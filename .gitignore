@@ -1,11 +1,9 @@
 ## Ignore the csharp project which is generated from cmake
 /cs/fesapiCs.csproj
 ## Ignore csharp swig generated files
-/cs/src/**
 /swig/swigGeneratedCsWrapper.cpp
 
 ## Ignore java swig generated files
-/java/src/com/f2i/energisticsStandardsApi/**
 /swig/swigGeneratedJavaWrapper.cpp
 
 
