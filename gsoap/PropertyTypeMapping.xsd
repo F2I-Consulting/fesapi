@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.f2i-consulting.com/PropertyTypeMapping" xmlns:ptm="http://www.f2i-consulting.com/PropertyTypeMapping" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:resqml="http://www.energistics.org/energyml/data/resqmlv2" elementFormDefault="qualified">
+	<xsd:import namespace="http://www.energistics.org/energyml/data/resqmlv2" schemaLocation="RESQML_SCHEMA_LOCATION/Common.xsd"/>
+	<xsd:element name="standardEnergisticsPropertyTypeSet" type="ptm:standardEnergisticsPropertyTypeSet">
+		<xsd:annotation>
+			<xsd:documentation>A container for enumeration lists.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!--                                                         -->
+	<xsd:complexType name="standardEnergisticsPropertyTypeSet">
+		<xsd:sequence>
+			<xsd:element name="standardEnergisticsPropertyType" type="ptm:standardEnergisticsPropertyType" minOccurs="1" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>A single enumeration list.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--                                                         -->
+	<xsd:complexType name="standardEnergisticsPropertyType">
+		<xsd:sequence>
+			<xsd:element name="name" type="resqml:ResqmlPropertyKind" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>The name of the value.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="description" type="xsd:string" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>A description of the value. </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="version" type="xsd:string" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>The version when the value was added.
+					The string should match the content of the root version attribute of the schema.
+					For example, "1.4.0.0".</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="deprecated" type="xsd:string" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>A non blank version indicates that the value has
+					been deprecated and may be removed in future versions.
+					The string should match the content of the root version attribute of the schema.
+					For example, "1.4.0.0".</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="replacedBy" type="xsd:string" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>The value to use as a replacement for a deprecated value.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="isAbstract" type="xsd:boolean" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>True ("1" or "true") indicates that the property is abstract and cannot be used to characterize a value.
+					False ("0" or "false") or not given indicates a non-abstract property that can be instantiated.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="parentKind" type="xsd:string" minOccurs="0" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>Points to a parent property kind</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="equivalentPropertyType" type="ptm:equivalentPropertyType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>The name of the value.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>	
+	<!--                                                         -->
+	<xsd:complexType name="equivalentPropertyType">
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>The name of the value.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="namingSystem" type="xsd:string" minOccurs="1" maxOccurs="1">
+				<xsd:annotation>
+					<xsd:documentation>The name of the value.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</schema>

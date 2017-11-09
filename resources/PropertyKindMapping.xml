@@ -1,0 +1,1263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<standardEnergisticsPropertyTypeSet xmlns="http://www.f2i-consulting.com/PropertyTypeMapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.f2i-consulting.com/PropertyTypeMapping PropertyTypeMapping.xsd ">
+	<standardEnergisticsPropertyType>
+		<name>absorbed dose</name>
+		<description>The amount of energy absorbed per mass.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>acceleration linear</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>activity (of radioactivity)</name>
+		<description>A measure of the radiation being emitted.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>amount of substance</name>
+		<description>Molar amount of a substance.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Amount of substance</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>amplitude</name>
+		<description>Amplitude of the acoustic signal recorded. It is not a physical property, only a standardEnergisticsPropertyType.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>unitless</parentKind>
+		<equivalentPropertyType>
+			<name>Seismic (default)</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>angle per length</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>angle per time</name>
+		<description>The angular velocity. The rate of change of an angle.</description>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>angle per volume</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>angular acceleration</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>area</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Area</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>area per area</name>
+		<description>A dimensionless quantity where the basis of the ratio is area.</description>
+		<isAbstract>true</isAbstract>
+		<parentKind>dimensionless</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>area per volume</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>attenuation</name>
+		<description>A logarithmic, fractional change of some measure, generally power or amplitude, over a standard range. This is generally used for frequency attenuation over an octave.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>attenuation per length</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>azimuth</name>
+		<description>Angle between the North and the projection of the normal to the horizon surface estimated on a local area of the interface.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>plane angle</parentKind>
+		<equivalentPropertyType>
+			<name>Dip azimuth</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>bubble point pressure</name>
+		<description>The pressure at which the first gas bubble appears while decreasing pressure on a fluid sample.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>pressure</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>bulk modulus</name>
+		<description>Bulk modulus, K</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>pressure</parentKind>
+		<equivalentPropertyType>
+			<name>Bulk modulus</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>capacitance</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>categorical</name>
+		<description>The abstract supertype of all enumerated string properties.</description>
+		<isAbstract>true</isAbstract>
+		<parentKind>RESQML root property</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>cell length</name>
+		<description>distance from cell face center to cell face center in the specified direction, DI, DJ, DK</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>length</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>charge density</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>chemical potential</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>code</name>
+		<description>A discrete code.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>categorical</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>compressibility</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>concentration of B</name>
+		<description>molar concentration of a substance.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>conductivity</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Conductivity</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>continuous</name>
+		<description>The abstract supertype of all floating point properties.</description>
+		<isAbstract>true</isAbstract>
+		<parentKind>RESQML root property</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>cross section absorption</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Photoelectric factor</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>current density</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>Darcy flow coefficient</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>data transmission speed</name>
+		<description>used primarily for computer transmission rates.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>delta temperature</name>
+		<description>Delta temperature refers to temperature differences. For non-zero offset temperature scales, Fahrenheit and Celsius, the conversion formulas are different than for absolute temperatures.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Differential temperature</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>density</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Density</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>depth</name>
+		<description>The perpendicular measurement downward from a surface. Also, the direct linear measurement from the point of viewing usually from front to back.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>length</parentKind>
+		<equivalentPropertyType>
+			<name>Elevation depth</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>diffusion coefficient</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Diffusivity</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>digital storage</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>dimensionless</name>
+		<description>A dimensionless quantity is the ratio of two dimensional quantities. The quantity types are not apparent from the basic dimensionless class, but may be apparent in variations - such as area per area, volume per volume, or mass per mass.</description>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>dip</name>
+		<description>In the azimuth direction, Angle between an horizon plane and an estimated plane on a local area of the interface.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>plane angle</parentKind>
+		<equivalentPropertyType>
+			<name>Dip angle</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>discrete</name>
+		<description>The abstract supertype of all integer properties.</description>
+		<isAbstract>true</isAbstract>
+		<parentKind>RESQML root property</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>dose equivalent</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>dose equivalent rate</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>dynamic viscosity</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>electric charge</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>electric conductance</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>electric current</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>electric dipole moment</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>electric field strength</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>electric polarization</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>electric potential</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Spontaneous potential</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>electrical resistivity</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Resistivity</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>electrochemical equivalent</name>
+		<description>An electrochemical equivalent differs from molarity in that the valence (oxidation reduction potential) of the element is also considered.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>electromagnetic moment</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>energy length per area</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>energy length per time area temperature</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>energy per area</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>energy per length</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>equivalent per mass</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>equivalent per volume</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>exposure (radioactivity)</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>fluid volume</name>
+		<description>Volume of fluid</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>volume</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>force</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>force area</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>force length per length</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>force per force</name>
+		<description>A dimensionless quantity where the basis of the ratio is force.</description>
+		<isAbstract>true</isAbstract>
+		<parentKind>dimensionless</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>force per length</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>force per volume</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>formation volume factor</name>
+		<description>Ratio of volumes at subsurface and surface conditions</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>volume per volume</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>frequency</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Seismic - Frequency</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>frequency interval</name>
+		<description>An octave is a doubling of a frquency.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>gamma ray API unit</name>
+		<description>This class is defined by the API, and is used for units of gamma ray log response.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Gamma ray</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>heat capacity</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>heat flow rate</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>heat transfer coefficient</name>
+		<description>PRESSURE PER VELOCITY PER AREA</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Heat transfer coefficient</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>illuminance</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>index</name>
+		<description>Serial ordering</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>discrete</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>irradiance</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>isothermal compressibility</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>kinematic viscosity</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>Lambda Rho</name>
+		<description>Product of Lame constant and density, LR</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Lambda*Rho</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>Lame constant</name>
+		<description>Lame constant, Lambda</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>pressure</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>length</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>length per length</name>
+		<description>A dimensionless quantity where the basis of the ratio is length.</description>
+		<isAbstract>true</isAbstract>
+		<parentKind>dimensionless</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>length per temperature</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>length per volume</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>level of power intensity</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>light exposure</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>linear thermal expansion</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>luminance</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>luminous efficacy</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>luminous flux</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>luminous intensity</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>magnetic dipole moment</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>magnetic field strength</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>magnetic flux</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>magnetic induction</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>magnetic permeability</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>magnetic vector potential</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>mass</name>
+		<description>M/L2T</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Mass</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>mass attenuation coefficient</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>mass concentration</name>
+		<description>A dimensionless quantity where the basis of the ratio is mass.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>dimensionless</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>mass flow rate</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Mass flow rate</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>mass length</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>mass per energy</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>mass per length</name>
+		<description>M  /L4T</description>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>mass per time per area</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>mass per time per length</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>mass per volume per length</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>mobility</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Mobility</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>modulus of compression</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>molar concentration</name>
+		<description>molar concentration of a substance.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>concentration of B</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>molar heat capacity</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>molar volume</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Molar volume</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>mole per area</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>mole per time</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>mole per time per area</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>moment of force</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>moment of inertia</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>moment of section</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>momentum</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>Mu Rho</name>
+		<description>Product of Shear modulus and density, MR</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Mu*Rho</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>net to gross ratio</name>
+		<description>Ratio of net rock volume to gross rock volume, NTG</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>volume per volume</parentKind>
+		<equivalentPropertyType>
+			<name>Net/Gross</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>neutron API unit</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>nonDarcy flow coefficient</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>operations per time</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>parachor</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>per area</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>per electric potential</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>per force</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>per length</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>per mass</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>per volume</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>permeability length</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Permeability-length</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>permeability rock</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>permeability thickness</name>
+		<description>Product of permeability and thickness</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>permeability length</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>permeance</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>permittivity</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>pH</name>
+		<description>The pH is a class that measures the hydrogen ion concentration (acidity).</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>plane angle</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>Poisson ratio</name>
+		<description>Poisson's ratio, Sigma</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>dimensionless</parentKind>
+		<equivalentPropertyType>
+			<name>Poissons ratio</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>pore volume</name>
+		<description>Volume of the Pore Space of the Rock</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>volume</parentKind>
+		<equivalentPropertyType>
+			<name>Pore volume</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>porosity</name>
+		<description>porosity</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>volume per volume</parentKind>
+		<equivalentPropertyType>
+			<name>Porosity</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>potential difference per power drop</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>power</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>power per volume</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>pressure</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Pressure</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>pressure per time</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>pressure squared</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>pressure squared per force time per area</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>pressure time per volume</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>productivity index</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>property multiplier</name>
+		<description>Unitless multiplier to apply to any property</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>unitless</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>quantity</name>
+		<description>The abstract supertype of all floating point properties with a unit of measure.</description>
+		<isAbstract>true</isAbstract>
+		<parentKind>continuous</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>quantity of light</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>radiance</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>radiant intensity</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>relative permeability</name>
+		<description>Ratio of phase permeability, which is a function of saturation, to the rock permeability</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>dimensionless</parentKind>
+		<equivalentPropertyType>
+			<name>Relative permeability</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>relative power</name>
+		<description>A dimensionless quantity where the basis of the ratio is power.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>dimensionless</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>relative time</name>
+		<description>A dimensionless quantity where the basis of the ratio is time.</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>dimensionless</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>reluctance</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>resistance</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>resistivity per length</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>RESQML root property</name>
+		<description>The abstract supertype of all properties. This property does not have a parent.</description>
+		<isAbstract>true</isAbstract>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>Rock Impedance</name>
+		<description>Acoustic impedence, Ip, Is</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>mass per time per area</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>rock permeability</name>
+		<description>See "permeability rock"</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>permeability rock</parentKind>
+		<equivalentPropertyType>
+			<name>Permeability</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>rock volume</name>
+		<description>Rock Volume</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>volume</parentKind>
+		<equivalentPropertyType>
+			<name>Rock volume</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>saturation</name>
+		<description>Ratio of phase fluid volume to pore volume</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>volume per volume</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>second moment of area</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>shear modulus</name>
+		<description>Shear modulus, Mu</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>pressure</parentKind>
+		<equivalentPropertyType>
+			<name>Shear modulus</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>solid angle</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>solution gas-oil ratio</name>
+		<description>Ratio of solution gas volume to oil volume at reservoir conditions</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>volume per volume</parentKind>
+		<equivalentPropertyType>
+			<name>Solution gas-oil ratio</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>specific activity (of radioactivity)</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>specific energy</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>specific heat capacity</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>specific productivity index</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>specific volume</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>surface density</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>temperature per length</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Thermal Gradient</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>temperature per time</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>thermal conductance</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>thermal conductivity</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>thermal diffusivity</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>thermal insulance</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>thermal resistance</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Thermal resistance</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>thermodynamic temperature</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Absolute temperature</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>thickness</name>
+		<description>Distance measured in a volume between two surfaces ( e.G. Geological Top Boundary and Geological Bottom Boundary of a Geological unit).</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>length</parentKind>
+		<equivalentPropertyType>
+			<name>Thickness general</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>time</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>General time</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>time per length</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>time per volume</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>transmissibility</name>
+		<description>Volumetric flux per unit area per unit pressure drop for unit viscosity fluid</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>unit productivity index</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>unitless</name>
+		<description>The abstract supertype of all floating point properties with NO unit of measure. In order to allow the unit information to be required for all continuous properties, the special unit of measure of "NONE" has been assigned to all children of this class. In addition, the special dimensional class of "0" has been assigned to all children of this class. PV: CHANGED "NONE" TO "Euc"</description>
+		<isAbstract>true</isAbstract>
+		<parentKind>continuous</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>vapor oil-gas ratio</name>
+		<description>Ratio of oil vapor volume to gas volume at reservoir conditions</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>volume per volume</parentKind>
+		<equivalentPropertyType>
+			<name>Vapourized oil-gas ratio</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>velocity</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+		<equivalentPropertyType>
+			<name>Velocity</name>
+			<namingSystem>Petrel</namingSystem>
+		</equivalentPropertyType>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>volume</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>volume flow rate</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>volume length per time</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>volume per area</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>volume per length</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>volume per time per area</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>volume per time per length</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>volume per time per time</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>volume per time per volume</name>
+		<isAbstract>true</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>volume per volume</name>
+		<description>A dimensionless quantity where the basis of the ratio is volume.</description>
+		<isAbstract>true</isAbstract>
+		<parentKind>dimensionless</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>volumetric heat transfer coefficient</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>volumetric thermal expansion</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>work</name>
+		<isAbstract>false</isAbstract>
+		<parentKind>quantity</parentKind>
+	</standardEnergisticsPropertyType>
+	<standardEnergisticsPropertyType>
+		<name>Young modulus</name>
+		<description>Young's modulus, E</description>
+		<isAbstract>false</isAbstract>
+		<parentKind>pressure</parentKind>
+	</standardEnergisticsPropertyType>
+</standardEnergisticsPropertyTypeSet>
+
