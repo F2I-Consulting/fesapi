@@ -1,0 +1,5 @@
+All the files located in src/proxies are protected by a "GENIVIA INC SINGLE-USER DEVELOPEMENT LICENSE AGREEMENT FOR COMMERCILA USE" which has been defined between F2I-CONSULTING SARL and GENIVIA INC.
+This license allows F2I-CONSULTING to market, sell, offer to sell and distribute these files.
+F2I-CONSULTING thanks GENIVIA INC to have been very helpful during the writing of the license.
+
+If you want to use your own src/proxies files, you can generate them with your own GSOAP license (see PROXIES_GENERATION variable in src/CMakeLists.txt). Or you can easily use the Standard Open Source Edition of Gsoap provided by GENIVIA INC at http://www.cs.fsu.edu/~engelen/soap.html. In the latter case, notice that the F2I Energistics Standards API would be a GPL license project cause of the Standard Open Source Edition conditions.
