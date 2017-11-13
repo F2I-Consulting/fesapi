@@ -36,7 +36,7 @@ Fesapi uses cmake as its build tool. A 3.4 version or later of cmake is required
 		- UUID_INCLUDE_DIR : where the UUID headers are located
 		- UUID_LIBRARY : the UUID library you want to link to
 - Click again on "Configure" button. You should no more have errors so you can now click on "Generate" button.
-./cmake/cmake.JPG
+![alt text](./cmake/cmake.JPG)
 - You can now build your solution with your favorite compiler (and linker) using the generated solution in yourPath/fesapiEnv/build/theNameYouWant
 - OPTIONALLY, you can also set the variables WITH_DOTNET_WRAPPING or WITH_JAVA_WRAPPING to true if you want to also generate wrappers on top of fesapi for these two other programming languages. Don't forget to click again on "Configure" button once you changed the value of these two variables.
 	- You will then have to also provide the path to the SWIG executable http://swig.org/download.html in the SWIG_EXECUTABLE variable (and click again on "Configure" button)
