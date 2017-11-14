@@ -3,7 +3,9 @@ sudo: false
 language: cpp
 script: cmake
 install:
-  - mkdir dependencies
-  - cd dependencies
+  - mkdir ../dependencies
+  - cd ../dependencies
   - wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.18/bin/linux-centos7-x86_64-gcc485-noszip/hdf5-1.8.18-linux-centos7-x86_64-gcc485-noszip-shared.tar.gz
   - tar -xzvf hdf5-1.8.18-linux-centos7-x86_64-gcc485-noszip-shared.tar.gz
+  - mkdir ../build
+  - cmake -DHDF5_C_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/hdf5-1.8.18-linux-centos7-x86_64-gcc485-noszip-shared/include -DHDF5_C_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/hdf5-1.8.18-linux-centos7-x86_64-gcc485-noszip-shared/lib/libhdf5.so
