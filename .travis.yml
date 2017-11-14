@@ -1,0 +1,9 @@
+dist: trusty
+sudo: false
+language: cpp
+script: cmake
+install:
+  - mkdir dependencies
+  - cd dependencies
+  - wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.18/bin/linux-centos7-x86_64-gcc485-noszip/hdf5-1.8.18-linux-centos7-x86_64-gcc485-noszip-shared.tar.gz
+  - tar -xzvf hdf5-1.8.18-linux-centos7-x86_64-gcc485-noszip-shared.tar.gz
