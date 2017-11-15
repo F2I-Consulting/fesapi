@@ -6,7 +6,7 @@ PROJECT (Fesapi_SRC)
 # version mechanism
 set (Fesapi_SRC_VERSION_MAJOR 0)
 set (Fesapi_SRC_VERSION_MINOR 11)
-set (Fesapi_SRC_VERSION_PATCH 0)
+set (Fesapi_SRC_VERSION_PATCH 1)
 set (Fesapi_SRC_VERSION_TWEAK 0)
 
 set (Fesapi_SRC_VERSION ${Fesapi_SRC_VERSION_MAJOR}.${Fesapi_SRC_VERSION_MINOR}.${Fesapi_SRC_VERSION_PATCH}.${Fesapi_SRC_VERSION_TWEAK})

@@ -436,6 +436,8 @@ void Package::addProperty(const CoreProperty::TypeProperty & pkgTypeProperty, co
 	case CoreProperty::version:
 		d_ptr->fileCoreProperties.setVersion(pkgPropertyValue);
 		break;
+	default:
+		throw invalid_argument("The core property to add does not exist, is unknown or is not supported yet. For your information, its value is " + pkgPropertyValue);
 	}
 }
 
