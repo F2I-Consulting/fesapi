@@ -2851,8 +2851,8 @@ int main(int argc, char **argv)
 		std::cerr << "Error : " << Exp.what() << ".\n";
 	}
 
-	cout << "Press enter to continue..." << endl;
-	cin.get();
+	//cout << "Press enter to continue..." << endl;
+	//cin.get();
 
 #ifdef _WIN32
 	_CrtDumpMemoryLeaks();
