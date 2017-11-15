@@ -1,6 +1,9 @@
 dist: trusty
 sudo: required
 language: cpp
+compiler:
+  - clang
+  - gcc
 script: cmake
 install:
   - sudo apt-get install uuid-dev
@@ -20,3 +23,5 @@ script:
     -DMINIZIP_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.0.0.0-linux-ubuntu1604-x86_64-gcc540/include
     -DMINIZIP_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.0.0.0-linux-ubuntu1604-x86_64-gcc540/lib/libminizip.a
     $TRAVIS_BUILD_DIR
+  - make
+  
