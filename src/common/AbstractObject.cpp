@@ -325,8 +325,8 @@ void AbstractObject::setOriginator(const std::string & originator)
 
 	if (originator.empty()) {
 #if defined(__gnu_linux__) || defined(__APPLE__)
-		register struct passwd *pw;
-		register uid_t uid;
+		struct passwd *pw;
+		uid_t uid;
 
 		uid = geteuid();
 		pw = getpwuid(uid);

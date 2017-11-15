@@ -65,8 +65,8 @@ void FileCoreProperties::initDefaultCoreProperties()
 	if (properties[CoreProperty::creator].isEmpty())
 	{
 #if defined(__gnu_linux__) 
-        register struct passwd *pw;
-        register uid_t uid;
+        struct passwd *pw;
+        uid_t uid;
                 
         uid = geteuid ();
         pw = getpwuid (uid);
