@@ -24,4 +24,5 @@ script:
     -DMINIZIP_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.0.0.0-linux-ubuntu1604-x86_64-gcc540/lib/libminizip.a
     $TRAVIS_BUILD_DIR
   - make
+  - ./example/example
   
