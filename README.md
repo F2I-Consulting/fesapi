@@ -7,7 +7,7 @@
 # Prepare the dependencies
 Download (build and install if necessary) third party libraries:
 
-- HDF5: All versions of 1.8.* starting from 1.8.9 should be ok. Versions 1.10.* are not supported yet https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/
+- HDF5: All versions of 1.8.* starting from 1.8.18 should be ok. Versions 1.10.* are not supported yet (even if they should work) https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/
 - MINIZIP : the following version is recommended https://github.com/F2I-Consulting/minizip It is also highly recommended to link minzip to the same zlib library than the one associated to your HDF5 library. It is recommended to create a *static* library of minizip from this source code.
 - UUID-DEV package *(ONLY FOR LINUX)* : Source code can be found in https://www.kernel.org/pub/linux/utils/util-linux/
 We advise you to install these third party libraries respectively into
