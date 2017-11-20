@@ -64,6 +64,7 @@ configuration: Release
 #  - Release
 
 build:
+  project: build\INSTALL.vcxproj
 
 # scripts to run before build
 before_build:
