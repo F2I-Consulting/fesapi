@@ -69,6 +69,15 @@ build:
 before_build:
   - mkdir build
   - cd build
+  - >
+    cmake -G"Visual Studio 12 2013 Win64"
+    -DHD5_BUILT_AS_DYNAMIC_LIB=TRUE
+    -DHDF5_C_INCLUDE_DIR=c:/projects/fesapiEnv/dependencies/hdf5-1.8.18-win64-vs2013-noszip/include
+    -DHDF5_C_LIBRARY_RELEASE=c:/projects/fesapiEnv/dependencies/hdf5-1.8.18-win64-vs2013-noszip/lib/hdf5.lib
+    -DMINIZIP_INCLUDE_DIR=c:/projects/fesapiEnv/dependencies/minizip-1.0.0.0-win64-vs2013/include
+    -DMINIZIP_LIBRARY_RELEASE=c:/projects/fesapiEnv/dependencies/minizip-1.0.0.0-win64-vs2013/lib/minizip.lib
+    -DZLIB_LIBRARY_RELEASE=c:/projects/fesapiEnv/dependencies/hdf5-1.8.18-win64-vs2013-noszip/lib/zlib.lib
+    ../fesapi
 
 # scripts to run *after* solution is built and *before* automatic packaging occurs (web apps, NuGet packages, Azure Cloud Services)
 before_package:
@@ -80,16 +89,4 @@ after_build:
   - copy c:/projects/fesapiEnv/dependencies/hdf5-1.8.18-win64-vs2013-noszip/bin/zlib.dll .
   - example.exe
 
-# to run your custom scripts instead of automatic MSBuild
-build_script:
-  - >
-    cmake -G"Visual Studio 12 2013 Win64"
-    -DHD5_BUILT_AS_DYNAMIC_LIB=TRUE
-    -DHDF5_C_INCLUDE_DIR=c:/projects/fesapiEnv/dependencies/hdf5-1.8.18-win64-vs2013-noszip/include
-    -DHDF5_C_LIBRARY_RELEASE=c:/projects/fesapiEnv/dependencies/hdf5-1.8.18-win64-vs2013-noszip/lib/hdf5.lib
-    -DMINIZIP_INCLUDE_DIR=c:/projects/fesapiEnv/dependencies/minizip-1.0.0.0-win64-vs2013/include
-    -DMINIZIP_LIBRARY_RELEASE=c:/projects/fesapiEnv/dependencies/minizip-1.0.0.0-win64-vs2013/lib/minizip.lib
-    -DZLIB_LIBRARY_RELEASE=c:/projects/fesapiEnv/dependencies/hdf5-1.8.18-win64-vs2013-noszip/lib/zlib.lib
-    ../fesapi
-  - cmake --build .
 
