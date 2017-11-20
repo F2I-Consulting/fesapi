@@ -20,7 +20,7 @@ branches:
 #---------------------------------#
 
 # Build worker image (VM template)
-image: Visual Studio 2015
+image: Visual Studio 2013
 
 # scripts that are called at very beginning, before repo cloning
 init:
@@ -36,9 +36,12 @@ install:
   ############################################################################
   - mkdir C:\projects\fesapiEnv\dependencies
   - cd C:\projects\fesapiEnv\dependencies
-  - appveyor DownloadFile https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.18/bin/windows/noszip/extra/hdf5-1.8.18-win64-vs2015-noszip.zip
-  - 7z x hdf5-1.8.18-win64-vs2015-noszip.zip -oC:\projects\fesapiEnv\dependencies > nul
-  - msiexec.exe /i "C:\projects\fesapiEnv\dependencies\hdf5\HDF5-1.8.18-win64.msi" /qn
+  - appveyor DownloadFile https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.18/bin/windows/noszip/hdf5-1.8.18-win64-vs2013-noszip.zip
+  - 7z x hdf5-1.8.18-win64-vs2013-noszip.zip -oC:\projects\fesapiEnv\dependencies > nul
+  - msiexec.exe /i "C:\projects\fesapiEnv\dependencies\hdf5\HDF5-1.8.18-win64.msi" /qn INSTALL_ROOT=C:\projects\fesapiEnv\dependencies
+  - appveyor DownloadFile https://github.com/F2I-Consulting/minizip/releases/download/v1.0.0.0/minizip-1.0.0.0-win64-vs2013.zip
+  - 7z x minizip-1.0.0.0-win64-vs2013.zip -oC:\projects\fesapiEnv\dependencies > nul
+  - dir
   - cd ..
 
 #---------------------------------#
@@ -65,8 +68,8 @@ build:
 
 # scripts to run before build
 before_build:
-  - mkdir ../build
-  - cd ../build
+  - mkdir build
+  - cd build
   - cmake --build .
 
 # scripts to run *after* solution is built and *before* automatic packaging occurs (web apps, NuGet packages, Azure Cloud Services)
@@ -78,12 +81,12 @@ after_build:
 # to run your custom scripts instead of automatic MSBuild
 build_script:
   - >
-    cmake -G"Visual Studio 14 2015 Win64"
+    cmake -G"Visual Studio 12 2013 Win64"
     -DHD5_BUILT_AS_DYNAMIC_LIB=TRUE
-    -DHDF5_C_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/hdf5-1.8.18-linux-centos7-x86_64-gcc485-noszip-shared/include
-    -DHDF5_C_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/hdf5-1.8.18-linux-centos7-x86_64-gcc485-noszip-shared/lib/libhdf5.so
-    -DMINIZIP_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.0.0.0-linux-ubuntu1604-x86_64-gcc540/include
-    -DMINIZIP_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.0.0.0-linux-ubuntu1604-x86_64-gcc540/lib/libminizip.a
+    -DHDF5_C_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/hdf5/include
+    -DHDF5_C_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/hdf5/lib/hdf5.lib
+    -DMINIZIP_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.0.0.0-win64-vs2013/include
+    -DMINIZIP_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.0.0.0-win64-vs2013/lib/minizip.lib
     ../fesapi
   - cmake --build .
 
