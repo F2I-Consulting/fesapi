@@ -64,10 +64,11 @@ configuration: Release
 #  - Release
 
 build:
-  project: build\INSTALL.vcxproj
+  project: C:\projects\fesapiEnv\build\INSTALL.vcxproj
 
 # scripts to run before build
 before_build:
+  - dir
   - mkdir build
   - cd build
   - >
