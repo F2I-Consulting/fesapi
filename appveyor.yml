@@ -87,8 +87,8 @@ before_package:
 # scripts to run after build
 after_build:
   - cd Release
-  - copy c:/projects/fesapiEnv/dependencies/hdf5-1.8.18-win64-vs2013-noszip/bin/hdf5.dll .
-  - copy c:/projects/fesapiEnv/dependencies/hdf5-1.8.18-win64-vs2013-noszip/bin/zlib.dll .
+  - copy c:\projects\fesapiEnv\dependencies\hdf5-1.8.18-win64-vs2013-noszip\bin\hdf5.dll .
+  - copy c:\projects\fesapiEnv\dependencies\hdf5-1.8.18-win64-vs2013-noszip\bin\zlib.dll .
   - example.exe
 
 
