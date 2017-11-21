@@ -740,9 +740,9 @@ void IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch(co
 					for (unsigned int k = 0; k <= kInterfaceEnd - kInterfaceStart; ++k) {
 						if (parameterDistance != .0) {
 							if (pillarInformation->controlPointParameters != nullptr)
-								ratioFromFirstControlPoint = (parameters[paramIndex] - pillarInformation->controlPointParameters[pillarIndex]) / parameterDistance;
+								ratioFromFirstControlPoint = (parameters[(k * xyzPointCount) + paramIndex] - pillarInformation->controlPointParameters[pillarIndex]) / parameterDistance;
 							else { // Should never occur by business rule. Assume the parameters are Z values for now (workaround for some softwares)....
-								ratioFromFirstControlPoint = (parameters[paramIndex] - pillarInformation->controlPoints[pillarIndex * 3 + 2]) / parameterDistance;
+								ratioFromFirstControlPoint = (parameters[(k * xyzPointCount) + paramIndex] - pillarInformation->controlPoints[pillarIndex * 3 + 2]) / parameterDistance;
 							}
 						}
 						else
