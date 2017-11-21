@@ -68,7 +68,6 @@ build:
 
 # scripts to run before build
 before_build:
-  - dir
   - mkdir build
   - cd build
   - >
