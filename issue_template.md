@@ -1,12 +1,4 @@
----------------------------------------------------------------
-Thanks for reporting an issue! Here are information to take into account before to add an issue to the project.
-# Where-to-post summary:
-- How do I? Why do you? When will you? -> Forum : https://discourse.f2i-consulting.com/c/fesapi
-- I got this error, why? -> Forum : https://discourse.f2i-consulting.com/c/fesapi
-- I got this error and I'm sure it's a bug -> add an issue by filling out the related blanks below!
-- I have a request -> add an issue by filling out the related blanks below!
----------------------------------------------------------------
-PLEASE, DELETE ALL LINES ABOVE AND THIS LINE TOO BEFORE SENDING THE ISSUE
+(Thanks for reporting an issue! Please make sure you click the link above to view the issue guidelines, then fill out the blanks below.)
 
 # What are the steps to reproduce this issue?
 1. …
