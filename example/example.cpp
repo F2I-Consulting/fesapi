@@ -2651,7 +2651,6 @@ void ijkGridHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, unsigned 
 	ijkGrid->loadBlockInformation(0, iCellCount, 0, jCellCount, 0, kCellCount);
 
 	time_t timeStart, timeEnd;
-	clock_t clockStart, clockEnd;
 	clock_t nonHyperslabClockDuration = 0;
 	clock_t hyperslabClockDuration = 0;
 	clock_t blockHyperslabClockDuration = 0;
@@ -2663,6 +2662,8 @@ void ijkGridHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, unsigned 
 
 	for (unsigned int i = 0; i < smoothingConstant; ++i)
 	{
+		clock_t clockStart, clockEnd;
+
 		// non hyperslabbing
 		clockStart = clock();
 		time(&timeStart);

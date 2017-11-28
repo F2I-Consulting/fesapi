@@ -125,7 +125,7 @@ void IjkGridExplicitRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch(cons
 			offsetPerDimension[3] = 0;
 
 			hdfProxy->readArrayNdOfDoubleValues(
-				static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->PathInHdfFile,
+				pathInHdfFile,
 				xyzPoints,
 				valueCountPerDimension,
 				offsetPerDimension,
