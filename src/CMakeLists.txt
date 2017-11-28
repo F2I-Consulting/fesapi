@@ -296,9 +296,14 @@ ENDIF (WIN32)
 ADD_LIBRARY (${CPP_LIBRARY_NAME} ${LIB_TYPE} ${ALL_SOURCES_AND_HEADERS})
 
 # Linker instructions
-# zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked to fesapi, zlib could be not present in these linked libraries.
 IF (WIN32)
-	TARGET_LINK_LIBRARIES (${CPP_LIBRARY_NAME} ${MINIZIP_LIBRARY_RELEASE} ${HDF5_C_LIBRARY_RELEASE} ${ZLIB_LIBRARY_RELEASE} )
+	TARGET_LINK_LIBRARIES (${CPP_LIBRARY_NAME} ${MINIZIP_LIBRARY_RELEASE} ${HDF5_C_LIBRARY_RELEASE})
+# zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
+# zlib is linked because it is a very probable dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to zlib), zlib could be not present in these linked libraries.
+	IF (EXISTS ${ZLIB_LIBRARY_RELEASE})
+		TARGET_LINK_LIBRARIES (${CPP_LIBRARY_NAME} ${ZLIB_LIBRARY_RELEASE})
+	ENDIF ()
+# szip is linked because it is a potential dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to szip), szip could be not present in these linked libraries.
 	IF (EXISTS ${SZIP_LIBRARY_RELEASE})
 		TARGET_LINK_LIBRARIES (${CPP_LIBRARY_NAME} ${SZIP_LIBRARY_RELEASE})
 	ENDIF ()
@@ -309,9 +314,15 @@ IF (WIN32)
 		IMPORT_SUFFIX ".${Fesapi_SRC_VERSION}.lib"
 		VERSION ${Fesapi_SRC_VERSION_MAJOR}.${Fesapi_SRC_VERSION_MINOR})
 ELSEIF (UNIX)
-	TARGET_LINK_LIBRARIES (${CPP_LIBRARY_NAME} ${UUID_LIBRARIES} ${GSOAP_LIBRARIES} ${MINIZIP_LIBRARY_RELEASE} ${HDF5_C_LIBRARY_RELEASE} ${ZLIB_LIBRARY_RELEASE})
-	IF (EXISTS ${SZIP_LIBRARY_RELEASE})
+	TARGET_LINK_LIBRARIES (${CPP_LIBRARY_NAME} ${UUID_LIBRARIES} ${GSOAP_LIBRARIES} ${MINIZIP_LIBRARY_RELEASE} ${HDF5_C_LIBRARY_RELEASE})
+# zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
+# zlib is linked because it is a very probable dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to zlib), zlib could be not present in these linked libraries.
+	IF (EXISTS ${ZLIB_LIBRARY_RELEASE})
 		TARGET_LINK_LIBRARIES (${CPP_LIBRARY_NAME} ${SZIP_LIBRARY_RELEASE})
+	ENDIF ()
+# szip is linked because it is a potential dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to szip), szip could be not present in these linked libraries.
+	IF (EXISTS ${SZIP_LIBRARY_RELEASE})
+		TARGET_LINK_LIBRARIES (${CPP_LIBRARY_NAME} ${ZLIB_LIBRARY_RELEASE})
 	ENDIF ()
 
 	# In case of static link to hdf5 libraries, then we need to also link to some other libraries

@@ -8,14 +8,14 @@
 Download (build and install if necessary) third party libraries:
 
 - HDF5: All versions of 1.8.* starting from 1.8.18 should be ok. Versions 1.10.* are not supported yet (even if they should work) https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/
-- MINIZIP : the following version is recommended https://github.com/F2I-Consulting/minizip It is also highly recommended to link minzip to the same zlib library than the one associated to your HDF5 library. It is recommended to create a *static* library of minizip from this source code.
+- MINIZIP : the following version is recommended https://github.com/F2I-Consulting/minizip It is also highly recommended to link minzip to the same zlib library than the one associated to your HDF5 library. From this source code, it is recommended to create a *static* library of minizip dynamically linked to the same zlib library than the one used for the hdf5 library.
 - UUID-DEV package *(ONLY FOR LINUX)* : Source code can be found in https://www.kernel.org/pub/linux/utils/util-linux/
 We advise you to install these third party libraries respectively into
 	- fesapiEnv/dependencies/hdf5-particularVersion
 	- fesapiEnv/dependencies/minizip-particularVersion
 	- fesapiEnv/dependencies/uuid-particularVersion (or in system directory using : sudo apt-get install uuid-dev)
 # Configure the build
-Fesapi uses cmake as its build tool. A 3.4 version or later of cmake is required https://cmake.org/download/. We also recommend using cmake-gui (already included in the bin folder of the binary releases of cmake) which provides a graphical user interface on top of cmake. Follow the below instructions :
+Fesapi uses cmake as its build tool. A 3.2 version or later of cmake is required https://cmake.org/download/. We also recommend using cmake-gui (already included in the bin folder of the binary releases of cmake) which provides a graphical user interface on top of cmake. Follow the below instructions :
 
 - yourPath/fesapiEnv/fesapi defines where is the source code folder
 - yourPath/fesapiEnv/build/theNameYouWant defines where to build the binaries
@@ -28,7 +28,7 @@ Fesapi uses cmake as its build tool. A 3.4 version or later of cmake is required
 	- MINIZIP
 		- MINIZIP_INCLUDE_DIR : where the HDF5 headers are located
 		- MINIZIP_LIBRARY_RELEASE : the MINIZIP library you want to link to
-	- ZLIB (it is only required when you have built minizip as a static library which is recommended)
+	- ZLIB (It is most of time required since fesapi is supposed to be statically linked to minizip which should be dynamically linked to zlib. It is also required if fesapi is statically linked to hdf5 and if hdf5 is dynamically linked to zlib.)
 		- ZLIB_LIBRARY_RELEASE : the ZLIB library you want to link to. It must be the same as the one which is linked to HDF5 library and MINIZIP library otherwise you will get a warning from CMake. This warning can be ignored most of time but it can really create unpredictable bugs in some circumstances.
 	- SZIP (it is only required when you statically link to HDF5 AND when HDF5 has been built using SZIP)
 		- SZIP_LIBRARY_RELEASE : the SZIP library you want to link to. This warning can be ignored most of time but it can really create unpredictable bugs in some circumstances (static linking to HDF5 with HDF5 making use of szip).
