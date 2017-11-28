@@ -111,6 +111,8 @@ void IjkGridExplicitRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch(cons
 
 		if (splitCoordinateLineCount == 0)
 		{
+			const std::string pathInHdfFile = static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->PathInHdfFile;
+		
 			unsigned long long* valueCountPerDimension = new unsigned long long[4];
 			valueCountPerDimension[0] = kInterfaceEnd - kInterfaceStart + 1;
 			valueCountPerDimension[1] = getJCellCount() + 1;
@@ -122,7 +124,6 @@ void IjkGridExplicitRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch(cons
 			offsetPerDimension[2] = 0;
 			offsetPerDimension[3] = 0;
 
-			const std::string pathInHdfFile = static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->PathInHdfFile;
 			hdfProxy->readArrayNdOfDoubleValues(
 				static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->PathInHdfFile,
 				xyzPoints,
@@ -134,6 +135,8 @@ void IjkGridExplicitRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch(cons
 		}
 		else
 		{
+			const std::string pathInHdfFile = static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->PathInHdfFile;
+		
 			unsigned long long* valueCountPerDimension = new unsigned long long[3];
 			valueCountPerDimension[0] = kInterfaceEnd - kInterfaceStart + 1;
 			valueCountPerDimension[1] = (getJCellCount() + 1) * (getICellCount() + 1) + splitCoordinateLineCount;
@@ -144,7 +147,7 @@ void IjkGridExplicitRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch(cons
 			offsetPerDimension[2] = 0;
 
 			hdfProxy->readArrayNdOfDoubleValues(
-				static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->PathInHdfFile,
+				pathInHdfFile,
 				xyzPoints,
 				valueCountPerDimension,
 				offsetPerDimension,
@@ -152,6 +155,168 @@ void IjkGridExplicitRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch(cons
 
 			delete[] valueCountPerDimension;
 			delete[] offsetPerDimension;
+		}
+	}
+	else {
+		throw invalid_argument("The geometry of the grid either does not exist or it is not an explicit one.");
+	}
+
+	// Truncation
+	if (isTruncated()) {
+		throw invalid_argument("Getting all the XYZ points of a particular K interface is not supported yet for truncated grids.");
+	}
+}
+
+void IjkGridExplicitRepresentation::getXyzPointsOfBlockOfPatch(const unsigned int & patchIndex, double * xyzPoints)
+{
+	if (blockInformation == nullptr)
+		throw invalid_argument("The block information must have been loaded first.");
+
+	if (patchIndex >= getPatchCount())
+		throw range_error("An ijk grid has a maximum of one patch.");
+
+	if (xyzPoints == nullptr)
+		throw invalid_argument("xyzPoints must be allocated.");
+
+	resqml2__PointGeometry* pointGeom = getPointGeometry2_0_1(patchIndex);
+	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array)
+	{
+		unsigned long splitCoordinateLineCount = getSplitCoordinateLineCount();
+
+		if (splitCoordinateLineCount == 0)
+		{
+			const std::string pathInHdfFile = static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->PathInHdfFile;
+		
+			unsigned long long* valueCountPerDimension = new unsigned long long[4];
+			valueCountPerDimension[0] = blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1;
+			valueCountPerDimension[1] = blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1;
+			valueCountPerDimension[2] = blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1;
+			valueCountPerDimension[3] = 3;
+			unsigned long long* offsetPerDimension = new unsigned long long[4];
+			offsetPerDimension[0] = blockInformation->kInterfaceStart;
+			offsetPerDimension[1] = blockInformation->jInterfaceStart;
+			offsetPerDimension[2] = blockInformation->iInterfaceStart;
+			offsetPerDimension[3] = 0;
+
+			hdfProxy->readArrayNdOfDoubleValues(
+				static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->PathInHdfFile,
+				xyzPoints,
+				valueCountPerDimension,
+				offsetPerDimension,
+				4);
+			delete[] valueCountPerDimension;
+			delete[] offsetPerDimension;
+		}
+		else
+		{
+			const std::string pathInHdfFile = static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->PathInHdfFile;
+		
+			unsigned long long* blockCountPerDimension = new unsigned long long[3];
+			blockCountPerDimension[0] = 1;
+			blockCountPerDimension[1] = blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1;
+			blockCountPerDimension[2] = 1;
+			unsigned long long* offsetPerDimension = new unsigned long long[3];
+			offsetPerDimension[0] = blockInformation->kInterfaceStart;
+			offsetPerDimension[1] = blockInformation->jInterfaceStart * (getICellCount() + 1) + blockInformation->iInterfaceStart;
+			offsetPerDimension[2] = 0;
+			unsigned long long* strideInEachDimension = new unsigned long long[3];
+			strideInEachDimension[0] = 1;
+			strideInEachDimension[1] = (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) + ((getICellCount() + 1) - (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1));
+			strideInEachDimension[2] = 1;
+			unsigned long long* blockSizeInEachDimension = new unsigned long long[3];
+			blockSizeInEachDimension[0] = blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1;
+			blockSizeInEachDimension[1] = blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1;
+			blockSizeInEachDimension[2] = 3;
+		
+			int dataset, filespace;
+			hdfProxy->selectArrayNdOfValues(
+				pathInHdfFile,
+				blockCountPerDimension,
+				offsetPerDimension,
+				strideInEachDimension,
+				blockSizeInEachDimension,
+				3,
+				true,
+				dataset,
+				filespace);
+
+			unsigned long long slab_size = 1;
+			for (unsigned int h = 0; h < 3; ++h) {
+				slab_size *= blockSizeInEachDimension[h];
+			}
+			for (unsigned int h = 0; h < 3; ++h) {
+				slab_size *= blockCountPerDimension[h];
+			}
+
+			// Adding block split coordinate lines to the selected regions
+			// traversing all bloc pillars in direction i and then in direction j
+			for (unsigned int jPillarIndex = blockInformation->jInterfaceStart; jPillarIndex <= blockInformation->jInterfaceEnd; ++jPillarIndex)
+			{
+				for (unsigned int iPillarIndex = blockInformation->iInterfaceStart; iPillarIndex <= blockInformation->iInterfaceEnd; iPillarIndex++)
+				{
+					unsigned int pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
+
+					if (splitInformation[pillarIndex].size() != 0)
+					{
+						// here is a split pillar
+
+						// traversing all split coordinate lines corresponding to the current splitted pillar
+						for (unsigned int splitCoordinateLineIndex = 0; splitCoordinateLineIndex < splitInformation[pillarIndex].size(); ++splitCoordinateLineIndex)
+						{
+							// traversing adjacent columns, it current column is in the bloc, corresponding coordinate line is added to the selected region
+							for (unsigned int columnIndex = 0; columnIndex < splitInformation[pillarIndex][splitCoordinateLineIndex].second.size(); ++columnIndex)
+							{
+								unsigned int iColumnIndex = getIColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
+								unsigned int jColumnIndex = getJColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
+								
+								if ((iColumnIndex >= blockInformation->iInterfaceStart && iColumnIndex < blockInformation->iInterfaceEnd) && (jColumnIndex >= blockInformation->jInterfaceStart && jColumnIndex < blockInformation->jInterfaceEnd))
+								{
+									// here is a split coordinate line impacting the bloc
+									unsigned int splitCoordinateLineHdfIndex = (getICellCount() + 1) * (getJCellCount() + 1) + splitInformation[pillarIndex][splitCoordinateLineIndex].first;
+
+									// the split coordinate line is added to the selected region
+									blockCountPerDimension[0] = 1;
+									blockCountPerDimension[1] = 1;
+									blockCountPerDimension[2] = 1;
+									offsetPerDimension[0] = blockInformation->kInterfaceStart;
+									offsetPerDimension[1] = splitCoordinateLineHdfIndex;
+									offsetPerDimension[2] = 0;
+									strideInEachDimension[0] = 1;
+									strideInEachDimension[1] = 1;
+									strideInEachDimension[2] = 1;
+									blockSizeInEachDimension[0] = blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1;
+									blockSizeInEachDimension[1] = 1;
+									blockSizeInEachDimension[2] = 3;
+
+									hdfProxy->selectArrayNdOfValues(
+										pathInHdfFile,
+										blockCountPerDimension,
+										offsetPerDimension,
+										strideInEachDimension,
+										blockSizeInEachDimension,
+										3,
+										false,
+										dataset,
+										filespace);
+
+									slab_size += (blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1) * 3;
+
+									break; // in order to be sure not adding twice a same coordinate line if it is adjacent to several columns within the bloc
+								}
+							}
+						}
+					}
+				}
+			}
+
+			// reading values corresponding to the whole selected region (non splitted and splitted part)
+			hdfProxy->readArrayNdOfDoubleValues(dataset, filespace,
+				xyzPoints, slab_size);
+
+			delete[] blockCountPerDimension;
+			delete[] offsetPerDimension;
+			delete[] strideInEachDimension;
+			delete[] blockSizeInEachDimension;
 		}
 	}
 	else {

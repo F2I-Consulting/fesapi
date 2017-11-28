@@ -115,12 +115,19 @@ namespace resqml2_0_1
 		/**
 		* Get all the XYZ points of a particular sequence of K interfaces of a particular patch of this representation.
 		* XYZ points are given in the local CRS.
-		* @param kInterfaceStart The K index of the starting interface starting from zero to kCellCount.
-		* @param kInterfaceEnd The K index of the ending interface starting frilm zero to kCellCount
+		* @param kInterfaceStart The K index of the starting interface taken from zero to kCellCount.
+		* @param kInterfaceEnd The K index of the ending interface taken from zero to kCellCount
 		* @param patchIndex	The index of the patch. It is generally zero.
 		* @param xyzPoints 	A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated with a size of 3*getXyzPointCountOfKInterfaceOfPatch.
 		*/
 		void getXyzPointsOfKInterfaceSequenceOfPatch(const unsigned int & kInterfaceStart, const unsigned int & kInterfaceEnd, const unsigned int & patchIndex, double * xyzPoints);
+
+		/**
+		* Get all the XYZ points of the current block. XYZ points are given in the local CRS. Block information must be loaded.
+		* @param patchIndex			The index of the patch. It is generally zero.
+		* @param xyzPoints 			A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated with a size of 3*getXyzPointCountOfBlock.
+		*/
+		void getXyzPointsOfBlockOfPatch(const unsigned int & patchIndex, double * xyzPoints);
 
 		/**
 		* Get all the XYZ points of a particular patch of this representation.

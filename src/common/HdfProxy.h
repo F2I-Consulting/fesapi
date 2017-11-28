@@ -64,22 +64,84 @@ namespace common
 		void readArrayNdOfValues(const std::string & datasetName, void* values, const int & datatype);
 
 		/**
-		 * Find the array associated with @p datasetName and read a portion of it.
-		 * @param datasetName                    The name of the array (potentially with multi dimensions).
-		 * @param values                         1d array output of double values ordered firstly by fastest direction.
-		 * @param numValuesInEachDimension       Number of values in each dimension of the array to read. They are ordered from fastest index to slowest index.
-		 * @param offsetValuesInEachDimension    Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
-		 * @param numDimensions                  The number of the dimensions of the array to read.
-		 * @param datatype 		The hdf datatype of the values to read.
-		 * 						If the values are not stored in this particular datatype, then hdf library will try to do a conversion.
-		 */
+		* Find the array associated with @p datasetName and read a portion of it.
+		* @param datasetName                    The name of the array (potentially with multi dimensions).
+		* @param values                         1d array output of double values ordered firstly by fastest direction.
+		* @param numValuesInEachDimension       Number of values in each dimension of the array to read. They are ordered from fastest index to slowest index.
+		* @param offsetValuesInEachDimension    Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
+		* @param numDimensions                  The number of the dimensions of the array to read.
+		* @param datatype 		The hdf datatype of the values to read.
+		* 						If the values are not stored in this particular datatype, then hdf library will try to do a conversion.
+		*/
 		void readArrayNdOfValues(
-		  const std::string & datasetName,
-		  void* values,
-		  unsigned long long * numValuesInEachDimension,
-		  unsigned long long * offsetInEachDimension,
-		  const unsigned int & numDimensions,
-		  const int & datatype);
+			const std::string & datasetName,
+			void* values,
+			unsigned long long * numValuesInEachDimension,
+			unsigned long long * offsetInEachDimension,
+			const unsigned int & numDimensions,
+			const int & datatype);
+
+		/**
+		* Find the array associated with @p datasetName and read from it.
+		* @param datasetName					The name of the array (potentially with multi dimensions).
+		* @param values							1d array output of values ordered firstly by fastest direction.
+		* @param blockCountPerDimension			Number of blocks to select from the dataspace, in each dimension. They are ordered from fastest index to slowest index.
+		* @param offsetInEachDimension			Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
+		* @param strideInEachDimension			Number of elements to move from one block to another in each dimension. They are ordered from fastest index to slowest index.
+		* @param blockSizeInEachDimension		Size of selected blocks in each dimension. They are ordered from fastest index to slowest index.
+		* @param numDimensions					The number of the dimensions of the array to read.
+		* @param datatype 						The hdf datatype of the values to read.
+		* 										If the values are not stored in this particular datatype, then hdf library will try to do a conversion.
+		*/
+		void readArrayNdOfValues(
+			const std::string & datasetName,
+			void* values,
+			unsigned long long * blockCountPerDimension,
+			unsigned long long * offsetInEachDimension,
+			unsigned long long * strideInEachDimension,
+			unsigned long long * blockSizeInEachDimension,
+			const unsigned int & numDimensions,
+			const int & datatype);
+
+		/**
+		* Considering a given dataset, this method selects an hyperslab region to add to an existing selected region or to add to a new selected region.
+		* The dataset is not closed within this method.
+		* @param datasetName					The name of the array (potentially with multi dimensions).
+		* @param blockCountPerDimension			Number of blocks to select from the dataspace, in each dimension. They are ordered from fastest index to slowest index.
+		* @param offsetInEachDimension			Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
+		* @param strideInEachDimension			Number of elements to move from one block to another in each dimension. They are ordered from fastest index to slowest index.
+		* @param blockSizeInEachDimension		Size of selected blocks in each dimension. They are ordered from fastest index to slowest index.
+		* @param numDimensions					The number of the dimensions of the array to select.
+		* @param newSelection					true if creating a new selected region else false.
+		* @param dataset						Input dataset ID if adding a new hyperslab region to an existing selected region, output dataset ID if creating a new selected region.
+		* @param filespace						Input selected region ID if adding a new hyperslab region to an existing selected region, output selected region ID if creating a new selected region.
+		*/
+		void selectArrayNdOfValues(
+			const std::string & datasetName,
+			unsigned long long * blockCountPerDimension,
+			unsigned long long * offsetInEachDimension,
+			unsigned long long * strideInEachDimension,
+			unsigned long long * blockSizeInEachDimension,
+			const unsigned int & numDimensions,
+			bool newSelection,
+			int & dataset,
+			int & filespace);
+
+		/**
+		* Considering a given dataset, read the double values corresponding to an existing selected region.
+		* @param dataset		ID of the dataset to read from.
+		* @param filespace		ID of the selected region.
+		* @param values			1d array output of double values ordered firstly by fastest direction.
+		* @param slabSize		Number of values to read.
+		* @param datatype 		The hdf datatype of the values to read.
+		* 						If the values are not stored in this particular datatype, then hdf library will try to do a conversion.
+		*/
+		void readArrayNdOfValues(
+			int dataset,
+			int filespace,
+			void* values, 
+			unsigned long long slabSize, 
+			const int & datatype);
 
 	public:
 
@@ -366,6 +428,37 @@ namespace common
 		  unsigned long long * offsetInEachDimension,
 		  const unsigned int & numDimensions
 		  );
+
+		/**
+		* Find the array associated with @p datasetName and read from it.
+		* @param datasetName					The name of the array (potentially with multi dimensions).
+		* @param values							1d array output of double values ordered firstly by fastest direction.
+		* @param blockCountPerDimension			Number of blocks to select from the dataspace, in each dimension. They are ordered from fastest index to slowest index.
+		* @param offsetInEachDimension			Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
+		* @param strideInEachDimension			Number of elements to move from one block to another in each dimension. They are ordered from fastest index to slowest index.
+		* @param blockSizeInEachDimension		Size of selected blocks in each dimension. They are ordered from fastest index to slowest index.
+		* @param numDimensions					The number of the dimensions of the array to read.
+		*/
+		void readArrayNdOfDoubleValues(
+			const std::string & datasetName, double* values,
+			unsigned long long * blockCountPerDimension,
+			unsigned long long * offsetInEachDimension,
+			unsigned long long * strideInEachDimension,
+			unsigned long long * blockSizeInEachDimension,
+			const unsigned int & numDimensions);
+
+		/**
+		* Considering a given dataset, read the double values corresponding to an existing selected region.
+		* @param dataset		ID of the dataset to read from.
+		* @param filespace		ID of the selected region.
+		* @param values			1d array output of double values ordered firstly by fastest direction.
+		* @param slabSize		Number of values to read.
+		*/
+		void readArrayNdOfDoubleValues(
+			int dataset,
+			int filespace,
+			void* values,
+			unsigned long long slabSize);
 
 		/**
 		* Read an array Nd of float values stored in a specific dataset.

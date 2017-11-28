@@ -36,6 +36,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
 #include "resqml2/AbstractColumnLayerGridRepresentation.h"
 
 #include <stdexcept>
+#include <map>
 
 namespace resqml2_0_1
 {
@@ -55,13 +56,34 @@ namespace resqml2_0_1
 				const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
 				bool withTruncatedPillars);
 
+		class BlockInformation
+		{
+		public:
+
+			unsigned int iInterfaceStart;
+			unsigned int iInterfaceEnd;
+			unsigned int jInterfaceStart;
+			unsigned int jInterfaceEnd;
+			unsigned int kInterfaceStart;
+			unsigned int kInterfaceEnd;
+
+			/**
+			* Map split coordinate lines index with local index (according to a block)
+			*/
+			std::map<unsigned int, unsigned int> globalToLocalSplitCoordinateLinesIndex;
+			
+			BlockInformation() {}
+
+			~BlockInformation() {}
+		};
+
 	protected :
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml2__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr) {}
-		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml2__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr) {}
+		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml2__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), blockInformation(nullptr) {}
+		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml2__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), blockInformation(nullptr) {}
 
 		gsoap_resqml2_0_1::_resqml2__IjkGridRepresentation* getSpecializedGsoapProxy() const;
 		gsoap_resqml2_0_1::_resqml2__TruncatedIjkGridRepresentation* getSpecializedTruncatedGsoapProxy() const;
@@ -69,6 +91,8 @@ namespace resqml2_0_1
 		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const;
 
 		std::vector< std::pair< unsigned int, std::vector<unsigned int> > >* splitInformation;
+
+		BlockInformation* blockInformation;
 
 	public:
 
@@ -99,7 +123,11 @@ namespace resqml2_0_1
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
-		virtual ~AbstractIjkGridRepresentation() {}
+		virtual ~AbstractIjkGridRepresentation() 
+		{
+			if (blockInformation != nullptr)
+				delete blockInformation;
+		}
 
 		/**
 		* Get the I cell count of the grid
@@ -199,6 +227,11 @@ namespace resqml2_0_1
 		unsigned long getSplitCoordinateLineCount() const;
 
 		/**
+		 * Get the split coordinate line count within a block. Block information must be loaded.
+		 */
+		unsigned long getBlockSplitCoordinateLineCount() const;
+
+		/**
 		* Get the split coordinate line count
 		*/
 		ULONG64 getSplitNodeCount() const;
@@ -232,6 +265,17 @@ namespace resqml2_0_1
 		void loadSplitInformation();
 
 		/**
+		 * Load the block information into memory to speed up the processes and make easier block geometry handling for the user.
+		 * @param iCellStart	The starting I cell index of the block taken from zero to iCellCount - 1.
+		 * @param iCellEnd		The ending I cell index of the block taken from zero to iCellCount - 1.
+		 * @param jCellStart	The starting J cell index of the block taken from zero to jCellCount - 1.
+		 * @param jCellEnd		The ending J cell index of the block taken from zero to jCellCount - 1.
+		 * @param kCellStart	The starting K cell index of the block taken from zero to kCellCount - 1.
+		 * @param kCellEnd		The ending K cell index of the block taken from zero to kCellCount - 1.
+		 */
+		void loadBlockInformation(const unsigned int & iInterfaceStart, const unsigned int & iInterfaceEnd, const unsigned int & jInterfaceStart, const unsigned int & jInterfaceEnd, const unsigned int & kInterfaceStart, const unsigned int & kInterfaceEnd);
+
+		/**
 		* Unload the split information from memory.
 		*/
 		void unloadSplitInformation();
@@ -253,6 +297,7 @@ namespace resqml2_0_1
 		* This method requires your have already loaded the split information.
 		* @param iCell	The I index of the cell
 		* @param jCell	The J index of the cell
+		* @param kCell	The K index of the cell
 		* @param corner	0 for (0,0,0)
 		*				1 for (1,0,0)
 		*				2 for (1,1,0)
@@ -267,9 +312,37 @@ namespace resqml2_0_1
 		ULONG64 getXyzPointIndexFromCellCorner(const unsigned int & iCell, const unsigned int & jCell, const unsigned int & kCell, const unsigned int & corner) const;
 
 		/**
+		* Gets the x, y and z values of the corner of a cell of a given block.
+		* This method requires your have already both loaded the block information and get the geometry of the block thanks to getXyzPointsOfBlockOfPatch.
+		* @param iCell			The I index of the cell.
+		* @param jCell			The J index of the cell.
+		* @param kCell			The K index of the cell.
+		* @param corner			0 for (0,0,0)
+		*						1 for (1,0,0)
+		*						2 for (1,1,0)
+		*						3 for (0,1,0)
+		*						4 for (0,0,1)
+		*						5 for (1,0,1)
+		*						6 for (1,1,1)
+		*						7 for (0,1,1)
+		* @param xyzPoints		The XYZ points of the block (resulting from a call to getXyzPointsOfBlockOfPatch).
+		* @param x				(output parameter) the x value of the corner we look for.
+		* @param y				(output parameter) the y value of the corner we look for.
+		* @param z				(output parameter) the z value of the corner we look for.
+		*/
+		void getXyzPointOfBlockFromCellCorner(const unsigned int & iCell, const unsigned int & jCell, const unsigned int & kCell, const unsigned int & corner,
+			const double* xyzPoints, double & x, double & y, double & z) const;
+
+		/**
 		* Get the xyz point count in each K Layer interface in a given patch.
+		* @param patchIndex	The index of the patch. It is generally zero.
 		*/
 		ULONG64 getXyzPointCountOfKInterfaceOfPatch(const unsigned int & patchIndex) const;
+
+		/**
+		 * Get the xyz point count of the current block. Block information must be loaded.
+		 */
+		ULONG64 getXyzPointCountOfBlock() const;
 
 		/**
 		* Get all the XYZ points of a particular K interface of a particular patch of this representation.
@@ -282,6 +355,8 @@ namespace resqml2_0_1
 		void getXyzPointsOfKInterfaceOfPatch(const unsigned int & kInterface, const unsigned int & patchIndex, double * xyzPoints);
 
 		virtual void getXyzPointsOfKInterfaceSequenceOfPatch(const unsigned int & kInterfaceStart, const unsigned int & kInterfaceEnd, const unsigned int & patchIndex, double * xyzPoints) { throw std::logic_error("Partial object"); }
+
+		virtual void getXyzPointsOfBlockOfPatch(const unsigned int & patchIndex, double * xyzPoints) { throw std::logic_error("Partial object"); };
 
 		/**
 		* Get the K direction of the grid.
