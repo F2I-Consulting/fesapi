@@ -487,13 +487,13 @@ void serializeGrid(common::EpcDocument * pck, common::AbstractHdfProxy* hdfProxy
 	ijkgridParametricNotSameLineKind->setGeometryAsParametricSplittedPillarNodes(gsoap_resqml2_0_1::resqml2__PillarShape__straight, gsoap_resqml2_0_1::resqml2__KDirection__down, false, parameters, controlPointsNotSameLineKind, controlPointParametersNotSameLineKind, 3, pillarKind, hdfProxy,
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
-	//// FOUR SUGARS PARAMETRIC different line kind an one cubic pillar : A copy
-	//IjkGridParametricRepresentation* ijkgridParametricNotSameLineKindCopy = pck->createIjkGridParametricRepresentation(local3dCrs, "46efd88c-87e1-4e00-bbdd-4c7bcc941749", "Copy of Four faulted sugar cubes with one cubic pillar", 2, 1, 2);
-	//const std::string hdfDatasetPrefix = "/RESQML/" + ijkgridParametricNotSameLineKind->getUuid();
-	//ijkgridParametricNotSameLineKindCopy->setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(gsoap_resqml2_0_1::resqml2__PillarShape__straight, gsoap_resqml2_0_1::resqml2__KDirection__down, false,
-	//	hdfDatasetPrefix + "/PointParameters", hdfDatasetPrefix + "/ControlPoints", hdfDatasetPrefix + "/controlPointParameters", 3, hdfDatasetPrefix + "/LineKindIndices", hdfDatasetPrefix + "/PillarGeometryIsDefined", hdfProxy,
-	//	2, hdfDatasetPrefix + "/PillarIndices",
-	//	hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + CUMULATIVE_LENGTH_DS_NAME, hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + ELEMENTS_DS_NAME);
+	// FOUR SUGARS PARAMETRIC different line kind an one cubic pillar : A copy
+	IjkGridParametricRepresentation* ijkgridParametricNotSameLineKindCopy = pck->createIjkGridParametricRepresentation(local3dCrs, "46efd88c-87e1-4e00-bbdd-4c7bcc941749", "Copy of Four faulted sugar cubes with one cubic pillar", 2, 1, 2);
+	const std::string hdfDatasetPrefix = "/RESQML/" + ijkgridParametricNotSameLineKind->getUuid();
+	ijkgridParametricNotSameLineKindCopy->setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(gsoap_resqml2_0_1::resqml2__PillarShape__straight, gsoap_resqml2_0_1::resqml2__KDirection__down, false,
+		hdfDatasetPrefix + "/PointParameters", hdfDatasetPrefix + "/ControlPoints", hdfDatasetPrefix + "/controlPointParameters", 3, hdfDatasetPrefix + "/LineKindIndices", hdfDatasetPrefix + "/PillarGeometryIsDefined", hdfProxy,
+		2, hdfDatasetPrefix + "/PillarIndices",
+		hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + CUMULATIVE_LENGTH_DS_NAME, hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + ELEMENTS_DS_NAME);
 
 	// 4*3*2 explicit grid Left Handed
 	IjkGridExplicitRepresentation* ijkgrid432 = pck->createIjkGridExplicitRepresentation(local3dCrs, "e96c2bde-e3ae-4d51-b078-a8e57fb1e667", "Four by Three by Two Left Handed", 4, 3, 2);
@@ -1786,6 +1786,75 @@ void deserializeGridHyperslabbingInterfaceSequence(common::EpcDocument & pck)
 }
 
 /**
+ * Display the cell geometry of an IJK grid block.
+ * @param ijkGrid			An IJK grid.
+ * @param iInterfaceStart	Sarting i interface of the block.
+ * @param iInterfaceEnd		Ending i interface of the block.
+ * @param jInterfaceStart	Sarting j interface of the block.
+ * @param jInterfaceEnd		Ending j interface of the block.
+ * @param kInterfaceStart	Sarting k interface of the block.
+ * @param kInterfaceEnd		Ending k interface of the block.
+ * @param xyzPoints			The geometry of the block.
+ */
+void displayBlockCellGeometry(AbstractIjkGridRepresentation* ijkGrid,
+	unsigned int iInterfaceStart, unsigned int iInterfaceEnd,
+	unsigned int jInterfaceStart, unsigned int jInterfaceEnd,
+	unsigned int kInterfaceStart, unsigned int kInterfaceEnd,
+	double* xyzPoints
+	)
+{
+	if (xyzPoints == nullptr)
+		throw invalid_argument("xyzPoints == nullptr");
+
+	for (unsigned int k = kInterfaceStart; k < kInterfaceEnd; k++)
+	{
+		cout << "LAYER: " << k << std::endl;
+
+		for (unsigned int j = jInterfaceStart; j < jInterfaceEnd; j++)
+		{
+			for (unsigned int i = iInterfaceStart; i < iInterfaceEnd; i++)
+			{
+				cout << "CELL (" << i << ", " << j << ", " << k << ")" << std::endl;
+
+				double x, y, z;
+
+				// Corner (0, 0, 0)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 0, xyzPoints, x, y, z);
+				cout << "CORNER (0, 0, 0): " << x << " " << y << " " << z << std::endl;
+
+				// Corner (1, 0, 0)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 1, xyzPoints, x, y, z);
+				cout << "CORNER (1, 0, 0): " << x << " " << y << " " << z << std::endl;
+
+				// Corner (1, 1, 0)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 2, xyzPoints, x, y, z);
+				cout << "CORNER (1, 1, 0): " << x << " " << y << " " << z << std::endl;
+
+				// Corner (0, 1, 0)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 3, xyzPoints, x, y, z);
+				cout << "CORNER (0, 1, 0): " << x << " " << y << " " << z << std::endl;
+
+				// Corner (0, 0, 1)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 4, xyzPoints, x, y, z);
+				cout << "CORNER (0, 0, 1): " << x << " " << y << " " << z << std::endl;
+
+				// Corner (1, 0, 1)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 5, xyzPoints, x, y, z);
+				cout << "CORNER (1, 0, 1): " << x << " " << y << " " << z << std::endl;
+
+				// Corner (1, 1, 1)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 6, xyzPoints, x, y, z);
+				cout << "CORNER (1, 1, 1): " << x << " " << y << " " << z << std::endl;
+
+				// Corner (0, 1, 1)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 7, xyzPoints, x, y, z);
+				cout << "CORNER (0, 1, 1): " << x << " " << y << " " << z << std::endl;
+			}
+		}
+	}
+}
+
+/**
 * Deserialize IJK grid explicit representations packed in a given EPC document.
 * This method read grid geometry block by using hyperslabbing methods. Each block is read 
 * layer by layer.
@@ -1824,52 +1893,12 @@ void deserializeGridHyperslabbingBlock(common::EpcDocument & pck)
 		std::cout << "(" << xyzPoints[3 * index] << " " << xyzPoints[3 * index + 1] << " " << xyzPoints[3 * index + 2] << ") ";
 	std::cout << std::endl;*/
 
-	for (unsigned int k = kInterfaceStart; k < kInterfaceEnd; k++)
-	{
-		cout << "LAYER: " << k << std::endl;
-
-		for (unsigned int j = jInterfaceStart; j < jInterfaceEnd; j++)
-		{
-			for (unsigned int i = iInterfaceStart; i < iInterfaceEnd; i++)
-			{
-				cout << "CELL (" << i << ", " << j << ", " << k << ")" << std::endl;
-
-				double x, y, z;
-	
-				// Corner (0, 0, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 0, xyzPoints, x, y, z);
-				cout << "CORNER (0, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 0, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 1, xyzPoints, x, y, z);
-				cout << "CORNER (1, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 1, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 2, xyzPoints, x, y, z);
-				cout << "CORNER (1, 1, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 1, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 3, xyzPoints, x, y, z);
-				cout << "CORNER (0, 1, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 0, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 4, xyzPoints, x, y, z);
-				cout << "CORNER (0, 0, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 0, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 5, xyzPoints, x, y, z);
-				cout << "CORNER (1, 0, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 1, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 6, xyzPoints, x, y, z);
-				cout << "CORNER (1, 1, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 1, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 7, xyzPoints, x, y, z);
-				cout << "CORNER (0, 1, 1): " << x << " " << y << " " << z << std::endl;
-			}
-		}
-	}
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints
+	);
 
 	delete[] xyzPoints;
 
@@ -1930,52 +1959,12 @@ void deserializeGridHyperslabbingBlock(common::EpcDocument & pck)
 	xyzPoints = new double[xyzPointCountOfBlock * 3];
 	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
 
-	for (unsigned int k = kInterfaceStart; k < kInterfaceEnd; k++)
-	{
-		cout << "LAYER: " << k << std::endl;
-
-		for (unsigned int j = jInterfaceStart; j < jInterfaceEnd; j++)
-		{
-			for (unsigned int i = iInterfaceStart; i < iInterfaceEnd; i++)
-			{
-				cout << "CELL (" << i << ", " << j << ", " << k << ")" << std::endl;
-
-				double x, y, z;
-
-				// Corner (0, 0, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 0, xyzPoints, x, y, z);
-				cout << "CORNER (0, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 0, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 1, xyzPoints, x, y, z);
-				cout << "CORNER (1, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 1, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 2, xyzPoints, x, y, z);
-				cout << "CORNER (1, 1, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 1, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 3, xyzPoints, x, y, z);
-				cout << "CORNER (0, 1, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 0, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 4, xyzPoints, x, y, z);
-				cout << "CORNER (0, 0, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 0, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 5, xyzPoints, x, y, z);
-				cout << "CORNER (1, 0, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 1, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 6, xyzPoints, x, y, z);
-				cout << "CORNER (1, 1, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 1, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 7, xyzPoints, x, y, z);
-				cout << "CORNER (0, 1, 1): " << x << " " << y << " " << z << std::endl;
-			}
-		}
-	}
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints
+	);
 
 	delete[] xyzPoints;
 
@@ -2026,52 +2015,12 @@ void deserializeGridHyperslabbingBlock(common::EpcDocument & pck)
 	xyzPoints = new double[xyzPointCountOfBlock * 3];
 	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
 
-	for (unsigned int k = kInterfaceStart; k < kInterfaceEnd; k++)
-	{
-		cout << "LAYER: " << k << std::endl;
-
-		for (unsigned int j = jInterfaceStart; j < jInterfaceEnd; j++)
-		{
-			for (unsigned int i = iInterfaceStart; i < iInterfaceEnd; i++)
-			{
-				cout << "CELL (" << i << ", " << j << ", " << k << ")" << std::endl;
-
-				double x, y, z;
-
-				// Corner (0, 0, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 0, xyzPoints, x, y, z);
-				cout << "CORNER (0, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 0, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 1, xyzPoints, x, y, z);
-				cout << "CORNER (1, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 1, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 2, xyzPoints, x, y, z);
-				cout << "CORNER (1, 1, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 1, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 3, xyzPoints, x, y, z);
-				cout << "CORNER (0, 1, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 0, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 4, xyzPoints, x, y, z);
-				cout << "CORNER (0, 0, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 0, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 5, xyzPoints, x, y, z);
-				cout << "CORNER (1, 0, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 1, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 6, xyzPoints, x, y, z);
-				cout << "CORNER (1, 1, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 1, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 7, xyzPoints, x, y, z);
-				cout << "CORNER (0, 1, 1): " << x << " " << y << " " << z << std::endl;
-			}
-		}
-	}
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints
+	);
 
 	delete[] xyzPoints;
 
@@ -2122,52 +2071,12 @@ void deserializeGridHyperslabbingBlock(common::EpcDocument & pck)
 	xyzPoints = new double[xyzPointCountOfBlock * 3];
 	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
 
-	for (unsigned int k = kInterfaceStart; k < kInterfaceEnd; k++)
-	{
-		cout << "LAYER: " << k << std::endl;
-
-		for (unsigned int j = jInterfaceStart; j < jInterfaceEnd; j++)
-		{
-			for (unsigned int i = iInterfaceStart; i < iInterfaceEnd; i++)
-			{
-				cout << "CELL (" << i << ", " << j << ", " << k << ")" << std::endl;
-
-				double x, y, z;
-
-				// Corner (0, 0, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 0, xyzPoints, x, y, z);
-				cout << "CORNER (0, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 0, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 1, xyzPoints, x, y, z);
-				cout << "CORNER (1, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 1, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 2, xyzPoints, x, y, z);
-				cout << "CORNER (1, 1, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 1, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 3, xyzPoints, x, y, z);
-				cout << "CORNER (0, 1, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 0, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 4, xyzPoints, x, y, z);
-				cout << "CORNER (0, 0, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 0, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 5, xyzPoints, x, y, z);
-				cout << "CORNER (1, 0, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 1, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 6, xyzPoints, x, y, z);
-				cout << "CORNER (1, 1, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 1, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 7, xyzPoints, x, y, z);
-				cout << "CORNER (0, 1, 1): " << x << " " << y << " " << z << std::endl;
-			}
-		}
-	}
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints
+	);
 
 	delete[] xyzPoints;
 
@@ -2216,52 +2125,12 @@ void deserializeGridHyperslabbingBlock(common::EpcDocument & pck)
 	xyzPoints = new double[xyzPointCountOfBlock * 3];
 	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
 
-	for (unsigned int k = kInterfaceStart; k < kInterfaceEnd; k++)
-	{
-		cout << "LAYER: " << k << std::endl;
-
-		for (unsigned int j = jInterfaceStart; j < jInterfaceEnd; j++)
-		{
-			for (unsigned int i = iInterfaceStart; i < iInterfaceEnd; i++)
-			{
-				cout << "CELL (" << i << ", " << j << ", " << k << ")" << std::endl;
-
-				double x, y, z;
-
-				// Corner (0, 0, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 0, xyzPoints, x, y, z);
-				cout << "CORNER (0, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 0, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 1, xyzPoints, x, y, z);
-				cout << "CORNER (1, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 1, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 2, xyzPoints, x, y, z);
-				cout << "CORNER (1, 1, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 1, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 3, xyzPoints, x, y, z);
-				cout << "CORNER (0, 1, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 0, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 4, xyzPoints, x, y, z);
-				cout << "CORNER (0, 0, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 0, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 5, xyzPoints, x, y, z);
-				cout << "CORNER (1, 0, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 1, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 6, xyzPoints, x, y, z);
-				cout << "CORNER (1, 1, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 1, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 7, xyzPoints, x, y, z);
-				cout << "CORNER (0, 1, 1): " << x << " " << y << " " << z << std::endl;
-			}
-		}
-	}
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints
+	);
 
 	delete[] xyzPoints;
 
@@ -2300,52 +2169,12 @@ void deserializeGridHyperslabbingBlock(common::EpcDocument & pck)
 	xyzPoints = new double[xyzPointCountOfBlock * 3];
 	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
 
-	for (unsigned int k = kInterfaceStart; k < kInterfaceEnd; k++)
-	{
-		cout << "LAYER: " << k << std::endl;
-
-		for (unsigned int j = jInterfaceStart; j < jInterfaceEnd; j++)
-		{
-			for (unsigned int i = iInterfaceStart; i < iInterfaceEnd; i++)
-			{
-				cout << "CELL (" << i << ", " << j << ", " << k << ")" << std::endl;
-
-				double x, y, z;
-
-				// Corner (0, 0, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 0, xyzPoints, x, y, z);
-				cout << "CORNER (0, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 0, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 1, xyzPoints, x, y, z);
-				cout << "CORNER (1, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 1, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 2, xyzPoints, x, y, z);
-				cout << "CORNER (1, 1, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 1, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 3, xyzPoints, x, y, z);
-				cout << "CORNER (0, 1, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 0, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 4, xyzPoints, x, y, z);
-				cout << "CORNER (0, 0, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 0, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 5, xyzPoints, x, y, z);
-				cout << "CORNER (1, 0, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 1, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 6, xyzPoints, x, y, z);
-				cout << "CORNER (1, 1, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 1, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 7, xyzPoints, x, y, z);
-				cout << "CORNER (0, 1, 1): " << x << " " << y << " " << z << std::endl;
-			}
-		}
-	}
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints
+	);
 
 	delete[] xyzPoints;
 
@@ -2395,57 +2224,17 @@ void deserializeGridHyperslabbingBlock(common::EpcDocument & pck)
 	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
 
 	// Keep for testing
-	cout << "All xyz points:" << endl;
+	/*cout << "All xyz points:" << endl;
 	for (unsigned int index = 0; index < xyzPointCountOfBlock; ++index)
 		std::cout << "(" << xyzPoints[3 * index] << " " << xyzPoints[3 * index + 1] << " " << xyzPoints[3 * index + 2] << ") ";
-	std::cout << std::endl;
+	std::cout << std::endl;*/
 
-	for (unsigned int k = kInterfaceStart; k < kInterfaceEnd; k++)
-	{
-		cout << "LAYER: " << k << std::endl;
-
-		for (unsigned int j = jInterfaceStart; j < jInterfaceEnd; j++)
-		{
-			for (unsigned int i = iInterfaceStart; i < iInterfaceEnd; i++)
-			{
-				cout << "CELL (" << i << ", " << j << ", " << k << ")" << std::endl;
-
-				double x, y, z;
-
-				// Corner (0, 0, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 0, xyzPoints, x, y, z);
-				cout << "CORNER (0, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 0, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 1, xyzPoints, x, y, z);
-				cout << "CORNER (1, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 1, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 2, xyzPoints, x, y, z);
-				cout << "CORNER (1, 1, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 1, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 3, xyzPoints, x, y, z);
-				cout << "CORNER (0, 1, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 0, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 4, xyzPoints, x, y, z);
-				cout << "CORNER (0, 0, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 0, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 5, xyzPoints, x, y, z);
-				cout << "CORNER (1, 0, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 1, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 6, xyzPoints, x, y, z);
-				cout << "CORNER (1, 1, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 1, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 7, xyzPoints, x, y, z);
-				cout << "CORNER (0, 1, 1): " << x << " " << y << " " << z << std::endl;
-			}
-		}
-	}
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints
+	);
 
 	delete[] xyzPoints;
 
@@ -2484,52 +2273,12 @@ void deserializeGridHyperslabbingBlock(common::EpcDocument & pck)
 	xyzPoints = new double[xyzPointCountOfBlock * 3];
 	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
 
-	for (unsigned int k = kInterfaceStart; k < kInterfaceEnd; k++)
-	{
-		cout << "LAYER: " << k << std::endl;
-
-		for (unsigned int j = jInterfaceStart; j < jInterfaceEnd; j++)
-		{
-			for (unsigned int i = iInterfaceStart; i < iInterfaceEnd; i++)
-			{
-				cout << "CELL (" << i << ", " << j << ", " << k << ")" << std::endl;
-
-				double x, y, z;
-
-				// Corner (0, 0, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 0, xyzPoints, x, y, z);
-				cout << "CORNER (0, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 0, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 1, xyzPoints, x, y, z);
-				cout << "CORNER (1, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 1, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 2, xyzPoints, x, y, z);
-				cout << "CORNER (1, 1, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 1, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 3, xyzPoints, x, y, z);
-				cout << "CORNER (0, 1, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 0, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 4, xyzPoints, x, y, z);
-				cout << "CORNER (0, 0, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 0, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 5, xyzPoints, x, y, z);
-				cout << "CORNER (1, 0, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 1, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 6, xyzPoints, x, y, z);
-				cout << "CORNER (1, 1, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 1, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 7, xyzPoints, x, y, z);
-				cout << "CORNER (0, 1, 1): " << x << " " << y << " " << z << std::endl;
-			}
-		}
-	}
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints
+	);
 
 	delete[] xyzPoints;
 
@@ -2568,52 +2317,12 @@ void deserializeGridHyperslabbingBlock(common::EpcDocument & pck)
 	xyzPoints = new double[xyzPointCountOfBlock * 3];
 	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
 
-	for (unsigned int k = kInterfaceStart; k < kInterfaceEnd; k++)
-	{
-		cout << "LAYER: " << k << std::endl;
-
-		for (unsigned int j = jInterfaceStart; j < jInterfaceEnd; j++)
-		{
-			for (unsigned int i = iInterfaceStart; i < iInterfaceEnd; i++)
-			{
-				cout << "CELL (" << i << ", " << j << ", " << k << ")" << std::endl;
-
-				double x, y, z;
-
-				// Corner (0, 0, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 0, xyzPoints, x, y, z);
-				cout << "CORNER (0, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 0, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 1, xyzPoints, x, y, z);
-				cout << "CORNER (1, 0, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 1, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 2, xyzPoints, x, y, z);
-				cout << "CORNER (1, 1, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 1, 0)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 3, xyzPoints, x, y, z);
-				cout << "CORNER (0, 1, 0): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 0, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 4, xyzPoints, x, y, z);
-				cout << "CORNER (0, 0, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 0, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 5, xyzPoints, x, y, z);
-				cout << "CORNER (1, 0, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (1, 1, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 6, xyzPoints, x, y, z);
-				cout << "CORNER (1, 1, 1): " << x << " " << y << " " << z << std::endl;
-
-				// Corner (0, 1, 1)
-				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 7, xyzPoints, x, y, z);
-				cout << "CORNER (0, 1, 1): " << x << " " << y << " " << z << std::endl;
-			}
-		}
-	}
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints
+	);
 
 	delete[] xyzPoints;
 
@@ -2826,11 +2535,6 @@ void deserialize(const string & inputFile)
 		cout << "Press enter to continue..." << endl;
 		cin.get();
 	}
-
-	//ijkGridHyperslabingTiming(pck.getIjkGridExplicitRepresentationSet()[0], 500);
-
-	//pck.close();
-	//return;
 
 	unsigned int hdfProxyCount = pck.getHdfProxyCount();
 	cout << "There are " << pck.getHdfProxyCount() << " hdf files associated to this epc document." << endl;
@@ -3440,7 +3144,7 @@ void deserialize(const string & inputFile)
 	
 	
 	// ====================
-	// Timing hyperslabbing
+	// Timing hyperslabbing (time consuming)
 
 	//// 4*3*2 explicit grid Left Handed
 	//AbstractIjkGridRepresentation* ijkgrid432 = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("e96c2bde-e3ae-4d51-b078-a8e57fb1e667"));
