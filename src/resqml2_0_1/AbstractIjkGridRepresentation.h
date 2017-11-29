@@ -116,7 +116,7 @@ namespace resqml2_0_1
 		*/
 		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject,
 			bool withTruncatedPillars = false) :
-			AbstractColumnLayerGridRepresentation(nullptr, partialObject, withTruncatedPillars), splitInformation(nullptr)
+			AbstractColumnLayerGridRepresentation(nullptr, partialObject, withTruncatedPillars), splitInformation(nullptr), blockInformation(nullptr)
 		{
 		}
 
