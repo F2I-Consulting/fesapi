@@ -2467,7 +2467,6 @@ void discretePropertyHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, 
 	offsetInEachDimension[1] = 0;
 	offsetInEachDimension[2] = 0;
 
-	clock_t clockStart, clockEnd;
 	time_t timeStart, timeEnd;
 	clock_t nonHyperslabClockDuration = 0;
 	double nonHyperslabTImeDuration = 0;
@@ -2478,6 +2477,8 @@ void discretePropertyHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, 
 
 	for (unsigned int i = 0; i < smoothingConstant; ++i)
 	{
+		clock_t clockStart, clockEnd;
+
 		// non hyperslabbing
 		clockStart = clock();
 		time(&timeStart);
