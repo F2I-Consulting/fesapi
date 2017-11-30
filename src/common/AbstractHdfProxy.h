@@ -356,6 +356,62 @@ namespace common
 		  ) = 0;
 
 		/**
+		 * Find the array associated with @p datasetName and read from it.
+		 * @param datasetName					The name of the array (potentially with multi dimensions).
+		 * @param values						1d array output of double values ordered firstly by fastest direction.
+		 * @param blockCountPerDimension		Number of blocks to select from the dataspace, in each dimension. They are ordered from fastest index to slowest index.
+		 * @param offsetInEachDimension			Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
+		 * @param strideInEachDimension			Number of elements to move from one block to another in each dimension. They are ordered from fastest index to slowest index.
+		 * @param blockSizeInEachDimension		Size of selected blocks in each dimension. They are ordered from fastest index to slowest index.
+		 * @param numDimensions					The number of the dimensions of the array to read.
+		 */
+		virtual void readArrayNdOfDoubleValues(
+			const std::string & datasetName, 
+			double* values,
+			unsigned long long * blockCountPerDimension,
+			unsigned long long * offsetInEachDimension,
+			unsigned long long * strideInEachDimension,
+			unsigned long long * blockSizeInEachDimension,
+			const unsigned int & numDimensions) = 0;
+
+		/**
+		 * Considering a given dataset, this method selects an hyperslab region to add to an existing selected region or to add to a new selected region.
+		 * The dataset is not closed within this method.
+		 * @param datasetName					The name of the array (potentially with multi dimensions).
+		 * @param blockCountPerDimension		Number of blocks to select from the dataspace, in each dimension. They are ordered from fastest index to slowest index.
+		 * @param offsetInEachDimension			Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
+		 * @param strideInEachDimension			Number of elements to move from one block to another in each dimension. They are ordered from fastest index to slowest index.
+		 * @param blockSizeInEachDimension		Size of selected blocks in each dimension. They are ordered from fastest index to slowest index.
+		 * @param numDimensions					The number of the dimensions of the array to read.
+		 * @param newSelection					true if creating a new selected region else false.
+		 * @param dataset						Input dataset ID if adding a new hyperslab region to an existing selected region, output dataset ID if creating a new selected region.
+		 * @param filespace						Input selected region ID if adding a new hyperslab region to an existing selected region, output selected region ID if creating a new selected region.
+		 */
+		virtual void selectArrayNdOfValues(
+			const std::string & datasetName,
+			unsigned long long * blockCountPerDimension,
+			unsigned long long * offsetInEachDimension,
+			unsigned long long * strideInEachDimension,
+			unsigned long long * blockSizeInEachDimension,
+			const unsigned int & numDimensions,
+			bool newSelection,
+			int & dataset,
+			int & filespace) = 0;
+
+		/**
+		 * Considering a given dataset, read the double values corresponding to an existing selected region. 
+		 * @param dataset		ID of the dataset to read from.
+		 * @param filespace		ID of the selected region.
+		 * @param values		1d array output of double values ordered firstly by fastest direction.
+		 * @param slabSize		Number of values to read.
+		 */
+		virtual void readArrayNdOfDoubleValues(
+			int dataset,
+			int filespace,
+			void* values,
+			unsigned long long slabSize) = 0;
+
+		/**
 		 * Read an array Nd of float values stored in a specific dataset.
 		 * @param datasetName	The absolute dataset name where to read the values
 		 * @param values 		The values must be pre-allocated.

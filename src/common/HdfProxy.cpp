@@ -60,7 +60,7 @@ void HdfProxy::open()
 				string hdfUuid = readStringAttribute(".", "uuid");
 				if (getUuid() != hdfUuid) {
 					getEpcDocument()->addWarning("The uuid \"" + hdfUuid + "\" attribute of the HDF5 file is not the same as the uuid \"" + getUuid() + "\" of the xml EpcExternalPart.");
-				}
+		}
 			}
 		}
 		else {
@@ -79,7 +79,7 @@ void HdfProxy::open()
 					string hdfUuid = readStringAttribute(".", "uuid");
 					if (getUuid() != hdfUuid) {
 						getEpcDocument()->addWarning("The uuid \"" + hdfUuid + "\" attribute of the HDF5 file is not the same as the uuid \"" + getUuid() + "\" of the xml EpcExternalPart.");
-					}
+			}
 				}
 			}
 			else {
@@ -151,11 +151,23 @@ void HdfProxy::readArrayNdOfValues(const std::string & datasetName, void* values
 }
 
 void HdfProxy::readArrayNdOfValues(
-	  const std::string & datasetName,
-	  void* values,
-	  unsigned long long * numValuesInEachDimension,
-	  unsigned long long * offsetInEachDimension,
-	  const unsigned int & numDimensions, const hid_t & datatype)
+	const std::string & datasetName,
+	void* values,
+	unsigned long long * numValuesInEachDimension,
+	unsigned long long * offsetInEachDimension,
+	const unsigned int & numDimensions, const hid_t & datatype)
+{
+	readArrayNdOfValues(datasetName, values, numValuesInEachDimension, offsetInEachDimension, nullptr, nullptr, numDimensions, datatype);
+}
+
+void HdfProxy::readArrayNdOfValues(
+	const std::string & datasetName,
+	void* values,
+	unsigned long long * blockCountPerDimension,
+	unsigned long long * offsetInEachDimension,
+	unsigned long long * strideInEachDimension,
+	unsigned long long * blockSizeInEachDimension,
+	const unsigned int & numDimensions, const hid_t & datatype)
 {
 	if (!isOpened()) {
 		open();
@@ -171,25 +183,137 @@ void HdfProxy::readArrayNdOfValues(
 		H5Dclose(dataset);
 		throw invalid_argument("The filespace of resqml dataset " + datasetName + " could not be opened.");
 	}
-	herr_t result = H5Sselect_hyperslab(filespace, H5S_SELECT_SET, offsetInEachDimension, nullptr, numValuesInEachDimension, nullptr);
-	if (result < 0){
+	herr_t result = H5Sselect_hyperslab(filespace, H5S_SELECT_SET, offsetInEachDimension, strideInEachDimension, blockCountPerDimension, blockSizeInEachDimension);
+	if (result < 0) {
 		H5Sclose(filespace);
 		H5Dclose(dataset);
 		throw invalid_argument("The hyperslabbing of resqml dataset " + datasetName + " could not be selected.");
 	}
 
-	hsize_t slab_size =1;
-	for (unsigned int h = 0; h < numDimensions; ++h) {
-		slab_size *= numValuesInEachDimension[h];
+	if (H5Sget_simple_extent_ndims(filespace) != numDimensions)
+	{
+		H5Sclose(filespace);
+		H5Dclose(dataset);
+		throw invalid_argument("The resqml dataset " + datasetName + " does not have " + std::to_string(numDimensions) + " dimensions.");
 	}
+
+	hsize_t slab_size = 1;
+	if (blockSizeInEachDimension == nullptr)
+	{
+		for (unsigned int h = 0; h < numDimensions; ++h) {
+			slab_size *= blockCountPerDimension[h];
+		}
+	}
+	else
+	{
+		for (unsigned int h = 0; h < numDimensions; ++h) {
+			slab_size *= blockSizeInEachDimension[h];
+		}
+		for (unsigned int h = 0; h < numDimensions; ++h) {
+			slab_size *= blockCountPerDimension[h];
+		}
+	}
+
 	hid_t memspace = H5Screate_simple(1, &slab_size, nullptr);
-	if (memspace < 0){
+	if (memspace < 0) {
 		H5Sclose(filespace);
 		H5Dclose(dataset);
 		throw invalid_argument("The memory space for the slabbing of resqml dataset " + datasetName + " could not be created.");
 	}
 
 	hid_t readingError = H5Dread(dataset, datatype, memspace, filespace, H5P_DEFAULT, values);
+
+	H5Sclose(memspace);
+	H5Sclose(filespace);
+	H5Dclose(dataset);
+
+	if (readingError < 0) {
+		throw invalid_argument("The resqml dataset " + datasetName + " could not be read.");
+	}
+}
+
+void HdfProxy::selectArrayNdOfValues(
+	const std::string & datasetName,
+	unsigned long long * blockCountPerDimension,
+	unsigned long long * offsetInEachDimension,
+	unsigned long long * strideInEachDimension,
+	unsigned long long * blockSizeInEachDimension,
+	const unsigned int & numDimensions,
+	bool newSelection,
+	int & dataset,
+	int & filespace)
+{
+	if (!isOpened()) {
+		open();
+	}
+
+	if (newSelection)
+	{
+		dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
+		if (dataset < 0) {
+			throw invalid_argument("The resqml dataset " + datasetName + " could not be opened.");
+		}
+
+		filespace = H5Dget_space(dataset);
+		if (filespace < 0) {
+			H5Dclose(dataset);
+			throw invalid_argument("The filespace of resqml dataset " + datasetName + " could not be opened.");
+		}
+
+		if (H5Sget_simple_extent_ndims(filespace) != numDimensions)
+		{
+			H5Sclose(filespace);
+			H5Dclose(dataset);
+			throw invalid_argument("The resqml dataset " + datasetName + " does not have " + std::to_string(numDimensions) + " dimensions.");
+		}
+	}
+
+	H5S_seloper_t selectionMode;
+	if (newSelection)
+		selectionMode = H5S_SELECT_SET;
+	else
+		selectionMode = H5S_SELECT_OR;
+
+	herr_t result = H5Sselect_hyperslab(filespace, selectionMode, offsetInEachDimension, strideInEachDimension, blockCountPerDimension, blockSizeInEachDimension);
+	if (result < 0) {
+		H5Sclose(filespace);
+		H5Dclose(dataset);
+		throw invalid_argument("The hyperslabbing region cannot be added to the " + datasetName + " selected region.");
+	}
+}
+
+void HdfProxy::readArrayNdOfValues(
+	int dataset,
+	int filespace,
+	void* values, 
+	unsigned long long slabSize, 
+	const int & datatype)
+{
+	if (!isOpened()) {
+		open();
+	}
+
+	hid_t memspace = H5Screate_simple(1, &slabSize, nullptr);
+	if (memspace < 0) {
+		ssize_t size = 1 + H5Iget_name(dataset, NULL, 0);
+		char * name = (char *)malloc(size);
+		size = H5Iget_name(dataset, name, size);
+		std::string datasetName(name);
+		free(name);
+		H5Sclose(filespace);
+		H5Dclose(dataset);
+		throw invalid_argument("The memory space for the slabbing of resqml dataset " + datasetName + " could not be created.");
+	}
+
+	hid_t readingError = H5Dread(dataset, datatype, memspace, filespace, H5P_DEFAULT, values);
+	std::string datasetName;
+	if (readingError < 0) {
+		ssize_t size = 1 + H5Iget_name(dataset, NULL, 0);
+		char * name = (char *)malloc(size);
+		size = H5Iget_name(dataset, name, size);
+		datasetName = std::string(name);
+		free(name);
+	}
 
 	H5Sclose(memspace);
 	H5Sclose(filespace);
@@ -564,6 +688,28 @@ void HdfProxy::readArrayNdOfDoubleValues(
 	readArrayNdOfValues(datasetName, values,
 			numValuesInEachDimension, offsetInEachDimension, numDimensions,
 			H5T_NATIVE_DOUBLE);
+}
+
+void HdfProxy::readArrayNdOfDoubleValues(
+	const std::string & datasetName, double* values,
+	hsize_t * blockCountPerDimension,
+	hsize_t * offsetInEachDimension,
+	hsize_t * strideInEachDimension,
+	hsize_t * blockSizeInEachDimension,
+	const unsigned int & numDimensions)
+{
+	readArrayNdOfValues(datasetName, values,
+		blockCountPerDimension, offsetInEachDimension, strideInEachDimension, blockSizeInEachDimension, numDimensions,
+		H5T_NATIVE_DOUBLE);
+}
+
+void HdfProxy::readArrayNdOfDoubleValues(
+	int dataset,
+	int filespace,
+	void* values,
+	unsigned long long slabSize)
+{
+	readArrayNdOfValues(dataset, filespace, values, slabSize, H5T_NATIVE_DOUBLE);
 }
 
 void HdfProxy::readArrayNdOfFloatValues(const std::string & datasetName, float* values)

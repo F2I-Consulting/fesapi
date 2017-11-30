@@ -1569,7 +1569,7 @@ void deserializeGeobody(common::EpcDocument * pck)
 * and then layer by layer.
 * @param pck	An EPC document containine the IJK grid to deserialize.
 */
-void deserializeGridHyperslabbing(common::EpcDocument & pck)
+void deserializeGridHyperslabbingInterfaceSequence(common::EpcDocument & pck)
 {
 	cout << endl << "BEGIN: IJK GRID REP (hyperslabbing)" << std::endl;
 	unsigned int ijkGridCount = pck.getIjkGridRepresentationCount();
@@ -1786,58 +1786,657 @@ void deserializeGridHyperslabbing(common::EpcDocument & pck)
 }
 
 /**
+ * Display the cell geometry of an IJK grid block.
+ * @param ijkGrid			An IJK grid.
+ * @param iInterfaceStart	Sarting i interface of the block.
+ * @param iInterfaceEnd		Ending i interface of the block.
+ * @param jInterfaceStart	Sarting j interface of the block.
+ * @param jInterfaceEnd		Ending j interface of the block.
+ * @param kInterfaceStart	Sarting k interface of the block.
+ * @param kInterfaceEnd		Ending k interface of the block.
+ * @param xyzPoints			The geometry of the block.
+ */
+void displayBlockCellGeometry(AbstractIjkGridRepresentation* ijkGrid,
+	unsigned int iInterfaceStart, unsigned int iInterfaceEnd,
+	unsigned int jInterfaceStart, unsigned int jInterfaceEnd,
+	unsigned int kInterfaceStart, unsigned int kInterfaceEnd,
+	double* xyzPoints
+	)
+{
+	if (xyzPoints == nullptr)
+		throw invalid_argument("xyzPoints == nullptr");
+
+	for (unsigned int k = kInterfaceStart; k < kInterfaceEnd; k++)
+	{
+		cout << "LAYER: " << k << std::endl;
+
+		for (unsigned int j = jInterfaceStart; j < jInterfaceEnd; j++)
+		{
+			for (unsigned int i = iInterfaceStart; i < iInterfaceEnd; i++)
+			{
+				cout << "CELL (" << i << ", " << j << ", " << k << ")" << std::endl;
+
+				double x, y, z;
+
+				// Corner (0, 0, 0)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 0, xyzPoints, x, y, z);
+				cout << "CORNER (0, 0, 0): " << x << " " << y << " " << z << std::endl;
+
+				// Corner (1, 0, 0)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 1, xyzPoints, x, y, z);
+				cout << "CORNER (1, 0, 0): " << x << " " << y << " " << z << std::endl;
+
+				// Corner (1, 1, 0)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 2, xyzPoints, x, y, z);
+				cout << "CORNER (1, 1, 0): " << x << " " << y << " " << z << std::endl;
+
+				// Corner (0, 1, 0)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 3, xyzPoints, x, y, z);
+				cout << "CORNER (0, 1, 0): " << x << " " << y << " " << z << std::endl;
+
+				// Corner (0, 0, 1)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 4, xyzPoints, x, y, z);
+				cout << "CORNER (0, 0, 1): " << x << " " << y << " " << z << std::endl;
+
+				// Corner (1, 0, 1)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 5, xyzPoints, x, y, z);
+				cout << "CORNER (1, 0, 1): " << x << " " << y << " " << z << std::endl;
+
+				// Corner (1, 1, 1)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 6, xyzPoints, x, y, z);
+				cout << "CORNER (1, 1, 1): " << x << " " << y << " " << z << std::endl;
+
+				// Corner (0, 1, 1)
+				ijkGrid->getXyzPointOfBlockFromCellCorner(i, j, k, 7, xyzPoints, x, y, z);
+				cout << "CORNER (0, 1, 1): " << x << " " << y << " " << z << std::endl;
+			}
+		}
+	}
+}
+
+/**
+* Deserialize IJK grid explicit representations packed in a given EPC document.
+* This method read grid geometry block by using hyperslabbing methods. Each block is read 
+* layer by layer.
+* @param pck	An EPC document containing the IJK grid to deserialize.
+*/
+void deserializeGridHyperslabbingBlock(common::EpcDocument & pck)
+{
+	cout << endl << "BEGIN: IJK GRID REP (block hyperslabbing)" << endl;
+
+	// ONE SUGAR
+	AbstractIjkGridRepresentation* ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b"));
+
+	cout << "--------------------------------------------------" << std::endl;
+	showAllMetadata(ijkGrid);
+	cout << "--------------------------------------------------" << std::endl;
+
+	ijkGrid->loadSplitInformation();
+
+	unsigned int iInterfaceStart = 0;
+	unsigned int iInterfaceEnd = 1;
+	unsigned int jInterfaceStart = 0;
+	unsigned int jInterfaceEnd = 1;
+	unsigned int kInterfaceStart = 0;
+	unsigned int kInterfaceEnd = 1;
+
+	ijkGrid->loadBlockInformation(iInterfaceStart, iInterfaceEnd, jInterfaceStart, jInterfaceEnd, kInterfaceStart, kInterfaceEnd);
+
+	ULONG64 xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
+
+	double* xyzPoints = new double[xyzPointCountOfBlock * 3];
+	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+
+	// Keep for testing
+	/*cout << "All xyz points:" << endl;
+	for (unsigned int index = 0; index < xyzPointCountOfBlock; ++index)
+		std::cout << "(" << xyzPoints[3 * index] << " " << xyzPoints[3 * index + 1] << " " << xyzPoints[3 * index + 2] << ") ";
+	std::cout << std::endl;*/
+
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints
+	);
+
+	delete[] xyzPoints;
+
+	ijkGrid->unloadSplitInformation();
+
+	// Four by Three by Two Left Handed (e96c2bde-e3ae-4d51-b078-a8e57fb1e667)
+	ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("e96c2bde-e3ae-4d51-b078-a8e57fb1e667"));
+
+	cout << std::endl;
+	cout << "--------------------------------------------------" << std::endl;
+	showAllMetadata(ijkGrid);
+	cout << "--------------------------------------------------" << std::endl;
+
+	ijkGrid->loadSplitInformation();
+
+	// 2*3*2 sized block with:
+	//
+	// kInterface = 0
+	//  -- ** ** --
+	// |  *  *  *  |
+	//  -- ** ** --
+	// |  *  *  *  |
+	//  -- ** ** --
+	// |  *  *  *  |
+	//  -- ** ** --
+	//
+	// kInterface = 1
+	//  -- ** ** --
+	// |  *  *  *  |
+	//  -- ** ** --
+	// |  *  *  *  |
+	//  -- ** ** --
+	// |  *  *  *  |
+	//  -- ** ** --
+	//
+	// kInterface = 2
+	//  -- ** ** --
+	// |  *  *  *  |
+	//  -- ** ** --
+	// |  *  *  *  |
+	//  -- ** ** --
+	// |  *  *  *  |
+	//  -- ** ** --
+
+	std::cout << "block 2*3*2" << std::endl;
+
+	iInterfaceStart = 1;
+	iInterfaceEnd = 3;
+	jInterfaceStart = 0;
+	jInterfaceEnd = 3;
+	kInterfaceStart = 0;
+	kInterfaceEnd = 2;
+
+	ijkGrid->loadBlockInformation(iInterfaceStart, iInterfaceEnd, jInterfaceStart, jInterfaceEnd, kInterfaceStart, kInterfaceEnd);
+
+	xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
+
+	xyzPoints = new double[xyzPointCountOfBlock * 3];
+	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints
+	);
+
+	delete[] xyzPoints;
+
+	cout << "--------------------------------------------------" << std::endl;
+
+	// 1*1*1 sized block with:
+	//
+	// kInterface = 0
+	//  -- -- -- --
+	// |  |  |  |  |
+	//  -- -- -- --
+	// |  |  |  |  |
+	//  -- -- -- --
+	// |  |  |  |  |
+	//  -- -- -- --
+	//
+	// kInterface = 1
+	//  -- -- -- --
+	// |  |  |  |  |
+	//  -- -- ** --
+	// |  |  *  *  |
+	//  -- -- ** --
+	// |  |  |  |  |
+	//  -- -- -- --
+	//
+	// kInterface = 2
+	//  -- -- -- --
+	// |  |  |  |  |
+	//  -- -- ** --
+	// |  |  *  *  |
+	//  -- -- ** --
+	// |  |  |  |  |
+	//  -- -- -- --
+
+	std::cout << "bloc 1*1*1" << std::endl;
+
+	iInterfaceStart = 2;
+	iInterfaceEnd = 3;
+	jInterfaceStart = 1;
+	jInterfaceEnd = 2;
+	kInterfaceStart = 1;
+	kInterfaceEnd = 2;
+
+	ijkGrid->loadBlockInformation(iInterfaceStart, iInterfaceEnd, jInterfaceStart, jInterfaceEnd, kInterfaceStart, kInterfaceEnd);
+
+	xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
+
+	xyzPoints = new double[xyzPointCountOfBlock * 3];
+	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints
+	);
+
+	delete[] xyzPoints;
+
+	cout << "--------------------------------------------------" << std::endl;
+
+	// 4*3*2 sized block with:
+	//
+	// kInterface = 0
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	//
+	// kInterface = 1
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	//
+	// kInterface = 2
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+	// *  *  *  *  *
+	//  ** ** ** **
+
+	std::cout << "bloc 4*3*2" << std::endl;
+
+	iInterfaceStart = 0;
+	iInterfaceEnd = 4;
+	jInterfaceStart = 0;
+	jInterfaceEnd = 3;
+	kInterfaceStart = 0;
+	kInterfaceEnd = 2;
+
+	ijkGrid->loadBlockInformation(iInterfaceStart, iInterfaceEnd, jInterfaceStart, jInterfaceEnd, kInterfaceStart, kInterfaceEnd);
+
+	xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
+
+	xyzPoints = new double[xyzPointCountOfBlock * 3];
+	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints
+	);
+
+	delete[] xyzPoints;
+
+	ijkGrid->unloadSplitInformation();
+
+	// Four faulted sugar cubes(parametric geometry) (37c45c00-fa3e-11e5-a21e-0002a5d5c51b)
+	ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("37c45c00-fa3e-11e5-a21e-0002a5d5c51b"));
+
+	cout << std::endl;
+	cout << "--------------------------------------------------" << std::endl;
+	showAllMetadata(ijkGrid);
+	cout << "--------------------------------------------------" << std::endl;
+
+	ijkGrid->loadSplitInformation();
+
+	// 1*1*1 sized block with:
+	//
+	// kInterface = 0
+	//  -- -- 
+	// |  |  |
+	//  -- --
+	//
+	// kInterface = 1
+	//  -- ** 
+	// |  *  *
+	//  -- **
+	//
+	// kInterface = 2
+	//  -- ** 
+	// |  *  *
+	//  -- **
+
+	std::cout << "bloc 1*1*1" << std::endl;
+
+	iInterfaceStart = 1;
+	iInterfaceEnd = 2;
+	jInterfaceStart = 0;
+	jInterfaceEnd = 1;
+	kInterfaceStart = 1;
+	kInterfaceEnd = 2;
+
+	ijkGrid->loadBlockInformation(iInterfaceStart, iInterfaceEnd, jInterfaceStart, jInterfaceEnd, kInterfaceStart, kInterfaceEnd);
+
+	xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
+
+	xyzPoints = new double[xyzPointCountOfBlock * 3];
+	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints
+	);
+
+	delete[] xyzPoints;
+
+	cout << "--------------------------------------------------" << std::endl;
+
+	// 1*1*2 sized block with:
+	//
+	// kInterface = 0
+	//  ** -- 
+	// *  *  |
+	//  ** --
+	//
+	// kInterface = 1
+	//  ** -- 
+	// *  *  |
+	//  ** --
+	//
+	// kInterface = 2
+	//  ** -- 
+	// *  *  |
+	//  ** --
+
+	std::cout << "bloc 1*1*2" << std::endl;
+
+	iInterfaceStart = 0;
+	iInterfaceEnd = 1;
+	jInterfaceStart = 0;
+	jInterfaceEnd = 1;
+	kInterfaceStart = 0;
+	kInterfaceEnd = 2;
+
+	ijkGrid->loadBlockInformation(iInterfaceStart, iInterfaceEnd, jInterfaceStart, jInterfaceEnd, kInterfaceStart, kInterfaceEnd);
+
+	xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
+
+	xyzPoints = new double[xyzPointCountOfBlock * 3];
+	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints
+	);
+
+	delete[] xyzPoints;
+
+	ijkGrid->unloadSplitInformation();
+
+	// Four faulted sugar cubes (straight parametric geometry) (f68235af-1d7a-4e24-93a8-10739b15ca40)
+	ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("f68235af-1d7a-4e24-93a8-10739b15ca40"));
+
+	cout << std::endl;
+	cout << "--------------------------------------------------" << std::endl;
+	showAllMetadata(ijkGrid);
+	cout << "--------------------------------------------------" << std::endl;
+
+	ijkGrid->loadSplitInformation();
+
+	// 1*1*1 sized block with:
+	//
+	// kInterface = 0
+	//  -- -- 
+	// |  |  |
+	//  -- --
+	//
+	// kInterface = 1
+	//  -- ** 
+	// |  *  *
+	//  -- **
+	//
+	// kInterface = 2
+	//  -- ** 
+	// |  *  *
+	//  -- **
+
+	std::cout << "bloc 1*1*1" << std::endl;
+
+	iInterfaceStart = 1;
+	iInterfaceEnd = 2;
+	jInterfaceStart = 0;
+	jInterfaceEnd = 1;
+	kInterfaceStart = 1;
+	kInterfaceEnd = 2;
+
+	ijkGrid->loadBlockInformation(iInterfaceStart, iInterfaceEnd, jInterfaceStart, jInterfaceEnd, kInterfaceStart, kInterfaceEnd);
+
+	xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
+
+	xyzPoints = new double[xyzPointCountOfBlock * 3];
+	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+
+	// Keep for testing
+	/*cout << "All xyz points:" << endl;
+	for (unsigned int index = 0; index < xyzPointCountOfBlock; ++index)
+		std::cout << "(" << xyzPoints[3 * index] << " " << xyzPoints[3 * index + 1] << " " << xyzPoints[3 * index + 2] << ") ";
+	std::cout << std::endl;*/
+
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints
+	);
+
+	delete[] xyzPoints;
+
+	cout << "--------------------------------------------------" << std::endl;
+
+	// 1*1*2 sized block with:
+	//
+	// kInterface = 0
+	//  ** -- 
+	// *  *  |
+	//  ** --
+	//
+	// kInterface = 1
+	//  ** -- 
+	// *  *  |
+	//  ** --
+	//
+	// kInterface = 2
+	//  ** -- 
+	// *  *  |
+	//  ** --
+
+	std::cout << "bloc 1*1*2" << std::endl;
+
+	iInterfaceStart = 0;
+	iInterfaceEnd = 1;
+	jInterfaceStart = 0;
+	jInterfaceEnd = 1;
+	kInterfaceStart = 0;
+	kInterfaceEnd = 2;
+
+	ijkGrid->loadBlockInformation(iInterfaceStart, iInterfaceEnd, jInterfaceStart, jInterfaceEnd, kInterfaceStart, kInterfaceEnd);
+
+	xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
+
+	xyzPoints = new double[xyzPointCountOfBlock * 3];
+	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints
+	);
+
+	delete[] xyzPoints;
+
+	cout << "--------------------------------------------------" << std::endl;
+
+	// 2*1*2 sized block with:
+	//
+	// kInterface = 0
+	//  ** ** 
+	// *  *  *
+	//  ** **
+	//
+	// kInterface = 1
+	//  ** ** 
+	// *  *  *
+	//  ** **
+	//
+	// kInterface = 2
+	//  ** ** 
+	// *  *  *
+	//  ** **
+
+	std::cout << "bloc 2*1*2" << std::endl;
+
+	iInterfaceStart = 0;
+	iInterfaceEnd = 2;
+	jInterfaceStart = 0;
+	jInterfaceEnd = 1;
+	kInterfaceStart = 0;
+	kInterfaceEnd = 2;
+
+	ijkGrid->loadBlockInformation(iInterfaceStart, iInterfaceEnd, jInterfaceStart, jInterfaceEnd, kInterfaceStart, kInterfaceEnd);
+
+	xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
+
+	xyzPoints = new double[xyzPointCountOfBlock * 3];
+	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+
+	displayBlockCellGeometry(ijkGrid,
+		iInterfaceStart, iInterfaceEnd,
+		jInterfaceStart, jInterfaceEnd,
+		kInterfaceStart, kInterfaceEnd,
+		xyzPoints
+	);
+
+	delete[] xyzPoints;
+
+	ijkGrid->unloadSplitInformation();
+
+	cout << endl << "END: IJK GRID REP (block hyperslabbing)" << endl;
+}
+
+/**
  * This method provides a time comparison betweeen hyperslabbed and non-hyperslabbed versions of IJK grid geometry reading.
  * This method is relevant only if the pillar information loading is forced at each
  * IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch call!
  * @param ijkGrid	an IJK grid representation
- * @param nbIter		number of geometry reading iteration
+ * @param nbIter	number of geometry reading iteration
  */
 void ijkGridHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, unsigned int nbIter)
 {
+	if (ijkGrid == nullptr)
+		throw invalid_argument("discretePropertyHyperslabingTiming: ijkGrid is nullptr.");
+
 	cout << endl << "BEGIN: IJK GRID REP (hyperslabbed and non-hyperslabbed geometry reading comparison)" << std::endl << std::endl;
 	cout.precision(17);
 
 	ijkGrid->loadSplitInformation();
 	double* xyzPoints = new double[ijkGrid->getXyzPointCountOfAllPatches() * 3];
 
-	// non hyperslabbing
-	clock_t clockStart = clock();
-	time_t timeStart, timeEnd;
-	time(&timeStart);
-	for (unsigned int n = 0; n < nbIter; ++n)
-		ijkGrid->getXyzPointsOfPatch(0, xyzPoints);
-	clock_t clockEnd = clock();
-	time(&timeEnd);
-	clock_t nonHyperslabClockDuration = clockEnd - clockStart;
-	double nonHyperslabTImeDuration = difftime(timeEnd, timeStart);
-
-	// hyperslabbing
+	unsigned int iCellCount = ijkGrid->getICellCount();
+	unsigned int jCellCount = ijkGrid->getJCellCount();
 	unsigned int kCellCount = ijkGrid->getKCellCount();
-	clockStart = clock();
-	time(&timeStart);
-	for (unsigned int n = 0; n < nbIter; ++n)
-		ijkGrid->getXyzPointsOfKInterfaceSequenceOfPatch(0, kCellCount, 0, xyzPoints);
-	clockEnd = clock();
-	time(&timeEnd);
-	clock_t hyperslabClockDuration = clockEnd - clockStart;
-	double hyperslabTimeDuration = difftime(timeEnd, timeStart);
+
+	std::cout << "iCellCount = " << iCellCount << std::endl;
+	std::cout << "jCellCount = " << jCellCount << std::endl;
+	std::cout << "kCellCount = " << kCellCount << std::endl;
+
+	ijkGrid->loadBlockInformation(0, iCellCount, 0, jCellCount, 0, kCellCount);
+
+	time_t timeStart, timeEnd;
+	clock_t nonHyperslabClockDuration = 0;
+	clock_t hyperslabClockDuration = 0;
+	clock_t blockHyperslabClockDuration = 0;
+	double nonHyperslabTimeDuration = 0;
+	double hyperslabTimeDuration = 0;
+	double blockHyperslabTimeDuration = 0;
+
+	const unsigned int smoothingConstant = 10;
+
+	for (unsigned int i = 0; i < smoothingConstant; ++i)
+	{
+		clock_t clockStart, clockEnd;
+
+		// non hyperslabbing
+		clockStart = clock();
+		time(&timeStart);
+		for (unsigned int n = 0; n < nbIter; ++n)
+			ijkGrid->getXyzPointsOfPatch(0, xyzPoints);
+		clockEnd = clock();
+		time(&timeEnd);
+		nonHyperslabClockDuration += clockEnd - clockStart;
+		nonHyperslabTimeDuration += difftime(timeEnd, timeStart);
+
+		//// keep track for debug
+		//for (unsigned int i = 0; i < ijkGrid->getXyzPointCountOfAllPatches(); ++i)
+		//	std::cout << "(" << xyzPoints[i] << ", " << xyzPoints[i + 1] << ", " << xyzPoints[i + 2] << ")";
+		//std::cout << std::endl;
+
+		// k interface sequence hyperslabbing
+		clockStart = clock();
+		time(&timeStart);
+		for (unsigned int n = 0; n < nbIter; ++n)
+			ijkGrid->getXyzPointsOfKInterfaceSequenceOfPatch(0, kCellCount, 0, xyzPoints);
+		clockEnd = clock();
+		time(&timeEnd);
+		hyperslabClockDuration += clockEnd - clockStart;
+		hyperslabTimeDuration += difftime(timeEnd, timeStart);
+
+		// block hyperslabbing
+		clockStart = clock();
+		time(&timeStart);
+		for (unsigned int n = 0; n < nbIter; ++n)
+			ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+		clockEnd = clock();
+		time(&timeEnd);
+		blockHyperslabClockDuration += clockEnd - clockStart;
+		blockHyperslabTimeDuration += difftime(timeEnd, timeStart);
+	}
+
+	nonHyperslabClockDuration /= smoothingConstant;
+	hyperslabClockDuration /= smoothingConstant;
+	blockHyperslabClockDuration /= smoothingConstant;
+	nonHyperslabTimeDuration /= smoothingConstant;
+	hyperslabTimeDuration /= smoothingConstant;
+	blockHyperslabTimeDuration /= smoothingConstant;
 
 	// results
-	cout << "Be careful: in the case of parametric grids, following results are relevant only if pillar information" << std::endl;
-	cout << " loading is forced at each call of IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch method" << std::endl;
-	cout << "Non hyperslab: geometry of " << ijkGrid->getTitle() << " have been read " << nbIter << " times in " << nonHyperslabClockDuration << " ticks (CPU time)" << std::endl;
-	cout << "Hyperslab:     geometry of " << ijkGrid->getTitle() << " have been read " << nbIter << " times in " << hyperslabClockDuration << " ticks (CPU time)" << std::endl;
-	double result = (hyperslabClockDuration * 100) / nonHyperslabClockDuration;
-	cout << "hyperslab version took " << result << " % of non hyperslab version" << std::endl;
-	cout << "Non hyperslab: geometry of " << ijkGrid->getTitle() << " have been read " << nbIter << " times in " << fixed << nonHyperslabTImeDuration << " seconds" << std::endl;
-	cout << "Hyperslab:     geometry of " << ijkGrid->getTitle() << " have been read " << nbIter << " times in " << fixed << hyperslabTimeDuration << " seconds" << std::endl;
-	result = (hyperslabTimeDuration * 100) / nonHyperslabTImeDuration;
-	cout << "hyperslab version took " << result << " % of non hyperslab version" << std::endl;
+	std::cout << "Be careful: in the case of parametric grids, following results are relevant only if pillar information" << std::endl;
+	std::cout << " loading is forced at each call of IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch method" << std::endl;
+	std::cout << "Non hyperslab:	geometry of " << ijkGrid->getTitle() << " have been read " << nbIter << " times in " << nonHyperslabClockDuration << " ticks (CPU time)" << std::endl;
+	std::cout << "k-interface hyperslab: geometry of " << ijkGrid->getTitle() << " have been read " << nbIter << " times in " << hyperslabClockDuration << " ticks (CPU time)" << std::endl;
+	std::cout << "Block hperslab: geometry of " << ijkGrid->getTitle() << " have been read " << nbIter << " times in " << blockHyperslabClockDuration << " ticks (CPU time)" << std::endl;
+	std::cout << "k-interface hyperslab version took " << (hyperslabClockDuration * 100) / nonHyperslabClockDuration << " % of non hyperslab version" << std::endl;
+	std::cout << "block hyperslab version took " << (blockHyperslabClockDuration * 100) / nonHyperslabClockDuration << " % of non hyperslab version" << std::endl;
+	std::cout << "block hyperslab version took " << (blockHyperslabClockDuration * 100) / hyperslabClockDuration << " % of k-interface hyperslab version" << std::endl << std::endl;;
+
+	std::cout << "Non hyperslab: geometry of " << ijkGrid->getTitle() << " have been read " << nbIter << " times in " << fixed << nonHyperslabTimeDuration << " seconds" << std::endl;
+	std::cout << "k-interface hyperslab: geometry of " << ijkGrid->getTitle() << " have been read " << nbIter << " times in " << fixed << hyperslabTimeDuration << " seconds" << std::endl;
+	std::cout << "block hyperslab: geometry of " << ijkGrid->getTitle() << " have been read " << nbIter << " times in " << fixed << blockHyperslabTimeDuration << " seconds" << std::endl;
+	std::cout << "k-interface hyperslab version took " << (hyperslabTimeDuration * 100) / nonHyperslabTimeDuration << " % of non hyperslab version" << std::endl;
+	std::cout << "block hyperslab version took " << (blockHyperslabTimeDuration * 100) / nonHyperslabTimeDuration << " % of non hyperslab version" << std::endl;
+	std::cout << "block hyperslab version took " << (blockHyperslabTimeDuration * 100) / hyperslabTimeDuration << " % of k-interface hyperslab version" << std::endl;
 
 	ijkGrid->unloadSplitInformation();
 	delete[] xyzPoints;
 
-	cout << endl << "END: IJK GRID REP (hyperslabbed and non-hyperslabbed geometry reading comparison)" << std::endl;
+	std::cout << endl << "END: IJK GRID REP (hyperslabbed and non-hyperslabbed geometry reading comparison)" << std::endl;
 }
 
 /**
@@ -1849,23 +2448,16 @@ void ijkGridHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, unsigned 
  */
 void discretePropertyHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, DiscreteProperty* prop, unsigned int nbIter)
 {
-	cout << endl << "BEGIN: IJK GRID REP (hyperslabbed and non-hyperslabbed property reading comparison)" << std::endl << std::endl;
-	cout.precision(17);
+	if (ijkGrid == nullptr)
+		throw invalid_argument("discretePropertyHyperslabingTiming: ijkGrid is nullptr.");
+	if (prop == nullptr)
+		throw invalid_argument("discretePropertyHyperslabingTiming: prop is nullptr.");
+
+	std::cout << endl << "BEGIN: IJK GRID REP (hyperslabbed and non-hyperslabbed property reading comparison)" << std::endl << std::endl;
+	std::cout.precision(17);
 
 	int* values = new int[prop->getValuesCountOfPatch(0)];
 
-	// non hyperslabbing
-	clock_t clockStart = clock();
-	time_t timeStart, timeEnd;
-	time(&timeStart);
-	for (unsigned int n = 0; n < nbIter; ++n)
-		prop->getIntValuesOfPatch(0, values);
-	clock_t clockEnd = clock();
-	time(&timeEnd);
-	clock_t nonHyperslabClockDuration = clockEnd - clockStart;
-	double nonHyperslabTImeDuration = difftime(timeEnd, timeStart);
-
-	// hyperslabbing
 	unsigned long long* numValuesInEachDimension = new unsigned long long[3];
 	numValuesInEachDimension[0] = ijkGrid->getKCellCount();
 	numValuesInEachDimension[1] = ijkGrid->getJCellCount();
@@ -1874,30 +2466,61 @@ void discretePropertyHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, 
 	offsetInEachDimension[0] = 0;
 	offsetInEachDimension[1] = 0;
 	offsetInEachDimension[2] = 0;
-	clockStart = clock();
-	time(&timeStart);
-	for (unsigned int n = 0; n < nbIter; ++n)
-		prop->getIntValuesOfPatch(0, values, numValuesInEachDimension, offsetInEachDimension, 3);
-	clockEnd = clock();
-	time(&timeEnd);
-	clock_t hyperslabDuration = clockEnd - clockStart;
-	double hyperslabTimeDuration = difftime(timeEnd, timeStart);
+
+	time_t timeStart, timeEnd;
+	clock_t nonHyperslabClockDuration = 0;
+	double nonHyperslabTImeDuration = 0;
+	clock_t hyperslabClockDuration = 0;
+	double hyperslabTimeDuration = 0;
+
+	const unsigned int smoothingConstant = 20;
+
+	for (unsigned int i = 0; i < smoothingConstant; ++i)
+	{
+		clock_t clockStart, clockEnd;
+
+		// non hyperslabbing
+		clockStart = clock();
+		time(&timeStart);
+		for (unsigned int n = 0; n < nbIter; ++n)
+			prop->getIntValuesOfPatch(0, values);
+		clockEnd = clock();
+		time(&timeEnd);
+		nonHyperslabClockDuration = clockEnd - clockStart;
+		nonHyperslabTImeDuration = difftime(timeEnd, timeStart);
+
+		// hyperslabbing
+		clockStart = clock();
+		time(&timeStart);
+		for (unsigned int n = 0; n < nbIter; ++n)
+			prop->getIntValuesOfPatch(0, values, numValuesInEachDimension, offsetInEachDimension, 3);
+		clockEnd = clock();
+		time(&timeEnd);
+		hyperslabClockDuration = clockEnd - clockStart;
+		hyperslabTimeDuration = difftime(timeEnd, timeStart);
+	}
+
 	delete[] numValuesInEachDimension;
 	delete[] offsetInEachDimension;
 
+	nonHyperslabClockDuration /= smoothingConstant;
+	nonHyperslabTImeDuration /= smoothingConstant;
+	hyperslabClockDuration /= smoothingConstant;
+	hyperslabTimeDuration /= smoothingConstant;
+
 	// results
-	cout << "Non hyperslab: property " << prop->getTitle() << " have been read " << nbIter << " times in " << nonHyperslabClockDuration << " ticks (CPU time)" << std::endl;
-	cout << "Hyperslab:     property " << prop->getTitle() << " have been read " << nbIter << " times in " << hyperslabDuration << " ticks (CPU time)" << std::endl;
-	double result = (hyperslabDuration * 100) / nonHyperslabClockDuration;
-	cout << "hyperslab version took " << result << " % of non hyperslab version" << std::endl;
-	cout << "Non hyperslab: property " << ijkGrid->getTitle() << " have been read " << nbIter << " times in " << fixed << nonHyperslabTImeDuration << " seconds" << std::endl;
-	cout << "Hyperslab:     property " << ijkGrid->getTitle() << " have been read " << nbIter << " times in " << fixed << hyperslabTimeDuration << " seconds" << std::endl;
+	std::cout << "Non hyperslab: property " << prop->getTitle() << " have been read " << nbIter << " times in " << nonHyperslabClockDuration << " ticks (CPU time)" << std::endl;
+	std::cout << "Hyperslab:     property " << prop->getTitle() << " have been read " << nbIter << " times in " << hyperslabClockDuration << " ticks (CPU time)" << std::endl;
+	double result = (hyperslabClockDuration * 100) / nonHyperslabClockDuration;
+	std::cout << "hyperslab version took " << result << " % of non hyperslab version" << std::endl;
+	std::cout << "Non hyperslab: property " << ijkGrid->getTitle() << " have been read " << nbIter << " times in " << fixed << nonHyperslabTImeDuration << " seconds" << std::endl;
+	std::cout << "Hyperslab:     property " << ijkGrid->getTitle() << " have been read " << nbIter << " times in " << fixed << hyperslabTimeDuration << " seconds" << std::endl;
 	result = (hyperslabTimeDuration * 100) / nonHyperslabTImeDuration;
-	cout << "hyperslab version took " << result << " % of non hyperslab version" << std::endl;
+	std::cout << "hyperslab version took " << result << " % of non hyperslab version" << std::endl;
 
 	delete[] values;
 
-	cout << endl << "END: IJK GRID REP (hyperslabbed and non-hyperslabbed property reading comparison)" << std::endl;
+	std::cout << endl << "END: IJK GRID REP (hyperslabbed and non-hyperslabbed property reading comparison)" << std::endl;
 }
 
 
@@ -2514,20 +3137,31 @@ void deserialize(const string & inputFile)
 		}
 	}
 
-	//deserializeGridHyperslabbing(pck);
-	/*
-	// 4*3*2 explicit grid Left Handed
-	AbstractIjkGridRepresentation* ijkgrid432 = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("e96c2bde-e3ae-4d51-b078-a8e57fb1e667"));
-	ijkGridHyperslabingTiming(ijkgrid432, 250000);
+	// Testing k-layers hyperslabbing
+	deserializeGridHyperslabbingInterfaceSequence(pck);
 
-	// FOUR SUGARS PARAMETRIC
-	AbstractIjkGridRepresentation* ijkgridParametric = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("37c45c00-fa3e-11e5-a21e-0002a5d5c51b"));
-	ijkGridHyperslabingTiming(ijkgridParametric, 250000);
+	// Testing block hyperslabbing
+	deserializeGridHyperslabbingBlock(pck);
 	
-	// Four sugar cubes cellIndex
-	DiscreteProperty* discreteProp1OnIjkgridParametric = static_cast<DiscreteProperty*>(pck.getResqmlAbstractObjectByUuid("eb3dbf6c-5745-4e41-9d09-672f6fbab414"));
-	discretePropertyHyperslabingTiming(ijkgridParametric, discreteProp1OnIjkgridParametric, 250000);
-	*/
+	
+	// ====================
+	// Timing hyperslabbing (time consuming)
+
+	//// 4*3*2 explicit grid Left Handed
+	//AbstractIjkGridRepresentation* ijkgrid432 = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("e96c2bde-e3ae-4d51-b078-a8e57fb1e667"));
+	//ijkGridHyperslabingTiming(ijkgrid432, 250000);
+
+	//// FOUR SUGARS PARAMETRIC
+	//AbstractIjkGridRepresentation* ijkgridParametric = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("37c45c00-fa3e-11e5-a21e-0002a5d5c51b"));
+	//ijkGridHyperslabingTiming(ijkgridParametric, 250000);
+	
+	//// Four sugar cubes cellIndex
+	//DiscreteProperty* discreteProp1OnIjkgridParametric = static_cast<DiscreteProperty*>(pck.getResqmlAbstractObjectByUuid("eb3dbf6c-5745-4e41-9d09-672f6fbab414"));
+	//discretePropertyHyperslabingTiming(ijkgridParametric, discreteProp1OnIjkgridParametric, 250000);
+	
+	// ====================
+	
+
 	std::cout << endl << "UNSTRUCTURED GRID REP" << endl;
 	for (size_t i = 0; i < unstructuredGridRepSet.size(); ++i)
 	{
@@ -2835,6 +3469,7 @@ void prodml_deserialize(const string & inputFile)
 
 // filepath is defined in a macro to better check memory leak
 #define filePath "../../testingPackageCpp.epc"
+//#define filePath "C:/Dev/Data/huabei.epc"
 #define prodml_filePath "../../prodml_testingPackageCpp.epc"
 int main(int argc, char **argv)
 {
