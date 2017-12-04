@@ -1,6 +1,5 @@
 ## Ignore the csharp project and the AssemblyInfo file which are generated from cmake
 /cs/fesapiCs.csproj
-/cs/Properties/AssemblyInfo.cs
 ## Ignore csharp swig generated files
 /swig/swigGeneratedCsWrapper.cpp
 
