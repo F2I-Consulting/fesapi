@@ -225,7 +225,7 @@ IF (WITH_DOTNET_WRAPPING)
 	
 	message("Generating SWIG files")
 	#Cleaning
-	execute_process(COMMAND powershell "Remove-Item ${FESAPI_ROOT_DIR}/cs/src/* -recurse")
+	execute_process(COMMAND powershell "Remove-Item ${FESAPI_ROOT_DIR}/cs/src/* -recurse -exclude .gitignore")
 	
 	# Filling
 	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} -c++ -csharp -dllimport ${CPP_LIBRARY_NAME}.${Fesapi_SRC_VERSION}.dll -namespace f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/cs/src ${FESAPI_ROOT_DIR}/swig/swigModule.i")
@@ -238,7 +238,7 @@ IF (WITH_DOTNET_WRAPPING)
 		${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.cpp
 	)
 	 
-	# Copy the UTF8Marshaller csharp class to the cshapr src directory
+	# Copy the UTF8Marshaller csharp class to the csharp src directory
 	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/UTF8Marshaler.cs ${FESAPI_ROOT_DIR}/cs/src/UTF8Marshaler.cs) # Overwrite if different
 	
 	# Create the Visual Studio project from a template file
