@@ -6,7 +6,7 @@
 #include "resqml2_0_1test/MdDatumTest.h"
 
 #include "catch.hpp"
-#include "EpcDocument.h"
+#include "common/EpcDocument.h"
 #include "resqml2_0_1/WellboreInterpretation.h"
 #include "resqml2/MdDatum.h"
 #include "resqml2_0_1/WellboreTrajectoryRepresentation.h"

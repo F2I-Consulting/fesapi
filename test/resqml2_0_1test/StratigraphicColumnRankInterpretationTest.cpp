@@ -6,7 +6,7 @@
 #include "resqml2_0_1test/StratigraphicOrganizationTest.h"
 #include "resqml2_0_1test/StratigraphicUnitInterpretationTest.h"
 
-#include "EpcDocument.h"
+#include "common/EpcDocument.h"
 #include "resqml2_0_1/OrganizationFeature.h"
 #include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
 #include "resqml2_0_1/StratigraphicUnitInterpretation.h"

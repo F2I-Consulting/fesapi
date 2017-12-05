@@ -1,6 +1,6 @@
 #include "ActivityTemplateTest.h"
 #include "resqml2/ActivityTemplate.h"
-#include "EpcDocument.h"
+#include "common/EpcDocument.h"
 #include "../catch.hpp"
 
 using namespace std;

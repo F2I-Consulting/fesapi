@@ -5,7 +5,7 @@
 #include "catch.hpp"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 
-#include "EpcDocument.h"
+#include "common/EpcDocument.h"
 #include "resqml2_0_1/WellboreFeature.h"
 #include "resqml2_0_1/LocalDepth3dCrs.h"
 

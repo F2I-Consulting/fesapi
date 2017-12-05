@@ -1,6 +1,6 @@
 #include "LocalDepth3dCrsTest.h"
 #include "../config.h"
-#include "EpcDocument.h"
+#include "common/EpcDocument.h"
 #include "../catch.hpp"
 
 using namespace resqml2_0_1test;
@@ -26,7 +26,7 @@ LocalDepth3dCrsTest::LocalDepth3dCrsTest(EpcDocument* epcDoc, bool init)
 
 void LocalDepth3dCrsTest::initEpcDocHandler()
 {
-	this->epcDoc->createLocalDepth3dCrs(uuid, title, .0, .0, .0, .0, gsoap_resqml2_0_1::eml__LengthUom__m, 23031, gsoap_resqml2_0_1::eml__LengthUom__m, "Unknown", false);
+	this->epcDoc->createLocalDepth3dCrs(uuid, title, .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
 }
 
 void LocalDepth3dCrsTest::readEpcDocHandler()

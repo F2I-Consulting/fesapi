@@ -4,7 +4,7 @@
 
 #include "catch.hpp"
 
-#include "EpcDocument.h"
+#include "common/EpcDocument.h"
 #include "resqml2_0_1/StratigraphicUnitFeature.h"
 #include <stdexcept>
 

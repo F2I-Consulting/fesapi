@@ -6,7 +6,7 @@
 #include "resqml2_0_1/PolylineRepresentation.h"
 #include "resqml2_0_1/HorizonInterpretation.h"
 #include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "resqml2/HdfProxy.h"
+#include "common/HdfProxy.h"
 #include "resqml2_0_1test/HorizonInterpretationTest.h"
 #include "resqml2_0_1test/SeismicLineRepresentationTest.h"
 #include "LocalDepth3dCrsTest.h"
@@ -36,7 +36,7 @@ HorizonOnSeismicLine::HorizonOnSeismicLine(EpcDocument * epcDocument, bool init)
 
 void HorizonOnSeismicLine::initEpcDocHandler()
 {
-	resqml2::AbstractHdfProxy * hdfProxy = epcDoc->getHdfProxy(0);
+	common::AbstractHdfProxy * hdfProxy = epcDoc->getHdfProxy(0);
 
 	HorizonInterpretation* horizonInterp = epcDoc->getResqmlAbstractObjectByUuid<HorizonInterpretation>(uuidHorizon0Interp);
 	if (horizonInterp == nullptr) {

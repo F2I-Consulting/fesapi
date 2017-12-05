@@ -5,8 +5,8 @@
 #include "resqml2_0_1test/IjkGridExplicitRepresentationTest.h"
 
 #include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "EpcDocument.h"
-#include "resqml2/AbstractHdfProxy.h"
+#include "common/EpcDocument.h"
+#include "common/AbstractHdfProxy.h"
 #include "resqml2_0_1/UnstructuredGridRepresentation.h"
 #include "resqml2_0_1/IjkGridExplicitRepresentation.h"
 

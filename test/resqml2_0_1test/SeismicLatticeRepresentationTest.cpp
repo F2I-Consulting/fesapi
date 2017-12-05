@@ -5,7 +5,7 @@
 #include "resqml2_0_1/GenericFeatureInterpretation.h"
 #include "resqml2_0_1/Grid2dRepresentation.h"
 #include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "resqml2/HdfProxy.h"
+#include "common/HdfProxy.h"
 #include "resqml2_0_1test/AbstractFeatureTest.h"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 

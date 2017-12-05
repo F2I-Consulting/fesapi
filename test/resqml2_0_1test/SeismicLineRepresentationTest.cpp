@@ -5,7 +5,7 @@
 #include "resqml2_0_1/GenericFeatureInterpretation.h"
 #include "resqml2_0_1/PolylineRepresentation.h"
 #include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "resqml2/AbstractHdfProxy.h"
+#include "common/AbstractHdfProxy.h"
 #include "resqml2_0_1test/AbstractFeatureTest.h"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 
@@ -46,7 +46,7 @@ void SeismicLineRepresentationTest::initEpcDocHandler()
 		delete crsTest;
 	}
 
-	resqml2::AbstractHdfProxy * hdfProxy = epcDoc->getHdfProxy(0);
+	common::AbstractHdfProxy * hdfProxy = epcDoc->getHdfProxy(0);
 
 	SeismicLineSetFeature* seismicLineSet = epcDoc->createSeismicLineSet(defaultUuidFeatureSet, defaultTitleFeatureSet);
 

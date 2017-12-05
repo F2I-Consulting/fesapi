@@ -1,6 +1,6 @@
 #include "LocalTime3dCrs.h"
 #include "../config.h"
-#include "EpcDocument.h"
+#include "common/EpcDocument.h"
 #include "../catch.hpp"
 
 using namespace resqml2_0_1test;
@@ -26,7 +26,7 @@ LocalTime3dCrs::LocalTime3dCrs(EpcDocument* epcDoc, bool init)
 
 void LocalTime3dCrs::initEpcDocHandler()
 {
-	epcDoc->createLocalTime3dCrs(uuid, title, 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml__LengthUom__m, 23031, gsoap_resqml2_0_1::eml__TimeUom__s, gsoap_resqml2_0_1::eml__LengthUom__m, "Unknown", false);
+	epcDoc->createLocalTime3dCrs(uuid, title, 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__TimeUom__s, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
 }
 
 void LocalTime3dCrs::readEpcDocHandler()

@@ -9,7 +9,7 @@
 #include "resqml2_0_1/WellboreInterpretation.h"
 #include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
 #include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
-#include "resqml2/AbstractHdfProxy.h"
+#include "common/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace common;
@@ -44,7 +44,7 @@ void WellboreFrameRepresentationTest::initEpcDocHandler() {
 	delete trajTest;
 
 	// getting the hdf proxy
-	resqml2::AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
+	common::AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
 	REQUIRE(hdfProxy != nullptr);
 
 	// WellboreFeature frame

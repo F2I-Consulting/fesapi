@@ -7,7 +7,7 @@
 #include "resqml2/PropertyKind.h"
 #include "resqml2_0_1/DiscreteProperty.h"
 #include "resqml2_0_1/WellboreFrameRepresentation.h"
-#include "resqml2/AbstractHdfProxy.h"
+#include "common/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace common;

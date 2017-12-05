@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #include "catch.hpp"
-#include "EpcDocument.h"
+#include "common/EpcDocument.h"
 #include "resqml2_0_1/WellboreFeature.h"
 #include "config.h"
 

@@ -1,5 +1,5 @@
 #include "AbstractTest.h"
-#include "EpcDocument.h"
+#include "common/EpcDocument.h"
 #include "catch.hpp"
 #include "config.h"
 
@@ -47,8 +47,8 @@ void AbstractTest::deserialize() {
 		cout << endl;
 	}
 
-	epcDoc->close();
 	readEpcDoc();
+	epcDoc->close();
 
 	delete epcDoc;
 }

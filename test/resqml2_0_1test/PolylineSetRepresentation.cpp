@@ -1,11 +1,11 @@
 #include "resqml2_0_1test/PolylineSetRepresentation.h"
 
 #include "../catch.hpp"
-#include "EpcDocument.h"
+#include "common/EpcDocument.h"
 #include "resqml2_0_1/FaultInterpretation.h"
 #include "resqml2_0_1/LocalTime3dCrs.h"
 #include "resqml2_0_1/PolylineSetRepresentation.h"
-#include "resqml2/HdfProxy.h"
+#include "common/HdfProxy.h"
 #include "resqml2_0_1test/FaultInterpretationTest.h"
 #include "resqml2_0_1test/LocalTime3dCrs.h"
 
