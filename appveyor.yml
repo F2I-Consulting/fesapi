@@ -74,7 +74,7 @@ before_build:
   - cd build
   - >
     cmake -G"Visual Studio 12 2013 Win64"
-    -DHD5_BUILT_AS_DYNAMIC_LIB=TRUE
+    -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE
     -DHDF5_C_INCLUDE_DIR=c:/projects/fesapiEnv/dependencies/hdf5-1.8.18-win64-vs2013-noszip/include
     -DHDF5_C_LIBRARY_RELEASE=c:/projects/fesapiEnv/dependencies/hdf5-1.8.18-win64-vs2013-noszip/lib/hdf5.lib
     -DMINIZIP_INCLUDE_DIR=c:/projects/fesapiEnv/dependencies/minizip-1.0.0.0-win64-vs2013/include
