@@ -35,7 +35,7 @@ void FaultMultiPatchTriangulatedSetRepresentationTest::initEpcDocHandler()
 
 	FaultInterpretation * interp = static_cast<FaultInterpretation*>(this->epcDoc->getResqmlAbstractObjectByUuid(uuidFaultInterpretation));
 	LocalDepth3dCrs * crs = static_cast<LocalDepth3dCrs *>(this->epcDoc->getResqmlAbstractObjectByUuid(LocalDepth3dCrsTest::defaultUuid));
-	HdfProxy* hdfProxy = static_cast<HdfProxy *>(this->epcDoc->getResqmlAbstractObjectByUuid(uuidHdfProxy));
+	common::HdfProxy* hdfProxy = static_cast<common::HdfProxy *>(this->epcDoc->getResqmlAbstractObjectByUuid(uuidHdfProxy));
 
 	TriangulatedSetRepresentation* rep = this->epcDoc->createTriangulatedSetRepresentation(interp, crs, this->uuid, this->title);
 	REQUIRE( rep != nullptr );

@@ -4,7 +4,7 @@
 #include "resqml2_0_1test/ActivityTemplateGenericCreationTest.h"
 #include "resqml2_0_1test/HorizonInterpretationTest.h"
 
-#include "EpcDocument.h"
+#include "common/EpcDocument.h"
 #include "resqml2/ActivityTemplate.h"
 #include "resqml2/Activity.h"
 #include "resqml2_0_1/HorizonInterpretation.h"

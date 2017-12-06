@@ -1,6 +1,6 @@
 #include "FaultTest.h"
 #include "../catch.hpp"
-#include "EpcDocument.h"
+#include "common/EpcDocument.h"
 #include "resqml2_0_1/TectonicBoundaryFeature.h"
 #include <stdexcept>
 #include "../config.h"

@@ -7,7 +7,7 @@
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 
 #include "catch.hpp"
-#include "EpcDocument.h"
+#include "common/EpcDocument.h"
 #include "resqml2_0_1/LocalDepth3dCrs.h"
 #include "resqml2_0_1/IjkGridExplicitRepresentation.h"
 #include "resqml2_0_1/DiscreteProperty.h"

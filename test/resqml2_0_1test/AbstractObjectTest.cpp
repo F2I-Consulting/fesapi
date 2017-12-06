@@ -3,8 +3,8 @@
 #include "catch.hpp"
 #include "AbstractTest.h"
 
-#include "EpcDocument.h"
-#include "resqml2/AbstractObject.h"
+#include "common/EpcDocument.h"
+#include "common/AbstractObject.h"
 
 using namespace std;
 using namespace resqml2_0_1test;
@@ -35,7 +35,7 @@ void AbstractObjectTest::initEpcDoc()
 }
 
 void AbstractObjectTest::readEpcDoc() {
-	AbstractObject* resqmlObject = static_cast<AbstractObject*>(this->epcDoc->getResqmlAbstractObjectByUuid(this->uuid));
+	common::AbstractObject* resqmlObject = static_cast<common::AbstractObject*>(this->epcDoc->getResqmlAbstractObjectByUuid(this->uuid));
 	REQUIRE(resqmlObject != nullptr);
 	REQUIRE(resqmlObject->getUuid() == this->uuid);
 	REQUIRE( resqmlObject->getTitle() == this->title );

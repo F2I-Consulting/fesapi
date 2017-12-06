@@ -5,7 +5,7 @@
 
 #include "resqml2_0_1/ContinuousProperty.h"
 #include "resqml2_0_1/WellboreFrameRepresentation.h"
-#include "resqml2/AbstractHdfProxy.h"
+#include "common/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace common;

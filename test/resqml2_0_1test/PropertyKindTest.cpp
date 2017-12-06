@@ -1,6 +1,6 @@
 #include "PropertyKindTest.h"
 #include "../catch.hpp"
-#include "EpcDocument.h"
+#include "common/EpcDocument.h"
 #include "resqml2/PropertyKind.h"
 #include <stdexcept>
 #include "../config.h"

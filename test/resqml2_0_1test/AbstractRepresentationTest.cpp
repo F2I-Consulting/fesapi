@@ -2,7 +2,7 @@
 
 #include "catch.hpp"
 
-#include "EpcDocument.h"
+#include "common/EpcDocument.h"
 #include "resqml2/AbstractRepresentation.h"
 
 #include "proxies/stdsoap2.h"

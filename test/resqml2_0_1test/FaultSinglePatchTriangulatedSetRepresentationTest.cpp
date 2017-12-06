@@ -4,7 +4,7 @@
 #include "resqml2_0_1/TriangulatedSetRepresentation.h"
 #include "resqml2_0_1/FaultInterpretation.h"
 #include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "resqml2/HdfProxy.h"
+#include "common/HdfProxy.h"
 #include "FaultInterpretationTest.h"
 #include "LocalDepth3dCrsTest.h"
 

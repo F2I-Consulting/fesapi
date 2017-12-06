@@ -1,6 +1,6 @@
 #include "ActivityTemplateGenericCreationTest.h"
 #include "../config.h"
-#include "EpcDocument.h"
+#include "common/EpcDocument.h"
 #include "resqml2_0_1/ActivityTemplate.h"
 #include "../catch.hpp"
 

@@ -3,8 +3,8 @@
 #include "../catch.hpp"
 #include "LocalDepth3dCrsTest.h"
 #include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "EpcDocument.h"
-#include "resqml2/AbstractHdfProxy.h"
+#include "common/EpcDocument.h"
+#include "common/AbstractHdfProxy.h"
 #include "resqml2_0_1/UnstructuredGridRepresentation.h"
 
 using namespace std;
