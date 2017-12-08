@@ -93,6 +93,9 @@ string GridConnectionSetRepresentation::getHdfProxyUuid() const
 
 void GridConnectionSetRepresentation::setCellIndexPairsUsingExistingDataset(const ULONG64 & cellIndexPairCount, const std::string & cellIndexPair, const ULONG64 & nullValue, common::AbstractHdfProxy * proxy, const std::string & gridIndexPair)
 {
+	if (cellIndexPairCount == 0) {
+		throw std::invalid_argument("You cannot set zero cell index pair.");
+	}
 	_resqml2__GridConnectionSetRepresentation* const rep = static_cast<_resqml2__GridConnectionSetRepresentation* const>(gsoapProxy2_0_1);
 	rep->Count = cellIndexPairCount;
 

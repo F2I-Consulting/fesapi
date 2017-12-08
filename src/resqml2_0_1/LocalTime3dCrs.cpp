@@ -49,8 +49,9 @@ void LocalTime3dCrs::init(soap* soapContext, const std::string & guid, const std
 			const gsoap_resqml2_0_1::eml20__TimeUom & timeUom,
 			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const bool & isUpOriented)
 {
-	if (soapContext == nullptr)
+	if (soapContext == nullptr) {
 		throw invalid_argument("The EPC document where the local CRS will be stored cannot be null.");
+	}
 
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORELocalTime3dCrs(soapContext, 1);
 	_resqml2__LocalTime3dCrs* local3dCrs = static_cast<_resqml2__LocalTime3dCrs*>(gsoapProxy2_0_1);
@@ -76,6 +77,9 @@ LocalTime3dCrs::LocalTime3dCrs(soap* soapContext, const std::string & guid, cons
 			const gsoap_resqml2_0_1::eml20__TimeUom & timeUom,
 			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const unsigned int & verticalEpsgCode, const bool & isUpOriented)
 {
+	if (projectedEpsgCode == 0 || verticalEpsgCode == 0) {
+		throw invalid_argument("An EPSG code cannot be set to 0.");
+	}
 	init(soapContext, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation, projectedUom, timeUom, verticalUom, isUpOriented);
 	_resqml2__LocalTime3dCrs* local3dCrs = static_cast<_resqml2__LocalTime3dCrs*>(gsoapProxy2_0_1);
 
@@ -118,6 +122,9 @@ LocalTime3dCrs::LocalTime3dCrs(soap* soapContext, const std::string & guid, cons
 			const gsoap_resqml2_0_1::eml20__TimeUom & timeUom,
 			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const std::string & verticalUnknownReason, const bool & isUpOriented)
 {
+	if (projectedEpsgCode == 0) {
+		throw invalid_argument("An EPSG code cannot be set to 0.");
+	}
 	init(soapContext, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation, projectedUom, timeUom, verticalUom, isUpOriented);
 	_resqml2__LocalTime3dCrs* local3dCrs = static_cast<_resqml2__LocalTime3dCrs*>(gsoapProxy2_0_1);
 
@@ -139,6 +146,9 @@ LocalTime3dCrs::LocalTime3dCrs(soap* soapContext, const std::string & guid, cons
 			const gsoap_resqml2_0_1::eml20__TimeUom & timeUom,
 			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const unsigned int & verticalEpsgCode, const bool & isUpOriented)
 {
+	if (verticalEpsgCode == 0) {
+		throw invalid_argument("An EPSG code cannot be set to 0.");
+	}
 	init(soapContext, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation, projectedUom, timeUom, verticalUom, isUpOriented);
 	_resqml2__LocalTime3dCrs* local3dCrs = static_cast<_resqml2__LocalTime3dCrs*>(gsoapProxy2_0_1);
 

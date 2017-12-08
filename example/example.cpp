@@ -1866,6 +1866,9 @@ void deserializeGridHyperslabbingBlock(common::EpcDocument & pck)
 
 	// ONE SUGAR
 	AbstractIjkGridRepresentation* ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b"));
+	if (ijkGrid == nullptr) {
+		return;
+	}
 
 	cout << "--------------------------------------------------" << std::endl;
 	showAllMetadata(ijkGrid);
@@ -3469,7 +3472,6 @@ void prodml_deserialize(const string & inputFile)
 
 // filepath is defined in a macro to better check memory leak
 #define filePath "../../testingPackageCpp.epc"
-//#define filePath "C:/Dev/Data/huabei.epc"
 #define prodml_filePath "../../prodml_testingPackageCpp.epc"
 int main(int argc, char **argv)
 {
