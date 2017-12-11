@@ -6,14 +6,14 @@
 	 - dependencies
 # Prepare the dependencies
 Download (build and install if necessary) third party libraries:
-
 - HDF5: All versions of 1.8.* starting from 1.8.18 should be ok. Versions 1.10.* are not supported yet (even if they should work) https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/
 - MINIZIP : the following version is recommended https://github.com/F2I-Consulting/minizip It is also highly recommended to link minzip to the same zlib library than the one associated to your HDF5 library. From this source code, it is recommended to create a *static* library of minizip dynamically linked to the same zlib library than the one used for the hdf5 library.
 - UUID-DEV package *(ONLY FOR LINUX)* : Source code can be found in https://www.kernel.org/pub/linux/utils/util-linux/
+
 We advise you to install these third party libraries respectively into
-	- fesapiEnv/dependencies/hdf5-particularVersion
-	- fesapiEnv/dependencies/minizip-particularVersion
-	- fesapiEnv/dependencies/uuid-particularVersion (or in system directory using : sudo apt-get install uuid-dev)
+- fesapiEnv/dependencies/hdf5-particularVersion
+- fesapiEnv/dependencies/minizip-particularVersion
+- fesapiEnv/dependencies/uuid-particularVersion (or in system directory using : sudo apt-get install uuid-dev)
 # Configure the build
 Fesapi uses cmake as its build tool. A 3.2 version or later of cmake is required https://cmake.org/download/. We also recommend using cmake-gui (already included in the bin folder of the binary releases of cmake) which provides a graphical user interface on top of cmake. Follow the below instructions :
 
