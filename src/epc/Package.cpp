@@ -269,11 +269,11 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 #endif
 
     char current_filename[UNZ_MAXFILENAMEINZIP+1];
-	int err = unzGoToFirstFile2(d_ptr->unzipped, nullptr, current_filename, sizeof(current_filename) - 1, nullptr, 0, nullptr, 0);
+	int err = unzGoToFirstFile(d_ptr->unzipped);
     while (err == UNZ_OK)
     {
 		d_ptr->name2file[current_filename] = *(unz64_s*)d_ptr->unzipped;
-		err = unzGoToNextFile2(d_ptr->unzipped, nullptr, current_filename, sizeof(current_filename) - 1, nullptr, 0, nullptr, 0);
+		err = unzGoToNextFile(d_ptr->unzipped);
     }
 #endif
 
@@ -610,7 +610,7 @@ void Package::writePackage()
 	}
 
 	// Close the zip archive
-	int err = zipClose(d_ptr->zf, nullptr, d_ptr->isZip64);
+	int err = zipClose(d_ptr->zf, "");
 	if (err != ZIP_OK) {
 		throw invalid_argument("Could not close " + d_ptr->pathName.substr(0, d_ptr->pathName.size() - 4));
 	}
