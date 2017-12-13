@@ -1451,7 +1451,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		// Cumulative
 		resqml2__IntegerHdf5Array* cumulativeLength = soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
 		geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength = cumulativeLength;
-		cumulativeLength->NullValue = getPillarCount();
+		cumulativeLength->NullValue = 0;
 		cumulativeLength->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
 		cumulativeLength->Values->HdfProxy = proxy->newResqmlReference();
 		cumulativeLength->Values->PathInHdfFile = splitCoordinateLineColumnCumulativeCount;
