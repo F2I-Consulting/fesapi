@@ -1,0 +1,107 @@
+#pragma once
+
+#include "AbstractIjkGridRepresentationTest.h"
+#include <iostream>
+
+namespace common {
+	class EpcDocument;
+}
+
+namespace resqml2_0_1test {
+	class AbstractBigIjkGridRepresentationTest : public AbstractIjkGridRepresentationTest {
+	public:
+		const unsigned int iCount;
+		const unsigned int jCount;
+		const unsigned int kCount;
+		const unsigned int faultCount;
+		const double xMin;
+		const double xMax;
+		const double yMin;
+		const double yMax;
+		const double zMin;
+		const double zMax;
+		const double faultThrow;
+		double* nodesIjkGridRepresentation;
+
+		AbstractBigIjkGridRepresentationTest(
+			const std::string & epcDocPath,
+			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount, 
+			const unsigned int & faultCount, 
+			const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
+			const double & faultThrow,
+			const char * defaultUuid, const char * defaultTitle);
+
+		AbstractBigIjkGridRepresentationTest(common::EpcDocument * epcDoc, bool init,
+			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
+			const unsigned int & faultCount,
+			const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
+			const double & faultThrow,
+			const char * defaultUuid, const char * defaultTitle);
+
+		~AbstractBigIjkGridRepresentationTest() {
+			if (nodesIjkGridRepresentation != nullptr)
+			{
+				delete[] nodesIjkGridRepresentation;
+			}
+		}
+	protected:
+		virtual void initEpcDocHandler() = 0;
+		virtual void readEpcDocHandler() = 0;
+
+		/**
+		 * Get the number of nodes (including splitted ones) of the generated grid. 
+		 * @param iCount number of cells in the I direction.
+		 * @param jCount number of cells in the J direction.
+		 * @param kCount number of cells in the K direction.
+		 * @param faultCount number of faults. Faults are parallel to YZ plane (they fit with i-interfaces). faultCount in [0; iCount[.
+		 */
+		ULONG64 initNodesCountIjkGridRepresentation(const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
+			const unsigned int & faultCount);
+
+		/**
+		 * Initialize generated grid geometry. Result is stored into class variable nodesIjkGridRepresentation.
+		 * @param iCount number of cells in the I direction.
+		 * @param jCount number of cells in the J direction.
+		 * @param kCount number of cells in the K direction.
+		 * @param faultCount number of faults. Faults are parallel to YZ plane (they fit with i-interfaces). faultCount in [0; iCount[.
+		 * @param xMin minimum x value of the grid.
+		 * @param xMax maximum x value of the grid.
+		 * @param yMin minimum y value of the grid.
+		 * @param yMax maximum y value of the grid.
+		 * @param zMin minimum z value of the grid (without considering any fault throw).
+		 * @param zMax maximum z value of the grid (without considering any fault throw).
+		 * @param faultThrow lenght of the fault throw along z axis.
+		 * @return nodesIjkGridRepresentation.
+		 */
+		double * initNodesIjkGridRepresentation(const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
+			const unsigned int & faultCount,
+			const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
+			const double & faultThrow);
+		
+		/**
+		 * Initialize split coordinate lines informations.
+		 * @param pillarOfCoordinateLine					Properly allocated output parameter. For each split coordinate line, indicates which pillar it belongs to. 
+		 * @param splitCoordinateLineColumnCumulativeCount	Properly allocated output parameter. For each split coordinate line, indicates how many columns of the ijk grid are incident to it.
+															See IjkGridExplicitRepresentation documentation for more information. 
+		* @param splitCoordinateLineColumns					For each split coordinate line, indicates which columns are incident to it.
+	
+		 */
+		void initSplitCoordinateLine(unsigned int * pillarOfCoordinateLine, 
+			unsigned int * splitCoordinateLineColumnCumulativeCount,
+			unsigned int * splitCoordinateLineColumns);
+
+		/**
+		 * Initialize generated grid discrete property values. For a given cell, corresponding value
+		 * if its k index.
+		 * @param discretePropertyValues Properly allocated output parameter.
+		 */
+		void initDiscreteProperty(unsigned short * discretePropertyValues);
+
+		/**
+		 * Initialize generated grid continuous property values. For a given cell, corresponding value
+		 * is taken in [0.; 1.] by applying an homogeneous gradient from 0. to 1. in the I direction. 
+		 * @param continuousPropertyValues Properly allocated output parameter.
+		 */
+		void initContinuousProperty(double * continuousPropertyValues);
+	};
+}

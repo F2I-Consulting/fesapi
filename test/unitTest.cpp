@@ -31,6 +31,8 @@
 #include "resqml2_0_1test/DiscretePropertyUsingLocalKindOnWellFrameTest.h"
 #include "resqml2_0_1test/HorizonOnSeismicLine.h"
 #include "resqml2_0_1test/RightHanded4x3x2ExplicitIjkGrid.h"
+#include "resqml2_0_1test/BigIjkGridExplicitRepresentationTest.h"
+#include "resqml2_0_1test/BigIjkGridParametricRepresentationTest.h"
 #include "resqml2_0_1test/SubRepresentationOnPartialGridConnectionSet.h"
 #include "resqml2_0_1test/LgrOnRightHanded4x3x2ExplicitIjkGrid.h"
 #include "resqml2_0_1test/InterpretationDomain.h"
@@ -72,6 +74,22 @@ FESAPI_TEST("Export and import a generic creation activity template", "[activity
 FESAPI_TEST("Export and import an activity", "[activity]", ActivityCreationTest)
 
 FESAPI_TEST("Export and import a 4*3*2 explicit right handed ijk grid", "[grid]", RightHanded4x3x2ExplicitIjkGrid)
+
+TEST_CASE("Export and import a big explicit ijk grid", "[grid][property]")
+{
+	BigIjkGridExplicitRepresentationTest* test = new BigIjkGridExplicitRepresentationTest("../../BigIjkGridExplicitRepresentationTest.epc", 10, 10, 5, 9, 0., 100., 0., 100., 0., 50., 10);
+	test->serialize();
+	test->deserialize();
+	delete test;
+}
+
+TEST_CASE("Export and import a big parametric ijk grid", "[grid][property]")
+{
+	BigIjkGridParametricRepresentationTest* test = new BigIjkGridParametricRepresentationTest("../../BigIjkGridParametricRepresentationTest.epc", 20, 20, 10, 10, 0., 100., 0., 100., 0., 50., 10);
+	test->serialize();
+	test->deserialize();
+	delete test;
+}
 
 FESAPI_TEST("Export and import a LGR on a 4*3*2 explicit right handed ijk grid", "[grid]", LgrOnRightHanded4x3x2ExplicitIjkGrid)
 
