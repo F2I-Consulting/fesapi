@@ -33,12 +33,12 @@ AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(
 
 	if (faultCount > (iCount - 1))
 	{
-		throw invalid_argument("faultCount must be strictly lesser than iCount.");
+		throw invalid_argument("faultCount must be strictly less than iCount.");
 	}
 
 	if ((xMin == xMax) || (yMin == yMax) || (zMin == zMax))
 	{
-		throw invalid_argument("In each dimension, grid lenght cannot be 0.");
+		throw invalid_argument("In each dimension, grid length cannot be 0.");
 	}
 }
 
@@ -60,12 +60,12 @@ AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(EpcDo
 
 	if (faultCount >(iCount - 1))
 	{
-		throw invalid_argument("faultCount must be strictly lesser than iCount.");
+		throw invalid_argument("faultCount must be strictly less than iCount.");
 	}
 
 	if ((xMin == xMax) || (yMin == yMax) || (zMin == zMax))
 	{
-		throw invalid_argument("In each dimension, grid lenght cannot be 0.");
+		throw invalid_argument("In each dimension, grid length cannot be 0.");
 	}
 
 	if (init)
@@ -204,15 +204,7 @@ void AbstractBigIjkGridRepresentationTest::initDiscreteProperty(unsigned short *
 
 void AbstractBigIjkGridRepresentationTest::initContinuousProperty(double * continuousPropertyValues)
 {
-	double valueIncr;
-	if ((iCount - 1) != 0)
-	{
-		valueIncr = 1. / (iCount - 1);
-	}
-	else
-	{
-		valueIncr = 0.;
-	}
+	double valueIncr = (iCount - 1) != 0 ? valueIncr = 1. / (iCount - 1) : 0.;
 
 	for (unsigned short k = 0; k < kCount; ++k)
 		for (unsigned int j = 0; j < jCount; ++j)

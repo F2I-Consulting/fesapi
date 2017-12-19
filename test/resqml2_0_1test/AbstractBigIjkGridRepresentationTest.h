@@ -70,7 +70,7 @@ namespace resqml2_0_1test {
 		 * @param yMax maximum y value of the grid.
 		 * @param zMin minimum z value of the grid (without considering any fault throw).
 		 * @param zMax maximum z value of the grid (without considering any fault throw).
-		 * @param faultThrow lenght of the fault throw along z axis.
+		 * @param faultThrow length of the fault throw along z axis.
 		 * @return nodesIjkGridRepresentation.
 		 */
 		double * initNodesIjkGridRepresentation(const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
