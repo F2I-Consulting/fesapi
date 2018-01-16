@@ -70,7 +70,7 @@ ENDIF (UNIX)
 SET (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
 # hdf5
-# FIND_PACKAGE (HDF5) Do no more try to find HDF5 because it looks to be too much different accross different platforms/versions.
+# FIND_PACKAGE (HDF5) Do no more try to find HDF5 because it looks to be too much different across different platforms/versions.
 SET (HDF5_C_INCLUDE_DIR HDF5_C_INCLUDE_DIR-NOTFOUND CACHE PATH "Path to the directory which contains the HDF5 C header files")
 IF (NOT IS_DIRECTORY ${HDF5_C_INCLUDE_DIR})
 	MESSAGE(WARNING "The HDF5 include dir (HDF5_C_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
