@@ -407,7 +407,7 @@ void HdfProxy::writeItemizedListOfList(const string & groupName,
 		H5Pset_deflate (dcpl, compressionLevel);
 		H5Pset_chunk (dcpl, 1, &elementsSize);
 
-		datasetE = H5Dcreate(grp, CUMULATIVE_LENGTH_DS_NAME, elementsDatatype, fspaceE, H5P_DEFAULT, dcpl, H5P_DEFAULT);
+		datasetE = H5Dcreate(grp, ELEMENTS_DS_NAME, elementsDatatype, fspaceE, H5P_DEFAULT, dcpl, H5P_DEFAULT);
 
 		H5Pclose(dcpl);
 	}
