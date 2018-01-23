@@ -1,15 +1,6 @@
 CMAKE_MINIMUM_REQUIRED (VERSION 3.2)
 
-
 PROJECT (Fesapi_SRC)
-
-# version mechanism
-set (Fesapi_SRC_VERSION_MAJOR 0)
-set (Fesapi_SRC_VERSION_MINOR 11)
-set (Fesapi_SRC_VERSION_PATCH 1)
-set (Fesapi_SRC_VERSION_TWEAK 0)
-
-set (Fesapi_SRC_VERSION ${Fesapi_SRC_VERSION_MAJOR}.${Fesapi_SRC_VERSION_MINOR}.${Fesapi_SRC_VERSION_PATCH}.${Fesapi_SRC_VERSION_TWEAK})
 
 # ============================================================================
 # Resqml/Witsqml proxies generation
@@ -208,7 +199,7 @@ IF (WITH_JAVA_WRAPPING)
 	# Building the jar
 	FILE (GLOB_RECURSE SWIG_JAVA_FILES ${FESAPI_ROOT_DIR}/java/src/*.java)
 	set(CMAKE_JAVA_COMPILE_FLAGS -g)
-	add_jar(fesapiJava ${SWIG_JAVA_FILES} VERSION ${Fesapi_SRC_VERSION})
+	add_jar(fesapiJava ${SWIG_JAVA_FILES} VERSION ${Fesapi_VERSION})
 	
 	SET (ALL_SOURCES_AND_HEADERS
 		${ALL_SOURCES_AND_HEADERS}
@@ -228,7 +219,7 @@ IF (WITH_DOTNET_WRAPPING)
 	execute_process(COMMAND powershell "Remove-Item ${FESAPI_ROOT_DIR}/cs/src/* -recurse -exclude .gitignore")
 	
 	# Filling
-	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} -c++ -csharp -dllimport ${CPP_LIBRARY_NAME}.${Fesapi_SRC_VERSION}.dll -namespace f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/cs/src ${FESAPI_ROOT_DIR}/swig/swigModule.i")
+	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} -c++ -csharp -dllimport ${CPP_LIBRARY_NAME}.${Fesapi_VERSION}.dll -namespace f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/cs/src ${FESAPI_ROOT_DIR}/swig/swigModule.i")
 	execute_process(COMMAND powershell  ${EXECUTE_COMMAND})
 	message("SWIG files have been generated")
 
@@ -310,9 +301,9 @@ IF (WIN32)
 	SET_TARGET_PROPERTIES(${CPP_LIBRARY_NAME} PROPERTIES
 		LINK_FLAGS "/INCREMENTAL:NO /OPT:REF"
 		RUNTIME_OUTPUT_DIRECTORY ${FESAPI_BINARY_DIR}
-		SUFFIX ".${Fesapi_SRC_VERSION}.dll"
-		IMPORT_SUFFIX ".${Fesapi_SRC_VERSION}.lib"
-		VERSION ${Fesapi_SRC_VERSION_MAJOR}.${Fesapi_SRC_VERSION_MINOR})
+		SUFFIX ".${Fesapi_VERSION}.dll"
+		IMPORT_SUFFIX ".${Fesapi_VERSION}.lib"
+		VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR})
 ELSEIF (UNIX)
 	TARGET_LINK_LIBRARIES (${CPP_LIBRARY_NAME} ${UUID_LIBRARIES} ${GSOAP_LIBRARIES} ${MINIZIP_LIBRARY_RELEASE} ${HDF5_C_LIBRARY_RELEASE})
 # zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
@@ -331,8 +322,8 @@ ELSEIF (UNIX)
 	ENDIF ()
 	SET_TARGET_PROPERTIES(${CPP_LIBRARY_NAME} PROPERTIES
 		COMPILE_FLAGS "-fPIC"
-		VERSION ${Fesapi_SRC_VERSION}
-		SOVERSION ${Fesapi_SRC_VERSION_MAJOR}.${Fesapi_SRC_VERSION_MINOR})
+		VERSION ${Fesapi_VERSION}
+		SOVERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR})
 ENDIF (WIN32)
 
 # ============================================================================
@@ -346,7 +337,7 @@ INSTALL (
 
 if (${WITH_JAVA_WRAPPING})
 	INSTALL (
-		FILES ${CMAKE_CURRENT_BINARY_DIR}/fesapiJava-${Fesapi_SRC_VERSION}.jar
+		FILES ${CMAKE_CURRENT_BINARY_DIR}/fesapiJava-${Fesapi_VERSION}.jar
 		DESTINATION lib
 	)
 endif (${WITH_JAVA_WRAPPING})
