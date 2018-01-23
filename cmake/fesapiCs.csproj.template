@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>f2i.energisticsStandardsApi</RootNamespace>
-    <AssemblyName>${CS_LIBRARY_NAME}.${Fesapi_SRC_VERSION}</AssemblyName>
+    <AssemblyName>${CS_LIBRARY_NAME}.${Fesapi_VERSION}</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Numéro de build
 //      Révision
 //
-[assembly: AssemblyVersion("${Fesapi_SRC_VERSION}")]
-[assembly: AssemblyFileVersion("${Fesapi_SRC_VERSION}")]
+[assembly: AssemblyVersion("${Fesapi_VERSION}")]
+[assembly: AssemblyFileVersion("${Fesapi_VERSION}")]
