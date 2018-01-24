@@ -190,7 +190,7 @@ void HdfProxy::readArrayNdOfValues(
 		throw invalid_argument("The hyperslabbing of resqml dataset " + datasetName + " could not be selected.");
 	}
 
-	if (H5Sget_simple_extent_ndims(filespace) != numDimensions)
+	if (H5Sget_simple_extent_ndims(filespace) != (int) numDimensions)
 	{
 		H5Sclose(filespace);
 		H5Dclose(dataset);
@@ -260,7 +260,7 @@ void HdfProxy::selectArrayNdOfValues(
 			throw invalid_argument("The filespace of resqml dataset " + datasetName + " could not be opened.");
 		}
 
-		if (H5Sget_simple_extent_ndims(filespace) != numDimensions)
+		if (H5Sget_simple_extent_ndims(filespace) != (int) numDimensions)
 		{
 			H5Sclose(filespace);
 			H5Dclose(dataset);
