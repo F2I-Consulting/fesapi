@@ -629,17 +629,17 @@ void AbstractIjkGridRepresentation::loadBlockInformation(const unsigned int & iI
 	if (splitInformation == nullptr)
 		throw invalid_argument("The split information must have been loaded first.");
 
-	if (iInterfaceStart < 0 || iInterfaceEnd > getICellCount() || iInterfaceEnd < 0 || iInterfaceEnd > getICellCount())
+	if (iInterfaceEnd > getICellCount() || iInterfaceEnd > getICellCount())
 		throw range_error("iInterfaceStart and/or iInterfaceEnd is/are out of boundaries.");
 	if (iInterfaceStart > iInterfaceEnd)
 		throw range_error("iInterfaceStart > iInterfaceEnd");
 
-	if (jInterfaceStart < 0 || jInterfaceEnd > getJCellCount() || jInterfaceEnd < 0 || jInterfaceEnd > getJCellCount())
+	if (jInterfaceEnd > getJCellCount() || jInterfaceEnd > getJCellCount())
 		throw range_error("jInterfaceStart and/or jInterfaceEnd is/are out of boundaries.");
 	if (jInterfaceStart > jInterfaceEnd)
 		throw range_error("jInterfaceStart > jInterfaceEnd");
 
-	if (kInterfaceStart < 0 || kInterfaceEnd > getKCellCount() || kInterfaceEnd < 0 || kInterfaceEnd > getKCellCount())
+	if (kInterfaceEnd > getKCellCount() || kInterfaceEnd > getKCellCount())
 		throw range_error("kInterfaceStart and/or kInterfaceEnd is/are out of boundaries.");
 	if (kInterfaceStart > kInterfaceEnd)
 		throw range_error("kInterfaceStart > kInterfaceEnd");
