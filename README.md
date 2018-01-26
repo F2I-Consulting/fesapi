@@ -22,7 +22,7 @@ Fesapi uses cmake as its build tool. A 3.2 version or later of cmake is required
 - Click on "Configure" button and select your favorite compiler : it will raise several errors.
 - give real path and files to the following cmake variables:
 	- HDF5
-		- (ONLY FOR WINDOWS) HD5_BUILT_AS_DYNAMIC_LIB : true if you link to a shard HDF5 library else false
+		- (ONLY FOR WINDOWS) HD5_BUILT_AS_DYNAMIC_LIB : true if you link to a shared HDF5 library else false
 		- HDF5_C_INCLUDE_DIR : where the HDF5 headers are located
 		- HDF5_C_LIBRARY_RELEASE : the HDF5 library you want to link to
 	- MINIZIP
@@ -44,3 +44,5 @@ Fesapi uses cmake as its build tool. A 3.2 version or later of cmake is required
 	- you will find the wrappers in fesapi/java/src or fesapi/cs/src (fesapi/cs also contains a VS2013 project for the wrappers)
 
 Remark : you can choose where fesapi will be installed (using "make install" on Linux or by generating the "INSTALL" project on Visual Studio) by setting the cmake variable called CMAKE_INSTALL_PREFIX
+# Credits
+This software was developed with the gSOAP toolkit from [Genivia Inc](http://genivia.com/)
