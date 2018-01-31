@@ -228,9 +228,6 @@ IF (WITH_DOTNET_WRAPPING)
 		${ALL_SOURCES_AND_HEADERS}
 		${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.cpp
 	)
-	 
-	# Copy the UTF8Marshaller csharp class to the csharp src directory
-	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/UTF8Marshaler.cs ${FESAPI_ROOT_DIR}/cs/src/UTF8Marshaler.cs) # Overwrite if different
 	
 	# Create the Visual Studio project from a template file
 	#FILE(TO_NATIVE_PATH "${FESAPI_ROOT_DIR}/cs/src" DOS_STYLE_SOURCE_DIR)
