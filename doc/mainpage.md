@@ -1,7 +1,7 @@
 Fesapi is a library helping developers who want to import and/or export Resqml 2 (DAS and partly WITSML 1.4.1.1) data into a software.
 
 Key functionalities are:
-- Open source (license Cecill-B)
+- Open source (license Apache 2.0)
 - Community friendly (Github forge) 
 - Multiplatforms (CMake build)
 - Multilanguages (Swig wrappers)
