@@ -196,6 +196,9 @@ IF (WITH_JAVA_WRAPPING)
 	ENDIF (WIN32)
 	message("SWIG files have been generated")
 	
+	# Create the Visualjava example file
+	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR}/java/src/com/f2i/example/FesapiJavaExample.java) # Overwrite if different
+	
 	# Building the jar
 	FILE (GLOB_RECURSE SWIG_JAVA_FILES ${FESAPI_ROOT_DIR}/java/src/*.java)
 	set(CMAKE_JAVA_COMPILE_FLAGS -g)
@@ -392,4 +395,10 @@ INSTALL (
 INSTALL (
 	FILES ${FESAPI_ROOT_DIR}/resources/PropertyKindMapping.xml
 	DESTINATION resources/
+)
+
+# license
+INSTALL (
+	FILES ${FESAPI_ROOT_DIR}/LICENSE ${FESAPI_ROOT_DIR}/NOTICE 
+	DESTINATION .
 )

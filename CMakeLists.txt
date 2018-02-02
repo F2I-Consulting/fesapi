@@ -99,7 +99,6 @@ IF (NOT EXISTS ${ZLIB_LIBRARY_RELEASE})
 ENDIF ()
 
 # Minizip
-FIND_PACKAGE (MiniZip)
 MARK_AS_ADVANCED(CLEAR MINIZIP_INCLUDE_DIR)
 IF (NOT IS_DIRECTORY ${MINIZIP_INCLUDE_DIR})
 	MESSAGE(WARNING "The Minizip include dir (MINIZIP_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
@@ -117,7 +116,6 @@ ENDIF ()
 
 # Uuid
 IF (UNIX)
-	FIND_PACKAGE (UUID)
 	MARK_AS_ADVANCED (UUID_LIBRARY_DEBUG)
 	IF (NOT IS_DIRECTORY ${UUID_INCLUDE_DIR})
 		MESSAGE(WARNING "The UUID include dir (UUID_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")

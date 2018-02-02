@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using f2i.energisticsStandardsApi;
 using f2i.energisticsStandardsApi.common;
@@ -18,7 +14,7 @@ namespace example
         {
             using (EpcDocument epc_file = new EpcDocument("../../../TestingPackageCs"))
             {
-                LocalDepth3dCrs crs = epc_file.createLocalDepth3dCrs(Guid.NewGuid().ToString(), "UTF8 Crs title : éàç : олег1", 0.0, 0.0, 0.0, 0.0, eml__LengthUom.eml__LengthUom__m, 5215, eml__LengthUom.eml__LengthUom__m, "Unknown", false);
+                LocalDepth3dCrs crs = epc_file.createLocalDepth3dCrs(Guid.NewGuid().ToString(), "UTF8 Crs title : éàç : олег1", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.eml20__LengthUom__m, 5215, eml20__LengthUom.eml20__LengthUom__m, "Unknown", false);
                 epc_file.serialize();
                 epc_file.close();
             }
