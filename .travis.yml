@@ -18,6 +18,7 @@ install:
 script:
   - >
     cmake
+    -DUUID_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libuuid.so
     -DHDF5_C_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/hdf5-1.8.18-linux-centos7-x86_64-gcc485-noszip-shared/include
     -DHDF5_C_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/hdf5-1.8.18-linux-centos7-x86_64-gcc485-noszip-shared/lib/libhdf5.so
     -DMINIZIP_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.0.0.0-linux-ubuntu1604-x86_64-gcc540/include

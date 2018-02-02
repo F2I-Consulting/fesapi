@@ -196,6 +196,9 @@ IF (WITH_JAVA_WRAPPING)
 	ENDIF (WIN32)
 	message("SWIG files have been generated")
 	
+	# Create the Visualjava example file
+	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR}/java/src/com/f2i/example/FesapiJavaExample.java) # Overwrite if different
+	
 	# Building the jar
 	FILE (GLOB_RECURSE SWIG_JAVA_FILES ${FESAPI_ROOT_DIR}/java/src/*.java)
 	set(CMAKE_JAVA_COMPILE_FLAGS -g)
@@ -228,9 +231,6 @@ IF (WITH_DOTNET_WRAPPING)
 		${ALL_SOURCES_AND_HEADERS}
 		${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.cpp
 	)
-	 
-	# Copy the UTF8Marshaller csharp class to the csharp src directory
-	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/UTF8Marshaler.cs ${FESAPI_ROOT_DIR}/cs/src/UTF8Marshaler.cs) # Overwrite if different
 	
 	# Create the Visual Studio project from a template file
 	#FILE(TO_NATIVE_PATH "${FESAPI_ROOT_DIR}/cs/src" DOS_STYLE_SOURCE_DIR)
@@ -305,7 +305,7 @@ IF (WIN32)
 		IMPORT_SUFFIX ".${Fesapi_VERSION}.lib"
 		VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR})
 ELSEIF (UNIX)
-	TARGET_LINK_LIBRARIES (${CPP_LIBRARY_NAME} ${UUID_LIBRARIES} ${GSOAP_LIBRARIES} ${MINIZIP_LIBRARY_RELEASE} ${HDF5_C_LIBRARY_RELEASE})
+	TARGET_LINK_LIBRARIES (${CPP_LIBRARY_NAME} ${UUID_LIBRARY_RELEASE} ${GSOAP_LIBRARIES} ${MINIZIP_LIBRARY_RELEASE} ${HDF5_C_LIBRARY_RELEASE})
 # zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
 # zlib is linked because it is a very probable dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to zlib), zlib could be not present in these linked libraries.
 	IF (EXISTS ${ZLIB_LIBRARY_RELEASE})
@@ -395,4 +395,10 @@ INSTALL (
 INSTALL (
 	FILES ${FESAPI_ROOT_DIR}/resources/PropertyKindMapping.xml
 	DESTINATION resources/
+)
+
+# license
+INSTALL (
+	FILES ${FESAPI_ROOT_DIR}/LICENSE ${FESAPI_ROOT_DIR}/NOTICE 
+	DESTINATION .
 )
