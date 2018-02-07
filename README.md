@@ -34,7 +34,7 @@ Fesapi uses cmake as its build tool. A 3.2 version or later of cmake is required
 		- SZIP_LIBRARY_RELEASE : the SZIP library you want to link to. This warning can be ignored most of time but it can really create unpredictable bugs in some circumstances (static linking to HDF5 with HDF5 making use of szip).
 	- UUID (ONLY FOR LINUX)
 		- UUID_INCLUDE_DIR : where the UUID headers are located
-		- UUID_LIBRARY : the UUID library you want to link to
+		- UUID_LIBRARY_RELEASE : the UUID library you want to link to
 - Click again on "Configure" button. You should no more have errors so you can now click on "Generate" button.
 ![alt text](./cmake/cmake.JPG)
 - You can now build your solution with your favorite compiler (and linker) using the generated solution in yourPath/fesapiEnv/build/theNameYouWant
