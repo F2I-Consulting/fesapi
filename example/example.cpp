@@ -630,7 +630,7 @@ void serializeGrid(common::EpcDocument * pck, common::AbstractHdfProxy* hdfProxy
 	DiscreteProperty* discreteProp1OnIjkgridParametric = pck->createDiscreteProperty(ijkgridParametric, "eb3dbf6c-5745-4e41-9d09-672f6fbab414", "Four sugar cubes cellIndex", 1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, propType1);
 	unsigned short prop1ValuesOnIjkgridParametric[4] = { 0, 1, 2, 3 };
-	discreteProp1OnIjkgridParametric->pushBackUShortHdf5Array3dOfValues(prop1ValuesOnIjkgridParametric, 2, 1, 2, hdfProxy, -1);
+	discreteProp1OnIjkgridParametric->pushBackUShortHdf5Array3dOfValues(prop1ValuesOnIjkgridParametric, 2, 1, 2, hdfProxy, -1, 0, 3);
 	//Move this prop to another same ninjnk ijk grid
 	discreteProp1OnIjkgridParametric->setRepresentation(ijkgridParametricNotSameLineKind);
 
@@ -1439,6 +1439,11 @@ void showAllProperties(resqml2::AbstractRepresentation * rep, bool* enabledCells
 			}
 			else
 			{
+				DiscreteProperty* discreteProp = static_cast<DiscreteProperty*>(propVal);
+				const LONG64 maxValue = discreteProp->getMaximumValue();
+				const LONG64 minValue = discreteProp->getMinimumValue();
+				std::cout << "\tMax value is " << maxValue << endl;
+				std::cout << "\tMin value is " << minValue << endl;
 				long* values = new long[valueCount];
 				propVal->getLongValuesOfPatch(0, values);
 				std::cout << "\tFirst value is " << values[0] << endl;

@@ -174,6 +174,18 @@ namespace resqml2_0_1
 		* Check if the associated standard property kind is allowed for this property.
 		*/
 		bool validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk);
+
+		/*
+		* Get the minimum value in this discrete properties. It reads it from file.
+		* @return the minimum value if present in the file otherwise long.max.
+		*/
+		LONG64 getMinimumValue();
+
+		/*
+		* Get the maximum value in this discrete properties. It reads it from file.
+		* @return the maximum value if present in the file otherwise long.min.
+		*/
+		LONG64 getMaximumValue();
 	};
 }
 

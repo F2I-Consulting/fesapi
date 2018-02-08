@@ -467,3 +467,16 @@ bool DiscreteProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1::
 	return true;
 }
 
+LONG64 DiscreteProperty::getMinimumValue()
+{
+	_resqml2__DiscreteProperty* prop = static_cast<_resqml2__DiscreteProperty*>(gsoapProxy2_0_1);
+
+	return prop->MinimumValue.empty() ? (std::numeric_limits<LONG64>::max)() : prop->MinimumValue[0];
+}
+
+LONG64 DiscreteProperty::getMaximumValue()
+{
+	_resqml2__DiscreteProperty* prop = static_cast<_resqml2__DiscreteProperty*>(gsoapProxy2_0_1);
+
+	return prop->MaximumValue.empty() ? (std::numeric_limits<LONG64>::min)() : prop->MaximumValue[0];
+}

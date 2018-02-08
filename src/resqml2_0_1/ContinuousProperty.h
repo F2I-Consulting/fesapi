@@ -360,7 +360,16 @@ namespace resqml2_0_1
 			const ULONG64& offsetInSlowestDim
 		);
 
+		/*
+		* Get the minimum value in this continuous properties. It reads it from file.
+		* @return the minimum value if present in the file otherwise NaN.
+		*/
 		double getMinimumValue();
+
+		/*
+		* Get the maximum value in this discrete properties. It reads it from file.
+		* @return the maximum value if present in the file otherwise NaN.
+		*/
 		double getMaximumValue();
 
 		/**
