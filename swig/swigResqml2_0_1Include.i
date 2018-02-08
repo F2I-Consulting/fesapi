@@ -3315,6 +3315,9 @@ namespace resqml2_0_1
 		void pushBackUShortHdf5ArrayOfValues(unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const unsigned short & nullValue);
 		void pushBackCharHdf5ArrayOfValues(char * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const char & nullValue, const char & minimumValue, const char & maximumValue);
 		void pushBackCharHdf5ArrayOfValues(char * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const char & nullValue);
+		
+		LONG64 getMinimumValue();
+		LONG64 getMaximumValue();
 	};
 	
 #ifdef SWIGPYTHON
