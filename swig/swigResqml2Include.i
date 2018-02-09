@@ -176,7 +176,9 @@ namespace resqml2
 		std::string getProjectedCrsUnitAsString() const;
 		gsoap_resqml2_0_1::eml20__LengthUom getVerticalCrsUnit() const;
 		std::string getVerticalCrsUnitAsString() const;
+		
 		gsoap_resqml2_0_1::eml20__AxisOrder2d getAxisOrder() const;
+		void setAxisOrder(const gsoap_resqml2_0_1::eml20__AxisOrder2d & axisOrder) const;
 	};
 	
 	class MdDatum : public common::AbstractObject
