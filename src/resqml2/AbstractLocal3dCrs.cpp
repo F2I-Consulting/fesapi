@@ -297,3 +297,12 @@ gsoap_resqml2_0_1::eml20__AxisOrder2d AbstractLocal3dCrs::getAxisOrder() const
 	}
 }
 
+void AbstractLocal3dCrs::setAxisOrder(const gsoap_resqml2_0_1::eml20__AxisOrder2d & axisOrder) const
+{
+	if (gsoapProxy2_0_1 != nullptr) {
+		static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedAxisOrder = axisOrder;
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
+}

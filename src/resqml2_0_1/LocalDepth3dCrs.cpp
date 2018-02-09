@@ -42,6 +42,7 @@ void LocalDepth3dCrs::init(soap* soapContext, const std::string & guid, const st
 	local3dCrs->ArealRotation = soap_new_eml20__PlaneAngleMeasure(gsoapProxy2_0_1->soap, 1);
 	local3dCrs->ArealRotation->__item = arealRotation;
 	local3dCrs->ArealRotation->uom = eml20__PlaneAngleUom__rad;
+	local3dCrs->ProjectedAxisOrder = eml20__AxisOrder2d__easting_x0020northing;
 	local3dCrs->XOffset = originOrdinal1;
 	local3dCrs->YOffset = originOrdinal2;
 	local3dCrs->ZOffset = originOrdinal3;
