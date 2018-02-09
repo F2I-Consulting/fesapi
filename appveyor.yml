@@ -40,7 +40,7 @@ install:
   - 7z x hdf5-1.8.18-win64-vs2013-noszip.zip -oC:\projects\fesapiEnv\dependencies > nul
   - msiexec.exe /i "C:\projects\fesapiEnv\dependencies\hdf5\HDF5-1.8.18-win64.msi" /qn INSTALL_ROOT=C:\projects\fesapiEnv\dependencies\hdf5-1.8.18-win64-vs2013-noszip
   - appveyor DownloadFile https://github.com/F2I-Consulting/Minizip/releases/download/1.1/minizip-1.1-win64-vs2013-static.zip
-  - 7z x minizip-1.1-win64-vs2013.zip -oC:\projects\fesapiEnv\dependencies > nul
+  - 7z x minizip-1.1-win64-vs2013-static.zip -oC:\projects\fesapiEnv\dependencies > nul
   - appveyor DownloadFile http://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip
   - 7z x swigwin-3.0.12.zip -oC:\projects\fesapiEnv\dependencies > nul
   - cd ..
