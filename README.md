@@ -1,3 +1,4 @@
+
 # Prepare your build environment
  - Create a folder called fesapiEnv.
  - In this folder create the three following folders
@@ -7,7 +8,7 @@
 # Prepare the dependencies
 Download (build and install if necessary) third party libraries:
 - HDF5: All versions of 1.8.* starting from 1.8.18 should be ok. Versions 1.10.* are not supported yet (even if they should work) https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/
-- MINIZIP : the following version is recommended https://github.com/F2I-Consulting/minizip It is also highly recommended to link minzip to the same zlib library than the one associated to your HDF5 library. From this source code, it is recommended to create a *static* library of minizip dynamically linked to the same zlib library than the one used for the hdf5 library.
+- MINIZIP : Version 1.1 is needed : it is the official version included in current zlib distribution https://www.zlib.net/ (look into "contrib" folder). You can directly install minizip developement package on most of Linux distributions. On Windows, you can copy the CMakeLists.txt file from fesapi/cmake/minizip to the minizip directory to help you to build minizip (or we provide a copy of minizip 1.1 with cmake files on github : https://github.com/F2I-Consulting/Minizip). It is also highly recommended to link minizip to the same zlib library than the one associated to your HDF5 library.
 - UUID-DEV package *(ONLY FOR LINUX)* : Source code can be found in https://www.kernel.org/pub/linux/utils/util-linux/
 
 We advise you to install these third party libraries respectively into
@@ -28,7 +29,7 @@ Fesapi uses cmake as its build tool. A 3.2 version or later of cmake is required
 	- MINIZIP
 		- MINIZIP_INCLUDE_DIR : where the HDF5 headers are located
 		- MINIZIP_LIBRARY_RELEASE : the MINIZIP library you want to link to
-	- ZLIB (It is most of time required since fesapi is supposed to be statically linked to minizip which should be dynamically linked to zlib. It is also required if fesapi is statically linked to hdf5 and if hdf5 is dynamically linked to zlib.)
+	- ZLIB (It is most of time required since fesapi is often statically linked to minizip which is often dynamically linked to zlib. It is also required if fesapi is statically linked to hdf5 and if hdf5 is dynamically linked to zlib.)
 		- ZLIB_LIBRARY_RELEASE : the ZLIB library you want to link to. It must be the same as the one which is linked to HDF5 library and MINIZIP library otherwise you will get a warning from CMake. This warning can be ignored most of time but it can really create unpredictable bugs in some circumstances.
 	- SZIP (it is only required when you statically link to HDF5 AND when HDF5 has been built using SZIP)
 		- SZIP_LIBRARY_RELEASE : the SZIP library you want to link to. This warning can be ignored most of time but it can really create unpredictable bugs in some circumstances (static linking to HDF5 with HDF5 making use of szip).
