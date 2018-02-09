@@ -83,7 +83,7 @@ namespace resqml2_0_1
 			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const std::string & verticalUnknownReason, const bool & isUpOriented);
 
 		/**
-		* Creates a local depth 3d CRS which is identified by an EPSG code for its projected part and which is unkown for its vertial part.
+		* Creates a local depth 3d CRS which is identified by an EPSG code for its projected part and which is unkown for its vertical part.
 		* @param soapContext			The soap context where the underlying gsoap proxy is going to be created.
 		* @param guid					The guid to set to the local 3d crs. If empty then a new guid will be generated.
 		* @param title					A title for the instance to create.

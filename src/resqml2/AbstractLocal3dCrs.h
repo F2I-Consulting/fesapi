@@ -153,6 +153,11 @@ namespace resqml2
 		*/
 		gsoap_resqml2_0_1::eml20__AxisOrder2d getAxisOrder() const;
 
+		/**
+		* Set the axis order of the projected Crs
+		*/
+		void setAxisOrder(const gsoap_resqml2_0_1::eml20__AxisOrder2d & axisOrder) const;
+
 		void convertXyzPointsToGlobalCrs(double * xyzPoints, const ULONG64 & xyzPointCount, bool withoutTranslation = false) const;
 
 	protected:
