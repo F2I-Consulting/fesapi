@@ -326,6 +326,9 @@ ULONG64 WellboreTrajectoryRepresentation::getXyzPointCountOfPatch(const unsigned
 	}
 
 	_resqml2__WellboreTrajectoryRepresentation* rep = static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
+	if (rep->Geometry == nullptr) {
+		return 0;
+	}
 	return static_cast<resqml2__ParametricLineGeometry*>(rep->Geometry)->KnotCount;
 }
 
