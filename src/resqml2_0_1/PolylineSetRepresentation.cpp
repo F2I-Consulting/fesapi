@@ -338,7 +338,7 @@ bool PolylineSetRepresentation::areAllPolylinesClosedOfPatch(const unsigned int 
 		{
 			unsigned int* tmp = new unsigned int[polylineCount];
 			hdfProxy->readArrayNdOfUIntValues(static_cast<resqml2__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-			if (find(tmp, tmp + polylineCount, 0) != tmp + polylineCount)
+			if (find(tmp, tmp + polylineCount, 0u) != tmp + polylineCount)
 				result = false;
 			delete [] tmp;
 		}
@@ -354,7 +354,7 @@ bool PolylineSetRepresentation::areAllPolylinesClosedOfPatch(const unsigned int 
 		{
 			unsigned long* tmp = new unsigned long[polylineCount];
 			hdfProxy->readArrayNdOfULongValues(static_cast<resqml2__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-			if (find(tmp, tmp + polylineCount, 0) != tmp + polylineCount)
+			if (find(tmp, tmp + polylineCount, 0u) != tmp + polylineCount)
 				result = false;
 			delete [] tmp;
 		}
