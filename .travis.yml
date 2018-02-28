@@ -10,9 +10,9 @@ install:
   - mkdir ../dependencies
   - cd ../dependencies
   - wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.18/bin/linux-centos7-x86_64-gcc485-noszip/hdf5-1.8.18-linux-centos7-x86_64-gcc485-noszip-shared.tar.gz
-  - tar -xzvf hdf5-1.8.18-linux-centos7-x86_64-gcc485-noszip-shared.tar.gz
-  - wget https://github.com/F2I-Consulting/minizip/releases/download/v1.0.0.0/minizip-1.0.0.0-linux-ubuntu1604-x86_64-gcc540.tar.gz
-  - tar -xzvf minizip-1.0.0.0-linux-ubuntu1604-x86_64-gcc540.tar.gz
+  - tar -xzf hdf5-1.8.18-linux-centos7-x86_64-gcc485-noszip-shared.tar.gz
+  - wget https://github.com/F2I-Consulting/Minizip/releases/download/1.1/minizip-1.1-linux-ubuntu1604-x86_64-gcc540.tar.gz
+  - tar -xzf minizip-1.1-linux-ubuntu1604-x86_64-gcc540.tar.gz
   - mkdir ../build
   - cd ../build
 script:
@@ -21,8 +21,8 @@ script:
     -DUUID_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libuuid.so
     -DHDF5_C_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/hdf5-1.8.18-linux-centos7-x86_64-gcc485-noszip-shared/include
     -DHDF5_C_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/hdf5-1.8.18-linux-centos7-x86_64-gcc485-noszip-shared/lib/libhdf5.so
-    -DMINIZIP_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.0.0.0-linux-ubuntu1604-x86_64-gcc540/include
-    -DMINIZIP_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.0.0.0-linux-ubuntu1604-x86_64-gcc540/lib/libminizip.a
+    -DMINIZIP_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.1-linux-ubuntu1604-x86_64-gcc540/include
+    -DMINIZIP_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.1-linux-ubuntu1604-x86_64-gcc540/lib/libminizip.a
     $TRAVIS_BUILD_DIR
   - make
   - ./example/example

@@ -39,8 +39,8 @@ install:
   - appveyor DownloadFile https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.18/bin/windows/noszip/hdf5-1.8.18-win64-vs2013-noszip.zip
   - 7z x hdf5-1.8.18-win64-vs2013-noszip.zip -oC:\projects\fesapiEnv\dependencies > nul
   - msiexec.exe /i "C:\projects\fesapiEnv\dependencies\hdf5\HDF5-1.8.18-win64.msi" /qn INSTALL_ROOT=C:\projects\fesapiEnv\dependencies\hdf5-1.8.18-win64-vs2013-noszip
-  - appveyor DownloadFile https://github.com/F2I-Consulting/minizip/releases/download/v1.0.0.0/minizip-1.0.0.0-win64-vs2013.zip
-  - 7z x minizip-1.0.0.0-win64-vs2013.zip -oC:\projects\fesapiEnv\dependencies > nul
+  - appveyor DownloadFile https://github.com/F2I-Consulting/Minizip/releases/download/1.1/minizip-1.1-win64-vs2013-static.zip
+  - 7z x minizip-1.1-win64-vs2013-static.zip -oC:\projects\fesapiEnv\dependencies > nul
   - appveyor DownloadFile http://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip
   - 7z x swigwin-3.0.12.zip -oC:\projects\fesapiEnv\dependencies > nul
   - cd ..
@@ -77,8 +77,8 @@ before_build:
     -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE
     -DHDF5_C_INCLUDE_DIR=c:/projects/fesapiEnv/dependencies/hdf5-1.8.18-win64-vs2013-noszip/include
     -DHDF5_C_LIBRARY_RELEASE=c:/projects/fesapiEnv/dependencies/hdf5-1.8.18-win64-vs2013-noszip/lib/hdf5.lib
-    -DMINIZIP_INCLUDE_DIR=c:/projects/fesapiEnv/dependencies/minizip-1.0.0.0-win64-vs2013/include
-    -DMINIZIP_LIBRARY_RELEASE=c:/projects/fesapiEnv/dependencies/minizip-1.0.0.0-win64-vs2013/lib/minizip.lib
+    -DMINIZIP_INCLUDE_DIR=c:/projects/fesapiEnv/dependencies/minizip-1.1-win64-vs2013-static/include
+    -DMINIZIP_LIBRARY_RELEASE=c:/projects/fesapiEnv/dependencies/minizip-1.1-win64-vs2013-static/lib/minizip.lib
     -DZLIB_LIBRARY_RELEASE=c:/projects/fesapiEnv/dependencies/hdf5-1.8.18-win64-vs2013-noszip/lib/zlib.lib
     -DWITH_DOTNET_WRAPPING=TRUE
     -DSWIG_EXECUTABLE=c:/projects/fesapiEnv/dependencies/swigwin-3.0.12/swig.exe
