@@ -75,7 +75,7 @@ void HorizonOnSeismicLine::initEpcDocHandler()
 	PolylineRepresentation* h1i1SinglePolylineRep = epcDoc->createPolylineRepresentation(horizonInterp, crs, uuid, title);
 	h1i1SinglePolylineRep->setGeometry(defaultXyzPoints, 4, hdfProxy);
 	double seismicLineAbscissa[4] = { 0.0, 1.0, 3.0, 4.0 };
-	h1i1SinglePolylineRep->addSeismic2dCoordinatesToPatch(0, seismicLineAbscissa, 4, seismicLineRep, hdfProxy);
+	h1i1SinglePolylineRep->addSeismic2dCoordinatesToPatch(0, seismicLineAbscissa, seismicLineRep, hdfProxy);
 }
 
 void HorizonOnSeismicLine::readEpcDocHandler()

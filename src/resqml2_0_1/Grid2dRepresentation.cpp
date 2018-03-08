@@ -673,15 +673,16 @@ vector<Relationship> Grid2dRepresentation::getAllEpcRelationships() const
 {
 	vector<Relationship> result = AbstractSurfaceRepresentation::getAllEpcRelationships();
 
-	// Supporting representation
-	if (supportingRepresentation && std::find(seismicSupportSet.begin(), seismicSupportSet.end(), supportingRepresentation) == seismicSupportSet.end())
+	// Supporting Grid 2D representation
+	std::set<AbstractRepresentation*> allSeisSupport = getAllSeismicSupport();
+	if (supportingRepresentation && std::find(allSeisSupport.begin(), allSeisSupport.end(), supportingRepresentation) == allSeisSupport.end())
 	{
 		Relationship relSupportingRepresentation(supportingRepresentation->getPartNameInEpcDocument(), "", supportingRepresentation->getUuid());
 		relSupportingRepresentation.setDestinationObjectType();
 		result.push_back(relSupportingRepresentation);
 	}
 
-	// Supported representations
+	// Supported Grid 2D representations
 	for(vector<AbstractRepresentation*>::const_iterator it = supportedRepresentationSet.begin(); it != supportedRepresentationSet.end(); ++it)
 	{
 		if (it == supportedRepresentationSet.begin() || std::find(supportedRepresentationSet.begin(), it, *it) != supportedRepresentationSet.end()) //  No need to add the rel twice

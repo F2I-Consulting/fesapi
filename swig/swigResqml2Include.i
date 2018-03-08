@@ -263,8 +263,10 @@ namespace resqml2
 		
 		AbstractRepresentation* getSeismicSupportOfPatch(const unsigned int & patchIndex);
 		void getSeismicLineAbscissaOfPointsOfPatch(const unsigned int & patchIndex, double* values);
-		void addSeismic2dCoordinatesToPatch(const unsigned int patchIndex, double * lineAbscissa, const unsigned int & pointCount,
+		void addSeismic2dCoordinatesToPatch(const unsigned int patchIndex, double * lineAbscissa,
 			AbstractRepresentation * seismicSupport, common::AbstractHdfProxy * proxy);
+		void getInlinesOfPointsOfPatch(const unsigned int & patchIndex, double * values);
+		void getCrosslinesOfPointsOfPatch(const unsigned int & patchIndex, double * values);
 		void addSeismic3dCoordinatesToPatch(const unsigned int patchIndex, double * inlines, double * crosslines, const unsigned int & pointCount,
 			AbstractRepresentation * seismicSupport, common::AbstractHdfProxy * proxy);
 		void addSeismic3dCoordinatesToPatch(const unsigned int patchIndex, const double & startInline, const double & incrInline, const unsigned int & countInline,
