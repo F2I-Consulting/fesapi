@@ -298,7 +298,7 @@ void serializeBoundaries(common::EpcDocument * pck, common::AbstractHdfProxy* hd
 	double h1i1SinglePolylineRepPoints[12] = { 0, 100, 300, 150, 110, 300, 450, 130, 350, 600, 140, 350 };
 	h1i1SinglePolylineRep->setGeometry(h1i1SinglePolylineRepPoints, 4, hdfProxy);
 	double seismicLineAbscissa[4] = { 0.0, 1.0, 3.0, 4.0 };
-	//h1i1SinglePolylineRep->pushBackSeismic2dCoordinatesPatch(seismicLineAbscissa, 4, seismicLineRep, hdfProxy);
+	h1i1SinglePolylineRep->addSeismic2dCoordinatesToPatch(0, seismicLineAbscissa, seismicLineRep, hdfProxy);
 
 #if defined(OFFICIAL)
 	h1i1SingleGrid2dRep = pck->createGrid2dRepresentation(horizon1Interp1, local3dCrs, "", "Horizon1 Interp1 Grid2dRep");
@@ -316,7 +316,7 @@ void serializeBoundaries(common::EpcDocument * pck, common::AbstractHdfProxy* hd
 
 	// Horizon 1 triangulated representation
 	h1i1triRep = pck->createTriangulatedSetRepresentation(horizon1Interp1, local3dCrs,
-		"",
+		"0c49b40a-632a-457a-b519-a178f40a397d",
 		"Horizon1 Interp1 TriRep");
 	// Patch 0
 	double explicitPointsHor1Patch0[15] = { 250, 0, 300, 250, 100, 300, 250, 200, 300, 0, 0, 300, 0, 200, 300 };
@@ -329,14 +329,17 @@ void serializeBoundaries(common::EpcDocument * pck, common::AbstractHdfProxy* hd
 
 	// Horizon 2 triangulated representation
 	h2i1triRep = pck->createTriangulatedSetRepresentation(horizon2Interp1, local3dCrs,
-		"",
+		"ea6943d0-30b0-47fd-80ad-a3cf019a8c92",
 		"Horizon2 Interp1 TriRep");
-	// Patch 0
-	double explicitPointsHor2Patch0[30] = { 450, 0, 500, 450, 100, 500, 450, 200, 500, 0, 0, 500, 0, 200, 500 };
+	// Patch 0 (no seismic support)
+	double explicitPointsHor2Patch0[15] = { 450, 0, 500, 450, 100, 500, 450, 200, 500, 0, 0, 500, 0, 200, 500 };
 	h2i1triRep->pushBackTrianglePatch(5, explicitPointsHor2Patch0, 3, triangleNodeIndexHorPatch0, hdfProxy);
-	// Patch 1
-	double explicitPointsHor2Patch1[30] = { 500, 0, 550, 500, 100, 550, 500, 200, 550, 700, 0, 550, 700, 200, 550 };
+	// Patch 1 (seismic support)
+	double explicitPointsHor2Patch1[15] = { 500, 0, 550, 500, 100, 550, 500, 200, 550, 700, 0, 550, 700, 200, 550 };
 	h2i1triRep->pushBackTrianglePatch(5, explicitPointsHor2Patch1, 3, triangleNodeIndexHorPatch1, hdfProxy);
+	double inlines[5] = { 0, 1, 2, 3, 4 }; // dummy values
+	double crosslines[5] = { 10, 11, 12, 13, 14 }; // dummy values
+	h2i1triRep->addSeismic3dCoordinatesToPatch(1, inlines, crosslines, 5, seismicLatticeRep, hdfProxy);
 
 	//**************
 	// Fault Representations
@@ -344,7 +347,7 @@ void serializeBoundaries(common::EpcDocument * pck, common::AbstractHdfProxy* hd
 
 	// Single patch triangulated representation
 	f1i1triRepSinglePatch = pck->createTriangulatedSetRepresentation(fault1Interp1, local3dCrs,
-		"",
+		"d8a03d57-8bf3-4f75-8645-ef2fbfa5d1e3",
 		"Fault1 Interp1 TriRep Single Patch");
 	//hsize_t dimExplicitPointsFault1 [1] = {6};
 	double explicitPointsFault1[54] = { 150, 0, 200, 150, 100, 200, 150, 200, 200,
@@ -362,7 +365,7 @@ void serializeBoundaries(common::EpcDocument * pck, common::AbstractHdfProxy* hd
 
 	// multi patch triangulated representation
 	f1i1triRep = pck->createTriangulatedSetRepresentation(fault1Interp1, local3dCrs,
-		"",
+		"1a4112fa-c4ef-4c8d-aed0-47d9273bebc5",
 		"Fault1 Interp1 TriRep");
 	// Patch 0
 	double explicitPointsFault1Patch0[18] = { 150, 0, 200, 150, 100, 200, 150, 200, 200,
@@ -398,9 +401,7 @@ void serializeBoundaries(common::EpcDocument * pck, common::AbstractHdfProxy* hd
 	unsigned int numNodesPerPolylinePerPatch[2] = { 3, 2 };
 	double polylinePoints[15] = { 150, 0, 200, 300, 0, 350, 450, 0, 500, 150, 200, 200, 450, 200, 500 };
 	f1i1PolyLineRep->pushBackGeometryPatch(numNodesPerPolylinePerPatch, polylinePoints, 2, false, hdfProxy);
-	double inlines[5] = { 0, 1, 2, 3, 4 };
-	double crosslines[5] = { 10, 11, 12, 13, 14 };
-	//f1i1PolyLineRep->pushBackSeismic3dCoordinatesPatch(inlines, crosslines, 5, seismicLatticeRep, hdfProxy);
+	f1i1PolyLineRep->addSeismic3dCoordinatesToPatch(0, inlines, crosslines, 5, seismicLatticeRep, hdfProxy);
 
 #if !defined(OFFICIAL)
 	//**************
@@ -2613,7 +2614,7 @@ void deserialize(const string & inputFile)
 		showAllMetadata(faultSet[i]);
 	}
 
-	std::cout << faultPolyRep.size() << " FAULT POLYLINE REP" << endl;
+	std::cout << faultPolyRep.size() << " FAULT POLYLINE SET REP" << endl;
 	for (size_t i = 0; i < faultPolyRep.size(); ++i) {
 		showAllMetadata(faultPolyRep[i]);
 		ULONG64 nodeCount = faultPolyRep[i]->getXyzPointCountOfAllPatches();
@@ -2655,7 +2656,7 @@ void deserialize(const string & inputFile)
 		}
 	}
 
-	std::cout << faultPolyRep.size() << " FRONTIER POLYLINE REP" << endl;
+	std::cout << faultPolyRep.size() << " FRONTIER POLYLINE SET REP" << endl;
 	for (size_t i = 0; i < frontierPolyRep.size(); ++i) {
 		showAllMetadata(frontierPolyRep[i]);
 
@@ -2739,7 +2740,7 @@ void deserialize(const string & inputFile)
 	for (size_t i = 0; i < horizonTriRepSet.size(); i++) {
 		showAllMetadata(horizonTriRepSet[i]);
 
-		ULONG64 pointCount = horizonTriRepSet[i]->getXyzPointCountOfAllPatches();
+		const ULONG64 pointCount = horizonTriRepSet[i]->getXyzPointCountOfAllPatches();
 		unsigned int triangleCount = horizonTriRepSet[i]->getTriangleCountOfAllPatches();
 		cout << "point Count " << pointCount << endl;
 		cout << "triangle Count " << triangleCount << endl;
@@ -2758,6 +2759,33 @@ void deserialize(const string & inputFile)
 
 		delete[] xyzPoints;
 		delete[] triangleIndices;
+
+		const unsigned int patchCount = horizonTriRepSet[i]->getPatchCount();
+		for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
+			resqml2::AbstractRepresentation* seismicSupport = horizonTriRepSet[i]->getSeismicSupportOfPatch(patchIndex);
+			if (seismicSupport != nullptr) {
+				const ULONG64 pointCountForPatch = horizonTriRepSet[i]->getXyzPointCountOfPatch(patchIndex);
+				cout << "Seismic support of patch " << patchIndex << " is : " << seismicSupport->getTitle() << endl;
+				double* inlines = new double[pointCountForPatch];
+				horizonTriRepSet[i]->getInlinesOfPointsOfPatch(patchIndex, inlines);
+				for (unsigned int index = 0; index < pointCountForPatch; index++)
+				{
+					std::cout << "\tinline : " << inlines[index] << std::endl;
+				}
+				delete[] inlines;
+				double* crosslines = new double[pointCountForPatch];;
+				horizonTriRepSet[i]->getCrosslinesOfPointsOfPatch(patchIndex, crosslines);
+				for (unsigned int index = 0; index < pointCountForPatch; index++)
+				{
+					std::cout << "\tcrossline : " << crosslines[index] << std::endl;
+				}
+				delete[] crosslines;
+			}
+			else {
+				cout << "No seismic support for patch " << patchIndex << endl;
+			}
+		}
+
 		deserializeActivity(horizonTriRepSet[i]);
 		showAllProperties(horizonTriRepSet[i]);
 	}
@@ -2766,17 +2794,23 @@ void deserialize(const string & inputFile)
 	for (size_t i = 0; i < horizonSinglePolylineRepSet.size(); i++)
 	{
 		showAllMetadata(horizonSinglePolylineRepSet[i]);
-		/*
-				cout << "Seismic support is : " << horizonSinglePolylineRepSet[i]->getSeismicSupportOfPatch(0)->getTitle() << endl;
-				double * lineAbscissa = new double[horizonSinglePolylineRepSet[i]->getSeismicPointCountOfPatch(0)];
-				horizonSinglePolylineRepSet[i]->getSeismicLineAbscissaOfPointsOfPatch(0, lineAbscissa);
+		
+		const unsigned int patchCount = horizonSinglePolylineRepSet[i]->getPatchCount();
+		for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
+			resqml2::AbstractRepresentation* seismicSupport = horizonSinglePolylineRepSet[i]->getSeismicSupportOfPatch(patchIndex);
+			if (seismicSupport != nullptr) {
+				cout << "Seismic support of patch " << patchIndex << " is : " << seismicSupport->getTitle() << endl;
+				double * lineAbscissa = new double[horizonSinglePolylineRepSet[i]->getXyzPointCountOfPatch(patchIndex)];
+				horizonSinglePolylineRepSet[i]->getSeismicLineAbscissaOfPointsOfPatch(patchIndex, lineAbscissa);
 
-				for (unsigned int j = 0; j < horizonSinglePolylineRepSet[i]->getSeismicPointCountOfPatch(0); j++)
+				for (ULONG64 j = 0; j < horizonSinglePolylineRepSet[i]->getXyzPointCountOfPatch(patchIndex); j++)
 				{
-				std::cout << "line Abscissa : " << lineAbscissa[j] << std::endl;
+					std::cout << "line Abscissa : " << lineAbscissa[j] << std::endl;
 				}
-				delete [] lineAbscissa;
-				*/
+				delete[] lineAbscissa;
+			}
+		}
+				
 		showAllProperties(horizonSinglePolylineRepSet[i]);
 	}
 

@@ -44,7 +44,6 @@ AbstractRepresentation::AbstractRepresentation(AbstractFeatureInterpretation* in
 
 void AbstractRepresentation::pushBackSeismicSupport(AbstractRepresentation * seismicSupport)
 {
-	seismicSupportSet.push_back(seismicSupport);
 	if (std::find(seismicSupportedRepSet.begin(), seismicSupportedRepSet.end(), this) == seismicSupportedRepSet.end())
 		seismicSupport->seismicSupportedRepSet.push_back(this);
 }
@@ -369,41 +368,37 @@ void AbstractRepresentation::getXyzPointsOfAllPatchesInGlobalCrs(double * xyzPoi
 	localCrs->convertXyzPointsToGlobalCrs(xyzPoints, getXyzPointCountOfAllPatches());
 }
 
-/*
-void AbstractRepresentation::getInlinesOfPointsOfPatch(const unsigned int & patchIndex, double * values)
+AbstractRepresentation* AbstractRepresentation::getSeismicSupportOfPatch(const unsigned int & patchIndex) const
 {
-	gsoap_resqml2_0_1::resqml2__cs_USCOREseismic3dCoordinatesInfo* seisInfo = getSeismic3dCoordinatesInfo();
-	if (!seisInfo)
-		return;
-
-	if (seisInfo->patch[patchIndex]->inlineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
-	{
-		resqml2__DoubleHdf5Array* dblValues = static_cast<resqml2__DoubleHdf5Array*>(seisInfo->patch[patchIndex]->inlineCoordinates);
-		hdfProxy->readArrayNdOfDoubleValues(dblValues->Values->PathInHdfFile, values);
-	}
-}
-
-void AbstractRepresentation::getCrosslinesOfPointsOfPatch(const unsigned int & patchIndex, double * values)
-{
-	gsoap_resqml2_0_1::resqml2__cs_USCOREseismic3dCoordinatesInfo* seisInfo = getSeismic3dCoordinatesInfo();
-	if (!seisInfo)
-		return;
-
-	if (seisInfo->patch[patchIndex]->crosslineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
-	{
-		resqml2__DoubleHdf5Array* dblValues = static_cast<resqml2__DoubleHdf5Array*>(seisInfo->patch[patchIndex]->crosslineCoordinates);
-		hdfProxy->readArrayNdOfDoubleValues(dblValues->Values->PathInHdfFile, values);
-	}
-}
-*/
-
-AbstractRepresentation* AbstractRepresentation::getSeismicSupportOfPatch(const unsigned int & patchIndex)
-{
-	if (patchIndex >= seismicSupportSet.size()) {
+	if (patchIndex >= getPatchCount()) {
 		throw range_error("The seismic support of the patch at the specified index is out of range.");
 	}
 
-	return seismicSupportSet[patchIndex];
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(patchIndex);
+		if (geom == nullptr || geom->SeismicCoordinates == nullptr) {
+			return nullptr;
+		}
+
+		return getEpcDocument()->getResqmlAbstractObjectByUuid<AbstractRepresentation>(geom->SeismicCoordinates->SeismicSupport->UUID);
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
+}
+
+std::set<AbstractRepresentation*> AbstractRepresentation::getAllSeismicSupport() const
+{
+	std::set<AbstractRepresentation*> result;
+	const unsigned int patchCount = getPatchCount();
+	for (size_t patchIndex = 0; patchIndex < patchCount; ++patchIndex)
+	{
+		AbstractRepresentation* seismicSupport = getSeismicSupportOfPatch(patchIndex);
+		if (seismicSupport != nullptr)
+			result.insert(seismicSupport);
+	}
+
+	return result;
 }
 
 void AbstractRepresentation::pushBackIntoRepresentationSet(RepresentationSetRepresentation * repSet, bool xml)
@@ -552,17 +547,16 @@ vector<Relationship> AbstractRepresentation::getAllEpcRelationships() const
 		result.push_back(relValues);
 	}
 
-	// Seismic support
-	for (vector<AbstractRepresentation*>::const_iterator it = seismicSupportSet.begin(); it != seismicSupportSet.end(); ++it)
-	{
-		if (it == seismicSupportSet.begin() || std::find(seismicSupportSet.begin(), it, *it) != seismicSupportSet.end()) //  No need to add the rel twice
-		{
-			Relationship relSeisSupport((*it)->getPartNameInEpcDocument(), "", (*it)->getUuid());
-			relSeisSupport.setDestinationObjectType();
-			result.push_back(relSeisSupport);
-		}
+	// Seismic forward relationship
+	std::set<AbstractRepresentation*> allSeismicSupport = getAllSeismicSupport();
+	for (std::set<AbstractRepresentation*>::iterator it = allSeismicSupport.begin(); it != allSeismicSupport.end(); ++it) {
+		AbstractRepresentation* seismicSupport = *it;
+		Relationship rel(seismicSupport->getPartNameInEpcDocument(), "", seismicSupport->getUuid());
+		rel.setDestinationObjectType();
+		result.push_back(rel);
 	}
 
+	// Seismic backward relationship
 	for (size_t i = 0; i < seismicSupportedRepSet.size(); ++i)
 	{
 		Relationship relSeisSupportedRep(seismicSupportedRepSet[i]->getPartNameInEpcDocument(), "", seismicSupportedRepSet[i]->getUuid());
@@ -681,7 +675,7 @@ void AbstractRepresentation::addSeismic3dCoordinatesToPatch(const unsigned int p
 	}
 }
 
-void AbstractRepresentation::addSeismic2dCoordinatesToPatch(const unsigned int patchIndex, double * lineAbscissa, const unsigned int & pointCount,
+void AbstractRepresentation::addSeismic2dCoordinatesToPatch(const unsigned int patchIndex, double * lineAbscissa,
 	resqml2::AbstractRepresentation * seismicSupport, common::AbstractHdfProxy * proxy)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -715,8 +709,8 @@ void AbstractRepresentation::addSeismic2dCoordinatesToPatch(const unsigned int p
 		patch->LineAbscissa = abscissaValues;
 
 		// inlines HDF
-		hsize_t dim[] = { pointCount };
-		hdfProxy->writeArrayNdOfDoubleValues(getUuid(), oss.str(), lineAbscissa, dim, 1);
+		ULONG64 pointCount = getXyzPointCountOfPatch(patchIndex);
+		hdfProxy->writeArrayNdOfDoubleValues(getUuid(), oss.str(), lineAbscissa, &pointCount, 1);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -728,17 +722,57 @@ void AbstractRepresentation::getSeismicLineAbscissaOfPointsOfPatch(const unsigne
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml2__Seismic2dCoordinates* seisInfo = getSeismic2dCoordinates(patchIndex);
 		if (seisInfo == nullptr) {
-			return;
+			throw invalid_argument("The patch of this representation has not got any seismic information.");
 		}
 
 		if (seisInfo->LineAbscissa->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
 			gsoap_resqml2_0_1::resqml2__DoubleHdf5Array* dblValues = static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(seisInfo->LineAbscissa);
 			hdfProxy->readArrayNdOfDoubleValues(dblValues->Values->PathInHdfFile, values);
 		}
+		else
+			throw logic_error("Not implemented yet");
 	}
 	else {
 		throw logic_error("Not implemented yet");
 	}
 }
 
+void AbstractRepresentation::getInlinesOfPointsOfPatch(const unsigned int & patchIndex, double * values)
+{
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml2__Seismic3dCoordinates* seisInfo = getSeismic3dCoordinates(patchIndex);
+		if (seisInfo == nullptr) {
+			throw invalid_argument("The patch of this representation has not got any seismic information.");
+		}
 
+		if (seisInfo->InlineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
+			gsoap_resqml2_0_1::resqml2__DoubleHdf5Array* dblValues = static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(seisInfo->InlineCoordinates);
+			hdfProxy->readArrayNdOfDoubleValues(dblValues->Values->PathInHdfFile, values);
+		}
+		else
+			throw logic_error("Not implemented yet");
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
+}
+
+void AbstractRepresentation::getCrosslinesOfPointsOfPatch(const unsigned int & patchIndex, double * values)
+{
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml2__Seismic3dCoordinates* seisInfo = getSeismic3dCoordinates(patchIndex);
+		if (seisInfo == nullptr) {
+			throw invalid_argument("The patch of this representation has not got any seismic information.");
+		}
+
+		if (seisInfo->CrosslineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
+			gsoap_resqml2_0_1::resqml2__DoubleHdf5Array* dblValues = static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(seisInfo->CrosslineCoordinates);
+			hdfProxy->readArrayNdOfDoubleValues(dblValues->Values->PathInHdfFile, values);
+		}
+		else
+			throw logic_error("Not implemented yet");
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
+}

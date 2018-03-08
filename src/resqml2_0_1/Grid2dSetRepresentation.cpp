@@ -208,9 +208,10 @@ vector<Relationship> Grid2dSetRepresentation::getAllEpcRelationships() const
 	vector<Relationship> result = AbstractSurfaceRepresentation::getAllEpcRelationships();
 
 	// Supporting representations
+	std::set<AbstractRepresentation*> allSeisSupport = getAllSeismicSupport();
 	for(vector<Grid2dRepresentation*>::const_iterator it = supportingRepresentationSet.begin(); it != supportingRepresentationSet.end(); ++it)
 	{
-		if (std::find(seismicSupportSet.begin(), seismicSupportSet.end(), *it) == seismicSupportSet.end() &&
+		if (std::find(allSeisSupport.begin(), allSeisSupport.end(), *it) == allSeisSupport.end() &&
 			(it == supportingRepresentationSet.begin() || std::find(supportingRepresentationSet.begin(), it, *it) != supportingRepresentationSet.end())) //  No need to add the rel twice
 		{
 			Relationship relSupportingRepresentation((*it)->getPartNameInEpcDocument(), "", (*it)->getUuid());

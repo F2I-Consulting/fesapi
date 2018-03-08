@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
+#include <set>
+
 #include "resqml2/AbstractProperty.h"
 
 namespace common {
@@ -47,9 +49,9 @@ namespace resqml2
 		AbstractRepresentation(gsoap_resqml2_0_1::resqml2__AbstractRepresentation* fromGsoap) : common::AbstractObject(fromGsoap), interpretation(nullptr), hdfProxy(nullptr), localCrs(nullptr) {}
 
 		/**
-		* Push back the seismic support of this representation and sets the opposite relationship
-		* i.e. from the base rep to the child rep.
+		* Create if necessary (i.e if it does not already exist) a link from a seismic suport rep to this instance.
 		* Only updates memory, no XML.
+		* @param seismicSupport	The seismic representation which is a seismic support for this instance.
 		*/
 		void pushBackSeismicSupport(AbstractRepresentation * seismicSupport);
 
@@ -165,7 +167,7 @@ namespace resqml2
 		std::string getInterpretationContentType() const;
 
 		/**
-		* DONOT USE THIS METHOD EXCEPT IF YOU REALLY KNOW WHAT YOU ARE DOING.
+		* DO NOT USE THIS METHOD EXCEPT IF YOU REALLY KNOW WHAT YOU ARE DOING.
 		* Push back a subrepresentation to this representation.
 		* Does not add the inverse relationship i.e. from the subrepresentation to this representation.
 		*/
@@ -244,26 +246,16 @@ namespace resqml2
 		void getXyzPointsOfAllPatchesInGlobalCrs(double * xyzPoints) const;
 
 		/**
-		* Get the seismic support representation set of this representation
-		*/
-		//const std::vector<AbstractRepresentation*> & getSeismicSupportSet() {return seismicSupportSet;}
-		
-		/**
-		* Get the seismic support representation uuid set of this representation.
-		* Useful when one of the seismic support representation is not accessible. At least we know its uuid.
-		*/
-		//std::vector<std::string> getSeismicSupportUuidSet();
-
-		/**
-		* Get the count of seismic points in a particular patch of this representation
-		*/
-		//unsigned int getSeismicPointCountOfPatch(const unsigned int & patchIndex);
-
-		/**
 		* Get the seismic support of a specific patch.
 		* @return nullptr if seismic info have not been provided.
 		*/
-		AbstractRepresentation* getSeismicSupportOfPatch(const unsigned int & patchIndex);
+		AbstractRepresentation* getSeismicSupportOfPatch(const unsigned int & patchIndex) const;
+
+		/**
+		* Get all seismic support of the current geoemtry of this representation.
+		* This method does not return the seismic lattice representations which are support of 2D grid representation.
+		*/
+		std::set<AbstractRepresentation*> getAllSeismicSupport() const;
 
 		virtual unsigned int getPatchCount() const = 0;
 
@@ -298,18 +290,35 @@ namespace resqml2
 			resqml2::AbstractRepresentation * seismicSupport);
 
 		/**
-		* Push back a patch of seismic 2D coordinates info.
-		* The index this patch will be located must be consistent with the index of the geometry patch it is related to.
-		* @param The index of the geometry patch which receives these seismic coordinates
+		* Add seismic coordinates to an existing point geometry patch.
+		* @param patchIndex		The index of the geometry patch which receives the seismic coordinates
+		* @param lineAbscissa	The abscissa of each points of the patch on the seismic line. The count of this array must be equal to getXyzPointCountOfPatch(patchIndex).
+		* @param seismicSupport	The representation of the seismic line.
+		* @param proxy			The hdf proxy where the lineAbscissa are stored.
 		*/
-		void addSeismic2dCoordinatesToPatch(const unsigned int patchIndex, double * lineAbscissa, const unsigned int & pointCount,
+		void addSeismic2dCoordinatesToPatch(const unsigned int patchIndex, double * lineAbscissa,
 			resqml2::AbstractRepresentation * seismicSupport, common::AbstractHdfProxy * proxy);
 
 		/**
 		* Get all the abscissa of the points of a specific patch related to seismic line 2d.
-		* @return nullptr if seismic info have not been provided.
+		* @param patchIndex		The index of the geometry patch which stores the seismic coordinates
+		* @param values			The array where the abscissa are going to be stored. The count of this array must be equal to getXyzPointCountOfPatch(patchIndex).
 		*/
 		void getSeismicLineAbscissaOfPointsOfPatch(const unsigned int & patchIndex, double* values);
+
+		/**
+		* Get all the inline coordinates of the points of a specific patch related to seismic lattice.
+		* @param patchIndex		The index of the geometry patch which stores the seismic coordinates
+		* @param values			The array where the inlines coordinates are going to be stored. The count of this array must be equal to getXyzPointCountOfPatch(patchIndex).
+		*/
+		void getInlinesOfPointsOfPatch(const unsigned int & patchIndex, double * values);
+
+		/**
+		* Get all the crossline coordinates of the points of a specific patch related to seismic lattice.
+		* @param patchIndex		The index of the geometry patch which stores the seismic coordinates
+		* @param values			The array where the crossline coordinates are going to be stored. The count of this array must be equal to getXyzPointCountOfPatch(patchIndex).
+		*/
+		void getCrosslinesOfPointsOfPatch(const unsigned int & patchIndex, double * values);
 
 		static const char* XML_TAG;
 
@@ -322,7 +331,6 @@ namespace resqml2
 		class AbstractFeatureInterpretation*				interpretation;
 		common::AbstractHdfProxy * 							hdfProxy;
 		class AbstractLocal3dCrs *							localCrs;
-		std::vector<AbstractRepresentation*> 				seismicSupportSet;
 
 		// XML backward relationships
 		std::vector<SubRepresentation*>						subRepresentationSet;
