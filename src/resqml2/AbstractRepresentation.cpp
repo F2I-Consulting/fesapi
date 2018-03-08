@@ -709,7 +709,7 @@ void AbstractRepresentation::addSeismic2dCoordinatesToPatch(const unsigned int p
 		patch->LineAbscissa = abscissaValues;
 
 		// inlines HDF
-		ULONG64 pointCount = getXyzPointCountOfPatch(patchIndex);
+		unsigned long long pointCount = getXyzPointCountOfPatch(patchIndex);
 		hdfProxy->writeArrayNdOfDoubleValues(getUuid(), oss.str(), lineAbscissa, &pointCount, 1);
 	}
 	else {
