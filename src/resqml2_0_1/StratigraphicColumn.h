@@ -20,19 +20,19 @@ under the License.
 
 #include "resqml2_0_1/EarthModelInterpretation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	/**
 	* This class is a container for other organizations that are consistent to each others.
 	*/
-	class DLL_IMPORT_OR_EXPORT StratigraphicColumn : public common::AbstractObject
+	class DLL_IMPORT_OR_EXPORT StratigraphicColumn : public COMMON_NS::AbstractObject
 	{
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		StratigraphicColumn(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : common::AbstractObject(partialObject) {}
+		StratigraphicColumn(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -65,7 +65,7 @@ namespace resqml2_0_1
 
     private:
         std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(common::EpcDocument * epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc);
 
 		// Forward relationships
         std::vector<class StratigraphicColumnRankInterpretation*> stratigraphicColumnRankSet;

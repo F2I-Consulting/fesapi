@@ -20,16 +20,16 @@ under the License.
 
 #include "resqml2/MdDatum.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT MdDatum : public resqml2::MdDatum
+	class DLL_IMPORT_OR_EXPORT MdDatum : public RESQML2_NS::MdDatum
 	{
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		MdDatum(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : resqml2::MdDatum(partialObject) {}
+		MdDatum(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::MdDatum(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -43,13 +43,13 @@ namespace resqml2_0_1
 		* @param referenceLocationOrdinal3	The location of the MD reference point on the third axis of the local 3d CRS.
 		*/
 		MdDatum(soap* soapContext, const std::string & guid, const std::string & title,
-			resqml2::AbstractLocal3dCrs * locCrs, const gsoap_resqml2_0_1::resqml2__MdReference & originKind,
+			RESQML2_NS::AbstractLocal3dCrs * locCrs, const gsoap_resqml2_0_1::resqml2__MdReference & originKind,
 			const double & referenceLocationOrdinal1, const double & referenceLocationOrdinal2, const double & referenceLocationOrdinal3);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		MdDatum(gsoap_resqml2_0_1::_resqml2__MdDatum* fromGsoap) :resqml2::MdDatum(fromGsoap) {}
+		MdDatum(gsoap_resqml2_0_1::_resqml2__MdDatum* fromGsoap) :RESQML2_NS::MdDatum(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -86,7 +86,7 @@ namespace resqml2_0_1
 
 	protected:
 
-		void setXmlLocalCrs(resqml2::AbstractLocal3dCrs * localCrs);
+		void setXmlLocalCrs(RESQML2_NS::AbstractLocal3dCrs * localCrs);
 
 		// XML backward relationship
 		std::vector<class WellboreTrajectoryRepresentation*> wellboreTrajectoryRepresentationSet;

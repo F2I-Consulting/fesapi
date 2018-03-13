@@ -28,7 +28,7 @@ under the License.
 #include "resqml2_0_1/UnstructuredGridRepresentation.h"
 #include "resqml2_0_1/AbstractIjkGridRepresentation.h"
 
-using namespace resqml2;
+using namespace RESQML2_NS;
 using namespace std;
 using namespace epc;
 
@@ -66,7 +66,7 @@ vector<Relationship> AbstractGridRepresentation::getAllEpcRelationships() const
 
 	// Strati unit
 	if (hasCellStratigraphicUnitIndices()) {
-		resqml2_0_1::AbstractStratigraphicOrganizationInterpretation* stratiOrg = getStratigraphicOrganizationInterpretation();
+		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = getStratigraphicOrganizationInterpretation();
 		Relationship relStrati(stratiOrg->getPartNameInEpcDocument(), "", stratiOrg->getUuid());
 		relStrati.setDestinationObjectType();
 		result.push_back(relStrati);
@@ -75,7 +75,7 @@ vector<Relationship> AbstractGridRepresentation::getAllEpcRelationships() const
 	return result;
 }
 
-resqml2::GridConnectionSetRepresentation* AbstractGridRepresentation::getGridConnectionSetRepresentation(const unsigned int & index) const
+RESQML2_NS::GridConnectionSetRepresentation* AbstractGridRepresentation::getGridConnectionSetRepresentation(const unsigned int & index) const
 {
 	if (gridConnectionSetRepresentationSet.size() > index) {
 		return gridConnectionSetRepresentationSet[index];
@@ -204,7 +204,7 @@ gsoap_resqml2_0_1::resqml2__Regrid* AbstractGridRepresentation::createRegrid(con
 	return regrid;
 }
 
-void AbstractGridRepresentation::setParentWindow(ULONG64 * cellIndices, const ULONG64 & cellIndexCount, resqml2_0_1::UnstructuredGridRepresentation* parentGrid)
+void AbstractGridRepresentation::setParentWindow(ULONG64 * cellIndices, const ULONG64 & cellIndexCount, RESQML2_0_1_NS::UnstructuredGridRepresentation* parentGrid)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
@@ -306,7 +306,7 @@ void AbstractGridRepresentation::setParentWindow(
 	const unsigned int & iCellIndexRegridStart, unsigned int * childCellCountPerIInterval, unsigned int * parentCellCountPerIInterval,  const unsigned int & iIntervalCount,
 	const unsigned int & jCellIndexRegridStart, unsigned int * childCellCountPerJInterval, unsigned int * parentCellCountPerJInterval,  const unsigned int & jIntervalCount,
 	const unsigned int & kCellIndexRegridStart, unsigned int * childCellCountPerKInterval, unsigned int * parentCellCountPerKInterval,  const unsigned int & kIntervalCount,
-	resqml2_0_1::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights, double * jChildCellWeights, double * kChildCellWeights)
+	RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights, double * jChildCellWeights, double * kChildCellWeights)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
@@ -333,7 +333,7 @@ void AbstractGridRepresentation::setParentWindow(
 	const unsigned int & iCellIndexRegridStart, unsigned int constantChildCellCountPerIInterval, unsigned int constantParentCellCountPerIInterval, const unsigned int & iIntervalCount,
 	const unsigned int & jCellIndexRegridStart, unsigned int constantChildCellCountPerJInterval, unsigned int constantParentCellCountPerJInterval, const unsigned int & jIntervalCount,
 	const unsigned int & kCellIndexRegridStart, unsigned int constantChildCellCountPerKInterval, unsigned int constantParentCellCountPerKInterval, const unsigned int & kIntervalCount,
-	resqml2_0_1::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights, double * jChildCellWeights, double * kChildCellWeights)
+	RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights, double * jChildCellWeights, double * kChildCellWeights)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
@@ -360,7 +360,7 @@ void AbstractGridRepresentation::setParentWindow(
 	const unsigned int & iCellIndexRegridStart, unsigned int iChildCellCount, unsigned int iParentCellCount,
 	const unsigned int & jCellIndexRegridStart, unsigned int jChildCellCount, unsigned int jParentCellCount,
 	const unsigned int & kCellIndexRegridStart, unsigned int kChildCellCount, unsigned int kParentCellCount,
-	resqml2_0_1::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights, double * jChildCellWeights, double * kChildCellWeights)
+	RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights, double * jChildCellWeights, double * kChildCellWeights)
 {
 	setParentWindow(
 		iCellIndexRegridStart, &iChildCellCount, &iParentCellCount, 1,
@@ -967,17 +967,17 @@ void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimensio
 	}
 }
 
-void AbstractGridRepresentation::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void AbstractGridRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
 
 	// LGR backward relationships
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getParentGridDor();
 	if (dor != nullptr) {
-		resqml2::AbstractGridRepresentation* parentGrid = epcDoc->getResqmlAbstractObjectByUuid<resqml2::AbstractGridRepresentation>(dor->UUID);
+		RESQML2_NS::AbstractGridRepresentation* parentGrid = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
 		if (parentGrid == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dor);
-			parentGrid = getEpcDocument()->getResqmlAbstractObjectByUuid<resqml2::AbstractGridRepresentation>(dor->UUID);
+			parentGrid = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
 		}
 		if (parentGrid == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -990,10 +990,10 @@ void AbstractGridRepresentation::importRelationshipSetFromEpc(common::EpcDocumen
 	// Strati org backward relationships
 	dor = getStratigraphicOrganizationInterpretationDor();
 	if (dor != nullptr) {
-		resqml2_0_1::AbstractStratigraphicOrganizationInterpretation* stratiOrg = epcDoc->getResqmlAbstractObjectByUuid<resqml2_0_1::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
+		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
 		if (stratiOrg == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dor);
-			stratiOrg = getEpcDocument()->getResqmlAbstractObjectByUuid<resqml2_0_1::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
+			stratiOrg = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
 		}
 		if (stratiOrg == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -1004,7 +1004,7 @@ void AbstractGridRepresentation::importRelationshipSetFromEpc(common::EpcDocumen
 	}
 }
 
-void AbstractGridRepresentation::setCellAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, resqml2_0_1::AbstractStratigraphicOrganizationInterpretation * stratiOrgInterp)
+void AbstractGridRepresentation::setCellAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation * stratiOrgInterp)
 {
 	// Backward rel
 	if (!stratiOrgInterp->isAssociatedToGridRepresentation(this))
@@ -1063,14 +1063,14 @@ std::string AbstractGridRepresentation::getStratigraphicOrganizationInterpretati
 	return dor == nullptr ? string() : dor->Title;
 }
 
-resqml2_0_1::AbstractStratigraphicOrganizationInterpretation* AbstractGridRepresentation::getStratigraphicOrganizationInterpretation() const
+RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* AbstractGridRepresentation::getStratigraphicOrganizationInterpretation() const
 {
 	const string stratigraphicOrganizationInterpretationUuid = getStratigraphicOrganizationInterpretationUuid();
 	if (stratigraphicOrganizationInterpretationUuid.empty()) {
 		return nullptr;
 	}
 
-	return static_cast<resqml2_0_1::AbstractStratigraphicOrganizationInterpretation*>(getEpcDocument()->getResqmlAbstractObjectByUuid(stratigraphicOrganizationInterpretationUuid));
+	return static_cast<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation*>(getEpcDocument()->getResqmlAbstractObjectByUuid(stratigraphicOrganizationInterpretationUuid));
 }
 
 bool AbstractGridRepresentation::hasCellStratigraphicUnitIndices() const

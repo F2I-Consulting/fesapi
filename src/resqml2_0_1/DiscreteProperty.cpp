@@ -30,12 +30,12 @@ under the License.
 #include "resqml2_0_1/PropertyKindMapper.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* DiscreteProperty::XML_TAG = "DiscreteProperty";
 
-DiscreteProperty::DiscreteProperty(resqml2::AbstractRepresentation * rep, const string & guid, const string & title,
+DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const resqml2__ResqmlPropertyKind & energisticsPropertyKind)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREDiscreteProperty(rep->getGsoapContext(), 1);	
@@ -53,8 +53,8 @@ DiscreteProperty::DiscreteProperty(resqml2::AbstractRepresentation * rep, const 
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");
 }
 
-DiscreteProperty::DiscreteProperty(resqml2::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, resqml2::PropertyKind * localPropKind)
+DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropKind)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREDiscreteProperty(rep->getGsoapContext(), 1);	
 	_resqml2__DiscreteProperty* prop = static_cast<_resqml2__DiscreteProperty*>(gsoapProxy2_0_1);
@@ -69,98 +69,98 @@ DiscreteProperty::DiscreteProperty(resqml2::AbstractRepresentation * rep, const 
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");
 }
 
-void DiscreteProperty::pushBackLongHdf5Array1dOfValues(long * values, const ULONG64 & valueCount, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackLongHdf5Array1dOfValues(long * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy,
 		const long & nullValue, const long &  minimumValue, const long &  maximumValue)
 {
 	hsize_t valueCountPerDimension[1] = {valueCount};
 	pushBackLongHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, nullValue, minimumValue, maximumValue);
 }
 
-void DiscreteProperty::pushBackLongHdf5Array1dOfValues(long * values, const ULONG64 & valueCount, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackLongHdf5Array1dOfValues(long * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy,
 	const long & nullValue)
 {
 	hsize_t valueCountPerDimension[1] = {valueCount};
 	pushBackLongHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, nullValue);
 }
 
-void DiscreteProperty::pushBackIntHdf5Array1dOfValues(int * values, const ULONG64 & valueCount, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackIntHdf5Array1dOfValues(int * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy,
 	const int & nullValue, const int &  minimumValue, const int &  maximumValue)
 {
 	hsize_t valueCountPerDimension[1] = { valueCount };
 	pushBackIntHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, nullValue, minimumValue, maximumValue);
 }
 
-void DiscreteProperty::pushBackIntHdf5Array1dOfValues(int * values, const ULONG64 & valueCount, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackIntHdf5Array1dOfValues(int * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy,
 	const int & nullValue)
 {
 	hsize_t valueCountPerDimension[1] = { valueCount };
 	pushBackIntHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, nullValue);
 }
 
-void DiscreteProperty::pushBackShortHdf5Array1dOfValues(short * values, const ULONG64 & valueCount, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackShortHdf5Array1dOfValues(short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy,
 	const short & nullValue, const short &  minimumValue, const short &  maximumValue)
 {
 	hsize_t valueCountPerDimension[1] = { valueCount };
 	pushBackShortHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, nullValue, minimumValue, maximumValue);
 }
 
-void DiscreteProperty::pushBackShortHdf5Array1dOfValues(short * values, const ULONG64 & valueCount, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackShortHdf5Array1dOfValues(short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy,
 	const short & nullValue)
 {
 	hsize_t valueCountPerDimension[1] = { valueCount };
 	pushBackShortHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, nullValue);
 }
 
-void DiscreteProperty::pushBackCharHdf5Array1dOfValues(char * values, const ULONG64 & valueCount, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackCharHdf5Array1dOfValues(char * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy,
 	const char & nullValue, const char &  minimumValue, const char &  maximumValue)
 {
 	hsize_t valueCountPerDimension[1] = { valueCount };
 	pushBackCharHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, nullValue, minimumValue, maximumValue);
 }
 
-void DiscreteProperty::pushBackCharHdf5Array1dOfValues(char * values, const ULONG64 & valueCount, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackCharHdf5Array1dOfValues(char * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy,
 	const char & nullValue)
 {
 	hsize_t valueCountPerDimension[1] = { valueCount };
 	pushBackCharHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, nullValue);
 }
 
-void DiscreteProperty::pushBackLongHdf5Array2dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackLongHdf5Array2dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 			const long & nullValue, const long &  minimumValue, const long &  maximumValue)
 {
 	hsize_t valueCountPerDimension[2] = {valueCountInSlowestDim, valueCountInFastestDim};
 	pushBackLongHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue, minimumValue, maximumValue);
 }
 
-void DiscreteProperty::pushBackLongHdf5Array2dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackLongHdf5Array2dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 	const long & nullValue)
 {
 	hsize_t valueCountPerDimension[2] = {valueCountInSlowestDim, valueCountInFastestDim};
 	pushBackLongHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
-void DiscreteProperty::pushBackIntHdf5Array2dOfValues(int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackIntHdf5Array2dOfValues(int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 	const int & nullValue, const int &  minimumValue, const int &  maximumValue)
 {
 	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackIntHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue, minimumValue, maximumValue);
 }
 
-void DiscreteProperty::pushBackIntHdf5Array2dOfValues(int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackIntHdf5Array2dOfValues(int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 	const int & nullValue)
 {
 	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackIntHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
-void DiscreteProperty::pushBackShortHdf5Array2dOfValues(short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackShortHdf5Array2dOfValues(short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 	const short & nullValue, const short &  minimumValue, const short &  maximumValue)
 {
 	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackShortHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue, minimumValue, maximumValue);
 }
 
-void DiscreteProperty::pushBackShortHdf5Array2dOfValues(short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackShortHdf5Array2dOfValues(short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 	const short & nullValue)
 {
 	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
@@ -168,108 +168,108 @@ void DiscreteProperty::pushBackShortHdf5Array2dOfValues(short * values, const UL
 }
 
 
-void DiscreteProperty::pushBackUShortHdf5Array2dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const unsigned short & nullValue, const unsigned short & minimumValue, const unsigned short & maximumValue)
+void DiscreteProperty::pushBackUShortHdf5Array2dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue, const unsigned short & minimumValue, const unsigned short & maximumValue)
 {
 	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue, minimumValue, maximumValue);
 }
 
-void DiscreteProperty::pushBackUShortHdf5Array2dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const unsigned short & nullValue)
+void DiscreteProperty::pushBackUShortHdf5Array2dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue)
 {
 	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
-void DiscreteProperty::pushBackCharHdf5Array2dOfValues(char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackCharHdf5Array2dOfValues(char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 	const char & nullValue, const char &  minimumValue, const char &  maximumValue)
 {
 	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackCharHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue, minimumValue, maximumValue);
 }
 
-void DiscreteProperty::pushBackCharHdf5Array2dOfValues(char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackCharHdf5Array2dOfValues(char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 	const char & nullValue)
 {
 	hsize_t valueCountPerDimension[2] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackCharHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
-void DiscreteProperty::pushBackLongHdf5Array3dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackLongHdf5Array3dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 			const long & nullValue, const long &  minimumValue, const long &  maximumValue)
 {
 	hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
 	pushBackLongHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue, minimumValue, maximumValue);
 }
 
-void DiscreteProperty::pushBackLongHdf5Array3dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackLongHdf5Array3dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 	const long & nullValue)
 {
 	hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
 	pushBackLongHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-void DiscreteProperty::pushBackIntHdf5Array3dOfValues(int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackIntHdf5Array3dOfValues(int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 	const int & nullValue, const int &  minimumValue, const int &  maximumValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackIntHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue, minimumValue, maximumValue);
 }
 
-void DiscreteProperty::pushBackIntHdf5Array3dOfValues(int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackIntHdf5Array3dOfValues(int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 	const int & nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackIntHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-void DiscreteProperty::pushBackShortHdf5Array3dOfValues(short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackShortHdf5Array3dOfValues(short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 	const short & nullValue, const short &  minimumValue, const short &  maximumValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackShortHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue, minimumValue, maximumValue);
 }
 
-void DiscreteProperty::pushBackShortHdf5Array3dOfValues(short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackShortHdf5Array3dOfValues(short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 	const short & nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackShortHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-void DiscreteProperty::pushBackUShortHdf5Array3dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackUShortHdf5Array3dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 	const unsigned short & nullValue, const unsigned short &  minimumValue, const unsigned short &  maximumValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue, minimumValue, maximumValue);
 }
 
-void DiscreteProperty::pushBackUShortHdf5Array3dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackUShortHdf5Array3dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 	const unsigned short & nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-void DiscreteProperty::pushBackCharHdf5Array3dOfValues(char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackCharHdf5Array3dOfValues(char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 	const char & nullValue, const char &  minimumValue, const char &  maximumValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackCharHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue, minimumValue, maximumValue);
 }
 
-void DiscreteProperty::pushBackCharHdf5Array3dOfValues(char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackCharHdf5Array3dOfValues(char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 	const char & nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackCharHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-std::string DiscreteProperty::pushBackRefToExistingDataset(common::AbstractHdfProxy* hdfProxy, const std::string & datasetName, const long & nullValue)
+std::string DiscreteProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, const long & nullValue)
 {
 	return pushBackRefToExistingIntegerDataset(hdfProxy, datasetName, nullValue);
 }
 
-std::string DiscreteProperty::pushBackRefToExistingDataset(common::AbstractHdfProxy* proxy, const std::string & datasetName, const long & nullValue, const long &  minimumValue, const long &  maximumValue)
+std::string DiscreteProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* proxy, const std::string & datasetName, const long & nullValue, const long &  minimumValue, const long &  maximumValue)
 {
 	const string result = pushBackRefToExistingDataset(proxy, datasetName, nullValue);
 
@@ -291,7 +291,7 @@ std::string DiscreteProperty::pushBackRefToExistingDataset(common::AbstractHdfPr
 	return result;
 }
 
-void DiscreteProperty::pushBackLongHdf5ArrayOfValues(long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackLongHdf5ArrayOfValues(long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy,
 	const long & nullValue, const long & minimumValue, const long & maximumValue)
 {
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
@@ -304,7 +304,7 @@ void DiscreteProperty::pushBackLongHdf5ArrayOfValues(long * values, unsigned lon
 		numValues, numDimensionsInArray);
 }
 
-void DiscreteProperty::pushBackLongHdf5ArrayOfValues(long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy * proxy,
+void DiscreteProperty::pushBackLongHdf5ArrayOfValues(long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy,
 	const long & nullValue)
 {
 	size_t numTotalValues = numValues[0];
@@ -316,7 +316,7 @@ void DiscreteProperty::pushBackLongHdf5ArrayOfValues(long * values, unsigned lon
 	pushBackLongHdf5ArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue, minMax.first, minMax.second);
 }
 
-void DiscreteProperty::pushBackIntHdf5ArrayOfValues(int * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const int & nullValue, const int &  minimumValue, const int &  maximumValue)
+void DiscreteProperty::pushBackIntHdf5ArrayOfValues(int * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const int & nullValue, const int &  minimumValue, const int &  maximumValue)
 {
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
 
@@ -328,7 +328,7 @@ void DiscreteProperty::pushBackIntHdf5ArrayOfValues(int * values, unsigned long 
 		numValues, numDimensionsInArray);
 }
 
-void DiscreteProperty::pushBackIntHdf5ArrayOfValues(int * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const int & nullValue)
+void DiscreteProperty::pushBackIntHdf5ArrayOfValues(int * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const int & nullValue)
 {
 	hsize_t numTotalValues = numValues[0];
 	for (unsigned int dim = 1; dim < numDimensionsInArray; ++dim) {
@@ -339,7 +339,7 @@ void DiscreteProperty::pushBackIntHdf5ArrayOfValues(int * values, unsigned long 
 	pushBackIntHdf5ArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue, minMax.first, minMax.second);
 }
 
-void DiscreteProperty::pushBackShortHdf5ArrayOfValues(short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const short & nullValue, const short &  minimumValue, const short &  maximumValue)
+void DiscreteProperty::pushBackShortHdf5ArrayOfValues(short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const short & nullValue, const short &  minimumValue, const short &  maximumValue)
 {
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
 
@@ -351,7 +351,7 @@ void DiscreteProperty::pushBackShortHdf5ArrayOfValues(short * values, unsigned l
 		numValues, numDimensionsInArray);
 }
 
-void DiscreteProperty::pushBackShortHdf5ArrayOfValues(short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const short & nullValue)
+void DiscreteProperty::pushBackShortHdf5ArrayOfValues(short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const short & nullValue)
 {
 	hsize_t numTotalValues = numValues[0];
 	for (unsigned int dim = 1; dim < numDimensionsInArray; ++dim) {
@@ -362,7 +362,7 @@ void DiscreteProperty::pushBackShortHdf5ArrayOfValues(short * values, unsigned l
 	pushBackShortHdf5ArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue, minMax.first, minMax.second);
 }
 
-void DiscreteProperty::pushBackUShortHdf5ArrayOfValues(unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const unsigned short & nullValue, const unsigned short &  minimumValue, const unsigned short &  maximumValue)
+void DiscreteProperty::pushBackUShortHdf5ArrayOfValues(unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue, const unsigned short &  minimumValue, const unsigned short &  maximumValue)
 {
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
 
@@ -374,7 +374,7 @@ void DiscreteProperty::pushBackUShortHdf5ArrayOfValues(unsigned short * values, 
 		numValues, numDimensionsInArray);
 }
 
-void DiscreteProperty::pushBackUShortHdf5ArrayOfValues(unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const unsigned short & nullValue)
+void DiscreteProperty::pushBackUShortHdf5ArrayOfValues(unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue)
 {
 	hsize_t numTotalValues = numValues[0];
 	for (unsigned int dim = 1; dim < numDimensionsInArray; ++dim) {
@@ -385,7 +385,7 @@ void DiscreteProperty::pushBackUShortHdf5ArrayOfValues(unsigned short * values, 
 	pushBackUShortHdf5ArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue, minMax.first, minMax.second);
 }
 
-void DiscreteProperty::pushBackCharHdf5ArrayOfValues(char * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const char & nullValue, const char &  minimumValue, const char &  maximumValue)
+void DiscreteProperty::pushBackCharHdf5ArrayOfValues(char * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const char & nullValue, const char &  minimumValue, const char &  maximumValue)
 {
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
 
@@ -397,7 +397,7 @@ void DiscreteProperty::pushBackCharHdf5ArrayOfValues(char * values, unsigned lon
 		numValues, numDimensionsInArray);
 }
 
-void DiscreteProperty::pushBackCharHdf5ArrayOfValues(char * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const char & nullValue)
+void DiscreteProperty::pushBackCharHdf5ArrayOfValues(char * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const char & nullValue)
 {
 	hsize_t numTotalValues = numValues[0];
 	for (unsigned int dim = 1; dim < numDimensionsInArray; ++dim) {
@@ -408,7 +408,7 @@ void DiscreteProperty::pushBackCharHdf5ArrayOfValues(char * values, unsigned lon
 	pushBackCharHdf5ArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue, minMax.first, minMax.second);
 }
 
-bool DiscreteProperty::validatePropertyKindAssociation(resqml2::PropertyKind* pk)
+bool DiscreteProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKind* pk)
 {
 	if (pk == nullptr) {
 		throw invalid_argument("The property kind to validate cannot be null.");

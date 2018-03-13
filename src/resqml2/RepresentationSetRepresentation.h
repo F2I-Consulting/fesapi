@@ -20,19 +20,19 @@ under the License.
 
 #include "resqml2/AbstractRepresentation.h"
 
-namespace resqml2
+namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation : public resqml2::AbstractRepresentation
+	class DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	protected:
-		RepresentationSetRepresentation(resqml2::AbstractFeatureInterpretation* interp) : AbstractRepresentation(interp, nullptr) {}
+		RepresentationSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp) : AbstractRepresentation(interp, nullptr) {}
 
-		RepresentationSetRepresentation() : AbstractRepresentation(nullptr, static_cast<resqml2::AbstractLocal3dCrs*>(nullptr)) {}
+		RepresentationSetRepresentation() : AbstractRepresentation(nullptr, static_cast<RESQML2_NS::AbstractLocal3dCrs*>(nullptr)) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		RepresentationSetRepresentation(gsoap_resqml2_0_1::_resqml2__RepresentationSetRepresentation* fromGsoap) : resqml2::AbstractRepresentation(fromGsoap) {}
+		RepresentationSetRepresentation(gsoap_resqml2_0_1::_resqml2__RepresentationSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
 		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const { return nullptr; }
 
@@ -42,7 +42,7 @@ namespace resqml2
 		* Only to be used in partial transfer context
 		*/
 		RepresentationSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			resqml2::AbstractRepresentation(partialObject)
+			RESQML2_NS::AbstractRepresentation(partialObject)
 		{
 		}
 
@@ -81,7 +81,7 @@ namespace resqml2
 		/**
 		* Get a particular representation of this representation set according to its position.
 		*/
-		resqml2::AbstractRepresentation* getRepresentation(const unsigned int & index) const;
+		RESQML2_NS::AbstractRepresentation* getRepresentation(const unsigned int & index) const;
 
 		/**
 		* Get a particular representation dor of this representation set according to its position.
@@ -95,12 +95,12 @@ namespace resqml2
 
     protected:
 
-		void pushBackXmlRepresentation(resqml2::AbstractRepresentation* rep);
+		void pushBackXmlRepresentation(RESQML2_NS::AbstractRepresentation* rep);
 
 		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-		virtual void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
-		friend void resqml2::AbstractRepresentation::pushBackIntoRepresentationSet(RepresentationSetRepresentation * repSet, bool xml);
+		friend void RESQML2_NS::AbstractRepresentation::pushBackIntoRepresentationSet(RepresentationSetRepresentation * repSet, bool xml);
 	};
 }
 

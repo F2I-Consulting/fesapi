@@ -20,9 +20,9 @@ under the License.
 
 #include "resqml2/GridConnectionSetRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT GridConnectionSetRepresentation : public resqml2::GridConnectionSetRepresentation
+	class DLL_IMPORT_OR_EXPORT GridConnectionSetRepresentation : public RESQML2_NS::GridConnectionSetRepresentation
 	{
 	protected:
 		void init(soap* soapContext, const std::string & guid, const std::string & title);
@@ -31,14 +31,14 @@ namespace resqml2_0_1
 		* Pushes back an interpretation which can be mapped with some connections.
 		* @param interp	The interpration to push back.
 		*/
-		void pushBackXmlInterpretation(resqml2::AbstractFeatureInterpretation* interp);
+		void pushBackXmlInterpretation(RESQML2_NS::AbstractFeatureInterpretation* interp);
 
 
 		/**
 		* Pushes back a grid representation which is one of the support of this representation.
 		* And push back this representation as a grid connection information of the grid representation as well.
 		*/
-		void pushBackXmlSupportingGridRepresentation(resqml2::AbstractGridRepresentation * supportingGridRep);
+		void pushBackXmlSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep);
 
 	public:
 
@@ -46,7 +46,7 @@ namespace resqml2_0_1
 		* Only to be used in partial transfer context
 		*/
 		GridConnectionSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			resqml2::GridConnectionSetRepresentation(partialObject) {}
+			RESQML2_NS::GridConnectionSetRepresentation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -54,7 +54,7 @@ namespace resqml2_0_1
 		* @param guid	A guid for the instance to create.
 		* @param title	A title for the instance to create.
 		*/
-		GridConnectionSetRepresentation(resqml2::AbstractFeatureInterpretation* interp,
+		GridConnectionSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
                 const std::string & guid, const std::string & title);
 
 		/**
@@ -69,7 +69,7 @@ namespace resqml2_0_1
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		GridConnectionSetRepresentation(gsoap_resqml2_0_1::_resqml2__GridConnectionSetRepresentation* fromGsoap) : resqml2::GridConnectionSetRepresentation(fromGsoap) {}
+		GridConnectionSetRepresentation(gsoap_resqml2_0_1::_resqml2__GridConnectionSetRepresentation* fromGsoap) : RESQML2_NS::GridConnectionSetRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -166,7 +166,7 @@ namespace resqml2_0_1
 		* @param proxy				The HDF proxy where the numerical values (cell indices) are stored.
         * @param gridIndexPair		The HDF dataset path where we can find all the grid index pair in a 1d Array where the grid indices go faster than the pair. The grid at an index must correspond to the cell at the same index in the cellIndexPair array.
 		*/
-		void setCellIndexPairsUsingExistingDataset(const ULONG64 & cellIndexPairCount, const std::string & cellIndexPair, const ULONG64 & nullValue, common::AbstractHdfProxy * proxy, const std::string & gridIndexPair = "");
+		void setCellIndexPairsUsingExistingDataset(const ULONG64 & cellIndexPairCount, const std::string & cellIndexPair, const ULONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & gridIndexPair = "");
 
 		/**
 		* The numerical values
@@ -176,7 +176,7 @@ namespace resqml2_0_1
 		* @param localFacePerCellIndexPair	The HDF dataset path where we can find all the local Face Per CellIndex Pair in a 1d Array.
 		* @param proxy						The HDF proxy where the numerical values (cell indices) are stored.
 		*/
-		void setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, common::AbstractHdfProxy * proxy);
+		void setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, COMMON_NS::AbstractHdfProxy * proxy);
 
 		/**
 		* 2 x #Connections array of local face-per-cell indices for (Cell1,Cell2) for each connection. Local face-per-cell indices are used because global face indices need not have been defined.
@@ -186,7 +186,7 @@ namespace resqml2_0_1
 		* @param localFacePerCellIndexPair	The HDF dataset path where we can find all the local Face Per CellIndex Pair in a 1d Array.
 		* @param proxy						The HDF proxy where the numerical values (cell indices) are stored.
 		*/
-		void setLocalFacePerCellIndexPairs(const ULONG64 & cellIndexPairCount, int * localFacePerCellIndexPair, common::AbstractHdfProxy * proxy);
+		void setLocalFacePerCellIndexPairs(const ULONG64 & cellIndexPairCount, int * localFacePerCellIndexPair, COMMON_NS::AbstractHdfProxy * proxy);
 
 		/**
 		* For each connection in the grid connection set representation, allow to map zero or one feature interpretation. TODO: Resqml allows to map with more than one feature interpretation.
@@ -195,7 +195,7 @@ namespace resqml2_0_1
 		* @param nullValue					The null value must be used as the corresponding interpretation index for each connection which are not associated to any interpretation.
 		* @param proxy						The Hdf proxy where the numerical values will be stored.
 		*/
-		void setConnectionInterpretationIndices(unsigned int * interpretationIndices, const unsigned int & interpretationIndiceCount, const ULONG64 & nullValue, common::AbstractHdfProxy * proxy);
+		void setConnectionInterpretationIndices(unsigned int * interpretationIndices, const unsigned int & interpretationIndiceCount, const ULONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy);
 		
 		/**
 		* Get the count of the supporting grid representations of this grid connection representation.

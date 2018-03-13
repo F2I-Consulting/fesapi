@@ -29,8 +29,8 @@ under the License.
 
 using namespace std;
 using namespace resqml2_0_1test;
-using namespace common;
-using namespace resqml2_0_1;
+using namespace COMMON_NS;
+using namespace RESQML2_0_1_NS;
 
 const char* SeismicLatticeRepresentationTest::defaultUuidFeature = "3e04d513-7d2c-4cc3-853c-a3a651c5eb4a";
 const char* SeismicLatticeRepresentationTest::defaultTitleFeature = "Seismic Lattice Feature";
@@ -66,14 +66,14 @@ void SeismicLatticeRepresentationTest::initEpcDocHandler()
 void SeismicLatticeRepresentationTest::readEpcDocHandler()
 {
 	// Feature
-	resqml2_0_1::SeismicLatticeFeature* feature = epcDoc->getResqmlAbstractObjectByUuid<resqml2_0_1::SeismicLatticeFeature>(defaultUuidFeature);
+	RESQML2_0_1_NS::SeismicLatticeFeature* feature = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::SeismicLatticeFeature>(defaultUuidFeature);
 	REQUIRE(feature->getCrosslineIncrement() == 2);
 	REQUIRE(feature->getOriginCrossline() == 152);
 	REQUIRE(feature->getInlineIncrement() == 2);
 	REQUIRE(feature->getOriginInline() == 150);
 
 	// Grid 2D
-	resqml2_0_1::Grid2dRepresentation* rep = epcDoc->getResqmlAbstractObjectByUuid<resqml2_0_1::Grid2dRepresentation>(defaultUuid);
+	RESQML2_0_1_NS::Grid2dRepresentation* rep = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::Grid2dRepresentation>(defaultUuid);
 	REQUIRE(rep->getSupportingRepresentation() == nullptr);
 	REQUIRE_THROWS(rep->getSeismicSupportOfPatch(0));
 	REQUIRE((rep->isISpacingConstant() && rep->isJSpacingConstant()));

@@ -20,7 +20,7 @@ under the License.
 
 #include "resqml2_0_1/AbstractIjkGridRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT IjkGridNoGeometryRepresentation : public AbstractIjkGridRepresentation
 	{
@@ -30,7 +30,7 @@ namespace resqml2_0_1
 			const std::string & guid, const std::string & title,
 			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
 
-		IjkGridNoGeometryRepresentation(resqml2::AbstractFeatureInterpretation* interp,
+		IjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 				const std::string & guid, const std::string & title,
 				const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
 

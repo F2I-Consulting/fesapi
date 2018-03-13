@@ -23,7 +23,7 @@ under the License.
 #include "resqml2/AbstractValuesProperty.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 
@@ -53,7 +53,7 @@ PropertyKind::PropertyKind(soap* soapContext, const string & guid, const string 
 }
 
 PropertyKind::PropertyKind(soap* soapContext, const string & guid, const string & title,
-	const string & namingSystem, const resqml2__ResqmlUom & uom, resqml2::PropertyKind * parentPropType)
+	const string & namingSystem, const resqml2__ResqmlUom & uom, RESQML2_NS::PropertyKind * parentPropType)
 {
 	init(soapContext, guid, title, namingSystem);
 	static_cast<_resqml2__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = uom;
@@ -74,7 +74,7 @@ PropertyKind::PropertyKind(soap* soapContext, const string & guid, const string 
 }
 
 PropertyKind::PropertyKind(soap* soapContext, const string & guid, const string & title,
-	const string & namingSystem, const std::string & nonStandardUom, resqml2::PropertyKind * parentPropType)
+	const string & namingSystem, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * parentPropType)
 {
 	init(soapContext, guid, title, namingSystem);
 	static_cast<_resqml2__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc;
@@ -92,7 +92,7 @@ _resqml2__PropertyKind* PropertyKind::getSpecializedGsoapProxy() const
 	return static_cast<_resqml2__PropertyKind*>(gsoapProxy2_0_1);
 }
 
-void PropertyKind::setXmlParentPropertyKind(resqml2::PropertyKind* parentPropertyKind)
+void PropertyKind::setXmlParentPropertyKind(RESQML2_NS::PropertyKind* parentPropertyKind)
 {
 	_resqml2__PropertyKind* propType = getSpecializedGsoapProxy();
 

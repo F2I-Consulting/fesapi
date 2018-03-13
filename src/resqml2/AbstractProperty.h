@@ -20,16 +20,16 @@ under the License.
 
 #include "common/AbstractObject.h"
 
-namespace resqml2
+namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractProperty: public common::AbstractObject
+	class DLL_IMPORT_OR_EXPORT AbstractProperty: public COMMON_NS::AbstractObject
 	{
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		AbstractProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : common::AbstractObject(partialObject) {}
+		AbstractProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Default constructor
@@ -40,7 +40,7 @@ namespace resqml2
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractProperty(gsoap_resqml2_0_1::resqml2__AbstractProperty* fromGsoap) : common::AbstractObject(fromGsoap), local3dCrs(nullptr) {}
+		AbstractProperty(gsoap_resqml2_0_1::resqml2__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap), local3dCrs(nullptr) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -129,12 +129,12 @@ namespace resqml2
 		/**
 		* Set the Hdf Proxy where the numerical values are stored.
 		*/
-		void setHdfProxy(common::AbstractHdfProxy * proxy);
+		void setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
 
 		/**
 		* Getter for the hdf proxy which stores this instance values.
 		*/
-		common::AbstractHdfProxy* getHdfProxy() const;
+		COMMON_NS::AbstractHdfProxy* getHdfProxy() const;
 
 		/*
 		 * Getter for the uuid of the hdf proxy which is used for storing the numerical values of this property.
@@ -227,7 +227,7 @@ namespace resqml2
 		void setXmlLocalPropertyKind(class PropertyKind* propKind);
 
 		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-		virtual void importRelationshipSetFromEpc(common::EpcDocument * epcDoc);
+		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc);
 
 		class AbstractLocal3dCrs *		local3dCrs;			/// The used local 3D CRS in case the property values need one.
 	};

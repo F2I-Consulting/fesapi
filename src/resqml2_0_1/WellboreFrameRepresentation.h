@@ -21,19 +21,19 @@ under the License.
 #include "resqml2/AbstractRepresentation.h"
 #include "resqml2/AbstractValuesProperty.h"
 
-namespace witsml1_4_1_1
+namespace WITSML1_4_1_1_NS
 {
 	class Log;
 }
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT WellboreFrameRepresentation : public resqml2::AbstractRepresentation
+	class DLL_IMPORT_OR_EXPORT WellboreFrameRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	protected:
 		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const {return nullptr;}
 
-		WellboreFrameRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs) : AbstractRepresentation(interp, crs), trajectory(nullptr), witsmlLog(nullptr) {}
+		WellboreFrameRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs) : AbstractRepresentation(interp, crs), trajectory(nullptr), witsmlLog(nullptr) {}
 
 	public:
 
@@ -41,7 +41,7 @@ namespace resqml2_0_1
 		* Only to be used in partial transfer context
 		*/
 		WellboreFrameRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			resqml2::AbstractRepresentation(partialObject)
+			RESQML2_NS::AbstractRepresentation(partialObject)
 		{
 		}
 
@@ -67,7 +67,7 @@ namespace resqml2_0_1
 		* @param mdValueCount	The MD values count.
 		* @param proxy			The HDF proxy where to write the MD values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void setMdValues(double * mdValues, const unsigned int & mdValueCount, common::AbstractHdfProxy* proxy);
+		void setMdValues(double * mdValues, const unsigned int & mdValueCount, COMMON_NS::AbstractHdfProxy* proxy);
 
 		/**
 		* Set the MD values of this WellboreFrameRepresentation frame as a regular discretization along the wellbore trajectory.
@@ -114,7 +114,7 @@ namespace resqml2_0_1
 		/**
 		* Get the Measured Depth datatype in the HDF dataset
 		*/
-		resqml2::AbstractValuesProperty::hdfDatatypeEnum getMdHdfDatatype() const;
+		RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum getMdHdfDatatype() const;
 
 		/**
 		* Get all the md values of the instance which are supposed to be double ones.
@@ -142,8 +142,8 @@ namespace resqml2_0_1
 
 		unsigned int getPatchCount() const {return 1;}
 
-		void setWitsmlLog(witsml1_4_1_1::Log * witsmlLogToSet);
-		witsml1_4_1_1::Log* getWitsmlLog() {return witsmlLog;}
+		void setWitsmlLog(WITSML1_4_1_1_NS::Log * witsmlLogToSet);
+		WITSML1_4_1_1_NS::Log* getWitsmlLog() {return witsmlLog;}
 
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
@@ -151,10 +151,10 @@ namespace resqml2_0_1
 	protected:
 
 		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-		virtual void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		class WellboreTrajectoryRepresentation * trajectory;
-		witsml1_4_1_1::Log * witsmlLog;
+		WITSML1_4_1_1_NS::Log * witsmlLog;
 	};
 }
 

@@ -21,13 +21,13 @@ under the License.
 #include "prodml2_0/AbstractObject.h"
 #include "resqml2/AbstractValuesProperty.h"
 
-namespace common {
+namespace COMMON_NS {
 	class HdfProxy;
 }
 
-namespace prodml2_0
+namespace PRODML2_0_NS
 {
-	class DLL_IMPORT_OR_EXPORT DasAcquisition : public prodml2_0::AbstractObject
+	class DLL_IMPORT_OR_EXPORT DasAcquisition : public PRODML2_0_NS::AbstractObject
 	{
 	private:
 		/**
@@ -37,7 +37,7 @@ namespace prodml2_0
 			const std::string & startTime, const std::string endTime, const ULONG64 & timeCount,
 			gsoap_eml2_1::prodml2__DasDimensions slowestHdfDimension, gsoap_eml2_1::prodml2__DasDimensions fastestHdfDimension,
 			bool datatypeIsInteger,
-			common::AbstractHdfProxy* proxy);
+			COMMON_NS::AbstractHdfProxy* proxy);
 
 	public:
 		/**
@@ -67,7 +67,7 @@ namespace prodml2_0
 		* Creates an instance of this class by parsing an HDF5 file.
 		*/
 		DasAcquisition(class FiberOpticalPath* fiberOpticalPath, class DasInstrumentBox* dasInstrumentBox,
-			prodml2_0::HdfProxy * proxy);
+			PRODML2_0_NS::HdfProxy * proxy);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -82,7 +82,7 @@ namespace prodml2_0
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
 
-		void setHdfProxy(common::AbstractHdfProxy * proxy);
+		void setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
 
 		gsoap_eml2_1::eml21__DataObjectReference* getFiberOpticalPathDor() const;
 		class FiberOpticalPath* getFiberOpticalPath() const;
@@ -134,7 +134,7 @@ namespace prodml2_0
 		* @param timeCount			The count of time in time array
 		* @param proxy				The hdf proxy where the data will be stored.
 		*/
-		void pushBackRaw(const std::string & guid, bool datatypeIsInteger, const char & datatypeByteCount, const std::string & rawDataUnit, LONG64* timeArray, const ULONG64 & timeCount, common::AbstractHdfProxy* proxy);
+		void pushBackRaw(const std::string & guid, bool datatypeIsInteger, const char & datatypeByteCount, const std::string & rawDataUnit, LONG64* timeArray, const ULONG64 & timeCount, COMMON_NS::AbstractHdfProxy* proxy);
 
 		/**
 		* @param data			The measured data. A linearized array of a 2d one where loci go fastest and time slowest.
@@ -183,7 +183,7 @@ namespace prodml2_0
 		/**
 		* Get the values datatype in the HDF dataset
 		*/
-		resqml2::AbstractValuesProperty::hdfDatatypeEnum getRawDataHdfDatatype(const unsigned int & rawIndex) const;
+		RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum getRawDataHdfDatatype(const unsigned int & rawIndex) const;
 
 		/**
 		* Get all the values of a particular raw of the instance which are supposed to be double ones.
@@ -233,7 +233,7 @@ namespace prodml2_0
 		*/
 		void getRawDataTime(const unsigned int & rawIndex, LONG64 * values);
 
-		common::AbstractHdfProxy* getHdfProxy() const;
+		COMMON_NS::AbstractHdfProxy* getHdfProxy() const;
 
 		std::string getHdfProxyUuid() const;
 
@@ -245,7 +245,7 @@ namespace prodml2_0
 		/**
 		* Does nothing since StringTableLookup has not got any forward relationship.
 		*/
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc) {}
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
 	};
 }
 

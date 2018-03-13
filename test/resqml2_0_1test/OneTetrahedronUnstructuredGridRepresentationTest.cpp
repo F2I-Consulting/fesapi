@@ -26,9 +26,9 @@ under the License.
 #include "resqml2_0_1/UnstructuredGridRepresentation.h"
 
 using namespace std;
-using namespace common;
+using namespace COMMON_NS;
 using namespace resqml2_0_1test;
-using namespace resqml2;
+using namespace RESQML2_NS;
 
 OneTetrahedronUnstructuredGridRepresentationTest::OneTetrahedronUnstructuredGridRepresentationTest(const string & epcDocPath)
 	: UnstructuredGridRepresentationTest(epcDocPath, uuidOneTetrahedronUnstructuredGridRepresentation, titleOneTetrahedronUnstructuredGridRepresentation, nodesCountOneTetrahedronUnstructuredGridRepresentation, nodesOneTetrahedronUnstructuredGridRepresentation) {
@@ -45,13 +45,13 @@ OneTetrahedronUnstructuredGridRepresentationTest::OneTetrahedronUnstructuredGrid
 void OneTetrahedronUnstructuredGridRepresentationTest::initEpcDocHandler() {
 	// getting the local depth 3d crs
 	LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(this->epcDoc, true);
-	resqml2_0_1::LocalDepth3dCrs* crs = static_cast<resqml2_0_1::LocalDepth3dCrs*>(this->epcDoc->getResqmlAbstractObjectByUuid(LocalDepth3dCrsTest::defaultUuid));
+	RESQML2_0_1_NS::LocalDepth3dCrs* crs = static_cast<RESQML2_0_1_NS::LocalDepth3dCrs*>(this->epcDoc->getResqmlAbstractObjectByUuid(LocalDepth3dCrsTest::defaultUuid));
 
 	// getting the hdf proxy
 	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
 
 	// creating the unstructured grid
-	resqml2_0_1::UnstructuredGridRepresentation* tetraGrid = this->epcDoc->createUnstructuredGridRepresentation(crs, this->uuid, this->title, 1);
+	RESQML2_0_1_NS::UnstructuredGridRepresentation* tetraGrid = this->epcDoc->createUnstructuredGridRepresentation(crs, this->uuid, this->title, 1);
 	REQUIRE(tetraGrid != nullptr);
 	unsigned char faceRightHandness[4] = { 0, 0, 1, 1 };
 	ULONG64 faceIndicesPerCell[4] = { 0, 1, 2, 3 };
@@ -67,7 +67,7 @@ void OneTetrahedronUnstructuredGridRepresentationTest::readEpcDocHandler() {
 	LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(this->epcDoc, false);
 
 	// getting the unstructured grid
-	resqml2_0_1::UnstructuredGridRepresentation * unstructuredGrid = static_cast<resqml2_0_1::UnstructuredGridRepresentation*>(this->epcDoc->getResqmlAbstractObjectByUuid(uuidOneTetrahedronUnstructuredGridRepresentation));
+	RESQML2_0_1_NS::UnstructuredGridRepresentation * unstructuredGrid = static_cast<RESQML2_0_1_NS::UnstructuredGridRepresentation*>(this->epcDoc->getResqmlAbstractObjectByUuid(uuidOneTetrahedronUnstructuredGridRepresentation));
 	
 	// getHdfProxyUuid
 	REQUIRE( unstructuredGrid->getHdfProxyUuid() == uuidHdfProxy);

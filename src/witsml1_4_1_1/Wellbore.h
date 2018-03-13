@@ -25,7 +25,7 @@ under the License.
 
 #include "resqml2_0_1/WellboreFeature.h"
 
-namespace witsml1_4_1_1
+namespace WITSML1_4_1_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT Wellbore : public AbstractObject
 	{
@@ -119,7 +119,7 @@ namespace witsml1_4_1_1
 
 		class Well* getWell() {return well;}
 
-		resqml2_0_1::WellboreFeature* getResqmlWellboreFeature() const {return resqmlWellboreFeature;}
+		RESQML2_0_1_NS::WellboreFeature* getResqmlWellboreFeature() const {return resqmlWellboreFeature;}
 
 		soap* getGSoapContext() const {return collection->soap;}
 
@@ -154,7 +154,7 @@ namespace witsml1_4_1_1
 		/**
 		* Resolve all relationships of the object in an epc document.
 		*/
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
@@ -165,7 +165,7 @@ namespace witsml1_4_1_1
 		class Well* well;
 
 		// XML backwards relationship
-		resqml2_0_1::WellboreFeature* resqmlWellboreFeature;
+		RESQML2_0_1_NS::WellboreFeature* resqmlWellboreFeature;
 		std::vector<Trajectory*> trajectorySet;
 		std::vector<Log*> logSet;
 		std::vector<FormationMarker*> formationMarkerSet;
@@ -173,7 +173,7 @@ namespace witsml1_4_1_1
 		friend void Trajectory::setWellbore(Wellbore* witsmlWellbore);
 		friend void Log::setWellbore(Wellbore* witsmlWellbore);
 		friend void FormationMarker::setWellbore(Wellbore* witsmlWellbore);
-		friend void resqml2_0_1::WellboreFeature::setWitsmlWellbore(Wellbore * wellbore);
+		friend void RESQML2_0_1_NS::WellboreFeature::setWitsmlWellbore(Wellbore * wellbore);
 	};
 }
 

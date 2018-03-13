@@ -20,16 +20,16 @@ under the License.
 
 #include "resqml2/ActivityTemplate.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT ActivityTemplate : public resqml2::ActivityTemplate
+	class DLL_IMPORT_OR_EXPORT ActivityTemplate : public RESQML2_NS::ActivityTemplate
 	{
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		ActivityTemplate(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : resqml2::ActivityTemplate(partialObject) {}
+		ActivityTemplate(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::ActivityTemplate(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -39,7 +39,7 @@ namespace resqml2_0_1
 		*/
 		ActivityTemplate(soap* soapContext, const std::string & guid, const std::string & title);
 
-		ActivityTemplate(gsoap_resqml2_0_1::_resqml2__ActivityTemplate* fromGsoap) : resqml2::ActivityTemplate(fromGsoap) {}
+		ActivityTemplate(gsoap_resqml2_0_1::_resqml2__ActivityTemplate* fromGsoap) : RESQML2_NS::ActivityTemplate(fromGsoap) {}
 		virtual ~ActivityTemplate() {}
 		
 		/**
@@ -102,7 +102,7 @@ namespace resqml2_0_1
 
 	private:
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(common::EpcDocument * epcDoc) {}
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc) {}
 
 		gsoap_resqml2_0_1::resqml2__ParameterTemplate* getParameterFromTitle(const std::string & paramTitle) const;
 		

@@ -20,16 +20,16 @@ under the License.
 
 #include "resqml2/AbstractFeatureInterpretation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT GenericFeatureInterpretation : public resqml2::AbstractFeatureInterpretation
+	class DLL_IMPORT_OR_EXPORT GenericFeatureInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		GenericFeatureInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : resqml2::AbstractFeatureInterpretation(partialObject) {}
+		GenericFeatureInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeatureInterpretation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -37,9 +37,9 @@ namespace resqml2_0_1
 		* @param guid		The guid to set to the interpretation. If empty then a new guid will be generated.
 		* @param title		A title for the instance to create.
 		*/
-		GenericFeatureInterpretation(resqml2::AbstractFeature * feature, const std::string & guid, const std::string & title);
+		GenericFeatureInterpretation(RESQML2_NS::AbstractFeature * feature, const std::string & guid, const std::string & title);
 
-		GenericFeatureInterpretation(gsoap_resqml2_0_1::_resqml2__GenericFeatureInterpretation* fromGsoap) : resqml2::AbstractFeatureInterpretation(fromGsoap) {}
+		GenericFeatureInterpretation(gsoap_resqml2_0_1::_resqml2__GenericFeatureInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
 
 		~GenericFeatureInterpretation() {}
 	

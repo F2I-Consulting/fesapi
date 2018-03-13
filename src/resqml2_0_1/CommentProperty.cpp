@@ -28,12 +28,12 @@ under the License.
 #include "common/AbstractHdfProxy.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* CommentProperty::XML_TAG = "CommentProperty";
 
-CommentProperty::CommentProperty(resqml2::AbstractRepresentation * rep, const string & guid, const string & title,
+CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const resqml2__ResqmlPropertyKind & energisticsPropertyKind)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORECommentProperty(rep->getGsoapContext(), 1);	
@@ -51,8 +51,8 @@ CommentProperty::CommentProperty(resqml2::AbstractRepresentation * rep, const st
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");
 }
 
-CommentProperty::CommentProperty(resqml2::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, resqml2::PropertyKind * localPropKind)
+CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropKind)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORECommentProperty(rep->getGsoapContext(), 1);	
 	_resqml2__CommentProperty* prop = static_cast<_resqml2__CommentProperty*>(gsoapProxy2_0_1);
@@ -68,7 +68,7 @@ CommentProperty::CommentProperty(resqml2::AbstractRepresentation * rep, const st
 }
 
 void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values,
-	common::AbstractHdfProxy * proxy)
+	COMMON_NS::AbstractHdfProxy * proxy)
 {
 	const string datasetName = pushBackRefToExistingDataset(proxy, "");
 
@@ -107,7 +107,7 @@ void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::str
     delete [] cTab;
 }
 
-std::string CommentProperty::pushBackRefToExistingDataset(common::AbstractHdfProxy* hdfProxy, const std::string & datasetName, const long & nullValue)
+std::string CommentProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, const long & nullValue)
 {
 	setHdfProxy(hdfProxy);
 	_resqml2__CommentProperty* prop = static_cast<_resqml2__CommentProperty*>(gsoapProxy2_0_1);
@@ -141,7 +141,7 @@ std::string CommentProperty::pushBackRefToExistingDataset(common::AbstractHdfPro
 std::vector<std::string> CommentProperty::getStringValuesOfPatch(const unsigned int & patchIndex)
 {
 	// Check that the hdf proxy has been resolved.
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 	if (hdfProxy == nullptr) {
 		throw invalid_argument("The hdf proxy does not exist");
 	}
@@ -191,7 +191,7 @@ std::vector<std::string> CommentProperty::getStringValuesOfPatch(const unsigned 
 	return result;
 }
 
-bool CommentProperty::validatePropertyKindAssociation(resqml2::PropertyKind* pk)
+bool CommentProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKind* pk)
 {
 	if (pk == nullptr) {
 		throw invalid_argument("The property kind to validate cannot be null.");

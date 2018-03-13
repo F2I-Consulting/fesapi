@@ -20,9 +20,9 @@ under the License.
 
 #include "resqml2/AbstractRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT PlaneSetRepresentation : public resqml2::AbstractRepresentation
+	class DLL_IMPORT_OR_EXPORT PlaneSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	private :
 		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const {return nullptr;}
@@ -32,7 +32,7 @@ namespace resqml2_0_1
 		/**
 		* Only to be used in partial transfer context
 		*/
-		PlaneSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : resqml2::AbstractRepresentation(partialObject) {}
+		PlaneSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractRepresentation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -41,13 +41,13 @@ namespace resqml2_0_1
 		* @param guid							The guid to set to the new instance. If empty then a new guid will be generated.
 		* @param title							A title for the instance to create.
 		*/
-		PlaneSetRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+		PlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 				const std::string & guid, const std::string & title);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		PlaneSetRepresentation(gsoap_resqml2_0_1::_resqml2__PlaneSetRepresentation* fromGsoap) : resqml2::AbstractRepresentation(fromGsoap) {}
+		PlaneSetRepresentation(gsoap_resqml2_0_1::_resqml2__PlaneSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

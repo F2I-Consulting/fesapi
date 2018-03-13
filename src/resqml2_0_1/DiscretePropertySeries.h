@@ -20,7 +20,7 @@ under the License.
 
 #include "resqml2_0_1/DiscreteProperty.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT DiscretePropertySeries : public DiscreteProperty
 	{
@@ -42,10 +42,10 @@ namespace resqml2_0_1
 		* @param ts							The associated time series.
 		* @param useInterval				Indicates wether the property values will be attached to the time index or to the interval between consecutive time index. 
 		*/
-		DiscretePropertySeries(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		DiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
 			const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind,
-			resqml2::TimeSeries * ts, const bool & useInterval = false);
+			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -58,10 +58,10 @@ namespace resqml2_0_1
 		* @param ts							The associated time series.
 		* @param useInterval				Indicates wether the property values will be attached to the time index or to the interval between consecutive time index. 
 		*/
-		DiscretePropertySeries(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		DiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
-			resqml2::PropertyKind * localPropKind,
-			resqml2::TimeSeries * ts, const bool & useInterval = false);
+			RESQML2_NS::PropertyKind * localPropKind,
+			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.

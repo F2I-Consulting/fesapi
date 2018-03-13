@@ -20,16 +20,16 @@ under the License.
 
 #include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT StratigraphicUnitInterpretation : public resqml2::AbstractFeatureInterpretation
+	class DLL_IMPORT_OR_EXPORT StratigraphicUnitInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		StratigraphicUnitInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : resqml2::AbstractFeatureInterpretation(partialObject) {}
+		StratigraphicUnitInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeatureInterpretation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -42,7 +42,7 @@ namespace resqml2_0_1
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		StratigraphicUnitInterpretation(gsoap_resqml2_0_1::_resqml2__StratigraphicUnitInterpretation* fromGsoap) : resqml2::AbstractFeatureInterpretation(fromGsoap) {}
+		StratigraphicUnitInterpretation(gsoap_resqml2_0_1::_resqml2__StratigraphicUnitInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

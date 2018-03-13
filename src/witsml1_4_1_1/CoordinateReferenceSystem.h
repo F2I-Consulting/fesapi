@@ -20,7 +20,7 @@ under the License.
 
 #include "witsml1_4_1_1/AbstractObject.h"
 
-namespace witsml1_4_1_1
+namespace WITSML1_4_1_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT CoordinateReferenceSystem : public AbstractObject
 	{
@@ -81,7 +81,7 @@ namespace witsml1_4_1_1
 		* Resolve all relationships of the object in an epc document.
 		* Does nothing since there is no forward relationship.
 		*/
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc) {}
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
 
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}

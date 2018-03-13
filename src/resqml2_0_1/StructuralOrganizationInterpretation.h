@@ -21,7 +21,7 @@ under the License.
 #include "resqml2_0_1/AbstractOrganizationInterpretation.h"
 #include "resqml2_0_1/EarthModelInterpretation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT StructuralOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{
@@ -93,11 +93,11 @@ namespace resqml2_0_1
     private:
 
         std::vector<epc::Relationship> getAllEpcRelationships() const;	
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
         // backward relationships
         std::vector<EarthModelInterpretation *> earthModelSet;
-		std::vector<resqml2::GridConnectionSetRepresentation *> gridConnectionSet;
+		std::vector<RESQML2_NS::GridConnectionSetRepresentation *> gridConnectionSet;
 
 		friend void EarthModelInterpretation::setStructuralOrganizationInterpretation(StructuralOrganizationInterpretation * structOrganization);
 	};

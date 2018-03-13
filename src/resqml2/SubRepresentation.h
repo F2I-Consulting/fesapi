@@ -20,9 +20,9 @@ under the License.
 
 #include "resqml2/AbstractRepresentation.h"
 
-namespace resqml2
+namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT SubRepresentation : public resqml2::AbstractRepresentation
+	class DLL_IMPORT_OR_EXPORT SubRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	protected:
 
@@ -30,16 +30,16 @@ namespace resqml2
 		* Only to be used in partial transfer context
 		*/
 		SubRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			resqml2::AbstractRepresentation(partialObject)
+			RESQML2_NS::AbstractRepresentation(partialObject)
 		{
 		}
 
-		SubRepresentation(resqml2::AbstractFeatureInterpretation* interp) : resqml2::AbstractRepresentation(interp, nullptr) {}
+		SubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp) : RESQML2_NS::AbstractRepresentation(interp, nullptr) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		SubRepresentation(gsoap_resqml2_0_1::_resqml2__SubRepresentation* fromGsoap) : resqml2::AbstractRepresentation(fromGsoap) {}
+		SubRepresentation(gsoap_resqml2_0_1::_resqml2__SubRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
 		virtual void pushBackXmlSupportingRepresentation(AbstractRepresentation * supportingRep) = 0;
 
@@ -112,7 +112,7 @@ namespace resqml2
         * @param	proxy					The HDF proxy where the numerical values (indices) are stored.
 		* @param	supportingRepIndices	The indices of the supporting represenation for each elment in the supporting representation. The count must be elementCount.
 		*/
-		virtual void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, ULONG64 * elementIndices, common::AbstractHdfProxy* proxy, short * supportingRepIndices = nullptr) = 0;
+		virtual void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, ULONG64 * elementIndices, COMMON_NS::AbstractHdfProxy* proxy, short * supportingRepIndices = nullptr) = 0;
 
 		/**
 		* Push back a new patch in the subrepresentation which is constituted by means of pairwise elements.
@@ -126,7 +126,7 @@ namespace resqml2
 		virtual void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind0, const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind1,
 			const ULONG64 & elementCount,
 			ULONG64 * elementIndices0, ULONG64 * elementIndices1,
-			common::AbstractHdfProxy* proxy) = 0;
+			COMMON_NS::AbstractHdfProxy* proxy) = 0;
 
 		/**
 		* Push back a new patch (without pairwise elements) in the subrepresentation where the indice values have not to be written in the HDF file.
@@ -139,7 +139,7 @@ namespace resqml2
 		* @param	supportingRepDataset	The HDF5 dataset name where the element indices are stored. If empty, it won't be exported any information about suppporting rep relying on the fact there is only one suppporting rep for this whole patch.
 		*/
 		virtual void pushBackRefToExistingDataset(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, const std::string & elementDataset,
-			const LONG64 & nullValue, common::AbstractHdfProxy * proxy, const std::string & supportingRepDataset = "") = 0;
+			const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset = "") = 0;
 
 		ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 
@@ -195,7 +195,7 @@ namespace resqml2
 		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const {return nullptr;}
 		
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 	};
 }
 

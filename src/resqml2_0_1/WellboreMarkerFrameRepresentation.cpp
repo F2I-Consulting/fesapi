@@ -39,7 +39,7 @@ under the License.
 #include "witsml1_4_1_1/FormationMarker.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 
@@ -130,7 +130,7 @@ void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned i
 	hdfProxy->writeArrayNd(frame->uuid, "IntervalStratigraphicUnits", H5T_NATIVE_UINT, stratiUnitIndices, &dim, 1);
 }
 
-void WellboreMarkerFrameRepresentation::setWitsmlFormationMarker(const unsigned int & resqmlMarkerIndex, witsml1_4_1_1::FormationMarker * witsmlFormationMarker)
+void WellboreMarkerFrameRepresentation::setWitsmlFormationMarker(const unsigned int & resqmlMarkerIndex, WITSML1_4_1_1_NS::FormationMarker * witsmlFormationMarker)
 {
 	_resqml2__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml2__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
 	if (frame->WellboreMarker.size() <= resqmlMarkerIndex)
@@ -186,7 +186,7 @@ vector<Relationship> WellboreMarkerFrameRepresentation::getAllEpcRelationships()
 	return result;
 }
 
-void WellboreMarkerFrameRepresentation::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void WellboreMarkerFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	WellboreFrameRepresentation::importRelationshipSetFromEpc(epcDoc);
 
@@ -198,7 +198,7 @@ void WellboreMarkerFrameRepresentation::importRelationshipSetFromEpc(common::Epc
 
 	if (rep->IntervalStratigraphiUnits != nullptr)
 	{
-		setStratigraphicOccurrenceInterpretation(epcDoc->getResqmlAbstractObjectByUuid<resqml2_0_1::StratigraphicOccurrenceInterpretation>(rep->IntervalStratigraphiUnits->StratigraphicOrganization->UUID));
+		setStratigraphicOccurrenceInterpretation(epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation>(rep->IntervalStratigraphiUnits->StratigraphicOrganization->UUID));
 	}
 
 	updateXml = true;
@@ -207,7 +207,7 @@ void WellboreMarkerFrameRepresentation::importRelationshipSetFromEpc(common::Epc
 	{
 		if (rep->WellboreMarker[i]->WitsmlFormationMarker)
 		{
-			witsml1_4_1_1::FormationMarker* tmp = static_cast<witsml1_4_1_1::FormationMarker*>(epcDoc->getWitsmlAbstractObjectByUuid(rep->WellboreMarker[i]->WitsmlFormationMarker->UUID));
+			WITSML1_4_1_1_NS::FormationMarker* tmp = static_cast<WITSML1_4_1_1_NS::FormationMarker*>(epcDoc->getWitsmlAbstractObjectByUuid(rep->WellboreMarker[i]->WitsmlFormationMarker->UUID));
 			if (tmp)
 			{
 				updateXml = false;

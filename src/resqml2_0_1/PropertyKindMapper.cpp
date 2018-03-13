@@ -31,7 +31,7 @@ under the License.
 #include "resqml2_0_1/PropertyKind.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 
 string PropertyKindMapper::loadMappingFilesFromDirectory(const string & directory)
 {

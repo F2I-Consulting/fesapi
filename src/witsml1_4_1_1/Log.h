@@ -22,7 +22,7 @@ under the License.
 
 #include "resqml2_0_1/WellboreFrameRepresentation.h"
 
-namespace witsml1_4_1_1
+namespace WITSML1_4_1_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT Log : public AbstractObject
 	{
@@ -123,7 +123,7 @@ namespace witsml1_4_1_1
 
 		class Wellbore* getWellbore() {return wellbore;}
 
-		resqml2_0_1::WellboreFrameRepresentation* getResqmlWellboreFrameRepresentation() const {return resqmlWellboreFrameRepresentation;}
+		RESQML2_0_1_NS::WellboreFrameRepresentation* getResqmlWellboreFrameRepresentation() const {return resqmlWellboreFrameRepresentation;}
 
 		soap* getGSoapContext() const {return collection->soap;}
 
@@ -150,7 +150,7 @@ namespace witsml1_4_1_1
 		/**
 		* Resolve all relationships of the object in an epc document.
 		*/
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
@@ -161,9 +161,9 @@ namespace witsml1_4_1_1
 		class Wellbore* wellbore;
 
 		// XML backwards relationship
-		resqml2_0_1::WellboreFrameRepresentation* resqmlWellboreFrameRepresentation;
+		RESQML2_0_1_NS::WellboreFrameRepresentation* resqmlWellboreFrameRepresentation;
 		
-		friend void resqml2_0_1::WellboreFrameRepresentation::setWitsmlLog(Log * witsmlLogToSet);
+		friend void RESQML2_0_1_NS::WellboreFrameRepresentation::setWitsmlLog(Log * witsmlLogToSet);
 	};
 }
 

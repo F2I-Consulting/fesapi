@@ -21,7 +21,7 @@ under the License.
 #include "AbstractBigIjkGridRepresentationTest.h"
 #include <iostream>
 
-namespace common {
+namespace COMMON_NS {
 	class EpcDocument;
 }
 
@@ -79,7 +79,7 @@ namespace resqml2_0_1test {
 		* @param zMax		maximum z value of the grid (without considering any fault throw).
 		* @param faultThrow	length of the fault throw along z axis.
 		*/
-		BigIjkGridParametricRepresentationTest(common::EpcDocument * epcDoc, bool init,
+		BigIjkGridParametricRepresentationTest(COMMON_NS::EpcDocument * epcDoc, bool init,
 			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
 			const unsigned int & faultCount,
 			const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,

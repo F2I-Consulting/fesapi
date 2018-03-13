@@ -24,9 +24,9 @@ under the License.
 #include "resqml2/AbstractRepresentation.h"
 
 using namespace std;
-using namespace common;
+using namespace COMMON_NS;
 using namespace resqml2_0_1test;
-using namespace resqml2;
+using namespace RESQML2_NS;
 
 const char* SubRepresentationOnPartialGridConnectionSet::defaultUuid = "4c698ca0-ee35-4c68-9c52-9ddeb52eaa21";
 const char* SubRepresentationOnPartialGridConnectionSet::defaultTitle = "SubRepresentation On Partial GridConnectionSet";
@@ -35,7 +35,7 @@ SubRepresentationOnPartialGridConnectionSet::SubRepresentationOnPartialGridConne
 	: AbstractRepresentationTest(epcDocPath, defaultUuid, defaultTitle) {
 }
 
-SubRepresentationOnPartialGridConnectionSet::SubRepresentationOnPartialGridConnectionSet(common::EpcDocument * epcDoc, bool init)
+SubRepresentationOnPartialGridConnectionSet::SubRepresentationOnPartialGridConnectionSet(COMMON_NS::EpcDocument * epcDoc, bool init)
 	: AbstractRepresentationTest(epcDoc, defaultUuid, defaultTitle) {
 		if (init)
 			this->initEpcDoc();
@@ -48,9 +48,9 @@ void SubRepresentationOnPartialGridConnectionSet::initEpcDocHandler()
 	// getting the hdf proxy
 	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
 
-	resqml2::GridConnectionSetRepresentation* partialGcsr = this->epcDoc->createPartialGridConnectionSetRepresentation("00a7d22f-4746-409b-87dc-5bdb83660d27", "GCSR");
+	RESQML2_NS::GridConnectionSetRepresentation* partialGcsr = this->epcDoc->createPartialGridConnectionSetRepresentation("00a7d22f-4746-409b-87dc-5bdb83660d27", "GCSR");
 	REQUIRE(partialGcsr != nullptr);
-	resqml2::SubRepresentation* subRep = epcDoc->createSubRepresentation(this->uuid, this->title);
+	RESQML2_NS::SubRepresentation* subRep = epcDoc->createSubRepresentation(this->uuid, this->title);
 	subRep->pushBackSupportingRepresentation(partialGcsr);
 
 	ULONG64 elements[2] = { 1, 2 };
@@ -60,7 +60,7 @@ void SubRepresentationOnPartialGridConnectionSet::initEpcDocHandler()
 void SubRepresentationOnPartialGridConnectionSet::readEpcDocHandler()
 {
 	// getting the subrep
-	resqml2::SubRepresentation* subRep = epcDoc->getResqmlAbstractObjectByUuid<resqml2::SubRepresentation>(this->uuid);
+	RESQML2_NS::SubRepresentation* subRep = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::SubRepresentation>(this->uuid);
 
 	REQUIRE(subRep->getSupportingRepresentation(0)->isPartial());
 	REQUIRE(subRep->getSupportingRepresentation(0)->getXmlTag().compare("GridConnectionSetRepresentation") == 0);

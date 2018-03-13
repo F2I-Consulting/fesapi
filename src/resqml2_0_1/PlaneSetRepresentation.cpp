@@ -26,12 +26,12 @@ under the License.
 #include "resqml2/AbstractLocal3dCrs.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* PlaneSetRepresentation::XML_TAG = "PlaneSetRepresentation";
 
-PlaneSetRepresentation::PlaneSetRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+PlaneSetRepresentation::PlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 		const std::string & guid, const std::string & title):
 	AbstractRepresentation(interp, crs)
 {

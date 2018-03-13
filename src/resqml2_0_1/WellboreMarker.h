@@ -20,13 +20,13 @@ under the License.
 
 #include "common/AbstractObject.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	/**
 	* This class is one of the only one to be a ResqmlDataObject which is not exported into a single file i.e. not a top level element.
 	* Consequently its behaviour is slightly different than other class. Especially there is no integration of the instances into an EPC document.
 	*/
-	class DLL_IMPORT_OR_EXPORT WellboreMarker : public common::AbstractObject
+	class DLL_IMPORT_OR_EXPORT WellboreMarker : public COMMON_NS::AbstractObject
 	{
 	public:
 
@@ -93,7 +93,7 @@ namespace resqml2_0_1
 
 		// No need these two inherited methods since WellboreMarker is not an EPC top level element.
 		std::vector<epc::Relationship> getAllEpcRelationships() const {std::vector<epc::Relationship> result; return result;}
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc) {};
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {};
 
 		class BoundaryFeatureInterpretation* boundaryFeatureInterpretation;
 		class WellboreMarkerFrameRepresentation* wellboreMarkerFrameRepresentation;

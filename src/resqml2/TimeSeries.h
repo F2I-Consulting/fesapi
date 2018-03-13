@@ -20,9 +20,9 @@ under the License.
 
 #include "resqml2/AbstractProperty.h"
 
-namespace resqml2
+namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT TimeSeries : public common::AbstractObject
+	class DLL_IMPORT_OR_EXPORT TimeSeries : public COMMON_NS::AbstractObject
 	{
 	protected:
 		/**
@@ -33,12 +33,12 @@ namespace resqml2
 		/**
 		* Only to be used in partial transfer context
 		*/
-		TimeSeries(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : common::AbstractObject(partialObject) {}
+		TimeSeries(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		TimeSeries(gsoap_resqml2_0_1::_resqml2__TimeSeries* fromGsoap) : common::AbstractObject(fromGsoap) {}
+		TimeSeries(gsoap_resqml2_0_1::_resqml2__TimeSeries* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 	public:
 		
@@ -75,7 +75,7 @@ namespace resqml2
 		/**
 		* Get all the properties which use this time series
 		*/
-		const std::vector<resqml2::AbstractProperty*>& getPropertySet() const { return propertySet; }
+		const std::vector<RESQML2_NS::AbstractProperty*>& getPropertySet() const { return propertySet; }
 
 	protected:
 
@@ -83,10 +83,10 @@ namespace resqml2
 		/**
 		* Does nothing since StringTableLookup has not got any forward relationship.
 		*/
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc) {}
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
 
 		// XML backward relationship
-		std::vector<resqml2::AbstractProperty*> propertySet;
+		std::vector<RESQML2_NS::AbstractProperty*> propertySet;
 
 		friend void AbstractProperty::setTimeSeries(TimeSeries * ts);
 	};

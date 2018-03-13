@@ -26,7 +26,7 @@ under the License.
 #include "resqml2_0_1/StratigraphicOccurrenceInterpretation.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 
@@ -112,7 +112,7 @@ vector<Relationship> EarthModelInterpretation::getAllEpcRelationships() const
     return result;
 }
 		
-void EarthModelInterpretation::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void EarthModelInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	AbstractFeatureInterpretation::importRelationshipSetFromEpc(epcDoc);
 

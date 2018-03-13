@@ -125,6 +125,14 @@ ENDIF (PROXIES_GENERATION)
 SET (WITH_JAVA_WRAPPING OFF CACHE BOOL "Compile the swig cpp generated file for Java wrappers.")
 SET (WITH_DOTNET_WRAPPING OFF CACHE BOOL "Compile the swig cpp generated file for .NET wrappers.")
 
+# Namespaces definitions
+SET (FESAPI_COMMON_NS common CACHE STRING "Namespace for common objects")
+SET (FESAPI_PRODML2_0_NS prodml2_0 CACHE STRING "Namespace for prodml2_0 objects")
+SET (FESAPI_RESQML2_NS resqml2 CACHE STRING "Namespace for resqml2 objects")
+SET (FESAPI_RESQML2_0_1_NS resqml2_0_1 CACHE STRING "Namespace for resqml2_0_1 objects")
+SET (FESAPI_WITSML1_4_1_1_NS witsml1_4_1_1 CACHE STRING "Namespace for witsml1_4_1_1 objects")
+CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/nsDefinitions.h) # Overwrite if different
+
 FILE (GLOB FESAPI_COMMON_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/common/*.cpp)
 FILE (GLOB FESAPI_COMMON_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/common/*.h)
 
@@ -146,11 +154,11 @@ FILE (GLOB FESAPI_RESQML_2_0_1_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREF
 FILE (GLOB FESAPI_PRODML_2_0_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_0}/*.cpp)
 FILE (GLOB FESAPI_PRODML_2_0_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_0}/*.h)
 
-	
 FILE (GLOB FESAPI_WITSML_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX}/*.cpp)
 FILE (GLOB FESAPI_WITSML_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX}/*.h)
 
 SET (ALL_SOURCES_AND_HEADERS
+	${CMAKE_CURRENT_SOURCE_DIR}/nsDefinitions.h
 	${FESAPI_COMMON_SOURCES}
 	${FESAPI_COMMON_HEADERS}
 	${FESAPI_TOOLS_SOURCES}
@@ -196,7 +204,7 @@ IF (WITH_JAVA_WRAPPING)
 	ENDIF (WIN32)
 	message("SWIG files have been generated")
 	
-	# Create the Visualjava example file
+	# Create the Visual java example file
 	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR}/java/src/com/f2i/example/FesapiJavaExample.java) # Overwrite if different
 	
 	# Building the jar

@@ -19,7 +19,7 @@ under the License.
 #include "AbstractValuesPropertyTest.h"
 
 using namespace std;
-using namespace common;
+using namespace COMMON_NS;
 using namespace resqml2_0_1test;
 
 AbstractValuesPropertyTest::AbstractValuesPropertyTest(const string & epcDocPath, const string & uuid, const string & title, const string & uuidRepresentation, const string & titleRepresentation)

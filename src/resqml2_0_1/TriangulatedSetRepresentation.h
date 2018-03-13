@@ -20,7 +20,7 @@ under the License.
 
 #include "resqml2_0_1/AbstractSurfaceRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	/**
 	 * A triangulated representation is a representation (most of time a surface) which is constituted by triangles.
@@ -44,7 +44,7 @@ namespace resqml2_0_1
 		* @param guid						The guid to set to the new instance. If empty then a new guid will be generated.
 		* @param title						A title for the instance to create.
 		*/
-		TriangulatedSetRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+		TriangulatedSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title);
 
 		/**
@@ -69,7 +69,7 @@ namespace resqml2_0_1
 		*								The three following values define the 3 vertices of the second triangle and so on...
 		* @param proxy					The HDF proxy which defines where the nodes and triangle indices will be stored.
 		*/
-		void pushBackTrianglePatch(const unsigned int & nodeCount, double * nodes, const unsigned int & triangleCount, unsigned int * triangleNodeIndices, common::AbstractHdfProxy* proxy);
+		void pushBackTrianglePatch(const unsigned int & nodeCount, double * nodes, const unsigned int & triangleCount, unsigned int * triangleNodeIndices, COMMON_NS::AbstractHdfProxy* proxy);
 
 		/**
 		* Get the xyz point count in a given patch.

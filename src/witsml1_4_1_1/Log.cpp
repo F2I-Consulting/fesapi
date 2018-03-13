@@ -24,7 +24,7 @@ under the License.
 #include "witsml1_4_1_1/Well.h"
 
 using namespace std;
-using namespace witsml1_4_1_1;
+using namespace WITSML1_4_1_1_NS;
 using namespace gsoap_witsml1_4_1_1;
 using namespace epc;
 
@@ -398,7 +398,7 @@ void Log::pushBackLogCurveInfo(
 	*logCurveInfo->traceOrigin = traceOrigin; 
 }
 
-void Log::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void Log::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	witsml1__obj_USCORElog* log = static_cast<_witsml1__logs*>(collection)->log[0];
 	if (log && log->uidWellbore)

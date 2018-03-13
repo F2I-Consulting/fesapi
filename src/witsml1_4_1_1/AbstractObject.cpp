@@ -25,7 +25,7 @@ under the License.
 #include "witsml1_4_1_1/CoordinateReferenceSystem.h"
 
 using namespace std;
-using namespace witsml1_4_1_1;
+using namespace WITSML1_4_1_1_NS;
 using namespace gsoap_witsml1_4_1_1;
 using namespace epc;
 

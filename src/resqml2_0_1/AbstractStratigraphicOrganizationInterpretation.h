@@ -21,7 +21,7 @@ under the License.
 #include "resqml2_0_1/AbstractOrganizationInterpretation.h"
 #include "resqml2/AbstractColumnLayerGridRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT AbstractStratigraphicOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{
@@ -57,22 +57,22 @@ namespace resqml2_0_1
 		* Get a grid representation associated to this strati org interp by means of its index.
 		* @param index	The index of the grid representation to get in the array of grid representaitons of this strati org interp.
 		*/
-		resqml2::AbstractGridRepresentation* getGridRepresentation(const unsigned int & index) const;
+		RESQML2_NS::AbstractGridRepresentation* getGridRepresentation(const unsigned int & index) const;
 
 		/**
 		* Check if a grid representation is wether associated to this strati org interp or not.
 		* @param gridRep	The grid representation to check its assocaition with this strati org interp.
 		* @return			True or false.
 		*/
-		bool isAssociatedToGridRepresentation(resqml2::AbstractGridRepresentation* gridRep) const;
+		bool isAssociatedToGridRepresentation(RESQML2_NS::AbstractGridRepresentation* gridRep) const;
 
 	private:
 
 		// Backward relationship
-		std::vector<resqml2::AbstractGridRepresentation *> gridRepresentationSet;
+		std::vector<RESQML2_NS::AbstractGridRepresentation *> gridRepresentationSet;
 
-		friend void resqml2::AbstractGridRepresentation::setCellAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, AbstractStratigraphicOrganizationInterpretation * stratiOrgInterp);
-		friend void resqml2::AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
+		friend void RESQML2_NS::AbstractGridRepresentation::setCellAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, AbstractStratigraphicOrganizationInterpretation * stratiOrgInterp);
+		friend void RESQML2_NS::AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
 	};
 }
 

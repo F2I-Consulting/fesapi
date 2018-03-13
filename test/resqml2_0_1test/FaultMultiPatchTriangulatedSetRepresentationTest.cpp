@@ -28,8 +28,8 @@ under the License.
 
 using namespace std;
 using namespace resqml2_0_1test;
-using namespace common;
-using namespace resqml2_0_1;
+using namespace COMMON_NS;
+using namespace RESQML2_0_1_NS;
 
 FaultMultiPatchTriangulatedSetRepresentationTest::FaultMultiPatchTriangulatedSetRepresentationTest(const string & epcDocPath)
 	: TriangulatedSetRepresentationTest(epcDocPath, uuidFaultMultiPatchTriangulatedSetRepresentation, titleFaultMultiPatchTriangulatedSetRepresentation)
@@ -53,7 +53,7 @@ void FaultMultiPatchTriangulatedSetRepresentationTest::initEpcDocHandler()
 
 	FaultInterpretation * interp = static_cast<FaultInterpretation*>(this->epcDoc->getResqmlAbstractObjectByUuid(uuidFaultInterpretation));
 	LocalDepth3dCrs * crs = static_cast<LocalDepth3dCrs *>(this->epcDoc->getResqmlAbstractObjectByUuid(LocalDepth3dCrsTest::defaultUuid));
-	common::HdfProxy* hdfProxy = static_cast<common::HdfProxy *>(this->epcDoc->getResqmlAbstractObjectByUuid(uuidHdfProxy));
+	COMMON_NS::HdfProxy* hdfProxy = static_cast<COMMON_NS::HdfProxy *>(this->epcDoc->getResqmlAbstractObjectByUuid(uuidHdfProxy));
 
 	TriangulatedSetRepresentation* rep = this->epcDoc->createTriangulatedSetRepresentation(interp, crs, this->uuid, this->title);
 	REQUIRE( rep != nullptr );

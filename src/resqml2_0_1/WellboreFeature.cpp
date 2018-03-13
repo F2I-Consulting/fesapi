@@ -23,7 +23,7 @@ under the License.
 #include "witsml1_4_1_1/Well.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 
@@ -40,7 +40,7 @@ WellboreFeature::WellboreFeature(soap* soapContext, const string & guid, const s
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");
 }
 
-void WellboreFeature::setWitsmlWellbore(witsml1_4_1_1::Wellbore * wellbore)
+void WellboreFeature::setWitsmlWellbore(WITSML1_4_1_1_NS::Wellbore * wellbore)
 {
 	witsmlWellbore = wellbore;
 	wellbore->resqmlWellboreFeature = this;
@@ -72,13 +72,13 @@ vector<Relationship> WellboreFeature::getAllEpcRelationships() const
 	return result;
 }
 
-void WellboreFeature::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void WellboreFeature::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	resqml2__obj_USCOREWellboreFeature* resqmlWellbore = static_cast<resqml2__obj_USCOREWellboreFeature*>(gsoapProxy2_0_1);
 
 	if (resqmlWellbore->WitsmlWellbore && resqmlWellbore->WitsmlWellbore->WitsmlWellbore)
 	{
-		witsml1_4_1_1::Wellbore* tmp = static_cast<witsml1_4_1_1::Wellbore*>(epcDoc->getWitsmlAbstractObjectByUuid(resqmlWellbore->WitsmlWellbore->WitsmlWellbore->UUID));
+		WITSML1_4_1_1_NS::Wellbore* tmp = static_cast<WITSML1_4_1_1_NS::Wellbore*>(epcDoc->getWitsmlAbstractObjectByUuid(resqmlWellbore->WitsmlWellbore->WitsmlWellbore->UUID));
 		if (tmp)
 		{
 			updateXml = false;

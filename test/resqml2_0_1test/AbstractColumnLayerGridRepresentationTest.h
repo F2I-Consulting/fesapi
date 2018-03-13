@@ -21,7 +21,7 @@ under the License.
 #include "AbstractGridRepresentationTest.h"
 #include <iostream>
 
-namespace common {
+namespace COMMON_NS {
 	class EpcDocument;
 }
 
@@ -29,7 +29,7 @@ namespace resqml2_0_1test {
 	class AbstractColumnLayerGridRepresentationTest : public AbstractGridRepresentationTest {
 	public:
 		AbstractColumnLayerGridRepresentationTest(const std::string & epcDocPath, const std::string & uuid, const std::string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInGlobalCrs);
-		AbstractColumnLayerGridRepresentationTest(common::EpcDocument * epcDoc, const std::string & uuid, const std::string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInGlobalCrs);
+		AbstractColumnLayerGridRepresentationTest(COMMON_NS::EpcDocument * epcDoc, const std::string & uuid, const std::string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInGlobalCrs);
 	};
 }
 

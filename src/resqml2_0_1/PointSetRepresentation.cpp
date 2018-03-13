@@ -27,12 +27,12 @@ under the License.
 #include "common/AbstractHdfProxy.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* PointSetRepresentation::XML_TAG = "PointSetRepresentation";
 
-PointSetRepresentation::PointSetRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+PointSetRepresentation::PointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 		const std::string & guid, const std::string & title):
 	AbstractRepresentation(interp, crs)
 {
@@ -51,7 +51,7 @@ PointSetRepresentation::PointSetRepresentation(resqml2::AbstractFeatureInterpret
 
 void PointSetRepresentation::pushBackGeometryPatch(
 	const unsigned int & xyzPointCount, double * xyzPoints,
-	common::AbstractHdfProxy * proxy)
+	COMMON_NS::AbstractHdfProxy * proxy)
 {
 	resqml2__NodePatch* patch = soap_new_resqml2__NodePatch(gsoapProxy2_0_1->soap, 1);
 	patch->PatchIndex = static_cast<_resqml2__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch.size();

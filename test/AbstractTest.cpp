@@ -30,13 +30,13 @@ AbstractTest::AbstractTest(const string & epcDocPath) :
 	epcDoc(nullptr) {
 }
 
-AbstractTest::AbstractTest(common::EpcDocument* epcDoc) :
+AbstractTest::AbstractTest(COMMON_NS::EpcDocument* epcDoc) :
 	epcDocPath(epcDoc->getStorageDirectory()),
 	epcDoc(epcDoc) {
 }
 
 void AbstractTest::serialize() {
-	epcDoc = new common::EpcDocument(epcDocPath, common::EpcDocument::OVERWRITE);
+	epcDoc = new COMMON_NS::EpcDocument(epcDocPath, COMMON_NS::EpcDocument::OVERWRITE);
 	epcDoc->createHdfProxy(uuidHdfProxy, titleHdfProxy, epcDoc->getStorageDirectory(), epcDoc->getName() + ".h5");
 
 	initEpcDoc();
@@ -47,7 +47,7 @@ void AbstractTest::serialize() {
 }
 
 void AbstractTest::deserialize() {
-	epcDoc = new common::EpcDocument(epcDocPath);
+	epcDoc = new COMMON_NS::EpcDocument(epcDocPath);
 
 	std::string validationResult = epcDoc->deserialize();
 	if (validationResult.size() > 0)

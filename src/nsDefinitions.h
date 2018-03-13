@@ -7,7 +7,7 @@ to you under the Apache License, Version 2.0 (the
 "License"; you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
-  http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing,
 software distributed under the License is distributed on an
@@ -18,18 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractColumnLayerGridRepresentationTest.h"
-#include <iostream>
-
-namespace COMMON_NS {
-	class EpcDocument;
-}
-
-namespace resqml2_0_1test {
-	class AbstractIjkGridRepresentationTest : public AbstractColumnLayerGridRepresentationTest {
-	public:
-		AbstractIjkGridRepresentationTest(const std::string & epcDocPath, const std::string & uuid, const std::string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInGlobalCrs);
-		AbstractIjkGridRepresentationTest(COMMON_NS::EpcDocument * epcDoc, const std::string & uuid, const std::string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInGlobalCrs);
-	};
-}
-
+#define COMMON_NS common
+#define PRODML2_0_NS prodml2_0
+#define RESQML2_NS resqml2
+#define RESQML2_0_1_NS resqml2_0_1
+#define WITSML1_4_1_1_NS witsml1_4_1_1

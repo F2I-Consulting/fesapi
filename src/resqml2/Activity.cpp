@@ -24,7 +24,7 @@ under the License.
 #include <algorithm>
 
 using namespace std;
-using namespace resqml2;
+using namespace RESQML2_NS;
 using namespace epc;
 
 const char* Activity::XML_TAG = "Activity";
@@ -33,7 +33,7 @@ vector<Relationship> Activity::getAllEpcRelationships() const
 {
 	vector<Relationship> result;
 
-	resqml2::ActivityTemplate* activityTemplate = getActivityTemplate();
+	RESQML2_NS::ActivityTemplate* activityTemplate = getActivityTemplate();
 	if (activityTemplate != nullptr) {
 		Relationship rel(activityTemplate->getPartNameInEpcDocument(), "", activityTemplate->getUuid());
 		rel.setDestinationObjectType();
@@ -52,15 +52,15 @@ vector<Relationship> Activity::getAllEpcRelationships() const
 	return result;
 }
 
-std::vector<common::AbstractObject*> Activity::getResqmlObjectSet() const
+std::vector<COMMON_NS::AbstractObject*> Activity::getResqmlObjectSet() const
 {
-	std::vector<common::AbstractObject*> result;
+	std::vector<COMMON_NS::AbstractObject*> result;
 
 	unsigned int paramCount = getParameterCount();
 
 	for (unsigned int index=0; index < paramCount; ++index) {
 		if (isAResqmlObjectParameter(index)) {
-			common::AbstractObject* obj = getResqmlObjectParameterValue(index);
+			COMMON_NS::AbstractObject* obj = getResqmlObjectParameterValue(index);
 			if (std::find(result.begin(), result.end(), obj) == result.end()) {
 				result.push_back(obj);
 			}
@@ -72,6 +72,6 @@ std::vector<common::AbstractObject*> Activity::getResqmlObjectSet() const
 
 ActivityTemplate* Activity::getActivityTemplate() const
 {
-	return getEpcDocument()->getResqmlAbstractObjectByUuid<resqml2::ActivityTemplate>(getActivityTemplateDor()->UUID);
+	return getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_NS::ActivityTemplate>(getActivityTemplateDor()->UUID);
 }
 

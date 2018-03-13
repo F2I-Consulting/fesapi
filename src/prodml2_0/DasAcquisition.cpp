@@ -32,7 +32,7 @@ under the License.
 #include "tools/GuidTools.h"
 
 using namespace std;
-using namespace prodml2_0;
+using namespace PRODML2_0_NS;
 using namespace gsoap_eml2_1;
 using namespace epc;
 
@@ -100,7 +100,7 @@ DasAcquisition::DasAcquisition(FiberOpticalPath* fiberOpticalPath, class DasInst
 }
 
 DasAcquisition::DasAcquisition(FiberOpticalPath* fiberOpticalPath, DasInstrumentBox* dasInstrumentBox,
-	prodml2_0::HdfProxy * proxy)
+	PRODML2_0_NS::HdfProxy * proxy)
 {
 	setHdfProxy(proxy);
 
@@ -180,9 +180,9 @@ DasAcquisition::DasAcquisition(FiberOpticalPath* fiberOpticalPath, DasInstrument
 
 }
 
-common::AbstractHdfProxy* DasAcquisition::getHdfProxy() const
+COMMON_NS::AbstractHdfProxy* DasAcquisition::getHdfProxy() const
 {
-	common::AbstractHdfProxy* hdfProxy = static_cast<common::AbstractHdfProxy*>(epcDocument->getResqmlAbstractObjectByUuid(getHdfProxyUuid()));
+	COMMON_NS::AbstractHdfProxy* hdfProxy = static_cast<COMMON_NS::AbstractHdfProxy*>(epcDocument->getResqmlAbstractObjectByUuid(getHdfProxyUuid()));
 	if (hdfProxy != nullptr && !hdfProxy->isOpened()) {
 		hdfProxy->open();
 	}
@@ -200,7 +200,7 @@ std::string DasAcquisition::getHdfProxyUuid() const
 	return hdfValues->Values->ExternalFileProxy[0]->EpcExternalPartReference->Uuid;
 }
 
-void DasAcquisition::setHdfProxy(common::AbstractHdfProxy * proxy)
+void DasAcquisition::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy)
 {
 	if (proxy == nullptr) {
 		throw invalid_argument("The hdf proxy of das acquisiiton " + getUuid() + " cannot be null");
@@ -279,7 +279,7 @@ vector<Relationship> DasAcquisition::getAllEpcRelationships() const
 	relDib.setDestinationObjectType();
 	result.push_back(relDib);
 
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 	Relationship relHdf(hdfProxy->getPartNameInEpcDocument(), "", hdfProxy->getUuid());
 	relHdf.setMlToExternalPartProxyType();
 	result.push_back(relHdf);
@@ -291,7 +291,7 @@ void DasAcquisition::initHdfAttributes()
 {
 	_prodml2__DasAcquisition* da = static_cast<_prodml2__DasAcquisition*>(gsoapProxy2_1);
 	soap* soapContext = getGsoapContext();
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 
 	// STRING
 	std::vector<std::string> attributeStringValues;
@@ -367,7 +367,7 @@ prodml2__DasRaw* DasAcquisition::pushBackRawXmlOnly(const std::string & uuid, co
 	const std::string & startTime, const std::string endTime, const ULONG64 & timeCount,
 	gsoap_eml2_1::prodml2__DasDimensions slowestHdfDimension, gsoap_eml2_1::prodml2__DasDimensions fastestHdfDimension,
 	bool datatypeIsInteger,
-	common::AbstractHdfProxy* proxy)
+	COMMON_NS::AbstractHdfProxy* proxy)
 {
 	setHdfProxy(proxy);
 
@@ -434,7 +434,7 @@ prodml2__DasRaw* DasAcquisition::pushBackRawXmlOnly(const std::string & uuid, co
 	return dasRaw;
 }
 
-void DasAcquisition::pushBackRaw(const std::string & guid, bool datatypeIsInteger, const char & datatypeByteCount, const std::string & rawDataUnit, LONG64* timeArray, const ULONG64 & timeCount, common::AbstractHdfProxy* proxy)
+void DasAcquisition::pushBackRaw(const std::string & guid, bool datatypeIsInteger, const char & datatypeByteCount, const std::string & rawDataUnit, LONG64* timeArray, const ULONG64 & timeCount, COMMON_NS::AbstractHdfProxy* proxy)
 {
 	_prodml2__DasAcquisition* da = static_cast<_prodml2__DasAcquisition*>(gsoapProxy2_1);
 
@@ -526,7 +526,7 @@ void DasAcquisition::pushBackRaw(const std::string & guid, bool datatypeIsIntege
 #define COMMON_CODE_WRITE_INTO_DATASET _prodml2__DasAcquisition* da = static_cast<_prodml2__DasAcquisition*>(gsoapProxy2_1); \
 	hsize_t numValuesInEachDimension[] = {numSampleForAllLoci, da->NumberOfLoci}; \
 	hsize_t offsetInEachDimension[] = {timeStepIndex, 0}; \
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 
 void DasAcquisition::writeIntoDataset(float * data,
 	unsigned long numSampleForAllLoci,
@@ -650,9 +650,9 @@ ULONG64 DasAcquisition::getRawDataTimeCount(const unsigned int & rawIndex) const
 	return da->Raw[rawIndex]->RawDataTime->__DasTimeArray_sequence->TimeArray->Values->ExternalFileProxy[0]->Count;
 }
 
-resqml2::AbstractValuesProperty::hdfDatatypeEnum DasAcquisition::getRawDataHdfDatatype(const unsigned int & rawIndex) const
+RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum DasAcquisition::getRawDataHdfDatatype(const unsigned int & rawIndex) const
 {
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 
 	hid_t dt = -1;
 	if (gsoapProxy2_1 != nullptr) {
@@ -665,7 +665,7 @@ resqml2::AbstractValuesProperty::hdfDatatypeEnum DasAcquisition::getRawDataHdfDa
 			dt = hdfProxy->getHdfDatatypeInDataset(static_cast<eml21__IntegerExternalArray*>(da->Raw[rawIndex]->RawData->RawDataArray)->Values->ExternalFileProxy[0]->PathInExternalFile);
 		}
 		else {
-			return resqml2::AbstractValuesProperty::UNKNOWN;
+			return RESQML2_NS::AbstractValuesProperty::UNKNOWN;
 		}
 	}
 	else {
@@ -673,27 +673,27 @@ resqml2::AbstractValuesProperty::hdfDatatypeEnum DasAcquisition::getRawDataHdfDa
 	}
 
 	if (H5Tequal(dt, H5T_NATIVE_DOUBLE) > 0)
-		return resqml2::AbstractValuesProperty::DOUBLE;
+		return RESQML2_NS::AbstractValuesProperty::DOUBLE;
 	else if (H5Tequal(dt, H5T_NATIVE_FLOAT) > 0)
-		return resqml2::AbstractValuesProperty::FLOAT;
+		return RESQML2_NS::AbstractValuesProperty::FLOAT;
 	else if (H5Tequal(dt, H5T_NATIVE_LLONG) > 0)
-		return resqml2::AbstractValuesProperty::LONG;
+		return RESQML2_NS::AbstractValuesProperty::LONG;
 	else if (H5Tequal(dt, H5T_NATIVE_ULLONG) > 0)
-		return resqml2::AbstractValuesProperty::ULONG;
+		return RESQML2_NS::AbstractValuesProperty::ULONG;
 	else if (H5Tequal(dt, H5T_NATIVE_INT) > 0)
-		return resqml2::AbstractValuesProperty::INT;
+		return RESQML2_NS::AbstractValuesProperty::INT;
 	else if (H5Tequal(dt, H5T_NATIVE_UINT) > 0)
-		return resqml2::AbstractValuesProperty::UINT;
+		return RESQML2_NS::AbstractValuesProperty::UINT;
 	else if (H5Tequal(dt, H5T_NATIVE_SHORT) > 0)
-		return resqml2::AbstractValuesProperty::SHORT;
+		return RESQML2_NS::AbstractValuesProperty::SHORT;
 	else if (H5Tequal(dt, H5T_NATIVE_USHORT) > 0)
-		return resqml2::AbstractValuesProperty::USHORT;
+		return RESQML2_NS::AbstractValuesProperty::USHORT;
 	else if (H5Tequal(dt, H5T_NATIVE_CHAR) > 0)
-		return resqml2::AbstractValuesProperty::CHAR;
+		return RESQML2_NS::AbstractValuesProperty::CHAR;
 	else if (H5Tequal(dt, H5T_NATIVE_UCHAR) > 0)
-		return resqml2::AbstractValuesProperty::UCHAR;
+		return RESQML2_NS::AbstractValuesProperty::UCHAR;
 
-	return resqml2::AbstractValuesProperty::UNKNOWN; // unknwown datatype...
+	return RESQML2_NS::AbstractValuesProperty::UNKNOWN; // unknwown datatype...
 }
 
 void DasAcquisition::getRawDataAsDoubleValues(const unsigned int & rawIndex, double * values)

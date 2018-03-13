@@ -30,9 +30,9 @@ under the License.
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 
-IjkGridParametricRepresentation::IjkGridParametricRepresentation(soap* soapContext, resqml2::AbstractLocal3dCrs * crs,
+IjkGridParametricRepresentation::IjkGridParametricRepresentation(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
 	const std::string & guid, const std::string & title,
 	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
 	bool withTruncatedPillars) :
@@ -40,7 +40,7 @@ IjkGridParametricRepresentation::IjkGridParametricRepresentation(soap* soapConte
 {
 }
 
-IjkGridParametricRepresentation::IjkGridParametricRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+IjkGridParametricRepresentation::IjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 	const std::string & guid, const std::string & title,
 	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
 	bool withTruncatedPillars) :
@@ -1168,7 +1168,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfPatch(const unsigned int & p
 
 void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNodes(
 			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-			double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, short * pillarKind, common::AbstractHdfProxy* proxy)
+			double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy* proxy)
 {
 	setGeometryAsParametricSplittedPillarNodes(mostComplexPillarGeometry, kDirectionKind, isRightHanded, parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, pillarKind, proxy,
 		0, nullptr, nullptr, nullptr);
@@ -1176,7 +1176,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNo
 
 void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNodesUsingExistingDatasets(
 	const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, common::AbstractHdfProxy* proxy)
+	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, COMMON_NS::AbstractHdfProxy* proxy)
 {
 	setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(mostComplexPillarGeometry, kDirectionKind, isRightHanded, parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, pillarKind, definedPillars, proxy,
 		0, "", "", "");
@@ -1184,7 +1184,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNo
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes(
 			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-			double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, short * pillarKind, common::AbstractHdfProxy * proxy,
+			double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy * proxy,
 			const unsigned long & splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
 			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns)
 {
@@ -1246,7 +1246,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 	const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, common::AbstractHdfProxy* proxy,
+	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, COMMON_NS::AbstractHdfProxy* proxy,
 	const unsigned long & splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns)
 {
@@ -1289,7 +1289,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes(
 	const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-	double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointCountPerPillar, short pillarKind, common::AbstractHdfProxy * proxy,
+	double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy * proxy,
 	const unsigned long & splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
 	unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns)
 {
@@ -1365,7 +1365,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 	const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, const unsigned int & controlPointCountPerPillar, short pillarKind, common::AbstractHdfProxy* proxy,
+	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, const unsigned int & controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
 	const unsigned long & splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 	const std::string &  splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns)
 {

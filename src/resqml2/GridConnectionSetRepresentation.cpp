@@ -34,7 +34,7 @@ under the License.
 
 using namespace std;
 using namespace epc;
-using namespace resqml2;
+using namespace RESQML2_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* GridConnectionSetRepresentation::XML_TAG = "GridConnectionSetRepresentation";
@@ -99,7 +99,7 @@ void GridConnectionSetRepresentation::pushBackInterpretation(AbstractFeatureInte
 	}
 }
 
-void GridConnectionSetRepresentation::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void GridConnectionSetRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
 
@@ -107,10 +107,10 @@ void GridConnectionSetRepresentation::importRelationshipSetFromEpc(common::EpcDo
 	unsigned int supportingGridCount = getSupportingGridRepresentationCount();
 	for (unsigned int i = 0; i < supportingGridCount; ++i) {
 		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getSupportingGridRepresentationDor(i);
-		resqml2::AbstractGridRepresentation* supportingGridRep = epcDoc->getResqmlAbstractObjectByUuid<resqml2::AbstractGridRepresentation>(dor->UUID);
+		RESQML2_NS::AbstractGridRepresentation* supportingGridRep = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
 		if (supportingGridRep == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dor);
-			supportingGridRep = getEpcDocument()->getResqmlAbstractObjectByUuid<resqml2::AbstractGridRepresentation>(dor->UUID);
+			supportingGridRep = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
 		}
 		if (supportingGridRep == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -124,7 +124,7 @@ void GridConnectionSetRepresentation::importRelationshipSetFromEpc(common::EpcDo
 		updateXml = false;
 		unsigned int interpCount = getInterpretationCount();
 		for (unsigned int i = 0; i < interpCount; ++i) {
-			resqml2::AbstractFeatureInterpretation* interp = epcDocument->getResqmlAbstractObjectByUuid<AbstractFeatureInterpretation>(getInterpretationUuidFromIndex(i));
+			RESQML2_NS::AbstractFeatureInterpretation* interp = epcDocument->getResqmlAbstractObjectByUuid<AbstractFeatureInterpretation>(getInterpretationUuidFromIndex(i));
 			if (interp == nullptr) {
 				throw logic_error("The referenced interpretation is either not a resqml grid interpretation or it is partial and not implemented yet");
 			}
@@ -136,7 +136,7 @@ void GridConnectionSetRepresentation::importRelationshipSetFromEpc(common::EpcDo
 	}
 }
 
-void GridConnectionSetRepresentation::setCellIndexPairs(const ULONG64 & cellIndexPairCount, ULONG64 * cellIndexPair, const ULONG64 & nullValue, common::AbstractHdfProxy * proxy, ULONG64 * gridIndexPair)
+void GridConnectionSetRepresentation::setCellIndexPairs(const ULONG64 & cellIndexPairCount, ULONG64 * cellIndexPair, const ULONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, ULONG64 * gridIndexPair)
 {
 	const std::string uuid = getUuid();
 	setCellIndexPairsUsingExistingDataset(cellIndexPairCount, "/RESQML/" + getUuid() + "/CellIndexPairs", nullValue, proxy, gridIndexPair != nullptr ? "/RESQML/" + getUuid() + "/GridIndexPairs" : "");

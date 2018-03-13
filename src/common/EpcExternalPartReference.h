@@ -20,18 +20,18 @@ under the License.
 
 #include "common/AbstractObject.h"
 
-namespace resqml2{
+namespace RESQML2_NS{
 	class AbstractRepresentation;
 	class AbstractProperty;
 }
 
-namespace prodml2_0 {
+namespace PRODML2_0_NS {
 	class DasAcquisition;
 }
 
-namespace common
+namespace COMMON_NS
 {
-	class DLL_IMPORT_OR_EXPORT EpcExternalPartReference : public common::AbstractObject
+	class DLL_IMPORT_OR_EXPORT EpcExternalPartReference : public COMMON_NS::AbstractObject
 	{
 	public:
 		/**
@@ -44,13 +44,13 @@ namespace common
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		EpcExternalPartReference(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath):
-			common::AbstractObject(fromGsoap), packageDirectoryAbsolutePath(packageDirAbsolutePath), relativeFilePath(externalFilePath) {}
+			COMMON_NS::AbstractObject(fromGsoap), packageDirectoryAbsolutePath(packageDirAbsolutePath), relativeFilePath(externalFilePath) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		EpcExternalPartReference(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
-			common::AbstractObject(fromGsoap), packageDirectoryAbsolutePath(packageDirAbsolutePath), relativeFilePath(externalFilePath) {}
+			COMMON_NS::AbstractObject(fromGsoap), packageDirectoryAbsolutePath(packageDirAbsolutePath), relativeFilePath(externalFilePath) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -71,11 +71,11 @@ namespace common
 		/**
 		* Does nothing since external reference has not forward relationships at all
 		*/
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc) {}
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
 
-		std::vector<resqml2::AbstractRepresentation*> representationSourceObject;					/// All the representations that use this external reference.
-		std::vector<resqml2::AbstractProperty*> propertySourceObject;								/// All the properties that use this external reference.
-		std::vector<prodml2_0::DasAcquisition*> dasAcquisitionSourceObject;							/// All the DAS acquisition that use this external reference.
+		std::vector<RESQML2_NS::AbstractRepresentation*> representationSourceObject;					/// All the representations that use this external reference.
+		std::vector<RESQML2_NS::AbstractProperty*> propertySourceObject;								/// All the properties that use this external reference.
+		std::vector<PRODML2_0_NS::DasAcquisition*> dasAcquisitionSourceObject;							/// All the DAS acquisition that use this external reference.
 		std::string packageDirectoryAbsolutePath;												/// The directory where the EPC document is stored.
 		std::string relativeFilePath;															/// Must be relative to the location of the package
 	};

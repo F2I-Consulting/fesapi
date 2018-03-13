@@ -25,7 +25,7 @@ under the License.
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 
 IjkGridNoGeometryRepresentation::IjkGridNoGeometryRepresentation(soap* soapContext,
 			const std::string & guid, const std::string & title,
@@ -34,7 +34,7 @@ IjkGridNoGeometryRepresentation::IjkGridNoGeometryRepresentation(soap* soapConte
 {
 }
 
-IjkGridNoGeometryRepresentation::IjkGridNoGeometryRepresentation(resqml2::AbstractFeatureInterpretation* interp,
+IjkGridNoGeometryRepresentation::IjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 		const std::string & guid, const std::string & title,
 		const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount):
 	AbstractIjkGridRepresentation(interp, nullptr, guid, title, iCount, jCount, kCount)

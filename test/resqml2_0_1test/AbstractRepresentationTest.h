@@ -23,7 +23,7 @@ under the License.
 
 #include "proxies/stdsoap2.h"
 
-namespace common {
+namespace COMMON_NS {
 	class EpcDocument;
 }
 
@@ -56,7 +56,7 @@ namespace resqml2_0_1test {
 		 * @param xyzPointCountOfAllPatches count of xyz points in the whole representation (default 0)
 		 * @param xyzPointsOfAllPatchesInGlobalCrs xyz points values (default nullptr)
 		 */
-		AbstractRepresentationTest(common::EpcDocument* epcDoc, const std::string & uuid, const std::string & title, const ULONG64 & xyzPointCountOfAllPatches = 0, double * xyzPointsOfAllPatchesInGlobalCrs = nullptr);
+		AbstractRepresentationTest(COMMON_NS::EpcDocument* epcDoc, const std::string & uuid, const std::string & title, const ULONG64 & xyzPointCountOfAllPatches = 0, double * xyzPointsOfAllPatchesInGlobalCrs = nullptr);
 		
 		/**
 		 * Overrides (and calls) AbstractObject::readEpcDoc(). 

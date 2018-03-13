@@ -20,35 +20,35 @@ under the License.
 
 #include "resqml2/AbstractGridRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class AbstractStratigraphicOrganizationInterpretation;
 }
 
-namespace resqml2
+namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractColumnLayerGridRepresentation : public resqml2::AbstractGridRepresentation
+	class DLL_IMPORT_OR_EXPORT AbstractColumnLayerGridRepresentation : public RESQML2_NS::AbstractGridRepresentation
 	{
 	protected:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		AbstractColumnLayerGridRepresentation(common::EpcDocument * epcDoc, gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars) :resqml2::AbstractGridRepresentation(partialObject, withTruncatedPillars) {}
+		AbstractColumnLayerGridRepresentation(COMMON_NS::EpcDocument * epcDoc, gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars) :RESQML2_NS::AbstractGridRepresentation(partialObject, withTruncatedPillars) {}
 
 		/**
 		* Default constructor
 		*/
-		AbstractColumnLayerGridRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs, bool withTruncatedPillars) : resqml2::AbstractGridRepresentation(interp, crs, withTruncatedPillars) {}
+		AbstractColumnLayerGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs, bool withTruncatedPillars) : RESQML2_NS::AbstractGridRepresentation(interp, crs, withTruncatedPillars) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractColumnLayerGridRepresentation(gsoap_resqml2_0_1::resqml2__AbstractColumnLayerGridRepresentation* fromGsoap, bool withTruncatedPillars) : resqml2::AbstractGridRepresentation(fromGsoap, withTruncatedPillars) {}
-		AbstractColumnLayerGridRepresentation(gsoap_resqml2_0_1::resqml2__AbstractTruncatedColumnLayerGridRepresentation* fromGsoap, bool withTruncatedPillars) : resqml2::AbstractGridRepresentation(fromGsoap, withTruncatedPillars) {}
+		AbstractColumnLayerGridRepresentation(gsoap_resqml2_0_1::resqml2__AbstractColumnLayerGridRepresentation* fromGsoap, bool withTruncatedPillars) : RESQML2_NS::AbstractGridRepresentation(fromGsoap, withTruncatedPillars) {}
+		AbstractColumnLayerGridRepresentation(gsoap_resqml2_0_1::resqml2__AbstractTruncatedColumnLayerGridRepresentation* fromGsoap, bool withTruncatedPillars) : RESQML2_NS::AbstractGridRepresentation(fromGsoap, withTruncatedPillars) {}
 
 		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 	public:
 
@@ -78,7 +78,7 @@ namespace resqml2
 		* @param nullValue			The value which is used to tell the association between a grid interval and strati unit is unavailable.
 		* @param stratiOrgInterp	The stratigraphic organization interpretation which is associated to this grid representation.
 		*/
-		void setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, resqml2_0_1::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
+		void setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
 
 		/**
 		* @return	null pointer if no stratigraphic organization interpretation is associated to this grid representation. Otherwise return the data objet reference of the associated stratigraphic organization interpretation.

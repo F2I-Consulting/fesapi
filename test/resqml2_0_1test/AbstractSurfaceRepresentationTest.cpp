@@ -25,7 +25,7 @@ AbstractSurfaceRepresentationTest::AbstractSurfaceRepresentationTest(const std::
 	: AbstractRepresentationTest(epcDocPath, uuid, title, xyzPointCountOfAllPatches, xyzPointsOfAllPatchesInGlobalCrs) {
 }
 
-AbstractSurfaceRepresentationTest::AbstractSurfaceRepresentationTest(common::EpcDocument* epcDoc, const string & uuid, const string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInGlobalCrs)
+AbstractSurfaceRepresentationTest::AbstractSurfaceRepresentationTest(COMMON_NS::EpcDocument* epcDoc, const string & uuid, const string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInGlobalCrs)
 	: AbstractRepresentationTest(epcDoc, uuid, title, xyzPointCountOfAllPatches, xyzPointsOfAllPatchesInGlobalCrs) {
 }
 

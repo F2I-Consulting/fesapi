@@ -20,7 +20,7 @@ under the License.
 
 #include "common/EpcDocument.h"
 
-namespace witsml1_4_1_1
+namespace WITSML1_4_1_1_NS
 {
 	/**
 	* They are all containers.
@@ -29,7 +29,7 @@ namespace witsml1_4_1_1
 	{
 	protected:		
 		gsoap_witsml1_4_1_1::abstract__abstractObject* collection;
-		common::EpcDocument* epcDocument;
+		COMMON_NS::EpcDocument* epcDocument;
 
 		// forward relationshsip
 		class CoordinateReferenceSystem* crs;
@@ -38,7 +38,7 @@ namespace witsml1_4_1_1
 		
 		AbstractObject(gsoap_witsml1_4_1_1::abstract__abstractObject* proxy = nullptr) : collection(proxy), epcDocument (nullptr), crs(nullptr), updateXml(true) {}
 
-		friend void common::EpcDocument::addGsoapProxy(witsml1_4_1_1::AbstractObject* proxy);
+		friend void COMMON_NS::EpcDocument::addGsoapProxy(WITSML1_4_1_1_NS::AbstractObject* proxy);
 
 		gsoap_witsml1_4_1_1::witsml1__cs_USCOREcommonData* newCommonData(
 			const std::string & sourceName,
@@ -94,7 +94,7 @@ namespace witsml1_4_1_1
 		/**
 		 * Return the EPC document which contains this gsoap wrapper.
 		 */
-		common::EpcDocument* getEpcDocument() const {return epcDocument;}
+		COMMON_NS::EpcDocument* getEpcDocument() const {return epcDocument;}
 
 		/**
 		* Get the XML namespace for the tags for the XML serialization of this instance
@@ -130,7 +130,7 @@ namespace witsml1_4_1_1
 		/**
 		* Resolve all relationships of the object in an epc document
 		*/
-		virtual void importRelationshipSetFromEpc(common::EpcDocument * epcDoc) = 0;
+		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc) = 0;
 
 		/**
 		* Serialize the gsoap proxy into a string

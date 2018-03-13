@@ -27,8 +27,8 @@ under the License.
 
 using namespace std;
 using namespace resqml2_0_1test;
-using namespace common;
-using namespace resqml2_0_1;
+using namespace COMMON_NS;
+using namespace RESQML2_0_1_NS;
 
 const char* WellboreTest::defaultUuid = "9058a950-35c7-44e6-9671-0f1ba13118cf";
 const char* WellboreTest::defaultTitle = "Wellbore Test";

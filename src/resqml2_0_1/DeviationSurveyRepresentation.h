@@ -20,16 +20,16 @@ under the License.
 
 #include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
 
-namespace resqml2
+namespace RESQML2_NS
 {
 	class MdDatum;
 }
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class WellboreTrajectoryRepresentation;
 
-	class DLL_IMPORT_OR_EXPORT DeviationSurveyRepresentation : public resqml2::AbstractRepresentation
+	class DLL_IMPORT_OR_EXPORT DeviationSurveyRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
 
@@ -47,7 +47,7 @@ namespace resqml2_0_1
 		* @param isFinal				Used to indicate that this is a final version of the deviation survey, as distinct from the interim interpretations.
 		* @param mdInfo					The MD information of the survey, mainly the well reference point.
 		*/
-		DeviationSurveyRepresentation(class WellboreInterpretation* interp, const std::string & guid, const std::string & title, const bool & isFinal, resqml2::MdDatum * mdInfo);
+		DeviationSurveyRepresentation(class WellboreInterpretation* interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -74,12 +74,12 @@ namespace resqml2_0_1
 		void setGeometry(double * firstStationLocation, const ULONG64 & stationCount,
 			const gsoap_resqml2_0_1::eml20__LengthUom & mdUom, double * mds,
 			const gsoap_resqml2_0_1::eml20__PlaneAngleUom & angleUom, double * azimuths, double * inclinations,
-			common::AbstractHdfProxy* proxy);
+			COMMON_NS::AbstractHdfProxy* proxy);
 
 		/**
 		* Set the Md datum of this trajectory
 		*/
-		void setMdDatum(resqml2::MdDatum* mdDatum);
+		void setMdDatum(RESQML2_NS::MdDatum* mdDatum);
 
 		/**
 		* @return	null pointer if no md datum is associated to this representation. Otherwise return the data object reference of the associated md datum.
@@ -89,7 +89,7 @@ namespace resqml2_0_1
 		/**
 		* Getter of the md information associated to this WellboreFeature trajectory representation.
 		*/
-		resqml2::MdDatum * getMdDatum() const;
+		RESQML2_NS::MdDatum * getMdDatum() const;
 
 		/**
 		* Getter of the md information uuid associated to this WellboreFeature trajectory representation.
@@ -192,7 +192,7 @@ namespace resqml2_0_1
 		void addTrajectory(class WellboreTrajectoryRepresentation* trajectory);
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 		
 		// XML backward relationships
 		std::vector<class WellboreTrajectoryRepresentation*> wbTrajectoryRepSet;

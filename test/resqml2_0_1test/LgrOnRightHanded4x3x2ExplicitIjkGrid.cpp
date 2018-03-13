@@ -33,8 +33,8 @@ under the License.
 
 using namespace std;
 using namespace resqml2_0_1test;
-using namespace common;
-using namespace resqml2;
+using namespace COMMON_NS;
+using namespace RESQML2_NS;
 
 const char* LgrOnRightHanded4x3x2ExplicitIjkGrid::defaultUuid = "11852778-139e-4fa3-bb34-70c4014553f7";
 const char* LgrOnRightHanded4x3x2ExplicitIjkGrid::defaultTitle = "LGR";
@@ -70,8 +70,8 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 	// getting the parent grid
 	RightHanded4x3x2ExplicitIjkGrid* parentGridTest = new RightHanded4x3x2ExplicitIjkGrid(this->epcDoc, true);
 
-	resqml2_0_1::IjkGridExplicitRepresentation* parentGrid = epcDoc->getResqmlAbstractObjectByUuid<resqml2_0_1::IjkGridExplicitRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
-	resqml2_0_1::LocalDepth3dCrs* crs = epcDoc->getResqmlAbstractObjectByUuid<resqml2_0_1::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* parentGrid = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
+	RESQML2_0_1_NS::LocalDepth3dCrs* crs = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 
 	// cleaning
 	delete parentGridTest;
@@ -80,7 +80,7 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
 
 	// creating the child ijk grid
-	resqml2_0_1::IjkGridExplicitRepresentation* childGrid = epcDoc->createIjkGridExplicitRepresentation(crs, uuid, title, 3, 1, 4);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGrid = epcDoc->createIjkGridExplicitRepresentation(crs, uuid, title, 3, 1, 4);
 	childGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, xyzPointsOfAllPatchesInGlobalCrs, hdfProxy);
 	childGrid->setParentWindow(
 		0, 3, 1, 1,
@@ -89,7 +89,7 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 		parentGrid);
 
 	// Discrete Property
-	resqml2_0_1::DiscreteProperty* discreteProp = epcDoc->createDiscreteProperty(childGrid, "65169116-4330-4a88-b698-f127454a7106", "Cell index", 1,
+	RESQML2_0_1_NS::DiscreteProperty* discreteProp = epcDoc->createDiscreteProperty(childGrid, "65169116-4330-4a88-b698-f127454a7106", "Cell index", 1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__index);
 	long discretePropValues[12] = {
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
@@ -97,7 +97,7 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 	discreteProp->pushBackLongHdf5Array3dOfValues(discretePropValues, 3, 1, 4, hdfProxy, -1);
 
 	// Continuous property
-	resqml2_0_1::ContinuousProperty* continuousProp = epcDoc->createContinuousProperty(childGrid, "a8e1720e-2b58-4329-9317-534bf8abca29", "Amplitude", 1,
+	RESQML2_0_1_NS::ContinuousProperty* continuousProp = epcDoc->createContinuousProperty(childGrid, "a8e1720e-2b58-4329-9317-534bf8abca29", "Amplitude", 1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__amplitude);
 	double continuousPropValues[12] = {
 		0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.5, 0.4, 0.3, 0.2, 0.1, 0.0
@@ -109,8 +109,8 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::readEpcDocHandler() {
 	RightHanded4x3x2ExplicitIjkGrid* parentGridTest = new RightHanded4x3x2ExplicitIjkGrid(this->epcDoc, false);
 
 	// getting the childGrid
-	resqml2_0_1::IjkGridExplicitRepresentation* childGrid = epcDoc->getResqmlAbstractObjectByUuid<resqml2_0_1::IjkGridExplicitRepresentation>(uuid);
-	resqml2_0_1::IjkGridExplicitRepresentation* parentGrid = epcDoc->getResqmlAbstractObjectByUuid<resqml2_0_1::IjkGridExplicitRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGrid = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(uuid);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* parentGrid = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
 
 	REQUIRE(childGrid->getCellCount() == 12);
 	REQUIRE(childGrid->getPillarCount() == 8);

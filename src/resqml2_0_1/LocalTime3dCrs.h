@@ -20,9 +20,9 @@ under the License.
 
 #include "resqml2/AbstractLocal3dCrs.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT LocalTime3dCrs : public resqml2::AbstractLocal3dCrs
+	class DLL_IMPORT_OR_EXPORT LocalTime3dCrs : public RESQML2_NS::AbstractLocal3dCrs
 	{
 	private:
 		void init(soap* soapContext, const std::string & guid, const std::string & title,
@@ -39,7 +39,7 @@ namespace resqml2_0_1
 		/**
 		* Only to be used in partial transfer context
 		*/
-		LocalTime3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : resqml2::AbstractLocal3dCrs(partialObject) {}
+		LocalTime3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractLocal3dCrs(partialObject) {}
 
 		/**
 		* Creates a local depth 3d CRS which is fully identified by means of EPSG code.

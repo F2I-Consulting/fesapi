@@ -26,7 +26,7 @@ under the License.
 #include "common/AbstractHdfProxy.h"
 
 using namespace gsoap_resqml2_0_1;
-using namespace resqml2;
+using namespace RESQML2_NS;
 using namespace std;
 using namespace epc;
 
@@ -63,7 +63,7 @@ void AbstractColumnLayerGridRepresentation::setKCellCount(const unsigned int & k
 	}
 }
 
-void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, resqml2_0_1::AbstractStratigraphicOrganizationInterpretation * stratiOrgInterp)
+void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation * stratiOrgInterp)
 {
 	if (isTruncated()) {
 		throw invalid_argument("A truncated grid cannot be linked to a strati columnumn in Resqml2");
@@ -102,7 +102,7 @@ void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigrap
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractColumnLayerGridRepresentation::getStratigraphicOrganizationInterpretationDor() const
 {
-	gsoap_resqml2_0_1::eml20__DataObjectReference* result = resqml2::AbstractGridRepresentation::getStratigraphicOrganizationInterpretationDor();
+	gsoap_resqml2_0_1::eml20__DataObjectReference* result = RESQML2_NS::AbstractGridRepresentation::getStratigraphicOrganizationInterpretationDor();
 	if (result != nullptr) {
 		return result;
 	}
@@ -169,7 +169,7 @@ vector<Relationship> AbstractColumnLayerGridRepresentation::getAllEpcRelationshi
 	// Strati unit
 	if (!hasCellStratigraphicUnitIndices() && hasIntervalStratigraphicUnitIndices())
 	{
-		resqml2_0_1::AbstractStratigraphicOrganizationInterpretation* stratiOrg = getStratigraphicOrganizationInterpretation();
+		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = getStratigraphicOrganizationInterpretation();
 		Relationship relStrati(stratiOrg->getPartNameInEpcDocument(), "", stratiOrg->getUuid());
 		relStrati.setDestinationObjectType();
 		result.push_back(relStrati);
@@ -178,17 +178,17 @@ vector<Relationship> AbstractColumnLayerGridRepresentation::getAllEpcRelationshi
 	return result;
 }
 
-void AbstractColumnLayerGridRepresentation::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void AbstractColumnLayerGridRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	AbstractGridRepresentation::importRelationshipSetFromEpc(epcDoc);
 
 	// Strati org backward relationships
 	if (hasIntervalStratigraphicUnitIndices()) {
 		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getStratigraphicOrganizationInterpretationDor();
-		resqml2_0_1::AbstractStratigraphicOrganizationInterpretation* stratiOrg = getEpcDocument()->getResqmlAbstractObjectByUuid<resqml2_0_1::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
+		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
 		if (stratiOrg == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dor);
-			stratiOrg = getEpcDocument()->getResqmlAbstractObjectByUuid<resqml2_0_1::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
+			stratiOrg = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
 		}
 		if (stratiOrg == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");

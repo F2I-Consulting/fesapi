@@ -20,19 +20,19 @@ under the License.
 
 #include "resqml2/AbstractFeatureInterpretation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	/**
 	* This class is a container for other organizations that are consistent to each others.
 	*/
-	class DLL_IMPORT_OR_EXPORT EarthModelInterpretation : public resqml2::AbstractFeatureInterpretation
+	class DLL_IMPORT_OR_EXPORT EarthModelInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		EarthModelInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : resqml2::AbstractFeatureInterpretation(partialObject) {}
+		EarthModelInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeatureInterpretation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -45,7 +45,7 @@ namespace resqml2_0_1
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		EarthModelInterpretation(gsoap_resqml2_0_1::_resqml2__EarthModelInterpretation* fromGsoap) : resqml2::AbstractFeatureInterpretation(fromGsoap), structuralOrganization(nullptr), stratigraphicColumn(nullptr) {}
+		EarthModelInterpretation(gsoap_resqml2_0_1::_resqml2__EarthModelInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap), structuralOrganization(nullptr), stratigraphicColumn(nullptr) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -63,7 +63,7 @@ namespace resqml2_0_1
 
     private:
         std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML Forward relationships
         class StructuralOrganizationInterpretation* structuralOrganization;

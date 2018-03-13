@@ -29,12 +29,12 @@ under the License.
 #include "common/AbstractHdfProxy.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* PolylineSetRepresentation::XML_TAG = "PolylineSetRepresentation";
 
-void PolylineSetRepresentation::init(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+void PolylineSetRepresentation::init(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 									 const std::string & guid, const std::string & title)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREPolylineSetRepresentation(crs->getGsoapContext(), 1);
@@ -52,20 +52,20 @@ void PolylineSetRepresentation::init(resqml2::AbstractFeatureInterpretation* int
 	}
 }
 
-PolylineSetRepresentation::PolylineSetRepresentation(resqml2::AbstractLocal3dCrs * crs, const string & guid, const string & title) :
+PolylineSetRepresentation::PolylineSetRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs, const string & guid, const string & title) :
 	AbstractRepresentation(nullptr, crs)
 {
 	init(nullptr, crs, guid, title);
 }
 
-PolylineSetRepresentation::PolylineSetRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+PolylineSetRepresentation::PolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 													 const std::string & guid, const std::string & title):
 	AbstractRepresentation(interp, crs)
 {
 	init(interp, crs, guid, title);
 }
 
-PolylineSetRepresentation::PolylineSetRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+PolylineSetRepresentation::PolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 													 const std::string & guid, const std::string & title,
 													 const resqml2__LineRole & roleKind):
 	AbstractRepresentation(interp, crs)
@@ -78,7 +78,7 @@ PolylineSetRepresentation::PolylineSetRepresentation(resqml2::AbstractFeatureInt
 void PolylineSetRepresentation::pushBackGeometryPatch(
 				unsigned int * NodeCountPerPolyline, double * nodes,
 				const unsigned int & polylineCount, const bool & allPolylinesClosedFlag,
-				common::AbstractHdfProxy * proxy)
+				COMMON_NS::AbstractHdfProxy * proxy)
 {
 	resqml2__PolylineSetPatch* patch = soap_new_resqml2__PolylineSetPatch(gsoapProxy2_0_1->soap, 1);
 	patch->PatchIndex = static_cast<_resqml2__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.size();
@@ -118,7 +118,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 void PolylineSetRepresentation::pushBackGeometryPatch(
 				unsigned int * NodeCountPerPolyline, double * nodes,
 				const unsigned int & polylineCount, bool * polylineClosedFlags,
-				common::AbstractHdfProxy * proxy)
+				COMMON_NS::AbstractHdfProxy * proxy)
 {
 	resqml2__PolylineSetPatch* patch = soap_new_resqml2__PolylineSetPatch(gsoapProxy2_0_1->soap, 1);
 	patch->PatchIndex = static_cast<_resqml2__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.size();

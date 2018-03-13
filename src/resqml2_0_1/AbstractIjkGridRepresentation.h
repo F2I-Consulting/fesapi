@@ -23,20 +23,20 @@ under the License.
 #include <stdexcept>
 #include <map>
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	/**
 	* This class is semantically abstract.
 	* Technically speaking, it is not an abstract because it can be used in case of partial transfer where we don't know the geometry of the ijk grid.
 	*/
-	class DLL_IMPORT_OR_EXPORT AbstractIjkGridRepresentation : public resqml2::AbstractColumnLayerGridRepresentation
+	class DLL_IMPORT_OR_EXPORT AbstractIjkGridRepresentation : public RESQML2_NS::AbstractColumnLayerGridRepresentation
 	{
 	private :
 
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
 		*/
-		void init(soap* soapContext, resqml2::AbstractLocal3dCrs * crs,
+		void init(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
 				const std::string & guid, const std::string & title,
 				const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
 				bool withTruncatedPillars);
@@ -86,12 +86,12 @@ namespace resqml2_0_1
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
 		*/
-		AbstractIjkGridRepresentation(soap* soapContext, resqml2::AbstractLocal3dCrs * crs,
+		AbstractIjkGridRepresentation(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title,
 			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
 			bool withTruncatedPillars = false);
 
-		AbstractIjkGridRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+		AbstractIjkGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title,
 			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
 			bool withTruncatedPillars = false);

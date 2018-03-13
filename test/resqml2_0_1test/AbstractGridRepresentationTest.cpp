@@ -19,7 +19,7 @@ under the License.
 #include "AbstractGridRepresentationTest.h"
 
 using namespace std;
-using namespace common;
+using namespace COMMON_NS;
 using namespace resqml2_0_1test;
 
 AbstractGridRepresentationTest::AbstractGridRepresentationTest(const string & epcDocPath, const string & uuid, const string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInGlobalCrs)

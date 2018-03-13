@@ -25,10 +25,10 @@ under the License.
 #include "witsml1_4_1_1/CoordinateReferenceSystem.h"
 
 using namespace std;
-using namespace witsml1_4_1_1;
+using namespace WITSML1_4_1_1_NS;
 using namespace gsoap_witsml1_4_1_1;
 using namespace epc;
-using namespace common;
+using namespace COMMON_NS;
 
 const char* Well::XML_TAG = "wells";
 
@@ -393,7 +393,7 @@ gsoap_witsml1_4_1_1::witsml1__cs_USCOREwellDatum* Well::getDatum(const std::stri
 	return nullptr;
 }
 
-void Well::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void Well::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	witsml1__obj_USCOREwell* well = static_cast<_witsml1__wells*>(collection)->well[0];
 	for (unsigned int i = 0; i < well->__obj_USCOREwell_sequence->wellLocation.size(); ++i)
@@ -417,7 +417,7 @@ vector<Relationship> Well::getAllEpcRelationships() const
 	std::vector<Wellbore*> wellboreSet = getWellbores();
 	for (unsigned int j = 0; j < wellboreSet.size(); ++j)
 	{
-		resqml2_0_1::WellboreFeature* resqmlWellboreFeature = wellboreSet[j]->getResqmlWellboreFeature();
+		RESQML2_0_1_NS::WellboreFeature* resqmlWellboreFeature = wellboreSet[j]->getResqmlWellboreFeature();
 		if (resqmlWellboreFeature)
 		{
 			Relationship rel(resqmlWellboreFeature->getPartNameInEpcDocument(), "", resqmlWellboreFeature->getUuid());

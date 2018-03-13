@@ -24,13 +24,13 @@ under the License.
 
 using namespace std;
 using namespace resqml2_0_1test;
-using namespace resqml2;
+using namespace RESQML2_NS;
 
 AbstractFeatureInterpretationTest::AbstractFeatureInterpretationTest(const string & epcDocPath, const string & uuid, const string & title, const string & uuidFeature, const string & titleFeature)
 	: AbstractResqmlDataObjectTest(epcDocPath, uuid, title), uuidFeature(uuidFeature), titleFeature(titleFeature) {
 }
 
-AbstractFeatureInterpretationTest::AbstractFeatureInterpretationTest(common::EpcDocument * epcDoc, const string & uuid, const string & title, const string & uuidFeature, const string & titleFeature)
+AbstractFeatureInterpretationTest::AbstractFeatureInterpretationTest(COMMON_NS::EpcDocument * epcDoc, const string & uuid, const string & title, const string & uuidFeature, const string & titleFeature)
 	: AbstractResqmlDataObjectTest(epcDoc, uuid, title), uuidFeature(uuidFeature), titleFeature(titleFeature) {
 }
 

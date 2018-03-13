@@ -21,7 +21,7 @@ under the License.
 #include "../AbstractTest.h"
 #include <iostream>
 
-namespace common {
+namespace COMMON_NS {
 	class EpcDocument;
 }
 
@@ -41,7 +41,7 @@ namespace resqml2_0_1test {
 		* @param init true if this object is created for initialization purpose else false if it is 
 		* created for reading purpose. According to init value a iniEpcDoc() or readEpcDoc() is called.
 		*/
-		FaultSingleAndMultiPatchTriangulatedSetRepresentationTest(common::EpcDocument * epcDocument, bool init);
+		FaultSingleAndMultiPatchTriangulatedSetRepresentationTest(COMMON_NS::EpcDocument * epcDocument, bool init);
 	protected:
 		void initEpcDoc();
 		void readEpcDoc();

@@ -22,7 +22,7 @@ under the License.
 #include "../catch.hpp"
 
 using namespace std;
-using namespace common;
+using namespace COMMON_NS;
 using namespace commontest;
 using namespace resqml2_0_1test;
 

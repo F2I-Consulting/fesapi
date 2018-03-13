@@ -20,7 +20,7 @@ under the License.
 
 #include "resqml2_0_1/AbstractIjkGridRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT IjkGridExplicitRepresentation : public AbstractIjkGridRepresentation
 	{
@@ -29,12 +29,12 @@ namespace resqml2_0_1
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
 		*/
-		IjkGridExplicitRepresentation(soap* soapContext, resqml2::AbstractLocal3dCrs * crs,
+		IjkGridExplicitRepresentation(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title,
 			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
 			bool withTruncatedPillars = false);
 
-		IjkGridExplicitRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+		IjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title,
 			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
 			bool withTruncatedPillars = false);
@@ -99,7 +99,7 @@ namespace resqml2_0_1
 		*/
 		void setGeometryAsCoordinateLineNodes(
 			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-			double * points, common::AbstractHdfProxy* proxy,
+			double * points, COMMON_NS::AbstractHdfProxy* proxy,
 			const unsigned long & splitCoordinateLineCount = 0, unsigned int * pillarOfCoordinateLine = nullptr,
 			unsigned int * splitCoordinateLineColumnCumulativeCount = nullptr, unsigned int * splitCoordinateLineColumns = nullptr,
 			char * definedPillars = nullptr);
@@ -109,7 +109,7 @@ namespace resqml2_0_1
 		*/
 		void setGeometryAsCoordinateLineNodesUsingExistingDatasets(
 			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-			const std::string & points, common::AbstractHdfProxy* proxy,
+			const std::string & points, COMMON_NS::AbstractHdfProxy* proxy,
 			const unsigned long & splitCoordinateLineCount = 0, const std::string & pillarOfCoordinateLine = "",
 			const std::string & splitCoordinateLineColumnCumulativeCount = "", const std::string & splitCoordinateLineColumns = "",
 			const std::string & definedPillars = "");

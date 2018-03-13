@@ -20,12 +20,12 @@ under the License.
 
 #include "resqml2_0_1/WellboreFrameRepresentation.h"
 
-namespace witsml1_4_1_1
+namespace WITSML1_4_1_1_NS
 {
 	class FormationMarker;
 }
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT WellboreMarkerFrameRepresentation : public WellboreFrameRepresentation
 	{
@@ -89,7 +89,7 @@ namespace resqml2_0_1
 
 		class StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation() { return stratigraphicOccurrenceInterpretation; }
 
-		void setWitsmlFormationMarker(const unsigned int & resqmlMarkerIndex, witsml1_4_1_1::FormationMarker * witsmlFormationMarker);
+		void setWitsmlFormationMarker(const unsigned int & resqmlMarkerIndex, WITSML1_4_1_1_NS::FormationMarker * witsmlFormationMarker);
 
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
@@ -97,10 +97,10 @@ namespace resqml2_0_1
 	protected:
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML forward relationships
-		std::vector<witsml1_4_1_1::FormationMarker*> witsmlFormationMarkerSet;
+		std::vector<WITSML1_4_1_1_NS::FormationMarker*> witsmlFormationMarkerSet;
 		class StratigraphicOccurrenceInterpretation* stratigraphicOccurrenceInterpretation;
 
 		// only memory relationship

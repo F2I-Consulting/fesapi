@@ -23,11 +23,11 @@ under the License.
 #include "hdf5.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 
 
 HdfProxy::HdfProxy(soap* soapContext, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
-	common::HdfProxy(packageDirAbsolutePath, externalFilePath)
+	COMMON_NS::HdfProxy(packageDirAbsolutePath, externalFilePath)
 {
 	initGsoapProxy(soapContext, guid, title, TWO_DOT_ZERO);
 }

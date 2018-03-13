@@ -29,13 +29,13 @@ under the License.
 #include "common/AbstractHdfProxy.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 
 const char* CategoricalProperty::XML_TAG = "CategoricalProperty";
 
-CategoricalProperty::CategoricalProperty(resqml2::AbstractRepresentation * rep, const string & guid, const string & title,
+CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
 	StringTableLookup* strLookup, const resqml2__ResqmlPropertyKind & energisticsPropertyKind)
 	: stringLookup(strLookup)
@@ -58,9 +58,9 @@ CategoricalProperty::CategoricalProperty(resqml2::AbstractRepresentation * rep, 
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");
 }
 
-CategoricalProperty::CategoricalProperty(resqml2::AbstractRepresentation * rep, const string & guid, const string & title,
+CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
-	StringTableLookup* strLookup, resqml2::PropertyKind * localPropKind)
+	StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropKind)
 	:stringLookup(strLookup)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORECategoricalProperty(rep->getGsoapContext(), 1);	
@@ -97,7 +97,7 @@ vector<Relationship> CategoricalProperty::getAllEpcRelationships() const
 	return result;
 }
 
-void CategoricalProperty::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void CategoricalProperty::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	AbstractValuesProperty:: importRelationshipSetFromEpc(epcDoc);
 
@@ -107,25 +107,25 @@ void CategoricalProperty::importRelationshipSetFromEpc(common::EpcDocument* epcD
 		stringLookup->addCategoricalPropertyValues(this);
 }
 
-void CategoricalProperty::pushBackLongHdf5Array1dOfValues(long * values, const ULONG64 & valueCount, common::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackLongHdf5Array1dOfValues(long * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
 {
 	hsize_t valueCountPerDimension[1] = {valueCount};
 	pushBackLongHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, nullValue);
 }
 
-void CategoricalProperty::pushBackLongHdf5Array2dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackLongHdf5Array2dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
 {
 	hsize_t valueCountPerDimension[2] = {valueCountInSlowestDim, valueCountInFastestDim};
 	pushBackLongHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
-void CategoricalProperty::pushBackLongHdf5Array3dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackLongHdf5Array3dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
 {
 	hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
 	pushBackLongHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-void CategoricalProperty::pushBackLongHdf5ArrayOfValues(long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackLongHdf5ArrayOfValues(long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
 {
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue);
 
@@ -137,25 +137,25 @@ void CategoricalProperty::pushBackLongHdf5ArrayOfValues(long * values, unsigned 
 		numValues, numDimensionsInArray);
 }
 
-void CategoricalProperty::pushBackUShortHdf5Array1dOfValues(unsigned short * values, const ULONG64 & valueCount, common::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackUShortHdf5Array1dOfValues(unsigned short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCount };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, nullValue);
 }
 
-void CategoricalProperty::pushBackUShortHdf5Array2dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackUShortHdf5Array2dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
-void CategoricalProperty::pushBackUShortHdf5Array3dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackUShortHdf5Array3dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-void CategoricalProperty::pushBackUShortHdf5ArrayOfValues(unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const unsigned short & nullValue)
+void CategoricalProperty::pushBackUShortHdf5ArrayOfValues(unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue)
 {
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue);
 
@@ -167,7 +167,7 @@ void CategoricalProperty::pushBackUShortHdf5ArrayOfValues(unsigned short * value
 		numValues, numDimensionsInArray);
 }
 
-std::string CategoricalProperty::pushBackRefToExistingDataset(common::AbstractHdfProxy* hdfProxy, const std::string & datasetName, const long & nullValue)
+std::string CategoricalProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, const long & nullValue)
 {
 	return pushBackRefToExistingIntegerDataset(hdfProxy, datasetName, nullValue);
 }
@@ -177,7 +177,7 @@ std::string CategoricalProperty::getStringLookupUuid() const
 	return static_cast<_resqml2__CategoricalProperty*>(gsoapProxy2_0_1)->Lookup->UUID;
 }
 
-bool CategoricalProperty::validatePropertyKindAssociation(resqml2::PropertyKind* pk)
+bool CategoricalProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKind* pk)
 {
 	if (pk == nullptr) {
 		throw invalid_argument("The property kind to validate cannot be null.");

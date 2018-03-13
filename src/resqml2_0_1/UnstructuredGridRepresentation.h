@@ -21,16 +21,16 @@ under the License.
 
 #include "resqml2/AbstractGridRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT UnstructuredGridRepresentation : public resqml2::AbstractGridRepresentation
+	class DLL_IMPORT_OR_EXPORT UnstructuredGridRepresentation : public RESQML2_NS::AbstractGridRepresentation
 	{
 	private :
 
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
 		*/
-		void init(soap* soapContext, resqml2::AbstractLocal3dCrs * crs,
+		void init(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
 				const std::string & guid, const std::string & title,
 				const ULONG64 & cellCount);
 		
@@ -51,7 +51,7 @@ namespace resqml2_0_1
 		* @param nodeCountPerFace					The constant node count per face.
 		*/
 		void setConstantCellShapeGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
-			ULONG64 pointCount, ULONG64 faceCount, common::AbstractHdfProxy* proxy,
+			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, ULONG64 faceCountPerCell,
 			const std::string& nodeIndicesPerFace, ULONG64 nodeCountPerFace);
 
@@ -68,7 +68,7 @@ namespace resqml2_0_1
 		* @param nodeCountPerFace					The constant node count per face.
 		*/
 		void setConstantCellShapeGeometry(unsigned char * cellFaceIsRightHanded, double * points,
-			ULONG64 pointCount, ULONG64 faceCount, common::AbstractHdfProxy* proxy,
+			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
 			ULONG64 * faceIndicesPerCell, ULONG64 faceCountPerCell,
 			ULONG64 * nodeIndicesPerFace, ULONG64 nodeCountPerFace);
 
@@ -85,7 +85,7 @@ namespace resqml2_0_1
 		* Only to be used in partial transfer context
 		*/
 		UnstructuredGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
-			resqml2::AbstractGridRepresentation(partialObject, false), constantNodeCountPerFace(0), constantFaceCountPerCell(0),
+			RESQML2_NS::AbstractGridRepresentation(partialObject, false), constantNodeCountPerFace(0), constantFaceCountPerCell(0),
 			cumulativeNodeCountPerFace(nullptr), cumulativeFaceCountPerCell(nullptr),
 			nodeIndicesOfFaces(nullptr), faceIndicesOfCells(nullptr)
 		{
@@ -94,11 +94,11 @@ namespace resqml2_0_1
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
 		*/
-		UnstructuredGridRepresentation(soap* soapContext, resqml2::AbstractLocal3dCrs * crs,
+		UnstructuredGridRepresentation(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title,
 			const ULONG64 & cellCount);
 
-		UnstructuredGridRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+		UnstructuredGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title,
 			const ULONG64 & cellCount);
 
@@ -106,7 +106,7 @@ namespace resqml2_0_1
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		UnstructuredGridRepresentation(gsoap_resqml2_0_1::_resqml2__UnstructuredGridRepresentation* fromGsoap):
-			resqml2::AbstractGridRepresentation(fromGsoap, false), constantNodeCountPerFace(0), constantFaceCountPerCell(0),
+			RESQML2_NS::AbstractGridRepresentation(fromGsoap, false), constantNodeCountPerFace(0), constantFaceCountPerCell(0),
 			cumulativeNodeCountPerFace(nullptr), cumulativeFaceCountPerCell(nullptr),
 			nodeIndicesOfFaces(nullptr), faceIndicesOfCells(nullptr) {}
 
@@ -262,7 +262,7 @@ namespace resqml2_0_1
 		* @param nodeIndicesCumulativeCountPerFace	The path to the hdf5 dataset in the hdf proxy where each item defines the cumulative count of nodes. The count of this array must be eqaul to faceCount.
 		* @param cellShape							A denormalization of the information which gives quick access to the most complex shape of polyhedron encountered in this unstructured grid.
 		*/
-		void setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, ULONG64 pointCount, common::AbstractHdfProxy* proxy,
+		void setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, ULONG64 pointCount, COMMON_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string&faceIndicesCumulativeCountPerCell,
 			ULONG64 faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,
 			const gsoap_resqml2_0_1::resqml2__CellShape & cellShape);
@@ -280,7 +280,7 @@ namespace resqml2_0_1
 		 * @param nodeIndicesCumulativeCountPerFace	Each item defines the cumulative count of nodes. The count of this array must be eqaul to faceCount.
 		 * @param cellShape							A denormalization of the information which gives quick access to the most complex shape of polyhedron encountered in this unstructured grid.
 		 */
-		void setGeometry(unsigned char * cellFaceIsRightHanded, double * points, ULONG64 pointCount, common::AbstractHdfProxy* proxy,
+		void setGeometry(unsigned char * cellFaceIsRightHanded, double * points, ULONG64 pointCount, COMMON_NS::AbstractHdfProxy* proxy,
 			ULONG64 * faceIndicesPerCell, ULONG64 * faceIndicesCumulativeCountPerCell,
 			ULONG64 faceCount, ULONG64 * nodeIndicesPerFace, ULONG64 * nodeIndicesCumulativeCountPerFace,
 			const gsoap_resqml2_0_1::resqml2__CellShape & cellShape);
@@ -296,7 +296,7 @@ namespace resqml2_0_1
 		* @param nodeIndicesPerFace					The path to the hdf5 dataset in the hdf proxy where each item defines the index of the node of a face. There must be a count of nodeCountPerFace * faceCount.
 		*/
 		void setTetrahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
-			ULONG64 pointCount, ULONG64 faceCount, common::AbstractHdfProxy* proxy,
+			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace);
 
 		/**
@@ -310,7 +310,7 @@ namespace resqml2_0_1
 		* @param nodeIndicesPerFace					Each item defines the index of the node of a face. There must be a count of nodeCountPerFace * faceCount.
 		*/
 		void setTetrahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points,
-			ULONG64 pointCount, ULONG64 faceCount, common::AbstractHdfProxy* proxy,
+			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
 			ULONG64 * faceIndicesPerCell, ULONG64 * nodeIndicesPerFace);
 
 		/**
@@ -324,7 +324,7 @@ namespace resqml2_0_1
 		* @param nodeIndicesPerFace					The path to the hdf5 dataset in the hdf proxy where each item defines the index of the node of a face. There must be a count of nodeCountPerFace * faceCount.
 		*/
 		void setHexahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
-			ULONG64 pointCount, ULONG64 faceCount, common::AbstractHdfProxy* proxy,
+			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace);
 
 		/**
@@ -338,7 +338,7 @@ namespace resqml2_0_1
 		* @param nodeIndicesPerFace					Each item defines the index of the node of a face. There must be a count of nodeCountPerFace * faceCount.
 		*/
 		void setHexahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points,
-			ULONG64 pointCount, ULONG64 faceCount, common::AbstractHdfProxy* proxy,
+			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
 			ULONG64 * faceIndicesPerCell, ULONG64 * nodeIndicesPerFace);
 
 		static const char* XML_TAG;

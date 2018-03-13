@@ -27,13 +27,13 @@ under the License.
 #include "common/AbstractHdfProxy.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 
 const char* Grid2dSetRepresentation::XML_TAG = "Grid2dSetRepresentation";
 
-Grid2dSetRepresentation::Grid2dSetRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+Grid2dSetRepresentation::Grid2dSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 	const string & guid, const string & title):
 	AbstractSurfaceRepresentation(interp, crs)
 {
@@ -121,7 +121,7 @@ unsigned int Grid2dSetRepresentation::getPatchCount() const
 }
 
 void Grid2dSetRepresentation::pushBackGeometryPatch(double * zValues,
-	const unsigned int & numI, const unsigned int & numJ, common::AbstractHdfProxy * proxy,
+	const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy * proxy,
 	Grid2dRepresentation * supportingGrid2dRepresentation,
 	const unsigned int & startIndexI, const unsigned int & startIndexJ,
 	const int & indexIncrementI, const int & indexIncrementJ)
@@ -223,7 +223,7 @@ vector<Relationship> Grid2dSetRepresentation::getAllEpcRelationships() const
 	return result;
 }
 
-void Grid2dSetRepresentation::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void Grid2dSetRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	AbstractSurfaceRepresentation::importRelationshipSetFromEpc(epcDoc);
 

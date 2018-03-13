@@ -20,12 +20,12 @@ under the License.
 
 #include "resqml2_0_1/AbstractTechnicalFeature.h"
 
-namespace witsml1_4_1_1
+namespace WITSML1_4_1_1_NS
 {
 	class Wellbore;
 }
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT WellboreFeature : public AbstractTechnicalFeature
 	{
@@ -62,16 +62,16 @@ namespace resqml2_0_1
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
 		
-		witsml1_4_1_1::Wellbore* getWitsmlWellbore() {return witsmlWellbore;}
-		void setWitsmlWellbore(witsml1_4_1_1::Wellbore * wellbore);
+		WITSML1_4_1_1_NS::Wellbore* getWitsmlWellbore() {return witsmlWellbore;}
+		void setWitsmlWellbore(WITSML1_4_1_1_NS::Wellbore * wellbore);
 
 	protected:
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML forward relationship
-		witsml1_4_1_1::Wellbore * witsmlWellbore;
+		WITSML1_4_1_1_NS::Wellbore * witsmlWellbore;
 	};
 }
 

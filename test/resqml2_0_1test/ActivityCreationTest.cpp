@@ -29,8 +29,8 @@ under the License.
 
 using namespace std;
 using namespace resqml2_0_1test;
-using namespace common;
-using namespace resqml2;
+using namespace COMMON_NS;
+using namespace RESQML2_NS;
 
 // Activity
 const char* ActivityCreationTest::defaultUuid = "705cd6f5-8ee8-427b-adde-04b0b6afcdf0";
@@ -51,7 +51,7 @@ ActivityCreationTest::ActivityCreationTest(EpcDocument * epcDoc, bool init)
 void ActivityCreationTest::initEpcDocHandler() {
 	// creation of an horizon interpretation
 	HorizonInterpretationTest * horizonInterpretationTest = new HorizonInterpretationTest(this->epcDoc, true);
-	resqml2_0_1::HorizonInterpretation * horizonInterpretation = static_cast<resqml2_0_1::HorizonInterpretation*>(this->epcDoc->getResqmlAbstractObjectByUuid(HorizonInterpretationTest::defaultUuid));
+	RESQML2_0_1_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_0_1_NS::HorizonInterpretation*>(this->epcDoc->getResqmlAbstractObjectByUuid(HorizonInterpretationTest::defaultUuid));
 
 	// creation of the generic creation activity template
 	ActivityTemplateGenericCreationTest* activityTemplateTest = new ActivityTemplateGenericCreationTest(this->epcDoc, true);
@@ -79,7 +79,7 @@ void ActivityCreationTest::readEpcDocHandler() {
 	REQUIRE( activity != nullptr );
 
 	// getting the horizon interpretation
-	resqml2_0_1::HorizonInterpretation * horizonInterpretation = static_cast<resqml2_0_1::HorizonInterpretation*>(this->epcDoc->getResqmlAbstractObjectByUuid(HorizonInterpretationTest::defaultUuid));
+	RESQML2_0_1_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_0_1_NS::HorizonInterpretation*>(this->epcDoc->getResqmlAbstractObjectByUuid(HorizonInterpretationTest::defaultUuid));
 	REQUIRE( horizonInterpretation != nullptr );
 
 	// testing the activity

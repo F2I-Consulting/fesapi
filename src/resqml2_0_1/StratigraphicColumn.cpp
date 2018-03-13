@@ -21,7 +21,7 @@ under the License.
 #include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 
@@ -65,7 +65,7 @@ vector<Relationship> StratigraphicColumn::getAllEpcRelationships() const
     return result;
 }
 
-void StratigraphicColumn::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void StratigraphicColumn::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	updateXml = false;
 

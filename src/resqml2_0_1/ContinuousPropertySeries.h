@@ -20,7 +20,7 @@ under the License.
 
 #include "resqml2_0_1/ContinuousProperty.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	/**
 	* This class is mainly useful for describing temporal properties on well objects.
@@ -47,10 +47,10 @@ namespace resqml2_0_1
 		* @param ts							The associated time series.
 		* @param useInterval				Indicates wether the property values will be attached to the time index or to the interval between consecutive time index. 
 		*/
-		ContinuousPropertySeries(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		ContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
 			const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind,
-			resqml2::TimeSeries * ts, const bool & useInterval = false);
+			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -64,10 +64,10 @@ namespace resqml2_0_1
 		* @param ts							The associated time series.
 		* @param useInterval				Indicates wether the property values will be attached to the time index or to the interval between consecutive time index.
 		*/
-		ContinuousPropertySeries(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		ContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
-			const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, resqml2::PropertyKind * localPropKind,
-			resqml2::TimeSeries * ts, const bool & useInterval = false);
+			const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, RESQML2_NS::PropertyKind * localPropKind,
+			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.

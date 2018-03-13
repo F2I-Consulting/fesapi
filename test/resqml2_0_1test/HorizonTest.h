@@ -21,7 +21,7 @@ under the License.
 #include "resqml2_0_1test/AbstractFeatureTest.h"
 #include <iostream>
 
-namespace common {
+namespace COMMON_NS {
 	class EpcDocument;
 }
 
@@ -45,8 +45,8 @@ namespace resqml2_0_1test {
 		* @param init true if this object is created for initialization purpose else false if it is 
 		* created for reading purpose. According to init value a iniEpcDoc() or readEpcDoc() is called.
 		*/
-		HorizonTest(common::EpcDocument* epcDoc, bool init);
-		HorizonTest(common::EpcDocument* epcDoc, bool init, const std::string & uuid, const std::string & title);
+		HorizonTest(COMMON_NS::EpcDocument* epcDoc, bool init);
+		HorizonTest(COMMON_NS::EpcDocument* epcDoc, bool init, const std::string & uuid, const std::string & title);
 
 	protected:
 		void initEpcDocHandler();

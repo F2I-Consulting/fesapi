@@ -21,7 +21,7 @@ under the License.
 #include <stdexcept>
 
 using namespace std;
-using namespace prodml2_0;
+using namespace PRODML2_0_NS;
 using namespace gsoap_eml2_1;
 using namespace epc;
 

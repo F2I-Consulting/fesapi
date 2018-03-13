@@ -22,9 +22,9 @@ under the License.
 #include "resqml2/TimeSeries.h"
 
 using namespace std;
-using namespace common;
+using namespace COMMON_NS;
 using namespace resqml2_0_1test;
-using namespace resqml2;
+using namespace RESQML2_NS;
 
 const char* TimeSeriesTest::defaultUuid = "0b8fc144-8e71-4f2a-a062-60c2d17fdc12";
 const char* TimeSeriesTest::inputTile = "Time Series";

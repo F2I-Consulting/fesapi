@@ -20,21 +20,21 @@ under the License.
 
 #include "resqml2/GridConnectionSetRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class StructuralOrganizationInterpretation;
 }
 
-namespace resqml2
+namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation : public common::AbstractObject
+	class DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation : public COMMON_NS::AbstractObject
 	{
 	protected:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		AbstractFeatureInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : common::AbstractObject(partialObject) {}
+		AbstractFeatureInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Default constructor
@@ -45,9 +45,9 @@ namespace resqml2
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractFeatureInterpretation(gsoap_resqml2_0_1::resqml2__AbstractFeatureInterpretation* fromGsoap) : common::AbstractObject(fromGsoap) {}
+		AbstractFeatureInterpretation(gsoap_resqml2_0_1::resqml2__AbstractFeatureInterpretation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
-		void setInterpretedFeatureInXml(resqml2::AbstractFeature* feature);
+		void setInterpretedFeatureInXml(RESQML2_NS::AbstractFeature* feature);
 
 	public:
 
@@ -108,23 +108,23 @@ namespace resqml2
 		* Indicates that this interpretation is a frontier of a stack of an organization
 		* BE CAREFUL : Does not add back this instance to the organization. It is assumed it is already done.
 		*/
-		void setBottomFrontierOf(resqml2_0_1::StructuralOrganizationInterpretation* structOrg);
-		void setTopFrontierOf(resqml2_0_1::StructuralOrganizationInterpretation* structOrg);
-		void setSideFrontierOf(resqml2_0_1::StructuralOrganizationInterpretation* structOrg);
+		void setBottomFrontierOf(RESQML2_0_1_NS::StructuralOrganizationInterpretation* structOrg);
+		void setTopFrontierOf(RESQML2_0_1_NS::StructuralOrganizationInterpretation* structOrg);
+		void setSideFrontierOf(RESQML2_0_1_NS::StructuralOrganizationInterpretation* structOrg);
 
 	protected:
 
 		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
 		
-		virtual void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML backward relationship
 		std::vector<AbstractRepresentation *>						representationSet;
 		std::vector<GridConnectionSetRepresentation *>				gridConnectionSetRepresentationSet;
 
-		std::vector<resqml2_0_1::StructuralOrganizationInterpretation *>	isBottomFrontierSet;
-		std::vector<resqml2_0_1::StructuralOrganizationInterpretation *>	isTopFrontierSet;
-		std::vector<resqml2_0_1::StructuralOrganizationInterpretation *>	isSideFrontierSet;
+		std::vector<RESQML2_0_1_NS::StructuralOrganizationInterpretation *>	isBottomFrontierSet;
+		std::vector<RESQML2_0_1_NS::StructuralOrganizationInterpretation *>	isTopFrontierSet;
+		std::vector<RESQML2_0_1_NS::StructuralOrganizationInterpretation *>	isSideFrontierSet;
 
 		friend void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation * interp);
 		friend void GridConnectionSetRepresentation::pushBackInterpretation(AbstractFeatureInterpretation* interp);

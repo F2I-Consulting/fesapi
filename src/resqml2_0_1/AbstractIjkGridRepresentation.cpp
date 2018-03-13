@@ -29,7 +29,7 @@ under the License.
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 
 const char* AbstractIjkGridRepresentation::XML_TAG = "IjkGridRepresentation";
 const char* AbstractIjkGridRepresentation::XML_TAG_TRUNCATED = "TruncatedIjkGridRepresentation";
@@ -39,7 +39,7 @@ std::string AbstractIjkGridRepresentation::getXmlTag() const
 	return !isTruncated() ? XML_TAG : XML_TAG_TRUNCATED;
 }
 
-void AbstractIjkGridRepresentation::init(soap* soapContext, resqml2::AbstractLocal3dCrs * crs,
+void AbstractIjkGridRepresentation::init(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title,
 			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
 			bool withTruncatedPillars)
@@ -75,20 +75,20 @@ void AbstractIjkGridRepresentation::init(soap* soapContext, resqml2::AbstractLoc
 	}
 }
 
-AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(soap* soapContext, resqml2::AbstractLocal3dCrs * crs,
+AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
 	const std::string & guid, const std::string & title,
 	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
 	bool withTruncatedPillars) :
-	resqml2::AbstractColumnLayerGridRepresentation(nullptr, crs, withTruncatedPillars), splitInformation(nullptr), blockInformation(nullptr)
+	RESQML2_NS::AbstractColumnLayerGridRepresentation(nullptr, crs, withTruncatedPillars), splitInformation(nullptr), blockInformation(nullptr)
 {
 	init(soapContext, crs, guid, title, iCount, jCount, kCount, withTruncatedPillars);
 }
 
-AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 	const std::string & guid, const std::string & title,
 	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
 	bool withTruncatedPillars) :
-	resqml2::AbstractColumnLayerGridRepresentation(interp, crs, withTruncatedPillars), splitInformation(nullptr), blockInformation(nullptr)
+	RESQML2_NS::AbstractColumnLayerGridRepresentation(interp, crs, withTruncatedPillars), splitInformation(nullptr), blockInformation(nullptr)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The interpretation of the IJK grid cannot be null.");

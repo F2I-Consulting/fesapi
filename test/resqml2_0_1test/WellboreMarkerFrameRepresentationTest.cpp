@@ -30,8 +30,8 @@ under the License.
 #include "resqml2_0_1/WellboreMarker.h"
 
 using namespace std;
-using namespace common;
-using namespace resqml2_0_1;
+using namespace COMMON_NS;
+using namespace RESQML2_0_1_NS;
 using namespace resqml2_0_1test;
 
 const char* WellboreMarkerFrameRepresentationTest::defaultUuid = "8f1c7e38-afc7-4cb8-86bb-a116e9135de4";

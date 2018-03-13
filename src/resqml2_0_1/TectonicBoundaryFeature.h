@@ -20,7 +20,7 @@ under the License.
 
 #include "resqml2_0_1/BoundaryFeature.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT TectonicBoundaryFeature : public BoundaryFeature
 	{

@@ -25,7 +25,7 @@ under the License.
 #define CUMULATIVE_LENGTH_DS_NAME "cumulativeLength"
 #define ELEMENTS_DS_NAME "elements"
 
-namespace common
+namespace COMMON_NS
 {
 	class DLL_IMPORT_OR_EXPORT AbstractHdfProxy : public EpcExternalPartReference
 	{
@@ -528,9 +528,9 @@ namespace common
 		*/
 		virtual bool exist(const std::string & absolutePathInHdfFile) const = 0;
   
-		friend void resqml2::AbstractRepresentation::setHdfProxy(common::AbstractHdfProxy * proxy);
-		friend void resqml2::AbstractProperty::setHdfProxy(common::AbstractHdfProxy * proxy);
-		friend void prodml2_0::DasAcquisition::setHdfProxy(common::AbstractHdfProxy * proxy);
+		friend void RESQML2_NS::AbstractRepresentation::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
+		friend void RESQML2_NS::AbstractProperty::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
+		friend void PRODML2_0_NS::DasAcquisition::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
 
 	};
 }

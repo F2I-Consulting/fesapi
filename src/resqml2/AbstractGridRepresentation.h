@@ -21,13 +21,13 @@ under the License.
 #include "resqml2/GridConnectionSetRepresentation.h"
 #include "resqml2_0_1/BlockedWellboreRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class AbstractStratigraphicOrganizationInterpretation;
 	class UnstructuredGridRepresentation;
 }
 
-namespace resqml2
+namespace RESQML2_NS
 {
 	class DLL_IMPORT_OR_EXPORT AbstractGridRepresentation : public AbstractRepresentation
 	{
@@ -58,7 +58,7 @@ namespace resqml2
 		/**
 		* Default constructor
 		*/
-		AbstractGridRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs, bool withTruncatedPillars) : AbstractRepresentation(interp, crs), withTruncatedPillars(withTruncatedPillars){}
+		AbstractGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs, bool withTruncatedPillars) : AbstractRepresentation(interp, crs), withTruncatedPillars(withTruncatedPillars){}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -84,7 +84,7 @@ namespace resqml2
 		/**
 		* Get the vector of all grid connection set rep asociated to this grid instance.
 		*/
-		std::vector<resqml2::GridConnectionSetRepresentation*> getGridConnectionSetRepresentationSet() const {return gridConnectionSetRepresentationSet;}
+		std::vector<RESQML2_NS::GridConnectionSetRepresentation*> getGridConnectionSetRepresentationSet() const {return gridConnectionSetRepresentationSet;}
 
 		/**
 		 * Get the GridConnectionSetRepresentation count into this EPC document which are associated to this grid.
@@ -96,7 +96,7 @@ namespace resqml2
 		 * Get a particular ijk parametric grid according to its position in the EPC document.
 		 * It is mainly used in SWIG context for parsing the vector from a non C++ language.
 		 */
-		resqml2::GridConnectionSetRepresentation* getGridConnectionSetRepresentation(const unsigned int & index) const;
+		RESQML2_NS::GridConnectionSetRepresentation* getGridConnectionSetRepresentation(const unsigned int & index) const;
 
 
 		//************************************************************
@@ -134,7 +134,7 @@ namespace resqml2
 		/**
 		* Indicates that this grid takes place into another unstructured parent grid.
 		*/
-		void setParentWindow(ULONG64 * cellIndices, const ULONG64 & cellIndexCount, resqml2_0_1::UnstructuredGridRepresentation* parentGrid);
+		void setParentWindow(ULONG64 * cellIndices, const ULONG64 & cellIndexCount, RESQML2_0_1_NS::UnstructuredGridRepresentation* parentGrid);
 
 		/**
 		* Indicates that this grid takes place into another Column Layer parent grid.
@@ -175,7 +175,7 @@ namespace resqml2
 			const unsigned int & iCellIndexRegridStart, unsigned int * childCellCountPerIInterval, unsigned int * parentCellCountPerIInterval,  const unsigned int & iIntervalCount,
 			const unsigned int & jCellIndexRegridStart, unsigned int * childCellCountPerJInterval, unsigned int * parentCellCountPerJInterval,  const unsigned int & jIntervalCount,
 			const unsigned int & kCellIndexRegridStart, unsigned int * childCellCountPerKInterval, unsigned int * parentCellCountPerKInterval,  const unsigned int & kIntervalCount,
-			resqml2_0_1::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
+			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 
 		/**
 		* Indicates that this grid takes place into another IJK parent grid.
@@ -200,7 +200,7 @@ namespace resqml2
 			const unsigned int & iCellIndexRegridStart, unsigned int constantChildCellCountPerIInterval, unsigned int constantParentCellCountPerIInterval, const unsigned int & iIntervalCount,
 			const unsigned int & jCellIndexRegridStart, unsigned int constantChildCellCountPerJInterval, unsigned int constantParentCellCountPerJInterval, const unsigned int & jIntervalCount,
 			const unsigned int & kCellIndexRegridStart, unsigned int constantChildCellCountPerKInterval, unsigned int constantParentCellCountPerKInterval, const unsigned int & kIntervalCount,
-			resqml2_0_1::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
+			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 
 		/**
 		* Indicates that this grid takes place into another IJK parent grid.
@@ -223,7 +223,7 @@ namespace resqml2
 			const unsigned int & iCellIndexRegridStart, unsigned int iChildCellCount, unsigned int iParentCellCount,
 			const unsigned int & jCellIndexRegridStart, unsigned int jChildCellCount, unsigned int jParentCellCount,
 			const unsigned int & kCellIndexRegridStart, unsigned int kChildCellCount, unsigned int kParentCellCount,
-			resqml2_0_1::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
+			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 
 		/**
 		* When a parent windows has been defined, this method allows to force some parent cells to be noted as non regridded.
@@ -327,12 +327,12 @@ namespace resqml2
 		* @param nullValue			The value which is used to tell the association between a cell and strati unit is unavailable.
 		* @param stratiOrgInterp	The stratigraphic organization interpretation which is associated to this grid representation.
 		*/
-		void setCellAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, resqml2_0_1::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
+		void setCellAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
 
 		/**
 		* @return	nullptr if no stratigraphic organization interpretation is associated to this grid representation. Otherwise return the associated stratigraphic organization interpretation.
 		*/
-		resqml2_0_1::AbstractStratigraphicOrganizationInterpretation* getStratigraphicOrganizationInterpretation() const;
+		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* getStratigraphicOrganizationInterpretation() const;
 
 		/**
 		* @return	null pointer if no stratigraphic organization interpretation is associated to this grid representation. Otherwise return the data objet reference of the associated stratigraphic organization interpretation.
@@ -469,17 +469,17 @@ namespace resqml2
 	protected:
 
 		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		bool withTruncatedPillars;
 
 		std::vector<AbstractGridRepresentation*> childGridSet;
 
-		std::vector<resqml2::GridConnectionSetRepresentation*> gridConnectionSetRepresentationSet;
-		std::vector<resqml2_0_1::BlockedWellboreRepresentation*> blockedWellboreRepresentationSet;
+		std::vector<RESQML2_NS::GridConnectionSetRepresentation*> gridConnectionSetRepresentationSet;
+		std::vector<RESQML2_0_1_NS::BlockedWellboreRepresentation*> blockedWellboreRepresentationSet;
 
 		friend void GridConnectionSetRepresentation::pushBackSupportingGridRepresentation(AbstractGridRepresentation * supportingGridRep);
-		friend void resqml2_0_1::BlockedWellboreRepresentation::pushBackSupportingGridRepresentation(resqml2::AbstractGridRepresentation * supportingGridRep);
+		friend void RESQML2_0_1_NS::BlockedWellboreRepresentation::pushBackSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep);
 
 	};
 }

@@ -20,7 +20,7 @@ under the License.
 
 #include "resqml2_0_1/AbstractSurfaceRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT Grid2dSetRepresentation : public AbstractSurfaceRepresentation
 	{
@@ -40,7 +40,7 @@ namespace resqml2_0_1
 		* @param guid				The guid to set to the new instance. If empty then a new guid will be generated.
 		* @param title				A title for the instance to create.
 		*/
-		Grid2dSetRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+		Grid2dSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title);
 
 		/**
@@ -107,7 +107,7 @@ namespace resqml2_0_1
 		*/
 		void pushBackGeometryPatch(
 				double * zValues,
-				const unsigned int & numI, const unsigned int & numJ, common::AbstractHdfProxy* proxy,
+				const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy* proxy,
 				Grid2dRepresentation * supportingGrid2dRepresentation,
 				const unsigned int & startIndexI = 0, const unsigned int & startIndexJ = 0,
 				const int & indexIncrementI = 1, const int & indexIncrementJ = 1);
@@ -145,7 +145,7 @@ namespace resqml2_0_1
 
 	private:
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		std::vector<Grid2dRepresentation *> supportingRepresentationSet;
 	};

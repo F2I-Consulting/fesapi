@@ -19,7 +19,7 @@ under the License.
 #include "resqml2_0_1/GeneticBoundaryFeature.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 
 const char* GeneticBoundaryFeature::XML_TAG = "GeneticBoundaryFeature";
 

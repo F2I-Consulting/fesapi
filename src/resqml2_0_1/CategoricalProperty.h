@@ -20,16 +20,16 @@ under the License.
 
 #include "resqml2/AbstractValuesProperty.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT CategoricalProperty : public resqml2::AbstractValuesProperty
+	class DLL_IMPORT_OR_EXPORT CategoricalProperty : public RESQML2_NS::AbstractValuesProperty
 	{
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		CategoricalProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : resqml2::AbstractValuesProperty(partialObject) {}
+		CategoricalProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractValuesProperty(partialObject) {}
 
 		CategoricalProperty(StringTableLookup* strLookup): stringLookup(strLookup) {}
 
@@ -43,7 +43,7 @@ namespace resqml2_0_1
 		* @param strLookup					The string lookup which defines the possible string values and their keys.
 		* @param energisticsPropertyKind	The property kind of these property values which must be defined in the standard energistics property type dictionary.
 		*/
-		CategoricalProperty(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
 			class StringTableLookup* strLookup, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind);
 
@@ -57,9 +57,9 @@ namespace resqml2_0_1
 		* @param strLookup					The string lookup which defines the possible string values and their keys.
 		* @param localPropKind				The property kind of these property values which must be defined in the EPC document as a local property kind.
 		*/
-		CategoricalProperty(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
-			class StringTableLookup* strLookup, resqml2::PropertyKind * localPropKind);
+			class StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropKind);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -80,7 +80,7 @@ namespace resqml2_0_1
 		* @param valueCount				The number of values to write.
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackLongHdf5Array1dOfValues(long * values, const ULONG64 & valueCount, common::AbstractHdfProxy * proxy, const long & nullValue);
+		void pushBackLongHdf5Array1dOfValues(long * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
 
 		/**
 		* Add a 2d array of explicit long values to the property values.
@@ -89,7 +89,7 @@ namespace resqml2_0_1
 		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly J dimension).
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackLongHdf5Array2dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy, const long & nullValue);
+		void pushBackLongHdf5Array2dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
 
 		/**
 		* Add a 3d array of explicit long values to the property values.
@@ -99,7 +99,7 @@ namespace resqml2_0_1
 		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly K dimension).
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackLongHdf5Array3dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy, const long & nullValue);
+		void pushBackLongHdf5Array3dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
 
 		/**
 		* Add an array (potentially multi dimensions) of long values to the property values which will be stored in the HDF file identified by its HDF proxy.
@@ -108,7 +108,7 @@ namespace resqml2_0_1
 		* @param numDimensionsInArray	The number of dimensions in the array to write.
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackLongHdf5ArrayOfValues(long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const long & nullValue);
+		void pushBackLongHdf5ArrayOfValues(long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue);
 
 		/**
 		* Add a 1d array of explicit unsigned short values to the property values.
@@ -116,7 +116,7 @@ namespace resqml2_0_1
 		* @param valueCount				The number of values to write.
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackUShortHdf5Array1dOfValues(unsigned short * values, const ULONG64 & valueCount, common::AbstractHdfProxy * proxy, const long & nullValue);
+		void pushBackUShortHdf5Array1dOfValues(unsigned short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
 
 		/**
 		* Add a 2d array of explicit unsigned short values to the property values.
@@ -125,7 +125,7 @@ namespace resqml2_0_1
 		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly J dimension).
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackUShortHdf5Array2dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy, const long & nullValue);
+		void pushBackUShortHdf5Array2dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
 
 		/**
 		* Add a 3d array of explicit unsigned short values to the property values.
@@ -135,7 +135,7 @@ namespace resqml2_0_1
 		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly K dimension).
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackUShortHdf5Array3dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy, const long & nullValue);
+		void pushBackUShortHdf5Array3dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
 
 		/**
 		* Add an array (potentially multi dimensions) of unsigned short values to the property values which will be stored in the HDF file identified by its HDF proxy.
@@ -144,9 +144,9 @@ namespace resqml2_0_1
 		* @param numDimensionsInArray	The number of dimensions in the array to write.
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackUShortHdf5ArrayOfValues(unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const unsigned short & nullValue);
+		void pushBackUShortHdf5ArrayOfValues(unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue);
 
-		std::string pushBackRefToExistingDataset(common::AbstractHdfProxy* hdfProxy, const std::string & dataset = "", const long & nullValue = (std::numeric_limits<long>::max)());
+		std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & dataset = "", const long & nullValue = (std::numeric_limits<long>::max)());
 
 		/**
 		* Get the string lookup which is associated to this categorical property values.
@@ -161,7 +161,7 @@ namespace resqml2_0_1
 		/**
 		* Check if the associated local property kind is allowed for this property.
 		*/
-		bool validatePropertyKindAssociation(resqml2::PropertyKind* pk);
+		bool validatePropertyKindAssociation(RESQML2_NS::PropertyKind* pk);
 
 		/**
 		* Check if the associated standard property kind is allowed for this property.
@@ -170,7 +170,7 @@ namespace resqml2_0_1
 
 	protected:
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		virtual void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML forward relationship
 		class StringTableLookup* stringLookup;

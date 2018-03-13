@@ -26,12 +26,12 @@ under the License.
 
 #include "common/EpcDocument.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT PropertyKindMapper
 	{
 	public:
-		PropertyKindMapper(common::EpcDocument* epcDoc):epcDocument(epcDoc) {}
+		PropertyKindMapper(COMMON_NS::EpcDocument* epcDoc):epcDocument(epcDoc) {}
 		~PropertyKindMapper() {}
 
 		/**
@@ -99,7 +99,7 @@ namespace resqml2_0_1
 		bool isAbstract(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind resqmlStandardPropertyKindName) const;
 
 	private:
-		common::EpcDocument * epcDocument;
+		COMMON_NS::EpcDocument * epcDocument;
 
 
 #if (defined(_WIN32) && _MSC_VER >= 1600)

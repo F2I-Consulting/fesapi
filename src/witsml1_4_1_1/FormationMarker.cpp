@@ -24,7 +24,7 @@ under the License.
 #include "witsml1_4_1_1/Well.h"
 
 using namespace std;
-using namespace witsml1_4_1_1;
+using namespace WITSML1_4_1_1_NS;
 using namespace gsoap_witsml1_4_1_1;
 using namespace epc;
 
@@ -167,7 +167,7 @@ void FormationMarker::setWellbore(Wellbore* witsmlWellbore)
 	}
 }
 
-void FormationMarker::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void FormationMarker::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	witsml1__obj_USCOREformationMarker* fm = static_cast<_witsml1__formationMarkers*>(collection)->formationMarker[0];
 	if (fm && fm->uidWellbore)

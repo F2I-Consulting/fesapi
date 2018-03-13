@@ -20,11 +20,11 @@ under the License.
 
 #include "resqml2_0_1/RepresentationSetRepresentation.h"
 
-namespace resqml2 {
+namespace RESQML2_NS {
 	class AbstractHdfProxy;
 }
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT SealedSurfaceFrameworkRepresentation : public RepresentationSetRepresentation
 	{
@@ -85,7 +85,7 @@ namespace resqml2_0_1
 			const unsigned int & patchCount,
 			const unsigned int & identicalNodesCount,
 			int * identicalNodes,
-			common::AbstractHdfProxy * proxy);
+			COMMON_NS::AbstractHdfProxy * proxy);
 
 		/**
 		 * Pushes back a contact patch in a particular sealed contact representation of the structural framework.
@@ -98,7 +98,7 @@ namespace resqml2_0_1
 			const unsigned int & contactIndex,
 			int * nodeIndicesOnSupportingRepresentation, const unsigned int & NodeCount,
 			class AbstractRepresentation * supportingRepresentation,
-			common::AbstractHdfProxy * proxy);
+			COMMON_NS::AbstractHdfProxy * proxy);
 
 		 /**
 		  * Push back a contact identity in the structural framework with implicit identical nodes
@@ -110,7 +110,7 @@ namespace resqml2_0_1
 		 void pushBackContactIdentity(
 			const gsoap_resqml2_0_1::resqml2__IdentityKind & kind,
 			const unsigned int & sealedContactRepresentationsCount, int * sealedContactRepresentationsIndexes,
-			common::AbstractHdfProxy * proxy);
+			COMMON_NS::AbstractHdfProxy * proxy);
 
 		 /**
 		  * Push back a contact identity in the structural framework
@@ -125,7 +125,7 @@ namespace resqml2_0_1
 			const gsoap_resqml2_0_1::resqml2__IdentityKind & kind,
 			const unsigned int & sealedContactRepresentationsCount, int * sealedContactRepresentationsIndexes,
 			const unsigned int & identicalNodesCount, int * identicalNodesIndexes,
-			common::AbstractHdfProxy * proxy);
+			COMMON_NS::AbstractHdfProxy * proxy);
 
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
@@ -133,5 +133,5 @@ namespace resqml2_0_1
 		virtual std::string getHdfProxyUuid() const;
 	};
 
-} // namespace resqml2_0_1
+} // namespace RESQML2_0_1_NS
 

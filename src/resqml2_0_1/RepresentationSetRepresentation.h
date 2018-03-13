@@ -20,12 +20,12 @@ under the License.
 
 #include "resqml2/RepresentationSetRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation : public resqml2::RepresentationSetRepresentation
+	class DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation : public RESQML2_NS::RepresentationSetRepresentation
 	{
 	protected:
-		RepresentationSetRepresentation(resqml2::AbstractFeatureInterpretation* interp) : resqml2::RepresentationSetRepresentation(interp) {}
+		RepresentationSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp) : RESQML2_NS::RepresentationSetRepresentation(interp) {}
 
 		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const { return nullptr; }
 
@@ -34,22 +34,22 @@ namespace resqml2_0_1
 		/**
 		* Only to be used in partial transfer context
 		*/
-		RepresentationSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : resqml2::RepresentationSetRepresentation(partialObject) {}
+		RepresentationSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::RepresentationSetRepresentation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
 		* @param horizon the feature the instance interprets.
 		* @param title A title for the instance to create.
 		*/
-		RepresentationSetRepresentation(resqml2::AbstractFeatureInterpretation* interp, const std::string & guid, const std::string & title);
+		RepresentationSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, const std::string & guid, const std::string & title);
 
 		// To use if the representation set representation is not linked to any interpretation
-		RepresentationSetRepresentation(common::EpcDocument* epcDoc, const std::string & guid, const std::string & title);
+		RepresentationSetRepresentation(COMMON_NS::EpcDocument* epcDoc, const std::string & guid, const std::string & title);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		RepresentationSetRepresentation(gsoap_resqml2_0_1::_resqml2__RepresentationSetRepresentation* fromGsoap) : resqml2::RepresentationSetRepresentation(fromGsoap) {}
+		RepresentationSetRepresentation(gsoap_resqml2_0_1::_resqml2__RepresentationSetRepresentation* fromGsoap) : RESQML2_NS::RepresentationSetRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

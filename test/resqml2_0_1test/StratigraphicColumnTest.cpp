@@ -27,8 +27,8 @@ under the License.
 
 using namespace std;
 using namespace resqml2_0_1test;
-using namespace common;
-using namespace resqml2_0_1;
+using namespace COMMON_NS;
+using namespace RESQML2_0_1_NS;
 
 const char* StratigraphicColumnTest::defaultUuid = "b407ddc5-67a7-437a-aa24-baf096a76857";
 const char* StratigraphicColumnTest::defaultTitle = "Strati Column";

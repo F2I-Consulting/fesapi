@@ -20,17 +20,17 @@ under the License.
 
 #include "common/AbstractHdfProxy.h"
 
-namespace common
+namespace COMMON_NS
 {
 	class DLL_IMPORT_OR_EXPORT HdfProxy : public AbstractHdfProxy
 	{
 	protected:
 
 		HdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
-			common::AbstractHdfProxy(fromGsoap, packageDirAbsolutePath, externalFilePath), hdfFile(-1), compressionLevel(0) {}
+			COMMON_NS::AbstractHdfProxy(fromGsoap, packageDirAbsolutePath, externalFilePath), hdfFile(-1), compressionLevel(0) {}
 
 		HdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
-			common::AbstractHdfProxy(fromGsoap, packageDirAbsolutePath, externalFilePath), hdfFile(-1), compressionLevel(0) {}
+			COMMON_NS::AbstractHdfProxy(fromGsoap, packageDirAbsolutePath, externalFilePath), hdfFile(-1), compressionLevel(0) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.

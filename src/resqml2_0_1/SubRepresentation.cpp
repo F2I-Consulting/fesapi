@@ -31,7 +31,7 @@ under the License.
 
 using namespace std;
 using namespace epc;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 void SubRepresentation::init(soap* soapContext, const string & guid, const string & title)
@@ -44,14 +44,14 @@ void SubRepresentation::init(soap* soapContext, const string & guid, const strin
 }
 
 SubRepresentation::SubRepresentation(soap* soapContext,	const string & guid, const string & title) :
-	resqml2::SubRepresentation(static_cast<resqml2::AbstractFeatureInterpretation*>(nullptr))
+	RESQML2_NS::SubRepresentation(static_cast<RESQML2_NS::AbstractFeatureInterpretation*>(nullptr))
 {
 	init(soapContext, guid, title);
 }
 
-SubRepresentation::SubRepresentation(resqml2::AbstractFeatureInterpretation* interp,
+SubRepresentation::SubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const string & guid, const string & title) :
-	resqml2::SubRepresentation(interp)
+	RESQML2_NS::SubRepresentation(interp)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The interpretation of the subrepresentation cannot be null.");
@@ -109,7 +109,7 @@ void SubRepresentation::pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::
 	integerArray->Offset.push_back(offset);
 }
 
-void SubRepresentation::pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, ULONG64 * elementIndices, common::AbstractHdfProxy * proxy, short * supportingRepIndices)
+void SubRepresentation::pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, ULONG64 * elementIndices, COMMON_NS::AbstractHdfProxy * proxy, short * supportingRepIndices)
 {
 	_resqml2__SubRepresentation* rep = getSpecializedGsoapProxy();
 
@@ -133,7 +133,7 @@ void SubRepresentation::pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::
 }
 
 void SubRepresentation::pushBackRefToExistingDataset(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, const std::string & elementDataset,
-	const LONG64 & nullValue, common::AbstractHdfProxy * proxy, const std::string & supportingRepDataset)
+	const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset)
 {
 	_resqml2__SubRepresentation* rep = getSpecializedGsoapProxy();
 	
@@ -186,7 +186,7 @@ DiscreteProperty* SubRepresentation::getSupportingRepresentationIndicesDiscreteP
 void SubRepresentation::pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind0, const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind1,
 	const ULONG64 & elementCount,
 	ULONG64 * elementIndices0, ULONG64 * elementIndices1,
-	common::AbstractHdfProxy * proxy)
+	COMMON_NS::AbstractHdfProxy * proxy)
 {
 	pushBackSubRepresentationPatch(elementKind0, elementCount, elementIndices0, proxy);
 
@@ -229,7 +229,7 @@ string SubRepresentation::getHdfProxyUuid() const
 	return "";
 }
 
-resqml2::AbstractRepresentation::indexableElement SubRepresentation::getElementKindOfPatch(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex) const
+RESQML2_NS::AbstractRepresentation::indexableElement SubRepresentation::getElementKindOfPatch(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex) const
 {
 	_resqml2__SubRepresentation* rep = getSpecializedGsoapProxy();
 	if (rep->SubRepresentationPatch.size() > patchIndex) {
@@ -417,7 +417,7 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* SubRepresentation::getSupportingR
 	return result;
 }
 
-void SubRepresentation::pushBackXmlSupportingRepresentation(resqml2::AbstractRepresentation * supportingRep)
+void SubRepresentation::pushBackXmlSupportingRepresentation(RESQML2_NS::AbstractRepresentation * supportingRep)
 {
 	_resqml2__SubRepresentation* rep = getSpecializedGsoapProxy();
 	if (rep->SupportingRepresentation == nullptr) {

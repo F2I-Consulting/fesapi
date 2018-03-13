@@ -28,13 +28,13 @@ under the License.
 #include "common/AbstractHdfProxy.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 
 const char* TriangulatedSetRepresentation::XML_TAG = "TriangulatedSetRepresentation";
 
-TriangulatedSetRepresentation::TriangulatedSetRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+TriangulatedSetRepresentation::TriangulatedSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 		const std::string & guid, const std::string & title):
 	AbstractSurfaceRepresentation(interp, crs)
 {
@@ -77,7 +77,7 @@ resqml2__PointGeometry* TriangulatedSetRepresentation::getPointGeometry2_0_1(con
 void TriangulatedSetRepresentation::pushBackTrianglePatch(
 	const unsigned int & nodeCount, double * nodes,
 	const unsigned int & triangleCount, unsigned int * triangleNodeIndices,
-	common::AbstractHdfProxy * proxy)
+	COMMON_NS::AbstractHdfProxy * proxy)
 {
 	_resqml2__TriangulatedSetRepresentation* triRep = static_cast<_resqml2__TriangulatedSetRepresentation*>(gsoapProxy2_0_1);
 

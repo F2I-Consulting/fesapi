@@ -25,8 +25,8 @@ under the License.
 
 using namespace std;
 using namespace resqml2_0_1test;
-using namespace common;
-using namespace resqml2_0_1;
+using namespace COMMON_NS;
+using namespace RESQML2_0_1_NS;
 
 FaultTest::FaultTest(const string & epcDocPath)
 	: AbstractFeatureTest(epcDocPath, uuidFault, titleFault) {

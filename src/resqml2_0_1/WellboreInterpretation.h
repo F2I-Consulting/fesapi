@@ -21,9 +21,9 @@ under the License.
 
 #include "resqml2/AbstractFeatureInterpretation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT WellboreInterpretation : public resqml2::AbstractFeatureInterpretation
+	class DLL_IMPORT_OR_EXPORT WellboreInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	public:
 
@@ -31,7 +31,7 @@ namespace resqml2_0_1
 		* Only to be used in partial transfer context
 		*/
 		WellboreInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			resqml2::AbstractFeatureInterpretation(partialObject)
+			RESQML2_NS::AbstractFeatureInterpretation(partialObject)
 		{
 		}
 
@@ -47,7 +47,7 @@ namespace resqml2_0_1
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreInterpretation(gsoap_resqml2_0_1::_resqml2__WellboreInterpretation* fromGsoap) : resqml2::AbstractFeatureInterpretation(fromGsoap) {}
+		WellboreInterpretation(gsoap_resqml2_0_1::_resqml2__WellboreInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

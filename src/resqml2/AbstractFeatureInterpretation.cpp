@@ -26,12 +26,12 @@ under the License.
 #include "resqml2/GridConnectionSetRepresentation.h"
 #include "resqml2_0_1/StructuralOrganizationInterpretation.h"
 
-using namespace resqml2;
+using namespace RESQML2_NS;
 using namespace std;
 using namespace epc;
 
 
-void AbstractFeatureInterpretation::setInterpretedFeatureInXml(resqml2::AbstractFeature* feature)
+void AbstractFeatureInterpretation::setInterpretedFeatureInXml(RESQML2_NS::AbstractFeature* feature)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		static_cast<gsoap_resqml2_0_1::resqml2__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->InterpretedFeature = feature->newResqmlReference();
@@ -41,7 +41,7 @@ void AbstractFeatureInterpretation::setInterpretedFeatureInXml(resqml2::Abstract
 	}
 }
 
-void AbstractFeatureInterpretation::setInterpretedFeature(resqml2::AbstractFeature * feature)
+void AbstractFeatureInterpretation::setInterpretedFeature(RESQML2_NS::AbstractFeature * feature)
 {
 	if (feature == nullptr)
 		throw invalid_argument("The interpreted feature cannot be null.");
@@ -56,10 +56,10 @@ void AbstractFeatureInterpretation::setInterpretedFeature(resqml2::AbstractFeatu
 	}
 }
 
-void AbstractFeatureInterpretation::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void AbstractFeatureInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getInterpretedFeatureDor();
-	resqml2::AbstractFeature* interpretedFeature = epcDoc->getResqmlAbstractObjectByUuid<AbstractFeature>(dor->UUID);
+	RESQML2_NS::AbstractFeature* interpretedFeature = epcDoc->getResqmlAbstractObjectByUuid<AbstractFeature>(dor->UUID);
 	if (interpretedFeature == nullptr) { // partial transfer
 		getEpcDocument()->createPartial(dor);
 		interpretedFeature = getEpcDocument()->getResqmlAbstractObjectByUuid<AbstractFeature>(dor->UUID);
@@ -76,7 +76,7 @@ vector<Relationship> AbstractFeatureInterpretation::getAllEpcRelationships() con
 {
 	vector<Relationship> result;
 
-	resqml2::AbstractFeature* interpretedFeature = getInterpretedFeature();
+	RESQML2_NS::AbstractFeature* interpretedFeature = getInterpretedFeature();
 	Relationship rel(interpretedFeature->getPartNameInEpcDocument(), "", interpretedFeature->getUuid());
 	rel.setDestinationObjectType();
 	result.push_back(rel);
@@ -144,9 +144,9 @@ std::string AbstractFeatureInterpretation::getInterpretedFeatureUuid() const
 	return getInterpretedFeatureDor()->UUID;
 }
 
-resqml2::AbstractFeature* AbstractFeatureInterpretation::getInterpretedFeature() const
+RESQML2_NS::AbstractFeature* AbstractFeatureInterpretation::getInterpretedFeature() const
 {
-	return static_cast<resqml2::AbstractFeature*>(epcDocument->getResqmlAbstractObjectByUuid(getInterpretedFeatureUuid()));
+	return static_cast<RESQML2_NS::AbstractFeature*>(epcDocument->getResqmlAbstractObjectByUuid(getInterpretedFeatureUuid()));
 }
 
 const gsoap_resqml2_0_1::resqml2__Domain & AbstractFeatureInterpretation::initDomain(const gsoap_resqml2_0_1::resqml2__Domain & defaultDomain) const
@@ -220,17 +220,17 @@ vector<GridConnectionSetRepresentation *> AbstractFeatureInterpretation::getGrid
 	return gridConnectionSetRepresentationSet;
 }
 
-void AbstractFeatureInterpretation::setBottomFrontierOf(resqml2_0_1::StructuralOrganizationInterpretation* structOrg)
+void AbstractFeatureInterpretation::setBottomFrontierOf(RESQML2_0_1_NS::StructuralOrganizationInterpretation* structOrg)
 {
 	isBottomFrontierSet.push_back(structOrg);
 }
 
-void AbstractFeatureInterpretation::setTopFrontierOf(resqml2_0_1::StructuralOrganizationInterpretation* structOrg)
+void AbstractFeatureInterpretation::setTopFrontierOf(RESQML2_0_1_NS::StructuralOrganizationInterpretation* structOrg)
 {
 	isTopFrontierSet.push_back(structOrg);
 }
 
-void AbstractFeatureInterpretation::setSideFrontierOf(resqml2_0_1::StructuralOrganizationInterpretation* structOrg)
+void AbstractFeatureInterpretation::setSideFrontierOf(RESQML2_0_1_NS::StructuralOrganizationInterpretation* structOrg)
 {
 	isSideFrontierSet.push_back(structOrg);
 }

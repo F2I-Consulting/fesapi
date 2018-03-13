@@ -20,9 +20,9 @@ under the License.
 
 #include "common/HdfProxy.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT HdfProxy : public common::HdfProxy
+	class DLL_IMPORT_OR_EXPORT HdfProxy : public COMMON_NS::HdfProxy
 	{
 	public:
 		/**
@@ -36,7 +36,7 @@ namespace resqml2_0_1
 		HdfProxy(soap* soapContext, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
 
 		HdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) : 
-			common::HdfProxy(fromGsoap, packageDirAbsolutePath, externalFilePath) {}
+			COMMON_NS::HdfProxy(fromGsoap, packageDirAbsolutePath, externalFilePath) {}
 
 		~HdfProxy() {}
 
