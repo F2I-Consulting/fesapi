@@ -41,7 +41,6 @@ using namespace gsoap_resqml2_0_1;
 void GridConnectionSetRepresentation::init(soap* soapContext, const std::string & guid, const std::string & title)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREGridConnectionSetRepresentation(soapContext, 1);
-    _resqml2__GridConnectionSetRepresentation* rep = static_cast<_resqml2__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 
     initMandatoryMetadata();
     setMetadata(guid, title, "", -1, "", "", -1, "", "");

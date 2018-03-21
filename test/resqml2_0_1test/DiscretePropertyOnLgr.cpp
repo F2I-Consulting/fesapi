@@ -71,6 +71,7 @@ void DiscretePropertyOnLgr::initEpcDocHandler() {
 
 	// cleaning
 	delete frameTest;
+	delete pkTest;
 }
 
 void DiscretePropertyOnLgr::readEpcDocHandler() {
@@ -108,5 +109,6 @@ void DiscretePropertyOnLgr::readEpcDocHandler() {
 
 	// cleaning
 	delete frameTest;
+	delete pkTest;
 }
 

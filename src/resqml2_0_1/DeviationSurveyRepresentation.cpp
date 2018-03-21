@@ -315,7 +315,6 @@ unsigned int DeviationSurveyRepresentation::getWellboreFrameRepresentationCount(
 WellboreFrameRepresentation* DeviationSurveyRepresentation::getWellboreFrameRepresentation(unsigned int index) const
 {
 	vector<WellboreTrajectoryRepresentation*> trajectories = getWellboreTrajectoryRepresentationSet();
-	unsigned int result = 0;
 	for (size_t trajIndex = 0; trajIndex < trajectories.size(); ++trajIndex) {
 		WellboreTrajectoryRepresentation* traj = trajectories[trajIndex];
 		if (traj->getMdDatumUuid() == getMdDatumUuid() && traj->getMdUom() == getMdUom()) {

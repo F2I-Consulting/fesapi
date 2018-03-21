@@ -547,12 +547,6 @@ void IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch(co
 		pillarInformation = new PillarInformation();
 		loadPillarInformation(*pillarInformation);
 	}
-
-	// following lines for time testing
-	/*if (pillarInformation != nullptr)
-		delete pillarInformation;
-	pillarInformation = new PillarInformation();
-	loadPillarInformation(*pillarInformation);*/
 	
 	ULONG64 xyzPointCount = getXyzPointCountOfKInterfaceOfPatch(patchIndex);
 
@@ -573,6 +567,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch(co
 		delete[] offsetInEachDimension;
 	}
 	else {
+		delete[] parameters;
 		throw logic_error("Non floating point coordinate line parameters are not implemented yet");
 	}
 

@@ -47,8 +47,6 @@ DasInstrumentBox::DasInstrumentBox(soap* soapContext, const string & guid, const
 
 vector<Relationship> DasInstrumentBox::getAllEpcRelationships() const
 {
-	_prodml2__DasAcquisition* da = static_cast<_prodml2__DasAcquisition*>(gsoapProxy2_1);
-
 	vector<Relationship> result;
 	
 	// XML backward relationship

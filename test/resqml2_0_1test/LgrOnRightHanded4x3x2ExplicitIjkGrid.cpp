@@ -132,5 +132,7 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::readEpcDocHandler() {
 	REQUIRE(childGrid->getRegridConstantCellCountPerInterval('i', false) == 1);
 	REQUIRE(childGrid->getRegridConstantCellCountPerInterval('j', false) == 1);
 	REQUIRE(childGrid->getRegridConstantCellCountPerInterval('k', false) == 1);
+
+	delete parentGridTest;
 }
 

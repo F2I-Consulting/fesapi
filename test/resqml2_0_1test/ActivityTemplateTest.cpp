@@ -38,7 +38,7 @@ void ActivityTemplateTest::initEpcDocHandler() {
 	ActivityTemplate*  genericCreationActivityTemplate = this->epcDoc->createActivityTemplate(this->uuid, this->title);
 	REQUIRE( genericCreationActivityTemplate != nullptr );
 
-	for (std::map<string, ParameterTest>::iterator it=this->parameterMap.begin(); it!=this->parameterMap.end(); it++)
+	for (std::map<string, ParameterTest>::iterator it=this->parameterMap.begin(); it!=this->parameterMap.end(); ++it)
 	{
 		genericCreationActivityTemplate->pushBackParameter((*it).second.title, (*it).second.isInput, (*it).second.isOutput, (*it).second.minOccurs, (*it).second.maxOccurs); 
 	}

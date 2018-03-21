@@ -61,9 +61,6 @@ void WellboreTrajectoryRepresentationTest::initEpcDocHandler() {
 	delete interpTest;
 	delete mdDatumTest;
 
-	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
-
 	// creating the representation
 	RESQML2_0_1_NS::WellboreTrajectoryRepresentation* rep = epcDoc->createWellboreTrajectoryRepresentation(interp, this->uuid, this->title, mdDatum);
 	double controlPoints[12] = { 275, 75, 0, 275, 75, 325, 275, 75, 500, 275, 75, 1000 };

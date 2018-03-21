@@ -148,8 +148,6 @@ void WellboreMarkerFrameRepresentation::setWitsmlFormationMarker(const unsigned 
 
 vector<Relationship> WellboreMarkerFrameRepresentation::getAllEpcRelationships() const
 {
-	_resqml2__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml2__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
-	
 	vector<Relationship> result = WellboreFrameRepresentation::getAllEpcRelationships();
 
 	// XML forward relationship

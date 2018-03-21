@@ -52,6 +52,7 @@ void UnstructuredFromIjkGridRepresentationTest::initEpcDocHandler() {
 	// creating an IJK grid
 	IjkGridExplicitRepresentationTest * ijkGridTest = new IjkGridExplicitRepresentationTest(this->epcDoc, true);
 	RESQML2_0_1_NS::IjkGridExplicitRepresentation * ijkGrid = static_cast<RESQML2_0_1_NS::IjkGridExplicitRepresentation *>(this->epcDoc->getResqmlAbstractObjectByUuid(IjkGridExplicitRepresentationTest::defaultUuid));
+	REQUIRE(ijkGrid != nullptr);
 
 	// cloning the ijk grid into an unstructured one
 	//ijkGrid->cloneToUnstructuredGridRepresentation(this->uuid, this->title);

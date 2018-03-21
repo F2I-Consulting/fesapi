@@ -74,7 +74,7 @@ void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::str
 
 	// Build the CHAR array
 	hsize_t dimTwo = 0;
-	for (std::vector<std::string>::const_iterator it = values.begin() ; it!= values.end() ; it++){
+	for (std::vector<std::string>::const_iterator it = values.begin() ; it!= values.end() ; ++it){
 		if ((*it).length() > dimTwo)
 			dimTwo = (*it).length();
 	}
@@ -83,7 +83,7 @@ void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::str
 	unsigned char* cTab = new unsigned char[strNb*dimTwo];
 
 	int indStr = 0;
-	for (std::vector<std::string>::const_iterator it = values.begin() ; it!= values.end() ; it++){
+	for (std::vector<std::string>::const_iterator it = values.begin() ; it!= values.end() ; ++it){
 		for (unsigned int indCha = 0 ; indCha < dimTwo ; indCha++) {
 			if (indCha < (*it).length())
 				cTab[(indStr*dimTwo)+indCha] = (*it)[indCha];

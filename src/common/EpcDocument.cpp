@@ -857,8 +857,7 @@ string EpcDocument::deserialize()
 			istringstream iss(fileStr);
 			setGsoapStream(&iss);
 			WITSML1_4_1_1_NS::AbstractObject* wrapper = nullptr;
-			string resqmlContentType = "";
-			resqmlContentType = it->second.getContentTypeString().substr(50);
+			string resqmlContentType = it->second.getContentTypeString().substr(50);
 			if (resqmlContentType.compare(Well::XML_TAG) == 0)
 			{
 				gsoap_witsml1_4_1_1::_witsml1__wells* read = gsoap_witsml1_4_1_1::soap_new_witsml1__obj_USCOREwells(s, 1);

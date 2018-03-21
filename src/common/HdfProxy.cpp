@@ -78,11 +78,23 @@ void HdfProxy::open()
 			H5Tset_size(atype, getUuid().size());
 			hid_t attribute_id = H5Acreate2(hdfFile, "uuid", atype, aid, H5P_DEFAULT, H5P_DEFAULT);
 			int status = H5Awrite(attribute_id, atype, getUuid().c_str());
+			if (status < 0) {
+				throw invalid_argument("The uuid file attribute could not have been written.");
+			}
 
 			// Close the attribute.
 			status = H5Sclose(aid);
+			if (status < 0) {
+				throw invalid_argument("The uuid file attribute dataspace could not have been closed.");
+			}
 			status = H5Tclose(atype);
-			status = H5Aclose(attribute_id);
+			if (status < 0) {
+				throw invalid_argument("The uuid file attribute datatype could not have been closed.");
+			}
+			status = H5Aclose(attribute_id);;
+			if (status < 0) {
+				throw invalid_argument("The uuid file attribute could not have been closed.");
+			}
 		}
 	}
 	else if (getEpcDocument()->getHdf5PermissionAccess() == COMMON_NS::EpcDocument::OVERWRITE) {
@@ -94,11 +106,23 @@ void HdfProxy::open()
 		H5Tset_size(atype, getUuid().size());
 		hid_t attribute_id = H5Acreate2(hdfFile, "uuid", atype, aid, H5P_DEFAULT, H5P_DEFAULT);
 		int status = H5Awrite(attribute_id, atype, getUuid().c_str());
+		if (status < 0) {
+			throw invalid_argument("The uuid file attribute could not have been written.");
+		}
 
 		// Close the attribute.
 		status = H5Sclose(aid);
+		if (status < 0) {
+			throw invalid_argument("The uuid file attribute dataspace could not have been closed.");
+		}
 		status = H5Tclose(atype);
-		status = H5Aclose(attribute_id);
+		if (status < 0) {
+			throw invalid_argument("The uuid file attribute datatype could not have been closed.");
+		}
+		status = H5Aclose(attribute_id);;
+		if (status < 0) {
+			throw invalid_argument("The uuid file attribute could not have been closed.");
+		}
 	}
 	else {
 		throw invalid_argument("The HDF5 permission access is unknown.");

@@ -265,8 +265,6 @@ void DasAcquisition::setDasInstrumentBox(DasInstrumentBox* dasInstrumentBox)
 
 vector<Relationship> DasAcquisition::getAllEpcRelationships() const
 {
-	_prodml2__DasAcquisition* da = static_cast<_prodml2__DasAcquisition*>(gsoapProxy2_1);
-
 	vector<Relationship> result;
 	
 	FiberOpticalPath* fop = getFiberOpticalPath();
@@ -375,7 +373,6 @@ prodml2__DasRaw* DasAcquisition::pushBackRawXmlOnly(const std::string & uuid, co
 
 	ostringstream oss;
 	oss << "Acquisition/Raw[" << da->Raw.size() << "]";
-	string hdfGroup = oss.str();
 
 	soap* soapContext = getGsoapContext();
 	prodml2__DasRaw* dasRaw = soap_new_prodml2__DasRaw(soapContext, 1);

@@ -64,6 +64,9 @@ void InterpretationDomain::initEpcDoc() {
 	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml2__Domain__depth);
 	resqml2_0_1test::PolylineSetRepresentation* polylineRepTest = new resqml2_0_1test::PolylineSetRepresentation(epcDoc, true);
 	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml2__Domain__mixed);
+
+	delete repTest;
+	delete polylineRepTest;
 }
 
 void InterpretationDomain::readEpcDoc() {

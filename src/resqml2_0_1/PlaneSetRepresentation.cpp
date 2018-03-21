@@ -36,7 +36,6 @@ PlaneSetRepresentation::PlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterp
 	AbstractRepresentation(interp, crs)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREPlaneSetRepresentation(interp->getGsoapContext(), 1);
-	_resqml2__PlaneSetRepresentation* plSetRep = static_cast<_resqml2__PlaneSetRepresentation*>(gsoapProxy2_0_1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");

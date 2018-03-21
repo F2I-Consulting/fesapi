@@ -70,6 +70,7 @@ void DiscretePropertyUsingLocalKindOnWellFrameTest::initEpcDocHandler() {
 
 	// cleaning
 	delete frameTest;
+	delete pkTest;
 }
 
 void DiscretePropertyUsingLocalKindOnWellFrameTest::readEpcDocHandler() {
@@ -107,5 +108,6 @@ void DiscretePropertyUsingLocalKindOnWellFrameTest::readEpcDocHandler() {
 
 	// cleaning
 	delete frameTest;
+	delete pkTest;
 }
 

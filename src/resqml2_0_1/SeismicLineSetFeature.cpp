@@ -33,7 +33,6 @@ SeismicLineSetFeature::SeismicLineSetFeature(soap* soapContext, const std::strin
 		throw invalid_argument("The soap context cannot be null.");
 
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORESeismicLineSetFeature(soapContext, 1);
-	_resqml2__SeismicLineSetFeature* seismicLineSet = static_cast<_resqml2__SeismicLineSetFeature*>(gsoapProxy2_0_1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");
@@ -43,7 +42,7 @@ std::vector<epc::Relationship> SeismicLineSetFeature::getAllEpcRelationships() c
 {
 	std::vector<epc::Relationship> result;
 
-	for (unsigned int i = 0; i < seismicLineSet.size(); i++)
+	for (size_t i = 0; i < seismicLineSet.size(); ++i)
 	{
 		Relationship rel(seismicLineSet[i]->getPartNameInEpcDocument(), "", seismicLineSet[i]->getUuid());
 		rel.setSourceObjectType();

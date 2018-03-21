@@ -176,19 +176,18 @@ void AbstractIjkGridRepresentation::getPillarsOfSplitCoordinateLines(unsigned in
 	}
 
 	if (reverseIAxis || reverseJAxis) {
-		unsigned int iPillarCount = getICellCount()+1;
-		unsigned int jPillarCount = getJCellCount()+1;
+		const unsigned int iPillarCount = getICellCount()+1;
 		if (reverseIAxis) {
 			for (unsigned int index = 0; index < getSplitCoordinateLineCount(); ++index) {
-				unsigned int iPillar = pillarIndices[index] % iPillarCount;
-				unsigned int jPillar = pillarIndices[index] / iPillarCount;
+				const unsigned int iPillar = pillarIndices[index] % iPillarCount;
+				const unsigned int jPillar = pillarIndices[index] / iPillarCount;
 				pillarIndices[index] = (getICellCount() - iPillar) + jPillar*iPillarCount;
 			}
 		}
 		if (reverseJAxis) {
 			for (unsigned int index = 0; index < getSplitCoordinateLineCount(); ++index) {
-				unsigned int iPillar = pillarIndices[index] % iPillarCount;
-				unsigned int jPillar = pillarIndices[index] / iPillarCount;
+				const unsigned int iPillar = pillarIndices[index] % iPillarCount;
+				const unsigned int jPillar = pillarIndices[index] / iPillarCount;
 				pillarIndices[index] = iPillar + (getJCellCount()-jPillar)*iPillarCount;
 			}
 		}

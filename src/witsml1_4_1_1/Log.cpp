@@ -333,7 +333,7 @@ void Log::pushBackLogCurveInfo(
 
 	witsml1__cs_USCOREwellDatum* datum = nullptr;
 	if (datumIndex >= 0)
-		wellbore->getWell()->getDatum(datumIndex);
+		datum = wellbore->getWell()->getDatum(datumIndex);
 
 	// creation of the soap log curve info object and attachement to its parent soap log object
 	witsml1__cs_USCORElogCurveInfo* logCurveInfo = soap_new_witsml1__cs_USCORElogCurveInfo(collection->soap, 1);

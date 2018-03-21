@@ -42,8 +42,6 @@ StringTableLookup::StringTableLookup(soap* soapContext, const string & guid, con
 
 vector<Relationship> StringTableLookup::getAllEpcRelationships() const
 {
-	_resqml2__StringTableLookup* stringLookup = static_cast<_resqml2__StringTableLookup*>(gsoapProxy2_0_1);
-
 	vector<Relationship> result;
 
 	// XML backward relationship

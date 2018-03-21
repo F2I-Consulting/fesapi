@@ -137,8 +137,6 @@ void PropertyKind::setParentPropertyKind(PropertyKind* parentPropertyKind)
 
 vector<Relationship> PropertyKind::getAllEpcRelationships() const
 {
-	gsoap_resqml2_0_1::_resqml2__PropertyKind* propType = static_cast<gsoap_resqml2_0_1::_resqml2__PropertyKind*>(gsoapProxy2_0_1);
-
 	vector<Relationship> result;
 
 	// forward relationships

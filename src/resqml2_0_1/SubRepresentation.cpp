@@ -37,7 +37,6 @@ using namespace gsoap_resqml2_0_1;
 void SubRepresentation::init(soap* soapContext, const string & guid, const string & title)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORESubRepresentation(soapContext, 1);
-	_resqml2__SubRepresentation* rep = getSpecializedGsoapProxy();
 
 	initMandatoryMetadata();
     setMetadata(guid, title, "", -1, "", "", -1, "", "");
