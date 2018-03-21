@@ -28,8 +28,8 @@ under the License.
 
 using namespace std;
 using namespace resqml2_0_1test;
-using namespace common;
-using namespace resqml2_0_1;
+using namespace COMMON_NS;
+using namespace RESQML2_0_1_NS;
 
 FaultSinglePatchTriangulatedSetRepresentationTest::FaultSinglePatchTriangulatedSetRepresentationTest(const string & epcDocPath)
 	: TriangulatedSetRepresentationTest(epcDocPath, uuidFaultSinglePatchTriangulatedSetRepresentation, titleFaultSinglePatchTriangulatedSetRepresentation, nodesCountFaultSinglePatchTriangulatedSetRepresentation, nodesFaultSinglePatchTriangulatedSetRepresentation)

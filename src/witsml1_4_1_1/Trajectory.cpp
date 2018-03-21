@@ -25,7 +25,7 @@ under the License.
 #include "witsml1_4_1_1/CoordinateReferenceSystem.h"
 
 using namespace std;
-using namespace witsml1_4_1_1;
+using namespace WITSML1_4_1_1_NS;
 using namespace gsoap_witsml1_4_1_1;
 using namespace epc;
 
@@ -741,7 +741,7 @@ void Trajectory::setProjectedXProjectedYTrajectoryStations(
 		wellbore->setShape(witsml1__WellboreShape__unknown);
 }
 
-void Trajectory::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void Trajectory::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	witsml1__obj_USCOREtrajectory* traj = static_cast<_witsml1__trajectorys*>(collection)->trajectory[0];
 	if (traj && traj->uidWellbore)

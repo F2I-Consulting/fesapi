@@ -21,7 +21,7 @@ under the License.
 #include "resqml2_0_1/SeismicLineSetFeature.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 
@@ -87,7 +87,7 @@ std::vector<epc::Relationship> SeismicLineFeature::getAllEpcRelationships() cons
 	return result;
 }
 
-void SeismicLineFeature::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void SeismicLineFeature::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	updateXml = false;
 

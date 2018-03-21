@@ -20,7 +20,7 @@ under the License.
 
 #include "resqml2_0_1/RepresentationSetRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT NonSealedSurfaceFrameworkRepresentation : public RepresentationSetRepresentation
 	{
@@ -50,7 +50,7 @@ namespace resqml2_0_1
 		/**
 		 * Pushes back a contact representation in the structural framework
 		 */
-		void pushBackNonSealedContactRepresentation(const unsigned int & pointCount, double * points, resqml2::AbstractLocal3dCrs* crs, common::AbstractHdfProxy* proxy);
+		void pushBackNonSealedContactRepresentation(const unsigned int & pointCount, double * points, RESQML2_NS::AbstractLocal3dCrs* crs, COMMON_NS::AbstractHdfProxy* proxy);
                 
         /**
 		* Pushes back a contact patch in a particular contact representation of the structural framework.
@@ -65,7 +65,7 @@ namespace resqml2_0_1
         		const unsigned int & contactIndex,
                 int * nodeIndicesOnSupportingRepresentation, const unsigned int & NodeCount,
                 class AbstractRepresentation * supportingRepresentation,
-                common::AbstractHdfProxy* proxy);
+                COMMON_NS::AbstractHdfProxy* proxy);
                 */
 
         static const char* XML_TAG;

@@ -27,16 +27,16 @@ under the License.
 #include "common/AbstractHdfProxy.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 
 const char* CategoricalPropertySeries::XML_TAG = "CategoricalPropertySeries";
 
-CategoricalPropertySeries::CategoricalPropertySeries(resqml2::AbstractRepresentation * rep, const string & guid, const string & title,
+CategoricalPropertySeries::CategoricalPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
 	StringTableLookup* strLookup, const resqml2__ResqmlPropertyKind & energisticsPropertyKind,
-	resqml2::TimeSeries * ts, const bool & useInterval)
+	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 	: CategoricalProperty(strLookup)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORECategoricalPropertySeries(rep->getGsoapContext(), 1);	
@@ -62,10 +62,10 @@ CategoricalPropertySeries::CategoricalPropertySeries(resqml2::AbstractRepresenta
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");
 }
 
-CategoricalPropertySeries::CategoricalPropertySeries(resqml2::AbstractRepresentation * rep, const string & guid, const string & title,
+CategoricalPropertySeries::CategoricalPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
-	StringTableLookup* strLookup, resqml2::PropertyKind * localPropKind,
-	resqml2::TimeSeries * ts, const bool & useInterval)
+	StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropKind,
+	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 	:CategoricalProperty(strLookup)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORECategoricalPropertySeries(rep->getGsoapContext(), 1);	

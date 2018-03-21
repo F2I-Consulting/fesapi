@@ -30,7 +30,7 @@ under the License.
 #include "witsml1_4_1_1/Log.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 
@@ -92,7 +92,7 @@ vector<Relationship> WellboreFrameRepresentation::getAllEpcRelationships() const
 	return result;
 }
 
-void WellboreFrameRepresentation::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void WellboreFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	const _resqml2__WellboreFrameRepresentation* const rep = static_cast<const _resqml2__WellboreFrameRepresentation* const>(gsoapProxy2_0_1);
 
@@ -106,11 +106,11 @@ void WellboreFrameRepresentation::importRelationshipSetFromEpc(common::EpcDocume
 
 	int valuesType = rep->NodeMd->soap_type();
 	if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-		setHdfProxy(static_cast<common::AbstractHdfProxy* const>(epcDoc->getResqmlAbstractObjectByUuid(static_cast<resqml2__DoubleHdf5Array* const>(rep->NodeMd)->Values->HdfProxy->UUID)));
+		setHdfProxy(static_cast<COMMON_NS::AbstractHdfProxy* const>(epcDoc->getResqmlAbstractObjectByUuid(static_cast<resqml2__DoubleHdf5Array* const>(rep->NodeMd)->Values->HdfProxy->UUID)));
 	}
 
 	if (rep->WitsmlLogReference) {
-		witsml1_4_1_1::Log* tmp = static_cast<witsml1_4_1_1::Log* const>(epcDoc->getWitsmlAbstractObjectByUuid(rep->WitsmlLogReference->UUID));
+		WITSML1_4_1_1_NS::Log* tmp = static_cast<WITSML1_4_1_1_NS::Log* const>(epcDoc->getWitsmlAbstractObjectByUuid(rep->WitsmlLogReference->UUID));
 		if (tmp != nullptr) {
 			updateXml = false;
 			setWitsmlLog(tmp);
@@ -119,7 +119,7 @@ void WellboreFrameRepresentation::importRelationshipSetFromEpc(common::EpcDocume
 	}
 }
 
-void WellboreFrameRepresentation::setMdValues(double * mdValues, const unsigned int & mdValueCount, common::AbstractHdfProxy * proxy)
+void WellboreFrameRepresentation::setMdValues(double * mdValues, const unsigned int & mdValueCount, COMMON_NS::AbstractHdfProxy * proxy)
 {
 	setHdfProxy(proxy);
 
@@ -201,42 +201,42 @@ unsigned int WellboreFrameRepresentation::getMdValuesCount() const
 	return static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->NodeCount;
 }
 
-resqml2::AbstractValuesProperty::hdfDatatypeEnum WellboreFrameRepresentation::getMdHdfDatatype() const
+RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum WellboreFrameRepresentation::getMdHdfDatatype() const
 {
 	_resqml2__WellboreFrameRepresentation* frame = static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
 	if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
 	{
 		if (hdfProxy == nullptr)
-			return resqml2::AbstractValuesProperty::UNKNOWN;
+			return RESQML2_NS::AbstractValuesProperty::UNKNOWN;
 
 		hid_t dt = hdfProxy->getHdfDatatypeInDataset(static_cast<resqml2__DoubleHdf5Array*>(frame->NodeMd)->Values->PathInHdfFile);
 		if (H5Tequal(dt, H5T_NATIVE_DOUBLE) > 0)
-			return resqml2::AbstractValuesProperty::DOUBLE;
+			return RESQML2_NS::AbstractValuesProperty::DOUBLE;
 		else if (H5Tequal(dt, H5T_NATIVE_FLOAT) > 0)
-			return resqml2::AbstractValuesProperty::FLOAT;
+			return RESQML2_NS::AbstractValuesProperty::FLOAT;
 		else if (H5Tequal(dt, H5T_NATIVE_LONG) > 0)
-			return resqml2::AbstractValuesProperty::LONG;
+			return RESQML2_NS::AbstractValuesProperty::LONG;
 		else if (H5Tequal(dt, H5T_NATIVE_ULONG) > 0)
-			return resqml2::AbstractValuesProperty::ULONG;
+			return RESQML2_NS::AbstractValuesProperty::ULONG;
 		else if (H5Tequal(dt, H5T_NATIVE_INT) > 0)
-			return resqml2::AbstractValuesProperty::INT;
+			return RESQML2_NS::AbstractValuesProperty::INT;
 		else if (H5Tequal(dt, H5T_NATIVE_UINT) > 0)
-			return resqml2::AbstractValuesProperty::UINT;
+			return RESQML2_NS::AbstractValuesProperty::UINT;
 		else if (H5Tequal(dt, H5T_NATIVE_SHORT) > 0)
-			return resqml2::AbstractValuesProperty::SHORT;
+			return RESQML2_NS::AbstractValuesProperty::SHORT;
 		else if (H5Tequal(dt, H5T_NATIVE_USHORT) > 0)
-			return resqml2::AbstractValuesProperty::USHORT;
+			return RESQML2_NS::AbstractValuesProperty::USHORT;
 		else if (H5Tequal(dt, H5T_NATIVE_CHAR) > 0)
-			return resqml2::AbstractValuesProperty::CHAR;
+			return RESQML2_NS::AbstractValuesProperty::CHAR;
 		else if (H5Tequal(dt, H5T_NATIVE_UCHAR) > 0)
-			return resqml2::AbstractValuesProperty::UCHAR;
+			return RESQML2_NS::AbstractValuesProperty::UCHAR;
 	}
 	else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleLatticeArray)
 	{
-		return resqml2::AbstractValuesProperty::DOUBLE;
+		return RESQML2_NS::AbstractValuesProperty::DOUBLE;
 	}
 
-	return resqml2::AbstractValuesProperty::UNKNOWN; // unknwown datatype...
+	return RESQML2_NS::AbstractValuesProperty::UNKNOWN; // unknwown datatype...
 }
 
 void WellboreFrameRepresentation::getMdAsDoubleValues(double * values)
@@ -301,7 +301,7 @@ std::string WellboreFrameRepresentation::getHdfProxyUuid() const
 		return "";
 }
 
-void WellboreFrameRepresentation::setWitsmlLog(witsml1_4_1_1::Log * witsmlLogToSet)
+void WellboreFrameRepresentation::setWitsmlLog(WITSML1_4_1_1_NS::Log * witsmlLogToSet)
 {
 	witsmlLog = witsmlLogToSet;
 	witsmlLog->resqmlWellboreFrameRepresentation = this;

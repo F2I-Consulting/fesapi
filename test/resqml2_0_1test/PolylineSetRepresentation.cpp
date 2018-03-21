@@ -32,7 +32,7 @@ under the License.
 
 using namespace std;
 using namespace resqml2_0_1test;
-using namespace common;
+using namespace COMMON_NS;
 
 const char* PolylineSetRepresentation::defaultUuid = "60b04722-8608-4e92-8f1d-596372dd309e";
 const char* PolylineSetRepresentation::defaultTitle = "Polyline represenation (in time)";
@@ -52,21 +52,21 @@ PolylineSetRepresentation::PolylineSetRepresentation(EpcDocument* epcDoc, bool i
 }
 
 void PolylineSetRepresentation::initEpcDocHandler() {
-	resqml2_0_1::FaultInterpretation * interp = static_cast<resqml2_0_1::FaultInterpretation*>(this->epcDoc->getResqmlAbstractObjectByUuid(uuidFaultInterpretation));
+	RESQML2_0_1_NS::FaultInterpretation * interp = static_cast<RESQML2_0_1_NS::FaultInterpretation*>(this->epcDoc->getResqmlAbstractObjectByUuid(uuidFaultInterpretation));
 	if (interp == nullptr) {
 		FaultInterpretationTest * interpTest = new FaultInterpretationTest(this->epcDoc, true);
-		interp = static_cast<resqml2_0_1::FaultInterpretation*>(this->epcDoc->getResqmlAbstractObjectByUuid(uuidFaultInterpretation));
+		interp = static_cast<RESQML2_0_1_NS::FaultInterpretation*>(this->epcDoc->getResqmlAbstractObjectByUuid(uuidFaultInterpretation));
 		delete interpTest;
 	}
 
-	resqml2_0_1::LocalTime3dCrs * crs = static_cast<resqml2_0_1::LocalTime3dCrs *>(this->epcDoc->getResqmlAbstractObjectByUuid(LocalTime3dCrs::defaultUuid));
+	RESQML2_0_1_NS::LocalTime3dCrs * crs = static_cast<RESQML2_0_1_NS::LocalTime3dCrs *>(this->epcDoc->getResqmlAbstractObjectByUuid(LocalTime3dCrs::defaultUuid));
 	if (crs == nullptr) {
 		LocalTime3dCrs * crsTest = new LocalTime3dCrs(this->epcDoc, true);
-		crs = static_cast<resqml2_0_1::LocalTime3dCrs *>(this->epcDoc->getResqmlAbstractObjectByUuid(LocalTime3dCrs::defaultUuid));
+		crs = static_cast<RESQML2_0_1_NS::LocalTime3dCrs *>(this->epcDoc->getResqmlAbstractObjectByUuid(LocalTime3dCrs::defaultUuid));
 		delete crsTest;
 	}
 
-	resqml2_0_1::PolylineSetRepresentation* rep = epcDoc->createPolylineSetRepresentation(interp, crs, defaultUuid, defaultTitle);
+	RESQML2_0_1_NS::PolylineSetRepresentation* rep = epcDoc->createPolylineSetRepresentation(interp, crs, defaultUuid, defaultTitle);
 	REQUIRE(rep != nullptr);
 	rep->pushBackGeometryPatch(numNodesPerPolylinePerPatch, polylinePoints, 2, false, epcDoc->getHdfProxySet()[0]);
 }

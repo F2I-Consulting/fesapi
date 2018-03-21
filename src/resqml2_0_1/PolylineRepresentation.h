@@ -20,9 +20,9 @@ under the License.
 
 #include "resqml2_0_1/AbstractSurfaceRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT PolylineRepresentation : public resqml2::AbstractRepresentation
+	class DLL_IMPORT_OR_EXPORT PolylineRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	private :
 		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const;
@@ -44,7 +44,7 @@ namespace resqml2_0_1
 		std::vector<AbstractSurfaceRepresentation*> outerRingOfSet;
 		std::vector<AbstractSurfaceRepresentation*> innerRingOfSet;
 
-		void init(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+		void init(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title, bool isClosed = false);
 
 	public:
@@ -52,7 +52,7 @@ namespace resqml2_0_1
 		/**
 		* Only to be used in partial transfer context
 		*/
-		PolylineRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : resqml2::AbstractRepresentation(partialObject) {}
+		PolylineRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractRepresentation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -63,7 +63,7 @@ namespace resqml2_0_1
 		* @param roleKind				Indicates the role of this representation.
 		* @param isClosed				Indicates wether this line representaiton is closed or not.
 		*/
-		PolylineRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+		PolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__LineRole & roleKind,
 			bool isClosed = false);
 
@@ -74,7 +74,7 @@ namespace resqml2_0_1
 		* @param title					A title for the instance to create.
 		* @param isClosed				Indicates wether this line representaiton is closed or not.
 		*/
-		PolylineRepresentation(resqml2::AbstractLocal3dCrs * crs,
+		PolylineRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title, bool isClosed = false);
 
 		/**
@@ -85,13 +85,13 @@ namespace resqml2_0_1
 		* @param title					A title for the instance to create.
 		* @param isClosed				Indicates wether this line representaiton is closed or not.
 		*/
-		PolylineRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+		PolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title, bool isClosed = false);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		PolylineRepresentation(gsoap_resqml2_0_1::_resqml2__PolylineRepresentation* fromGsoap) : resqml2::AbstractRepresentation(fromGsoap) {}
+		PolylineRepresentation(gsoap_resqml2_0_1::_resqml2__PolylineRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -117,7 +117,7 @@ namespace resqml2_0_1
 		 * @param pointCount	The count of points in the polyline. Must be three times the count of the array of doubles "points".
 		 * @param proxy			The HDf proxy defining the HDF file where the double array will be stored.
 		 */
-		void setGeometry(double * points, const unsigned int & pointCount, common::AbstractHdfProxy* proxy);
+		void setGeometry(double * points, const unsigned int & pointCount, COMMON_NS::AbstractHdfProxy* proxy);
 
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}

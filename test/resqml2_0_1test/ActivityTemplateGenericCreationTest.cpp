@@ -23,9 +23,9 @@ under the License.
 #include "../catch.hpp"
 
 using namespace std;
-using namespace common;
+using namespace COMMON_NS;
 using namespace resqml2_0_1test;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 
 // ***************************************************************
 // two followings values are conventions, they must not be changed

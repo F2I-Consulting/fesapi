@@ -20,9 +20,9 @@ under the License.
 
 #include "prodml2_0/DasAcquisition.h"
 
-namespace prodml2_0
+namespace PRODML2_0_NS
 {
-	class DLL_IMPORT_OR_EXPORT DasInstrumentBox : public prodml2_0::AbstractObject
+	class DLL_IMPORT_OR_EXPORT DasInstrumentBox : public PRODML2_0_NS::AbstractObject
 	{
 	public:
 		/**
@@ -58,7 +58,7 @@ namespace prodml2_0
 		/**
 		* Does nothing since StringTableLookup has not got any forward relationship.
 		*/
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc) {}
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
 
 		// XML backwards relationships
 		std::vector<class DasAcquisition*> dasAcquisitionSet;

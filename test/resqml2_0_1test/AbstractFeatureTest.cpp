@@ -25,7 +25,7 @@ AbstractFeatureTest::AbstractFeatureTest(const std::string & epcDocPath, const s
 	: AbstractResqmlDataObjectTest(epcDocPath, uuid, title) {
 }
 
-AbstractFeatureTest::AbstractFeatureTest(common::EpcDocument* epcDoc, const string & uuid, const string & title)
+AbstractFeatureTest::AbstractFeatureTest(COMMON_NS::EpcDocument* epcDoc, const string & uuid, const string & title)
 	: AbstractResqmlDataObjectTest(epcDoc, uuid, title) {
 }
 

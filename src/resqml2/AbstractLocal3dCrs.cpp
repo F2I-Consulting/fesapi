@@ -26,7 +26,7 @@ under the License.
 #include "tools/Trigonometry.h"
 
 using namespace std;
-using namespace resqml2;
+using namespace RESQML2_NS;
 using namespace epc;
 
 void AbstractLocal3dCrs::addRepresentation(AbstractRepresentation* rep)

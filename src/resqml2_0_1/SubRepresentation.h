@@ -20,9 +20,9 @@ under the License.
 
 #include "resqml2/SubRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT SubRepresentation : public resqml2::SubRepresentation
+	class DLL_IMPORT_OR_EXPORT SubRepresentation : public RESQML2_NS::SubRepresentation
 	{
 	private:
 		/*
@@ -43,7 +43,7 @@ namespace resqml2_0_1
 		* Push back a representation which is one of the support of this subrepresentation.
 		* And push back this representation as a subrepresenation of the representation as well.
 		*/
-		void pushBackXmlSupportingRepresentation(resqml2::AbstractRepresentation * supportingRep);
+		void pushBackXmlSupportingRepresentation(RESQML2_NS::AbstractRepresentation * supportingRep);
 
 		class DiscreteProperty* getSupportingRepresentationIndicesDiscretePropOfPatch(const unsigned int & patchIndex) const;
 
@@ -53,7 +53,7 @@ namespace resqml2_0_1
 		* Only to be used in partial transfer context
 		*/
 		SubRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
-			resqml2::SubRepresentation(partialObject) {}
+			RESQML2_NS::SubRepresentation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context. This instance is not linked to any interpretation.
@@ -69,13 +69,13 @@ namespace resqml2_0_1
 		* @param guid	The guid to set to this instance.
 		* @param title	A title for the instance to create.
 		*/
-		SubRepresentation(resqml2::AbstractFeatureInterpretation* interp,
+		SubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
                 const std::string & guid, const std::string & title);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		SubRepresentation(gsoap_resqml2_0_1::_resqml2__SubRepresentation* fromGsoap) : resqml2::SubRepresentation(fromGsoap) {}
+		SubRepresentation(gsoap_resqml2_0_1::_resqml2__SubRepresentation* fromGsoap) : RESQML2_NS::SubRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -87,7 +87,7 @@ namespace resqml2_0_1
 		/**
 		* Get the kind of the selected elements for a particular patch of this subrepresentation.
 		*/
-		resqml2::AbstractRepresentation::indexableElement getElementKindOfPatch(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex) const;
+		RESQML2_NS::AbstractRepresentation::indexableElement getElementKindOfPatch(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex) const;
 
 		/**
 		* Get the count of the selected elements for a particular patch of this subrepresentation.
@@ -143,7 +143,7 @@ namespace resqml2_0_1
         * @param	proxy					The HDF proxy where the numerical values (indices) are stored.
 		* @param	supportingRepIndices	The indices of the supporting represenation for each elment in the supporting representation. The count must be elementCount.
 		*/
-		void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, ULONG64 * elementIndices, common::AbstractHdfProxy* proxy, short * supportingRepIndices = nullptr);
+		void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, ULONG64 * elementIndices, COMMON_NS::AbstractHdfProxy* proxy, short * supportingRepIndices = nullptr);
 
 		/**
 		* Push back a new patch in the subrepresentation which is constituted by means of pairwise elements.
@@ -157,7 +157,7 @@ namespace resqml2_0_1
 		void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind0, const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind1,
 			const ULONG64 & elementCount,
 			ULONG64 * elementIndices0, ULONG64 * elementIndices1,
-			common::AbstractHdfProxy* proxy);
+			COMMON_NS::AbstractHdfProxy* proxy);
 
 		/**
 		* Push back a new patch (without pairwise elements) in the subrepresentation where the indice values have not to be written in the HDF file.
@@ -170,7 +170,7 @@ namespace resqml2_0_1
 		* @param	supportingRepDataset	The HDF5 dataset name where the element indices are stored. If empty, it won't be exported any information about suppporting rep relying on the fact there is only one suppporting rep for this whole patch.
 		*/
 		void pushBackRefToExistingDataset(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, const std::string & elementDataset,
-			const LONG64 & nullValue, common::AbstractHdfProxy * proxy, const std::string & supportingRepDataset = "");
+			const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset = "");
 
 		unsigned int getPatchCount() const;
 

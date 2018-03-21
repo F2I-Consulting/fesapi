@@ -21,7 +21,7 @@ under the License.
 #include "resqml2_0_1test/BoundaryFeatureInterpretationTest.h"
 #include <iostream>
 
-namespace common {
+namespace COMMON_NS {
 	class EpcDocument;
 }
 
@@ -45,8 +45,8 @@ namespace resqml2_0_1test {
 		* @param init true if this object is created for initialization purpose else false if it is 
 		* created for reading purpose. According to init value a iniEpcDoc() or readEpcDoc() is called.
 		*/
-		HorizonInterpretationTest(common::EpcDocument * epcDocument, bool init);
-		HorizonInterpretationTest(common::EpcDocument * epcDocument, bool init, const std::string & uuid, const std::string & title, const std::string & uuidFeature, const std::string & titleFeature);
+		HorizonInterpretationTest(COMMON_NS::EpcDocument * epcDocument, bool init);
+		HorizonInterpretationTest(COMMON_NS::EpcDocument * epcDocument, bool init, const std::string & uuid, const std::string & title, const std::string & uuidFeature, const std::string & titleFeature);
 	protected:
 		void initEpcDocHandler();
 		void readEpcDocHandler();

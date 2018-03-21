@@ -20,7 +20,7 @@ under the License.
 
 #include <stdexcept>
 
-using namespace resqml2;
+using namespace RESQML2_NS;
 using namespace std;
 using namespace epc;
 

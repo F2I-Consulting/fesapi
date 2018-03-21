@@ -21,7 +21,7 @@ under the License.
 #include "AbstractIjkGridRepresentationTest.h"
 #include <iostream>
 
-namespace common {
+namespace COMMON_NS {
 	class EpcDocument;
 }
 
@@ -49,7 +49,7 @@ namespace resqml2_0_1test {
 			const double & faultThrow,
 			const char * defaultUuid, const char * defaultTitle);
 
-		AbstractBigIjkGridRepresentationTest(common::EpcDocument * epcDoc, bool init,
+		AbstractBigIjkGridRepresentationTest(COMMON_NS::EpcDocument * epcDoc, bool init,
 			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
 			const unsigned int & faultCount,
 			const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,

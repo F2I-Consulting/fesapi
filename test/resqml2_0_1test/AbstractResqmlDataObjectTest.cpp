@@ -28,7 +28,7 @@ AbstractResqmlDataObjectTest::AbstractResqmlDataObjectTest(const string & epcDoc
 	AbstractObjectTest(epcDocPath, uuid, title) {
 }
 
-AbstractResqmlDataObjectTest::AbstractResqmlDataObjectTest(common::EpcDocument* epcDoc, const string & uuid, const string & title) :
+AbstractResqmlDataObjectTest::AbstractResqmlDataObjectTest(COMMON_NS::EpcDocument* epcDoc, const string & uuid, const string & title) :
 	AbstractObjectTest(epcDoc, uuid, title) {
 }
 

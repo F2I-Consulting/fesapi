@@ -37,7 +37,7 @@ under the License.
 #include "resqml2/Activity.h"
 
 using namespace std;
-using namespace common;
+using namespace COMMON_NS;
 using namespace gsoap_resqml2_0_1;
 
 AbstractObject::AbstractObject() :
@@ -628,7 +628,7 @@ std::string AbstractObject::getAliasTitleAtIndex(const unsigned int & index) con
 	return (static_cast<eml20__AbstractCitedDataObject*>(gsoapProxy2_0_1)->Aliases)[index]->Identifier;
 }
 
-const std::vector<resqml2::Activity*> & AbstractObject::getActivitySet() const
+const std::vector<RESQML2_NS::Activity*> & AbstractObject::getActivitySet() const
 {
 	return activitySet;
 }
@@ -638,7 +638,7 @@ unsigned int AbstractObject::getActivityCount() const
 	return activitySet.size();
 }
 
-resqml2::Activity* AbstractObject::getActivity (const unsigned int & index) const
+RESQML2_NS::Activity* AbstractObject::getActivity (const unsigned int & index) const
 {
 	if (partialObject != nullptr)
 			throw invalid_argument("The wrapped gsoap proxy must not be null");
@@ -649,7 +649,7 @@ resqml2::Activity* AbstractObject::getActivity (const unsigned int & index) cons
 	return activitySet[index];
 }
 
-void AbstractObject::addActivityToResqmlObject(resqml2::Activity* activity, AbstractObject* resqmlObject)
+void AbstractObject::addActivityToResqmlObject(RESQML2_NS::Activity* activity, AbstractObject* resqmlObject)
 {
 	if (activity == nullptr)
 	{

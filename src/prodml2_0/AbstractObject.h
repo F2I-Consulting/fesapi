@@ -20,9 +20,9 @@ under the License.
 
 #include "common/AbstractObject.h"
 
-namespace prodml2_0
+namespace PRODML2_0_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractObject : public common::AbstractObject
+	class DLL_IMPORT_OR_EXPORT AbstractObject : public COMMON_NS::AbstractObject
 	{
 	public:
 
@@ -53,7 +53,7 @@ namespace prodml2_0
 		*/
 		AbstractObject() {}
 
-		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) : common::AbstractObject(proxy) {}
+		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) : COMMON_NS::AbstractObject(proxy) {}
 	};
 }
 

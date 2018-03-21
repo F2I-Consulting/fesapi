@@ -25,7 +25,7 @@ namespace commontest {
 	class EpcDocumentTest : public AbstractTest {
 	public:
 		EpcDocumentTest(const std::string & epcDocPath);
-		EpcDocumentTest(common::EpcDocument * epcDoc);
+		EpcDocumentTest(COMMON_NS::EpcDocument * epcDoc);
 		void initEpcDoc() {}
 		void readEpcDoc() {}
 	};

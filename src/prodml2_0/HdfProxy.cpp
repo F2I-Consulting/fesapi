@@ -21,17 +21,17 @@ under the License.
 #include <stdexcept>
 
 using namespace std;
-using namespace prodml2_0;
+using namespace PRODML2_0_NS;
 
 
 HdfProxy::HdfProxy(soap* soapContext, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
-	common::HdfProxy(packageDirAbsolutePath, externalFilePath)
+	COMMON_NS::HdfProxy(packageDirAbsolutePath, externalFilePath)
 {
 	initGsoapProxy(soapContext, guid, title, TWO_DOT_ONE);
 }
 
 HdfProxy::HdfProxy(soap* soapContext, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
-	common::HdfProxy(packageDirAbsolutePath, externalFilePath)
+	COMMON_NS::HdfProxy(packageDirAbsolutePath, externalFilePath)
 {
 	gsoapProxy2_1 = gsoap_eml2_1::soap_new_eml21__EpcExternalPartReference(soapContext, 1);
 	static_cast<gsoap_eml2_1::_eml21__EpcExternalPartReference* const>(gsoapProxy2_1)->MimeType = gsoap_eml2_1::soap_new_std__string(soapContext, 1);

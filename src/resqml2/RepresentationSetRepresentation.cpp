@@ -26,7 +26,7 @@ under the License.
 
 using namespace std;
 using namespace epc;
-using namespace resqml2;
+using namespace RESQML2_NS;
 
 const char* RepresentationSetRepresentation::XML_TAG = "RepresentationSetRepresentation";
 
@@ -51,16 +51,16 @@ vector<Relationship> RepresentationSetRepresentation::getAllEpcRelationships() c
 	return result;
 }
 
-void RepresentationSetRepresentation::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void RepresentationSetRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	const unsigned int repCount = getRepresentationCount();
 	for (unsigned int i = 0; i < repCount; ++i)
 	{
 		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getRepresentationDor(i);
-		resqml2::AbstractRepresentation* rep = epcDoc->getResqmlAbstractObjectByUuid<resqml2::AbstractRepresentation>(dor->UUID);
+		RESQML2_NS::AbstractRepresentation* rep = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
 		if (rep == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dor);
-			rep = getEpcDocument()->getResqmlAbstractObjectByUuid<resqml2::AbstractRepresentation>(dor->UUID);
+			rep = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
 		}
 		if (rep == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -105,9 +105,9 @@ unsigned int RepresentationSetRepresentation::getRepresentationCount() const
 	}
 }
 
-resqml2::AbstractRepresentation* RepresentationSetRepresentation::getRepresentation(const unsigned int & index) const
+RESQML2_NS::AbstractRepresentation* RepresentationSetRepresentation::getRepresentation(const unsigned int & index) const
 {
-	return static_cast<resqml2::AbstractRepresentation*>(epcDocument->getResqmlAbstractObjectByUuid(getRepresentationUuid(index)));
+	return static_cast<RESQML2_NS::AbstractRepresentation*>(epcDocument->getResqmlAbstractObjectByUuid(getRepresentationUuid(index)));
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* RepresentationSetRepresentation::getRepresentationDor(const unsigned int & index) const
@@ -129,7 +129,7 @@ std::string RepresentationSetRepresentation::getRepresentationUuid(const unsigne
 	return getRepresentationDor(index)->UUID;
 }
 
-void RepresentationSetRepresentation::pushBackXmlRepresentation(resqml2::AbstractRepresentation* rep)
+void RepresentationSetRepresentation::pushBackXmlRepresentation(RESQML2_NS::AbstractRepresentation* rep)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::_resqml2__RepresentationSetRepresentation* rsr = static_cast<gsoap_resqml2_0_1::_resqml2__RepresentationSetRepresentation*>(gsoapProxy2_0_1);

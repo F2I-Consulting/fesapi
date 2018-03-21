@@ -20,11 +20,13 @@ under the License.
 
 #include <iostream>
 
+#include "nsDefinitions.h"
+
 #if (defined(_WIN32) && _MSC_VER < 1600) || (defined(__GNUC__) && (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 6)))
 #include "tools/nullptr_emulation.h"
 #endif
 
-namespace common {
+namespace COMMON_NS {
 	class EpcDocument;
 }
 
@@ -45,7 +47,7 @@ namespace commontest {
 		 * Creation of a testing object from an existing EPC document.
 		 * @param epcDoc an existing EPC document
 		 */
-		AbstractTest(common::EpcDocument * epcDoc);
+		AbstractTest(COMMON_NS::EpcDocument * epcDoc);
 
 		virtual ~AbstractTest() {}
 
@@ -72,7 +74,7 @@ namespace commontest {
 		 */
 		virtual void readEpcDoc() = 0;
 	protected:
-		common::EpcDocument* epcDoc;
+		COMMON_NS::EpcDocument* epcDoc;
 		const std::string epcDocPath;
 	};
 }

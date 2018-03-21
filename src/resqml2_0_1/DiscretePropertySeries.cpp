@@ -25,16 +25,16 @@ under the License.
 #include "resqml2_0_1/PropertyKind.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 
 const char* DiscretePropertySeries::XML_TAG = "DiscretePropertySeries";
 
-DiscretePropertySeries::DiscretePropertySeries(resqml2::AbstractRepresentation * rep, const string & guid, const string & title,
+DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
 	const resqml2__ResqmlPropertyKind & energisticsPropertyKind,
-	resqml2::TimeSeries * ts, const bool & useInterval)
+	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREDiscretePropertySeries(rep->getGsoapContext(), 1);	
 	_resqml2__DiscretePropertySeries* prop = static_cast<_resqml2__DiscretePropertySeries*>(gsoapProxy2_0_1);
@@ -56,10 +56,10 @@ DiscretePropertySeries::DiscretePropertySeries(resqml2::AbstractRepresentation *
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");
 }
 
-DiscretePropertySeries::DiscretePropertySeries(resqml2::AbstractRepresentation * rep, const string & guid, const string & title,
+DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
-	resqml2::PropertyKind * localPropKind,
-	resqml2::TimeSeries * ts, const bool & useInterval)
+	RESQML2_NS::PropertyKind * localPropKind,
+	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREDiscretePropertySeries(rep->getGsoapContext(), 1);	
 	_resqml2__DiscretePropertySeries* prop = static_cast<_resqml2__DiscretePropertySeries*>(gsoapProxy2_0_1);

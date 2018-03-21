@@ -21,7 +21,7 @@ under the License.
 #include <stdexcept>
 #include <algorithm>
 
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace std;
 using namespace epc;
@@ -31,7 +31,7 @@ unsigned int AbstractStratigraphicOrganizationInterpretation::getGridRepresentat
 	return gridRepresentationSet.size();
 }
 
-resqml2::AbstractGridRepresentation* AbstractStratigraphicOrganizationInterpretation::getGridRepresentation(const unsigned int & index) const
+RESQML2_NS::AbstractGridRepresentation* AbstractStratigraphicOrganizationInterpretation::getGridRepresentation(const unsigned int & index) const
 {
 	if (index >= getGridRepresentationCount()) {
 		throw range_error("The index of the grid representation to get is out of range.");
@@ -40,7 +40,7 @@ resqml2::AbstractGridRepresentation* AbstractStratigraphicOrganizationInterpreta
 	return gridRepresentationSet[index];
 }
 
-bool AbstractStratigraphicOrganizationInterpretation::isAssociatedToGridRepresentation(resqml2::AbstractGridRepresentation* gridRep) const
+bool AbstractStratigraphicOrganizationInterpretation::isAssociatedToGridRepresentation(RESQML2_NS::AbstractGridRepresentation* gridRep) const
 {
 	return find(gridRepresentationSet.begin(), gridRepresentationSet.end(), gridRep) != gridRepresentationSet.end();
 }

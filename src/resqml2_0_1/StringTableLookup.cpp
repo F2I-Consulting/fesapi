@@ -23,7 +23,7 @@ under the License.
 #include "resqml2_0_1/CategoricalProperty.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 
@@ -42,8 +42,6 @@ StringTableLookup::StringTableLookup(soap* soapContext, const string & guid, con
 
 vector<Relationship> StringTableLookup::getAllEpcRelationships() const
 {
-	_resqml2__StringTableLookup* stringLookup = static_cast<_resqml2__StringTableLookup*>(gsoapProxy2_0_1);
-
 	vector<Relationship> result;
 
 	// XML backward relationship

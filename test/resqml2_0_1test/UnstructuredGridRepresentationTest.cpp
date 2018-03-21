@@ -19,7 +19,7 @@ under the License.
 #include "UnstructuredGridRepresentationTest.h"
 
 using namespace std;
-using namespace common;
+using namespace COMMON_NS;
 using namespace resqml2_0_1test;
 
 const char* UnstructuredGridRepresentationTest::defaultUuid = "d084eef4-137a-423f-a41c-8064868bcfa0";

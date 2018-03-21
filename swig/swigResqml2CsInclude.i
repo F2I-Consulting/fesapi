@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 /**********************************************************************
 This file add special SWIG management of the C++ polymorphic datatype.
-Basically this file add methods resqml2_0_instantiate* which will create the right C# instance according to what it is exactly.
+Basically this file add methods resqml2_instantiate* which will create the right C# instance according to what it is exactly.
 **********************************************************************/
 
 %pragma(csharp) imclasscode=%{
@@ -433,7 +433,7 @@ public static f2i.energisticsStandardsApi.common.AbstractObject resqml2_instanti
   }
 %}
 
-namespace common
+namespace COMMON_NS
 {	
 	%typemap(csout, excode=SWIGEXCODE) AbstractObject*  {
 		global::System.IntPtr cPtr = $imcall;
@@ -442,7 +442,7 @@ namespace common
 	}
 }
 
-namespace resqml2
+namespace RESQML2_NS
 {		
 	%typemap(csout, excode=SWIGEXCODE) AbstractFeature*  {
 		global::System.IntPtr cPtr = $imcall;
@@ -481,7 +481,7 @@ namespace resqml2
 	}
 }
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {	
 	%typemap(csout, excode=SWIGEXCODE) WellboreFrameRepresentation*  {
 		global::System.IntPtr cPtr = $imcall;

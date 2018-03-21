@@ -19,7 +19,7 @@ under the License.
 #include "resqml2_0_1/StratigraphicUnitFeature.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* StratigraphicUnitFeature::XML_TAG = "StratigraphicUnitFeature";
@@ -30,7 +30,6 @@ StratigraphicUnitFeature::StratigraphicUnitFeature(soap* soapContext, const stri
 		throw invalid_argument("The soap context cannot be null.");
 
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREStratigraphicUnitFeature(soapContext, 1);
-	_resqml2__StratigraphicUnitFeature* stratUnit = static_cast<_resqml2__StratigraphicUnitFeature*>(gsoapProxy2_0_1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");

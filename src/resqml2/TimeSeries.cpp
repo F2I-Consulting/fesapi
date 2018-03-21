@@ -23,7 +23,7 @@ under the License.
 #include "resqml2/AbstractValuesProperty.h"
 
 using namespace std;
-using namespace resqml2;
+using namespace RESQML2_NS;
 using namespace epc;
 
 const char* TimeSeries::XML_TAG = "TimeSeries";

@@ -21,7 +21,7 @@ under the License.
 #include "resqml2_0_1test/AbstractRepresentationTest.h"
 #include <iostream>
 
-namespace common {
+namespace COMMON_NS {
 	class EpcDocument;
 }
 
@@ -32,7 +32,7 @@ namespace resqml2_0_1test {
 		static const char* defaultTitle;
 
 		WellboreFrameRepresentationTest(const std::string & epcDocPath);
-		WellboreFrameRepresentationTest(common::EpcDocument * epcDoc, bool init);
+		WellboreFrameRepresentationTest(COMMON_NS::EpcDocument * epcDoc, bool init);
 	protected:
 		void initEpcDocHandler();
 		void readEpcDocHandler();

@@ -20,14 +20,14 @@ under the License.
 
 #include "resqml2/AbstractRepresentation.h"
 
-namespace witsml1_4_1_1
+namespace WITSML1_4_1_1_NS
 {
 	class Trajectory;
 }
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT WellboreTrajectoryRepresentation : public resqml2::AbstractRepresentation
+	class DLL_IMPORT_OR_EXPORT WellboreTrajectoryRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	private:
 		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const {return nullptr;}
@@ -49,7 +49,7 @@ namespace resqml2_0_1
 		* @param title					A title for the instance to create.
 		* @param mdInfo					The MD information of the trajectory, mainly the well reference point.
 		*/
-		WellboreTrajectoryRepresentation(class WellboreInterpretation* interp, const std::string & guid, const std::string & title, resqml2::MdDatum * mdInfo);
+		WellboreTrajectoryRepresentation(class WellboreInterpretation* interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo);
 
 		/**
 		* Creates an instance with an existing deviation survey as its origin.
@@ -75,7 +75,7 @@ namespace resqml2_0_1
 		* @param proxy							The HDF proxy which indicates in which HDF5 file the control points and its parameters will be stored.
 		*										It must be already opened for writing and won't be closed.
 		*/
-		void setGeometry(double * controlPoints, const double & startMd, const double & endMd, const unsigned int & controlPointCount, const int & lineKind, common::AbstractHdfProxy* proxy);
+		void setGeometry(double * controlPoints, const double & startMd, const double & endMd, const unsigned int & controlPointCount, const int & lineKind, COMMON_NS::AbstractHdfProxy* proxy);
 
 		/*
 		*  Set the geometry of the representation by means of one natural cubic parametric line.
@@ -86,7 +86,7 @@ namespace resqml2_0_1
 		*										It must be already opened for writing and won't be closed.
 		*/
 		void setGeometry(double * controlPoints, double* controlPointParameters, const unsigned int & controlPointCount,
-			common::AbstractHdfProxy* proxy);
+			COMMON_NS::AbstractHdfProxy* proxy);
 
 		/*
 		*  Set the geometry of the representation by means of one cubic parametric line.
@@ -99,7 +99,7 @@ namespace resqml2_0_1
 		*/
 		void setGeometry(double * controlPoints,
 			double * tangentVectors, double* controlPointParameters, const unsigned int & controlPointCount,
-			common::AbstractHdfProxy* proxy);
+			COMMON_NS::AbstractHdfProxy* proxy);
 
 		/**
 		* 0 for vertical, 1 for linear spline, 2 for natural cubic spline, 3 for cubic spline, 4 for z linear cubic spline, 5 for minimum-curvature spline, (-1) for null: no line
@@ -109,12 +109,12 @@ namespace resqml2_0_1
 		/**
 		* Set the Md datum of this trajectory
 		*/
-		void setMdDatum(resqml2::MdDatum* mdDatum);
+		void setMdDatum(RESQML2_NS::MdDatum* mdDatum);
 
 		/**
 		* Getter of the md information associated to this WellboreFeature trajectory representation.
 		*/
-		resqml2::MdDatum * getMdDatum() const;
+		RESQML2_NS::MdDatum * getMdDatum() const;
 
 		/**
 		* Getter of the md information uuid associated to this WellboreFeature trajectory representation.
@@ -235,8 +235,8 @@ namespace resqml2_0_1
 
 		bool hasGeometry() const;
 
-		void setWitsmlTrajectory(witsml1_4_1_1::Trajectory * witsmlTraj);
-		witsml1_4_1_1::Trajectory * getWitsmlTrajectory() {return witsmlTrajectory;}
+		void setWitsmlTrajectory(WITSML1_4_1_1_NS::Trajectory * witsmlTraj);
+		WITSML1_4_1_1_NS::Trajectory * getWitsmlTrajectory() {return witsmlTrajectory;}
 
 	private:
 		/**
@@ -253,10 +253,10 @@ namespace resqml2_0_1
 	protected:
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML forward relationships
-		witsml1_4_1_1::Trajectory * witsmlTrajectory;
+		WITSML1_4_1_1_NS::Trajectory * witsmlTrajectory;
 		
 		// XML backward relationships
 		std::vector<WellboreTrajectoryRepresentation*> childrenTrajSet;

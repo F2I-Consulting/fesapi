@@ -29,7 +29,7 @@ under the License.
 #include "resqml2/AbstractLocal3dCrs.h"
 #include "common/AbstractHdfProxy.h"
 
-using namespace resqml2;
+using namespace RESQML2_NS;
 using namespace std;
 using namespace epc;
 
@@ -45,7 +45,7 @@ unsigned int AbstractValuesProperty::getPatchCount() const
 
 AbstractValuesProperty::hdfDatatypeEnum AbstractValuesProperty::getValuesHdfDatatype() const
 {
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 	if (hdfProxy == nullptr)
 		return AbstractValuesProperty::UNKNOWN;
 
@@ -99,7 +99,7 @@ AbstractValuesProperty::hdfDatatypeEnum AbstractValuesProperty::getValuesHdfData
 	return AbstractValuesProperty::UNKNOWN; // unknwown datatype...
 }
 
-std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(common::AbstractHdfProxy* hdfProxy, const std::string & datasetName, const long & nullValue)
+std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, const long & nullValue)
 {
 	setHdfProxy(hdfProxy);
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -170,7 +170,7 @@ std::string AbstractValuesProperty::getPathInHdfFileOfPatch(const unsigned int &
 
 long AbstractValuesProperty::getLongValuesOfPatch(const unsigned int & patchIndex, long * values)
 {
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 	if (hdfProxy == nullptr) {
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 	}
@@ -198,7 +198,7 @@ long AbstractValuesProperty::getNullValueOfPatch(const unsigned int & patchIndex
 
 unsigned long AbstractValuesProperty::getULongValuesOfPatch(const unsigned int & patchIndex, unsigned long * values)
 {
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 	if (hdfProxy == nullptr)
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 
@@ -210,7 +210,7 @@ unsigned long AbstractValuesProperty::getULongValuesOfPatch(const unsigned int &
 
 int AbstractValuesProperty::getIntValuesOfPatch(const unsigned int & patchIndex, int * values)
 {
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 	if (hdfProxy == nullptr) {
 		throw invalid_argument("The hdf proxy does not exist");
 	}
@@ -228,7 +228,7 @@ int AbstractValuesProperty::getIntValuesOfPatch(
 	unsigned long long* offsetInEachDimension,
 	const unsigned int& numArrayDimensions)
 {
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 	if (hdfProxy == nullptr) {
 		throw invalid_argument("The hdf proxy does not exist");
 	}
@@ -268,7 +268,7 @@ void AbstractValuesProperty::getIntValuesOf3dPatch(
 
 unsigned int AbstractValuesProperty::getUIntValuesOfPatch(const unsigned int & patchIndex, unsigned int * values)
 {
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 	if (hdfProxy == nullptr) {
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 	}
@@ -281,7 +281,7 @@ unsigned int AbstractValuesProperty::getUIntValuesOfPatch(const unsigned int & p
 
 short AbstractValuesProperty::getShortValuesOfPatch(const unsigned int & patchIndex, short * values)
 {
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 	if (hdfProxy == nullptr) {
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 	}
@@ -294,7 +294,7 @@ short AbstractValuesProperty::getShortValuesOfPatch(const unsigned int & patchIn
 
 unsigned short AbstractValuesProperty::getUShortValuesOfPatch(const unsigned int & patchIndex, unsigned short * values)
 {
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 	if (hdfProxy == nullptr) {
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 	}
@@ -307,7 +307,7 @@ unsigned short AbstractValuesProperty::getUShortValuesOfPatch(const unsigned int
 
 char AbstractValuesProperty::getCharValuesOfPatch(const unsigned int & patchIndex, char * values)
 {
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 	if (hdfProxy == nullptr) {
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 	}
@@ -320,7 +320,7 @@ char AbstractValuesProperty::getCharValuesOfPatch(const unsigned int & patchInde
 
 unsigned char AbstractValuesProperty::getUCharValuesOfPatch(const unsigned int & patchIndex, unsigned char * values)
 {
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 	if (hdfProxy == nullptr) {
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 	}
@@ -333,7 +333,7 @@ unsigned char AbstractValuesProperty::getUCharValuesOfPatch(const unsigned int &
 
 unsigned int AbstractValuesProperty::getValuesCountOfDimensionOfPatch(const unsigned int & dimIndex, const unsigned int & patchIndex)
 {
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 	if (hdfProxy == nullptr) {
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 	}
@@ -350,7 +350,7 @@ unsigned int AbstractValuesProperty::getValuesCountOfDimensionOfPatch(const unsi
 
 unsigned int AbstractValuesProperty::getDimensionsCountOfPatch(const unsigned int & patchIndex)
 {
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 	if (hdfProxy == nullptr) {
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 	}
@@ -412,7 +412,7 @@ std::string AbstractValuesProperty::getFacetValue(const unsigned int & index) co
 
 unsigned int AbstractValuesProperty::getValuesCountOfPatch (const unsigned int & patchIndex)
 {
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 	if (hdfProxy == nullptr) {
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 	}
@@ -425,7 +425,7 @@ void AbstractValuesProperty::createLongHdf5Array3dOfValues(
 	const unsigned int& valueCountInFastestDim, 
 	const unsigned int& valueCountInMiddleDim, 
 	const unsigned int& valueCountInSlowestDim, 
-	common::AbstractHdfProxy* proxy)
+	COMMON_NS::AbstractHdfProxy* proxy)
 {
 	hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
 	createLongHdf5ArrayOfValues(valueCountPerDimension, 3, proxy);
@@ -439,7 +439,7 @@ void AbstractValuesProperty::pushBackLongHdf5SlabArray3dOfValues(
 	const unsigned int& offsetInFastestDim, 
 	const unsigned int& offsetInMiddleDim, 
 	const unsigned int& offsetInSlowestDim,
-	common::AbstractHdfProxy * proxy)
+	COMMON_NS::AbstractHdfProxy * proxy)
 {
 	hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
 	hsize_t offsetPerDimension[3] = {offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim};
@@ -455,7 +455,7 @@ void AbstractValuesProperty::pushBackLongHdf5SlabArray3dOfValues(
 void AbstractValuesProperty::createLongHdf5ArrayOfValues(
 	hsize_t* numValues, 
 	const unsigned int& numArrayDimensions, 
-	common::AbstractHdfProxy* proxy)
+	COMMON_NS::AbstractHdfProxy* proxy)
 {
 	setHdfProxy(proxy);
 
@@ -494,7 +494,7 @@ void AbstractValuesProperty::createLongHdf5ArrayOfValues(
 void AbstractValuesProperty::pushBackLongHdf5SlabArrayOfValues(
 	long* values, hsize_t* numValuesInEachDimension,
 	hsize_t* offsetInEachDimension, const unsigned int& numArrayDimensions, 
-	common::AbstractHdfProxy* proxy)
+	COMMON_NS::AbstractHdfProxy* proxy)
 {
 	ostringstream oss;
 	oss << "values_patch" << getPatchCount() - 1;
@@ -516,7 +516,7 @@ void AbstractValuesProperty::getLongValuesOfPatch(
 	hsize_t* offsetInEachDimension, 
 	const unsigned int& numArrayDimensions)
 {
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 	if (hdfProxy == nullptr) {
 		throw invalid_argument("The hdf proxy does not exist");
 	}

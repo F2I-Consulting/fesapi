@@ -21,16 +21,16 @@ under the License.
 #include "resqml2/AbstractFeatureInterpretation.h"
 #include "resqml2_0_1/WellboreMarker.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT BoundaryFeatureInterpretation : public resqml2::AbstractFeatureInterpretation
+	class DLL_IMPORT_OR_EXPORT BoundaryFeatureInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		BoundaryFeatureInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :resqml2::AbstractFeatureInterpretation(partialObject) {}
+		BoundaryFeatureInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :RESQML2_NS::AbstractFeatureInterpretation(partialObject) {}
 
 		/**
 		* Default constructor
@@ -46,7 +46,7 @@ namespace resqml2_0_1
 		*/
 		BoundaryFeatureInterpretation(class BoundaryFeature * feature, const std::string & guid, const std::string & title);
 
-		BoundaryFeatureInterpretation(gsoap_resqml2_0_1::_resqml2__BoundaryFeatureInterpretation* fromGsoap) : resqml2::AbstractFeatureInterpretation(fromGsoap) {}
+		BoundaryFeatureInterpretation(gsoap_resqml2_0_1::_resqml2__BoundaryFeatureInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
 		virtual ~BoundaryFeatureInterpretation() {}
 
 		static const char* XML_TAG;

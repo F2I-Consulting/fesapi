@@ -22,7 +22,7 @@ under the License.
 #include "../catch.hpp"
 
 using namespace resqml2_0_1test;
-using namespace common;
+using namespace COMMON_NS;
 using namespace std;
 
 const char* LocalTime3dCrs::defaultUuid = "8f8285a7-f1e7-4964-a9e1-e815c82c65e0";

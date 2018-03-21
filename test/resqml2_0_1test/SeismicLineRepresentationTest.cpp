@@ -29,8 +29,8 @@ under the License.
 
 using namespace std;
 using namespace resqml2_0_1test;
-using namespace common;
-using namespace resqml2_0_1;
+using namespace COMMON_NS;
+using namespace RESQML2_0_1_NS;
 
 const char* SeismicLineRepresentationTest::defaultUuidFeatureSet = "4b463e9b-0369-40e7-a3c0-0f0d4b228a21";
 const char* SeismicLineRepresentationTest::defaultTitleFeatureSet = "Seismic Line Set Feature";
@@ -64,7 +64,7 @@ void SeismicLineRepresentationTest::initEpcDocHandler()
 		delete crsTest;
 	}
 
-	common::AbstractHdfProxy * hdfProxy = epcDoc->getHdfProxy(0);
+	COMMON_NS::AbstractHdfProxy * hdfProxy = epcDoc->getHdfProxy(0);
 
 	SeismicLineSetFeature* seismicLineSet = epcDoc->createSeismicLineSet(defaultUuidFeatureSet, defaultTitleFeatureSet);
 
@@ -80,13 +80,13 @@ void SeismicLineRepresentationTest::initEpcDocHandler()
 void SeismicLineRepresentationTest::readEpcDocHandler()
 {
 	// Feature
-	resqml2_0_1::SeismicLineFeature* feature = epcDoc->getResqmlAbstractObjectByUuid<resqml2_0_1::SeismicLineFeature>(defaultUuidFeature);
+	RESQML2_0_1_NS::SeismicLineFeature* feature = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::SeismicLineFeature>(defaultUuidFeature);
 	REQUIRE(feature->getFirstTraceIndex() == 0);
 	REQUIRE(feature->getTraceCount() == 5);
 	REQUIRE(feature->getTraceIndexIncrement() == 1);
 
 	// Grid 2D
-	resqml2_0_1::PolylineRepresentation* rep = epcDoc->getResqmlAbstractObjectByUuid<resqml2_0_1::PolylineRepresentation>(defaultUuid);
+	RESQML2_0_1_NS::PolylineRepresentation* rep = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::PolylineRepresentation>(defaultUuid);
 	REQUIRE_THROWS(rep->getSeismicSupportOfPatch(0));
 	REQUIRE(rep->getXyzPointCountOfAllPatches() == 5);
 }

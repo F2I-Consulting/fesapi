@@ -29,8 +29,8 @@ under the License.
 
 using namespace std;
 using namespace resqml2_0_1test;
-using namespace common;
-using namespace resqml2;
+using namespace COMMON_NS;
+using namespace RESQML2_NS;
 
 const char* MdDatumTest::defaultUuid = "aa4da18f-5cc8-4bbb-841a-30e4031376fa";
 const char* MdDatumTest::defaultTitle = "Md Datum";
@@ -49,7 +49,7 @@ MdDatumTest::MdDatumTest(EpcDocument* epcDoc, bool init)
 
 void MdDatumTest::initEpcDocHandler() {
 	LocalDepth3dCrsTest * crsTest = new LocalDepth3dCrsTest(this->epcDoc, true);
-	resqml2_0_1::LocalDepth3dCrs * crs = static_cast<resqml2_0_1::LocalDepth3dCrs *>(this->epcDoc->getResqmlAbstractObjectByUuid(LocalDepth3dCrsTest::defaultUuid));
+	RESQML2_0_1_NS::LocalDepth3dCrs * crs = static_cast<RESQML2_0_1_NS::LocalDepth3dCrs *>(this->epcDoc->getResqmlAbstractObjectByUuid(LocalDepth3dCrsTest::defaultUuid));
 
 	// cleaning
 	delete crsTest;

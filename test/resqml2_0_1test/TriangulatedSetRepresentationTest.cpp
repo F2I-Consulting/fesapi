@@ -25,7 +25,7 @@ TriangulatedSetRepresentationTest::TriangulatedSetRepresentationTest(const std::
 	: AbstractSurfaceRepresentationTest(epcDocPath, uuid, title, xyzPointCountOfAllPatches, xyzPointsOfAllPatchesInGlobalCrs) {
 }
 
-TriangulatedSetRepresentationTest::TriangulatedSetRepresentationTest(common::EpcDocument* epcDoc, const string & uuid, const string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInGlobalCrs)
+TriangulatedSetRepresentationTest::TriangulatedSetRepresentationTest(COMMON_NS::EpcDocument* epcDoc, const string & uuid, const string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInGlobalCrs)
 	: AbstractSurfaceRepresentationTest(epcDoc, uuid, title, xyzPointCountOfAllPatches, xyzPointsOfAllPatchesInGlobalCrs) {
 }
 

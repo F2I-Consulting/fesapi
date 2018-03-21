@@ -30,8 +30,8 @@ under the License.
 #include "common/AbstractHdfProxy.h"
 
 using namespace std;
-using namespace common;
-using namespace resqml2_0_1;
+using namespace COMMON_NS;
+using namespace RESQML2_0_1_NS;
 using namespace resqml2_0_1test;
 
 const char* WellboreRegularFrameRepresentationTest::defaultUuid = "bbcacfa6-b117-467f-8514-02660df62270";
@@ -58,7 +58,7 @@ void WellboreRegularFrameRepresentationTest::initEpcDocHandler() {
 	delete trajTest;
 
 	// getting the hdf proxy
-	common::AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
+	COMMON_NS::AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
 	REQUIRE(hdfProxy != nullptr);
 
 	// WellboreFeature frame

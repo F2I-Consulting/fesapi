@@ -20,7 +20,7 @@ under the License.
 
 #include "resqml2_0_1test/AbstractFeatureInterpretationTest.h"
 
-namespace common {
+namespace COMMON_NS {
 	class EpcDocument;
 }
 
@@ -54,8 +54,8 @@ namespace resqml2_0_1test {
 		* @param init true if this object is created for initialization purpose else false if it is 
 		* created for reading purpose. According to init value a iniEpcDoc() or readEpcDoc() is called.
 		*/
-		StratigraphicColumnRankInterpretationTest(common::EpcDocument* epcDoc, bool init);
-		StratigraphicColumnRankInterpretationTest(common::EpcDocument* epcDoc, const std::string & uuid, const std::string & title, const std::string & uuidFeature, const std::string & titleFeature, bool init);
+		StratigraphicColumnRankInterpretationTest(COMMON_NS::EpcDocument* epcDoc, bool init);
+		StratigraphicColumnRankInterpretationTest(COMMON_NS::EpcDocument* epcDoc, const std::string & uuid, const std::string & title, const std::string & uuidFeature, const std::string & titleFeature, bool init);
 	protected:
 		void initEpcDocHandler();
 		void readEpcDocHandler();

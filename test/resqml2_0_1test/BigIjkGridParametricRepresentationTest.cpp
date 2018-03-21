@@ -27,9 +27,9 @@ under the License.
 #include "resqml2_0_1/ContinuousProperty.h"
 
 using namespace std;
-using namespace common;
+using namespace COMMON_NS;
 using namespace resqml2_0_1test;
-using namespace resqml2;
+using namespace RESQML2_NS;
 
 const char* BigIjkGridParametricRepresentationTest::defaultUuid = "d94033f1-188b-465b-9594-c88403f7767e";
 const char* BigIjkGridParametricRepresentationTest::defaultTitle = "Ijk Grid Param Representation";
@@ -73,13 +73,13 @@ void BigIjkGridParametricRepresentationTest::initParametersAndControlPoints(doub
 void BigIjkGridParametricRepresentationTest::initEpcDocHandler() {
 	// getting the local depth 3d crs
 	LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(this->epcDoc, true);
-	resqml2_0_1::LocalDepth3dCrs* crs = epcDoc->getResqmlAbstractObjectByUuid<resqml2_0_1::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
+	RESQML2_0_1_NS::LocalDepth3dCrs* crs = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 
 	// getting the hdf proxy
 	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
 
 	// creating the ijk grid
-	resqml2_0_1::IjkGridParametricRepresentation* ijkGrid = this->epcDoc->createIjkGridParametricRepresentation(crs, uuid, title, iCount, jCount, kCount);
+	RESQML2_0_1_NS::IjkGridParametricRepresentation* ijkGrid = this->epcDoc->createIjkGridParametricRepresentation(crs, uuid, title, iCount, jCount, kCount);
 	REQUIRE(ijkGrid != nullptr);
 	double * parameters = new double[initNodesCountIjkGridRepresentation(iCount, jCount, kCount, faultCount)]; 
 	double * controlPoints = new double[(iCount + 1) * (jCount + 1) * 3];
@@ -93,7 +93,7 @@ void BigIjkGridParametricRepresentationTest::initEpcDocHandler() {
 		faultCount * (jCount + 1), pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// adding a discrete property
-	resqml2_0_1::DiscreteProperty* discreteProperty = this->epcDoc->createDiscreteProperty(
+	RESQML2_0_1_NS::DiscreteProperty* discreteProperty = this->epcDoc->createDiscreteProperty(
 		ijkGrid, discretePropertyUuid, discretePropertyTitle,
 		1, 
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, 
@@ -103,7 +103,7 @@ void BigIjkGridParametricRepresentationTest::initEpcDocHandler() {
 	discreteProperty->pushBackUShortHdf5Array3dOfValues(discretePropertyValues, iCount, jCount, kCount, hdfProxy, -1);
 
 	// adding a continuous property
-	resqml2_0_1::ContinuousProperty* continuousProperty = this->epcDoc->createContinuousProperty(
+	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = this->epcDoc->createContinuousProperty(
 		ijkGrid, continuousPropertyUuid, continuousPropertyTitle,
 		1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells,

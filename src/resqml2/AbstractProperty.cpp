@@ -33,12 +33,12 @@ under the License.
 #include "resqml2/TimeSeries.h"
 #include "resqml2_0_1/PropertyKindMapper.h"
 
-using namespace resqml2;
+using namespace RESQML2_NS;
 using namespace std;
 using namespace epc;
 
 
-void AbstractProperty::setXmlRepresentation(resqml2::AbstractRepresentation * rep)
+void AbstractProperty::setXmlRepresentation(RESQML2_NS::AbstractRepresentation * rep)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->SupportingRepresentation = rep->newResqmlReference();
@@ -136,7 +136,7 @@ vector<Relationship> AbstractProperty::getAllEpcRelationships() const
 		result.push_back(relTs);
 	}
 
-	common::AbstractHdfProxy* hdfProxy = getHdfProxy();
+	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 	if (hdfProxy != nullptr)
 	{
 		Relationship relHdf(hdfProxy->getPartNameInEpcDocument(), "", hdfProxy->getUuid());
@@ -158,13 +158,13 @@ vector<Relationship> AbstractProperty::getAllEpcRelationships() const
 	return result;
 }
 
-void AbstractProperty::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void AbstractProperty::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getRepresentationDor();
-	resqml2::AbstractRepresentation* rep = epcDoc->getResqmlAbstractObjectByUuid<resqml2::AbstractRepresentation>(dor->UUID);
+	RESQML2_NS::AbstractRepresentation* rep = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
 	if (rep == nullptr) { // partial transfer
 		getEpcDocument()->createPartial(dor);
-		rep = getEpcDocument()->getResqmlAbstractObjectByUuid<resqml2::AbstractRepresentation>(dor->UUID);
+		rep = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
 	}
 	if (rep == nullptr) {
 		throw invalid_argument("The DOR looks invalid.");
@@ -191,7 +191,7 @@ void AbstractProperty::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
 	if (!isAssociatedToOneStandardEnergisticsPropertyKind())
 	{
 		dor = getLocalPropertyKindDor();
-		resqml2::PropertyKind* pk = epcDoc->getResqmlAbstractObjectByUuid<PropertyKind>(dor->UUID);
+		RESQML2_NS::PropertyKind* pk = epcDoc->getResqmlAbstractObjectByUuid<PropertyKind>(dor->UUID);
 		if (pk == nullptr) {
 			epcDoc->createPartial(dor);
 			pk = epcDoc->getResqmlAbstractObjectByUuid<PropertyKind>(dor->UUID);
@@ -213,7 +213,7 @@ void AbstractProperty::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
 
 	string uuidHdfProxy = getHdfProxyUuid();
 	if (!uuidHdfProxy.empty()) {
-		common::AbstractHdfProxy* hdfProxy = epcDoc->getResqmlAbstractObjectByUuid<common::AbstractHdfProxy>(uuidHdfProxy);
+		COMMON_NS::AbstractHdfProxy* hdfProxy = epcDoc->getResqmlAbstractObjectByUuid<COMMON_NS::AbstractHdfProxy>(uuidHdfProxy);
 		if (hdfProxy == nullptr) {
 			epcDoc->addWarning("The referenced hdf proxy (" + uuidHdfProxy + ") is missing.");
 		}
@@ -396,7 +396,7 @@ unsigned int AbstractProperty::getTimeIndex() const
 	}
 }
 
-void AbstractProperty::setHdfProxy(common::AbstractHdfProxy * proxy)
+void AbstractProperty::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy)
 {
 	if (proxy == nullptr) {
 		throw invalid_argument("The hdf proxy of property " + getUuid() + " cannot be null");
@@ -405,9 +405,9 @@ void AbstractProperty::setHdfProxy(common::AbstractHdfProxy * proxy)
 	proxy->propertySourceObject.push_back(this);
 }
 
-common::AbstractHdfProxy* AbstractProperty::getHdfProxy() const
+COMMON_NS::AbstractHdfProxy* AbstractProperty::getHdfProxy() const
 {
-	return static_cast<common::AbstractHdfProxy*>(epcDocument->getResqmlAbstractObjectByUuid(getHdfProxyUuid()));
+	return static_cast<COMMON_NS::AbstractHdfProxy*>(epcDocument->getResqmlAbstractObjectByUuid(getHdfProxyUuid()));
 }
 
 std::string AbstractProperty::getHdfProxyUuid() const

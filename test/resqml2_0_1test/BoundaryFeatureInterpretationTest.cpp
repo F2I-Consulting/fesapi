@@ -25,7 +25,7 @@ BoundaryFeatureInterpretationTest::BoundaryFeatureInterpretationTest(const strin
 	: AbstractFeatureInterpretationTest(epcDocPath, uuid, title, uuidFeature, titleFeature) {
 }
 
-BoundaryFeatureInterpretationTest::BoundaryFeatureInterpretationTest(common::EpcDocument * epcDoc, const string & uuid, const string & title, const string & uuidFeature, const string & titleFeature)
+BoundaryFeatureInterpretationTest::BoundaryFeatureInterpretationTest(COMMON_NS::EpcDocument * epcDoc, const string & uuid, const string & title, const string & uuidFeature, const string & titleFeature)
 	: AbstractFeatureInterpretationTest(epcDoc, uuid, title, uuidFeature, titleFeature) {
 }
 

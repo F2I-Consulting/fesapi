@@ -21,9 +21,9 @@ under the License.
 #include "resqml2/PropertyKind.h"
 #include "resqml2_0_1/PropertyKindMapper.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT PropertyKind : public resqml2::PropertyKind
+	class DLL_IMPORT_OR_EXPORT PropertyKind : public RESQML2_NS::PropertyKind
 	{
 	private:
 
@@ -33,7 +33,7 @@ namespace resqml2_0_1
 		/**
 		* Only to be used in partial transfer context
 		*/
-		PropertyKind(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : resqml2::PropertyKind(partialObject) {}
+		PropertyKind(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::PropertyKind(partialObject) {}
 
 		/**
 		* Creates a local property type which uses a standard uom and which derives from a standard Energistics property type.
@@ -57,7 +57,7 @@ namespace resqml2_0_1
 		* @param parentPropType					The local parent property type in the EPC document.
 		*/
 		PropertyKind(soap* soapContext, const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, resqml2::PropertyKind * parentPropType);
+			const std::string & namingSystem, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, RESQML2_NS::PropertyKind * parentPropType);
 
 		/**
 		* Creates a local property type which uses a non standard uom and which derives from a standard Energistics property type.
@@ -81,12 +81,12 @@ namespace resqml2_0_1
 		* @param parentPropType					The local parent property type in the EPC document.
 		*/
 		PropertyKind(soap* soapContext, const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const std::string & nonStandardUom, resqml2::PropertyKind * parentPropType);
+			const std::string & namingSystem, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * parentPropType);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		PropertyKind(gsoap_resqml2_0_1::_resqml2__PropertyKind* fromGsoap) :resqml2::PropertyKind(fromGsoap) {}
+		PropertyKind(gsoap_resqml2_0_1::_resqml2__PropertyKind* fromGsoap) :RESQML2_NS::PropertyKind(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -98,11 +98,11 @@ namespace resqml2_0_1
 		bool isAbstract() const;
 
 	protected:
-		void setXmlParentPropertyKind(resqml2::PropertyKind* parentPropertyKind);
+		void setXmlParentPropertyKind(RESQML2_NS::PropertyKind* parentPropertyKind);
 		
 		gsoap_resqml2_0_1::_resqml2__PropertyKind* getSpecializedGsoapProxy() const;
 
-		friend resqml2_0_1::PropertyKind* PropertyKindMapper::addResqmlLocalPropertyKindToEpcDocumentFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application);
+		friend RESQML2_0_1_NS::PropertyKind* PropertyKindMapper::addResqmlLocalPropertyKindToEpcDocumentFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application);
 	};
 }
 

@@ -31,8 +31,8 @@ under the License.
 
 using namespace std;
 using namespace resqml2_0_1test;
-using namespace common;
-using namespace resqml2_0_1;
+using namespace COMMON_NS;
+using namespace RESQML2_0_1_NS;
 
 const char* HorizonOnSeismicLine::defaultUuid = "c9bea300-6231-4acb-8b7c-77e4099224d4";
 const char* HorizonOnSeismicLine::defaultTitle = "Horizon on seismic line";
@@ -54,7 +54,7 @@ HorizonOnSeismicLine::HorizonOnSeismicLine(EpcDocument * epcDocument, bool init)
 
 void HorizonOnSeismicLine::initEpcDocHandler()
 {
-	common::AbstractHdfProxy * hdfProxy = epcDoc->getHdfProxy(0);
+	COMMON_NS::AbstractHdfProxy * hdfProxy = epcDoc->getHdfProxy(0);
 
 	HorizonInterpretation* horizonInterp = epcDoc->getResqmlAbstractObjectByUuid<HorizonInterpretation>(uuidHorizon0Interp);
 	if (horizonInterp == nullptr) {
@@ -70,7 +70,7 @@ void HorizonOnSeismicLine::initEpcDocHandler()
 		delete seismicLineRepresentationTest;
 	}
 
-	resqml2::AbstractLocal3dCrs * crs = seismicLineRep->getLocalCrs();;
+	RESQML2_NS::AbstractLocal3dCrs * crs = seismicLineRep->getLocalCrs();;
 
 	PolylineRepresentation* h1i1SinglePolylineRep = epcDoc->createPolylineRepresentation(horizonInterp, crs, uuid, title);
 	h1i1SinglePolylineRep->setGeometry(defaultXyzPoints, 4, hdfProxy);

@@ -28,8 +28,8 @@ under the License.
 
 using namespace std;
 using namespace resqml2_0_1test;
-using namespace common;
-using namespace resqml2_0_1;
+using namespace COMMON_NS;
+using namespace RESQML2_0_1_NS;
 
 const char* StratigraphicUnitTest::defaultUuid = "e9e8ce58-b53a-4425-84c7-667642027a4a";
 const char* StratigraphicUnitTest::defaultTitle = "Strati Unit";

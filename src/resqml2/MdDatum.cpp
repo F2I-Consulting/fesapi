@@ -24,13 +24,13 @@ under the License.
 #include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
 
 using namespace std;
-using namespace resqml2;
+using namespace RESQML2_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 
 const char* MdDatum::XML_TAG = "MdDatum";
 
-void MdDatum::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void MdDatum::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	_resqml2__MdDatum* mdInfo = static_cast<_resqml2__MdDatum*>(gsoapProxy2_0_1);
 

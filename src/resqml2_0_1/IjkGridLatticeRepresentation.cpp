@@ -29,16 +29,16 @@ under the License.
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 
-IjkGridLatticeRepresentation::IjkGridLatticeRepresentation(soap* soapContext, resqml2::AbstractLocal3dCrs * crs,
+IjkGridLatticeRepresentation::IjkGridLatticeRepresentation(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title,
 			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount):
 			AbstractIjkGridRepresentation(soapContext, crs, guid, title, iCount, jCount, kCount)
 {
 }
 
-IjkGridLatticeRepresentation::IjkGridLatticeRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+IjkGridLatticeRepresentation::IjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 		const std::string & guid, const std::string & title,
 		const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount):
 	AbstractIjkGridRepresentation(interp, crs, guid, title, iCount, jCount, kCount)
@@ -50,7 +50,7 @@ bool IjkGridLatticeRepresentation::isASeismicCube() const
 	// A Seismic cube is defined by an IjkGridRepresentation that has a feature of type SeismicLatticeFeature and that
 	// has at least one continuous property (amplitude).
 	bool atLeastOneContProp = false;
-	vector<resqml2::AbstractValuesProperty*> allValuesProperty = getValuesPropertySet();
+	vector<RESQML2_NS::AbstractValuesProperty*> allValuesProperty = getValuesPropertySet();
     for (unsigned int propIndex = 0; propIndex < allValuesProperty.size(); ++propIndex)
     {
         if (allValuesProperty[propIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREContinuousProperty)
@@ -70,7 +70,7 @@ bool IjkGridLatticeRepresentation::isAFaciesCube() const
 	// A Facies cube is defined by an IjkGridRepresentation that has a feature of type SeismicLatticeFeature and that
 	// has at least one categorical property (facies).
 	bool atLeastOneCateProp = false;
-	vector<resqml2::AbstractValuesProperty*> allValuesProperty = getValuesPropertySet();
+	vector<RESQML2_NS::AbstractValuesProperty*> allValuesProperty = getValuesPropertySet();
     for (unsigned int propIndex = 0; propIndex < allValuesProperty.size(); ++propIndex)
     {
         if (allValuesProperty[propIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECategoricalProperty)

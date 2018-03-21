@@ -20,7 +20,7 @@ under the License.
 
 #include "witsml1_4_1_1/Wellbore.h"
 
-namespace witsml1_4_1_1
+namespace WITSML1_4_1_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT Well : public AbstractObject
 	{
@@ -153,7 +153,7 @@ namespace witsml1_4_1_1
 		* Resolve all relationships of the object in an epc document.
 		* Does nothing since there is no forward relationship.
 		*/
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
 

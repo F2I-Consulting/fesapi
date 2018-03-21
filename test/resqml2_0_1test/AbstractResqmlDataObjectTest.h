@@ -21,11 +21,11 @@ under the License.
 #include <iostream>
 #include "AbstractObjectTest.h"
 
-namespace common {
+namespace COMMON_NS {
 	class EpcDocument;
 }
 
-namespace resqml2_0_1 {
+namespace RESQML2_0_1_NS {
 	class AbstractResqmlDataObject;
 }
 
@@ -33,7 +33,7 @@ namespace resqml2_0_1test {
 	class AbstractResqmlDataObjectTest : public AbstractObjectTest {
 	public:
 		AbstractResqmlDataObjectTest(const std::string & epcDocPath, const std::string & uuid, const std::string & title);
-		AbstractResqmlDataObjectTest(common::EpcDocument * epcDoc, const std::string & uuid, const std::string & title);
+		AbstractResqmlDataObjectTest(COMMON_NS::EpcDocument * epcDoc, const std::string & uuid, const std::string & title);
 	};
 }
 

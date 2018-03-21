@@ -20,12 +20,12 @@ under the License.
 
 #include "resqml2_0_1/WellboreFrameRepresentation.h"
 
-namespace resqml2
+namespace RESQML2_NS
 {
 	class AbstractGridRepresentation;
 }
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT BlockedWellboreRepresentation : public WellboreFrameRepresentation
 	{
@@ -72,7 +72,7 @@ namespace resqml2_0_1
 		* @param localFacePairPerCellIndicesNullValue	The null value used in localFacePerCellIndices in order to indicate that it corresponds to a missing intersection, e.g., when a trajectory originates or terminates within a cell.
 		* @param hdfProxy								The hdf proxy where the numerical values will be stored.
 		*/
-		void setIntevalGridCells(unsigned int * gridIndices, unsigned int gridIndicesNullValue, unsigned int cellCount, ULONG64* cellIndices, unsigned char* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, common::AbstractHdfProxy * hdfProxy);
+		void setIntevalGridCells(unsigned int * gridIndices, unsigned int gridIndicesNullValue, unsigned int cellCount, ULONG64* cellIndices, unsigned char* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, COMMON_NS::AbstractHdfProxy * hdfProxy);
 
 		/**
 		* The number of non-null entries in the grid indices array.
@@ -89,7 +89,7 @@ namespace resqml2_0_1
 		 * Pushes back a grid representation which is one of the support of this representation.
 		 * And push back this representation as a grid connection information of the grid representation as well.
 		 */
-		void pushBackSupportingGridRepresentation(resqml2::AbstractGridRepresentation * supportingGridRep);
+		void pushBackSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep);
 		
 		/**
 		* Get the count of the supporting grid representations of this grid connection representation.
@@ -99,7 +99,7 @@ namespace resqml2_0_1
 		/**
 		* Get the supporting grid representation located at a specific index of this blocked wellbore representation.
 		*/
-		resqml2::AbstractGridRepresentation* getSupportingGridRepresentation(unsigned int index) const;
+		RESQML2_NS::AbstractGridRepresentation* getSupportingGridRepresentation(unsigned int index) const;
 
 		/**
 		* Get the supporting grid representation dor located at a specific index of this blocked wellbore representation.
@@ -114,7 +114,7 @@ namespace resqml2_0_1
 	private:
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 	};
 }
 

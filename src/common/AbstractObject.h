@@ -22,7 +22,7 @@ under the License.
 #include "proxies/gsoap_eml2_1H.h"
 #include "common/EpcDocument.h"
 
-namespace common
+namespace COMMON_NS
 {
 	class DLL_IMPORT_OR_EXPORT AbstractObject
 	{
@@ -79,8 +79,8 @@ namespace common
 		
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;
 		gsoap_eml2_1::eml21__AbstractObject* gsoapProxy2_1;
-		common::EpcDocument* epcDocument;
-		std::vector<resqml2::Activity*> activitySet;
+		COMMON_NS::EpcDocument* epcDocument;
+		std::vector<RESQML2_NS::Activity*> activitySet;
 
 		bool updateXml; /// Indicate whether methods update the XML (gSoap) or only the C++ classes of the API.
 
@@ -96,24 +96,24 @@ namespace common
 
 		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy);
 
-		friend void common::EpcDocument::addGsoapProxy(AbstractObject* proxy);
+		friend void COMMON_NS::EpcDocument::addGsoapProxy(AbstractObject* proxy);
 
 		void initMandatoryMetadata();
 		
 		/**
 		* Resolve all relationships of the object in an epc document
 		*/
-		virtual void importRelationshipSetFromEpc(common::EpcDocument * epcDoc) = 0;
-		friend void common::EpcDocument::updateAllRelationships();
+		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc) = 0;
+		friend void COMMON_NS::EpcDocument::updateAllRelationships();
 
 		/**
 		* Return all relationships (backward and forward ones) of the instance using EPC format.
 		*/
 		virtual std::vector<epc::Relationship> getAllEpcRelationships() const = 0;
-		friend void common::EpcDocument::serialize(bool useZip64);
+		friend void COMMON_NS::EpcDocument::serialize(bool useZip64);
 
 		// Only for Activity. Can not use friendness between AbstractObject and Activity for circular dependencies reason.
-		static void addActivityToResqmlObject(resqml2::Activity* activity, AbstractObject* resqmlObject);
+		static void addActivityToResqmlObject(RESQML2_NS::Activity* activity, AbstractObject* resqmlObject);
 
 		/**
 		* It is too dangerous for now to modify the uuid because too much things depend on it. That's why this method is only protected : it is only used by derived class constructor.
@@ -198,7 +198,7 @@ namespace common
 		/**
 		 * Return the EPC document which contains this gsoap wrapper.
 		 */
-		common::EpcDocument* getEpcDocument() const {return epcDocument;}
+		COMMON_NS::EpcDocument* getEpcDocument() const {return epcDocument;}
 
 		/**
 		* Get the XML namespace for the tags for the XML serialization of this instance
@@ -253,7 +253,7 @@ namespace common
 		/**
 		* Get all the activities where the instance is involved.
 		*/
-		const std::vector<resqml2::Activity*> & getActivitySet() const;
+		const std::vector<RESQML2_NS::Activity*> & getActivitySet() const;
 
 		/**
 		* Get the count of associated activities.
@@ -263,7 +263,7 @@ namespace common
 		/**
 		* Get the associated activity at a particular index.
 		*/
-		resqml2::Activity* getActivity (const unsigned int & index) const;
+		RESQML2_NS::Activity* getActivity (const unsigned int & index) const;
 
 		/**
 		* Push back an extra metadata (not a standard one)

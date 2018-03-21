@@ -26,8 +26,8 @@ under the License.
 #include "common/AbstractHdfProxy.h"
 
 using namespace std;
-using namespace common;
-using namespace resqml2;
+using namespace COMMON_NS;
+using namespace RESQML2_NS;
 using namespace resqml2_0_1test;
 
 const char* CommentProperty::defaultUuid = "3e01e290-7df3-450e-ad93-2f88e79fe2fe";
@@ -48,13 +48,13 @@ CommentProperty::CommentProperty(EpcDocument * epcDoc, bool init)
 void CommentProperty::initEpcDocHandler() {
 	// creating an IJK grid
 	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(this->epcDoc, true);
-	resqml2_0_1::WellboreFrameRepresentation * frame = static_cast<resqml2_0_1::WellboreFrameRepresentation *>(this->epcDoc->getResqmlAbstractObjectByUuid(WellboreFrameRepresentationTest::defaultUuid));
+	RESQML2_0_1_NS::WellboreFrameRepresentation * frame = static_cast<RESQML2_0_1_NS::WellboreFrameRepresentation *>(this->epcDoc->getResqmlAbstractObjectByUuid(WellboreFrameRepresentationTest::defaultUuid));
 
 	// getting the hdf proxy
 	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
 
 	// creating the ContinuousProperty
-	resqml2_0_1::CommentProperty* commentProperty = epcDoc->createCommentProperty(
+	RESQML2_0_1_NS::CommentProperty* commentProperty = epcDoc->createCommentProperty(
 		frame, this->uuid, this->title,
 		1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__nodes,
@@ -77,7 +77,7 @@ void CommentProperty::readEpcDocHandler() {
 	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(this->epcDoc, false);
 
 	// getting the ContinuousPropertySeries
-	resqml2_0_1::CommentProperty* commentProperty = this->epcDoc->getResqmlAbstractObjectByUuid<resqml2_0_1::CommentProperty>(uuid);
+	RESQML2_0_1_NS::CommentProperty* commentProperty = this->epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::CommentProperty>(uuid);
 
 	// ************************************
 	// reading the ContinuousProperty

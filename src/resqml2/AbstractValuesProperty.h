@@ -21,7 +21,7 @@ under the License.
 #include <limits>
 #include "resqml2/AbstractProperty.h"
 
-namespace resqml2
+namespace RESQML2_NS
 {
 	class DLL_IMPORT_OR_EXPORT AbstractValuesProperty : public AbstractProperty
 	{
@@ -41,7 +41,7 @@ namespace resqml2
 		* @param	nullValue			Only relevant for integer hdf5 datasets. Indeed, Resqml (and fesapi) forces null value for floating point ot be NaN value.
 		* @return	The name of the hdf5 dataset.
 		*/
-		std::string pushBackRefToExistingIntegerDataset(common::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", const long & nullValue = (std::numeric_limits<long>::max)());
+		std::string pushBackRefToExistingIntegerDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", const long & nullValue = (std::numeric_limits<long>::max)());
 
 	public:
 
@@ -61,7 +61,7 @@ namespace resqml2
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractValuesProperty(gsoap_resqml2_0_1::resqml2__AbstractValuesProperty* fromGsoap) : resqml2::AbstractProperty(fromGsoap) {}
+		AbstractValuesProperty(gsoap_resqml2_0_1::resqml2__AbstractValuesProperty* fromGsoap) : RESQML2_NS::AbstractProperty(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -86,7 +86,7 @@ namespace resqml2
 		* @param	nullValue			Only relevant for integer hdf5 datasets. Indeed, Resqml (and fesapi) forces null value for floating point to be NaN value.
 		* @return	The name of the hdf5 dataset.
 		*/
-		virtual std::string pushBackRefToExistingDataset(common::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", const long & nullValue = (std::numeric_limits<long>::max)()) = 0;
+		virtual std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", const long & nullValue = (std::numeric_limits<long>::max)()) = 0;
 
 		/**
 		* Get all the values of the instance which are supposed to be long ones.
@@ -243,7 +243,7 @@ namespace resqml2
 		void createLongHdf5ArrayOfValues(
 			unsigned long long* numValues, 
 			const unsigned int& numArrayDimensions, 
-			common::AbstractHdfProxy* proxy
+			COMMON_NS::AbstractHdfProxy* proxy
 		);
 
 		/**
@@ -257,7 +257,7 @@ namespace resqml2
 			const unsigned int& valueCountInFastestDim, 
 			const unsigned int& valueCountInMiddleDim, 
 			const unsigned int& valueCountInSlowestDim, 
-			common::AbstractHdfProxy* proxy
+			COMMON_NS::AbstractHdfProxy* proxy
 		);
 
 		/**
@@ -279,7 +279,7 @@ namespace resqml2
 			const unsigned int& offsetInFastestDim, 
 			const unsigned int& offsetInMiddleDim, 
 			const unsigned int& offsetInSlowestDim, 
-			common::AbstractHdfProxy* proxy
+			COMMON_NS::AbstractHdfProxy* proxy
 		);
 
 		/**
@@ -296,7 +296,7 @@ namespace resqml2
 			unsigned long long * numValues,
 			unsigned long long * offsetValues,
 			const unsigned int & numArrayDimensions, 
-			common::AbstractHdfProxy* proxy
+			COMMON_NS::AbstractHdfProxy* proxy
 		);
 
 		/**

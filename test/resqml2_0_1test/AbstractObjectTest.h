@@ -21,7 +21,7 @@ under the License.
 #include "../AbstractTest.h"
 #include <iostream>
 
-namespace common {
+namespace COMMON_NS {
 	class EpcDocument;
 }
 
@@ -50,7 +50,7 @@ namespace resqml2_0_1test {
 		 * @param uuid the uuid of the Resqml top level object to test
 		 * @param title the title of the Resqml top level object to test
 		 */
-		AbstractObjectTest(common::EpcDocument * epcDoc, const std::string & uuid, const std::string & title);
+		AbstractObjectTest(COMMON_NS::EpcDocument * epcDoc, const std::string & uuid, const std::string & title);
 		
 		/**
 		 * Implementation of AbstractTest::initEpcDoc(). It is checked that the Resqml object to create does not

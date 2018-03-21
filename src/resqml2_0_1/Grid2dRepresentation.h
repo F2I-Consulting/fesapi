@@ -20,7 +20,7 @@ under the License.
 
 #include "resqml2_0_1/Grid2dSetRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT Grid2dRepresentation : public AbstractSurfaceRepresentation
 	{
@@ -49,7 +49,7 @@ namespace resqml2_0_1
 		* @param guid				The guid to set to the new instance. If empty then a new guid will be generated.
 		* @param title				A title for the instance to create.
 		*/
-		Grid2dRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+		Grid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title);
 
 		/**
@@ -240,7 +240,7 @@ namespace resqml2_0_1
 		*/
 		void setGeometryAsArray2dOfExplicitZ(
 				double * zValues,
-				const unsigned int & numI, const unsigned int & numJ, common::AbstractHdfProxy* proxy,
+				const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy* proxy,
 				Grid2dRepresentation * supportingGrid2dRepresentation,
 				const unsigned int & startIndexI = 0, const unsigned int & startIndexJ = 0,
 				const int & indexIncrementI = 1, const int & indexIncrementJ = 1);
@@ -251,7 +251,7 @@ namespace resqml2_0_1
 		*/
 		void setGeometryAsArray2dOfExplicitZ(
 				double * zValues,
-				const unsigned int & numI, const unsigned int & numJ, common::AbstractHdfProxy* proxy,
+				const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy* proxy,
 				const double & originX, const double & originY, const double & originZ,
 				const double & offsetIX, const double & offsetIY, const double & offsetIZ, const double & spacingI,
 				const double & offsetJX, const double & offsetJY, const double & offsetJZ, const double & spacingJ);
@@ -292,7 +292,7 @@ namespace resqml2_0_1
 
 	private:
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// Forward relationships
 		Grid2dRepresentation * supportingRepresentation;
@@ -302,7 +302,7 @@ namespace resqml2_0_1
 
 		friend void Grid2dSetRepresentation::pushBackGeometryPatch(
 				double * zValues,
-				const unsigned int & numI, const unsigned int & numJ, common::AbstractHdfProxy* proxy,
+				const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy* proxy,
 				Grid2dRepresentation * supportingGrid2dRepresentation,
 				const unsigned int & startIndexI, const unsigned int & startIndexJ,
 				const int & indexIncrementI, const int & indexIncrementJ);

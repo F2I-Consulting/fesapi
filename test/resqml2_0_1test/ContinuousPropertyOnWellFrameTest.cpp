@@ -26,8 +26,8 @@ under the License.
 #include "common/AbstractHdfProxy.h"
 
 using namespace std;
-using namespace common;
-using namespace resqml2;
+using namespace COMMON_NS;
+using namespace RESQML2_NS;
 using namespace resqml2_0_1test;
 
 const char* ContinuousPropertyOnWellFrameTest::defaultUuid = "6e4ca2c9-6780-44bd-b4c2-6bb3ef4682d4";
@@ -48,13 +48,13 @@ ContinuousPropertyOnWellFrameTest::ContinuousPropertyOnWellFrameTest(EpcDocument
 void ContinuousPropertyOnWellFrameTest::initEpcDocHandler() {
 	// creating an IJK grid
 	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(this->epcDoc, true);
-	resqml2_0_1::WellboreFrameRepresentation * frame = static_cast<resqml2_0_1::WellboreFrameRepresentation *>(this->epcDoc->getResqmlAbstractObjectByUuid(WellboreFrameRepresentationTest::defaultUuid));
+	RESQML2_0_1_NS::WellboreFrameRepresentation * frame = static_cast<RESQML2_0_1_NS::WellboreFrameRepresentation *>(this->epcDoc->getResqmlAbstractObjectByUuid(WellboreFrameRepresentationTest::defaultUuid));
 
 	// getting the hdf proxy
 	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
 
 	// creating the ContinuousProperty
-	resqml2_0_1::ContinuousProperty* continuousProperty = epcDoc->createContinuousProperty(
+	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = epcDoc->createContinuousProperty(
 		frame, this->uuid, this->title,
 		1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__nodes,
@@ -73,7 +73,7 @@ void ContinuousPropertyOnWellFrameTest::readEpcDocHandler() {
 	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(this->epcDoc, false);
 
 	// getting the ContinuousPropertySeries
-	resqml2_0_1::ContinuousProperty* continuousProperty = this->epcDoc->getResqmlAbstractObjectByUuid<resqml2_0_1::ContinuousProperty>(uuid);
+	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = this->epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::ContinuousProperty>(uuid);
 
 	// ************************************
 	// reading the ContinuousProperty

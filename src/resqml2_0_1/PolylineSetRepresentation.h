@@ -20,13 +20,13 @@ under the License.
 
 #include "resqml2/AbstractRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT PolylineSetRepresentation : public resqml2::AbstractRepresentation
+	class DLL_IMPORT_OR_EXPORT PolylineSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	private :
 		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const;
-		void init(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+		void init(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 				  const std::string & guid, const std::string & title);
 
 	public:
@@ -34,7 +34,7 @@ namespace resqml2_0_1
 		/**
 		* Only to be used in partial transfer context
 		*/
-		PolylineSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : resqml2::AbstractRepresentation(partialObject) {}
+		PolylineSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractRepresentation(partialObject) {}
 		
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -42,7 +42,7 @@ namespace resqml2_0_1
 		* @param guid							The guid to set to the new instance. If empty then a new guid will be generated.
 		* @param title							A title for the instance to create.
 		*/
-		PolylineSetRepresentation(resqml2::AbstractLocal3dCrs * crs,
+		PolylineSetRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
 				const std::string & guid, const std::string & title);
 
 		/**
@@ -52,7 +52,7 @@ namespace resqml2_0_1
 		* @param guid							The guid to set to the new instance. If empty then a new guid will be generated.
 		* @param title							A title for the instance to create.
 		*/
-		PolylineSetRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+		PolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 				const std::string & guid, const std::string & title);
 
 		/**
@@ -63,13 +63,13 @@ namespace resqml2_0_1
 		* @param title							A title for the instance to create.
 		* @param roleKind						Indicates the role of this representation.
 		*/
-		PolylineSetRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+		PolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 				const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__LineRole & roleKind);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		PolylineSetRepresentation(gsoap_resqml2_0_1::_resqml2__PolylineSetRepresentation* fromGsoap) : resqml2::AbstractRepresentation(fromGsoap) {}
+		PolylineSetRepresentation(gsoap_resqml2_0_1::_resqml2__PolylineSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -123,7 +123,7 @@ namespace resqml2_0_1
 		void pushBackGeometryPatch(
 				unsigned int * NodeCountPerPolyline, double * nodes,
 				const unsigned int & polylineCount, const bool & allPolylinesClosedFlag,
-				common::AbstractHdfProxy* proxy);
+				COMMON_NS::AbstractHdfProxy* proxy);
 
 		/**
 		* Push back a new patch of polylines
@@ -136,7 +136,7 @@ namespace resqml2_0_1
 		void pushBackGeometryPatch(
 				unsigned int * NodeCountPerPolyline, double * nodes,
 				const unsigned int & polylineCount, bool * polylineClosedFlags,
-				common::AbstractHdfProxy* proxy);
+				COMMON_NS::AbstractHdfProxy* proxy);
 
 		/**
 		* Check if all polylines contained in a single patch are closed or not.

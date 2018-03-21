@@ -20,16 +20,16 @@ under the License.
 
 #include "common/AbstractObject.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT StringTableLookup : public common::AbstractObject
+	class DLL_IMPORT_OR_EXPORT StringTableLookup : public COMMON_NS::AbstractObject
 	{
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		StringTableLookup(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : common::AbstractObject(partialObject) {}
+		StringTableLookup(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Default constructor
@@ -116,7 +116,7 @@ namespace resqml2_0_1
 		/**
 		* Does nothing since StringTableLookup has not got any forward relationship.
 		*/
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc) {}
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
 
 		// XML backwards relationships
 		std::vector<class CategoricalProperty*> categoricalPropertyValuesSet;

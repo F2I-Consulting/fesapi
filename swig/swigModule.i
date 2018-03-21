@@ -113,27 +113,29 @@ under the License.
     }
 }
 
+%include "../src/nsDefinitions.h"
+
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
-	%nspace common::EpcDocument;
-	%nspace common::AbstractObject;
-	%nspace common::EpcExternalPartReference;
-	%nspace common::AbstractHdfProxy;
-	%nspace common::HdfProxy;
+	%nspace COMMON_NS::EpcDocument;
+	%nspace COMMON_NS::AbstractObject;
+	%nspace COMMON_NS::EpcExternalPartReference;
+	%nspace COMMON_NS::AbstractHdfProxy;
+	%nspace COMMON_NS::HdfProxy;
 #endif
 
-namespace resqml2
+namespace RESQML2_NS
 {
 	class Activity;
 }
 
-namespace common
+namespace COMMON_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
 	
 	class AbstractObject
 	{
 	public:
-		common::EpcDocument* getEpcDocument() const;
+		COMMON_NS::EpcDocument* getEpcDocument() const;
 	
 		bool isPartial() const;
 	
@@ -172,7 +174,7 @@ namespace common
 		std::string getExtraMetadataStringValueAtIndex(const unsigned int & index) const;
 
 		unsigned int getActivityCount() const;
-		resqml2::Activity* getActivity (const unsigned int & index) const;
+		RESQML2_NS::Activity* getActivity (const unsigned int & index) const;
 	};
 	
 	//************************************
@@ -204,12 +206,12 @@ namespace common
 
 %template(StringVector) std::vector< std::string >;
 
-namespace resqml2
+namespace RESQML2_NS
 {
 	class Activity;
 }
 
-namespace common
+namespace COMMON_NS
 {
 	%typemap(javafinalize) EpcDocument %{
 	%}
@@ -230,7 +232,7 @@ namespace common
 		std::string getStorageDirectory() const;
 		std::string getName() const;
 		
-		resqml2_0_1::PropertyKindMapper* getPropertyKindMapper() const;
+		RESQML2_0_1_NS::PropertyKindMapper* getPropertyKindMapper() const;
 		
 		std::string getEnergisticsPropertyKindName(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind) const;
 		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind getEnergisticsPropertyKind(const std::string & energisticsPropertyKindName) const;
@@ -244,414 +246,414 @@ namespace common
 
 		std::string getWitsmlPlaneAngleUom(const gsoap_witsml1_4_1_1::witsml1__PlaneAngleUom & witsmlUom) const;
 		
-		const std::vector<resqml2_0_1::LocalDepth3dCrs*> & getLocalDepth3dCrsSet() const;
-		const std::vector<resqml2_0_1::LocalTime3dCrs*> & getLocalTime3dCrsSet() const;
+		const std::vector<RESQML2_0_1_NS::LocalDepth3dCrs*> & getLocalDepth3dCrsSet() const;
+		const std::vector<RESQML2_0_1_NS::LocalTime3dCrs*> & getLocalTime3dCrsSet() const;
 		
-		const std::vector<resqml2_0_1::StratigraphicColumn*> & getStratigraphicColumnSet() const;
+		const std::vector<RESQML2_0_1_NS::StratigraphicColumn*> & getStratigraphicColumnSet() const;
 		
-		const std::vector<resqml2_0_1::TectonicBoundaryFeature*> & getFaultSet() const;
-		const std::vector<resqml2_0_1::TectonicBoundaryFeature*> & getFractureSet() const {return fractureSet;}
-		const std::vector<resqml2_0_1::FrontierFeature*> & getFrontierSet() const;
-		std::vector<resqml2_0_1::PolylineSetRepresentation*> getFaultPolylineSetRepSet() const;
-		std::vector<resqml2_0_1::PolylineSetRepresentation*> getFracturePolylineSetRepSet() const;
-		std::vector<resqml2_0_1::PolylineSetRepresentation*> getFrontierPolylineSetRepSet() const;
-		std::vector<resqml2_0_1::TriangulatedSetRepresentation*> getFaultTriangulatedSetRepSet() const;
-		std::vector<resqml2_0_1::TriangulatedSetRepresentation*> getFractureTriangulatedSetRepSet() const;
+		const std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*> & getFaultSet() const;
+		const std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*> & getFractureSet() const {return fractureSet;}
+		const std::vector<RESQML2_0_1_NS::FrontierFeature*> & getFrontierSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getFaultPolylineSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getFracturePolylineSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getFrontierPolylineSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getFaultTriangulatedSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getFractureTriangulatedSetRepSet() const;
 		
-		std::vector<resqml2_0_1::Horizon*> getHorizonSet() const;
+		std::vector<RESQML2_0_1_NS::Horizon*> getHorizonSet() const;
 		unsigned int getGeobodyBoundaryCount() const;
-		resqml2_0_1::GeneticBoundaryFeature* getGeobodyBoundary(unsigned int index) const;
-		const std::vector<resqml2_0_1::GeobodyFeature*> & getGeobodySet() const;
-		std::vector<resqml2_0_1::Grid2dSetRepresentation*> getHorizonGrid2dSetRepSet() const;
-		std::vector<resqml2_0_1::Grid2dRepresentation*> getHorizonGrid2dRepSet() const;
-		std::vector<resqml2_0_1::PolylineRepresentation*> getHorizonPolylineRepSet() const;
-		std::vector<resqml2_0_1::PolylineSetRepresentation*> getHorizonPolylineSetRepSet() const;
-		std::vector<resqml2_0_1::TriangulatedSetRepresentation*> getHorizonTriangulatedSetRepSet() const;
-		const std::vector<resqml2_0_1::TriangulatedSetRepresentation*> & getAllTriangulatedSetRepSet() const;
-		std::vector<resqml2_0_1::TriangulatedSetRepresentation*> getUnclassifiedTriangulatedSetRepSet() const;
+		RESQML2_0_1_NS::GeneticBoundaryFeature* getGeobodyBoundary(unsigned int index) const;
+		const std::vector<RESQML2_0_1_NS::GeobodyFeature*> & getGeobodySet() const;
+		std::vector<RESQML2_0_1_NS::Grid2dSetRepresentation*> getHorizonGrid2dSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::Grid2dRepresentation*> getHorizonGrid2dRepSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineRepresentation*> getHorizonPolylineRepSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getHorizonPolylineSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getHorizonTriangulatedSetRepSet() const;
+		const std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> & getAllTriangulatedSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getUnclassifiedTriangulatedSetRepSet() const;
 		
-		const std::vector<resqml2_0_1::SeismicLineFeature*> & getSeismicLineSet() const;
+		const std::vector<RESQML2_0_1_NS::SeismicLineFeature*> & getSeismicLineSet() const;
 		
-		const std::vector<resqml2_0_1::WellboreFeature*> & getWellboreSet() const;
-		std::vector<resqml2_0_1::WellboreTrajectoryRepresentation*> getWellboreTrajectoryRepresentationSet() const;
-		std::vector<resqml2_0_1::DeviationSurveyRepresentation*> getDeviationSurveyRepresentationSet() const;
+		const std::vector<RESQML2_0_1_NS::WellboreFeature*> & getWellboreSet() const;
+		std::vector<RESQML2_0_1_NS::WellboreTrajectoryRepresentation*> getWellboreTrajectoryRepresentationSet() const;
+		std::vector<RESQML2_0_1_NS::DeviationSurveyRepresentation*> getDeviationSurveyRepresentationSet() const;
 		
 		unsigned int getRepresentationSetRepresentationCount() const;
-		resqml2::RepresentationSetRepresentation* getRepresentationSetRepresentation(const unsigned int & index) const;
+		RESQML2_NS::RepresentationSetRepresentation* getRepresentationSetRepresentation(const unsigned int & index) const;
 		
 		unsigned int getHdfProxyCount() const;
-		common::AbstractHdfProxy* getHdfProxy(const unsigned int & index) const;
+		COMMON_NS::AbstractHdfProxy* getHdfProxy(const unsigned int & index) const;
 		
 		unsigned int getIjkGridRepresentationCount() const;
-		resqml2_0_1::AbstractIjkGridRepresentation* getIjkGridRepresentation(const unsigned int & i) const;
-		std::vector<resqml2_0_1::IjkGridExplicitRepresentation*> getIjkGridExplicitRepresentationSet() const;
-		std::vector<resqml2_0_1::IjkGridParametricRepresentation*> getIjkGridParametricRepresentationSet() const;
+		RESQML2_0_1_NS::AbstractIjkGridRepresentation* getIjkGridRepresentation(const unsigned int & i) const;
+		std::vector<RESQML2_0_1_NS::IjkGridExplicitRepresentation*> getIjkGridExplicitRepresentationSet() const;
+		std::vector<RESQML2_0_1_NS::IjkGridParametricRepresentation*> getIjkGridParametricRepresentationSet() const;
 
-		std::vector<resqml2_0_1::PolylineRepresentation*> getSeismicLinePolylineRepSet() const;
-		std::vector<resqml2_0_1::IjkGridLatticeRepresentation*> getIjkSeismicCubeGridRepresentationSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineRepresentation*> getSeismicLinePolylineRepSet() const;
+		std::vector<RESQML2_0_1_NS::IjkGridLatticeRepresentation*> getIjkSeismicCubeGridRepresentationSet() const;
 		
-		const std::vector<resqml2_0_1::UnstructuredGridRepresentation*> & getUnstructuredGridRepresentationSet() const;
+		const std::vector<RESQML2_0_1_NS::UnstructuredGridRepresentation*> & getUnstructuredGridRepresentationSet() const;
 		
 		unsigned int getSubRepresentationCount() const;
-		resqml2::SubRepresentation* getSubRepresentation(const unsigned int & index) const;
+		RESQML2_NS::SubRepresentation* getSubRepresentation(const unsigned int & index) const;
 		
 		unsigned int getPointSetRepresentationCount() const;
-		resqml2_0_1::PointSetRepresentation* getPointSetRepresentation(const unsigned int & index) const;
+		RESQML2_0_1_NS::PointSetRepresentation* getPointSetRepresentation(const unsigned int & index) const;
 		
 		void setExtendedCoreProperty(const std::string & key, const std::string & value);
 		std::string getExtendedCoreProperty(const std::string & key);
 
-		common::AbstractObject* getResqmlAbstractObjectByUuid(const std::string & uuid) const;
-		witsml1_4_1_1::AbstractObject* getWitsmlAbstractObjectByUuid(const std::string & uuid) const;
+		COMMON_NS::AbstractObject* getResqmlAbstractObjectByUuid(const std::string & uuid) const;
+		WITSML1_4_1_1_NS::AbstractObject* getWitsmlAbstractObjectByUuid(const std::string & uuid) const;
 
 		//************************************
 		//************ HDF *******************
 		//************************************
 
-		virtual common::AbstractHdfProxy* createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
+		virtual COMMON_NS::AbstractHdfProxy* createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
 
 		//************************************
 		//************ CRS *******************
 		//************************************
 
-		resqml2_0_1::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
 			const double & arealRotation,
 			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const unsigned long & projectedEpsgCode,
 			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const unsigned int & verticalEpsgCode, const bool & isUpOriented);
 
-		resqml2_0_1::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
 			const double & arealRotation,
 			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const std::string & projectedUnknownReason,
 			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const std::string & verticalUnknownReason, const bool & isUpOriented);
 
-		resqml2_0_1::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
 			const double & arealRotation,
 			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const unsigned long & projectedEpsgCode,
 			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const std::string & verticalUnknownReason, const bool & isUpOriented);
 
-		resqml2_0_1::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
 			const double & arealRotation,
 			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const std::string & projectedUnknownReason,
 			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const unsigned int & verticalEpsgCode, const bool & isUpOriented);
 	
-		resqml2_0_1::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
 			const double & arealRotation,
 			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const unsigned long & projectedEpsgCode,
 			const gsoap_resqml2_0_1::eml20__TimeUom & timeUom,
 			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const unsigned int & verticalEpsgCode, const bool & isUpOriented);
 
-		resqml2_0_1::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
 			const double & arealRotation,
 			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const std::string & projectedUnknownReason,
 			const gsoap_resqml2_0_1::eml20__TimeUom & timeUom,
 			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const std::string & verticalUnknownReason, const bool & isUpOriented);
 
-		resqml2_0_1::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
 			const double & arealRotation,
 			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const unsigned long & projectedEpsgCode,
 			const gsoap_resqml2_0_1::eml20__TimeUom & timeUom,
 			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const std::string & verticalUnknownReason, const bool & isUpOriented);
 
-		resqml2_0_1::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::LocalTime3dCrs* createLocalTime3dCrs(const std::string & guid, const std::string & title,
 			const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
 			const double & arealRotation,
 			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const std::string & projectedUnknownReason,
 			const gsoap_resqml2_0_1::eml20__TimeUom & timeUom,
 			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const unsigned int & verticalEpsgCode, const bool & isUpOriented);
 			
-		resqml2_0_1::MdDatum* createMdDatum(const std::string & guid, const std::string & title,
-			resqml2::AbstractLocal3dCrs * locCrs, const gsoap_resqml2_0_1::resqml2__MdReference & originKind,
+		RESQML2_0_1_NS::MdDatum* createMdDatum(const std::string & guid, const std::string & title,
+			RESQML2_NS::AbstractLocal3dCrs * locCrs, const gsoap_resqml2_0_1::resqml2__MdReference & originKind,
 			const double & referenceLocationOrdinal1, const double & referenceLocationOrdinal2, const double & referenceLocationOrdinal3);
 
 		//************************************
 		//************ FEATURE ***************
 		//************************************
 
-		resqml2_0_1::BoundaryFeature* createBoundaryFeature(const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::BoundaryFeature* createBoundaryFeature(const std::string & guid, const std::string & title);
 
-		resqml2_0_1::Horizon* createHorizon(const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::Horizon* createHorizon(const std::string & guid, const std::string & title);
 
-		resqml2_0_1::GeneticBoundaryFeature* createGeobodyBoundaryFeature(const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::GeneticBoundaryFeature* createGeobodyBoundaryFeature(const std::string & guid, const std::string & title);
 
-		resqml2_0_1::GeobodyFeature* createGeobodyFeature(const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::GeobodyFeature* createGeobodyFeature(const std::string & guid, const std::string & title);
 
-		resqml2_0_1::TectonicBoundaryFeature* createFault(const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::TectonicBoundaryFeature* createFault(const std::string & guid, const std::string & title);
 		
-		resqml2_0_1::TectonicBoundaryFeature* createFracture(const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::TectonicBoundaryFeature* createFracture(const std::string & guid, const std::string & title);
 		
-		resqml2_0_1::WellboreFeature* createWellboreFeature(const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::WellboreFeature* createWellboreFeature(const std::string & guid, const std::string & title);
 		
-		resqml2_0_1::SeismicLatticeFeature* createSeismicLattice(const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::SeismicLatticeFeature* createSeismicLattice(const std::string & guid, const std::string & title,
 			const int & inlineIncrement, const int & crosslineIncrement,
 			const unsigned int & originInline, const unsigned int & originCrossline,
 			const unsigned int & inlineCount, const unsigned int & crosslineCount);
 
-		resqml2_0_1::SeismicLineFeature* createSeismicLine(const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::SeismicLineFeature* createSeismicLine(const std::string & guid, const std::string & title,
 			const int & traceIndexIncrement, const unsigned int & firstTraceIndex, const unsigned int & traceCount);
 			
-		resqml2_0_1::SeismicLineSetFeature* createSeismicLineSet(const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::SeismicLineSetFeature* createSeismicLineSet(const std::string & guid, const std::string & title);
 
-		resqml2_0_1::FrontierFeature* createFrontier(const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::FrontierFeature* createFrontier(const std::string & guid, const std::string & title);
 			
-		resqml2_0_1::OrganizationFeature* createStructuralModel(const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::OrganizationFeature* createStructuralModel(const std::string & guid, const std::string & title);
 		
-		resqml2_0_1::StratigraphicUnitFeature* createStratigraphicUnit(const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::StratigraphicUnitFeature* createStratigraphicUnit(const std::string & guid, const std::string & title);
 		
-		resqml2_0_1::OrganizationFeature* createStratigraphicModel(const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::OrganizationFeature* createStratigraphicModel(const std::string & guid, const std::string & title);
 
-        resqml2_0_1::OrganizationFeature* createEarthModel(const std::string & guid, const std::string & title);
+        RESQML2_0_1_NS::OrganizationFeature* createEarthModel(const std::string & guid, const std::string & title);
 		
-		resqml2_0_1::FluidBoundaryFeature* createFluidBoundaryFeature(const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__FluidContact & fluidContact);
+		RESQML2_0_1_NS::FluidBoundaryFeature* createFluidBoundaryFeature(const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__FluidContact & fluidContact);
 		
 		//************************************
 		//************ INTERPRETATION ********
 		//************************************
 
-		resqml2_0_1::GenericFeatureInterpretation* createGenericFeatureInterpretation(resqml2::AbstractFeature * feature, const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::GenericFeatureInterpretation* createGenericFeatureInterpretation(RESQML2_NS::AbstractFeature * feature, const std::string & guid, const std::string & title);
 		
-		resqml2_0_1::BoundaryFeatureInterpretation* createBoundaryFeatureInterpretation(resqml2_0_1::BoundaryFeature * feature, const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::BoundaryFeatureInterpretation* createBoundaryFeatureInterpretation(RESQML2_0_1_NS::BoundaryFeature * feature, const std::string & guid, const std::string & title);
 
-		resqml2_0_1::HorizonInterpretation* createHorizonInterpretation(resqml2_0_1::Horizon * horizon, const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::HorizonInterpretation* createHorizonInterpretation(RESQML2_0_1_NS::Horizon * horizon, const std::string & guid, const std::string & title);
 
-		resqml2_0_1::GeobodyBoundaryInterpretation* createGeobodyBoundaryInterpretation(resqml2_0_1::GeneticBoundaryFeature * geobodyBoundary, const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::GeobodyBoundaryInterpretation* createGeobodyBoundaryInterpretation(RESQML2_0_1_NS::GeneticBoundaryFeature * geobodyBoundary, const std::string & guid, const std::string & title);
 
-		resqml2_0_1::FaultInterpretation* createFaultInterpretation(resqml2_0_1::TectonicBoundaryFeature* fault, const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::FaultInterpretation* createFaultInterpretation(RESQML2_0_1_NS::TectonicBoundaryFeature* fault, const std::string & guid, const std::string & title);
 		
-		resqml2_0_1::WellboreInterpretation* createWellboreInterpretation(resqml2_0_1::WellboreFeature * wellbore, const std::string & guid, const std::string & title, bool isDrilled);
+		RESQML2_0_1_NS::WellboreInterpretation* createWellboreInterpretation(RESQML2_0_1_NS::WellboreFeature * wellbore, const std::string & guid, const std::string & title, bool isDrilled);
 		
-		resqml2_0_1::EarthModelInterpretation* createEarthModelInterpretation(resqml2_0_1::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::EarthModelInterpretation* createEarthModelInterpretation(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
 
-		resqml2_0_1::StructuralOrganizationInterpretation* createStructuralOrganizationInterpretationInAge(resqml2_0_1::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);	
-		resqml2_0_1::StructuralOrganizationInterpretation* createStructuralOrganizationInterpretationInApparentDepth(resqml2_0_1::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);		
-		resqml2_0_1::StructuralOrganizationInterpretation* createStructuralOrganizationInterpretationInMeasuredDepth(resqml2_0_1::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::StructuralOrganizationInterpretation* createStructuralOrganizationInterpretationInAge(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);	
+		RESQML2_0_1_NS::StructuralOrganizationInterpretation* createStructuralOrganizationInterpretationInApparentDepth(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);		
+		RESQML2_0_1_NS::StructuralOrganizationInterpretation* createStructuralOrganizationInterpretationInMeasuredDepth(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
 
-		resqml2_0_1::GeobodyInterpretation* createGeobodyInterpretation(resqml2_0_1::GeobodyFeature * geobody, const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::GeobodyInterpretation* createGeobodyInterpretation(RESQML2_0_1_NS::GeobodyFeature * geobody, const std::string & guid, const std::string & title);
 
-		resqml2_0_1::StratigraphicUnitInterpretation* createStratigraphicUnitInterpretation(resqml2_0_1::StratigraphicUnitFeature * stratiUnitFeature, const std::string & guid, const std::string & title);
-		resqml2_0_1::StratigraphicColumn* createStratigraphicColumn(const std::string & guid, const std::string & title);
-		resqml2_0_1::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInAge(resqml2_0_1::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank);
-		resqml2_0_1::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInApparentDepth(resqml2_0_1::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank);
-		resqml2_0_1::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInAge(resqml2_0_1::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
-		resqml2_0_1::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInApparentDepth(resqml2_0_1::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::StratigraphicUnitInterpretation* createStratigraphicUnitInterpretation(RESQML2_0_1_NS::StratigraphicUnitFeature * stratiUnitFeature, const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::StratigraphicColumn* createStratigraphicColumn(const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInAge(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank);
+		RESQML2_0_1_NS::StratigraphicColumnRankInterpretation* createStratigraphicColumnRankInterpretationInApparentDepth(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank);
+		RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInAge(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInApparentDepth(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
 
 		//************************************
 		//************ REPRESENTATION ********
 		//************************************
 
-		resqml2_0_1::TriangulatedSetRepresentation* createTriangulatedSetRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs, const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::TriangulatedSetRepresentation* createTriangulatedSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs, const std::string & guid, const std::string & title);
 
-		resqml2_0_1::PolylineSetRepresentation* createPolylineSetRepresentation(resqml2::AbstractLocal3dCrs * crs, const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::PolylineSetRepresentation* createPolylineSetRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs, const std::string & guid, const std::string & title);
 		
-		resqml2_0_1::PolylineSetRepresentation* createPolylineSetRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs, const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::PolylineSetRepresentation* createPolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs, const std::string & guid, const std::string & title);
 
-		resqml2_0_1::PolylineSetRepresentation* createPolylineSetRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs, const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__LineRole & roleKind);
+		RESQML2_0_1_NS::PolylineSetRepresentation* createPolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs, const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__LineRole & roleKind);
 			
-		resqml2_0_1::PointSetRepresentation* createPointSetRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,	const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::PointSetRepresentation* createPointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,	const std::string & guid, const std::string & title);
 
-		resqml2_0_1::PlaneSetRepresentation* createPlaneSetRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs, const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::PlaneSetRepresentation* createPlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs, const std::string & guid, const std::string & title);
 		
-		resqml2_0_1::PolylineRepresentation* createPolylineRepresentation(resqml2::AbstractLocal3dCrs * crs, const std::string & guid, const std::string & title, bool isClosed = false);
+		RESQML2_0_1_NS::PolylineRepresentation* createPolylineRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs, const std::string & guid, const std::string & title, bool isClosed = false);
 		
-		resqml2_0_1::PolylineRepresentation* createPolylineRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs, const std::string & guid, const std::string & title, bool isClosed = false);
+		RESQML2_0_1_NS::PolylineRepresentation* createPolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs, const std::string & guid, const std::string & title, bool isClosed = false);
 
-		resqml2_0_1::PolylineRepresentation* createPolylineRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs, const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__LineRole & roleKind, bool isClosed = false);
+		RESQML2_0_1_NS::PolylineRepresentation* createPolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs, const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__LineRole & roleKind, bool isClosed = false);
 
-		resqml2_0_1::Grid2dRepresentation* createGrid2dRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs, const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::Grid2dRepresentation* createGrid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs, const std::string & guid, const std::string & title);
 
-		resqml2_0_1::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(resqml2_0_1::WellboreInterpretation* interp, const std::string & guid, const std::string & title, resqml2_0_1::MdDatum * mdInfo);	
-		resqml2_0_1::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(resqml2_0_1::WellboreInterpretation* interp, const std::string & guid, const std::string & title, resqml2_0_1::DeviationSurveyRepresentation* deviationSurvey);
+		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::MdDatum * mdInfo);	
+		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::DeviationSurveyRepresentation* deviationSurvey);
 		
-		resqml2_0_1::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(resqml2_0_1::WellboreInterpretation* interp, const std::string & guid, const std::string & title, const bool & isFinal, resqml2::MdDatum * mdInfo);
+		RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo);
 		
-		resqml2_0_1::WellboreFrameRepresentation* createWellboreFrameRepresentation(resqml2_0_1::WellboreInterpretation* interp, const std::string & guid, const std::string & title, resqml2_0_1::WellboreTrajectoryRepresentation * traj);
+		RESQML2_0_1_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
 
-		resqml2_0_1::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(resqml2_0_1::WellboreInterpretation* interp, const std::string & guid, const std::string & title, resqml2_0_1::WellboreTrajectoryRepresentation * traj);
+		RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
 			
-		resqml2::RepresentationSetRepresentation* createRepresentationSetRepresentation(
-                resqml2_0_1::AbstractOrganizationInterpretation* interp,
+		RESQML2_NS::RepresentationSetRepresentation* createRepresentationSetRepresentation(
+                RESQML2_0_1_NS::AbstractOrganizationInterpretation* interp,
                 const std::string & guid,
 				const std::string & title);
 
-		resqml2::RepresentationSetRepresentation* createRepresentationSetRepresentation(
+		RESQML2_NS::RepresentationSetRepresentation* createRepresentationSetRepresentation(
 			const std::string & guid,
 			const std::string & title);
 			
-		resqml2::RepresentationSetRepresentation* createPartialRepresentationSetRepresentation(const std::string & guid, const std::string & title);
+		RESQML2_NS::RepresentationSetRepresentation* createPartialRepresentationSetRepresentation(const std::string & guid, const std::string & title);
                 
-        resqml2_0_1::NonSealedSurfaceFrameworkRepresentation* createNonSealedSurfaceFrameworkRepresentation(
-                resqml2_0_1::StructuralOrganizationInterpretation* interp, 
+        RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation* createNonSealedSurfaceFrameworkRepresentation(
+                RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp, 
                 const std::string & guid, 
                 const std::string & title,
                 const bool & isSealed);
 
-		resqml2_0_1::SealedSurfaceFrameworkRepresentation* createSealedSurfaceFrameworkRepresentation(
-		        resqml2_0_1::StructuralOrganizationInterpretation* interp,
+		RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* createSealedSurfaceFrameworkRepresentation(
+		        RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp,
 		        const std::string & guid,
 		        const std::string & title);
 				
-		resqml2_0_1::AbstractIjkGridRepresentation* createPartialIjkGridRepresentation(const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::AbstractIjkGridRepresentation* createPartialIjkGridRepresentation(const std::string & guid, const std::string & title);
     	        
-		resqml2_0_1::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(resqml2::AbstractLocal3dCrs * crs,
+		RESQML2_0_1_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title,
 			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
 
-		resqml2_0_1::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+		RESQML2_0_1_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title,
 			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
 
-		resqml2_0_1::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(resqml2::AbstractLocal3dCrs * crs,
+		RESQML2_0_1_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title,
 			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
 
-		resqml2_0_1::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+		RESQML2_0_1_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title,
 			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
 
-		resqml2_0_1::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(resqml2::AbstractLocal3dCrs * crs,
+		RESQML2_0_1_NS::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title,
 			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
 
-		resqml2_0_1::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+		RESQML2_0_1_NS::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title,
 			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
 
-		resqml2_0_1::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(
+		RESQML2_0_1_NS::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(
 			const std::string & guid, const std::string & title,
 			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
 
-		resqml2_0_1::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(resqml2::AbstractFeatureInterpretation* interp,
+		RESQML2_0_1_NS::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
 			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
 			
-		resqml2_0_1::UnstructuredGridRepresentation* createPartialUnstructuredGridRepresentation(const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::UnstructuredGridRepresentation* createPartialUnstructuredGridRepresentation(const std::string & guid, const std::string & title);
 
-		resqml2_0_1::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(resqml2::AbstractLocal3dCrs * crs,
+		RESQML2_0_1_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
 			const std::string & guid, const std::string & title,
 			const ULONG64 & cellCount);
 
-		resqml2::SubRepresentation* createPartialSubRepresentation(const std::string & guid, const std::string & title);
+		RESQML2_NS::SubRepresentation* createPartialSubRepresentation(const std::string & guid, const std::string & title);
 			
-		resqml2::SubRepresentation* createSubRepresentation(
+		RESQML2_NS::SubRepresentation* createSubRepresentation(
                 const std::string & guid, const std::string & title);
 			
-		resqml2::SubRepresentation* createSubRepresentation(resqml2::AbstractFeatureInterpretation* interp,
+		RESQML2_NS::SubRepresentation* createSubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 		
-		resqml2::GridConnectionSetRepresentation* createGridConnectionSetRepresentation(const std::string & guid, const std::string & title);
+		RESQML2_NS::GridConnectionSetRepresentation* createGridConnectionSetRepresentation(const std::string & guid, const std::string & title);
 
-		resqml2::GridConnectionSetRepresentation* createGridConnectionSetRepresentation(resqml2::AbstractFeatureInterpretation* interp,
+		RESQML2_NS::GridConnectionSetRepresentation* createGridConnectionSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
                 const std::string & guid, const std::string & title);
 
 		//************************************
 		//************* PROPERTIES ***********
 		//************************************
 
-		resqml2::TimeSeries* createTimeSeries(const std::string & guid, const std::string & title);
+		RESQML2_NS::TimeSeries* createTimeSeries(const std::string & guid, const std::string & title);
 
-		resqml2::TimeSeries* createPartialTimeSeries(const std::string & guid, const std::string & title);
+		RESQML2_NS::TimeSeries* createPartialTimeSeries(const std::string & guid, const std::string & title);
 		
-		resqml2_0_1::StringTableLookup* createStringTableLookup(const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::StringTableLookup* createStringTableLookup(const std::string & guid, const std::string & title);
 		
-		resqml2::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
+		RESQML2_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
 			const std::string & namingSystem, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & parentEnergisticsPropertyKind);
 
-		resqml2::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, resqml2::PropertyKind * parentPropType);
+		RESQML2_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
+			const std::string & namingSystem, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, RESQML2_NS::PropertyKind * parentPropType);
 
-		resqml2::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
+		RESQML2_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
 			const std::string & namingSystem, const std::string & nonStandardUom, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & parentEnergisticsPropertyKind);
 
-		resqml2::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const std::string & nonStandardUom, resqml2::PropertyKind * parentPropType);
+		RESQML2_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
+			const std::string & namingSystem, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * parentPropType);
 
-		resqml2::PropertyKind* createPartialPropertyKind(const std::string & guid, const std::string & title);
+		RESQML2_NS::PropertyKind* createPartialPropertyKind(const std::string & guid, const std::string & title);
 
-		resqml2_0_1::CommentProperty* createCommentProperty(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::CommentProperty* createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind);
 
-		resqml2_0_1::CommentProperty* createCommentProperty(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, resqml2::PropertyKind * localPropType);
+		RESQML2_0_1_NS::CommentProperty* createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropType);
 	
-		resqml2_0_1::ContinuousProperty* createContinuousProperty(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind);
 
-		resqml2_0_1::ContinuousProperty* createContinuousProperty(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, resqml2::PropertyKind * localPropType);
+		RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, RESQML2_NS::PropertyKind * localPropType);
 
-		resqml2_0_1::ContinuousProperty* createContinuousProperty(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const std::string & nonStandardUom, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind);
 
-		resqml2_0_1::ContinuousProperty* createContinuousProperty(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const std::string & nonStandardUom, resqml2::PropertyKind * localPropType);
+		RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * localPropType);
 
-		resqml2_0_1::ContinuousPropertySeries* createContinuousPropertySeries(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::ContinuousPropertySeries* createContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind,
-			resqml2::TimeSeries * ts, const bool & useInterval = false);
+			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
-		resqml2_0_1::ContinuousPropertySeries* createContinuousPropertySeries(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, resqml2::PropertyKind * localPropType,
-			resqml2::TimeSeries * ts, const bool & useInterval = false);
+		RESQML2_0_1_NS::ContinuousPropertySeries* createContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, RESQML2_NS::PropertyKind * localPropType,
+			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 	
-		resqml2_0_1::DiscreteProperty* createDiscreteProperty(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::DiscreteProperty* createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind);
 
-		resqml2_0_1::DiscreteProperty* createDiscreteProperty(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, resqml2::PropertyKind * localPropType);
+		RESQML2_0_1_NS::DiscreteProperty* createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropType);
 	
-		resqml2_0_1::DiscretePropertySeries* createDiscretePropertySeries(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::DiscretePropertySeries* createDiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind,
-			resqml2::TimeSeries * ts, const bool & useInterval = false);
+			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
-		resqml2_0_1::DiscretePropertySeries* createDiscretePropertySeries(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, resqml2::PropertyKind * localPropType,
-			resqml2::TimeSeries * ts, const bool & useInterval = false);
+		RESQML2_0_1_NS::DiscretePropertySeries* createDiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropType,
+			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
-		resqml2_0_1::CategoricalProperty* createCategoricalProperty(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
-			resqml2_0_1::StringTableLookup* strLookup, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind);
+			RESQML2_0_1_NS::StringTableLookup* strLookup, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind);
 	
-		resqml2_0_1::CategoricalProperty* createCategoricalProperty(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
-			resqml2_0_1::StringTableLookup* strLookup, resqml2::PropertyKind * localPropType);
+			RESQML2_0_1_NS::StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropType);
 
-		resqml2_0_1::CategoricalPropertySeries* createCategoricalPropertySeries(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::CategoricalPropertySeries* createCategoricalPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
-			resqml2_0_1::StringTableLookup* strLookup, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind,
-			resqml2::TimeSeries * ts, const bool & useInterval = false);
+			RESQML2_0_1_NS::StringTableLookup* strLookup, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind,
+			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
-		resqml2_0_1::CategoricalPropertySeries* createCategoricalPropertySeries(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		RESQML2_0_1_NS::CategoricalPropertySeries* createCategoricalPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
-			resqml2_0_1::StringTableLookup* strLookup, resqml2::PropertyKind * localPropType,
-			resqml2::TimeSeries * ts, const bool & useInterval = false);
+			RESQML2_0_1_NS::StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropType,
+			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		//************************************
 		//************* ACTIVITIES ***********
 		//************************************
 
-		resqml2::ActivityTemplate* createActivityTemplate(const std::string & guid, const std::string & title);
+		RESQML2_NS::ActivityTemplate* createActivityTemplate(const std::string & guid, const std::string & title);
 		
-		resqml2::Activity* createActivity(resqml2::ActivityTemplate* activityTemplate, const std::string & guid, const std::string & title);
+		RESQML2_NS::Activity* createActivity(RESQML2_NS::ActivityTemplate* activityTemplate, const std::string & guid, const std::string & title);
 			
 
 		//************************************
 		//************ WITSML ****************
 		//************************************
 		
-		std::vector<witsml1_4_1_1::Trajectory*> getWitsmlTrajectorySet() const;
+		std::vector<WITSML1_4_1_1_NS::Trajectory*> getWitsmlTrajectorySet() const;
 		
-		witsml1_4_1_1::Well* createWell(
+		WITSML1_4_1_1_NS::Well* createWell(
 			const std::string & guid,
 			const std::string & title,
 			const std::string & timeZone);
 
-		witsml1_4_1_1::Well* createWell(
+		WITSML1_4_1_1_NS::Well* createWell(
 			const std::string & guid,
 			const std::string & title,
 			const std::string & timeZone,
@@ -667,7 +669,7 @@ namespace common
 			const std::string & comments
 		);
 
-		witsml1_4_1_1::CoordinateReferenceSystem* createCoordinateReferenceSystem(
+		WITSML1_4_1_1_NS::CoordinateReferenceSystem* createCoordinateReferenceSystem(
 			const std::string & guid,
 			const std::string & title,
 			const std::string & namingSystem,

@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "common/AbstractHdfProxy.h"
 
-using namespace common;
+using namespace COMMON_NS;
 
 AbstractHdfProxy::AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
 	EpcExternalPartReference(packageDirAbsolutePath, externalFilePath)

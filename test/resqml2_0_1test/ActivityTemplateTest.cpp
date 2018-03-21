@@ -22,9 +22,9 @@ under the License.
 #include "../catch.hpp"
 
 using namespace std;
-using namespace common;
+using namespace COMMON_NS;
 using namespace resqml2_0_1test;
-using namespace resqml2;
+using namespace RESQML2_NS;
 
 ActivityTemplateTest::ActivityTemplateTest(const string & epcDocPath, const string & uuid, const string & title) 
 	: AbstractResqmlDataObjectTest(epcDocPath, uuid, title) {
@@ -38,7 +38,7 @@ void ActivityTemplateTest::initEpcDocHandler() {
 	ActivityTemplate*  genericCreationActivityTemplate = this->epcDoc->createActivityTemplate(this->uuid, this->title);
 	REQUIRE( genericCreationActivityTemplate != nullptr );
 
-	for (std::map<string, ParameterTest>::iterator it=this->parameterMap.begin(); it!=this->parameterMap.end(); it++)
+	for (std::map<string, ParameterTest>::iterator it=this->parameterMap.begin(); it!=this->parameterMap.end(); ++it)
 	{
 		genericCreationActivityTemplate->pushBackParameter((*it).second.title, (*it).second.isInput, (*it).second.isOutput, (*it).second.minOccurs, (*it).second.maxOccurs); 
 	}

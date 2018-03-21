@@ -20,7 +20,7 @@ under the License.
 
 #include "resqml2_0_1/AbstractTechnicalFeature.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT SeismicLineFeature : public AbstractTechnicalFeature
 	{
@@ -81,7 +81,7 @@ namespace resqml2_0_1
 	private:
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		class SeismicLineSetFeature* seismicLineSet;
 	};

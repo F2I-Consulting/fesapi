@@ -31,7 +31,7 @@ under the License.
 
 using namespace std;
 using namespace epc;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* NonSealedSurfaceFrameworkRepresentation::XML_TAG = "NonSealedSurfaceFrameworkRepresentation";
@@ -59,7 +59,7 @@ NonSealedSurfaceFrameworkRepresentation::NonSealedSurfaceFrameworkRepresentation
 	setInterpretation(interp);
 }
 
-void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresentation(const unsigned int & pointCount, double * points, resqml2::AbstractLocal3dCrs* crs, common::AbstractHdfProxy * proxy)
+void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresentation(const unsigned int & pointCount, double * points, RESQML2_NS::AbstractLocal3dCrs* crs, COMMON_NS::AbstractHdfProxy * proxy)
 {
 	if (pointCount == 0)
 		throw invalid_argument("Contact point count cannot be zero.");

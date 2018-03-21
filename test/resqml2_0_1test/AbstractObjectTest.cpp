@@ -27,7 +27,7 @@ under the License.
 using namespace std;
 using namespace resqml2_0_1test;
 using namespace commontest;
-using namespace resqml2;
+using namespace RESQML2_NS;
 
 AbstractObjectTest::AbstractObjectTest(const string & epcDocPath, const string & uuid, const string & title) :
 	AbstractTest(epcDocPath),
@@ -35,7 +35,7 @@ AbstractObjectTest::AbstractObjectTest(const string & epcDocPath, const string &
 	title(title) {
 }
 
-AbstractObjectTest::AbstractObjectTest(common::EpcDocument* epcDoc, const string & uuid, const string & title) :
+AbstractObjectTest::AbstractObjectTest(COMMON_NS::EpcDocument* epcDoc, const string & uuid, const string & title) :
 	AbstractTest(epcDoc),
 	uuid(uuid),
 	title(title) {
@@ -53,7 +53,7 @@ void AbstractObjectTest::initEpcDoc()
 }
 
 void AbstractObjectTest::readEpcDoc() {
-	common::AbstractObject* resqmlObject = static_cast<common::AbstractObject*>(this->epcDoc->getResqmlAbstractObjectByUuid(this->uuid));
+	COMMON_NS::AbstractObject* resqmlObject = static_cast<COMMON_NS::AbstractObject*>(this->epcDoc->getResqmlAbstractObjectByUuid(this->uuid));
 	REQUIRE(resqmlObject != nullptr);
 	REQUIRE(resqmlObject->getUuid() == this->uuid);
 	REQUIRE( resqmlObject->getTitle() == this->title );

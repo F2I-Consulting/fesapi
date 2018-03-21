@@ -23,7 +23,7 @@ under the License.
 #include "resqml2/AbstractValuesProperty.h"
 
 using namespace std;
-using namespace resqml2;
+using namespace RESQML2_NS;
 using namespace epc;
 
 const char* PropertyKind::XML_TAG = "PropertyKind";
@@ -137,8 +137,6 @@ void PropertyKind::setParentPropertyKind(PropertyKind* parentPropertyKind)
 
 vector<Relationship> PropertyKind::getAllEpcRelationships() const
 {
-	gsoap_resqml2_0_1::_resqml2__PropertyKind* propType = static_cast<gsoap_resqml2_0_1::_resqml2__PropertyKind*>(gsoapProxy2_0_1);
-
 	vector<Relationship> result;
 
 	// forward relationships
@@ -166,14 +164,14 @@ vector<Relationship> PropertyKind::getAllEpcRelationships() const
 	return result;
 }
 
-void PropertyKind::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void PropertyKind::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	if (isParentAnEnergisticsPropertyKind()) {
 		return;
 	}
 
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getParentLocalPropertyKindDor();
-	resqml2::PropertyKind* parentPk = epcDoc->getResqmlAbstractObjectByUuid<PropertyKind>(dor->UUID);
+	RESQML2_NS::PropertyKind* parentPk = epcDoc->getResqmlAbstractObjectByUuid<PropertyKind>(dor->UUID);
 	if (parentPk == nullptr) {
 		epcDoc->createPartial(dor);
 		parentPk = epcDoc->getResqmlAbstractObjectByUuid<PropertyKind>(dor->UUID);

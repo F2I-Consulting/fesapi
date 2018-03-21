@@ -22,7 +22,7 @@ under the License.
 #include "resqml2_0_1/EarthModelInterpretation.h"
 #include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	/**
 	* This class is a container for other organizations that are consistent to each others.
@@ -71,7 +71,7 @@ namespace resqml2_0_1
 	private:
 
         std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// Forward relationship
 		class StratigraphicColumnRankInterpretation * stratigraphicColumnRankInterpretation;

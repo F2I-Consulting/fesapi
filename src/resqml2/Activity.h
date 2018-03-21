@@ -20,21 +20,21 @@ under the License.
 
 #include "common/AbstractObject.h"
 
-namespace resqml2
+namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT Activity : public common::AbstractObject
+	class DLL_IMPORT_OR_EXPORT Activity : public COMMON_NS::AbstractObject
 	{
 	protected:
 		Activity() : AbstractObject() {}
 
-		Activity(gsoap_resqml2_0_1::_resqml2__Activity* fromGsoap) : common::AbstractObject(fromGsoap) {}
+		Activity(gsoap_resqml2_0_1::_resqml2__Activity* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		Activity(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : common::AbstractObject(partialObject) {}
+		Activity(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		virtual ~Activity() {}
 

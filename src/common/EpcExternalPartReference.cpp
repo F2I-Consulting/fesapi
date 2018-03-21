@@ -27,7 +27,7 @@ under the License.
 #include "prodml2_0/DasAcquisition.h"
 
 using namespace std;
-using namespace common;
+using namespace COMMON_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 

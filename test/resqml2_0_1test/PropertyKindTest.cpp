@@ -25,8 +25,8 @@ under the License.
 
 using namespace std;
 using namespace resqml2_0_1test;
-using namespace common;
-using namespace resqml2;
+using namespace COMMON_NS;
+using namespace RESQML2_NS;
 
 const char* PropertyKindTest::defaultUuid = "f1effef1-6bc7-4e82-829b-797713b60cdc";
 const char* PropertyKindTest::defaultTitle = "Property Kind Test";

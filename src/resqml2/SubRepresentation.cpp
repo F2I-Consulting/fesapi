@@ -30,7 +30,7 @@ under the License.
 
 using namespace std;
 using namespace epc;
-using namespace resqml2;
+using namespace RESQML2_NS;
 
 const char* SubRepresentation::XML_TAG = "SubRepresentation";
 
@@ -52,7 +52,7 @@ vector<Relationship> SubRepresentation::getAllEpcRelationships() const
 	return result;
 }
 
-void SubRepresentation::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void SubRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
 
@@ -60,10 +60,10 @@ void SubRepresentation::importRelationshipSetFromEpc(common::EpcDocument* epcDoc
 	const unsigned int supRepCount = getSupportingRepresentationCount();
 	for (unsigned int supRepIndex = 0; supRepIndex < supRepCount; ++supRepIndex) {
 		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getSupportingRepresentationDor(supRepIndex);
-		resqml2::AbstractRepresentation* supportingRep = epcDoc->getResqmlAbstractObjectByUuid<resqml2::AbstractRepresentation>(dor->UUID);
+		RESQML2_NS::AbstractRepresentation* supportingRep = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
 		if (supportingRep == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dor);
-			supportingRep = getEpcDocument()->getResqmlAbstractObjectByUuid<resqml2::AbstractRepresentation>(dor->UUID);
+			supportingRep = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
 		}
 		if (supportingRep == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");

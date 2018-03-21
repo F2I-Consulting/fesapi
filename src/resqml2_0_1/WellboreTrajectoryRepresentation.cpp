@@ -31,14 +31,14 @@ under the License.
 #include "witsml1_4_1_1/Trajectory.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
-using namespace common;
+using namespace COMMON_NS;
 
 const char* WellboreTrajectoryRepresentation::XML_TAG = "WellboreTrajectoryRepresentation";
 
-WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInterpretation* interp, const string & guid, const std::string & title, resqml2::MdDatum * mdInfo) :
+WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInterpretation* interp, const string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo) :
 	AbstractRepresentation(interp, mdInfo->getLocalCrs()), witsmlTrajectory(nullptr)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREWellboreTrajectoryRepresentation(interp->getGsoapContext(), 1);	
@@ -54,8 +54,8 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInter
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");
 
-	if (dynamic_cast<resqml2::AbstractLocal3dCrs*>(mdInfo->getLocalCrs()) != nullptr) {
-		rep->MdUom = static_cast<resqml2::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit();
+	if (dynamic_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs()) != nullptr) {
+		rep->MdUom = static_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit();
 	}
 }
 
@@ -65,7 +65,7 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInter
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREWellboreTrajectoryRepresentation(interp->getGsoapContext(), 1);
 	_resqml2__WellboreTrajectoryRepresentation* rep = static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 
-	resqml2::MdDatum * mdInfo = deviationSurvey->getMdDatum();
+	RESQML2_NS::MdDatum * mdInfo = deviationSurvey->getMdDatum();
 	setMdDatum(mdInfo);
 
 	ULONG64 stationCount = deviationSurvey->getXyzPointCountOfPatch(0);
@@ -83,12 +83,12 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInter
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");
 
-	if (dynamic_cast<resqml2::AbstractLocal3dCrs*>(mdInfo->getLocalCrs()) != nullptr) {
-		rep->MdUom = static_cast<resqml2::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit();
+	if (dynamic_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs()) != nullptr) {
+		rep->MdUom = static_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit();
 	}
 }
 
-void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, const double & startMd, const double & endMd, const unsigned int & controlPointCount, const int & lineKind, common::AbstractHdfProxy * proxy)
+void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, const double & startMd, const double & endMd, const unsigned int & controlPointCount, const int & lineKind, COMMON_NS::AbstractHdfProxy * proxy)
 {
 	if (controlPoints == nullptr)
 		throw invalid_argument("The control points are missing.");
@@ -124,7 +124,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, const
 }
 
 void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, double* controlPointParameters, const unsigned int & controlPointCount,
-	common::AbstractHdfProxy * proxy)
+	COMMON_NS::AbstractHdfProxy * proxy)
 {
 	if (controlPointParameters == nullptr)
 		throw invalid_argument("The control points parameters are missing.");
@@ -147,7 +147,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, doubl
 
 void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints,
 	double * tangentVectors, double* controlPointParameters, const unsigned int & controlPointCount,
-	common::AbstractHdfProxy * proxy)
+	COMMON_NS::AbstractHdfProxy * proxy)
 {
 	setGeometry(controlPoints, controlPointParameters, controlPointCount, proxy);
 
@@ -167,7 +167,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints,
 	hdfProxy->writeArrayNdOfDoubleValues(rep->uuid, "tangentVectors", tangentVectors, dim, 2);
 }
 
-void WellboreTrajectoryRepresentation::setWitsmlTrajectory(witsml1_4_1_1::Trajectory * witsmlTraj)
+void WellboreTrajectoryRepresentation::setWitsmlTrajectory(WITSML1_4_1_1_NS::Trajectory * witsmlTraj)
 {
 	witsmlTrajectory = witsmlTraj;
 	witsmlTraj->resqmlWellboreTrajectoryRepresentation = this;
@@ -185,7 +185,7 @@ vector<Relationship> WellboreTrajectoryRepresentation::getAllEpcRelationships() 
 	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
 
 	// XML forward relationship
-	resqml2::MdDatum* mdDatum = getMdDatum();
+	RESQML2_NS::MdDatum* mdDatum = getMdDatum();
 	if (mdDatum != nullptr) {
 		Relationship relMdInfo(mdDatum->getPartNameInEpcDocument(), "", getMdDatumUuid());
 		relMdInfo.setDestinationObjectType();
@@ -231,13 +231,13 @@ vector<Relationship> WellboreTrajectoryRepresentation::getAllEpcRelationships() 
 	return result;
 }
 
-void WellboreTrajectoryRepresentation::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void WellboreTrajectoryRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
 
 	_resqml2__WellboreTrajectoryRepresentation* rep = static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 
-	resqml2::MdDatum* mdDatum = epcDoc->getResqmlAbstractObjectByUuid<resqml2::MdDatum>(getMdDatumUuid());
+	RESQML2_NS::MdDatum* mdDatum = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::MdDatum>(getMdDatumUuid());
 	if (mdDatum != nullptr) {
 		updateXml = false;
 		setMdDatum(mdDatum);
@@ -261,12 +261,12 @@ void WellboreTrajectoryRepresentation::importRelationshipSetFromEpc(common::EpcD
 	}
 
 	if (rep->ParentIntersection != nullptr) {
-		WellboreTrajectoryRepresentation* parentTraj = epcDoc->getResqmlAbstractObjectByUuid<resqml2_0_1::WellboreTrajectoryRepresentation>(rep->ParentIntersection->ParentTrajectory->UUID);
+		WellboreTrajectoryRepresentation* parentTraj = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>(rep->ParentIntersection->ParentTrajectory->UUID);
 		parentTraj->addChildrenTrajectory(this);
 	}
 
 	if (rep->WitsmlTrajectory != nullptr) {
-		witsml1_4_1_1::Trajectory* tmp = static_cast<witsml1_4_1_1::Trajectory*>(epcDoc->getWitsmlAbstractObjectByUuid(rep->WitsmlTrajectory->UUID));
+		WITSML1_4_1_1_NS::Trajectory* tmp = static_cast<WITSML1_4_1_1_NS::Trajectory*>(epcDoc->getWitsmlAbstractObjectByUuid(rep->WitsmlTrajectory->UUID));
 		if (tmp)
 		{
 			updateXml = false;
@@ -295,7 +295,7 @@ WellboreTrajectoryRepresentation* WellboreTrajectoryRepresentation::getParentTra
 		return nullptr;
 
 	WellboreTrajectoryRepresentation* result = nullptr;
-	common::AbstractObject* obj = getEpcDocument()->getResqmlAbstractObjectByUuid(rep->ParentIntersection->ParentTrajectory->UUID);
+	COMMON_NS::AbstractObject* obj = getEpcDocument()->getResqmlAbstractObjectByUuid(rep->ParentIntersection->ParentTrajectory->UUID);
 
 	if (dynamic_cast<WellboreTrajectoryRepresentation*>(obj) != nullptr)
 		return static_cast<WellboreTrajectoryRepresentation*>(obj);
@@ -432,7 +432,7 @@ void WellboreTrajectoryRepresentation::getTangentVectors(double* tangentVectors)
 	hdfProxy->readArrayNdOfDoubleValues(xmlTangentVectors->Coordinates->PathInHdfFile, tangentVectors);
 }
 
-void WellboreTrajectoryRepresentation::setMdDatum(resqml2::MdDatum* mdDatum)
+void WellboreTrajectoryRepresentation::setMdDatum(RESQML2_NS::MdDatum* mdDatum)
 {
 	if (mdDatum == nullptr) {
 		throw invalid_argument("The md Datum is missing.");
@@ -445,9 +445,9 @@ void WellboreTrajectoryRepresentation::setMdDatum(resqml2::MdDatum* mdDatum)
 	}
 }
 
-resqml2::MdDatum * WellboreTrajectoryRepresentation::getMdDatum() const
+RESQML2_NS::MdDatum * WellboreTrajectoryRepresentation::getMdDatum() const
 {
-	return static_cast<resqml2::MdDatum*>(getEpcDocument()->getResqmlAbstractObjectByUuid(getMdDatumUuid()));
+	return static_cast<RESQML2_NS::MdDatum*>(getEpcDocument()->getResqmlAbstractObjectByUuid(getMdDatumUuid()));
 }
 
 std::string WellboreTrajectoryRepresentation::getMdDatumUuid() const

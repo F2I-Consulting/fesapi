@@ -21,7 +21,7 @@ under the License.
 #include "AbstractLocal3dCrsTest.h"
 #include <iostream>
 
-namespace common {
+namespace COMMON_NS {
 	class EpcDocument;
 }
 
@@ -44,7 +44,7 @@ namespace resqml2_0_1test {
 		* @param init true if this object is created for initialization purpose else false if it is 
 		* created for reading purpose. According to init value a iniEpcDoc() or readEpcDoc() is called.
 		*/
-		LocalDepth3dCrsTest(common::EpcDocument* epcDoc, bool init);
+		LocalDepth3dCrsTest(COMMON_NS::EpcDocument* epcDoc, bool init);
 	protected:
 		void initEpcDocHandler();
 		void readEpcDocHandler();

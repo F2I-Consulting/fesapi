@@ -22,16 +22,16 @@ under the License.
 
 #include "resqml2/AbstractFeatureInterpretation.h"
 
-namespace resqml2
+namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractFeature : public common::AbstractObject
+	class DLL_IMPORT_OR_EXPORT AbstractFeature : public COMMON_NS::AbstractObject
 	{
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		AbstractFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : common::AbstractObject(partialObject) {}
+		AbstractFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Default constructor
@@ -43,7 +43,7 @@ namespace resqml2
 		* Creates an instance of this class by wrapping a gsoap instance.
 		* @param fromGsoap	The gsoap proxy which shold be wrapped by the constructed feature.
 		*/
-		AbstractFeature(gsoap_resqml2_0_1::resqml2__AbstractFeature* fromGsoap) : common::AbstractObject(fromGsoap) {}
+		AbstractFeature(gsoap_resqml2_0_1::resqml2__AbstractFeature* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -71,11 +71,11 @@ namespace resqml2
 		/**
 		* Does nothing since feature has not forward relationships at all
 		*/
-		virtual void importRelationshipSetFromEpc(common::EpcDocument* epcDoc) {}
+		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
 
 		std::vector<AbstractFeatureInterpretation*> interpretationSet; /// All the interpretations of the feature
 
-		friend void AbstractFeatureInterpretation::setInterpretedFeature(resqml2::AbstractFeature * feature);
+		friend void AbstractFeatureInterpretation::setInterpretedFeature(RESQML2_NS::AbstractFeature * feature);
 	};
 }
 

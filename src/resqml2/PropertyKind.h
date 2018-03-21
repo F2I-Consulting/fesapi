@@ -20,9 +20,9 @@ under the License.
 
 #include "resqml2/AbstractProperty.h"
 
-namespace resqml2
+namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT PropertyKind : public common::AbstractObject
+	class DLL_IMPORT_OR_EXPORT PropertyKind : public COMMON_NS::AbstractObject
 	{
 	protected:
 
@@ -34,12 +34,12 @@ namespace resqml2
 		/**
 		* Only to be used in partial transfer context
 		*/
-		PropertyKind(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : common::AbstractObject(partialObject) {}
+		PropertyKind(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		PropertyKind(gsoap_resqml2_0_1::_resqml2__PropertyKind* fromGsoap) : common::AbstractObject(fromGsoap) {}
+		PropertyKind(gsoap_resqml2_0_1::_resqml2__PropertyKind* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 	public:
 
@@ -124,7 +124,7 @@ namespace resqml2
 		virtual void setXmlParentPropertyKind(PropertyKind* parentPropertyKind) = 0;
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML backward relationship
 		std::vector<class AbstractProperty*> propertySet;

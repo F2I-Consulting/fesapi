@@ -29,7 +29,7 @@ under the License.
 
 using namespace std;
 using namespace epc;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* StructuralOrganizationInterpretation::XML_TAG = "StructuralOrganizationInterpretation";
@@ -190,7 +190,7 @@ vector<Relationship> StructuralOrganizationInterpretation::getAllEpcRelationship
 	return result;
 }
 		
-void StructuralOrganizationInterpretation::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void StructuralOrganizationInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	AbstractOrganizationInterpretation::importRelationshipSetFromEpc(epcDoc);
 
@@ -198,7 +198,7 @@ void StructuralOrganizationInterpretation::importRelationshipSetFromEpc(common::
 
 	_resqml2__StructuralOrganizationInterpretation* interp = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 
-	common::AbstractObject* obj = nullptr;
+	COMMON_NS::AbstractObject* obj = nullptr;
 	for (size_t i = 0; i < interp->Faults.size(); ++i)
 	{
 		obj = epcDoc->getResqmlAbstractObjectByUuid(interp->Faults[i]->UUID);

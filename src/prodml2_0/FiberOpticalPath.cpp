@@ -21,7 +21,7 @@ under the License.
 #include <stdexcept>
 
 using namespace std;
-using namespace prodml2_0;
+using namespace PRODML2_0_NS;
 using namespace gsoap_eml2_1;
 using namespace epc;
 
@@ -56,8 +56,6 @@ FiberOpticalPath::FiberOpticalPath(soap* soapContext, const string & guid, const
 
 vector<Relationship> FiberOpticalPath::getAllEpcRelationships() const
 {
-	_prodml2__DasAcquisition* da = static_cast<_prodml2__DasAcquisition*>(gsoapProxy2_1);
-
 	vector<Relationship> result;
 	
 	// XML backward relationship

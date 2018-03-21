@@ -20,16 +20,16 @@ under the License.
 
 #include "resqml2/AbstractFeature.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractTechnicalFeature : public resqml2::AbstractFeature
+	class DLL_IMPORT_OR_EXPORT AbstractTechnicalFeature : public RESQML2_NS::AbstractFeature
 	{
 	protected:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		AbstractTechnicalFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : resqml2::AbstractFeature(partialObject) {}
+		AbstractTechnicalFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeature(partialObject) {}
 
 		/**
 		* Default constructor
@@ -37,7 +37,7 @@ namespace resqml2_0_1
 		*/
 		AbstractTechnicalFeature() {}
 
-		AbstractTechnicalFeature(gsoap_resqml2_0_1::resqml2__AbstractTechnicalFeature* fromGsoap) : resqml2::AbstractFeature(fromGsoap) {}
+		AbstractTechnicalFeature(gsoap_resqml2_0_1::resqml2__AbstractTechnicalFeature* fromGsoap) : RESQML2_NS::AbstractFeature(fromGsoap) {}
 
 	public:
 

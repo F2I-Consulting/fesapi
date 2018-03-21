@@ -19,7 +19,7 @@ under the License.
 #include "resqml2_0_1/GeobodyFeature.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* GeobodyFeature::XML_TAG = "GeobodyFeature";
@@ -30,7 +30,6 @@ GeobodyFeature::GeobodyFeature(soap* soapContext, const string & guid, const str
 		throw invalid_argument("The soap context cannot be null.");
 
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREGeobodyFeature(soapContext, 1);
-	_resqml2__GeobodyFeature* stratUnit = static_cast<_resqml2__GeobodyFeature*>(gsoapProxy2_0_1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");

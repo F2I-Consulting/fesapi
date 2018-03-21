@@ -22,11 +22,11 @@ under the License.
 
 using namespace std;
 using namespace epc;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-RepresentationSetRepresentation::RepresentationSetRepresentation(resqml2::AbstractFeatureInterpretation* interp, const std::string & guid, const string & title) :
-	resqml2::RepresentationSetRepresentation(interp)
+RepresentationSetRepresentation::RepresentationSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, const std::string & guid, const string & title) :
+	RESQML2_NS::RepresentationSetRepresentation(interp)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The linked interpretation cannot be null. Please use another constructor.");
@@ -43,7 +43,7 @@ RepresentationSetRepresentation::RepresentationSetRepresentation(resqml2::Abstra
 	setInterpretation(interp);
 }
 
-RepresentationSetRepresentation::RepresentationSetRepresentation(common::EpcDocument* epcDoc, const std::string & guid, const std::string & title)
+RepresentationSetRepresentation::RepresentationSetRepresentation(COMMON_NS::EpcDocument* epcDoc, const std::string & guid, const std::string & title)
 {
 	if (epcDoc == nullptr) {
 		throw invalid_argument("The epc document cannot be NULL.");

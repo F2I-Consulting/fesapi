@@ -21,7 +21,7 @@ under the License.
 #include <stdexcept>
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* OrganizationFeature::XML_TAG = "OrganizationFeature";

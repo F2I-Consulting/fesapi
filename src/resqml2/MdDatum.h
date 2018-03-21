@@ -20,27 +20,27 @@ under the License.
 
 #include "resqml2_0_1/DeviationSurveyRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class WellboreTrajectoryRepresentation;
 	class DeviationSurveyRepresentation;
 }
 
-namespace resqml2
+namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT MdDatum : public common::AbstractObject
+	class DLL_IMPORT_OR_EXPORT MdDatum : public COMMON_NS::AbstractObject
 	{
 	protected :
 
 		/**
 		* Default constructor does nothing
 		*/
-		MdDatum() : common::AbstractObject() {}
+		MdDatum() : COMMON_NS::AbstractObject() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		MdDatum(gsoap_resqml2_0_1::_resqml2__MdDatum* fromGsoap) : common::AbstractObject(fromGsoap) {}
+		MdDatum(gsoap_resqml2_0_1::_resqml2__MdDatum* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 	private :
 
@@ -48,13 +48,13 @@ namespace resqml2
 		* Add a Wellbore trajectory which uses this MD information
 		* Does not add the inverse relationship i.e. from the Wellbore trajectory to this MD information.
 		*/
-		void addWellboreTrajectoryRepresentation(resqml2_0_1::WellboreTrajectoryRepresentation* traj) { wellboreTrajectoryRepresentationSet.push_back(traj); }
+		void addWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj) { wellboreTrajectoryRepresentationSet.push_back(traj); }
 
 		/**
 		* Add a Deviation Survey which uses this MD information
 		* Does not add the inverse relationship i.e. from the deviation survey to this MD information.
 		*/
-		void addDeviationSurveyRepresentation(resqml2_0_1::DeviationSurveyRepresentation* deviationSurvey)  { deviationSurveyRepresentationSet.push_back(deviationSurvey); }
+		void addDeviationSurveyRepresentation(RESQML2_0_1_NS::DeviationSurveyRepresentation* deviationSurvey)  { deviationSurveyRepresentationSet.push_back(deviationSurvey); }
 
 	public:
 
@@ -116,17 +116,17 @@ namespace resqml2
 
 	protected:
 
-		friend void resqml2_0_1::WellboreTrajectoryRepresentation::setMdDatum(resqml2::MdDatum* mdDatum);
-		friend void resqml2_0_1::DeviationSurveyRepresentation::setMdDatum(resqml2::MdDatum* mdDatum);
+		friend void RESQML2_0_1_NS::WellboreTrajectoryRepresentation::setMdDatum(RESQML2_NS::MdDatum* mdDatum);
+		friend void RESQML2_0_1_NS::DeviationSurveyRepresentation::setMdDatum(RESQML2_NS::MdDatum* mdDatum);
 
-		virtual void setXmlLocalCrs(resqml2::AbstractLocal3dCrs * localCrs) = 0;
+		virtual void setXmlLocalCrs(RESQML2_NS::AbstractLocal3dCrs * localCrs) = 0;
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML backward relationship
-		std::vector<resqml2_0_1::WellboreTrajectoryRepresentation*> wellboreTrajectoryRepresentationSet;
-		std::vector<resqml2_0_1::DeviationSurveyRepresentation*> deviationSurveyRepresentationSet;
+		std::vector<RESQML2_0_1_NS::WellboreTrajectoryRepresentation*> wellboreTrajectoryRepresentationSet;
+		std::vector<RESQML2_0_1_NS::DeviationSurveyRepresentation*> deviationSurveyRepresentationSet;
 	};
 }
 

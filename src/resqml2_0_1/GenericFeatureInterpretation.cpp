@@ -22,14 +22,14 @@ under the License.
 
 #include "resqml2/AbstractFeature.h"
 
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace std;
 using namespace epc;
 
 const char* GenericFeatureInterpretation::XML_TAG = "GenericFeatureInterpretation";
 
-GenericFeatureInterpretation::GenericFeatureInterpretation(resqml2::AbstractFeature * feature, const string & guid, const string & title)
+GenericFeatureInterpretation::GenericFeatureInterpretation(RESQML2_NS::AbstractFeature * feature, const string & guid, const string & title)
 {
 	if (feature == nullptr) {
 		throw invalid_argument("The interpreted feature cannot be null.");

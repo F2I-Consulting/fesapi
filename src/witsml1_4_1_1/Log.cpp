@@ -24,7 +24,7 @@ under the License.
 #include "witsml1_4_1_1/Well.h"
 
 using namespace std;
-using namespace witsml1_4_1_1;
+using namespace WITSML1_4_1_1_NS;
 using namespace gsoap_witsml1_4_1_1;
 using namespace epc;
 
@@ -333,7 +333,7 @@ void Log::pushBackLogCurveInfo(
 
 	witsml1__cs_USCOREwellDatum* datum = nullptr;
 	if (datumIndex >= 0)
-		wellbore->getWell()->getDatum(datumIndex);
+		datum = wellbore->getWell()->getDatum(datumIndex);
 
 	// creation of the soap log curve info object and attachement to its parent soap log object
 	witsml1__cs_USCORElogCurveInfo* logCurveInfo = soap_new_witsml1__cs_USCORElogCurveInfo(collection->soap, 1);
@@ -398,7 +398,7 @@ void Log::pushBackLogCurveInfo(
 	*logCurveInfo->traceOrigin = traceOrigin; 
 }
 
-void Log::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void Log::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	witsml1__obj_USCORElog* log = static_cast<_witsml1__logs*>(collection)->log[0];
 	if (log && log->uidWellbore)

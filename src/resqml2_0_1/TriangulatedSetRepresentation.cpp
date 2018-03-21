@@ -28,18 +28,17 @@ under the License.
 #include "common/AbstractHdfProxy.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 
 const char* TriangulatedSetRepresentation::XML_TAG = "TriangulatedSetRepresentation";
 
-TriangulatedSetRepresentation::TriangulatedSetRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+TriangulatedSetRepresentation::TriangulatedSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 		const std::string & guid, const std::string & title):
 	AbstractSurfaceRepresentation(interp, crs)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORETriangulatedSetRepresentation(interp->getGsoapContext(), 1);
-	_resqml2__TriangulatedSetRepresentation* triRep = static_cast<_resqml2__TriangulatedSetRepresentation*>(gsoapProxy2_0_1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");
@@ -53,8 +52,6 @@ TriangulatedSetRepresentation::TriangulatedSetRepresentation(resqml2::AbstractFe
 
 string TriangulatedSetRepresentation::getHdfProxyUuid() const
 {
-	string result = "";
-
 	resqml2__TrianglePatch* patch = static_cast<_resqml2__TriangulatedSetRepresentation*>(gsoapProxy2_0_1)->TrianglePatch[0];
 	if (patch->Triangles->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
 	{
@@ -77,7 +74,7 @@ resqml2__PointGeometry* TriangulatedSetRepresentation::getPointGeometry2_0_1(con
 void TriangulatedSetRepresentation::pushBackTrianglePatch(
 	const unsigned int & nodeCount, double * nodes,
 	const unsigned int & triangleCount, unsigned int * triangleNodeIndices,
-	common::AbstractHdfProxy * proxy)
+	COMMON_NS::AbstractHdfProxy * proxy)
 {
 	_resqml2__TriangulatedSetRepresentation* triRep = static_cast<_resqml2__TriangulatedSetRepresentation*>(gsoapProxy2_0_1);
 

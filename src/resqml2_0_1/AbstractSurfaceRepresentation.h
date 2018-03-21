@@ -20,27 +20,27 @@ under the License.
 
 #include "resqml2/AbstractRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractSurfaceRepresentation : public resqml2::AbstractRepresentation
+	class DLL_IMPORT_OR_EXPORT AbstractSurfaceRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	protected:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		AbstractSurfaceRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : resqml2::AbstractRepresentation(partialObject) {}
+		AbstractSurfaceRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractRepresentation(partialObject) {}
 
 		/**
 		* Default constructor
 		* Set the gsoap proxy to nullptr.
 		*/
-		AbstractSurfaceRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs) : resqml2::AbstractRepresentation(interp, crs) {}
+		AbstractSurfaceRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs) : RESQML2_NS::AbstractRepresentation(interp, crs) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractSurfaceRepresentation(gsoap_resqml2_0_1::resqml2__AbstractSurfaceRepresentation* fromGsoap) : resqml2::AbstractRepresentation(fromGsoap) {}
+		AbstractSurfaceRepresentation(gsoap_resqml2_0_1::resqml2__AbstractSurfaceRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
 		/**
 		* Try to get a Point3dFromRepresentationLatticeArray from the geometry of a patch of the representation.
@@ -71,7 +71,7 @@ namespace resqml2_0_1
 		*/
 		gsoap_resqml2_0_1::resqml2__PointGeometry* createArray2dOfExplicitZ(
 			const unsigned int & patchIndex, double * zValues,
-			const unsigned int & numI, const unsigned int & numJ, common::AbstractHdfProxy* proxy,
+			const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy* proxy,
 			class Grid2dRepresentation * supportingRepresentation,
 			const unsigned int & startGlobalIndex = 0,
 			const int & indexIncrementI = 1, const int & indexIncrementJ = 1);
@@ -85,14 +85,14 @@ namespace resqml2_0_1
 		*/
 		gsoap_resqml2_0_1::resqml2__PointGeometry* createArray2dOfExplicitZ(
 			const unsigned int & patchIndex, double * zValues,
-			const unsigned int & numI, const unsigned int & numJ, common::AbstractHdfProxy* proxy,
+			const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy* proxy,
 			const double & originX, const double & originY, const double & originZ,
 			const double & offsetIX, const double & offsetIY, const double & offsetIZ, const double & spacingI,
 			const double & offsetJX, const double & offsetJY, const double & offsetJZ, const double & spacingJ);
 
 		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
 
-		virtual void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		std::vector<PolylineRepresentation*> outerRingSet; // outer rings are ordered as the patches of the representation are ordered.
 

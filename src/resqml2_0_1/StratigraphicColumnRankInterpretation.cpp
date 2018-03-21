@@ -25,7 +25,7 @@ under the License.
 #include "resqml2_0_1/HorizonInterpretation.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 
@@ -168,7 +168,7 @@ void StratigraphicColumnRankInterpretation::pushBackStratigraphicBinaryContact(S
 	}
 }
 		
-void StratigraphicColumnRankInterpretation::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void StratigraphicColumnRankInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	AbstractStratigraphicOrganizationInterpretation::importRelationshipSetFromEpc(epcDoc);
 

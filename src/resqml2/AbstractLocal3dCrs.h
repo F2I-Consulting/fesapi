@@ -20,16 +20,16 @@ under the License.
 
 #include "resqml2/MdDatum.h"
 
-namespace resqml2
+namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractLocal3dCrs : public common::AbstractObject
+	class DLL_IMPORT_OR_EXPORT AbstractLocal3dCrs : public COMMON_NS::AbstractObject
 	{
 	protected:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		AbstractLocal3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : common::AbstractObject(partialObject) {}
+		AbstractLocal3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		AbstractLocal3dCrs() {}
 
@@ -37,7 +37,7 @@ namespace resqml2
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		AbstractLocal3dCrs(gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs* fromGsoap):
-			common::AbstractObject(fromGsoap) {}
+			COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		* Get the Z offset which is always equal to zero for a time CRS.
@@ -163,7 +163,7 @@ namespace resqml2
 	protected:
 		
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc) {}
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
 
 		// XML backward relationship
 		std::vector<class AbstractRepresentation*> repSet;

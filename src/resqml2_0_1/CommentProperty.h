@@ -20,16 +20,16 @@ under the License.
 
 #include "resqml2/AbstractValuesProperty.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT CommentProperty : public resqml2::AbstractValuesProperty
+	class DLL_IMPORT_OR_EXPORT CommentProperty : public RESQML2_NS::AbstractValuesProperty
 	{
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		CommentProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : resqml2::AbstractValuesProperty(partialObject) {}
+		CommentProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractValuesProperty(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -40,7 +40,7 @@ namespace resqml2_0_1
 		* @param attachmentKind				The topological orbit which support each value.
 		* @param energisticsPropertyKind	The property kind of these property values which must be defined in the standard energistics property type dictionary.
 		*/
-		CommentProperty(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+		CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind);
 
 		/**
@@ -52,8 +52,8 @@ namespace resqml2_0_1
 		* @param attachmentKind				The topological orbit which support each value.
 		* @param localPropKind				The property kind of these property values which must be defined in the EPC document as a local property kind.
 		*/
-		CommentProperty(resqml2::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, resqml2::PropertyKind * localPropKind);
+		CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropKind);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -73,9 +73,9 @@ namespace resqml2_0_1
 		* @param values					All the property values to set ordered according the topology of the representation it is based on.
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values, common::AbstractHdfProxy* proxy);
+		void pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values, COMMON_NS::AbstractHdfProxy* proxy);
 
-		std::string pushBackRefToExistingDataset(common::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", const long & nullValue = (std::numeric_limits<long>::max)());
+		std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", const long & nullValue = (std::numeric_limits<long>::max)());
 
 		/**
 		* Get all the values of the instance which are supposed to be string ones.
@@ -85,7 +85,7 @@ namespace resqml2_0_1
 		/**
 		* Check if the associated local property kind is allowed for this property.
 		*/
-		bool validatePropertyKindAssociation(resqml2::PropertyKind* pk);
+		bool validatePropertyKindAssociation(RESQML2_NS::PropertyKind* pk);
 
 		/**
 		* Check if the associated standard property kind is allowed for this property.

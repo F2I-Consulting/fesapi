@@ -29,14 +29,14 @@ under the License.
 #include "common/HdfProxy.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
-using namespace common;
+using namespace COMMON_NS;
 
 const char* DeviationSurveyRepresentation::XML_TAG = "DeviationSurveyRepresentation";
 
-DeviationSurveyRepresentation::DeviationSurveyRepresentation(WellboreInterpretation* interp, const string & guid, const std::string & title, const bool & isFinal, resqml2::MdDatum * mdInfo) :
+DeviationSurveyRepresentation::DeviationSurveyRepresentation(WellboreInterpretation* interp, const string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo) :
 	AbstractRepresentation(interp, mdInfo->getLocalCrs())
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREDeviationSurveyRepresentation(interp->getGsoapContext(), 1);	
@@ -54,15 +54,15 @@ DeviationSurveyRepresentation::DeviationSurveyRepresentation(WellboreInterpretat
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");
 
-	if (dynamic_cast<resqml2::AbstractLocal3dCrs*>(mdInfo->getLocalCrs()) != nullptr) {
-		rep->MdUom = static_cast<resqml2::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit();
+	if (dynamic_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs()) != nullptr) {
+		rep->MdUom = static_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit();
 	}
 }
 
 void DeviationSurveyRepresentation::setGeometry(double * firstStationLocation, const ULONG64 & stationCount,
 	const gsoap_resqml2_0_1::eml20__LengthUom & mdUom, double * mds,
 	const gsoap_resqml2_0_1::eml20__PlaneAngleUom & angleUom, double * azimuths, double * inclinations,
-	common::AbstractHdfProxy* proxy)
+	COMMON_NS::AbstractHdfProxy* proxy)
 {
 	if (firstStationLocation == nullptr)
 		throw invalid_argument("The first station location is missing.");
@@ -120,7 +120,7 @@ vector<Relationship> DeviationSurveyRepresentation::getAllEpcRelationships() con
 	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
 
 	// XML forward relationship
-	resqml2::MdDatum* mdDatum = getMdDatum();
+	RESQML2_NS::MdDatum* mdDatum = getMdDatum();
 	if (mdDatum != nullptr) {
 		Relationship relMdInfo(mdDatum->getPartNameInEpcDocument(), "", getMdDatumUuid());
 		relMdInfo.setDestinationObjectType();
@@ -140,11 +140,11 @@ vector<Relationship> DeviationSurveyRepresentation::getAllEpcRelationships() con
 	return result;
 }
 
-void DeviationSurveyRepresentation::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void DeviationSurveyRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
 
-	resqml2::MdDatum* mdDatum = epcDoc->getResqmlAbstractObjectByUuid<resqml2::MdDatum>(getMdDatumUuid());
+	RESQML2_NS::MdDatum* mdDatum = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::MdDatum>(getMdDatumUuid());
 	if (mdDatum != nullptr) {
 		updateXml = false;
 		setMdDatum(mdDatum);
@@ -219,7 +219,7 @@ void DeviationSurveyRepresentation::getAzimuths(double* values)
 	}
 }
 
-void DeviationSurveyRepresentation::setMdDatum(resqml2::MdDatum* mdDatum)
+void DeviationSurveyRepresentation::setMdDatum(RESQML2_NS::MdDatum* mdDatum)
 {
 	if (mdDatum == nullptr) {
 		throw invalid_argument("The md Datum is missing.");
@@ -232,9 +232,9 @@ void DeviationSurveyRepresentation::setMdDatum(resqml2::MdDatum* mdDatum)
 	}
 }
 
-resqml2::MdDatum * DeviationSurveyRepresentation::getMdDatum() const
+RESQML2_NS::MdDatum * DeviationSurveyRepresentation::getMdDatum() const
 {
-	return static_cast<resqml2::MdDatum*>(getEpcDocument()->getResqmlAbstractObjectByUuid(getMdDatumUuid()));
+	return static_cast<RESQML2_NS::MdDatum*>(getEpcDocument()->getResqmlAbstractObjectByUuid(getMdDatumUuid()));
 }
 
 std::string DeviationSurveyRepresentation::getMdDatumUuid() const
@@ -315,7 +315,6 @@ unsigned int DeviationSurveyRepresentation::getWellboreFrameRepresentationCount(
 WellboreFrameRepresentation* DeviationSurveyRepresentation::getWellboreFrameRepresentation(unsigned int index) const
 {
 	vector<WellboreTrajectoryRepresentation*> trajectories = getWellboreTrajectoryRepresentationSet();
-	unsigned int result = 0;
 	for (size_t trajIndex = 0; trajIndex < trajectories.size(); ++trajIndex) {
 		WellboreTrajectoryRepresentation* traj = trajectories[trajIndex];
 		if (traj->getMdDatumUuid() == getMdDatumUuid() && traj->getMdUom() == getMdUom()) {

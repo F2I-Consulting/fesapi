@@ -58,7 +58,7 @@ under the License.
   }
 %}
 
-namespace witsml1_4_1_1
+namespace WITSML1_4_1_1_NS
 {	
 	%typemap(csout, excode=SWIGEXCODE) AbstractObject*  {
 		global::System.IntPtr cPtr = $imcall;

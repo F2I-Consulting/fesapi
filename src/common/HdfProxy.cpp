@@ -24,7 +24,7 @@ under the License.
 #include "hdf5.h"
 
 using namespace std;
-using namespace common;
+using namespace COMMON_NS;
 
 
 HdfProxy::HdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
@@ -36,7 +36,7 @@ void HdfProxy::open()
 		close();
 	}
 
-	if (getEpcDocument() == nullptr || getEpcDocument()->getHdf5PermissionAccess() == common::EpcDocument::READ_ONLY) { // By default, if no Epc document is available (DAS use case), open in read only mode
+	if (getEpcDocument() == nullptr || getEpcDocument()->getHdf5PermissionAccess() == COMMON_NS::EpcDocument::READ_ONLY) { // By default, if no Epc document is available (DAS use case), open in read only mode
 		if (H5Fis_hdf5((packageDirectoryAbsolutePath + relativeFilePath).c_str()) > 0) {
 			hdfFile = H5Fopen((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_RDONLY, H5P_DEFAULT);
 
@@ -52,7 +52,7 @@ void HdfProxy::open()
 			throw invalid_argument("The HDF5 file " + packageDirectoryAbsolutePath + relativeFilePath + " does not exist or is not a valid HDF5 file.");
 		}
 	}
-	else if (getEpcDocument()->getHdf5PermissionAccess() == common::EpcDocument::READ_WRITE) {
+	else if (getEpcDocument()->getHdf5PermissionAccess() == COMMON_NS::EpcDocument::READ_WRITE) {
 		hdfFile = H5Fcreate((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_EXCL, H5P_DEFAULT, H5P_DEFAULT);
 
 		if (hdfFile < 0) {
@@ -78,14 +78,26 @@ void HdfProxy::open()
 			H5Tset_size(atype, getUuid().size());
 			hid_t attribute_id = H5Acreate2(hdfFile, "uuid", atype, aid, H5P_DEFAULT, H5P_DEFAULT);
 			int status = H5Awrite(attribute_id, atype, getUuid().c_str());
+			if (status < 0) {
+				throw invalid_argument("The uuid file attribute could not have been written.");
+			}
 
 			// Close the attribute.
 			status = H5Sclose(aid);
+			if (status < 0) {
+				throw invalid_argument("The uuid file attribute dataspace could not have been closed.");
+			}
 			status = H5Tclose(atype);
-			status = H5Aclose(attribute_id);
+			if (status < 0) {
+				throw invalid_argument("The uuid file attribute datatype could not have been closed.");
+			}
+			status = H5Aclose(attribute_id);;
+			if (status < 0) {
+				throw invalid_argument("The uuid file attribute could not have been closed.");
+			}
 		}
 	}
-	else if (getEpcDocument()->getHdf5PermissionAccess() == common::EpcDocument::OVERWRITE) {
+	else if (getEpcDocument()->getHdf5PermissionAccess() == COMMON_NS::EpcDocument::OVERWRITE) {
 		hdfFile = H5Fcreate((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
 
 		// create an attribute at the file level to store the uuid of the corresponding resqml hdf proxy.
@@ -94,11 +106,23 @@ void HdfProxy::open()
 		H5Tset_size(atype, getUuid().size());
 		hid_t attribute_id = H5Acreate2(hdfFile, "uuid", atype, aid, H5P_DEFAULT, H5P_DEFAULT);
 		int status = H5Awrite(attribute_id, atype, getUuid().c_str());
+		if (status < 0) {
+			throw invalid_argument("The uuid file attribute could not have been written.");
+		}
 
 		// Close the attribute.
 		status = H5Sclose(aid);
+		if (status < 0) {
+			throw invalid_argument("The uuid file attribute dataspace could not have been closed.");
+		}
 		status = H5Tclose(atype);
-		status = H5Aclose(attribute_id);
+		if (status < 0) {
+			throw invalid_argument("The uuid file attribute datatype could not have been closed.");
+		}
+		status = H5Aclose(attribute_id);;
+		if (status < 0) {
+			throw invalid_argument("The uuid file attribute could not have been closed.");
+		}
 	}
 	else {
 		throw invalid_argument("The HDF5 permission access is unknown.");

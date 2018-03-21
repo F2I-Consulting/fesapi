@@ -24,7 +24,7 @@ under the License.
 #include "witsml1_4_1_1/Well.h"
 
 using namespace std;
-using namespace witsml1_4_1_1;
+using namespace WITSML1_4_1_1_NS;
 using namespace gsoap_witsml1_4_1_1;
 using namespace epc;
 
@@ -301,7 +301,7 @@ void Wellbore::setShape(const witsml1__WellboreShape & shape)
 	*static_cast<_witsml1__wellbores*>(collection)->wellbore[0]->__obj_USCOREwellbore_sequence->shape = shape;
 }
 
-void Wellbore::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void Wellbore::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	witsml1__obj_USCOREwellbore* wellbore = static_cast<_witsml1__wellbores*>(collection)->wellbore[0];
 	if (wellbore && wellbore->uidWell)

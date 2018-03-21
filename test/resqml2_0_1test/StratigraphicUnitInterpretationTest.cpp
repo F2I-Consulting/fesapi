@@ -30,8 +30,8 @@ under the License.
 
 using namespace std;
 using namespace resqml2_0_1test;
-using namespace common;
-using namespace resqml2_0_1;
+using namespace COMMON_NS;
+using namespace RESQML2_0_1_NS;
 
 const char* StratigraphicUnitInterpretationTest::defaultUuid = "65abde7d-d6ab-42b5-89c8-cc6ccec56dcc";
 const char* StratigraphicUnitInterpretationTest::defaultTitle = "Strati Unit Interp";
@@ -52,7 +52,7 @@ StratigraphicUnitInterpretationTest::StratigraphicUnitInterpretationTest(EpcDocu
 			readEpcDoc();
 }
 
-StratigraphicUnitInterpretationTest::StratigraphicUnitInterpretationTest(common::EpcDocument* epcDoc, const std::string & uuid, const std::string & title, const string & uuidFeature, const string & titleFeature, bool init)
+StratigraphicUnitInterpretationTest::StratigraphicUnitInterpretationTest(COMMON_NS::EpcDocument* epcDoc, const std::string & uuid, const std::string & title, const string & uuidFeature, const string & titleFeature, bool init)
 	: AbstractFeatureInterpretationTest(epcDocPath, uuid, title, uuidFeature, titleFeature) {
 }
 

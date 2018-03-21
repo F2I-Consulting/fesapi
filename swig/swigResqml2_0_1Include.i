@@ -92,7 +92,7 @@ under the License.
 // STD::VECTOR DEFINITIONS
 //************************
 
-namespace resqml2_0_1 {
+namespace RESQML2_0_1_NS {
 	class LocalDepth3dCrs;
 	class LocalTime3dCrs;
 	class StratigraphicColumn;
@@ -129,33 +129,33 @@ namespace resqml2_0_1 {
 // Don't try to create vector of polymorphic data unless you really know what you are doing.
 // Use C array approach instead.
 namespace std {
-   %template(LocalDepth3dCrsVector) vector<resqml2_0_1::LocalDepth3dCrs*>;
-   %template(LocalTime3dCrsVector) vector<resqml2_0_1::LocalTime3dCrs*>;
-   %template(StratigraphicColumnVector) vector<resqml2_0_1::StratigraphicColumn*>;
-   %template(StratigraphicColumnRankInterpretationVector) vector<resqml2_0_1::StratigraphicColumnRankInterpretation*>;
-   %template(TectonicBoundaryFeatureVector) vector<resqml2_0_1::TectonicBoundaryFeature*>;
-   %template(HorizonVector) vector<resqml2_0_1::Horizon*>;
-   %template(GeobodyFeatureVector) vector<resqml2_0_1::GeobodyFeature*>;
-   %template(FrontierVector) vector<resqml2_0_1::FrontierFeature*>;
-   %template(StratigraphicUnitInterpretationVector) vector<resqml2_0_1::StratigraphicUnitInterpretation*>;
-   %template(StratigraphicOccurrenceInterpretationVector) vector<resqml2_0_1::StratigraphicOccurrenceInterpretation*>;
-   %template(HorizonInterpretationVector) vector<resqml2_0_1::HorizonInterpretation*>;
-   %template(Grid2dSetRepresentationVector) vector<resqml2_0_1::Grid2dSetRepresentation*>;
-   %template(Grid2dRepresentationVector) vector<resqml2_0_1::Grid2dRepresentation*>;
-   %template(PolylineRepresentationVector) vector<resqml2_0_1::PolylineRepresentation*>;
-   %template(PolylineSetRepresentationVector) vector<resqml2_0_1::PolylineSetRepresentation*>;
-   %template(TriangulatedSetRepresentationVector) vector<resqml2_0_1::TriangulatedSetRepresentation*>;
-   %template(SeismicLineFeatureVector) vector<resqml2_0_1::SeismicLineFeature*>;
-   %template(WellboreFeatureVector) vector<resqml2_0_1::WellboreFeature*>;
-   %template(WellboreTrajectoryRepresentationVector) vector<resqml2_0_1::WellboreTrajectoryRepresentation*>;
-   %template(DeviationSurveyRepresentationVector) vector<resqml2_0_1::DeviationSurveyRepresentation*>;
-   %template(WellboreMarkerFrameRepresentationVector) vector<resqml2_0_1::WellboreMarkerFrameRepresentation*>;
-   %template(UnstructuredGridRepresentationVector) vector<resqml2_0_1::UnstructuredGridRepresentation*>;
-   %template(WellboreMarkerVector) vector<resqml2_0_1::WellboreMarker*>;
-   %template(IjkGridExplicitRepresentationVector) vector<resqml2_0_1::IjkGridExplicitRepresentation*>;
-   %template(IjkGridParametricRepresentationVector) vector<resqml2_0_1::IjkGridParametricRepresentation*>;
-   %template(IjkGridLatticeRepresentationVector) vector<resqml2_0_1::IjkGridLatticeRepresentation*>;
-   %template(IjkGridNoGeometryRepresentationVector) vector<resqml2_0_1::IjkGridNoGeometryRepresentation*>;
+   %template(LocalDepth3dCrsVector) vector<RESQML2_0_1_NS::LocalDepth3dCrs*>;
+   %template(LocalTime3dCrsVector) vector<RESQML2_0_1_NS::LocalTime3dCrs*>;
+   %template(StratigraphicColumnVector) vector<RESQML2_0_1_NS::StratigraphicColumn*>;
+   %template(StratigraphicColumnRankInterpretationVector) vector<RESQML2_0_1_NS::StratigraphicColumnRankInterpretation*>;
+   %template(TectonicBoundaryFeatureVector) vector<RESQML2_0_1_NS::TectonicBoundaryFeature*>;
+   %template(HorizonVector) vector<RESQML2_0_1_NS::Horizon*>;
+   %template(GeobodyFeatureVector) vector<RESQML2_0_1_NS::GeobodyFeature*>;
+   %template(FrontierVector) vector<RESQML2_0_1_NS::FrontierFeature*>;
+   %template(StratigraphicUnitInterpretationVector) vector<RESQML2_0_1_NS::StratigraphicUnitInterpretation*>;
+   %template(StratigraphicOccurrenceInterpretationVector) vector<RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation*>;
+   %template(HorizonInterpretationVector) vector<RESQML2_0_1_NS::HorizonInterpretation*>;
+   %template(Grid2dSetRepresentationVector) vector<RESQML2_0_1_NS::Grid2dSetRepresentation*>;
+   %template(Grid2dRepresentationVector) vector<RESQML2_0_1_NS::Grid2dRepresentation*>;
+   %template(PolylineRepresentationVector) vector<RESQML2_0_1_NS::PolylineRepresentation*>;
+   %template(PolylineSetRepresentationVector) vector<RESQML2_0_1_NS::PolylineSetRepresentation*>;
+   %template(TriangulatedSetRepresentationVector) vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*>;
+   %template(SeismicLineFeatureVector) vector<RESQML2_0_1_NS::SeismicLineFeature*>;
+   %template(WellboreFeatureVector) vector<RESQML2_0_1_NS::WellboreFeature*>;
+   %template(WellboreTrajectoryRepresentationVector) vector<RESQML2_0_1_NS::WellboreTrajectoryRepresentation*>;
+   %template(DeviationSurveyRepresentationVector) vector<RESQML2_0_1_NS::DeviationSurveyRepresentation*>;
+   %template(WellboreMarkerFrameRepresentationVector) vector<RESQML2_0_1_NS::WellboreMarkerFrameRepresentation*>;
+   %template(UnstructuredGridRepresentationVector) vector<RESQML2_0_1_NS::UnstructuredGridRepresentation*>;
+   %template(WellboreMarkerVector) vector<RESQML2_0_1_NS::WellboreMarker*>;
+   %template(IjkGridExplicitRepresentationVector) vector<RESQML2_0_1_NS::IjkGridExplicitRepresentation*>;
+   %template(IjkGridParametricRepresentationVector) vector<RESQML2_0_1_NS::IjkGridParametricRepresentation*>;
+   %template(IjkGridLatticeRepresentationVector) vector<RESQML2_0_1_NS::IjkGridLatticeRepresentation*>;
+   %template(IjkGridNoGeometryRepresentationVector) vector<RESQML2_0_1_NS::IjkGridNoGeometryRepresentation*>;
 }
 
 namespace gsoap_resqml2_0_1
@@ -2114,7 +2114,7 @@ namespace gsoap_resqml2_0_1
 	};
 }
 
-namespace witsml1_4_1_1 {
+namespace WITSML1_4_1_1_NS {
 	class Wellbore;
 	class Trajectory;
 	class Log;
@@ -2122,7 +2122,7 @@ namespace witsml1_4_1_1 {
 }
 
 #ifdef SWIGPYTHON
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	%typemap(out) WellboreFrameRepresentation* {
 		// Check potential downcasting
@@ -2132,81 +2132,81 @@ namespace resqml2_0_1
 }
 #endif
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
-	%nspace resqml2_0_1::Activity;
-	%nspace resqml2_0_1::ActivityTemplate;
-	%nspace resqml2_0_1::LocalDepth3dCrs;
-	%nspace resqml2_0_1::LocalTime3dCrs ;
-	%nspace resqml2_0_1::MdDatum;
-	%nspace resqml2_0_1::AbstractGeologicFeature;
-	%nspace resqml2_0_1::GeologicUnitFeature;
-	%nspace resqml2_0_1::BoundaryFeature;
-	%nspace resqml2_0_1::GeneticBoundaryFeature;
-	%nspace resqml2_0_1::Horizon;
-	%nspace resqml2_0_1::GeobodyBoundaryInterpretation;
-	%nspace resqml2_0_1::GeobodyFeature;
-	%nspace resqml2_0_1:: GeobodyInterpretation;
-	%nspace resqml2_0_1::TectonicBoundaryFeature;
-	%nspace resqml2_0_1::AbstractTechnicalFeature;
-	%nspace resqml2_0_1::SeismicLineSetFeature;
-	%nspace resqml2_0_1::SeismicLineFeature;
-	%nspace resqml2_0_1::SeismicLatticeFeature;
-	%nspace resqml2_0_1::WellboreFeature;
-	%nspace resqml2_0_1::OrganizationFeature;
-	%nspace resqml2_0_1::GenericFeatureInterpretation;
-	%nspace resqml2_0_1::BoundaryFeatureInterpretation;
-	%nspace resqml2_0_1::FaultInterpretation;
-	%nspace resqml2_0_1::HorizonInterpretation;
-	%nspace resqml2_0_1::WellboreInterpretation;
-	%nspace resqml2_0_1::AbstractOrganizationInterpretation;
-	%nspace resqml2_0_1::StructuralOrganizationInterpretation;
-	%nspace resqml2_0_1::StratigraphicUnitFeature;
-	%nspace resqml2_0_1::StratigraphicUnitInterpretation;
-	%nspace resqml2_0_1::AbstractStratigraphicOrganizationInterpretation;
-	%nspace resqml2_0_1::StratigraphicColumnRankInterpretation;
-	%nspace resqml2_0_1::StratigraphicOccurrenceInterpretation;
-	%nspace resqml2_0_1::StratigraphicColumn;
-	%nspace resqml2_0_1::EarthModelInterpretation;
-	%nspace resqml2_0_1::SubRepresentation;
-	%nspace resqml2_0_1::PolylineSetRepresentation;
-	%nspace resqml2_0_1::PointSetRepresentation;
-	%nspace resqml2_0_1::PolylineRepresentation;
-	%nspace resqml2_0_1::AbstractSurfaceRepresentation;
-	%nspace resqml2_0_1::Grid2dRepresentation;
-	%nspace resqml2_0_1::Grid2dSetRepresentation;
-	%nspace resqml2_0_1::TriangulatedSetRepresentation;
-	%nspace resqml2_0_1::WellboreTrajectoryRepresentation;
-	%nspace resqml2_0_1::DeviationSurveyRepresentation;
-	%nspace resqml2_0_1::WellboreFrameRepresentation;
-	%nspace resqml2_0_1::WellboreMarker;
-	%nspace resqml2_0_1::WellboreMarkerFrameRepresentation;
-	%nspace resqml2_0_1::RepresentationSetRepresentation;
-	%nspace resqml2_0_1::NonSealedSurfaceFrameworkRepresentation;
-	%nspace resqml2_0_1::SealedSurfaceFrameworkRepresentation;
-	%nspace resqml2_0_1::UnstructuredGridRepresentation;
-	%nspace resqml2_0_1::GridConnectionSetRepresentation;
-	%nspace resqml2_0_1::TimeSeries;
-	%nspace resqml2_0_1::PropertyKind;
-	%nspace resqml2_0_1::StringTableLookup;
-	%nspace resqml2_0_1::CommentProperty;
-	%nspace resqml2_0_1::ContinuousProperty;
-	%nspace resqml2_0_1::ContinuousPropertySeries;
-	%nspace resqml2_0_1::DiscreteProperty;
-	%nspace resqml2_0_1::DiscretePropertySeries;
-	%nspace resqml2_0_1::CategoricalProperty;
-	%nspace resqml2_0_1::CategoricalPropertySeries;
-	%nspace resqml2_0_1::PropertyKindMapper;
-	%nspace resqml2_0_1::FrontierFeature;
-	%nspace resqml2_0_1::PlaneSetRepresentation;
-	%nspace resqml2_0_1::FluidBoundaryFeature;
-	%nspace resqml2_0_1::AbstractIjkGridRepresentation;
-	%nspace resqml2_0_1::IjkGridExplicitRepresentation;
-	%nspace resqml2_0_1::IjkGridLatticeRepresentation;
-	%nspace resqml2_0_1::IjkGridParametricRepresentation;
-	%nspace resqml2_0_1::IjkGridNoGeometryRepresentation;
-	%nspace resqml2_0_1::HdfProxy;
+	%nspace RESQML2_0_1_NS::Activity;
+	%nspace RESQML2_0_1_NS::ActivityTemplate;
+	%nspace RESQML2_0_1_NS::LocalDepth3dCrs;
+	%nspace RESQML2_0_1_NS::LocalTime3dCrs ;
+	%nspace RESQML2_0_1_NS::MdDatum;
+	%nspace RESQML2_0_1_NS::AbstractGeologicFeature;
+	%nspace RESQML2_0_1_NS::GeologicUnitFeature;
+	%nspace RESQML2_0_1_NS::BoundaryFeature;
+	%nspace RESQML2_0_1_NS::GeneticBoundaryFeature;
+	%nspace RESQML2_0_1_NS::Horizon;
+	%nspace RESQML2_0_1_NS::GeobodyBoundaryInterpretation;
+	%nspace RESQML2_0_1_NS::GeobodyFeature;
+	%nspace RESQML2_0_1_NS:: GeobodyInterpretation;
+	%nspace RESQML2_0_1_NS::TectonicBoundaryFeature;
+	%nspace RESQML2_0_1_NS::AbstractTechnicalFeature;
+	%nspace RESQML2_0_1_NS::SeismicLineSetFeature;
+	%nspace RESQML2_0_1_NS::SeismicLineFeature;
+	%nspace RESQML2_0_1_NS::SeismicLatticeFeature;
+	%nspace RESQML2_0_1_NS::WellboreFeature;
+	%nspace RESQML2_0_1_NS::OrganizationFeature;
+	%nspace RESQML2_0_1_NS::GenericFeatureInterpretation;
+	%nspace RESQML2_0_1_NS::BoundaryFeatureInterpretation;
+	%nspace RESQML2_0_1_NS::FaultInterpretation;
+	%nspace RESQML2_0_1_NS::HorizonInterpretation;
+	%nspace RESQML2_0_1_NS::WellboreInterpretation;
+	%nspace RESQML2_0_1_NS::AbstractOrganizationInterpretation;
+	%nspace RESQML2_0_1_NS::StructuralOrganizationInterpretation;
+	%nspace RESQML2_0_1_NS::StratigraphicUnitFeature;
+	%nspace RESQML2_0_1_NS::StratigraphicUnitInterpretation;
+	%nspace RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation;
+	%nspace RESQML2_0_1_NS::StratigraphicColumnRankInterpretation;
+	%nspace RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation;
+	%nspace RESQML2_0_1_NS::StratigraphicColumn;
+	%nspace RESQML2_0_1_NS::EarthModelInterpretation;
+	%nspace RESQML2_0_1_NS::SubRepresentation;
+	%nspace RESQML2_0_1_NS::PolylineSetRepresentation;
+	%nspace RESQML2_0_1_NS::PointSetRepresentation;
+	%nspace RESQML2_0_1_NS::PolylineRepresentation;
+	%nspace RESQML2_0_1_NS::AbstractSurfaceRepresentation;
+	%nspace RESQML2_0_1_NS::Grid2dRepresentation;
+	%nspace RESQML2_0_1_NS::Grid2dSetRepresentation;
+	%nspace RESQML2_0_1_NS::TriangulatedSetRepresentation;
+	%nspace RESQML2_0_1_NS::WellboreTrajectoryRepresentation;
+	%nspace RESQML2_0_1_NS::DeviationSurveyRepresentation;
+	%nspace RESQML2_0_1_NS::WellboreFrameRepresentation;
+	%nspace RESQML2_0_1_NS::WellboreMarker;
+	%nspace RESQML2_0_1_NS::WellboreMarkerFrameRepresentation;
+	%nspace RESQML2_0_1_NS::RepresentationSetRepresentation;
+	%nspace RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation;
+	%nspace RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation;
+	%nspace RESQML2_0_1_NS::UnstructuredGridRepresentation;
+	%nspace RESQML2_0_1_NS::GridConnectionSetRepresentation;
+	%nspace RESQML2_0_1_NS::TimeSeries;
+	%nspace RESQML2_0_1_NS::PropertyKind;
+	%nspace RESQML2_0_1_NS::StringTableLookup;
+	%nspace RESQML2_0_1_NS::CommentProperty;
+	%nspace RESQML2_0_1_NS::ContinuousProperty;
+	%nspace RESQML2_0_1_NS::ContinuousPropertySeries;
+	%nspace RESQML2_0_1_NS::DiscreteProperty;
+	%nspace RESQML2_0_1_NS::DiscretePropertySeries;
+	%nspace RESQML2_0_1_NS::CategoricalProperty;
+	%nspace RESQML2_0_1_NS::CategoricalPropertySeries;
+	%nspace RESQML2_0_1_NS::PropertyKindMapper;
+	%nspace RESQML2_0_1_NS::FrontierFeature;
+	%nspace RESQML2_0_1_NS::PlaneSetRepresentation;
+	%nspace RESQML2_0_1_NS::FluidBoundaryFeature;
+	%nspace RESQML2_0_1_NS::AbstractIjkGridRepresentation;
+	%nspace RESQML2_0_1_NS::IjkGridExplicitRepresentation;
+	%nspace RESQML2_0_1_NS::IjkGridLatticeRepresentation;
+	%nspace RESQML2_0_1_NS::IjkGridParametricRepresentation;
+	%nspace RESQML2_0_1_NS::IjkGridNoGeometryRepresentation;
+	%nspace RESQML2_0_1_NS::HdfProxy;
 #endif
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
 	
@@ -2216,7 +2216,7 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_HdfProxy) HdfProxy;
 #endif
-	class HdfProxy : public common::HdfProxy
+	class HdfProxy : public COMMON_NS::HdfProxy
 	{
 	public:
 	};
@@ -2228,7 +2228,7 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_ActivityTemplate) ActivityTemplate;
 #endif
-	class ActivityTemplate : public resqml2::ActivityTemplate
+	class ActivityTemplate : public RESQML2_NS::ActivityTemplate
 	{
 	public:
 		void pushBackParameter(const std::string title,
@@ -2240,7 +2240,7 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_Activity) Activity;
 #endif
-	class Activity : public resqml2::Activity
+	class Activity : public RESQML2_NS::Activity
 	{
 	public:
 		void pushBackParameter(const std::string title,
@@ -2255,7 +2255,7 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_LocalDepth3dCrs) LocalDepth3dCrs;
 #endif
-	class LocalDepth3dCrs : public resqml2::AbstractLocal3dCrs
+	class LocalDepth3dCrs : public RESQML2_NS::AbstractLocal3dCrs
 	{
 	public:
 	};
@@ -2263,7 +2263,7 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_LocalTime3dCrs) LocalTime3dCrs;
 #endif
-	class LocalTime3dCrs : public resqml2::AbstractLocal3dCrs
+	class LocalTime3dCrs : public RESQML2_NS::AbstractLocal3dCrs
 	{
 	public:
 		gsoap_resqml2_0_1::eml20__TimeUom getUnit() const;
@@ -2273,7 +2273,7 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_MdDatum) MdDatum;
 #endif
-	class MdDatum : public resqml2::MdDatum
+	class MdDatum : public RESQML2_NS::MdDatum
 	{
 	public:
 		gsoap_resqml2_0_1::resqml2__MdReference getOriginKind() const;
@@ -2286,7 +2286,7 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_AbstractGeologicFeature) AbstractGeologicFeature;
 #endif
-	class AbstractGeologicFeature : public resqml2::AbstractFeature
+	class AbstractGeologicFeature : public RESQML2_NS::AbstractFeature
 	{
 	};
 
@@ -2335,7 +2335,7 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_AbstractTechnicalFeature) AbstractTechnicalFeature;
 #endif
-	class AbstractTechnicalFeature : public resqml2::AbstractFeature
+	class AbstractTechnicalFeature : public RESQML2_NS::AbstractFeature
 	{
 	};
 
@@ -2378,8 +2378,8 @@ namespace resqml2_0_1
 	class WellboreFeature : public AbstractTechnicalFeature
 	{
 	public:
-		witsml1_4_1_1::Wellbore* getWitsmlWellbore();
-		void setWitsmlWellbore(witsml1_4_1_1::Wellbore * wellbore);
+		WITSML1_4_1_1_NS::Wellbore* getWitsmlWellbore();
+		void setWitsmlWellbore(WITSML1_4_1_1_NS::Wellbore * wellbore);
 	};
 
 #ifdef SWIGPYTHON
@@ -2427,14 +2427,14 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_GenericFeatureInterpretation) GenericFeatureInterpretation;
 #endif
-	class GenericFeatureInterpretation : public resqml2::AbstractFeatureInterpretation
+	class GenericFeatureInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	};
 
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_BoundaryFeatureInterpretation) BoundaryFeatureInterpretation;
 #endif
-	class BoundaryFeatureInterpretation : public resqml2::AbstractFeatureInterpretation
+	class BoundaryFeatureInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	};
 
@@ -2465,7 +2465,7 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_WellboreInterpretation) WellboreInterpretation;
 #endif
-	class WellboreInterpretation : public resqml2::AbstractFeatureInterpretation
+	class WellboreInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	public:
 		bool isDrilled() const;
@@ -2475,14 +2475,14 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_StratigraphicUnitInterpretation) StratigraphicUnitInterpretation;
 #endif
-	class StratigraphicUnitInterpretation : public resqml2::AbstractFeatureInterpretation
+	class StratigraphicUnitInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	};
 	
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_GeobodyInterpretation) GeobodyInterpretation;
 #endif
-	class GeobodyInterpretation : public resqml2::AbstractFeatureInterpretation
+	class GeobodyInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	public :
 		void set3dShape(gsoap_resqml2_0_1::resqml2__Geobody3dShape geobody3dShape);
@@ -2493,11 +2493,11 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_AbstractOrganizationInterpretation) AbstractOrganizationInterpretation;
 #endif
-	class AbstractOrganizationInterpretation : public resqml2::AbstractFeatureInterpretation
+	class AbstractOrganizationInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	public:
-		void pushBackBinaryContact(const gsoap_resqml2_0_1::resqml2__ContactRelationship & kind, resqml2::AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml2__ContactVerb & verb, resqml2::AbstractFeatureInterpretation* directObject);
-		void pushBackBinaryContact(const gsoap_resqml2_0_1::resqml2__ContactRelationship & kind, resqml2::AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml2__ContactVerb & verb, resqml2::AbstractFeatureInterpretation* directObject,
+		void pushBackBinaryContact(const gsoap_resqml2_0_1::resqml2__ContactRelationship & kind, RESQML2_NS::AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml2__ContactVerb & verb, RESQML2_NS::AbstractFeatureInterpretation* directObject);
+		void pushBackBinaryContact(const gsoap_resqml2_0_1::resqml2__ContactRelationship & kind, RESQML2_NS::AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml2__ContactVerb & verb, RESQML2_NS::AbstractFeatureInterpretation* directObject,
 				const gsoap_resqml2_0_1::resqml2__ContactSide & directObjectQualifier);
 	};
 	
@@ -2509,9 +2509,9 @@ namespace resqml2_0_1
 	public:
 		void pushBackFaultInterpretation(FaultInterpretation * faultInterpretation);
 		void pushBackHorizonInterpretation(HorizonInterpretation * horizonInterpretation, const int & stratigraphicRank);
-		void pushBackTopFrontierInterpretation(resqml2::AbstractFeatureInterpretation * topFrontierInterpretation);
-        void pushBackBottomFrontierInterpretation(resqml2::AbstractFeatureInterpretation * bottomFrontierInterpretation);
-        void pushBackSideFrontierInterpretation(resqml2::AbstractFeatureInterpretation * sideFrontierInterpretation);
+		void pushBackTopFrontierInterpretation(RESQML2_NS::AbstractFeatureInterpretation * topFrontierInterpretation);
+        void pushBackBottomFrontierInterpretation(RESQML2_NS::AbstractFeatureInterpretation * bottomFrontierInterpretation);
+        void pushBackSideFrontierInterpretation(RESQML2_NS::AbstractFeatureInterpretation * sideFrontierInterpretation);
 		
 		unsigned int getFaultInterpretationCount() const;
 		FaultInterpretation* getFaultInterpretation(const unsigned int & index);
@@ -2524,8 +2524,8 @@ namespace resqml2_0_1
 	{
 	public:
 		unsigned int getGridRepresentationCount() const;
-		resqml2::AbstractGridRepresentation* getGridRepresentation(const unsigned int & index) const;
-		bool isAssociatedToGridRepresentation(resqml2::AbstractGridRepresentation* gridRep) const;
+		RESQML2_NS::AbstractGridRepresentation* getGridRepresentation(const unsigned int & index) const;
+		bool isAssociatedToGridRepresentation(RESQML2_NS::AbstractGridRepresentation* gridRep) const;
 	};
 	
 	class StratigraphicOccurrenceInterpretation;	
@@ -2570,7 +2570,7 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_StratigraphicColumn) StratigraphicColumn;
 #endif
-	class StratigraphicColumn : public common::AbstractObject
+	class StratigraphicColumn : public COMMON_NS::AbstractObject
 	{
 	public:
 		void pushBackStratiColumnRank(StratigraphicColumnRankInterpretation * stratiColumnRank);
@@ -2580,7 +2580,7 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_EarthModelInterpretation) EarthModelInterpretation;
 #endif
-	class EarthModelInterpretation : public resqml2::AbstractFeatureInterpretation
+	class EarthModelInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	public:
 		void setStructuralOrganizationInterpretation(StructuralOrganizationInterpretation * structOrganization);
@@ -2594,7 +2594,7 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_SubRepresentation) SubRepresentation;
 #endif	
-	class SubRepresentation : public resqml2::SubRepresentation
+	class SubRepresentation : public RESQML2_NS::SubRepresentation
 	{
 	public:
 	};
@@ -2602,7 +2602,7 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_PolylineSetRepresentation) PolylineSetRepresentation;
 #endif
-	class PolylineSetRepresentation : public resqml2::AbstractRepresentation
+	class PolylineSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
 		unsigned int getPolylineCountOfPatch(const unsigned int & patchIndex) const;
@@ -2612,11 +2612,11 @@ namespace resqml2_0_1
 		void pushBackGeometryPatch(
 				unsigned int * NodeCountPerPolyline, double * nodes,
 				const unsigned int & polylineCount, const bool & allPolylinesClosedFlag,
-				common::AbstractHdfProxy * proxy);
+				COMMON_NS::AbstractHdfProxy * proxy);
 		void pushBackGeometryPatch(
 				unsigned int * NodeCountPerPolyline, double * nodes,
 				const unsigned int & polylineCount, bool * polylineClosedFlags,
-				common::AbstractHdfProxy * proxy);
+				COMMON_NS::AbstractHdfProxy * proxy);
 				
 		bool areAllPolylinesClosedOfPatch(const unsigned int & patchIndex) const;
 		bool areAllPolylinesClosedOfAllPatches() const;
@@ -2632,18 +2632,18 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_PointSetRepresentation) PointSetRepresentation;
 #endif
-	class PointSetRepresentation : public resqml2::AbstractRepresentation
+	class PointSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
 		void pushBackGeometryPatch(
 			const unsigned int & xyzPointCount, double * xyzPoints,
-			common::AbstractHdfProxy * proxy);
+			COMMON_NS::AbstractHdfProxy * proxy);
 	};
 	
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_PlaneSetRepresentation) PlaneSetRepresentation;
 #endif
-	class PlaneSetRepresentation : public resqml2::AbstractRepresentation
+	class PlaneSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
 		void pushBackHorizontalPlaneGeometryPatch(const double & zCoordinate);
@@ -2655,10 +2655,10 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_PolylineRepresentation) PolylineRepresentation;
 #endif
-	class PolylineRepresentation : public resqml2::AbstractRepresentation
+	class PolylineRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
-		void setGeometry(double * points, const unsigned int & pointCount, common::AbstractHdfProxy * proxy);
+		void setGeometry(double * points, const unsigned int & pointCount, COMMON_NS::AbstractHdfProxy * proxy);
 		bool isClosed() const;
 		bool hasALineRole() const;
 		gsoap_resqml2_0_1::resqml2__LineRole getLineRole() const;
@@ -2668,7 +2668,7 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_AbstractSurfaceRepresentation) AbstractSurfaceRepresentation;
 #endif
-	class AbstractSurfaceRepresentation : public resqml2::AbstractRepresentation
+	class AbstractSurfaceRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
 		void setSurfaceRole(const gsoap_resqml2_0_1::resqml2__SurfaceRole & surfaceRole);
@@ -2721,14 +2721,14 @@ namespace resqml2_0_1
 
 		void setGeometryAsArray2dOfExplicitZ(
 			double * zValues,
-			const unsigned int & numI, const unsigned int & numJ, common::AbstractHdfProxy * proxy,
+			const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy * proxy,
 			Grid2dRepresentation * supportingGrid2dRepresentation,
 			const unsigned int & startIndexI = 0, const unsigned int & startIndexJ = 0,
 			const int & indexIncrementI = 1, const int & indexIncrementJ = 1);
 			
 		void setGeometryAsArray2dOfExplicitZ(
 			double * zValues,
-			const unsigned int & numI, const unsigned int & numJ, common::AbstractHdfProxy * proxy,
+			const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy * proxy,
 			const double & originX, const double & originY, const double & originZ,
 			const double & offsetIX, const double & offsetIY, const double & offsetIZ, const double & spacingI,
 			const double & offsetJX, const double & offsetJY, const double & offsetJZ, const double & spacingJ);
@@ -2750,7 +2750,7 @@ namespace resqml2_0_1
 		void getZValuesOfPatchInGlobalCrs(const unsigned int & patchIndex, double* values) const;
 		void pushBackGeometryPatch(
 				double * zValues,
-				const unsigned int & numI, const unsigned int & numJ, common::AbstractHdfProxy * proxy,
+				const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy * proxy,
 				Grid2dRepresentation * supportingGrid2dRepresentation,
 				const unsigned int & startIndexI = 0, const unsigned int & startIndexJ = 0,
 				const int & indexIncrementI = 1, const int & indexIncrementJ = 1);
@@ -2772,29 +2772,29 @@ namespace resqml2_0_1
 		unsigned int getTriangleCountOfAllPatches() const;
 		void getTriangleNodeIndicesOfPatch(const unsigned int & patchIndex, unsigned int * triangleNodeIndices) const;
 		void getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const;
-		void pushBackTrianglePatch(const unsigned int & NodeCount, double * nodes, const unsigned int & triangleCount, unsigned int * triangleNodeIndices, common::AbstractHdfProxy * proxy);
+		void pushBackTrianglePatch(const unsigned int & NodeCount, double * nodes, const unsigned int & triangleCount, unsigned int * triangleNodeIndices, COMMON_NS::AbstractHdfProxy * proxy);
 	};
 	
 	class WellboreFrameRepresentation;
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_WellboreTrajectoryRepresentation) WellboreTrajectoryRepresentation;
 #endif
-	class  WellboreTrajectoryRepresentation : public resqml2::AbstractRepresentation
+	class  WellboreTrajectoryRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
 		unsigned int getWellboreFrameRepresentationCount() const;
 		WellboreFrameRepresentation* getWellboreFrameRepresentation(const unsigned int & index) const;
 		
 		std::string getMdDatumUuid() const;
-		resqml2::MdDatum * getMdDatum() const;
+		RESQML2_NS::MdDatum * getMdDatum() const;
 		
-		void setGeometry(double * controlPoints, const double & startMd, const double & endMd, const unsigned int & controlPointCount, const int & lineKind, class common::AbstractHdfProxy * proxy);
+		void setGeometry(double * controlPoints, const double & startMd, const double & endMd, const unsigned int & controlPointCount, const int & lineKind, class COMMON_NS::AbstractHdfProxy * proxy);
 		void setGeometry(double * controlPoints,
 			double* controlPointParameters, const unsigned int & controlPointCount,
-			common::AbstractHdfProxy * proxy);
+			COMMON_NS::AbstractHdfProxy * proxy);
 		void setGeometry(double * controlPoints,
 			double * tangentVectors, double* controlPointParameters, const unsigned int & controlPointCount,
-			common::AbstractHdfProxy * proxy);
+			COMMON_NS::AbstractHdfProxy * proxy);
 			
 		void addParentTrajectory(const double & kickoffMd, const double & parentMd, WellboreTrajectoryRepresentation* parentTrajRep);
 		WellboreTrajectoryRepresentation* getParentTrajectory() const;
@@ -2816,22 +2816,22 @@ namespace resqml2_0_1
 		void setDeviationSurvey(class DeviationSurveyRepresentation* deviationSurvey);
 		class DeviationSurveyRepresentation* getDeviationSurvey() const;
 
-		void setWitsmlTrajectory(witsml1_4_1_1::Trajectory * witsmlTraj);
-		witsml1_4_1_1::Trajectory * getWitsmlTrajectory();
+		void setWitsmlTrajectory(WITSML1_4_1_1_NS::Trajectory * witsmlTraj);
+		WITSML1_4_1_1_NS::Trajectory * getWitsmlTrajectory();
 	};
 
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_DeviationSurveyRepresentation) DeviationSurveyRepresentation;
 #endif
-	class DeviationSurveyRepresentation : public resqml2::AbstractRepresentation
+	class DeviationSurveyRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
 		void setGeometry(double * firstStationLocation, const ULONG64 & stationCount,
 			const gsoap_resqml2_0_1::eml20__LengthUom & mdUom, double * mds,
 			const gsoap_resqml2_0_1::eml20__PlaneAngleUom & angleUom, double * azimuths, double * inclinations,
-			common::AbstractHdfProxy* proxy);
+			COMMON_NS::AbstractHdfProxy* proxy);
 
-		resqml2::MdDatum * getMdDatum() const;
+		RESQML2_NS::MdDatum * getMdDatum() const;
 		std::string getMdDatumUuid() const;
 
 		bool isFinal() const;
@@ -2853,10 +2853,10 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_WellboreFrameRepresentation) WellboreFrameRepresentation;
 #endif
-	class WellboreFrameRepresentation : public resqml2::AbstractRepresentation
+	class WellboreFrameRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
-		void setMdValues(double * mdValues, const unsigned int & mdValueCount, class common::AbstractHdfProxy * proxy);
+		void setMdValues(double * mdValues, const unsigned int & mdValueCount, class COMMON_NS::AbstractHdfProxy * proxy);
 		void setMdValues(const double & firstMdValue, const double & incrementMdValue, const unsigned int & mdValueCount);
 
 		bool areMdValuesRegularlySpaced() const;
@@ -2864,21 +2864,21 @@ namespace resqml2_0_1
 		double getMdFirstValue() const;
 
 		unsigned int getMdValuesCount() const;
-		resqml2::AbstractValuesProperty::hdfDatatypeEnum getMdHdfDatatype() const;
+		RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum getMdHdfDatatype() const;
 		void getMdAsDoubleValues(double * values);
 		void getMdAsFloatValues(float * values);
 		
 		std::string getWellboreTrajectoryUuid() const;
 		WellboreTrajectoryRepresentation* getWellboreTrajectory();
 
-		void setWitsmlLog(witsml1_4_1_1::Log * witsmlLogToSet);
-		witsml1_4_1_1::Log* getWitsmlLog();
+		void setWitsmlLog(WITSML1_4_1_1_NS::Log * witsmlLogToSet);
+		WITSML1_4_1_1_NS::Log* getWitsmlLog();
 	};
 	
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_WellboreMarker) WellboreMarker;
 #endif
-	class WellboreMarker : public common::AbstractObject
+	class WellboreMarker : public COMMON_NS::AbstractObject
 	{
 	public:
 		bool hasAGeologicBoundaryKind();
@@ -2903,13 +2903,13 @@ namespace resqml2_0_1
 		void setIntervalStratigraphicUnits(unsigned int * stratiUnitIndices, const unsigned int & nullValue, class StratigraphicOccurrenceInterpretation* stratiOccurenceInterp);
 		StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation();
 
-		void setWitsmlFormationMarker(const unsigned int & resqmlMarkerIndex, witsml1_4_1_1::FormationMarker * witsmlFormationMarker);
+		void setWitsmlFormationMarker(const unsigned int & resqmlMarkerIndex, WITSML1_4_1_1_NS::FormationMarker * witsmlFormationMarker);
 	};
 	
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_RepresentationSetRepresentation) RepresentationSetRepresentation;
 #endif
-	class RepresentationSetRepresentation : public resqml2::RepresentationSetRepresentation
+	class RepresentationSetRepresentation : public RESQML2_NS::RepresentationSetRepresentation
 	{
 	public:
 	};
@@ -2920,7 +2920,7 @@ namespace resqml2_0_1
 	class NonSealedSurfaceFrameworkRepresentation : public RepresentationSetRepresentation
 	{
 	public:
-		void pushBackNonSealedContactRepresentation(const unsigned int & pointCount, double * points, resqml2::AbstractLocal3dCrs* localCrs, common::AbstractHdfProxy * proxy);
+		void pushBackNonSealedContactRepresentation(const unsigned int & pointCount, double * points, RESQML2_NS::AbstractLocal3dCrs* localCrs, COMMON_NS::AbstractHdfProxy * proxy);
 	};
 	
 #ifdef SWIGPYTHON
@@ -2934,7 +2934,7 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_UnstructuredGridRepresentation) UnstructuredGridRepresentation;
 #endif
-	class UnstructuredGridRepresentation : public resqml2::AbstractGridRepresentation
+	class UnstructuredGridRepresentation : public RESQML2_NS::AbstractGridRepresentation
 	{
 	public:
 		void getCellFaceIsRightHanded(unsigned char* cellFaceIsRightHanded) const;
@@ -2958,18 +2958,18 @@ namespace resqml2_0_1
 		ULONG64 * getNodeIndicesOfFaceOfCell(const ULONG64 & cellIndex, const unsigned int & localFaceIndex) const;
 		void unloadGeometry();
 		
-		void setGeometry(unsigned char * cellFaceIsRightHanded, double * points, ULONG64 pointCount, class common::AbstractHdfProxy * proxy,
+		void setGeometry(unsigned char * cellFaceIsRightHanded, double * points, ULONG64 pointCount, class COMMON_NS::AbstractHdfProxy * proxy,
 			ULONG64 * faceIndicesPerCell, ULONG64 * faceIndicesCumulativeCountPerCell,
 			ULONG64 faceCount, ULONG64 * nodeIndicesPerFace, ULONG64 * nodeIndicesCumulativeCountPerFace,
 			const gsoap_resqml2_0_1::resqml2__CellShape & cellShape);
-		void setTetrahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points, ULONG64 pointCount, ULONG64 faceCount, class common::AbstractHdfProxy * proxy,
+		void setTetrahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points, ULONG64 pointCount, ULONG64 faceCount, class COMMON_NS::AbstractHdfProxy * proxy,
 			ULONG64 * faceIndicesPerCell, ULONG64 * nodeIndicesPerFace);
 	};
 	
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_AbstractIjkGridRepresentation) AbstractIjkGridRepresentation;
 #endif
-	class AbstractIjkGridRepresentation : public resqml2::AbstractColumnLayerGridRepresentation
+	class AbstractIjkGridRepresentation : public RESQML2_NS::AbstractColumnLayerGridRepresentation
 	{
 	public:
 		enum geometryKind { UNKNOWN = 0, EXPLICIT = 1, PARAMETRIC = 2, LATTICE = 3, NO_GEOMETRY = 4 };
@@ -3052,7 +3052,7 @@ namespace resqml2_0_1
 						const unsigned int patchIndex,
 						const double & startInline, const double & incrInline, const unsigned int & countInline,
 						const double & startCrossline, const double & incrCrossline, const unsigned int & countCrossline,
-			            const unsigned int & countSample, resqml2::AbstractRepresentation * seismicSupport);
+			            const unsigned int & countSample, RESQML2_NS::AbstractRepresentation * seismicSupport);
 	};
 	
 #ifdef SWIGPYTHON
@@ -3063,14 +3063,14 @@ namespace resqml2_0_1
 	public:
 		void setGeometryAsCoordinateLineNodes(
 			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-			double * points, class common::AbstractHdfProxy * proxy,
+			double * points, class COMMON_NS::AbstractHdfProxy * proxy,
 			const unsigned long & splitCoordinateLineCount = 0, unsigned int * pillarOfCoordinateLine = nullptr,
 			unsigned int * splitCoordinateLineColumnCumulativeCount = nullptr, unsigned int * splitCoordinateLineColumns = nullptr,
 			char * definedPillars = nullptr);
 			
 			void setGeometryAsCoordinateLineNodesUsingExistingDatasets(
 			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-			const std::string & points, common::AbstractHdfProxy* proxy,
+			const std::string & points, COMMON_NS::AbstractHdfProxy* proxy,
 			const unsigned long & splitCoordinateLineCount = 0, const std::string & pillarOfCoordinateLine = "",
 			const std::string & splitCoordinateLineColumnCumulativeCount = "", const std::string & splitCoordinateLineColumns = "",
 			const std::string & definedPillars = "");
@@ -3091,26 +3091,26 @@ namespace resqml2_0_1
 
 		void setGeometryAsParametricSplittedPillarNodes(
 			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-			double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, short * pillarKind, common::AbstractHdfProxy* proxy,
+			double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
 			const unsigned long & splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
 			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns);
 
 		void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, common::AbstractHdfProxy* proxy,
+			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, COMMON_NS::AbstractHdfProxy* proxy,
 			const unsigned long & splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns);
 
 		void setGeometryAsParametricSplittedPillarNodes(
 			const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-			double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointCountPerPillar, short pillarKind, common::AbstractHdfProxy* proxy,
+			double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
 			const unsigned long & splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
 			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns);
 
 
 		void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, const unsigned int & controlPointCountPerPillar, short pillarKind, common::AbstractHdfProxy* proxy,
+			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, const unsigned int & controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
 			const unsigned long & splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns);
 	};
@@ -3126,7 +3126,7 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_GridConnectionSetRepresentation) GridConnectionSetRepresentation;
 #endif	
-	class GridConnectionSetRepresentation : public resqml2::GridConnectionSetRepresentation
+	class GridConnectionSetRepresentation : public RESQML2_NS::GridConnectionSetRepresentation
 	{
 	public:
 	};
@@ -3137,7 +3137,7 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_TimeSeries) TimeSeries;
 #endif	
-	class TimeSeries : public resqml2::TimeSeries
+	class TimeSeries : public RESQML2_NS::TimeSeries
 	{
 	public:
 	};
@@ -3145,7 +3145,7 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_PropertyKind) PropertyKind;
 #endif	
-	class PropertyKind : public resqml2::PropertyKind
+	class PropertyKind : public RESQML2_NS::PropertyKind
 	{
 	public:
 	};
@@ -3153,7 +3153,7 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_StringTableLookup) StringTableLookup;
 #endif	
-	class StringTableLookup : public common::AbstractObject
+	class StringTableLookup : public COMMON_NS::AbstractObject
 	{
 	public:
 		unsigned int getItemCount() const;
@@ -3168,51 +3168,51 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_CommentProperty) CommentProperty;
 #endif	
-	class CommentProperty : public resqml2::AbstractValuesProperty
+	class CommentProperty : public RESQML2_NS::AbstractValuesProperty
 	{
 	public:
-		void pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values, common::AbstractHdfProxy * proxy);
+		void pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values, COMMON_NS::AbstractHdfProxy * proxy);
 		std::vector<std::string> getStringValuesOfPatch(const unsigned int & patchIndex);
 	};
 	
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_ContinuousProperty) ContinuousProperty;
 #endif
-	class ContinuousProperty : public resqml2::AbstractValuesProperty
+	class ContinuousProperty : public RESQML2_NS::AbstractValuesProperty
 	{
 	public:
 
 		const gsoap_resqml2_0_1::resqml2__ResqmlUom & getUom() const;
 		std::string getUomAsString() const;
 		
-		void pushBackDoubleHdf5Array1dOfValues(double * values, const ULONG64 & valueCount, common::AbstractHdfProxy* proxy,
+		void pushBackDoubleHdf5Array1dOfValues(double * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy,
 			const double & minimumValue = std::numeric_limits<double>::quiet_NaN(), const double & maximumValue = std::numeric_limits<double>::quiet_NaN());
-		void pushBackDoubleHdf5Array2dOfValues(double * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy,
+		void pushBackDoubleHdf5Array2dOfValues(double * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
 			const double & minimumValue = std::numeric_limits<double>::quiet_NaN(), const double & maximumValue = std::numeric_limits<double>::quiet_NaN());
-		void pushBackDoubleHdf5Array3dOfValues(double * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy,
+		void pushBackDoubleHdf5Array3dOfValues(double * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
 			const double & minimumValue = std::numeric_limits<double>::quiet_NaN(), const double & maximumValue = std::numeric_limits<double>::quiet_NaN());
-		void pushBackDoubleHdf5ArrayOfValues(double * values, unsigned long long * numValues, const unsigned int & numArrayDimensions, common::AbstractHdfProxy* proxy,
+		void pushBackDoubleHdf5ArrayOfValues(double * values, unsigned long long * numValues, const unsigned int & numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy,
 			double * minimumValue = nullptr, double * maximumValue = nullptr);
-		void pushBackFloatHdf5Array1dOfValues(float * values, const ULONG64 & valueCount, common::AbstractHdfProxy* proxy,
+		void pushBackFloatHdf5Array1dOfValues(float * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy,
 			const float & minimumValue = std::numeric_limits<float>::quiet_NaN(), const float & maximumValue = std::numeric_limits<float>::quiet_NaN());
-		void pushBackFloatHdf5Array2dOfValues(float * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy,
+		void pushBackFloatHdf5Array2dOfValues(float * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
 			const float & minimumValue = std::numeric_limits<float>::quiet_NaN(), const float & maximumValue = std::numeric_limits<float>::quiet_NaN());
-		void pushBackFloatHdf5Array3dOfValues(float * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy,
+		void pushBackFloatHdf5Array3dOfValues(float * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
 			const float & minimumValue = std::numeric_limits<float>::quiet_NaN(), const float & maximumValue = std::numeric_limits<float>::quiet_NaN());
-		void pushBackFloatHdf5ArrayOfValues(float * values, unsigned long long * numValues, const unsigned int & numArrayDimensions, common::AbstractHdfProxy* proxy,
+		void pushBackFloatHdf5ArrayOfValues(float * values, unsigned long long * numValues, const unsigned int & numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy,
 			float * minimumValue = nullptr, float * maximumValue = nullptr);
 
 
 		void pushBackFloatHdf5ArrayOfValues(
 			unsigned long long* numValues,
 			const unsigned int& numArrayDimensions, 
-			common::AbstractHdfProxy* proxy
+			COMMON_NS::AbstractHdfProxy* proxy
 		);
 		void pushBackFloatHdf5ArrayOfValues(
 			const ULONG64& valueCountInFastestDim,
 			const ULONG64& valueCountInMiddleDim,
 			const ULONG64& valueCountInSlowestDim,
-			common::AbstractHdfProxy* proxy
+			COMMON_NS::AbstractHdfProxy* proxy
 		);
 		void setValuesOfFloatHdf5ArrayOfValues(
 			float* values, 
@@ -3222,7 +3222,7 @@ namespace resqml2_0_1
 			const ULONG64& offsetInFastestDim,
 			const ULONG64& offsetInMiddleDim,
 			const ULONG64& offsetInSlowestDim,
-			common::AbstractHdfProxy* proxy,
+			COMMON_NS::AbstractHdfProxy* proxy,
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max()
 		);
 		void setValuesOfFloatHdf5ArrayOfValues(
@@ -3230,7 +3230,7 @@ namespace resqml2_0_1
 			unsigned long long * numValues,
 			unsigned long long * offsetValues,
 			const unsigned int & numArrayDimensions, 
-			common::AbstractHdfProxy* proxy,
+			COMMON_NS::AbstractHdfProxy* proxy,
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max()
 		);
 
@@ -3271,50 +3271,50 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_DiscreteProperty) DiscreteProperty;
 #endif
-	class DiscreteProperty : public resqml2::AbstractValuesProperty
+	class DiscreteProperty : public RESQML2_NS::AbstractValuesProperty
 	{
 	public:
-		void pushBackLongHdf5Array1dOfValues(long * values, const ULONG64 & valueCount, common::AbstractHdfProxy* proxy, const long & nullValue, const long & minimumValue, const long & maximumValue);
-		void pushBackLongHdf5Array1dOfValues(long * values, const ULONG64 & valueCount, common::AbstractHdfProxy* proxy, const long & nullValue);
-		void pushBackIntHdf5Array1dOfValues(int * values, const ULONG64 & valueCount, common::AbstractHdfProxy* proxy, const int & nullValue, const int & minimumValue, const int & maximumValue);
-		void pushBackIntHdf5Array1dOfValues(int * values, const ULONG64 & valueCount, common::AbstractHdfProxy* proxy, const int & nullValue);
-		void pushBackShortHdf5Array1dOfValues(short * values, const ULONG64 & valueCount, common::AbstractHdfProxy* proxy, const short & nullValue, const short & minimumValue, const short & maximumValue);
-		void pushBackShortHdf5Array1dOfValues(short * values, const ULONG64 & valueCount, common::AbstractHdfProxy* proxy, const short & nullValue);
-		void pushBackCharHdf5Array1dOfValues(char * values, const ULONG64 & valueCount, common::AbstractHdfProxy* proxy, const char & nullValue, const char & minimumValue, const char & maximumValue);
-		void pushBackCharHdf5Array1dOfValues(char * values, const ULONG64 & valueCount, common::AbstractHdfProxy* proxy, const char & nullValue);
+		void pushBackLongHdf5Array1dOfValues(long * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue, const long & minimumValue, const long & maximumValue);
+		void pushBackLongHdf5Array1dOfValues(long * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue);
+		void pushBackIntHdf5Array1dOfValues(int * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy, const int & nullValue, const int & minimumValue, const int & maximumValue);
+		void pushBackIntHdf5Array1dOfValues(int * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy, const int & nullValue);
+		void pushBackShortHdf5Array1dOfValues(short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy, const short & nullValue, const short & minimumValue, const short & maximumValue);
+		void pushBackShortHdf5Array1dOfValues(short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy, const short & nullValue);
+		void pushBackCharHdf5Array1dOfValues(char * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy, const char & nullValue, const char & minimumValue, const char & maximumValue);
+		void pushBackCharHdf5Array1dOfValues(char * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy, const char & nullValue);
 		
-		void pushBackLongHdf5Array2dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const long & nullValue, const long & minimumValue, const long & maximumValue);
-		void pushBackLongHdf5Array2dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const long & nullValue);
-		void pushBackIntHdf5Array2dOfValues(int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const int & nullValue, const int & minimumValue, const int & maximumValue);
-		void pushBackIntHdf5Array2dOfValues(int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const int & nullValue);
-		void pushBackShortHdf5Array2dOfValues(short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const short & nullValue, const short & minimumValue, const short & maximumValue);
-		void pushBackShortHdf5Array2dOfValues(short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const short & nullValue);
-		void pushBackUShortHdf5Array2dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const unsigned short & nullValue, const unsigned short & minimumValue, const unsigned short & maximumValue);
-		void pushBackUShortHdf5Array2dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const unsigned short & nullValue);
-		void pushBackCharHdf5Array2dOfValues(char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const char & nullValue, const char & minimumValue, const char & maximumValue);
-		void pushBackCharHdf5Array2dOfValues(char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const char & nullValue);
+		void pushBackLongHdf5Array2dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue, const long & minimumValue, const long & maximumValue);
+		void pushBackLongHdf5Array2dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue);
+		void pushBackIntHdf5Array2dOfValues(int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const int & nullValue, const int & minimumValue, const int & maximumValue);
+		void pushBackIntHdf5Array2dOfValues(int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const int & nullValue);
+		void pushBackShortHdf5Array2dOfValues(short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const short & nullValue, const short & minimumValue, const short & maximumValue);
+		void pushBackShortHdf5Array2dOfValues(short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const short & nullValue);
+		void pushBackUShortHdf5Array2dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue, const unsigned short & minimumValue, const unsigned short & maximumValue);
+		void pushBackUShortHdf5Array2dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue);
+		void pushBackCharHdf5Array2dOfValues(char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const char & nullValue, const char & minimumValue, const char & maximumValue);
+		void pushBackCharHdf5Array2dOfValues(char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const char & nullValue);
 		
-		void pushBackLongHdf5Array3dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const long & nullValue, const long & minimumValue, const long & maximumValue);
-		void pushBackLongHdf5Array3dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const long & nullValue);
-		void pushBackIntHdf5Array3dOfValues(int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const int & nullValue, const int & minimumValue, const int & maximumValue);
-		void pushBackIntHdf5Array3dOfValues(int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const int & nullValue);
-		void pushBackShortHdf5Array3dOfValues(short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const short & nullValue, const short & minimumValue, const short & maximumValue);
-		void pushBackShortHdf5Array3dOfValues(short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const short & nullValue);
-		void pushBackUShortHdf5Array3dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const unsigned short & nullValue, const unsigned short & minimumValue, const unsigned short & maximumValue);
-		void pushBackUShortHdf5Array3dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const unsigned short & nullValue);
-		void pushBackCharHdf5Array3dOfValues(char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const char & nullValue, const char & minimumValue, const char & maximumValue);
-		void pushBackCharHdf5Array3dOfValues(char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy* proxy, const char & nullValue);
+		void pushBackLongHdf5Array3dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue, const long & minimumValue, const long & maximumValue);
+		void pushBackLongHdf5Array3dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue);
+		void pushBackIntHdf5Array3dOfValues(int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const int & nullValue, const int & minimumValue, const int & maximumValue);
+		void pushBackIntHdf5Array3dOfValues(int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const int & nullValue);
+		void pushBackShortHdf5Array3dOfValues(short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const short & nullValue, const short & minimumValue, const short & maximumValue);
+		void pushBackShortHdf5Array3dOfValues(short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const short & nullValue);
+		void pushBackUShortHdf5Array3dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue, const unsigned short & minimumValue, const unsigned short & maximumValue);
+		void pushBackUShortHdf5Array3dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue);
+		void pushBackCharHdf5Array3dOfValues(char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const char & nullValue, const char & minimumValue, const char & maximumValue);
+		void pushBackCharHdf5Array3dOfValues(char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const char & nullValue);
 		
-		void pushBackLongHdf5ArrayOfValues(long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const long & nullValue, const long & minimumValue, const long & maximumValue);
-		void pushBackLongHdf5ArrayOfValues(long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const long & nullValue);
-		void pushBackIntHdf5ArrayOfValues(int * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const int & nullValue, const int & minimumValue, const int & maximumValue);
-		void pushBackIntHdf5ArrayOfValues(int * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const int & nullValue);
-		void pushBackShortHdf5ArrayOfValues(short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const short & nullValue, const short & minimumValue, const short & maximumValue);
-		void pushBackShortHdf5ArrayOfValues(short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const short & nullValue);
-		void pushBackUShortHdf5ArrayOfValues(unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const unsigned short & nullValue, const unsigned short & minimumValue, const unsigned short & maximumValue);
-		void pushBackUShortHdf5ArrayOfValues(unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const unsigned short & nullValue);
-		void pushBackCharHdf5ArrayOfValues(char * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const char & nullValue, const char & minimumValue, const char & maximumValue);
-		void pushBackCharHdf5ArrayOfValues(char * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const char & nullValue);
+		void pushBackLongHdf5ArrayOfValues(long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue, const long & minimumValue, const long & maximumValue);
+		void pushBackLongHdf5ArrayOfValues(long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue);
+		void pushBackIntHdf5ArrayOfValues(int * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const int & nullValue, const int & minimumValue, const int & maximumValue);
+		void pushBackIntHdf5ArrayOfValues(int * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const int & nullValue);
+		void pushBackShortHdf5ArrayOfValues(short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const short & nullValue, const short & minimumValue, const short & maximumValue);
+		void pushBackShortHdf5ArrayOfValues(short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const short & nullValue);
+		void pushBackUShortHdf5ArrayOfValues(unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue, const unsigned short & minimumValue, const unsigned short & maximumValue);
+		void pushBackUShortHdf5ArrayOfValues(unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue);
+		void pushBackCharHdf5ArrayOfValues(char * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const char & nullValue, const char & minimumValue, const char & maximumValue);
+		void pushBackCharHdf5ArrayOfValues(char * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const char & nullValue);
 		
 		LONG64 getMinimumValue();
 		LONG64 getMaximumValue();
@@ -3331,23 +3331,23 @@ namespace resqml2_0_1
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_CategoricalProperty) CategoricalProperty;
 #endif
-	class CategoricalProperty : public resqml2::AbstractValuesProperty
+	class CategoricalProperty : public RESQML2_NS::AbstractValuesProperty
 	{
 	public:
 		std::string getStringLookupUuid() const;
 		StringTableLookup* getStringLookup();
 		
-		void pushBackLongHdf5Array1dOfValues(long * values, const ULONG64 & valueCount, common::AbstractHdfProxy * proxy, const long & nullValue);
-		void pushBackUShortHdf5Array1dOfValues(unsigned short * values, const ULONG64 & valueCount, common::AbstractHdfProxy * proxy, const long & nullValue);
+		void pushBackLongHdf5Array1dOfValues(long * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
+		void pushBackUShortHdf5Array1dOfValues(unsigned short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
 
-		void pushBackLongHdf5Array2dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy, const long & nullValue);
-		void pushBackUShortHdf5Array2dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy, const long & nullValue);
+		void pushBackLongHdf5Array2dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
+		void pushBackUShortHdf5Array2dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
 		
-		void pushBackLongHdf5Array3dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy, const long & nullValue);
-		void pushBackUShortHdf5Array3dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, common::AbstractHdfProxy * proxy, const long & nullValue);
+		void pushBackLongHdf5Array3dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
+		void pushBackUShortHdf5Array3dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
 		
-		void pushBackLongHdf5ArrayOfValues(long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const long & nullValue);
-		void pushBackUShortHdf5ArrayOfValues(unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy* proxy, const unsigned short & nullValue);		
+		void pushBackLongHdf5ArrayOfValues(long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue);
+		void pushBackUShortHdf5ArrayOfValues(unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue);		
 	};
 	
 #ifdef SWIGPYTHON
@@ -3364,7 +3364,7 @@ namespace resqml2_0_1
 	class PropertyKindMapper
 	{
 	public:
-		PropertyKindMapper(common::EpcDocument * epcDoc);
+		PropertyKindMapper(COMMON_NS::EpcDocument * epcDoc);
 
 		std::string loadMappingFilesFromDirectory(const std::string & directory);
 		std::string getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & resqmlStandardPropertyKindName, const std::string & application) const;

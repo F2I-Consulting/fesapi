@@ -24,12 +24,12 @@ under the License.
 #include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 
 MdDatum::MdDatum(soap* soapContext, const string & guid, const string & title,
-			resqml2::AbstractLocal3dCrs * locCrs, const resqml2__MdReference & originKind,
+			RESQML2_NS::AbstractLocal3dCrs * locCrs, const resqml2__MdReference & originKind,
 			const double & referenceLocationOrdinal1, const double & referenceLocationOrdinal2, const double & referenceLocationOrdinal3)
 {
 	if (soapContext == nullptr)
@@ -50,7 +50,7 @@ MdDatum::MdDatum(soap* soapContext, const string & guid, const string & title,
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");
 }
 
-void MdDatum::setXmlLocalCrs(resqml2::AbstractLocal3dCrs * localCrs)
+void MdDatum::setXmlLocalCrs(RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	_resqml2__MdDatum* mdDatum = static_cast<_resqml2__MdDatum*>(gsoapProxy2_0_1);
 	mdDatum->LocalCrs = localCrs->newResqmlReference();
@@ -96,7 +96,7 @@ double MdDatum::getZ() const
 double MdDatum::getZInGlobalCrs() const
 {
 	double originOrdinal3 = .0;
-	resqml2::AbstractLocal3dCrs* localCrs = getLocalCrs();
+	RESQML2_NS::AbstractLocal3dCrs* localCrs = getLocalCrs();
 	if (localCrs->getGsoapType() != SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORELocalTime3dCrs)
 		originOrdinal3 = localCrs->getOriginDepthOrElevation();
 	return getZ() + originOrdinal3;

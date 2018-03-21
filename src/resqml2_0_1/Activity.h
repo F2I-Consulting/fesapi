@@ -20,33 +20,33 @@ under the License.
 
 #include "resqml2/Activity.h"
 
-namespace resqml2
+namespace RESQML2_NS
 {
 	class ActivityTemplate;
 }
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT Activity : public resqml2::Activity
+	class DLL_IMPORT_OR_EXPORT Activity : public RESQML2_NS::Activity
 	{
 	protected:
-		Activity() : resqml2::Activity() {}
+		Activity() : RESQML2_NS::Activity() {}
 
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		Activity(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : resqml2::Activity(partialObject) {}
+		Activity(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::Activity(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
 		* @param guid		The guid to set to the boundary horizon. If empty then a new guid will be generated.
 		* @param title		A title for the instance to create.
 		*/
-		Activity(resqml2::ActivityTemplate* activityTemplate, const std::string & guid, const std::string & title);
+		Activity(RESQML2_NS::ActivityTemplate* activityTemplate, const std::string & guid, const std::string & title);
 
-		Activity(gsoap_resqml2_0_1::_resqml2__Activity* fromGsoap) : resqml2::Activity(fromGsoap) {}
+		Activity(gsoap_resqml2_0_1::_resqml2__Activity* fromGsoap) : RESQML2_NS::Activity(fromGsoap) {}
 		virtual ~Activity() {}
 
 		/**
@@ -114,7 +114,7 @@ namespace resqml2_0_1
 		/**
 		* Set the activity template of the activity
 		**/
-		void setActivityTemplate(resqml2::ActivityTemplate* activityTemplate);
+		void setActivityTemplate(RESQML2_NS::ActivityTemplate* activityTemplate);
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getActivityTemplateDor() const;
 
@@ -122,7 +122,7 @@ namespace resqml2_0_1
 
 	private:
 
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc);
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		std::vector<gsoap_resqml2_0_1::resqml2__AbstractActivityParameter*> getParameterFromTitle(const std::string & paramTitle) const;
 	};

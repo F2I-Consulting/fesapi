@@ -22,7 +22,7 @@ under the License.
 #include "../catch.hpp"
 
 using namespace resqml2_0_1test;
-using namespace common;
+using namespace COMMON_NS;
 using namespace std;
 
 const char* LocalDepth3dCrsTest::defaultUuid = "a8effb2c-c94f-4d88-ae76-581ff14a4b96";

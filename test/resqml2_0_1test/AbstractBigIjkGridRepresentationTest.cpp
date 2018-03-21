@@ -27,9 +27,9 @@ under the License.
 #include "resqml2_0_1/ContinuousProperty.h"
 
 using namespace std;
-using namespace common;
+using namespace COMMON_NS;
 using namespace resqml2_0_1test;
-using namespace resqml2;
+using namespace RESQML2_NS;
 
 AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(
 	const string & epcDocPath,

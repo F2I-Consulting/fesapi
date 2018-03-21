@@ -28,8 +28,8 @@ under the License.
 
 using namespace std;
 using namespace resqml2_0_1test;
-using namespace common;
-using namespace resqml2_0_1;
+using namespace COMMON_NS;
+using namespace RESQML2_0_1_NS;
 
 const char* HorizonTest::defaultUuid = "dce10adc-dbd1-4b19-87ad-92457d7e9031";
 const char* HorizonTest::defaultTitle = "Horizon";

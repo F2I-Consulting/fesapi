@@ -20,7 +20,7 @@ under the License.
 
 #include "resqml2_0_1/RepresentationSetRepresentation.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT SealedVolumeFrameworkRepresentation : public RepresentationSetRepresentation
 	{
@@ -35,5 +35,5 @@ namespace resqml2_0_1
 			 */
 			~SealedVolumeFrameworkRepresentation() {}
 	};
-} // namespace resqml2_0_1
+} // namespace RESQML2_0_1_NS
 

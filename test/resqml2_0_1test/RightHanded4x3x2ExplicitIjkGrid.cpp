@@ -28,9 +28,9 @@ under the License.
 #include "resqml2_0_1/ContinuousProperty.h"
 
 using namespace std;
-using namespace common;
+using namespace COMMON_NS;
 using namespace resqml2_0_1test;
-using namespace resqml2;
+using namespace RESQML2_NS;
 
 const char* RightHanded4x3x2ExplicitIjkGrid::defaultUuid = "f274d3d8-80ff-4860-90fb-609716303887";
 const char* RightHanded4x3x2ExplicitIjkGrid::defaultTitle = "Right Handed 4x3x2 Explicit Ijk Grid";
@@ -68,13 +68,13 @@ RightHanded4x3x2ExplicitIjkGrid::RightHanded4x3x2ExplicitIjkGrid(EpcDocument * e
 void RightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 	// getting the local depth 3d crs
 	LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(this->epcDoc, true);
-	resqml2_0_1::LocalDepth3dCrs* crs = epcDoc->getResqmlAbstractObjectByUuid<resqml2_0_1::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
+	RESQML2_0_1_NS::LocalDepth3dCrs* crs = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 
 	// getting the hdf proxy
 	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
 
 	// creating the ijk grid
-	resqml2_0_1::IjkGridExplicitRepresentation* ijkGrid = this->epcDoc->createIjkGridExplicitRepresentation(crs, uuid, title, 4, 3, 2);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = this->epcDoc->createIjkGridExplicitRepresentation(crs, uuid, title, 4, 3, 2);
 	REQUIRE(ijkGrid != nullptr);
 	unsigned int pillarOfCoordinateLine[4] = { 17, 12, 7, 2 };
 	unsigned int splitCoordinateLineColumnCumulativeCount[4] = { 1, 3, 5, 6 };
@@ -90,7 +90,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 	ijkGrid->setEnabledCells(enabledCells);
 
 	// Grid connection set representation
-	resqml2::GridConnectionSetRepresentation * gridConnSet432 = epcDoc->createGridConnectionSetRepresentation("a3d1462a-04e3-4374-921b-a4a1e9ba3ea3", "GridConnectionSetRepresentation");
+	RESQML2_NS::GridConnectionSetRepresentation * gridConnSet432 = epcDoc->createGridConnectionSetRepresentation("a3d1462a-04e3-4374-921b-a4a1e9ba3ea3", "GridConnectionSetRepresentation");
 	gridConnSet432->pushBackSupportingGridRepresentation(ijkGrid);
 	ULONG64 cellConn432[30] = {
 		1, 9999, 5, 9999, 9, 9999,
@@ -110,7 +110,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 	gridConnSet432->setLocalFacePerCellIndexPairs(15, localFacePerCellIndexPairs432, hdfProxy);
 
 	// Discrete property
-	resqml2_0_1::DiscreteProperty* discreteProp = epcDoc->createDiscreteProperty(ijkGrid, "0a8fb2aa-d1e1-4914-931c-e9e6bf2aabe5", "Cell index", 1,
+	RESQML2_0_1_NS::DiscreteProperty* discreteProp = epcDoc->createDiscreteProperty(ijkGrid, "0a8fb2aa-d1e1-4914-931c-e9e6bf2aabe5", "Cell index", 1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__index);
 	long discretePropValues[24] = {
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
@@ -119,7 +119,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 	discreteProp->pushBackLongHdf5Array3dOfValues(discretePropValues, 4, 3, 2, hdfProxy, -1);
 
 	// Continuous property
-	resqml2_0_1::ContinuousProperty* continuousProp = epcDoc->createContinuousProperty(ijkGrid, "de5a71cc-879d-4cda-8fb3-146c70539cf9", "Amplitude", 1,
+	RESQML2_0_1_NS::ContinuousProperty* continuousProp = epcDoc->createContinuousProperty(ijkGrid, "de5a71cc-879d-4cda-8fb3-146c70539cf9", "Amplitude", 1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__amplitude);
 	double continuousPropValues[24] = {
 		0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.5, 0.4, 0.3, 0.2, 0.1, 0.0,
@@ -133,7 +133,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 
 void RightHanded4x3x2ExplicitIjkGrid::readEpcDocHandler() {
 	// getting the subrep
-	resqml2_0_1::IjkGridExplicitRepresentation* ijkGrid = epcDoc->getResqmlAbstractObjectByUuid<resqml2_0_1::IjkGridExplicitRepresentation>(this->uuid);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(this->uuid);
 
 	REQUIRE(ijkGrid->getCellCount() == 24);
 	REQUIRE(ijkGrid->getPillarCount() == 20);

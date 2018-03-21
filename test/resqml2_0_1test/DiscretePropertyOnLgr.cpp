@@ -29,8 +29,8 @@ under the License.
 #include "common/AbstractHdfProxy.h"
 
 using namespace std;
-using namespace common;
-using namespace resqml2;
+using namespace COMMON_NS;
+using namespace RESQML2_NS;
 using namespace resqml2_0_1test;
 
 const char* DiscretePropertyOnLgr::defaultUuid = "5aa6a9d4-253e-43a8-bdf5-621e5df2d425";
@@ -51,7 +51,7 @@ DiscretePropertyOnLgr::DiscretePropertyOnLgr(EpcDocument * epcDoc, bool init)
 void DiscretePropertyOnLgr::initEpcDocHandler() {
 	// creation
 	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(this->epcDoc, true);
-	resqml2_0_1::WellboreFrameRepresentation * frame = this->epcDoc->getResqmlAbstractObjectByUuid<resqml2_0_1::WellboreFrameRepresentation>(WellboreFrameRepresentationTest::defaultUuid);
+	RESQML2_0_1_NS::WellboreFrameRepresentation * frame = this->epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::WellboreFrameRepresentation>(WellboreFrameRepresentationTest::defaultUuid);
 
 	PropertyKindTest * pkTest = new PropertyKindTest(this->epcDoc, true);
 	PropertyKind * propertyKind = this->epcDoc->getResqmlAbstractObjectByUuid<PropertyKind>(PropertyKindTest::defaultUuid);
@@ -60,7 +60,7 @@ void DiscretePropertyOnLgr::initEpcDocHandler() {
 	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
 
 	// creating the DiscreteProperty
-	resqml2_0_1::DiscreteProperty* discreteProperty = epcDoc->createDiscreteProperty(
+	RESQML2_0_1_NS::DiscreteProperty* discreteProperty = epcDoc->createDiscreteProperty(
 		frame, this->uuid, this->title,
 		1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__intervals,
@@ -71,6 +71,7 @@ void DiscretePropertyOnLgr::initEpcDocHandler() {
 
 	// cleaning
 	delete frameTest;
+	delete pkTest;
 }
 
 void DiscretePropertyOnLgr::readEpcDocHandler() {
@@ -79,7 +80,7 @@ void DiscretePropertyOnLgr::readEpcDocHandler() {
 	PropertyKindTest * pkTest = new PropertyKindTest(this->epcDoc, false);
 
 	// getting the DiscreteProperty
-	resqml2_0_1::DiscreteProperty* discreteProperty = this->epcDoc->getResqmlAbstractObjectByUuid<resqml2_0_1::DiscreteProperty>(uuid);
+	RESQML2_0_1_NS::DiscreteProperty* discreteProperty = this->epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::DiscreteProperty>(uuid);
 
 	// ************************************
 	// reading the DiscreteProperty
@@ -108,5 +109,6 @@ void DiscretePropertyOnLgr::readEpcDocHandler() {
 
 	// cleaning
 	delete frameTest;
+	delete pkTest;
 }
 

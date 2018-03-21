@@ -27,13 +27,13 @@ under the License.
 #include "resqml2/AbstractLocal3dCrs.h"
 
 using namespace std;
-using namespace resqml2_0_1;
+using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 
 const char* Grid2dRepresentation::XML_TAG = "Grid2dRepresentation";
 
-Grid2dRepresentation::Grid2dRepresentation(resqml2::AbstractFeatureInterpretation* interp, resqml2::AbstractLocal3dCrs * crs,
+Grid2dRepresentation::Grid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
 	const string & guid, const std::string & title):
 	AbstractSurfaceRepresentation(interp, crs), supportingRepresentation(nullptr)
 {
@@ -552,7 +552,7 @@ void Grid2dRepresentation::setGeometryAsArray2dOfLatticePoints3d(
 
 void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
 		double * zValues,
-		const unsigned int & numI, const unsigned int & numJ, common::AbstractHdfProxy * proxy,
+		const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy * proxy,
 		Grid2dRepresentation * supportingGrid2dRepresentation,
 		const unsigned int & startIndexI, const unsigned int & startIndexJ,
 		const int & indexIncrementI, const int & indexIncrementJ)
@@ -576,7 +576,7 @@ void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
 
 void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
 				double * zValues,
-				const unsigned int & numI, const unsigned int & numJ, common::AbstractHdfProxy * proxy,
+				const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy * proxy,
 				const double & originX, const double & originY, const double & originZ,
 				const double & offsetIX, const double & offsetIY, const double & offsetIZ, const double & spacingI,
 				const double & offsetJX, const double & offsetJY, const double & offsetJZ, const double & spacingJ)
@@ -696,7 +696,7 @@ vector<Relationship> Grid2dRepresentation::getAllEpcRelationships() const
 	return result;
 }
 
-void Grid2dRepresentation::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void Grid2dRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	AbstractSurfaceRepresentation::importRelationshipSetFromEpc(epcDoc);
 

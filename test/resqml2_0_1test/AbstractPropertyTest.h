@@ -21,7 +21,7 @@ under the License.
 #include "AbstractResqmlDataObjectTest.h"
 #include <iostream>
 
-namespace common {
+namespace COMMON_NS {
 	class EpcDocument;
 }
 
@@ -47,7 +47,7 @@ namespace resqml2_0_1test {
 		 * @param uuidRepresentation the uuid of the supporting representation
 		 * @param titleRepresentation the title of the supporting representation
 		 */
-		AbstractPropertyTest(common::EpcDocument * epcDoc, const std::string & uuid, const std::string & title, const std::string & uuidRepresentation, const std::string & titleRepresentation);
+		AbstractPropertyTest(COMMON_NS::EpcDocument * epcDoc, const std::string & uuid, const std::string & title, const std::string & uuidRepresentation, const std::string & titleRepresentation);
 		
 		/**
 		 * This methods overrides (and calls) AbstractObjectTest::readEpcDoc(). It includes a test for checking that the supporting representation uuid and title

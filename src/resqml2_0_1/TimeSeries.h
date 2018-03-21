@@ -20,16 +20,16 @@ under the License.
 
 #include "resqml2/TimeSeries.h"
 
-namespace resqml2_0_1
+namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT TimeSeries : public resqml2::TimeSeries
+	class DLL_IMPORT_OR_EXPORT TimeSeries : public RESQML2_NS::TimeSeries
 	{
 	public:
 		/**
 		* Only to be used in partial transfer context
 		*/
 		TimeSeries(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
-			resqml2::TimeSeries(partialObject)
+			RESQML2_NS::TimeSeries(partialObject)
 		{
 		}
 
@@ -44,7 +44,7 @@ namespace resqml2_0_1
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		TimeSeries(gsoap_resqml2_0_1::_resqml2__TimeSeries* fromGsoap) : resqml2::TimeSeries(fromGsoap) {}
+		TimeSeries(gsoap_resqml2_0_1::_resqml2__TimeSeries* fromGsoap) : RESQML2_NS::TimeSeries(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

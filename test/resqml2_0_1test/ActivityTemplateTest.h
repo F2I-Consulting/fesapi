@@ -23,7 +23,7 @@ under the License.
 #include <vector>
 #include <map>
 
-namespace common {
+namespace COMMON_NS {
 	class EpcDocument;
 }
 
@@ -31,7 +31,7 @@ namespace resqml2_0_1test {
 	class ActivityTemplateTest : public AbstractResqmlDataObjectTest {
 	public:
 		ActivityTemplateTest(const std::string & epcDocPath, const std::string & uuid, const std::string & title);
-		ActivityTemplateTest(common::EpcDocument * epcDoc, const std::string & uuid, const std::string & title);
+		ActivityTemplateTest(COMMON_NS::EpcDocument * epcDoc, const std::string & uuid, const std::string & title);
 	protected:
 		struct ParameterTest {
 			std::string title;

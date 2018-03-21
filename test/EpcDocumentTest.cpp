@@ -19,7 +19,7 @@ under the License.
 #include "EpcDocumentTest.h"
 
 using namespace std;
-using namespace common;
+using namespace COMMON_NS;
 using namespace commontest;
 
 EpcDocumentTest::EpcDocumentTest(const string & epcDocPath)

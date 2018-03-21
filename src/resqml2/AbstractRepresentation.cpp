@@ -32,7 +32,7 @@ under the License.
 #include "common/AbstractHdfProxy.h"
 #include "resqml2/AbstractLocal3dCrs.h"
 
-using namespace resqml2;
+using namespace RESQML2_NS;
 using namespace std;
 using namespace epc;
 
@@ -115,7 +115,7 @@ gsoap_resqml2_0_1::resqml2__Seismic3dCoordinates* AbstractRepresentation::getSei
 }
 
 gsoap_resqml2_0_1::resqml2__PointGeometry* AbstractRepresentation::createPointGeometryPatch2_0_1(const unsigned int & patchIndex,
-	double * points, hsize_t * numPoints, const unsigned int & numDimensionsInArray, common::AbstractHdfProxy * proxy)
+	double * points, hsize_t * numPoints, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		setHdfProxy(proxy);
@@ -177,7 +177,7 @@ std::string AbstractRepresentation::getLocalCrsUuid() const
 	return dor == nullptr ? string() : dor->UUID;
 }
 
-common::AbstractHdfProxy * AbstractRepresentation::getHdfProxy() const
+COMMON_NS::AbstractHdfProxy * AbstractRepresentation::getHdfProxy() const
 {
 	return hdfProxy;
 }
@@ -321,7 +321,7 @@ unsigned int AbstractRepresentation::getFaultSubRepresentationCount() const
 
 SubRepresentation* AbstractRepresentation::getFaultSubRepresentation(const unsigned int & index) const
 {
-	std::vector<resqml2::SubRepresentation*> tmp = getFaultSubRepresentationSet();
+	std::vector<RESQML2_NS::SubRepresentation*> tmp = getFaultSubRepresentationSet();
 
 	if (index >= tmp.size()) {
 		throw range_error("The fault subrepresentation at the specified index is out of range.");
@@ -430,7 +430,7 @@ RepresentationSetRepresentation* AbstractRepresentation::getRepresentationSetRep
 	return representationSetRepresentationSet[index];
 }
 
-void AbstractRepresentation::setHdfProxy(common::AbstractHdfProxy * proxy)
+void AbstractRepresentation::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy)
 {
 	if (proxy == nullptr) {
 		throw invalid_argument("The hdf proxy to associate to the representation cannot be null");
@@ -440,14 +440,14 @@ void AbstractRepresentation::setHdfProxy(common::AbstractHdfProxy * proxy)
 	proxy->representationSourceObject.push_back(this);
 }
 
-void AbstractRepresentation::importRelationshipSetFromEpc(common::EpcDocument* epcDoc)
+void AbstractRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getInterpretationDor();
 	if (dor != nullptr) {
-		resqml2::AbstractFeatureInterpretation* interp = epcDoc->getResqmlAbstractObjectByUuid<resqml2::AbstractFeatureInterpretation>(dor->UUID);
+		RESQML2_NS::AbstractFeatureInterpretation* interp = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractFeatureInterpretation>(dor->UUID);
 		if (interp == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dor);
-			interp = getEpcDocument()->getResqmlAbstractObjectByUuid<resqml2::AbstractFeatureInterpretation>(dor->UUID);
+			interp = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractFeatureInterpretation>(dor->UUID);
 		}
 		if (interp == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -475,7 +475,7 @@ void AbstractRepresentation::importRelationshipSetFromEpc(common::EpcDocument* e
 
 	const std::string uuid = getHdfProxyUuid();
 	if (!uuid.empty()) {
-		common::AbstractHdfProxy* const hdfProxy = epcDoc->getResqmlAbstractObjectByUuid<common::AbstractHdfProxy>(uuid);
+		COMMON_NS::AbstractHdfProxy* const hdfProxy = epcDoc->getResqmlAbstractObjectByUuid<COMMON_NS::AbstractHdfProxy>(uuid);
 		if (hdfProxy != nullptr) {
 			setHdfProxy(hdfProxy);
 		}
@@ -575,7 +575,7 @@ vector<Relationship> AbstractRepresentation::getAllEpcRelationships() const
 }
 
 void AbstractRepresentation::addSeismic3dCoordinatesToPatch(const unsigned int patchIndex, double * inlines, double * crosslines, const unsigned int & pointCount,
-	resqml2::AbstractRepresentation * seismicSupport, common::AbstractHdfProxy * proxy)
+	RESQML2_NS::AbstractRepresentation * seismicSupport, COMMON_NS::AbstractHdfProxy * proxy)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		setHdfProxy(proxy);
@@ -631,7 +631,7 @@ void AbstractRepresentation::addSeismic3dCoordinatesToPatch(const unsigned int p
 
 void AbstractRepresentation::addSeismic3dCoordinatesToPatch(const unsigned int patchIndex, const double & startInline, const double & incrInline, const unsigned int & countInline,
 	const double & startCrossline, const double & incrCrossline, const unsigned int & countCrossline,
-	resqml2::AbstractRepresentation * seismicSupport)
+	RESQML2_NS::AbstractRepresentation * seismicSupport)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(patchIndex);
@@ -676,7 +676,7 @@ void AbstractRepresentation::addSeismic3dCoordinatesToPatch(const unsigned int p
 }
 
 void AbstractRepresentation::addSeismic2dCoordinatesToPatch(const unsigned int patchIndex, double * lineAbscissa,
-	resqml2::AbstractRepresentation * seismicSupport, common::AbstractHdfProxy * proxy)
+	RESQML2_NS::AbstractRepresentation * seismicSupport, COMMON_NS::AbstractHdfProxy * proxy)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		setHdfProxy(proxy);

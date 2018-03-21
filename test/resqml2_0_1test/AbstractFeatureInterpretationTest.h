@@ -21,7 +21,7 @@ under the License.
 #include "AbstractResqmlDataObjectTest.h"
 #include <iostream>
 
-namespace common {
+namespace COMMON_NS {
 	class EpcDocument;
 }
 
@@ -47,7 +47,7 @@ namespace resqml2_0_1test {
 		 * @param uuidFeature uuid of the interpreted feature
 		 * @param titleFeature title of the interpreted feature
 		 */
-		AbstractFeatureInterpretationTest(common::EpcDocument * epcDoc, const std::string & uuid, const std::string & title, const std::string & uuidFeature, const std::string & titleFeature);
+		AbstractFeatureInterpretationTest(COMMON_NS::EpcDocument * epcDoc, const std::string & uuid, const std::string & title, const std::string & uuidFeature, const std::string & titleFeature);
 
 		/**
 		 * This methods overrides (and calls) AbstractObjectTest::readEpcDoc(). It includes a test for checking that the interpreted
