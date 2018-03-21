@@ -22,8 +22,8 @@ import java.util.UUID;
 
 import com.f2i.energisticsStandardsApi.LocalDepth3dCrsVector;
 import com.f2i.energisticsStandardsApi.eml20__LengthUom;
-import com.f2i.energisticsStandardsApi.common.EpcDocument;
-import com.f2i.energisticsStandardsApi.resqml2_0_1.LocalDepth3dCrs;
+import com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.EpcDocument;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.LocalDepth3dCrs;
 
 public class FesapiJavaExample {
 	/**

@@ -28,10 +28,10 @@ under the License.
 
 %include "std_vector.i"
 namespace std {
-	%template(WellboreVector) vector<witsml1_4_1_1::Wellbore*>;
-	%template(TrajectoryVector) vector<witsml1_4_1_1::Trajectory*>;
-	%template(LogVector) vector<witsml1_4_1_1::Log*>;
-	%template(FormationMarkerVector) vector<witsml1_4_1_1::FormationMarker*>;
+	%template(WellboreVector) vector<WITSML1_4_1_1_NS::Wellbore*>;
+	%template(TrajectoryVector) vector<WITSML1_4_1_1_NS::Trajectory*>;
+	%template(LogVector) vector<WITSML1_4_1_1_NS::Log*>;
+	%template(FormationMarkerVector) vector<WITSML1_4_1_1_NS::FormationMarker*>;
 }
 
 namespace gsoap_witsml1_4_1_1
@@ -65,16 +65,16 @@ namespace gsoap_witsml1_4_1_1
 	%include "swigWitsml1_4_1_1CsInclude.i"
 #endif
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
-	%nspace witsml1_4_1_1::AbstractObject;
-	%nspace witsml1_4_1_1::CoordinateReferenceSystem;
-	%nspace witsml1_4_1_1::Well;
-	%nspace witsml1_4_1_1::Wellbore;
-	%nspace witsml1_4_1_1::Trajectory;
-	%nspace witsml1_4_1_1::Log;
-	%nspace witsml1_4_1_1::FormationMarker;
+	%nspace WITSML1_4_1_1_NS::AbstractObject;
+	%nspace WITSML1_4_1_1_NS::CoordinateReferenceSystem;
+	%nspace WITSML1_4_1_1_NS::Well;
+	%nspace WITSML1_4_1_1_NS::Wellbore;
+	%nspace WITSML1_4_1_1_NS::Trajectory;
+	%nspace WITSML1_4_1_1_NS::Log;
+	%nspace WITSML1_4_1_1_NS::FormationMarker;
 #endif
 
-namespace witsml1_4_1_1
+namespace WITSML1_4_1_1_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
 	
@@ -85,7 +85,7 @@ namespace witsml1_4_1_1
 	class AbstractObject
 	{
 	public:
-		common::EpcDocument* getEpcDocument() const;
+		COMMON_NS::EpcDocument* getEpcDocument() const;
 		std::string getXmlTag() const;
 		
 		const std::string & getTitle() const;
@@ -228,7 +228,7 @@ namespace witsml1_4_1_1
 			
 		Well* getWell();
 		
-		resqml2_0_1::WellboreFeature* getResqmlWellboreFeature();
+		RESQML2_0_1_NS::WellboreFeature* getResqmlWellboreFeature();
 		
 		const std::vector<Trajectory*>& getTrajectories() const;
 
@@ -330,7 +330,7 @@ namespace witsml1_4_1_1
 			
 		Wellbore* getWellbore();
 		
-		resqml2_0_1::WellboreTrajectoryRepresentation* getResqmlWellboreTrajectoryRepresentation() const;		
+		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* getResqmlWellboreTrajectoryRepresentation() const;		
 	};
 	
 	class Log : public AbstractObject
@@ -378,14 +378,14 @@ namespace witsml1_4_1_1
 
 		Wellbore* getWellbore();
 		
-		resqml2_0_1::WellboreFrameRepresentation* getResqmlWellboreFrameRepresentation() const;
+		RESQML2_0_1_NS::WellboreFrameRepresentation* getResqmlWellboreFrameRepresentation() const;
 	};
 	
 	class FormationMarker : public AbstractObject
 	{
 	public:
 		Wellbore* getWellbore();
-		resqml2_0_1::WellboreMarkerFrameRepresentation* getResqmlWellboreMarkerFrameRepresentation() const;
+		RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* getResqmlWellboreMarkerFrameRepresentation() const;
 	};
 }
 

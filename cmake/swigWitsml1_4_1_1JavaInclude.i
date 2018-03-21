@@ -17,37 +17,37 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 %pragma(java) jniclasscode=%{
-  public static com.f2i.energisticsStandardsApi.witsml1_4_1_1.AbstractObject witsml1_4_1_1_instantiateConcreteObject(long cPtr, boolean owner)
+  public static com.f2i.energisticsStandardsApi.${FESAPI_WITSML1_4_1_1_NS}.AbstractObject witsml1_4_1_1_instantiateConcreteObject(long cPtr, boolean owner)
   {
-    com.f2i.energisticsStandardsApi.witsml1_4_1_1.AbstractObject ret = null;
+    com.f2i.energisticsStandardsApi.${FESAPI_WITSML1_4_1_1_NS}.AbstractObject ret = null;
     if (cPtr == 0) {
       return ret;
     }
 	
-    String type = witsml1_4_1_1_AbstractObject_getXmlTag(cPtr, new com.f2i.energisticsStandardsApi.witsml1_4_1_1.AbstractObject(cPtr, false));
+    String type = ${FESAPI_WITSML1_4_1_1_NS}_AbstractObject_getXmlTag(cPtr, new com.f2i.energisticsStandardsApi.${FESAPI_WITSML1_4_1_1_NS}.AbstractObject(cPtr, false));
     if (type.equals("coordinateReferenceSystems"))
     {
-        ret = new com.f2i.energisticsStandardsApi.witsml1_4_1_1.CoordinateReferenceSystem(cPtr, owner);
+        ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML1_4_1_1_NS}.CoordinateReferenceSystem(cPtr, owner);
     }
     else if (type.equals("formationMarkers"))
     {
-        ret = new com.f2i.energisticsStandardsApi.witsml1_4_1_1.FormationMarker(cPtr, owner);
+        ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML1_4_1_1_NS}.FormationMarker(cPtr, owner);
     }
     else if (type.equals("logs"))
     {
-        ret = new com.f2i.energisticsStandardsApi.witsml1_4_1_1.Log(cPtr, owner);
+        ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML1_4_1_1_NS}.Log(cPtr, owner);
     }
     else if (type.equals("trajectorys"))
     {
-        ret = new com.f2i.energisticsStandardsApi.witsml1_4_1_1.Trajectory(cPtr, owner);
+        ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML1_4_1_1_NS}.Trajectory(cPtr, owner);
     }
     else if (type.equals("wells"))
     {
-        ret = new com.f2i.energisticsStandardsApi.witsml1_4_1_1.Well(cPtr, owner);
+        ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML1_4_1_1_NS}.Well(cPtr, owner);
     }
     else if (type.equals("wellbores"))
     {
-        ret = new com.f2i.energisticsStandardsApi.witsml1_4_1_1.Wellbore(cPtr, owner);
+        ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML1_4_1_1_NS}.Wellbore(cPtr, owner);
     }
 	else
 	{
@@ -58,7 +58,7 @@ under the License.
   }
 %}
 
-namespace witsml1_4_1_1
+namespace WITSML1_4_1_1_NS
 {	
 	%typemap(javaout) AbstractObject*  {
 		long cPtr = $jnicall;

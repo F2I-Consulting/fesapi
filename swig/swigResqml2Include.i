@@ -38,7 +38,7 @@ typedef long long 				time_t;
 // STD::VECTOR DEFINITIONS
 //************************
 
-namespace resqml2 {
+namespace RESQML2_NS {
 	class Activity;
 }
 
@@ -47,9 +47,9 @@ namespace resqml2 {
 %include "std_vector.i"
 
 #ifdef SWIGPYTHON
-namespace resqml2
+namespace RESQML2_NS
 {
-	%typemap(out) common::AbstractObject*, common::AbstractHdfProxy*,  AbstractFeature*, AbstractFeatureInterpretation*,  AbstractLocal3dCrs*, AbstractProperty*, AbstractValuesProperty*,AbstractRepresentation* {
+	%typemap(out) COMMON_NS::AbstractObject*, COMMON_NS::AbstractHdfProxy*,  AbstractFeature*, AbstractFeatureInterpretation*,  AbstractLocal3dCrs*, AbstractProperty*, AbstractValuesProperty*,AbstractRepresentation* {
 		// Check potential downcasting
 		swig_type_info * const outtype = SWIG_TypeQuery(("resqml2::" + result->getXmlTag() + " *").c_str());
 		resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), outtype, 0);
@@ -63,26 +63,26 @@ namespace resqml2
 	%include "swigResqml2CsInclude.i"
 #endif
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
-	%nspace resqml2::AbstractColumnLayerGridRepresentation;
-	%nspace common::AbstractObject;
-	%nspace resqml2::AbstractFeature;
-	%nspace resqml2::AbstractFeatureInterpretation;
-	%nspace resqml2::AbstractGridRepresentation;
-	%nspace resqml2::AbstractLocal3dCrs;
-	%nspace resqml2::AbstractProperty;
-	%nspace resqml2::AbstractRepresentation;
-	%nspace resqml2::AbstractValuesProperty;
-	%nspace resqml2::Activity;
-	%nspace resqml2::ActivityTemplate;
-	%nspace resqml2::GridConnectionSetRepresentation;
-	%nspace resqml2::MdDatum;
-	%nspace resqml2::PropertyKind;
-	%nspace resqml2::RepresentationSetRepresentation;
-	%nspace resqml2::SubRepresentation;
-	%nspace resqml2::TimeSeries;
+	%nspace RESQML2_NS::AbstractColumnLayerGridRepresentation;
+	%nspace COMMON_NS::AbstractObject;
+	%nspace RESQML2_NS::AbstractFeature;
+	%nspace RESQML2_NS::AbstractFeatureInterpretation;
+	%nspace RESQML2_NS::AbstractGridRepresentation;
+	%nspace RESQML2_NS::AbstractLocal3dCrs;
+	%nspace RESQML2_NS::AbstractProperty;
+	%nspace RESQML2_NS::AbstractRepresentation;
+	%nspace RESQML2_NS::AbstractValuesProperty;
+	%nspace RESQML2_NS::Activity;
+	%nspace RESQML2_NS::ActivityTemplate;
+	%nspace RESQML2_NS::GridConnectionSetRepresentation;
+	%nspace RESQML2_NS::MdDatum;
+	%nspace RESQML2_NS::PropertyKind;
+	%nspace RESQML2_NS::RepresentationSetRepresentation;
+	%nspace RESQML2_NS::SubRepresentation;
+	%nspace RESQML2_NS::TimeSeries;
 #endif
 
-namespace resqml2
+namespace RESQML2_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
 
@@ -91,7 +91,7 @@ namespace resqml2
 	//************ Activity **************
 	//************************************
 
-	class ActivityTemplate : public common::AbstractObject
+	class ActivityTemplate : public COMMON_NS::AbstractObject
 	{
 	public:
 		void pushBackParameter(const std::string title,
@@ -114,7 +114,7 @@ namespace resqml2
 		const LONG64 getParameterMaxOccurences(const std::string & paramTitle) const;
 	};
 
-	class Activity : public common::AbstractObject
+	class Activity : public COMMON_NS::AbstractObject
 	{
 	public:
 		void pushBackParameter(const std::string title,
@@ -122,7 +122,7 @@ namespace resqml2
 		void pushBackParameter(const std::string title,
 			const LONG64 & value);
 		void pushBackParameter(const std::string title,
-			common::AbstractObject* resqmlObject);
+			COMMON_NS::AbstractObject* resqmlObject);
 		
 		unsigned int getParameterCount() const;
 		unsigned int getParameterCount(const std::string & paramTitle) const;
@@ -143,7 +143,7 @@ namespace resqml2
 
 		bool isAResqmlObjectParameter(const std::string & paramTitle) const;
 		bool isAResqmlObjectParameter(const unsigned int & index) const;
-		common::AbstractObject* getResqmlObjectParameterValue(const unsigned int & index) const;
+		COMMON_NS::AbstractObject* getResqmlObjectParameterValue(const unsigned int & index) const;
 
 		void setActivityTemplate(ActivityTemplate* activityTemplate);
 		ActivityTemplate* getActivityTemplate() const;
@@ -153,7 +153,7 @@ namespace resqml2
 	//************ CRS *******************
 	//************************************
 	
-	class AbstractLocal3dCrs : public common::AbstractObject
+	class AbstractLocal3dCrs : public COMMON_NS::AbstractObject
 	{
 	public:
 		double getOriginOrdinal1() const;
@@ -181,7 +181,7 @@ namespace resqml2
 		void setAxisOrder(const gsoap_resqml2_0_1::eml20__AxisOrder2d & axisOrder) const;
 	};
 	
-	class MdDatum : public common::AbstractObject
+	class MdDatum : public COMMON_NS::AbstractObject
 	{
 	public:
 		AbstractLocal3dCrs * getLocalCrs() const;
@@ -202,7 +202,7 @@ namespace resqml2
 	//************************************
 
 	class AbstractFeatureInterpretation;
-	class AbstractFeature : public common::AbstractObject
+	class AbstractFeature : public COMMON_NS::AbstractObject
 	{
 	public:
 		unsigned int getInterpretationCount() const;
@@ -214,7 +214,7 @@ namespace resqml2
 	//************************************
 
 	class AbstractRepresentation;
-	class AbstractFeatureInterpretation : public common::AbstractObject
+	class AbstractFeatureInterpretation : public COMMON_NS::AbstractObject
 	{
 	public:
 		unsigned int						getRepresentationCount() const;
@@ -233,7 +233,7 @@ namespace resqml2
 	class AbstractValuesProperty;
 	class SubRepresentation;
 	class RepresentationSetRepresentation;
-	class AbstractRepresentation : public common::AbstractObject
+	class AbstractRepresentation : public COMMON_NS::AbstractObject
 	{
 	public:
 
@@ -243,7 +243,7 @@ namespace resqml2
 		std::string getInterpretationUuid() const;
 		AbstractLocal3dCrs * getLocalCrs();
 		std::string getLocalCrsUuid() const;
-		common::AbstractHdfProxy * getHdfProxy();
+		COMMON_NS::AbstractHdfProxy * getHdfProxy();
 		std::string getHdfProxyUuid() const;
 		unsigned int getValuesPropertyCount() const;
 		AbstractValuesProperty* getValuesProperty(const unsigned int & index) const;
@@ -264,11 +264,11 @@ namespace resqml2
 		AbstractRepresentation* getSeismicSupportOfPatch(const unsigned int & patchIndex);
 		void getSeismicLineAbscissaOfPointsOfPatch(const unsigned int & patchIndex, double* values);
 		void addSeismic2dCoordinatesToPatch(const unsigned int patchIndex, double * lineAbscissa,
-			AbstractRepresentation * seismicSupport, common::AbstractHdfProxy * proxy);
+			AbstractRepresentation * seismicSupport, COMMON_NS::AbstractHdfProxy * proxy);
 		void getInlinesOfPointsOfPatch(const unsigned int & patchIndex, double * values);
 		void getCrosslinesOfPointsOfPatch(const unsigned int & patchIndex, double * values);
 		void addSeismic3dCoordinatesToPatch(const unsigned int patchIndex, double * inlines, double * crosslines, const unsigned int & pointCount,
-			AbstractRepresentation * seismicSupport, common::AbstractHdfProxy * proxy);
+			AbstractRepresentation * seismicSupport, COMMON_NS::AbstractHdfProxy * proxy);
 		void addSeismic3dCoordinatesToPatch(const unsigned int patchIndex, const double & startInline, const double & incrInline, const unsigned int & countInline,
 			const double & startCrossline, const double & incrCrossline, const unsigned int & countCrossline,
 			AbstractRepresentation * seismicSupport);
@@ -278,7 +278,7 @@ namespace resqml2
 		RepresentationSetRepresentation* getRepresentationSetRepresentation(const ULONG64  & index) const;
 	};
 	
-	class RepresentationSetRepresentation : public resqml2::AbstractRepresentation
+	class RepresentationSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
 		bool isHomogeneous() const;
@@ -286,18 +286,18 @@ namespace resqml2
 		AbstractRepresentation*				getRepresentation(const unsigned int & index) const;
 	};
 	
-	class SubRepresentation : public resqml2::AbstractRepresentation
+	class SubRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
 		void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & originIndex, 
 			const unsigned int & elementCountInSlowestDimension,
 			const unsigned int & elementCountInMiddleDimension,
 			const unsigned int & elementCountInFastestDimension);
-		void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, ULONG64 * elementIndices, common::AbstractHdfProxy * proxy, short * supportingRepIndices = nullptr);
+		void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, ULONG64 * elementIndices, COMMON_NS::AbstractHdfProxy * proxy, short * supportingRepIndices = nullptr);
 		void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind0, const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind1,
 			const ULONG64 & elementCount,
 			ULONG64 * elementIndices0, ULONG64 * elementIndices1,
-			common::AbstractHdfProxy * proxy);
+			COMMON_NS::AbstractHdfProxy * proxy);
 		
 		bool areElementIndicesPairwise(const unsigned int & patchIndex) const;
 		bool areElementIndicesBasedOnLattice(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const;
@@ -333,7 +333,7 @@ namespace resqml2
 		AbstractGridRepresentation* getParentGrid() const;
 		unsigned int getChildGridCount() const;
 		AbstractGridRepresentation* getChildGrid(const unsigned int & index) const;
-		void setParentWindow(ULONG64 * cellIndices, const ULONG64 & cellIndexCount, resqml2_0_1::UnstructuredGridRepresentation* parentGrid);
+		void setParentWindow(ULONG64 * cellIndices, const ULONG64 & cellIndexCount, RESQML2_0_1_NS::UnstructuredGridRepresentation* parentGrid);
 		void setParentWindow(unsigned int * columnIndices, const unsigned int & columnIndexCount,
 			const unsigned int & kLayerIndexRegridStart,
 			unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval,  const unsigned int & intervalCount,
@@ -342,17 +342,17 @@ namespace resqml2
 			const unsigned int & iCellIndexRegridStart, unsigned int * childCellCountPerIInterval, unsigned int * parentCellCountPerIInterval,  const unsigned int & iIntervalCount,
 			const unsigned int & jCellIndexRegridStart, unsigned int * childCellCountPerJInterval, unsigned int * parentCellCountPerJInterval,  const unsigned int & jIntervalCount,
 			const unsigned int & kCellIndexRegridStart, unsigned int * childCellCountPerKInterval, unsigned int * parentCellCountPerKInterval,  const unsigned int & kIntervalCount,
-			resqml2_0_1::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
+			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 		void setParentWindow(
 			const unsigned int & iCellIndexRegridStart, unsigned int constantChildCellCountPerIInterval, unsigned int constantParentCellCountPerIInterval, const unsigned int & iIntervalCount,
 			const unsigned int & jCellIndexRegridStart, unsigned int constantChildCellCountPerJInterval, unsigned int constantParentCellCountPerJInterval, const unsigned int & jIntervalCount,
 			const unsigned int & kCellIndexRegridStart, unsigned int constantChildCellCountPerKInterval, unsigned int constantParentCellCountPerKInterval, const unsigned int & kIntervalCount,
-			resqml2_0_1::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
+			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 		void setParentWindow(
 			const unsigned int & iCellIndexRegridStart, unsigned int iChildCellCount, unsigned int iParentCellCount,
 			const unsigned int & jCellIndexRegridStart, unsigned int jChildCellCount, unsigned int jParentCellCount,
 			const unsigned int & kCellIndexRegridStart, unsigned int kChildCellCount, unsigned int kParentCellCount,
-			resqml2_0_1::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
+			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 		void setForcedNonRegridedParentCell(ULONG64 * cellIndices, const ULONG64 & cellIndexCount);	
 		LONG64 getParentCellIndexCount() const;
 		void getParentCellIndices(ULONG64 * parentCellIndices) const;
@@ -367,9 +367,9 @@ namespace resqml2
 		void getRegridChildCellWeights(const char & dimension, ULONG64 * childCellWeights) const;
 		bool hasForcedNonRegridedParentCell() const;
 
-		void setCellAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, resqml2_0_1::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
+		void setCellAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
 		virtual std::string getStratigraphicOrganizationInterpretationUuid() const;
-		resqml2_0_1::AbstractStratigraphicOrganizationInterpretation* getStratigraphicOrganizationInterpretation() const;
+		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* getStratigraphicOrganizationInterpretation() const;
 		bool hasCellStratigraphicUnitIndices() const;
 		ULONG64 getCellStratigraphicUnitIndices(ULONG64 * stratiUnitIndices);
 		
@@ -395,13 +395,13 @@ namespace resqml2
 		unsigned int getKCellCount() const;
 		void setKCellCount(const unsigned int & kCount);
 		
-		void setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, resqml2_0_1::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
-		resqml2_0_1::AbstractStratigraphicOrganizationInterpretation* getStratigraphicOrganizationInterpretation() const;
+		void setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
+		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* getStratigraphicOrganizationInterpretation() const;
 		bool hasIntervalStratigraphicUnitIndices() const;
 		ULONG64 getIntervalStratigraphicUnitIndices(ULONG64 * stratiUnitIndices);
 	};
 	
-	class GridConnectionSetRepresentation : public resqml2::AbstractRepresentation
+	class GridConnectionSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
 		bool isAssociatedToInterpretations() const;
@@ -421,9 +421,9 @@ namespace resqml2
 		
 		void pushBackSupportingGridRepresentation(AbstractGridRepresentation * supportingGridRep);
 		
-		void setCellIndexPairs(const ULONG64 & cellIndexPairCount, ULONG64 * cellIndexPair, const ULONG64 & nullValue, common::AbstractHdfProxy * proxy, ULONG64 * gridIndexPair = nullptr);
-		void setLocalFacePerCellIndexPairs(const ULONG64 & cellIndexPairCount, int * localFacePerCellIndexPair, common::AbstractHdfProxy * proxy);
-		void setConnectionInterpretationIndices(unsigned int * interpretationIndices, const unsigned int & interpretationIndiceCount, const ULONG64 & nullValue, common::AbstractHdfProxy * proxy);
+		void setCellIndexPairs(const ULONG64 & cellIndexPairCount, ULONG64 * cellIndexPair, const ULONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, ULONG64 * gridIndexPair = nullptr);
+		void setLocalFacePerCellIndexPairs(const ULONG64 & cellIndexPairCount, int * localFacePerCellIndexPair, COMMON_NS::AbstractHdfProxy * proxy);
+		void setConnectionInterpretationIndices(unsigned int * interpretationIndices, const unsigned int & interpretationIndiceCount, const ULONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy);
 		void pushBackInterpretation(AbstractFeatureInterpretation* interp);
 		
 		std::string getInterpretationUuidFromIndex(const unsigned int & interpretationIndex) const;
@@ -439,7 +439,7 @@ namespace resqml2
 	//************** PROPERTY ************
 	//************************************
 	
-	class PropertyKind : public common::AbstractObject
+	class PropertyKind : public COMMON_NS::AbstractObject
 	{
 	public:
 		const std::string & getNamingSystem() const;
@@ -448,7 +448,7 @@ namespace resqml2
 		std::string getUomAsString() const;
 	};
 	
-	class TimeSeries : public common::AbstractObject
+	class TimeSeries : public COMMON_NS::AbstractObject
 	{
 	public:
 		void pushBackTimestamp(const time_t & timestamp);
@@ -457,7 +457,7 @@ namespace resqml2
 		time_t getTimestamp(const unsigned int & index) const;
 	};
 	
-	class AbstractProperty: public common::AbstractObject
+	class AbstractProperty: public COMMON_NS::AbstractObject
 	{
 	public:
 		std::string getRepresentationUuid() const;
@@ -465,7 +465,7 @@ namespace resqml2
 		void setRepresentation(AbstractRepresentation * rep);
 		
 		std::string getHdfProxyUuid() const;
-		common::AbstractHdfProxy* getHdfProxy();
+		COMMON_NS::AbstractHdfProxy* getHdfProxy();
 		
 		std::string getPropertyKindDescription() const;
 		std::string getPropertyKindAsString() const;
@@ -486,12 +486,12 @@ namespace resqml2
 		time_t getTimestamp() const;
 	};
 	
-	class AbstractValuesProperty : public resqml2::AbstractProperty
+	class AbstractValuesProperty : public RESQML2_NS::AbstractProperty
 	{
 	public:
 		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG = 3, ULONG = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
 		AbstractValuesProperty::hdfDatatypeEnum getValuesHdfDatatype() const;
-		virtual std::string pushBackRefToExistingDataset(common::AbstractHdfProxy* hdfProxy, const std::string & datasetName, const long & nullValue) = 0;
+		virtual std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, const long & nullValue) = 0;
 		
 		long getNullValueOfPatch(const unsigned int & patchIndex);
 		long getLongValuesOfPatch(const unsigned int & patchIndex, long * values);
@@ -535,13 +535,13 @@ namespace resqml2
 		void createLongHdf5ArrayOfValues(
 			unsigned long long* numValues, 
 			const unsigned int& numArrayDimensions, 
-			common::AbstractHdfProxy* proxy
+			COMMON_NS::AbstractHdfProxy* proxy
 		);
 		void createLongHdf5Array3dOfValues(
 			const unsigned int& valueCountInFastestDim, 
 			const unsigned int& valueCountInMiddleDim, 
 			const unsigned int& valueCountInSlowestDim, 
-			common::AbstractHdfProxy * proxy
+			COMMON_NS::AbstractHdfProxy * proxy
 		);
 		void pushBackLongHdf5SlabArray3dOfValues(
 			long* values, 
@@ -551,14 +551,14 @@ namespace resqml2
 			const unsigned int& offsetInFastestDim, 
 			const unsigned int& offsetInMiddleDim, 
 			const unsigned int& offsetInSlowestDim, 
-			common::AbstractHdfProxy* proxy
+			COMMON_NS::AbstractHdfProxy* proxy
 		);
 		void pushBackLongHdf5SlabArrayOfValues(
 			long * values, 
 			unsigned long long * numValues, 
 			unsigned long long * offsetValues, 
 			const unsigned int & numArrayDimensions, 
-			common::AbstractHdfProxy * proxy
+			COMMON_NS::AbstractHdfProxy * proxy
 		);
 		void getLongValuesOfPatch(
 			const unsigned int& patchIndex, 

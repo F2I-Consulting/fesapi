@@ -1438,7 +1438,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation * rep, bool* enabledCe
 				cout << "\tPress enter to continue..." << endl;
 				cin.get();
 			}
-			else
+			else if (dynamic_cast<DiscreteProperty*>(propVal) != nullptr)
 			{
 				DiscreteProperty* discreteProp = static_cast<DiscreteProperty*>(propVal);
 				const LONG64 maxValue = discreteProp->getMaximumValue();
