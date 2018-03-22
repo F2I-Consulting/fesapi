@@ -1076,10 +1076,14 @@ std::string HdfProxy::readStringAttribute(const std::string & obj_name,
 	if (atype < 0) {
 		throw invalid_argument("Cannot read the type of the \"" + attr_name + "\" attribute of \"" + obj_name + "\".");
 	}
-	size_t aSize = H5Tget_size(atype);
+	const size_t aSize = H5Tget_size(atype);
 	char* buf = nullptr;
 	if (H5Tis_variable_str(atype) <= 0) {
-		buf = new char[aSize];
+		const hid_t attDs = H5Aget_space(uuidAtt);
+		const hssize_t stringCount = H5Sget_simple_extent_npoints(attDs);
+		buf = new char[aSize * stringCount];
+		H5Sclose(attDs);
+
 	} // else buf is allocated directly by HDF5
 	hid_t readingError = H5Aread(uuidAtt, atype, buf);
 	if (readingError < 0) {

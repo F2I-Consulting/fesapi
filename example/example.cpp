@@ -1478,12 +1478,14 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation * rep, bool* enabledCe
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
 
-				for (size_t cellIndex = 0; cellIndex < valueCount; ++cellIndex) {
-					if (enabledCells != nullptr && !enabledCells[cellIndex]) {
-						continue;
-					}
-					if (values[cellIndex] > maxValue || values[cellIndex] < minValue) {
-						std::cerr << "\tERROR of min max range on : cell " << cellIndex << " has value " << values[cellIndex] << endl;
+				if (continuousProp->getElementCountPerValue() == 1) {
+					for (size_t cellIndex = 0; cellIndex < valueCount; ++cellIndex) {
+						if (enabledCells != nullptr && !enabledCells[cellIndex]) {
+							continue;
+						}
+						if (values[cellIndex] > maxValue || values[cellIndex] < minValue) {
+							std::cerr << "\tERROR of min max range on : cell " << cellIndex << " has value " << values[cellIndex] << endl;
+						}
 					}
 				}
 
