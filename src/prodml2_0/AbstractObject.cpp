@@ -18,12 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "prodml2_0/AbstractObject.h"
 
-#include <stdexcept>
-
 using namespace std;
 using namespace PRODML2_0_NS;
-using namespace gsoap_eml2_1;
-using namespace epc;
 
 std::string AbstractObject::getXmlNamespace() const
 {

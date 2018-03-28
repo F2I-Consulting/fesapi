@@ -36,8 +36,6 @@ under the License.
 #include "resqml2_0_1/HorizonInterpretation.h"
 #include "common/AbstractHdfProxy.h"
 
-#include "witsml1_4_1_1/FormationMarker.h"
-
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
@@ -63,8 +61,9 @@ WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(WellboreInt
 
 WellboreMarkerFrameRepresentation::~WellboreMarkerFrameRepresentation()
 {
-	for (unsigned int i = 0; i < markerSet.size(); ++i)
+	for (size_t i = 0; i < markerSet.size(); ++i) {
 		delete markerSet[i];
+	}
 }
 
 WellboreMarker* WellboreMarkerFrameRepresentation::pushBackNewWellboreMarker(const std::string & guid, const std::string & title)
@@ -111,8 +110,9 @@ void WellboreMarkerFrameRepresentation::setStratigraphicOccurrenceInterpretation
 
 void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned int * stratiUnitIndices, const unsigned int & nullValue, StratigraphicOccurrenceInterpretation* stratiOccurenceInterp)
 {
-	if (stratiUnitIndices == nullptr)
+	if (stratiUnitIndices == nullptr) {
 		throw invalid_argument("The strati unit indices cannot be null.");
+	}
 
 	setStratigraphicOccurrenceInterpretation(stratiOccurenceInterp);
 
@@ -130,22 +130,6 @@ void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned i
 	hdfProxy->writeArrayNd(frame->uuid, "IntervalStratigraphicUnits", H5T_NATIVE_UINT, stratiUnitIndices, &dim, 1);
 }
 
-void WellboreMarkerFrameRepresentation::setWitsmlFormationMarker(const unsigned int & resqmlMarkerIndex, WITSML1_4_1_1_NS::FormationMarker * witsmlFormationMarker)
-{
-	_resqml2__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml2__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
-	if (frame->WellboreMarker.size() <= resqmlMarkerIndex)
-		throw out_of_range("The marker index is not valid");
-
-	for (unsigned int i = witsmlFormationMarkerSet.size(); i < resqmlMarkerIndex+1; ++i)
-		witsmlFormationMarkerSet.push_back(nullptr);
-
-	witsmlFormationMarkerSet[resqmlMarkerIndex] = witsmlFormationMarker;
-	witsmlFormationMarker->resqmlWellboreMarkerFrameRepresentation = this;
-
-	if (updateXml)
-		frame->WellboreMarker[resqmlMarkerIndex]->WitsmlFormationMarker = witsmlFormationMarker->newResqmlReference();
-}
-
 vector<Relationship> WellboreMarkerFrameRepresentation::getAllEpcRelationships() const
 {
 	vector<Relationship> result = WellboreFrameRepresentation::getAllEpcRelationships();
@@ -158,27 +142,14 @@ vector<Relationship> WellboreMarkerFrameRepresentation::getAllEpcRelationships()
 		result.push_back(relStratiRank);
 	}
 
-	for (unsigned int i = 0; i < markerSet.size(); ++i)
+	for (size_t i = 0; i < markerSet.size(); ++i)
 	{
-		if (markerSet[i]->getBoundaryFeatureInterpretation())
+		if (markerSet[i]->getBoundaryFeatureInterpretation() != nullptr)
 		{
 			Relationship relBoundaryFeature(markerSet[i]->getBoundaryFeatureInterpretation()->getPartNameInEpcDocument(), "", markerSet[i]->getBoundaryFeatureInterpretation()->getUuid());
 			relBoundaryFeature.setDestinationObjectType();
 			result.push_back(relBoundaryFeature);
 		}
-	}
-
-	int firstNonNullWitsmlMarker = -1;
-	for (unsigned int i = 0; i < witsmlFormationMarkerSet.size() && firstNonNullWitsmlMarker < 0; ++i)
-	{
-		if (witsmlFormationMarkerSet[i])
-			firstNonNullWitsmlMarker = i;
-	}
-	if (firstNonNullWitsmlMarker>=0)
-	{
-		Relationship relWitsml(witsmlFormationMarkerSet[firstNonNullWitsmlMarker]->getPartNameInEpcDocument(), "", witsmlFormationMarkerSet[firstNonNullWitsmlMarker]->getUuid());
-		relWitsml.setDestinationObjectType();
-		result.push_back(relWitsml);
 	}
 
 	return result;
@@ -187,8 +158,6 @@ vector<Relationship> WellboreMarkerFrameRepresentation::getAllEpcRelationships()
 void WellboreMarkerFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	WellboreFrameRepresentation::importRelationshipSetFromEpc(epcDoc);
-
-	updateXml = false;
 
 	_resqml2__WellboreMarkerFrameRepresentation* rep = static_cast<_resqml2__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
 
@@ -199,23 +168,10 @@ void WellboreMarkerFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::
 		setStratigraphicOccurrenceInterpretation(epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation>(rep->IntervalStratigraphiUnits->StratigraphicOrganization->UUID));
 	}
 
-	updateXml = true;
-
-	for (unsigned int i = 0; i < rep->WellboreMarker.size(); ++i)
+	for (size_t i = 0; i < rep->WellboreMarker.size(); ++i)
 	{
-		if (rep->WellboreMarker[i]->WitsmlFormationMarker)
-		{
-			WITSML1_4_1_1_NS::FormationMarker* tmp = static_cast<WITSML1_4_1_1_NS::FormationMarker*>(epcDoc->getWitsmlAbstractObjectByUuid(rep->WellboreMarker[i]->WitsmlFormationMarker->UUID));
-			if (tmp)
-			{
-				updateXml = false;
-				setWitsmlFormationMarker(i, tmp);
-				updateXml = true;
-			}
-		}
-
 		WellboreMarker* marker = new WellboreMarker(rep->WellboreMarker[i], this);
-		if (rep->WellboreMarker[i]->Interpretation)
+		if (rep->WellboreMarker[i]->Interpretation != nullptr)
 		{
 			marker->setBoundaryFeatureInterpretation(static_cast<BoundaryFeatureInterpretation*>(epcDoc->getResqmlAbstractObjectByUuid(rep->WellboreMarker[i]->Interpretation->UUID)));
 		}
@@ -224,4 +180,3 @@ void WellboreMarkerFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::
 
 	updateXml = true;
 }
-

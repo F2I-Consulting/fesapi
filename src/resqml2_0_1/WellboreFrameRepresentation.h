@@ -21,7 +21,7 @@ under the License.
 #include "resqml2/AbstractRepresentation.h"
 #include "resqml2/AbstractValuesProperty.h"
 
-namespace WITSML1_4_1_1_NS
+namespace WITSML2_0_NS
 {
 	class Log;
 }
@@ -142,8 +142,8 @@ namespace RESQML2_0_1_NS
 
 		unsigned int getPatchCount() const {return 1;}
 
-		void setWitsmlLog(WITSML1_4_1_1_NS::Log * witsmlLogToSet);
-		WITSML1_4_1_1_NS::Log* getWitsmlLog() {return witsmlLog;}
+		void setWitsmlLog(WITSML2_0_NS::Log * witsmlLogToSet);
+		WITSML2_0_NS::Log* getWitsmlLog() {return witsmlLog;}
 
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
@@ -154,7 +154,7 @@ namespace RESQML2_0_1_NS
 		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		class WellboreTrajectoryRepresentation * trajectory;
-		WITSML1_4_1_1_NS::Log * witsmlLog;
+		WITSML2_0_NS::Log * witsmlLog;
 	};
 }
 

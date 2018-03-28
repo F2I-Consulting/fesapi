@@ -25,7 +25,6 @@ under the License.
 
 #include "proxies/stdsoap2.h"
 #include "proxies/gsoap_resqml2_0_1H.h"
-#include "proxies/gsoap_witsml1_4_1_1H.h"
 #include "proxies/gsoap_eml2_1H.h"
 
 #include "epc/Package.h"
@@ -128,12 +127,14 @@ namespace RESQML2_0_1_NS
 	class BlockedWellboreRepresentation;
 }
 
-namespace WITSML1_4_1_1_NS
+namespace WITSML2_0_NS
 {
-	class AbstractObject;
 	class Well;
-	class CoordinateReferenceSystem;
+	class Wellbore;
 	class Trajectory;
+	class Well;
+	class Log;
+	class WellboreMarkerSet;
 }
 
 namespace PRODML2_0_NS
@@ -233,11 +234,6 @@ namespace COMMON_NS
 		void addGsoapProxy(COMMON_NS::AbstractObject* proxy);
 
 		/**
-		* Add a gsoap proxy to serialize with the package
-		*/
-		void addGsoapProxy(WITSML1_4_1_1_NS::AbstractObject* proxy);
-
-		/**
 		 * Get the property kind mapper of this epc document if given at EPC document construction time.
 		 * Else return NULL.
 		 */
@@ -283,25 +279,13 @@ namespace COMMON_NS
 		* Get the name (string) of the witsml uom as a string based on the enumerated uom.
 		* @return The empty string if no correspondence is found
 		*/
-		std::string getWitsmlLengthUom(const gsoap_witsml1_4_1_1::witsml1__LengthUom & witsmlUom) const;
+		std::string getLengthUom(const gsoap_eml2_1::eml21__LengthUom & witsmlUom) const;
 
 		/**
 		* Get the name (string) of the witsml uom as a string based on the enumerated uom.
 		* @return The empty string if no correspondence is found
 		*/
-		std::string getWitsmlWellVerticalCoordinateUom(const gsoap_witsml1_4_1_1::witsml1__WellVerticalCoordinateUom & witsmlUom) const;
-
-		/**
-		* Get the name (string) of the witsml uom as a string based on the enumerated uom.
-		* @return The empty string if no correspondence is found
-		*/
-		std::string getWitsmlMeasuredDepthUom(const gsoap_witsml1_4_1_1::witsml1__MeasuredDepthUom & witsmlUom) const;
-
-		/**
-		* Get the name (string) of the witsml uom as a string based on the enumerated uom.
-		* @return The empty string if no correspondence is found
-		*/
-		std::string getWitsmlPlaneAngleUom(const gsoap_witsml1_4_1_1::witsml1__PlaneAngleUom & witsmlUom) const;
+		std::string getWitsmlPlaneAngleUom(const gsoap_eml2_1::eml21__PlaneAngleUom & witsmlUom) const;
 
 		/**
 		* Get all the resqml gsoap wrappers from the epc document
@@ -341,8 +325,6 @@ namespace COMMON_NS
 
 			throw std::invalid_argument("The uuid " + uuid + " does not resolve to the expected datatype");
 		}
-
-		WITSML1_4_1_1_NS::AbstractObject* getWitsmlAbstractObjectByUuid(const std::string & uuid) const;
 
 		std::vector<PRODML2_0_NS::DasAcquisition*> getDasAcquisitionSet() const;
 
@@ -1086,38 +1068,51 @@ namespace COMMON_NS
 		/**
 		* Get all the witsml trajectories contained into the EPC document
 		*/
-		std::vector<WITSML1_4_1_1_NS::Trajectory*> getWitsmlTrajectorySet() const;
+		std::vector<WITSML2_0_NS::Trajectory*> getWitsmlTrajectorySet() const;
 
-		WITSML1_4_1_1_NS::Well* createWell(
+		WITSML2_0_NS::Well* createWell(
+			const std::string & guid,
+			const std::string & title);
+
+		WITSML2_0_NS::Well* createWell(
 			const std::string & guid,
 			const std::string & title,
-			const std::string & timeZone);
-
-		WITSML1_4_1_1_NS::Well* createWell(
-			const std::string & guid,
-			const std::string & title,
-			const std::string & timeZone,
 			const std::string & operator_,
-			gsoap_witsml1_4_1_1::witsml1__WellStatus statusWell,
-			gsoap_witsml1_4_1_1::witsml1__WellPurpose purposeWell,
-			gsoap_witsml1_4_1_1::witsml1__WellFluid fluidWell,
-			gsoap_witsml1_4_1_1::witsml1__WellDirection directionWell,
-			const time_t & dTimSpud,
-			const std::string & sourceName,
-			const time_t & dTimCreation,
-			const time_t & dTimLastChange,
-			const std::string & comments
+			gsoap_eml2_1::eml21__WellStatus statusWell,
+			gsoap_eml2_1::witsml2__WellPurpose purposeWell,
+			gsoap_eml2_1::witsml2__WellFluid fluidWell,
+			gsoap_eml2_1::witsml2__WellDirection directionWell
 		);
 
-		WITSML1_4_1_1_NS::CoordinateReferenceSystem* createCoordinateReferenceSystem(
+		WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
+			const std::string & guid,
+			const std::string & title);
+
+		WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title,
-			const std::string & namingSystem,
-			const std::string & code,
-			const std::string & sourceName,
-			const time_t & dTimCreation,
-			const time_t & dTimLastChange,
-			const std::string & comments);
+			gsoap_eml2_1::eml21__WellStatus statusWellbore,
+			const bool & isActive,
+			gsoap_eml2_1::witsml2__WellPurpose purposeWellbore,
+			gsoap_eml2_1::witsml2__WellboreType typeWellbore,
+			const bool & achievedTD
+			);
+
+		WITSML2_0_NS::Trajectory* createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
+			const std::string & guid,
+			const std::string & title,
+			const gsoap_eml2_1::witsml2__ChannelStatus & growingStatus);
+
+		WITSML2_0_NS::Log* createLog(WITSML2_0_NS::Wellbore* witsmlWellbore,
+			const std::string & guid,
+			const std::string & title);
+
+		WITSML2_0_NS::WellboreMarkerSet* createWellboreMarkerSet(WITSML2_0_NS::Wellbore* witsmlWellbore,
+			const std::string & guid,
+			const std::string & title,
+			const std::string & mdDatum,
+			const double & mdBaseSample,
+			const double & mdTopSample);
 
 		//************************************
 		//************ PRODML ****************
@@ -1171,11 +1166,6 @@ namespace COMMON_NS
 		void addFesapiWrapperAndDeleteItIfException(COMMON_NS::AbstractObject* proxy);
 
 		/**
-		* Add a witsml fesapi wrapper into this instance
-		*/
-		void addFesapiWrapperAndDeleteItIfException(WITSML1_4_1_1_NS::AbstractObject* proxy);
-
-		/**
 		* Read the Gsoap proxy from the stream associated to the current gsoap context and wrap this gsoap proxy into a fesapi wrapper.
 		* It does not add this fesapi wrapper to the current instance.
 		* It does not work for EpcExternalPartReference content type since this type is related to an external file which must be handled differently.
@@ -1201,11 +1191,6 @@ namespace COMMON_NS
 #else
 		std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* > resqmlAbstractObjectSet;
 #endif
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-		std::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* > witsmlAbstractObjectSet;
-#else
-		std::tr1::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* > witsmlAbstractObjectSet;
-#endif
 		soap* s;
 		std::string filePath;
 
@@ -1221,9 +1206,9 @@ namespace COMMON_NS
 		std::vector<COMMON_NS::AbstractHdfProxy*>						hdfProxySet;
 		std::vector<RESQML2_0_1_NS::WellboreFeature*>					wellboreSet;
 		std::vector<RESQML2_NS::RepresentationSetRepresentation*>		representationSetRepresentationSet;
-		std::vector<WITSML1_4_1_1_NS::Trajectory*>						witsmlTrajectorySet;
-		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*>		triangulatedSetRepresentationSet;
 		std::vector<resqml2_0_1::Grid2dRepresentation*>					grid2dRepresentationSet;
+		std::vector<WITSML2_0_NS::Trajectory*>							witsmlTrajectorySet;
+		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*>		triangulatedSetRepresentationSet;
 		std::vector<RESQML2_0_1_NS::PolylineRepresentation*>			polylineRepresentationSet;
 		std::vector<RESQML2_0_1_NS::AbstractIjkGridRepresentation*>		ijkGridRepresentationSet;
 		std::vector<RESQML2_0_1_NS::UnstructuredGridRepresentation*>	unstructuredGridRepresentationSet;

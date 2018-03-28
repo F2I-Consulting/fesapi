@@ -83,9 +83,8 @@ under the License.
 #include "resqml2_0_1/Activity.h"
 #include "resqml2_0_1/ActivityTemplate.h"
 
-#include "witsml1_4_1_1/Well.h"
-#include "witsml1_4_1_1/CoordinateReferenceSystem.h"
-#include "witsml1_4_1_1/Trajectory.h"
+#include "witsml2_0/Well.h"
+#include "witsml2_0/Trajectory.h"
 
 #include "prodml2_0/DasAcquisition.h"
 #include "prodml2_0/FiberOpticalPath.h"
@@ -113,28 +112,25 @@ LocalTime3dCrs* localTime3dCrs;
 WellboreInterpretation* wellbore1Interp1;
 StratigraphicColumnRankInterpretation* stratiColumnRank;
 
-WITSML1_4_1_1_NS::Wellbore* witsmlWellbore = NULL;
-
-WITSML1_4_1_1_NS::CoordinateReferenceSystem* witsmlCrs;
+WITSML2_0_NS::Wellbore* witsmlWellbore = NULL;
 
 void serializeWells(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
-	WITSML1_4_1_1_NS::Trajectory* witsmlTraj = nullptr;
-	WITSML1_4_1_1_NS::Log* witsmlLog = nullptr;
+	WITSML2_0_NS::Trajectory* witsmlTraj = nullptr;
+	WITSML2_0_NS::Log* witsmlLog = nullptr;
 
 	// WELL
-	WITSML1_4_1_1_NS::Well* witsmlWell = pck->createWell("", "Well1", "00:00");
-	witsmlWell->setEastingNorthingLocation(gsoap_witsml1_4_1_1::witsml1__LengthUom__m, 275, 75, witsmlCrs);
-	witsmlWell->pushBackDatum("", "well1 msl datum", gsoap_witsml1_4_1_1::witsml1__ElevCodeEnum__KB, "EPSG",
-		"5100", "Mean Sea Level");
-	witsmlWell->pushBackDatum("", "well1 datum", gsoap_witsml1_4_1_1::witsml1__ElevCodeEnum__KB, 0,
-		gsoap_witsml1_4_1_1::witsml1__WellVerticalCoordinateUom__m, 15);
+	WITSML2_0_NS::Well* witsmlWell = pck->createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1");
+	witsmlWell->pushBackLocation("8cd3c8b2-face-4426-8aea-ae34870bd969", 275, 75, 0);
+	witsmlWell->pushBackDatum("aa92fa8b-d6cc-459e-b456-27fec0c08b24", "well1 msl datum", gsoap_eml2_1::eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 0, 5100);
+	witsmlWell->pushBackDatum("d3ac5401-d3e7-4474-b846-070673b210ae", "KB", gsoap_eml2_1::eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 15, 5100);
 
 	// WELLBORE
-	witsmlWellbore = witsmlWell->createWellbore("", "Wellbore1");
+	witsmlWellbore = pck->createWellbore(witsmlWell, "3bd60188-5688-43df-89bb-935fe86a813f", "Wellbore1");
 
 	// TRAJECTORY
-	witsmlTraj = witsmlWellbore->createTrajectory("", "Trajectory");
+	witsmlTraj = pck->createTrajectory(witsmlWellbore, "9d09c16e-44b0-4baf-89b0-c6de3f66d0e3", "Trajectory", gsoap_eml2_1::witsml2__ChannelStatus__active);
+	/*
 	double mds[4] = { 15, 340, 515, 1015 };
 	double tvds[4] = { 0, 325, 500, 1000 };
 	double incl[4] = { .0, .0, .0, .0 };
@@ -142,22 +138,25 @@ void serializeWells(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* h
 	double eastings[4] = { 275, 275, 275, 275 };
 	double northings[4] = { 75, 75, 75, 75 };
 	witsmlTraj->setEastingNorthingTrajectoryStations(4,
-		1, gsoap_witsml1_4_1_1::witsml1__MeasuredDepthUom__m, mds,
-		0, gsoap_witsml1_4_1_1::witsml1__WellVerticalCoordinateUom__m, tvds,
-		gsoap_witsml1_4_1_1::witsml1__PlaneAngleUom__rad, incl,
-		gsoap_witsml1_4_1_1::witsml1__AziRef__grid_x0020north, azi,
-		gsoap_witsml1_4_1_1::witsml1__LengthUom__m, eastings, northings,
+		1, gsoap_witsml2_0::witsml1__MeasuredDepthUom__m, mds,
+		0, gsoap_witsml2_0::witsml1__WellVerticalCoordinateUom__m, tvds,
+		gsoap_witsml2_0::witsml1__PlaneAngleUom__rad, incl,
+		gsoap_witsml2_0::witsml1__AziRef__grid_x0020north, azi,
+		gsoap_witsml2_0::witsml1__LengthUom__m, eastings, northings,
 		witsmlCrs);
+		*/
 
 	// LOG
-	witsmlLog = witsmlWellbore->createLog("", "Log", gsoap_witsml1_4_1_1::witsml1__LogIndexType__measured_x0020depth, "MD");
+	/*
+	witsmlLog = pck->createLog(witsmlWellbore, "c078b261-36ff-4592-99cc-26a03bc84804", "Log");
 	vector<string> witsmlLogMds;
 	witsmlLogMds.push_back("0,0");
 	witsmlLogMds.push_back("250,1");
 	witsmlLogMds.push_back("500,2");
 	witsmlLogMds.push_back("750,3");
 	witsmlLogMds.push_back("1000,4");
-	witsmlLog->setValues("", ",", "m", .0, 1000, 250, gsoap_witsml1_4_1_1::witsml1__LogIndexDirection__increasing, "MD,IntervalIdx", "m,Euc", witsmlLogMds);
+	witsmlLog->setValues("", ",", "m", .0, 1000, 250, gsoap_witsml2_0::witsml1__LogIndexDirection__increasing, "MD,IntervalIdx", "m,Euc", witsmlLogMds);
+	*/
 
 	////////////////////////
 	// RESQML
@@ -204,8 +203,8 @@ void serializeWells(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* h
 
 void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
-	WITSML1_4_1_1_NS::FormationMarker* witsmlFormationMarker0 = NULL;
-	WITSML1_4_1_1_NS::FormationMarker* witsmlFormationMarker1 = NULL;
+	//WITSML2_0_NS::FormationMarker* witsmlFormationMarker0 = NULL;
+	//WITSML2_0_NS::FormationMarker* witsmlFormationMarker1 = NULL;
 
 	StratigraphicColumn* stratiColumn = pck->createStratigraphicColumn("7f6666a0-fa3b-11e5-a509-0002a5d5c51b", "Stratigraphic column");
 	OrganizationFeature* stratiModelFeature = pck->createStratigraphicModel("", "stratiModel");
@@ -232,13 +231,15 @@ void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::Abstra
 	marker1->setBoundaryFeatureInterpretation(fault1Interp1);
 
 	// WITSML MARKER
-	witsmlFormationMarker0 = witsmlWellbore->createFormationMarker("", "marker0", 0, gsoap_witsml1_4_1_1::witsml1__MeasuredDepthUom__m, 350);
-	witsmlFormationMarker1 = witsmlWellbore->createFormationMarker("", "marker1", 0, gsoap_witsml1_4_1_1::witsml1__MeasuredDepthUom__m, 550);
+	/*
+	witsmlFormationMarker0 = witsmlWellbore->createFormationMarker("", "marker0", 0, gsoap_witsml2_0::witsml1__MeasuredDepthUom__m, 350);
+	witsmlFormationMarker1 = witsmlWellbore->createFormationMarker("", "marker1", 0, gsoap_witsml2_0::witsml1__MeasuredDepthUom__m, 550);
 
 	if (witsmlFormationMarker0)
 		wmf->setWitsmlFormationMarker(0, witsmlFormationMarker0);
 	if (witsmlFormationMarker1)
 		wmf->setWitsmlFormationMarker(1, witsmlFormationMarker1);
+		*/
 }
 
 void serializeGeobody(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
@@ -1318,9 +1319,6 @@ bool serialize(const string & filePath)
 	//CRS
 	local3dCrs = pck.createLocalDepth3dCrs("", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
 	localTime3dCrs = pck.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__TimeUom__s, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false); // CRS translation is just for testing;
-#if !defined(OFFICIAL)
-	witsmlCrs = pck.createCoordinateReferenceSystem("", "witsmlCrs", "EPSG", "5715", "", -1, -1, "");
-#endif
 
 	// Comment or uncomment below domains/lines you want wether to test or not
 	serializeWells(&pck, hdfProxy);
@@ -2562,8 +2560,6 @@ void deserialize(const string & inputFile)
 	string resqmlResult = pck.deserialize();
 	if (!resqmlResult.empty()) {
 		cerr << resqmlResult << endl;
-		cout << "Press enter to continue..." << endl;
-		cin.get();
 	}
 
 	unsigned int hdfProxyCount = pck.getHdfProxyCount();
@@ -2876,14 +2872,12 @@ void deserialize(const string & inputFile)
 	for (size_t i = 0; i < wellboreSet.size(); i++)
 	{
 		showAllMetadata(wellboreSet[i]);
-		WITSML1_4_1_1_NS::Wellbore* witsmlWellbore = wellboreSet[i]->getWitsmlWellbore();
+		WITSML2_0_NS::Wellbore* witsmlWellbore = wellboreSet[i]->getWitsmlWellbore();
 		if (witsmlWellbore != NULL)
 		{
 			std::cout << "Associated with witsml well bore " << witsmlWellbore->getTitle()
 				<< " with GUID " << witsmlWellbore->getUuid() << " and witsml well " << witsmlWellbore->getWell()->getTitle()
 				<< " with GUID " << witsmlWellbore->getWell()->getUuid() << std::endl;
-			std::cout << "Associated with witsml well bore datum " << witsmlWellbore->getTrajectories()[0]->getMdDatumName();
-			std::cout << "Well bore datum elevation uom" << witsmlWellbore->getTrajectories()[0]->getMdDatumElevationUom();
 		}
 		for (size_t j = 0; j < wellboreSet[i]->getInterpretationSet().size(); j++)
 		{

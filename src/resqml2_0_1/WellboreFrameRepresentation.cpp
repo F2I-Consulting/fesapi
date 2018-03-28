@@ -27,7 +27,7 @@ under the License.
 #include "resqml2/AbstractLocal3dCrs.h"
 #include "common/AbstractHdfProxy.h"
 
-#include "witsml1_4_1_1/Log.h"
+#include "witsml2_0/Log.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -110,7 +110,7 @@ void WellboreFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDoc
 	}
 
 	if (rep->WitsmlLogReference) {
-		WITSML1_4_1_1_NS::Log* tmp = static_cast<WITSML1_4_1_1_NS::Log* const>(epcDoc->getWitsmlAbstractObjectByUuid(rep->WitsmlLogReference->UUID));
+		WITSML2_0_NS::Log* tmp = static_cast<WITSML2_0_NS::Log* const>(epcDoc->getResqmlAbstractObjectByUuid(rep->WitsmlLogReference->UUID));
 		if (tmp != nullptr) {
 			updateXml = false;
 			setWitsmlLog(tmp);
@@ -301,7 +301,7 @@ std::string WellboreFrameRepresentation::getHdfProxyUuid() const
 		return "";
 }
 
-void WellboreFrameRepresentation::setWitsmlLog(WITSML1_4_1_1_NS::Log * witsmlLogToSet)
+void WellboreFrameRepresentation::setWitsmlLog(WITSML2_0_NS::Log * witsmlLogToSet)
 {
 	witsmlLog = witsmlLogToSet;
 	witsmlLog->resqmlWellboreFrameRepresentation = this;

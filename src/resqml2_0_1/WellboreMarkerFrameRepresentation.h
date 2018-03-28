@@ -20,11 +20,6 @@ under the License.
 
 #include "resqml2_0_1/WellboreFrameRepresentation.h"
 
-namespace WITSML1_4_1_1_NS
-{
-	class FormationMarker;
-}
-
 namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT WellboreMarkerFrameRepresentation : public WellboreFrameRepresentation
@@ -35,7 +30,7 @@ namespace RESQML2_0_1_NS
 		* Only to be used in partial transfer context
 		*/
 		WellboreMarkerFrameRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			WellboreFrameRepresentation(partialObject)
+			WellboreFrameRepresentation(partialObject), stratigraphicOccurrenceInterpretation(nullptr)
 		{
 		}
 
@@ -89,8 +84,6 @@ namespace RESQML2_0_1_NS
 
 		class StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation() { return stratigraphicOccurrenceInterpretation; }
 
-		void setWitsmlFormationMarker(const unsigned int & resqmlMarkerIndex, WITSML1_4_1_1_NS::FormationMarker * witsmlFormationMarker);
-
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
 
@@ -100,7 +93,6 @@ namespace RESQML2_0_1_NS
 		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML forward relationships
-		std::vector<WITSML1_4_1_1_NS::FormationMarker*> witsmlFormationMarkerSet;
 		class StratigraphicOccurrenceInterpretation* stratigraphicOccurrenceInterpretation;
 
 		// only memory relationship

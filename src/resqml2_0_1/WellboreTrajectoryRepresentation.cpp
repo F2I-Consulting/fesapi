@@ -28,7 +28,7 @@ under the License.
 #include "resqml2/AbstractLocal3dCrs.h"
 #include "common/AbstractHdfProxy.h"
 
-#include "witsml1_4_1_1/Trajectory.h"
+#include "witsml2_0/Trajectory.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -167,7 +167,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints,
 	hdfProxy->writeArrayNdOfDoubleValues(rep->uuid, "tangentVectors", tangentVectors, dim, 2);
 }
 
-void WellboreTrajectoryRepresentation::setWitsmlTrajectory(WITSML1_4_1_1_NS::Trajectory * witsmlTraj)
+void WellboreTrajectoryRepresentation::setWitsmlTrajectory(WITSML2_0_NS::Trajectory * witsmlTraj)
 {
 	witsmlTrajectory = witsmlTraj;
 	witsmlTraj->resqmlWellboreTrajectoryRepresentation = this;
@@ -266,7 +266,7 @@ void WellboreTrajectoryRepresentation::importRelationshipSetFromEpc(COMMON_NS::E
 	}
 
 	if (rep->WitsmlTrajectory != nullptr) {
-		WITSML1_4_1_1_NS::Trajectory* tmp = static_cast<WITSML1_4_1_1_NS::Trajectory*>(epcDoc->getWitsmlAbstractObjectByUuid(rep->WitsmlTrajectory->UUID));
+		WITSML2_0_NS::Trajectory* tmp = static_cast<WITSML2_0_NS::Trajectory*>(epcDoc->getResqmlAbstractObjectByUuid(rep->WitsmlTrajectory->UUID));
 		if (tmp)
 		{
 			updateXml = false;

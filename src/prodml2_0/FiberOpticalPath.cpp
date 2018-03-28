@@ -59,7 +59,7 @@ vector<Relationship> FiberOpticalPath::getAllEpcRelationships() const
 	vector<Relationship> result;
 	
 	// XML backward relationship
-	for (size_t i = 0; i < dasAcquisitionSet.size(); i++)
+	for (size_t i = 0; i < dasAcquisitionSet.size(); ++i)
 	{
 		Relationship rel(dasAcquisitionSet[i]->getPartNameInEpcDocument(), "", dasAcquisitionSet[i]->getUuid());
 		rel.setSourceObjectType();

@@ -20,7 +20,7 @@ under the License.
 
 #include "resqml2/AbstractRepresentation.h"
 
-namespace WITSML1_4_1_1_NS
+namespace WITSML2_0_NS
 {
 	class Trajectory;
 }
@@ -235,8 +235,8 @@ namespace RESQML2_0_1_NS
 
 		bool hasGeometry() const;
 
-		void setWitsmlTrajectory(WITSML1_4_1_1_NS::Trajectory * witsmlTraj);
-		WITSML1_4_1_1_NS::Trajectory * getWitsmlTrajectory() {return witsmlTrajectory;}
+		void setWitsmlTrajectory(WITSML2_0_NS::Trajectory * witsmlTraj);
+		WITSML2_0_NS::Trajectory * getWitsmlTrajectory() {return witsmlTrajectory;}
 
 	private:
 		/**
@@ -256,7 +256,7 @@ namespace RESQML2_0_1_NS
 		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML forward relationships
-		WITSML1_4_1_1_NS::Trajectory * witsmlTrajectory;
+		WITSML2_0_NS::Trajectory * witsmlTrajectory;
 		
 		// XML backward relationships
 		std::vector<WellboreTrajectoryRepresentation*> childrenTrajSet;
