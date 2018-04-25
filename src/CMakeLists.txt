@@ -11,6 +11,7 @@ SET (RESQML_PREFIX_2_0_1 "resqml2_0_1")
 SET (RESQML_PREFIX_2_1 "resqml2_1")
 SET (WITSML_PREFIX "witsml1_4_1_1")
 SET (PRODML_PREFIX_2_0 "prodml2_0")
+SET (ETP_PREFIX "etp")
 
 IF (PROXIES_GENERATION)
 	# setting RESQML_XSD_FILES 
@@ -132,6 +133,7 @@ SET (FESAPI_PRODML2_0_NS prodml2_0 CACHE STRING "Namespace for prodml2_0 objects
 SET (FESAPI_RESQML2_NS resqml2 CACHE STRING "Namespace for resqml2 objects")
 SET (FESAPI_RESQML2_0_1_NS resqml2_0_1 CACHE STRING "Namespace for resqml2_0_1 objects")
 SET (FESAPI_WITSML1_4_1_1_NS witsml1_4_1_1 CACHE STRING "Namespace for witsml1_4_1_1 objects")
+SET (FESAPI_ETP_NS etp CACHE STRING "Namespace for etp objects")
 CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/nsDefinitions.h) # Overwrite if different
 
 FILE (GLOB FESAPI_COMMON_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/common/*.cpp)
@@ -177,6 +179,39 @@ SET (ALL_SOURCES_AND_HEADERS
 	${FESAPI_PROXIES_SOURCES}
 	${FESAPI_PROXIES_HEADERS}
 )
+
+IF (WITH_ETP)
+	FILE (GLOB FESAPI_ETP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/etp/*.cpp)
+	FILE (GLOB FESAPI_ETP_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/etp/*.h)
+
+	SET (ALL_SOURCES_AND_HEADERS
+		${ALL_SOURCES_AND_HEADERS}
+		${FESAPI_ETP_SOURCES}
+		${FESAPI_ETP_HEADERS}		
+	)
+
+	find_package (Threads)
+
+	# avro DEPENDENCY
+	SET (AVRO_INCLUDE_DIR AVRO_INCLUDE_DIR-NOTFOUND CACHE PATH "Path to the directory which contains the avro header files")
+	IF (NOT IS_DIRECTORY ${AVRO_INCLUDE_DIR})
+		MESSAGE(WARNING "The Avro include dir (AVRO_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
+	ENDIF ()
+	SET (AVRO_LIBRARY_RELEASE AVRO_LIBRARY_RELEASE-NOTFOUND CACHE FILEPATH "Path to the file which contains the avro library release")
+	IF (NOT EXISTS ${AVRO_LIBRARY_RELEASE})
+		MESSAGE(WARNING "The avro library (AVRO_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
+	ENDIF ()
+
+	# Boost DEPENDENCY
+	SET (BOOST_INCLUDE_DIR BOOST_INCLUDE_DIR-NOTFOUND CACHE PATH "Path to the directory which contains the BOOST header files")
+	IF (NOT IS_DIRECTORY ${BOOST_INCLUDE_DIR})
+		MESSAGE(WARNING "The BOOST include dir (BOOST_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
+	ENDIF ()
+	SET (BOOST_LIBRARY_RELEASE BOOST_LIBRARY_RELEASE-NOTFOUND CACHE FILEPATH "Path to the file which contains the BOOST library release")
+	IF (NOT EXISTS ${BOOST_LIBRARY_RELEASE})
+		MESSAGE(WARNING "The BOOST library (BOOST_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
+	ENDIF ()
+ENDIF (WITH_ETP)
 
 IF (WITH_JAVA_WRAPPING)
 	FIND_PACKAGE(JNI REQUIRED)
@@ -269,6 +304,10 @@ IF (WIN32)
 	SOURCE_GROUP ("${PRODML_PREFIX_2_0}" FILES ${FESAPI_PRODML_2_0_SOURCES} ${FESAPI_PRODML_2_0_HEADERS})
 	
 	SOURCE_GROUP ("proxies" FILES ${FESAPI_PROXIES_SOURCES} ${FESAPI_PROXIES_HEADERS})
+
+	IF (WITH_ETP)
+		SOURCE_GROUP ("${ETP_PREFIX}" FILES ${FESAPI_ETP_SOURCES} ${FESAPI_ETP_HEADERS})
+	ENDIF (WITH_ETP)
 ENDIF (WIN32)
 
 # ============================================================================
@@ -281,6 +320,10 @@ INCLUDE_DIRECTORIES (
 	${MINIZIP_INCLUDE_DIR}
 )
 
+IF (WITH_ETP)
+	INCLUDE_DIRECTORIES (${AVRO_INCLUDE_DIR})
+	INCLUDE_DIRECTORIES (${BOOST_INCLUDE_DIR})
+ENDIF (WITH_ETP)
 
 IF (UNIX)
 	INCLUDE_DIRECTORIES (${UUID_INCLUDE_DIRS})
@@ -341,6 +384,10 @@ ELSEIF (UNIX)
 		VERSION ${Fesapi_VERSION}
 		SOVERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR})
 ENDIF (WIN32)
+
+IF (WITH_ETP)
+	TARGET_LINK_LIBRARIES (${CPP_LIBRARY_NAME} ${BOOST_LIBRARY_RELEASE} ${CMAKE_THREAD_LIBS_INIT} ${AVRO_LIBRARY_RELEASE})
+ENDIF (WITH_ETP)
 
 # ============================================================================
 # Install FesapiCpp library
