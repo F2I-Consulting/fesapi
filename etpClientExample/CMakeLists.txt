@@ -1,0 +1,41 @@
+CMAKE_MINIMUM_REQUIRED (VERSION 3.2)
+
+PROJECT (Fesapi_ETP_Client_Example)
+
+# ============================================================================
+# include directories
+# ============================================================================
+
+INCLUDE_DIRECTORIES (
+	${FESAPI_ROOT_DIR}/src/
+	${HDF5_INCLUDE_DIRS}
+	${MINIZIP_INCLUDE_DIR}
+	${ZLIB_INCLUDE_DIRS}
+	${AVRO_INCLUDE_DIR}
+	${BOOST_INCLUDE_DIR}
+)
+
+IF (WITH_SZIP)
+	INCLUDE_DIRECTORIES (${SZIP_INCLUDE_DIRS})
+ENDIF (WITH_SZIP)
+
+IF (UNIX)
+	INCLUDE_DIRECTORIES (${UUID_INCLUDE_DIRS})
+ENDIF (UNIX)
+
+# ============================================================================
+# build example
+# ============================================================================
+
+ADD_EXECUTABLE (etpClientExample ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
+ADD_DEPENDENCIES (etpClientExample ${CPP_LIBRARY_NAME})
+TARGET_LINK_LIBRARIES (etpClientExample ${CPP_LIBRARY_NAME})
+IF (WIN32)
+	SET_TARGET_PROPERTIES (etpClientExample PROPERTIES LINK_FLAGS "/INCREMENTAL:NO")
+	SET_TARGET_PROPERTIES (etpClientExample PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${FESAPI_BINARY_DIR}) 
+ENDIF (WIN32)
+
+INSTALL (
+	TARGETS etpClientExample
+	DESTINATION ${CMAKE_INSTALL_PREFIX}
+)
