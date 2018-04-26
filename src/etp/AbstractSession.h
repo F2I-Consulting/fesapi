@@ -35,13 +35,16 @@ namespace ETP_NS
 	{
 	protected:
 	    websocket::stream<tcp::socket> ws;
-	    boost::beast::flat_buffer buffer;
+	    boost::beast::flat_buffer receivedBuffer;
+	    boost::shared_ptr<std::vector<uint8_t> > bytesToSend;
 	    long long messageId = 1;
 
 	    // For client session
 	    AbstractSession(boost::asio::io_context& ioc) : ws(ioc) {}
+	    // For server session
+	    AbstractSession(tcp::socket socket) : ws(std::move(socket)) {}
 
-		virtual void run(const std::string & host, const std::string port) = 0;
+		virtual void run() = 0;
 		virtual void close() = 0;
 	};
 }

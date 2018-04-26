@@ -35,16 +35,30 @@ int main(int argc, char **argv)
 	Energistics::Datatypes::SupportedProtocol protocol;
 	protocol.m_protocol = Energistics::Datatypes::Protocols::Discovery;
 	protocol.m_protocolVersion = protocolVersion;
-	protocol.m_role = "consumer";
+	protocol.m_role = "customer";
 	requestedProtocols.push_back(protocol);
 
 	std::vector<std::string> supportedObjects;
 
-	auto clientSession = std::make_shared<ClientSession>(ioc, requestedProtocols, supportedObjects);
-
-	clientSession->run("127.0.0.1", "8080");
-
+	auto clientSession = std::make_shared<ClientSession>(ioc, "127.0.0.1", "8080", requestedProtocols, supportedObjects);
+	clientSession->run();
+/*
+	std::string command;
+	while (command != "quit") {
+		std::cout << "What is your command ?" << std::endl;
+		std::cin >> command;
+	    if (command == "quit") {
+	    	clientSession->close();
+	    }
+	    else if (command == "connect") {
+	    	clientSession->run();
+	    }
+	}
+*/
+    // Run the I/O service. The call will return when the socket is closed.
 	ioc.run();
+
+	std::cout << "The socket is now closed. Close the program." << std::endl;
 
 #ifdef _WIN32
 	_CrtDumpMemoryLeaks();

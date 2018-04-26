@@ -1,4 +1,3 @@
-
 /*-----------------------------------------------------------------------
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
@@ -17,29 +16,35 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#pragma once
 
-#include "etp/AbstractSession.h"
+#include "etp/Server.h"
 
-#include <boost/asio/strand.hpp>
+#include <thread>
 
-namespace ETP_NS
+using namespace ETP_NS;
+
+void Server::listen(const std::string & host, unsigned short port, int threadCount)
 {
-	class ServerSession : public ETP_NS::AbstractSession
-	{
-	private:
-		boost::asio::strand<boost::asio::io_context::executor_type> strand;
+	// The io_context is required for all I/O
+	boost::asio::io_context ioc{threadCount};
 
-	public:
-		ServerSession(tcp::socket socket);
+	// Create and launch a listening port
+	auto const address = boost::asio::ip::make_address(host);
+	std::make_shared<Server::listener>(ioc, tcp::endpoint{address, port})->run();
 
-		void run();
-		void close();
+	// Run the I/O service on the requested number of threads
+	std::vector<std::thread> v;
+	v.reserve(threadCount - 1);
+	for(auto i = threadCount - 1; i > 0; --i)
+		v.emplace_back(
+		[&ioc]
+		{
+			ioc.run();
+		});
+	ioc.run();
+}
 
-		void on_accept(boost::system::error_code ec);
-		void on_close(boost::system::error_code ec);
-		void do_read();
-		void on_read(boost::system::error_code ec, std::size_t bytes_transferred);
-		void on_write(boost::system::error_code ec, std::size_t bytes_transferred);
-	};
+void Server::close()
+{
+	std::cout << "Should close the server" << std::endl;
 }

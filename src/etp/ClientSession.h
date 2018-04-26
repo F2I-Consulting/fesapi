@@ -27,6 +27,7 @@ namespace ETP_NS
 	private:
 	    tcp::resolver resolver;
 	    std::string host;
+	    std::string port;
 	    websocket::response_type responseType; // In order to check handshake sec_websocket_protocol
 	    Energistics::Protocol::Core::RequestSession requestSession;
 
@@ -36,11 +37,15 @@ namespace ETP_NS
 	     * @param supportedObjects		A list of the Data Objects supported by the client. This list MUST be empty if the client is a customer. This field MUST be supplied if the client is a Store and is requesting a customer role for the server.
 	     */
 		ClientSession(boost::asio::io_context& ioc,
+				const std::string & host, const std::string & port,
 				const std::vector<Energistics::Datatypes::SupportedProtocol> & requestedProtocols,
 				const std::vector<std::string>& supportedObjects);
 
-		void run(const std::string & host, const std::string port);
+		void run();
 		void close();
+
+		void do_read();
+		void do_read2();
 
 		void on_resolve(boost::system::error_code ec, tcp::resolver::results_type results);
 		void on_connect(boost::system::error_code ec);
