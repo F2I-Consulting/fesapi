@@ -135,6 +135,8 @@ namespace WITSML2_0_NS
 	class Well;
 	class Log;
 	class WellboreMarkerSet;
+	class ToolErrorModel;
+	class ToolErrorTermSet;
 }
 
 namespace PRODML2_0_NS
@@ -1113,6 +1115,14 @@ namespace COMMON_NS
 			const std::string & mdDatum,
 			const double & mdBaseSample,
 			const double & mdTopSample);
+
+		WITSML2_0_NS::ToolErrorModel* createToolErrorModel(
+			const std::string & guid,
+			const std::string & title);
+
+		WITSML2_0_NS::ToolErrorTermSet* createToolErrorTermSet(
+			const std::string & guid,
+			const std::string & title);
 
 		//************************************
 		//************ PRODML ****************

@@ -100,6 +100,8 @@ under the License.
 #include "witsml2_0/Trajectory.h"
 #include "witsml2_0/Log.h"
 #include "witsml2_0/WellboreMarkerSet.h"
+#include "witsml2_0/ToolErrorModel.h"
+#include "witsml2_0/ToolErrorTermSet.h"
 
 #include "prodml2_0/HdfProxy.h"
 #include "prodml2_0/DasAcquisition.h"
@@ -929,6 +931,7 @@ COMMON_NS::AbstractObject* EpcDocument::getResqml2_0_1WrapperFromGsoapContext(co
 	else if CHECK_AND_GET_WITSML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Trajectory)
 	else if CHECK_AND_GET_WITSML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Log)
 	else if CHECK_AND_GET_WITSML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreMarkerSet)
+	else if CHECK_AND_GET_WITSML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ToolErrorModel)
 	else if (resqmlContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
@@ -2449,6 +2452,24 @@ WITSML2_0_NS::WellboreMarkerSet* EpcDocument::createWellboreMarkerSet(WITSML2_0_
 	const double & mdTopSample)
 {
 	WellboreMarkerSet* result = new WellboreMarkerSet(witsmlWellbore, guid, title, mdDatum, mdBaseSample, mdTopSample);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_0_NS::ToolErrorModel* EpcDocument::createToolErrorModel(
+	const std::string & guid,
+	const std::string & title)
+{
+	ToolErrorModel* result = new ToolErrorModel(getGsoapContext(), guid, title);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_0_NS::ToolErrorTermSet* EpcDocument::createToolErrorTermSet(
+	const std::string & guid,
+	const std::string & title)
+{
+	ToolErrorTermSet* result = new ToolErrorTermSet(getGsoapContext(), guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }

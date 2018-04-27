@@ -59,7 +59,6 @@ namespace WITSML2_0_NS
 
 		gsoap_eml2_1::eml21__DataObjectReference* getWellboreDor() const;
 		class Wellbore* getWellbore() const;
-
 		void setWellbore(class Wellbore* witsmlWellbore);
 
 		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* getResqmlWellboreTrajectoryRepresentation() const {return resqmlWellboreTrajectoryRepresentation;}

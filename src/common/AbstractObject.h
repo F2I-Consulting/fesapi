@@ -39,6 +39,7 @@ namespace COMMON_NS
 		* Push back an extra metadata (not a standard one)
 		*/
 		void pushBackExtraMetadataV2_0_1(const std::string & key, const std::string & value);
+		void pushBackExtraMetadataV2_1(const std::string & key, const std::string & value);
 
 		/**
 		* Getter (in read only mode) of all the extra metadata
