@@ -282,6 +282,8 @@ const std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*> & EpcDocument::getFr
 
 const std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> & EpcDocument::getAllTriangulatedSetRepSet() const { return triangulatedSetRepresentationSet; }
 
+const std::vector<resqml2_0_1::Grid2dRepresentation*> & EpcDocument::getAllGrid2dRepresentationSet() const { return grid2dRepresentationSet; }
+
 const std::vector<RESQML2_0_1_NS::SeismicLineFeature*> & EpcDocument::getSeismicLineSet() const { return seismicLineSet; }
 
 const std::vector<RESQML2_0_1_NS::WellboreFeature*> & EpcDocument::getWellboreSet() const { return wellboreSet; }
@@ -408,6 +410,7 @@ void EpcDocument::close()
 	representationSetRepresentationSet.clear();
 	witsmlTrajectorySet.clear();
 	triangulatedSetRepresentationSet.clear();
+	grid2dRepresentationSet.clear();
 	polylineRepresentationSet.clear();
 	ijkGridRepresentationSet.clear();
 	unstructuredGridRepresentationSet.clear();
@@ -547,6 +550,9 @@ void EpcDocument::addGsoapProxy(COMMON_NS::AbstractObject* proxy)
 	}
 	else if (xmlTag.compare(TriangulatedSetRepresentation::XML_TAG) == 0) {
 		triangulatedSetRepresentationSet.push_back(static_cast<TriangulatedSetRepresentation* const>(proxy));
+	}
+	else if (xmlTag.compare(Grid2dRepresentation::XML_TAG) == 0) {
+		grid2dRepresentationSet.push_back(static_cast<Grid2dRepresentation* const>(proxy));
 	}
 	else if (xmlTag.compare(FrontierFeature::XML_TAG) == 0) {
 		frontierSet.push_back(static_cast<FrontierFeature* const>(proxy));

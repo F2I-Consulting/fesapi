@@ -438,6 +438,11 @@ namespace COMMON_NS
 		const std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> & getAllTriangulatedSetRepSet() const;
 
 		/**
+		* Get all the grid 2d representations of the EPC document
+		*/
+		const std::vector<RESQML2_0_1_NS::Grid2dRepresentation*> & getAllGrid2dRepresentationSet() const;
+
+		/**
 		* Get all the triangulated set representations of the EPC document which are not horizon and fault neither.
 		*/
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getUnclassifiedTriangulatedSetRepSet() const;
@@ -1211,15 +1216,16 @@ namespace COMMON_NS
 		std::vector<RESQML2_0_1_NS::WellboreFeature*>					wellboreSet;
 		std::vector<RESQML2_NS::RepresentationSetRepresentation*>		representationSetRepresentationSet;
 		std::vector<WITSML1_4_1_1_NS::Trajectory*>						witsmlTrajectorySet;
-		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*>	triangulatedSetRepresentationSet;
+		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*>		triangulatedSetRepresentationSet;
+		std::vector<resqml2_0_1::Grid2dRepresentation*>					grid2dRepresentationSet;
 		std::vector<RESQML2_0_1_NS::PolylineRepresentation*>			polylineRepresentationSet;
-		std::vector<RESQML2_0_1_NS::AbstractIjkGridRepresentation*>	ijkGridRepresentationSet;
+		std::vector<RESQML2_0_1_NS::AbstractIjkGridRepresentation*>		ijkGridRepresentationSet;
 		std::vector<RESQML2_0_1_NS::UnstructuredGridRepresentation*>	unstructuredGridRepresentationSet;
 		std::vector<RESQML2_0_1_NS::StratigraphicColumn*>				stratigraphicColumnSet;
 		std::vector<RESQML2_0_1_NS::FrontierFeature*>					frontierSet;
 		std::vector<RESQML2_0_1_NS::OrganizationFeature*> 				organizationSet;
 		std::vector<RESQML2_NS::TimeSeries*> 							timeSeriesSet;
-		std::vector<RESQML2_NS::SubRepresentation*>					subRepresentationSet;
+		std::vector<RESQML2_NS::SubRepresentation*>						subRepresentationSet;
 		std::vector<RESQML2_0_1_NS::PointSetRepresentation*>			pointSetRepresentationSet;
 
 		RESQML2_0_1_NS::PropertyKindMapper* propertyKindMapper;
