@@ -22,6 +22,7 @@ under the License.
 #include "etp/AbstractSession.h"
 
 #include <boost/asio/strand.hpp>
+#include <boost/asio/bind_executor.hpp>
 
 namespace ETP_NS
 {
@@ -33,13 +34,47 @@ namespace ETP_NS
 	public:
 		ServerSession(tcp::socket socket);
 
+		virtual ~ServerSession() {}
+
 		void run();
-		void close();
+
+		 void do_write() {
+			ws.async_write(
+				boost::asio::buffer(*bytesToSend),
+				boost::asio::bind_executor(
+					strand,
+					std::bind(
+						&AbstractSession::on_write,
+						shared_from_this(),
+						std::placeholders::_1,
+						std::placeholders::_2)));
+		}
+
+		 void do_writeAndRead() {
+			ws.async_write(
+				boost::asio::buffer(*bytesToSend),
+				boost::asio::bind_executor(
+					strand,
+					std::bind(
+						&AbstractSession::on_writeAndRead,
+						shared_from_this(),
+						std::placeholders::_1,
+						std::placeholders::_2)));
+		}
+
+		 void do_close() {
+			 ws.async_close(websocket::close_code::normal,
+				boost::asio::bind_executor(
+					strand,
+					std::bind(
+						&AbstractSession::on_close,
+						shared_from_this(),
+						std::placeholders::_1)));
+		 }
+
+		virtual void do_when_finished();
 
 		void on_accept(boost::system::error_code ec);
-		void on_close(boost::system::error_code ec);
 		void do_read();
-		void on_read(boost::system::error_code ec, std::size_t bytes_transferred);
-		void on_write(boost::system::error_code ec, std::size_t bytes_transferred);
 	};
 }

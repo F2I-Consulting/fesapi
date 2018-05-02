@@ -16,20 +16,26 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
+#pragma once
 
-#include "etp/Server.h"
-#include "MyOwnEtpServerSession.h"
+#include "etp/ProtocolHandlers/ProtocolHandlers.h"
 
-using namespace ETP_NS;
+#include "tools/GuidTools.h"
 
-int main(int argc, char **argv)
+namespace ETP_NS
 {
-	Server<MyOwnEtpServerSession> etpServer;
-	etpServer.listen("127.0.0.1", 8080, 2);
+	class CoreHandlers : public ProtocolHandlers
+	{
+	public:
+		CoreHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
+		virtual ~CoreHandlers() {}
 
-#ifdef _WIN32
-	_CrtDumpMemoryLeaks();
-#endif
+	    void decodeMessageBody(const Energistics ::Datatypes::MessageHeader & mh, avro::DecoderPtr d) override;
 
-	return 0;
+	    virtual void on_RequestSession(const Energistics::Protocol::Core::RequestSession & rs);
+	    virtual void on_OpenSession(const Energistics::Protocol::Core::OpenSession & os);
+	    virtual void on_CloseSession(const Energistics::Protocol::Core::CloseSession & cs);
+	    virtual void on_ProtocolException(const Energistics::Protocol::Core::ProtocolException & pe);
+
+	};
 }

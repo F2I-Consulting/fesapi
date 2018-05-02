@@ -17,7 +17,8 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
-#include "etp/ClientSession.h"
+#include <thread>
+#include "MyOwnEtpClientSession.h"
 
 using namespace ETP_NS;
 
@@ -33,32 +34,22 @@ int main(int argc, char **argv)
 	// Requested protocol
 	std::vector<Energistics::Datatypes::SupportedProtocol> requestedProtocols;
 	Energistics::Datatypes::SupportedProtocol protocol;
+	protocol.m_protocol = Energistics::Datatypes::Protocols::Core;
+	protocol.m_protocolVersion = protocolVersion;
+	protocol.m_role = "server";
+	requestedProtocols.push_back(protocol);
 	protocol.m_protocol = Energistics::Datatypes::Protocols::Discovery;
 	protocol.m_protocolVersion = protocolVersion;
-	protocol.m_role = "customer";
+	protocol.m_role = "store";
 	requestedProtocols.push_back(protocol);
 
 	std::vector<std::string> supportedObjects;
 
-	auto clientSession = std::make_shared<ClientSession>(ioc, "127.0.0.1", "8080", requestedProtocols, supportedObjects);
+	auto clientSession = std::make_shared<MyOwnEtpClientSession>(ioc, "127.0.0.1", "8080", requestedProtocols, supportedObjects);
 	clientSession->run();
-/*
-	std::string command;
-	while (command != "quit") {
-		std::cout << "What is your command ?" << std::endl;
-		std::cin >> command;
-	    if (command == "quit") {
-	    	clientSession->close();
-	    }
-	    else if (command == "connect") {
-	    	clientSession->run();
-	    }
-	}
-*/
+
     // Run the I/O service. The call will return when the socket is closed.
 	ioc.run();
-
-	std::cout << "The socket is now closed. Close the program." << std::endl;
 
 #ifdef _WIN32
 	_CrtDumpMemoryLeaks();

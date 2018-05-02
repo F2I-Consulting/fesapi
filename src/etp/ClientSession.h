@@ -41,17 +41,44 @@ namespace ETP_NS
 				const std::vector<Energistics::Datatypes::SupportedProtocol> & requestedProtocols,
 				const std::vector<std::string>& supportedObjects);
 
-		void run();
-		void close();
+		virtual ~ClientSession() {}
 
+		void run();
+
+		void do_write() {
+			ws.async_write(
+				boost::asio::buffer(*bytesToSend),
+				std::bind(
+					&AbstractSession::on_write,
+					shared_from_this(),
+					std::placeholders::_1,
+					std::placeholders::_2));
+		}
+
+		void do_writeAndRead() {
+			ws.async_write(
+				boost::asio::buffer(*bytesToSend),
+				std::bind(
+					&AbstractSession::on_writeAndRead,
+					shared_from_this(),
+					std::placeholders::_1,
+					std::placeholders::_2));
+		}
+
+		void do_close() {
+			ws.async_close(websocket::close_code::normal,
+				std::bind(
+					&AbstractSession::on_close,
+					shared_from_this(),
+					std::placeholders::_1));
+		}
+
+		virtual void do_when_finished();
 		void do_read();
-		void do_read2();
 
 		void on_resolve(boost::system::error_code ec, tcp::resolver::results_type results);
 		void on_connect(boost::system::error_code ec);
 		void on_handshake(boost::system::error_code ec);
-		void on_write(boost::system::error_code ec, std::size_t bytes_transferred);
-		void on_read(boost::system::error_code ec, std::size_t bytes_transferred);
 		void on_close(boost::system::error_code ec);
 	};
 }

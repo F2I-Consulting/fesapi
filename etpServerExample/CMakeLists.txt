@@ -7,6 +7,7 @@ PROJECT (Fesapi_ETP_Server_Example)
 # ============================================================================
 
 INCLUDE_DIRECTORIES (
+	${CMAKE_CURRENT_SOURCE_DIR}
 	${FESAPI_ROOT_DIR}/src/
 	${HDF5_INCLUDE_DIRS}
 	${MINIZIP_INCLUDE_DIR}
@@ -27,7 +28,9 @@ ENDIF (UNIX)
 # build example
 # ============================================================================
 
-ADD_EXECUTABLE (etpServerExample ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
+FILE (GLOB ALL_CPP_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+
+ADD_EXECUTABLE (etpServerExample ${ALL_CPP_FILES})
 ADD_DEPENDENCIES (etpServerExample ${CPP_LIBRARY_NAME})
 TARGET_LINK_LIBRARIES (etpServerExample ${CPP_LIBRARY_NAME})
 IF (WIN32)

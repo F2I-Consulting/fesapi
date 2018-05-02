@@ -18,3 +18,71 @@ under the License.
 -----------------------------------------------------------------------*/
 
 #include "etp/AbstractSession.h"
+
+#include "tools/GuidTools.h"
+
+using namespace ETP_NS;
+
+Energistics::Datatypes::MessageHeader AbstractSession::decodeMessageHeader(avro::DecoderPtr decoder, bool print)
+{
+	Energistics ::Datatypes::MessageHeader receivedMh;
+	avro::decode(*decoder, receivedMh);
+	if (print) {
+		std::cout << "*************************************************" << std::endl;
+		std::cout << "Message Header received : " << std::endl;
+		std::cout << "protocol : " << receivedMh.m_protocol << std::endl;
+		std::cout << "type : " << receivedMh.m_messageType << std::endl;
+		std::cout << "id : " << receivedMh.m_messageId << std::endl;
+		std::cout << "correlation id : " << receivedMh.m_correlationId << std::endl;
+		std::cout << "flags : " << receivedMh.m_messageFlags << std::endl;
+		std::cout << "*************************************************" << std::endl;
+	}
+
+	return receivedMh;
+}
+
+void AbstractSession::on_read(boost::system::error_code ec, std::size_t bytes_transferred)
+{
+	boost::ignore_unused(bytes_transferred);
+
+	// This indicates that the session was closed
+	if(ec == websocket::error::closed) {
+		std::cout << "The other endpoint closed connection." << std::endl;
+		closed = true;
+		return;
+	}
+
+	if(ec) {
+		std::cerr << "on_read : " << ec.message() << std::endl;
+	}
+
+	if (bytes_transferred == 0) return;
+
+	std::auto_ptr<avro::InputStream> in = avro::memoryInputStream(static_cast<const uint8_t*>(receivedBuffer.data().data()), bytes_transferred);
+	avro::DecoderPtr d = avro::binaryDecoder();
+	d->init(*in);
+
+	Energistics ::Datatypes::MessageHeader receivedMh = decodeMessageHeader(d, true);
+
+	if (receivedMh.m_protocol < protocols.size() && protocols[receivedMh.m_protocol] != nullptr) {
+		protocols[receivedMh.m_protocol]->decodeMessageBody(receivedMh, d);
+	}
+	else {
+		Energistics::Protocol::Core::ProtocolException error;
+		error.m_errorCode = 4;
+		error.m_errorMessage = "The agent does not support the protocol identified in a message header.";
+
+		send(error);
+	}
+
+	// Clear the buffer
+	receivedBuffer.consume(receivedBuffer.size());
+}
+
+void AbstractSession::close()
+{
+	// Build Open Session message
+	Energistics::Protocol::Core::CloseSession closeSession;
+
+	sendAndDoRead(closeSession);
+}

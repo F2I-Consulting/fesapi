@@ -16,20 +16,18 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
+#pragma once
 
-#include "etp/Server.h"
-#include "MyOwnEtpServerSession.h"
+#include "etp/ServerSession.h"
 
-using namespace ETP_NS;
+#include "common/EpcDocument.h"
 
-int main(int argc, char **argv)
+class MyOwnEtpServerSession : public ETP_NS::ServerSession
 {
-	Server<MyOwnEtpServerSession> etpServer;
-	etpServer.listen("127.0.0.1", 8080, 2);
+private:
+	COMMON_NS::EpcDocument epcDoc;
 
-#ifdef _WIN32
-	_CrtDumpMemoryLeaks();
-#endif
+public:
 
-	return 0;
-}
+	MyOwnEtpServerSession(tcp::socket socket);
+};

@@ -16,20 +16,30 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
+#pragma once
 
-#include "etp/Server.h"
-#include "MyOwnEtpServerSession.h"
+#include <memory>
 
-using namespace ETP_NS;
+#include "nsDefinitions.h"
+#include "etp/EtpMessages.h"
 
-int main(int argc, char **argv)
+namespace ETP_NS
 {
-	Server<MyOwnEtpServerSession> etpServer;
-	etpServer.listen("127.0.0.1", 8080, 2);
+	class AbstractSession;
 
-#ifdef _WIN32
-	_CrtDumpMemoryLeaks();
-#endif
+	class ProtocolHandlers : public std::enable_shared_from_this<ProtocolHandlers>
+	{
+	protected:
+		ProtocolHandlers(AbstractSession* mySession): session(mySession) {}
 
-	return 0;
+		AbstractSession* session;
+
+		void sendExceptionCode3();
+
+	public:
+		virtual ~ProtocolHandlers() {}
+
+	    virtual void decodeMessageBody(const Energistics ::Datatypes::MessageHeader & mh, avro::DecoderPtr d) = 0;
+
+	};
 }

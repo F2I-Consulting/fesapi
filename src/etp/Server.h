@@ -19,6 +19,7 @@ under the License.
 #pragma once
 
 #include <boost/asio/ip/tcp.hpp>
+#include <thread>
 
 #include "etp/ServerSession.h"
 
@@ -26,6 +27,7 @@ using tcp = boost::asio::ip::tcp;               // from <boost/asio/ip/tcp.hpp>
 
 namespace ETP_NS
 {
+	template <class T>
 	class Server
 	{
 	private:
@@ -95,7 +97,7 @@ namespace ETP_NS
 					socket_,
 					std::bind(
 						&listener::on_accept,
-						shared_from_this(),
+						this->shared_from_this(),
 						std::placeholders::_1));
 			}
 
@@ -108,7 +110,7 @@ namespace ETP_NS
 				else
 				{
 					// Create the session and run it
-					std::make_shared<ServerSession>(std::move(socket_))->run();
+					std::make_shared<T>(std::move(socket_))->run();
 				}
 
 				// Accept another connection
@@ -119,7 +121,24 @@ namespace ETP_NS
 	public:
 	    Server() {}
 
-		void listen(const std::string & host, unsigned short port, int threadCount);
-		void close();
+		void listen(const std::string & host, unsigned short port, int threadCount) {
+	    	// The io_context is required for all I/O
+			boost::asio::io_context ioc{threadCount};
+
+			// Create and launch a listening port
+			auto const address = boost::asio::ip::make_address(host);
+			std::make_shared<Server::listener>(ioc, tcp::endpoint{address, port})->run();
+
+			// Run the I/O service on the requested number of threads
+			std::vector<std::thread> v;
+			v.reserve(threadCount - 1);
+			for(auto i = threadCount - 1; i > 0; --i)
+				v.emplace_back(
+				[&ioc]
+				{
+					ioc.run();
+				});
+			ioc.run();
+		}
 	};
 }

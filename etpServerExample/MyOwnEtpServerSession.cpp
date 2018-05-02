@@ -17,19 +17,23 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
-#include "etp/Server.h"
 #include "MyOwnEtpServerSession.h"
 
-using namespace ETP_NS;
+#include "MyOwnCoreProtocolHandlers.h"
 
-int main(int argc, char **argv)
+using namespace std;
+
+MyOwnEtpServerSession::MyOwnEtpServerSession(tcp::socket socket)
+	: ETP_NS::ServerSession(std::move(socket)),
+	  epcDoc("../../testingPackageCpp.epc", COMMON_NS::EpcDocument::READ_ONLY)
 {
-	Server<MyOwnEtpServerSession> etpServer;
-	etpServer.listen("127.0.0.1", 8080, 2);
+	setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(this));
 
-#ifdef _WIN32
-	_CrtDumpMemoryLeaks();
-#endif
-
-	return 0;
+	cout << "Start deserialization of " << epcDoc.getName() << " in " << (epcDoc.getStorageDirectory().empty() ? "working directory." : epcDoc.getStorageDirectory()) << endl;
+	string resqmlResult = epcDoc.deserialize();
+	if (!resqmlResult.empty()) {
+		cerr << resqmlResult << endl;
+		cout << "Press enter to continue..." << endl;
+		cin.get();
+	}
 }

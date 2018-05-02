@@ -17,34 +17,27 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
-#include "etp/Server.h"
+#include "MyOwnEtpClientSession.h"
 
-#include <thread>
-
-using namespace ETP_NS;
-
-void Server::listen(const std::string & host, unsigned short port, int threadCount)
+MyOwnEtpClientSession::MyOwnEtpClientSession(boost::asio::io_context& ioc,
+		const std::string & host, const std::string & port,
+		const std::vector<Energistics::Datatypes::SupportedProtocol> & requestedProtocols,
+		const std::vector<std::string>& supportedObjects)
+	: ETP_NS::ClientSession(ioc, host, port, requestedProtocols, supportedObjects)
 {
-	// The io_context is required for all I/O
-	boost::asio::io_context ioc{threadCount};
-
-	// Create and launch a listening port
-	auto const address = boost::asio::ip::make_address(host);
-	std::make_shared<Server::listener>(ioc, tcp::endpoint{address, port})->run();
-
-	// Run the I/O service on the requested number of threads
-	std::vector<std::thread> v;
-	v.reserve(threadCount - 1);
-	for(auto i = threadCount - 1; i > 0; --i)
-		v.emplace_back(
-		[&ioc]
-		{
-			ioc.run();
-		});
-	ioc.run();
 }
 
-void Server::close()
+void MyOwnEtpClientSession::do_when_finished()
 {
-	std::cout << "Should close the server" << std::endl;
+	std::string command;
+	std::cout << "What is your command ?" << std::endl;
+	std::cin >> command;
+	if (command == "quit") {
+		close();
+	}
+	else if (command == "GetResources") {
+		Energistics::Protocol::Discovery::GetResources mb;
+		mb.m_uri = "testURI";
+		sendAndDoRead(mb);
+	}
 }

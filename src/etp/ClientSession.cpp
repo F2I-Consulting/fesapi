@@ -101,150 +101,32 @@ void ClientSession::on_handshake(boost::system::error_code ec)
 
 	if(! responseType.count(boost::beast::http::field::sec_websocket_protocol) ||
 			responseType[boost::beast::http::field::sec_websocket_protocol] != "energistics-tp")
-		throw std::invalid_argument("the client MUST specify the Sec-Websocket-Protocol header value of energistics-tp, and the server MUST reply with the same");
+		throw std::invalid_argument("The client MUST specify the Sec-Websocket-Protocol header value of energistics-tp, and the server MUST reply with the same");
 
-	// Build Message Header
-	Energistics ::Datatypes::MessageHeader mh;
-	mh.m_protocol = Energistics::Datatypes::Protocols::Core;
-	mh.m_messageType = Energistics::Protocol::Core::RequestSession::messageTypeId;
-	mh.m_correlationId = 0;
-	mh.m_messageId = messageId++;
-	mh.m_messageFlags = 0;
-	//Encode into avro
-	std::auto_ptr<avro::OutputStream> out = avro::memoryOutputStream();
-	avro::EncoderPtr e = avro::binaryEncoder();
-	e->init(*out);
-	avro::encode(*e, mh);
-	avro::encode(*e, requestSession);
-	bytesToSend = avro::snapshot(*out);
+	closed = false;
 
-	// Send Request session
-	std::cout << "WRITE" << std::endl;
-	ws.async_write(
-			boost::asio::buffer(*bytesToSend),
-		std::bind(
-			&ClientSession::on_write,
-			std::static_pointer_cast<ClientSession>(shared_from_this()),
-			std::placeholders::_1,
-			std::placeholders::_2));
+	sendAndDoRead(requestSession);
 }
 
-void ClientSession::on_write(boost::system::error_code ec, std::size_t bytes_transferred)
+void ClientSession::do_when_finished()
 {
-	boost::ignore_unused(bytes_transferred);
-
-	if(ec) {
-		std::cerr << "on_write : " << ec.message() << std::endl;
+	if (closed) {
+		std::cout << "CLOSED : NOTHING MORE TO DO" << std::endl;
+		return;
 	}
 
+	// Read a message into our buffer
 	do_read();
 }
 
 void ClientSession::do_read()
 {
-	std::cerr << "DO READ " << std::endl;
 	// Read a message into our buffer
-	std::cout << "Current buffer size : " <<  receivedBuffer.size() << std::endl;
 	ws.async_read(
-			receivedBuffer,
-			std::bind(
-				&ClientSession::on_read,
-				std::static_pointer_cast<ClientSession>(shared_from_this()),
-				std::placeholders::_1,
-				std::placeholders::_2));
-}
-
-void ClientSession::do_read2()
-{
-	std::string command;
-	while (command != "quit") {
-		std::cout << "What is your command ?" << std::endl;
-		std::cin >> command;
-		if (command == "quit") {
-			close();
-		}
-		else if (command == "connect") {
-			run();
-		}
-	}
-}
-
-void ClientSession::on_read(boost::system::error_code ec, std::size_t bytes_transferred)
-{
-	std::cerr << "READ " << bytes_transferred << " bytes" << std::endl;
-	if (bytes_transferred == 0) return;
-	boost::ignore_unused(bytes_transferred);
-
-	// This indicates that the session was closed
-	if(ec == websocket::error::closed) {
-		std::cout << "Server closed connection." << std::endl;
-		return;
-	}
-
-	if(ec) {
-		std::cerr << "on_read : " << ec.message() << std::endl;
-	}
-
-	std::auto_ptr<avro::InputStream> in = avro::memoryInputStream(static_cast<const uint8_t*>(receivedBuffer.data().data()), bytes_transferred);
-	avro::DecoderPtr d = avro::binaryDecoder();
-	d->init(*in);
-
-	Energistics ::Datatypes::MessageHeader receivedMh;
-	avro::decode(*d, receivedMh);
-	std::cout << '(' << receivedMh.m_correlationId << ", " << receivedMh.m_messageId << ')' << std::endl;
-
-	if (receivedMh.m_protocol == Energistics::Datatypes::Protocols::Core && receivedMh.m_messageType == Energistics::Protocol::Core::OpenSession::messageTypeId) {
-			Energistics::Protocol::Core::OpenSession os;
-			avro::decode(*d, os);
-			std::cout << '(' << os.m_applicationName << ", " << os.m_applicationVersion << ')' << std::endl;
-	}
-
-	do_read2();
-}
-
-void ClientSession::close()
-{
-	// Build Message Header
-	Energistics ::Datatypes::MessageHeader mh;
-	mh.m_protocol = Energistics::Datatypes::Protocols::Core;
-	mh.m_messageType = Energistics::Protocol::Core::CloseSession::messageTypeId;
-	mh.m_correlationId = 0;
-	mh.m_messageId = messageId++;
-	mh.m_messageFlags = 0;
-	//Encode into avro
-	std::auto_ptr<avro::OutputStream> out = avro::memoryOutputStream();
-	avro::EncoderPtr e = avro::binaryEncoder();
-	e->init(*out);
-	avro::encode(*e, mh);
-	// Build Open Session message
-	Energistics::Protocol::Core::CloseSession closeSession;
-	avro::encode(*e, closeSession);
-	bytesToSend = avro::snapshot(*out);
-
-	// Send Request session
-	std::cout << "WRITE CLOSE MESSAGE" << std::endl;
-	ws.async_write(
-			boost::asio::buffer(*bytesToSend),
+		receivedBuffer,
 		std::bind(
-			&ClientSession::on_write,
-			std::static_pointer_cast<ClientSession>(shared_from_this()),
+			&AbstractSession::on_read,
+			shared_from_this(),
 			std::placeholders::_1,
 			std::placeholders::_2));
-/*
-	ws.async_close(websocket::close_code::normal,
-		std::bind(
-			&ClientSession::on_close,
-			std::static_pointer_cast<ClientSession>(shared_from_this()),
-			std::placeholders::_1));
-			*/
-}
-
-void ClientSession::on_close(boost::system::error_code ec)
-{
-	if(ec) {
-			std::cerr << "on_close : " << ec.message() << std::endl;
-		}
-
-	// If we get here then the connection is closed gracefully
-	std::cout << "!!! CLOSED !!!" << std::endl;
 }

@@ -16,20 +16,16 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
+#include  "etp/ProtocolHandlers/ProtocolHandlers.h"
 
-#include "etp/Server.h"
-#include "MyOwnEtpServerSession.h"
+#include "etp/AbstractSession.h"
 
 using namespace ETP_NS;
 
-int main(int argc, char **argv)
-{
-	Server<MyOwnEtpServerSession> etpServer;
-	etpServer.listen("127.0.0.1", 8080, 2);
+void ProtocolHandlers::sendExceptionCode3() {
+	Energistics::Protocol::Core::ProtocolException error;
+	error.m_errorCode = 3;
+	error.m_errorMessage = "The message type ID is invalid for the given protocol.";
 
-#ifdef _WIN32
-	_CrtDumpMemoryLeaks();
-#endif
-
-	return 0;
+	session->send(error);
 }

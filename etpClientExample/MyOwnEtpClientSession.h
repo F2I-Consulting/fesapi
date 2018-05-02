@@ -16,20 +16,21 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
+#pragma once
 
-#include "etp/Server.h"
-#include "MyOwnEtpServerSession.h"
+#include "etp/ClientSession.h"
 
-using namespace ETP_NS;
-
-int main(int argc, char **argv)
+class MyOwnEtpClientSession : public ETP_NS::ClientSession
 {
-	Server<MyOwnEtpServerSession> etpServer;
-	etpServer.listen("127.0.0.1", 8080, 2);
+public:
+	/**
+	 * @param requestedProtocols An array of protocol IDs that the client expects to communicate on for this session. If the server does not support all of the protocols, the client may or may not continue with the protocols that are supported.
+	 * @param supportedObjects		A list of the Data Objects supported by the client. This list MUST be empty if the client is a customer. This field MUST be supplied if the client is a Store and is requesting a customer role for the server.
+	 */
+	MyOwnEtpClientSession(boost::asio::io_context& ioc,
+			const std::string & host, const std::string & port,
+			const std::vector<Energistics::Datatypes::SupportedProtocol> & requestedProtocols,
+			const std::vector<std::string>& supportedObjects);
 
-#ifdef _WIN32
-	_CrtDumpMemoryLeaks();
-#endif
-
-	return 0;
-}
+	void do_when_finished();
+};
