@@ -35,9 +35,9 @@ void MyOwnEtpClientSession::do_when_finished()
 	if (command == "quit") {
 		close();
 	}
-	else if (command == "GetResources") {
+	else if (command.substr(0, 12) == "GetResources") {
 		Energistics::Protocol::Discovery::GetResources mb;
-		mb.m_uri = "testURI";
+		mb.m_uri = command.size() > 13 ? command.substr(13) : "";
 		sendAndDoRead(mb);
 	}
 }

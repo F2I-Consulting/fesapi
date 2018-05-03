@@ -11,7 +11,6 @@
 #include "avro/Specific.hh"
 #include "avro/Encoder.hh"
 #include "avro/Decoder.hh"
-#include "EtpErrorCodes.h"
 
 namespace Energistics {
 	namespace Datatypes {	

@@ -64,8 +64,8 @@ void AbstractSession::on_read(boost::system::error_code ec, std::size_t bytes_tr
 
 	Energistics ::Datatypes::MessageHeader receivedMh = decodeMessageHeader(d, true);
 
-	if (receivedMh.m_protocol < protocols.size() && protocols[receivedMh.m_protocol] != nullptr) {
-		protocols[receivedMh.m_protocol]->decodeMessageBody(receivedMh, d);
+	if (receivedMh.m_protocol < protocolHandlers.size() && protocolHandlers[receivedMh.m_protocol] != nullptr) {
+		protocolHandlers[receivedMh.m_protocol]->decodeMessageBody(receivedMh, d);
 	}
 	else {
 		Energistics::Protocol::Core::ProtocolException error;

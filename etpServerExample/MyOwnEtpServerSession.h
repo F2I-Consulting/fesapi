@@ -24,10 +24,9 @@ under the License.
 
 class MyOwnEtpServerSession : public ETP_NS::ServerSession
 {
-private:
-	COMMON_NS::EpcDocument epcDoc;
-
 public:
+
+	COMMON_NS::EpcDocument epcDoc;
 
 	MyOwnEtpServerSession(tcp::socket socket);
 };

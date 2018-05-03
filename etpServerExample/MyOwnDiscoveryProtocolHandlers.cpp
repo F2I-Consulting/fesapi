@@ -16,17 +16,11 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#pragma once
+#include "MyOwnDiscoveryProtocolHandlers.h"
 
-#include "etp/ProtocolHandlers/CoreHandlers.h"
+#include "etp/AbstractSession.h"
 
-#include "MyOwnEtpServerSession.h"
-
-class MyOwnCoreProtocolHandlers : public ETP_NS::CoreHandlers
+void MyOwnDiscoveryProtocolHandlers::on_GetResources(const Energistics::Protocol::Discovery::GetResources & gr)
 {
-public:
-	MyOwnCoreProtocolHandlers(MyOwnEtpServerSession* mySession): ETP_NS::CoreHandlers(mySession) {}
-	~MyOwnCoreProtocolHandlers() {}
 
-	void on_RequestSession(const Energistics::Protocol::Core::RequestSession & rs);
-};
+}

@@ -40,7 +40,7 @@ namespace ETP_NS
 	    boost::beast::flat_buffer receivedBuffer;
 	    boost::shared_ptr<std::vector<uint8_t> > bytesToSend;
 	    long long messageId = 1;
-	    std::vector<std::shared_ptr<ETP_NS::ProtocolHandlers>> protocols;
+	    std::vector<std::shared_ptr<ETP_NS::ProtocolHandlers>> protocolHandlers;
 	    bool closed;
 
 	    // For client session
@@ -91,14 +91,24 @@ namespace ETP_NS
 		/**
 		 * Set the Core protocol handlers
 		 */
-	    void setCoreProtocolHandlers(std::shared_ptr<CoreHandlers> coreProtocol) {
-	    	if (protocols.empty()) {
-	    		protocols.push_back(coreProtocol);
+	    void setCoreProtocolHandlers(std::shared_ptr<CoreHandlers> coreHandlers) {
+	    	if (protocolHandlers.empty()) {
+	    		protocolHandlers.push_back(coreHandlers);
 	    	}
 	    	else {
-	    		protocols[0] = coreProtocol;
+	    		protocolHandlers[0] = coreHandlers;
 	    	}
 	    }
+
+	    /**
+		 * Set the Discovery protocol handlers
+		 */
+		void setDiscoveryProtocolHandlers(std::shared_ptr<DiscoveryHandlers> discoveryHandlers) {
+			while (protocolHandlers.size() < 4) {
+				protocolHandlers.push_back(nullptr);
+			}
+			protocolHandlers[3] = discoveryHandlers;
+		}
 
 		void close();
 

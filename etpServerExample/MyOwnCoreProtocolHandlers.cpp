@@ -42,6 +42,9 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Protocol::C
 	    	protocol.m_protocol = Energistics::Datatypes::Protocols::Discovery;
 			protocol.m_protocolVersion = protocolVersion;
 			protocol.m_role = "store";
+			Energistics::Datatypes::DataValue value;
+			value.m_item.set_int(1000);
+			protocol.m_protocolCapabilities.insert(std::make_pair("MaxGetResourcesResponse", value));
 	    	supportedProtocols.push_back(protocol);
 	    }
 	}

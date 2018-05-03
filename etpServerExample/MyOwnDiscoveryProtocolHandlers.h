@@ -18,15 +18,15 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/ProtocolHandlers/CoreHandlers.h"
+#include "etp/ProtocolHandlers/DiscoveryHandlers.h"
 
 #include "MyOwnEtpServerSession.h"
 
-class MyOwnCoreProtocolHandlers : public ETP_NS::CoreHandlers
+class MyOwnDiscoveryProtocolHandlers : public ETP_NS::DiscoveryHandlers
 {
 public:
-	MyOwnCoreProtocolHandlers(MyOwnEtpServerSession* mySession): ETP_NS::CoreHandlers(mySession) {}
-	~MyOwnCoreProtocolHandlers() {}
+	MyOwnDiscoveryProtocolHandlers(MyOwnEtpServerSession* mySession): ETP_NS::DiscoveryHandlers(mySession) {}
+	~MyOwnDiscoveryProtocolHandlers() {}
 
-	void on_RequestSession(const Energistics::Protocol::Core::RequestSession & rs);
+	void on_GetResources(const Energistics::Protocol::Discovery::GetResources & gr);
 };
