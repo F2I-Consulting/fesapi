@@ -77,7 +77,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* The number of non-null entries in the grid indices array.
 		*/
-		unsigned int getCellCount() const;
+		ULONG64 getCellCount() const;
 
 		/**
 		* Size of array = IntervalCount on the wellbore frame rep. The grids (and there indices) are defined using pushBackSupportingGridRepresentation method.

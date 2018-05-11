@@ -151,7 +151,7 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int * gridIndic
 		dimLocalFacePerCellIndicesNullValue, 1);
 }
 
-unsigned int BlockedWellboreRepresentation::getCellCount() const
+ULONG64 BlockedWellboreRepresentation::getCellCount() const
 {
 	return static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->CellCount;
 }

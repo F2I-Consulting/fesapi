@@ -136,7 +136,7 @@ void GridConnectionSetRepresentation::importRelationshipSetFromEpc(COMMON_NS::Ep
 	}
 }
 
-void GridConnectionSetRepresentation::setCellIndexPairs(const ULONG64 & cellIndexPairCount, ULONG64 * cellIndexPair, const ULONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, ULONG64 * gridIndexPair)
+void GridConnectionSetRepresentation::setCellIndexPairs(const ULONG64 & cellIndexPairCount, ULONG64 * cellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, ULONG64 * gridIndexPair)
 {
 	const std::string uuid = getUuid();
 	setCellIndexPairsUsingExistingDataset(cellIndexPairCount, "/RESQML/" + getUuid() + "/CellIndexPairs", nullValue, proxy, gridIndexPair != nullptr ? "/RESQML/" + getUuid() + "/GridIndexPairs" : "");

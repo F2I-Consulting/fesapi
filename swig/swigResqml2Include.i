@@ -415,15 +415,15 @@ namespace RESQML2_NS
 		ULONG64 getCellIndexPairs(ULONG64 * cellIndexPairs) const;
 		void getGridConnectionSetInformationFromInterpretationIndex(ULONG64 * cellIndexPairs, ULONG64 * gridIndexPairs, int * localFaceIndexPairs, const unsigned int & interpretationIndex) const;
 		bool hasLocalFacePerCell() const;
-		void getLocalFacePerCellIndexPairs(int * localFacePerCellIndexPairs) const;
+		LONG64 getLocalFacePerCellIndexPairs(int * localFacePerCellIndexPairs) const;
 		bool isBasedOnMultiGrids() const;
 		void getGridIndexPairs(ULONG64 * gridIndexPairs) const;
 		
 		void pushBackSupportingGridRepresentation(AbstractGridRepresentation * supportingGridRep);
 		
-		void setCellIndexPairs(const ULONG64 & cellIndexPairCount, ULONG64 * cellIndexPair, const ULONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, ULONG64 * gridIndexPair = nullptr);
-		void setLocalFacePerCellIndexPairs(const ULONG64 & cellIndexPairCount, int * localFacePerCellIndexPair, COMMON_NS::AbstractHdfProxy * proxy);
-		void setConnectionInterpretationIndices(unsigned int * interpretationIndices, const unsigned int & interpretationIndiceCount, const ULONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy);
+		void setCellIndexPairs(const ULONG64 & cellIndexPairCount, ULONG64 * cellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, ULONG64 * gridIndexPair = nullptr);
+		void setLocalFacePerCellIndexPairs(const ULONG64 & cellIndexPairCount, int * localFacePerCellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy);
+		void setConnectionInterpretationIndices(unsigned int * interpretationIndices, const unsigned int & interpretationIndiceCount, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy);
 		void pushBackInterpretation(AbstractFeatureInterpretation* interp);
 		
 		std::string getInterpretationUuidFromIndex(const unsigned int & interpretationIndex) const;
