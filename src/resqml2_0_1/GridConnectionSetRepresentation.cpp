@@ -145,11 +145,12 @@ void GridConnectionSetRepresentation::getInterpretationIndexCumulativeCount(unsi
 			hdfProxy->readArrayNdOfUIntValues(static_cast<resqml2__IntegerHdf5Array*>(rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength)->Values->PathInHdfFile, cumulativeCount);
 		}
 		else {
-			throw std::logic_error("Not yet implemented");
+			throw std::logic_error("Not implemented yet");
 		}
 	}
-
-	throw std::invalid_argument("There are no fault associated to the cell connections.");
+	else {
+		throw std::invalid_argument("There are no fault associated to the cell connections.");
+	}
 }
 
 void GridConnectionSetRepresentation::getInterpretationIndices(unsigned int * interpretationIndices) const
@@ -160,11 +161,12 @@ void GridConnectionSetRepresentation::getInterpretationIndices(unsigned int * in
 			hdfProxy->readArrayNdOfUIntValues(static_cast<resqml2__IntegerHdf5Array*>(rep->ConnectionInterpretations->InterpretationIndices->Elements)->Values->PathInHdfFile, interpretationIndices);
 		}
 		else {
-			throw std::logic_error("Not yet implemented");
+			throw std::logic_error("Not implemented yet");
 		}
 	}
-
-	throw std::invalid_argument("There are no fault associated to the cell connections.");
+	else {
+		throw std::invalid_argument("There are no fault associated to the cell connections.");
+	}
 }
 
 LONG64 GridConnectionSetRepresentation::getInterpretationIndexNullValue() const
@@ -175,11 +177,12 @@ LONG64 GridConnectionSetRepresentation::getInterpretationIndexNullValue() const
 			return static_cast<resqml2__IntegerHdf5Array*>(rep->ConnectionInterpretations->InterpretationIndices->Elements)->NullValue;
 		}
 		else {
-			throw std::logic_error("Not yet implemented");
+			throw std::logic_error("Not implemented yet");
 		}
 	}
-
-	throw std::invalid_argument("There are no fault associated to the cell connections.");
+	else {
+		throw std::invalid_argument("There are no fault associated to the cell connections.");
+	}
 }
 
 ULONG64 GridConnectionSetRepresentation::getCellIndexPairCount() const
