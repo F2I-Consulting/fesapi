@@ -107,7 +107,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 		3, 5, 3, 5, 3, 5,
 		9999, 5, 9999, 5, 9999, 5
 	};
-	gridConnSet432->setLocalFacePerCellIndexPairs(15, localFacePerCellIndexPairs432, hdfProxy);
+	gridConnSet432->setLocalFacePerCellIndexPairs(15, localFacePerCellIndexPairs432, 9999, hdfProxy);
 
 	// Discrete property
 	RESQML2_0_1_NS::DiscreteProperty* discreteProp = epcDoc->createDiscreteProperty(ijkGrid, "0a8fb2aa-d1e1-4914-931c-e9e6bf2aabe5", "Cell index", 1,

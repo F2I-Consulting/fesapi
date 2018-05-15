@@ -127,10 +127,12 @@ namespace RESQML2_NS
 		virtual bool hasLocalFacePerCell() const = 0;
 
 		/**
-		* Get the local face cell index pairs of this grid connection representation
-		* The count of localFacePerCellIndexPairs must be getCellIndexPairCount()*2.
+		* Get the local face cell index pairs of this grid connection representation.
+		*
+		* @param localFacePerCellIndexPairs Tis array must be pre allocated and won't be deallocated byt fesapi. The count of localFacePerCellIndexPairs must be getCellIndexPairCount()*2.
+		* @return The used null value in localFacePerCellIndexPairs
 		*/
-		virtual void getLocalFacePerCellIndexPairs(int * localFacePerCellIndexPairs) const = 0;
+		virtual LONG64 getLocalFacePerCellIndexPairs(int * localFacePerCellIndexPairs) const = 0;
 
 		/**
 		* Indicates if the grid connection set representation is based on several grids.
@@ -151,7 +153,7 @@ namespace RESQML2_NS
 		* @param proxy				The HDF proxy where the numerical values (cell indices) are stored.
         * @param gridIndexPair		The HDF dataset path where we can find all the grid index pair in a 1d Array where the grid indices go faster than the pair. The grid at an index must correspond to the cell at the same index in the cellIndexPair array.
 		*/
-		virtual void setCellIndexPairsUsingExistingDataset(const ULONG64 & cellIndexPairCount, const std::string & cellIndexPair, const ULONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & gridIndexPair = "") = 0;
+		virtual void setCellIndexPairsUsingExistingDataset(const ULONG64 & cellIndexPairCount, const std::string & cellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & gridIndexPair = "") = 0;
 
 		/**
 		* Set the cell index pairs of the grid connections representation
@@ -161,14 +163,13 @@ namespace RESQML2_NS
         * @param proxy				The HDF proxy where the numerical values (cell indices) are stored.
         * @param gridIndexPair		All the grid index pair in a 1d Array where the grid indices go faster than the pair. The grid at an index must correspond to the cell at the same index in the cellIndexPair array.
 		*/
-		void setCellIndexPairs(const ULONG64 & cellIndexPairCount, ULONG64 * cellIndexPair, const ULONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, ULONG64 * gridIndexPair = nullptr);
+		void setCellIndexPairs(const ULONG64 & cellIndexPairCount, ULONG64 * cellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, ULONG64 * gridIndexPair = nullptr);
 
 		/**
 		* Optional 2 x #Connections array of local face-per-cell indices for (Cell1,Cell2) for each connection. Local face-per-cell indices are used because global face indices need not have been defined.
 		* If no face-per-cell definition occurs as part of the grid representation, e.g., for a block-centered grid, then this array need not appear.
-		* Null value = -1 by dcoumentation
 		*/
-		virtual void setLocalFacePerCellIndexPairs(const ULONG64 & cellIndexPairCount, int * localFacePerCellIndexPair, COMMON_NS::AbstractHdfProxy * proxy) = 0;
+		virtual void setLocalFacePerCellIndexPairs(const ULONG64 & cellIndexPairCount, int * localFacePerCellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy) = 0;
 
 		/**
 		* For each connection in the grid connection set representation, allow to map zero or one feature interpretation. TODO: Resqml allows to map with more than one feature interpretation.
@@ -177,7 +178,7 @@ namespace RESQML2_NS
 		* @param nullValue					The null value must be used as the corresponding interpretation index for each connection which are not associated to any interpretation.
 		* @param proxy						The Hdf proxy where the numerical values will be stored.
 		*/
-		virtual void setConnectionInterpretationIndices(unsigned int * interpretationIndices, const unsigned int & interpretationIndiceCount, const ULONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy) = 0;
+		virtual void setConnectionInterpretationIndices(unsigned int * interpretationIndices, const unsigned int & interpretationIndiceCount, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy) = 0;
 
 		/**
 		* Push back an interpretation which can be mapped with some connections.

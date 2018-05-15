@@ -142,10 +142,12 @@ namespace RESQML2_0_1_NS
 		bool hasLocalFacePerCell() const;
 
 		/**
-		* Get the local face cell index pairs of this grid connection representation
-		* The count of localFacePerCellIndexPairs must be getCellIndexPairCount()*2.
+		* Get the local face cell index pairs of this grid connection representation.
+		*
+		* @param localFacePerCellIndexPairs Tis array must be pre allocated and won't be deallocated byt fesapi. The count of localFacePerCellIndexPairs must be getCellIndexPairCount()*2.
+		* @return The used null value in localFacePerCellIndexPairs
 		*/
-		void getLocalFacePerCellIndexPairs(int * localFacePerCellIndexPairs) const;
+		LONG64 getLocalFacePerCellIndexPairs(int * localFacePerCellIndexPairs) const;
 
 		/**
 		* Indicates if the grid connection set representation is based on several grids.
@@ -166,7 +168,7 @@ namespace RESQML2_0_1_NS
 		* @param proxy				The HDF proxy where the numerical values (cell indices) are stored.
         * @param gridIndexPair		The HDF dataset path where we can find all the grid index pair in a 1d Array where the grid indices go faster than the pair. The grid at an index must correspond to the cell at the same index in the cellIndexPair array.
 		*/
-		void setCellIndexPairsUsingExistingDataset(const ULONG64 & cellIndexPairCount, const std::string & cellIndexPair, const ULONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & gridIndexPair = "");
+		void setCellIndexPairsUsingExistingDataset(const ULONG64 & cellIndexPairCount, const std::string & cellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & gridIndexPair = "");
 
 		/**
 		* The numerical values
@@ -176,7 +178,7 @@ namespace RESQML2_0_1_NS
 		* @param localFacePerCellIndexPair	The HDF dataset path where we can find all the local Face Per CellIndex Pair in a 1d Array.
 		* @param proxy						The HDF proxy where the numerical values (cell indices) are stored.
 		*/
-		void setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, COMMON_NS::AbstractHdfProxy * proxy);
+		void setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy);
 
 		/**
 		* 2 x #Connections array of local face-per-cell indices for (Cell1,Cell2) for each connection. Local face-per-cell indices are used because global face indices need not have been defined.
@@ -186,7 +188,7 @@ namespace RESQML2_0_1_NS
 		* @param localFacePerCellIndexPair	The HDF dataset path where we can find all the local Face Per CellIndex Pair in a 1d Array.
 		* @param proxy						The HDF proxy where the numerical values (cell indices) are stored.
 		*/
-		void setLocalFacePerCellIndexPairs(const ULONG64 & cellIndexPairCount, int * localFacePerCellIndexPair, COMMON_NS::AbstractHdfProxy * proxy);
+		void setLocalFacePerCellIndexPairs(const ULONG64 & cellIndexPairCount, int * localFacePerCellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy);
 
 		/**
 		* For each connection in the grid connection set representation, allow to map zero or one feature interpretation. TODO: Resqml allows to map with more than one feature interpretation.
@@ -195,7 +197,7 @@ namespace RESQML2_0_1_NS
 		* @param nullValue					The null value must be used as the corresponding interpretation index for each connection which are not associated to any interpretation.
 		* @param proxy						The Hdf proxy where the numerical values will be stored.
 		*/
-		void setConnectionInterpretationIndices(unsigned int * interpretationIndices, const unsigned int & interpretationIndiceCount, const ULONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy);
+		void setConnectionInterpretationIndices(unsigned int * interpretationIndices, const unsigned int & interpretationIndiceCount, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy);
 		
 		/**
 		* Get the count of the supporting grid representations of this grid connection representation.

@@ -75,7 +75,7 @@ string GridConnectionSetRepresentation::getHdfProxyUuid() const
 	throw std::logic_error("Not implemented yet");
 }
 
-void GridConnectionSetRepresentation::setCellIndexPairsUsingExistingDataset(const ULONG64 & cellIndexPairCount, const std::string & cellIndexPair, const ULONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & gridIndexPair)
+void GridConnectionSetRepresentation::setCellIndexPairsUsingExistingDataset(const ULONG64 & cellIndexPairCount, const std::string & cellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & gridIndexPair)
 {
 	if (cellIndexPairCount == 0) {
 		throw std::invalid_argument("You cannot set zero cell index pair.");
@@ -106,7 +106,7 @@ void GridConnectionSetRepresentation::setCellIndexPairsUsingExistingDataset(cons
 	}
 }
 
-void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, COMMON_NS::AbstractHdfProxy * proxy)
+void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy)
 {
 	_resqml2__GridConnectionSetRepresentation* rep = static_cast<_resqml2__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 
@@ -118,14 +118,14 @@ void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairsUsingExisting
 	resqmlHDF5dataset->HdfProxy = hdfProxy->newResqmlReference();
 	resqmlHDF5dataset->PathInHdfFile = localFacePerCellIndexPair;
 	integerArray->Values = resqmlHDF5dataset;
-	integerArray->NullValue = -1;
+	integerArray->NullValue = nullValue;
 	rep->LocalFacePerCellIndexPairs = integerArray;
 }
 
-void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs(const ULONG64 & cellIndexPairCount, int * localFacePerCellIndexPair, COMMON_NS::AbstractHdfProxy * proxy)
+void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs(const ULONG64 & cellIndexPairCount, int * localFacePerCellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy)
 {
 	const std::string uuid = getUuid();
-	setLocalFacePerCellIndexPairsUsingExistingDataset("/RESQML/" + uuid + "/LocalFacePerCellIndexPairs", proxy);
+	setLocalFacePerCellIndexPairsUsingExistingDataset("/RESQML/" + uuid + "/LocalFacePerCellIndexPairs", nullValue, proxy);
 
 	// ************ HDF ************		
 	hsize_t numValues[] = {cellIndexPairCount,2};
@@ -397,7 +397,7 @@ void GridConnectionSetRepresentation::getGridIndexPairs(ULONG64 * gridIndexPairs
 		hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<resqml2__IntegerHdf5Array*>(rep->GridIndexPairs)->Values->PathInHdfFile, gridIndexPairs);
 	}
 	else {
-		throw std::logic_error("Not yet implemented");
+		throw std::logic_error("Not implemented yet");
 	}
 }
 
@@ -406,7 +406,7 @@ bool GridConnectionSetRepresentation::hasLocalFacePerCell() const
 	return static_cast<_resqml2__GridConnectionSetRepresentation*>(gsoapProxy2_0_1)->LocalFacePerCellIndexPairs != nullptr;
 }
 
-void GridConnectionSetRepresentation::getLocalFacePerCellIndexPairs(int * localFaceCellIndexPairs) const
+LONG64 GridConnectionSetRepresentation::getLocalFacePerCellIndexPairs(int * localFaceCellIndexPairs) const
 {
 	if (!hasLocalFacePerCell()) {
 		throw std::invalid_argument("This representation has no local face per cell.");
@@ -416,9 +416,10 @@ void GridConnectionSetRepresentation::getLocalFacePerCellIndexPairs(int * localF
 
 	if (rep->LocalFacePerCellIndexPairs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
 		hdfProxy->readArrayNdOfIntValues(static_cast<resqml2__IntegerHdf5Array*>(rep->LocalFacePerCellIndexPairs)->Values->PathInHdfFile, localFaceCellIndexPairs);
+		return static_cast<resqml2__IntegerHdf5Array*>(rep->LocalFacePerCellIndexPairs)->NullValue;
 	}
 	else {
-		throw std::logic_error("Not yet implemented");
+		throw std::logic_error("Not implemented yet");
 	}
 }
 
@@ -427,7 +428,7 @@ void GridConnectionSetRepresentation::pushBackXmlSupportingGridRepresentation(RE
 	static_cast<_resqml2__GridConnectionSetRepresentation*>(gsoapProxy2_0_1)->Grid.push_back(supportingGridRep->newResqmlReference());
 }
 
-void GridConnectionSetRepresentation::setConnectionInterpretationIndices(unsigned int * interpretationIndices, const unsigned int & interpretationIndiceCount, const ULONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy)
+void GridConnectionSetRepresentation::setConnectionInterpretationIndices(unsigned int * interpretationIndices, const unsigned int & interpretationIndiceCount, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy)
 {
 	_resqml2__GridConnectionSetRepresentation* rep = static_cast<_resqml2__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 	if (rep->ConnectionInterpretations == nullptr) {
