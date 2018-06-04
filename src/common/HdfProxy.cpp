@@ -45,7 +45,7 @@ void HdfProxy::open()
 				string hdfUuid = readStringAttribute(".", "uuid");
 				if (getUuid() != hdfUuid) {
 					getEpcDocument()->addWarning("The uuid \"" + hdfUuid + "\" attribute of the HDF5 file is not the same as the uuid \"" + getUuid() + "\" of the xml EpcExternalPart.");
-		}
+				}
 			}
 		}
 		else {
@@ -64,7 +64,7 @@ void HdfProxy::open()
 					string hdfUuid = readStringAttribute(".", "uuid");
 					if (getUuid() != hdfUuid) {
 						getEpcDocument()->addWarning("The uuid \"" + hdfUuid + "\" attribute of the HDF5 file is not the same as the uuid \"" + getUuid() + "\" of the xml EpcExternalPart.");
-			}
+					}
 				}
 			}
 			else {
@@ -91,7 +91,7 @@ void HdfProxy::open()
 			if (status < 0) {
 				throw invalid_argument("The uuid file attribute datatype could not have been closed.");
 			}
-			status = H5Aclose(attribute_id);;
+			status = H5Aclose(attribute_id);
 			if (status < 0) {
 				throw invalid_argument("The uuid file attribute could not have been closed.");
 			}
@@ -119,7 +119,7 @@ void HdfProxy::open()
 		if (status < 0) {
 			throw invalid_argument("The uuid file attribute datatype could not have been closed.");
 		}
-		status = H5Aclose(attribute_id);;
+		status = H5Aclose(attribute_id);
 		if (status < 0) {
 			throw invalid_argument("The uuid file attribute could not have been closed.");
 		}
@@ -199,22 +199,19 @@ void HdfProxy::readArrayNdOfValues(
 		throw invalid_argument("The hyperslabbing of resqml dataset " + datasetName + " could not be selected.");
 	}
 
-	if (H5Sget_simple_extent_ndims(filespace) != (int) numDimensions)
-	{
+	if (H5Sget_simple_extent_ndims(filespace) != (int) numDimensions) {
 		H5Sclose(filespace);
 		H5Dclose(dataset);
 		throw invalid_argument("The resqml dataset " + datasetName + " does not have " + std::to_string(numDimensions) + " dimensions.");
 	}
 
 	hsize_t slab_size = 1;
-	if (blockSizeInEachDimension == nullptr)
-	{
+	if (blockSizeInEachDimension == nullptr) {
 		for (unsigned int h = 0; h < numDimensions; ++h) {
 			slab_size *= blockCountPerDimension[h];
 		}
 	}
-	else
-	{
+	else {
 		for (unsigned int h = 0; h < numDimensions; ++h) {
 			slab_size *= blockSizeInEachDimension[h];
 		}
@@ -256,8 +253,7 @@ void HdfProxy::selectArrayNdOfValues(
 		open();
 	}
 
-	if (newSelection)
-	{
+	if (newSelection) {
 		dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
 		if (dataset < 0) {
 			throw invalid_argument("The resqml dataset " + datasetName + " could not be opened.");
@@ -1076,14 +1072,14 @@ std::string HdfProxy::readStringAttribute(const std::string & obj_name,
 	if (atype < 0) {
 		throw invalid_argument("Cannot read the type of the \"" + attr_name + "\" attribute of \"" + obj_name + "\".");
 	}
-	const size_t aSize = H5Tget_size(atype);
+	size_t aSize = H5Tget_size(atype);
 	char* buf = nullptr;
-	if (H5Tis_variable_str(atype) <= 0) {
+	if (H5Tis_variable_str(atype) <= 0) { // it would also read an array of string as a single string.
 		const hid_t attDs = H5Aget_space(uuidAtt);
 		const hssize_t stringCount = H5Sget_simple_extent_npoints(attDs);
-		buf = new char[aSize * stringCount];
+		aSize *= stringCount;
+		buf = new char[aSize];
 		H5Sclose(attDs);
-
 	} // else buf is allocated directly by HDF5
 	hid_t readingError = H5Aread(uuidAtt, atype, buf);
 	if (readingError < 0) {
@@ -1100,8 +1096,22 @@ std::string HdfProxy::readStringAttribute(const std::string & obj_name,
 		throw invalid_argument("Cannot read the \"" + attr_name + "\" attribute of \"" + obj_name + "\".");
 	}
 
-	std::string result(buf, aSize);
-	delete[] buf;
+	// Build the string to return
+	std::string result(buf, aSize);  // Specify the size because an HDF5 string attribute is not forced to be null terminated.
+	// Remove null terminating characters
+	while (result.back() == '\0') {
+		result.pop_back();
+	}
+
+	// Memory cleaning
+	if (H5Tis_variable_str(atype) <= 0) {
+		delete[] buf;
+	}
+	else {
+		// buf[i] has been allocated by HDF5 library using malloc/calloc. Consequently we cannot use delete[] on it but free.
+		// Especially on windows, since buf[i] has been allocated by the HDF5 library, you will have memory conflict if you don't use the same C standard library for HDF5 lib and for fesapi!
+		free(buf);
+	}
 
 	H5Tclose(atype);
 	H5Aclose(uuidAtt);
