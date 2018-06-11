@@ -3001,6 +3001,8 @@ namespace RESQML2_0_1_NS
 		void getXyzPointsOfKInterfaceOfPatch(const unsigned int & kInterface, const unsigned int & patchIndex, double * xyzPoints);
 		virtual void getXyzPointsOfKInterfaceSequenceOfPatch(const unsigned int & kInterfaceStart, const unsigned int & kInterfaceEnd, const unsigned int & patchIndex, double * xyzPoints);
 		
+		gsoap_resqml2_0_1::resqml2__KDirection getKDirection() const;
+		
 		virtual geometryKind getGeometryKind() const = 0;
 	};
 	
