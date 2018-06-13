@@ -155,7 +155,8 @@ string AbstractObject::getEditor() const
 
 time_t AbstractObject::getCreation() const
 {
-	return mktime(&getCreationAsTimeStructure());
+	tm tmp = getCreationAsTimeStructure();
+	return mktime(&tmp);
 }
 
 tm AbstractObject::getCreationAsTimeStructure() const

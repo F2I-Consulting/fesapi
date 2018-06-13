@@ -99,7 +99,8 @@ unsigned int TimeSeries::getTimestampCount() const
 
 time_t TimeSeries::getTimestamp(const unsigned int & index) const
 {
-	return mktime(&getTimestampAsTimeStructure(index));
+	tm temp = getTimestampAsTimeStructure(index);
+	return mktime(&temp);
 }
 
 tm TimeSeries::getTimestampAsTimeStructure(const unsigned int & index) const
