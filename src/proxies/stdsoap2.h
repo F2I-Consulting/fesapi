@@ -1,5 +1,5 @@
 /*
-        stdsoap2.h 2.8.61
+        stdsoap2.h 2.8.66
 
         gSOAP runtime engine
 
@@ -31,7 +31,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_VERSION 20861
+#define GSOAP_VERSION 20866
 
 #ifdef WITH_SOAPDEFS_H
 # include "soapdefs.h"          /* include user-defined stuff in soapdefs.h */
@@ -699,6 +699,11 @@ extern intmax_t __strtoull(const char*, char**, int);
 # endif
 #endif
 
+/* force inclusion of xlocale.h */
+#if defined(WITH_INCLUDE_XLOCALE_H) && !defined(HAVE_XLOCALE_H)
+# define HAVE_XLOCALE_H
+#endif
+
 #ifdef WITH_C_LOCALE
 # include <locale.h>
 # if defined(WIN32) && !defined(CYGWIN)
@@ -863,6 +868,10 @@ extern intmax_t __strtoull(const char*, char**, int);
 # define SOAP_WINSOCKINT size_t
 #endif
 
+#ifdef WIN32
+# undef WITH_SELF_PIPE
+#endif
+
 #if defined(WITH_IPV6_V6ONLY) || defined(WITH_NO_IPV6_V6ONLY)
 # ifndef WITH_IPV6
 #  define WITH_IPV6
@@ -937,7 +946,10 @@ extern intmax_t __strtoull(const char*, char**, int);
 #ifdef WITH_GNUTLS
 # include <gnutls/gnutls.h>
 # include <gnutls/x509.h>
-# include <gcrypt.h>
+# if GNUTLS_VERSION_NUMBER < 0x020b00
+/* deprecated since GNUTLS 2.11.0 */
+#  include <gcrypt.h>
+# endif
 # ifndef HAVE_PTHREAD_H
 #  ifdef _POSIX_THREADS
 #   define HAVE_PTHREAD_H /* make GNUTLS thread safe */
@@ -1810,7 +1822,18 @@ typedef soap_int32 soap_mode;
 # endif
 #endif
 
-#if (defined(__GNUC__) && (__GNUC__ <= 2)) || defined(__clang__) || defined(_AIX) || defined(AIX)
+#if defined(__BORLANDC__) && !defined(__clang__)
+/* Embarcadero Classic compiler special case */
+# ifndef SOAP_NEW
+#  define SOAP_NEW(soap, type) new SOAP_NOTHROW (type)
+# endif
+# ifndef SOAP_NEW_ARRAY
+#  define SOAP_NEW_ARRAY(soap, type, n) new SOAP_NOTHROW (type[n])
+# endif
+# ifndef SOAP_PLACEMENT_NEW
+#  define SOAP_PLACEMENT_NEW(soap, buf, type) new (buf) (type)
+# endif
+#elif (defined(__GNUC__) && (__GNUC__ <= 2)) || defined(__clang__) || defined(_AIX) || defined(AIX)
 /* old form w/o parenthesis, soap context may be NULL */
 # ifndef SOAP_NEW
 #  define SOAP_NEW(soap, type) new SOAP_NOTHROW type
@@ -1846,7 +1869,7 @@ typedef soap_int32 soap_mode;
 # define SOAP_NEW_UNMANAGED(soap) new SOAP_NOTHROW soap
 #endif
 
-#ifndef SOA_DELETE_UNMANAGED            /* use C++ unmanaged delete operator for soap_free() */
+#ifndef SOAP_DELETE_UNMANAGED           /* use C++ unmanaged delete operator for soap_free() */
 # define SOAP_DELETE_UNMANAGED(soap) delete soap;
 #endif
 
@@ -2622,6 +2645,9 @@ struct SOAP_CMAC soap
   int bind_flags;               /* user-definable bind() SOL_SOCKET sockopt flags, e.g. set to SO_REUSEADDR to enable reuse */
   int bind_v6only;              /* user-definable bind() IPPROTO_IPV6 socopt IPV6_V6ONLY (only with -DWITH_IPV6) */
   int accept_flags;             /* user-definable accept() SOL_SOCKET sockopt flags */
+#ifdef WITH_SELF_PIPE
+  int pipe_fd[2];               /* self pipe trick file descriptors used to close the select call from another thread */
+#endif
   int sndbuf;                   /* user-definable SO_SNFBUF setsockopt */
   int rcvbuf;                   /* user-definable SO_SNFBUF setsockopt */
   unsigned short linger_time;   /* user-definable linger time for SO_LINGER option */
@@ -2888,7 +2914,7 @@ struct SOAP_CMAC soap
   char session_host[SOAP_TAGLEN];
   int session_port;
 #ifdef SOAP_LOCALE_T
-  SOAP_LOCALE_T c_locale;       /* set to C locale by default, if this does not compile use -DWITH_NO_C_LOCALE */
+  SOAP_LOCALE_T c_locale;       /* if this does not compile use -DWITH_INCLUDE_XLOCALE_H, or use -DWITH_NO_C_LOCALE to disable locale support */
 #else
   void *c_locale;
 #endif
@@ -3246,6 +3272,9 @@ SOAP_FMAC1 void SOAP_FMAC2 soap_begin(struct soap*);
 SOAP_FMAC1 void SOAP_FMAC2 soap_end(struct soap*);
 SOAP_FMAC1 void SOAP_FMAC2 soap_delete(struct soap*, void*);
 SOAP_FMAC1 void SOAP_FMAC2 soap_delegate_deletion(struct soap*, struct soap*);
+#ifdef WITH_SELF_PIPE
+SOAP_FMAC1 void SOAP_FMAC2 soap_close_connection(struct soap*);
+#endif
 
 /* API functions available with DEBUG or SOAP_DEBUG defined: */
 SOAP_FMAC1 void SOAP_FMAC2 soap_set_recv_logfile(struct soap*, const char*);

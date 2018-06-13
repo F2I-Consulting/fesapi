@@ -147,18 +147,34 @@ namespace COMMON_NS
 		std::string getTitle() const;
 		std::string getEditor() const;
 		time_t getCreation() const;
+		/**
+		* Use this method if you want to read some dates out of range of time_t
+		*/
+		tm getCreationAsTimeStructure() const;
 		std::string getOriginator() const;
 		std::string getDescription() const;
 		time_t getLastUpdate() const;
+		/**
+		* Use this method if you want to read some dates out of range of time_t
+		*/
+		tm getLastUpdateAsTimeStructure() const;
 		std::string getFormat() const;
 		std::string getDescriptiveKeywords() const;
 
 		void setTitle(const std::string & title);
 		void setEditor(const std::string & editor);
 		void setCreation(const time_t & creation);
+		/**
+		* Use this method if you want to set some dates out of range of time_t
+		*/
+		void setCreation(const tm & creation);
 		void setOriginator(const std::string & originator);
 		void setDescription(const std::string & description);
 		void setLastUpdate(const time_t & lastUpdate);
+		/**
+		* Use this method if you want to set some dates out of range of time_t
+		*/
+		void setLastUpdate(const tm & lastUpdate);
 		void setFormat(const std::string & format);
 		void setDescriptiveKeywords(const std::string & descriptiveKeywords);
 
@@ -178,7 +194,7 @@ namespace COMMON_NS
 		/**
 		* Get the gsoap proxy which is wrapped by this entity
 		*/
-		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* getGsoapProxy() const {return gsoapProxy2_0_1;}
+		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* getGsoapProxy() const;
 
 		/**
 		* Get the gsoap context where the underlying gsoap proxy is defined.

@@ -316,7 +316,7 @@ void DasAcquisition::initHdfAttributes()
 	attributeStringValues.push_back(da->uuid);
 	attributeStringValues.push_back(da->Citation->Title);
 	char buf[20]; // 19 for the string below +1 for the terminating char
-	strftime(buf, 20, "%Y-%m-%dT%H:%M:%S", gmtime(&da->Citation->Creation));
+	strftime(buf, 20, "%Y-%m-%dT%H:%M:%S", &da->Citation->Creation);
 	attributeStringValues.push_back(buf);
 	attributeStringValues.push_back(da->Citation->Format);
 	attributeStringValues.push_back(da->AcquisitionId);

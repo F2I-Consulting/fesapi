@@ -115,8 +115,8 @@ Well::Well(soap* soapContext,
 	wellSequence->directionWell = (witsml1__WellDirection *) soap_malloc(collection->soap, sizeof(witsml1__WellDirection));
 	*wellSequence->directionWell = directionWell;
 
-	wellSequence->dTimSpud = (time_t *) soap_malloc(collection->soap, sizeof(time_t));
-	*wellSequence->dTimSpud = dTimSpud;
+	wellSequence->dTimSpud = (tm *) soap_malloc(collection->soap, sizeof(tm));
+	*wellSequence->dTimSpud = *gmtime(&dTimSpud);
 
 	well->__obj_USCOREwell_sequence = wellSequence;
 
