@@ -80,14 +80,14 @@ namespace WITSML1_4_1_1_NS
 		time_t getCreation() const
 		{
 			if (static_cast<gsoap_witsml1_4_1_1::_witsml1__formationMarkers*>(collection)->formationMarker[0]->commonData->dTimCreation)
-				return *static_cast<gsoap_witsml1_4_1_1::_witsml1__formationMarkers*>(collection)->formationMarker[0]->commonData->dTimCreation;
+				return mktime(static_cast<gsoap_witsml1_4_1_1::_witsml1__formationMarkers*>(collection)->formationMarker[0]->commonData->dTimCreation);
 			else
 				return -1;
 		}
 		time_t getLastUpdate() const
 		{
 			if (static_cast<gsoap_witsml1_4_1_1::_witsml1__formationMarkers*>(collection)->formationMarker[0]->commonData->dTimLastChange)
-				return *static_cast<gsoap_witsml1_4_1_1::_witsml1__formationMarkers*>(collection)->formationMarker[0]->commonData->dTimLastChange;
+				return mktime(static_cast<gsoap_witsml1_4_1_1::_witsml1__formationMarkers*>(collection)->formationMarker[0]->commonData->dTimLastChange);
 			else
 				return -1;
 		}

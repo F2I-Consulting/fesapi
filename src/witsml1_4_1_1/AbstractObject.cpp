@@ -196,13 +196,13 @@ witsml1__cs_USCOREcommonData* AbstractObject::newCommonData(
 	}
 	if (dTimCreation>=0)
 	{
-		commonData->dTimCreation = (time_t *) soap_malloc(collection->soap, sizeof(time_t));
-		*commonData->dTimCreation = dTimCreation;
+		commonData->dTimCreation = (tm *) soap_malloc(collection->soap, sizeof(tm));
+		*commonData->dTimCreation = *gmtime(&dTimCreation);
 	}
 	if (dTimLastChange>=0)
 	{
-		commonData->dTimLastChange = (time_t *) soap_malloc(collection->soap, sizeof(time_t));
-		*commonData->dTimLastChange = dTimLastChange;
+		commonData->dTimLastChange = (tm *)soap_malloc(collection->soap, sizeof(tm));
+		*commonData->dTimLastChange = *gmtime(&dTimLastChange);
 	}
 	if (!comments.empty())
 	{

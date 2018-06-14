@@ -155,6 +155,12 @@ string AbstractObject::getEditor() const
 
 time_t AbstractObject::getCreation() const
 {
+	tm tmp = getCreationAsTimeStructure();
+	return mktime(&tmp);
+}
+
+tm AbstractObject::getCreationAsTimeStructure() const
+{
 	if (partialObject != nullptr)
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
@@ -194,6 +200,17 @@ string AbstractObject::getDescription() const
 
 time_t AbstractObject::getLastUpdate() const
 {
+	tm result = getLastUpdateAsTimeStructure();
+
+	if (result.tm_mday == 0) {
+		return -1;
+	}
+
+	return mktime(&result);
+}
+
+tm AbstractObject::getLastUpdateAsTimeStructure() const
+{
 	if (partialObject != nullptr)
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
@@ -201,8 +218,19 @@ time_t AbstractObject::getLastUpdate() const
 		return *gsoapProxy2_0_1->Citation->LastUpdate;
 	else if (gsoapProxy2_1 != nullptr && gsoapProxy2_1->Citation->LastUpdate)
 		return *gsoapProxy2_1->Citation->LastUpdate;
-	else
-		return -1;
+	else {
+		tm result;
+		result.tm_hour = 0;
+		result.tm_isdst = 0;
+		result.tm_mday = 0;
+		result.tm_min = 0;
+		result.tm_mon = 0;
+		result.tm_sec = 0;
+		result.tm_wday = 0;
+		result.tm_yday = 0;
+		result.tm_year = 0;
+		return result;
+	}
 }
 
 string AbstractObject::getFormat() const
@@ -287,21 +315,27 @@ void AbstractObject::setEditor(const std::string & editor)
 
 void AbstractObject::setCreation(const time_t & creation)
 {
-	if (partialObject != nullptr)
-		throw invalid_argument("The wrapped gsoap proxy must not be null");
-
 	if (creation > 0) {
-		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->Citation->Creation = creation;
-		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->Citation->Creation = creation;
+		setCreation(*gmtime(&creation));
 	}
 	else {
 		time_t now;
 		time(&now);
-
-		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->Citation->Creation = now;
-		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->Citation->Creation = now;
+		setCreation(*gmtime(&now));
 	}
-	
+}
+
+void AbstractObject::setCreation(const tm & creation)
+{
+	if (partialObject != nullptr)
+		throw invalid_argument("The wrapped gsoap proxy must not be null");
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoapProxy2_0_1->Citation->Creation = creation;
+	}
+	else if (gsoapProxy2_1 != nullptr) {
+		gsoapProxy2_1->Citation->Creation = creation;
+	}
 }
 
 void AbstractObject::setOriginator(const std::string & originator)
@@ -358,16 +392,26 @@ void AbstractObject::setLastUpdate(const time_t & lastUpdate)
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	if (lastUpdate > 0) {
-		if (gsoapProxy2_0_1 != nullptr) {
-			if (gsoapProxy2_0_1->Citation->LastUpdate == nullptr)
-				gsoapProxy2_0_1->Citation->LastUpdate = (time_t *)soap_malloc(gsoapProxy2_0_1->soap, sizeof(time_t));
-			*gsoapProxy2_0_1->Citation->LastUpdate = lastUpdate;
+		setLastUpdate(*gmtime(&lastUpdate));
+	}
+}
+
+void AbstractObject::setLastUpdate(const tm & lastUpdate)
+{
+	if (partialObject != nullptr)
+		throw invalid_argument("The wrapped gsoap proxy must not be null");
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		if (gsoapProxy2_0_1->Citation->LastUpdate == nullptr) {
+			gsoapProxy2_0_1->Citation->LastUpdate = (tm *)soap_malloc(gsoapProxy2_0_1->soap, sizeof(tm));
 		}
-		else {
-			if (gsoapProxy2_1->Citation->LastUpdate == nullptr)
-				gsoapProxy2_1->Citation->LastUpdate = (time_t *)soap_malloc(gsoapProxy2_1->soap, sizeof(time_t));
-			*gsoapProxy2_1->Citation->LastUpdate = lastUpdate;
+		*gsoapProxy2_0_1->Citation->LastUpdate = lastUpdate;
+	}
+	else if (gsoapProxy2_1 != nullptr) {
+		if (gsoapProxy2_1->Citation->LastUpdate == nullptr) {
+			gsoapProxy2_1->Citation->LastUpdate = (tm *)soap_malloc(gsoapProxy2_1->soap, sizeof(tm));
 		}
+		*gsoapProxy2_1->Citation->LastUpdate = lastUpdate;
 	}
 }
 
@@ -479,6 +523,10 @@ void AbstractObject::serializeIntoStream(ostream * stream)
 			gsoapProxy2_1->soap_put(gsoapProxy2_1->soap, xmlTagIncludingNamespace.c_str(), nullptr) ||
 			soap_end_send(gsoapProxy2_1->soap));
 	}
+}
+
+gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* AbstractObject::getGsoapProxy() const {
+	return gsoapProxy2_0_1;
 }
 
 eml20__DataObjectReference* AbstractObject::newResqmlReference() const

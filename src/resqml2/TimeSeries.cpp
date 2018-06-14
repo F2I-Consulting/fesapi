@@ -30,6 +30,11 @@ const char* TimeSeries::XML_TAG = "TimeSeries";
 
 void TimeSeries::pushBackTimestamp(const time_t & timestamp)
 {
+	pushBackTimestamp(*gmtime(&timestamp));
+}
+
+void TimeSeries::pushBackTimestamp(const tm & timestamp)
+{
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml2__Timestamp* ts = gsoap_resqml2_0_1::soap_new_resqml2__Timestamp(gsoapProxy2_0_1->soap, 1);
 		ts->DateTime = timestamp;
@@ -46,7 +51,31 @@ unsigned int TimeSeries::getTimestampIndex(const time_t & timestamp) const
 		gsoap_resqml2_0_1::_resqml2__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml2__TimeSeries*>(gsoapProxy2_0_1);
 
 		for (size_t result = 0; result < timeSeries->Time.size(); ++result) {
-			if (timeSeries->Time[result]->DateTime == timestamp) {
+			if (mktime(&timeSeries->Time[result]->DateTime) == timestamp) {
+				return result;
+			}
+		}
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
+
+	throw out_of_range("The timestamp has not been found in the allowed range.");
+}
+
+unsigned int TimeSeries::getTimestampIndex(const tm & timestamp) const
+{
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::_resqml2__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml2__TimeSeries*>(gsoapProxy2_0_1);
+
+		for (size_t result = 0; result < timeSeries->Time.size(); ++result) {
+			// Very basic equaility check between two tm
+			if (timeSeries->Time[result]->DateTime.tm_year == timestamp.tm_year &&
+				timeSeries->Time[result]->DateTime.tm_mon == timestamp.tm_mon &&
+				timeSeries->Time[result]->DateTime.tm_mday == timestamp.tm_mday &&
+				timeSeries->Time[result]->DateTime.tm_hour == timestamp.tm_hour &&
+				timeSeries->Time[result]->DateTime.tm_min == timestamp.tm_min &&
+				timeSeries->Time[result]->DateTime.tm_sec == timestamp.tm_sec) {
 				return result;
 			}
 		}
@@ -70,6 +99,12 @@ unsigned int TimeSeries::getTimestampCount() const
 
 time_t TimeSeries::getTimestamp(const unsigned int & index) const
 {
+	tm temp = getTimestampAsTimeStructure(index);
+	return mktime(&temp);
+}
+
+tm TimeSeries::getTimestampAsTimeStructure(const unsigned int & index) const
+{
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::_resqml2__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml2__TimeSeries*>(gsoapProxy2_0_1);
 
@@ -80,7 +115,7 @@ time_t TimeSeries::getTimestamp(const unsigned int & index) const
 	else {
 		throw logic_error("Not implemented yet");
 	}
-	
+
 	throw out_of_range("The index is out of range");
 }
 

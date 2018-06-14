@@ -28,6 +28,10 @@ endif (${UNDER_DEV})
 
 # we check if Resqml/Witsml proxies are already provided
 FILE (GLOB FESAPI_PROXIES_SOURCES ${FESAPI_ROOT_DIR}/src/proxies/*.cpp)
+SET (FESAPI_PROXIES_SOURCES
+	${FESAPI_PROXIES_SOURCES}
+	${CMAKE_CURRENT_SOURCE_DIR}/src/proxies/struct_tm.cpp
+)
 FILE (GLOB FESAPI_PROXIES_HEADERS ${FESAPI_ROOT_DIR}/src/proxies/*.h)
 IF (FESAPI_PROXIES_SOURCES STREQUAL "")
 	SET (PROXIES_GENERATION ON)

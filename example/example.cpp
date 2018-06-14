@@ -281,6 +281,14 @@ void serializeBoundaries(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfPro
 	// Features
 	//BoundaryFeature* bf = pck->createBoundaryFeature("", "testingBoundaryFeature");
 	horizon1 = pck->createHorizon("35d7b57e-e5ff-4062-95af-ba2d7c4ce347", "Horizon1");
+	tm timeStruct;
+	timeStruct.tm_hour = 15;
+	timeStruct.tm_min = 2;
+	timeStruct.tm_sec = 35;
+	timeStruct.tm_mday = 8;
+	timeStruct.tm_mon = 1;
+	timeStruct.tm_year = 0;
+	horizon1->setCreation(timeStruct);
 	horizon2 = pck->createHorizon("fd7950a6-f62e-4e47-96c4-048820a61c59", "Horizon2");
 	fault1 = pck->createFault("1424bcc2-3d9d-4f30-b1f9-69dcb897e33b", "Fault1");
 	fault1->setMetadata("", "philippe", 148526020, "philippe", "", 148526100, "F2I", "");
@@ -639,7 +647,14 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 	// Time Series
 	//**************
 	RESQML2_NS::TimeSeries * timeSeries = pck->createTimeSeries("1187d8a0-fa3e-11e5-ac3a-0002a5d5c51b", "Testing time series");
-	timeSeries->pushBackTimestamp(1378217895);
+	tm timeStruct;
+	timeStruct.tm_hour = 15;
+	timeStruct.tm_min = 2;
+	timeStruct.tm_sec = 35;
+	timeStruct.tm_mday = 8;
+	timeStruct.tm_mon = 1;
+	timeStruct.tm_year = 0;
+	timeSeries->pushBackTimestamp(timeStruct);
 	timeSeries->pushBackTimestamp(1409753895);
 	timeSeries->pushBackTimestamp(1441289895);
 	ContinuousProperty* continuousPropTime0 = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
@@ -1331,11 +1346,15 @@ void showAllMetadata(COMMON_NS::AbstractObject * obj, const std::string & prefix
 		for (unsigned int i = 0; i < obj->getExtraMetadataCount(); ++i) {
 			std::cout << prefix << "Extrametadata is : " << obj->getExtraMetadataKeyAtIndex(i) << ":" << obj->getExtraMetadataStringValueAtIndex(i) << std::endl;
 		}
+		time_t creation = obj->getCreation();
+		std::cout << prefix << "Creation date is (unix timestamp) : " << creation << std::endl;
+		tm creationTm = obj->getCreationAsTimeStructure();
+		std::cout << prefix << "Creation date is (struct tm) : " << 1900 + creationTm.tm_year << "-" << creationTm.tm_mon + 1 << "-" << creationTm.tm_mday << "T" << creationTm.tm_hour << ":" << creationTm.tm_min << ":" << creationTm.tm_sec << std::endl;
+		std::cout << prefix << "--------------------------------------------------" << std::endl;
 	}
 	else {
 		std::cout << prefix << "IS PARTIAL!" << std::endl;
 	}
-	std::cout << prefix << "--------------------------------------------------" << std::endl;
 }
 
 void showAllSubRepresentations(const vector<RESQML2_NS::SubRepresentation*> & subRepSet)
@@ -3274,6 +3293,12 @@ void deserialize(const string & inputFile)
 	for (size_t i = 0; i < timeSeriesSet.size(); ++i)
 	{
 		showAllMetadata(timeSeriesSet[i]);
+		for (unsigned int j = 0; j < timeSeriesSet[i]->getTimestampCount(); ++j) {
+			time_t creation = timeSeriesSet[i]->getTimestamp(j);
+			std::cout << "Timestamp " << j << " is (unix timestamp) : " << creation << std::endl;
+			tm creationTm = timeSeriesSet[i]->getTimestampAsTimeStructure(j);
+			std::cout << "Timestamp " << j << " is (struct tm) : " << 1900 + creationTm.tm_year << "-" << creationTm.tm_mon + 1 << "-" << creationTm.tm_mday << "T" << creationTm.tm_hour << ":" << creationTm.tm_min << ":" << creationTm.tm_sec << std::endl;
+		}
 		for (size_t j = 0; j < timeSeriesSet[i]->getPropertySet().size(); ++j)
 		{
 			std::cout << endl << "\tPROPERTIES" << endl;

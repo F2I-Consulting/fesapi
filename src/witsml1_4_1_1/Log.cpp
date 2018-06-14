@@ -110,8 +110,8 @@ Log::Log(
 	}
 	if (dTimCreation >= 0)
 	{
-		log->__obj_USCORElog_sequence->creationDate = (time_t *) soap_malloc(collection->soap, sizeof(time_t));
-		*log->__obj_USCORElog_sequence->creationDate = dTimCreation;
+		log->__obj_USCORElog_sequence->creationDate = (tm *) soap_malloc(collection->soap, sizeof(tm));
+		*log->__obj_USCORElog_sequence->creationDate = *gmtime(&dTimCreation);
 	}
 }
 
