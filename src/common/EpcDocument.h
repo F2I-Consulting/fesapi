@@ -26,6 +26,7 @@ under the License.
 #include "proxies/stdsoap2.h"
 #include "proxies/gsoap_resqml2_0_1H.h"
 #include "proxies/gsoap_eml2_1H.h"
+#include "proxies/gsoap_eml2_2H.h"
 
 #include "epc/Package.h"
 
@@ -127,7 +128,7 @@ namespace RESQML2_0_1_NS
 	class BlockedWellboreRepresentation;
 }
 
-namespace WITSML2_0_NS
+namespace WITSML2_1_NS
 {
 	class Well;
 	class Wellbore;
@@ -136,7 +137,11 @@ namespace WITSML2_0_NS
 	class Log;
 	class WellboreMarkerSet;
 	class ToolErrorModel;
-	class ToolErrorTermSet;
+	class ToolErrorModelDictionary;
+	class ErrorTerm;
+	class ErrorTermDictionary;
+	class WeightingFunction;
+	class WeightingFunctionDictionary;
 }
 
 namespace PRODML2_0_NS
@@ -1070,57 +1075,83 @@ namespace COMMON_NS
 		/**
 		* Get all the witsml trajectories contained into the EPC document
 		*/
-		std::vector<WITSML2_0_NS::Trajectory*> getWitsmlTrajectorySet() const;
+		std::vector<WITSML2_1_NS::Trajectory*> getWitsmlTrajectorySet() const;
 
-		WITSML2_0_NS::Well* createWell(
+		WITSML2_1_NS::Well* createWell(
 			const std::string & guid,
 			const std::string & title);
 
-		WITSML2_0_NS::Well* createWell(
+		WITSML2_1_NS::Well* createWell(
 			const std::string & guid,
 			const std::string & title,
 			const std::string & operator_,
-			gsoap_eml2_1::eml21__WellStatus statusWell,
-			gsoap_eml2_1::witsml2__WellPurpose purposeWell,
-			gsoap_eml2_1::witsml2__WellFluid fluidWell,
-			gsoap_eml2_1::witsml2__WellDirection directionWell
+			gsoap_eml2_2::eml22__WellStatus statusWell,
+			gsoap_eml2_2::witsml2__WellPurpose purposeWell,
+			gsoap_eml2_2::witsml2__WellFluid fluidWell,
+			gsoap_eml2_2::witsml2__WellDirection directionWell
 		);
 
-		WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
+		WITSML2_1_NS::Wellbore* createWellbore(WITSML2_1_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title);
 
-		WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
+		WITSML2_1_NS::Wellbore* createWellbore(WITSML2_1_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title,
-			gsoap_eml2_1::eml21__WellStatus statusWellbore,
+			gsoap_eml2_2::eml22__WellStatus statusWellbore,
 			const bool & isActive,
-			gsoap_eml2_1::witsml2__WellPurpose purposeWellbore,
-			gsoap_eml2_1::witsml2__WellboreType typeWellbore,
+			gsoap_eml2_2::witsml2__WellPurpose purposeWellbore,
+			gsoap_eml2_2::witsml2__WellboreType typeWellbore,
 			const bool & achievedTD
 			);
 
-		WITSML2_0_NS::Trajectory* createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
+		WITSML2_1_NS::Trajectory* createTrajectory(WITSML2_1_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title,
-			const gsoap_eml2_1::witsml2__ChannelStatus & growingStatus);
+			const gsoap_eml2_2::witsml2__ChannelStatus & growingStatus);
 
-		WITSML2_0_NS::Log* createLog(WITSML2_0_NS::Wellbore* witsmlWellbore,
+		WITSML2_1_NS::Log* createLog(WITSML2_1_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title);
 
-		WITSML2_0_NS::WellboreMarkerSet* createWellboreMarkerSet(WITSML2_0_NS::Wellbore* witsmlWellbore,
+		WITSML2_1_NS::WellboreMarkerSet* createWellboreMarkerSet(WITSML2_1_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title,
 			const std::string & mdDatum,
 			const double & mdBaseSample,
 			const double & mdTopSample);
 
-		WITSML2_0_NS::ToolErrorModel* createToolErrorModel(
+		WITSML2_1_NS::ToolErrorModel* createPartialToolErrorModel(
 			const std::string & guid,
 			const std::string & title);
 
-		WITSML2_0_NS::ToolErrorTermSet* createToolErrorTermSet(
+		WITSML2_1_NS::ToolErrorModel* createToolErrorModel(
+			const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_2::witsml2__MisalignmentMode misalignmentMode);
+
+		WITSML2_1_NS::ToolErrorModelDictionary* createToolErrorModelDictionary(
+			const std::string & guid,
+			const std::string & title);
+
+		WITSML2_1_NS::ErrorTerm* createErrorTerm(
+			const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_2::witsml2__ErrorPropagationMode propagationMode,
+			WITSML2_1_NS::WeightingFunction* weightingFunction);
+
+		WITSML2_1_NS::ErrorTermDictionary* createErrorTermDictionary(
+			const std::string & guid,
+			const std::string & title);
+
+		WITSML2_1_NS::WeightingFunction* createWeightingFunction(
+			const std::string & guid,
+			const std::string & title,
+			const std::string & depthFormula,
+			const std::string & inclinationFormula,
+			const std::string & azimuthFormula);
+
+		WITSML2_1_NS::WeightingFunctionDictionary* createWeightingFunctionDictionary(
 			const std::string & guid,
 			const std::string & title);
 
@@ -1216,8 +1247,8 @@ namespace COMMON_NS
 		std::vector<COMMON_NS::AbstractHdfProxy*>						hdfProxySet;
 		std::vector<RESQML2_0_1_NS::WellboreFeature*>					wellboreSet;
 		std::vector<RESQML2_NS::RepresentationSetRepresentation*>		representationSetRepresentationSet;
-		std::vector<resqml2_0_1::Grid2dRepresentation*>					grid2dRepresentationSet;
-		std::vector<WITSML2_0_NS::Trajectory*>							witsmlTrajectorySet;
+		std::vector<RESQML2_0_1_NS::Grid2dRepresentation*>				grid2dRepresentationSet;
+		std::vector<WITSML2_1_NS::Trajectory*>							witsmlTrajectorySet;
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*>		triangulatedSetRepresentationSet;
 		std::vector<RESQML2_0_1_NS::PolylineRepresentation*>			polylineRepresentationSet;
 		std::vector<RESQML2_0_1_NS::AbstractIjkGridRepresentation*>		ijkGridRepresentationSet;

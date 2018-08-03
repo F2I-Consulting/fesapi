@@ -3,13 +3,13 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.2)
 PROJECT (Fesapi_SRC)
 
 # ============================================================================
-# Resqml/Witsqml proxies generation
+# Resqml/Witsml proxies generation
 # ============================================================================
 
 SET (RESQML_PREFIX_2 "resqml2")
 SET (RESQML_PREFIX_2_0_1 "resqml2_0_1")
 SET (RESQML_PREFIX_2_1 "resqml2_1")
-SET (WITSML_PREFIX "witsml2_0")
+SET (WITSML_PREFIX "witsml2_1")
 SET (PRODML_PREFIX_2_0 "prodml2_0")
 
 IF (PROXIES_GENERATION)
@@ -129,7 +129,7 @@ SET (FESAPI_COMMON_NS common CACHE STRING "Namespace for common objects")
 SET (FESAPI_PRODML2_0_NS prodml2_0 CACHE STRING "Namespace for prodml2_0 objects")
 SET (FESAPI_RESQML2_NS resqml2 CACHE STRING "Namespace for resqml2 objects")
 SET (FESAPI_RESQML2_0_1_NS resqml2_0_1 CACHE STRING "Namespace for resqml2_0_1 objects")
-SET (FESAPI_WITSML2_0_NS witsml2_0 CACHE STRING "Namespace for witsml2_0 objects")
+SET (FESAPI_WITSML2_1_NS witsml2_1 CACHE STRING "Namespace for witsml2_1 objects")
 CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/nsDefinitions.h) # Overwrite if different
 
 FILE (GLOB FESAPI_COMMON_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/common/*.cpp)
@@ -191,7 +191,7 @@ IF (WITH_JAVA_WRAPPING)
 	FILE (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/common)
 	FILE (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2)
 	FILE (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2_0_1)
-	FILE (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml2_0)
+	FILE (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml2_1)
 	
 	# Create the dedicated swig files
 	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/swigResqml2JavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigResqml2JavaInclude.i) # Overwrite if different

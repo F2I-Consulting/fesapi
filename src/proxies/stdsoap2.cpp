@@ -1,5 +1,5 @@
 /*
-        stdsoap2.c[pp] 2.8.66
+        stdsoap2.c[pp] 2.8.68
 
         gSOAP runtime engine
 
@@ -31,7 +31,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_LIB_VERSION 20866
+#define GSOAP_LIB_VERSION 20868
 
 #ifdef AS400
 # pragma convert(819)   /* EBCDIC to ASCII */
@@ -65,10 +65,10 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 #endif
 
 #ifdef __cplusplus
-SOAP_SOURCE_STAMP("@(#) stdsoap2.cpp ver 2.8.66 2018-04-09 00:00:00 GMT")
+SOAP_SOURCE_STAMP("@(#) stdsoap2.cpp ver 2.8.68 2018-06-28 00:00:00 GMT")
 extern "C" {
 #else
-SOAP_SOURCE_STAMP("@(#) stdsoap2.c ver 2.8.66 2018-04-09 00:00:00 GMT")
+SOAP_SOURCE_STAMP("@(#) stdsoap2.c ver 2.8.68 2018-06-28 00:00:00 GMT")
 #endif
 
 /* 8bit character representing unknown character entity or multibyte data */
@@ -158,7 +158,7 @@ static const char* soap_QName(struct soap *soap, const char *s, long minlen, lon
 
 #ifndef WITH_LEANER
 #ifndef PALM_1
-static struct soap_multipart *soap_alloc_multipart(struct soap*, struct soap_multipart**, struct soap_multipart**, char*, size_t);
+static struct soap_multipart *soap_alloc_multipart(struct soap*, struct soap_multipart**, struct soap_multipart**, const char*, size_t);
 static int soap_putdimefield(struct soap*, const char*, size_t);
 static char *soap_getdimefield(struct soap*, size_t);
 static void soap_select_mime_boundary(struct soap*);
@@ -6204,20 +6204,23 @@ tcp_select(struct soap *soap, SOAP_SOCKET sk, int flags, int timeout)
   {
     rfd = sfd = efd = NULL;
 #ifdef WITH_SELF_PIPE
-    if (flags & SOAP_TCP_SELECT_PIP)
+    if ((flags & SOAP_TCP_SELECT_PIP) || (flags & SOAP_TCP_SELECT_RCV))
     {
       rfd = &fd[0];
       FD_ZERO(rfd);
-      FD_SET(soap->pipe_fd[0], rfd);
+      if (flags & SOAP_TCP_SELECT_PIP)
+        FD_SET(soap->pipe_fd[0], rfd);
+      if (flags & SOAP_TCP_SELECT_RCV)
+        FD_SET(sk, rfd);
     }
-    else
-#endif
+#else
     if (flags & SOAP_TCP_SELECT_RCV)
     {
       rfd = &fd[0];
       FD_ZERO(rfd);
       FD_SET(sk, rfd);
     }
+#endif
     if (flags & SOAP_TCP_SELECT_SND)
     {
       sfd = &fd[1];
@@ -8762,7 +8765,7 @@ soap_putcookies(struct soap *soap, const char *domain, const char *path, int sec
           *s++ = ';';
         }
         DBGLOG(TEST, SOAP_MESSAGE(fdebug, "Sending cookie %s=%s path=\"/%s\" domain=\"%s\"\n", q->name ? q->name : "(null)", q->value ? q->value : "(null)", q->path ? q->path : "(null)", q->domain ? q->domain : "(null)"));
-        if (q->version != version && (s-tmp) - (size_t)36 < sizeof(tmp))
+        if (q->version != version && (s-tmp) + (size_t)36 < sizeof(tmp))
         {
           (SOAP_SNPRINTF_SAFE(s, sizeof(tmp) - (s-tmp)), "$Version=%u;", q->version);
           version = q->version;
@@ -9983,9 +9986,9 @@ soap_attachment(struct soap *soap, const char *tag, int id, const void *p, const
     {
       struct soap_multipart *content;
       if (soap->omode & SOAP_ENC_MTOM)
-        content = soap_alloc_multipart(soap, &soap->mime.first, &soap->mime.last, (char*)a, n);
+        content = soap_alloc_multipart(soap, &soap->mime.first, &soap->mime.last, (const char*)a, n);
       else
-        content = soap_alloc_multipart(soap, &soap->dime.first, &soap->dime.last, (char*)a, n);
+        content = soap_alloc_multipart(soap, &soap->dime.first, &soap->dime.last, (const char*)a, n);
       if (!content)
       {
         soap->error = SOAP_EOM;
@@ -13807,6 +13810,19 @@ soap_element_end_in(struct soap *soap, const char *tag)
     c = soap_get(soap);
   if (c != SOAP_GT)
     return soap->error = SOAP_SYNTAX_ERROR;
+#ifndef WITH_LEAN
+#ifdef WITH_DOM
+  if (soap->feltendin)
+  {
+    int err = soap->error;
+    soap->error = soap->feltendin(soap, soap->tag, tag);
+    if (soap->error)
+      return soap->error;
+    if (err)
+      return soap->error = err; /* restore error */
+  }
+#endif
+#endif
   if (tag && (soap->mode & SOAP_XML_STRICT))
   {
     soap_pop_namespace(soap);
@@ -13816,20 +13832,6 @@ soap_element_end_in(struct soap *soap, const char *tag)
       return soap->error = SOAP_SYNTAX_ERROR;
     }
   }
-#ifndef WITH_LEAN
-#ifdef WITH_DOM
-  if (soap->feltendin)
-  {
-    int err = soap->error;
-    soap->level--;
-    soap->error = soap->feltendin(soap, soap->tag, tag);
-    if (soap->error)
-      return soap->error;
-    soap->error = err; /* restore error */
-    return SOAP_OK;
-  }
-#endif
-#endif
   DBGLOG(TEST, SOAP_MESSAGE(fdebug, "End tag found (level=%u) '%s'='%s'\n", soap->level, soap->tag, tag ? tag : SOAP_STR_EOS));
   soap->level--;
   return SOAP_OK;
@@ -20135,7 +20137,7 @@ soap_clr_mime(struct soap *soap)
 #ifndef WITH_LEANER
 #ifndef PALM_1
 static struct soap_multipart*
-soap_alloc_multipart(struct soap *soap, struct soap_multipart **first, struct soap_multipart **last, char *ptr, size_t size)
+soap_alloc_multipart(struct soap *soap, struct soap_multipart **first, struct soap_multipart **last, const char *ptr, size_t size)
 {
   struct soap_multipart *content;
   DBGLOG(TEST, SOAP_MESSAGE(fdebug, "New DIME/MIME attachment %p (%lu)\n", (void*)ptr, (unsigned long)size));
@@ -20169,7 +20171,7 @@ soap_alloc_multipart(struct soap *soap, struct soap_multipart **first, struct so
 SOAP_FMAC1
 int
 SOAP_FMAC2
-soap_set_dime_attachment(struct soap *soap, char *ptr, size_t size, const char *type, const char *id, unsigned short optype, const char *option)
+soap_set_dime_attachment(struct soap *soap, const char *ptr, size_t size, const char *type, const char *id, unsigned short optype, const char *option)
 {
   struct soap_multipart *content = soap_alloc_multipart(soap, &soap->dime.first, &soap->dime.last, ptr, size);
   if (!content)
@@ -20189,7 +20191,7 @@ soap_set_dime_attachment(struct soap *soap, char *ptr, size_t size, const char *
 SOAP_FMAC1
 int
 SOAP_FMAC2
-soap_set_mime_attachment(struct soap *soap, char *ptr, size_t size, enum soap_mime_encoding encoding, const char *type, const char *id, const char *location, const char *description)
+soap_set_mime_attachment(struct soap *soap, const char *ptr, size_t size, enum soap_mime_encoding encoding, const char *type, const char *id, const char *location, const char *description)
 {
   struct soap_multipart *content = soap_alloc_multipart(soap, &soap->mime.first, &soap->mime.last, ptr, size);
   if (!content)

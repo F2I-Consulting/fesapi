@@ -20,7 +20,7 @@ under the License.
 
 #include <stdexcept>
 
-#include "witsml2_0/Well.h"
+#include "witsml2_1/Well.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -40,7 +40,7 @@ WellboreFeature::WellboreFeature(soap* soapContext, const string & guid, const s
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");
 }
 
-void WellboreFeature::setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore)
+void WellboreFeature::setWitsmlWellbore(WITSML2_1_NS::Wellbore * wellbore)
 {
 	witsmlWellbore = wellbore;
 	wellbore->resqmlWellboreFeature = this;
@@ -78,7 +78,7 @@ void WellboreFeature::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDo
 
 	if (resqmlWellbore->WitsmlWellbore != nullptr && resqmlWellbore->WitsmlWellbore->WitsmlWellbore != nullptr)
 	{
-		WITSML2_0_NS::Wellbore* witsmlWellbore = static_cast<WITSML2_0_NS::Wellbore*>(epcDoc->getResqmlAbstractObjectByUuid(resqmlWellbore->WitsmlWellbore->WitsmlWellbore->UUID));
+		WITSML2_1_NS::Wellbore* witsmlWellbore = static_cast<WITSML2_1_NS::Wellbore*>(epcDoc->getResqmlAbstractObjectByUuid(resqmlWellbore->WitsmlWellbore->WitsmlWellbore->UUID));
 		if (witsmlWellbore != nullptr)
 		{
 			updateXml = false;

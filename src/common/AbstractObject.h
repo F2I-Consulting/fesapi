@@ -20,6 +20,7 @@ under the License.
 
 #include "proxies/gsoap_resqml2_0_1H.h"
 #include "proxies/gsoap_eml2_1H.h"
+#include "proxies/gsoap_eml2_2H.h"
 #include "common/EpcDocument.h"
 
 namespace COMMON_NS
@@ -40,6 +41,7 @@ namespace COMMON_NS
 		*/
 		void pushBackExtraMetadataV2_0_1(const std::string & key, const std::string & value);
 		void pushBackExtraMetadataV2_1(const std::string & key, const std::string & value);
+		void pushBackExtraMetadataV2_2(const std::string & key, const std::string & value);
 
 		/**
 		* Getter (in read only mode) of all the extra metadata
@@ -76,10 +78,12 @@ namespace COMMON_NS
 		enum EmlVersion {
 			TWO_DOT_ZERO = 0,
 			TWO_DOT_ONE = 1,
+			TWO_DOT_TWO = 2,
 		};
 		
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;
 		gsoap_eml2_1::eml21__AbstractObject* gsoapProxy2_1;
+		gsoap_eml2_2::eml22__AbstractObject* gsoapProxy2_2;
 		COMMON_NS::EpcDocument* epcDocument;
 		std::vector<RESQML2_NS::Activity*> activitySet;
 
@@ -96,6 +100,8 @@ namespace COMMON_NS
 		AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy);
 
 		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy);
+
+		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy);
 
 		friend void COMMON_NS::EpcDocument::addGsoapProxy(AbstractObject* proxy);
 
@@ -143,6 +149,8 @@ namespace COMMON_NS
 		* A partial object is never explicit in an EPC document : it is not a file.
 		*/
 		bool isPartial() const {return partialObject != nullptr;}
+
+		virtual bool isTopLevelElement() const { return true; }
 
 		std::string getUuid() const;
 		std::string getTitle() const;
@@ -199,6 +207,8 @@ namespace COMMON_NS
 		*/
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* getGsoapProxy() const;
 
+		gsoap_eml2_2::eml22__AbstractObject* getGsoapProxy2_2() const { return gsoapProxy2_2; }
+
 		/**
 		* Get the gsoap context where the underlying gsoap proxy is defined.
 		*/
@@ -211,6 +221,7 @@ namespace COMMON_NS
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* newResqmlReference() const;
 		gsoap_eml2_1::eml21__DataObjectReference* newEmlReference() const;
+		gsoap_eml2_2::eml22__DataObjectReference* newEml22Reference() const;
 
 		gsoap_resqml2_0_1::resqml2__ContactElementReference* newResqmlContactElementReference() const;
 

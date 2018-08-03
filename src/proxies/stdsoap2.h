@@ -1,5 +1,5 @@
 /*
-        stdsoap2.h 2.8.66
+        stdsoap2.h 2.8.68
 
         gSOAP runtime engine
 
@@ -31,7 +31,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_VERSION 20866
+#define GSOAP_VERSION 20868
 
 #ifdef WITH_SOAPDEFS_H
 # include "soapdefs.h"          /* include user-defined stuff in soapdefs.h */
@@ -735,7 +735,7 @@ extern intmax_t __strtoull(const char*, char**, int);
 # define int32_t int
 # define int64_t long long
 # define LONG64 long long
-# define ULONG64 long long
+# define ULONG64 unsigned long long
 # define DBL_PINFTY (1.1579208923716189e77)
 # undef HAVE_WCTOMB
 # undef HAVE_MBTOWC
@@ -1046,6 +1046,7 @@ extern "C" {
 #endif
 
 #if defined(SYMBIAN)
+# warning "Symbian build: removing 64 bit integer support"
 # define LONG64 long
 # define ULONG64 unsigned LONG64
 # ifndef SOAP_LONG_FORMAT
@@ -1054,17 +1055,6 @@ extern "C" {
 # ifndef SOAP_ULONG_FORMAT
 #  define SOAP_ULONG_FORMAT "%lu"
 # endif
-#elif !defined(__cplusplus) && defined(__STDC__) && !defined(__STDC_VERSION__) /* C90? */
-# define LONG64 long
-# define ULONG64 unsigned LONG64
-# ifndef SOAP_LONG_FORMAT
-#  define SOAP_LONG_FORMAT "%ld"
-# endif
-# ifndef SOAP_ULONG_FORMAT
-#  define SOAP_ULONG_FORMAT "%lu"
-# endif
-# define soap_strtoll soap_strtol
-# define soap_strtoull soap_strtoul
 #elif !defined(WIN32) || defined(CYGWIN) || defined(__GLIBC__) || defined(__GNU__) || defined(__GNUC__)
 # ifndef LONG64
 #  if defined(HAVE_INTTYPES_H)
@@ -2157,7 +2147,7 @@ enum soap_mime_encoding
 /* DIME/MIME multipart list */
 struct soap_multipart
 { struct soap_multipart *next;
-  char *ptr;                            /* points to raw data content */
+  const char *ptr;                      /* points to raw data content */
   size_t size;                          /* size of data content */
   const char *id;                       /* DIME/MIME content ID or form data name */
   const char *type;                     /* DIME/MIME type (MIME type format) */
@@ -3519,8 +3509,8 @@ SOAP_FMAC1 void SOAP_FMAC2 soap_set_dime(struct soap*);
 SOAP_FMAC1 void SOAP_FMAC2 soap_set_mime(struct soap*, const char *boundary, const char *start);
 SOAP_FMAC1 void SOAP_FMAC2 soap_clr_dime(struct soap*);
 SOAP_FMAC1 void SOAP_FMAC2 soap_clr_mime(struct soap*);
-SOAP_FMAC1 int SOAP_FMAC2 soap_set_dime_attachment(struct soap*, char *ptr, size_t size, const char *type, const char *id, unsigned short optype, const char *option);
-SOAP_FMAC1 int SOAP_FMAC2 soap_set_mime_attachment(struct soap*, char *ptr, size_t size, enum soap_mime_encoding encoding, const char *type, const char *id, const char *location, const char *description);
+SOAP_FMAC1 int SOAP_FMAC2 soap_set_dime_attachment(struct soap*, const char *ptr, size_t size, const char *type, const char *id, unsigned short optype, const char *option);
+SOAP_FMAC1 int SOAP_FMAC2 soap_set_mime_attachment(struct soap*, const char *ptr, size_t size, enum soap_mime_encoding encoding, const char *type, const char *id, const char *location, const char *description);
 SOAP_FMAC1 void SOAP_FMAC2 soap_post_check_mime_attachments(struct soap *soap);
 SOAP_FMAC1 int SOAP_FMAC2 soap_check_mime_attachments(struct soap *soap);
 SOAP_FMAC1 struct soap_multipart* SOAP_FMAC2 soap_get_mime_attachment(struct soap *soap, void *handle);

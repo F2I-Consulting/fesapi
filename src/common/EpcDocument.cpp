@@ -95,13 +95,14 @@ under the License.
 #include "resqml2_0_1/CategoricalPropertySeries.h"
 #include "resqml2_0_1/DiscretePropertySeries.h"
 
-#include "witsml2_0/Well.h"
-#include "witsml2_0/Wellbore.h"
-#include "witsml2_0/Trajectory.h"
-#include "witsml2_0/Log.h"
-#include "witsml2_0/WellboreMarkerSet.h"
-#include "witsml2_0/ToolErrorModel.h"
-#include "witsml2_0/ToolErrorTermSet.h"
+#include "witsml2_1/Well.h"
+#include "witsml2_1/Wellbore.h"
+#include "witsml2_1/Trajectory.h"
+#include "witsml2_1/Log.h"
+#include "witsml2_1/WellboreMarkerSet.h""
+#include "witsml2_1/ToolErrorModelDictionary.h""
+#include "witsml2_1/ErrorTermDictionary.h"
+#include "witsml2_1/WeightingFunction.h"
 
 #include "prodml2_0/HdfProxy.h"
 #include "prodml2_0/DasAcquisition.h"
@@ -115,7 +116,7 @@ using namespace epc;
 using namespace gsoap_resqml2_0_1;
 using namespace COMMON_NS;
 using namespace RESQML2_0_1_NS;
-using namespace WITSML2_0_NS;
+using namespace WITSML2_1_NS;
 using namespace PRODML2_0_NS;
 
 const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
@@ -158,18 +159,18 @@ const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 /////////////////////
 /////// WITSML //////
 /////////////////////
-#define GET_WITSML_2_0_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
-	gsoap_eml2_1::_witsml2__##className* read = gsoap_eml2_1::soap_new_witsml2__##className(s, 1);\
-	gsoap_eml2_1::soap_read_witsml2__##className(s, read);
+#define GET_WITSML_2_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
+	gsoap_eml2_2::_witsml2__##className* read = gsoap_eml2_2::soap_new_witsml2__##className(s, 1);\
+	gsoap_eml2_2::soap_read_witsml2__##className(s, read);
 
-#define GET_WITSML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
-	GET_WITSML_2_0_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
+#define GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
+	GET_WITSML_2_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
 	wrapper = new className(read);
 
-#define CHECK_AND_GET_WITSML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
+#define CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
 	(resqmlContentType.compare(className::XML_TAG) == 0)\
 	{\
-		GET_WITSML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
+		GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
 	}
 
 // Create a fesapi partial wrapper based on a content type
@@ -368,7 +369,7 @@ RESQML2_0_1_NS::PointSetRepresentation* EpcDocument::getPointSetRepresentation(c
 const std::vector<COMMON_NS::AbstractHdfProxy*> & EpcDocument::getHdfProxySet() const { return hdfProxySet; }
 unsigned int EpcDocument::getHdfProxyCount() const { return hdfProxySet.size(); }
 
-std::vector<WITSML2_0_NS::Trajectory*> EpcDocument::getWitsmlTrajectorySet() const { return witsmlTrajectorySet; }
+std::vector<WITSML2_1_NS::Trajectory*> EpcDocument::getWitsmlTrajectorySet() const { return witsmlTrajectorySet; }
 
 void EpcDocument::addWarning(const std::string & warning) { warnings.push_back(warning); }
 const std::vector<std::string> & EpcDocument::getWarnings() const { return warnings; }
@@ -634,7 +635,7 @@ void EpcDocument::serialize(bool useZip64)
 	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
 #endif
 	{
-		if (!it->second->isPartial()) {
+		if (!it->second->isPartial() && it->second->isTopLevelElement()) {
 			string str = it->second->serializeIntoString();
 
 			epc::FilePart* fp = package->createPart(str, it->second->getPartNameInEpcDocument());
@@ -926,12 +927,17 @@ COMMON_NS::AbstractObject* EpcDocument::getResqml2_0_1WrapperFromGsoapContext(co
 	else if CHECK_AND_GET_PRODML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DasAcquisition)
 	else if CHECK_AND_GET_PRODML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(FiberOpticalPath)
 	else if CHECK_AND_GET_PRODML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DasInstrumentBox)
-	else if CHECK_AND_GET_WITSML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Well)
-	else if CHECK_AND_GET_WITSML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Wellbore)
-	else if CHECK_AND_GET_WITSML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Trajectory)
-	else if CHECK_AND_GET_WITSML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Log)
-	else if CHECK_AND_GET_WITSML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreMarkerSet)
-	else if CHECK_AND_GET_WITSML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ToolErrorModel)
+	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Well)
+	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Wellbore)
+	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Trajectory)
+	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Log)
+	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreMarkerSet)
+	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ToolErrorModel)
+	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ToolErrorModelDictionary)
+	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ErrorTerm)
+	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ErrorTermDictionary)
+	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WeightingFunction)
+	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WeightingFunctionDictionary)
 	else if (resqmlContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
@@ -2379,7 +2385,7 @@ RESQML2_NS::Activity* EpcDocument::createActivity(RESQML2_NS::ActivityTemplate* 
 //*************** WITSML *************
 //************************************
 
-WITSML2_0_NS::Well* EpcDocument::createWell(
+WITSML2_1_NS::Well* EpcDocument::createWell(
 			const std::string & guid,
 			const std::string & title)
 {
@@ -2388,21 +2394,21 @@ WITSML2_0_NS::Well* EpcDocument::createWell(
 	return result;
 }
 
-WITSML2_0_NS::Well* EpcDocument::createWell(
+WITSML2_1_NS::Well* EpcDocument::createWell(
 			const std::string & guid,
 			const std::string & title,
 			const std::string & operator_,
-			gsoap_eml2_1::eml21__WellStatus statusWell,
-			gsoap_eml2_1::witsml2__WellPurpose purposeWell,
-			gsoap_eml2_1::witsml2__WellFluid fluidWell,
-			gsoap_eml2_1::witsml2__WellDirection directionWell)
+			gsoap_eml2_2::eml22__WellStatus statusWell,
+			gsoap_eml2_2::witsml2__WellPurpose purposeWell,
+			gsoap_eml2_2::witsml2__WellFluid fluidWell,
+			gsoap_eml2_2::witsml2__WellDirection directionWell)
 {
 	Well* result = new Well(getGsoapContext(), guid, title, operator_, statusWell, purposeWell, fluidWell, directionWell);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
 
-WITSML2_0_NS::Wellbore* EpcDocument::createWellbore(WITSML2_0_NS::Well* witsmlWell,
+WITSML2_1_NS::Wellbore* EpcDocument::createWellbore(WITSML2_1_NS::Well* witsmlWell,
 	const std::string & guid,
 	const std::string & title)
 {
@@ -2411,13 +2417,13 @@ WITSML2_0_NS::Wellbore* EpcDocument::createWellbore(WITSML2_0_NS::Well* witsmlWe
 	return result;
 }
 
-WITSML2_0_NS::Wellbore* EpcDocument::createWellbore(WITSML2_0_NS::Well* witsmlWell,
+WITSML2_1_NS::Wellbore* EpcDocument::createWellbore(WITSML2_1_NS::Well* witsmlWell,
 	const std::string & guid,
 	const std::string & title,
-	gsoap_eml2_1::eml21__WellStatus statusWellbore,
+	gsoap_eml2_2::eml22__WellStatus statusWellbore,
 	const bool & isActive,
-	gsoap_eml2_1::witsml2__WellPurpose purposeWellbore,
-	gsoap_eml2_1::witsml2__WellboreType typeWellbore,
+	gsoap_eml2_2::witsml2__WellPurpose purposeWellbore,
+	gsoap_eml2_2::witsml2__WellboreType typeWellbore,
 	const bool & achievedTD)
 {
 	Wellbore* result = new Wellbore(witsmlWell, guid, title, statusWellbore, isActive, purposeWellbore, typeWellbore, achievedTD);
@@ -2425,17 +2431,17 @@ WITSML2_0_NS::Wellbore* EpcDocument::createWellbore(WITSML2_0_NS::Well* witsmlWe
 	return result;
 }
 
-WITSML2_0_NS::Trajectory* EpcDocument::createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
+WITSML2_1_NS::Trajectory* EpcDocument::createTrajectory(WITSML2_1_NS::Wellbore* witsmlWellbore,
 	const std::string & guid,
 	const std::string & title,
-	const gsoap_eml2_1::witsml2__ChannelStatus & growingStatus)
+	const gsoap_eml2_2::witsml2__ChannelStatus & growingStatus)
 {
 	Trajectory* result = new Trajectory(witsmlWellbore, guid, title, growingStatus);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
 
-WITSML2_0_NS::Log* EpcDocument::createLog(WITSML2_0_NS::Wellbore* witsmlWellbore,
+WITSML2_1_NS::Log* EpcDocument::createLog(WITSML2_1_NS::Wellbore* witsmlWellbore,
 	const std::string & guid,
 	const std::string & title)
 {
@@ -2444,7 +2450,7 @@ WITSML2_0_NS::Log* EpcDocument::createLog(WITSML2_0_NS::Wellbore* witsmlWellbore
 	return result;
 }
 
-WITSML2_0_NS::WellboreMarkerSet* EpcDocument::createWellboreMarkerSet(WITSML2_0_NS::Wellbore* witsmlWellbore,
+WITSML2_1_NS::WellboreMarkerSet* EpcDocument::createWellboreMarkerSet(WITSML2_1_NS::Wellbore* witsmlWellbore,
 	const std::string & guid,
 	const std::string & title,
 	const std::string & mdDatum,
@@ -2456,20 +2462,69 @@ WITSML2_0_NS::WellboreMarkerSet* EpcDocument::createWellboreMarkerSet(WITSML2_0_
 	return result;
 }
 
-WITSML2_0_NS::ToolErrorModel* EpcDocument::createToolErrorModel(
+WITSML2_1_NS::ToolErrorModel* EpcDocument::createPartialToolErrorModel(
 	const std::string & guid,
 	const std::string & title)
 {
-	ToolErrorModel* result = new ToolErrorModel(getGsoapContext(), guid, title);
+	return createPartial<WITSML2_1_NS::ToolErrorModel>(guid, title);;
+}
+
+WITSML2_1_NS::ToolErrorModel* EpcDocument::createToolErrorModel(
+	const std::string & guid,
+	const std::string & title,
+	gsoap_eml2_2::witsml2__MisalignmentMode misalignmentMode)
+{
+	ToolErrorModel* result = new ToolErrorModel(getGsoapContext(), guid, title, misalignmentMode);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
 
-WITSML2_0_NS::ToolErrorTermSet* EpcDocument::createToolErrorTermSet(
+WITSML2_1_NS::ToolErrorModelDictionary* EpcDocument::createToolErrorModelDictionary(
 	const std::string & guid,
 	const std::string & title)
 {
-	ToolErrorTermSet* result = new ToolErrorTermSet(getGsoapContext(), guid, title);
+	ToolErrorModelDictionary* result = new ToolErrorModelDictionary(getGsoapContext(), guid, title);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_1_NS::ErrorTerm* EpcDocument::createErrorTerm(
+	const std::string & guid,
+	const std::string & title,
+	gsoap_eml2_2::witsml2__ErrorPropagationMode propagationMode,
+	WeightingFunction* weightingFunction)
+{
+	ErrorTerm* result = new ErrorTerm(getGsoapContext(), guid, title, propagationMode, weightingFunction);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_1_NS::ErrorTermDictionary* EpcDocument::createErrorTermDictionary(
+	const std::string & guid,
+	const std::string & title)
+{
+	ErrorTermDictionary* result = new ErrorTermDictionary(getGsoapContext(), guid, title);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_1_NS::WeightingFunction* EpcDocument::createWeightingFunction(
+	const std::string & guid,
+	const std::string & title,
+	const std::string & depthFormula,
+	const std::string & inclinationFormula,
+	const std::string & azimuthFormula)
+{
+	WeightingFunction* result = new WeightingFunction(getGsoapContext(), guid, title, depthFormula, inclinationFormula, azimuthFormula);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_1_NS::WeightingFunctionDictionary* EpcDocument::createWeightingFunctionDictionary(
+	const std::string & guid,
+	const std::string & title)
+{
+	WeightingFunctionDictionary* result = new WeightingFunctionDictionary(getGsoapContext(), guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2570,4 +2625,3 @@ gsoap_eml2_1::_eml21__EpcExternalPartReference* EpcDocument::getEpcExternalPartR
 	gsoap_eml2_1::soap_read_eml21__EpcExternalPartReference(s, read);
 	return read;
 }
-

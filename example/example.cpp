@@ -83,8 +83,8 @@ under the License.
 #include "resqml2_0_1/Activity.h"
 #include "resqml2_0_1/ActivityTemplate.h"
 
-#include "witsml2_0/Well.h"
-#include "witsml2_0/Trajectory.h"
+#include "witsml2_1/Well.h"
+#include "witsml2_1/Trajectory.h"
 
 #include "prodml2_0/DasAcquisition.h"
 #include "prodml2_0/FiberOpticalPath.h"
@@ -112,24 +112,24 @@ LocalTime3dCrs* localTime3dCrs;
 WellboreInterpretation* wellbore1Interp1;
 StratigraphicColumnRankInterpretation* stratiColumnRank;
 
-WITSML2_0_NS::Wellbore* witsmlWellbore = NULL;
+WITSML2_1_NS::Wellbore* witsmlWellbore = NULL;
 
 void serializeWells(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
-	WITSML2_0_NS::Trajectory* witsmlTraj = nullptr;
-	WITSML2_0_NS::Log* witsmlLog = nullptr;
+	WITSML2_1_NS::Trajectory* witsmlTraj = nullptr;
+	WITSML2_1_NS::Log* witsmlLog = nullptr;
 
 	// WELL
-	WITSML2_0_NS::Well* witsmlWell = pck->createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1");
+	WITSML2_1_NS::Well* witsmlWell = pck->createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1");
 	witsmlWell->pushBackLocation("8cd3c8b2-face-4426-8aea-ae34870bd969", 275, 75, 0);
-	witsmlWell->pushBackDatum("aa92fa8b-d6cc-459e-b456-27fec0c08b24", "well1 msl datum", gsoap_eml2_1::eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 0, 5100);
-	witsmlWell->pushBackDatum("d3ac5401-d3e7-4474-b846-070673b210ae", "KB", gsoap_eml2_1::eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 15, 5100);
+	witsmlWell->pushBackDatum("aa92fa8b-d6cc-459e-b456-27fec0c08b24", "well1 msl datum", gsoap_eml2_2::eml22__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", gsoap_eml2_2::eml22__LengthUom__m, 0, 5100);
+	witsmlWell->pushBackDatum("d3ac5401-d3e7-4474-b846-070673b210ae", "KB", gsoap_eml2_2::eml22__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", gsoap_eml2_2::eml22__LengthUom__m, 15, 5100);
 
 	// WELLBORE
 	witsmlWellbore = pck->createWellbore(witsmlWell, "3bd60188-5688-43df-89bb-935fe86a813f", "Wellbore1");
 
 	// TRAJECTORY
-	witsmlTraj = pck->createTrajectory(witsmlWellbore, "9d09c16e-44b0-4baf-89b0-c6de3f66d0e3", "Trajectory", gsoap_eml2_1::witsml2__ChannelStatus__active);
+	witsmlTraj = pck->createTrajectory(witsmlWellbore, "9d09c16e-44b0-4baf-89b0-c6de3f66d0e3", "Trajectory", gsoap_eml2_2::witsml2__ChannelStatus__active);
 	/*
 	double mds[4] = { 15, 340, 515, 1015 };
 	double tvds[4] = { 0, 325, 500, 1000 };
@@ -203,8 +203,8 @@ void serializeWells(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* h
 
 void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
-	//WITSML2_0_NS::FormationMarker* witsmlFormationMarker0 = NULL;
-	//WITSML2_0_NS::FormationMarker* witsmlFormationMarker1 = NULL;
+	//WITSML2_1_NS::FormationMarker* witsmlFormationMarker0 = NULL;
+	//WITSML2_1_NS::FormationMarker* witsmlFormationMarker1 = NULL;
 
 	StratigraphicColumn* stratiColumn = pck->createStratigraphicColumn("7f6666a0-fa3b-11e5-a509-0002a5d5c51b", "Stratigraphic column");
 	OrganizationFeature* stratiModelFeature = pck->createStratigraphicModel("", "stratiModel");
@@ -2872,7 +2872,7 @@ void deserialize(const string & inputFile)
 	for (size_t i = 0; i < wellboreSet.size(); i++)
 	{
 		showAllMetadata(wellboreSet[i]);
-		WITSML2_0_NS::Wellbore* witsmlWellbore = wellboreSet[i]->getWitsmlWellbore();
+		WITSML2_1_NS::Wellbore* witsmlWellbore = wellboreSet[i]->getWitsmlWellbore();
 		if (witsmlWellbore != NULL)
 		{
 			std::cout << "Associated with witsml well bore " << witsmlWellbore->getTitle()
@@ -3552,16 +3552,17 @@ void prodml_deserialize(const string & inputFile)
 }
 
 // filepath is defined in a macro to better check memory leak
-#define filePath "../../testingPackageCpp.epc"
+//#define filePath "../../testingPackageCpp.epc"
+#define filePath "C:/Users/Philippe/data/resqml/resqmlExchangedModel/v2_0/total/unstructured/2units_withWT_unfaulted.epc"
 #define prodml_filePath "../../prodml_testingPackageCpp.epc"
 int main(int argc, char **argv)
 {
 	try {
-		if (serialize(filePath))
+		//if (serialize(filePath))
 			deserialize(filePath);
 			
-		if (prodml_serialize(prodml_filePath))
-			prodml_deserialize(prodml_filePath);
+		//if (prodml_serialize(prodml_filePath))
+			//prodml_deserialize(prodml_filePath);
 			
 	}
 	catch (const std::invalid_argument & Exp)

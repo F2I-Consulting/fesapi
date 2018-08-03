@@ -43,7 +43,7 @@ using namespace gsoap_resqml2_0_1;
 
 AbstractObject::AbstractObject() :
 	partialObject(nullptr), gsoapProxy2_0_1(nullptr),
-	gsoapProxy2_1(nullptr),
+	gsoapProxy2_1(nullptr), gsoapProxy2_2(nullptr),
 	epcDocument(nullptr), updateXml(true) {
 }
 
@@ -52,19 +52,25 @@ AbstractObject::AbstractObject() :
 */
 AbstractObject::AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
 	partialObject(partialObject), gsoapProxy2_0_1(nullptr),
-	gsoapProxy2_1(nullptr),
+	gsoapProxy2_1(nullptr), gsoapProxy2_2(nullptr),
 	epcDocument (nullptr), updateXml(true) {
 }
 
 AbstractObject::AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy):
 	partialObject(nullptr), gsoapProxy2_0_1(proxy),
-	gsoapProxy2_1(nullptr),
+	gsoapProxy2_1(nullptr), gsoapProxy2_2(nullptr),
 	epcDocument(nullptr), updateXml(true) {
 }
 
 AbstractObject::AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) :
 	partialObject(nullptr), gsoapProxy2_0_1(nullptr),
-	gsoapProxy2_1(proxy),
+	gsoapProxy2_1(proxy), gsoapProxy2_2(nullptr),
+	epcDocument(nullptr), updateXml(true) {
+}
+
+AbstractObject::AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy) :
+	partialObject(nullptr), gsoapProxy2_0_1(nullptr),
+	gsoapProxy2_1(nullptr), gsoapProxy2_2(proxy),
 	epcDocument(nullptr), updateXml(true) {
 }
 
@@ -90,7 +96,8 @@ void AbstractObject::changeToPartialObject()
 soap* AbstractObject::getGsoapContext() const
 {
 	if (gsoapProxy2_0_1 == nullptr
-		&& gsoapProxy2_1 == nullptr) {
+		&& gsoapProxy2_1 == nullptr
+		&& gsoapProxy2_2 == nullptr) {
 		return getEpcDocument() == nullptr ? nullptr : getEpcDocument()->getGsoapContext();
 	}
 	else if (gsoapProxy2_0_1 != nullptr) {
@@ -98,6 +105,9 @@ soap* AbstractObject::getGsoapContext() const
 	}
 	else if (gsoapProxy2_1 != nullptr) {
 		return gsoapProxy2_1->soap;
+	}
+	else if (gsoapProxy2_2 != nullptr) {
+		return gsoapProxy2_2->soap;
 	}
 
 	throw invalid_argument("There is no available gsoap proxy instance.");
@@ -109,6 +119,9 @@ int AbstractObject::getGsoapType() const {
 	}
 	else if (gsoapProxy2_1 != nullptr) {
 		return gsoapProxy2_1->soap_type();
+	}
+	else if (gsoapProxy2_2 != nullptr) {
+		return gsoapProxy2_2->soap_type();
 	}
 	else {
 		return partialObject->soap_type();
@@ -125,6 +138,8 @@ string AbstractObject::getUuid() const
 		return gsoapProxy2_0_1->uuid;
 	else if (gsoapProxy2_1 != nullptr)
 		return gsoapProxy2_1->uuid;
+	else if (gsoapProxy2_2 != nullptr)
+		return gsoapProxy2_2->uuid;
 
 	throw invalid_argument("There is no available gsoap proxy instance.");
 }
@@ -137,6 +152,8 @@ string AbstractObject::getTitle() const
 		return gsoapProxy2_0_1->Citation->Title;
 	else if (gsoapProxy2_1 != nullptr)
 		return gsoapProxy2_1->Citation->Title;
+	else if (gsoapProxy2_2 != nullptr)
+		return gsoapProxy2_2->Citation->Title;
 
 	throw invalid_argument("There is no available gsoap proxy instance.");
 }
@@ -150,6 +167,8 @@ string AbstractObject::getEditor() const
 		return *gsoapProxy2_0_1->Citation->Editor;
 	else if (gsoapProxy2_1 != nullptr && gsoapProxy2_1->Citation->Editor)
 		return *gsoapProxy2_1->Citation->Editor;
+	else if (gsoapProxy2_2 != nullptr && gsoapProxy2_1->Citation->Editor)
+		return *gsoapProxy2_2->Citation->Editor;
 	else
 		return "";
 }
@@ -169,6 +188,8 @@ tm AbstractObject::getCreationAsTimeStructure() const
 		return gsoapProxy2_0_1->Citation->Creation;
 	else if (gsoapProxy2_1 != nullptr)
 		return gsoapProxy2_1->Citation->Creation;
+	else if (gsoapProxy2_2 != nullptr)
+		return gsoapProxy2_2->Citation->Creation;
 
 	throw invalid_argument("There is no available gsoap proxy instance.");
 }
@@ -182,6 +203,8 @@ string AbstractObject::getOriginator() const
 		return gsoapProxy2_0_1->Citation->Originator;
 	else if (gsoapProxy2_1 != nullptr)
 		return gsoapProxy2_1->Citation->Originator;
+	else if (gsoapProxy2_2 != nullptr)
+		return gsoapProxy2_2->Citation->Originator;
 
 	throw invalid_argument("There is no available gsoap proxy instance.");
 }
@@ -195,6 +218,8 @@ string AbstractObject::getDescription() const
 		return *gsoapProxy2_0_1->Citation->Description;
 	else if (gsoapProxy2_1 != nullptr && gsoapProxy2_1->Citation->Description)
 		return *gsoapProxy2_1->Citation->Description;
+	else if (gsoapProxy2_2 != nullptr && gsoapProxy2_2->Citation->Description)
+		return *gsoapProxy2_2->Citation->Description;
 	else
 		return "";
 }
@@ -219,6 +244,8 @@ tm AbstractObject::getLastUpdateAsTimeStructure() const
 		return *gsoapProxy2_0_1->Citation->LastUpdate;
 	else if (gsoapProxy2_1 != nullptr && gsoapProxy2_1->Citation->LastUpdate)
 		return *gsoapProxy2_1->Citation->LastUpdate;
+	else if (gsoapProxy2_2 != nullptr && gsoapProxy2_2->Citation->LastUpdate)
+		return *gsoapProxy2_2->Citation->LastUpdate;
 	else {
 		tm result;
 		result.tm_hour = 0;
@@ -243,6 +270,8 @@ string AbstractObject::getFormat() const
 		return gsoapProxy2_0_1->Citation->Format;
 	else if (gsoapProxy2_1 != nullptr)
 		return gsoapProxy2_1->Citation->Format;
+	else if (gsoapProxy2_2 != nullptr)
+		return gsoapProxy2_2->Citation->Format;
 
 	throw invalid_argument("There is no available gsoap proxy instance.");
 }
@@ -256,6 +285,23 @@ string AbstractObject::getDescriptiveKeywords() const
 		return *gsoapProxy2_0_1->Citation->DescriptiveKeywords;
 	else if (gsoapProxy2_1 != nullptr && gsoapProxy2_1->Citation->DescriptiveKeywords)
 		return *gsoapProxy2_1->Citation->DescriptiveKeywords;
+	else if (gsoapProxy2_2 != nullptr && gsoapProxy2_2->Citation->DescriptiveKeywords)
+		return *gsoapProxy2_2->Citation->DescriptiveKeywords;
+	else
+		return "";
+}
+
+string AbstractObject::getVersionString() const
+{
+	if (partialObject != nullptr)
+		throw invalid_argument("The wrapped gsoap proxy must not be null");
+
+	if (gsoapProxy2_0_1 != nullptr && gsoapProxy2_0_1->Citation->VersionString)
+		return *gsoapProxy2_0_1->Citation->VersionString;
+	else if (gsoapProxy2_1 != nullptr && gsoapProxy2_1->Citation->VersionString)
+		return *gsoapProxy2_1->Citation->VersionString;
+	else if (gsoapProxy2_2 != nullptr && gsoapProxy2_2->Citation->VersionString)
+		return *gsoapProxy2_2->Citation->VersionString;
 	else
 		return string();
 }
@@ -281,6 +327,7 @@ void AbstractObject::setUuid(const std::string & uuid)
 	if (uuid.empty()) {
 		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->uuid = GuidTools::generateUidAsString();
 		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->uuid = GuidTools::generateUidAsString();
+		else if (gsoapProxy2_2 != nullptr) gsoapProxy2_2->uuid = GuidTools::generateUidAsString();
 	}
 	else
 	{
@@ -290,6 +337,7 @@ void AbstractObject::setUuid(const std::string & uuid)
 #endif
 		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->uuid = uuid;
 		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->uuid = uuid;
+		else if (gsoapProxy2_2 != nullptr) gsoapProxy2_2->uuid = uuid;
 	}
 }
 
@@ -301,10 +349,12 @@ void AbstractObject::setTitle(const std::string & title)
 	if (title.empty()) {
 		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->Citation->Title = "unknown";
 		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->Citation->Title = "unknown";
+		else if (gsoapProxy2_2 != nullptr) gsoapProxy2_2->Citation->Title = "unknown";
 	}
 	else {
 		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->Citation->Title = title;
 		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->Citation->Title = title;
+		else if (gsoapProxy2_2 != nullptr) gsoapProxy2_2->Citation->Title = title;
 	}
 }
 
@@ -319,10 +369,15 @@ void AbstractObject::setEditor(const std::string & editor)
 				gsoapProxy2_0_1->Citation->Editor = soap_new_std__string(gsoapProxy2_0_1->soap, 1);
 			gsoapProxy2_0_1->Citation->Editor->assign(editor);
 		}
-		else {
+		else if (gsoapProxy2_1 != nullptr) {
 			if (gsoapProxy2_1->Citation->Editor == nullptr)
 				gsoapProxy2_1->Citation->Editor = soap_new_std__string(gsoapProxy2_1->soap, 1);
 			gsoapProxy2_1->Citation->Editor->assign(editor);
+		}
+		else if (gsoapProxy2_2 != nullptr) {
+			if (gsoapProxy2_2->Citation->Editor == nullptr)
+				gsoapProxy2_2->Citation->Editor = soap_new_std__string(gsoapProxy2_2->soap, 1);
+			gsoapProxy2_2->Citation->Editor->assign(editor);
 		}
 	}
 }
@@ -350,6 +405,9 @@ void AbstractObject::setCreation(const tm & creation)
 	else if (gsoapProxy2_1 != nullptr) {
 		gsoapProxy2_1->Citation->Creation = creation;
 	}
+	else if (gsoapProxy2_2 != nullptr) {
+		gsoapProxy2_2->Citation->Creation = creation;
+	}
 }
 
 void AbstractObject::setOriginator(const std::string & originator)
@@ -372,11 +430,13 @@ void AbstractObject::setOriginator(const std::string & originator)
 		GetUserName(acUserName, &nUserName);
 		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->Citation->Originator = acUserName;
 		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->Citation->Originator = acUserName;
+		else if (gsoapProxy2_2 != nullptr) gsoapProxy2_2->Citation->Originator = acUserName;
 #endif	
 	}
 	else {
 		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->Citation->Originator = originator;
 		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->Citation->Originator = originator;
+		else if (gsoapProxy2_2 != nullptr) gsoapProxy2_2->Citation->Originator = originator;
 	}
 }
 
@@ -392,10 +452,15 @@ void AbstractObject::setDescription(const std::string & description)
 				gsoapProxy2_0_1->Citation->Description = soap_new_std__string(gsoapProxy2_0_1->soap, 1);
 			gsoapProxy2_0_1->Citation->Description->assign(description);
 		}
-		else {
+		else if (gsoapProxy2_1 != nullptr) {
 			if (gsoapProxy2_1->Citation->Description == nullptr)
 				gsoapProxy2_1->Citation->Description = soap_new_std__string(gsoapProxy2_1->soap, 1);
 			gsoapProxy2_1->Citation->Description->assign(description);
+		}
+		else if (gsoapProxy2_2 != nullptr) {
+			if (gsoapProxy2_2->Citation->Description == nullptr)
+				gsoapProxy2_2->Citation->Description = soap_new_std__string(gsoapProxy2_2->soap, 1);
+			gsoapProxy2_2->Citation->Description->assign(description);
 		}
 	}
 }
@@ -427,6 +492,12 @@ void AbstractObject::setLastUpdate(const tm & lastUpdate)
 		}
 		*gsoapProxy2_1->Citation->LastUpdate = lastUpdate;
 	}
+	else if (gsoapProxy2_2 != nullptr) {
+		if (gsoapProxy2_2->Citation->LastUpdate == nullptr) {
+			gsoapProxy2_2->Citation->LastUpdate = (tm *)soap_malloc(gsoapProxy2_2->soap, sizeof(tm));
+		}
+		*gsoapProxy2_2->Citation->LastUpdate = lastUpdate;
+	}
 }
 
 void AbstractObject::setFormat(const std::string & format)
@@ -437,10 +508,12 @@ void AbstractObject::setFormat(const std::string & format)
 	if (format.empty()) {
 		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->Citation->Format = "[F2I-CONSULTING:fesapi]";
 		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->Citation->Format = "[F2I-CONSULTING:fesapi]";
+		else if (gsoapProxy2_2 != nullptr) gsoapProxy2_2->Citation->Format = "[F2I-CONSULTING:fesapi]";
 	}
 	else {
 		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->Citation->Format = format;
 		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->Citation->Format = format;
+		else if (gsoapProxy2_2 != nullptr) gsoapProxy2_2->Citation->Format = format;
 	}
 }
 
@@ -456,10 +529,40 @@ void AbstractObject::setDescriptiveKeywords(const std::string & descriptiveKeywo
 				gsoapProxy2_0_1->Citation->DescriptiveKeywords = soap_new_std__string(gsoapProxy2_0_1->soap, 1);
 			gsoapProxy2_0_1->Citation->DescriptiveKeywords->assign(descriptiveKeywords);
 		}
-		else {
+		else if (gsoapProxy2_1 != nullptr) {
 			if (gsoapProxy2_1->Citation->DescriptiveKeywords == nullptr)
 				gsoapProxy2_1->Citation->DescriptiveKeywords = soap_new_std__string(gsoapProxy2_1->soap, 1);
 			gsoapProxy2_1->Citation->DescriptiveKeywords->assign(descriptiveKeywords);
+		}
+		else if (gsoapProxy2_2 != nullptr) {
+			if (gsoapProxy2_2->Citation->DescriptiveKeywords == nullptr)
+				gsoapProxy2_2->Citation->DescriptiveKeywords = soap_new_std__string(gsoapProxy2_2->soap, 1);
+			gsoapProxy2_2->Citation->DescriptiveKeywords->assign(descriptiveKeywords);
+		}
+	}
+}
+
+void AbstractObject::setVersionString(const std::string & versionString)
+{
+	if (partialObject != nullptr)
+		throw invalid_argument("The wrapped gsoap proxy must not be null");
+
+	if (!versionString.empty())
+	{
+		if (gsoapProxy2_0_1 != nullptr) {
+			if (gsoapProxy2_0_1->Citation->VersionString == nullptr)
+				gsoapProxy2_0_1->Citation->VersionString = soap_new_std__string(gsoapProxy2_0_1->soap, 1);
+			gsoapProxy2_0_1->Citation->VersionString->assign(versionString);
+		}
+		else if (gsoapProxy2_1 != nullptr) {
+			if (gsoapProxy2_1->Citation->VersionString == nullptr)
+				gsoapProxy2_1->Citation->VersionString = soap_new_std__string(gsoapProxy2_1->soap, 1);
+			gsoapProxy2_1->Citation->VersionString->assign(versionString);
+		}
+		else if (gsoapProxy2_2 != nullptr) {
+			if (gsoapProxy2_2->Citation->VersionString == nullptr)
+				gsoapProxy2_2->Citation->VersionString = soap_new_std__string(gsoapProxy2_2->soap, 1);
+			gsoapProxy2_2->Citation->VersionString->assign(versionString);
 		}
 	}
 }
@@ -493,9 +596,13 @@ void AbstractObject::initMandatoryMetadata()
 		gsoapProxy2_0_1->schemaVersion = getResqmlVersion();
 		gsoapProxy2_0_1->Citation = soap_new_eml20__Citation(gsoapProxy2_0_1->soap, 1);
 	}
-	else {
+	else if (gsoapProxy2_1 != nullptr) {
 		gsoapProxy2_1->schemaVersion = getResqmlVersion();
 		gsoapProxy2_1->Citation = gsoap_eml2_1::soap_new_eml21__Citation(gsoapProxy2_1->soap, 1);
+	}
+	else if (gsoapProxy2_2 != nullptr) {
+		gsoapProxy2_2->schemaVersion = getResqmlVersion();
+		gsoapProxy2_2->Citation = gsoap_eml2_2::soap_new_eml22__Citation(gsoapProxy2_2->soap, 1);
 	}
 
 	setMetadata("", "", "", -1, "", "", -1, "", "");
@@ -550,12 +657,19 @@ void AbstractObject::serializeIntoStream(ostream * stream)
 			gsoapProxy2_0_1->soap_put(gsoapProxy2_0_1->soap, xmlTagIncludingNamespace.c_str(), nullptr) ||
 			soap_end_send(gsoapProxy2_0_1->soap));
 	}
-	else {
+	else if (gsoapProxy2_1 != nullptr) {
 		gsoapProxy2_1->soap->os = stream;
 		(soap_begin_send(gsoapProxy2_1->soap) || soap_send(gsoapProxy2_1->soap, gsoapProxy2_1->soap->prolog ? gsoapProxy2_1->soap->prolog : "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n") ||
 			(gsoapProxy2_1->soap_serialize(gsoapProxy2_1->soap), 0) ||
 			gsoapProxy2_1->soap_put(gsoapProxy2_1->soap, xmlTagIncludingNamespace.c_str(), nullptr) ||
 			soap_end_send(gsoapProxy2_1->soap));
+	}
+	else if (gsoapProxy2_2 != nullptr) {
+		gsoapProxy2_2->soap->os = stream;
+		(soap_begin_send(gsoapProxy2_2->soap) || soap_send(gsoapProxy2_2->soap, gsoapProxy2_2->soap->prolog ? gsoapProxy2_2->soap->prolog : "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n") ||
+			(gsoapProxy2_2->soap_serialize(gsoapProxy2_2->soap), 0) ||
+			gsoapProxy2_2->soap_put(gsoapProxy2_2->soap, xmlTagIncludingNamespace.c_str(), nullptr) ||
+			soap_end_send(gsoapProxy2_2->soap));
 	}
 }
 
@@ -593,6 +707,27 @@ gsoap_eml2_1::eml21__DataObjectReference* AbstractObject::newEmlReference() cons
 	return result;
 }
 
+gsoap_eml2_2::eml22__DataObjectReference* AbstractObject::newEml22Reference() const
+{
+	ostringstream oss;
+
+	gsoap_eml2_2::eml22__DataObjectReference* result = gsoap_eml2_2::soap_new_eml22__DataObjectReference(getGsoapContext(), 1);
+	result->Uuid = getUuid();
+	result->Title = getTitle();
+	result->ContentType = getContentType();
+	if (gsoapProxy2_2 != nullptr) // Not partial transfer
+	{
+		result->VersionString = gsoap_eml2_1::soap_new_std__string(gsoapProxy2_2->soap, 1);
+		if (getLastUpdate() != -1)
+			oss << getLastUpdate();
+		else
+			oss << getCreation();
+		result->VersionString->assign(oss.str());
+	}
+
+	return result;
+}
+
 gsoap_resqml2_0_1::resqml2__ContactElementReference* AbstractObject::newResqmlContactElementReference() const
 {
 	if (partialObject != nullptr)
@@ -618,7 +753,15 @@ std::string AbstractObject::getXmlNamespace() const
 
 std::string AbstractObject::getResqmlVersion() const
 {
-	return getXmlNamespace() == "eml21" ? "2.1" : "2.0";
+	string xmlNs = getXmlNamespace();
+	if (xmlNs == "eml21") {
+		return "2.1";
+	}
+	else if (xmlNs == "eml22") {
+		return "2.2";
+	}
+
+	return "2.0";
 }
 
 string AbstractObject::getContentType() const
@@ -631,6 +774,8 @@ string AbstractObject::getContentType() const
 		//return "application/x-eml+xml;version=2.0;type=obj_" + getXmlTag();
 	else if (xmlNs == "eml21")
 		return "application/x-eml+xml;version=2.1;type=" + getXmlTag();
+	else if (xmlNs == "eml22")
+		return "application/x-eml+xml;version=2.2;type=" + getXmlTag();
 	else
 		throw invalid_argument("unknown xml namespace");
 }
@@ -638,7 +783,9 @@ string AbstractObject::getContentType() const
 std::string AbstractObject::getPartNameInEpcDocument() const
 {
 	std::string result = getXmlTag() + "_" + getUuid() + ".xml";
-	return getXmlNamespace() == "eml21" ? result : "obj_" + result;
+
+	std::string xmlNs = getXmlNamespace();
+	return xmlNs == "eml21" || xmlNs == "eml22" ? result : "obj_" + result;
 }
 
 string AbstractObject::serializeIntoString()
@@ -669,6 +816,12 @@ void AbstractObject::addAlias(const std::string & authority, const std::string &
 		alias->Identifier = title;
 		gsoapProxy2_1->Aliases.push_back(alias);
 	}
+	else if (gsoapProxy2_2 != nullptr) {
+		gsoap_eml2_2::eml22__ObjectAlias* alias = gsoap_eml2_2::soap_new_eml22__ObjectAlias(gsoapProxy2_2->soap, 1);
+		alias->authority = authority;
+		alias->Identifier = title;
+		gsoapProxy2_2->Aliases.push_back(alias);
+	}
 }
 
 unsigned int AbstractObject::getAliasCount() const
@@ -682,6 +835,9 @@ unsigned int AbstractObject::getAliasCount() const
 	}
 	else if (gsoapProxy2_1 != nullptr) {
 		return gsoapProxy2_1->Aliases.size();
+	}
+	else if (gsoapProxy2_2 != nullptr) {
+		return gsoapProxy2_2->Aliases.size();
 	}
 }
 
@@ -704,6 +860,9 @@ std::string AbstractObject::getAliasAuthorityAtIndex(const unsigned int & index)
 	else if (gsoapProxy2_1 != nullptr) {
 		return gsoapProxy2_1->Aliases[index]->authority;
 	}
+	else if (gsoapProxy2_2 != nullptr) {
+		return gsoapProxy2_2->Aliases[index]->authority;
+	}
 }
 
 std::string AbstractObject::getAliasTitleAtIndex(const unsigned int & index) const
@@ -721,6 +880,9 @@ std::string AbstractObject::getAliasTitleAtIndex(const unsigned int & index) con
 	}
 	else if (gsoapProxy2_1 != nullptr) {
 		return gsoapProxy2_1->Aliases[index]->Identifier;
+	}
+	else if (gsoapProxy2_2 != nullptr) {
+		return gsoapProxy2_2->Aliases[index]->Identifier;
 	}
 }
 
@@ -786,6 +948,19 @@ void AbstractObject::pushBackExtraMetadataV2_1(const std::string & key, const st
 	gsoapProxy2_1->ExtensionNameValue.push_back(stringPair);
 }
 
+void AbstractObject::pushBackExtraMetadataV2_2(const std::string & key, const std::string & value)
+{
+	if (value.size() > 64) {
+		throw invalid_argument("An extra metadata value cannot be greater than 64 chars.");
+	}
+
+	gsoap_eml2_2::eml22__ExtensionNameValue* stringPair = gsoap_eml2_2::soap_new_eml22__ExtensionNameValue(gsoapProxy2_2->soap, 1);
+	stringPair->Name = key;
+	stringPair->Value = gsoap_eml2_2::soap_new_eml22__StringMeasure(gsoapProxy2_2->soap, 1);
+	stringPair->Value->__item = value;
+	gsoapProxy2_2->ExtensionNameValue.push_back(stringPair);
+}
+
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 std::unordered_map< std::string, std::string > AbstractObject::getExtraMetadataSetV2_0_1() const
 {
@@ -843,8 +1018,11 @@ void AbstractObject::pushBackExtraMetadata(const std::string & key, const std::s
 	if (gsoapProxy2_0_1 != nullptr) {
 		pushBackExtraMetadataV2_0_1(key, value);
 	}
-	if (gsoapProxy2_1 != nullptr) {
+	else if (gsoapProxy2_1 != nullptr) {
 		pushBackExtraMetadataV2_1(key, value);
+	}
+	else if (gsoapProxy2_2 != nullptr) {
+		pushBackExtraMetadataV2_2(key, value);
 	}
 	else {
 		throw logic_error("Not implemented yet.");
