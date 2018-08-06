@@ -71,8 +71,8 @@ namespace WITSML2_1_NS
 		void setToolKind(gsoap_eml2_2::witsml2__ToolKind toolKind);
 		void pushBackToolSubKind(gsoap_eml2_2::witsml2__ToolSubKind toolSubKind);
 		void pushBackOperatingCondition(gsoap_eml2_2::witsml2__OperatingCondition operatingCondition);
-		void setSurveyRunDateStart(unsigned long surveyRunDateStart);
-		void setSurveyRunDateEnd(unsigned long surveyRunDateEnd);
+		void setSurveyRunDateStart(time_t surveyRunDateStart);
+		void setSurveyRunDateEnd(time_t surveyRunDateEnd);
 		void pushBackCorrectionConsidered(gsoap_eml2_2::witsml2__CorrectionConsidered correctionConsidered);
 
 		/**
@@ -82,10 +82,10 @@ namespace WITSML2_1_NS
 		* @param status				Can be nullptr. If not null, a copy of the pointed object will be done into the WITSML Authorization History.
 		*/
 		void setAuthorization(const std::string & approvalAuthority,
-			const std::string & approvedBy, int approvedOn,
-			const std::string & checkedBy, int checkedOn,
+			const std::string & approvedBy, time_t approvedOn,
+			const std::string & checkedBy, time_t checkedOn,
 			ToolErrorModel* replaces,
-			const std::string & revisionComment, int revisionDate,
+			const std::string & revisionComment, time_t revisionDate,
 			gsoap_eml2_2::witsml2__AuthorizationStatus* status);
 
 		void pushBackInclinationRange(double min, double max, gsoap_eml2_2::eml22__PlaneAngleUom minMaxUom, const std::string & comment = std::string());

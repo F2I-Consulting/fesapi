@@ -159,24 +159,24 @@ void ToolErrorModel::pushBackOperatingCondition(gsoap_eml2_2::witsml2__Operating
 	static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2)->OperatingCondition.push_back(soap_witsml2__OperatingCondition2s(gsoapProxy2_2->soap, operatingCondition));
 }
 
-void ToolErrorModel::setSurveyRunDateStart(unsigned long surveyRunDateStart)
+void ToolErrorModel::setSurveyRunDateStart(time_t surveyRunDateStart)
 {
 	witsml2__ToolErrorModel* tem = static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2);
 	if (tem->SurveyRunDateStart == nullptr) {
-		tem->SurveyRunDateStart = (time_t*)soap_malloc(gsoapProxy2_2->soap, sizeof(time_t));
+		tem->SurveyRunDateStart = (tm*)soap_malloc(gsoapProxy2_2->soap, sizeof(tm));
 	}
 
-	*tem->SurveyRunDateStart = surveyRunDateStart;
+	*tem->SurveyRunDateStart = *gmtime(&surveyRunDateStart);
 }
 
-void ToolErrorModel::setSurveyRunDateEnd(unsigned long surveyRunDateEnd)
+void ToolErrorModel::setSurveyRunDateEnd(time_t surveyRunDateEnd)
 {
 	witsml2__ToolErrorModel* tem = static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2);
 	if (tem->SurveyRunDateEnd == nullptr) {
-		tem->SurveyRunDateEnd = (time_t*)soap_malloc(gsoapProxy2_2->soap, sizeof(time_t));
+		tem->SurveyRunDateEnd = (tm*)soap_malloc(gsoapProxy2_2->soap, sizeof(tm));
 	}
 
-	*tem->SurveyRunDateEnd = surveyRunDateEnd;
+	*tem->SurveyRunDateEnd = *gmtime(&surveyRunDateEnd);
 }
 
 void ToolErrorModel::pushBackCorrectionConsidered(gsoap_eml2_2::witsml2__CorrectionConsidered correctionConsidered)
@@ -185,10 +185,10 @@ void ToolErrorModel::pushBackCorrectionConsidered(gsoap_eml2_2::witsml2__Correct
 }
 
 void ToolErrorModel::setAuthorization(const std::string & approvalAuthority,
-	const std::string & approvedBy, int approvedOn,
-	const std::string & checkedBy, int checkedOn,
+	const std::string & approvedBy, time_t approvedOn,
+	const std::string & checkedBy, time_t checkedOn,
 	ToolErrorModel* replaces,
-	const std::string & revisionComment, int revisionDate,
+	const std::string & revisionComment, time_t revisionDate,
 	gsoap_eml2_2::witsml2__AuthorizationStatus* status)
 {
 	witsml2__ToolErrorModel* tem = static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2);
@@ -212,16 +212,16 @@ void ToolErrorModel::setAuthorization(const std::string & approvalAuthority,
 			ah->ApprovedBy->assign(approvedBy);
 		}
 		if (approvedOn > -1) {
-			ah->ApprovedOn = (time_t*)soap_malloc(gsoapProxy2_2->soap, sizeof(time_t));
-			*ah->ApprovedOn = approvedOn;
+			ah->ApprovedOn = (tm*)soap_malloc(gsoapProxy2_2->soap, sizeof(tm));
+			*ah->ApprovedOn = *gmtime(&approvedOn);
 		}
 		if (!checkedBy.empty()) {
 			ah->CheckedBy = soap_new_std__string(gsoapProxy2_2->soap, 1);
 			ah->CheckedBy->assign(checkedBy);
 		}
 		if (checkedOn > -1) {
-			ah->CheckedOn = (time_t*)soap_malloc(gsoapProxy2_2->soap, sizeof(time_t));
-			*ah->CheckedOn = checkedOn;
+			ah->CheckedOn = (tm*)soap_malloc(gsoapProxy2_2->soap, sizeof(tm));
+			*ah->CheckedOn = *gmtime(&checkedOn);
 		}
 
 		if (!revisionComment.empty()) {
@@ -229,8 +229,8 @@ void ToolErrorModel::setAuthorization(const std::string & approvalAuthority,
 			ah->RevisionComment->assign(revisionComment);
 		}
 		if (revisionDate > -1) {
-			ah->RevisionDate = (time_t*)soap_malloc(gsoapProxy2_2->soap, sizeof(time_t));
-			*ah->RevisionDate = revisionDate;
+			ah->RevisionDate = (tm*)soap_malloc(gsoapProxy2_2->soap, sizeof(tm));
+			*ah->RevisionDate = *gmtime(&revisionDate);
 		}
 
 		if (status != nullptr) {
