@@ -222,7 +222,7 @@ unsigned int GridConnectionSetRepresentation::getCellIndexPairCountFromInterpret
 	return result;
 }
 
-void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpretationIndex(ULONG64 * cellIndexPairs, ULONG64 * gridIndexPairs, int * localFaceIndexPairs, const unsigned int & interpretationIndex) const
+void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpretationIndex(ULONG64 * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, const unsigned int & interpretationIndex) const
 {
 	unsigned int result = 0;
 
@@ -230,10 +230,10 @@ void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpr
 	const ULONG64 totalCellIndexPairCount = getCellIndexPairCount();
 	ULONG64 * const totalCellIndexPairs = new ULONG64[totalCellIndexPairCount*2];
 	getCellIndexPairs(totalCellIndexPairs);
-	ULONG64 * totalGridIndexPairs = nullptr;
+	unsigned short * totalGridIndexPairs = nullptr;
 	if (gridIndexPairs != nullptr)
 	{
-		totalGridIndexPairs = new ULONG64[totalCellIndexPairCount * 2];
+		totalGridIndexPairs = new unsigned short[totalCellIndexPairCount * 2];
 		getGridIndexPairs(totalGridIndexPairs);
 	}
 	int * totalLocalFaceIndexPairs = nullptr;
@@ -388,7 +388,7 @@ bool GridConnectionSetRepresentation::isBasedOnMultiGrids() const
 		static_cast<_resqml2__GridConnectionSetRepresentation*>(gsoapProxy2_0_1)->Grid.size() > 1;
 }
 
-void GridConnectionSetRepresentation::getGridIndexPairs(ULONG64 * gridIndexPairs) const
+void GridConnectionSetRepresentation::getGridIndexPairs(unsigned short * gridIndexPairs) const
 {
 	if (!isBasedOnMultiGrids()) {
 		throw std::invalid_argument("This representation has no multiple grid support.");
@@ -397,7 +397,7 @@ void GridConnectionSetRepresentation::getGridIndexPairs(ULONG64 * gridIndexPairs
 	_resqml2__GridConnectionSetRepresentation* rep = static_cast<_resqml2__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 
 	if (rep->GridIndexPairs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-		hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<resqml2__IntegerHdf5Array*>(rep->GridIndexPairs)->Values->PathInHdfFile, gridIndexPairs);
+		hdfProxy->readArrayNdOfUShortValues(static_cast<resqml2__IntegerHdf5Array*>(rep->GridIndexPairs)->Values->PathInHdfFile, gridIndexPairs);
 	}
 	else {
 		throw std::logic_error("Not implemented yet");
