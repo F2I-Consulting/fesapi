@@ -349,6 +349,12 @@ void serializeBoundaries(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfPro
 	double crosslines[5] = { 10, 11, 12, 13, 14 }; // dummy values
 	h2i1triRep->addSeismic3dCoordinatesToPatch(1, inlines, crosslines, 5, seismicLatticeRep, hdfProxy);
 
+	// TriRep without interp
+	TriangulatedSetRepresentation* triRepWithoutInterp = pck->createTriangulatedSetRepresentation(nullptr, local3dCrs,
+		"",
+		"TriRep without interp");
+	triRepWithoutInterp->pushBackTrianglePatch(5, explicitPointsHor2Patch0, 3, triangleNodeIndexHorPatch0, hdfProxy);
+
 	//**************
 	// Fault Representations
 	//**************
@@ -2611,6 +2617,7 @@ void deserialize(const string & inputFile)
 	std::vector<Horizon*> horizonSet = pck.getHorizonSet();
 	std::vector<Grid2dRepresentation*> horizonGrid2dSet = pck.getHorizonGrid2dRepSet();
 	std::vector<TriangulatedSetRepresentation*> horizonTriRepSet = pck.getHorizonTriangulatedSetRepSet();
+	std::vector<TriangulatedSetRepresentation*> unclassifiedTriRepSet = pck.getUnclassifiedTriangulatedSetRepSet();
 	std::vector<PolylineRepresentation*> horizonSinglePolylineRepSet = pck.getHorizonPolylineRepSet();
 	std::vector<WellboreFeature*> wellboreSet = pck.getWellboreSet();
 	std::vector<WellboreTrajectoryRepresentation*> wellboreCubicTrajSet = pck.getWellboreTrajectoryRepresentationSet();
@@ -2809,6 +2816,13 @@ void deserialize(const string & inputFile)
 
 		deserializeActivity(horizonTriRepSet[i]);
 		showAllProperties(horizonTriRepSet[i]);
+	}
+
+	std::cout << "UNCLASSIFIED TRI REP" << endl;
+	for (size_t i = 0; i < unclassifiedTriRepSet.size(); i++) {
+		showAllMetadata(unclassifiedTriRepSet[i]);
+		deserializeActivity(unclassifiedTriRepSet[i]);
+		showAllProperties(unclassifiedTriRepSet[i]);
 	}
 
 	std::cout << "HORIZONS SINGLE POLYLINE REP" << endl;
