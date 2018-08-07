@@ -123,7 +123,7 @@ namespace RESQML2_0_1_NS
 		* @param localFaceIndexPairs	Optional (put null if you don't want it). Must be allocated with getCellIndexPairCountFromIndex first.
 		* @param interpretationIndex	The index of the interpretation in the collection of feature interpretation of this grid connection set.
 		*/
-		void getGridConnectionSetInformationFromInterpretationIndex(ULONG64 * cellIndexPairs, ULONG64 * gridIndexPairs, int * localFaceIndexPairs, const unsigned int & interpretationIndex) const;
+		void getGridConnectionSetInformationFromInterpretationIndex(ULONG64 * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, const unsigned int & interpretationIndex) const;
 
 		/**
 		* Get the UUID of a particular interpretation of this grid connection set.
@@ -158,7 +158,7 @@ namespace RESQML2_0_1_NS
 		* Get the grid index pairs of this grid connection representation
 		* The count of gridIndexPairs must be getCellIndexPairCount()*2.
 		*/
-		void getGridIndexPairs(ULONG64 * gridIndexPairs) const;
+		void getGridIndexPairs(unsigned short * gridIndexPairs) const;
 
 		/**
 		* Set the cell index pairs of the grid connections representation using some exisiting hdf5 datasets.

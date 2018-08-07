@@ -136,7 +136,7 @@ void GridConnectionSetRepresentation::importRelationshipSetFromEpc(COMMON_NS::Ep
 	}
 }
 
-void GridConnectionSetRepresentation::setCellIndexPairs(const ULONG64 & cellIndexPairCount, ULONG64 * cellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, ULONG64 * gridIndexPair)
+void GridConnectionSetRepresentation::setCellIndexPairs(const ULONG64 & cellIndexPairCount, ULONG64 * cellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, unsigned short * gridIndexPair)
 {
 	const std::string uuid = getUuid();
 	setCellIndexPairsUsingExistingDataset(cellIndexPairCount, "/RESQML/" + getUuid() + "/CellIndexPairs", nullValue, proxy, gridIndexPair != nullptr ? "/RESQML/" + getUuid() + "/GridIndexPairs" : "");
@@ -145,7 +145,7 @@ void GridConnectionSetRepresentation::setCellIndexPairs(const ULONG64 & cellInde
 	hsize_t numValues[] = { cellIndexPairCount, 2 };
 	hdfProxy->writeArrayNd(uuid, "CellIndexPairs", H5T_NATIVE_ULLONG, cellIndexPair, numValues, 2);
 	if (gridIndexPair != nullptr) {
-		hdfProxy->writeArrayNd(uuid, "GridIndexPairs", H5T_NATIVE_ULLONG, gridIndexPair, numValues, 2);
+		hdfProxy->writeArrayNd(uuid, "GridIndexPairs", H5T_NATIVE_USHORT, gridIndexPair, numValues, 2);
 	}
 }
 

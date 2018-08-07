@@ -102,7 +102,7 @@ namespace RESQML2_NS
 		* @param localFaceIndexPairs	Optional (put null if you don't want it). Must be allocated with getCellIndexPairCountFromIndex first.
 		* @param interpretationIndex	The index of the interpretation in the collection of feature interpretation of this grid connection set.
 		*/
-		virtual void getGridConnectionSetInformationFromInterpretationIndex(ULONG64 * cellIndexPairs, ULONG64 * gridIndexPairs, int * localFaceIndexPairs, const unsigned int & interpretationIndex) const = 0;
+		virtual void getGridConnectionSetInformationFromInterpretationIndex(ULONG64 * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, const unsigned int & interpretationIndex) const = 0;
 
 		/**
 		* Get the UUID of a particular interpretation of this grid connection set.
@@ -143,7 +143,7 @@ namespace RESQML2_NS
 		* Get the grid index pairs of this grid connection representation
 		* The count of gridIndexPairs must be getCellIndexPairCount()*2.
 		*/
-		virtual void getGridIndexPairs(ULONG64 * gridIndexPairs) const = 0;
+		virtual void getGridIndexPairs(unsigned short * gridIndexPairs) const = 0;
 
 		/**
 		* Set the cell index pairs of the grid connections representation using some exisiting hdf5 datasets.
@@ -163,7 +163,7 @@ namespace RESQML2_NS
         * @param proxy				The HDF proxy where the numerical values (cell indices) are stored.
         * @param gridIndexPair		All the grid index pair in a 1d Array where the grid indices go faster than the pair. The grid at an index must correspond to the cell at the same index in the cellIndexPair array.
 		*/
-		void setCellIndexPairs(const ULONG64 & cellIndexPairCount, ULONG64 * cellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, ULONG64 * gridIndexPair = nullptr);
+		void setCellIndexPairs(const ULONG64 & cellIndexPairCount, ULONG64 * cellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, unsigned short * gridIndexPair = nullptr);
 
 		/**
 		* Optional 2 x #Connections array of local face-per-cell indices for (Cell1,Cell2) for each connection. Local face-per-cell indices are used because global face indices need not have been defined.
