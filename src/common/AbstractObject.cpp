@@ -256,7 +256,20 @@ string AbstractObject::getDescriptiveKeywords() const
 	else if (gsoapProxy2_1 != nullptr && gsoapProxy2_1->Citation->DescriptiveKeywords)
 		return *gsoapProxy2_1->Citation->DescriptiveKeywords;
 	else
-		return "";
+		return string();
+}
+
+std::string AbstractObject::getVersionString() const
+{
+	if (partialObject != nullptr)
+		throw invalid_argument("The wrapped gsoap proxy must not be null");
+
+	if (gsoapProxy2_0_1 != nullptr && gsoapProxy2_0_1->Citation->VersionString)
+		return *gsoapProxy2_0_1->Citation->VersionString;
+	else if (gsoapProxy2_1 != nullptr && gsoapProxy2_1->Citation->VersionString)
+		return *gsoapProxy2_1->Citation->VersionString;
+	else
+		return string();
 }
 
 void AbstractObject::setUuid(const std::string & uuid)
@@ -450,6 +463,26 @@ void AbstractObject::setDescriptiveKeywords(const std::string & descriptiveKeywo
 	}
 }
 
+void AbstractObject::setVersionString(const std::string & versionString)
+{
+	if (partialObject != nullptr)
+		throw invalid_argument("The wrapped gsoap proxy must not be null");
+
+	if (!versionString.empty())
+	{
+		if (gsoapProxy2_0_1 != nullptr) {
+			if (gsoapProxy2_0_1->Citation->VersionString == nullptr)
+				gsoapProxy2_0_1->Citation->VersionString = soap_new_std__string(gsoapProxy2_0_1->soap, 1);
+			gsoapProxy2_0_1->Citation->VersionString->assign(versionString);
+		}
+		else {
+			if (gsoapProxy2_1->Citation->VersionString == nullptr)
+				gsoapProxy2_1->Citation->VersionString = soap_new_std__string(gsoapProxy2_1->soap, 1);
+			gsoapProxy2_1->Citation->VersionString->assign(versionString);
+		}
+	}
+}
+
 void AbstractObject::initMandatoryMetadata()
 {
 	if (partialObject != nullptr)
@@ -531,20 +564,14 @@ gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* AbstractObject::getGsoapProxy
 
 eml20__DataObjectReference* AbstractObject::newResqmlReference() const
 {
-	ostringstream oss;
-
 	eml20__DataObjectReference* result = soap_new_eml20__DataObjectReference(getGsoapContext(), 1);
 	result->UUID = getUuid();
 	result->Title = getTitle();
 	result->ContentType = getContentType();
-	if (gsoapProxy2_0_1 != nullptr) // Not partial transfer
+	if (gsoapProxy2_0_1 != nullptr && !getVersionString().empty())
 	{
 		result->VersionString = soap_new_std__string(gsoapProxy2_0_1->soap, 1);
-		if (getLastUpdate() != -1)
-			oss << getLastUpdate();
-		else
-			oss << getCreation();
-		result->VersionString->assign(oss.str());
+		result->VersionString->assign(getVersionString());
 	}
 
 	return result;
@@ -552,20 +579,14 @@ eml20__DataObjectReference* AbstractObject::newResqmlReference() const
 
 gsoap_eml2_1::eml21__DataObjectReference* AbstractObject::newEmlReference() const
 {
-	ostringstream oss;
-
 	gsoap_eml2_1::eml21__DataObjectReference* result = gsoap_eml2_1::soap_new_eml21__DataObjectReference(getGsoapContext(), 1);
 	result->Uuid = getUuid();
 	result->Title = getTitle();
 	result->ContentType = getContentType();
-	if (gsoapProxy2_0_1 != nullptr) // Not partial transfer
+	if (gsoapProxy2_0_1 != nullptr && !getVersionString().empty()) // Not partial transfer
 	{
 		result->VersionString = gsoap_eml2_1::soap_new_std__string(gsoapProxy2_0_1->soap, 1);
-		if (getLastUpdate() != -1)
-			oss << getLastUpdate();
-		else
-			oss << getCreation();
-		result->VersionString->assign(oss.str());
+		result->VersionString->assign(getVersionString());
 	}
 
 	return result;
@@ -576,16 +597,13 @@ gsoap_resqml2_0_1::resqml2__ContactElementReference* AbstractObject::newResqmlCo
 	if (partialObject != nullptr)
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
-	ostringstream oss;
-
 	resqml2__ContactElementReference* result = soap_new_resqml2__ContactElementReference(gsoapProxy2_0_1->soap, 1);
 	result->UUID = getUuid();
-	result->VersionString = soap_new_std__string(gsoapProxy2_0_1->soap, 1);
-	if (getLastUpdate() != -1)
-		oss << getLastUpdate();
-	else
-		oss << getCreation();
-	result->VersionString->assign(oss.str());
+	if (gsoapProxy2_0_1 != nullptr && !getVersionString().empty()) // Not partial transfer
+	{
+		result->VersionString = gsoap_eml2_1::soap_new_std__string(gsoapProxy2_0_1->soap, 1);
+		result->VersionString->assign(getVersionString());
+	}
 	result->Title = gsoapProxy2_0_1->Citation->Title;
 	result->ContentType = getContentType();
 

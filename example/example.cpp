@@ -290,6 +290,7 @@ void serializeBoundaries(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfPro
 	timeStruct.tm_year = 0;
 	horizon1->setCreation(timeStruct);
 	horizon2 = pck->createHorizon("fd7950a6-f62e-4e47-96c4-048820a61c59", "Horizon2");
+	horizon2->setVersionString("my version string");
 	fault1 = pck->createFault("1424bcc2-3d9d-4f30-b1f9-69dcb897e33b", "Fault1");
 	fault1->setMetadata("", "philippe", 148526020, "philippe", "", 148526100, "F2I", "");
 
@@ -1350,7 +1351,12 @@ void showAllMetadata(COMMON_NS::AbstractObject * obj, const std::string & prefix
 		std::cout << prefix << "Creation date is (unix timestamp) : " << creation << std::endl;
 		tm creationTm = obj->getCreationAsTimeStructure();
 		std::cout << prefix << "Creation date is (struct tm) : " << 1900 + creationTm.tm_year << "-" << creationTm.tm_mon + 1 << "-" << creationTm.tm_mday << "T" << creationTm.tm_hour << ":" << creationTm.tm_min << ":" << creationTm.tm_sec << std::endl;
+		std::string versionString = obj->getVersionString();
+		if (!versionString.empty()) {
+			std::cout << prefix << "VersionString is : " << versionString << std::endl;
+		}
 		std::cout << prefix << "--------------------------------------------------" << std::endl;
+
 	}
 	else {
 		std::cout << prefix << "IS PARTIAL!" << std::endl;

@@ -160,6 +160,7 @@ namespace COMMON_NS
 		tm getLastUpdateAsTimeStructure() const;
 		std::string getFormat() const;
 		std::string getDescriptiveKeywords() const;
+		std::string getVersionString() const;
 
 		void setTitle(const std::string & title);
 		void setEditor(const std::string & editor);
@@ -177,6 +178,7 @@ namespace COMMON_NS
 		void setLastUpdate(const tm & lastUpdate);
 		void setFormat(const std::string & format);
 		void setDescriptiveKeywords(const std::string & descriptiveKeywords);
+		void setVersionString(const std::string & versionString);
 
 		/**
 		* Set a title and other common metadata for the resqml instance. Set to empty string or zero if you don't want to use.

@@ -148,6 +148,7 @@ namespace COMMON_NS
 		time_t getLastUpdate() const;
 		std::string getFormat() const;
 		std::string getDescriptiveKeywords() const;
+		std::string getVersionString() const;
 		
 		void setMetadata(const std::string & title, const std::string & editor, const time_t & creation, const std::string & originator,
 				const std::string & description, const time_t & lastUpdate, const std::string & format, const std::string & descriptiveKeywords);
@@ -159,6 +160,7 @@ namespace COMMON_NS
 		void setLastUpdate(const time_t & lastUpdate);
 		void setFormat(const std::string & format);
 		void setDescriptiveKeywords(const std::string & descriptiveKeywords);
+		void setVersionString(const std::string & versionString);
 				
 		std::string getXmlTag() const;
 		
