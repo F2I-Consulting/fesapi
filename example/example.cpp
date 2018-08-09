@@ -708,7 +708,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 	ijkgrid->setIntervalAssociationWithStratigraphicOrganizationInterpretation(&stratiUnitIndice, 1000, stratiColumnRank);
 
 	// Partial transfer
-	UnstructuredGridRepresentation* partialGrid = pck->createPartialUnstructuredGridRepresentation("27290b9a-ff46-47b7-befd-cf6b7836045c", "Partial Grid");
+	UnstructuredGridRepresentation* partialGrid = pck->createPartialUnstructuredGridRepresentation("", "Partial Grid");
 	ContinuousProperty* continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "Testing partial property", 1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, gsoap_resqml2_0_1::resqml2__ResqmlUom__m, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
 	double continuousProp1Values[6] = { 0, 1, 2, 3, 4, 5 };

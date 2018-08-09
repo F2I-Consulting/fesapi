@@ -20,17 +20,7 @@ under the License.
 
 #include <string>
 
-namespace tools
+namespace GuidTools
 {
-	class GuidTools
-	{
-	public:
-		GuidTools() {}
-		~GuidTools() {}
-
-		static std::string generateUidAsString();
-	};
+	std::string generateUidAsString();
 }
-
-
-

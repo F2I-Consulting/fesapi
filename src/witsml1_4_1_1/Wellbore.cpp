@@ -48,7 +48,7 @@ Wellbore::Wellbore(
 
 	wellbore->uid = soap_new_std__string(collection->soap, 1);
 	if (guid.empty()) {
-		wellbore->uid->assign(tools::GuidTools::generateUidAsString());
+		wellbore->uid->assign(GuidTools::generateUidAsString());
 	} else {
 		wellbore->uid->assign(guid);
 	}
@@ -87,7 +87,7 @@ Wellbore::Wellbore(
 
 	wellbore->uid = soap_new_std__string(collection->soap, 1);
 	if (guid.empty()) {
-		wellbore->uid->assign(tools::GuidTools::generateUidAsString());
+		wellbore->uid->assign(GuidTools::generateUidAsString());
 	} else {
 		wellbore->uid->assign(guid);
 	}

@@ -103,6 +103,8 @@ under the License.
 #include "prodml2_0/FiberOpticalPath.h"
 #include "prodml2_0/DasInstrumentBox.h"
 
+#include "tools/GuidTools.h"
+
 using namespace std;
 using namespace epc;
 using namespace gsoap_resqml2_0_1;
@@ -191,6 +193,11 @@ EpcDocument::EpcDocument(const std::string & fileName, const std::string & prope
 		propertyKindMapper = nullptr;
 		throw invalid_argument("Could not import property kind mappers : " + error);
 	}
+}
+
+std::string EpcDocument::generateRandomUuidAsString()
+{
+	return GuidTools::generateUidAsString();
 }
 
 const EpcDocument::openingMode & EpcDocument::getHdf5PermissionAccess() const
@@ -1848,12 +1855,7 @@ BoundaryFeatureInterpretation* EpcDocument::createBoundaryFeatureInterpretation(
 
 HorizonInterpretation* EpcDocument::createPartialHorizonInterpretation(const std::string & guid, const std::string & title)
 {
-	eml20__DataObjectReference* dor = soap_new_eml20__DataObjectReference(s, 1);
-	dor->UUID = guid;
-	dor->Title = title;
-	HorizonInterpretation* result = new HorizonInterpretation(dor);
-	addFesapiWrapperAndDeleteItIfException(result);
-	return result;
+	return createPartial<HorizonInterpretation>(guid, title);
 }
 
 HorizonInterpretation* EpcDocument::createHorizonInterpretation(Horizon * horizon, const std::string & guid, const std::string & title)
@@ -2109,12 +2111,7 @@ RESQML2_NS::RepresentationSetRepresentation* EpcDocument::createRepresentationSe
 
 RESQML2_NS::RepresentationSetRepresentation* EpcDocument::createPartialRepresentationSetRepresentation(const std::string & guid, const std::string & title)
 {
-	eml20__DataObjectReference* dor = soap_new_eml20__DataObjectReference(s, 1);
-	dor->UUID = guid;
-	dor->Title = title;
-	RESQML2_NS::RepresentationSetRepresentation* result = new RESQML2_NS::RepresentationSetRepresentation(dor);
-	addFesapiWrapperAndDeleteItIfException(result);
-	return result;
+	return createPartial<RepresentationSetRepresentation>(guid, title);
 }
 
 NonSealedSurfaceFrameworkRepresentation* EpcDocument::createNonSealedSurfaceFrameworkRepresentation(
@@ -2140,12 +2137,7 @@ SealedSurfaceFrameworkRepresentation* EpcDocument::createSealedSurfaceFrameworkR
 
 AbstractIjkGridRepresentation* EpcDocument::createPartialIjkGridRepresentation(const std::string & guid, const std::string & title)
 {
-	eml20__DataObjectReference* dor = soap_new_eml20__DataObjectReference(s, 1);
-	dor->UUID = guid;
-	dor->Title = title;
-	AbstractIjkGridRepresentation* result = new AbstractIjkGridRepresentation(dor, false);
-	addFesapiWrapperAndDeleteItIfException(result);
-	return result;
+	return createPartial<AbstractIjkGridRepresentation>(guid, title);
 }
 
 AbstractIjkGridRepresentation* EpcDocument::createPartialTruncatedIjkGridRepresentation(const std::string & guid, const std::string & title)
@@ -2232,12 +2224,7 @@ RESQML2_0_1_NS::IjkGridNoGeometryRepresentation* EpcDocument::createIjkGridNoGeo
 
 UnstructuredGridRepresentation* EpcDocument::createPartialUnstructuredGridRepresentation(const std::string & guid, const std::string & title)
 {
-	eml20__DataObjectReference* dor = soap_new_eml20__DataObjectReference(s, 1);
-	dor->UUID = guid;
-	dor->Title = title;
-	UnstructuredGridRepresentation* result = new UnstructuredGridRepresentation(dor);
-	addFesapiWrapperAndDeleteItIfException(result);
-	return result;
+	return createPartial<UnstructuredGridRepresentation>(guid, title);
 }
 
 UnstructuredGridRepresentation* EpcDocument::createUnstructuredGridRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
@@ -2251,12 +2238,7 @@ UnstructuredGridRepresentation* EpcDocument::createUnstructuredGridRepresentatio
 
 RESQML2_NS::SubRepresentation* EpcDocument::createPartialSubRepresentation(const std::string & guid, const std::string & title)
 {
-	eml20__DataObjectReference* dor = soap_new_eml20__DataObjectReference(s, 1);
-	dor->UUID = guid;
-	dor->Title = title;
-	RESQML2_NS::SubRepresentation* result = new SubRepresentation(dor);
-	addFesapiWrapperAndDeleteItIfException(result);
-	return result;
+	return createPartial<SubRepresentation>(guid, title);
 }
 
 RESQML2_NS::SubRepresentation* EpcDocument::createSubRepresentation(const std::string & guid, const std::string & title)
@@ -2276,12 +2258,7 @@ RESQML2_NS::SubRepresentation* EpcDocument::createSubRepresentation(RESQML2_NS::
 
 RESQML2_NS::GridConnectionSetRepresentation* EpcDocument::createPartialGridConnectionSetRepresentation(const std::string & guid, const std::string & title)
 {
-	eml20__DataObjectReference* dor = soap_new_eml20__DataObjectReference(s, 1);
-	dor->UUID = guid;
-	dor->Title = title;
-	RESQML2_NS::GridConnectionSetRepresentation* result = new GridConnectionSetRepresentation(dor);
-	addFesapiWrapperAndDeleteItIfException(result);
-	return result;
+	return createPartial<GridConnectionSetRepresentation>(guid, title);
 }
 
 RESQML2_NS::GridConnectionSetRepresentation* EpcDocument::createGridConnectionSetRepresentation(const std::string & guid, const std::string & title)
@@ -2312,12 +2289,7 @@ RESQML2_NS::TimeSeries* EpcDocument::createTimeSeries(const std::string & guid, 
 
 RESQML2_NS::TimeSeries* EpcDocument::createPartialTimeSeries(const std::string & guid, const std::string & title)
 {
-	eml20__DataObjectReference* dor = soap_new_eml20__DataObjectReference(s, 1);
-	dor->UUID = guid;
-	dor->Title = title;
-	RESQML2_NS::TimeSeries* result = new RESQML2_0_1_NS::TimeSeries(dor);
-	addFesapiWrapperAndDeleteItIfException(result);
-	return result;
+	return createPartial<TimeSeries>(guid, title);
 }
 
 StringTableLookup* EpcDocument::createStringTableLookup(const std::string & guid, const std::string & title)
@@ -2361,12 +2333,7 @@ RESQML2_NS::PropertyKind* EpcDocument::createPropertyKind(const std::string & gu
 
 RESQML2_NS::PropertyKind* EpcDocument::createPartialPropertyKind(const std::string & guid, const std::string & title)
 {
-	eml20__DataObjectReference* dor = soap_new_eml20__DataObjectReference(s, 1);
-	dor->UUID = guid;
-	dor->Title = title;
-	RESQML2_NS::PropertyKind* result = new RESQML2_0_1_NS::PropertyKind(dor);
-	addFesapiWrapperAndDeleteItIfException(result);
-	return result;
+	return createPartial<PropertyKind>(guid, title);
 }
 
 CommentProperty* EpcDocument::createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,

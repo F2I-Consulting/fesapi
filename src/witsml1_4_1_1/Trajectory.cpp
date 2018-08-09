@@ -48,7 +48,7 @@ Trajectory::Trajectory(Wellbore* witsmlWellbore,
 
 	traj->uid = soap_new_std__string(collection->soap, 1);
 	if (guid.empty()) {
-		traj->uid->assign(tools::GuidTools::generateUidAsString());
+		traj->uid->assign(GuidTools::generateUidAsString());
 	} else {
 		traj->uid->assign(guid);
 	}
@@ -78,7 +78,7 @@ Trajectory::Trajectory(Wellbore* witsmlWellbore,
 
 	traj->uid = soap_new_std__string(traj->soap, 1);
 	if (guid.empty()) {
-		traj->uid->assign(tools::GuidTools::generateUidAsString());
+		traj->uid->assign(GuidTools::generateUidAsString());
 	} else {
 		traj->uid->assign(guid);
 	}

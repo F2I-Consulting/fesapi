@@ -278,8 +278,8 @@ void AbstractObject::setUuid(const std::string & uuid)
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	if (uuid.empty()) {
-		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->uuid = tools::GuidTools::generateUidAsString();
-		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->uuid = tools::GuidTools::generateUidAsString();
+		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->uuid = GuidTools::generateUidAsString();
+		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->uuid = GuidTools::generateUidAsString();
 	}
 	else
 	{

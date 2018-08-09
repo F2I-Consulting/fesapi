@@ -155,6 +155,12 @@ namespace COMMON_NS
 	class DLL_IMPORT_OR_EXPORT EpcDocument
 	{
 	private :
+
+		/**
+		* Necessary to avoid a dependency on GuidTools.h
+		*/
+		std::string generateRandomUuidAsString();
+
 		/**
 		* In case of PRODML2.0, only one HDF5 file can be given without any EPC document.
 		* this method will create a fake/virtual EPC document based on the HDF5 file
@@ -596,7 +602,7 @@ namespace COMMON_NS
 		valueType* createPartial(const std::string & guid, const std::string & title)
 		{
 			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(s, 1);
-			dor->UUID = guid;
+			dor->UUID = dor->UUID = guid.empty() ? generateRandomUuidAsString() : guid;
 			dor->Title = title;
 			valueType* result = new valueType(dor);
 			addFesapiWrapperAndDeleteItIfException(result);
