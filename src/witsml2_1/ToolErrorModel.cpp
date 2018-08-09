@@ -184,59 +184,60 @@ void ToolErrorModel::pushBackCorrectionConsidered(gsoap_eml2_2::witsml2__Correct
 	static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2)->CorrectionConsidered.push_back(soap_witsml2__CorrectionConsidered2s(gsoapProxy2_2->soap, correctionConsidered));
 }
 
+void ToolErrorModel::setReplacedToolErrorModel(ToolErrorModel* replaces)
+{
+	if (replaces == nullptr) {
+		throw invalid_argument("The replaced Tool Error Model to set cannot be null");
+	}
+
+	replaces->nextVersionToolErrorModel = this;
+
+	if (updateXml) {
+		static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2)->Replaces = replaces->newEml22Reference();
+	}
+}
+
 void ToolErrorModel::setAuthorization(const std::string & approvalAuthority,
 	const std::string & approvedBy, time_t approvedOn,
 	const std::string & checkedBy, time_t checkedOn,
-	ToolErrorModel* replaces,
 	const std::string & revisionComment, time_t revisionDate,
 	gsoap_eml2_2::witsml2__AuthorizationStatus* status)
 {
 	witsml2__ToolErrorModel* tem = static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2);
-	witsml2__AuthorizationHistory* ah;
-	if (tem->AuthorizationHistory.empty()) {
-		ah = gsoap_eml2_2::soap_new_witsml2__AuthorizationHistory(gsoapProxy2_2->soap, 1);
-		tem->AuthorizationHistory.push_back(ah);
+	witsml2__Authorization* ah = gsoap_eml2_2::soap_new_witsml2__Authorization(gsoapProxy2_2->soap, 1);
+	tem->Authorization = ah;
+
+	ah->ApprovalAuthority = approvalAuthority;
+
+	if (!approvedBy.empty()) {
+		ah->ApprovedBy = soap_new_std__string(gsoapProxy2_2->soap, 1);
+		ah->ApprovedBy->assign(approvedBy);
 	}
-	else {
-		ah = tem->AuthorizationHistory[0];
+	if (approvedOn > -1) {
+		ah->ApprovedOn = (tm*)soap_malloc(gsoapProxy2_2->soap, sizeof(tm));
+		*ah->ApprovedOn = *gmtime(&approvedOn);
 	}
-	if (replaces != nullptr) {
-		ah->Replaces = replaces->newEml22Reference();
+	if (!checkedBy.empty()) {
+		ah->CheckedBy = soap_new_std__string(gsoapProxy2_2->soap, 1);
+		ah->CheckedBy->assign(checkedBy);
+	}
+	if (checkedOn > -1) {
+		ah->CheckedOn = (tm*)soap_malloc(gsoapProxy2_2->soap, sizeof(tm));
+		*ah->CheckedOn = *gmtime(&checkedOn);
 	}
 
-	if (updateXml) {
-		ah->ApprovalAuthority = approvalAuthority;
+	if (!revisionComment.empty()) {
+		ah->RevisionComment = soap_new_std__string(gsoapProxy2_2->soap, 1);
+		ah->RevisionComment->assign(revisionComment);
+	}
+	if (revisionDate > -1) {
+		ah->RevisionDate = (tm*)soap_malloc(gsoapProxy2_2->soap, sizeof(tm));
+		*ah->RevisionDate = *gmtime(&revisionDate);
+	}
 
-		if (!approvedBy.empty()) {
-			ah->ApprovedBy = soap_new_std__string(gsoapProxy2_2->soap, 1);
-			ah->ApprovedBy->assign(approvedBy);
-		}
-		if (approvedOn > -1) {
-			ah->ApprovedOn = (tm*)soap_malloc(gsoapProxy2_2->soap, sizeof(tm));
-			*ah->ApprovedOn = *gmtime(&approvedOn);
-		}
-		if (!checkedBy.empty()) {
-			ah->CheckedBy = soap_new_std__string(gsoapProxy2_2->soap, 1);
-			ah->CheckedBy->assign(checkedBy);
-		}
-		if (checkedOn > -1) {
-			ah->CheckedOn = (tm*)soap_malloc(gsoapProxy2_2->soap, sizeof(tm));
-			*ah->CheckedOn = *gmtime(&checkedOn);
-		}
-
-		if (!revisionComment.empty()) {
-			ah->RevisionComment = soap_new_std__string(gsoapProxy2_2->soap, 1);
-			ah->RevisionComment->assign(revisionComment);
-		}
-		if (revisionDate > -1) {
-			ah->RevisionDate = (tm*)soap_malloc(gsoapProxy2_2->soap, sizeof(tm));
-			*ah->RevisionDate = *gmtime(&revisionDate);
-		}
-
-		if (status != nullptr) {
-			ah->Status = soap_new_witsml2__AuthorizationStatus(gsoapProxy2_2->soap, 1);
-			*ah->Status = *status;
-		}
+	if (status != nullptr) {
+		ah->Status = soap_new_witsml2__AuthorizationStatus(gsoapProxy2_2->soap, 1);
+		*ah->Status = *status;
 	}
 }
 
@@ -366,9 +367,9 @@ void ToolErrorModel::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc
 		pushBackErrorTerm(et, std::numeric_limits<double>::quiet_NaN(), "");
 	}
 
-	if (tem->AuthorizationHistory[0]->Replaces != nullptr) {
-		ToolErrorModel* previousTem = getEpcDocument()->getResqmlAbstractObjectByUuid<ToolErrorModel>(tem->AuthorizationHistory[0]->Replaces->Uuid);
-		setAuthorization("", "", -1, "", -1, previousTem, "", -1, nullptr);
+	if (tem->Replaces != nullptr) {
+		ToolErrorModel* previousTem = getEpcDocument()->getResqmlAbstractObjectByUuid<ToolErrorModel>(tem->Replaces->Uuid);
+		setReplacedToolErrorModel(previousTem);
 	}
 
 	updateXml = true;
@@ -387,8 +388,8 @@ vector<Relationship> ToolErrorModel::getAllEpcRelationships() const
 	}
 
 	witsml2__ToolErrorModel* tem = static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2);
-	if (tem->AuthorizationHistory[0]->Replaces != nullptr) {
-		ToolErrorModel* previousTem = getEpcDocument()->getResqmlAbstractObjectByUuid<ToolErrorModel>(tem->AuthorizationHistory[0]->Replaces->Uuid);
+	if (tem->Replaces != nullptr) {
+		ToolErrorModel* previousTem = getEpcDocument()->getResqmlAbstractObjectByUuid<ToolErrorModel>(tem->Replaces->Uuid);
 		Relationship rel(previousTem->getPartNameInEpcDocument(), "", previousTem->getUuid());
 		rel.setDestinationObjectType();
 		result.push_back(rel);

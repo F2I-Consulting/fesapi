@@ -75,6 +75,8 @@ namespace WITSML2_1_NS
 		void setSurveyRunDateEnd(time_t surveyRunDateEnd);
 		void pushBackCorrectionConsidered(gsoap_eml2_2::witsml2__CorrectionConsidered correctionConsidered);
 
+		void setReplacedToolErrorModel(ToolErrorModel* replaces);
+
 		/**
 		* All parameters can be empty, negative or nullptr if non present. Documentation on each parameter can override this rule.
 		*
@@ -84,7 +86,6 @@ namespace WITSML2_1_NS
 		void setAuthorization(const std::string & approvalAuthority,
 			const std::string & approvedBy, time_t approvedOn,
 			const std::string & checkedBy, time_t checkedOn,
-			ToolErrorModel* replaces,
 			const std::string & revisionComment, time_t revisionDate,
 			gsoap_eml2_2::witsml2__AuthorizationStatus* status);
 

@@ -300,21 +300,8 @@ string AbstractObject::getVersionString() const
 		return *gsoapProxy2_0_1->Citation->VersionString;
 	else if (gsoapProxy2_1 != nullptr && gsoapProxy2_1->Citation->VersionString)
 		return *gsoapProxy2_1->Citation->VersionString;
-	else if (gsoapProxy2_2 != nullptr && gsoapProxy2_2->Citation->VersionString)
-		return *gsoapProxy2_2->Citation->VersionString;
-	else
-		return string();
-}
-
-std::string AbstractObject::getVersionString() const
-{
-	if (partialObject != nullptr)
-		throw invalid_argument("The wrapped gsoap proxy must not be null");
-
-	if (gsoapProxy2_0_1 != nullptr && gsoapProxy2_0_1->Citation->VersionString)
-		return *gsoapProxy2_0_1->Citation->VersionString;
-	else if (gsoapProxy2_1 != nullptr && gsoapProxy2_1->Citation->VersionString)
-		return *gsoapProxy2_1->Citation->VersionString;
+	else if (gsoapProxy2_2 != nullptr && gsoapProxy2_2->objectVersion)
+		return *gsoapProxy2_2->objectVersion;
 	else
 		return string();
 }
@@ -560,29 +547,9 @@ void AbstractObject::setVersionString(const std::string & versionString)
 			gsoapProxy2_1->Citation->VersionString->assign(versionString);
 		}
 		else if (gsoapProxy2_2 != nullptr) {
-			if (gsoapProxy2_2->Citation->VersionString == nullptr)
-				gsoapProxy2_2->Citation->VersionString = soap_new_std__string(gsoapProxy2_2->soap, 1);
-			gsoapProxy2_2->Citation->VersionString->assign(versionString);
-		}
-	}
-}
-
-void AbstractObject::setVersionString(const std::string & versionString)
-{
-	if (partialObject != nullptr)
-		throw invalid_argument("The wrapped gsoap proxy must not be null");
-
-	if (!versionString.empty())
-	{
-		if (gsoapProxy2_0_1 != nullptr) {
-			if (gsoapProxy2_0_1->Citation->VersionString == nullptr)
-				gsoapProxy2_0_1->Citation->VersionString = soap_new_std__string(gsoapProxy2_0_1->soap, 1);
-			gsoapProxy2_0_1->Citation->VersionString->assign(versionString);
-		}
-		else {
-			if (gsoapProxy2_1->Citation->VersionString == nullptr)
-				gsoapProxy2_1->Citation->VersionString = soap_new_std__string(gsoapProxy2_1->soap, 1);
-			gsoapProxy2_1->Citation->VersionString->assign(versionString);
+			if (gsoapProxy2_2->objectVersion == nullptr)
+				gsoapProxy2_2->objectVersion = soap_new_std__string(gsoapProxy2_2->soap, 1);
+			gsoapProxy2_2->objectVersion->assign(versionString);
 		}
 	}
 }
@@ -717,12 +684,12 @@ gsoap_eml2_2::eml22__DataObjectReference* AbstractObject::newEml22Reference() co
 	result->ContentType = getContentType();
 	if (gsoapProxy2_2 != nullptr) // Not partial transfer
 	{
-		result->VersionString = gsoap_eml2_1::soap_new_std__string(gsoapProxy2_2->soap, 1);
+		result->ObjectVersion = gsoap_eml2_1::soap_new_std__string(gsoapProxy2_2->soap, 1);
 		if (getLastUpdate() != -1)
 			oss << getLastUpdate();
 		else
 			oss << getCreation();
-		result->VersionString->assign(oss.str());
+		result->ObjectVersion->assign(oss.str());
 	}
 
 	return result;
