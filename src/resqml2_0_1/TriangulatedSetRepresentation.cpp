@@ -38,7 +38,10 @@ TriangulatedSetRepresentation::TriangulatedSetRepresentation(RESQML2_NS::Abstrac
 		const std::string & guid, const std::string & title):
 	AbstractSurfaceRepresentation(interp, crs)
 {
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORETriangulatedSetRepresentation(interp->getGsoapContext(), 1);
+	if (crs == nullptr) {
+		throw invalid_argument("The local CRS of the TriangulatedSetRepresentation cannot be null.");
+	}
+	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORETriangulatedSetRepresentation(crs->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");
@@ -47,7 +50,9 @@ TriangulatedSetRepresentation::TriangulatedSetRepresentation(RESQML2_NS::Abstrac
 	localCrs->addRepresentation(this);
 
 	// relationhsips
-	setInterpretation(interp);
+	if (interp != nullptr) {
+		setInterpretation(interp);
+	}
 }
 
 string TriangulatedSetRepresentation::getHdfProxyUuid() const
