@@ -32,7 +32,7 @@ void CoreHandlers::decodeMessageBody(const Energistics ::Datatypes::MessageHeade
 	if (mh.m_messageType == 1) {
 		Energistics::Protocol::Core::RequestSession rs;
 		avro::decode(*d, rs);
-		on_RequestSession(rs);
+		on_RequestSession(rs, mh.m_messageId);
 	}
 	else if (mh.m_messageType == 2) {
 		Energistics::Protocol::Core::OpenSession os;
@@ -54,13 +54,13 @@ void CoreHandlers::decodeMessageBody(const Energistics ::Datatypes::MessageHeade
 	}
 }
 
-void CoreHandlers::on_RequestSession(const Energistics::Protocol::Core::RequestSession & rs)
+void CoreHandlers::on_RequestSession(const Energistics::Protocol::Core::RequestSession & rs, int64_t correlationId)
 {
 	Energistics::Protocol::Core::ProtocolException error;
 	error.m_errorCode = 2;
 	error.m_errorMessage = "The Core::on_RequestSession method has not been overriden by the agent.";
 
-	session->send(error);
+	session->sendAndDoWhenFinished(error);
 }
 
 void CoreHandlers::on_OpenSession(const Energistics::Protocol::Core::OpenSession & os)

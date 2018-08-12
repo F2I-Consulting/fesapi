@@ -1,4 +1,3 @@
-
 /*-----------------------------------------------------------------------
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
@@ -38,13 +37,25 @@ namespace ETP_NS
 
 		void run();
 
-		 void do_write() {
+		void do_write() {
 			ws.async_write(
 				boost::asio::buffer(*bytesToSend),
 				boost::asio::bind_executor(
 					strand,
 					std::bind(
 						&AbstractSession::on_write,
+						shared_from_this(),
+						std::placeholders::_1,
+						std::placeholders::_2)));
+		}
+
+		 void do_writeAndFinished() {
+			ws.async_write(
+				boost::asio::buffer(*bytesToSend),
+				boost::asio::bind_executor(
+					strand,
+					std::bind(
+						&AbstractSession::on_writeAndFinished,
 						shared_from_this(),
 						std::placeholders::_1,
 						std::placeholders::_2)));

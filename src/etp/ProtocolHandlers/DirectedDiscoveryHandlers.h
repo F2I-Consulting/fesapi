@@ -22,18 +22,21 @@ under the License.
 
 namespace ETP_NS
 {
-	class CoreHandlers : public ProtocolHandlers
+	class DirectedDiscoveryHandlers : public ProtocolHandlers
 	{
+	protected:
+		bool validateUri(const std::string & uri)const;
+
 	public:
-		CoreHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
-		virtual ~CoreHandlers() {}
+		DirectedDiscoveryHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
 
-	    void decodeMessageBody(const Energistics ::Datatypes::MessageHeader & mh, avro::DecoderPtr d) override;
+	    void decodeMessageBody(const Energistics ::Datatypes::MessageHeader & mh, avro::DecoderPtr d);
 
-	    virtual void on_RequestSession(const Energistics::Protocol::Core::RequestSession & rs, int64_t correlationId);
-	    virtual void on_OpenSession(const Energistics::Protocol::Core::OpenSession & os);
-	    virtual void on_CloseSession(const Energistics::Protocol::Core::CloseSession & cs);
-	    virtual void on_ProtocolException(const Energistics::Protocol::Core::ProtocolException & pe);
+	    virtual void on_GetContent(const Energistics::Protocol::DirectedDiscovery::GetContent & gc, int64_t correlationId);
+	    virtual void on_GetResourcesResponse(const Energistics::Protocol::DirectedDiscovery::GetResourcesResponse & grr);
+	    virtual void on_GetSourceFolders(const Energistics::Protocol::DirectedDiscovery::GetSourceFolders & gsf);
+	    virtual void on_GetTargetFolders(const Energistics::Protocol::DirectedDiscovery::GetTargetFolders & gtf);
 
+		virtual ~DirectedDiscoveryHandlers() {}
 	};
 }

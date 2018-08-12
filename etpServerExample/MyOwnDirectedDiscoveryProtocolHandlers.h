@@ -16,28 +16,19 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
+#pragma once
 
-#include "MyOwnEtpClientSession.h"
+#include "etp/ProtocolHandlers/DirectedDiscoveryHandlers.h"
 
-MyOwnEtpClientSession::MyOwnEtpClientSession(boost::asio::io_context& ioc,
-		const std::string & host, const std::string & port, const std::string & target,
-		const std::vector<Energistics::Datatypes::SupportedProtocol> & requestedProtocols,
-		const std::vector<std::string>& supportedObjects)
-	: ETP_NS::ClientSession(ioc, host, port, target, requestedProtocols, supportedObjects)
+#include "MyOwnEtpServerSession.h"
+
+class MyOwnDirectedDiscoveryProtocolHandlers : public ETP_NS::DirectedDiscoveryHandlers
 {
-}
+public:
+	MyOwnDirectedDiscoveryProtocolHandlers(MyOwnEtpServerSession* mySession): ETP_NS::DirectedDiscoveryHandlers(mySession) {}
+	~MyOwnDirectedDiscoveryProtocolHandlers() {}
 
-void MyOwnEtpClientSession::do_when_finished()
-{
-	std::string command;
-	std::cout << "What is your command ?" << std::endl;
-	std::getline(std::cin, command);
-	if (command == "quit") {
-		close();
-	}
-	else if (command.substr(0, 10) == "GetContent") {
-		Energistics::Protocol::DirectedDiscovery::GetContent mb;
-		mb.m_uri = command.size() > 11 ? command.substr(11) : "";
-		sendAndDoRead(mb);
-	}
-}
+	void on_GetContent(const Energistics::Protocol::DirectedDiscovery::GetContent & gc, int64_t correlationId);
+	//void on_GetSourceFolders(const Energistics::Protocol::DirectedDiscovery::GetSourceFolders & gsf);
+	//void on_GetTargetFolders(const Energistics::Protocol::DirectedDiscovery::GetTargetFolders & gtf);
+};

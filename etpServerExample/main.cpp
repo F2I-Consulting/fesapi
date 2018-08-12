@@ -26,6 +26,7 @@ int main(int argc, char **argv)
 {
 	Server<MyOwnEtpServerSession> etpServer;
 	etpServer.listen("127.0.0.1", 8080, 2);
+	//etpServer.listen("10.3.107.49", 8080, 2);
 
 #ifdef _WIN32
 	_CrtDumpMemoryLeaks();

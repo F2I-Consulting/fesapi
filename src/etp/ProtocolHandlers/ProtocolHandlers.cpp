@@ -27,5 +27,5 @@ void ProtocolHandlers::sendExceptionCode3() {
 	error.m_errorCode = 3;
 	error.m_errorMessage = "The message type ID is invalid for the given protocol.";
 
-	session->send(error);
+	session->sendAndDoWhenFinished(error);
 }

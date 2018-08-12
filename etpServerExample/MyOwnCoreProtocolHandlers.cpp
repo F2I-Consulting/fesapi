@@ -19,8 +19,9 @@ under the License.
 #include "MyOwnCoreProtocolHandlers.h"
 
 #include "etp/AbstractSession.h"
+#include "tools/GuidTools.h"
 
-void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Protocol::Core::RequestSession & rs)
+void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Protocol::Core::RequestSession & rs, int64_t correlationId)
 {
 	// Check requested protocols
 	std::vector<Energistics::Datatypes::SupportedProtocol> supportedProtocols;
@@ -54,7 +55,7 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Protocol::C
 		error.m_errorCode = 2;
 		error.m_errorMessage = "The server does not support any of the requested protocols.";
 
-		session->send(error);
+		session->sendAndDoWhenFinished(error);
 		return;
 	}
 
@@ -68,5 +69,5 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Protocol::C
 	supportedObjects.push_back("application/x-resqml+xml;version=2.0;type=*");
 	openSession.m_supportedObjects = supportedObjects;
 
-	session->sendAndDoRead(openSession);
+	session->sendAndDoWhenFinished(openSession, correlationId);
 }

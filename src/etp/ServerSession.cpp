@@ -32,8 +32,18 @@ ServerSession::ServerSession(tcp::socket socket)
 
 void ServerSession::run()
 {
+#ifndef NDEBUG
+	// Show the HTTP request
+	boost::beast::flat_buffer buffer;
+	boost::beast::http::request<boost::beast::http::string_body> req;
+	boost::beast::http::read(ws.next_layer(), buffer, req);
+	if(boost::beast::websocket::is_upgrade(req))
+	{
+		std::cout << req << std::endl;
+	}
+
 	// Accept the websocket handshake
-	ws.async_accept_ex(
+	ws.async_accept_ex(req,
 			[](websocket::response_type& m)
 				{
 					m.insert(boost::beast::http::field::sec_websocket_protocol, "energistics-tp");
@@ -44,6 +54,20 @@ void ServerSession::run()
 				&ServerSession::on_accept,
 				std::static_pointer_cast<ServerSession>(shared_from_this()),
 				std::placeholders::_1)));
+#else
+	 // does not show up the HTTP request
+	ws.async_accept_ex(
+				[](websocket::response_type& m)
+					{
+						m.insert(boost::beast::http::field::sec_websocket_protocol, "energistics-tp");
+					},
+			boost::asio::bind_executor(
+				strand,
+				std::bind(
+					&ServerSession::on_accept,
+					std::static_pointer_cast<ServerSession>(shared_from_this()),
+					std::placeholders::_1)));
+#endif
 }
 
 void ServerSession::on_accept(boost::system::error_code ec)

@@ -25,13 +25,14 @@ under the License.
 using namespace ETP_NS;
 
 ClientSession::ClientSession(boost::asio::io_context& ioc,
-		const std::string & host, const std::string & port,
+		const std::string & host, const std::string & port,  const std::string & target,
 		const std::vector<Energistics::Datatypes::SupportedProtocol> & requestedProtocols,
 		const std::vector<std::string>& supportedObjects)
 	: AbstractSession(ioc),
 	  resolver(ioc),
 	  host(host),
-	  port(port)
+	  port(port),
+	  target(target)
 {
 	ws.binary(true);
 
@@ -82,7 +83,7 @@ void ClientSession::on_connect(boost::system::error_code ec)
 
 	// Perform the websocket handshake
 	ws.async_handshake_ex(responseType,
-		host, "/",
+		host + ":" + port, target,
 		[](websocket::request_type& m)
 			{
 				m.insert(boost::beast::http::field::sec_websocket_protocol, "energistics-tp");
@@ -99,9 +100,13 @@ void ClientSession::on_handshake(boost::system::error_code ec)
 		std::cerr << "on_handshake : " << ec.message() << std::endl;
 	}
 
+#ifndef NDEBUG
+	std::cout << responseType << std::endl;
+#endif
+
 	if(! responseType.count(boost::beast::http::field::sec_websocket_protocol) ||
 			responseType[boost::beast::http::field::sec_websocket_protocol] != "energistics-tp")
-		throw std::invalid_argument("The client MUST specify the Sec-Websocket-Protocol header value of energistics-tp, and the server MUST reply with the same");
+		std::cerr << "The client MUST specify the Sec-Websocket-Protocol header value of energistics-tp, and the server MUST reply with the same" << std::endl;
 
 	closed = false;
 

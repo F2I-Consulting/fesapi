@@ -20,7 +20,7 @@ under the License.
 #include "MyOwnEtpServerSession.h"
 
 #include "MyOwnCoreProtocolHandlers.h"
-#include "MyOwnDiscoveryProtocolHandlers.h"
+#include "MyOwnDirectedDiscoveryProtocolHandlers.h"
 
 using namespace std;
 
@@ -29,7 +29,7 @@ MyOwnEtpServerSession::MyOwnEtpServerSession(tcp::socket socket)
 	  epcDoc("../../testingPackageCpp.epc", COMMON_NS::EpcDocument::READ_ONLY)
 {
 	setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(this));
-	setDiscoveryProtocolHandlers(std::make_shared<MyOwnDiscoveryProtocolHandlers>(this));
+	setDirectedDiscoveryProtocolHandlers(std::make_shared<MyOwnDirectedDiscoveryProtocolHandlers>(this));
 
 	cout << "Start deserialization of " << epcDoc.getName() << " in " << (epcDoc.getStorageDirectory().empty() ? "working directory." : epcDoc.getStorageDirectory()) << endl;
 	string resqmlResult = epcDoc.deserialize();

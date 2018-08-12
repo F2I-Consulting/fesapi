@@ -23,20 +23,20 @@ under the License.
 
 using namespace ETP_NS;
 
-Energistics::Datatypes::MessageHeader AbstractSession::decodeMessageHeader(avro::DecoderPtr decoder, bool print)
+Energistics::Datatypes::MessageHeader AbstractSession::decodeMessageHeader(avro::DecoderPtr decoder)
 {
 	Energistics ::Datatypes::MessageHeader receivedMh;
 	avro::decode(*decoder, receivedMh);
-	if (print) {
-		std::cout << "*************************************************" << std::endl;
-		std::cout << "Message Header received : " << std::endl;
-		std::cout << "protocol : " << receivedMh.m_protocol << std::endl;
-		std::cout << "type : " << receivedMh.m_messageType << std::endl;
-		std::cout << "id : " << receivedMh.m_messageId << std::endl;
-		std::cout << "correlation id : " << receivedMh.m_correlationId << std::endl;
-		std::cout << "flags : " << receivedMh.m_messageFlags << std::endl;
-		std::cout << "*************************************************" << std::endl;
-	}
+#ifndef NDEBUG
+	std::cout << "*************************************************" << std::endl;
+	std::cout << "Message Header received : " << std::endl;
+	std::cout << "protocol : " << receivedMh.m_protocol << std::endl;
+	std::cout << "type : " << receivedMh.m_messageType << std::endl;
+	std::cout << "id : " << receivedMh.m_messageId << std::endl;
+	std::cout << "correlation id : " << receivedMh.m_correlationId << std::endl;
+	std::cout << "flags : " << receivedMh.m_messageFlags << std::endl;
+	std::cout << "*************************************************" << std::endl;
+#endif
 
 	return receivedMh;
 }
@@ -62,7 +62,7 @@ void AbstractSession::on_read(boost::system::error_code ec, std::size_t bytes_tr
 	avro::DecoderPtr d = avro::binaryDecoder();
 	d->init(*in);
 
-	Energistics ::Datatypes::MessageHeader receivedMh = decodeMessageHeader(d, true);
+	Energistics ::Datatypes::MessageHeader receivedMh = decodeMessageHeader(d);
 
 	if (receivedMh.m_protocol < protocolHandlers.size() && protocolHandlers[receivedMh.m_protocol] != nullptr) {
 		protocolHandlers[receivedMh.m_protocol]->decodeMessageBody(receivedMh, d);
@@ -72,7 +72,7 @@ void AbstractSession::on_read(boost::system::error_code ec, std::size_t bytes_tr
 		error.m_errorCode = 4;
 		error.m_errorMessage = "The agent does not support the protocol identified in a message header.";
 
-		send(error);
+		sendAndDoWhenFinished(error);
 	}
 
 	// Clear the buffer

@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 
 	Energistics::Datatypes::Version protocolVersion;
 	protocolVersion.m_major = 1;
-	protocolVersion.m_minor = 1;
+	protocolVersion.m_minor = 2;
 	protocolVersion.m_patch = 0;
 	protocolVersion.m_revision = 0;
 	// Requested protocol
@@ -38,14 +38,15 @@ int main(int argc, char **argv)
 	protocol.m_protocolVersion = protocolVersion;
 	protocol.m_role = "server";
 	requestedProtocols.push_back(protocol);
-	protocol.m_protocol = Energistics::Datatypes::Protocols::Discovery;
+	protocol.m_protocol = Energistics::Datatypes::Protocols::DirectedDiscovery;
 	protocol.m_protocolVersion = protocolVersion;
 	protocol.m_role = "store";
 	requestedProtocols.push_back(protocol);
 
 	std::vector<std::string> supportedObjects;
 
-	auto clientSession = std::make_shared<MyOwnEtpClientSession>(ioc, "127.0.0.1", "8080", requestedProtocols, supportedObjects);
+	//auto clientSession = std::make_shared<MyOwnEtpClientSession>(ioc, "127.0.0.1", "8080", requestedProtocols, supportedObjects);
+	auto clientSession = std::make_shared<MyOwnEtpClientSession>(ioc, argv[1], argv[2], argc < 4 ? "/" : argv[3], requestedProtocols, supportedObjects);
 	clientSession->run();
 
     // Run the I/O service. The call will return when the socket is closed.

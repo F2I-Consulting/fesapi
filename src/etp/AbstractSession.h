@@ -27,6 +27,7 @@ under the License.
 #include "etp/EtpMessages.h"
 #include "etp/ProtocolHandlers/CoreHandlers.h"
 #include "etp/ProtocolHandlers/DiscoveryHandlers.h"
+#include "etp/ProtocolHandlers/DirectedDiscoveryHandlers.h"
 
 using tcp = boost::asio::ip::tcp;               // from <boost/asio/ip/tcp.hpp>
 namespace websocket = boost::beast::websocket;  // from <boost/beast/websocket.hpp>
@@ -58,21 +59,22 @@ namespace ETP_NS
 		 * Write the current buffer on the web socket
 		 */
 		virtual void do_write() = 0;
+		virtual void do_writeAndFinished() = 0;
 		virtual void do_writeAndRead() = 0;
 
 		/**
 		 * Reads the message header currently stored in the decoder.
 		 * @param decoder	Must be initialized with stream containing a coded message header.
 		 */
-		Energistics ::Datatypes::MessageHeader decodeMessageHeader(avro::DecoderPtr decoder, bool print = false);
+		Energistics ::Datatypes::MessageHeader decodeMessageHeader(avro::DecoderPtr decoder);
 
-		template<typename T> void encode(const T & mb)
+		template<typename T> void encode(const T & mb, int64_t correlationId = 0)
 		{
 			// Build message header
-			Energistics ::Datatypes::MessageHeader mh;
+			Energistics::Datatypes::MessageHeader mh;
 			mh.m_protocol = mb.protocolId;
 			mh.m_messageType = mb.messageTypeId;
-			mh.m_correlationId = 0;
+			mh.m_correlationId = correlationId;
 			mh.m_messageId = messageId++;
 			mh.m_messageFlags = 0;
 
@@ -96,7 +98,7 @@ namespace ETP_NS
 	    		protocolHandlers.push_back(coreHandlers);
 	    	}
 	    	else {
-	    		protocolHandlers[0] = coreHandlers;
+	    		protocolHandlers[Energistics::Datatypes::Protocols::Core] = coreHandlers;
 	    	}
 	    }
 
@@ -104,21 +106,25 @@ namespace ETP_NS
 		 * Set the Discovery protocol handlers
 		 */
 		void setDiscoveryProtocolHandlers(std::shared_ptr<DiscoveryHandlers> discoveryHandlers) {
-			while (protocolHandlers.size() < 4) {
+			while (protocolHandlers.size() < Energistics::Datatypes::Protocols::Discovery + 1) {
 				protocolHandlers.push_back(nullptr);
 			}
-			protocolHandlers[3] = discoveryHandlers;
+			protocolHandlers[Energistics::Datatypes::Protocols::Discovery] = discoveryHandlers;
+		}
+
+		/**
+		 * Set the Directed Discovery protocol handlers
+		 */
+		void setDirectedDiscoveryProtocolHandlers(std::shared_ptr<DirectedDiscoveryHandlers> directedDiscoveryHandlers) {
+			while (protocolHandlers.size() < Energistics::Datatypes::Protocols::DirectedDiscovery + 1) {
+				protocolHandlers.push_back(nullptr);
+			}
+			protocolHandlers[Energistics::Datatypes::Protocols::DirectedDiscovery] = directedDiscoveryHandlers;
 		}
 
 		void close();
 
-		/**
-		 * Create a default ETP message header from the ETP message body.
-		 * Encode this created default ETP message header + the ETP message body into the session buffer.
-		 * Write/send this session buffer on the web socket.
-		 * @param mb The ETP message body to send
-		 */
-		template<typename T> void send(const T & mb)
+		template<typename T> void send(const T & mb, int64_t correlationId = 0)
 		{
 			encode(mb);
 			do_write();
@@ -127,10 +133,22 @@ namespace ETP_NS
 		/**
 		 * Create a default ETP message header from the ETP message body.
 		 * Encode this created default ETP message header + the ETP message body into the session buffer.
+		 * Write/send this session buffer on the web socket.
+		 * @param mb The ETP message body to send
+		 */
+		template<typename T> void sendAndDoWhenFinished(const T & mb, int64_t correlationId = 0)
+		{
+			encode(mb);
+			do_writeAndFinished();
+		}
+
+		/**
+		 * Create a default ETP message header from the ETP message body.
+		 * Encode this created default ETP message header + the ETP message body into the session buffer.
 		 * Write/send this session buffer on the web socket and then read an answer.
 		 * @param mb The ETP message body to send
 		 */
-		template<typename T> void sendAndDoRead(const T & mb)
+		template<typename T> void sendAndDoRead(const T & mb, int64_t correlationId = 0)
 		{
 			encode(mb);
 			do_writeAndRead();
@@ -157,15 +175,13 @@ namespace ETP_NS
 		 */
 		void on_read(boost::system::error_code ec, std::size_t bytes_transferred);
 
-		/**
-		 * This method is called each time a message is received on the web socket
-		 */
-		void on_write(boost::system::error_code ec, std::size_t bytes_transferred) {
+		void on_write(boost::system::error_code ec, std::size_t bytes_transferred) { }
+		void on_writeAndFinished(boost::system::error_code ec, std::size_t bytes_transferred) {
 			do_when_finished();
-		};
+		}
 		void on_writeAndRead(boost::system::error_code ec, std::size_t bytes_transferred) {
 			do_read();
-		};
+		}
 
 		void on_close(boost::system::error_code ec) {
 			if(ec) {
@@ -173,7 +189,9 @@ namespace ETP_NS
 			}
 
 			// If we get here then the connection is closed gracefully
+#ifndef NDEBUG
 			std::cout << "!!! CLOSED !!!" << std::endl;
+#endif
 
 			closed = true;
 		}

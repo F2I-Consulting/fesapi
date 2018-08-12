@@ -28,5 +28,5 @@ public:
 	MyOwnCoreProtocolHandlers(MyOwnEtpServerSession* mySession): ETP_NS::CoreHandlers(mySession) {}
 	~MyOwnCoreProtocolHandlers() {}
 
-	void on_RequestSession(const Energistics::Protocol::Core::RequestSession & rs);
+	void on_RequestSession(const Energistics::Protocol::Core::RequestSession & rs, int64_t correlationId);
 };

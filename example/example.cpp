@@ -1463,8 +1463,9 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation * rep, bool* enabledCe
 				cout << "\tTrying to convert.." << endl;
 				double* values = new double[valueCount];
 				static_cast<ContinuousProperty*>(propVal)->getDoubleValuesOfPatch(0, values);
-				std::cout << "\tFirst value is " << values[0] << endl;
-				std::cout << "\tSecond value is " << values[1] << endl;
+				for (size_t valueIndex = 0; valueIndex < valueCount; ++valueIndex) {
+					std::cout << "\tContinuous value at index " << valueIndex << " == "<< values[valueIndex] << endl;
+				}
 				delete[] values;
 				cout << "\tPress enter to continue..." << endl;
 				cin.get();
@@ -1478,8 +1479,9 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation * rep, bool* enabledCe
 				std::cout << "\tMin value is " << minValue << endl;
 				long* values = new long[valueCount];
 				propVal->getLongValuesOfPatch(0, values);
-				std::cout << "\tFirst value is " << values[0] << endl;
-				std::cout << "\tSecond value is " << values[1] << endl;
+				for (size_t valueIndex = 0; valueIndex < valueCount; ++valueIndex) {
+					std::cout << "\tDiscrete value at index " << valueIndex << " == "<< values[valueIndex] << endl;
+				}
 				delete[] values;
 			}
 		}
@@ -1491,8 +1493,9 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation * rep, bool* enabledCe
 				cout << "\tTrying to convert.." << endl;
 				long* values = new long[valueCount];
 				propVal->getLongValuesOfPatch(0, values);
-				std::cout << "\tFirst value is " << values[0] << endl;
-				std::cout << "\tSecond value is " << values[1] << endl;
+				for (size_t valueIndex = 0; valueIndex < valueCount; ++valueIndex) {
+					std::cout << "\tDiscrete value at index " << valueIndex << " == "<< values[valueIndex] << endl;
+				}
 				delete[] values;
 				cout << "\tPress enter to continue..." << endl;
 				cin.get();
@@ -1506,8 +1509,10 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation * rep, bool* enabledCe
 				std::cout << "\tMin value is " << minValue << endl;
 				double* values = new double[valueCount];
 				continuousProp->getDoubleValuesOfPatch(0, values);
-				std::cout << "\tFirst value is " << values[0] << endl;
-				std::cout << "\tSecond value is " << values[1] << endl;
+				for (size_t valueIndex = 0; valueIndex < valueCount; ++valueIndex) {
+					if (values[valueIndex] < 0)
+					std::cout << "\tContinuous value at index " << valueIndex << " == "<< values[valueIndex] << endl;
+				}
 
 				if (continuousProp->getElementCountPerValue() == 1) {
 					for (size_t cellIndex = 0; cellIndex < valueCount; ++cellIndex) {
@@ -2967,6 +2972,7 @@ void deserialize(const string & inputFile)
 
 		showAllMetadata(ijkGrid);
 		if (ijkGrid->isPartial()) {
+			showAllProperties(ijkGrid);
 			continue;
 		}
 		if (ijkGrid->getGeometryKind() != AbstractIjkGridRepresentation::NO_GEOMETRY)
@@ -3279,20 +3285,23 @@ void deserialize(const string & inputFile)
 			unstructuredGridRepSet[i]->getXyzPointsOfAllPatchesInGlobalCrs(gridPoints);
 			std::cout << "DONE" << std::endl;
 			std::cout << "--------------------------------------------------" << std::endl;
-			delete[] gridPoints;
 
 			unstructuredGridRepSet[i]->loadGeometry();
 
-			std::cout << "(in memory) Face count of cell 0 is : " << unstructuredGridRepSet[i]->getFaceCountOfCell(0) << std::endl;
-			if (unstructuredGridRepSet[i]->getCellCount() > 1)
-				std::cout << "(in memory) Face count of cell 1 is : " << unstructuredGridRepSet[i]->getFaceCountOfCell(1) << std::endl;
-			std::cout << "(in memory) Node count of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeCountOfFaceOfCell(0, 0) << std::endl;
-			std::cout << "(in memory) Node indice 0 of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 0)[0] << std::endl;
-			std::cout << "(in memory) Node indice 1 of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 0)[1] << std::endl;
-			std::cout << "(in memory) Node indice 2 of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 0)[2] << std::endl;
-			std::cout << "(in memory) Node indice 0 of face 1 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 1)[0] << std::endl;
+			std::cout << "In memory" << std::endl;
+			for (unsigned long cellIndex = 0; cellIndex < unstructuredGridRepSet[i]->getCellCount(); ++cellIndex) {
+				std::cout << "Face count of cell " << cellIndex << " is : " << unstructuredGridRepSet[i]->getFaceCountOfCell(cellIndex) << std::endl;
+				for (unsigned int faceIndex = 0; faceIndex < unstructuredGridRepSet[i]->getFaceCountOfCell(cellIndex); ++faceIndex) {
+					std::cout << "Node count of face " << faceIndex << " of cell " << cellIndex << " is : " << unstructuredGridRepSet[i]->getNodeCountOfFaceOfCell(cellIndex, faceIndex) << std::endl;
+					for (unsigned int nodeIndex = 0; nodeIndex < unstructuredGridRepSet[i]->getNodeCountOfFaceOfCell(cellIndex, faceIndex); ++nodeIndex) {
+						std::cout << "Node indice " << nodeIndex << " of face " << faceIndex << " of cell " << cellIndex << " is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] << std::endl;
+						std::cout << "X= " <<  gridPoints[unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3] << " Y= " <<  gridPoints[unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3+1 ] << " Z= " <<  gridPoints[unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3+ 2 ] << std::endl;
+					}
+				}
+			}
 
 			unstructuredGridRepSet[i]->unloadGeometry();
+			delete[] gridPoints;
 
 			showAllProperties(unstructuredGridRepSet[i]);
 		}

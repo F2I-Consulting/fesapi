@@ -24,11 +24,14 @@ class MyOwnEtpClientSession : public ETP_NS::ClientSession
 {
 public:
 	/**
+	 * @param host		The IP address on which the server is listening for etp (websocket) connection
+	 * @param port		The port on which the server is listening for etp (websocket) connection
+	 * @param target	usually "/" but a server can decide to serve etp on a particular target
 	 * @param requestedProtocols An array of protocol IDs that the client expects to communicate on for this session. If the server does not support all of the protocols, the client may or may not continue with the protocols that are supported.
 	 * @param supportedObjects		A list of the Data Objects supported by the client. This list MUST be empty if the client is a customer. This field MUST be supplied if the client is a Store and is requesting a customer role for the server.
 	 */
 	MyOwnEtpClientSession(boost::asio::io_context& ioc,
-			const std::string & host, const std::string & port,
+			const std::string & host, const std::string & port, const std::string & target,
 			const std::vector<Energistics::Datatypes::SupportedProtocol> & requestedProtocols,
 			const std::vector<std::string>& supportedObjects);
 

@@ -20,18 +20,19 @@ under the License.
 
 #include "etp/ProtocolHandlers/ProtocolHandlers.h"
 
-#include "tools/GuidTools.h"
-
 namespace ETP_NS
 {
 	class DiscoveryHandlers : public ProtocolHandlers
 	{
+	protected:
+		bool validateUri(const std::string & uri)const;
+
 	public:
 		DiscoveryHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
 
 	    void decodeMessageBody(const Energistics ::Datatypes::MessageHeader & mh, avro::DecoderPtr d);
 
-	    virtual void on_GetResources(const Energistics::Protocol::Discovery::GetResources & gr);
+	    virtual void on_GetResources(const Energistics::Protocol::Discovery::GetResources & gr, int64_t correlationId);
 	    virtual void on_GetResourcesResponse(const Energistics::Protocol::Discovery::GetResourcesResponse & grr);
 
 		virtual ~DiscoveryHandlers() {}

@@ -28,5 +28,5 @@ public:
 	MyOwnDiscoveryProtocolHandlers(MyOwnEtpServerSession* mySession): ETP_NS::DiscoveryHandlers(mySession) {}
 	~MyOwnDiscoveryProtocolHandlers() {}
 
-	void on_GetResources(const Energistics::Protocol::Discovery::GetResources & gr);
+	void on_GetResources(const Energistics::Protocol::Discovery::GetResources & gr, int64_t correlationId);
 };

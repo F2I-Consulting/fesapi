@@ -18,9 +18,16 @@ under the License.
 -----------------------------------------------------------------------*/
 #include  "etp/ProtocolHandlers/DiscoveryHandlers.h"
 
+#include <regex>
+
 #include "etp/AbstractSession.h"
 
 using namespace ETP_NS;
+
+bool DiscoveryHandlers::validateUri(const std::string & uri)const
+{
+	return std::regex_match(uri, std::regex("^eml://((witsml|resqml|prodml|eml)([0-9]+))*.*", std::regex::ECMAScript));
+}
 
 void DiscoveryHandlers::decodeMessageBody(const Energistics ::Datatypes::MessageHeader & mh, avro::DecoderPtr d)
 {
@@ -32,7 +39,7 @@ void DiscoveryHandlers::decodeMessageBody(const Energistics ::Datatypes::Message
 	if (mh.m_messageType == 1) {
 		Energistics::Protocol::Discovery::GetResources gr;
 		avro::decode(*d, gr);
-		on_GetResources(gr);
+		on_GetResources(gr, mh.m_messageId);
 	}
 	else if (mh.m_messageType == 2) {
 		Energistics::Protocol::Discovery::GetResourcesResponse grr;
@@ -44,15 +51,16 @@ void DiscoveryHandlers::decodeMessageBody(const Energistics ::Datatypes::Message
 	}
 }
 
-void DiscoveryHandlers::on_GetResources(const Energistics::Protocol::Discovery::GetResources & gr)
+void DiscoveryHandlers::on_GetResources(const Energistics::Protocol::Discovery::GetResources & gr, int64_t correlationId)
 {
 	std::cout << "on_GetResources" << std::endl;
+
 	// Build GetResourcesResponse message
 	Energistics::Protocol::Core::ProtocolException error;
 	error.m_errorCode = 7;
 	error.m_errorMessage = "The Discovery::on_GetResources method has not been overriden by the agent.";
 
-	session->send(error);
+	session->sendAndDoWhenFinished(error);
 }
 
 void DiscoveryHandlers::on_GetResourcesResponse(const Energistics::Protocol::Discovery::GetResourcesResponse & grr)
