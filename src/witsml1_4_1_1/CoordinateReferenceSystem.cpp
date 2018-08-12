@@ -68,7 +68,7 @@ CoordinateReferenceSystem::CoordinateReferenceSystem(soap* soapContext,
 
 	crs->uid = soap_new_std__string(collection->soap, 1);
 	if (guid.empty()) {
-		crs->uid->assign(tools::GuidTools::generateUidAsString());
+		crs->uid->assign(GuidTools::generateUidAsString());
 	} else {
 		crs->uid->assign(guid);
 	}

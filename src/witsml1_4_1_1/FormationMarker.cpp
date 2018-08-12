@@ -51,7 +51,7 @@ FormationMarker::FormationMarker(
 
 	fm->uid = soap_new_std__string(collection->soap, 1);
 	if (guid.empty()) {
-		fm->uid->assign(tools::GuidTools::generateUidAsString());
+		fm->uid->assign(GuidTools::generateUidAsString());
 	} else {
 		fm->uid->assign(guid);
 	}
@@ -101,7 +101,7 @@ FormationMarker::FormationMarker(
 
 	fm->uid = soap_new_std__string(collection->soap, 1);
 	if (guid.empty()) {
-		fm->uid->assign(tools::GuidTools::generateUidAsString());
+		fm->uid->assign(GuidTools::generateUidAsString());
 	} else {
 		fm->uid->assign(guid);
 	}

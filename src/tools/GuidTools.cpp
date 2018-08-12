@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "tools/GuidTools.h"
 
-using namespace tools;
 using namespace std;
 
 #if defined(__gnu_linux__) || defined(__APPLE__)

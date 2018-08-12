@@ -50,7 +50,7 @@ Log::Log(
 
 	log->uid = soap_new_std__string(collection->soap, 1);
 	if (guid.empty()) {
-		log->uid->assign(tools::GuidTools::generateUidAsString());
+		log->uid->assign(GuidTools::generateUidAsString());
 	} else {
 		log->uid->assign(guid);
 	}
@@ -88,7 +88,7 @@ Log::Log(
 
 	log->uid = soap_new_std__string(collection->soap, 1);
 	if (guid.empty()) {
-		log->uid->assign(tools::GuidTools::generateUidAsString());
+		log->uid->assign(GuidTools::generateUidAsString());
 	} else {
 		log->uid->assign(guid);
 	}
