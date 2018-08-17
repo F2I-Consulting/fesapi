@@ -263,7 +263,13 @@ void DasAcquisition::setDasInstrumentBox(DasInstrumentBox* dasInstrumentBox)
 	}
 }
 
-vector<Relationship> DasAcquisition::getAllEpcRelationships() const
+std::vector<epc::Relationship> DasAcquisition::getAllSourceRelationships() const
+{
+	vector<Relationship> result;
+	return result;
+}
+
+std::vector<epc::Relationship> DasAcquisition::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 	

@@ -54,19 +54,24 @@ FiberOpticalPath::FiberOpticalPath(soap* soapContext, const string & guid, const
 	fop->Inventory->Terminator->TerminationType = terminationType;
 }
 
-vector<Relationship> FiberOpticalPath::getAllEpcRelationships() const
+
+std::vector<epc::Relationship> FiberOpticalPath::getAllSourceRelationships() const
 {
 	vector<Relationship> result;
-	
-	// XML backward relationship
-	for (size_t i = 0; i < dasAcquisitionSet.size(); i++)
-	{
-		Relationship rel(dasAcquisitionSet[i]->getPartNameInEpcDocument(), "", dasAcquisitionSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-	
-	return result;
+
+		// XML backward relationship
+		for (size_t i = 0; i < dasAcquisitionSet.size(); i++)
+		{
+			Relationship rel(dasAcquisitionSet[i]->getPartNameInEpcDocument(), "", dasAcquisitionSet[i]->getUuid());
+			rel.setSourceObjectType();
+			result.push_back(rel);
+		}
+
+		return result;
 }
 
-
+std::vector<epc::Relationship> FiberOpticalPath::getAllTargetRelationships() const
+{
+	vector<Relationship> result;
+	return result;
+}

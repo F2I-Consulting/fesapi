@@ -22,59 +22,64 @@ under the License.
 
 using namespace ETP_NS;
 
-void CoreHandlers::decodeMessageBody(const Energistics ::Datatypes::MessageHeader & mh, avro::DecoderPtr d)
+void CoreHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d)
 {
-	if (mh.m_protocol != Energistics::Datatypes::Protocols::Core) {
+	if (mh.m_protocol != Energistics::Etp::v12::Datatypes::Protocols::Core) {
 		std::cerr << "Error : This message header does not belong to the protocol Core" << std::endl;
 		return;
 	}
 
 	if (mh.m_messageType == 1) {
-		Energistics::Protocol::Core::RequestSession rs;
+		Energistics::Etp::v12::Protocol::Core::RequestSession rs;
 		avro::decode(*d, rs);
+		session->flushReceivingBuffer();
 		on_RequestSession(rs, mh.m_messageId);
 	}
 	else if (mh.m_messageType == 2) {
-		Energistics::Protocol::Core::OpenSession os;
+		Energistics::Etp::v12::Protocol::Core::OpenSession os;
 		avro::decode(*d, os);
+		session->flushReceivingBuffer();
 		on_OpenSession(os);
 	}
 	else if (mh.m_messageType == 5) {
-		Energistics::Protocol::Core::CloseSession cs;
+		Energistics::Etp::v12::Protocol::Core::CloseSession cs;
 		avro::decode(*d, cs);
+		session->flushReceivingBuffer();
 		on_CloseSession(cs);
 	}
 	else if (mh.m_messageType == 1000) {
-		Energistics::Protocol::Core::ProtocolException pe;
+		Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
 		avro::decode(*d, pe);
+		session->flushReceivingBuffer();
 		on_ProtocolException(pe);
 	}
 	else {
+		session->flushReceivingBuffer();
 		sendExceptionCode3();
 	}
 }
 
-void CoreHandlers::on_RequestSession(const Energistics::Protocol::Core::RequestSession & rs, int64_t correlationId)
+void CoreHandlers::on_RequestSession(const Energistics::Etp::v12::Protocol::Core::RequestSession & rs, int64_t correlationId)
 {
-	Energistics::Protocol::Core::ProtocolException error;
+	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
 	error.m_errorCode = 2;
 	error.m_errorMessage = "The Core::on_RequestSession method has not been overriden by the agent.";
 
-	session->sendAndDoWhenFinished(error);
+	session->send(error);
 }
 
-void CoreHandlers::on_OpenSession(const Energistics::Protocol::Core::OpenSession & os)
+void CoreHandlers::on_OpenSession(const Energistics::Etp::v12::Protocol::Core::OpenSession & os)
 {
 	session->do_when_finished();
 }
 
-void CoreHandlers::on_CloseSession(const Energistics::Protocol::Core::CloseSession & cs)
+void CoreHandlers::on_CloseSession(const Energistics::Etp::v12::Protocol::Core::CloseSession & cs)
 {
 	std::cout << "Close session after received request." << std::endl;
 	session->do_close();
 }
 
-void CoreHandlers::on_ProtocolException(const Energistics::Protocol::Core::ProtocolException & pe)
+void CoreHandlers::on_ProtocolException(const Energistics::Etp::v12::Protocol::Core::ProtocolException & pe)
 {
 	std::cout << "EXCEPTION with error code "  << pe.m_errorCode << " : " << pe.m_errorMessage << std::endl;
 

@@ -39,7 +39,7 @@ namespace ETP_NS
 	public:
 		virtual ~ProtocolHandlers() {}
 
-	    virtual void decodeMessageBody(const Energistics ::Datatypes::MessageHeader & mh, avro::DecoderPtr d) = 0;
+	    virtual void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d) = 0;
 
 	};
 }

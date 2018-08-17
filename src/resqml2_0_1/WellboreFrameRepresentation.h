@@ -41,7 +41,7 @@ namespace RESQML2_0_1_NS
 		* Only to be used in partial transfer context
 		*/
 		WellboreFrameRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			RESQML2_NS::AbstractRepresentation(partialObject)
+			RESQML2_NS::AbstractRepresentation(partialObject), trajectory(nullptr), witsmlLog(nullptr)
 		{
 		}
 
@@ -148,9 +148,9 @@ namespace RESQML2_0_1_NS
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
 
-	protected:
+		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
 
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
+	protected:
 		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		class WellboreTrajectoryRepresentation * trajectory;

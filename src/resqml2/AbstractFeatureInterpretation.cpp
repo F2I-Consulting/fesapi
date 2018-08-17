@@ -72,7 +72,7 @@ void AbstractFeatureInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcD
 	updateXml = true;
 }
 
-vector<Relationship> AbstractFeatureInterpretation::getAllEpcRelationships() const
+vector<Relationship> AbstractFeatureInterpretation::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 
@@ -80,7 +80,14 @@ vector<Relationship> AbstractFeatureInterpretation::getAllEpcRelationships() con
 	Relationship rel(interpretedFeature->getPartNameInEpcDocument(), "", interpretedFeature->getUuid());
 	rel.setDestinationObjectType();
 	result.push_back(rel);
+
+	return result;
+}
 	
+vector<Relationship> AbstractFeatureInterpretation::getAllSourceRelationships() const
+{
+	vector<Relationship> result;
+
 	for (size_t i = 0; i < representationSet.size(); ++i)
 	{
 		if (representationSet[i] != nullptr)

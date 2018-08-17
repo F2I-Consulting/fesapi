@@ -45,12 +45,12 @@ BoundaryFeatureInterpretation::BoundaryFeatureInterpretation(BoundaryFeature * f
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");
 }
 
-vector<Relationship> BoundaryFeatureInterpretation::getAllEpcRelationships() const
+vector<Relationship> BoundaryFeatureInterpretation::getAllSourceRelationships() const
 {
-	vector<Relationship> result = AbstractFeatureInterpretation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractFeatureInterpretation::getAllSourceRelationships();
 
 	vector<WellboreMarkerFrameRepresentation*> tmp;
-	for (unsigned int i = 0; i < wellboreMarkerSet.size(); ++i)
+	for (size_t i = 0; i < wellboreMarkerSet.size(); ++i)
 	{
 		bool alreadyInserted = (std::find(tmp.begin(), tmp.end(), wellboreMarkerSet[i]->getWellMarkerFrameRepresentation()) != tmp.end());
 		if (!alreadyInserted)

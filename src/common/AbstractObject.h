@@ -70,6 +70,13 @@ namespace COMMON_NS
 		*/
 		std::string getExtraMetadataStringValueAtIndexV2_0_1(const unsigned int & index) const;
 
+		/**
+		* Return all relationships (backward and forward ones) of the instance using EPC format.
+		*/
+		virtual std::vector<epc::Relationship> getAllSourceRelationships() const = 0;
+		virtual std::vector<epc::Relationship> getAllTargetRelationships() const = 0;
+		std::vector<epc::Relationship> getAllEpcRelationships() const;
+
 	protected:
 
 		enum EmlVersion {
@@ -106,10 +113,6 @@ namespace COMMON_NS
 		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc) = 0;
 		friend void COMMON_NS::EpcDocument::updateAllRelationships();
 
-		/**
-		* Return all relationships (backward and forward ones) of the instance using EPC format.
-		*/
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const = 0;
 		friend void COMMON_NS::EpcDocument::serialize(bool useZip64);
 
 		// Only for Activity. Can not use friendness between AbstractObject and Activity for circular dependencies reason.

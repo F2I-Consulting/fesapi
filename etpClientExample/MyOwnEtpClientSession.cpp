@@ -18,13 +18,17 @@ under the License.
 -----------------------------------------------------------------------*/
 
 #include "MyOwnEtpClientSession.h"
+#include "etp/ProtocolHandlers/CoreHandlers.h"
+#include "etp/ProtocolHandlers/DirectedDiscoveryHandlers.h"
 
 MyOwnEtpClientSession::MyOwnEtpClientSession(boost::asio::io_context& ioc,
 		const std::string & host, const std::string & port, const std::string & target,
-		const std::vector<Energistics::Datatypes::SupportedProtocol> & requestedProtocols,
+		const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 		const std::vector<std::string>& supportedObjects)
 	: ETP_NS::ClientSession(ioc, host, port, target, requestedProtocols, supportedObjects)
 {
+	setCoreProtocolHandlers(std::make_shared<ETP_NS::CoreHandlers>(this));
+	setDirectedDiscoveryProtocolHandlers(std::make_shared<ETP_NS::DirectedDiscoveryHandlers>(this));
 }
 
 void MyOwnEtpClientSession::do_when_finished()
@@ -36,7 +40,7 @@ void MyOwnEtpClientSession::do_when_finished()
 		close();
 	}
 	else if (command.substr(0, 10) == "GetContent") {
-		Energistics::Protocol::DirectedDiscovery::GetContent mb;
+		Energistics::Etp::v12::Protocol::DirectedDiscovery::GetContent mb;
 		mb.m_uri = command.size() > 11 ? command.substr(11) : "";
 		sendAndDoRead(mb);
 	}

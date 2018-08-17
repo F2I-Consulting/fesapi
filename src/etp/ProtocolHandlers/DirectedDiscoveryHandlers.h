@@ -30,12 +30,12 @@ namespace ETP_NS
 	public:
 		DirectedDiscoveryHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
 
-	    void decodeMessageBody(const Energistics ::Datatypes::MessageHeader & mh, avro::DecoderPtr d);
+	    void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d);
 
-	    virtual void on_GetContent(const Energistics::Protocol::DirectedDiscovery::GetContent & gc, int64_t correlationId);
-	    virtual void on_GetResourcesResponse(const Energistics::Protocol::DirectedDiscovery::GetResourcesResponse & grr);
-	    virtual void on_GetSourceFolders(const Energistics::Protocol::DirectedDiscovery::GetSourceFolders & gsf);
-	    virtual void on_GetTargetFolders(const Energistics::Protocol::DirectedDiscovery::GetTargetFolders & gtf);
+	    virtual void on_GetContent(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetContent & gc, int64_t correlationId);
+	    virtual void on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetResourcesResponse & grr);
+	    virtual void on_GetSources(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetSources & gs);
+	    virtual void on_GetTargets(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetTargets & gt);
 
 		virtual ~DirectedDiscoveryHandlers() {}
 	};

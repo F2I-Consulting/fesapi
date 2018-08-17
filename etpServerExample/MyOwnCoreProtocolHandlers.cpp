@@ -21,29 +21,29 @@ under the License.
 #include "etp/AbstractSession.h"
 #include "tools/GuidTools.h"
 
-void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Protocol::Core::RequestSession & rs, int64_t correlationId)
+void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::Protocol::Core::RequestSession & rs, int64_t correlationId)
 {
 	// Check requested protocols
-	std::vector<Energistics::Datatypes::SupportedProtocol> supportedProtocols;
-	Energistics::Datatypes::Version protocolVersion;
+	std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> supportedProtocols;
+	Energistics::Etp::v12::Datatypes::Version protocolVersion;
 	protocolVersion.m_major = 1;
 	protocolVersion.m_minor = 1;
 	protocolVersion.m_patch = 0;
 	protocolVersion.m_revision = 0;
 	for (auto& rp : rs.m_requestedProtocols) {
 	    if (rp.m_protocol == 0 && rp.m_role == "server") {
-	    	Energistics::Datatypes::SupportedProtocol protocol;
-	    	protocol.m_protocol = Energistics::Datatypes::Protocols::Core;
+	    	Energistics::Etp::v12::Datatypes::SupportedProtocol protocol;
+	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocols::Core;
 	    	protocol.m_protocolVersion = protocolVersion;
 	    	protocol.m_role = "server";
 	    	supportedProtocols.push_back(protocol);
 	    }
 	    else if (rp.m_protocol == 3 && rp.m_role == "store") {
-	    	Energistics::Datatypes::SupportedProtocol protocol;
-	    	protocol.m_protocol = Energistics::Datatypes::Protocols::Discovery;
+	    	Energistics::Etp::v12::Datatypes::SupportedProtocol protocol;
+	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocols::Discovery;
 			protocol.m_protocolVersion = protocolVersion;
 			protocol.m_role = "store";
-			Energistics::Datatypes::DataValue value;
+			Energistics::Etp::v12::Datatypes::DataValue value;
 			value.m_item.set_int(1000);
 			protocol.m_protocolCapabilities.insert(std::make_pair("MaxGetResourcesResponse", value));
 	    	supportedProtocols.push_back(protocol);
@@ -51,23 +51,23 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Protocol::C
 	}
 
 	if (supportedProtocols.empty()) {
-		Energistics::Protocol::Core::ProtocolException error;
+		Energistics::Etp::v12::Protocol::Core::ProtocolException error;
 		error.m_errorCode = 2;
 		error.m_errorMessage = "The server does not support any of the requested protocols.";
 
-		session->sendAndDoWhenFinished(error);
+		session->send(error);
 		return;
 	}
 
 	// Build Open Session message
-	Energistics::Protocol::Core::OpenSession openSession;
+	Energistics::Etp::v12::Protocol::Core::OpenSession openSession;
 	openSession.m_applicationName = "F2I ETP Example Server";
 	openSession.m_applicationVersion = "0.0";
-	openSession.m_sessionId = tools::GuidTools::generateUidAsString();
+	openSession.m_sessionId = GuidTools::generateUidAsString();
 	openSession.m_supportedProtocols = supportedProtocols;
 	std::vector<std::string> supportedObjects;
 	supportedObjects.push_back("application/x-resqml+xml;version=2.0;type=*");
 	openSession.m_supportedObjects = supportedObjects;
 
-	session->sendAndDoWhenFinished(openSession, correlationId);
+	session->send(openSession, correlationId);
 }

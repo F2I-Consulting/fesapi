@@ -23,9 +23,9 @@ under the License.
 
 using namespace ETP_NS;
 
-Energistics::Datatypes::MessageHeader AbstractSession::decodeMessageHeader(avro::DecoderPtr decoder)
+Energistics::Etp::v12::Datatypes::MessageHeader AbstractSession::decodeMessageHeader(avro::DecoderPtr decoder)
 {
-	Energistics ::Datatypes::MessageHeader receivedMh;
+	Energistics::Etp::v12::Datatypes::MessageHeader receivedMh;
 	avro::decode(*decoder, receivedMh);
 #ifndef NDEBUG
 	std::cout << "*************************************************" << std::endl;
@@ -62,27 +62,26 @@ void AbstractSession::on_read(boost::system::error_code ec, std::size_t bytes_tr
 	avro::DecoderPtr d = avro::binaryDecoder();
 	d->init(*in);
 
-	Energistics ::Datatypes::MessageHeader receivedMh = decodeMessageHeader(d);
+	Energistics::Etp::v12::Datatypes::MessageHeader receivedMh = decodeMessageHeader(d);
 
 	if (receivedMh.m_protocol < protocolHandlers.size() && protocolHandlers[receivedMh.m_protocol] != nullptr) {
 		protocolHandlers[receivedMh.m_protocol]->decodeMessageBody(receivedMh, d);
 	}
 	else {
-		Energistics::Protocol::Core::ProtocolException error;
+		flushReceivingBuffer();
+
+		Energistics::Etp::v12::Protocol::Core::ProtocolException error;
 		error.m_errorCode = 4;
 		error.m_errorMessage = "The agent does not support the protocol identified in a message header.";
 
-		sendAndDoWhenFinished(error);
+		send(error);
 	}
-
-	// Clear the buffer
-	receivedBuffer.consume(receivedBuffer.size());
 }
 
 void AbstractSession::close()
 {
 	// Build Open Session message
-	Energistics::Protocol::Core::CloseSession closeSession;
+	Energistics::Etp::v12::Protocol::Core::CloseSession closeSession;
 
 	sendAndDoRead(closeSession);
 }

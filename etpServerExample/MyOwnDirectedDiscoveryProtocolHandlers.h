@@ -28,7 +28,7 @@ public:
 	MyOwnDirectedDiscoveryProtocolHandlers(MyOwnEtpServerSession* mySession): ETP_NS::DirectedDiscoveryHandlers(mySession) {}
 	~MyOwnDirectedDiscoveryProtocolHandlers() {}
 
-	void on_GetContent(const Energistics::Protocol::DirectedDiscovery::GetContent & gc, int64_t correlationId);
-	//void on_GetSourceFolders(const Energistics::Protocol::DirectedDiscovery::GetSourceFolders & gsf);
-	//void on_GetTargetFolders(const Energistics::Protocol::DirectedDiscovery::GetTargetFolders & gtf);
+	void on_GetContent(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetContent & gc, int64_t correlationId);
+	//void on_GetSourceFolders(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetSourceFolders & gsf);
+	//void on_GetTargetFolders(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetTargetFolders & gtf);
 };

@@ -39,13 +39,13 @@ namespace ETP_NS
 	protected:
 	    websocket::stream<tcp::socket> ws;
 	    boost::beast::flat_buffer receivedBuffer;
-	    boost::shared_ptr<std::vector<uint8_t> > bytesToSend;
 	    long long messageId = 1;
 	    std::vector<std::shared_ptr<ETP_NS::ProtocolHandlers>> protocolHandlers;
 	    bool closed;
+	    std::vector<std::vector<uint8_t> > queue;
 
 	    // For client session
-	    AbstractSession(boost::asio::io_context& ioc) : ws(ioc), closed(true){
+	    AbstractSession(boost::asio::io_context& ioc) : ws(ioc), closed(true) {
 	    	setCoreProtocolHandlers(std::make_shared<CoreHandlers>(this));
 	    }
 	    // For server session
@@ -59,36 +59,49 @@ namespace ETP_NS
 		 * Write the current buffer on the web socket
 		 */
 		virtual void do_write() = 0;
-		virtual void do_writeAndFinished() = 0;
-		virtual void do_writeAndRead() = 0;
 
 		/**
 		 * Reads the message header currently stored in the decoder.
 		 * @param decoder	Must be initialized with stream containing a coded message header.
 		 */
-		Energistics ::Datatypes::MessageHeader decodeMessageHeader(avro::DecoderPtr decoder);
+		Energistics::Etp::v12::Datatypes::MessageHeader decodeMessageHeader(avro::DecoderPtr decoder);
 
-		template<typename T> void encode(const T & mb, int64_t correlationId = 0)
+		template<typename T> void encode(const T & mb, int64_t correlationId = 0, int32_t messageFlags = 0)
 		{
 			// Build message header
-			Energistics::Datatypes::MessageHeader mh;
+			Energistics::Etp::v12::Datatypes::MessageHeader mh;
 			mh.m_protocol = mb.protocolId;
 			mh.m_messageType = mb.messageTypeId;
 			mh.m_correlationId = correlationId;
 			mh.m_messageId = messageId++;
-			mh.m_messageFlags = 0;
+			mh.m_messageFlags = messageFlags;
+
+#ifndef NDEBUG
+			std::cout << "*************************************************" << std::endl;
+			std::cout << "Message Header sent : " << std::endl;
+			std::cout << "protocol : " << mh.m_protocol << std::endl;
+			std::cout << "type : " << mh.m_messageType << std::endl;
+			std::cout << "id : " << mh.m_messageId << std::endl;
+			std::cout << "correlation id : " << mh.m_correlationId << std::endl;
+			std::cout << "flags : " << mh.m_messageFlags << std::endl;
+			std::cout << "*************************************************" << std::endl;
+#endif
 
 			std::auto_ptr<avro::OutputStream> out = avro::memoryOutputStream();
 			avro::EncoderPtr e = avro::binaryEncoder();
 			e->init(*out);
 			avro::encode(*e, mh);
 			avro::encode(*e, mb);
-			bytesToSend = avro::snapshot(*out);
+			queue.push_back(*avro::snapshot(*out).get());
 		}
 
 	public:
 
 		virtual ~AbstractSession() {	}
+
+		void flushReceivingBuffer() {
+			receivedBuffer.consume(receivedBuffer.size());
+		}
 
 		/**
 		 * Set the Core protocol handlers
@@ -98,7 +111,7 @@ namespace ETP_NS
 	    		protocolHandlers.push_back(coreHandlers);
 	    	}
 	    	else {
-	    		protocolHandlers[Energistics::Datatypes::Protocols::Core] = coreHandlers;
+	    		protocolHandlers[Energistics::Etp::v12::Datatypes::Protocols::Core] = coreHandlers;
 	    	}
 	    }
 
@@ -106,29 +119,23 @@ namespace ETP_NS
 		 * Set the Discovery protocol handlers
 		 */
 		void setDiscoveryProtocolHandlers(std::shared_ptr<DiscoveryHandlers> discoveryHandlers) {
-			while (protocolHandlers.size() < Energistics::Datatypes::Protocols::Discovery + 1) {
+			while (protocolHandlers.size() < Energistics::Etp::v12::Datatypes::Protocols::Discovery + 1) {
 				protocolHandlers.push_back(nullptr);
 			}
-			protocolHandlers[Energistics::Datatypes::Protocols::Discovery] = discoveryHandlers;
+			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocols::Discovery] = discoveryHandlers;
 		}
 
 		/**
 		 * Set the Directed Discovery protocol handlers
 		 */
 		void setDirectedDiscoveryProtocolHandlers(std::shared_ptr<DirectedDiscoveryHandlers> directedDiscoveryHandlers) {
-			while (protocolHandlers.size() < Energistics::Datatypes::Protocols::DirectedDiscovery + 1) {
+			while (protocolHandlers.size() < Energistics::Etp::v12::Datatypes::Protocols::DirectedDiscovery + 1) {
 				protocolHandlers.push_back(nullptr);
 			}
-			protocolHandlers[Energistics::Datatypes::Protocols::DirectedDiscovery] = directedDiscoveryHandlers;
+			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocols::DirectedDiscovery] = directedDiscoveryHandlers;
 		}
 
 		void close();
-
-		template<typename T> void send(const T & mb, int64_t correlationId = 0)
-		{
-			encode(mb);
-			do_write();
-		}
 
 		/**
 		 * Create a default ETP message header from the ETP message body.
@@ -136,10 +143,17 @@ namespace ETP_NS
 		 * Write/send this session buffer on the web socket.
 		 * @param mb The ETP message body to send
 		 */
-		template<typename T> void sendAndDoWhenFinished(const T & mb, int64_t correlationId = 0)
+		template<typename T> void send(const T & mb, int64_t correlationId = 0, int32_t messageFlags = 0)
 		{
-			encode(mb);
-			do_writeAndFinished();
+			encode(mb, correlationId, messageFlags); // put the message to write in the queue
+
+			if(queue.size() == 1) {
+				do_write();
+			}
+
+			if ((messageFlags & 0x02) != 0 || (messageFlags & 0x01) == 0) {
+				do_when_finished();
+			}
 		}
 
 		/**
@@ -148,10 +162,14 @@ namespace ETP_NS
 		 * Write/send this session buffer on the web socket and then read an answer.
 		 * @param mb The ETP message body to send
 		 */
-		template<typename T> void sendAndDoRead(const T & mb, int64_t correlationId = 0)
+		template<typename T> void sendAndDoRead(const T & mb, int64_t correlationId = 0, int32_t messageFlags = 0)
 		{
-			encode(mb);
-			do_writeAndRead();
+			encode(mb, correlationId, messageFlags); // put the message to write in the queue
+			if(queue.size() == 1) {
+				do_write();
+			}
+
+			do_read();
 		}
 
 		/**
@@ -175,12 +193,17 @@ namespace ETP_NS
 		 */
 		void on_read(boost::system::error_code ec, std::size_t bytes_transferred);
 
-		void on_write(boost::system::error_code ec, std::size_t bytes_transferred) { }
-		void on_writeAndFinished(boost::system::error_code ec, std::size_t bytes_transferred) {
-			do_when_finished();
-		}
-		void on_writeAndRead(boost::system::error_code ec, std::size_t bytes_transferred) {
-			do_read();
+		void on_write(boost::system::error_code ec, std::size_t bytes_transferred) {
+			if(ec) {
+				std::cerr << "on_write : " << ec.message() << std::endl;
+			}
+
+			// Remove the message from the queue
+			queue.erase(queue.begin());
+
+			if(! queue.empty()) {
+				do_write();
+			}
 		}
 
 		void on_close(boost::system::error_code ec) {

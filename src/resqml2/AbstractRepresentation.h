@@ -322,9 +322,10 @@ namespace RESQML2_NS
 
 		static const char* XML_TAG;
 
-	protected:
+		virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
+		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
 
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
+	protected:
 		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML forward relationships

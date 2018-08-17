@@ -160,9 +160,10 @@ namespace RESQML2_NS
 
 		void convertXyzPointsToGlobalCrs(double * xyzPoints, const ULONG64 & xyzPointCount, bool withoutTranslation = false) const;
 
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
+
 	protected:
-		
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
 		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
 
 		// XML backward relationship

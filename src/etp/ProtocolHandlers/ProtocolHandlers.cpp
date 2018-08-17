@@ -23,9 +23,9 @@ under the License.
 using namespace ETP_NS;
 
 void ProtocolHandlers::sendExceptionCode3() {
-	Energistics::Protocol::Core::ProtocolException error;
+	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
 	error.m_errorCode = 3;
 	error.m_errorMessage = "The message type ID is invalid for the given protocol.";
 
-	session->sendAndDoWhenFinished(error);
+	session->send(error);
 }

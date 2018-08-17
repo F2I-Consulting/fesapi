@@ -92,12 +92,12 @@ namespace RESQML2_NS
 		* Get a particular representation uuid of this representation set according to its position.
 		*/
 		std::string getRepresentationUuid(const unsigned int & index) const;
+		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
 
     protected:
 
 		void pushBackXmlRepresentation(RESQML2_NS::AbstractRepresentation* rep);
 
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
 		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		friend void RESQML2_NS::AbstractRepresentation::pushBackIntoRepresentationSet(RepresentationSetRepresentation * repSet, bool xml);

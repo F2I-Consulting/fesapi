@@ -508,7 +508,43 @@ void AbstractRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument
 	}
 }
 
-vector<Relationship> AbstractRepresentation::getAllEpcRelationships() const
+vector<Relationship> AbstractRepresentation::getAllSourceRelationships() const
+{
+	vector<Relationship> result;
+
+	for (size_t i = 0; i < subRepresentationSet.size(); ++i)
+	{
+		Relationship relSubRep(subRepresentationSet[i]->getPartNameInEpcDocument(), "", subRepresentationSet[i]->getUuid());
+		relSubRep.setSourceObjectType();
+		result.push_back(relSubRep);
+	}
+
+	for (size_t i = 0; i < propertySet.size(); ++i)
+	{
+		Relationship relValues(propertySet[i]->getPartNameInEpcDocument(), "", propertySet[i]->getUuid());
+		relValues.setSourceObjectType();
+		result.push_back(relValues);
+	}
+
+	// Seismic backward relationship
+	for (size_t i = 0; i < seismicSupportedRepSet.size(); ++i)
+	{
+		Relationship relSeisSupportedRep(seismicSupportedRepSet[i]->getPartNameInEpcDocument(), "", seismicSupportedRepSet[i]->getUuid());
+		relSeisSupportedRep.setSourceObjectType();
+		result.push_back(relSeisSupportedRep);
+	}
+
+	for (size_t i = 0; i < representationSetRepresentationSet.size(); ++i)
+	{
+		Relationship relOrg(representationSetRepresentationSet[i]->getPartNameInEpcDocument(), "", representationSetRepresentationSet[i]->getUuid());
+		relOrg.setSourceObjectType();
+		result.push_back(relOrg);
+	}
+
+	return result;
+}
+
+vector<Relationship> AbstractRepresentation::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 
@@ -533,20 +569,6 @@ vector<Relationship> AbstractRepresentation::getAllEpcRelationships() const
 		result.push_back(relHdf);
 	}
 
-	for (size_t i = 0; i < subRepresentationSet.size(); ++i)
-	{
-		Relationship relSubRep(subRepresentationSet[i]->getPartNameInEpcDocument(), "", subRepresentationSet[i]->getUuid());
-		relSubRep.setSourceObjectType();
-		result.push_back(relSubRep);
-	}
-
-	for (size_t i = 0; i < propertySet.size(); ++i)
-	{
-		Relationship relValues(propertySet[i]->getPartNameInEpcDocument(), "", propertySet[i]->getUuid());
-		relValues.setSourceObjectType();
-		result.push_back(relValues);
-	}
-
 	// Seismic forward relationship
 	std::set<AbstractRepresentation*> allSeismicSupport = getAllSeismicSupport();
 	for (std::set<AbstractRepresentation*>::iterator it = allSeismicSupport.begin(); it != allSeismicSupport.end(); ++it) {
@@ -554,21 +576,6 @@ vector<Relationship> AbstractRepresentation::getAllEpcRelationships() const
 		Relationship rel(seismicSupport->getPartNameInEpcDocument(), "", seismicSupport->getUuid());
 		rel.setDestinationObjectType();
 		result.push_back(rel);
-	}
-
-	// Seismic backward relationship
-	for (size_t i = 0; i < seismicSupportedRepSet.size(); ++i)
-	{
-		Relationship relSeisSupportedRep(seismicSupportedRepSet[i]->getPartNameInEpcDocument(), "", seismicSupportedRepSet[i]->getUuid());
-		relSeisSupportedRep.setSourceObjectType();
-		result.push_back(relSeisSupportedRep);
-	}
-
-	for (size_t i = 0; i < representationSetRepresentationSet.size(); ++i)
-	{
-		Relationship relOrg(representationSetRepresentationSet[i]->getPartNameInEpcDocument(), "", representationSetRepresentationSet[i]->getUuid());
-		relOrg.setSourceObjectType();
-		result.push_back(relOrg);
 	}
 
 	return result;

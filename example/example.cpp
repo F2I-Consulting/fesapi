@@ -55,7 +55,6 @@ under the License.
 #include "resqml2_0_1/StructuralOrganizationInterpretation.h"
 #include "resqml2_0_1/StratigraphicUnitInterpretation.h"
 #include "resqml2_0_1/Grid2dRepresentation.h"
-#include "resqml2_0_1/Grid2dSetRepresentation.h"
 #include "resqml2_0_1/SeismicLatticeFeature.h"
 #include "resqml2_0_1/SeismicLineSetFeature.h"
 #include "resqml2_0_1/WellboreFeature.h"

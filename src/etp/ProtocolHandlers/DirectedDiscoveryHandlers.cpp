@@ -29,75 +29,96 @@ bool DirectedDiscoveryHandlers::validateUri(const std::string & uri)const
 	return std::regex_match(uri, std::regex("^eml://((witsml|resqml|prodml|eml)([0-9]+))*.*", std::regex::ECMAScript));
 }
 
-void DirectedDiscoveryHandlers::decodeMessageBody(const Energistics ::Datatypes::MessageHeader & mh, avro::DecoderPtr d)
+void DirectedDiscoveryHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d)
 {
-	if (mh.m_protocol != Energistics::Datatypes::Protocols::DirectedDiscovery) {
+	if (mh.m_protocol != Energistics::Etp::v12::Datatypes::Protocols::DirectedDiscovery) {
 		std::cerr << "Error : This message header does not belong to the protocol Discovery" << std::endl;
 		return;
 	}
 
-	if (mh.m_messageType == Energistics::Protocol::DirectedDiscovery::GetContent::messageTypeId) {
-		Energistics::Protocol::DirectedDiscovery::GetContent gc;
+	if (mh.m_messageType == Energistics::Etp::v12::Protocol::DirectedDiscovery::GetContent::messageTypeId) {
+		Energistics::Etp::v12::Protocol::DirectedDiscovery::GetContent gc;
 		avro::decode(*d, gc);
+		session->flushReceivingBuffer();
 		on_GetContent(gc, mh.m_messageId);
 	}
-	else if (mh.m_messageType == Energistics::Protocol::DirectedDiscovery::GetResourcesResponse::messageTypeId) {
-		Energistics::Protocol::DirectedDiscovery::GetResourcesResponse grr;
+	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DirectedDiscovery::GetResourcesResponse::messageTypeId) {
+		Energistics::Etp::v12::Protocol::DirectedDiscovery::GetResourcesResponse grr;
 		avro::decode(*d, grr);
+		session->flushReceivingBuffer();
 		on_GetResourcesResponse(grr);
+		if ((mh.m_messageFlags & 0x02) != 0 || (mh.m_messageFlags & 0x01) == 0) {
+			session->do_when_finished();
+		}
+		else {
+			session->do_read();
+		}
 	}
-	else if (mh.m_messageType == Energistics::Protocol::DirectedDiscovery::GetSourceFolders::messageTypeId) {
-		Energistics::Protocol::DirectedDiscovery::GetSourceFolders gsf;
-		avro::decode(*d, gsf);
-		on_GetSourceFolders(gsf);
+	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DirectedDiscovery::GetSources::messageTypeId) {
+		Energistics::Etp::v12::Protocol::DirectedDiscovery::GetSources gs;
+		avro::decode(*d, gs);
+		session->flushReceivingBuffer();
+		on_GetSources(gs);
 	}
-	else if (mh.m_messageType == Energistics::Protocol::DirectedDiscovery::GetTargetFolders::messageTypeId) {
-		Energistics::Protocol::DirectedDiscovery::GetTargetFolders gtf;
-		avro::decode(*d, gtf);
-		on_GetTargetFolders(gtf);
+	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DirectedDiscovery::GetTargets::messageTypeId) {
+		Energistics::Etp::v12::Protocol::DirectedDiscovery::GetTargets gt;
+		avro::decode(*d, gt);
+		session->flushReceivingBuffer();
+		on_GetTargets(gt);
 	}
 	else {
+		session->flushReceivingBuffer();
 		sendExceptionCode3();
 	}
 }
 
-void DirectedDiscoveryHandlers::on_GetContent(const Energistics::Protocol::DirectedDiscovery::GetContent & gc, int64_t correlationId)
+void DirectedDiscoveryHandlers::on_GetContent(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetContent & gc, int64_t correlationId)
 {
 	std::cout << "on_GetContent" << std::endl;
 
-	Energistics::Protocol::Core::ProtocolException error;
+	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
 	error.m_errorCode = 7;
 	error.m_errorMessage = "The DirectedDiscovery::on_GetContent method has not been overriden by the agent.";
 
-	session->sendAndDoWhenFinished(error);
+	session->send(error);
 }
 
-void DirectedDiscoveryHandlers::on_GetResourcesResponse(const Energistics::Protocol::DirectedDiscovery::GetResourcesResponse & grr)
+void DirectedDiscoveryHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetResourcesResponse & grr)
 {
-	std::cout << '(' << grr.m_resource.m_name << ", " << grr.m_resource.m_contentType << ')' << std::endl;
-
-	session->do_when_finished();
+	Energistics::Etp::v12::Datatypes::Object::GraphResource graphResource =  grr.m_resource;
+	std::cout << "*************************************************" << std::endl;
+	std::cout << "GraphResource received : " << std::endl;
+	std::cout << "uri : " << graphResource.m_uri << std::endl;
+	std::cout << "contentType : " << graphResource.m_contentType << std::endl;
+	std::cout << "name : " << graphResource.m_name << std::endl;
+	std::cout << "type : " << graphResource.m_resourceType << std::endl;
+	std::cout << "sourceCount : " << graphResource.m_sourceCount << std::endl;
+	std::cout << "targetCount : " << graphResource.m_targetCount << std::endl;
+	std::cout << "contentCount : " << graphResource.m_contentCount << std::endl;
+	std::cout << "uuid : " << graphResource.m_uuid << std::endl;
+	std::cout << "lastChanged : " << graphResource.m_lastChanged << std::endl;
+	std::cout << "*************************************************" << std::endl;
 }
 
-void DirectedDiscoveryHandlers::on_GetSourceFolders(const Energistics::Protocol::DirectedDiscovery::GetSourceFolders & gsf)
+void DirectedDiscoveryHandlers::on_GetSources(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetSources & gs)
 {
-	std::cout << "on_GetSourceFolders" << std::endl;
+	std::cout << "on_GetSources" << std::endl;
 
-	Energistics::Protocol::Core::ProtocolException error;
+	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
 	error.m_errorCode = 7;
-	error.m_errorMessage = "The DirectedDiscovery::on_GetSourceFolders method has not been overriden by the agent.";
+	error.m_errorMessage = "The DirectedDiscovery::on_GetSources method has not been overriden by the agent.";
 
-	session->sendAndDoWhenFinished(error);
+	session->send(error);
 }
 
-void DirectedDiscoveryHandlers::on_GetTargetFolders(const Energistics::Protocol::DirectedDiscovery::GetTargetFolders & gtf)
+void DirectedDiscoveryHandlers::on_GetTargets(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetTargets & gt)
 {
-	std::cout << "on_GetTargetFolders" << std::endl;
+	std::cout << "on_GetTargets" << std::endl;
 
 	// Build GetResourcesResponse message
-	Energistics::Protocol::Core::ProtocolException error;
+	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
 	error.m_errorCode = 7;
-	error.m_errorMessage = "The DirectedDiscovery::on_GetTargetFolders method has not been overriden by the agent.";
+	error.m_errorMessage = "The DirectedDiscovery::on_GetTargets method has not been overriden by the agent.";
 
-	session->sendAndDoWhenFinished(error);
+	session->send(error);
 }

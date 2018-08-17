@@ -185,13 +185,14 @@ namespace RESQML2_0_1_NS
 
 		unsigned int getPatchCount() const {return 1;}
 
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
 	protected:
 
 		friend void WellboreTrajectoryRepresentation::setDeviationSurvey(DeviationSurveyRepresentation* deviationSurvey);
 
 		void addTrajectory(class WellboreTrajectoryRepresentation* trajectory);
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
 		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 		
 		// XML backward relationships

@@ -39,7 +39,9 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :AbstractRepresentation(partialObject) {}
+		WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
+			AbstractRepresentation(partialObject),
+			witsmlTrajectory(nullptr) {}
 
 
 		/**
@@ -238,6 +240,9 @@ namespace RESQML2_0_1_NS
 		void setWitsmlTrajectory(WITSML1_4_1_1_NS::Trajectory * witsmlTraj);
 		WITSML1_4_1_1_NS::Trajectory * getWitsmlTrajectory() {return witsmlTrajectory;}
 
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
+
 	private:
 		/**
 		* Add a children parent to this trajectory in case of trajectory branching.
@@ -251,8 +256,6 @@ namespace RESQML2_0_1_NS
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getDeviationSurveyDor() const;
 
 	protected:
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
 		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML forward relationships

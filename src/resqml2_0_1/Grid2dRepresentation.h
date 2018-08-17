@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/Grid2dSetRepresentation.h"
+#include "resqml2_0_1/AbstractSurfaceRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -40,7 +40,9 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		Grid2dRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractSurfaceRepresentation(partialObject) {}
+		Grid2dRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
+			AbstractSurfaceRepresentation(partialObject),
+			supportingRepresentation(nullptr) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -290,8 +292,10 @@ namespace RESQML2_0_1_NS
 
 		unsigned int getPatchCount() const {return 1;}
 
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
+
 	private:
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
 		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// Forward relationships
@@ -299,13 +303,6 @@ namespace RESQML2_0_1_NS
 
 		// Backward relationships
 		std::vector<AbstractRepresentation *> supportedRepresentationSet;
-
-		friend void Grid2dSetRepresentation::pushBackGeometryPatch(
-				double * zValues,
-				const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy* proxy,
-				Grid2dRepresentation * supportingGrid2dRepresentation,
-				const unsigned int & startIndexI, const unsigned int & startIndexJ,
-				const int & indexIncrementI, const int & indexIncrementJ);
 	};
 }
 

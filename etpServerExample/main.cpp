@@ -24,9 +24,13 @@ using namespace ETP_NS;
 
 int main(int argc, char **argv)
 {
+	const std::string ipAddress = "127.0.0.1";
+	const unsigned short port = 8080;
+	const int threadCount = 2;
+
 	Server<MyOwnEtpServerSession> etpServer;
-	etpServer.listen("127.0.0.1", 8080, 2);
-	//etpServer.listen("10.3.107.49", 8080, 2);
+	std::cout << "Start listening on " << ipAddress << ":" << port << " with " << threadCount << " threads..." << std::endl;
+	etpServer.listen(ipAddress, port, threadCount);
 
 #ifdef _WIN32
 	_CrtDumpMemoryLeaks();

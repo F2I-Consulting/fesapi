@@ -178,9 +178,24 @@ void FormationMarker::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDo
 	}
 }
 
-vector<Relationship> FormationMarker::getAllEpcRelationships() const
+vector<Relationship> FormationMarker::getAllSourceRelationships() const
 {
-	vector<Relationship> result = AbstractObject::getAllEpcRelationships();
+	vector<Relationship> result;
+
+	// XML backward relationship
+	if (resqmlWellboreMarkerFrameRepresentation != nullptr)
+	{
+		Relationship rel(resqmlWellboreMarkerFrameRepresentation->getPartNameInEpcDocument(), "", resqmlWellboreMarkerFrameRepresentation->getUuid());
+		rel.setSourceObjectType();
+		result.push_back(rel);
+	}
+
+	return result;
+}
+
+vector<Relationship> FormationMarker::getAllTargetRelationships() const
+{
+	vector<Relationship> result = AbstractObject::getAllTargetRelationships();
 
 	// XML forward relationship
 	Relationship relWellbore(wellbore->getPartNameInEpcDocument(), "", wellbore->getUuid());
@@ -190,14 +205,6 @@ vector<Relationship> FormationMarker::getAllEpcRelationships() const
 	Relationship relWell(wellbore->getWell()->getPartNameInEpcDocument(), "", wellbore->getWell()->getUuid());
 	relWell.setDestinationObjectType();
 	result.push_back(relWell);
-
-	// XML backward relationship
-	if (resqmlWellboreMarkerFrameRepresentation)
-	{
-		Relationship rel(resqmlWellboreMarkerFrameRepresentation->getPartNameInEpcDocument(), "", resqmlWellboreMarkerFrameRepresentation->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
 
 	return result;
 }

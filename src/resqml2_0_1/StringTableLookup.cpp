@@ -40,18 +40,24 @@ StringTableLookup::StringTableLookup(soap* soapContext, const string & guid, con
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");
 }
 
-vector<Relationship> StringTableLookup::getAllEpcRelationships() const
+vector<Relationship> StringTableLookup::getAllSourceRelationships() const
 {
 	vector<Relationship> result;
 
 	// XML backward relationship
-	for (unsigned int i = 0; i < categoricalPropertyValuesSet.size(); i++)
+	for (size_t i = 0; i < categoricalPropertyValuesSet.size(); ++i)
 	{
 		Relationship rel(categoricalPropertyValuesSet[i]->getPartNameInEpcDocument(), "", categoricalPropertyValuesSet[i]->getUuid());
 		rel.setSourceObjectType();
 		result.push_back(rel);
 	}
 
+	return result;
+}
+
+vector<Relationship> StringTableLookup::getAllTargetRelationships() const
+{
+	vector<Relationship> result;
 	return result;
 }
 

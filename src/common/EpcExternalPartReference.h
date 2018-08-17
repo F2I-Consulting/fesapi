@@ -65,9 +65,11 @@ namespace COMMON_NS
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const;
 
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
+
 	protected:
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
 		/**
 		* Does nothing since external reference has not forward relationships at all
 		*/

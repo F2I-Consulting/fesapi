@@ -73,9 +73,9 @@ namespace RESQML2_0_1_NS
 
 		virtual std::string getHdfProxyUuid() const;
 
-    private:
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
+    private:
 
         std::vector<class AbstractRepresentation*> supportingRepOfContactPatchSet;
             

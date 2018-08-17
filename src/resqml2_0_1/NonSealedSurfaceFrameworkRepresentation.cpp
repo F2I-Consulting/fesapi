@@ -120,12 +120,12 @@ std::string NonSealedSurfaceFrameworkRepresentation::getHdfProxyUuid() const
 	return result;
 }
 
-vector<Relationship> NonSealedSurfaceFrameworkRepresentation::getAllEpcRelationships() const
+vector<Relationship> NonSealedSurfaceFrameworkRepresentation::getAllTargetRelationships() const
 {
-	vector<Relationship> result = RepresentationSetRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = RepresentationSetRepresentation::getAllTargetRelationships();
         
     // supporting representations of organization sub representations
-    for (unsigned int i = 0; i < supportingRepOfContactPatchSet.size(); i++)
+    for (size_t i = 0; i < supportingRepOfContactPatchSet.size(); i++)
     {
 		Relationship rel(supportingRepOfContactPatchSet[i]->getPartNameInEpcDocument(), "", supportingRepOfContactPatchSet[i]->getUuid());
 		rel.setDestinationObjectType();

@@ -30,10 +30,10 @@ namespace ETP_NS
 	public:
 		DiscoveryHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
 
-	    void decodeMessageBody(const Energistics ::Datatypes::MessageHeader & mh, avro::DecoderPtr d);
+	    void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d);
 
-	    virtual void on_GetResources(const Energistics::Protocol::Discovery::GetResources & gr, int64_t correlationId);
-	    virtual void on_GetResourcesResponse(const Energistics::Protocol::Discovery::GetResourcesResponse & grr);
+	    virtual void on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources & gr, int64_t correlationId);
+	    virtual void on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse & grr);
 
 		virtual ~DiscoveryHandlers() {}
 	};

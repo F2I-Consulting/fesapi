@@ -44,13 +44,13 @@ StratigraphicUnitInterpretation::StratigraphicUnitInterpretation(StratigraphicUn
 	setInterpretedFeature(feature);
 }
 
-vector<Relationship> StratigraphicUnitInterpretation::getAllEpcRelationships() const
+vector<Relationship> StratigraphicUnitInterpretation::getAllSourceRelationships() const
 {
-	vector<Relationship> result = AbstractFeatureInterpretation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractFeatureInterpretation::getAllSourceRelationships();
 
-	for (unsigned int i = 0; i < stratigraphicColumnRankSet.size(); i++)
+	for (size_t i = 0; i < stratigraphicColumnRankSet.size(); ++i)
 	{
-		if (stratigraphicColumnRankSet[i])
+		if (stratigraphicColumnRankSet[i] != nullptr)
 		{
 			Relationship rel(stratigraphicColumnRankSet[i]->getPartNameInEpcDocument(), "", stratigraphicColumnRankSet[i]->getUuid());
 			rel.setSourceObjectType();

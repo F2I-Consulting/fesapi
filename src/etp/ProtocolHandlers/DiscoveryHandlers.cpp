@@ -29,41 +29,44 @@ bool DiscoveryHandlers::validateUri(const std::string & uri)const
 	return std::regex_match(uri, std::regex("^eml://((witsml|resqml|prodml|eml)([0-9]+))*.*", std::regex::ECMAScript));
 }
 
-void DiscoveryHandlers::decodeMessageBody(const Energistics ::Datatypes::MessageHeader & mh, avro::DecoderPtr d)
+void DiscoveryHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d)
 {
-	if (mh.m_protocol != Energistics::Datatypes::Protocols::Discovery) {
+	if (mh.m_protocol != Energistics::Etp::v12::Datatypes::Protocols::Discovery) {
 		std::cerr << "Error : This message header does not belong to the protocol Discovery" << std::endl;
 		return;
 	}
 
 	if (mh.m_messageType == 1) {
-		Energistics::Protocol::Discovery::GetResources gr;
+		Energistics::Etp::v12::Protocol::Discovery::GetResources gr;
 		avro::decode(*d, gr);
+		session->flushReceivingBuffer();
 		on_GetResources(gr, mh.m_messageId);
 	}
 	else if (mh.m_messageType == 2) {
-		Energistics::Protocol::Discovery::GetResourcesResponse grr;
+		Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse grr;
 		avro::decode(*d, grr);
+		session->flushReceivingBuffer();
 		on_GetResourcesResponse(grr);
 	}
 	else {
+		session->flushReceivingBuffer();
 		sendExceptionCode3();
 	}
 }
 
-void DiscoveryHandlers::on_GetResources(const Energistics::Protocol::Discovery::GetResources & gr, int64_t correlationId)
+void DiscoveryHandlers::on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources & gr, int64_t correlationId)
 {
 	std::cout << "on_GetResources" << std::endl;
 
 	// Build GetResourcesResponse message
-	Energistics::Protocol::Core::ProtocolException error;
+	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
 	error.m_errorCode = 7;
 	error.m_errorMessage = "The Discovery::on_GetResources method has not been overriden by the agent.";
 
-	session->sendAndDoWhenFinished(error);
+	session->send(error);
 }
 
-void DiscoveryHandlers::on_GetResourcesResponse(const Energistics::Protocol::Discovery::GetResourcesResponse & grr)
+void DiscoveryHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse & grr)
 {
 	std::cout << '(' << grr.m_resource.m_name << ", " << grr.m_resource.m_contentType << ')' << std::endl;
 

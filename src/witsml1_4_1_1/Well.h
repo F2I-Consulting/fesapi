@@ -155,7 +155,7 @@ namespace WITSML1_4_1_1_NS
 		*/
 		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
 
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}

@@ -203,40 +203,47 @@ void StratigraphicColumnRankInterpretation::importRelationshipSetFromEpc(COMMON_
 	updateXml = true;
 }
 
-vector<Relationship> StratigraphicColumnRankInterpretation::getAllEpcRelationships() const
+vector<Relationship> StratigraphicColumnRankInterpretation::getAllSourceRelationships() const
 {
-	vector<Relationship> result = AbstractStratigraphicOrganizationInterpretation::getAllEpcRelationships();
-
-	// forward relationships
-	for (unsigned int i = 0; i < stratigraphicUnitSet.size(); i++)
-	{
-		Relationship rel(stratigraphicUnitSet[i]->getPartNameInEpcDocument(), "", stratigraphicUnitSet[i]->getUuid());
-		rel.setDestinationObjectType();
-		result.push_back(rel);
-	}
-
-	for (unsigned int i = 0; i < horizonInterpretationSet.size(); i++)
-	{
-		Relationship rel(horizonInterpretationSet[i]->getPartNameInEpcDocument(), "", horizonInterpretationSet[i]->getUuid());
-		rel.setDestinationObjectType();
-		result.push_back(rel);
-	}
+	vector<Relationship> result = AbstractStratigraphicOrganizationInterpretation::getAllSourceRelationships();
 
 	// Backward relationships
-	for (unsigned int i = 0; i < stratigraphicColumnSet.size(); i++)
+	for (size_t i = 0; i < stratigraphicColumnSet.size(); i++)
 	{
 		Relationship rel(stratigraphicColumnSet[i]->getPartNameInEpcDocument(), "", stratigraphicColumnSet[i]->getUuid());
 		rel.setSourceObjectType();
 		result.push_back(rel);
 	}
 
-	for (unsigned int i = 0; i < stratigraphicOccurrenceInterpretationSet.size(); i++)
+	for (size_t i = 0; i < stratigraphicOccurrenceInterpretationSet.size(); i++)
 	{
 		Relationship rel(stratigraphicOccurrenceInterpretationSet[i]->getPartNameInEpcDocument(), "", stratigraphicOccurrenceInterpretationSet[i]->getUuid());
 		rel.setSourceObjectType();
 		result.push_back(rel);
 	}
-        
+
+    return result;
+}
+
+vector<Relationship> StratigraphicColumnRankInterpretation::getAllTargetRelationships() const
+{
+	vector<Relationship> result = AbstractStratigraphicOrganizationInterpretation::getAllTargetRelationships();
+
+	// forward relationships
+	for (size_t i = 0; i < stratigraphicUnitSet.size(); i++)
+	{
+		Relationship rel(stratigraphicUnitSet[i]->getPartNameInEpcDocument(), "", stratigraphicUnitSet[i]->getUuid());
+		rel.setDestinationObjectType();
+		result.push_back(rel);
+	}
+
+	for (size_t i = 0; i < horizonInterpretationSet.size(); i++)
+	{
+		Relationship rel(horizonInterpretationSet[i]->getPartNameInEpcDocument(), "", horizonInterpretationSet[i]->getUuid());
+		rel.setDestinationObjectType();
+		result.push_back(rel);
+	}
+
     return result;
 }
 

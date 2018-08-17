@@ -115,9 +115,23 @@ void DeviationSurveyRepresentation::setGeometry(double * firstStationLocation, c
 	hdfProxy->writeArrayNdOfDoubleValues(rep->uuid, "inclinations", inclinations, dim, 1);
 }
 
-vector<Relationship> DeviationSurveyRepresentation::getAllEpcRelationships() const
+vector<Relationship> DeviationSurveyRepresentation::getAllSourceRelationships() const
 {	
-	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractRepresentation::getAllSourceRelationships();
+
+	// XML backward relationship
+	for (size_t i = 0; i < wbTrajectoryRepSet.size(); ++i) {
+		Relationship relFrame(wbTrajectoryRepSet[i]->getPartNameInEpcDocument(), "", wbTrajectoryRepSet[i]->getUuid());
+		relFrame.setSourceObjectType();
+		result.push_back(relFrame);
+	}
+
+	return result;
+}
+
+vector<Relationship> DeviationSurveyRepresentation::getAllTargetRelationships() const
+{
+	vector<Relationship> result = AbstractRepresentation::getAllTargetRelationships();
 
 	// XML forward relationship
 	RESQML2_NS::MdDatum* mdDatum = getMdDatum();
@@ -128,13 +142,6 @@ vector<Relationship> DeviationSurveyRepresentation::getAllEpcRelationships() con
 	}
 	else {
 		throw domain_error("The MD information associated to the WellboreFeature trajectory cannot be nullptr.");
-	}
-
-	// XML backward relationship
-	for (size_t i = 0; i < wbTrajectoryRepSet.size(); ++i) {
-		Relationship relFrame(wbTrajectoryRepSet[i]->getPartNameInEpcDocument(), "", wbTrajectoryRepSet[i]->getUuid());
-		relFrame.setSourceObjectType();
-		result.push_back(relFrame);
 	}
 
 	return result;

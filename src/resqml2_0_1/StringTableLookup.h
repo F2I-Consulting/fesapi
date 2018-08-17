@@ -110,9 +110,10 @@ namespace RESQML2_0_1_NS
 		std::tr1::unordered_map<long, std::string> getMap() const;
 #endif
 
-	protected:
+        std::vector<epc::Relationship> getAllSourceRelationships() const;
+        std::vector<epc::Relationship> getAllTargetRelationships() const;
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
+	protected:
 		/**
 		* Does nothing since StringTableLookup has not got any forward relationship.
 		*/

@@ -45,9 +45,9 @@ bool AbstractStratigraphicOrganizationInterpretation::isAssociatedToGridRepresen
 	return find(gridRepresentationSet.begin(), gridRepresentationSet.end(), gridRep) != gridRepresentationSet.end();
 }
 
-vector<Relationship> AbstractStratigraphicOrganizationInterpretation::getAllEpcRelationships() const
+vector<Relationship> AbstractStratigraphicOrganizationInterpretation::getAllSourceRelationships() const
 {
-	vector<Relationship> result = AbstractOrganizationInterpretation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractOrganizationInterpretation::getAllSourceRelationships();
 
 	for (size_t i = 0; i < gridRepresentationSet.size(); ++i) {
 		Relationship relRep(gridRepresentationSet[i]->getPartNameInEpcDocument(), "", gridRepresentationSet[i]->getUuid());

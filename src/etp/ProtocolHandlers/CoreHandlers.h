@@ -28,12 +28,12 @@ namespace ETP_NS
 		CoreHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
 		virtual ~CoreHandlers() {}
 
-	    void decodeMessageBody(const Energistics ::Datatypes::MessageHeader & mh, avro::DecoderPtr d) override;
+	    void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d) override;
 
-	    virtual void on_RequestSession(const Energistics::Protocol::Core::RequestSession & rs, int64_t correlationId);
-	    virtual void on_OpenSession(const Energistics::Protocol::Core::OpenSession & os);
-	    virtual void on_CloseSession(const Energistics::Protocol::Core::CloseSession & cs);
-	    virtual void on_ProtocolException(const Energistics::Protocol::Core::ProtocolException & pe);
+	    virtual void on_RequestSession(const Energistics::Etp::v12::Protocol::Core::RequestSession & rs, int64_t correlationId);
+	    virtual void on_OpenSession(const Energistics::Etp::v12::Protocol::Core::OpenSession & os);
+	    virtual void on_CloseSession(const Energistics::Etp::v12::Protocol::Core::CloseSession & cs);
+	    virtual void on_ProtocolException(const Energistics::Etp::v12::Protocol::Core::ProtocolException & pe);
 
 	};
 }

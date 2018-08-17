@@ -26,7 +26,7 @@ using namespace ETP_NS;
 
 ClientSession::ClientSession(boost::asio::io_context& ioc,
 		const std::string & host, const std::string & port,  const std::string & target,
-		const std::vector<Energistics::Datatypes::SupportedProtocol> & requestedProtocols,
+		const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 		const std::vector<std::string>& supportedObjects)
 	: AbstractSession(ioc),
 	  resolver(ioc),

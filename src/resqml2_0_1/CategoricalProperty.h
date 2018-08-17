@@ -168,8 +168,8 @@ namespace RESQML2_0_1_NS
 		*/
 		bool validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk);
 
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
 	protected:
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
 		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML forward relationship

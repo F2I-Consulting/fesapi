@@ -162,9 +162,9 @@ ULONG64 AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndic
 	}
 }
 
-vector<Relationship> AbstractColumnLayerGridRepresentation::getAllEpcRelationships() const
+vector<Relationship> AbstractColumnLayerGridRepresentation::getAllTargetRelationships() const
 {
-	vector<Relationship> result = AbstractGridRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractGridRepresentation::getAllTargetRelationships();
 
 	// Strati unit
 	if (!hasCellStratigraphicUnitIndices() && hasIntervalStratigraphicUnitIndices())

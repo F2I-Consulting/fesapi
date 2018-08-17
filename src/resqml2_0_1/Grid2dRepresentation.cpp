@@ -669,18 +669,9 @@ int Grid2dRepresentation::getIndexOffsetOnSupportingRepresentation(const unsigne
 	throw invalid_argument("It does not exist supporting representation for this representation.");
 }
 
-vector<Relationship> Grid2dRepresentation::getAllEpcRelationships() const
+vector<Relationship> Grid2dRepresentation::getAllSourceRelationships() const
 {
-	vector<Relationship> result = AbstractSurfaceRepresentation::getAllEpcRelationships();
-
-	// Supporting Grid 2D representation
-	std::set<AbstractRepresentation*> allSeisSupport = getAllSeismicSupport();
-	if (supportingRepresentation && std::find(allSeisSupport.begin(), allSeisSupport.end(), supportingRepresentation) == allSeisSupport.end())
-	{
-		Relationship relSupportingRepresentation(supportingRepresentation->getPartNameInEpcDocument(), "", supportingRepresentation->getUuid());
-		relSupportingRepresentation.setDestinationObjectType();
-		result.push_back(relSupportingRepresentation);
-	}
+	vector<Relationship> result = AbstractSurfaceRepresentation::getAllSourceRelationships();
 
 	// Supported Grid 2D representations
 	for(vector<AbstractRepresentation*>::const_iterator it = supportedRepresentationSet.begin(); it != supportedRepresentationSet.end(); ++it)
@@ -696,6 +687,21 @@ vector<Relationship> Grid2dRepresentation::getAllEpcRelationships() const
 	return result;
 }
 
+vector<Relationship> Grid2dRepresentation::getAllTargetRelationships() const
+{
+	vector<Relationship> result = AbstractSurfaceRepresentation::getAllTargetRelationships();
+
+	// Supporting Grid 2D representation
+	std::set<AbstractRepresentation*> allSeisSupport = getAllSeismicSupport();
+	if (supportingRepresentation != nullptr && std::find(allSeisSupport.begin(), allSeisSupport.end(), supportingRepresentation) == allSeisSupport.end())
+	{
+		Relationship relSupportingRepresentation(supportingRepresentation->getPartNameInEpcDocument(), "", supportingRepresentation->getUuid());
+		relSupportingRepresentation.setDestinationObjectType();
+		result.push_back(relSupportingRepresentation);
+	}
+
+	return result;
+}
 void Grid2dRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	AbstractSurfaceRepresentation::importRelationshipSetFromEpc(epcDoc);

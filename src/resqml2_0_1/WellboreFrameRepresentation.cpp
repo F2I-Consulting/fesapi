@@ -66,14 +66,14 @@ void WellboreFrameRepresentation::getXyzPointsOfPatch(const unsigned int & patch
 		throw invalid_argument("The geometry of the representation either does not exist or it is not an explicit one.");
 }
 
-vector<Relationship> WellboreFrameRepresentation::getAllEpcRelationships() const
+vector<Relationship> WellboreFrameRepresentation::getAllTargetRelationships() const
 {
 	_resqml2__WellboreFrameRepresentation* frame = static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
 	
-	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractRepresentation::getAllTargetRelationships();
 
 	// XML forward relationship
-	if (trajectory)
+	if (trajectory != nullptr)
 	{
 		Relationship relTraj(trajectory->getPartNameInEpcDocument(), "", frame->Trajectory->UUID);
 		relTraj.setDestinationObjectType();
@@ -82,7 +82,7 @@ vector<Relationship> WellboreFrameRepresentation::getAllEpcRelationships() const
 	else
 		throw domain_error("The trajectory associated to the WellboreFeature frame cannot be nullptr.");
 
-	if (witsmlLog)
+	if (witsmlLog != nullptr)
 	{
 		Relationship relWitsmlLog(witsmlLog->getPartNameInEpcDocument(), "", witsmlLog->getUuid());
 		relWitsmlLog.setDestinationObjectType();

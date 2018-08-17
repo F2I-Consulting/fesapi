@@ -32,7 +32,7 @@ public:
 	 */
 	MyOwnEtpClientSession(boost::asio::io_context& ioc,
 			const std::string & host, const std::string & port, const std::string & target,
-			const std::vector<Energistics::Datatypes::SupportedProtocol> & requestedProtocols,
+			const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 			const std::vector<std::string>& supportedObjects);
 
 	void do_when_finished();

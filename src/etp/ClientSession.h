@@ -30,7 +30,7 @@ namespace ETP_NS
 	    std::string port;
 	    std::string target;
 	    websocket::response_type responseType; // In order to check handshake sec_websocket_protocol
-	    Energistics::Protocol::Core::RequestSession requestSession;
+	    Energistics::Etp::v12::Protocol::Core::RequestSession requestSession;
 
 	public:
 	    /**
@@ -42,7 +42,7 @@ namespace ETP_NS
 	     */
 		ClientSession(boost::asio::io_context& ioc,
 				const std::string & host, const std::string & port, const std::string & target,
-				const std::vector<Energistics::Datatypes::SupportedProtocol> & requestedProtocols,
+				const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 				const std::vector<std::string>& supportedObjects);
 
 		virtual ~ClientSession() {}
@@ -51,32 +51,12 @@ namespace ETP_NS
 
 		void do_write() {
 			ws.async_write(
-				boost::asio::buffer(*bytesToSend),
-				std::bind(
-					&AbstractSession::on_write,
-					shared_from_this(),
-					std::placeholders::_1,
-					std::placeholders::_2));
-		}
-
-		void do_writeAndFinished() {
-			ws.async_write(
-				boost::asio::buffer(*bytesToSend),
-				std::bind(
-					&AbstractSession::on_writeAndFinished,
-					shared_from_this(),
-					std::placeholders::_1,
-					std::placeholders::_2));
-		}
-
-		void do_writeAndRead() {
-			ws.async_write(
-				boost::asio::buffer(*bytesToSend),
-				std::bind(
-					&AbstractSession::on_writeAndRead,
-					shared_from_this(),
-					std::placeholders::_1,
-					std::placeholders::_2));
+					boost::asio::buffer(queue[0]),
+					std::bind(
+							&AbstractSession::on_write,
+							shared_from_this(),
+							std::placeholders::_1,
+							std::placeholders::_2));
 		}
 
 		void do_close() {

@@ -35,9 +35,9 @@ std::string RepresentationSetRepresentation::getXmlTag() const
 	return XML_TAG;
 }
 
-vector<Relationship> RepresentationSetRepresentation::getAllEpcRelationships() const
+vector<Relationship> RepresentationSetRepresentation::getAllTargetRelationships() const
 {
-	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractRepresentation::getAllTargetRelationships();
 
 	const unsigned int repCount = getRepresentationCount();
 	for (size_t i = 0; i < repCount; ++i)

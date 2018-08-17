@@ -90,9 +90,10 @@ namespace RESQML2_0_1_NS
         */
         void pushBackSideFrontierInterpretation(AbstractFeatureInterpretation * sideFrontierInterpretation);
 
-    private:
+        std::vector<epc::Relationship> getAllSourceRelationships() const;
+        std::vector<epc::Relationship> getAllTargetRelationships() const;
 
-        std::vector<epc::Relationship> getAllEpcRelationships() const;	
+    private:
 		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
         // backward relationships

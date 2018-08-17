@@ -64,9 +64,9 @@ BlockedWellboreRepresentation::BlockedWellboreRepresentation(WellboreInterpretat
 	}
 }
 
-vector<Relationship> BlockedWellboreRepresentation::getAllEpcRelationships() const
+vector<Relationship> BlockedWellboreRepresentation::getAllTargetRelationships() const
 {
-	vector<Relationship> result = WellboreFrameRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = WellboreFrameRepresentation::getAllTargetRelationships();
 
 	_resqml2__BlockedWellboreRepresentation* rep = static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 	for (size_t i = 0; i < rep->Grid.size(); ++i) {

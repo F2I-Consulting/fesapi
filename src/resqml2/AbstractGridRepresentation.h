@@ -466,9 +466,11 @@ namespace RESQML2_NS
 
 		static const char* XML_TAG;
 
+		virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
+		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
+
 	protected:
 
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
 		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		bool withTruncatedPillars;
