@@ -767,18 +767,9 @@ void Trajectory::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 	}
 }
 
-vector<Relationship> Trajectory::getAllEpcRelationships() const
+vector<Relationship> Trajectory::getAllSourceRelationships() const
 {
-	vector<Relationship> result = AbstractObject::getAllEpcRelationships();
-
-	// XML forward relationship
-	Relationship relWellbore(wellbore->getPartNameInEpcDocument(), "", wellbore->getUuid());
-	relWellbore.setDestinationObjectType();
-	result.push_back(relWellbore);
-		
-	Relationship relWell(wellbore->getWell()->getPartNameInEpcDocument(), "", wellbore->getWell()->getUuid());
-	relWell.setDestinationObjectType();
-	result.push_back(relWell);
+	vector<Relationship> result;
 
 	// XML backward relationship
 	if (resqmlWellboreTrajectoryRepresentation)
@@ -791,3 +782,18 @@ vector<Relationship> Trajectory::getAllEpcRelationships() const
 	return result;
 }
 
+vector<Relationship> Trajectory::getAllTargetRelationships() const
+{
+	vector<Relationship> result = AbstractObject::getAllTargetRelationships();
+
+	// XML forward relationship
+	Relationship relWellbore(wellbore->getPartNameInEpcDocument(), "", wellbore->getUuid());
+	relWellbore.setDestinationObjectType();
+	result.push_back(relWellbore);
+
+	Relationship relWell(wellbore->getWell()->getPartNameInEpcDocument(), "", wellbore->getWell()->getUuid());
+	relWell.setDestinationObjectType();
+	result.push_back(relWell);
+
+	return result;
+}

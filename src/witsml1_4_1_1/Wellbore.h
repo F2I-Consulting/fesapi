@@ -152,7 +152,8 @@ namespace WITSML1_4_1_1_NS
 
 		void setShape(const gsoap_witsml1_4_1_1::witsml1__WellboreShape & shape);
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
 
 		/**
 		* Resolve all relationships of the object in an epc document.

@@ -88,8 +88,6 @@ namespace RESQML2_0_1_NS
 		const LONG64 getParameterMaxOccurences(const unsigned int & index) const;
 		const LONG64 getParameterMaxOccurences(const std::string & paramTitle) const;
 
-		const std::vector<Activity*> & getActivityInstanceSet() const { return activityInstanceSet; }
-
 		//******************************************************************
 		//******************** MANDATORY FOR GsoapWrapper ******************
 		//******************************************************************
@@ -101,12 +99,7 @@ namespace RESQML2_0_1_NS
 
 
 	private:
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc) {}
-
 		gsoap_resqml2_0_1::resqml2__ParameterTemplate* getParameterFromTitle(const std::string & paramTitle) const;
-		
-        std::vector<Activity*> activityInstanceSet;
 	};
 }
 

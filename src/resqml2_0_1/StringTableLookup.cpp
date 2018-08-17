@@ -40,7 +40,7 @@ StringTableLookup::StringTableLookup(soap* soapContext, const string & guid, con
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");
 }
 
-vector<Relationship> StringTableLookup::getAllEpcRelationships() const
+vector<Relationship> StringTableLookup::getAllSourceRelationships() const
 {
 	vector<Relationship> result;
 
@@ -52,6 +52,12 @@ vector<Relationship> StringTableLookup::getAllEpcRelationships() const
 		result.push_back(rel);
 	}
 
+	return result;
+}
+
+vector<Relationship> StringTableLookup::getAllTargetRelationships() const
+{
+	vector<Relationship> result;
 	return result;
 }
 

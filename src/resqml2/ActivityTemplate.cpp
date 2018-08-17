@@ -27,12 +27,11 @@ using namespace epc;
 
 const char* ActivityTemplate::XML_TAG = "ActivityTemplate";
 
-vector<Relationship> ActivityTemplate::getAllEpcRelationships() const
+vector<Relationship> ActivityTemplate::getAllSourceRelationships() const
 {
 	vector<Relationship> result;
 
-	for (unsigned int i = 0; i < activityInstanceSet.size(); ++i)
-	{
+	for (size_t i = 0; i < activityInstanceSet.size(); ++i) {
 		Relationship rel(activityInstanceSet[i]->getPartNameInEpcDocument(), "", activityInstanceSet[i]->getUuid());
 		rel.setSourceObjectType();
 		result.push_back(rel);
@@ -41,3 +40,8 @@ vector<Relationship> ActivityTemplate::getAllEpcRelationships() const
 	return result;
 }
 
+vector<Relationship> ActivityTemplate::getAllTargetRelationships() const
+{
+	vector<Relationship> result;
+	return result;
+}

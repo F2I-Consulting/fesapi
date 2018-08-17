@@ -409,16 +409,16 @@ void Well::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 	}
 }
 
-vector<Relationship> Well::getAllEpcRelationships() const
+vector<Relationship> Well::getAllSourceRelationships() const
 {
-	vector<Relationship> result = AbstractObject::getAllEpcRelationships();
+	vector<Relationship> result;
 
 	// XML backward relationship
 	std::vector<Wellbore*> wellboreSet = getWellbores();
-	for (unsigned int j = 0; j < wellboreSet.size(); ++j)
+	for (size_t j = 0; j < wellboreSet.size(); ++j)
 	{
 		RESQML2_0_1_NS::WellboreFeature* resqmlWellboreFeature = wellboreSet[j]->getResqmlWellboreFeature();
-		if (resqmlWellboreFeature)
+		if (resqmlWellboreFeature != nullptr)
 		{
 			Relationship rel(resqmlWellboreFeature->getPartNameInEpcDocument(), "", resqmlWellboreFeature->getUuid());
 			rel.setSourceObjectType();
@@ -430,7 +430,7 @@ vector<Relationship> Well::getAllEpcRelationships() const
 		result.push_back(relWellbore);
 
 		std::vector<Trajectory*> trajSet = wellboreSet[j]->getTrajectories();
-		for (unsigned int t = 0; t < trajSet.size(); ++t)
+		for (size_t t = 0; t < trajSet.size(); ++t)
 		{
 			Relationship relTrajectory(trajSet[t]->getPartNameInEpcDocument(), "", trajSet[t]->getUuid());
 			relTrajectory.setSourceObjectType();

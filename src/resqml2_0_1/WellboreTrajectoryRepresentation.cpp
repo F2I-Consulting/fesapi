@@ -178,11 +178,29 @@ void WellboreTrajectoryRepresentation::setWitsmlTrajectory(WITSML1_4_1_1_NS::Tra
 	}
 }
 
-vector<Relationship> WellboreTrajectoryRepresentation::getAllEpcRelationships() const
+vector<Relationship> WellboreTrajectoryRepresentation::getAllSourceRelationships() const
 {
-	_resqml2__WellboreTrajectoryRepresentation* rep = static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
-	
-	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractRepresentation::getAllSourceRelationships();
+
+	// XML backward relationship
+	for (size_t i = 0 ; i < childrenTrajSet.size(); ++i) {
+		Relationship relChildrenTraj(childrenTrajSet[i]->getPartNameInEpcDocument(), "", childrenTrajSet[i]->getUuid());
+		relChildrenTraj.setSourceObjectType();
+		result.push_back(relChildrenTraj);
+	}
+
+	for (size_t i = 0; i < wellboreFrameRepresentationSet.size(); ++i) {
+		Relationship relFrame(wellboreFrameRepresentationSet[i]->getPartNameInEpcDocument(), "", wellboreFrameRepresentationSet[i]->getUuid());
+		relFrame.setSourceObjectType();
+		result.push_back(relFrame);
+	}
+
+	return result;
+}
+
+vector<Relationship> WellboreTrajectoryRepresentation::getAllTargetRelationships() const
+{
+	vector<Relationship> result = AbstractRepresentation::getAllTargetRelationships();
 
 	// XML forward relationship
 	RESQML2_NS::MdDatum* mdDatum = getMdDatum();
@@ -204,6 +222,7 @@ vector<Relationship> WellboreTrajectoryRepresentation::getAllEpcRelationships() 
 
 	WellboreTrajectoryRepresentation* parentTraj = getParentTrajectory();
 	if (parentTraj != nullptr) {
+		_resqml2__WellboreTrajectoryRepresentation* rep = static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 		Relationship relParentTraj(parentTraj->getPartNameInEpcDocument(), "", rep->ParentIntersection->ParentTrajectory->UUID);
 		relParentTraj.setDestinationObjectType();
 		result.push_back(relParentTraj);
@@ -213,19 +232,6 @@ vector<Relationship> WellboreTrajectoryRepresentation::getAllEpcRelationships() 
 		Relationship relWitsmlTraj(witsmlTrajectory->getPartNameInEpcDocument(), "", witsmlTrajectory->getUuid());
 		relWitsmlTraj.setDestinationObjectType();
 		result.push_back(relWitsmlTraj);
-	}
-
-	// XML backward relationship
-	for (size_t i = 0 ; i < childrenTrajSet.size(); ++i) {
-		Relationship relChildrenTraj(childrenTrajSet[i]->getPartNameInEpcDocument(), "", childrenTrajSet[i]->getUuid());
-		relChildrenTraj.setSourceObjectType();
-		result.push_back(relChildrenTraj);
-	}
-
-	for (size_t i = 0; i < wellboreFrameRepresentationSet.size(); ++i) {
-		Relationship relFrame(wellboreFrameRepresentationSet[i]->getPartNameInEpcDocument(), "", wellboreFrameRepresentationSet[i]->getUuid());
-		relFrame.setSourceObjectType();
-		result.push_back(relFrame);
 	}
 
 	return result;

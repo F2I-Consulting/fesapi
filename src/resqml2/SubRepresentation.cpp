@@ -34,9 +34,9 @@ using namespace RESQML2_NS;
 
 const char* SubRepresentation::XML_TAG = "SubRepresentation";
 
-vector<Relationship> SubRepresentation::getAllEpcRelationships() const
+vector<Relationship> SubRepresentation::getAllTargetRelationships() const
 {
-	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractRepresentation::getAllTargetRelationships();
 
 	const unsigned int supRepCount = getSupportingRepresentationCount();
 	for (unsigned int supRepIndex = 0; supRepIndex < supRepCount; ++supRepIndex) {

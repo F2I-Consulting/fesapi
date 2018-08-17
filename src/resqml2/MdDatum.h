@@ -114,6 +114,9 @@ namespace RESQML2_NS
 		*/
 		virtual gsoap_resqml2_0_1::resqml2__MdReference getOriginKind() const = 0;
 
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
+
 	protected:
 
 		friend void RESQML2_0_1_NS::WellboreTrajectoryRepresentation::setMdDatum(RESQML2_NS::MdDatum* mdDatum);
@@ -121,7 +124,6 @@ namespace RESQML2_NS
 
 		virtual void setXmlLocalCrs(RESQML2_NS::AbstractLocal3dCrs * localCrs) = 0;
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
 		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML backward relationship

@@ -65,9 +65,11 @@ namespace RESQML2_NS
 		 */
 		AbstractFeatureInterpretation*				getInterpretation(const unsigned int & index) const;
 
+		virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
+		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
+
 	protected:
 
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
 		/**
 		* Does nothing since feature has not forward relationships at all
 		*/

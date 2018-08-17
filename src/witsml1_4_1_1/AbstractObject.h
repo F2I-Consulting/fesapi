@@ -125,7 +125,9 @@ namespace WITSML1_4_1_1_NS
 		/**
 		* Return all relationships (backward and forward ones) of the instance using EPC format.
 		*/
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
+		std::vector<epc::Relationship> getAllEpcRelationships() const;
+		virtual std::vector<epc::Relationship> getAllSourceRelationships() const = 0;
+		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
 
 		/**
 		* Resolve all relationships of the object in an epc document

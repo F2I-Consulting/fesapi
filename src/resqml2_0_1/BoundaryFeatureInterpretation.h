@@ -52,9 +52,9 @@ namespace RESQML2_0_1_NS
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
 
+		virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
 
 	protected:
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
 		
         std::vector<WellboreMarker*> wellboreMarkerSet;
 

@@ -23,3 +23,4 @@ under the License.
 #define RESQML2_NS ${FESAPI_RESQML2_NS}
 #define RESQML2_0_1_NS ${FESAPI_RESQML2_0_1_NS}
 #define WITSML1_4_1_1_NS ${FESAPI_WITSML1_4_1_1_NS}
+#define ETP_NS ${FESAPI_ETP_NS}

@@ -29,7 +29,30 @@ using namespace epc;
 
 const char* Activity::XML_TAG = "Activity";
 
-vector<Relationship> Activity::getAllEpcRelationships() const
+void Activity::setActivityTemplate(RESQML2_NS::ActivityTemplate * activityTemplate)
+{
+	if (activityTemplate == nullptr)
+	{
+		return;
+	}
+
+	// Backward relationship
+	activityTemplate->activityInstanceSet.push_back(this);
+
+	// XML
+	if (updateXml && gsoapProxy2_0_1 != nullptr)
+	{
+		static_cast<gsoap_resqml2_0_1::_resqml2__Activity*>(gsoapProxy2_0_1)->ActivityDescriptor = activityTemplate->newResqmlReference();
+	}
+}
+
+vector<Relationship> Activity::getAllSourceRelationships() const
+{
+	vector<Relationship> result;
+	return result;
+}
+
+vector<Relationship> Activity::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 

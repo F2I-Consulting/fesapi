@@ -51,11 +51,17 @@ void StratigraphicColumn::pushBackStratiColumnRank(StratigraphicColumnRankInterp
 	}
 }
 
-vector<Relationship> StratigraphicColumn::getAllEpcRelationships() const
+vector<Relationship> StratigraphicColumn::getAllSourceRelationships() const
+{
+	vector<Relationship> result;
+	return result;
+}
+
+vector<Relationship> StratigraphicColumn::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 
-	for (unsigned int i = 0; i < stratigraphicColumnRankSet.size(); i++)
+	for (size_t i = 0; i < stratigraphicColumnRankSet.size(); ++i)
 	{
 		Relationship rel(stratigraphicColumnRankSet[i]->getPartNameInEpcDocument(), "", stratigraphicColumnRankSet[i]->getUuid());
 		rel.setDestinationObjectType();

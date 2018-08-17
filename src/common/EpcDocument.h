@@ -416,7 +416,7 @@ namespace COMMON_NS
 		* Get all the geobodies contained into the EPC document
 		*/
 		const std::vector<RESQML2_0_1_NS::GeobodyFeature*> & getGeobodySet() const;
-        
+
 		/**
 		* Get all the individual representations of horizons which are associated to grid 2d set topology
 		*/

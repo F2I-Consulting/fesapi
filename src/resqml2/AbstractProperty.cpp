@@ -111,7 +111,13 @@ void AbstractProperty::setXmlLocalPropertyKind(class PropertyKind* propKind)
 	}
 }
 
-vector<Relationship> AbstractProperty::getAllEpcRelationships() const
+vector<Relationship> AbstractProperty::getAllSourceRelationships() const
+{
+	vector<Relationship> result;
+	return result;
+}
+
+vector<Relationship> AbstractProperty::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 

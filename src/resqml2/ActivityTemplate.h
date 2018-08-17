@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/Activity.h"
+#include "resqml2/Activity.h"
 
 namespace RESQML2_NS
 {
@@ -78,14 +78,15 @@ namespace RESQML2_NS
 		static const char* XML_TAG;
 		std::string getXmlTag() const {return XML_TAG;}
 
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
 
-	private:
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
+	protected:
 		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc) {}
 		
         std::vector<Activity*> activityInstanceSet;
 
-		friend void RESQML2_0_1_NS::Activity::setActivityTemplate(RESQML2_NS::ActivityTemplate* activityTemplate);
+		friend void RESQML2_NS::Activity::setActivityTemplate(RESQML2_NS::ActivityTemplate* activityTemplate);
 	};
 }
 

@@ -312,19 +312,12 @@ void Wellbore::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 	}
 }
 
-vector<Relationship> Wellbore::getAllEpcRelationships() const
+vector<Relationship> Wellbore::getAllSourceRelationships() const
 {
-	vector<Relationship> result = AbstractObject::getAllEpcRelationships();
-
-	// XML forward relationship
-	if (well) {
-		Relationship relWell(well->getPartNameInEpcDocument(), "", well->getUuid());
-		relWell.setDestinationObjectType();
-		result.push_back(relWell);
-	}
+	vector<Relationship> result;
 
 	// XML backward relationship
-	if (resqmlWellboreFeature)
+	if (resqmlWellboreFeature != nullptr)
 	{
 		Relationship rel(resqmlWellboreFeature->getPartNameInEpcDocument(), "", resqmlWellboreFeature->getUuid());
 		rel.setSourceObjectType();
@@ -334,3 +327,16 @@ vector<Relationship> Wellbore::getAllEpcRelationships() const
 	return result;
 }
 
+vector<Relationship> Wellbore::getAllTargetRelationships() const
+{
+	vector<Relationship> result = AbstractObject::getAllTargetRelationships();
+
+	// XML forward relationship
+	if (well != nullptr) {
+		Relationship relWell(well->getPartNameInEpcDocument(), "", well->getUuid());
+		relWell.setDestinationObjectType();
+		result.push_back(relWell);
+	}
+
+	return result;
+}

@@ -111,11 +111,6 @@ namespace RESQML2_0_1_NS
 		std::vector<AbstractObject*> getResqmlObjectParameterValue(const std::string & paramTitle) const;
 		AbstractObject* getResqmlObjectParameterValue(const unsigned int & index) const;
 
-		/**
-		* Set the activity template of the activity
-		**/
-		void setActivityTemplate(RESQML2_NS::ActivityTemplate* activityTemplate);
-
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getActivityTemplateDor() const;
 
 		std::string getResqmlVersion() const;

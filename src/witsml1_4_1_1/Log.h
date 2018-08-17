@@ -147,7 +147,8 @@ namespace WITSML1_4_1_1_NS
 				return -1;
 		}
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
 
 		/**
 		* Resolve all relationships of the object in an epc document.
