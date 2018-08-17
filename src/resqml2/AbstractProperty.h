@@ -220,13 +220,15 @@ namespace RESQML2_NS
 		*/
 		virtual bool validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk) = 0;
 
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
+		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
+
 	protected:
 
 		void setXmlRepresentation(class AbstractRepresentation * rep);
 		void setXmlTimeSeries(TimeSeries * ts);
 		void setXmlLocalPropertyKind(class PropertyKind* propKind);
 
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
 		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc);
 
 		class AbstractLocal3dCrs *		local3dCrs;			/// The used local 3D CRS in case the property values need one.

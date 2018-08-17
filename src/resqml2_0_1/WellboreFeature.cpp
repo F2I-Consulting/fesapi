@@ -54,11 +54,11 @@ void WellboreFeature::setWitsmlWellbore(WITSML1_4_1_1_NS::Wellbore * wellbore)
 	}
 }
 
-vector<Relationship> WellboreFeature::getAllEpcRelationships() const
+vector<Relationship> WellboreFeature::getAllTargetRelationships() const
 {
-	vector<Relationship> result = AbstractTechnicalFeature::getAllEpcRelationships();
+	vector<Relationship> result = AbstractTechnicalFeature::getAllTargetRelationships();
 
-	if (witsmlWellbore)
+	if (witsmlWellbore != nullptr)
 	{
 		Relationship relWellbores(witsmlWellbore->getPartNameInEpcDocument(), "", witsmlWellbore->getUuid());
 		relWellbores.setDestinationObjectType();

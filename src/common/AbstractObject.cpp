@@ -874,3 +874,11 @@ std::string AbstractObject::getExtraMetadataStringValueAtIndex(const unsigned in
 	}
 }
 
+std::vector<epc::Relationship> AbstractObject::getAllEpcRelationships() const
+{
+	std::vector<epc::Relationship> sourceRels = getAllSourceRelationships();
+	std::vector<epc::Relationship> result = getAllTargetRelationships();
+
+	result.insert( result.end(), sourceRels.begin(), sourceRels.end() );
+	return result;
+}

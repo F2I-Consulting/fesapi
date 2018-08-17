@@ -79,27 +79,27 @@ void EarthModelInterpretation::pushBackStratiOccurence(StratigraphicOccurrenceIn
 		static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.push_back(stratiOccurence->newResqmlReference());
 }
 
-vector<Relationship> EarthModelInterpretation::getAllEpcRelationships() const
+vector<Relationship> EarthModelInterpretation::getAllTargetRelationships() const
 {
-	vector<Relationship> result = AbstractFeatureInterpretation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractFeatureInterpretation::getAllTargetRelationships();
         
-    if (structuralOrganization)
+    if (structuralOrganization != nullptr)
     {
         Relationship rel(structuralOrganization->getPartNameInEpcDocument(), "", structuralOrganization->getUuid());
 		rel.setDestinationObjectType();
 		result.push_back(rel);
     }
 
-    if (stratigraphicColumn)
+    if (stratigraphicColumn != nullptr)
     {
         Relationship rel(stratigraphicColumn->getPartNameInEpcDocument(), "", stratigraphicColumn->getUuid());
 		rel.setDestinationObjectType();
 		result.push_back(rel);
     }
 
-	for (unsigned int i = 0; i< stratigraphicOccurenceSet.size();i++)
+	for (size_t i = 0; i< stratigraphicOccurenceSet.size();i++)
     {
-		if (stratigraphicOccurenceSet[i])
+		if (stratigraphicOccurenceSet[i] != nullptr)
 		{
 			Relationship rel(stratigraphicOccurenceSet[i]->getPartNameInEpcDocument(), "", stratigraphicOccurenceSet[i]->getUuid());
 			rel.setDestinationObjectType();

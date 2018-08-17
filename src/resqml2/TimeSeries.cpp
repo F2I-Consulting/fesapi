@@ -121,7 +121,7 @@ tm TimeSeries::getTimestampAsTimeStructure(const unsigned int & index) const
 	throw out_of_range("The index is out of range");
 }
 
-vector<Relationship> TimeSeries::getAllEpcRelationships() const
+vector<Relationship> TimeSeries::getAllSourceRelationships() const
 {
 	vector<Relationship> result;
 
@@ -136,3 +136,8 @@ vector<Relationship> TimeSeries::getAllEpcRelationships() const
 	return result;
 }
 
+vector<Relationship> TimeSeries::getAllTargetRelationships() const
+{
+	vector<Relationship> result;
+	return result;
+}

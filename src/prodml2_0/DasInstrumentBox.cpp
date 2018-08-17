@@ -45,10 +45,10 @@ DasInstrumentBox::DasInstrumentBox(soap* soapContext, const string & guid, const
 	dib->Instrument->Name = instrumentName;
 }
 
-vector<Relationship> DasInstrumentBox::getAllEpcRelationships() const
+std::vector<epc::Relationship> DasInstrumentBox::getAllSourceRelationships() const
 {
 	vector<Relationship> result;
-	
+
 	// XML backward relationship
 	for (size_t i = 0; i < dasAcquisitionSet.size(); i++)
 	{
@@ -56,8 +56,12 @@ vector<Relationship> DasInstrumentBox::getAllEpcRelationships() const
 		rel.setSourceObjectType();
 		result.push_back(rel);
 	}
-	
+
 	return result;
 }
 
-
+std::vector<epc::Relationship> DasInstrumentBox::getAllTargetRelationships() const
+{
+	vector<Relationship> result;
+	return result;
+}

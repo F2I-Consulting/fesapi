@@ -95,9 +95,11 @@ namespace RESQML2_NS
 		*/
 		const std::vector<RESQML2_NS::AbstractProperty*>& getPropertySet() const { return propertySet; }
 
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
+
 	protected:
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
 		/**
 		* Does nothing since StringTableLookup has not got any forward relationship.
 		*/

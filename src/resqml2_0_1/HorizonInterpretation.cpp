@@ -46,18 +46,18 @@ HorizonInterpretation::HorizonInterpretation(Horizon * horizon, const string & g
 	setInterpretedFeature(horizon);
 }
 
-vector<Relationship> HorizonInterpretation::getAllEpcRelationships() const
+vector<Relationship> HorizonInterpretation::getAllSourceRelationships() const
 {
-	vector<Relationship> result = BoundaryFeatureInterpretation::getAllEpcRelationships();
+	vector<Relationship> result = BoundaryFeatureInterpretation::getAllSourceRelationships();
 
-	for (unsigned int i = 0; i < structuralOrganizationInterpretationSet.size(); ++i)
+	for (size_t i = 0; i < structuralOrganizationInterpretationSet.size(); ++i)
 	{
 		Relationship rel(structuralOrganizationInterpretationSet[i]->getPartNameInEpcDocument(), "", structuralOrganizationInterpretationSet[i]->getUuid());
 		rel.setSourceObjectType();
 		result.push_back(rel);
 	}
 
-	for (unsigned int i = 0; i < stratigraphicColumnRankInterpretationSet.size(); ++i)
+	for (size_t i = 0; i < stratigraphicColumnRankInterpretationSet.size(); ++i)
 	{
 		Relationship rel(stratigraphicColumnRankInterpretationSet[i]->getPartNameInEpcDocument(), "", stratigraphicColumnRankInterpretationSet[i]->getUuid());
 		rel.setSourceObjectType();

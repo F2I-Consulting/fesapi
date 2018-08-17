@@ -67,18 +67,27 @@ string AbstractObject::serializeIntoString()
 	return oss.str();
 }
 
-vector<Relationship> AbstractObject::getAllEpcRelationships() const
+vector<Relationship> AbstractObject::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 
 	// XML forward relationship
-	if (crs)
+	if (crs != nullptr)
 	{
 		Relationship rel(crs->getPartNameInEpcDocument(), "", crs->getUuid());
 		rel.setDestinationObjectType();
 		result.push_back(rel);
 	}
 
+	return result;
+}
+
+std::vector<epc::Relationship> AbstractObject::getAllEpcRelationships() const
+{
+	std::vector<epc::Relationship> sourceRels = getAllSourceRelationships();
+	std::vector<epc::Relationship> result = getAllTargetRelationships();
+
+	result.insert( result.end(), sourceRels.begin(), sourceRels.end() );
 	return result;
 }
 

@@ -95,12 +95,12 @@ witsml1__refNameString* CoordinateReferenceSystem::newReference() const
 	return result;
 }
 
-vector<Relationship> CoordinateReferenceSystem::getAllEpcRelationships() const
+vector<Relationship> CoordinateReferenceSystem::getAllSourceRelationships() const
 {
 	vector<Relationship> result;
 
 	// XML backward relationship
-	for (unsigned int j = 0; j < objectsUsingThisCrs.size(); ++j)
+	for (size_t j = 0; j < objectsUsingThisCrs.size(); ++j)
 	{
 		Relationship rel(objectsUsingThisCrs[j]->getPartNameInEpcDocument(), "", objectsUsingThisCrs[j]->getUuid());
 		rel.setSourceObjectType();

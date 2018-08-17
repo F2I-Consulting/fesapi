@@ -112,10 +112,11 @@ namespace RESQML2_NS
 		void setTopFrontierOf(RESQML2_0_1_NS::StructuralOrganizationInterpretation* structOrg);
 		void setSideFrontierOf(RESQML2_0_1_NS::StructuralOrganizationInterpretation* structOrg);
 
+		virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
+		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
+		
 	protected:
 
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-		
 		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML backward relationship

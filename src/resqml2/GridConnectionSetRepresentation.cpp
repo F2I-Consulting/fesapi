@@ -44,9 +44,9 @@ std::string GridConnectionSetRepresentation::getXmlTag() const
 	return XML_TAG;
 }
 
-vector<Relationship> GridConnectionSetRepresentation::getAllEpcRelationships() const
+vector<Relationship> GridConnectionSetRepresentation::getAllTargetRelationships() const
 {
-	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractRepresentation::getAllTargetRelationships();
 
 	const unsigned int supportingGridCount = getSupportingGridRepresentationCount();
 	for (unsigned int i = 0; i < supportingGridCount; ++i)

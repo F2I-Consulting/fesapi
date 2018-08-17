@@ -94,7 +94,7 @@ namespace RESQML2_NS
 		/**
 		* Set the activity template of the activity
 		**/
-		virtual void setActivityTemplate(class ActivityTemplate* activityTemplate) = 0;
+		void setActivityTemplate(class ActivityTemplate* activityTemplate);
 
 		/**
 		* Get the activity template dor of the activity
@@ -114,9 +114,8 @@ namespace RESQML2_NS
 		static const char* XML_TAG;
 		std::string getXmlTag() const {return XML_TAG;}
 
-	protected:
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
 	};
 }
 

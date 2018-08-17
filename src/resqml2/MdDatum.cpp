@@ -45,7 +45,22 @@ void MdDatum::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 	}
 }
 
-vector<Relationship> MdDatum::getAllEpcRelationships() const
+vector<Relationship> MdDatum::getAllSourceRelationships() const
+{
+	vector<Relationship> result;
+
+	// WellboreFeature trajectories
+	for (size_t i = 0; i < wellboreTrajectoryRepresentationSet.size(); ++i)
+	{
+		Relationship rel(wellboreTrajectoryRepresentationSet[i]->getPartNameInEpcDocument(), "", wellboreTrajectoryRepresentationSet[i]->getUuid());
+		rel.setSourceObjectType();
+		result.push_back(rel);
+	}
+
+	return result;
+}
+
+vector<Relationship> MdDatum::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 
@@ -61,16 +76,9 @@ vector<Relationship> MdDatum::getAllEpcRelationships() const
 		throw domain_error("The local CRS associated to the MD information cannot be nullptr.");
 	}
 
-	// WellboreFeature trajectories
-	for (size_t i = 0; i < wellboreTrajectoryRepresentationSet.size(); ++i)
-	{
-		Relationship rel(wellboreTrajectoryRepresentationSet[i]->getPartNameInEpcDocument(), "", wellboreTrajectoryRepresentationSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
 	return result;
 }
+
 
 void MdDatum::setLocalCrs(AbstractLocal3dCrs * localCrs)
 {

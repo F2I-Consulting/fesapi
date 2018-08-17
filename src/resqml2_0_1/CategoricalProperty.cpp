@@ -79,13 +79,13 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	setMetadata(guid, title, "", -1, "", "", -1, "", "");
 }
 
-vector<Relationship> CategoricalProperty::getAllEpcRelationships() const
+vector<Relationship> CategoricalProperty::getAllTargetRelationships() const
 {
-	vector<Relationship> result = AbstractValuesProperty::getAllEpcRelationships();
+	vector<Relationship> result = AbstractValuesProperty::getAllTargetRelationships();
 
 	_resqml2__CategoricalProperty* prop = static_cast<_resqml2__CategoricalProperty*>(gsoapProxy2_0_1);
 
-	if (stringLookup)
+	if (stringLookup != nullptr)
 	{
 		Relationship rel(stringLookup->getPartNameInEpcDocument(), "", prop->Lookup->UUID);
 		rel.setDestinationObjectType();

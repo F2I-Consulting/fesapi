@@ -54,7 +54,9 @@ namespace PRODML2_0_NS
 
 	protected:
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
+
 		/**
 		* Does nothing since StringTableLookup has not got any forward relationship.
 		*/

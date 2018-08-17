@@ -146,9 +146,9 @@ void WellboreMarkerFrameRepresentation::setWitsmlFormationMarker(const unsigned 
 		frame->WellboreMarker[resqmlMarkerIndex]->WitsmlFormationMarker = witsmlFormationMarker->newResqmlReference();
 }
 
-vector<Relationship> WellboreMarkerFrameRepresentation::getAllEpcRelationships() const
+vector<Relationship> WellboreMarkerFrameRepresentation::getAllTargetRelationships() const
 {
-	vector<Relationship> result = WellboreFrameRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = WellboreFrameRepresentation::getAllTargetRelationships();
 
 	// XML forward relationship
 	if (stratigraphicOccurrenceInterpretation != nullptr)
@@ -158,7 +158,7 @@ vector<Relationship> WellboreMarkerFrameRepresentation::getAllEpcRelationships()
 		result.push_back(relStratiRank);
 	}
 
-	for (unsigned int i = 0; i < markerSet.size(); ++i)
+	for (size_t i = 0; i < markerSet.size(); ++i)
 	{
 		if (markerSet[i]->getBoundaryFeatureInterpretation())
 		{
@@ -169,7 +169,7 @@ vector<Relationship> WellboreMarkerFrameRepresentation::getAllEpcRelationships()
 	}
 
 	int firstNonNullWitsmlMarker = -1;
-	for (unsigned int i = 0; i < witsmlFormationMarkerSet.size() && firstNonNullWitsmlMarker < 0; ++i)
+	for (size_t i = 0; i < witsmlFormationMarkerSet.size() && firstNonNullWitsmlMarker < 0; ++i)
 	{
 		if (witsmlFormationMarkerSet[i])
 			firstNonNullWitsmlMarker = i;

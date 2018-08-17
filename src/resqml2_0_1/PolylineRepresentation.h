@@ -155,8 +155,7 @@ namespace RESQML2_0_1_NS
 
 		unsigned int getPatchCount() const {return 1;}
 
-	protected:
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
 	};
 }
 

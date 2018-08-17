@@ -228,9 +228,9 @@ resqml2__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ(
 	return geom;
 }
 
-vector<Relationship> AbstractSurfaceRepresentation::getAllEpcRelationships() const
+vector<Relationship> AbstractSurfaceRepresentation::getAllTargetRelationships() const
 {
-	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractRepresentation::getAllTargetRelationships();
 
 	// Outer rings
 	for(vector<PolylineRepresentation*>::const_iterator it = outerRingSet.begin(); it != outerRingSet.end(); ++it) {

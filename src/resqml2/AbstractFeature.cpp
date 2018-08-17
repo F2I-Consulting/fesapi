@@ -44,11 +44,11 @@ AbstractFeatureInterpretation*	AbstractFeature::getInterpretation(const unsigned
 	}
 }
 
-vector<Relationship> AbstractFeature::getAllEpcRelationships() const
+vector<Relationship> AbstractFeature::getAllSourceRelationships() const
 {
 	vector<Relationship> result;
 
-	for (unsigned int i = 0; i < interpretationSet.size(); ++i) {
+	for (size_t i = 0; i < interpretationSet.size(); ++i) {
 		if (interpretationSet[i] != nullptr) {
 			Relationship rel(interpretationSet[i]->getPartNameInEpcDocument(), "", interpretationSet[i]->getUuid());
 			rel.setSourceObjectType();
@@ -62,4 +62,8 @@ vector<Relationship> AbstractFeature::getAllEpcRelationships() const
 	return result;
 }
 
-
+vector<Relationship> AbstractFeature::getAllTargetRelationships() const
+{
+	vector<Relationship> result;
+	return result;
+}
