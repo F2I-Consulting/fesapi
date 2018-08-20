@@ -2988,20 +2988,20 @@ void deserialize(const string & inputFile)
 						std::cout << "Non constant parametric line kind" << std::endl;
 						short* pillarKind = new short[paramIjkGrid->getPillarCount()];
 						paramIjkGrid->getParametricLineKind(pillarKind);
-						for (int pillarIndex = 0; pillarIndex < paramIjkGrid->getPillarCount() && pillarIndex < 10; ++pillarIndex) {
+						for (size_t pillarIndex = 0; pillarIndex < paramIjkGrid->getPillarCount() && pillarIndex < 10; ++pillarIndex) {
 							cout << "Pillar index " << pillarIndex << " with kind " << pillarKind[pillarIndex] << endl;
 						}
 						delete[] pillarKind;
 					}
 
-					long patchCount = ijkGrid->getPatchCount();
-					for (long currentPatch = 0; currentPatch < patchCount; ++currentPatch) {
+					unsigned int patchCount = ijkGrid->getPatchCount();
+					for (unsigned int currentPatch = 0; currentPatch < patchCount; ++currentPatch) {
 						ULONG64 nbVertex = ijkGrid->getXyzPointCountOfPatch(currentPatch);
 
 						double* xyzPts = new double[nbVertex * 3];
 						ijkGrid->getXyzPointsOfPatch(currentPatch, xyzPts);
 
-						for (int vIndex = 0; vIndex < nbVertex && vIndex < 10; ++vIndex) {
+						for (size_t vIndex = 0; vIndex < nbVertex && vIndex < 10; ++vIndex) {
 							double x = xyzPts[vIndex * 3];
 							double y = xyzPts[vIndex * 3 + 1];
 							double z = xyzPts[vIndex * 3 + 2];
@@ -3474,9 +3474,9 @@ void prodml_deserialize(COMMON_NS::EpcDocument & pck)
 
 		std::cout << "TriggeredMeasurement: " << da->isTriggeredMeasurement() << endl;
 
-		const ULONG64 rawCount = da->getRawCount();
+		const unsigned int rawCount = da->getRawCount();
 		std::cout << "rawCount: " << rawCount << endl;
-		for (ULONG64 rawIndex = 0; rawIndex < rawCount; ++rawIndex) {
+		for (unsigned int rawIndex = 0; rawIndex < rawCount; ++rawIndex) {
 			std::cout << "Raw index: " << rawIndex << endl;
 			const gsoap_eml2_1::prodml2__DasDimensions rawDataSlowestDimension = da->getRawDataSlowestDimension(rawIndex);
 			std::cout << "RawDataSlowestDimension: " << rawDataSlowestDimension << endl;

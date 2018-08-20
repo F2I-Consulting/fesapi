@@ -23,6 +23,8 @@ script:
     -DHDF5_C_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/hdf5-1.8.18-linux-centos7-x86_64-gcc485-noszip-shared/lib/libhdf5.so
     -DMINIZIP_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.1-linux-ubuntu1604-x86_64-gcc540/include
     -DMINIZIP_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.1-linux-ubuntu1604-x86_64-gcc540/lib/libminizip.a
+    -DZLIB_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/hdf5-1.8.18-linux-centos7-x86_64-gcc485-noszip-shared/include
+    -DZLIB_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/hdf5-1.8.18-linux-centos7-x86_64-gcc485-noszip-shared/lib/libz.so
     $TRAVIS_BUILD_DIR
   - make
   - ./example/example
