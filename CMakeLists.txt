@@ -97,6 +97,10 @@ ENDIF (WIN32)
 
 # Zlib
 FIND_PACKAGE (ZLIB)
+MARK_AS_ADVANCED(CLEAR ZLIB_INCLUDE_DIR)
+IF (NOT EXISTS ${ZLIB_INCLUDE_DIR})
+	MESSAGE(WARNING "The zlib include dir (ZLIB_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
+ENDIF ()
 MARK_AS_ADVANCED(CLEAR ZLIB_LIBRARY_RELEASE)
 IF (NOT EXISTS ${ZLIB_LIBRARY_RELEASE})
 	MESSAGE(WARNING "The zlib library (ZLIB_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")

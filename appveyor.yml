@@ -79,6 +79,7 @@ before_build:
     -DHDF5_C_LIBRARY_RELEASE=c:/projects/fesapiEnv/dependencies/hdf5-1.8.18-win64-vs2013-noszip/lib/hdf5.lib
     -DMINIZIP_INCLUDE_DIR=c:/projects/fesapiEnv/dependencies/minizip-1.1-win64-vs2013-static/include
     -DMINIZIP_LIBRARY_RELEASE=c:/projects/fesapiEnv/dependencies/minizip-1.1-win64-vs2013-static/lib/minizip.lib
+    -DZLIB_INCLUDE_DIR=c:/projects/fesapiEnv/dependencies/hdf5-1.8.18-win64-vs2013-noszip/include
     -DZLIB_LIBRARY_RELEASE=c:/projects/fesapiEnv/dependencies/hdf5-1.8.18-win64-vs2013-noszip/lib/zlib.lib
     -DWITH_DOTNET_WRAPPING=TRUE
     -DSWIG_EXECUTABLE=c:/projects/fesapiEnv/dependencies/swigwin-3.0.12/swig.exe
