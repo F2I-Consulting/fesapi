@@ -22,13 +22,75 @@ under the License.
 
 #include "MyOwnEtpServerSession.h"
 
+#include "common/AbstractObject.h"
+
+namespace {
+	Energistics::Etp::v12::Datatypes::Object::GraphResource buildGraphResourceFromObject(COMMON_NS::AbstractObject * obj) {
+		if (obj == nullptr) {
+			throw std::invalid_argument("Cannot build graph resource from a null object.");
+		}
+		if (obj->isPartial()) {
+			throw std::invalid_argument("Cannot build graph resource from a partial object.");
+		}
+
+		Energistics::Etp::v12::Datatypes::Object::GraphResource result;
+
+		result.m_channelSubscribable = false;
+		result.m_objectNotifiable = false;
+		result.m_contentCount = -1;
+		result.m_contentType = "application/x-resqml+xml;version=2.0;type=obj_" + obj->getXmlTag();
+		result.m_uri = "eml://" + obj->getXmlNamespace() + "/" + obj->getXmlTag() + "(" + obj->getUuid() + ")";
+		result.m_name = obj->getTitle();
+		result.m_lastChanged = obj->getLastUpdate() == -1 ? obj->getCreation() : obj->getLastUpdate();
+
+		std::vector<epc::Relationship> sourceRels = obj->getAllSourceRelationships();
+		result.m_sourceCount = std::count_if(sourceRels.begin(), sourceRels.end(), [](const epc::Relationship& rel) {return rel.isInternalTarget();});
+		sourceRels = obj->getAllTargetRelationships();
+		result.m_targetCount = std::count_if(sourceRels.begin(), sourceRels.end(), [](const epc::Relationship& rel) {return rel.isInternalTarget();});
+
+		return result;
+	}
+}
 class MyOwnDirectedDiscoveryProtocolHandlers : public ETP_NS::DirectedDiscoveryHandlers
 {
+private:
+
+
+	template <class T>
+	void sendGraphResourcesFromObjects(const std::vector<T*> & objs, int64_t correlationId)
+	{
+		bool onlyPartial = true;
+		for (auto i = 0; i < objs.size(); ++i) {
+			if (!objs[i]->isPartial()) {
+				onlyPartial = false;
+				break;
+			}
+		}
+
+		if (objs.empty() || onlyPartial) {
+			Energistics::Etp::v12::Protocol::Core::ProtocolException error;
+			error.m_errorCode = 11;
+			error.m_errorMessage = "This folder has not got any content.";
+
+			session->send(error);
+			return;
+		}
+
+		Energistics::Etp::v12::Protocol::DirectedDiscovery::GetResourcesResponse mb;
+		for (auto i = 0; i < objs.size(); ++i) {
+			mb.m_resource = buildGraphResourceFromObject(objs[i]);
+			session->send(mb, correlationId, i == objs.size() - 1 ? (0x01 | 0x02) : 0x01);
+		}
+	}
+
+	void sendGraphResourcesFromRelationships(const std::vector<epc::Relationship> & rels, int64_t correlationId);
+	COMMON_NS::AbstractObject* getObjectFromUri(const std::string & uri);
+
 public:
 	MyOwnDirectedDiscoveryProtocolHandlers(MyOwnEtpServerSession* mySession): ETP_NS::DirectedDiscoveryHandlers(mySession) {}
 	~MyOwnDirectedDiscoveryProtocolHandlers() {}
 
 	void on_GetContent(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetContent & gc, int64_t correlationId);
-	//void on_GetSourceFolders(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetSourceFolders & gsf);
-	//void on_GetTargetFolders(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetTargetFolders & gtf);
+	void on_GetSources(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetSources & gs, int64_t correlationId);
+	void on_GetTargets(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetTargets & gt, int64_t correlationId);
 };
