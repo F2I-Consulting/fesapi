@@ -70,13 +70,6 @@ namespace COMMON_NS
 		*/
 		std::string getExtraMetadataStringValueAtIndexV2_0_1(const unsigned int & index) const;
 
-		/**
-		* Return all relationships (backward and forward ones) of the instance using EPC format.
-		*/
-		virtual std::vector<epc::Relationship> getAllSourceRelationships() const = 0;
-		virtual std::vector<epc::Relationship> getAllTargetRelationships() const = 0;
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-
 	protected:
 
 		enum EmlVersion {
@@ -320,6 +313,13 @@ namespace COMMON_NS
 		* Get the string value of a string value pair at a particular index in the extra metadata set
 		*/
 		std::string getExtraMetadataStringValueAtIndex(const unsigned int & index) const;
+
+		/**
+		* Return all relationships (backward and forward ones) of the instance using EPC format.
+		*/
+		virtual std::vector<epc::Relationship> getAllSourceRelationships() const = 0;
+		virtual std::vector<epc::Relationship> getAllTargetRelationships() const = 0;
+		std::vector<epc::Relationship> getAllEpcRelationships() const;
 	};
 }
 

@@ -25,7 +25,8 @@ namespace ETP_NS
 	class DirectedDiscoveryHandlers : public ProtocolHandlers
 	{
 	protected:
-		bool validateUri(const std::string & uri)const;
+		bool validateUri(const std::string & uri, bool sendException = false) const;
+		bool validateDataObjectUri(const std::string & uri, bool sendException = false) const;
 
 	public:
 		DirectedDiscoveryHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
@@ -34,8 +35,8 @@ namespace ETP_NS
 
 	    virtual void on_GetContent(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetContent & gc, int64_t correlationId);
 	    virtual void on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetResourcesResponse & grr);
-	    virtual void on_GetSources(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetSources & gs);
-	    virtual void on_GetTargets(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetTargets & gt);
+	    virtual void on_GetSources(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetSources & gs, int64_t correlationId);
+	    virtual void on_GetTargets(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetTargets & gt, int64_t correlationId);
 
 		virtual ~DirectedDiscoveryHandlers() {}
 	};

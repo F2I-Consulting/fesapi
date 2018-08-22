@@ -34,7 +34,7 @@ MyOwnEtpClientSession::MyOwnEtpClientSession(boost::asio::io_context& ioc,
 void MyOwnEtpClientSession::do_when_finished()
 {
 	std::string command;
-	std::cout << "What is your command ?" << std::endl;
+	std::cout << "What is your command (""quit"" for closing connection)?" << std::endl;
 	std::getline(std::cin, command);
 	if (command == "quit") {
 		close();
@@ -43,5 +43,19 @@ void MyOwnEtpClientSession::do_when_finished()
 		Energistics::Etp::v12::Protocol::DirectedDiscovery::GetContent mb;
 		mb.m_uri = command.size() > 11 ? command.substr(11) : "";
 		sendAndDoRead(mb);
+	}
+	else if (command.substr(0, 10) == "GetSources") {
+		Energistics::Etp::v12::Protocol::DirectedDiscovery::GetSources mb;
+		mb.m_uri = command.size() > 11 ? command.substr(11) : "";
+		sendAndDoRead(mb);
+	}
+	else if (command.substr(0, 10) == "GetTargets") {
+		Energistics::Etp::v12::Protocol::DirectedDiscovery::GetTargets mb;
+		mb.m_uri = command.size() > 11 ? command.substr(11) : "";
+		sendAndDoRead(mb);
+	}
+	else {
+		std::cout << "WRONG COMMAND!!! Please retry" << std::endl;
+		do_when_finished();
 	}
 }
