@@ -16,31 +16,24 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
+#pragma once
 
-#include "etp/Server.h"
-#include "MyOwnEtpServerSession.h"
+#include "etp/ProtocolHandlers/ProtocolHandlers.h"
 
-using namespace ETP_NS;
-
-int main(int argc, char **argv)
+namespace ETP_NS
 {
-	if (argc < 4) {
-		std::cerr << "The command must be : etpServerExample ipAddress port epcFileName" << std::endl;
-		std::cerr << "EXAMPLE : ./etpServerExample 127.0.0.1 8080 ../../testingPackageCpp.epc" << std::endl;
+	class StoreHandlers : public ProtocolHandlers
+	{
+	public:
+		StoreHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
 
-		return 1;
-	}
+	    void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d);
 
-	const int threadCount = 2;
+	    virtual void on_GetObject(const Energistics::Etp::v12::Protocol::Store::GetObject & getO, int64_t correlationId);
+	    virtual void on_PutObject(const Energistics::Etp::v12::Protocol::Store::PutObject & putO, int64_t correlationId);
+	    virtual void on_DeleteObject(const Energistics::Etp::v12::Protocol::Store::DeleteObject & deleteO, int64_t correlationId);
+	    virtual void on_Object(const Energistics::Etp::v12::Protocol::Store::Object & obj);
 
-	Server<MyOwnEtpServerSession> etpServer;
-	MyOwnEtpServerSession::epcFileName = argv[3];
-	std::cout << "Start listening on " << argv[1] << ":" << argv[2] << " with " << threadCount << " threads..." << std::endl;
-	etpServer.listen(argv[1], std::stoi(argv[2]), threadCount);
-
-#ifdef _WIN32
-	_CrtDumpMemoryLeaks();
-#endif
-
-	return 0;
+		virtual ~StoreHandlers() {}
+	};
 }

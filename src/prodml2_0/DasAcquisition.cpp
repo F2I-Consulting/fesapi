@@ -653,7 +653,7 @@ ULONG64 DasAcquisition::getRawDataTimeCount(const unsigned int & rawIndex) const
 	return da->Raw[rawIndex]->RawDataTime->__DasTimeArray_sequence->TimeArray->Values->ExternalFileProxy[0]->Count;
 }
 
-RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum DasAcquisition::getRawDataHdfDatatype(const unsigned int & rawIndex) const
+COMMON_NS::AbstractObject::hdfDatatypeEnum DasAcquisition::getRawDataHdfDatatype(const unsigned int & rawIndex) const
 {
 	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
 
@@ -662,10 +662,10 @@ RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum DasAcquisition::getRawDataHd
 		_prodml2__DasAcquisition* da = static_cast<_prodml2__DasAcquisition*>(gsoapProxy2_1);
 
 		if (da->Raw[rawIndex]->RawData->RawDataArray->soap_type() == SOAP_TYPE_gsoap_eml2_1_eml21__FloatingPointExternalArray) {
-			dt = hdfProxy->getHdfDatatypeInDataset(static_cast<eml21__FloatingPointExternalArray*>(da->Raw[rawIndex]->RawData->RawDataArray)->Values->ExternalFileProxy[0]->PathInExternalFile);
+			return hdfProxy->getHdfDatatypeInDataset(static_cast<eml21__FloatingPointExternalArray*>(da->Raw[rawIndex]->RawData->RawDataArray)->Values->ExternalFileProxy[0]->PathInExternalFile);
 		}
 		else if (da->Raw[rawIndex]->RawData->RawDataArray->soap_type() == SOAP_TYPE_gsoap_eml2_1_eml21__IntegerExternalArray) {
-			dt = hdfProxy->getHdfDatatypeInDataset(static_cast<eml21__IntegerExternalArray*>(da->Raw[rawIndex]->RawData->RawDataArray)->Values->ExternalFileProxy[0]->PathInExternalFile);
+			return hdfProxy->getHdfDatatypeInDataset(static_cast<eml21__IntegerExternalArray*>(da->Raw[rawIndex]->RawData->RawDataArray)->Values->ExternalFileProxy[0]->PathInExternalFile);
 		}
 		else {
 			return RESQML2_NS::AbstractValuesProperty::UNKNOWN;
@@ -674,29 +674,6 @@ RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum DasAcquisition::getRawDataHd
 	else {
 		throw logic_error("Not implemented yet");
 	}
-
-	if (H5Tequal(dt, H5T_NATIVE_DOUBLE) > 0)
-		return RESQML2_NS::AbstractValuesProperty::DOUBLE;
-	else if (H5Tequal(dt, H5T_NATIVE_FLOAT) > 0)
-		return RESQML2_NS::AbstractValuesProperty::FLOAT;
-	else if (H5Tequal(dt, H5T_NATIVE_LLONG) > 0)
-		return RESQML2_NS::AbstractValuesProperty::LONG;
-	else if (H5Tequal(dt, H5T_NATIVE_ULLONG) > 0)
-		return RESQML2_NS::AbstractValuesProperty::ULONG;
-	else if (H5Tequal(dt, H5T_NATIVE_INT) > 0)
-		return RESQML2_NS::AbstractValuesProperty::INT;
-	else if (H5Tequal(dt, H5T_NATIVE_UINT) > 0)
-		return RESQML2_NS::AbstractValuesProperty::UINT;
-	else if (H5Tequal(dt, H5T_NATIVE_SHORT) > 0)
-		return RESQML2_NS::AbstractValuesProperty::SHORT;
-	else if (H5Tequal(dt, H5T_NATIVE_USHORT) > 0)
-		return RESQML2_NS::AbstractValuesProperty::USHORT;
-	else if (H5Tequal(dt, H5T_NATIVE_CHAR) > 0)
-		return RESQML2_NS::AbstractValuesProperty::CHAR;
-	else if (H5Tequal(dt, H5T_NATIVE_UCHAR) > 0)
-		return RESQML2_NS::AbstractValuesProperty::UCHAR;
-
-	return RESQML2_NS::AbstractValuesProperty::UNKNOWN; // unknwown datatype...
 }
 
 void DasAcquisition::getRawDataAsDoubleValues(const unsigned int & rawIndex, double * values)

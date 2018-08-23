@@ -183,7 +183,7 @@ namespace PRODML2_0_NS
 		/**
 		* Get the values datatype in the HDF dataset
 		*/
-		RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum getRawDataHdfDatatype(const unsigned int & rawIndex) const;
+		COMMON_NS::AbstractObject::hdfDatatypeEnum getRawDataHdfDatatype(const unsigned int & rawIndex) const;
 
 		/**
 		* Get all the values of a particular raw of the instance which are supposed to be double ones.

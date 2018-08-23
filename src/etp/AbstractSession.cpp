@@ -19,7 +19,7 @@ under the License.
 
 #include "etp/AbstractSession.h"
 
-#include "tools/GuidTools.h"
+#include <regex>
 
 using namespace ETP_NS;
 
@@ -84,4 +84,41 @@ void AbstractSession::close()
 	Energistics::Etp::v12::Protocol::Core::CloseSession closeSession;
 
 	sendAndDoRead(closeSession);
+}
+
+bool AbstractSession::validateUri(const std::string & uri, bool sendException)
+{
+	bool result = std::regex_match(uri, std::regex("^eml://((witsml|resqml|prodml|eml)([0-9]{2}))?/?", std::regex::ECMAScript)) ||
+			std::regex_match(uri, std::regex("^eml://(witsml|resqml|prodml|eml)([0-9]{2})/[a-zA-Z0-9]+", std::regex::ECMAScript));
+	if (!result) {
+		std::cerr << "The URI \"" + uri + "\"  is invalid." << std::endl;
+	}
+
+	if (!result && sendException) {
+		Energistics::Etp::v12::Protocol::Core::ProtocolException error;
+		error.m_errorCode = 9;
+		error.m_errorMessage = "The URI " + uri + "  is invalid.";
+
+		send(error);
+	}
+
+	return result;
+}
+
+bool AbstractSession::validateDataObjectUri(const std::string & uri, bool sendException)
+{
+	bool result = std::regex_match(uri, std::regex("^eml://(witsml|resqml|prodml|eml)([0-9]{2})/[a-zA-Z0-9]+[(][a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}[)]", std::regex::ECMAScript));
+	if (!result) {
+		std::cerr << "The data object URI \"" + uri + "\"  is invalid." << std::endl;
+	}
+
+	if (!result && sendException) {
+		Energistics::Etp::v12::Protocol::Core::ProtocolException error;
+		error.m_errorCode = 9;
+		error.m_errorMessage = "The data object URI " + uri + "  is invalid.";
+
+		send(error);
+	}
+
+	return result;
 }

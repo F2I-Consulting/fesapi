@@ -48,7 +48,8 @@ namespace COMMON_NS
 		*/
 		void initGsoapProxy(soap* soapContext, const std::string & guid, const std::string & title, const EmlVersion & emlVersion);
 
-	public:  
+	public:
+
 		virtual ~AbstractHdfProxy() {}
 
 		/**
@@ -71,7 +72,7 @@ namespace COMMON_NS
 		 * Get the used (native) datatype in a dataset
 		* To compare with H5T_NATIVE_INT, H5T_NATIVE_UINT, H5T_NATIVE_FLOAT, etc...
 		 */
-		virtual int getHdfDatatypeInDataset(const std::string & datasetName) const = 0;
+		virtual AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string & datasetName) const = 0;
 
 		/**
 		* Get the used datatype class in a dataset
@@ -105,6 +106,12 @@ namespace COMMON_NS
 		 * @param datasetName	The absolute name of the dataset we want to get the number of dimensions.
 		 */
 		virtual unsigned int getDimensionCount(const std::string & datasetName) = 0;
+
+		/**
+		 * Get the number of elements in each dimension in an HDF dataset of the proxy.
+		 * @param datasetName	The absolute name of the dataset we want to get the number of elements.
+		 */
+		virtual std::vector<unsigned long long> getElementCountPerDimension(const std::string & datasetName) = 0;
 
 		/**
 		 * Get the number of elements in an HDF dataset of the proxy. The number of elements is get from all dimensions.

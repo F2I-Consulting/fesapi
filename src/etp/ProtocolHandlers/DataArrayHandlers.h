@@ -22,18 +22,19 @@ under the License.
 
 namespace ETP_NS
 {
-	class DirectedDiscoveryHandlers : public ProtocolHandlers
+	class DataArrayHandlers : public ProtocolHandlers
 	{
 	public:
-		DirectedDiscoveryHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
+		DataArrayHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
 
 	    void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d);
 
-	    virtual void on_GetContent(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetContent & gc, int64_t correlationId);
-	    virtual void on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetResourcesResponse & grr);
-	    virtual void on_GetSources(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetSources & gs, int64_t correlationId);
-	    virtual void on_GetTargets(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetTargets & gt, int64_t correlationId);
+	    virtual void on_GetDataArray(const Energistics::Etp::v12::Protocol::DataArray::GetDataArray & gda, int64_t correlationId);
+	    virtual void on_PutDataArray(const Energistics::Etp::v12::Protocol::DataArray::PutDataArray & pda, int64_t correlationId);
+	    virtual void on_GetDataArraySlice(const Energistics::Etp::v12::Protocol::DataArray::GetDataArraySlice & gdas, int64_t correlationId);
+	    virtual void on_PutDataArraySlice(const Energistics::Etp::v12::Protocol::DataArray::PutDataArraySlice & pdas, int64_t correlationId);
+	    virtual void on_DataArray(Energistics::Etp::v12::Protocol::DataArray::DataArray & da);
 
-		virtual ~DirectedDiscoveryHandlers() {}
+		virtual ~DataArrayHandlers() {}
 	};
 }

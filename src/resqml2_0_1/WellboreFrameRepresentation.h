@@ -114,7 +114,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get the Measured Depth datatype in the HDF dataset
 		*/
-		RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum getMdHdfDatatype() const;
+		COMMON_NS::AbstractObject::hdfDatatypeEnum getMdHdfDatatype() const;
 
 		/**
 		* Get all the md values of the instance which are supposed to be double ones.

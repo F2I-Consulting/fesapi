@@ -28,9 +28,24 @@ under the License.
 #include "etp/ProtocolHandlers/CoreHandlers.h"
 #include "etp/ProtocolHandlers/DiscoveryHandlers.h"
 #include "etp/ProtocolHandlers/DirectedDiscoveryHandlers.h"
+#include "etp/ProtocolHandlers/StoreHandlers.h"
+#include "etp/ProtocolHandlers/DataArrayHandlers.h"
 
 using tcp = boost::asio::ip::tcp;               // from <boost/asio/ip/tcp.hpp>
 namespace websocket = boost::beast::websocket;  // from <boost/beast/websocket.hpp>
+
+namespace {
+	std::vector<std::string> tokenize(const std::string & str, char delimiter) {
+		std::vector<std::string> tokens;
+		std::stringstream ss(str);
+		std::string token;
+		while(getline(ss, token, delimiter)) {
+			tokens.push_back(token);
+		}
+
+		return tokens;
+	}
+}
 
 namespace ETP_NS
 {
@@ -135,6 +150,26 @@ namespace ETP_NS
 			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocols::DirectedDiscovery] = directedDiscoveryHandlers;
 		}
 
+		/**
+		 * Set the Store protocol handlers
+		 */
+		void setStoreProtocolHandlers(std::shared_ptr<StoreHandlers> storeHandlers) {
+			while (protocolHandlers.size() < Energistics::Etp::v12::Datatypes::Protocols::Store + 1) {
+				protocolHandlers.push_back(nullptr);
+			}
+			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocols::Store] = storeHandlers;
+		}
+
+		/**
+		 * Set the Data Array protocol handlers
+		 */
+		void setDataArrayProtocolHandlers(std::shared_ptr<DataArrayHandlers> dataArrayHandlers) {
+			while (protocolHandlers.size() < Energistics::Etp::v12::Datatypes::Protocols::DataArray + 1) {
+				protocolHandlers.push_back(nullptr);
+			}
+			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocols::DataArray] = dataArrayHandlers;
+		}
+
 		void close();
 
 		/**
@@ -218,5 +253,8 @@ namespace ETP_NS
 
 			closed = true;
 		}
+
+		bool validateUri(const std::string & uri, bool sendException = false);
+		bool validateDataObjectUri(const std::string & uri, bool sendException = false);
 	};
 }

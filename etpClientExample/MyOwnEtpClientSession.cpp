@@ -20,6 +20,8 @@ under the License.
 #include "MyOwnEtpClientSession.h"
 #include "etp/ProtocolHandlers/CoreHandlers.h"
 #include "etp/ProtocolHandlers/DirectedDiscoveryHandlers.h"
+#include "etp/ProtocolHandlers/StoreHandlers.h"
+#include "etp/ProtocolHandlers/DataArrayHandlers.h"
 
 MyOwnEtpClientSession::MyOwnEtpClientSession(boost::asio::io_context& ioc,
 		const std::string & host, const std::string & port, const std::string & target,
@@ -29,6 +31,8 @@ MyOwnEtpClientSession::MyOwnEtpClientSession(boost::asio::io_context& ioc,
 {
 	setCoreProtocolHandlers(std::make_shared<ETP_NS::CoreHandlers>(this));
 	setDirectedDiscoveryProtocolHandlers(std::make_shared<ETP_NS::DirectedDiscoveryHandlers>(this));
+	setStoreProtocolHandlers(std::make_shared<ETP_NS::StoreHandlers>(this));
+	setDataArrayProtocolHandlers(std::make_shared<ETP_NS::DataArrayHandlers>(this));
 }
 
 void MyOwnEtpClientSession::do_when_finished()
@@ -53,6 +57,19 @@ void MyOwnEtpClientSession::do_when_finished()
 		Energistics::Etp::v12::Protocol::DirectedDiscovery::GetTargets mb;
 		mb.m_uri = command.size() > 11 ? command.substr(11) : "";
 		sendAndDoRead(mb);
+	}
+	else if (command.substr(0, 9) == "GetObject") {
+		Energistics::Etp::v12::Protocol::Store::GetObject getO;
+		getO.m_uri = command.size() > 10 ? command.substr(10) : "";
+		sendAndDoRead(getO);
+	}
+	else if (command.substr(0, 12) == "GetDataArray") {
+		Energistics::Etp::v12::Protocol::DataArray::GetDataArray gda;
+		size_t lastSpace = command.rfind(' ');
+		gda.m_uri = command.size() > 13 ? command.substr(13, lastSpace-13) : "";
+		++lastSpace;
+		gda.m_pathInResource = command.substr(lastSpace);
+		sendAndDoRead(gda);
 	}
 	else {
 		std::cout << "WRONG COMMAND!!! Please retry" << std::endl;

@@ -25,8 +25,11 @@ under the License.
 class MyOwnEtpServerSession : public ETP_NS::ServerSession
 {
 public:
-
+	static const char* epcFileName;
 	COMMON_NS::EpcDocument epcDoc;
 
 	MyOwnEtpServerSession(tcp::socket socket);
+	~MyOwnEtpServerSession();
+
+	COMMON_NS::AbstractObject* getObjectFromUri(const std::string & uri);
 };
