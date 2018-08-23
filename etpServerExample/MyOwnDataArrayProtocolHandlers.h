@@ -16,31 +16,19 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
+#pragma once
 
-#include "etp/Server.h"
+#include "etp/ProtocolHandlers/DataArrayHandlers.h"
+
 #include "MyOwnEtpServerSession.h"
 
-using namespace ETP_NS;
+#include "common/AbstractObject.h"
 
-int main(int argc, char **argv)
+class MyOwnDataArrayProtocolHandlers : public ETP_NS::DataArrayHandlers
 {
-	if (argc < 4) {
-		std::cerr << "The command must be : etpServerExample ipAddress port epcFileName" << std::endl;
-		std::cerr << "EXAMPLE : ./etpServerExample 127.0.0.1 8080 ../../testingPackageCpp.epc" << std::endl;
+public:
+	MyOwnDataArrayProtocolHandlers(MyOwnEtpServerSession* mySession): ETP_NS::DataArrayHandlers(mySession) {}
+	~MyOwnDataArrayProtocolHandlers() {}
 
-		return 1;
-	}
-
-	const int threadCount = 2;
-
-	Server<MyOwnEtpServerSession> etpServer;
-	MyOwnEtpServerSession::epcFileName = argv[3];
-	std::cout << "Start listening on " << argv[1] << ":" << argv[2] << " with " << threadCount << " threads..." << std::endl;
-	etpServer.listen(argv[1], std::stoi(argv[2]), threadCount);
-
-#ifdef _WIN32
-	_CrtDumpMemoryLeaks();
-#endif
-
-	return 0;
-}
+    void on_GetDataArray(const Energistics::Etp::v12::Protocol::DataArray::GetDataArray & gda, int64_t correlationId);
+};

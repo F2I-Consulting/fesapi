@@ -45,8 +45,6 @@ namespace RESQML2_NS
 
 	public:
 
-		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG = 3, ULONG = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
-
 		/**
 		* Only to be used in partial transfer context
 		*/
@@ -76,7 +74,7 @@ namespace RESQML2_NS
 		/**
 		* Get the values datatype in the HDF dataset
 		*/
-		AbstractValuesProperty::hdfDatatypeEnum getValuesHdfDatatype() const;
+		COMMON_NS::AbstractObject::hdfDatatypeEnum getValuesHdfDatatype() const;
 
 		/**
 		* Push back a new patch of values for this property where the values have not to be written in the HDF file.
