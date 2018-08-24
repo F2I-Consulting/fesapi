@@ -22,7 +22,7 @@ under the License.
 
 namespace ETP_NS
 {
-	class DirectedDiscoveryHandlers : public ProtocolHandlers
+	class DLL_IMPORT_OR_EXPORT DirectedDiscoveryHandlers : public ProtocolHandlers
 	{
 	public:
 		DirectedDiscoveryHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}

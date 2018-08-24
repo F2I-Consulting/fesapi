@@ -37,10 +37,12 @@ under the License.
 #endif
 
 #if defined(_WIN32) && defined(FESAPI_DLL)
-	#if defined(FesapiCpp_EXPORTS) || defined(FesapiCppUnderDev_EXPORTS)
-		#define DLL_IMPORT_OR_EXPORT __declspec(dllexport)
-	#else
-		#define DLL_IMPORT_OR_EXPORT __declspec(dllimport) 
+	#ifndef DLL_IMPORT_OR_EXPORT
+		#if defined(FesapiCpp_EXPORTS) || defined(FesapiCppUnderDev_EXPORTS)
+			#define DLL_IMPORT_OR_EXPORT __declspec(dllexport)
+		#else
+			#define DLL_IMPORT_OR_EXPORT __declspec(dllimport)
+		#endif
 	#endif
 #else
 	#define DLL_IMPORT_OR_EXPORT

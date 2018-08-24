@@ -22,7 +22,7 @@ under the License.
 
 namespace ETP_NS
 {
-	class ClientSession : public ETP_NS::AbstractSession
+	class DLL_IMPORT_OR_EXPORT ClientSession : public ETP_NS::AbstractSession
 	{
 	private:
 	    tcp::resolver resolver;

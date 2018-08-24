@@ -514,7 +514,7 @@ std::vector<unsigned long long> HdfProxy::getElementCountPerDimension(const std:
 		throw invalid_argument("The number of elements in each dimension of the dataspace for the dataset " + datasetName + " could not be read.");
 	}
 
-	std::vector<unsigned long long> result(ndims);
+	std::vector<unsigned long long> result;
 	for (auto i = 0; i < ndims; ++i) {
 		result.push_back(dims[i]);
 	}

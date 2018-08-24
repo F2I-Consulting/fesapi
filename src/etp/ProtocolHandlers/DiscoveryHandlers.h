@@ -22,7 +22,7 @@ under the License.
 
 namespace ETP_NS
 {
-	class DiscoveryHandlers : public ProtocolHandlers
+	class DLL_IMPORT_OR_EXPORT DiscoveryHandlers : public ProtocolHandlers
 	{
 	protected:
 		bool validateUri(const std::string & uri)const;

@@ -25,7 +25,7 @@ under the License.
 
 namespace ETP_NS
 {
-	class ServerSession : public ETP_NS::AbstractSession
+	class DLL_IMPORT_OR_EXPORT ServerSession : public ETP_NS::AbstractSession
 	{
 	private:
 		boost::asio::strand<boost::asio::io_context::executor_type> strand;
