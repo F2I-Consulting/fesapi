@@ -22,6 +22,7 @@ under the License.
 
 void MyOwnDataArrayProtocolHandlers::on_GetDataArray(const Energistics::Etp::v12::Protocol::DataArray::GetDataArray & gda, int64_t correlationId)
 {
+	std::cout << "Received uri : " << gda.m_uri << std::endl;
 	COMMON_NS::AbstractObject* obj = static_cast<MyOwnEtpServerSession*>(session)->getObjectFromUri(gda.m_uri);
 	if (obj == nullptr) {
 		return;
@@ -37,13 +38,14 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArray(const Energistics::Etp::v12
 		return;
 	}
 
+	std::cout << "Received pathInResource : " << gda.m_pathInResource << std::endl;
 	Energistics::Etp::v12::Protocol::DataArray::DataArray daResponse;
 	auto elemCountPerDim = hdfProxy->getElementCountPerDimension(gda.m_pathInResource);
 	daResponse.m_dimensions.reserve(elemCountPerDim.size());
-	unsigned long long globalElemCount = 0;
+	unsigned long long globalElemCount = 1;
 	for (auto i = 0; i < elemCountPerDim.size(); ++i) {
 		daResponse.m_dimensions.push_back(elemCountPerDim[i]);
-		globalElemCount += elemCountPerDim[i];
+		globalElemCount *= elemCountPerDim[i];
 	}
 
 	auto dt = hdfProxy->getHdfDatatypeInDataset(gda.m_pathInResource);

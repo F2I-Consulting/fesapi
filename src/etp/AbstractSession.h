@@ -31,6 +31,18 @@ under the License.
 #include "etp/ProtocolHandlers/StoreHandlers.h"
 #include "etp/ProtocolHandlers/DataArrayHandlers.h"
 
+#if defined(_WIN32) && defined(FESAPI_DLL)
+	#ifndef DLL_IMPORT_OR_EXPORT
+		#if defined(FesapiCpp_EXPORTS) || defined(FesapiCppUnderDev_EXPORTS)
+			#define DLL_IMPORT_OR_EXPORT __declspec(dllexport)
+		#else
+			#define DLL_IMPORT_OR_EXPORT __declspec(dllimport)
+		#endif
+	#endif
+#else
+	#define DLL_IMPORT_OR_EXPORT
+#endif
+
 using tcp = boost::asio::ip::tcp;               // from <boost/asio/ip/tcp.hpp>
 namespace websocket = boost::beast::websocket;  // from <boost/beast/websocket.hpp>
 
@@ -49,7 +61,7 @@ namespace {
 
 namespace ETP_NS
 {
-	class AbstractSession : public std::enable_shared_from_this<AbstractSession>
+	class DLL_IMPORT_OR_EXPORT AbstractSession : public std::enable_shared_from_this<AbstractSession>
 	{
 	protected:
 	    websocket::stream<tcp::socket> ws;

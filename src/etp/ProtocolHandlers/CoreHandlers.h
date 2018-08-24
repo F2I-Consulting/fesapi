@@ -22,7 +22,7 @@ under the License.
 
 namespace ETP_NS
 {
-	class CoreHandlers : public ProtocolHandlers
+	class DLL_IMPORT_OR_EXPORT CoreHandlers : public ProtocolHandlers
 	{
 	public:
 		CoreHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
