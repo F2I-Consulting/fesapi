@@ -39,7 +39,7 @@ namespace ETP_NS
 
 		void do_write() {
 			ws.async_write(
-				boost::asio::buffer(queue[0]),
+				boost::asio::buffer(sendingQueue[0]),
 				boost::asio::bind_executor(
 					 strand,
 					 std::bind(
