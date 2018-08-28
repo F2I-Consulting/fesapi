@@ -63,7 +63,7 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetContent(const Energistics::Et
 		return;
 	}
 
-	const std::string uriPrefix = "eml://resqml20/";
+	const std::string uriPrefix = "eml://resqml20/obj_";
 	std::string path = gc.m_uri.substr(6);
 
 	resource.m_resourceType = "Folder";
@@ -137,6 +137,7 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetContent(const Energistics::Et
 		}
 
 		MyOwnEtpServerSession* mySession = static_cast<MyOwnEtpServerSession*>(session);
+		tokens[1] = tokens[1].substr(4);
 		if (tokens[1] == resqml2_0_1::TriangulatedSetRepresentation::XML_TAG) {
 			sendGraphResourcesFromObjects(mySession->epcDoc.getAllTriangulatedSetRepSet(), correlationId);
 		}
