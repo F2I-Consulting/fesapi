@@ -94,7 +94,7 @@ void GridConnectionSetOnPartialGridSet::initEpcDocHandler() {
 	ULONG64 cellConnMultiGrids[6] = {
 		1, 2, 1, 2, 1, 2
 	};
-	ULONG64 multiGridIndices[6] = {
+	unsigned short multiGridIndices[6] = {
 		0, 0, 1, 1, 1, 2
 	};
 	gcsMultiGrids->setCellIndexPairs(3, cellConnMultiGrids, -1, hdfProxy, multiGridIndices);
@@ -132,7 +132,7 @@ void GridConnectionSetOnPartialGridSet::readEpcDocHandler() {
 	REQUIRE(cellIndexPair[4] == 1);
 	REQUIRE(cellIndexPair[5] == 2);
 	delete[] cellIndexPair;
-	ULONG64* gridIndexPair = new ULONG64[6];
+	unsigned short* gridIndexPair = new unsigned short[6];
 	gcsMultiGrids->getGridIndexPairs(gridIndexPair);
 	REQUIRE(gridIndexPair[0] == 0);
 	REQUIRE(gridIndexPair[1] == 0);
