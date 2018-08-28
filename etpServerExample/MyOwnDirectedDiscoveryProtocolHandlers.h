@@ -44,7 +44,7 @@ namespace {
 		std::string etpNs =  obj->getXmlNamespace();
 		if (etpNs[etpNs.size()-1] != '0') etpNs += '0';
 		// END TODO
-		result.m_uri = "eml://" + etpNs  + "/" + obj->getXmlTag() + "(" + obj->getUuid() + ")";
+		result.m_uri = "eml://" + etpNs  + "/obj_" + obj->getXmlTag() + "(" + obj->getUuid() + ")";
 		result.m_uuid = obj->getUuid();
 		result.m_name = obj->getTitle();
 		result.m_lastChanged = obj->getLastUpdate() == -1 ? obj->getCreation() : obj->getLastUpdate();

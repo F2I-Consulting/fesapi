@@ -817,7 +817,7 @@ namespace Energistics {
 					GrowingObjectQuery=16,
 					GrowingObjectNotificationQuery=17,
 					Transaction=18,
-					DirectedDiscovery=19
+					DirectedDiscovery=30
 				};				
 			};			
 		};		
