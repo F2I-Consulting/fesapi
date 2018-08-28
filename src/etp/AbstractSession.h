@@ -69,7 +69,7 @@ namespace ETP_NS
 	    long long messageId = 1;
 	    std::vector<std::shared_ptr<ETP_NS::ProtocolHandlers>> protocolHandlers;
 	    bool closed;
-	    std::vector<std::vector<uint8_t> > queue;
+	    std::vector<std::vector<uint8_t> > sendingQueue;
 
 	    // For client session
 	    AbstractSession(boost::asio::io_context& ioc) : ws(ioc), closed(true) {
@@ -119,7 +119,7 @@ namespace ETP_NS
 			e->init(*out);
 			avro::encode(*e, mh);
 			avro::encode(*e, mb);
-			queue.push_back(*avro::snapshot(*out).get());
+			sendingQueue.push_back(*avro::snapshot(*out).get());
 		}
 
 	public:
@@ -194,7 +194,7 @@ namespace ETP_NS
 		{
 			encode(mb, correlationId, messageFlags); // put the message to write in the queue
 
-			if(queue.size() == 1) {
+			if(sendingQueue.size() == 1) {
 				do_write();
 			}
 
@@ -212,7 +212,7 @@ namespace ETP_NS
 		template<typename T> void sendAndDoRead(const T & mb, int64_t correlationId = 0, int32_t messageFlags = 0)
 		{
 			encode(mb, correlationId, messageFlags); // put the message to write in the queue
-			if(queue.size() == 1) {
+			if(sendingQueue.size() == 1) {
 				do_write();
 			}
 
@@ -246,9 +246,9 @@ namespace ETP_NS
 			}
 
 			// Remove the message from the queue
-			queue.erase(queue.begin());
+			sendingQueue.erase(sendingQueue.begin());
 
-			if(! queue.empty()) {
+			if(! sendingQueue.empty()) {
 				do_write();
 			}
 		}
