@@ -69,10 +69,17 @@ void MyOwnEtpClientSession::do_when_finished()
 		gda.m_uri = command.size() > 13 ? command.substr(13, lastSpace-13) : "";
 		++lastSpace;
 		gda.m_pathInResource = command.substr(lastSpace);
+		std::cout << gda.m_pathInResource << std::endl;
 		sendAndDoRead(gda);
 	}
 	else {
 		std::cout << "WRONG COMMAND!!! Please retry" << std::endl;
+		std::cout << "List of available commands :" << std::endl;
+		std::cout << "GetContent folderUri" << std::endl;
+		std::cout << "GetSources dataObjectURI" << std::endl;
+		std::cout << "GetTargets dataObjectURI" << std::endl;
+		std::cout << "GetObject dataObjectURI" << std::endl;
+		std::cout << "GetDataArray epcExternalPartURI datasetPathInEpcExternalPart" << std::endl;
 		do_when_finished();
 	}
 }
