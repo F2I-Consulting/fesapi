@@ -40,10 +40,22 @@ int main(int argc, char **argv)
 	// Requested protocol
 	std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> requestedProtocols;
 	Energistics::Etp::v12::Datatypes::SupportedProtocol protocol;
+
 	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocols::Core;
 	protocol.m_protocolVersion = protocolVersion;
 	protocol.m_role = "server";
 	requestedProtocols.push_back(protocol);
+
+	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocols::Store;
+	protocol.m_protocolVersion = protocolVersion;
+	protocol.m_role = "store";
+	requestedProtocols.push_back(protocol);
+
+	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocols::DataArray;
+	protocol.m_protocolVersion = protocolVersion;
+	protocol.m_role = "store";
+	requestedProtocols.push_back(protocol);
+
 	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocols::DirectedDiscovery;
 	protocol.m_protocolVersion = protocolVersion;
 	protocol.m_role = "store";
