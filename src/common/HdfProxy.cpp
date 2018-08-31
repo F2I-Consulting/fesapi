@@ -202,7 +202,9 @@ void HdfProxy::readArrayNdOfValues(
 	if (H5Sget_simple_extent_ndims(filespace) != (int) numDimensions) {
 		H5Sclose(filespace);
 		H5Dclose(dataset);
-		throw invalid_argument("The resqml dataset " + datasetName + " does not have " + std::to_string(numDimensions) + " dimensions.");
+		ostringstream oss;
+		oss << numDimensions;
+		throw invalid_argument("The resqml dataset " + datasetName + " does not have " + oss.str() + " dimensions.");
 	}
 
 	hsize_t slab_size = 1;
@@ -269,7 +271,9 @@ void HdfProxy::selectArrayNdOfValues(
 		{
 			H5Sclose(filespace);
 			H5Dclose(dataset);
-			throw invalid_argument("The resqml dataset " + datasetName + " does not have " + std::to_string(numDimensions) + " dimensions.");
+			ostringstream oss;
+			oss << numDimensions;
+			throw invalid_argument("The resqml dataset " + datasetName + " does not have " + oss.str() + " dimensions.");
 		}
 	}
 
@@ -1099,8 +1103,8 @@ std::string HdfProxy::readStringAttribute(const std::string & obj_name,
 	// Build the string to return
 	std::string result(buf, aSize);  // Specify the size because an HDF5 string attribute is not forced to be null terminated.
 	// Remove null terminating characters
-	while (result.back() == '\0') {
-		result.pop_back();
+	while (result[result.size()-1] == '\0') {
+		result.resize(result.size()-1);
 	}
 
 	// Memory cleaning
