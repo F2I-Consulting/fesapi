@@ -284,7 +284,7 @@ INCLUDE_DIRECTORIES (
 
 
 IF (UNIX)
-	INCLUDE_DIRECTORIES (${UUID_INCLUDE_DIRS})
+	INCLUDE_DIRECTORIES (${UUID_INCLUDE_DIR})
 ENDIF (UNIX)
 
 # ============================================================================
