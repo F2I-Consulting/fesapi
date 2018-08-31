@@ -45,7 +45,7 @@ vector<Relationship> StringTableLookup::getAllEpcRelationships() const
 	vector<Relationship> result;
 
 	// XML backward relationship
-	for (unsigned int i = 0; i < categoricalPropertyValuesSet.size(); i++)
+	for (size_t i = 0; i < categoricalPropertyValuesSet.size(); ++i)
 	{
 		Relationship rel(categoricalPropertyValuesSet[i]->getPartNameInEpcDocument(), "", categoricalPropertyValuesSet[i]->getUuid());
 		rel.setSourceObjectType();
@@ -80,7 +80,7 @@ bool StringTableLookup::containsKey(const long & longValue)
 {
 	_resqml2__StringTableLookup* stringLookup = static_cast<_resqml2__StringTableLookup*>(gsoapProxy2_0_1);
 
-	for (unsigned int i = 0; i < stringLookup->Value.size(); i++)
+	for (size_t i = 0; i < stringLookup->Value.size(); ++i)
 	{
 		if (stringLookup->Value[i]->Key == longValue)
 		{
@@ -95,7 +95,7 @@ std::string StringTableLookup::getStringValue(const long & longValue)
 {
 	_resqml2__StringTableLookup* stringLookup = static_cast<_resqml2__StringTableLookup*>(gsoapProxy2_0_1);
 
-	for (unsigned int i = 0; i < stringLookup->Value.size(); i++)
+	for (size_t i = 0; i < stringLookup->Value.size(); ++i)
 	{
 		if (stringLookup->Value[i]->Key == longValue)
 		{
@@ -120,7 +120,7 @@ void StringTableLookup::setValue(const string & strValue, const long & longValue
 {
 	_resqml2__StringTableLookup* stringLookup = static_cast<_resqml2__StringTableLookup*>(gsoapProxy2_0_1);
 
-	for (unsigned int i = 0; i < stringLookup->Value.size(); i++)
+	for (size_t i = 0; i < stringLookup->Value.size(); ++i)
 	{
 		if (stringLookup->Value[i]->Key == longValue)
 		{
@@ -128,6 +128,34 @@ void StringTableLookup::setValue(const string & strValue, const long & longValue
 			return;
 		}
 	}
+}
+
+LONG64 StringTableLookup::getMinimumValue()
+{
+	_resqml2__StringTableLookup* stringLookup = static_cast<_resqml2__StringTableLookup*>(gsoapProxy2_0_1);
+
+	LONG64 min = (std::numeric_limits<LONG64>::max)();
+	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
+		if (min > stringLookup->Value[i]->Key) {
+			min = stringLookup->Value[i]->Key;
+		}
+	}
+
+	return min;
+}
+
+LONG64 StringTableLookup::getMaximumValue()
+{
+	_resqml2__StringTableLookup* stringLookup = static_cast<_resqml2__StringTableLookup*>(gsoapProxy2_0_1);
+
+	LONG64 max = (std::numeric_limits<LONG64>::min)();
+	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
+		if (max < stringLookup->Value[i]->Key) {
+			max = stringLookup->Value[i]->Key;
+		}
+	}
+
+	return max;
 }
 
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)

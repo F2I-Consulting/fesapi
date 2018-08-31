@@ -102,6 +102,18 @@ namespace RESQML2_0_1_NS
 		void setValue(const std::string & strValue, const long & longValue);
 
 		/*
+		* Get the minimum value in this discrete properties. It reads it from file.
+		* @return the minimum value if present in the file otherwise long.max.
+		*/
+		LONG64 getMinimumValue();
+
+		/*
+		* Get the maximum value in this discrete properties. It reads it from file.
+		* @return the maximum value if present in the file otherwise long.min.
+		*/
+		LONG64 getMaximumValue();
+
+		/*
 		* Getter for the underlying map of the string lookup.
 		*/
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)

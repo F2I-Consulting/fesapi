@@ -3165,6 +3165,9 @@ namespace RESQML2_0_1_NS
 		
 		void addValue(const std::string & strValue, const long & longValue);
 		void setValue(const std::string & strValue, const long & longValue);
+		
+		LONG64 getMinimumValue();
+		LONG64 getMaximumValue();
 	};
 	
 #ifdef SWIGPYTHON
