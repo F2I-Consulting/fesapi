@@ -602,7 +602,7 @@ namespace COMMON_NS
 		valueType* createPartial(const std::string & guid, const std::string & title)
 		{
 			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(s, 1);
-			dor->UUID = dor->UUID = guid.empty() ? generateRandomUuidAsString() : guid;
+			dor->UUID = guid.empty() ? generateRandomUuidAsString() : guid;
 			dor->Title = title;
 			valueType* result = new valueType(dor);
 			addFesapiWrapperAndDeleteItIfException(result);
