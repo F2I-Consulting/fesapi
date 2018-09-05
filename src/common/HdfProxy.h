@@ -25,6 +25,10 @@ namespace COMMON_NS
 	class DLL_IMPORT_OR_EXPORT HdfProxy : public AbstractHdfProxy
 	{
 	protected:
+		/**
+		* Only to be used in partial transfer context
+		*/
+		HdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractHdfProxy(partialObject), hdfFile(-1), compressionLevel(0)  {}
 
 		HdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
 			COMMON_NS::AbstractHdfProxy(fromGsoap, packageDirAbsolutePath, externalFilePath), hdfFile(-1), compressionLevel(0) {}

@@ -213,19 +213,19 @@ void SubRepresentation::pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::
 	hdfProxy->writeArrayNdOfGSoapULong64Values(rep->uuid, ossForHdf.str(), elementIndices1, numValues, 1);
 }
 
-string SubRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* SubRepresentation::getHdfProxyDor() const
 {
 	_resqml2__SubRepresentation* rep = getSpecializedGsoapProxy();
 
 	if (!rep->SubRepresentationPatch.empty()) {
 		if (!rep->SubRepresentationPatch[0]->ElementIndices.empty()) {
 			if (rep->SubRepresentationPatch[0]->ElementIndices[0]->Indices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-				return static_cast<resqml2__IntegerHdf5Array*>(rep->SubRepresentationPatch[0]->ElementIndices[0]->Indices)->Values->HdfProxy->UUID;
+				return static_cast<resqml2__IntegerHdf5Array*>(rep->SubRepresentationPatch[0]->ElementIndices[0]->Indices)->Values->HdfProxy;
 			}
 		}
 	}
 
-	return "";
+	return nullptr;
 }
 
 RESQML2_NS::AbstractRepresentation::indexableElement SubRepresentation::getElementKindOfPatch(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex) const

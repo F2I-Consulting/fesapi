@@ -83,9 +83,9 @@ PolylineRepresentation::PolylineRepresentation(RESQML2_NS::AbstractFeatureInterp
 	(*static_cast<_resqml2__PolylineRepresentation*>(gsoapProxy2_0_1)->LineRole) = roleKind;
 }
 
-std::string PolylineRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* PolylineRepresentation::getHdfProxyDor() const
 {
-	return getHdfProxyUuidFromPointGeometryPatch(getPointGeometry2_0_1(0));
+	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
 resqml2__PointGeometry* PolylineRepresentation::getPointGeometry2_0_1(const unsigned int & patchIndex) const

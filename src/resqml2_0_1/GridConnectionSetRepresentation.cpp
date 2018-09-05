@@ -64,12 +64,12 @@ GridConnectionSetRepresentation::GridConnectionSetRepresentation(RESQML2_NS::Abs
 	}
 }
 
-string GridConnectionSetRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* GridConnectionSetRepresentation::getHdfProxyDor() const
 {
 	_resqml2__GridConnectionSetRepresentation* rep = static_cast<_resqml2__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 
 	if (rep->CellIndexPairs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-		return static_cast<resqml2__IntegerHdf5Array*>(rep->CellIndexPairs)->Values->HdfProxy->UUID;
+		return static_cast<resqml2__IntegerHdf5Array*>(rep->CellIndexPairs)->Values->HdfProxy;
 	}
 
 	throw std::logic_error("Not implemented yet");

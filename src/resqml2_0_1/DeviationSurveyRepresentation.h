@@ -181,7 +181,7 @@ namespace RESQML2_0_1_NS
 		*/
 		class WellboreTrajectoryRepresentation* getWellboreTrajectoryRepresentation(const unsigned int & index) const;
 
-		std::string getHdfProxyUuid() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		unsigned int getPatchCount() const {return 1;}
 

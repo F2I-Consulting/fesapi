@@ -264,26 +264,26 @@ gsoap_resqml2_0_1::eml20__PlaneAngleUom DeviationSurveyRepresentation::getAngleU
 	return static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1)->AngleUom;
 }
 
-std::string DeviationSurveyRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* DeviationSurveyRepresentation::getHdfProxyDor() const
 {
 	_resqml2__DeviationSurveyRepresentation* rep = static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
 	if (rep->Mds != nullptr) {
 		if (rep->Mds->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-			return static_cast<resqml2__DoubleHdf5Array*>(rep->Mds)->Values->HdfProxy->UUID;
+			return static_cast<resqml2__DoubleHdf5Array*>(rep->Mds)->Values->HdfProxy;
 		}
 	}
 	else if (rep->Inclinations != nullptr) {
 		if (rep->Inclinations->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-			return static_cast<resqml2__DoubleHdf5Array*>(rep->Inclinations)->Values->HdfProxy->UUID;
+			return static_cast<resqml2__DoubleHdf5Array*>(rep->Inclinations)->Values->HdfProxy;
 		}
 	}
 	else if (rep->Azimuths != nullptr) {
 		if (rep->Azimuths->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-			return static_cast<resqml2__DoubleHdf5Array*>(rep->Azimuths)->Values->HdfProxy->UUID;
+			return static_cast<resqml2__DoubleHdf5Array*>(rep->Azimuths)->Values->HdfProxy;
 		}
 	}
 
-	return "";
+	return nullptr;
 }
 
 void DeviationSurveyRepresentation::addTrajectory(WellboreTrajectoryRepresentation* trajectory)

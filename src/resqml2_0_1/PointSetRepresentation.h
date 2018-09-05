@@ -54,7 +54,7 @@ namespace RESQML2_0_1_NS
 		*/
 		~PointSetRepresentation() {}
 
-		std::string getHdfProxyUuid() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}

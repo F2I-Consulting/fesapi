@@ -95,7 +95,7 @@ namespace RESQML2_0_1_NS
 				delete pillarInformation; 
 		}
 
-		std::string getHdfProxyUuid() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		/**
 		* Get the xyz point count in a given patch.

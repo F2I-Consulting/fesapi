@@ -20,19 +20,25 @@ under the License.
 #include "MyOwnEtpClientSession.h"
 #include "etp/ProtocolHandlers/CoreHandlers.h"
 #include "etp/ProtocolHandlers/DirectedDiscoveryHandlers.h"
-#include "etp/ProtocolHandlers/StoreHandlers.h"
+#include "MyOwnStoreProtocolHandlers.h"
 #include "etp/ProtocolHandlers/DataArrayHandlers.h"
 
 MyOwnEtpClientSession::MyOwnEtpClientSession(boost::asio::io_context& ioc,
 		const std::string & host, const std::string & port, const std::string & target,
 		const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 		const std::vector<std::string>& supportedObjects)
-	: ETP_NS::ClientSession(ioc, host, port, target, requestedProtocols, supportedObjects)
+	: ETP_NS::ClientSession(ioc, host, port, target, requestedProtocols, supportedObjects),
+	  epcDoc("", COMMON_NS::EpcDocument::OVERWRITE)
 {
 	setCoreProtocolHandlers(std::make_shared<ETP_NS::CoreHandlers>(this));
 	setDirectedDiscoveryProtocolHandlers(std::make_shared<ETP_NS::DirectedDiscoveryHandlers>(this));
-	setStoreProtocolHandlers(std::make_shared<ETP_NS::StoreHandlers>(this));
+	setStoreProtocolHandlers(std::make_shared<MyOwnStoreProtocolHandlers>(this));
 	setDataArrayProtocolHandlers(std::make_shared<ETP_NS::DataArrayHandlers>(this));
+}
+
+MyOwnEtpClientSession::~MyOwnEtpClientSession()
+{
+	epcDoc.close();
 }
 
 void MyOwnEtpClientSession::do_when_finished()

@@ -138,7 +138,7 @@ namespace RESQML2_0_1_NS
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor() const;
 
-		std::string getHdfProxyUuid() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		unsigned int getPatchCount() const {return 1;}
 

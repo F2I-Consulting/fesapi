@@ -25,6 +25,12 @@ namespace RESQML2_0_1_NS
 	class DLL_IMPORT_OR_EXPORT HdfProxy : public COMMON_NS::HdfProxy
 	{
 	public:
+
+		/**
+		* Only to be used in partial transfer context
+		*/
+		HdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::HdfProxy(partialObject) {}
+
 		/**
 		* Creates an instance of this class in a gsoap context.
 		* @param soapContext		The soap context where the underlying gsoap proxy is going to be created.

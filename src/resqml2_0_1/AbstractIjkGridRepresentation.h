@@ -349,7 +349,7 @@ namespace RESQML2_0_1_NS
 		gsoap_resqml2_0_1::resqml2__KDirection getKDirection() const;
 
 		virtual geometryKind getGeometryKind() const { return UNKNOWN; }
-		virtual std::string getHdfProxyUuid() const { throw std::logic_error("Partial object"); }
+		virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const { throw std::logic_error("Partial object"); }
 		virtual ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const { throw std::logic_error("Partial object"); }
 		virtual void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const { throw std::logic_error("Partial object"); }
 
