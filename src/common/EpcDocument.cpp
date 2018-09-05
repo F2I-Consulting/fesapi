@@ -526,6 +526,49 @@ std::string EpcDocument::getWitsmlPlaneAngleUom(const gsoap_witsml1_4_1_1::witsm
 	return gsoap_witsml1_4_1_1::soap_witsml1__PlaneAngleUom2s(s, witsmlUom);
 }
 
+COMMON_NS::AbstractObject* EpcDocument::addOrReplaceGsoapProxy(const std::string & xml, const string & contentType)
+{
+	istringstream iss(xml);
+	setGsoapStream(&iss);
+	COMMON_NS::AbstractObject* wrapper = nullptr;
+
+	const size_t lastEqualCharPos = contentType.find_last_of('_'); // The XML tag is after "obj_"
+	const string datatype = contentType.substr(lastEqualCharPos+1);
+
+	if (datatype.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0) {
+		gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* read = getEpcExternalPartReference_2_0_GsoapProxyFromGsoapContext();
+		wrapper = make_hdf_proxy_from_gsoap_proxy_2_0_1(read, string(), string());
+	}
+	else {
+		wrapper = getResqml2_0_1WrapperFromGsoapContext(datatype);
+	}
+
+	if (wrapper != nullptr) {
+		if (s->error != SOAP_OK) {
+			ostringstream oss;
+			soap_stream_fault(s, oss);
+			delete wrapper;
+		}
+		else {
+			addFesapiWrapperAndDeleteItIfException(wrapper);
+		}
+	}
+	else {
+		warnings.push_back("The content type " + contentType + " could not be wrapped by fesapi. The related instance will be ignored.");
+	}
+
+	COMMON_NS::AbstractObject* obj = getResqmlAbstractObjectByUuid(wrapper->getUuid());
+	if (obj == nullptr) {
+		addGsoapProxy(wrapper);
+		return wrapper;
+	}
+	else { // replacement
+		obj->setGsoapProxy(wrapper->getGsoapProxy());
+		delete wrapper;
+		return obj;
+	}
+}
+
 void EpcDocument::addGsoapProxy(COMMON_NS::AbstractObject* proxy)
 {
 	string xmlTag = proxy->getXmlTag();
@@ -1565,7 +1608,7 @@ COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_resqml2_0_1::eml20__
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(GeobodyInterpretation)
 	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
-		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
+		return createPartial<RESQML2_0_1_NS::HdfProxy>(dor->UUID, dor->Title);
 	}
 
 	throw invalid_argument("The content type " + resqmlContentType + " of the partial object (DOR) to create has not been recognized by fesapi.");

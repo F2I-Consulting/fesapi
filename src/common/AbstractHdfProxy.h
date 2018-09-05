@@ -30,6 +30,10 @@ namespace COMMON_NS
 	class DLL_IMPORT_OR_EXPORT AbstractHdfProxy : public EpcExternalPartReference
 	{
 	protected:
+		/**
+		* Only to be used in partial transfer context
+		*/
+		AbstractHdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::EpcExternalPartReference(partialObject) {}
 
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.

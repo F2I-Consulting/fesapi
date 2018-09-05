@@ -62,9 +62,9 @@ resqml2__PointGeometry* Grid2dRepresentation::getPointGeometry2_0_1(const unsign
 		return nullptr;
 }
 
-string Grid2dRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* Grid2dRepresentation::getHdfProxyDor() const
 {
-	return getHdfProxyUuidFromPointGeometryPatch(getPointGeometry2_0_1(0));
+	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
 ULONG64 Grid2dRepresentation::getNodeCountAlongIAxis() const

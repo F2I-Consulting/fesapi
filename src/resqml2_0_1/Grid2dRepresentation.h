@@ -72,7 +72,7 @@ namespace RESQML2_0_1_NS
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
 
-		std::string getHdfProxyUuid() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		/**
 		* Get the number of nodes in the I direction of the lattice 2d grid

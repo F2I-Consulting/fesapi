@@ -268,15 +268,15 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getL
 	return trajectory->getLocalCrsDor();
 }
 
-std::string WellboreFrameRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getHdfProxyDor() const
 {
 	_resqml2__WellboreFrameRepresentation* frame = static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
 	if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
 	{
-		return static_cast<resqml2__DoubleHdf5Array*>(frame->NodeMd)->Values->HdfProxy->UUID;
+		return static_cast<resqml2__DoubleHdf5Array*>(frame->NodeMd)->Values->HdfProxy;
 	}
-	else
-		return "";
+
+	return nullptr;
 }
 
 void WellboreFrameRepresentation::setWitsmlLog(WITSML1_4_1_1_NS::Log * witsmlLogToSet)

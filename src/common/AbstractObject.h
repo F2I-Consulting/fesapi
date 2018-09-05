@@ -198,6 +198,11 @@ namespace COMMON_NS
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* getGsoapProxy() const;
 
 		/**
+		 * Set the underlying gsoap proxy of this object
+		 */
+		void setGsoapProxy(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy);
+
+		/**
 		* Get the gsoap context where the underlying gsoap proxy is defined.
 		*/
 		soap* getGsoapContext() const;

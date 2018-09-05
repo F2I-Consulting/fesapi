@@ -54,7 +54,7 @@ namespace RESQML2_NS
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const;
 
-		std::string getHdfProxyUuid() const {return "";}
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const {return nullptr;}
 
 
 		ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;

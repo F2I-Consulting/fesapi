@@ -20,6 +20,8 @@ under the License.
 
 #include "etp/ClientSession.h"
 
+#include "common/EpcDocument.h"
+
 class MyOwnEtpClientSession : public ETP_NS::ClientSession
 {
 public:
@@ -35,5 +37,9 @@ public:
 			const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 			const std::vector<std::string>& supportedObjects);
 
+	~MyOwnEtpClientSession();
+
 	void do_when_finished();
+
+	COMMON_NS::EpcDocument epcDoc;
 };

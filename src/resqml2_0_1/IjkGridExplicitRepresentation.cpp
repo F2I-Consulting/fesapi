@@ -48,9 +48,9 @@ IjkGridExplicitRepresentation::IjkGridExplicitRepresentation(RESQML2_NS::Abstrac
 {
 }
 
-string IjkGridExplicitRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* IjkGridExplicitRepresentation::getHdfProxyDor() const
 {
-	return getHdfProxyUuidFromPointGeometryPatch(getPointGeometry2_0_1(0));
+	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
 ULONG64 IjkGridExplicitRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const

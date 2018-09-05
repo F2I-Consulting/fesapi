@@ -461,16 +461,15 @@ std::string WellboreTrajectoryRepresentation::getMdDatumUuid() const
 	return static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1)->MdDatum->UUID;
 }
 
-std::string WellboreTrajectoryRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreTrajectoryRepresentation::getHdfProxyDor() const
 {
 	_resqml2__WellboreTrajectoryRepresentation* rep = static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 	if (rep->Geometry != nullptr) {
 		resqml2__ParametricLineGeometry* paramLine = static_cast<resqml2__ParametricLineGeometry*>(rep->Geometry);
-		return static_cast<resqml2__Point3dHdf5Array*>(paramLine->ControlPoints)->Coordinates->HdfProxy->UUID;
+		return static_cast<resqml2__Point3dHdf5Array*>(paramLine->ControlPoints)->Coordinates->HdfProxy;
 	}
-	else {
-		return "";
-	}
+
+	return nullptr;
 }
 
 gsoap_resqml2_0_1::_resqml2__WellboreTrajectoryRepresentation* WellboreTrajectoryRepresentation::getSpecializedGsoapProxy() const

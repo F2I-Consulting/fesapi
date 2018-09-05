@@ -99,12 +99,11 @@ void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresenta
 	hdfProxy->writeArrayNdOfDoubleValues(getUuid(), oss.str(), points, numValues, 2);
 }
 
-std::string NonSealedSurfaceFrameworkRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* NonSealedSurfaceFrameworkRepresentation::getHdfProxyDor() const
 {
-	string result = "";
 	_resqml2__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml2__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
-	if (orgRep->NonSealedContactRepresentation.size() > 0)
+	if (!orgRep->NonSealedContactRepresentation.empty())
 	{
 		resqml2__NonSealedContactRepresentationPart* firstContact = static_cast<resqml2__NonSealedContactRepresentationPart*>(orgRep->NonSealedContactRepresentation[0]);
 		if (firstContact->Geometry->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__PointGeometry)
@@ -112,12 +111,12 @@ std::string NonSealedSurfaceFrameworkRepresentation::getHdfProxyUuid() const
 			resqml2__PointGeometry* pointGeom = static_cast<resqml2__PointGeometry*>(firstContact->Geometry);
 			if (pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array)
 			{
-				return static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->HdfProxy->UUID;
+				return static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->HdfProxy;
 			}
 		}
 	}
 
-	return result;
+	return nullptr;
 }
 
 vector<Relationship> NonSealedSurfaceFrameworkRepresentation::getAllTargetRelationships() const
@@ -125,7 +124,7 @@ vector<Relationship> NonSealedSurfaceFrameworkRepresentation::getAllTargetRelati
 	vector<Relationship> result = RepresentationSetRepresentation::getAllTargetRelationships();
         
     // supporting representations of organization sub representations
-    for (size_t i = 0; i < supportingRepOfContactPatchSet.size(); i++)
+    for (size_t i = 0; i < supportingRepOfContactPatchSet.size(); ++i)
     {
 		Relationship rel(supportingRepOfContactPatchSet[i]->getPartNameInEpcDocument(), "", supportingRepOfContactPatchSet[i]->getUuid());
 		rel.setDestinationObjectType();

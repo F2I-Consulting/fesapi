@@ -130,7 +130,7 @@ namespace RESQML2_0_1_NS
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
 
-		virtual std::string getHdfProxyUuid() const;
+		virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 	};
 
 } // namespace RESQML2_0_1_NS

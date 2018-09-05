@@ -41,9 +41,9 @@ IjkGridNoGeometryRepresentation::IjkGridNoGeometryRepresentation(RESQML2_NS::Abs
 {
 }
 
-string IjkGridNoGeometryRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* IjkGridNoGeometryRepresentation::getHdfProxyDor() const
 {
-	return "";
+	return nullptr;
 }
 
 ULONG64 IjkGridNoGeometryRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const

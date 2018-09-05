@@ -230,6 +230,12 @@ namespace COMMON_NS
 
 		/**
 		* Add a gsoap proxy to serialize with the package
+		* @param xml The XML which is the serialization of the gsoap proxy to add or to replace
+		*/
+		COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentType);
+
+		/**
+		* Add a gsoap proxy to serialize with the package
 		*/
 		void addGsoapProxy(COMMON_NS::AbstractObject* proxy);
 

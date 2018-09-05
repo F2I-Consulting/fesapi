@@ -55,8 +55,6 @@ namespace RESQML2_NS
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const;
 
-		virtual std::string getHdfProxyUuid() const = 0;
-
 		/**
 		* Get the cell index pair count of this grid connection representation
 		*/

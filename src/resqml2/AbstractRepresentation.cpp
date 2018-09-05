@@ -58,22 +58,21 @@ void AbstractRepresentation::setXmlInterpretation(AbstractFeatureInterpretation 
 	}
 }
 
-std::string AbstractRepresentation::getHdfProxyUuidFromPointGeometryPatch(gsoap_resqml2_0_1::resqml2__PointGeometry* patch) const
+gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractRepresentation::getHdfProxyDorFromPointGeometryPatch(gsoap_resqml2_0_1::resqml2__PointGeometry* patch) const
 {
-	string result = "";
 	if (patch != nullptr) {
 		if (patch->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dZValueArray) {
 			gsoap_resqml2_0_1::resqml2__Point3dZValueArray* const tmp = static_cast<gsoap_resqml2_0_1::resqml2__Point3dZValueArray* const>(patch->Points);
 			if (tmp->ZValues->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-				return static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array* const>(tmp->ZValues)->Values->HdfProxy->UUID;
+				return static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array* const>(tmp->ZValues)->Values->HdfProxy;
 			}
 		}
 		else if (patch->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array) {
-			return static_cast<gsoap_resqml2_0_1::resqml2__Point3dHdf5Array* const>(patch->Points)->Coordinates->HdfProxy->UUID;
+			return static_cast<gsoap_resqml2_0_1::resqml2__Point3dHdf5Array* const>(patch->Points)->Coordinates->HdfProxy;
 		}
 	}
 
-	return result;
+	return nullptr;
 }
 
 gsoap_resqml2_0_1::resqml2__Seismic2dCoordinates* AbstractRepresentation::getSeismic2dCoordinates(const unsigned int & patchIndex) const
@@ -182,6 +181,12 @@ COMMON_NS::AbstractHdfProxy * AbstractRepresentation::getHdfProxy() const
 	return hdfProxy;
 }
 
+std::string AbstractRepresentation::getHdfProxyUuid() const
+{
+	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getHdfProxyDor();
+	return dor == nullptr ? string() : dor->UUID;
+}
+
 const std::vector<AbstractProperty*> & AbstractRepresentation::getPropertySet() const
 {
 	return propertySet;
@@ -253,8 +258,7 @@ AbstractFeatureInterpretation* AbstractRepresentation::getInterpretation() const
 gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractRepresentation::getInterpretationDor() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation != nullptr ?
-			static_cast<gsoap_resqml2_0_1::resqml2__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation : nullptr;
+		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -473,15 +477,18 @@ void AbstractRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument
 		updateXml = true;
 	}
 
-	const std::string uuid = getHdfProxyUuid();
-	if (!uuid.empty()) {
-		COMMON_NS::AbstractHdfProxy* const hdfProxy = epcDoc->getResqmlAbstractObjectByUuid<COMMON_NS::AbstractHdfProxy>(uuid);
-		if (hdfProxy != nullptr) {
-			setHdfProxy(hdfProxy);
+	// Epc External part
+	dor = getHdfProxyDor();
+	if (dor != nullptr) {
+		COMMON_NS::AbstractHdfProxy* hdfProxy = epcDoc->getResqmlAbstractObjectByUuid<COMMON_NS::AbstractHdfProxy>(dor->UUID);
+		if (hdfProxy == nullptr) { // partial transfer
+			getEpcDocument()->createPartial(dor);
+			hdfProxy = getEpcDocument()->getResqmlAbstractObjectByUuid<COMMON_NS::AbstractHdfProxy>(dor->UUID);
 		}
-		else {
-			getEpcDocument()->addWarning("The HDF proxy " + uuid + " of the representation " + getUuid() + " is missing");
+		if (hdfProxy == nullptr) {
+			throw invalid_argument("The DOR looks invalid.");
 		}
+		setHdfProxy(hdfProxy);
 	}
 
 	// Seismic support
@@ -491,7 +498,7 @@ void AbstractRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument
 		// Seismic support
 		for (unsigned int patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
 			gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(patchIndex);
-			if (geom && geom->SeismicCoordinates) {
+			if (geom != nullptr && geom->SeismicCoordinates != nullptr) {
 				if (geom->SeismicCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Seismic3dCoordinates) {
 					gsoap_resqml2_0_1::resqml2__Seismic3dCoordinates* const seis3dInfo = static_cast<gsoap_resqml2_0_1::resqml2__Seismic3dCoordinates* const>(geom->SeismicCoordinates);
 					pushBackSeismicSupport(epcDoc->getResqmlAbstractObjectByUuid<AbstractRepresentation>(seis3dInfo->SeismicSupport->UUID));

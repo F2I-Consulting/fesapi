@@ -563,6 +563,10 @@ gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* AbstractObject::getGsoapProxy
 	return gsoapProxy2_0_1;
 }
 
+void AbstractObject::setGsoapProxy(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy) {
+	gsoapProxy2_0_1 = gsoapProxy;
+}
+
 eml20__DataObjectReference* AbstractObject::newResqmlReference() const
 {
 	eml20__DataObjectReference* result = soap_new_eml20__DataObjectReference(getGsoapContext(), 1);
