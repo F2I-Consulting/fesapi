@@ -124,11 +124,10 @@ ENDIF ()
 
 # Uuid
 IF (UNIX)
-	SET (UUID_INCLUDE_DIR UUID_INCLUDE_DIR-NOTFOUND CACHE PATH "Path to the directory which contains the UUID header files")
-#No warning because usually uuid includes are in system includes
-	#IF (NOT IS_DIRECTORY ${UUID_INCLUDE_DIR})
-	#	MESSAGE(WARNING "The UUID include dir (UUID_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
-	#ENDIF ()
+	SET (UUID_INCLUDE_DIR /usr/include CACHE PATH "Path to the directory which contains the uuid/uuid.h header file")
+	IF (NOT IS_DIRECTORY ${UUID_INCLUDE_DIR})
+		MESSAGE(WARNING "The UUID include dir (UUID_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
+	ENDIF ()
 	SET (UUID_LIBRARY_RELEASE /usr/lib/x86_64-linux-gnu/libuuid.so CACHE FILEPATH "Path to the file which contains the UUID library release")
 	IF (NOT EXISTS ${UUID_LIBRARY_RELEASE})
 		MESSAGE(WARNING "The UUID library (UUID_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
