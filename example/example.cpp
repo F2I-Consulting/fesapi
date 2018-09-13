@@ -265,7 +265,7 @@ void serializeBoundaries(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfPro
 	SeismicLatticeFeature* seismicLattice = pck->createSeismicLattice("eb6a5e97-4d86-4809-b136-051f34cfcb51", "Seismic lattice", 2, 2, 150, 152, 4, 2);
 	GenericFeatureInterpretation* seismicLatticeInterp = pck->createGenericFeatureInterpretation(seismicLattice, "97816427-6ef6-4776-b21c-5b93c8a6310a", "Seismic lattice Interp");
 	Grid2dRepresentation* seismicLatticeRep = pck->createGrid2dRepresentation(seismicLatticeInterp, local3dCrs, "aa5b90f1-2eab-4fa6-8720-69dd4fd51a4d", "Seismic lattice Rep");
-	seismicLatticeRep->setGeometryAsArray2dOfLatticePoints3d(4, 2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 250, 200);
+	seismicLatticeRep->setGeometryAsArray2dOfLatticePoints3d(4, 2, 0, 0, 0, 1, 0, 2, 0, 1, 3, 250, 200);
 
 	// Seismic Line Set
 	SeismicLineSetFeature* seismicLineSet = pck->createSeismicLineSet("53c6a0be-c901-4bb6-845b-fba79745da02", "Seismic line Set");
@@ -2750,6 +2750,15 @@ void deserialize(const string & inputFile)
 		horizonGrid2dSet[i]->getZValuesInGlobalCrs(zValues);
 		std::cout << "First zValue is : " << zValues[0] << std::endl;
 		std::cout << "Second zValue is : " << zValues[1] << std::endl;
+		std::cout << "Third zValue is : " << zValues[2] << std::endl;
+		std::cout << "Fourth zValue is : " << zValues[3] << std::endl;
+		std::cout << "Fifth zValue is : " << zValues[4] << std::endl;
+		horizonGrid2dSet[i]->getSupportingRepresentation()->getZValuesInGlobalCrs(zValues);
+		std::cout << "Supporting Representation first zValue is : " << zValues[0] << std::endl;
+		std::cout << "Supporting Representation second zValue is : " << zValues[1] << std::endl;
+		std::cout << "Supporting Representation third zValue is : " << zValues[2] << std::endl;
+		std::cout << "Supporting Representation fourth zValue is : " << zValues[3] << std::endl;
+		std::cout << "Supporting Representation fifth zValue is : " << zValues[4] << std::endl;
 		delete[] zValues;
 		cout << "XIOffset : " << horizonGrid2dSet[i]->getXIOffsetInGlobalCrs() << endl;
 		cout << "YIOffset : " << horizonGrid2dSet[i]->getYIOffsetInGlobalCrs() << endl;
