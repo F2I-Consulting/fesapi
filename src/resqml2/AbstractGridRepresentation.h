@@ -90,7 +90,7 @@ namespace RESQML2_NS
 		 * Get the GridConnectionSetRepresentation count into this EPC document which are associated to this grid.
 		 * It is mainly used in SWIG context for parsing the vector from a non C++ language.
 		 */
-		unsigned int getGridConnectionSetRepresentationCount() const {return gridConnectionSetRepresentationSet.size();}
+		unsigned int getGridConnectionSetRepresentationCount() const {return static_cast<unsigned int>(gridConnectionSetRepresentationSet.size());}
 
 		/**
 		 * Get a particular ijk parametric grid according to its position in the EPC document.
@@ -124,7 +124,7 @@ namespace RESQML2_NS
 		/**
 		* Return the count of child grid in this grid.
 		*/
-		unsigned int getChildGridCount() const {return childGridSet.size();}
+		unsigned int getChildGridCount() const {return static_cast<unsigned int>(childGridSet.size());}
 
 		/**
 		* Return the count of child grid in this grid.
