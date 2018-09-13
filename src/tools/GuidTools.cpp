@@ -54,5 +54,3 @@ string GuidTools::generateUidAsString()
 }
 
 #endif
-
-

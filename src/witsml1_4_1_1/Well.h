@@ -20,6 +20,8 @@ under the License.
 
 #include "witsml1_4_1_1/Wellbore.h"
 
+#include "tools/TimeTools.h"
+
 namespace WITSML1_4_1_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT Well : public AbstractObject
@@ -114,14 +116,14 @@ namespace WITSML1_4_1_1_NS
 		time_t getCreation() const
 		{
 			if (static_cast<gsoap_witsml1_4_1_1::_witsml1__wells*>(collection)->well[0]->commonData->dTimCreation)
-				return mktime(static_cast<gsoap_witsml1_4_1_1::_witsml1__wells*>(collection)->well[0]->commonData->dTimCreation);
+				return timeTools::timegm(static_cast<gsoap_witsml1_4_1_1::_witsml1__wells*>(collection)->well[0]->commonData->dTimCreation);
 			else
 				return -1;
 		}
 		time_t getLastUpdate() const
 		{
 			if (static_cast<gsoap_witsml1_4_1_1::_witsml1__wells*>(collection)->well[0]->commonData->dTimLastChange)
-				return mktime(static_cast<gsoap_witsml1_4_1_1::_witsml1__wells*>(collection)->well[0]->commonData->dTimLastChange);
+				return timeTools::timegm(static_cast<gsoap_witsml1_4_1_1::_witsml1__wells*>(collection)->well[0]->commonData->dTimLastChange);
 			else
 				return -1;
 		}

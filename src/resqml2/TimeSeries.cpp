@@ -20,6 +20,8 @@ under the License.
 
 #include <stdexcept>
 
+#include "tools/TimeTools.h"
+
 #include "resqml2/AbstractValuesProperty.h"
 
 using namespace std;
@@ -51,7 +53,7 @@ unsigned int TimeSeries::getTimestampIndex(const time_t & timestamp) const
 		gsoap_resqml2_0_1::_resqml2__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml2__TimeSeries*>(gsoapProxy2_0_1);
 
 		for (size_t result = 0; result < timeSeries->Time.size(); ++result) {
-			if (mktime(&timeSeries->Time[result]->DateTime) == timestamp) {
+			if (timeTools::timegm(&timeSeries->Time[result]->DateTime) == timestamp) {
 				return result;
 			}
 		}
@@ -69,7 +71,7 @@ unsigned int TimeSeries::getTimestampIndex(const tm & timestamp) const
 		gsoap_resqml2_0_1::_resqml2__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml2__TimeSeries*>(gsoapProxy2_0_1);
 
 		for (size_t result = 0; result < timeSeries->Time.size(); ++result) {
-			// Very basic equaility check between two tm
+			// Very basic equality check between two tm
 			if (timeSeries->Time[result]->DateTime.tm_year == timestamp.tm_year &&
 				timeSeries->Time[result]->DateTime.tm_mon == timestamp.tm_mon &&
 				timeSeries->Time[result]->DateTime.tm_mday == timestamp.tm_mday &&
@@ -100,7 +102,7 @@ unsigned int TimeSeries::getTimestampCount() const
 time_t TimeSeries::getTimestamp(const unsigned int & index) const
 {
 	tm temp = getTimestampAsTimeStructure(index);
-	return mktime(&temp);
+	return timeTools::timegm(&temp);
 }
 
 tm TimeSeries::getTimestampAsTimeStructure(const unsigned int & index) const
@@ -124,7 +126,7 @@ vector<Relationship> TimeSeries::getAllEpcRelationships() const
 	vector<Relationship> result;
 
 	// backward relationships
-	for (size_t i = 0; i < propertySet.size(); i++)
+	for (size_t i = 0; i < propertySet.size(); ++i)
 	{
 		Relationship rel(propertySet[i]->getPartNameInEpcDocument(), "", propertySet[i]->getUuid());
 		rel.setSourceObjectType();

@@ -26,5 +26,10 @@ namespace timeTools
 	* Convert an Unix timestamp which is given in microseconds into a date in ISO format.
 	*/
 	std::string convertMicrosecondUnixTimestampToIso(const long long & ts);
+
+	/**
+	* Converts a UTC time represented by a tm``struct to a UTC time represented by a time_t type.
+	*/
+	time_t timegm(struct tm *tm);
 }
 
