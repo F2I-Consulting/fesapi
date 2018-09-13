@@ -2687,16 +2687,22 @@ namespace RESQML2_0_1_NS
 		
 		double getXOrigin() const;
 		double getYOrigin() const;
+		double getZOrigin() const;
 		double getXOriginInGlobalCrs() const;
 		double getYOriginInGlobalCrs() const;
+		double getZOriginInGlobalCrs() const;
 		double getXJOffset() const;
 		double getYJOffset() const;
+		double getZJOffset() const;
 		double getXJOffsetInGlobalCrs() const;
 		double getYJOffsetInGlobalCrs() const;
+		double getZJOffsetInGlobalCrs() const;
 		double getXIOffset() const;
 		double getYIOffset() const;
+		double getZIOffset() const;
 		double getXIOffsetInGlobalCrs() const;
 		double getYIOffsetInGlobalCrs() const;
+		double getZIOffsetInGlobalCrs() const;
 		bool isJSpacingConstant() const;
 		bool isISpacingConstant() const;
 		void getJSpacing(double* const jSpacings) const;
