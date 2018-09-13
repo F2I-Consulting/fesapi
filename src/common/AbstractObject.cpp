@@ -28,6 +28,7 @@ under the License.
 #include <algorithm>
 
 #include "tools/GuidTools.h"
+#include "tools/TimeTools.h"
 
 #if defined(__gnu_linux__) || defined(__APPLE__)
 #include <unistd.h>
@@ -156,7 +157,7 @@ string AbstractObject::getEditor() const
 time_t AbstractObject::getCreation() const
 {
 	tm tmp = getCreationAsTimeStructure();
-	return mktime(&tmp);
+	return timeTools::timegm(&tmp);
 }
 
 tm AbstractObject::getCreationAsTimeStructure() const
@@ -206,7 +207,7 @@ time_t AbstractObject::getLastUpdate() const
 		return -1;
 	}
 
-	return mktime(&result);
+	return timeTools::timegm(&result);
 }
 
 tm AbstractObject::getLastUpdateAsTimeStructure() const

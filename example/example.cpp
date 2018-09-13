@@ -1369,41 +1369,6 @@ void showAllMetadata(COMMON_NS::AbstractObject * obj, const std::string & prefix
 	}
 }
 
-void showAllSubRepresentations(const vector<RESQML2_NS::SubRepresentation*> & subRepSet)
-{
-	if (!subRepSet.empty()) {
-		cout << "SUBREPRESENTATIONS" << std::endl;
-	}
-	std::cout << "\t--------------------------------------------------" << std::endl;
-	for (size_t subRepIndex = 0; subRepIndex < subRepSet.size(); ++subRepIndex)
-	{
-		showAllMetadata(subRepSet[subRepIndex], "\t");
-		if (!subRepSet[subRepIndex]->isPartial()) {
-			const ULONG64 indiceCount = subRepSet[subRepIndex]->getElementCountOfPatch(0);
-
-			// element indices
-			ULONG64 * elementIndices = new ULONG64[indiceCount];
-			subRepSet[subRepIndex]->getElementIndicesOfPatch(0, 0, elementIndices);
-			for (unsigned int i = 0; i < indiceCount && i < 10; ++i) {
-				std::cout << "Element indice at position " << i << " : " << elementIndices[i] << std::endl;
-			}
-			delete[] elementIndices;
-
-			// Supporting rep indices
-			short * supRepIndices = new short[indiceCount];
-			subRepSet[subRepIndex]->getSupportingRepresentationIndicesOfPatch(0, supRepIndices);
-			for (unsigned int i = 0; i < indiceCount && i < 10; ++i) {
-				std::cout << "Supporting rep indice at position " << i << " : " << supRepIndices[i] << std::endl;
-			}
-			delete[] supRepIndices;
-
-		}
-		else {
-			std::cout << "IS PARTIAL!" << std::endl;
-		}
-	}
-}
-
 void showAllProperties(RESQML2_NS::AbstractRepresentation * rep, bool* enabledCells = nullptr)
 {
 	std::vector<RESQML2_NS::AbstractValuesProperty*> propertyValuesSet = rep->getValuesPropertySet();
@@ -1525,6 +1490,43 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation * rep, bool* enabledCe
 		}
 	}
 	std::cout << "\t--------------------------------------------------" << std::endl;
+}
+
+void showAllSubRepresentations(const vector<RESQML2_NS::SubRepresentation*> & subRepSet)
+{
+	if (!subRepSet.empty()) {
+		cout << "SUBREPRESENTATIONS" << std::endl;
+	}
+	std::cout << "\t--------------------------------------------------" << std::endl;
+	for (size_t subRepIndex = 0; subRepIndex < subRepSet.size(); ++subRepIndex)
+	{
+		showAllMetadata(subRepSet[subRepIndex], "\t");
+		if (!subRepSet[subRepIndex]->isPartial()) {
+			const ULONG64 indiceCount = subRepSet[subRepIndex]->getElementCountOfPatch(0);
+
+			// element indices
+			ULONG64 * elementIndices = new ULONG64[indiceCount];
+			subRepSet[subRepIndex]->getElementIndicesOfPatch(0, 0, elementIndices);
+			for (unsigned int i = 0; i < indiceCount && i < 10; ++i) {
+				std::cout << "Element indice at position " << i << " : " << elementIndices[i] << std::endl;
+			}
+			delete[] elementIndices;
+
+			// Supporting rep indices
+			short * supRepIndices = new short[indiceCount];
+			subRepSet[subRepIndex]->getSupportingRepresentationIndicesOfPatch(0, supRepIndices);
+			for (unsigned int i = 0; i < indiceCount && i < 10; ++i) {
+				std::cout << "Supporting rep indice at position " << i << " : " << supRepIndices[i] << std::endl;
+			}
+			delete[] supRepIndices;
+
+		}
+		else {
+			std::cout << "IS PARTIAL!" << std::endl;
+		}
+
+		showAllProperties(subRepSet[subRepIndex]);
+	}
 }
 
 void deserializeStratiColumn(StratigraphicColumn * stratiColumn)

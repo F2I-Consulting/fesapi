@@ -45,3 +45,23 @@ std::string timeTools::convertMicrosecondUnixTimestampToIso(const long long & ts
 	return oss.str();
 }
 
+time_t timeTools::timegm(struct tm *tm)
+{
+#if defined(__gnu_linux__) || defined(__APPLE__)
+	time_t ret;
+	char *tz;
+
+	tz = getenv("TZ");
+	setenv("TZ", "", 1);
+	tzset();
+	ret = mktime(tm);
+	if (tz)
+		setenv("TZ", tz, 1);
+	else
+		unsetenv("TZ");
+	tzset();
+	return ret;
+#elif defined(_WIN32)
+	return _mkgmtime(tm);
+#endif
+}
