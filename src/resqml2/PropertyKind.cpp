@@ -171,7 +171,7 @@ vector<Relationship> PropertyKind::getAllTargetRelationships() const
 	return result;
 }
 
-void PropertyKind::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void PropertyKind::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	if (isParentAnEnergisticsPropertyKind()) {
 		return;

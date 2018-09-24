@@ -168,9 +168,9 @@ void StratigraphicColumnRankInterpretation::pushBackStratigraphicBinaryContact(S
 	}
 }
 		
-void StratigraphicColumnRankInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void StratigraphicColumnRankInterpretation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractStratigraphicOrganizationInterpretation::importRelationshipSetFromEpc(epcDoc);
+	AbstractStratigraphicOrganizationInterpretation::resolveTargetRelationships(epcDoc);
 
 	updateXml = false;
 

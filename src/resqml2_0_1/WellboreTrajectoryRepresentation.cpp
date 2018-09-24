@@ -237,9 +237,9 @@ vector<Relationship> WellboreTrajectoryRepresentation::getAllTargetRelationships
 	return result;
 }
 
-void WellboreTrajectoryRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void WellboreTrajectoryRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractRepresentation::resolveTargetRelationships(epcDoc);
 
 	_resqml2__WellboreTrajectoryRepresentation* rep = static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 

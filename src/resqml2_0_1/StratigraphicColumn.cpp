@@ -71,7 +71,7 @@ vector<Relationship> StratigraphicColumn::getAllTargetRelationships() const
     return result;
 }
 
-void StratigraphicColumn::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void StratigraphicColumn::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	updateXml = false;
 

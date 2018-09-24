@@ -167,7 +167,7 @@ void FormationMarker::setWellbore(Wellbore* witsmlWellbore)
 	}
 }
 
-void FormationMarker::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void FormationMarker::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	witsml1__obj_USCOREformationMarker* fm = static_cast<_witsml1__formationMarkers*>(collection)->formationMarker[0];
 	if (fm && fm->uidWellbore)

@@ -323,7 +323,7 @@ PropertyKind* PropertyKindMapper::addResqmlLocalPropertyKindToEpcDocumentFromApp
 			}
 			for (unsigned int addedIndex = 0; addedIndex < added.size(); addedIndex++)
 			{
-				added[addedIndex]->importRelationshipSetFromEpc(epcDocument);
+				added[addedIndex]->resolveTargetRelationships(epcDocument);
 			}
 			return added[0];
 		}

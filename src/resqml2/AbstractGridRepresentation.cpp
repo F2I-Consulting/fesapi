@@ -974,9 +974,9 @@ void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimensio
 	}
 }
 
-void AbstractGridRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void AbstractGridRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractRepresentation::resolveTargetRelationships(epcDoc);
 
 	// LGR backward relationships
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getParentGridDor();

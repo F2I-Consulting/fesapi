@@ -187,13 +187,13 @@ namespace RESQML2_0_1_NS
 
 		std::vector<epc::Relationship> getAllSourceRelationships() const;
 		std::vector<epc::Relationship> getAllTargetRelationships() const;
+
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
 	protected:
 
 		friend void WellboreTrajectoryRepresentation::setDeviationSurvey(DeviationSurveyRepresentation* deviationSurvey);
 
 		void addTrajectory(class WellboreTrajectoryRepresentation* trajectory);
-
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 		
 		// XML backward relationships
 		std::vector<class WellboreTrajectoryRepresentation*> wbTrajectoryRepSet;

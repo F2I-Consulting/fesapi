@@ -301,7 +301,7 @@ void Wellbore::setShape(const witsml1__WellboreShape & shape)
 	*static_cast<_witsml1__wellbores*>(collection)->wellbore[0]->__obj_USCOREwellbore_sequence->shape = shape;
 }
 
-void Wellbore::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void Wellbore::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	witsml1__obj_USCOREwellbore* wellbore = static_cast<_witsml1__wellbores*>(collection)->wellbore[0];
 	if (wellbore && wellbore->uidWell)

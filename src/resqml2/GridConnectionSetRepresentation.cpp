@@ -99,9 +99,9 @@ void GridConnectionSetRepresentation::pushBackInterpretation(AbstractFeatureInte
 	}
 }
 
-void GridConnectionSetRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void GridConnectionSetRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractRepresentation::resolveTargetRelationships(epcDoc);
 
 	// Supporting grid representation
 	unsigned int supportingGridCount = getSupportingGridRepresentationCount();

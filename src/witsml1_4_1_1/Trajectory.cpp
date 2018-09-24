@@ -741,7 +741,7 @@ void Trajectory::setProjectedXProjectedYTrajectoryStations(
 		wellbore->setShape(witsml1__WellboreShape__unknown);
 }
 
-void Trajectory::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void Trajectory::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	witsml1__obj_USCOREtrajectory* traj = static_cast<_witsml1__trajectorys*>(collection)->trajectory[0];
 	if (traj && traj->uidWellbore)

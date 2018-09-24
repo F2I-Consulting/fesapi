@@ -83,7 +83,7 @@ namespace WITSML1_4_1_1_NS
 		* Resolve all relationships of the object in an epc document.
 		* Does nothing since there is no forward relationship.
 		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc) {}
 
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}

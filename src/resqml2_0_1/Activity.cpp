@@ -482,7 +482,7 @@ std::string Activity::getResqmlVersion() const
 	return "2.0.1";
 }
 
-void Activity::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void Activity::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	_resqml2__Activity* activity = static_cast<_resqml2__Activity*>(gsoapProxy2_0_1);
 

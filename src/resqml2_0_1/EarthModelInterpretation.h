@@ -65,8 +65,8 @@ namespace RESQML2_0_1_NS
 		virtual std::string getXmlTag() const {return XML_TAG;}
 
         std::vector<epc::Relationship> getAllTargetRelationships() const;
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
     private:
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML Forward relationships
         class StructuralOrganizationInterpretation* structuralOrganization;

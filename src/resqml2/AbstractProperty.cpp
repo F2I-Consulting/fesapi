@@ -164,7 +164,7 @@ vector<Relationship> AbstractProperty::getAllTargetRelationships() const
 	return result;
 }
 
-void AbstractProperty::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void AbstractProperty::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getRepresentationDor();
 	RESQML2_NS::AbstractRepresentation* rep = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);

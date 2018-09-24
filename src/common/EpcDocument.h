@@ -185,12 +185,15 @@ namespace COMMON_NS
 		typedef COMMON_NS::AbstractHdfProxy* (HdfProxyBuilderFromGsoapProxy2_0_1)(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
 		// A function pointer which allows to build a v2.0.1 abstract hdf proxy in reading mode of an epc document
 		typedef PRODML2_0_NS::HdfProxy* (HdfProxyBuilderFromGsoapProxy2_1)(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
+		// A function pointer which allows to build a partial hdf proxy
+		typedef COMMON_NS::AbstractHdfProxy* (PartialHdfProxyBuilder)(soap* soapContext, const std::string & guid, const std::string & title);
 
 		// Allows a fesapi user to set a different builder of Hdf Proxy than the default one in writing mode of an epc document
 		// This is especially useful when the fesapi users wants to use its own builder for example.
 		void set_hdf_proxy_builder(HdfProxyBuilder builder);
 		void set_hdf_proxy_builder(HdfProxyBuilderFromGsoapProxy2_0_1 builder);
 		void set_hdf_proxy_builder(HdfProxyBuilderFromGsoapProxy2_1 builder);
+		void set_hdf_proxy_builder(PartialHdfProxyBuilder builder);
 
 		/**
 		* Open an epc document.
@@ -1248,6 +1251,7 @@ namespace COMMON_NS
 		HdfProxyBuilder* make_hdf_proxy; /// the builder for HDF proxy in writing mode of the epc document
 		HdfProxyBuilderFromGsoapProxy2_0_1* make_hdf_proxy_from_gsoap_proxy_2_0_1; /// the builder for a v2.0.1 HDF proxy in reading mode of the epc document
 		HdfProxyBuilderFromGsoapProxy2_1* make_hdf_proxy_from_gsoap_proxy_2_1; /// the builder for a v2.1 HDF proxy in reading mode of the epc document
+		PartialHdfProxyBuilder* make_partial_hdf_proxy;  /// the builder for partial HDF proxy
 	};
 }
 

@@ -97,9 +97,9 @@ vector<Relationship> CategoricalProperty::getAllTargetRelationships() const
 	return result;
 }
 
-void CategoricalProperty::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void CategoricalProperty::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractValuesProperty:: importRelationshipSetFromEpc(epcDoc);
+	AbstractValuesProperty:: resolveTargetRelationships(epcDoc);
 
 	_resqml2__CategoricalProperty* prop = static_cast<_resqml2__CategoricalProperty*>(gsoapProxy2_0_1);
 	stringLookup = static_cast<StringTableLookup*>(epcDoc->getResqmlAbstractObjectByUuid(prop->Lookup->UUID));

@@ -94,11 +94,11 @@ namespace RESQML2_NS
 		std::string getRepresentationUuid(const unsigned int & index) const;
 		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
 
+		virtual void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
+
     protected:
 
 		void pushBackXmlRepresentation(RESQML2_NS::AbstractRepresentation* rep);
-
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		friend void RESQML2_NS::AbstractRepresentation::pushBackIntoRepresentationSet(RepresentationSetRepresentation * repSet, bool xml);
 	};

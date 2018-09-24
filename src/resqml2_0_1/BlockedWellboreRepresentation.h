@@ -113,9 +113,7 @@ namespace RESQML2_0_1_NS
 
 		std::vector<epc::Relationship> getAllTargetRelationships() const;
 
-	private:
-
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
 	};
 }
 

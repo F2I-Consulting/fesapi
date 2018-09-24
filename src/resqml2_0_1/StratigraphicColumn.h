@@ -67,9 +67,9 @@ namespace RESQML2_0_1_NS
 
         std::vector<epc::Relationship> getAllSourceRelationships() const;
         std::vector<epc::Relationship> getAllTargetRelationships() const;
+		void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc);
 
     private:
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc);
 
 		// Forward relationships
         std::vector<class StratigraphicColumnRankInterpretation*> stratigraphicColumnRankSet;

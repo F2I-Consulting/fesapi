@@ -52,9 +52,9 @@ vector<Relationship> SubRepresentation::getAllTargetRelationships() const
 	return result;
 }
 
-void SubRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void SubRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractRepresentation::resolveTargetRelationships(epcDoc);
 
 	// Supporting representation
 	const unsigned int supRepCount = getSupportingRepresentationCount();

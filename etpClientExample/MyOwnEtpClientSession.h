@@ -25,6 +25,9 @@ under the License.
 class MyOwnEtpClientSession : public ETP_NS::ClientSession
 {
 public:
+
+	typedef COMMON_NS::AbstractHdfProxy* (HdfProxyBuilderFromGsoapProxy2_0_1)(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
+
 	/**
 	 * @param host		The IP address on which the server is listening for etp (websocket) connection
 	 * @param port		The port on which the server is listening for etp (websocket) connection

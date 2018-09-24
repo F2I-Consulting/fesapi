@@ -235,10 +235,7 @@ namespace RESQML2_NS
 		unsigned int getPatchCount() const {return 1;}
 
 		std::vector<epc::Relationship> getAllTargetRelationships() const;
-
-	private:
-
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
 	};
 }
 

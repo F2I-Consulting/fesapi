@@ -207,9 +207,9 @@ std::string BlockedWellboreRepresentation::getSupportingGridRepresentationUuid(u
 	return getSupportingGridRepresentationDor(index)->UUID;
 }
 
-void BlockedWellboreRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void BlockedWellboreRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	WellboreFrameRepresentation::importRelationshipSetFromEpc(epcDoc);
+	WellboreFrameRepresentation::resolveTargetRelationships(epcDoc);
 
 	_resqml2__BlockedWellboreRepresentation* rep = static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 

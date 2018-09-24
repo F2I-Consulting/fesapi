@@ -223,13 +223,13 @@ namespace RESQML2_NS
 		std::vector<epc::Relationship> getAllSourceRelationships() const;
 		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
 
+		virtual void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc);
+
 	protected:
 
 		void setXmlRepresentation(class AbstractRepresentation * rep);
 		void setXmlTimeSeries(TimeSeries * ts);
 		void setXmlLocalPropertyKind(class PropertyKind* propKind);
-
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc);
 
 		class AbstractLocal3dCrs *		local3dCrs;			/// The used local 3D CRS in case the property values need one.
 	};

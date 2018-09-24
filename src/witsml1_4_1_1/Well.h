@@ -155,7 +155,7 @@ namespace WITSML1_4_1_1_NS
 		* Resolve all relationships of the object in an epc document.
 		* Does nothing since there is no forward relationship.
 		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
 
 		std::vector<epc::Relationship> getAllSourceRelationships() const;
 

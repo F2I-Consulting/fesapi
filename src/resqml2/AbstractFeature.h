@@ -68,12 +68,12 @@ namespace RESQML2_NS
 		virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
 		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
 
-	protected:
-
 		/**
-		* Does nothing since feature has not forward relationships at all
+		* Does nothing since feature has not target relationships at all
 		*/
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
+		virtual void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc) {}
+
+	protected:
 
 		std::vector<AbstractFeatureInterpretation*> interpretationSet; /// All the interpretations of the feature
 

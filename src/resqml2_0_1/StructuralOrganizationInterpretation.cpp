@@ -197,9 +197,9 @@ vector<Relationship> StructuralOrganizationInterpretation::getAllTargetRelations
 	return result;
 }
 		
-void StructuralOrganizationInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void StructuralOrganizationInterpretation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractOrganizationInterpretation::importRelationshipSetFromEpc(epcDoc);
+	AbstractOrganizationInterpretation::resolveTargetRelationships(epcDoc);
 
 	updateXml = false;
 

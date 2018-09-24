@@ -68,9 +68,9 @@ namespace RESQML2_0_1_NS
 		void setWitsmlWellbore(WITSML1_4_1_1_NS::Wellbore * wellbore);
 
 		std::vector<epc::Relationship> getAllTargetRelationships() const;
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
 
 	protected:
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML forward relationship
 		WITSML1_4_1_1_NS::Wellbore * witsmlWellbore;

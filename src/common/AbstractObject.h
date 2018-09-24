@@ -100,10 +100,6 @@ namespace COMMON_NS
 
 		void initMandatoryMetadata();
 		
-		/**
-		* Resolve all relationships of the object in an epc document
-		*/
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc) = 0;
 		friend void COMMON_NS::EpcDocument::updateAllRelationships();
 
 		friend void COMMON_NS::EpcDocument::serialize(bool useZip64);
@@ -328,6 +324,12 @@ namespace COMMON_NS
 		virtual std::vector<epc::Relationship> getAllSourceRelationships() const = 0;
 		virtual std::vector<epc::Relationship> getAllTargetRelationships() const = 0;
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
+
+		/**
+		* Transform target relationships contained in the XML into in memory bi idrectonal relationships.
+		* Does not update anything about the source relationships of the this current object.
+		*/
+		virtual void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc) = 0;
 	};
 }
 
