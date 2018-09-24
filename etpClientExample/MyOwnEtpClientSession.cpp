@@ -28,7 +28,7 @@ MyOwnEtpClientSession::MyOwnEtpClientSession(boost::asio::io_context& ioc,
 		const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 		const std::vector<std::string>& supportedObjects)
 	: ETP_NS::ClientSession(ioc, host, port, target, requestedProtocols, supportedObjects),
-	  epcDoc("", COMMON_NS::EpcDocument::OVERWRITE)
+	  epcDoc("../../fakeForEtpClient.epc", COMMON_NS::EpcDocument::OVERWRITE)
 {
 	setCoreProtocolHandlers(std::make_shared<ETP_NS::CoreHandlers>(this));
 	setDirectedDiscoveryProtocolHandlers(std::make_shared<ETP_NS::DirectedDiscoveryHandlers>(this));
@@ -78,14 +78,23 @@ void MyOwnEtpClientSession::do_when_finished()
 		std::cout << gda.m_pathInResource << std::endl;
 		sendAndDoRead(gda);
 	}
+	else if (command.substr(0, 12) == "List") {
+		std::cout << "*** START LISTING ***" << std::endl;
+		for (const auto& entryPair : epcDoc.getResqmlAbstractObjectSet()) {
+				std::cout << entryPair.first << " : " << entryPair.second->getTitle() << std::endl;
+		}
+		std::cout << "*** END LISTING ***" << std::endl;
+		do_when_finished();
+	}
 	else {
 		std::cout << "WRONG COMMAND!!! Please retry" << std::endl;
 		std::cout << "List of available commands :" << std::endl;
-		std::cout << "GetContent folderUri" << std::endl;
-		std::cout << "GetSources dataObjectURI" << std::endl;
-		std::cout << "GetTargets dataObjectURI" << std::endl;
-		std::cout << "GetObject dataObjectURI" << std::endl;
-		std::cout << "GetDataArray epcExternalPartURI datasetPathInEpcExternalPart" << std::endl;
+		std::cout << "List -> list the objects which have been got from ETP to the in memory epc" << std::endl;
+		std::cout << "GetContent folderUri -> get content of a folder in an ETP store" << std::endl;
+		std::cout << "GetSources dataObjectURI  -> get dataobject sources of a dataobject in an ETP store" << std::endl;
+		std::cout << "GetTargets dataObjectURI  -> get dataobject targets of a dataobject in an ETP store" << std::endl;
+		std::cout << "GetObject dataObjectURI  -> get the object from an ETP store and store it into the in memory epc" << std::endl;
+		std::cout << "GetDataArray epcExternalPartURI datasetPathInEpcExternalPart  -> get the numerical values from a dataset included in an EpcExternalPart over ETP." << std::endl;
 		do_when_finished();
 	}
 }

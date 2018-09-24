@@ -406,7 +406,7 @@ if (${WITH_JAVA_WRAPPING})
 	)
 endif (${WITH_JAVA_WRAPPING})
 
-# proxies headers
+# namespaces
 INSTALL (
 	FILES ${FESAPI_ROOT_DIR}/src/nsDefinitions.h
 	DESTINATION include/
@@ -418,7 +418,7 @@ INSTALL (
 	DESTINATION include/proxies/
 )
 
-# main headers
+# common headers
 INSTALL (
 	FILES ${FESAPI_COMMON_HEADERS}
 	DESTINATION include/common
@@ -460,6 +460,14 @@ INSTALL (
 	FILES ${FESAPI_PRODML_2_0_HEADERS}
 	DESTINATION include/${PRODML_PREFIX_2_0}/
 )
+
+# etp header
+IF (WITH_ETP)
+	INSTALL (
+		FILES ${FESAPI_ETP_HEADERS}
+		DESTINATION include/${ETP_PREFIX}/
+	)
+endif (WITH_ETP)
 
 # PropertyTypeMapping.xml
 INSTALL (
