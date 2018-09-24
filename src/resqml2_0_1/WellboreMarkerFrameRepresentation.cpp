@@ -184,9 +184,9 @@ vector<Relationship> WellboreMarkerFrameRepresentation::getAllTargetRelationship
 	return result;
 }
 
-void WellboreMarkerFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void WellboreMarkerFrameRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	WellboreFrameRepresentation::importRelationshipSetFromEpc(epcDoc);
+	WellboreFrameRepresentation::resolveTargetRelationships(epcDoc);
 
 	updateXml = false;
 

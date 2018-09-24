@@ -132,7 +132,7 @@ namespace WITSML1_4_1_1_NS
 		/**
 		* Resolve all relationships of the object in an epc document
 		*/
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc) = 0;
+		virtual void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc) = 0;
 
 		/**
 		* Serialize the gsoap proxy into a string

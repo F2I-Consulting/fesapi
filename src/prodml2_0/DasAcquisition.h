@@ -247,7 +247,7 @@ namespace PRODML2_0_NS
 		/**
 		* Does nothing since StringTableLookup has not got any forward relationship.
 		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc) {}
 	};
 }
 

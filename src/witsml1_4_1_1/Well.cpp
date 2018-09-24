@@ -393,7 +393,7 @@ gsoap_witsml1_4_1_1::witsml1__cs_USCOREwellDatum* Well::getDatum(const std::stri
 	return nullptr;
 }
 
-void Well::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void Well::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	witsml1__obj_USCOREwell* well = static_cast<_witsml1__wells*>(collection)->well[0];
 	for (unsigned int i = 0; i < well->__obj_USCOREwell_sequence->wellLocation.size(); ++i)

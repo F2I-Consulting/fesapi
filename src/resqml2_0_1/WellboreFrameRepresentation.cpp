@@ -92,17 +92,17 @@ vector<Relationship> WellboreFrameRepresentation::getAllTargetRelationships() co
 	return result;
 }
 
-void WellboreFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void WellboreFrameRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	const _resqml2__WellboreFrameRepresentation* const rep = static_cast<const _resqml2__WellboreFrameRepresentation* const>(gsoapProxy2_0_1);
 
-	// need to do that before AbstractRepresentation::importRelationshipSetFromEpc because the trajectory is used for finding the local crs relationship.
+	// need to do that before AbstractRepresentation::resolveTargetRelationships because the trajectory is used for finding the local crs relationship.
 	trajectory = static_cast<WellboreTrajectoryRepresentation* const>(epcDoc->getResqmlAbstractObjectByUuid(rep->Trajectory->UUID));
 	if (trajectory != nullptr) {
 		trajectory->addWellboreFrameRepresentation(this);
 	}
 
-	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractRepresentation::resolveTargetRelationships(epcDoc);
 
 	int valuesType = rep->NodeMd->soap_type();
 	if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
@@ -204,17 +204,18 @@ unsigned int WellboreFrameRepresentation::getMdValuesCount() const
 COMMON_NS::AbstractObject::hdfDatatypeEnum WellboreFrameRepresentation::getMdHdfDatatype() const
 {
 	_resqml2__WellboreFrameRepresentation* frame = static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
-	if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
-	{
-		if (hdfProxy == nullptr)
+	if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
+		if (hdfProxy == nullptr) {
 			return COMMON_NS::AbstractObject::UNKNOWN;
+		}
 
 		return hdfProxy->getHdfDatatypeInDataset(static_cast<resqml2__DoubleHdf5Array*>(frame->NodeMd)->Values->PathInHdfFile);
 	}
-	else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleLatticeArray)
-	{
+	else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleLatticeArray) {
 		return COMMON_NS::AbstractObject::DOUBLE;
 	}
+
+	return COMMON_NS::AbstractObject::UNKNOWN;
 }
 
 void WellboreFrameRepresentation::getMdAsDoubleValues(double * values)

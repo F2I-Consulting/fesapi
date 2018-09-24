@@ -254,9 +254,9 @@ namespace RESQML2_0_1_NS
 		* Get the information to resolve the associated deviation survey. It can return a null pointer.
 		*/
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getDeviationSurveyDor() const;
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
 
 	protected:
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML forward relationships
 		WITSML1_4_1_1_NS::Trajectory * witsmlTrajectory;

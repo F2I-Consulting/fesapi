@@ -56,7 +56,7 @@ void AbstractFeatureInterpretation::setInterpretedFeature(RESQML2_NS::AbstractFe
 	}
 }
 
-void AbstractFeatureInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void AbstractFeatureInterpretation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getInterpretedFeatureDor();
 	RESQML2_NS::AbstractFeature* interpretedFeature = epcDoc->getResqmlAbstractObjectByUuid<AbstractFeature>(dor->UUID);

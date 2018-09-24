@@ -112,9 +112,9 @@ vector<Relationship> EarthModelInterpretation::getAllTargetRelationships() const
     return result;
 }
 		
-void EarthModelInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void EarthModelInterpretation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractFeatureInterpretation::importRelationshipSetFromEpc(epcDoc);
+	AbstractFeatureInterpretation::resolveTargetRelationships(epcDoc);
 
 	updateXml = false;
 

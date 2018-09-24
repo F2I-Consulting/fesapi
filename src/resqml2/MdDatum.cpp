@@ -30,7 +30,7 @@ using namespace epc;
 
 const char* MdDatum::XML_TAG = "MdDatum";
 
-void MdDatum::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void MdDatum::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	_resqml2__MdDatum* mdInfo = static_cast<_resqml2__MdDatum*>(gsoapProxy2_0_1);
 

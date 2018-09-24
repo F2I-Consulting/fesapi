@@ -30,5 +30,7 @@ void MyOwnStoreProtocolHandlers::on_Object(const Energistics::Etp::v12::Protocol
 	std::cout << "uuid : " << graphResource.m_resource.m_uuid << std::endl;
 	std::cout << "*************************************************" << std::endl;
 
-	static_cast<MyOwnEtpClientSession*>(session)->epcDoc.addOrReplaceGsoapProxy(graphResource.m_data, graphResource.m_resource.m_contentType);
+	COMMON_NS::AbstractObject* importedObj  = static_cast<MyOwnEtpClientSession*>(session)->epcDoc.addOrReplaceGsoapProxy(graphResource.m_data, graphResource.m_resource.m_contentType);
+
+	importedObj->resolveTargetRelationships(&static_cast<MyOwnEtpClientSession*>(session)->epcDoc);
 }

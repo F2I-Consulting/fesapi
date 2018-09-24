@@ -469,9 +469,9 @@ namespace RESQML2_NS
 		virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
 		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
 
-	protected:
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
 
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+	protected:
 
 		bool withTruncatedPillars;
 

@@ -244,9 +244,9 @@ vector<Relationship> AbstractSurfaceRepresentation::getAllTargetRelationships() 
 	return result;
 }
 
-void AbstractSurfaceRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void AbstractSurfaceRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractRepresentation::resolveTargetRelationships(epcDoc);
 
 	resqml2__AbstractSurfaceRepresentation* rep = static_cast<resqml2__AbstractSurfaceRepresentation*>(gsoapProxy2_0_1);
 

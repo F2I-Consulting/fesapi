@@ -398,7 +398,7 @@ void Log::pushBackLogCurveInfo(
 	*logCurveInfo->traceOrigin = traceOrigin; 
 }
 
-void Log::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void Log::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	witsml1__obj_USCORElog* log = static_cast<_witsml1__logs*>(collection)->log[0];
 	if (log && log->uidWellbore)

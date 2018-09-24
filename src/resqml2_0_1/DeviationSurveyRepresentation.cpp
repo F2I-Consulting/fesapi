@@ -147,9 +147,9 @@ vector<Relationship> DeviationSurveyRepresentation::getAllTargetRelationships() 
 	return result;
 }
 
-void DeviationSurveyRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void DeviationSurveyRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractRepresentation::resolveTargetRelationships(epcDoc);
 
 	RESQML2_NS::MdDatum* mdDatum = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::MdDatum>(getMdDatumUuid());
 	if (mdDatum != nullptr) {

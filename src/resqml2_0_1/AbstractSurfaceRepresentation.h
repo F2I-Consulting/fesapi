@@ -90,8 +90,6 @@ namespace RESQML2_0_1_NS
 			const double & offsetIX, const double & offsetIY, const double & offsetIZ, const double & spacingI,
 			const double & offsetJX, const double & offsetJY, const double & offsetJZ, const double & spacingJ);
 
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-
 		std::vector<PolylineRepresentation*> outerRingSet; // outer rings are ordered as the patches of the representation are ordered.
 
 	public:
@@ -122,6 +120,8 @@ namespace RESQML2_0_1_NS
 		const gsoap_resqml2_0_1::resqml2__SurfaceRole & getSurfaceRole() const;
 
 		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
+
+		virtual void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
 	};
 }
 

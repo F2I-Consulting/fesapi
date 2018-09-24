@@ -168,18 +168,27 @@ namespace // anonymous namespace. Use only in that file.
 	{
 		return new PRODML2_0_NS::HdfProxy(fromGsoap, packageDirAbsolutePath, externalFilePath);
 	}
+
+	COMMON_NS::AbstractHdfProxy* default_builder(soap* soapContext, const std::string & guid, const std::string & title)
+	{
+		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(soapContext, 1);
+		partialObject->Title = title;
+		partialObject->UUID = guid;
+		partialObject->ContentType = "application/x-resqml+xml;version=2.0;type=obj_EpcExternalPartReference";
+		return new RESQML2_0_1_NS::HdfProxy(partialObject);
+	}
 }
 
 EpcDocument::EpcDocument(const string & fileName, const openingMode & hdf5PermissionAccess) :
 	package(nullptr), s(nullptr), propertyKindMapper(nullptr), make_hdf_proxy(&default_builder), make_hdf_proxy_from_gsoap_proxy_2_0_1(&default_builder)
-	, make_hdf_proxy_from_gsoap_proxy_2_1(&default_builder)
+	, make_hdf_proxy_from_gsoap_proxy_2_1(&default_builder), make_partial_hdf_proxy(&default_builder)
 {
 	open(fileName, hdf5PermissionAccess);
 }
 
 EpcDocument::EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, const openingMode & hdf5PermissionAccess) :
 	package(nullptr), s(nullptr), make_hdf_proxy(&default_builder), make_hdf_proxy_from_gsoap_proxy_2_0_1(&default_builder)
-	, make_hdf_proxy_from_gsoap_proxy_2_1(&default_builder)
+	, make_hdf_proxy_from_gsoap_proxy_2_1(&default_builder), make_partial_hdf_proxy(&default_builder)
 {
 	open(fileName, hdf5PermissionAccess);
 
@@ -550,23 +559,21 @@ COMMON_NS::AbstractObject* EpcDocument::addOrReplaceGsoapProxy(const std::string
 			delete wrapper;
 		}
 		else {
-			addFesapiWrapperAndDeleteItIfException(wrapper);
+			COMMON_NS::AbstractObject* obj = getResqmlAbstractObjectByUuid(wrapper->getUuid());
+			if (obj == nullptr) {
+				addFesapiWrapperAndDeleteItIfException(wrapper);
+				return wrapper;
+			}
+			else { // replacement
+				obj->setGsoapProxy(wrapper->getGsoapProxy());
+				delete wrapper;
+				return obj;
+			}
 		}
 	}
-	else {
-		warnings.push_back("The content type " + contentType + " could not be wrapped by fesapi. The related instance will be ignored.");
-	}
 
-	COMMON_NS::AbstractObject* obj = getResqmlAbstractObjectByUuid(wrapper->getUuid());
-	if (obj == nullptr) {
-		addGsoapProxy(wrapper);
-		return wrapper;
-	}
-	else { // replacement
-		obj->setGsoapProxy(wrapper->getGsoapProxy());
-		delete wrapper;
-		return obj;
-	}
+	warnings.push_back("The content type " + contentType + " could not be wrapped by fesapi. The related instance will be ignored.");
+	return nullptr;
 }
 
 void EpcDocument::addGsoapProxy(COMMON_NS::AbstractObject* proxy)
@@ -1506,7 +1513,7 @@ void EpcDocument::updateAllRelationships()
 #endif
 	{
 		if (!it->second->isPartial()) {
-			it->second->importRelationshipSetFromEpc(this);
+			it->second->resolveTargetRelationships(this);
 		}
 	}
 
@@ -1517,7 +1524,7 @@ void EpcDocument::updateAllRelationships()
 	for (std::tr1::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.begin(); it != witsmlAbstractObjectSet.end(); ++it)
 #endif
 	{
-		it->second->importRelationshipSetFromEpc(this);
+		it->second->resolveTargetRelationships(this);
 	}
 }
 
@@ -1606,9 +1613,11 @@ COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_resqml2_0_1::eml20__
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(GeobodyFeature)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(GeobodyBoundaryInterpretation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(GeobodyInterpretation)
-	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
+	else if (resqmlContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
-		return createPartial<RESQML2_0_1_NS::HdfProxy>(dor->UUID, dor->Title);
+		COMMON_NS::AbstractHdfProxy* result = make_partial_hdf_proxy(getGsoapContext(), dor->UUID, dor->Title);
+		addFesapiWrapperAndDeleteItIfException(result);
+		return result;
 	}
 
 	throw invalid_argument("The content type " + resqmlContentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
@@ -2639,6 +2648,11 @@ void COMMON_NS::EpcDocument::set_hdf_proxy_builder(HdfProxyBuilderFromGsoapProxy
 void COMMON_NS::EpcDocument::set_hdf_proxy_builder(HdfProxyBuilderFromGsoapProxy2_1 builder)
 {
 	make_hdf_proxy_from_gsoap_proxy_2_1 = builder;
+}
+
+void COMMON_NS::EpcDocument::set_hdf_proxy_builder(PartialHdfProxyBuilder builder)
+{
+	make_partial_hdf_proxy = builder;
 }
 
 int EpcDocument::getGsoapErrorCode() const

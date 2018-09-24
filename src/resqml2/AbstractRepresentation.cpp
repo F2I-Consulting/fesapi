@@ -444,7 +444,7 @@ void AbstractRepresentation::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy)
 	proxy->representationSourceObject.push_back(this);
 }
 
-void AbstractRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void AbstractRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getInterpretationDor();
 	if (dor != nullptr) {

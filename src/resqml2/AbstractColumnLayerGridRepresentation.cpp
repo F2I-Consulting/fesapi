@@ -178,9 +178,9 @@ vector<Relationship> AbstractColumnLayerGridRepresentation::getAllTargetRelation
 	return result;
 }
 
-void AbstractColumnLayerGridRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void AbstractColumnLayerGridRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractGridRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractGridRepresentation::resolveTargetRelationships(epcDoc);
 
 	// Strati org backward relationships
 	if (hasIntervalStratigraphicUnitIndices()) {

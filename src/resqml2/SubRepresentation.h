@@ -192,11 +192,11 @@ namespace RESQML2_NS
 
 		std::vector<epc::Relationship> getAllTargetRelationships() const;
 
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
+
 	private:
 
 		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const {return nullptr;}
-		
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 	};
 }
 

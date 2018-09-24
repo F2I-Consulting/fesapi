@@ -98,12 +98,12 @@ namespace RESQML2_NS
 		std::vector<epc::Relationship> getAllSourceRelationships() const;
 		std::vector<epc::Relationship> getAllTargetRelationships() const;
 
-	protected:
-
 		/**
-		* Does nothing since StringTableLookup has not got any forward relationship.
+		* Does nothing since StringTableLookup has not got any target relationship.
 		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc) {}
+
+	protected:
 
 		// XML backward relationship
 		std::vector<RESQML2_NS::AbstractProperty*> propertySet;

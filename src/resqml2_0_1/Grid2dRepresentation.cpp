@@ -769,9 +769,9 @@ vector<Relationship> Grid2dRepresentation::getAllTargetRelationships() const
 
 	return result;
 }
-void Grid2dRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void Grid2dRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractSurfaceRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractSurfaceRepresentation::resolveTargetRelationships(epcDoc);
 
 	_resqml2__Grid2dRepresentation* singleGrid2dRep = static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1);
 

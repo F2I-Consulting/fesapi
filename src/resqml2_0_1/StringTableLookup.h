@@ -125,13 +125,14 @@ namespace RESQML2_0_1_NS
         std::vector<epc::Relationship> getAllSourceRelationships() const;
         std::vector<epc::Relationship> getAllTargetRelationships() const;
 
-	protected:
 		/**
-		* Does nothing since StringTableLookup has not got any forward relationship.
+		* Does nothing since StringTableLookup has not got any target relationship.
 		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc) {}
 
-		// XML backwards relationships
+	protected:
+
+		// XML source relationships
 		std::vector<class CategoricalProperty*> categoricalPropertyValuesSet;
 	};
 }

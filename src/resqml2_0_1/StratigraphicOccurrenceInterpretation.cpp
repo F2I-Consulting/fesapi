@@ -100,9 +100,9 @@ vector<Relationship> StratigraphicOccurrenceInterpretation::getAllTargetRelation
     return result;
 }
 	
-void StratigraphicOccurrenceInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void StratigraphicOccurrenceInterpretation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractStratigraphicOrganizationInterpretation::importRelationshipSetFromEpc(epcDoc);
+	AbstractStratigraphicOrganizationInterpretation::resolveTargetRelationships(epcDoc);
 
 	updateXml = false;
 
