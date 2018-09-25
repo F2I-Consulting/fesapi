@@ -830,6 +830,8 @@ std::string AbstractObject::getAliasAuthorityAtIndex(const unsigned int & index)
 	else if (gsoapProxy2_2 != nullptr) {
 		return gsoapProxy2_2->Aliases[index]->authority;
 	}
+
+	throw invalid_argument("The proxy is not recognized");
 }
 
 std::string AbstractObject::getAliasTitleAtIndex(const unsigned int & index) const
@@ -851,6 +853,8 @@ std::string AbstractObject::getAliasTitleAtIndex(const unsigned int & index) con
 	else if (gsoapProxy2_2 != nullptr) {
 		return gsoapProxy2_2->Aliases[index]->Identifier;
 	}
+
+	throw invalid_argument("The proxy is not recognized");
 }
 
 const std::vector<RESQML2_NS::Activity*> & AbstractObject::getActivitySet() const

@@ -95,16 +95,16 @@ namespace WITSML2_1_NS
 		void setXyzAccelerometer();
 		void setXyAccelerometer(double cantAngle, gsoap_eml2_2::eml22__PlaneAngleUom cantAngleUom, bool switching);
 
-		void setGyroReinitializationDistance(double value, gsoap_eml2_2::eml22__LengthUom uom);
-		void setNoiseReductionFactor(double value);
 		void setExternalReference(bool value);
 
-		void pushBackGyro(gsoap_eml2_2::witsml2__GyroAxisCombination axisCombination, gsoap_eml2_2::witsml2__GyroMode mode,
-			double start, gsoap_eml2_2::eml22__PlaneAngleUom startUom,
-			double end, gsoap_eml2_2::eml22__PlaneAngleUom endUom,
-			double initialization, gsoap_eml2_2::eml22__PlaneAngleUom initializationUom,
+		void pushBackContinuousGyro(gsoap_eml2_2::witsml2__GyroAxisCombination axisCombination,
+			double start, double end, double initialization, gsoap_eml2_2::eml22__PlaneAngleUom rangeUom,
+			double noiseReductionFactor = std::numeric_limits<double>::quiet_NaN(),
 			gsoap_eml2_2::eml22__LengthPerTimeUom speedUom = gsoap_eml2_2::eml22__LengthPerTimeUom__m_x002fs, double speed = std::numeric_limits<double>::quiet_NaN(),
-			gsoap_eml2_2::eml22__LengthUom uom = gsoap_eml2_2::eml22__LengthUom__m, double reinitializationDistance = std::numeric_limits<double>::quiet_NaN());
+			gsoap_eml2_2::eml22__LengthUom reinitializationDistanceUom = gsoap_eml2_2::eml22__LengthUom__m, double reinitializationDistance = std::numeric_limits<double>::quiet_NaN());
+
+		void pushBackStationaryGyro(gsoap_eml2_2::witsml2__GyroAxisCombination axisCombination,
+			double start, double end, gsoap_eml2_2::eml22__PlaneAngleUom rangeUom);
 
 		/**
 		* Resolve all relationships of the object in an epc document.

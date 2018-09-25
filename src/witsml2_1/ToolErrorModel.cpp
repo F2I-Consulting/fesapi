@@ -274,6 +274,7 @@ gsoap_eml2_2::witsml2__GyroToolConfiguration* ToolErrorModel::getOrCreateGyroToo
 	if (tem->GyroToolConfiguration == nullptr)  {
 		tem->GyroToolConfiguration = soap_new_witsml2__GyroToolConfiguration(gsoapProxy2_2->soap, 1);
 	}
+	tem->GyroToolConfiguration->ExternalReference = false;
 
 	return tem->GyroToolConfiguration;
 }
@@ -296,66 +297,67 @@ void ToolErrorModel::setXyAccelerometer(double cantAngle, gsoap_eml2_2::eml22__P
 	getOrCreateGyroToolConfig()->XyAccelerometer->Switching = switching;
 }
 
-void ToolErrorModel::setGyroReinitializationDistance(double value, gsoap_eml2_2::eml22__LengthUom uom)
-{
-	/*
-	getOrCreateGyroToolConfig()->GyroReinitializationDistance = soap_new_eml22__LengthMeasureExt(gsoapProxy2_2->soap, 1);
-	getOrCreateGyroToolConfig()->GyroReinitializationDistance->__item = value;
-	getOrCreateGyroToolConfig()->GyroReinitializationDistance->uom = gsoap_eml2_2::soap_eml22__LengthUom2s(gsoapProxy2_2->soap, uom);
-	*/
-}
-
-void ToolErrorModel::setNoiseReductionFactor(double value)
-{
-	getOrCreateGyroToolConfig()->NoiseReductionFactor = (double*)soap_malloc(gsoapProxy2_2->soap, sizeof(double));
-	*getOrCreateGyroToolConfig()->NoiseReductionFactor = value;
-}
-
 void ToolErrorModel::setExternalReference(bool value)
 {
-	getOrCreateGyroToolConfig()->ExternalReference = (bool*)soap_malloc(gsoapProxy2_2->soap, sizeof(bool));
-	*getOrCreateGyroToolConfig()->ExternalReference = value;
+	getOrCreateGyroToolConfig()->ExternalReference = value;
 }
 
-void ToolErrorModel::pushBackGyro(gsoap_eml2_2::witsml2__GyroAxisCombination axisCombination, gsoap_eml2_2::witsml2__GyroMode mode,
-	double start, gsoap_eml2_2::eml22__PlaneAngleUom startUom,
-	double end, gsoap_eml2_2::eml22__PlaneAngleUom endUom,
-	double initialization, gsoap_eml2_2::eml22__PlaneAngleUom initializationUom,
+void ToolErrorModel::pushBackContinuousGyro(gsoap_eml2_2::witsml2__GyroAxisCombination axisCombination,
+	double start, double end, double initialization, gsoap_eml2_2::eml22__PlaneAngleUom rangeUom,
+	double noiseReductionFactor,
 	gsoap_eml2_2::eml22__LengthPerTimeUom speedUom, double speed,
-	gsoap_eml2_2::eml22__LengthUom uom, double reinitializationDistance)
+	gsoap_eml2_2::eml22__LengthUom reinitializationDistanceUom, double reinitializationDistance)
 {
-	witsml2__Gyro* gyro = soap_new_witsml2__Gyro(gsoapProxy2_2->soap, 1);
-	getOrCreateGyroToolConfig()->Gyro.push_back(gyro);
+	witsml2__ContinuousGyro* gyro = soap_new_witsml2__ContinuousGyro(gsoapProxy2_2->soap, 1);
+	getOrCreateGyroToolConfig()->ContinuousGyro.push_back(gyro);
 
 	gyro->AxisCombination = axisCombination;
-	gyro->Mode = mode;
 
 	gyro->Start = soap_new_eml22__PlaneAngleMeasureExt(gsoapProxy2_2->soap, 1);
 	gyro->Start->__item = start;
-	gyro->Start->uom = gsoap_eml2_2::soap_eml22__PlaneAngleUom2s(gsoapProxy2_2->soap, startUom);
+	gyro->Start->uom = gsoap_eml2_2::soap_eml22__PlaneAngleUom2s(gsoapProxy2_2->soap, rangeUom);
 
 	gyro->End = soap_new_eml22__PlaneAngleMeasureExt(gsoapProxy2_2->soap, 1);
 	gyro->End->__item = end;
-	gyro->End->uom = gsoap_eml2_2::soap_eml22__PlaneAngleUom2s(gsoapProxy2_2->soap, endUom);
+	gyro->End->uom = gsoap_eml2_2::soap_eml22__PlaneAngleUom2s(gsoapProxy2_2->soap, rangeUom);
 
 	gyro->Initialization = soap_new_eml22__PlaneAngleMeasureExt(gsoapProxy2_2->soap, 1);
 	gyro->Initialization->__item = initialization;
-	gyro->Initialization->uom = gsoap_eml2_2::soap_eml22__PlaneAngleUom2s(gsoapProxy2_2->soap, initializationUom);
+	gyro->Initialization->uom = gsoap_eml2_2::soap_eml22__PlaneAngleUom2s(gsoapProxy2_2->soap, rangeUom);
 
-	if (speed == speed)
-	{
+	if (noiseReductionFactor == noiseReductionFactor) {
+		gyro->NoiseReductionFactor = soap_new_double(gsoapProxy2_2->soap, 1);
+		*gyro->NoiseReductionFactor = noiseReductionFactor;
+	}
+
+	if (speed == speed) {
 		gyro->Speed = soap_new_eml22__LengthPerTimeMeasureExt(gsoapProxy2_2->soap, 1);
 		gyro->Speed->__item = speed;
 		gyro->Speed->uom = gsoap_eml2_2::soap_eml22__LengthPerTimeUom2s(gsoapProxy2_2->soap, speedUom);
 	}
 
-	if (reinitializationDistance == reinitializationDistance)
-	{
+	if (reinitializationDistance == reinitializationDistance) {
 		gyro->GyroReinitializationDistance = soap_new_eml22__LengthMeasureExt(gsoapProxy2_2->soap, 1);
 		gyro->GyroReinitializationDistance->__item = reinitializationDistance;
-		gyro->GyroReinitializationDistance->uom = gsoap_eml2_2::soap_eml22__LengthUom2s(gsoapProxy2_2->soap, uom);
+		gyro->GyroReinitializationDistance->uom = gsoap_eml2_2::soap_eml22__LengthUom2s(gsoapProxy2_2->soap, reinitializationDistanceUom);
 	}
 }
+
+void ToolErrorModel::pushBackStationaryGyro(gsoap_eml2_2::witsml2__GyroAxisCombination axisCombination,
+	double start, double end, gsoap_eml2_2::eml22__PlaneAngleUom rangeUom)
+{
+	witsml2__StationaryGyro* gyro = soap_new_witsml2__StationaryGyro(gsoapProxy2_2->soap, 1);
+	getOrCreateGyroToolConfig()->StationaryGyro.push_back(gyro);
+
+	gyro->AxisCombination = axisCombination;
+
+	gyro->Range = soap_new_witsml2__PlaneAngleOperatingRange(gsoapProxy2_2->soap, 1);
+
+	gyro->Range->Min = start;
+	gyro->Range->Max = end;
+	gyro->Range->Uom = gsoap_eml2_2::soap_eml22__PlaneAngleUom2s(gsoapProxy2_2->soap, rangeUom);
+}
+
 
 void ToolErrorModel::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
