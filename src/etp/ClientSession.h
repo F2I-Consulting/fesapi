@@ -67,7 +67,6 @@ namespace ETP_NS
 					std::placeholders::_1));
 		}
 
-		virtual void do_when_finished();
 		void do_read();
 
 		void on_resolve(boost::system::error_code ec, tcp::resolver::results_type results);

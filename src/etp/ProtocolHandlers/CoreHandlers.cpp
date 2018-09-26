@@ -70,7 +70,6 @@ void CoreHandlers::on_RequestSession(const Energistics::Etp::v12::Protocol::Core
 
 void CoreHandlers::on_OpenSession(const Energistics::Etp::v12::Protocol::Core::OpenSession & os)
 {
-	session->do_when_finished();
 }
 
 void CoreHandlers::on_CloseSession(const Energistics::Etp::v12::Protocol::Core::CloseSession & cs)
@@ -82,6 +81,4 @@ void CoreHandlers::on_CloseSession(const Energistics::Etp::v12::Protocol::Core::
 void CoreHandlers::on_ProtocolException(const Energistics::Etp::v12::Protocol::Core::ProtocolException & pe)
 {
 	std::cout << "EXCEPTION with error code "  << pe.m_errorCode << " : " << pe.m_errorMessage << std::endl;
-
-	session->do_when_finished();
 }

@@ -69,6 +69,4 @@ void DiscoveryHandlers::on_GetResources(const Energistics::Etp::v12::Protocol::D
 void DiscoveryHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse & grr)
 {
 	std::cout << '(' << grr.m_resource.m_name << ", " << grr.m_resource.m_contentType << ')' << std::endl;
-
-	session->do_when_finished();
 }

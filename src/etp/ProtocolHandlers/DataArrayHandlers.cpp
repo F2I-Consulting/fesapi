@@ -60,12 +60,6 @@ void DataArrayHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes
 		avro::decode(*d, da);
 		session->flushReceivingBuffer();
 		on_DataArray(da);
-		if ((mh.m_messageFlags & 0x02) != 0 || (mh.m_messageFlags & 0x01) == 0) {
-			session->do_when_finished();
-		}
-		else {
-			session->do_read();
-		}
 	}
 	else {
 		session->flushReceivingBuffer();

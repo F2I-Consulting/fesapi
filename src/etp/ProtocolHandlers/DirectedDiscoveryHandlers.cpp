@@ -42,12 +42,6 @@ void DirectedDiscoveryHandlers::decodeMessageBody(const Energistics::Etp::v12::D
 		avro::decode(*d, grr);
 		session->flushReceivingBuffer();
 		on_GetResourcesResponse(grr);
-		if ((mh.m_messageFlags & 0x02) != 0 || (mh.m_messageFlags & 0x01) == 0) {
-			session->do_when_finished();
-		}
-		else {
-			session->do_read();
-		}
 	}
 	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DirectedDiscovery::GetSources::messageTypeId) {
 		Energistics::Etp::v12::Protocol::DirectedDiscovery::GetSources gs;

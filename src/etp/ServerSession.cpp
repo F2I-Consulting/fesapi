@@ -79,11 +79,16 @@ void ServerSession::on_accept(boost::system::error_code ec)
 	closed = false;
 
 	// Read a message
-	do_when_finished();
+	do_read();
 }
 
 void ServerSession::do_read()
 {
+	if (closed) {
+		std::cout << "CLOSED : NOTHING MORE TO DO" << std::endl;
+		return;
+	}
+
 	// Read a message into our buffer
 	ws.async_read(
 		receivedBuffer,
@@ -94,15 +99,4 @@ void ServerSession::do_read()
 				shared_from_this(),
 				std::placeholders::_1,
 				std::placeholders::_2)));
-}
-
-void ServerSession::do_when_finished()
-{
-	if (closed) {
-		std::cout << "CLOSED : NOTHING MORE TO DO" << std::endl;
-		return;
-	}
-
-	// Read a message into our buffer
-	do_read();
 }

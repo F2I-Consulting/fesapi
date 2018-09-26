@@ -76,6 +76,8 @@ void AbstractSession::on_read(boost::system::error_code ec, std::size_t bytes_tr
 
 		send(error);
 	}
+
+	do_read();
 }
 
 void AbstractSession::close()
@@ -83,7 +85,7 @@ void AbstractSession::close()
 	// Build Open Session message
 	Energistics::Etp::v12::Protocol::Core::CloseSession closeSession;
 
-	sendAndDoRead(closeSession);
+	send(closeSession);
 }
 
 bool AbstractSession::validateUri(const std::string & uri, bool sendException)

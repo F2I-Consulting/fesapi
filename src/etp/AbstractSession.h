@@ -162,6 +162,12 @@ namespace ETP_NS
 			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocols::DirectedDiscovery] = directedDiscoveryHandlers;
 		}
 
+		std::shared_ptr<ETP_NS::ProtocolHandlers> getDirectedDiscoveryProtocolHandlers() {
+			return protocolHandlers.size() > Energistics::Etp::v12::Datatypes::Protocols::DirectedDiscovery ?
+					protocolHandlers[Energistics::Etp::v12::Datatypes::Protocols::DirectedDiscovery] :
+					nullptr;
+		}
+
 		/**
 		 * Set the Store protocol handlers
 		 */
@@ -197,33 +203,7 @@ namespace ETP_NS
 			if(sendingQueue.size() == 1) {
 				do_write();
 			}
-
-			if ((messageFlags & 0x02) != 0 || (messageFlags & 0x01) == 0) {
-				do_when_finished();
-			}
 		}
-
-		/**
-		 * Create a default ETP message header from the ETP message body.
-		 * Encode this created default ETP message header + the ETP message body into the session buffer.
-		 * Write/send this session buffer on the web socket and then read an answer.
-		 * @param mb The ETP message body to send
-		 */
-		template<typename T> void sendAndDoRead(const T & mb, int64_t correlationId = 0, int32_t messageFlags = 0)
-		{
-			encode(mb, correlationId, messageFlags); // put the message to write in the queue
-			if(sendingQueue.size() == 1) {
-				do_write();
-			}
-
-			do_read();
-		}
-
-		/**
-		 * This method is called once all exchanges are done.
-		 * It is typically implemented by a read method (wait for something to read)
-		 */
-		virtual void do_when_finished() = 0;
 
 		/**
 		 * Close the web socket (without sending any ETP message)

@@ -54,12 +54,6 @@ void StoreHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::Me
 		avro::decode(*d, obj);
 		session->flushReceivingBuffer();
 		on_Object(obj);
-		if ((mh.m_messageFlags & 0x02) != 0 || (mh.m_messageFlags & 0x01) == 0) {
-			session->do_when_finished();
-		}
-		else {
-			session->do_read();
-		}
 	}
 	else {
 		session->flushReceivingBuffer();

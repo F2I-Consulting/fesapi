@@ -37,6 +37,6 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energ
 	if (getObjectWhenDiscovered) {
 		Energistics::Etp::v12::Protocol::Store::GetObject getO;
 		getO.m_uri = graphResource.m_uri;
-		session->sendAndDoRead(getO);
+		session->send(getO);
 	}
 }
