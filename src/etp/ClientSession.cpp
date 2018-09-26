@@ -110,22 +110,17 @@ void ClientSession::on_handshake(boost::system::error_code ec)
 
 	closed = false;
 
-	sendAndDoRead(requestSession);
+	send(requestSession);
+	do_read();
 }
 
-void ClientSession::do_when_finished()
+void ClientSession::do_read()
 {
 	if (closed) {
 		std::cout << "CLOSED : NOTHING MORE TO DO" << std::endl;
 		return;
 	}
 
-	// Read a message into our buffer
-	do_read();
-}
-
-void ClientSession::do_read()
-{
 	// Read a message into our buffer
 	ws.async_read(
 		receivedBuffer,

@@ -59,8 +59,6 @@ namespace ETP_NS
 						std::placeholders::_1)));
 		 }
 
-		virtual void do_when_finished();
-
 		void on_accept(boost::system::error_code ec);
 		void do_read();
 	};
