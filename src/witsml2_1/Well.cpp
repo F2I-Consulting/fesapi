@@ -94,7 +94,7 @@ double Well::getLocationProjectedX(const unsigned int & locationIndex)
 	if (well->WellLocation.size() <= locationIndex) {
 		throw range_error("The well location index is out of range.");
 	}
-	if (well->WellLocation[locationIndex]->soap_type() != SOAP_TYPE_gsoap_eml2_1_witsml2__ProjectedWellLocation){
+	if (well->WellLocation[locationIndex]->soap_type() != SOAP_TYPE_gsoap_eml2_2_witsml2__ProjectedWellLocation){
 		throw range_error("The well location is not a projected one.");
 	}
 
@@ -108,7 +108,7 @@ double Well::getLocationProjectedY(const unsigned int & locationIndex)
 	if (well->WellLocation.size() <= locationIndex) {
 		throw range_error("The well location index is out of range.");
 	}
-	if (well->WellLocation[locationIndex]->soap_type() != SOAP_TYPE_gsoap_eml2_1_witsml2__ProjectedWellLocation){
+	if (well->WellLocation[locationIndex]->soap_type() != SOAP_TYPE_gsoap_eml2_2_witsml2__ProjectedWellLocation){
 		throw range_error("The well location is not a projected one.");
 	}
 

@@ -241,7 +241,7 @@ void ToolErrorModel::setAuthorization(const std::string & approvalAuthority,
 	}
 }
 
-void ToolErrorModel::pushBackInclinationRange(double min, double max, gsoap_eml2_2::eml22__PlaneAngleUom minMaxUom, const std::string & comment)
+void ToolErrorModel::pushBackInclinationRange(double start, bool startInclusive, double end, bool endInclusive, gsoap_eml2_2::eml22__PlaneAngleUom uom, const std::string & comment)
 {
 	witsml2__ToolErrorModel* tem = static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2);
 	witsml2__OperatingConstraints* oc = gsoap_eml2_2::soap_new_witsml2__OperatingConstraints(gsoapProxy2_2->soap, 1);
@@ -249,18 +249,20 @@ void ToolErrorModel::pushBackInclinationRange(double min, double max, gsoap_eml2
 
 	witsml2__PlaneAngleOperatingRange* paor = gsoap_eml2_2::soap_new_witsml2__PlaneAngleOperatingRange(gsoapProxy2_2->soap, 1);
 	oc->InclinationRange.push_back(paor);
-	paor->Min = min;
-	paor->Max = max;
-	paor->Uom = soap_eml22__PlaneAngleUom2s(gsoapProxy2_2->soap, minMaxUom);
+	paor->Start = start;
+	paor->StartInclusive = startInclusive;
+	paor->End = end;
+	paor->EndInclusive = endInclusive;
+	paor->Uom = gsoap_eml2_2::soap_eml22__PlaneAngleUom2s(gsoapProxy2_2->soap, uom);
 	if (!comment.empty()) {
 		paor->Comment = soap_new_std__string(gsoapProxy2_2->soap, 1);
 		paor->Comment->assign(comment);
 	}
 }
 
-void ToolErrorModel::pushBackInclinationRange(double min, double max, gsoap_eml2_2::eml22__PlaneAngleUom minMaxUom, double horizontalEastWestMaxValue, gsoap_eml2_2::eml22__PlaneAngleUom horizontalEastWestMaxValueUom, const std::string & comment)
+void ToolErrorModel::pushBackInclinationRange(double start, bool startInclusive, double end, bool endInclusive, gsoap_eml2_2::eml22__PlaneAngleUom uom, double horizontalEastWestMaxValue, gsoap_eml2_2::eml22__PlaneAngleUom horizontalEastWestMaxValueUom, const std::string & comment)
 {
-	pushBackInclinationRange(min, max, minMaxUom, comment);
+	pushBackInclinationRange(start, startInclusive, end, endInclusive, uom, comment);
 
 	witsml2__OperatingConstraints* oc = static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2)->OperatingConstraints;
 	oc->HorizontalEastWestMaxValue = soap_new_eml22__PlaneAngleMeasureExt(gsoapProxy2_2->soap, 1);
@@ -303,7 +305,7 @@ void ToolErrorModel::setExternalReference(bool value)
 }
 
 void ToolErrorModel::pushBackContinuousGyro(gsoap_eml2_2::witsml2__GyroAxisCombination axisCombination,
-	double start, double end, double initialization, gsoap_eml2_2::eml22__PlaneAngleUom rangeUom,
+	double start, bool startInclusive, double end, bool endInclusive, double initialization, gsoap_eml2_2::eml22__PlaneAngleUom rangeUom,
 	double noiseReductionFactor,
 	gsoap_eml2_2::eml22__LengthPerTimeUom speedUom, double speed,
 	gsoap_eml2_2::eml22__LengthUom reinitializationDistanceUom, double reinitializationDistance)
@@ -313,13 +315,13 @@ void ToolErrorModel::pushBackContinuousGyro(gsoap_eml2_2::witsml2__GyroAxisCombi
 
 	gyro->AxisCombination = axisCombination;
 
-	gyro->Start = soap_new_eml22__PlaneAngleMeasureExt(gsoapProxy2_2->soap, 1);
-	gyro->Start->__item = start;
-	gyro->Start->uom = gsoap_eml2_2::soap_eml22__PlaneAngleUom2s(gsoapProxy2_2->soap, rangeUom);
+	gyro->Range = soap_new_witsml2__PlaneAngleOperatingRange(gsoapProxy2_2->soap, 1);
 
-	gyro->End = soap_new_eml22__PlaneAngleMeasureExt(gsoapProxy2_2->soap, 1);
-	gyro->End->__item = end;
-	gyro->End->uom = gsoap_eml2_2::soap_eml22__PlaneAngleUom2s(gsoapProxy2_2->soap, rangeUom);
+	gyro->Range->Start = start;
+	gyro->Range->StartInclusive = startInclusive;
+	gyro->Range->End = end;
+	gyro->Range->EndInclusive = endInclusive;
+	gyro->Range->Uom = gsoap_eml2_2::soap_eml22__PlaneAngleUom2s(gsoapProxy2_2->soap, rangeUom);
 
 	gyro->Initialization = soap_new_eml22__PlaneAngleMeasureExt(gsoapProxy2_2->soap, 1);
 	gyro->Initialization->__item = initialization;
@@ -344,7 +346,7 @@ void ToolErrorModel::pushBackContinuousGyro(gsoap_eml2_2::witsml2__GyroAxisCombi
 }
 
 void ToolErrorModel::pushBackStationaryGyro(gsoap_eml2_2::witsml2__GyroAxisCombination axisCombination,
-	double start, double end, gsoap_eml2_2::eml22__PlaneAngleUom rangeUom)
+	double start, bool startInclusive, double end, bool endInclusive, gsoap_eml2_2::eml22__PlaneAngleUom rangeUom)
 {
 	witsml2__StationaryGyro* gyro = soap_new_witsml2__StationaryGyro(gsoapProxy2_2->soap, 1);
 	getOrCreateGyroToolConfig()->StationaryGyro.push_back(gyro);
@@ -353,8 +355,10 @@ void ToolErrorModel::pushBackStationaryGyro(gsoap_eml2_2::witsml2__GyroAxisCombi
 
 	gyro->Range = soap_new_witsml2__PlaneAngleOperatingRange(gsoapProxy2_2->soap, 1);
 
-	gyro->Range->Min = start;
-	gyro->Range->Max = end;
+	gyro->Range->Start = start;
+	gyro->Range->StartInclusive = startInclusive;
+	gyro->Range->End = end;
+	gyro->Range->EndInclusive = endInclusive;
 	gyro->Range->Uom = gsoap_eml2_2::soap_eml22__PlaneAngleUom2s(gsoapProxy2_2->soap, rangeUom);
 }
 

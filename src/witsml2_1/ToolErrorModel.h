@@ -89,8 +89,8 @@ namespace WITSML2_1_NS
 			const std::string & revisionComment, time_t revisionDate,
 			gsoap_eml2_2::witsml2__AuthorizationStatus* status);
 
-		void pushBackInclinationRange(double min, double max, gsoap_eml2_2::eml22__PlaneAngleUom minMaxUom, const std::string & comment = std::string());
-		void pushBackInclinationRange(double min, double max, gsoap_eml2_2::eml22__PlaneAngleUom minMaxUom, double horizontalEastWestMaxValue, gsoap_eml2_2::eml22__PlaneAngleUom horizontalEastWestMaxValueUom, const std::string & comment = std::string());
+		void pushBackInclinationRange(double start, bool startInclusive, double end, bool endInclusive, gsoap_eml2_2::eml22__PlaneAngleUom uom, const std::string & comment = std::string());
+		void pushBackInclinationRange(double start, bool startInclusive, double end, bool endInclusive, gsoap_eml2_2::eml22__PlaneAngleUom uom, double horizontalEastWestMaxValue, gsoap_eml2_2::eml22__PlaneAngleUom horizontalEastWestMaxValueUom, const std::string & comment = std::string());
 
 		void setXyzAccelerometer();
 		void setXyAccelerometer(double cantAngle, gsoap_eml2_2::eml22__PlaneAngleUom cantAngleUom, bool switching);
@@ -98,13 +98,13 @@ namespace WITSML2_1_NS
 		void setExternalReference(bool value);
 
 		void pushBackContinuousGyro(gsoap_eml2_2::witsml2__GyroAxisCombination axisCombination,
-			double start, double end, double initialization, gsoap_eml2_2::eml22__PlaneAngleUom rangeUom,
+			double start, bool startInclusive, double end, bool endInclusive, double initialization, gsoap_eml2_2::eml22__PlaneAngleUom rangeUom,
 			double noiseReductionFactor = std::numeric_limits<double>::quiet_NaN(),
 			gsoap_eml2_2::eml22__LengthPerTimeUom speedUom = gsoap_eml2_2::eml22__LengthPerTimeUom__m_x002fs, double speed = std::numeric_limits<double>::quiet_NaN(),
 			gsoap_eml2_2::eml22__LengthUom reinitializationDistanceUom = gsoap_eml2_2::eml22__LengthUom__m, double reinitializationDistance = std::numeric_limits<double>::quiet_NaN());
 
 		void pushBackStationaryGyro(gsoap_eml2_2::witsml2__GyroAxisCombination axisCombination,
-			double start, double end, gsoap_eml2_2::eml22__PlaneAngleUom rangeUom);
+			double start, bool startInclusive, double end, bool endInclusive, gsoap_eml2_2::eml22__PlaneAngleUom rangeUom);
 
 		/**
 		* Resolve all relationships of the object in an epc document.
