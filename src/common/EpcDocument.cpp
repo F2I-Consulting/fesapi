@@ -215,6 +215,22 @@ const std::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDocumen
 const std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDocument::getResqmlAbstractObjectSet() const { return resqmlAbstractObjectSet; }
 #endif
 
+std::vector<std::string> EpcDocument::getAllUuids() const
+{
+	std::vector<std::string> keys;
+	keys.reserve(resqmlAbstractObjectSet.size());
+
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it) {
+#else
+	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it) {
+#endif
+		keys.push_back(it->first);
+	}
+
+	return keys;
+}
+
 std::vector<PRODML2_0_NS::DasAcquisition*> EpcDocument::getDasAcquisitionSet() const
 {
 	std::vector<PRODML2_0_NS::DasAcquisition*> result;
@@ -1509,8 +1525,6 @@ std::string EpcDocument::getExtendedCoreProperty(const std::string & key)
 
 COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_resqml2_0_1::eml20__DataObjectReference* dor)
 {
-	addWarning("Create a partial object for object \"" + dor->Title + "\" with UUID " + dor->UUID + " and content type " + dor->ContentType);
-
 	const size_t lastEqualCharPos = dor->ContentType.find_last_of('_'); // The XML tag is after "obj_"
 	const string resqmlContentType = dor->ContentType.substr(lastEqualCharPos + 1);
 

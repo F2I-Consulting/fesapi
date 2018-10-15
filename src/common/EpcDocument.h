@@ -313,7 +313,12 @@ namespace COMMON_NS
 #endif
 
 		/**
-		* Get the Gsoap type  by means of its uuid
+		* Get all UUIDs of the objects contained in the EPC document
+		*/
+		std::vector<std::string> getAllUuids() const;
+
+		/**
+		* Get the Gsoap type by means of its uuid
 		*/
 		COMMON_NS::AbstractObject* getResqmlAbstractObjectByUuid(const std::string & uuid, int & gsoapType) const;
 
@@ -1223,7 +1228,7 @@ namespace COMMON_NS
 		std::vector<RESQML2_NS::RepresentationSetRepresentation*>		representationSetRepresentationSet;
 		std::vector<WITSML1_4_1_1_NS::Trajectory*>						witsmlTrajectorySet;
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*>		triangulatedSetRepresentationSet;
-		std::vector<resqml2_0_1::Grid2dRepresentation*>					grid2dRepresentationSet;
+		std::vector<RESQML2_0_1_NS::Grid2dRepresentation*>				grid2dRepresentationSet;
 		std::vector<RESQML2_0_1_NS::PolylineRepresentation*>			polylineRepresentationSet;
 		std::vector<RESQML2_0_1_NS::AbstractIjkGridRepresentation*>		ijkGridRepresentationSet;
 		std::vector<RESQML2_0_1_NS::UnstructuredGridRepresentation*>	unstructuredGridRepresentationSet;
