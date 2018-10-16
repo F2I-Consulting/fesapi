@@ -3097,25 +3097,27 @@ namespace RESQML2_0_1_NS
 		void getParametricLineKind(short * pillarKind, bool reverseIAxis = false, bool reverseJAxis= false) const;
 		void getParametersOfNodes(double * parameters, bool reverseIAxis = false, bool reverseJAxis= false, bool reverseKAxis= false) const;
 
-		void setGeometryAsParametricSplittedPillarNodes(
+		void setGeometryAsParametricNonSplittedPillarNodes(
+			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const bool & isRightHanded,
+			double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy* proxy);
+		void setGeometryAsParametricNonSplittedPillarNodesUsingExistingDatasets(
 			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
+			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, COMMON_NS::AbstractHdfProxy* proxy);
+		
+		void setGeometryAsParametricSplittedPillarNodes(const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const bool & isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
 			const unsigned long & splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
 			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns);
-
 		void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, COMMON_NS::AbstractHdfProxy* proxy,
 			const unsigned long & splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns);
 
-		void setGeometryAsParametricSplittedPillarNodes(
-			const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
+		void setGeometryAsParametricSplittedPillarNodes(const bool & isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
 			const unsigned long & splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
 			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns);
-
-
 		void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, const unsigned int & controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy* proxy,

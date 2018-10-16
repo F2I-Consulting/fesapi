@@ -307,6 +307,8 @@ namespace COMMON_NS
 
 		COMMON_NS::AbstractObject* getResqmlAbstractObjectByUuid(const std::string & uuid) const;
 		WITSML1_4_1_1_NS::AbstractObject* getWitsmlAbstractObjectByUuid(const std::string & uuid) const;
+		
+		std::vector<std::string> getAllUuids() const;
 
 		//************************************
 		//************ HDF *******************

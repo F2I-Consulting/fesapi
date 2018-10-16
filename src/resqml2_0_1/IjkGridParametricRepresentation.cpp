@@ -1162,10 +1162,10 @@ void IjkGridParametricRepresentation::getXyzPointsOfPatch(const unsigned int & p
 }
 
 void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNodes(
-			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
+			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const bool & isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy* proxy)
 {
-	setGeometryAsParametricSplittedPillarNodes(mostComplexPillarGeometry, kDirectionKind, isRightHanded, parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, pillarKind, proxy,
+	setGeometryAsParametricSplittedPillarNodes(mostComplexPillarGeometry, isRightHanded, parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, pillarKind, proxy,
 		0, nullptr, nullptr, nullptr);
 }
 
@@ -1178,7 +1178,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNo
 }
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes(
-			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
+			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const bool & isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy * proxy,
 			const unsigned long & splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
 			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns)
@@ -1187,7 +1187,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		throw invalid_argument("The kind of the coordinate lines cannot be null.");
 	}
 
-	setGeometryAsParametricSplittedPillarNodes(kDirectionKind, isRightHanded, parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, 2, proxy,
+	setGeometryAsParametricSplittedPillarNodes(isRightHanded, parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, 2, proxy,
 		splitCoordinateLineCount, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(0));
@@ -1282,8 +1282,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	xmlLineKinds->Values->PathInHdfFile = pillarKind;
 }
 
-void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes(
-	const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
+void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes(const bool & isRightHanded,
 	double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy * proxy,
 	const unsigned long & splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
 	unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns)
@@ -1297,6 +1296,8 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	if (splitCoordinateLineCount != 0 && (pillarOfCoordinateLine == nullptr || splitCoordinateLineColumnCumulativeCount == nullptr || splitCoordinateLineColumns == nullptr)) {
 		throw invalid_argument("The definition of the split coordinate lines is incomplete.");
 	}
+
+	gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind = computeKDirection(controlPoints, controlPointCountPerPillar);
 
 	const std::string hdfDatasetPrefix = "/RESQML/" + gsoapProxy2_0_1->uuid;
 	setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(kDirectionKind, isRightHanded,
@@ -1764,3 +1765,87 @@ AbstractIjkGridRepresentation::geometryKind IjkGridParametricRepresentation::get
 	return PARAMETRIC;
 }
 
+namespace {
+	/**
+	* @param controlPointIndex The index of the first control point of the studied pillar in the controlPoints array
+	*/
+	short computeKDirectionOnASinglePillar(unsigned int pillarIndex, unsigned int pillarCount, double * controlPoints, const unsigned int & controlPointCountOnPillar, bool isCrsDepthOriented) {
+		short result = -1;
+
+		size_t controlPointIndex = pillarIndex * 3 + 2;
+		double firstZ = controlPoints[controlPointIndex];
+		if (firstZ != firstZ) { // The pillar is undefined
+			return -1;
+		}
+		unsigned int pillarCountTimes3 = pillarCount * 3; // optim
+		controlPointIndex += pillarCountTimes3;
+
+		for (; controlPointIndex < controlPointCountOnPillar * pillarCountTimes3; controlPointIndex += pillarCountTimes3) {
+			if (controlPoints[controlPointIndex] != controlPoints[controlPointIndex]) { // The pillar definition is already complete
+				break;
+			}
+			if (controlPoints[controlPointIndex] == firstZ) { // The K Direction cannot be deduced
+				continue;
+			}
+
+			gsoap_resqml2_0_1::resqml2__KDirection tmp = gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__not_x0020monotonic;
+			if (isCrsDepthOriented) {
+				tmp = controlPoints[controlPointIndex] > firstZ
+					? gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__down
+					: gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__up;
+			}
+			else {
+				tmp = controlPoints[controlPointIndex] > firstZ
+					? gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__up
+					: gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__down;
+			}
+
+			if (result == -1) {
+				result = tmp;
+			}
+			else if (result != tmp) {
+				return gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__not_x0020monotonic;
+			}
+		}
+
+		return result;
+	}
+}
+
+gsoap_resqml2_0_1::resqml2__KDirection IjkGridParametricRepresentation::computeKDirection(double * controlPoints, const unsigned int & controlPointCountPerPillar) {
+	if (controlPoints == nullptr) {
+		throw invalid_argument("The control points cannot be null.");
+	}
+	if (controlPointCountPerPillar < 1) {
+		throw invalid_argument("The max count of control points per coordinate line of the ijk grid cannot be less than one.");
+	}
+
+	if (controlPointCountPerPillar == 1) {
+		return gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__down; // arbitrary default
+	}
+	
+	// CRS
+	const bool isCrsDepthOriented = getLocalCrs()->isDepthOriented();
+
+	// Initialization
+	short result = -1;
+	unsigned int pillarIndex = 0;
+	for (; pillarIndex < getPillarCount() && result == -1; ++pillarIndex) {
+		result = computeKDirectionOnASinglePillar(pillarIndex, getPillarCount(), controlPoints, controlPointCountPerPillar, isCrsDepthOriented);
+	}
+	if (result == gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__not_x0020monotonic)
+		return gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__not_x0020monotonic;
+
+	// Loop
+	for (; pillarIndex < getPillarCount(); ++pillarIndex) {
+		size_t controlPointIndex = pillarIndex * controlPointCountPerPillar * 3 + 2;
+		short tmp = computeKDirectionOnASinglePillar(pillarIndex, getPillarCount(), controlPoints, controlPointCountPerPillar, isCrsDepthOriented);
+		if (tmp != -1 && tmp != result) {
+			return gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__not_x0020monotonic;
+		}
+	}
+
+	return result < 0
+		? gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__down  // arbitrary default
+		: static_cast<gsoap_resqml2_0_1::resqml2__KDirection>(result);
+}
