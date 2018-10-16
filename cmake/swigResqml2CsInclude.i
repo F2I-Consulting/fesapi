@@ -242,10 +242,6 @@ public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject res
     {
        return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.Grid2dRepresentation(cPtr, owner);
     }
-    else if (type == "Grid2dSetRepresentation")
-    {
-       return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.Grid2dSetRepresentation(cPtr, owner);
-    }
     else if (type == "GridConnectionSetRepresentation")
     {
        return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GridConnectionSetRepresentation(cPtr, owner);

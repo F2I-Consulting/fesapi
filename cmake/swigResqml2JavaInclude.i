@@ -237,10 +237,6 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
     {
        return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.Grid2dRepresentation(cPtr, owner);
     }
-    else if (type.equals("Grid2dSetRepresentation"))
-    {
-       return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.Grid2dSetRepresentation(cPtr, owner);
-    }
     else if (type.equals("GridConnectionSetRepresentation"))
     {
        return new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GridConnectionSetRepresentation(cPtr, owner);
