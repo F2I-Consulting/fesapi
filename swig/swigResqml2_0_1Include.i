@@ -52,7 +52,6 @@ under the License.
 #include "resqml2_0_1/PlaneSetRepresentation.h"
 #include "resqml2_0_1/PolylineRepresentation.h"
 #include "resqml2_0_1/Grid2dRepresentation.h"
-#include "resqml2_0_1/Grid2dSetRepresentation.h"
 #include "resqml2_0_1/TriangulatedSetRepresentation.h"
 #include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
 #include "resqml2_0_1/DeviationSurveyRepresentation.h"
@@ -107,7 +106,6 @@ namespace RESQML2_0_1_NS {
 	class HorizonInterpretation;
 	class StratigraphicOccurrenceInterpretation;
 	class PolylineSetRepresentation;
-	class Grid2dSetRepresentation;
 	class Grid2dRepresentation;
 	class PolylineRepresentation;
 	class PolylineSetRepresentation;
@@ -140,7 +138,6 @@ namespace std {
    %template(StratigraphicUnitInterpretationVector) vector<RESQML2_0_1_NS::StratigraphicUnitInterpretation*>;
    %template(StratigraphicOccurrenceInterpretationVector) vector<RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation*>;
    %template(HorizonInterpretationVector) vector<RESQML2_0_1_NS::HorizonInterpretation*>;
-   %template(Grid2dSetRepresentationVector) vector<RESQML2_0_1_NS::Grid2dSetRepresentation*>;
    %template(Grid2dRepresentationVector) vector<RESQML2_0_1_NS::Grid2dRepresentation*>;
    %template(PolylineRepresentationVector) vector<RESQML2_0_1_NS::PolylineRepresentation*>;
    %template(PolylineSetRepresentationVector) vector<RESQML2_0_1_NS::PolylineSetRepresentation*>;
@@ -2172,7 +2169,6 @@ namespace RESQML2_0_1_NS
 	%nspace RESQML2_0_1_NS::PolylineRepresentation;
 	%nspace RESQML2_0_1_NS::AbstractSurfaceRepresentation;
 	%nspace RESQML2_0_1_NS::Grid2dRepresentation;
-	%nspace RESQML2_0_1_NS::Grid2dSetRepresentation;
 	%nspace RESQML2_0_1_NS::TriangulatedSetRepresentation;
 	%nspace RESQML2_0_1_NS::WellboreTrajectoryRepresentation;
 	%nspace RESQML2_0_1_NS::DeviationSurveyRepresentation;
@@ -2742,32 +2738,7 @@ namespace RESQML2_0_1_NS
 		Grid2dRepresentation*  getSupportingRepresentation();
 		std::string getSupportingRepresentationUuid() const;
 	};
-	
-#ifdef SWIGPYTHON
-	%rename(Resqml2_0_1_Grid2dSetRepresentation) Grid2dSetRepresentation;
-#endif
-	class Grid2dSetRepresentation : public AbstractSurfaceRepresentation
-	{
-	public:
-		unsigned int getNodeCountAlongIAxis(const unsigned int & patchIndex) const;
-		unsigned int getNodeCountAlongJAxis(const unsigned int & patchIndex) const;
-		
-		void getZValuesOfPatch(const unsigned int & patchIndex, double* values) const;
-		void getZValuesOfPatchInGlobalCrs(const unsigned int & patchIndex, double* values) const;
-		void pushBackGeometryPatch(
-				double * zValues,
-				const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy * proxy,
-				Grid2dRepresentation * supportingGrid2dRepresentation,
-				const unsigned int & startIndexI = 0, const unsigned int & startIndexJ = 0,
-				const int & indexIncrementI = 1, const int & indexIncrementJ = 1);
-		
-		std::string getSupportingRepresentationUuid(const unsigned int & patchIndex) const;
-		Grid2dRepresentation * getSupportingRepresentation(const unsigned int & patchIndex) {return supportingRepresentationSet[patchIndex];}
-		int getIndexOriginOnSupportingRepresentation(const unsigned int & patchIndex, const unsigned int & dimension) const;
-		int getNodeCountOnSupportingRepresentation(const unsigned int & patchIndex, const unsigned int & dimension) const;
-		int getIndexOffsetOnSupportingRepresentation(const unsigned int & patchIndex, const unsigned int & dimension) const;
-	};
-	
+
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_TriangulatedSetRepresentation) TriangulatedSetRepresentation;
 #endif
