@@ -803,8 +803,9 @@ void AbstractObject::pushBackExtraMetadata(const std::string & key, const std::s
 	if (gsoapProxy2_0_1 != nullptr) {
 		pushBackExtraMetadataV2_0_1(key, value);
 	}
-
-	throw logic_error("Not implemented yet.");
+	else {
+		throw logic_error("Not implemented yet.");
+	}
 }
 
 /**
