@@ -42,7 +42,5 @@ public:
 
 	~MyOwnEtpClientSession();
 
-	void do_when_finished();
-
 	COMMON_NS::EpcDocument epcDoc;
 };

@@ -20,6 +20,7 @@ under the License.
 
 #include <stdexcept>
 
+using namespace ETP_NS;
 using namespace std;
 
 void EtpHdfProxy::open()

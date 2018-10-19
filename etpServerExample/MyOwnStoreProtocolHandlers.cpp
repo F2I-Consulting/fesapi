@@ -18,6 +18,10 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnStoreProtocolHandlers.h"
 
+#include "MyOwnEtpServerSession.h"
+
+#include "common/AbstractObject.h"
+
 namespace {
 	Energistics::Etp::v12::Datatypes::Object::Resource buildResourceFromObject(COMMON_NS::AbstractObject * obj) {
 		if (obj == nullptr) {
@@ -47,7 +51,9 @@ namespace {
 	}
 }
 
-void MyOwnStoreProtocolHandlers::on_GetObject(const Energistics::Etp::v12::Protocol::Store::GetObject & getO, int64_t correlationId)
+MyOwnStoreProtocolHandlers::MyOwnStoreProtocolHandlers(MyOwnEtpServerSession* mySession) : ETP_NS::StoreHandlers(mySession) {}
+
+void MyOwnStoreProtocolHandlers::on_GetObject(const Energistics::Etp::v12::Protocol::Store::GetObject_ & getO, int64_t correlationId)
 {
 	COMMON_NS::AbstractObject* obj = static_cast<MyOwnEtpServerSession*>(session)->getObjectFromUri(getO.m_uri);
 	if (obj == nullptr) {

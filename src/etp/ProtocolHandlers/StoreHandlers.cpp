@@ -31,8 +31,8 @@ void StoreHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::Me
 		return;
 	}
 
-	if (mh.m_messageType == Energistics::Etp::v12::Protocol::Store::GetObject::messageTypeId) {
-		Energistics::Etp::v12::Protocol::Store::GetObject getO;
+	if (mh.m_messageType == Energistics::Etp::v12::Protocol::Store::GetObject_::messageTypeId) {
+		Energistics::Etp::v12::Protocol::Store::GetObject_ getO;
 		avro::decode(*d, getO);
 		session->flushReceivingBuffer();
 		on_GetObject(getO, mh.m_messageId);
@@ -61,7 +61,7 @@ void StoreHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::Me
 	}
 }
 
-void StoreHandlers::on_GetObject(const Energistics::Etp::v12::Protocol::Store::GetObject & getO, int64_t correlationId)
+void StoreHandlers::on_GetObject(const Energistics::Etp::v12::Protocol::Store::GetObject_ & getO, int64_t correlationId)
 {
 	std::cout << "on_GetObject" << std::endl;
 

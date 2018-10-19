@@ -803,9 +803,8 @@ void AbstractObject::pushBackExtraMetadata(const std::string & key, const std::s
 	if (gsoapProxy2_0_1 != nullptr) {
 		pushBackExtraMetadataV2_0_1(key, value);
 	}
-	else {
-		throw logic_error("Not implemented yet.");
-	}
+
+	throw logic_error("Not implemented yet.");
 }
 
 /**
@@ -820,9 +819,8 @@ std::tr1::unordered_map< std::string, std::string > AbstractObject::getExtraMeta
 	if (gsoapProxy2_0_1 != nullptr) {
 		return getExtraMetadataSetV2_0_1();
 	}
-	else {
-		throw logic_error("Not implemented yet.");
-	}
+
+	throw logic_error("Not implemented yet.");
 }
 
 /**
@@ -834,9 +832,8 @@ vector<string> AbstractObject::getExtraMetadata(const std::string & key) const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return getExtraMetadataV2_0_1(key);
 	}
-	else {
-		throw logic_error("Not implemented yet.");
-	}
+
+	throw logic_error("Not implemented yet.");
 }
 
 /**
@@ -847,9 +844,8 @@ unsigned int AbstractObject::getExtraMetadataCount() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return getExtraMetadataCountV2_0_1();
 	}
-	else {
-		throw logic_error("Not implemented yet.");
-	}
+
+	throw logic_error("Not implemented yet.");
 }
 
 /**
@@ -860,9 +856,8 @@ std::string AbstractObject::getExtraMetadataKeyAtIndex(const unsigned int & inde
 	if (gsoapProxy2_0_1 != nullptr) {
 		return getExtraMetadataKeyAtIndexV2_0_1(index);
 	}
-	else {
-		throw logic_error("Not implemented yet.");
-	}
+
+	throw logic_error("Not implemented yet.");
 }
 
 /**
@@ -873,9 +868,8 @@ std::string AbstractObject::getExtraMetadataStringValueAtIndex(const unsigned in
 	if (gsoapProxy2_0_1 != nullptr) {
 		return getExtraMetadataStringValueAtIndexV2_0_1(index);
 	}
-	else {
-		throw logic_error("Not implemented yet.");
-	}
+
+	throw logic_error("Not implemented yet.");
 }
 
 std::vector<epc::Relationship> AbstractObject::getAllEpcRelationships() const
@@ -885,4 +879,27 @@ std::vector<epc::Relationship> AbstractObject::getAllEpcRelationships() const
 
 	result.insert( result.end(), sourceRels.begin(), sourceRels.end() );
 	return result;
+}
+
+namespace {
+	std::vector<std::string> getAllRelationshipUuids(const std::vector<epc::Relationship> & rels) {
+		std::vector<std::string> result;
+		for (size_t i = 0; i < rels.size(); ++i) {
+			if (rels[i].isInternalTarget()) {
+				std::string uuid = rels[i].getId();
+				result.push_back(uuid[0] == '_' ? uuid.substr(1) : uuid);
+			}
+		}
+		return result;
+	}
+}
+
+std::vector<std::string> AbstractObject::getAllSourceRelationshipUuids() const
+{
+	return getAllRelationshipUuids(getAllSourceRelationships());
+}
+
+std::vector<std::string> AbstractObject::getAllTargetRelationshipUuids() const
+{
+	return getAllRelationshipUuids(getAllTargetRelationships());
 }

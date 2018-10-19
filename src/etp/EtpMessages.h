@@ -3652,12 +3652,12 @@ namespace Energistics {
 		namespace v12 {		
 			namespace Protocol {			
 				namespace Store {				
-					struct GetObject{					
+					struct GetObject_{		// Underscore suffix because of conflict wiht macro in wingdi.h			
 						std::string m_uri;
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Store;
 					};					
-					typedef boost::shared_ptr<GetObject> GetObjectPtr;
+					typedef boost::shared_ptr<GetObject_> GetObjectPtr;
 					const int GETOBJECT=1;
 				};				
 			};			
@@ -3665,11 +3665,11 @@ namespace Energistics {
 	};	
 };
 namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Protocol::Store::GetObject> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::Store::GetObject& v) {		
+	template<> struct codec_traits<Energistics::Etp::v12::Protocol::Store::GetObject_> {	
+		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::Store::GetObject_& v) {		
 			avro::encode(e, v.m_uri);
 		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::Store::GetObject& v) {		
+		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::Store::GetObject_& v) {		
 			avro::decode(e, v.m_uri);
 		}		
 	};	

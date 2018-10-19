@@ -49,10 +49,8 @@ namespace {
 		result.m_name = obj->getTitle();
 		result.m_lastChanged = obj->getLastUpdate() == -1 ? obj->getCreation() : obj->getLastUpdate();
 
-		std::vector<epc::Relationship> sourceRels = obj->getAllSourceRelationships();
-		result.m_sourceCount = std::count_if(sourceRels.begin(), sourceRels.end(), [](const epc::Relationship& rel) {return rel.isInternalTarget();});
-		sourceRels = obj->getAllTargetRelationships();
-		result.m_targetCount = std::count_if(sourceRels.begin(), sourceRels.end(), [](const epc::Relationship& rel) {return rel.isInternalTarget();});
+		result.m_sourceCount = obj->getAllSourceRelationshipUuids().size();
+		result.m_targetCount = obj->getAllTargetRelationshipUuids().size();
 
 		return result;
 	}
@@ -61,8 +59,6 @@ namespace {
 class MyOwnDirectedDiscoveryProtocolHandlers : public ETP_NS::DirectedDiscoveryHandlers
 {
 private:
-
-
 	template <class T>
 	void sendGraphResourcesFromObjects(const std::vector<T*> & objs, int64_t correlationId)
 	{
@@ -90,7 +86,7 @@ private:
 		}
 	}
 
-	void sendGraphResourcesFromRelationships(const std::vector<epc::Relationship> & rels, int64_t correlationId);
+	void sendGraphResourcesFromRelationships(const std::vector<std::string> & uuids, int64_t correlationId);
 
 public:
 	MyOwnDirectedDiscoveryProtocolHandlers(MyOwnEtpServerSession* mySession): ETP_NS::DirectedDiscoveryHandlers(mySession) {}

@@ -25,12 +25,20 @@ IF (UNIX)
 ENDIF (UNIX)
 
 # ============================================================================
-# build example
+# COMMON
 # ============================================================================
-
 FILE (GLOB ALL_CPP_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 
-ADD_EXECUTABLE (etpServerExample ${ALL_CPP_FILES})
+# organizing sources and headers in the Visual Studio Project
+IF (WIN32)
+	FILE (GLOB ALL_H_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
+	SOURCE_GROUP ("src" FILES ${ALL_CPP_FILES} ${ALL_H_FILES})
+	add_compile_definitions (FESAPI_DLL)
+ENDIF (WIN32)
+
+add_compile_definitions (BOOST_ALL_NO_LIB)
+	
+ADD_EXECUTABLE (etpServerExample ${ALL_CPP_FILES} ${ALL_H_FILES})
 ADD_DEPENDENCIES (etpServerExample ${CPP_LIBRARY_NAME})
 TARGET_LINK_LIBRARIES (etpServerExample ${CPP_LIBRARY_NAME})
 IF (WIN32)
