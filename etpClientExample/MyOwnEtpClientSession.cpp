@@ -24,30 +24,13 @@ under the License.
 #include "etp/ProtocolHandlers/DirectedDiscoveryHandlers.h"
 #include "etp/ProtocolHandlers/DataArrayHandlers.h"
 
-#include "EtpHdfProxy.h"
-
-namespace // anonymous namespace. Use only in that file.
-{
-	//partial
-	COMMON_NS::AbstractHdfProxy* default_builder(soap* soapContext, const std::string & guid, const std::string & title)
-	{
-		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(soapContext, 1);
-		partialObject->Title = title;
-		partialObject->UUID = guid;
-		partialObject->ContentType = "application/x-resqml+xml;version=2.0;type=obj_EpcExternalPartReference";
-		return new EtpHdfProxy(partialObject);
-	}
-}
-
 MyOwnEtpClientSession::MyOwnEtpClientSession(boost::asio::io_context& ioc,
 		const std::string & host, const std::string & port, const std::string & target,
 		const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 		const std::vector<std::string>& supportedObjects)
 	: ETP_NS::ClientSession(ioc, host, port, target, requestedProtocols, supportedObjects),
-	  epcDoc("../../fakeForEtpClient.epc", COMMON_NS::EpcDocument::OVERWRITE)
+	  epcDoc("../../fakeForEtpClient.epc", COMMON_NS::EpcDocument::ETP)
 {
-	epcDoc.set_hdf_proxy_builder(&default_builder);
-
 	setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(this));
 	setDirectedDiscoveryProtocolHandlers(std::make_shared<MyOwnDirectedDiscoveryProtocolHandlers>(this));
 	setStoreProtocolHandlers(std::make_shared<MyOwnStoreProtocolHandlers>(this));

@@ -505,12 +505,13 @@ std::vector<unsigned long long> HdfProxy::getElementCountPerDimension(const std:
 		throw invalid_argument("The number of dimensions of the dataspace for the dataset " + datasetName + " could not be read.");
 	}
 
-	hsize_t dims[ndims];
+	hsize_t* dims = new hsize_t[ndims];
 	ndims = H5Sget_simple_extent_dims(dataspace, dims, nullptr);
 
 	H5Sclose(dataspace);
 	H5Dclose(dataset);
 	if (ndims < 0) {
+		delete[] dims;
 		throw invalid_argument("The number of elements in each dimension of the dataspace for the dataset " + datasetName + " could not be read.");
 	}
 
@@ -518,6 +519,7 @@ std::vector<unsigned long long> HdfProxy::getElementCountPerDimension(const std:
 	for (auto i = 0; i < ndims; ++i) {
 		result.push_back(dims[i]);
 	}
+	delete[] dims;
 
 	return result;
 }

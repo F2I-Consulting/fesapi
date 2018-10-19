@@ -50,7 +50,7 @@ void askUser(ETP_NS::AbstractSession* session)
 			session->send(mb);
 		}
 		else if (command.substr(0, 9) == "GetObject") {
-			Energistics::Etp::v12::Protocol::Store::GetObject getO;
+			Energistics::Etp::v12::Protocol::Store::GetObject_ getO;
 			getO.m_uri = command.size() > 10 ? command.substr(10) : "";
 			session->send(getO);
 		}
@@ -71,16 +71,17 @@ void askUser(ETP_NS::AbstractSession* session)
 		}
 		else if (command.substr(0, 12) == "List") {
 			std::cout << "*** START LISTING ***" << std::endl;
-			for (const auto& entryPair : static_cast<MyOwnEtpClientSession*>(session)->epcDoc.getResqmlAbstractObjectSet()) {
+			COMMON_NS::EpcDocument& epcDoc = static_cast<MyOwnEtpClientSession*>(session)->epcDoc;
+			for (const auto& entryPair : epcDoc.getResqmlAbstractObjectSet()) {
 				if (!entryPair.second->isPartial()) {
 					std::cout << entryPair.first << " : " << entryPair.second->getTitle() << std::endl;
 					std::cout << "*** SOURCE REL ***" << std::endl;
-					for (const auto& rel : entryPair.second->getAllSourceRelationships()) {
-						std::cout << rel.getId() << " : " << rel.getType() << std::endl;
+					for (const auto& uuid : entryPair.second->getAllSourceRelationshipUuids()) {
+						std::cout << uuid << " : " << epcDoc.getResqmlAbstractObjectByUuid(uuid)->getXmlTag() << std::endl;
 					}
 					std::cout << "*** TARGET REL ***" << std::endl;
-					for (const auto& rel : entryPair.second->getAllTargetRelationships()) {
-						std::cout << rel.getId() << " : " << rel.getType() << std::endl;
+					for (const auto& uuid : entryPair.second->getAllTargetRelationshipUuids()) {
+						std::cout << uuid << " : " << epcDoc.getResqmlAbstractObjectByUuid(uuid)->getXmlTag() << std::endl;
 					}
 					std::cout << std::endl;
 				}

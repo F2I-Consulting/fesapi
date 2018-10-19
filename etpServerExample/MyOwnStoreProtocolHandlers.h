@@ -20,15 +20,11 @@ under the License.
 
 #include "etp/ProtocolHandlers/StoreHandlers.h"
 
-#include "MyOwnEtpServerSession.h"
-
-#include "common/AbstractObject.h"
-
 class MyOwnStoreProtocolHandlers : public ETP_NS::StoreHandlers
 {
 public:
-	MyOwnStoreProtocolHandlers(MyOwnEtpServerSession* mySession): ETP_NS::StoreHandlers(mySession) {}
+	MyOwnStoreProtocolHandlers(class MyOwnEtpServerSession* mySession);
 	~MyOwnStoreProtocolHandlers() {}
 
-    void on_GetObject(const Energistics::Etp::v12::Protocol::Store::GetObject & getO, int64_t correlationId);
+    void on_GetObject(const Energistics::Etp::v12::Protocol::Store::GetObject_ & getO, int64_t correlationId);
 };

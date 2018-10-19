@@ -102,6 +102,10 @@ under the License.
 #include "prodml2_0/FiberOpticalPath.h"
 #include "prodml2_0/DasInstrumentBox.h"
 
+#ifdef WITH_ETP
+#include "etp/EtpHdfProxy.h"
+#endif
+
 #include "tools/GuidTools.h"
 
 using namespace std;
@@ -169,7 +173,7 @@ namespace // anonymous namespace. Use only in that file.
 		return new PRODML2_0_NS::HdfProxy(fromGsoap, packageDirAbsolutePath, externalFilePath);
 	}
 
-	COMMON_NS::AbstractHdfProxy* default_builder(soap* soapContext, const std::string & guid, const std::string & title)
+	COMMON_NS::AbstractHdfProxy* epc_partial_builder(soap* soapContext, const std::string & guid, const std::string & title)
 	{
 		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(soapContext, 1);
 		partialObject->Title = title;
@@ -177,19 +181,46 @@ namespace // anonymous namespace. Use only in that file.
 		partialObject->ContentType = "application/x-resqml+xml;version=2.0;type=obj_EpcExternalPartReference";
 		return new RESQML2_0_1_NS::HdfProxy(partialObject);
 	}
+
+#ifdef WITH_ETP
+	COMMON_NS::AbstractHdfProxy* etp_partial_builder(soap* soapContext, const std::string & guid, const std::string & title)
+	{
+		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(soapContext, 1);
+		partialObject->Title = title;
+		partialObject->UUID = guid;
+		partialObject->ContentType = "application/x-resqml+xml;version=2.0;type=obj_EpcExternalPartReference";
+		return new ETP_NS::EtpHdfProxy(partialObject);
+	}
+#endif
 }
 
 EpcDocument::EpcDocument(const string & fileName, const openingMode & hdf5PermissionAccess) :
 	package(nullptr), s(nullptr), propertyKindMapper(nullptr), make_hdf_proxy(&default_builder), make_hdf_proxy_from_gsoap_proxy_2_0_1(&default_builder)
-	, make_hdf_proxy_from_gsoap_proxy_2_1(&default_builder), make_partial_hdf_proxy(&default_builder)
+	, make_hdf_proxy_from_gsoap_proxy_2_1(&default_builder)
 {
+#ifdef WITH_ETP
+	set_hdf_proxy_builder(hdf5PermissionAccess == openingMode::ETP ? &etp_partial_builder : &epc_partial_builder);
+#else
+	if (hdf5PermissionAccess == openingMode::ETP) {
+		throw std::invalid_argument("Enable WITH_ETP in compile definitions if you want to use HDF ETP opening mode.");
+	}
+	set_hdf_proxy_builder(&epc_partial_builder);
+#endif
 	open(fileName, hdf5PermissionAccess);
 }
 
 EpcDocument::EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, const openingMode & hdf5PermissionAccess) :
 	package(nullptr), s(nullptr), make_hdf_proxy(&default_builder), make_hdf_proxy_from_gsoap_proxy_2_0_1(&default_builder)
-	, make_hdf_proxy_from_gsoap_proxy_2_1(&default_builder), make_partial_hdf_proxy(&default_builder)
+	, make_hdf_proxy_from_gsoap_proxy_2_1(&default_builder)
 {
+#ifdef WITH_ETP
+	set_hdf_proxy_builder(hdf5PermissionAccess == openingMode::ETP ? &etp_partial_builder : &epc_partial_builder);
+#else
+	if (hdf5PermissionAccess == openingMode::ETP) {
+		throw std::invalid_argument("Enable WITH_ETP in compile definitions if you want to use HDF ETP opening mode.");
+}
+	set_hdf_proxy_builder(&epc_partial_builder);
+#endif
 	open(fileName, hdf5PermissionAccess);
 
 	// Load property kind mapping files

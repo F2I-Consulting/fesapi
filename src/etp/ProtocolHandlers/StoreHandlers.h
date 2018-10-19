@@ -29,7 +29,7 @@ namespace ETP_NS
 
 	    void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d);
 
-	    virtual void on_GetObject(const Energistics::Etp::v12::Protocol::Store::GetObject & getO, int64_t correlationId);
+	    virtual void on_GetObject(const Energistics::Etp::v12::Protocol::Store::GetObject_ & getO, int64_t correlationId);
 	    virtual void on_PutObject(const Energistics::Etp::v12::Protocol::Store::PutObject & putO, int64_t correlationId);
 	    virtual void on_DeleteObject(const Energistics::Etp::v12::Protocol::Store::DeleteObject & deleteO, int64_t correlationId);
 	    virtual void on_Object(const Energistics::Etp::v12::Protocol::Store::Object & obj);

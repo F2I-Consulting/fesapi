@@ -24,6 +24,9 @@ ENDIF (UNIX)
 # ============================================================================
 # build example
 # ============================================================================
+IF (WIN32)
+	add_compile_definitions (FESAPI_DLL)
+ENDIF (WIN32)
 
 ADD_EXECUTABLE (example ${CMAKE_CURRENT_SOURCE_DIR}/example.cpp)
 ADD_DEPENDENCIES (example ${CPP_LIBRARY_NAME})

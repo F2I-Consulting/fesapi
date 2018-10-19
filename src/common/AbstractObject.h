@@ -322,7 +322,9 @@ namespace COMMON_NS
 		* Return all relationships (backward and forward ones) of the instance using EPC format.
 		*/
 		virtual std::vector<epc::Relationship> getAllSourceRelationships() const = 0;
+		std::vector<std::string> getAllSourceRelationshipUuids() const;
 		virtual std::vector<epc::Relationship> getAllTargetRelationships() const = 0;
+		std::vector<std::string> getAllTargetRelationshipUuids() const;
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
 
 		/**

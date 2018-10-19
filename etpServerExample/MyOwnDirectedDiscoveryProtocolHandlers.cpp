@@ -76,33 +76,33 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetContent(const Energistics::Et
 		//***********************
 
 		// Triangulated Set Representation
-		resource.m_uri = uriPrefix + resqml2_0_1::TriangulatedSetRepresentation::XML_TAG;
-		resource.m_name = resqml2_0_1::TriangulatedSetRepresentation::XML_TAG;
-		resource.m_name +=" Folder";
+		resource.m_uri = uriPrefix + RESQML2_0_1_NS::TriangulatedSetRepresentation::XML_TAG;
+		resource.m_name = RESQML2_0_1_NS::TriangulatedSetRepresentation::XML_TAG;
+		resource.m_name += " Folder";
 		resource.m_contentCount = static_cast<MyOwnEtpServerSession*>(session)->epcDoc.getAllTriangulatedSetRepSet().size();
 		mb.m_resource = resource;
 		session->send(mb, correlationId, 0x01);
 
 		// Grid 2d Representation
-		resource.m_uri = uriPrefix + resqml2_0_1::Grid2dRepresentation::XML_TAG;
-		resource.m_name = resqml2_0_1::Grid2dRepresentation::XML_TAG ;
-		resource.m_name +=" Folder";
-		resource.m_contentCount = static_cast<MyOwnEtpServerSession*>(session)->epcDoc.getHorizonGrid2dRepSet().size();
+		resource.m_uri = uriPrefix + RESQML2_0_1_NS::Grid2dRepresentation::XML_TAG;
+		resource.m_name = RESQML2_0_1_NS::Grid2dRepresentation::XML_TAG ;
+		resource.m_name += " Folder";
+		resource.m_contentCount = static_cast<MyOwnEtpServerSession*>(session)->epcDoc.getAllGrid2dRepresentationSet().size();
 		mb.m_resource = resource;
 		session->send(mb, correlationId, 0x01);
 
 		// Wellbore trajectory
-		resource.m_uri = uriPrefix + resqml2_0_1::WellboreTrajectoryRepresentation::XML_TAG;
-		resource.m_name = resqml2_0_1::WellboreTrajectoryRepresentation::XML_TAG;
-		resource.m_name +=" Folder";
+		resource.m_uri = uriPrefix + RESQML2_0_1_NS::WellboreTrajectoryRepresentation::XML_TAG;
+		resource.m_name = RESQML2_0_1_NS::WellboreTrajectoryRepresentation::XML_TAG;
+		resource.m_name += " Folder";
 		resource.m_contentCount = static_cast<MyOwnEtpServerSession*>(session)->epcDoc.getWellboreTrajectoryRepresentationSet().size();
 		mb.m_resource = resource;
 		session->send(mb, correlationId, 0x01);
 
 		// IJK Grid
-		resource.m_uri = uriPrefix + resqml2_0_1::AbstractIjkGridRepresentation::XML_TAG;
-		resource.m_name = resqml2_0_1::AbstractIjkGridRepresentation::XML_TAG;
-		resource.m_name +=" Folder";
+		resource.m_uri = uriPrefix + RESQML2_0_1_NS::AbstractIjkGridRepresentation::XML_TAG;
+		resource.m_name = RESQML2_0_1_NS::AbstractIjkGridRepresentation::XML_TAG;
+		resource.m_name += " Folder";
 		resource.m_contentCount = static_cast<MyOwnEtpServerSession*>(session)->epcDoc.getIjkGridRepresentationSet().size();
 		mb.m_resource = resource;
 		session->send(mb, correlationId, 0x01 | 0x02);
@@ -138,16 +138,16 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetContent(const Energistics::Et
 
 		MyOwnEtpServerSession* mySession = static_cast<MyOwnEtpServerSession*>(session);
 		tokens[1] = tokens[1].substr(4);
-		if (tokens[1] == resqml2_0_1::TriangulatedSetRepresentation::XML_TAG) {
+		if (tokens[1] == RESQML2_0_1_NS::TriangulatedSetRepresentation::XML_TAG) {
 			sendGraphResourcesFromObjects(mySession->epcDoc.getAllTriangulatedSetRepSet(), correlationId);
 		}
-		else if (tokens[1] == resqml2_0_1::Grid2dRepresentation::XML_TAG) {
-			sendGraphResourcesFromObjects(mySession->epcDoc.getAllTriangulatedSetRepSet(), correlationId);
+		else if (tokens[1] == RESQML2_0_1_NS::Grid2dRepresentation::XML_TAG) {
+			sendGraphResourcesFromObjects(mySession->epcDoc.getAllGrid2dRepresentationSet(), correlationId);
 		}
-		else if (tokens[1] == resqml2_0_1::WellboreTrajectoryRepresentation::XML_TAG) {
+		else if (tokens[1] == RESQML2_0_1_NS::WellboreTrajectoryRepresentation::XML_TAG) {
 			sendGraphResourcesFromObjects(mySession->epcDoc.getWellboreTrajectoryRepresentationSet(), correlationId);
 		}
-		else if (tokens[1] == resqml2_0_1::AbstractIjkGridRepresentation::XML_TAG) {
+		else if (tokens[1] == RESQML2_0_1_NS::AbstractIjkGridRepresentation::XML_TAG) {
 			sendGraphResourcesFromObjects(mySession->epcDoc.getIjkGridRepresentationSet(), correlationId);
 		}
 		else if (tokens[1] == COMMON_NS::EpcExternalPartReference::XML_TAG) {
@@ -163,9 +163,9 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetContent(const Energistics::Et
 	}
 }
 
-void MyOwnDirectedDiscoveryProtocolHandlers::sendGraphResourcesFromRelationships(const std::vector<epc::Relationship> & rels, int64_t correlationId)
+void MyOwnDirectedDiscoveryProtocolHandlers::sendGraphResourcesFromRelationships(const std::vector<std::string> & uuids, int64_t correlationId)
 {
-	if (rels.empty()) {
+	if (uuids.empty()) {
 		Energistics::Etp::v12::Protocol::Core::ProtocolException error;
 		error.m_errorCode = 11;
 		error.m_errorMessage = "This data object has not got this kind of relationship.";
@@ -175,15 +175,9 @@ void MyOwnDirectedDiscoveryProtocolHandlers::sendGraphResourcesFromRelationships
 	}
 
 	Energistics::Etp::v12::Protocol::DirectedDiscovery::GetResourcesResponse mb;
-	for (auto i = 0; i < rels.size(); ++i) {
-		if (rels[i].isInternalTarget()) {
-			size_t lastUnderscorePos = rels[i].getTarget().rfind('_');
-			size_t lastDotPos = rels[i].getTarget().rfind('.');
-			++lastUnderscorePos;
-			std::string uuid = rels[i].getTarget().substr(lastUnderscorePos, lastDotPos - lastUnderscorePos);
-			mb.m_resource = buildGraphResourceFromObject(static_cast<MyOwnEtpServerSession*>(session)->epcDoc.getResqmlAbstractObjectByUuid(uuid));
-			session->send(mb, correlationId, i == rels.size() - 1 ? (0x01 | 0x02) : 0x01);
-		}
+	for (auto i = 0; i < uuids.size(); ++i) {
+		mb.m_resource = buildGraphResourceFromObject(static_cast<MyOwnEtpServerSession*>(session)->epcDoc.getResqmlAbstractObjectByUuid(uuids[i]));
+		session->send(mb, correlationId, i == uuids.size() - 1 ? (0x01 | 0x02) : 0x01);
 	}
 }
 
@@ -196,7 +190,7 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetSources(const Energistics::Et
 		return;
 	}
 
-	sendGraphResourcesFromRelationships(obj->getAllSourceRelationships(), correlationId);
+	sendGraphResourcesFromRelationships(obj->getAllSourceRelationshipUuids(), correlationId);
 }
 
 void MyOwnDirectedDiscoveryProtocolHandlers::on_GetTargets(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetTargets & gt, int64_t correlationId)
@@ -208,5 +202,5 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetTargets(const Energistics::Et
 		return;
 	}
 
-	sendGraphResourcesFromRelationships(obj->getAllTargetRelationships(), correlationId);
+	sendGraphResourcesFromRelationships(obj->getAllTargetRelationshipUuids(), correlationId);
 }

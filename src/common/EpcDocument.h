@@ -169,7 +169,7 @@ namespace COMMON_NS
 		std::string deserializeProdmlHdf5File();
 	public:
 
-		enum openingMode { READ_ONLY = 0, READ_WRITE = 1, OVERWRITE = 2 };
+		enum openingMode { READ_ONLY = 0, READ_WRITE = 1, OVERWRITE = 2 , ETP = 3};
 
 		EpcDocument(const std::string & fileName, const openingMode & hdf5PermissionAccess = READ_ONLY);
 		EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, const openingMode & hdf5PermissionAccess = READ_ONLY);
