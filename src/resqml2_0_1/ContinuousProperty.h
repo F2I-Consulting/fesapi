@@ -428,13 +428,20 @@ namespace RESQML2_0_1_NS
 					throw std::invalid_argument("Cannot compute and set min and max value on a property which has a Count set to zero or negative.");
 				}
 
-				for (unsigned int propIndex = 0; propIndex < prop->Count; ++propIndex) {
+				for (ULONG64 propIndex = 0; propIndex < prop->Count; ++propIndex) {
 					size_t i = propIndex;
 					T computedMin = std::numeric_limits<T>::quiet_NaN();
 					T computedMax = std::numeric_limits<T>::quiet_NaN();
 					while (i < nValues && values[i] != values[i]) i += prop->Count;
 					if (i >= nValues) {
-						throw std::invalid_argument("All values of a dimension of the vectorial property look to be only NaN values.");
+						// All values of a dimension of the vectorial property look to be only NaN values.
+						if (prop->Count == 1) {
+							return; // Does not set min and max value
+						}
+						else { // Set min and max as NaN values
+							prop->MinimumValue.push_back(std::numeric_limits<T>::quiet_NaN());
+							prop->MaximumValue.push_back(std::numeric_limits<T>::quiet_NaN());
+						}
 					}
 					computedMin = values[i];
 					computedMax = values[i];

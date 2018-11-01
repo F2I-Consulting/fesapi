@@ -62,6 +62,11 @@ namespace RESQML2_0_1_NS
 		* It allows to accelerate getter of xyz points when reading them by K interface
 		*/
 		void loadPillarInformation(PillarInformation & pillarInfo) const;
+
+		/**
+		* Compute the K Direction of the gid according to its contorl points.
+		*/
+		gsoap_resqml2_0_1::resqml2__KDirection computeKDirection(double * controlPoints, const unsigned int & controlPointCountPerPillar);
 	protected:
 		PillarInformation* pillarInformation;
 	
@@ -175,7 +180,6 @@ namespace RESQML2_0_1_NS
 		* Set the geometry of the IJK grid as parametric pillar nodes where no pillar is splitted.
 		* Defined pillars are deduced from pillarKind == -1;
 		* @param mostComplexPillarGeometry					The most complex pillar shape which we can find on this ijk grid.
-		* @param kDirectionKind								Indicates if the K direction always go up, dow or is not monotonic.
 		* @param isRightHanded								Indicates that the IJK grid is right handed, as determined by the triple product of tangent vectors in the I, J, and K directions.
 		* @param parameters									The parameter values (regarding the pillars) of each node of the grid.
 		* @param controlPoints								The control points of the pillars of the grid. They are ordered first (quickest) by pillar and then (slowest) by control point : cp0 of pillar0, cp0 of pillar1, cp0 of pillar3, ..., cp0 of pillarCount-1, cp1 of pillar0, cp1 of pillar1, etc... Pad with nan values if necessary.
@@ -186,7 +190,7 @@ namespace RESQML2_0_1_NS
 		* @param splitCoordinateLineCount					The count of split coordinate line in this grid. A pillar being splitted by a maximum of 3 split coordinate lines (one coordinate line is always non splitted)
 		*/
 		void setGeometryAsParametricNonSplittedPillarNodes(
-			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
+			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const bool & isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy* proxy);
 
 		/**
@@ -201,7 +205,6 @@ namespace RESQML2_0_1_NS
 		* Set the geometry of the IJK grid as parametric pillar nodes where at least one pillar is supposed to be splitted
 		* Defined pillars are deduced from pillarKind == -1;
 		* @param mostComplexPillarGeometry					The most complex pillar shape which we can find on this ijk grid.
-		* @param kDirectionKind								Indicates if the K direction always go up, dow or is not monotonic.
 		* @param isRightHanded								Indicates that the IJK grid is right handed, as determined by the triple product of tangent vectors in the I, J, and K directions.
 		* @param parameters									The parameter values (regarding the pillars) of each node of the grid.
 		* @param controlPoints								The control points of the pillars of the grid. They are ordered first (quickest) by pillar and then (slowest) by control point : cp0 of pillar0, cp0 of pillar1, cp0 of pillar3, ..., cp0 of pillarCount-1, cp1 of pillar0, cp1 of pillar1, etc... Pad with nan values if necessary.
@@ -215,7 +218,7 @@ namespace RESQML2_0_1_NS
 		* @param splitCoordinateLineColumns					For each split coordinate line, indicates the grid columns which are splitted by this coordinate line.
 		*/
 		void setGeometryAsParametricSplittedPillarNodes(
-			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
+			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const bool & isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
 			const unsigned long & splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
 			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns);
@@ -233,7 +236,6 @@ namespace RESQML2_0_1_NS
 		/**
 		* Set the geometry of the IJK grid as parametric pillar nodes where at least one pillar is supposed to be splitted and where all pillars are of the same kind.
 		* All pillars are assumed to be defined using this method.
-		* @param kDirectionKind								Indicates if the K direction always go up, dow or is not monotonic.
 		* @param isRightHanded								Indicates that the IJK grid is right handed, as determined by the triple product of tangent vectors in the I, J, and K directions.
 		* @param parameters									The parameter values (regarding the pillars) of each node of the grid.
 		* @param controlPoints								The control points of the pillars of the grid. They are ordered first (quickest) by pillar and then (slowest) by control point : cp0 of pillar0, cp0 of pillar1, cp0 of pillar3, ..., cp0 of pillarCount-1, cp1 of pillar0, cp1 of pillar1, etc... Pad with nan values if necessary.
@@ -246,8 +248,7 @@ namespace RESQML2_0_1_NS
 		* @param splitCoordinateLineColumnCumulativeCount	For each split coordinate line, indicates the count of grid column which are splitted by this coordinate line.
 		* @param splitCoordinateLineColumns					For each split coordinate line, indicates the grid columns which are splitted by this coordinate line.
 		*/
-		void setGeometryAsParametricSplittedPillarNodes(
-			const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
+		void setGeometryAsParametricSplittedPillarNodes(const bool & isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
 			const unsigned long & splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
 			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns);

@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/Grid2dSetRepresentation.h"
+#include "resqml2_0_1/AbstractSurfaceRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -34,6 +34,11 @@ namespace RESQML2_0_1_NS
 		* Only updates memory, not XML.
 		*/
 		void setSupportingRepresentation(Grid2dRepresentation * supportingRep);
+
+		/**
+		* @param componentIndex	0 is X, 1 is Y and 2 is Z
+		*/
+		double getComponentInGlobalCrs(double x, double y, double z, size_t componentIndex) const;
 
 	public:
 
@@ -92,14 +97,14 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get all the z values of a patch located at a specific index of the geometry points.
 		* Z Values are given in the local CRS.
-		* @param values		All the z values of the selected patch. i dimension is the quickest.
+		* @param values		All the z values of the selected patch. i dimension is the quickest. It must be preallocated and won't be freed by this method. Its size must be equel to getNodeCountAlongIAxis() * getNodeCountAlongJAxis().
 		*/
 		void getZValues(double * values) const;
 
 		/**
 		* Get all the z values of a patch located at a specific index of the geometry points.
 		* Z Values are given in the global CRS.
-		* @param values		All the z values of the selected patch. i dimension is the quickest.
+		* @param values		All the z values of the selected patch. i dimension is the quickest. It must be preallocated and won't be freed by this method. Its size must be equel to getNodeCountAlongIAxis() * getNodeCountAlongJAxis().
 		*/
 		void getZValuesInGlobalCrs(double * values) const;
 
@@ -118,6 +123,13 @@ namespace RESQML2_0_1_NS
 		double getYOrigin() const;
 
 		/**
+		* Get the Z origin of this geometry.
+		* Z coordinate is given in the local CRS.
+		* @return				A double.NAN coordinate if something's wrong. The Z origin point otherwise.
+		*/
+		double getZOrigin() const;
+
+		/**
 		* Get the X origin of this geometry.
 		* X coordinate is given in the global CRS.
 		* @return				A double.NAN coordinate if something's wrong. The X origin point otherwise.
@@ -132,18 +144,38 @@ namespace RESQML2_0_1_NS
 		double getYOriginInGlobalCrs() const;
 
 		/**
-		* Get the X (in local crs) offset between two consecutive nodes lying on the J axis.
+		* Get the Z origin of this geometry.
+		* Z coordinate is given in the global CRS.
+		* @return				A double.NAN coordinate if something's wrong. The Z origin point otherwise.
+		*/
+		double getZOriginInGlobalCrs() const;
+
+		/**
+		* Get the X (in local crs) offset on the J axis.
+		* If the J spacing is constant, the returned offset is exactly the offset between two consecutive nodes lying on the J axis.
+		* If not, the offset length does not have any meaning.
 		* X coordinate is given in the local CRS.
 		* @return				A double.NAN coordinate if something's wrong. The X offset point otherwise.
 		*/
 		double getXJOffset() const;
 
 		/**
-		* Get the Y (in local crs) offset between two consecutive nodes lying on the J axis.
+		* Get the Y (in local crs) offset on the J axis.
+		* If the J spacing is constant, the returned offset is exactly the offset between two consecutive nodes lying on the J axis.
+		* If not, the offset length does not have any meaning.
 		* Y coordinate is given in the local CRS.
 		* @return				A double.NAN coordinate if something's wrong. The Y offset point otherwise.
 		*/
 		double getYJOffset() const;
+
+		/**
+		* Get the Z (in local crs) offset on the J axis.
+		* If the J spacing is constant, the returned offset is exactly the offset between two consecutive nodes lying on the J axis.
+		* If not, the offset length does not have any meaning.
+		* Z coordinate is given in the local CRS.
+		* @return				A double.NAN coordinate if something's wrong. The Z offset point otherwise.
+		*/
+		double getZJOffset() const;
 
 		/**
 		* Get the X (in global crs) offset between two consecutive nodes lying on the J axis.
@@ -153,11 +185,18 @@ namespace RESQML2_0_1_NS
 		double getXJOffsetInGlobalCrs() const;
 
 		/**
-		* Get the Y  (in global crs) offset between two consecutive nodes lying on the J axis.
+		* Get the Y (in global crs) offset between two consecutive nodes lying on the J axis.
 		* Y coordinate is given in the global CRS.
 		* @return				A double.NAN coordinate if something's wrong. The Y offset point otherwise.
 		*/
 		double getYJOffsetInGlobalCrs() const;
+
+		/**
+		* Get the Z (in global crs) offset between two consecutive nodes lying on the J axis.
+		* Z coordinate is given in the global CRS.
+		* @return				A double.NAN coordinate if something's wrong. The Z offset point otherwise.
+		*/
+		double getZJOffsetInGlobalCrs() const;
 
 		/**
 		* Get the X (in local crs) offset between two consecutive nodes lying on the I axis.
@@ -174,6 +213,13 @@ namespace RESQML2_0_1_NS
 		double getYIOffset() const;
 
 		/**
+		* Get the Z (in local crs) offset between two consecutive nodes lying on the I axis.
+		* Z coordinate is given in the local CRS.
+		* @return				A double.NAN coordinate if something's wrong. The Z offset point otherwise.
+		*/
+		double getZIOffset() const;
+
+		/**
 		* Get the X (in global crs) offset between two consecutive nodes lying on the I axis.
 		* X coordinate is given in the global CRS.
 		* @return				A double.NAN coordinate if something's wrong. The X offset point otherwise.
@@ -186,6 +232,13 @@ namespace RESQML2_0_1_NS
 		* @return				A double.NAN coordinate if something's wrong. The Y offset point otherwise.
 		*/
 		double getYIOffsetInGlobalCrs() const;
+
+		/**
+		* Get the Z (in global crs) offset between two consecutive nodes lying on the I axis.
+		* Z coordinate is given in the global CRS.
+		* @return				A double.NAN coordinate if something's wrong. The Z offset point otherwise.
+		*/
+		double getZIOffsetInGlobalCrs() const;
 
 		/**
 		* Checkes wether the spacing between nodes on J dimension is constant or not.
@@ -205,7 +258,7 @@ namespace RESQML2_0_1_NS
 
 		/**
 		* Get all the J (fastest) spacings of this 2d grid representation.
-		* @param jSpacings	The count of this array souhld be JCellCount - 1. It must be preallocated.
+		* @param jSpacings	The count of this array should be getNodeCountAlongJAxis - 1. It must be preallocated and won't be freed by this method.
 		* @return			All the spacings in the J direction of the 2d grid representation.
 		*/
 		void getJSpacing(double* const jSpacings) const;
@@ -218,7 +271,7 @@ namespace RESQML2_0_1_NS
 
 		/**
 		* Get all the I (fastest) spacings of this 2d grid representation.
-		* @param iSpacings	The count of this array souhld be ICellCount - 1. It must be preallocated.
+		* @param iSpacings	The count of this array shouhd be getNodeCountAlongIAxis - 1. It must be preallocated and won't be freed by this method.
 		* @return			All the spacings in the I direction of the 2d grid representation.
 		*/
 		void getISpacing(double* const iSpacings) const;
@@ -299,13 +352,6 @@ namespace RESQML2_0_1_NS
 
 		// Backward relationships
 		std::vector<AbstractRepresentation *> supportedRepresentationSet;
-
-		friend void Grid2dSetRepresentation::pushBackGeometryPatch(
-				double * zValues,
-				const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy* proxy,
-				Grid2dRepresentation * supportingGrid2dRepresentation,
-				const unsigned int & startIndexI, const unsigned int & startIndexJ,
-				const int & indexIncrementI, const int & indexIncrementJ);
 	};
 }
 

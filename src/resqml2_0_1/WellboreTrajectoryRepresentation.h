@@ -205,7 +205,7 @@ namespace RESQML2_0_1_NS
 		* Get the count of wellbore frame representation which are associated with this wellbore trajectory.
 		* Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
 		*/
-		unsigned int getWellboreFrameRepresentationCount() const {return wellboreFrameRepresentationSet.size();}
+		unsigned int getWellboreFrameRepresentationCount() const {return static_cast<unsigned int>(wellboreFrameRepresentationSet.size());}
 
 		/**
 		* Get a particular wellbore frame representation of this wellbore trajectory representation according to its position in the EPC document.

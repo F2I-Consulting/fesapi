@@ -80,7 +80,6 @@ namespace RESQML2_0_1_NS
 	class PolylineSetRepresentation;
 	class PolylineRepresentation;
 	class TriangulatedSetRepresentation;
-	class Grid2dSetRepresentation;
 	class Grid2dRepresentation;
 	class WellboreTrajectoryRepresentation;
 	class DeviationSurveyRepresentation;
@@ -313,7 +312,12 @@ namespace COMMON_NS
 #endif
 
 		/**
-		* Get the Gsoap type  by means of its uuid
+		* Get all UUIDs of the objects contained in the EPC document
+		*/
+		std::vector<std::string> getAllUuids() const;
+
+		/**
+		* Get the Gsoap type by means of its uuid
 		*/
 		COMMON_NS::AbstractObject* getResqmlAbstractObjectByUuid(const std::string & uuid, int & gsoapType) const;
 
@@ -412,11 +416,6 @@ namespace COMMON_NS
 		* Get all the geobodies contained into the EPC document
 		*/
 		const std::vector<RESQML2_0_1_NS::GeobodyFeature*> & getGeobodySet() const;
-
-		/**
-		* Get all the individual representations of horizons which are associated to grid 2d set topology
-		*/
-		std::vector<RESQML2_0_1_NS::Grid2dSetRepresentation*> getHorizonGrid2dSetRepSet() const;
         
 		/**
 		* Get all the individual representations of horizons which are associated to grid 2d set topology
@@ -602,7 +601,7 @@ namespace COMMON_NS
 		valueType* createPartial(const std::string & guid, const std::string & title)
 		{
 			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(s, 1);
-			dor->UUID = dor->UUID = guid.empty() ? generateRandomUuidAsString() : guid;
+			dor->UUID = guid.empty() ? generateRandomUuidAsString() : guid;
 			dor->Title = title;
 			valueType* result = new valueType(dor);
 			addFesapiWrapperAndDeleteItIfException(result);
@@ -1223,7 +1222,7 @@ namespace COMMON_NS
 		std::vector<RESQML2_NS::RepresentationSetRepresentation*>		representationSetRepresentationSet;
 		std::vector<WITSML1_4_1_1_NS::Trajectory*>						witsmlTrajectorySet;
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*>		triangulatedSetRepresentationSet;
-		std::vector<resqml2_0_1::Grid2dRepresentation*>					grid2dRepresentationSet;
+		std::vector<RESQML2_0_1_NS::Grid2dRepresentation*>				grid2dRepresentationSet;
 		std::vector<RESQML2_0_1_NS::PolylineRepresentation*>			polylineRepresentationSet;
 		std::vector<RESQML2_0_1_NS::AbstractIjkGridRepresentation*>		ijkGridRepresentationSet;
 		std::vector<RESQML2_0_1_NS::UnstructuredGridRepresentation*>	unstructuredGridRepresentationSet;

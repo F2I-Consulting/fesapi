@@ -79,16 +79,18 @@ ULONG64 Grid2dRepresentation::getNodeCountAlongJAxis() const
 
 ULONG64 Grid2dRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
 {
-	if (patchIndex >= getPatchCount())
+	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch.");
+	}
 
 	return getNodeCountAlongIAxis() * getNodeCountAlongJAxis();
 }
 
 void Grid2dRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
 {
-	if (patchIndex >= getPatchCount())
+	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch.");
+	}
 
 	throw logic_error("Please compute X and Y values with the lattice information.");
 }
@@ -99,17 +101,63 @@ void Grid2dRepresentation::getZValues(double* values) const
 
 	if (rep->Grid2dPatch->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dZValueArray) {
 		resqml2__AbstractDoubleArray* zValues = static_cast<resqml2__Point3dZValueArray*>(rep->Grid2dPatch->Geometry->Points)->ZValues;
-		string datasetName = "";
 		if (zValues->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-			datasetName = static_cast<resqml2__DoubleHdf5Array*>(zValues)->Values->PathInHdfFile;
-			hdfProxy->readArrayNdOfDoubleValues(datasetName, values);
+			hdfProxy->readArrayNdOfDoubleValues(static_cast<resqml2__DoubleHdf5Array*>(zValues)->Values->PathInHdfFile, values);
 		}
 		else {
 			throw std::logic_error("The Z values can only be retrieved if they are described as a DoubleHdf5Array.");
 		}
 	}
+	else if (rep->Grid2dPatch->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dLatticeArray) {
+		const double zOrigin = getZOrigin();
+		double zIOffset = getZIOffset();
+		double zJOffset = getZJOffset();
+
+		if (isISpacingConstant() && isJSpacingConstant()) {
+			const ULONG64 iNodeCount = getNodeCountAlongIAxis();
+			const ULONG64 jNodeCount = getNodeCountAlongJAxis();
+			for (size_t jNode = 0; jNode < jNodeCount; ++jNode) {
+				for (size_t iNode = 0; iNode < iNodeCount; ++iNode) {
+					values[iNode + jNode*iNodeCount] = zOrigin + zIOffset*iNode + zJOffset*jNode;
+				}
+			}
+		}
+		else {
+			const ULONG64 iNodeCount = getNodeCountAlongIAxis();
+			const ULONG64 jNodeCount = getNodeCountAlongJAxis();
+			double* iSpacings = new double[iNodeCount]; /// the size should rigourously be iNodeCount - 1. For optimization reason, we just have one extra item to avoid a range error in the later for loop where the last item is accessed but not used anyhow.
+			getISpacing(iSpacings);
+			double* jSpacings = new double[jNodeCount]; /// the size should rigourously be jNodeCount - 1. For optimization reason, we just have one extra item to avoid a range error in the later for loop where the last item is accessed but not used anyhow.
+			getJSpacing(jSpacings);
+
+			// I Offset unit vector
+			const double xIOffset = getXIOffset();
+			const double yIOffset = getYIOffset();
+			const double iOffsetMagnitude = sqrt(xIOffset*xIOffset + yIOffset*yIOffset + zIOffset*zIOffset);
+			zIOffset /= iOffsetMagnitude;
+
+			// J Offset unit vector
+			const double xJOffset = getXJOffset();
+			const double yJOffset = getYJOffset();
+			const double jOffsetMagnitude = sqrt(xJOffset*xJOffset + yJOffset*yJOffset + zJOffset*zJOffset);
+			zJOffset /= jOffsetMagnitude;
+
+			double jSpacing = 0;
+			for (size_t jNode = 0; jNode < jNodeCount; ++jNode) {
+				double iSpacing = 0;
+				for (size_t iNode = 0; iNode < iNodeCount; ++iNode) {
+					values[iNode + jNode*iNodeCount] = zOrigin + zIOffset*iSpacing + zJOffset*jSpacing;
+					iSpacing += iSpacings[iNode];
+				}
+				jSpacing += jSpacings[jNode];
+			}
+
+			delete[] iSpacings;
+			delete[] jSpacings;
+		}
+	}
 	else {
-		throw std::logic_error("The Z values can only be retrieved for a Point3dZValueArray geometry.");
+		throw std::logic_error("The Z values can only be retrieved for a Point3dZValueArray or a Point3dLatticeArray geometry.");
 	}
 }
 
@@ -117,14 +165,12 @@ void Grid2dRepresentation::getZValuesInGlobalCrs(double * values) const
 {
 	getZValues(values);
 
-	if (localCrs->getGsoapType() != SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORELocalTime3dCrs)
-	{
+	if (localCrs->getGsoapType() != SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORELocalTime3dCrs) {
 		_resqml2__Grid2dRepresentation* rep = static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1);
-		unsigned int NodeCount = rep->Grid2dPatch->FastestAxisCount * rep->Grid2dPatch->SlowestAxisCount;
-		double zOffset = localCrs->getOriginDepthOrElevation();
-		if (zOffset != .0)
-		{
-			for (unsigned int index = 0; index < NodeCount; index++)
+		const ULONG64 nodeCount = rep->Grid2dPatch->FastestAxisCount * rep->Grid2dPatch->SlowestAxisCount;
+		const double zOffset = localCrs->getOriginDepthOrElevation();
+		if (zOffset != .0) {
+			for (size_t index = 0; index < nodeCount; ++index)
 				values[index] += zOffset;
 		}
 	}
@@ -132,221 +178,248 @@ void Grid2dRepresentation::getZValuesInGlobalCrs(double * values) const
 
 resqml2__Point3dLatticeArray* Grid2dRepresentation::getArrayLatticeOfPoints3d() const
 {
-	resqml2__Point3dLatticeArray* result = nullptr;
-
 	resqml2__Grid2dPatch* patch = static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch;
 	if (patch->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dLatticeArray) {
-		result = static_cast<resqml2__Point3dLatticeArray*>(patch->Geometry->Points);
+		return static_cast<resqml2__Point3dLatticeArray*>(patch->Geometry->Points);
 	}
-	else if (patch->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dZValueArray) {
+	
+	if (patch->Geometry->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dZValueArray) {
 		resqml2__Point3dZValueArray* arrayOfZValuePoints3d = static_cast<resqml2__Point3dZValueArray*>(patch->Geometry->Points);
 		if (arrayOfZValuePoints3d->SupportingGeometry->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dLatticeArray) {
-			result = static_cast<resqml2__Point3dLatticeArray*>(arrayOfZValuePoints3d->SupportingGeometry);
+			return static_cast<resqml2__Point3dLatticeArray*>(arrayOfZValuePoints3d->SupportingGeometry);
 		}
 	}
 
-	return result;
+	return nullptr;
 }
 
 double Grid2dRepresentation::getXOrigin() const
 {
 	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
-	if (arrayLatticeOfPoints3d) {
+	if (arrayLatticeOfPoints3d != nullptr) {
 		return arrayLatticeOfPoints3d->Origin->Coordinate1;
 	}
-	else if (!getSupportingRepresentationUuid().empty()) {
-		int iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
-		int jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
 
-		double xOrigin = supportingRepresentation->getXOrigin();
+	if (!getSupportingRepresentationUuid().empty()) {
+		const int iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
+		const int jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
 
-		if (iOrigin != 0 || jOrigin != 0) {
-			double xIOffset = supportingRepresentation->getXIOffset();
-			double xJOffset = supportingRepresentation->getXJOffset();
+		return iOrigin == 0 && jOrigin == 0 ? supportingRepresentation->getXOrigin() :
+			supportingRepresentation->getXOrigin() + iOrigin*supportingRepresentation->getXIOffset() + jOrigin*supportingRepresentation->getXJOffset();
 
-			return xOrigin + iOrigin*xIOffset + jOrigin*xJOffset;
-		}
-		else {
-			return xOrigin;
-		}
 	}
-	else {
-		return std::numeric_limits<double>::signaling_NaN();
-	}
+
+	return std::numeric_limits<double>::signaling_NaN();
 }
 
 double Grid2dRepresentation::getYOrigin() const
 {
 	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
-	if (arrayLatticeOfPoints3d)
+	if (arrayLatticeOfPoints3d != nullptr) {
 		return arrayLatticeOfPoints3d->Origin->Coordinate2;
-	else if (getSupportingRepresentationUuid().size())
-	{
-		int iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
-		int jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
-
-		double yOrigin = supportingRepresentation->getYOrigin();
-
-		if (iOrigin != 0 || jOrigin != 0)
-		{
-			double yIOffset = supportingRepresentation->getYIOffset();
-			double yJOffset = supportingRepresentation->getYJOffset();
-
-			return yOrigin + iOrigin*yIOffset + jOrigin*yJOffset;
-		}
-		else
-		{
-			return yOrigin;
-		}
 	}
-	else
-		return std::numeric_limits<double>::signaling_NaN();
+	
+	if (!getSupportingRepresentationUuid().empty()) {
+		const int iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
+		const int jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
+
+		return iOrigin == 0 && jOrigin == 0 ? supportingRepresentation->getYOrigin() :
+			supportingRepresentation->getYOrigin() + iOrigin*supportingRepresentation->getYIOffset() + jOrigin*supportingRepresentation->getYJOffset();
+	}
+
+	return std::numeric_limits<double>::signaling_NaN();
+}
+
+double Grid2dRepresentation::getZOrigin() const
+{
+	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+
+	if (arrayLatticeOfPoints3d != nullptr) {
+		return arrayLatticeOfPoints3d->Origin->Coordinate3;
+	}
+	
+	if (!getSupportingRepresentationUuid().empty()) {
+		const int iOrigin = getIndexOriginOnSupportingRepresentation(1); // I is fastest
+		const int jOrigin = getIndexOriginOnSupportingRepresentation(0); // J is slowest
+
+		return iOrigin == 0 && jOrigin == 0 ? supportingRepresentation->getZOrigin() :
+			supportingRepresentation->getZOrigin() + iOrigin*supportingRepresentation->getZIOffset() + jOrigin*supportingRepresentation->getZJOffset();
+	}
+	
+	return std::numeric_limits<double>::signaling_NaN();
+}
+
+double Grid2dRepresentation::getComponentInGlobalCrs(double x, double y, double z, size_t componentIndex) const
+{
+	double result[] = { x, y, z };
+	if (result[componentIndex] != result[componentIndex]) {
+		return result[componentIndex];
+	}
+
+	localCrs->convertXyzPointsToGlobalCrs(result, 1, true);
+
+	return result[componentIndex];
 }
 
 double Grid2dRepresentation::getXOriginInGlobalCrs() const
 {
-	double result[] = {getXOrigin(), getYOrigin(), .0};
-	if (result[0] != result[0])
-		return result[0];
-
-	localCrs->convertXyzPointsToGlobalCrs(result, 1);
-
-	return result[0];
+	return getComponentInGlobalCrs(getXOrigin(), getYOrigin(), getZOrigin(), 0);
 }
 
 double Grid2dRepresentation::getYOriginInGlobalCrs() const
 {
-	double result[] = {getXOrigin(), getYOrigin(), .0};
-	if (result[1] != result[1])
-		return result[1];
+	return getComponentInGlobalCrs(getXOrigin(), getYOrigin(), getZOrigin(), 1);
+}
 
-	localCrs->convertXyzPointsToGlobalCrs(result, 1);
-
-	return result[1];
+double Grid2dRepresentation::getZOriginInGlobalCrs() const
+{
+	return getComponentInGlobalCrs(getXOrigin(), getYOrigin(), getZOrigin(), 2);
 }
 
 double Grid2dRepresentation::getXJOffset() const
 {
 	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
-	if (arrayLatticeOfPoints3d != nullptr)
-	{
-		return arrayLatticeOfPoints3d->Offset[0]->Offset->Coordinate1 * getJSpacing()/
-			sqrt(arrayLatticeOfPoints3d->Offset[0]->Offset->Coordinate1 * arrayLatticeOfPoints3d->Offset[0]->Offset->Coordinate1 + arrayLatticeOfPoints3d->Offset[0]->Offset->Coordinate2 * arrayLatticeOfPoints3d->Offset[0]->Offset->Coordinate2);
+	if (arrayLatticeOfPoints3d != nullptr) {
+		resqml2__Point3d * offset = arrayLatticeOfPoints3d->Offset[0]->Offset;
+		return isJSpacingConstant() ?
+			offset->Coordinate1 * getJSpacing() /
+			sqrt(offset->Coordinate1 * offset->Coordinate1 + offset->Coordinate2 * offset->Coordinate2) :
+			offset->Coordinate1;
 	}
-	else if (getSupportingRepresentationUuid().size())
-	{
+	
+	if (!getSupportingRepresentationUuid().empty()) {
 		return supportingRepresentation->getXJOffset() * getIndexOffsetOnSupportingRepresentation(0);
 	}
-	else
-	{
-		throw invalid_argument("No lattice array have been found for this 2d grid.");
-	}
+
+	throw invalid_argument("No lattice array have been found for this 2d grid.");
 }
 
 double Grid2dRepresentation::getYJOffset() const
 {
 	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
-	if (arrayLatticeOfPoints3d != nullptr)
-	{
-		return arrayLatticeOfPoints3d->Offset[0]->Offset->Coordinate2 * getJSpacing()/
-			sqrt(arrayLatticeOfPoints3d->Offset[0]->Offset->Coordinate1 * arrayLatticeOfPoints3d->Offset[0]->Offset->Coordinate1 + arrayLatticeOfPoints3d->Offset[0]->Offset->Coordinate2 * arrayLatticeOfPoints3d->Offset[0]->Offset->Coordinate2);
+	if (arrayLatticeOfPoints3d != nullptr) {
+		resqml2__Point3d * offset = arrayLatticeOfPoints3d->Offset[0]->Offset;
+		return isJSpacingConstant() ?
+			offset->Coordinate2 * getJSpacing() /
+			sqrt(offset->Coordinate1 * offset->Coordinate1 + offset->Coordinate2 * offset->Coordinate2) :
+			offset->Coordinate2;
 	}
-	else if (getSupportingRepresentationUuid().size())
-	{
+	
+	if (!getSupportingRepresentationUuid().empty()) {
 		return supportingRepresentation->getYJOffset() * getIndexOffsetOnSupportingRepresentation(0);
 	}
-	else
-	{
-		throw invalid_argument("No lattice array have been found for this 2d grid.");
-	}
+
+	throw invalid_argument("No lattice array have been found for this 2d grid.");
 }
 
-// TODO rotation
+double Grid2dRepresentation::getZJOffset() const
+{
+	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+
+	if (arrayLatticeOfPoints3d != nullptr) {
+		resqml2__Point3d * offset = arrayLatticeOfPoints3d->Offset[0]->Offset;
+		return isJSpacingConstant() ?
+			offset->Coordinate3 * getJSpacing() /
+			sqrt(offset->Coordinate1 * offset->Coordinate1 + offset->Coordinate2 * offset->Coordinate2) :
+			offset->Coordinate3;
+	}
+	
+	if (!getSupportingRepresentationUuid().empty()) {
+		return supportingRepresentation->getZJOffset() * getIndexOffsetOnSupportingRepresentation(0);
+	}
+
+	throw invalid_argument("No lattice array have been found for this 2d grid.");
+}
+
 double Grid2dRepresentation::getXJOffsetInGlobalCrs() const
 {
-	double result[] = {getXJOffset(), getYJOffset(), .0};
-	if (result[0] != result[0])
-		return result[0];
-
-	localCrs->convertXyzPointsToGlobalCrs(result, 1, true);
-
-	return result[0];
+	return getComponentInGlobalCrs(getXJOffset(), getYJOffset(), getZJOffset(), 0);
 }
 
-// TODO rotation
 double Grid2dRepresentation::getYJOffsetInGlobalCrs() const
 {
-	double result[] = {getXJOffset(), getYJOffset(), .0};
-	if (result[1] != result[1])
-		return result[1];
+	return getComponentInGlobalCrs(getXJOffset(), getYJOffset(), getZJOffset(), 1);
+}
 
-	localCrs->convertXyzPointsToGlobalCrs(result, 1, true);
-
-	return result[1];
+double Grid2dRepresentation::getZJOffsetInGlobalCrs() const
+{
+	return getComponentInGlobalCrs(getXJOffset(), getYJOffset(), getZJOffset(), 2);
 }
 
 double Grid2dRepresentation::getXIOffset() const
 {
 	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
-	if (arrayLatticeOfPoints3d != nullptr)
-	{
-		return arrayLatticeOfPoints3d->Offset[1]->Offset->Coordinate1 * getISpacing() /
-			sqrt(arrayLatticeOfPoints3d->Offset[1]->Offset->Coordinate1 * arrayLatticeOfPoints3d->Offset[1]->Offset->Coordinate1 + arrayLatticeOfPoints3d->Offset[1]->Offset->Coordinate2 * arrayLatticeOfPoints3d->Offset[1]->Offset->Coordinate2);
+	if (arrayLatticeOfPoints3d != nullptr) {
+		resqml2__Point3d * offset = arrayLatticeOfPoints3d->Offset[1]->Offset;
+		return isISpacingConstant() ? 
+			offset->Coordinate1 * getISpacing() /
+			sqrt(offset->Coordinate1 * offset->Coordinate1 + offset->Coordinate2 * offset->Coordinate2) :
+			offset->Coordinate1;
 	}
-	else if (getSupportingRepresentationUuid().size())
-	{
+	
+	if (!getSupportingRepresentationUuid().empty()) {
 		return supportingRepresentation->getXIOffset() * getIndexOffsetOnSupportingRepresentation(1);
 	}
-	else
-	{
-		throw invalid_argument("No lattice array have been found for this 2d grid.");
-	}
+
+	throw invalid_argument("No lattice array have been found for this 2d grid.");
 }
 
 double Grid2dRepresentation::getYIOffset() const
 {
 	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
-	if (arrayLatticeOfPoints3d != nullptr)
-	{
-		return arrayLatticeOfPoints3d->Offset[1]->Offset->Coordinate2 * getISpacing() /
-			sqrt(arrayLatticeOfPoints3d->Offset[1]->Offset->Coordinate1 * arrayLatticeOfPoints3d->Offset[1]->Offset->Coordinate1 + arrayLatticeOfPoints3d->Offset[1]->Offset->Coordinate2 * arrayLatticeOfPoints3d->Offset[1]->Offset->Coordinate2);
+	if (arrayLatticeOfPoints3d != nullptr) {
+		resqml2__Point3d * offset = arrayLatticeOfPoints3d->Offset[1]->Offset;
+		return isISpacingConstant() ?
+			offset->Coordinate2 * getISpacing() /
+			sqrt(offset->Coordinate1 * offset->Coordinate1 + offset->Coordinate2 * offset->Coordinate2) :
+			offset->Coordinate2;
 	}
-	else if (getSupportingRepresentationUuid().size())
-	{
+	
+	if (!getSupportingRepresentationUuid().empty()) {
 		return supportingRepresentation->getYIOffset() * getIndexOffsetOnSupportingRepresentation(1);
 	}
-	else
-	{
-		throw invalid_argument("No lattice array have been found for this 2d grid.");
+
+	throw invalid_argument("No lattice array have been found for this 2d grid.");
+}
+
+double Grid2dRepresentation::getZIOffset() const
+{
+	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+
+	if (arrayLatticeOfPoints3d != nullptr) {
+		resqml2__Point3d * offset = arrayLatticeOfPoints3d->Offset[1]->Offset;
+		return isISpacingConstant() ?
+			offset->Coordinate3 * getISpacing() /
+			sqrt(offset->Coordinate1 * offset->Coordinate1 + offset->Coordinate2 * offset->Coordinate2) :
+			offset->Coordinate3;
 	}
+
+	if (!getSupportingRepresentationUuid().empty()) {
+		return supportingRepresentation->getYIOffset() * getIndexOffsetOnSupportingRepresentation(1);
+	}
+
+	throw invalid_argument("No lattice array have been found for this 2d grid.");
 }
 
 double Grid2dRepresentation::getXIOffsetInGlobalCrs() const
 {
-	double result[] = {getXIOffset(), getYIOffset(), .0};
-	if (result[0] != result[0])
-		return result[0];
-
-	localCrs->convertXyzPointsToGlobalCrs(result, 1, true);
-
-	return result[0];
+	return getComponentInGlobalCrs(getXIOffset(), getYIOffset(), getZIOffset(), 0);
 }
 
 double Grid2dRepresentation::getYIOffsetInGlobalCrs() const
 {
-	double result[] = {getXIOffset(), getYIOffset(), .0};
-	if (result[1] != result[1])
-		return result[1];
+	return getComponentInGlobalCrs(getXIOffset(), getYIOffset(), getZIOffset(), 1);
+}
 
-	localCrs->convertXyzPointsToGlobalCrs(result, 1, true);
-
-	return result[1];
+double Grid2dRepresentation::getZIOffsetInGlobalCrs() const
+{
+	return getComponentInGlobalCrs(getXIOffset(), getYIOffset(), getZIOffset(), 2);
 }
 
 bool Grid2dRepresentation::isJSpacingConstant() const
@@ -357,9 +430,8 @@ bool Grid2dRepresentation::isJSpacingConstant() const
 		if (!arrayLatticeOfPoints3d->Offset.empty()) {
 			return arrayLatticeOfPoints3d->Offset[0]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleConstantArray;
 		}
-		else {
-			throw invalid_argument("This 2d grid representation does not look to have dimensions.");
-		}
+
+		throw invalid_argument("This 2d grid representation does not look to have dimensions.");
 	}
 	else if (!getSupportingRepresentationUuid().empty()) {
 		return supportingRepresentation->isJSpacingConstant();
@@ -376,9 +448,8 @@ bool Grid2dRepresentation::isISpacingConstant() const
 		if (arrayLatticeOfPoints3d->Offset.size() > 1) {
 			return arrayLatticeOfPoints3d->Offset[1]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleConstantArray;
 		}
-		else {
-			throw invalid_argument("This 2d grid representation does not look to have (at least) 2 dimensions.");
-		}
+		
+		throw invalid_argument("This 2d grid representation does not look to have (at least) 2 dimensions.");
 	}
 	else if (!getSupportingRepresentationUuid().empty()) {
 		return supportingRepresentation->isISpacingConstant();
@@ -398,13 +469,11 @@ double Grid2dRepresentation::getJSpacing() const
 	if (arrayLatticeOfPoints3d != nullptr) {
 		return static_cast<resqml2__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[0]->Spacing)->Value;
 	}
-	else
-	{
-		const int jIndexOffset = getIndexOffsetOnSupportingRepresentation(0);
-		const double jSpacingOnSupportingRep = supportingRepresentation->getJSpacing();
 
-		return jIndexOffset * jSpacingOnSupportingRep;
-	}
+	const int jIndexOffset = getIndexOffsetOnSupportingRepresentation(0);
+	const double jSpacingOnSupportingRep = supportingRepresentation->getJSpacing();
+
+	return jIndexOffset * jSpacingOnSupportingRep;
 }
 
 void Grid2dRepresentation::getJSpacing(double* const jSpacings) const
@@ -437,12 +506,12 @@ void Grid2dRepresentation::getJSpacing(double* const jSpacings) const
 		for (ULONG64 j = 0; j < jSpacingCount; ++j) {
 			jSpacings[j] = .0;
 			if (jIndexOffset > 0) {
-				for (size_t tmp = 0; tmp < jIndexOffset; ++tmp) {
+				for (int tmp = 0; tmp < jIndexOffset; ++tmp) {
 					jSpacings[j] += jSpacingsOnSupportingRep[jIndexOrigin + j * jIndexOffset + tmp];
 				}
 			}
 			else if (jIndexOffset < 0) {
-				for (size_t tmp = 0; tmp > jIndexOffset; --tmp) {
+				for (int tmp = 0; tmp > jIndexOffset; --tmp) {
 					jSpacings[j] += jSpacingsOnSupportingRep[jIndexOrigin - 1 + j * jIndexOffset + tmp];
 				}
 			}
@@ -468,13 +537,11 @@ double Grid2dRepresentation::getISpacing() const
 	if (arrayLatticeOfPoints3d != nullptr) {
 		return static_cast<resqml2__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[1]->Spacing)->Value;
 	}
-	else
-	{
-		const int iIndexOffset = getIndexOffsetOnSupportingRepresentation(1);
-		const double iSpacingOnSupportingRep = supportingRepresentation->getISpacing();
 
-		return iIndexOffset * iSpacingOnSupportingRep;
-	}
+	const int iIndexOffset = getIndexOffsetOnSupportingRepresentation(1);
+	const double iSpacingOnSupportingRep = supportingRepresentation->getISpacing();
+
+	return iIndexOffset * iSpacingOnSupportingRep;
 }
 
 void Grid2dRepresentation::getISpacing(double* const iSpacings) const

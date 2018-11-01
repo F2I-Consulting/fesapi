@@ -45,7 +45,6 @@ under the License.
 #include "resqml2_0_1/PointSetRepresentation.h"
 #include "resqml2_0_1/PlaneSetRepresentation.h"
 #include "resqml2_0_1/SeismicLatticeFeature.h"
-#include "resqml2_0_1/Grid2dSetRepresentation.h"
 #include "resqml2_0_1/Grid2dRepresentation.h"
 #include "resqml2_0_1/HdfProxy.h"
 #include "resqml2_0_1/TriangulatedSetRepresentation.h"
@@ -214,6 +213,22 @@ const std::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDocumen
 #else
 const std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDocument::getResqmlAbstractObjectSet() const { return resqmlAbstractObjectSet; }
 #endif
+
+std::vector<std::string> EpcDocument::getAllUuids() const
+{
+	std::vector<std::string> keys;
+	keys.reserve(resqmlAbstractObjectSet.size());
+
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it) {
+#else
+	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it) {
+#endif
+		keys.push_back(it->first);
+	}
+
+	return keys;
+}
 
 std::vector<PRODML2_0_NS::DasAcquisition*> EpcDocument::getDasAcquisitionSet() const
 {
@@ -962,7 +977,6 @@ COMMON_NS::AbstractObject* EpcDocument::getResqml2_0_1WrapperFromGsoapContext(co
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PointSetRepresentation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PlaneSetRepresentation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PolylineRepresentation)
-	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Grid2dSetRepresentation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Grid2dRepresentation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(TriangulatedSetRepresentation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(BlockedWellboreRepresentation)
@@ -1179,26 +1193,6 @@ vector<TriangulatedSetRepresentation*> EpcDocument::getFractureTriangulatedSetRe
 				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORETriangulatedSetRepresentation)
 				{
 					result.push_back(static_cast<TriangulatedSetRepresentation*>(repSet[repIndex]));
-				}
-			}
-		}
-	}
-
-	return result;
-}
-
-vector<Grid2dSetRepresentation*> EpcDocument::getHorizonGrid2dSetRepSet() const
-{
-	vector<Grid2dSetRepresentation*> result;
-
-	vector<Horizon*> horizonSet = getHorizonSet();
-	for (size_t featureIndex = 0; featureIndex < horizonSet.size(); ++featureIndex) {
-		vector<RESQML2_NS::AbstractFeatureInterpretation*> interpSet = horizonSet[featureIndex]->getInterpretationSet();
-		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
-			vector<RESQML2_NS::AbstractRepresentation*> repSet = interpSet[interpIndex]->getRepresentationSet();
-			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
-				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREGrid2dSetRepresentation) {
-					result.push_back(static_cast<Grid2dSetRepresentation*>(repSet[repIndex]));
 				}
 			}
 		}
@@ -1509,8 +1503,6 @@ std::string EpcDocument::getExtendedCoreProperty(const std::string & key)
 
 COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_resqml2_0_1::eml20__DataObjectReference* dor)
 {
-	addWarning("Create a partial object for object \"" + dor->Title + "\" with UUID " + dor->UUID + " and content type " + dor->ContentType);
-
 	const size_t lastEqualCharPos = dor->ContentType.find_last_of('_'); // The XML tag is after "obj_"
 	const string resqmlContentType = dor->ContentType.substr(lastEqualCharPos + 1);
 
@@ -1544,7 +1536,6 @@ COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_resqml2_0_1::eml20__
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(PointSetRepresentation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(PlaneSetRepresentation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(PolylineRepresentation)
-	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(Grid2dSetRepresentation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(Grid2dRepresentation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(TriangulatedSetRepresentation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(BlockedWellboreRepresentation)

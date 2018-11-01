@@ -55,7 +55,6 @@ under the License.
 #include "resqml2_0_1/StructuralOrganizationInterpretation.h"
 #include "resqml2_0_1/StratigraphicUnitInterpretation.h"
 #include "resqml2_0_1/Grid2dRepresentation.h"
-#include "resqml2_0_1/Grid2dSetRepresentation.h"
 #include "resqml2_0_1/SeismicLatticeFeature.h"
 #include "resqml2_0_1/SeismicLineSetFeature.h"
 #include "resqml2_0_1/WellboreFeature.h"
@@ -265,7 +264,7 @@ void serializeBoundaries(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfPro
 	SeismicLatticeFeature* seismicLattice = pck->createSeismicLattice("eb6a5e97-4d86-4809-b136-051f34cfcb51", "Seismic lattice", 2, 2, 150, 152, 4, 2);
 	GenericFeatureInterpretation* seismicLatticeInterp = pck->createGenericFeatureInterpretation(seismicLattice, "97816427-6ef6-4776-b21c-5b93c8a6310a", "Seismic lattice Interp");
 	Grid2dRepresentation* seismicLatticeRep = pck->createGrid2dRepresentation(seismicLatticeInterp, local3dCrs, "aa5b90f1-2eab-4fa6-8720-69dd4fd51a4d", "Seismic lattice Rep");
-	seismicLatticeRep->setGeometryAsArray2dOfLatticePoints3d(4, 2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 250, 200);
+	seismicLatticeRep->setGeometryAsArray2dOfLatticePoints3d(4, 2, 0, 0, 0, 1, 0, 2, 0, 1, 3, 250, 200);
 
 	// Seismic Line Set
 	SeismicLineSetFeature* seismicLineSet = pck->createSeismicLineSet("53c6a0be-c901-4bb6-845b-fba79745da02", "Seismic line Set");
@@ -463,7 +462,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 		400, 400, 450, 400, 400, 450, /* SPLIT*/ 450, 450,
 		500, 500, 550, 500, 500, 550, /* SPLIT*/ 550, 550 };
 	double controlPoints[18] = { 0, 0, 300, 375, 0, 300, 700, 0, 350, 0, 150, 300, 375, 150, 300, 700, 150, 350 };
-	ijkgridParametric->setGeometryAsParametricSplittedPillarNodes(gsoap_resqml2_0_1::resqml2__KDirection__down, false, parameters, controlPoints, NULL, 1, 0, hdfProxy,
+	ijkgridParametric->setGeometryAsParametricSplittedPillarNodes(false, parameters, controlPoints, NULL, 1, 0, hdfProxy,
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// FOUR SUGARS PARAMETRIC STRAIGHT
@@ -472,7 +471,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 		0, 0, 500, 375, 0, 500, 700, 0, 550, 0, 150, 500, 375, 150, 500, 700, 150, 550 };
 	double controlPointsParameters[12] = { 300, 300, 350, 300, 300, 350,
 		500, 500, 550, 500, 500, 550 };
-	ijkgridParametricStraight->setGeometryAsParametricSplittedPillarNodes(gsoap_resqml2_0_1::resqml2__KDirection__down, false, parameters, controlPointsParametricStraight, controlPointsParameters, 2, 1, hdfProxy,
+	ijkgridParametricStraight->setGeometryAsParametricSplittedPillarNodes(false, parameters, controlPointsParametricStraight, controlPointsParameters, 2, 1, hdfProxy,
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// FOUR SUGARS PARAMETRIC different line kind and one cubic pillar
@@ -485,7 +484,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 		1000, 400, nan, nan, nan, nan,
 		nan, 600, nan, nan, nan, nan };
 	short pillarKind[6] = { 1, 4, 0, 0, 0, 0 };
-	ijkgridParametricNotSameLineKind->setGeometryAsParametricSplittedPillarNodes(gsoap_resqml2_0_1::resqml2__PillarShape__straight, gsoap_resqml2_0_1::resqml2__KDirection__down, false, parameters, controlPointsNotSameLineKind, controlPointParametersNotSameLineKind, 3, pillarKind, hdfProxy,
+	ijkgridParametricNotSameLineKind->setGeometryAsParametricSplittedPillarNodes(gsoap_resqml2_0_1::resqml2__PillarShape__straight, false, parameters, controlPointsNotSameLineKind, controlPointParametersNotSameLineKind, 3, pillarKind, hdfProxy,
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// FOUR SUGARS PARAMETRIC different line kind an one cubic pillar : A copy
@@ -1369,41 +1368,6 @@ void showAllMetadata(COMMON_NS::AbstractObject * obj, const std::string & prefix
 	}
 }
 
-void showAllSubRepresentations(const vector<RESQML2_NS::SubRepresentation*> & subRepSet)
-{
-	if (!subRepSet.empty()) {
-		cout << "SUBREPRESENTATIONS" << std::endl;
-	}
-	std::cout << "\t--------------------------------------------------" << std::endl;
-	for (size_t subRepIndex = 0; subRepIndex < subRepSet.size(); ++subRepIndex)
-	{
-		showAllMetadata(subRepSet[subRepIndex], "\t");
-		if (!subRepSet[subRepIndex]->isPartial()) {
-			const ULONG64 indiceCount = subRepSet[subRepIndex]->getElementCountOfPatch(0);
-
-			// element indices
-			ULONG64 * elementIndices = new ULONG64[indiceCount];
-			subRepSet[subRepIndex]->getElementIndicesOfPatch(0, 0, elementIndices);
-			for (unsigned int i = 0; i < indiceCount && i < 10; ++i) {
-				std::cout << "Element indice at position " << i << " : " << elementIndices[i] << std::endl;
-			}
-			delete[] elementIndices;
-
-			// Supporting rep indices
-			short * supRepIndices = new short[indiceCount];
-			subRepSet[subRepIndex]->getSupportingRepresentationIndicesOfPatch(0, supRepIndices);
-			for (unsigned int i = 0; i < indiceCount && i < 10; ++i) {
-				std::cout << "Supporting rep indice at position " << i << " : " << supRepIndices[i] << std::endl;
-			}
-			delete[] supRepIndices;
-
-		}
-		else {
-			std::cout << "IS PARTIAL!" << std::endl;
-		}
-	}
-}
-
 void showAllProperties(RESQML2_NS::AbstractRepresentation * rep, bool* enabledCells = nullptr)
 {
 	std::vector<RESQML2_NS::AbstractValuesProperty*> propertyValuesSet = rep->getValuesPropertySet();
@@ -1525,6 +1489,43 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation * rep, bool* enabledCe
 		}
 	}
 	std::cout << "\t--------------------------------------------------" << std::endl;
+}
+
+void showAllSubRepresentations(const vector<RESQML2_NS::SubRepresentation*> & subRepSet)
+{
+	if (!subRepSet.empty()) {
+		cout << "SUBREPRESENTATIONS" << std::endl;
+	}
+	std::cout << "\t--------------------------------------------------" << std::endl;
+	for (size_t subRepIndex = 0; subRepIndex < subRepSet.size(); ++subRepIndex)
+	{
+		showAllMetadata(subRepSet[subRepIndex], "\t");
+		if (!subRepSet[subRepIndex]->isPartial()) {
+			const ULONG64 indiceCount = subRepSet[subRepIndex]->getElementCountOfPatch(0);
+
+			// element indices
+			ULONG64 * elementIndices = new ULONG64[indiceCount];
+			subRepSet[subRepIndex]->getElementIndicesOfPatch(0, 0, elementIndices);
+			for (unsigned int i = 0; i < indiceCount && i < 10; ++i) {
+				std::cout << "Element indice at position " << i << " : " << elementIndices[i] << std::endl;
+			}
+			delete[] elementIndices;
+
+			// Supporting rep indices
+			short * supRepIndices = new short[indiceCount];
+			subRepSet[subRepIndex]->getSupportingRepresentationIndicesOfPatch(0, supRepIndices);
+			for (unsigned int i = 0; i < indiceCount && i < 10; ++i) {
+				std::cout << "Supporting rep indice at position " << i << " : " << supRepIndices[i] << std::endl;
+			}
+			delete[] supRepIndices;
+
+		}
+		else {
+			std::cout << "IS PARTIAL!" << std::endl;
+		}
+
+		showAllProperties(subRepSet[subRepIndex]);
+	}
 }
 
 void deserializeStratiColumn(StratigraphicColumn * stratiColumn)
@@ -2563,6 +2564,12 @@ void deserialize(const string & inputFile)
 		cout << "Press enter to continue..." << endl;
 		cin.get();
 	}
+	std::vector<std::string> allUuids = pck.getAllUuids();
+	std::cout << "********************** UUIDS **********************" << std::endl;
+	for (size_t index = 0; index < allUuids.size(); ++index) {
+		std::cout << allUuids[index] << std::endl;
+	}
+	std::cout << "***************************************************" << std::endl;
 
 	unsigned int hdfProxyCount = pck.getHdfProxyCount();
 	cout << "There are " << pck.getHdfProxyCount() << " hdf files associated to this epc document." << endl;
@@ -2748,6 +2755,15 @@ void deserialize(const string & inputFile)
 		horizonGrid2dSet[i]->getZValuesInGlobalCrs(zValues);
 		std::cout << "First zValue is : " << zValues[0] << std::endl;
 		std::cout << "Second zValue is : " << zValues[1] << std::endl;
+		std::cout << "Third zValue is : " << zValues[2] << std::endl;
+		std::cout << "Fourth zValue is : " << zValues[3] << std::endl;
+		std::cout << "Fifth zValue is : " << zValues[4] << std::endl;
+		horizonGrid2dSet[i]->getSupportingRepresentation()->getZValuesInGlobalCrs(zValues);
+		std::cout << "Supporting Representation first zValue is : " << zValues[0] << std::endl;
+		std::cout << "Supporting Representation second zValue is : " << zValues[1] << std::endl;
+		std::cout << "Supporting Representation third zValue is : " << zValues[2] << std::endl;
+		std::cout << "Supporting Representation fourth zValue is : " << zValues[3] << std::endl;
+		std::cout << "Supporting Representation fifth zValue is : " << zValues[4] << std::endl;
 		delete[] zValues;
 		cout << "XIOffset : " << horizonGrid2dSet[i]->getXIOffsetInGlobalCrs() << endl;
 		cout << "YIOffset : " << horizonGrid2dSet[i]->getYIOffsetInGlobalCrs() << endl;
