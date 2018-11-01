@@ -140,7 +140,7 @@ namespace RESQML2_0_1_NS
 		* @param minimumValue			The minimum value of the values to add. If NAN is provided then the minimum value will be computed from the values.
 		* @param maximumValue			The maximum value of the values to add. If NAN is provided then the maximum value will be computed from the values.
 		*/
-		void pushBackDoubleHdf5Array1dOfValues(double * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy,
+		void pushBackDoubleHdf5Array1dOfValues(const double * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy,
 			const double & minimumValue = std::numeric_limits<double>::quiet_NaN(), const double & maximumValue = std::numeric_limits<double>::quiet_NaN());
 
 		/**
@@ -152,7 +152,7 @@ namespace RESQML2_0_1_NS
 		* @param minimumValue			The minimum value of the values to add. If NAN is provided then the minimum value will be computed from the values.
 		* @param maximumValue			The maximum value of the values to add. If NAN is provided then the maximum value will be computed from the values.
 		*/
-		void pushBackDoubleHdf5Array2dOfValues(double * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
+		void pushBackDoubleHdf5Array2dOfValues(const double * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
 			const double & minimumValue = std::numeric_limits<double>::quiet_NaN(), const double & maximumValue = std::numeric_limits<double>::quiet_NaN());
 
 		/**
@@ -165,7 +165,7 @@ namespace RESQML2_0_1_NS
 		* @param minimumValue			The minimum value of the values to add. If NAN is provided then the minimum value will be computed from the values.
 		* @param maximumValue			The maximum value of the values to add. If NAN is provided then the maximum value will be computed from the values.
 		*/
-		void pushBackDoubleHdf5Array3dOfValues(double * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
+		void pushBackDoubleHdf5Array3dOfValues(const double * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
 			const double & minimumValue = std::numeric_limits<double>::quiet_NaN(), const double & maximumValue = std::numeric_limits<double>::quiet_NaN());
 
 		/**
@@ -177,7 +177,7 @@ namespace RESQML2_0_1_NS
 		* @param minimumValue			The minimum value (or value vector) of the values to add. If nullptr is provided and the dimension of value is 1 then the minimum value will be computed from the values.
 		* @param maximumValue			The maximum value (or value vector) of the values to add. If nullptr is provided and the dimension of value is 1 then the maximum value will be computed from the values.
 		*/
-		void pushBackDoubleHdf5ArrayOfValues(double * values, unsigned long long * numValues, const unsigned int & numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy,
+		void pushBackDoubleHdf5ArrayOfValues(const double * values, unsigned long long * numValues, const unsigned int & numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy,
 			double * minimumValue = nullptr, double * maximumValue = nullptr);
 
 		/**
@@ -188,7 +188,7 @@ namespace RESQML2_0_1_NS
 		* @param minimumValue			The minimum value of the values to add. If NAN is provided then the minimum value will be computed from the values.
 		* @param maximumValue			The maximum value of the values to add. If NAN is provided then the maximum value will be computed from the values.
 		*/
-		void pushBackFloatHdf5Array1dOfValues(float * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy,
+		void pushBackFloatHdf5Array1dOfValues(const float * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy,
 			const float & minimumValue = std::numeric_limits<float>::quiet_NaN(), const float & maximumValue = std::numeric_limits<float>::quiet_NaN());
 
 		/**
@@ -200,7 +200,7 @@ namespace RESQML2_0_1_NS
 		* @param minimumValue			The minimum value of the values to add. If NAN is provided then the minimum value will be computed from the values.
 		* @param maximumValue			The maximum value of the values to add. If NAN is provided then the maximum value will be computed from the values.
 		*/
-		void pushBackFloatHdf5Array2dOfValues(float * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
+		void pushBackFloatHdf5Array2dOfValues(const float * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
 			const float & minimumValue = std::numeric_limits<float>::quiet_NaN(), const float & maximumValue = std::numeric_limits<float>::quiet_NaN());
 
 		/**
@@ -213,7 +213,7 @@ namespace RESQML2_0_1_NS
 		* @param minimumValue			The minimum value of the values to add. If NAN is provided then the minimum value will be computed from the values.
 		* @param maximumValue			The maximum value of the values to add. If NAN is provided then the maximum value will be computed from the values.
 		*/
-		void pushBackFloatHdf5Array3dOfValues(float * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
+		void pushBackFloatHdf5Array3dOfValues(const float * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
 			const float & minimumValue = std::numeric_limits<float>::quiet_NaN(), const float & maximumValue = std::numeric_limits<float>::quiet_NaN());
 
 		/**
@@ -225,7 +225,7 @@ namespace RESQML2_0_1_NS
 		* @param minimumValue			The minimum value (or value vector) of the values to add. If nullptr is provided and the dimension of value is 1 then the minimum value will be computed from the values.
 		* @param maximumValue			The maximum value (or value vector) of the values to add. If nullptr is provided and the dimension of value is 1 then the maximum value will be computed from the values.
 		*/
-		void pushBackFloatHdf5ArrayOfValues(float * values, unsigned long long * numValues, const unsigned int & numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy,
+		void pushBackFloatHdf5ArrayOfValues(const float * values, unsigned long long * numValues, const unsigned int & numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy,
 			float * minimumValue = nullptr, float * maximumValue = nullptr);
 
 		/**
@@ -235,7 +235,7 @@ namespace RESQML2_0_1_NS
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
 		void pushBackFloatHdf5ArrayOfValues(
-			unsigned long long* numValues,
+			const unsigned long long* numValues,
 			const unsigned int& numArrayDimensions, 
 			COMMON_NS::AbstractHdfProxy* proxy
 		);
@@ -394,7 +394,7 @@ namespace RESQML2_0_1_NS
 		*/
 		template <class T>
 		void setPropertyMinMax(
-			T* values, 
+			const T* values, 
 			unsigned long long* numValuesInEachDimension,
 			const unsigned int& numArrayDimensions,
 			T * minimumValue = nullptr, T * maximumValue = nullptr)

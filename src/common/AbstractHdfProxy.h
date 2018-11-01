@@ -94,10 +94,10 @@ namespace COMMON_NS
 		virtual void writeItemizedListOfList(const std::string & groupName,
 			const std::string & name,
 			const int & cumulativeLengthDatatype,
-			void * cumulativeLength,
+			const void * cumulativeLength,
 			const unsigned long long & cumulativeLengthSize,
 			const int & elementsDatatype,
-			void * elements,
+			const void * elements,
 			const unsigned long long & elementsSize) = 0;
 
 		/**
@@ -120,8 +120,8 @@ namespace COMMON_NS
 
 		virtual void writeArrayNdOfFloatValues(const std::string & groupName,
 		  const std::string & name,
-		  float * floatValues,
-		  unsigned long long * numValuesInEachDimension,
+		  const float * floatValues,
+		  const unsigned long long * numValuesInEachDimension,
 		  const unsigned int & numDimensions) = 0;
 
 		/**
@@ -135,8 +135,8 @@ namespace COMMON_NS
 		 */
 		virtual void writeArrayNdOfDoubleValues(const std::string & groupName,
 		  const std::string & name,
-		  double * dblValues,
-		  unsigned long long * numValuesInEachDimension,
+		  const double * dblValues,
+		  const unsigned long long * numValuesInEachDimension,
 		  const unsigned int & numDimensions) = 0;
 
 		/**
@@ -150,8 +150,8 @@ namespace COMMON_NS
 		*/
 		virtual void writeArrayNdOfCharValues(const std::string & groupName,
 			const std::string & name,
-			char * intValues,
-			unsigned long long * numValuesInEachDimension,
+			const char * intValues,
+			const unsigned long long * numValuesInEachDimension,
 			const unsigned int & numDimensions) = 0;
 
 		/**
@@ -165,8 +165,8 @@ namespace COMMON_NS
 		 */
 		virtual void writeArrayNdOfIntValues(const std::string & groupName,
 		  const std::string & name,
-		  int * intValues,
-		  unsigned long long * numValuesInEachDimension,
+		  const int * intValues,
+		  const unsigned long long * numValuesInEachDimension,
 		  const unsigned int & numDimensions) = 0;
 
 		/**
@@ -180,8 +180,8 @@ namespace COMMON_NS
 		*/
  		virtual void writeArrayNdOfGSoapULong64Values(const std::string & groupName,
 			const std::string & name,
-			ULONG64 * ulong64Values,
-			unsigned long long * numValuesInEachDimension,
+			const ULONG64 * ulong64Values,
+			const unsigned long long * numValuesInEachDimension,
 			const unsigned int & numDimensions) = 0;
 
 		/**
@@ -197,8 +197,8 @@ namespace COMMON_NS
 		virtual void writeArrayNd(const std::string & groupName,
 		  const std::string & name,
 		  const int & datatype,
-		  void * values,
-		  unsigned long long * numValuesInEachDimension,
+		  const void * values,
+		  const unsigned long long * numValuesInEachDimension,
 		  const unsigned int & numDimensions) = 0;
 
 		/**
@@ -214,7 +214,7 @@ namespace COMMON_NS
 		  const std::string& groupName,
 		  const std::string& name,
 		  const int & datatype,
-		  unsigned long long* numValuesInEachDimension,
+		  const unsigned long long* numValuesInEachDimension,
 		  const unsigned int& numDimensions
 		  ) = 0;
 
@@ -231,9 +231,9 @@ namespace COMMON_NS
 		  const std::string& groupName,
 		  const std::string& name,
 		  const int & datatype,
-		  void* values,
-		  unsigned long long* numValuesInEachDimension,
-		  unsigned long long* offsetValuesInEachDimension,
+		  const void* values,
+		  const unsigned long long* numValuesInEachDimension,
+		  const unsigned long long* offsetValuesInEachDimension,
 		  const unsigned int& numDimensions
 		  ) = 0;
 
