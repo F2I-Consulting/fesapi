@@ -93,7 +93,7 @@ namespace ETP_NS
 		 */
 		Energistics::Etp::v12::Datatypes::MessageHeader decodeMessageHeader(avro::DecoderPtr decoder);
 
-		template<typename T> void encode(const T & mb, int64_t correlationId = 0, int32_t messageFlags = 0)
+		template<typename T> int64_t encode(const T & mb, int64_t correlationId = 0, int32_t messageFlags = 0)
 		{
 			// Build message header
 			Energistics::Etp::v12::Datatypes::MessageHeader mh;
@@ -120,6 +120,8 @@ namespace ETP_NS
 			avro::encode(*e, mh);
 			avro::encode(*e, mb);
 			sendingQueue.push_back(*avro::snapshot(*out).get());
+
+			return mh.m_correlationId;
 		}
 
 	public:
@@ -196,13 +198,15 @@ namespace ETP_NS
 		 * Write/send this session buffer on the web socket.
 		 * @param mb The ETP message body to send
 		 */
-		template<typename T> void send(const T & mb, int64_t correlationId = 0, int32_t messageFlags = 0)
+		template<typename T> int64_t send(const T & mb, int64_t correlationId = 0, int32_t messageFlags = 0)
 		{
-			encode(mb, correlationId, messageFlags); // put the message to write in the queue
+			int64_t messageId = encode(mb, correlationId, messageFlags); // put the message to write in the queue
 
 			if(sendingQueue.size() == 1) {
 				do_write();
 			}
+
+			return messageId;
 		}
 
 		/**

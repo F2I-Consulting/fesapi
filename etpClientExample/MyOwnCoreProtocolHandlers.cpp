@@ -30,9 +30,6 @@ void askUser(ETP_NS::AbstractSession* session)
 	std::string command;
 	while (command != "quit")
 	{
-		//clean
-		std::static_pointer_cast<MyOwnDirectedDiscoveryProtocolHandlers>(session->getDirectedDiscoveryProtocolHandlers())->getObjectWhenDiscovered = false;
-
 		std::getline(std::cin, command);
 		if (command.substr(0, 10) == "GetContent") {
 			Energistics::Etp::v12::Protocol::DirectedDiscovery::GetContent mb;
@@ -55,10 +52,9 @@ void askUser(ETP_NS::AbstractSession* session)
 			session->send(getO);
 		}
 		else if (command.substr(0, 16) == "GetSourceObjects") {
-			std::static_pointer_cast<MyOwnDirectedDiscoveryProtocolHandlers>(session->getDirectedDiscoveryProtocolHandlers())->getObjectWhenDiscovered = true;
 			Energistics::Etp::v12::Protocol::DirectedDiscovery::GetSources mb;
 			mb.m_uri = command.size() > 17 ? command.substr(17) : "";
-			session->send(mb);
+			std::static_pointer_cast<MyOwnDirectedDiscoveryProtocolHandlers>(session->getDirectedDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb));
 		}
 		else if (command.substr(0, 12) == "GetDataArray") {
 			Energistics::Etp::v12::Protocol::DataArray::GetDataArray gda;

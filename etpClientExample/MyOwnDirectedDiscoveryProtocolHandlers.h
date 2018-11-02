@@ -27,10 +27,10 @@ under the License.
 class MyOwnDirectedDiscoveryProtocolHandlers : public ETP_NS::DirectedDiscoveryHandlers
 {
 public:
-	MyOwnDirectedDiscoveryProtocolHandlers(MyOwnEtpClientSession* mySession): ETP_NS::DirectedDiscoveryHandlers(mySession), getObjectWhenDiscovered(false) {}
+	MyOwnDirectedDiscoveryProtocolHandlers(MyOwnEtpClientSession* mySession): ETP_NS::DirectedDiscoveryHandlers(mySession) {}
 	~MyOwnDirectedDiscoveryProtocolHandlers() {}
 
-	bool getObjectWhenDiscovered;
+	std::vector<int64_t> getObjectWhenDiscovered; // all message id in this vector will result in response where the objects are going to be get in addition to be discovered
 
-	void on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetResourcesResponse & grr);
+	void on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetResourcesResponse & grr, int64_t correlationId);
 };

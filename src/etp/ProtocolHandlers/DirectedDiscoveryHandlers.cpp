@@ -41,7 +41,7 @@ void DirectedDiscoveryHandlers::decodeMessageBody(const Energistics::Etp::v12::D
 		Energistics::Etp::v12::Protocol::DirectedDiscovery::GetResourcesResponse grr;
 		avro::decode(*d, grr);
 		session->flushReceivingBuffer();
-		on_GetResourcesResponse(grr);
+		on_GetResourcesResponse(grr, mh.m_correlationId);
 	}
 	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DirectedDiscovery::GetSources::messageTypeId) {
 		Energistics::Etp::v12::Protocol::DirectedDiscovery::GetSources gs;
@@ -72,7 +72,7 @@ void DirectedDiscoveryHandlers::on_GetContent(const Energistics::Etp::v12::Proto
 	session->send(error);
 }
 
-void DirectedDiscoveryHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetResourcesResponse & grr)
+void DirectedDiscoveryHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetResourcesResponse & grr, int64_t correlationId)
 {
 	Energistics::Etp::v12::Datatypes::Object::GraphResource graphResource =  grr.m_resource;
 	std::cout << "*************************************************" << std::endl;
