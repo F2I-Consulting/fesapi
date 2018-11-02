@@ -18,7 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnDirectedDiscoveryProtocolHandlers.h"
 
-void MyOwnDirectedDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetResourcesResponse & grr)
+#include <algorithm>
+
+void MyOwnDirectedDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetResourcesResponse & grr, int64_t correlationId)
 {
 	Energistics::Etp::v12::Datatypes::Object::GraphResource graphResource =  grr.m_resource;
 	std::cout << "*************************************************" << std::endl;
@@ -34,7 +36,9 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energ
 	std::cout << "lastChanged : " << graphResource.m_lastChanged << std::endl;
 	std::cout << "*************************************************" << std::endl;
 
-	if (getObjectWhenDiscovered) {
+
+	if (std::find(getObjectWhenDiscovered.begin(), getObjectWhenDiscovered.end(), correlationId) != getObjectWhenDiscovered.end()) { //TODO
+		std::cout << "GET OBJECT -----------------------------------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
 		Energistics::Etp::v12::Protocol::Store::GetObject_ getO;
 		getO.m_uri = graphResource.m_uri;
 		session->send(getO);
