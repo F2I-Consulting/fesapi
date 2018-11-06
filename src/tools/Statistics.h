@@ -27,7 +27,7 @@ namespace statistics
 
 	template <class T>
 	std::pair<T, T> getMinMax(
-		T* values,
+		const T* values,
 		const T & noValue,
 		const size_t & valueCount)
 	{

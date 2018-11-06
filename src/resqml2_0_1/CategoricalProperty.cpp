@@ -107,25 +107,25 @@ void CategoricalProperty::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* e
 		stringLookup->addCategoricalPropertyValues(this);
 }
 
-void CategoricalProperty::pushBackLongHdf5Array1dOfValues(long * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackLongHdf5Array1dOfValues(const long * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
 {
 	hsize_t valueCountPerDimension[1] = {valueCount};
 	pushBackLongHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, nullValue);
 }
 
-void CategoricalProperty::pushBackLongHdf5Array2dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackLongHdf5Array2dOfValues(const long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
 {
 	hsize_t valueCountPerDimension[2] = {valueCountInSlowestDim, valueCountInFastestDim};
 	pushBackLongHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
-void CategoricalProperty::pushBackLongHdf5Array3dOfValues(long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackLongHdf5Array3dOfValues(const long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
 {
 	hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
 	pushBackLongHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-void CategoricalProperty::pushBackLongHdf5ArrayOfValues(long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackLongHdf5ArrayOfValues(const long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
 {
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue);
 
@@ -137,25 +137,25 @@ void CategoricalProperty::pushBackLongHdf5ArrayOfValues(long * values, unsigned 
 		numValues, numDimensionsInArray);
 }
 
-void CategoricalProperty::pushBackUShortHdf5Array1dOfValues(unsigned short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackUShortHdf5Array1dOfValues(const unsigned short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCount };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, nullValue);
 }
 
-void CategoricalProperty::pushBackUShortHdf5Array2dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackUShortHdf5Array2dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
-void CategoricalProperty::pushBackUShortHdf5Array3dOfValues(unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackUShortHdf5Array3dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-void CategoricalProperty::pushBackUShortHdf5ArrayOfValues(unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue)
+void CategoricalProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue)
 {
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue);
 

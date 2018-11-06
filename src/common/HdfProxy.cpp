@@ -368,10 +368,10 @@ int HdfProxy::getHdfDatatypeClassInDataset(const std::string & datasetName) cons
 void HdfProxy::writeItemizedListOfList(const string & groupName,
 			const string & name,
 			const int & cumulativeLengthDatatype,
-			void * cumulativeLength,
+			const void * cumulativeLength,
 			const unsigned long long & cumulativeLengthSize,
 			const int & elementsDatatype,
-			void * elements,
+			const void * elements,
 			const unsigned long long & elementsSize)
 {
 	if (!isOpened()) {
@@ -467,8 +467,8 @@ hssize_t HdfProxy::getElementCount(const std::string & datasetName)
 
 void HdfProxy::writeArrayNdOfFloatValues(const string & groupName,
 		const string & name,
-		float * floatValues,
-		hsize_t * numValuesInEachDimension,
+		const float * floatValues,
+		const hsize_t * numValuesInEachDimension,
 		const unsigned int & numDimensions)
 {
 	writeArrayNd(groupName, name, H5T_NATIVE_FLOAT, floatValues, numValuesInEachDimension, numDimensions);
@@ -476,8 +476,8 @@ void HdfProxy::writeArrayNdOfFloatValues(const string & groupName,
 
 void HdfProxy::writeArrayNdOfDoubleValues(const string & groupName,
 		const string & name,
-		double * dblValues,
-		hsize_t * numValuesInEachDimension,
+		const double * dblValues,
+		const hsize_t * numValuesInEachDimension,
 		const unsigned int & numDimensions)
 {
 	writeArrayNd(groupName, name, H5T_NATIVE_DOUBLE, dblValues, numValuesInEachDimension, numDimensions);
@@ -485,8 +485,8 @@ void HdfProxy::writeArrayNdOfDoubleValues(const string & groupName,
 
 void HdfProxy::writeArrayNdOfCharValues(const std::string & groupName,
 		const std::string & name,
-		char * intValues,
-		unsigned long long * numValuesInEachDimension,
+		const char * intValues,
+		const unsigned long long * numValuesInEachDimension,
 		const unsigned int & numDimensions)
 {
 	writeArrayNd(groupName, name, H5T_NATIVE_CHAR, intValues, numValuesInEachDimension, numDimensions);
@@ -494,8 +494,8 @@ void HdfProxy::writeArrayNdOfCharValues(const std::string & groupName,
 
 void HdfProxy::writeArrayNdOfIntValues(const string & groupName,
         const string & name,
-        int * intValues,
-        hsize_t * numValuesInEachDimension,
+        const int * intValues,
+        const hsize_t * numValuesInEachDimension,
         const unsigned int & numDimensions)
 {
 	writeArrayNd(groupName, name, H5T_NATIVE_INT, intValues, numValuesInEachDimension, numDimensions);
@@ -503,8 +503,8 @@ void HdfProxy::writeArrayNdOfIntValues(const string & groupName,
 
 void HdfProxy::writeArrayNdOfGSoapULong64Values(const std::string & groupName,
 		const std::string & name,
-		ULONG64 * ulong64Values,
-		hsize_t * numValuesInEachDimension,
+		const ULONG64 * ulong64Values,
+		const hsize_t * numValuesInEachDimension,
 		const unsigned int & numDimensions)
 {
 	writeArrayNd(groupName, name, H5T_NATIVE_ULLONG, ulong64Values, numValuesInEachDimension, numDimensions);
@@ -513,8 +513,8 @@ void HdfProxy::writeArrayNdOfGSoapULong64Values(const std::string & groupName,
 void HdfProxy::writeArrayNd(const std::string & groupName,
 			const std::string & name,
 			const int & datatype,
-			void * values,
-			unsigned long long * numValuesInEachDimension,
+			const void * values,
+			const unsigned long long * numValuesInEachDimension,
 			const unsigned int & numDimensions)
 {
 	if (!isOpened()) {
@@ -571,7 +571,7 @@ void HdfProxy::createArrayNd(
 	const std::string& groupName,
 	const std::string& datasetName,
 	const int & datatype,
-	unsigned long long* numValuesInEachDimension,
+	const unsigned long long* numValuesInEachDimension,
 	const unsigned int& numDimensions
 ) {
 	if (!isOpened()) {
@@ -624,9 +624,9 @@ void HdfProxy::writeArrayNdSlab(
 	const string& groupName,
 	const string& datasetName,
 	const int & datatype,
-	void* values,
-	hsize_t* numValuesInEachDimension,
-	hsize_t* offsetInEachDimension,
+	const void* values,
+	const hsize_t* numValuesInEachDimension,
+	const hsize_t* offsetInEachDimension,
 	const unsigned int& numDimensions)
 {
 	if (!isOpened()) {
