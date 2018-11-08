@@ -1,10 +1,14 @@
 
 # Prepare your build environment
- - Create a folder called fesapiEnv.
- - In this folder create the three following folders
-	 - build
-	 - fesapi (Git clone this repository into this folder "fesapi". You should then have a path fesapiEnv/fesapi/src)
-	 - dependencies
+- Create a folder called fesapiEnv.
+- In this folder create the three following folders
+	- build
+	- fesapi (Git clone this repository into this folder "fesapi". You should then have a path fesapiEnv/fesapi/src)
+	- dependencies
+# Minimal version of compiler (no 32 bits support)
+- VS 2015
+- g++ 4.8.5
+- clang 7
 # Prepare the dependencies
 Download (build and install if necessary) third party libraries:
 - HDF5: All versions of 1.8.* starting from 1.8.18 should be ok. Versions 1.10.* are not supported yet (even if they should work) https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/
@@ -16,7 +20,7 @@ We advise you to install these third party libraries respectively into
 - fesapiEnv/dependencies/minizip-particularVersion
 - fesapiEnv/dependencies/uuid-particularVersion (or in system directory using : sudo apt-get install uuid-dev)
 # Configure the build
-Fesapi uses cmake as its build tool. A 3.2 version or later of cmake is required https://cmake.org/download/. We also recommend using cmake-gui (already included in the bin folder of the binary releases of cmake) which provides a graphical user interface on top of cmake. Follow the below instructions :
+Fesapi uses cmake as its build tool. A 3.12 version or later of cmake is required https://cmake.org/download/. We also recommend using cmake-gui (already included in the bin folder of the binary releases of cmake) which provides a graphical user interface on top of cmake. Follow the below instructions :
 
 - yourPath/fesapiEnv/fesapi defines where is the source code folder
 - yourPath/fesapiEnv/build/theNameYouWant defines where to build the binaries

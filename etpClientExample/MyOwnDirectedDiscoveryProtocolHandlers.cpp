@@ -37,7 +37,7 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energ
 	std::cout << "*************************************************" << std::endl;
 
 
-	if (std::find(getObjectWhenDiscovered.begin(), getObjectWhenDiscovered.end(), correlationId) != getObjectWhenDiscovered.end()) { //TODO
+	if (std::find(getObjectWhenDiscovered.begin(), getObjectWhenDiscovered.end(), correlationId) != getObjectWhenDiscovered.end()) {
 		std::cout << "GET OBJECT -----------------------------------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
 		Energistics::Etp::v12::Protocol::Store::GetObject_ getO;
 		getO.m_uri = graphResource.m_uri;
