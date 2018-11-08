@@ -344,11 +344,11 @@ namespace COMMON_NS
 		 * @param numDimensions                  The number of the dimensions of the array to read.
 		 */
 		virtual void readArrayNdOfDoubleValues(
-		  const std::string & datasetName,
-		  double* values,
-		  unsigned long long * numValuesInEachDimension,
-		  unsigned long long * offsetInEachDimension,
-		  const unsigned int & numDimensions
+			const std::string & datasetName,
+			double* values,
+			const unsigned long long * numValuesInEachDimension,
+			const unsigned long long * offsetInEachDimension,
+			const unsigned int & numDimensions
 		  ) = 0;
 
 		/**
@@ -364,10 +364,10 @@ namespace COMMON_NS
 		virtual void readArrayNdOfDoubleValues(
 			const std::string & datasetName, 
 			double* values,
-			unsigned long long * blockCountPerDimension,
-			unsigned long long * offsetInEachDimension,
-			unsigned long long * strideInEachDimension,
-			unsigned long long * blockSizeInEachDimension,
+			const unsigned long long * blockCountPerDimension,
+			const unsigned long long * offsetInEachDimension,
+			const unsigned long long * strideInEachDimension,
+			const unsigned long long * blockSizeInEachDimension,
 			const unsigned int & numDimensions) = 0;
 
 		/**
@@ -385,10 +385,10 @@ namespace COMMON_NS
 		 */
 		virtual void selectArrayNdOfValues(
 			const std::string & datasetName,
-			unsigned long long * blockCountPerDimension,
-			unsigned long long * offsetInEachDimension,
-			unsigned long long * strideInEachDimension,
-			unsigned long long * blockSizeInEachDimension,
+			const unsigned long long * blockCountPerDimension,
+			const unsigned long long * offsetInEachDimension,
+			const unsigned long long * strideInEachDimension,
+			const unsigned long long * blockSizeInEachDimension,
 			const unsigned int & numDimensions,
 			bool newSelection,
 			int & dataset,
@@ -423,11 +423,11 @@ namespace COMMON_NS
 		 * @param numDimensions                  The number of the dimensions of the array to read.
 		 */
 		virtual void readArrayNdOfFloatValues(
-		  const std::string & datasetName,
-		  float* values,
-		  unsigned long long * numValuesInEachDimension,
-		  unsigned long long * offsetInEachDimension,
-		  const unsigned int & numDimensions
+			const std::string & datasetName,
+			float* values,
+			const unsigned long long * numValuesInEachDimension,
+			const unsigned long long * offsetInEachDimension,
+			const unsigned int & numDimensions
 		  ) = 0;
 
 		/**
@@ -456,11 +456,11 @@ namespace COMMON_NS
 		 * @param numDimensions                  The number of the dimensions of the array to read.
 		 */
 		virtual void readArrayNdOfLongValues(
-		  const std::string & datasetName,
-		  long* values,
-		  unsigned long long * numValuesInEachDimension,
-		  unsigned long long * offsetInEachDimension,
-		  const unsigned int & numDimensions
+			const std::string & datasetName,
+			long* values,
+			const unsigned long long * numValuesInEachDimension,
+			const unsigned long long * offsetInEachDimension,
+			const unsigned int & numDimensions
 		  ) = 0;
 
 		/**
@@ -488,8 +488,8 @@ namespace COMMON_NS
 		virtual void readArrayNdOfIntValues(
 			const std::string & datasetName,
 			int* values,
-			unsigned long long * numValuesInEachDimension,
-			unsigned long long * offsetInEachDimension,
+			const unsigned long long * numValuesInEachDimension,
+			const unsigned long long * offsetInEachDimension,
 			const unsigned int & numDimensions
 		) = 0;
 

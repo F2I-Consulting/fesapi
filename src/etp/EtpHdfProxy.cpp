@@ -41,8 +41,8 @@ void EtpHdfProxy::readArrayNdOfValues(const std::string & datasetName, void* val
 void EtpHdfProxy::readArrayNdOfValues(
 	const std::string & datasetName,
 	void* values,
-	unsigned long long * numValuesInEachDimension,
-	unsigned long long * offsetInEachDimension,
+	const unsigned long long * numValuesInEachDimension,
+	const unsigned long long * offsetInEachDimension,
 	const unsigned int & numDimensions, const int & datatype)
 {
 }
@@ -50,20 +50,20 @@ void EtpHdfProxy::readArrayNdOfValues(
 void EtpHdfProxy::readArrayNdOfValues(
 	const std::string & datasetName,
 	void* values,
-	unsigned long long * blockCountPerDimension,
-	unsigned long long * offsetInEachDimension,
-	unsigned long long * strideInEachDimension,
-	unsigned long long * blockSizeInEachDimension,
+	const unsigned long long * blockCountPerDimension,
+	const unsigned long long * offsetInEachDimension,
+	const unsigned long long * strideInEachDimension,
+	const unsigned long long * blockSizeInEachDimension,
 	const unsigned int & numDimensions, const int & datatype)
 {
 }
 
 void EtpHdfProxy::selectArrayNdOfValues(
 	const std::string & datasetName,
-	unsigned long long * blockCountPerDimension,
-	unsigned long long * offsetInEachDimension,
-	unsigned long long * strideInEachDimension,
-	unsigned long long * blockSizeInEachDimension,
+	const unsigned long long * blockCountPerDimension,
+	const unsigned long long * offsetInEachDimension,
+	const unsigned long long * strideInEachDimension,
+	const unsigned long long * blockSizeInEachDimension,
 	const unsigned int & numDimensions,
 	bool newSelection,
 	int & dataset,
@@ -95,10 +95,10 @@ int EtpHdfProxy::getHdfDatatypeClassInDataset(const std::string & datasetName) c
 void EtpHdfProxy::writeItemizedListOfList(const string & groupName,
 			const string & name,
 			const int & cumulativeLengthDatatype,
-			void * cumulativeLength,
+			const void * cumulativeLength,
 			const unsigned long long & cumulativeLengthSize,
 			const int & elementsDatatype,
-			void * elements,
+			const void * elements,
 			const unsigned long long & elementsSize)
 {
 
@@ -121,55 +121,55 @@ signed long long EtpHdfProxy::getElementCount(const std::string & datasetName)
 }
 
 void EtpHdfProxy::writeArrayNdOfFloatValues(const string & groupName,
-		const string & name,
-		float * floatValues,
-		unsigned long long * numValuesInEachDimension,
-		const unsigned int & numDimensions)
+	const string & name,
+	const float * floatValues,
+	const unsigned long long * numValuesInEachDimension,
+	const unsigned int & numDimensions)
 {
 
 }
 
 void EtpHdfProxy::writeArrayNdOfDoubleValues(const string & groupName,
-		const string & name,
-		double * dblValues,
-		unsigned long long * numValuesInEachDimension,
-		const unsigned int & numDimensions)
+	const string & name,
+	const double * dblValues,
+	const unsigned long long * numValuesInEachDimension,
+	const unsigned int & numDimensions)
 {
 
 }
 
 void EtpHdfProxy::writeArrayNdOfCharValues(const std::string & groupName,
-		const std::string & name,
-		char * intValues,
-		unsigned long long * numValuesInEachDimension,
-		const unsigned int & numDimensions)
+	const std::string & name,
+	const char * intValues,
+	const unsigned long long * numValuesInEachDimension,
+	const unsigned int & numDimensions)
 {
 
 }
 
 void EtpHdfProxy::writeArrayNdOfIntValues(const string & groupName,
-        const string & name,
-        int * intValues,
-        unsigned long long * numValuesInEachDimension,
-        const unsigned int & numDimensions)
+	const string & name,
+	const int * intValues,
+	const unsigned long long * numValuesInEachDimension,
+	const unsigned int & numDimensions)
 {
 }
 
 void EtpHdfProxy::writeArrayNdOfGSoapULong64Values(const std::string & groupName,
-		const std::string & name,
-		ULONG64 * ulong64Values,
-		unsigned long long * numValuesInEachDimension,
-		const unsigned int & numDimensions)
+	const std::string & name,
+	const ULONG64 * ulong64Values,
+	const unsigned long long * numValuesInEachDimension,
+	const unsigned int & numDimensions)
 {
 
 }
 
 void EtpHdfProxy::writeArrayNd(const std::string & groupName,
-			const std::string & name,
-			const int & datatype,
-			void * values,
-			unsigned long long * numValuesInEachDimension,
-			const unsigned int & numDimensions)
+	const std::string & name,
+	const int & datatype,
+	const void * values,
+	const unsigned long long * numValuesInEachDimension,
+	const unsigned int & numDimensions)
 {
 
 }
@@ -178,9 +178,9 @@ void EtpHdfProxy::createArrayNd(
 	const std::string& groupName,
 	const std::string& datasetName,
 	const int & datatype,
-	unsigned long long* numValuesInEachDimension,
-	const unsigned int& numDimensions
-) {
+	const unsigned long long* numValuesInEachDimension,
+	const unsigned int& numDimensions)
+{
 
 }
 
@@ -189,9 +189,9 @@ void EtpHdfProxy::writeArrayNdSlab(
 	const string& groupName,
 	const string& datasetName,
 	const int & datatype,
-	void* values,
-	unsigned long long* numValuesInEachDimension,
-	unsigned long long* offsetInEachDimension,
+	const void* values,
+	const unsigned long long* numValuesInEachDimension,
+	const unsigned long long* offsetInEachDimension,
 	const unsigned int& numDimensions)
 {
 	
@@ -203,20 +203,20 @@ void EtpHdfProxy::readArrayNdOfDoubleValues(const std::string & datasetName, dou
 }
 
 void EtpHdfProxy::readArrayNdOfDoubleValues(
-	  const std::string & datasetName, double* values,
-	  unsigned long long * numValuesInEachDimension,
-	  unsigned long long * offsetInEachDimension,
-	  const unsigned int & numDimensions)
+	const std::string & datasetName, double* values,
+	const unsigned long long * numValuesInEachDimension,
+	const unsigned long long * offsetInEachDimension,
+	const unsigned int & numDimensions)
 {
 }
 
 void EtpHdfProxy::readArrayNdOfDoubleValues(
-		const std::string & datasetName, double* values,
-		unsigned long long * blockCountPerDimension,
-		unsigned long long * offsetInEachDimension,
-		unsigned long long * strideInEachDimension,
-		unsigned long long * blockSizeInEachDimension,
-		const unsigned int & numDimensions)
+	const std::string & datasetName, double* values,
+	const unsigned long long * blockCountPerDimension,
+	const unsigned long long * offsetInEachDimension,
+	const unsigned long long * strideInEachDimension,
+	const unsigned long long * blockSizeInEachDimension,
+	const unsigned int & numDimensions)
 {
 
 }
@@ -237,8 +237,8 @@ void EtpHdfProxy::readArrayNdOfFloatValues(const std::string & datasetName, floa
 
 void EtpHdfProxy::readArrayNdOfFloatValues(
 	const std::string& datasetName, float* values,
-	unsigned long long* numValuesInEachDimension,
-	unsigned long long* offsetInEachDimension,
+	const unsigned long long* numValuesInEachDimension,
+	const unsigned long long* offsetInEachDimension,
 	const unsigned int& numDimensions)
 {
 
@@ -261,8 +261,8 @@ void EtpHdfProxy::readArrayNdOfLongValues(const std::string & datasetName, long*
 
 void EtpHdfProxy::readArrayNdOfLongValues(
 	const std::string& datasetName, long* values,
-	unsigned long long* numValuesInEachDimension,
-	unsigned long long* offsetInEachDimension,
+	const unsigned long long* numValuesInEachDimension,
+	const unsigned long long* offsetInEachDimension,
 	const unsigned int& numDimensions)
 {
 
@@ -279,8 +279,8 @@ void EtpHdfProxy::readArrayNdOfIntValues(const std::string & datasetName, int* v
 
 void EtpHdfProxy::readArrayNdOfIntValues(
 	const std::string& datasetName, int* values,
-	unsigned long long* numValuesInEachDimension,
-	unsigned long long* offsetInEachDimension,
+	const unsigned long long* numValuesInEachDimension,
+	const unsigned long long* offsetInEachDimension,
 	const unsigned int& numDimensions)
 {
 }
