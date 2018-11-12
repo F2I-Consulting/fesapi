@@ -3,7 +3,7 @@
 branches:
   # whitelist
   only:
-    - geosiris
+    - etp
 
 skip_commits:
   message: /\[skip ci\]|\[ci skip\]|\[skip appveyor\]|\[ci appveyor\]/
