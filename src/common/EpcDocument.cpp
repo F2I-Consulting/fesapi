@@ -194,35 +194,22 @@ namespace // anonymous namespace. Use only in that file.
 #endif
 }
 
-EpcDocument::EpcDocument(const string & fileName, const openingMode & hdf5PermissionAccess) :
-	package(nullptr), s(nullptr), propertyKindMapper(nullptr), make_hdf_proxy(&default_builder), make_hdf_proxy_from_gsoap_proxy_2_0_1(&default_builder)
-	, make_hdf_proxy_from_gsoap_proxy_2_1(&default_builder)
+EpcDocument::EpcDocument() :
+	package(nullptr), s(nullptr),
+	propertyKindMapper(nullptr), make_hdf_proxy(&default_builder), make_hdf_proxy_from_gsoap_proxy_2_0_1(&default_builder),
+	make_hdf_proxy_from_gsoap_proxy_2_1(&default_builder), make_partial_hdf_proxy(&epc_partial_builder)
 {
-#ifdef WITH_ETP
-	set_hdf_proxy_builder(hdf5PermissionAccess == openingMode::ETP ? &etp_partial_builder : &epc_partial_builder);
-#else
-	if (hdf5PermissionAccess == openingMode::ETP) {
-		throw std::invalid_argument("Enable WITH_ETP in compile definitions if you want to use HDF ETP opening mode.");
-	}
-	set_hdf_proxy_builder(&epc_partial_builder);
-#endif
+}
+
+EpcDocument::EpcDocument(const string & fileName, const openingMode & hdf5PermissionAccess) :
+	EpcDocument()
+{
 	open(fileName, hdf5PermissionAccess);
 }
 
 EpcDocument::EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, const openingMode & hdf5PermissionAccess) :
-	package(nullptr), s(nullptr), make_hdf_proxy(&default_builder), make_hdf_proxy_from_gsoap_proxy_2_0_1(&default_builder)
-	, make_hdf_proxy_from_gsoap_proxy_2_1(&default_builder)
+	EpcDocument(fileName, hdf5PermissionAccess)
 {
-#ifdef WITH_ETP
-	set_hdf_proxy_builder(hdf5PermissionAccess == openingMode::ETP ? &etp_partial_builder : &epc_partial_builder);
-#else
-	if (hdf5PermissionAccess == openingMode::ETP) {
-		throw std::invalid_argument("Enable WITH_ETP in compile definitions if you want to use HDF ETP opening mode.");
-}
-	set_hdf_proxy_builder(&epc_partial_builder);
-#endif
-	open(fileName, hdf5PermissionAccess);
-
 	// Load property kind mapping files
 	propertyKindMapper = new PropertyKindMapper(this);
 	string error = propertyKindMapper->loadMappingFilesFromDirectory(propertyKindMappingFilesDirectory);
@@ -248,22 +235,14 @@ soap* EpcDocument::getGsoapContext() const { return s; }
 
 PropertyKindMapper* EpcDocument::getPropertyKindMapper() const { return propertyKindMapper; }
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 const std::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDocument::getResqmlAbstractObjectSet() const { return resqmlAbstractObjectSet; }
-#else
-const std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDocument::getResqmlAbstractObjectSet() const { return resqmlAbstractObjectSet; }
-#endif
 
 std::vector<std::string> EpcDocument::getAllUuids() const
 {
 	std::vector<std::string> keys;
 	keys.reserve(resqmlAbstractObjectSet.size());
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it) {
-#else
-	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it) {
-#endif
 		keys.push_back(it->first);
 	}
 
@@ -274,11 +253,7 @@ std::vector<PRODML2_0_NS::DasAcquisition*> EpcDocument::getDasAcquisitionSet() c
 {
 	std::vector<PRODML2_0_NS::DasAcquisition*> result;
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
-#else
-	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
-#endif
 	{
 		if (it->second->getGsoapType() == SOAP_TYPE_gsoap_eml2_1_prodml2__DasAcquisition) {
 			result.push_back(static_cast<PRODML2_0_NS::DasAcquisition*>(it->second));
@@ -410,6 +385,15 @@ void  EpcDocument::open(const std::string & fileName, const openingMode & hdf5Pe
 		throw invalid_argument("The epc document must be closed before to be opened again.");
 	}
 
+#ifdef WITH_ETP
+	set_hdf_proxy_builder(hdf5PermissionAccess == openingMode::ETP ? &etp_partial_builder : &epc_partial_builder);
+#else
+	if (hdf5PermissionAccess == openingMode::ETP) {
+		throw std::invalid_argument("Enable WITH_ETP in compile definitions if you want to use HDF ETP opening mode.");
+	}
+	set_hdf_proxy_builder(&epc_partial_builder);
+#endif
+
 	this->hdf5PermissionAccess = hdf5PermissionAccess;
 	setFilePath(fileName);
 
@@ -426,22 +410,12 @@ void EpcDocument::close()
 		propertyKindMapper = nullptr;
 	}
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
-#else
-	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
-#endif
-	{
+	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it) {
 	  delete it->second;
 	}
 	resqmlAbstractObjectSet.clear();
 
-#if (defined(_WIN32) && _MSC_VER >= 1600)|| defined(__APPLE__)
-	for (std::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.begin(); it != witsmlAbstractObjectSet.end(); ++it)
-#else
-	for (std::tr1::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.begin(); it != witsmlAbstractObjectSet.end(); ++it)
-#endif
-	{
+	for (std::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.begin(); it != witsmlAbstractObjectSet.end(); ++it) {
 	  delete it->second;
 	}
 	witsmlAbstractObjectSet.clear();
@@ -748,12 +722,7 @@ void EpcDocument::serialize(bool useZip64)
 	warnings.clear();
 
 	package->openForWriting(filePath, useZip64);
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
-#else
-	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
-#endif
-	{
+	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it) {
 		if (!it->second->isPartial()) {
 			string str = it->second->serializeIntoString();
 
@@ -769,12 +738,7 @@ void EpcDocument::serialize(bool useZip64)
 	}
 
 	
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	for (std::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.begin(); it != witsmlAbstractObjectSet.end(); ++it)
-#else
-	for (std::tr1::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.begin(); it != witsmlAbstractObjectSet.end(); ++it)
-#endif
-	{
+	for (std::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.begin(); it != witsmlAbstractObjectSet.end(); ++it) {
 		string str = it->second->serializeIntoString();
 
 		epc::FilePart* fp = package->createPart(str, it->second->getPartNameInEpcDocument());
@@ -1143,22 +1107,13 @@ COMMON_NS::AbstractObject* EpcDocument::getResqmlAbstractObjectByUuid(const std:
 
 COMMON_NS::AbstractObject* EpcDocument::getResqmlAbstractObjectByUuid(const string & uuid) const
 {
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.find(uuid);
-#else
-	std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.find(uuid);
-#endif
 	return it == resqmlAbstractObjectSet.end() ? nullptr : it->second;
 }
 
 WITSML1_4_1_1_NS::AbstractObject* EpcDocument::getWitsmlAbstractObjectByUuid(const string & uuid) const
 {
-	
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	std::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.find(uuid);
-#else
-	std::tr1::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.find(uuid);
-#endif
 	return it == witsmlAbstractObjectSet.end() ? nullptr : it->second;
 }
 
@@ -1537,34 +1492,18 @@ string EpcDocument::getName() const
 
 void EpcDocument::updateAllRelationships()
 {
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
-#else
-	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
-#endif
-	{
+	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it) {
 		if (!it->second->isPartial()) {
 			it->second->resolveTargetRelationships(this);
 		}
 	}
 
-
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	for (std::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.begin(); it != witsmlAbstractObjectSet.end(); ++it)
-#else
-	for (std::tr1::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.begin(); it != witsmlAbstractObjectSet.end(); ++it)
-#endif
-	{
+	for (std::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.begin(); it != witsmlAbstractObjectSet.end(); ++it) {
 		it->second->resolveTargetRelationships(this);
 	}
 }
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-unordered_map< string, string > & EpcDocument::getExtendedCoreProperty()
-#else
-tr1::unordered_map< string, string > & EpcDocument::getExtendedCoreProperty()
-#endif
-{
+unordered_map< string, string > & EpcDocument::getExtendedCoreProperty() {
 	return package->getExtendedCoreProperty();
 }
 

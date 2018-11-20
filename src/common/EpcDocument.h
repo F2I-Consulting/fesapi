@@ -155,7 +155,7 @@ namespace COMMON_NS
 	*/
 	class DLL_IMPORT_OR_EXPORT EpcDocument
 	{
-	private :
+	private:
 
 		/**
 		* Necessary to avoid a dependency on GuidTools.h
@@ -169,9 +169,26 @@ namespace COMMON_NS
 		std::string deserializeProdmlHdf5File();
 	public:
 
-		enum openingMode { READ_ONLY = 0, READ_WRITE = 1, OVERWRITE = 2 , ETP = 3};
+		enum openingMode { READ_ONLY = 0, READ_WRITE = 1, OVERWRITE = 2, ETP = 3};
 
+		/** Default constructor
+		* It just initializes necessary variables. It does not open anything.
+		*/
+		EpcDocument();
+
+		/**
+		* Construct an instance, set the file name of the Epc Document and set the rights to access to the companion HDF5 file.
+		* @param fileName				The file path of the EPC document to read or write.
+		* @param hdf5PermissionAccess	The rights when opening the companion HDF5 file.
+		*/
 		EpcDocument(const std::string & fileName, const openingMode & hdf5PermissionAccess = READ_ONLY);
+
+		/**
+		* Construct an instance, set the file name of the Epc Document, set the rights to access to the companion HDF5 file and indicates where to look for property kind configuration.
+		* @param fileName							The file path of the EPC document to read or write.
+		* @param propertyKindMappingFilesDirectory	The directory where all property kind configuration files are stored.
+		* @param hdf5PermissionAccess				The rights when opening the companion HDF5 file.
+		*/
 		EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, const openingMode & hdf5PermissionAccess = READ_ONLY);
 
 		/**
@@ -188,6 +205,7 @@ namespace COMMON_NS
 		// A function pointer which allows to build a partial hdf proxy
 		typedef COMMON_NS::AbstractHdfProxy* (PartialHdfProxyBuilder)(soap* soapContext, const std::string & guid, const std::string & title);
 
+
 		// Allows a fesapi user to set a different builder of Hdf Proxy than the default one in writing mode of an epc document
 		// This is especially useful when the fesapi users wants to use its own builder for example.
 		void set_hdf_proxy_builder(HdfProxyBuilder builder);
@@ -201,7 +219,7 @@ namespace COMMON_NS
 		* Don't forget to call close() before to destroy this object.
 		*/
 		void open(const std::string & fileName, const openingMode & hdf5PermissionAccess = READ_ONLY);
-	
+
 		/**
 		 * Free all ressources contained in this package.
 		 */
@@ -316,11 +334,7 @@ namespace COMMON_NS
 		/**
 		* Get all the resqml gsoap wrappers from the epc document
 		*/
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		const std::unordered_map< std::string, COMMON_NS::AbstractObject* > & getResqmlAbstractObjectSet() const;
-#else
-		const std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* > & getResqmlAbstractObjectSet() const;
-#endif
 
 		/**
 		* Get all UUIDs of the objects contained in the EPC document
@@ -406,7 +420,7 @@ namespace COMMON_NS
 		*/
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getFaultTriangulatedSetRepSet() const;
 
-        /**
+		/**
 		* Get all the individual representations of fractures which are associated to a triangulation set topology
 		*/
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getFractureTriangulatedSetRepSet() const;
@@ -432,18 +446,18 @@ namespace COMMON_NS
 		* Get all the individual representations of horizons which are associated to grid 2d set topology
 		*/
 		std::vector<RESQML2_0_1_NS::Grid2dRepresentation*> getHorizonGrid2dRepSet() const;
-        
+
 		/**
 		* Get all the single polyline representations of all the horizons
 		*/
 		std::vector<RESQML2_0_1_NS::PolylineRepresentation*> getHorizonPolylineRepSet() const;
-        
+
 		/**
 		* Get all the single polyline representations of all the horizons
 		*/
 		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getHorizonPolylineSetRepSet() const;
-        
-        /**
+
+		/**
 		* Get all the triangulated set representations of all the horizons
 		*/
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getHorizonTriangulatedSetRepSet() const;
@@ -586,11 +600,7 @@ namespace COMMON_NS
 		*/
 		void updateAllRelationships();
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		std::unordered_map< std::string, std::string > & getExtendedCoreProperty();
-#else
-		std::tr1::unordered_map< std::string, std::string > & getExtendedCoreProperty();
-#endif
 
 		void setExtendedCoreProperty(const std::string & key, const std::string & value);
 
@@ -648,7 +658,7 @@ namespace COMMON_NS
 			const double & arealRotation,
 			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const unsigned long & projectedEpsgCode,
 			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const unsigned int & verticalEpsgCode, const bool & isUpOriented);
-		
+
 		/**
 		* Creates a local depth 3d CRS which is fully unknown.
 		* @param guid					The guid to set to the local 3d crs. If empty then a new guid will be generated.
@@ -708,7 +718,7 @@ namespace COMMON_NS
 			const double & arealRotation,
 			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const std::string & projectedUnknownReason,
 			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const unsigned int & verticalEpsgCode, const bool & isUpOriented);
-	
+
 		/**
 		* Creates a local depth 3d CRS which is fully identified by means of EPSG code.
 		* @param guid				The guid to set to the local 3d crs. If empty then a new guid will be generated.
@@ -837,8 +847,8 @@ namespace COMMON_NS
 
 		RESQML2_0_1_NS::OrganizationFeature* createStratigraphicModel(const std::string & guid, const std::string & title);
 
-        RESQML2_0_1_NS::OrganizationFeature* createEarthModel(const std::string & guid, const std::string & title);
-		
+		RESQML2_0_1_NS::OrganizationFeature* createEarthModel(const std::string & guid, const std::string & title);
+
 		RESQML2_0_1_NS::FluidBoundaryFeature* createFluidBoundaryFeature(const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__FluidContact & fluidContact);
 
 		//************************************
@@ -846,7 +856,7 @@ namespace COMMON_NS
 		//************************************
 
 		RESQML2_0_1_NS::GenericFeatureInterpretation* createGenericFeatureInterpretation(RESQML2_NS::AbstractFeature * feature, const std::string & guid, const std::string & title);
-		
+
 		RESQML2_0_1_NS::BoundaryFeatureInterpretation* createBoundaryFeatureInterpretation(RESQML2_0_1_NS::BoundaryFeature * feature, const std::string & guid, const std::string & title);
 
 		RESQML2_0_1_NS::HorizonInterpretation* createPartialHorizonInterpretation(const std::string & guid, const std::string & title);
@@ -858,13 +868,13 @@ namespace COMMON_NS
 		RESQML2_0_1_NS::FaultInterpretation* createFaultInterpretation(RESQML2_0_1_NS::TectonicBoundaryFeature * fault, const std::string & guid, const std::string & title);
 
 		RESQML2_0_1_NS::WellboreInterpretation* createWellboreInterpretation(RESQML2_0_1_NS::WellboreFeature * wellbore, const std::string & guid, const std::string & title, bool isDrilled);
-                
+
 		RESQML2_0_1_NS::EarthModelInterpretation* createEarthModelInterpretation(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
-		
+
 		RESQML2_0_1_NS::StructuralOrganizationInterpretation* createStructuralOrganizationInterpretationInAge(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
 		RESQML2_0_1_NS::StructuralOrganizationInterpretation* createStructuralOrganizationInterpretationInApparentDepth(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
 		RESQML2_0_1_NS::StructuralOrganizationInterpretation* createStructuralOrganizationInterpretationInMeasuredDepth(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
-		
+
 		RESQML2_0_1_NS::GeobodyInterpretation* createGeobodyInterpretation(RESQML2_0_1_NS::GeobodyFeature * geobody, const std::string & guid, const std::string & title);
 
 		RESQML2_0_1_NS::StratigraphicUnitInterpretation* createStratigraphicUnitInterpretation(RESQML2_0_1_NS::StratigraphicUnitFeature * stratiUnitFeature, const std::string & guid, const std::string & title);
@@ -921,26 +931,26 @@ namespace COMMON_NS
 			const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
 
 		RESQML2_NS::RepresentationSetRepresentation* createRepresentationSetRepresentation(
-                RESQML2_0_1_NS::AbstractOrganizationInterpretation* interp,
-                const std::string & guid,
-				const std::string & title);
+			RESQML2_0_1_NS::AbstractOrganizationInterpretation* interp,
+			const std::string & guid,
+			const std::string & title);
 
 		RESQML2_NS::RepresentationSetRepresentation* createRepresentationSetRepresentation(
 			const std::string & guid,
 			const std::string & title);
 
 		RESQML2_NS::RepresentationSetRepresentation* createPartialRepresentationSetRepresentation(const std::string & guid, const std::string & title);
-                
-        RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation* createNonSealedSurfaceFrameworkRepresentation(
-                RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp, 
-                const std::string & guid, 
-                const std::string & title,
-                const bool & isSealed);
 
-        RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* createSealedSurfaceFrameworkRepresentation(
-                RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp,
-                const std::string & guid,
-                const std::string & title);
+		RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation* createNonSealedSurfaceFrameworkRepresentation(
+			RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp,
+			const std::string & guid,
+			const std::string & title,
+			const bool & isSealed);
+
+		RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* createSealedSurfaceFrameworkRepresentation(
+			RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp,
+			const std::string & guid,
+			const std::string & title);
 
 		RESQML2_0_1_NS::AbstractIjkGridRepresentation* createPartialIjkGridRepresentation(const std::string & guid, const std::string & title);
 
@@ -987,17 +997,17 @@ namespace COMMON_NS
 		RESQML2_NS::SubRepresentation* createPartialSubRepresentation(const std::string & guid, const std::string & title);
 
 		RESQML2_NS::SubRepresentation* createSubRepresentation(
-                const std::string & guid, const std::string & title);
+			const std::string & guid, const std::string & title);
 
 		RESQML2_NS::SubRepresentation* createSubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-                const std::string & guid, const std::string & title);
+			const std::string & guid, const std::string & title);
 
 		RESQML2_NS::GridConnectionSetRepresentation* createPartialGridConnectionSetRepresentation(const std::string & guid, const std::string & title);
 
 		RESQML2_NS::GridConnectionSetRepresentation* createGridConnectionSetRepresentation(const std::string & guid, const std::string & title);
 
 		RESQML2_NS::GridConnectionSetRepresentation* createGridConnectionSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-                const std::string & guid, const std::string & title);
+			const std::string & guid, const std::string & title);
 
 		//************************************
 		//************* PROPERTIES ***********
@@ -1028,7 +1038,7 @@ namespace COMMON_NS
 
 		RESQML2_0_1_NS::CommentProperty* createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropType);
-	
+
 		RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind);
 
@@ -1048,13 +1058,13 @@ namespace COMMON_NS
 		RESQML2_0_1_NS::ContinuousPropertySeries* createContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, RESQML2_NS::PropertyKind * localPropType,
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
-	
+
 		RESQML2_0_1_NS::DiscreteProperty* createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind);
 
 		RESQML2_0_1_NS::DiscreteProperty* createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropType);
-	
+
 		RESQML2_0_1_NS::DiscretePropertySeries* createDiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind,
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
@@ -1066,7 +1076,7 @@ namespace COMMON_NS
 		RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
 			RESQML2_0_1_NS::StringTableLookup* strLookup, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind);
-	
+
 		RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
 			RESQML2_0_1_NS::StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropType);
@@ -1086,13 +1096,13 @@ namespace COMMON_NS
 		//************************************
 
 		RESQML2_NS::ActivityTemplate* createActivityTemplate(const std::string & guid, const std::string & title);
-		
+
 		RESQML2_NS::Activity* createActivity(RESQML2_NS::ActivityTemplate* activityTemplate, const std::string & guid, const std::string & title);
-		
+
 		//************************************
 		//*************** WITSML *************
 		//************************************
-		
+
 		/**
 		* Get all the witsml trajectories contained into the EPC document
 		*/
@@ -1206,16 +1216,10 @@ namespace COMMON_NS
 		openingMode hdf5PermissionAccess;
 
 		epc::Package* package;
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+
 		std::unordered_map< std::string, COMMON_NS::AbstractObject* > resqmlAbstractObjectSet;
-#else
-		std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* > resqmlAbstractObjectSet;
-#endif
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		std::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* > witsmlAbstractObjectSet;
-#else
-		std::tr1::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* > witsmlAbstractObjectSet;
-#endif
+
 		soap* s;
 		std::string filePath;
 
@@ -1254,6 +1258,3 @@ namespace COMMON_NS
 		PartialHdfProxyBuilder* make_partial_hdf_proxy;  /// the builder for partial HDF proxy
 	};
 }
-
-
-

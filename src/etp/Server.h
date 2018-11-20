@@ -122,6 +122,11 @@ namespace ETP_NS
 	    Server() {}
 
 		void listen(const std::string & host, unsigned short port, int threadCount) {
+			if (threadCount < 1) {
+				std::cerr << "You need to run your server on at least one thread." << std::endl;
+				return;
+			}
+
 	    	// The io_context is required for all I/O
 			boost::asio::io_context ioc{threadCount};
 
@@ -136,9 +141,11 @@ namespace ETP_NS
 				v.emplace_back(
 				[&ioc]
 				{
-					ioc.run();
+					auto handlersExecuted = ioc.run();
+					std::cout << "The thread has executed " << handlersExecuted << " handlers." << std::endl;
 				});
-			ioc.run();
+			auto handlersExecuted = ioc.run();
+			std::cout << handlersExecuted << " handlers have been executed." << std::endl;
 		}
 	};
 }

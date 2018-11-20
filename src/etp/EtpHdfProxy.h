@@ -20,111 +20,32 @@ under the License.
 
 #include "common/AbstractHdfProxy.h"
 
+#include "etp/DataArrayBlockingSession.h"
+
 namespace ETP_NS
 {
 	class DLL_IMPORT_OR_EXPORT EtpHdfProxy : public COMMON_NS::AbstractHdfProxy
 	{
-	protected:
-		/**
-		* Read an array Nd of float values stored in a specific dataset.
-		* @param datasetName	The absolute dataset name where to read the values
-		* @param values 		The values must be pre-allocated.
-		* @param datatype 		The hdf datatype of the values to read.
-		* 						If the values are not stored in this particular datatype, then hdf library will try to do a conversion.
-		*/
-		void readArrayNdOfValues(const std::string & datasetName, void* values, const int & datatype);
+	private:
+		std::shared_ptr<DataArrayBlockingSession> session;
+		unsigned int compressionLevel;
 
-		/**
-		* Find the array associated with @p datasetName and read a portion of it.
-		* @param datasetName                    The name of the array (potentially with multi dimensions).
-		* @param values                         1d array output of double values ordered firstly by fastest direction.
-		* @param numValuesInEachDimension       Number of values in each dimension of the array to read. They are ordered from fastest index to slowest index.
-		* @param offsetValuesInEachDimension    Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
-		* @param numDimensions                  The number of the dimensions of the array to read.
-		* @param datatype 		The hdf datatype of the values to read.
-		* 						If the values are not stored in this particular datatype, then hdf library will try to do a conversion.
-		*/
-		void readArrayNdOfValues(
-			const std::string & datasetName,
-			void* values,
-			const unsigned long long * numValuesInEachDimension,
-			const unsigned long long * offsetInEachDimension,
-			const unsigned int & numDimensions,
-			const int & datatype);
-
-		/**
-		* Find the array associated with @p datasetName and read from it.
-		* @param datasetName					The name of the array (potentially with multi dimensions).
-		* @param values							1d array output of values ordered firstly by fastest direction.
-		* @param blockCountPerDimension			Number of blocks to select from the dataspace, in each dimension. They are ordered from fastest index to slowest index.
-		* @param offsetInEachDimension			Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
-		* @param strideInEachDimension			Number of elements to move from one block to another in each dimension. They are ordered from fastest index to slowest index.
-		* @param blockSizeInEachDimension		Size of selected blocks in each dimension. They are ordered from fastest index to slowest index.
-		* @param numDimensions					The number of the dimensions of the array to read.
-		* @param datatype 						The hdf datatype of the values to read.
-		* 										If the values are not stored in this particular datatype, then hdf library will try to do a conversion.
-		*/
-		void readArrayNdOfValues(
-			const std::string & datasetName,
-			void* values,
-			const unsigned long long * blockCountPerDimension,
-			const unsigned long long * offsetInEachDimension,
-			const unsigned long long * strideInEachDimension,
-			const unsigned long long * blockSizeInEachDimension,
-			const unsigned int & numDimensions,
-			const int & datatype);
-
-		/**
-		* Considering a given dataset, this method selects an hyperslab region to add to an existing selected region or to add to a new selected region.
-		* The dataset is not closed within this method.
-		* @param datasetName					The name of the array (potentially with multi dimensions).
-		* @param blockCountPerDimension			Number of blocks to select from the dataspace, in each dimension. They are ordered from fastest index to slowest index.
-		* @param offsetInEachDimension			Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
-		* @param strideInEachDimension			Number of elements to move from one block to another in each dimension. They are ordered from fastest index to slowest index.
-		* @param blockSizeInEachDimension		Size of selected blocks in each dimension. They are ordered from fastest index to slowest index.
-		* @param numDimensions					The number of the dimensions of the array to select.
-		* @param newSelection					true if creating a new selected region else false.
-		* @param dataset						Input dataset ID if adding a new hyperslab region to an existing selected region, output dataset ID if creating a new selected region.
-		* @param filespace						Input selected region ID if adding a new hyperslab region to an existing selected region, output selected region ID if creating a new selected region.
-		*/
-		void selectArrayNdOfValues(
-			const std::string & datasetName,
-			const unsigned long long * blockCountPerDimension,
-			const unsigned long long * offsetInEachDimension,
-			const unsigned long long * strideInEachDimension,
-			const unsigned long long * blockSizeInEachDimension,
-			const unsigned int & numDimensions,
-			bool newSelection,
-			int & dataset,
-			int & filespace);
-
-		/**
-		* Considering a given dataset, read the double values corresponding to an existing selected region.
-		* @param dataset		ID of the dataset to read from.
-		* @param filespace		ID of the selected region.
-		* @param values			1d array output of double values ordered firstly by fastest direction.
-		* @param slabSize		Number of values to read.
-		* @param datatype 		The hdf datatype of the values to read.
-		* 						If the values are not stored in this particular datatype, then hdf library will try to do a conversion.
-		*/
-		void readArrayNdOfValues(
-			int dataset,
-			int filespace,
-			void* values,
-			unsigned long long slabSize,
-			const int & datatype);
+		std::string getUri() const;
 
 	public:
 		/**
 		* Only for partial transfer
 		*/
-		EtpHdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractHdfProxy(partialObject) {}
+		EtpHdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject);
 
 		/**
 		* Destructor.
 		* Close the hdf file.
 		*/
-		~EtpHdfProxy() {close();}
+		~EtpHdfProxy() {}
+
+		std::shared_ptr<DataArrayBlockingSession> getSession() { return session; }
+		void setSession(boost::asio::io_context& ioc, const std::string & host, const std::string & port, const std::string & target);
 
 		/**
 		* Open the file for reading and writing.
@@ -133,14 +54,14 @@ namespace ETP_NS
 		void open();
 
 		/**
-		* Check if the Hdf file is open or not
+		* It is opened if the ETP session is opened
 		*/
-		bool isOpened() const {return hdfFile != -1;}
+		bool isOpened() const { return session != nullptr && !session->isClosed();  }
 
 		/**
 		* Close the file
 		*/
-		void close();
+		void close() { session->close(); }
 
 		/*
 		* Get the used (native) datatype in a dataset
@@ -197,7 +118,7 @@ namespace ETP_NS
 		* Set the new compression level which will be used for all data to be written
 		* @param compressionLevel				Lower compression levels are faster but result in less compression. Range [0..9] is allowed.
 		*/
-		void setCompressionLevel(const unsigned int & newCompressionLevel) {if (newCompressionLevel > 9) compressionLevel = 9; else compressionLevel = newCompressionLevel;}
+		void setCompressionLevel(const unsigned int & newCompressionLevel) { if (newCompressionLevel > 9) compressionLevel = 9; else compressionLevel = newCompressionLevel; }
 
 		void writeArrayNdOfFloatValues(const std::string & groupName,
 			const std::string & name,
@@ -428,6 +349,17 @@ namespace ETP_NS
 			const unsigned long long * blockSizeInEachDimension,
 			const unsigned int & numDimensions);
 
+		void selectArrayNdOfValues(
+			const std::string & datasetName,
+			const unsigned long long * blockCountPerDimension,
+			const unsigned long long * offsetInEachDimension,
+			const unsigned long long * strideInEachDimension,
+			const unsigned long long * blockSizeInEachDimension,
+			const unsigned int & numDimensions,
+			bool newSelection,
+			int & dataset,
+			int & filespace);
+
 		/**
 		* Considering a given dataset, read the double values corresponding to an existing selected region.
 		* @param dataset		ID of the dataset to read from.
@@ -572,23 +504,5 @@ namespace ETP_NS
 		* Check wether an absolute path exists in the hdf file or not.
 		*/
 		bool exist(const std::string & absolutePathInHdfFile) const;
-
-	protected:
-
-		/**
-		* Allow to force a root group for all newly created groups in inherited hdf proxies.
-		*/
-		virtual int openOrCreateRootGroup();
-
-		/**
-		* Check if an hdf group named as groupName exists in the root group.
-		* If it exists, it returns the latter. If not, it creates this group and then returns it.
-		* Please close the group after having called and used this group.
-		*/
-		int openOrCreateGroupInRootGroup(const std::string & groupName);
-
-		int hdfFile;
-
-		unsigned int compressionLevel;
 	};
 }

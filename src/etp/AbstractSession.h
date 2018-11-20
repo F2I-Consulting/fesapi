@@ -65,7 +65,7 @@ namespace ETP_NS
 	{
 	protected:
 	    websocket::stream<tcp::socket> ws;
-	    boost::beast::flat_buffer receivedBuffer;
+		boost::beast::flat_buffer receivedBuffer;
 	    long long messageId = 1;
 	    std::vector<std::shared_ptr<ETP_NS::ProtocolHandlers>> protocolHandlers;
 	    bool closed;
@@ -121,12 +121,16 @@ namespace ETP_NS
 			avro::encode(*e, mb);
 			sendingQueue.push_back(*avro::snapshot(*out).get());
 
-			return mh.m_correlationId;
+			return mh.m_messageId;
 		}
 
 	public:
 
-		virtual ~AbstractSession() {	}
+		virtual ~AbstractSession() {}
+
+		boost::asio::io_context& getIoContext() {
+			return ws.get_executor().context();
+		}
 
 		void flushReceivingBuffer() {
 			receivedBuffer.consume(receivedBuffer.size());
@@ -209,6 +213,15 @@ namespace ETP_NS
 			return messageId;
 		}
 
+		void sendCloseFrame() {
+			std::vector<uint8_t> empty;
+			sendingQueue.push_back(empty);
+
+			if (sendingQueue.size() == 1) {
+				do_write();
+			}
+		}
+
 		/**
 		 * Close the web socket (without sending any ETP message)
 		 */
@@ -246,11 +259,12 @@ namespace ETP_NS
 #ifndef NDEBUG
 			std::cout << "!!! CLOSED !!!" << std::endl;
 #endif
-
 			closed = true;
 		}
 
 		bool validateUri(const std::string & uri, bool sendException = false);
 		bool validateDataObjectUri(const std::string & uri, bool sendException = false);
+
+		bool isClosed() const { return closed;  }
 	};
 }

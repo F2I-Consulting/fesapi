@@ -162,8 +162,7 @@ void StratigraphicColumnRankInterpretation::pushBackStratigraphicBinaryContact(S
     contact->Subject->SecondaryQualifier = static_cast<resqml2__ContactMode*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml2__ContactMode)));
     *(contact->Subject->SecondaryQualifier) = subjectContactMode;
 
-	if (partOf)
-	{
+	if (partOf != nullptr) {
 		setHorizonOfLastContact(partOf);
 	}
 }
@@ -176,28 +175,39 @@ void StratigraphicColumnRankInterpretation::resolveTargetRelationships(COMMON_NS
 
 	_resqml2__StratigraphicColumnRankInterpretation* interp = static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1); 
 
-	for (unsigned int i = 0; i < interp->StratigraphicUnits.size(); i++)
-	{
-		if (interp->StratigraphicUnits[i]->Unit)
-			pushBackStratiUnitInterpretation(static_cast<StratigraphicUnitInterpretation*>(epcDoc->getResqmlAbstractObjectByUuid(interp->StratigraphicUnits[i]->Unit->UUID)));
+	for (const auto & stratiUnit : interp->StratigraphicUnits) {
+		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = stratiUnit->Unit;
+		if (dor != nullptr) {
+			StratigraphicUnitInterpretation* stratiUnitInterp = getEpcDocument()->getResqmlAbstractObjectByUuid<StratigraphicUnitInterpretation>(dor->UUID);
+			if (stratiUnitInterp == nullptr) { // partial transfer
+				getEpcDocument()->createPartial(dor);
+				stratiUnitInterp = getEpcDocument()->getResqmlAbstractObjectByUuid<StratigraphicUnitInterpretation>(dor->UUID);
+			}
+			if (stratiUnitInterp == nullptr) {
+				throw invalid_argument("The DOR looks invalid.");
+			}
+			pushBackStratiUnitInterpretation(stratiUnitInterp);
+		}
 		else
-			throw logic_error("Not yet implemented");
+			throw logic_error("Not implemented yet");
 	}
 
-	for (unsigned int i = 0; i < interp->ContactInterpretation.size(); i++)
-	{
-		if (interp->ContactInterpretation[i]->PartOf) {
-			HorizonInterpretation* horizonInterp = epcDoc->getResqmlAbstractObjectByUuid<HorizonInterpretation>(interp->ContactInterpretation[i]->PartOf->UUID);
+	for (const auto & contactInterp : interp->ContactInterpretation) {
+		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = contactInterp->PartOf;
+		if (dor != nullptr) {
+			HorizonInterpretation* horizonInterp = getEpcDocument()->getResqmlAbstractObjectByUuid<HorizonInterpretation>(dor->UUID);
 
-			if (horizonInterp == nullptr) {
-				getEpcDocument()->addWarning("The referenced horizon interp \"" + interp->ContactInterpretation[i]->PartOf->Title + "\" (" + interp->ContactInterpretation[i]->PartOf->UUID + ") is missing.");
-				horizonInterp = epcDoc->createPartialHorizonInterpretation(interp->ContactInterpretation[i]->PartOf->UUID, interp->ContactInterpretation[i]->PartOf->Title);
+			if (horizonInterp == nullptr) { // partial transfer
+				getEpcDocument()->createPartial(dor);
+				horizonInterp = getEpcDocument()->getResqmlAbstractObjectByUuid<HorizonInterpretation>(dor->UUID);
 			}
-
+			if (horizonInterp == nullptr) {
+				throw invalid_argument("The DOR looks invalid.");
+			}
 			setHorizonOfLastContact(horizonInterp);
 		}
 		else
-			throw logic_error("Not yet implemented");
+			throw logic_error("Not implemented yet");
 	}
 
 	updateXml = true;

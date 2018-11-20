@@ -28,16 +28,10 @@ MyOwnEtpClientSession::MyOwnEtpClientSession(boost::asio::io_context& ioc,
 		const std::string & host, const std::string & port, const std::string & target,
 		const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 		const std::vector<std::string>& supportedObjects)
-	: ETP_NS::ClientSession(ioc, host, port, target, requestedProtocols, supportedObjects),
-	  epcDoc("../../fakeForEtpClient.epc", COMMON_NS::EpcDocument::ETP)
+	: ETP_NS::ClientSession(ioc, host, port, target, requestedProtocols, supportedObjects)
 {
 	setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(this));
 	setDirectedDiscoveryProtocolHandlers(std::make_shared<MyOwnDirectedDiscoveryProtocolHandlers>(this));
 	setStoreProtocolHandlers(std::make_shared<MyOwnStoreProtocolHandlers>(this));
 	setDataArrayProtocolHandlers(std::make_shared<ETP_NS::DataArrayHandlers>(this));
-}
-
-MyOwnEtpClientSession::~MyOwnEtpClientSession()
-{
-	epcDoc.close();
 }

@@ -38,15 +38,20 @@ namespace ETP_NS
 		void run();
 
 		void do_write() {
-			ws.async_write(
-				boost::asio::buffer(sendingQueue[0]),
-				boost::asio::bind_executor(
-					 strand,
-					 std::bind(
-							 &AbstractSession::on_write,
-							 shared_from_this(),
-							 std::placeholders::_1,
-							 std::placeholders::_2)));
+			if (!sendingQueue[0].empty()) {
+				ws.async_write(
+					boost::asio::buffer(sendingQueue[0]),
+					boost::asio::bind_executor(
+						strand,
+						std::bind(
+							&AbstractSession::on_write,
+							shared_from_this(),
+							std::placeholders::_1,
+							std::placeholders::_2)));
+			}
+			else {
+				do_close();
+			}
 		}
 
 		 void do_close() {

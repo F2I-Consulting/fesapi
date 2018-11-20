@@ -37,6 +37,7 @@ IF (WIN32)
 ENDIF (WIN32)
 
 add_compile_definitions (BOOST_ALL_NO_LIB)
+add_compile_definitions (WITH_ETP)
 	
 ADD_EXECUTABLE (etpClientExample ${ALL_CPP_FILES} ${ALL_H_FILES})
 ADD_DEPENDENCIES (etpClientExample ${CPP_LIBRARY_NAME})

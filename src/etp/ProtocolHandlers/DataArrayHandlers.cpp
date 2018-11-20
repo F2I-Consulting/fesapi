@@ -147,7 +147,7 @@ void DataArrayHandlers::on_DataArray(Energistics::Etp::v12::Protocol::DataArray:
 			std::cout << "long value " << i << " == " << values[i] << std::endl;
 		}
 	}
-	else if (da.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayTypes::arrayOfLong) {
+	else if (da.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayTypes::arrayOfFloat) {
 		Energistics::Etp::v12::Datatypes::ArrayOfFloat avroArray  = da.m_data.m_item.get_ArrayOfFloat();
 		auto values = avroArray.m_values;
 		for (auto i = 0; i < values.size() && i < 20; ++i) {

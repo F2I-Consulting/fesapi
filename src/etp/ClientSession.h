@@ -20,6 +20,8 @@ under the License.
 
 #include "etp/AbstractSession.h"
 
+#include "etp/DataArrayBlockingSession.h"
+
 namespace ETP_NS
 {
 	class DLL_IMPORT_OR_EXPORT ClientSession : public ETP_NS::AbstractSession
@@ -47,16 +49,29 @@ namespace ETP_NS
 
 		virtual ~ClientSession() {}
 
+		std::string getHost() { return host; }
+		std::string getPort() { return port; }
+		std::string getTarget() { return target; }
+
 		void run();
 
+		std::shared_ptr<DataArrayBlockingSession> createDataArrayBlockingSession() {
+			return std::make_shared<DataArrayBlockingSession>(ws.get_executor().context(), host, port, target);
+		}
+
 		void do_write() {
-			ws.async_write(
+			if (!sendingQueue[0].empty()) {
+				ws.async_write(
 					boost::asio::buffer(sendingQueue[0]),
 					std::bind(
-							&AbstractSession::on_write,
-							shared_from_this(),
-							std::placeholders::_1,
-							std::placeholders::_2));
+						&AbstractSession::on_write,
+						shared_from_this(),
+						std::placeholders::_1,
+						std::placeholders::_2));
+			}
+			else {
+				do_close();
+			}
 		}
 
 		void do_close() {
@@ -72,6 +87,5 @@ namespace ETP_NS
 		void on_resolve(boost::system::error_code ec, tcp::resolver::results_type results);
 		void on_connect(boost::system::error_code ec);
 		void on_handshake(boost::system::error_code ec);
-		void on_close(boost::system::error_code ec);
 	};
 }

@@ -29,10 +29,10 @@ public:
 	typedef COMMON_NS::AbstractHdfProxy* (HdfProxyBuilderFromGsoapProxy2_0_1)(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
 
 	/**
-	 * @param host		The IP address on which the server is listening for etp (websocket) connection
-	 * @param port		The port on which the server is listening for etp (websocket) connection
-	 * @param target	usually "/" but a server can decide to serve etp on a particular target
-	 * @param requestedProtocols An array of protocol IDs that the client expects to communicate on for this session. If the server does not support all of the protocols, the client may or may not continue with the protocols that are supported.
+	 * @param host					The IP address on which the server is listening for etp (websocket) connection
+	 * @param port					The port on which the server is listening for etp (websocket) connection
+	 * @param target				Usually "/" but a server can decide to serve etp on a particular target
+	 * @param requestedProtocols	An array of protocol IDs that the client expects to communicate on for this session. If the server does not support all of the protocols, the client may or may not continue with the protocols that are supported.
 	 * @param supportedObjects		A list of the Data Objects supported by the client. This list MUST be empty if the client is a customer. This field MUST be supplied if the client is a Store and is requesting a customer role for the server.
 	 */
 	MyOwnEtpClientSession(boost::asio::io_context& ioc,
@@ -40,7 +40,7 @@ public:
 			const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 			const std::vector<std::string>& supportedObjects);
 
-	~MyOwnEtpClientSession();
+	~MyOwnEtpClientSession() {}
 
 	COMMON_NS::EpcDocument epcDoc;
 };

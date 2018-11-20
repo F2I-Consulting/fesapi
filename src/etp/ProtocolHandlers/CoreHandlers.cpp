@@ -75,7 +75,7 @@ void CoreHandlers::on_OpenSession(const Energistics::Etp::v12::Protocol::Core::O
 void CoreHandlers::on_CloseSession(const Energistics::Etp::v12::Protocol::Core::CloseSession & cs)
 {
 	std::cout << "Close session after received request." << std::endl;
-	session->do_close();
+	session->sendCloseFrame();
 }
 
 void CoreHandlers::on_ProtocolException(const Energistics::Etp::v12::Protocol::Core::ProtocolException & pe)

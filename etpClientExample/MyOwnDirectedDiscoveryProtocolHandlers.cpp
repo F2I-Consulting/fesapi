@@ -38,9 +38,12 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energ
 
 
 	if (std::find(getObjectWhenDiscovered.begin(), getObjectWhenDiscovered.end(), correlationId) != getObjectWhenDiscovered.end()) {
-		std::cout << "GET OBJECT -----------------------------------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
-		Energistics::Etp::v12::Protocol::Store::GetObject_ getO;
-		getO.m_uri = graphResource.m_uri;
-		session->send(getO);
+		auto resqmlObj = static_cast<MyOwnEtpClientSession*>(session)->epcDoc.getResqmlAbstractObjectByUuid(graphResource.m_uuid);
+		if (resqmlObj == nullptr || resqmlObj->isPartial()) {
+			std::cout << "GET OBJECT -----------------------------------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
+			Energistics::Etp::v12::Protocol::Store::GetObject_ getO;
+			getO.m_uri = graphResource.m_uri;
+			session->send(getO);
+		}
 	}
 }

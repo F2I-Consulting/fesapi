@@ -49,11 +49,13 @@ void AbstractSession::on_read(boost::system::error_code ec, std::size_t bytes_tr
 	if(ec == websocket::error::closed) {
 		std::cout << "The other endpoint closed connection." << std::endl;
 		closed = true;
+		flushReceivingBuffer();
 		return;
 	}
 
 	if(ec) {
-		std::cerr << "on_read : " << ec.message() << std::endl;
+		std::cerr << "on_read : error code number " << ec.value() << " -> " << ec.message() << std::endl;
+		return;
 	}
 
 	if (bytes_transferred == 0) return;
