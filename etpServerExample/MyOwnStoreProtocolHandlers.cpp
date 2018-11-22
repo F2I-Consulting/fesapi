@@ -33,8 +33,7 @@ namespace {
 
 		Energistics::Etp::v12::Datatypes::Object::Resource result;
 
-		result.m_resourceType = "DataObject";
-		result.m_channelSubscribable = false;
+		result.m_resourceType = Energistics::Etp::v12::Datatypes::Object::ResourceKind::DataObject;
 		result.m_objectNotifiable = false;
 		result.m_childCount.set_null();
 		result.m_contentType = "application/x-resqml+xml;version=2.0;type=obj_" + obj->getXmlTag();
@@ -43,7 +42,6 @@ namespace {
 		if (etpNs[etpNs.size()-1] != '0') etpNs += '0';
 		// END TODO
 		result.m_uri = "eml://" + etpNs + "/" + obj->getXmlTag() + "(" + obj->getUuid() + ")";
-		result.m_uuid = obj->getUuid();
 		result.m_name = obj->getTitle();
 		result.m_lastChanged.set_long(obj->getLastUpdate() == -1 ? obj->getCreation() : obj->getLastUpdate());
 

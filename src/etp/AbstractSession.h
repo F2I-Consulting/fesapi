@@ -144,7 +144,7 @@ namespace ETP_NS
 	    		protocolHandlers.push_back(coreHandlers);
 	    	}
 	    	else {
-	    		protocolHandlers[Energistics::Etp::v12::Datatypes::Protocols::Core] = coreHandlers;
+	    		protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::Core] = coreHandlers;
 	    	}
 	    }
 
@@ -152,25 +152,25 @@ namespace ETP_NS
 		 * Set the Discovery protocol handlers
 		 */
 		void setDiscoveryProtocolHandlers(std::shared_ptr<DiscoveryHandlers> discoveryHandlers) {
-			while (protocolHandlers.size() < Energistics::Etp::v12::Datatypes::Protocols::Discovery + 1) {
+			while (protocolHandlers.size() < Energistics::Etp::v12::Datatypes::Protocol::Discovery + 1) {
 				protocolHandlers.push_back(nullptr);
 			}
-			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocols::Discovery] = discoveryHandlers;
+			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::Discovery] = discoveryHandlers;
 		}
 
 		/**
 		 * Set the Directed Discovery protocol handlers
 		 */
 		void setDirectedDiscoveryProtocolHandlers(std::shared_ptr<DirectedDiscoveryHandlers> directedDiscoveryHandlers) {
-			while (protocolHandlers.size() < Energistics::Etp::v12::Datatypes::Protocols::DirectedDiscovery + 1) {
+			while (protocolHandlers.size() < Energistics::Etp::v12::Datatypes::Protocol::DirectedDiscovery + 1) {
 				protocolHandlers.push_back(nullptr);
 			}
-			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocols::DirectedDiscovery] = directedDiscoveryHandlers;
+			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::DirectedDiscovery] = directedDiscoveryHandlers;
 		}
 
 		std::shared_ptr<ETP_NS::ProtocolHandlers> getDirectedDiscoveryProtocolHandlers() {
-			return protocolHandlers.size() > Energistics::Etp::v12::Datatypes::Protocols::DirectedDiscovery ?
-					protocolHandlers[Energistics::Etp::v12::Datatypes::Protocols::DirectedDiscovery] :
+			return protocolHandlers.size() > Energistics::Etp::v12::Datatypes::Protocol::DirectedDiscovery ?
+					protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::DirectedDiscovery] :
 					nullptr;
 		}
 
@@ -178,20 +178,20 @@ namespace ETP_NS
 		 * Set the Store protocol handlers
 		 */
 		void setStoreProtocolHandlers(std::shared_ptr<StoreHandlers> storeHandlers) {
-			while (protocolHandlers.size() < Energistics::Etp::v12::Datatypes::Protocols::Store + 1) {
+			while (protocolHandlers.size() < Energistics::Etp::v12::Datatypes::Protocol::Store + 1) {
 				protocolHandlers.push_back(nullptr);
 			}
-			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocols::Store] = storeHandlers;
+			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::Store] = storeHandlers;
 		}
 
 		/**
 		 * Set the Data Array protocol handlers
 		 */
 		void setDataArrayProtocolHandlers(std::shared_ptr<DataArrayHandlers> dataArrayHandlers) {
-			while (protocolHandlers.size() < Energistics::Etp::v12::Datatypes::Protocols::DataArray + 1) {
+			while (protocolHandlers.size() < Energistics::Etp::v12::Datatypes::Protocol::DataArray + 1) {
 				protocolHandlers.push_back(nullptr);
 			}
-			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocols::DataArray] = dataArrayHandlers;
+			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::DataArray] = dataArrayHandlers;
 		}
 
 		void close();

@@ -48,7 +48,7 @@ DataArrayBlockingSession::DataArrayBlockingSession(boost::asio::io_context& ioc,
 
 	std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> requestedProtocols;
 	Energistics::Etp::v12::Datatypes::SupportedProtocol requestedProtocol;
-	requestedProtocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocols::DataArray;
+	requestedProtocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::DataArray;
 	requestedProtocol.m_protocolVersion = protocolVersion;
 	requestedProtocol.m_role = "store";
 	requestedProtocols.push_back(requestedProtocol);

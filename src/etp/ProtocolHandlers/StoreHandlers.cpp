@@ -26,7 +26,7 @@ using namespace ETP_NS;
 
 void StoreHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d)
 {
-	if (mh.m_protocol != Energistics::Etp::v12::Datatypes::Protocols::Store) {
+	if (mh.m_protocol != Energistics::Etp::v12::Datatypes::Protocol::Store) {
 		std::cerr << "Error : This message header does not belong to the protocol Store" << std::endl;
 		return;
 	}
@@ -103,11 +103,10 @@ void StoreHandlers::on_Object(const Energistics::Etp::v12::Protocol::Store::Obje
 	std::cout << "uri : " << graphResource.m_resource.m_uri << std::endl;
 	std::cout << "contentType : " << graphResource.m_resource.m_contentType << std::endl;
 	std::cout << "name : " << graphResource.m_resource.m_name << std::endl;
-	std::cout << "type : " << graphResource.m_resource.m_resourceType << std::endl;
+	std::cout << "type : " << static_cast<size_t>(graphResource.m_resource.m_resourceType) << std::endl;
 	//std::cout << "sourceCount : " << graphResource.m_resource.m_sourceCount << std::endl;
 	//std::cout << "targetCount : " << graphResource.m_resource.m_targetCount << std::endl;
 	//std::cout << "contentCount : " << graphResource.m_resource.m_contentCount << std::endl;
-	std::cout << "uuid : " << graphResource.m_resource.m_uuid << std::endl;
 	//std::cout << "lastChanged : " << graphResource.m_resource.m_lastChanged << std::endl;
 	std::cout << "*************************************************" << std::endl;
 	std::cout << graphResource.m_data << std::endl;

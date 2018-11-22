@@ -31,16 +31,16 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 	protocolVersion.m_patch = 0;
 	protocolVersion.m_revision = 0;
 	for (auto& rp : rs.m_requestedProtocols) {
-	    if (rp.m_protocol == Energistics::Etp::v12::Datatypes::Protocols::Core && rp.m_role == "server") {
+	    if (rp.m_protocol == Energistics::Etp::v12::Datatypes::Protocol::Core && rp.m_role == "server") {
 	    	Energistics::Etp::v12::Datatypes::SupportedProtocol protocol;
-	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocols::Core;
+	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::Core;
 	    	protocol.m_protocolVersion = protocolVersion;
 	    	protocol.m_role = "server";
 	    	supportedProtocols.push_back(protocol);
 	    }
-	    else if (rp.m_protocol == Energistics::Etp::v12::Datatypes::Protocols::Discovery && rp.m_role == "store") {
+	    else if (rp.m_protocol == Energistics::Etp::v12::Datatypes::Protocol::Discovery && rp.m_role == "store") {
 	    	Energistics::Etp::v12::Datatypes::SupportedProtocol protocol;
-	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocols::Discovery;
+	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::Discovery;
 			protocol.m_protocolVersion = protocolVersion;
 			protocol.m_role = "store";
 			Energistics::Etp::v12::Datatypes::DataValue value;
@@ -48,9 +48,9 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 			protocol.m_protocolCapabilities.insert(std::make_pair("MaxGetResourcesResponse", value));
 	    	supportedProtocols.push_back(protocol);
 	    }
-	    else if (rp.m_protocol == Energistics::Etp::v12::Datatypes::Protocols::Store && rp.m_role == "store") {
+	    else if (rp.m_protocol == Energistics::Etp::v12::Datatypes::Protocol::Store && rp.m_role == "store") {
 	    	Energistics::Etp::v12::Datatypes::SupportedProtocol protocol;
-	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocols::Store;
+	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::Store;
 			protocol.m_protocolVersion = protocolVersion;
 			protocol.m_role = "store";
 			Energistics::Etp::v12::Datatypes::DataValue value;
@@ -58,9 +58,9 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 			protocol.m_protocolCapabilities.insert(std::make_pair("MaxGetResourcesResponse", value));
 	    	supportedProtocols.push_back(protocol);
 	    }
-	    else if (rp.m_protocol == Energistics::Etp::v12::Datatypes::Protocols::DataArray && rp.m_role == "store") {
+	    else if (rp.m_protocol == Energistics::Etp::v12::Datatypes::Protocol::DataArray && rp.m_role == "store") {
 	    	Energistics::Etp::v12::Datatypes::SupportedProtocol protocol;
-	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocols::DataArray;
+	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::DataArray;
 			protocol.m_protocolVersion = protocolVersion;
 			protocol.m_role = "store";
 			Energistics::Etp::v12::Datatypes::DataValue value;
@@ -68,9 +68,9 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 			protocol.m_protocolCapabilities.insert(std::make_pair("MaxGetResourcesResponse", value));
 	    	supportedProtocols.push_back(protocol);
 	    }
-	    else if (rp.m_protocol == Energistics::Etp::v12::Datatypes::Protocols::DirectedDiscovery && rp.m_role == "store") {
+	    else if (rp.m_protocol == Energistics::Etp::v12::Datatypes::Protocol::DirectedDiscovery && rp.m_role == "store") {
 	    	Energistics::Etp::v12::Datatypes::SupportedProtocol protocol;
-	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocols::DirectedDiscovery;
+	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::DirectedDiscovery;
 			protocol.m_protocolVersion = protocolVersion;
 			protocol.m_role = "store";
 			Energistics::Etp::v12::Datatypes::DataValue value;

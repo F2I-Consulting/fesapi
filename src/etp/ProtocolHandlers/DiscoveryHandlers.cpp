@@ -31,7 +31,7 @@ bool DiscoveryHandlers::validateUri(const std::string & uri)const
 
 void DiscoveryHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d)
 {
-	if (mh.m_protocol != Energistics::Etp::v12::Datatypes::Protocols::Discovery) {
+	if (mh.m_protocol != Energistics::Etp::v12::Datatypes::Protocol::Discovery) {
 		std::cerr << "Error : This message header does not belong to the protocol Discovery" << std::endl;
 		return;
 	}

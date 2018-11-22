@@ -35,7 +35,6 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetContent(const Energistics::Et
 
 	Energistics::Etp::v12::Protocol::DirectedDiscovery::GetResourcesResponse mb;
 	Energistics::Etp::v12::Datatypes::Object::GraphResource resource;
-	resource.m_channelSubscribable = false;
 	resource.m_objectNotifiable = false;
 	resource.m_contentType = "";
 
@@ -46,17 +45,15 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetContent(const Energistics::Et
 		// RESQML2.0
 		resource.m_uri = "eml://resqml20";
 		resource.m_name = "RESQML2.0 Protocol";
-		resource.m_resourceType = "UriProtocol";
-		resource.m_sourceCount = -1;
-		resource.m_targetCount = -1;
-		resource.m_contentCount = 4; // the four supported RESQML dataobject type
+		resource.m_resourceType = Energistics::Etp::v12::Datatypes::Object::ResourceKind::UriProtocol;
+		resource.m_contentCount.set_int(4); // the four supported RESQML dataobject type
 		mb.m_resource = resource;
 		session->send(mb, correlationId, 0x01);
 
 		// EML2.0
 		resource.m_uri = "eml://eml20";
 		resource.m_name = "EML2.0 Protocol";
-		resource.m_contentCount = 1; // Hdf Proxy
+		resource.m_contentCount.set_int(1); // Hdf Proxy
 		mb.m_resource = resource;
 		session->send(mb, correlationId, 0x01 | 0x02);
 
@@ -66,9 +63,7 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetContent(const Energistics::Et
 	const std::string uriPrefix = "eml://resqml20/obj_";
 	std::string path = gc.m_uri.substr(6);
 
-	resource.m_resourceType = "Folder";
-	resource.m_sourceCount = -1;
-	resource.m_targetCount = -1;
+	resource.m_resourceType = Energistics::Etp::v12::Datatypes::Object::ResourceKind::Folder;
 	if (path == "resqml20" || path == "resqml20/") {
 
 		//***********************
@@ -79,7 +74,7 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetContent(const Energistics::Et
 		resource.m_uri = uriPrefix + RESQML2_0_1_NS::TriangulatedSetRepresentation::XML_TAG;
 		resource.m_name = RESQML2_0_1_NS::TriangulatedSetRepresentation::XML_TAG;
 		resource.m_name += " Folder";
-		resource.m_contentCount = static_cast<MyOwnEtpServerSession*>(session)->epcDoc.getAllTriangulatedSetRepSet().size();
+		resource.m_contentCount.set_int(static_cast<MyOwnEtpServerSession*>(session)->epcDoc.getAllTriangulatedSetRepSet().size());
 		mb.m_resource = resource;
 		session->send(mb, correlationId, 0x01);
 
@@ -87,7 +82,7 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetContent(const Energistics::Et
 		resource.m_uri = uriPrefix + RESQML2_0_1_NS::Grid2dRepresentation::XML_TAG;
 		resource.m_name = RESQML2_0_1_NS::Grid2dRepresentation::XML_TAG ;
 		resource.m_name += " Folder";
-		resource.m_contentCount = static_cast<MyOwnEtpServerSession*>(session)->epcDoc.getAllGrid2dRepresentationSet().size();
+		resource.m_contentCount.set_int(static_cast<MyOwnEtpServerSession*>(session)->epcDoc.getAllGrid2dRepresentationSet().size());
 		mb.m_resource = resource;
 		session->send(mb, correlationId, 0x01);
 
@@ -95,7 +90,7 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetContent(const Energistics::Et
 		resource.m_uri = uriPrefix + RESQML2_0_1_NS::WellboreTrajectoryRepresentation::XML_TAG;
 		resource.m_name = RESQML2_0_1_NS::WellboreTrajectoryRepresentation::XML_TAG;
 		resource.m_name += " Folder";
-		resource.m_contentCount = static_cast<MyOwnEtpServerSession*>(session)->epcDoc.getWellboreTrajectoryRepresentationSet().size();
+		resource.m_contentCount.set_int(static_cast<MyOwnEtpServerSession*>(session)->epcDoc.getWellboreTrajectoryRepresentationSet().size());
 		mb.m_resource = resource;
 		session->send(mb, correlationId, 0x01);
 
@@ -103,7 +98,7 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetContent(const Energistics::Et
 		resource.m_uri = uriPrefix + RESQML2_0_1_NS::AbstractIjkGridRepresentation::XML_TAG;
 		resource.m_name = RESQML2_0_1_NS::AbstractIjkGridRepresentation::XML_TAG;
 		resource.m_name += " Folder";
-		resource.m_contentCount = static_cast<MyOwnEtpServerSession*>(session)->epcDoc.getIjkGridRepresentationSet().size();
+		resource.m_contentCount.set_int(static_cast<MyOwnEtpServerSession*>(session)->epcDoc.getIjkGridRepresentationSet().size());
 		mb.m_resource = resource;
 		session->send(mb, correlationId, 0x01 | 0x02);
 	}
@@ -116,7 +111,7 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetContent(const Energistics::Et
 		resource.m_uri = uriPrefix + COMMON_NS::EpcExternalPartReference::XML_TAG;
 		resource.m_name = COMMON_NS::EpcExternalPartReference::XML_TAG;
 		resource.m_name +=" Folder";
-		resource.m_contentCount = static_cast<MyOwnEtpServerSession*>(session)->epcDoc.getHdfProxySet().size();
+		resource.m_contentCount.set_int(static_cast<MyOwnEtpServerSession*>(session)->epcDoc.getHdfProxySet().size());
 		mb.m_resource = resource;
 		session->send(mb, correlationId, 0x01 | 0x02);
 	}

@@ -35,22 +35,19 @@ namespace {
 
 		Energistics::Etp::v12::Datatypes::Object::GraphResource result;
 
-		result.m_resourceType = "DataObject";
-		result.m_channelSubscribable = false;
+		result.m_resourceType = Energistics::Etp::v12::Datatypes::Object::ResourceKind::DataObject;
 		result.m_objectNotifiable = false;
-		result.m_contentCount = -1;
 		result.m_contentType = "application/x-resqml+xml;version=2.0;type=obj_" + obj->getXmlTag();
 		// TODO : change the xml namespace to be the same as the etp one
 		std::string etpNs =  obj->getXmlNamespace();
 		if (etpNs[etpNs.size()-1] != '0') etpNs += '0';
 		// END TODO
 		result.m_uri = "eml://" + etpNs  + "/obj_" + obj->getXmlTag() + "(" + obj->getUuid() + ")";
-		result.m_uuid = obj->getUuid();
 		result.m_name = obj->getTitle();
 		result.m_lastChanged = obj->getLastUpdate() == -1 ? obj->getCreation() : obj->getLastUpdate();
 
-		result.m_sourceCount = obj->getAllSourceRelationshipUuids().size();
-		result.m_targetCount = obj->getAllTargetRelationshipUuids().size();
+		result.m_sourceCount.set_int(obj->getAllSourceRelationshipUuids().size());
+		result.m_targetCount.set_int(obj->getAllTargetRelationshipUuids().size());
 
 		return result;
 	}

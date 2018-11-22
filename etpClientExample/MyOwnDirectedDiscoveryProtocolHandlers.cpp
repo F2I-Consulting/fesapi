@@ -28,22 +28,27 @@ void MyOwnDirectedDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energ
 	std::cout << "uri : " << graphResource.m_uri << std::endl;
 	std::cout << "contentType : " << graphResource.m_contentType << std::endl;
 	std::cout << "name : " << graphResource.m_name << std::endl;
-	std::cout << "type : " << graphResource.m_resourceType << std::endl;
-	std::cout << "sourceCount : " << graphResource.m_sourceCount << std::endl;
-	std::cout << "targetCount : " << graphResource.m_targetCount << std::endl;
-	std::cout << "contentCount : " << graphResource.m_contentCount << std::endl;
-	std::cout << "uuid : " << graphResource.m_uuid << std::endl;
+	std::cout << "type : " << static_cast<size_t>(graphResource.m_resourceType) << std::endl;
+	if (!graphResource.m_sourceCount.is_null())
+		std::cout << "sourceCount : " << graphResource.m_sourceCount.get_int() << std::endl;
+	if (!graphResource.m_targetCount.is_null())
+		std::cout << "targetCount : " << graphResource.m_targetCount.get_int() << std::endl;
+	if (!graphResource.m_contentCount.is_null())
+		std::cout << "contentCount : " << graphResource.m_contentCount.get_int() << std::endl;
 	std::cout << "lastChanged : " << graphResource.m_lastChanged << std::endl;
 	std::cout << "*************************************************" << std::endl;
 
 
 	if (std::find(getObjectWhenDiscovered.begin(), getObjectWhenDiscovered.end(), correlationId) != getObjectWhenDiscovered.end()) {
-		auto resqmlObj = static_cast<MyOwnEtpClientSession*>(session)->epcDoc.getResqmlAbstractObjectByUuid(graphResource.m_uuid);
-		if (resqmlObj == nullptr || resqmlObj->isPartial()) {
-			std::cout << "GET OBJECT -----------------------------------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
-			Energistics::Etp::v12::Protocol::Store::GetObject_ getO;
-			getO.m_uri = graphResource.m_uri;
-			session->send(getO);
+		size_t openingParenthesis = graphResource.m_uri.find('(', 5);
+		if (openingParenthesis != std::string::npos) {
+			auto resqmlObj = static_cast<MyOwnEtpClientSession*>(session)->epcDoc.getResqmlAbstractObjectByUuid(graphResource.m_uri.substr(openingParenthesis + 1, 36));
+			if (resqmlObj == nullptr || resqmlObj->isPartial()) {
+				std::cout << "GET OBJECT -----------------------------------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
+				Energistics::Etp::v12::Protocol::Store::GetObject_ getO;
+				getO.m_uri = graphResource.m_uri;
+				session->send(getO);
+			}
 		}
 	}
 }

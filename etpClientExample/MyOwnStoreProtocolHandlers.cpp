@@ -26,8 +26,7 @@ void MyOwnStoreProtocolHandlers::on_Object(const Energistics::Etp::v12::Protocol
 	std::cout << "uri : " << graphResource.m_resource.m_uri << std::endl;
 	std::cout << "contentType : " << graphResource.m_resource.m_contentType << std::endl;
 	std::cout << "name : " << graphResource.m_resource.m_name << std::endl;
-	std::cout << "type : " << graphResource.m_resource.m_resourceType << std::endl;
-	std::cout << "uuid : " << graphResource.m_resource.m_uuid << std::endl;
+	std::cout << "type : " << static_cast<size_t>(graphResource.m_resource.m_resourceType) << std::endl;
 	std::cout << "*************************************************" << std::endl;
 
 	COMMON_NS::AbstractObject* importedObj  = static_cast<MyOwnEtpClientSession*>(session)->epcDoc.addOrReplaceGsoapProxy(graphResource.m_data, graphResource.m_resource.m_contentType);
