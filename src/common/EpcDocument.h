@@ -22,6 +22,7 @@ under the License.
 #include <vector>
 #include <limits>
 #include <stdexcept>
+#include <unordered_map>
 
 #include "proxies/stdsoap2.h"
 #include "proxies/gsoap_resqml2_0_1H.h"
@@ -31,10 +32,6 @@ under the License.
 #include "epc/Package.h"
 
 #include "nsDefinitions.h"
-
-#if (defined(_WIN32) && _MSC_VER < 1600) || (defined(__GNUC__) && (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 6)))
-#include "tools/nullptr_emulation.h"
-#endif
 
 #if defined(_WIN32) && defined(FESAPI_DLL)
 	#ifndef DLL_IMPORT_OR_EXPORT

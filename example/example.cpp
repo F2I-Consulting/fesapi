@@ -2522,18 +2522,10 @@ void deserialize(const string & inputFile)
 
 	cout << "EXTENDED CORE PROPERTIES" << endl;
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	unordered_map<string, string> & extendedCoreProperty = pck.getExtendedCoreProperty();
 	for (unordered_map<string, string>::const_iterator it = extendedCoreProperty.begin(); it != extendedCoreProperty.end(); ++it) {
 		cout << it->first.c_str() << " " << it->second.c_str() << endl;
 	}
-#else
-	tr1::unordered_map<string, string> & extendedCoreProperty = pck.getExtendedCoreProperty();
-	for (tr1::unordered_map<string, string>::const_iterator it = extendedCoreProperty.begin(); it != extendedCoreProperty.end(); ++it)
-	{
-		cout << it->first.c_str() << " " << it->second.c_str() << endl;
-	}
-#endif
 
 	cout << "CRS" << endl;
 	vector<LocalDepth3dCrs*> depthCrsSet = pck.getLocalDepth3dCrsSet();

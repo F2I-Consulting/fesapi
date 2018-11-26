@@ -1503,7 +1503,7 @@ void EpcDocument::updateAllRelationships()
 	}
 }
 
-unordered_map< string, string > & EpcDocument::getExtendedCoreProperty() {
+std::unordered_map< string, string > & EpcDocument::getExtendedCoreProperty() {
 	return package->getExtendedCoreProperty();
 }
 
