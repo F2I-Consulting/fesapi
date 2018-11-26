@@ -158,6 +158,12 @@ namespace ETP_NS
 			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::Discovery] = discoveryHandlers;
 		}
 
+		std::shared_ptr<ETP_NS::ProtocolHandlers> getDiscoveryProtocolHandlers() {
+			return protocolHandlers.size() > Energistics::Etp::v12::Datatypes::Protocol::Discovery ?
+				protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::Discovery] :
+				nullptr;
+		}
+
 		/**
 		 * Set the Directed Discovery protocol handlers
 		 */

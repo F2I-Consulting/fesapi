@@ -186,6 +186,16 @@ void askUser(MyOwnEtpClientSession* session)
 				mb.m_uri = commandTokens[1];
 				std::static_pointer_cast<MyOwnDirectedDiscoveryProtocolHandlers>(session->getDirectedDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb));
 			}
+			else if (commandTokens[0] == "GetResourceObjects") {
+				Energistics::Etp::v12::Protocol::Discovery::GetResources2 mb;
+				mb.m_context.m_uri = commandTokens[1];
+				mb.m_context.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
+				mb.m_context.m_depth = 1;
+				std::static_pointer_cast<MyOwnDirectedDiscoveryProtocolHandlers>(session->getDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb));
+
+				mb.m_context.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources;
+				std::static_pointer_cast<MyOwnDirectedDiscoveryProtocolHandlers>(session->getDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb));
+			}
 		}
 		else if (commandTokens.size() == 3) {
 			if (commandTokens[0] == "GetDataArray") {
@@ -204,8 +214,9 @@ void askUser(MyOwnEtpClientSession* session)
 			std::cout << "\tGetTargets dataObjectURI" << std::endl << "\t\tGet dataobject targets of a dataobject in an ETP store" << std::endl << std::endl;
 			std::cout << "\tGetResources dataObjectURI scope(default self) depth(default 1) contentTypeFilter,contentTypeFilter,...(default noFilter)" << std::endl << "\t\tSame as GetContent, GetSources and GetTargets but in the Discovery protocol instead of the directed discovery protocol." << std::endl << std::endl;
 			std::cout << "\tGetObject dataObjectURI" << std::endl << "\t\tGet the object from an ETP store and store it into the in memory epc (only create partial TARGET relationships, not any SOURCE relationships)" << std::endl << std::endl;
-			std::cout << "\tGetSourceObjects dataObjectURI" << std::endl << "\t\tGet the source objects of another object from an ETP store and store it into the in memory epc" << std::endl << std::endl;
-			std::cout << "\tGetTargetObjects dataObjectURI" << std::endl << "\t\tGet the target objects of another object from an ETP store and store it into the in memory epc" << std::endl << std::endl;
+			std::cout << "\tGetSourceObjects dataObjectURI" << std::endl << "\t\tGet the source objects of another object from an ETP store and put it into the in memory epc" << std::endl << std::endl;
+			std::cout << "\tGetTargetObjects dataObjectURI" << std::endl << "\t\tGet the target objects of another object from an ETP store and put it into the in memory epc" << std::endl << std::endl;
+			std::cout << "\tGetResourceObjects dataObjectURI" << std::endl << "\t\tGet the object, its source and its target objects from an ETP store and put it into the in memory epc" << std::endl << std::endl;
 			std::cout << "\tGetDataArray epcExternalPartURI datasetPathInEpcExternalPart" << std::endl << "\t\tGet the numerical values from a dataset included in an EpcExternalPart over ETP." << std::endl << std::endl;
 			std::cout << "\tGetXyzOfIjkGrids" << std::endl << "\t\tGet all the XYZ points of the retrieved IJK grids and also their continuous property values." << std::endl << std::endl;
 			std::cout << "\tquit" << std::endl << "\t\tQuit the session." << std::endl << std::endl;
