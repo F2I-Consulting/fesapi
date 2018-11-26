@@ -24,11 +24,6 @@ under the License.
 
 using namespace ETP_NS;
 
-bool DiscoveryHandlers::validateUri(const std::string & uri)const
-{
-	return std::regex_match(uri, std::regex("^eml://((witsml|resqml|prodml|eml)([0-9]+))*.*", std::regex::ECMAScript));
-}
-
 void DiscoveryHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d)
 {
 	if (mh.m_protocol != Energistics::Etp::v12::Datatypes::Protocol::Discovery) {
@@ -36,17 +31,17 @@ void DiscoveryHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes
 		return;
 	}
 
-	if (mh.m_messageType == 1) {
-		Energistics::Etp::v12::Protocol::Discovery::GetResources gr;
+	if (mh.m_messageType == Energistics::Etp::v12::Protocol::Discovery::GetResources2::messageTypeId) {
+		Energistics::Etp::v12::Protocol::Discovery::GetResources2 gr;
 		avro::decode(*d, gr);
 		session->flushReceivingBuffer();
 		on_GetResources(gr, mh.m_messageId);
 	}
-	else if (mh.m_messageType == 2) {
-		Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse grr;
+	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse2::messageTypeId) {
+		Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse2 grr;
 		avro::decode(*d, grr);
 		session->flushReceivingBuffer();
-		on_GetResourcesResponse(grr);
+		on_GetResourcesResponse(grr, mh.m_correlationId);
 	}
 	else {
 		session->flushReceivingBuffer();
@@ -54,9 +49,9 @@ void DiscoveryHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes
 	}
 }
 
-void DiscoveryHandlers::on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources & gr, int64_t correlationId)
+void DiscoveryHandlers::on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources2 & gr, int64_t correlationId)
 {
-	std::cout << "on_GetResources" << std::endl;
+	std::cout << "on_GetResources2" << std::endl;
 
 	// Build GetResourcesResponse message
 	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
@@ -66,7 +61,9 @@ void DiscoveryHandlers::on_GetResources(const Energistics::Etp::v12::Protocol::D
 	session->send(error);
 }
 
-void DiscoveryHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse & grr)
+void DiscoveryHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse2 & grr, int64_t correlationId)
 {
-	std::cout << '(' << grr.m_resource.m_name << ", " << grr.m_resource.m_contentType << ')' << std::endl;
+	for (const auto & resource : grr.m_resource) {
+		std::cout << '(' << resource.m_name << ", " << resource.m_contentType << ')' << std::endl;
+	}
 }

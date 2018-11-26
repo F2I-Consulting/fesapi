@@ -49,6 +49,11 @@ int main(int argc, char **argv)
 	protocol.m_role = "server";
 	requestedProtocols.push_back(protocol);
 
+	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::Discovery;
+	protocol.m_protocolVersion = protocolVersion;
+	protocol.m_role = "store";
+	requestedProtocols.push_back(protocol);
+
 	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::Store;
 	protocol.m_protocolVersion = protocolVersion;
 	protocol.m_role = "store";

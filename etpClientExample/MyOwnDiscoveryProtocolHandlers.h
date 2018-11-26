@@ -18,20 +18,19 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/ProtocolHandlers/ProtocolHandlers.h"
+#include "etp/ProtocolHandlers/DiscoveryHandlers.h"
 
-namespace ETP_NS
+#include "MyOwnEtpClientSession.h"
+
+#include "common/AbstractObject.h"
+
+class MyOwnDiscoveryProtocolHandlers : public ETP_NS::DiscoveryHandlers
 {
-	class DLL_IMPORT_OR_EXPORT DiscoveryHandlers : public ProtocolHandlers
-	{
-	public:
-		DiscoveryHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
+public:
+	MyOwnDiscoveryProtocolHandlers(MyOwnEtpClientSession* mySession): ETP_NS::DiscoveryHandlers(mySession) {}
+	~MyOwnDiscoveryProtocolHandlers() {}
 
-	    void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d);
+	std::vector<int64_t> getObjectWhenDiscovered; // all message id in this vector will result in response where the objects are going to be get in addition to be discovered
 
-		virtual void on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources2 & gr, int64_t correlationId);
-		virtual void on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse2 & grr, int64_t correlationId);
-
-		virtual ~DiscoveryHandlers() {}
-	};
-}
+	void on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse2 & grr, int64_t correlationId);
+};

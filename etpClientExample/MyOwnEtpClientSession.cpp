@@ -18,10 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 
 #include "MyOwnCoreProtocolHandlers.h"
+#include "MyOwnDiscoveryProtocolHandlers.h"
 #include "MyOwnDirectedDiscoveryProtocolHandlers.h"
 #include "MyOwnStoreProtocolHandlers.h"
-#include "etp/ProtocolHandlers/CoreHandlers.h"
-#include "etp/ProtocolHandlers/DirectedDiscoveryHandlers.h"
 #include "etp/ProtocolHandlers/DataArrayHandlers.h"
 
 MyOwnEtpClientSession::MyOwnEtpClientSession(boost::asio::io_context& ioc,
@@ -31,6 +30,7 @@ MyOwnEtpClientSession::MyOwnEtpClientSession(boost::asio::io_context& ioc,
 	: ETP_NS::ClientSession(ioc, host, port, target, requestedProtocols, supportedObjects)
 {
 	setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(this));
+	setDiscoveryProtocolHandlers(std::make_shared<MyOwnDiscoveryProtocolHandlers>(this));
 	setDirectedDiscoveryProtocolHandlers(std::make_shared<MyOwnDirectedDiscoveryProtocolHandlers>(this));
 	setStoreProtocolHandlers(std::make_shared<MyOwnStoreProtocolHandlers>(this));
 	setDataArrayProtocolHandlers(std::make_shared<ETP_NS::DataArrayHandlers>(this));

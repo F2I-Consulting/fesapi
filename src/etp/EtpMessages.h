@@ -46,7 +46,7 @@ namespace Energistics {
 				struct ArrayOfBoolean{				
 					std::vector<bool> m_values;
 				};				
-				typedef boost::shared_ptr<ArrayOfBoolean> ArrayOfBooleanPtr;
+				typedef std::shared_ptr<ArrayOfBoolean> ArrayOfBooleanPtr;
 			};			
 		};		
 	};	
@@ -68,7 +68,7 @@ namespace Energistics {
 				struct ArrayOfDouble{				
 					std::vector<double> m_values;
 				};				
-				typedef boost::shared_ptr<ArrayOfDouble> ArrayOfDoublePtr;
+				typedef std::shared_ptr<ArrayOfDouble> ArrayOfDoublePtr;
 			};			
 		};		
 	};	
@@ -90,7 +90,7 @@ namespace Energistics {
 				struct ArrayOfFloat{				
 					std::vector<float> m_values;
 				};				
-				typedef boost::shared_ptr<ArrayOfFloat> ArrayOfFloatPtr;
+				typedef std::shared_ptr<ArrayOfFloat> ArrayOfFloatPtr;
 			};			
 		};		
 	};	
@@ -112,7 +112,7 @@ namespace Energistics {
 				struct ArrayOfInt{				
 					std::vector<int32_t> m_values;
 				};				
-				typedef boost::shared_ptr<ArrayOfInt> ArrayOfIntPtr;
+				typedef std::shared_ptr<ArrayOfInt> ArrayOfIntPtr;
 			};			
 		};		
 	};	
@@ -134,7 +134,7 @@ namespace Energistics {
 				struct ArrayOfLong{				
 					std::vector<int64_t> m_values;
 				};				
-				typedef boost::shared_ptr<ArrayOfLong> ArrayOfLongPtr;
+				typedef std::shared_ptr<ArrayOfLong> ArrayOfLongPtr;
 			};			
 		};		
 	};	
@@ -156,7 +156,7 @@ namespace Energistics {
 				struct ArrayOfString{				
 					std::vector<std::string> m_values;
 				};				
-				typedef boost::shared_ptr<ArrayOfString> ArrayOfStringPtr;
+				typedef std::shared_ptr<ArrayOfString> ArrayOfStringPtr;
 			};			
 		};		
 	};	
@@ -364,7 +364,7 @@ namespace Energistics {
 				struct AnyArray{				
 					Energistics::Etp::v12::Datatypes::AnyArrayitem_t m_item;
 				};				
-				typedef boost::shared_ptr<AnyArray> AnyArrayPtr;
+				typedef std::shared_ptr<AnyArray> AnyArrayPtr;
 			};			
 		};		
 	};	
@@ -389,7 +389,7 @@ namespace Energistics {
 					std::string m_dataType;
 					std::string m_description;
 				};				
-				typedef boost::shared_ptr<AttributeMetadataRecord> AttributeMetadataRecordPtr;
+				typedef std::shared_ptr<AttributeMetadataRecord> AttributeMetadataRecordPtr;
 			};			
 		};		
 	};	
@@ -420,7 +420,7 @@ namespace Energistics {
 					std::string m_contactPhone;
 					std::string m_contactEmail;
 				};				
-				typedef boost::shared_ptr<Contact> ContactPtr;
+				typedef std::shared_ptr<Contact> ContactPtr;
 			};			
 		};		
 	};	
@@ -754,7 +754,7 @@ namespace Energistics {
 				struct DataValue{				
 					Energistics::Etp::v12::Datatypes::DataValueitem_t m_item;
 				};				
-				typedef boost::shared_ptr<DataValue> DataValuePtr;
+				typedef std::shared_ptr<DataValue> DataValuePtr;
 			};			
 		};		
 	};	
@@ -777,7 +777,7 @@ namespace Energistics {
 					int32_t m_attributeId;
 					Energistics::Etp::v12::Datatypes::DataValue m_attributeValue;
 				};				
-				typedef boost::shared_ptr<DataAttribute> DataAttributePtr;
+				typedef std::shared_ptr<DataAttribute> DataAttributePtr;
 			};			
 		};		
 	};	
@@ -803,7 +803,7 @@ namespace Energistics {
 					std::string m_message;
 					int32_t m_code;
 				};				
-				typedef boost::shared_ptr<ErrorInfo> ErrorInfoPtr;
+				typedef std::shared_ptr<ErrorInfo> ErrorInfoPtr;
 			};			
 		};		
 	};	
@@ -915,7 +915,7 @@ namespace Energistics {
 				struct IndexValue{				
 					Energistics::Etp::v12::Datatypes::IndexValueitem_t m_item;
 				};				
-				typedef boost::shared_ptr<IndexValue> IndexValuePtr;
+				typedef std::shared_ptr<IndexValue> IndexValuePtr;
 			};			
 		};		
 	};	
@@ -941,7 +941,7 @@ namespace Energistics {
 					int64_t m_messageId;
 					int32_t m_messageFlags;
 				};				
-				typedef boost::shared_ptr<MessageHeader> MessageHeaderPtr;
+				typedef std::shared_ptr<MessageHeader> MessageHeaderPtr;
 			};			
 		};		
 	};	
@@ -1044,7 +1044,7 @@ namespace Energistics {
 					int32_t m_revision;
 					int32_t m_patch;
 				};				
-				typedef boost::shared_ptr<Version> VersionPtr;
+				typedef std::shared_ptr<Version> VersionPtr;
 			};			
 		};		
 	};	
@@ -1075,7 +1075,7 @@ namespace Energistics {
 					Energistics::Etp::v12::Datatypes::Version m_familyVersion;
 					std::string m_objectType;
 				};				
-				typedef boost::shared_ptr<ersatzContentType> ersatzContentTypePtr;
+				typedef std::shared_ptr<ersatzContentType> ersatzContentTypePtr;
 			};			
 		};		
 	};	
@@ -1106,7 +1106,7 @@ namespace Energistics {
 					std::string m_role;
 					std::map<std::string, Energistics::Etp::v12::Datatypes::DataValue> m_protocolCapabilities;
 				};				
-				typedef boost::shared_ptr<SupportedProtocol> SupportedProtocolPtr;
+				typedef std::shared_ptr<SupportedProtocol> SupportedProtocolPtr;
 			};			
 		};		
 	};	
@@ -1140,7 +1140,7 @@ namespace Energistics {
 					std::string m_supportedEncodings;
 					std::vector<std::string> m_supportedCompression;
 				};				
-				typedef boost::shared_ptr<ServerCapabilities> ServerCapabilitiesPtr;
+				typedef std::shared_ptr<ServerCapabilities> ServerCapabilitiesPtr;
 			};			
 		};		
 	};	
@@ -1174,7 +1174,7 @@ namespace Energistics {
 				struct Uuid{				
 					boost::array<uint8_t, 16> m_array;
 				};				
-				typedef boost::shared_ptr<Uuid> UuidPtr;
+				typedef std::shared_ptr<Uuid> UuidPtr;
 			};			
 		};		
 	};	
@@ -1266,7 +1266,7 @@ namespace Energistics {
 					std::string m_objectVersion;
 					std::string m_queryString;
 				};				
-				typedef boost::shared_ptr<ersatzUri> ersatzUriPtr;
+				typedef std::shared_ptr<ersatzUri> ersatzUriPtr;
 			};			
 		};		
 	};	
@@ -1349,7 +1349,7 @@ namespace Energistics {
 						bool m_infill=false;
 						bool m_dataChanges=false;
 					};					
-					typedef boost::shared_ptr<ChannelSubscribeInfo> ChannelSubscribeInfoPtr;
+					typedef std::shared_ptr<ChannelSubscribeInfo> ChannelSubscribeInfoPtr;
 				};				
 			};			
 		};		
@@ -1380,7 +1380,7 @@ namespace Energistics {
 						std::vector<int64_t> m_index;
 						std::vector<Energistics::Etp::v12::Datatypes::DataValue> m_data;
 					};					
-					typedef boost::shared_ptr<DataFrame> DataFramePtr;
+					typedef std::shared_ptr<DataFrame> DataFramePtr;
 				};				
 			};			
 		};		
@@ -1409,7 +1409,7 @@ namespace Energistics {
 						Energistics::Etp::v12::Datatypes::DataValue m_value;
 						std::vector<Energistics::Etp::v12::Datatypes::DataAttribute> m_valueAttributes;
 					};					
-					typedef boost::shared_ptr<DataItem> DataItemPtr;
+					typedef std::shared_ptr<DataItem> DataItemPtr;
 				};				
 			};			
 		};		
@@ -1467,7 +1467,7 @@ namespace Energistics {
 						bool m_infill=false;
 						bool m_dataChanges=false;
 					};					
-					typedef boost::shared_ptr<OpenChannelInfo> OpenChannelInfoPtr;
+					typedef std::shared_ptr<OpenChannelInfo> OpenChannelInfoPtr;
 				};				
 			};			
 		};		
@@ -1553,7 +1553,7 @@ namespace Energistics {
 						int32_t m_depth;
 						std::vector<std::string> m_contentTypes;
 					};					
-					typedef boost::shared_ptr<ContextInfo> ContextInfoPtr;
+					typedef std::shared_ptr<ContextInfo> ContextInfoPtr;
 				};				
 			};			
 		};		
@@ -1796,7 +1796,7 @@ namespace Energistics {
 						int64_t m_lastChanged;
 						bool m_objectNotifiable=false;
 					};					
-					typedef boost::shared_ptr<GraphResource> GraphResourcePtr;
+					typedef std::shared_ptr<GraphResource> GraphResourcePtr;
 				};				
 			};			
 		};		
@@ -1841,7 +1841,7 @@ namespace Energistics {
 						std::string m_uom;
 						std::string m_depthDatum;
 					};					
-					typedef boost::shared_ptr<IndexInterval> IndexIntervalPtr;
+					typedef std::shared_ptr<IndexInterval> IndexIntervalPtr;
 				};				
 			};			
 		};		
@@ -1872,7 +1872,7 @@ namespace Energistics {
 						std::vector<int64_t> m_channelId;
 						Energistics::Etp::v12::Datatypes::Object::IndexInterval m_interval;
 					};					
-					typedef boost::shared_ptr<ChannelRangeInfo> ChannelRangeInfoPtr;
+					typedef std::shared_ptr<ChannelRangeInfo> ChannelRangeInfoPtr;
 				};				
 			};			
 		};		
@@ -1901,7 +1901,7 @@ namespace Energistics {
 						Energistics::Etp::v12::Datatypes::ChannelData::IndexDirection m_direction;
 						std::string m_name;
 					};					
-					typedef boost::shared_ptr<IndexMetadataRecord> IndexMetadataRecordPtr;
+					typedef std::shared_ptr<IndexMetadataRecord> IndexMetadataRecordPtr;
 				};				
 			};			
 		};		
@@ -1942,7 +1942,7 @@ namespace Energistics {
 						std::map<std::string, Energistics::Etp::v12::Datatypes::DataValue> m_customData;
 						std::vector<Energistics::Etp::v12::Datatypes::AttributeMetadataRecord> m_attributeMetadata;
 					};					
-					typedef boost::shared_ptr<ChannelMetadataRecord> ChannelMetadataRecordPtr;
+					typedef std::shared_ptr<ChannelMetadataRecord> ChannelMetadataRecordPtr;
 				};				
 			};			
 		};		
@@ -2015,7 +2015,7 @@ namespace Energistics {
 						std::string m_uom;
 						std::string m_depthDatum;
 					};					
-					typedef boost::shared_ptr<ObjectIndex> ObjectIndexPtr;
+					typedef std::shared_ptr<ObjectIndex> ObjectIndexPtr;
 				};				
 			};			
 		};		
@@ -2047,7 +2047,7 @@ namespace Energistics {
 						Energistics::Etp::v12::Datatypes::Object::IndexInterval m_indexInterval;
 						std::map<std::string, Energistics::Etp::v12::Datatypes::DataValue> m_customData;
 					};					
-					typedef boost::shared_ptr<PartsMetadataInfo> PartsMetadataInfoPtr;
+					typedef std::shared_ptr<PartsMetadataInfo> PartsMetadataInfoPtr;
 				};				
 			};			
 		};		
@@ -2222,7 +2222,7 @@ namespace Energistics {
 						Energistics::Etp::v12::Datatypes::Object::ResourcelastChanged_t m_lastChanged;
 						bool m_objectNotifiable=false;
 					};					
-					typedef boost::shared_ptr<Resource> ResourcePtr;
+					typedef std::shared_ptr<Resource> ResourcePtr;
 				};				
 			};			
 		};		
@@ -2261,7 +2261,7 @@ namespace Energistics {
 						Energistics::Etp::v12::Datatypes::Object::Resource m_resource;
 						std::string m_data;
 					};					
-					typedef boost::shared_ptr<DataObject> DataObjectPtr;
+					typedef std::shared_ptr<DataObject> DataObjectPtr;
 				};				
 			};			
 		};		
@@ -2289,7 +2289,7 @@ namespace Energistics {
 						int64_t m_changeTime;
 						Energistics::Etp::v12::Datatypes::Object::DataObject m_dataObject;
 					};					
-					typedef boost::shared_ptr<ObjectChange> ObjectChangePtr;
+					typedef std::shared_ptr<ObjectChange> ObjectChangePtr;
 				};				
 			};			
 		};		
@@ -2598,7 +2598,7 @@ namespace Energistics {
 						Energistics::Etp::v12::Datatypes::Object::Resource2lastChanged_t m_lastChanged;
 						std::map<std::string, std::string> m_customData;
 					};					
-					typedef boost::shared_ptr<Resource2> Resource2Ptr;
+					typedef std::shared_ptr<Resource2> Resource2Ptr;
 				};				
 			};			
 		};		
@@ -2644,7 +2644,7 @@ namespace Energistics {
 						int64_t m_startTime;
 						std::vector<std::string> m_contentTypes;
 					};					
-					typedef boost::shared_ptr<SubscriptionInfo> SubscriptionInfoPtr;
+					typedef std::shared_ptr<SubscriptionInfo> SubscriptionInfoPtr;
 				};				
 			};			
 		};		
@@ -2679,7 +2679,7 @@ namespace Energistics {
 						int64_t m_startTime;
 						bool m_includeObjectData=false;
 					};					
-					typedef boost::shared_ptr<SubscriptionInfo2> SubscriptionInfo2Ptr;
+					typedef std::shared_ptr<SubscriptionInfo2> SubscriptionInfo2Ptr;
 				};				
 			};			
 		};		
@@ -2712,7 +2712,7 @@ namespace Energistics {
 						static const int messageTypeId=4;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelDataFrame;
 					};					
-					typedef boost::shared_ptr<ChannelDataFrameSet> ChannelDataFrameSetPtr;
+					typedef std::shared_ptr<ChannelDataFrameSet> ChannelDataFrameSetPtr;
 				};				
 			};			
 		};		
@@ -2740,7 +2740,7 @@ namespace Energistics {
 						static const int messageTypeId=3;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelDataFrame;
 					};					
-					typedef boost::shared_ptr<ChannelMetadata> ChannelMetadataPtr;
+					typedef std::shared_ptr<ChannelMetadata> ChannelMetadataPtr;
 				};				
 			};			
 		};		
@@ -2767,7 +2767,7 @@ namespace Energistics {
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelDataFrame;
 					};					
-					typedef boost::shared_ptr<RequestChannelData> RequestChannelDataPtr;
+					typedef std::shared_ptr<RequestChannelData> RequestChannelDataPtr;
 				};				
 			};			
 		};		
@@ -2796,7 +2796,7 @@ namespace Energistics {
 						static const int messageTypeId=6;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelDataLoad;
 					};					
-					typedef boost::shared_ptr<ChangedData> ChangedDataPtr;
+					typedef std::shared_ptr<ChangedData> ChangedDataPtr;
 				};				
 			};			
 		};		
@@ -2825,7 +2825,7 @@ namespace Energistics {
 						static const int messageTypeId=3;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelDataLoad;
 					};					
-					typedef boost::shared_ptr<CloseChannel> CloseChannelPtr;
+					typedef std::shared_ptr<CloseChannel> CloseChannelPtr;
 				};				
 			};			
 		};		
@@ -2853,7 +2853,7 @@ namespace Energistics {
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelDataLoad;
 					};					
-					typedef boost::shared_ptr<OpenChannel> OpenChannelPtr;
+					typedef std::shared_ptr<OpenChannel> OpenChannelPtr;
 				};				
 			};			
 		};		
@@ -2879,7 +2879,7 @@ namespace Energistics {
 						static const int messageTypeId=5;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelDataLoad;
 					};					
-					typedef boost::shared_ptr<InfillData> InfillDataPtr;
+					typedef std::shared_ptr<InfillData> InfillDataPtr;
 				};				
 			};			
 		};		
@@ -2906,7 +2906,7 @@ namespace Energistics {
 						static const int messageTypeId=2;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelDataLoad;
 					};					
-					typedef boost::shared_ptr<OpenChannelResponse> OpenChannelResponsePtr;
+					typedef std::shared_ptr<OpenChannelResponse> OpenChannelResponsePtr;
 				};				
 			};			
 		};		
@@ -2934,7 +2934,7 @@ namespace Energistics {
 						static const int messageTypeId=4;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelDataLoad;
 					};					
-					typedef boost::shared_ptr<RealtimeData> RealtimeDataPtr;
+					typedef std::shared_ptr<RealtimeData> RealtimeDataPtr;
 				};				
 			};			
 		};		
@@ -2960,7 +2960,7 @@ namespace Energistics {
 						static const int messageTypeId=2;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelStreaming;
 					};					
-					typedef boost::shared_ptr<ChannelData> ChannelDataPtr;
+					typedef std::shared_ptr<ChannelData> ChannelDataPtr;
 				};				
 			};			
 		};		
@@ -2986,7 +2986,7 @@ namespace Energistics {
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelStreaming;
 					};					
-					typedef boost::shared_ptr<ChannelMetadata> ChannelMetadataPtr;
+					typedef std::shared_ptr<ChannelMetadata> ChannelMetadataPtr;
 				};				
 			};			
 		};		
@@ -3011,7 +3011,7 @@ namespace Energistics {
 						static const int messageTypeId=3;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelStreaming;
 					};					
-					typedef boost::shared_ptr<StartStreaming> StartStreamingPtr;
+					typedef std::shared_ptr<StartStreaming> StartStreamingPtr;
 				};				
 			};			
 		};		
@@ -3034,7 +3034,7 @@ namespace Energistics {
 						static const int messageTypeId=4;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelStreaming;
 					};					
-					typedef boost::shared_ptr<StopStreaming> StopStreamingPtr;
+					typedef std::shared_ptr<StopStreaming> StopStreamingPtr;
 				};				
 			};			
 		};		
@@ -3058,7 +3058,7 @@ namespace Energistics {
 						static const int messageTypeId=11;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelSubscribe;
 					};					
-					typedef boost::shared_ptr<CancelGetRange> CancelGetRangePtr;
+					typedef std::shared_ptr<CancelGetRange> CancelGetRangePtr;
 				};				
 			};			
 		};		
@@ -3085,7 +3085,7 @@ namespace Energistics {
 						static const int messageTypeId=6;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelSubscribe;
 					};					
-					typedef boost::shared_ptr<ChangedData> ChangedDataPtr;
+					typedef std::shared_ptr<ChangedData> ChangedDataPtr;
 				};				
 			};			
 		};		
@@ -3113,7 +3113,7 @@ namespace Energistics {
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelSubscribe;
 					};					
-					typedef boost::shared_ptr<GetChannelMetadata> GetChannelMetadataPtr;
+					typedef std::shared_ptr<GetChannelMetadata> GetChannelMetadataPtr;
 				};				
 			};			
 		};		
@@ -3140,7 +3140,7 @@ namespace Energistics {
 						static const int messageTypeId=2;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelSubscribe;
 					};					
-					typedef boost::shared_ptr<GetChannelMetadataResponse> GetChannelMetadataResponsePtr;
+					typedef std::shared_ptr<GetChannelMetadataResponse> GetChannelMetadataResponsePtr;
 				};				
 			};			
 		};		
@@ -3169,7 +3169,7 @@ namespace Energistics {
 						static const int messageTypeId=9;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelSubscribe;
 					};					
-					typedef boost::shared_ptr<GetRange> GetRangePtr;
+					typedef std::shared_ptr<GetRange> GetRangePtr;
 				};				
 			};			
 		};		
@@ -3197,7 +3197,7 @@ namespace Energistics {
 						static const int messageTypeId=10;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelSubscribe;
 					};					
-					typedef boost::shared_ptr<GetRangeResponse> GetRangeResponsePtr;
+					typedef std::shared_ptr<GetRangeResponse> GetRangeResponsePtr;
 				};				
 			};			
 		};		
@@ -3223,7 +3223,7 @@ namespace Energistics {
 						static const int messageTypeId=5;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelSubscribe;
 					};					
-					typedef boost::shared_ptr<InfillData> InfillDataPtr;
+					typedef std::shared_ptr<InfillData> InfillDataPtr;
 				};				
 			};			
 		};		
@@ -3249,7 +3249,7 @@ namespace Energistics {
 						static const int messageTypeId=4;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelSubscribe;
 					};					
-					typedef boost::shared_ptr<RealtimeData> RealtimeDataPtr;
+					typedef std::shared_ptr<RealtimeData> RealtimeDataPtr;
 				};				
 			};			
 		};		
@@ -3275,7 +3275,7 @@ namespace Energistics {
 						static const int messageTypeId=3;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelSubscribe;
 					};					
-					typedef boost::shared_ptr<SubscribeChannels> SubscribeChannelsPtr;
+					typedef std::shared_ptr<SubscribeChannels> SubscribeChannelsPtr;
 				};				
 			};			
 		};		
@@ -3301,7 +3301,7 @@ namespace Energistics {
 						static const int messageTypeId=8;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelSubscribe;
 					};					
-					typedef boost::shared_ptr<SubscriptionStopped> SubscriptionStoppedPtr;
+					typedef std::shared_ptr<SubscriptionStopped> SubscriptionStoppedPtr;
 				};				
 			};			
 		};		
@@ -3327,7 +3327,7 @@ namespace Energistics {
 						static const int messageTypeId=7;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelSubscribe;
 					};					
-					typedef boost::shared_ptr<UnsubscribeChannels> UnsubscribeChannelsPtr;
+					typedef std::shared_ptr<UnsubscribeChannels> UnsubscribeChannelsPtr;
 				};				
 			};			
 		};		
@@ -3352,7 +3352,7 @@ namespace Energistics {
 						static const int messageTypeId=1001;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Core;
 					};					
-					typedef boost::shared_ptr<Acknowledge> AcknowledgePtr;
+					typedef std::shared_ptr<Acknowledge> AcknowledgePtr;
 				};				
 			};			
 		};		
@@ -3376,7 +3376,7 @@ namespace Energistics {
 						static const int messageTypeId=5;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Core;
 					};					
-					typedef boost::shared_ptr<CloseSession> CloseSessionPtr;
+					typedef std::shared_ptr<CloseSession> CloseSessionPtr;
 				};				
 			};			
 		};		
@@ -3407,7 +3407,7 @@ namespace Energistics {
 						static const int messageTypeId=2;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Core;
 					};					
-					typedef boost::shared_ptr<OpenSession> OpenSessionPtr;
+					typedef std::shared_ptr<OpenSession> OpenSessionPtr;
 				};				
 			};			
 		};		
@@ -3444,7 +3444,7 @@ namespace Energistics {
 						static const int messageTypeId=1000;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Core;
 					};					
-					typedef boost::shared_ptr<ProtocolException> ProtocolExceptionPtr;
+					typedef std::shared_ptr<ProtocolException> ProtocolExceptionPtr;
 				};				
 			};			
 		};		
@@ -3472,7 +3472,7 @@ namespace Energistics {
 						static const int messageTypeId=6;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Core;
 					};					
-					typedef boost::shared_ptr<RenewSecurityToken> RenewSecurityTokenPtr;
+					typedef std::shared_ptr<RenewSecurityToken> RenewSecurityTokenPtr;
 				};				
 			};			
 		};		
@@ -3502,7 +3502,7 @@ namespace Energistics {
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Core;
 					};					
-					typedef boost::shared_ptr<RequestSession> RequestSessionPtr;
+					typedef std::shared_ptr<RequestSession> RequestSessionPtr;
 				};				
 			};			
 		};		
@@ -3537,7 +3537,7 @@ namespace Energistics {
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::DataArray;
 					};					
-					typedef boost::shared_ptr<DataArray> DataArrayPtr;
+					typedef std::shared_ptr<DataArray> DataArrayPtr;
 				};				
 			};			
 		};		
@@ -3566,7 +3566,7 @@ namespace Energistics {
 						static const int messageTypeId=7;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::DataArray;
 					};					
-					typedef boost::shared_ptr<DataArrayMetadata> DataArrayMetadataPtr;
+					typedef std::shared_ptr<DataArrayMetadata> DataArrayMetadataPtr;
 				};				
 			};			
 		};		
@@ -3595,7 +3595,7 @@ namespace Energistics {
 						static const int messageTypeId=6;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::DataArray;
 					};					
-					typedef boost::shared_ptr<DescribeDataArray> DescribeDataArrayPtr;
+					typedef std::shared_ptr<DescribeDataArray> DescribeDataArrayPtr;
 				};				
 			};			
 		};		
@@ -3624,7 +3624,7 @@ namespace Energistics {
 						static const int messageTypeId=2;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::DataArray;
 					};					
-					typedef boost::shared_ptr<GetDataArray> GetDataArrayPtr;
+					typedef std::shared_ptr<GetDataArray> GetDataArrayPtr;
 				};				
 			};			
 		};		
@@ -3655,7 +3655,7 @@ namespace Energistics {
 						static const int messageTypeId=3;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::DataArray;
 					};					
-					typedef boost::shared_ptr<GetDataArraySlice> GetDataArraySlicePtr;
+					typedef std::shared_ptr<GetDataArraySlice> GetDataArraySlicePtr;
 				};				
 			};			
 		};		
@@ -3690,7 +3690,7 @@ namespace Energistics {
 						static const int messageTypeId=4;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::DataArray;
 					};					
-					typedef boost::shared_ptr<PutDataArray> PutDataArrayPtr;
+					typedef std::shared_ptr<PutDataArray> PutDataArrayPtr;
 				};				
 			};			
 		};		
@@ -3727,7 +3727,7 @@ namespace Energistics {
 						static const int messageTypeId=5;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::DataArray;
 					};					
-					typedef boost::shared_ptr<PutDataArraySlice> PutDataArraySlicePtr;
+					typedef std::shared_ptr<PutDataArraySlice> PutDataArraySlicePtr;
 				};				
 			};			
 		};		
@@ -3763,7 +3763,7 @@ namespace Energistics {
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::DirectedDiscovery;
 					};					
-					typedef boost::shared_ptr<GetContent> GetContentPtr;
+					typedef std::shared_ptr<GetContent> GetContentPtr;
 				};				
 			};			
 		};		
@@ -3789,7 +3789,7 @@ namespace Energistics {
 						static const int messageTypeId=2;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::DirectedDiscovery;
 					};					
-					typedef boost::shared_ptr<GetResourcesResponse> GetResourcesResponsePtr;
+					typedef std::shared_ptr<GetResourcesResponse> GetResourcesResponsePtr;
 				};				
 			};			
 		};		
@@ -3815,7 +3815,7 @@ namespace Energistics {
 						static const int messageTypeId=3;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::DirectedDiscovery;
 					};					
-					typedef boost::shared_ptr<GetSources> GetSourcesPtr;
+					typedef std::shared_ptr<GetSources> GetSourcesPtr;
 				};				
 			};			
 		};		
@@ -3841,7 +3841,7 @@ namespace Energistics {
 						static const int messageTypeId=4;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::DirectedDiscovery;
 					};					
-					typedef boost::shared_ptr<GetTargets> GetTargetsPtr;
+					typedef std::shared_ptr<GetTargets> GetTargetsPtr;
 				};				
 			};			
 		};		
@@ -3867,7 +3867,7 @@ namespace Energistics {
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Discovery;
 					};					
-					typedef boost::shared_ptr<GetResources> GetResourcesPtr;
+					typedef std::shared_ptr<GetResources> GetResourcesPtr;
 				};				
 			};			
 		};		
@@ -3893,7 +3893,7 @@ namespace Energistics {
 						static const int messageTypeId=3;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Discovery;
 					};					
-					typedef boost::shared_ptr<GetResources2> GetResources2Ptr;
+					typedef std::shared_ptr<GetResources2> GetResources2Ptr;
 				};				
 			};			
 		};		
@@ -3919,7 +3919,7 @@ namespace Energistics {
 						static const int messageTypeId=2;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Discovery;
 					};					
-					typedef boost::shared_ptr<GetResourcesResponse> GetResourcesResponsePtr;
+					typedef std::shared_ptr<GetResourcesResponse> GetResourcesResponsePtr;
 				};				
 			};			
 		};		
@@ -3945,7 +3945,7 @@ namespace Energistics {
 						static const int messageTypeId=4;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Discovery;
 					};					
-					typedef boost::shared_ptr<GetResourcesResponse2> GetResourcesResponse2Ptr;
+					typedef std::shared_ptr<GetResourcesResponse2> GetResourcesResponse2Ptr;
 				};				
 			};			
 		};		
@@ -3971,7 +3971,7 @@ namespace Energistics {
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::DiscoveryQuery;
 					};					
-					typedef boost::shared_ptr<FindResources> FindResourcesPtr;
+					typedef std::shared_ptr<FindResources> FindResourcesPtr;
 				};				
 			};			
 		};		
@@ -3998,7 +3998,7 @@ namespace Energistics {
 						static const int messageTypeId=2;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::DiscoveryQuery;
 					};					
-					typedef boost::shared_ptr<FindResourcesResponse> FindResourcesResponsePtr;
+					typedef std::shared_ptr<FindResourcesResponse> FindResourcesResponsePtr;
 				};				
 			};			
 		};		
@@ -4027,7 +4027,7 @@ namespace Energistics {
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObject;
 					};					
-					typedef boost::shared_ptr<DeletePart> DeletePartPtr;
+					typedef std::shared_ptr<DeletePart> DeletePartPtr;
 				};				
 			};			
 		};		
@@ -4057,7 +4057,7 @@ namespace Energistics {
 						static const int messageTypeId=2;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObject;
 					};					
-					typedef boost::shared_ptr<DeletePartsByRange> DeletePartsByRangePtr;
+					typedef std::shared_ptr<DeletePartsByRange> DeletePartsByRangePtr;
 				};				
 			};			
 		};		
@@ -4088,7 +4088,7 @@ namespace Energistics {
 						static const int messageTypeId=3;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObject;
 					};					
-					typedef boost::shared_ptr<GetPart> GetPartPtr;
+					typedef std::shared_ptr<GetPart> GetPartPtr;
 				};				
 			};			
 		};		
@@ -4118,7 +4118,7 @@ namespace Energistics {
 						static const int messageTypeId=4;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObject;
 					};					
-					typedef boost::shared_ptr<GetPartsByRange> GetPartsByRangePtr;
+					typedef std::shared_ptr<GetPartsByRange> GetPartsByRangePtr;
 				};				
 			};			
 		};		
@@ -4148,7 +4148,7 @@ namespace Energistics {
 						static const int messageTypeId=8;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObject;
 					};					
-					typedef boost::shared_ptr<GetPartsMetadata> GetPartsMetadataPtr;
+					typedef std::shared_ptr<GetPartsMetadata> GetPartsMetadataPtr;
 				};				
 			};			
 		};		
@@ -4175,7 +4175,7 @@ namespace Energistics {
 						static const int messageTypeId=9;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObject;
 					};					
-					typedef boost::shared_ptr<GetPartsMetadataResponse> GetPartsMetadataResponsePtr;
+					typedef std::shared_ptr<GetPartsMetadataResponse> GetPartsMetadataResponsePtr;
 				};				
 			};			
 		};		
@@ -4206,7 +4206,7 @@ namespace Energistics {
 						static const int messageTypeId=6;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObject;
 					};					
-					typedef boost::shared_ptr<ObjectPart> ObjectPartPtr;
+					typedef std::shared_ptr<ObjectPart> ObjectPartPtr;
 				};				
 			};			
 		};		
@@ -4241,7 +4241,7 @@ namespace Energistics {
 						static const int messageTypeId=5;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObject;
 					};					
-					typedef boost::shared_ptr<PutPart> PutPartPtr;
+					typedef std::shared_ptr<PutPart> PutPartPtr;
 				};				
 			};			
 		};		
@@ -4278,7 +4278,7 @@ namespace Energistics {
 						static const int messageTypeId=7;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObject;
 					};					
-					typedef boost::shared_ptr<ReplacePartsByRange> ReplacePartsByRangePtr;
+					typedef std::shared_ptr<ReplacePartsByRange> ReplacePartsByRangePtr;
 				};				
 			};			
 		};		
@@ -4314,7 +4314,7 @@ namespace Energistics {
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObjectQuery;
 					};					
-					typedef boost::shared_ptr<FindParts> FindPartsPtr;
+					typedef std::shared_ptr<FindParts> FindPartsPtr;
 				};				
 			};			
 		};		
@@ -4344,7 +4344,7 @@ namespace Energistics {
 						static const int messageTypeId=2;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObjectQuery;
 					};					
-					typedef boost::shared_ptr<FindPartsResponse> FindPartsResponsePtr;
+					typedef std::shared_ptr<FindPartsResponse> FindPartsResponsePtr;
 				};				
 			};			
 		};		
@@ -4383,7 +4383,7 @@ namespace Energistics {
 						static const int messageTypeId=2;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObjectNotification;
 					};					
-					typedef boost::shared_ptr<PartChanged> PartChangedPtr;
+					typedef std::shared_ptr<PartChanged> PartChangedPtr;
 				};				
 			};			
 		};		
@@ -4421,7 +4421,7 @@ namespace Energistics {
 						static const int messageTypeId=3;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObjectNotification;
 					};					
-					typedef boost::shared_ptr<PartDeleted> PartDeletedPtr;
+					typedef std::shared_ptr<PartDeleted> PartDeletedPtr;
 				};				
 			};			
 		};		
@@ -4454,7 +4454,7 @@ namespace Energistics {
 						static const int messageTypeId=5;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObjectNotification;
 					};					
-					typedef boost::shared_ptr<PartsDeletedByRange> PartsDeletedByRangePtr;
+					typedef std::shared_ptr<PartsDeletedByRange> PartsDeletedByRangePtr;
 				};				
 			};			
 		};		
@@ -4492,7 +4492,7 @@ namespace Energistics {
 						static const int messageTypeId=6;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObjectNotification;
 					};					
-					typedef boost::shared_ptr<PartsReplacedByRange> PartsReplacedByRangePtr;
+					typedef std::shared_ptr<PartsReplacedByRange> PartsReplacedByRangePtr;
 				};				
 			};			
 		};		
@@ -4530,7 +4530,7 @@ namespace Energistics {
 						static const int messageTypeId=7;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObjectNotification;
 					};					
-					typedef boost::shared_ptr<SubscribePartNotification2> SubscribePartNotification2Ptr;
+					typedef std::shared_ptr<SubscribePartNotification2> SubscribePartNotification2Ptr;
 				};				
 			};			
 		};		
@@ -4556,7 +4556,7 @@ namespace Energistics {
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObjectNotification;
 					};					
-					typedef boost::shared_ptr<SubscribePartNotification> SubscribePartNotificationPtr;
+					typedef std::shared_ptr<SubscribePartNotification> SubscribePartNotificationPtr;
 				};				
 			};			
 		};		
@@ -4582,7 +4582,7 @@ namespace Energistics {
 						static const int messageTypeId=4;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObjectNotification;
 					};					
-					typedef boost::shared_ptr<UnsubscribePartNotification> UnsubscribePartNotificationPtr;
+					typedef std::shared_ptr<UnsubscribePartNotification> UnsubscribePartNotificationPtr;
 				};				
 			};			
 		};		
@@ -4608,7 +4608,7 @@ namespace Energistics {
 						static const int messageTypeId=3;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Store;
 					};					
-					typedef boost::shared_ptr<DeleteObject> DeleteObjectPtr;
+					typedef std::shared_ptr<DeleteObject> DeleteObjectPtr;
 				};				
 			};			
 		};		
@@ -4634,7 +4634,7 @@ namespace Energistics {
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Store;
 					};					
-					typedef boost::shared_ptr<GetObject_> GetObjectPtr;
+					typedef std::shared_ptr<GetObject_> GetObjectPtr;
 				};				
 			};			
 		};		
@@ -4660,7 +4660,7 @@ namespace Energistics {
 						static const int messageTypeId=4;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Store;
 					};					
-					typedef boost::shared_ptr<Object> ObjectPtr;
+					typedef std::shared_ptr<Object> ObjectPtr;
 				};				
 			};			
 		};		
@@ -4686,7 +4686,7 @@ namespace Energistics {
 						static const int messageTypeId=2;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Store;
 					};					
-					typedef boost::shared_ptr<PutObject> PutObjectPtr;
+					typedef std::shared_ptr<PutObject> PutObjectPtr;
 				};				
 			};			
 		};		
@@ -4713,7 +4713,7 @@ namespace Energistics {
 						static const int messageTypeId=5;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::StoreNotification;
 					};					
-					typedef boost::shared_ptr<ObjectAccessRevoked> ObjectAccessRevokedPtr;
+					typedef std::shared_ptr<ObjectAccessRevoked> ObjectAccessRevokedPtr;
 				};				
 			};			
 		};		
@@ -4741,7 +4741,7 @@ namespace Energistics {
 						static const int messageTypeId=2;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::StoreNotification;
 					};					
-					typedef boost::shared_ptr<ObjectChanged> ObjectChangedPtr;
+					typedef std::shared_ptr<ObjectChanged> ObjectChangedPtr;
 				};				
 			};			
 		};		
@@ -4768,7 +4768,7 @@ namespace Energistics {
 						static const int messageTypeId=3;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::StoreNotification;
 					};					
-					typedef boost::shared_ptr<ObjectDeleted> ObjectDeletedPtr;
+					typedef std::shared_ptr<ObjectDeleted> ObjectDeletedPtr;
 				};				
 			};			
 		};		
@@ -4796,7 +4796,7 @@ namespace Energistics {
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::StoreNotification;
 					};					
-					typedef boost::shared_ptr<SubscribeNotification> SubscribeNotificationPtr;
+					typedef std::shared_ptr<SubscribeNotification> SubscribeNotificationPtr;
 				};				
 			};			
 		};		
@@ -4822,7 +4822,7 @@ namespace Energistics {
 						static const int messageTypeId=6;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::StoreNotification;
 					};					
-					typedef boost::shared_ptr<SubscribeNotification2> SubscribeNotification2Ptr;
+					typedef std::shared_ptr<SubscribeNotification2> SubscribeNotification2Ptr;
 				};				
 			};			
 		};		
@@ -4848,7 +4848,7 @@ namespace Energistics {
 						static const int messageTypeId=4;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::StoreNotification;
 					};					
-					typedef boost::shared_ptr<UnsubscribeNotification> UnsubscribeNotificationPtr;
+					typedef std::shared_ptr<UnsubscribeNotification> UnsubscribeNotificationPtr;
 				};				
 			};			
 		};		
@@ -4874,7 +4874,7 @@ namespace Energistics {
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::StoreQuery;
 					};					
-					typedef boost::shared_ptr<FindObjects> FindObjectsPtr;
+					typedef std::shared_ptr<FindObjects> FindObjectsPtr;
 				};				
 			};			
 		};		
@@ -4901,7 +4901,7 @@ namespace Energistics {
 						static const int messageTypeId=2;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::StoreQuery;
 					};					
-					typedef boost::shared_ptr<FindObjectsResponse> FindObjectsResponsePtr;
+					typedef std::shared_ptr<FindObjectsResponse> FindObjectsResponsePtr;
 				};				
 			};			
 		};		
@@ -4929,7 +4929,7 @@ namespace Energistics {
 						static const int messageTypeId=3;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Transaction;
 					};					
-					typedef boost::shared_ptr<CommitTransaction> CommitTransactionPtr;
+					typedef std::shared_ptr<CommitTransaction> CommitTransactionPtr;
 				};				
 			};			
 		};		
@@ -4957,7 +4957,7 @@ namespace Energistics {
 						static const int messageTypeId=5;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Transaction;
 					};					
-					typedef boost::shared_ptr<CommitTransactionResponse> CommitTransactionResponsePtr;
+					typedef std::shared_ptr<CommitTransactionResponse> CommitTransactionResponsePtr;
 				};				
 			};			
 		};		
@@ -4987,7 +4987,7 @@ namespace Energistics {
 						static const int messageTypeId=4;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Transaction;
 					};					
-					typedef boost::shared_ptr<RollbackTransaction> RollbackTransactionPtr;
+					typedef std::shared_ptr<RollbackTransaction> RollbackTransactionPtr;
 				};				
 			};			
 		};		
@@ -5012,7 +5012,7 @@ namespace Energistics {
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Transaction;
 					};					
-					typedef boost::shared_ptr<StartTransaction> StartTransactionPtr;
+					typedef std::shared_ptr<StartTransaction> StartTransactionPtr;
 				};				
 			};			
 		};		
@@ -5036,7 +5036,7 @@ namespace Energistics {
 						static const int messageTypeId=2;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Transaction;
 					};					
-					typedef boost::shared_ptr<StartTransactionResponse> StartTransactionResponsePtr;
+					typedef std::shared_ptr<StartTransactionResponse> StartTransactionResponsePtr;
 				};				
 			};			
 		};		
@@ -5065,7 +5065,7 @@ namespace Energistics {
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::WitsmlSoap;
 					};					
-					typedef boost::shared_ptr<WMLS_AddToStore> WMLS_AddToStorePtr;
+					typedef std::shared_ptr<WMLS_AddToStore> WMLS_AddToStorePtr;
 				};				
 			};			
 		};		
@@ -5098,7 +5098,7 @@ namespace Energistics {
 						static const int messageTypeId=2;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::WitsmlSoap;
 					};					
-					typedef boost::shared_ptr<WMLS_AddToStoreResponse> WMLS_AddToStoreResponsePtr;
+					typedef std::shared_ptr<WMLS_AddToStoreResponse> WMLS_AddToStoreResponsePtr;
 				};				
 			};			
 		};		
@@ -5129,7 +5129,7 @@ namespace Energistics {
 						static const int messageTypeId=3;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::WitsmlSoap;
 					};					
-					typedef boost::shared_ptr<WMLS_DeleteFromStore> WMLS_DeleteFromStorePtr;
+					typedef std::shared_ptr<WMLS_DeleteFromStore> WMLS_DeleteFromStorePtr;
 				};				
 			};			
 		};		
@@ -5162,7 +5162,7 @@ namespace Energistics {
 						static const int messageTypeId=4;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::WitsmlSoap;
 					};					
-					typedef boost::shared_ptr<WMLS_DeleteFromStoreResponse> WMLS_DeleteFromStoreResponsePtr;
+					typedef std::shared_ptr<WMLS_DeleteFromStoreResponse> WMLS_DeleteFromStoreResponsePtr;
 				};				
 			};			
 		};		
@@ -5190,7 +5190,7 @@ namespace Energistics {
 						static const int messageTypeId=5;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::WitsmlSoap;
 					};					
-					typedef boost::shared_ptr<WMLS_GetBaseMsg> WMLS_GetBaseMsgPtr;
+					typedef std::shared_ptr<WMLS_GetBaseMsg> WMLS_GetBaseMsgPtr;
 				};				
 			};			
 		};		
@@ -5216,7 +5216,7 @@ namespace Energistics {
 						static const int messageTypeId=6;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::WitsmlSoap;
 					};					
-					typedef boost::shared_ptr<WMLS_GetBaseMsgResponse> WMLS_GetBaseMsgResponsePtr;
+					typedef std::shared_ptr<WMLS_GetBaseMsgResponse> WMLS_GetBaseMsgResponsePtr;
 				};				
 			};			
 		};		
@@ -5242,7 +5242,7 @@ namespace Energistics {
 						static const int messageTypeId=7;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::WitsmlSoap;
 					};					
-					typedef boost::shared_ptr<WMLS_GetCap> WMLS_GetCapPtr;
+					typedef std::shared_ptr<WMLS_GetCap> WMLS_GetCapPtr;
 				};				
 			};			
 		};		
@@ -5270,7 +5270,7 @@ namespace Energistics {
 						static const int messageTypeId=8;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::WitsmlSoap;
 					};					
-					typedef boost::shared_ptr<WMLS_GetCapResponse> WMLS_GetCapResponsePtr;
+					typedef std::shared_ptr<WMLS_GetCapResponse> WMLS_GetCapResponsePtr;
 				};				
 			};			
 		};		
@@ -5303,7 +5303,7 @@ namespace Energistics {
 						static const int messageTypeId=9;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::WitsmlSoap;
 					};					
-					typedef boost::shared_ptr<WMLS_GetFromStore> WMLS_GetFromStorePtr;
+					typedef std::shared_ptr<WMLS_GetFromStore> WMLS_GetFromStorePtr;
 				};				
 			};			
 		};		
@@ -5337,7 +5337,7 @@ namespace Energistics {
 						static const int messageTypeId=10;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::WitsmlSoap;
 					};					
-					typedef boost::shared_ptr<WMLS_GetFromStoreResponse> WMLS_GetFromStoreResponsePtr;
+					typedef std::shared_ptr<WMLS_GetFromStoreResponse> WMLS_GetFromStoreResponsePtr;
 				};				
 			};			
 		};		
@@ -5366,7 +5366,7 @@ namespace Energistics {
 						static const int messageTypeId=11;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::WitsmlSoap;
 					};					
-					typedef boost::shared_ptr<WMLS_GetVersion> WMLS_GetVersionPtr;
+					typedef std::shared_ptr<WMLS_GetVersion> WMLS_GetVersionPtr;
 				};				
 			};			
 		};		
@@ -5390,7 +5390,7 @@ namespace Energistics {
 						static const int messageTypeId=12;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::WitsmlSoap;
 					};					
-					typedef boost::shared_ptr<WMLS_GetVersionResponse> WMLS_GetVersionResponsePtr;
+					typedef std::shared_ptr<WMLS_GetVersionResponse> WMLS_GetVersionResponsePtr;
 				};				
 			};			
 		};		
@@ -5419,7 +5419,7 @@ namespace Energistics {
 						static const int messageTypeId=13;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::WitsmlSoap;
 					};					
-					typedef boost::shared_ptr<WMLS_UpdateInStore> WMLS_UpdateInStorePtr;
+					typedef std::shared_ptr<WMLS_UpdateInStore> WMLS_UpdateInStorePtr;
 				};				
 			};			
 		};		
@@ -5452,7 +5452,7 @@ namespace Energistics {
 						static const int messageTypeId=14;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::WitsmlSoap;
 					};					
-					typedef boost::shared_ptr<WMLS_UpdateInStoreResponse> WMLS_UpdateInStoreResponsePtr;
+					typedef std::shared_ptr<WMLS_UpdateInStoreResponse> WMLS_UpdateInStoreResponsePtr;
 				};				
 			};			
 		};		
