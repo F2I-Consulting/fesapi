@@ -80,6 +80,7 @@ under the License.
 #include "resqml2_0_1/ContinuousProperty.h"
 #include "resqml2_0_1/ContinuousPropertySeries.h"
 
+#include "resqml2_0_1/Activity.h"
 #include "resqml2_0_1/ActivityTemplate.h"
 
 #include "resqml2_0_1/PropertyKindMapper.h"
