@@ -288,6 +288,7 @@ void serializeBoundaries(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfPro
 	timeStruct.tm_mon = 1;
 	timeStruct.tm_year = 0;
 	horizon1->setCreation(timeStruct);
+	horizon1->setAge(300000000);
 	horizon2 = pck->createHorizon("fd7950a6-f62e-4e47-96c4-048820a61c59", "Horizon2");
 	horizon2->setVersionString("my version string");
 	fault1 = pck->createFault("1424bcc2-3d9d-4f30-b1f9-69dcb897e33b", "Fault1");
@@ -2739,6 +2740,9 @@ void deserialize(const string & inputFile)
 	std::cout << "HORIZONS" << endl;
 	for (size_t i = 0; i < horizonSet.size(); i++) {
 		showAllMetadata(horizonSet[i]);
+		if (horizonSet[i]->hasAnAge()) {
+			cout << "Age " << horizonSet[i]->getAge() << " years" << endl;
+		}
 		std::cout << std::endl;
 	}
 
