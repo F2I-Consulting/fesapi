@@ -2112,11 +2112,11 @@ namespace gsoap_resqml2_0_1
 	};
 }
 
-namespace WITSML1_4_1_1_NS {
+namespace WITSML2_01_4_1_1_NS {
 	class Wellbore;
-	class Trajectory;
-	class Log;
-	class FormationMarker;
+//	class Trajectory;
+//	class Log;
+//	class FormationMarker;
 }
 
 #ifdef SWIGPYTHON
@@ -2375,8 +2375,8 @@ namespace RESQML2_0_1_NS
 	class WellboreFeature : public AbstractTechnicalFeature
 	{
 	public:
-		WITSML1_4_1_1_NS::Wellbore* getWitsmlWellbore();
-		void setWitsmlWellbore(WITSML1_4_1_1_NS::Wellbore * wellbore);
+		WITSML2_0_NS::Wellbore* getWitsmlWellbore();
+		void setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore);
 	};
 
 #ifdef SWIGPYTHON
@@ -2794,8 +2794,8 @@ namespace RESQML2_0_1_NS
 		void setDeviationSurvey(class DeviationSurveyRepresentation* deviationSurvey);
 		class DeviationSurveyRepresentation* getDeviationSurvey() const;
 
-		void setWitsmlTrajectory(WITSML1_4_1_1_NS::Trajectory * witsmlTraj);
-		WITSML1_4_1_1_NS::Trajectory * getWitsmlTrajectory();
+//		void setWitsmlTrajectory(WITSML1_4_1_1_NS::Trajectory * witsmlTraj);
+//		WITSML1_4_1_1_NS::Trajectory * getWitsmlTrajectory();
 	};
 
 #ifdef SWIGPYTHON
@@ -2849,8 +2849,8 @@ namespace RESQML2_0_1_NS
 		std::string getWellboreTrajectoryUuid() const;
 		WellboreTrajectoryRepresentation* getWellboreTrajectory();
 
-		void setWitsmlLog(WITSML1_4_1_1_NS::Log * witsmlLogToSet);
-		WITSML1_4_1_1_NS::Log* getWitsmlLog();
+//		void setWitsmlLog(WITSML1_4_1_1_NS::Log * witsmlLogToSet);
+//		WITSML1_4_1_1_NS::Log* getWitsmlLog();
 	};
 	
 #ifdef SWIGPYTHON
@@ -2881,7 +2881,7 @@ namespace RESQML2_0_1_NS
 		void setIntervalStratigraphicUnits(unsigned int * stratiUnitIndices, const unsigned int & nullValue, class StratigraphicOccurrenceInterpretation* stratiOccurenceInterp);
 		StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation();
 
-		void setWitsmlFormationMarker(const unsigned int & resqmlMarkerIndex, WITSML1_4_1_1_NS::FormationMarker * witsmlFormationMarker);
+//		void setWitsmlFormationMarker(const unsigned int & resqmlMarkerIndex, WITSML1_4_1_1_NS::FormationMarker * witsmlFormationMarker);
 	};
 	
 #ifdef SWIGPYTHON

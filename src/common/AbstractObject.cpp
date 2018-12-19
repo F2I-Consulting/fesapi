@@ -500,6 +500,7 @@ void AbstractObject::initMandatoryMetadata()
 		gsoapProxy2_0_1->Citation = soap_new_eml20__Citation(gsoapProxy2_0_1->soap, 1);
 	}
 	else {
+		// TODO à checker
 		gsoapProxy2_1->schemaVersion = getResqmlVersion();
 		gsoapProxy2_1->Citation = gsoap_eml2_1::soap_new_eml21__Citation(gsoapProxy2_1->soap, 1);
 	}
@@ -749,15 +750,9 @@ void AbstractObject::pushBackExtraMetadataV2_0_1(const std::string & key, const 
 	static_cast<resqml2__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata.push_back(stringPair);
 }
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 std::unordered_map< std::string, std::string > AbstractObject::getExtraMetadataSetV2_0_1() const
 {
 	std::unordered_map< std::string, std::string > result;
-#else
-std::tr1::unordered_map< std::string, std::string > AbstractObject::getExtraMetadataSetV2_0_1() const
-{
-	std::tr1::unordered_map< std::string, std::string > result;
-#endif
 	for (size_t i = 0; i < static_cast<resqml2__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata.size(); ++i) {
 		result[static_cast<resqml2__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata[i]->Name] = static_cast<resqml2__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata[i]->Value;
 	}
@@ -814,11 +809,7 @@ void AbstractObject::pushBackExtraMetadata(const std::string & key, const std::s
 /**
 * Getter (in read only mode) of all the extra metadata
 */
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 std::unordered_map< std::string, std::string > AbstractObject::getExtraMetadataSet() const
-#else
-std::tr1::unordered_map< std::string, std::string > AbstractObject::getExtraMetadataSet() const
-#endif
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		return getExtraMetadataSetV2_0_1();

@@ -535,6 +535,7 @@ namespace COMMON_NS
 
 		/**
 		* Read an array Nd of unsigned int values stored in a specific dataset
+		* Don't forget to delete the allocated pointer when no more necessary.
 		* @param datasetName	The absolute dataset name where to read the values
 		* @param values 		The values must be pre-allocated and won't be freed by this method.
 		*/
@@ -542,6 +543,7 @@ namespace COMMON_NS
 
 		/**
 		* Read an array Nd of short values stored in a specific dataset
+		* Don't forget to delete the allocated pointer when no more necessary.
 		* @param datasetName	The absolute dataset name where to read the values
 		* @param values 		The values must be pre-allocated and won't be freed by this method.
 		*/

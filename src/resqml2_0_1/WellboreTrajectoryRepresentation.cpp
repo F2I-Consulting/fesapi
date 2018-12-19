@@ -28,7 +28,8 @@ under the License.
 #include "resqml2/AbstractLocal3dCrs.h"
 #include "common/AbstractHdfProxy.h"
 
-#include "witsml1_4_1_1/Trajectory.h"
+// TODO à mettre à jour
+//#include "witsml1_4_1_1/Trajectory.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -167,16 +168,17 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints,
 	hdfProxy->writeArrayNdOfDoubleValues(rep->uuid, "tangentVectors", tangentVectors, dim, 2);
 }
 
-void WellboreTrajectoryRepresentation::setWitsmlTrajectory(WITSML1_4_1_1_NS::Trajectory * witsmlTraj)
-{
-	witsmlTrajectory = witsmlTraj;
-	witsmlTraj->resqmlWellboreTrajectoryRepresentation = this;
-
-	if (updateXml) {
-		resqml2__obj_USCOREWellboreTrajectoryRepresentation* resqmlTraj = static_cast<resqml2__obj_USCOREWellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
-		resqmlTraj->WitsmlTrajectory = witsmlTraj->newResqmlReference();
-	}
-}
+// TODO à mettre à jour
+//void WellboreTrajectoryRepresentation::setWitsmlTrajectory(WITSML1_4_1_1_NS::Trajectory * witsmlTraj)
+//{
+//	witsmlTrajectory = witsmlTraj;
+//	witsmlTraj->resqmlWellboreTrajectoryRepresentation = this;
+//
+//	if (updateXml) {
+//		resqml2__obj_USCOREWellboreTrajectoryRepresentation* resqmlTraj = static_cast<resqml2__obj_USCOREWellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
+//		resqmlTraj->WitsmlTrajectory = witsmlTraj->newResqmlReference();
+//	}
+//}
 
 vector<Relationship> WellboreTrajectoryRepresentation::getAllEpcRelationships() const
 {
@@ -209,11 +211,12 @@ vector<Relationship> WellboreTrajectoryRepresentation::getAllEpcRelationships() 
 		result.push_back(relParentTraj);
 	}
 
-	if (witsmlTrajectory != nullptr) {
-		Relationship relWitsmlTraj(witsmlTrajectory->getPartNameInEpcDocument(), "", witsmlTrajectory->getUuid());
-		relWitsmlTraj.setDestinationObjectType();
-		result.push_back(relWitsmlTraj);
-	}
+	// TODO à mettre à jour
+	//if (witsmlTrajectory != nullptr) {
+	//	Relationship relWitsmlTraj(witsmlTrajectory->getPartNameInEpcDocument(), "", witsmlTrajectory->getUuid());
+	//	relWitsmlTraj.setDestinationObjectType();
+	//	result.push_back(relWitsmlTraj);
+	//}
 
 	// XML backward relationship
 	for (size_t i = 0 ; i < childrenTrajSet.size(); ++i) {
@@ -265,15 +268,16 @@ void WellboreTrajectoryRepresentation::importRelationshipSetFromEpc(COMMON_NS::E
 		parentTraj->addChildrenTrajectory(this);
 	}
 
-	if (rep->WitsmlTrajectory != nullptr) {
-		WITSML1_4_1_1_NS::Trajectory* tmp = static_cast<WITSML1_4_1_1_NS::Trajectory*>(epcDoc->getWitsmlAbstractObjectByUuid(rep->WitsmlTrajectory->UUID));
-		if (tmp)
-		{
-			updateXml = false;
-			setWitsmlTrajectory(tmp);
-			updateXml = true;
-		}
-	}
+	// TODO à mettre à jour
+	//if (rep->WitsmlTrajectory != nullptr) {
+	//	WITSML1_4_1_1_NS::Trajectory* tmp = static_cast<WITSML1_4_1_1_NS::Trajectory*>(epcDoc->getWitsmlAbstractObjectByUuid(rep->WitsmlTrajectory->UUID));
+	//	if (tmp)
+	//	{
+	//		updateXml = false;
+	//		setWitsmlTrajectory(tmp);
+	//		updateXml = true;
+	//	}
+	//}
 }
 
 void WellboreTrajectoryRepresentation::addParentTrajectory(const double & kickoffMd, const double & parentMd, WellboreTrajectoryRepresentation* parentTrajRep)

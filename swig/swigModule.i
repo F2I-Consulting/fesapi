@@ -203,7 +203,7 @@ namespace COMMON_NS
 
 %include "swigResqml2Include.i"
 %include "swigResqml2_0_1Include.i"
-%include "swigWitsml1_4_1_1Include.i"
+%include "swigWitsml2_0Include.i"
 
 %template(StringVector) std::vector< std::string >;
 
@@ -241,11 +241,10 @@ namespace COMMON_NS
 		gsoap_resqml2_0_1::resqml2__ResqmlUom getEnergisticsUnitOfMeasure(const std::string & energisticsUomName) const;
 		std::string getFacet(const gsoap_resqml2_0_1::resqml2__Facet & facet) const;
 		gsoap_resqml2_0_1::resqml2__Facet getFacet(const std::string & facet) const;
-		std::string getWitsmlLengthUom(const gsoap_witsml1_4_1_1::witsml1__LengthUom & witsmlUom) const;
-		std::string getWitsmlWellVerticalCoordinateUom(const gsoap_witsml1_4_1_1::witsml1__WellVerticalCoordinateUom & witsmlUom) const;
-		std::string getWitsmlMeasuredDepthUom(const gsoap_witsml1_4_1_1::witsml1__MeasuredDepthUom & witsmlUom) const;
+		std::string lengthUomToString(const gsoap_eml2_1::eml21__LengthUom & witsmlUom) const;
+		std::string verticalCoordinateUomToString(const gsoap_eml2_1::eml21__VerticalCoordinateUom & witsmlUom) const;
 
-		std::string getWitsmlPlaneAngleUom(const gsoap_witsml1_4_1_1::witsml1__PlaneAngleUom & witsmlUom) const;
+		std::string planeAngleUomToString(const gsoap_eml2_1::eml21__PlaneAngleUom & witsmlUom) const;
 		
 		const std::vector<RESQML2_0_1_NS::LocalDepth3dCrs*> & getLocalDepth3dCrsSet() const;
 		const std::vector<RESQML2_0_1_NS::LocalTime3dCrs*> & getLocalTime3dCrsSet() const;
@@ -304,7 +303,6 @@ namespace COMMON_NS
 		std::string getExtendedCoreProperty(const std::string & key);
 
 		COMMON_NS::AbstractObject* getResqmlAbstractObjectByUuid(const std::string & uuid) const;
-		WITSML1_4_1_1_NS::AbstractObject* getWitsmlAbstractObjectByUuid(const std::string & uuid) const;
 		
 		std::vector<std::string> getAllUuids() const;
 
@@ -648,38 +646,41 @@ namespace COMMON_NS
 		//************ WITSML ****************
 		//************************************
 		
-		std::vector<WITSML1_4_1_1_NS::Trajectory*> getWitsmlTrajectorySet() const;
-		
-		WITSML1_4_1_1_NS::Well* createWell(
-			const std::string & guid,
-			const std::string & title,
-			const std::string & timeZone);
+		WITSML2_0_NS::Well* createWell(const std::string & guid,
+			const std::string & title);
 
-		WITSML1_4_1_1_NS::Well* createWell(
-			const std::string & guid,
+		WITSML2_0_NS::Well* createWell(const std::string & guid,
 			const std::string & title,
-			const std::string & timeZone,
 			const std::string & operator_,
-			gsoap_witsml1_4_1_1::witsml1__WellStatus statusWell,
-			gsoap_witsml1_4_1_1::witsml1__WellPurpose purposeWell,
-			gsoap_witsml1_4_1_1::witsml1__WellFluid fluidWell,
-			gsoap_witsml1_4_1_1::witsml1__WellDirection directionWell,
-			const time_t & dTimSpud,
-			const std::string & sourceName,
-			const time_t & dTimCreation,
-			const time_t & dTimLastChange,
-			const std::string & comments
+			gsoap_eml2_1::eml21__WellStatus statusWell,
+			gsoap_eml2_1::witsml2__WellPurpose purposeWell,
+			gsoap_eml2_1::witsml2__WellFluid fluidWell,
+			gsoap_eml2_1::witsml2__WellDirection directionWell
 		);
 
-		WITSML1_4_1_1_NS::CoordinateReferenceSystem* createCoordinateReferenceSystem(
+		WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
+			const std::string & guid,
+			const std::string & title);
+
+		WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title,
-			const std::string & namingSystem,
-			const std::string & code,
-			const std::string & sourceName,
-			const time_t & dTimCreation,
-			const time_t & dTimLastChange,
-			const std::string & comments);
+			gsoap_eml2_1::eml21__WellStatus statusWellbore,
+			const bool & isActive,
+			gsoap_eml2_1::witsml2__WellPurpose purposeWellbore,
+			gsoap_eml2_1::witsml2__WellboreType typeWellbore,
+			const bool & achievedTD
+		);
+		
+		WITSML2_0_NS::WellCompletion* createWellCompletion(WITSML2_0_NS::Well* witsmlWell,
+			const std::string & guid,
+			const std::string & title);
+
+		WITSML2_0_NS::WellboreCompletion* createWellboreCompletion(WITSML2_0_NS::Wellbore* witsmlWellbore,
+			WITSML2_0_NS::WellCompletion* wellCompletion,
+			const std::string & guid,
+			const std::string & title,
+			const std::string & wellCompletionName);
 				
 		const std::vector<std::string> & getWarnings() const;
 	};

@@ -5,125 +5,14 @@ PROJECT (Fesapi_SRC)
 configure_file(${FESAPI_ROOT_DIR}/cmake/version_config.h.in ${FESAPI_ROOT_DIR}/src/version_config.h)
 
 # ============================================================================
-# Resqml/Witsqml proxies generation
+# Getting source files
 # ============================================================================
 
 SET (RESQML_PREFIX_2 "resqml2")
 SET (RESQML_PREFIX_2_0_1 "resqml2_0_1")
 SET (RESQML_PREFIX_2_1 "resqml2_1")
-SET (WITSML_PREFIX "witsml1_4_1_1")
+SET (WITSML_PREFIX "witsml2_0")
 SET (PRODML_PREFIX_2_0 "prodml2_0")
-
-IF (PROXIES_GENERATION)
-	# setting RESQML_XSD_FILES 
-	SET (RESQML_XSD_FILES ${RESQML_SCHEMA_LOCATION}/ResqmlAllObjects.xsd)
-
-	# copying namespace.cpp to proxies output directory
-	ADD_CUSTOM_COMMAND (
-			OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/proxies/namespace.cpp
-			COMMAND ${CMAKE_COMMAND} -E copy ${FESAPI_ROOT_DIR}/gsoap/namespace.cpp ${CMAKE_CURRENT_SOURCE_DIR}/proxies/namespace.cpp
-	)
-
-	# copying stdsoap2.cpp(.h) to proxies output directory
-	ADD_CUSTOM_COMMAND (
-			OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/proxies/stdsoap2.cpp
-			OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/proxies/stdsoap2.h
-			COMMAND ${CMAKE_COMMAND} -E copy ${GSOAP_STDSOAP2_H} ${CMAKE_CURRENT_SOURCE_DIR}/proxies/stdsoap2.h
-			COMMAND ${CMAKE_COMMAND} -E copy ${GSOAP_STDSOAP2_CPP} ${CMAKE_CURRENT_SOURCE_DIR}/proxies/stdsoap2.cpp
-	)
-		
-	ADD_CUSTOM_COMMAND (
-		OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/proxies/envC.cpp ${CMAKE_CURRENT_SOURCE_DIR}/proxies/envH.h ${CMAKE_CURRENT_SOURCE_DIR}/proxies/envStub.h
-		COMMAND ${GSOAP_SOAPCPP2} -penv -d${CMAKE_CURRENT_BINARY_DIR} ${FESAPI_ROOT_DIR}/gsoap/env.h
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/envC.cpp ${CMAKE_CURRENT_SOURCE_DIR}/proxies/envC.cpp
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/envH.h ${CMAKE_CURRENT_SOURCE_DIR}/proxies/envH.h
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/envStub.h ${CMAKE_CURRENT_SOURCE_DIR}/proxies/envStub.h
-	)
-
-	IF (UNIX) 
-		ADD_CUSTOM_COMMAND (
-			OUTPUT typemap.dat PropertyTypeMapping.xsd
-			COMMAND ${CMAKE_COMMAND} -E copy ${FESAPI_ROOT_DIR}/gsoap/typemap.dat ${CMAKE_CURRENT_BINARY_DIR}/typemap.dat
-			COMMAND ${CMAKE_COMMAND} -E copy ${FESAPI_ROOT_DIR}/gsoap/PropertyTypeMapping.xsd ${CMAKE_CURRENT_BINARY_DIR}/PropertyTypeMapping.xsd
-			# next command aims at inserting the Resqml schema location into PropertyTypeMapping.xsd
-			COMMAND sed -i -e 's|RESQML_SCHEMA_LOCATION|${RESQML_SCHEMA_LOCATION}|g' ${CMAKE_CURRENT_BINARY_DIR}/PropertyTypeMapping.xsd 
-		)
-	ELSEIF (WIN32)
-		ADD_CUSTOM_COMMAND (
-			OUTPUT typemap.dat PropertyTypeMapping.xsd
-			COMMAND ${CMAKE_COMMAND} -E copy ${FESAPI_ROOT_DIR}/gsoap/typemap.dat ${CMAKE_CURRENT_BINARY_DIR}/typemap.dat
-			# next command aims at inserting the Resqml schema location into PropertyTypeMapping.xsd
-			COMMAND cscript ${FESAPI_ROOT_DIR}/gsoap/sed.vbs "s*RESQML_SCHEMA_LOCATION*${RESQML_SCHEMA_LOCATION}*g" < ${FESAPI_ROOT_DIR}/gsoap/PropertyTypeMapping.xsd > ${CMAKE_CURRENT_BINARY_DIR}/PropertyTypeMapping.xsd
-		)
-	ENDIF (UNIX)
-
-	add_custom_command(
-		OUTPUT ${RESQML_PREFIX_2_0_1}ForGsoap.h
-		COMMAND ${GSOAP_WSDL2H} -W -gjk -q gsoap_${RESQML_PREFIX_2_0_1} -o ${RESQML_PREFIX_2_0_1}ForGsoap.h ${RESQML_XSD_FILES} ${CMAKE_CURRENT_BINARY_DIR}/PropertyTypeMapping.xsd
-		DEPENDS typemap.dat PropertyTypeMapping.xsd
-	)
-
-	ADD_CUSTOM_COMMAND (
-		OUTPUT 
-			${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${RESQML_PREFIX_2_0_1}C.cpp
-			${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${RESQML_PREFIX_2_0_1}H.h
-			${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${RESQML_PREFIX_2_0_1}Stub.h
-		COMMAND ${GSOAP_SOAPCPP2} -jCLbst -I${GSOAP_LOCATION}/import -p${RESQML_PREFIX_2_0_1} -d${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR}/${RESQML_PREFIX_2_0_1}ForGsoap.h
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/gsoap_${RESQML_PREFIX_2_0_1}C.cpp ${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${RESQML_PREFIX_2_0_1}C.cpp
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/gsoap_${RESQML_PREFIX_2_0_1}H.h ${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${RESQML_PREFIX_2_0_1}H.h
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/gsoap_${RESQML_PREFIX_2_0_1}Stub.h ${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${RESQML_PREFIX_2_0_1}Stub.h
-		DEPENDS ${RESQML_PREFIX_2_0_1}ForGsoap.h
-	)
-
-	# setting WITSML_XSD_FILES
-	SET(WITSML_XSD_FILES
-		${WITSML_SCHEMA_LOCATION}/obj_well.xsd
-		${WITSML_SCHEMA_LOCATION}/obj_wellbore.xsd
-		${WITSML_SCHEMA_LOCATION}/obj_trajectory.xsd
-		${WITSML_SCHEMA_LOCATION}/obj_log.xsd 
-		${WITSML_SCHEMA_LOCATION}/obj_formationMarker.xsd
-		${WITSML_SCHEMA_LOCATION}/obj_coordinateReferenceSystem.xsd
-	)
-
-	ADD_CUSTOM_COMMAND (
-		OUTPUT ${WITSML_PREFIX}ForGsoap.h
-		COMMAND ${GSOAP_WSDL2H} -W -gjk -q gsoap_${WITSML_PREFIX} -o ${WITSML_PREFIX}ForGsoap.h ${WITSML_XSD_FILES}
-		DEPENDS typemap.dat
-	)
-	ADD_CUSTOM_COMMAND (
-		OUTPUT 
-			${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${WITSML_PREFIX}C.cpp
-			${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${WITSML_PREFIX}H.h
-			${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${WITSML_PREFIX}Stub.h
-		COMMAND ${GSOAP_SOAPCPP2} -jCLbst -I${GSOAP_LOCATION}/import -p${WITSML_PREFIX} -d${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR}/${WITSML_PREFIX}ForGsoap.h
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/gsoap_${WITSML_PREFIX}C.cpp ${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${WITSML_PREFIX}C.cpp
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/gsoap_${WITSML_PREFIX}H.h ${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${WITSML_PREFIX}H.h
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/gsoap_${WITSML_PREFIX}Stub.h ${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${WITSML_PREFIX}Stub.h
-		DEPENDS ${WITSML_PREFIX}ForGsoap.h
-	)
-
-	SET (FESAPI_PROXIES_SOURCES
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/envC.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/stdsoap2.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/struct_tm.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/namespace.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${RESQML_PREFIX_2_0_1}C.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${WITSML_PREFIX}C.cpp
-	)
-	SET (FESAPI_PROXIES_HEADERS
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/envH.h
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/envStub.h
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_resqml2_0_1H.h
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_resqml2_0_1Stub.h
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_witsml1_4_1_1H.h
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_witsml1_4_1_1Stub.h
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/stdsoap2.h
-	)
-ENDIF (PROXIES_GENERATION)
-
-# ============================================================================
-# Getting source files
-# ============================================================================
 
 SET (WITH_JAVA_WRAPPING OFF CACHE BOOL "Compile the swig cpp generated file for Java wrappers.")
 SET (WITH_DOTNET_WRAPPING OFF CACHE BOOL "Compile the swig cpp generated file for .NET wrappers.")
@@ -133,8 +22,11 @@ SET (FESAPI_COMMON_NS common CACHE STRING "Namespace for common objects")
 SET (FESAPI_PRODML2_0_NS prodml2_0 CACHE STRING "Namespace for prodml2_0 objects")
 SET (FESAPI_RESQML2_NS resqml2 CACHE STRING "Namespace for resqml2 objects")
 SET (FESAPI_RESQML2_0_1_NS resqml2_0_1 CACHE STRING "Namespace for resqml2_0_1 objects")
-SET (FESAPI_WITSML1_4_1_1_NS witsml1_4_1_1 CACHE STRING "Namespace for witsml1_4_1_1 objects")
+SET (FESAPI_WITSML2_0_NS witsml2_0 CACHE STRING "Namespace for witsml2_0 objects")
 CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/nsDefinitions.h) # Overwrite if different
+
+FILE (GLOB FESAPI_PROXIES_SOURCES ${FESAPI_ROOT_DIR}/src/proxies/*.cpp)
+FILE (GLOB FESAPI_PROXIES_HEADERS ${FESAPI_ROOT_DIR}/src/proxies/*.h)
 
 FILE (GLOB FESAPI_COMMON_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/common/*.cpp)
 FILE (GLOB FESAPI_COMMON_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/common/*.h)
@@ -196,7 +88,7 @@ IF (WITH_JAVA_WRAPPING)
 	FILE (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/common)
 	FILE (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2)
 	FILE (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2_0_1)
-	FILE (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml1_4_1_1)
+	FILE (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml2_0)
 	
 	# Create the dedicated swig files
 	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/swigResqml2JavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigResqml2JavaInclude.i) # Overwrite if different
@@ -237,7 +129,7 @@ IF (WITH_DOTNET_WRAPPING)
 	
 	# Create the dedicated swig files
 	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/swigResqml2CsInclude.i ${FESAPI_ROOT_DIR}/swig/swigResqml2CsInclude.i) # Overwrite if different
-	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/swigWitsml1_4_1_1CsInclude.i ${FESAPI_ROOT_DIR}/swig/swigWitsml1_4_1_1CsInclude.i) # Overwrite if different
+	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/swigWitsml2_0CsInclude.i ${FESAPI_ROOT_DIR}/swig/swigWitsml2_0CsInclude.i) # Overwrite if different
 	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/Program.cs ${FESAPI_ROOT_DIR}/cs/example/Program.cs) # Overwrite if different
 	
 	# Filling

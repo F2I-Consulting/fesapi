@@ -27,7 +27,8 @@ under the License.
 #include "resqml2/AbstractLocal3dCrs.h"
 #include "common/AbstractHdfProxy.h"
 
-#include "witsml1_4_1_1/Log.h"
+// TODO à mettre à jour
+//#include "witsml1_4_1_1/Log.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -37,7 +38,9 @@ using namespace epc;
 const char* WellboreFrameRepresentation::XML_TAG = "WellboreFrameRepresentation";
 
 WellboreFrameRepresentation::WellboreFrameRepresentation(WellboreInterpretation* interp, const string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj) :
-	AbstractRepresentation(interp, traj->getLocalCrs()), trajectory(traj), witsmlLog(nullptr)
+	AbstractRepresentation(interp, traj->getLocalCrs()), trajectory(traj)
+	// TODO à mettre à jour
+	//, witsmlLog(nullptr)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREWellboreFrameRepresentation(interp->getGsoapContext(), 1);	
 	_resqml2__WellboreFrameRepresentation* frame = static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
@@ -82,12 +85,13 @@ vector<Relationship> WellboreFrameRepresentation::getAllEpcRelationships() const
 	else
 		throw domain_error("The trajectory associated to the WellboreFeature frame cannot be nullptr.");
 
-	if (witsmlLog)
-	{
-		Relationship relWitsmlLog(witsmlLog->getPartNameInEpcDocument(), "", witsmlLog->getUuid());
-		relWitsmlLog.setDestinationObjectType();
-		result.push_back(relWitsmlLog);
-	}
+	// TODO à mettre à jour
+	//if (witsmlLog)
+	//{
+	//	Relationship relWitsmlLog(witsmlLog->getPartNameInEpcDocument(), "", witsmlLog->getUuid());
+	//	relWitsmlLog.setDestinationObjectType();
+	//	result.push_back(relWitsmlLog);
+	//}
 
 	return result;
 }
@@ -109,14 +113,14 @@ void WellboreFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDoc
 		setHdfProxy(static_cast<COMMON_NS::AbstractHdfProxy* const>(epcDoc->getResqmlAbstractObjectByUuid(static_cast<resqml2__DoubleHdf5Array* const>(rep->NodeMd)->Values->HdfProxy->UUID)));
 	}
 
-	if (rep->WitsmlLogReference) {
-		WITSML1_4_1_1_NS::Log* tmp = static_cast<WITSML1_4_1_1_NS::Log* const>(epcDoc->getWitsmlAbstractObjectByUuid(rep->WitsmlLogReference->UUID));
-		if (tmp != nullptr) {
-			updateXml = false;
-			setWitsmlLog(tmp);
-			updateXml = true;
-		}
-	}
+	//if (rep->WitsmlLogReference) {
+	//	WITSML2_0_NS::Log* tmp = static_cast<WITSML2_0_NS::Log* const>(epcDoc->getResqmlAbstractObjectByUuid(rep->WitsmlLogReference->UUID));
+	//	if (tmp != nullptr) {
+	//		updateXml = false;
+	//		setWitsmlLog(tmp);
+	//		updateXml = true;
+	//	}
+	//}
 }
 
 void WellboreFrameRepresentation::setMdValues(double * mdValues, const unsigned int & mdValueCount, COMMON_NS::AbstractHdfProxy * proxy)
@@ -301,15 +305,16 @@ std::string WellboreFrameRepresentation::getHdfProxyUuid() const
 		return "";
 }
 
-void WellboreFrameRepresentation::setWitsmlLog(WITSML1_4_1_1_NS::Log * witsmlLogToSet)
-{
-	witsmlLog = witsmlLogToSet;
-	witsmlLog->resqmlWellboreFrameRepresentation = this;
-
-	if (updateXml)
-	{
-		resqml2__obj_USCOREWellboreFrameRepresentation* resqmlLog = static_cast<resqml2__obj_USCOREWellboreFrameRepresentation*>(gsoapProxy2_0_1);
-		resqmlLog->WitsmlLogReference = witsmlLog->newResqmlReference();
-	}
-}
+// TODO à mettre à jour
+//void WellboreFrameRepresentation::setWitsmlLog(WITSML1_4_1_1_NS::Log * witsmlLogToSet)
+//{
+//	witsmlLog = witsmlLogToSet;
+//	witsmlLog->resqmlWellboreFrameRepresentation = this;
+//
+//	if (updateXml)
+//	{
+//		resqml2__obj_USCOREWellboreFrameRepresentation* resqmlLog = static_cast<resqml2__obj_USCOREWellboreFrameRepresentation*>(gsoapProxy2_0_1);
+//		resqmlLog->WitsmlLogReference = witsmlLog->newResqmlReference();
+//	}
+//}
 

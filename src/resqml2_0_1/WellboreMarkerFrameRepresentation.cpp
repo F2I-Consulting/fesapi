@@ -36,7 +36,8 @@ under the License.
 #include "resqml2_0_1/HorizonInterpretation.h"
 #include "common/AbstractHdfProxy.h"
 
-#include "witsml1_4_1_1/FormationMarker.h"
+// TODO à mettre à jour
+//#include "witsml1_4_1_1/FormationMarker.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -130,21 +131,22 @@ void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned i
 	hdfProxy->writeArrayNd(frame->uuid, "IntervalStratigraphicUnits", H5T_NATIVE_UINT, stratiUnitIndices, &dim, 1);
 }
 
-void WellboreMarkerFrameRepresentation::setWitsmlFormationMarker(const unsigned int & resqmlMarkerIndex, WITSML1_4_1_1_NS::FormationMarker * witsmlFormationMarker)
-{
-	_resqml2__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml2__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
-	if (frame->WellboreMarker.size() <= resqmlMarkerIndex)
-		throw out_of_range("The marker index is not valid");
-
-	for (unsigned int i = witsmlFormationMarkerSet.size(); i < resqmlMarkerIndex+1; ++i)
-		witsmlFormationMarkerSet.push_back(nullptr);
-
-	witsmlFormationMarkerSet[resqmlMarkerIndex] = witsmlFormationMarker;
-	witsmlFormationMarker->resqmlWellboreMarkerFrameRepresentation = this;
-
-	if (updateXml)
-		frame->WellboreMarker[resqmlMarkerIndex]->WitsmlFormationMarker = witsmlFormationMarker->newResqmlReference();
-}
+// TODO à mettre à jour
+//void WellboreMarkerFrameRepresentation::setWitsmlFormationMarker(const unsigned int & resqmlMarkerIndex, WITSML1_4_1_1_NS::FormationMarker * witsmlFormationMarker)
+//{
+//	_resqml2__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml2__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
+//	if (frame->WellboreMarker.size() <= resqmlMarkerIndex)
+//		throw out_of_range("The marker index is not valid");
+//
+//	for (unsigned int i = witsmlFormationMarkerSet.size(); i < resqmlMarkerIndex+1; ++i)
+//		witsmlFormationMarkerSet.push_back(nullptr);
+//
+//	witsmlFormationMarkerSet[resqmlMarkerIndex] = witsmlFormationMarker;
+//	witsmlFormationMarker->resqmlWellboreMarkerFrameRepresentation = this;
+//
+//	if (updateXml)
+//		frame->WellboreMarker[resqmlMarkerIndex]->WitsmlFormationMarker = witsmlFormationMarker->newResqmlReference();
+//}
 
 vector<Relationship> WellboreMarkerFrameRepresentation::getAllEpcRelationships() const
 {
@@ -168,18 +170,19 @@ vector<Relationship> WellboreMarkerFrameRepresentation::getAllEpcRelationships()
 		}
 	}
 
-	int firstNonNullWitsmlMarker = -1;
-	for (unsigned int i = 0; i < witsmlFormationMarkerSet.size() && firstNonNullWitsmlMarker < 0; ++i)
-	{
-		if (witsmlFormationMarkerSet[i])
-			firstNonNullWitsmlMarker = i;
-	}
-	if (firstNonNullWitsmlMarker>=0)
-	{
-		Relationship relWitsml(witsmlFormationMarkerSet[firstNonNullWitsmlMarker]->getPartNameInEpcDocument(), "", witsmlFormationMarkerSet[firstNonNullWitsmlMarker]->getUuid());
-		relWitsml.setDestinationObjectType();
-		result.push_back(relWitsml);
-	}
+	// TODO à mettre à jour
+	//int firstNonNullWitsmlMarker = -1;
+	//for (unsigned int i = 0; i < witsmlFormationMarkerSet.size() && firstNonNullWitsmlMarker < 0; ++i)
+	//{
+	//	if (witsmlFormationMarkerSet[i])
+	//		firstNonNullWitsmlMarker = i;
+	//}
+	//if (firstNonNullWitsmlMarker>=0)
+	//{
+	//	Relationship relWitsml(witsmlFormationMarkerSet[firstNonNullWitsmlMarker]->getPartNameInEpcDocument(), "", witsmlFormationMarkerSet[firstNonNullWitsmlMarker]->getUuid());
+	//	relWitsml.setDestinationObjectType();
+	//	result.push_back(relWitsml);
+	//}
 
 	return result;
 }
@@ -201,6 +204,8 @@ void WellboreMarkerFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::
 
 	updateXml = true;
 
+	// TODO à mettre à jour
+	/*
 	for (unsigned int i = 0; i < rep->WellboreMarker.size(); ++i)
 	{
 		if (rep->WellboreMarker[i]->WitsmlFormationMarker)
@@ -220,7 +225,7 @@ void WellboreMarkerFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::
 			marker->setBoundaryFeatureInterpretation(static_cast<BoundaryFeatureInterpretation*>(epcDoc->getResqmlAbstractObjectByUuid(rep->WellboreMarker[i]->Interpretation->UUID)));
 		}
 		markerSet.push_back(marker);
-	}
+	}*/
 
 	updateXml = true;
 }

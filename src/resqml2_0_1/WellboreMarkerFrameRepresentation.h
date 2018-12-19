@@ -89,7 +89,8 @@ namespace RESQML2_0_1_NS
 
 		class StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation() { return stratigraphicOccurrenceInterpretation; }
 
-		void setWitsmlFormationMarker(const unsigned int & resqmlMarkerIndex, WITSML1_4_1_1_NS::FormationMarker * witsmlFormationMarker);
+		// TODO à mettre à jour
+		//void setWitsmlFormationMarker(const unsigned int & resqmlMarkerIndex, WITSML1_4_1_1_NS::FormationMarker * witsmlFormationMarker);
 
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}

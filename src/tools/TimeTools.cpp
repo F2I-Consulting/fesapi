@@ -21,6 +21,7 @@ under the License.
 #include <cmath>
 #include <ctime>
 #include <sstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -43,6 +44,25 @@ std::string timeTools::convertMicrosecondUnixTimestampToIso(const long long & ts
 	oss << buf << '.' << onlyMicrosec << "+00:00";
 
 	return oss.str();
+}
+
+std::string timeTools::convertUnixTimestampToIso(const long long & ts)
+{
+	char buf[20]; // 19 for the string below +1 for the terminating char
+	strftime(buf, 20, "%Y-%m-%dT%H:%M:%S", gmtime(&ts));
+
+	ostringstream oss;
+	oss << buf << 'Z';
+
+	return oss.str();
+}
+
+time_t timeTools::convertIsoToUnixTimestamp(const std::string & s)
+{
+	struct tm tm;
+	std::istringstream iss(s);
+	iss >> std::get_time(&tm, "%Y-%m-%dT%H:%M:%S");
+	return timegm(&tm);
 }
 
 time_t timeTools::timegm(struct tm *tm)

@@ -26,19 +26,6 @@ endif (${UNDER_DEV})
 # user variables
 # ============================================================================
 
-# we check if Resqml/Witsml proxies are already provided
-FILE (GLOB FESAPI_PROXIES_SOURCES ${FESAPI_ROOT_DIR}/src/proxies/*.cpp)
-SET (FESAPI_PROXIES_SOURCES
-	${FESAPI_PROXIES_SOURCES}
-	${CMAKE_CURRENT_SOURCE_DIR}/src/proxies/struct_tm.cpp
-)
-FILE (GLOB FESAPI_PROXIES_HEADERS ${FESAPI_ROOT_DIR}/src/proxies/*.h)
-IF (FESAPI_PROXIES_SOURCES STREQUAL "")
-	SET (PROXIES_GENERATION ON)
-ELSE (FESAPI_PROXIES_SOURCES STREQUAL "")
-	SET (PROXIES_GENERATION OFF)
-ENDIF (FESAPI_PROXIES_SOURCES STREQUAL "")
-
 # on Windows checking if the target architecture is 32 bits or 64 bits
 IF (WIN32)
 	STRING (FIND ${CMAKE_GENERATOR} 64 POS)
@@ -133,12 +120,6 @@ IF (UNIX)
 		MESSAGE(WARNING "The UUID library (UUID_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
 	ENDIF ()
 ENDIF (UNIX)
-
-# Gsoap
-IF (PROXIES_GENERATION)
-	SET (GSOAP_LOCATION "" CACHE PATH "GSoap sources path")
-	FIND_PACKAGE (GSOAP REQUIRED)
-ENDIF (PROXIES_GENERATION)
 
 # ============================================================================
 # some useful variables
