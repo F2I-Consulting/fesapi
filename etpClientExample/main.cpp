@@ -85,6 +85,9 @@ int main(int argc, char **argv)
 #ifdef _WIN32
 	_CrtDumpMemoryLeaks();
 #endif
-
+	
+	//std::cout << "Press enter to continue..." << std::endl;
+	//std::cin.get();
+	
 	return 0;
 }

@@ -56,7 +56,7 @@ string PropertyKindMapper::loadMappingFilesFromDirectory(const string & director
 	do {
 		string fileName = currentFile->d_name;
 #endif
-		unsigned int pos = fileName.find_last_of('.');
+		size_t pos = fileName.find_last_of('.');
 		if (pos < fileName.size()) {
 			if (fileName.substr(pos).compare(".xml") == 0 && fileName.find("PropertyKind") != std::string::npos) {
 				if (fileName.compare("PropertyKindMapping.xml") == 0) {

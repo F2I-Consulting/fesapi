@@ -37,7 +37,7 @@ using namespace epc;
 const char* WellboreFrameRepresentation::XML_TAG = "WellboreFrameRepresentation";
 
 WellboreFrameRepresentation::WellboreFrameRepresentation(WellboreInterpretation* interp, const string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj) :
-	AbstractRepresentation(interp, traj->getLocalCrs()), trajectory(traj), witsmlLog(nullptr)
+	AbstractRepresentation(interp, traj->getLocalCrs()), witsmlLog(nullptr)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREWellboreFrameRepresentation(interp->getGsoapContext(), 1);	
 	_resqml2__WellboreFrameRepresentation* frame = static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
@@ -73,9 +73,10 @@ vector<Relationship> WellboreFrameRepresentation::getAllTargetRelationships() co
 	vector<Relationship> result = AbstractRepresentation::getAllTargetRelationships();
 
 	// XML forward relationship
+	WellboreTrajectoryRepresentation* trajectory = getWellboreTrajectory();
 	if (trajectory != nullptr)
 	{
-		Relationship relTraj(trajectory->getPartNameInEpcDocument(), "", frame->Trajectory->UUID);
+		Relationship relTraj(trajectory->getPartNameInEpcDocument(), "", trajectory->getUuid());
 		relTraj.setDestinationObjectType();
 		result.push_back(relTraj);
 	}
@@ -96,20 +97,16 @@ void WellboreFrameRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocum
 {
 	const _resqml2__WellboreFrameRepresentation* const rep = static_cast<const _resqml2__WellboreFrameRepresentation* const>(gsoapProxy2_0_1);
 
-	// need to do that before AbstractRepresentation::resolveTargetRelationships because the trajectory is used for finding the local crs relationship.
-	trajectory = static_cast<WellboreTrajectoryRepresentation* const>(epcDoc->getResqmlAbstractObjectByUuid(rep->Trajectory->UUID));
-	if (trajectory != nullptr) {
-		trajectory->addWellboreFrameRepresentation(this);
-	}
-
 	AbstractRepresentation::resolveTargetRelationships(epcDoc);
+
+	getOrCreateObjectFromDor<WellboreTrajectoryRepresentation>(getWellboreTrajectoryDor())->addWellboreFrameRepresentation(this);
 
 	int valuesType = rep->NodeMd->soap_type();
 	if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
 		setHdfProxy(static_cast<COMMON_NS::AbstractHdfProxy* const>(epcDoc->getResqmlAbstractObjectByUuid(static_cast<resqml2__DoubleHdf5Array* const>(rep->NodeMd)->Values->HdfProxy->UUID)));
 	}
 
-	if (rep->WitsmlLogReference) {
+	if (rep->WitsmlLogReference != nullptr) {
 		WITSML1_4_1_1_NS::Log* tmp = static_cast<WITSML1_4_1_1_NS::Log* const>(epcDoc->getWitsmlAbstractObjectByUuid(rep->WitsmlLogReference->UUID));
 		if (tmp != nullptr) {
 			updateXml = false;
@@ -136,12 +133,12 @@ void WellboreFrameRepresentation::setMdValues(double * mdValues, const unsigned 
 	frame->NodeCount = mdValueCount;
 
 	// HDF
-	hsize_t dim[] = {mdValueCount};
+	hsize_t dim = mdValueCount;
 	hdfProxy->writeArrayNd(frame->uuid,
 			"mdValues",
 			H5T_NATIVE_DOUBLE,
 			mdValues,
-			dim, 1);
+			&dim, 1);
 }
 
 void WellboreFrameRepresentation::setMdValues(const double & firstMdValue, const double & incrementMdValue, const unsigned int & mdValueCount)
@@ -259,14 +256,24 @@ void WellboreFrameRepresentation::getMdAsFloatValues(float *  values)
 		throw logic_error("The array structure of MD is not supported?");
 }
 
-std::string WellboreFrameRepresentation::getWellboreTrajectoryUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getWellboreTrajectoryDor() const
 {
-	return static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->Trajectory->UUID;
+	if (gsoapProxy2_0_1 != nullptr) {
+		return static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->Trajectory;
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getLocalCrsDor() const
+std::string WellboreFrameRepresentation::getWellboreTrajectoryUuid() const
 {
-	return trajectory->getLocalCrsDor();
+	return getWellboreTrajectoryDor()->UUID;
+}
+
+WellboreTrajectoryRepresentation* WellboreFrameRepresentation::getWellboreTrajectory() const
+{
+	return getEpcDocument()->getResqmlAbstractObjectByUuid<WellboreTrajectoryRepresentation>(getWellboreTrajectoryUuid());
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getHdfProxyDor() const

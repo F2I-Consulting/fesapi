@@ -54,7 +54,7 @@ WellboreMarker::WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarker
 
 bool WellboreMarker::hasAGeologicBoundaryKind()
 {
-	return static_cast<resqml2__WellboreMarker*>(gsoapProxy2_0_1)->GeologicBoundaryKind;
+	return static_cast<resqml2__WellboreMarker*>(gsoapProxy2_0_1)->GeologicBoundaryKind != nullptr;
 }
 
 resqml2__GeologicBoundaryKind WellboreMarker::getGeologicBoundaryKind()

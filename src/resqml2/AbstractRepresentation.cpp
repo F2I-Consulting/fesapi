@@ -395,7 +395,7 @@ std::set<AbstractRepresentation*> AbstractRepresentation::getAllSeismicSupport()
 {
 	std::set<AbstractRepresentation*> result;
 	const unsigned int patchCount = getPatchCount();
-	for (size_t patchIndex = 0; patchIndex < patchCount; ++patchIndex)
+	for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex)
 	{
 		AbstractRepresentation* seismicSupport = getSeismicSupportOfPatch(patchIndex);
 		if (seismicSupport != nullptr)
@@ -501,11 +501,33 @@ void AbstractRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* 
 			if (geom != nullptr && geom->SeismicCoordinates != nullptr) {
 				if (geom->SeismicCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Seismic3dCoordinates) {
 					gsoap_resqml2_0_1::resqml2__Seismic3dCoordinates* const seis3dInfo = static_cast<gsoap_resqml2_0_1::resqml2__Seismic3dCoordinates* const>(geom->SeismicCoordinates);
-					pushBackSeismicSupport(epcDoc->getResqmlAbstractObjectByUuid<AbstractRepresentation>(seis3dInfo->SeismicSupport->UUID));
+
+					gsoap_resqml2_0_1::eml20__DataObjectReference* dor = seis3dInfo->SeismicSupport;
+					RESQML2_NS::AbstractRepresentation* seismicSupport = epcDoc->getResqmlAbstractObjectByUuid<AbstractRepresentation>(dor->UUID);
+					if (seismicSupport == nullptr) { // partial transfer
+						getEpcDocument()->createPartial(dor);
+						seismicSupport = getEpcDocument()->getResqmlAbstractObjectByUuid<AbstractRepresentation>(dor->UUID);
+					}
+					if (seismicSupport == nullptr) {
+						throw invalid_argument("The DOR looks invalid.");
+					}
+
+					pushBackSeismicSupport(seismicSupport);
 				}
 				else if (geom->SeismicCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Seismic2dCoordinates) {
 					gsoap_resqml2_0_1::resqml2__Seismic2dCoordinates* const seis2dInfo = static_cast<gsoap_resqml2_0_1::resqml2__Seismic2dCoordinates* const>(geom->SeismicCoordinates);
-					pushBackSeismicSupport(epcDoc->getResqmlAbstractObjectByUuid<AbstractRepresentation>(seis2dInfo->SeismicSupport->UUID));
+
+					gsoap_resqml2_0_1::eml20__DataObjectReference* dor = seis2dInfo->SeismicSupport;
+					RESQML2_NS::AbstractRepresentation* seismicSupport = epcDoc->getResqmlAbstractObjectByUuid<AbstractRepresentation>(dor->UUID);
+					if (seismicSupport == nullptr) { // partial transfer
+						getEpcDocument()->createPartial(dor);
+						seismicSupport = getEpcDocument()->getResqmlAbstractObjectByUuid<AbstractRepresentation>(dor->UUID);
+					}
+					if (seismicSupport == nullptr) {
+						throw invalid_argument("The DOR looks invalid.");
+					}
+
+					pushBackSeismicSupport(seismicSupport);
 				}
 			}
 		}

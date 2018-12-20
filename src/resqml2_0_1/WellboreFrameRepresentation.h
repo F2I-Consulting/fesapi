@@ -33,7 +33,7 @@ namespace RESQML2_0_1_NS
 	protected:
 		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const {return nullptr;}
 
-		WellboreFrameRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs) : AbstractRepresentation(interp, crs), trajectory(nullptr), witsmlLog(nullptr) {}
+		WellboreFrameRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs) : AbstractRepresentation(interp, crs), witsmlLog(nullptr) {}
 
 	public:
 
@@ -41,7 +41,7 @@ namespace RESQML2_0_1_NS
 		* Only to be used in partial transfer context
 		*/
 		WellboreFrameRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			RESQML2_NS::AbstractRepresentation(partialObject), trajectory(nullptr), witsmlLog(nullptr)
+			RESQML2_NS::AbstractRepresentation(partialObject), witsmlLog(nullptr)
 		{
 		}
 
@@ -57,7 +57,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml2__WellboreFrameRepresentation* fromGsoap): AbstractRepresentation(fromGsoap), trajectory(nullptr), witsmlLog(nullptr)  {}
+		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml2__WellboreFrameRepresentation* fromGsoap): AbstractRepresentation(fromGsoap), witsmlLog(nullptr)  {}
 
 		~WellboreFrameRepresentation() {}
 
@@ -127,16 +127,19 @@ namespace RESQML2_0_1_NS
 		void getMdAsFloatValues(float * values);
 
 		/**
+		* Get the associated resqml wellbore trajectory data object reference
+		*/
+		gsoap_resqml2_0_1::eml20__DataObjectReference * getWellboreTrajectoryDor() const;
+
+		/**
 		* Get the associated resqml wellbore trajectory uuid
 		*/
 		std::string getWellboreTrajectoryUuid() const;
 
 		/**
-		* Get the associated resqml wellbore trajector
+		* Get the associated resqml wellbore trajectory
 		*/
-		class WellboreTrajectoryRepresentation* getWellboreTrajectory() {return trajectory;}
-
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor() const;
+		class WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
@@ -153,7 +156,6 @@ namespace RESQML2_0_1_NS
 
 	protected:
 
-		class WellboreTrajectoryRepresentation * trajectory;
 		WITSML1_4_1_1_NS::Log * witsmlLog;
 	};
 }

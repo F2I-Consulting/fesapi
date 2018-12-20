@@ -330,8 +330,21 @@ namespace COMMON_NS
 
 		/**
 		* Get all the resqml gsoap wrappers from the epc document
+		* @return A map where the key is the uuid of the RESQML object and where the value is the RESQML object
 		*/
 		const std::unordered_map< std::string, COMMON_NS::AbstractObject* > & getResqmlAbstractObjectSet() const;
+
+		/**
+		* Group Resqml objects by content type
+		* @return A map where the key is a content type and where the value is the collection of RESQML objects of this content type
+		*/
+		std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > getResqmlObjectsGroupedByContentType() const;
+
+		/**
+		* Get Resqml objects which honor this content type
+		* @return The vector of RESQML objects in this EPC Document which honor the content type
+		*/
+		std::vector<COMMON_NS::AbstractObject*> getResqmlObjectsByContentType(const std::string & contentType) const;
 
 		/**
 		* Get all UUIDs of the objects contained in the EPC document

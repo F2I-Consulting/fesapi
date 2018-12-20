@@ -27,7 +27,6 @@ under the License.
 #include "etp/EtpMessages.h"
 #include "etp/ProtocolHandlers/CoreHandlers.h"
 #include "etp/ProtocolHandlers/DiscoveryHandlers.h"
-#include "etp/ProtocolHandlers/DirectedDiscoveryHandlers.h"
 #include "etp/ProtocolHandlers/StoreHandlers.h"
 #include "etp/ProtocolHandlers/DataArrayHandlers.h"
 
@@ -162,22 +161,6 @@ namespace ETP_NS
 			return protocolHandlers.size() > Energistics::Etp::v12::Datatypes::Protocol::Discovery ?
 				protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::Discovery] :
 				nullptr;
-		}
-
-		/**
-		 * Set the Directed Discovery protocol handlers
-		 */
-		void setDirectedDiscoveryProtocolHandlers(std::shared_ptr<DirectedDiscoveryHandlers> directedDiscoveryHandlers) {
-			while (protocolHandlers.size() < Energistics::Etp::v12::Datatypes::Protocol::DirectedDiscovery + 1) {
-				protocolHandlers.push_back(nullptr);
-			}
-			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::DirectedDiscovery] = directedDiscoveryHandlers;
-		}
-
-		std::shared_ptr<ETP_NS::ProtocolHandlers> getDirectedDiscoveryProtocolHandlers() {
-			return protocolHandlers.size() > Energistics::Etp::v12::Datatypes::Protocol::DirectedDiscovery ?
-					protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::DirectedDiscovery] :
-					nullptr;
 		}
 
 		/**

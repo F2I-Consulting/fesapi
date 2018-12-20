@@ -136,7 +136,7 @@ bool PolylineRepresentation::isClosed() const
 
 bool PolylineRepresentation::hasALineRole() const
 {
-	return static_cast<_resqml2__PolylineRepresentation*>(gsoapProxy2_0_1)->LineRole;
+	return static_cast<_resqml2__PolylineRepresentation*>(gsoapProxy2_0_1)->LineRole != nullptr;
 }
 
 gsoap_resqml2_0_1::resqml2__LineRole PolylineRepresentation::getLineRole() const

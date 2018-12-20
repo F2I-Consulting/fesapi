@@ -21,7 +21,6 @@ under the License.
 
 #include "MyOwnCoreProtocolHandlers.h"
 #include "MyOwnDiscoveryProtocolHandlers.h"
-#include "MyOwnDirectedDiscoveryProtocolHandlers.h"
 #include "MyOwnStoreProtocolHandlers.h"
 #include "MyOwnDataArrayProtocolHandlers.h"
 
@@ -35,7 +34,6 @@ MyOwnEtpServerSession::MyOwnEtpServerSession(tcp::socket socket)
 {
 	setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(this));
 	setDiscoveryProtocolHandlers(std::make_shared<MyOwnDiscoveryProtocolHandlers>(this));
-	setDirectedDiscoveryProtocolHandlers(std::make_shared<MyOwnDirectedDiscoveryProtocolHandlers>(this));
 	setStoreProtocolHandlers(std::make_shared<MyOwnStoreProtocolHandlers>(this));
 	setDataArrayProtocolHandlers(std::make_shared<MyOwnDataArrayProtocolHandlers>(this));
 

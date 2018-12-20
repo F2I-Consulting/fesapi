@@ -29,8 +29,9 @@ namespace ETP_NS
 
 	    void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d);
 
-		virtual void on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources2 & gr, int64_t correlationId);
-		virtual void on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse2 & grr, int64_t correlationId);
+		virtual void on_GetTreeResources(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gr, int64_t correlationId);
+		virtual void on_GetGraphResources(const Energistics::Etp::v12::Protocol::Discovery::GetGraphResources & gr, int64_t correlationId);
+		virtual void on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse & grr, int64_t correlationId);
 
 		virtual ~DiscoveryHandlers() {}
 	};

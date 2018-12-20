@@ -17,7 +17,6 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
-
 #include "CoreProperty.h"
 
 #include <sstream>
@@ -61,11 +60,6 @@ void CoreProperty::setTypeProperty(const TypeProperty & corePropertyType)
 	type = corePropertyType;
 }
 
-vector<string> CoreProperty::getAllValue() const
-{
-	return value;
-}
-
 string CoreProperty::getValue(const int & index) const
 {
 	return value[index];
@@ -89,15 +83,12 @@ string CoreProperty::toString() const
 		return "<dc:identifier>" + getValue() + "</dc:identifier>";
 	case keywords:
 		{
-			vector<string> wk_Vector = getAllValue();
-			unsigned int wk_SizeVector = wk_Vector.size();
-
 			ostringstream oss;
-			oss << "<keywords xml:lang=\"" << wk_Vector[0].substr(0,5) << "\"> " << wk_Vector[0].substr(5,wk_Vector[0].size()) << endl;
+			oss << "<keywords xml:lang=\"" << getValue(0).substr(0,5) << "\"> " << getValue(0).substr(5, getValue(0).size()) << endl;
 		
-			for (unsigned int i = 1; i < wk_SizeVector; i++)
+			for (size_t i = 1; i < value.size(); ++i)
 			{
-				oss << "<value xml:lang=\"" << wk_Vector[i].substr(0,5) << "\">" << wk_Vector[i].substr(5,wk_Vector[i].size()) << "</value>" << endl; 
+				oss << "<value xml:lang=\"" << getValue(i).substr(0,5) << "\">" << getValue(i).substr(5, getValue(i).size()) << "</value>" << endl;
 			}
 
 			oss << "</keywords>" << endl;
@@ -121,7 +112,7 @@ string CoreProperty::toString() const
 	case version:
 		return "<version>" + getValue() + "</version>";
 	default :
-		return "";
+		return std::string();
 	}
 }
 
@@ -236,18 +227,3 @@ void CoreProperty::setVersion(std::string pValue)
 	value.erase(value.begin(), value.end());
 	value.push_back(pValue);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

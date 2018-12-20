@@ -18,18 +18,19 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnStoreProtocolHandlers.h"
 
-void MyOwnStoreProtocolHandlers::on_Object(const Energistics::Etp::v12::Protocol::Store::Object & obj)
+void MyOwnStoreProtocolHandlers::on_GetDataObjectsResponse(const Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse & obj)
 {
-	auto graphResource =  obj.m_dataObject;
-	std::cout << "*************************************************" << std::endl;
-	std::cout << "Resource received : " << std::endl;
-	std::cout << "uri : " << graphResource.m_resource.m_uri << std::endl;
-	std::cout << "contentType : " << graphResource.m_resource.m_contentType << std::endl;
-	std::cout << "name : " << graphResource.m_resource.m_name << std::endl;
-	std::cout << "type : " << static_cast<size_t>(graphResource.m_resource.m_resourceType) << std::endl;
-	std::cout << "*************************************************" << std::endl;
+	for (const auto & graphResource : obj.m_dataObjects) {
+		std::cout << "*************************************************" << std::endl;
+		std::cout << "Resource received : " << std::endl;
+		std::cout << "uri : " << graphResource.m_resource.m_uri << std::endl;
+		std::cout << "contentType : " << graphResource.m_resource.m_contentType << std::endl;
+		std::cout << "name : " << graphResource.m_resource.m_name << std::endl;
+		std::cout << "type : " << static_cast<size_t>(graphResource.m_resource.m_resourceType) << std::endl;
+		std::cout << "*************************************************" << std::endl;
 
-	COMMON_NS::AbstractObject* importedObj  = static_cast<MyOwnEtpClientSession*>(session)->epcDoc.addOrReplaceGsoapProxy(graphResource.m_data, graphResource.m_resource.m_contentType);
+		COMMON_NS::AbstractObject* importedObj = static_cast<MyOwnEtpClientSession*>(session)->epcDoc.addOrReplaceGsoapProxy(graphResource.m_data, graphResource.m_resource.m_contentType);
 
-	importedObj->resolveTargetRelationships(&static_cast<MyOwnEtpClientSession*>(session)->epcDoc);
+		importedObj->resolveTargetRelationships(&static_cast<MyOwnEtpClientSession*>(session)->epcDoc);
+	}
 }

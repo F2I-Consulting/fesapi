@@ -20,10 +20,10 @@ under the License.
 
 #include <algorithm>
 
-void MyOwnDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse2 & grr, int64_t correlationId)
+void MyOwnDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse & grr, int64_t correlationId)
 {
-	std::cout << grr.m_resource.size() << " resources received." << std::endl;
-	for (Energistics::Etp::v12::Datatypes::Object::Resource2 resource : grr.m_resource) {
+	std::cout << grr.m_resources.size() << " resources received." << std::endl;
+	for (Energistics::Etp::v12::Datatypes::Object::Resource resource : grr.m_resources) {
 		std::cout << "*************************************************" << std::endl;
 		std::cout << "uri : " << resource.m_uri << std::endl;
 		std::cout << "contentType : " << resource.m_contentType << std::endl;
@@ -44,8 +44,8 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energistics::
 				auto resqmlObj = static_cast<MyOwnEtpClientSession*>(session)->epcDoc.getResqmlAbstractObjectByUuid(resource.m_uri.substr(openingParenthesis + 1, 36));
 				if (resqmlObj == nullptr || resqmlObj->isPartial()) {
 					std::cout << "GET OBJECT -----------------------------------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
-					Energistics::Etp::v12::Protocol::Store::GetObject_ getO;
-					getO.m_uri = resource.m_uri;
+					Energistics::Etp::v12::Protocol::Store::GetDataObjects getO;
+					getO.m_uris.push_back(resource.m_uri);
 					session->send(getO);
 				}
 			}

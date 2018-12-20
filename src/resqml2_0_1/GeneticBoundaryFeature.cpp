@@ -52,7 +52,7 @@ void GeneticBoundaryFeature::setAge(const ULONG64 & age)
 		feature->AbsoluteAge->YearOffset = static_cast<LONG64*>(soap_malloc(getGsoapContext(), sizeof(LONG64)));
 	}
 
-	*(feature->AbsoluteAge->YearOffset) = -age;
+	*(feature->AbsoluteAge->YearOffset) = -static_cast<LONG64>(age);
 }
 
 bool GeneticBoundaryFeature::hasAnAge() const

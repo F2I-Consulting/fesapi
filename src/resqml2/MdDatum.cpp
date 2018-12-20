@@ -34,15 +34,9 @@ void MdDatum::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	_resqml2__MdDatum* mdInfo = static_cast<_resqml2__MdDatum*>(gsoapProxy2_0_1);
 
-	AbstractObject* localCrs = epcDoc->getResqmlAbstractObjectByUuid(mdInfo->LocalCrs->UUID);
-	if (dynamic_cast<AbstractLocal3dCrs*>(localCrs) != nullptr) {
-		updateXml = false;
-		setLocalCrs(static_cast<AbstractLocal3dCrs*>(localCrs));
-		updateXml = true;
-	}
-	else {
-		throw logic_error("The referenced local crs does not look to be a local crs.");
-	}
+	updateXml = false;
+	setLocalCrs(getOrCreateObjectFromDor<AbstractLocal3dCrs>(mdInfo->LocalCrs));
+	updateXml = true;
 }
 
 vector<Relationship> MdDatum::getAllSourceRelationships() const

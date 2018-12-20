@@ -237,6 +237,33 @@ PropertyKindMapper* EpcDocument::getPropertyKindMapper() const { return property
 
 const std::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDocument::getResqmlAbstractObjectSet() const { return resqmlAbstractObjectSet; }
 
+std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > EpcDocument::getResqmlObjectsGroupedByContentType() const
+{
+	std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
+
+	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it) {
+		const auto ct = it->second->getContentType();
+		if (ct.find("x-eml") == std::string::npos) {
+			result[it->second->getContentType()].push_back(it->second);
+		}
+	}
+
+	return result;
+}
+
+std::vector<COMMON_NS::AbstractObject*> EpcDocument::getResqmlObjectsByContentType(const std::string & contentType) const
+{
+	std::vector<COMMON_NS::AbstractObject*> result;
+
+	for (auto it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it) {
+		if (it->second->getContentType() == contentType) {
+			result.push_back(it->second);
+		}
+	}
+
+	return result;
+}
+
 std::vector<std::string> EpcDocument::getAllUuids() const
 {
 	std::vector<std::string> keys;

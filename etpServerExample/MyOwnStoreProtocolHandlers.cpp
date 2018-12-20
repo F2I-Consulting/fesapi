@@ -20,46 +20,24 @@ under the License.
 
 #include "MyOwnEtpServerSession.h"
 
-#include "common/AbstractObject.h"
-
-namespace {
-	Energistics::Etp::v12::Datatypes::Object::Resource buildResourceFromObject(COMMON_NS::AbstractObject * obj) {
-		if (obj == nullptr) {
-			throw std::invalid_argument("Cannot build resource from a null object.");
-		}
-		if (obj->isPartial()) {
-			throw std::invalid_argument("Cannot build resource from a partial object.");
-		}
-
-		Energistics::Etp::v12::Datatypes::Object::Resource result;
-
-		result.m_resourceType = Energistics::Etp::v12::Datatypes::Object::ResourceKind::DataObject;
-		result.m_objectNotifiable = false;
-		result.m_childCount.set_null();
-		result.m_contentType = "application/x-resqml+xml;version=2.0;type=obj_" + obj->getXmlTag();
-		// TODO : change the xml namespace to be the same as the etp one
-		std::string etpNs =  obj->getXmlNamespace();
-		if (etpNs[etpNs.size()-1] != '0') etpNs += '0';
-		// END TODO
-		result.m_uri = "eml://" + etpNs + "/" + obj->getXmlTag() + "(" + obj->getUuid() + ")";
-		result.m_name = obj->getTitle();
-		result.m_lastChanged.set_long(obj->getLastUpdate() == -1 ? obj->getCreation() : obj->getLastUpdate());
-
-		return result;
-	}
-}
-
 MyOwnStoreProtocolHandlers::MyOwnStoreProtocolHandlers(MyOwnEtpServerSession* mySession) : ETP_NS::StoreHandlers(mySession) {}
 
-void MyOwnStoreProtocolHandlers::on_GetObject(const Energistics::Etp::v12::Protocol::Store::GetObject_ & getO, int64_t correlationId)
+void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & getO, int64_t correlationId)
 {
-	COMMON_NS::AbstractObject* obj = static_cast<MyOwnEtpServerSession*>(session)->getObjectFromUri(getO.m_uri);
-	if (obj == nullptr) {
-		return;
-	}
+	Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse objResponse;
 
-	Energistics::Etp::v12::Protocol::Store::Object objResponse;
-	objResponse.m_dataObject.m_resource = buildResourceFromObject(obj);
-	objResponse.m_dataObject.m_data = obj->serializeIntoString();
+	for (const auto & uri : getO.m_uris) {
+		std::cout << "Store received URI : " << uri << std::endl;
+
+		COMMON_NS::AbstractObject* obj = static_cast<MyOwnEtpServerSession*>(session)->getObjectFromUri(uri);
+		if (obj == nullptr) {
+			continue;
+		}
+
+		Energistics::Etp::v12::Datatypes::Object::DataObject dataObject;
+		dataObject.m_resource = buildResourceFromObject(obj);
+		dataObject.m_data = obj->serializeIntoString();
+		objResponse.m_dataObjects.push_back(dataObject);
+	}
 	session->send(objResponse, correlationId, 0x01 | 0x02);
 }

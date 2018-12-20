@@ -31,29 +31,29 @@ void StoreHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::Me
 		return;
 	}
 
-	if (mh.m_messageType == Energistics::Etp::v12::Protocol::Store::GetObject_::messageTypeId) {
-		Energistics::Etp::v12::Protocol::Store::GetObject_ getO;
+	if (mh.m_messageType == Energistics::Etp::v12::Protocol::Store::GetDataObjects::messageTypeId) {
+		Energistics::Etp::v12::Protocol::Store::GetDataObjects getO;
 		avro::decode(*d, getO);
 		session->flushReceivingBuffer();
-		on_GetObject(getO, mh.m_messageId);
+		on_GetDataObjects(getO, mh.m_messageId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Store::PutObject::messageTypeId) {
-		Energistics::Etp::v12::Protocol::Store::PutObject putO;
+	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Store::PutDataObjects::messageTypeId) {
+		Energistics::Etp::v12::Protocol::Store::PutDataObjects putO;
 		avro::decode(*d, putO);
 		session->flushReceivingBuffer();
-		on_PutObject(putO, mh.m_messageId);
+		on_PutDataObjects(putO, mh.m_messageId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Store::DeleteObject::messageTypeId) {
-		Energistics::Etp::v12::Protocol::Store::DeleteObject deleteO;
+	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Store::DeleteDataObjects::messageTypeId) {
+		Energistics::Etp::v12::Protocol::Store::DeleteDataObjects deleteO;
 		avro::decode(*d, deleteO);
 		session->flushReceivingBuffer();
-		on_DeleteObject(deleteO, mh.m_messageId);
+		on_DeleteDataObjects(deleteO, mh.m_messageId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Store::Object::messageTypeId) {
-		Energistics::Etp::v12::Protocol::Store::Object obj;
+	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse::messageTypeId) {
+		Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse obj;
 		avro::decode(*d, obj);
 		session->flushReceivingBuffer();
-		on_Object(obj);
+		on_GetDataObjectsResponse(obj);
 	}
 	else {
 		session->flushReceivingBuffer();
@@ -61,54 +61,55 @@ void StoreHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::Me
 	}
 }
 
-void StoreHandlers::on_GetObject(const Energistics::Etp::v12::Protocol::Store::GetObject_ & getO, int64_t correlationId)
+void StoreHandlers::on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & getO, int64_t correlationId)
 {
-	std::cout << "on_GetObject" << std::endl;
+	std::cout << "on_GetDataObject" << std::endl;
 
 	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
 	error.m_errorCode = 7;
-	error.m_errorMessage = "The StoreHandlers::on_GetObject method has not been overriden by the agent.";
+	error.m_errorMessage = "The StoreHandlers::on_GetDataObject method has not been overriden by the agent.";
 
 	session->send(error);
 }
 
-void StoreHandlers::on_PutObject(const Energistics::Etp::v12::Protocol::Store::PutObject & putO, int64_t correlationId)
+void StoreHandlers::on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & putO, int64_t correlationId)
 {
-	std::cout << "on_PutObject" << std::endl;
+	std::cout << "on_PutDataObject" << std::endl;
 
 	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
 	error.m_errorCode = 7;
-	error.m_errorMessage = "The StoreHandlers::on_PutObject method has not been overriden by the agent.";
+	error.m_errorMessage = "The StoreHandlers::on_PutDataObject method has not been overriden by the agent.";
 
 	session->send(error);
 }
 
-void StoreHandlers::on_DeleteObject(const Energistics::Etp::v12::Protocol::Store::DeleteObject & deleteO, int64_t correlationId)
+void StoreHandlers::on_DeleteDataObjects(const Energistics::Etp::v12::Protocol::Store::DeleteDataObjects & deleteO, int64_t correlationId)
 {
-	std::cout << "on_DeleteObject" << std::endl;
+	std::cout << "on_DeleteDataObject" << std::endl;
 
 	// Build GetResourcesResponse message
 	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
 	error.m_errorCode = 7;
-	error.m_errorMessage = "The StoreHandlers::on_DeleteObject method has not been overriden by the agent.";
+	error.m_errorMessage = "The StoreHandlers::on_DeleteDataObject method has not been overriden by the agent.";
 
 	session->send(error);
 }
 
-void StoreHandlers::on_Object(const Energistics::Etp::v12::Protocol::Store::Object & obj)
+void StoreHandlers::on_GetDataObjectsResponse(const Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse & obj)
 {
-	auto graphResource =  obj.m_dataObject;
-	std::cout << "*************************************************" << std::endl;
-	std::cout << "Resource received : " << std::endl;
-	std::cout << "uri : " << graphResource.m_resource.m_uri << std::endl;
-	std::cout << "contentType : " << graphResource.m_resource.m_contentType << std::endl;
-	std::cout << "name : " << graphResource.m_resource.m_name << std::endl;
-	std::cout << "type : " << static_cast<size_t>(graphResource.m_resource.m_resourceType) << std::endl;
-	//std::cout << "sourceCount : " << graphResource.m_resource.m_sourceCount << std::endl;
-	//std::cout << "targetCount : " << graphResource.m_resource.m_targetCount << std::endl;
-	//std::cout << "contentCount : " << graphResource.m_resource.m_contentCount << std::endl;
-	//std::cout << "lastChanged : " << graphResource.m_resource.m_lastChanged << std::endl;
-	std::cout << "*************************************************" << std::endl;
-	std::cout << graphResource.m_data << std::endl;
-	std::cout << "*************************************************" << std::endl;
+	for (const auto& graphResource : obj.m_dataObjects) {
+		std::cout << "*************************************************" << std::endl;
+		std::cout << "Resource received : " << std::endl;
+		std::cout << "uri : " << graphResource.m_resource.m_uri << std::endl;
+		std::cout << "contentType : " << graphResource.m_resource.m_contentType << std::endl;
+		std::cout << "name : " << graphResource.m_resource.m_name << std::endl;
+		std::cout << "type : " << static_cast<size_t>(graphResource.m_resource.m_resourceType) << std::endl;
+		//std::cout << "sourceCount : " << graphResource.m_resource.m_sourceCount << std::endl;
+		//std::cout << "targetCount : " << graphResource.m_resource.m_targetCount << std::endl;
+		//std::cout << "contentCount : " << graphResource.m_resource.m_contentCount << std::endl;
+		//std::cout << "lastChanged : " << graphResource.m_resource.m_lastChanged << std::endl;
+		std::cout << "*************************************************" << std::endl;
+		std::cout << graphResource.m_data << std::endl;
+		std::cout << "*************************************************" << std::endl;
+	}
 }

@@ -983,14 +983,14 @@ void HdfProxy::writeGroupAttribute(const std::string & groupName,
 {
 	const int groupId = openOrCreateGroupInRootGroup(groupName);
 
-	unsigned int maxStringSize = 0;
+	size_t maxStringSize = 0;
 	for (size_t i = 0; i < values.size(); ++i) {
 		if (values[i].size() > maxStringSize) maxStringSize = values[i].size();
 	}
-	maxStringSize++;
+	++maxStringSize;
 	char* concat = new char[maxStringSize * values.size()];
 	for (size_t i = 0; i < values.size(); ++i) {
-		for (unsigned int j = 0; j < maxStringSize; ++j) {
+		for (size_t j = 0; j < maxStringSize; ++j) {
 			concat[j + i*maxStringSize] = values[i].size() > j ? values[i][j] : '\0';
 		}
 	}
@@ -1081,13 +1081,13 @@ void HdfProxy::writeDatasetAttribute(const std::string & datasetName,
 {
 	hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
 
-	unsigned int maxStringSize = 0;
+	size_t maxStringSize = 0;
 	for (size_t i = 0; i < values.size(); ++i) {
 		if (values[i].size() > maxStringSize) maxStringSize = values[i].size();
 	}
 	char* concat = new char[maxStringSize * values.size()];
 	for (size_t i = 0; i < values.size(); ++i) {
-		for (unsigned int j = 0; j < maxStringSize; ++j) {
+		for (size_t j = 0; j < maxStringSize; ++j) {
 			concat[j + i*maxStringSize] = values[i].size() > j ? values[i][j] : '\0';
 		}
 	}

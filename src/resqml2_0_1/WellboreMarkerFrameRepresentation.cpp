@@ -54,7 +54,6 @@ WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(WellboreInt
 	setInterpretation(interp);
 
 	frame->Trajectory = traj->newResqmlReference();
-	trajectory = traj;
 	traj->addWellboreFrameRepresentation(this);
 
 	initMandatoryMetadata();
@@ -63,7 +62,7 @@ WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(WellboreInt
 
 WellboreMarkerFrameRepresentation::~WellboreMarkerFrameRepresentation()
 {
-	for (unsigned int i = 0; i < markerSet.size(); ++i)
+	for (size_t i = 0; i < markerSet.size(); ++i)
 		delete markerSet[i];
 }
 
@@ -136,7 +135,7 @@ void WellboreMarkerFrameRepresentation::setWitsmlFormationMarker(const unsigned 
 	if (frame->WellboreMarker.size() <= resqmlMarkerIndex)
 		throw out_of_range("The marker index is not valid");
 
-	for (unsigned int i = witsmlFormationMarkerSet.size(); i < resqmlMarkerIndex+1; ++i)
+	for (size_t i = witsmlFormationMarkerSet.size(); i < resqmlMarkerIndex+1; ++i)
 		witsmlFormationMarkerSet.push_back(nullptr);
 
 	witsmlFormationMarkerSet[resqmlMarkerIndex] = witsmlFormationMarker;
@@ -160,7 +159,7 @@ vector<Relationship> WellboreMarkerFrameRepresentation::getAllTargetRelationship
 
 	for (size_t i = 0; i < markerSet.size(); ++i)
 	{
-		if (markerSet[i]->getBoundaryFeatureInterpretation())
+		if (markerSet[i]->getBoundaryFeatureInterpretation() != nullptr)
 		{
 			Relationship relBoundaryFeature(markerSet[i]->getBoundaryFeatureInterpretation()->getPartNameInEpcDocument(), "", markerSet[i]->getBoundaryFeatureInterpretation()->getUuid());
 			relBoundaryFeature.setDestinationObjectType();
@@ -174,7 +173,7 @@ vector<Relationship> WellboreMarkerFrameRepresentation::getAllTargetRelationship
 		if (witsmlFormationMarkerSet[i])
 			firstNonNullWitsmlMarker = i;
 	}
-	if (firstNonNullWitsmlMarker>=0)
+	if (firstNonNullWitsmlMarker >= 0)
 	{
 		Relationship relWitsml(witsmlFormationMarkerSet[firstNonNullWitsmlMarker]->getPartNameInEpcDocument(), "", witsmlFormationMarkerSet[firstNonNullWitsmlMarker]->getUuid());
 		relWitsml.setDestinationObjectType();
@@ -201,12 +200,12 @@ void WellboreMarkerFrameRepresentation::resolveTargetRelationships(COMMON_NS::Ep
 
 	updateXml = true;
 
-	for (unsigned int i = 0; i < rep->WellboreMarker.size(); ++i)
+	for (size_t i = 0; i < rep->WellboreMarker.size(); ++i)
 	{
-		if (rep->WellboreMarker[i]->WitsmlFormationMarker)
+		if (rep->WellboreMarker[i]->WitsmlFormationMarker != nullptr)
 		{
 			WITSML1_4_1_1_NS::FormationMarker* tmp = static_cast<WITSML1_4_1_1_NS::FormationMarker*>(epcDoc->getWitsmlAbstractObjectByUuid(rep->WellboreMarker[i]->WitsmlFormationMarker->UUID));
-			if (tmp)
+			if (tmp != nullptr)
 			{
 				updateXml = false;
 				setWitsmlFormationMarker(i, tmp);
@@ -215,7 +214,7 @@ void WellboreMarkerFrameRepresentation::resolveTargetRelationships(COMMON_NS::Ep
 		}
 
 		WellboreMarker* marker = new WellboreMarker(rep->WellboreMarker[i], this);
-		if (rep->WellboreMarker[i]->Interpretation)
+		if (rep->WellboreMarker[i]->Interpretation != nullptr)
 		{
 			marker->setBoundaryFeatureInterpretation(static_cast<BoundaryFeatureInterpretation*>(epcDoc->getResqmlAbstractObjectByUuid(rep->WellboreMarker[i]->Interpretation->UUID)));
 		}

@@ -445,6 +445,34 @@ namespace Energistics {
 	namespace Etp {	
 		namespace v12 {		
 			namespace Datatypes {			
+				struct ErrorInfo{				
+					std::string m_uri;
+					std::string m_message;
+					int32_t m_code;
+				};				
+				typedef std::shared_ptr<ErrorInfo> ErrorInfoPtr;
+			};			
+		};		
+	};	
+};
+namespace avro {
+	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::ErrorInfo> {	
+		static void encode(Encoder& e, const Energistics::Etp::v12::Datatypes::ErrorInfo& v) {		
+			avro::encode(e, v.m_uri);
+			avro::encode(e, v.m_message);
+			avro::encode(e, v.m_code);
+		}		
+		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::ErrorInfo& v) {		
+			avro::decode(e, v.m_uri);
+			avro::decode(e, v.m_message);
+			avro::decode(e, v.m_code);
+		}		
+	};	
+}
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Datatypes {			
 				struct DataValueitem_t {
 				private:				
 					size_t idx_=0;
@@ -798,34 +826,6 @@ namespace Energistics {
 	namespace Etp {	
 		namespace v12 {		
 			namespace Datatypes {			
-				struct ErrorInfo{				
-					std::string m_uri;
-					std::string m_message;
-					int32_t m_code;
-				};				
-				typedef std::shared_ptr<ErrorInfo> ErrorInfoPtr;
-			};			
-		};		
-	};	
-};
-namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::ErrorInfo> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Datatypes::ErrorInfo& v) {		
-			avro::encode(e, v.m_uri);
-			avro::encode(e, v.m_message);
-			avro::encode(e, v.m_code);
-		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::ErrorInfo& v) {		
-			avro::decode(e, v.m_uri);
-			avro::decode(e, v.m_message);
-			avro::decode(e, v.m_code);
-		}		
-	};	
-}
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Datatypes {			
 				struct IndexValueitem_t {
 				private:				
 					size_t idx_=0;
@@ -992,7 +992,7 @@ namespace Energistics {
 					DataArrayNotificationQuery=20,
 					ChannelSubscribe=21,
 					ChannelDataLoad=22,
-					DirectedDiscovery=30
+					DirectedDiscovery=23
 				};				
 			};			
 		};		
@@ -1013,7 +1013,7 @@ namespace Energistics {
 		namespace v12 {		
 			namespace Datatypes {			
 				namespace Object {				
-					enum class ResourceKind {					
+					enum class ResourceKind {
 						DataObject=0,
 						Folder=1,
 						UriProtocol=2,
@@ -1031,6 +1031,28 @@ namespace avro {
 		}		
 		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::Object::ResourceKind& v) {		
 			v = static_cast<Energistics::Etp::v12::Datatypes::Object::ResourceKind>(e.decodeEnum());
+		}		
+	};	
+}
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Datatypes {			
+				struct Uuid{				
+					boost::array<uint8_t, 16> m_array;
+				};				
+				typedef std::shared_ptr<Uuid> UuidPtr;
+			};			
+		};		
+	};	
+};
+namespace avro {
+	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::Uuid> {	
+		static void encode(Encoder& e, const Energistics::Etp::v12::Datatypes::Uuid& v) {		
+			avro::encode(e, v.m_array);
+		}		
+		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::Uuid& v) {		
+			avro::decode(e, v.m_array);
 		}		
 	};	
 }
@@ -1093,99 +1115,6 @@ namespace avro {
 			avro::decode(e, v.m_family);
 			avro::decode(e, v.m_familyVersion);
 			avro::decode(e, v.m_objectType);
-		}		
-	};	
-}
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Datatypes {			
-				struct SupportedProtocol{				
-					int32_t m_protocol;
-					Energistics::Etp::v12::Datatypes::Version m_protocolVersion;
-					std::string m_role;
-					std::map<std::string, Energistics::Etp::v12::Datatypes::DataValue> m_protocolCapabilities;
-				};				
-				typedef std::shared_ptr<SupportedProtocol> SupportedProtocolPtr;
-			};			
-		};		
-	};	
-};
-namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::SupportedProtocol> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Datatypes::SupportedProtocol& v) {		
-			avro::encode(e, v.m_protocol);
-			avro::encode(e, v.m_protocolVersion);
-			avro::encode(e, v.m_role);
-			avro::encode(e, v.m_protocolCapabilities);
-		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::SupportedProtocol& v) {		
-			avro::decode(e, v.m_protocol);
-			avro::decode(e, v.m_protocolVersion);
-			avro::decode(e, v.m_role);
-			avro::decode(e, v.m_protocolCapabilities);
-		}		
-	};	
-}
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Datatypes {			
-				struct ServerCapabilities{				
-					std::string m_applicationName;
-					std::string m_applicationVersion;
-					std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> m_supportedProtocols;
-					std::vector<std::string> m_supportedObjects;
-					Energistics::Etp::v12::Datatypes::Contact m_contactInformation;
-					std::string m_supportedEncodings;
-					std::vector<std::string> m_supportedCompression;
-				};				
-				typedef std::shared_ptr<ServerCapabilities> ServerCapabilitiesPtr;
-			};			
-		};		
-	};	
-};
-namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::ServerCapabilities> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Datatypes::ServerCapabilities& v) {		
-			avro::encode(e, v.m_applicationName);
-			avro::encode(e, v.m_applicationVersion);
-			avro::encode(e, v.m_supportedProtocols);
-			avro::encode(e, v.m_supportedObjects);
-			avro::encode(e, v.m_contactInformation);
-			avro::encode(e, v.m_supportedEncodings);
-			avro::encode(e, v.m_supportedCompression);
-		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::ServerCapabilities& v) {		
-			avro::decode(e, v.m_applicationName);
-			avro::decode(e, v.m_applicationVersion);
-			avro::decode(e, v.m_supportedProtocols);
-			avro::decode(e, v.m_supportedObjects);
-			avro::decode(e, v.m_contactInformation);
-			avro::decode(e, v.m_supportedEncodings);
-			avro::decode(e, v.m_supportedCompression);
-		}		
-	};	
-}
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Datatypes {			
-				struct Uuid{				
-					boost::array<uint8_t, 16> m_array;
-				};				
-				typedef std::shared_ptr<Uuid> UuidPtr;
-			};			
-		};		
-	};	
-};
-namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::Uuid> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Datatypes::Uuid& v) {		
-			avro::encode(e, v.m_array);
-		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::Uuid& v) {		
-			avro::decode(e, v.m_array);
 		}		
 	};	
 }
@@ -1293,6 +1222,77 @@ namespace Energistics {
 	namespace Etp {	
 		namespace v12 {		
 			namespace Datatypes {			
+				struct SupportedProtocol{				
+					int32_t m_protocol;
+					Energistics::Etp::v12::Datatypes::Version m_protocolVersion;
+					std::string m_role;
+					std::map<std::string, Energistics::Etp::v12::Datatypes::DataValue> m_protocolCapabilities;
+				};				
+				typedef std::shared_ptr<SupportedProtocol> SupportedProtocolPtr;
+			};			
+		};		
+	};	
+};
+namespace avro {
+	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::SupportedProtocol> {	
+		static void encode(Encoder& e, const Energistics::Etp::v12::Datatypes::SupportedProtocol& v) {		
+			avro::encode(e, v.m_protocol);
+			avro::encode(e, v.m_protocolVersion);
+			avro::encode(e, v.m_role);
+			avro::encode(e, v.m_protocolCapabilities);
+		}		
+		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::SupportedProtocol& v) {		
+			avro::decode(e, v.m_protocol);
+			avro::decode(e, v.m_protocolVersion);
+			avro::decode(e, v.m_role);
+			avro::decode(e, v.m_protocolCapabilities);
+		}		
+	};	
+}
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Datatypes {			
+				struct ServerCapabilities{				
+					std::string m_applicationName;
+					std::string m_applicationVersion;
+					std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> m_supportedProtocols;
+					std::vector<std::string> m_supportedObjects;
+					Energistics::Etp::v12::Datatypes::Contact m_contactInformation;
+					std::string m_supportedEncodings;
+					std::vector<std::string> m_supportedCompression;
+				};				
+				typedef std::shared_ptr<ServerCapabilities> ServerCapabilitiesPtr;
+			};			
+		};		
+	};	
+};
+namespace avro {
+	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::ServerCapabilities> {	
+		static void encode(Encoder& e, const Energistics::Etp::v12::Datatypes::ServerCapabilities& v) {		
+			avro::encode(e, v.m_applicationName);
+			avro::encode(e, v.m_applicationVersion);
+			avro::encode(e, v.m_supportedProtocols);
+			avro::encode(e, v.m_supportedObjects);
+			avro::encode(e, v.m_contactInformation);
+			avro::encode(e, v.m_supportedEncodings);
+			avro::encode(e, v.m_supportedCompression);
+		}		
+		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::ServerCapabilities& v) {		
+			avro::decode(e, v.m_applicationName);
+			avro::decode(e, v.m_applicationVersion);
+			avro::decode(e, v.m_supportedProtocols);
+			avro::decode(e, v.m_supportedObjects);
+			avro::decode(e, v.m_contactInformation);
+			avro::decode(e, v.m_supportedEncodings);
+			avro::decode(e, v.m_supportedCompression);
+		}		
+	};	
+}
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Datatypes {			
 				namespace ChannelData {				
 					enum ChannelIndexKind {					
 						Time=0,
@@ -1377,7 +1377,7 @@ namespace Energistics {
 			namespace Datatypes {			
 				namespace ChannelData {				
 					struct DataFrame{					
-						std::vector<int64_t> m_index;
+						std::vector<int64_t> m_indexes;
 						std::vector<Energistics::Etp::v12::Datatypes::DataValue> m_data;
 					};					
 					typedef std::shared_ptr<DataFrame> DataFramePtr;
@@ -1389,11 +1389,11 @@ namespace Energistics {
 namespace avro {
 	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::ChannelData::DataFrame> {	
 		static void encode(Encoder& e, const Energistics::Etp::v12::Datatypes::ChannelData::DataFrame& v) {		
-			avro::encode(e, v.m_index);
+			avro::encode(e, v.m_indexes);
 			avro::encode(e, v.m_data);
 		}		
 		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::ChannelData::DataFrame& v) {		
-			avro::decode(e, v.m_index);
+			avro::decode(e, v.m_indexes);
 			avro::decode(e, v.m_data);
 		}		
 	};	
@@ -1520,6 +1520,36 @@ namespace Energistics {
 		namespace v12 {		
 			namespace Datatypes {			
 				namespace Object {				
+					struct ContextInfo{					
+						std::string m_uri;
+						int32_t m_depth;
+						std::vector<std::string> m_contentTypes;
+					};					
+					typedef std::shared_ptr<ContextInfo> ContextInfoPtr;
+				};				
+			};			
+		};		
+	};	
+};
+namespace avro {
+	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::Object::ContextInfo> {	
+		static void encode(Encoder& e, const Energistics::Etp::v12::Datatypes::Object::ContextInfo& v) {		
+			avro::encode(e, v.m_uri);
+			avro::encode(e, v.m_depth);
+			avro::encode(e, v.m_contentTypes);
+		}		
+		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::Object::ContextInfo& v) {		
+			avro::decode(e, v.m_uri);
+			avro::decode(e, v.m_depth);
+			avro::decode(e, v.m_contentTypes);
+		}		
+	};	
+}
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Datatypes {			
+				namespace Object {				
 					enum ContextScopeKind {					
 						self=0,
 						sources=1,
@@ -1539,39 +1569,6 @@ namespace avro {
 		}		
 		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::Object::ContextScopeKind& v) {		
 			v = static_cast<Energistics::Etp::v12::Datatypes::Object::ContextScopeKind>(e.decodeEnum());
-		}		
-	};	
-}
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Datatypes {			
-				namespace Object {				
-					struct ContextInfo{					
-						std::string m_uri;
-						Energistics::Etp::v12::Datatypes::Object::ContextScopeKind m_scope;
-						int32_t m_depth;
-						std::vector<std::string> m_contentTypes;
-					};					
-					typedef std::shared_ptr<ContextInfo> ContextInfoPtr;
-				};				
-			};			
-		};		
-	};	
-};
-namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::Object::ContextInfo> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Datatypes::Object::ContextInfo& v) {		
-			avro::encode(e, v.m_uri);
-			avro::encode(e, v.m_scope);
-			avro::encode(e, v.m_depth);
-			avro::encode(e, v.m_contentTypes);
-		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::Object::ContextInfo& v) {		
-			avro::decode(e, v.m_uri);
-			avro::decode(e, v.m_scope);
-			avro::decode(e, v.m_depth);
-			avro::decode(e, v.m_contentTypes);
 		}		
 	};	
 }
@@ -1869,7 +1866,7 @@ namespace Energistics {
 			namespace Datatypes {			
 				namespace ChannelData {				
 					struct ChannelRangeInfo{					
-						std::vector<int64_t> m_channelId;
+						std::vector<int64_t> m_channelIds;
 						Energistics::Etp::v12::Datatypes::Object::IndexInterval m_interval;
 					};					
 					typedef std::shared_ptr<ChannelRangeInfo> ChannelRangeInfoPtr;
@@ -1881,11 +1878,11 @@ namespace Energistics {
 namespace avro {
 	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::ChannelData::ChannelRangeInfo> {	
 		static void encode(Encoder& e, const Energistics::Etp::v12::Datatypes::ChannelData::ChannelRangeInfo& v) {		
-			avro::encode(e, v.m_channelId);
+			avro::encode(e, v.m_channelIds);
 			avro::encode(e, v.m_interval);
 		}		
 		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::ChannelData::ChannelRangeInfo& v) {		
-			avro::decode(e, v.m_channelId);
+			avro::decode(e, v.m_channelIds);
 			avro::decode(e, v.m_interval);
 		}		
 	};	
@@ -2076,7 +2073,7 @@ namespace Energistics {
 		namespace v12 {		
 			namespace Datatypes {			
 				namespace Object {				
-					struct ResourcechildCount_t {
+					struct ResourcesourceCount_t {
 					private:					
 						size_t idx_=0;
 						boost::any value_;
@@ -2102,9 +2099,9 @@ namespace Energistics {
 	};	
 };
 namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::Object::ResourcechildCount_t> {
+	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::Object::ResourcesourceCount_t> {
 	
-		static void encode(Encoder& e, Energistics::Etp::v12::Datatypes::Object::ResourcechildCount_t v) {
+		static void encode(Encoder& e, Energistics::Etp::v12::Datatypes::Object::ResourcesourceCount_t v) {
 		
 			e.encodeUnionIndex(v.idx());
 			switch (v.idx()) {			
@@ -2116,7 +2113,143 @@ namespace avro {
 					break;								
 			}			
 		}		
-		static void decode(Decoder& d, Energistics::Etp::v12::Datatypes::Object::ResourcechildCount_t& v) {
+		static void decode(Decoder& d, Energistics::Etp::v12::Datatypes::Object::ResourcesourceCount_t& v) {
+		
+			size_t n = d.decodeUnionIndex();
+			if (n >= 2) { throw avro::Exception("Union index too big"); }
+			switch (n) {			
+				case 0:				
+					{					
+						d.decodeNull();
+						v.set_null();
+					}					
+					break;								
+				case 1:				
+					{					
+						int32_t vv;
+						avro::decode(d, vv);
+						v.set_int(vv);
+					}					
+					break;								
+			}			
+		}		
+	};	
+}
+
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Datatypes {			
+				namespace Object {				
+					struct ResourcetargetCount_t {
+					private:					
+						size_t idx_=0;
+						boost::any value_;
+										
+					public:					
+						size_t idx() const { return idx_; }
+						bool is_null() const { return idx_==0; }
+						void set_null() { idx_=0; value_ = boost::any(); }
+						int32_t& get_int()  {						
+							if (idx_ != 1) {							
+								throw avro::Exception("Invalid type for union.");
+							}							
+							return boost::any_cast< int32_t& >(value_);
+						}						
+						void set_int(const int32_t& v) {						
+							idx_ = 1;
+							value_ = v;
+						}						
+					};					
+				};				
+			};			
+		};		
+	};	
+};
+namespace avro {
+	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::Object::ResourcetargetCount_t> {
+	
+		static void encode(Encoder& e, Energistics::Etp::v12::Datatypes::Object::ResourcetargetCount_t v) {
+		
+			e.encodeUnionIndex(v.idx());
+			switch (v.idx()) {			
+				case 0:				
+					e.encodeNull();
+					break;								
+				case 1:				
+					avro::encode(e, v.get_int());
+					break;								
+			}			
+		}		
+		static void decode(Decoder& d, Energistics::Etp::v12::Datatypes::Object::ResourcetargetCount_t& v) {
+		
+			size_t n = d.decodeUnionIndex();
+			if (n >= 2) { throw avro::Exception("Union index too big"); }
+			switch (n) {			
+				case 0:				
+					{					
+						d.decodeNull();
+						v.set_null();
+					}					
+					break;								
+				case 1:				
+					{					
+						int32_t vv;
+						avro::decode(d, vv);
+						v.set_int(vv);
+					}					
+					break;								
+			}			
+		}		
+	};	
+}
+
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Datatypes {			
+				namespace Object {				
+					struct ResourcecontentCount_t {
+					private:					
+						size_t idx_=0;
+						boost::any value_;
+										
+					public:					
+						size_t idx() const { return idx_; }
+						bool is_null() const { return idx_==0; }
+						void set_null() { idx_=0; value_ = boost::any(); }
+						int32_t& get_int()  {						
+							if (idx_ != 1) {							
+								throw avro::Exception("Invalid type for union.");
+							}							
+							return boost::any_cast< int32_t& >(value_);
+						}						
+						void set_int(const int32_t& v) {						
+							idx_ = 1;
+							value_ = v;
+						}						
+					};					
+				};				
+			};			
+		};		
+	};	
+};
+namespace avro {
+	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::Object::ResourcecontentCount_t> {
+	
+		static void encode(Encoder& e, Energistics::Etp::v12::Datatypes::Object::ResourcecontentCount_t v) {
+		
+			e.encodeUnionIndex(v.idx());
+			switch (v.idx()) {			
+				case 0:				
+					e.encodeNull();
+					break;								
+				case 1:				
+					avro::encode(e, v.get_int());
+					break;								
+			}			
+		}		
+		static void decode(Decoder& d, Energistics::Etp::v12::Datatypes::Object::ResourcecontentCount_t& v) {
 		
 			size_t n = d.decodeUnionIndex();
 			if (n >= 2) { throw avro::Exception("Union index too big"); }
@@ -2216,11 +2349,13 @@ namespace Energistics {
 						std::string m_uri;
 						std::string m_contentType;
 						std::string m_name;
-						std::map<std::string, std::string> m_customData;
-						Energistics::Etp::v12::Datatypes::Object::ResourceKind m_resourceType;
-						Energistics::Etp::v12::Datatypes::Object::ResourcechildCount_t m_childCount;
-						Energistics::Etp::v12::Datatypes::Object::ResourcelastChanged_t m_lastChanged;
 						bool m_objectNotifiable=false;
+						Energistics::Etp::v12::Datatypes::Object::ResourceKind m_resourceType;
+						Energistics::Etp::v12::Datatypes::Object::ResourcesourceCount_t m_sourceCount;
+						Energistics::Etp::v12::Datatypes::Object::ResourcetargetCount_t m_targetCount;
+						Energistics::Etp::v12::Datatypes::Object::ResourcecontentCount_t m_contentCount;
+						Energistics::Etp::v12::Datatypes::Object::ResourcelastChanged_t m_lastChanged;
+						std::map<std::string, std::string> m_customData;
 					};					
 					typedef std::shared_ptr<Resource> ResourcePtr;
 				};				
@@ -2234,21 +2369,25 @@ namespace avro {
 			avro::encode(e, v.m_uri);
 			avro::encode(e, v.m_contentType);
 			avro::encode(e, v.m_name);
-			avro::encode(e, v.m_customData);
-			avro::encode(e, v.m_resourceType);
-			avro::encode(e, v.m_childCount);
-			avro::encode(e, v.m_lastChanged);
 			avro::encode(e, v.m_objectNotifiable);
+			avro::encode(e, v.m_resourceType);
+			avro::encode(e, v.m_sourceCount);
+			avro::encode(e, v.m_targetCount);
+			avro::encode(e, v.m_contentCount);
+			avro::encode(e, v.m_lastChanged);
+			avro::encode(e, v.m_customData);
 		}		
 		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::Object::Resource& v) {		
 			avro::decode(e, v.m_uri);
 			avro::decode(e, v.m_contentType);
 			avro::decode(e, v.m_name);
-			avro::decode(e, v.m_customData);
-			avro::decode(e, v.m_resourceType);
-			avro::decode(e, v.m_childCount);
-			avro::decode(e, v.m_lastChanged);
 			avro::decode(e, v.m_objectNotifiable);
+			avro::decode(e, v.m_resourceType);
+			avro::decode(e, v.m_sourceCount);
+			avro::decode(e, v.m_targetCount);
+			avro::decode(e, v.m_contentCount);
+			avro::decode(e, v.m_lastChanged);
+			avro::decode(e, v.m_customData);
 		}		
 	};	
 }
@@ -2314,7 +2453,7 @@ namespace Energistics {
 		namespace v12 {		
 			namespace Datatypes {			
 				namespace Object {				
-					struct Resource2sourceCount_t {
+					struct ResourceOldchildCount_t {
 					private:					
 						size_t idx_=0;
 						boost::any value_;
@@ -2340,9 +2479,9 @@ namespace Energistics {
 	};	
 };
 namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::Object::Resource2sourceCount_t> {
+	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::Object::ResourceOldchildCount_t> {
 	
-		static void encode(Encoder& e, Energistics::Etp::v12::Datatypes::Object::Resource2sourceCount_t v) {
+		static void encode(Encoder& e, Energistics::Etp::v12::Datatypes::Object::ResourceOldchildCount_t v) {
 		
 			e.encodeUnionIndex(v.idx());
 			switch (v.idx()) {			
@@ -2354,7 +2493,7 @@ namespace avro {
 					break;								
 			}			
 		}		
-		static void decode(Decoder& d, Energistics::Etp::v12::Datatypes::Object::Resource2sourceCount_t& v) {
+		static void decode(Decoder& d, Energistics::Etp::v12::Datatypes::Object::ResourceOldchildCount_t& v) {
 		
 			size_t n = d.decodeUnionIndex();
 			if (n >= 2) { throw avro::Exception("Union index too big"); }
@@ -2382,143 +2521,7 @@ namespace Energistics {
 		namespace v12 {		
 			namespace Datatypes {			
 				namespace Object {				
-					struct Resource2targetCount_t {
-					private:					
-						size_t idx_=0;
-						boost::any value_;
-										
-					public:					
-						size_t idx() const { return idx_; }
-						bool is_null() const { return idx_==0; }
-						void set_null() { idx_=0; value_ = boost::any(); }
-						int32_t& get_int()  {						
-							if (idx_ != 1) {							
-								throw avro::Exception("Invalid type for union.");
-							}							
-							return boost::any_cast< int32_t& >(value_);
-						}						
-						void set_int(const int32_t& v) {						
-							idx_ = 1;
-							value_ = v;
-						}						
-					};					
-				};				
-			};			
-		};		
-	};	
-};
-namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::Object::Resource2targetCount_t> {
-	
-		static void encode(Encoder& e, Energistics::Etp::v12::Datatypes::Object::Resource2targetCount_t v) {
-		
-			e.encodeUnionIndex(v.idx());
-			switch (v.idx()) {			
-				case 0:				
-					e.encodeNull();
-					break;								
-				case 1:				
-					avro::encode(e, v.get_int());
-					break;								
-			}			
-		}		
-		static void decode(Decoder& d, Energistics::Etp::v12::Datatypes::Object::Resource2targetCount_t& v) {
-		
-			size_t n = d.decodeUnionIndex();
-			if (n >= 2) { throw avro::Exception("Union index too big"); }
-			switch (n) {			
-				case 0:				
-					{					
-						d.decodeNull();
-						v.set_null();
-					}					
-					break;								
-				case 1:				
-					{					
-						int32_t vv;
-						avro::decode(d, vv);
-						v.set_int(vv);
-					}					
-					break;								
-			}			
-		}		
-	};	
-}
-
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Datatypes {			
-				namespace Object {				
-					struct Resource2contentCount_t {
-					private:					
-						size_t idx_=0;
-						boost::any value_;
-										
-					public:					
-						size_t idx() const { return idx_; }
-						bool is_null() const { return idx_==0; }
-						void set_null() { idx_=0; value_ = boost::any(); }
-						int32_t& get_int()  {						
-							if (idx_ != 1) {							
-								throw avro::Exception("Invalid type for union.");
-							}							
-							return boost::any_cast< int32_t& >(value_);
-						}						
-						void set_int(const int32_t& v) {						
-							idx_ = 1;
-							value_ = v;
-						}						
-					};					
-				};				
-			};			
-		};		
-	};	
-};
-namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::Object::Resource2contentCount_t> {
-	
-		static void encode(Encoder& e, Energistics::Etp::v12::Datatypes::Object::Resource2contentCount_t v) {
-		
-			e.encodeUnionIndex(v.idx());
-			switch (v.idx()) {			
-				case 0:				
-					e.encodeNull();
-					break;								
-				case 1:				
-					avro::encode(e, v.get_int());
-					break;								
-			}			
-		}		
-		static void decode(Decoder& d, Energistics::Etp::v12::Datatypes::Object::Resource2contentCount_t& v) {
-		
-			size_t n = d.decodeUnionIndex();
-			if (n >= 2) { throw avro::Exception("Union index too big"); }
-			switch (n) {			
-				case 0:				
-					{					
-						d.decodeNull();
-						v.set_null();
-					}					
-					break;								
-				case 1:				
-					{					
-						int32_t vv;
-						avro::decode(d, vv);
-						v.set_int(vv);
-					}					
-					break;								
-			}			
-		}		
-	};	
-}
-
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Datatypes {			
-				namespace Object {				
-					struct Resource2lastChanged_t {
+					struct ResourceOldlastChanged_t {
 					private:					
 						size_t idx_=0;
 						boost::any value_;
@@ -2544,9 +2547,9 @@ namespace Energistics {
 	};	
 };
 namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::Object::Resource2lastChanged_t> {
+	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::Object::ResourceOldlastChanged_t> {
 	
-		static void encode(Encoder& e, Energistics::Etp::v12::Datatypes::Object::Resource2lastChanged_t v) {
+		static void encode(Encoder& e, Energistics::Etp::v12::Datatypes::Object::ResourceOldlastChanged_t v) {
 		
 			e.encodeUnionIndex(v.idx());
 			switch (v.idx()) {			
@@ -2558,7 +2561,7 @@ namespace avro {
 					break;								
 			}			
 		}		
-		static void decode(Decoder& d, Energistics::Etp::v12::Datatypes::Object::Resource2lastChanged_t& v) {
+		static void decode(Decoder& d, Energistics::Etp::v12::Datatypes::Object::ResourceOldlastChanged_t& v) {
 		
 			size_t n = d.decodeUnionIndex();
 			if (n >= 2) { throw avro::Exception("Union index too big"); }
@@ -2586,49 +2589,43 @@ namespace Energistics {
 		namespace v12 {		
 			namespace Datatypes {			
 				namespace Object {				
-					struct Resource2{					
+					struct ResourceOld{					
 						std::string m_uri;
 						std::string m_contentType;
 						std::string m_name;
-						bool m_objectNotifiable=false;
-						Energistics::Etp::v12::Datatypes::Object::ResourceKind m_resourceType;
-						Energistics::Etp::v12::Datatypes::Object::Resource2sourceCount_t m_sourceCount;
-						Energistics::Etp::v12::Datatypes::Object::Resource2targetCount_t m_targetCount;
-						Energistics::Etp::v12::Datatypes::Object::Resource2contentCount_t m_contentCount;
-						Energistics::Etp::v12::Datatypes::Object::Resource2lastChanged_t m_lastChanged;
 						std::map<std::string, std::string> m_customData;
+						Energistics::Etp::v12::Datatypes::Object::ResourceKind m_resourceType;
+						Energistics::Etp::v12::Datatypes::Object::ResourceOldchildCount_t m_childCount;
+						Energistics::Etp::v12::Datatypes::Object::ResourceOldlastChanged_t m_lastChanged;
+						bool m_objectNotifiable=false;
 					};					
-					typedef std::shared_ptr<Resource2> Resource2Ptr;
+					typedef std::shared_ptr<ResourceOld> ResourceOldPtr;
 				};				
 			};			
 		};		
 	};	
 };
 namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::Object::Resource2> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Datatypes::Object::Resource2& v) {		
+	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::Object::ResourceOld> {	
+		static void encode(Encoder& e, const Energistics::Etp::v12::Datatypes::Object::ResourceOld& v) {		
 			avro::encode(e, v.m_uri);
 			avro::encode(e, v.m_contentType);
 			avro::encode(e, v.m_name);
-			avro::encode(e, v.m_objectNotifiable);
-			avro::encode(e, v.m_resourceType);
-			avro::encode(e, v.m_sourceCount);
-			avro::encode(e, v.m_targetCount);
-			avro::encode(e, v.m_contentCount);
-			avro::encode(e, v.m_lastChanged);
 			avro::encode(e, v.m_customData);
+			avro::encode(e, v.m_resourceType);
+			avro::encode(e, v.m_childCount);
+			avro::encode(e, v.m_lastChanged);
+			avro::encode(e, v.m_objectNotifiable);
 		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::Object::Resource2& v) {		
+		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::Object::ResourceOld& v) {		
 			avro::decode(e, v.m_uri);
 			avro::decode(e, v.m_contentType);
 			avro::decode(e, v.m_name);
-			avro::decode(e, v.m_objectNotifiable);
-			avro::decode(e, v.m_resourceType);
-			avro::decode(e, v.m_sourceCount);
-			avro::decode(e, v.m_targetCount);
-			avro::decode(e, v.m_contentCount);
-			avro::decode(e, v.m_lastChanged);
 			avro::decode(e, v.m_customData);
+			avro::decode(e, v.m_resourceType);
+			avro::decode(e, v.m_childCount);
+			avro::decode(e, v.m_lastChanged);
+			avro::decode(e, v.m_objectNotifiable);
 		}		
 	};	
 }
@@ -2638,11 +2635,11 @@ namespace Energistics {
 			namespace Datatypes {			
 				namespace Object {				
 					struct SubscriptionInfo{					
-						std::string m_uri;
+						Energistics::Etp::v12::Datatypes::Object::ContextInfo m_context;
+						Energistics::Etp::v12::Datatypes::Object::ContextScopeKind m_scope;
 						Energistics::Etp::v12::Datatypes::Uuid m_requestUuid;
-						bool m_includeObjectData=false;
 						int64_t m_startTime;
-						std::vector<std::string> m_contentTypes;
+						bool m_includeObjectData=false;
 					};					
 					typedef std::shared_ptr<SubscriptionInfo> SubscriptionInfoPtr;
 				};				
@@ -2653,18 +2650,18 @@ namespace Energistics {
 namespace avro {
 	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::Object::SubscriptionInfo> {	
 		static void encode(Encoder& e, const Energistics::Etp::v12::Datatypes::Object::SubscriptionInfo& v) {		
-			avro::encode(e, v.m_uri);
+			avro::encode(e, v.m_context);
+			avro::encode(e, v.m_scope);
 			avro::encode(e, v.m_requestUuid);
-			avro::encode(e, v.m_includeObjectData);
 			avro::encode(e, v.m_startTime);
-			avro::encode(e, v.m_contentTypes);
+			avro::encode(e, v.m_includeObjectData);
 		}		
 		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::Object::SubscriptionInfo& v) {		
-			avro::decode(e, v.m_uri);
+			avro::decode(e, v.m_context);
+			avro::decode(e, v.m_scope);
 			avro::decode(e, v.m_requestUuid);
-			avro::decode(e, v.m_includeObjectData);
 			avro::decode(e, v.m_startTime);
-			avro::decode(e, v.m_contentTypes);
+			avro::decode(e, v.m_includeObjectData);
 		}		
 	};	
 }
@@ -2673,31 +2670,34 @@ namespace Energistics {
 		namespace v12 {		
 			namespace Datatypes {			
 				namespace Object {				
-					struct SubscriptionInfo2{					
-						Energistics::Etp::v12::Datatypes::Object::ContextInfo m_context;
+					struct SubscriptionInfoOld{					
+						std::string m_uri;
 						Energistics::Etp::v12::Datatypes::Uuid m_requestUuid;
-						int64_t m_startTime;
 						bool m_includeObjectData=false;
+						int64_t m_startTime;
+						std::vector<std::string> m_contentTypes;
 					};					
-					typedef std::shared_ptr<SubscriptionInfo2> SubscriptionInfo2Ptr;
+					typedef std::shared_ptr<SubscriptionInfoOld> SubscriptionInfoOldPtr;
 				};				
 			};			
 		};		
 	};	
 };
 namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::Object::SubscriptionInfo2> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Datatypes::Object::SubscriptionInfo2& v) {		
-			avro::encode(e, v.m_context);
+	template<> struct codec_traits<Energistics::Etp::v12::Datatypes::Object::SubscriptionInfoOld> {	
+		static void encode(Encoder& e, const Energistics::Etp::v12::Datatypes::Object::SubscriptionInfoOld& v) {		
+			avro::encode(e, v.m_uri);
 			avro::encode(e, v.m_requestUuid);
-			avro::encode(e, v.m_startTime);
 			avro::encode(e, v.m_includeObjectData);
+			avro::encode(e, v.m_startTime);
+			avro::encode(e, v.m_contentTypes);
 		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::Object::SubscriptionInfo2& v) {		
-			avro::decode(e, v.m_context);
+		static void decode(Decoder& e, Energistics::Etp::v12::Datatypes::Object::SubscriptionInfoOld& v) {		
+			avro::decode(e, v.m_uri);
 			avro::decode(e, v.m_requestUuid);
-			avro::decode(e, v.m_startTime);
 			avro::decode(e, v.m_includeObjectData);
+			avro::decode(e, v.m_startTime);
+			avro::decode(e, v.m_contentTypes);
 		}		
 	};	
 }
@@ -2848,32 +2848,6 @@ namespace Energistics {
 		namespace v12 {		
 			namespace Protocol {			
 				namespace ChannelDataLoad {				
-					struct OpenChannel{					
-						std::vector<Energistics::Etp::v12::Datatypes::ChannelData::ChannelMetadataRecord> m_channels;
-						static const int messageTypeId=1;
-						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelDataLoad;
-					};					
-					typedef std::shared_ptr<OpenChannel> OpenChannelPtr;
-				};				
-			};			
-		};		
-	};	
-};
-namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Protocol::ChannelDataLoad::OpenChannel> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::ChannelDataLoad::OpenChannel& v) {		
-			avro::encode(e, v.m_channels);
-		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::ChannelDataLoad::OpenChannel& v) {		
-			avro::decode(e, v.m_channels);
-		}		
-	};	
-}
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Protocol {			
-				namespace ChannelDataLoad {				
 					struct InfillData{					
 						std::vector<Energistics::Etp::v12::Datatypes::ChannelData::DataItem> m_data;
 						static const int messageTypeId=5;
@@ -2892,6 +2866,32 @@ namespace avro {
 		}		
 		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::ChannelDataLoad::InfillData& v) {		
 			avro::decode(e, v.m_data);
+		}		
+	};	
+}
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Protocol {			
+				namespace ChannelDataLoad {				
+					struct OpenChannel{					
+						std::vector<Energistics::Etp::v12::Datatypes::ChannelData::ChannelMetadataRecord> m_channels;
+						static const int messageTypeId=1;
+						static const int protocolId=Energistics::Etp::v12::Datatypes::ChannelDataLoad;
+					};					
+					typedef std::shared_ptr<OpenChannel> OpenChannelPtr;
+				};				
+			};			
+		};		
+	};	
+};
+namespace avro {
+	template<> struct codec_traits<Energistics::Etp::v12::Protocol::ChannelDataLoad::OpenChannel> {	
+		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::ChannelDataLoad::OpenChannel& v) {		
+			avro::encode(e, v.m_channels);
+		}		
+		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::ChannelDataLoad::OpenChannel& v) {		
+			avro::decode(e, v.m_channels);
 		}		
 	};	
 }
@@ -3650,8 +3650,8 @@ namespace Energistics {
 					struct GetDataArraySlice{					
 						std::string m_uri;
 						std::string m_pathInResource;
-						std::vector<int64_t> m_start;
-						std::vector<int64_t> m_count;
+						std::vector<int64_t> m_starts;
+						std::vector<int64_t> m_counts;
 						static const int messageTypeId=3;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::DataArray;
 					};					
@@ -3666,14 +3666,14 @@ namespace avro {
 		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::DataArray::GetDataArraySlice& v) {		
 			avro::encode(e, v.m_uri);
 			avro::encode(e, v.m_pathInResource);
-			avro::encode(e, v.m_start);
-			avro::encode(e, v.m_count);
+			avro::encode(e, v.m_starts);
+			avro::encode(e, v.m_counts);
 		}		
 		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::DataArray::GetDataArraySlice& v) {		
 			avro::decode(e, v.m_uri);
 			avro::decode(e, v.m_pathInResource);
-			avro::decode(e, v.m_start);
-			avro::decode(e, v.m_count);
+			avro::decode(e, v.m_starts);
+			avro::decode(e, v.m_counts);
 		}		
 	};	
 }
@@ -3757,155 +3757,31 @@ namespace Energistics {
 	namespace Etp {	
 		namespace v12 {		
 			namespace Protocol {			
-				namespace DirectedDiscovery {				
-					struct GetContent{					
-						std::string m_uri;
-						static const int messageTypeId=1;
-						static const int protocolId=Energistics::Etp::v12::Datatypes::DirectedDiscovery;
-					};					
-					typedef std::shared_ptr<GetContent> GetContentPtr;
-				};				
-			};			
-		};		
-	};	
-};
-namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Protocol::DirectedDiscovery::GetContent> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetContent& v) {		
-			avro::encode(e, v.m_uri);
-		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::DirectedDiscovery::GetContent& v) {		
-			avro::decode(e, v.m_uri);
-		}		
-	};	
-}
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Protocol {			
-				namespace DirectedDiscovery {				
-					struct GetResourcesResponse{					
-						Energistics::Etp::v12::Datatypes::Object::GraphResource m_resource;
-						static const int messageTypeId=2;
-						static const int protocolId=Energistics::Etp::v12::Datatypes::DirectedDiscovery;
-					};					
-					typedef std::shared_ptr<GetResourcesResponse> GetResourcesResponsePtr;
-				};				
-			};			
-		};		
-	};	
-};
-namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Protocol::DirectedDiscovery::GetResourcesResponse> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetResourcesResponse& v) {		
-			avro::encode(e, v.m_resource);
-		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::DirectedDiscovery::GetResourcesResponse& v) {		
-			avro::decode(e, v.m_resource);
-		}		
-	};	
-}
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Protocol {			
-				namespace DirectedDiscovery {				
-					struct GetSources{					
-						std::string m_uri;
-						static const int messageTypeId=3;
-						static const int protocolId=Energistics::Etp::v12::Datatypes::DirectedDiscovery;
-					};					
-					typedef std::shared_ptr<GetSources> GetSourcesPtr;
-				};				
-			};			
-		};		
-	};	
-};
-namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Protocol::DirectedDiscovery::GetSources> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetSources& v) {		
-			avro::encode(e, v.m_uri);
-		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::DirectedDiscovery::GetSources& v) {		
-			avro::decode(e, v.m_uri);
-		}		
-	};	
-}
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Protocol {			
-				namespace DirectedDiscovery {				
-					struct GetTargets{					
-						std::string m_uri;
-						static const int messageTypeId=4;
-						static const int protocolId=Energistics::Etp::v12::Datatypes::DirectedDiscovery;
-					};					
-					typedef std::shared_ptr<GetTargets> GetTargetsPtr;
-				};				
-			};			
-		};		
-	};	
-};
-namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Protocol::DirectedDiscovery::GetTargets> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::DirectedDiscovery::GetTargets& v) {		
-			avro::encode(e, v.m_uri);
-		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::DirectedDiscovery::GetTargets& v) {		
-			avro::decode(e, v.m_uri);
-		}		
-	};	
-}
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Protocol {			
 				namespace Discovery {				
-					struct GetResources{					
-						std::string m_uri;
-						static const int messageTypeId=1;
-						static const int protocolId=Energistics::Etp::v12::Datatypes::Discovery;
-					};					
-					typedef std::shared_ptr<GetResources> GetResourcesPtr;
-				};				
-			};			
-		};		
-	};	
-};
-namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Protocol::Discovery::GetResources> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::Discovery::GetResources& v) {		
-			avro::encode(e, v.m_uri);
-		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::Discovery::GetResources& v) {		
-			avro::decode(e, v.m_uri);
-		}		
-	};	
-}
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Protocol {			
-				namespace Discovery {				
-					struct GetResources2{					
+					struct GetGraphResources{					
 						Energistics::Etp::v12::Datatypes::Object::ContextInfo m_context;
-						static const int messageTypeId=3;
+						Energistics::Etp::v12::Datatypes::Object::ContextScopeKind m_scope;
+						bool m_groupByType=false;
+						static const int messageTypeId=6;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Discovery;
 					};					
-					typedef std::shared_ptr<GetResources2> GetResources2Ptr;
+					typedef std::shared_ptr<GetGraphResources> GetGraphResourcesPtr;
 				};				
 			};			
 		};		
 	};	
 };
 namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Protocol::Discovery::GetResources2> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::Discovery::GetResources2& v) {		
+	template<> struct codec_traits<Energistics::Etp::v12::Protocol::Discovery::GetGraphResources> {	
+		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::Discovery::GetGraphResources& v) {		
 			avro::encode(e, v.m_context);
+			avro::encode(e, v.m_scope);
+			avro::encode(e, v.m_groupByType);
 		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::Discovery::GetResources2& v) {		
+		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::Discovery::GetGraphResources& v) {		
 			avro::decode(e, v.m_context);
+			avro::decode(e, v.m_scope);
+			avro::decode(e, v.m_groupByType);
 		}		
 	};	
 }
@@ -3915,8 +3791,8 @@ namespace Energistics {
 			namespace Protocol {			
 				namespace Discovery {				
 					struct GetResourcesResponse{					
-						Energistics::Etp::v12::Datatypes::Object::Resource m_resource;
-						static const int messageTypeId=2;
+						std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> m_resources;
+						static const int messageTypeId=4;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Discovery;
 					};					
 					typedef std::shared_ptr<GetResourcesResponse> GetResourcesResponsePtr;
@@ -3928,10 +3804,10 @@ namespace Energistics {
 namespace avro {
 	template<> struct codec_traits<Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse> {	
 		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse& v) {		
-			avro::encode(e, v.m_resource);
+			avro::encode(e, v.m_resources);
 		}		
 		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse& v) {		
-			avro::decode(e, v.m_resource);
+			avro::decode(e, v.m_resources);
 		}		
 	};	
 }
@@ -3940,24 +3816,24 @@ namespace Energistics {
 		namespace v12 {		
 			namespace Protocol {			
 				namespace Discovery {				
-					struct GetResourcesResponse2{					
-						std::vector<Energistics::Etp::v12::Datatypes::Object::Resource2> m_resource;
-						static const int messageTypeId=4;
+					struct GetTreeResources{					
+						Energistics::Etp::v12::Datatypes::Object::ContextInfo m_context;
+						static const int messageTypeId=5;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Discovery;
 					};					
-					typedef std::shared_ptr<GetResourcesResponse2> GetResourcesResponse2Ptr;
+					typedef std::shared_ptr<GetTreeResources> GetTreeResourcesPtr;
 				};				
 			};			
 		};		
 	};	
 };
 namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse2> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse2& v) {		
-			avro::encode(e, v.m_resource);
+	template<> struct codec_traits<Energistics::Etp::v12::Protocol::Discovery::GetTreeResources> {	
+		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources& v) {		
+			avro::encode(e, v.m_context);
 		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse2& v) {		
-			avro::decode(e, v.m_resource);
+		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::Discovery::GetTreeResources& v) {		
+			avro::decode(e, v.m_context);
 		}		
 	};	
 }
@@ -4308,70 +4184,6 @@ namespace Energistics {
 	namespace Etp {	
 		namespace v12 {		
 			namespace Protocol {			
-				namespace GrowingObjectQuery {				
-					struct FindParts{					
-						std::string m_uri;
-						static const int messageTypeId=1;
-						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObjectQuery;
-					};					
-					typedef std::shared_ptr<FindParts> FindPartsPtr;
-				};				
-			};			
-		};		
-	};	
-};
-namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Protocol::GrowingObjectQuery::FindParts> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::GrowingObjectQuery::FindParts& v) {		
-			avro::encode(e, v.m_uri);
-		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::GrowingObjectQuery::FindParts& v) {		
-			avro::decode(e, v.m_uri);
-		}		
-	};	
-}
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Protocol {			
-				namespace GrowingObjectQuery {				
-					struct FindPartsResponse{					
-						std::string m_uri;
-						std::string m_uid;
-						std::string m_contentType;
-						std::string m_data;
-						std::string m_serverSortOrder;
-						static const int messageTypeId=2;
-						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObjectQuery;
-					};					
-					typedef std::shared_ptr<FindPartsResponse> FindPartsResponsePtr;
-				};				
-			};			
-		};		
-	};	
-};
-namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Protocol::GrowingObjectQuery::FindPartsResponse> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::GrowingObjectQuery::FindPartsResponse& v) {		
-			avro::encode(e, v.m_uri);
-			avro::encode(e, v.m_uid);
-			avro::encode(e, v.m_contentType);
-			avro::encode(e, v.m_data);
-			avro::encode(e, v.m_serverSortOrder);
-		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::GrowingObjectQuery::FindPartsResponse& v) {		
-			avro::decode(e, v.m_uri);
-			avro::decode(e, v.m_uid);
-			avro::decode(e, v.m_contentType);
-			avro::decode(e, v.m_data);
-			avro::decode(e, v.m_serverSortOrder);
-		}		
-	};	
-}
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Protocol {			
 				namespace GrowingObjectNotification {				
 					struct PartChanged{					
 						Energistics::Etp::v12::Datatypes::Object::ObjectChangeKind m_changeKind;
@@ -4525,35 +4337,9 @@ namespace Energistics {
 		namespace v12 {		
 			namespace Protocol {			
 				namespace GrowingObjectNotification {				
-					struct SubscribePartNotification2{					
-						Energistics::Etp::v12::Datatypes::Object::SubscriptionInfo2 m_request;
-						static const int messageTypeId=7;
-						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObjectNotification;
-					};					
-					typedef std::shared_ptr<SubscribePartNotification2> SubscribePartNotification2Ptr;
-				};				
-			};			
-		};		
-	};	
-};
-namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Protocol::GrowingObjectNotification::SubscribePartNotification2> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::GrowingObjectNotification::SubscribePartNotification2& v) {		
-			avro::encode(e, v.m_request);
-		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::GrowingObjectNotification::SubscribePartNotification2& v) {		
-			avro::decode(e, v.m_request);
-		}		
-	};	
-}
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Protocol {			
-				namespace GrowingObjectNotification {				
 					struct SubscribePartNotification{					
 						Energistics::Etp::v12::Datatypes::Object::SubscriptionInfo m_request;
-						static const int messageTypeId=1;
+						static const int messageTypeId=7;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObjectNotification;
 					};					
 					typedef std::shared_ptr<SubscribePartNotification> SubscribePartNotificationPtr;
@@ -4602,25 +4388,89 @@ namespace Energistics {
 	namespace Etp {	
 		namespace v12 {		
 			namespace Protocol {			
-				namespace Store {				
-					struct DeleteObject{					
+				namespace GrowingObjectQuery {				
+					struct FindParts{					
 						std::string m_uri;
+						static const int messageTypeId=1;
+						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObjectQuery;
+					};					
+					typedef std::shared_ptr<FindParts> FindPartsPtr;
+				};				
+			};			
+		};		
+	};	
+};
+namespace avro {
+	template<> struct codec_traits<Energistics::Etp::v12::Protocol::GrowingObjectQuery::FindParts> {	
+		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::GrowingObjectQuery::FindParts& v) {		
+			avro::encode(e, v.m_uri);
+		}		
+		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::GrowingObjectQuery::FindParts& v) {		
+			avro::decode(e, v.m_uri);
+		}		
+	};	
+}
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Protocol {			
+				namespace GrowingObjectQuery {				
+					struct FindPartsResponse{					
+						std::string m_uri;
+						std::string m_uid;
+						std::string m_contentType;
+						std::string m_data;
+						std::string m_serverSortOrder;
+						static const int messageTypeId=2;
+						static const int protocolId=Energistics::Etp::v12::Datatypes::GrowingObjectQuery;
+					};					
+					typedef std::shared_ptr<FindPartsResponse> FindPartsResponsePtr;
+				};				
+			};			
+		};		
+	};	
+};
+namespace avro {
+	template<> struct codec_traits<Energistics::Etp::v12::Protocol::GrowingObjectQuery::FindPartsResponse> {	
+		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::GrowingObjectQuery::FindPartsResponse& v) {		
+			avro::encode(e, v.m_uri);
+			avro::encode(e, v.m_uid);
+			avro::encode(e, v.m_contentType);
+			avro::encode(e, v.m_data);
+			avro::encode(e, v.m_serverSortOrder);
+		}		
+		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::GrowingObjectQuery::FindPartsResponse& v) {		
+			avro::decode(e, v.m_uri);
+			avro::decode(e, v.m_uid);
+			avro::decode(e, v.m_contentType);
+			avro::decode(e, v.m_data);
+			avro::decode(e, v.m_serverSortOrder);
+		}		
+	};	
+}
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Protocol {			
+				namespace Store {				
+					struct DeleteDataObjects{					
+						std::vector<std::string> m_uris;
 						static const int messageTypeId=3;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Store;
 					};					
-					typedef std::shared_ptr<DeleteObject> DeleteObjectPtr;
+					typedef std::shared_ptr<DeleteDataObjects> DeleteDataObjectsPtr;
 				};				
 			};			
 		};		
 	};	
 };
 namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Protocol::Store::DeleteObject> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::Store::DeleteObject& v) {		
-			avro::encode(e, v.m_uri);
+	template<> struct codec_traits<Energistics::Etp::v12::Protocol::Store::DeleteDataObjects> {	
+		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::Store::DeleteDataObjects& v) {		
+			avro::encode(e, v.m_uris);
 		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::Store::DeleteObject& v) {		
-			avro::decode(e, v.m_uri);
+		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::Store::DeleteDataObjects& v) {		
+			avro::decode(e, v.m_uris);
 		}		
 	};	
 }
@@ -4629,24 +4479,24 @@ namespace Energistics {
 		namespace v12 {		
 			namespace Protocol {			
 				namespace Store {				
-					struct GetObject_{					
-						std::string m_uri;
+					struct GetDataObjects{					
+						std::vector<std::string> m_uris;
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Store;
 					};					
-					typedef std::shared_ptr<GetObject_> GetObjectPtr;
+					typedef std::shared_ptr<GetDataObjects> GetDataObjectsPtr;
 				};				
 			};			
 		};		
 	};	
 };
 namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Protocol::Store::GetObject_> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::Store::GetObject_& v) {		
-			avro::encode(e, v.m_uri);
+	template<> struct codec_traits<Energistics::Etp::v12::Protocol::Store::GetDataObjects> {	
+		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::Store::GetDataObjects& v) {		
+			avro::encode(e, v.m_uris);
 		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::Store::GetObject_& v) {		
-			avro::decode(e, v.m_uri);
+		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::Store::GetDataObjects& v) {		
+			avro::decode(e, v.m_uris);
 		}		
 	};	
 }
@@ -4655,50 +4505,50 @@ namespace Energistics {
 		namespace v12 {		
 			namespace Protocol {			
 				namespace Store {				
-					struct Object{					
-						Energistics::Etp::v12::Datatypes::Object::DataObject m_dataObject;
-						static const int messageTypeId=4;
-						static const int protocolId=Energistics::Etp::v12::Datatypes::Store;
-					};					
-					typedef std::shared_ptr<Object> ObjectPtr;
-				};				
-			};			
-		};		
-	};	
-};
-namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Protocol::Store::Object> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::Store::Object& v) {		
-			avro::encode(e, v.m_dataObject);
-		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::Store::Object& v) {		
-			avro::decode(e, v.m_dataObject);
-		}		
-	};	
-}
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Protocol {			
-				namespace Store {				
-					struct PutObject{					
-						Energistics::Etp::v12::Datatypes::Object::DataObject m_dataObject;
+					struct PutDataObjects{					
+						std::vector<Energistics::Etp::v12::Datatypes::Object::DataObject> m_dataObjects;
 						static const int messageTypeId=2;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Store;
 					};					
-					typedef std::shared_ptr<PutObject> PutObjectPtr;
+					typedef std::shared_ptr<PutDataObjects> PutDataObjectsPtr;
 				};				
 			};			
 		};		
 	};	
 };
 namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Protocol::Store::PutObject> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::Store::PutObject& v) {		
-			avro::encode(e, v.m_dataObject);
+	template<> struct codec_traits<Energistics::Etp::v12::Protocol::Store::PutDataObjects> {	
+		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::Store::PutDataObjects& v) {		
+			avro::encode(e, v.m_dataObjects);
 		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::Store::PutObject& v) {		
-			avro::decode(e, v.m_dataObject);
+		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::Store::PutDataObjects& v) {		
+			avro::decode(e, v.m_dataObjects);
+		}		
+	};	
+}
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Protocol {			
+				namespace Store {				
+					struct GetDataObjectsResponse{					
+						std::vector<Energistics::Etp::v12::Datatypes::Object::DataObject> m_dataObjects;
+						static const int messageTypeId=4;
+						static const int protocolId=Energistics::Etp::v12::Datatypes::Store;
+					};					
+					typedef std::shared_ptr<GetDataObjectsResponse> GetDataObjectsResponsePtr;
+				};				
+			};			
+		};		
+	};	
+};
+namespace avro {
+	template<> struct codec_traits<Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse> {	
+		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse& v) {		
+			avro::encode(e, v.m_dataObjects);
+		}		
+		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse& v) {		
+			avro::decode(e, v.m_dataObjects);
 		}		
 	};	
 }
@@ -4793,7 +4643,7 @@ namespace Energistics {
 				namespace StoreNotification {				
 					struct SubscribeNotification{					
 						Energistics::Etp::v12::Datatypes::Object::SubscriptionInfo m_request;
-						static const int messageTypeId=1;
+						static const int messageTypeId=6;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::StoreNotification;
 					};					
 					typedef std::shared_ptr<SubscribeNotification> SubscribeNotificationPtr;
@@ -4808,32 +4658,6 @@ namespace avro {
 			avro::encode(e, v.m_request);
 		}		
 		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotification& v) {		
-			avro::decode(e, v.m_request);
-		}		
-	};	
-}
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Protocol {			
-				namespace StoreNotification {				
-					struct SubscribeNotification2{					
-						Energistics::Etp::v12::Datatypes::Object::SubscriptionInfo2 m_request;
-						static const int messageTypeId=6;
-						static const int protocolId=Energistics::Etp::v12::Datatypes::StoreNotification;
-					};					
-					typedef std::shared_ptr<SubscribeNotification2> SubscribeNotification2Ptr;
-				};				
-			};			
-		};		
-	};	
-};
-namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotification2> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotification2& v) {		
-			avro::encode(e, v.m_request);
-		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotification2& v) {		
 			avro::decode(e, v.m_request);
 		}		
 	};	
@@ -4896,7 +4720,7 @@ namespace Energistics {
 			namespace Protocol {			
 				namespace StoreQuery {				
 					struct FindObjectsResponse{					
-						Energistics::Etp::v12::Datatypes::Object::DataObject m_dataObject;
+						std::vector<Energistics::Etp::v12::Datatypes::Object::DataObject> m_dataObject;
 						std::string m_serverSortOrder;
 						static const int messageTypeId=2;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::StoreQuery;
@@ -5009,6 +4833,7 @@ namespace Energistics {
 			namespace Protocol {			
 				namespace Transaction {				
 					struct StartTransaction{					
+						bool m_readonly=false;
 						static const int messageTypeId=1;
 						static const int protocolId=Energistics::Etp::v12::Datatypes::Transaction;
 					};					
@@ -5021,8 +4846,10 @@ namespace Energistics {
 namespace avro {
 	template<> struct codec_traits<Energistics::Etp::v12::Protocol::Transaction::StartTransaction> {	
 		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::Transaction::StartTransaction& v) {		
+			avro::encode(e, v.m_readonly);
 		}		
 		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::Transaction::StartTransaction& v) {		
+			avro::decode(e, v.m_readonly);
 		}		
 	};	
 }
@@ -5049,6 +4876,35 @@ namespace avro {
 		}		
 		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::Transaction::StartTransactionResponse& v) {		
 			avro::decode(e, v.m_transactionUuid);
+		}		
+	};	
+}
+namespace Energistics {
+	namespace Etp {	
+		namespace v12 {		
+			namespace Protocol {			
+				namespace WitsmlSoap {				
+					struct WMLS_AddToStoreResponse{					
+						int32_t m_Result;
+						std::string m_SuppMsgOut;
+						static const int messageTypeId=2;
+						static const int protocolId=Energistics::Etp::v12::Datatypes::WitsmlSoap;
+					};					
+					typedef std::shared_ptr<WMLS_AddToStoreResponse> WMLS_AddToStoreResponsePtr;
+				};				
+			};			
+		};		
+	};	
+};
+namespace avro {
+	template<> struct codec_traits<Energistics::Etp::v12::Protocol::WitsmlSoap::WMLS_AddToStoreResponse> {	
+		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::WitsmlSoap::WMLS_AddToStoreResponse& v) {		
+			avro::encode(e, v.m_Result);
+			avro::encode(e, v.m_SuppMsgOut);
+		}		
+		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::WitsmlSoap::WMLS_AddToStoreResponse& v) {		
+			avro::decode(e, v.m_Result);
+			avro::decode(e, v.m_SuppMsgOut);
 		}		
 	};	
 }
@@ -5084,35 +4940,6 @@ namespace avro {
 			avro::decode(e, v.m_XMLin);
 			avro::decode(e, v.m_OptionsIn);
 			avro::decode(e, v.m_CapabilitiesIn);
-		}		
-	};	
-}
-namespace Energistics {
-	namespace Etp {	
-		namespace v12 {		
-			namespace Protocol {			
-				namespace WitsmlSoap {				
-					struct WMLS_AddToStoreResponse{					
-						int32_t m_Result;
-						std::string m_SuppMsgOut;
-						static const int messageTypeId=2;
-						static const int protocolId=Energistics::Etp::v12::Datatypes::WitsmlSoap;
-					};					
-					typedef std::shared_ptr<WMLS_AddToStoreResponse> WMLS_AddToStoreResponsePtr;
-				};				
-			};			
-		};		
-	};	
-};
-namespace avro {
-	template<> struct codec_traits<Energistics::Etp::v12::Protocol::WitsmlSoap::WMLS_AddToStoreResponse> {	
-		static void encode(Encoder& e, const Energistics::Etp::v12::Protocol::WitsmlSoap::WMLS_AddToStoreResponse& v) {		
-			avro::encode(e, v.m_Result);
-			avro::encode(e, v.m_SuppMsgOut);
-		}		
-		static void decode(Decoder& e, Energistics::Etp::v12::Protocol::WitsmlSoap::WMLS_AddToStoreResponse& v) {		
-			avro::decode(e, v.m_Result);
-			avro::decode(e, v.m_SuppMsgOut);
 		}		
 	};	
 }

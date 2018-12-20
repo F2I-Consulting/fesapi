@@ -22,7 +22,7 @@ under the License.
 
 void MyOwnDataArrayProtocolHandlers::on_GetDataArray(const Energistics::Etp::v12::Protocol::DataArray::GetDataArray & gda, int64_t correlationId)
 {
-	std::cout << "Received uri : " << gda.m_uri << std::endl;
+	std::cout << "Data array received uri : " << gda.m_uri << std::endl;
 	COMMON_NS::AbstractObject* obj = static_cast<MyOwnEtpServerSession*>(session)->getObjectFromUri(gda.m_uri);
 	if (obj == nullptr) {
 		return;

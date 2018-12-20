@@ -26,5 +26,5 @@ public:
 	MyOwnStoreProtocolHandlers(class MyOwnEtpServerSession* mySession);
 	~MyOwnStoreProtocolHandlers() {}
 
-    void on_GetObject(const Energistics::Etp::v12::Protocol::Store::GetObject_ & getO, int64_t correlationId);
+    void on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & getO, int64_t correlationId);
 };

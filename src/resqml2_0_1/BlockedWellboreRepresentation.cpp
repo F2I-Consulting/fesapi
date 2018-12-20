@@ -46,7 +46,6 @@ void BlockedWellboreRepresentation::init(const std::string & guid, const std::st
 	_resqml2__BlockedWellboreRepresentation* frame = static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 
 	frame->Trajectory = traj->newResqmlReference();
-	trajectory = traj;
 	traj->addWellboreFrameRepresentation(this);
 
 	initMandatoryMetadata();

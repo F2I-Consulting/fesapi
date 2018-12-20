@@ -25,18 +25,16 @@ under the License.
 #include "resqml2_0_1/IjkGridExplicitRepresentation.h"
 #include "resqml2_0_1/IjkGridParametricRepresentation.h"
 
-void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlash(const Energistics::Etp::v12::Protocol::Discovery::GetResources2 & gr,  int64_t correlationId,
-	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource2> & result)
+void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlash(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gr,  int64_t correlationId,
+	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result)
 {
-	Energistics::Etp::v12::Datatypes::Object::Resource2 resource;
+	Energistics::Etp::v12::Datatypes::Object::Resource resource;
 	resource.m_objectNotifiable = false;
-	resource.m_contentType = "";
+	resource.m_contentType = std::string();
 
 	if (gr.m_context.m_depth >= 0) {
 		// Self
-		if (gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self ||
-			gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf ||
-			gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
+		if (gr.m_context.m_depth == 0) {
 			resource.m_uri = gr.m_context.m_uri;
 			resource.m_name = "eml://";
 			resource.m_resourceType = Energistics::Etp::v12::Datatypes::Object::ResourceKind::UriProtocol;
@@ -45,35 +43,28 @@ void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlash(const Energistics:
 				result.push_back(resource);
 			}
 		}
-
-		// Target
-		if (gr.m_context.m_depth >= 1 &&
-			(gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets ||
-			gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf)) {
-			Energistics::Etp::v12::Protocol::Discovery::GetResources2 nextGr = gr;
+		else {
+			Energistics::Etp::v12::Protocol::Discovery::GetTreeResources nextGr = gr;
 			--nextGr.m_context.m_depth;
-			nextGr.m_context.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
 
 			nextGr.m_context.m_uri = "eml://resqml20";
-			on_GetEmlColonSlashSlashResqml20(nextGr, correlationId, result);
+			on_GetEmlColonSlashSlashResqml20(nextGr, correlationId, result, true);
 			nextGr.m_context.m_uri = "eml://eml20";
-			on_GetEmlColonSlashSlashEml20(nextGr, correlationId, result);
+			on_GetEmlColonSlashSlashEml20(nextGr, correlationId, result, true);
 		}
 	}
 }
 
-void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlashResqml20(const Energistics::Etp::v12::Protocol::Discovery::GetResources2 & gr, int64_t correlationId,
-	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource2> & result)
+void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlashResqml20(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gr, int64_t correlationId,
+	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result, bool self)
 {
-	Energistics::Etp::v12::Datatypes::Object::Resource2 resource;
+	Energistics::Etp::v12::Datatypes::Object::Resource resource;
 	resource.m_objectNotifiable = false;
 	resource.m_contentType = "";
 
 	if (gr.m_context.m_depth >= 0) {
 		// Self
-		if (gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self ||
-			gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf ||
-			gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
+		if (gr.m_context.m_depth == 0) {
 			resource.m_uri = gr.m_context.m_uri;
 			resource.m_name = "RESQML2.0 Uri Protocol";
 			resource.m_resourceType = Energistics::Etp::v12::Datatypes::Object::ResourceKind::UriProtocol;
@@ -82,54 +73,32 @@ void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlashResqml20(const Ener
 				result.push_back(resource);
 			}
 		}
+		else {
+			Energistics::Etp::v12::Protocol::Discovery::GetTreeResources nextGr = gr;
+			--nextGr.m_context.m_depth;
 
-		if (gr.m_context.m_depth >= 1) {
-			// Target
-			if (gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets ||
-				gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
-				Energistics::Etp::v12::Protocol::Discovery::GetResources2 nextGr = gr;
-				--nextGr.m_context.m_depth;
-				nextGr.m_context.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
+			const std::string uriPrefix = "eml://resqml20/obj_";
+			MyOwnEtpServerSession* mySession = static_cast<MyOwnEtpServerSession*>(session);
 
-				const std::string uriPrefix = "eml://resqml20/obj_";
-
-				nextGr.m_context.m_uri = uriPrefix + RESQML2_0_1_NS::TriangulatedSetRepresentation::XML_TAG;
-				on_GetFolder(nextGr, correlationId, result);
-
-				nextGr.m_context.m_uri = uriPrefix + RESQML2_0_1_NS::Grid2dRepresentation::XML_TAG;
-				on_GetFolder(nextGr, correlationId, result);
-
-				nextGr.m_context.m_uri = uriPrefix + RESQML2_0_1_NS::WellboreTrajectoryRepresentation::XML_TAG;
-				on_GetFolder(nextGr, correlationId, result);
-
-				nextGr.m_context.m_uri = uriPrefix + RESQML2_0_1_NS::AbstractIjkGridRepresentation::XML_TAG;
-				on_GetFolder(nextGr, correlationId, result);
-			}
-			// Source
-			else if (gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources ||
-				gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf) {
-				Energistics::Etp::v12::Protocol::Discovery::GetResources2 nextGr = gr;
-				--nextGr.m_context.m_depth;
-				nextGr.m_context.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self;
-				nextGr.m_context.m_uri = "eml://";
-				on_GetEmlColonSlashSlash(nextGr, correlationId, result);
+			auto objectsGroupedByContentType = mySession->epcDoc.getResqmlObjectsGroupedByContentType();
+			for (auto it = objectsGroupedByContentType.begin(); it != objectsGroupedByContentType.end(); ++it) {
+				nextGr.m_context.m_uri = uriPrefix + it->second[0]->getXmlTag();
+				on_GetFolder(nextGr, correlationId, result, true);
 			}
 		}
 	}
 }
 
-void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlashEml20(const Energistics::Etp::v12::Protocol::Discovery::GetResources2 & gr, int64_t correlationId,
-	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource2> & result)
+void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlashEml20(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gr, int64_t correlationId,
+	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result, bool self)
 {
-	Energistics::Etp::v12::Datatypes::Object::Resource2 resource;
+	Energistics::Etp::v12::Datatypes::Object::Resource resource;
 	resource.m_objectNotifiable = false;
 	resource.m_contentType = "";
 
 	if (gr.m_context.m_depth >= 0) {
 		// Self
-		if (gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self ||
-			gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf ||
-			gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
+		if (gr.m_context.m_depth == 0) {
 			resource.m_uri = gr.m_context.m_uri;
 			resource.m_name = "EML2.0 Uri Protocol";
 			resource.m_resourceType = Energistics::Etp::v12::Datatypes::Object::ResourceKind::UriProtocol;
@@ -138,68 +107,42 @@ void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlashEml20(const Energis
 				result.push_back(resource);
 			}
 		}
+		else {
+			Energistics::Etp::v12::Protocol::Discovery::GetTreeResources nextGr = gr;
+			--nextGr.m_context.m_depth;
 
-		if (gr.m_context.m_depth >= 1) {
-			// Target
-			if (gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets ||
-				gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
-				Energistics::Etp::v12::Protocol::Discovery::GetResources2 nextGr = gr;
-				--nextGr.m_context.m_depth;
-				nextGr.m_context.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
+			const std::string uriPrefix = "eml://eml20/obj_";
 
-				const std::string uriPrefix = "eml://eml20/obj_";
-
-				nextGr.m_context.m_uri = uriPrefix + COMMON_NS::EpcExternalPartReference::XML_TAG;
-				on_GetFolder(nextGr, correlationId, result);
-			}
-			// Source
-			else if (gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources ||
-				gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf) {
-				Energistics::Etp::v12::Protocol::Discovery::GetResources2 nextGr = gr;
-				--nextGr.m_context.m_depth;
-				nextGr.m_context.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self;
-				nextGr.m_context.m_uri = "eml://";
-				on_GetEmlColonSlashSlash(nextGr, correlationId, result);
-			}
+			nextGr.m_context.m_uri = uriPrefix + COMMON_NS::EpcExternalPartReference::XML_TAG;
+			on_GetFolder(nextGr, correlationId, result, true);
 		}
 	}
 }
 
-void MyOwnDiscoveryProtocolHandlers::on_GetFolder(const Energistics::Etp::v12::Protocol::Discovery::GetResources2 & gr, int64_t correlationId,
-	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource2> & result)
+void MyOwnDiscoveryProtocolHandlers::on_GetFolder(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gr, int64_t correlationId,
+	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result, bool self)
 {
-	Energistics::Etp::v12::Datatypes::Object::Resource2 resource;
+	Energistics::Etp::v12::Datatypes::Object::Resource resource;
 	resource.m_objectNotifiable = false;
 	resource.m_contentType = "";
 
-	std::string resqml20Datatype = tokenize(gr.m_context.m_uri, '/')[3].substr(4);
+	std::string resqml20Datatype = tokenize(gr.m_context.m_uri, '/')[3];
 	if (gr.m_context.m_depth >= 0) {
 		MyOwnEtpServerSession* mySession = static_cast<MyOwnEtpServerSession*>(session);
 
 		// Self
-		if (gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self ||
-			gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf ||
-			gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
+		if (gr.m_context.m_depth == 0) {
 			resource.m_uri = gr.m_context.m_uri;
 			resource.m_name = resqml20Datatype + " Folder";
 			resource.m_resourceType = Energistics::Etp::v12::Datatypes::Object::ResourceKind::Folder;
 
-			
-			if (resqml20Datatype == RESQML2_0_1_NS::TriangulatedSetRepresentation::XML_TAG) {
-				resource.m_contentCount.set_int(mySession->epcDoc.getAllTriangulatedSetRepSet().size());
+			if (resqml20Datatype.substr(4) == COMMON_NS::EpcExternalPartReference::XML_TAG) {
+				resource.m_contentCount.set_int(mySession->epcDoc.getHdfProxySet().size());
 			}
-			else if (resqml20Datatype == RESQML2_0_1_NS::Grid2dRepresentation::XML_TAG) {
-				resource.m_contentCount.set_int(mySession->epcDoc.getAllGrid2dRepresentationSet().size());
+			else {
+				resource.m_contentCount.set_int(mySession->epcDoc.getResqmlObjectsByContentType("application/x-resqml+xml;version=2.0;type=" + resqml20Datatype).size());
 			}
-			else if (resqml20Datatype == RESQML2_0_1_NS::WellboreTrajectoryRepresentation::XML_TAG) {
-				resource.m_contentCount.set_int(mySession->epcDoc.getWellboreTrajectoryRepresentationSet().size());
-			}
-			else if (resqml20Datatype == RESQML2_0_1_NS::AbstractIjkGridRepresentation::XML_TAG) {
-				resource.m_contentCount.set_int(mySession->epcDoc.getIjkGridRepresentationCount());
-			}
-			else if (resqml20Datatype == COMMON_NS::EpcExternalPartReference::XML_TAG) {
-				resource.m_contentCount.set_int(mySession->epcDoc.getHdfProxyCount());
-			}
+/*
 			else {
 				Energistics::Etp::v12::Protocol::Core::ProtocolException error;
 				error.m_errorCode = 14;
@@ -207,73 +150,43 @@ void MyOwnDiscoveryProtocolHandlers::on_GetFolder(const Energistics::Etp::v12::P
 
 				session->send(error);
 			}
+			*/
 			if (gr.m_context.m_contentTypes.empty() || std::find(gr.m_context.m_contentTypes.begin(), gr.m_context.m_contentTypes.end(), std::string()) != gr.m_context.m_contentTypes.end()) {
 				result.push_back(resource);
 			}
 		}
+		else {
+			// Content
+			Energistics::Etp::v12::Protocol::Discovery::GetGraphResources nextGr;
+			nextGr.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self;
+			nextGr.m_groupByType = false;
+			nextGr.m_context.m_depth = 0;
 
-		if (gr.m_context.m_depth >= 1) {
-			// Target
-			if (gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets ||
-				gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
-				Energistics::Etp::v12::Protocol::Discovery::GetResources2 nextGr = gr;
-				--nextGr.m_context.m_depth;
-				nextGr.m_context.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
-
-				if (resqml20Datatype == RESQML2_0_1_NS::TriangulatedSetRepresentation::XML_TAG) {
-					for (const auto & obj : mySession->epcDoc.getAllTriangulatedSetRepSet()) {
-						nextGr.m_context.m_uri = gr.m_context.m_uri + '(' + obj->getUuid() + ')';
-						on_GetDataObject(nextGr, correlationId, result);
-					}
-				}
-				else if (resqml20Datatype == RESQML2_0_1_NS::Grid2dRepresentation::XML_TAG) {
-					for (const auto & obj : mySession->epcDoc.getAllGrid2dRepresentationSet()) {
-						nextGr.m_context.m_uri = gr.m_context.m_uri + '(' + obj->getUuid() + ')';
-						on_GetDataObject(nextGr, correlationId, result);
-					}
-				}
-				else if (resqml20Datatype == RESQML2_0_1_NS::WellboreTrajectoryRepresentation::XML_TAG) {
-					for (const auto & obj : mySession->epcDoc.getWellboreTrajectoryRepresentationSet()) {
-						nextGr.m_context.m_uri = gr.m_context.m_uri + '(' + obj->getUuid() + ')';
-						on_GetDataObject(nextGr, correlationId, result);
-					}
-				}
-				else if (resqml20Datatype == RESQML2_0_1_NS::AbstractIjkGridRepresentation::XML_TAG) {
-					for (const auto & obj : mySession->epcDoc.getIjkGridRepresentationSet()) {
-						nextGr.m_context.m_uri = gr.m_context.m_uri + '(' + obj->getUuid() + ')';
-						on_GetDataObject(nextGr, correlationId, result);
-					}
-				}
-				else if (resqml20Datatype == COMMON_NS::EpcExternalPartReference::XML_TAG) {
-					for (const auto & obj : mySession->epcDoc.getHdfProxySet()) {
+			if (resqml20Datatype.substr(4) == COMMON_NS::EpcExternalPartReference::XML_TAG) {
+				for (const auto & obj : mySession->epcDoc.getHdfProxySet()) {
+					if (!obj->isPartial()) {
 						nextGr.m_context.m_uri = gr.m_context.m_uri + '(' + obj->getUuid() + ')';
 						on_GetDataObject(nextGr, correlationId, result);
 					}
 				}
 			}
-			// Source
-			else if (gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources ||
-				gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf) {
-				Energistics::Etp::v12::Protocol::Discovery::GetResources2 nextGr = gr;
-				--nextGr.m_context.m_depth;
-				nextGr.m_context.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf;
-				if (resqml20Datatype == COMMON_NS::EpcExternalPartReference::XML_TAG) {
-					nextGr.m_context.m_uri = "eml://eml20";
-					on_GetEmlColonSlashSlashEml20(nextGr, correlationId, result);
-				}
-				else {
-					nextGr.m_context.m_uri = "eml://resqml20";
-					on_GetEmlColonSlashSlashResqml20(nextGr, correlationId, result);
+			else {
+				auto objs = mySession->epcDoc.getResqmlObjectsByContentType("application/x-resqml+xml;version=2.0;type=" + resqml20Datatype);
+				for (const auto & obj : objs) {
+					if (!obj->isPartial()) {
+						nextGr.m_context.m_uri = gr.m_context.m_uri + '(' + obj->getUuid() + ')';
+						on_GetDataObject(nextGr, correlationId, result);
+					}
 				}
 			}
 		}
 	}
 }
 
-void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v12::Protocol::Discovery::GetResources2 & gr, int64_t correlationId,
-	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource2> & result)
+void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v12::Protocol::Discovery::GetGraphResources & gr, int64_t correlationId,
+	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result)
 {
-	Energistics::Etp::v12::Datatypes::Object::Resource2 resource;
+	Energistics::Etp::v12::Datatypes::Object::Resource resource;
 	resource.m_objectNotifiable = false;
 	resource.m_contentType = "";
 
@@ -284,9 +197,9 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v1
 		COMMON_NS::AbstractObject* obj = mySession->epcDoc.getResqmlAbstractObjectByUuid(gr.m_context.m_uri.substr(openingParenthesis + 1, 36));
 
 		// Self
-		if (gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self ||
-			gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf ||
-			gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
+		if (gr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self ||
+			gr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf ||
+			gr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
 			if (gr.m_context.m_contentTypes.empty() || std::find(gr.m_context.m_contentTypes.begin(), gr.m_context.m_contentTypes.end(), obj->getContentType()) != gr.m_context.m_contentTypes.end()) {
 				result.push_back(buildResourceFromObject(obj));
 			}
@@ -294,11 +207,11 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v1
 
 		if (gr.m_context.m_depth >= 1) {
 			// Target
-			if (gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets ||
-				gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
-				Energistics::Etp::v12::Protocol::Discovery::GetResources2 nextGr = gr;
+			if (gr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets ||
+				gr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
+				Energistics::Etp::v12::Protocol::Discovery::GetGraphResources nextGr = gr;
 				--nextGr.m_context.m_depth;
-				nextGr.m_context.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
+				nextGr.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
 
 				for (const auto & targetUuid : obj->getAllTargetRelationshipUuids()) {
 					nextGr.m_context.m_uri = gr.m_context.m_uri.substr(0, openingParenthesis) + '(' + targetUuid + ')';
@@ -306,11 +219,11 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v1
 				}
 			}
 			// Source
-			else if (gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources ||
-				gr.m_context.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf) {
-				Energistics::Etp::v12::Protocol::Discovery::GetResources2 nextGr = gr;
+			else if (gr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources ||
+				gr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf) {
+				Energistics::Etp::v12::Protocol::Discovery::GetGraphResources nextGr = gr;
 				--nextGr.m_context.m_depth;
-				nextGr.m_context.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf;
+				nextGr.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf;
 				
 				for (const auto & targetUuid : obj->getAllSourceRelationshipUuids()) {
 					nextGr.m_context.m_uri = gr.m_context.m_uri.substr(0, openingParenthesis) + '(' + targetUuid + ')';
@@ -321,34 +234,45 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v1
 	}
 }
 
-void MyOwnDiscoveryProtocolHandlers::on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources2 & gr, int64_t correlationId)
+void MyOwnDiscoveryProtocolHandlers::on_GetTreeResources(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gr, int64_t correlationId)
 {
-	std::cout << "received uri : " << gr.m_context.m_uri << std::endl;
+	std::cout << "Discovery tree resource received uri : " << gr.m_context.m_uri << std::endl;
 
 	if (!session->validateUri(gr.m_context.m_uri, true)) {
 		return;
 	}
 
-	Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse2 mb;
+	Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse mb;
 
 	if (gr.m_context.m_uri == "eml://") {
-		on_GetEmlColonSlashSlash(gr, correlationId, mb.m_resource);
+		on_GetEmlColonSlashSlash(gr, correlationId, mb.m_resources);
 	}
 	else {
 		const std::string path = gr.m_context.m_uri.substr(6);
 		if (path == "resqml20" || path == "resqml20/") {
-			on_GetEmlColonSlashSlashResqml20(gr, correlationId, mb.m_resource);
+			on_GetEmlColonSlashSlashResqml20(gr, correlationId, mb.m_resources);
 		}
 		else if (path == "eml20" || path == "eml20/") {
-			on_GetEmlColonSlashSlashEml20(gr, correlationId, mb.m_resource);
-		}
-		else if (path[path.size() - 1] == ')') {
-			on_GetDataObject(gr, correlationId, mb.m_resource);
+			on_GetEmlColonSlashSlashEml20(gr, correlationId, mb.m_resources);
 		}
 		else {
-			on_GetFolder(gr, correlationId, mb.m_resource);
+			on_GetFolder(gr, correlationId, mb.m_resources);
 		}
 	}
 
-	session->send(mb, correlationId);
+	session->send(mb, correlationId, 0x01 | 0x02);
+}
+
+void MyOwnDiscoveryProtocolHandlers::on_GetGraphResources(const Energistics::Etp::v12::Protocol::Discovery::GetGraphResources & gr, int64_t correlationId)
+{
+	std::cout << "Discovery graph resource received uri : " << gr.m_context.m_uri << std::endl;
+
+	if (!session->validateDataObjectUri(gr.m_context.m_uri, true)) {
+		return;
+	}
+
+	Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse mb;
+	on_GetDataObject(gr, correlationId, mb.m_resources);
+
+	session->send(mb, correlationId, 0x01 | 0x02);
 }

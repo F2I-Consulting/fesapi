@@ -125,6 +125,23 @@ namespace COMMON_NS
 		*/
 		void changeToPartialObject();
 
+		/**
+		* Get or create an object from a data object reference
+		*/
+		template <class valueType>
+		valueType* getOrCreateObjectFromDor(gsoap_resqml2_0_1::eml20__DataObjectReference* dor) const
+		{
+			valueType* obj = getEpcDocument()->getResqmlAbstractObjectByUuid<valueType>(dor->UUID);
+			if (obj == nullptr) { // partial transfer
+				getEpcDocument()->createPartial(dor);
+				obj = getEpcDocument()->getResqmlAbstractObjectByUuid<valueType>(dor->UUID);
+			}
+			if (obj == nullptr) {
+				throw invalid_argument("The DOR looks invalid.");
+			}
+			return obj;
+		}
+
 	public:
 
 		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG = 3, ULONG = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
@@ -328,8 +345,7 @@ namespace COMMON_NS
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
 
 		/**
-		* Transform target relationships contained in the XML into in memory bi idrectonal relationships.
-		* Does not update anything about the source relationships of the this current object.
+		* Set the backward relationship to this object on each target of this object.
 		*/
 		virtual void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc) = 0;
 	};

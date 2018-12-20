@@ -631,8 +631,7 @@ string AbstractObject::getContentType() const
 	if (xmlNs == "resqml2")
 		return "application/x-resqml+xml;version=2.0;type=obj_" + getXmlTag();
 	else if (xmlNs == "eml20" )
-		return "application/x-resqml+xml;version=2.0;type=obj_" + getXmlTag(); // This is clearly a mistake, the line below is the right one. However, this is needed the time readers can read the right content type.
-		//return "application/x-eml+xml;version=2.0;type=obj_" + getXmlTag();
+		return "application/x-eml+xml;version=2.0;type=obj_" + getXmlTag();
 	else if (xmlNs == "eml21")
 		return "application/x-eml+xml;version=2.1;type=" + getXmlTag();
 	else

@@ -31,14 +31,20 @@ void DiscoveryHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes
 		return;
 	}
 
-	if (mh.m_messageType == Energistics::Etp::v12::Protocol::Discovery::GetResources2::messageTypeId) {
-		Energistics::Etp::v12::Protocol::Discovery::GetResources2 gr;
+	if (mh.m_messageType == Energistics::Etp::v12::Protocol::Discovery::GetTreeResources::messageTypeId) {
+		Energistics::Etp::v12::Protocol::Discovery::GetTreeResources gr;
 		avro::decode(*d, gr);
 		session->flushReceivingBuffer();
-		on_GetResources(gr, mh.m_messageId);
+		on_GetTreeResources(gr, mh.m_messageId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse2::messageTypeId) {
-		Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse2 grr;
+	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Discovery::GetGraphResources::messageTypeId) {
+		Energistics::Etp::v12::Protocol::Discovery::GetGraphResources gr;
+		avro::decode(*d, gr);
+		session->flushReceivingBuffer();
+		on_GetGraphResources(gr, mh.m_messageId);
+	}
+	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse::messageTypeId) {
+		Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse grr;
 		avro::decode(*d, grr);
 		session->flushReceivingBuffer();
 		on_GetResourcesResponse(grr, mh.m_correlationId);
@@ -49,21 +55,33 @@ void DiscoveryHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes
 	}
 }
 
-void DiscoveryHandlers::on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources2 & gr, int64_t correlationId)
+void DiscoveryHandlers::on_GetTreeResources(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gr, int64_t correlationId)
 {
-	std::cout << "on_GetResources2" << std::endl;
+	std::cout << "on_GetTreeResources" << std::endl;
 
 	// Build GetResourcesResponse message
 	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
 	error.m_errorCode = 7;
-	error.m_errorMessage = "The Discovery::on_GetResources method has not been overriden by the agent.";
+	error.m_errorMessage = "The Discovery::on_GetTreeResources method has not been overriden by the agent.";
 
 	session->send(error);
 }
 
-void DiscoveryHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse2 & grr, int64_t correlationId)
+void DiscoveryHandlers::on_GetGraphResources(const Energistics::Etp::v12::Protocol::Discovery::GetGraphResources & gr, int64_t correlationId)
 {
-	for (const auto & resource : grr.m_resource) {
+	std::cout << "on_GetGraphResources" << std::endl;
+
+	// Build GetResourcesResponse message
+	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
+	error.m_errorCode = 7;
+	error.m_errorMessage = "The Discovery::on_GetGraphResources method has not been overriden by the agent.";
+
+	session->send(error);
+}
+
+void DiscoveryHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse & grr, int64_t correlationId)
+{
+	for (const auto & resource : grr.m_resources) {
 		std::cout << '(' << resource.m_name << ", " << resource.m_contentType << ')' << std::endl;
 	}
 }
