@@ -36,7 +36,7 @@ OrganizationFeature::OrganizationFeature(soap* soapContext, const std::string & 
 	orgFeat->OrganizationKind = orgType;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 

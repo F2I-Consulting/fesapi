@@ -42,7 +42,7 @@ SeismicLineFeature::SeismicLineFeature(soap* soapContext, const std::string & gu
 	seismicLine->TraceCount = traceCount;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 int SeismicLineFeature::getTraceIndexIncrement() const

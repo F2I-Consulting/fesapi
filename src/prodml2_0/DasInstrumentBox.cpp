@@ -36,7 +36,7 @@ DasInstrumentBox::DasInstrumentBox(soap* soapContext, const string & guid, const
 	gsoapProxy2_1 = soap_new_prodml2__DasInstrumentBox(soapContext, 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	_prodml2__DasInstrumentBox* dib = static_cast<_prodml2__DasInstrumentBox*>(gsoapProxy2_1);
 

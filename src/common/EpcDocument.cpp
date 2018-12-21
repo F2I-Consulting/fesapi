@@ -24,6 +24,8 @@ under the License.
 #include "H5Epublic.h"
 #include "H5Fpublic.h"
 
+#include "version_config.h"
+
 #include "epc/Relationship.h"
 #include "epc/FilePart.h"
 

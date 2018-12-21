@@ -34,6 +34,8 @@ under the License.
 #include <sstream>
 #include <vector>
 
+#include "version_config.h"
+
 #include "proxies/stdsoap2.h"
 
 #include "common/EpcDocument.h"
@@ -292,7 +294,7 @@ void serializeBoundaries(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfPro
 	horizon2 = pck->createHorizon("fd7950a6-f62e-4e47-96c4-048820a61c59", "Horizon2");
 	horizon2->setVersionString("my version string");
 	fault1 = pck->createFault("1424bcc2-3d9d-4f30-b1f9-69dcb897e33b", "Fault1");
-	fault1->setMetadata("", "philippe", 148526020, "philippe", "", 148526100, "F2I", "");
+	fault1->setMetadata("", "philippe", 148526020, "philippe", "", 148526100, "");
 
 	// Interpretations
 	//BoundaryFeatureInterpretation* bfi = pck->createBoundaryFeatureInterpretation(bf, "", "testingBoundaryFeatureInterp");
@@ -1312,6 +1314,8 @@ void deserializeActivity(COMMON_NS::AbstractObject* resqmlObject)
 bool serialize(const string & filePath)
 {
 	COMMON_NS::EpcDocument pck(filePath, COMMON_NS::EpcDocument::OVERWRITE);
+
+	AbstractObject::setFormat("F2I-CONSULTING", "Fesapi Example", FESAPI_VERSION);
 
 	COMMON_NS::AbstractHdfProxy* hdfProxy = pck.createHdfProxy("", "Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5");
 

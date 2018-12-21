@@ -35,11 +35,15 @@ under the License.
 #include <pwd.h>
 #endif
 
+#include "version_config.h"
+
 #include "resqml2/Activity.h"
 
 using namespace std;
 using namespace COMMON_NS;
 using namespace gsoap_resqml2_0_1;
+
+char AbstractObject::citationFormat[257] = "[F2I-CONSULTING:fesapi " FESAPI_VERSION "]";
 
 AbstractObject::AbstractObject() :
 	partialObject(nullptr), gsoapProxy2_0_1(nullptr),
@@ -429,19 +433,21 @@ void AbstractObject::setLastUpdate(const tm & lastUpdate)
 	}
 }
 
-void AbstractObject::setFormat(const std::string & format)
+void AbstractObject::setFormat(const std::string & vendor, const std::string & applicationName, const std::string & applicationVersionNumber)
 {
-	if (partialObject != nullptr)
-		throw invalid_argument("The wrapped gsoap proxy must not be null");
+	string format = "[";
+	format += vendor;
+	format += ':';
+	format += applicationName;
+	format += ' ';
+	format += applicationVersionNumber;
+	format += ']';
+	if (vendor.size() + applicationName.size() + applicationVersionNumber.size() > 256) {
+		throw range_error("The format cannot be more than 256 characters");
+	}
 
-	if (format.empty()) {
-		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->Citation->Format = "[F2I-CONSULTING:fesapi]";
-		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->Citation->Format = "[F2I-CONSULTING:fesapi]";
-	}
-	else {
-		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->Citation->Format = format;
-		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->Citation->Format = format;
-	}
+	format.copy(citationFormat, format.size());
+	citationFormat[format.size()] = '\0';
 }
 
 void AbstractObject::setDescriptiveKeywords(const std::string & descriptiveKeywords)
@@ -498,18 +504,18 @@ void AbstractObject::initMandatoryMetadata()
 		gsoapProxy2_1->Citation = gsoap_eml2_1::soap_new_eml21__Citation(gsoapProxy2_1->soap, 1);
 	}
 
-	setMetadata("", "", "", -1, "", "", -1, "", "");
+	setMetadata(std::string(), std::string(), std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 void AbstractObject::setMetadata(const std::string & guid, const std::string & title, const std::string & editor, const time_t & creation, const std::string & originator,
-				const std::string & description, const time_t & lastUpdate, const std::string & format, const std::string & descriptiveKeywords)
+				const std::string & description, const time_t & lastUpdate, const std::string & descriptiveKeywords)
 {
 	setUuid(guid);
-	setMetadata(title, editor, creation, originator, description, lastUpdate, format, descriptiveKeywords);
+	setMetadata(title, editor, creation, originator, description, lastUpdate, descriptiveKeywords);
 }
 
 void AbstractObject::setMetadata(const std::string & title, const std::string & editor, const time_t & creation, const std::string & originator,
-	const std::string & description, const time_t & lastUpdate, const std::string & format, const std::string & descriptiveKeywords)
+	const std::string & description, const time_t & lastUpdate, const std::string & descriptiveKeywords)
 {
 	if (partialObject != nullptr)
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
@@ -526,9 +532,10 @@ void AbstractObject::setMetadata(const std::string & title, const std::string & 
 
 	setLastUpdate(lastUpdate);
 
-	setFormat(format);
-
 	setDescriptiveKeywords(descriptiveKeywords);
+
+	if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->Citation->Format = citationFormat;
+	else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->Citation->Format = citationFormat;
 }
 
 void AbstractObject::serializeIntoStream(ostream * stream)

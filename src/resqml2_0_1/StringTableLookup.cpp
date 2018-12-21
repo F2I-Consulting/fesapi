@@ -37,7 +37,7 @@ StringTableLookup::StringTableLookup(soap* soapContext, const string & guid, con
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREStringTableLookup(soapContext, 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 vector<Relationship> StringTableLookup::getAllEpcRelationships() const

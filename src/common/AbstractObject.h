@@ -27,6 +27,8 @@ namespace COMMON_NS
 	class DLL_IMPORT_OR_EXPORT AbstractObject
 	{
 	private:
+		static char citationFormat[];
+
 		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject; // only in case of partial transfer
 
 		/**
@@ -121,7 +123,7 @@ namespace COMMON_NS
 		* @param title				The title to set to the resqml instance. Set to empty string if you don't want to set it.
 		*/
 		void setMetadata(const std::string & guid, const std::string & title, const std::string & editor, const time_t & creation, const std::string & originator,
-			const std::string & description, const time_t & lastUpdate, const std::string & format, const std::string & descriptiveKeywords);
+			const std::string & description, const time_t & lastUpdate, const std::string & descriptiveKeywords);
 
 		/**
 		* Throw an exception if the instance if partial.
@@ -176,7 +178,16 @@ namespace COMMON_NS
 		* Use this method if you want to set some dates out of range of time_t
 		*/
 		void setLastUpdate(const tm & lastUpdate);
-		void setFormat(const std::string & format);
+		
+		/**
+		* Set the default citation format which is going to be written in each created object.
+		* A maximum of 256 chars is allowed.
+		* @param vendor The vendor name which is exporting the RESQML objects
+		* @param applicationName The application name which is exporting the RESQML objects
+		* @param applicationVersionNumber The application version number which is exporting the RESQML objects
+		*/
+		static void setFormat(const std::string & vendor, const std::string & applicationName, const std::string & applicationVersionNumber);
+
 		void setDescriptiveKeywords(const std::string & descriptiveKeywords);
 		void setVersionString(const std::string & versionString);
 
@@ -185,7 +196,7 @@ namespace COMMON_NS
 		* @param title				The title to set to the resqml instance. Set to empty string if you don't want to set it.
 		*/
 		void setMetadata(const std::string & title, const std::string & editor, const time_t & creation, const std::string & originator,
-			const std::string & description, const time_t & lastUpdate, const std::string & format, const std::string & descriptiveKeywords);
+			const std::string & description, const time_t & lastUpdate, const std::string & descriptiveKeywords);
 
 		/**
 		* Serialize the instance into a stream.
