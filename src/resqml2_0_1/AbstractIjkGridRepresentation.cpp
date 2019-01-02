@@ -727,7 +727,7 @@ bool AbstractIjkGridRepresentation::isColumnEdgeSplitted(const unsigned int & iC
 		throw range_error("I column is out of range.");
 	if (jColumn > getJCellCount())
 		throw range_error("J column is out of range.");
-	if (edge > 7)
+	if (edge > 3)
 		throw range_error("Edge is out of range.");
 
 	// Pillar
