@@ -36,7 +36,7 @@ WellboreMarker::WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarker
 	gsoapProxy2_0_1 = soap_new_resqml2__WellboreMarker(wellboreMarkerFrame->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 WellboreMarker::WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind & geologicBoundaryKind):
@@ -49,12 +49,12 @@ WellboreMarker::WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarker
 	*(marker->GeologicBoundaryKind) = geologicBoundaryKind;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 bool WellboreMarker::hasAGeologicBoundaryKind()
 {
-	return static_cast<resqml2__WellboreMarker*>(gsoapProxy2_0_1)->GeologicBoundaryKind;
+	return static_cast<resqml2__WellboreMarker*>(gsoapProxy2_0_1)->GeologicBoundaryKind != nullptr;
 }
 
 resqml2__GeologicBoundaryKind WellboreMarker::getGeologicBoundaryKind()

@@ -2,6 +2,8 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.2)
 
 PROJECT (Fesapi_SRC)
 
+configure_file(${FESAPI_ROOT_DIR}/cmake/version_config.h.in ${FESAPI_ROOT_DIR}/src/version_config.h)
+
 # ============================================================================
 # Resqml/Witsqml proxies generation
 # ============================================================================
@@ -160,6 +162,7 @@ FILE (GLOB FESAPI_WITSML_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX}/*.
 
 SET (ALL_SOURCES_AND_HEADERS
 	${CMAKE_CURRENT_SOURCE_DIR}/nsDefinitions.h
+	${CMAKE_CURRENT_SOURCE_DIR}/version_config.h
 	${FESAPI_COMMON_SOURCES}
 	${FESAPI_COMMON_HEADERS}
 	${FESAPI_TOOLS_SOURCES}

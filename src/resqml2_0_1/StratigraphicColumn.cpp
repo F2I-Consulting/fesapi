@@ -35,7 +35,7 @@ StratigraphicColumn::StratigraphicColumn(soap* soapContext, const std::string & 
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREStratigraphicColumn(soapContext, 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 void StratigraphicColumn::pushBackStratiColumnRank(StratigraphicColumnRankInterpretation * stratiColumnRank)

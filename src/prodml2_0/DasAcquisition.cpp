@@ -57,7 +57,7 @@ DasAcquisition::DasAcquisition(FiberOpticalPath* fiberOpticalPath, class DasInst
 	soap* soapContext = getGsoapContext();
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	setFiberOpticalPath(fiberOpticalPath);
 	setDasInstrumentBox(dasInstrumentBox);
@@ -109,7 +109,7 @@ DasAcquisition::DasAcquisition(FiberOpticalPath* fiberOpticalPath, DasInstrument
 	
 	initMandatoryMetadata();
 	string uuid = proxy->readStringAttribute("Acquisition", "uuid");
-	setMetadata(uuid, "Fake/Virtual Das Acquisition", "", -1, "", "", -1, "", "");
+	setMetadata(uuid, "Fake/Virtual Das Acquisition", std::string(), -1, std::string(), std::string(), -1, std::string());
 	
 	setFiberOpticalPath(fiberOpticalPath);
 	setDasInstrumentBox(dasInstrumentBox);

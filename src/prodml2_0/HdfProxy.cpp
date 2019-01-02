@@ -39,7 +39,7 @@ HdfProxy::HdfProxy(soap* soapContext, const std::string & packageDirAbsolutePath
 
 	initMandatoryMetadata();
 	open();
-	setMetadata(readStringAttribute(".", "uuid"), "Fake/Virtual Hdf Proxy", "", -1, "", "", -1, "", "");
+	setMetadata(readStringAttribute(".", "uuid"), "Fake/Virtual Hdf Proxy", std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 std::string HdfProxy::getXmlNamespace() const

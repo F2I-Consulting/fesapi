@@ -33,7 +33,7 @@ TectonicBoundaryFeature::TectonicBoundaryFeature(soap* soapContext, const string
 	static_cast<gsoap_resqml2_0_1::_resqml2__TectonicBoundaryFeature*>(gsoapProxy2_0_1)->TectonicBoundaryKind = isAFracture ? gsoap_resqml2_0_1::resqml2__TectonicBoundaryKind__fracture : gsoap_resqml2_0_1::resqml2__TectonicBoundaryKind__fault;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 bool TectonicBoundaryFeature::isAFracture() const
