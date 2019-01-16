@@ -36,23 +36,265 @@ namespace std {
 
 namespace gsoap_witsml1_4_1_1
 {
-	enum witsml1__WellStatus { witsml1__WellStatus__abandoned = 0, witsml1__WellStatus__active = 1, witsml1__WellStatus__active_x0020_x002d__x0020injecting = 2, witsml1__WellStatus__active_x0020_x002d__x0020producing = 3, witsml1__WellStatus__completed = 4, witsml1__WellStatus__drilling = 5, witsml1__WellStatus__partially_x0020plugged = 6, witsml1__WellStatus__permitted = 7, witsml1__WellStatus__plugged_x0020and_x0020abandoned = 8, witsml1__WellStatus__proposed = 9, witsml1__WellStatus__sold = 10, witsml1__WellStatus__suspended = 11, witsml1__WellStatus__temporarily_x0020abandoned = 12, witsml1__WellStatus__testing = 13, witsml1__WellStatus__tight = 14, witsml1__WellStatus__working_x0020over = 15, witsml1__WellStatus__unknown = 16 };
-	enum witsml1__WellPurpose { witsml1__WellPurpose__appraisal = 0, witsml1__WellPurpose__appraisal_x0020_x002d__x0020confirmation_x0020appraisal = 1, witsml1__WellPurpose__appraisal_x0020_x002d__x0020exploratory_x0020appraisal = 2, witsml1__WellPurpose__exploration = 3, witsml1__WellPurpose__exploration_x0020_x002d__x0020deeper_pool_x0020wildcat = 4, witsml1__WellPurpose__exploration_x0020_x002d__x0020new_field_x0020wildcat = 5, witsml1__WellPurpose__exploration_x0020_x002d__x0020new_pool_x0020wildcat = 6, witsml1__WellPurpose__exploration_x0020_x002d__x0020outpost_x0020wildcat = 7, witsml1__WellPurpose__exploration_x0020_x002d__x0020shallower_pool_x0020wildcat = 8, witsml1__WellPurpose__development = 9, witsml1__WellPurpose__development_x0020_x002d__x0020infill_x0020development = 10, witsml1__WellPurpose__development_x0020_x002d__x0020injector = 11, witsml1__WellPurpose__development_x0020_x002d__x0020producer = 12, witsml1__WellPurpose__fluid_x0020storage = 13, witsml1__WellPurpose__fluid_x0020storage_x0020_x002d__x0020gas_x0020storage = 14, witsml1__WellPurpose__general_x0020srvc = 15, witsml1__WellPurpose__general_x0020srvc_x0020_x002d__x0020borehole_x0020re_acquisition = 16, witsml1__WellPurpose__general_x0020srvc_x0020_x002d__x0020observation = 17, witsml1__WellPurpose__general_x0020srvc_x0020_x002d__x0020relief = 18, witsml1__WellPurpose__general_x0020srvc_x0020_x002d__x0020research = 19, witsml1__WellPurpose__general_x0020srvc_x0020_x002d__x0020research_x0020_x002d__x0020drill_x0020test = 20, witsml1__WellPurpose__general_x0020srvc_x0020_x002d__x0020research_x0020_x002d__x0020strat_x0020test = 21, witsml1__WellPurpose__general_x0020srvc_x0020_x002d__x0020waste_x0020disposal = 22, witsml1__WellPurpose__mineral = 23, witsml1__WellPurpose__unknown = 24 };
-	enum witsml1__WellFluid { witsml1__WellFluid__air = 0, witsml1__WellFluid__condensate = 1, witsml1__WellFluid__dry = 2, witsml1__WellFluid__gas = 3, witsml1__WellFluid__gas_water = 4, witsml1__WellFluid__non_x0020HC_x0020gas = 5, witsml1__WellFluid__non_x0020HC_x0020gas_x0020_x002d__x0020CO2 = 6, witsml1__WellFluid__oil = 7, witsml1__WellFluid__oil_gas = 8, witsml1__WellFluid__oil_water = 9, witsml1__WellFluid__steam = 10, witsml1__WellFluid__water = 11, witsml1__WellFluid__water_x0020_x002d__x0020brine = 12, witsml1__WellFluid__water_x0020_x002d__x0020fresh_x0020water = 13, witsml1__WellFluid__unknown = 14 };
-	enum witsml1__WellDirection { witsml1__WellDirection__huff_n_puff = 0, witsml1__WellDirection__injector = 1, witsml1__WellDirection__producer = 2, witsml1__WellDirection__uncertain = 3, witsml1__WellDirection__unknown = 4 };
-	enum witsml1__WellboreType { witsml1__WellboreType__bypass = 0, witsml1__WellboreType__initial = 1, witsml1__WellboreType__redrill = 2, witsml1__WellboreType__reentry = 3, witsml1__WellboreType__respud = 4, witsml1__WellboreType__sidetrack = 5, witsml1__WellboreType__unknown = 6 };
-	enum witsml1__LengthUom { witsml1__LengthUom__m = 0, witsml1__LengthUom__angstrom = 1, witsml1__LengthUom__chBnA = 2, witsml1__LengthUom__chBnB = 3, witsml1__LengthUom__chCla = 4, witsml1__LengthUom__chSe = 5, witsml1__LengthUom__chUS = 6, witsml1__LengthUom__cm = 7, witsml1__LengthUom__dm = 8, witsml1__LengthUom__fathom = 9, witsml1__LengthUom__fm = 10, witsml1__LengthUom__ft = 11, witsml1__LengthUom__ftBnA = 12, witsml1__LengthUom__ftBnB = 13, witsml1__LengthUom__ftBr_x002865_x0029 = 14, witsml1__LengthUom__ftCla = 15, witsml1__LengthUom__ftGC = 16, witsml1__LengthUom__ftInd = 17, witsml1__LengthUom__ftInd_x002837_x0029 = 18, witsml1__LengthUom__ftInd_x002862_x0029 = 19, witsml1__LengthUom__ftInd_x002875_x0029 = 20, witsml1__LengthUom__ftMA = 21, witsml1__LengthUom__ftSe = 22, witsml1__LengthUom__ftUS = 23, witsml1__LengthUom__in = 24, witsml1__LengthUom__in_x002f10 = 25, witsml1__LengthUom__in_x002f16 = 26, witsml1__LengthUom__in_x002f32 = 27, witsml1__LengthUom__in_x002f64 = 28, witsml1__LengthUom__inUS = 29, witsml1__LengthUom__km = 30, witsml1__LengthUom__lkBnA = 31, witsml1__LengthUom__lkBnB = 32, witsml1__LengthUom__lkCla = 33, witsml1__LengthUom__lkSe = 34, witsml1__LengthUom__lkUS = 35, witsml1__LengthUom__mGer = 36, witsml1__LengthUom__mi = 37, witsml1__LengthUom__mil = 38, witsml1__LengthUom__miUS = 39, witsml1__LengthUom__mm = 40, witsml1__LengthUom__Mm = 41, witsml1__LengthUom__nautmi = 42, witsml1__LengthUom__nm = 43, witsml1__LengthUom__pm = 44, witsml1__LengthUom__um = 45, witsml1__LengthUom__yd = 46, witsml1__LengthUom__ydBnA = 47, witsml1__LengthUom__ydBnB = 48, witsml1__LengthUom__ydCla = 49, witsml1__LengthUom__ydIm = 50, witsml1__LengthUom__ydInd = 51, witsml1__LengthUom__ydInd_x002837_x0029 = 52, witsml1__LengthUom__ydInd_x002862_x0029 = 53, witsml1__LengthUom__ydInd_x002875_x0029 = 54, witsml1__LengthUom__ydSe = 55 };
-	enum witsml1__ElevCodeEnum { witsml1__ElevCodeEnum__CF = 0, witsml1__ElevCodeEnum__CV = 1, witsml1__ElevCodeEnum__DF = 2, witsml1__ElevCodeEnum__GL = 3, witsml1__ElevCodeEnum__KB = 4, witsml1__ElevCodeEnum__RB = 5, witsml1__ElevCodeEnum__RT = 6, witsml1__ElevCodeEnum__SF = 7, witsml1__ElevCodeEnum__LAT = 8, witsml1__ElevCodeEnum__SL = 9, witsml1__ElevCodeEnum__MHHW = 10, witsml1__ElevCodeEnum__MHW = 11, witsml1__ElevCodeEnum__MLLW = 12, witsml1__ElevCodeEnum__MLW = 13, witsml1__ElevCodeEnum__MTL = 14, witsml1__ElevCodeEnum__KO = 15, witsml1__ElevCodeEnum__unknown = 16 };
-	enum witsml1__WellVerticalCoordinateUom { witsml1__WellVerticalCoordinateUom__m = 0, witsml1__WellVerticalCoordinateUom__ft = 1, witsml1__WellVerticalCoordinateUom__ftUS = 2, witsml1__WellVerticalCoordinateUom__ftBr_x002865_x0029 = 3 };
-	enum witsml1__LogIndexType { witsml1__LogIndexType__date_x0020time = 0, witsml1__LogIndexType__elapsed_x0020time = 1, witsml1__LogIndexType__length = 2, witsml1__LogIndexType__measured_x0020depth = 3, witsml1__LogIndexType__vertical_x0020depth = 4, witsml1__LogIndexType__other = 5, witsml1__LogIndexType__unknown = 6 };
-	enum witsml1__MeasuredDepthUom { witsml1__MeasuredDepthUom__m = 0, witsml1__MeasuredDepthUom__ft = 1, witsml1__MeasuredDepthUom__ftUS = 2 };
-	enum witsml1__PlaneAngleUom { witsml1__PlaneAngleUom__rad = 0, witsml1__PlaneAngleUom__c = 1, witsml1__PlaneAngleUom__ccgr = 2, witsml1__PlaneAngleUom__cgr = 3, witsml1__PlaneAngleUom__dega = 4, witsml1__PlaneAngleUom__gon = 5, witsml1__PlaneAngleUom__gr = 6, witsml1__PlaneAngleUom__Grad = 7, witsml1__PlaneAngleUom__krad = 8, witsml1__PlaneAngleUom__mila = 9, witsml1__PlaneAngleUom__mina = 10, witsml1__PlaneAngleUom__mrad = 11, witsml1__PlaneAngleUom__Mrad = 12, witsml1__PlaneAngleUom__mseca = 13, witsml1__PlaneAngleUom__seca = 14, witsml1__PlaneAngleUom__urad = 15 };
-	enum witsml1__AziRef { witsml1__AziRef__magnetic_x0020north = 0, witsml1__AziRef__grid_x0020north = 1, witsml1__AziRef__true_x0020north = 2, witsml1__AziRef__unknown = 3 };
-	enum witsml1__LogIndexDirection { witsml1__LogIndexDirection__decreasing = 0, witsml1__LogIndexDirection__increasing = 1, witsml1__LogIndexDirection__unknown = 2 };
-	enum witsml1__WellboreShape { witsml1__WellboreShape__build_x0020and_x0020hold = 0, witsml1__WellboreShape__deviated = 1, witsml1__WellboreShape__double_x0020kickoff = 2, witsml1__WellboreShape__horizontal = 3, witsml1__WellboreShape__S_shaped = 4, witsml1__WellboreShape__vertical = 5, witsml1__WellboreShape__unknown = 6 };
-	enum witsml1__PerLengthUom { witsml1__PerLengthUom__1_x002fm = 0, witsml1__PerLengthUom__1_x002fangstrom = 1, witsml1__PerLengthUom__1_x002fcm = 2, witsml1__PerLengthUom__1_x002fft = 3, witsml1__PerLengthUom__1_x002fin = 4, witsml1__PerLengthUom__1_x002fmi = 5, witsml1__PerLengthUom__1_x002fmm = 6, witsml1__PerLengthUom__1_x002fnm = 7, witsml1__PerLengthUom__1_x002fyd = 8 };
-	enum witsml1__LogTraceOrigin { witsml1__LogTraceOrigin__realtime = 0, witsml1__LogTraceOrigin__modeled = 1, witsml1__LogTraceOrigin__unknown = 2 };
-	enum witsml1__LogDataType { witsml1__LogDataType__byte = 0, witsml1__LogDataType__date_x0020time = 1, witsml1__LogDataType__double_ = 2, witsml1__LogDataType__float_ = 3, witsml1__LogDataType__int_ = 4, witsml1__LogDataType__long_ = 5, witsml1__LogDataType__short_ = 6, witsml1__LogDataType__string = 7, witsml1__LogDataType__string40 = 8, witsml1__LogDataType__string16 = 9, witsml1__LogDataType__unknown = 10 };
+	enum witsml1__WellStatus {
+		witsml1__WellStatus__abandoned = 0,
+		witsml1__WellStatus__active = 1,
+		witsml1__WellStatus__active_x0020_x002d__x0020injecting = 2,
+		witsml1__WellStatus__active_x0020_x002d__x0020producing = 3,
+		witsml1__WellStatus__completed = 4,
+		witsml1__WellStatus__drilling = 5,
+		witsml1__WellStatus__partially_x0020plugged = 6,
+		witsml1__WellStatus__permitted = 7,
+		witsml1__WellStatus__plugged_x0020and_x0020abandoned = 8,
+		witsml1__WellStatus__proposed = 9,
+		witsml1__WellStatus__sold = 10,
+		witsml1__WellStatus__suspended = 11,
+		witsml1__WellStatus__temporarily_x0020abandoned = 12,
+		witsml1__WellStatus__testing = 13,
+		witsml1__WellStatus__tight = 14,
+		witsml1__WellStatus__working_x0020over = 15,
+		witsml1__WellStatus__unknown = 16
+	};
+
+	enum witsml1__WellPurpose {
+		witsml1__WellPurpose__appraisal = 0,
+		witsml1__WellPurpose__appraisal_x0020_x002d__x0020confirmation_x0020appraisal = 1,
+		witsml1__WellPurpose__appraisal_x0020_x002d__x0020exploratory_x0020appraisal = 2,
+		witsml1__WellPurpose__exploration = 3,
+		witsml1__WellPurpose__exploration_x0020_x002d__x0020deeper_pool_x0020wildcat = 4,
+		witsml1__WellPurpose__exploration_x0020_x002d__x0020new_field_x0020wildcat = 5,
+		witsml1__WellPurpose__exploration_x0020_x002d__x0020new_pool_x0020wildcat = 6,
+		witsml1__WellPurpose__exploration_x0020_x002d__x0020outpost_x0020wildcat = 7,
+		witsml1__WellPurpose__exploration_x0020_x002d__x0020shallower_pool_x0020wildcat = 8,
+		witsml1__WellPurpose__development = 9,
+		witsml1__WellPurpose__development_x0020_x002d__x0020infill_x0020development = 10,
+		witsml1__WellPurpose__development_x0020_x002d__x0020injector = 11,
+		witsml1__WellPurpose__development_x0020_x002d__x0020producer = 12,
+		witsml1__WellPurpose__fluid_x0020storage = 13,
+		witsml1__WellPurpose__fluid_x0020storage_x0020_x002d__x0020gas_x0020storage = 14,
+		witsml1__WellPurpose__general_x0020srvc = 15,
+		witsml1__WellPurpose__general_x0020srvc_x0020_x002d__x0020borehole_x0020re_acquisition = 16,
+		witsml1__WellPurpose__general_x0020srvc_x0020_x002d__x0020observation = 17,
+		witsml1__WellPurpose__general_x0020srvc_x0020_x002d__x0020relief = 18,
+		witsml1__WellPurpose__general_x0020srvc_x0020_x002d__x0020research = 19,
+		witsml1__WellPurpose__general_x0020srvc_x0020_x002d__x0020research_x0020_x002d__x0020drill_x0020test = 20,
+		witsml1__WellPurpose__general_x0020srvc_x0020_x002d__x0020research_x0020_x002d__x0020strat_x0020test = 21,
+		witsml1__WellPurpose__general_x0020srvc_x0020_x002d__x0020waste_x0020disposal = 22,
+		witsml1__WellPurpose__mineral = 23,
+		witsml1__WellPurpose__unknown = 24
+	};
+
+	enum witsml1__WellFluid {
+		witsml1__WellFluid__air = 0,
+		witsml1__WellFluid__condensate = 1,
+		witsml1__WellFluid__dry = 2,
+		witsml1__WellFluid__gas = 3,
+		witsml1__WellFluid__gas_water = 4,
+		witsml1__WellFluid__non_x0020HC_x0020gas = 5,
+		witsml1__WellFluid__non_x0020HC_x0020gas_x0020_x002d__x0020CO2 = 6,
+		witsml1__WellFluid__oil = 7,
+		witsml1__WellFluid__oil_gas = 8,
+		witsml1__WellFluid__oil_water = 9,
+		witsml1__WellFluid__steam = 10,
+		witsml1__WellFluid__water = 11,
+		witsml1__WellFluid__water_x0020_x002d__x0020brine = 12,
+		witsml1__WellFluid__water_x0020_x002d__x0020fresh_x0020water = 13,
+		witsml1__WellFluid__unknown = 14
+	};
+
+	enum witsml1__WellDirection {
+		witsml1__WellDirection__huff_n_puff = 0,
+		witsml1__WellDirection__injector = 1,
+		witsml1__WellDirection__producer = 2,
+		witsml1__WellDirection__uncertain = 3,
+		witsml1__WellDirection__unknown = 4
+	};
+	
+	enum witsml1__WellboreType {
+		witsml1__WellboreType__bypass = 0,
+		witsml1__WellboreType__initial = 1,
+		witsml1__WellboreType__redrill = 2,
+		witsml1__WellboreType__reentry = 3,
+		witsml1__WellboreType__respud = 4,
+		witsml1__WellboreType__sidetrack = 5,
+		witsml1__WellboreType__unknown = 6
+	};
+	
+	enum witsml1__LengthUom {
+		witsml1__LengthUom__m = 'm',
+		witsml1__LengthUom__angstrom = 'n',
+		witsml1__LengthUom__chBnA = 'o',
+		witsml1__LengthUom__chBnB = 'p',
+		witsml1__LengthUom__chCla = 'q',
+		witsml1__LengthUom__chSe = 'r',
+		witsml1__LengthUom__chUS = 's',
+		witsml1__LengthUom__cm = 't',
+		witsml1__LengthUom__dm = 'u',
+		witsml1__LengthUom__fathom = 'v',
+		witsml1__LengthUom__fm = 'w',
+		witsml1__LengthUom__ft = 'x',
+		witsml1__LengthUom__ftBnA = 'y',
+		witsml1__LengthUom__ftBnB = 'z',
+		witsml1__LengthUom__ftBr_x002865_x0029 = 123,
+		witsml1__LengthUom__ftCla = 124,
+		witsml1__LengthUom__ftGC = 125,
+		witsml1__LengthUom__ftInd = 126,
+		witsml1__LengthUom__ftInd_x002837_x0029 = 127,
+		witsml1__LengthUom__ftInd_x002862_x0029 = 128,
+		witsml1__LengthUom__ftInd_x002875_x0029 = 129,
+		witsml1__LengthUom__ftMA = 130,
+		witsml1__LengthUom__ftSe = 131,
+		witsml1__LengthUom__ftUS = 132,
+		witsml1__LengthUom__in = 133,
+		witsml1__LengthUom__in_x002f10 = 134,
+		witsml1__LengthUom__in_x002f16 = 135,
+		witsml1__LengthUom__in_x002f32 = 136,
+		witsml1__LengthUom__in_x002f64 = 137,
+		witsml1__LengthUom__inUS = 138,
+		witsml1__LengthUom__km = 139,
+		witsml1__LengthUom__lkBnA = 140,
+		witsml1__LengthUom__lkBnB = 141,
+		witsml1__LengthUom__lkCla = 142,
+		witsml1__LengthUom__lkSe = 143,
+		witsml1__LengthUom__lkUS = 144,
+		witsml1__LengthUom__mGer = 145,
+		witsml1__LengthUom__mi = 146,
+		witsml1__LengthUom__mil = 147,
+		witsml1__LengthUom__miUS = 148,
+		witsml1__LengthUom__mm = 149,
+		witsml1__LengthUom__Mm = 150,
+		witsml1__LengthUom__nautmi = 151,
+		witsml1__LengthUom__nm = 152,
+		witsml1__LengthUom__pm = 153,
+		witsml1__LengthUom__um = 154,
+		witsml1__LengthUom__yd = 155,
+		witsml1__LengthUom__ydBnA = 156,
+		witsml1__LengthUom__ydBnB = 157,
+		witsml1__LengthUom__ydCla = 158,
+		witsml1__LengthUom__ydIm = 159,
+		witsml1__LengthUom__ydInd = 160,
+		witsml1__LengthUom__ydInd_x002837_x0029 = 161,
+		witsml1__LengthUom__ydInd_x002862_x0029 = 162,
+		witsml1__LengthUom__ydInd_x002875_x0029 = 163,
+		witsml1__LengthUom__ydSe = 164
+	};
+
+	enum witsml1__ElevCodeEnum {
+		witsml1__ElevCodeEnum__CF = 0,
+		witsml1__ElevCodeEnum__CV = 1,
+		witsml1__ElevCodeEnum__DF = 2,
+		witsml1__ElevCodeEnum__GL = 3,
+		witsml1__ElevCodeEnum__KB = 4,
+		witsml1__ElevCodeEnum__RB = 5,
+		witsml1__ElevCodeEnum__RT = 6,
+		witsml1__ElevCodeEnum__SF = 7,
+		witsml1__ElevCodeEnum__LAT = 8,
+		witsml1__ElevCodeEnum__SL = 9,
+		witsml1__ElevCodeEnum__MHHW = 10,
+		witsml1__ElevCodeEnum__MHW = 11,
+		witsml1__ElevCodeEnum__MLLW = 12,
+		witsml1__ElevCodeEnum__MLW = 13,
+		witsml1__ElevCodeEnum__MTL = 14,
+		witsml1__ElevCodeEnum__KO = 15,
+		witsml1__ElevCodeEnum__unknown = 16
+	};
+
+	enum witsml1__WellVerticalCoordinateUom {
+		witsml1__WellVerticalCoordinateUom__m = 'm',
+		witsml1__WellVerticalCoordinateUom__ft = 'n',
+		witsml1__WellVerticalCoordinateUom__ftUS = 'o',
+		witsml1__WellVerticalCoordinateUom__ftBr_x002865_x0029 = 'p'
+	};
+	
+	enum witsml1__LogIndexType {
+		witsml1__LogIndexType__date_x0020time = 0,
+		witsml1__LogIndexType__elapsed_x0020time = 1,
+		witsml1__LogIndexType__length = 2,
+		witsml1__LogIndexType__measured_x0020depth = 3,
+		witsml1__LogIndexType__vertical_x0020depth = 4,
+		witsml1__LogIndexType__other = 5,
+		witsml1__LogIndexType__unknown = 6
+	};
+
+	enum witsml1__MeasuredDepthUom {
+		witsml1__MeasuredDepthUom__m = 'm',
+		witsml1__MeasuredDepthUom__ft = 'n',
+		witsml1__MeasuredDepthUom__ftUS = 'o'
+	};
+
+	enum witsml1__PlaneAngleUom {
+		witsml1__PlaneAngleUom__c = 'c',
+		witsml1__PlaneAngleUom__rad = 'd',
+		witsml1__PlaneAngleUom__ccgr = 'e',
+		witsml1__PlaneAngleUom__cgr = 'f',
+		witsml1__PlaneAngleUom__dega = 'g',
+		witsml1__PlaneAngleUom__gon = 'h',
+		witsml1__PlaneAngleUom__gr = 'i',
+		witsml1__PlaneAngleUom__Grad = 'j',
+		witsml1__PlaneAngleUom__krad = 'k',
+		witsml1__PlaneAngleUom__mila = 'l',
+		witsml1__PlaneAngleUom__mina = 'm',
+		witsml1__PlaneAngleUom__mrad = 'n',
+		witsml1__PlaneAngleUom__Mrad = 'o',
+		witsml1__PlaneAngleUom__mseca = 'p',
+		witsml1__PlaneAngleUom__seca = 'q',
+		witsml1__PlaneAngleUom__urad = 'r'
+	};
+
+	enum witsml1__AziRef {
+		witsml1__AziRef__magnetic_x0020north = 0,
+		witsml1__AziRef__grid_x0020north = 1,
+		witsml1__AziRef__true_x0020north = 2,
+		witsml1__AziRef__unknown = 3
+	};
+
+	enum witsml1__LogIndexDirection {
+		witsml1__LogIndexDirection__decreasing = 0,
+		witsml1__LogIndexDirection__increasing = 1,
+		witsml1__LogIndexDirection__unknown = 2
+	};
+
+	enum witsml1__WellboreShape {
+		witsml1__WellboreShape__build_x0020and_x0020hold = 0,
+		witsml1__WellboreShape__deviated = 1,
+		witsml1__WellboreShape__double_x0020kickoff = 2,
+		witsml1__WellboreShape__horizontal = 3,
+		witsml1__WellboreShape__S_shaped = 4,
+		witsml1__WellboreShape__vertical = 5,
+		witsml1__WellboreShape__unknown = 6
+	};
+
+	enum witsml1__PerLengthUom {
+		witsml1__PerLengthUom__1_x002fm = 0,
+		witsml1__PerLengthUom__1_x002fangstrom = 1,
+		witsml1__PerLengthUom__1_x002fcm = 2,
+		witsml1__PerLengthUom__1_x002fft = 3,
+		witsml1__PerLengthUom__1_x002fin = 4,
+		witsml1__PerLengthUom__1_x002fmi = 5,
+		witsml1__PerLengthUom__1_x002fmm = 6,
+		witsml1__PerLengthUom__1_x002fnm = 7,
+		witsml1__PerLengthUom__1_x002fyd = 8
+	};
+
+	enum witsml1__LogTraceOrigin {
+		witsml1__LogTraceOrigin__realtime = 0,
+		witsml1__LogTraceOrigin__modeled = 1,
+		witsml1__LogTraceOrigin__unknown = 2
+	};
+
+	enum witsml1__LogDataType {
+		witsml1__LogDataType__byte = 0,
+		witsml1__LogDataType__date_x0020time = 1,
+		witsml1__LogDataType__double_ = 2,
+		witsml1__LogDataType__float_ = 3,
+		witsml1__LogDataType__int_ = 4,
+		witsml1__LogDataType__long_ = 5,
+		witsml1__LogDataType__short_ = 6,
+		witsml1__LogDataType__string = 7,
+		witsml1__LogDataType__string40 = 8,
+		witsml1__LogDataType__string16 = 9,
+		witsml1__LogDataType__unknown = 10
+	};
 }
 
 #ifdef SWIGJAVA
