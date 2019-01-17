@@ -414,7 +414,6 @@ void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool re
 
 	ULONG64 cellCount = getCellCount();
 	if (geom->CellGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__BooleanHdf5Array) {
-		hid_t dt = hdfProxy->getHdfDatatypeInDataset(static_cast<resqml2__BooleanHdf5Array*>(geom->CellGeometryIsDefined)->Values->PathInHdfFile);
 		char* tmp = new char[cellCount];
 		hdfProxy->readArrayNdOfCharValues(static_cast<resqml2__BooleanHdf5Array*>(geom->CellGeometryIsDefined)->Values->PathInHdfFile, tmp);
 		for (ULONG64 i = 0; i < cellCount; ++i) {

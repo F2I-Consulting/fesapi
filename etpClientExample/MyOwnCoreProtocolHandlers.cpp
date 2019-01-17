@@ -38,6 +38,21 @@ void setSessionToEtpHdfProxy(MyOwnEtpClientSession* myOwnEtpSession) {
 	}
 }
 
+void printHelp()
+{
+	std::cout << "List of available commands :" << std::endl;
+	std::cout << "\tList" << std::endl << "\t\tList the objects which have been got from ETP to the in memory epc" << std::endl << std::endl;
+	std::cout << "\tGetTreeResources dataObjectURI depth(default 1) getObject(true or false, default is false) contentTypeFilter,contentTypeFilter,...(default noFilter)" << std::endl << std::endl;
+	std::cout << "\tGetGraphResources dataObjectURI scope(default self) depth(default 1) getObject(true or false, default is false) contentTypeFilter,contentTypeFilter,...(default noFilter)" << std::endl << std::endl;
+	std::cout << "\tGetDataObject dataObjectURI,dataObjectURI,..." << std::endl << "\t\tGet the objects from an ETP store and store them into the in memory epc (only create partial TARGET relationships, not any SOURCE relationships)" << std::endl << std::endl;
+	std::cout << "\tGetSourceObjects dataObjectURI" << std::endl << "\t\tGet the source objects of another object from an ETP store and put it into the in memory epc" << std::endl << std::endl;
+	std::cout << "\tGetTargetObjects dataObjectURI" << std::endl << "\t\tGet the target objects of another object from an ETP store and put it into the in memory epc" << std::endl << std::endl;
+	std::cout << "\tGetResourceObjects dataObjectURI" << std::endl << "\t\tGet the object, its source and its target objects from an ETP store and put it into the in memory epc" << std::endl << std::endl;
+	std::cout << "\tGetDataArray epcExternalPartURI datasetPathInEpcExternalPart" << std::endl << "\t\tGet the numerical values from a dataset included in an EpcExternalPart over ETP." << std::endl << std::endl;
+	std::cout << "\tPerf" << std::endl << "\t\tGet all the objects." << std::endl << std::endl;
+	std::cout << "\tquit" << std::endl << "\t\tQuit the session." << std::endl << std::endl;
+}
+
 void askUser(MyOwnEtpClientSession* session)
 {
 	std::string buffer;
@@ -49,21 +64,14 @@ void askUser(MyOwnEtpClientSession* session)
 		std::getline(std::cin, command);
 		auto commandTokens = tokenize(command, ' ');
 
-		if (commandTokens.empty() || commandTokens[0] != "quit") {
-			std::cout << "List of available commands :" << std::endl;
-			std::cout << "\tList" << std::endl << "\t\tList the objects which have been got from ETP to the in memory epc" << std::endl << std::endl;
-			std::cout << "\tGetTreeResources dataObjectURI depth(default 1) getObject(true or false, default is false) contentTypeFilter,contentTypeFilter,...(default noFilter)" << std::endl << std::endl;
-			std::cout << "\tGetGraphResources dataObjectURI scope(default self) depth(default 1) getObject(true or false, default is false) contentTypeFilter,contentTypeFilter,...(default noFilter)" << std::endl << std::endl;
-			std::cout << "\tGetDataObject dataObjectURI,dataObjectURI,..." << std::endl << "\t\tGet the objects from an ETP store and store them into the in memory epc (only create partial TARGET relationships, not any SOURCE relationships)" << std::endl << std::endl;
-			std::cout << "\tGetSourceObjects dataObjectURI" << std::endl << "\t\tGet the source objects of another object from an ETP store and put it into the in memory epc" << std::endl << std::endl;
-			std::cout << "\tGetTargetObjects dataObjectURI" << std::endl << "\t\tGet the target objects of another object from an ETP store and put it into the in memory epc" << std::endl << std::endl;
-			std::cout << "\tGetResourceObjects dataObjectURI" << std::endl << "\t\tGet the object, its source and its target objects from an ETP store and put it into the in memory epc" << std::endl << std::endl;
-			std::cout << "\tGetDataArray epcExternalPartURI datasetPathInEpcExternalPart" << std::endl << "\t\tGet the numerical values from a dataset included in an EpcExternalPart over ETP." << std::endl << std::endl;
-			std::cout << "\tPerf" << std::endl << "\t\tGet all the objects." << std::endl << std::endl;
-			std::cout << "\tquit" << std::endl << "\t\tQuit the session." << std::endl << std::endl;
+		if (commandTokens.empty()) {
+			printHelp();
 			continue;
 		}
-
+		if (commandTokens[0] == "quit") {
+			continue;
+		}
+		
 		if (commandTokens[0] == "GetTreeResources") {
 			Energistics::Etp::v12::Protocol::Discovery::GetTreeResources mb;
 			mb.m_context.m_uri = commandTokens[1];
