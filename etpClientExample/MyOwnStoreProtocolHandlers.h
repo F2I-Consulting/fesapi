@@ -30,5 +30,5 @@ public:
 	MyOwnStoreProtocolHandlers(MyOwnEtpClientSession* mySession): ETP_NS::StoreHandlers(mySession) {}
 	~MyOwnStoreProtocolHandlers() {}
 
-	void on_GetDataObjectsResponse(const Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse & obj);
+	void on_GetDataObjectsResponse(const Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse & obj, int64_t correlationId);
 };

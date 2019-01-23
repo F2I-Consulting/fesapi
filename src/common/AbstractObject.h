@@ -137,7 +137,7 @@ namespace COMMON_NS
 				obj = getEpcDocument()->getResqmlAbstractObjectByUuid<valueType>(dor->UUID);
 			}
 			if (obj == nullptr) {
-				throw invalid_argument("The DOR looks invalid.");
+				throw std::invalid_argument("The DOR looks invalid.");
 			}
 			return obj;
 		}

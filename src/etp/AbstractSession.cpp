@@ -66,6 +66,12 @@ void AbstractSession::on_read(boost::system::error_code ec, std::size_t bytes_tr
 
 	Energistics::Etp::v12::Datatypes::MessageHeader receivedMh = decodeMessageHeader(d);
 
+	// Acknowledge
+	if ((receivedMh.m_messageFlags & 0x10) != 0) {
+		Energistics::Etp::v12::Protocol::Core::Acknowledge acknowledge;
+		send(acknowledge, receivedMh.m_messageId);
+	}
+
 	if (receivedMh.m_protocol < protocolHandlers.size() && protocolHandlers[receivedMh.m_protocol] != nullptr) {
 		protocolHandlers[receivedMh.m_protocol]->decodeMessageBody(receivedMh, d);
 	}
@@ -74,7 +80,7 @@ void AbstractSession::on_read(boost::system::error_code ec, std::size_t bytes_tr
 
 		Energistics::Etp::v12::Protocol::Core::ProtocolException error;
 		error.m_errorCode = 4;
-		error.m_errorMessage = "The agent does not support the protocol identified in a message header.";
+		error.m_errorMessage = "The agent does not support the protocol " + std::to_string(receivedMh.m_protocol) + " identified in a message header.";
 
 		send(error);
 	}

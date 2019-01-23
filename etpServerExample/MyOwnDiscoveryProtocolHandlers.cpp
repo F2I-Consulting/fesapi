@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnDiscoveryProtocolHandlers.h"
 
+#include "etp/EtpHelpers.h"
+
 #include "common/AbstractHdfProxy.h"
 #include "resqml2_0_1/TriangulatedSetRepresentation.h"
 #include "resqml2_0_1/Grid2dRepresentation.h"
@@ -119,20 +121,20 @@ void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlashEml20(const Energis
 	}
 }
 
-void MyOwnDiscoveryProtocolHandlers::on_GetFolder(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gr, int64_t correlationId,
+void MyOwnDiscoveryProtocolHandlers::on_GetFolder(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gtr, int64_t correlationId,
 	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result, bool self)
 {
 	Energistics::Etp::v12::Datatypes::Object::Resource resource;
 	resource.m_objectNotifiable = false;
 	resource.m_contentType = "";
 
-	std::string resqml20Datatype = tokenize(gr.m_context.m_uri, '/')[3];
-	if (gr.m_context.m_depth >= 0) {
+	std::string resqml20Datatype = tokenize(gtr.m_context.m_uri, '/')[3];
+	if (gtr.m_context.m_depth >= 0) {
 		MyOwnEtpServerSession* mySession = static_cast<MyOwnEtpServerSession*>(session);
 
 		// Self
-		if (gr.m_context.m_depth == 0) {
-			resource.m_uri = gr.m_context.m_uri;
+		if (gtr.m_context.m_depth == 0) {
+			resource.m_uri = gtr.m_context.m_uri;
 			resource.m_name = resqml20Datatype + " Folder";
 			resource.m_resourceType = Energistics::Etp::v12::Datatypes::Object::ResourceKind::Folder;
 
@@ -151,7 +153,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetFolder(const Energistics::Etp::v12::P
 				session->send(error);
 			}
 			*/
-			if (gr.m_context.m_contentTypes.empty() || std::find(gr.m_context.m_contentTypes.begin(), gr.m_context.m_contentTypes.end(), std::string()) != gr.m_context.m_contentTypes.end()) {
+			if (gtr.m_context.m_contentTypes.empty() || std::find(gtr.m_context.m_contentTypes.begin(), gtr.m_context.m_contentTypes.end(), std::string()) != gtr.m_context.m_contentTypes.end()) {
 				result.push_back(resource);
 			}
 		}
@@ -161,11 +163,12 @@ void MyOwnDiscoveryProtocolHandlers::on_GetFolder(const Energistics::Etp::v12::P
 			nextGr.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self;
 			nextGr.m_groupByType = false;
 			nextGr.m_context.m_depth = 0;
+			nextGr.m_context.m_contentTypes = gtr.m_context.m_contentTypes;
 
 			if (resqml20Datatype.substr(4) == COMMON_NS::EpcExternalPartReference::XML_TAG) {
 				for (const auto & obj : mySession->epcDoc.getHdfProxySet()) {
 					if (!obj->isPartial()) {
-						nextGr.m_context.m_uri = gr.m_context.m_uri + '(' + obj->getUuid() + ')';
+						nextGr.m_context.m_uri = gtr.m_context.m_uri + '(' + obj->getUuid() + ')';
 						on_GetDataObject(nextGr, correlationId, result);
 					}
 				}
@@ -174,7 +177,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetFolder(const Energistics::Etp::v12::P
 				auto objs = mySession->epcDoc.getResqmlObjectsByContentType("application/x-resqml+xml;version=2.0;type=" + resqml20Datatype);
 				for (const auto & obj : objs) {
 					if (!obj->isPartial()) {
-						nextGr.m_context.m_uri = gr.m_context.m_uri + '(' + obj->getUuid() + ')';
+						nextGr.m_context.m_uri = gtr.m_context.m_uri + '(' + obj->getUuid() + ')';
 						on_GetDataObject(nextGr, correlationId, result);
 					}
 				}
@@ -183,50 +186,50 @@ void MyOwnDiscoveryProtocolHandlers::on_GetFolder(const Energistics::Etp::v12::P
 	}
 }
 
-void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v12::Protocol::Discovery::GetGraphResources & gr, int64_t correlationId,
+void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v12::Protocol::Discovery::GetGraphResources & ggr, int64_t correlationId,
 	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result)
 {
 	Energistics::Etp::v12::Datatypes::Object::Resource resource;
 	resource.m_objectNotifiable = false;
 	resource.m_contentType = "";
 
-	if (gr.m_context.m_depth >= 0) {
+	if (ggr.m_context.m_depth >= 0) {
 		MyOwnEtpServerSession* mySession = static_cast<MyOwnEtpServerSession*>(session);
 
-		const size_t openingParenthesis = gr.m_context.m_uri.find('(', 5);
-		COMMON_NS::AbstractObject* obj = mySession->epcDoc.getResqmlAbstractObjectByUuid(gr.m_context.m_uri.substr(openingParenthesis + 1, 36));
+		const size_t openingParenthesis = ggr.m_context.m_uri.find('(', 5);
+		COMMON_NS::AbstractObject* obj = mySession->epcDoc.getResqmlAbstractObjectByUuid(ggr.m_context.m_uri.substr(openingParenthesis + 1, 36));
 
 		// Self
-		if (gr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self ||
-			gr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf ||
-			gr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
-			if (gr.m_context.m_contentTypes.empty() || std::find(gr.m_context.m_contentTypes.begin(), gr.m_context.m_contentTypes.end(), obj->getContentType()) != gr.m_context.m_contentTypes.end()) {
-				result.push_back(buildResourceFromObject(obj));
+		if (ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self ||
+			ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf ||
+			ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
+			if (ggr.m_context.m_contentTypes.empty() || std::find(ggr.m_context.m_contentTypes.begin(), ggr.m_context.m_contentTypes.end(), obj->getContentType()) != ggr.m_context.m_contentTypes.end()) {
+				result.push_back(ETP_NS::EtpHelpers::buildEtpResourceFromEnergisticsObject(obj));
 			}
 		}
 
-		if (gr.m_context.m_depth >= 1) {
+		if (ggr.m_context.m_depth >= 1) {
 			// Target
-			if (gr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets ||
-				gr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
-				Energistics::Etp::v12::Protocol::Discovery::GetGraphResources nextGr = gr;
+			if (ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets ||
+				ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
+				Energistics::Etp::v12::Protocol::Discovery::GetGraphResources nextGr = ggr;
 				--nextGr.m_context.m_depth;
 				nextGr.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
 
 				for (const auto & targetUuid : obj->getAllTargetRelationshipUuids()) {
-					nextGr.m_context.m_uri = gr.m_context.m_uri.substr(0, openingParenthesis) + '(' + targetUuid + ')';
+					nextGr.m_context.m_uri = ggr.m_context.m_uri.substr(0, openingParenthesis) + '(' + targetUuid + ')';
 					on_GetDataObject(nextGr, correlationId, result);
 				}
 			}
 			// Source
-			else if (gr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources ||
-				gr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf) {
-				Energistics::Etp::v12::Protocol::Discovery::GetGraphResources nextGr = gr;
+			else if (ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources ||
+				ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf) {
+				Energistics::Etp::v12::Protocol::Discovery::GetGraphResources nextGr = ggr;
 				--nextGr.m_context.m_depth;
 				nextGr.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf;
 				
 				for (const auto & targetUuid : obj->getAllSourceRelationshipUuids()) {
-					nextGr.m_context.m_uri = gr.m_context.m_uri.substr(0, openingParenthesis) + '(' + targetUuid + ')';
+					nextGr.m_context.m_uri = ggr.m_context.m_uri.substr(0, openingParenthesis) + '(' + targetUuid + ')';
 					on_GetDataObject(nextGr, correlationId, result);
 				}
 			}

@@ -53,7 +53,7 @@ void StoreHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::Me
 		Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse obj;
 		avro::decode(*d, obj);
 		session->flushReceivingBuffer();
-		on_GetDataObjectsResponse(obj);
+		on_GetDataObjectsResponse(obj, mh.m_correlationId);
 	}
 	else {
 		session->flushReceivingBuffer();
@@ -95,7 +95,7 @@ void StoreHandlers::on_DeleteDataObjects(const Energistics::Etp::v12::Protocol::
 	session->send(error);
 }
 
-void StoreHandlers::on_GetDataObjectsResponse(const Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse & obj)
+void StoreHandlers::on_GetDataObjectsResponse(const Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse & obj, int64_t correlationId)
 {
 	for (const auto& graphResource : obj.m_dataObjects) {
 		std::cout << "*************************************************" << std::endl;

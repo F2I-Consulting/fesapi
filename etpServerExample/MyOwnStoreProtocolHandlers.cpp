@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnStoreProtocolHandlers.h"
 
+#include "etp/EtpHelpers.h"
+
 #include "MyOwnEtpServerSession.h"
 
 MyOwnStoreProtocolHandlers::MyOwnStoreProtocolHandlers(MyOwnEtpServerSession* mySession) : ETP_NS::StoreHandlers(mySession) {}
@@ -34,10 +36,20 @@ void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::
 			continue;
 		}
 
-		Energistics::Etp::v12::Datatypes::Object::DataObject dataObject;
-		dataObject.m_resource = buildResourceFromObject(obj);
-		dataObject.m_data = obj->serializeIntoString();
+		Energistics::Etp::v12::Datatypes::Object::DataObject dataObject = ETP_NS::EtpHelpers::buildEtpDataObjectFromEnergisticsObject(obj);
 		objResponse.m_dataObjects.push_back(dataObject);
 	}
 	session->send(objResponse, correlationId, 0x01 | 0x02);
+}
+
+void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & putDataObjects, int64_t correlationId)
+{
+	MyOwnEtpServerSession* mySession = static_cast<MyOwnEtpServerSession*>(session);
+	for (const auto & dataObject : putDataObjects.m_dataObjects) {
+		std::cout << "Store received data object : " << dataObject.m_resource.m_contentType << " (" << dataObject.m_resource.m_uri << ")" << std::endl;
+
+		COMMON_NS::AbstractObject* importedObj = mySession->epcDoc.addOrReplaceGsoapProxy(dataObject.m_data, dataObject.m_resource.m_contentType);
+
+		importedObj->resolveTargetRelationships(&mySession->epcDoc);
+	}
 }

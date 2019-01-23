@@ -23,8 +23,10 @@ under the License.
 #include "MyOwnDiscoveryProtocolHandlers.h"
 
 #include "etp/EtpHdfProxy.h"
+#include "etp/EtpHelpers.h"
 
-#include <resqml2_0_1/AbstractIjkGridRepresentation.h>
+#include <resqml2_0_1/LocalDepth3dCrs.h>
+#include <resqml2_0_1/IjkGridExplicitRepresentation.h>
 #include <resqml2_0_1/ContinuousPropertySeries.h>
 
 void setSessionToEtpHdfProxy(MyOwnEtpClientSession* myOwnEtpSession) {
@@ -41,15 +43,15 @@ void setSessionToEtpHdfProxy(MyOwnEtpClientSession* myOwnEtpSession) {
 void printHelp()
 {
 	std::cout << "List of available commands :" << std::endl;
-	std::cout << "\tList" << std::endl << "\t\tList the objects which have been got from ETP to the in memory epc" << std::endl << std::endl;
+	std::cout << "\tList" << std::endl << "\t\tList the objects which have been got from ETP to the in-memory epc" << std::endl << std::endl;
 	std::cout << "\tGetTreeResources dataObjectURI depth(default 1) getObject(true or false, default is false) contentTypeFilter,contentTypeFilter,...(default noFilter)" << std::endl << std::endl;
 	std::cout << "\tGetGraphResources dataObjectURI scope(default self) depth(default 1) getObject(true or false, default is false) contentTypeFilter,contentTypeFilter,...(default noFilter)" << std::endl << std::endl;
 	std::cout << "\tGetDataObject dataObjectURI,dataObjectURI,..." << std::endl << "\t\tGet the objects from an ETP store and store them into the in memory epc (only create partial TARGET relationships, not any SOURCE relationships)" << std::endl << std::endl;
+	std::cout << "\tPutDataObject" << std::endl << "\t\tCreate an JK Grid on the fly and put/push it to the store" << std::endl << std::endl;
 	std::cout << "\tGetSourceObjects dataObjectURI" << std::endl << "\t\tGet the source objects of another object from an ETP store and put it into the in memory epc" << std::endl << std::endl;
 	std::cout << "\tGetTargetObjects dataObjectURI" << std::endl << "\t\tGet the target objects of another object from an ETP store and put it into the in memory epc" << std::endl << std::endl;
 	std::cout << "\tGetResourceObjects dataObjectURI" << std::endl << "\t\tGet the object, its source and its target objects from an ETP store and put it into the in memory epc" << std::endl << std::endl;
 	std::cout << "\tGetDataArray epcExternalPartURI datasetPathInEpcExternalPart" << std::endl << "\t\tGet the numerical values from a dataset included in an EpcExternalPart over ETP." << std::endl << std::endl;
-	std::cout << "\tPerf" << std::endl << "\t\tGet all the objects." << std::endl << std::endl;
 	std::cout << "\tquit" << std::endl << "\t\tQuit the session." << std::endl << std::endl;
 }
 
@@ -85,7 +87,7 @@ void askUser(MyOwnEtpClientSession* session)
 				}
 			}
 
-			if (commandTokens.size() > 3) {
+			if (commandTokens.size() > 3 && (commandTokens[3] == "true" || commandTokens[3] == "True" || commandTokens[3] == "TRUE")) {
 				std::static_pointer_cast<MyOwnDiscoveryProtocolHandlers>(session->getDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb));
 			}
 			else {
@@ -133,6 +135,29 @@ void askUser(MyOwnEtpClientSession* session)
 			Energistics::Etp::v12::Protocol::Store::GetDataObjects getO;
 			getO.m_uris = tokenize(commandTokens[1], ',');
 			session->send(getO);
+		}
+		else if (commandTokens[0] == "PutDataObject") {
+			Energistics::Etp::v12::Protocol::Store::PutDataObjects putDataObjects;
+			
+			// Fake the creation of an IJK Grid
+			COMMON_NS::EpcDocument epcDoc("../../fakeForIjkGrid.epc", COMMON_NS::EpcDocument::OVERWRITE);
+			COMMON_NS::AbstractHdfProxy* hdfProxy = epcDoc.createHdfProxy("", "Hdf Proxy", epcDoc.getStorageDirectory(), epcDoc.getName() + ".h5");
+
+			RESQML2_0_1_NS::LocalDepth3dCrs* local3dCrs = epcDoc.createLocalDepth3dCrs("f951f4b7-684a-4c1b-bcd7-bc61d939b328", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
+
+			RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkgrid = epcDoc.createIjkGridExplicitRepresentation(local3dCrs, "", "Put IJK Grid", 2, 1, 1);
+			double nodes[48] = { 0, 0, 300, 375, 0, 300, 700, 0, 350, 0, 150, 300, 375, 150, 300, 700, 150, 350, /* SPLIT*/ 375, 0, 350, 375, 150, 350,
+				0, 0, 500, 375, 0, 500, 700, 0, 550, 0, 150, 500, 375, 150, 500, 700, 150, 550, /* SPLIT*/ 375, 0, 550, 375, 150, 550 };
+			unsigned int pillarOfCoordinateLine[2] = { 1, 4 };
+			unsigned int splitCoordinateLineColumnCumulativeCount[2] = { 1, 2 };
+			unsigned int splitCoordinateLineColumns[2] = { 1, 1 };
+			ijkgrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodes, hdfProxy,
+				2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
+
+			Energistics::Etp::v12::Datatypes::Object::DataObject dataObject = ETP_NS::EtpHelpers::buildEtpDataObjectFromEnergisticsObject(ijkgrid);
+			putDataObjects.m_dataObjects.push_back(dataObject);
+
+			session->send(putDataObjects, 0, 0x10); // 0x10 requires Acknowledge from the store
 		}
 
 		if (commandTokens.size() == 1) {
@@ -257,7 +282,7 @@ void askUser(MyOwnEtpClientSession* session)
 	session->epcDoc.close();
 }
 
-void MyOwnCoreProtocolHandlers::on_OpenSession(const Energistics::Etp::v12::Protocol::Core::OpenSession & os)
+void MyOwnCoreProtocolHandlers::on_OpenSession(const Energistics::Etp::v12::Protocol::Core::OpenSession & os, int64_t correlationId)
 {
 	static_cast<MyOwnEtpClientSession*>(session)->epcDoc.open("../../fakeForEtpClient.epc", COMMON_NS::EpcDocument::ETP);
 	// Ask the user about what he wants to do on another thread

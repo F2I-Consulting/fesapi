@@ -27,4 +27,5 @@ public:
 	~MyOwnStoreProtocolHandlers() {}
 
     void on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & getO, int64_t correlationId);
+	void on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & putDataObjects, int64_t correlationId);
 };

@@ -29,29 +29,35 @@ void CoreHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::Mes
 		return;
 	}
 
-	if (mh.m_messageType == 1) {
+	if (mh.m_messageType == Energistics::Etp::v12::Protocol::Core::RequestSession::messageTypeId) {
 		Energistics::Etp::v12::Protocol::Core::RequestSession rs;
 		avro::decode(*d, rs);
 		session->flushReceivingBuffer();
 		on_RequestSession(rs, mh.m_messageId);
 	}
-	else if (mh.m_messageType == 2) {
+	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Core::OpenSession::messageTypeId) {
 		Energistics::Etp::v12::Protocol::Core::OpenSession os;
 		avro::decode(*d, os);
 		session->flushReceivingBuffer();
-		on_OpenSession(os);
+		on_OpenSession(os, mh.m_messageId);
 	}
-	else if (mh.m_messageType == 5) {
+	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Core::CloseSession::messageTypeId) {
 		Energistics::Etp::v12::Protocol::Core::CloseSession cs;
 		avro::decode(*d, cs);
 		session->flushReceivingBuffer();
-		on_CloseSession(cs);
+		on_CloseSession(cs, mh.m_messageId);
 	}
-	else if (mh.m_messageType == 1000) {
+	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Core::ProtocolException::messageTypeId) {
 		Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
 		avro::decode(*d, pe);
 		session->flushReceivingBuffer();
-		on_ProtocolException(pe);
+		on_ProtocolException(pe, mh.m_messageId);
+	}
+	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Core::Acknowledge::messageTypeId) {
+		Energistics::Etp::v12::Protocol::Core::Acknowledge ack;
+		avro::decode(*d, ack);
+		session->flushReceivingBuffer();
+		on_Acknowledge(ack, mh.m_messageId);
 	}
 	else {
 		session->flushReceivingBuffer();
@@ -68,17 +74,22 @@ void CoreHandlers::on_RequestSession(const Energistics::Etp::v12::Protocol::Core
 	session->send(error);
 }
 
-void CoreHandlers::on_OpenSession(const Energistics::Etp::v12::Protocol::Core::OpenSession & os)
+void CoreHandlers::on_OpenSession(const Energistics::Etp::v12::Protocol::Core::OpenSession & os, int64_t correlationId)
 {
 }
 
-void CoreHandlers::on_CloseSession(const Energistics::Etp::v12::Protocol::Core::CloseSession & cs)
+void CoreHandlers::on_CloseSession(const Energistics::Etp::v12::Protocol::Core::CloseSession & cs, int64_t correlationId)
 {
 	std::cout << "Close session after received request." << std::endl;
 	session->sendCloseFrame();
 }
 
-void CoreHandlers::on_ProtocolException(const Energistics::Etp::v12::Protocol::Core::ProtocolException & pe)
+void CoreHandlers::on_ProtocolException(const Energistics::Etp::v12::Protocol::Core::ProtocolException & pe, int64_t correlationId)
 {
-	std::cout << "EXCEPTION with error code "  << pe.m_errorCode << " : " << pe.m_errorMessage << std::endl;
+	std::cout << "EXCEPTION for message_id " << correlationId << " with error code "  << pe.m_errorCode << " : " << pe.m_errorMessage << std::endl;
+}
+
+void CoreHandlers::on_Acknowledge(const Energistics::Etp::v12::Protocol::Core::Acknowledge & ack, int64_t correlationId)
+{
+	std::cout << "Acknowledge message_id " << correlationId << std::endl;
 }
