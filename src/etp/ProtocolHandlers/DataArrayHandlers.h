@@ -33,6 +33,8 @@ namespace ETP_NS
 	    virtual void on_PutDataArray(const Energistics::Etp::v12::Protocol::DataArray::PutDataArray & pda, int64_t correlationId);
 	    virtual void on_GetDataArraySlice(const Energistics::Etp::v12::Protocol::DataArray::GetDataArraySlice & gdas, int64_t correlationId);
 	    virtual void on_PutDataArraySlice(const Energistics::Etp::v12::Protocol::DataArray::PutDataArraySlice & pdas, int64_t correlationId);
+		virtual void on_DescribeDataArray(const Energistics::Etp::v12::Protocol::DataArray::DescribeDataArray & dda, int64_t correlationId);
+		virtual void on_DataArrayMetadata(const Energistics::Etp::v12::Protocol::DataArray::DataArrayMetadata & dam);
 	    virtual void on_DataArray(Energistics::Etp::v12::Protocol::DataArray::DataArray & da);
 
 		virtual ~DataArrayHandlers() {}

@@ -30,7 +30,7 @@ const char* MyOwnEtpServerSession::epcFileName = "../../testingPackageCpp.epc";
 
 MyOwnEtpServerSession::MyOwnEtpServerSession(tcp::socket socket)
 	: ETP_NS::ServerSession(std::move(socket)),
-	  epcDoc(epcFileName, COMMON_NS::EpcDocument::READ_ONLY)
+	  epcDoc(epcFileName, COMMON_NS::EpcDocument::READ_WRITE)
 {
 	setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(this));
 	setDiscoveryProtocolHandlers(std::make_shared<MyOwnDiscoveryProtocolHandlers>(this));

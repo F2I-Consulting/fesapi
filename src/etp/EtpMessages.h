@@ -3350,7 +3350,7 @@ namespace Energistics {
 				namespace Core {				
 					struct Acknowledge{					
 						static const int messageTypeId=1001;
-						static const int protocolId=Energistics::Etp::v12::Datatypes::Core;
+						int protocolId;
 					};					
 					typedef std::shared_ptr<Acknowledge> AcknowledgePtr;
 				};				

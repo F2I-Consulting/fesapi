@@ -146,4 +146,78 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArray(const Energistics::Etp::v12
 void MyOwnDataArrayProtocolHandlers::on_PutDataArray(const Energistics::Etp::v12::Protocol::DataArray::PutDataArray & pda, int64_t correlationId)
 {
 	std::cout << "on_PutDataArray : Do nothing for now" << std::endl;
+
+	std::cout << "PutDataArray in resource " << pda.m_uri << " at path " << pda.m_pathInResource << std::endl;;
+	for (auto i = 0; i < pda.m_dimensions.size(); ++i) {
+		std::cout << "Dimension " << i << " with count : " << pda.m_dimensions[i] << std::endl;
+	}
+
+	COMMON_NS::AbstractObject* obj = static_cast<MyOwnEtpServerSession*>(session)->getObjectFromUri(pda.m_uri);
+	if (obj == nullptr) {
+		return;
+	}
+
+	COMMON_NS::AbstractHdfProxy* hdfProxy = dynamic_cast<COMMON_NS::AbstractHdfProxy*>(obj);
+	if (hdfProxy == nullptr) {
+		Energistics::Etp::v12::Protocol::Core::ProtocolException error;
+		error.m_errorCode = 11;
+		error.m_errorMessage = obj->getUuid() + " cannot be resolved as an HDF Proxy in this store";
+
+		session->send(error);
+		return;
+	}
+}
+
+void MyOwnDataArrayProtocolHandlers::on_DescribeDataArray(const Energistics::Etp::v12::Protocol::DataArray::DescribeDataArray & dda, int64_t correlationId)
+{
+	std::cout << "Describe Data array received uri : " << dda.m_uri << std::endl;
+	COMMON_NS::AbstractObject* obj = static_cast<MyOwnEtpServerSession*>(session)->getObjectFromUri(dda.m_uri);
+	if (obj == nullptr) {
+		return;
+	}
+
+	COMMON_NS::AbstractHdfProxy* hdfProxy = dynamic_cast<COMMON_NS::AbstractHdfProxy*>(obj);
+	if (hdfProxy == nullptr) {
+		Energistics::Etp::v12::Protocol::Core::ProtocolException error;
+		error.m_errorCode = 11;
+		error.m_errorMessage = obj->getUuid() + " cannot be resolved as an HDF Proxy in this store";
+
+		session->send(error);
+		return;
+	}
+
+	std::cout << "Received pathInResource : " << dda.m_pathInResource << std::endl;
+	Energistics::Etp::v12::Protocol::DataArray::DataArrayMetadata dam;
+	auto elemCountPerDim = hdfProxy->getElementCountPerDimension(dda.m_pathInResource);
+	dam.m_dimensions.reserve(elemCountPerDim.size());
+	unsigned long long globalElemCount = 1;
+	for (auto i = 0; i < elemCountPerDim.size(); ++i) {
+		dam.m_dimensions.push_back(elemCountPerDim[i]);
+		globalElemCount *= elemCountPerDim[i];
+	}
+
+	auto dt = hdfProxy->getHdfDatatypeInDataset(dda.m_pathInResource);
+	if (dt == COMMON_NS::AbstractObject::DOUBLE)
+	{
+		dam.m_arrayType = Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfDouble;
+	}
+	else if (dt == COMMON_NS::AbstractObject::FLOAT)
+	{
+		dam.m_arrayType = Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfFloat;
+	}
+	else if (dt == COMMON_NS::AbstractObject::LONG || dt == COMMON_NS::AbstractObject::ULONG)
+	{
+		dam.m_arrayType = Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfLong;
+	}
+	else if (dt == COMMON_NS::AbstractObject::INT || dt == COMMON_NS::AbstractObject::UINT ||
+		dt == COMMON_NS::AbstractObject::SHORT || dt == COMMON_NS::AbstractObject::USHORT)
+	{
+		dam.m_arrayType = Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfInt;
+	}
+	else if (dt == COMMON_NS::AbstractObject::CHAR || dt == COMMON_NS::AbstractObject::UCHAR)
+	{
+		dam.m_arrayType = Energistics::Etp::v12::Datatypes::AnyArrayType::bytes;
+	}
+
+	session->send(dam, correlationId);
 }

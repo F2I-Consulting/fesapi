@@ -55,6 +55,18 @@ void DataArrayHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes
 		session->flushReceivingBuffer();
 		on_PutDataArraySlice(pdas, mh.m_messageId);
 	}
+	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::DescribeDataArray::messageTypeId) {
+		Energistics::Etp::v12::Protocol::DataArray::DescribeDataArray dda;
+		avro::decode(*d, dda);
+		session->flushReceivingBuffer();
+		on_DescribeDataArray(dda, mh.m_messageId);
+	}
+	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::DataArrayMetadata::messageTypeId) {
+		Energistics::Etp::v12::Protocol::DataArray::DataArrayMetadata dam;
+		avro::decode(*d, dam);
+		session->flushReceivingBuffer();
+		on_DataArrayMetadata(dam);
+	}
 	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::DataArray::messageTypeId) {
 		Energistics::Etp::v12::Protocol::DataArray::DataArray da;
 		avro::decode(*d, da);
@@ -109,6 +121,38 @@ void DataArrayHandlers::on_PutDataArraySlice(const Energistics::Etp::v12::Protoc
 	error.m_errorMessage = "The DataArrayHandlers::on_PutDataArraySlice method has not been overriden by the agent.";
 
 	session->send(error);
+}
+
+void DataArrayHandlers::on_DescribeDataArray(const Energistics::Etp::v12::Protocol::DataArray::DescribeDataArray & dda, int64_t correlationId)
+{
+	std::cout << "on_DescribeDataArray" << std::endl;
+
+	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
+	error.m_errorCode = 7;
+	error.m_errorMessage = "The DataArrayHandlers::on_DescribeDataArray method has not been overriden by the agent.";
+
+	session->send(error);
+}
+
+void DataArrayHandlers::on_DataArrayMetadata(const Energistics::Etp::v12::Protocol::DataArray::DataArrayMetadata & dam)
+{
+	std::cout << "*************************************************" << std::endl;
+	std::cout << "Data Array Metadata received : " << std::endl;
+	std::cout << "Array type : ";
+	switch (dam.m_arrayType) {
+	case 0 : std::cout << "bool"; break;
+	case 1 : std::cout << "int"; break;
+	case 2: std::cout << "long"; break;
+	case 3: std::cout << "float"; break;
+	case 4: std::cout << "double"; break;
+	case 5: std::cout << "string"; break;
+	case 6: std::cout << "byte"; break;
+	}
+	std::cout << std::endl;
+	for (auto i = 0; i < dam.m_dimensions.size(); ++i) {
+		std::cout << "Dimension " << i << " with count : " << dam.m_dimensions[i] << std::endl;
+	}
+	std::cout << "*************************************************" << std::endl;
 }
 
 void DataArrayHandlers::on_DataArray(Energistics::Etp::v12::Protocol::DataArray::DataArray & da)

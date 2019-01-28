@@ -66,13 +66,18 @@ void AbstractSession::on_read(boost::system::error_code ec, std::size_t bytes_tr
 
 	Energistics::Etp::v12::Datatypes::MessageHeader receivedMh = decodeMessageHeader(d);
 
-	// Acknowledge
+	// Request for Acknowledge
 	if ((receivedMh.m_messageFlags & 0x10) != 0) {
 		Energistics::Etp::v12::Protocol::Core::Acknowledge acknowledge;
+		acknowledge.protocolId = receivedMh.m_protocol;
 		send(acknowledge, receivedMh.m_messageId);
 	}
 
-	if (receivedMh.m_protocol < protocolHandlers.size() && protocolHandlers[receivedMh.m_protocol] != nullptr) {
+
+	if (receivedMh.m_messageType == Energistics::Etp::v12::Protocol::Core::Acknowledge::messageTypeId) { // Receive Acknowledge
+		protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::Core]->decodeMessageBody(receivedMh, d);
+	}
+	else if (receivedMh.m_protocol < protocolHandlers.size() && protocolHandlers[receivedMh.m_protocol] != nullptr) {
 		protocolHandlers[receivedMh.m_protocol]->decodeMessageBody(receivedMh, d);
 	}
 	else {
