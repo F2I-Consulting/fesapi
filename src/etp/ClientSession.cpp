@@ -86,7 +86,7 @@ void ClientSession::on_connect(boost::system::error_code ec)
 		host + ":" + port, target,
 		[](websocket::request_type& m)
 			{
-				m.insert(boost::beast::http::field::sec_websocket_protocol, "energistics-tp");
+				m.insert(boost::beast::http::field::sec_websocket_protocol, "etp12.energistics.org");
 			},
 		std::bind(
 			&ClientSession::on_handshake,
@@ -105,8 +105,8 @@ void ClientSession::on_handshake(boost::system::error_code ec)
 #endif
 
 	if(! responseType.count(boost::beast::http::field::sec_websocket_protocol) ||
-			responseType[boost::beast::http::field::sec_websocket_protocol] != "energistics-tp")
-		std::cerr << "The client MUST specify the Sec-Websocket-Protocol header value of energistics-tp, and the server MUST reply with the same" << std::endl;
+			responseType[boost::beast::http::field::sec_websocket_protocol] != "etp12.energistics.org")
+		std::cerr << "The client MUST specify the Sec-Websocket-Protocol header value of etp12.energistics.org, and the server MUST reply with the same" << std::endl;
 
 	closed = false;
 

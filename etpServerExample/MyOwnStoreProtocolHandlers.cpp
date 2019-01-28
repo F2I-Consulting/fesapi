@@ -22,6 +22,9 @@ under the License.
 
 #include "MyOwnEtpServerSession.h"
 
+#include "resqml2/AbstractGridRepresentation.h"
+#include "resqml2/GridConnectionSetRepresentation.h"
+
 MyOwnStoreProtocolHandlers::MyOwnStoreProtocolHandlers(MyOwnEtpServerSession* mySession) : ETP_NS::StoreHandlers(mySession) {}
 
 void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & getO, int64_t correlationId)
@@ -51,5 +54,13 @@ void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::
 		COMMON_NS::AbstractObject* importedObj = mySession->epcDoc.addOrReplaceGsoapProxy(dataObject.m_data, dataObject.m_resource.m_contentType);
 
 		importedObj->resolveTargetRelationships(&mySession->epcDoc);
+
+		if (dataObject.m_resource.m_contentType == "application/x-resqml+xml;version=2.0;type=obj_IjkGridRepresentation") {
+			std::cout << "Create a dummy Grid Connection Set for received IJK Grid Representation." << std::endl;
+			RESQML2_NS::GridConnectionSetRepresentation* gcsr = mySession->epcDoc.createGridConnectionSetRepresentation(std::string(), "Dummy GCSR");
+			ULONG64 cellIndexPair[] = { 0, 1 };
+			gcsr->setCellIndexPairs(1, cellIndexPair, -1, mySession->epcDoc.getHdfProxy(0));
+			gcsr->pushBackSupportingGridRepresentation(static_cast<RESQML2_NS::AbstractGridRepresentation*>(importedObj));
+		}
 	}
 }

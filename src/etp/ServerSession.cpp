@@ -46,7 +46,7 @@ void ServerSession::run()
 	ws.async_accept_ex(req,
 			[](websocket::response_type& m)
 				{
-					m.insert(boost::beast::http::field::sec_websocket_protocol, "energistics-tp");
+					m.insert(boost::beast::http::field::sec_websocket_protocol, "etp12.energistics.org");
 				},
 		boost::asio::bind_executor(
 			strand,
@@ -59,7 +59,7 @@ void ServerSession::run()
 	ws.async_accept_ex(
 				[](websocket::response_type& m)
 					{
-						m.insert(boost::beast::http::field::sec_websocket_protocol, "energistics-tp");
+						m.insert(boost::beast::http::field::sec_websocket_protocol, "etp12.energistics.org");
 					},
 			boost::asio::bind_executor(
 				strand,

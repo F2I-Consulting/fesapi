@@ -47,7 +47,7 @@ void printHelp()
 	std::cout << "\tGetTreeResources dataObjectURI depth(default 1) getObject(true or false, default is false) contentTypeFilter,contentTypeFilter,...(default noFilter)" << std::endl << std::endl;
 	std::cout << "\tGetGraphResources dataObjectURI scope(default self) depth(default 1) getObject(true or false, default is false) contentTypeFilter,contentTypeFilter,...(default noFilter)" << std::endl << std::endl;
 	std::cout << "\tGetDataObject dataObjectURI,dataObjectURI,..." << std::endl << "\t\tGet the objects from an ETP store and store them into the in memory epc (only create partial TARGET relationships, not any SOURCE relationships)" << std::endl << std::endl;
-	std::cout << "\tPutDataObject" << std::endl << "\t\tCreate an JK Grid on the fly and put/push it to the store" << std::endl << std::endl;
+	std::cout << "\tPutDataObject" << std::endl << "\t\tCreate an IJK Grid on the fly and put/push it to the store" << std::endl << std::endl;
 	std::cout << "\tGetSourceObjects dataObjectURI" << std::endl << "\t\tGet the source objects of another object from an ETP store and put it into the in memory epc" << std::endl << std::endl;
 	std::cout << "\tGetTargetObjects dataObjectURI" << std::endl << "\t\tGet the target objects of another object from an ETP store and put it into the in memory epc" << std::endl << std::endl;
 	std::cout << "\tGetResourceObjects dataObjectURI" << std::endl << "\t\tGet the object, its source and its target objects from an ETP store and put it into the in memory epc" << std::endl << std::endl;

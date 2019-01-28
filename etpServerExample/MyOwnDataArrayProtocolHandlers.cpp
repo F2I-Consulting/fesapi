@@ -142,3 +142,8 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArray(const Energistics::Etp::v12
 
 	session->send(daResponse, correlationId, 0x01 | 0x02);
 }
+
+void MyOwnDataArrayProtocolHandlers::on_PutDataArray(const Energistics::Etp::v12::Protocol::DataArray::PutDataArray & pda, int64_t correlationId)
+{
+	std::cout << "on_PutDataArray : Do nothing for now" << std::endl;
+}
