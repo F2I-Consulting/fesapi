@@ -76,7 +76,7 @@ void ServerSession::on_accept(boost::system::error_code ec)
 		std::cerr << "on_accept : " << ec.message() << std::endl;
 	}
 
-	closed = false;
+	webSocketSessionClosed = false;
 
 	// Read a message
 	do_read();
@@ -84,7 +84,7 @@ void ServerSession::on_accept(boost::system::error_code ec)
 
 void ServerSession::do_read()
 {
-	if (closed) {
+	if (webSocketSessionClosed) {
 		std::cout << "CLOSED : NOTHING MORE TO DO" << std::endl;
 		return;
 	}

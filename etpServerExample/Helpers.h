@@ -18,15 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/ServerSession.h"
-
 #include "common/AbstractObject.h"
 
-class MyOwnEtpServerSession : public ETP_NS::ServerSession
-{
-public:
-	static const char* epcFileName;
+namespace ETP_NS {
+	class AbstractSession;
+}
 
-	MyOwnEtpServerSession(tcp::socket socket);
-	~MyOwnEtpServerSession();
+namespace Helpers {
+	COMMON_NS::AbstractObject* getObjectFromUri(const COMMON_NS::EpcDocument & epcDoc, ETP_NS::AbstractSession* session, const std::string & uri);
 };

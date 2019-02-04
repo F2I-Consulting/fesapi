@@ -70,7 +70,7 @@ namespace ETP_NS
 
 		template<class T>
 		void readArrayValues(const std::string & uri, const std::string & datasetName, T* values) {
-			if (closed) {
+			if (webSocketSessionClosed) {
 				std::cout << "CLOSED : NOTHING MORE TO DO" << std::endl;
 				return;
 			}

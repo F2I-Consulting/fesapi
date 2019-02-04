@@ -100,4 +100,6 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 	openSession.m_supportedObjects = supportedObjects;
 
 	session->send(openSession, correlationId);
+
+	std::cout << "New session" << std::endl;
 }

@@ -201,14 +201,14 @@ EpcDocument::EpcDocument() :
 {
 }
 
-EpcDocument::EpcDocument(const string & fileName, const openingMode & hdf5PermissionAccess) :
+EpcDocument::EpcDocument(const string & fileName, const openingMode & permissionAccess) :
 	EpcDocument()
 {
-	open(fileName, hdf5PermissionAccess);
+	open(fileName, permissionAccess);
 }
 
-EpcDocument::EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, const openingMode & hdf5PermissionAccess) :
-	EpcDocument(fileName, hdf5PermissionAccess)
+EpcDocument::EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, const openingMode & permissionAccess) :
+	EpcDocument(fileName, permissionAccess)
 {
 	// Load property kind mapping files
 	propertyKindMapper = new PropertyKindMapper(this);
@@ -226,9 +226,9 @@ std::string EpcDocument::generateRandomUuidAsString()
 	return GuidTools::generateUidAsString();
 }
 
-const EpcDocument::openingMode & EpcDocument::getHdf5PermissionAccess() const
+const EpcDocument::openingMode & EpcDocument::getPermissionAccess() const
 {
-	return hdf5PermissionAccess;
+	return permissionAccess;
 }
 
 soap* EpcDocument::getGsoapContext() const { return s; }
@@ -403,7 +403,7 @@ std::vector<WITSML1_4_1_1_NS::Trajectory*> EpcDocument::getWitsmlTrajectorySet()
 void EpcDocument::addWarning(const std::string & warning) { warnings.push_back(warning); }
 const std::vector<std::string> & EpcDocument::getWarnings() const { return warnings; }
 
-void  EpcDocument::open(const std::string & fileName, const openingMode & hdf5PermissionAccess)
+void  EpcDocument::open(const std::string & fileName, const openingMode & permissionAccess)
 {
 	if (fileName.empty()) {
 		throw invalid_argument("The epc document name cannot be empty.");
@@ -413,15 +413,15 @@ void  EpcDocument::open(const std::string & fileName, const openingMode & hdf5Pe
 	}
 
 #ifdef WITH_ETP
-	set_hdf_proxy_builder(hdf5PermissionAccess == openingMode::ETP ? &etp_partial_builder : &epc_partial_builder);
+	set_hdf_proxy_builder(permissionAccess == openingMode::ETP ? &etp_partial_builder : &epc_partial_builder);
 #else
-	if (hdf5PermissionAccess == openingMode::ETP) {
+	if (permissionAccess == openingMode::ETP) {
 		throw std::invalid_argument("Enable WITH_ETP in compile definitions if you want to use HDF ETP opening mode.");
 	}
 	set_hdf_proxy_builder(&epc_partial_builder);
 #endif
 
-	this->hdf5PermissionAccess = hdf5PermissionAccess;
+	this->permissionAccess = permissionAccess;
 	setFilePath(fileName);
 
 	// Below SOAP_XML_IGNORENS is used and should not be -> See gsoap sourceforge bug #1123 
@@ -746,9 +746,20 @@ void EpcDocument::addFesapiWrapperAndDeleteItIfException(WITSML1_4_1_1_NS::Abstr
 
 void EpcDocument::serialize(bool useZip64)
 {
+	if (permissionAccess == openingMode::READ_ONLY) {
+		throw std::invalid_argument("The permission to access to the EPC file is READ ONLY. It cannot be serialized.");
+	}
+#ifdef WITH_ETP
+	else if (permissionAccess == openingMode::ETP) {
+		throw std::invalid_argument("You cannot serialize and EPC document when you are in ETP mode yet.");
+	}
+#endif
+
 	warnings.clear();
 
-	package->openForWriting(filePath, useZip64);
+	// Cannot include zip.h for some macro conflict reasons with beast which also includes a port of zlib. Consequently cannot use macros below.
+	// 0 means APPEND_STATUS_CREATE
+	package->openForWriting(filePath, 0, useZip64);
 	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it) {
 		if (!it->second->isPartial()) {
 			string str = it->second->serializeIntoString();
@@ -1011,6 +1022,8 @@ string EpcDocument::deserialize()
 	}
 
 	updateAllRelationships();
+
+	package->close();
 
 	return result;
 }

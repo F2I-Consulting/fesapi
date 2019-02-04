@@ -29,54 +29,14 @@ using namespace std;
 const char* MyOwnEtpServerSession::epcFileName = "../../testingPackageCpp.epc";
 
 MyOwnEtpServerSession::MyOwnEtpServerSession(tcp::socket socket)
-	: ETP_NS::ServerSession(std::move(socket)),
-	  epcDoc(epcFileName, COMMON_NS::EpcDocument::READ_WRITE)
+	: ETP_NS::ServerSession(std::move(socket))
 {
 	setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(this));
 	setDiscoveryProtocolHandlers(std::make_shared<MyOwnDiscoveryProtocolHandlers>(this));
 	setStoreProtocolHandlers(std::make_shared<MyOwnStoreProtocolHandlers>(this));
 	setDataArrayProtocolHandlers(std::make_shared<MyOwnDataArrayProtocolHandlers>(this));
-
-	cout << "Start deserialization of " << epcDoc.getName() << " in " << (epcDoc.getStorageDirectory().empty() ? "working directory." : epcDoc.getStorageDirectory()) << endl;
-	string resqmlResult = epcDoc.deserialize();
-	if (!resqmlResult.empty()) {
-		cerr << resqmlResult << endl;
-		cout << "Press enter to continue..." << endl;
-		cin.get();
-	}
 }
 
 MyOwnEtpServerSession::~MyOwnEtpServerSession()
 {
-	cout << "Close Epc Document" << endl;
-	epcDoc.close();
-}
-
-COMMON_NS::AbstractObject* MyOwnEtpServerSession::getObjectFromUri(const std::string & uri) {
-	if (!validateDataObjectUri(uri, true)) {
-		return nullptr;
-	}
-
-	std::vector<std::string> tokens = tokenize(uri.substr(6), '/');
-	if (tokens[0] != "resqml20" && tokens[0] != "eml20") {
-		Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-		error.m_errorCode = 2;
-		error.m_errorMessage = "The URI " + uri + "  uses some dataspaces or witsml or prodml. This agent does not support dataspace.";
-
-		send(error);
-		return nullptr;
-	}
-
-	tokens = tokenize(tokens[1], '(');
-	tokens[1].pop_back();
-	COMMON_NS::AbstractObject* result = epcDoc.getResqmlAbstractObjectByUuid(tokens[1]);
-	if (result == nullptr) {
-		Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-		error.m_errorCode = 11;
-		error.m_errorMessage = tokens[1] + " cannot be resolved as a data object in this store";
-
-		send(error);
-	}
-
-	return result;
 }

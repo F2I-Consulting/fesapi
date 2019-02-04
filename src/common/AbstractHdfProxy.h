@@ -200,8 +200,8 @@ namespace COMMON_NS
 		 * @param groupName						The name of the group where to create the array of values.
 		 *										This name must not contain '/' character and must be directly contained in RESQML group.
 		 * @param name							The name of the array (potentially with multi dimensions) of a specific datatype hdf dataset. It must not already exist.
-		 * @param datatype						The specific datatype of the valeus to write.
-		 * @param values							1d array of specific datatype ordered firstly by fastest direction.
+		 * @param datatype						The specific datatype of the values to write.
+		 * @param values						1d array of specific datatype ordered firstly by fastest direction.
 		 * @param numValuesInEachDimension		Number of values in each dimension of the array to write. They are ordered from fastest index to slowest index.
 		 * @param numDimensions					The number of the dimensions of the array to write
 		 */

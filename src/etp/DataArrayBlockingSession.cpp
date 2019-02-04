@@ -81,7 +81,7 @@ void DataArrayBlockingSession::run()
 		responseType[boost::beast::http::field::sec_websocket_protocol] != "etp12.energistics.org")
 		std::cerr << "The client MUST specify the Sec-Websocket-Protocol header value of etp12.energistics.org, and the server MUST reply with the same" << std::endl;
 
-	closed = false;
+	webSocketSessionClosed = false;
 
 	send(requestSession);
 	do_read();
@@ -95,7 +95,7 @@ void DataArrayBlockingSession::run()
 
 void DataArrayBlockingSession::do_read()
 {
-	if (closed) {
+	if (webSocketSessionClosed) {
 		std::cout << "CLOSED : NOTHING MORE TO DO" << std::endl;
 		return;
 	}

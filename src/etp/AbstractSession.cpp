@@ -45,10 +45,10 @@ void AbstractSession::on_read(boost::system::error_code ec, std::size_t bytes_tr
 {
 	boost::ignore_unused(bytes_transferred);
 
-	// This indicates that the session was closed
+	// This indicates that the web socket (and consequently etp) session was closed
 	if(ec == websocket::error::closed) {
-		std::cout << "The other endpoint closed connection." << std::endl;
-		closed = true;
+		std::cout << "The other endpoint closed the web socket (and consequently etp) connection." << std::endl;
+		webSocketSessionClosed = true;
 		flushReceivingBuffer();
 		return;
 	}

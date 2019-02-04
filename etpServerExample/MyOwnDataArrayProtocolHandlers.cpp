@@ -18,13 +18,20 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnDataArrayProtocolHandlers.h"
 
+#include "Helpers.h"
+
 #include "common/AbstractHdfProxy.h"
 
 void MyOwnDataArrayProtocolHandlers::on_GetDataArray(const Energistics::Etp::v12::Protocol::DataArray::GetDataArray & gda, int64_t correlationId)
 {
 	std::cout << "Data array received uri : " << gda.m_uri << std::endl;
-	COMMON_NS::AbstractObject* obj = static_cast<MyOwnEtpServerSession*>(session)->getObjectFromUri(gda.m_uri);
+
+	COMMON_NS::EpcDocument epcDoc(MyOwnEtpServerSession::epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
+	std::string resqmlResult = epcDoc.deserialize();
+
+	COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(epcDoc, session, gda.m_uri);
 	if (obj == nullptr) {
+		epcDoc.close();
 		return;
 	}
 
@@ -35,6 +42,7 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArray(const Energistics::Etp::v12
 		error.m_errorMessage = obj->getUuid() + " cannot be resolved as an HDF Proxy in this store";
 
 		session->send(error);
+		epcDoc.close();
 		return;
 	}
 
@@ -141,19 +149,24 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArray(const Energistics::Etp::v12
 	}
 
 	session->send(daResponse, correlationId, 0x01 | 0x02);
+	epcDoc.close();
 }
 
 void MyOwnDataArrayProtocolHandlers::on_PutDataArray(const Energistics::Etp::v12::Protocol::DataArray::PutDataArray & pda, int64_t correlationId)
 {
-	std::cout << "on_PutDataArray : Do nothing for now" << std::endl;
+	std::cout << "on_PutDataArray : DO ALMOST NOTHING FOR NOW" << std::endl;
 
 	std::cout << "PutDataArray in resource " << pda.m_uri << " at path " << pda.m_pathInResource << std::endl;;
 	for (auto i = 0; i < pda.m_dimensions.size(); ++i) {
 		std::cout << "Dimension " << i << " with count : " << pda.m_dimensions[i] << std::endl;
 	}
 
-	COMMON_NS::AbstractObject* obj = static_cast<MyOwnEtpServerSession*>(session)->getObjectFromUri(pda.m_uri);
+	COMMON_NS::EpcDocument epcDoc(MyOwnEtpServerSession::epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
+	std::string resqmlResult = epcDoc.deserialize();
+
+	COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(epcDoc, session, pda.m_uri);
 	if (obj == nullptr) {
+		epcDoc.close();
 		return;
 	}
 
@@ -164,15 +177,39 @@ void MyOwnDataArrayProtocolHandlers::on_PutDataArray(const Energistics::Etp::v12
 		error.m_errorMessage = obj->getUuid() + " cannot be resolved as an HDF Proxy in this store";
 
 		session->send(error);
+		epcDoc.close();
 		return;
 	}
+
+	auto hdfGroups = tokenize(pda.m_pathInResource, '/');
+
+	if (hdfGroups.size() != 3) {
+		std::cout << "This server does not support putting a data array in a path which does not follow /RESQML/groupname/datasetname convention." << std::endl;
+		epcDoc.close();
+		return;
+	}
+	if (hdfGroups[0] != "RESQML") {
+		std::cout << "This server does not support putting a data array in another root group than RESQML group." << std::endl;
+		epcDoc.close();
+		return;
+	}
+	/*
+	std::unique_ptr<unsigned long long[]> numValuesInEachDimension(new unsigned long long[pda.m_dimensions.size()]());
+	hdfProxy->writeArrayNd(hdfGroups[1], hdfGroups[2], , , numValuesInEachDimension.get(), pda.m_dimensions.size());
+	*/
+	epcDoc.close();
 }
 
 void MyOwnDataArrayProtocolHandlers::on_DescribeDataArray(const Energistics::Etp::v12::Protocol::DataArray::DescribeDataArray & dda, int64_t correlationId)
 {
 	std::cout << "Describe Data array received uri : " << dda.m_uri << std::endl;
-	COMMON_NS::AbstractObject* obj = static_cast<MyOwnEtpServerSession*>(session)->getObjectFromUri(dda.m_uri);
+
+	COMMON_NS::EpcDocument epcDoc(MyOwnEtpServerSession::epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
+	std::string resqmlResult = epcDoc.deserialize();
+
+	COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(epcDoc, session, dda.m_uri);
 	if (obj == nullptr) {
+		epcDoc.close();
 		return;
 	}
 
@@ -183,6 +220,7 @@ void MyOwnDataArrayProtocolHandlers::on_DescribeDataArray(const Energistics::Etp
 		error.m_errorMessage = obj->getUuid() + " cannot be resolved as an HDF Proxy in this store";
 
 		session->send(error);
+		epcDoc.close();
 		return;
 	}
 
@@ -220,4 +258,5 @@ void MyOwnDataArrayProtocolHandlers::on_DescribeDataArray(const Energistics::Etp
 	}
 
 	session->send(dam, correlationId);
+	epcDoc.close();
 }

@@ -21,6 +21,7 @@ under the License.
 #include "etp/EtpHelpers.h"
 
 #include "MyOwnEtpServerSession.h"
+#include "Helpers.h"
 
 #include "resqml2/AbstractGridRepresentation.h"
 #include "resqml2/GridConnectionSetRepresentation.h"
@@ -29,12 +30,15 @@ MyOwnStoreProtocolHandlers::MyOwnStoreProtocolHandlers(MyOwnEtpServerSession* my
 
 void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & getO, int64_t correlationId)
 {
+	COMMON_NS::EpcDocument epcDoc(MyOwnEtpServerSession::epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
+	std::string resqmlResult = epcDoc.deserialize();
+
 	Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse objResponse;
 
 	for (const auto & uri : getO.m_uris) {
 		std::cout << "Store received URI : " << uri << std::endl;
 
-		COMMON_NS::AbstractObject* obj = static_cast<MyOwnEtpServerSession*>(session)->getObjectFromUri(uri);
+		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(epcDoc, session, uri);
 		if (obj == nullptr) {
 			continue;
 		}
@@ -43,24 +47,30 @@ void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::
 		objResponse.m_dataObjects.push_back(dataObject);
 	}
 	session->send(objResponse, correlationId, 0x01 | 0x02);
+
+	epcDoc.close();
 }
 
 void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & putDataObjects, int64_t correlationId)
 {
-	MyOwnEtpServerSession* mySession = static_cast<MyOwnEtpServerSession*>(session);
+	COMMON_NS::EpcDocument epcDoc(MyOwnEtpServerSession::epcFileName, COMMON_NS::EpcDocument::READ_WRITE);
+	std::string resqmlResult = epcDoc.deserialize();
+
 	for (const auto & dataObject : putDataObjects.m_dataObjects) {
 		std::cout << "Store received data object : " << dataObject.m_resource.m_contentType << " (" << dataObject.m_resource.m_uri << ")" << std::endl;
 
-		COMMON_NS::AbstractObject* importedObj = mySession->epcDoc.addOrReplaceGsoapProxy(dataObject.m_data, dataObject.m_resource.m_contentType);
+		COMMON_NS::AbstractObject* importedObj = epcDoc.addOrReplaceGsoapProxy(dataObject.m_data, dataObject.m_resource.m_contentType);
 
-		importedObj->resolveTargetRelationships(&mySession->epcDoc);
+		importedObj->resolveTargetRelationships(&epcDoc);
 
 		if (dataObject.m_resource.m_contentType == "application/x-resqml+xml;version=2.0;type=obj_IjkGridRepresentation") {
 			std::cout << "Create a dummy Grid Connection Set for received IJK Grid Representation." << std::endl;
-			RESQML2_NS::GridConnectionSetRepresentation* gcsr = mySession->epcDoc.createGridConnectionSetRepresentation(std::string(), "Dummy GCSR");
+			RESQML2_NS::GridConnectionSetRepresentation* gcsr = epcDoc.createGridConnectionSetRepresentation(std::string(), "Dummy GCSR");
 			ULONG64 cellIndexPair[] = { 0, 1 };
-			gcsr->setCellIndexPairs(1, cellIndexPair, -1, mySession->epcDoc.getHdfProxy(0));
+			gcsr->setCellIndexPairs(1, cellIndexPair, -1, epcDoc.getHdfProxy(0));
 			gcsr->pushBackSupportingGridRepresentation(static_cast<RESQML2_NS::AbstractGridRepresentation*>(importedObj));
 		}
 	}
+
+	epcDoc.close();
 }

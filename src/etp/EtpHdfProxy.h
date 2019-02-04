@@ -56,7 +56,7 @@ namespace ETP_NS
 		/**
 		* It is opened if the ETP session is opened
 		*/
-		bool isOpened() const { return session != nullptr && !session->isClosed();  }
+		bool isOpened() const { return session != nullptr && !session->isWebSocketSessionClosed();  }
 
 		/**
 		* Close the file

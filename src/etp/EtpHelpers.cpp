@@ -56,4 +56,3 @@ Energistics::Etp::v12::Datatypes::Object::DataObject ETP_NS::EtpHelpers::buildEt
 
 	return result;
 }
-

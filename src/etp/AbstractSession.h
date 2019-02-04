@@ -67,15 +67,16 @@ namespace ETP_NS
 		boost::beast::flat_buffer receivedBuffer;
 	    long long messageId = 1;
 	    std::vector<std::shared_ptr<ETP_NS::ProtocolHandlers>> protocolHandlers;
-	    bool closed;
-	    std::vector<std::vector<uint8_t> > sendingQueue;
+	    bool webSocketSessionClosed; // open with the websocket handshakr
+		bool etpSessionClosed; // open with the requestSession and openSession message
+		std::vector<std::vector<uint8_t> > sendingQueue;
 
 	    // For client session
-	    AbstractSession(boost::asio::io_context& ioc) : ws(ioc), closed(true) {
+	    AbstractSession(boost::asio::io_context& ioc) : ws(ioc), webSocketSessionClosed(true), etpSessionClosed(true) {
 	    	setCoreProtocolHandlers(std::make_shared<CoreHandlers>(this));
 	    }
 	    // For server session
-	    AbstractSession(tcp::socket socket) : ws(std::move(socket)), closed(true) {
+	    AbstractSession(tcp::socket socket) : ws(std::move(socket)), webSocketSessionClosed(true), etpSessionClosed(true) {
 	    	setCoreProtocolHandlers(std::make_shared<CoreHandlers>(this));
 	    }
 
@@ -248,12 +249,15 @@ namespace ETP_NS
 #ifndef NDEBUG
 			std::cout << "!!! CLOSED !!!" << std::endl;
 #endif
-			closed = true;
+			webSocketSessionClosed = true;
 		}
 
 		bool validateUri(const std::string & uri, bool sendException = false);
 		bool validateDataObjectUri(const std::string & uri, bool sendException = false);
 
-		bool isClosed() const { return closed;  }
+		bool isWebSocketSessionClosed() const { return webSocketSessionClosed;  }
+
+		void setEtpSessionClosed(bool etpSessionClosed) { this->etpSessionClosed = etpSessionClosed; }
+		bool isEtpSessionClosed() const { return etpSessionClosed; }
 	};
 }

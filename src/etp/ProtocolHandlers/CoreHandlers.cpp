@@ -33,12 +33,14 @@ void CoreHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::Mes
 		Energistics::Etp::v12::Protocol::Core::RequestSession rs;
 		avro::decode(*d, rs);
 		session->flushReceivingBuffer();
+		session->setEtpSessionClosed(false);
 		on_RequestSession(rs, mh.m_messageId);
 	}
 	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Core::OpenSession::messageTypeId) {
 		Energistics::Etp::v12::Protocol::Core::OpenSession os;
 		avro::decode(*d, os);
 		session->flushReceivingBuffer();
+		session->setEtpSessionClosed(false);
 		on_OpenSession(os, mh.m_messageId);
 	}
 	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Core::CloseSession::messageTypeId) {

@@ -27,7 +27,7 @@ under the License.
 #include "resqml2_0_1/IjkGridExplicitRepresentation.h"
 #include "resqml2_0_1/IjkGridParametricRepresentation.h"
 
-void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlash(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gr,  int64_t correlationId,
+void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlash(COMMON_NS::EpcDocument & epcDoc, const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gr,  int64_t correlationId,
 	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result)
 {
 	Energistics::Etp::v12::Datatypes::Object::Resource resource;
@@ -50,14 +50,14 @@ void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlash(const Energistics:
 			--nextGr.m_context.m_depth;
 
 			nextGr.m_context.m_uri = "eml://resqml20";
-			on_GetEmlColonSlashSlashResqml20(nextGr, correlationId, result, true);
+			on_GetEmlColonSlashSlashResqml20(epcDoc, nextGr, correlationId, result, true);
 			nextGr.m_context.m_uri = "eml://eml20";
-			on_GetEmlColonSlashSlashEml20(nextGr, correlationId, result, true);
+			on_GetEmlColonSlashSlashEml20(epcDoc, nextGr, correlationId, result, true);
 		}
 	}
 }
 
-void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlashResqml20(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gr, int64_t correlationId,
+void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlashResqml20(COMMON_NS::EpcDocument & epcDoc, const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gr, int64_t correlationId,
 	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result, bool self)
 {
 	Energistics::Etp::v12::Datatypes::Object::Resource resource;
@@ -80,18 +80,17 @@ void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlashResqml20(const Ener
 			--nextGr.m_context.m_depth;
 
 			const std::string uriPrefix = "eml://resqml20/obj_";
-			MyOwnEtpServerSession* mySession = static_cast<MyOwnEtpServerSession*>(session);
 
-			auto objectsGroupedByContentType = mySession->epcDoc.getResqmlObjectsGroupedByContentType();
+			auto objectsGroupedByContentType = epcDoc.getResqmlObjectsGroupedByContentType();
 			for (auto it = objectsGroupedByContentType.begin(); it != objectsGroupedByContentType.end(); ++it) {
 				nextGr.m_context.m_uri = uriPrefix + it->second[0]->getXmlTag();
-				on_GetFolder(nextGr, correlationId, result, true);
+				on_GetFolder(epcDoc, nextGr, correlationId, result, true);
 			}
 		}
 	}
 }
 
-void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlashEml20(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gr, int64_t correlationId,
+void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlashEml20(COMMON_NS::EpcDocument & epcDoc, const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gr, int64_t correlationId,
 	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result, bool self)
 {
 	Energistics::Etp::v12::Datatypes::Object::Resource resource;
@@ -116,12 +115,12 @@ void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlashEml20(const Energis
 			const std::string uriPrefix = "eml://eml20/obj_";
 
 			nextGr.m_context.m_uri = uriPrefix + COMMON_NS::EpcExternalPartReference::XML_TAG;
-			on_GetFolder(nextGr, correlationId, result, true);
+			on_GetFolder(epcDoc, nextGr, correlationId, result, true);
 		}
 	}
 }
 
-void MyOwnDiscoveryProtocolHandlers::on_GetFolder(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gtr, int64_t correlationId,
+void MyOwnDiscoveryProtocolHandlers::on_GetFolder(COMMON_NS::EpcDocument & epcDoc, const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gtr, int64_t correlationId,
 	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result, bool self)
 {
 	Energistics::Etp::v12::Datatypes::Object::Resource resource;
@@ -130,7 +129,6 @@ void MyOwnDiscoveryProtocolHandlers::on_GetFolder(const Energistics::Etp::v12::P
 
 	std::string resqml20Datatype = tokenize(gtr.m_context.m_uri, '/')[3];
 	if (gtr.m_context.m_depth >= 0) {
-		MyOwnEtpServerSession* mySession = static_cast<MyOwnEtpServerSession*>(session);
 
 		// Self
 		if (gtr.m_context.m_depth == 0) {
@@ -139,10 +137,10 @@ void MyOwnDiscoveryProtocolHandlers::on_GetFolder(const Energistics::Etp::v12::P
 			resource.m_resourceType = Energistics::Etp::v12::Datatypes::Object::ResourceKind::Folder;
 
 			if (resqml20Datatype.substr(4) == COMMON_NS::EpcExternalPartReference::XML_TAG) {
-				resource.m_contentCount.set_int(mySession->epcDoc.getHdfProxySet().size());
+				resource.m_contentCount.set_int(epcDoc.getHdfProxySet().size());
 			}
 			else {
-				resource.m_contentCount.set_int(mySession->epcDoc.getResqmlObjectsByContentType("application/x-resqml+xml;version=2.0;type=" + resqml20Datatype).size());
+				resource.m_contentCount.set_int(epcDoc.getResqmlObjectsByContentType("application/x-resqml+xml;version=2.0;type=" + resqml20Datatype).size());
 			}
 /*
 			else {
@@ -166,19 +164,19 @@ void MyOwnDiscoveryProtocolHandlers::on_GetFolder(const Energistics::Etp::v12::P
 			nextGr.m_context.m_contentTypes = gtr.m_context.m_contentTypes;
 
 			if (resqml20Datatype.substr(4) == COMMON_NS::EpcExternalPartReference::XML_TAG) {
-				for (const auto & obj : mySession->epcDoc.getHdfProxySet()) {
+				for (const auto & obj : epcDoc.getHdfProxySet()) {
 					if (!obj->isPartial()) {
 						nextGr.m_context.m_uri = gtr.m_context.m_uri + '(' + obj->getUuid() + ')';
-						on_GetDataObject(nextGr, correlationId, result);
+						on_GetDataObject(epcDoc, nextGr, correlationId, result);
 					}
 				}
 			}
 			else {
-				auto objs = mySession->epcDoc.getResqmlObjectsByContentType("application/x-resqml+xml;version=2.0;type=" + resqml20Datatype);
+				auto objs = epcDoc.getResqmlObjectsByContentType("application/x-resqml+xml;version=2.0;type=" + resqml20Datatype);
 				for (const auto & obj : objs) {
 					if (!obj->isPartial()) {
 						nextGr.m_context.m_uri = gtr.m_context.m_uri + '(' + obj->getUuid() + ')';
-						on_GetDataObject(nextGr, correlationId, result);
+						on_GetDataObject(epcDoc, nextGr, correlationId, result);
 					}
 				}
 			}
@@ -186,7 +184,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetFolder(const Energistics::Etp::v12::P
 	}
 }
 
-void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v12::Protocol::Discovery::GetGraphResources & ggr, int64_t correlationId,
+void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(COMMON_NS::EpcDocument & epcDoc, const Energistics::Etp::v12::Protocol::Discovery::GetGraphResources & ggr, int64_t correlationId,
 	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result)
 {
 	Energistics::Etp::v12::Datatypes::Object::Resource resource;
@@ -194,10 +192,8 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v1
 	resource.m_contentType = "";
 
 	if (ggr.m_context.m_depth >= 0) {
-		MyOwnEtpServerSession* mySession = static_cast<MyOwnEtpServerSession*>(session);
-
 		const size_t openingParenthesis = ggr.m_context.m_uri.find('(', 5);
-		COMMON_NS::AbstractObject* obj = mySession->epcDoc.getResqmlAbstractObjectByUuid(ggr.m_context.m_uri.substr(openingParenthesis + 1, 36));
+		COMMON_NS::AbstractObject* obj = epcDoc.getResqmlAbstractObjectByUuid(ggr.m_context.m_uri.substr(openingParenthesis + 1, 36));
 
 		// Self
 		if (ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self ||
@@ -218,7 +214,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v1
 
 				for (const auto & targetUuid : obj->getAllTargetRelationshipUuids()) {
 					nextGr.m_context.m_uri = ggr.m_context.m_uri.substr(0, openingParenthesis) + '(' + targetUuid + ')';
-					on_GetDataObject(nextGr, correlationId, result);
+					on_GetDataObject(epcDoc, nextGr, correlationId, result);
 				}
 			}
 			// Source
@@ -230,7 +226,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v1
 				
 				for (const auto & targetUuid : obj->getAllSourceRelationshipUuids()) {
 					nextGr.m_context.m_uri = ggr.m_context.m_uri.substr(0, openingParenthesis) + '(' + targetUuid + ')';
-					on_GetDataObject(nextGr, correlationId, result);
+					on_GetDataObject(epcDoc, nextGr, correlationId, result);
 				}
 			}
 		}
@@ -245,25 +241,30 @@ void MyOwnDiscoveryProtocolHandlers::on_GetTreeResources(const Energistics::Etp:
 		return;
 	}
 
+	COMMON_NS::EpcDocument epcDoc(MyOwnEtpServerSession::epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
+	std::string resqmlResult = epcDoc.deserialize();
+
 	Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse mb;
 
 	if (gr.m_context.m_uri == "eml://") {
-		on_GetEmlColonSlashSlash(gr, correlationId, mb.m_resources);
+		on_GetEmlColonSlashSlash(epcDoc, gr, correlationId, mb.m_resources);
 	}
 	else {
 		const std::string path = gr.m_context.m_uri.substr(6);
 		if (path == "resqml20" || path == "resqml20/") {
-			on_GetEmlColonSlashSlashResqml20(gr, correlationId, mb.m_resources);
+			on_GetEmlColonSlashSlashResqml20(epcDoc, gr, correlationId, mb.m_resources);
 		}
 		else if (path == "eml20" || path == "eml20/") {
-			on_GetEmlColonSlashSlashEml20(gr, correlationId, mb.m_resources);
+			on_GetEmlColonSlashSlashEml20(epcDoc, gr, correlationId, mb.m_resources);
 		}
 		else {
-			on_GetFolder(gr, correlationId, mb.m_resources);
+			on_GetFolder(epcDoc, gr, correlationId, mb.m_resources);
 		}
 	}
 
 	session->send(mb, correlationId, 0x01 | 0x02);
+
+	epcDoc.close();
 }
 
 void MyOwnDiscoveryProtocolHandlers::on_GetGraphResources(const Energistics::Etp::v12::Protocol::Discovery::GetGraphResources & gr, int64_t correlationId)
@@ -274,8 +275,13 @@ void MyOwnDiscoveryProtocolHandlers::on_GetGraphResources(const Energistics::Etp
 		return;
 	}
 
+	COMMON_NS::EpcDocument epcDoc(MyOwnEtpServerSession::epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
+	std::string resqmlResult = epcDoc.deserialize();
+
 	Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse mb;
-	on_GetDataObject(gr, correlationId, mb.m_resources);
+	on_GetDataObject(epcDoc, gr, correlationId, mb.m_resources);
 
 	session->send(mb, correlationId, 0x01 | 0x02);
+
+	epcDoc.close();
 }

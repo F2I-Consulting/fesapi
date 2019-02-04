@@ -176,17 +176,17 @@ namespace COMMON_NS
 		/**
 		* Construct an instance, set the file name of the Epc Document and set the rights to access to the companion HDF5 file.
 		* @param fileName				The file path of the EPC document to read or write.
-		* @param hdf5PermissionAccess	The rights when opening the companion HDF5 file.
+		* @param permissionAccess		The rights when opening the EPC and the HDF5 files.
 		*/
-		EpcDocument(const std::string & fileName, const openingMode & hdf5PermissionAccess = READ_ONLY);
+		EpcDocument(const std::string & fileName, const openingMode & permissionAccess = READ_ONLY);
 
 		/**
 		* Construct an instance, set the file name of the Epc Document, set the rights to access to the companion HDF5 file and indicates where to look for property kind configuration.
 		* @param fileName							The file path of the EPC document to read or write.
 		* @param propertyKindMappingFilesDirectory	The directory where all property kind configuration files are stored.
-		* @param hdf5PermissionAccess				The rights when opening the companion HDF5 file.
+		* @param permissionAccess					The rights when opening the EPC and the HDF5 files.
 		*/
-		EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, const openingMode & hdf5PermissionAccess = READ_ONLY);
+		EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, const openingMode & permissionAccess = READ_ONLY);
 
 		/**
 		* The destructor frees all allocated ressources.
@@ -222,7 +222,10 @@ namespace COMMON_NS
 		 */
 		void close();
 
-		const openingMode & getHdf5PermissionAccess() const;
+		/**
+		* Get the permission access on the EPC file and on the HDF5 file.
+		*/
+		const openingMode & getPermissionAccess() const;
 
 		/**
 		 * Set the file path which will be used for future serialization and deserialization
@@ -1223,7 +1226,7 @@ namespace COMMON_NS
 	private :
 		static const char * DOCUMENT_EXTENSION;
 
-		openingMode hdf5PermissionAccess;
+		openingMode permissionAccess;
 
 		epc::Package* package;
 

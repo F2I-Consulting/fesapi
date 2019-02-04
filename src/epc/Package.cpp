@@ -178,8 +178,7 @@ Package::CheshireCat::~CheshireCat()
 
 void Package::CheshireCat::close()
 {
-	if (unzipped)
-	{
+	if (unzipped != nullptr) {
 		unzClose(unzipped);
 		unzipped = nullptr;
 	}
@@ -200,7 +199,7 @@ Package::~Package()
 	delete d_ptr;
 }
 
-void Package::openForWriting(const std::string & pkgPathName, bool useZip64)
+void Package::openForWriting(const std::string & pkgPathName, int append, bool useZip64)
 {
 	d_ptr->pathName.assign(pkgPathName);
 
@@ -219,7 +218,7 @@ void Package::openForWriting(const std::string & pkgPathName, bool useZip64)
 	addRelationship(relToCoreProp);
 
 	d_ptr->isZip64 = useZip64;
-	d_ptr->zf = useZip64 ? zipOpen64(d_ptr->pathName.c_str(), 0) : zipOpen(d_ptr->pathName.c_str(), 0);
+	d_ptr->zf = useZip64 ? zipOpen64(d_ptr->pathName.c_str(), append) : zipOpen(d_ptr->pathName.c_str(), append);
 
 	if (d_ptr->zf == nullptr) {
 		throw invalid_argument("The file " + pkgPathName + " could not be opened");
@@ -526,7 +525,7 @@ void Package::writeStringIntoNewPart(const std::string &input, const std::string
 	}
 }
 
-void Package::writePackage() 
+void Package::writePackage()
 {
 	d_ptr->fileCoreProperties.initDefaultCoreProperties();
 	writeStringIntoNewPart(d_ptr->fileCoreProperties.toString(), "docProps/core.xml");
