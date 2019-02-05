@@ -38,7 +38,7 @@ Well::Well(soap* soapContext,
 	gsoapProxy2_1 = soap_new_witsml2__Well(soapContext, 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 }
 
 Well::Well(soap* soapContext,
@@ -56,7 +56,7 @@ Well::Well(soap* soapContext,
 	gsoapProxy2_1 = soap_new_witsml2__Well(soapContext, 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setOperator(operator_);
 

@@ -42,7 +42,7 @@ WellboreCompletion::WellboreCompletion(Wellbore* witsmlWellbore,
 	gsoapProxy2_1 = soap_new_witsml2__WellboreCompletion(witsmlWellbore->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setWellbore(witsmlWellbore);
 	setWellCompletion(wellCompletion);

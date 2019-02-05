@@ -38,7 +38,7 @@ Wellbore::Wellbore(
 	gsoapProxy2_1 = soap_new_witsml2__Wellbore(witsmlWell->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setWell(witsmlWell);
 }
@@ -59,7 +59,7 @@ Wellbore::Wellbore(
 	gsoapProxy2_1 = soap_new_witsml2__Wellbore(witsmlWell->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setWell(witsmlWell);
 
