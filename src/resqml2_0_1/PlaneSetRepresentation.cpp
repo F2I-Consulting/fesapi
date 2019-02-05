@@ -21,6 +21,7 @@ under the License.
 #include <stdexcept>
 #include <sstream>
 #include <algorithm>
+#include <stdexcept>
 
 #include "resqml2/AbstractFeatureInterpretation.h"
 #include "resqml2/AbstractLocal3dCrs.h"
@@ -45,6 +46,18 @@ PlaneSetRepresentation::PlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterp
 	localCrs->addRepresentation(this);
 
 	setInterpretation(interp);
+}
+
+gsoap_resqml2_0_1::eml20__DataObjectReference* PlaneSetRepresentation::getLocalCrsDor() const
+{
+	_resqml2__PlaneSetRepresentation* rep = static_cast<_resqml2__PlaneSetRepresentation*>(gsoapProxy2_0_1);
+	gsoap_resqml2_0_1::eml20__DataObjectReference* result = rep->Planes[0]->LocalCrs;
+	for (size_t geomIndex = 1; geomIndex < rep->Planes.size(); ++geomIndex) {
+		if (result->UUID != rep->Planes[geomIndex]->LocalCrs->UUID) {
+			throw std::invalid_argument("A multi CRS plane set representaiton is not supported yet");
+		}
+	}
+	return result;
 }
 
 void PlaneSetRepresentation::pushBackHorizontalPlaneGeometryPatch(const double & zCoordinate)
@@ -83,21 +96,21 @@ void PlaneSetRepresentation::pushBackTiltedPlaneGeometryPatch(
 
 ULONG64 PlaneSetRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
 {
+	if (patchIndex >= getPatchCount()) {
+		throw range_error("The index patch is not in the allowed range of patch");
+	}
+
 	_resqml2__PlaneSetRepresentation* rep = static_cast<_resqml2__PlaneSetRepresentation*>(gsoapProxy2_0_1);
-	if (rep->Planes[patchIndex]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__HorizontalPlaneGeometry)
-	{
-		return 1;
-	}
-	else
-	{
-		return static_cast<resqml2__TiltedPlaneGeometry*>(rep->Planes[patchIndex])->Plane.size() * 3;
-	}
+	return rep->Planes[patchIndex]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__HorizontalPlaneGeometry
+		? 1
+		: static_cast<resqml2__TiltedPlaneGeometry*>(rep->Planes[patchIndex])->Plane.size() * 3;
 }
 
 void PlaneSetRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
 {
-	if (patchIndex >= getPatchCount())
+	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch");
+	}
 
 	_resqml2__PlaneSetRepresentation* rep = static_cast<_resqml2__PlaneSetRepresentation*>(gsoapProxy2_0_1);
 	if (rep->Planes[patchIndex]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__HorizontalPlaneGeometry)
@@ -108,16 +121,19 @@ void PlaneSetRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex
 	}
 	else
 	{
-		resqml2__TiltedPlaneGeometry* tiltedPlane = static_cast<resqml2__TiltedPlaneGeometry*>(rep->Planes[patchIndex]); // TODO : allow more than one plane in one tilted plane
-		xyzPoints[0] = tiltedPlane->Plane[0]->Point3d[0]->Coordinate1;
-		xyzPoints[1] = tiltedPlane->Plane[0]->Point3d[0]->Coordinate2;
-		xyzPoints[2] = tiltedPlane->Plane[0]->Point3d[0]->Coordinate3;
-		xyzPoints[3] = tiltedPlane->Plane[1]->Point3d[1]->Coordinate1;
-		xyzPoints[4] = tiltedPlane->Plane[1]->Point3d[1]->Coordinate2;
-		xyzPoints[5] = tiltedPlane->Plane[1]->Point3d[1]->Coordinate3;
-		xyzPoints[6] = tiltedPlane->Plane[2]->Point3d[2]->Coordinate1;
-		xyzPoints[7] = tiltedPlane->Plane[2]->Point3d[2]->Coordinate2;
-		xyzPoints[8] = tiltedPlane->Plane[2]->Point3d[2]->Coordinate3;
+		resqml2__TiltedPlaneGeometry* tiltedPlane = static_cast<resqml2__TiltedPlaneGeometry*>(rep->Planes[patchIndex]);
+		for (size_t subplaneIndex = 0; subplaneIndex < tiltedPlane->Plane.size(); ++subplaneIndex) {
+			size_t offset = subplaneIndex * 9;
+			xyzPoints[offset] = tiltedPlane->Plane[subplaneIndex]->Point3d[0]->Coordinate1;
+			xyzPoints[offset + 1] = tiltedPlane->Plane[subplaneIndex]->Point3d[0]->Coordinate2;
+			xyzPoints[offset + 2] = tiltedPlane->Plane[subplaneIndex]->Point3d[0]->Coordinate3;
+			xyzPoints[offset + 3] = tiltedPlane->Plane[subplaneIndex]->Point3d[1]->Coordinate1;
+			xyzPoints[offset + 4] = tiltedPlane->Plane[subplaneIndex]->Point3d[1]->Coordinate2;
+			xyzPoints[offset + 5] = tiltedPlane->Plane[subplaneIndex]->Point3d[1]->Coordinate3;
+			xyzPoints[offset + 6] = tiltedPlane->Plane[subplaneIndex]->Point3d[2]->Coordinate1;
+			xyzPoints[offset + 7] = tiltedPlane->Plane[subplaneIndex]->Point3d[2]->Coordinate2;
+			xyzPoints[offset + 8] = tiltedPlane->Plane[subplaneIndex]->Point3d[2]->Coordinate3;
+		}
 	}
 }
 
@@ -125,4 +141,3 @@ unsigned int PlaneSetRepresentation::getPatchCount() const
 {
     return static_cast<_resqml2__PlaneSetRepresentation*>(gsoapProxy2_0_1)->Planes.size();
 }
-
