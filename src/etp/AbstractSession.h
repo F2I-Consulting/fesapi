@@ -258,6 +258,6 @@ namespace ETP_NS
 		bool isWebSocketSessionClosed() const { return webSocketSessionClosed;  }
 
 		void setEtpSessionClosed(bool etpSessionClosed) { this->etpSessionClosed = etpSessionClosed; }
-		bool isEtpSessionClosed() const { return etpSessionClosed; }
+		bool isEtpSessionClosed() const { return webSocketSessionClosed || etpSessionClosed; }
 	};
 }
