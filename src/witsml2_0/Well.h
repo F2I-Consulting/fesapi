@@ -88,6 +88,8 @@ namespace WITSML2_0_NS
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
 
+		RESQML2_0_1_NS::WellboreFeature* getResqmlWellboreFeature() const { return resqmlWellboreFeature; }
+
 		const std::vector<Wellbore*>& getWellbores() const { return wellboreSet; }
 
 		const std::vector<WellCompletion*>& getWellcompletions() const { return wellCompletionSet; }
@@ -98,9 +100,11 @@ namespace WITSML2_0_NS
 	protected:
 
 		// backwards relationship
+		RESQML2_0_1_NS::WellboreFeature* resqmlWellboreFeature;
 		std::vector<Wellbore*> wellboreSet;
 		std::vector<WellCompletion* > wellCompletionSet;
 
+		friend void RESQML2_0_1_NS::WellboreFeature::setWitsmlWellbore(Wellbore * wellbore);
 		friend void Wellbore::setWell(Well* witsmlWell);
 		friend void WellCompletion::setWell(Well* witsmlWell);
 	};

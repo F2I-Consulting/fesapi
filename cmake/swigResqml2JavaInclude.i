@@ -87,6 +87,22 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
     {
         ret = new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.TimeSeries(cPtr, owner);
     }
+	else if (type == "Well")
+	{
+		ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Well(cPtr, owner);
+	}
+	else if (type == "Wellbore")
+	{
+		ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Wellbore(cPtr, owner);
+	}
+	else if (type == "WellCompletion")
+	{
+		ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellCompletion(cPtr, owner);
+	}
+	else if (type == "WellboreCompletion")
+	{
+		ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellboreCompletion(cPtr, owner);
+	}else
     else
     {
 	throw new IllegalArgumentException("Encountered type " + type + " that is not known to be a Resqml concrete class");

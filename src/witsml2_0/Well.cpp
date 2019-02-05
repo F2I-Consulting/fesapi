@@ -31,7 +31,7 @@ const char* Well::XML_TAG = "Well";
 
 Well::Well(soap* soapContext,
 			const std::string & guid,
-			const std::string & title)
+			const std::string & title):resqmlWellboreFeature(nullptr)
 {
 	if (soapContext == nullptr) throw invalid_argument("A soap context must exist.");
 
@@ -49,7 +49,7 @@ Well::Well(soap* soapContext,
 		witsml2__WellPurpose purposeWell,
 		witsml2__WellFluid fluidWell,
 		witsml2__WellDirection directionWell
-	)
+	):resqmlWellboreFeature(nullptr)
 {
 	if (soapContext == nullptr) throw invalid_argument("A soap context must exist.");
 
@@ -190,6 +190,13 @@ vector<Relationship> Well::getAllEpcRelationships() const
 	vector<Relationship> result;
 
 	// XML backward relationship
+	if (resqmlWellboreFeature)
+	{
+		Relationship rel(resqmlWellboreFeature->getPartNameInEpcDocument(), "", resqmlWellboreFeature->getUuid());
+		rel.setSourceObjectType();
+		result.push_back(rel);
+	}
+
 	for (size_t i = 0; i < wellboreSet.size(); ++i)
 	{
 		Relationship relWellbore(wellboreSet[i]->getPartNameInEpcDocument(), "", wellboreSet[i]->getUuid());

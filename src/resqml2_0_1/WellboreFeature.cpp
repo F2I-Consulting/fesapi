@@ -44,6 +44,7 @@ void WellboreFeature::setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore)
 {
 	witsmlWellbore = wellbore;
 	wellbore->resqmlWellboreFeature = this;
+	wellbore->getWell()->resqmlWellboreFeature = this;
 
 	if (updateXml)
 	{

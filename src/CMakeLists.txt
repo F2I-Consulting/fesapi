@@ -129,7 +129,7 @@ IF (WITH_DOTNET_WRAPPING)
 	
 	# Create the dedicated swig files
 	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/swigResqml2CsInclude.i ${FESAPI_ROOT_DIR}/swig/swigResqml2CsInclude.i) # Overwrite if different
-	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/swigWitsml2_0CsInclude.i ${FESAPI_ROOT_DIR}/swig/swigWitsml2_0CsInclude.i) # Overwrite if different
+	#CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/swigWitsml2_0CsInclude.i ${FESAPI_ROOT_DIR}/swig/swigWitsml2_0CsInclude.i) # Overwrite if different
 	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/Program.cs ${FESAPI_ROOT_DIR}/cs/example/Program.cs) # Overwrite if different
 	
 	# Filling

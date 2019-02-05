@@ -215,7 +215,8 @@ void serializePerforations(COMMON_NS::EpcDocument * pck)
 {
 	// WELL COMPLETION
 	WITSML2_0_NS::WellCompletion* wellCompletion = pck->createWellCompletion(witsmlWell, "6593d580-2f44-4b18-97ce-8a9cf42a0414", "WellCompletion1");
-
+	WITSML2_0_NS::WellCompletion* toto = static_cast<WITSML2_0_NS::WellCompletion*>(pck->getResqmlAbstractObjectByUuid("6593d580-2f44-4b18-97ce-8a9cf42a0414"));
+	toto->getActivityCount();
 	// WELLBORE COMPLETION
 	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = pck->createWellboreCompletion(witsmlWellbore, wellCompletion, "7bda8ecf-2037-4dc7-8c59-db6ca09f2008", "WellboreCompletion1", "wellCompletionName");
 
