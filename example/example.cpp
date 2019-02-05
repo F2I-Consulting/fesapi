@@ -45,12 +45,14 @@ under the License.
 #include "resqml2_0_1/GeobodyFeature.h"
 #include "resqml2_0_1/TectonicBoundaryFeature.h"
 #include "resqml2_0_1/GenericFeatureInterpretation.h"
+#include "resqml2_0_1/FluidBoundaryFeature.h"
 #include "resqml2_0_1/HorizonInterpretation.h"
 #include "resqml2_0_1/GeobodyBoundaryInterpretation.h"
 #include "resqml2_0_1/FaultInterpretation.h"
 #include "resqml2_0_1/TriangulatedSetRepresentation.h"
 #include "resqml2_0_1/PolylineSetRepresentation.h"
 #include "resqml2_0_1/PointSetRepresentation.h"
+#include "resqml2_0_1/PlaneSetRepresentation.h"
 #include "common/HdfProxy.h"
 #include "resqml2_0_1/OrganizationFeature.h"
 #include "resqml2_0_1/EarthModelInterpretation.h"
@@ -1251,6 +1253,14 @@ void serializeActivities(COMMON_NS::EpcDocument * epcDoc)
 
 }
 
+void serializeFluidBoundary(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
+{
+	FluidBoundaryFeature* fluidBoundary = pck.createFluidBoundaryFeature("44a4d87c-3c67-4f98-a314-9d91c4147061", "Fluid boundary", gsoap_resqml2_0_1::resqml2__FluidContact__gas_x0020oil_x0020contact);
+	GenericFeatureInterpretation* interp = pck.createGenericFeatureInterpretation(fluidBoundary, "d06df5e4-3c56-4abd-836f-2abb5e58e13b", "Fluid boundary interp");
+	PlaneSetRepresentation* rep = pck.createPlaneSetRepresentation(interp, local3dCrs, "4df87ed5-ea4d-4a00-99a2-828a56c9dd02", "Fluid boundary PlaneSetRep");
+	rep->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
+}
+
 void deserializePropertyKindMappingFiles(COMMON_NS::EpcDocument * pck)
 {
 	PropertyKindMapper* ptMapper = pck->getPropertyKindMapper();
@@ -1371,6 +1381,7 @@ bool serialize(const string & filePath)
 	serializeActivities(&pck);
 // TODO bug
 	//serializeRepresentationSetRepresentation(&pck, hdfProxy);
+	serializeFluidBoundary(pck, hdfProxy);
 
 	// Add an extended core property before to serialize
 	pck.setExtendedCoreProperty("F2I-ExtendedCoreProp", "TestingVersion");
@@ -1629,6 +1640,25 @@ void deserializeGeobody(COMMON_NS::EpcDocument * pck)
 	}
 }
 
+void deserializeFluidBoundary(COMMON_NS::EpcDocument & pck)
+{
+	FluidBoundaryFeature* fluidBoundary = pck.getResqmlAbstractObjectByUuid<FluidBoundaryFeature>("44a4d87c-3c67-4f98-a314-9d91c4147061");
+	if (fluidBoundary == nullptr) return;
+	showAllMetadata(fluidBoundary);
+	showAllMetadata(fluidBoundary->getInterpretation(0));
+	PlaneSetRepresentation* rep = static_cast<PlaneSetRepresentation*>(fluidBoundary->getInterpretation(0)->getRepresentation(0));
+	showAllMetadata(rep);
+	ULONG64 ptCount = rep->getXyzPointCountOfAllPatches();
+	double* allXyzPoints = new double[ptCount * 3];
+	rep->getXyzPointsOfAllPatchesInGlobalCrs(allXyzPoints);
+	for (size_t i = 0; i < ptCount; ++i) {
+		std::cout << "Point " << i << " X=" << allXyzPoints[i * 3] << std::endl;
+		std::cout << "Point " << i << " Y=" << allXyzPoints[i * 3 + 1] << std::endl;
+		std::cout << "Point " << i << " Z=" << allXyzPoints[i * 3 + 2] << std::endl;
+	}
+	delete[] allXyzPoints;
+}
+
 /**
 * Deserialize IJK grid explicit and parametric representations packed in a given EPC document.
 * This method read grid geometry by using hyperslabbing methods. Each grid is read interface by interface
@@ -1866,8 +1896,7 @@ void displayBlockCellGeometry(AbstractIjkGridRepresentation* ijkGrid,
 	unsigned int iInterfaceStart, unsigned int iInterfaceEnd,
 	unsigned int jInterfaceStart, unsigned int jInterfaceEnd,
 	unsigned int kInterfaceStart, unsigned int kInterfaceEnd,
-	double* xyzPoints
-	)
+	double* xyzPoints)
 {
 	if (xyzPoints == nullptr)
 		throw invalid_argument("xyzPoints == nullptr");
@@ -2740,6 +2769,8 @@ void deserialize(const string & inputFile)
 	cout << endl;
 
 	deserializeGeobody(&pck);
+	deserializeFluidBoundary(pck);
+	return;
 
 	std::vector<TectonicBoundaryFeature*> faultSet = pck.getFaultSet();
 	std::vector<PolylineSetRepresentation*> faultPolyRep = pck.getFaultPolylineSetRepSet();
