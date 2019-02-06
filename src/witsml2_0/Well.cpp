@@ -46,8 +46,6 @@ Well::Well(soap* soapContext,
 		const std::string & title,
 		const std::string & operator_,
 		eml21__WellStatus statusWell,
-		witsml2__WellPurpose purposeWell,
-		witsml2__WellFluid fluidWell,
 		witsml2__WellDirection directionWell
 	):resqmlWellboreFeature(nullptr)
 {
@@ -64,12 +62,6 @@ Well::Well(soap* soapContext,
 
 	well->StatusWell = (eml21__WellStatus *)soap_malloc(soapContext, sizeof(eml21__WellStatus));
 	*well->StatusWell = statusWell;
-
-	well->PurposeWell = (witsml2__WellPurpose *)soap_malloc(soapContext, sizeof(witsml2__WellPurpose));
-	*well->PurposeWell = purposeWell;
-
-	well->FluidWell = (witsml2__WellFluid *)soap_malloc(soapContext, sizeof(witsml2__WellFluid));
-	*well->FluidWell = fluidWell;
 
 	well->DirectionWell = (witsml2__WellDirection *)soap_malloc(soapContext, sizeof(witsml2__WellDirection));
 	*well->DirectionWell = directionWell;

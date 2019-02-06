@@ -2397,11 +2397,9 @@ WITSML2_0_NS::Well* EpcDocument::createWell(const std::string & guid,
 	const std::string & title,
 	const std::string & operator_,
 	gsoap_eml2_1::eml21__WellStatus statusWell,
-	gsoap_eml2_1::witsml2__WellPurpose purposeWell,
-	gsoap_eml2_1::witsml2__WellFluid fluidWell,
 	gsoap_eml2_1::witsml2__WellDirection directionWell)
 {
-	Well* result = new Well(getGsoapContext(), guid, title, operator_, statusWell, purposeWell, fluidWell, directionWell);
+	Well* result = new Well(getGsoapContext(), guid, title, operator_, statusWell, directionWell);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2420,11 +2418,9 @@ WITSML2_0_NS::Wellbore* EpcDocument::createWellbore(WITSML2_0_NS::Well* witsmlWe
 	const std::string & title,
 	gsoap_eml2_1::eml21__WellStatus statusWellbore,
 	const bool & isActive,
-	gsoap_eml2_1::witsml2__WellPurpose purposeWellbore,
-	gsoap_eml2_1::witsml2__WellboreType typeWellbore,
 	const bool & achievedTD)
 {
-	Wellbore* result = new Wellbore(witsmlWell, guid, title, statusWellbore, isActive, purposeWellbore, typeWellbore, achievedTD);
+	Wellbore* result = new Wellbore(witsmlWell, guid, title, statusWellbore, isActive, achievedTD);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }

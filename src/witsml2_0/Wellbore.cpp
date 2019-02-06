@@ -49,8 +49,6 @@ Wellbore::Wellbore(
 		const std::string & title,
 		gsoap_eml2_1::eml21__WellStatus statusWellbore,
 		const bool & isActive,
-		gsoap_eml2_1::witsml2__WellPurpose purposeWellbore,
-		gsoap_eml2_1::witsml2__WellboreType typeWellbore,
 		const bool & achievedTD
 	):resqmlWellboreFeature(nullptr)
 {
@@ -70,12 +68,6 @@ Wellbore::Wellbore(
 
 	wellbore->IsActive = (bool *)soap_malloc(wellbore->soap, sizeof(bool));
 	*wellbore->IsActive = isActive;
-
-	wellbore->PurposeWellbore = (witsml2__WellPurpose *)soap_malloc(wellbore->soap, sizeof(witsml2__WellPurpose));
-	*wellbore->PurposeWellbore = purposeWellbore;
-
-	wellbore->TypeWellbore = (witsml2__WellboreType *)soap_malloc(wellbore->soap, sizeof(witsml2__WellboreType));
-	*wellbore->TypeWellbore = typeWellbore;
 
 	wellbore->AchievedTD = (bool *)soap_malloc(wellbore->soap, sizeof(bool));
 	*wellbore->AchievedTD = achievedTD;

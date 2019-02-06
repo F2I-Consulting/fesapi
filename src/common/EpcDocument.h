@@ -1077,8 +1077,6 @@ namespace COMMON_NS
 			const std::string & title,
 			const std::string & operator_,
 			gsoap_eml2_1::eml21__WellStatus statusWell,
-			gsoap_eml2_1::witsml2__WellPurpose purposeWell,
-			gsoap_eml2_1::witsml2__WellFluid fluidWell,
 			gsoap_eml2_1::witsml2__WellDirection directionWell
 		);
 
@@ -1091,21 +1089,8 @@ namespace COMMON_NS
 			const std::string & title,
 			gsoap_eml2_1::eml21__WellStatus statusWellbore,
 			const bool & isActive,
-			gsoap_eml2_1::witsml2__WellPurpose purposeWellbore,
-			gsoap_eml2_1::witsml2__WellboreType typeWellbore,
 			const bool & achievedTD
 		);
-
-		// TODO à mettre à jour
-		/*WITSML1_4_1_1_NS::CoordinateReferenceSystem* createCoordinateReferenceSystem(
-			const std::string & guid,
-			const std::string & title,
-			const std::string & namingSystem,
-			const std::string & code,
-			const std::string & sourceName,
-			const time_t & dTimCreation,
-			const time_t & dTimLastChange,
-			const std::string & comments);*/
 
 		WITSML2_0_NS::WellCompletion* createWellCompletion(WITSML2_0_NS::Well* witsmlWell,
 			const std::string & guid,

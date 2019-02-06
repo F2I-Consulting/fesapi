@@ -41,8 +41,6 @@ namespace WITSML2_0_NS
 			const std::string & title,
 			const std::string & operator_,
 			gsoap_eml2_1::eml21__WellStatus statusWell,
-			gsoap_eml2_1::witsml2__WellPurpose purposeWell,
-			gsoap_eml2_1::witsml2__WellFluid fluidWell,
 			gsoap_eml2_1::witsml2__WellDirection directionWell
 		);
 
