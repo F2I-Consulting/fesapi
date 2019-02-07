@@ -56,6 +56,7 @@ void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::
 	COMMON_NS::EpcDocument epcDoc(MyOwnEtpServerSession::epcFileName, COMMON_NS::EpcDocument::READ_WRITE);
 	std::string resqmlResult = epcDoc.deserialize();
 
+	bool isSerializationNeeded = false;
 	for (const auto & dataObject : putDataObjects.m_dataObjects) {
 		std::cout << "Store received data object : " << dataObject.m_resource.m_contentType << " (" << dataObject.m_resource.m_uri << ")" << std::endl;
 
@@ -69,8 +70,12 @@ void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::
 			ULONG64 cellIndexPair[] = { 0, 1 };
 			gcsr->setCellIndexPairs(1, cellIndexPair, -1, epcDoc.getHdfProxy(0));
 			gcsr->pushBackSupportingGridRepresentation(static_cast<RESQML2_NS::AbstractGridRepresentation*>(importedObj));
+			isSerializationNeeded = true;
 		}
 	}
 
+	if (isSerializationNeeded) {
+		epcDoc.serialize();
+	}
 	epcDoc.close();
 }

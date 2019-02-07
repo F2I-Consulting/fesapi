@@ -484,6 +484,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 	//**************
 	// Subrepresentations
 	//**************
+	/*
 	if (fault1Interp1 != nullptr)
 	{
 		RESQML2_NS::SubRepresentation * faultSubRep = pck->createSubRepresentation(fault1Interp1, "ff248280-fa3d-11e5-a35c-0002a5d5c51b", "Fault Subrep In Grid");
@@ -515,7 +516,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 	};
 	doubleGridSubrep->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml2__IndexableElements__cells, 23, doubleGridSubrepValues, hdfProxy, doubleGridSubrepSupportingRepIndices);
-
+	
 	//**************
 	// Grid Connection
 	//**************
@@ -557,7 +558,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 	gridConnSet432rh->pushBackSupportingGridRepresentation(ijkgrid432rh);
 	gridConnSet432rh->setCellIndexPairs(15, cellConn432, 9999, hdfProxy);
 	gridConnSet432rh->setLocalFacePerCellIndexPairs(15, localFacePerCellIndexPairs432, 9999, hdfProxy);
-
+	*/
 	//**************
 	// Properties
 	//**************
@@ -578,7 +579,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 	discreteProp1OnIjkgridParametric->pushBackUShortHdf5Array3dOfValues(prop1ValuesOnIjkgridParametric, 2, 1, 2, hdfProxy, -1, 0, 3);
 	//Move this prop to another same ninjnk ijk grid
 	discreteProp1OnIjkgridParametric->setRepresentation(ijkgridParametricNotSameLineKind);
-
+	/*
 	//**************
 	// Time Series
 	//**************
@@ -656,6 +657,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 	unsigned char faceRightHandness[4] = { 0, 0, 1, 1 };
 	ULONG64 nodeIndicesPerFace[12] = { 0, 1, 2, 1, 2, 3, 0, 1, 3, 0, 2, 3 };
 	tetraGrid->setTetrahedraOnlyGeometry(faceRightHandness, tetraGridPoints, 4, 4, hdfProxy, faceIndicesPerCell, nodeIndicesPerFace);
+	*/
 }
 
 void serializeRepresentationSetRepresentation(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
@@ -1249,14 +1251,14 @@ bool serialize(const string & filePath)
 	localTime3dCrs = pck.createLocalTime3dCrs("c898555d-3765-4f14-85e7-85ad897a7346", "Default local time CRS", 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__TimeUom__s, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false); // CRS translation is just for testing;
 
 	// Comment or uncomment below domains/lines you want wether to test or not
-	serializeWells(&pck, hdfProxy);
-	serializeBoundaries(&pck, hdfProxy);
-	serializeGeobody(&pck, hdfProxy);
-	serializeStructuralModel(pck, hdfProxy);
-	serializeStratigraphicModel(&pck, hdfProxy);
+	//serializeWells(&pck, hdfProxy);
+	//serializeBoundaries(&pck, hdfProxy);
+	//serializeGeobody(&pck, hdfProxy);
+	//serializeStructuralModel(pck, hdfProxy);
+	//serializeStratigraphicModel(&pck, hdfProxy);
 	serializeGrid(&pck, hdfProxy);
-	serializeActivities(&pck);
-	serializeRepresentationSetRepresentation(&pck, hdfProxy);
+	//serializeActivities(&pck);
+	//serializeRepresentationSetRepresentation(&pck, hdfProxy);
 
 	// Add an extended core property before to serialize
 	pck.setExtendedCoreProperty("F2I-ExtendedCoreProp", "TestingVersion");
