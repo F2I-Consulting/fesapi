@@ -59,7 +59,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Pushes back a contact representation in the structural framework with implicit identical nodes.
 		 *
-		 * After calling the following method, ContactPatch containter of the newly pushed SealedContactRepresentation
+		 * After calling the following method, ContactPatch container of the newly pushed SealedContactRepresentation
 		 * remains empty. After this call, do not forget to call the pushBackContactPatch method for each ContactPatch of
 		 * the SealedContactRepresentation.
 		 *
@@ -70,7 +70,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Pushes back a contact representation in the structural framework.
 		 *
-		 * After calling the following method, ContactPatch containter of the newly pushed SealedContactRepresentation
+		 * After calling the following method, ContactPatch container of the newly pushed SealedContactRepresentation
 		 * remains empty. After this call, do not forget to call the pushBackContactPatch method for each ContactPatch of
 		 * the SealedContactRepresentation.
 		 *
@@ -118,7 +118,7 @@ namespace RESQML2_0_1_NS
 		  * @param sealedContactRepresentationsCount    The number of sealed contact representations involved within the identity.
 		  * @param sealedContactRepresentationsIndexes  The sealed contact representations involved within the identity.
 		  * @param identicalNodesCount                  The number of identical nodes.
-		  * @param identicalNodesIndexes                The indexes of the identical nodes.
+		  * @param identicalNodesIndexes                The indices of the identical nodes.
 		  * @param proxy                                The hdf proxy.
 		  */
 		 void pushBackContactIdentity(

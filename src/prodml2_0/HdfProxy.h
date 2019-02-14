@@ -46,8 +46,6 @@ namespace PRODML2_0_NS
 		* Get the XML namespace for the tags for the XML serialization of this instance
 		*/
 		std::string getXmlNamespace() const;
-
-		int openOrCreateAcquisitionGroup();
 	};
 }
 
