@@ -92,7 +92,7 @@ namespace RESQML2_0_1_NS
 		* Get the cell index pairs count which correspond to a particular interpretation.
 		* @param interpretationIndex The index of the interpretation in the collection of feature interpretation of this grid connection set.
 		*/
-		unsigned int getCellIndexPairCountFromInterpretationIndex(const unsigned int & interpretationIndex) const;
+		unsigned int getCellIndexPairCountFromInterpretationIndex(unsigned int interpretationIndex) const;
 
 		/**
 		* Indicates wether the cell connection are associated to interpretation or not.
@@ -123,7 +123,7 @@ namespace RESQML2_0_1_NS
 		* @param localFaceIndexPairs	Optional (put null if you don't want it). Must be allocated with getCellIndexPairCountFromIndex first.
 		* @param interpretationIndex	The index of the interpretation in the collection of feature interpretation of this grid connection set.
 		*/
-		void getGridConnectionSetInformationFromInterpretationIndex(ULONG64 * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, const unsigned int & interpretationIndex) const;
+		void getGridConnectionSetInformationFromInterpretationIndex(ULONG64 * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const;
 
 		/**
 		* Get the UUID of a particular interpretation of this grid connection set.
@@ -162,13 +162,14 @@ namespace RESQML2_0_1_NS
 
 		/**
 		* Set the cell index pairs of the grid connections representation using some exisiting hdf5 datasets.
-		* @param cellIndexPairCount	The count of cell index pair. It is half of all the stored numerical values.
-		* @param cellIndexPair		The HDF dataset path where we can find all the cell index pair in a 1d Array where the cell indices go faster than the pair.
-		* @param nullValue			The integer null value used in the hdf dataset for null cell and potentially null grid.
-		* @param proxy				The HDF proxy where the numerical values (cell indices) are stored.
-        * @param gridIndexPair		The HDF dataset path where we can find all the grid index pair in a 1d Array where the grid indices go faster than the pair. The grid at an index must correspond to the cell at the same index in the cellIndexPair array.
+		* @param cellIndexPairCount		The count of cell index pair. It is half of all the stored numerical values.
+		* @param cellIndexPair			The HDF dataset path where we can find all the cell index pair in a 1d Array where the cell indices go faster than the pair.
+		* @param cellIndexPairNullValue	The integer null value used in the hdf cell index pair dataset.
+		* @param proxy					The HDF proxy where the numerical values (cell indices) are stored.
+		* @param gridIndexPairNullValue	The integer null value used in the hdf grid index pair dataset.
+		* @param gridIndexPair			The HDF dataset path where we can find all the grid index pair in a 1d Array where the grid indices go faster than the pair. The grid at an index must correspond to the cell at the same index in the cellIndexPair array.
 		*/
-		void setCellIndexPairsUsingExistingDataset(const ULONG64 & cellIndexPairCount, const std::string & cellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & gridIndexPair = "");
+		void setCellIndexPairsUsingExistingDataset(ULONG64 cellIndexPairCount, const std::string & cellIndexPair, LONG64 cellIndexPairNullValue, COMMON_NS::AbstractHdfProxy * proxy, LONG64 gridIndexPairNullValue = -1, const std::string & gridIndexPair = "");
 
 		/**
 		* The numerical values
@@ -178,17 +179,17 @@ namespace RESQML2_0_1_NS
 		* @param localFacePerCellIndexPair	The HDF dataset path where we can find all the local Face Per CellIndex Pair in a 1d Array.
 		* @param proxy						The HDF proxy where the numerical values (cell indices) are stored.
 		*/
-		void setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy);
+		void setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, LONG64 nullValue, COMMON_NS::AbstractHdfProxy * proxy);
 
 		/**
 		* 2 x #Connections array of local face-per-cell indices for (Cell1,Cell2) for each connection. Local face-per-cell indices are used because global face indices need not have been defined.
-		* The numerical values wil: be written as a new hdf5 dataset in an existing hdf5 file.
+		* The numerical values will be written as a new hdf5 dataset in an existing hdf5 file.
 		* Null value = -1 by documentation.
         * @param cellIndexPairCount			The count of cell index pair. It is half of all the stored numerical values.
 		* @param localFacePerCellIndexPair	The HDF dataset path where we can find all the local Face Per CellIndex Pair in a 1d Array.
 		* @param proxy						The HDF proxy where the numerical values (cell indices) are stored.
 		*/
-		void setLocalFacePerCellIndexPairs(const ULONG64 & cellIndexPairCount, int * localFacePerCellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy);
+		void setLocalFacePerCellIndexPairs(ULONG64 cellIndexPairCount, int * localFacePerCellIndexPair, int nullValue, COMMON_NS::AbstractHdfProxy * proxy);
 
 		/**
 		* For each connection in the grid connection set representation, allow to map zero or one feature interpretation. TODO: Resqml allows to map with more than one feature interpretation.
@@ -197,7 +198,7 @@ namespace RESQML2_0_1_NS
 		* @param nullValue					The null value must be used as the corresponding interpretation index for each connection which are not associated to any interpretation.
 		* @param proxy						The Hdf proxy where the numerical values will be stored.
 		*/
-		void setConnectionInterpretationIndices(unsigned int * interpretationIndices, const unsigned int & interpretationIndiceCount, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy);
+		void setConnectionInterpretationIndices(unsigned int * interpretationIndices, unsigned int interpretationIndiceCount, unsigned int nullValue, COMMON_NS::AbstractHdfProxy * proxy);
 		
 		/**
 		* Get the count of the supporting grid representations of this grid connection representation.

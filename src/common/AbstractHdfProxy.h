@@ -20,7 +20,6 @@ under the License.
 
 #include "common/EpcExternalPartReference.h"
 #include "resqml2/AbstractRepresentation.h"
-#include "prodml2_0/DasAcquisition.h"
 
 #define CUMULATIVE_LENGTH_DS_NAME "cumulativeLength"
 #define ELEMENTS_DS_NAME "elements"
@@ -533,7 +532,6 @@ namespace COMMON_NS
   
 		friend void RESQML2_NS::AbstractRepresentation::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
 		friend void RESQML2_NS::AbstractProperty::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
-		friend void PRODML2_0_NS::DasAcquisition::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
 
 	};
 }

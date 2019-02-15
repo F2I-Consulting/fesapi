@@ -167,7 +167,7 @@ void CategoricalProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short *
 		numValues, numDimensionsInArray);
 }
 
-std::string CategoricalProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, const long & nullValue)
+std::string CategoricalProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64 nullValue)
 {
 	return pushBackRefToExistingIntegerDataset(hdfProxy, datasetName, nullValue);
 }

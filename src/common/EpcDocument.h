@@ -135,14 +135,6 @@ namespace WITSML1_4_1_1_NS
 	class Trajectory;
 }
 
-namespace PRODML2_0_NS
-{
-	class DasAcquisition;
-	class FiberOpticalPath;
-	class DasInstrumentBox;
-	class HdfProxy;
-}
-
 namespace COMMON_NS
 {
 	class AbstractObject;
@@ -159,12 +151,7 @@ namespace COMMON_NS
 		* Necessary to avoid a dependency on GuidTools.h
 		*/
 		std::string generateRandomUuidAsString();
-
-		/**
-		* In case of PRODML2.0, only one HDF5 file can be given without any EPC document.
-		* this method will create a fake/virtual EPC document based on the HDF5 file
-		*/
-		std::string deserializeProdmlHdf5File();
+		
 	public:
 
 		enum openingMode { READ_ONLY = 0, READ_WRITE = 1, OVERWRITE = 2 };
@@ -178,17 +165,14 @@ namespace COMMON_NS
 		virtual ~EpcDocument() { close(); }
 
 		// A function pointer definition which allows to build an abstract hdf proxy in writing mode of an epc document
-		typedef COMMON_NS::AbstractHdfProxy* (HdfProxyBuilder)(soap* soapContext, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, bool v21);
+		typedef COMMON_NS::AbstractHdfProxy* (HdfProxyBuilder)(soap* soapContext, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
 		// A function pointer which allows to build a v2.0.1 abstract hdf proxy in reading mode of an epc document
 		typedef COMMON_NS::AbstractHdfProxy* (HdfProxyBuilderFromGsoapProxy2_0_1)(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
-		// A function pointer which allows to build a v2.0.1 abstract hdf proxy in reading mode of an epc document
-		typedef PRODML2_0_NS::HdfProxy* (HdfProxyBuilderFromGsoapProxy2_1)(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
 
 		// Allows a fesapi user to set a different builder of Hdf Proxy than the default one in writing mode of an epc document
 		// This is especially useful when the fesapi users wants to use its own builder for example.
 		void set_hdf_proxy_builder(HdfProxyBuilder builder);
 		void set_hdf_proxy_builder(HdfProxyBuilderFromGsoapProxy2_0_1 builder);
-		void set_hdf_proxy_builder(HdfProxyBuilderFromGsoapProxy2_1 builder);
 
 		/**
 		* Open an epc document.
@@ -347,8 +331,6 @@ namespace COMMON_NS
 		}
 
 		WITSML1_4_1_1_NS::AbstractObject* getWitsmlAbstractObjectByUuid(const std::string & uuid) const;
-
-		std::vector<PRODML2_0_NS::DasAcquisition*> getDasAcquisitionSet() const;
 
 		/**
 		* Get all the local 3d depth crs contained into the EPC document
@@ -612,7 +594,7 @@ namespace COMMON_NS
 		//************ HDF *******************
 		//************************************
 
-		virtual COMMON_NS::AbstractHdfProxy* createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, bool v21 = false);
+		virtual COMMON_NS::AbstractHdfProxy* createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
 
 		//************************************
 		//************ CRS *******************
@@ -1119,29 +1101,6 @@ namespace COMMON_NS
 			const std::string & comments);
 
 		//************************************
-		//************ PRODML ****************
-		//************************************
-
-		PRODML2_0_NS::DasAcquisition* createDasAcquisition(PRODML2_0_NS::FiberOpticalPath* fiberOpticalPath, PRODML2_0_NS::DasInstrumentBox* dasInstrumentBox,
-			const std::string & guid, const std::string & title,
-			const std::string & jobGuid, const std::string & facilityId, const std::string & vendorName,
-			const double & pulseRate, const gsoap_eml2_1::eml21__FrequencyUom & pulseRateUom,
-			const double & pulseWidth, const gsoap_eml2_1::eml21__TimeUom & pulseWidthUom,
-			const double & gaugeLength, const gsoap_eml2_1::eml21__LengthUom & gaugeLengthUom,
-			const double & spatialSamplingInterval, const gsoap_eml2_1::eml21__LengthUom & spatialSamplingIntervalUom,
-			const double & minimumFrequency, const gsoap_eml2_1::eml21__FrequencyUom & minimumFrequencyUom,
-			const double & maximumFrequency, const gsoap_eml2_1::eml21__FrequencyUom & maximumFrequencyUom,
-			const ULONG64 & lociCount, const ULONG64 & startLocusIndex,
-			const std::string & measurementStartIsoTime, bool triggeredMeasurement);
-
-		PRODML2_0_NS::FiberOpticalPath* createFiberOpticalPath(const std::string & guid, const std::string & title,
-			const std::string & firstSegmentUid, const double & firstSegmentLength, const gsoap_eml2_1::eml21__LengthUom & firstSegmentLengthUom,
-			const std::string & terminatorUid, const gsoap_eml2_1::prodml2__TerminationType & terminationType);
-
-		PRODML2_0_NS::DasInstrumentBox* createDasInstrumentBox(const std::string & guid, const std::string & title,
-			const std::string & firmwareVersion, const std::string & instrumentName);
-
-		//************************************
 		//************* WARNINGS *************
 		//************************************
 
@@ -1239,7 +1198,6 @@ namespace COMMON_NS
 
 		HdfProxyBuilder* make_hdf_proxy; /// the builder for HDF proxy in writing mode of the epc document
 		HdfProxyBuilderFromGsoapProxy2_0_1* make_hdf_proxy_from_gsoap_proxy_2_0_1; /// the builder for a v2.0.1 HDF proxy in reading mode of the epc document
-		HdfProxyBuilderFromGsoapProxy2_1* make_hdf_proxy_from_gsoap_proxy_2_1; /// the builder for a v2.1 HDF proxy in reading mode of the epc document
 	};
 }
 

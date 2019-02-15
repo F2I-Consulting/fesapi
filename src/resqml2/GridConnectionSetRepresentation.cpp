@@ -128,18 +128,20 @@ void GridConnectionSetRepresentation::importRelationshipSetFromEpc(COMMON_NS::Ep
 			if (interp == nullptr) {
 				throw logic_error("The referenced interpretation is either not a resqml grid interpretation or it is partial and not implemented yet");
 			}
-			else {
-				pushBackInterpretation(interp);
-			}
+			pushBackInterpretation(interp);
 		}
 		updateXml = true;
 	}
 }
 
-void GridConnectionSetRepresentation::setCellIndexPairs(const ULONG64 & cellIndexPairCount, ULONG64 * cellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, unsigned short * gridIndexPair)
+void GridConnectionSetRepresentation::setCellIndexPairs(ULONG64 cellIndexPairCount, ULONG64 * cellIndexPair, ULONG64 cellIndexPairNullValue, COMMON_NS::AbstractHdfProxy * proxy, unsigned short gridIndexPairNullValue, unsigned short * gridIndexPair)
 {
+	if (cellIndexPairNullValue > (std::numeric_limits<LONG64>::max)()) {
+		throw std::invalid_argument("The XML null value cannot be greater than a 64 bits signed integer cause of gsoap mappings");
+	}
+
 	const std::string uuid = getUuid();
-	setCellIndexPairsUsingExistingDataset(cellIndexPairCount, "/RESQML/" + getUuid() + "/CellIndexPairs", nullValue, proxy, gridIndexPair != nullptr ? "/RESQML/" + getUuid() + "/GridIndexPairs" : "");
+	setCellIndexPairsUsingExistingDataset(cellIndexPairCount, "/RESQML/" + getUuid() + "/CellIndexPairs", cellIndexPairNullValue, proxy, gridIndexPairNullValue, gridIndexPair != nullptr ? "/RESQML/" + getUuid() + "/GridIndexPairs" : "");
 
 	// ************ HDF ************		
 	hsize_t numValues[] = { cellIndexPairCount, 2 };

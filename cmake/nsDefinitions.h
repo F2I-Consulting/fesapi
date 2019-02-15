@@ -19,7 +19,6 @@ under the License.
 #pragma once
 
 #define COMMON_NS ${FESAPI_COMMON_NS}
-#define PRODML2_0_NS ${FESAPI_PRODML2_0_NS}
 #define RESQML2_NS ${FESAPI_RESQML2_NS}
 #define RESQML2_0_1_NS ${FESAPI_RESQML2_0_1_NS}
 #define WITSML1_4_1_1_NS ${FESAPI_WITSML1_4_1_1_NS}
