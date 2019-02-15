@@ -25,10 +25,6 @@ namespace RESQML2_NS{
 	class AbstractProperty;
 }
 
-namespace PRODML2_0_NS {
-	class DasAcquisition;
-}
-
 namespace COMMON_NS
 {
 	class DLL_IMPORT_OR_EXPORT EpcExternalPartReference : public COMMON_NS::AbstractObject
@@ -75,7 +71,6 @@ namespace COMMON_NS
 
 		std::vector<RESQML2_NS::AbstractRepresentation*> representationSourceObject;					/// All the representations that use this external reference.
 		std::vector<RESQML2_NS::AbstractProperty*> propertySourceObject;								/// All the properties that use this external reference.
-		std::vector<PRODML2_0_NS::DasAcquisition*> dasAcquisitionSourceObject;							/// All the DAS acquisition that use this external reference.
 		std::string packageDirectoryAbsolutePath;												/// The directory where the EPC document is stored.
 		std::string relativeFilePath;															/// Must be relative to the location of the package
 	};
