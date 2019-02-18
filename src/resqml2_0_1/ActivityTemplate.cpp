@@ -32,7 +32,7 @@ ActivityTemplate::ActivityTemplate(soap* soapContext, const string & guid, const
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREActivityTemplate(soapContext, 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 void ActivityTemplate::pushBackParameter(const std::string title,

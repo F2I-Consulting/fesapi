@@ -51,7 +51,7 @@ void LocalDepth3dCrs::init(soap* soapContext, const std::string & guid, const st
 	local3dCrs->VerticalUom = verticalUom;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 LocalDepth3dCrs::LocalDepth3dCrs(soap* soapContext, const std::string & guid, const std::string & title,

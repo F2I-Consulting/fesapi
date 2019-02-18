@@ -16,27 +16,6 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "prodml2_0/AbstractObject.h"
+#pragma once
 
-#include <stdexcept>
-
-using namespace std;
-using namespace PRODML2_0_NS;
-using namespace gsoap_eml2_1;
-using namespace epc;
-
-std::string AbstractObject::getXmlNamespace() const
-{
-	return "prodml2";
-}
-
-string AbstractObject::getContentType() const
-{
-	return "application/x-prodml+xml;version=2.0;type=" + getXmlTag();
-}
-
-std::string AbstractObject::getPartNameInEpcDocument() const
-{
-	return getXmlTag() + "_" + getUuid() + ".xml";
-}
-
+#define FESAPI_VERSION "${Fesapi_VERSION}"

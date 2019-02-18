@@ -150,15 +150,14 @@ namespace COMMON_NS
 		std::string getDescriptiveKeywords() const;
 		std::string getVersionString() const;
 		
-		void setMetadata(const std::string & title, const std::string & editor, const time_t & creation, const std::string & originator,
-				const std::string & description, const time_t & lastUpdate, const std::string & format, const std::string & descriptiveKeywords);
+		void setMetadata(const std::string & title, const std::string & editor, const time_t & creation, const std::string & originator, const std::string & description, const time_t & lastUpdate, const std::string & descriptiveKeywords);
 		void setTitle(const std::string & title);
 		void setEditor(const std::string & editor);
 		void setCreation(const time_t & creation);
 		void setOriginator(const std::string & originator);
 		void setDescription(const std::string & description);
 		void setLastUpdate(const time_t & lastUpdate);
-		void setFormat(const std::string & format);
+		static void setFormat(const std::string & vendor, const std::string & applicationName, const std::string & applicationVersionNumber);
 		void setDescriptiveKeywords(const std::string & descriptiveKeywords);
 		void setVersionString(const std::string & versionString);
 				

@@ -39,7 +39,7 @@ void SubRepresentation::init(soap* soapContext, const string & guid, const strin
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORESubRepresentation(soapContext, 1);
 
 	initMandatoryMetadata();
-    setMetadata(guid, title, "", -1, "", "", -1, "", "");
+    setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 SubRepresentation::SubRepresentation(soap* soapContext,	const string & guid, const string & title) :

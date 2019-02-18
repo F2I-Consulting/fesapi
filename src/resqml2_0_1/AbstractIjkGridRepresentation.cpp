@@ -66,7 +66,7 @@ void AbstractIjkGridRepresentation::init(soap* soapContext, RESQML2_NS::Abstract
 	}
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	// relationhsips
 	if (crs != nullptr) {
@@ -726,7 +726,7 @@ bool AbstractIjkGridRepresentation::isColumnEdgeSplitted(const unsigned int & iC
 		throw range_error("I column is out of range.");
 	if (jColumn > getJCellCount())
 		throw range_error("J column is out of range.");
-	if (edge > 7)
+	if (edge > 3)
 		throw range_error("Edge is out of range.");
 
 	// Pillar

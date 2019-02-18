@@ -36,7 +36,7 @@ WellboreInterpretation::WellboreInterpretation(WellboreFeature * WellboreFeature
 	wbInterp->IsDrilled = isDrilled;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	setInterpretedFeature(WellboreFeature);
 }

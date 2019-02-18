@@ -47,7 +47,7 @@ MdDatum::MdDatum(soap* soapContext, const string & guid, const string & title,
 	mdInfo->Location->Coordinate3 = referenceLocationOrdinal3;
 	
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 void MdDatum::setXmlLocalCrs(RESQML2_NS::AbstractLocal3dCrs * localCrs)

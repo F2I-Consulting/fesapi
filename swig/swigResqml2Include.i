@@ -410,10 +410,10 @@ namespace RESQML2_NS
 		LONG64 getInterpretationIndexNullValue() const;
 	
 		ULONG64 getCellIndexPairCount() const;
-		unsigned int getCellIndexPairCountFromInterpretationIndex(const unsigned int & interpretationIndex) const;
+		unsigned int getCellIndexPairCountFromInterpretationIndex(unsigned int interpretationIndex) const;
 		
 		ULONG64 getCellIndexPairs(ULONG64 * cellIndexPairs) const;
-		void getGridConnectionSetInformationFromInterpretationIndex(ULONG64 * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, const unsigned int & interpretationIndex) const;
+		void getGridConnectionSetInformationFromInterpretationIndex(ULONG64 * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const;
 		bool hasLocalFacePerCell() const;
 		LONG64 getLocalFacePerCellIndexPairs(int * localFacePerCellIndexPairs) const;
 		bool isBasedOnMultiGrids() const;
@@ -421,9 +421,10 @@ namespace RESQML2_NS
 		
 		void pushBackSupportingGridRepresentation(AbstractGridRepresentation * supportingGridRep);
 		
-		void setCellIndexPairs(const ULONG64 & cellIndexPairCount, ULONG64 * cellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, unsigned short * gridIndexPair = nullptr);
-		void setLocalFacePerCellIndexPairs(const ULONG64 & cellIndexPairCount, int * localFacePerCellIndexPair, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy);
-		void setConnectionInterpretationIndices(unsigned int * interpretationIndices, const unsigned int & interpretationIndiceCount, const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy);
+		void setCellIndexPairs(ULONG64 cellIndexPairCount, ULONG64 * cellIndexPair, ULONG64 cellIndexPairNullValue, COMMON_NS::AbstractHdfProxy * proxy);
+		void setCellIndexPairs(ULONG64 cellIndexPairCount, ULONG64 * cellIndexPair, ULONG64 cellIndexPairNullValue, COMMON_NS::AbstractHdfProxy * proxy, unsigned short gridIndexPairNullValue, unsigned short * gridIndexPair);
+		void setLocalFacePerCellIndexPairs(ULONG64 cellIndexPairCount, int * localFacePerCellIndexPair, int nullValue, COMMON_NS::AbstractHdfProxy * proxy);
+		void setConnectionInterpretationIndices(unsigned int * interpretationIndices, unsigned int interpretationIndiceCount, unsigned int nullValue, COMMON_NS::AbstractHdfProxy * proxy);
 		void pushBackInterpretation(AbstractFeatureInterpretation* interp);
 		
 		std::string getInterpretationUuidFromIndex(const unsigned int & interpretationIndex) const;
@@ -491,9 +492,9 @@ namespace RESQML2_NS
 	public:
 		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG = 3, ULONG = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
 		AbstractValuesProperty::hdfDatatypeEnum getValuesHdfDatatype() const;
-		virtual std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, const long & nullValue) = 0;
+		virtual std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64 nullValue) = 0;
 		
-		long getNullValueOfPatch(const unsigned int & patchIndex);
+		LONG64 getNullValueOfPatch(unsigned int patchIndex);
 		long getLongValuesOfPatch(const unsigned int & patchIndex, long * values);
 		unsigned long getULongValuesOfPatch(const unsigned int & patchIndex, unsigned long * values);
 		int getIntValuesOfPatch(const unsigned int & patchIndex, int * values);

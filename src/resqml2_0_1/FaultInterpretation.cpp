@@ -47,7 +47,7 @@ FaultInterpretation::FaultInterpretation(TectonicBoundaryFeature * fault, const 
 	setInterpretedFeature(fault);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 FaultInterpretation::FaultInterpretation(TectonicBoundaryFeature * fault, const string & guid, const string & title,
@@ -70,7 +70,7 @@ FaultInterpretation::FaultInterpretation(TectonicBoundaryFeature * fault, const 
 	interp->HasOccuredDuring->ChronoTop = chronoTop->newResqmlReference();
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	setInterpretedFeature(fault);
 }

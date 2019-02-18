@@ -37,7 +37,7 @@ WellboreFeature::WellboreFeature(soap* soapContext, const string & guid, const s
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREWellboreFeature(soapContext, 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 void WellboreFeature::setWitsmlWellbore(WITSML1_4_1_1_NS::Wellbore * wellbore)

@@ -19,7 +19,6 @@ under the License.
 #pragma once
 
 #define COMMON_NS common
-#define PRODML2_0_NS prodml2_0
 #define RESQML2_NS resqml2
 #define RESQML2_0_1_NS resqml2_0_1
 #define WITSML1_4_1_1_NS witsml1_4_1_1

@@ -50,7 +50,7 @@ DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, con
 	setRepresentation(rep);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
@@ -66,7 +66,7 @@ DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, con
 	setLocalPropertyKind(localPropKind);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 void DiscreteProperty::pushBackLongHdf5Array1dOfValues(const long * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy,
@@ -264,12 +264,12 @@ void DiscreteProperty::pushBackCharHdf5Array3dOfValues(const char * values, cons
 	pushBackCharHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-std::string DiscreteProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, const long & nullValue)
+std::string DiscreteProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64 nullValue)
 {
 	return pushBackRefToExistingIntegerDataset(hdfProxy, datasetName, nullValue);
 }
 
-std::string DiscreteProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* proxy, const std::string & datasetName, const long & nullValue, const long &  minimumValue, const long &  maximumValue)
+std::string DiscreteProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* proxy, const std::string & datasetName, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue)
 {
 	const string result = pushBackRefToExistingDataset(proxy, datasetName, nullValue);
 
@@ -277,12 +277,12 @@ std::string DiscreteProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHd
 
 	if (prop->Count == 1)
 	{
-		if (prop->MinimumValue.size() == 0)
+		if (prop->MinimumValue.empty())
 			prop->MinimumValue.push_back(minimumValue);
 		else
 			prop->MinimumValue[0] = minimumValue;
 
-		if (prop->MaximumValue.size() == 0)
+		if (prop->MaximumValue.empty())
 			prop->MaximumValue.push_back(maximumValue);
 		else
 			prop->MaximumValue[0] = maximumValue;

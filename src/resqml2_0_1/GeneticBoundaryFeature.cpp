@@ -33,7 +33,7 @@ GeneticBoundaryFeature::GeneticBoundaryFeature(soap* soapContext, const string &
 	horizon->GeneticBoundaryKind = isAnHorizon ? gsoap_resqml2_0_1::resqml2__GeneticBoundaryKind__horizon : gsoap_resqml2_0_1::resqml2__GeneticBoundaryKind__geobody_x0020boundary;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 bool GeneticBoundaryFeature::isAnHorizon() const

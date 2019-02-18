@@ -41,7 +41,7 @@ void PolylineSetRepresentation::init(RESQML2_NS::AbstractFeatureInterpretation* 
 	_resqml2__PolylineSetRepresentation* polylineSetRep = static_cast<_resqml2__PolylineSetRepresentation*>(gsoapProxy2_0_1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	// relationships
 	localCrs = crs;

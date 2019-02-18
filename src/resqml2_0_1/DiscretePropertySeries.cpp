@@ -53,7 +53,7 @@ DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentatio
 	setTimeSeries(ts);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
@@ -76,6 +76,6 @@ DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentatio
 	setLocalPropertyKind(localPropKind);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 

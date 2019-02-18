@@ -51,7 +51,7 @@ void UnstructuredGridRepresentation::init(soap* soapContext, RESQML2_NS::Abstrac
 	unstructuredGrid->CellCount = cellCount;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	// relationhsips
 	localCrs = crs;

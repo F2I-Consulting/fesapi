@@ -37,7 +37,7 @@ RepresentationSetRepresentation::RepresentationSetRepresentation(RESQML2_NS::Abs
 	static_cast<_resqml2__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->IsHomogeneous = true;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 	
 	// XML relationships
 	setInterpretation(interp);
@@ -54,6 +54,6 @@ RepresentationSetRepresentation::RepresentationSetRepresentation(COMMON_NS::EpcD
 	static_cast<_resqml2__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->IsHomogeneous = true;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 

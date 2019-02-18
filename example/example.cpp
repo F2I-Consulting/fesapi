@@ -34,6 +34,8 @@ under the License.
 #include <sstream>
 #include <vector>
 
+#include "version_config.h"
+
 #include "proxies/stdsoap2.h"
 
 #include "common/EpcDocument.h"
@@ -43,12 +45,14 @@ under the License.
 #include "resqml2_0_1/GeobodyFeature.h"
 #include "resqml2_0_1/TectonicBoundaryFeature.h"
 #include "resqml2_0_1/GenericFeatureInterpretation.h"
+#include "resqml2_0_1/FluidBoundaryFeature.h"
 #include "resqml2_0_1/HorizonInterpretation.h"
 #include "resqml2_0_1/GeobodyBoundaryInterpretation.h"
 #include "resqml2_0_1/FaultInterpretation.h"
 #include "resqml2_0_1/TriangulatedSetRepresentation.h"
 #include "resqml2_0_1/PolylineSetRepresentation.h"
 #include "resqml2_0_1/PointSetRepresentation.h"
+#include "resqml2_0_1/PlaneSetRepresentation.h"
 #include "common/HdfProxy.h"
 #include "resqml2_0_1/OrganizationFeature.h"
 #include "resqml2_0_1/EarthModelInterpretation.h"
@@ -82,13 +86,8 @@ under the License.
 #include "resqml2_0_1/Activity.h"
 #include "resqml2_0_1/ActivityTemplate.h"
 
-#include "prodml2_0/DasAcquisition.h"
-#include "prodml2_0/FiberOpticalPath.h"
-#include "prodml2_0/DasInstrumentBox.h"
-
 using namespace std;
 using namespace RESQML2_0_1_NS;
-using namespace PRODML2_0_NS;
 
 Horizon* horizon1;
 Horizon* horizon2;
@@ -221,7 +220,7 @@ void serializeBoundaries(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfPro
 	horizon2 = pck->createHorizon("fd7950a6-f62e-4e47-96c4-048820a61c59", "Horizon2");
 	horizon2->setVersionString("my version string");
 	fault1 = pck->createFault("1424bcc2-3d9d-4f30-b1f9-69dcb897e33b", "Fault1");
-	fault1->setMetadata("", "philippe", 148526020, "philippe", "", 148526100, "F2I", "");
+	fault1->setMetadata("", "philippe", 148526020, "philippe", "", 148526100, "");
 
 	// Interpretations
 	//BoundaryFeatureInterpretation* bfi = pck->createBoundaryFeatureInterpretation(bf, "", "testingBoundaryFeatureInterp");
@@ -1148,6 +1147,14 @@ void serializeActivities(COMMON_NS::EpcDocument * epcDoc)
 
 }
 
+void serializeFluidBoundary(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
+{
+	FluidBoundaryFeature* fluidBoundary = pck.createFluidBoundaryFeature("44a4d87c-3c67-4f98-a314-9d91c4147061", "Fluid boundary", gsoap_resqml2_0_1::resqml2__FluidContact__gas_x0020oil_x0020contact);
+	GenericFeatureInterpretation* interp = pck.createGenericFeatureInterpretation(fluidBoundary, "d06df5e4-3c56-4abd-836f-2abb5e58e13b", "Fluid boundary interp");
+	PlaneSetRepresentation* rep = pck.createPlaneSetRepresentation(interp, local3dCrs, "4df87ed5-ea4d-4a00-99a2-828a56c9dd02", "Fluid boundary PlaneSetRep");
+	rep->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
+}
+
 void deserializePropertyKindMappingFiles(COMMON_NS::EpcDocument * pck)
 {
 	PropertyKindMapper* ptMapper = pck->getPropertyKindMapper();
@@ -1244,6 +1251,8 @@ bool serialize(const string & filePath)
 {
 	COMMON_NS::EpcDocument pck(filePath, COMMON_NS::EpcDocument::OVERWRITE);
 
+	COMMON_NS::AbstractObject::setFormat("F2I-CONSULTING", "Fesapi Example", FESAPI_VERSION);
+
 	COMMON_NS::AbstractHdfProxy* hdfProxy = pck.createHdfProxy("", "Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5");
 
 	//CRS
@@ -1257,8 +1266,9 @@ bool serialize(const string & filePath)
 	//serializeStructuralModel(pck, hdfProxy);
 	//serializeStratigraphicModel(&pck, hdfProxy);
 	serializeGrid(&pck, hdfProxy);
-	//serializeActivities(&pck);
-	//serializeRepresentationSetRepresentation(&pck, hdfProxy);
+	serializeActivities(&pck);
+	serializeRepresentationSetRepresentation(&pck, hdfProxy);
+	serializeFluidBoundary(pck, hdfProxy);
 
 	// Add an extended core property before to serialize
 	pck.setExtendedCoreProperty("F2I-ExtendedCoreProp", "TestingVersion");
@@ -1522,6 +1532,25 @@ void deserializeGeobody(COMMON_NS::EpcDocument * pck)
 	}
 }
 
+void deserializeFluidBoundary(COMMON_NS::EpcDocument & pck)
+{
+	FluidBoundaryFeature* fluidBoundary = pck.getResqmlAbstractObjectByUuid<FluidBoundaryFeature>("44a4d87c-3c67-4f98-a314-9d91c4147061");
+	if (fluidBoundary == nullptr) return;
+	showAllMetadata(fluidBoundary);
+	showAllMetadata(fluidBoundary->getInterpretation(0));
+	PlaneSetRepresentation* rep = static_cast<PlaneSetRepresentation*>(fluidBoundary->getInterpretation(0)->getRepresentation(0));
+	showAllMetadata(rep);
+	ULONG64 ptCount = rep->getXyzPointCountOfAllPatches();
+	double* allXyzPoints = new double[ptCount * 3];
+	rep->getXyzPointsOfAllPatchesInGlobalCrs(allXyzPoints);
+	for (size_t i = 0; i < ptCount; ++i) {
+		std::cout << "Point " << i << " X=" << allXyzPoints[i * 3] << std::endl;
+		std::cout << "Point " << i << " Y=" << allXyzPoints[i * 3 + 1] << std::endl;
+		std::cout << "Point " << i << " Z=" << allXyzPoints[i * 3 + 2] << std::endl;
+	}
+	delete[] allXyzPoints;
+}
+
 /**
 * Deserialize IJK grid explicit and parametric representations packed in a given EPC document.
 * This method read grid geometry by using hyperslabbing methods. Each grid is read interface by interface
@@ -1759,8 +1788,7 @@ void displayBlockCellGeometry(AbstractIjkGridRepresentation* ijkGrid,
 	unsigned int iInterfaceStart, unsigned int iInterfaceEnd,
 	unsigned int jInterfaceStart, unsigned int jInterfaceEnd,
 	unsigned int kInterfaceStart, unsigned int kInterfaceEnd,
-	double* xyzPoints
-	)
+	double* xyzPoints)
 {
 	if (xyzPoints == nullptr)
 		throw invalid_argument("xyzPoints == nullptr");
@@ -2549,6 +2577,8 @@ void deserialize(const string & inputFile)
 	cout << endl;
 
 	deserializeGeobody(&pck);
+	deserializeFluidBoundary(pck);
+	return;
 
 	std::vector<TectonicBoundaryFeature*> faultSet = pck.getFaultSet();
 	std::vector<PolylineSetRepresentation*> faultPolyRep = pck.getFaultPolylineSetRepSet();
@@ -2616,10 +2646,8 @@ void deserialize(const string & inputFile)
 
 		showAllProperties(faultPolyRep[i]);
 
-		if (faultPolyRep[i]->getInterpretation()->getGridConnectionSetRepresentationSet().size() > 0) {
-			for (size_t gsrIndex = 0; gsrIndex < faultPolyRep[i]->getInterpretation()->getGridConnectionSetRepresentationSet().size(); ++gsrIndex) {
-				cout << "This fault polyline rep is linked to a grid connection set." << endl;
-			}
+		for (size_t gsrIndex = 0; gsrIndex < faultPolyRep[i]->getInterpretation()->getGridConnectionSetRepresentationSet().size(); ++gsrIndex) {
+			std::cout << "This fault polyline rep is linked to a grid connection set." << std::endl;
 		}
 	}
 
@@ -3310,193 +3338,13 @@ delete [] testingValues2;
 }
 */
 
-bool prodml_serialize(const string & filePath)
-{
-	COMMON_NS::EpcDocument pck(filePath, COMMON_NS::EpcDocument::OVERWRITE);
-
-	COMMON_NS::AbstractHdfProxy* hdfProxy = pck.createHdfProxy("", "Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5", true);
-
-	PRODML2_0_NS::FiberOpticalPath* fop = pck.createFiberOpticalPath("bfd164f4-f9e3-41c0-a74e-372b69cc2a09", "Fiber Optical Path",
-		"10", 25.0, gsoap_eml2_1::eml21__LengthUom__m,
-		"40", gsoap_eml2_1::prodml2__TerminationType__termination_x0020at_x0020cable);
-
-	PRODML2_0_NS::DasInstrumentBox* dib = pck.createDasInstrumentBox("df9447a1-8c6b-4634-88eb-ab07b41ac876", "Instrument Box",
-		"Firmware version 1", "Instrument Box");
-
-	PRODML2_0_NS::DasAcquisition* da = pck.createDasAcquisition(fop, dib,
-		"dc0e381a-094a-4fd2-ab89-dce867e3b99d", "Das Acquisition",
-		"4acd7eec-1dfd-41b7-a331-5a3e6bb7b755", "My Facility Id", "F2I vendor code",
-		50.0, gsoap_eml2_1::eml21__FrequencyUom__Hz,
-		8.0, gsoap_eml2_1::eml21__TimeUom__ns,
-		40.0, gsoap_eml2_1::eml21__LengthUom__m,
-		5.0, gsoap_eml2_1::eml21__LengthUom__m,
-		0.5, gsoap_eml2_1::eml21__FrequencyUom__Hz,
-		25, gsoap_eml2_1::eml21__FrequencyUom__Hz,
-		101, 0,
-		"2015-07-20T01:23:45.678000+01:00", true);
-	LONG64 timeArray[3] = { 1437355425678000, 1437355425698000, 1437355445658000 };
-	da->pushBackRaw("", false, 4, "Pa", timeArray, 3, hdfProxy);
-	std::cout << "hyperslabbing start" << endl;
-	float* numericData = new float[101];
-	da->writeIntoDataset(numericData, 1, 0);
-	delete[] numericData;
-	numericData = new float[101];
-	da->writeIntoDataset(numericData, 1, 1);
-	delete[] numericData;
-	numericData = new float[101];
-	da->writeIntoDataset(numericData, 1, 2);
-	delete[] numericData;
-	std::cout << "hyperslabbing end" << endl;
-
-	std::cout << "Start serialization of " << pck.getName() << " in " << (pck.getStorageDirectory().empty() ? "working directory." : pck.getStorageDirectory()) << endl;
-	pck.serialize();
-	return true;
-}
-
-void prodml_showAllMetadata(COMMON_NS::AbstractObject * obj, const std::string & prefix = "")
-{
-	std::cout << prefix << "Title is : " << obj->getTitle() << std::endl;
-	std::cout << prefix << "Guid is : " << obj->getUuid() << std::endl;
-	std::cout << prefix << "--------------------------------------------------" << std::endl;
-}
-
-void prodml_deserialize(COMMON_NS::EpcDocument & pck)
-{
-	cout << "Start deserialization of " << pck.getName() << " in " << (pck.getStorageDirectory().empty() ? "working directory." : pck.getStorageDirectory()) << endl;
-	string resqmlResult = pck.deserialize();
-	if (!resqmlResult.empty()) {
-		cerr << resqmlResult << endl;
-		cout << "Press enter to continue..." << endl;
-		cin.get();
-	}
-
-	for (size_t warningIndex = 0; warningIndex < pck.getWarnings().size(); ++warningIndex) {
-		cout << "Warning #" << warningIndex << " : " << pck.getWarnings()[warningIndex] << endl;
-	}
-
-	unsigned int hdfProxyCount = pck.getHdfProxyCount();
-	cout << "There are " << pck.getHdfProxyCount() << " hdf files associated to this epc document." << endl;
-	for (unsigned int hdfProxyIndex = 0; hdfProxyIndex < hdfProxyCount; ++hdfProxyIndex) {
-		cout << "Hdf file relative path : " << pck.getHdfProxy(hdfProxyIndex)->getRelativePath() << endl;
-	}
-
-	std::vector<PRODML2_0_NS::DasAcquisition*> dasAcquisitionSet = pck.getDasAcquisitionSet();
-
-	for (size_t daIndex = 0; daIndex < dasAcquisitionSet.size(); ++daIndex) {
-		PRODML2_0_NS::DasAcquisition* da = dasAcquisitionSet[daIndex];
-
-		std::cout << "JobUuid: " << da->getJobUuid() << endl;
-		std::cout << "FacilityUuid: " << da->getFacilityUuid() << endl;
-		std::cout << "VendorName: " << da->getVendorName() << endl;
-
-		std::cout << "PulseRate: " << da->getPulseRate() << endl;
-		std::cout << "PulseRate Uom enum index: " << da->getPulseRateUom() << endl;
-
-		std::cout << "PulseWidth: " << da->getPulseWidth() << endl;
-		std::cout << "PulseWidth Uom enum index: " << da->getPulseWidthUom() << endl;
-
-		std::cout << "GaugeLength: " << da->getGaugeLength() << endl;
-		std::cout << "GaugeLength Uom enum index: " << da->getGaugeLengthUom() << endl;
-
-		std::cout << "SpatialSamplingInterval: " << da->getSpatialSamplingInterval() << endl;
-		std::cout << "SpatialSamplingInterval Uom enum index: " << da->getSpatialSamplingIntervalUom() << endl;
-
-		std::cout << "MinimumFrequency: " << da->getMinimumFrequency() << endl;
-		std::cout << "MinimumFrequency Uom enum index: " << da->getMinimumFrequencyUom() << endl;
-
-		std::cout << "MaximumFrequency: " << da->getMaximumFrequency() << endl;
-		std::cout << "MaximumFrequency Uom enum index: " << da->getMaximumFrequencyUom() << endl;
-
-		std::cout << "LociCount: " << da->getLociCount() << endl;
-		std::cout << "StartLocusIndex: " << da->getStartLocusIndex() << endl;
-
-		std::cout << "MeasurementStartIsoTime: " << da->getMeasurementStartIsoTime() << endl;
-
-		std::cout << "TriggeredMeasurement: " << da->isTriggeredMeasurement() << endl;
-
-		const unsigned int rawCount = da->getRawCount();
-		std::cout << "rawCount: " << rawCount << endl;
-		for (unsigned int rawIndex = 0; rawIndex < rawCount; ++rawIndex) {
-			std::cout << "Raw index: " << rawIndex << endl;
-			const gsoap_eml2_1::prodml2__DasDimensions rawDataSlowestDimension = da->getRawDataSlowestDimension(rawIndex);
-			std::cout << "RawDataSlowestDimension: " << rawDataSlowestDimension << endl;
-			const gsoap_eml2_1::prodml2__DasDimensions rawDataFastestDimension = da->getRawDataFastestDimension(rawIndex);
-			std::cout << "RawDataFastestDimension: " << rawDataFastestDimension << endl;
-			std::cout << "RawDataUnit: " << da->getRawDataUnit(rawIndex) << endl;
-			std::cout << "StartLocusIndex: " << da->getStartLocusIndex(rawIndex) << endl;
-			const ULONG64 numberOfLoci = da->getNumberOfLoci(rawIndex);
-			std::cout << "NumberOfLoci: " << da->getNumberOfLoci(rawIndex) << endl;
-			const ULONG64 rawDataTimeCount = da->getRawDataTimeCount(rawIndex);
-			std::cout << "RawDataTimeCount: " << rawDataTimeCount << endl;
-
-			LONG64* rawDataTime = new LONG64[rawDataTimeCount];
-			da->getRawDataTime(rawIndex, rawDataTime);
-			for (unsigned int i = 0; i < rawDataTimeCount && i < 10; ++i) {
-				std::cout << "RawDataTime: " << rawDataTime[i] << endl;
-			}
-			delete[] rawDataTime;
-
-			RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum hdfDatatype = da->getRawDataHdfDatatype(rawIndex);
-			if ((rawDataSlowestDimension == gsoap_eml2_1::prodml2__DasDimensions::prodml2__DasDimensions__locus && rawDataFastestDimension == gsoap_eml2_1::prodml2__DasDimensions::prodml2__DasDimensions__time) ||
-				(rawDataSlowestDimension == gsoap_eml2_1::prodml2__DasDimensions::prodml2__DasDimensions__time && rawDataFastestDimension == gsoap_eml2_1::prodml2__DasDimensions::prodml2__DasDimensions__locus)) {
-				const size_t totalCount = numberOfLoci * rawDataTimeCount;
-				if (hdfDatatype == RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum::UNKNOWN) {
-					std::cout << "hdf datatype is unknown" << endl;
-				}
-				else if (hdfDatatype > RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum::FLOAT) {
-					LONG64* rawData = new LONG64[totalCount];
-					da->getRawDataAsLongValues(rawIndex, rawData); // cast whatever floating point in LONG64 for testing
-					for (unsigned int i = 0; i < totalCount && i < 10; ++i) {
-						std::cout << "RawData: " << rawData[i] << endl;
-					}
-					delete[] rawData;
-				}
-				else {
-					double* rawData = new double[totalCount];
-					da->getRawDataAsDoubleValues(rawIndex, rawData); // cast whatever floating point in double for testing
-					for (unsigned int i = 0; i < totalCount && i < 10; ++i) {
-						std::cout << "RawData: " << rawData[i] << endl;
-					}
-					delete[] rawData;
-				}
-				
-			}
-			else {
-				std::cout << "Only time and locus dimension are implemented yet" << endl;
-			}
-		}
-	}
-
-
-	std::cout << endl << pck.getWarnings().size() << " WARNING(S)" << endl;
-	for (size_t i = 0; i < pck.getWarnings().size(); ++i)
-		std::cout << i << " - " << pck.getWarnings()[i] << endl;
-}
-
-void prodml_deserialize(const string & inputFile)
-{
-	COMMON_NS::EpcDocument pck(inputFile, COMMON_NS::EpcDocument::READ_ONLY);
-	prodml_deserialize(pck);
-	string storageDirectory = pck.getStorageDirectory();
-	string fileName = pck.getName();
-	pck.close();
-
-	COMMON_NS::EpcDocument hdf5(storageDirectory + fileName + ".h5", COMMON_NS::EpcDocument::READ_ONLY);
-	prodml_deserialize(hdf5);
-	hdf5.close();
-}
-
 // filepath is defined in a macro to better check memory leak
 #define filePath "../../testingPackageCpp.epc"
-#define prodml_filePath "../../prodml_testingPackageCpp.epc"
 int main(int argc, char **argv)
 {
 	try {
 		if (serialize(filePath))
 			deserialize(filePath);
-			
-		if (prodml_serialize(prodml_filePath))
-			prodml_deserialize(prodml_filePath);
 			
 	}
 	catch (const std::invalid_argument & Exp)

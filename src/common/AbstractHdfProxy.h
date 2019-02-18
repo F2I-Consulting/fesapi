@@ -20,7 +20,6 @@ under the License.
 
 #include "common/EpcExternalPartReference.h"
 #include "resqml2/AbstractRepresentation.h"
-#include "prodml2_0/DasAcquisition.h"
 
 #define CUMULATIVE_LENGTH_DS_NAME "cumulativeLength"
 #define ELEMENTS_DS_NAME "elements"
@@ -74,15 +73,14 @@ namespace COMMON_NS
 
 		/**
 		 * Get the used (native) datatype in a dataset
-		* To compare with H5T_NATIVE_INT, H5T_NATIVE_UINT, H5T_NATIVE_FLOAT, etc...
 		 */
-		virtual AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string & datasetName) const = 0;
+		virtual AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string & datasetName) = 0;
 
 		/**
 		* Get the used datatype class in a dataset
 		* To compare with H5T_INTEGER, H5T_FLOAT , H5T_STRING , etc...
 		*/
-		virtual int getHdfDatatypeClassInDataset(const std::string & datasetName) const = 0;
+		virtual int getHdfDatatypeClassInDataset(const std::string & datasetName) = 0;
 
 		/**
 		* Write an itemized list of list into the HDF file by means of a single group containing 2 datasets.
@@ -544,7 +542,6 @@ namespace COMMON_NS
   
 		friend void RESQML2_NS::AbstractRepresentation::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
 		friend void RESQML2_NS::AbstractProperty::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
-		friend void PRODML2_0_NS::DasAcquisition::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
 
 	};
 }

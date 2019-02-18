@@ -38,9 +38,8 @@ unsigned int AbstractValuesProperty::getPatchCount() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues.size();
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+	
+	throw logic_error("Not implemented yet");
 }
 
 COMMON_NS::AbstractObject::hdfDatatypeEnum AbstractValuesProperty::getValuesHdfDatatype() const
@@ -76,7 +75,7 @@ COMMON_NS::AbstractObject::hdfDatatypeEnum AbstractValuesProperty::getValuesHdfD
 	}
 }
 
-std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, const long & nullValue)
+std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64 nullValue)
 {
 	setHdfProxy(hdfProxy);
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -152,13 +151,13 @@ long AbstractValuesProperty::getLongValuesOfPatch(const unsigned int & patchInde
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 	}
 
-	LONG64 nullValue = (numeric_limits<long long>::min)();
+	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	hdfProxy->readArrayNdOfLongValues(getPathInHdfFileOfPatch(patchIndex, nullValue), values);
 
 	return nullValue;
 }
 
-long AbstractValuesProperty::getNullValueOfPatch(const unsigned int & patchIndex)
+LONG64 AbstractValuesProperty::getNullValueOfPatch(unsigned int patchIndex)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml2__PatchOfValues* patch = static_cast<gsoap_resqml2_0_1::resqml2__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
@@ -179,7 +178,7 @@ unsigned long AbstractValuesProperty::getULongValuesOfPatch(const unsigned int &
 	if (hdfProxy == nullptr)
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 
-	LONG64 nullValue = (numeric_limits<long long>::min)();
+	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	hdfProxy->readArrayNdOfULongValues(getPathInHdfFileOfPatch(patchIndex, nullValue), values);
 
 	return nullValue;
@@ -192,7 +191,7 @@ int AbstractValuesProperty::getIntValuesOfPatch(const unsigned int & patchIndex,
 		throw invalid_argument("The hdf proxy does not exist");
 	}
 
-	LONG64 nullValue = (numeric_limits<long long>::min)();
+	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	hdfProxy->readArrayNdOfIntValues(getPathInHdfFileOfPatch(patchIndex, nullValue), values);
 
 	return nullValue;
@@ -210,7 +209,7 @@ int AbstractValuesProperty::getIntValuesOfPatch(
 		throw invalid_argument("The hdf proxy does not exist");
 	}
 
-	LONG64 nullValue = (numeric_limits<long long>::min)();
+	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	hdfProxy->readArrayNdOfIntValues(
 		getPathInHdfFileOfPatch(patchIndex, nullValue),
 		values,
@@ -250,7 +249,7 @@ unsigned int AbstractValuesProperty::getUIntValuesOfPatch(const unsigned int & p
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 	}
 
-	LONG64 nullValue = (numeric_limits<long long>::min)();
+	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	hdfProxy->readArrayNdOfUIntValues(getPathInHdfFileOfPatch(patchIndex, nullValue), values);
 
 	return nullValue;
@@ -263,7 +262,7 @@ short AbstractValuesProperty::getShortValuesOfPatch(const unsigned int & patchIn
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 	}
 
-	LONG64 nullValue = (numeric_limits<long long>::min)();
+	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	hdfProxy->readArrayNdOfShortValues(getPathInHdfFileOfPatch(patchIndex, nullValue), values);
 
 	return nullValue;
@@ -276,7 +275,7 @@ unsigned short AbstractValuesProperty::getUShortValuesOfPatch(const unsigned int
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 	}
 
-	LONG64 nullValue = (numeric_limits<long long>::min)();
+	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	hdfProxy->readArrayNdOfUShortValues(getPathInHdfFileOfPatch(patchIndex, nullValue), values);
 
 	return nullValue;
@@ -289,7 +288,7 @@ char AbstractValuesProperty::getCharValuesOfPatch(const unsigned int & patchInde
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 	}
 
-	LONG64 nullValue = (numeric_limits<long long>::min)();
+	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	hdfProxy->readArrayNdOfCharValues(getPathInHdfFileOfPatch(patchIndex, nullValue), values);
 
 	return nullValue;
@@ -302,7 +301,7 @@ unsigned char AbstractValuesProperty::getUCharValuesOfPatch(const unsigned int &
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 	}
 
-	LONG64 nullValue = (numeric_limits<long long>::min)();
+	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	hdfProxy->readArrayNdOfUCharValues(getPathInHdfFileOfPatch(patchIndex, nullValue), values);
 
 	return nullValue;
@@ -315,7 +314,7 @@ unsigned int AbstractValuesProperty::getValuesCountOfDimensionOfPatch(const unsi
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 	}
 
-	LONG64 nullValue = (numeric_limits<long long>::min)();
+	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	std::vector<hsize_t> dims = hdfProxy->readArrayDimensions(getPathInHdfFileOfPatch(patchIndex, nullValue));
 
 	if (dimIndex < dims.size())
@@ -332,7 +331,7 @@ unsigned int AbstractValuesProperty::getDimensionsCountOfPatch(const unsigned in
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 	}
 
-	LONG64 nullValue = (numeric_limits<long long>::min)();
+	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	return hdfProxy->getDimensionCount(getPathInHdfFileOfPatch(patchIndex, nullValue));
 }
 
@@ -394,7 +393,7 @@ unsigned int AbstractValuesProperty::getValuesCountOfPatch (const unsigned int &
 		throw invalid_argument("The Hdf proxy cannot be nullptr.");
 	}
 
-	LONG64 nullValue = (numeric_limits<long long>::min)();
+	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	return hdfProxy->getElementCount(getPathInHdfFileOfPatch(patchIndex, nullValue));
 }
 
@@ -498,7 +497,7 @@ void AbstractValuesProperty::getLongValuesOfPatch(
 		throw invalid_argument("The hdf proxy does not exist");
 	}
 
-	LONG64 nullValue = (numeric_limits<long long>::min)();
+	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	hdfProxy->readArrayNdOfLongValues(
 		getPathInHdfFileOfPatch(patchIndex, nullValue),
 		values, 

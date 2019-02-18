@@ -43,7 +43,7 @@ SeismicLatticeFeature::SeismicLatticeFeature(soap* soapContext, const string & g
 	seismicLattice->CrosslineCount = crosslineCount;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 int SeismicLatticeFeature::getCrosslineIncrement() const
