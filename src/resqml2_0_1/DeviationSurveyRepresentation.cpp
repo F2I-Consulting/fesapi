@@ -357,4 +357,3 @@ WellboreTrajectoryRepresentation* DeviationSurveyRepresentation::getWellboreTraj
 
 	return wbTrajectoryRepSet[index];
 }
-

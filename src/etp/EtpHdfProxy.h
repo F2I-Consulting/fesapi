@@ -67,13 +67,13 @@ namespace ETP_NS
 		* Get the used (native) datatype in a dataset
 		* To compare with H5T_NATIVE_INT, H5T_NATIVE_UINT, H5T_NATIVE_FLOAT, etc...
 		*/
-		AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string & groupName) const;
+		AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string & groupName);
 
 		/**
 		* Get the used datatype class in a dataset
 		* To compare with H5T_INTEGER, H5T_FLOAT , H5T_STRING , etc...
 		*/
-		int getHdfDatatypeClassInDataset(const std::string & datasetName) const;
+		int getHdfDatatypeClassInDataset(const std::string & datasetName);
 
 		/**
 		* Write an itemized list of list into the HDF file by means of a single group containing 2 datasets.

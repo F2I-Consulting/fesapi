@@ -113,8 +113,8 @@ gsoap_resqml2_0_1::resqml2__Seismic3dCoordinates* AbstractRepresentation::getSei
 	}
 }
 
-gsoap_resqml2_0_1::resqml2__PointGeometry* AbstractRepresentation::createPointGeometryPatch2_0_1(const unsigned int & patchIndex,
-	double * points, hsize_t * numPoints, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy)
+gsoap_resqml2_0_1::resqml2__PointGeometry* AbstractRepresentation::createPointGeometryPatch2_0_1(ULONG64 patchIndex,
+	double * points, hsize_t * numPoints, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		setHdfProxy(proxy);
@@ -158,12 +158,7 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractRepresentation::getLocalC
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml2__PointGeometry* pointGeom = getPointGeometry2_0_1(0);
-		if (pointGeom != nullptr) {
-			return pointGeom->LocalCrs;
-		}
-		else {
-			return nullptr;
-		}
+		return pointGeom != nullptr ? pointGeom->LocalCrs : nullptr;
 	}
 	else {
 		throw logic_error("Not implemented yet");

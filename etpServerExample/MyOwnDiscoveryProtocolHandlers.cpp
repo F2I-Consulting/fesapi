@@ -196,27 +196,34 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(COMMON_NS::EpcDocument & e
 		COMMON_NS::AbstractObject* obj = epcDoc.getResqmlAbstractObjectByUuid(ggr.m_context.m_uri.substr(openingParenthesis + 1, 36));
 
 		// Self
-		if (ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self ||
-			ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf ||
-			ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
-			if (ggr.m_context.m_contentTypes.empty() || std::find(ggr.m_context.m_contentTypes.begin(), ggr.m_context.m_contentTypes.end(), obj->getContentType()) != ggr.m_context.m_contentTypes.end()) {
-				result.push_back(ETP_NS::EtpHelpers::buildEtpResourceFromEnergisticsObject(obj));
-			}
-		}
-
-		if (ggr.m_context.m_depth >= 1) {
-			// Target
-			if (ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets ||
+		if (!obj->isPartial()) {
+			if (ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self ||
+				ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf ||
 				ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
-				Energistics::Etp::v12::Protocol::Discovery::GetGraphResources nextGr = ggr;
-				--nextGr.m_context.m_depth;
-				nextGr.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
-
-				for (const auto & targetUuid : obj->getAllTargetRelationshipUuids()) {
-					nextGr.m_context.m_uri = ggr.m_context.m_uri.substr(0, openingParenthesis) + '(' + targetUuid + ')';
-					on_GetDataObject(epcDoc, nextGr, correlationId, result);
+				if (ggr.m_context.m_contentTypes.empty() || std::find(ggr.m_context.m_contentTypes.begin(), ggr.m_context.m_contentTypes.end(), obj->getContentType()) != ggr.m_context.m_contentTypes.end()) {
+					result.push_back(ETP_NS::EtpHelpers::buildEtpResourceFromEnergisticsObject(obj));
 				}
 			}
+		}
+		//else erroinfo pattern
+
+		if (ggr.m_context.m_depth >= 1) {
+			if (!obj->isPartial()) {
+				// Target
+				if (ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets ||
+					ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
+					Energistics::Etp::v12::Protocol::Discovery::GetGraphResources nextGr = ggr;
+					--nextGr.m_context.m_depth;
+					nextGr.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
+
+					for (const auto & targetUuid : obj->getAllTargetRelationshipUuids()) {
+						nextGr.m_context.m_uri = ggr.m_context.m_uri.substr(0, openingParenthesis) + '(' + targetUuid + ')';
+						on_GetDataObject(epcDoc, nextGr, correlationId, result);
+					}
+				}
+			}
+			//else erroinfo pattern
+
 			// Source
 			else if (ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources ||
 				ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf) {

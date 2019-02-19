@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include  "etp/ProtocolHandlers/DataArrayHandlers.h"
 
-#include <regex>
-
 #include "etp/AbstractSession.h"
 
 using namespace ETP_NS;
