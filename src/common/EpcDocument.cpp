@@ -261,11 +261,13 @@ const std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> & EpcDocument:
 
 const std::vector<resqml2_0_1::Grid2dRepresentation*> & EpcDocument::getAllGrid2dRepresentationSet() const { return grid2dRepresentationSet; }
 
+const std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> & EpcDocument::getAllPolylineSetRepSet() const { return polylineSetRepresentationSet; }
+
 const std::vector<RESQML2_0_1_NS::SeismicLineFeature*> & EpcDocument::getSeismicLineSet() const { return seismicLineSet; }
 
 const std::vector<RESQML2_0_1_NS::WellboreFeature*> & EpcDocument::getWellboreSet() const { return wellboreSet; }
 
-std::vector<RESQML2_0_1_NS::PolylineRepresentation*> EpcDocument::getPolylineRepresentationSet() const { return polylineRepresentationSet; }
+const std::vector<RESQML2_0_1_NS::PolylineRepresentation*> & EpcDocument::getAllPolylineRepresentationSet() const { return polylineRepresentationSet; }
 
 const std::vector<RESQML2_0_1_NS::AbstractIjkGridRepresentation*> & EpcDocument::getIjkGridRepresentationSet() const { return ijkGridRepresentationSet; }
 unsigned int EpcDocument::getIjkGridRepresentationCount() const { return ijkGridRepresentationSet.size(); }
@@ -389,6 +391,7 @@ void EpcDocument::close()
 	triangulatedSetRepresentationSet.clear();
 	grid2dRepresentationSet.clear();
 	polylineRepresentationSet.clear();
+	polylineSetRepresentationSet.clear();
 	ijkGridRepresentationSet.clear();
 	unstructuredGridRepresentationSet.clear();
 	stratigraphicColumnSet.clear();
@@ -496,6 +499,9 @@ void EpcDocument::addGsoapProxy(COMMON_NS::AbstractObject* proxy)
 	}
 	else if (xmlTag.compare(PolylineRepresentation::XML_TAG) == 0) {
 		polylineRepresentationSet.push_back(static_cast<PolylineRepresentation* const>(proxy));
+	}
+	else if (xmlTag.compare(PolylineSetRepresentation::XML_TAG) == 0) {
+		polylineSetRepresentationSet.push_back(static_cast<PolylineSetRepresentation* const>(proxy));
 	}
 	else if (xmlTag.compare(AbstractIjkGridRepresentation::XML_TAG) == 0 || xmlTag.compare(AbstractIjkGridRepresentation::XML_TAG_TRUNCATED) == 0) {
 		ijkGridRepresentationSet.push_back(static_cast<AbstractIjkGridRepresentation* const>(proxy));
@@ -1282,7 +1288,7 @@ vector<IjkGridExplicitRepresentation*> EpcDocument::getIjkGridExplicitRepresenta
 std::vector<PolylineRepresentation*> EpcDocument::getSeismicLinePolylineRepSet() const
 {
 	vector<PolylineRepresentation*> result;
-	vector<PolylineRepresentation*> polylineRepSet = getPolylineRepresentationSet();
+	vector<PolylineRepresentation*> polylineRepSet = getAllPolylineRepresentationSet();
 
 	for (size_t i = 0; i < polylineRepSet.size(); ++i) {
 		if (polylineRepSet[i]->isASeismicLine() || polylineRepSet[i]->isAFaciesLine()) {

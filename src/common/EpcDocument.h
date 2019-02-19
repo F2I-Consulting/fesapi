@@ -430,6 +430,11 @@ namespace COMMON_NS
 		const std::vector<RESQML2_0_1_NS::Grid2dRepresentation*> & getAllGrid2dRepresentationSet() const;
 
 		/**
+		* Get all the polyline set representations of the EPC document
+		*/
+		const std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> & getAllPolylineSetRepSet() const;
+
+		/**
 		* Get all the triangulated set representations of the EPC document which are not horizon and fault neither.
 		*/
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getUnclassifiedTriangulatedSetRepSet() const;
@@ -470,9 +475,9 @@ namespace COMMON_NS
 		RESQML2_NS::RepresentationSetRepresentation* getRepresentationSetRepresentation(const unsigned int & index) const;
 
 		/**
-		* Get all the polyline representation contained into the EPC document.
+		* Get all the polyline representations contained into the EPC document.
 		*/
-		std::vector<RESQML2_0_1_NS::PolylineRepresentation*> getPolylineRepresentationSet() const;
+		const std::vector<RESQML2_0_1_NS::PolylineRepresentation*> & getAllPolylineRepresentationSet() const;
 
 		/**
 		* Get all the single polyline representations contained into the EPC document which correspond to a seismic line.
@@ -1183,6 +1188,7 @@ namespace COMMON_NS
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*>		triangulatedSetRepresentationSet;
 		std::vector<RESQML2_0_1_NS::Grid2dRepresentation*>				grid2dRepresentationSet;
 		std::vector<RESQML2_0_1_NS::PolylineRepresentation*>			polylineRepresentationSet;
+		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*>			polylineSetRepresentationSet;
 		std::vector<RESQML2_0_1_NS::AbstractIjkGridRepresentation*>		ijkGridRepresentationSet;
 		std::vector<RESQML2_0_1_NS::UnstructuredGridRepresentation*>	unstructuredGridRepresentationSet;
 		std::vector<RESQML2_0_1_NS::StratigraphicColumn*>				stratigraphicColumnSet;
