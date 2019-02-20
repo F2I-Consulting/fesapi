@@ -252,27 +252,35 @@ namespace COMMON_NS
 		
 		const std::vector<RESQML2_0_1_NS::StratigraphicColumn*> & getStratigraphicColumnSet() const;
 		
+		const std::vector<RESQML2_0_1_NS::FrontierFeature*> & getFrontierSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getFrontierPolylineSetRepSet() const;
+		
 		const std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*> & getFaultSet() const;
 		const std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*> & getFractureSet() const {return fractureSet;}
-		const std::vector<RESQML2_0_1_NS::FrontierFeature*> & getFrontierSet() const;
 		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getFaultPolylineSetRepSet() const;
 		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getFracturePolylineSetRepSet() const;
-		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getFrontierPolylineSetRepSet() const;
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getFaultTriangulatedSetRepSet() const;
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getFractureTriangulatedSetRepSet() const;
 		
-		std::vector<RESQML2_0_1_NS::Horizon*> getHorizonSet() const;
 		unsigned int getGeobodyBoundaryCount() const;
 		RESQML2_0_1_NS::GeneticBoundaryFeature* getGeobodyBoundary(unsigned int index) const;
 		const std::vector<RESQML2_0_1_NS::GeobodyFeature*> & getGeobodySet() const;
+		
+		std::vector<RESQML2_0_1_NS::Horizon*> getHorizonSet() const;
 		std::vector<RESQML2_0_1_NS::Grid2dRepresentation*> getHorizonGrid2dRepSet() const;
 		std::vector<RESQML2_0_1_NS::PolylineRepresentation*> getHorizonPolylineRepSet() const;
 		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getHorizonPolylineSetRepSet() const;
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getHorizonTriangulatedSetRepSet() const;
+		
 		const std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> & getAllTriangulatedSetRepSet() const;
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getUnclassifiedTriangulatedSetRepSet() const;
+		const std::vector<RESQML2_0_1_NS::Grid2dRepresentation*> & getAllGrid2dRepresentationSet() const;
+		const std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> & getAllPolylineSetRepSet() const;
+		const std::vector<RESQML2_0_1_NS::PolylineRepresentation*> & getAllPolylineRepresentationSet() const;
 		
 		const std::vector<RESQML2_0_1_NS::SeismicLineFeature*> & getSeismicLineSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineRepresentation*> getSeismicLinePolylineRepSet() const;
+		std::vector<RESQML2_0_1_NS::IjkGridLatticeRepresentation*> getIjkSeismicCubeGridRepresentationSet() const;
 		
 		const std::vector<RESQML2_0_1_NS::WellboreFeature*> & getWellboreSet() const;
 		std::vector<RESQML2_0_1_NS::WellboreTrajectoryRepresentation*> getWellboreTrajectoryRepresentationSet() const;
@@ -289,9 +297,6 @@ namespace COMMON_NS
 		std::vector<RESQML2_0_1_NS::IjkGridExplicitRepresentation*> getIjkGridExplicitRepresentationSet() const;
 		std::vector<RESQML2_0_1_NS::IjkGridParametricRepresentation*> getIjkGridParametricRepresentationSet() const;
 
-		std::vector<RESQML2_0_1_NS::PolylineRepresentation*> getSeismicLinePolylineRepSet() const;
-		std::vector<RESQML2_0_1_NS::IjkGridLatticeRepresentation*> getIjkSeismicCubeGridRepresentationSet() const;
-		
 		const std::vector<RESQML2_0_1_NS::UnstructuredGridRepresentation*> & getUnstructuredGridRepresentationSet() const;
 		
 		unsigned int getSubRepresentationCount() const;
