@@ -72,7 +72,7 @@ namespace COMMON_NS
 		virtual void close() = 0;
 
 		/**
-		 * Get the used (native) datatype in a dataset
+		 * Get the datatype in a dataset
 		 */
 		virtual AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string & datasetName) = 0;
 

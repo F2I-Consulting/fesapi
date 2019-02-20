@@ -1260,11 +1260,11 @@ bool serialize(const string & filePath)
 	localTime3dCrs = pck.createLocalTime3dCrs("c898555d-3765-4f14-85e7-85ad897a7346", "Default local time CRS", 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__TimeUom__s, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false); // CRS translation is just for testing;
 
 	// Comment or uncomment below domains/lines you want wether to test or not
-	//serializeWells(&pck, hdfProxy);
-	//serializeBoundaries(&pck, hdfProxy);
-	//serializeGeobody(&pck, hdfProxy);
-	//serializeStructuralModel(pck, hdfProxy);
-	//serializeStratigraphicModel(&pck, hdfProxy);
+	serializeWells(&pck, hdfProxy);
+	serializeBoundaries(&pck, hdfProxy);
+	serializeGeobody(&pck, hdfProxy);
+	serializeStructuralModel(pck, hdfProxy);
+	serializeStratigraphicModel(&pck, hdfProxy);
 	serializeGrid(&pck, hdfProxy);
 	serializeActivities(&pck);
 	serializeRepresentationSetRepresentation(&pck, hdfProxy);
@@ -3412,5 +3412,3 @@ cout << "Press enter to continue..." << endl;
 cin.get();
 }
 */
-
-
