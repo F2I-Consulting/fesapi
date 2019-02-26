@@ -1,6 +1,6 @@
-CMAKE_MINIMUM_REQUIRED (VERSION 3.2)
+cmake_minimum_required (VERSION 3.12)
 
-PROJECT (Fesapi_SRC)
+project (Fesapi_SRC)
 
 configure_file(${FESAPI_ROOT_DIR}/cmake/version_config.h.in ${FESAPI_ROOT_DIR}/src/version_config.h)
 
@@ -8,159 +8,108 @@ configure_file(${FESAPI_ROOT_DIR}/cmake/version_config.h.in ${FESAPI_ROOT_DIR}/s
 # Resqml/Witsqml proxies generation
 # ============================================================================
 
-SET (RESQML_PREFIX_2 "resqml2")
-SET (RESQML_PREFIX_2_0_1 "resqml2_0_1")
-SET (RESQML_PREFIX_2_1 "resqml2_1")
-SET (WITSML_PREFIX "witsml1_4_1_1")
-#SET (PRODML_PREFIX_2_0 "prodml2_0")
+set (RESQML_PREFIX_2 "resqml2")
+set (RESQML_PREFIX_2_0_1 "resqml2_0_1")
+set (RESQML_PREFIX_2_1 "resqml2_1")
+set (WITSML_PREFIX "witsml1_4_1_1")
+#set (PRODML_PREFIX_2_0 "prodml2_0")
 
-IF (PROXIES_GENERATION)
-	# setting RESQML_XSD_FILES 
-	SET (RESQML_XSD_FILES ${RESQML_SCHEMA_LOCATION}/ResqmlAllObjects.xsd)
+add_library (${CPP_LIBRARY_NAME} ${LIB_TYPE} "")
 
-	# copying namespace.cpp to proxies output directory
-	ADD_CUSTOM_COMMAND (
-			OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/proxies/namespace.cpp
-			COMMAND ${CMAKE_COMMAND} -E copy ${FESAPI_ROOT_DIR}/gsoap/namespace.cpp ${CMAKE_CURRENT_SOURCE_DIR}/proxies/namespace.cpp
-	)
+target_compile_options(${CPP_LIBRARY_NAME}	PUBLIC
+	$<$<CXX_COMPILER_ID:MSVC>:/bigobj>
+	$<$<CXX_COMPILER_ID:MSVC>:/MP>
+)
 
-	# copying stdsoap2.cpp(.h) to proxies output directory
-	ADD_CUSTOM_COMMAND (
-			OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/proxies/stdsoap2.cpp
-			OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/proxies/stdsoap2.h
-			COMMAND ${CMAKE_COMMAND} -E copy ${GSOAP_STDSOAP2_H} ${CMAKE_CURRENT_SOURCE_DIR}/proxies/stdsoap2.h
-			COMMAND ${CMAKE_COMMAND} -E copy ${GSOAP_STDSOAP2_CPP} ${CMAKE_CURRENT_SOURCE_DIR}/proxies/stdsoap2.cpp
-	)
-		
-	ADD_CUSTOM_COMMAND (
-		OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/proxies/envC.cpp ${CMAKE_CURRENT_SOURCE_DIR}/proxies/envH.h ${CMAKE_CURRENT_SOURCE_DIR}/proxies/envStub.h
-		COMMAND ${GSOAP_SOAPCPP2} -penv -d${CMAKE_CURRENT_BINARY_DIR} ${FESAPI_ROOT_DIR}/gsoap/env.h
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/envC.cpp ${CMAKE_CURRENT_SOURCE_DIR}/proxies/envC.cpp
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/envH.h ${CMAKE_CURRENT_SOURCE_DIR}/proxies/envH.h
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/envStub.h ${CMAKE_CURRENT_SOURCE_DIR}/proxies/envStub.h
-	)
+if (WIN32)
+	if (BUILD_SHARED_LIBS)
+		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE "-DFESAPI_DLL")
+	endif (BUILD_SHARED_LIBS)
+	if (HDF5_BUILT_AS_DYNAMIC_LIB)
+		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE "-DH5_BUILT_AS_DYNAMIC_LIB")
+	endif (HDF5_BUILT_AS_DYNAMIC_LIB)
+endif (WIN32)
 
-	IF (UNIX) 
-		ADD_CUSTOM_COMMAND (
-			OUTPUT typemap.dat PropertyTypeMapping.xsd
-			COMMAND ${CMAKE_COMMAND} -E copy ${FESAPI_ROOT_DIR}/gsoap/typemap.dat ${CMAKE_CURRENT_BINARY_DIR}/typemap.dat
-			COMMAND ${CMAKE_COMMAND} -E copy ${FESAPI_ROOT_DIR}/gsoap/PropertyTypeMapping.xsd ${CMAKE_CURRENT_BINARY_DIR}/PropertyTypeMapping.xsd
-			# next command aims at inserting the Resqml schema location into PropertyTypeMapping.xsd
-			COMMAND sed -i -e 's|RESQML_SCHEMA_LOCATION|${RESQML_SCHEMA_LOCATION}|g' ${CMAKE_CURRENT_BINARY_DIR}/PropertyTypeMapping.xsd 
-		)
-	ELSEIF (WIN32)
-		ADD_CUSTOM_COMMAND (
-			OUTPUT typemap.dat PropertyTypeMapping.xsd
-			COMMAND ${CMAKE_COMMAND} -E copy ${FESAPI_ROOT_DIR}/gsoap/typemap.dat ${CMAKE_CURRENT_BINARY_DIR}/typemap.dat
-			# next command aims at inserting the Resqml schema location into PropertyTypeMapping.xsd
-			COMMAND cscript ${FESAPI_ROOT_DIR}/gsoap/sed.vbs "s*RESQML_SCHEMA_LOCATION*${RESQML_SCHEMA_LOCATION}*g" < ${FESAPI_ROOT_DIR}/gsoap/PropertyTypeMapping.xsd > ${CMAKE_CURRENT_BINARY_DIR}/PropertyTypeMapping.xsd
-		)
-	ENDIF (UNIX)
+# Linker instructions
+if (WIN32)
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_RELEASE} ${HDF5_C_LIBRARY_RELEASE})
+# zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
+# zlib is linked because it is a very probable dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to zlib), zlib could be not present in these linked libraries.
+	if (EXISTS ${ZLIB_LIBRARY_RELEASE})
+		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_LIBRARY_RELEASE})
+	endif ()
+# szip is linked because it is a potential dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to szip), szip could be not present in these linked libraries.
+	if (EXISTS ${SZIP_LIBRARY_RELEASE})
+		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${SZIP_LIBRARY_RELEASE})
+	endif ()
+	set_target_properties(${CPP_LIBRARY_NAME} PROPERTIES
+		LINK_FLAGS "/INCREMENTAL:NO /OPT:REF"
+		RUNTIME_OUTPUT_DIRECTORY ${FESAPI_BINARY_DIR}
+		SUFFIX ".${Fesapi_VERSION}.dll"
+		IMPORT_SUFFIX ".${Fesapi_VERSION}.lib"
+		VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR})
+ELSEIF (UNIX)
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${UUID_LIBRARY_RELEASE} ${GSOAP_LIBRARIES} ${MINIZIP_LIBRARY_RELEASE} ${HDF5_C_LIBRARY_RELEASE})
+# zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
+# zlib is linked because it is a very probable dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to zlib), zlib could be not present in these linked libraries.
+	if (EXISTS ${ZLIB_LIBRARY_RELEASE})
+		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_LIBRARY_RELEASE})
+	endif ()
+# szip is linked because it is a potential dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to szip), szip could be not present in these linked libraries.
+	if (EXISTS ${SZIP_LIBRARY_RELEASE})
+		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${SZIP_LIBRARY_RELEASE})
+	endif ()
 
-	add_custom_command(
-		OUTPUT ${RESQML_PREFIX_2_0_1}ForGsoap.h
-		COMMAND ${GSOAP_WSDL2H} -W -gjk -q gsoap_${RESQML_PREFIX_2_0_1} -o ${RESQML_PREFIX_2_0_1}ForGsoap.h ${RESQML_XSD_FILES} ${CMAKE_CURRENT_BINARY_DIR}/PropertyTypeMapping.xsd
-		DEPENDS typemap.dat PropertyTypeMapping.xsd
-	)
-
-	ADD_CUSTOM_COMMAND (
-		OUTPUT 
-			${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${RESQML_PREFIX_2_0_1}C.cpp
-			${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${RESQML_PREFIX_2_0_1}H.h
-			${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${RESQML_PREFIX_2_0_1}Stub.h
-		COMMAND ${GSOAP_SOAPCPP2} -jCLbst -I${GSOAP_LOCATION}/import -p${RESQML_PREFIX_2_0_1} -d${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR}/${RESQML_PREFIX_2_0_1}ForGsoap.h
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/gsoap_${RESQML_PREFIX_2_0_1}C.cpp ${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${RESQML_PREFIX_2_0_1}C.cpp
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/gsoap_${RESQML_PREFIX_2_0_1}H.h ${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${RESQML_PREFIX_2_0_1}H.h
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/gsoap_${RESQML_PREFIX_2_0_1}Stub.h ${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${RESQML_PREFIX_2_0_1}Stub.h
-		DEPENDS ${RESQML_PREFIX_2_0_1}ForGsoap.h
-	)
-
-	# setting WITSML_XSD_FILES
-	SET(WITSML_XSD_FILES
-		${WITSML_SCHEMA_LOCATION}/obj_well.xsd
-		${WITSML_SCHEMA_LOCATION}/obj_wellbore.xsd
-		${WITSML_SCHEMA_LOCATION}/obj_trajectory.xsd
-		${WITSML_SCHEMA_LOCATION}/obj_log.xsd 
-		${WITSML_SCHEMA_LOCATION}/obj_formationMarker.xsd
-		${WITSML_SCHEMA_LOCATION}/obj_coordinateReferenceSystem.xsd
-	)
-
-	ADD_CUSTOM_COMMAND (
-		OUTPUT ${WITSML_PREFIX}ForGsoap.h
-		COMMAND ${GSOAP_WSDL2H} -W -gjk -q gsoap_${WITSML_PREFIX} -o ${WITSML_PREFIX}ForGsoap.h ${WITSML_XSD_FILES}
-		DEPENDS typemap.dat
-	)
-	ADD_CUSTOM_COMMAND (
-		OUTPUT 
-			${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${WITSML_PREFIX}C.cpp
-			${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${WITSML_PREFIX}H.h
-			${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${WITSML_PREFIX}Stub.h
-		COMMAND ${GSOAP_SOAPCPP2} -jCLbst -I${GSOAP_LOCATION}/import -p${WITSML_PREFIX} -d${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR}/${WITSML_PREFIX}ForGsoap.h
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/gsoap_${WITSML_PREFIX}C.cpp ${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${WITSML_PREFIX}C.cpp
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/gsoap_${WITSML_PREFIX}H.h ${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${WITSML_PREFIX}H.h
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/gsoap_${WITSML_PREFIX}Stub.h ${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${WITSML_PREFIX}Stub.h
-		DEPENDS ${WITSML_PREFIX}ForGsoap.h
-	)
-
-	SET (FESAPI_PROXIES_SOURCES
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/envC.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/stdsoap2.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/struct_tm.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/namespace.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${RESQML_PREFIX_2_0_1}C.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_${WITSML_PREFIX}C.cpp
-	)
-	SET (FESAPI_PROXIES_HEADERS
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/envH.h
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/envStub.h
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_resqml2_0_1H.h
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_resqml2_0_1Stub.h
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_witsml1_4_1_1H.h
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/gsoap_witsml1_4_1_1Stub.h
-		${CMAKE_CURRENT_SOURCE_DIR}/proxies/stdsoap2.h
-	)
-ENDIF (PROXIES_GENERATION)
+	# In case of static link to hdf5 libraries, then we need to also link to some other libraries
+	if( ${HDF5_C_LIBRARY_RELEASE} MATCHES ".*\.a$" )
+		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE dl)
+	endif ()
+	set_target_properties(${CPP_LIBRARY_NAME} PROPERTIES
+		COMPILE_FLAGS "-fPIC"
+		VERSION ${Fesapi_VERSION}
+		SOVERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR})
+endif (WIN32)
 
 # ============================================================================
 # Getting source files
 # ============================================================================
 
-SET (WITH_JAVA_WRAPPING OFF CACHE BOOL "Compile the swig cpp generated file for Java wrappers.")
-SET (WITH_DOTNET_WRAPPING OFF CACHE BOOL "Compile the swig cpp generated file for .NET wrappers.")
+set (WITH_JAVA_WRAPPING OFF CACHE BOOL "Compile the swig cpp generated file for Java wrappers.")
+set (WITH_DOTNET_WRAPPING OFF CACHE BOOL "Compile the swig cpp generated file for .NET wrappers.")
 
 # Namespaces definitions
-SET (FESAPI_COMMON_NS common CACHE STRING "Namespace for common objects")
-#SET (FESAPI_PRODML2_0_NS prodml2_0 CACHE STRING "Namespace for prodml2_0 objects")
-SET (FESAPI_RESQML2_NS resqml2 CACHE STRING "Namespace for resqml2 objects")
-SET (FESAPI_RESQML2_0_1_NS resqml2_0_1 CACHE STRING "Namespace for resqml2_0_1 objects")
-SET (FESAPI_WITSML1_4_1_1_NS witsml1_4_1_1 CACHE STRING "Namespace for witsml1_4_1_1 objects")
-CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/nsDefinitions.h) # Overwrite if different
+set (FESAPI_COMMON_NS common CACHE STRING "Namespace for common objects")
+#set (FESAPI_PRODML2_0_NS prodml2_0 CACHE STRING "Namespace for prodml2_0 objects")
+set (FESAPI_RESQML2_NS resqml2 CACHE STRING "Namespace for resqml2 objects")
+set (FESAPI_RESQML2_0_1_NS resqml2_0_1 CACHE STRING "Namespace for resqml2_0_1 objects")
+set (FESAPI_WITSML1_4_1_1_NS witsml1_4_1_1 CACHE STRING "Namespace for witsml1_4_1_1 objects")
+configure_file(${FESAPI_ROOT_DIR}/cmake/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/nsDefinitions.h) # Overwrite if different
 
-FILE (GLOB FESAPI_COMMON_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/common/*.cpp)
-FILE (GLOB FESAPI_COMMON_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/common/*.h)
+file (GLOB FESAPI_COMMON_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/common/*.cpp)
+file (GLOB FESAPI_COMMON_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/common/*.h)
 
-FILE (GLOB FESAPI_TOOLS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tools/*.cpp)
-FILE (GLOB FESAPI_TOOLS_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/tools/*.h)
+file (GLOB FESAPI_TOOLS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tools/*.cpp)
+file (GLOB FESAPI_TOOLS_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/tools/*.h)
 
-FILE (GLOB FESAPI_EPC_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/epc/*.cpp)
-FILE (GLOB FESAPI_EPC_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/epc/*.h)
+file (GLOB FESAPI_EPC_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/epc/*.cpp)
+file (GLOB FESAPI_EPC_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/epc/*.h)
 
-FILE (GLOB FESAPI_RESQML_2_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/*.cpp)
-FILE (GLOB FESAPI_RESQML_2_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/*.h)
+file (GLOB FESAPI_RESQML_2_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/*.cpp)
+file (GLOB FESAPI_RESQML_2_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2}/*.h)
 
-FILE (GLOB FESAPI_RESQML_2_0_1_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_0_1}/*.cpp)
-FILE (GLOB FESAPI_RESQML_2_0_1_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_0_1}/*.h)
+file (GLOB FESAPI_RESQML_2_0_1_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_0_1}/*.cpp)
+file (GLOB FESAPI_RESQML_2_0_1_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_0_1}/*.h)
 
-#FILE (GLOB FESAPI_RESQML_2_1_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_1}/*.cpp)
-#FILE (GLOB FESAPI_RESQML_2_1_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_1}/*.h)
+#file (GLOB FESAPI_RESQML_2_1_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_1}/*.cpp)
+#file (GLOB FESAPI_RESQML_2_1_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_1}/*.h)
 
-#FILE (GLOB FESAPI_PRODML_2_0_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_0}/*.cpp)
-#FILE (GLOB FESAPI_PRODML_2_0_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_0}/*.h)
+#file (GLOB FESAPI_PRODML_2_0_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_0}/*.cpp)
+#file (GLOB FESAPI_PRODML_2_0_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_0}/*.h)
 
-FILE (GLOB FESAPI_WITSML_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX}/*.cpp)
-FILE (GLOB FESAPI_WITSML_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX}/*.h)
+file (GLOB FESAPI_WITSML_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX}/*.cpp)
+file (GLOB FESAPI_WITSML_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX}/*.h)
 
-SET (ALL_SOURCES_AND_HEADERS
+set (ALL_SOURCES_AND_HEADERS
 	${CMAKE_CURRENT_SOURCE_DIR}/nsDefinitions.h
 	${CMAKE_CURRENT_SOURCE_DIR}/version_config.h
 	${FESAPI_COMMON_SOURCES}
@@ -181,27 +130,60 @@ SET (ALL_SOURCES_AND_HEADERS
 	${FESAPI_PROXIES_HEADERS}
 )
 
+target_sources(${CPP_LIBRARY_NAME} PRIVATE ${ALL_SOURCES_AND_HEADERS})
+
+target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_INCLUDE_DIRS})
+target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_INCLUDE_DIR})
+target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_C_INCLUDE_DIR})
+target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_INCLUDE_DIR})
+
+IF (UNIX)
+	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${UUID_INCLUDE_DIR})
+ENDIF (UNIX)
+
+target_include_directories(${CPP_LIBRARY_NAME} PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+	$<INSTALL_INTERFACE:include>
+)
+
+# organizing sources and headers in the Visual Studio Project
+IF (WIN32)
+	source_group ("common" FILES ${FESAPI_COMMON_SOURCES} ${FESAPI_COMMON_HEADERS})
+	source_group ("tools" FILES ${FESAPI_TOOLS_SOURCES} ${FESAPI_TOOLS_HEADERS})
+	source_group ("epc" FILES ${FESAPI_EPC_SOURCES} ${FESAPI_EPC_HEADERS})
+	
+	source_group ("${RESQML_PREFIX_2}" FILES ${FESAPI_RESQML_2_SOURCES} ${FESAPI_RESQML_2_HEADERS})
+	
+	source_group ("${RESQML_PREFIX_2_0_1}" FILES ${FESAPI_RESQML_2_0_1_SOURCES} ${FESAPI_RESQML_2_0_1_HEADERS})
+	
+	source_group ("${WITSML_PREFIX}" FILES ${FESAPI_WITSML_SOURCES} ${FESAPI_WITSML_HEADERS})
+	
+#	source_group ("${PRODML_PREFIX_2_0}" FILES ${FESAPI_PRODML_2_0_SOURCES} ${FESAPI_PRODML_2_0_HEADERS})
+	
+	source_group ("proxies" FILES ${FESAPI_PROXIES_SOURCES} ${FESAPI_PROXIES_HEADERS})
+ENDIF (WIN32)
+
 IF (WITH_JAVA_WRAPPING)
-	FIND_PACKAGE(JNI REQUIRED)
-	FIND_PACKAGE(SWIG REQUIRED)
-	FIND_PACKAGE(Java REQUIRED)
-	INCLUDE(UseJava)
+	find_package(JNI REQUIRED)
+	find_package(SWIG REQUIRED)
+	find_package(Java REQUIRED)
+	include(UseJava)
 
 	message("Generating SWIG files")
 	#Cleaning
-	FILE (GLOB TO_DELETE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/*.java)
+	file (GLOB TO_DELETE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/*.java)
 	if (TO_DELETE)
-		FILE (REMOVE ${TO_DELETE})
+		file (REMOVE ${TO_DELETE})
 	endif (TO_DELETE)
-	FILE (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/common)
-	FILE (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2)
-	FILE (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2_0_1)
-	FILE (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml1_4_1_1)
+	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/common)
+	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2)
+	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2_0_1)
+	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml1_4_1_1)
 	
 	# Create the dedicated swig files
-	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/swigResqml2JavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigResqml2JavaInclude.i) # Overwrite if different
-	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/swigWitsml1_4_1_1JavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigWitsml1_4_1_1JavaInclude.i) # Overwrite if different
-	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR}/java/example/FesapiJavaExample.java) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2JavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigResqml2JavaInclude.i) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/swigWitsml1_4_1_1JavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigWitsml1_4_1_1JavaInclude.i) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR}/java/example/FesapiJavaExample.java) # Overwrite if different
 
 	# Filling
 	IF (WIN32)
@@ -214,31 +196,27 @@ IF (WITH_JAVA_WRAPPING)
 	message("SWIG files have been generated")
 	
 	# Building the jar
-	FILE (GLOB_RECURSE SWIG_JAVA_FILES ${FESAPI_ROOT_DIR}/java/src/*.java)
+	file (GLOB_RECURSE SWIG_JAVA_FILES ${FESAPI_ROOT_DIR}/java/src/*.java)
 	set(CMAKE_JAVA_COMPILE_FLAGS -g)
 	add_jar(fesapiJava ${SWIG_JAVA_FILES} VERSION ${Fesapi_VERSION})
 	
-	SET (ALL_SOURCES_AND_HEADERS
-		${ALL_SOURCES_AND_HEADERS}
-		${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp
-	)
-	INCLUDE_DIRECTORIES (${JAVA_INCLUDE_PATH}
-		${JAVA_INCLUDE_PATH2}
-	)
+	target_sources(${CPP_LIBRARY_NAME} PRIVATE ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp)
+	
+	target_include_directories(${CPP_LIBRARY_NAME} PUBLIC ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2})
 
 ENDIF (WITH_JAVA_WRAPPING)
 
 IF (WITH_DOTNET_WRAPPING)
-	FIND_PACKAGE(SWIG REQUIRED)
+	find_package(SWIG REQUIRED)
 	
 	message("Generating SWIG files")
 	#Cleaning
 	execute_process(COMMAND powershell "Remove-Item ${FESAPI_ROOT_DIR}/cs/src/* -recurse -exclude .gitignore")
 	
 	# Create the dedicated swig files
-	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/swigResqml2CsInclude.i ${FESAPI_ROOT_DIR}/swig/swigResqml2CsInclude.i) # Overwrite if different
-	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/swigWitsml1_4_1_1CsInclude.i ${FESAPI_ROOT_DIR}/swig/swigWitsml1_4_1_1CsInclude.i) # Overwrite if different
-	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/Program.cs ${FESAPI_ROOT_DIR}/cs/example/Program.cs) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2CsInclude.i ${FESAPI_ROOT_DIR}/swig/swigResqml2CsInclude.i) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/swigWitsml1_4_1_1CsInclude.i ${FESAPI_ROOT_DIR}/swig/swigWitsml1_4_1_1CsInclude.i) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/Program.cs ${FESAPI_ROOT_DIR}/cs/example/Program.cs) # Overwrite if different
 	
 	# Filling
 	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} -c++ -csharp -dllimport ${CPP_LIBRARY_NAME}.${Fesapi_VERSION}.dll -namespace f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/cs/src ${FESAPI_ROOT_DIR}/swig/swigModule.i")
@@ -246,117 +224,13 @@ IF (WITH_DOTNET_WRAPPING)
 	message("SWIG files have been generated")
 
 	#Add the swig cpp file to the FesapiCpp
-	SET (ALL_SOURCES_AND_HEADERS
-		${ALL_SOURCES_AND_HEADERS}
-		${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.cpp
-	)
+	target_sources(${CPP_LIBRARY_NAME} PRIVATE ${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.cpp)
 	
 	# Create the Visual Studio project from a template file
-	#FILE(TO_NATIVE_PATH "${FESAPI_ROOT_DIR}/cs/src" DOS_STYLE_SOURCE_DIR)
-	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/fesapiCs.csproj.template ${FESAPI_ROOT_DIR}/cs/fesapiCs.csproj) # Overwrite if different
-	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/AssemblyInfo.cs ${FESAPI_ROOT_DIR}/cs/Properties/AssemblyInfo.cs) # Overwrite if different
+	#file(TO_NATIVE_PATH "${FESAPI_ROOT_DIR}/cs/src" DOS_STYLE_SOURCE_DIR)
+	configure_file(${FESAPI_ROOT_DIR}/cmake/fesapiCs.csproj.template ${FESAPI_ROOT_DIR}/cs/fesapiCs.csproj) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/AssemblyInfo.cs ${FESAPI_ROOT_DIR}/cs/Properties/AssemblyInfo.cs) # Overwrite if different
 ENDIF (WITH_DOTNET_WRAPPING)
-
-# organizing sources and headers in the Visual Studio Project
-IF (WIN32)
-	SOURCE_GROUP ("common" FILES ${FESAPI_COMMON_SOURCES} ${FESAPI_COMMON_HEADERS})
-	SOURCE_GROUP ("tools" FILES ${FESAPI_TOOLS_SOURCES} ${FESAPI_TOOLS_HEADERS})
-	SOURCE_GROUP ("epc" FILES ${FESAPI_EPC_SOURCES} ${FESAPI_EPC_HEADERS})
-	
-	SOURCE_GROUP ("${RESQML_PREFIX_2}" FILES ${FESAPI_RESQML_2_SOURCES} ${FESAPI_RESQML_2_HEADERS})
-	
-	SOURCE_GROUP ("${RESQML_PREFIX_2_0_1}" FILES ${FESAPI_RESQML_2_0_1_SOURCES} ${FESAPI_RESQML_2_0_1_HEADERS})
-	
-	SOURCE_GROUP ("${WITSML_PREFIX}" FILES ${FESAPI_WITSML_SOURCES} ${FESAPI_WITSML_HEADERS})
-	
-#	SOURCE_GROUP ("${PRODML_PREFIX_2_0}" FILES ${FESAPI_PRODML_2_0_SOURCES} ${FESAPI_PRODML_2_0_HEADERS})
-	
-	SOURCE_GROUP ("proxies" FILES ${FESAPI_PROXIES_SOURCES} ${FESAPI_PROXIES_HEADERS})
-ENDIF (WIN32)
-
-# ============================================================================
-# Setting include directories
-# ============================================================================
-
-INCLUDE_DIRECTORIES (
-	${CMAKE_CURRENT_SOURCE_DIR}
-	${ZLIB_INCLUDE_DIR}
-	${HDF5_C_INCLUDE_DIR}
-	${MINIZIP_INCLUDE_DIR}
-)
-
-
-IF (UNIX)
-	INCLUDE_DIRECTORIES (${UUID_INCLUDE_DIR})
-ENDIF (UNIX)
-
-# ============================================================================
-# Add FesapiCpp library to build
-# ============================================================================
-
-IF (WIN32)
-	ADD_DEFINITIONS (/bigobj)
-	IF (BUILD_SHARED_LIBS)
-		ADD_DEFINITIONS (-DFESAPI_DLL)
-	ENDIF (BUILD_SHARED_LIBS)
-	IF (HDF5_BUILT_AS_DYNAMIC_LIB)
-		ADD_DEFINITIONS (-DH5_BUILT_AS_DYNAMIC_LIB)
-	ENDIF (HDF5_BUILT_AS_DYNAMIC_LIB)
-ENDIF (WIN32)
-
-# use, i.e. don't skip the full RPATH for the build tree
-SET(CMAKE_SKIP_BUILD_RPATH  FALSE)
-
-# when building, don't use the install RPATH already
-# (but later on when installing)
-SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
-
-# add the automatically determined parts of the RPATH
-# which point to directories outside the build tree to the install RPATH
-SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-
-
-ADD_LIBRARY (${CPP_LIBRARY_NAME} ${LIB_TYPE} ${ALL_SOURCES_AND_HEADERS})
-
-# Linker instructions
-IF (WIN32)
-	TARGET_LINK_LIBRARIES (${CPP_LIBRARY_NAME} ${MINIZIP_LIBRARY_RELEASE} ${HDF5_C_LIBRARY_RELEASE})
-# zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
-# zlib is linked because it is a very probable dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to zlib), zlib could be not present in these linked libraries.
-	IF (EXISTS ${ZLIB_LIBRARY_RELEASE})
-		TARGET_LINK_LIBRARIES (${CPP_LIBRARY_NAME} ${ZLIB_LIBRARY_RELEASE})
-	ENDIF ()
-# szip is linked because it is a potential dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to szip), szip could be not present in these linked libraries.
-	IF (EXISTS ${SZIP_LIBRARY_RELEASE})
-		TARGET_LINK_LIBRARIES (${CPP_LIBRARY_NAME} ${SZIP_LIBRARY_RELEASE})
-	ENDIF ()
-	SET_TARGET_PROPERTIES(${CPP_LIBRARY_NAME} PROPERTIES
-		LINK_FLAGS "/INCREMENTAL:NO /OPT:REF"
-		RUNTIME_OUTPUT_DIRECTORY ${FESAPI_BINARY_DIR}
-		SUFFIX ".${Fesapi_VERSION}.dll"
-		IMPORT_SUFFIX ".${Fesapi_VERSION}.lib"
-		VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR})
-ELSEIF (UNIX)
-	TARGET_LINK_LIBRARIES (${CPP_LIBRARY_NAME} ${UUID_LIBRARY_RELEASE} ${GSOAP_LIBRARIES} ${MINIZIP_LIBRARY_RELEASE} ${HDF5_C_LIBRARY_RELEASE})
-# zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
-# zlib is linked because it is a very probable dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to zlib), zlib could be not present in these linked libraries.
-	IF (EXISTS ${ZLIB_LIBRARY_RELEASE})
-		TARGET_LINK_LIBRARIES (${CPP_LIBRARY_NAME} ${ZLIB_LIBRARY_RELEASE})
-	ENDIF ()
-# szip is linked because it is a potential dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to szip), szip could be not present in these linked libraries.
-	IF (EXISTS ${SZIP_LIBRARY_RELEASE})
-		TARGET_LINK_LIBRARIES (${CPP_LIBRARY_NAME} ${SZIP_LIBRARY_RELEASE})
-	ENDIF ()
-
-	# In case of static link to hdf5 libraries, then we need to also link to some other libraries
-	IF( ${HDF5_C_LIBRARY_RELEASE} MATCHES ".*\.a$" )
-		TARGET_LINK_LIBRARIES (${CPP_LIBRARY_NAME} dl)
-	ENDIF ()
-	SET_TARGET_PROPERTIES(${CPP_LIBRARY_NAME} PROPERTIES
-		COMPILE_FLAGS "-fPIC"
-		VERSION ${Fesapi_VERSION}
-		SOVERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR})
-ENDIF (WIN32)
 
 # ============================================================================
 # Install FesapiCpp library
