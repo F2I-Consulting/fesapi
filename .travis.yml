@@ -80,8 +80,8 @@ install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       wget https://github.com/untereiner/Minizip/releases/download/1.2/Minizip-linux.zip;
       unzip Minizip-linux.zip -d Minizip-linux;
-      wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.sh
-      sudo sh cmake-3.12.0-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir
+      wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.sh;
+      sudo sh cmake-3.12.0-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
       wget https://github.com/untereiner/Minizip/releases/download/1.2/Minizip-osx.zip;
