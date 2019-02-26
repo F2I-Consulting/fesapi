@@ -56,8 +56,8 @@ install:
   - mkdir ../dependencies
   - cd ../dependencies
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      wget https://github.com/F2I-Consulting/Minizip/releases/download/1.1/minizip-1.1-linux-ubuntu1604-x86_64-gcc540.tar.gz
-      tar -xzf minizip-1.1-linux-ubuntu1604-x86_64-gcc540.tar.gz
+      wget https://github.com/F2I-Consulting/Minizip/releases/download/1.1/minizip-1.1-linux-ubuntu1604-x86_64-gcc540.tar.gz;
+      tar -xzf minizip-1.1-linux-ubuntu1604-x86_64-gcc540.tar.gz;
       wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.sh;
       sudo sh cmake-3.12.0-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir;
     fi
