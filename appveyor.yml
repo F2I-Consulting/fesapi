@@ -27,7 +27,7 @@ configuration:
 platform:
   - x64
  
- init:
+init:
   - echo %platform%
   - echo %APPVEYOR_BUILD_WORKER_IMAGE%
   - if "%platform%"=="x64" (set TARGET_PLATFORM= Win64)
