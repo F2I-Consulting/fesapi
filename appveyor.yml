@@ -26,11 +26,6 @@ configuration:
 
 platform:
   - x64
- 
-init:
-  - echo %platform%
-  - echo %APPVEYOR_BUILD_WORKER_IMAGE%
-  - if "%platform%"=="x64" (set TARGET_PLATFORM= Win64)
 
 build:
   parallel: true
@@ -43,7 +38,7 @@ for:
       only:
         - image: Visual Studio 2013
     init:
-      - set GENERATOR="Visual Studio 12 2013%TARGET_PLATFORM%"
+      - set GENERATOR="Visual Studio 12 2013 Win64"
       - echo %GENERATOR%
     install:
       - mkdir C:\projects\fesapiEnv\dependencies
@@ -87,7 +82,7 @@ for:
       only:
         - image: Visual Studio 2015
     init:
-      - set GENERATOR="Visual Studio 14 2015%TARGET_PLATFORM%"
+      - set GENERATOR="Visual Studio 14 2015 Win64"
       - echo %GENERATOR%
     install:
       - mkdir C:\projects\fesapiEnv\dependencies
