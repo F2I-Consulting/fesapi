@@ -72,7 +72,7 @@ ELSEIF (UNIX)
 endif (WIN32)
 
 if (WITH_ETP)
-	target_link_libraries (${CPP_LIBRARY_NAME} ${BOOST_SYSTEM_LIBRARY} ${CMAKE_THREAD_LIBS_INIT} ${AVRO_LIBRARY_RELEASE})
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${BOOST_SYSTEM_LIBRARY} ${CMAKE_THREAD_LIBS_INIT} ${AVRO_LIBRARY_RELEASE})
 endif (WITH_ETP)
 
 # ============================================================================
