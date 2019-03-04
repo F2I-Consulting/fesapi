@@ -2308,7 +2308,7 @@ namespace RESQML2_0_1_NS
 	{
 	public:
 		bool isAnHorizon() const;
-		void setAge(const ULONG64 & age);
+		void setAge(unsigned int age);
 		bool hasAnAge() const;
 		ULONG64 getAge() const;
 	};

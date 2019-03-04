@@ -59,7 +59,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Sets the age of the isntance.
 		*/
-		void setAge(const ULONG64 & age);
+		void setAge(unsigned int age);
 
 		/**
 		* Indicates if the instance has got an age or not.
