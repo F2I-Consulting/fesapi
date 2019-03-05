@@ -98,11 +98,6 @@ under the License.
 
 #include "witsml2_0/Well.h"
 
-#include "prodml2_0/HdfProxy.h"
-#include "prodml2_0/DasAcquisition.h"
-#include "prodml2_0/FiberOpticalPath.h"
-#include "prodml2_0/DasInstrumentBox.h"
-
 #include "tools/GuidTools.h"
 
 using namespace std;
@@ -111,7 +106,6 @@ using namespace gsoap_resqml2_0_1;
 using namespace COMMON_NS;
 using namespace RESQML2_0_1_NS;
 using namespace WITSML2_0_NS;
-using namespace PRODML2_0_NS;
 
 const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 
@@ -130,21 +124,6 @@ const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 		GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
 	}
 
-#define GET_PRODML_2_0_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
-	gsoap_eml2_1::_prodml2__##className* read = gsoap_eml2_1::soap_new_prodml2__##className(s, 1);\
-	gsoap_eml2_1::soap_read_prodml2__##className(s, read);
-
-
-#define GET_PRODML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
-	GET_PRODML_2_0_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
-	wrapper = new className(read);
-
-#define CHECK_AND_GET_PRODML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
-	(resqmlContentType.compare(className::XML_TAG) == 0)\
-	{\
-		GET_PRODML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
-	}
-
 // Create a fesapi partial wrappe based on a content type
 #define CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(className)\
 	(resqmlContentType.compare(className::XML_TAG) == 0)\
@@ -154,33 +133,25 @@ const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 
 namespace // anonymous namespace. Use only in that file.
 {
-	COMMON_NS::AbstractHdfProxy* default_builder(soap* soapContext, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, bool v21)
+	COMMON_NS::AbstractHdfProxy* default_builder(soap* soapContext, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath)
 	{
-		if (v21) return new PRODML2_0_NS::HdfProxy(soapContext, guid, title, packageDirAbsolutePath, externalFilePath);
-		else return new RESQML2_0_1_NS::HdfProxy(soapContext, guid, title, packageDirAbsolutePath, externalFilePath);
+		return new RESQML2_0_1_NS::HdfProxy(soapContext, guid, title, packageDirAbsolutePath, externalFilePath);
 	}
 
 	COMMON_NS::AbstractHdfProxy* default_builder(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath)
 	{
 		return new RESQML2_0_1_NS::HdfProxy(fromGsoap, packageDirAbsolutePath, externalFilePath);
 	}
-
-	PRODML2_0_NS::HdfProxy* default_builder(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath)
-	{
-		return new PRODML2_0_NS::HdfProxy(fromGsoap, packageDirAbsolutePath, externalFilePath);
-	}
 }
 
 EpcDocument::EpcDocument(const string & fileName, const openingMode & hdf5PermissionAccess) :
 	package(nullptr), s(nullptr), propertyKindMapper(nullptr), make_hdf_proxy(&default_builder), make_hdf_proxy_from_gsoap_proxy_2_0_1(&default_builder)
-	, make_hdf_proxy_from_gsoap_proxy_2_1(&default_builder)
 {
 	open(fileName, hdf5PermissionAccess);
 }
 
 EpcDocument::EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, const openingMode & hdf5PermissionAccess) :
 	package(nullptr), s(nullptr), make_hdf_proxy(&default_builder), make_hdf_proxy_from_gsoap_proxy_2_0_1(&default_builder)
-	, make_hdf_proxy_from_gsoap_proxy_2_1(&default_builder)
 {
 	open(fileName, hdf5PermissionAccess);
 
@@ -221,20 +192,6 @@ std::vector<std::string> EpcDocument::getAllUuids() const
 	}
 
 	return keys;
-}
-
-std::vector<PRODML2_0_NS::DasAcquisition*> EpcDocument::getDasAcquisitionSet() const
-{
-	std::vector<PRODML2_0_NS::DasAcquisition*> result;
-
-	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
-	{
-		if (it->second->getGsoapType() == SOAP_TYPE_gsoap_eml2_1_prodml2__DasAcquisition) {
-			result.push_back(static_cast<PRODML2_0_NS::DasAcquisition*>(it->second));
-		}
-	}
-
-	return result;
 }
 
 const std::vector<RESQML2_0_1_NS::LocalDepth3dCrs*> & EpcDocument::getLocalDepth3dCrsSet() const { return localDepth3dCrsSet; }
@@ -295,11 +252,13 @@ const std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> & EpcDocument:
 
 const std::vector<resqml2_0_1::Grid2dRepresentation*> & EpcDocument::getAllGrid2dRepresentationSet() const { return grid2dRepresentationSet; }
 
+const std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> & EpcDocument::getAllPolylineSetRepSet() const { return polylineSetRepresentationSet; }
+
 const std::vector<RESQML2_0_1_NS::SeismicLineFeature*> & EpcDocument::getSeismicLineSet() const { return seismicLineSet; }
 
 const std::vector<RESQML2_0_1_NS::WellboreFeature*> & EpcDocument::getWellboreSet() const { return wellboreSet; }
 
-std::vector<RESQML2_0_1_NS::PolylineRepresentation*> EpcDocument::getPolylineRepresentationSet() const { return polylineRepresentationSet; }
+const std::vector<RESQML2_0_1_NS::PolylineRepresentation*> & EpcDocument::getAllPolylineRepresentationSet() const { return polylineRepresentationSet; }
 
 const std::vector<RESQML2_0_1_NS::AbstractIjkGridRepresentation*> & EpcDocument::getIjkGridRepresentationSet() const { return ijkGridRepresentationSet; }
 unsigned int EpcDocument::getIjkGridRepresentationCount() const { return ijkGridRepresentationSet.size(); }
@@ -406,6 +365,7 @@ void EpcDocument::close()
 	triangulatedSetRepresentationSet.clear();
 	grid2dRepresentationSet.clear();
 	polylineRepresentationSet.clear();
+	polylineSetRepresentationSet.clear();
 	ijkGridRepresentationSet.clear();
 	unstructuredGridRepresentationSet.clear();
 	stratigraphicColumnSet.clear();
@@ -420,19 +380,6 @@ void EpcDocument::setFilePath(const std::string & filePath)
 	herr_t hdf5Err = H5Eset_auto(H5E_DEFAULT, nullptr, nullptr);
 	if (hdf5Err < 0) {
 		throw invalid_argument("The HDF5 error handling could not have been disabled.");
-	}
-
-	if (H5Fis_hdf5(filePath.c_str()) <= 0) { // In case of PRODML2.0, a single HDF5 file can be given without any EPC document
-		// Add .epc extension if it is not already done in parameter
-		size_t dotPos = this->filePath.find_last_of('.');
-		if (dotPos != string::npos) {
-			if (this->filePath.substr(dotPos) != DOCUMENT_EXTENSION) {
-				this->filePath += DOCUMENT_EXTENSION;
-			}
-		}
-		else {
-			this->filePath += DOCUMENT_EXTENSION;
-		}
 	}
 }
 
@@ -521,6 +468,9 @@ void EpcDocument::addGsoapProxy(COMMON_NS::AbstractObject* proxy)
 	}
 	else if (xmlTag.compare(PolylineRepresentation::XML_TAG) == 0) {
 		polylineRepresentationSet.push_back(static_cast<PolylineRepresentation* const>(proxy));
+	}
+	else if (xmlTag.compare(PolylineSetRepresentation::XML_TAG) == 0) {
+		polylineSetRepresentationSet.push_back(static_cast<PolylineSetRepresentation* const>(proxy));
 	}
 	else if (xmlTag.compare(AbstractIjkGridRepresentation::XML_TAG) == 0 || xmlTag.compare(AbstractIjkGridRepresentation::XML_TAG_TRUNCATED) == 0) {
 		ijkGridRepresentationSet.push_back(static_cast<AbstractIjkGridRepresentation* const>(proxy));
@@ -619,39 +569,8 @@ void EpcDocument::serialize(bool useZip64)
 	package->writePackage();
 }
 
-string EpcDocument::deserializeProdmlHdf5File()
-{
-	string result;
-
-	// The (fake) HDF proxy XML object
-	PRODML2_0_NS::HdfProxy* hdfProxy = new PRODML2_0_NS::HdfProxy(s, getStorageDirectory(), getName() + ".h5");
-	if (hdfProxy != nullptr) {
-		addFesapiWrapperAndDeleteItIfException(hdfProxy);
-	}
-	else {
-		warnings.push_back("The (fake) HDF proxy XML object could not be created.");
-	}
-
-	// The (fake) FiberOpticalPath XML object
-	FiberOpticalPath* fiberOpticalPath = new FiberOpticalPath(s, "00000000-0000-0000-0000-000000000000", "Fake/Virtual Fiber Optical Path", "Fake/Virtual Segment Uid", numeric_limits<double>::quiet_NaN(), gsoap_eml2_1::eml21__LengthUom__Em,
-		"Fake/Virtual Terminator Uid", gsoap_eml2_1::prodml2__TerminationType__termination_x0020at_x0020cable); // Some default fake values because everything is not part of the HDF5 dataset attribute collection so far.
-	addFesapiWrapperAndDeleteItIfException(fiberOpticalPath);
-
-	// The (fake) DasInstrumentBox XML object
-	DasInstrumentBox* dasInstrumentBox = new DasInstrumentBox(s, "00000000-0000-0000-0000-000000000001", "Fake/Virtual DAS Instrument Box", "Fake/Virtual Firmware version", "Fake/Virtual Instrument Name");
-	addFesapiWrapperAndDeleteItIfException(dasInstrumentBox);
-
-	// The (fake) Das Acquisition XML object
-	addFesapiWrapperAndDeleteItIfException(new PRODML2_0_NS::DasAcquisition(fiberOpticalPath, dasInstrumentBox, hdfProxy));
-
-	return result;
-}
-
 string EpcDocument::deserialize()
 {
-	if (H5Fis_hdf5(filePath.c_str()) > 0) { // In case of PRODML2.0, only one HDF5 file can be given without any EPC document
-		return deserializeProdmlHdf5File();
-	}
 	string result;
 	warnings = package->openForReading(filePath);
 
@@ -723,8 +642,7 @@ string EpcDocument::deserialize()
 				warnings.push_back("The content type " + resqmlContentType + " could not be wrapped by fesapi. The related instance will be ignored.");
 			}
 		}
-		else if (it->second.getContentTypeString().find("application/x-prodml+xml;version=2.0;type=") == 0 ||
-			it->second.getContentTypeString().find("application/x-eml+xml;version=2.1;type=") == 0)
+		else if (it->second.getContentTypeString().find("application/x-eml+xml;version=2.1;type=") == 0)
 		{
 			const string fileStr = package->extractFile(it->second.getExtensionOrPartName().substr(1));
 			if (fileStr.empty()) {
@@ -737,35 +655,7 @@ string EpcDocument::deserialize()
 			const string resqmlContentType = it->second.getContentTypeString().substr(lastEqualCharPos + 1);
 			if (resqmlContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 			{
-				if (it->second.getContentTypeString().find("application/x-eml+xml;version=2.1;type=") != 0) {
-					warnings.push_back("The content type " + resqmlContentType + " belongs to eml 2.1 namespace. However its content type has been set to prodml 2.0 namespace.");
-				}
-
-				// Look for the relative path of the HDF file
-				string relFilePath = "";
-				const size_t slashPos = it->second.getExtensionOrPartName().substr(1).find_last_of("/\\");
-				if (slashPos != string::npos) {
-					relFilePath = it->second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
-				}
-				relFilePath += "_rels" + it->second.getExtensionOrPartName().substr(it->second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
-				if (!package->fileExists(relFilePath)) {
-					addWarning("The HDF proxy " + it->second.getExtensionOrPartName() + " does not look to be associated to any HDF files : there is no rel file for this object. It is going to be withdrawn.");
-					continue;
-				}
-				FileRelationship relFile;
-				relFile.readFromString(package->extractFile(relFilePath));
-				const vector<Relationship> allRels = relFile.getAllRelationship();
-				string hdfRelativeFilePath;
-				for (size_t relIndex = 0; relIndex < allRels.size(); relIndex++) {
-					if (allRels[relIndex].getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
-						hdfRelativeFilePath = allRels[relIndex].getTarget();
-						break;
-					}
-				}
-
-				// Common initialization
-				gsoap_eml2_1::_eml21__EpcExternalPartReference* read = getEpcExternalPartReference_2_1_GsoapProxyFromGsoapContext();
-				wrapper = make_hdf_proxy_from_gsoap_proxy_2_1(read, getStorageDirectory(), hdfRelativeFilePath);
+				throw std::invalid_argument("Not supported yet");
 			}
 			else {
 				wrapper = getResqml2_0_1WrapperFromGsoapContext(resqmlContentType);
@@ -937,9 +827,6 @@ COMMON_NS::AbstractObject* EpcDocument::getResqml2_0_1WrapperFromGsoapContext(co
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyFeature)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyBoundaryInterpretation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyInterpretation)
-	else if CHECK_AND_GET_PRODML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DasAcquisition)
-	else if CHECK_AND_GET_PRODML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(FiberOpticalPath)
-	else if CHECK_AND_GET_PRODML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DasInstrumentBox)
 	else if (resqmlContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
@@ -1286,7 +1173,7 @@ vector<IjkGridExplicitRepresentation*> EpcDocument::getIjkGridExplicitRepresenta
 std::vector<PolylineRepresentation*> EpcDocument::getSeismicLinePolylineRepSet() const
 {
 	vector<PolylineRepresentation*> result;
-	vector<PolylineRepresentation*> polylineRepSet = getPolylineRepresentationSet();
+	vector<PolylineRepresentation*> polylineRepSet = getAllPolylineRepresentationSet();
 
 	for (size_t i = 0; i < polylineRepSet.size(); ++i) {
 		if (polylineRepSet[i]->isASeismicLine() || polylineRepSet[i]->isAFaciesLine()) {
@@ -1440,9 +1327,9 @@ COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_resqml2_0_1::eml20__
 //************ HDF *******************
 //************************************
 
-COMMON_NS::AbstractHdfProxy* EpcDocument::createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, bool v21)
+COMMON_NS::AbstractHdfProxy* EpcDocument::createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath)
 {
-	COMMON_NS::AbstractHdfProxy* result = make_hdf_proxy(getGsoapContext(), guid, title, packageDirAbsolutePath, externalFilePath, v21);
+	COMMON_NS::AbstractHdfProxy* result = make_hdf_proxy(getGsoapContext(), guid, title, packageDirAbsolutePath, externalFilePath);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2412,57 +2299,6 @@ WITSML2_0_NS::WellboreCompletion* EpcDocument::createWellboreCompletion(WITSML2_
 	return result;
 }
 
-//************************************
-//************ PRODML ****************
-//************************************
-
-PRODML2_0_NS::DasAcquisition* EpcDocument::createDasAcquisition(PRODML2_0_NS::FiberOpticalPath* fiberOpticalPath, PRODML2_0_NS::DasInstrumentBox* dasInstrumentBox,
-	const std::string & guid, const std::string & title,
-	const std::string & jobGuid, const std::string & facilityId, const std::string & vendorName,
-	const double & pulseRate, const gsoap_eml2_1::eml21__FrequencyUom & pulseRateUom,
-	const double & pulseWidth, const gsoap_eml2_1::eml21__TimeUom & pulseWidthUom,
-	const double & gaugeLength, const gsoap_eml2_1::eml21__LengthUom & gaugeLengthUom,
-	const double & spatialSamplingInterval, const gsoap_eml2_1::eml21__LengthUom & spatialSamplingIntervalUom,
-	const double & minimumFrequency, const gsoap_eml2_1::eml21__FrequencyUom & minimumFrequencyUom,
-	const double & maximumFrequency, const gsoap_eml2_1::eml21__FrequencyUom & maximumFrequencyUom,
-	const ULONG64 & lociCount, const ULONG64 & startLocusIndex,
-	const std::string & measurementStartIsoTime, bool triggeredMeasurement)
-{
-	PRODML2_0_NS::DasAcquisition* result = new PRODML2_0_NS::DasAcquisition(fiberOpticalPath, dasInstrumentBox,
-		guid, title,
-		jobGuid, facilityId, vendorName,
-		pulseRate, pulseRateUom,
-		pulseWidth, pulseWidthUom,
-		gaugeLength, gaugeLengthUom,
-		spatialSamplingInterval, spatialSamplingIntervalUom,
-		minimumFrequency, minimumFrequencyUom,
-		maximumFrequency, maximumFrequencyUom,
-		lociCount, startLocusIndex,
-		measurementStartIsoTime, triggeredMeasurement);
-	addFesapiWrapperAndDeleteItIfException(result);
-	return result;
-}
-
-PRODML2_0_NS::FiberOpticalPath* EpcDocument::createFiberOpticalPath(const std::string & guid, const std::string & title,
-	const std::string & firstSegmentUid, const double & firstSegmentLength, const gsoap_eml2_1::eml21__LengthUom & firstSegmentLengthUom,
-	const std::string & terminatorUid, const gsoap_eml2_1::prodml2__TerminationType & terminationType)
-{
-	PRODML2_0_NS::FiberOpticalPath* result = new PRODML2_0_NS::FiberOpticalPath(getGsoapContext(), guid, title,
-		firstSegmentUid, firstSegmentLength, firstSegmentLengthUom,
-		terminatorUid, terminationType);
-	addFesapiWrapperAndDeleteItIfException(result);
-	return result;
-}
-
-PRODML2_0_NS::DasInstrumentBox* EpcDocument::createDasInstrumentBox(const std::string & guid, const std::string & title,
-	const std::string & firmwareVersion, const std::string & instrumentName)
-{
-	PRODML2_0_NS::DasInstrumentBox* result = new PRODML2_0_NS::DasInstrumentBox(getGsoapContext(), guid, title,
-		firmwareVersion, instrumentName);
-	addFesapiWrapperAndDeleteItIfException(result);
-	return result;
-}
-
 void COMMON_NS::EpcDocument::set_hdf_proxy_builder(HdfProxyBuilder builder)
 {
   make_hdf_proxy = builder;
@@ -2471,11 +2307,6 @@ void COMMON_NS::EpcDocument::set_hdf_proxy_builder(HdfProxyBuilder builder)
 void COMMON_NS::EpcDocument::set_hdf_proxy_builder(HdfProxyBuilderFromGsoapProxy2_0_1 builder)
 {
 	make_hdf_proxy_from_gsoap_proxy_2_0_1 = builder;
-}
-
-void COMMON_NS::EpcDocument::set_hdf_proxy_builder(HdfProxyBuilderFromGsoapProxy2_1 builder)
-{
-	make_hdf_proxy_from_gsoap_proxy_2_1 = builder;
 }
 
 int EpcDocument::getGsoapErrorCode() const

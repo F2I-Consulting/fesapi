@@ -162,8 +162,8 @@ namespace RESQML2_0_1_NS
 		* @param	maximumValue			The maximum value of the values in the HDF5 dataset.
 		* @return	The name of the referenced HDF5 dataset.
 		*/
-		std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* proxy, const std::string & datasetName, const long & nullValue, const long &  minimumValue, const long &  maximumValue);
-		std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & dataset = "", const long & nullValue = (std::numeric_limits<long>::max)());
+		std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* proxy, const std::string & datasetName, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue);
+		std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & dataset = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
 
 		/**
 		* Check if the associated local property kind is allowed for this property.

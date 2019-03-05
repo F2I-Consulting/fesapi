@@ -277,13 +277,7 @@ void HdfProxy::selectArrayNdOfValues(
 		}
 	}
 
-	H5S_seloper_t selectionMode;
-	if (newSelection)
-		selectionMode = H5S_SELECT_SET;
-	else
-		selectionMode = H5S_SELECT_OR;
-
-	herr_t result = H5Sselect_hyperslab(filespace, selectionMode, offsetInEachDimension, strideInEachDimension, blockCountPerDimension, blockSizeInEachDimension);
+	herr_t result = H5Sselect_hyperslab(filespace, newSelection ? H5S_SELECT_SET : H5S_SELECT_OR, offsetInEachDimension, strideInEachDimension, blockCountPerDimension, blockSizeInEachDimension);
 	if (result < 0) {
 		H5Sclose(filespace);
 		H5Dclose(dataset);
@@ -333,10 +327,10 @@ void HdfProxy::readArrayNdOfValues(
 	}
 }
 
-int HdfProxy::getHdfDatatypeInDataset(const std::string & datasetName) const
+int HdfProxy::getHdfDatatypeInDataset(const std::string & datasetName)
 {
 	if (!isOpened()) {
-		throw invalid_argument("The HDF5 file ust be opened");
+		open();
 	}
 
 	hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT); 
@@ -349,10 +343,10 @@ int HdfProxy::getHdfDatatypeInDataset(const std::string & datasetName) const
 	return native_datatype;
 }
 
-int HdfProxy::getHdfDatatypeClassInDataset(const std::string & datasetName) const
+int HdfProxy::getHdfDatatypeClassInDataset(const std::string & datasetName)
 {
 	if (!isOpened()) {
-		throw invalid_argument("The HDF5 file ust be opened");
+		open();
 	}
 
 	hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
@@ -831,12 +825,9 @@ int HdfProxy::openOrCreateGroupInRootGroup(const string & groupName)
 		H5O_info_t info;
 		herr_t status = H5Oget_info_by_name(rootGroup, groupName.c_str(), &info, H5P_DEFAULT);
 
-		if (status >= 0) {
-			result = H5Gopen(rootGroup, group.c_str(), H5P_DEFAULT);
-		}
-		else {
-			result = H5Gcreate(rootGroup, group.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
-		}
+		result = status >= 0
+			? result = H5Gopen(rootGroup, group.c_str(), H5P_DEFAULT)
+			: result = H5Gcreate(rootGroup, group.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 		H5Gclose(rootGroup);
 		rootGroup = result;
 
@@ -1245,4 +1236,3 @@ bool HdfProxy::exist(const std::string & absolutePathInHdfFile) const
 {
 	return H5Oexists_by_name(hdfFile, absolutePathInHdfFile.c_str(), H5P_DEFAULT) > 0;
 }
-

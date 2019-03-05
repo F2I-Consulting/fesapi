@@ -1,9 +1,9 @@
-CMAKE_MINIMUM_REQUIRED (VERSION 3.2)
+cmake_minimum_required (VERSION 3.9.2)
 
-PROJECT (Fesapi)
+project (Fesapi)
 
-SET (FESAPI_ROOT_DIR ${CMAKE_SOURCE_DIR})
-SET (FESAPI_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
+set (FESAPI_ROOT_DIR ${CMAKE_SOURCE_DIR})
+set (FESAPI_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
 # version mechanism
 set (Fesapi_VERSION_MAJOR 0)
@@ -15,16 +15,23 @@ set (Fesapi_VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR}.${Fesapi_VER
 
 set (CPP_LIBRARY_NAME FesapiCpp)
 set (CS_LIBRARY_NAME FesapiCs)
-SET (UNDER_DEV TRUE)
+set (UNDER_DEV FALSE)
 if (${UNDER_DEV})
 	set (CPP_LIBRARY_NAME ${CPP_LIBRARY_NAME}UnderDev)
 	set (CS_LIBRARY_NAME ${CS_LIBRARY_NAME}UnderDev)
 endif (${UNDER_DEV})
 
+if(NOT CMAKE_BUILD_TYPE)
+	set(CMAKE_BUILD_TYPE "Release")
+endif()
 
-# ============================================================================
-# user variables
-# ============================================================================
+# we check if Resqml/Witsml proxies are already provided
+FILE (GLOB FESAPI_PROXIES_SOURCES ${FESAPI_ROOT_DIR}/src/proxies/*.cpp)
+SET (FESAPI_PROXIES_SOURCES
+	${FESAPI_PROXIES_SOURCES}
+	${CMAKE_CURRENT_SOURCE_DIR}/src/proxies/struct_tm.cpp
+)
+FILE (GLOB FESAPI_PROXIES_HEADERS ${FESAPI_ROOT_DIR}/src/proxies/*.h)
 
 # on Windows checking if the target architecture is 32 bits or 64 bits
 IF (WIN32)
@@ -125,19 +132,11 @@ ENDIF (UNIX)
 # some useful variables
 # ============================================================================
 
-IF (BUILD_SHARED_LIBS)
-	SET (LIB_TYPE SHARED)
-ELSE (BUILD_SHARED_LIBS)
-	SET (LIB_TYPE STATIC)
-ENDIF (BUILD_SHARED_LIBS)
-
-# ============================================================================
-# compilation options
-# ============================================================================
-
-IF (WIN32)
-	SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
-ENDIF (WIN32)
+if (BUILD_SHARED_LIBS)
+	set (LIB_TYPE SHARED)
+else (BUILD_SHARED_LIBS)
+	set (LIB_TYPE STATIC)
+endif (BUILD_SHARED_LIBS)
 
 # ============================================================================
 # including subdirectories

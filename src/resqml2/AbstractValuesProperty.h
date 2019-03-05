@@ -41,7 +41,7 @@ namespace RESQML2_NS
 		* @param	nullValue			Only relevant for integer hdf5 datasets. Indeed, Resqml (and fesapi) forces null value for floating point ot be NaN value.
 		* @return	The name of the hdf5 dataset.
 		*/
-		std::string pushBackRefToExistingIntegerDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", const long & nullValue = (std::numeric_limits<long>::max)());
+		std::string pushBackRefToExistingIntegerDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
 
 	public:
 
@@ -86,7 +86,7 @@ namespace RESQML2_NS
 		* @param	nullValue			Only relevant for integer hdf5 datasets. Indeed, Resqml (and fesapi) forces null value for floating point to be NaN value.
 		* @return	The name of the hdf5 dataset.
 		*/
-		virtual std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", const long & nullValue = (std::numeric_limits<long>::max)()) = 0;
+		virtual std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)()) = 0;
 
 		/**
 		* Get all the values of the instance which are supposed to be long ones.
@@ -100,7 +100,7 @@ namespace RESQML2_NS
 		* Not for continuous property values.
 		* @return the null value
 		*/
-		long getNullValueOfPatch(const unsigned int & patchIndex);
+		LONG64 getNullValueOfPatch(unsigned int patchIndex);
 
 		/**
 		* Get all the values of the instance which are supposed to be unsigned long ones.
