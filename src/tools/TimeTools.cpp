@@ -46,7 +46,7 @@ std::string timeTools::convertMicrosecondUnixTimestampToIso(const long long & ts
 	return oss.str();
 }
 
-std::string timeTools::convertUnixTimestampToIso(const long long & ts)
+std::string timeTools::convertUnixTimestampToIso(const time_t & ts)
 {
 	char buf[20]; // 19 for the string below +1 for the terminating char
 	strftime(buf, 20, "%Y-%m-%dT%H:%M:%S", gmtime(&ts));
@@ -60,9 +60,13 @@ std::string timeTools::convertUnixTimestampToIso(const long long & ts)
 time_t timeTools::convertIsoToUnixTimestamp(const std::string & s)
 {
 	struct tm tm;
+#if defined(__gnu_linux__) || defined(__APPLE__)
+	strptime(s.c_str(), "%Y-%m-%dT%H:%M:%S", &tm);
+#elif defined(_WIN32)
 	std::istringstream iss(s);
 	iss >> std::get_time(&tm, "%Y-%m-%dT%H:%M:%S");
-	return timegm(&tm);
+#endif
+	return timeTools::timegm(&tm);
 }
 
 time_t timeTools::timegm(struct tm *tm)

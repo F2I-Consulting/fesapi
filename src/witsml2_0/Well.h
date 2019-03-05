@@ -102,7 +102,7 @@ namespace WITSML2_0_NS
 		std::vector<Wellbore*> wellboreSet;
 		std::vector<WellCompletion* > wellCompletionSet;
 
-		friend void RESQML2_0_1_NS::WellboreFeature::setWitsmlWellbore(Wellbore * wellbore);
+		friend void RESQML2_0_1_NS::WellboreFeature::setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore);
 		friend void Wellbore::setWell(Well* witsmlWell);
 		friend void WellCompletion::setWell(Well* witsmlWell);
 	};
