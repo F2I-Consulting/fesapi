@@ -104,7 +104,7 @@ public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject res
 		ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellboreCompletion(cPtr, owner);
 	}else
 	{
-		throw new System.ArgumentException(string.Format("Encountered type '{0}' that is not known to be a Resqml concrete class", type.ToString()));
+		throw new System.ArgumentException(string.Format("Encountered type '{0}' that is not known to be a Resqml or Witsml concrete class", type.ToString()));
 	}
 	
 	return ret;
