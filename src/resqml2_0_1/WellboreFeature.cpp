@@ -79,7 +79,7 @@ void WellboreFeature::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDo
 
 	if (resqmlWellbore->WitsmlWellbore != nullptr && resqmlWellbore->WitsmlWellbore->WitsmlWellbore != nullptr)
 	{
-		WITSML2_0_NS::Wellbore* witsmlWellbore = static_cast<WITSML2_0_NS::Wellbore*>(epcDoc->getResqmlAbstractObjectByUuid(resqmlWellbore->WitsmlWellbore->WitsmlWellbore->UUID));
+		WITSML2_0_NS::Wellbore* witsmlWellbore = static_cast<WITSML2_0_NS::Wellbore*>(epcDoc->getDataObjectByUuid(resqmlWellbore->WitsmlWellbore->WitsmlWellbore->UUID));
 		if (witsmlWellbore != nullptr)
 		{
 			updateXml = false;

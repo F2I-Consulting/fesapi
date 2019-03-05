@@ -122,21 +122,21 @@ void EarthModelInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocume
 
 	if (interp->Structure)
 	{
-		StructuralOrganizationInterpretation* structuralOrganizationInterp = static_cast<StructuralOrganizationInterpretation*>(epcDoc->getResqmlAbstractObjectByUuid(interp->Structure->UUID));
+		StructuralOrganizationInterpretation* structuralOrganizationInterp = static_cast<StructuralOrganizationInterpretation*>(epcDoc->getDataObjectByUuid(interp->Structure->UUID));
 		if (structuralOrganizationInterp)
 			setStructuralOrganizationInterpretation(structuralOrganizationInterp);
 	}
 
 	if (interp->StratigraphicColumn)
 	{
-		StratigraphicColumn* stratCol = static_cast<StratigraphicColumn*>(epcDoc->getResqmlAbstractObjectByUuid(interp->StratigraphicColumn->UUID));
+		StratigraphicColumn* stratCol = static_cast<StratigraphicColumn*>(epcDoc->getDataObjectByUuid(interp->StratigraphicColumn->UUID));
 		if (stratCol)
 			setStratiColumn(stratCol);
 	}
 
 	for (unsigned int i = 0; i < interp->StratigraphicOccurrences.size(); i++)
 	{
-		pushBackStratiOccurence(static_cast<StratigraphicOccurrenceInterpretation*>(epcDoc->getResqmlAbstractObjectByUuid(interp->StratigraphicOccurrences[i]->UUID)));
+		pushBackStratiOccurence(static_cast<StratigraphicOccurrenceInterpretation*>(epcDoc->getDataObjectByUuid(interp->StratigraphicOccurrences[i]->UUID)));
 	}
 
 	updateXml = true;

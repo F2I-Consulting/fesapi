@@ -98,7 +98,7 @@ gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind PropertyKind::getParentEnergistic
 
 PropertyKind* PropertyKind::getParentLocalPropertyKind() const
 {
-	return static_cast<PropertyKind*>(epcDocument->getResqmlAbstractObjectByUuid(getParentLocalPropertyKindUuid()));
+	return static_cast<PropertyKind*>(epcDocument->getDataObjectByUuid(getParentLocalPropertyKindUuid()));
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* PropertyKind::getParentLocalPropertyKindDor() const
@@ -171,10 +171,10 @@ void PropertyKind::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 	}
 
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getParentLocalPropertyKindDor();
-	RESQML2_NS::PropertyKind* parentPk = epcDoc->getResqmlAbstractObjectByUuid<PropertyKind>(dor->UUID);
+	RESQML2_NS::PropertyKind* parentPk = epcDoc->getDataObjectByUuid<PropertyKind>(dor->UUID);
 	if (parentPk == nullptr) {
 		epcDoc->createPartial(dor);
-		parentPk = epcDoc->getResqmlAbstractObjectByUuid<PropertyKind>(dor->UUID);
+		parentPk = epcDoc->getDataObjectByUuid<PropertyKind>(dor->UUID);
 		if (parentPk == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
 		}

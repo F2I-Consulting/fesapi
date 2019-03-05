@@ -182,7 +182,7 @@ DasAcquisition::DasAcquisition(FiberOpticalPath* fiberOpticalPath, DasInstrument
 
 COMMON_NS::AbstractHdfProxy* DasAcquisition::getHdfProxy() const
 {
-	COMMON_NS::AbstractHdfProxy* hdfProxy = static_cast<COMMON_NS::AbstractHdfProxy*>(epcDocument->getResqmlAbstractObjectByUuid(getHdfProxyUuid()));
+	COMMON_NS::AbstractHdfProxy* hdfProxy = static_cast<COMMON_NS::AbstractHdfProxy*>(epcDocument->getDataObjectByUuid(getHdfProxyUuid()));
 	if (hdfProxy != nullptr && !hdfProxy->isOpened()) {
 		hdfProxy->open();
 	}
@@ -218,7 +218,7 @@ gsoap_eml2_1::eml21__DataObjectReference* DasAcquisition::getFiberOpticalPathDor
 
 FiberOpticalPath* DasAcquisition::getFiberOpticalPath() const
 {
-	return getEpcDocument()->getResqmlAbstractObjectByUuid<FiberOpticalPath>(getFiberOpticalPathDor()->Uuid);
+	return getEpcDocument()->getDataObjectByUuid<FiberOpticalPath>(getFiberOpticalPathDor()->Uuid);
 }
 
 void DasAcquisition::setFiberOpticalPath(FiberOpticalPath* fiberOpticalPath)
@@ -244,7 +244,7 @@ gsoap_eml2_1::eml21__DataObjectReference* DasAcquisition::getDasInstrumentBoxDor
 
 DasInstrumentBox* DasAcquisition::getDasInstrumentBox() const
 {
-	return getEpcDocument()->getResqmlAbstractObjectByUuid<DasInstrumentBox>(getDasInstrumentBoxDor()->Uuid);
+	return getEpcDocument()->getDataObjectByUuid<DasInstrumentBox>(getDasInstrumentBoxDor()->Uuid);
 }
 
 void DasAcquisition::setDasInstrumentBox(DasInstrumentBox* dasInstrumentBox)

@@ -92,7 +92,7 @@ IF (WITH_JAVA_WRAPPING)
 	
 	# Create the dedicated swig files
 	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/swigResqml2JavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigResqml2JavaInclude.i) # Overwrite if different
-	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/swigWitsml1_4_1_1JavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigWitsml1_4_1_1JavaInclude.i) # Overwrite if different
+	#CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/swigWitsml1_4_1_1JavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigWitsml1_4_1_1JavaInclude.i) # Overwrite if different
 	CONFIGURE_FILE(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR}/java/example/FesapiJavaExample.java) # Overwrite if different
 
 	# Filling

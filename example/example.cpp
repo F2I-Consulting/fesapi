@@ -86,10 +86,7 @@ under the License.
 #include "resqml2_0_1/Activity.h"
 #include "resqml2_0_1/ActivityTemplate.h"
 
-// TODO à mettre à jour
 #include "witsml2_0/Well.h"
-//#include "witsml1_4_1_1/CoordinateReferenceSystem.h"
-//#include "witsml1_4_1_1/Trajectory.h"
 
 #include "prodml2_0/DasAcquisition.h"
 #include "prodml2_0/FiberOpticalPath.h"
@@ -123,15 +120,8 @@ StratigraphicColumnRankInterpretation* stratiColumnRank;
 WITSML2_0_NS::Well* witsmlWell = NULL;
 WITSML2_0_NS::Wellbore* witsmlWellbore = NULL;
 
-// TODO à mettre à jour
-//WITSML1_4_1_1_NS::CoordinateReferenceSystem* witsmlCrs;
-
-// TODO à mettre à jour (repris du code de l'exemple de la branche witsml2 de Philippe)
 void serializeWells(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
-	//WITSML2_1_NS::Trajectory* witsmlTraj = nullptr;
-	//WITSML2_1_NS::Log* witsmlLog = nullptr;
-
 	// WELL
 	witsmlWell = pck->createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1");
 	witsmlWell->pushBackLocation("8cd3c8b2-face-4426-8aea-ae34870bd969", 275, 75, 0);
@@ -140,35 +130,6 @@ void serializeWells(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* h
 
 	// WELLBORE
 	witsmlWellbore = pck->createWellbore(witsmlWell, "3bd60188-5688-43df-89bb-935fe86a813f", "Wellbore1");
-
-	// TRAJECTORY
-	/*witsmlTraj = pck->createTrajectory(witsmlWellbore, "9d09c16e-44b0-4baf-89b0-c6de3f66d0e3", "Trajectory", gsoap_eml2_2::witsml2__ChannelStatus__active);
-	double mds[4] = { 15, 340, 515, 1015 };
-	double tvds[4] = { 0, 325, 500, 1000 };
-	double incl[4] = { .0, .0, .0, .0 };
-	double azi[4] = { .0, .0, .0, .0 };
-	double eastings[4] = { 275, 275, 275, 275 };
-	double northings[4] = { 75, 75, 75, 75 };
-	witsmlTraj->setEastingNorthingTrajectoryStations(4,
-	1, gsoap_witsml2_0::witsml1__MeasuredDepthUom__m, mds,
-	0, gsoap_witsml2_0::witsml1__WellVerticalCoordinateUom__m, tvds,
-	gsoap_witsml2_0::witsml1__PlaneAngleUom__rad, incl,
-	gsoap_witsml2_0::witsml1__AziRef__grid_x0020north, azi,
-	gsoap_witsml2_0::witsml1__LengthUom__m, eastings, northings,
-	witsmlCrs);
-	*/
-
-	// LOG
-	/*
-	witsmlLog = pck->createLog(witsmlWellbore, "c078b261-36ff-4592-99cc-26a03bc84804", "Log");
-	vector<string> witsmlLogMds;
-	witsmlLogMds.push_back("0,0");
-	witsmlLogMds.push_back("250,1");
-	witsmlLogMds.push_back("500,2");
-	witsmlLogMds.push_back("750,3");
-	witsmlLogMds.push_back("1000,4");
-	witsmlLog->setValues("", ",", "m", .0, 1000, 250, gsoap_witsml2_0::witsml1__LogIndexDirection__increasing, "MD,IntervalIdx", "m,Euc", witsmlLogMds);
-	*/
 
 	////////////////////////
 	// RESQML
@@ -185,39 +146,34 @@ void serializeWells(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* h
 	// Representation
 	RESQML2_NS::MdDatum* mdInfo = pck->createMdDatum("", "md Info", local3dCrs, gsoap_resqml2_0_1::resqml2__MdReference__mean_x0020sea_x0020level, 275, 75, 0);
 
-	////Geometry	
-	//w1i1TrajRep = pck->createWellboreTrajectoryRepresentation(wellbore1Interp1, "", "Wellbore1 Interp1 TrajRep", mdInfo);
-	//double controlPoints[12] = { 275, 75, 0, 275, 75, 325, 275, 75, 500, 275, 75, 1000 };
-	//double trajectoryTangentVectors[12] = { 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1 };
-	//double trajectoryMds[4] = { 0, 325, 500, 1000 };
-	//w1i1TrajRep->setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, hdfProxy);
-	//if (witsmlTraj)
-	//	w1i1TrajRep->setWitsmlTrajectory(witsmlTraj);
+	//Geometry	
+	w1i1TrajRep = pck->createWellboreTrajectoryRepresentation(wellbore1Interp1, "", "Wellbore1 Interp1 TrajRep", mdInfo);
+	double controlPoints[12] = { 275, 75, 0, 275, 75, 325, 275, 75, 500, 275, 75, 1000 };
+	double trajectoryTangentVectors[12] = { 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1 };
+	double trajectoryMds[4] = { 0, 325, 500, 1000 };
+	w1i1TrajRep->setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, hdfProxy);
+	
+	// WellboreFeature frame
+	WellboreFrameRepresentation* w1i1FrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
+	double logMds[5] = { 0, 250, 500, 750, 1000 };
+	w1i1FrameRep->setMdValues(logMds, 5, hdfProxy);
 
-	//// WellboreFeature frame
-	//WellboreFrameRepresentation* w1i1FrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
-	//double logMds[5] = { 0, 250, 500, 750, 1000 };
-	//w1i1FrameRep->setMdValues(logMds, 5, hdfProxy);
+	WellboreFrameRepresentation* w1i1RegularFrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
+	w1i1RegularFrameRep->setMdValues(0, 200, 6);
 
-	//WellboreFrameRepresentation* w1i1RegularFrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
-	//w1i1RegularFrameRep->setMdValues(0, 200, 6);
+	RESQML2_NS::PropertyKind * unitNumberPropType = pck->createPropertyKind("", "Unit number", "urn:resqml:geosiris.com:testingAPI", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__discrete);
 
-	//RESQML2_NS::PropertyKind * unitNumberPropType = pck->createPropertyKind("", "Unit number", "urn:resqml:geosiris.com:testingAPI", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__discrete);
-
-	//DiscreteProperty* discreteProp = pck->createDiscreteProperty(w1i1FrameRep, "61c2917c-2334-4205-824e-d4f4a0cf6d8e", "Wellbore1 Interp1 FrameRep IntervalIndex", 1,
-	//	gsoap_resqml2_0_1::resqml2__IndexableElements__intervals, unitNumberPropType);
-	//char unitNumbers[5] = { 0, 1, 2, 3, 4 };
-	//discreteProp->pushBackCharHdf5Array1dOfValues(unitNumbers, 5, hdfProxy, -1);
-	//if (witsmlLog != nullptr) {
-	//	w1i1FrameRep->setWitsmlLog(witsmlLog);
-	//}
+	DiscreteProperty* discreteProp = pck->createDiscreteProperty(w1i1FrameRep, "61c2917c-2334-4205-824e-d4f4a0cf6d8e", "Wellbore1 Interp1 FrameRep IntervalIndex", 1,
+		gsoap_resqml2_0_1::resqml2__IndexableElements__intervals, unitNumberPropType);
+	char unitNumbers[5] = { 0, 1, 2, 3, 4 };
+	discreteProp->pushBackCharHdf5Array1dOfValues(unitNumbers, 5, hdfProxy, -1);
 }
 
 void serializePerforations(COMMON_NS::EpcDocument * pck)
 {
 	// WELL COMPLETION
 	WITSML2_0_NS::WellCompletion* wellCompletion = pck->createWellCompletion(witsmlWell, "6593d580-2f44-4b18-97ce-8a9cf42a0414", "WellCompletion1");
-	WITSML2_0_NS::WellCompletion* toto = static_cast<WITSML2_0_NS::WellCompletion*>(pck->getResqmlAbstractObjectByUuid("6593d580-2f44-4b18-97ce-8a9cf42a0414"));
+	WITSML2_0_NS::WellCompletion* toto = static_cast<WITSML2_0_NS::WellCompletion*>(pck->getDataObjectByUuid("6593d580-2f44-4b18-97ce-8a9cf42a0414"));
 	toto->getActivityCount();
 	// WELLBORE COMPLETION
 	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = pck->createWellboreCompletion(witsmlWellbore, wellCompletion, "7bda8ecf-2037-4dc7-8c59-db6ca09f2008", "WellboreCompletion1", "wellCompletionName");
@@ -234,45 +190,32 @@ void serializePerforations(COMMON_NS::EpcDocument * pck)
 	wellboreCompletion->pushBackPerforationHistoryEntry("1", gsoap_eml2_1::witsml2__PerforationStatus__squeezed, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 1995, date2);
 }
 
-// TODO à mettre à jour
-//void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
-//{
-//	WITSML1_4_1_1_NS::FormationMarker* witsmlFormationMarker0 = NULL;
-//	WITSML1_4_1_1_NS::FormationMarker* witsmlFormationMarker1 = NULL;
-//
-//	StratigraphicColumn* stratiColumn = pck->createStratigraphicColumn("7f6666a0-fa3b-11e5-a509-0002a5d5c51b", "Stratigraphic column");
-//	OrganizationFeature* stratiModelFeature = pck->createStratigraphicModel("", "stratiModel");
-//	StratigraphicOccurrenceInterpretation* stratiOccurence = pck->createStratigraphicOccurrenceInterpretationInApparentDepth(stratiModelFeature, "", "stratiModel Interp");
-//	stratiColumnRank = pck->createStratigraphicColumnRankInterpretationInApparentDepth(stratiModelFeature, "ba06f220-fa3b-11e5-928c-0002a5d5c51b", "Stratigraphic column rank", 0);
-//	stratiColumn->pushBackStratiColumnRank(stratiColumnRank);
-//	StratigraphicUnitFeature* stratiUnit0Feature = pck->createStratigraphicUnit("0426c6a0-fa3c-11e5-8b9c-0002a5d5c51b", "Unit 0");
-//	StratigraphicUnitInterpretation* stratiUnit0Interp = pck->createStratigraphicUnitInterpretation(stratiUnit0Feature, "1a919b40-fa3c-11e5-a72c-0002a5d5c51b", "Unit 0 interp");
-//	StratigraphicUnitFeature* stratiUnit1Feature = pck->createStratigraphicUnit("273a92c0-fa3c-11e5-85f8-0002a5d5c51b", "Unit 1");
-//	StratigraphicUnitInterpretation* stratiUnit1Interp = pck->createStratigraphicUnitInterpretation(stratiUnit1Feature, "2b9169c0-fa3c-11e5-ae2c-0002a5d5c51b", "Unit 1 interp");
-//
-//	// Build the stratigraphic column rank
-//	stratiColumnRank->pushBackStratiUnitInterpretation(stratiUnit0Interp);
-//	stratiColumnRank->pushBackStratiUnitInterpretation(stratiUnit1Interp);
-//	stratiColumnRank->pushBackStratigraphicBinaryContact(stratiUnit0Interp, gsoap_resqml2_0_1::resqml2__ContactMode__proportional, stratiUnit1Interp, gsoap_resqml2_0_1::resqml2__ContactMode__proportional, horizon2Interp1);
-//
-//	// WellboreFeature marker frame
-//	WellboreMarkerFrameRepresentation* wmf = pck->createWellboreMarkerFrameRepresentation(wellbore1Interp1, "", "Wellbore Marker Frame", w1i1TrajRep);
-//	double markerMdValues[2] = { 350, 550 };
-//	wmf->setMdValues(markerMdValues, 2, hdfProxy);
-//	WellboreMarker* marker0 = wmf->pushBackNewWellboreMarker("", "", gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__horizon);
-//	marker0->setBoundaryFeatureInterpretation(horizon1Interp1);
-//	WellboreMarker* marker1 = wmf->pushBackNewWellboreMarker("", "testing Fault", gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__fault);
-//	marker1->setBoundaryFeatureInterpretation(fault1Interp1);
-//
-//	// WITSML MARKER
-//	witsmlFormationMarker0 = witsmlWellbore->createFormationMarker("", "marker0", 0, gsoap_witsml1_4_1_1::witsml1__MeasuredDepthUom__m, 350);
-//	witsmlFormationMarker1 = witsmlWellbore->createFormationMarker("", "marker1", 0, gsoap_witsml1_4_1_1::witsml1__MeasuredDepthUom__m, 550);
-//
-//	if (witsmlFormationMarker0)
-//		wmf->setWitsmlFormationMarker(0, witsmlFormationMarker0);
-//	if (witsmlFormationMarker1)
-//		wmf->setWitsmlFormationMarker(1, witsmlFormationMarker1);
-//}
+void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
+{
+	StratigraphicColumn* stratiColumn = pck->createStratigraphicColumn("7f6666a0-fa3b-11e5-a509-0002a5d5c51b", "Stratigraphic column");
+	OrganizationFeature* stratiModelFeature = pck->createStratigraphicModel("", "stratiModel");
+	StratigraphicOccurrenceInterpretation* stratiOccurence = pck->createStratigraphicOccurrenceInterpretationInApparentDepth(stratiModelFeature, "", "stratiModel Interp");
+	stratiColumnRank = pck->createStratigraphicColumnRankInterpretationInApparentDepth(stratiModelFeature, "ba06f220-fa3b-11e5-928c-0002a5d5c51b", "Stratigraphic column rank", 0);
+	stratiColumn->pushBackStratiColumnRank(stratiColumnRank);
+	StratigraphicUnitFeature* stratiUnit0Feature = pck->createStratigraphicUnit("0426c6a0-fa3c-11e5-8b9c-0002a5d5c51b", "Unit 0");
+	StratigraphicUnitInterpretation* stratiUnit0Interp = pck->createStratigraphicUnitInterpretation(stratiUnit0Feature, "1a919b40-fa3c-11e5-a72c-0002a5d5c51b", "Unit 0 interp");
+	StratigraphicUnitFeature* stratiUnit1Feature = pck->createStratigraphicUnit("273a92c0-fa3c-11e5-85f8-0002a5d5c51b", "Unit 1");
+	StratigraphicUnitInterpretation* stratiUnit1Interp = pck->createStratigraphicUnitInterpretation(stratiUnit1Feature, "2b9169c0-fa3c-11e5-ae2c-0002a5d5c51b", "Unit 1 interp");
+
+	// Build the stratigraphic column rank
+	stratiColumnRank->pushBackStratiUnitInterpretation(stratiUnit0Interp);
+	stratiColumnRank->pushBackStratiUnitInterpretation(stratiUnit1Interp);
+	stratiColumnRank->pushBackStratigraphicBinaryContact(stratiUnit0Interp, gsoap_resqml2_0_1::resqml2__ContactMode__proportional, stratiUnit1Interp, gsoap_resqml2_0_1::resqml2__ContactMode__proportional, horizon2Interp1);
+
+	// WellboreFeature marker frame
+	WellboreMarkerFrameRepresentation* wmf = pck->createWellboreMarkerFrameRepresentation(wellbore1Interp1, "", "Wellbore Marker Frame", w1i1TrajRep);
+	double markerMdValues[2] = { 350, 550 };
+	wmf->setMdValues(markerMdValues, 2, hdfProxy);
+	WellboreMarker* marker0 = wmf->pushBackNewWellboreMarker("", "", gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__horizon);
+	marker0->setBoundaryFeatureInterpretation(horizon1Interp1);
+	WellboreMarker* marker1 = wmf->pushBackNewWellboreMarker("", "testing Fault", gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__fault);
+	marker1->setBoundaryFeatureInterpretation(fault1Interp1);
+}
 
 void serializeGeobody(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
@@ -736,33 +679,32 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 		0, 3, 1,
 		ijkgrid);
 	
-	// TODO bug
-	////**************
-	//// Stratigraphy
-	////**************
-	//ULONG64 stratiUnitIndice = 0;
-	//ijkgrid->setIntervalAssociationWithStratigraphicOrganizationInterpretation(&stratiUnitIndice, 1000, stratiColumnRank);
+	//**************
+	// Stratigraphy
+	//**************
+	ULONG64 stratiUnitIndice = 0;
+	ijkgrid->setIntervalAssociationWithStratigraphicOrganizationInterpretation(&stratiUnitIndice, 1000, stratiColumnRank);
 
-	//// Partial transfer
-	//UnstructuredGridRepresentation* partialGrid = pck->createPartialUnstructuredGridRepresentation("", "Partial Grid");
-	//ContinuousProperty* continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "Testing partial property", 1,
-	//	gsoap_resqml2_0_1::resqml2__IndexableElements__cells, gsoap_resqml2_0_1::resqml2__ResqmlUom__m, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
-	//double continuousProp1Values[6] = { 0, 1, 2, 3, 4, 5 };
-	//continuousProp1->pushBackDoubleHdf5Array1dOfValues(continuousProp1Values, 6, hdfProxy);
+	// Partial transfer
+	UnstructuredGridRepresentation* partialGrid = pck->createPartialUnstructuredGridRepresentation("", "Partial Grid");
+	ContinuousProperty* continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "Testing partial property", 1,
+		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, gsoap_resqml2_0_1::resqml2__ResqmlUom__m, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
+	double continuousProp1Values[6] = { 0, 1, 2, 3, 4, 5 };
+	continuousProp1->pushBackDoubleHdf5Array1dOfValues(continuousProp1Values, 6, hdfProxy);
 
-	//// sub rep of a partial unstructured grid
-	//RESQML2_NS::SubRepresentation * subRepOfUnstructuredGrid = pck->createSubRepresentation("", "Subrep On Partial grid");
-	//subRepOfUnstructuredGrid->pushBackSupportingRepresentation(partialGrid);
-	//ULONG64 nodeIndex[2] = { 0, 1 };
-	//subRepOfUnstructuredGrid->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml2__IndexableElements__nodes, 2, nodeIndex, hdfProxy);
+	// sub rep of a partial unstructured grid
+	RESQML2_NS::SubRepresentation * subRepOfUnstructuredGrid = pck->createSubRepresentation("", "Subrep On Partial grid");
+	subRepOfUnstructuredGrid->pushBackSupportingRepresentation(partialGrid);
+	ULONG64 nodeIndex[2] = { 0, 1 };
+	subRepOfUnstructuredGrid->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml2__IndexableElements__nodes, 2, nodeIndex, hdfProxy);
 
-	//// Tetra grid
-	//UnstructuredGridRepresentation* tetraGrid = pck->createUnstructuredGridRepresentation(local3dCrs, "9283cd33-5e52-4110-b7b1-616abde2b303", "One tetrahedron grid", 1);
-	//double tetraGridPoints[12] = { 0, 0, 300, 375, 0, 300, 0, 150, 300, 0, 0, 500 };
-	//ULONG64 faceIndicesPerCell[4] = { 0, 1, 2, 3 };
-	//unsigned char faceRightHandness[4] = { 0, 0, 1, 1 };
-	//ULONG64 nodeIndicesPerFace[12] = { 0, 1, 2, 1, 2, 3, 0, 1, 3, 0, 2, 3 };
-	//tetraGrid->setTetrahedraOnlyGeometry(faceRightHandness, tetraGridPoints, 4, 4, hdfProxy, faceIndicesPerCell, nodeIndicesPerFace);
+	// Tetra grid
+	UnstructuredGridRepresentation* tetraGrid = pck->createUnstructuredGridRepresentation(local3dCrs, "9283cd33-5e52-4110-b7b1-616abde2b303", "One tetrahedron grid", 1);
+	double tetraGridPoints[12] = { 0, 0, 300, 375, 0, 300, 0, 150, 300, 0, 0, 500 };
+	ULONG64 faceIndicesPerCell[4] = { 0, 1, 2, 3 };
+	unsigned char faceRightHandness[4] = { 0, 0, 1, 1 };
+	ULONG64 nodeIndicesPerFace[12] = { 0, 1, 2, 1, 2, 3, 0, 1, 3, 0, 2, 3 };
+	tetraGrid->setTetrahedraOnlyGeometry(faceRightHandness, tetraGridPoints, 4, 4, hdfProxy, faceIndicesPerCell, nodeIndicesPerFace);
 }
 
 void serializeRepresentationSetRepresentation(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
@@ -1364,10 +1306,6 @@ bool serialize(const string & filePath)
 	//CRS
 	local3dCrs = pck.createLocalDepth3dCrs("", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
 	localTime3dCrs = pck.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__TimeUom__s, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false); // CRS translation is just for testing;
-// TODO à mettre à jour
-//#if !defined(OFFICIAL)
-//	witsmlCrs = pck.createCoordinateReferenceSystem("", "witsmlCrs", "EPSG", "5715", "", -1, -1, "");
-//#endif
 
 	// Comment or uncomment below domains/lines you want wether to test or not
 	serializeWells(&pck, hdfProxy);
@@ -1375,12 +1313,10 @@ bool serialize(const string & filePath)
 	serializeBoundaries(&pck, hdfProxy);
 	serializeGeobody(&pck, hdfProxy);
 	serializeStructuralModel(pck, hdfProxy);
-	// TODO à mettre à jour
-	//serializeStratigraphicModel(&pck, hdfProxy);
+	serializeStratigraphicModel(&pck, hdfProxy);
 	serializeGrid(&pck, hdfProxy);
 	serializeActivities(&pck);
-// TODO bug
-	//serializeRepresentationSetRepresentation(&pck, hdfProxy);
+	serializeRepresentationSetRepresentation(&pck, hdfProxy);
 	serializeFluidBoundary(pck, hdfProxy);
 
 	// Add an extended core property before to serialize
@@ -1642,7 +1578,7 @@ void deserializeGeobody(COMMON_NS::EpcDocument * pck)
 
 void deserializeFluidBoundary(COMMON_NS::EpcDocument & pck)
 {
-	FluidBoundaryFeature* fluidBoundary = pck.getResqmlAbstractObjectByUuid<FluidBoundaryFeature>("44a4d87c-3c67-4f98-a314-9d91c4147061");
+	FluidBoundaryFeature* fluidBoundary = pck.getDataObjectByUuid<FluidBoundaryFeature>("44a4d87c-3c67-4f98-a314-9d91c4147061");
 	if (fluidBoundary == nullptr) return;
 	showAllMetadata(fluidBoundary);
 	showAllMetadata(fluidBoundary->getInterpretation(0));
@@ -1960,7 +1896,7 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::EpcDocument & pck)
 	cout << endl << "BEGIN: IJK GRID REP (block hyperslabbing)" << endl;
 
 	// ONE SUGAR
-	AbstractIjkGridRepresentation* ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b"));
+	AbstractIjkGridRepresentation* ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b"));
 	if (ijkGrid == nullptr) {
 		return;
 	}
@@ -2003,7 +1939,7 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::EpcDocument & pck)
 	ijkGrid->unloadSplitInformation();
 
 	// Four by Three by Two Left Handed (e96c2bde-e3ae-4d51-b078-a8e57fb1e667)
-	ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("e96c2bde-e3ae-4d51-b078-a8e57fb1e667"));
+	ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("e96c2bde-e3ae-4d51-b078-a8e57fb1e667"));
 
 	cout << std::endl;
 	cout << "--------------------------------------------------" << std::endl;
@@ -2181,7 +2117,7 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::EpcDocument & pck)
 	ijkGrid->unloadSplitInformation();
 
 	// Four faulted sugar cubes(parametric geometry) (37c45c00-fa3e-11e5-a21e-0002a5d5c51b)
-	ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("37c45c00-fa3e-11e5-a21e-0002a5d5c51b"));
+	ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("37c45c00-fa3e-11e5-a21e-0002a5d5c51b"));
 
 	cout << std::endl;
 	cout << "--------------------------------------------------" << std::endl;
@@ -2279,7 +2215,7 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::EpcDocument & pck)
 	ijkGrid->unloadSplitInformation();
 
 	// Four faulted sugar cubes (straight parametric geometry) (f68235af-1d7a-4e24-93a8-10739b15ca40)
-	ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("f68235af-1d7a-4e24-93a8-10739b15ca40"));
+	ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("f68235af-1d7a-4e24-93a8-10739b15ca40"));
 
 	cout << std::endl;
 	cout << "--------------------------------------------------" << std::endl;
@@ -2625,15 +2561,10 @@ void deserializePerforations(COMMON_NS::EpcDocument & pck)
 {
 	cout << endl << "PERFORATIONS" << endl;
 
-	// ONE SUGAR
-	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = static_cast<WITSML2_0_NS::WellboreCompletion*>(pck.getResqmlAbstractObjectByUuid("7bda8ecf-2037-4dc7-8c59-db6ca09f2008"));
+	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = static_cast<WITSML2_0_NS::WellboreCompletion*>(pck.getDataObjectByUuid("7bda8ecf-2037-4dc7-8c59-db6ca09f2008"));
 	if (wellboreCompletion == nullptr) {
 		return;
 	}
-
-	//cout << "--------------------------------------------------" << std::endl;
-	//cout << 
-	//cout << "--------------------------------------------------" << std::endl;
 
 	cout << "deserializing WellboreCompletion: " << wellboreCompletion->getTitle() << " (" << wellboreCompletion->getUuid() << ")" << std::endl;
 
@@ -2770,8 +2701,7 @@ void deserialize(const string & inputFile)
 
 	deserializeGeobody(&pck);
 	deserializeFluidBoundary(pck);
-	return;
-
+	
 	std::vector<TectonicBoundaryFeature*> faultSet = pck.getFaultSet();
 	std::vector<PolylineSetRepresentation*> faultPolyRep = pck.getFaultPolylineSetRepSet();
 	std::vector<TriangulatedSetRepresentation*> faultTriRepSet = pck.getFaultTriangulatedSetRepSet();
@@ -3028,7 +2958,6 @@ void deserialize(const string & inputFile)
 		deserializeStratiColumn(stratiColumnSet[i]);
 	}
 
-	// TODO à mettre à jour
 	std::cout << "WELLBORES" << endl;
 	for (size_t i = 0; i < wellboreSet.size(); i++)
 	{
@@ -3039,9 +2968,6 @@ void deserialize(const string & inputFile)
 			std::cout << "Associated with witsml well bore " << witsmlWellbore->getTitle()
 				<< " with GUID " << witsmlWellbore->getUuid() << " and witsml well " << witsmlWellbore->getWell()->getTitle()
 				<< " with GUID " << witsmlWellbore->getWell()->getUuid() << std::endl;
-			// TODO à mettre à jour
-			/*std::cout << "Associated with witsml well bore datum " << witsmlWellbore->getTrajectories()[0]->getMdDatumName();
-			std::cout << "Well bore datum elevation uom" << witsmlWellbore->getTrajectories()[0]->getMdDatumElevationUom();*/
 		}
 		for (size_t j = 0; j < wellboreSet[i]->getInterpretationSet().size(); j++)
 		{
@@ -3086,417 +3012,416 @@ void deserialize(const string & inputFile)
 
 	deserializePerforations(pck);
 
-	// TODO retirer pour gagner du temps
-	//std::cout << endl << "WELLBORES CUBIC TRAJ" << endl;
-	//for (size_t i = 0; i < wellboreCubicTrajSet.size(); i++)
-	//{
-	//	showAllMetadata(wellboreCubicTrajSet[i]);
-	//	std::cout << "MD Datum is : " << wellboreCubicTrajSet[i]->getMdDatum()->getTitle() << std::endl;
-	//	std::cout << "--------------------------------------------------" << std::endl;
-	//	if (wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches() == 0)
-	//		break;
-	//	double* mdValues = new double[wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches()];
-	//	wellboreCubicTrajSet[i]->getMdValues(mdValues);
-	//	double* xyzPt = new double[wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches() * 3];
-	//	wellboreCubicTrajSet[i]->getXyzPointsOfAllPatchesInGlobalCrs(xyzPt);
-	//	for (size_t j = 0; j < wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches() * 3 && j < 10; j += 3)
-	//	{
-	//		cout << "Trajectory station : MD=" << mdValues[j / 3] << " X=" << xyzPt[j] << " Y=" << xyzPt[j + 1] << " Z=" << xyzPt[j + 2] << endl;
-	//	}
-	//	delete[] mdValues;
-	//	delete[] xyzPt;
-	//	std::cout << "LOGS" << endl;
-	//	std::cout << "--------------------------------------------------" << std::endl;
-	//	std::vector<WellboreFrameRepresentation*> wellboreFrameSet = wellboreCubicTrajSet[i]->getWellboreFrameRepresentationSet();
-	//	for (size_t j = 0; j < wellboreFrameSet.size(); j++)
-	//	{
-	//		showAllMetadata(wellboreFrameSet[j]);
-	//		std::cout << "Value Count : " << wellboreFrameSet[j]->getMdValuesCount() << endl;
-	//		if (wellboreFrameSet[j]->areMdValuesRegularlySpaced())
-	//		{
-	//			std::cout << "Regularly spaced" << std::endl;
-	//			std::cout << "First Value : " << wellboreFrameSet[j]->getMdFirstValue() << endl;
-	//			std::cout << "Increment : " << wellboreFrameSet[j]->getMdConstantIncrementValue() << endl;
-	//		}
-	//		else
-	//		{
-	//			std::cout << "Iregularly spaced" << std::endl;
-	//		}
-	//		if (wellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::DOUBLE)
-	//			std::cout << "Hdf datatype is NATIVE DOUBLE" << std::endl;
-	//		else if (wellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::FLOAT)
-	//			std::cout << "Hdf datatype is NATIVE FLOAT" << std::endl;
-	//		else if (wellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN)
-	//			std::cout << "Hdf datatype is UNKNOWN" << std::endl;
-	//	}
-	//}
+	std::cout << endl << "WELLBORES CUBIC TRAJ" << endl;
+	for (size_t i = 0; i < wellboreCubicTrajSet.size(); i++)
+	{
+		showAllMetadata(wellboreCubicTrajSet[i]);
+		std::cout << "MD Datum is : " << wellboreCubicTrajSet[i]->getMdDatum()->getTitle() << std::endl;
+		std::cout << "--------------------------------------------------" << std::endl;
+		if (wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches() == 0)
+			break;
+		double* mdValues = new double[wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches()];
+		wellboreCubicTrajSet[i]->getMdValues(mdValues);
+		double* xyzPt = new double[wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches() * 3];
+		wellboreCubicTrajSet[i]->getXyzPointsOfAllPatchesInGlobalCrs(xyzPt);
+		for (size_t j = 0; j < wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches() * 3 && j < 10; j += 3)
+		{
+			cout << "Trajectory station : MD=" << mdValues[j / 3] << " X=" << xyzPt[j] << " Y=" << xyzPt[j + 1] << " Z=" << xyzPt[j + 2] << endl;
+		}
+		delete[] mdValues;
+		delete[] xyzPt;
+		std::cout << "LOGS" << endl;
+		std::cout << "--------------------------------------------------" << std::endl;
+		std::vector<WellboreFrameRepresentation*> wellboreFrameSet = wellboreCubicTrajSet[i]->getWellboreFrameRepresentationSet();
+		for (size_t j = 0; j < wellboreFrameSet.size(); j++)
+		{
+			showAllMetadata(wellboreFrameSet[j]);
+			std::cout << "Value Count : " << wellboreFrameSet[j]->getMdValuesCount() << endl;
+			if (wellboreFrameSet[j]->areMdValuesRegularlySpaced())
+			{
+				std::cout << "Regularly spaced" << std::endl;
+				std::cout << "First Value : " << wellboreFrameSet[j]->getMdFirstValue() << endl;
+				std::cout << "Increment : " << wellboreFrameSet[j]->getMdConstantIncrementValue() << endl;
+			}
+			else
+			{
+				std::cout << "Iregularly spaced" << std::endl;
+			}
+			if (wellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::DOUBLE)
+				std::cout << "Hdf datatype is NATIVE DOUBLE" << std::endl;
+			else if (wellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::FLOAT)
+				std::cout << "Hdf datatype is NATIVE FLOAT" << std::endl;
+			else if (wellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN)
+				std::cout << "Hdf datatype is UNKNOWN" << std::endl;
+		}
+	}
 
-	//std::cout << endl << "IJK GRID REP" << endl;
-	//unsigned int ijkGridCount = pck.getIjkGridRepresentationCount();
-	//for (unsigned int i = 0; i < ijkGridCount; ++i)
-	//{
-	//	AbstractIjkGridRepresentation* ijkGrid = pck.getIjkGridRepresentation(i);
+	std::cout << endl << "IJK GRID REP" << endl;
+	unsigned int ijkGridCount = pck.getIjkGridRepresentationCount();
+	for (unsigned int i = 0; i < ijkGridCount; ++i)
+	{
+		AbstractIjkGridRepresentation* ijkGrid = pck.getIjkGridRepresentation(i);
 
-	//	showAllMetadata(ijkGrid);
-	//	if (ijkGrid->isPartial()) {
-	//		continue;
-	//	}
-	//	if (ijkGrid->getGeometryKind() != AbstractIjkGridRepresentation::NO_GEOMETRY)
-	//	{
-	//		if (ijkGrid->getGeometryKind() == AbstractIjkGridRepresentation::LATTICE) {
-	//			std::cout << "This 3d grid has a lattice geometry." << std::endl;
-	//		}
-	//		else {
-	//			if (ijkGrid->getGeometryKind() == AbstractIjkGridRepresentation::PARAMETRIC)
-	//			{
-	//				std::cout << "This 3d grid has a parametric geometry." << std::endl;
-	//				IjkGridParametricRepresentation* paramIjkGrid = static_cast<IjkGridParametricRepresentation*>(ijkGrid);
-	//				if (paramIjkGrid->isParametricLineKindConstant())
-	//				{
-	//					std::cout << "Constant parametric line kind : " << paramIjkGrid->getConstantParametricLineKind() << std::endl;
-	//				}
-	//				else
-	//				{
-	//					std::cout << "Non constant parametric line kind" << std::endl;
-	//					short* pillarKind = new short[paramIjkGrid->getPillarCount()];
-	//					paramIjkGrid->getParametricLineKind(pillarKind);
-	//					for (size_t pillarIndex = 0; pillarIndex < paramIjkGrid->getPillarCount() && pillarIndex < 10; ++pillarIndex) {
-	//						cout << "Pillar index " << pillarIndex << " with kind " << pillarKind[pillarIndex] << endl;
-	//					}
-	//					delete[] pillarKind;
-	//				}
+		showAllMetadata(ijkGrid);
+		if (ijkGrid->isPartial()) {
+			continue;
+		}
+		if (ijkGrid->getGeometryKind() != AbstractIjkGridRepresentation::NO_GEOMETRY)
+		{
+			if (ijkGrid->getGeometryKind() == AbstractIjkGridRepresentation::LATTICE) {
+				std::cout << "This 3d grid has a lattice geometry." << std::endl;
+			}
+			else {
+				if (ijkGrid->getGeometryKind() == AbstractIjkGridRepresentation::PARAMETRIC)
+				{
+					std::cout << "This 3d grid has a parametric geometry." << std::endl;
+					IjkGridParametricRepresentation* paramIjkGrid = static_cast<IjkGridParametricRepresentation*>(ijkGrid);
+					if (paramIjkGrid->isParametricLineKindConstant())
+					{
+						std::cout << "Constant parametric line kind : " << paramIjkGrid->getConstantParametricLineKind() << std::endl;
+					}
+					else
+					{
+						std::cout << "Non constant parametric line kind" << std::endl;
+						short* pillarKind = new short[paramIjkGrid->getPillarCount()];
+						paramIjkGrid->getParametricLineKind(pillarKind);
+						for (size_t pillarIndex = 0; pillarIndex < paramIjkGrid->getPillarCount() && pillarIndex < 10; ++pillarIndex) {
+							cout << "Pillar index " << pillarIndex << " with kind " << pillarKind[pillarIndex] << endl;
+						}
+						delete[] pillarKind;
+					}
 
-	//				unsigned int patchCount = ijkGrid->getPatchCount();
-	//				for (unsigned int currentPatch = 0; currentPatch < patchCount; ++currentPatch) {
-	//					ULONG64 nbVertex = ijkGrid->getXyzPointCountOfPatch(currentPatch);
+					unsigned int patchCount = ijkGrid->getPatchCount();
+					for (unsigned int currentPatch = 0; currentPatch < patchCount; ++currentPatch) {
+						ULONG64 nbVertex = ijkGrid->getXyzPointCountOfPatch(currentPatch);
 
-	//					double* xyzPts = new double[nbVertex * 3];
-	//					ijkGrid->getXyzPointsOfPatch(currentPatch, xyzPts);
+						double* xyzPts = new double[nbVertex * 3];
+						ijkGrid->getXyzPointsOfPatch(currentPatch, xyzPts);
 
-	//					for (size_t vIndex = 0; vIndex < nbVertex && vIndex < 10; ++vIndex) {
-	//						double x = xyzPts[vIndex * 3];
-	//						double y = xyzPts[vIndex * 3 + 1];
-	//						double z = xyzPts[vIndex * 3 + 2];
-	//						std::cout << x << " " << y << " " << z << std::endl;
-	//					}
+						for (size_t vIndex = 0; vIndex < nbVertex && vIndex < 10; ++vIndex) {
+							double x = xyzPts[vIndex * 3];
+							double y = xyzPts[vIndex * 3 + 1];
+							double z = xyzPts[vIndex * 3 + 2];
+							std::cout << x << " " << y << " " << z << std::endl;
+						}
 
-	//					delete[] xyzPts;
-	//				}
-	//				/*
-	//				ULONG64 pointCountByInterface = paramIjkGrid->getXyzPointCountOfKInterfaceOfPatch(0);
-	//				double* interfaceXyzPoints = new double[pointCountByInterface * 3];
-	//				paramIjkGrid->getXyzPointsOfKInterfaceOfPatch(0, 0, interfaceXyzPoints);
-	//				delete[] interfaceXyzPoints;
-	//				*/
-	//			}
-	//			else if (ijkGrid->getGeometryKind() == AbstractIjkGridRepresentation::EXPLICIT)
-	//			{
-	//				std::cout << "This 3d grid has an explicit geometry." << std::endl;
-	//			}
-	//			else
-	//			{
-	//				std::cout << "This 3d grid has an unknown geometry." << std::endl;
-	//			}
+						delete[] xyzPts;
+					}
+					/*
+					ULONG64 pointCountByInterface = paramIjkGrid->getXyzPointCountOfKInterfaceOfPatch(0);
+					double* interfaceXyzPoints = new double[pointCountByInterface * 3];
+					paramIjkGrid->getXyzPointsOfKInterfaceOfPatch(0, 0, interfaceXyzPoints);
+					delete[] interfaceXyzPoints;
+					*/
+				}
+				else if (ijkGrid->getGeometryKind() == AbstractIjkGridRepresentation::EXPLICIT)
+				{
+					std::cout << "This 3d grid has an explicit geometry." << std::endl;
+				}
+				else
+				{
+					std::cout << "This 3d grid has an unknown geometry." << std::endl;
+				}
 
-	//			// read points
-	//			ULONG64 xyzPointCount = ijkGrid->getXyzPointCountOfAllPatches();
-	//			std::cout << "\t XYZ points count :" << xyzPointCount << std::endl;
-	//			std::cout << "\t Start reading XYZ points..." << std::endl;
-	//			double* xyzPoints = new double[xyzPointCount * 3];
-	//			ijkGrid->getXyzPointsOfAllPatches(xyzPoints);
-	//			delete[] xyzPoints;
-	//			std::cout << "\t Stop reading XYZ points :" << std::endl;
+				// read points
+				ULONG64 xyzPointCount = ijkGrid->getXyzPointCountOfAllPatches();
+				std::cout << "\t XYZ points count :" << xyzPointCount << std::endl;
+				std::cout << "\t Start reading XYZ points..." << std::endl;
+				double* xyzPoints = new double[xyzPointCount * 3];
+				ijkGrid->getXyzPointsOfAllPatches(xyzPoints);
+				delete[] xyzPoints;
+				std::cout << "\t Stop reading XYZ points :" << std::endl;
 
-	//			std::cout << "Split coordinate line count is : " << ijkGrid->getSplitCoordinateLineCount() << std::endl;
-	//		}
-	//	}
-	//	else
-	//		std::cout << "This 3d grid has no geometry." << std::endl;
+				std::cout << "Split coordinate line count is : " << ijkGrid->getSplitCoordinateLineCount() << std::endl;
+			}
+		}
+		else
+			std::cout << "This 3d grid has no geometry." << std::endl;
 
-	//	if (ijkGrid->getInterpretation())
-	//	{
-	//		std::cout << "Interpretation is : " << ijkGrid->getInterpretation()->getTitle() << std::endl;
-	//		if (ijkGrid->getInterpretation()->getInterpretedFeature())
-	//			std::cout << "Feature is : " << ijkGrid->getInterpretation()->getInterpretedFeature()->getTitle() << std::endl;
-	//		else
-	//			std::cout << " NO Feature" << std::endl;
-	//	}
-	//	else
-	//		std::cout << " NO interpretation" << std::endl;
+		if (ijkGrid->getInterpretation())
+		{
+			std::cout << "Interpretation is : " << ijkGrid->getInterpretation()->getTitle() << std::endl;
+			if (ijkGrid->getInterpretation()->getInterpretedFeature())
+				std::cout << "Feature is : " << ijkGrid->getInterpretation()->getInterpretedFeature()->getTitle() << std::endl;
+			else
+				std::cout << " NO Feature" << std::endl;
+		}
+		else
+			std::cout << " NO interpretation" << std::endl;
 
-	//	for (unsigned int subRepIndex = 0; subRepIndex < ijkGrid->getFaultSubRepresentationCount(); ++subRepIndex)
-	//	{
-	//		std::cout << "Fault Subrep is : " << ijkGrid->getFaultSubRepresentation(subRepIndex)->getTitle() << std::endl;
-	//	}
+		for (unsigned int subRepIndex = 0; subRepIndex < ijkGrid->getFaultSubRepresentationCount(); ++subRepIndex)
+		{
+			std::cout << "Fault Subrep is : " << ijkGrid->getFaultSubRepresentation(subRepIndex)->getTitle() << std::endl;
+		}
 
-	//	showAllSubRepresentations(ijkGrid->getSubRepresentationSet());
+		showAllSubRepresentations(ijkGrid->getSubRepresentationSet());
 
-	//	//*****************************
-	//	// TRUNCATION
-	//	//*****************************
-	//	if (ijkGrid->isTruncated()) {
-	//		std::cout << "This grid is truncated" << std::endl;
-	//		std::cout << "Truncated face count : " << ijkGrid->getTruncatedFaceCount() << std::endl;
-	//		std::cout << "Truncated cell count : " << ijkGrid->getTruncatedCellCount() << std::endl;
+		//*****************************
+		// TRUNCATION
+		//*****************************
+		if (ijkGrid->isTruncated()) {
+			std::cout << "This grid is truncated" << std::endl;
+			std::cout << "Truncated face count : " << ijkGrid->getTruncatedFaceCount() << std::endl;
+			std::cout << "Truncated cell count : " << ijkGrid->getTruncatedCellCount() << std::endl;
 
-	//		ULONG64* cellIndices = new ULONG64[ijkGrid->getTruncatedCellCount()];
-	//		ijkGrid->getTruncatedCellIndices(cellIndices);
-	//		for (ULONG64 index = 0; index < ijkGrid->getTruncatedCellCount() && index < 10; ++index) {
-	//			cout << "truncated cell Indices : " << cellIndices[index] << endl;
-	//		}
-	//		delete[] cellIndices;
+			ULONG64* cellIndices = new ULONG64[ijkGrid->getTruncatedCellCount()];
+			ijkGrid->getTruncatedCellIndices(cellIndices);
+			for (ULONG64 index = 0; index < ijkGrid->getTruncatedCellCount() && index < 10; ++index) {
+				cout << "truncated cell Indices : " << cellIndices[index] << endl;
+			}
+			delete[] cellIndices;
 
-	//		ULONG64* cumNodeCount = new ULONG64[ijkGrid->getTruncatedFaceCount()];
-	//		ijkGrid->getCumulativeNodeCountPerTruncatedFace(cumNodeCount);
-	//		for (ULONG64 index = 0; index < ijkGrid->getTruncatedFaceCount() && index < 10; ++index) {
-	//			cout << "CumulativeNodeCountPerTruncatedFace : " << cumNodeCount[index] << endl;
-	//		}
-	//		ULONG64* nodeIndicesPerTruncFace = new ULONG64[cumNodeCount[ijkGrid->getTruncatedFaceCount() - 1]];
-	//		ijkGrid->getNodeIndicesOfTruncatedFaces(nodeIndicesPerTruncFace);
-	//		for (ULONG64 index = 0; index < cumNodeCount[ijkGrid->getTruncatedFaceCount() - 1] && index < 10; ++index) {
-	//			cout << "nodeIndicesPerTruncFace : " << nodeIndicesPerTruncFace[index] << endl;
-	//		}
-	//		delete[] cumNodeCount;
-	//		delete[] nodeIndicesPerTruncFace;
+			ULONG64* cumNodeCount = new ULONG64[ijkGrid->getTruncatedFaceCount()];
+			ijkGrid->getCumulativeNodeCountPerTruncatedFace(cumNodeCount);
+			for (ULONG64 index = 0; index < ijkGrid->getTruncatedFaceCount() && index < 10; ++index) {
+				cout << "CumulativeNodeCountPerTruncatedFace : " << cumNodeCount[index] << endl;
+			}
+			ULONG64* nodeIndicesPerTruncFace = new ULONG64[cumNodeCount[ijkGrid->getTruncatedFaceCount() - 1]];
+			ijkGrid->getNodeIndicesOfTruncatedFaces(nodeIndicesPerTruncFace);
+			for (ULONG64 index = 0; index < cumNodeCount[ijkGrid->getTruncatedFaceCount() - 1] && index < 10; ++index) {
+				cout << "nodeIndicesPerTruncFace : " << nodeIndicesPerTruncFace[index] << endl;
+			}
+			delete[] cumNodeCount;
+			delete[] nodeIndicesPerTruncFace;
 
-	//		ULONG64* cumFaceCount = new ULONG64[ijkGrid->getTruncatedCellCount()];
-	//		ijkGrid->getCumulativeTruncatedFaceCountPerTruncatedCell(cumFaceCount);
-	//		for (ULONG64 index = 0; index < ijkGrid->getTruncatedCellCount() && index < 10; ++index) {
-	//			cout << "CumulativeTruncatedFaceCountPerTruncatedCell : " << cumFaceCount[index] << endl;
-	//		}
-	//		ULONG64* faceIndicesPerTruncCell = new ULONG64[cumFaceCount[ijkGrid->getTruncatedCellCount() - 1]];
-	//		ijkGrid->getTruncatedFaceIndicesOfTruncatedCells(faceIndicesPerTruncCell);
-	//		for (ULONG64 index = 0; index < cumFaceCount[ijkGrid->getTruncatedCellCount() - 1] && index < 10; ++index) {
-	//			cout << "faceIndicesPerTruncCell : " << faceIndicesPerTruncCell[index] << endl;
-	//		}
-	//		delete[] cumFaceCount;
-	//		delete[] faceIndicesPerTruncCell;
+			ULONG64* cumFaceCount = new ULONG64[ijkGrid->getTruncatedCellCount()];
+			ijkGrid->getCumulativeTruncatedFaceCountPerTruncatedCell(cumFaceCount);
+			for (ULONG64 index = 0; index < ijkGrid->getTruncatedCellCount() && index < 10; ++index) {
+				cout << "CumulativeTruncatedFaceCountPerTruncatedCell : " << cumFaceCount[index] << endl;
+			}
+			ULONG64* faceIndicesPerTruncCell = new ULONG64[cumFaceCount[ijkGrid->getTruncatedCellCount() - 1]];
+			ijkGrid->getTruncatedFaceIndicesOfTruncatedCells(faceIndicesPerTruncCell);
+			for (ULONG64 index = 0; index < cumFaceCount[ijkGrid->getTruncatedCellCount() - 1] && index < 10; ++index) {
+				cout << "faceIndicesPerTruncCell : " << faceIndicesPerTruncCell[index] << endl;
+			}
+			delete[] cumFaceCount;
+			delete[] faceIndicesPerTruncCell;
 
-	//		ULONG64* cumNonTruncFaceCount = new ULONG64[ijkGrid->getTruncatedCellCount()];
-	//		ijkGrid->getCumulativeNonTruncatedFaceCountPerTruncatedCell(cumNonTruncFaceCount);
-	//		for (ULONG64 index = 0; index < ijkGrid->getTruncatedCellCount() && index < 10; ++index) {
-	//			cout << "CumulativeNonTruncatedFaceCountPerTruncatedCell : " << cumNonTruncFaceCount[index] << endl;
-	//		}
-	//		ULONG64* nonTruncfaceIndicesPerTruncCell = new ULONG64[cumNonTruncFaceCount[ijkGrid->getTruncatedCellCount() - 1]];
-	//		ijkGrid->getNonTruncatedFaceIndicesOfTruncatedCells(nonTruncfaceIndicesPerTruncCell);
-	//		for (ULONG64 index = 0; index < cumNonTruncFaceCount[ijkGrid->getTruncatedCellCount() - 1] && index < 10; ++index) {
-	//			cout << "nonTruncfaceIndicesPerTruncCell : " << nonTruncfaceIndicesPerTruncCell[index] << endl;
-	//		}
-	//		delete[] cumNonTruncFaceCount;
-	//		delete[] nonTruncfaceIndicesPerTruncCell;
+			ULONG64* cumNonTruncFaceCount = new ULONG64[ijkGrid->getTruncatedCellCount()];
+			ijkGrid->getCumulativeNonTruncatedFaceCountPerTruncatedCell(cumNonTruncFaceCount);
+			for (ULONG64 index = 0; index < ijkGrid->getTruncatedCellCount() && index < 10; ++index) {
+				cout << "CumulativeNonTruncatedFaceCountPerTruncatedCell : " << cumNonTruncFaceCount[index] << endl;
+			}
+			ULONG64* nonTruncfaceIndicesPerTruncCell = new ULONG64[cumNonTruncFaceCount[ijkGrid->getTruncatedCellCount() - 1]];
+			ijkGrid->getNonTruncatedFaceIndicesOfTruncatedCells(nonTruncfaceIndicesPerTruncCell);
+			for (ULONG64 index = 0; index < cumNonTruncFaceCount[ijkGrid->getTruncatedCellCount() - 1] && index < 10; ++index) {
+				cout << "nonTruncfaceIndicesPerTruncCell : " << nonTruncfaceIndicesPerTruncCell[index] << endl;
+			}
+			delete[] cumNonTruncFaceCount;
+			delete[] nonTruncfaceIndicesPerTruncCell;
 
-	//		unsigned char* rightHandnessTruncFace = new unsigned char[ijkGrid->getTruncatedFaceCount()];
-	//		ijkGrid->getTruncatedFaceIsRightHanded(rightHandnessTruncFace);
-	//		for (ULONG64 index = 0; index < ijkGrid->getTruncatedFaceCount() && index < 10; ++index) {
-	//			cout << "rightHandnessTruncFace : " << rightHandnessTruncFace[index] << endl;
-	//		}
-	//		delete[] rightHandnessTruncFace;
-	//	}
+			unsigned char* rightHandnessTruncFace = new unsigned char[ijkGrid->getTruncatedFaceCount()];
+			ijkGrid->getTruncatedFaceIsRightHanded(rightHandnessTruncFace);
+			for (ULONG64 index = 0; index < ijkGrid->getTruncatedFaceCount() && index < 10; ++index) {
+				cout << "rightHandnessTruncFace : " << rightHandnessTruncFace[index] << endl;
+			}
+			delete[] rightHandnessTruncFace;
+		}
 
-	//	//*****************************
-	//	// GRID CONNECTION SET 
-	//	//*****************************
-	//	unsigned int gridConnectionSetCount = ijkGrid->getGridConnectionSetRepresentationCount();
-	//	std::cout << "Grid Connection Count is : " << gridConnectionSetCount << std::endl;
-	//	if (gridConnectionSetCount > 0) {
-	//		RESQML2_NS::GridConnectionSetRepresentation* gridConnectionSet = ijkGrid->getGridConnectionSetRepresentation(0);
-	//		unsigned int faultInterpOfGridConnCount = gridConnectionSet->getInterpretationCount();
-	//		std::cout << "Interpretation Count of this grid connection set is : " << faultInterpOfGridConnCount << endl;
-	//		if (faultInterpOfGridConnCount > 0)
-	//		{
-	//			RESQML2_NS::AbstractFeatureInterpretation* faultInterpOfGridConn = gridConnectionSet->getInterpretationFromIndex(0);
-	//			std::cout << "Interpretation of this grid connection set is : " << faultInterpOfGridConn->getTitle() << " With UUID " << faultInterpOfGridConn->getUuid() << endl;
-	//		}
+		//*****************************
+		// GRID CONNECTION SET 
+		//*****************************
+		unsigned int gridConnectionSetCount = ijkGrid->getGridConnectionSetRepresentationCount();
+		std::cout << "Grid Connection Count is : " << gridConnectionSetCount << std::endl;
+		if (gridConnectionSetCount > 0) {
+			RESQML2_NS::GridConnectionSetRepresentation* gridConnectionSet = ijkGrid->getGridConnectionSetRepresentation(0);
+			unsigned int faultInterpOfGridConnCount = gridConnectionSet->getInterpretationCount();
+			std::cout << "Interpretation Count of this grid connection set is : " << faultInterpOfGridConnCount << endl;
+			if (faultInterpOfGridConnCount > 0)
+			{
+				RESQML2_NS::AbstractFeatureInterpretation* faultInterpOfGridConn = gridConnectionSet->getInterpretationFromIndex(0);
+				std::cout << "Interpretation of this grid connection set is : " << faultInterpOfGridConn->getTitle() << " With UUID " << faultInterpOfGridConn->getUuid() << endl;
+			}
 
-	//		int* localFacePerCellIndexPairs = new int[gridConnectionSet->getCellIndexPairCount() * 2];
-	//		LONG64 gcsNullValue = gridConnectionSet->getLocalFacePerCellIndexPairs(localFacePerCellIndexPairs);
-	//		std::cout << "Null Value for LocalFacePerCellIndexPairs : " << gcsNullValue << endl;
-	//		delete[] localFacePerCellIndexPairs;
-	//	}
+			int* localFacePerCellIndexPairs = new int[gridConnectionSet->getCellIndexPairCount() * 2];
+			LONG64 gcsNullValue = gridConnectionSet->getLocalFacePerCellIndexPairs(localFacePerCellIndexPairs);
+			std::cout << "Null Value for LocalFacePerCellIndexPairs : " << gcsNullValue << endl;
+			delete[] localFacePerCellIndexPairs;
+		}
 
-	//	//*****************************
-	//	// LGR 
-	//	//*****************************
-	//	if (ijkGrid->getParentGrid() != NULL)
-	//	{
-	//		std::cout << "\t PARENT WINDOW" << std::endl;
-	//		if (ijkGrid->getParentGrid()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREIjkGridRepresentation)
-	//		{
-	//			for (char dimension = 'i'; dimension < 'l'; ++dimension) {
-	//				std::cout << "\t\t DIMENSION :" << dimension << std::endl;
-	//				std::cout << "\t\t Regrid start at :" << ijkGrid->getRegridStartIndexOnParentGrid(dimension) << std::endl;
-	//				std::cout << "\t\t Interval count is :" << ijkGrid->getRegridIntervalCount(dimension) << std::endl;
-	//				if (ijkGrid->isRegridCellCountPerIntervalConstant('i', false)) {
-	//					std::cout << "\t\t Constant parent cell count per interval :" << ijkGrid->getRegridConstantCellCountPerInterval(dimension, false) << std::endl;
-	//				}
-	//				else {
-	//					std::cout << "\t\t Non constant parent cell count per interval" << std::endl;
-	//				}
-	//				if (ijkGrid->isRegridCellCountPerIntervalConstant('i', true)) {
-	//					std::cout << "\t\t Constant child cell count per interval :" << ijkGrid->getRegridConstantCellCountPerInterval(dimension, true) << std::endl;
-	//				}
-	//				else {
-	//					std::cout << "\t\t Non constant child cell count per interval" << std::endl;
-	//				}
-	//			}
-	//		}
-	//		else if (ijkGrid->getParentGrid()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREUnstructuredColumnLayerGridRepresentation)
-	//		{
-	//			std::cout << "\t\t Refined columns count :" << ijkGrid->getParentColumnIndexCount() << std::endl;
-	//		}
-	//		else if (ijkGrid->getParentGrid()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREUnstructuredGridRepresentation)
-	//		{
-	//			std::cout << "\t\t Refined cells count :" << ijkGrid->getParentCellIndexCount() << std::endl;
-	//		}
-	//	}
+		//*****************************
+		// LGR 
+		//*****************************
+		if (ijkGrid->getParentGrid() != NULL)
+		{
+			std::cout << "\t PARENT WINDOW" << std::endl;
+			if (ijkGrid->getParentGrid()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREIjkGridRepresentation)
+			{
+				for (char dimension = 'i'; dimension < 'l'; ++dimension) {
+					std::cout << "\t\t DIMENSION :" << dimension << std::endl;
+					std::cout << "\t\t Regrid start at :" << ijkGrid->getRegridStartIndexOnParentGrid(dimension) << std::endl;
+					std::cout << "\t\t Interval count is :" << ijkGrid->getRegridIntervalCount(dimension) << std::endl;
+					if (ijkGrid->isRegridCellCountPerIntervalConstant('i', false)) {
+						std::cout << "\t\t Constant parent cell count per interval :" << ijkGrid->getRegridConstantCellCountPerInterval(dimension, false) << std::endl;
+					}
+					else {
+						std::cout << "\t\t Non constant parent cell count per interval" << std::endl;
+					}
+					if (ijkGrid->isRegridCellCountPerIntervalConstant('i', true)) {
+						std::cout << "\t\t Constant child cell count per interval :" << ijkGrid->getRegridConstantCellCountPerInterval(dimension, true) << std::endl;
+					}
+					else {
+						std::cout << "\t\t Non constant child cell count per interval" << std::endl;
+					}
+				}
+			}
+			else if (ijkGrid->getParentGrid()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREUnstructuredColumnLayerGridRepresentation)
+			{
+				std::cout << "\t\t Refined columns count :" << ijkGrid->getParentColumnIndexCount() << std::endl;
+			}
+			else if (ijkGrid->getParentGrid()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREUnstructuredGridRepresentation)
+			{
+				std::cout << "\t\t Refined cells count :" << ijkGrid->getParentCellIndexCount() << std::endl;
+			}
+		}
 
-	//	//*****************************
-	//	// STRATIGRAPHY 
-	//	//*****************************
-	//	cout << "\t STRATIGRAPHY" << std::endl;
-	//	if (ijkGrid->hasIntervalStratigraphicUnitIndices())
-	//	{
-	//		cout << "\t\t Linked with strati : " << ijkGrid->getStratigraphicOrganizationInterpretation()->getTitle() << endl;
-	//		ULONG64* stratiIndices = new ULONG64[ijkGrid->getKCellCount()];
-	//		ijkGrid->getIntervalStratigraphicUnitIndices(stratiIndices);
-	//		for (size_t i = 0; i < ijkGrid->getKCellCount(); ++i)
-	//		{
-	//			cout << "\t\t K layer " << i << " is linked to strati layer " << stratiIndices[i] << endl;
-	//		}
-	//		delete[] stratiIndices;
-	//	}
-	//	else
-	//	{
-	//		cout << "\t\t No link with stratigraphy." << endl;
-	//	}
+		//*****************************
+		// STRATIGRAPHY 
+		//*****************************
+		cout << "\t STRATIGRAPHY" << std::endl;
+		if (ijkGrid->hasIntervalStratigraphicUnitIndices())
+		{
+			cout << "\t\t Linked with strati : " << ijkGrid->getStratigraphicOrganizationInterpretation()->getTitle() << endl;
+			ULONG64* stratiIndices = new ULONG64[ijkGrid->getKCellCount()];
+			ijkGrid->getIntervalStratigraphicUnitIndices(stratiIndices);
+			for (size_t i = 0; i < ijkGrid->getKCellCount(); ++i)
+			{
+				cout << "\t\t K layer " << i << " is linked to strati layer " << stratiIndices[i] << endl;
+			}
+			delete[] stratiIndices;
+		}
+		else
+		{
+			cout << "\t\t No link with stratigraphy." << endl;
+		}
 
-	//	bool * enabledCells = nullptr;
-	//	if (ijkGrid->hasEnabledCellInformation()) {
-	//		std::cout << "Has enabled/disabled cell information" << std::endl;
-	//		enabledCells = new bool[ijkGrid->getCellCount()];
-	//		ijkGrid->getEnabledCells(enabledCells);
-	//	}
-	//	showAllProperties(ijkGrid, enabledCells);
-	//	if (enabledCells != nullptr) {
-	//		delete[] enabledCells;
-	//	}
-	//}
+		bool * enabledCells = nullptr;
+		if (ijkGrid->hasEnabledCellInformation()) {
+			std::cout << "Has enabled/disabled cell information" << std::endl;
+			enabledCells = new bool[ijkGrid->getCellCount()];
+			ijkGrid->getEnabledCells(enabledCells);
+		}
+		showAllProperties(ijkGrid, enabledCells);
+		if (enabledCells != nullptr) {
+			delete[] enabledCells;
+		}
+	}
 
-	//// Testing k-layers hyperslabbing
-	//deserializeGridHyperslabbingInterfaceSequence(pck);
+	// Testing k-layers hyperslabbing
+	deserializeGridHyperslabbingInterfaceSequence(pck);
 
-	//// Testing block hyperslabbing
-	//deserializeGridHyperslabbingBlock(pck);
+	// Testing block hyperslabbing
+	deserializeGridHyperslabbingBlock(pck);
 	
 	
 	// ====================
 	// Timing hyperslabbing (time consuming)
 
 	//// 4*3*2 explicit grid Left Handed
-	//AbstractIjkGridRepresentation* ijkgrid432 = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("e96c2bde-e3ae-4d51-b078-a8e57fb1e667"));
+	//AbstractIjkGridRepresentation* ijkgrid432 = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("e96c2bde-e3ae-4d51-b078-a8e57fb1e667"));
 	//ijkGridHyperslabingTiming(ijkgrid432, 250000);
 
 	//// FOUR SUGARS PARAMETRIC
-	//AbstractIjkGridRepresentation* ijkgridParametric = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("37c45c00-fa3e-11e5-a21e-0002a5d5c51b"));
+	//AbstractIjkGridRepresentation* ijkgridParametric = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("37c45c00-fa3e-11e5-a21e-0002a5d5c51b"));
 	//ijkGridHyperslabingTiming(ijkgridParametric, 250000);
 	
 	//// Four sugar cubes cellIndex
-	//DiscreteProperty* discreteProp1OnIjkgridParametric = static_cast<DiscreteProperty*>(pck.getResqmlAbstractObjectByUuid("eb3dbf6c-5745-4e41-9d09-672f6fbab414"));
+	//DiscreteProperty* discreteProp1OnIjkgridParametric = static_cast<DiscreteProperty*>(pck.getDataObjectByUuid("eb3dbf6c-5745-4e41-9d09-672f6fbab414"));
 	//discretePropertyHyperslabingTiming(ijkgridParametric, discreteProp1OnIjkgridParametric, 250000);
 	
-	//// ====================
-	//
+	// ====================
+	
 
-	//std::cout << endl << "UNSTRUCTURED GRID REP" << endl;
-	//for (size_t i = 0; i < unstructuredGridRepSet.size(); ++i)
-	//{
-	//	showAllMetadata(unstructuredGridRepSet[i]);
-	//	if (!unstructuredGridRepSet[i]->isPartial() && unstructuredGridRepSet[i]->hasGeometry())
-	//	{
-	//		std::cout << "Node count is : " << unstructuredGridRepSet[i]->getXyzPointCountOfPatch(0) << std::endl;
+	std::cout << endl << "UNSTRUCTURED GRID REP" << endl;
+	for (size_t i = 0; i < unstructuredGridRepSet.size(); ++i)
+	{
+		showAllMetadata(unstructuredGridRepSet[i]);
+		if (!unstructuredGridRepSet[i]->isPartial() && unstructuredGridRepSet[i]->hasGeometry())
+		{
+			std::cout << "Node count is : " << unstructuredGridRepSet[i]->getXyzPointCountOfPatch(0) << std::endl;
 
-	//		ULONG64 faceCount = 0;
-	//		if (!unstructuredGridRepSet[i]->isFaceCountOfCellsConstant())
-	//		{
-	//			ULONG64 * faceCountOfCells = new ULONG64[unstructuredGridRepSet[i]->getCellCount()];
-	//			unstructuredGridRepSet[i]->getCumulativeFaceCountPerCell(faceCountOfCells);
-	//			std::cout << "Face count of cell 0 is : " << faceCountOfCells[0] << std::endl;
-	//			if (unstructuredGridRepSet[i]->getCellCount() > 1)
-	//				std::cout << "Face count of cell 1 is : " << faceCountOfCells[1] - faceCountOfCells[0] << std::endl;
-	//			faceCount = faceCountOfCells[unstructuredGridRepSet[i]->getCellCount() - 1];
-	//			delete[] faceCountOfCells;
-	//		}
-	//		else
-	//		{
-	//			std::cout << "Face count of cell is constant : " << unstructuredGridRepSet[i]->getConstantFaceCountOfCells() << std::endl;
-	//			faceCount = unstructuredGridRepSet[i]->getConstantFaceCountOfCells() * unstructuredGridRepSet[i]->getCellCount();
-	//		}
-	//		if (!unstructuredGridRepSet[i]->isNodeCountOfFacesConstant())
-	//		{
-	//			ULONG64 * nodeCountOfFaces = new ULONG64[faceCount];
-	//			unstructuredGridRepSet[i]->getCumulativeNodeCountPerFace(nodeCountOfFaces);
-	//			std::cout << "Node count of face 0 is : " << nodeCountOfFaces[0] << std::endl;
-	//			if (faceCount > 1)
-	//				std::cout << "Node count of face 1 is : " << nodeCountOfFaces[1] - nodeCountOfFaces[0] << std::endl;
-	//			delete[] nodeCountOfFaces;
-	//		}
-	//		else
-	//		{
-	//			std::cout << "Node count of face is constant : " << unstructuredGridRepSet[i]->getConstantNodeCountOfFaces() << std::endl;
-	//		}
+			ULONG64 faceCount = 0;
+			if (!unstructuredGridRepSet[i]->isFaceCountOfCellsConstant())
+			{
+				ULONG64 * faceCountOfCells = new ULONG64[unstructuredGridRepSet[i]->getCellCount()];
+				unstructuredGridRepSet[i]->getCumulativeFaceCountPerCell(faceCountOfCells);
+				std::cout << "Face count of cell 0 is : " << faceCountOfCells[0] << std::endl;
+				if (unstructuredGridRepSet[i]->getCellCount() > 1)
+					std::cout << "Face count of cell 1 is : " << faceCountOfCells[1] - faceCountOfCells[0] << std::endl;
+				faceCount = faceCountOfCells[unstructuredGridRepSet[i]->getCellCount() - 1];
+				delete[] faceCountOfCells;
+			}
+			else
+			{
+				std::cout << "Face count of cell is constant : " << unstructuredGridRepSet[i]->getConstantFaceCountOfCells() << std::endl;
+				faceCount = unstructuredGridRepSet[i]->getConstantFaceCountOfCells() * unstructuredGridRepSet[i]->getCellCount();
+			}
+			if (!unstructuredGridRepSet[i]->isNodeCountOfFacesConstant())
+			{
+				ULONG64 * nodeCountOfFaces = new ULONG64[faceCount];
+				unstructuredGridRepSet[i]->getCumulativeNodeCountPerFace(nodeCountOfFaces);
+				std::cout << "Node count of face 0 is : " << nodeCountOfFaces[0] << std::endl;
+				if (faceCount > 1)
+					std::cout << "Node count of face 1 is : " << nodeCountOfFaces[1] - nodeCountOfFaces[0] << std::endl;
+				delete[] nodeCountOfFaces;
+			}
+			else
+			{
+				std::cout << "Node count of face is constant : " << unstructuredGridRepSet[i]->getConstantNodeCountOfFaces() << std::endl;
+			}
 
 
-	//		std::cout << "Reading XYZ points" << std::endl;
-	//		double * gridPoints = new double[unstructuredGridRepSet[i]->getXyzPointCountOfPatch(0) * 3];
-	//		unstructuredGridRepSet[i]->getXyzPointsOfAllPatchesInGlobalCrs(gridPoints);
-	//		std::cout << "DONE" << std::endl;
-	//		std::cout << "--------------------------------------------------" << std::endl;
-	//		delete[] gridPoints;
+			std::cout << "Reading XYZ points" << std::endl;
+			double * gridPoints = new double[unstructuredGridRepSet[i]->getXyzPointCountOfPatch(0) * 3];
+			unstructuredGridRepSet[i]->getXyzPointsOfAllPatchesInGlobalCrs(gridPoints);
+			std::cout << "DONE" << std::endl;
+			std::cout << "--------------------------------------------------" << std::endl;
+			delete[] gridPoints;
 
-	//		unstructuredGridRepSet[i]->loadGeometry();
+			unstructuredGridRepSet[i]->loadGeometry();
 
-	//		std::cout << "(in memory) Face count of cell 0 is : " << unstructuredGridRepSet[i]->getFaceCountOfCell(0) << std::endl;
-	//		if (unstructuredGridRepSet[i]->getCellCount() > 1)
-	//			std::cout << "(in memory) Face count of cell 1 is : " << unstructuredGridRepSet[i]->getFaceCountOfCell(1) << std::endl;
-	//		std::cout << "(in memory) Node count of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeCountOfFaceOfCell(0, 0) << std::endl;
-	//		std::cout << "(in memory) Node indice 0 of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 0)[0] << std::endl;
-	//		std::cout << "(in memory) Node indice 1 of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 0)[1] << std::endl;
-	//		std::cout << "(in memory) Node indice 2 of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 0)[2] << std::endl;
-	//		std::cout << "(in memory) Node indice 0 of face 1 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 1)[0] << std::endl;
+			std::cout << "(in memory) Face count of cell 0 is : " << unstructuredGridRepSet[i]->getFaceCountOfCell(0) << std::endl;
+			if (unstructuredGridRepSet[i]->getCellCount() > 1)
+				std::cout << "(in memory) Face count of cell 1 is : " << unstructuredGridRepSet[i]->getFaceCountOfCell(1) << std::endl;
+			std::cout << "(in memory) Node count of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeCountOfFaceOfCell(0, 0) << std::endl;
+			std::cout << "(in memory) Node indice 0 of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 0)[0] << std::endl;
+			std::cout << "(in memory) Node indice 1 of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 0)[1] << std::endl;
+			std::cout << "(in memory) Node indice 2 of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 0)[2] << std::endl;
+			std::cout << "(in memory) Node indice 0 of face 1 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 1)[0] << std::endl;
 
-	//		unstructuredGridRepSet[i]->unloadGeometry();
+			unstructuredGridRepSet[i]->unloadGeometry();
 
-	//		showAllProperties(unstructuredGridRepSet[i]);
-	//	}
+			showAllProperties(unstructuredGridRepSet[i]);
+		}
 
-	//	showAllSubRepresentations(unstructuredGridRepSet[i]->getSubRepresentationSet());
-	//}
+		showAllSubRepresentations(unstructuredGridRepSet[i]->getSubRepresentationSet());
+	}
 
-	//std::cout << endl << "ONLY PARTIAL SUBREPRESENTATIONS" << endl;
-	//vector<RESQML2_NS::SubRepresentation*> onlyPartialSubReps;
-	//for (size_t i = 0; i < subRepresentationSet.size(); ++i) {
-	//	if (subRepresentationSet[i]->isPartial()) {
-	//		onlyPartialSubReps.push_back(subRepresentationSet[i]);
-	//	}
-	//}
-	//showAllSubRepresentations(onlyPartialSubReps);
+	std::cout << endl << "ONLY PARTIAL SUBREPRESENTATIONS" << endl;
+	vector<RESQML2_NS::SubRepresentation*> onlyPartialSubReps;
+	for (size_t i = 0; i < subRepresentationSet.size(); ++i) {
+		if (subRepresentationSet[i]->isPartial()) {
+			onlyPartialSubReps.push_back(subRepresentationSet[i]);
+		}
+	}
+	showAllSubRepresentations(onlyPartialSubReps);
 
-	//std::cout << endl << "TIME SERIES" << endl;
-	//for (size_t i = 0; i < timeSeriesSet.size(); ++i)
-	//{
-	//	showAllMetadata(timeSeriesSet[i]);
-	//	for (unsigned int j = 0; j < timeSeriesSet[i]->getTimestampCount(); ++j) {
-	//		time_t creation = timeSeriesSet[i]->getTimestamp(j);
-	//		std::cout << "Timestamp " << j << " is (unix timestamp) : " << creation << std::endl;
-	//		tm creationTm = timeSeriesSet[i]->getTimestampAsTimeStructure(j);
-	//		std::cout << "Timestamp " << j << " is (struct tm) : " << 1900 + creationTm.tm_year << "-" << creationTm.tm_mon + 1 << "-" << creationTm.tm_mday << "T" << creationTm.tm_hour << ":" << creationTm.tm_min << ":" << creationTm.tm_sec << std::endl;
-	//	}
-	//	for (size_t j = 0; j < timeSeriesSet[i]->getPropertySet().size(); ++j)
-	//	{
-	//		std::cout << endl << "\tPROPERTIES" << endl;
-	//		showAllMetadata(timeSeriesSet[i]->getPropertySet()[j]);
-	//	}
-	//}
+	std::cout << endl << "TIME SERIES" << endl;
+	for (size_t i = 0; i < timeSeriesSet.size(); ++i)
+	{
+		showAllMetadata(timeSeriesSet[i]);
+		for (unsigned int j = 0; j < timeSeriesSet[i]->getTimestampCount(); ++j) {
+			time_t creation = timeSeriesSet[i]->getTimestamp(j);
+			std::cout << "Timestamp " << j << " is (unix timestamp) : " << creation << std::endl;
+			tm creationTm = timeSeriesSet[i]->getTimestampAsTimeStructure(j);
+			std::cout << "Timestamp " << j << " is (struct tm) : " << 1900 + creationTm.tm_year << "-" << creationTm.tm_mon + 1 << "-" << creationTm.tm_mday << "T" << creationTm.tm_hour << ":" << creationTm.tm_min << ":" << creationTm.tm_sec << std::endl;
+		}
+		for (size_t j = 0; j < timeSeriesSet[i]->getPropertySet().size(); ++j)
+		{
+			std::cout << endl << "\tPROPERTIES" << endl;
+			showAllMetadata(timeSeriesSet[i]->getPropertySet()[j]);
+		}
+	}
 
 	std::cout << endl << pck.getWarnings().size() << " WARNING(S)" << endl;
 	for (size_t i = 0; i < pck.getWarnings().size(); ++i)
@@ -3780,7 +3705,7 @@ epc.close();
 epc.open("../../testPersistence.epc", COMMON_NS::EpcDocument::READ_WRITE);
 epc.deserialize();
 
-seismicLatticeRep = epc.getResqmlAbstractObjectByUuid<Grid2dRepresentation>("aa5b90f1-2eab-4fa6-8720-69dd4fd51a4d");
+seismicLatticeRep = epc.getDataObjectByUuid<Grid2dRepresentation>("aa5b90f1-2eab-4fa6-8720-69dd4fd51a4d");
 hdfProxy = epc.getHdfProxy(0);
 RESQML2_NS::PropertyKind * propType1 = epc.createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__continuous);
 ContinuousProperty* contProp1 = epc.createContinuousProperty(seismicLatticeRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 2,

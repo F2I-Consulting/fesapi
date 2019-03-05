@@ -59,7 +59,7 @@ gsoap_eml2_1::eml21__DataObjectReference* WellboreCompletion::getWellboreDor() c
 
 class Wellbore* WellboreCompletion::getWellbore() const
 {
-	return getEpcDocument()->getResqmlAbstractObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
+	return getEpcDocument()->getDataObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
 }
 
 gsoap_eml2_1::eml21__DataObjectReference* WellboreCompletion::getWellCompletionDor() const
@@ -69,7 +69,7 @@ gsoap_eml2_1::eml21__DataObjectReference* WellboreCompletion::getWellCompletionD
 
 class WellCompletion* WellboreCompletion::getWellCompletion() const
 {
-	return getEpcDocument()->getResqmlAbstractObjectByUuid<WellCompletion>(getWellCompletionDor()->Uuid);
+	return getEpcDocument()->getDataObjectByUuid<WellCompletion>(getWellCompletionDor()->Uuid);
 }
 
 void WellboreCompletion::setWellbore(Wellbore* witsmlWellbore)
@@ -532,27 +532,15 @@ double WellboreCompletion::getPerforationHistoryEntryBaseMd(const std::string & 
 void WellboreCompletion::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellboreDor();
-	Wellbore* wellbore = epcDoc->getResqmlAbstractObjectByUuid<Wellbore>(dor->Uuid);
-	// TODO à mettre à jour (avec une nouvelle createPartial pour eml 21
-	/*
-	if (well == nullptr) { // partial transfer
-	getEpcDocument()->createPartial(dor);
-	well = getEpcDocument()->getResqmlAbstractObjectByUuid<well>(dor->Uuid);
-	}
-	*/
+	Wellbore* wellbore = epcDoc->getDataObjectByUuid<Wellbore>(dor->Uuid);
+
 	if (wellbore == nullptr) {
 		throw invalid_argument("The DOR looks invalid.");
 	}
 
 	dor = getWellCompletionDor();
-	WellCompletion* wellCompletion = epcDoc->getResqmlAbstractObjectByUuid<WellCompletion>(dor->Uuid);
-	// TODO à mettre à jour (avec une nouvelle createPartial pour eml 21
-	/*
-	if (well == nullptr) { // partial transfer
-	getEpcDocument()->createPartial(dor);
-	well = getEpcDocument()->getResqmlAbstractObjectByUuid<well>(dor->Uuid);
-	}
-	*/
+	WellCompletion* wellCompletion = epcDoc->getDataObjectByUuid<WellCompletion>(dor->Uuid);
+	
 	if (wellCompletion == nullptr) {
 		throw invalid_argument("The DOR looks invalid.");
 	}

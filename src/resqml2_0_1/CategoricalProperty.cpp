@@ -102,7 +102,7 @@ void CategoricalProperty::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* e
 	AbstractValuesProperty:: importRelationshipSetFromEpc(epcDoc);
 
 	_resqml2__CategoricalProperty* prop = static_cast<_resqml2__CategoricalProperty*>(gsoapProxy2_0_1);
-	stringLookup = static_cast<StringTableLookup*>(epcDoc->getResqmlAbstractObjectByUuid(prop->Lookup->UUID));
+	stringLookup = static_cast<StringTableLookup*>(epcDoc->getDataObjectByUuid(prop->Lookup->UUID));
 	if (stringLookup)
 		stringLookup->addCategoricalPropertyValues(this);
 }

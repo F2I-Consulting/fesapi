@@ -134,7 +134,7 @@ AbstractGridRepresentation* AbstractGridRepresentation::getParentGrid() const
 	const string parentGridUuid = getParentGridUuid();
 
 	if (!parentGridUuid.empty()) {
-		return static_cast<AbstractGridRepresentation*>(getEpcDocument()->getResqmlAbstractObjectByUuid(parentGridUuid));
+		return static_cast<AbstractGridRepresentation*>(getEpcDocument()->getDataObjectByUuid(parentGridUuid));
 	}
 	
 	return nullptr;
@@ -974,10 +974,10 @@ void AbstractGridRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocu
 	// LGR backward relationships
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getParentGridDor();
 	if (dor != nullptr) {
-		RESQML2_NS::AbstractGridRepresentation* parentGrid = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
+		RESQML2_NS::AbstractGridRepresentation* parentGrid = epcDoc->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
 		if (parentGrid == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dor);
-			parentGrid = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
+			parentGrid = getEpcDocument()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
 		}
 		if (parentGrid == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -990,10 +990,10 @@ void AbstractGridRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocu
 	// Strati org backward relationships
 	dor = getStratigraphicOrganizationInterpretationDor();
 	if (dor != nullptr) {
-		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
+		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
 		if (stratiOrg == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dor);
-			stratiOrg = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
+			stratiOrg = getEpcDocument()->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
 		}
 		if (stratiOrg == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -1070,7 +1070,7 @@ RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* AbstractGridRep
 		return nullptr;
 	}
 
-	return static_cast<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation*>(getEpcDocument()->getResqmlAbstractObjectByUuid(stratigraphicOrganizationInterpretationUuid));
+	return static_cast<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation*>(getEpcDocument()->getDataObjectByUuid(stratigraphicOrganizationInterpretationUuid));
 }
 
 bool AbstractGridRepresentation::hasCellStratigraphicUnitIndices() const

@@ -49,7 +49,7 @@ gsoap_eml2_1::eml21__DataObjectReference* WellCompletion::getWellDor() const
 
 class Well* WellCompletion::getWell() const
 {
-	return getEpcDocument()->getResqmlAbstractObjectByUuid<Well>(getWellDor()->Uuid);
+	return getEpcDocument()->getDataObjectByUuid<Well>(getWellDor()->Uuid);
 }
 
 void WellCompletion::setWell(Well* witsmlWell)
@@ -71,14 +71,8 @@ void WellCompletion::setWell(Well* witsmlWell)
 void WellCompletion::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellDor();
-	Well* well = epcDoc->getResqmlAbstractObjectByUuid<Well>(dor->Uuid);
-	// TODO à mettre à jour (avec une nouvelle createPartial pour eml 21
-	/*
-	if (well == nullptr) { // partial transfer
-	getEpcDocument()->createPartial(dor);
-	well = getEpcDocument()->getResqmlAbstractObjectByUuid<well>(dor->Uuid);
-	}
-	*/
+	Well* well = epcDoc->getDataObjectByUuid<Well>(dor->Uuid);
+
 	if (well == nullptr) {
 		throw invalid_argument("The DOR looks invalid.");
 	}

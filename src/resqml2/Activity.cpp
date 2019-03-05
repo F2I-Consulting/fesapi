@@ -72,6 +72,6 @@ std::vector<COMMON_NS::AbstractObject*> Activity::getResqmlObjectSet() const
 
 ActivityTemplate* Activity::getActivityTemplate() const
 {
-	return getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_NS::ActivityTemplate>(getActivityTemplateDor()->UUID);
+	return getEpcDocument()->getDataObjectByUuid<RESQML2_NS::ActivityTemplate>(getActivityTemplateDor()->UUID);
 }
 

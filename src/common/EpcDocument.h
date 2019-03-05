@@ -133,9 +133,6 @@ namespace WITSML2_0_NS
 	class Wellbore;
 	class WellCompletion;
 	class WellboreCompletion;
-// TODO à mettre à jour
-//	class CoordinateReferenceSystem;
-//	class Trajectory;
 }
 
 namespace PRODML2_0_NS
@@ -297,7 +294,7 @@ namespace COMMON_NS
 		/**
 		* Get all the resqml gsoap wrappers from the epc document
 		*/
-		const std::unordered_map< std::string, COMMON_NS::AbstractObject* > & getResqmlAbstractObjectSet() const;
+		const std::unordered_map< std::string, COMMON_NS::AbstractObject* > & getDataObjectSet() const;
 
 		/**
 		* Get all UUIDs of the objects contained in the EPC document
@@ -307,21 +304,21 @@ namespace COMMON_NS
 		/**
 		* Get the Gsoap type by means of its uuid
 		*/
-		COMMON_NS::AbstractObject* getResqmlAbstractObjectByUuid(const std::string & uuid, int & gsoapType) const;
+		COMMON_NS::AbstractObject* getDataObjectByUuid(const std::string & uuid, int & gsoapType) const;
 
 		/**
 		* Get a gsoap wrapper from the epc document by means of its uuid
 		*/
-		COMMON_NS::AbstractObject* getResqmlAbstractObjectByUuid(const std::string & uuid) const;
+		COMMON_NS::AbstractObject* getDataObjectByUuid(const std::string & uuid) const;
 
 		/**
 		* Get a gsoap wrapper from the epc document by means of its uuid
 		* and try to cast it to a child class of COMMON_NS::AbstractObject
 		*/
 		template <class valueType>
-		valueType* getResqmlAbstractObjectByUuid(const std::string & uuid) const
+		valueType* getDataObjectByUuid(const std::string & uuid) const
 		{
-			COMMON_NS::AbstractObject* const result = getResqmlAbstractObjectByUuid(uuid);
+			COMMON_NS::AbstractObject* const result = getDataObjectByUuid(uuid);
 
 			if (result == nullptr) {
 				return nullptr;
@@ -1064,12 +1061,6 @@ namespace COMMON_NS
 		//*************** WITSML *************
 		//************************************
 		
-		// TODO a mettre à jour
-		///**
-		//* Get all the witsml trajectories contained into the EPC document
-		//*/
-		//std::vector<WITSML1_4_1_1_NS::Trajectory*> getWitsmlTrajectorySet() const;
-
 		WITSML2_0_NS::Well* createWell(const std::string & guid,
 			const std::string & title);
 
@@ -1174,7 +1165,7 @@ namespace COMMON_NS
 		openingMode hdf5PermissionAccess;
 
 		epc::Package* package;
-		std::unordered_map< std::string, COMMON_NS::AbstractObject* > resqmlAbstractObjectSet;
+		std::unordered_map< std::string, COMMON_NS::AbstractObject* > dataObjectSet;
 		soap* s;
 		std::string filePath;
 
@@ -1190,8 +1181,6 @@ namespace COMMON_NS
 		std::vector<COMMON_NS::AbstractHdfProxy*>						hdfProxySet;
 		std::vector<RESQML2_0_1_NS::WellboreFeature*>					wellboreSet;
 		std::vector<RESQML2_NS::RepresentationSetRepresentation*>		representationSetRepresentationSet;
-		// TODO à mettre à jour
-		//std::vector<WITSML1_4_1_1_NS::Trajectory*>						witsmlTrajectorySet;
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*>		triangulatedSetRepresentationSet;
 		std::vector<RESQML2_0_1_NS::Grid2dRepresentation*>				grid2dRepresentationSet;
 		std::vector<RESQML2_0_1_NS::PolylineRepresentation*>			polylineRepresentationSet;

@@ -256,7 +256,7 @@ PropertyKind* PropertyKindMapper::addResqmlLocalPropertyKindToEpcDocumentFromApp
 	std::unordered_map<std::string, std::string>::const_iterator cit = value.find (applicationPropertyKindName);
 	if (cit != value.end())
 	{
-		if (epcDocument->getResqmlAbstractObjectByUuid(cit->second) == nullptr)
+		if (epcDocument->getDataObjectByUuid(cit->second) == nullptr)
 		{
 			gsoap_resqml2_0_1::_resqml2__PropertyKind* propType = resqmlLocalPropertyKindUuidToResqmlLocalPropertyKind[cit->second];
 
@@ -265,7 +265,7 @@ PropertyKind* PropertyKindMapper::addResqmlLocalPropertyKindToEpcDocumentFromApp
 
 			while (propType->ParentPropertyKind->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__LocalPropertyKind)
 			{
-				if (epcDocument->getResqmlAbstractObjectByUuid(static_cast<gsoap_resqml2_0_1::resqml2__LocalPropertyKind*>(propType->ParentPropertyKind)->LocalPropertyKind->UUID) == nullptr)
+				if (epcDocument->getDataObjectByUuid(static_cast<gsoap_resqml2_0_1::resqml2__LocalPropertyKind*>(propType->ParentPropertyKind)->LocalPropertyKind->UUID) == nullptr)
 				{
 					propType = resqmlLocalPropertyKindUuidToResqmlLocalPropertyKind[static_cast<gsoap_resqml2_0_1::resqml2__LocalPropertyKind*>(propType->ParentPropertyKind)->LocalPropertyKind->UUID];
 					toAdd.push_back(propType);

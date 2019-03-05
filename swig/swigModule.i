@@ -302,7 +302,7 @@ namespace COMMON_NS
 		void setExtendedCoreProperty(const std::string & key, const std::string & value);
 		std::string getExtendedCoreProperty(const std::string & key);
 
-		COMMON_NS::AbstractObject* getResqmlAbstractObjectByUuid(const std::string & uuid) const;
+		COMMON_NS::AbstractObject* getDataObjectByUuid(const std::string & uuid) const;
 		
 		std::vector<std::string> getAllUuids() const;
 

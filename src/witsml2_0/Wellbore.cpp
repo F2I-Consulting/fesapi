@@ -80,7 +80,7 @@ gsoap_eml2_1::eml21__DataObjectReference* Wellbore::getWellDor() const
 
 class Well* Wellbore::getWell() const
 {
-	return getEpcDocument()->getResqmlAbstractObjectByUuid<Well>(getWellDor()->Uuid);
+	return getEpcDocument()->getDataObjectByUuid<Well>(getWellDor()->Uuid);
 }
 
 
@@ -113,14 +113,7 @@ void Wellbore::setShape(const witsml2__WellboreShape & shape)
 void Wellbore::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellDor();
-	Well* well = epcDoc->getResqmlAbstractObjectByUuid<Well>(dor->Uuid);
-	// TODO à mettre à jour (avec une nouvelle createPartial pour eml 21
-	/*
-	if (well == nullptr) { // partial transfer
-		getEpcDocument()->createPartial(dor);
-		well = getEpcDocument()->getResqmlAbstractObjectByUuid<well>(dor->Uuid);
-	}
-	*/
+	Well* well = epcDoc->getDataObjectByUuid<Well>(dor->Uuid);
 
 	if (well == nullptr) {
 		throw invalid_argument("The DOR looks invalid.");
@@ -147,28 +140,6 @@ vector<Relationship> Wellbore::getAllEpcRelationships() const
 		rel.setSourceObjectType();
 		result.push_back(rel);
 	}
-
-	// TODO à mettre à jour
-	//for (size_t i = 0; i < trajectorySet.size(); ++i)
-	//{
-	//	Relationship rel(trajectorySet[i]->getPartNameInEpcDocument(), "", trajectorySet[i]->getUuid());
-	//	rel.setSourceObjectType();
-	//	result.push_back(rel);
-	//}
-
-	//for (size_t i = 0; i < logSet.size(); ++i)
-	//{
-	//	Relationship rel(logSet[i]->getPartNameInEpcDocument(), "", logSet[i]->getUuid());
-	//	rel.setSourceObjectType();
-	//	result.push_back(rel);
-	//}
-
-	//for (size_t i = 0; i < wellboreMarkerSetSet.size(); ++i)
-	//{
-	//	Relationship rel(wellboreMarkerSetSet[i]->getPartNameInEpcDocument(), "", wellboreMarkerSetSet[i]->getUuid());
-	//	rel.setSourceObjectType();
-	//	result.push_back(rel);
-	//}
 
 	for (size_t i = 0; i < wellboreCompletionSet.size(); ++i)
 	{

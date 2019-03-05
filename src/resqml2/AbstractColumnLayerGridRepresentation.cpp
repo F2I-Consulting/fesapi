@@ -185,10 +185,10 @@ void AbstractColumnLayerGridRepresentation::importRelationshipSetFromEpc(COMMON_
 	// Strati org backward relationships
 	if (hasIntervalStratigraphicUnitIndices()) {
 		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getStratigraphicOrganizationInterpretationDor();
-		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
+		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = getEpcDocument()->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
 		if (stratiOrg == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dor);
-			stratiOrg = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
+			stratiOrg = getEpcDocument()->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
 		}
 		if (stratiOrg == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");

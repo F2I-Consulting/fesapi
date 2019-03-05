@@ -235,10 +235,6 @@ namespace RESQML2_0_1_NS
 
 		bool hasGeometry() const;
 
-		// TODO à mettre à jour
-		//void setWitsmlTrajectory(WITSML1_4_1_1_NS::Trajectory * witsmlTraj);
-		//WITSML1_4_1_1_NS::Trajectory * getWitsmlTrajectory() {return witsmlTrajectory;}
-
 	private:
 		/**
 		* Add a children parent to this trajectory in case of trajectory branching.

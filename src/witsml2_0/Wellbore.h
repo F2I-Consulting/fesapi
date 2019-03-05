@@ -66,13 +66,6 @@ namespace WITSML2_0_NS
 
 		const std::vector<WellboreCompletion *>& getWellboreCompletions() const { return wellboreCompletionSet; }
 
-		//  TODO à mettre à jour
-		//const std::vector<Trajectory*>& getTrajectories() const {return trajectorySet;}
-
-		//const std::vector<Log*>& getLogs() const {return logSet;}
-
-		//const std::vector<WellboreMarkerSet*>& getWellboreMarkerSets() const { return wellboreMarkerSetSet; }
-
 		void setShape(const gsoap_eml2_1::witsml2__WellboreShape & shape);
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
@@ -91,14 +84,6 @@ namespace WITSML2_0_NS
 		RESQML2_0_1_NS::WellboreFeature* resqmlWellboreFeature;
 		std::vector<WellboreCompletion* > wellboreCompletionSet;
 
-		// TODO à mettre à jour
-		/*std::vector<WITSML2_1_NS::Trajectory*> trajectorySet;
-		std::vector<WITSML2_1_NS::Log*> logSet;
-		std::vector<WITSML2_1_NS::WellboreMarkerSet*> wellboreMarkerSetSet;
-		
-		friend void WITSML2_1_NS::Trajectory::setWellbore(Wellbore* witsmlWellbore);
-		friend void WITSML2_1_NS::Log::setWellbore(Wellbore* witsmlWellbore);
-		friend void WITSML2_1_NS::WellboreMarkerSet::setWellbore(Wellbore* witsmlWellbore);*/
 		friend void RESQML2_0_1_NS::WellboreFeature::setWitsmlWellbore(Wellbore * wellbore);
 		friend void WellboreCompletion::setWellbore(Wellbore* witsmlWellbore);
 	};
