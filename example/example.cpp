@@ -88,6 +88,8 @@ under the License.
 
 #include "witsml2_0/Well.h"
 
+#include "tools/TimeTools.h"
+
 using namespace std;
 using namespace RESQML2_0_1_NS;
 
