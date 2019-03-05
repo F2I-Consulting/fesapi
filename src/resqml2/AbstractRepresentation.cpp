@@ -162,13 +162,12 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractRepresentation::getLocalC
 		if (pointGeom != nullptr) {
 			return pointGeom->LocalCrs;
 		}
-		else {
-			return nullptr;
-		}
 	}
 	else {
 		throw logic_error("Not implemented yet");
 	}
+
+	return nullptr;
 }
 
 std::string AbstractRepresentation::getLocalCrsUuid() const

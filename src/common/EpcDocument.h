@@ -910,8 +910,7 @@ namespace COMMON_NS
         RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation* createNonSealedSurfaceFrameworkRepresentation(
                 RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp, 
                 const std::string & guid, 
-                const std::string & title,
-                const bool & isSealed);
+                const std::string & title);
 
         RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* createSealedSurfaceFrameworkRepresentation(
                 RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp,

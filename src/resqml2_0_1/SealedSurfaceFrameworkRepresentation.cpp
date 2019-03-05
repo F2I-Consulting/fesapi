@@ -21,9 +21,8 @@ under the License.
 #include <stdexcept>
 #include <sstream>
 
-#include "hdf5.h"
+#include "H5Tpublic.h"
 
-#include "resqml2/AbstractLocal3dCrs.h"
 #include "resqml2_0_1/StructuralOrganizationInterpretation.h"
 #include "common/AbstractHdfProxy.h"
 
@@ -39,9 +38,9 @@ SealedSurfaceFrameworkRepresentation::SealedSurfaceFrameworkRepresentation(
         const std::string & guid,
         const std::string & title
         ):
-	RepresentationSetRepresentation(interp)
+	AbstractSurfaceFrameworkRepresentation(interp)
 {
-    if (!interp)
+    if (interp == nullptr)
         throw invalid_argument("The structural organization interpretation cannot be null.");
 
     // proxy constructor
@@ -169,86 +168,12 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatchInSealedContactRe
     contactRep->Contact.push_back(contactPatch);
 }
 
-void SealedSurfaceFrameworkRepresentation::pushBackContactIdentity(
-        const gsoap_resqml2_0_1::resqml2__IdentityKind & kind,
-        const unsigned int & sealedContactRepresentationsCount, int * sealedContactRepresentationsIndexes,
-		COMMON_NS::AbstractHdfProxy * proxy)
-{
-    _resqml2__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml2__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
-
-    resqml2__ContactIdentity * contactIdentity = soap_new_resqml2__ContactIdentity(gsoapProxy2_0_1->soap, 1);
-    contactIdentity->IdentityKind = kind;
-
-    // ListOfContactRepresentations handling
-    resqml2__IntegerHdf5Array * xmlListOfContactRepresentations = soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
-    xmlListOfContactRepresentations->NullValue = (std::numeric_limits<int>::max)();
-    xmlListOfContactRepresentations->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
-    xmlListOfContactRepresentations->Values->HdfProxy = proxy->newResqmlReference();
-    ostringstream ossForHdfContactRepresentations;
-    ossForHdfContactRepresentations << "contactIdentity_listOfContactRep_" << orgRep->ContactIdentity.size() ;
-    xmlListOfContactRepresentations->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + ossForHdfContactRepresentations.str();
-    contactIdentity->ListOfContactRepresentations = xmlListOfContactRepresentations;
-    // ************ HDF *************
-    hsize_t dimContactRepresentations[1] = {sealedContactRepresentationsCount};
-    proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
-        ossForHdfContactRepresentations.str(), H5T_NATIVE_UINT,
-        sealedContactRepresentationsIndexes,
-        dimContactRepresentations, 1);
-
-    orgRep->ContactIdentity.push_back(contactIdentity);
-}
-
-void SealedSurfaceFrameworkRepresentation::pushBackContactIdentity(
-        const gsoap_resqml2_0_1::resqml2__IdentityKind & kind,
-        const unsigned int & sealedContactRepresentationsCount, int * sealedContactRepresentationsIndexes,
-		const unsigned int & identicalNodesCount, int * identicalNodesIndexes, COMMON_NS::AbstractHdfProxy * proxy)
-{
-    _resqml2__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml2__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
-
-    resqml2__ContactIdentity * contactIdentity = soap_new_resqml2__ContactIdentity(gsoapProxy2_0_1->soap, 1);
-    contactIdentity->IdentityKind = kind;
-
-    // ListOfContactRepresentations handling
-    resqml2__IntegerHdf5Array * xmlListOfContactRepresentations = soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
-    xmlListOfContactRepresentations->NullValue = (std::numeric_limits<int>::max)();
-    xmlListOfContactRepresentations->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
-    xmlListOfContactRepresentations->Values->HdfProxy = proxy->newResqmlReference();
-    ostringstream ossForHdfContactRepresentations;
-    ossForHdfContactRepresentations << "contactIdentity_listOfContactRep_" << orgRep->ContactIdentity.size() ;
-    xmlListOfContactRepresentations->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + ossForHdfContactRepresentations.str();
-    contactIdentity->ListOfContactRepresentations = xmlListOfContactRepresentations;
-    // ************ HDF *************
-    hsize_t dimContactRepresentations[1] = {sealedContactRepresentationsCount};
-    proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
-        ossForHdfContactRepresentations.str(), H5T_NATIVE_UINT,
-        sealedContactRepresentationsIndexes,
-        dimContactRepresentations, 1);
-
-    // ListOfIdenticalNodes handling
-    resqml2__IntegerHdf5Array * xmlListOfIdenticalNodes = soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
-    xmlListOfIdenticalNodes->NullValue = (std::numeric_limits<int>::max)();
-    xmlListOfIdenticalNodes->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
-    xmlListOfIdenticalNodes->Values->HdfProxy = proxy->newResqmlReference();
-    ostringstream ossForHdfIdenticalNodes;
-    ossForHdfIdenticalNodes << "contactIdentity_listOfIdenticalNodes_" << orgRep->ContactIdentity.size() ;
-    xmlListOfIdenticalNodes->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + ossForHdfIdenticalNodes.str();
-    contactIdentity->ListOfIdenticalNodes = xmlListOfIdenticalNodes;
-    // ************ HDF *************
-    hsize_t dimIdenticalNodes[2] = {identicalNodesCount, sealedContactRepresentationsCount};
-    proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
-        ossForHdfIdenticalNodes.str(), H5T_NATIVE_UINT,
-        identicalNodesIndexes,
-        dimIdenticalNodes, 2);
-
-    orgRep->ContactIdentity.push_back(contactIdentity);
-}
-
 std::string SealedSurfaceFrameworkRepresentation::getHdfProxyUuid() const
 {
-    string result = "";
+    string result;
     _resqml2__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml2__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
-    if (orgRep->SealedContactRepresentation.size() > 0 && static_cast<resqml2__SealedContactRepresentationPart*>(orgRep->SealedContactRepresentation[0])->IdenticalNodeIndices != nullptr)
+    if (!orgRep->SealedContactRepresentation.empty() && static_cast<resqml2__SealedContactRepresentationPart*>(orgRep->SealedContactRepresentation[0])->IdenticalNodeIndices != nullptr)
     {
         resqml2__SealedContactRepresentationPart *sealedContactRep = static_cast<resqml2__SealedContactRepresentationPart*>(orgRep->SealedContactRepresentation[0]);
         result = static_cast<resqml2__IntegerHdf5Array *>(sealedContactRep->IdenticalNodeIndices)->Values->HdfProxy->UUID;
@@ -257,3 +182,97 @@ std::string SealedSurfaceFrameworkRepresentation::getHdfProxyUuid() const
     return result;
 }
 
+unsigned int SealedSurfaceFrameworkRepresentation::getContactRepCount() const
+{
+	_resqml2__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml2__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
+
+	if (orgRep->SealedContactRepresentation.size() > (std::numeric_limits<unsigned int>::max)()) {
+		throw range_error("There are too much contact representations for fesapi");
+	}
+
+	return static_cast<unsigned int>(orgRep->SealedContactRepresentation.size());
+}
+
+gsoap_resqml2_0_1::resqml2__SealedContactRepresentationPart* SealedSurfaceFrameworkRepresentation::getContactRepresentation(unsigned int crIndex) const
+{
+	if (crIndex >= getContactRepCount()) {
+		throw range_error("The index of the contact represenation is out of range.");
+	}
+
+	return static_cast<_resqml2__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1)->SealedContactRepresentation[crIndex];
+}
+
+gsoap_resqml2_0_1::resqml2__IdentityKind SealedSurfaceFrameworkRepresentation::getContactPatchIdentityKind(unsigned int crIndex) const
+{
+	return getContactRepresentation(crIndex)->IdentityKind;
+}
+
+bool SealedSurfaceFrameworkRepresentation::areAllContactPatchNodesIdenticalInContactRep(unsigned int crIndex) const
+{
+	return getContactRepresentation(crIndex)->IdenticalNodeIndices == nullptr;
+}
+
+unsigned int SealedSurfaceFrameworkRepresentation::getIdenticalNodeCountOfContactRep(unsigned int crIndex) const
+{
+	if (areAllContactPatchNodesIdenticalInContactRep(crIndex)) {
+		throw invalid_argument("The nodes are all identical");
+	}
+
+	ULONG64 result = getCountOfIntegerArray(getContactRepresentation(crIndex)->IdenticalNodeIndices);
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw range_error("There are too much identical nodes for fesapi");
+	}
+
+	return static_cast<unsigned int>(result);
+}
+
+void SealedSurfaceFrameworkRepresentation::getIdenticalNodeIndicesOfContactRep(unsigned int crIndex, unsigned int * nodeIndices) const
+{
+	if (areAllContactPatchNodesIdenticalInContactRep(crIndex)) {
+		throw invalid_argument("The nodes are all identical");
+	}
+
+	readArrayNdOfUIntValues(getContactRepresentation(crIndex)->IdenticalNodeIndices, nodeIndices);
+}
+
+unsigned int SealedSurfaceFrameworkRepresentation::getContactPatchCount(unsigned int crIndex) const
+{
+	resqml2__SealedContactRepresentationPart* contactRep = getContactRepresentation(crIndex);
+
+	if (contactRep->Contact.size() > (std::numeric_limits<unsigned int>::max)()) {
+		throw range_error("There are too much contact patches for fesapi");
+	}
+
+	return static_cast<unsigned int>(contactRep->Contact.size());
+}
+
+gsoap_resqml2_0_1::resqml2__ContactPatch* SealedSurfaceFrameworkRepresentation::getContactPatch(unsigned int crIndex, unsigned int cpIndex) const
+{
+	resqml2__SealedContactRepresentationPart* contactRep = getContactRepresentation(crIndex);
+
+	if (cpIndex >= getContactPatchCount(crIndex)) {
+		throw range_error("The index of the contact patch is out of range.");
+	}
+
+	return contactRep->Contact[cpIndex];
+}
+
+RESQML2_NS::AbstractRepresentation* SealedSurfaceFrameworkRepresentation::getRepresentationOfContactPatch(unsigned int crIndex, unsigned int cpIndex) const
+{
+	return getRepresentation(getContactPatch(crIndex, cpIndex)->RepresentationIndex);
+}
+
+unsigned int SealedSurfaceFrameworkRepresentation::getNodeCountOfContactPatch(unsigned int crIndex, unsigned int cpIndex) const
+{
+	ULONG64 result = getCountOfIntegerArray(getContactPatch(crIndex, cpIndex)->SupportingRepresentationNodes);
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw range_error("There are too much nodes in this contact patch for fesapi");
+	}
+
+	return static_cast<unsigned int>(result);
+}
+
+void SealedSurfaceFrameworkRepresentation::getNodeIndicesOfContactPatch(unsigned int crIndex, unsigned int cpIndex, unsigned int * nodeIndices) const
+{
+	readArrayNdOfUIntValues(getContactPatch(crIndex, cpIndex)->SupportingRepresentationNodes, nodeIndices);
+}

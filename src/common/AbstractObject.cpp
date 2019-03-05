@@ -38,6 +38,7 @@ under the License.
 #include "version_config.h"
 
 #include "resqml2/Activity.h"
+#include "common/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -881,3 +882,72 @@ std::string AbstractObject::getExtraMetadataStringValueAtIndex(const unsigned in
 	}
 }
 
+void AbstractObject::readArrayNdOfUIntValues(gsoap_resqml2_0_1::resqml2__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const
+{
+	long soapType = arrayInput->soap_type();
+	if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
+	{
+		COMMON_NS::AbstractHdfProxy* hdfProxy = epcDocument->getResqmlAbstractObjectByUuid<COMMON_NS::AbstractHdfProxy>(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(arrayInput)->Values->HdfProxy->UUID);
+		if (hdfProxy == nullptr) {
+			throw invalid_argument("The hdf proxy " + static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(arrayInput)->Values->HdfProxy->UUID + " is not available.");
+		}
+		hdfProxy->readArrayNdOfUIntValues(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(arrayInput)->Values->PathInHdfFile, arrayOutput);
+	}
+	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerRangeArray)
+	{
+		gsoap_resqml2_0_1::resqml2__IntegerRangeArray* rangeArray = static_cast<gsoap_resqml2_0_1::resqml2__IntegerRangeArray*>(arrayInput);
+		for (size_t i = 0; i < rangeArray->Count; ++i) {
+			arrayOutput[i] = i + rangeArray->Value;
+		}
+	}
+	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray)
+	{
+		gsoap_resqml2_0_1::resqml2__IntegerConstantArray* constantArray = static_cast<gsoap_resqml2_0_1::resqml2__IntegerConstantArray*>(arrayInput);
+		for (size_t i = 0; i < constantArray->Count; ++i) {
+			arrayOutput[i] = constantArray->Value;
+		}
+	}
+	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerLatticeArray)
+	{
+		gsoap_resqml2_0_1::resqml2__IntegerLatticeArray* latticeArray = static_cast<gsoap_resqml2_0_1::resqml2__IntegerLatticeArray*>(arrayInput);
+		if (latticeArray->Offset.size() > 1) {
+			throw invalid_argument("The integer lattice array contains more than one offset.");
+		}
+		for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
+			arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
+		}
+	}
+	else
+		throw invalid_argument("The integer array type is not supported yet.");
+}
+
+ULONG64 AbstractObject::getCountOfIntegerArray(gsoap_resqml2_0_1::resqml2__AbstractIntegerArray * arrayInput) const
+{
+	long soapType = arrayInput->soap_type();
+	if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
+	{
+		COMMON_NS::AbstractHdfProxy* hdfProxy = epcDocument->getResqmlAbstractObjectByUuid<COMMON_NS::AbstractHdfProxy>(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(arrayInput)->Values->HdfProxy->UUID);
+		if (hdfProxy == nullptr) {
+			throw invalid_argument("The hdf proxy " + static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(arrayInput)->Values->HdfProxy->UUID + " is not available.");
+		}
+		return hdfProxy->getElementCount(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(arrayInput)->Values->PathInHdfFile);
+	}
+	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerRangeArray)
+	{
+		return static_cast<gsoap_resqml2_0_1::resqml2__IntegerRangeArray*>(arrayInput)->Count;
+	}
+	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray)
+	{
+		return static_cast<gsoap_resqml2_0_1::resqml2__IntegerConstantArray*>(arrayInput)->Count;
+	}
+	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerLatticeArray)
+	{
+		gsoap_resqml2_0_1::resqml2__IntegerLatticeArray* latticeArray = static_cast<gsoap_resqml2_0_1::resqml2__IntegerLatticeArray*>(arrayInput);
+		if (latticeArray->Offset.size() > 1) {
+			throw invalid_argument("The integer lattice array contains more than one offset.");
+		}
+		return static_cast<gsoap_resqml2_0_1::resqml2__IntegerLatticeArray*>(arrayInput)->Offset[0]->Count + 1;
+	}
+	else
+		throw invalid_argument("The integer array type is not supported yet.");
+}

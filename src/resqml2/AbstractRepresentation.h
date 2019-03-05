@@ -22,10 +22,6 @@ under the License.
 
 #include "resqml2/AbstractProperty.h"
 
-namespace COMMON_NS {
-	class AbstractHdfProxy;
-}
-
 namespace RESQML2_NS
 {
 	class DLL_IMPORT_OR_EXPORT AbstractRepresentation : public COMMON_NS::AbstractObject

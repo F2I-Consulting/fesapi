@@ -1993,10 +1993,9 @@ RESQML2_NS::RepresentationSetRepresentation* EpcDocument::createPartialRepresent
 NonSealedSurfaceFrameworkRepresentation* EpcDocument::createNonSealedSurfaceFrameworkRepresentation(
         StructuralOrganizationInterpretation* interp, 
         const std::string & guid,
-        const std::string & title,
-        const bool & isSealed)
+        const std::string & title)
 {
-	NonSealedSurfaceFrameworkRepresentation* result = new NonSealedSurfaceFrameworkRepresentation(interp, guid, title, isSealed);
+	NonSealedSurfaceFrameworkRepresentation* result = new NonSealedSurfaceFrameworkRepresentation(interp, guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
