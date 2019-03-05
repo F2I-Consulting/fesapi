@@ -152,8 +152,6 @@ void WellboreCompletion::pushBackPerforationHistoryEntry(const std::string & per
 	const string & guid
 )
 {
-	witsml2__WellboreCompletion* wellboreCompletion = static_cast<witsml2__WellboreCompletion*>(gsoapProxy2_1);
-
 	witsml2__PerforationSetInterval * perforationSetInterval = getPerforation(perforationGuid);
 	if (perforationSetInterval == nullptr)
 	{

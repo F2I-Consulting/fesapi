@@ -30,12 +30,12 @@ namespace timeTools
 	/**
 	* Convert an Unix timestamp which is given in seconds into a date in ISO format.
 	*/
-	__declspec(dllexport) std::string convertUnixTimestampToIso(const long long & ts);
+	std::string convertUnixTimestampToIso(const long long & ts);
 
 	/**
 	* Converts a UTC time (given in seconds) represented by a string to a UTC time represented by a time_t type.
 	*/
-	__declspec(dllexport) time_t convertIsoToUnixTimestamp(const std::string & s);
+	time_t convertIsoToUnixTimestamp(const std::string & s);
 
 	/**
 	* Converts a UTC time represented by a tm``struct to a UTC time represented by a time_t type.

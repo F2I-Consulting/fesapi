@@ -176,13 +176,10 @@ void serializePerforations(COMMON_NS::EpcDocument * pck)
 	// j'ai un doute sur le paramètre datum et sur le top/bottom
 	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980);
 	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 2000);
-	time_t date1 = timeTools::convertIsoToUnixTimestamp("1982-12-01T05:30:45Z");
-	time_t date2 = timeTools::convertIsoToUnixTimestamp("2018-01-01T00:00:00Z");
-	wellboreCompletion->pushBackPerforationHistoryEntry("0", gsoap_eml2_1::witsml2__PerforationStatus__open, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980, date1, date2);
-	wellboreCompletion->pushBackPerforationHistoryEntry("0", gsoap_eml2_1::witsml2__PerforationStatus__squeezed, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980, date2);
-	time_t date3 = timeTools::convertIsoToUnixTimestamp("1982-12-30T14:00:00Z");
-	wellboreCompletion->pushBackPerforationHistoryEntry("1", gsoap_eml2_1::witsml2__PerforationStatus__open, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 2000, date3);
-	wellboreCompletion->pushBackPerforationHistoryEntry("1", gsoap_eml2_1::witsml2__PerforationStatus__squeezed, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 1995, date2);
+	wellboreCompletion->pushBackPerforationHistoryEntry("0", gsoap_eml2_1::witsml2__PerforationStatus__open, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980, 407568645, 1514764800);
+	wellboreCompletion->pushBackPerforationHistoryEntry("0", gsoap_eml2_1::witsml2__PerforationStatus__squeezed, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980, 1514764800);
+	wellboreCompletion->pushBackPerforationHistoryEntry("1", gsoap_eml2_1::witsml2__PerforationStatus__open, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 2000, 410104800);
+	wellboreCompletion->pushBackPerforationHistoryEntry("1", gsoap_eml2_1::witsml2__PerforationStatus__squeezed, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 1995, 1514764800);
 }
 
 void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
@@ -2606,11 +2603,11 @@ void deserializePerforations(COMMON_NS::EpcDocument & pck)
 			}
 			if (wellboreCompletion->hasPerforationHistoryEntryStartDate(historyEntryUid, perforationUid))
 			{
-				cout << "\tstart date: " << timeTools::convertUnixTimestampToIso(wellboreCompletion->getPerforationHistoryEntryStartDate(historyEntryUid, perforationUid)) << std::endl;
+				cout << "\tstart date: " << wellboreCompletion->getPerforationHistoryEntryStartDate(historyEntryUid, perforationUid) << std::endl;
 			}
 			if (wellboreCompletion->hasPerforationHistoryEntryEndDate(historyEntryUid, perforationUid))
 			{
-				cout << "\tend date: " << timeTools::convertUnixTimestampToIso(wellboreCompletion->getPerforationHistoryEntryEndDate(historyEntryUid, perforationUid)) << std::endl;
+				cout << "\tend date: " << wellboreCompletion->getPerforationHistoryEntryEndDate(historyEntryUid, perforationUid) << std::endl;
 			}
 			if (wellboreCompletion->hasPerforationHistoryEntryMdDatum(historyEntryUid, perforationUid))
 			{

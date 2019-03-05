@@ -53,7 +53,7 @@ public class FesapiJavaExample {
 	 */
 	static {
 		try {
-			System.loadLibrary("FesapiCppUnderDev.0.15.0.0");
+			System.loadLibrary("${CPP_LIBRARY_NAME}.${Fesapi_VERSION}");
 		}
 		catch (UnsatisfiedLinkError e) {
 			System.out.println("UnsatisfiedLinkError : " + e.toString());
@@ -355,7 +355,6 @@ public class FesapiJavaExample {
     			}
     		}
     		
-    		// MATHIEU
     		System.out.println("WITSML WELL");
     		Well witsmlWell = (Well) pck.getDataObjectByUuid("704a287c-5c24-4af3-a97b-bc6670f4e14f");
     		System.out.println("Well title is : " + witsmlWell.getTitle());
