@@ -45,6 +45,8 @@ using namespace COMMON_NS;
 using namespace gsoap_resqml2_0_1;
 
 char AbstractObject::citationFormat[257] = "[F2I-CONSULTING:fesapi " FESAPI_VERSION "]";
+const char* AbstractObject::RESQML_2_0_CONTENT_TYPE_PREFIX = "application/x-resqml+xml;version=2.0;type=obj_";
+const char* AbstractObject::RESQML_2_0_1_CONTENT_TYPE_PREFIX = "application/x-resqml+xml;version=2.0.1;type=obj_";
 
 AbstractObject::AbstractObject() :
 	partialObject(nullptr), gsoapProxy2_0_1(nullptr),
@@ -633,9 +635,9 @@ string AbstractObject::getContentType() const
 {
 	std::string xmlNs = getXmlNamespace();
 	if (xmlNs == "resqml2")
-		return "application/x-resqml+xml;version=2.0;type=obj_" + getXmlTag();
+		return RESQML_2_0_CONTENT_TYPE_PREFIX + getXmlTag();
 	else if (xmlNs == "eml20" )
-		return "application/x-resqml+xml;version=2.0;type=obj_" + getXmlTag(); // This is clearly a mistake, the line below is the right one. However, this is needed the time readers can read the right content type.
+		return RESQML_2_0_CONTENT_TYPE_PREFIX + getXmlTag(); // This is clearly a mistake, the line below is the right one. However, this is needed the time readers can read the right content type.
 		//return "application/x-eml+xml;version=2.0;type=obj_" + getXmlTag();
 	else if (xmlNs == "eml21")
 		return "application/x-eml+xml;version=2.1;type=" + getXmlTag();

@@ -19,15 +19,20 @@ add_library (${CPP_LIBRARY_NAME} ${LIB_TYPE} "")
 target_compile_options(${CPP_LIBRARY_NAME}	PUBLIC
 	$<$<CXX_COMPILER_ID:MSVC>:/bigobj>
 	$<$<CXX_COMPILER_ID:MSVC>:/MP>
+	$<$<CXX_COMPILER_ID:MSVC>:/W4>
+	$<$<CXX_COMPILER_ID:GNU>:-Wall>
+	$<$<CXX_COMPILER_ID:GNU>:-Wextra>
+	$<$<CXX_COMPILER_ID:GNU>:-Wpedantic>
+	$<$<CXX_COMPILER_ID:CLANG>:-Weverything>
 )
 
 if (WIN32)
-	if (BUILD_SHARED_LIBS)
-		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE "-DFESAPI_DLL")
-	endif (BUILD_SHARED_LIBS)
+	if (NOT BUILD_SHARED_LIBS)
+		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE "-DFESAPI_STATIC")
+	endif ()
 	if (HDF5_BUILT_AS_DYNAMIC_LIB)
 		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE "-DH5_BUILT_AS_DYNAMIC_LIB")
-	endif (HDF5_BUILT_AS_DYNAMIC_LIB)
+	endif ()
 endif (WIN32)
 
 # Linker instructions

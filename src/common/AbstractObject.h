@@ -342,6 +342,9 @@ namespace COMMON_NS
 		* Get the string value of a string value pair at a particular index in the extra metadata set
 		*/
 		std::string getExtraMetadataStringValueAtIndex(const unsigned int & index) const;
+
+		static const char* RESQML_2_0_CONTENT_TYPE_PREFIX;
+		static const char* RESQML_2_0_1_CONTENT_TYPE_PREFIX;
 	};
 }
 
