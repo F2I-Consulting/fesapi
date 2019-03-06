@@ -158,7 +158,7 @@ public:
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	unordered_map< string, string >			extendedCoreProperties;					/// Set of non standard (extended) core properties
 #else
-	tr1::unordered_map< string, string >	extendedCoreProperties;					/// Set of non standard (extended) core properties
+	tr1::unordered_map< string, string >			extendedCoreProperties;					/// Set of non standard (extended) core properties
 #endif
 	string				pathName;													/// Pathname of package
 	unzFile				unzipped;
@@ -557,15 +557,12 @@ void Package::writePackage()
 		// content
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		for (std::unordered_map< std::string, std::string >::iterator it = d_ptr->extendedCoreProperties.begin(); it != d_ptr->extendedCoreProperties.end(); ++it)
-		{
-			oss << "\t<" << it->first << ">" + it->second + "</" + it->first + ">" << endl;
-		}
 #else
-		for (tr1::unordered_map< std::string, std::string >::iterator it = d_ptr->extendedCoreProperties.begin();  it != d_ptr->extendedCoreProperties.end(); ++it)
+		for (std::tr1::unordered_map< std::string, std::string >::iterator it = d_ptr->extendedCoreProperties.begin(); it != d_ptr->extendedCoreProperties.end(); ++it)
+#endif
 		{
 			oss << "\t<" << it->first << ">" + it->second + "</" + it->first + ">" << endl;
 		}
-#endif
 
 		// end tag
 		oss << "</extendedCoreProperties>" << endl;

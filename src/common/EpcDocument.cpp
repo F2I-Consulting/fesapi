@@ -96,8 +96,7 @@ under the License.
 #include "resqml2_0_1/CategoricalPropertySeries.h"
 #include "resqml2_0_1/DiscretePropertySeries.h"
 
-#include "witsml1_4_1_1/CoordinateReferenceSystem.h"
-#include "witsml1_4_1_1/Well.h"
+#include "witsml2_0/Well.h"
 
 #include "tools/GuidTools.h"
 
@@ -106,7 +105,7 @@ using namespace epc;
 using namespace gsoap_resqml2_0_1;
 using namespace COMMON_NS;
 using namespace RESQML2_0_1_NS;
-using namespace WITSML1_4_1_1_NS;
+using namespace WITSML2_0_NS;
 
 const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 
@@ -182,9 +181,9 @@ soap* EpcDocument::getGsoapContext() const { return s; }
 PropertyKindMapper* EpcDocument::getPropertyKindMapper() const { return propertyKindMapper; }
 
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-const std::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDocument::getResqmlAbstractObjectSet() const { return resqmlAbstractObjectSet; }
+const std::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDocument::getDataObjectSet() const { return dataObjectSet; }
 #else
-const std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDocument::getResqmlAbstractObjectSet() const { return resqmlAbstractObjectSet; }
+const std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDocument::getDataObjectSet() const { return dataObjectSet; }
 #endif
 
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
@@ -235,12 +234,12 @@ std::vector<COMMON_NS::AbstractObject*> EpcDocument::getResqml2_0ObjectsByXmlTag
 std::vector<std::string> EpcDocument::getAllUuids() const
 {
 	std::vector<std::string> keys;
-	keys.reserve(resqmlAbstractObjectSet.size());
+	keys.reserve(dataObjectSet.size());
 
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it) {
+	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
 #else
-	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it) {
+	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
 #endif
 		keys.push_back(it->first);
 	}
@@ -358,8 +357,6 @@ RESQML2_0_1_NS::PointSetRepresentation* EpcDocument::getPointSetRepresentation(c
 const std::vector<COMMON_NS::AbstractHdfProxy*> & EpcDocument::getHdfProxySet() const { return hdfProxySet; }
 unsigned int EpcDocument::getHdfProxyCount() const { return hdfProxySet.size(); }
 
-std::vector<WITSML1_4_1_1_NS::Trajectory*> EpcDocument::getWitsmlTrajectorySet() const { return witsmlTrajectorySet; }
-
 void EpcDocument::addWarning(const std::string & warning) { warnings.push_back(warning); }
 const std::vector<std::string> & EpcDocument::getWarnings() const { return warnings; }
 
@@ -389,24 +386,14 @@ void EpcDocument::close()
 	}
 
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
+	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
 #else
-	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
+	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
 #endif
 	{
 	  delete it->second;
 	}
-	resqmlAbstractObjectSet.clear();
-
-#if (defined(_WIN32) && _MSC_VER >= 1600)|| defined(__APPLE__)
-	for (std::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.begin(); it != witsmlAbstractObjectSet.end(); ++it)
-#else
-	for (std::tr1::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.begin(); it != witsmlAbstractObjectSet.end(); ++it)
-#endif
-	{
-	  delete it->second;
-	}
-	witsmlAbstractObjectSet.clear();
+	dataObjectSet.clear();
 
 	if (package != nullptr) {
 		delete package;
@@ -432,7 +419,6 @@ void EpcDocument::close()
 	hdfProxySet.clear();
 	wellboreSet.clear();
 	representationSetRepresentationSet.clear();
-	witsmlTrajectorySet.clear();
 	triangulatedSetRepresentationSet.clear();
 	grid2dRepresentationSet.clear();
 	polylineRepresentationSet.clear();
@@ -496,24 +482,19 @@ gsoap_resqml2_0_1::resqml2__Facet EpcDocument::getFacet(const std::string & face
 		return resqml2__Facet__what;
 }
 
-std::string EpcDocument::getWitsmlLengthUom(const gsoap_witsml1_4_1_1::witsml1__LengthUom & witsmlUom) const
+std::string EpcDocument::lengthUomToString(const gsoap_eml2_1::eml21__LengthUom & witsmlUom) const
 {
-	return gsoap_witsml1_4_1_1::soap_witsml1__LengthUom2s(s, witsmlUom);
+	return gsoap_eml2_1::soap_eml21__LengthUom2s(s, witsmlUom);
 }
 
-std::string EpcDocument::getWitsmlWellVerticalCoordinateUom(const gsoap_witsml1_4_1_1::witsml1__WellVerticalCoordinateUom & witsmlUom) const
+std::string EpcDocument::verticalCoordinateUomToString(const gsoap_eml2_1::eml21__VerticalCoordinateUom & witsmlUom) const
 {
-	return gsoap_witsml1_4_1_1::soap_witsml1__WellVerticalCoordinateUom2s(s, witsmlUom);
+	return gsoap_eml2_1::soap_eml21__VerticalCoordinateUom2s(s, witsmlUom);
 }
 
-std::string EpcDocument::getWitsmlMeasuredDepthUom(const gsoap_witsml1_4_1_1::witsml1__MeasuredDepthUom & witsmlUom) const
+std::string EpcDocument::planeAngleUomToString(const gsoap_eml2_1::eml21__PlaneAngleUom & witsmlUom) const
 {
-	return gsoap_witsml1_4_1_1::soap_witsml1__MeasuredDepthUom2s(s, witsmlUom);
-}
-
-std::string EpcDocument::getWitsmlPlaneAngleUom(const gsoap_witsml1_4_1_1::witsml1__PlaneAngleUom & witsmlUom) const
-{
-	return gsoap_witsml1_4_1_1::soap_witsml1__PlaneAngleUom2s(s, witsmlUom);
+	return gsoap_eml2_1::soap_eml21__PlaneAngleUom2s(s, witsmlUom);
 }
 
 void EpcDocument::addGsoapProxy(COMMON_NS::AbstractObject* proxy)
@@ -597,8 +578,8 @@ void EpcDocument::addGsoapProxy(COMMON_NS::AbstractObject* proxy)
 		pointSetRepresentationSet.push_back(static_cast<PointSetRepresentation* const>(proxy));
 	}
 
-	if (getResqmlAbstractObjectByUuid(proxy->getUuid()) == nullptr) {
-		resqmlAbstractObjectSet[proxy->getUuid()] = proxy;
+	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {
+		dataObjectSet[proxy->getUuid()] = proxy;
 	}
 	else {
 		throw invalid_argument("You cannot have twice the same UUID " + proxy->getUuid() + " for two different Resqml objects in an EPC document");
@@ -621,49 +602,16 @@ void EpcDocument::addFesapiWrapperAndDeleteItIfException(COMMON_NS::AbstractObje
 	}
 }
 
-void EpcDocument::addGsoapProxy(WITSML1_4_1_1_NS::AbstractObject* proxy)
-{
-	switch (proxy->getGsoapType())
-	{
-	case SOAP_TYPE_gsoap_witsml1_4_1_1_witsml1__obj_USCOREtrajectorys :
-		witsmlTrajectorySet.push_back(static_cast<Trajectory*>(proxy)); break;
-	}
-
-	if (witsmlAbstractObjectSet.find(proxy->getUuid()) == witsmlAbstractObjectSet.end())
-	{
-		witsmlAbstractObjectSet[proxy->getUuid()] = proxy;
-	}
-	else
-	{
-		throw invalid_argument("You cannot have twice the same UUID " + proxy->getUuid() + " for two different Resqml objects in an EPC document");
-	}
-	proxy->epcDocument = this;
-}
-
-void EpcDocument::addFesapiWrapperAndDeleteItIfException(WITSML1_4_1_1_NS::AbstractObject* proxy)
-{
-	try {
-		addGsoapProxy(proxy);
-	}
-	catch (const exception & e)
-	{
-		std::cerr << e.what() << endl;
-		std::cerr << "The proxy is going to be deleted but deletion is not yet guaranteed. You should close your application." << endl;
-		addWarning("The proxy is going to be deleted but deletion is not yet guaranteed. You should close your application.");
-		delete proxy;
-		throw;
-	}
-}
-
 void EpcDocument::serialize(bool useZip64)
 {
 	warnings.clear();
 
 	package->openForWriting(filePath, useZip64);
+
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
+	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
 #else
-	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
+	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
 #endif
 	{
 		if (!it->second->isPartial()) {
@@ -678,25 +626,6 @@ void EpcDocument::serialize(bool useZip64)
 			epc::ContentType contentType(false, it->second->getContentType(), it->second->getPartNameInEpcDocument());
 			package->addContentType(contentType);
 		}
-	}
-
-	
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	for (std::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.begin(); it != witsmlAbstractObjectSet.end(); ++it)
-#else
-	for (std::tr1::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.begin(); it != witsmlAbstractObjectSet.end(); ++it)
-#endif
-	{
-		string str = it->second->serializeIntoString();
-
-		epc::FilePart* fp = package->createPart(str, it->second->getPartNameInEpcDocument());
-		std::vector<epc::Relationship> relSet = it->second->getAllEpcRelationships();
-		for (size_t relIndex = 0; relIndex < relSet.size(); relIndex++) {
-			fp->addRelationship(relSet[relIndex]);
-		}
-
-		epc::ContentType contentType(false, it->second->getContentType(), it->second->getPartNameInEpcDocument());
-		package->addContentType(contentType);
 	}
 
 	package->writePackage();
@@ -809,7 +738,7 @@ string EpcDocument::deserialize()
 				warnings.push_back("The content type " + resqmlContentType + " could not be wrapped by fesapi. The related instance will be ignored.");
 			}
 		}
-		else if (it->second.getContentTypeString().find("application/x-witsml+xml;version=1.4.1.1;type=") == 0)
+		else if (it->second.getContentTypeString().find("application/x-witsml+xml;version=2.0;type=") == 0)
 		{
 			string fileStr = package->extractFile(it->second.getExtensionOrPartName().substr(1));
 			if (fileStr.empty()) {
@@ -817,43 +746,31 @@ string EpcDocument::deserialize()
 			}
 			istringstream iss(fileStr);
 			setGsoapStream(&iss);
-			WITSML1_4_1_1_NS::AbstractObject* wrapper = nullptr;
-			string resqmlContentType = it->second.getContentTypeString().substr(50);
+			WITSML2_0_NS::AbstractObject* wrapper = nullptr;
+			string resqmlContentType = it->second.getContentTypeString().substr(42);
 			if (resqmlContentType.compare(Well::XML_TAG) == 0)
 			{
-				gsoap_witsml1_4_1_1::_witsml1__wells* read = gsoap_witsml1_4_1_1::soap_new_witsml1__obj_USCOREwells(s, 1);
-				soap_read_witsml1__obj_USCOREwells(s, read);
+				gsoap_eml2_1::_witsml2__Well* read = gsoap_eml2_1::soap_new_witsml2__Well(s, 1);
+				soap_read_witsml2__Well(s, read);
 				wrapper = new Well(read);
 			}
 			else if (resqmlContentType.compare(Wellbore::XML_TAG) == 0)
 			{
-				gsoap_witsml1_4_1_1::_witsml1__wellbores* read = gsoap_witsml1_4_1_1::soap_new_witsml1__obj_USCOREwellbores(s, 1);
-				soap_read_witsml1__obj_USCOREwellbores(s, read);
+				gsoap_eml2_1::_witsml2__Wellbore* read = gsoap_eml2_1::soap_new_witsml2__Wellbore(s, 1);
+				soap_read_witsml2__Wellbore(s, read);
 				wrapper = new Wellbore(read);
 			}
-			else if (resqmlContentType.compare(Trajectory::XML_TAG) == 0)
+			else if (resqmlContentType.compare(WellCompletion::XML_TAG) == 0)
 			{
-				gsoap_witsml1_4_1_1::_witsml1__trajectorys* read = gsoap_witsml1_4_1_1::soap_new_witsml1__obj_USCOREtrajectorys(s, 1);
-				soap_read_witsml1__obj_USCOREtrajectorys(s, read);
-				wrapper = new Trajectory(read);
+				gsoap_eml2_1::_witsml2__WellCompletion* read = gsoap_eml2_1::soap_new_witsml2__WellCompletion(s, 1);
+				soap_read_witsml2__WellCompletion(s, read);
+				wrapper = new WellCompletion(read);
 			}
-			else if (resqmlContentType.compare(Log::XML_TAG) == 0)
+			else if (resqmlContentType.compare(WellboreCompletion::XML_TAG) == 0)
 			{
-				gsoap_witsml1_4_1_1::_witsml1__logs* read = gsoap_witsml1_4_1_1::soap_new_witsml1__obj_USCORElogs(s, 1);
-				soap_read_witsml1__obj_USCORElogs(s, read);
-				wrapper = new Log(read);
-			}
-			else if (resqmlContentType.compare(FormationMarker::XML_TAG) == 0)
-			{
-				gsoap_witsml1_4_1_1::_witsml1__formationMarkers* read = gsoap_witsml1_4_1_1::soap_new_witsml1__obj_USCOREformationMarkers(s, 1);
-				soap_read_witsml1__obj_USCOREformationMarkers(s, read);
-				wrapper = new FormationMarker(read);
-			}
-			else if (resqmlContentType.compare(CoordinateReferenceSystem::XML_TAG) == 0)
-			{
-				gsoap_witsml1_4_1_1::_witsml1__coordinateReferenceSystems* read = gsoap_witsml1_4_1_1::soap_new_witsml1__obj_USCOREcoordinateReferenceSystems(s, 1);
-				soap_read_witsml1__obj_USCOREcoordinateReferenceSystems(s, read);
-				wrapper = new CoordinateReferenceSystem(read);
+				gsoap_eml2_1::_witsml2__WellboreCompletion* read = gsoap_eml2_1::soap_new_witsml2__WellboreCompletion(s, 1);
+				soap_read_witsml2__WellboreCompletion(s, read);
+				wrapper = new WellboreCompletion(read);
 			}
 			
 			if (wrapper != nullptr)
@@ -980,9 +897,9 @@ COMMON_NS::AbstractObject* EpcDocument::getResqml2_0_1WrapperFromGsoapContext(co
 	return wrapper;
 }
 
-COMMON_NS::AbstractObject* EpcDocument::getResqmlAbstractObjectByUuid(const std::string & uuid, int & gsoapType) const
+COMMON_NS::AbstractObject* EpcDocument::getDataObjectByUuid(const std::string & uuid, int & gsoapType) const
 {
-	COMMON_NS::AbstractObject* result = getResqmlAbstractObjectByUuid(uuid);
+	COMMON_NS::AbstractObject* result = getDataObjectByUuid(uuid);
 	if (result != nullptr)
 	{
 		gsoapType = result->getGsoapType();
@@ -990,25 +907,14 @@ COMMON_NS::AbstractObject* EpcDocument::getResqmlAbstractObjectByUuid(const std:
 	return result;
 }
 
-COMMON_NS::AbstractObject* EpcDocument::getResqmlAbstractObjectByUuid(const string & uuid) const
+COMMON_NS::AbstractObject* EpcDocument::getDataObjectByUuid(const string & uuid) const
 {
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.find(uuid);
+	std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.find(uuid);
 #else
-	std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.find(uuid);
+	std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.find(uuid);
 #endif
-	return it == resqmlAbstractObjectSet.end() ? nullptr : it->second;
-}
-
-WITSML1_4_1_1_NS::AbstractObject* EpcDocument::getWitsmlAbstractObjectByUuid(const string & uuid) const
-{
-	
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	std::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.find(uuid);
-#else
-	std::tr1::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.find(uuid);
-#endif
-	return it == witsmlAbstractObjectSet.end() ? nullptr : it->second;
+	return it == dataObjectSet.end() ? nullptr : it->second;
 }
 
 vector<PolylineSetRepresentation*> EpcDocument::getFaultPolylineSetRepSet() const
@@ -1387,24 +1293,14 @@ string EpcDocument::getName() const
 void EpcDocument::updateAllRelationships()
 {
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
+	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
 #else
-	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
+	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
 #endif
 	{
 		if (!it->second->isPartial()) {
 			it->second->importRelationshipSetFromEpc(this);
 		}
-	}
-
-
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	for (std::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.begin(); it != witsmlAbstractObjectSet.end(); ++it)
-#else
-	for (std::tr1::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* >::const_iterator it = witsmlAbstractObjectSet.begin(); it != witsmlAbstractObjectSet.end(); ++it)
-#endif
-	{
-		it->second->importRelationshipSetFromEpc(this);
 	}
 }
 
@@ -2416,47 +2312,62 @@ RESQML2_NS::Activity* EpcDocument::createActivity(RESQML2_NS::ActivityTemplate* 
 //*************** WITSML *************
 //************************************
 
-Well* EpcDocument::createWell(
-			const std::string & guid,
-			const std::string & title,
-			const std::string & timeZone)
+WITSML2_0_NS::Well* EpcDocument::createWell(const std::string & guid,
+	const std::string & title)
 {
-	Well* result = new Well(getGsoapContext(), guid, title, timeZone);
+	Well* result = new Well(getGsoapContext(), guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
 
-Well* EpcDocument::createWell(
-			const std::string & guid,
-			const std::string & title,
-			const std::string & timeZone,
-			const std::string & operator_,
-			gsoap_witsml1_4_1_1::witsml1__WellStatus statusWell,
-			gsoap_witsml1_4_1_1::witsml1__WellPurpose purposeWell,
-			gsoap_witsml1_4_1_1::witsml1__WellFluid fluidWell,
-			gsoap_witsml1_4_1_1::witsml1__WellDirection directionWell,
-			const time_t & dTimSpud,
-			const std::string & sourceName,
-			const time_t & dTimCreation,
-			const time_t & dTimLastChange,
-			const std::string & comments)
+WITSML2_0_NS::Well* EpcDocument::createWell(const std::string & guid,
+	const std::string & title,
+	const std::string & operator_,
+	gsoap_eml2_1::eml21__WellStatus statusWell,
+	gsoap_eml2_1::witsml2__WellDirection directionWell)
 {
-	Well* result = new Well(getGsoapContext(), guid, title, timeZone, operator_, statusWell, purposeWell, fluidWell, directionWell, dTimSpud, sourceName, dTimCreation, dTimLastChange, comments);
+	Well* result = new Well(getGsoapContext(), guid, title, operator_, statusWell, directionWell);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
 
-CoordinateReferenceSystem* EpcDocument::createCoordinateReferenceSystem(
-			const std::string & guid,
-			const std::string & title,
-			const std::string & namingSystem,
-			const std::string & code,
-			const std::string & sourceName,
-			const time_t & dTimCreation,
-			const time_t & dTimLastChange,
-			const std::string & comments)
+WITSML2_0_NS::Wellbore* EpcDocument::createWellbore(WITSML2_0_NS::Well* witsmlWell,
+	const std::string & guid,
+	const std::string & title)
 {
-	CoordinateReferenceSystem* result = new CoordinateReferenceSystem(getGsoapContext(), guid, title, namingSystem, code, sourceName, dTimCreation, dTimLastChange, comments);
+	Wellbore* result = new Wellbore(witsmlWell, guid, title);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_0_NS::Wellbore* EpcDocument::createWellbore(WITSML2_0_NS::Well* witsmlWell,
+	const std::string & guid,
+	const std::string & title,
+	gsoap_eml2_1::eml21__WellStatus statusWellbore,
+	const bool & isActive,
+	const bool & achievedTD)
+{
+	Wellbore* result = new Wellbore(witsmlWell, guid, title, statusWellbore, isActive, achievedTD);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_0_NS::WellCompletion* EpcDocument::createWellCompletion(WITSML2_0_NS::Well* witsmlWell,
+	const std::string & guid,
+	const std::string & title)
+{
+	WellCompletion* result = new WellCompletion(witsmlWell, guid, title);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_0_NS::WellboreCompletion* EpcDocument::createWellboreCompletion(WITSML2_0_NS::Wellbore* witsmlWellbore,
+	WITSML2_0_NS::WellCompletion* wellCompletion,
+	const std::string & guid,
+	const std::string & title,
+	const std::string & wellCompletionName)
+{
+	WellboreCompletion* result = new WellboreCompletion(witsmlWellbore, wellCompletion, guid, title, wellCompletionName);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }

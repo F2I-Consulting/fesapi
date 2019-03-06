@@ -125,21 +125,21 @@ void EarthModelInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocume
 
 	if (interp->Structure != nullptr)
 	{
-		StructuralOrganizationInterpretation* structuralOrganizationInterp = static_cast<StructuralOrganizationInterpretation*>(epcDoc->getResqmlAbstractObjectByUuid(interp->Structure->UUID));
+		StructuralOrganizationInterpretation* structuralOrganizationInterp = static_cast<StructuralOrganizationInterpretation*>(epcDoc->getDataObjectByUuid(interp->Structure->UUID));
 		if (structuralOrganizationInterp != nullptr)
 			setStructuralOrganizationInterpretation(structuralOrganizationInterp);
 	}
 
 	if (interp->StratigraphicColumn != nullptr)
 	{
-		StratigraphicColumn* stratCol = static_cast<StratigraphicColumn*>(epcDoc->getResqmlAbstractObjectByUuid(interp->StratigraphicColumn->UUID));
+		StratigraphicColumn* stratCol = static_cast<StratigraphicColumn*>(epcDoc->getDataObjectByUuid(interp->StratigraphicColumn->UUID));
 		if (stratCol != nullptr)
 			setStratiColumn(stratCol);
 	}
 
 	for (size_t i = 0; i < interp->StratigraphicOccurrences.size(); ++i)
 	{
-		pushBackStratiOccurence(static_cast<StratigraphicOccurrenceInterpretation*>(epcDoc->getResqmlAbstractObjectByUuid(interp->StratigraphicOccurrences[i]->UUID)));
+		pushBackStratiOccurence(static_cast<StratigraphicOccurrenceInterpretation*>(epcDoc->getDataObjectByUuid(interp->StratigraphicOccurrences[i]->UUID)));
 	}
 
 	updateXml = true;

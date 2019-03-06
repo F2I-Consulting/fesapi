@@ -107,10 +107,10 @@ void GridConnectionSetRepresentation::importRelationshipSetFromEpc(COMMON_NS::Ep
 	unsigned int supportingGridCount = getSupportingGridRepresentationCount();
 	for (unsigned int i = 0; i < supportingGridCount; ++i) {
 		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getSupportingGridRepresentationDor(i);
-		RESQML2_NS::AbstractGridRepresentation* supportingGridRep = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
+		RESQML2_NS::AbstractGridRepresentation* supportingGridRep = epcDoc->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
 		if (supportingGridRep == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dor);
-			supportingGridRep = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
+			supportingGridRep = getEpcDocument()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
 		}
 		if (supportingGridRep == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -124,7 +124,7 @@ void GridConnectionSetRepresentation::importRelationshipSetFromEpc(COMMON_NS::Ep
 		updateXml = false;
 		unsigned int interpCount = getInterpretationCount();
 		for (unsigned int i = 0; i < interpCount; ++i) {
-			RESQML2_NS::AbstractFeatureInterpretation* interp = epcDocument->getResqmlAbstractObjectByUuid<AbstractFeatureInterpretation>(getInterpretationUuidFromIndex(i));
+			RESQML2_NS::AbstractFeatureInterpretation* interp = epcDocument->getDataObjectByUuid<AbstractFeatureInterpretation>(getInterpretationUuidFromIndex(i));
 			if (interp == nullptr) {
 				throw logic_error("The referenced interpretation is either not a resqml grid interpretation or it is partial and not implemented yet");
 			}
@@ -163,12 +163,12 @@ void GridConnectionSetRepresentation::getXyzPointsOfPatch(const unsigned int & p
 
 AbstractFeatureInterpretation * GridConnectionSetRepresentation::getInterpretationFromIndex(const unsigned int & interpretationIndex) const
 {
-	return static_cast<AbstractFeatureInterpretation*>(epcDocument->getResqmlAbstractObjectByUuid(getInterpretationUuidFromIndex(interpretationIndex)));
+	return static_cast<AbstractFeatureInterpretation*>(epcDocument->getDataObjectByUuid(getInterpretationUuidFromIndex(interpretationIndex)));
 }
 
 AbstractGridRepresentation* GridConnectionSetRepresentation::getSupportingGridRepresentation(unsigned int index) const 
 {
-	return static_cast<AbstractGridRepresentation*>(epcDocument->getResqmlAbstractObjectByUuid(getSupportingGridRepresentationUuid(index)));
+	return static_cast<AbstractGridRepresentation*>(epcDocument->getDataObjectByUuid(getSupportingGridRepresentationUuid(index)));
 }
 
 std::string GridConnectionSetRepresentation::getSupportingGridRepresentationUuid(unsigned int index) const

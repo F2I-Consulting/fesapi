@@ -379,7 +379,7 @@ AbstractRepresentation* AbstractRepresentation::getSeismicSupportOfPatch(const u
 			return nullptr;
 		}
 
-		return getEpcDocument()->getResqmlAbstractObjectByUuid<AbstractRepresentation>(geom->SeismicCoordinates->SeismicSupport->UUID);
+		return getEpcDocument()->getDataObjectByUuid<AbstractRepresentation>(geom->SeismicCoordinates->SeismicSupport->UUID);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -443,10 +443,10 @@ void AbstractRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getInterpretationDor();
 	if (dor != nullptr) {
-		RESQML2_NS::AbstractFeatureInterpretation* interp = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractFeatureInterpretation>(dor->UUID);
+		RESQML2_NS::AbstractFeatureInterpretation* interp = epcDoc->getDataObjectByUuid<RESQML2_NS::AbstractFeatureInterpretation>(dor->UUID);
 		if (interp == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dor);
-			interp = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractFeatureInterpretation>(dor->UUID);
+			interp = getEpcDocument()->getDataObjectByUuid<RESQML2_NS::AbstractFeatureInterpretation>(dor->UUID);
 		}
 		if (interp == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -459,10 +459,10 @@ void AbstractRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument
 	// Local CRS
 	dor = getLocalCrsDor();
 	if (dor != nullptr) {
-		localCrs = epcDoc->getResqmlAbstractObjectByUuid<AbstractLocal3dCrs>(dor->UUID);
+		localCrs = epcDoc->getDataObjectByUuid<AbstractLocal3dCrs>(dor->UUID);
 		if (localCrs == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dor);
-			localCrs = getEpcDocument()->getResqmlAbstractObjectByUuid<AbstractLocal3dCrs>(dor->UUID);
+			localCrs = getEpcDocument()->getDataObjectByUuid<AbstractLocal3dCrs>(dor->UUID);
 		}
 		if (localCrs == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -474,7 +474,7 @@ void AbstractRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument
 
 	const std::string uuid = getHdfProxyUuid();
 	if (!uuid.empty()) {
-		COMMON_NS::AbstractHdfProxy* const hdfProxy = epcDoc->getResqmlAbstractObjectByUuid<COMMON_NS::AbstractHdfProxy>(uuid);
+		COMMON_NS::AbstractHdfProxy* const hdfProxy = epcDoc->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(uuid);
 		if (hdfProxy != nullptr) {
 			setHdfProxy(hdfProxy);
 		}
@@ -493,11 +493,11 @@ void AbstractRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument
 			if (geom && geom->SeismicCoordinates) {
 				if (geom->SeismicCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Seismic3dCoordinates) {
 					gsoap_resqml2_0_1::resqml2__Seismic3dCoordinates* const seis3dInfo = static_cast<gsoap_resqml2_0_1::resqml2__Seismic3dCoordinates* const>(geom->SeismicCoordinates);
-					pushBackSeismicSupport(epcDoc->getResqmlAbstractObjectByUuid<AbstractRepresentation>(seis3dInfo->SeismicSupport->UUID));
+					pushBackSeismicSupport(epcDoc->getDataObjectByUuid<AbstractRepresentation>(seis3dInfo->SeismicSupport->UUID));
 				}
 				else if (geom->SeismicCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Seismic2dCoordinates) {
 					gsoap_resqml2_0_1::resqml2__Seismic2dCoordinates* const seis2dInfo = static_cast<gsoap_resqml2_0_1::resqml2__Seismic2dCoordinates* const>(geom->SeismicCoordinates);
-					pushBackSeismicSupport(epcDoc->getResqmlAbstractObjectByUuid<AbstractRepresentation>(seis2dInfo->SeismicSupport->UUID));
+					pushBackSeismicSupport(epcDoc->getDataObjectByUuid<AbstractRepresentation>(seis2dInfo->SeismicSupport->UUID));
 				}
 			}
 		}

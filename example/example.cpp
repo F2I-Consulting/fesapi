@@ -86,9 +86,9 @@ under the License.
 #include "resqml2_0_1/Activity.h"
 #include "resqml2_0_1/ActivityTemplate.h"
 
-#include "witsml1_4_1_1/Well.h"
-#include "witsml1_4_1_1/CoordinateReferenceSystem.h"
-#include "witsml1_4_1_1/Trajectory.h"
+#include "witsml2_0/Well.h"
+
+#include "tools/TimeTools.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -108,61 +108,30 @@ TriangulatedSetRepresentation* h2i1triRep;
 WellboreTrajectoryRepresentation* w1i1TrajRep;
 LocalDepth3dCrs* local3dCrs;
 LocalTime3dCrs* localTime3dCrs;
+WellboreFeature* wellbore1;
 WellboreInterpretation* wellbore1Interp1;
 StratigraphicColumnRankInterpretation* stratiColumnRank;
 
-WITSML1_4_1_1_NS::Wellbore* witsmlWellbore = NULL;
-
-WITSML1_4_1_1_NS::CoordinateReferenceSystem* witsmlCrs;
+WITSML2_0_NS::Well* witsmlWell = NULL;
+WITSML2_0_NS::Wellbore* witsmlWellbore = NULL;
 
 void serializeWells(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
-	WITSML1_4_1_1_NS::Trajectory* witsmlTraj = nullptr;
-	WITSML1_4_1_1_NS::Log* witsmlLog = nullptr;
-
 	// WELL
-	WITSML1_4_1_1_NS::Well* witsmlWell = pck->createWell("", "Well1", "00:00");
-	witsmlWell->setEastingNorthingLocation(gsoap_witsml1_4_1_1::witsml1__LengthUom__m, 275, 75, witsmlCrs);
-	witsmlWell->pushBackDatum("", "well1 msl datum", gsoap_witsml1_4_1_1::witsml1__ElevCodeEnum__KB, "EPSG",
-		"5100", "Mean Sea Level");
-	witsmlWell->pushBackDatum("", "well1 datum", gsoap_witsml1_4_1_1::witsml1__ElevCodeEnum__KB, 0,
-		gsoap_witsml1_4_1_1::witsml1__WellVerticalCoordinateUom__m, 15);
+	witsmlWell = pck->createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1");
+	witsmlWell->pushBackLocation("8cd3c8b2-face-4426-8aea-ae34870bd969", 275, 75, 0);
+	witsmlWell->pushBackDatum("aa92fa8b-d6cc-459e-b456-27fec0c08b24", "well1 msl datum", gsoap_eml2_1::eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 0, 5100);
+	witsmlWell->pushBackDatum("d3ac5401-d3e7-4474-b846-070673b210ae", "KB", gsoap_eml2_1::eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 15, 5100);
 
 	// WELLBORE
-	witsmlWellbore = witsmlWell->createWellbore("", "Wellbore1");
-
-	// TRAJECTORY
-	witsmlTraj = witsmlWellbore->createTrajectory("", "Trajectory");
-	double mds[4] = { 15, 340, 515, 1015 };
-	double tvds[4] = { 0, 325, 500, 1000 };
-	double incl[4] = { .0, .0, .0, .0 };
-	double azi[4] = { .0, .0, .0, .0 };
-	double eastings[4] = { 275, 275, 275, 275 };
-	double northings[4] = { 75, 75, 75, 75 };
-	witsmlTraj->setEastingNorthingTrajectoryStations(4,
-		1, gsoap_witsml1_4_1_1::witsml1__MeasuredDepthUom__m, mds,
-		0, gsoap_witsml1_4_1_1::witsml1__WellVerticalCoordinateUom__m, tvds,
-		gsoap_witsml1_4_1_1::witsml1__PlaneAngleUom__rad, incl,
-		gsoap_witsml1_4_1_1::witsml1__AziRef__grid_x0020north, azi,
-		gsoap_witsml1_4_1_1::witsml1__LengthUom__m, eastings, northings,
-		witsmlCrs);
-
-	// LOG
-	witsmlLog = witsmlWellbore->createLog("", "Log", gsoap_witsml1_4_1_1::witsml1__LogIndexType__measured_x0020depth, "MD");
-	vector<string> witsmlLogMds;
-	witsmlLogMds.push_back("0,0");
-	witsmlLogMds.push_back("250,1");
-	witsmlLogMds.push_back("500,2");
-	witsmlLogMds.push_back("750,3");
-	witsmlLogMds.push_back("1000,4");
-	witsmlLog->setValues("", ",", "m", .0, 1000, 250, gsoap_witsml1_4_1_1::witsml1__LogIndexDirection__increasing, "MD,IntervalIdx", "m,Euc", witsmlLogMds);
+	witsmlWellbore = pck->createWellbore(witsmlWell, "3bd60188-5688-43df-89bb-935fe86a813f", "Wellbore1");
 
 	////////////////////////
 	// RESQML
 	////////////////////////
 
 	// Features
-	WellboreFeature* wellbore1 = pck->createWellboreFeature("", "Wellbore1");
+	wellbore1 = pck->createWellboreFeature("", "Wellbore1");
 	if (witsmlWellbore)
 		wellbore1->setWitsmlWellbore(witsmlWellbore);
 
@@ -178,9 +147,7 @@ void serializeWells(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* h
 	double trajectoryTangentVectors[12] = { 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1 };
 	double trajectoryMds[4] = { 0, 325, 500, 1000 };
 	w1i1TrajRep->setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, hdfProxy);
-	if (witsmlTraj)
-		w1i1TrajRep->setWitsmlTrajectory(witsmlTraj);
-
+	
 	// WellboreFeature frame
 	WellboreFrameRepresentation* w1i1FrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
 	double logMds[5] = { 0, 250, 500, 750, 1000 };
@@ -195,16 +162,28 @@ void serializeWells(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* h
 		gsoap_resqml2_0_1::resqml2__IndexableElements__intervals, unitNumberPropType);
 	char unitNumbers[5] = { 0, 1, 2, 3, 4 };
 	discreteProp->pushBackCharHdf5Array1dOfValues(unitNumbers, 5, hdfProxy, -1);
-	if (witsmlLog != nullptr) {
-		w1i1FrameRep->setWitsmlLog(witsmlLog);
-	}
+}
+
+void serializePerforations(COMMON_NS::EpcDocument * pck)
+{
+	// WELL COMPLETION
+	WITSML2_0_NS::WellCompletion* wellCompletion = pck->createWellCompletion(witsmlWell, "6593d580-2f44-4b18-97ce-8a9cf42a0414", "WellCompletion1");
+	WITSML2_0_NS::WellCompletion* toto = static_cast<WITSML2_0_NS::WellCompletion*>(pck->getDataObjectByUuid("6593d580-2f44-4b18-97ce-8a9cf42a0414"));
+	toto->getActivityCount();
+	// WELLBORE COMPLETION
+	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = pck->createWellboreCompletion(witsmlWellbore, wellCompletion, "7bda8ecf-2037-4dc7-8c59-db6ca09f2008", "WellboreCompletion1", "wellCompletionName");
+
+	// j'ai un doute sur le paramètre datum et sur le top/bottom
+	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980);
+	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 2000);
+	wellboreCompletion->pushBackPerforationHistoryEntry("0", gsoap_eml2_1::witsml2__PerforationStatus__open, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980, 407568645, 1514764800);
+	wellboreCompletion->pushBackPerforationHistoryEntry("0", gsoap_eml2_1::witsml2__PerforationStatus__squeezed, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980, 1514764800);
+	wellboreCompletion->pushBackPerforationHistoryEntry("1", gsoap_eml2_1::witsml2__PerforationStatus__open, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 2000, 410104800);
+	wellboreCompletion->pushBackPerforationHistoryEntry("1", gsoap_eml2_1::witsml2__PerforationStatus__squeezed, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 1995, 1514764800);
 }
 
 void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
-	WITSML1_4_1_1_NS::FormationMarker* witsmlFormationMarker0 = NULL;
-	WITSML1_4_1_1_NS::FormationMarker* witsmlFormationMarker1 = NULL;
-
 	StratigraphicColumn* stratiColumn = pck->createStratigraphicColumn("7f6666a0-fa3b-11e5-a509-0002a5d5c51b", "Stratigraphic column");
 	OrganizationFeature* stratiModelFeature = pck->createStratigraphicModel("", "stratiModel");
 	StratigraphicOccurrenceInterpretation* stratiOccurence = pck->createStratigraphicOccurrenceInterpretationInApparentDepth(stratiModelFeature, "", "stratiModel Interp");
@@ -228,15 +207,6 @@ void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::Abstra
 	marker0->setBoundaryFeatureInterpretation(horizon1Interp1);
 	WellboreMarker* marker1 = wmf->pushBackNewWellboreMarker("", "testing Fault", gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__fault);
 	marker1->setBoundaryFeatureInterpretation(fault1Interp1);
-
-	// WITSML MARKER
-	witsmlFormationMarker0 = witsmlWellbore->createFormationMarker("", "marker0", 0, gsoap_witsml1_4_1_1::witsml1__MeasuredDepthUom__m, 350);
-	witsmlFormationMarker1 = witsmlWellbore->createFormationMarker("", "marker1", 0, gsoap_witsml1_4_1_1::witsml1__MeasuredDepthUom__m, 550);
-
-	if (witsmlFormationMarker0)
-		wmf->setWitsmlFormationMarker(0, witsmlFormationMarker0);
-	if (witsmlFormationMarker1)
-		wmf->setWitsmlFormationMarker(1, witsmlFormationMarker1);
 }
 
 void serializeGeobody(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
@@ -700,6 +670,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 		0, 1, 1,
 		0, 3, 1,
 		ijkgrid);
+	
 	//**************
 	// Stratigraphy
 	//**************
@@ -1327,12 +1298,10 @@ bool serialize(const string & filePath)
 	//CRS
 	local3dCrs = pck.createLocalDepth3dCrs("", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
 	localTime3dCrs = pck.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__TimeUom__s, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false); // CRS translation is just for testing;
-#if !defined(OFFICIAL)
-	witsmlCrs = pck.createCoordinateReferenceSystem("", "witsmlCrs", "EPSG", "5715", "", -1, -1, "");
-#endif
 
 	// Comment or uncomment below domains/lines you want wether to test or not
 	serializeWells(&pck, hdfProxy);
+	serializePerforations(&pck);
 	serializeBoundaries(&pck, hdfProxy);
 	serializeGeobody(&pck, hdfProxy);
 	serializeStructuralModel(pck, hdfProxy);
@@ -1683,7 +1652,7 @@ void deserializeGeobody(COMMON_NS::EpcDocument * pck)
 
 void deserializeFluidBoundary(COMMON_NS::EpcDocument & pck)
 {
-	FluidBoundaryFeature* fluidBoundary = pck.getResqmlAbstractObjectByUuid<FluidBoundaryFeature>("44a4d87c-3c67-4f98-a314-9d91c4147061");
+	FluidBoundaryFeature* fluidBoundary = pck.getDataObjectByUuid<FluidBoundaryFeature>("44a4d87c-3c67-4f98-a314-9d91c4147061");
 	if (fluidBoundary == nullptr) return;
 	showAllMetadata(fluidBoundary);
 	showAllMetadata(fluidBoundary->getInterpretation(0));
@@ -2001,7 +1970,7 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::EpcDocument & pck)
 	cout << endl << "BEGIN: IJK GRID REP (block hyperslabbing)" << endl;
 
 	// ONE SUGAR
-	AbstractIjkGridRepresentation* ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b"));
+	AbstractIjkGridRepresentation* ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b"));
 	if (ijkGrid == nullptr) {
 		return;
 	}
@@ -2044,7 +2013,7 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::EpcDocument & pck)
 	ijkGrid->unloadSplitInformation();
 
 	// Four by Three by Two Left Handed (e96c2bde-e3ae-4d51-b078-a8e57fb1e667)
-	ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("e96c2bde-e3ae-4d51-b078-a8e57fb1e667"));
+	ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("e96c2bde-e3ae-4d51-b078-a8e57fb1e667"));
 
 	cout << std::endl;
 	cout << "--------------------------------------------------" << std::endl;
@@ -2222,7 +2191,7 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::EpcDocument & pck)
 	ijkGrid->unloadSplitInformation();
 
 	// Four faulted sugar cubes(parametric geometry) (37c45c00-fa3e-11e5-a21e-0002a5d5c51b)
-	ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("37c45c00-fa3e-11e5-a21e-0002a5d5c51b"));
+	ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("37c45c00-fa3e-11e5-a21e-0002a5d5c51b"));
 
 	cout << std::endl;
 	cout << "--------------------------------------------------" << std::endl;
@@ -2320,7 +2289,7 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::EpcDocument & pck)
 	ijkGrid->unloadSplitInformation();
 
 	// Four faulted sugar cubes (straight parametric geometry) (f68235af-1d7a-4e24-93a8-10739b15ca40)
-	ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("f68235af-1d7a-4e24-93a8-10739b15ca40"));
+	ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("f68235af-1d7a-4e24-93a8-10739b15ca40"));
 
 	cout << std::endl;
 	cout << "--------------------------------------------------" << std::endl;
@@ -2662,6 +2631,85 @@ void discretePropertyHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, 
 	std::cout << endl << "END: IJK GRID REP (hyperslabbed and non-hyperslabbed property reading comparison)" << std::endl;
 }
 
+void deserializePerforations(COMMON_NS::EpcDocument & pck)
+{
+	cout << endl << "PERFORATIONS" << endl;
+
+	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = static_cast<WITSML2_0_NS::WellboreCompletion*>(pck.getDataObjectByUuid("7bda8ecf-2037-4dc7-8c59-db6ca09f2008"));
+	if (wellboreCompletion == nullptr) {
+		return;
+	}
+
+	cout << "deserializing WellboreCompletion: " << wellboreCompletion->getTitle() << " (" << wellboreCompletion->getUuid() << ")" << std::endl;
+
+	WITSML2_0_NS::WellCompletion* wellCompletion = wellboreCompletion->getWellCompletion();
+	std::cout << "Associated with witsml well completion " << wellCompletion->getTitle()
+		<< " with GUID " << wellCompletion->getUuid() << " and witsml well " << wellCompletion->getWell()->getTitle()
+		<< " with GUID " << wellCompletion->getWell()->getUuid() << std::endl;
+
+	WITSML2_0_NS::Wellbore* witsmlWellbore = wellboreCompletion->getWellbore();
+	std::cout << "Associated with witsml well bore " << witsmlWellbore->getTitle()
+			<< " with GUID " << witsmlWellbore->getUuid() << " and witsml well " << witsmlWellbore->getWell()->getTitle()
+			<< " with GUID " << witsmlWellbore->getWell()->getUuid() << std::endl;
+	
+	for (unsigned int perforationIndex = 0; perforationIndex < wellboreCompletion->getPerforationCount(); ++perforationIndex)
+	{
+		std::string perforationUid = std::to_string(perforationIndex);
+
+		cout << std::endl << "perforation " + perforationUid << ":" << std::endl;
+		if (wellboreCompletion->hasPerforationMdDatum(perforationUid))
+		{
+			cout << "datum: " << wellboreCompletion->getPerforationMdDatum(perforationUid) << std::endl;
+		}
+		if (wellboreCompletion->hasPerforationMdUnit(perforationUid))
+		{
+			cout << "md unit: " << pck.lengthUomToString(wellboreCompletion->getPerforationMdUnit(perforationUid)) << std::endl;
+		}
+		if (wellboreCompletion->hasPerforationTopMd(perforationUid))
+		{
+			cout << "top md: " << wellboreCompletion->getPerforationTopMd(perforationUid) << std::endl;
+		}
+		if (wellboreCompletion->hasPerforationBaseMd(perforationUid))
+		{
+			cout << "base md: " << wellboreCompletion->getPerforationBaseMd(perforationUid) << std::endl;
+		}
+
+		for (unsigned int historyEntryIndex = 0; historyEntryIndex < wellboreCompletion->getHistoryEntryCount(perforationUid); ++historyEntryIndex)
+		{
+			std::string historyEntryUid = std::to_string(historyEntryIndex);
+
+			cout << "history entry " << historyEntryUid << ":" << std::endl;
+			if (wellboreCompletion->hasPerforationHistoryEntryStatus(historyEntryUid, perforationUid))
+			{
+				cout << "\tstatus: " << wellboreCompletion->getPerforationHistoryEntryStatusToString(historyEntryUid, perforationUid) << std::endl;
+			}
+			if (wellboreCompletion->hasPerforationHistoryEntryStartDate(historyEntryUid, perforationUid))
+			{
+				cout << "\tstart date: " << wellboreCompletion->getPerforationHistoryEntryStartDate(historyEntryUid, perforationUid) << std::endl;
+			}
+			if (wellboreCompletion->hasPerforationHistoryEntryEndDate(historyEntryUid, perforationUid))
+			{
+				cout << "\tend date: " << wellboreCompletion->getPerforationHistoryEntryEndDate(historyEntryUid, perforationUid) << std::endl;
+			}
+			if (wellboreCompletion->hasPerforationHistoryEntryMdDatum(historyEntryUid, perforationUid))
+			{
+				cout << "\tend datum: " << wellboreCompletion->getPerforationHistoryEntryMdDatum(historyEntryUid, perforationUid) << std::endl;
+			}
+			if (wellboreCompletion->hasPerforationHistoryEntryMdUnit(historyEntryUid, perforationUid))
+			{
+				cout << "\tend md unit: " << pck.lengthUomToString(wellboreCompletion->getPerforationHistoryEntryMdUnit(historyEntryUid, perforationUid)) << std::endl;
+			}
+			if (wellboreCompletion->hasPerforationHistoryEntryTopMd(historyEntryUid, perforationUid))
+			{
+				cout << "\tend top md: " << wellboreCompletion->getPerforationHistoryEntryTopMd(historyEntryUid, perforationUid) << std::endl;
+			}
+			if (wellboreCompletion->hasPerforationHistoryEntryBaseMd(historyEntryUid, perforationUid))
+			{
+				cout << "\tend base md: " << wellboreCompletion->getPerforationHistoryEntryBaseMd(historyEntryUid, perforationUid) << std::endl;
+			}
+		}
+	}
+}
 
 void deserialize(const string & inputFile)
 {
@@ -2706,15 +2754,12 @@ void deserialize(const string & inputFile)
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	unordered_map<string, string> & extendedCoreProperty = pck.getExtendedCoreProperty();
 	for (unordered_map<string, string>::const_iterator it = extendedCoreProperty.begin(); it != extendedCoreProperty.end(); ++it) {
-		cout << it->first.c_str() << " " << it->second.c_str() << endl;
-	}
 #else
 	tr1::unordered_map<string, string> & extendedCoreProperty = pck.getExtendedCoreProperty();
-	for (tr1::unordered_map<string, string>::const_iterator it = extendedCoreProperty.begin(); it != extendedCoreProperty.end(); ++it)
-	{
+	for (tr1::unordered_map<string, string>::const_iterator it = extendedCoreProperty.begin(); it != extendedCoreProperty.end(); ++it) {
+#endif
 		cout << it->first.c_str() << " " << it->second.c_str() << endl;
 	}
-#endif
 
 	cout << "CRS" << endl;
 	vector<LocalDepth3dCrs*> depthCrsSet = pck.getLocalDepth3dCrsSet();
@@ -2998,14 +3043,12 @@ void deserialize(const string & inputFile)
 	for (size_t i = 0; i < wellboreSet.size(); i++)
 	{
 		showAllMetadata(wellboreSet[i]);
-		WITSML1_4_1_1_NS::Wellbore* witsmlWellbore = wellboreSet[i]->getWitsmlWellbore();
+		WITSML2_0_NS::Wellbore* witsmlWellbore = wellboreSet[i]->getWitsmlWellbore();
 		if (witsmlWellbore != NULL)
 		{
 			std::cout << "Associated with witsml well bore " << witsmlWellbore->getTitle()
 				<< " with GUID " << witsmlWellbore->getUuid() << " and witsml well " << witsmlWellbore->getWell()->getTitle()
 				<< " with GUID " << witsmlWellbore->getWell()->getUuid() << std::endl;
-			std::cout << "Associated with witsml well bore datum " << witsmlWellbore->getTrajectories()[0]->getMdDatumName();
-			std::cout << "Well bore datum elevation uom" << witsmlWellbore->getTrajectories()[0]->getMdDatumElevationUom();
 		}
 		for (size_t j = 0; j < wellboreSet[i]->getInterpretationSet().size(); j++)
 		{
@@ -3047,6 +3090,8 @@ void deserialize(const string & inputFile)
 			}
 		}
 	}
+
+	deserializePerforations(pck);
 
 	std::cout << endl << "WELLBORES CUBIC TRAJ" << endl;
 	for (size_t i = 0; i < wellboreCubicTrajSet.size(); i++)
@@ -3354,15 +3399,15 @@ void deserialize(const string & inputFile)
 	// Timing hyperslabbing (time consuming)
 
 	//// 4*3*2 explicit grid Left Handed
-	//AbstractIjkGridRepresentation* ijkgrid432 = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("e96c2bde-e3ae-4d51-b078-a8e57fb1e667"));
+	//AbstractIjkGridRepresentation* ijkgrid432 = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("e96c2bde-e3ae-4d51-b078-a8e57fb1e667"));
 	//ijkGridHyperslabingTiming(ijkgrid432, 250000);
 
 	//// FOUR SUGARS PARAMETRIC
-	//AbstractIjkGridRepresentation* ijkgridParametric = static_cast<AbstractIjkGridRepresentation*>(pck.getResqmlAbstractObjectByUuid("37c45c00-fa3e-11e5-a21e-0002a5d5c51b"));
+	//AbstractIjkGridRepresentation* ijkgridParametric = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("37c45c00-fa3e-11e5-a21e-0002a5d5c51b"));
 	//ijkGridHyperslabingTiming(ijkgridParametric, 250000);
 	
 	//// Four sugar cubes cellIndex
-	//DiscreteProperty* discreteProp1OnIjkgridParametric = static_cast<DiscreteProperty*>(pck.getResqmlAbstractObjectByUuid("eb3dbf6c-5745-4e41-9d09-672f6fbab414"));
+	//DiscreteProperty* discreteProp1OnIjkgridParametric = static_cast<DiscreteProperty*>(pck.getDataObjectByUuid("eb3dbf6c-5745-4e41-9d09-672f6fbab414"));
 	//discretePropertyHyperslabingTiming(ijkgridParametric, discreteProp1OnIjkgridParametric, 250000);
 	
 	// ====================
@@ -3561,7 +3606,7 @@ epc.close();
 epc.open("../../testPersistence.epc", COMMON_NS::EpcDocument::READ_WRITE);
 epc.deserialize();
 
-seismicLatticeRep = epc.getResqmlAbstractObjectByUuid<Grid2dRepresentation>("aa5b90f1-2eab-4fa6-8720-69dd4fd51a4d");
+seismicLatticeRep = epc.getDataObjectByUuid<Grid2dRepresentation>("aa5b90f1-2eab-4fa6-8720-69dd4fd51a4d");
 hdfProxy = epc.getHdfProxy(0);
 RESQML2_NS::PropertyKind * propType1 = epc.createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__continuous);
 ContinuousProperty* contProp1 = epc.createContinuousProperty(seismicLatticeRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 2,

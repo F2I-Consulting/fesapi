@@ -144,7 +144,7 @@ void DeviationSurveyRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcD
 {
 	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
 
-	RESQML2_NS::MdDatum* mdDatum = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::MdDatum>(getMdDatumUuid());
+	RESQML2_NS::MdDatum* mdDatum = epcDoc->getDataObjectByUuid<RESQML2_NS::MdDatum>(getMdDatumUuid());
 	if (mdDatum != nullptr) {
 		updateXml = false;
 		setMdDatum(mdDatum);
@@ -234,7 +234,7 @@ void DeviationSurveyRepresentation::setMdDatum(RESQML2_NS::MdDatum* mdDatum)
 
 RESQML2_NS::MdDatum * DeviationSurveyRepresentation::getMdDatum() const
 {
-	return static_cast<RESQML2_NS::MdDatum*>(getEpcDocument()->getResqmlAbstractObjectByUuid(getMdDatumUuid()));
+	return static_cast<RESQML2_NS::MdDatum*>(getEpcDocument()->getDataObjectByUuid(getMdDatumUuid()));
 }
 
 std::string DeviationSurveyRepresentation::getMdDatumUuid() const

@@ -36,7 +36,6 @@ namespace epc
 	class FileContentType
 	{
     public:
-
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		typedef std::unordered_map<std::string, ContentType> ContentTypeMap;
 #else

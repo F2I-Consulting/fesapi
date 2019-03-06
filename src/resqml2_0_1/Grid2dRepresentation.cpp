@@ -773,7 +773,7 @@ void Grid2dRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* 
 	const string supportingRepUuid = getSupportingRepresentationUuid();
 	if (!supportingRepUuid.empty())
 	{
-		Grid2dRepresentation* grid2d = epcDoc->getResqmlAbstractObjectByUuid<Grid2dRepresentation>(supportingRepUuid);
+		Grid2dRepresentation* grid2d = epcDoc->getDataObjectByUuid<Grid2dRepresentation>(supportingRepUuid);
 		if (grid2d != nullptr) {
 			setSupportingRepresentation(grid2d);
 		}

@@ -179,7 +179,7 @@ DiscreteProperty* SubRepresentation::getSupportingRepresentationIndicesDiscreteP
 	ostringstream oss;
 	oss << "SubRepresentationPatch[" << patchIndex << "]/ElementIndices/SupportingRepresentationIndex";
 	vector<string> uuid = getExtraMetadata(oss.str());
-	return getEpcDocument()->getResqmlAbstractObjectByUuid<DiscreteProperty>(uuid[0]);
+	return getEpcDocument()->getDataObjectByUuid<DiscreteProperty>(uuid[0]);
 }
 
 void SubRepresentation::pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind0, const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind1,
