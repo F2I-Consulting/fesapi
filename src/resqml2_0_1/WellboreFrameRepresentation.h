@@ -33,7 +33,8 @@ namespace RESQML2_0_1_NS
 	protected:
 		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const {return nullptr;}
 
-		WellboreFrameRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs) : AbstractRepresentation(interp, crs), trajectory(nullptr), witsmlLog(nullptr) {}
+		WellboreFrameRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs) : AbstractRepresentation(interp, crs), trajectory(nullptr)
+		{}
 
 	public:
 
@@ -57,7 +58,8 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml2__WellboreFrameRepresentation* fromGsoap): AbstractRepresentation(fromGsoap), trajectory(nullptr), witsmlLog(nullptr)  {}
+		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml2__WellboreFrameRepresentation* fromGsoap): AbstractRepresentation(fromGsoap), trajectory(nullptr)
+		{}
 
 		~WellboreFrameRepresentation() {}
 
@@ -142,9 +144,6 @@ namespace RESQML2_0_1_NS
 
 		unsigned int getPatchCount() const {return 1;}
 
-		void setWitsmlLog(WITSML1_4_1_1_NS::Log * witsmlLogToSet);
-		WITSML1_4_1_1_NS::Log* getWitsmlLog() {return witsmlLog;}
-
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
 
@@ -154,7 +153,6 @@ namespace RESQML2_0_1_NS
 		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		class WellboreTrajectoryRepresentation * trajectory;
-		WITSML1_4_1_1_NS::Log * witsmlLog;
 	};
 }
 

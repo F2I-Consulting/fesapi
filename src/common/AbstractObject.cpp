@@ -500,6 +500,7 @@ void AbstractObject::initMandatoryMetadata()
 		gsoapProxy2_0_1->Citation = soap_new_eml20__Citation(gsoapProxy2_0_1->soap, 1);
 	}
 	else {
+		// currently, WITSML and RESQML are by chance in v2.0 as well
 		gsoapProxy2_1->schemaVersion = getResqmlVersion();
 		gsoapProxy2_1->Citation = gsoap_eml2_1::soap_new_eml21__Citation(gsoapProxy2_1->soap, 1);
 	}

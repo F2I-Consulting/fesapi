@@ -28,8 +28,6 @@ under the License.
 #include "resqml2/AbstractLocal3dCrs.h"
 #include "common/AbstractHdfProxy.h"
 
-#include "witsml1_4_1_1/Trajectory.h"
-
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
@@ -167,16 +165,17 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints,
 	hdfProxy->writeArrayNdOfDoubleValues(rep->uuid, "tangentVectors", tangentVectors, dim, 2);
 }
 
-void WellboreTrajectoryRepresentation::setWitsmlTrajectory(WITSML1_4_1_1_NS::Trajectory * witsmlTraj)
-{
-	witsmlTrajectory = witsmlTraj;
-	witsmlTraj->resqmlWellboreTrajectoryRepresentation = this;
-
-	if (updateXml) {
-		resqml2__obj_USCOREWellboreTrajectoryRepresentation* resqmlTraj = static_cast<resqml2__obj_USCOREWellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
-		resqmlTraj->WitsmlTrajectory = witsmlTraj->newResqmlReference();
-	}
-}
+// TODO to update for WITSML 2.0
+//void WellboreTrajectoryRepresentation::setWitsmlTrajectory(WITSML1_4_1_1_NS::Trajectory * witsmlTraj)
+//{
+//	witsmlTrajectory = witsmlTraj;
+//	witsmlTraj->resqmlWellboreTrajectoryRepresentation = this;
+//
+//	if (updateXml) {
+//		resqml2__obj_USCOREWellboreTrajectoryRepresentation* resqmlTraj = static_cast<resqml2__obj_USCOREWellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
+//		resqmlTraj->WitsmlTrajectory = witsmlTraj->newResqmlReference();
+//	}
+//}
 
 vector<Relationship> WellboreTrajectoryRepresentation::getAllEpcRelationships() const
 {
@@ -209,12 +208,6 @@ vector<Relationship> WellboreTrajectoryRepresentation::getAllEpcRelationships() 
 		result.push_back(relParentTraj);
 	}
 
-	if (witsmlTrajectory != nullptr) {
-		Relationship relWitsmlTraj(witsmlTrajectory->getPartNameInEpcDocument(), "", witsmlTrajectory->getUuid());
-		relWitsmlTraj.setDestinationObjectType();
-		result.push_back(relWitsmlTraj);
-	}
-
 	// XML backward relationship
 	for (size_t i = 0 ; i < childrenTrajSet.size(); ++i) {
 		Relationship relChildrenTraj(childrenTrajSet[i]->getPartNameInEpcDocument(), "", childrenTrajSet[i]->getUuid());
@@ -237,7 +230,7 @@ void WellboreTrajectoryRepresentation::importRelationshipSetFromEpc(COMMON_NS::E
 
 	_resqml2__WellboreTrajectoryRepresentation* rep = static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 
-	RESQML2_NS::MdDatum* mdDatum = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::MdDatum>(getMdDatumUuid());
+	RESQML2_NS::MdDatum* mdDatum = epcDoc->getDataObjectByUuid<RESQML2_NS::MdDatum>(getMdDatumUuid());
 	if (mdDatum != nullptr) {
 		updateXml = false;
 		setMdDatum(mdDatum);
@@ -247,10 +240,10 @@ void WellboreTrajectoryRepresentation::importRelationshipSetFromEpc(COMMON_NS::E
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dsrDor = getDeviationSurveyDor();
 	if (dsrDor != nullptr)
 	{
-		DeviationSurveyRepresentation* dsr = epcDoc->getResqmlAbstractObjectByUuid<DeviationSurveyRepresentation>(dsrDor->UUID);
+		DeviationSurveyRepresentation* dsr = epcDoc->getDataObjectByUuid<DeviationSurveyRepresentation>(dsrDor->UUID);
 		if (dsr == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dsrDor);
-			dsr = getEpcDocument()->getResqmlAbstractObjectByUuid<DeviationSurveyRepresentation>(dsrDor->UUID);
+			dsr = getEpcDocument()->getDataObjectByUuid<DeviationSurveyRepresentation>(dsrDor->UUID);
 		}
 		if (dsr == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -261,18 +254,8 @@ void WellboreTrajectoryRepresentation::importRelationshipSetFromEpc(COMMON_NS::E
 	}
 
 	if (rep->ParentIntersection != nullptr) {
-		WellboreTrajectoryRepresentation* parentTraj = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>(rep->ParentIntersection->ParentTrajectory->UUID);
+		WellboreTrajectoryRepresentation* parentTraj = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>(rep->ParentIntersection->ParentTrajectory->UUID);
 		parentTraj->addChildrenTrajectory(this);
-	}
-
-	if (rep->WitsmlTrajectory != nullptr) {
-		WITSML1_4_1_1_NS::Trajectory* tmp = static_cast<WITSML1_4_1_1_NS::Trajectory*>(epcDoc->getWitsmlAbstractObjectByUuid(rep->WitsmlTrajectory->UUID));
-		if (tmp)
-		{
-			updateXml = false;
-			setWitsmlTrajectory(tmp);
-			updateXml = true;
-		}
 	}
 }
 
@@ -295,7 +278,7 @@ WellboreTrajectoryRepresentation* WellboreTrajectoryRepresentation::getParentTra
 		return nullptr;
 
 	WellboreTrajectoryRepresentation* result = nullptr;
-	COMMON_NS::AbstractObject* obj = getEpcDocument()->getResqmlAbstractObjectByUuid(rep->ParentIntersection->ParentTrajectory->UUID);
+	COMMON_NS::AbstractObject* obj = getEpcDocument()->getDataObjectByUuid(rep->ParentIntersection->ParentTrajectory->UUID);
 
 	if (dynamic_cast<WellboreTrajectoryRepresentation*>(obj) != nullptr)
 		return static_cast<WellboreTrajectoryRepresentation*>(obj);
@@ -447,7 +430,7 @@ void WellboreTrajectoryRepresentation::setMdDatum(RESQML2_NS::MdDatum* mdDatum)
 
 RESQML2_NS::MdDatum * WellboreTrajectoryRepresentation::getMdDatum() const
 {
-	return static_cast<RESQML2_NS::MdDatum*>(getEpcDocument()->getResqmlAbstractObjectByUuid(getMdDatumUuid()));
+	return static_cast<RESQML2_NS::MdDatum*>(getEpcDocument()->getDataObjectByUuid(getMdDatumUuid()));
 }
 
 std::string WellboreTrajectoryRepresentation::getMdDatumUuid() const
@@ -503,6 +486,6 @@ DeviationSurveyRepresentation* WellboreTrajectoryRepresentation::getDeviationSur
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dsDor = getDeviationSurveyDor();
 
-	return dsDor == nullptr ? nullptr : epcDocument->getResqmlAbstractObjectByUuid<DeviationSurveyRepresentation>(dsDor->UUID);
+	return dsDor == nullptr ? nullptr : epcDocument->getDataObjectByUuid<DeviationSurveyRepresentation>(dsDor->UUID);
 }
 

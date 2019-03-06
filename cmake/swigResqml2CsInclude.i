@@ -87,9 +87,24 @@ public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject res
     {
         ret = new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.TimeSeries(cPtr, owner);
     }
-	else
+	else if (type == "Well")
 	{
-		throw new System.ArgumentException(string.Format("Encountered type '{0}' that is not known to be a Resqml concrete class", type.ToString()));
+		ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Well(cPtr, owner);
+	}
+	else if (type == "Wellbore")
+	{
+		ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Wellbore(cPtr, owner);
+	}
+	else if (type == "WellCompletion")
+	{
+		ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellCompletion(cPtr, owner);
+	}
+	else if (type == "WellboreCompletion")
+	{
+		ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellboreCompletion(cPtr, owner);
+	}else
+	{
+		throw new System.ArgumentException(string.Format("Encountered type '{0}' that is not known to be a Resqml or Witsml concrete class", type.ToString()));
 	}
 	
 	return ret;

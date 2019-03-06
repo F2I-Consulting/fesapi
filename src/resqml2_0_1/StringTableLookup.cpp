@@ -163,9 +163,9 @@ unordered_map<long, string> StringTableLookup::getMap() const
 {
 	unordered_map<long, string> result;
 #else
-std::tr1::unordered_map<long, string> StringTableLookup::getMap() const
+tr1::unordered_map<long, string> StringTableLookup::getMap() const
 {
-	std::tr1::unordered_map<long, string> result;
+	tr1::unordered_map<long, string> result;
 #endif
 
 	_resqml2__StringTableLookup* stringLookup = static_cast<_resqml2__StringTableLookup*>(gsoapProxy2_0_1);
