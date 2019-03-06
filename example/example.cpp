@@ -3032,7 +3032,7 @@ void deserialize(const string & inputFile)
 	}
 
 	deserializeSealedSurfaceFramework(pck);
-	return;
+	
 	std::cout << "STRATI COLUMN" << endl;
 	for (size_t i = 0; i < stratiColumnSet.size(); i++)
 	{

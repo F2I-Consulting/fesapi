@@ -156,5 +156,5 @@ StratigraphicColumn* EarthModelInterpretation::getStratiColumn() const
 		throw invalid_argument("There is no associated stratigraphic column");
 	}
 
-	return epcDocument->getResqmlAbstractObjectByUuid<StratigraphicColumn>(static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn->UUID);
+	return epcDocument->getDataObjectByUuid<StratigraphicColumn>(static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn->UUID);
 }
