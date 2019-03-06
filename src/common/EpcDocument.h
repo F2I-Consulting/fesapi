@@ -278,7 +278,11 @@ namespace COMMON_NS
 		/**
 		* Get all the resqml gsoap wrappers from the epc document
 		*/
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		const std::unordered_map< std::string, COMMON_NS::AbstractObject* > & getDataObjectSet() const;
+#else
+		const std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* > & getDataObjectSet() const;
+#endif
 
 		/**
 		* Get all UUIDs of the objects contained in the EPC document
@@ -545,7 +549,11 @@ namespace COMMON_NS
 		*/
 		void updateAllRelationships();
 
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		std::unordered_map< std::string, std::string > & getExtendedCoreProperty();
+#else
+		std::tr1::unordered_map< std::string, std::string > & getExtendedCoreProperty();
+#endif
 
 		void setExtendedCoreProperty(const std::string & key, const std::string & value);
 
@@ -1129,7 +1137,11 @@ namespace COMMON_NS
 		openingMode hdf5PermissionAccess;
 
 		epc::Package* package;
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		std::unordered_map< std::string, COMMON_NS::AbstractObject* > dataObjectSet;
+#else
+		std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* > dataObjectSet;
+#endif
 		soap* s;
 		std::string filePath;
 

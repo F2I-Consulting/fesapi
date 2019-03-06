@@ -180,14 +180,22 @@ soap* EpcDocument::getGsoapContext() const { return s; }
 
 PropertyKindMapper* EpcDocument::getPropertyKindMapper() const { return propertyKindMapper; }
 
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 const std::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDocument::getDataObjectSet() const { return dataObjectSet; }
+#else
+const std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDocument::getDataObjectSet() const { return dataObjectSet; }
+#endif
 
 std::vector<std::string> EpcDocument::getAllUuids() const
 {
 	std::vector<std::string> keys;
 	keys.reserve(dataObjectSet.size());
 
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
+#else
+	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
+#endif
 		keys.push_back(it->first);
 	}
 
@@ -332,7 +340,11 @@ void EpcDocument::close()
 		propertyKindMapper = nullptr;
 	}
 
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
+#else
+	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
+#endif
 	{
 	  delete it->second;
 	}
@@ -550,7 +562,12 @@ void EpcDocument::serialize(bool useZip64)
 	warnings.clear();
 
 	package->openForWriting(filePath, useZip64);
+
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
+#else
+	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
+#endif
 	{
 		if (!it->second->isPartial()) {
 			string str = it->second->serializeIntoString();
@@ -847,7 +864,11 @@ COMMON_NS::AbstractObject* EpcDocument::getDataObjectByUuid(const std::string & 
 
 COMMON_NS::AbstractObject* EpcDocument::getDataObjectByUuid(const string & uuid) const
 {
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.find(uuid);
+#else
+	std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.find(uuid);
+#endif
 	return it == dataObjectSet.end() ? nullptr : it->second;
 }
 
@@ -1226,7 +1247,11 @@ string EpcDocument::getName() const
 
 void EpcDocument::updateAllRelationships()
 {
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
+#else
+	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
+#endif
 	{
 		if (!it->second->isPartial()) {
 			it->second->importRelationshipSetFromEpc(this);
@@ -1234,7 +1259,11 @@ void EpcDocument::updateAllRelationships()
 	}
 }
 
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 unordered_map< string, string > & EpcDocument::getExtendedCoreProperty()
+#else
+tr1::unordered_map< string, string > & EpcDocument::getExtendedCoreProperty()
+#endif
 {
 	return package->getExtendedCoreProperty();
 }

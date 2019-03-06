@@ -116,7 +116,11 @@ namespace RESQML2_0_1_NS
 		/*
 		* Getter for the underlying map of the string lookup.
 		*/
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		std::unordered_map<long, std::string> getMap() const;
+#else
+		std::tr1::unordered_map<long, std::string> getMap() const;
+#endif
 
 	protected:
 

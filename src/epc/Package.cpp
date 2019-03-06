@@ -155,13 +155,21 @@ public:
 	FileContentType		fileContentType;											/// ContentTypes file
 	FileRelationship	filePrincipalRelationship;									/// Relationships file
 	PartMap				allFileParts;												/// Set of parts file
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	unordered_map< string, string >			extendedCoreProperties;					/// Set of non standard (extended) core properties
+#else
+	tr1::unordered_map< string, string >			extendedCoreProperties;					/// Set of non standard (extended) core properties
+#endif
 	string				pathName;													/// Pathname of package
 	unzFile				unzipped;
 	zipFile             zf;
 	bool                isZip64;
 #ifdef CACHE_FILE_DESCRIPTOR
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	std::unordered_map< std::string, unz64_s > name2file;
+#else
+	std::tr1::unordered_map< std::string, unz64_s > name2file;
+#endif
 #endif
 };
 
@@ -358,7 +366,11 @@ void Package::setFileFileCoreProperties(const FileCoreProperties & pkgFileCP)
 	d_ptr->fileCoreProperties = pkgFileCP;
 }
 
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 unordered_map< string, string > & Package::getExtendedCoreProperty()
+#else
+tr1::unordered_map< string, string > & Package::getExtendedCoreProperty()
+#endif
 {
 	return d_ptr->extendedCoreProperties;
 }
@@ -543,7 +555,11 @@ void Package::writePackage()
 		oss << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" << endl;
 
 		// content
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		for (std::unordered_map< std::string, std::string >::iterator it = d_ptr->extendedCoreProperties.begin(); it != d_ptr->extendedCoreProperties.end(); ++it)
+#else
+		for (std::tr1::unordered_map< std::string, std::string >::iterator it = d_ptr->extendedCoreProperties.begin(); it != d_ptr->extendedCoreProperties.end(); ++it)
+#endif
 		{
 			oss << "\t<" << it->first << ">" + it->second + "</" + it->first + ">" << endl;
 		}
@@ -649,7 +665,11 @@ bool Package::fileExists(const string & filename) const
 string Package::extractFile(const string & filename, const string & password)
 {
 #ifdef CACHE_FILE_DESCRIPTOR
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	std::unordered_map< std::string, unz64_s >::const_iterator it = d_ptr->name2file.find(filename);
+#else
+	std::tr1::unordered_map< std::string, unz64_s >::const_iterator it = d_ptr->name2file.find(filename);
+#endif
 	if (it == d_ptr->name2file.end())
 	{
 		if (!fileExists(filename))
