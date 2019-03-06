@@ -192,11 +192,11 @@ std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > EpcDo
 std::tr1::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > & EpcDocument::getDataObjectsGroupedByContentType() const
 #endif
 {
-	std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
-
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+	std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
 	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
 #else
+	std::tr1::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
 	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
 #endif
 		if (it->second->getContentType().find("x-eml") == std::string::npos) {
