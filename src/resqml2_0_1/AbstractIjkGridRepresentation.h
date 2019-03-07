@@ -101,7 +101,7 @@ namespace RESQML2_0_1_NS
 		*/
 		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject,
 			bool withTruncatedPillars = false) :
-			AbstractColumnLayerGridRepresentation(nullptr, partialObject, withTruncatedPillars), splitInformation(nullptr), blockInformation(nullptr)
+			AbstractColumnLayerGridRepresentation(partialObject, withTruncatedPillars), splitInformation(nullptr), blockInformation(nullptr)
 		{
 		}
 
@@ -339,9 +339,9 @@ namespace RESQML2_0_1_NS
 		*/
 		void getXyzPointsOfKInterfaceOfPatch(const unsigned int & kInterface, const unsigned int & patchIndex, double * xyzPoints);
 
-		virtual void getXyzPointsOfKInterfaceSequenceOfPatch(const unsigned int & kInterfaceStart, const unsigned int & kInterfaceEnd, const unsigned int & patchIndex, double * xyzPoints) { throw std::logic_error("Partial object"); }
+		virtual void getXyzPointsOfKInterfaceSequenceOfPatch(const unsigned int & kInterfaceStart, const unsigned int & kInterfaceEnd, const unsigned int & patchIndex, double * xyzPoints);
 
-		virtual void getXyzPointsOfBlockOfPatch(const unsigned int & patchIndex, double * xyzPoints) { throw std::logic_error("Partial object"); };
+		virtual void getXyzPointsOfBlockOfPatch(const unsigned int & patchIndex, double * xyzPoints);
 
 		/**
 		* Get the K direction of the grid.
@@ -350,8 +350,8 @@ namespace RESQML2_0_1_NS
 
 		virtual geometryKind getGeometryKind() const { return UNKNOWN; }
 		virtual std::string getHdfProxyUuid() const { throw std::logic_error("Partial object"); }
-		virtual ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const { throw std::logic_error("Partial object"); }
-		virtual void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const { throw std::logic_error("Partial object"); }
+		virtual ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		virtual void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
 
 		static const char* XML_TAG;
 		static const char* XML_TAG_TRUNCATED;

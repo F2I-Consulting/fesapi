@@ -31,7 +31,7 @@ vector<Relationship> ActivityTemplate::getAllEpcRelationships() const
 {
 	vector<Relationship> result;
 
-	for (unsigned int i = 0; i < activityInstanceSet.size(); ++i)
+	for (size_t i = 0; i < activityInstanceSet.size(); ++i)
 	{
 		Relationship rel(activityInstanceSet[i]->getPartNameInEpcDocument(), "", activityInstanceSet[i]->getUuid());
 		rel.setSourceObjectType();
@@ -41,3 +41,5 @@ vector<Relationship> ActivityTemplate::getAllEpcRelationships() const
 	return result;
 }
 
+void ActivityTemplate::importRelationshipSetFromEpc(COMMON_NS::EpcDocument *)
+{}

@@ -56,14 +56,14 @@ namespace WITSML2_0_NS
 
 		void setOperator(const std::string & operator_);
 
-		double getLocationProjectedX(const unsigned int & locationIndex);
-		double getLocationProjectedY(const unsigned int & locationIndex);
+		double getLocationProjectedX(unsigned int locationIndex);
+		double getLocationProjectedY(unsigned int locationIndex);
 
 		void pushBackLocation(
 			const std::string & guid,
-			const double & projectedX,
-			const double & projectedY,
-			const unsigned int & projectedCrsEpsgCode);
+			double projectedX,
+			double projectedY,
+			unsigned int projectedCrsEpsgCode);
 
 		unsigned int geLocationCount() const;
 		
@@ -73,16 +73,12 @@ namespace WITSML2_0_NS
 			gsoap_eml2_1::eml21__WellboreDatumReference code,
 			const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom elevationUnit,
-			const double & elevation,
-			const unsigned int & verticalCrsEpsgCode);
+			double elevation,
+			unsigned int verticalCrsEpsgCode);
 
 		unsigned int getDatumCount() const;
 		
-		/**
-		* Resolve all relationships of the object in an epc document.
-		* Does nothing since there is no forward relationship.
-		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
 

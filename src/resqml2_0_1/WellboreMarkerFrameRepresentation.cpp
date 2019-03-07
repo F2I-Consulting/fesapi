@@ -25,7 +25,7 @@ under the License.
 #include <pwd.h>
 #endif
 
-#include "hdf5.h"
+#include "H5Tpublic.h"
 
 #include "resqml2_0_1/WellboreInterpretation.h"
 #include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
@@ -170,4 +170,3 @@ void WellboreMarkerFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::
 
 	updateXml = true;
 }
-

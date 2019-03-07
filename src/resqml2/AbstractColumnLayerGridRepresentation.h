@@ -34,7 +34,7 @@ namespace RESQML2_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		AbstractColumnLayerGridRepresentation(COMMON_NS::EpcDocument * epcDoc, gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars) :RESQML2_NS::AbstractGridRepresentation(partialObject, withTruncatedPillars) {}
+		AbstractColumnLayerGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars) :RESQML2_NS::AbstractGridRepresentation(partialObject, withTruncatedPillars) {}
 
 		/**
 		* Default constructor

@@ -21,18 +21,11 @@ under the License.
 #include "resqml2/AbstractRepresentation.h"
 #include "resqml2/AbstractValuesProperty.h"
 
-namespace WITSML1_4_1_1_NS
-{
-	class Log;
-}
-
 namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT WellboreFrameRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	protected:
-		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const {return nullptr;}
-
 		WellboreFrameRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs) : AbstractRepresentation(interp, crs), trajectory(nullptr)
 		{}
 
@@ -104,7 +97,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get the xyz point count in a given patch.
 		*/
-		ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const {return getMdValuesCount();}
+		ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 
 		/**
 		* Get all the XYZ points of a particular patch of this representation.
@@ -155,4 +148,3 @@ namespace RESQML2_0_1_NS
 		class WellboreTrajectoryRepresentation * trajectory;
 	};
 }
-

@@ -146,4 +146,3 @@ void RepresentationSetRepresentation::pushBackXmlRepresentation(RESQML2_NS::Abst
 		throw logic_error("Not implemented yet");
 	}
 }
-

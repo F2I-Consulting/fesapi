@@ -98,10 +98,7 @@ namespace RESQML2_NS
 	protected:
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		/**
-		* Does nothing since StringTableLookup has not got any forward relationship.
-		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML backward relationship
 		std::vector<RESQML2_NS::AbstractProperty*> propertySet;
@@ -109,4 +106,3 @@ namespace RESQML2_NS
 		friend void AbstractProperty::setTimeSeries(TimeSeries * ts);
 	};
 }
-

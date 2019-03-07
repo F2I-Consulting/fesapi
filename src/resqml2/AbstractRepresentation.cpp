@@ -775,3 +775,12 @@ void AbstractRepresentation::getCrosslinesOfPointsOfPatch(const unsigned int & p
 		throw logic_error("Not implemented yet");
 	}
 }
+
+gsoap_resqml2_0_1::resqml2__PointGeometry* AbstractRepresentation::getPointGeometry2_0_1(const unsigned int & patchIndex) const
+{
+	if (patchIndex >= getPatchCount()) {
+		throw range_error("The patch index is out of range");
+	}
+
+	return nullptr;
+}
