@@ -271,4 +271,3 @@ void AbstractSurfaceRepresentation::pushBackOuterRing(PolylineRepresentation * o
 	outerRingSet.push_back(outerRing);
 	outerRing->pushBackRepresentationOuterRing(this);
 }
-

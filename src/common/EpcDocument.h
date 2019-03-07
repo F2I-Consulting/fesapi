@@ -35,7 +35,7 @@ under the License.
 #include "tools/nullptr_emulation.h"
 #endif
 
-#if defined(_WIN32) && defined(FESAPI_DLL)
+#if defined(_WIN32) && !defined(FESAPI_STATIC)
 	#if defined(FesapiCpp_EXPORTS) || defined(FesapiCppUnderDev_EXPORTS)
 		#define DLL_IMPORT_OR_EXPORT __declspec(dllexport)
 	#else
@@ -283,6 +283,48 @@ namespace COMMON_NS
 #else
 		const std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* > & getDataObjectSet() const;
 #endif
+
+		/**
+		* Group Data objects by content type
+		* @return A map where the key is a content type and where the value is the collection of Data objects of this content type
+		*/
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+		std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > getDataObjectsGroupedByContentType() const;
+#else
+		std::tr1::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > & getDataObjectsGroupedByContentType() const;
+#endif
+
+		/**
+		* Get Data objects which honor this content type
+		* @return The vector of Data objects in this EPC Document which honor the content type
+		*/
+		std::vector<COMMON_NS::AbstractObject*> getDataObjectsByContentType(const std::string & contentType) const;
+
+		/**
+		* Get RESQML2.0 objects which honor a particular XML tag.
+		* All fesapi objects expose publicly a "XML_TAG" static member.
+		* It is necessary to build your application with "FESAPI_DLL" definition if you want to acces "XML_TAG" on Windows from a fesapi shared library (not with a static one).
+		*
+		* @return The vector of RESQML2.0.1 objects in this EPC Document which honor the XML tag
+		*/
+		std::vector<COMMON_NS::AbstractObject*> getResqml2_0ObjectsByXmlTag(const std::string & xmlTag) const;
+
+		/**
+		* Get RESQML2.0 objects which honor a particular XML tag.
+		*
+		* @return The vector of RESQML2.0.1 objects in this EPC Document which honor the XML tag
+		*/
+		template <class valueType>
+		std::vector<valueType*> getResqml2_0Objects() const
+		{
+			std::vector<COMMON_NS::AbstractObject*> const untypedResult = getResqml2_0ObjectsByXmlTag(valueType::XML_TAG);
+
+			std::vector<valueType*> result;
+			for (size_t i = 0; i < untypedResult.size(); ++i) {
+				result.push_back(static_cast<valueType*>(untypedResult[i]));
+			}
+			return result;
+		}
 
 		/**
 		* Get all UUIDs of the objects contained in the EPC document
@@ -897,8 +939,7 @@ namespace COMMON_NS
         RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation* createNonSealedSurfaceFrameworkRepresentation(
                 RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp, 
                 const std::string & guid, 
-                const std::string & title,
-                const bool & isSealed);
+                const std::string & title);
 
         RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* createSealedSurfaceFrameworkRepresentation(
                 RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp,

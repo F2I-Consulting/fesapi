@@ -774,14 +774,14 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 	//    structuralOrganizationInterpretationSurfaceFramework->pushBackRepresentation(h2i1triRep);
 
 	// Single Patch Fault 1
-	SealedSurfaceFrameworkRepresentation* singlePatchFault1SealedSurfaceFramework = pck.createSealedSurfaceFrameworkRepresentation(structuralOrganizationInterpretation, "", "Single Patch Fault1 StructuralOrg1 Interp1 Interp1 SealedSurfFrmwk");
+	SealedSurfaceFrameworkRepresentation* singlePatchFault1SealedSurfaceFramework = pck.createSealedSurfaceFrameworkRepresentation(structuralOrganizationInterpretation, "df673451-d6f2-4e4d-ad86-eaaf131c458f", "Single Patch Fault1 StructuralOrg1 Interp1 Interp1 SealedSurfFrmwk");
 	singlePatchFault1SealedSurfaceFramework->setOriginator("Geosiris");
 	f1i1triRepSinglePatch->pushBackIntoRepresentationSet(singlePatchFault1SealedSurfaceFramework);
 	h1i1triRep->pushBackIntoRepresentationSet(singlePatchFault1SealedSurfaceFramework);
 	h2i1triRep->pushBackIntoRepresentationSet(singlePatchFault1SealedSurfaceFramework);
 
 	// Multipatch Fault 1
-	SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = pck.createSealedSurfaceFrameworkRepresentation(structuralOrganizationInterpretation, "", "StructuralOrg1 Interp1 Interp1 SealedSurfFrmwk");
+	SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = pck.createSealedSurfaceFrameworkRepresentation(structuralOrganizationInterpretation, "c89011a9-0fd8-42cd-b992-96785ed01f6f", "StructuralOrg1 Interp1 Interp1 SealedSurfFrmwk");
 	sealedSurfaceFramework->setOriginator("Geosiris");
 	f1i1triRep->pushBackIntoRepresentationSet(sealedSurfaceFramework);
 	h1i1triRep->pushBackIntoRepresentationSet(sealedSurfaceFramework);
@@ -1546,6 +1546,88 @@ void deserializeStratiColumn(StratigraphicColumn * stratiColumn)
 					}
 				}
 				delete[] doubleMds;
+			}
+		}
+	}
+}
+
+void deserializeSealedSurfaceFramework(const COMMON_NS::EpcDocument & pck)
+{
+	const std::vector<RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation*> ssfVec = pck.getResqml2_0Objects<RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation>();
+
+	for (size_t ssfIndex = 0; ssfIndex < ssfVec.size(); ++ssfIndex) {
+		std::cout << "\tSEALED SURFACE FRAMEWORK" << std::endl;
+		RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* ssf = ssfVec[ssfIndex];
+		showAllMetadata(ssf);
+
+		std::cout << "\tCONTAINED REPRESENTATIONS" << std::endl;
+		const unsigned int repCount = ssf->getRepresentationCount();
+		for (unsigned int repIdx = 0; repIdx < repCount; ++repIdx) {
+			showAllMetadata(ssf->getRepresentation(repIdx));
+		}
+
+		std::cout << "\tCONTACT (REPRESENTATION) IDENTITY" << std::endl;
+		const unsigned int ciCount = ssf->getContactRepIdentityCount();
+		for (unsigned int ciIdx = 0; ciIdx < ciCount; ++ciIdx) {
+			std::cout << "\t\tidentity kind (0->coloc, 1->preColoc, 2->eq, 3->preEq) : " << ssf->getContactRepIdentityKind(ciIdx) << std::endl;
+			const unsigned int ciContactRepCount = ssf->getContactRepCountOfContactIdentity(ciIdx);
+			unsigned int* cicrIndices = new unsigned int[ciContactRepCount];
+			ssf->getContactRepIndicesOfContactIdentity(ciIdx, cicrIndices);
+			std::cout << "\t\tcontact rep indices : ";
+			for (unsigned int cicrIdx = 0; cicrIdx < ciContactRepCount; ++cicrIdx) {
+				std::cout << cicrIndices[cicrIdx] << " ";
+			}
+			delete[] cicrIndices;
+			std::cout << std::endl;
+
+			if (ssf->areAllContactRepNodesIdenticalInContactIdentity(ciIdx)) {
+				std::cout << "\t\tAll nodes are identical." << endl;
+			}
+			else {
+				const unsigned int ciIdenticalNodeCount = ssf->getIdenticalNodeCountOfContactIdentity(ciIdx);
+				unsigned int* ciIdenticalNodeIndices = new unsigned int[ciIdenticalNodeCount];
+				ssf->getIdenticalNodeIndicesOfContactIdentity(ciIdx, ciIdenticalNodeIndices);
+				std::cout << "\t\tIdentical nodes : ";
+				for (unsigned int identicalNodesIdx = 0; identicalNodesIdx < ciIdenticalNodeCount; ++identicalNodesIdx) {
+					std::cout << ciIdenticalNodeIndices[identicalNodesIdx] << " ";
+				}
+				delete[] ciIdenticalNodeIndices;
+				std::cout << std::endl;
+			}
+		}
+
+		std::cout << "\tCONTACT REPRESENTATIONS" << std::endl;;
+		const unsigned int crCount = ssf->getContactRepCount();
+		for (unsigned int crIdx = 0; crIdx < crCount; ++crIdx) {
+			std::cout << "\t\tidentity kind (0->coloc, 1->preColoc, 2->eq, 3->preEq) : " << ssf->getContactPatchIdentityKind(crIdx) << std::endl;
+			if (ssf->areAllContactPatchNodesIdenticalInContactRep(crIdx)) {
+				std::cout << "\t\tAll nodes are identical." << endl;
+			}
+			else {
+				const unsigned int crIdenticalNodeCount = ssf->getIdenticalNodeCountOfContactRep(crIdx);
+				unsigned int* crIdenticalNodeIndices = new unsigned int[crIdenticalNodeCount];
+				ssf->getIdenticalNodeIndicesOfContactRep(crIdx, crIdenticalNodeIndices);
+				std::cout << "\t\tIdentical nodes : ";
+				for (unsigned int identicalNodesIdx = 0; identicalNodesIdx < crIdenticalNodeCount; ++identicalNodesIdx) {
+					std::cout << crIdenticalNodeIndices[identicalNodesIdx] << " ";
+				}
+				delete[] crIdenticalNodeIndices;
+				std::cout << std::endl;
+			}
+
+			std::cout << "\t\tCONTACT PATCHES" << std::endl;;
+			const unsigned int cpCount = ssf->getContactPatchCount(crIdx);
+			for (unsigned int cpIdx = 0; cpIdx < cpCount; ++cpIdx) {
+				showAllMetadata(ssf->getRepresentationOfContactPatch(crIdx, cpIdx));
+				const unsigned int cpNodeCount = ssf->getNodeCountOfContactPatch(crIdx, cpIdx);
+				unsigned int* cpNodeIndices = new unsigned int[cpNodeCount];
+				ssf->getNodeIndicesOfContactPatch(crIdx, cpIdx, cpNodeIndices);
+				std::cout << "\t\tcontact patch indices : ";
+				for (unsigned int cpNodeIdx = 0; cpNodeIdx < cpNodeCount; ++cpNodeIdx) {
+					std::cout << cpNodeIndices[cpNodeIdx] << " ";
+				}
+				delete[] cpNodeIndices;
+				std::cout << std::endl;
 			}
 		}
 	}
@@ -2642,11 +2724,13 @@ void deserialize(const string & inputFile)
 		cin.get();
 	}
 	std::vector<std::string> allUuids = pck.getAllUuids();
+	/*
 	std::cout << "********************** UUIDS **********************" << std::endl;
 	for (size_t index = 0; index < allUuids.size(); ++index) {
 		std::cout << allUuids[index] << std::endl;
 	}
 	std::cout << "***************************************************" << std::endl;
+	*/
 
 	unsigned int hdfProxyCount = pck.getHdfProxyCount();
 	cout << "There are " << pck.getHdfProxyCount() << " hdf files associated to this epc document." << endl;
@@ -2698,7 +2782,7 @@ void deserialize(const string & inputFile)
 
 	deserializeGeobody(&pck);
 	deserializeFluidBoundary(pck);
-	
+
 	std::vector<TectonicBoundaryFeature*> faultSet = pck.getFaultSet();
 	std::vector<PolylineSetRepresentation*> faultPolyRep = pck.getFaultPolylineSetRepSet();
 	std::vector<TriangulatedSetRepresentation*> faultTriRepSet = pck.getFaultTriangulatedSetRepSet();
@@ -2947,6 +3031,8 @@ void deserialize(const string & inputFile)
 		showAllProperties(horizonSinglePolylineRepSet[i]);
 	}
 
+	deserializeSealedSurfaceFramework(pck);
+	
 	std::cout << "STRATI COLUMN" << endl;
 	for (size_t i = 0; i < stratiColumnSet.size(); i++)
 	{

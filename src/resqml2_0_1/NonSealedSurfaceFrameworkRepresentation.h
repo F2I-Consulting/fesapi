@@ -18,11 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/RepresentationSetRepresentation.h"
+#include "resqml2_0_1/AbstractSurfaceFrameworkRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT NonSealedSurfaceFrameworkRepresentation : public RepresentationSetRepresentation
+	class DLL_IMPORT_OR_EXPORT NonSealedSurfaceFrameworkRepresentation : public AbstractSurfaceFrameworkRepresentation
 	{
     public:
         /**
@@ -30,17 +30,15 @@ namespace RESQML2_0_1_NS
 		* @param interp     The structural organization interpretation the instance interprets.
 		* @param guid		The guid to set to the horizon. If empty then a new guid will be generated.
 		* @param title      A title for the instance to create.
-		* @param isSealed	Indicates if this representaiton is sealed or not.
 		*/
 		NonSealedSurfaceFrameworkRepresentation(class StructuralOrganizationInterpretation* interp,
                         const std::string & guid, 
-                        const std::string & title,
-                        const bool & isSealed);
+                        const std::string & title);
                 
         /**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		NonSealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::_resqml2__NonSealedSurfaceFrameworkRepresentation* fromGsoap): RepresentationSetRepresentation(fromGsoap) {}
+		NonSealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::_resqml2__NonSealedSurfaceFrameworkRepresentation* fromGsoap): AbstractSurfaceFrameworkRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -67,6 +65,8 @@ namespace RESQML2_0_1_NS
                 class AbstractRepresentation * supportingRepresentation,
                 COMMON_NS::AbstractHdfProxy* proxy);
                 */
+
+		unsigned int getContactRepCount() const;
 
         static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}

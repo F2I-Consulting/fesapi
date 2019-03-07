@@ -186,6 +186,51 @@ const std::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDocumen
 const std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDocument::getDataObjectSet() const { return dataObjectSet; }
 #endif
 
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > EpcDocument::getDataObjectsGroupedByContentType() const
+#else
+std::tr1::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > & EpcDocument::getDataObjectsGroupedByContentType() const
+#endif
+{
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+	std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
+	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
+#else
+	std::tr1::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
+	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
+#endif
+		if (it->second->getContentType().find("x-eml") == std::string::npos) {
+			result[it->second->getContentType()].push_back(it->second);
+		}
+	}
+
+	return result;
+}
+
+std::vector<COMMON_NS::AbstractObject*> EpcDocument::getDataObjectsByContentType(const std::string & contentType) const
+{
+	std::vector<COMMON_NS::AbstractObject*> result;
+
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
+#else
+	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
+#endif
+		if (it->second->getContentType() == contentType) {
+			result.push_back(it->second);
+		}
+	}
+
+	return result;
+}
+
+std::vector<COMMON_NS::AbstractObject*> EpcDocument::getResqml2_0ObjectsByXmlTag(const std::string & xmlTag) const
+{
+	std::vector<COMMON_NS::AbstractObject*> result = getDataObjectsByContentType(COMMON_NS::AbstractObject::RESQML_2_0_CONTENT_TYPE_PREFIX + xmlTag);
+
+	return result.empty() ? getDataObjectsByContentType(COMMON_NS::AbstractObject::RESQML_2_0_1_CONTENT_TYPE_PREFIX + xmlTag) : result;
+}
+
 std::vector<std::string> EpcDocument::getAllUuids() const
 {
 	std::vector<std::string> keys;
@@ -1889,10 +1934,9 @@ RESQML2_NS::RepresentationSetRepresentation* EpcDocument::createPartialRepresent
 NonSealedSurfaceFrameworkRepresentation* EpcDocument::createNonSealedSurfaceFrameworkRepresentation(
         StructuralOrganizationInterpretation* interp, 
         const std::string & guid,
-        const std::string & title,
-        const bool & isSealed)
+        const std::string & title)
 {
-	NonSealedSurfaceFrameworkRepresentation* result = new NonSealedSurfaceFrameworkRepresentation(interp, guid, title, isSealed);
+	NonSealedSurfaceFrameworkRepresentation* result = new NonSealedSurfaceFrameworkRepresentation(interp, guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }

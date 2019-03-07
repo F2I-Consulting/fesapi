@@ -135,6 +135,20 @@ namespace COMMON_NS
 		*/
 		void changeToPartialObject();
 
+		/*
+		* Read an input array which come from XML (and potentially HDF5) and store it into a preallocated output array in memory.
+		* It does not allocate or deallocate memory.
+		*/
+		void readArrayNdOfUIntValues(gsoap_resqml2_0_1::resqml2__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const;
+
+		/*
+		* Get the count of item in an array of integer
+		*
+		* @param arrayInput	The array of integer.
+		* @return			The count of item in the array of integer.
+		*/
+		ULONG64 getCountOfIntegerArray(gsoap_resqml2_0_1::resqml2__AbstractIntegerArray * arrayInput) const;
+
 	public:
 		virtual ~AbstractObject() {}
 
@@ -328,6 +342,9 @@ namespace COMMON_NS
 		* Get the string value of a string value pair at a particular index in the extra metadata set
 		*/
 		std::string getExtraMetadataStringValueAtIndex(const unsigned int & index) const;
+
+		static const char* RESQML_2_0_CONTENT_TYPE_PREFIX;
+		static const char* RESQML_2_0_1_CONTENT_TYPE_PREFIX;
 	};
 }
 

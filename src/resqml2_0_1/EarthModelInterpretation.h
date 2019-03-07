@@ -45,7 +45,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		EarthModelInterpretation(gsoap_resqml2_0_1::_resqml2__EarthModelInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap), structuralOrganization(nullptr), stratigraphicColumn(nullptr) {}
+		EarthModelInterpretation(gsoap_resqml2_0_1::_resqml2__EarthModelInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -56,6 +56,21 @@ namespace RESQML2_0_1_NS
 
 		void setStratiColumn(class StratigraphicColumn * stratiColumn);
 
+		/*
+		* Check if a strati column is associated to this earth model interpretation
+		*
+		* @return True if a strati column is associated to this earth model interpretation elsa false.
+		*/
+		bool hasStratiColumn() const;
+
+		/*
+		* Get the strati column associated to this earth model interpretation.
+		* Throw an exception if there is no strati column associated. Check with hasStratiColumn().
+		*
+		* @return The associated stratigraphic column.
+		*/
+		class StratigraphicColumn* getStratiColumn() const;
+
 		void pushBackStratiOccurence(class StratigraphicOccurrenceInterpretation * stratiOccurence);
 
 		static const char* XML_TAG;
@@ -64,11 +79,6 @@ namespace RESQML2_0_1_NS
     private:
         std::vector<epc::Relationship> getAllEpcRelationships() const;
 		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-
-		// XML Forward relationships
-        class StructuralOrganizationInterpretation* structuralOrganization;
-        class StratigraphicColumn* stratigraphicColumn;
-        std::vector<class StratigraphicOccurrenceInterpretation*> stratigraphicOccurenceSet;
 	};
 }
 

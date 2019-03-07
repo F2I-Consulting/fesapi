@@ -57,6 +57,7 @@ under the License.
 #include "resqml2_0_1/DeviationSurveyRepresentation.h"
 #include "resqml2_0_1/WellboreMarker.h"
 #include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
+#include "resqml2_0_1/RepresentationSetRepresentation.h"
 #include "resqml2_0_1/NonSealedSurfaceFrameworkRepresentation.h"
 #include "resqml2_0_1/SealedSurfaceFrameworkRepresentation.h"
 
@@ -2177,6 +2178,7 @@ namespace RESQML2_0_1_NS
 	%nspace RESQML2_0_1_NS::WellboreMarker;
 	%nspace RESQML2_0_1_NS::WellboreMarkerFrameRepresentation;
 	%nspace RESQML2_0_1_NS::RepresentationSetRepresentation;
+	%nspace RESQML2_0_1_NS::AbstractSurfaceFrameworkRepresentation;
 	%nspace RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation;
 	%nspace RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation;
 	%nspace RESQML2_0_1_NS::UnstructuredGridRepresentation;
@@ -2308,7 +2310,7 @@ namespace RESQML2_0_1_NS
 	{
 	public:
 		bool isAnHorizon() const;
-		void setAge(const ULONG64 & age);
+		void setAge(unsigned int age);
 		bool hasAnAge() const;
 		ULONG64 getAge() const;
 	};
@@ -2893,9 +2895,17 @@ namespace RESQML2_0_1_NS
 	};
 	
 #ifdef SWIGPYTHON
+	%rename(Resqml2_0_1_AbstractSurfaceFrameworkRepresentation) AbstractSurfaceFrameworkRepresentation;
+#endif
+	class AbstractSurfaceFrameworkRepresentation : public RESQML2_NS::RepresentationSetRepresentation
+	{
+	public:
+	};
+	
+#ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_NonSealedSurfaceFrameworkRepresentation) NonSealedSurfaceFrameworkRepresentation;
 #endif
-	class NonSealedSurfaceFrameworkRepresentation : public RepresentationSetRepresentation
+	class NonSealedSurfaceFrameworkRepresentation : public AbstractSurfaceFrameworkRepresentation
 	{
 	public:
 		void pushBackNonSealedContactRepresentation(const unsigned int & pointCount, double * points, RESQML2_NS::AbstractLocal3dCrs* localCrs, COMMON_NS::AbstractHdfProxy * proxy);
@@ -2904,7 +2914,7 @@ namespace RESQML2_0_1_NS
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_SealedSurfaceFrameworkRepresentation) SealedSurfaceFrameworkRepresentation;
 #endif
-	class SealedSurfaceFrameworkRepresentation : public RepresentationSetRepresentation
+	class SealedSurfaceFrameworkRepresentation : public AbstractSurfaceFrameworkRepresentation
 	{
 	public:
 	};
