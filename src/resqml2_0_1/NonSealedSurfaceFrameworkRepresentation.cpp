@@ -133,7 +133,7 @@ vector<Relationship> NonSealedSurfaceFrameworkRepresentation::getAllEpcRelations
 	return result;
 }
 
-unsigned int NonSealedSurfaceFrameworkRepresentation::getContactRepCount() const
+unsigned int NonSealedSurfaceFrameworkRepresentation::getContactCount() const
 {
 	_resqml2__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml2__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 

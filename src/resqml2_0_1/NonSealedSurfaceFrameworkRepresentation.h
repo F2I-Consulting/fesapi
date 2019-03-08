@@ -66,7 +66,7 @@ namespace RESQML2_0_1_NS
                 COMMON_NS::AbstractHdfProxy* proxy);
                 */
 
-		unsigned int getContactRepCount() const;
+		unsigned int getContactCount() const;
 
         static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}

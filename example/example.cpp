@@ -112,8 +112,8 @@ WellboreFeature* wellbore1;
 WellboreInterpretation* wellbore1Interp1;
 StratigraphicColumnRankInterpretation* stratiColumnRank;
 
-WITSML2_0_NS::Well* witsmlWell = NULL;
-WITSML2_0_NS::Wellbore* witsmlWellbore = NULL;
+WITSML2_0_NS::Well* witsmlWell = nullptr;
+WITSML2_0_NS::Wellbore* witsmlWellbore = nullptr;
 
 void serializeWells(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
@@ -801,12 +801,12 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 		1, 1, 1,
 		2, 2, 2
 	};
-	//sealedSurfaceFramework->pushBackSealedContactRepresentation(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
-	singlePatchFault1SealedSurfaceFramework->pushBackSealedContactRepresentation(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	//sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
+	singlePatchFault1SealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
 
 	// Contact 0 Patch 0
 	int indexSetContact0Patch0[3] = { 3, 4, 5 };
-	singlePatchFault1SealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	singlePatchFault1SealedSurfaceFramework->pushBackContactPatch(
 		0,
 		indexSetContact0Patch0,
 		3,
@@ -814,7 +814,7 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 
 	// Contact 0 Patch 1
 	int indexSetContact0Patch1[3] = { 0, 1, 2 };
-	singlePatchFault1SealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	singlePatchFault1SealedSurfaceFramework->pushBackContactPatch(
 		0,
 		indexSetContact0Patch1,
 		3,
@@ -822,19 +822,19 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 
 	// Contact 0 Patch 2
 	int indexSetContact0Patch2[3] = { 3, 4, 5 };
-	singlePatchFault1SealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	singlePatchFault1SealedSurfaceFramework->pushBackContactPatch(
 		0,
 		indexSetContact0Patch2,
 		3,
 		f1i1triRepSinglePatch, hdfProxy);
 
 	// Contact 1
-	//sealedSurfaceFramework->pushBackSealedContactRepresentation(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
-	singlePatchFault1SealedSurfaceFramework->pushBackSealedContactRepresentation(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	//sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
+	singlePatchFault1SealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
 
 	// Contact 1 Patch 0
 	int indexSetContact1Patch0[3] = { 6, 7, 8 };
-	singlePatchFault1SealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	singlePatchFault1SealedSurfaceFramework->pushBackContactPatch(
 		1,
 		indexSetContact1Patch0,
 		3,
@@ -842,7 +842,7 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 
 	// Contact 1 Patch 1
 	int indexSetContact1Patch1[3] = { 5, 6, 7 };
-	singlePatchFault1SealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	singlePatchFault1SealedSurfaceFramework->pushBackContactPatch(
 		1,
 		indexSetContact1Patch1,
 		3,
@@ -850,19 +850,19 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 
 	// Contact 1 Patch 2
 	int indexSetContact1Patch2[3] = { 6, 7, 8 };
-	singlePatchFault1SealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	singlePatchFault1SealedSurfaceFramework->pushBackContactPatch(
 		1,
 		indexSetContact1Patch2,
 		3,
 		f1i1triRepSinglePatch, hdfProxy);
 
 	// Contact 2
-	//sealedSurfaceFramework->pushBackSealedContactRepresentation(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
-	singlePatchFault1SealedSurfaceFramework->pushBackSealedContactRepresentation(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	//sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
+	singlePatchFault1SealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
 
 	// Contact 2 Patch 0
 	int indexSetContact2Patch0[3] = { 9, 10, 11 };
-	singlePatchFault1SealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	singlePatchFault1SealedSurfaceFramework->pushBackContactPatch(
 		2,
 		indexSetContact2Patch0,
 		3,
@@ -870,7 +870,7 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 
 	// Contact 2 Patch 1
 	int indexSetContact2Patch1[3] = { 0, 1, 2 };
-	singlePatchFault1SealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	singlePatchFault1SealedSurfaceFramework->pushBackContactPatch(
 		2,
 		indexSetContact2Patch1,
 		3,
@@ -878,19 +878,19 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 
 	// Contact 2 Patch 2
 	int indexSetContact2Patch2[3] = { 9, 10, 11 };
-	singlePatchFault1SealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	singlePatchFault1SealedSurfaceFramework->pushBackContactPatch(
 		2,
 		indexSetContact2Patch2,
 		3,
 		f1i1triRepSinglePatch, hdfProxy);
 
 	// Contact 3
-	//sealedSurfaceFramework->pushBackSealedContactRepresentation(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
-	singlePatchFault1SealedSurfaceFramework->pushBackSealedContactRepresentation(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	//sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
+	singlePatchFault1SealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
 
 	// Contact 3 Patch 0
 	int indexSetContact3Patch0[3] = { 12, 13, 14 };
-	singlePatchFault1SealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	singlePatchFault1SealedSurfaceFramework->pushBackContactPatch(
 		3,
 		indexSetContact3Patch0,
 		3,
@@ -898,7 +898,7 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 
 	// Contact 3 Patch 1
 	int indexSetContact3Patch1[3] = { 5, 6, 7 };
-	singlePatchFault1SealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	singlePatchFault1SealedSurfaceFramework->pushBackContactPatch(
 		3,
 		indexSetContact3Patch1,
 		3,
@@ -906,7 +906,7 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 
 	// Contact 3 Patch 2
 	int indexSetContact3Patch2[3] = { 12, 13, 14 };
-	singlePatchFault1SealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	singlePatchFault1SealedSurfaceFramework->pushBackContactPatch(
 		3,
 		indexSetContact3Patch2,
 		3,
@@ -922,15 +922,15 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 	//        1,1,1,
 	//        2,2,2
 	//    };
-	//sealedSurfaceFramework->pushBackSealedContactRepresentation(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
-	sealedSurfaceFramework->pushBackSealedContactRepresentation(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	//sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
 
 	// Contact 0 Patch 0
 	//int * indexSetContact0Patch0 = new int[3];
 	indexSetContact0Patch0[0] = 3;
 	indexSetContact0Patch0[1] = 4;
 	indexSetContact0Patch0[2] = 5;
-	sealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	sealedSurfaceFramework->pushBackContactPatch(
 		0,
 		indexSetContact0Patch0,
 		3,
@@ -941,7 +941,7 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 	indexSetContact0Patch1[0] = 0;
 	indexSetContact0Patch1[1] = 1;
 	indexSetContact0Patch1[2] = 2;
-	sealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	sealedSurfaceFramework->pushBackContactPatch(
 		0,
 		indexSetContact0Patch1,
 		3,
@@ -952,22 +952,22 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 	indexSetContact0Patch2[0] = 6;
 	indexSetContact0Patch2[1] = 7;
 	indexSetContact0Patch2[2] = 8;
-	sealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	sealedSurfaceFramework->pushBackContactPatch(
 		0,
 		indexSetContact0Patch2,
 		3,
 		f1i1triRep, hdfProxy);
 
 	// Contact 1
-	//sealedSurfaceFramework->pushBackSealedContactRepresentation(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
-	sealedSurfaceFramework->pushBackSealedContactRepresentation(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	//sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
 
 	// Contact 1 Patch 0
 	//int * indexSetContact1Patch0 = new int[3];
 	indexSetContact1Patch0[0] = 9;
 	indexSetContact1Patch0[1] = 10;
 	indexSetContact1Patch0[2] = 11;
-	sealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	sealedSurfaceFramework->pushBackContactPatch(
 		1,
 		indexSetContact1Patch0,
 		3,
@@ -978,7 +978,7 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 	indexSetContact1Patch1[0] = 5;
 	indexSetContact1Patch1[1] = 6;
 	indexSetContact1Patch1[2] = 7;
-	sealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	sealedSurfaceFramework->pushBackContactPatch(
 		1,
 		indexSetContact1Patch1,
 		3,
@@ -989,22 +989,22 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 	indexSetContact1Patch2[0] = 12;
 	indexSetContact1Patch2[1] = 13;
 	indexSetContact1Patch2[2] = 14;
-	sealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	sealedSurfaceFramework->pushBackContactPatch(
 		1,
 		indexSetContact1Patch2,
 		3,
 		f1i1triRep, hdfProxy);
 
 	// Contact 2
-	//sealedSurfaceFramework->pushBackSealedContactRepresentation(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
-	sealedSurfaceFramework->pushBackSealedContactRepresentation(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	//sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
 
 	// Contact 2 Patch 0
 	//int * indexSetContact2Patch0 = new int[3];
 	indexSetContact2Patch0[0] = 15;
 	indexSetContact2Patch0[1] = 16;
 	indexSetContact2Patch0[2] = 17;
-	sealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	sealedSurfaceFramework->pushBackContactPatch(
 		2,
 		indexSetContact2Patch0,
 		3,
@@ -1015,7 +1015,7 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 	indexSetContact2Patch1[0] = 0;
 	indexSetContact2Patch1[1] = 1;
 	indexSetContact2Patch1[2] = 2;
-	sealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	sealedSurfaceFramework->pushBackContactPatch(
 		2,
 		indexSetContact2Patch1,
 		3,
@@ -1026,22 +1026,22 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 	indexSetContact2Patch2[0] = 18;
 	indexSetContact2Patch2[1] = 19;
 	indexSetContact2Patch2[2] = 20;
-	sealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	sealedSurfaceFramework->pushBackContactPatch(
 		2,
 		indexSetContact2Patch2,
 		3,
 		f1i1triRep, hdfProxy);
 
 	// Contact 3
-	//sealedSurfaceFramework->pushBackSealedContactRepresentation(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
-	sealedSurfaceFramework->pushBackSealedContactRepresentation(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	//sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
 
 	// Contact 3 Patch 0
 	//int * indexSetContact3Patch0 = new int[3];
 	indexSetContact3Patch0[0] = 21;
 	indexSetContact3Patch0[1] = 22;
 	indexSetContact3Patch0[2] = 23;
-	sealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	sealedSurfaceFramework->pushBackContactPatch(
 		3,
 		indexSetContact3Patch0,
 		3,
@@ -1052,7 +1052,7 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 	indexSetContact3Patch1[0] = 5;
 	indexSetContact3Patch1[1] = 6;
 	indexSetContact3Patch1[2] = 7;
-	sealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	sealedSurfaceFramework->pushBackContactPatch(
 		3,
 		indexSetContact3Patch1,
 		3,
@@ -1063,7 +1063,7 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 	indexSetContact3Patch2[0] = 24;
 	indexSetContact3Patch2[1] = 25;
 	indexSetContact3Patch2[2] = 26;
-	sealedSurfaceFramework->pushBackContactPatchInSealedContactRepresentation(
+	sealedSurfaceFramework->pushBackContactPatch(
 		3,
 		indexSetContact3Patch2,
 		3,
@@ -1567,12 +1567,12 @@ void deserializeSealedSurfaceFramework(const COMMON_NS::EpcDocument & pck)
 		}
 
 		std::cout << "\tCONTACT (REPRESENTATION) IDENTITY" << std::endl;
-		const unsigned int ciCount = ssf->getContactRepIdentityCount();
+		const unsigned int ciCount = ssf->getContactIdentityCount();
 		for (unsigned int ciIdx = 0; ciIdx < ciCount; ++ciIdx) {
-			std::cout << "\t\tidentity kind (0->coloc, 1->preColoc, 2->eq, 3->preEq) : " << ssf->getContactRepIdentityKind(ciIdx) << std::endl;
-			const unsigned int ciContactRepCount = ssf->getContactRepCountOfContactIdentity(ciIdx);
+			std::cout << "\t\tidentity kind (0->coloc, 1->preColoc, 2->eq, 3->preEq) : " << ssf->getContactIdentityKind(ciIdx) << std::endl;
+			const unsigned int ciContactRepCount = ssf->getContactCountInContactIdentity(ciIdx);
 			unsigned int* cicrIndices = new unsigned int[ciContactRepCount];
-			ssf->getContactRepIndicesOfContactIdentity(ciIdx, cicrIndices);
+			ssf->getContactIndices(ciIdx, cicrIndices);
 			std::cout << "\t\tcontact rep indices : ";
 			for (unsigned int cicrIdx = 0; cicrIdx < ciContactRepCount; ++cicrIdx) {
 				std::cout << cicrIndices[cicrIdx] << " ";
@@ -1580,13 +1580,13 @@ void deserializeSealedSurfaceFramework(const COMMON_NS::EpcDocument & pck)
 			delete[] cicrIndices;
 			std::cout << std::endl;
 
-			if (ssf->areAllContactRepNodesIdenticalInContactIdentity(ciIdx)) {
+			if (ssf->areAllContactNodesIdentical(ciIdx)) {
 				std::cout << "\t\tAll nodes are identical." << endl;
 			}
 			else {
-				const unsigned int ciIdenticalNodeCount = ssf->getIdenticalNodeCountOfContactIdentity(ciIdx);
+				const unsigned int ciIdenticalNodeCount = ssf->getIdenticalContactNodeCount(ciIdx);
 				unsigned int* ciIdenticalNodeIndices = new unsigned int[ciIdenticalNodeCount];
-				ssf->getIdenticalNodeIndicesOfContactIdentity(ciIdx, ciIdenticalNodeIndices);
+				ssf->getIdenticalContactNodeIndices(ciIdx, ciIdenticalNodeIndices);
 				std::cout << "\t\tIdentical nodes : ";
 				for (unsigned int identicalNodesIdx = 0; identicalNodesIdx < ciIdenticalNodeCount; ++identicalNodesIdx) {
 					std::cout << ciIdenticalNodeIndices[identicalNodesIdx] << " ";
@@ -1597,16 +1597,16 @@ void deserializeSealedSurfaceFramework(const COMMON_NS::EpcDocument & pck)
 		}
 
 		std::cout << "\tCONTACT REPRESENTATIONS" << std::endl;;
-		const unsigned int crCount = ssf->getContactRepCount();
+		const unsigned int crCount = ssf->getContactCount();
 		for (unsigned int crIdx = 0; crIdx < crCount; ++crIdx) {
 			std::cout << "\t\tidentity kind (0->coloc, 1->preColoc, 2->eq, 3->preEq) : " << ssf->getContactPatchIdentityKind(crIdx) << std::endl;
-			if (ssf->areAllContactPatchNodesIdenticalInContactRep(crIdx)) {
+			if (ssf->areAllContactPatchNodesIdentical(crIdx)) {
 				std::cout << "\t\tAll nodes are identical." << endl;
 			}
 			else {
-				const unsigned int crIdenticalNodeCount = ssf->getIdenticalNodeCountOfContactRep(crIdx);
+				const unsigned int crIdenticalNodeCount = ssf->getIdenticalContactPatchNodeCount(crIdx);
 				unsigned int* crIdenticalNodeIndices = new unsigned int[crIdenticalNodeCount];
-				ssf->getIdenticalNodeIndicesOfContactRep(crIdx, crIdenticalNodeIndices);
+				ssf->getIdenticalContactPatchNodeIndices(crIdx, crIdenticalNodeIndices);
 				std::cout << "\t\tIdentical nodes : ";
 				for (unsigned int identicalNodesIdx = 0; identicalNodesIdx < crIdenticalNodeCount; ++identicalNodesIdx) {
 					std::cout << crIdenticalNodeIndices[identicalNodesIdx] << " ";
@@ -1619,9 +1619,9 @@ void deserializeSealedSurfaceFramework(const COMMON_NS::EpcDocument & pck)
 			const unsigned int cpCount = ssf->getContactPatchCount(crIdx);
 			for (unsigned int cpIdx = 0; cpIdx < cpCount; ++cpIdx) {
 				showAllMetadata(ssf->getRepresentationOfContactPatch(crIdx, cpIdx));
-				const unsigned int cpNodeCount = ssf->getNodeCountOfContactPatch(crIdx, cpIdx);
+				const unsigned int cpNodeCount = ssf->getContactPatchNodeCount(crIdx, cpIdx);
 				unsigned int* cpNodeIndices = new unsigned int[cpNodeCount];
-				ssf->getNodeIndicesOfContactPatch(crIdx, cpIdx, cpNodeIndices);
+				ssf->getContactPatchNodeIndices(crIdx, cpIdx, cpNodeIndices);
 				std::cout << "\t\tcontact patch indices : ";
 				for (unsigned int cpNodeIdx = 0; cpNodeIdx < cpNodeCount; ++cpNodeIdx) {
 					std::cout << cpNodeIndices[cpNodeIdx] << " ";
@@ -1679,9 +1679,9 @@ void deserializeGridHyperslabbingInterfaceSequence(COMMON_NS::EpcDocument & pck)
 {
 	cout << endl << "BEGIN: IJK GRID REP (hyperslabbing)" << std::endl;
 	unsigned int ijkGridCount = pck.getIjkGridRepresentationCount();
-	for (unsigned int i = 0; i < ijkGridCount; ++i)
+	for (unsigned int ijkGridIdx = 0; ijkGridIdx < ijkGridCount; ++ijkGridIdx)
 	{
-		AbstractIjkGridRepresentation* ijkGrid = pck.getIjkGridRepresentation(i);
+		AbstractIjkGridRepresentation* ijkGrid = pck.getIjkGridRepresentation(ijkGridIdx);
 
 		if (ijkGrid->getGeometryKind() != AbstractIjkGridRepresentation::NO_GEOMETRY)
 		{
@@ -2647,7 +2647,7 @@ void deserializePerforations(COMMON_NS::EpcDocument & pck)
 		<< " with GUID " << wellCompletion->getUuid() << " and witsml well " << wellCompletion->getWell()->getTitle()
 		<< " with GUID " << wellCompletion->getWell()->getUuid() << std::endl;
 
-	WITSML2_0_NS::Wellbore* witsmlWellbore = wellboreCompletion->getWellbore();
+	witsmlWellbore = wellboreCompletion->getWellbore();
 	std::cout << "Associated with witsml well bore " << witsmlWellbore->getTitle()
 			<< " with GUID " << witsmlWellbore->getUuid() << " and witsml well " << witsmlWellbore->getWell()->getTitle()
 			<< " with GUID " << witsmlWellbore->getWell()->getUuid() << std::endl;
@@ -3043,8 +3043,8 @@ void deserialize(const string & inputFile)
 	for (size_t i = 0; i < wellboreSet.size(); i++)
 	{
 		showAllMetadata(wellboreSet[i]);
-		WITSML2_0_NS::Wellbore* witsmlWellbore = wellboreSet[i]->getWitsmlWellbore();
-		if (witsmlWellbore != NULL)
+		witsmlWellbore = wellboreSet[i]->getWitsmlWellbore();
+		if (witsmlWellbore != nullptr)
 		{
 			std::cout << "Associated with witsml well bore " << witsmlWellbore->getTitle()
 				<< " with GUID " << witsmlWellbore->getUuid() << " and witsml well " << witsmlWellbore->getWell()->getTitle()
@@ -3066,7 +3066,7 @@ void deserialize(const string & inputFile)
 						}
 					}
 
-					for (size_t l = 0; l < wmf->getPropertySet().size(); l++)
+					for (size_t l = 0; l < wmf->getPropertySet().size(); ++l)
 					{
 						if (wmf->getPropertySet()[l]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECategoricalProperty)
 						{
@@ -3139,9 +3139,9 @@ void deserialize(const string & inputFile)
 
 	std::cout << endl << "IJK GRID REP" << endl;
 	unsigned int ijkGridCount = pck.getIjkGridRepresentationCount();
-	for (unsigned int i = 0; i < ijkGridCount; ++i)
+	for (unsigned int ijkGridIdx = 0; ijkGridIdx < ijkGridCount; ++ijkGridIdx)
 	{
-		AbstractIjkGridRepresentation* ijkGrid = pck.getIjkGridRepresentation(i);
+		AbstractIjkGridRepresentation* ijkGrid = pck.getIjkGridRepresentation(ijkGridIdx);
 
 		showAllMetadata(ijkGrid);
 		if (ijkGrid->isPartial()) {
@@ -3550,7 +3550,7 @@ delete [] testingValues2;
 
 // filepath is defined in a macro to better check memory leak
 #define filePath "../../testingPackageCpp.epc"
-int main(int argc, char **argv)
+int main()
 {
 	try {
 		if (serialize(filePath))

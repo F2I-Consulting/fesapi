@@ -73,6 +73,7 @@ under the License.
 #include "resqml2_0_1/BlockedWellboreRepresentation.h"
 
 #include "resqml2_0_1/EarthModelInterpretation.h"
+#include "resqml2_0_1/RepresentationSetRepresentation.h"
 #include "resqml2_0_1/StructuralOrganizationInterpretation.h"
 #include "resqml2_0_1/NonSealedSurfaceFrameworkRepresentation.h"
 #include "resqml2_0_1/SealedSurfaceFrameworkRepresentation.h"
@@ -1912,7 +1913,7 @@ RESQML2_NS::RepresentationSetRepresentation* EpcDocument::createRepresentationSe
         const std::string & guid,
         const std::string & title)
 {
-	RepresentationSetRepresentation* result = new RepresentationSetRepresentation(interp, guid, title);
+	RESQML2_0_1_NS::RepresentationSetRepresentation* result = new RESQML2_0_1_NS::RepresentationSetRepresentation(interp, guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -1921,14 +1922,14 @@ RESQML2_NS::RepresentationSetRepresentation* EpcDocument::createRepresentationSe
 	const std::string & guid,
 	const std::string & title)
 {
-	RepresentationSetRepresentation* result = new RepresentationSetRepresentation(this, guid, title);
+	RESQML2_0_1_NS::RepresentationSetRepresentation* result = new RESQML2_0_1_NS::RepresentationSetRepresentation(this, guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
 
 RESQML2_NS::RepresentationSetRepresentation* EpcDocument::createPartialRepresentationSetRepresentation(const std::string & guid, const std::string & title)
 {
-	return createPartial<RepresentationSetRepresentation>(guid, title);
+	return createPartial<RESQML2_0_1_NS::RepresentationSetRepresentation>(guid, title);
 }
 
 NonSealedSurfaceFrameworkRepresentation* EpcDocument::createNonSealedSurfaceFrameworkRepresentation(
@@ -1947,6 +1948,17 @@ SealedSurfaceFrameworkRepresentation* EpcDocument::createSealedSurfaceFrameworkR
         const std::string & title)
 {
 	SealedSurfaceFrameworkRepresentation* result = new SealedSurfaceFrameworkRepresentation(interp, guid, title);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation* EpcDocument::createSealedVolumeFrameworkRepresentation(
+	RESQML2_0_1_NS::StratigraphicColumnRankInterpretation* interp,
+	const std::string & guid,
+	const std::string & title,
+	RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* ssf)
+{
+	SealedVolumeFrameworkRepresentation* result = new SealedVolumeFrameworkRepresentation(interp, guid, title, ssf);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }

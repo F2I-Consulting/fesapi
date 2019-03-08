@@ -37,7 +37,7 @@ AbstractSurfaceFrameworkRepresentation::AbstractSurfaceFrameworkRepresentation(S
 
 void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	gsoap_resqml2_0_1::resqml2__IdentityKind kind,
-	unsigned int sealedContactRepresentationsCount, int * sealedContactRepresentationsIndexes,
+	unsigned int contactCount, int * contactIndices,
 	COMMON_NS::AbstractHdfProxy * proxy)
 {
 	resqml2__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml2__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
@@ -55,10 +55,10 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	xmlListOfContactRepresentations->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + ossForHdfContactRepresentations.str();
 	contactIdentity->ListOfContactRepresentations = xmlListOfContactRepresentations;
 	// ************ HDF *************
-	hsize_t dimContactRepresentations[1] = { sealedContactRepresentationsCount };
+	hsize_t dimContactRepresentations[1] = { contactCount };
 	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
 		ossForHdfContactRepresentations.str(), H5T_NATIVE_UINT,
-		sealedContactRepresentationsIndexes,
+		contactIndices,
 		dimContactRepresentations, 1);
 
 	orgRep->ContactIdentity.push_back(contactIdentity);
@@ -66,7 +66,7 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 
 void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	gsoap_resqml2_0_1::resqml2__IdentityKind kind,
-	unsigned int sealedContactRepresentationsCount, int * sealedContactRepresentationsIndexes,
+	unsigned int contactCount, int * contactIndices,
 	unsigned int identicalNodesCount, int * identicalNodesIndexes, COMMON_NS::AbstractHdfProxy * proxy)
 {
 	resqml2__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml2__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
@@ -84,10 +84,10 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	xmlListOfContactRepresentations->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + ossForHdfContactRepresentations.str();
 	contactIdentity->ListOfContactRepresentations = xmlListOfContactRepresentations;
 	// ************ HDF *************
-	hsize_t dimContactRepresentations[1] = { sealedContactRepresentationsCount };
+	hsize_t dimContactRepresentations[1] = { contactCount };
 	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
 		ossForHdfContactRepresentations.str(), H5T_NATIVE_UINT,
-		sealedContactRepresentationsIndexes,
+		contactIndices,
 		dimContactRepresentations, 1);
 
 	// ListOfIdenticalNodes handling
@@ -100,7 +100,7 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	xmlListOfIdenticalNodes->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + ossForHdfIdenticalNodes.str();
 	contactIdentity->ListOfIdenticalNodes = xmlListOfIdenticalNodes;
 	// ************ HDF *************
-	hsize_t dimIdenticalNodes[2] = { identicalNodesCount, sealedContactRepresentationsCount };
+	hsize_t dimIdenticalNodes[2] = { identicalNodesCount, contactCount };
 	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
 		ossForHdfIdenticalNodes.str(), H5T_NATIVE_UINT,
 		identicalNodesIndexes,
@@ -109,7 +109,7 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	orgRep->ContactIdentity.push_back(contactIdentity);
 }
 
-unsigned int AbstractSurfaceFrameworkRepresentation::getContactRepIdentityCount() const
+unsigned int AbstractSurfaceFrameworkRepresentation::getContactIdentityCount() const
 {
 	resqml2__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml2__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
@@ -131,12 +131,12 @@ gsoap_resqml2_0_1::resqml2__ContactIdentity* AbstractSurfaceFrameworkRepresentat
 	return orgRep->ContactIdentity[ciIndex];
 }
 
-gsoap_resqml2_0_1::resqml2__IdentityKind AbstractSurfaceFrameworkRepresentation::getContactRepIdentityKind(unsigned int ciIndex) const
+gsoap_resqml2_0_1::resqml2__IdentityKind AbstractSurfaceFrameworkRepresentation::getContactIdentityKind(unsigned int ciIndex) const
 {
 	return getContactIdentity(ciIndex)->IdentityKind;
 }
 
-unsigned int AbstractSurfaceFrameworkRepresentation::getContactRepCountOfContactIdentity(unsigned int ciIndex) const
+unsigned int AbstractSurfaceFrameworkRepresentation::getContactCountInContactIdentity(unsigned int ciIndex) const
 {
 	ULONG64 result = getCountOfIntegerArray(getContactIdentity(ciIndex)->ListOfContactRepresentations);
 	if (result > (std::numeric_limits<unsigned int>::max)()) {
@@ -146,19 +146,19 @@ unsigned int AbstractSurfaceFrameworkRepresentation::getContactRepCountOfContact
 	return static_cast<unsigned int>(result);
 }
 
-void AbstractSurfaceFrameworkRepresentation::getContactRepIndicesOfContactIdentity(unsigned int ciIndex, unsigned int * contactRepIndices) const
+void AbstractSurfaceFrameworkRepresentation::getContactIndices(unsigned int ciIndex, unsigned int * contactRepIndices) const
 {
 	readArrayNdOfUIntValues(getContactIdentity(ciIndex)->ListOfContactRepresentations, contactRepIndices);
 }
 
-bool AbstractSurfaceFrameworkRepresentation::areAllContactRepNodesIdenticalInContactIdentity(unsigned int ciIndex) const
+bool AbstractSurfaceFrameworkRepresentation::areAllContactNodesIdentical(unsigned int ciIndex) const
 {
 	return getContactIdentity(ciIndex)->ListOfIdenticalNodes == nullptr;
 }
 
-unsigned int AbstractSurfaceFrameworkRepresentation::getIdenticalNodeCountOfContactIdentity(unsigned int ciIndex) const
+unsigned int AbstractSurfaceFrameworkRepresentation::getIdenticalContactNodeCount(unsigned int ciIndex) const
 {
-	if (areAllContactRepNodesIdenticalInContactIdentity(ciIndex)) {
+	if (areAllContactNodesIdentical(ciIndex)) {
 		throw invalid_argument("The nodes are all identical");
 	}
 
@@ -170,9 +170,9 @@ unsigned int AbstractSurfaceFrameworkRepresentation::getIdenticalNodeCountOfCont
 	return static_cast<unsigned int>(result);
 }
 
-void AbstractSurfaceFrameworkRepresentation::getIdenticalNodeIndicesOfContactIdentity(unsigned int ciIndex, unsigned int * nodeIndices) const
+void AbstractSurfaceFrameworkRepresentation::getIdenticalContactNodeIndices(unsigned int ciIndex, unsigned int * nodeIndices) const
 {
-	if (areAllContactRepNodesIdenticalInContactIdentity(ciIndex)) {
+	if (areAllContactNodesIdentical(ciIndex)) {
 		throw invalid_argument("The nodes are all identical");
 	}
 
