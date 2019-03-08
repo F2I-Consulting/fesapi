@@ -110,7 +110,8 @@ LocalDepth3dCrs* local3dCrs;
 LocalTime3dCrs* localTime3dCrs;
 WellboreFeature* wellbore1;
 WellboreInterpretation* wellbore1Interp1;
-StratigraphicColumnRankInterpretation* stratiColumnRank;
+StratigraphicColumnRankInterpretation* stratiColumnRank0;
+SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework;
 
 WITSML2_0_NS::Well* witsmlWell = nullptr;
 WITSML2_0_NS::Wellbore* witsmlWellbore = nullptr;
@@ -173,7 +174,6 @@ void serializePerforations(COMMON_NS::EpcDocument * pck)
 	// WELLBORE COMPLETION
 	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = pck->createWellboreCompletion(witsmlWellbore, wellCompletion, "7bda8ecf-2037-4dc7-8c59-db6ca09f2008", "WellboreCompletion1", "wellCompletionName");
 
-	// j'ai un doute sur le paramètre datum et sur le top/bottom
 	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980);
 	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 2000);
 	wellboreCompletion->pushBackPerforationHistoryEntry("0", gsoap_eml2_1::witsml2__PerforationStatus__open, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980, 407568645, 1514764800);
@@ -185,28 +185,84 @@ void serializePerforations(COMMON_NS::EpcDocument * pck)
 void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
 	StratigraphicColumn* stratiColumn = pck->createStratigraphicColumn("7f6666a0-fa3b-11e5-a509-0002a5d5c51b", "Stratigraphic column");
-	OrganizationFeature* stratiModelFeature = pck->createStratigraphicModel("", "stratiModel");
-	StratigraphicOccurrenceInterpretation* stratiOccurence = pck->createStratigraphicOccurrenceInterpretationInApparentDepth(stratiModelFeature, "", "stratiModel Interp");
-	stratiColumnRank = pck->createStratigraphicColumnRankInterpretationInApparentDepth(stratiModelFeature, "ba06f220-fa3b-11e5-928c-0002a5d5c51b", "Stratigraphic column rank", 0);
-	stratiColumn->pushBackStratiColumnRank(stratiColumnRank);
-	StratigraphicUnitFeature* stratiUnit0Feature = pck->createStratigraphicUnit("0426c6a0-fa3c-11e5-8b9c-0002a5d5c51b", "Unit 0");
-	StratigraphicUnitInterpretation* stratiUnit0Interp = pck->createStratigraphicUnitInterpretation(stratiUnit0Feature, "1a919b40-fa3c-11e5-a72c-0002a5d5c51b", "Unit 0 interp");
-	StratigraphicUnitFeature* stratiUnit1Feature = pck->createStratigraphicUnit("273a92c0-fa3c-11e5-85f8-0002a5d5c51b", "Unit 1");
-	StratigraphicUnitInterpretation* stratiUnit1Interp = pck->createStratigraphicUnitInterpretation(stratiUnit1Feature, "2b9169c0-fa3c-11e5-ae2c-0002a5d5c51b", "Unit 1 interp");
+	OrganizationFeature* stratiModelFeature = pck->createStratigraphicModel("7fcde2b5-d184-4481-b31e-32aafbdc4b7f", "stratiModel");
+	StratigraphicOccurrenceInterpretation* stratiOccurence = pck->createStratigraphicOccurrenceInterpretationInApparentDepth(stratiModelFeature, "2426e574-1ea3-4f20-9deb-669c15a17625", "stratiModel Interp");
+	stratiColumnRank0 = pck->createStratigraphicColumnRankInterpretationInApparentDepth(stratiModelFeature, "ba06f220-fa3b-11e5-928c-0002a5d5c51b", "Stratigraphic column rank 0", 0);
+	StratigraphicColumnRankInterpretation* stratiColumnRank1 = pck->createStratigraphicColumnRankInterpretationInApparentDepth(stratiModelFeature, "9d2d19cf-aedb-4766-9691-758d536456ba", "Stratigraphic column rank 1", 1);
+	stratiColumn->pushBackStratiColumnRank(stratiColumnRank0);
+	StratigraphicUnitFeature* stratiUnitAFeature = pck->createStratigraphicUnit("0426c6a0-fa3c-11e5-8b9c-0002a5d5c51b", "Unit A");
+	StratigraphicUnitInterpretation* stratiUnitAInterp = pck->createStratigraphicUnitInterpretation(stratiUnitAFeature, "1a919b40-fa3c-11e5-a72c-0002a5d5c51b", "Unit 0 interp");
+	StratigraphicUnitFeature* stratiUnitBFeature = pck->createStratigraphicUnit("273a92c0-fa3c-11e5-85f8-0002a5d5c51b", "Unit B");
+	StratigraphicUnitInterpretation* stratiUnitBInterp = pck->createStratigraphicUnitInterpretation(stratiUnitBFeature, "2b9169c0-fa3c-11e5-ae2c-0002a5d5c51b", "Unit 1 interp");
+	StratigraphicUnitFeature* stratiUnitB1Feature = pck->createStratigraphicUnit("0b7cc266-4280-4696-b9dc-5d17017797e2", "Unit b1");
+	StratigraphicUnitInterpretation* stratiUnitB1Interp = pck->createStratigraphicUnitInterpretation(stratiUnitBFeature, "7d7ab0bc-554d-48f5-ab5c-3bb7b66696e5", "Unit 2 interp");
+	StratigraphicUnitFeature* stratiUnitB2Feature = pck->createStratigraphicUnit("87255cf5-033f-4fa4-941b-7947b434f4c2", "Unit b2");
+	StratigraphicUnitInterpretation* stratiUnitB2Interp = pck->createStratigraphicUnitInterpretation(stratiUnitBFeature, "34c37be0-964f-41a8-ba78-db5147744927", "Unit 2 interp");
 
 	// Build the stratigraphic column rank
-	stratiColumnRank->pushBackStratiUnitInterpretation(stratiUnit0Interp);
-	stratiColumnRank->pushBackStratiUnitInterpretation(stratiUnit1Interp);
-	stratiColumnRank->pushBackStratigraphicBinaryContact(stratiUnit0Interp, gsoap_resqml2_0_1::resqml2__ContactMode__proportional, stratiUnit1Interp, gsoap_resqml2_0_1::resqml2__ContactMode__proportional, horizon2Interp1);
+	stratiColumnRank0->pushBackStratiUnitInterpretation(stratiUnitAInterp);
+	stratiColumnRank1->pushBackStratiUnitInterpretation(stratiUnitAInterp);
+	stratiColumnRank0->pushBackStratiUnitInterpretation(stratiUnitBInterp);
+	stratiColumnRank1->pushBackStratiUnitInterpretation(stratiUnitB1Interp);
+	stratiColumnRank1->pushBackStratiUnitInterpretation(stratiUnitB2Interp);
+	stratiColumnRank0->pushBackStratigraphicBinaryContact(stratiUnitAInterp, gsoap_resqml2_0_1::resqml2__ContactMode__proportional, stratiUnitBInterp, gsoap_resqml2_0_1::resqml2__ContactMode__proportional, horizon2Interp1);
 
 	// WellboreFeature marker frame
-	WellboreMarkerFrameRepresentation* wmf = pck->createWellboreMarkerFrameRepresentation(wellbore1Interp1, "", "Wellbore Marker Frame", w1i1TrajRep);
+	WellboreMarkerFrameRepresentation* wmf = pck->createWellboreMarkerFrameRepresentation(wellbore1Interp1, "657d5e6b-1752-425d-b3e7-237037fa11eb", "Wellbore Marker Frame", w1i1TrajRep);
 	double markerMdValues[2] = { 350, 550 };
 	wmf->setMdValues(markerMdValues, 2, hdfProxy);
-	WellboreMarker* marker0 = wmf->pushBackNewWellboreMarker("", "", gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__horizon);
+	WellboreMarker* marker0 = wmf->pushBackNewWellboreMarker("624f9f17-6797-4d78-b3fc-9ca2c8174bcd", "", gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__horizon);
 	marker0->setBoundaryFeatureInterpretation(horizon1Interp1);
-	WellboreMarker* marker1 = wmf->pushBackNewWellboreMarker("", "testing Fault", gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__fault);
+	WellboreMarker* marker1 = wmf->pushBackNewWellboreMarker("3611725e-4d9b-4d3e-87e6-58fcd238f5a8", "testing Fault", gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__fault);
 	marker1->setBoundaryFeatureInterpretation(fault1Interp1);
+
+	// ***********************
+	// Sealed volume framework
+	// ***********************
+	SealedVolumeFrameworkRepresentation* svf = pck->createSealedVolumeFrameworkRepresentation(stratiColumnRank1, "c7ed87c2-9a46-4e3d-8f0f-b25d4d72892a", "Sealed volume framework", sealedSurfaceFramework);
+
+	// Add the surfaces.
+	// TODO : add the frontiers!!!!
+	f1i1triRep->pushBackIntoRepresentationSet(svf);
+	h1i1triRep->pushBackIntoRepresentationSet(svf);
+	h2i1triRep->pushBackIntoRepresentationSet(svf);
+
+	//Region 1
+	const unsigned int nullValue = (std::numeric_limits<unsigned int>::max)();
+	std::vector<unsigned int> region1RepIndices = { nullValue, 0, 1, nullValue, nullValue, nullValue}; // nullValue stands for frontier. Frontiers are not supported in this example yet.
+	std::vector<unsigned int> region1PatchIndices = { nullValue, 0, 0, nullValue, nullValue, nullValue};
+	bool region1Sides[6] = {true, true, true, true, true, true};
+	svf->pushBackVolumeRegion(stratiUnitAInterp, "Region 1", 6, region1RepIndices.data(), region1PatchIndices.data(), region1Sides);
+
+	//Region 2
+	std::vector<unsigned int> region2RepIndices = { 1, 0, 0, 2, nullValue, nullValue, nullValue };
+	std::vector<unsigned int> region2PatchIndices = { 0, 1, 2, 0, nullValue, nullValue, nullValue };
+	bool region2Sides[7] = { false, true, true, true, true, true, true};
+	svf->pushBackVolumeRegion(stratiUnitB1Interp, "Region 2", 7, region2RepIndices.data(), region2PatchIndices.data(), region2Sides);
+
+	//Region 3
+	std::vector<unsigned int> region3RepIndices = { 2, 0, 0, nullValue, nullValue, nullValue, nullValue };
+	std::vector<unsigned int> region3PatchIndices = {0, 3, 4, nullValue, nullValue, nullValue, nullValue };
+	bool region3Sides[7] = {false, true, true, true, true, true, true };
+	svf->pushBackVolumeRegion(stratiUnitB2Interp, "Region 3", 7, region3RepIndices.data(), region3PatchIndices.data(), region3Sides);
+
+	//Region 4
+	std::vector<unsigned int> region4RepIndices = { nullValue, nullValue, 2, 0, 0, nullValue, nullValue };
+	std::vector<unsigned int> region4PatchIndices = { nullValue, nullValue, 1, 1, 0, nullValue, nullValue };
+	bool region4Sides[7] = { true, true, true, false, false, true, true };
+	svf->pushBackVolumeRegion(stratiUnitAInterp, "Region 4", 7, region4RepIndices.data(), region4PatchIndices.data(), region4Sides);
+
+	//Region 5
+	std::vector<unsigned int> region5RepIndices = { 1, nullValue, 2, 0, 0, nullValue, nullValue };
+	std::vector<unsigned int> region5PatchIndices = { 1, nullValue, 1, 3, 2, nullValue, nullValue };
+	bool region5Sides[7] = { false, true, true, false, false, true, true };
+	svf->pushBackVolumeRegion(stratiUnitB1Interp, "Region 5", 7, region5RepIndices.data(), region5PatchIndices.data(), region5Sides);
+
+	//Region 6
+	std::vector<unsigned int> region6RepIndices = { 2, nullValue, nullValue, 0,  nullValue, nullValue };
+	std::vector<unsigned int> region6PatchIndices = { 1, nullValue, nullValue, 4, nullValue, nullValue };
+	bool region6Sides[6] = { false, true, true, false, true, true };
+	svf->pushBackVolumeRegion(stratiUnitB2Interp, "Region 6", 6, region6RepIndices.data(), region6PatchIndices.data(), region6Sides);
 }
 
 void serializeGeobody(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
@@ -675,7 +731,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 	// Stratigraphy
 	//**************
 	ULONG64 stratiUnitIndice = 0;
-	ijkgrid->setIntervalAssociationWithStratigraphicOrganizationInterpretation(&stratiUnitIndice, 1000, stratiColumnRank);
+	ijkgrid->setIntervalAssociationWithStratigraphicOrganizationInterpretation(&stratiUnitIndice, 1000, stratiColumnRank0);
 
 	// Partial transfer
 	UnstructuredGridRepresentation* partialGrid = pck->createPartialUnstructuredGridRepresentation("", "Partial Grid");
@@ -776,13 +832,15 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 	// Single Patch Fault 1
 	SealedSurfaceFrameworkRepresentation* singlePatchFault1SealedSurfaceFramework = pck.createSealedSurfaceFrameworkRepresentation(structuralOrganizationInterpretation, "df673451-d6f2-4e4d-ad86-eaaf131c458f", "Single Patch Fault1 StructuralOrg1 Interp1 Interp1 SealedSurfFrmwk");
 	singlePatchFault1SealedSurfaceFramework->setOriginator("Geosiris");
+	singlePatchFault1SealedSurfaceFramework->setEditor("F2I");
 	f1i1triRepSinglePatch->pushBackIntoRepresentationSet(singlePatchFault1SealedSurfaceFramework);
 	h1i1triRep->pushBackIntoRepresentationSet(singlePatchFault1SealedSurfaceFramework);
 	h2i1triRep->pushBackIntoRepresentationSet(singlePatchFault1SealedSurfaceFramework);
 
 	// Multipatch Fault 1
-	SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = pck.createSealedSurfaceFrameworkRepresentation(structuralOrganizationInterpretation, "c89011a9-0fd8-42cd-b992-96785ed01f6f", "StructuralOrg1 Interp1 Interp1 SealedSurfFrmwk");
+	sealedSurfaceFramework = pck.createSealedSurfaceFrameworkRepresentation(structuralOrganizationInterpretation, "c89011a9-0fd8-42cd-b992-96785ed01f6f", "StructuralOrg1 Interp1 Interp1 SealedSurfFrmwk");
 	sealedSurfaceFramework->setOriginator("Geosiris");
+	sealedSurfaceFramework->setEditor("F2I");
 	f1i1triRep->pushBackIntoRepresentationSet(sealedSurfaceFramework);
 	h1i1triRep->pushBackIntoRepresentationSet(sealedSurfaceFramework);
 	h2i1triRep->pushBackIntoRepresentationSet(sealedSurfaceFramework);
@@ -3505,8 +3563,9 @@ void deserialize(const string & inputFile)
 	}
 
 	std::cout << endl << pck.getWarnings().size() << " WARNING(S)" << endl;
-	for (size_t i = 0; i < pck.getWarnings().size(); ++i)
+	for (size_t i = 0; i < pck.getWarnings().size(); ++i) {
 		std::cout << i << " - " << pck.getWarnings()[i] << endl;
+	}
 
 	pck.close();
 }
@@ -3553,9 +3612,9 @@ delete [] testingValues2;
 int main()
 {
 	try {
-		if (serialize(filePath))
+		if (serialize(filePath)) {
 			deserialize(filePath);
-			
+		}
 	}
 	catch (const std::invalid_argument & Exp)
 	{

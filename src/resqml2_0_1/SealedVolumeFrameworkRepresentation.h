@@ -139,6 +139,9 @@ namespace RESQML2_0_1_NS
 		*/
 		bool getSideFlageOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const;
 
+		static const char* XML_TAG;
+		std::string getXmlTag() const { return XML_TAG; }
+
 	private:
 
 		gsoap_resqml2_0_1::resqml2__VolumeRegion* getRegion(unsigned int regionIndex) const;

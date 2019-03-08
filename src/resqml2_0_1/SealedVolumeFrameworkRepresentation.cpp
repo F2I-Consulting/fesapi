@@ -27,6 +27,8 @@ using namespace epc;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* SealedVolumeFrameworkRepresentation::XML_TAG = "SealedVolumeFrameworkRepresentation";
+
 SealedVolumeFrameworkRepresentation::SealedVolumeFrameworkRepresentation(StratigraphicColumnRankInterpretation* interp,
 	const std::string & guid,
 	const std::string & title,
@@ -42,7 +44,9 @@ SealedVolumeFrameworkRepresentation::SealedVolumeFrameworkRepresentation(Stratig
 
 	// proxy constructor
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORESealedVolumeFrameworkRepresentation(interp->getGsoapContext(), 1);
+	_resqml2__SealedVolumeFrameworkRepresentation* orgRep = static_cast<_resqml2__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1);
 
+	orgRep->IsHomogeneous = true;
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
@@ -53,7 +57,7 @@ SealedVolumeFrameworkRepresentation::SealedVolumeFrameworkRepresentation(Stratig
 	// Create a dummy shell as an official workaround (see note in http://docs.energistics.org/RESQML/RESQML_TOPICS/RESQML-500-269-0-R-sv2010.html)
 	resqml2__VolumeShell* dummyShell = soap_new_resqml2__VolumeShell(gsoapProxy2_0_1->soap, 1);
 	dummyShell->ShellUid = "dummy uid";
-	static_cast<_resqml2__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->Shells.push_back(dummyShell);
+	orgRep->Shells.push_back(dummyShell);
 
 	resqml2__OrientedMacroFace* face = soap_new_resqml2__OrientedMacroFace(gsoapProxy2_0_1->soap, 1);
 	face->RepresentationIndex = (std::numeric_limits<int>::max)();
