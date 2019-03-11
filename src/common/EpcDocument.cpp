@@ -73,6 +73,7 @@ under the License.
 #include "resqml2_0_1/BlockedWellboreRepresentation.h"
 
 #include "resqml2_0_1/EarthModelInterpretation.h"
+#include "resqml2_0_1/RepresentationSetRepresentation.h"
 #include "resqml2_0_1/StructuralOrganizationInterpretation.h"
 #include "resqml2_0_1/NonSealedSurfaceFrameworkRepresentation.h"
 #include "resqml2_0_1/SealedSurfaceFrameworkRepresentation.h"
@@ -189,7 +190,7 @@ const std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDo
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > EpcDocument::getDataObjectsGroupedByContentType() const
 #else
-std::tr1::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > & EpcDocument::getDataObjectsGroupedByContentType() const
+std::tr1::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > EpcDocument::getDataObjectsGroupedByContentType() const
 #endif
 {
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
@@ -885,7 +886,9 @@ COMMON_NS::AbstractObject* EpcDocument::getResqml2_0_1WrapperFromGsoapContext(co
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GridConnectionSetRepresentation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(TimeSeries)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(RepresentationSetRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(NonSealedSurfaceFrameworkRepresentation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SealedSurfaceFrameworkRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SealedVolumeFrameworkRepresentation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyFeature)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyBoundaryInterpretation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyInterpretation)
@@ -1384,7 +1387,9 @@ COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_resqml2_0_1::eml20__
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(GridConnectionSetRepresentation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(TimeSeries)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(RepresentationSetRepresentation)
+	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(NonSealedSurfaceFrameworkRepresentation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(SealedSurfaceFrameworkRepresentation)
+	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(SealedVolumeFrameworkRepresentation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(DeviationSurveyRepresentation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(GeobodyFeature)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(GeobodyBoundaryInterpretation)
@@ -1912,7 +1917,7 @@ RESQML2_NS::RepresentationSetRepresentation* EpcDocument::createRepresentationSe
         const std::string & guid,
         const std::string & title)
 {
-	RepresentationSetRepresentation* result = new RepresentationSetRepresentation(interp, guid, title);
+	RESQML2_0_1_NS::RepresentationSetRepresentation* result = new RESQML2_0_1_NS::RepresentationSetRepresentation(interp, guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -1921,14 +1926,14 @@ RESQML2_NS::RepresentationSetRepresentation* EpcDocument::createRepresentationSe
 	const std::string & guid,
 	const std::string & title)
 {
-	RepresentationSetRepresentation* result = new RepresentationSetRepresentation(this, guid, title);
+	RESQML2_0_1_NS::RepresentationSetRepresentation* result = new RESQML2_0_1_NS::RepresentationSetRepresentation(this, guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
 
 RESQML2_NS::RepresentationSetRepresentation* EpcDocument::createPartialRepresentationSetRepresentation(const std::string & guid, const std::string & title)
 {
-	return createPartial<RepresentationSetRepresentation>(guid, title);
+	return createPartial<RESQML2_0_1_NS::RepresentationSetRepresentation>(guid, title);
 }
 
 NonSealedSurfaceFrameworkRepresentation* EpcDocument::createNonSealedSurfaceFrameworkRepresentation(
@@ -1947,6 +1952,17 @@ SealedSurfaceFrameworkRepresentation* EpcDocument::createSealedSurfaceFrameworkR
         const std::string & title)
 {
 	SealedSurfaceFrameworkRepresentation* result = new SealedSurfaceFrameworkRepresentation(interp, guid, title);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation* EpcDocument::createSealedVolumeFrameworkRepresentation(
+	RESQML2_0_1_NS::StratigraphicColumnRankInterpretation* interp,
+	const std::string & guid,
+	const std::string & title,
+	RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* ssf)
+{
+	SealedVolumeFrameworkRepresentation* result = new SealedVolumeFrameworkRepresentation(interp, guid, title, ssf);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }

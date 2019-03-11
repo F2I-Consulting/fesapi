@@ -488,4 +488,3 @@ DeviationSurveyRepresentation* WellboreTrajectoryRepresentation::getDeviationSur
 
 	return dsDor == nullptr ? nullptr : epcDocument->getDataObjectByUuid<DeviationSurveyRepresentation>(dsDor->UUID);
 }
-

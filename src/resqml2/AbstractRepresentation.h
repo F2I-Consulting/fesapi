@@ -60,7 +60,7 @@ namespace RESQML2_NS
 		* Get the point geometry of a specific patch of the representation.
 		* @return	nullptr if there is no point geometry for this particular patch otherwise the found point geometry.
 		*/
-		virtual gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const { return nullptr; }
+		virtual gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const;
 
 		/**
 		* Creates a point geometry patch.

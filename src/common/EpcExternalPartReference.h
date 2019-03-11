@@ -64,10 +64,7 @@ namespace COMMON_NS
 	protected:
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		/**
-		* Does nothing since external reference has not forward relationships at all
-		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		std::vector<RESQML2_NS::AbstractRepresentation*> representationSourceObject;					/// All the representations that use this external reference.
 		std::vector<RESQML2_NS::AbstractProperty*> propertySourceObject;								/// All the properties that use this external reference.

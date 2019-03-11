@@ -136,3 +136,5 @@ vector<Relationship> TimeSeries::getAllEpcRelationships() const
 	return result;
 }
 
+void TimeSeries::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+{}

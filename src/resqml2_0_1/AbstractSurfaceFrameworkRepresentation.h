@@ -24,7 +24,7 @@ namespace RESQML2_0_1_NS
 {
 	/*
 	* Parent class for a sealed or non-sealed surface framework representation. Each one instantiates a representation set representation.
-	* The difference between the sealed and non-sealed frameworks is that, in the non-sealed case, we do not have all of the contact representations, or we have all of the contacts but they are not all sealed.
+	* The difference between the sealed and non-sealed frameworks is that, in the non-sealed case, we do not have all of the contacts, or we have all of the contacts but they are not all sealed.
 	*/
 	class DLL_IMPORT_OR_EXPORT AbstractSurfaceFrameworkRepresentation : public RESQML2_NS::RepresentationSetRepresentation
 	{
@@ -48,7 +48,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get a contact identity from its index in this framework.
 		*
-		* @param ciIndex	The index of the contact representation identity in the contact representation identity list. It must be in the interval [0..getContactIdentityCount()[.
+		* @param ciIndex	The index of the contact identity in the contact identity list. It must be in the interval [0..getContactIdentityCount()[.
 		* @return			A contact identity from its index in this framework.
 		*/
 		gsoap_resqml2_0_1::resqml2__ContactIdentity* getContactIdentity(unsigned int ciIndex) const;
@@ -62,96 +62,96 @@ namespace RESQML2_0_1_NS
 
 		/**
 		* Push back a contact identity in the structural framework with implicit identical nodes
-		* @param kind                                 Identity kind.
-		* @param sealedContactRepresentationsCount    The number of sealed contact representations involved within the identity.
-		* @param sealedContactRepresentationsIndexes  The sealed contact representations involved within the identity.
-		* @param proxy                                The hdf proxy.
+		* @param kind			Identity kind.
+		* @param contactCount	The number of sealed contacts involved within the identity.
+		* @param contactIndices	The sealed contacts involved within the identity.
+		* @param proxy			The hdf proxy.
 		*/
 		void pushBackContactIdentity(
 			gsoap_resqml2_0_1::resqml2__IdentityKind kind,
-			unsigned int sealedContactRepresentationsCount, int * sealedContactRepresentationsIndexes,
+			unsigned int contactCount, int * contactIndices,
 			COMMON_NS::AbstractHdfProxy * proxy);
 
 		/**
 		* Push back a contact identity in the structural framework
-		* @param kind                                 Identity kind.
-		* @param sealedContactRepresentationsCount    The number of sealed contact representations involved within the identity.
-		* @param sealedContactRepresentationsIndexes  The sealed contact representations involved within the identity.
-		* @param identicalNodesCount                  The number of identical nodes.
-		* @param identicalNodesIndexes                The indices of the identical nodes.
-		* @param proxy                                The hdf proxy.
+		* @param kind					Identity kind.
+		* @param contactCount			The number of sealed contacts involved within the identity.
+		* @param contactIndices			The sealed contacts involved within the identity.
+		* @param identicalNodesCount	The number of identical nodes.
+		* @param identicalNodesIndexes	The indices of the identical nodes.
+		* @param proxy					The hdf proxy.
 		*/
 		void pushBackContactIdentity(
 			gsoap_resqml2_0_1::resqml2__IdentityKind kind,
-			unsigned int sealedContactRepresentationsCount, int * sealedContactRepresentationsIndexes,
+			unsigned int contactCount, int * contactIndices,
 			unsigned int identicalNodesCount, int * identicalNodesIndexes,
 			COMMON_NS::AbstractHdfProxy * proxy);
 
 		/**
-		* Get the count of contact representations in this framework.
+		* Get the count of contacts in this framework.
 		*
-		* @return The count of contact representations in this framework.
+		* @return The count of contacts in this framework.
 		*/
-		virtual unsigned int getContactRepCount() const = 0;
+		virtual unsigned int getContactCount() const = 0;
 
 		/**
-		* Get the count of contact representation identity in this framework.
-		* @return The count of contact representation identity in this framework.
+		* Get the count of contact identity in this framework.
+		* @return The count of contact identity in this framework.
 		*/
-		unsigned int getContactRepIdentityCount() const;
+		unsigned int getContactIdentityCount() const;
 
 		/**
-		* Get the kind of a contact representation identity located at a particular index.
+		* Get the kind of a contact identity located at a particular index.
 		*
-		* @param ciIndex	The index of the contact representation identity in the contact representation identity list. It must be in the interval [0..getContactIdentityCount()[.
-		* @return The kind of the contact representation identity located at a particular index.
+		* @param ciIndex	The index of the contact identity in the contact identity list. It must be in the interval [0..getContactIdentityCount()[.
+		* @return The kind of the contact identity located at a particular index.
 		*/
-		gsoap_resqml2_0_1::resqml2__IdentityKind getContactRepIdentityKind(unsigned int ciIndex) const;
+		gsoap_resqml2_0_1::resqml2__IdentityKind getContactIdentityKind(unsigned int ciIndex) const;
 
 		/**
-		* Get the count of contact representation of a particular contact identity.
+		* Get the count of contact of a particular contact identity.
 		*
-		* @param ciIndex	The index of the contact representation identity in the contact representation identity list. It must be in the interval [0..getContactIdentityCount()[.
-		* @return			The count of contact representation of a particular contact identity.
+		* @param ciIndex	The index of the contact identity in the contact identity list. It must be in the interval [0..getContactIdentityCount()[.
+		* @return			The count of contact of a particular contact identity.
 		*/
-		unsigned int getContactRepCountOfContactIdentity(unsigned int ciIndex) const;
+		unsigned int getContactCountInContactIdentity(unsigned int ciIndex) const;
 
 		/**
-		* Get the contact representation indices of a particular contact identity.
-		* The returned indices are in the interval [0..getContactRepCount()[
+		* Get the contact indices of a particular contact identity.
+		* The returned indices are in the interval [0..getContactCount()[
 		* 
-		* @param ciIndex			The index of the contact representation identity in the contact representation identity list. It must be in the interval [0..getContactIdentityCount()[.
-		* @param contactRepIndices	This array must be preallocated with getContactRepCountOfContactIdentity(). It won't be deleted by fesapi.
+		* @param ciIndex			The index of the contact identity in the contact identity list. It must be in the interval [0..getContactIdentityCount()[.
+		* @param contactRepIndices	This array must be preallocated with getContactCountOfContactIdentity(). It won't be deleted by fesapi.
 		*							It will be filled in with the desired contact rep indices.
 		*/
-		void getContactRepIndicesOfContactIdentity(unsigned int ciIndex, unsigned int * contactRepIndices) const;
+		void getContactIndices(unsigned int ciIndex, unsigned int * contactRepIndices) const;
 
 		/*
-		* Check if all nodes of contact representations are identical in a contact identity.
+		* Check if all nodes of contacts are identical in a contact identity.
 		*
-		* @param ciIndex	The index of the contact representation identity in the contact representation identity list. It must be in the interval [0..getContactIdentityCount()[.
-		* @return			True if all node of contact representations are identical else false.
+		* @param ciIndex	The index of the contact identity in the contact identity list. It must be in the interval [0..getContactIdentityCount()[.
+		* @return			True if all node of contacts are identical else false.
 		*/
-		bool areAllContactRepNodesIdenticalInContactIdentity(unsigned int ciIndex) const;
+		bool areAllContactNodesIdentical(unsigned int ciIndex) const;
 
 		/**
 		* Get the count of identical nodes of a particular contact identity.
 		* Throw an exception if all nodes are identical (see areAllContactRepNodesIdenticalInContactIdentity()).
 		*
-		* @param ciIndex	The index of the contact representation identity in the contact representation identity list. It must be in the interval [0..getContactIdentityCount()[.
+		* @param ciIndex	The index of the contact identity in the contact identity list. It must be in the interval [0..getContactIdentityCount()[.
 		* @return			The count of identical nodes of a particular contact identity.
 		*/
-		unsigned int getIdenticalNodeCountOfContactIdentity(unsigned int ciIndex) const;
+		unsigned int getIdenticalContactNodeCount(unsigned int ciIndex) const;
 
 		/**
-		* Get the node indices of all contact representations which are identical.
+		* Get the node indices of all contacts which are identical.
 		* Throw an exception if all nodes are identical (see areAllContactRepNodesIdenticalInContactIdentity()).
 		*
-		* @param ciIndex		The index of the contact representation identity in the contact representation identity list. It must be in the interval [0..getContactIdentityCount()[.
-		* @param nodeIndices	This array must be preallocated with getIdenticalNodeCountOfContactIdentity(). It won't be deleted by fesapi.
+		* @param ciIndex		The index of the contact identity in the contact identity list. It must be in the interval [0..getContactIdentityCount()[.
+		* @param nodeIndices	This array must be preallocated with getIdenticalContactlNodeCount(). It won't be deleted by fesapi.
 		*						It will be filled in with the desired node indices.
 		*/
-		void getIdenticalNodeIndicesOfContactIdentity(unsigned int ciIndex, unsigned int * nodeIndices) const;
+		void getIdenticalContactNodeIndices(unsigned int ciIndex, unsigned int * nodeIndices) const;
 	};
 }
 

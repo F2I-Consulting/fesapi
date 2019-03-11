@@ -79,7 +79,7 @@ void Well::setOperator(const string & operator_)
 	well->Operator->assign(operator_);
 }
 
-double Well::getLocationProjectedX(const unsigned int & locationIndex)
+double Well::getLocationProjectedX(unsigned int locationIndex)
 {
 	witsml2__Well* well = static_cast<witsml2__Well*>(gsoapProxy2_1);
 
@@ -93,7 +93,7 @@ double Well::getLocationProjectedX(const unsigned int & locationIndex)
 	return static_cast<witsml2__ProjectedWellLocation*>(well->WellLocation[locationIndex])->Coordinate1;
 }
 
-double Well::getLocationProjectedY(const unsigned int & locationIndex)
+double Well::getLocationProjectedY(unsigned int locationIndex)
 {
 	witsml2__Well* well = static_cast<witsml2__Well*>(gsoapProxy2_1);
 
@@ -109,9 +109,9 @@ double Well::getLocationProjectedY(const unsigned int & locationIndex)
 
 void Well::pushBackLocation(
 	const std::string & guid,
-	const double & projectedX,
-	const double & projectedY,
-	const unsigned int & projectedCrsEpsgCode)
+	double projectedX,
+	double projectedY,
+	unsigned int projectedCrsEpsgCode)
 {
 	witsml2__Well* well = static_cast<witsml2__Well*>(gsoapProxy2_1);
 
@@ -142,13 +142,13 @@ void Well::pushBackDatum(
 	eml21__WellboreDatumReference code,
 	const std::string & datum,
 	eml21__LengthUom elevationUnit,
-	const double & elevation,
-	const unsigned int & verticalCrsEpsgCode)
+	double elevation,
+	unsigned int verticalCrsEpsgCode)
 {
 	witsml2__Well* well = static_cast<witsml2__Well*>(gsoapProxy2_1);
 
 	witsml2__WellDatum* wellDatum = soap_new_witsml2__WellDatum(gsoapProxy2_1->soap, 1);
-	if (guid.size() == 0) {
+	if (guid.empty()) {
 		ostringstream oss;
 		oss << well->WellDatum.size();
 		wellDatum->uid = oss.str();
@@ -182,7 +182,7 @@ vector<Relationship> Well::getAllEpcRelationships() const
 	vector<Relationship> result;
 
 	// XML backward relationship
-	if (resqmlWellboreFeature)
+	if (resqmlWellboreFeature != nullptr)
 	{
 		Relationship rel(resqmlWellboreFeature->getPartNameInEpcDocument(), "", resqmlWellboreFeature->getUuid());
 		rel.setSourceObjectType();
@@ -206,3 +206,5 @@ vector<Relationship> Well::getAllEpcRelationships() const
 	return result;
 }
 
+void Well::importRelationshipSetFromEpc(COMMON_NS::EpcDocument*)
+{}

@@ -75,3 +75,5 @@ vector<Relationship> EpcExternalPartReference::getAllEpcRelationships() const
 	return result;
 }
 
+void EpcExternalPartReference::importRelationshipSetFromEpc(COMMON_NS::EpcDocument*)
+{}

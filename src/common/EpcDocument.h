@@ -108,6 +108,7 @@ namespace RESQML2_0_1_NS
 	class WellboreMarkerFrameRepresentation;
 	class NonSealedSurfaceFrameworkRepresentation;
 	class SealedSurfaceFrameworkRepresentation;
+	class SealedVolumeFrameworkRepresentation;
 	class StringTableLookup;
 	class CommentProperty;
 	class ContinuousProperty;
@@ -291,7 +292,7 @@ namespace COMMON_NS
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > getDataObjectsGroupedByContentType() const;
 #else
-		std::tr1::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > & getDataObjectsGroupedByContentType() const;
+		std::tr1::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > getDataObjectsGroupedByContentType() const;
 #endif
 
 		/**
@@ -945,6 +946,12 @@ namespace COMMON_NS
                 RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp,
                 const std::string & guid,
                 const std::string & title);
+
+		RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation* createSealedVolumeFrameworkRepresentation(
+			RESQML2_0_1_NS::StratigraphicColumnRankInterpretation* interp,
+			const std::string & guid,
+			const std::string & title,
+			RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* ssf);
 
 		RESQML2_0_1_NS::AbstractIjkGridRepresentation* createPartialIjkGridRepresentation(const std::string & guid, const std::string & title);
 

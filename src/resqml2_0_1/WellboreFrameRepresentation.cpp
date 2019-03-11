@@ -279,6 +279,15 @@ std::string WellboreFrameRepresentation::getHdfProxyUuid() const
 	{
 		return static_cast<resqml2__DoubleHdf5Array*>(frame->NodeMd)->Values->HdfProxy->UUID;
 	}
-	else
-		return "";
+
+	return std::string();
+}
+
+ULONG64 WellboreFrameRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+{
+	if (patchIndex >= getPatchCount()) {
+		throw range_error("The patch index is out of range");
+	}
+
+	return getMdValuesCount();
 }

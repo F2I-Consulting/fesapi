@@ -25,6 +25,12 @@ namespace RESQML2_0_1_NS
 	class DLL_IMPORT_OR_EXPORT NonSealedSurfaceFrameworkRepresentation : public AbstractSurfaceFrameworkRepresentation
 	{
     public:
+
+		/**
+		* Only to be used in partial transfer context
+		*/
+		NonSealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractSurfaceFrameworkRepresentation(partialObject) {}
+
         /**
 		* Creates an instance of this class in a gsoap context.
 		* @param interp     The structural organization interpretation the instance interprets.
@@ -66,7 +72,7 @@ namespace RESQML2_0_1_NS
                 COMMON_NS::AbstractHdfProxy* proxy);
                 */
 
-		unsigned int getContactRepCount() const;
+		unsigned int getContactCount() const;
 
         static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}

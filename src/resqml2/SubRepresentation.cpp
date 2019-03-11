@@ -131,4 +131,3 @@ std::string SubRepresentation::getSupportingRepresentationContentType() const
 {
 	return getSupportingRepresentationDor(0)->ContentType;
 }
-

@@ -980,3 +980,22 @@ gsoap_resqml2_0_1::resqml2__KDirection AbstractIjkGridRepresentation::getKDirect
 	return geom->KDirection;
 }
 
+void AbstractIjkGridRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch(const unsigned int &, const unsigned int &, const unsigned int &, double *)
+{
+	throw std::logic_error("Partial object");
+}
+
+void AbstractIjkGridRepresentation::getXyzPointsOfBlockOfPatch(const unsigned int &, double *)
+{
+	throw std::logic_error("Partial object");
+}
+
+ULONG64 AbstractIjkGridRepresentation::getXyzPointCountOfPatch(const unsigned int &) const
+{
+	throw std::logic_error("Partial object");
+}
+
+void AbstractIjkGridRepresentation::getXyzPointsOfPatch(const unsigned int &, double *) const
+{
+	throw std::logic_error("Partial object");
+}

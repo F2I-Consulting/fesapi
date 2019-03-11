@@ -17,8 +17,6 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
-
-
 #ifndef RELATIONSHIP_H
 #define RELATIONSHIP_H
 
@@ -78,21 +76,6 @@ namespace epc
 	};
 
 	bool operator==(const Relationship& r1, const Relationship& r2);
-};
+}
 
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
