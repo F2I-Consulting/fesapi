@@ -32,7 +32,7 @@ Relationship::Relationship(const bool & internalTarget):
 }
 
 Relationship::Relationship(const string & rsTarget, const string & rsType,const string & rsId, const bool & internalTarget):
-	target(rsTarget),type(rsType),id(rsId),internalTarget(internalTarget)
+	internalTarget(internalTarget),target(rsTarget),type(rsType),id(rsId)
 {
 	if (isdigit(id[0]) != 0)
 		id = "_" + id;

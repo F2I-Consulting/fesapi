@@ -174,8 +174,6 @@ void SubRepresentation::pushBackRefToExistingDataset(const gsoap_resqml2_0_1::re
 
 DiscreteProperty* SubRepresentation::getSupportingRepresentationIndicesDiscretePropOfPatch(const unsigned int & patchIndex) const
 {
-	_resqml2__SubRepresentation* rep = getSpecializedGsoapProxy();
-
 	ostringstream oss;
 	oss << "SubRepresentationPatch[" << patchIndex << "]/ElementIndices/SupportingRepresentationIndex";
 	vector<string> uuid = getExtraMetadata(oss.str());

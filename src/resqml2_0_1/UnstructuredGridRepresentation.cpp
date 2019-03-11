@@ -401,7 +401,6 @@ void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std:
 		throw invalid_argument("The dataset path of the node indices count per face is incomplete.");
 
 	setHdfProxy(proxy);
-	ULONG64 cellCount = getSpecializedGsoapProxy()->CellCount;
 
 	resqml2__UnstructuredGridGeometry* geom = soap_new_resqml2__UnstructuredGridGeometry(gsoapProxy2_0_1->soap, 1);
 	getSpecializedGsoapProxy()->Geometry = geom;

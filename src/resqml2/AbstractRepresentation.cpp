@@ -38,7 +38,7 @@ using namespace epc;
 
 const char* AbstractRepresentation::XML_TAG = "AbstractRepresentation";
 
-AbstractRepresentation::AbstractRepresentation(AbstractFeatureInterpretation* interp, AbstractLocal3dCrs * crs): interpretation(nullptr), hdfProxy(nullptr), localCrs(nullptr)
+AbstractRepresentation::AbstractRepresentation(AbstractFeatureInterpretation*, AbstractLocal3dCrs *): interpretation(nullptr), hdfProxy(nullptr), localCrs(nullptr)
 {
 }
 
@@ -485,8 +485,6 @@ void AbstractRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument
 
 	// Seismic support
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml2__AbstractRepresentation* const rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractRepresentation* const>(gsoapProxy2_0_1);
-
 		// Seismic support
 		for (unsigned int patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
 			gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(patchIndex);

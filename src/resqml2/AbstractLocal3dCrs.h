@@ -163,7 +163,7 @@ namespace RESQML2_NS
 	protected:
 		
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML backward relationship
 		std::vector<class AbstractRepresentation*> repSet;

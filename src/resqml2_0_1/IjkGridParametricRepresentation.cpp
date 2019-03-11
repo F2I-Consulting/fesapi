@@ -1838,7 +1838,6 @@ gsoap_resqml2_0_1::resqml2__KDirection IjkGridParametricRepresentation::computeK
 
 	// Loop
 	for (; pillarIndex < getPillarCount(); ++pillarIndex) {
-		size_t controlPointIndex = pillarIndex * controlPointCountPerPillar * 3 + 2;
 		short tmp = computeKDirectionOnASinglePillar(pillarIndex, getPillarCount(), controlPoints, controlPointCountPerPillar, isCrsDepthOriented);
 		if (tmp != -1 && tmp != result) {
 			return gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__not_x0020monotonic;

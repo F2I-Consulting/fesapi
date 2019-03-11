@@ -86,7 +86,7 @@ ULONG64 Grid2dRepresentation::getXyzPointCountOfPatch(const unsigned int & patch
 	return getNodeCountAlongIAxis() * getNodeCountAlongJAxis();
 }
 
-void Grid2dRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void Grid2dRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch.");
@@ -574,12 +574,12 @@ void Grid2dRepresentation::getISpacing(double* const iSpacings) const
 		for (ULONG64 i = 0; i < iSpacingCount; ++i) {
 			iSpacings[i] = .0;
 			if (iIndexOffset > 0) {
-				for (size_t tmp = 0; tmp < iIndexOffset; ++tmp) {
+				for (int tmp = 0; tmp < iIndexOffset; ++tmp) {
 					iSpacings[i] += iSpacingsOnSupportingRep[iIndexOrigin + i * iIndexOffset + tmp];
 				}
 			}
 			else if (iIndexOffset < 0) {
-				for (size_t tmp = 0; tmp > iIndexOffset; --tmp) {
+				for (int tmp = 0; tmp > iIndexOffset; --tmp) {
 					iSpacings[i] += iSpacingsOnSupportingRep[iIndexOrigin - 1 + i * iIndexOffset + tmp];
 				}
 			}
@@ -766,8 +766,6 @@ vector<Relationship> Grid2dRepresentation::getAllEpcRelationships() const
 void Grid2dRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	AbstractSurfaceRepresentation::importRelationshipSetFromEpc(epcDoc);
-
-	_resqml2__Grid2dRepresentation* singleGrid2dRep = static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1);
 
 	// Base representation
 	const string supportingRepUuid = getSupportingRepresentationUuid();

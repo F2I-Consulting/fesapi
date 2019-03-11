@@ -107,7 +107,7 @@ void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::str
     delete [] cTab;
 }
 
-std::string CommentProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64 nullValue)
+std::string CommentProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64)
 {
 	setHdfProxy(hdfProxy);
 	_resqml2__CommentProperty* prop = static_cast<_resqml2__CommentProperty*>(gsoapProxy2_0_1);

@@ -245,3 +245,4 @@ vector<Relationship> ActivityTemplate::getAllEpcRelationships() const
 	return result;
 }
 
+void ActivityTemplate::importRelationshipSetFromEpc(COMMON_NS::EpcDocument *) {}
