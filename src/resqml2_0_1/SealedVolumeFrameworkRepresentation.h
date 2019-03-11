@@ -83,6 +83,21 @@ namespace RESQML2_0_1_NS
 			unsigned int * faceRepresentationIndices, unsigned int * faceRepPatchIndices, bool * faceSide);
 
 		/**
+		* Push back an internal shell in a particular region of this sealed volume framework.
+		* Throw exception if the region index does not correspond to a region which has been already pushed.
+		*
+		* @param regionIndex				The index of the framework region.. It must be in the interval [0..getRegionCount()[.
+		* @param internalShellUid			The uid of the internal shell of this region.
+		* @param unsigned		The count of faces composing the region internal shell.
+		* @param faceRepresentationIndices	The indices of the representation in the representation list of this organization for each internal shell face.
+		* @param faceRepPatchIndices		The indices of the patch in the representation defined in \a faceRepresentationIndices for each internal shell face.
+		* @param faceSide					The side "flag" dor each internal shell face.
+		*/
+		void pushBackInternalShell(unsigned int regionIndex, const std::string & internalShellUid,
+			unsigned int externalShellFaceCount,
+			unsigned int * faceRepresentationIndices, unsigned int * faceRepPatchIndices, bool * faceSide);
+
+		/**
 		* Get the Sealed Structural Framework this framework is based on.
 		*
 		* @return The Sealed Structural Framework this framework is based on.
@@ -105,12 +120,46 @@ namespace RESQML2_0_1_NS
 		unsigned int getRegionCount() const;
 
 		/**
+		* Get the count of internal shells in a particular region.
+		*
+		* @param regionIndex	The index of the framework region. It must be in the interval [0..getRegionCount()[.
+		* @return				The count of internal shells in a particular region.
+		*/
+		unsigned int getInternalShellCount(unsigned int regionIndex) const;
+
+		/**
+		* Get the uid of a particular region external shell.
+		*
+		* @param regionIndex	The index of the framework region. It must be in the interval [0..getRegionCount()[.
+		* @return				The uid of a particular region external shell.
+		*/
+		std::string getUidOfExternalShell(unsigned int regionIndex) const;
+
+		/**
+		* Get the uid of a particular region internal shell.
+		*
+		* @param regionIndex		The index of the framework region. It must be in the interval [0..getRegionCount()[.
+		* @param internalShellIndex	The index of the internal shell. It must be in the interval [0..getInternalShellCount()[.
+		* @return					The uid of a particular region internal shell.
+		*/
+		std::string getUidOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const;
+
+		/**
 		* Get the count of faces in a particular region external shell.
 		*
 		* @param regionIndex	The index of the framework region. It must be in the interval [0..getRegionCount()[.
 		* @return				The count of faces in a particular region external shell.
 		*/
-		unsigned int getFaceCountOfExternalShellFace(unsigned int regionIndex) const;
+		unsigned int getFaceCountOfExternalShell(unsigned int regionIndex) const;
+
+		/**
+		* Get the count of faces in a particular region internal shell.
+		*
+		* @param regionIndex		The index of the framework region. It must be in the interval [0..getRegionCount()[.
+		* @param internalShellIndex	The index of the internal shell. It must be in the interval [0..getInternalShellCount()[.
+		* @return					The count of faces in a particular region internal shell.
+		*/
+		unsigned int getFaceCountOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const;
 
 		/**
 		* Get the representation (for instance the triangulated surface) which contains a particular face of the external shell of a particular region of this framework.
@@ -122,6 +171,16 @@ namespace RESQML2_0_1_NS
 		RESQML2_NS::AbstractRepresentation* getRepOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const;
 
 		/**
+		* Get the representation (for instance the triangulated surface) which contains a particular face of a particular internal shell of a particular region of this framework.
+		*
+		* @param regionIndex		The index of the framework region. It must be in the interval [0..getRegionCount()[.
+		* @param internalShellIndex	The index of the internal shell. It must be in the interval [0..getInternalShellCount()[.
+		* @param faceIndex			The index of the face of the framework region external shell.
+		* @return					The representation which contains the face \a faceIndex of the external shell of the region \a regionIndex of this framework.
+		*/
+		RESQML2_NS::AbstractRepresentation* getRepOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const;
+
+		/**
 		* Get the representation patch index which is a particular face of the external shell of a particular region of this framework.
 		*
 		* @param regionIndex	The index of the framework region. It must be in the interval [0..getRegionCount()[.
@@ -129,6 +188,16 @@ namespace RESQML2_0_1_NS
 		* @return				The representation patch index (on representation getRepOfExternalShellFace()) which is the face \a faceIndex of the external shell of the region \a regionIndex of this framework.
 		*/
 		unsigned int getRepPatchIndexOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const;
+
+		/**
+		* Get the representation patch index which is a particular face of particular internal shell of a particular region of this framework.
+		*
+		* @param regionIndex		The index of the framework region. It must be in the interval [0..getRegionCount()[.
+		* @param internalShellIndex	The index of the internal shell. It must be in the interval [0..getInternalShellCount()[.
+		* @param faceIndex			The index of the face of the framework region external shell.
+		* @return					The representation patch index (on representation getRepOfExternalShellFace()) which is the face \a faceIndex of the external shell of the region \a regionIndex of this framework.
+		*/
+		unsigned int getRepPatchIndexOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const;
 
 		/**
 		* Get the side flag of a particular face of the external shell of a particular region of this framework.
@@ -139,14 +208,30 @@ namespace RESQML2_0_1_NS
 		*/
 		bool getSideFlagOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const;
 
+		/**
+		* Get the side flag of a particular face of a particular internal shell of a particular region of this framework.
+		*
+		* @param regionIndex		The index of the framework region. It must be in the interval [0..getRegionCount()[.
+		* @param internalShellIndex	The index of the internal shell. It must be in the interval [0..getInternalShellCount()[.
+		* @param faceIndex			The index of the face of the framework region external shell.
+		* @return					The side flag of the face \a faceIndex of the external shell of the region \a regionIndex of this framework.
+		*/
+		bool getSideFlagOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const;
+
 		static const char* XML_TAG;
 		std::string getXmlTag() const { return XML_TAG; }
 
 	private:
 
+		gsoap_resqml2_0_1::resqml2__VolumeShell* createVolumeShell(const std::string & shellUid,
+			unsigned int shellFaceCount,
+			unsigned int * faceRepresentationIndices, unsigned int * faceRepPatchIndices, bool * faceSide);
+
 		gsoap_resqml2_0_1::resqml2__VolumeRegion* getRegion(unsigned int regionIndex) const;
 		gsoap_resqml2_0_1::resqml2__VolumeShell* getRegionExternalShell(unsigned int regionIndex) const;
+		gsoap_resqml2_0_1::resqml2__VolumeShell* getRegionInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const;
 		gsoap_resqml2_0_1::resqml2__OrientedMacroFace* getRegionExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const;
+		gsoap_resqml2_0_1::resqml2__OrientedMacroFace* getRegionInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const;
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getSealedStructuralFrameworkDor() const;
 		std::string getSealedStructuralFrameworkUuid() const;

@@ -1739,7 +1739,7 @@ void deserializeSealedVolumeFramework(const COMMON_NS::EpcDocument & pck)
 		for (unsigned int regionIdx = 0; regionIdx < regionCount; ++regionIdx) {
 			showAllMetadata(svf->getStratiUnitInterp(regionIdx));
 
-			const unsigned int faceCount = svf->getFaceCountOfExternalShellFace(regionIdx);
+			const unsigned int faceCount = svf->getFaceCountOfExternalShell(regionIdx);
 			for (unsigned int faceIdx = 0; faceIdx < faceCount; ++faceIdx) {
 				std::cout << "\t\tFace index " << faceIdx << " is the patch " << svf->getRepPatchIndexOfExternalShellFace(regionIdx, faceIdx) << " with side " << svf->getSideFlagOfExternalShellFace(regionIdx, faceIdx) << " of surface representation" << std::endl;
 				showAllMetadata(svf->getRepOfExternalShellFace(regionIdx, faceIdx));
