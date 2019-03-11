@@ -228,7 +228,7 @@ unsigned int SealedVolumeFrameworkRepresentation::getRepPatchIndexOfExternalShel
 	return getRegionExternalShellFace(regionIndex, faceIndex)->PatchIndexOfRepresentation;
 }
 
-bool SealedVolumeFrameworkRepresentation::getSideFlageOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const
+bool SealedVolumeFrameworkRepresentation::getSideFlagOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const
 {
 	return getRegionExternalShellFace(regionIndex, faceIndex)->SideIsPlus;
 }

@@ -137,7 +137,7 @@ namespace RESQML2_0_1_NS
 		* @param faceIndex		The index of the face of the framework region external shell.
 		* @return				The side flag of the face \a faceIndex of the external shell of the region \a regionIndex of this framework.
 		*/
-		bool getSideFlageOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const;
+		bool getSideFlagOfExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const;
 
 		static const char* XML_TAG;
 		std::string getXmlTag() const { return XML_TAG; }

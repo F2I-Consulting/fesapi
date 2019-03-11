@@ -41,6 +41,7 @@ under the License.
 #include "common/EpcDocument.h"
 #include "resqml2_0_1/LocalDepth3dCrs.h"
 #include "resqml2_0_1/LocalTime3dCrs.h"
+#include "resqml2_0_1/FrontierFeature.h"
 #include "resqml2_0_1/Horizon.h"
 #include "resqml2_0_1/GeobodyFeature.h"
 #include "resqml2_0_1/TectonicBoundaryFeature.h"
@@ -191,13 +192,13 @@ void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::Abstra
 	StratigraphicColumnRankInterpretation* stratiColumnRank1 = pck->createStratigraphicColumnRankInterpretationInApparentDepth(stratiModelFeature, "9d2d19cf-aedb-4766-9691-758d536456ba", "Stratigraphic column rank 1", 1);
 	stratiColumn->pushBackStratiColumnRank(stratiColumnRank0);
 	StratigraphicUnitFeature* stratiUnitAFeature = pck->createStratigraphicUnit("0426c6a0-fa3c-11e5-8b9c-0002a5d5c51b", "Unit A");
-	StratigraphicUnitInterpretation* stratiUnitAInterp = pck->createStratigraphicUnitInterpretation(stratiUnitAFeature, "1a919b40-fa3c-11e5-a72c-0002a5d5c51b", "Unit 0 interp");
+	StratigraphicUnitInterpretation* stratiUnitAInterp = pck->createStratigraphicUnitInterpretation(stratiUnitAFeature, "1a919b40-fa3c-11e5-a72c-0002a5d5c51b", "Unit A interp");
 	StratigraphicUnitFeature* stratiUnitBFeature = pck->createStratigraphicUnit("273a92c0-fa3c-11e5-85f8-0002a5d5c51b", "Unit B");
-	StratigraphicUnitInterpretation* stratiUnitBInterp = pck->createStratigraphicUnitInterpretation(stratiUnitBFeature, "2b9169c0-fa3c-11e5-ae2c-0002a5d5c51b", "Unit 1 interp");
-	StratigraphicUnitFeature* stratiUnitB1Feature = pck->createStratigraphicUnit("0b7cc266-4280-4696-b9dc-5d17017797e2", "Unit b1");
-	StratigraphicUnitInterpretation* stratiUnitB1Interp = pck->createStratigraphicUnitInterpretation(stratiUnitBFeature, "7d7ab0bc-554d-48f5-ab5c-3bb7b66696e5", "Unit 2 interp");
-	StratigraphicUnitFeature* stratiUnitB2Feature = pck->createStratigraphicUnit("87255cf5-033f-4fa4-941b-7947b434f4c2", "Unit b2");
-	StratigraphicUnitInterpretation* stratiUnitB2Interp = pck->createStratigraphicUnitInterpretation(stratiUnitBFeature, "34c37be0-964f-41a8-ba78-db5147744927", "Unit 2 interp");
+	StratigraphicUnitInterpretation* stratiUnitBInterp = pck->createStratigraphicUnitInterpretation(stratiUnitBFeature, "2b9169c0-fa3c-11e5-ae2c-0002a5d5c51b", "Unit B interp");
+	StratigraphicUnitFeature* stratiUnitB1Feature = pck->createStratigraphicUnit("0b7cc266-4280-4696-b9dc-5d17017797e2", "Unit B1");
+	StratigraphicUnitInterpretation* stratiUnitB1Interp = pck->createStratigraphicUnitInterpretation(stratiUnitBFeature, "7d7ab0bc-554d-48f5-ab5c-3bb7b66696e5", "Unit B1 interp");
+	StratigraphicUnitFeature* stratiUnitB2Feature = pck->createStratigraphicUnit("87255cf5-033f-4fa4-941b-7947b434f4c2", "Unit B2");
+	StratigraphicUnitInterpretation* stratiUnitB2Interp = pck->createStratigraphicUnitInterpretation(stratiUnitBFeature, "34c37be0-964f-41a8-ba78-db5147744927", "Unit B2 interp");
 
 	// Build the stratigraphic column rank
 	stratiColumnRank0->pushBackStratiUnitInterpretation(stratiUnitAInterp);
@@ -221,46 +222,76 @@ void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::Abstra
 	// ***********************
 	SealedVolumeFrameworkRepresentation* svf = pck->createSealedVolumeFrameworkRepresentation(stratiColumnRank1, "c7ed87c2-9a46-4e3d-8f0f-b25d4d72892a", "Sealed volume framework", sealedSurfaceFramework);
 
+	LocalDepth3dCrs* crs = pck->getLocalDepth3dCrsSet()[0];
 	// Add the surfaces.
-	// TODO : add the frontiers!!!!
 	f1i1triRep->pushBackIntoRepresentationSet(svf);
 	h1i1triRep->pushBackIntoRepresentationSet(svf);
 	h2i1triRep->pushBackIntoRepresentationSet(svf);
+	FrontierFeature* topFrontier = pck->createFrontier("f2a59545-2674-4204-a054-acc51114e4fc", "Top Frontier");
+	GenericFeatureInterpretation* topFrontierInterp = pck->createGenericFeatureInterpretation(topFrontier, "41a2678c-25bc-49c1-add5-f9b7c48ba919", "Top Frontier Interp");
+	PlaneSetRepresentation* topFrontierRep = pck->createPlaneSetRepresentation(topFrontierInterp, crs, "e421278e-06b6-4ccc-b1fe-9b96c8a85dd3", "Top frontier rep");
+	topFrontierRep->pushBackHorizontalPlaneGeometryPatch(200);
+	topFrontierRep->pushBackIntoRepresentationSet(svf);
+	FrontierFeature* xPlusFrontier = pck->createFrontier("e062ee65-8296-44c0-adf9-14cef0c2eb27", "X Plus Frontier");
+	GenericFeatureInterpretation* xPlusFrontierInterp = pck->createGenericFeatureInterpretation(topFrontier, "e888c38b-86d5-41ae-9aaa-a7a41d0f4554", "X Plus Frontier Interp");
+	PlaneSetRepresentation* xPlusFrontierRep = pck->createPlaneSetRepresentation(topFrontierInterp, crs, "0a327e2e-105c-4068-a325-a6c5e3de135f", "X Plus frontier rep");
+	xPlusFrontierRep->pushBackTiltedPlaneGeometryPatch(700,0,200, 700,200,200, 700,0,650);
+	xPlusFrontierRep->pushBackIntoRepresentationSet(svf);
+	FrontierFeature* btmFrontier = pck->createFrontier("139904c3-def1-4e30-9e22-6c44e6cff59b", "Bottom Frontier");
+	GenericFeatureInterpretation* btmFrontierInterp = pck->createGenericFeatureInterpretation(topFrontier, "b2493aa4-6ed1-4226-9eeb-84beaad9e15d", "Bottom Frontier Interp");
+	PlaneSetRepresentation* btmFrontierRep = pck->createPlaneSetRepresentation(topFrontierInterp, crs, "13d3da0e-cce8-4795-957f-414bbb60ded8", "Bottom Frontier rep");
+	btmFrontierRep->pushBackHorizontalPlaneGeometryPatch(650);
+	btmFrontierRep->pushBackIntoRepresentationSet(svf);
+	FrontierFeature* xMinusFrontier = pck->createFrontier("dd2cdf75-a71f-449d-b0b1-e7a99f9ea9f5", "X Minus Frontier");
+	GenericFeatureInterpretation* xMinusFrontierInterp = pck->createGenericFeatureInterpretation(topFrontier, "7a67a81a-e86e-47cc-a959-0e1df93516f9", "X Minus Frontier Interp");
+	PlaneSetRepresentation* xMinusFrontierRep = pck->createPlaneSetRepresentation(topFrontierInterp, crs, "6e678338-3b53-49b6-8801-faee493e0c42", "X Minus frontier rep");
+	xMinusFrontierRep->pushBackTiltedPlaneGeometryPatch(0, 0, 200, 0, 200, 200, 0, 0, 650);
+	xMinusFrontierRep->pushBackIntoRepresentationSet(svf);
+	FrontierFeature* yPlusFrontier = pck->createFrontier("5c86ea8d-06d6-4dd9-8c61-8d9dba8ff04a", "Y Plus Frontier");
+	GenericFeatureInterpretation* yPlusFrontierInterp = pck->createGenericFeatureInterpretation(topFrontier, "7b049732-d2ef-4957-81ad-b1e51547c56c", "Y Plus Frontier Interp");
+	PlaneSetRepresentation* yPlusFrontierRep = pck->createPlaneSetRepresentation(topFrontierInterp, crs, "e960aea8-72e2-495d-8253-60fda5620921", "Y Plus frontier rep");
+	yPlusFrontierRep->pushBackTiltedPlaneGeometryPatch(0,200,200, 700,200,200, 0,200,650);
+	yPlusFrontierRep->pushBackIntoRepresentationSet(svf);
+	FrontierFeature* yMinusFrontier = pck->createFrontier("282ea9df-aae9-4c54-a4e3-e88de750b63d", "Y Minus Frontier");
+	GenericFeatureInterpretation* yMinusFrontierInterp = pck->createGenericFeatureInterpretation(topFrontier, "48f81cb8-0d9f-44ec-b651-05e2023a655d", "Y Minus Frontier Interp");
+	PlaneSetRepresentation* yMinusFrontierRep = pck->createPlaneSetRepresentation(topFrontierInterp, crs, "38f64a1c-356f-4d30-a9ce-4cd3b8d6ec40", "Y Minus frontier rep");
+	yMinusFrontierRep->pushBackTiltedPlaneGeometryPatch(0, 0, 200, 700, 0, 200, 0, 0, 650);
+	yMinusFrontierRep->pushBackIntoRepresentationSet(svf);
 
 	//Region 1
 	const unsigned int nullValue = (std::numeric_limits<unsigned int>::max)();
-	std::vector<unsigned int> region1RepIndices = { nullValue, 0, 1, nullValue, nullValue, nullValue}; // nullValue stands for frontier. Frontiers are not supported in this example yet.
-	std::vector<unsigned int> region1PatchIndices = { nullValue, 0, 0, nullValue, nullValue, nullValue};
-	bool region1Sides[6] = {true, true, true, true, true, true};
+	std::vector<unsigned int> region1RepIndices = { 3, 0, 1, 6, 7, 8}; // face order => top, x plus, btm, x minus, y plus, y minus
+	std::vector<unsigned int> region1PatchIndices = { 0, 0, 0, 0, 0, 0};
+	bool region1Sides[6] = {true, true, true, true, true, true}; // Frontiers are always on true side flag in this example.
 	svf->pushBackVolumeRegion(stratiUnitAInterp, "Region 1", 6, region1RepIndices.data(), region1PatchIndices.data(), region1Sides);
 
 	//Region 2
-	std::vector<unsigned int> region2RepIndices = { 1, 0, 0, 2, nullValue, nullValue, nullValue };
-	std::vector<unsigned int> region2PatchIndices = { 0, 1, 2, 0, nullValue, nullValue, nullValue };
+	std::vector<unsigned int> region2RepIndices = { 1, 0, 0, 2, 6, 7, 8 };
+	std::vector<unsigned int> region2PatchIndices = { 0, 1, 2, 0, 0, 0, 0 };
 	bool region2Sides[7] = { false, true, true, true, true, true, true};
 	svf->pushBackVolumeRegion(stratiUnitB1Interp, "Region 2", 7, region2RepIndices.data(), region2PatchIndices.data(), region2Sides);
 
 	//Region 3
-	std::vector<unsigned int> region3RepIndices = { 2, 0, 0, nullValue, nullValue, nullValue, nullValue };
-	std::vector<unsigned int> region3PatchIndices = {0, 3, 4, nullValue, nullValue, nullValue, nullValue };
+	std::vector<unsigned int> region3RepIndices = { 2, 0, 0, 5, 6, 7, 8 };
+	std::vector<unsigned int> region3PatchIndices = {0, 3, 4, 0, 0, 0, 0 };
 	bool region3Sides[7] = {false, true, true, true, true, true, true };
 	svf->pushBackVolumeRegion(stratiUnitB2Interp, "Region 3", 7, region3RepIndices.data(), region3PatchIndices.data(), region3Sides);
 
 	//Region 4
-	std::vector<unsigned int> region4RepIndices = { nullValue, nullValue, 2, 0, 0, nullValue, nullValue };
-	std::vector<unsigned int> region4PatchIndices = { nullValue, nullValue, 1, 1, 0, nullValue, nullValue };
+	std::vector<unsigned int> region4RepIndices = { 3, 4, 2, 0, 0, 7, 8 };
+	std::vector<unsigned int> region4PatchIndices = { 0, 0, 1, 1, 0, 0, 0 };
 	bool region4Sides[7] = { true, true, true, false, false, true, true };
 	svf->pushBackVolumeRegion(stratiUnitAInterp, "Region 4", 7, region4RepIndices.data(), region4PatchIndices.data(), region4Sides);
 
 	//Region 5
-	std::vector<unsigned int> region5RepIndices = { 1, nullValue, 2, 0, 0, nullValue, nullValue };
-	std::vector<unsigned int> region5PatchIndices = { 1, nullValue, 1, 3, 2, nullValue, nullValue };
+	std::vector<unsigned int> region5RepIndices = { 1, 4, 2, 0, 0, 7, 8 };
+	std::vector<unsigned int> region5PatchIndices = { 1, 0, 1, 3, 2, 0, 0 };
 	bool region5Sides[7] = { false, true, true, false, false, true, true };
 	svf->pushBackVolumeRegion(stratiUnitB1Interp, "Region 5", 7, region5RepIndices.data(), region5PatchIndices.data(), region5Sides);
 
 	//Region 6
-	std::vector<unsigned int> region6RepIndices = { 2, nullValue, nullValue, 0,  nullValue, nullValue };
-	std::vector<unsigned int> region6PatchIndices = { 1, nullValue, nullValue, 4, nullValue, nullValue };
+	std::vector<unsigned int> region6RepIndices = { 2, 4, 5, 0, 7, 8 };
+	std::vector<unsigned int> region6PatchIndices = { 1, 0, 0, 4, 0, 0 };
 	bool region6Sides[6] = { false, true, true, false, true, true };
 	svf->pushBackVolumeRegion(stratiUnitB2Interp, "Region 6", 6, region6RepIndices.data(), region6PatchIndices.data(), region6Sides);
 }
@@ -1691,6 +1722,33 @@ void deserializeSealedSurfaceFramework(const COMMON_NS::EpcDocument & pck)
 	}
 }
 
+void deserializeSealedVolumeFramework(const COMMON_NS::EpcDocument & pck)
+{
+	const std::vector<RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation*> svfVec = pck.getResqml2_0Objects<RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation>();
+
+	for (size_t svfIndex = 0; svfIndex < svfVec.size(); ++svfIndex) {
+		std::cout << "\tSEALED VOLUME FRAMEWORK" << std::endl;
+		RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation* svf = svfVec[svfIndex];
+		showAllMetadata(svf);
+
+		std::cout << "\tis based on sealed structural framework " << endl;
+		showAllMetadata(svf->getSealedStructuralFramework());
+
+		std::cout << "\t\tCONTAINED REGIONS" << std::endl;
+		const unsigned int regionCount = svf->getRegionCount();
+		for (unsigned int regionIdx = 0; regionIdx < regionCount; ++regionIdx) {
+			showAllMetadata(svf->getStratiUnitInterp(regionIdx));
+
+			const unsigned int faceCount = svf->getFaceCountOfExternalShellFace(regionIdx);
+			for (unsigned int faceIdx = 0; faceIdx < faceCount; ++faceIdx) {
+				std::cout << "\t\tFace index " << faceIdx << " is the patch " << svf->getRepPatchIndexOfExternalShellFace(regionIdx, faceIdx) << " with side " << svf->getSideFlagOfExternalShellFace(regionIdx, faceIdx) << " of surface representation" << std::endl;
+				showAllMetadata(svf->getRepOfExternalShellFace(regionIdx, faceIdx));
+			}
+		}
+
+	}
+}
+
 void deserializeGeobody(COMMON_NS::EpcDocument * pck)
 {
 	//2d
@@ -3090,6 +3148,7 @@ void deserialize(const string & inputFile)
 	}
 
 	deserializeSealedSurfaceFramework(pck);
+	deserializeSealedVolumeFramework(pck);
 	
 	std::cout << "STRATI COLUMN" << endl;
 	for (size_t i = 0; i < stratiColumnSet.size(); i++)
@@ -3630,56 +3689,3 @@ int main()
 
 	return 0;
 }
-
-// TEST EPC PERSISTENCE
-/*
-int main(int argc, char **argv)
-{
-COMMON_NS::EpcDocument epc("../../testPersistence.epc", COMMON_NS::EpcDocument::READ_WRITE);
-cout << "Start deserialization of " << epc.getName() << " in " << (epc.getStorageDirectory().empty() ? "working directory." : epc.getStorageDirectory()) << endl;
-
-try {
-string resqmlResult = epc.deserialize();
-if (!resqmlResult.empty()) {
-cerr << resqmlResult << endl;
-cout << "Press enter to continue..." << endl;
-cin.get();
-}
-}
-catch (...) {
-cout << "no epc..." << endl;
-}
-
-local3dCrs = epc.createLocalDepth3dCrs("", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
-
-COMMON_NS::AbstractHdfProxy* hdfProxy = epc.createHdfProxy("", "Hdf Proxy", epc.getStorageDirectory(), epc.getName() + ".h5");
-
-
-SeismicLatticeFeature* seismicLattice = epc.createSeismicLattice("eb6a5e97-4d86-4809-b136-051f34cfcb51", "Seismic lattice", 2, 2, 150, 152, 4, 2);
-GenericFeatureInterpretation* seismicLatticeInterp = epc.createGenericFeatureInterpretation(seismicLattice, "97816427-6ef6-4776-b21c-5b93c8a6310a", "Seismic lattice Interp");
-Grid2dRepresentation* seismicLatticeRep = epc.createGrid2dRepresentation(seismicLatticeInterp, local3dCrs, "aa5b90f1-2eab-4fa6-8720-69dd4fd51a4d", "Seismic lattice Rep");
-seismicLatticeRep->setGeometryAsArray2dOfLatticePoints3d(4, 2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 250, 200);
-
-epc.serialize(false);
-epc.close();
-epc.open("../../testPersistence.epc", COMMON_NS::EpcDocument::READ_WRITE);
-epc.deserialize();
-
-seismicLatticeRep = epc.getDataObjectByUuid<Grid2dRepresentation>("aa5b90f1-2eab-4fa6-8720-69dd4fd51a4d");
-hdfProxy = epc.getHdfProxy(0);
-RESQML2_NS::PropertyKind * propType1 = epc.createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__continuous);
-ContinuousProperty* contProp1 = epc.createContinuousProperty(seismicLatticeRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 2,
-gsoap_resqml2_0_1::resqml2__IndexableElements__nodes, "exoticMeter", propType1);
-double prop1Values[8] = { 301, 302, 301, 302, 351, 352, 351, 352 };
-contProp1->pushBackDoubleHdf5Array2dOfValues(prop1Values, 2, 4, hdfProxy);
-
-epc.serialize(false);
-
-epc.close();
-
-cout << "Press enter to continue..." << endl;
-cin.get();
-}
-*/
-
-
