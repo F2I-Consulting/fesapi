@@ -52,17 +52,17 @@ PolylineSetRepresentation::PolylineSetRepresentation(EpcDocument* epcDoc, bool i
 }
 
 void PolylineSetRepresentation::initEpcDocHandler() {
-	RESQML2_0_1_NS::FaultInterpretation * interp = static_cast<RESQML2_0_1_NS::FaultInterpretation*>(this->epcDoc->getResqmlAbstractObjectByUuid(uuidFaultInterpretation));
+	RESQML2_0_1_NS::FaultInterpretation * interp = static_cast<RESQML2_0_1_NS::FaultInterpretation*>(this->epcDoc->getDataObjectByUuid(uuidFaultInterpretation));
 	if (interp == nullptr) {
 		FaultInterpretationTest * interpTest = new FaultInterpretationTest(this->epcDoc, true);
-		interp = static_cast<RESQML2_0_1_NS::FaultInterpretation*>(this->epcDoc->getResqmlAbstractObjectByUuid(uuidFaultInterpretation));
+		interp = static_cast<RESQML2_0_1_NS::FaultInterpretation*>(this->epcDoc->getDataObjectByUuid(uuidFaultInterpretation));
 		delete interpTest;
 	}
 
-	RESQML2_0_1_NS::LocalTime3dCrs * crs = static_cast<RESQML2_0_1_NS::LocalTime3dCrs *>(this->epcDoc->getResqmlAbstractObjectByUuid(LocalTime3dCrs::defaultUuid));
+	RESQML2_0_1_NS::LocalTime3dCrs * crs = static_cast<RESQML2_0_1_NS::LocalTime3dCrs *>(this->epcDoc->getDataObjectByUuid(LocalTime3dCrs::defaultUuid));
 	if (crs == nullptr) {
 		LocalTime3dCrs * crsTest = new LocalTime3dCrs(this->epcDoc, true);
-		crs = static_cast<RESQML2_0_1_NS::LocalTime3dCrs *>(this->epcDoc->getResqmlAbstractObjectByUuid(LocalTime3dCrs::defaultUuid));
+		crs = static_cast<RESQML2_0_1_NS::LocalTime3dCrs *>(this->epcDoc->getDataObjectByUuid(LocalTime3dCrs::defaultUuid));
 		delete crsTest;
 	}
 

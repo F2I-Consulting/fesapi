@@ -60,7 +60,7 @@ void StratigraphicUnitInterpretationTest::initEpcDocHandler() {
 	// creating dependencies
 	StratigraphicUnitTest* stratiUnitTest = new StratigraphicUnitTest(epcDoc, true);
 
-	StratigraphicUnitFeature* stratiUnit = static_cast<StratigraphicUnitFeature*>(this->epcDoc->getResqmlAbstractObjectByUuid(StratigraphicUnitTest::defaultTitle));
+	StratigraphicUnitFeature* stratiUnit = static_cast<StratigraphicUnitFeature*>(this->epcDoc->getDataObjectByUuid(StratigraphicUnitTest::defaultTitle));
 
 	// cleaning
 	delete stratiUnitTest;

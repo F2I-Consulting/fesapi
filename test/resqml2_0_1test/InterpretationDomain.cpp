@@ -49,10 +49,10 @@ InterpretationDomain::InterpretationDomain(EpcDocument* epcDoc, bool init)
 
 void InterpretationDomain::initEpcDoc() {
 
-	FaultInterpretation* faultInterp = epcDoc->getResqmlAbstractObjectByUuid<FaultInterpretation>(uuidFaultInterpretation);
+	FaultInterpretation* faultInterp = epcDoc->getDataObjectByUuid<FaultInterpretation>(uuidFaultInterpretation);
 	if (faultInterp == nullptr) {
 		FaultInterpretationTest* faultInterpTest = new FaultInterpretationTest(this->epcDoc, true);
-		faultInterp = epcDoc->getResqmlAbstractObjectByUuid<FaultInterpretation>(uuidFaultInterpretation);
+		faultInterp = epcDoc->getDataObjectByUuid<FaultInterpretation>(uuidFaultInterpretation);
 		delete faultInterpTest;
 	}
 

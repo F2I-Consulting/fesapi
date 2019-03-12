@@ -136,7 +136,7 @@ namespace RESQML2_0_1_NS
 
 		/**
 		 * Get all the face indices of all the cells.
-		 * @param faceIndices 			It must be pre allocated with the last value returned by getCumulativeFaceCountOfCells()
+		 * @param faceIndices 			It must be pre allocated with the last value returned by getCumulativeFaceCountPerCell()
 		 */
 		void getFaceIndicesOfCells(ULONG64 * faceIndices) const;
 
@@ -150,7 +150,7 @@ namespace RESQML2_0_1_NS
 		void getCumulativeFaceCountPerCell(ULONG64 * cumulativeFaceCountPerCell) const;
 
 		/**
-		* Less efficient than getCumulativeFaceCountOfCells.
+		* Less efficient than getCumulativeFaceCountPerCell.
 		* Get the face count per cell. First value is the count of faces in the first cell.
 		* Second value is the count of faces in the second cell. etc...
 		* @param faceCountPerCell	It must be pre allocated with getCellCount()
@@ -169,7 +169,7 @@ namespace RESQML2_0_1_NS
 
 		/**
 		 * Get all the node indices of all the faces.
-		 * @param nodeIndices 			It must be pre allocated with the last value returned by getCumulativeNodeCountOfFaces().
+		 * @param nodeIndices	It must be pre allocated with the last value returned by getCumulativeNodeCountPerFace().
 		 */
 		void getNodeIndicesOfFaces(ULONG64 * nodeIndices) const;
 
@@ -178,7 +178,7 @@ namespace RESQML2_0_1_NS
 		* Second value is the count of nodes in the first and in the second face. Third value is the count of nodes in the first and in the second and in the third face. Etc...
 		* Count of this array is equal to getFaceCount()
 		* A single node count should be at least 3.
-		* @param nodeCountPerFace	It must be pre allocated with getFaceCount() == last value of getCumulativeFaceCountOfCells()
+		* @param nodeCountPerFace	It must be pre allocated with the last value of getFaceCount().
 		*/
 		void getCumulativeNodeCountPerFace(ULONG64 * nodeCountPerFace) const;
 
@@ -186,7 +186,7 @@ namespace RESQML2_0_1_NS
 		* Less efficient than getCumulativeNodeCountPerFace.
 		* Get the node count per face. First value is the count of nodes in the first face.
 		* Second value is the count of nodes in the second face. etc...
-		* @param nodeCountPerFace	It must be pre allocated with getFaceCount() == last value of getCumulativeFaceCountOfCells()
+		* @param nodeCountPerFace	It must be pre allocated with the last value of getFaceCount().
 		*/
 		void getNodeCountPerFace(ULONG64 * nodeCountPerFace) const;
 

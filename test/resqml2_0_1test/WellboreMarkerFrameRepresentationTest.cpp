@@ -50,8 +50,8 @@ void WellboreMarkerFrameRepresentationTest::initEpcDocHandler() {
 	WellboreInterpretationTest * interpTest = new WellboreInterpretationTest(this->epcDoc, true);
 	WellboreTrajectoryRepresentationTest * trajTest = new WellboreTrajectoryRepresentationTest(this->epcDoc, true);
 
-	WellboreInterpretation * interp = epcDoc->getResqmlAbstractObjectByUuid<WellboreInterpretation>(WellboreInterpretationTest::defaultUuid);
-	WellboreTrajectoryRepresentation * traj = epcDoc->getResqmlAbstractObjectByUuid<WellboreTrajectoryRepresentation>(WellboreTrajectoryRepresentationTest::defaultUuid);
+	WellboreInterpretation * interp = epcDoc->getDataObjectByUuid<WellboreInterpretation>(WellboreInterpretationTest::defaultUuid);
+	WellboreTrajectoryRepresentation * traj = epcDoc->getDataObjectByUuid<WellboreTrajectoryRepresentation>(WellboreTrajectoryRepresentationTest::defaultUuid);
 
 	// cleaning
 	delete interpTest;
@@ -66,7 +66,7 @@ void WellboreMarkerFrameRepresentationTest::initEpcDocHandler() {
 }
 
 void WellboreMarkerFrameRepresentationTest::readEpcDocHandler() {
-	WellboreMarkerFrameRepresentation* wmf = epcDoc->getResqmlAbstractObjectByUuid<WellboreMarkerFrameRepresentation>(uuid);
+	WellboreMarkerFrameRepresentation* wmf = epcDoc->getDataObjectByUuid<WellboreMarkerFrameRepresentation>(uuid);
 	REQUIRE(wmf != nullptr);
 	REQUIRE(wmf->getWellboreMarkerCount() == 2);
 	REQUIRE((wmf->getWellboreMarkerSet()[0])->getGeologicBoundaryKind() == gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__horizon);

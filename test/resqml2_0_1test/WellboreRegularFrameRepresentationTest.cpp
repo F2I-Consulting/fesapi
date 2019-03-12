@@ -50,8 +50,8 @@ void WellboreRegularFrameRepresentationTest::initEpcDocHandler() {
 	WellboreInterpretationTest * interpTest = new WellboreInterpretationTest(this->epcDoc, true);
 	WellboreTrajectoryRepresentationTest * trajTest = new WellboreTrajectoryRepresentationTest(this->epcDoc, true);
 
-	WellboreInterpretation * interp = static_cast<WellboreInterpretation*>(this->epcDoc->getResqmlAbstractObjectByUuid(WellboreInterpretationTest::defaultUuid));
-	WellboreTrajectoryRepresentation * traj = static_cast<WellboreTrajectoryRepresentation*>(this->epcDoc->getResqmlAbstractObjectByUuid(WellboreTrajectoryRepresentationTest::defaultUuid));
+	WellboreInterpretation * interp = static_cast<WellboreInterpretation*>(this->epcDoc->getDataObjectByUuid(WellboreInterpretationTest::defaultUuid));
+	WellboreTrajectoryRepresentation * traj = static_cast<WellboreTrajectoryRepresentation*>(this->epcDoc->getDataObjectByUuid(WellboreTrajectoryRepresentationTest::defaultUuid));
 
 	// cleaning
 	delete interpTest;
@@ -67,7 +67,7 @@ void WellboreRegularFrameRepresentationTest::initEpcDocHandler() {
 }
 
 void WellboreRegularFrameRepresentationTest::readEpcDocHandler() {
-	WellboreFrameRepresentation* w1i1FrameRep = this->epcDoc->getResqmlAbstractObjectByUuid<WellboreFrameRepresentation>(defaultUuid);
+	WellboreFrameRepresentation* w1i1FrameRep = this->epcDoc->getDataObjectByUuid<WellboreFrameRepresentation>(defaultUuid);
 	REQUIRE(w1i1FrameRep != nullptr);
 
 	REQUIRE(w1i1FrameRep->areMdValuesRegularlySpaced());

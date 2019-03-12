@@ -94,17 +94,17 @@ void GridConnectionSetOnPartialGridSet::initEpcDocHandler() {
 	ULONG64 cellConnMultiGrids[6] = {
 		1, 2, 1, 2, 1, 2
 	};
-	ULONG64 multiGridIndices[6] = {
+	unsigned short multiGridIndices[6] = {
 		0, 0, 1, 1, 1, 2
 	};
-	gcsMultiGrids->setCellIndexPairs(3, cellConnMultiGrids, -1, hdfProxy, multiGridIndices);
+	gcsMultiGrids->setCellIndexPairs(3, cellConnMultiGrids, -1, hdfProxy, (std::numeric_limits<unsigned short>::max)(), multiGridIndices);
 
 }
 
 void GridConnectionSetOnPartialGridSet::readEpcDocHandler() {
 	// getting the ContinuousProperty
-	RESQML2_NS::GridConnectionSetRepresentation* gcsSingleGrid = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::GridConnectionSetRepresentation>("c0214c71-eed8-4ea2-9de4-f7508caeb3c6");
-	RESQML2_NS::GridConnectionSetRepresentation* gcsMultiGrids = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::GridConnectionSetRepresentation>(uuid);
+	RESQML2_NS::GridConnectionSetRepresentation* gcsSingleGrid = epcDoc->getDataObjectByUuid<RESQML2_NS::GridConnectionSetRepresentation>("c0214c71-eed8-4ea2-9de4-f7508caeb3c6");
+	RESQML2_NS::GridConnectionSetRepresentation* gcsMultiGrids = epcDoc->getDataObjectByUuid<RESQML2_NS::GridConnectionSetRepresentation>(uuid);
 
 	// checking that the supporting representation is partial
 	REQUIRE(!gcsSingleGrid->isBasedOnMultiGrids());
@@ -132,7 +132,7 @@ void GridConnectionSetOnPartialGridSet::readEpcDocHandler() {
 	REQUIRE(cellIndexPair[4] == 1);
 	REQUIRE(cellIndexPair[5] == 2);
 	delete[] cellIndexPair;
-	ULONG64* gridIndexPair = new ULONG64[6];
+	unsigned short* gridIndexPair = new unsigned short[6];
 	gcsMultiGrids->getGridIndexPairs(gridIndexPair);
 	REQUIRE(gridIndexPair[0] == 0);
 	REQUIRE(gridIndexPair[1] == 0);
@@ -142,4 +142,3 @@ void GridConnectionSetOnPartialGridSet::readEpcDocHandler() {
 	REQUIRE(gridIndexPair[5] == 2);
 	delete[] gridIndexPair;
 }
-
