@@ -437,7 +437,7 @@ void Package::setFileContentType(const FileContentType & pkgFileCT)
 void Package::addContentType(const ContentType & contentType)
 {
 	d_ptr->fileContentType.addContentType(contentType);
-};
+}
 
 void Package::setPrincipalRelationship(const FileRelationship & pkgFileRS)
 {
