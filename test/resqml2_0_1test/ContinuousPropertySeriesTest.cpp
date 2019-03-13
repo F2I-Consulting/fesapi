@@ -49,11 +49,11 @@ ContinuousPropertySeriesTest::ContinuousPropertySeriesTest(EpcDocument * epcDoc,
 void ContinuousPropertySeriesTest::initEpcDocHandler() {
 	// creating an IJK grid
 	IjkGridExplicitRepresentationTest * ijkGridTest = new IjkGridExplicitRepresentationTest(this->epcDoc, true);
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation * ijkGrid = static_cast<RESQML2_0_1_NS::IjkGridExplicitRepresentation *>(this->epcDoc->getResqmlAbstractObjectByUuid(IjkGridExplicitRepresentationTest::defaultUuid));
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation * ijkGrid = static_cast<RESQML2_0_1_NS::IjkGridExplicitRepresentation *>(this->epcDoc->getDataObjectByUuid(IjkGridExplicitRepresentationTest::defaultUuid));
 
 	// creating the TimeSeries
 	TimeSeriesTest * timeSeriesTest = new TimeSeriesTest(this->epcDoc, true);
-	TimeSeries* timeSeries = static_cast<TimeSeries *>(this->epcDoc->getResqmlAbstractObjectByUuid(TimeSeriesTest::defaultUuid));
+	TimeSeries* timeSeries = static_cast<TimeSeries *>(this->epcDoc->getDataObjectByUuid(TimeSeriesTest::defaultUuid));
 
 	// getting the hdf proxy
 	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
@@ -81,7 +81,7 @@ void ContinuousPropertySeriesTest::readEpcDocHandler() {
 	TimeSeriesTest * timeSeriesTest = new TimeSeriesTest(this->epcDoc, false);
 
 	// getting the ContinuousPropertySeries
-	RESQML2_0_1_NS::ContinuousPropertySeries* continuousPropertySeries = static_cast<RESQML2_0_1_NS::ContinuousPropertySeries*>(this->epcDoc->getResqmlAbstractObjectByUuid(uuid));
+	RESQML2_0_1_NS::ContinuousPropertySeries* continuousPropertySeries = static_cast<RESQML2_0_1_NS::ContinuousPropertySeries*>(this->epcDoc->getDataObjectByUuid(uuid));
 
 	// ************************************
 	// reading the ContinuousPropertySeries
@@ -99,7 +99,7 @@ void ContinuousPropertySeriesTest::readEpcDocHandler() {
 	REQUIRE( continuousPropertySeries->getEnergisticsPropertyKind() == gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length );
 
 	// getTimeSeries
-	TimeSeries * timeSeries = static_cast<TimeSeries *>(this->epcDoc->getResqmlAbstractObjectByUuid(TimeSeriesTest::defaultUuid));
+	TimeSeries * timeSeries = static_cast<TimeSeries *>(this->epcDoc->getDataObjectByUuid(TimeSeriesTest::defaultUuid));
 	REQUIRE( continuousPropertySeries->getTimeSeries() == timeSeries );
 
 	// getValuesCountOfPatch

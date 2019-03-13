@@ -224,8 +224,6 @@ unsigned int GridConnectionSetRepresentation::getCellIndexPairCountFromInterpret
 
 void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpretationIndex(ULONG64 * cellIndexPairs, unsigned short * gridIndexPairs, int * localFaceIndexPairs, unsigned int interpretationIndex) const
 {
-	unsigned int result = 0;
-
 	//load global information into memory
 	const ULONG64 totalCellIndexPairCount = getCellIndexPairCount();
 	ULONG64 * const totalCellIndexPairs = new ULONG64[totalCellIndexPairCount*2];

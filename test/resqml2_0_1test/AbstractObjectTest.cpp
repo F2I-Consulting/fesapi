@@ -46,14 +46,14 @@ void AbstractObjectTest::initEpcDoc()
 	if (this->epcDoc == nullptr)
 		throw std::logic_error("The EPC document is not initialized.");
 
-	if (this->epcDoc->getResqmlAbstractObjectByUuid(this->uuid) != nullptr)
+	if (this->epcDoc->getDataObjectByUuid(this->uuid) != nullptr)
 		return;
 
 	this->initEpcDocHandler();
 }
 
 void AbstractObjectTest::readEpcDoc() {
-	COMMON_NS::AbstractObject* resqmlObject = static_cast<COMMON_NS::AbstractObject*>(this->epcDoc->getResqmlAbstractObjectByUuid(this->uuid));
+	COMMON_NS::AbstractObject* resqmlObject = static_cast<COMMON_NS::AbstractObject*>(this->epcDoc->getDataObjectByUuid(this->uuid));
 	REQUIRE(resqmlObject != nullptr);
 	REQUIRE(resqmlObject->getUuid() == this->uuid);
 	REQUIRE( resqmlObject->getTitle() == this->title );

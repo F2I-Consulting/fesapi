@@ -151,12 +151,12 @@ void GridConnectionSetRepresentation::setCellIndexPairs(ULONG64 cellIndexPairCou
 	}
 }
 
-ULONG64 GridConnectionSetRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+ULONG64 GridConnectionSetRepresentation::getXyzPointCountOfPatch(const unsigned int &) const
 {
 	throw logic_error("Not implemented yet");
 }
 
-void GridConnectionSetRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void GridConnectionSetRepresentation::getXyzPointsOfPatch(const unsigned int &, double *) const
 {
 	throw logic_error("Not implemented yet");
 }

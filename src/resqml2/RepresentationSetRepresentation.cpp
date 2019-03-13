@@ -71,12 +71,12 @@ void RepresentationSetRepresentation::importRelationshipSetFromEpc(COMMON_NS::Ep
 	}
 }
 
-ULONG64 RepresentationSetRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+ULONG64 RepresentationSetRepresentation::getXyzPointCountOfPatch(const unsigned int &) const
 {
 	throw logic_error("Not implemented yet.");
 }
 
-void RepresentationSetRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void RepresentationSetRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch.");

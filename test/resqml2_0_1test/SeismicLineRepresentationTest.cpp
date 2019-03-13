@@ -57,10 +57,10 @@ SeismicLineRepresentationTest::SeismicLineRepresentationTest(EpcDocument * epcDo
 
 void SeismicLineRepresentationTest::initEpcDocHandler()
 {
-	LocalDepth3dCrs * crs = epcDoc->getResqmlAbstractObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
+	LocalDepth3dCrs * crs = epcDoc->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 	if (crs == nullptr) {
 		LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(this->epcDoc, true);
-		crs = epcDoc->getResqmlAbstractObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
+		crs = epcDoc->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 		delete crsTest;
 	}
 
@@ -80,13 +80,13 @@ void SeismicLineRepresentationTest::initEpcDocHandler()
 void SeismicLineRepresentationTest::readEpcDocHandler()
 {
 	// Feature
-	RESQML2_0_1_NS::SeismicLineFeature* feature = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::SeismicLineFeature>(defaultUuidFeature);
+	RESQML2_0_1_NS::SeismicLineFeature* feature = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::SeismicLineFeature>(defaultUuidFeature);
 	REQUIRE(feature->getFirstTraceIndex() == 0);
 	REQUIRE(feature->getTraceCount() == 5);
 	REQUIRE(feature->getTraceIndexIncrement() == 1);
 
 	// Grid 2D
-	RESQML2_0_1_NS::PolylineRepresentation* rep = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::PolylineRepresentation>(defaultUuid);
+	RESQML2_0_1_NS::PolylineRepresentation* rep = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::PolylineRepresentation>(defaultUuid);
 	REQUIRE_THROWS(rep->getSeismicSupportOfPatch(0));
 	REQUIRE(rep->getXyzPointCountOfAllPatches() == 5);
 }

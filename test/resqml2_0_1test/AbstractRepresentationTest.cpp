@@ -45,7 +45,7 @@ void AbstractRepresentationTest::readEpcDoc() {
 
 	if (this->xyzPointsOfAllPatchesInGlobalCrs != nullptr) {
 		// checking number of points in the geometry
-		AbstractRepresentation* representation = static_cast<AbstractRepresentation*>(this->epcDoc->getResqmlAbstractObjectByUuid(this->uuid));
+		AbstractRepresentation* representation = static_cast<AbstractRepresentation*>(this->epcDoc->getDataObjectByUuid(this->uuid));
 		REQUIRE( representation->getXyzPointCountOfAllPatches() == this->xyzPointCountOfAllPatches );
 
 		// checking values

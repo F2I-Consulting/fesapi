@@ -48,7 +48,7 @@ void FaultInterpretationTest::initEpcDocHandler()
 	// creating dependencies
 	FaultTest* faultTest = new FaultTest(this->epcDoc, true);
 
-	TectonicBoundaryFeature* fault = static_cast<TectonicBoundaryFeature*>(this->epcDoc->getResqmlAbstractObjectByUuid(uuidFault));
+	TectonicBoundaryFeature* fault = static_cast<TectonicBoundaryFeature*>(this->epcDoc->getDataObjectByUuid(uuidFault));
 	FaultInterpretation* FaultInterp = this->epcDoc->createFaultInterpretation(fault, this->uuid, this->title);
 	REQUIRE( FaultInterp != nullptr );
 

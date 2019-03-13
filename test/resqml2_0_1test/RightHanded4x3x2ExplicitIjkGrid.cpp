@@ -68,7 +68,7 @@ RightHanded4x3x2ExplicitIjkGrid::RightHanded4x3x2ExplicitIjkGrid(EpcDocument * e
 void RightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 	// getting the local depth 3d crs
 	LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(this->epcDoc, true);
-	RESQML2_0_1_NS::LocalDepth3dCrs* crs = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
+	RESQML2_0_1_NS::LocalDepth3dCrs* crs = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 
 	// getting the hdf proxy
 	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
@@ -133,7 +133,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 
 void RightHanded4x3x2ExplicitIjkGrid::readEpcDocHandler() {
 	// getting the subrep
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(this->uuid);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(this->uuid);
 
 	REQUIRE(ijkGrid->getCellCount() == 24);
 	REQUIRE(ijkGrid->getPillarCount() == 20);

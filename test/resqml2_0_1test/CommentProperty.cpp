@@ -48,7 +48,7 @@ CommentProperty::CommentProperty(EpcDocument * epcDoc, bool init)
 void CommentProperty::initEpcDocHandler() {
 	// creating an IJK grid
 	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(this->epcDoc, true);
-	RESQML2_0_1_NS::WellboreFrameRepresentation * frame = static_cast<RESQML2_0_1_NS::WellboreFrameRepresentation *>(this->epcDoc->getResqmlAbstractObjectByUuid(WellboreFrameRepresentationTest::defaultUuid));
+	RESQML2_0_1_NS::WellboreFrameRepresentation * frame = static_cast<RESQML2_0_1_NS::WellboreFrameRepresentation *>(this->epcDoc->getDataObjectByUuid(WellboreFrameRepresentationTest::defaultUuid));
 
 	// getting the hdf proxy
 	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
@@ -77,7 +77,7 @@ void CommentProperty::readEpcDocHandler() {
 	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(this->epcDoc, false);
 
 	// getting the ContinuousPropertySeries
-	RESQML2_0_1_NS::CommentProperty* commentProperty = this->epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::CommentProperty>(uuid);
+	RESQML2_0_1_NS::CommentProperty* commentProperty = this->epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::CommentProperty>(uuid);
 
 	// ************************************
 	// reading the ContinuousProperty

@@ -88,7 +88,7 @@ ULONG64 SubRepresentation::getXyzPointCountOfPatch(const unsigned int & patchInd
 	}
 }
 
-void SubRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void SubRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
