@@ -24,7 +24,7 @@ under the License.
 #include "resqml2_0_1/StructuralOrganizationInterpretation.h"
 #include "resqml2_0_1/StratigraphicColumn.h"
 #include "resqml2_0_1/StratigraphicOccurrenceInterpretation.h"
-
+#include "resqml2_0_1/RockFluidOrganizationInterpretation.h"
 #include "tools/Misc.h"
 
 using namespace std;
@@ -55,6 +55,17 @@ void EarthModelInterpretation::setStructuralOrganizationInterpretation(Structura
     // XML
 	if (updateXml) {
 		static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure = structOrganization->newResqmlReference();
+	}
+}
+
+void EarthModelInterpretation::setRockFluidOrganizationInterpretation(class RockFluidOrganizationInterpretation* rockFluid)
+{
+	// epc
+	rockFluid->earthModelSet.push_back(this);
+
+	//XML
+	if(updateXml) {
+		static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid = rockFluid->newResqmlReference();
 	}
 }
 
@@ -157,4 +168,18 @@ StratigraphicColumn* EarthModelInterpretation::getStratiColumn() const
 	}
 
 	return epcDocument->getDataObjectByUuid<StratigraphicColumn>(static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn->UUID);
+}
+
+bool EarthModelInterpretation::hasRockFluidOrganizationInterpretation() const
+{
+	return static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid != nullptr;
+}
+
+RockFluidOrganizationInterpretation* EarthModelInterpretation::getRockFluidOrganizationInterpretation() const
+{
+	if (!hasRockFluidOrganizationInterpretation()) {
+		throw invalid_argument("There is no rock fluid organization");
+	}
+
+	return epcDocument->getDataObjectByUuid<RockFluidOrganizationInterpretation>(static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid->UUID);
 }

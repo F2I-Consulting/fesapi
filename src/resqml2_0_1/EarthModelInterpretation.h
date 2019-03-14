@@ -52,10 +52,9 @@ namespace RESQML2_0_1_NS
 		*/
 		~EarthModelInterpretation() {}
 
-        void setStructuralOrganizationInterpretation(class StructuralOrganizationInterpretation * structOrganization);
+  	void setStructuralOrganizationInterpretation(class StructuralOrganizationInterpretation * structOrganization);
 
 		void setStratiColumn(class StratigraphicColumn * stratiColumn);
-
 		/*
 		* Check if a strati column is associated to this earth model interpretation
 		*
@@ -73,11 +72,20 @@ namespace RESQML2_0_1_NS
 
 		void pushBackStratiOccurence(class StratigraphicOccurrenceInterpretation * stratiOccurence);
 
+		// Rock Fluid
+		void setRockFluidOrganizationInterpretation(class RockFluidOrganizationInterpretation* rockFluid);
+
+		bool hasRockFluidOrganizationInterpretation() const;
+
+		RockFluidOrganizationInterpretation* getRockFluidOrganizationInterpretation() const;
+		
+		void pushBackRockFluidOrganizationInterpretation(class RockFluidOrganizationInterpretation * rockFluid);
+
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
 
     private:
-        std::vector<epc::Relationship> getAllEpcRelationships() const;
+    std::vector<epc::Relationship> getAllEpcRelationships() const;
 		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 	};
 }

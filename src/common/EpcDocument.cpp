@@ -78,6 +78,7 @@ under the License.
 #include "resqml2_0_1/NonSealedSurfaceFrameworkRepresentation.h"
 #include "resqml2_0_1/SealedSurfaceFrameworkRepresentation.h"
 #include "resqml2_0_1/SealedVolumeFrameworkRepresentation.h"
+#include "resqml2_0_1/RockFluidOrganizationInterpretation.h"
 
 #include "resqml2_0_1/StratigraphicUnitFeature.h"
 #include "resqml2_0_1/StratigraphicUnitInterpretation.h"
@@ -578,7 +579,6 @@ void EpcDocument::addGsoapProxy(COMMON_NS::AbstractObject* proxy)
 	else if (xmlTag.compare(PointSetRepresentation::XML_TAG) == 0) {
 		pointSetRepresentationSet.push_back(static_cast<PointSetRepresentation* const>(proxy));
 	}
-
 	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {
 		dataObjectSet[proxy->getUuid()] = proxy;
 	}
@@ -892,6 +892,7 @@ COMMON_NS::AbstractObject* EpcDocument::getResqml2_0_1WrapperFromGsoapContext(co
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyFeature)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyBoundaryInterpretation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyInterpretation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(RockFluidOrganizationInterpretation)
 	else if (resqmlContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
@@ -1394,6 +1395,7 @@ COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_resqml2_0_1::eml20__
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(GeobodyFeature)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(GeobodyBoundaryInterpretation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(GeobodyInterpretation)
+	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(RockFluidOrganizationInterpretation)
 	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
@@ -1732,6 +1734,13 @@ StructuralOrganizationInterpretation* EpcDocument::createStructuralOrganizationI
 StructuralOrganizationInterpretation* EpcDocument::createStructuralOrganizationInterpretationInMeasuredDepth(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title)
 {
 	StructuralOrganizationInterpretation* result = new StructuralOrganizationInterpretation(orgFeat, guid, title, resqml2__OrderingCriteria__measured_x0020depth);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+RockFluidOrganizationInterpretation* EpcDocument::createRockFluidOrganizationInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title)
+{
+	RockFluidOrganizationInterpretation* result = new RockFluidOrganizationInterpretation(orgFeat, guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
