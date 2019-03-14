@@ -48,6 +48,7 @@ under the License.
 #include "resqml2_0_1/GenericFeatureInterpretation.h"
 #include "resqml2_0_1/FluidBoundaryFeature.h"
 #include "resqml2_0_1/HorizonInterpretation.h"
+#include "resqml2_0_1/GeobodyInterpretation.h"
 #include "resqml2_0_1/GeobodyBoundaryInterpretation.h"
 #include "resqml2_0_1/FaultInterpretation.h"
 #include "resqml2_0_1/TriangulatedSetRepresentation.h"
@@ -192,7 +193,7 @@ void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::Abstra
 	// Build the Stratigraphic column
 	StratigraphicColumn* stratiColumn = pck->createStratigraphicColumn("7f6666a0-fa3b-11e5-a509-0002a5d5c51b", "Stratigraphic column");
 	OrganizationFeature* stratiModelFeature = pck->createStratigraphicModel("7fcde2b5-d184-4481-b31e-32aafbdc4b7f", "stratiModel");
-	StratigraphicOccurrenceInterpretation* stratiOccurence = pck->createStratigraphicOccurrenceInterpretationInApparentDepth(stratiModelFeature, "2426e574-1ea3-4f20-9deb-669c15a17625", "stratiModel Interp");
+	pck->createStratigraphicOccurrenceInterpretationInApparentDepth(stratiModelFeature, "2426e574-1ea3-4f20-9deb-669c15a17625", "stratiModel Interp");
 	stratiColumnRank0 = pck->createStratigraphicColumnRankInterpretationInApparentDepth(stratiModelFeature, "ba06f220-fa3b-11e5-928c-0002a5d5c51b", "Stratigraphic column rank 0", 0);
 	StratigraphicColumnRankInterpretation* stratiColumnRank1 = pck->createStratigraphicColumnRankInterpretationInApparentDepth(stratiModelFeature, "9d2d19cf-aedb-4766-9691-758d536456ba", "Stratigraphic column rank 1", 1);
 	stratiColumn->pushBackStratiColumnRank(stratiColumnRank0);
@@ -202,14 +203,14 @@ void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::Abstra
 	StratigraphicUnitFeature* stratiUnitBFeature = pck->createStratigraphicUnit("273a92c0-fa3c-11e5-85f8-0002a5d5c51b", "Unit B");
 	StratigraphicUnitInterpretation* stratiUnitBInterp = pck->createStratigraphicUnitInterpretation(stratiUnitBFeature, "2b9169c0-fa3c-11e5-ae2c-0002a5d5c51b", "Unit B interp");
 	StratigraphicUnitFeature* stratiUnitB1Feature = pck->createStratigraphicUnit("0b7cc266-4280-4696-b9dc-5d17017797e2", "Unit B1");
-	StratigraphicUnitInterpretation* stratiUnitB1Interp = pck->createStratigraphicUnitInterpretation(stratiUnitBFeature, "7d7ab0bc-554d-48f5-ab5c-3bb7b66696e5", "Unit B1 interp");
+	StratigraphicUnitInterpretation* stratiUnitB1Interp = pck->createStratigraphicUnitInterpretation(stratiUnitB1Feature, "7d7ab0bc-554d-48f5-ab5c-3bb7b66696e5", "Unit B1 interp");
 	StratigraphicUnitFeature* stratiUnitB2Feature = pck->createStratigraphicUnit("87255cf5-033f-4fa4-941b-7947b434f4c2", "Unit B2");
-	StratigraphicUnitInterpretation* stratiUnitB2Interp = pck->createStratigraphicUnitInterpretation(stratiUnitBFeature, "34c37be0-964f-41a8-ba78-db5147744927", "Unit B2 interp");
+	StratigraphicUnitInterpretation* stratiUnitB2Interp = pck->createStratigraphicUnitInterpretation(stratiUnitB2Feature, "34c37be0-964f-41a8-ba78-db5147744927", "Unit B2 interp");
 
 	// Build a minimal Stratigraphic column to allow the definition of a minimal sealed volume framework
 	StratigraphicColumn* minimalStratiColumn = pck->createStratigraphicColumn("90f375b7-6865-4a69-943e-f2328fdbbb7e", "Minimal Stratigraphic column");
 	OrganizationFeature* minimalStratiModelFeature = pck->createStratigraphicModel("ea021981-1b79-435f-9f26-8bf03472efcf", "Minimal stratiModel");
-	StratigraphicColumnRankInterpretation* minimalStratiColumnRank = pck->createStratigraphicColumnRankInterpretationInApparentDepth(stratiModelFeature, "31b0b787-31df-4b87-8830-a3863eb9842c", "Minimal Stratigraphic column rank ", 0);
+	StratigraphicColumnRankInterpretation* minimalStratiColumnRank = pck->createStratigraphicColumnRankInterpretationInApparentDepth(minimalStratiModelFeature, "31b0b787-31df-4b87-8830-a3863eb9842c", "Minimal Stratigraphic column rank ", 0);
 	minimalStratiColumn->pushBackStratiColumnRank(minimalStratiColumnRank);
 
 	// Build the stratigraphic column ranks
@@ -271,7 +272,7 @@ void serializeGeobody(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy*
 	// 3D
 	GeobodyFeature* geobody = pck->createGeobodyFeature("e221f9da-ead3-4a9d-8324-fc2e6606cb01", "Geobody");
 	GeobodyInterpretation* geobodyInterp = pck->createGeobodyInterpretation(geobody, "d445041f-6364-44e7-a7f8-ade5a93bfd49", "Geobody interp");
-	PointSetRepresentation* geobodyGraphNode = pck->createPointSetRepresentation(geobodyBoundaryInterp, local3dCrs, "8442a6b7-a97b-431e-abda-f72cf7ef346f", "Geobody graph node");
+	PointSetRepresentation* geobodyGraphNode = pck->createPointSetRepresentation(geobodyInterp, local3dCrs, "8442a6b7-a97b-431e-abda-f72cf7ef346f", "Geobody graph node");
 	double geobodyPointCoords[18] = { 50, 30, 330, 10, 28, 3000, 100, 50, 350, 300, 100, 400, 400, 20, 400, 400, 300, 400 };
 	geobodyGraphNode->pushBackGeometryPatch(6, geobodyPointCoords, hdfProxy);
 	//RESQML2_NS::SubRepresentation* geobodyGraphEdge = pck->createSubRepresentation(geobodyBoundaryInterp, "7e0450aa-c39d-49f8-bee4-62fc42bb849d", "Geobody graph edge");
@@ -749,7 +750,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 	tetraGrid->setTetrahedraOnlyGeometry(faceRightHandness, tetraGridPoints, 4, 4, hdfProxy, faceIndicesPerCell, nodeIndicesPerFace);
 }
 
-void serializeRepresentationSetRepresentation(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
+void serializeRepresentationSetRepresentation(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy*)
 {
 	RESQML2_NS::RepresentationSetRepresentation* result = pck->createRepresentationSetRepresentation("", "Testing Representation set");
 	cout << "is homogeneous : " << result->isHomogeneous() << endl;
@@ -981,11 +982,11 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 
 	// Contact 0
 	// nbPatch * nbIdenticalNodes = 9
-	int contactIdenticalNodes[9] = {
-		0, 0, 0,
-		1, 1, 1,
-		2, 2, 2
-	};
+	//int contactIdenticalNodes[9] = {
+	//	0, 0, 0,
+	//	1, 1, 1,
+	//	2, 2, 2
+	//};
 	//sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
 	singlePatchFault1SealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
 
@@ -1566,7 +1567,7 @@ void serializeActivities(COMMON_NS::EpcDocument * epcDoc)
 
 }
 
-void serializeFluidBoundary(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
+void serializeFluidBoundary(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractHdfProxy*)
 {
 	FluidBoundaryFeature* fluidBoundary = pck.createFluidBoundaryFeature("44a4d87c-3c67-4f98-a314-9d91c4147061", "Fluid boundary", gsoap_resqml2_0_1::resqml2__FluidContact__gas_x0020oil_x0020contact);
 	GenericFeatureInterpretation* interp = pck.createGenericFeatureInterpretation(fluidBoundary, "d06df5e4-3c56-4abd-836f-2abb5e58e13b", "Fluid boundary interp");
@@ -1770,7 +1771,6 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation * rep, bool* enabledCe
 
 		// Datatype
 		std::cout << "\tDatatype is : " << propVal->getValuesHdfDatatype() << std::endl;
-		bool isFloat = true;
 		if (propVal->getValuesHdfDatatype() == 0)
 		{
 			cerr << "\tERROR !!!!! The hdf datatype is unknown" << endl;
@@ -1779,7 +1779,6 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation * rep, bool* enabledCe
 		}
 		else if (propVal->getValuesHdfDatatype() > 2)
 		{
-			isFloat = false;
 			if (dynamic_cast<DiscreteProperty*>(propVal) == nullptr && dynamic_cast<CategoricalProperty*>(propVal) == nullptr)
 			{
 				cerr << "\tERROR !!!!! The continuous property is linked to an integer HDF5 dataset." << endl;
