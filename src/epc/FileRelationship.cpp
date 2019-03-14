@@ -30,17 +30,14 @@ FileRelationship::FileRelationship()
 {
 }
 
-FileRelationship::FileRelationship(const Relationship & frRelationship)
+FileRelationship::FileRelationship(const Relationship & frRelationship) : pathName("_rels\\.rels")
 {
-	pathName = "_rels\\.rels";
 	relationship.push_back(frRelationship);
 }
 
 FileRelationship::FileRelationship(const vector<Relationship> & frRelationship):
-	relationship(frRelationship)
-{
-	pathName = "_rels\\.rels";
-}
+	pathName("_rels\\.rels"), relationship(frRelationship)
+{}
 
 bool FileRelationship::isEmpty() const
 {

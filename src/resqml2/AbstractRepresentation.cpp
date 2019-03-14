@@ -192,17 +192,11 @@ std::vector<AbstractValuesProperty*> AbstractRepresentation::getValuesPropertySe
 
 	for (size_t i = 0; i < propertySet.size(); ++i)
 	{
-		if (propertySet[i]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREContinuousProperty ||
-			propertySet[i]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECategoricalProperty ||
-			propertySet[i]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREDiscreteProperty ||
-			propertySet[i]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECommentProperty
-#ifdef WITH_RESQML2_1
-			|| propertySet[i]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREContinuousProperty ||
-			propertySet[i]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECategoricalProperty ||
-			propertySet[i]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREDiscreteProperty ||
-			propertySet[i]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECommentProperty
-#endif
-			) {
+		int gsoapType = propertySet[i]->getGsoapType();
+		if (gsoapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREContinuousProperty ||
+			gsoapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECategoricalProperty ||
+			gsoapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREDiscreteProperty ||
+			gsoapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECommentProperty) {
 			result.push_back(static_cast<AbstractValuesProperty*>(propertySet[i]));
 		}
 	}
