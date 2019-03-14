@@ -71,11 +71,11 @@ for:
         -DWITH_DOTNET_WRAPPING=TRUE
         -DWITH_TEST=TRUE
         -DSWIG_EXECUTABLE=c:/projects/fesapiEnv/dependencies/swigwin-3.0.12/swig.exe
-      - cmake --build . --config "%CONFIGURATION%"
-      - ctest -C "%CONFIGURATION%" -V
-
-    after_build:
-      - cd Release
+      - cmake --build . --config "$(configuration)"
+    
+    test_script:
+      - ctest -C "$(configuration)" -V
+      - cd $(configuration)
       - copy c:\projects\fesapiEnv\dependencies\hdf5-1.8.18-win64-vs2013-noszip\bin\hdf5.dll .
       - copy c:\projects\fesapiEnv\dependencies\hdf5-1.8.18-win64-vs2013-noszip\bin\zlib.dll .
       - example.exe
@@ -117,11 +117,11 @@ for:
         -DWITH_DOTNET_WRAPPING=TRUE
         -DWITH_TEST=TRUE
         -DSWIG_EXECUTABLE=c:/projects/fesapiEnv/dependencies/swigwin-3.0.12/swig.exe
-      - cmake --build . --config "%CONFIGURATION%"
-      - ctest -C "%CONFIGURATION%" -V
-      
-    after_build:
-      - cd Release
+      - cmake --build . --config "$(configuration)"
+    
+    test_script:
+      - ctest -C "$(configuration)" -V
+      - cd $(configuration)
       - copy c:\projects\fesapiEnv\dependencies\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll .
       - copy c:\projects\fesapiEnv\dependencies\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll .
       - example.exe
