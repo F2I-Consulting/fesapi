@@ -61,7 +61,7 @@ WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(WellboreInt
 
 WellboreMarkerFrameRepresentation::~WellboreMarkerFrameRepresentation()
 {
-	for (unsigned int i = 0; i < markerSet.size(); ++i)
+	for (size_t i = 0; i < markerSet.size(); ++i)
 		delete markerSet[i];
 }
 
@@ -140,7 +140,7 @@ vector<Relationship> WellboreMarkerFrameRepresentation::getAllEpcRelationships()
 		result.push_back(relStratiRank);
 	}
 
-	for (unsigned int i = 0; i < markerSet.size(); ++i)
+	for (size_t i = 0; i < markerSet.size(); ++i)
 	{
 		if (markerSet[i]->getBoundaryFeatureInterpretation())
 		{
@@ -157,8 +157,6 @@ void WellboreMarkerFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::
 {
 	WellboreFrameRepresentation::importRelationshipSetFromEpc(epcDoc);
 
-	updateXml = false;
-
 	_resqml2__WellboreMarkerFrameRepresentation* rep = static_cast<_resqml2__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
 
 	updateXml = false;
@@ -168,5 +166,20 @@ void WellboreMarkerFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::
 		setStratigraphicOccurrenceInterpretation(epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation>(rep->IntervalStratigraphiUnits->StratigraphicOrganization->UUID));
 	}
 
+	for (size_t i = 0; i < rep->WellboreMarker.size(); ++i)
+	{
+		WellboreMarker* marker = new WellboreMarker(rep->WellboreMarker[i], this);
+		if (rep->WellboreMarker[i]->Interpretation != nullptr)
+		{
+			marker->setBoundaryFeatureInterpretation(static_cast<BoundaryFeatureInterpretation*>(epcDoc->getDataObjectByUuid(rep->WellboreMarker[i]->Interpretation->UUID)));
+		}
+		markerSet.push_back(marker);
+	}
+
 	updateXml = true;
+}
+
+const std::vector<class WellboreMarker*> & WellboreMarkerFrameRepresentation::getWellboreMarkerSet() const
+{
+	return markerSet;
 }

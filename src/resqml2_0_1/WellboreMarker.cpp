@@ -31,7 +31,7 @@ using namespace epc;
 const char* WellboreMarker::XML_TAG = "WellboreMarker";
 
 WellboreMarker::WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title):
-	boundaryFeatureInterpretation(nullptr), wellboreMarkerFrameRepresentation(wellboreMarkerFrame)
+	wellboreMarkerFrameRepresentation(wellboreMarkerFrame)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__WellboreMarker(wellboreMarkerFrame->getGsoapContext(), 1);
 
@@ -40,7 +40,7 @@ WellboreMarker::WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarker
 }
 
 WellboreMarker::WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind & geologicBoundaryKind):
-	boundaryFeatureInterpretation(nullptr), wellboreMarkerFrameRepresentation(wellboreMarkerFrame)
+	wellboreMarkerFrameRepresentation(wellboreMarkerFrame)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__WellboreMarker(wellboreMarkerFrame->getGsoapContext(), 1);	
 	resqml2__WellboreMarker* marker = static_cast<resqml2__WellboreMarker*>(gsoapProxy2_0_1);
@@ -59,8 +59,9 @@ bool WellboreMarker::hasAGeologicBoundaryKind()
 
 resqml2__GeologicBoundaryKind WellboreMarker::getGeologicBoundaryKind()
 {
-	if (!hasAGeologicBoundaryKind())
+	if (!hasAGeologicBoundaryKind()) {
 		throw invalid_argument("The marker has not a Geologic Boundary Kind.");
+	}
 
 	return *(static_cast<resqml2__WellboreMarker*>(gsoapProxy2_0_1)->GeologicBoundaryKind);
 }
@@ -70,13 +71,17 @@ std::string WellboreMarker::getBoundaryFeatureInterpretationUuid() const
 	if (static_cast<resqml2__WellboreMarker*>(gsoapProxy2_0_1)->Interpretation != nullptr)
 		return static_cast<resqml2__WellboreMarker*>(gsoapProxy2_0_1)->Interpretation->UUID;
 
-	return "";
+	return string();
+}
+
+BoundaryFeatureInterpretation* WellboreMarker::getBoundaryFeatureInterpretation() const
+{
+	return getWellMarkerFrameRepresentation()->getEpcDocument()->getDataObjectByUuid<BoundaryFeatureInterpretation>(getBoundaryFeatureInterpretationUuid());
 }
 
 void WellboreMarker::setBoundaryFeatureInterpretation(BoundaryFeatureInterpretation* interp)
 {
 	// EPC
-	boundaryFeatureInterpretation = interp;
 	interp->wellboreMarkerSet.push_back(this);
 
     // XML

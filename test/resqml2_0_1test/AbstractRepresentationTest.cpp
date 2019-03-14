@@ -58,4 +58,3 @@ void AbstractRepresentationTest::readEpcDoc() {
 		delete[] xyzPoint;
 	}
 }
-
