@@ -72,7 +72,7 @@ for:
         -DWITH_TEST=TRUE
         -DSWIG_EXECUTABLE=c:/projects/fesapiEnv/dependencies/swigwin-3.0.12/swig.exe
       - cmake --build . --config "%CONFIGURATION%"
-      - ctest -V
+      - ctest -C "%CONFIGURATION%" -V
 
     after_build:
       - cd Release
@@ -118,7 +118,7 @@ for:
         -DWITH_TEST=TRUE
         -DSWIG_EXECUTABLE=c:/projects/fesapiEnv/dependencies/swigwin-3.0.12/swig.exe
       - cmake --build . --config "%CONFIGURATION%"
-      - ctest -V
+      - ctest -C "%CONFIGURATION%" -V
       
     after_build:
       - cd Release
