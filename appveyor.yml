@@ -74,8 +74,8 @@ for:
       - cmake --build . --config "%CONFIGURATION%"
     
     test_script:
-      - copy c:\projects\fesapiEnv\dependencies\hdf5-1.8.18-win64-vs2013-noszip\bin\hdf5.dll ./%CONFIGURATION%
-      - copy c:\projects\fesapiEnv\dependencies\hdf5-1.8.18-win64-vs2013-noszip\bin\zlib.dll ./%CONFIGURATION%
+      - copy c:\projects\fesapiEnv\dependencies\hdf5-1.8.18-win64-vs2013-noszip\bin\hdf5.dll %CONFIGURATION%
+      - copy c:\projects\fesapiEnv\dependencies\hdf5-1.8.18-win64-vs2013-noszip\bin\zlib.dll %CONFIGURATION%
       - ctest -C "%CONFIGURATION%" -V
       - cd %CONFIGURATION%
       - example.exe
@@ -120,8 +120,8 @@ for:
       - cmake --build . --config "%CONFIGURATION%"
     
     test_script:
-      - copy c:\projects\fesapiEnv\dependencies\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll ./%CONFIGURATION%
-      - copy c:\projects\fesapiEnv\dependencies\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll ./%CONFIGURATION%
+      - copy c:\projects\fesapiEnv\dependencies\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll %CONFIGURATION%
+      - copy c:\projects\fesapiEnv\dependencies\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll %CONFIGURATION%
       - ctest -C "%CONFIGURATION%" -V
       - cd %CONFIGURATION%
       - example.exe
