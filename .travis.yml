@@ -20,8 +20,11 @@ matrix:
                 -DMINIZIP_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.1-linux-ubuntu1604-x86_64-gcc540/lib/libminizip.a
                 -DZLIB_INCLUDE_DIR=/usr/include
                 -DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so
-            - cmake --build .
+                -DWITH_TEST=TRUE
+            - cmake --build . -- -j 2
+          after_success:
             - ./example/example
+            - ctest -V
         - os: linux
           name: "FesapiCpp with dynamic HDF5 (clang 5.0.0)"
           sudo: required
@@ -40,8 +43,11 @@ matrix:
                 -DMINIZIP_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.1-linux-ubuntu1604-x86_64-gcc540/lib/libminizip.a
                 -DZLIB_INCLUDE_DIR=/usr/include
                 -DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so
-            - cmake --build .
+                -DWITH_TEST=TRUE
+            - cmake --build . -- -j 2
+          after_success:
             - ./example/example
+            - ctest -V
 addons:
   apt:
     packages:

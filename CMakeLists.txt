@@ -142,11 +142,12 @@ endif (BUILD_SHARED_LIBS)
 # including subdirectories
 # ============================================================================
 
-ADD_SUBDIRECTORY (src)
-ADD_SUBDIRECTORY (example)
-ADD_SUBDIRECTORY (doc)
+add_subdirectory(src)
+add_subdirectory(example)
+add_subdirectory(doc)
 
 set (WITH_TEST OFF CACHE BOOL "Also build the unit tests.")
 if (WITH_TEST)
-	ADD_SUBDIRECTORY (test)
+	enable_testing()
+	add_subdirectory(test)
 endif (WITH_TEST)

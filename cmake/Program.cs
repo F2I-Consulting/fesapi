@@ -29,8 +29,9 @@ namespace example
             using (EpcDocument epc_file = new EpcDocument("../../../TestingPackageCs"))
             {
                 string status = epc_file.deserialize();
-                if (status.Length > 0)
-                    System.Console.WriteLine(status);
+                if (status.Length > 0) {
+                    System.Console.WriteLine("Warnings are " + status);
+				}
                 LocalDepth3dCrsVector crs_set = epc_file.getLocalDepth3dCrsSet();
                 System.Console.WriteLine("Deserialize : CRS title is " + crs_set[0].getTitle());
 				Well well = epc_file.getResqmlAbstractObjectByUuid("1425632e-3c22-4845-b431-ecd36da0671e") as Well;
