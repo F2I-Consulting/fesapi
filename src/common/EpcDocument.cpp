@@ -312,6 +312,10 @@ const std::vector<RESQML2_0_1_NS::SeismicLineFeature*> & EpcDocument::getSeismic
 
 const std::vector<RESQML2_0_1_NS::WellboreFeature*> & EpcDocument::getWellboreSet() const { return wellboreSet; }
 
+const std::vector<RESQML2_0_1_NS::FluidBoundaryFeature*>& EpcDocument::getFluidBoundarySet() const { return fluidBoundarySet; }
+
+const std::vector<RESQML2_0_1_NS::StratigraphicUnitFeature*>& EpcDocument::getStratiUnitFeatureSet() const { return stratiUnitFeatureSet; }
+
 const std::vector<RESQML2_0_1_NS::PolylineRepresentation*> & EpcDocument::getAllPolylineRepresentationSet() const { return polylineRepresentationSet; }
 
 const std::vector<RESQML2_0_1_NS::AbstractIjkGridRepresentation*> & EpcDocument::getIjkGridRepresentationSet() const { return ijkGridRepresentationSet; }
@@ -419,6 +423,8 @@ void EpcDocument::close()
 	seismicLineSet.clear();
 	hdfProxySet.clear();
 	wellboreSet.clear();
+	fluidBoundarySet.clear();
+	stratiUnitFeatureSet.clear();
 	representationSetRepresentationSet.clear();
 	triangulatedSetRepresentationSet.clear();
 	grid2dRepresentationSet.clear();
@@ -524,6 +530,12 @@ void EpcDocument::addGsoapProxy(COMMON_NS::AbstractObject* proxy)
 	else if (xmlTag.compare(WellboreFeature::XML_TAG) == 0) {
 		wellboreSet.push_back(static_cast<WellboreFeature* const>(proxy));
 	}
+	else if(xmlTag.compare(FluidBoundaryFeature::XML_TAG) == 0) {
+		fluidBoundarySet.push_back(static_cast<FluidBoundaryFeature* const>(proxy));
+	}
+	else if(xmlTag.compare(StratigraphicUnitFeature::XML_TAG) == 0) {
+		stratiUnitFeatureSet.push_back(static_cast<StratigraphicUnitFeature* const>(proxy));
+	}
 	else if (xmlTag.compare(PolylineRepresentation::XML_TAG) == 0) {
 		polylineRepresentationSet.push_back(static_cast<PolylineRepresentation* const>(proxy));
 	}
@@ -578,7 +590,6 @@ void EpcDocument::addGsoapProxy(COMMON_NS::AbstractObject* proxy)
 	else if (xmlTag.compare(PointSetRepresentation::XML_TAG) == 0) {
 		pointSetRepresentationSet.push_back(static_cast<PointSetRepresentation* const>(proxy));
 	}
-
 	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {
 		dataObjectSet[proxy->getUuid()] = proxy;
 	}

@@ -480,6 +480,16 @@ namespace COMMON_NS
 		const std::vector<RESQML2_0_1_NS::WellboreFeature*> & getWellboreSet() const;
 
 		/**
+		* Get all the Fluid Boundary contained into the EPC document
+		*/
+		const std::vector<RESQML2_0_1_NS::FluidBoundaryFeature*>& getFluidBoundarySet() const;
+
+		/**
+		* Get all the Stratigraphic Unit Feature contained into the EPC document
+		*/
+		const std::vector<RESQML2_0_1_NS::StratigraphicUnitFeature*>& getStratiUnitFeatureSet() const;
+
+		/**
 		* Get all the trajectory representations of all wellbores.
 		*/
 		std::vector<RESQML2_0_1_NS::WellboreTrajectoryRepresentation*> getWellboreTrajectoryRepresentationSet() const;
@@ -1204,6 +1214,8 @@ namespace COMMON_NS
 		std::vector<RESQML2_0_1_NS::SeismicLineFeature*>				seismicLineSet;
 		std::vector<COMMON_NS::AbstractHdfProxy*>						hdfProxySet;
 		std::vector<RESQML2_0_1_NS::WellboreFeature*>					wellboreSet;
+		std::vector<RESQML2_0_1_NS::FluidBoundaryFeature*>				fluidBoundarySet;
+		std::vector<RESQML2_0_1_NS::StratigraphicUnitFeature*>			stratiUnitFeatureSet;
 		std::vector<RESQML2_NS::RepresentationSetRepresentation*>		representationSetRepresentationSet;
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*>		triangulatedSetRepresentationSet;
 		std::vector<RESQML2_0_1_NS::Grid2dRepresentation*>				grid2dRepresentationSet;
