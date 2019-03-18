@@ -3040,7 +3040,7 @@ void deserializePerforations(COMMON_NS::EpcDocument & pck)
 {
 	cout << endl << "PERFORATIONS" << endl;
 
-	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = static_cast<WITSML2_0_NS::WellboreCompletion*>(pck.getDataObjectByUuid("7bda8ecf-2037-4dc7-8c59-db6ca09f2008"));
+	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = pck.getDataObjectByUuid<WITSML2_0_NS::WellboreCompletion>("7bda8ecf-2037-4dc7-8c59-db6ca09f2008");
 	if (wellboreCompletion == nullptr) {
 		return;
 	}
