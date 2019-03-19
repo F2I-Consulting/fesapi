@@ -64,7 +64,7 @@ StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretation
 			readEpcDoc();
 }
 
-StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(COMMON_NS::EpcDocument* epcDoc, const std::string & uuid, const std::string & title, const string & uuidFeature, const string & titleFeature, bool init)
+StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(COMMON_NS::EpcDocument*, const std::string & uuid, const std::string & title, const string & uuidFeature, const string & titleFeature, bool)
 	: AbstractFeatureInterpretationTest(epcDocPath, uuid, title, uuidFeature, titleFeature) {
 }
 

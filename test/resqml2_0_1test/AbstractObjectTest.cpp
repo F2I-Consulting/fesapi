@@ -60,4 +60,3 @@ void AbstractObjectTest::readEpcDoc() {
 
 	this->readEpcDocHandler();
 }
-

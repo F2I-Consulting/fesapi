@@ -30,11 +30,11 @@ using namespace resqml2_0_1test;
 using namespace RESQML2_NS;
 
 AbstractRepresentationTest::AbstractRepresentationTest(const std::string & epcDocPath, const string & uuid, const string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInGlobalCrs) 
-	: AbstractResqmlDataObjectTest(epcDocPath, uuid, title), xyzPointCountOfAllPatches(xyzPointCountOfAllPatches), xyzPointsOfAllPatchesInGlobalCrs(xyzPointsOfAllPatchesInGlobalCrs) {
+	: AbstractResqmlDataObjectTest(epcDocPath, uuid, title), xyzPointsOfAllPatchesInGlobalCrs(xyzPointsOfAllPatchesInGlobalCrs), xyzPointCountOfAllPatches(xyzPointCountOfAllPatches) {
 }
 
 AbstractRepresentationTest::AbstractRepresentationTest(COMMON_NS::EpcDocument* epcDoc, const string & uuid, const string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInGlobalCrs)
-	: AbstractResqmlDataObjectTest(epcDoc, uuid, title), xyzPointCountOfAllPatches(xyzPointCountOfAllPatches), xyzPointsOfAllPatchesInGlobalCrs(xyzPointsOfAllPatchesInGlobalCrs) {
+	: AbstractResqmlDataObjectTest(epcDoc, uuid, title), xyzPointsOfAllPatchesInGlobalCrs(xyzPointsOfAllPatchesInGlobalCrs), xyzPointCountOfAllPatches(xyzPointCountOfAllPatches) {
 }
 
 void AbstractRepresentationTest::readEpcDoc() {
@@ -58,4 +58,3 @@ void AbstractRepresentationTest::readEpcDoc() {
 		delete[] xyzPoint;
 	}
 }
-

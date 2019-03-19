@@ -50,9 +50,9 @@ SeismicLineRepresentationTest::SeismicLineRepresentationTest(EpcDocument * epcDo
 	: AbstractSurfaceRepresentationTest(epcDocument, defaultUuid, defaultTitle, 5, nullptr)
 {
 	if (init)
-		this->initEpcDoc();
+		initEpcDoc();
 	else
-		this->readEpcDoc();
+		readEpcDoc();
 }
 
 void SeismicLineRepresentationTest::initEpcDocHandler()
@@ -87,7 +87,7 @@ void SeismicLineRepresentationTest::readEpcDocHandler()
 
 	// Grid 2D
 	RESQML2_0_1_NS::PolylineRepresentation* rep = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::PolylineRepresentation>(defaultUuid);
-	REQUIRE_THROWS(rep->getSeismicSupportOfPatch(0));
+	REQUIRE(rep->getSeismicSupportOfPatch(0) == nullptr);
 	REQUIRE(rep->getXyzPointCountOfAllPatches() == 5);
 }
 

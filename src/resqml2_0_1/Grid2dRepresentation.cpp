@@ -607,8 +607,7 @@ void Grid2dRepresentation::setGeometryAsArray2dOfLatticePoints3d(
 			xOffsetInSlowestDirection, yOffsetInSlowestDirection, zOffsetInSlowestDirection,
 			spacingInFastestDirection, spacingInSlowestDirection);
 
-	resqml2__Grid2dPatch* patch = static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch;
-	patch = soap_new_resqml2__Grid2dPatch(gsoapProxy2_0_1->soap, 1);
+	resqml2__Grid2dPatch* patch = soap_new_resqml2__Grid2dPatch(gsoapProxy2_0_1->soap, 1);
 	patch->PatchIndex = 0;
 	patch->Geometry = geomPatch;
 	patch->SlowestAxisCount = numPointsInSlowestDirection;
