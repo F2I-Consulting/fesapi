@@ -103,7 +103,7 @@ std::string StringTableLookup::getStringValue(const long & longValue)
 		}
 	}
 
-	return "";
+	return std::string();
 }
 
 void StringTableLookup::addValue(const string & strValue, const long & longValue)
@@ -163,14 +163,14 @@ unordered_map<long, string> StringTableLookup::getMap() const
 {
 	unordered_map<long, string> result;
 #else
-std::tr1::unordered_map<long, string> StringTableLookup::getMap() const
+tr1::unordered_map<long, string> StringTableLookup::getMap() const
 {
-	std::tr1::unordered_map<long, string> result;
+	tr1::unordered_map<long, string> result;
 #endif
 
 	_resqml2__StringTableLookup* stringLookup = static_cast<_resqml2__StringTableLookup*>(gsoapProxy2_0_1);
 
-	for (unsigned int i = 0; i < stringLookup->Value.size(); i++)
+	for (size_t i = 0; i < stringLookup->Value.size(); ++i)
 	{
 		result[stringLookup->Value[i]->Key] = stringLookup->Value[i]->Value;
 	}
@@ -178,4 +178,4 @@ std::tr1::unordered_map<long, string> StringTableLookup::getMap() const
 	return result;
 }
 
-
+void StringTableLookup::importRelationshipSetFromEpc(COMMON_NS::EpcDocument*) {}

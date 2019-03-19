@@ -30,8 +30,6 @@ namespace RESQML2_0_1_NS
 	class DLL_IMPORT_OR_EXPORT WellboreTrajectoryRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	private:
-		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const {return nullptr;}
-
 		gsoap_resqml2_0_1::_resqml2__WellboreTrajectoryRepresentation* getSpecializedGsoapProxy() const;
 
 	public:
@@ -234,9 +232,6 @@ namespace RESQML2_0_1_NS
 		unsigned int getPatchCount() const {return 1;}
 
 		bool hasGeometry() const;
-
-		void setWitsmlTrajectory(WITSML1_4_1_1_NS::Trajectory * witsmlTraj);
-		WITSML1_4_1_1_NS::Trajectory * getWitsmlTrajectory() {return witsmlTrajectory;}
 
 	private:
 		/**

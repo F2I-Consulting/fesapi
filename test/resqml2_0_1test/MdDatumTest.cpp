@@ -49,7 +49,7 @@ MdDatumTest::MdDatumTest(EpcDocument* epcDoc, bool init)
 
 void MdDatumTest::initEpcDocHandler() {
 	LocalDepth3dCrsTest * crsTest = new LocalDepth3dCrsTest(this->epcDoc, true);
-	RESQML2_0_1_NS::LocalDepth3dCrs * crs = static_cast<RESQML2_0_1_NS::LocalDepth3dCrs *>(this->epcDoc->getResqmlAbstractObjectByUuid(LocalDepth3dCrsTest::defaultUuid));
+	RESQML2_0_1_NS::LocalDepth3dCrs * crs = static_cast<RESQML2_0_1_NS::LocalDepth3dCrs *>(this->epcDoc->getDataObjectByUuid(LocalDepth3dCrsTest::defaultUuid));
 
 	// cleaning
 	delete crsTest;

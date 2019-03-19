@@ -44,7 +44,6 @@ namespace epc
 	private :
 		class CheshireCat;               // Not defined here but in the cpp
 		CheshireCat * d_ptr;              // opaque pointer
-
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		typedef std::unordered_map<std::string, FilePart> PartMap;
 #else
@@ -190,18 +189,3 @@ namespace epc
 }
 
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

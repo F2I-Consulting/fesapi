@@ -271,8 +271,9 @@ unsigned int UnstructuredGridRepresentation::getConstantFaceCountOfCells() const
 void UnstructuredGridRepresentation::getNodeIndicesOfFaces(ULONG64 * nodeIndices) const
 {
 	_resqml2__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
-	if (grid->Geometry == nullptr)
+	if (grid->Geometry == nullptr) {
 		throw invalid_argument("There is no geometry in this grid.");
+	}
 	if (grid->Geometry->NodesPerFace->Elements->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
 	{
 		hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<resqml2__IntegerHdf5Array*>(grid->Geometry->NodesPerFace->Elements)->Values->PathInHdfFile, nodeIndices);
@@ -401,7 +402,6 @@ void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std:
 		throw invalid_argument("The dataset path of the node indices count per face is incomplete.");
 
 	setHdfProxy(proxy);
-	ULONG64 cellCount = getSpecializedGsoapProxy()->CellCount;
 
 	resqml2__UnstructuredGridGeometry* geom = soap_new_resqml2__UnstructuredGridGeometry(gsoapProxy2_0_1->soap, 1);
 	getSpecializedGsoapProxy()->Geometry = geom;

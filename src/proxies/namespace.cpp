@@ -29,7 +29,7 @@ SOAP_NMAC struct Namespace namespaces[] =
 	{"resqml1", "http://www.resqml.org/schemas/1series", NULL, NULL},
 	{"resqml2", "http://www.energistics.org/energyml/data/resqmlv2", NULL, NULL},
     {"prodml2", "http://www.energistics.org/energyml/data/prodmlv2", NULL, NULL},
-	{"witsml1", "http://www.witsml.org/schemas/1series", NULL, NULL},
+	{"witsml2", "http://www.energistics.org/energyml/data/witsmlv2", NULL, NULL},
 	{ "eml20", "http://www.energistics.org/energyml/data/commonv2", NULL, NULL },
 	{ "eml21", "http://www.energistics.org/energyml/data/commonv2", NULL, NULL },
 	{"gml", "http://www.opengis.net/gml/3.2", NULL, NULL},

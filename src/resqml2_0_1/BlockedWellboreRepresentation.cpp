@@ -216,7 +216,7 @@ void BlockedWellboreRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcD
 	// Supporting grid representation
 	updateXml = false;
 	for (size_t i = 0; i < rep->Grid.size(); ++i) {
-		RESQML2_NS::AbstractGridRepresentation* supportingGridRep = epcDocument->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(rep->Grid[i]->UUID);
+		RESQML2_NS::AbstractGridRepresentation* supportingGridRep = epcDocument->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(rep->Grid[i]->UUID);
 		pushBackSupportingGridRepresentation(supportingGridRep);
 	}
 	updateXml = true;
@@ -230,6 +230,6 @@ unsigned int BlockedWellboreRepresentation::getSupportingGridRepresentationCount
 
 RESQML2_NS::AbstractGridRepresentation* BlockedWellboreRepresentation::getSupportingGridRepresentation(unsigned int index) const
 {
-	return epcDocument->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(getSupportingGridRepresentationUuid(index));
+	return epcDocument->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(getSupportingGridRepresentationUuid(index));
 }
 

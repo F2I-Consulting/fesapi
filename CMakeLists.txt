@@ -7,7 +7,7 @@ set (FESAPI_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
 # version mechanism
 set (Fesapi_VERSION_MAJOR 0)
-set (Fesapi_VERSION_MINOR 14)
+set (Fesapi_VERSION_MINOR 15)
 set (Fesapi_VERSION_PATCH 0)
 set (Fesapi_VERSION_TWEAK 0)
 
@@ -15,7 +15,7 @@ set (Fesapi_VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR}.${Fesapi_VER
 
 set (CPP_LIBRARY_NAME FesapiCpp)
 set (CS_LIBRARY_NAME FesapiCs)
-set (UNDER_DEV FALSE)
+set (UNDER_DEV TRUE)
 if (${UNDER_DEV})
 	set (CPP_LIBRARY_NAME ${CPP_LIBRARY_NAME}UnderDev)
 	set (CS_LIBRARY_NAME ${CS_LIBRARY_NAME}UnderDev)
@@ -142,7 +142,12 @@ endif (BUILD_SHARED_LIBS)
 # including subdirectories
 # ============================================================================
 
-ADD_SUBDIRECTORY (src)
-ADD_SUBDIRECTORY (example)
-ADD_SUBDIRECTORY (doc)
-#ADD_SUBDIRECTORY (test)
+add_subdirectory(src)
+add_subdirectory(example)
+add_subdirectory(doc)
+
+set (WITH_TEST OFF CACHE BOOL "Also build the unit tests.")
+if (WITH_TEST)
+	enable_testing()
+	add_subdirectory(test)
+endif (WITH_TEST)

@@ -60,10 +60,10 @@ void SubRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epc
 	const unsigned int supRepCount = getSupportingRepresentationCount();
 	for (unsigned int supRepIndex = 0; supRepIndex < supRepCount; ++supRepIndex) {
 		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getSupportingRepresentationDor(supRepIndex);
-		RESQML2_NS::AbstractRepresentation* supportingRep = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
+		RESQML2_NS::AbstractRepresentation* supportingRep = epcDoc->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
 		if (supportingRep == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dor);
-			supportingRep = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
+			supportingRep = getEpcDocument()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
 		}
 		if (supportingRep == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -88,7 +88,7 @@ ULONG64 SubRepresentation::getXyzPointCountOfPatch(const unsigned int & patchInd
 	}
 }
 
-void SubRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void SubRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -114,7 +114,7 @@ void SubRepresentation::pushBackSupportingRepresentation(AbstractRepresentation 
 
 AbstractRepresentation* SubRepresentation::getSupportingRepresentation(unsigned int index) const
 {
-	return static_cast<AbstractRepresentation*>(epcDocument->getResqmlAbstractObjectByUuid(getSupportingRepresentationUuid(index)));
+	return static_cast<AbstractRepresentation*>(epcDocument->getDataObjectByUuid(getSupportingRepresentationUuid(index)));
 }
 
 std::string SubRepresentation::getSupportingRepresentationUuid(unsigned int index) const
@@ -131,4 +131,3 @@ std::string SubRepresentation::getSupportingRepresentationContentType() const
 {
 	return getSupportingRepresentationDor(0)->ContentType;
 }
-

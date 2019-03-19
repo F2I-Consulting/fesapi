@@ -47,17 +47,17 @@ FaultSinglePatchTriangulatedSetRepresentationTest::FaultSinglePatchTriangulatedS
 
 void FaultSinglePatchTriangulatedSetRepresentationTest::initEpcDocHandler()
 {
-	FaultInterpretation * interp = static_cast<FaultInterpretation*>(this->epcDoc->getResqmlAbstractObjectByUuid(uuidFaultInterpretation));
+	FaultInterpretation * interp = static_cast<FaultInterpretation*>(this->epcDoc->getDataObjectByUuid(uuidFaultInterpretation));
 	if (interp == nullptr) {
 		FaultInterpretationTest * interpTest = new FaultInterpretationTest(this->epcDoc, true);
-		interp = static_cast<FaultInterpretation*>(this->epcDoc->getResqmlAbstractObjectByUuid(uuidFaultInterpretation));
+		interp = static_cast<FaultInterpretation*>(this->epcDoc->getDataObjectByUuid(uuidFaultInterpretation));
 		delete interpTest;
 	}
 
-	LocalDepth3dCrs * crs = static_cast<LocalDepth3dCrs *>(this->epcDoc->getResqmlAbstractObjectByUuid(LocalDepth3dCrsTest::defaultUuid));
+	LocalDepth3dCrs * crs = static_cast<LocalDepth3dCrs *>(this->epcDoc->getDataObjectByUuid(LocalDepth3dCrsTest::defaultUuid));
 	if (crs == nullptr) {
 		LocalDepth3dCrsTest * crsTest = new LocalDepth3dCrsTest(this->epcDoc, true);
-		crs = static_cast<LocalDepth3dCrs *>(this->epcDoc->getResqmlAbstractObjectByUuid(LocalDepth3dCrsTest::defaultUuid));
+		crs = static_cast<LocalDepth3dCrs *>(this->epcDoc->getDataObjectByUuid(LocalDepth3dCrsTest::defaultUuid));
 		delete crsTest;
 	}
 

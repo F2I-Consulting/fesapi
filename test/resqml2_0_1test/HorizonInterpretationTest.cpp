@@ -62,14 +62,14 @@ HorizonInterpretationTest::HorizonInterpretationTest(EpcDocument * epcDoc, bool 
 void HorizonInterpretationTest::initEpcDocHandler()
 {
 	// creating dependencies
-	Horizon* horizon = epcDoc->getResqmlAbstractObjectByUuid<Horizon>(uuidFeature);
+	Horizon* horizon = epcDoc->getDataObjectByUuid<Horizon>(uuidFeature);
 	if (horizon == nullptr) {
 		HorizonTest* horizonTest = new HorizonTest(this->epcDoc, true, uuidFeature, titleFeature);
-		horizon = epcDoc->getResqmlAbstractObjectByUuid<Horizon>(uuidFeature);
+		horizon = epcDoc->getDataObjectByUuid<Horizon>(uuidFeature);
 		delete horizonTest;
 	}
 
-	HorizonInterpretation* horizonInterp = epcDoc->getResqmlAbstractObjectByUuid<HorizonInterpretation>(uuid);
+	HorizonInterpretation* horizonInterp = epcDoc->getDataObjectByUuid<HorizonInterpretation>(uuid);
 	if (horizonInterp == nullptr) {
 		horizonInterp = this->epcDoc->createHorizonInterpretation(horizon, uuid, title);
 	}

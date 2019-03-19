@@ -22,6 +22,7 @@ under the License.
 
 #include "resqml2_0_1/StratigraphicUnitFeature.h"
 #include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
+#include "resqml2_0_1/SealedVolumeFrameworkRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -48,9 +49,9 @@ vector<Relationship> StratigraphicUnitInterpretation::getAllEpcRelationships() c
 {
 	vector<Relationship> result = AbstractFeatureInterpretation::getAllEpcRelationships();
 
-	for (unsigned int i = 0; i < stratigraphicColumnRankSet.size(); i++)
+	for (size_t i = 0; i < stratigraphicColumnRankSet.size(); ++i)
 	{
-		if (stratigraphicColumnRankSet[i])
+		if (stratigraphicColumnRankSet[i] != nullptr)
 		{
 			Relationship rel(stratigraphicColumnRankSet[i]->getPartNameInEpcDocument(), "", stratigraphicColumnRankSet[i]->getUuid());
 			rel.setSourceObjectType();
@@ -58,6 +59,18 @@ vector<Relationship> StratigraphicUnitInterpretation::getAllEpcRelationships() c
 		}
 		else
 			throw domain_error("The stratigraphicColumnRank Interpretation associated to this interpretation cannot be nullptr.");
+	}
+
+	for (size_t i = 0; i < svfSet.size(); ++i)
+	{
+		if (svfSet[i] != nullptr)
+		{
+			Relationship rel(svfSet[i]->getPartNameInEpcDocument(), "", svfSet[i]->getUuid());
+			rel.setSourceObjectType();
+			result.push_back(rel);
+		}
+		else
+			throw domain_error("The Sealed Volume Framework Representation associated to this interpretation cannot be nullptr.");
 	}
 
 	return result;

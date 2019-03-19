@@ -5,13 +5,13 @@ project (Fesapi_SRC)
 configure_file(${FESAPI_ROOT_DIR}/cmake/version_config.h.in ${FESAPI_ROOT_DIR}/src/version_config.h)
 
 # ============================================================================
-# Resqml/Witsqml proxies generation
+# Getting source files
 # ============================================================================
 
 set (RESQML_PREFIX_2 "resqml2")
 set (RESQML_PREFIX_2_0_1 "resqml2_0_1")
 set (RESQML_PREFIX_2_1 "resqml2_1")
-set (WITSML_PREFIX "witsml1_4_1_1")
+set (WITSML_PREFIX "witsml2_0")
 #set (PRODML_PREFIX_2_0 "prodml2_0")
 
 add_library (${CPP_LIBRARY_NAME} ${LIB_TYPE} "")
@@ -19,15 +19,20 @@ add_library (${CPP_LIBRARY_NAME} ${LIB_TYPE} "")
 target_compile_options(${CPP_LIBRARY_NAME}	PUBLIC
 	$<$<CXX_COMPILER_ID:MSVC>:/bigobj>
 	$<$<CXX_COMPILER_ID:MSVC>:/MP>
+	$<$<CXX_COMPILER_ID:MSVC>:/W4>
+	$<$<CXX_COMPILER_ID:GNU>:-Wall>
+	$<$<CXX_COMPILER_ID:GNU>:-Wextra>
+	$<$<CXX_COMPILER_ID:GNU>:-Wpedantic>
+	$<$<CXX_COMPILER_ID:CLANG>:-Weverything>
 )
 
 if (WIN32)
-	if (BUILD_SHARED_LIBS)
-		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE "-DFESAPI_DLL")
-	endif (BUILD_SHARED_LIBS)
+	if (NOT BUILD_SHARED_LIBS)
+		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE "-DFESAPI_STATIC")
+	endif ()
 	if (HDF5_BUILT_AS_DYNAMIC_LIB)
 		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE "-DH5_BUILT_AS_DYNAMIC_LIB")
-	endif (HDF5_BUILT_AS_DYNAMIC_LIB)
+	endif ()
 endif (WIN32)
 
 # Linker instructions
@@ -82,7 +87,7 @@ set (FESAPI_COMMON_NS common CACHE STRING "Namespace for common objects")
 #set (FESAPI_PRODML2_0_NS prodml2_0 CACHE STRING "Namespace for prodml2_0 objects")
 set (FESAPI_RESQML2_NS resqml2 CACHE STRING "Namespace for resqml2 objects")
 set (FESAPI_RESQML2_0_1_NS resqml2_0_1 CACHE STRING "Namespace for resqml2_0_1 objects")
-set (FESAPI_WITSML1_4_1_1_NS witsml1_4_1_1 CACHE STRING "Namespace for witsml1_4_1_1 objects")
+set (FESAPI_WITSML2_0_NS witsml2_0 CACHE STRING "Namespace for witsml1_4_1_1 objects")
 configure_file(${FESAPI_ROOT_DIR}/cmake/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/nsDefinitions.h) # Overwrite if different
 
 file (GLOB FESAPI_COMMON_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/common/*.cpp)
@@ -137,7 +142,7 @@ target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_INCLUDE_DIR})
 target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_C_INCLUDE_DIR})
 target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_INCLUDE_DIR})
 
-IF (UNIX)
+if (UNIX)
 	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${UUID_INCLUDE_DIR})
 ENDIF (UNIX)
 
@@ -147,7 +152,7 @@ target_include_directories(${CPP_LIBRARY_NAME} PUBLIC
 )
 
 # organizing sources and headers in the Visual Studio Project
-IF (WIN32)
+if (WIN32)
 	source_group ("common" FILES ${FESAPI_COMMON_SOURCES} ${FESAPI_COMMON_HEADERS})
 	source_group ("tools" FILES ${FESAPI_TOOLS_SOURCES} ${FESAPI_TOOLS_HEADERS})
 	source_group ("epc" FILES ${FESAPI_EPC_SOURCES} ${FESAPI_EPC_HEADERS})
@@ -161,9 +166,9 @@ IF (WIN32)
 #	source_group ("${PRODML_PREFIX_2_0}" FILES ${FESAPI_PRODML_2_0_SOURCES} ${FESAPI_PRODML_2_0_HEADERS})
 	
 	source_group ("proxies" FILES ${FESAPI_PROXIES_SOURCES} ${FESAPI_PROXIES_HEADERS})
-ENDIF (WIN32)
+endif (WIN32)
 
-IF (WITH_JAVA_WRAPPING)
+if (WITH_JAVA_WRAPPING)
 	find_package(JNI REQUIRED)
 	find_package(SWIG REQUIRED)
 	find_package(Java REQUIRED)
@@ -178,21 +183,20 @@ IF (WITH_JAVA_WRAPPING)
 	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/common)
 	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2)
 	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2_0_1)
-	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml1_4_1_1)
+	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml2_0)
 	
 	# Create the dedicated swig files
 	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2JavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigResqml2JavaInclude.i) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/swigWitsml1_4_1_1JavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigWitsml1_4_1_1JavaInclude.i) # Overwrite if different
 	configure_file(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR}/java/example/FesapiJavaExample.java) # Overwrite if different
 
 	# Filling
-	IF (WIN32)
+	if (WIN32)
 		set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} -c++ -java -package com.f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i")
 		execute_process(COMMAND powershell  ${EXECUTE_COMMAND})
-	ELSEIF (UNIX)
+	elseif (UNIX)
 		set ( EXECUTE_COMMAND ${SWIG_EXECUTABLE} -c++ -java -package com.f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i)
 		execute_process(COMMAND ${EXECUTE_COMMAND})
-	ENDIF (WIN32)
+	endif (WIN32)
 	message("SWIG files have been generated")
 	
 	# Building the jar
@@ -204,9 +208,9 @@ IF (WITH_JAVA_WRAPPING)
 	
 	target_include_directories(${CPP_LIBRARY_NAME} PUBLIC ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2})
 
-ENDIF (WITH_JAVA_WRAPPING)
+endif (WITH_JAVA_WRAPPING)
 
-IF (WITH_DOTNET_WRAPPING)
+if (WITH_DOTNET_WRAPPING)
 	find_package(SWIG REQUIRED)
 	
 	message("Generating SWIG files")
@@ -215,7 +219,6 @@ IF (WITH_DOTNET_WRAPPING)
 	
 	# Create the dedicated swig files
 	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2CsInclude.i ${FESAPI_ROOT_DIR}/swig/swigResqml2CsInclude.i) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/swigWitsml1_4_1_1CsInclude.i ${FESAPI_ROOT_DIR}/swig/swigWitsml1_4_1_1CsInclude.i) # Overwrite if different
 	configure_file(${FESAPI_ROOT_DIR}/cmake/Program.cs ${FESAPI_ROOT_DIR}/cs/example/Program.cs) # Overwrite if different
 	
 	# Filling
@@ -230,7 +233,7 @@ IF (WITH_DOTNET_WRAPPING)
 	#file(TO_NATIVE_PATH "${FESAPI_ROOT_DIR}/cs/src" DOS_STYLE_SOURCE_DIR)
 	configure_file(${FESAPI_ROOT_DIR}/cmake/fesapiCs.csproj.template ${FESAPI_ROOT_DIR}/cs/fesapiCs.csproj) # Overwrite if different
 	configure_file(${FESAPI_ROOT_DIR}/cmake/AssemblyInfo.cs ${FESAPI_ROOT_DIR}/cs/Properties/AssemblyInfo.cs) # Overwrite if different
-ENDIF (WITH_DOTNET_WRAPPING)
+endif (WITH_DOTNET_WRAPPING)
 
 # ============================================================================
 # Install FesapiCpp library
