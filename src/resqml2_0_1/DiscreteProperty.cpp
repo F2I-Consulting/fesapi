@@ -421,6 +421,10 @@ bool DiscreteProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKind*
 			return false;
 		}
 		if (epcDocument->getPropertyKindMapper() != nullptr) {
+			if (pk->isParentPartial()) {
+				epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the discrete property " + getUuid() + " is right because one if its parent property kind is abstract.");
+				return true;
+			}
 			if (!pk->isChildOf(resqml2__ResqmlPropertyKind__discrete)) {
 				if (!pk->isChildOf(resqml2__ResqmlPropertyKind__categorical)) {
 					epcDocument->addWarning("The discrete property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
@@ -433,8 +437,11 @@ bool DiscreteProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKind*
 			}
 		}
 		else {
-			epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the categorical property " + getUuid() + " is right because no property kind mapping files have been loaded.");
+			epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the discrete property " + getUuid() + " is right because no property kind mapping files have been loaded.");
 		}
+	}
+	else {
+		epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the discrete property " + getUuid() + " is right because it is abstract.");
 	}
 
 	return true;

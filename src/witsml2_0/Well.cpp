@@ -21,6 +21,8 @@ under the License.
 #include <stdexcept>
 #include <sstream>
 
+#include "tools/TimeTools.h"
+
 using namespace std;
 using namespace WITSML2_0_NS;
 using namespace gsoap_eml2_1;
@@ -82,9 +84,11 @@ void Well::setString(std::string* & strToBeSet, const std::string & strToSet) {
 	strToBeSet->assign(strToSet);
 }
 
+#define GETTER_PRESENCE_ATTRIBUTE_IMPL(attributeName) bool Well::has##attributeName() const { return static_cast<witsml2__Well*>(gsoapProxy2_1)->attributeName != nullptr; }
+
 #define GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE_IMPL(attributeName)\
 	void Well::set##attributeName(const std::string & attributeName) { setString(static_cast<witsml2__Well*>(gsoapProxy2_1)->attributeName, attributeName); }\
-	bool Well::has##attributeName() const { return static_cast<witsml2__Well*>(gsoapProxy2_1)->attributeName != nullptr; }\
+	GETTER_PRESENCE_ATTRIBUTE_IMPL(attributeName)\
 	std::string Well::get##attributeName() const {\
 		if (!has##attributeName()) { throw invalid_argument("The string attribute to get does not exist."); }\
 		return *static_cast<witsml2__Well*>(gsoapProxy2_1)->attributeName;\
@@ -113,7 +117,7 @@ GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE_IMPL(NumAPI)
 		well->attributeName->__item = value;\
 		well->attributeName->uom = uom;\
 	}\
-	bool Well::has##attributeName() const { return static_cast<witsml2__Well*>(gsoapProxy2_1)->attributeName != nullptr; }\
+	GETTER_PRESENCE_ATTRIBUTE_IMPL(attributeName)\
 	double Well::get##attributeName##Value() const {\
 		if (!has##attributeName()) { throw invalid_argument("The length measure attribute to get does not exist."); }\
 		return static_cast<witsml2__Well*>(gsoapProxy2_1)->attributeName->__item;\
@@ -125,6 +129,76 @@ GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE_IMPL(NumAPI)
 
 GETTER_AND_SETTER_WELL_LENGTH_MEASURE_ATTRIBUTE_IMPL(WaterDepth, soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap, 1))
 GETTER_AND_SETTER_WELL_LENGTH_MEASURE_ATTRIBUTE_IMPL(GroundElevation, soap_new_witsml2__WellElevationCoord(gsoapProxy2_1->soap, 1))
+
+#define GETTER_AND_SETTER_WELL_TIMESTAMP_ATTRIBUTE_IMPL(attributeName)\
+	void Well::set##attributeName(unsigned int attributeName) { setString(static_cast<witsml2__Well*>(gsoapProxy2_1)->attributeName, timeTools::convertUnixTimestampToIso(attributeName)); }\
+	GETTER_PRESENCE_ATTRIBUTE_IMPL(attributeName)\
+	unsigned int Well::get##attributeName() const {\
+		if (!has##attributeName()) { throw invalid_argument("The string attribute to get does not exist."); }\
+		return timeTools::convertIsoToUnixTimestamp(*static_cast<witsml2__Well*>(gsoapProxy2_1)->attributeName);\
+	}
+
+GETTER_AND_SETTER_WELL_TIMESTAMP_ATTRIBUTE_IMPL(DTimLicense)
+GETTER_AND_SETTER_WELL_TIMESTAMP_ATTRIBUTE_IMPL(DTimSpud)
+GETTER_AND_SETTER_WELL_TIMESTAMP_ATTRIBUTE_IMPL(DTimPa)
+
+void Well::setTimeZone(bool direction, unsigned short hours, unsigned short minutes)
+{
+	if (hours > 23) { throw invalid_argument("You cannot set a time zone superior to 23 hours"); }
+	if (minutes > 59) { throw invalid_argument("You cannot set a time zone superior to 59 minutes"); }
+	witsml2__Well* well = static_cast<witsml2__Well*>(gsoapProxy2_1);
+	if (well->TimeZone == nullptr) { well->TimeZone = soap_new_eml21__TimeZone(gsoapProxy2_1->soap, 1); }
+
+	if (hours == 00 && minutes == 0) {
+		well->TimeZone->assign("Z");
+		return;
+	}
+
+	std::ostringstream oss;
+	if (direction) {
+		oss << "+";
+	}
+	else {
+		oss << "-";
+	}
+
+	if (hours < 10) {
+		oss << "0";
+	}
+	oss << hours << ":";
+
+	if (minutes < 10) {
+		oss << "0";
+	}
+	oss << minutes;
+
+	well->TimeZone->assign(oss.str());
+}
+GETTER_PRESENCE_ATTRIBUTE_IMPL(TimeZone)
+bool Well::getTimeZoneDirection() const {
+	if (!hasTimeZone()) { throw invalid_argument("The  attribute to get does not exist."); }
+	return static_cast<witsml2__Well*>(gsoapProxy2_1)->TimeZone->at(0) != '-';
+}
+unsigned short Well::getTimeZoneHours() const {
+	if (!hasTimeZone()) { throw invalid_argument("The  attribute to get does not exist."); }
+	if (static_cast<witsml2__Well*>(gsoapProxy2_1)->TimeZone->size() == 1) { return 0; }
+	if (static_cast<witsml2__Well*>(gsoapProxy2_1)->TimeZone->size() != 6) { throw invalid_argument("The time zone does not looks to conform to the XSD standard."); }
+
+	istringstream iss(static_cast<witsml2__Well*>(gsoapProxy2_1)->TimeZone->substr(1,2));
+	unsigned short result;
+	iss >> result;
+	return result;
+}
+unsigned short Well::getTimeZoneMinutes() const {
+	if (!hasTimeZone()) { throw invalid_argument("The  attribute to get does not exist."); }
+	if (static_cast<witsml2__Well*>(gsoapProxy2_1)->TimeZone->size() == 1) { return 0; }
+	if (static_cast<witsml2__Well*>(gsoapProxy2_1)->TimeZone->size() != 6) { throw invalid_argument("The time zone does not looks to conform to the XSD standard."); }
+
+	istringstream iss(static_cast<witsml2__Well*>(gsoapProxy2_1)->TimeZone->substr(4, 2));
+	unsigned short result;
+	iss >> result;
+	return result;
+}
 
 double Well::getLocationProjectedX(unsigned int locationIndex)
 {

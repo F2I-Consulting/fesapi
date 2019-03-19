@@ -23,7 +23,7 @@ under the License.
 #include <iomanip>
 
 using namespace std;
-
+/*
 std::string timeTools::convertMicrosecondUnixTimestampToIso(long long ts)
 {
 	// microsecond part
@@ -44,7 +44,7 @@ std::string timeTools::convertMicrosecondUnixTimestampToIso(long long ts)
 
 	return oss.str();
 }
-
+*/
 std::string timeTools::convertUnixTimestampToIso(time_t ts)
 {
 	char buf[20]; // 19 for the string below +1 for the terminating char
