@@ -165,17 +165,17 @@ namespace COMMON_NS
 		
 		void addAlias(const std::string & authority, const std::string & title);
 		unsigned int getAliasCount() const;
-		std::string getAliasAuthorityAtIndex(const unsigned int & index) const;
-		std::string getAliasTitleAtIndex(const unsigned int & index) const;
+		std::string getAliasAuthorityAtIndex(unsigned int index) const;
+		std::string getAliasTitleAtIndex(unsigned int index) const;
 		
 		void pushBackExtraMetadata(const std::string & key, const std::string & value);
 		
 		unsigned int getExtraMetadataCount() const;
-		std::string getExtraMetadataKeyAtIndex(const unsigned int & index) const;
-		std::string getExtraMetadataStringValueAtIndex(const unsigned int & index) const;
+		std::string getExtraMetadataKeyAtIndex(unsigned int index) const;
+		std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
 
 		unsigned int getActivityCount() const;
-		RESQML2_NS::Activity* getActivity (const unsigned int & index) const;
+		RESQML2_NS::Activity* getActivity (unsigned int index) const;
 	};
 	
 	//************************************

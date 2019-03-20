@@ -20,6 +20,12 @@ under the License.
 
 #include "proxies/stdsoap2.h"
 
+namespace commontest {
+	// AbstractObject
+	static const char* authorityAlias = "Authorithy Alias Test";
+	static const char* titleAlias = "Alias Test";
+}
+
 namespace resqml2_0_1test {
 	// HdfProxy
 	static const char* uuidHdfProxy = "75f5b460-3ccb-4102-a06e-e9c1019769b2";
@@ -87,3 +93,8 @@ namespace resqml2_0_1test {
 	static const char* titlePartialUnstructuredGridRepresentation = "Partial Unstructured Grid Representation Test";
 }
 
+namespace witsml2_0test {
+	// HdfProxy
+	static const char* uuidWell = "4b4ef814-a891-46f5-bf10-3cc30be396a5";
+	static const char* titleWell = "Witsml Well Test";
+}
