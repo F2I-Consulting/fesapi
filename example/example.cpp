@@ -81,6 +81,7 @@ under the License.
 #include "resqml2_0_1/SubRepresentation.h"
 #include "resqml2_0_1/TimeSeries.h"
 #include "resqml2_0_1/ContinuousPropertySeries.h"
+#include "resqml2_0_1/RockFluidOrganizationInterpretation.h"
 
 #include "resqml2_0_1/PropertyKindMapper.h"
 
@@ -1284,6 +1285,25 @@ void serializeFluidBoundary(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractHdf
 	rep->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
 }
 
+void serializeRockFluidOrganization(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
+{
+	// EarthModel
+	OrganizationFeature * earthModelOrg = pck.createEarthModel("", "EarthModelOrg2");
+	earthModelOrg->setOriginator("Geosiris");
+
+	//RockFluid
+	RockFluidOrganizationInterpretation* rockFluidOrg = pck.createRockFluidOrganizationInterpretation(earthModelOrg, "b5bbfe42-4a63-11e9-9eeb-4f036e6e8141", "Rock Fluid org");
+
+	EarthModelInterpretation * earthModel = pck.createEarthModelInterpretation(earthModelOrg, "", "EarthModel2");
+	earthModel->setOriginator("Geosiris");
+	earthModel->setRockFluidOrganizationInterpretation(rockFluidOrg);
+
+	// ONE SUGAR
+	IjkGridExplicitRepresentation* singleCellIjkgrid = pck->getDataObjectByUuid<IjkGridExplicitRepresentation>("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b");
+	ULONG64 rockFluidUnitIndice = 0;
+	ijkgrid->setCellAssociationWithRockFluidOrganizationInterpretation(&rockFluidUnitIndice, 1000, rockFluidOrg);
+}
+
 void deserializePropertyKindMappingFiles(COMMON_NS::EpcDocument * pck)
 {
 	PropertyKindMapper* ptMapper = pck->getPropertyKindMapper();
@@ -1399,7 +1419,7 @@ bool serialize(const string & filePath)
 	serializeActivities(&pck);
 	serializeRepresentationSetRepresentation(&pck, hdfProxy);
 	serializeFluidBoundary(pck, hdfProxy);
-
+	serializeRockFluidOrganization(pck, hdfProxy);
 	// Add an extended core property before to serialize
 	pck.setExtendedCoreProperty("F2I-ExtendedCoreProp", "TestingVersion");
 
@@ -1783,6 +1803,18 @@ void deserializeFluidBoundary(COMMON_NS::EpcDocument & pck)
 		std::cout << "Point " << i << " Z=" << allXyzPoints[i * 3 + 2] << std::endl;
 	}
 	delete[] allXyzPoints;
+}
+
+void deserializeRockFluidOrganization(COMMON_NS::EpcDocument & pck)
+{
+	RockFluidOrganizationInterpretation* rockFluidOrg = pck.getDataObjectByUuid<RockFluidOrganizationInterpretation>("b5bbfe42-4a63-11e9-9eeb-4f036e6e8141");
+	if (rockFluidOrg == nullptr) return;
+	cout << "RockFluidRepresentationIndex: " rockFluidOrg->getRockFluidUnitInterpretationIndex() << endl;
+	showAllMetadata(rockFluidOrg);
+	for (size_t i = 0; i < rockFluidOrg->getGridRepresentationCount(); ++i) {
+		RESQML2_NS::AbstractGridRepresentation* grid = rockFluidOrg->getGridRepresentation(i);
+		showAllMetadata(grid);
+	}
 }
 
 /**
@@ -2898,6 +2930,7 @@ void deserialize(const string & inputFile)
 
 	deserializeGeobody(&pck);
 	deserializeFluidBoundary(pck);
+	deserializeRockFluidOrganization(pck);
 
 	std::vector<TectonicBoundaryFeature*> faultSet = pck.getFaultSet();
 	std::vector<PolylineSetRepresentation*> faultPolyRep = pck.getFaultPolylineSetRepSet();
