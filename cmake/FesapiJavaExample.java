@@ -53,7 +53,7 @@ public class FesapiJavaExample {
 	 */
 	static {
 		try {
-			System.loadLibrary("${CPP_LIBRARY_NAME}.${Fesapi_VERSION}");
+			System.loadLibrary("${ASSEMBLY_NAME}");
 		}
 		catch (UnsatisfiedLinkError e) {
 			System.out.println("UnsatisfiedLinkError : " + e.toString());

@@ -181,4 +181,3 @@ void PropertyKind::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 	}
 	parentPk->childPropertyKind.push_back(this);
 }
-

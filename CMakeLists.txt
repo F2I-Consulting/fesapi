@@ -15,6 +15,7 @@ set (Fesapi_VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR}.${Fesapi_VER
 
 set (CPP_LIBRARY_NAME FesapiCpp)
 set (CS_LIBRARY_NAME FesapiCs)
+set (SUFFIX_INCLUDES_VERSION TRUE)
 set (UNDER_DEV TRUE)
 if (${UNDER_DEV})
 	set (CPP_LIBRARY_NAME ${CPP_LIBRARY_NAME}UnderDev)
@@ -85,6 +86,10 @@ SET (HDF5_C_LIBRARY_RELEASE HDF5_C_LIBRARY_RELEASE-NOTFOUND CACHE FILEPATH "Path
 IF (NOT EXISTS ${HDF5_C_LIBRARY_RELEASE})
 	MESSAGE(WARNING "The HDF5 library (HDF5_C_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
 ENDIF ()
+SET (HDF5_C_LIBRARY_DEBUG HDF5_C_LIBRARY_DEBUG-NOTFOUND CACHE FILEPATH "Path to the file which contains the HDF5 C library debug")
+IF (NOT EXISTS ${HDF5_C_LIBRARY_DEBUG})
+	MESSAGE(WARNING "The HDF5 library (HDF5_C_LIBRARY_DEBUG variable) does not look to be a valid file. Please modify it.")
+ENDIF ()
 IF (WIN32)
 	SET (HDF5_BUILT_AS_DYNAMIC_LIB ON CACHE BOOL "Is your HDF5 library built as a dynamic library ?")
 ENDIF (WIN32)
@@ -99,6 +104,11 @@ MARK_AS_ADVANCED(CLEAR ZLIB_LIBRARY_RELEASE)
 IF (NOT EXISTS ${ZLIB_LIBRARY_RELEASE})
 	MESSAGE(WARNING "The zlib library (ZLIB_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
 ENDIF ()
+MARK_AS_ADVANCED(CLEAR ZLIB_LIBRARY_DEBUG)
+IF (NOT EXISTS ${ZLIB_LIBRARY_DEBUG})
+	MESSAGE(WARNING "The zlib library (ZLIB_LIBRARY_DEBUG variable) does not look to be a valid file. Please modify it.")
+ENDIF ()
+
 
 # Minizip
 SET (MINIZIP_INCLUDE_DIR MINIZIP_INCLUDE_DIR-NOTFOUND CACHE PATH "Path to the directory which contains the minizip header files")
@@ -109,11 +119,20 @@ SET (MINIZIP_LIBRARY_RELEASE MINIZIP_LIBRARY_RELEASE-NOTFOUND CACHE FILEPATH "Pa
 IF (NOT EXISTS ${MINIZIP_LIBRARY_RELEASE})
 	MESSAGE(WARNING "The Minizip library (MINIZIP_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
 ENDIF ()
+SET (MINIZIP_LIBRARY_DEBUG MINIZIP_LIBRARY_DEBUG-NOTFOUND CACHE FILEPATH "Path to the file which contains the minizip library DEBUG")
+IF (NOT EXISTS ${MINIZIP_LIBRARY_DEBUG})
+	MESSAGE(WARNING "The Minizip library (MINIZIP_LIBRARY_DEBUG variable) does not look to be a valid file. Please modify it.")
+ENDIF ()
+
 
 # Szip (only useful when using static linking to HDF5)
 SET (SZIP_LIBRARY_RELEASE SZIP_LIBRARY_RELEASE-NOTFOUND CACHE FILEPATH "Path to the file which contains the szip library release")
 IF (NOT EXISTS ${SZIP_LIBRARY_RELEASE} AND WIN32 AND NOT ${HDF5_BUILT_AS_DYNAMIC_LIB})
 	MESSAGE(WARNING "The Szip library (SZIP_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
+ENDIF ()
+SET (SZIP_LIBRARY_DEBUG SZIP_LIBRARY_DEBUG-NOTFOUND CACHE FILEPATH "Path to the file which contains the szip library DEBUG")
+IF (NOT EXISTS ${SZIP_LIBRARY_DEBUG} AND WIN32 AND NOT ${HDF5_BUILT_AS_DYNAMIC_LIB})
+	MESSAGE(WARNING "The Szip library (SZIP_LIBRARY_DEBUG variable) does not look to be a valid file. Please modify it.")
 ENDIF ()
 
 # Uuid

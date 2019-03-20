@@ -1931,7 +1931,7 @@ void deserializeStratiColumn(StratigraphicColumn * stratiColumn)
 
 void deserializeSealedSurfaceFramework(const COMMON_NS::EpcDocument & pck)
 {
-	const std::vector<RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation*> ssfVec = pck.getResqml2_0Objects<RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation>();
+	const std::vector<RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation*> ssfVec = pck.getDataObjects<RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation>();
 
 	for (size_t ssfIndex = 0; ssfIndex < ssfVec.size(); ++ssfIndex) {
 		std::cout << "\tSEALED SURFACE FRAMEWORK" << std::endl;
@@ -2013,7 +2013,7 @@ void deserializeSealedSurfaceFramework(const COMMON_NS::EpcDocument & pck)
 
 void deserializeSealedVolumeFramework(const COMMON_NS::EpcDocument & pck)
 {
-	const std::vector<RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation*> svfVec = pck.getResqml2_0Objects<RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation>();
+	const std::vector<RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation*> svfVec = pck.getDataObjects<RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation>();
 
 	for (size_t svfIndex = 0; svfIndex < svfVec.size(); ++svfIndex) {
 		std::cout << "\tSEALED VOLUME FRAMEWORK" << std::endl;
@@ -3040,7 +3040,7 @@ void deserializePerforations(COMMON_NS::EpcDocument & pck)
 {
 	cout << endl << "PERFORATIONS" << endl;
 
-	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = static_cast<WITSML2_0_NS::WellboreCompletion*>(pck.getDataObjectByUuid("7bda8ecf-2037-4dc7-8c59-db6ca09f2008"));
+	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = pck.getDataObjectByUuid<WITSML2_0_NS::WellboreCompletion>("7bda8ecf-2037-4dc7-8c59-db6ca09f2008");
 	if (wellboreCompletion == nullptr) {
 		return;
 	}
@@ -3966,7 +3966,7 @@ int main()
 	}
 	catch (const std::invalid_argument & Exp)
 	{
-		std::cerr << "Error : " << Exp.what() << ".\n";
+		std::cerr << "Error : " << Exp.what() << std::endl;
 	}
 
 	//cout << "Press enter to continue..." << endl;
