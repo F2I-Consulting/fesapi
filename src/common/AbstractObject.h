@@ -65,12 +65,12 @@ namespace COMMON_NS
 		/**
 		* Get the key of a string value pair at a particular index in the extra metadata set
 		*/
-		std::string getExtraMetadataKeyAtIndexV2_0_1(const unsigned int index) const;
+		std::string getExtraMetadataKeyAtIndexV2_0_1(unsigned int index) const;
 
 		/**
 		* Get the string value of a string value pair at a particular index in the extra metadata set
 		*/
-		std::string getExtraMetadataStringValueAtIndexV2_0_1(const unsigned int index) const;
+		std::string getExtraMetadataStringValueAtIndexV2_0_1(unsigned int index) const;
 
 	protected:
 
@@ -286,12 +286,12 @@ namespace COMMON_NS
 		/**
 		* Get the alias authority at a particular index in the aliases set.
 		*/
-		std::string getAliasAuthorityAtIndex(const unsigned int index) const;
+		std::string getAliasAuthorityAtIndex(unsigned int index) const;
 
 		/**
 		* Get the alias title at a particular index in the aliases set.
 		*/
-		std::string getAliasTitleAtIndex(const unsigned int index) const;
+		std::string getAliasTitleAtIndex(unsigned int index) const;
 
 		/**
 		* Get all the activities where the instance is involved.
@@ -306,7 +306,7 @@ namespace COMMON_NS
 		/**
 		* Get the associated activity at a particular index.
 		*/
-		RESQML2_NS::Activity* getActivity (const unsigned int index) const;
+		RESQML2_NS::Activity* getActivity(unsigned int index) const;
 
 		/**
 		* Push back an extra metadata (not a standard one)
@@ -336,12 +336,12 @@ namespace COMMON_NS
 		/**
 		* Get the key of a string value pair at a particular index in the extra metadata set
 		*/
-		std::string getExtraMetadataKeyAtIndex(const unsigned int index) const;
+		std::string getExtraMetadataKeyAtIndex(unsigned int index) const;
 
 		/**
 		* Get the string value of a string value pair at a particular index in the extra metadata set
 		*/
-		std::string getExtraMetadataStringValueAtIndex(const unsigned int index) const;
+		std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
 
 		static const char* RESQML_2_0_CONTENT_TYPE_PREFIX;
 		static const char* RESQML_2_0_1_CONTENT_TYPE_PREFIX;
