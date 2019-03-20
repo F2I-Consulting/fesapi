@@ -22,31 +22,17 @@ under the License.
 #include "witsml2_0/Wellbore.h"
 #include "witsml2_0/WellCompletion.h"
 
-#define GETTER_PRESENCE_ATTRIBUTE(attributeName) DLL_IMPORT_OR_EXPORT bool has##attributeName() const;
-
-#define GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(attributeName)\
-	DLL_IMPORT_OR_EXPORT void set##attributeName(const std::string & attributeName);\
-	GETTER_PRESENCE_ATTRIBUTE(attributeName)\
-	DLL_IMPORT_OR_EXPORT std::string get##attributeName() const;
-
-#define GETTER_AND_SETTER_WELL_UINT_ATTRIBUTE(attributeName)\
-	DLL_IMPORT_OR_EXPORT void set##attributeName(unsigned int attributeName);\
-	GETTER_PRESENCE_ATTRIBUTE(attributeName)\
-	DLL_IMPORT_OR_EXPORT unsigned int get##attributeName() const;
-
-#define GETTER_AND_SETTER_WELL_LENGTH_MEASURE_ATTRIBUTE(attributeName)\
-	DLL_IMPORT_OR_EXPORT void set##attributeName(double value, gsoap_eml2_1::eml21__LengthUom uom);\
-	GETTER_PRESENCE_ATTRIBUTE(attributeName)\
-	DLL_IMPORT_OR_EXPORT double get##attributeName##Value() const;\
-	DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom get##attributeName##Uom() const;
-
 namespace WITSML2_0_NS
 {
 	class Well : public WITSML2_0_NS::AbstractObject
 	{
-	private:
-		void setString(std::string* & strToBeSet, const std::string & strToSet);
 	public:
+
+		/**
+		* Only to be used in partial transfer context
+		*/
+		Well(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::AbstractObject(partialObject) {}
+
 		/**
 		* Creates an instance of this class in a gsoap context.
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
@@ -74,27 +60,27 @@ namespace WITSML2_0_NS
 		*/
 		~Well() {}
 
-		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(NameLegal)
-		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(NumLicense)
-		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(NumGovt)
-		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(Field)
-		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(Country)
-		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(State)
-		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(County)
-		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(Region)
-		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(District)
-		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(Block)
-		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(Operator)
-		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(OperatorDiv)
-		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(OriginalOperator)
-		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(NumAPI)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NameLegal)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumLicense)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumGovt)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Field)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Country)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, State)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, County)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Region)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, District)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Block)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Operator)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, OperatorDiv)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, OriginalOperator)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumAPI)
 
-		GETTER_AND_SETTER_WELL_LENGTH_MEASURE_ATTRIBUTE(WaterDepth)
-		GETTER_AND_SETTER_WELL_LENGTH_MEASURE_ATTRIBUTE(GroundElevation)
+		GETTER_AND_SETTER_LENGTH_MEASURE_ATTRIBUTE(WaterDepth)
+		GETTER_AND_SETTER_LENGTH_MEASURE_ATTRIBUTE(GroundElevation)
 
-		GETTER_AND_SETTER_WELL_UINT_ATTRIBUTE(DTimLicense)
-		GETTER_AND_SETTER_WELL_UINT_ATTRIBUTE(DTimSpud)
-		GETTER_AND_SETTER_WELL_UINT_ATTRIBUTE(DTimPa)
+		GETTER_AND_SETTER_TIME_T_ATTRIBUTE(DTimLicense)
+		GETTER_AND_SETTER_TIME_T_ATTRIBUTE(DTimSpud)
+		GETTER_AND_SETTER_TIME_T_ATTRIBUTE(DTimPa)
 
 		/**
 		* Set the time zone in which the well is located. It is the deviation in hours and minutes from UTC. This should be the normal time zone at the well and not a seasonally-adjusted value, such as daylight savings time

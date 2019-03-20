@@ -131,6 +131,11 @@ const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 	{\
 		return createPartial<className>(dor->UUID, dor->Title);\
 	}
+#define CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(className)\
+	(resqmlContentType.compare(className::XML_TAG) == 0)\
+	{\
+		return createPartial<className>(dor->Uuid, dor->Title);\
+	}
 
 namespace // anonymous namespace. Use only in that file.
 {
@@ -1338,7 +1343,7 @@ std::string EpcDocument::getExtendedCoreProperty(const std::string & key)
 
 COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_resqml2_0_1::eml20__DataObjectReference* dor)
 {
-	const size_t lastEqualCharPos = dor->ContentType.find_last_of('_'); // The XML tag is after "obj_"
+	const size_t lastEqualCharPos = dor->ContentType.find_last_of('_'); // The XML tag is after "type=obj_"
 	const string resqmlContentType = dor->ContentType.substr(lastEqualCharPos + 1);
 
 	if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(MdDatum)
@@ -1400,6 +1405,21 @@ COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_resqml2_0_1::eml20__
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(GeobodyFeature)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(GeobodyBoundaryInterpretation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(GeobodyInterpretation)
+	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
+	{
+		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
+	}
+
+	throw invalid_argument("The content type " + resqmlContentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
+}
+
+COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_eml2_1::eml21__DataObjectReference* dor)
+{
+	const size_t lastEqualCharPos = dor->ContentType.find_last_of('='); // The XML tag is after "type="
+	const string resqmlContentType = dor->ContentType.substr(lastEqualCharPos + 1);
+
+	if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Well)
+	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Wellbore)
 	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
@@ -2366,8 +2386,8 @@ WITSML2_0_NS::Wellbore* EpcDocument::createWellbore(WITSML2_0_NS::Well* witsmlWe
 	const std::string & guid,
 	const std::string & title,
 	gsoap_eml2_1::eml21__WellStatus statusWellbore,
-	const bool & isActive,
-	const bool & achievedTD)
+	bool isActive,
+	bool achievedTD)
 {
 	Wellbore* result = new Wellbore(witsmlWell, guid, title, statusWellbore, isActive, achievedTD);
 	addFesapiWrapperAndDeleteItIfException(result);
@@ -2390,6 +2410,16 @@ WITSML2_0_NS::WellboreCompletion* EpcDocument::createWellboreCompletion(WITSML2_
 	const std::string & wellCompletionName)
 {
 	WellboreCompletion* result = new WellboreCompletion(witsmlWellbore, wellCompletion, guid, title, wellCompletionName);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_0_NS::Trajectory* EpcDocument::createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
+	const std::string & guid,
+	const std::string & title,
+	gsoap_eml2_1::witsml2__ChannelStatus channelStatus)
+{
+	Trajectory* result = new Trajectory(witsmlWellbore, guid, title, channelStatus);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }

@@ -18,11 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "witsml2_0/AbstractObject.h"
+#include "witsml2_0/WellboreObject.h"
 
 namespace WITSML2_0_NS
 {
-	class DLL_IMPORT_OR_EXPORT WellboreCompletion : public WITSML2_0_NS::AbstractObject
+	class WellboreCompletion : public WITSML2_0_NS::WellboreObject
 	{
 	public:
 		WellboreCompletion(class Wellbore* witsmlWellbore,
@@ -34,7 +34,7 @@ namespace WITSML2_0_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreCompletion(gsoap_eml2_1::witsml2__WellboreCompletion* fromGsoap) :AbstractObject(fromGsoap) {}
+		WellboreCompletion(gsoap_eml2_1::witsml2__WellboreCompletion* fromGsoap) :WellboreObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -43,24 +43,21 @@ namespace WITSML2_0_NS
 
 		gsoap_eml2_1::eml21__DataObjectReference* getWellboreDor() const;
 
-		class Wellbore* getWellbore() const;
-
 		gsoap_eml2_1::eml21__DataObjectReference* getWellCompletionDor() const;
 
-		class WellCompletion* getWellCompletion() const;
+		DLL_IMPORT_OR_EXPORT class WellCompletion* getWellCompletion() const;
 
-		void setWellbore(class Wellbore* witsmlWellbore);
+		DLL_IMPORT_OR_EXPORT void setWellbore(class Wellbore* witsmlWellbore);
 		
-		void setWellCompletion(class WellCompletion* wellCompletion);
+		DLL_IMPORT_OR_EXPORT void setWellCompletion(class WellCompletion* wellCompletion);
 
-		void pushBackPerforation(const std::string & datum,
+		DLL_IMPORT_OR_EXPORT void pushBackPerforation(const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom MdUnit,
 			const double & TopMd,
 			const double & BaseMd, 
 			const std::string & guid = "");
 
-		// bien préciser dans la doc qu'on peut mettre -1 manuellement pour les dates et "" pour le guid
-		void pushBackPerforationHistoryEntry(const std::string & perforationGuid,
+		DLL_IMPORT_OR_EXPORT void pushBackPerforationHistoryEntry(const std::string & perforationGuid,
 			gsoap_eml2_1::witsml2__PerforationStatus perforationStatus,
 			const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom MdUnit,
@@ -70,69 +67,69 @@ namespace WITSML2_0_NS
 			const time_t & endDate = -1,
 			const std::string & guid = "");
 
-		unsigned int getPerforationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getPerforationCount() const;
 
-		bool hasPerforationMdDatum(const std::string & guid) const;
+		DLL_IMPORT_OR_EXPORT bool hasPerforationMdDatum(const std::string & guid) const;
 		
-		std::string getPerforationMdDatum(const std::string & guid) const;
+		DLL_IMPORT_OR_EXPORT std::string getPerforationMdDatum(const std::string & guid) const;
 		
-		bool hasPerforationMdUnit(const std::string & guid) const;
+		DLL_IMPORT_OR_EXPORT bool hasPerforationMdUnit(const std::string & guid) const;
 		
-		gsoap_eml2_1::eml21__LengthUom getPerforationMdUnit(const std::string & guid) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getPerforationMdUnit(const std::string & guid) const;
 		
-		bool hasPerforationTopMd(const std::string & guid) const;
+		DLL_IMPORT_OR_EXPORT bool hasPerforationTopMd(const std::string & guid) const;
 		
-		double getPerforationTopMd(const std::string & guid) const;
+		DLL_IMPORT_OR_EXPORT double getPerforationTopMd(const std::string & guid) const;
 
-		bool hasPerforationBaseMd(const std::string & guid) const;
+		DLL_IMPORT_OR_EXPORT bool hasPerforationBaseMd(const std::string & guid) const;
 
-		double getPerforationBaseMd(const std::string & guid) const;
+		DLL_IMPORT_OR_EXPORT double getPerforationBaseMd(const std::string & guid) const;
 
-		unsigned int getHistoryEntryCount(const std::string & perforationGuid) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getHistoryEntryCount(const std::string & perforationGuid) const;
 
-		bool hasPerforationHistoryEntryStatus(const std::string & guid,
+		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryEntryStatus(const std::string & guid,
 			const std::string & perforationGuid) const;
 
-		gsoap_eml2_1::witsml2__PerforationStatus getPerforationHistoryEntryStatus(const std::string & guid,
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::witsml2__PerforationStatus getPerforationHistoryEntryStatus(const std::string & guid,
 			const std::string & perforationGuid) const;
 
-		std::string getPerforationHistoryEntryStatusToString(const std::string & guid,
+		DLL_IMPORT_OR_EXPORT std::string getPerforationHistoryEntryStatusToString(const std::string & guid,
 			const std::string & perforationGuid) const;
 
-		bool hasPerforationHistoryEntryStartDate(const std::string & guid,
+		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryEntryStartDate(const std::string & guid,
 			const std::string & perforationGuid) const;
 
-		time_t getPerforationHistoryEntryStartDate(const std::string & guid,
+		DLL_IMPORT_OR_EXPORT time_t getPerforationHistoryEntryStartDate(const std::string & guid,
 			const std::string & perforationGuid) const;
 
-		bool hasPerforationHistoryEntryEndDate(const std::string & guid,
+		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryEntryEndDate(const std::string & guid,
 			const std::string & perforationGuid) const;
 
-		time_t getPerforationHistoryEntryEndDate(const std::string & guid,
-			const std::string & perforationGuid) const;
-		
-		bool hasPerforationHistoryEntryMdDatum(const std::string & guid,
+		DLL_IMPORT_OR_EXPORT time_t getPerforationHistoryEntryEndDate(const std::string & guid,
 			const std::string & perforationGuid) const;
 		
-		std::string getPerforationHistoryEntryMdDatum(const std::string & guid,
+		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryEntryMdDatum(const std::string & guid,
 			const std::string & perforationGuid) const;
 		
-		bool hasPerforationHistoryEntryMdUnit(const std::string & guid,
-			const std::string & perforationGuid) const;
-
-		gsoap_eml2_1::eml21__LengthUom getPerforationHistoryEntryMdUnit(const std::string & guid,
-			const std::string & perforationGuid) const;
-
-		bool hasPerforationHistoryEntryTopMd(const std::string & guid,
-			const std::string & perforationGuid) const;
-
-		double getPerforationHistoryEntryTopMd(const std::string & guid,
+		DLL_IMPORT_OR_EXPORT std::string getPerforationHistoryEntryMdDatum(const std::string & guid,
 			const std::string & perforationGuid) const;
 		
-		bool hasPerforationHistoryEntryBaseMd(const std::string & guid,
+		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryEntryMdUnit(const std::string & guid,
 			const std::string & perforationGuid) const;
 
-		double getPerforationHistoryEntryBaseMd(const std::string & guid,
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getPerforationHistoryEntryMdUnit(const std::string & guid,
+			const std::string & perforationGuid) const;
+
+		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryEntryTopMd(const std::string & guid,
+			const std::string & perforationGuid) const;
+
+		DLL_IMPORT_OR_EXPORT double getPerforationHistoryEntryTopMd(const std::string & guid,
+			const std::string & perforationGuid) const;
+		
+		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryEntryBaseMd(const std::string & guid,
+			const std::string & perforationGuid) const;
+
+		DLL_IMPORT_OR_EXPORT double getPerforationHistoryEntryBaseMd(const std::string & guid,
 			const std::string & perforationGuid) const;
 
 		/**
@@ -142,8 +139,8 @@ namespace WITSML2_0_NS
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	private:
 		gsoap_eml2_1::witsml2__PerforationSetInterval* getPerforation(const std::string & guid) const;

@@ -35,4 +35,3 @@ std::string AbstractObject::getPartNameInEpcDocument() const
 {
 	return getXmlTag() + "_" + getUuid() + ".xml";
 }
-

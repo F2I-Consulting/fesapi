@@ -20,6 +20,8 @@ under the License.
 
 #include "common/AbstractObject.h"
 
+#include "witsml2_0/MacroDefinitions.h"
+
 namespace WITSML2_0_NS
 {
 	class DLL_IMPORT_OR_EXPORT AbstractObject : public COMMON_NS::AbstractObject
