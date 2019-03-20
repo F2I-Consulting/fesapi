@@ -43,6 +43,7 @@ under the License.
 using namespace std;
 using namespace COMMON_NS;
 using namespace gsoap_resqml2_0_1;
+using namespace gsoap_eml2_1;
 
 char AbstractObject::citationFormat[257] = "[F2I-CONSULTING:fesapi " FESAPI_VERSION "]";
 const char* AbstractObject::RESQML_2_0_CONTENT_TYPE_PREFIX = "application/x-resqml+xml;version=2.0;type=obj_";
@@ -323,12 +324,12 @@ void AbstractObject::setEditor(const std::string & editor)
 	if (!editor.empty()) {
 		if (gsoapProxy2_0_1 != nullptr) {
 			if (gsoapProxy2_0_1->Citation->Editor == nullptr)
-				gsoapProxy2_0_1->Citation->Editor = soap_new_std__string(gsoapProxy2_0_1->soap, 1);
+				gsoapProxy2_0_1->Citation->Editor = gsoap_resqml2_0_1::soap_new_std__string(gsoapProxy2_0_1->soap, 1);
 			gsoapProxy2_0_1->Citation->Editor->assign(editor);
 		}
 		else {
 			if (gsoapProxy2_1->Citation->Editor == nullptr)
-				gsoapProxy2_1->Citation->Editor = soap_new_std__string(gsoapProxy2_1->soap, 1);
+				gsoapProxy2_1->Citation->Editor = gsoap_eml2_1::soap_new_std__string(gsoapProxy2_1->soap, 1);
 			gsoapProxy2_1->Citation->Editor->assign(editor);
 		}
 	}
@@ -396,12 +397,12 @@ void AbstractObject::setDescription(const std::string & description)
 	{
 		if (gsoapProxy2_0_1 != nullptr) {
 			if (gsoapProxy2_0_1->Citation->Description == nullptr)
-				gsoapProxy2_0_1->Citation->Description = soap_new_std__string(gsoapProxy2_0_1->soap, 1);
+				gsoapProxy2_0_1->Citation->Description = gsoap_resqml2_0_1::soap_new_std__string(gsoapProxy2_0_1->soap, 1);
 			gsoapProxy2_0_1->Citation->Description->assign(description);
 		}
 		else {
 			if (gsoapProxy2_1->Citation->Description == nullptr)
-				gsoapProxy2_1->Citation->Description = soap_new_std__string(gsoapProxy2_1->soap, 1);
+				gsoapProxy2_1->Citation->Description = gsoap_eml2_1::soap_new_std__string(gsoapProxy2_1->soap, 1);
 			gsoapProxy2_1->Citation->Description->assign(description);
 		}
 	}
@@ -462,12 +463,12 @@ void AbstractObject::setDescriptiveKeywords(const std::string & descriptiveKeywo
 	{
 		if (gsoapProxy2_0_1 != nullptr) {
 			if (gsoapProxy2_0_1->Citation->DescriptiveKeywords == nullptr)
-				gsoapProxy2_0_1->Citation->DescriptiveKeywords = soap_new_std__string(gsoapProxy2_0_1->soap, 1);
+				gsoapProxy2_0_1->Citation->DescriptiveKeywords = gsoap_resqml2_0_1::soap_new_std__string(gsoapProxy2_0_1->soap, 1);
 			gsoapProxy2_0_1->Citation->DescriptiveKeywords->assign(descriptiveKeywords);
 		}
 		else {
 			if (gsoapProxy2_1->Citation->DescriptiveKeywords == nullptr)
-				gsoapProxy2_1->Citation->DescriptiveKeywords = soap_new_std__string(gsoapProxy2_1->soap, 1);
+				gsoapProxy2_1->Citation->DescriptiveKeywords = gsoap_eml2_1::soap_new_std__string(gsoapProxy2_1->soap, 1);
 			gsoapProxy2_1->Citation->DescriptiveKeywords->assign(descriptiveKeywords);
 		}
 	}
@@ -482,12 +483,12 @@ void AbstractObject::setVersionString(const std::string & versionString)
 	{
 		if (gsoapProxy2_0_1 != nullptr) {
 			if (gsoapProxy2_0_1->Citation->VersionString == nullptr)
-				gsoapProxy2_0_1->Citation->VersionString = soap_new_std__string(gsoapProxy2_0_1->soap, 1);
+				gsoapProxy2_0_1->Citation->VersionString = gsoap_resqml2_0_1::soap_new_std__string(gsoapProxy2_0_1->soap, 1);
 			gsoapProxy2_0_1->Citation->VersionString->assign(versionString);
 		}
 		else {
 			if (gsoapProxy2_1->Citation->VersionString == nullptr)
-				gsoapProxy2_1->Citation->VersionString = soap_new_std__string(gsoapProxy2_1->soap, 1);
+				gsoapProxy2_1->Citation->VersionString = gsoap_eml2_1::soap_new_std__string(gsoapProxy2_1->soap, 1);
 			gsoapProxy2_1->Citation->VersionString->assign(versionString);
 		}
 	}
@@ -582,7 +583,7 @@ eml20__DataObjectReference* AbstractObject::newResqmlReference() const
 	result->ContentType = getContentType();
 	if (gsoapProxy2_0_1 != nullptr && !getVersionString().empty())
 	{
-		result->VersionString = soap_new_std__string(gsoapProxy2_0_1->soap, 1);
+		result->VersionString = gsoap_resqml2_0_1::soap_new_std__string(gsoapProxy2_0_1->soap, 1);
 		result->VersionString->assign(getVersionString());
 	}
 
@@ -666,11 +667,19 @@ void AbstractObject::addAlias(const std::string & authority, const std::string &
 	if (partialObject != nullptr)
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
-	eml20__ObjectAlias* alias = soap_new_eml20__ObjectAlias(gsoapProxy2_0_1->soap, 1);
-	alias->authority = soap_new_std__string(gsoapProxy2_0_1->soap, 1);
-	alias->authority->assign(authority);
-	alias->Identifier = title;
-	static_cast<resqml2__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->Aliases.push_back(alias);
+	if (gsoapProxy2_0_1 != nullptr) {
+		eml20__ObjectAlias* alias = soap_new_eml20__ObjectAlias(gsoapProxy2_0_1->soap, 1);
+		alias->authority = gsoap_resqml2_0_1::soap_new_std__string(gsoapProxy2_0_1->soap, 1);
+		alias->authority->assign(authority);
+		alias->Identifier = title;
+		gsoapProxy2_0_1->Aliases.push_back(alias);
+	}
+	else {
+		eml21__ObjectAlias* alias = soap_new_eml21__ObjectAlias(gsoapProxy2_1->soap, 1);
+		alias->authority = authority;
+		alias->Identifier = title;
+		gsoapProxy2_1->Aliases.push_back(alias);
+	}
 }
 
 unsigned int AbstractObject::getAliasCount() const
@@ -678,24 +687,47 @@ unsigned int AbstractObject::getAliasCount() const
 	if (partialObject != nullptr)
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
-	return static_cast<resqml2__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->Aliases.size();
+	size_t count = 0;
+	
+	if (gsoapProxy2_0_1 != nullptr) {
+		count = gsoapProxy2_0_1->Aliases.size();
+	}
+	else {
+		count = gsoapProxy2_1->Aliases.size();
+	}
+
+	if (count > (std::numeric_limits<unsigned int>::max)()) {
+			throw range_error("There is too much aliases for fesapi.");
+	}
+
+	return static_cast<unsigned int>(count);
 }
 
-std::string AbstractObject::getAliasAuthorityAtIndex(const unsigned int & index) const
+std::string AbstractObject::getAliasAuthorityAtIndex(const unsigned int index) const
 {
 	if (partialObject != nullptr)
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
-	if (getAliasCount() <= index)
+	if (getAliasCount() <= index) {
 		throw out_of_range("The index is out of range.");
+	}
 
-	if ((static_cast<eml20__AbstractCitedDataObject*>(gsoapProxy2_0_1)->Aliases)[index]->authority)
-		return *((static_cast<eml20__AbstractCitedDataObject*>(gsoapProxy2_0_1)->Aliases)[index]->authority);
+	if (gsoapProxy2_0_1 != nullptr)
+	{
+		if ((gsoapProxy2_0_1->Aliases)[index]->authority) {
+			return *((gsoapProxy2_0_1->Aliases)[index]->authority);
+		}
+		else {
+			return std::string();
+		}
+	}
 	else
-		return "";
+	{
+		return (gsoapProxy2_1->Aliases)[index]->authority;
+	}
 }
 
-std::string AbstractObject::getAliasTitleAtIndex(const unsigned int & index) const
+std::string AbstractObject::getAliasTitleAtIndex(const unsigned int index) const
 {
 	if (partialObject != nullptr)
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
@@ -703,7 +735,12 @@ std::string AbstractObject::getAliasTitleAtIndex(const unsigned int & index) con
 	if (getAliasCount() <= index)
 		throw out_of_range("The index is out of range.");
 
-	return (static_cast<eml20__AbstractCitedDataObject*>(gsoapProxy2_0_1)->Aliases)[index]->Identifier;
+	if (gsoapProxy2_0_1 != nullptr) {
+		return (gsoapProxy2_0_1->Aliases)[index]->Identifier;
+	}
+	else {
+		return (gsoapProxy2_1->Aliases)[index]->Identifier;
+	}
 }
 
 const std::vector<RESQML2_NS::Activity*> & AbstractObject::getActivitySet() const
@@ -716,7 +753,7 @@ unsigned int AbstractObject::getActivityCount() const
 	return activitySet.size();
 }
 
-RESQML2_NS::Activity* AbstractObject::getActivity (const unsigned int & index) const
+RESQML2_NS::Activity* AbstractObject::getActivity (const unsigned int index) const
 {
 	if (partialObject != nullptr)
 			throw invalid_argument("The wrapped gsoap proxy must not be null");
@@ -787,7 +824,7 @@ unsigned int AbstractObject::getExtraMetadataCountV2_0_1() const
 	return static_cast<resqml2__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata.size();
 }
 
-std::string AbstractObject::getExtraMetadataKeyAtIndexV2_0_1(const unsigned int & index) const
+std::string AbstractObject::getExtraMetadataKeyAtIndexV2_0_1(const unsigned int index) const
 {
 	if (getExtraMetadataCount() <= index) {
 		throw out_of_range("The index is out of range.");
@@ -796,7 +833,7 @@ std::string AbstractObject::getExtraMetadataKeyAtIndexV2_0_1(const unsigned int 
 	return (static_cast<resqml2__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata)[index]->Name;
 }
 
-std::string AbstractObject::getExtraMetadataStringValueAtIndexV2_0_1(const unsigned int & index) const
+std::string AbstractObject::getExtraMetadataStringValueAtIndexV2_0_1(const unsigned int index) const
 {
 	if (getExtraMetadataCount() <= index) {
 		throw out_of_range("The index is out of range.");
@@ -862,7 +899,7 @@ unsigned int AbstractObject::getExtraMetadataCount() const
 /**
 * Get the key of a string value pair at a particular index in the extra metadata set
 */
-std::string AbstractObject::getExtraMetadataKeyAtIndex(const unsigned int & index) const
+std::string AbstractObject::getExtraMetadataKeyAtIndex(const unsigned int index) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		return getExtraMetadataKeyAtIndexV2_0_1(index);
@@ -875,7 +912,7 @@ std::string AbstractObject::getExtraMetadataKeyAtIndex(const unsigned int & inde
 /**
 * Get the string value of a string value pair at a particular index in the extra metadata set
 */
-std::string AbstractObject::getExtraMetadataStringValueAtIndex(const unsigned int & index) const
+std::string AbstractObject::getExtraMetadataStringValueAtIndex(const unsigned int index) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		return getExtraMetadataStringValueAtIndexV2_0_1(index);

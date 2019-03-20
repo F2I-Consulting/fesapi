@@ -7,7 +7,7 @@ to you under the Apache License, Version 2.0 (the
 "License"; you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
-  http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing,
 software distributed under the License is distributed on an
@@ -18,22 +18,33 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include <iostream>
 #include "../AbstractObjectTest.h"
+#include <iostream>
 
 namespace COMMON_NS {
 	class EpcDocument;
 }
 
-namespace RESQML2_0_1_NS {
-	class AbstractResqmlDataObject;
-}
-
-namespace resqml2_0_1test {
-	class AbstractResqmlDataObjectTest : public commontest::AbstractObjectTest{
+namespace witsml2_0test {
+	class WellTest : public commontest::AbstractObjectTest {
 	public:
-		AbstractResqmlDataObjectTest(const std::string & epcDocPath, const std::string & uuid, const std::string & title);
-		AbstractResqmlDataObjectTest(COMMON_NS::EpcDocument * epcDoc, const std::string & uuid, const std::string & title);
+		/**
+		* Creation of a testing object from an EPC document path. At serialize() call,
+		* exising .epc file will be erased.
+		* @param epcDocPath the path of the .epc file (including .epc extension)
+		*/
+		WellTest(const std::string & epcDocPath);
+
+		/**
+		* Creation of a testing object from an existing EPC document.
+		* @param epcDoc an existing EPC document
+		* @param init true if this object is created for initialization purpose else false if it is
+		* created for reading purpose. According to init value a iniEpcDoc() or readEpcDoc() is called.
+		*/
+		WellTest(COMMON_NS::EpcDocument* epcDoc, bool init);
+	protected:
+		void initEpcDocHandler();
+		void readEpcDocHandler();
 	};
 }
 
