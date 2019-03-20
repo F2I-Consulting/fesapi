@@ -120,6 +120,11 @@ namespace RESQML2_NS
 		*/
 		virtual bool isAbstract() const = 0;
 
+		/**
+		* Check if this property kind is partial or if one of its parent is partial.
+		*/
+		virtual bool isParentPartial() const = 0;
+
 	protected:
 		virtual void setXmlParentPropertyKind(PropertyKind* parentPropertyKind) = 0;
 

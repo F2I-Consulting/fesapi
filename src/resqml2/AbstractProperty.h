@@ -220,6 +220,11 @@ namespace RESQML2_NS
 		*/
 		virtual bool validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk) = 0;
 
+		/**
+		* Check if the associated property kind is allowed for this property.
+		*/
+		bool validate();
+
 	protected:
 
 		void setXmlRepresentation(class AbstractRepresentation * rep);
