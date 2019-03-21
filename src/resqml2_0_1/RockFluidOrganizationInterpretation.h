@@ -77,6 +77,8 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
+		void pushBackRockFluidUnitInterpretation(class RockFluidUnitInterpretation * rockFluidUnitInterpretation);
+
 	private:
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
@@ -85,6 +87,7 @@ namespace RESQML2_0_1_NS
 		// backward relationships
 		std::vector<EarthModelInterpretation *> earthModelSet;
 		std::vector<RESQML2_NS::AbstractGridRepresentation *> gridRepresentationSet;
+		std::vector<class RockFluidUnitInterpretation*> rockFluidUnitSet;
 
 		friend void RESQML2_NS::AbstractGridRepresentation::setCellAssociationWithRockFluidOrganizationInterpretation(ULONG64 * fluidUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::RockFluidOrganizationInterpretation * rockFluidOrgInterp);
 		friend void RESQML2_0_1_NS::EarthModelInterpretation::setRockFluidOrganizationInterpretation(RockFluidOrganizationInterpretation * rockFluid);

@@ -17,6 +17,7 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_0_1/RockFluidOrganizationInterpretation.h"
+#include "resqml2_0_1/RockFluidUnitInterpretation.h"
 #include <algorithm>
 
 #include "tools/Misc.h"
@@ -72,9 +73,33 @@ bool RockFluidOrganizationInterpretation::isAssociatedToGridRepresentation(RESQM
 	return find(gridRepresentationSet.begin(), gridRepresentationSet.end(), gridRep) != gridRepresentationSet.end();
 }
 
+void RockFluidOrganizationInterpretation::pushBackRockFluidUnitInterpretation(RockFluidUnitInterpretation * rockFluidUnitInterpretation)
+{
+	// EPC
+	rockFluidUnitSet.push_back(rockFluidUnitInterpretation);
+	rockFluidUnitInterpretation->rockFluidOrganizationInterpSet.push_back(this);
+
+	// XML
+	if (updateXml)
+	{
+		_resqml2__RockFluidOrganizationInterpretation* rockFluidInterpretation = static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1);
+		resqml2__RockFluidUnitInterpretationIndex* rockFluidUnitInterpRef = soap_new_resqml2__RockFluidUnitInterpretationIndex(gsoapProxy2_0_1->soap, 1);
+		rockFluidUnitInterpRef->Index = 0;
+		rockFluidUnitInterpRef->RockFluidUnit = rockFluidUnitInterpretation->newResqmlReference();
+//		rockFluidInterpretation->RockFluidUnitIndex = 0;
+	}
+}
+
 vector<Relationship> RockFluidOrganizationInterpretation::getAllEpcRelationships() const
 {
 	vector<Relationship> result = AbstractOrganizationInterpretation::getAllEpcRelationships();
+
+	for (size_t i = 0; i < rockFluidUnitSet.size(); ++i)
+	{
+		Relationship rel(rockFluidUnitSet[i]->getPartNameInEpcDocument(), "", rockFluidUnitSet[i]->getUuid());
+		rel.setDestinationObjectType();
+		result.push_back(rel);
+	}
 
 	for (size_t i = 0; i < gridRepresentationSet.size(); ++i) {
 		Relationship rel(gridRepresentationSet[i]->getPartNameInEpcDocument(), "", gridRepresentationSet[i]->getUuid());
