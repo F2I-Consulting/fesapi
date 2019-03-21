@@ -2073,7 +2073,7 @@ void deserializeGeobody(COMMON_NS::EpcDocument * pck)
 
 void deserializeFluidBoundary(COMMON_NS::EpcDocument & pck)
 {
-	std::vector<FluidBoundaryFeature*> fbfSet = pck.getResqml2_0Objects<FluidBoundaryFeature>();
+	std::vector<FluidBoundaryFeature*> fbfSet = pck.getDataObjects<FluidBoundaryFeature>();
 	for (size_t fbfIndex = 0; fbfIndex < fbfSet.size(); ++fbfIndex) {
 		FluidBoundaryFeature* fluidBoundary = fbfSet[fbfIndex];
 		if (fluidBoundary == nullptr) return;
@@ -2095,7 +2095,7 @@ void deserializeFluidBoundary(COMMON_NS::EpcDocument & pck)
 
 void deserializeRockFluidOrganization(COMMON_NS::EpcDocument & pck)
 {
-	std::vector<RockFluidOrganizationInterpretation*> rockFluidOrgInterpSet = pck.getResqml2_0Objects<RockFluidOrganizationInterpretation>();
+	std::vector<RockFluidOrganizationInterpretation*> rockFluidOrgInterpSet = pck.getDataObjects<RockFluidOrganizationInterpretation>();
 	for (size_t rfoiIndex = 0; rfoiIndex < rockFluidOrgInterpSet.size(); ++rfoiIndex) {
 		RockFluidOrganizationInterpretation* rockFluidOrgInterp = rockFluidOrgInterpSet[rfoiIndex];
 		showAllMetadata(rockFluidOrgInterp);
