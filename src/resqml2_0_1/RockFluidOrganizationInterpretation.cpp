@@ -55,7 +55,7 @@ unsigned int RockFluidOrganizationInterpretation::getGridRepresentationCount() c
 		throw range_error("Too much grid representations.");
 	}
 
-	return static_cast<unsigned int>(gridRepresentationSet.size());
+	return static_cast<unsigned int>(count);
 }
 
 RESQML2_NS::AbstractGridRepresentation* RockFluidOrganizationInterpretation::getGridRepresentation(unsigned int index) const
