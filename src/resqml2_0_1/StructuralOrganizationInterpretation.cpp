@@ -37,6 +37,13 @@ const char* StructuralOrganizationInterpretation::XML_TAG = "StructuralOrganizat
 StructuralOrganizationInterpretation::StructuralOrganizationInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title,
 		const gsoap_resqml2_0_1::resqml2__OrderingCriteria & orderingCriteria)
 {
+	if (orgFeat == nullptr) {
+		throw invalid_argument("The interpreted organization feature cannot be null.");
+	}
+	if (!orgFeat->isPartial() && orgFeat->getKind() != gsoap_resqml2_0_1::resqml2__OrganizationKind__structural) {
+		throw invalid_argument("The kind of the organization feature is not a structural organization.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREStructuralOrganizationInterpretation(orgFeat->getGsoapContext(), 1);
 	
 	static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->OrderingCriteria = orderingCriteria;

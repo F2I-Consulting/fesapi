@@ -26,7 +26,9 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/**
-	* This class is a container for other organizations that are consistent to each others.
+	* This class is a container for rock fluid units.
+	* As a first step, This class only works for a single rock fluid unit container due to the fact that the workaround described here http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html is not impelemented yet.
+	* Use with caution : ONLY IF YOU HAVE A SINGLE ROCK FLUID UNIT ORGANISATION !!!!
 	*/
 	class RockFluidOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{
@@ -38,11 +40,9 @@ namespace RESQML2_0_1_NS
 
 		/**
 		* Creates an instance of this class in a gsoap context.
-		* @param orgFeat			The feature the instance interprets. It must be a rock fluid organization feature.
+		* @param orgFeat			The feature the instance interprets. It must be a "fluid" organization feature.
 		* @param guid				The guid to set to the interpretation. If empty then a new guid will be generated.
 		* @param title				A title for the instance to create.
-		* @param rank				The rank index of this interpretation within a rock fluid column
-		* @param orderingCriteria	How the included horizons are ordered.
 		*/
 		RockFluidOrganizationInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
 
@@ -77,7 +77,6 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
-		DLL_IMPORT_OR_EXPORT ULONG64 getRockFluidUnitInterpretationIndex() const;
 	private:
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;

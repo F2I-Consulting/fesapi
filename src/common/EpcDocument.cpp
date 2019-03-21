@@ -1645,6 +1645,13 @@ OrganizationFeature* EpcDocument::createStratigraphicModel(const std::string & g
 	return result;
 }
 
+OrganizationFeature* EpcDocument::createRockFluidModel(const std::string & guid, const std::string & title)
+{
+	OrganizationFeature* result = new OrganizationFeature(getGsoapContext(), guid, title, resqml2__OrganizationKind__fluid);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
 OrganizationFeature* EpcDocument::createEarthModel(const std::string & guid, const std::string & title)
 {
 	OrganizationFeature* result = new OrganizationFeature(getGsoapContext(), guid, title, resqml2__OrganizationKind__earth_x0020model);

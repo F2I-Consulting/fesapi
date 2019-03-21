@@ -28,13 +28,19 @@ using namespace gsoap_resqml2_0_1;
 
 const char* RockFluidOrganizationInterpretation::XML_TAG = "RockFluidOrganizationInterpretation";
 
-RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title)
+RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title)
 {
-	if (orgFeat != nullptr)
+	if (orgFeat == nullptr) {
 		throw invalid_argument("The interpreted organization feature cannot be null.");
+	}
+	if (!orgFeat->isPartial() && orgFeat->getKind() != gsoap_resqml2_0_1::resqml2__OrganizationKind__fluid) {
+		throw invalid_argument("The kind of the organization feature is not a fluid organization.");
+	}
 
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORERockFluidOrganizationInterpretation(orgFeat->getGsoapContext(), 1);
-	static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->Index = 0;
+	_resqml2__RockFluidOrganizationInterpretation* rfoi = static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1);
+	rfoi->RockFluidUnitIndex = soap_new_resqml2__RockFluidUnitInterpretationIndex(orgFeat->getGsoapContext(), 1);
+	// No need to initialize index since it is a bug : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -42,14 +48,14 @@ RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(class O
 	setInterpretedFeature(orgFeat);
 }
 
-ULONG64 RockFluidOrganizationInterpretation::getRockFluidUnitInterpretationIndex() const
-{
-	return static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->Index;
-}
-
 unsigned int RockFluidOrganizationInterpretation::getGridRepresentationCount() const
 {
-	return gridRepresentationSet.size();
+	const size_t count = gridRepresentationSet.size();
+	if (count > (std::numeric_limits<unsigned int>::max)()) {
+		throw range_error("Too much grid representations.");
+	}
+
+	return static_cast<unsigned int>(gridRepresentationSet.size());
 }
 
 RESQML2_NS::AbstractGridRepresentation* RockFluidOrganizationInterpretation::getGridRepresentation(unsigned int index) const

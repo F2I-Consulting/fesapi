@@ -1287,21 +1287,17 @@ void serializeFluidBoundary(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractHdf
 
 void serializeRockFluidOrganization(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
-	// EarthModel
-	OrganizationFeature * earthModelOrg = pck.createEarthModel("", "EarthModelOrg2");
-	earthModelOrg->setOriginator("Geosiris");
+	// Feature
+	OrganizationFeature * rockFluidOrgFeature = pck.createRockFluidModel("311587dd-7abc-425b-a364-908d0508ed61", "Rock Fluid Organization feature");
+	rockFluidOrgFeature->setOriginator("Geosiris");
 
-	//RockFluid
-	RockFluidOrganizationInterpretation* rockFluidOrg = pck.createRockFluidOrganizationInterpretation(earthModelOrg, "b5bbfe42-4a63-11e9-9eeb-4f036e6e8141", "Rock Fluid org");
+	// Interp
+	RockFluidOrganizationInterpretation* rockFluidOrgInterp = pck.createRockFluidOrganizationInterpretation(rockFluidOrgFeature, "b5bbfe42-4a63-11e9-9eeb-4f036e6e8141", "Rock Fluid org");
 
-	EarthModelInterpretation * earthModel = pck.createEarthModelInterpretation(earthModelOrg, "", "EarthModel2");
-	earthModel->setOriginator("Geosiris");
-	earthModel->setRockFluidOrganizationInterpretation(rockFluidOrg);
-
-	// ONE SUGAR
+	// Link between ijk grid and rock fuid org
 	IjkGridExplicitRepresentation* singleCellIjkgrid = pck.getDataObjectByUuid<IjkGridExplicitRepresentation>("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b");
 	ULONG64 rockFluidUnitIndice = 0;
-	singleCellIjkgrid->setCellAssociationWithRockFluidOrganizationInterpretation(&rockFluidUnitIndice, 1000, rockFluidOrg);
+	singleCellIjkgrid->setCellAssociationWithRockFluidOrganizationInterpretation(&rockFluidUnitIndice, 1000, rockFluidOrgInterp);
 }
 
 void deserializePropertyKindMappingFiles(COMMON_NS::EpcDocument * pck)
@@ -1788,32 +1784,36 @@ void deserializeGeobody(COMMON_NS::EpcDocument * pck)
 
 void deserializeFluidBoundary(COMMON_NS::EpcDocument & pck)
 {
-	FluidBoundaryFeature* fluidBoundary = pck.getDataObjectByUuid<FluidBoundaryFeature>("44a4d87c-3c67-4f98-a314-9d91c4147061");
-	if (fluidBoundary == nullptr) return;
-	showAllMetadata(fluidBoundary);
-	showAllMetadata(fluidBoundary->getInterpretation(0));
-	PlaneSetRepresentation* rep = static_cast<PlaneSetRepresentation*>(fluidBoundary->getInterpretation(0)->getRepresentation(0));
-	showAllMetadata(rep);
-	ULONG64 ptCount = rep->getXyzPointCountOfAllPatches();
-	double* allXyzPoints = new double[ptCount * 3];
-	rep->getXyzPointsOfAllPatchesInGlobalCrs(allXyzPoints);
-	for (size_t i = 0; i < ptCount; ++i) {
-		std::cout << "Point " << i << " X=" << allXyzPoints[i * 3] << std::endl;
-		std::cout << "Point " << i << " Y=" << allXyzPoints[i * 3 + 1] << std::endl;
-		std::cout << "Point " << i << " Z=" << allXyzPoints[i * 3 + 2] << std::endl;
+	std::vector<FluidBoundaryFeature*> fbfSet = pck.getResqml2_0Objects<FluidBoundaryFeature>();
+	for (size_t fbfIndex = 0; fbfIndex < fbfSet.size(); ++fbfIndex) {
+		FluidBoundaryFeature* fluidBoundary = fbfSet[fbfIndex];
+		if (fluidBoundary == nullptr) return;
+		showAllMetadata(fluidBoundary);
+		showAllMetadata(fluidBoundary->getInterpretation(0));
+		PlaneSetRepresentation* rep = static_cast<PlaneSetRepresentation*>(fluidBoundary->getInterpretation(0)->getRepresentation(0));
+		showAllMetadata(rep);
+		ULONG64 ptCount = rep->getXyzPointCountOfAllPatches();
+		double* allXyzPoints = new double[ptCount * 3];
+		rep->getXyzPointsOfAllPatchesInGlobalCrs(allXyzPoints);
+		for (size_t i = 0; i < ptCount; ++i) {
+			std::cout << "Point " << i << " X=" << allXyzPoints[i * 3] << std::endl;
+			std::cout << "Point " << i << " Y=" << allXyzPoints[i * 3 + 1] << std::endl;
+			std::cout << "Point " << i << " Z=" << allXyzPoints[i * 3 + 2] << std::endl;
+		}
+		delete[] allXyzPoints;
 	}
-	delete[] allXyzPoints;
 }
 
 void deserializeRockFluidOrganization(COMMON_NS::EpcDocument & pck)
 {
-	RockFluidOrganizationInterpretation* rockFluidOrg = pck.getDataObjectByUuid<RockFluidOrganizationInterpretation>("b5bbfe42-4a63-11e9-9eeb-4f036e6e8141");
-	if (rockFluidOrg == nullptr) return;
-	std::cout << "RockFluidRepresentationIndex: " << rockFluidOrg->getRockFluidUnitInterpretationIndex() << std::endl;
-	showAllMetadata(rockFluidOrg);
-	for (size_t i = 0; i < rockFluidOrg->getGridRepresentationCount(); ++i) {
-		RESQML2_NS::AbstractGridRepresentation* grid = rockFluidOrg->getGridRepresentation(i);
-		showAllMetadata(grid);
+	std::vector<RockFluidOrganizationInterpretation*> rockFluidOrgInterpSet = pck.getResqml2_0Objects<RockFluidOrganizationInterpretation>();
+	for (size_t rfoiIndex = 0; rfoiIndex < rockFluidOrgInterpSet.size(); ++rfoiIndex) {
+		RockFluidOrganizationInterpretation* rockFluidOrgInterp = rockFluidOrgInterpSet[rfoiIndex];
+		showAllMetadata(rockFluidOrgInterp);
+		for (size_t i = 0; i < rockFluidOrgInterp->getGridRepresentationCount(); ++i) {
+			RESQML2_NS::AbstractGridRepresentation* grid = rockFluidOrgInterp->getGridRepresentation(i);
+			showAllMetadata(grid);
+		}
 	}
 }
 
@@ -2868,8 +2868,7 @@ void deserialize(const string & inputFile)
 	string resqmlResult = pck.deserialize();
 	if (!resqmlResult.empty()) {
 		cerr << resqmlResult << endl;
-		cout << "Press enter to continue..." << endl;
-		cin.get();
+		throw invalid_argument("The epc document is not a valid one");
 	}
 	std::vector<std::string> allUuids = pck.getAllUuids();
 	/*
@@ -3703,15 +3702,16 @@ delete [] testingValues2;
 #define filePath "../../testingPackageCpp.epc"
 int main()
 {
-	try {
+	//try {
 		if (serialize(filePath)) {
 			deserialize(filePath);
 		}
-	}
+	/*}
 	catch (const std::invalid_argument & Exp)
 	{
 		std::cerr << "Error : " << Exp.what() << ".\n";
-	}
+		return 1;
+	}*/
 
 	//cout << "Press enter to continue..." << endl;
 	//cin.get();
