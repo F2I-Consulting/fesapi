@@ -73,7 +73,7 @@ void BigIjkGridParametricRepresentationTest::initParametersAndControlPoints(doub
 void BigIjkGridParametricRepresentationTest::initEpcDocHandler() {
 	// getting the local depth 3d crs
 	LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(this->epcDoc, true);
-	RESQML2_0_1_NS::LocalDepth3dCrs* crs = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
+	RESQML2_0_1_NS::LocalDepth3dCrs* crs = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 
 	// getting the hdf proxy
 	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
@@ -89,7 +89,7 @@ void BigIjkGridParametricRepresentationTest::initEpcDocHandler() {
 	initParametersAndControlPoints(parameters, controlPoints);
 	initSplitCoordinateLine(pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
-	ijkGrid->setGeometryAsParametricSplittedPillarNodes(gsoap_resqml2_0_1::resqml2__KDirection__down, false, parameters, controlPoints, NULL, 1, 0, hdfProxy,
+	ijkGrid->setGeometryAsParametricSplittedPillarNodes(false, parameters, controlPoints, NULL, 1, 0, hdfProxy,
 		faultCount * (jCount + 1), pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// adding a discrete property

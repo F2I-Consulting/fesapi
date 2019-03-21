@@ -76,7 +76,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get all the wellbore markers of this well marker frame representation.
 		*/
-		const std::vector<class WellboreMarker*> & getWellboreMarkerSet() const { return markerSet; }
+		const std::vector<class WellboreMarker*> & getWellboreMarkerSet() const;
 
 		void setStratigraphicOccurrenceInterpretation(class StratigraphicOccurrenceInterpretation * stratiOccurenceInterp);
 

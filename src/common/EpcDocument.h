@@ -312,19 +312,25 @@ namespace COMMON_NS
 		std::vector<COMMON_NS::AbstractObject*> getResqml2_0ObjectsByXmlTag(const std::string & xmlTag) const;
 
 		/**
-		* Get RESQML2.0 objects which honor a particular XML tag.
+		* Get all data objects of a particular type indicated by means of the template class.
 		*
-		* @return The vector of RESQML2.0.1 objects in this EPC Document which honor the XML tag
+		* @return The vector of data object in this EPC Document 
 		*/
 		template <class valueType>
-		std::vector<valueType*> getResqml2_0Objects() const
+		std::vector<valueType*> getDataObjects() const
 		{
-			std::vector<COMMON_NS::AbstractObject*> const untypedResult = getResqml2_0ObjectsByXmlTag(valueType::XML_TAG);
-
 			std::vector<valueType*> result;
-			for (size_t i = 0; i < untypedResult.size(); ++i) {
-				result.push_back(static_cast<valueType*>(untypedResult[i]));
+
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+			for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
+#else
+			for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
+#endif
+				if (dynamic_cast<valueType*>(it->second) != nullptr) {
+					result.push_back(static_cast<valueType*>(it->second));
+				}
 			}
+
 			return result;
 		}
 

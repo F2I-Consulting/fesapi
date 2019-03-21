@@ -97,6 +97,8 @@ namespace RESQML2_0_1_NS
 
 		bool isAbstract() const;
 
+		bool isParentPartial() const;
+
 	protected:
 		void setXmlParentPropertyKind(RESQML2_NS::PropertyKind* parentPropertyKind);
 		

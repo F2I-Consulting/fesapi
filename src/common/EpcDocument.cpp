@@ -791,6 +791,12 @@ string EpcDocument::deserialize()
 
 	updateAllRelationships();
 
+	// Validate properties
+	const vector<RESQML2_NS::AbstractProperty*> allprops = getDataObjects<RESQML2_NS::AbstractProperty>();
+	for (size_t propIndex = 0; propIndex < allprops.size(); ++propIndex) {
+		allprops[propIndex]->validate();
+	}
+
 	return result;
 }
 

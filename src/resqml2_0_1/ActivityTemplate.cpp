@@ -40,8 +40,9 @@ void ActivityTemplate::pushBackParameter(const std::string title,
 			const unsigned int & minOccurs, const int & maxOccurs)
 {
 	// Preconditions
-	if (minOccurs > maxOccurs)
+	if (maxOccurs >= 0 && minOccurs > static_cast<unsigned int>(maxOccurs)) {
 		throw invalid_argument("Maximum occurences of a parameter template must be at least equal to the minimum occurences of this same parameter template.");
+	}
 
 	_resqml2__ActivityTemplate* activityTemplate = static_cast<_resqml2__ActivityTemplate*>(gsoapProxy2_0_1);
 
@@ -245,3 +246,4 @@ vector<Relationship> ActivityTemplate::getAllEpcRelationships() const
 	return result;
 }
 
+void ActivityTemplate::importRelationshipSetFromEpc(COMMON_NS::EpcDocument *) {}

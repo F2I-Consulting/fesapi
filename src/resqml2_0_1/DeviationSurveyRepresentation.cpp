@@ -162,7 +162,7 @@ ULONG64 DeviationSurveyRepresentation::getXyzPointCountOfPatch(const unsigned in
 	return rep->StationCount;
 }
 
-void DeviationSurveyRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void DeviationSurveyRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch");

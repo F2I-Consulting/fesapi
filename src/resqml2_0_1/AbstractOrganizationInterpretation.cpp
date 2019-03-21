@@ -71,4 +71,3 @@ void AbstractOrganizationInterpretation::pushBackBinaryContact(const gsoap_resqm
     contact->Subject->Qualifier = static_cast<resqml2__ContactSide*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml2__ContactSide)));
     *(contact->Subject->Qualifier) = subjectQualifier;
 }
-

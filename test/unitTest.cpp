@@ -54,9 +54,11 @@ under the License.
 #include "resqml2_0_1test/SubRepresentationOnPartialGridConnectionSet.h"
 #include "resqml2_0_1test/LgrOnRightHanded4x3x2ExplicitIjkGrid.h"
 #include "resqml2_0_1test/InterpretationDomain.h"
+#include "witsml2_0test/WellTest.h"
 
 using namespace commontest;
 using namespace resqml2_0_1test;
+using namespace witsml2_0test;
 
 #define FESAPI_TEST(name, tags, classTest)  TEST_CASE(name, tags)\
 {\
@@ -135,4 +137,6 @@ FESAPI_TEST("Export and import a wellbore frame (irregular md spacings) with a s
 FESAPI_TEST("Export and import a wellbore frame (irregular md spacings) with a single discrete property on node using a local property kind", "[well][property]", DiscretePropertyUsingLocalKindOnWellFrameTest)
 
 FESAPI_TEST("Export and import an horizon on a seismic line", "[seismic]", HorizonOnSeismicLine)
+
+FESAPI_TEST("Export and import a Witsml well", "[well]", WellTest)
 

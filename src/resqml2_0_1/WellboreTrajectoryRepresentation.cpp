@@ -274,16 +274,11 @@ WellboreTrajectoryRepresentation* WellboreTrajectoryRepresentation::getParentTra
 {
 	_resqml2__WellboreTrajectoryRepresentation* rep = static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 
-	if (rep->ParentIntersection == nullptr)
+	if (rep->ParentIntersection == nullptr) {
 		return nullptr;
+	}
 
-	WellboreTrajectoryRepresentation* result = nullptr;
-	COMMON_NS::AbstractObject* obj = getEpcDocument()->getDataObjectByUuid(rep->ParentIntersection->ParentTrajectory->UUID);
-
-	if (dynamic_cast<WellboreTrajectoryRepresentation*>(obj) != nullptr)
-		return static_cast<WellboreTrajectoryRepresentation*>(obj);
-	else
-		throw invalid_argument("The parent trajectory (or its reference) of this wellbore trajectory does not look valid regarding EPC/XML");
+	return getEpcDocument()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(rep->ParentIntersection->ParentTrajectory->UUID);
 }
 
 const double& WellboreTrajectoryRepresentation::getParentTrajectoryMd() const

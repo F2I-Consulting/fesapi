@@ -1569,14 +1569,13 @@ void IjkGridParametricRepresentation::loadPillarInformation(IjkGridParametricRep
 
 void IjkGridParametricRepresentation::getXyzPointsOfPatchFromParametricPoints(gsoap_resqml2_0_1::resqml2__Point3dParametricArray* parametricPoint3d, double * xyzPoints) const
 {
-	ULONG64 xyzPointCount = getXyzPointCountOfPatch(0);
-
 	// parameters : ordered
-	double * parameters = new double[xyzPointCount];
+	double * parameters = new double[getXyzPointCountOfPatch(0)];
 	if (parametricPoint3d->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
 		hdfProxy->readArrayNdOfDoubleValues(static_cast<resqml2__DoubleHdf5Array*>(parametricPoint3d->Parameters)->Values->PathInHdfFile, parameters);
 	}
 	else {
+		delete[] parameters;
 		throw logic_error("Non floating point coordinate line parameters are not implemented yet");
 	}
 
@@ -1838,7 +1837,6 @@ gsoap_resqml2_0_1::resqml2__KDirection IjkGridParametricRepresentation::computeK
 
 	// Loop
 	for (; pillarIndex < getPillarCount(); ++pillarIndex) {
-		size_t controlPointIndex = pillarIndex * controlPointCountPerPillar * 3 + 2;
 		short tmp = computeKDirectionOnASinglePillar(pillarIndex, getPillarCount(), controlPoints, controlPointCountPerPillar, isCrsDepthOriented);
 		if (tmp != -1 && tmp != result) {
 			return gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__not_x0020monotonic;

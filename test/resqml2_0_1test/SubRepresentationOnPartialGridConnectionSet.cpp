@@ -60,7 +60,7 @@ void SubRepresentationOnPartialGridConnectionSet::initEpcDocHandler()
 void SubRepresentationOnPartialGridConnectionSet::readEpcDocHandler()
 {
 	// getting the subrep
-	RESQML2_NS::SubRepresentation* subRep = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::SubRepresentation>(this->uuid);
+	RESQML2_NS::SubRepresentation* subRep = epcDoc->getDataObjectByUuid<RESQML2_NS::SubRepresentation>(this->uuid);
 
 	REQUIRE(subRep->getSupportingRepresentation(0)->isPartial());
 	REQUIRE(subRep->getSupportingRepresentation(0)->getXmlTag().compare("GridConnectionSetRepresentation") == 0);

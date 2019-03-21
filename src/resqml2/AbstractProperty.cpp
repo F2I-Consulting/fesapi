@@ -200,15 +200,9 @@ void AbstractProperty::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcD
 			}
 		}
 
-		validatePropertyKindAssociation(pk);
-
 		updateXml = false;
 		setLocalPropertyKind(pk);
 		updateXml = true;
-	}
-	else {
-
-		validatePropertyKindAssociation(getEnergisticsPropertyKind());
 	}
 
 	string uuidHdfProxy = getHdfProxyUuid();
@@ -221,6 +215,11 @@ void AbstractProperty::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcD
 		setHdfProxy(hdfProxy);
 		updateXml = true;
 	}
+}
+
+bool AbstractProperty::validate()
+{
+	return isAssociatedToOneStandardEnergisticsPropertyKind() ? validatePropertyKindAssociation(getEnergisticsPropertyKind()) : validatePropertyKindAssociation(getLocalPropertyKind());
 }
 
 void AbstractProperty::setRepresentation(AbstractRepresentation * rep)

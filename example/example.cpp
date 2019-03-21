@@ -48,6 +48,7 @@ under the License.
 #include "resqml2_0_1/GenericFeatureInterpretation.h"
 #include "resqml2_0_1/FluidBoundaryFeature.h"
 #include "resqml2_0_1/HorizonInterpretation.h"
+#include "resqml2_0_1/GeobodyInterpretation.h"
 #include "resqml2_0_1/GeobodyBoundaryInterpretation.h"
 #include "resqml2_0_1/FaultInterpretation.h"
 #include "resqml2_0_1/TriangulatedSetRepresentation.h"
@@ -95,25 +96,29 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 
-Horizon* horizon1;
-Horizon* horizon2;
-TectonicBoundaryFeature* fault1;
-HorizonInterpretation* horizon1Interp1;
-HorizonInterpretation* horizon2Interp1;
-FaultInterpretation* fault1Interp1;
-Grid2dRepresentation* h1i1SingleGrid2dRep;
-PolylineSetRepresentation* f1i1PolyLineRep;
-TriangulatedSetRepresentation* f1i1triRepSinglePatch;
-TriangulatedSetRepresentation* f1i1triRep;
-TriangulatedSetRepresentation* h1i1triRep;
-TriangulatedSetRepresentation* h2i1triRep;
-WellboreTrajectoryRepresentation* w1i1TrajRep;
-LocalDepth3dCrs* local3dCrs;
-LocalTime3dCrs* localTime3dCrs;
-WellboreFeature* wellbore1;
-WellboreInterpretation* wellbore1Interp1;
-StratigraphicColumnRankInterpretation* stratiColumnRank0;
-SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework;
+Horizon* horizon1 = nullptr;
+Horizon* horizon2 = nullptr;
+TectonicBoundaryFeature* fault1 = nullptr;
+HorizonInterpretation* horizon1Interp1 = nullptr;
+HorizonInterpretation* horizon2Interp1 = nullptr;
+FaultInterpretation* fault1Interp1 = nullptr;
+Grid2dRepresentation* h1i1SingleGrid2dRep = nullptr;
+PolylineSetRepresentation* f1i1PolyLineRep = nullptr;
+TriangulatedSetRepresentation* f1i1triRepSinglePatch = nullptr;
+TriangulatedSetRepresentation* f1i1triRep = nullptr;
+TriangulatedSetRepresentation* h1i1triRep = nullptr;
+TriangulatedSetRepresentation* h2i1triRep = nullptr;
+TriangulatedSetRepresentation* xMinusFrontierRep = nullptr;
+TriangulatedSetRepresentation* xPlusFrontierRep = nullptr;
+TriangulatedSetRepresentation* yMinusFrontierRep = nullptr;
+TriangulatedSetRepresentation* yPlusFrontierRep = nullptr;
+WellboreTrajectoryRepresentation* w1i1TrajRep = nullptr;
+LocalDepth3dCrs* local3dCrs = nullptr;
+LocalTime3dCrs* localTime3dCrs = nullptr;
+WellboreFeature* wellbore1 = nullptr;
+WellboreInterpretation* wellbore1Interp1 = nullptr;
+StratigraphicColumnRankInterpretation* stratiColumnRank0 = nullptr;
+SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = nullptr;
 
 WITSML2_0_NS::Well* witsmlWell = nullptr;
 WITSML2_0_NS::Wellbore* witsmlWellbore = nullptr;
@@ -186,115 +191,74 @@ void serializePerforations(COMMON_NS::EpcDocument * pck)
 
 void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
+	// Build the Stratigraphic column
 	StratigraphicColumn* stratiColumn = pck->createStratigraphicColumn("7f6666a0-fa3b-11e5-a509-0002a5d5c51b", "Stratigraphic column");
 	OrganizationFeature* stratiModelFeature = pck->createStratigraphicModel("7fcde2b5-d184-4481-b31e-32aafbdc4b7f", "stratiModel");
-	StratigraphicOccurrenceInterpretation* stratiOccurence = pck->createStratigraphicOccurrenceInterpretationInApparentDepth(stratiModelFeature, "2426e574-1ea3-4f20-9deb-669c15a17625", "stratiModel Interp");
+	pck->createStratigraphicOccurrenceInterpretationInApparentDepth(stratiModelFeature, "2426e574-1ea3-4f20-9deb-669c15a17625", "stratiModel Interp");
 	stratiColumnRank0 = pck->createStratigraphicColumnRankInterpretationInApparentDepth(stratiModelFeature, "ba06f220-fa3b-11e5-928c-0002a5d5c51b", "Stratigraphic column rank 0", 0);
 	StratigraphicColumnRankInterpretation* stratiColumnRank1 = pck->createStratigraphicColumnRankInterpretationInApparentDepth(stratiModelFeature, "9d2d19cf-aedb-4766-9691-758d536456ba", "Stratigraphic column rank 1", 1);
 	stratiColumn->pushBackStratiColumnRank(stratiColumnRank0);
+	stratiColumn->pushBackStratiColumnRank(stratiColumnRank1);
 	StratigraphicUnitFeature* stratiUnitAFeature = pck->createStratigraphicUnit("0426c6a0-fa3c-11e5-8b9c-0002a5d5c51b", "Unit A");
 	StratigraphicUnitInterpretation* stratiUnitAInterp = pck->createStratigraphicUnitInterpretation(stratiUnitAFeature, "1a919b40-fa3c-11e5-a72c-0002a5d5c51b", "Unit A interp");
 	StratigraphicUnitFeature* stratiUnitBFeature = pck->createStratigraphicUnit("273a92c0-fa3c-11e5-85f8-0002a5d5c51b", "Unit B");
 	StratigraphicUnitInterpretation* stratiUnitBInterp = pck->createStratigraphicUnitInterpretation(stratiUnitBFeature, "2b9169c0-fa3c-11e5-ae2c-0002a5d5c51b", "Unit B interp");
 	StratigraphicUnitFeature* stratiUnitB1Feature = pck->createStratigraphicUnit("0b7cc266-4280-4696-b9dc-5d17017797e2", "Unit B1");
-	StratigraphicUnitInterpretation* stratiUnitB1Interp = pck->createStratigraphicUnitInterpretation(stratiUnitBFeature, "7d7ab0bc-554d-48f5-ab5c-3bb7b66696e5", "Unit B1 interp");
+	StratigraphicUnitInterpretation* stratiUnitB1Interp = pck->createStratigraphicUnitInterpretation(stratiUnitB1Feature, "7d7ab0bc-554d-48f5-ab5c-3bb7b66696e5", "Unit B1 interp");
 	StratigraphicUnitFeature* stratiUnitB2Feature = pck->createStratigraphicUnit("87255cf5-033f-4fa4-941b-7947b434f4c2", "Unit B2");
-	StratigraphicUnitInterpretation* stratiUnitB2Interp = pck->createStratigraphicUnitInterpretation(stratiUnitBFeature, "34c37be0-964f-41a8-ba78-db5147744927", "Unit B2 interp");
+	StratigraphicUnitInterpretation* stratiUnitB2Interp = pck->createStratigraphicUnitInterpretation(stratiUnitB2Feature, "34c37be0-964f-41a8-ba78-db5147744927", "Unit B2 interp");
 
-	// Build the stratigraphic column rank
+	// Build a minimal Stratigraphic column to allow the definition of a minimal sealed volume framework
+	StratigraphicColumn* minimalStratiColumn = pck->createStratigraphicColumn("90f375b7-6865-4a69-943e-f2328fdbbb7e", "Minimal Stratigraphic column");
+	OrganizationFeature* minimalStratiModelFeature = pck->createStratigraphicModel("ea021981-1b79-435f-9f26-8bf03472efcf", "Minimal stratiModel");
+	StratigraphicColumnRankInterpretation* minimalStratiColumnRank = pck->createStratigraphicColumnRankInterpretationInApparentDepth(minimalStratiModelFeature, "31b0b787-31df-4b87-8830-a3863eb9842c", "Minimal Stratigraphic column rank ", 0);
+	minimalStratiColumn->pushBackStratiColumnRank(minimalStratiColumnRank);
+
+	// Build the stratigraphic column ranks
 	stratiColumnRank0->pushBackStratiUnitInterpretation(stratiUnitAInterp);
 	stratiColumnRank1->pushBackStratiUnitInterpretation(stratiUnitAInterp);
 	stratiColumnRank0->pushBackStratiUnitInterpretation(stratiUnitBInterp);
 	stratiColumnRank1->pushBackStratiUnitInterpretation(stratiUnitB1Interp);
 	stratiColumnRank1->pushBackStratiUnitInterpretation(stratiUnitB2Interp);
+	minimalStratiColumnRank->pushBackStratiUnitInterpretation(stratiUnitB1Interp);
 	stratiColumnRank0->pushBackStratigraphicBinaryContact(stratiUnitAInterp, gsoap_resqml2_0_1::resqml2__ContactMode__proportional, stratiUnitBInterp, gsoap_resqml2_0_1::resqml2__ContactMode__proportional, horizon2Interp1);
 
 	// WellboreFeature marker frame
-	WellboreMarkerFrameRepresentation* wmf = pck->createWellboreMarkerFrameRepresentation(wellbore1Interp1, "657d5e6b-1752-425d-b3e7-237037fa11eb", "Wellbore Marker Frame", w1i1TrajRep);
-	double markerMdValues[2] = { 350, 550 };
-	wmf->setMdValues(markerMdValues, 2, hdfProxy);
-	WellboreMarker* marker0 = wmf->pushBackNewWellboreMarker("624f9f17-6797-4d78-b3fc-9ca2c8174bcd", "", gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__horizon);
-	marker0->setBoundaryFeatureInterpretation(horizon1Interp1);
-	WellboreMarker* marker1 = wmf->pushBackNewWellboreMarker("3611725e-4d9b-4d3e-87e6-58fcd238f5a8", "testing Fault", gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__fault);
-	marker1->setBoundaryFeatureInterpretation(fault1Interp1);
+	if (wellbore1Interp1 != nullptr) {
+		WellboreMarkerFrameRepresentation* wmf = pck->createWellboreMarkerFrameRepresentation(wellbore1Interp1, "657d5e6b-1752-425d-b3e7-237037fa11eb", "Wellbore Marker Frame", w1i1TrajRep);
+		double markerMdValues[2] = { 350, 550 };
+		wmf->setMdValues(markerMdValues, 2, hdfProxy);
+		WellboreMarker* marker0 = wmf->pushBackNewWellboreMarker("624f9f17-6797-4d78-b3fc-9ca2c8174bcd", "", gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__horizon);
+		marker0->setBoundaryFeatureInterpretation(horizon1Interp1);
+		WellboreMarker* marker1 = wmf->pushBackNewWellboreMarker("3611725e-4d9b-4d3e-87e6-58fcd238f5a8", "testing Fault", gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__fault);
+		marker1->setBoundaryFeatureInterpretation(fault1Interp1);
+	}
 
 	// ***********************
 	// Sealed volume framework
 	// ***********************
-	SealedVolumeFrameworkRepresentation* svf = pck->createSealedVolumeFrameworkRepresentation(stratiColumnRank1, "c7ed87c2-9a46-4e3d-8f0f-b25d4d72892a", "Sealed volume framework", sealedSurfaceFramework);
+	SealedVolumeFrameworkRepresentation* svf = pck->createSealedVolumeFrameworkRepresentation(stratiColumnRank1, "c7ed87c2-9a46-4e3d-8f0f-b25d4d72892a", "Minimal Sealed volume framework", sealedSurfaceFramework);
 
-	LocalDepth3dCrs* crs = pck->getLocalDepth3dCrsSet()[0];
 	// Add the surfaces.
 	f1i1triRep->pushBackIntoRepresentationSet(svf);
 	h1i1triRep->pushBackIntoRepresentationSet(svf);
 	h2i1triRep->pushBackIntoRepresentationSet(svf);
-	FrontierFeature* topFrontier = pck->createFrontier("f2a59545-2674-4204-a054-acc51114e4fc", "Top Frontier");
-	GenericFeatureInterpretation* topFrontierInterp = pck->createGenericFeatureInterpretation(topFrontier, "41a2678c-25bc-49c1-add5-f9b7c48ba919", "Top Frontier Interp");
-	PlaneSetRepresentation* topFrontierRep = pck->createPlaneSetRepresentation(topFrontierInterp, crs, "e421278e-06b6-4ccc-b1fe-9b96c8a85dd3", "Top frontier rep");
-	topFrontierRep->pushBackHorizontalPlaneGeometryPatch(200);
-	topFrontierRep->pushBackIntoRepresentationSet(svf);
-	FrontierFeature* xPlusFrontier = pck->createFrontier("e062ee65-8296-44c0-adf9-14cef0c2eb27", "X Plus Frontier");
-	GenericFeatureInterpretation* xPlusFrontierInterp = pck->createGenericFeatureInterpretation(topFrontier, "e888c38b-86d5-41ae-9aaa-a7a41d0f4554", "X Plus Frontier Interp");
-	PlaneSetRepresentation* xPlusFrontierRep = pck->createPlaneSetRepresentation(topFrontierInterp, crs, "0a327e2e-105c-4068-a325-a6c5e3de135f", "X Plus frontier rep");
-	xPlusFrontierRep->pushBackTiltedPlaneGeometryPatch(700,0,200, 700,200,200, 700,0,650);
-	xPlusFrontierRep->pushBackIntoRepresentationSet(svf);
-	FrontierFeature* btmFrontier = pck->createFrontier("139904c3-def1-4e30-9e22-6c44e6cff59b", "Bottom Frontier");
-	GenericFeatureInterpretation* btmFrontierInterp = pck->createGenericFeatureInterpretation(topFrontier, "b2493aa4-6ed1-4226-9eeb-84beaad9e15d", "Bottom Frontier Interp");
-	PlaneSetRepresentation* btmFrontierRep = pck->createPlaneSetRepresentation(topFrontierInterp, crs, "13d3da0e-cce8-4795-957f-414bbb60ded8", "Bottom Frontier rep");
-	btmFrontierRep->pushBackHorizontalPlaneGeometryPatch(650);
-	btmFrontierRep->pushBackIntoRepresentationSet(svf);
-	FrontierFeature* xMinusFrontier = pck->createFrontier("dd2cdf75-a71f-449d-b0b1-e7a99f9ea9f5", "X Minus Frontier");
-	GenericFeatureInterpretation* xMinusFrontierInterp = pck->createGenericFeatureInterpretation(topFrontier, "7a67a81a-e86e-47cc-a959-0e1df93516f9", "X Minus Frontier Interp");
-	PlaneSetRepresentation* xMinusFrontierRep = pck->createPlaneSetRepresentation(topFrontierInterp, crs, "6e678338-3b53-49b6-8801-faee493e0c42", "X Minus frontier rep");
-	xMinusFrontierRep->pushBackTiltedPlaneGeometryPatch(0, 0, 200, 0, 200, 200, 0, 0, 650);
 	xMinusFrontierRep->pushBackIntoRepresentationSet(svf);
-	FrontierFeature* yPlusFrontier = pck->createFrontier("5c86ea8d-06d6-4dd9-8c61-8d9dba8ff04a", "Y Plus Frontier");
-	GenericFeatureInterpretation* yPlusFrontierInterp = pck->createGenericFeatureInterpretation(topFrontier, "7b049732-d2ef-4957-81ad-b1e51547c56c", "Y Plus Frontier Interp");
-	PlaneSetRepresentation* yPlusFrontierRep = pck->createPlaneSetRepresentation(topFrontierInterp, crs, "e960aea8-72e2-495d-8253-60fda5620921", "Y Plus frontier rep");
-	yPlusFrontierRep->pushBackTiltedPlaneGeometryPatch(0,200,200, 700,200,200, 0,200,650);
-	yPlusFrontierRep->pushBackIntoRepresentationSet(svf);
-	FrontierFeature* yMinusFrontier = pck->createFrontier("282ea9df-aae9-4c54-a4e3-e88de750b63d", "Y Minus Frontier");
-	GenericFeatureInterpretation* yMinusFrontierInterp = pck->createGenericFeatureInterpretation(topFrontier, "48f81cb8-0d9f-44ec-b651-05e2023a655d", "Y Minus Frontier Interp");
-	PlaneSetRepresentation* yMinusFrontierRep = pck->createPlaneSetRepresentation(topFrontierInterp, crs, "38f64a1c-356f-4d30-a9ce-4cd3b8d6ec40", "Y Minus frontier rep");
-	yMinusFrontierRep->pushBackTiltedPlaneGeometryPatch(0, 0, 200, 700, 0, 200, 0, 0, 650);
+	xPlusFrontierRep->pushBackIntoRepresentationSet(svf);
 	yMinusFrontierRep->pushBackIntoRepresentationSet(svf);
-
-	//Region 1
-	const unsigned int nullValue = (std::numeric_limits<unsigned int>::max)();
-	std::vector<unsigned int> region1RepIndices = { 3, 0, 1, 6, 7, 8}; // face order => top, x plus, btm, x minus, y plus, y minus
-	std::vector<unsigned int> region1PatchIndices = { 0, 0, 0, 0, 0, 0};
-	bool region1Sides[6] = {true, true, true, true, true, true}; // Frontiers are always on true side flag in this example.
-	svf->pushBackVolumeRegion(stratiUnitAInterp, "Region 1", 6, region1RepIndices.data(), region1PatchIndices.data(), region1Sides);
+	yPlusFrontierRep->pushBackIntoRepresentationSet(svf);
 
 	//Region 2
-	std::vector<unsigned int> region2RepIndices = { 1, 0, 0, 2, 6, 7, 8 };
+	std::vector<unsigned int> region2RepIndices = { 1, 0, 0, 2, 3, 5, 6 }; // face order => top, x plus, btm, x minus, y minus, y plus
 	std::vector<unsigned int> region2PatchIndices = { 0, 1, 2, 0, 0, 0, 0 };
-	bool region2Sides[7] = { false, true, true, true, true, true, true};
+	bool region2Sides[7] = { false, false, false, true, true, true, true}; //Top face is true, bottom face is false and Frontiers are always on true side flag in this example.
 	svf->pushBackVolumeRegion(stratiUnitB1Interp, "Region 2", 7, region2RepIndices.data(), region2PatchIndices.data(), region2Sides);
 
-	//Region 3
-	std::vector<unsigned int> region3RepIndices = { 2, 0, 0, 5, 6, 7, 8 };
-	std::vector<unsigned int> region3PatchIndices = {0, 3, 4, 0, 0, 0, 0 };
-	bool region3Sides[7] = {false, true, true, true, true, true, true };
-	svf->pushBackVolumeRegion(stratiUnitB2Interp, "Region 3", 7, region3RepIndices.data(), region3PatchIndices.data(), region3Sides);
-
-	//Region 4
-	std::vector<unsigned int> region4RepIndices = { 3, 4, 2, 0, 0, 7, 8 };
-	std::vector<unsigned int> region4PatchIndices = { 0, 0, 1, 1, 0, 0, 0 };
-	bool region4Sides[7] = { true, true, true, false, false, true, true };
-	svf->pushBackVolumeRegion(stratiUnitAInterp, "Region 4", 7, region4RepIndices.data(), region4PatchIndices.data(), region4Sides);
-
 	//Region 5
-	std::vector<unsigned int> region5RepIndices = { 1, 4, 2, 0, 0, 7, 8 };
-	std::vector<unsigned int> region5PatchIndices = { 1, 0, 1, 3, 2, 0, 0 };
-	bool region5Sides[7] = { false, true, true, false, false, true, true };
+	std::vector<unsigned int> region5RepIndices = { 1, 4, 2, 0, 0, 5, 6 };
+	std::vector<unsigned int> region5PatchIndices = { 1, 0, 1, 3, 2, 1, 1 };
+	bool region5Sides[7] = { false, true, true, true, true, true, true };
 	svf->pushBackVolumeRegion(stratiUnitB1Interp, "Region 5", 7, region5RepIndices.data(), region5PatchIndices.data(), region5Sides);
-
-	//Region 6
-	std::vector<unsigned int> region6RepIndices = { 2, 4, 5, 0, 7, 8 };
-	std::vector<unsigned int> region6PatchIndices = { 1, 0, 0, 4, 0, 0 };
-	bool region6Sides[6] = { false, true, true, false, true, true };
-	svf->pushBackVolumeRegion(stratiUnitB2Interp, "Region 6", 6, region6RepIndices.data(), region6PatchIndices.data(), region6Sides);
 }
 
 void serializeGeobody(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
@@ -309,7 +273,7 @@ void serializeGeobody(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy*
 	// 3D
 	GeobodyFeature* geobody = pck->createGeobodyFeature("e221f9da-ead3-4a9d-8324-fc2e6606cb01", "Geobody");
 	GeobodyInterpretation* geobodyInterp = pck->createGeobodyInterpretation(geobody, "d445041f-6364-44e7-a7f8-ade5a93bfd49", "Geobody interp");
-	PointSetRepresentation* geobodyGraphNode = pck->createPointSetRepresentation(geobodyBoundaryInterp, local3dCrs, "8442a6b7-a97b-431e-abda-f72cf7ef346f", "Geobody graph node");
+	PointSetRepresentation* geobodyGraphNode = pck->createPointSetRepresentation(geobodyInterp, local3dCrs, "8442a6b7-a97b-431e-abda-f72cf7ef346f", "Geobody graph node");
 	double geobodyPointCoords[18] = { 50, 30, 330, 10, 28, 3000, 100, 50, 350, 300, 100, 400, 400, 20, 400, 400, 300, 400 };
 	geobodyGraphNode->pushBackGeometryPatch(6, geobodyPointCoords, hdfProxy);
 	//RESQML2_NS::SubRepresentation* geobodyGraphEdge = pck->createSubRepresentation(geobodyBoundaryInterp, "7e0450aa-c39d-49f8-bee4-62fc42bb849d", "Geobody graph edge");
@@ -787,7 +751,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 	tetraGrid->setTetrahedraOnlyGeometry(faceRightHandness, tetraGridPoints, 4, 4, hdfProxy, faceIndicesPerCell, nodeIndicesPerFace);
 }
 
-void serializeRepresentationSetRepresentation(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
+void serializeRepresentationSetRepresentation(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy*)
 {
 	RESQML2_NS::RepresentationSetRepresentation* result = pck->createRepresentationSetRepresentation("", "Testing Representation set");
 	cout << "is homogeneous : " << result->isHomogeneous() << endl;
@@ -808,14 +772,16 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 	// =========================================================================
 	// =========================================================================
 	// Organization features
-	OrganizationFeature * structOrg1 = pck.createStructuralModel("", "StructuralOrg1");
+	OrganizationFeature * structOrg1 = pck.createStructuralModel("446068f6-33d8-40f4-9bec-2640fb7df23e", "StructuralOrg1");
 	structOrg1->setOriginator("Geosiris");
+	structOrg1->setEditor("F2I");
 
 	// =========================================================================
 	// =========================================================================
 	// Organization interpretations
-	StructuralOrganizationInterpretation * structuralOrganizationInterpretation = pck.createStructuralOrganizationInterpretationInApparentDepth(structOrg1, "", "StructuralOrg1 Interp1");
+	StructuralOrganizationInterpretation * structuralOrganizationInterpretation = pck.createStructuralOrganizationInterpretationInApparentDepth(structOrg1, "456f31e2-f79a-400c-91a9-ffd1fc939d32", "StructuralOrg1 Interp1");
 	structuralOrganizationInterpretation->setOriginator("Geosiris");
+	structuralOrganizationInterpretation->setEditor("F2I");
 	structuralOrganizationInterpretation->pushBackFaultInterpretation(fault1Interp1);
 	structuralOrganizationInterpretation->pushBackHorizonInterpretation(horizon1Interp1, 0);
 	structuralOrganizationInterpretation->pushBackHorizonInterpretation(horizon2Interp1, 0);
@@ -823,13 +789,25 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 	// =========================================================================
 	// =========================================================================
 	// EarthModel
-	OrganizationFeature * earthModelOrg = pck.createEarthModel("", "EarthModelOrg");
+	OrganizationFeature * earthModelOrg = pck.createEarthModel("cb8848cd-8df6-4373-8cdd-fdf5f944b6ab", "EarthModelOrg");
 	earthModelOrg->setOriginator("Geosiris");
-	EarthModelInterpretation * earthModel = pck.createEarthModelInterpretation(earthModelOrg, "", "EarthModel");
+	earthModelOrg->setEditor("F2I");
+	EarthModelInterpretation * earthModel = pck.createEarthModelInterpretation(earthModelOrg, "03bb3a50-c206-4aee-8343-dbea84011850", "EarthModel");
 	earthModel->setOriginator("Geosiris");
+	earthModel->setEditor("F2I");
 	earthModel->setStructuralOrganizationInterpretation(structuralOrganizationInterpretation);
 
 	// =========================================================================
+	// Add frontiers
+	FrontierFeature* xPlusFrontier = pck.createFrontier("e062ee65-8296-44c0-adf9-14cef0c2eb27", "X Plus Frontier");
+	GenericFeatureInterpretation* xPlusFrontierInterp = pck.createGenericFeatureInterpretation(xPlusFrontier, "e888c38b-86d5-41ae-9aaa-a7a41d0f4554", "X Plus Frontier Interp");
+	FrontierFeature* xMinusFrontier = pck.createFrontier("0f979db7-1189-47f4-827f-f61f9d163655", "X Minus Frontier");
+	GenericFeatureInterpretation* xMinusFrontierInterp = pck.createGenericFeatureInterpretation(xMinusFrontier, "cdbf2692-ab91-4529-8878-c10348a263a6", "X Minus Frontier Interp");
+	FrontierFeature* yPlusFrontier = pck.createFrontier("f50de712-10cd-40e1-ae71-fe36a5a78453", "Y Plus Frontier");
+	GenericFeatureInterpretation* yPlusFrontierInterp = pck.createGenericFeatureInterpretation(yPlusFrontier, "ef1b0d82-52f5-4394-9b1a-ea92fffa8548", "Y Plus Frontier Interp");
+	FrontierFeature* yMinusFrontier = pck.createFrontier("d4820ef8-2698-407f-84c7-c36396e19d08", "Y Minus Frontier");
+	GenericFeatureInterpretation* yMinusFrontierInterp = pck.createGenericFeatureInterpretation(yMinusFrontier, "74977015-731a-4e66-8fba-7c42cc44faa0", "Y Minus Frontier Interp");
+
 	// =========================================================================
 	// Binary contact interpretation
 
@@ -837,22 +815,114 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020genetic_x0020boundary, fault1Interp1, gsoap_resqml2_0_1::resqml2__ContactSide__hanging_x0020wall,
 		gsoap_resqml2_0_1::resqml2__ContactVerb__splits,
 		horizon1Interp1, gsoap_resqml2_0_1::resqml2__ContactSide__both);
-
-	// Contact 1: fault1Interp1 FOOT_WALL_SIDE SPLITS horizon2Interp1 BOTH_SIDES
+	// Contact 1: fault1Interp1 FOOT_WALL_SIDE SPLITS horizon1Interp1 BOTH_SIDES
 	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020genetic_x0020boundary, fault1Interp1, gsoap_resqml2_0_1::resqml2__ContactSide__footwall,
 		gsoap_resqml2_0_1::resqml2__ContactVerb__splits,
 		horizon1Interp1, gsoap_resqml2_0_1::resqml2__ContactSide__both);
-
-	// Contact 2: fault1Interp1 HANGING_WALL_SIDE SPLITS horizon1Interp1 BOTH_SIDES
+	// Contact 2: fault1Interp1 HANGING_WALL_SIDE SPLITS horizon2Interp1 BOTH_SIDES
 	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020genetic_x0020boundary, fault1Interp1, gsoap_resqml2_0_1::resqml2__ContactSide__hanging_x0020wall,
 		gsoap_resqml2_0_1::resqml2__ContactVerb__splits,
 		horizon2Interp1, gsoap_resqml2_0_1::resqml2__ContactSide__both);
-
-	// Contact 3: fault1Interp1 FOOT_WALL_SIDE SPLITS horizon1Interp1 BOTH_SIDES
+	// Contact 3: fault1Interp1 FOOT_WALL_SIDE SPLITS horizon2Interp1 BOTH_SIDES
 	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020genetic_x0020boundary, fault1Interp1, gsoap_resqml2_0_1::resqml2__ContactSide__footwall,
 		gsoap_resqml2_0_1::resqml2__ContactVerb__splits,
 		horizon2Interp1, gsoap_resqml2_0_1::resqml2__ContactSide__both);
 
+	// Contact 4: horizon1Interp1 STOPS AT yMinusFrontierInterp
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		yMinusFrontierInterp);
+	// Contact 5: fault1Interp1 STOPS AT yMinusFrontierInterp (part above horizon1Interp1)
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		yMinusFrontierInterp);
+	// Contact 6: horizon2Interp1 STOPS AT yMinusFrontierInterp
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		yMinusFrontierInterp);
+
+	// Contact 7: horizon1Interp1 STOPS AT yPlusFrontierInterp
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		yPlusFrontierInterp);
+	// Contact 8: fault1Interp1 STOPS AT yPlusFrontierInterp (part above horizon1Interp1)
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		yPlusFrontierInterp);
+	// Contact 9: horizon2Interp1 STOPS AT yPlusFrontierInterp
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		yPlusFrontierInterp);
+
+	// Contact 10: horizon1Interp1 STOPS AT xMinusFrontierInterp
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		xMinusFrontierInterp);
+	// Contact 11: horizon2Interp1 STOPS AT xMinusFrontierInterp
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		xMinusFrontierInterp);
+	// Contact 12: xMinusFrontierInterp STOPS AT yMinusFrontierInterp
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__frontier_x0020feature_x0020to_x0020frontier_x0020feature, xMinusFrontierInterp,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		yMinusFrontierInterp);
+	// Contact 13: xMinusFrontierInterp STOPS AT yPlusFrontierInterp
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__frontier_x0020feature_x0020to_x0020frontier_x0020feature, xMinusFrontierInterp,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		yPlusFrontierInterp);
+
+	// Contact 14: fault1Interp1 STOPS AT yMinusFrontierInterp (part below horizon1Interp1)
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		yMinusFrontierInterp);
+	// Contact 15: fault1Interp1 STOPS AT yPlusFrontierInterp (part above horizon1Interp1)
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		yPlusFrontierInterp);
+
+	// Contact 16: horizon1Interp1 STOPS AT yMinusFrontierInterp
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		yMinusFrontierInterp);
+	// Contact 17: fault1Interp1 STOPS AT yMinusFrontierInterp (part below horizon2Interp1)
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		yMinusFrontierInterp);
+	// Contact 18: horizon2Interp1 STOPS AT yMinusFrontierInterp
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		yMinusFrontierInterp);
+
+	// Contact 19: horizon1Interp1 STOPS AT yPlusFrontierInterp
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		yPlusFrontierInterp);
+	// Contact 20: fault1Interp1 STOPS AT yPlusFrontierInterp (part below horizon2Interp1)
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		yPlusFrontierInterp);
+	// Contact 21: horizon2Interp1 STOPS AT yPlusFrontierInterp
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		yPlusFrontierInterp);
+
+	// Contact 22: horizon1Interp1 STOPS AT xPlusFrontierInterp
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		xPlusFrontierInterp);
+	// Contact 23: horizon2Interp1 STOPS AT xPlusFrontierInterp
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		xPlusFrontierInterp);
+	// Contact 24: xPlusFrontierInterp STOPS AT yMinusFrontierInterp
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__frontier_x0020feature_x0020to_x0020frontier_x0020feature, xPlusFrontierInterp,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		yMinusFrontierInterp);
+	// Contact 25: xPlusFrontierInterp STOPS AT yPlusFrontierInterp
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__frontier_x0020feature_x0020to_x0020frontier_x0020feature, xPlusFrontierInterp,
+		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+		yPlusFrontierInterp);
+	
 	// =========================================================================
 	// =========================================================================
 	// SurfaceFramework
@@ -870,12 +940,39 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 	h2i1triRep->pushBackIntoRepresentationSet(singlePatchFault1SealedSurfaceFramework);
 
 	// Multipatch Fault 1
+	LocalDepth3dCrs* crs = pck.getLocalDepth3dCrsSet()[0];
 	sealedSurfaceFramework = pck.createSealedSurfaceFrameworkRepresentation(structuralOrganizationInterpretation, "c89011a9-0fd8-42cd-b992-96785ed01f6f", "StructuralOrg1 Interp1 Interp1 SealedSurfFrmwk");
 	sealedSurfaceFramework->setOriginator("Geosiris");
 	sealedSurfaceFramework->setEditor("F2I");
 	f1i1triRep->pushBackIntoRepresentationSet(sealedSurfaceFramework);
-	h1i1triRep->pushBackIntoRepresentationSet(sealedSurfaceFramework);
-	h2i1triRep->pushBackIntoRepresentationSet(sealedSurfaceFramework);
+	h1i1triRep->pushBackIntoRepresentationSet(sealedSurfaceFramework); // Top frontier of the corresponding sealedVolumeFramework
+	h2i1triRep->pushBackIntoRepresentationSet(sealedSurfaceFramework); // Btm frontier of the corresponding sealedVolumeFramework
+	xMinusFrontierRep = pck.createTriangulatedSetRepresentation(xMinusFrontierInterp, crs, "0a327e2e-105c-4068-a325-a6c5e3de135f", "X Minus frontier rep");
+	double xMinusFrontierRepNodes[18] = { 0, 0, 300, 0, 200, 300, 0, 0, 350, 0, 200, 350, 0, 0, 500, 0, 200, 500 };
+	unsigned int xMinusFrontierRepTriangles[12] = { 0, 1, 2, 1, 3, 2, 2,3,4, 3,5,4 };
+	xMinusFrontierRep->pushBackTrianglePatch(6, xMinusFrontierRepNodes, 4, xMinusFrontierRepTriangles, hdfProxy);
+	xMinusFrontierRep->pushBackIntoRepresentationSet(sealedSurfaceFramework);
+	xPlusFrontierRep = pck.createTriangulatedSetRepresentation(xPlusFrontierInterp, crs, "6e678338-3b53-49b6-8801-faee493e0c42", "X Plus frontier rep");
+	double xPlusFrontierRepRepNodes[18] = { 700, 0, 350, 700, 200, 350, 700, 0, 500, 700, 200, 500, 700, 0, 550, 700, 200, 550 };
+	unsigned int xPlusFrontierRepRepTriangles[12] = { 0, 1, 2, 1, 3, 2, 2,3,4, 3,5,4 };
+	xPlusFrontierRep->pushBackTrianglePatch(6, xPlusFrontierRepRepNodes, 4, xPlusFrontierRepRepTriangles, hdfProxy);
+	xPlusFrontierRep->pushBackIntoRepresentationSet(sealedSurfaceFramework);
+	yPlusFrontierRep = pck.createTriangulatedSetRepresentation(yPlusFrontierInterp, crs, "e960aea8-72e2-495d-8253-60fda5620921", "Y Plus frontier rep");
+	double yPlusFrontierRepNodesPatch0[18] = { 0, 200, 300, 250, 200, 300, 0, 200, 350, 300, 200, 350, 0, 200, 500, 450, 200, 500 };
+	unsigned int yPlusFrontierRepTrianglesPatch0[12] = { 0,1,2, 1,3,2, 2,3,4, 3,5,4 };
+	yPlusFrontierRep->pushBackTrianglePatch(6, yPlusFrontierRepNodesPatch0, 4, yPlusFrontierRepTrianglesPatch0, hdfProxy);
+	double yPlusFrontierRepNodesPatch1[18] = { 300, 200, 350, 700, 200, 350, 450, 200, 500, 700, 200, 500, 500, 200, 550, 700, 200, 550 };
+	unsigned int yPlusFrontierRepTrianglesPatch1[12] = { 6,7,8, 7,9,8, 8,9,10, 9,11,10 };
+	yPlusFrontierRep->pushBackTrianglePatch(6, yPlusFrontierRepNodesPatch1, 4, yPlusFrontierRepTrianglesPatch1, hdfProxy);
+	yPlusFrontierRep->pushBackIntoRepresentationSet(sealedSurfaceFramework);
+	yMinusFrontierRep = pck.createTriangulatedSetRepresentation(yMinusFrontierInterp, crs, "38f64a1c-356f-4d30-a9ce-4cd3b8d6ec40", "Y Minus frontier rep");
+	double yMinusFrontierRepNodesPatch0[18] = { 0, 0, 300, 250, 0, 300, 0, 0, 350, 300, 0, 350, 0, 0, 500, 450, 0, 500 };
+	unsigned int yMinusFrontierRepTrianglesPatch0[12] = { 0,1,2, 1,3,2, 2,3,4, 3,5,4 };
+	yMinusFrontierRep->pushBackTrianglePatch(6, yMinusFrontierRepNodesPatch0, 4, yMinusFrontierRepTrianglesPatch0, hdfProxy);
+	double yMinusFrontierRepNodesPatch1[18] = { 300, 0, 350, 700, 0, 350, 450, 0, 500, 700, 0, 500, 500, 0, 550, 700, 0, 550 };
+	unsigned int yMinusFrontierRepTrianglesPatch1[12] = { 6,7,8, 7,9,8, 8,9,10, 9,11,10 };
+	yMinusFrontierRep->pushBackTrianglePatch(6, yMinusFrontierRepNodesPatch1, 4, yMinusFrontierRepTrianglesPatch1, hdfProxy);
+	yMinusFrontierRep->pushBackIntoRepresentationSet(sealedSurfaceFramework);
 
 	// =========================================================================
 	// =========================================================================
@@ -886,11 +983,11 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 
 	// Contact 0
 	// nbPatch * nbIdenticalNodes = 9
-	int contactIdenticalNodes[9] = {
-		0, 0, 0,
-		1, 1, 1,
-		2, 2, 2
-	};
+	//int contactIdenticalNodes[9] = {
+	//	0, 0, 0,
+	//	1, 1, 1,
+	//	2, 2, 2
+	//};
 	//sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
 	singlePatchFault1SealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
 
@@ -1159,6 +1256,200 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 		3,
 		f1i1triRep, hdfProxy);
 
+	// Contact 4: horizon1Interp1 STOPS AT yMinusFrontierInterp
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	int twoIndicesContact[2] = { 3, 0 };
+	sealedSurfaceFramework->pushBackContactPatch(4, twoIndicesContact, 2, h1i1triRep, hdfProxy);
+	twoIndicesContact[0] = 0;
+	twoIndicesContact[1] = 1;
+	sealedSurfaceFramework->pushBackContactPatch(4, twoIndicesContact, 2, yMinusFrontierRep, hdfProxy);
+	// Contact 5: fault1Interp1 STOPS AT yMinusFrontierInterp (part above horizon1Interp1)
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	twoIndicesContact[0] = 6;
+	twoIndicesContact[1] = 9;
+	sealedSurfaceFramework->pushBackContactPatch(5, twoIndicesContact, 2, f1i1triRep, hdfProxy);
+	twoIndicesContact[0] = 1;
+	twoIndicesContact[1] = 3;
+	sealedSurfaceFramework->pushBackContactPatch(5, twoIndicesContact, 2, yMinusFrontierRep, hdfProxy);
+	// Contact 6: horizon2Interp1 STOPS AT yMinusFrontierInterp
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	twoIndicesContact[0] = 3;
+	twoIndicesContact[1] = 0;
+	sealedSurfaceFramework->pushBackContactPatch(6, twoIndicesContact, 2, h2i1triRep, hdfProxy);
+	twoIndicesContact[0] = 4;
+	twoIndicesContact[1] = 5;
+	sealedSurfaceFramework->pushBackContactPatch(6, twoIndicesContact, 2, yMinusFrontierRep, hdfProxy);
+
+	// Contact 7: horizon1Interp1 STOPS AT yPlusFrontierInterp
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	twoIndicesContact[0] = 4;
+	twoIndicesContact[1] = 2;
+	sealedSurfaceFramework->pushBackContactPatch(7, twoIndicesContact, 2, h1i1triRep, hdfProxy);
+	twoIndicesContact[0] = 0;
+	twoIndicesContact[1] = 1;
+	sealedSurfaceFramework->pushBackContactPatch(7, twoIndicesContact, 2, yPlusFrontierRep, hdfProxy);
+	// Contact 8: fault1Interp1 STOPS AT yPlusFrontierInterp (part above horizon1Interp1)
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	twoIndicesContact[0] = 6;
+	twoIndicesContact[1] = 9;
+	sealedSurfaceFramework->pushBackContactPatch(8, twoIndicesContact, 2, f1i1triRep, hdfProxy);
+	twoIndicesContact[0] = 1;
+	twoIndicesContact[1] = 3;
+	sealedSurfaceFramework->pushBackContactPatch(8, twoIndicesContact, 2, yPlusFrontierRep, hdfProxy);
+	// Contact 9: horizon2Interp1 STOPS AT yPlusFrontierInterp
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	twoIndicesContact[0] = 4;
+	twoIndicesContact[1] = 2;
+	sealedSurfaceFramework->pushBackContactPatch(9, twoIndicesContact, 2, h2i1triRep, hdfProxy);
+	twoIndicesContact[0] = 4;
+	twoIndicesContact[1] = 5;
+	sealedSurfaceFramework->pushBackContactPatch(9, twoIndicesContact, 2, yPlusFrontierRep, hdfProxy);
+
+	// Contact 10: horizon1Interp1 STOPS AT xMinusFrontierInterp
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	twoIndicesContact[0] = 3;
+	twoIndicesContact[1] = 4;
+	sealedSurfaceFramework->pushBackContactPatch(10, twoIndicesContact, 2, h1i1triRep, hdfProxy);
+	twoIndicesContact[0] = 0;
+	twoIndicesContact[1] = 1;
+	sealedSurfaceFramework->pushBackContactPatch(10, twoIndicesContact, 2, xMinusFrontierRep, hdfProxy);
+	// Contact 11: horizon2Interp1 STOPS AT xMinusFrontierInterp
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	twoIndicesContact[0] = 3;
+	twoIndicesContact[1] = 4;
+	sealedSurfaceFramework->pushBackContactPatch(11, twoIndicesContact, 2, h2i1triRep, hdfProxy);
+	twoIndicesContact[0] = 2;
+	twoIndicesContact[1] = 3;
+	sealedSurfaceFramework->pushBackContactPatch(11, twoIndicesContact, 2, xMinusFrontierRep, hdfProxy);
+	// Contact 12: xMinusFrontierInterp STOPS AT yMinusFrontierInterp
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	int threeIndicesContact[3] = { 0,2,4 };
+	sealedSurfaceFramework->pushBackContactPatch(12, threeIndicesContact, 2, yMinusFrontierRep, hdfProxy);
+	threeIndicesContact[0] = 0;
+	threeIndicesContact[1] = 2;
+	threeIndicesContact[2] = 4;
+	sealedSurfaceFramework->pushBackContactPatch(12, threeIndicesContact, 2, xMinusFrontierRep, hdfProxy);
+	// Contact 13: xMinusFrontierInterp STOPS AT yPlusFrontierInterp
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	threeIndicesContact[0] = 0;
+	threeIndicesContact[1] = 2;
+	threeIndicesContact[2] = 4;
+	sealedSurfaceFramework->pushBackContactPatch(13, threeIndicesContact, 2, yPlusFrontierRep, hdfProxy);
+	threeIndicesContact[0] = 1;
+	threeIndicesContact[1] = 3;
+	threeIndicesContact[2] = 5;
+	sealedSurfaceFramework->pushBackContactPatch(13, threeIndicesContact, 2, xMinusFrontierRep, hdfProxy);
+
+	// Contact 14: fault1Interp1 STOPS AT yMinusFrontierInterp (part below horizon1Interp1)
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	twoIndicesContact[0] = 12;
+	twoIndicesContact[1] = 15;
+	sealedSurfaceFramework->pushBackContactPatch(14, twoIndicesContact, 2, f1i1triRep, hdfProxy);
+	twoIndicesContact[0] = 3;
+	twoIndicesContact[1] = 5;
+	sealedSurfaceFramework->pushBackContactPatch(14, twoIndicesContact, 2, yMinusFrontierRep, hdfProxy);
+	twoIndicesContact[0] = 6;
+	twoIndicesContact[1] = 8;
+	sealedSurfaceFramework->pushBackContactPatch(14, twoIndicesContact, 2, yMinusFrontierRep, hdfProxy);
+	// Contact 15: fault1Interp1 STOPS AT yPlusFrontierInterp (part above horizon1Interp1)
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	twoIndicesContact[0] = 14;
+	twoIndicesContact[1] = 17;
+	sealedSurfaceFramework->pushBackContactPatch(15, twoIndicesContact, 2, f1i1triRep, hdfProxy);
+	twoIndicesContact[0] = 3;
+	twoIndicesContact[1] = 5;
+	sealedSurfaceFramework->pushBackContactPatch(15, twoIndicesContact, 2, yPlusFrontierRep, hdfProxy);
+	twoIndicesContact[0] = 6;
+	twoIndicesContact[1] = 8;
+	sealedSurfaceFramework->pushBackContactPatch(15, twoIndicesContact, 2, yPlusFrontierRep, hdfProxy);
+
+	// Contact 16: horizon1Interp1 STOPS AT yMinusFrontierInterp
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	twoIndicesContact[0] = 5;
+	twoIndicesContact[1] = 8;
+	sealedSurfaceFramework->pushBackContactPatch(16, twoIndicesContact, 2, h1i1triRep, hdfProxy);
+	twoIndicesContact[0] = 6;
+	twoIndicesContact[1] = 7;
+	sealedSurfaceFramework->pushBackContactPatch(16, twoIndicesContact, 2, yMinusFrontierRep, hdfProxy);
+	// Contact 17: fault1Interp1 STOPS AT yMinusFrontierInterp (part below horizon2Interp1)
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	twoIndicesContact[0] = 18;
+	twoIndicesContact[1] = 21;
+	sealedSurfaceFramework->pushBackContactPatch(17, twoIndicesContact, 2, f1i1triRep, hdfProxy);
+	twoIndicesContact[0] = 8;
+	twoIndicesContact[1] = 10;
+	sealedSurfaceFramework->pushBackContactPatch(17, twoIndicesContact, 2, yMinusFrontierRep, hdfProxy);
+	// Contact 18: horizon2Interp1 STOPS AT yMinusFrontierInterp
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	twoIndicesContact[0] = 5;
+	twoIndicesContact[1] = 8;
+	sealedSurfaceFramework->pushBackContactPatch(18, twoIndicesContact, 2, h2i1triRep, hdfProxy);
+	twoIndicesContact[0] = 10;
+	twoIndicesContact[1] = 11;
+	sealedSurfaceFramework->pushBackContactPatch(18, twoIndicesContact, 2, yMinusFrontierRep, hdfProxy);
+
+	// Contact 19: horizon1Interp1 STOPS AT yPlusFrontierInterp
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	twoIndicesContact[0] = 7;
+	twoIndicesContact[1] = 9;
+	sealedSurfaceFramework->pushBackContactPatch(19, twoIndicesContact, 2, h1i1triRep, hdfProxy);
+	twoIndicesContact[0] = 6;
+	twoIndicesContact[1] = 7;
+	sealedSurfaceFramework->pushBackContactPatch(19, twoIndicesContact, 2, yPlusFrontierRep, hdfProxy);
+	// Contact 20: fault1Interp1 STOPS AT yPlusFrontierInterp (part below horizon2Interp1)
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	twoIndicesContact[0] = 20;
+	twoIndicesContact[1] = 23;
+	sealedSurfaceFramework->pushBackContactPatch(20, twoIndicesContact, 2, f1i1triRep, hdfProxy);
+	twoIndicesContact[0] = 8;
+	twoIndicesContact[1] = 10;
+	sealedSurfaceFramework->pushBackContactPatch(20, twoIndicesContact, 2, yPlusFrontierRep, hdfProxy);
+	// Contact 21: horizon2Interp1 STOPS AT yPlusFrontierInterp
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	twoIndicesContact[0] = 7;
+	twoIndicesContact[1] = 9;
+	sealedSurfaceFramework->pushBackContactPatch(21, twoIndicesContact, 2, h2i1triRep, hdfProxy);
+	twoIndicesContact[0] = 10;
+	twoIndicesContact[1] = 11;
+	sealedSurfaceFramework->pushBackContactPatch(21, twoIndicesContact, 2, yPlusFrontierRep, hdfProxy);
+
+	// Contact 22: horizon1Interp1 STOPS AT xPlusFrontierInterp
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	twoIndicesContact[0] = 8;
+	twoIndicesContact[1] = 9;
+	sealedSurfaceFramework->pushBackContactPatch(22, twoIndicesContact, 2, h1i1triRep, hdfProxy);
+	twoIndicesContact[0] = 0;
+	twoIndicesContact[1] = 1;
+	sealedSurfaceFramework->pushBackContactPatch(22, twoIndicesContact, 2, xPlusFrontierRep, hdfProxy);
+	// Contact 23: horizon2Interp1 STOPS AT xPlusFrontierInterp
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	twoIndicesContact[0] = 8;
+	twoIndicesContact[1] = 9;
+	sealedSurfaceFramework->pushBackContactPatch(23, twoIndicesContact, 2, h2i1triRep, hdfProxy);
+	twoIndicesContact[0] = 0;
+	twoIndicesContact[1] = 1;
+	sealedSurfaceFramework->pushBackContactPatch(23, twoIndicesContact, 2, xPlusFrontierRep, hdfProxy);
+	// Contact 24: xPlusFrontierInterp STOPS AT yMinusFrontierInterp
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	threeIndicesContact[0] = 7;
+	threeIndicesContact[1] = 9;
+	threeIndicesContact[2] = 11;
+	sealedSurfaceFramework->pushBackContactPatch(24, threeIndicesContact, 2, yMinusFrontierRep, hdfProxy);
+	threeIndicesContact[0] = 0;
+	threeIndicesContact[1] = 2;
+	threeIndicesContact[2] = 4;
+	sealedSurfaceFramework->pushBackContactPatch(24, threeIndicesContact, 2, xPlusFrontierRep, hdfProxy);
+	// Contact 25: xPlusFrontierInterp STOPS AT yPlusFrontierInterp
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	threeIndicesContact[0] = 7;
+	threeIndicesContact[1] = 9;
+	threeIndicesContact[2] = 11;
+	sealedSurfaceFramework->pushBackContactPatch(25, threeIndicesContact, 2, yPlusFrontierRep, hdfProxy);
+	threeIndicesContact[0] = 1;
+	threeIndicesContact[1] = 3;
+	threeIndicesContact[2] = 5;
+	sealedSurfaceFramework->pushBackContactPatch(25, threeIndicesContact, 2, xPlusFrontierRep, hdfProxy);
+
 	// =========================================================================
 	// =========================================================================
 	// Contact identities
@@ -1277,7 +1568,7 @@ void serializeActivities(COMMON_NS::EpcDocument * epcDoc)
 
 }
 
-void serializeFluidBoundary(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
+void serializeFluidBoundary(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractHdfProxy*)
 {
 	FluidBoundaryFeature* fluidBoundary = pck.createFluidBoundaryFeature("44a4d87c-3c67-4f98-a314-9d91c4147061", "Fluid boundary", gsoap_resqml2_0_1::resqml2__FluidContact__gas_x0020oil_x0020contact);
 	GenericFeatureInterpretation* interp = pck.createGenericFeatureInterpretation(fluidBoundary, "d06df5e4-3c56-4abd-836f-2abb5e58e13b", "Fluid boundary interp");
@@ -1496,7 +1787,6 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation * rep, bool* enabledCe
 
 		// Datatype
 		std::cout << "\tDatatype is : " << propVal->getValuesHdfDatatype() << std::endl;
-		bool isFloat = true;
 		if (propVal->getValuesHdfDatatype() == 0)
 		{
 			cerr << "\tERROR !!!!! The hdf datatype is unknown" << endl;
@@ -1505,7 +1795,6 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation * rep, bool* enabledCe
 		}
 		else if (propVal->getValuesHdfDatatype() > 2)
 		{
-			isFloat = false;
 			if (dynamic_cast<DiscreteProperty*>(propVal) == nullptr && dynamic_cast<CategoricalProperty*>(propVal) == nullptr)
 			{
 				cerr << "\tERROR !!!!! The continuous property is linked to an integer HDF5 dataset." << endl;
@@ -1658,7 +1947,7 @@ void deserializeStratiColumn(StratigraphicColumn * stratiColumn)
 
 void deserializeSealedSurfaceFramework(const COMMON_NS::EpcDocument & pck)
 {
-	const std::vector<RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation*> ssfVec = pck.getResqml2_0Objects<RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation>();
+	const std::vector<RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation*> ssfVec = pck.getDataObjects<RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation>();
 
 	for (size_t ssfIndex = 0; ssfIndex < ssfVec.size(); ++ssfIndex) {
 		std::cout << "\tSEALED SURFACE FRAMEWORK" << std::endl;
@@ -1740,7 +2029,7 @@ void deserializeSealedSurfaceFramework(const COMMON_NS::EpcDocument & pck)
 
 void deserializeSealedVolumeFramework(const COMMON_NS::EpcDocument & pck)
 {
-	const std::vector<RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation*> svfVec = pck.getResqml2_0Objects<RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation>();
+	const std::vector<RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation*> svfVec = pck.getDataObjects<RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation>();
 
 	for (size_t svfIndex = 0; svfIndex < svfVec.size(); ++svfIndex) {
 		std::cout << "\tSEALED VOLUME FRAMEWORK" << std::endl;
@@ -2783,7 +3072,7 @@ void deserializePerforations(COMMON_NS::EpcDocument & pck)
 {
 	cout << endl << "PERFORATIONS" << endl;
 
-	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = static_cast<WITSML2_0_NS::WellboreCompletion*>(pck.getDataObjectByUuid("7bda8ecf-2037-4dc7-8c59-db6ca09f2008"));
+	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = pck.getDataObjectByUuid<WITSML2_0_NS::WellboreCompletion>("7bda8ecf-2037-4dc7-8c59-db6ca09f2008");
 	if (wellboreCompletion == nullptr) {
 		return;
 	}

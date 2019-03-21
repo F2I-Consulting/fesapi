@@ -38,7 +38,7 @@ using namespace epc;
 
 const char* AbstractRepresentation::XML_TAG = "AbstractRepresentation";
 
-AbstractRepresentation::AbstractRepresentation(AbstractFeatureInterpretation* interp, AbstractLocal3dCrs * crs): interpretation(nullptr), hdfProxy(nullptr), localCrs(nullptr)
+AbstractRepresentation::AbstractRepresentation(AbstractFeatureInterpretation*, AbstractLocal3dCrs *): interpretation(nullptr), hdfProxy(nullptr), localCrs(nullptr)
 {
 }
 
@@ -192,17 +192,11 @@ std::vector<AbstractValuesProperty*> AbstractRepresentation::getValuesPropertySe
 
 	for (size_t i = 0; i < propertySet.size(); ++i)
 	{
-		if (propertySet[i]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREContinuousProperty ||
-			propertySet[i]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECategoricalProperty ||
-			propertySet[i]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREDiscreteProperty ||
-			propertySet[i]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECommentProperty
-#ifdef WITH_RESQML2_1
-			|| propertySet[i]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREContinuousProperty ||
-			propertySet[i]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECategoricalProperty ||
-			propertySet[i]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREDiscreteProperty ||
-			propertySet[i]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECommentProperty
-#endif
-			) {
+		int gsoapType = propertySet[i]->getGsoapType();
+		if (gsoapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREContinuousProperty ||
+			gsoapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECategoricalProperty ||
+			gsoapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREDiscreteProperty ||
+			gsoapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECommentProperty) {
 			result.push_back(static_cast<AbstractValuesProperty*>(propertySet[i]));
 		}
 	}
@@ -485,8 +479,6 @@ void AbstractRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument
 
 	// Seismic support
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml2__AbstractRepresentation* const rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractRepresentation* const>(gsoapProxy2_0_1);
-
 		// Seismic support
 		for (unsigned int patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
 			gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(patchIndex);

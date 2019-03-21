@@ -22,10 +22,30 @@ under the License.
 #include "witsml2_0/Wellbore.h"
 #include "witsml2_0/WellCompletion.h"
 
+#define GETTER_PRESENCE_ATTRIBUTE(attributeName) DLL_IMPORT_OR_EXPORT bool has##attributeName() const;
+
+#define GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(attributeName)\
+	DLL_IMPORT_OR_EXPORT void set##attributeName(const std::string & attributeName);\
+	GETTER_PRESENCE_ATTRIBUTE(attributeName)\
+	DLL_IMPORT_OR_EXPORT std::string get##attributeName() const;
+
+#define GETTER_AND_SETTER_WELL_UINT_ATTRIBUTE(attributeName)\
+	DLL_IMPORT_OR_EXPORT void set##attributeName(unsigned int attributeName);\
+	GETTER_PRESENCE_ATTRIBUTE(attributeName)\
+	DLL_IMPORT_OR_EXPORT unsigned int get##attributeName() const;
+
+#define GETTER_AND_SETTER_WELL_LENGTH_MEASURE_ATTRIBUTE(attributeName)\
+	DLL_IMPORT_OR_EXPORT void set##attributeName(double value, gsoap_eml2_1::eml21__LengthUom uom);\
+	GETTER_PRESENCE_ATTRIBUTE(attributeName)\
+	DLL_IMPORT_OR_EXPORT double get##attributeName##Value() const;\
+	DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom get##attributeName##Uom() const;
+
 namespace WITSML2_0_NS
 {
-	class DLL_IMPORT_OR_EXPORT Well : public WITSML2_0_NS::AbstractObject
+	class Well : public WITSML2_0_NS::AbstractObject
 	{
+	private:
+		void setString(std::string* & strToBeSet, const std::string & strToSet);
 	public:
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -54,20 +74,70 @@ namespace WITSML2_0_NS
 		*/
 		~Well() {}
 
-		void setOperator(const std::string & operator_);
+		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(NameLegal)
+		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(NumLicense)
+		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(NumGovt)
+		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(Field)
+		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(Country)
+		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(State)
+		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(County)
+		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(Region)
+		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(District)
+		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(Block)
+		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(Operator)
+		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(OperatorDiv)
+		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(OriginalOperator)
+		GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE(NumAPI)
 
-		double getLocationProjectedX(unsigned int locationIndex);
-		double getLocationProjectedY(unsigned int locationIndex);
+		GETTER_AND_SETTER_WELL_LENGTH_MEASURE_ATTRIBUTE(WaterDepth)
+		GETTER_AND_SETTER_WELL_LENGTH_MEASURE_ATTRIBUTE(GroundElevation)
 
-		void pushBackLocation(
+		GETTER_AND_SETTER_WELL_UINT_ATTRIBUTE(DTimLicense)
+		GETTER_AND_SETTER_WELL_UINT_ATTRIBUTE(DTimSpud)
+		GETTER_AND_SETTER_WELL_UINT_ATTRIBUTE(DTimPa)
+
+		/**
+		* Set the time zone in which the well is located. It is the deviation in hours and minutes from UTC. This should be the normal time zone at the well and not a seasonally-adjusted value, such as daylight savings time
+		*
+		* @param direction	True means the time zone is a positive offset from UTC, false means the time zone is a negative offset from UTC
+		* @param hours		the deviation hours from UTC
+		* @param minutes	the deviation minutes from UTC
+		*/
+		DLL_IMPORT_OR_EXPORT void setTimeZone(bool direction, unsigned short hours, unsigned short minutes = 0);
+		GETTER_PRESENCE_ATTRIBUTE(TimeZone)
+		/**
+		* Get the time zone direction in which the well is located.
+		*
+		* @return True means the time zone is a positive offset from UTC, false means the time zone is a negative offset from UTC. If the time zone is Z then an arbitrary '+' is returned.
+		*/
+		DLL_IMPORT_OR_EXPORT bool getTimeZoneDirection() const;
+		/**
+		* Get the time zone hour(s) in which the well is located.
+		* Must be used with getTimeZoneDirection and getTimeZoneMinute() to have the complete time zone.
+		*
+		* @return the deviation hour(s) from UTC
+		*/
+		DLL_IMPORT_OR_EXPORT unsigned short getTimeZoneHours() const;
+		/**
+		* Get the time zone minute(s) in which the well is located.
+		* Must be used with getTimeZoneDirection and getTimeZoneHour() to have the complete time zone.
+		*
+		* @return the deviation minute(s) from UTC
+		*/
+		DLL_IMPORT_OR_EXPORT unsigned short getTimeZoneMinutes() const;
+
+		DLL_IMPORT_OR_EXPORT double getLocationProjectedX(unsigned int locationIndex);
+		DLL_IMPORT_OR_EXPORT double getLocationProjectedY(unsigned int locationIndex);
+
+		DLL_IMPORT_OR_EXPORT void pushBackLocation(
 			const std::string & guid,
 			double projectedX,
 			double projectedY,
 			unsigned int projectedCrsEpsgCode);
 
-		unsigned int geLocationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int geLocationCount() const;
 		
-		void pushBackDatum(
+		DLL_IMPORT_OR_EXPORT void pushBackDatum(
 			const std::string & guid, 
 			const std::string & title,
 			gsoap_eml2_1::eml21__WellboreDatumReference code,
@@ -76,20 +146,20 @@ namespace WITSML2_0_NS
 			double elevation,
 			unsigned int verticalCrsEpsgCode);
 
-		unsigned int getDatumCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getDatumCount() const;
 		
 		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
 
-		RESQML2_0_1_NS::WellboreFeature* getResqmlWellboreFeature() const { return resqmlWellboreFeature; }
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreFeature* getResqmlWellboreFeature() const;
 
-		const std::vector<Wellbore*>& getWellbores() const { return wellboreSet; }
+		DLL_IMPORT_OR_EXPORT const std::vector<Wellbore*>& getWellbores() const;
 
-		const std::vector<WellCompletion*>& getWellcompletions() const { return wellCompletionSet; }
+		DLL_IMPORT_OR_EXPORT const std::vector<WellCompletion*>& getWellcompletions() const;
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 	protected:
 

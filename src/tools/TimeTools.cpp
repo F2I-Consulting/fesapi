@@ -18,14 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "tools/TimeTools.h"
 
-#include <cmath>
 #include <ctime>
 #include <sstream>
 #include <iomanip>
 
 using namespace std;
-
-std::string timeTools::convertMicrosecondUnixTimestampToIso(const long long & ts)
+/*
+std::string timeTools::convertMicrosecondUnixTimestampToIso(long long ts)
 {
 	// microsecond part
 	long long onlyMicrosec = 0;
@@ -45,8 +44,8 @@ std::string timeTools::convertMicrosecondUnixTimestampToIso(const long long & ts
 
 	return oss.str();
 }
-
-std::string timeTools::convertUnixTimestampToIso(const time_t & ts)
+*/
+std::string timeTools::convertUnixTimestampToIso(time_t ts)
 {
 	char buf[20]; // 19 for the string below +1 for the terminating char
 	strftime(buf, 20, "%Y-%m-%dT%H:%M:%S", gmtime(&ts));

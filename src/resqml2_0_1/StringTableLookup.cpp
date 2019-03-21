@@ -178,5 +178,4 @@ tr1::unordered_map<long, string> StringTableLookup::getMap() const
 	return result;
 }
 
-void StringTableLookup::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
-{}
+void StringTableLookup::importRelationshipSetFromEpc(COMMON_NS::EpcDocument*) {}
