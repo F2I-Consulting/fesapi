@@ -1299,9 +1299,9 @@ void serializeRockFluidOrganization(COMMON_NS::EpcDocument & pck, COMMON_NS::Abs
 	earthModel->setRockFluidOrganizationInterpretation(rockFluidOrg);
 
 	// ONE SUGAR
-	IjkGridExplicitRepresentation* singleCellIjkgrid = pck->getDataObjectByUuid<IjkGridExplicitRepresentation>("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b");
+	IjkGridExplicitRepresentation* singleCellIjkgrid = pck.getDataObjectByUuid<IjkGridExplicitRepresentation>("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b");
 	ULONG64 rockFluidUnitIndice = 0;
-	ijkgrid->setCellAssociationWithRockFluidOrganizationInterpretation(&rockFluidUnitIndice, 1000, rockFluidOrg);
+	singleCellIjkgrid->setCellAssociationWithRockFluidOrganizationInterpretation(&rockFluidUnitIndice, 1000, rockFluidOrg);
 }
 
 void deserializePropertyKindMappingFiles(COMMON_NS::EpcDocument * pck)
@@ -1809,7 +1809,7 @@ void deserializeRockFluidOrganization(COMMON_NS::EpcDocument & pck)
 {
 	RockFluidOrganizationInterpretation* rockFluidOrg = pck.getDataObjectByUuid<RockFluidOrganizationInterpretation>("b5bbfe42-4a63-11e9-9eeb-4f036e6e8141");
 	if (rockFluidOrg == nullptr) return;
-	cout << "RockFluidRepresentationIndex: " rockFluidOrg->getRockFluidUnitInterpretationIndex() << endl;
+	std::cout << "RockFluidRepresentationIndex: " << rockFluidOrg->getRockFluidUnitInterpretationIndex() << std::endl;
 	showAllMetadata(rockFluidOrg);
 	for (size_t i = 0; i < rockFluidOrg->getGridRepresentationCount(); ++i) {
 		RESQML2_NS::AbstractGridRepresentation* grid = rockFluidOrg->getGridRepresentation(i);
