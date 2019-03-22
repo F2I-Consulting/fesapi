@@ -50,7 +50,7 @@ void PropertyKindTest::initEpcDocHandler() {
 
 void PropertyKindTest::readEpcDocHandler() {
 	// getting the PropertyKind
-	PropertyKind* propertyKind = this->epcDoc->getResqmlAbstractObjectByUuid<PropertyKind>(uuid);
+	PropertyKind* propertyKind = this->epcDoc->getDataObjectByUuid<PropertyKind>(uuid);
 
 	REQUIRE(propertyKind->getNamingSystem().compare("F2I") == 0);
 	REQUIRE(propertyKind->getUom() == gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc);

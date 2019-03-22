@@ -224,6 +224,10 @@ namespace RESQML2_NS
 		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
 
 		virtual void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc);
+		/**
+		* Check if the associated property kind is allowed for this property.
+		*/
+		bool validate();
 
 	protected:
 

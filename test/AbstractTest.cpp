@@ -26,13 +26,13 @@ using namespace commontest;
 using namespace resqml2_0_1test;
 
 AbstractTest::AbstractTest(const string & epcDocPath) :
-	epcDocPath(epcDocPath),
-	epcDoc(nullptr) {
+	epcDoc(nullptr),
+	epcDocPath(epcDocPath) {
 }
 
 AbstractTest::AbstractTest(COMMON_NS::EpcDocument* epcDoc) :
-	epcDocPath(epcDoc->getStorageDirectory()),
-	epcDoc(epcDoc) {
+	epcDoc(epcDoc),
+	epcDocPath(epcDoc->getStorageDirectory()) {
 }
 
 void AbstractTest::serialize() {

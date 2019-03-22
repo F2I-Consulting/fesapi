@@ -45,7 +45,7 @@ OneTetrahedronUnstructuredGridRepresentationTest::OneTetrahedronUnstructuredGrid
 void OneTetrahedronUnstructuredGridRepresentationTest::initEpcDocHandler() {
 	// getting the local depth 3d crs
 	LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(this->epcDoc, true);
-	RESQML2_0_1_NS::LocalDepth3dCrs* crs = static_cast<RESQML2_0_1_NS::LocalDepth3dCrs*>(this->epcDoc->getResqmlAbstractObjectByUuid(LocalDepth3dCrsTest::defaultUuid));
+	RESQML2_0_1_NS::LocalDepth3dCrs* crs = static_cast<RESQML2_0_1_NS::LocalDepth3dCrs*>(this->epcDoc->getDataObjectByUuid(LocalDepth3dCrsTest::defaultUuid));
 
 	// getting the hdf proxy
 	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
@@ -67,7 +67,7 @@ void OneTetrahedronUnstructuredGridRepresentationTest::readEpcDocHandler() {
 	LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(this->epcDoc, false);
 
 	// getting the unstructured grid
-	RESQML2_0_1_NS::UnstructuredGridRepresentation * unstructuredGrid = static_cast<RESQML2_0_1_NS::UnstructuredGridRepresentation*>(this->epcDoc->getResqmlAbstractObjectByUuid(uuidOneTetrahedronUnstructuredGridRepresentation));
+	RESQML2_0_1_NS::UnstructuredGridRepresentation * unstructuredGrid = static_cast<RESQML2_0_1_NS::UnstructuredGridRepresentation*>(this->epcDoc->getDataObjectByUuid(uuidOneTetrahedronUnstructuredGridRepresentation));
 	
 	// getHdfProxyUuid
 	REQUIRE( unstructuredGrid->getHdfProxyUuid() == uuidHdfProxy);

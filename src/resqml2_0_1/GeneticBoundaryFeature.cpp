@@ -41,7 +41,7 @@ bool GeneticBoundaryFeature::isAnHorizon() const
 	return static_cast<gsoap_resqml2_0_1::_resqml2__GeneticBoundaryFeature*>(gsoapProxy2_0_1)->GeneticBoundaryKind == gsoap_resqml2_0_1::resqml2__GeneticBoundaryKind__horizon;
 }
 
-void GeneticBoundaryFeature::setAge(const ULONG64 & age)
+void GeneticBoundaryFeature::setAge(unsigned int age)
 {
 	gsoap_resqml2_0_1::_resqml2__GeneticBoundaryFeature* feature = static_cast<gsoap_resqml2_0_1::_resqml2__GeneticBoundaryFeature*>(gsoapProxy2_0_1);
 	if (!hasAnAge()) {

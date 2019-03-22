@@ -19,7 +19,7 @@ under the License.
 #pragma once
 
 #include <iostream>
-#include "AbstractObjectTest.h"
+#include "../AbstractObjectTest.h"
 
 namespace COMMON_NS {
 	class EpcDocument;
@@ -30,7 +30,7 @@ namespace RESQML2_0_1_NS {
 }
 
 namespace resqml2_0_1test {
-	class AbstractResqmlDataObjectTest : public AbstractObjectTest {
+	class AbstractResqmlDataObjectTest : public commontest::AbstractObjectTest{
 	public:
 		AbstractResqmlDataObjectTest(const std::string & epcDocPath, const std::string & uuid, const std::string & title);
 		AbstractResqmlDataObjectTest(COMMON_NS::EpcDocument * epcDoc, const std::string & uuid, const std::string & title);

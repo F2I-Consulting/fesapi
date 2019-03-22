@@ -21,11 +21,6 @@ under the License.
 #include "resqml2/AbstractRepresentation.h"
 #include "resqml2/AbstractValuesProperty.h"
 
-namespace WITSML1_4_1_1_NS
-{
-	class Log;
-}
-
 namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT WellboreFrameRepresentation : public RESQML2_NS::AbstractRepresentation
@@ -33,7 +28,8 @@ namespace RESQML2_0_1_NS
 	protected:
 		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const {return nullptr;}
 
-		WellboreFrameRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs) : AbstractRepresentation(interp, crs), witsmlLog(nullptr) {}
+		WellboreFrameRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs) : AbstractRepresentation(interp, crs), trajectory(nullptr)
+		{}
 
 	public:
 
@@ -57,7 +53,8 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml2__WellboreFrameRepresentation* fromGsoap): AbstractRepresentation(fromGsoap), witsmlLog(nullptr)  {}
+		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml2__WellboreFrameRepresentation* fromGsoap): AbstractRepresentation(fromGsoap), trajectory(nullptr)
+		{}
 
 		~WellboreFrameRepresentation() {}
 
@@ -102,7 +99,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get the xyz point count in a given patch.
 		*/
-		ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const {return getMdValuesCount();}
+		ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 
 		/**
 		* Get all the XYZ points of a particular patch of this representation.
@@ -145,9 +142,6 @@ namespace RESQML2_0_1_NS
 
 		unsigned int getPatchCount() const {return 1;}
 
-		void setWitsmlLog(WITSML1_4_1_1_NS::Log * witsmlLogToSet);
-		WITSML1_4_1_1_NS::Log* getWitsmlLog() {return witsmlLog;}
-
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
 
@@ -156,7 +150,6 @@ namespace RESQML2_0_1_NS
 
 	protected:
 
-		WITSML1_4_1_1_NS::Log * witsmlLog;
+		class WellboreTrajectoryRepresentation * trajectory;
 	};
 }
-

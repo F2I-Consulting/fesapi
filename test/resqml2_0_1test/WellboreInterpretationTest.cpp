@@ -51,7 +51,7 @@ void WellboreInterpretationTest::initEpcDocHandler()
 	// creating dependencies
 	WellboreTest* wellboreTest = new WellboreTest(this->epcDoc, true);
 
-	WellboreFeature* wellbore = static_cast<WellboreFeature*>(this->epcDoc->getResqmlAbstractObjectByUuid(WellboreTest::defaultUuid));
+	WellboreFeature* wellbore = static_cast<WellboreFeature*>(this->epcDoc->getDataObjectByUuid(WellboreTest::defaultUuid));
 
 	// cleaning
 	delete wellboreTest;

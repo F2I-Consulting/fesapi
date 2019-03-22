@@ -80,3 +80,6 @@ std::vector<epc::Relationship> EpcExternalPartReference::getAllTargetRelationshi
 
 	return result;
 }
+
+void EpcExternalPartReference::importRelationshipSetFromEpc(COMMON_NS::EpcDocument*)
+{}

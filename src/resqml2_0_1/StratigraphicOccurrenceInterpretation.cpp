@@ -110,7 +110,7 @@ void StratigraphicOccurrenceInterpretation::resolveTargetRelationships(COMMON_NS
 
 	if (interp->IsOccurrenceOf)
 	{
-		setStratigraphicColumnRankInterpretation(static_cast<StratigraphicColumnRankInterpretation*>(epcDoc->getResqmlAbstractObjectByUuid(interp->IsOccurrenceOf->UUID)));
+		setStratigraphicColumnRankInterpretation(static_cast<StratigraphicColumnRankInterpretation*>(epcDoc->getDataObjectByUuid(interp->IsOccurrenceOf->UUID)));
 	}
 
 	updateXml = true;

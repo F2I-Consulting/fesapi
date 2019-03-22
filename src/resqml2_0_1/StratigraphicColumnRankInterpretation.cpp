@@ -93,7 +93,7 @@ StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getSubje
 
 	resqml2__BinaryContactInterpretationPart* contact = static_cast<resqml2__BinaryContactInterpretationPart*>(static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation[contactIndex]);
 	if (contact->Subject)
-		return static_cast<StratigraphicUnitInterpretation*>(epcDocument->getResqmlAbstractObjectByUuid(contact->Subject->UUID));
+		return static_cast<StratigraphicUnitInterpretation*>(epcDocument->getDataObjectByUuid(contact->Subject->UUID));
 	else
 		return nullptr;
 }
@@ -117,7 +117,7 @@ StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getDirec
 
 	resqml2__BinaryContactInterpretationPart* contact = static_cast<resqml2__BinaryContactInterpretationPart*>(static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation[contactIndex]);
 	if (contact->DirectObject)
-		return static_cast<StratigraphicUnitInterpretation*>(epcDocument->getResqmlAbstractObjectByUuid(contact->DirectObject->UUID));
+		return static_cast<StratigraphicUnitInterpretation*>(epcDocument->getDataObjectByUuid(contact->DirectObject->UUID));
 	else
 		return nullptr;
 }
@@ -129,7 +129,7 @@ HorizonInterpretation* StratigraphicColumnRankInterpretation::getHorizonInterpre
 
 	resqml2__BinaryContactInterpretationPart* contact = static_cast<resqml2__BinaryContactInterpretationPart*>(static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation[contactIndex]);
 	if (contact->PartOf)
-		return static_cast<HorizonInterpretation*>(epcDocument->getResqmlAbstractObjectByUuid(contact->PartOf->UUID));
+		return static_cast<HorizonInterpretation*>(epcDocument->getDataObjectByUuid(contact->PartOf->UUID));
 	else
 		return nullptr;
 }

@@ -423,12 +423,12 @@ void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool re
 	}
 	else if (geom->CellGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__BooleanConstantArray) {
 		if (static_cast<resqml2__BooleanConstantArray*>(geom->CellGeometryIsDefined)->Value == true) {
-			for (unsigned int i = 0; i < cellCount; ++i) {
+			for (ULONG64 i = 0; i < cellCount; ++i) {
 				enabledCells[i] = true;
 			}
 		}
 		else {
-			for (unsigned int i = 0; i < cellCount; ++i) {
+			for (ULONG64 i = 0; i < cellCount; ++i) {
 				enabledCells[i] = false;
 			}
 		}
@@ -746,8 +746,9 @@ bool AbstractIjkGridRepresentation::isColumnEdgeSplitted(const unsigned int & iC
 	else if (edge == 2) ++jOtherColum;
 	else if (edge == 3) --iOtherColum;
 
-	if (iOtherColum < 0 || jOtherColum < 0 || iOtherColum >= getICellCount() || jOtherColum >= getJCellCount())
+	if (iOtherColum < 0 || jOtherColum < 0 || static_cast<unsigned int>(iOtherColum) >= getICellCount() || static_cast<unsigned int>(jOtherColum) >= getJCellCount()) {
 		return false;
+	}
 	unsigned int otherColumnIndex = getGlobalIndexColumnFromIjIndex(iOtherColum, jOtherColum);
 
 	// Check split on first pillar of the column edge
@@ -979,3 +980,22 @@ gsoap_resqml2_0_1::resqml2__KDirection AbstractIjkGridRepresentation::getKDirect
 	return geom->KDirection;
 }
 
+void AbstractIjkGridRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch(const unsigned int &, const unsigned int &, const unsigned int &, double *)
+{
+	throw std::logic_error("Partial object");
+}
+
+void AbstractIjkGridRepresentation::getXyzPointsOfBlockOfPatch(const unsigned int &, double *)
+{
+	throw std::logic_error("Partial object");
+}
+
+ULONG64 AbstractIjkGridRepresentation::getXyzPointCountOfPatch(const unsigned int &) const
+{
+	throw std::logic_error("Partial object");
+}
+
+void AbstractIjkGridRepresentation::getXyzPointsOfPatch(const unsigned int &, double *) const
+{
+	throw std::logic_error("Partial object");
+}

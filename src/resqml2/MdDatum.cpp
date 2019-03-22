@@ -91,6 +91,6 @@ std::string MdDatum::getLocalCrsUuid() const
 AbstractLocal3dCrs * MdDatum::getLocalCrs() const
 {
 	const string uuidLocalCrs = getLocalCrsUuid();
-	return static_cast<AbstractLocal3dCrs*>(epcDocument->getResqmlAbstractObjectByUuid(uuidLocalCrs));
+	return static_cast<AbstractLocal3dCrs*>(epcDocument->getDataObjectByUuid(uuidLocalCrs));
 }
 

@@ -62,16 +62,16 @@ namespace RESQML2_NS
 		*/
 		virtual bool isAnExistingParameter(const std::string & paramTitle) const = 0;
 
-		virtual const unsigned int getParameterCount() const = 0;
+		virtual unsigned int getParameterCount() const = 0;
 		virtual const std::string & getParameterTitle(const unsigned int & index) const = 0;
 		virtual const bool & getParameterIsInput(const unsigned int & index) const = 0;
 		virtual const bool & getParameterIsInput(const std::string & paramTitle) const = 0;
 		virtual const bool & getParameterIsOutput(const unsigned int & index) const = 0;
 		virtual const bool & getParameterIsOutput(const std::string & paramTitle) const = 0;
-		virtual const LONG64 getParameterMinOccurences(const unsigned int & index) const = 0;
-		virtual const LONG64 getParameterMinOccurences(const std::string & paramTitle) const = 0;
-		virtual const LONG64 getParameterMaxOccurences(const unsigned int & index) const = 0;
-		virtual const LONG64 getParameterMaxOccurences(const std::string & paramTitle) const = 0;
+		virtual LONG64 getParameterMinOccurences(const unsigned int & index) const = 0;
+		virtual LONG64 getParameterMinOccurences(const std::string & paramTitle) const = 0;
+		virtual LONG64 getParameterMaxOccurences(const unsigned int & index) const = 0;
+		virtual LONG64 getParameterMaxOccurences(const std::string & paramTitle) const = 0;
 
 		const std::vector<Activity*> & getActivityInstanceSet() const { return activityInstanceSet; }
 

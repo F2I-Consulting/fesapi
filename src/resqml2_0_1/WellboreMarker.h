@@ -50,7 +50,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreMarker(gsoap_resqml2_0_1::resqml2__WellboreMarker* fromGsoap, class WellboreMarkerFrameRepresentation* wellboreMarkerFrame) : AbstractObject(fromGsoap), boundaryFeatureInterpretation(nullptr), wellboreMarkerFrameRepresentation(wellboreMarkerFrame)  {}
+		WellboreMarker(gsoap_resqml2_0_1::resqml2__WellboreMarker* fromGsoap, class WellboreMarkerFrameRepresentation* wellboreMarkerFrame) : AbstractObject(fromGsoap), wellboreMarkerFrameRepresentation(wellboreMarkerFrame)  {}
 
 		/**
 		* Destructor
@@ -68,12 +68,12 @@ namespace RESQML2_0_1_NS
 		*/
 		gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind getGeologicBoundaryKind();
 
-		class WellboreMarkerFrameRepresentation * getWellMarkerFrameRepresentation() {return wellboreMarkerFrameRepresentation;}
+		class WellboreMarkerFrameRepresentation * getWellMarkerFrameRepresentation() const {return wellboreMarkerFrameRepresentation;}
 
 		/**
 		* Get the boundary feature interpretation linked to this well marker.
 		*/
-		class BoundaryFeatureInterpretation* getBoundaryFeatureInterpretation() const {return boundaryFeatureInterpretation;}
+		class BoundaryFeatureInterpretation* getBoundaryFeatureInterpretation() const;
 
 		/**
 		* Get the UUID of the boundary feature interpretation linked to this well marker.
@@ -96,8 +96,6 @@ namespace RESQML2_0_1_NS
 		std::vector<epc::Relationship> getAllTargetRelationships() const {std::vector<epc::Relationship> result; return result;}
 		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc) {};
 
-		class BoundaryFeatureInterpretation* boundaryFeatureInterpretation;
 		class WellboreMarkerFrameRepresentation* wellboreMarkerFrameRepresentation;
 	};
 }
-

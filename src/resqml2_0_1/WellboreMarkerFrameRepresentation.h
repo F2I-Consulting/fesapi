@@ -77,7 +77,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get all the wellbore markers of this well marker frame representation.
 		*/
-		const std::vector<class WellboreMarker*> & getWellboreMarkerSet() const { return markerSet; }
+		const std::vector<class WellboreMarker*> & getWellboreMarkerSet() const;
 
 		void setStratigraphicOccurrenceInterpretation(class StratigraphicOccurrenceInterpretation * stratiOccurenceInterp);
 
@@ -89,8 +89,6 @@ namespace RESQML2_0_1_NS
 		void setIntervalStratigraphicUnits(unsigned int * stratiUnitIndices, const unsigned int & nullValue, class StratigraphicOccurrenceInterpretation* stratiOccurenceInterp);
 
 		class StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation() { return stratigraphicOccurrenceInterpretation; }
-
-		void setWitsmlFormationMarker(const unsigned int & resqmlMarkerIndex, WITSML1_4_1_1_NS::FormationMarker * witsmlFormationMarker);
 
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}

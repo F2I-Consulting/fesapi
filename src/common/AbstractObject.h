@@ -65,12 +65,12 @@ namespace COMMON_NS
 		/**
 		* Get the key of a string value pair at a particular index in the extra metadata set
 		*/
-		std::string getExtraMetadataKeyAtIndexV2_0_1(const unsigned int & index) const;
+		std::string getExtraMetadataKeyAtIndexV2_0_1(unsigned int index) const;
 
 		/**
 		* Get the string value of a string value pair at a particular index in the extra metadata set
 		*/
-		std::string getExtraMetadataStringValueAtIndexV2_0_1(const unsigned int & index) const;
+		std::string getExtraMetadataStringValueAtIndexV2_0_1(unsigned int index) const;
 
 	protected:
 
@@ -143,6 +143,20 @@ namespace COMMON_NS
 			}
 			return obj;
 		}
+
+		/*
+		* Read an input array which come from XML (and potentially HDF5) and store it into a preallocated output array in memory.
+		* It does not allocate or deallocate memory.
+		*/
+		void readArrayNdOfUIntValues(gsoap_resqml2_0_1::resqml2__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const;
+
+		/*
+		* Get the count of item in an array of integer
+		*
+		* @param arrayInput	The array of integer.
+		* @return			The count of item in the array of integer.
+		*/
+		ULONG64 getCountOfIntegerArray(gsoap_resqml2_0_1::resqml2__AbstractIntegerArray * arrayInput) const;
 
 	public:
 
@@ -289,12 +303,12 @@ namespace COMMON_NS
 		/**
 		* Get the alias authority at a particular index in the aliases set.
 		*/
-		std::string getAliasAuthorityAtIndex(const unsigned int & index) const;
+		std::string getAliasAuthorityAtIndex(unsigned int index) const;
 
 		/**
 		* Get the alias title at a particular index in the aliases set.
 		*/
-		std::string getAliasTitleAtIndex(const unsigned int & index) const;
+		std::string getAliasTitleAtIndex(unsigned int index) const;
 
 		/**
 		* Get all the activities where the instance is involved.
@@ -309,7 +323,7 @@ namespace COMMON_NS
 		/**
 		* Get the associated activity at a particular index.
 		*/
-		RESQML2_NS::Activity* getActivity (const unsigned int & index) const;
+		RESQML2_NS::Activity* getActivity(unsigned int index) const;
 
 		/**
 		* Push back an extra metadata (not a standard one)
@@ -339,12 +353,12 @@ namespace COMMON_NS
 		/**
 		* Get the key of a string value pair at a particular index in the extra metadata set
 		*/
-		std::string getExtraMetadataKeyAtIndex(const unsigned int & index) const;
+		std::string getExtraMetadataKeyAtIndex(unsigned int index) const;
 
 		/**
 		* Get the string value of a string value pair at a particular index in the extra metadata set
 		*/
-		std::string getExtraMetadataStringValueAtIndex(const unsigned int & index) const;
+	std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
 
 		/**
 		* Return all relationships (backward and forward ones) of the instance using EPC format.
@@ -359,6 +373,9 @@ namespace COMMON_NS
 		* Set the backward relationship to this object on each target of this object.
 		*/
 		virtual void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc) = 0;
+
+		static const char* RESQML_2_0_CONTENT_TYPE_PREFIX;
+		static const char* RESQML_2_0_1_CONTENT_TYPE_PREFIX;
 	};
 }
 

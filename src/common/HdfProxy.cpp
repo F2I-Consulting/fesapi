@@ -913,8 +913,8 @@ int HdfProxy::openOrCreateGroupInRootGroup(const string & groupName)
 		herr_t status = H5Oget_info_by_name(rootGroup, groupName.c_str(), &info, H5P_DEFAULT);
 
 		result = status >= 0
-			? result = H5Gopen(rootGroup, group.c_str(), H5P_DEFAULT)
-			: result = H5Gcreate(rootGroup, group.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+			? H5Gopen(rootGroup, group.c_str(), H5P_DEFAULT)
+			: H5Gcreate(rootGroup, group.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 		H5Gclose(rootGroup);
 		rootGroup = result;
 

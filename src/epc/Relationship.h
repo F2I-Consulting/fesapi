@@ -75,21 +75,6 @@ namespace epc
 	};
 
 	bool operator==(const Relationship& r1, const Relationship& r2);
-};
+}
 
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

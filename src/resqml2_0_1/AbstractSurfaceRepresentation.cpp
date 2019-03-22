@@ -253,7 +253,7 @@ void AbstractSurfaceRepresentation::resolveTargetRelationships(COMMON_NS::EpcDoc
 	for (size_t i = 0; i < rep->Boundaries.size(); ++i) {
 		if (rep->Boundaries[i]->OuterRing != nullptr) {
 			if (rep->Boundaries[i]->OuterRing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREPolylineRepresentation) {
-				pushBackOuterRing(static_cast<PolylineRepresentation*>(epcDoc->getResqmlAbstractObjectByUuid(rep->Boundaries[i]->OuterRing->UUID)));
+				pushBackOuterRing(static_cast<PolylineRepresentation*>(epcDoc->getDataObjectByUuid(rep->Boundaries[i]->OuterRing->UUID)));
 			}
 		}
 	}
@@ -271,4 +271,3 @@ void AbstractSurfaceRepresentation::pushBackOuterRing(PolylineRepresentation * o
 	outerRingSet.push_back(outerRing);
 	outerRing->pushBackRepresentationOuterRing(this);
 }
-

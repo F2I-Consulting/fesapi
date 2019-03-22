@@ -118,4 +118,3 @@ namespace RESQML2_NS
 		std::vector<epc::Relationship> getAllTargetRelationships() const;
 	};
 }
-

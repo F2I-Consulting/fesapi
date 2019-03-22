@@ -79,7 +79,7 @@ void StratigraphicColumn::resolveTargetRelationships(COMMON_NS::EpcDocument* epc
 
 	for (unsigned int i = 0; i < stratCol->Ranks.size(); i++)
 	{
-		pushBackStratiColumnRank(static_cast<StratigraphicColumnRankInterpretation*>(epcDoc->getResqmlAbstractObjectByUuid(stratCol->Ranks[i]->UUID)));
+		pushBackStratiColumnRank(static_cast<StratigraphicColumnRankInterpretation*>(epcDoc->getDataObjectByUuid(stratCol->Ranks[i]->UUID)));
 	}
 
 	updateXml = true;

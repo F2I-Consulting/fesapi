@@ -125,6 +125,11 @@ namespace RESQML2_NS
 
 		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
 
+		/**
+		* Check if this property kind is partial or if one of its parent is partial.
+		*/
+		virtual bool isParentPartial() const = 0;
+
 	protected:
 		virtual void setXmlParentPropertyKind(PropertyKind* parentPropertyKind) = 0;
 

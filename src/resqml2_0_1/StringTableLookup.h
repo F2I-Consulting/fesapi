@@ -136,4 +136,3 @@ namespace RESQML2_0_1_NS
 		std::vector<class CategoricalProperty*> categoricalPropertyValuesSet;
 	};
 }
-

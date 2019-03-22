@@ -24,35 +24,28 @@ import com.f2i.energisticsStandardsApi.Grid2dRepresentationVector;
 import com.f2i.energisticsStandardsApi.LocalDepth3dCrsVector;
 import com.f2i.energisticsStandardsApi.SWIGTYPE_p_double;
 import com.f2i.energisticsStandardsApi.SWIGTYPE_p_unsigned_int;
-import com.f2i.energisticsStandardsApi.TriangulatedSetRepresentationVector;
 import com.f2i.energisticsStandardsApi.eml20__LengthUom;
+import com.f2i.energisticsStandardsApi.eml21__LengthUom;
+import com.f2i.energisticsStandardsApi.eml21__WellboreDatumReference;
 import com.f2i.energisticsStandardsApi.fesapi;
-import com.f2i.energisticsStandardsApi.fesapiJNI;
 import com.f2i.energisticsStandardsApi.resqml2__IndexableElements;
 import com.f2i.energisticsStandardsApi.resqml2__ResqmlPropertyKind;
 import com.f2i.energisticsStandardsApi.resqml2__ResqmlUom;
-import com.f2i.energisticsStandardsApi.witsml1__ElevCodeEnum;
-import com.f2i.energisticsStandardsApi.witsml1__LengthUom;
-import com.f2i.energisticsStandardsApi.witsml1__WellVerticalCoordinateUom;
-import com.f2i.energisticsStandardsApi.common.AbstractHdfProxy;
-import com.f2i.energisticsStandardsApi.common.EpcDocument;
-import com.f2i.energisticsStandardsApi.resqml2.PropertyKind;
-import com.f2i.energisticsStandardsApi.resqml2_0_1.ContinuousProperty;
-import com.f2i.energisticsStandardsApi.resqml2_0_1.FaultInterpretation;
-import com.f2i.energisticsStandardsApi.resqml2_0_1.GenericFeatureInterpretation;
-import com.f2i.energisticsStandardsApi.resqml2_0_1.Grid2dRepresentation;
-import com.f2i.energisticsStandardsApi.resqml2_0_1.Horizon;
-import com.f2i.energisticsStandardsApi.resqml2_0_1.HorizonInterpretation;
-import com.f2i.energisticsStandardsApi.resqml2_0_1.LocalDepth3dCrs;
-import com.f2i.energisticsStandardsApi.resqml2_0_1.PointSetRepresentation;
-import com.f2i.energisticsStandardsApi.resqml2_0_1.PolylineRepresentation;
-import com.f2i.energisticsStandardsApi.resqml2_0_1.SeismicLatticeFeature;
-import com.f2i.energisticsStandardsApi.resqml2_0_1.SeismicLineFeature;
-import com.f2i.energisticsStandardsApi.resqml2_0_1.SeismicLineSetFeature;
-import com.f2i.energisticsStandardsApi.resqml2_0_1.TectonicBoundaryFeature;
-import com.f2i.energisticsStandardsApi.resqml2_0_1.TriangulatedSetRepresentation;
-import com.f2i.energisticsStandardsApi.witsml1_4_1_1.CoordinateReferenceSystem;
-import com.f2i.energisticsStandardsApi.witsml1_4_1_1.Well;
+import com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractHdfProxy;
+import com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.EpcDocument;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.PropertyKind;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.ContinuousProperty;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.GenericFeatureInterpretation;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.Grid2dRepresentation;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.Horizon;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.HorizonInterpretation;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.LocalDepth3dCrs;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PolylineRepresentation;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SeismicLatticeFeature;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SeismicLineFeature;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SeismicLineSetFeature;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.TriangulatedSetRepresentation;
+import com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Well;
 
 public class FesapiJavaExample {
 	/**
@@ -60,7 +53,7 @@ public class FesapiJavaExample {
 	 */
 	static {
 		try {
-			System.loadLibrary("${CPP_LIBRARY_NAME}.${Fesapi_VERSION}");
+			System.loadLibrary("${ASSEMBLY_NAME}");
 		}
 		catch (UnsatisfiedLinkError e) {
 			System.out.println("UnsatisfiedLinkError : " + e.toString());
@@ -69,13 +62,11 @@ public class FesapiJavaExample {
 	
 	static void serializeWells(EpcDocument pck)
 	{
-		CoordinateReferenceSystem witsmlCrs = pck.createCoordinateReferenceSystem("", "witsmlCrs", "EPSG", "5715", "", -1, -1, "");
-		
 		// WELL
-		Well witsmlWell = pck.createWell("", "Well1", "00:00");
-		witsmlWell.setEastingNorthingLocation(witsml1__LengthUom.witsml1__LengthUom__m, 275, 75, witsmlCrs);
-		witsmlWell.pushBackDatum("", "well1 msl datum", witsml1__ElevCodeEnum.witsml1__ElevCodeEnum__KB, "EPSG", "5100", "Mean Sea Level");
-		witsmlWell.pushBackDatum("", "well1 datum", witsml1__ElevCodeEnum.witsml1__ElevCodeEnum__KB, 0, witsml1__WellVerticalCoordinateUom.witsml1__WellVerticalCoordinateUom__m, 15);
+		Well witsmlWell = pck.createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1");
+		witsmlWell.pushBackLocation("8cd3c8b2-face-4426-8aea-ae34870bd969", 275, 75, 0);
+		witsmlWell.pushBackDatum("aa92fa8b-d6cc-459e-b456-27fec0c08b24", "well1 msl datum", eml21__WellboreDatumReference.eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", eml21__LengthUom.eml21__LengthUom__m, 0, 5100);
+		witsmlWell.pushBackDatum("d3ac5401-d3e7-4474-b846-070673b210ae", "KB", eml21__WellboreDatumReference.eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", eml21__LengthUom.eml21__LengthUom__m, 15, 5100);
 	}
 	
 	private static void serializeBoundaries(EpcDocument pck, LocalDepth3dCrs crs, AbstractHdfProxy hdfProxy) {
@@ -363,6 +354,12 @@ public class FesapiJavaExample {
     				System.out.println("Spacing in J is not constant.");
     			}
     		}
+    		
+    		System.out.println("WITSML WELL");
+    		Well witsmlWell = (Well) pck.getDataObjectByUuid("704a287c-5c24-4af3-a97b-bc6670f4e14f");
+    		System.out.println("Well title is : " + witsmlWell.getTitle());
+    		System.out.println("Location projected X : " + witsmlWell.getLocationProjectedX(0));
+    		System.out.println("Location projected Y : " + witsmlWell.getLocationProjectedY(0));
 	    }
 	    finally {
 	        pck.close();

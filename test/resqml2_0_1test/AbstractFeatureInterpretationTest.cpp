@@ -39,7 +39,7 @@ void AbstractFeatureInterpretationTest::readEpcDoc()
 	AbstractObjectTest::readEpcDoc();
 
 	// remark: following REQUIRE directives are not redundant with "cascade testing" since they cover the partial reference case.
-	AbstractFeatureInterpretation* interpretation = static_cast<AbstractFeatureInterpretation*>(epcDoc->getResqmlAbstractObjectByUuid(this->uuid));
+	AbstractFeatureInterpretation* interpretation = static_cast<AbstractFeatureInterpretation*>(epcDoc->getDataObjectByUuid(this->uuid));
 	REQUIRE( interpretation->getInterpretedFeature()->getUuid() == this->uuidFeature );
 	REQUIRE( interpretation->getInterpretedFeature()->getTitle() == this->titleFeature );
 

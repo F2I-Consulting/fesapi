@@ -111,4 +111,3 @@ namespace RESQML2_NS
 		friend void AbstractProperty::setTimeSeries(TimeSeries * ts);
 	};
 }
-

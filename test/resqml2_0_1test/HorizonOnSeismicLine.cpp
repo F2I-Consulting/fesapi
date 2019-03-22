@@ -56,17 +56,17 @@ void HorizonOnSeismicLine::initEpcDocHandler()
 {
 	COMMON_NS::AbstractHdfProxy * hdfProxy = epcDoc->getHdfProxy(0);
 
-	HorizonInterpretation* horizonInterp = epcDoc->getResqmlAbstractObjectByUuid<HorizonInterpretation>(uuidHorizon0Interp);
+	HorizonInterpretation* horizonInterp = epcDoc->getDataObjectByUuid<HorizonInterpretation>(uuidHorizon0Interp);
 	if (horizonInterp == nullptr) {
 		HorizonInterpretationTest* horizonInterpTest = new HorizonInterpretationTest(epcDoc, true, uuidHorizon0Interp, titleHorizon0Interp, uuidHorizon0, titleHorizon0);
-		horizonInterp = epcDoc->getResqmlAbstractObjectByUuid<HorizonInterpretation>(uuidHorizon0Interp);
+		horizonInterp = epcDoc->getDataObjectByUuid<HorizonInterpretation>(uuidHorizon0Interp);
 		delete horizonInterpTest;
 	}
 	
-	PolylineRepresentation* seismicLineRep = epcDoc->getResqmlAbstractObjectByUuid<PolylineRepresentation>(SeismicLineRepresentationTest::defaultUuid);
+	PolylineRepresentation* seismicLineRep = epcDoc->getDataObjectByUuid<PolylineRepresentation>(SeismicLineRepresentationTest::defaultUuid);
 	if (seismicLineRep == nullptr) {
 		SeismicLineRepresentationTest* seismicLineRepresentationTest = new SeismicLineRepresentationTest(epcDoc, true);
-		seismicLineRep = epcDoc->getResqmlAbstractObjectByUuid<PolylineRepresentation>(SeismicLineRepresentationTest::defaultUuid);
+		seismicLineRep = epcDoc->getDataObjectByUuid<PolylineRepresentation>(SeismicLineRepresentationTest::defaultUuid);
 		delete seismicLineRepresentationTest;
 	}
 
@@ -84,7 +84,7 @@ void HorizonOnSeismicLine::readEpcDocHandler()
 	HorizonInterpretationTest* horizonInterpTest = new HorizonInterpretationTest(this->epcDoc, false, uuidHorizon0Interp, titleHorizon0Interp, uuidHorizon0, titleHorizon0);
 	SeismicLineRepresentationTest * seismicLineRepTest = new SeismicLineRepresentationTest(this->epcDoc, false);
 
-	PolylineRepresentation* h1i1SinglePolylineRep = epcDoc->getResqmlAbstractObjectByUuid<PolylineRepresentation>(uuid);
+	PolylineRepresentation* h1i1SinglePolylineRep = epcDoc->getDataObjectByUuid<PolylineRepresentation>(uuid);
 	REQUIRE(h1i1SinglePolylineRep->getSeismicSupportOfPatch(0) != nullptr);
 
 	double seismicLineAbscissa[4] = { -1.0, -1.0, -1.0, -1.0 };

@@ -25,7 +25,6 @@ under the License.
 #include "H5public.h"
 
 #include "resqml2_0_1/StructuralOrganizationInterpretation.h"
-#include "resqml2/AbstractFeatureInterpretation.h"
 #include "common/AbstractHdfProxy.h"
 #include "resqml2/AbstractLocal3dCrs.h"
 
@@ -39,17 +38,17 @@ const char* NonSealedSurfaceFrameworkRepresentation::XML_TAG = "NonSealedSurface
 NonSealedSurfaceFrameworkRepresentation::NonSealedSurfaceFrameworkRepresentation(
         StructuralOrganizationInterpretation* interp,
         const std::string & guid, 
-        const std::string & title,
-        const bool & isSealed):
-	RepresentationSetRepresentation(interp)
+        const std::string & title):
+	AbstractSurfaceFrameworkRepresentation(interp)
 {
-	if (!interp)
+	if (interp == nullptr)
 		throw invalid_argument("The structural organization interpretation cannot be null.");
 
 	// proxy constructor
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORENonSealedSurfaceFrameworkRepresentation(interp->getGsoapContext(), 1);	
 	_resqml2__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml2__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
-    
+
+	orgRep->IsHomogeneous = true;
 	orgRep->RepresentedInterpretation = soap_new_eml20__DataObjectReference(gsoapProxy2_0_1->soap, 1);
     orgRep->RepresentedInterpretation->UUID.assign(interp->getUuid());
 
@@ -63,9 +62,9 @@ void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresenta
 {
 	if (pointCount == 0)
 		throw invalid_argument("Contact point count cannot be zero.");
-	if (!points)
+	if (points == nullptr)
 		throw invalid_argument("The contact points cannot be null.");
-	if (!proxy)
+	if (proxy == nullptr)
 		throw invalid_argument("The HDF proxy cannot be null.");
 
 	if (localCrs == nullptr)
@@ -134,4 +133,13 @@ vector<Relationship> NonSealedSurfaceFrameworkRepresentation::getAllTargetRelati
 	return result;
 }
 
+unsigned int NonSealedSurfaceFrameworkRepresentation::getContactCount() const
+{
+	_resqml2__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml2__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
+	if (orgRep->NonSealedContactRepresentation.size() > (std::numeric_limits<unsigned int>::max)()) {
+		throw range_error("There are too much contact representations for fesapi");
+	}
+
+	return static_cast<unsigned int>(orgRep->NonSealedContactRepresentation.size());
+}

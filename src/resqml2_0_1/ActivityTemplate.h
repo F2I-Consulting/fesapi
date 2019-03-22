@@ -75,7 +75,7 @@ namespace RESQML2_0_1_NS
 		*/
 		bool isAnExistingParameter(const std::string & paramTitle) const;
 
-		const unsigned int getParameterCount() const;
+		unsigned int getParameterCount() const;
 		const std::string & getParameterTitle(const unsigned int & index) const;
 		const std::vector<gsoap_resqml2_0_1::resqml2__ParameterKind> & getParameterAllowedKinds(const unsigned int & index) const;
 		const std::vector<gsoap_resqml2_0_1::resqml2__ParameterKind> & getParameterAllowedKinds(const std::string & paramTitle) const;
@@ -83,10 +83,10 @@ namespace RESQML2_0_1_NS
 		const bool & getParameterIsInput(const std::string & paramTitle) const;
 		const bool & getParameterIsOutput(const unsigned int & index) const;
 		const bool & getParameterIsOutput(const std::string & paramTitle) const;
-		const LONG64 getParameterMinOccurences(const unsigned int & index) const;
-		const LONG64 getParameterMinOccurences(const std::string & paramTitle) const;
-		const LONG64 getParameterMaxOccurences(const unsigned int & index) const;
-		const LONG64 getParameterMaxOccurences(const std::string & paramTitle) const;
+		LONG64 getParameterMinOccurences(const unsigned int & index) const;
+		LONG64 getParameterMinOccurences(const std::string & paramTitle) const;
+		LONG64 getParameterMaxOccurences(const unsigned int & index) const;
+		LONG64 getParameterMaxOccurences(const std::string & paramTitle) const;
 
 		//******************************************************************
 		//******************** MANDATORY FOR GsoapWrapper ******************

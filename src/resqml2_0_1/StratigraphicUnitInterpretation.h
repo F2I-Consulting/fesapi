@@ -19,6 +19,7 @@ under the License.
 #pragma once
 
 #include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
+#include "resqml2_0_1/SealedVolumeFrameworkRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -69,8 +70,9 @@ namespace RESQML2_0_1_NS
 
 		// Backward relationship
 		std::vector<StratigraphicColumnRankInterpretation *> stratigraphicColumnRankSet;
+		std::vector<SealedVolumeFrameworkRepresentation*> svfSet;
 
 		friend void StratigraphicColumnRankInterpretation::pushBackStratiUnitInterpretation(StratigraphicUnitInterpretation * stratiUnitInterpretation);
+		friend void SealedVolumeFrameworkRepresentation::setInterpretationOfVolumeRegion(unsigned int regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp);
 	};
 }
-

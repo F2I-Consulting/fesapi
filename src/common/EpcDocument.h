@@ -26,20 +26,21 @@ under the License.
 
 #include "proxies/stdsoap2.h"
 #include "proxies/gsoap_resqml2_0_1H.h"
-#include "proxies/gsoap_witsml1_4_1_1H.h"
 #include "proxies/gsoap_eml2_1H.h"
 
 #include "epc/Package.h"
 
 #include "nsDefinitions.h"
 
-#if defined(_WIN32) && defined(FESAPI_DLL)
-	#ifndef DLL_IMPORT_OR_EXPORT
-		#if defined(FesapiCpp_EXPORTS) || defined(FesapiCppUnderDev_EXPORTS)
-			#define DLL_IMPORT_OR_EXPORT __declspec(dllexport)
-		#else
-			#define DLL_IMPORT_OR_EXPORT __declspec(dllimport)
-		#endif
+#if (defined(_WIN32) && _MSC_VER < 1600) || (defined(__GNUC__) && (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 6)))
+#include "tools/nullptr_emulation.h"
+#endif
+
+#if defined(_WIN32) && !defined(FESAPI_STATIC)
+	#if defined(FesapiCpp_EXPORTS) || defined(FesapiCppUnderDev_EXPORTS)
+		#define DLL_IMPORT_OR_EXPORT __declspec(dllexport)
+	#else
+		#define DLL_IMPORT_OR_EXPORT __declspec(dllimport)
 	#endif
 #else
 	#define DLL_IMPORT_OR_EXPORT
@@ -108,6 +109,7 @@ namespace RESQML2_0_1_NS
 	class WellboreMarkerFrameRepresentation;
 	class NonSealedSurfaceFrameworkRepresentation;
 	class SealedSurfaceFrameworkRepresentation;
+	class SealedVolumeFrameworkRepresentation;
 	class StringTableLookup;
 	class CommentProperty;
 	class ContinuousProperty;
@@ -126,12 +128,13 @@ namespace RESQML2_0_1_NS
 	class BlockedWellboreRepresentation;
 }
 
-namespace WITSML1_4_1_1_NS
+namespace WITSML2_0_NS
 {
 	class AbstractObject;
 	class Well;
-	class CoordinateReferenceSystem;
-	class Trajectory;
+	class Wellbore;
+	class WellCompletion;
+	class WellboreCompletion;
 }
 
 namespace COMMON_NS
@@ -244,11 +247,6 @@ namespace COMMON_NS
 		void addGsoapProxy(COMMON_NS::AbstractObject* proxy);
 
 		/**
-		* Add a gsoap proxy to serialize with the package
-		*/
-		void addGsoapProxy(WITSML1_4_1_1_NS::AbstractObject* proxy);
-
-		/**
 		 * Get the property kind mapper of this epc document if given at EPC document construction time.
 		 * Else return NULL.
 		 */
@@ -294,43 +292,76 @@ namespace COMMON_NS
 		* Get the name (string) of the witsml uom as a string based on the enumerated uom.
 		* @return The empty string if no correspondence is found
 		*/
-		std::string getWitsmlLengthUom(const gsoap_witsml1_4_1_1::witsml1__LengthUom & witsmlUom) const;
+		std::string lengthUomToString(const gsoap_eml2_1::eml21__LengthUom & witsmlUom) const;
 
 		/**
 		* Get the name (string) of the witsml uom as a string based on the enumerated uom.
 		* @return The empty string if no correspondence is found
 		*/
-		std::string getWitsmlWellVerticalCoordinateUom(const gsoap_witsml1_4_1_1::witsml1__WellVerticalCoordinateUom & witsmlUom) const;
+		std::string verticalCoordinateUomToString(const gsoap_eml2_1::eml21__VerticalCoordinateUom & witsmlUom) const;
 
 		/**
 		* Get the name (string) of the witsml uom as a string based on the enumerated uom.
 		* @return The empty string if no correspondence is found
 		*/
-		std::string getWitsmlMeasuredDepthUom(const gsoap_witsml1_4_1_1::witsml1__MeasuredDepthUom & witsmlUom) const;
-
-		/**
-		* Get the name (string) of the witsml uom as a string based on the enumerated uom.
-		* @return The empty string if no correspondence is found
-		*/
-		std::string getWitsmlPlaneAngleUom(const gsoap_witsml1_4_1_1::witsml1__PlaneAngleUom & witsmlUom) const;
+		std::string planeAngleUomToString(const gsoap_eml2_1::eml21__PlaneAngleUom & witsmlUom) const;
 
 		/**
 		* Get all the resqml gsoap wrappers from the epc document
-		* @return A map where the key is the uuid of the RESQML object and where the value is the RESQML object
 		*/
-		const std::unordered_map< std::string, COMMON_NS::AbstractObject* > & getResqmlAbstractObjectSet() const;
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+		const std::unordered_map< std::string, COMMON_NS::AbstractObject* > & getDataObjectSet() const;
+#else
+		const std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* > & getDataObjectSet() const;
+#endif
 
 		/**
-		* Group Resqml objects by content type
-		* @return A map where the key is a content type and where the value is the collection of RESQML objects of this content type
+		* Group Data objects by content type
+		* @return A map where the key is a content type and where the value is the collection of Data objects of this content type
 		*/
-		std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > getResqmlObjectsGroupedByContentType() const;
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+		std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > getDataObjectsGroupedByContentType() const;
+#else
+		std::tr1::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > getDataObjectsGroupedByContentType() const;
+#endif
 
 		/**
-		* Get Resqml objects which honor this content type
-		* @return The vector of RESQML objects in this EPC Document which honor the content type
+		* Get Data objects which honor this content type
+		* @return The vector of Data objects in this EPC Document which honor the content type
 		*/
-		std::vector<COMMON_NS::AbstractObject*> getResqmlObjectsByContentType(const std::string & contentType) const;
+		std::vector<COMMON_NS::AbstractObject*> getDataObjectsByContentType(const std::string & contentType) const;
+
+		/**
+		* Get RESQML2.0 objects which honor a particular XML tag.
+		* All fesapi objects expose publicly a "XML_TAG" static member.
+		* It is necessary to build your application with "FESAPI_DLL" definition if you want to acces "XML_TAG" on Windows from a fesapi shared library (not with a static one).
+		*
+		* @return The vector of RESQML2.0.1 objects in this EPC Document which honor the XML tag
+		*/
+		std::vector<COMMON_NS::AbstractObject*> getResqml2_0ObjectsByXmlTag(const std::string & xmlTag) const;
+
+		/**
+		* Get all data objects of a particular type indicated by means of the template class.
+		*
+		* @return The vector of data object in this EPC Document 
+		*/
+		template <class valueType>
+		std::vector<valueType*> getDataObjects() const
+		{
+			std::vector<valueType*> result;
+
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+			for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
+#else
+			for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
+#endif
+				if (dynamic_cast<valueType*>(it->second) != nullptr) {
+					result.push_back(static_cast<valueType*>(it->second));
+				}
+			}
+
+			return result;
+		}
 
 		/**
 		* Get all UUIDs of the objects contained in the EPC document
@@ -340,21 +371,21 @@ namespace COMMON_NS
 		/**
 		* Get the Gsoap type by means of its uuid
 		*/
-		COMMON_NS::AbstractObject* getResqmlAbstractObjectByUuid(const std::string & uuid, int & gsoapType) const;
+		COMMON_NS::AbstractObject* getDataObjectByUuid(const std::string & uuid, int & gsoapType) const;
 
 		/**
 		* Get a gsoap wrapper from the epc document by means of its uuid
 		*/
-		COMMON_NS::AbstractObject* getResqmlAbstractObjectByUuid(const std::string & uuid) const;
+		COMMON_NS::AbstractObject* getDataObjectByUuid(const std::string & uuid) const;
 
 		/**
 		* Get a gsoap wrapper from the epc document by means of its uuid
 		* and try to cast it to a child class of COMMON_NS::AbstractObject
 		*/
 		template <class valueType>
-		valueType* getResqmlAbstractObjectByUuid(const std::string & uuid) const
+		valueType* getDataObjectByUuid(const std::string & uuid) const
 		{
-			COMMON_NS::AbstractObject* const result = getResqmlAbstractObjectByUuid(uuid);
+			COMMON_NS::AbstractObject* const result = getDataObjectByUuid(uuid);
 
 			if (result == nullptr) {
 				return nullptr;
@@ -366,8 +397,6 @@ namespace COMMON_NS
 
 			throw std::invalid_argument("The uuid " + uuid + " does not resolve to the expected datatype");
 		}
-
-		WITSML1_4_1_1_NS::AbstractObject* getWitsmlAbstractObjectByUuid(const std::string & uuid) const;
 
 		/**
 		* Get all the local 3d depth crs contained into the EPC document
@@ -939,17 +968,22 @@ namespace COMMON_NS
 			const std::string & title);
 
 		RESQML2_NS::RepresentationSetRepresentation* createPartialRepresentationSetRepresentation(const std::string & guid, const std::string & title);
+                
+        RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation* createNonSealedSurfaceFrameworkRepresentation(
+                RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp, 
+                const std::string & guid, 
+                const std::string & title);
 
-		RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation* createNonSealedSurfaceFrameworkRepresentation(
-			RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp,
+        RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* createSealedSurfaceFrameworkRepresentation(
+                RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp,
+                const std::string & guid,
+                const std::string & title);
+
+		RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation* createSealedVolumeFrameworkRepresentation(
+			RESQML2_0_1_NS::StratigraphicColumnRankInterpretation* interp,
 			const std::string & guid,
 			const std::string & title,
-			const bool & isSealed);
-
-		RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* createSealedSurfaceFrameworkRepresentation(
-			RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp,
-			const std::string & guid,
-			const std::string & title);
+			RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* ssf);
 
 		RESQML2_0_1_NS::AbstractIjkGridRepresentation* createPartialIjkGridRepresentation(const std::string & guid, const std::string & title);
 
@@ -1101,42 +1135,38 @@ namespace COMMON_NS
 		//************************************
 		//*************** WITSML *************
 		//************************************
+		
+		WITSML2_0_NS::Well* createWell(const std::string & guid,
+			const std::string & title);
 
-		/**
-		* Get all the witsml trajectories contained into the EPC document
-		*/
-		std::vector<WITSML1_4_1_1_NS::Trajectory*> getWitsmlTrajectorySet() const;
-
-		WITSML1_4_1_1_NS::Well* createWell(
-			const std::string & guid,
+		WITSML2_0_NS::Well* createWell(const std::string & guid,
 			const std::string & title,
-			const std::string & timeZone);
-
-		WITSML1_4_1_1_NS::Well* createWell(
-			const std::string & guid,
-			const std::string & title,
-			const std::string & timeZone,
 			const std::string & operator_,
-			gsoap_witsml1_4_1_1::witsml1__WellStatus statusWell,
-			gsoap_witsml1_4_1_1::witsml1__WellPurpose purposeWell,
-			gsoap_witsml1_4_1_1::witsml1__WellFluid fluidWell,
-			gsoap_witsml1_4_1_1::witsml1__WellDirection directionWell,
-			const time_t & dTimSpud,
-			const std::string & sourceName,
-			const time_t & dTimCreation,
-			const time_t & dTimLastChange,
-			const std::string & comments
+			gsoap_eml2_1::eml21__WellStatus statusWell,
+			gsoap_eml2_1::witsml2__WellDirection directionWell
 		);
 
-		WITSML1_4_1_1_NS::CoordinateReferenceSystem* createCoordinateReferenceSystem(
+		WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
+			const std::string & guid,
+			const std::string & title);
+
+		WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title,
-			const std::string & namingSystem,
-			const std::string & code,
-			const std::string & sourceName,
-			const time_t & dTimCreation,
-			const time_t & dTimLastChange,
-			const std::string & comments);
+			gsoap_eml2_1::eml21__WellStatus statusWellbore,
+			const bool & isActive,
+			const bool & achievedTD
+		);
+
+		WITSML2_0_NS::WellCompletion* createWellCompletion(WITSML2_0_NS::Well* witsmlWell,
+			const std::string & guid,
+			const std::string & title);
+
+		WITSML2_0_NS::WellboreCompletion* createWellboreCompletion(WITSML2_0_NS::Wellbore* witsmlWellbore,
+			WITSML2_0_NS::WellCompletion* wellCompletion,
+			const std::string & guid,
+			const std::string & title,
+			const std::string & wellCompletionName);
 
 		//************************************
 		//************* WARNINGS *************
@@ -1167,11 +1197,6 @@ namespace COMMON_NS
 		void addFesapiWrapperAndDeleteItIfException(COMMON_NS::AbstractObject* proxy);
 
 		/**
-		* Add a witsml fesapi wrapper into this instance
-		*/
-		void addFesapiWrapperAndDeleteItIfException(WITSML1_4_1_1_NS::AbstractObject* proxy);
-
-		/**
 		* Read the Gsoap proxy from the stream associated to the current gsoap context and wrap this gsoap proxy into a fesapi wrapper.
 		* It does not add this fesapi wrapper to the current instance.
 		* It does not work for EpcExternalPartReference content type since this type is related to an external file which must be handled differently.
@@ -1193,9 +1218,11 @@ namespace COMMON_NS
 
 		epc::Package* package;
 
-		std::unordered_map< std::string, COMMON_NS::AbstractObject* > resqmlAbstractObjectSet;
-		std::unordered_map< std::string, WITSML1_4_1_1_NS::AbstractObject* > witsmlAbstractObjectSet;
-
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+		std::unordered_map< std::string, COMMON_NS::AbstractObject* > dataObjectSet;
+#else
+		std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* > dataObjectSet;
+#endif
 		soap* s;
 		std::string filePath;
 
@@ -1211,7 +1238,6 @@ namespace COMMON_NS
 		std::vector<COMMON_NS::AbstractHdfProxy*>						hdfProxySet;
 		std::vector<RESQML2_0_1_NS::WellboreFeature*>					wellboreSet;
 		std::vector<RESQML2_NS::RepresentationSetRepresentation*>		representationSetRepresentationSet;
-		std::vector<WITSML1_4_1_1_NS::Trajectory*>						witsmlTrajectorySet;
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*>		triangulatedSetRepresentationSet;
 		std::vector<RESQML2_0_1_NS::Grid2dRepresentation*>				grid2dRepresentationSet;
 		std::vector<RESQML2_0_1_NS::PolylineRepresentation*>			polylineRepresentationSet;

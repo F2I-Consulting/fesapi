@@ -31,7 +31,11 @@ std::vector<AbstractFeatureInterpretation*> AbstractFeature::getInterpretationSe
 
 unsigned int AbstractFeature::getInterpretationCount() const
 {
-	return interpretationSet.size();
+	if (interpretationSet.size() > (std::numeric_limits<unsigned int>::max)()) {
+		throw range_error("There are too many interpretations for this feature.");
+	}
+
+	return static_cast<unsigned int>(interpretationSet.size());
 }
 
 AbstractFeatureInterpretation*	AbstractFeature::getInterpretation(const unsigned int & index) const
@@ -39,9 +43,8 @@ AbstractFeatureInterpretation*	AbstractFeature::getInterpretation(const unsigned
 	if (interpretationSet.size() > index) {
 		return interpretationSet[index];
 	}
-	else {
-		throw range_error("The interpretation index is out of the range of the interpretation set of the feature.");
-	}
+
+	throw range_error("The interpretation index is out of the range of the interpretation set of the feature.");
 }
 
 vector<Relationship> AbstractFeature::getAllSourceRelationships() const
@@ -67,3 +70,6 @@ vector<Relationship> AbstractFeature::getAllTargetRelationships() const
 	vector<Relationship> result;
 	return result;
 }
+
+void AbstractFeature::importRelationshipSetFromEpc(COMMON_NS::EpcDocument*)
+{}

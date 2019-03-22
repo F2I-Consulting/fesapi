@@ -38,7 +38,7 @@ void AbstractPropertyTest::readEpcDoc() {
 	AbstractObjectTest::readEpcDoc();
 
 	// remark: following REQUIRE directives are not redundant with "cascade testing" since they cover the partial reference case.
-	AbstractProperty* property = static_cast<AbstractProperty*>(this->epcDoc->getResqmlAbstractObjectByUuid(this->uuid));
+	AbstractProperty* property = static_cast<AbstractProperty*>(this->epcDoc->getDataObjectByUuid(this->uuid));
 	REQUIRE( property->getRepresentation()->getUuid() == this->uuidRepresentation );
 	REQUIRE( property->getRepresentation()->getTitle() == this->titleRepresentation );
 }

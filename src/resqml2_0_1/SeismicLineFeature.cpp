@@ -95,7 +95,7 @@ void SeismicLineFeature::resolveTargetRelationships(COMMON_NS::EpcDocument* epcD
 
 	if (seismicLine->IsPartOf)
 	{
-		SeismicLineSetFeature* seisLineSet = static_cast<SeismicLineSetFeature*>(epcDoc->getResqmlAbstractObjectByUuid(seismicLine->IsPartOf->UUID));
+		SeismicLineSetFeature* seisLineSet = static_cast<SeismicLineSetFeature*>(epcDoc->getDataObjectByUuid(seismicLine->IsPartOf->UUID));
 		if (seisLineSet)
 			setSeismicLineSet(seisLineSet);
 	}

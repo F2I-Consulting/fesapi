@@ -151,7 +151,7 @@ void DeviationSurveyRepresentation::resolveTargetRelationships(COMMON_NS::EpcDoc
 {
 	AbstractRepresentation::resolveTargetRelationships(epcDoc);
 
-	RESQML2_NS::MdDatum* mdDatum = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::MdDatum>(getMdDatumUuid());
+	RESQML2_NS::MdDatum* mdDatum = epcDoc->getDataObjectByUuid<RESQML2_NS::MdDatum>(getMdDatumUuid());
 	if (mdDatum != nullptr) {
 		updateXml = false;
 		setMdDatum(mdDatum);
@@ -169,7 +169,7 @@ ULONG64 DeviationSurveyRepresentation::getXyzPointCountOfPatch(const unsigned in
 	return rep->StationCount;
 }
 
-void DeviationSurveyRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void DeviationSurveyRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch");
@@ -241,7 +241,7 @@ void DeviationSurveyRepresentation::setMdDatum(RESQML2_NS::MdDatum* mdDatum)
 
 RESQML2_NS::MdDatum * DeviationSurveyRepresentation::getMdDatum() const
 {
-	return static_cast<RESQML2_NS::MdDatum*>(getEpcDocument()->getResqmlAbstractObjectByUuid(getMdDatumUuid()));
+	return static_cast<RESQML2_NS::MdDatum*>(getEpcDocument()->getDataObjectByUuid(getMdDatumUuid()));
 }
 
 std::string DeviationSurveyRepresentation::getMdDatumUuid() const

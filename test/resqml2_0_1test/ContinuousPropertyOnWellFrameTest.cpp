@@ -48,7 +48,7 @@ ContinuousPropertyOnWellFrameTest::ContinuousPropertyOnWellFrameTest(EpcDocument
 void ContinuousPropertyOnWellFrameTest::initEpcDocHandler() {
 	// creating an IJK grid
 	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(this->epcDoc, true);
-	RESQML2_0_1_NS::WellboreFrameRepresentation * frame = static_cast<RESQML2_0_1_NS::WellboreFrameRepresentation *>(this->epcDoc->getResqmlAbstractObjectByUuid(WellboreFrameRepresentationTest::defaultUuid));
+	RESQML2_0_1_NS::WellboreFrameRepresentation * frame = static_cast<RESQML2_0_1_NS::WellboreFrameRepresentation *>(this->epcDoc->getDataObjectByUuid(WellboreFrameRepresentationTest::defaultUuid));
 
 	// getting the hdf proxy
 	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
@@ -73,7 +73,7 @@ void ContinuousPropertyOnWellFrameTest::readEpcDocHandler() {
 	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(this->epcDoc, false);
 
 	// getting the ContinuousPropertySeries
-	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = this->epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::ContinuousProperty>(uuid);
+	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = this->epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::ContinuousProperty>(uuid);
 
 	// ************************************
 	// reading the ContinuousProperty

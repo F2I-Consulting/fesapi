@@ -199,4 +199,3 @@ namespace RESQML2_NS
 		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const {return nullptr;}
 	};
 }
-

@@ -90,7 +90,7 @@ ULONG64 IjkGridNoGeometryRepresentation::getXyzPointCountOfPatch(const unsigned 
 	}
 }
 
-void IjkGridNoGeometryRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void IjkGridNoGeometryRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount())
 		throw range_error("An ijk grid has a maximum of one patch.");

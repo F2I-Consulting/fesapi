@@ -18,7 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/RepresentationSetRepresentation.h"
+#include "resqml2_0_1/AbstractSurfaceFrameworkRepresentation.h"
+
+#include "resqml2_0_1/SealedVolumeFrameworkRepresentation.h"
 
 namespace RESQML2_NS {
 	class AbstractHdfProxy;
@@ -26,15 +28,41 @@ namespace RESQML2_NS {
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT SealedSurfaceFrameworkRepresentation : public RepresentationSetRepresentation
+	/**
+	* A collection of contact, which are a list of contact patches and their identities.
+	* This collection of contact is completed by a set of representations gathered at the representation set representation level.
+	*/
+	class DLL_IMPORT_OR_EXPORT SealedSurfaceFrameworkRepresentation : public AbstractSurfaceFrameworkRepresentation
 	{
+	private:
+		/**
+		* Get a contact from its index in this framework.
+		*
+		* @param contactIdx	The index of the contact in the contact list. It must be in the interval [0..getContactCount()[.
+		* @return			A contact from its index in this framework.
+		*/
+		gsoap_resqml2_0_1::resqml2__SealedContactRepresentationPart* getContact(unsigned int contactIdx) const;
+
+		/**
+		* Get a contact patch from its index in a contact of this framework.
+		*
+		* @param contactIdx	The index of the contact in the contact list. It must be in the interval [0..getContactCount()[.
+		* @param cpIndex	The index of the contact patch in the contact. It must be in the interval [0..getContactPatchCount()[.
+		* @return			A contact patch from its index in a contact of this framework.
+		*/
+		gsoap_resqml2_0_1::resqml2__ContactPatch* getContactPatch(unsigned int contactIdx, unsigned int cpIndex) const;
+
+		std::vector<epc::Relationship> getAllEpcRelationships() const;
+
+		friend void SealedVolumeFrameworkRepresentation::setSealedSurfaceFramework(SealedSurfaceFrameworkRepresentation* ssf);
+		std::vector<SealedVolumeFrameworkRepresentation*> svfSet;
 
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		SealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RepresentationSetRepresentation(partialObject) {}
+		SealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractSurfaceFrameworkRepresentation(partialObject) {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
@@ -43,13 +71,13 @@ namespace RESQML2_0_1_NS
 		 * @param title     A title for the instance to create.
 		 */
 		SealedSurfaceFrameworkRepresentation(class StructuralOrganizationInterpretation* interp,
-								const std::string & guid,
-								const std::string & title);
+			const std::string & guid,
+			const std::string & title);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 */
-		SealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::_resqml2__SealedSurfaceFrameworkRepresentation* fromGsoap): RepresentationSetRepresentation(fromGsoap) {}
+		SealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::_resqml2__SealedSurfaceFrameworkRepresentation* fromGsoap) : AbstractSurfaceFrameworkRepresentation(fromGsoap) {}
 
 		/**
 		 * Destructor does nothing since the memory is managed by the gsoap context.
@@ -57,81 +85,127 @@ namespace RESQML2_0_1_NS
 		~SealedSurfaceFrameworkRepresentation() {}
 
 		/**
-		 * Pushes back a contact representation in the structural framework with implicit identical nodes.
+		 * Push back a contact in the structural framework with implicit identical nodes.
 		 *
-		 * After calling the following method, ContactPatch container of the newly pushed SealedContactRepresentation
+		 * After calling the following method, ContactPatch container of the newly pushed contact
 		 * remains empty. After this call, do not forget to call the pushBackContactPatch method for each ContactPatch of
-		 * the SealedContactRepresentation.
+		 * the contact.
 		 *
 		 * @param kind  Identity kind.
 		 */
-		void pushBackSealedContactRepresentation(const gsoap_resqml2_0_1::resqml2__IdentityKind & kind);
+		void pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind kind);
 
 		/**
-		 * Pushes back a contact representation in the structural framework.
+		 * Push back a contact in the structural framework.
 		 *
-		 * After calling the following method, ContactPatch container of the newly pushed SealedContactRepresentation
+		 * After calling the following method, ContactPatch container of the newly pushed contact
 		 * remains empty. After this call, do not forget to call the pushBackContactPatch method for each ContactPatch of
-		 * the SealedContactRepresentation.
+		 * the contact.
 		 *
 		 * @param kind                  Identity kind.
-		 * @param patchCount            The number of contact patch within this sealed contact representation
-		 * @param identicalNodesCount   The number of identical nodes along this sealed contact representation
+		 * @param patchCount            The number of contact patch within this sealed contact
+		 * @param identicalNodesCount   The number of identical nodes along this sealed contact
 		 * @param identicalNodes        The patchCount x identicalNodesCount sized 1D array of identical nodes indices
 		 * @param proxy                 The hdf proxy
 		 */
-		void pushBackSealedContactRepresentation(
-			const gsoap_resqml2_0_1::resqml2__IdentityKind & kind,
-			const unsigned int & patchCount,
-			const unsigned int & identicalNodesCount,
+		void pushBackContact(
+			gsoap_resqml2_0_1::resqml2__IdentityKind kind,
+			unsigned int patchCount,
+			unsigned int identicalNodesCount,
 			int * identicalNodes,
 			COMMON_NS::AbstractHdfProxy * proxy);
 
 		/**
-		 * Pushes back a contact patch in a particular sealed contact representation of the structural framework.
-		 * @param contactIndex							The index of the contact which will contain this contact patch.
+		 * Push back a contact patch in a particular contact of the structural framework.
+		 * @param contactIdx							The index of the contact which will contain this contact patch.
 		 * @param nodeIndicesOnSupportingRepresentation	The nodes defining the contact patch on the supporting representation.
-		 * @param NodeCount								The node count of this contact patch.
+		 * @param nodeCount								The node count of this contact patch.
 		 * @param supportingRepresentation 				The supporting representation of this contact patch.
 		 */
-		 void pushBackContactPatchInSealedContactRepresentation(
-			const unsigned int & contactIndex,
-			int * nodeIndicesOnSupportingRepresentation, const unsigned int & NodeCount,
+		void pushBackContactPatch(
+			unsigned int contactIdx,
+			int * nodeIndicesOnSupportingRepresentation, unsigned int nodeCount,
 			class AbstractRepresentation * supportingRepresentation,
 			COMMON_NS::AbstractHdfProxy * proxy);
 
-		 /**
-		  * Push back a contact identity in the structural framework with implicit identical nodes
-		  * @param kind                                 Identity kind.
-		  * @param sealedContactRepresentationsCount    The number of sealed contact representations involved within the identity.
-		  * @param sealedContactRepresentationsIndexes  The sealed contact representations involved within the identity.
-		  * @param proxy                                The hdf proxy.
-		  */
-		 void pushBackContactIdentity(
-			const gsoap_resqml2_0_1::resqml2__IdentityKind & kind,
-			const unsigned int & sealedContactRepresentationsCount, int * sealedContactRepresentationsIndexes,
-			COMMON_NS::AbstractHdfProxy * proxy);
+		unsigned int getContactCount() const;
 
-		 /**
-		  * Push back a contact identity in the structural framework
-		  * @param kind                                 Identity kind.
-		  * @param sealedContactRepresentationsCount    The number of sealed contact representations involved within the identity.
-		  * @param sealedContactRepresentationsIndexes  The sealed contact representations involved within the identity.
-		  * @param identicalNodesCount                  The number of identical nodes.
-		  * @param identicalNodesIndexes                The indices of the identical nodes.
-		  * @param proxy                                The hdf proxy.
-		  */
-		 void pushBackContactIdentity(
-			const gsoap_resqml2_0_1::resqml2__IdentityKind & kind,
-			const unsigned int & sealedContactRepresentationsCount, int * sealedContactRepresentationsIndexes,
-			const unsigned int & identicalNodesCount, int * identicalNodesIndexes,
-			COMMON_NS::AbstractHdfProxy * proxy);
+		/**
+		* Get the contact patch identity kind of a contact located at a particular index.
+		*
+		* @param contactIdx	The index of the contact in the contact list. It must be in the interval [0..getContactCount()[.
+		* @return			The contact patch identity kind of the contact located at a particular index.
+		*/
+		gsoap_resqml2_0_1::resqml2__IdentityKind getContactPatchIdentityKind(unsigned int contactIdx) const;
+
+		/*
+		* Check if all nodes of contact patches are identical in a contact.
+		*
+		* @param contactIdx	The index of the contact in the contact list. It must be in the interval [0..getContactCount()[.
+		* @return			True if all node of contact patches are identical else false.
+		*/
+		bool areAllContactPatchNodesIdentical(unsigned int contactIdx) const;
+
+		/**
+		* Get the count of identical nodes of a particular contact.
+		* Throw an exception if all nodes are identical (see areAllContactPatchNodesIdenticalInContactRep()).
+		*
+		* @param contactIdx	The index of the contact in the contact list. It must be in the interval [0..getContactCount()[.
+		* @return			The count of identical nodes of a particular contact.
+		*/
+		unsigned int getIdenticalContactPatchNodeCount(unsigned int contactIdx) const;
+
+		/**
+		* Get the node indices of all contact patches which are identical.
+		* Throw an exception if all nodes are identical (see areAllContactPatchNodesIdenticalInContactRep()).
+		*
+		* @param contactIdx		The index of the contact in the contact list. It must be in the interval [0..getContactCount()[.
+		* @param nodeIndices	This array must be preallocated with getIdenticalNodeCount(). It won't be deleted by fesapi.
+		*						It will be filled in with the desired node indices.
+		*/
+		void getIdenticalContactPatchNodeIndices(unsigned int contactIdx, unsigned int * nodeIndices) const;
+
+		/**
+		* Get the count of contact patches in a particular contact represenation of this framework.
+		*
+		* @param contactIdx	The index of the contact in the contact list. It must be in the interval [0..getContactCount()[.
+		* @return			The count of contact patches in a particular contact represenation in this framework.
+		*/
+		unsigned int getContactPatchCount(unsigned int contactIdx) const;
+
+		/**
+		* Get the representation (for instance the triangulated surface) where a particular contact patch has been defined.
+		*
+		* @param contactIdx	The index of the contact in the contact list. It must be in the interval [0..getContactCount()[.
+		* @param cpIndex	The index of the contact patch in the contact. It must be in the interval [0..getContactPatchCount()[.
+		* @return			The representation where the contact patch has been defined.
+		*/
+		RESQML2_NS::AbstractRepresentation* getRepresentationOfContactPatch(unsigned int contactIdx, unsigned int cpIndex) const;
+
+		/**
+		* Get the count of nodes of a particular contact patch.
+		*
+		* @param contactIdx	The index of the contact in the contact list. It must be in the interval [0..getContactCount()[.
+		* @param cpIndex	The index of the contact patch in the contact. It must be in the interval [0..getContactPatchCount()[.
+		* @return			The count of nodes of a particular contact patch.
+		*/
+		unsigned int getContactPatchNodeCount(unsigned int contactIdx, unsigned int cpIndex) const;
+
+		/**
+		* Get the node indices of a particular contact patch.
+		* The returned indices are associated to the node array of the representation of the particular contact patch (see getRepresentationOfContactPatch()).
+		*
+		* @param contactIdx		The index of the contact in the contact list. It must be in the interval [0..getContactCount()[.
+		* @param cpIndex		The index of the contact patch in the contact. It must be in the interval [0..getContactPatchCount()[.
+		* @param nodeIndices	This array must be preallocated with getNodeCountOfContactPatch(). It won't be deleted by fesapi.
+		*						It will be filled in with the desired node indices.
+		*/
+		void getContactPatchNodeIndices(unsigned int contactIdx, unsigned int cpIndex, unsigned int * nodeIndices) const;
 
 		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		std::string getXmlTag() const { return XML_TAG; }
 
 		virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 	};
 
-} // namespace RESQML2_0_1_NS
-
+}

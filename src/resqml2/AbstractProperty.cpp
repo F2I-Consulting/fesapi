@@ -167,10 +167,10 @@ vector<Relationship> AbstractProperty::getAllTargetRelationships() const
 void AbstractProperty::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getRepresentationDor();
-	RESQML2_NS::AbstractRepresentation* rep = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
+	RESQML2_NS::AbstractRepresentation* rep = epcDoc->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
 	if (rep == nullptr) { // partial transfer
 		getEpcDocument()->createPartial(dor);
-		rep = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
+		rep = getEpcDocument()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
 	}
 	if (rep == nullptr) {
 		throw invalid_argument("The DOR looks invalid.");
@@ -181,10 +181,10 @@ void AbstractProperty::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc
 
 	dor = getTimeSeriesDor();
 	if (dor != nullptr) {
-		TimeSeries* ts = epcDoc->getResqmlAbstractObjectByUuid<TimeSeries>(dor->UUID);
+		TimeSeries* ts = epcDoc->getDataObjectByUuid<TimeSeries>(dor->UUID);
 		if (ts == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dor);
-			ts = getEpcDocument()->getResqmlAbstractObjectByUuid<TimeSeries>(dor->UUID);
+			ts = getEpcDocument()->getDataObjectByUuid<TimeSeries>(dor->UUID);
 		}
 		if (ts == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -197,29 +197,23 @@ void AbstractProperty::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc
 	if (!isAssociatedToOneStandardEnergisticsPropertyKind())
 	{
 		dor = getLocalPropertyKindDor();
-		RESQML2_NS::PropertyKind* pk = epcDoc->getResqmlAbstractObjectByUuid<PropertyKind>(dor->UUID);
+		RESQML2_NS::PropertyKind* pk = epcDoc->getDataObjectByUuid<PropertyKind>(dor->UUID);
 		if (pk == nullptr) {
 			epcDoc->createPartial(dor);
-			pk = epcDoc->getResqmlAbstractObjectByUuid<PropertyKind>(dor->UUID);
+			pk = epcDoc->getDataObjectByUuid<PropertyKind>(dor->UUID);
 			if (pk == nullptr) {
 				throw invalid_argument("The DOR looks invalid.");
 			}
 		}
 
-		validatePropertyKindAssociation(pk);
-
 		updateXml = false;
 		setLocalPropertyKind(pk);
 		updateXml = true;
 	}
-	else {
-
-		validatePropertyKindAssociation(getEnergisticsPropertyKind());
-	}
 
 	string uuidHdfProxy = getHdfProxyUuid();
 	if (!uuidHdfProxy.empty()) {
-		COMMON_NS::AbstractHdfProxy* hdfProxy = epcDoc->getResqmlAbstractObjectByUuid<COMMON_NS::AbstractHdfProxy>(uuidHdfProxy);
+		COMMON_NS::AbstractHdfProxy* hdfProxy = epcDoc->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(uuidHdfProxy);
 		if (hdfProxy == nullptr) {
 			epcDoc->addWarning("The referenced hdf proxy (" + uuidHdfProxy + ") is missing.");
 		}
@@ -227,6 +221,11 @@ void AbstractProperty::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc
 		setHdfProxy(hdfProxy);
 		updateXml = true;
 	}
+}
+
+bool AbstractProperty::validate()
+{
+	return isAssociatedToOneStandardEnergisticsPropertyKind() ? validatePropertyKindAssociation(getEnergisticsPropertyKind()) : validatePropertyKindAssociation(getLocalPropertyKind());
 }
 
 void AbstractProperty::setRepresentation(AbstractRepresentation * rep)
@@ -251,7 +250,7 @@ void AbstractProperty::setRepresentation(AbstractRepresentation * rep)
 
 AbstractRepresentation* AbstractProperty::getRepresentation() const
 {
-	return getEpcDocument()->getResqmlAbstractObjectByUuid<AbstractRepresentation>(getRepresentationUuid());
+	return getEpcDocument()->getDataObjectByUuid<AbstractRepresentation>(getRepresentationUuid());
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractProperty::getRepresentationDor() const
@@ -281,7 +280,7 @@ std::string AbstractProperty::getRepresentationContentType() const
 
 TimeSeries* AbstractProperty::getTimeSeries() const
 {
-	return static_cast<TimeSeries*>(epcDocument->getResqmlAbstractObjectByUuid(getTimeSeriesUuid()));
+	return static_cast<TimeSeries*>(epcDocument->getDataObjectByUuid(getTimeSeriesUuid()));
 }
 
 void AbstractProperty::setTimeSeries(TimeSeries * ts)
@@ -413,7 +412,7 @@ void AbstractProperty::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy)
 
 COMMON_NS::AbstractHdfProxy* AbstractProperty::getHdfProxy() const
 {
-	return static_cast<COMMON_NS::AbstractHdfProxy*>(epcDocument->getResqmlAbstractObjectByUuid(getHdfProxyUuid()));
+	return static_cast<COMMON_NS::AbstractHdfProxy*>(epcDocument->getDataObjectByUuid(getHdfProxyUuid()));
 }
 
 std::string AbstractProperty::getHdfProxyUuid() const
@@ -590,6 +589,6 @@ std::string AbstractProperty::getLocalPropertyKindTitle() const
 
 PropertyKind* AbstractProperty::getLocalPropertyKind() const
 {
-	return getEpcDocument()->getResqmlAbstractObjectByUuid<PropertyKind>(getLocalPropertyKindUuid());
+	return getEpcDocument()->getDataObjectByUuid<PropertyKind>(getLocalPropertyKindUuid());
 }
 

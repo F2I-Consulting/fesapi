@@ -100,7 +100,7 @@ ULONG64 IjkGridLatticeRepresentation::getXyzPointCountOfPatch(const unsigned int
 		throw range_error("An ijk grid has a maximum of one patch.");
 }
 
-void IjkGridLatticeRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void IjkGridLatticeRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
 {
 	if (patchIndex < getPatchCount())
 	{

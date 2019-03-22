@@ -51,7 +51,7 @@ UnstructuredFromIjkGridRepresentationTest::UnstructuredFromIjkGridRepresentation
 void UnstructuredFromIjkGridRepresentationTest::initEpcDocHandler() {
 	// creating an IJK grid
 	IjkGridExplicitRepresentationTest * ijkGridTest = new IjkGridExplicitRepresentationTest(this->epcDoc, true);
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation * ijkGrid = static_cast<RESQML2_0_1_NS::IjkGridExplicitRepresentation *>(this->epcDoc->getResqmlAbstractObjectByUuid(IjkGridExplicitRepresentationTest::defaultUuid));
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation * ijkGrid = static_cast<RESQML2_0_1_NS::IjkGridExplicitRepresentation *>(this->epcDoc->getDataObjectByUuid(IjkGridExplicitRepresentationTest::defaultUuid));
 	REQUIRE(ijkGrid != nullptr);
 
 	// cloning the ijk grid into an unstructured one
@@ -67,10 +67,10 @@ void UnstructuredFromIjkGridRepresentationTest::readEpcDocHandler() {
 	IjkGridExplicitRepresentationTest * ijkGridTest = new IjkGridExplicitRepresentationTest(this->epcDoc, false);
 
 	// getting the unstructured grid
-	RESQML2_0_1_NS::UnstructuredGridRepresentation * unstructuredGrid = static_cast<RESQML2_0_1_NS::UnstructuredGridRepresentation*>(this->epcDoc->getResqmlAbstractObjectByUuid(uuid));
+	RESQML2_0_1_NS::UnstructuredGridRepresentation * unstructuredGrid = static_cast<RESQML2_0_1_NS::UnstructuredGridRepresentation*>(this->epcDoc->getDataObjectByUuid(uuid));
 
 	// checking that unstructured and ijk grid refer the same interpretation
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = static_cast<RESQML2_0_1_NS::IjkGridExplicitRepresentation*>(epcDoc->getResqmlAbstractObjectByUuid(IjkGridExplicitRepresentationTest::defaultUuid));
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = static_cast<RESQML2_0_1_NS::IjkGridExplicitRepresentation*>(epcDoc->getDataObjectByUuid(IjkGridExplicitRepresentationTest::defaultUuid));
 	REQUIRE( unstructuredGrid->getInterpretation() == ijkGrid->getInterpretation() );
 
 	// getXyzPointCountOfPatch

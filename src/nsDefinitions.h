@@ -21,5 +21,5 @@ under the License.
 #define COMMON_NS common
 #define RESQML2_NS resqml2
 #define RESQML2_0_1_NS resqml2_0_1
-#define WITSML1_4_1_1_NS witsml1_4_1_1
+#define WITSML2_0_NS witsml2_0
 #define ETP_NS etp

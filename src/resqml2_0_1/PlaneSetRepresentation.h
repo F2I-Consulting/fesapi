@@ -24,9 +24,6 @@ namespace RESQML2_0_1_NS
 {
 	class DLL_IMPORT_OR_EXPORT PlaneSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
-	private :
-		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const {return nullptr;}
-
 	public:
 
 		/**
