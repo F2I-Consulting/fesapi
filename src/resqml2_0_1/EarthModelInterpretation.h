@@ -52,15 +52,24 @@ namespace RESQML2_0_1_NS
 		*/
 		~EarthModelInterpretation() {}
 
-  	void setStructuralOrganizationInterpretation(class StructuralOrganizationInterpretation * structOrganization);
+		//Structural
 
-		void setStratiColumn(class StratigraphicColumn * stratiColumn);
+		bool hasStructuralOrganizationInterpretation() const;
+
+		class StructuralOrganizationInterpretation* getStructuralOrganizationInterpertation() const;
+
+		void setStructuralOrganizationInterpretation(class StructuralOrganizationInterpretation * structOrganization);
+
+		//Strati column
+
 		/*
 		* Check if a strati column is associated to this earth model interpretation
 		*
 		* @return True if a strati column is associated to this earth model interpretation elsa false.
 		*/
 		bool hasStratiColumn() const;
+
+		void setStratiColumn(class StratigraphicColumn * stratiColumn);
 
 		/*
 		* Get the strati column associated to this earth model interpretation.
@@ -70,17 +79,21 @@ namespace RESQML2_0_1_NS
 		*/
 		class StratigraphicColumn* getStratiColumn() const;
 
+		//Strati occurences
+
+		unsigned int getStratiOccurenceCount() const;
+
+		class StratigraphicOccurrenceInterpretation* getStratiOccurence(unsigned int index) const;
+
 		void pushBackStratiOccurence(class StratigraphicOccurrenceInterpretation * stratiOccurence);
 
 		// Rock Fluid
-		void setRockFluidOrganizationInterpretation(class RockFluidOrganizationInterpretation* rockFluid);
-
 		bool hasRockFluidOrganizationInterpretation() const;
+
+		void setRockFluidOrganizationInterpretation(class RockFluidOrganizationInterpretation* rockFluid);
 
 		RockFluidOrganizationInterpretation* getRockFluidOrganizationInterpretation() const;
 		
-		void pushBackRockFluidOrganizationInterpretation(class RockFluidOrganizationInterpretation * rockFluid);
-
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
 

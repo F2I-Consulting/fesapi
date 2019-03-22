@@ -47,6 +47,20 @@ EarthModelInterpretation::EarthModelInterpretation(OrganizationFeature * orgFeat
 	setInterpretedFeature(orgFeat);
 }
 
+bool EarthModelInterpretation::hasStructuralOrganizationInterpretation() const
+{
+	return static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure != nullptr;
+}
+
+StructuralOrganizationInterpretation* EarthModelInterpretation::getStructuralOrganizationInterpertation() const
+{
+	if (!hasStructuralOrganizationInterpretation()) {
+		throw invalid_argument("There is no associated structural organization");
+	}
+
+	return epcDocument->getDataObjectByUuid<StructuralOrganizationInterpretation>(static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure->UUID);
+}
+
 void EarthModelInterpretation::setStructuralOrganizationInterpretation(StructuralOrganizationInterpretation * structOrganization)
 {
     // epc
@@ -58,15 +72,9 @@ void EarthModelInterpretation::setStructuralOrganizationInterpretation(Structura
 	}
 }
 
-void EarthModelInterpretation::setRockFluidOrganizationInterpretation(class RockFluidOrganizationInterpretation* rockFluid)
+bool EarthModelInterpretation::hasStratiColumn() const
 {
-	// epc
-	rockFluid->earthModelSet.push_back(this);
-
-	//XML
-	if(updateXml) {
-		static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid = rockFluid->newResqmlReference();
-	}
+	return static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn != nullptr;
 }
 
 void EarthModelInterpretation::setStratiColumn(StratigraphicColumn * stratiColumn)
@@ -80,6 +88,31 @@ void EarthModelInterpretation::setStratiColumn(StratigraphicColumn * stratiColum
 	}
 }
 
+StratigraphicColumn* EarthModelInterpretation::getStratiColumn() const
+{
+	if (!hasStratiColumn()) {
+		throw invalid_argument("There is no associated stratigraphic column");
+	}
+
+	return epcDocument->getDataObjectByUuid<StratigraphicColumn>(static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn->UUID);
+}
+
+unsigned int EarthModelInterpretation::getStratiOccurenceCount() const
+{
+	return static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.size();
+}
+
+StratigraphicOccurrenceInterpretation* EarthModelInterpretation::getStratiOccurence(unsigned int index) const
+{
+	_resqml2__EarthModelInterpretation* earthModelInterpretation = static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1);
+	if (index < earthModelInterpretation->StratigraphicOccurrences.size()) {
+		return static_cast<StratigraphicOccurrenceInterpretation*>(epcDocument->getDataObjectByUuid(earthModelInterpretation->StratigraphicOccurrences[index]->UUID));
+	}
+	else {
+		throw std::out_of_range("The strati occurence index is out of range.");
+	}
+}
+
 void EarthModelInterpretation::pushBackStratiOccurence(StratigraphicOccurrenceInterpretation * stratiOccurence)
 {
     // epc
@@ -89,6 +122,31 @@ void EarthModelInterpretation::pushBackStratiOccurence(StratigraphicOccurrenceIn
 	if (updateXml) {
 		static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.push_back(stratiOccurence->newResqmlReference());
 	}
+}
+
+bool EarthModelInterpretation::hasRockFluidOrganizationInterpretation() const
+{
+	return static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid != nullptr;
+}
+
+void EarthModelInterpretation::setRockFluidOrganizationInterpretation(class RockFluidOrganizationInterpretation* rockFluid)
+{
+	// epc
+	rockFluid->earthModelSet.push_back(this);
+
+	//XML
+	if(updateXml) {
+		static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid = rockFluid->newResqmlReference();
+	}
+}
+
+RockFluidOrganizationInterpretation* EarthModelInterpretation::getRockFluidOrganizationInterpretation() const
+{
+	if (!hasRockFluidOrganizationInterpretation()) {
+		throw invalid_argument("There is no rock fluid organization");
+	}
+
+	return epcDocument->getDataObjectByUuid<RockFluidOrganizationInterpretation>(static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid->UUID);
 }
 
 vector<Relationship> EarthModelInterpretation::getAllEpcRelationships() const
@@ -156,30 +214,8 @@ void EarthModelInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocume
 	updateXml = true;
 }
 
-bool EarthModelInterpretation::hasStratiColumn() const
-{
-	return static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn != nullptr;
-}
 
-StratigraphicColumn* EarthModelInterpretation::getStratiColumn() const
-{
-	if (!hasStratiColumn()) {
-		throw invalid_argument("There is no associated stratigraphic column");
-	}
 
-	return epcDocument->getDataObjectByUuid<StratigraphicColumn>(static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn->UUID);
-}
 
-bool EarthModelInterpretation::hasRockFluidOrganizationInterpretation() const
-{
-	return static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid != nullptr;
-}
 
-RockFluidOrganizationInterpretation* EarthModelInterpretation::getRockFluidOrganizationInterpretation() const
-{
-	if (!hasRockFluidOrganizationInterpretation()) {
-		throw invalid_argument("There is no rock fluid organization");
-	}
 
-	return epcDocument->getDataObjectByUuid<RockFluidOrganizationInterpretation>(static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid->UUID);
-}
