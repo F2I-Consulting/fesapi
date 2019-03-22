@@ -251,13 +251,13 @@ void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::Abstra
 	std::vector<unsigned int> region2RepIndices = { 1, 0, 0, 2, 3, 5, 6 }; // face order => top, x plus, btm, x minus, y minus, y plus
 	std::vector<unsigned int> region2PatchIndices = { 0, 1, 2, 0, 0, 0, 0 };
 	bool region2Sides[7] = { false, false, false, true, true, true, true}; //Top face is true, bottom face is false and Frontiers are always on true side flag in this example.
-	svf->pushBackVolumeRegion(stratiUnitB1Interp, "Region 2", 7, region2RepIndices.data(), region2PatchIndices.data(), region2Sides);
+	svf->pushBackVolumeRegion(stratiUnitB1Interp, 7, region2RepIndices.data(), region2PatchIndices.data(), region2Sides);
 
 	//Region 5
 	std::vector<unsigned int> region5RepIndices = { 1, 4, 2, 0, 0, 5, 6 };
 	std::vector<unsigned int> region5PatchIndices = { 1, 0, 1, 3, 2, 1, 1 };
 	bool region5Sides[7] = { false, true, true, true, true, true, true };
-	svf->pushBackVolumeRegion(stratiUnitB1Interp, "Region 5", 7, region5RepIndices.data(), region5PatchIndices.data(), region5Sides);
+	svf->pushBackVolumeRegion(stratiUnitB1Interp, 7, region5RepIndices.data(), region5PatchIndices.data(), region5Sides);
 }
 
 void serializeGeobody(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)

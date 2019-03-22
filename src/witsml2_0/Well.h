@@ -75,12 +75,12 @@ namespace WITSML2_0_NS
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, OriginalOperator)
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumAPI)
 
-		GETTER_AND_SETTER_LENGTH_MEASURE_ATTRIBUTE(WaterDepth)
-		GETTER_AND_SETTER_LENGTH_MEASURE_ATTRIBUTE(GroundElevation)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(WaterDepth, gsoap_eml2_1::eml21__LengthUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(GroundElevation, gsoap_eml2_1::eml21__LengthUom)
 
-		GETTER_AND_SETTER_TIME_T_ATTRIBUTE(DTimLicense)
-		GETTER_AND_SETTER_TIME_T_ATTRIBUTE(DTimSpud)
-		GETTER_AND_SETTER_TIME_T_ATTRIBUTE(DTimPa)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimLicense)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimSpud)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimPa)
 
 		/**
 		* Set the time zone in which the well is located. It is the deviation in hours and minutes from UTC. This should be the normal time zone at the well and not a seasonally-adjusted value, such as daylight savings time

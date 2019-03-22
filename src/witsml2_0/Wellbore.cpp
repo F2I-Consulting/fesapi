@@ -134,7 +134,7 @@ vector<Relationship> Wellbore::getAllEpcRelationships() const
 	result.push_back(relWell);
 
 	// XML backward relationship
-	if (resqmlWellboreFeature)
+	if (resqmlWellboreFeature != nullptr)
 	{
 		Relationship rel(resqmlWellboreFeature->getPartNameInEpcDocument(), "", resqmlWellboreFeature->getUuid());
 		rel.setSourceObjectType();

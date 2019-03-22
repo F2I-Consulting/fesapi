@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "witsml2_0/Trajectory.h"
 
+#include <stdexcept>
+
 #include "witsml2_0/Wellbore.h"
 
 #include "tools/TimeTools.h"
@@ -65,23 +67,88 @@ void Trajectory::setWellbore(Wellbore* witsmlWellbore)
 	}
 }
 
-GETTER_AND_SETTER_TIME_T_ATTRIBUTE_IMPL(Trajectory, DTimTrajStart)
-GETTER_AND_SETTER_TIME_T_ATTRIBUTE_IMPL(Trajectory, DTimTrajEnd)
+GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, DTimTrajStart)
+GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, DTimTrajEnd)
 
-GETTER_AND_SETTER_MEASURED_DEPTH_COORD_ATTRIBUTE_IMPL(Trajectory, MdMn)
-GETTER_AND_SETTER_MEASURED_DEPTH_COORD_ATTRIBUTE_IMPL(Trajectory, MdMx)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, MdMn, eml21__LengthUom, gsoap_eml2_1::soap_new_witsml2__MeasuredDepthCoord)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, MdMx, eml21__LengthUom, gsoap_eml2_1::soap_new_witsml2__MeasuredDepthCoord)
 
-GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Trajectory, ServiceCompany, soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Trajectory, ServiceCompany, gsoap_eml2_1::soap_new_std__string)
 
-GETTER_AND_SETTER_PLANE_ANGLE_MEASURE_ATTRIBUTE_IMPL(Trajectory, MagDeclUsed)
-GETTER_AND_SETTER_PLANE_ANGLE_MEASURE_ATTRIBUTE_IMPL(Trajectory, GridConUsed)
-GETTER_AND_SETTER_PLANE_ANGLE_MEASURE_ATTRIBUTE_IMPL(Trajectory, AziVertSect)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, MagDeclUsed, gsoap_eml2_1::eml21__PlaneAngleUom, gsoap_eml2_1::soap_new_eml21__PlaneAngleMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, GridConUsed, gsoap_eml2_1::eml21__PlaneAngleUom, gsoap_eml2_1::soap_new_eml21__PlaneAngleMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, AziVertSect, gsoap_eml2_1::eml21__PlaneAngleUom, gsoap_eml2_1::soap_new_eml21__PlaneAngleMeasure)
 
-GETTER_AND_SETTER_LENGTH_MEASURE_ATTRIBUTE_IMPL(Trajectory, DispNsVertSectOrig)
-GETTER_AND_SETTER_LENGTH_MEASURE_ATTRIBUTE_IMPL(Trajectory, DispEwVertSectOrig)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, DispNsVertSectOrig, eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, DispEwVertSectOrig, eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
 
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(bool, Trajectory, Definitive, gsoap_eml2_1::soap_new_bool)
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(bool, Trajectory, Memory, gsoap_eml2_1::soap_new_bool)
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(bool, Trajectory, FinalTraj, gsoap_eml2_1::soap_new_bool)
 
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml2__AziRef, Trajectory, AziRef, gsoap_eml2_1::soap_new_witsml2__AziRef)
+
+//***************************************
+// ******* TRAJECTORY STATIONS **********
+//***************************************
+
+// Mandatory
+GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR_IMPL(std::string, Trajectory, TrajectoryStation, uid)
+GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR_IMPL(gsoap_eml2_1::witsml2__TrajStationType, Trajectory, TrajectoryStation, TypeTrajStation)
+GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, Md, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_witsml2__MeasuredDepthCoord)
+
+// Optional bool
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(bool, Trajectory, TrajectoryStation, ManuallyEntered, gsoap_eml2_1::soap_new_bool)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(bool, Trajectory, TrajectoryStation, GravAccelCorUsed, gsoap_eml2_1::soap_new_bool)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(bool, Trajectory, TrajectoryStation, MagXAxialCorUsed, gsoap_eml2_1::soap_new_bool)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(bool, Trajectory, TrajectoryStation, SagCorUsed, gsoap_eml2_1::soap_new_bool)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(bool, Trajectory, TrajectoryStation, MagDrlstrCorUsed, gsoap_eml2_1::soap_new_bool)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(bool, Trajectory, TrajectoryStation, InfieldRefCorUsed, gsoap_eml2_1::soap_new_bool)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(bool, Trajectory, TrajectoryStation, InterpolatedInfieldRefCorUsed, gsoap_eml2_1::soap_new_bool)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(bool, Trajectory, TrajectoryStation, InHoleRefCorUsed, gsoap_eml2_1::soap_new_bool)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(bool, Trajectory, TrajectoryStation, AxialMagInterferenceCorUsed, gsoap_eml2_1::soap_new_bool)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(bool, Trajectory, TrajectoryStation, CosagCorUsed, gsoap_eml2_1::soap_new_bool)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(bool, Trajectory, TrajectoryStation, MSACorUsed, gsoap_eml2_1::soap_new_bool)
+
+// Optional string
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(std::string, Trajectory, TrajectoryStation, Target, gsoap_eml2_1::soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(std::string, Trajectory, TrajectoryStation, MagModelUsed, gsoap_eml2_1::soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(std::string, Trajectory, TrajectoryStation, MagModelValid, gsoap_eml2_1::soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(std::string, Trajectory, TrajectoryStation, GeoModelUsed, gsoap_eml2_1::soap_new_std__string)
+
+// Optional timestamp
+GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, DTimStn)
+
+// Optional enum
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(gsoap_eml2_1::witsml2__TypeSurveyTool, Trajectory, TrajectoryStation, TypeSurveyTool, gsoap_eml2_1::soap_new_witsml2__TypeSurveyTool)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(gsoap_eml2_1::witsml2__TrajStnCalcAlgorithm, Trajectory, TrajectoryStation, CalcAlgorithm, gsoap_eml2_1::soap_new_witsml2__TrajStnCalcAlgorithm)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(gsoap_eml2_1::witsml2__TrajStationStatus, Trajectory, TrajectoryStation, StatusTrajStation, gsoap_eml2_1::soap_new_witsml2__TrajStationStatus)
+
+// Optional Length Measure
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, Tvd, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_witsml2__WellVerticalDepthCoord)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, DispNs, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, DispEw, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, VertSect, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, MdDelta, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, TvdDelta, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
+
+// Optional Plane AngleMeasure
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, Incl, gsoap_eml2_1::eml21__PlaneAngleUom, gsoap_eml2_1::soap_new_eml21__PlaneAngleMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, Azi, gsoap_eml2_1::eml21__PlaneAngleUom, gsoap_eml2_1::soap_new_eml21__PlaneAngleMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, Mtf, gsoap_eml2_1::eml21__PlaneAngleUom, gsoap_eml2_1::soap_new_eml21__PlaneAngleMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, Gtf, gsoap_eml2_1::eml21__PlaneAngleUom, gsoap_eml2_1::soap_new_eml21__PlaneAngleMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, DipAngleUncert, gsoap_eml2_1::eml21__PlaneAngleUom, gsoap_eml2_1::soap_new_eml21__PlaneAngleMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, MagDipAngleReference, gsoap_eml2_1::eml21__PlaneAngleUom, gsoap_eml2_1::soap_new_eml21__PlaneAngleMeasure)
+
+// Optional Plane AngleMeasure
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, Dls, gsoap_eml2_1::eml21__AnglePerLengthUom, gsoap_eml2_1::soap_new_eml21__AnglePerLengthMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, RateTurn, gsoap_eml2_1::eml21__AnglePerLengthUom, gsoap_eml2_1::soap_new_eml21__AnglePerLengthMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, RateBuild, gsoap_eml2_1::eml21__AnglePerLengthUom, gsoap_eml2_1::soap_new_eml21__AnglePerLengthMeasure)
+
+// Optional Linear Acceleration Measure
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, GravTotalUncert, gsoap_eml2_1::eml21__LinearAccelerationUom, gsoap_eml2_1::soap_new_eml21__LinearAccelerationMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, GravTotalFieldReference, gsoap_eml2_1::eml21__LinearAccelerationUom, gsoap_eml2_1::soap_new_eml21__LinearAccelerationMeasure)
+
+// Optional Magnetic Flux Density Measure
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, MagTotalUncert, gsoap_eml2_1::eml21__MagneticFluxDensityUom, gsoap_eml2_1::soap_new_eml21__MagneticFluxDensityMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, MagTotalFieldReference, gsoap_eml2_1::eml21__MagneticFluxDensityUom, gsoap_eml2_1::soap_new_eml21__MagneticFluxDensityMeasure)

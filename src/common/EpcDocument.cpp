@@ -778,6 +778,12 @@ string EpcDocument::deserialize()
 				soap_read_witsml2__WellboreCompletion(s, read);
 				wrapper = new WellboreCompletion(read);
 			}
+			else if (resqmlContentType.compare(Trajectory::XML_TAG) == 0)
+			{
+				gsoap_eml2_1::_witsml2__Trajectory* read = gsoap_eml2_1::soap_new_witsml2__Trajectory(s, 1);
+				soap_read_witsml2__Trajectory(s, read);
+				wrapper = new Trajectory(read);
+			}
 			
 			if (wrapper != nullptr)
 			{
@@ -1420,6 +1426,7 @@ COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_eml2_1::eml21__DataO
 
 	if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Well)
 	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Wellbore)
+	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Trajectory)
 	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
