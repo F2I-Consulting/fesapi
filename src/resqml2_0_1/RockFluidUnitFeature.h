@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT RockFluidUnitFeature : public GeologicUnitFeature
+	class RockFluidUnitFeature : public GeologicUnitFeature
 	{
 	public:
 
@@ -49,7 +49,7 @@ namespace RESQML2_0_1_NS
 		*/
 		~RockFluidUnitFeature() {}
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 	};
 }

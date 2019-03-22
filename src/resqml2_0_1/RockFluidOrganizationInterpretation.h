@@ -40,11 +40,12 @@ namespace RESQML2_0_1_NS
 
 		/**
 		* Creates an instance of this class in a gsoap context.
-		* @param orgFeat			The feature the instance interprets. It must be a "fluid" organization feature.
-		* @param guid				The guid to set to the interpretation. If empty then a new guid will be generated.
-		* @param title				A title for the instance to create.
+		* @param orgFeat				The feature the instance interprets. It must be a "fluid" organization feature.
+		* @param guid					The guid to set to the interpretation. If empty then a new guid will be generated.
+		* @param title					A title for the instance to create.
+		* @param rockFluidUnitInterp	The unique (for now) rock fluid unit which is contained by this organization
 		*/
-		RockFluidOrganizationInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
+		RockFluidOrganizationInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, class RockFluidUnitInterpretation * rockFluidUnitInterp);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -74,10 +75,15 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT bool isAssociatedToGridRepresentation(RESQML2_NS::AbstractGridRepresentation* gridRep) const;
 
+		/**
+		* Push back a rock fluid unit in this organization
+		*
+		* @param rockFluidUnitInterpretation	The rock fluid unit interpretation to push back
+		*/
+		DLL_IMPORT_OR_EXPORT void pushBackRockFluidUnitInterpretation(class RockFluidUnitInterpretation * rockFluidUnitInterpretation);
+
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
-
-		void pushBackRockFluidUnitInterpretation(class RockFluidUnitInterpretation * rockFluidUnitInterpretation);
 
 	private:
 
@@ -87,7 +93,6 @@ namespace RESQML2_0_1_NS
 		// backward relationships
 		std::vector<EarthModelInterpretation *> earthModelSet;
 		std::vector<RESQML2_NS::AbstractGridRepresentation *> gridRepresentationSet;
-		std::vector<class RockFluidUnitInterpretation*> rockFluidUnitSet;
 
 		friend void RESQML2_NS::AbstractGridRepresentation::setCellAssociationWithRockFluidOrganizationInterpretation(ULONG64 * fluidUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::RockFluidOrganizationInterpretation * rockFluidOrgInterp);
 		friend void RESQML2_0_1_NS::EarthModelInterpretation::setRockFluidOrganizationInterpretation(RockFluidOrganizationInterpretation * rockFluid);

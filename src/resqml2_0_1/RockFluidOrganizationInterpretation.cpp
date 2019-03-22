@@ -29,7 +29,7 @@ using namespace gsoap_resqml2_0_1;
 
 const char* RockFluidOrganizationInterpretation::XML_TAG = "RockFluidOrganizationInterpretation";
 
-RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title)
+RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, RockFluidUnitInterpretation * rockFluidUnitInterp)
 {
 	if (orgFeat == nullptr) {
 		throw invalid_argument("The interpreted organization feature cannot be null.");
@@ -42,6 +42,7 @@ RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(Organiz
 	_resqml2__RockFluidOrganizationInterpretation* rfoi = static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1);
 	rfoi->RockFluidUnitIndex = soap_new_resqml2__RockFluidUnitInterpretationIndex(orgFeat->getGsoapContext(), 1);
 	// No need to initialize index since it is a bug : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html
+	pushBackRockFluidUnitInterpretation(rockFluidUnitInterp);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -75,18 +76,18 @@ bool RockFluidOrganizationInterpretation::isAssociatedToGridRepresentation(RESQM
 
 void RockFluidOrganizationInterpretation::pushBackRockFluidUnitInterpretation(RockFluidUnitInterpretation * rockFluidUnitInterpretation)
 {
+	if (updateXml && static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit != nullptr) {
+		throw logic_error("Fesapi for now only supports one unit in a Rock fluid organization");
+	}
+
 	// EPC
-	rockFluidUnitSet.push_back(rockFluidUnitInterpretation);
 	rockFluidUnitInterpretation->rockFluidOrganizationInterpSet.push_back(this);
 
 	// XML
+	// For now cannot really push back but only set cause of the bug http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html
 	if (updateXml)
 	{
-		_resqml2__RockFluidOrganizationInterpretation* rockFluidInterpretation = static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1);
-		resqml2__RockFluidUnitInterpretationIndex* rockFluidUnitInterpRef = soap_new_resqml2__RockFluidUnitInterpretationIndex(gsoapProxy2_0_1->soap, 1);
-		rockFluidUnitInterpRef->Index = 0;
-		rockFluidUnitInterpRef->RockFluidUnit = rockFluidUnitInterpretation->newResqmlReference();
-//		rockFluidInterpretation->RockFluidUnitIndex = 0;
+		static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit = rockFluidUnitInterpretation->newResqmlReference();
 	}
 }
 
@@ -94,12 +95,11 @@ vector<Relationship> RockFluidOrganizationInterpretation::getAllEpcRelationships
 {
 	vector<Relationship> result = AbstractOrganizationInterpretation::getAllEpcRelationships();
 
-	for (size_t i = 0; i < rockFluidUnitSet.size(); ++i)
-	{
-		Relationship rel(rockFluidUnitSet[i]->getPartNameInEpcDocument(), "", rockFluidUnitSet[i]->getUuid());
-		rel.setDestinationObjectType();
-		result.push_back(rel);
-	}
+	// Only one unit for now : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html
+	gsoap_resqml2_0_1::eml20__DataObjectReference * dor = static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit;
+	Relationship relUnit(misc::getPartNameFromReference(dor), "", dor->UUID);
+	relUnit.setDestinationObjectType();
+	result.push_back(relUnit);
 
 	for (size_t i = 0; i < gridRepresentationSet.size(); ++i) {
 		Relationship rel(gridRepresentationSet[i]->getPartNameInEpcDocument(), "", gridRepresentationSet[i]->getUuid());
@@ -120,4 +120,19 @@ vector<Relationship> RockFluidOrganizationInterpretation::getAllEpcRelationships
 void RockFluidOrganizationInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	AbstractOrganizationInterpretation::importRelationshipSetFromEpc(epcDoc);
+
+	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit;
+	if (dor != nullptr) {
+		RockFluidUnitInterpretation* interp = epcDoc->getDataObjectByUuid<RockFluidUnitInterpretation>(dor->UUID);
+		if (interp == nullptr) { // partial transfer
+			getEpcDocument()->createPartial(dor);
+			interp = getEpcDocument()->getDataObjectByUuid<RockFluidUnitInterpretation>(dor->UUID);
+		}
+		if (interp == nullptr) {
+			throw invalid_argument("The DOR looks invalid.");
+		}
+		updateXml = false;
+		pushBackRockFluidUnitInterpretation(interp);
+		updateXml = true;
+	}
 }
