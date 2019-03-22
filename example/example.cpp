@@ -1577,10 +1577,22 @@ void serializeFluidBoundary(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractHdf
 	rep->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
 }
 
-void serializeRockFluidOrganization(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
+void serializeRockFluidOrganization(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractHdfProxy*)
 {
+	//Top Boundary
+	FluidBoundaryFeature* fluidBoundaryTop = pck.createFluidBoundaryFeature("cd400fa2-4c8b-11e9-be79-3f8079258eaa", "Fluid boundary top", gsoap_resqml2_0_1::resqml2__FluidContact__gas_x0020oil_x0020contact);
+	GenericFeatureInterpretation* interpTop = pck.createGenericFeatureInterpretation(fluidBoundaryTop, "0ab8f2f4-4c96-11e9-999e-c3449b44fef5", "Fluid boundary top interp");
+	PlaneSetRepresentation* repTop = pck.createPlaneSetRepresentation(interpTop, local3dCrs, "ae1d618c-4c96-11e9-8f12-cf7f4da2a08d", "Fluid boundary top PlaneSetRep");
+	repTop->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
+
+	//Bottom Boundary
+	FluidBoundaryFeature* fluidBoundaryBottom = pck.createFluidBoundaryFeature("d332b298-4c8b-11e9-80d8-c760b2e2530d", "Fluid boundary bottom", gsoap_resqml2_0_1::resqml2__FluidContact__gas_x0020oil_x0020contact);
+	GenericFeatureInterpretation* interpBottom = pck.createGenericFeatureInterpretation(fluidBoundaryBottom, "1371efae-4c96-11e9-bcdd-37d8112fd19e", "Fluid boundary bottom interp");
+	PlaneSetRepresentation* repBottom = pck.createPlaneSetRepresentation(interpBottom, local3dCrs, "b54cc3b2-4c96-11e9-b33d-ef2c41476266", "Fluid boundary bottom PlaneSetRep");
+	repBottom->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
+
 	// Unit construction
-	RockFluidUnitFeature* rockFluidFeature = pck.createRockFluidUnit("18a714da-4bf2-11e9-a17e-e74cb7f87d2a", "Rock Fluid Unit");
+	RockFluidUnitFeature* rockFluidFeature = pck.createRockFluidUnit("18a714da-4bf2-11e9-a17e-e74cb7f87d2a", "Rock Fluid Unit", gsoap_resqml2_0_1::resqml2__Phase__oil_x0020column, fluidBoundaryTop, fluidBoundaryBottom);
 	RockFluidUnitInterpretation *rockFluidUnit = pck.createRockFluidUnitInterpretation(rockFluidFeature, "4b73172a-4bf1-11e9-a9f6-9b2813cc56e1", "Rock Fluid Unit interp");
 
 	// Feature

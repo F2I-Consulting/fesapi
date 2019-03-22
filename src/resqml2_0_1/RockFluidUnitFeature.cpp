@@ -17,6 +17,7 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_0_1/RockFluidUnitFeature.h"
+#include "resqml2_0_1/FluidBoundaryFeature.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -24,12 +25,16 @@ using namespace gsoap_resqml2_0_1;
 
 const char* RockFluidUnitFeature::XML_TAG = "RockFluidUnitFeature";
 
-RockFluidUnitFeature::RockFluidUnitFeature(soap* soapContext, const string & guid, const string & title)
+RockFluidUnitFeature::RockFluidUnitFeature(soap* soapContext, const string & guid, const string & title, gsoap_resqml2_0_1::resqml2__Phase phase, FluidBoundaryFeature* fluidBoundaryTop, FluidBoundaryFeature* fluidBoundaryBottom)
 {
 	if (soapContext == nullptr)
 		throw invalid_argument("The soap context cannot be null.");
 
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORERockFluidUnitFeature(soapContext, 1);
+	_resqml2__RockFluidUnitFeature* rfuf = static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1);
+	rfuf->Phase = phase;
+	rfuf->FluidBoundaryTop = fluidBoundaryTop->newResqmlReference();
+	rfuf->FluidBoundaryBottom = fluidBoundaryBottom->newResqmlReference();
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());

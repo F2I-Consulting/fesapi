@@ -1644,9 +1644,10 @@ StratigraphicUnitFeature* EpcDocument::createStratigraphicUnit(const std::string
 	return result;
 }
 
-RockFluidUnitFeature* EpcDocument::createRockFluidUnit(const std::string & guid, const std::string & title)
+RockFluidUnitFeature* EpcDocument::createRockFluidUnit(const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml2__Phase phase,
+													   RESQML2_0_1_NS::FluidBoundaryFeature* fluidBoundaryTop, RESQML2_0_1_NS::FluidBoundaryFeature* fluidBoundaryBottom)
 {
-	RockFluidUnitFeature* result = new RockFluidUnitFeature(getGsoapContext(), guid, title);
+	RockFluidUnitFeature* result = new RockFluidUnitFeature(getGsoapContext(), guid, title, phase, fluidBoundaryTop, fluidBoundaryBottom);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }

@@ -37,7 +37,8 @@ namespace RESQML2_0_1_NS
 		* @param guid		The guid to set to the horizon. If empty then a new guid will be generated.
 		* @param title		A title for the instance to create.
 		*/
-		RockFluidUnitFeature(soap* soapContext, const std::string & guid, const std::string & title);
+		RockFluidUnitFeature(soap* soapContext, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml2__Phase phase,
+							 class FluidBoundaryFeature* fluidBoundaryTop, class FluidBoundaryFeature* fluidBoundaryBottom);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
