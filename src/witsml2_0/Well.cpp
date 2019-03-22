@@ -88,8 +88,16 @@ GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, OperatorDiv
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, OriginalOperator, soap_new_std__string)
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, NumAPI, soap_new_std__string)
 
+// Optional enum
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::eml21__WellStatus, Well, StatusWell, gsoap_eml2_1::soap_new_eml21__WellStatus)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml2__WellPurpose, Well, PurposeWell, gsoap_eml2_1::soap_new_witsml2__WellPurpose)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml2__WellFluid, Well, FluidWell, gsoap_eml2_1::soap_new_witsml2__WellFluid)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml2__WellDirection, Well, DirectionWell, gsoap_eml2_1::soap_new_witsml2__WellDirection)
+
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Well, WaterDepth, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Well, GroundElevation, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_witsml2__WellElevationCoord)
+
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Well, PcInterest, gsoap_eml2_1::eml21__DimensionlessUom, gsoap_eml2_1::soap_new_eml21__DimensionlessMeasure)
 
 GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(Well, DTimLicense)
 GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(Well, DTimSpud)

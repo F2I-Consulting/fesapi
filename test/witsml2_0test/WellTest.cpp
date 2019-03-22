@@ -28,6 +28,8 @@ using namespace witsml2_0test;
 using namespace COMMON_NS;
 using namespace WITSML2_0_NS;
 
+const time_t WellTest::defaultTimestamp = 1553268493; // 2019-03-22T15:28:13+00:00
+
 WellTest::WellTest(const string & epcDocPath)
 	: AbstractObjectTest(epcDocPath, uuidWell, titleWell) {
 }
@@ -35,16 +37,35 @@ WellTest::WellTest(const string & epcDocPath)
 WellTest::WellTest(EpcDocument* epcDoc, bool init)
 	: AbstractObjectTest(epcDoc, uuidWell, titleWell) {
 	if (init)
-		this->initEpcDoc();
+		initEpcDoc();
 	else
-		this->readEpcDoc();
+		readEpcDoc();
 }
 
 void WellTest::initEpcDocHandler() {
-	Well* well = this->epcDoc->createWell(this->uuid, this->title);
+	Well* well = epcDoc->createWell(uuid, title);
 	REQUIRE(well != nullptr);
+	well->setBlock("my Block");
+	// No county
+	well->setDTimLicense(defaultTimestamp);
+	well->setGroundElevation(10, gsoap_eml2_1::eml21__LengthUom__m);
+	REQUIRE_THROWS(well->setTimeZone(true, -1));
+	REQUIRE_THROWS(well->setTimeZone(true, 22, 65));
+	well->setTimeZone(true, 0); // time zone == 'Z'
+	well->setStatusWell(gsoap_eml2_1::eml21__WellStatus__active);
 }
 
 void WellTest::readEpcDocHandler() {
+	Well* well = epcDoc->getDataObjectByUuid<Well>(uuid);
+	REQUIRE(well != nullptr);
+	REQUIRE(well->hasBlock());
+	REQUIRE(well->getBlock() == "my Block");
+	REQUIRE(!well->hasCounty());
+	REQUIRE(well->getDTimLicense() == defaultTimestamp);
+	REQUIRE(well->getGroundElevationValue() == 10);
+	REQUIRE(well->getGroundElevationUom() == gsoap_eml2_1::eml21__LengthUom__m);
+	REQUIRE(well->getTimeZoneDirection() == true);
+	REQUIRE(well->getTimeZoneHours() == 0);
+	REQUIRE(well->getTimeZoneMinutes() == 0);
+	REQUIRE(well->getStatusWell() == gsoap_eml2_1::eml21__WellStatus__active);
 }
-

@@ -2380,6 +2380,13 @@ WITSML2_0_NS::Well* EpcDocument::createWell(const std::string & guid,
 	return result;
 }
 
+WITSML2_0_NS::Wellbore* EpcDocument::createPartialWellbore(
+	const std::string & guid,
+	const std::string & title)
+{
+	return createPartial<WITSML2_0_NS::Wellbore>(guid, title);
+}
+
 WITSML2_0_NS::Wellbore* EpcDocument::createWellbore(WITSML2_0_NS::Well* witsmlWell,
 	const std::string & guid,
 	const std::string & title)

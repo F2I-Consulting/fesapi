@@ -18,6 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "witsml2_0/Trajectory.h"
 
+#include <sstream>
 #include <stdexcept>
 
 #include "witsml2_0/Wellbore.h"
@@ -66,6 +67,8 @@ void Trajectory::setWellbore(Wellbore* witsmlWellbore)
 		static_cast<witsml2__Trajectory*>(gsoapProxy2_1)->Wellbore = witsmlWellbore->newEmlReference();
 	}
 }
+
+GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml2__ChannelStatus, Trajectory, GrowingStatus, gsoap_eml2_1::soap_new_witsml2__ChannelStatus)
 
 GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, DTimTrajStart)
 GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, DTimTrajEnd)
@@ -152,3 +155,30 @@ GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, Trajecto
 // Optional Magnetic Flux Density Measure
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, MagTotalUncert, gsoap_eml2_1::eml21__MagneticFluxDensityUom, gsoap_eml2_1::soap_new_eml21__MagneticFluxDensityMeasure)
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, MagTotalFieldReference, gsoap_eml2_1::eml21__MagneticFluxDensityUom, gsoap_eml2_1::soap_new_eml21__MagneticFluxDensityMeasure)
+
+void Trajectory::pushBackTrajectoryStation(gsoap_eml2_1::witsml2__TrajStationType kind, double mdValue, gsoap_eml2_1::eml21__LengthUom uom, const std::string & uid)
+{
+	static_cast<witsml2__Trajectory*>(gsoapProxy2_1)->TrajectoryStation.push_back(gsoap_eml2_1::soap_new_witsml2__TrajectoryStation(gsoapProxy2_1->soap, 1));
+	unsigned int index = getTrajectoryStationCount() - 1;
+	if (uid.empty()) {
+		std::ostringstream oss;
+		oss << index;
+		setTrajectoryStationuid(index, oss.str());
+	}
+	else {
+		setTrajectoryStationuid(index, uid);
+	}
+
+	setTrajectoryStationTypeTrajStation(index, kind);
+	setTrajectoryStationMd(index, mdValue, uom);
+}
+
+unsigned int Trajectory::getTrajectoryStationCount() const
+{
+	const size_t count = static_cast<witsml2__Trajectory*>(gsoapProxy2_1)->TrajectoryStation.size();
+	if (count >= (std::numeric_limits<unsigned int>::max)()) {
+		throw range_error("Too much trajectory stations");
+	}
+
+	return static_cast<unsigned int>(count);
+}

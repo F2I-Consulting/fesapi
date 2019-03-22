@@ -48,6 +48,8 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__DataObjectReference* getWellboreDor() const;
 		DLL_IMPORT_OR_EXPORT void setWellbore(class Wellbore* witsmlWellbore);
 
+		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(gsoap_eml2_1::witsml2__ChannelStatus, GrowingStatus)
+
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimTrajStart)
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimTrajEnd)
 
@@ -133,6 +135,23 @@ namespace WITSML2_0_NS
 		// Optional Magnetic Flux Density Measure
 		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, MagTotalUncert, gsoap_eml2_1::eml21__MagneticFluxDensityUom)
 		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, MagTotalFieldReference, gsoap_eml2_1::eml21__MagneticFluxDensityUom)
+
+		/**
+		* Push back a minimal trajectory station into the trajectory.
+		*
+		* @param kind		The kind of trajectory station
+		* @param mdValue	The Measured Depth value of the trajectory station
+		* @param mdValue	The Measured Depth uom of the trajectory station
+		* @param uid		The uid of the trajectory station. Automatically set to its index if empty.
+		*/
+		DLL_IMPORT_OR_EXPORT void pushBackTrajectoryStation(gsoap_eml2_1::witsml2__TrajStationType kind, double mdValue, gsoap_eml2_1::eml21__LengthUom uom, const std::string & uid = "");
+
+		/**
+		* Get the count of trajectory stations in this trajectory
+		*
+		* @return the count of trajectory stations in this trajectory
+		*/
+		DLL_IMPORT_OR_EXPORT unsigned int getTrajectoryStationCount() const;
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }

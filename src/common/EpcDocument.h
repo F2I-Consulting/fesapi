@@ -1122,6 +1122,10 @@ namespace COMMON_NS
 			gsoap_eml2_1::witsml2__WellDirection directionWell
 		);
 
+		WITSML2_0_NS::Wellbore* createPartialWellbore(
+			const std::string & guid,
+			const std::string & title);
+
 		WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title);
