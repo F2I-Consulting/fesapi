@@ -27,14 +27,12 @@ under the License.
 // STD::VECTOR DEFINITIONS
 //************************
 
-// TODO est-ce que je dois garder ça ?
-//%include "std_vector.i"
-//namespace std {
-//	%template(WellboreVector) vector<WITSML1_4_1_1_NS::Wellbore*>;
-//	%template(TrajectoryVector) vector<WITSML1_4_1_1_NS::Trajectory*>;
-//	%template(LogVector) vector<WITSML1_4_1_1_NS::Log*>;
-//	%template(FormationMarkerVector) vector<WITSML1_4_1_1_NS::FormationMarker*>;
-//}
+%include "std_vector.i"
+namespace std {
+	%template(WellboreVector) vector<WITSML2_0_NS::Wellbore*>;
+	%template(WellCompletionVector) vector<WITSML2_0_NS::WellCompletion*>;
+	%template(WellboreCompletionVector) vector<WITSML2_0_NS::WellboreCompletion*>;
+}
 
 namespace gsoap_eml2_1
 {
@@ -129,7 +127,6 @@ namespace WITSML2_0_NS
 	class Wellbore : public AbstractObject 
 	{
 	public:
-		gsoap_eml2_1::eml21__DataObjectReference* getWellDor() const;
 		class Well* getWell() const;
 
 		void setWell(class Well* witsmlWell);
@@ -164,9 +161,9 @@ namespace WITSML2_0_NS
 	class WellboreCompletion : public WellboreObject
 	{
 	public:
-		gsoap_eml2_1::eml21__DataObjectReference* getWellCompletionDor() const;
+		class Wellbore* getWellbore() const;
+
 		class WellCompletion* getWellCompletion() const;
-		
 		void setWellCompletion(class WellCompletion* wellCompletion);
 
 		void pushBackPerforation(const std::string & datum,
