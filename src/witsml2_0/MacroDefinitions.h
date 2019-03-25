@@ -23,19 +23,19 @@ under the License.
 #define CHECK_RANGE(vector, index) if (index >= vector.size()) { throw std::range_error("The index is out of range"); }
 #define CHECK_ATTRIBUTE_EXISTENCE(className, attributeName) if (static_cast<witsml2__##className*>(gsoapProxy2_1)->attributeName == nullptr) { throw std::invalid_argument("The attribute does not exist"); }
 #define CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE(className, vectorName, attributeName) \
-		CHECK_RANGE(static_cast<witsml2__##className*>(gsoapProxy2_1)->##vectorName, index)\
-		if (static_cast<witsml2__##className*>(gsoapProxy2_1)->##vectorName[index]->attributeName == nullptr) { throw std::invalid_argument("The attribute in vector does not exist"); }
+		CHECK_RANGE(static_cast<witsml2__##className*>(gsoapProxy2_1)->vectorName, index)\
+		if (static_cast<witsml2__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName == nullptr) { throw std::invalid_argument("The attribute in vector does not exist"); }
 #define CREATE_ATTRIBUTE_IF_NOT_PRESENT(className, attributeName, constructor) if (static_cast<witsml2__##className*>(gsoapProxy2_1)->attributeName == nullptr) { static_cast<witsml2__##className*>(gsoapProxy2_1)->attributeName = constructor(gsoapProxy2_1->soap, 1); }
 #define CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT(className, vectorName, attributeName, constructor)\
-		CHECK_RANGE(static_cast<witsml2__##className*>(gsoapProxy2_1)->##vectorName, index)\
-		if (static_cast<witsml2__##className*>(gsoapProxy2_1)->##vectorName[index]->attributeName == nullptr) { static_cast<witsml2__##className*>(gsoapProxy2_1)->##vectorName[index]->attributeName = constructor(gsoapProxy2_1->soap, 1); }
+		CHECK_RANGE(static_cast<witsml2__##className*>(gsoapProxy2_1)->vectorName, index)\
+		if (static_cast<witsml2__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName == nullptr) { static_cast<witsml2__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName = constructor(gsoapProxy2_1->soap, 1); }
 
 #define GETTER_PRESENCE_ATTRIBUTE(attributeName) DLL_IMPORT_OR_EXPORT bool has##attributeName() const;
 #define GETTER_PRESENCE_ATTRIBUTE_IMPL(className, attributeName) bool GLUE(,className)::has##attributeName() const { return static_cast<witsml2__##className*>(gsoapProxy2_1)->attributeName != nullptr; }
 #define GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName) DLL_IMPORT_OR_EXPORT bool has##vectorName##attributeName(unsigned int index) const;
 #define GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName) bool GLUE(,className)::has##vectorName##attributeName(unsigned int index) const {\
-	CHECK_RANGE(static_cast<witsml2__##className*>(gsoapProxy2_1)->##vectorName, index)\
-	return static_cast<witsml2__##className*>(gsoapProxy2_1)->##vectorName[index]->attributeName != nullptr;\
+	CHECK_RANGE(static_cast<witsml2__##className*>(gsoapProxy2_1)->vectorName, index)\
+	return static_cast<witsml2__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName != nullptr;\
 }
 
 #define GETTER_AND_SETTER_GENERIC_ATTRIBUTE(attributeDatatype, attributeName)\
@@ -49,12 +49,12 @@ under the License.
 	DLL_IMPORT_OR_EXPORT attributeDatatype get##vectorName##attributeName(unsigned int index) const;
 #define GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR_IMPL(attributeDatatype, className, vectorName, attributeName)\
 	void GLUE(,className)::set##vectorName##attributeName(unsigned int index, const attributeDatatype & value) {\
-		CHECK_RANGE(static_cast<witsml2__##className*>(gsoapProxy2_1)->##vectorName, index)\
-		static_cast<witsml2__##className*>(gsoapProxy2_1)->##vectorName[index]->attributeName = value;\
+		CHECK_RANGE(static_cast<witsml2__##className*>(gsoapProxy2_1)->vectorName, index)\
+		static_cast<witsml2__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName = value;\
 	}\
 	attributeDatatype GLUE(,className)::get##vectorName##attributeName(unsigned int index) const {\
-		CHECK_RANGE(static_cast<witsml2__##className*>(gsoapProxy2_1)->##vectorName, index)\
-		return static_cast<witsml2__##className*>(gsoapProxy2_1)->##vectorName[index]->attributeName;\
+		CHECK_RANGE(static_cast<witsml2__##className*>(gsoapProxy2_1)->vectorName, index)\
+		return static_cast<witsml2__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName;\
 	}
 
 #define GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(attributeDatatype, attributeName)\
@@ -75,15 +75,15 @@ under the License.
 	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName)
 #define GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(attributeDatatype, className, vectorName, attributeName, constructor)\
 	void GLUE(,className)::set##vectorName##attributeName(unsigned int index, const attributeDatatype & value) {\
-		CHECK_RANGE(static_cast<witsml2__##className*>(gsoapProxy2_1)->##vectorName, index)\
+		CHECK_RANGE(static_cast<witsml2__##className*>(gsoapProxy2_1)->vectorName, index)\
 		CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT(className, vectorName, attributeName, constructor)\
-		*static_cast<witsml2__##className*>(gsoapProxy2_1)->##vectorName[index]->attributeName = value;\
+		*static_cast<witsml2__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName = value;\
 	}\
 	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName)\
 	attributeDatatype GLUE(,className)::get##vectorName##attributeName(unsigned int index) const {\
-		CHECK_RANGE(static_cast<witsml2__##className*>(gsoapProxy2_1)->##vectorName, index)\
+		CHECK_RANGE(static_cast<witsml2__##className*>(gsoapProxy2_1)->vectorName, index)\
 		CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE(className, vectorName, attributeName)\
-		return *static_cast<witsml2__##className*>(gsoapProxy2_1)->##vectorName[index]->attributeName;\
+		return *static_cast<witsml2__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName;\
 	}
 
 #define GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(className, attributeName)\
@@ -99,13 +99,13 @@ under the License.
 #define GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName)\
 	void GLUE(,className)::set##vectorName##attributeName(unsigned int index, const time_t & attributeName) {\
 		CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT(className, vectorName, attributeName, gsoap_eml2_1::soap_new_std__string)\
-		*static_cast<witsml2__##className*>(gsoapProxy2_1)->##vectorName[index]->attributeName = timeTools::convertUnixTimestampToIso(attributeName);\
+		*static_cast<witsml2__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName = timeTools::convertUnixTimestampToIso(attributeName);\
 	}\
 	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR_IMPL(className, vectorName, attributeName)\
 	time_t GLUE(,className)::get##vectorName##attributeName(unsigned int index) const {\
-		CHECK_RANGE(static_cast<witsml2__##className*>(gsoapProxy2_1)->##vectorName, index)\
+		CHECK_RANGE(static_cast<witsml2__##className*>(gsoapProxy2_1)->vectorName, index)\
 		CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE(className, vectorName, attributeName)\
-		return timeTools::convertIsoToUnixTimestamp(*static_cast<witsml2__##className*>(gsoapProxy2_1)->##vectorName[index]->attributeName);\
+		return timeTools::convertIsoToUnixTimestamp(*static_cast<witsml2__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName);\
 	}
 
 #define GETTER_AND_SETTER_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
