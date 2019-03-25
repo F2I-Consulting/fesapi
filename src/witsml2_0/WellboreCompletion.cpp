@@ -36,30 +36,23 @@ WellboreCompletion::WellboreCompletion(Wellbore* witsmlWellbore,
 	const string & title,
 	const string & wellCompletionName)
 {
-	if (witsmlWellbore == nullptr) throw invalid_argument("A wellbore must be associated to a wellbore wompletion.");
+	if (witsmlWellbore == nullptr) throw invalid_argument("A wellbore must be associated to a wellbore completion.");
 	if (wellCompletion == nullptr) throw invalid_argument("A well completion must be associated to a wellbore completion");
 
 	gsoapProxy2_1 = soap_new_witsml2__WellboreCompletion(witsmlWellbore->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	setWellbore(witsmlWellbore);
 	setWellCompletion(wellCompletion);
 
-	witsml2__WellboreCompletion* wellboreCompletion = static_cast<witsml2__WellboreCompletion*>(gsoapProxy2_1);
-
-	wellboreCompletion->NameWellCompletion = wellCompletionName;
+	static_cast<witsml2__WellboreCompletion*>(gsoapProxy2_1)->NameWellCompletion = wellCompletionName;
 }
 
 gsoap_eml2_1::eml21__DataObjectReference* WellboreCompletion::getWellboreDor() const
 {
 	return static_cast<witsml2__WellboreCompletion*>(gsoapProxy2_1)->ReferenceWellbore;
-}
-
-class Wellbore* WellboreCompletion::getWellbore() const
-{
-	return getEpcDocument()->getDataObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
 }
 
 gsoap_eml2_1::eml21__DataObjectReference* WellboreCompletion::getWellCompletionDor() const
@@ -529,14 +522,9 @@ double WellboreCompletion::getPerforationHistoryEntryBaseMd(const std::string & 
 
 void WellboreCompletion::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
-	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellboreDor();
-	Wellbore* wellbore = epcDoc->getDataObjectByUuid<Wellbore>(dor->Uuid);
+	WellboreObject::importRelationshipSetFromEpc(epcDoc);
 
-	if (wellbore == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-
-	dor = getWellCompletionDor();
+	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellCompletionDor();
 	WellCompletion* wellCompletion = epcDoc->getDataObjectByUuid<WellCompletion>(dor->Uuid);
 	
 	if (wellCompletion == nullptr) {
@@ -544,21 +532,15 @@ void WellboreCompletion::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* ep
 	}
 
 	updateXml = false;
-	setWellbore(wellbore);
 	setWellCompletion(wellCompletion);
 	updateXml = true;
 }
 
 vector<Relationship> WellboreCompletion::getAllEpcRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = WellboreObject::getAllEpcRelationships();
 
 	// XML forward relationship
-	Wellbore* wellbore = getWellbore();
-	Relationship relWellbore(wellbore->getPartNameInEpcDocument(), "", wellbore->getUuid());
-	relWellbore.setDestinationObjectType();
-	result.push_back(relWellbore);
-
 	WellCompletion* wellCompletion = getWellCompletion();
 	Relationship relWellCompletion(wellCompletion->getPartNameInEpcDocument(), "", wellCompletion->getUuid());
 	relWellCompletion.setDestinationObjectType();

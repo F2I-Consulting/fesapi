@@ -668,8 +668,8 @@ namespace COMMON_NS
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::eml21__WellStatus statusWellbore,
-			const bool & isActive,
-			const bool & achievedTD
+			bool isActive,
+			bool achievedTD
 		);
 		
 		WITSML2_0_NS::WellCompletion* createWellCompletion(WITSML2_0_NS::Well* witsmlWell,
@@ -681,6 +681,11 @@ namespace COMMON_NS
 			const std::string & guid,
 			const std::string & title,
 			const std::string & wellCompletionName);
+
+		WITSML2_0_NS::Trajectory* createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
+			const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_1::witsml2__ChannelStatus channelStatus);
 				
 		const std::vector<std::string> & getWarnings() const;
 	};

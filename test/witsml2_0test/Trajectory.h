@@ -16,22 +16,35 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "witsml2_0/AbstractObject.h"
+#pragma once
 
-using namespace std;
-using namespace WITSML2_0_NS;
+#include "../AbstractObjectTest.h"
+#include <iostream>
 
-std::string AbstractObject::getXmlNamespace() const
-{
-	return "witsml2";
+namespace COMMON_NS {
+	class EpcDocument;
 }
 
-string AbstractObject::getContentType() const
-{
-	return "application/x-witsml+xml;version=2.0;type=" + getXmlTag();
+namespace witsml2_0test {
+	class Trajectory : public commontest::AbstractObjectTest {
+	public:
+		/**
+		* Creation of a testing object from an EPC document path. At serialize() call,
+		* exising .epc file will be erased.
+		* @param epcDocPath the path of the .epc file (including .epc extension)
+		*/
+		Trajectory(const std::string & epcDocPath);
+
+		/**
+		* Creation of a testing object from an existing EPC document.
+		* @param epcDoc an existing EPC document
+		* @param init true if this object is created for initialization purpose else false if it is
+		* created for reading purpose. According to init value a iniEpcDoc() or readEpcDoc() is called.
+		*/
+		Trajectory(COMMON_NS::EpcDocument* epcDoc, bool init);
+	protected:
+		void initEpcDocHandler();
+		void readEpcDocHandler();
+	};
 }
 
-std::string AbstractObject::getPartNameInEpcDocument() const
-{
-	return getXmlTag() + "_" + getUuid() + ".xml";
-}

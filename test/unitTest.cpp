@@ -55,6 +55,7 @@ under the License.
 #include "resqml2_0_1test/LgrOnRightHanded4x3x2ExplicitIjkGrid.h"
 #include "resqml2_0_1test/InterpretationDomain.h"
 #include "witsml2_0test/WellTest.h"
+#include "witsml2_0test/Trajectory.h"
 
 using namespace commontest;
 using namespace resqml2_0_1test;
@@ -139,4 +140,5 @@ FESAPI_TEST("Export and import a wellbore frame (irregular md spacings) with a s
 FESAPI_TEST("Export and import an horizon on a seismic line", "[seismic]", HorizonOnSeismicLine)
 
 FESAPI_TEST("Export and import a Witsml well", "[well]", WellTest)
+FESAPI_TEST("Export and import a Witsml trajectory", "[well]", Trajectory)
 

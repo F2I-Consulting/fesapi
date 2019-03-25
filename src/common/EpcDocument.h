@@ -135,9 +135,10 @@ namespace WITSML2_0_NS
 {
 	class AbstractObject;
 	class Well;
-	class Wellbore;
 	class WellCompletion;
+	class Wellbore;
 	class WellboreCompletion;
+	class Trajectory;
 }
 
 namespace COMMON_NS
@@ -620,6 +621,7 @@ namespace COMMON_NS
 		* Create a partial object in this EpcDocument based on a Data Object Reference
 		*/
 		COMMON_NS::AbstractObject* createPartial(gsoap_resqml2_0_1::eml20__DataObjectReference* dor);
+		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_1::eml21__DataObjectReference* dor);
 
 		/**
 		* Create a partial object i.e. a data object reference (DOR)
@@ -1132,6 +1134,10 @@ namespace COMMON_NS
 			gsoap_eml2_1::witsml2__WellDirection directionWell
 		);
 
+		WITSML2_0_NS::Wellbore* createPartialWellbore(
+			const std::string & guid,
+			const std::string & title);
+
 		WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title);
@@ -1140,8 +1146,8 @@ namespace COMMON_NS
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::eml21__WellStatus statusWellbore,
-			const bool & isActive,
-			const bool & achievedTD
+			bool isActive,
+			bool achievedTD
 		);
 
 		WITSML2_0_NS::WellCompletion* createWellCompletion(WITSML2_0_NS::Well* witsmlWell,
@@ -1153,6 +1159,11 @@ namespace COMMON_NS
 			const std::string & guid,
 			const std::string & title,
 			const std::string & wellCompletionName);
+
+		WITSML2_0_NS::Trajectory* createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
+			const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_1::witsml2__ChannelStatus channelStatus);
 
 		//************************************
 		//************* WARNINGS *************

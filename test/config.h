@@ -94,7 +94,10 @@ namespace resqml2_0_1test {
 }
 
 namespace witsml2_0test {
-	// HdfProxy
+	// Well
 	static const char* uuidWell = "4b4ef814-a891-46f5-bf10-3cc30be396a5";
 	static const char* titleWell = "Witsml Well Test";
+	// Trajecotry
+	static const char* uuidTraj = "b4f02547-9fca-49ef-83a9-c96a802c857e";
+	static const char* titleTraj = "Witsml Trajectory Test";
 }

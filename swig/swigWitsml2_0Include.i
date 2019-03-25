@@ -122,8 +122,8 @@ namespace WITSML2_0_NS
 		const std::vector<class WellCompletion*>& getWellcompletions();
 	};
 	
-	class Well;
-	class WellboreCompletion;	
+	class WellboreCompletion;
+	class Trajectory;
 	class Wellbore : public AbstractObject 
 	{
 	public:
@@ -134,11 +134,11 @@ namespace WITSML2_0_NS
 		RESQML2_0_1_NS::WellboreFeature* getResqmlWellboreFeature() const;
 
 		const std::vector<class WellboreCompletion *>& getWellboreCompletions() const;
+		const std::vector<class Trajectory *>& getTrajectories() const;
 
 		void setShape(const gsoap_eml2_1::witsml2__WellboreShape & shape);
 	};
 	
-	class Well;
 	class WellboreCompletion;
 	class WellCompletion : public AbstractObject
 	{
@@ -151,17 +151,19 @@ namespace WITSML2_0_NS
 		const std::vector<class WellboreCompletion*>& getWellboreCompletions() const;
 	};
 	
-	class Wellbore;
-	class WellCompletion;
-	class WellboreCompletion : public AbstractObject
+	class WellboreObject : public AbstractObject
+	{
+	public:
+		Wellbore* getWellbore() const;
+		virtual void setWellbore(class Wellbore* witsmlWellbore) = 0;
+	};
+	
+	class WellboreCompletion : public WellboreObject
 	{
 	public:
 		class Wellbore* getWellbore() const;
 
 		class WellCompletion* getWellCompletion() const;
-
-		void setWellbore(class Wellbore* witsmlWellbore);
-		
 		void setWellCompletion(class WellCompletion* wellCompletion);
 
 		void pushBackPerforation(const std::string & datum,
@@ -245,5 +247,11 @@ namespace WITSML2_0_NS
 		double getPerforationHistoryEntryBaseMd(const std::string & guid,
 			const std::string & perforationGuid) const;
 	};
+	
+	class Trajectory : public WellboreObject
+	{
+	public:
+	};
+}
 }
 
