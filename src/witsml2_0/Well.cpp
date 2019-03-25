@@ -73,74 +73,35 @@ Well::Well(soap* soapContext,
 	*well->DirectionWell = directionWell;
 }
 
-void Well::setString(std::string* & strToBeSet, const std::string & strToSet) {
-	if (strToSet.empty()) {
-		throw invalid_argument("The value to set cannot be empty.");
-	}
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, NameLegal, soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, NumLicense, soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, NumGovt, soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, Field, soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, Country, soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, State, soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, County, soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, Region, soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, District, soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, Block, soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, Operator, soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, OperatorDiv, soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, OriginalOperator, soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, NumAPI, soap_new_std__string)
 
-	if (strToBeSet == nullptr) {
-		strToBeSet = soap_new_std__string(gsoapProxy2_1->soap, 1);
-	}
-	strToBeSet->assign(strToSet);
-}
+// Optional enum
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::eml21__WellStatus, Well, StatusWell, gsoap_eml2_1::soap_new_eml21__WellStatus)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml2__WellPurpose, Well, PurposeWell, gsoap_eml2_1::soap_new_witsml2__WellPurpose)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml2__WellFluid, Well, FluidWell, gsoap_eml2_1::soap_new_witsml2__WellFluid)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml2__WellDirection, Well, DirectionWell, gsoap_eml2_1::soap_new_witsml2__WellDirection)
 
-#define GETTER_PRESENCE_ATTRIBUTE_IMPL(attributeName) bool Well::has##attributeName() const { return static_cast<witsml2__Well*>(gsoapProxy2_1)->attributeName != nullptr; }
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Well, WaterDepth, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Well, GroundElevation, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_witsml2__WellElevationCoord)
 
-#define GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE_IMPL(attributeName)\
-	void Well::set##attributeName(const std::string & attributeName) { setString(static_cast<witsml2__Well*>(gsoapProxy2_1)->attributeName, attributeName); }\
-	GETTER_PRESENCE_ATTRIBUTE_IMPL(attributeName)\
-	std::string Well::get##attributeName() const {\
-		if (!has##attributeName()) { throw invalid_argument("The string attribute to get does not exist."); }\
-		return *static_cast<witsml2__Well*>(gsoapProxy2_1)->attributeName;\
-	}
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Well, PcInterest, gsoap_eml2_1::eml21__DimensionlessUom, gsoap_eml2_1::soap_new_eml21__DimensionlessMeasure)
 
-GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE_IMPL(NameLegal)
-GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE_IMPL(NumLicense)
-GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE_IMPL(NumGovt)
-GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE_IMPL(Field)
-GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE_IMPL(Country)
-GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE_IMPL(State)
-GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE_IMPL(County)
-GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE_IMPL(Region)
-GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE_IMPL(District)
-GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE_IMPL(Block)
-GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE_IMPL(Operator)
-GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE_IMPL(OperatorDiv)
-GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE_IMPL(OriginalOperator)
-GETTER_AND_SETTER_WELL_STRING64_ATTRIBUTE_IMPL(NumAPI)
-
-#define GETTER_AND_SETTER_WELL_LENGTH_MEASURE_ATTRIBUTE_IMPL(attributeName, constructor)\
-	void Well::set##attributeName(double value, gsoap_eml2_1::eml21__LengthUom uom) {\
-		if (value != value) { throw invalid_argument("You cannot set an undefined water depth"); }\
-		witsml2__Well* well = static_cast<witsml2__Well*>(gsoapProxy2_1);\
-		if (well->attributeName == nullptr) { well->attributeName = constructor; }\
-		well->attributeName->__item = value;\
-		well->attributeName->uom = uom;\
-	}\
-	GETTER_PRESENCE_ATTRIBUTE_IMPL(attributeName)\
-	double Well::get##attributeName##Value() const {\
-		if (!has##attributeName()) { throw invalid_argument("The length measure attribute to get does not exist."); }\
-		return static_cast<witsml2__Well*>(gsoapProxy2_1)->attributeName->__item;\
-	}\
-	gsoap_eml2_1::eml21__LengthUom Well::get##attributeName##Uom() const {\
-		if (!has##attributeName()) { throw invalid_argument("The length measure attribute to get does not exist."); }\
-		return static_cast<witsml2__Well*>(gsoapProxy2_1)->attributeName->uom;\
-	}\
-
-GETTER_AND_SETTER_WELL_LENGTH_MEASURE_ATTRIBUTE_IMPL(WaterDepth, soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap, 1))
-GETTER_AND_SETTER_WELL_LENGTH_MEASURE_ATTRIBUTE_IMPL(GroundElevation, soap_new_witsml2__WellElevationCoord(gsoapProxy2_1->soap, 1))
-
-#define GETTER_AND_SETTER_WELL_TIMESTAMP_ATTRIBUTE_IMPL(attributeName)\
-	void Well::set##attributeName(unsigned int attributeName) { setString(static_cast<witsml2__Well*>(gsoapProxy2_1)->attributeName, timeTools::convertUnixTimestampToIso(attributeName)); }\
-	GETTER_PRESENCE_ATTRIBUTE_IMPL(attributeName)\
-	unsigned int Well::get##attributeName() const {\
-		if (!has##attributeName()) { throw invalid_argument("The string attribute to get does not exist."); }\
-		return timeTools::convertIsoToUnixTimestamp(*static_cast<witsml2__Well*>(gsoapProxy2_1)->attributeName);\
-	}
-
-GETTER_AND_SETTER_WELL_TIMESTAMP_ATTRIBUTE_IMPL(DTimLicense)
-GETTER_AND_SETTER_WELL_TIMESTAMP_ATTRIBUTE_IMPL(DTimSpud)
-GETTER_AND_SETTER_WELL_TIMESTAMP_ATTRIBUTE_IMPL(DTimPa)
+GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(Well, DTimLicense)
+GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(Well, DTimSpud)
+GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(Well, DTimPa)
 
 void Well::setTimeZone(bool direction, unsigned short hours, unsigned short minutes)
 {
@@ -174,13 +135,13 @@ void Well::setTimeZone(bool direction, unsigned short hours, unsigned short minu
 
 	well->TimeZone->assign(oss.str());
 }
-GETTER_PRESENCE_ATTRIBUTE_IMPL(TimeZone)
+GETTER_PRESENCE_ATTRIBUTE_IMPL(Well, TimeZone)
 bool Well::getTimeZoneDirection() const {
-	if (!hasTimeZone()) { throw invalid_argument("The  attribute to get does not exist."); }
+	if (!hasTimeZone()) { throw invalid_argument("The attribute to get does not exist."); }
 	return static_cast<witsml2__Well*>(gsoapProxy2_1)->TimeZone->at(0) != '-';
 }
 unsigned short Well::getTimeZoneHours() const {
-	if (!hasTimeZone()) { throw invalid_argument("The  attribute to get does not exist."); }
+	if (!hasTimeZone()) { throw invalid_argument("The attribute to get does not exist."); }
 	if (static_cast<witsml2__Well*>(gsoapProxy2_1)->TimeZone->size() == 1) { return 0; }
 	if (static_cast<witsml2__Well*>(gsoapProxy2_1)->TimeZone->size() != 6) { throw invalid_argument("The time zone does not looks to conform to the XSD standard."); }
 
@@ -190,7 +151,7 @@ unsigned short Well::getTimeZoneHours() const {
 	return result;
 }
 unsigned short Well::getTimeZoneMinutes() const {
-	if (!hasTimeZone()) { throw invalid_argument("The  attribute to get does not exist."); }
+	if (!hasTimeZone()) { throw invalid_argument("The attribute to get does not exist."); }
 	if (static_cast<witsml2__Well*>(gsoapProxy2_1)->TimeZone->size() == 1) { return 0; }
 	if (static_cast<witsml2__Well*>(gsoapProxy2_1)->TimeZone->size() != 6) { throw invalid_argument("The time zone does not looks to conform to the XSD standard."); }
 

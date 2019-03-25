@@ -28,15 +28,17 @@ const char* OrganizationFeature::XML_TAG = "OrganizationFeature";
 
 OrganizationFeature::OrganizationFeature(soap* soapContext, const std::string & guid, const string & title, const resqml2__OrganizationKind & orgType)
 {
-	if (soapContext == nullptr)
+	if (soapContext == nullptr) {
 		throw invalid_argument("The soap context cannot be null.");
+	}
 
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREOrganizationFeature(soapContext, 1);
-	_resqml2__OrganizationFeature* orgFeat = static_cast<_resqml2__OrganizationFeature*>(gsoapProxy2_0_1);
-	orgFeat->OrganizationKind = orgType;
+	static_cast<_resqml2__OrganizationFeature*>(gsoapProxy2_0_1)->OrganizationKind = orgType;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
-
+gsoap_resqml2_0_1::resqml2__OrganizationKind OrganizationFeature::getKind() const {
+	return static_cast<_resqml2__OrganizationFeature*>(gsoapProxy2_0_1)->OrganizationKind;
+}

@@ -126,15 +126,20 @@ namespace RESQML2_0_1_NS
 	class PlaneSetRepresentation;
 	class FluidBoundaryFeature;
 	class BlockedWellboreRepresentation;
+	class RockFluidOrganizationInterpretation;
+	class RockFluidUnitInterpretation;
+	class RockFluidUnitFeature;
+
 }
 
 namespace WITSML2_0_NS
 {
 	class AbstractObject;
 	class Well;
-	class Wellbore;
 	class WellCompletion;
+	class Wellbore;
 	class WellboreCompletion;
+	class Trajectory;
 }
 
 namespace COMMON_NS
@@ -642,6 +647,7 @@ namespace COMMON_NS
 		* Create a partial object in this EpcDocument based on a Data Object Reference
 		*/
 		COMMON_NS::AbstractObject* createPartial(gsoap_resqml2_0_1::eml20__DataObjectReference* dor);
+		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_1::eml21__DataObjectReference* dor);
 
 		/**
 		* Create a partial object i.e. a data object reference (DOR)
@@ -875,9 +881,14 @@ namespace COMMON_NS
 
 		RESQML2_0_1_NS::OrganizationFeature* createStratigraphicModel(const std::string & guid, const std::string & title);
 
-		RESQML2_0_1_NS::OrganizationFeature* createEarthModel(const std::string & guid, const std::string & title);
+		RESQML2_0_1_NS::OrganizationFeature* createRockFluidModel(const std::string & guid, const std::string & title);
+
+        RESQML2_0_1_NS::OrganizationFeature* createEarthModel(const std::string & guid, const std::string & title);
 
 		RESQML2_0_1_NS::FluidBoundaryFeature* createFluidBoundaryFeature(const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__FluidContact & fluidContact);
+
+		RESQML2_0_1_NS::RockFluidUnitFeature* createRockFluidUnit(const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml2__Phase phase, RESQML2_0_1_NS::FluidBoundaryFeature* fluidBoundaryTop, RESQML2_0_1_NS::FluidBoundaryFeature* fluidBoundaryBottom);
+
 
 		//************************************
 		//************ INTERPRETATION ********
@@ -902,6 +913,9 @@ namespace COMMON_NS
 		RESQML2_0_1_NS::StructuralOrganizationInterpretation* createStructuralOrganizationInterpretationInAge(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
 		RESQML2_0_1_NS::StructuralOrganizationInterpretation* createStructuralOrganizationInterpretationInApparentDepth(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
 		RESQML2_0_1_NS::StructuralOrganizationInterpretation* createStructuralOrganizationInterpretationInMeasuredDepth(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
+		
+		RESQML2_0_1_NS::RockFluidOrganizationInterpretation* createRockFluidOrganizationInterpretation(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, RESQML2_0_1_NS::RockFluidUnitInterpretation * rockFluidUnitInterp);
+		RESQML2_0_1_NS::RockFluidUnitInterpretation* createRockFluidUnitInterpretation(RESQML2_0_1_NS::RockFluidUnitFeature * rockFluidUnitFeature, const std::string & guid, const std::string & title);
 
 		RESQML2_0_1_NS::GeobodyInterpretation* createGeobodyInterpretation(RESQML2_0_1_NS::GeobodyFeature * geobody, const std::string & guid, const std::string & title);
 
@@ -1146,6 +1160,10 @@ namespace COMMON_NS
 			gsoap_eml2_1::witsml2__WellDirection directionWell
 		);
 
+		WITSML2_0_NS::Wellbore* createPartialWellbore(
+			const std::string & guid,
+			const std::string & title);
+
 		WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title);
@@ -1154,8 +1172,8 @@ namespace COMMON_NS
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::eml21__WellStatus statusWellbore,
-			const bool & isActive,
-			const bool & achievedTD
+			bool isActive,
+			bool achievedTD
 		);
 
 		WITSML2_0_NS::WellCompletion* createWellCompletion(WITSML2_0_NS::Well* witsmlWell,
@@ -1167,6 +1185,11 @@ namespace COMMON_NS
 			const std::string & guid,
 			const std::string & title,
 			const std::string & wellCompletionName);
+
+		WITSML2_0_NS::Trajectory* createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
+			const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_1::witsml2__ChannelStatus channelStatus);
 
 		//************************************
 		//************* WARNINGS *************

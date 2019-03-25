@@ -121,7 +121,7 @@ void SealedVolumeFrameworkRepresentation::setXmlInterpretationOfVolumeRegion(uns
 	svf->Regions[regionIndex]->Represents = stratiUnitInterp->newResqmlReference();
 }
 
-gsoap_resqml2_0_1::resqml2__VolumeShell* SealedVolumeFrameworkRepresentation::createVolumeShell(const std::string & shellUid,
+gsoap_resqml2_0_1::resqml2__VolumeShell* SealedVolumeFrameworkRepresentation::createVolumeShell(
 	unsigned int shellFaceCount,
 	unsigned int * faceRepresentationIndices, unsigned int * faceRepPatchIndices, bool * faceSide)
 {
@@ -130,7 +130,7 @@ gsoap_resqml2_0_1::resqml2__VolumeShell* SealedVolumeFrameworkRepresentation::cr
 	}
 
 	resqml2__VolumeShell* externalShell = soap_new_resqml2__VolumeShell(gsoapProxy2_0_1->soap, 1);
-	externalShell->ShellUid = shellUid;
+	externalShell->ShellUid = "dummy uid";
 
 	// Faces
 	for (unsigned int faceIdx = 0; faceIdx < shellFaceCount; ++faceIdx) {
@@ -144,7 +144,7 @@ gsoap_resqml2_0_1::resqml2__VolumeShell* SealedVolumeFrameworkRepresentation::cr
 	return externalShell;
 }
 
-void SealedVolumeFrameworkRepresentation::pushBackVolumeRegion(StratigraphicUnitInterpretation * stratiUnitInterp, const std::string & externalShellUid,
+void SealedVolumeFrameworkRepresentation::pushBackVolumeRegion(StratigraphicUnitInterpretation * stratiUnitInterp,
 	unsigned int externalShellFaceCount,
 	unsigned int * faceRepresentationIndices, unsigned int * faceRepPatchIndices, bool * faceSide)
 {
@@ -155,15 +155,15 @@ void SealedVolumeFrameworkRepresentation::pushBackVolumeRegion(StratigraphicUnit
 	setInterpretationOfVolumeRegion(region->PatchIndex, stratiUnitInterp);
 
 	// External shell
-	region->ExternalShell = createVolumeShell(externalShellUid, externalShellFaceCount,
+	region->ExternalShell = createVolumeShell(externalShellFaceCount,
 		faceRepresentationIndices, faceRepPatchIndices, faceSide);
 }
 
-void SealedVolumeFrameworkRepresentation::pushBackInternalShell(unsigned int regionIndex, const std::string & internalShellUid,
+void SealedVolumeFrameworkRepresentation::pushBackInternalShell(unsigned int regionIndex,
 	unsigned int externalShellFaceCount,
 	unsigned int * faceRepresentationIndices, unsigned int * faceRepPatchIndices, bool * faceSide)
 {
-	getRegion(regionIndex)->InternalShells.push_back(createVolumeShell(internalShellUid, externalShellFaceCount,
+	getRegion(regionIndex)->InternalShells.push_back(createVolumeShell(externalShellFaceCount,
 		faceRepresentationIndices, faceRepPatchIndices, faceSide));
 }
 
@@ -237,16 +237,6 @@ gsoap_resqml2_0_1::resqml2__VolumeShell* SealedVolumeFrameworkRepresentation::ge
 	}
 
 	return getRegion(regionIndex)->InternalShells[internalShellIndex];
-}
-
-std::string SealedVolumeFrameworkRepresentation::getUidOfExternalShell(unsigned int regionIndex) const
-{
-	return getRegionExternalShell(regionIndex)->ShellUid;
-}
-
-std::string SealedVolumeFrameworkRepresentation::getUidOfInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const
-{
-	return getRegionInternalShell(regionIndex, internalShellIndex)->ShellUid;
 }
 
 unsigned int SealedVolumeFrameworkRepresentation::getFaceCountOfExternalShell(unsigned int regionIndex) const

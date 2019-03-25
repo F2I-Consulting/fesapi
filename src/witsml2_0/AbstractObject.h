@@ -20,9 +20,11 @@ under the License.
 
 #include "common/AbstractObject.h"
 
+#include "witsml2_0/MacroDefinitions.h"
+
 namespace WITSML2_0_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractObject : public COMMON_NS::AbstractObject
+	class AbstractObject : public COMMON_NS::AbstractObject
 	{
 	public:
 
@@ -34,17 +36,17 @@ namespace WITSML2_0_NS
 		/**
 		* Get the XML namespace for the tags for the XML serialization of this instance
 		*/
-		std::string getXmlNamespace() const;
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const;
 
 		/**
 		* Get the content type of the instance according to EPC recommendation
 		*/
-		std::string getContentType() const;
+		DLL_IMPORT_OR_EXPORT std::string getContentType() const;
 
 		/**
 		* Get part name of this XML top level instance in the EPC document
 		*/
-		std::string getPartNameInEpcDocument() const;
+		DLL_IMPORT_OR_EXPORT std::string getPartNameInEpcDocument() const;
 
 	protected:
 

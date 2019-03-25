@@ -23,7 +23,7 @@ under the License.
 
 namespace WITSML2_0_NS
 {
-	class DLL_IMPORT_OR_EXPORT WellCompletion : public WITSML2_0_NS::AbstractObject
+	class WellCompletion : public WITSML2_0_NS::AbstractObject
 	{
 	public:
 		WellCompletion(class Well* witsmlWell,
@@ -42,18 +42,18 @@ namespace WITSML2_0_NS
 
 		gsoap_eml2_1::eml21__DataObjectReference* getWellDor() const;
 		
-		class Well* getWell() const;
+		DLL_IMPORT_OR_EXPORT class Well* getWell() const;
 
-		void setWell(class Well* witsmlWell);
+		DLL_IMPORT_OR_EXPORT void setWell(class Well* witsmlWell);
 
-		const std::vector<WellboreCompletion*>& getWellboreCompletions() const { return wellboreCompletionSet; }
+		DLL_IMPORT_OR_EXPORT const std::vector<WellboreCompletion*>& getWellboreCompletions() const { return wellboreCompletionSet; }
 
-		std::vector<epc::Relationship> getAllSourceRelationships() const;
-		std::vector<epc::Relationship> getAllTargetRelationships() const;
-		void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc);
+		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllSourceRelationships() const;
+		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllTargetRelationships() const;
+		DLL_IMPORT_OR_EXPORT void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc);
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	protected:
 		// backwards relationships

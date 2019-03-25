@@ -24,7 +24,7 @@ under the License.
 #include "resqml2_0_1/StructuralOrganizationInterpretation.h"
 #include "resqml2_0_1/StratigraphicColumn.h"
 #include "resqml2_0_1/StratigraphicOccurrenceInterpretation.h"
-
+#include "resqml2_0_1/RockFluidOrganizationInterpretation.h"
 #include "tools/Misc.h"
 
 using namespace std;
@@ -47,6 +47,20 @@ EarthModelInterpretation::EarthModelInterpretation(OrganizationFeature * orgFeat
 	setInterpretedFeature(orgFeat);
 }
 
+bool EarthModelInterpretation::hasStructuralOrganizationInterpretation() const
+{
+	return static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure != nullptr;
+}
+
+StructuralOrganizationInterpretation* EarthModelInterpretation::getStructuralOrganizationInterpertation() const
+{
+	if (!hasStructuralOrganizationInterpretation()) {
+		throw invalid_argument("There is no associated structural organization");
+	}
+
+	return epcDocument->getDataObjectByUuid<StructuralOrganizationInterpretation>(static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure->UUID);
+}
+
 void EarthModelInterpretation::setStructuralOrganizationInterpretation(StructuralOrganizationInterpretation * structOrganization)
 {
     // epc
@@ -56,6 +70,11 @@ void EarthModelInterpretation::setStructuralOrganizationInterpretation(Structura
 	if (updateXml) {
 		static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure = structOrganization->newResqmlReference();
 	}
+}
+
+bool EarthModelInterpretation::hasStratiColumn() const
+{
+	return static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn != nullptr;
 }
 
 void EarthModelInterpretation::setStratiColumn(StratigraphicColumn * stratiColumn)
@@ -69,6 +88,31 @@ void EarthModelInterpretation::setStratiColumn(StratigraphicColumn * stratiColum
 	}
 }
 
+StratigraphicColumn* EarthModelInterpretation::getStratiColumn() const
+{
+	if (!hasStratiColumn()) {
+		throw invalid_argument("There is no associated stratigraphic column");
+	}
+
+	return epcDocument->getDataObjectByUuid<StratigraphicColumn>(static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn->UUID);
+}
+
+unsigned int EarthModelInterpretation::getStratiOccurenceCount() const
+{
+	return static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.size();
+}
+
+StratigraphicOccurrenceInterpretation* EarthModelInterpretation::getStratiOccurence(unsigned int index) const
+{
+	_resqml2__EarthModelInterpretation* earthModelInterpretation = static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1);
+	if (index < earthModelInterpretation->StratigraphicOccurrences.size()) {
+		return static_cast<StratigraphicOccurrenceInterpretation*>(epcDocument->getDataObjectByUuid(earthModelInterpretation->StratigraphicOccurrences[index]->UUID));
+	}
+	else {
+		throw std::out_of_range("The strati occurence index is out of range.");
+	}
+}
+
 void EarthModelInterpretation::pushBackStratiOccurence(StratigraphicOccurrenceInterpretation * stratiOccurence)
 {
     // epc
@@ -78,6 +122,31 @@ void EarthModelInterpretation::pushBackStratiOccurence(StratigraphicOccurrenceIn
 	if (updateXml) {
 		static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.push_back(stratiOccurence->newResqmlReference());
 	}
+}
+
+bool EarthModelInterpretation::hasRockFluidOrganizationInterpretation() const
+{
+	return static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid != nullptr;
+}
+
+void EarthModelInterpretation::setRockFluidOrganizationInterpretation(class RockFluidOrganizationInterpretation* rockFluid)
+{
+	// epc
+	rockFluid->earthModelSet.push_back(this);
+
+	//XML
+	if(updateXml) {
+		static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid = rockFluid->newResqmlReference();
+	}
+}
+
+RockFluidOrganizationInterpretation* EarthModelInterpretation::getRockFluidOrganizationInterpretation() const
+{
+	if (!hasRockFluidOrganizationInterpretation()) {
+		throw invalid_argument("There is no rock fluid organization");
+	}
+
+	return epcDocument->getDataObjectByUuid<RockFluidOrganizationInterpretation>(static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid->UUID);
 }
 
 vector<Relationship> EarthModelInterpretation::getAllTargetRelationships() const
@@ -111,6 +180,13 @@ vector<Relationship> EarthModelInterpretation::getAllTargetRelationships() const
 		else
 			throw domain_error("The stratigraphic occurence associated to the earth model cannot be nullptr.");
     }
+
+	if (hasRockFluidOrganizationInterpretation())
+	{
+		Relationship rel(misc::getPartNameFromReference(interp->Fluid), "", interp->Fluid->UUID);
+		rel.setDestinationObjectType();
+		result.push_back(rel);
+	}
         
     return result;
 }
@@ -119,42 +195,68 @@ void EarthModelInterpretation::resolveTargetRelationships(COMMON_NS::EpcDocument
 {
 	AbstractFeatureInterpretation::resolveTargetRelationships(epcDoc);
 
-	updateXml = false;
-
 	_resqml2__EarthModelInterpretation* interp = static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1);
 
-	if (interp->Structure != nullptr)
-	{
-		StructuralOrganizationInterpretation* structuralOrganizationInterp = static_cast<StructuralOrganizationInterpretation*>(epcDoc->getDataObjectByUuid(interp->Structure->UUID));
-		if (structuralOrganizationInterp != nullptr)
-			setStructuralOrganizationInterpretation(structuralOrganizationInterp);
+	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = interp->Structure;
+	if (dor != nullptr) {
+		StructuralOrganizationInterpretation* interp = epcDoc->getDataObjectByUuid<StructuralOrganizationInterpretation>(dor->UUID);
+		if (interp == nullptr) { // partial transfer
+			getEpcDocument()->createPartial(dor);
+			interp = getEpcDocument()->getDataObjectByUuid<StructuralOrganizationInterpretation>(dor->UUID);
+		}
+		if (interp == nullptr) {
+			throw invalid_argument("The DOR looks invalid.");
+		}
+		updateXml = false;
+		setStructuralOrganizationInterpretation(interp);
+		updateXml = true;
 	}
 
-	if (interp->StratigraphicColumn != nullptr)
-	{
-		StratigraphicColumn* stratCol = static_cast<StratigraphicColumn*>(epcDoc->getDataObjectByUuid(interp->StratigraphicColumn->UUID));
-		if (stratCol != nullptr)
-			setStratiColumn(stratCol);
+	dor = interp->StratigraphicColumn;
+	if (dor != nullptr) {
+		StratigraphicColumn* interp = epcDoc->getDataObjectByUuid<StratigraphicColumn>(dor->UUID);
+		if (interp == nullptr) { // partial transfer
+			getEpcDocument()->createPartial(dor);
+			interp = getEpcDocument()->getDataObjectByUuid<StratigraphicColumn>(dor->UUID);
+		}
+		if (interp == nullptr) {
+			throw invalid_argument("The DOR looks invalid.");
+		}
+		updateXml = false;
+		setStratiColumn(interp);
+		updateXml = true;
 	}
 
 	for (size_t i = 0; i < interp->StratigraphicOccurrences.size(); ++i)
 	{
-		pushBackStratiOccurence(static_cast<StratigraphicOccurrenceInterpretation*>(epcDoc->getDataObjectByUuid(interp->StratigraphicOccurrences[i]->UUID)));
+		dor = interp->StratigraphicOccurrences[i];
+		if (dor != nullptr) {
+			StratigraphicOccurrenceInterpretation* interp = epcDoc->getDataObjectByUuid<StratigraphicOccurrenceInterpretation>(dor->UUID);
+			if (interp == nullptr) { // partial transfer
+				getEpcDocument()->createPartial(dor);
+				interp = getEpcDocument()->getDataObjectByUuid<StratigraphicOccurrenceInterpretation>(dor->UUID);
+			}
+			if (interp == nullptr) {
+				throw invalid_argument("The DOR looks invalid.");
+			}
+			updateXml = false;
+			pushBackStratiOccurence(interp);
+			updateXml = true;
+		}
 	}
 
-	updateXml = true;
-}
-
-bool EarthModelInterpretation::hasStratiColumn() const
-{
-	return static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn != nullptr;
-}
-
-StratigraphicColumn* EarthModelInterpretation::getStratiColumn() const
-{
-	if (!hasStratiColumn()) {
-		throw invalid_argument("There is no associated stratigraphic column");
+	dor = interp->Fluid;
+	if (dor != nullptr) {
+		RockFluidOrganizationInterpretation* interp = epcDoc->getDataObjectByUuid<RockFluidOrganizationInterpretation>(dor->UUID);
+		if (interp == nullptr) { // partial transfer
+			getEpcDocument()->createPartial(dor);
+			interp = getEpcDocument()->getDataObjectByUuid<RockFluidOrganizationInterpretation>(dor->UUID);
+		}
+		if (interp == nullptr) {
+			throw invalid_argument("The DOR looks invalid.");
+		}
+		updateXml = false;
+		setRockFluidOrganizationInterpretation(interp);
+		updateXml = true;
 	}
-
-	return epcDocument->getDataObjectByUuid<StratigraphicColumn>(static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn->UUID);
 }

@@ -18,19 +18,22 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-//#include "witsml2_1/Trajectory.h"
-//#include "witsml2_1/Log.h"
-//#include "witsml2_1/WellboreMarkerSet.h"
-
 #include "witsml2_0/AbstractObject.h"
 #include "resqml2_0_1/WellboreFeature.h"
 #include "witsml2_0/WellboreCompletion.h"
+#include "witsml2_0/Trajectory.h"
 
 namespace WITSML2_0_NS
 {
 	class Wellbore : public WITSML2_0_NS::AbstractObject
 	{
 	public:
+
+		/**
+		* Only to be used in partial transfer context
+		*/
+		Wellbore(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::AbstractObject(partialObject) {}
+
 		/**
 		* Creates an instance of this class in a gsoap context.
 		* @param guid		The guid to set to this instance. If empty then a new guid will be generated.
@@ -43,8 +46,8 @@ namespace WITSML2_0_NS
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::eml21__WellStatus statusWellbore,
-			const bool & isActive,
-			const bool & achievedTD
+			bool isActive,
+			bool achievedTD
 		);
 
 		/**
@@ -66,7 +69,9 @@ namespace WITSML2_0_NS
 
 		DLL_IMPORT_OR_EXPORT const std::vector<WellboreCompletion *>& getWellboreCompletions() const { return wellboreCompletionSet; }
 
-		DLL_IMPORT_OR_EXPORT void setShape(const gsoap_eml2_1::witsml2__WellboreShape & shape);
+		DLL_IMPORT_OR_EXPORT const std::vector<Trajectory *>& getTrajectories() const { return trajectorySet; }
+
+		DLL_IMPORT_OR_EXPORT void setShape(gsoap_eml2_1::witsml2__WellboreShape shape);
 
 		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllSourceRelationships() const;
 		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllTargetRelationships() const;
@@ -80,9 +85,11 @@ namespace WITSML2_0_NS
 		// XML backwards relationship
 		RESQML2_0_1_NS::WellboreFeature* resqmlWellboreFeature;
 		std::vector<WellboreCompletion* > wellboreCompletionSet;
+		std::vector<Trajectory*> trajectorySet;
 
 		friend void RESQML2_0_1_NS::WellboreFeature::setWitsmlWellbore(Wellbore * wellbore);
 		friend void WellboreCompletion::setWellbore(Wellbore* witsmlWellbore);
+		friend void Trajectory::setWellbore(Wellbore* witsmlWellbore);
 	};
 }
 

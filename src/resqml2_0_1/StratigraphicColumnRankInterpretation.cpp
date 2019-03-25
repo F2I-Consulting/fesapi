@@ -33,8 +33,12 @@ const char* StratigraphicColumnRankInterpretation::XML_TAG = "StratigraphicColum
 
 StratigraphicColumnRankInterpretation::StratigraphicColumnRankInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank, const gsoap_resqml2_0_1::resqml2__OrderingCriteria & orderingCriteria)
 {
-	if (!orgFeat)
+	if (orgFeat == nullptr) {
 		throw invalid_argument("The interpreted organization feature cannot be null.");
+	}
+	if (!orgFeat->isPartial() && orgFeat->getKind() != gsoap_resqml2_0_1::resqml2__OrganizationKind__stratigraphic) {
+		throw invalid_argument("The kind of the organization feature is not a fluid organization.");
+	}
 
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREStratigraphicColumnRankInterpretation(orgFeat->getGsoapContext(), 1);
 	static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->Domain = resqml2__Domain__mixed;

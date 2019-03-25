@@ -362,6 +362,51 @@ namespace RESQML2_NS
 		ULONG64 getCellStratigraphicUnitIndices(ULONG64 * stratiUnitIndices);
 
 		//************************************************************
+		//**************** LINK WITH ROCKFLUID ********************
+		//************************************************************
+
+		/**
+		* Set the rock fluid organization interpretation which is associated to this grid representation.
+		* @param rockFluidUnitIndices	Index of the rock fluid unit of a given rock fluid column for each cell. Array length is the number of cells in the grid or the blocked well.
+		* @param nullValue			The value which is used to tell the association between a cell and rockFluid unit is unavailable.
+		* @param rockFluidOrgInterp	The rock fluid organization interpretation which is associated to this grid representation.
+		*/
+		void setCellAssociationWithRockFluidOrganizationInterpretation(ULONG64 * rockFluidUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::RockFluidOrganizationInterpretation* rockFluidOrgInterp);
+
+		/**
+		* @return	nullptr if no rock fluid organization interpretation is associated to this grid representation. Otherwise return the associated rock fluid organization interpretation.
+		*/
+		RESQML2_0_1_NS::RockFluidOrganizationInterpretation* getRockFluidOrganizationInterpretation() const;
+
+		/**
+		* @return	null pointer if no rock fluid organization interpretation is associated to this grid representation. Otherwise return the data objet reference of the associated rock fluid organization interpretation.
+		*/
+		virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getRockFluidOrganizationInterpretationDor() const;
+
+		/**
+		* @return	empty string if no rock fluid organization interpretation is associated to this grid representation. Otherwise return the uuid of the associated rock fluid organization interpretation.
+		*/
+		std::string getRockFluidOrganizationInterpretationUuid() const;
+
+		/**
+		* @return	empty string if no rock fluid organization interpretation is associated to this grid representation. Otherwise return the title of the associated rock fluid organization interpretation.
+		*/
+		std::string getRockFluidOrganizationInterpretationTitle() const;
+		
+		/**
+		* @return	true if this grid representation has got some association between rock fluid unit indices and cell.
+		*/
+		bool hasCellFluidPhaseUnitIndices() const;
+
+		/**
+		* Get the rock fluid unit indices (regarding the associated rock fluid organization interpretation) of each cell of this grid representation.
+		* @param rockFluidUnitIndices	This array must be allocated with a count equal to getCellCount(). It will be filled in with the rock fluid unit indices ordered as grid cells are ordered.
+		* @return					The null value is returned. The null value is used to tell the association between a cell and rock fluid unit is unavailable.
+		*/
+		ULONG64 getCellFluidPhaseUnitIndices(ULONG64 * rockfluidUnitIndices);
+
+
+		//************************************************************
 		//********************** TRUNCATION **************************
 		//************************************************************
 

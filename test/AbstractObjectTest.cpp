@@ -42,26 +42,26 @@ AbstractObjectTest::AbstractObjectTest(COMMON_NS::EpcDocument* epcDoc, const str
 
 void AbstractObjectTest::initEpcDoc()
 {
-	if (this->epcDoc == nullptr)
+	if (epcDoc == nullptr)
 		throw std::logic_error("The EPC document is not initialized.");
 
-	if (this->epcDoc->getDataObjectByUuid(this->uuid) != nullptr)
+	if (epcDoc->getDataObjectByUuid(uuid) != nullptr)
 		return;
 
-	this->initEpcDocHandler();
+	initEpcDocHandler();
 
-	COMMON_NS::AbstractObject* resqmlObject = static_cast<COMMON_NS::AbstractObject*>(this->epcDoc->getDataObjectByUuid(this->uuid));
+	COMMON_NS::AbstractObject* resqmlObject = static_cast<COMMON_NS::AbstractObject*>(epcDoc->getDataObjectByUuid(uuid));
 	resqmlObject->addAlias(authorityAlias, titleAlias);
 }
 
 void AbstractObjectTest::readEpcDoc() {
-	COMMON_NS::AbstractObject* resqmlObject = static_cast<COMMON_NS::AbstractObject*>(this->epcDoc->getDataObjectByUuid(this->uuid));
+	COMMON_NS::AbstractObject* resqmlObject = static_cast<COMMON_NS::AbstractObject*>(epcDoc->getDataObjectByUuid(uuid));
 	REQUIRE(resqmlObject != nullptr);
-	REQUIRE(resqmlObject->getUuid() == this->uuid);
-	REQUIRE(resqmlObject->getTitle() == this->title);
+	REQUIRE(resqmlObject->getUuid() == uuid);
+	REQUIRE(resqmlObject->getTitle() == title);
 	REQUIRE(resqmlObject->getAliasCount() == 1);
 	REQUIRE(resqmlObject->getAliasAuthorityAtIndex(0) == authorityAlias);
 	REQUIRE(resqmlObject->getAliasTitleAtIndex(0) == titleAlias);
 
-	this->readEpcDocHandler();
+	readEpcDocHandler();
 }

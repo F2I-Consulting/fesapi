@@ -18,19 +18,17 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
-#include "resqml2_0_1/SealedVolumeFrameworkRepresentation.h"
+#include "resqml2_0_1/RockFluidOrganizationInterpretation.h"
 
 namespace RESQML2_0_1_NS
 {
-	class StratigraphicUnitInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
+	class RockFluidUnitInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	public:
-
 		/**
 		* Only to be used in partial transfer context
 		*/
-		StratigraphicUnitInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeatureInterpretation(partialObject) {}
+		RockFluidUnitInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeatureInterpretation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -38,41 +36,40 @@ namespace RESQML2_0_1_NS
 		* @param guid		The guid to set to the interpretation. If empty then a new guid will be generated.
 		* @param title		A title for the instance to create.
 		*/
-		StratigraphicUnitInterpretation(class StratigraphicUnitFeature * feature, const std::string & guid, const std::string & title);
+		RockFluidUnitInterpretation(class RockFluidUnitFeature * feature, const std::string & guid, const std::string & title);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		StratigraphicUnitInterpretation(gsoap_resqml2_0_1::_resqml2__StratigraphicUnitInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
+		RockFluidUnitInterpretation(gsoap_resqml2_0_1::_resqml2__RockFluidUnitInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
-		~StratigraphicUnitInterpretation() {}
+		~RockFluidUnitInterpretation() {}
 
 		/**
 		 * Indicates if the instance has an information about its deposition mode.
 		 */
-		DLL_IMPORT_OR_EXPORT bool hasDepositionMode() const;
+		DLL_IMPORT_OR_EXPORT bool hasPhase() const;
 
 		/**
 		 * Get the deposition mode of the stratigraphic unit interpretation.
 		 * You should verify its existency using hasDepositionMode() before to call this function.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__DepositionMode getDepositionMode() const;
-			
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__Phase getPhase() const;
+
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
-		std::vector<epc::Relationship> getAllSourceRelationships() const;
-
 	private:
 
-		// Backward relationship
-		std::vector<StratigraphicColumnRankInterpretation *> stratigraphicColumnRankSet;
-		std::vector<SealedVolumeFrameworkRepresentation*> svfSet;
+		std::vector<epc::Relationship> getAllEpcRelationships() const;
 
-		friend void StratigraphicColumnRankInterpretation::pushBackStratiUnitInterpretation(StratigraphicUnitInterpretation * stratiUnitInterpretation);
-		friend void SealedVolumeFrameworkRepresentation::setInterpretationOfVolumeRegion(unsigned int regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp);
+		// Backward relationship
+		std::vector<RockFluidOrganizationInterpretation *> rockFluidOrganizationInterpSet;
+
+		friend void RockFluidOrganizationInterpretation::pushBackRockFluidUnitInterpretation(RockFluidUnitInterpretation * rockFluidUnitInterpretation);
+
 	};
 }

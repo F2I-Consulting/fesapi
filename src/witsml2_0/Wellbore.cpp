@@ -48,8 +48,8 @@ Wellbore::Wellbore(
 		const std::string & guid,
 		const std::string & title,
 		gsoap_eml2_1::eml21__WellStatus statusWellbore,
-		const bool & isActive,
-		const bool & achievedTD
+		bool isActive,
+		bool achievedTD
 	):resqmlWellboreFeature(nullptr)
 {
 	if (witsmlWell == nullptr) throw invalid_argument("A wellbore must be associated to a well.");
@@ -100,7 +100,7 @@ void Wellbore::setWell(Well* witsmlWell)
 	}
 }
 
-void Wellbore::setShape(const witsml2__WellboreShape & shape)
+void Wellbore::setShape(witsml2__WellboreShape shape)
 {
 	witsml2__Wellbore* wellbore = static_cast<witsml2__Wellbore*>(gsoapProxy2_1);
 

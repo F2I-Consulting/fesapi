@@ -18,18 +18,18 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/BoundaryFeature.h"
+#include "resqml2_0_1/GeologicUnitFeature.h"
 
 namespace RESQML2_0_1_NS
 {
-	class FluidBoundaryFeature : public BoundaryFeature
+	class RockFluidUnitFeature : public GeologicUnitFeature
 	{
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		FluidBoundaryFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : BoundaryFeature(partialObject) {}
+		RockFluidUnitFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : GeologicUnitFeature(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -37,23 +37,31 @@ namespace RESQML2_0_1_NS
 		* @param guid		The guid to set to the horizon. If empty then a new guid will be generated.
 		* @param title		A title for the instance to create.
 		*/
-		FluidBoundaryFeature(soap* soapContext, const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__FluidContact & fluidContact);
+		RockFluidUnitFeature(soap* soapContext, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml2__Phase phase,
+							 class BoundaryFeature* top, class BoundaryFeature* bottom);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		FluidBoundaryFeature(gsoap_resqml2_0_1::_resqml2__FluidBoundaryFeature* fromGsoap): BoundaryFeature(fromGsoap) {}
+		RockFluidUnitFeature(gsoap_resqml2_0_1::_resqml2__RockFluidUnitFeature* fromGsoap): GeologicUnitFeature(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is manged by the gsoap context.
 		*/
-		~FluidBoundaryFeature() {}
+		~RockFluidUnitFeature() {}
 
-		//******************************************************************
-		//********** INHERITED FROM AbstractObjectWithDcMetadata ***********
-		//******************************************************************
+		DLL_IMPORT_OR_EXPORT void setTop(class BoundaryFeature* top);
+		DLL_IMPORT_OR_EXPORT class BoundaryFeature* getTop() const;
+
+		DLL_IMPORT_OR_EXPORT void setBottom(class BoundaryFeature* bottom);
+		DLL_IMPORT_OR_EXPORT class BoundaryFeature* getBottom() const;
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
+
+	private:
+
+		std::vector<epc::Relationship> getAllEpcRelationships() const;
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 	};
 }

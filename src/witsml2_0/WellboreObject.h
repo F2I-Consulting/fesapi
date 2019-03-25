@@ -18,45 +18,48 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/AbstractGeologicFeature.h"
+#include "witsml2_0/AbstractObject.h"
 
-namespace RESQML2_0_1_NS
+namespace WITSML2_0_NS
 {
-	class OrganizationFeature : public AbstractGeologicFeature
+	/**
+	* The class is the super class for all wellbore objects (all top level objects pointing to Wellbore)
+	*/
+	class WellboreObject : public WITSML2_0_NS::AbstractObject
 	{
-	public:
-
+	protected:
 		/**
-		* Only to be used in partial transfer context
+		* Constructor for partial transfer
 		*/
-		OrganizationFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractGeologicFeature(partialObject) {}
+		WellboreObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
-		* @param epcDoc		The EPC document which will contain the hroizon.
-		* @param guid		The guid to set to the horizon. If empty then a new guid will be generated.
-		* @param title		A title for the instance to create.
-		* @param orgType	The type of organization we want to create
 		*/
-		OrganizationFeature(soap* soapContext, const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__OrganizationKind & orgType);
+		WellboreObject():WITSML2_0_NS::AbstractObject() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		OrganizationFeature(gsoap_resqml2_0_1::_resqml2__OrganizationFeature* fromGsoap): AbstractGeologicFeature(fromGsoap) {}
+		WellboreObject(gsoap_eml2_1::eml21__AbstractObject* fromGsoap):WITSML2_0_NS::AbstractObject(fromGsoap) {}
+
+	public:
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
-		~OrganizationFeature() {}
+		~WellboreObject() {}
+
+		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_1::eml21__DataObjectReference* getWellboreDor() const = 0;
+		DLL_IMPORT_OR_EXPORT class Wellbore* getWellbore() const;
+		DLL_IMPORT_OR_EXPORT virtual void setWellbore(class Wellbore* witsmlWellbore) = 0;
+
+		std::vector<epc::Relationship> getAllEpcRelationships() const;
 
 		/**
-		* Get the kind of the organization feature.
+		* Resolve all relationships of the object in an epc document.
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__OrganizationKind getKind() const;
-	
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+
 	};
 }
-

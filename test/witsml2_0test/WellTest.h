@@ -28,6 +28,8 @@ namespace COMMON_NS {
 namespace witsml2_0test {
 	class WellTest : public commontest::AbstractObjectTest {
 	public:
+		static const time_t defaultTimestamp;
+
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,
 		* exising .epc file will be erased.
