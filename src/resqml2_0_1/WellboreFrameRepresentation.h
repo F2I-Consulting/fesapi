@@ -37,7 +37,7 @@ namespace RESQML2_0_1_NS
 		* Only to be used in partial transfer context
 		*/
 		WellboreFrameRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			RESQML2_NS::AbstractRepresentation(partialObject), witsmlLog(nullptr)
+			RESQML2_NS::AbstractRepresentation(partialObject)
 		{
 		}
 

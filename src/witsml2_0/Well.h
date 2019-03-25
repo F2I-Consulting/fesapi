@@ -147,16 +147,16 @@ namespace WITSML2_0_NS
 			unsigned int verticalCrsEpsgCode);
 
 		DLL_IMPORT_OR_EXPORT unsigned int getDatumCount() const;
-		
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreFeature* getResqmlWellboreFeature() const;
 
 		DLL_IMPORT_OR_EXPORT const std::vector<Wellbore*>& getWellbores() const;
 
 		DLL_IMPORT_OR_EXPORT const std::vector<WellCompletion*>& getWellcompletions() const;
+
+		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllSourceRelationships() const;
+		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllTargetRelationships() const;
+		DLL_IMPORT_OR_EXPORT void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc);
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}

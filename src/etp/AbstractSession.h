@@ -30,7 +30,7 @@ under the License.
 #include "etp/ProtocolHandlers/StoreHandlers.h"
 #include "etp/ProtocolHandlers/DataArrayHandlers.h"
 
-#if defined(_WIN32) && defined(FESAPI_DLL)
+#if defined(_WIN32) && !defined(FESAPI_STATIC)
 	#ifndef DLL_IMPORT_OR_EXPORT
 		#if defined(FesapiCpp_EXPORTS) || defined(FesapiCppUnderDev_EXPORTS)
 			#define DLL_IMPORT_OR_EXPORT __declspec(dllexport)

@@ -216,16 +216,16 @@ void askUser(MyOwnEtpClientSession* session)
 			else if (commandTokens[0] == "List") {
 				std::cout << "*** START LISTING ***" << std::endl;
 				COMMON_NS::EpcDocument& epcDoc = session->epcDoc;
-				for (const auto& entryPair : epcDoc.getResqmlAbstractObjectSet()) {
+				for (const auto& entryPair : epcDoc.getDataObjectSet()) {
 					if (!entryPair.second->isPartial()) {
 						std::cout << entryPair.first << " : " << entryPair.second->getTitle() << std::endl;
 						std::cout << "*** SOURCE REL ***" << std::endl;
 						for (const auto& uuid : entryPair.second->getAllSourceRelationshipUuids()) {
-							std::cout << uuid << " : " << epcDoc.getResqmlAbstractObjectByUuid(uuid)->getXmlTag() << std::endl;
+							std::cout << uuid << " : " << epcDoc.getDataObjectByUuid(uuid)->getXmlTag() << std::endl;
 						}
 						std::cout << "*** TARGET REL ***" << std::endl;
 						for (const auto& uuid : entryPair.second->getAllTargetRelationshipUuids()) {
-							std::cout << uuid << " : " << epcDoc.getResqmlAbstractObjectByUuid(uuid)->getXmlTag() << std::endl;
+							std::cout << uuid << " : " << epcDoc.getDataObjectByUuid(uuid)->getXmlTag() << std::endl;
 						}
 						std::cout << std::endl;
 					}

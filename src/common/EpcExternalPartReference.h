@@ -73,7 +73,7 @@ namespace COMMON_NS
 		/**
 		* Does nothing since EPC external part reference has not target relationships at all
 		*/
-		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc) {}
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
 
 	protected:
 

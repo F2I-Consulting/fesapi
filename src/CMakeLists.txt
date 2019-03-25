@@ -29,12 +29,20 @@ target_compile_options(${CPP_LIBRARY_NAME}	PUBLIC
 
 if (WIN32)
 	if (NOT BUILD_SHARED_LIBS)
-		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE "-DFESAPI_STATIC")
+		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE FESAPI_STATIC)
 	endif ()
 	if (HDF5_BUILT_AS_DYNAMIC_LIB)
-		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE "-DH5_BUILT_AS_DYNAMIC_LIB")
+		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE H5_BUILT_AS_DYNAMIC_LIB)
 	endif ()
 endif (WIN32)
+
+if (WITH_ETP)
+	target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE WITH_ETP)
+	target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE BOOST_ALL_NO_LIB)
+	if (WITH_ETP_SSL)
+		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE WITH_ETP_SSL)
+	endif ()
+endif (WITH_ETP)
 
 # Linker instructions
 if (WIN32)
@@ -186,6 +194,21 @@ set (ALL_SOURCES_AND_HEADERS
 	${FESAPI_PROXIES_HEADERS}
 )
 
+if (WITH_ETP)	
+	file (GLOB FESAPI_ETP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/etp/*.cpp)
+	file (GLOB FESAPI_ETP_PROTOCOL_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/etp/ProtocolHandlers/*.cpp)
+	file (GLOB FESAPI_ETP_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/etp/*.h)
+	file (GLOB FESAPI_ETP_PROTOCOL_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/etp/ProtocolHandlers/*.h)
+
+	set (ALL_SOURCES_AND_HEADERS
+		${ALL_SOURCES_AND_HEADERS}
+		${FESAPI_ETP_SOURCES}
+		${FESAPI_ETP_PROTOCOL_SOURCES}
+		${FESAPI_ETP_HEADERS}	
+		${FESAPI_ETP_PROTOCOL_HEADERS}	
+	)
+endif (WITH_ETP)
+
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${ALL_SOURCES_AND_HEADERS})
 
 target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_INCLUDE_DIRS})
@@ -196,6 +219,9 @@ target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_INCLUDE_DIR})
 if (WITH_ETP)
 	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${AVRO_INCLUDE_DIR})
 	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${BOOST_INCLUDE_DIR})
+	if (WITH_ETP_SSL)
+		target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${OPENSSL_INCLUDE_DIR})
+	endif ()
 endif (WITH_ETP)
 
 if (UNIX)
@@ -229,46 +255,6 @@ if (WIN32)
 	endif (WITH_ETP)
 	
 endif (WIN32)
-
-if (WITH_ETP)
-	add_compile_definitions (WITH_ETP)
-	
-	file (GLOB FESAPI_ETP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/etp/*.cpp)
-	file (GLOB FESAPI_ETP_PROTOCOL_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/etp/ProtocolHandlers/*.cpp)
-	file (GLOB FESAPI_ETP_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/etp/*.h)
-	file (GLOB FESAPI_ETP_PROTOCOL_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/etp/ProtocolHandlers/*.h)
-
-	set (ALL_SOURCES_AND_HEADERS
-		${ALL_SOURCES_AND_HEADERS}
-		${FESAPI_ETP_SOURCES}
-		${FESAPI_ETP_PROTOCOL_SOURCES}
-		${FESAPI_ETP_HEADERS}	
-		${FESAPI_ETP_PROTOCOL_HEADERS}	
-	)
-
-	find_package (Threads)
-
-	# avro DEPENDENCY
-	set (AVRO_INCLUDE_DIR AVRO_INCLUDE_DIR-NOTFOUND CACHE PATH "Path to the directory which contains the avro header files")
-	if (NOT IS_DIRECTORY ${AVRO_INCLUDE_DIR})
-		message(WARNING "The Avro include dir (AVRO_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
-	endif ()
-	set (AVRO_LIBRARY_RELEASE AVRO_LIBRARY_RELEASE-NOTFOUND CACHE FILEPATH "Path to the file which contains the avro library release")
-	if (NOT EXISTS ${AVRO_LIBRARY_RELEASE})
-		message(WARNING "The avro library (AVRO_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
-	endif ()
-
-	# Boost DEPENDENCY
-	set (BOOST_INCLUDE_DIR BOOST_INCLUDE_DIR-NOTFOUND CACHE PATH "Path to the directory which contains the BOOST header files")
-	if (NOT IS_DIRECTORY ${BOOST_INCLUDE_DIR})
-		message(WARNING "The BOOST include dir (BOOST_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
-	endif ()
-	set (BOOST_SYSTEM_LIBRARY BOOST_SYSTEM_LIBRARY-NOTFOUND CACHE FILEPATH "Path to the file which contains the Boost system static library release")
-	if (NOT EXISTS ${BOOST_SYSTEM_LIBRARY})
-		message(WARNING "The BOOST library (BOOST_SYSTEM_LIBRARY variable) does not look to be a valid file. Please modify it.")
-	endif ()
-	add_compile_definitions (BOOST_ALL_NO_LIB)
-endif (WITH_ETP)
 
 if (WITH_JAVA_WRAPPING)
 	find_package(JNI REQUIRED)

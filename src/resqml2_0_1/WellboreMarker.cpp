@@ -92,5 +92,5 @@ void WellboreMarker::setBoundaryFeatureInterpretation(BoundaryFeatureInterpretat
 	}
 }
 
-void WellboreMarker::importRelationshipSetFromEpc(COMMON_NS::EpcDocument*)
+void WellboreMarker::resolveTargetRelationships(COMMON_NS::EpcDocument*)
 {}

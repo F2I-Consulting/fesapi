@@ -3130,7 +3130,7 @@ void deserialize(const string & inputFile)
 	//COMMON_NS::EpcDocument pck(inputFile, "/home/philippe/dev/fesapi/resources", COMMON_NS::EpcDocument::READ_ONLY);
 	cout << "Start deserialization of " << pck.getName() << " in " << (pck.getStorageDirectory().empty() ? "working directory." : pck.getStorageDirectory()) << endl;
 	string resqmlResult = pck.deserialize();
-	if (!resqmlResult.empty()) {tr1
+	if (!resqmlResult.empty()) {
 		cerr << resqmlResult << endl;
 		cout << "Press enter to continue..." << endl;
 		cin.get();

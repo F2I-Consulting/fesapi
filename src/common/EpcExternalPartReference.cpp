@@ -81,5 +81,5 @@ std::vector<epc::Relationship> EpcExternalPartReference::getAllTargetRelationshi
 	return result;
 }
 
-void EpcExternalPartReference::importRelationshipSetFromEpc(COMMON_NS::EpcDocument*)
+void EpcExternalPartReference::resolveTargetRelationships(COMMON_NS::EpcDocument*)
 {}

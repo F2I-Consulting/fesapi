@@ -560,7 +560,7 @@ COMMON_NS::AbstractObject* EpcDocument::addOrReplaceGsoapProxy(const std::string
 			delete wrapper;
 		}
 		else {
-			COMMON_NS::AbstractObject* obj = getResqmlAbstractObjectByUuid(wrapper->getUuid());
+			COMMON_NS::AbstractObject* obj = getDataObjectByUuid(wrapper->getUuid());
 			if (obj == nullptr) {
 				addFesapiWrapperAndDeleteItIfException(wrapper);
 				return wrapper;

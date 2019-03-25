@@ -94,7 +94,7 @@ namespace RESQML2_0_1_NS
 		// No need these three inherited methods since WellboreMarker is not an EPC top level element.
 		std::vector<epc::Relationship> getAllSourceRelationships() const {std::vector<epc::Relationship> result; return result;}
 		std::vector<epc::Relationship> getAllTargetRelationships() const {std::vector<epc::Relationship> result; return result;}
-		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc) {};
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
 
 		class WellboreMarkerFrameRepresentation* wellboreMarkerFrameRepresentation;
 	};

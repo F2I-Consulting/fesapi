@@ -178,10 +178,10 @@ void StratigraphicColumnRankInterpretation::resolveTargetRelationships(COMMON_NS
 	for (const auto & stratiUnit : interp->StratigraphicUnits) {
 		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = stratiUnit->Unit;
 		if (dor != nullptr) {
-			StratigraphicUnitInterpretation* stratiUnitInterp = getEpcDocument()->getResqmlAbstractObjectByUuid<StratigraphicUnitInterpretation>(dor->UUID);
+			StratigraphicUnitInterpretation* stratiUnitInterp = getEpcDocument()->getDataObjectByUuid<StratigraphicUnitInterpretation>(dor->UUID);
 			if (stratiUnitInterp == nullptr) { // partial transfer
 				getEpcDocument()->createPartial(dor);
-				stratiUnitInterp = getEpcDocument()->getResqmlAbstractObjectByUuid<StratigraphicUnitInterpretation>(dor->UUID);
+				stratiUnitInterp = getEpcDocument()->getDataObjectByUuid<StratigraphicUnitInterpretation>(dor->UUID);
 			}
 			if (stratiUnitInterp == nullptr) {
 				throw invalid_argument("The DOR looks invalid.");
@@ -195,11 +195,11 @@ void StratigraphicColumnRankInterpretation::resolveTargetRelationships(COMMON_NS
 	for (const auto & contactInterp : interp->ContactInterpretation) {
 		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = contactInterp->PartOf;
 		if (dor != nullptr) {
-			HorizonInterpretation* horizonInterp = getEpcDocument()->getResqmlAbstractObjectByUuid<HorizonInterpretation>(dor->UUID);
+			HorizonInterpretation* horizonInterp = getEpcDocument()->getDataObjectByUuid<HorizonInterpretation>(dor->UUID);
 
 			if (horizonInterp == nullptr) { // partial transfer
 				getEpcDocument()->createPartial(dor);
-				horizonInterp = getEpcDocument()->getResqmlAbstractObjectByUuid<HorizonInterpretation>(dor->UUID);
+				horizonInterp = getEpcDocument()->getDataObjectByUuid<HorizonInterpretation>(dor->UUID);
 			}
 			if (horizonInterp == nullptr) {
 				throw invalid_argument("The DOR looks invalid.");

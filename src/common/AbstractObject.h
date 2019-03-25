@@ -133,10 +133,10 @@ namespace COMMON_NS
 		template <class valueType>
 		valueType* getOrCreateObjectFromDor(gsoap_resqml2_0_1::eml20__DataObjectReference* dor) const
 		{
-			valueType* obj = getEpcDocument()->getResqmlAbstractObjectByUuid<valueType>(dor->UUID);
+			valueType* obj = getEpcDocument()->getDataObjectByUuid<valueType>(dor->UUID);
 			if (obj == nullptr) { // partial transfer
 				getEpcDocument()->createPartial(dor);
-				obj = getEpcDocument()->getResqmlAbstractObjectByUuid<valueType>(dor->UUID);
+				obj = getEpcDocument()->getDataObjectByUuid<valueType>(dor->UUID);
 			}
 			if (obj == nullptr) {
 				throw std::invalid_argument("The DOR looks invalid.");

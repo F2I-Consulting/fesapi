@@ -81,7 +81,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlashResqml20(COMMON_NS:
 
 			const std::string uriPrefix = "eml://resqml20/obj_";
 
-			auto objectsGroupedByContentType = epcDoc.getResqmlObjectsGroupedByContentType();
+			auto objectsGroupedByContentType = epcDoc.getDataObjectsGroupedByContentType();
 			for (auto it = objectsGroupedByContentType.begin(); it != objectsGroupedByContentType.end(); ++it) {
 				nextGr.m_context.m_uri = uriPrefix + it->second[0]->getXmlTag();
 				on_GetFolder(epcDoc, nextGr, correlationId, result, true);
@@ -140,7 +140,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetFolder(COMMON_NS::EpcDocument & epcDo
 				resource.m_contentCount.set_int(epcDoc.getHdfProxySet().size());
 			}
 			else {
-				resource.m_contentCount.set_int(epcDoc.getResqmlObjectsByContentType("application/x-resqml+xml;version=2.0;type=" + resqml20Datatype).size());
+				resource.m_contentCount.set_int(epcDoc.getDataObjectsByContentType("application/x-resqml+xml;version=2.0;type=" + resqml20Datatype).size());
 			}
 /*
 			else {
@@ -172,7 +172,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetFolder(COMMON_NS::EpcDocument & epcDo
 				}
 			}
 			else {
-				auto objs = epcDoc.getResqmlObjectsByContentType("application/x-resqml+xml;version=2.0;type=" + resqml20Datatype);
+				auto objs = epcDoc.getDataObjectsByContentType("application/x-resqml+xml;version=2.0;type=" + resqml20Datatype);
 				for (const auto & obj : objs) {
 					if (!obj->isPartial()) {
 						nextGr.m_context.m_uri = gtr.m_context.m_uri + '(' + obj->getUuid() + ')';
@@ -193,7 +193,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(COMMON_NS::EpcDocument & e
 
 	if (ggr.m_context.m_depth >= 0) {
 		const size_t openingParenthesis = ggr.m_context.m_uri.find('(', 5);
-		COMMON_NS::AbstractObject* obj = epcDoc.getResqmlAbstractObjectByUuid(ggr.m_context.m_uri.substr(openingParenthesis + 1, 36));
+		COMMON_NS::AbstractObject* obj = epcDoc.getDataObjectByUuid(ggr.m_context.m_uri.substr(openingParenthesis + 1, 36));
 
 		// Self
 		if (!obj->isPartial()) {

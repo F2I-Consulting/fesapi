@@ -527,29 +527,12 @@ double WellboreCompletion::getPerforationHistoryEntryBaseMd(const std::string & 
 	return perforationStatusHistory->PerforationMdInterval->MdBase->__item;
 }
 
-void WellboreCompletion::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
-{
-	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellboreDor();
-	Wellbore* wellbore = epcDoc->getDataObjectByUuid<Wellbore>(dor->Uuid);
-
-	if (wellbore == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-
-	dor = getWellCompletionDor();
-	WellCompletion* wellCompletion = epcDoc->getDataObjectByUuid<WellCompletion>(dor->Uuid);
-	
-	if (wellCompletion == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-
-	updateXml = false;
-	setWellbore(wellbore);
-	setWellCompletion(wellCompletion);
-	updateXml = true;
+std::vector<epc::Relationship> WellboreCompletion::getAllSourceRelationships() const {
+	vector<Relationship> result;
+	return result;
 }
 
-vector<Relationship> WellboreCompletion::getAllEpcRelationships() const
+std::vector<epc::Relationship> WellboreCompletion::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 
@@ -565,6 +548,28 @@ vector<Relationship> WellboreCompletion::getAllEpcRelationships() const
 	result.push_back(relWellCompletion);
 
 	return result;
+}
+
+void WellboreCompletion::resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc)
+{
+	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellboreDor();
+	Wellbore* wellbore = epcDoc->getDataObjectByUuid<Wellbore>(dor->Uuid);
+
+	if (wellbore == nullptr) {
+		throw invalid_argument("The DOR looks invalid.");
+	}
+
+	dor = getWellCompletionDor();
+	WellCompletion* wellCompletion = epcDoc->getDataObjectByUuid<WellCompletion>(dor->Uuid);
+
+	if (wellCompletion == nullptr) {
+		throw invalid_argument("The DOR looks invalid.");
+	}
+
+	updateXml = false;
+	setWellbore(wellbore);
+	setWellCompletion(wellCompletion);
+	updateXml = true;
 }
 
 witsml2__PerforationSetInterval * WellboreCompletion::getPerforation(const string & guid) const

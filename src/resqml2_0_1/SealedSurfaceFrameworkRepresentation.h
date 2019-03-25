@@ -51,9 +51,7 @@ namespace RESQML2_0_1_NS
 		* @return			A contact patch from its index in a contact of this framework.
 		*/
 		gsoap_resqml2_0_1::resqml2__ContactPatch* getContactPatch(unsigned int contactIdx, unsigned int cpIndex) const;
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-
+		
 		friend void SealedVolumeFrameworkRepresentation::setSealedSurfaceFramework(SealedSurfaceFrameworkRepresentation* ssf);
 		std::vector<SealedVolumeFrameworkRepresentation*> svfSet;
 
@@ -201,6 +199,8 @@ namespace RESQML2_0_1_NS
 		*						It will be filled in with the desired node indices.
 		*/
 		void getContactPatchNodeIndices(unsigned int contactIdx, unsigned int cpIndex, unsigned int * nodeIndices) const;
+
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
 
 		static const char* XML_TAG;
 		std::string getXmlTag() const { return XML_TAG; }

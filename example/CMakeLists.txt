@@ -1,55 +1,41 @@
-CMAKE_MINIMUM_REQUIRED (VERSION 3.2)
+cmake_minimum_required (VERSION 3.2)
 
-PROJECT (Fesapi_Example)
+project (Fesapi_Example)
+
+add_executable (example ${CMAKE_CURRENT_SOURCE_DIR}/example.cpp)
 
 # ============================================================================
 # include directories
 # ============================================================================
 
-INCLUDE_DIRECTORIES (
-	${FESAPI_ROOT_DIR}/src/
-	${HDF5_INCLUDE_DIRS}
-	${MINIZIP_INCLUDE_DIR}
-	${ZLIB_INCLUDE_DIRS}	
-)
-
-IF (WITH_SZIP)
-	INCLUDE_DIRECTORIES (${SZIP_INCLUDE_DIRS})
-ENDIF (WITH_SZIP)
-
-IF (UNIX)
-	INCLUDE_DIRECTORIES (${UUID_INCLUDE_DIRS})
-ENDIF (UNIX)
+target_include_directories(example PRIVATE ${FESAPI_ROOT_DIR}/src/)
 
 # ============================================================================
 # build example
 # ============================================================================
-IF (WIN32)
-	add_compile_definitions (FESAPI_DLL)
-ENDIF (WIN32)
 
 # use, i.e. don't skip the full RPATH for the build tree
-SET(CMAKE_SKIP_BUILD_RPATH  FALSE)
+set(CMAKE_SKIP_BUILD_RPATH  FALSE)
 
 # when building, don't use the install RPATH already
 # (but later on when installing)
-SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
 
-SET(CMAKE_INSTALL_RPATH "\$ORIGIN/lib")
+set(CMAKE_INSTALL_RPATH "\$ORIGIN/lib")
 
 # add the automatically determined parts of the RPATH
 # which point to directories outside the build tree to the install RPATH
-SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-ADD_EXECUTABLE (example ${CMAKE_CURRENT_SOURCE_DIR}/example.cpp)
-ADD_DEPENDENCIES (example ${CPP_LIBRARY_NAME})
-TARGET_LINK_LIBRARIES (example ${CPP_LIBRARY_NAME})
-IF (WIN32)
-	SET_TARGET_PROPERTIES (example PROPERTIES LINK_FLAGS "/INCREMENTAL:NO")
-	SET_TARGET_PROPERTIES (example PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${FESAPI_BINARY_DIR}) 
-ENDIF (WIN32)
+add_dependencies (example ${CPP_LIBRARY_NAME})
+target_link_libraries (example PRIVATE ${CPP_LIBRARY_NAME})
+if (WIN32)
+	set_target_properties (example PROPERTIES
+		LINK_FLAGS "/INCREMENTAL:NO"
+		RUNTIME_OUTPUT_DIRECTORY ${FESAPI_BINARY_DIR})
+endif (WIN32)
 
-INSTALL (
+install (
 	TARGETS example
 	DESTINATION ${CMAKE_INSTALL_PREFIX}
 )

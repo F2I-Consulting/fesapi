@@ -110,31 +110,12 @@ void Wellbore::setShape(const witsml2__WellboreShape & shape)
 	*wellbore->Shape = shape;
 }
 
-void Wellbore::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
-{
-	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellDor();
-	Well* well = epcDoc->getDataObjectByUuid<Well>(dor->Uuid);
-
-	if (well == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-	updateXml = false;
-	setWell(well);
-	updateXml = true;
-}
-
-vector<Relationship> Wellbore::getAllEpcRelationships() const
+std::vector<epc::Relationship> Wellbore::getAllSourceRelationships() const
 {
 	vector<Relationship> result;
 
-	// XML forward relationship
-	Well* well = getWell();
-	Relationship relWell(well->getPartNameInEpcDocument(), "", well->getUuid());
-	relWell.setDestinationObjectType();
-	result.push_back(relWell);
-
 	// XML backward relationship
-	if (resqmlWellboreFeature)
+	if (resqmlWellboreFeature != nullptr)
 	{
 		Relationship rel(resqmlWellboreFeature->getPartNameInEpcDocument(), "", resqmlWellboreFeature->getUuid());
 		rel.setSourceObjectType();
@@ -151,3 +132,28 @@ vector<Relationship> Wellbore::getAllEpcRelationships() const
 	return result;
 }
 
+std::vector<epc::Relationship> Wellbore::getAllTargetRelationships() const
+{
+	vector<Relationship> result;
+
+	// XML forward relationship
+	Well* well = getWell();
+	Relationship relWell(well->getPartNameInEpcDocument(), "", well->getUuid());
+	relWell.setDestinationObjectType();
+	result.push_back(relWell);
+
+	return result;
+}
+
+void Wellbore::resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc)
+{
+	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellDor();
+	Well* well = epcDoc->getDataObjectByUuid<Well>(dor->Uuid);
+
+	if (well == nullptr) {
+		throw invalid_argument("The DOR looks invalid.");
+	}
+	updateXml = false;
+	setWell(well);
+	updateXml = true;
+}

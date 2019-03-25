@@ -135,12 +135,9 @@ namespace WITSML2_0_NS
 		double getPerforationHistoryEntryBaseMd(const std::string & guid,
 			const std::string & perforationGuid) const;
 
-		/**
-		* Resolve all relationships of the object in an epc document.
-		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
+		void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc);
 
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const { return XML_TAG; }

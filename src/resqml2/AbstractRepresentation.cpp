@@ -473,10 +473,10 @@ void AbstractRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* 
 	// Epc External part
 	dor = getHdfProxyDor();
 	if (dor != nullptr) {
-		COMMON_NS::AbstractHdfProxy* hdfProxy = epcDoc->getResqmlAbstractObjectByUuid<COMMON_NS::AbstractHdfProxy>(dor->UUID);
+		COMMON_NS::AbstractHdfProxy* hdfProxy = epcDoc->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dor->UUID);
 		if (hdfProxy == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dor);
-			hdfProxy = getEpcDocument()->getResqmlAbstractObjectByUuid<COMMON_NS::AbstractHdfProxy>(dor->UUID);
+			hdfProxy = getEpcDocument()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dor->UUID);
 		}
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -494,10 +494,10 @@ void AbstractRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* 
 					gsoap_resqml2_0_1::resqml2__Seismic3dCoordinates* const seis3dInfo = static_cast<gsoap_resqml2_0_1::resqml2__Seismic3dCoordinates* const>(geom->SeismicCoordinates);
 
 					gsoap_resqml2_0_1::eml20__DataObjectReference* dor = seis3dInfo->SeismicSupport;
-					RESQML2_NS::AbstractRepresentation* seismicSupport = epcDoc->getResqmlAbstractObjectByUuid<AbstractRepresentation>(dor->UUID);
+					RESQML2_NS::AbstractRepresentation* seismicSupport = epcDoc->getDataObjectByUuid<AbstractRepresentation>(dor->UUID);
 					if (seismicSupport == nullptr) { // partial transfer
 						getEpcDocument()->createPartial(dor);
-						seismicSupport = getEpcDocument()->getResqmlAbstractObjectByUuid<AbstractRepresentation>(dor->UUID);
+						seismicSupport = getEpcDocument()->getDataObjectByUuid<AbstractRepresentation>(dor->UUID);
 					}
 					if (seismicSupport == nullptr) {
 						throw invalid_argument("The DOR looks invalid.");
@@ -509,10 +509,10 @@ void AbstractRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* 
 					gsoap_resqml2_0_1::resqml2__Seismic2dCoordinates* const seis2dInfo = static_cast<gsoap_resqml2_0_1::resqml2__Seismic2dCoordinates* const>(geom->SeismicCoordinates);
 
 					gsoap_resqml2_0_1::eml20__DataObjectReference* dor = seis2dInfo->SeismicSupport;
-					RESQML2_NS::AbstractRepresentation* seismicSupport = epcDoc->getResqmlAbstractObjectByUuid<AbstractRepresentation>(dor->UUID);
+					RESQML2_NS::AbstractRepresentation* seismicSupport = epcDoc->getDataObjectByUuid<AbstractRepresentation>(dor->UUID);
 					if (seismicSupport == nullptr) { // partial transfer
 						getEpcDocument()->createPartial(dor);
-						seismicSupport = getEpcDocument()->getResqmlAbstractObjectByUuid<AbstractRepresentation>(dor->UUID);
+						seismicSupport = getEpcDocument()->getDataObjectByUuid<AbstractRepresentation>(dor->UUID);
 					}
 					if (seismicSupport == nullptr) {
 						throw invalid_argument("The DOR looks invalid.");

@@ -24,7 +24,7 @@ under the License.
 
 namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractFeature : public COMMON_NS::AbstractObject
+	class AbstractFeature : public COMMON_NS::AbstractObject
 	{
 	public:
 
@@ -53,25 +53,25 @@ namespace RESQML2_NS
 		/**
 		* Get all the interpretations of this feature
 		*/
-		std::vector<AbstractFeatureInterpretation*> 	getInterpretationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<AbstractFeatureInterpretation*> 	getInterpretationSet() const;
 
 		/**
 		 * Get the interpretation count of this feature.
 		 */
-		unsigned int 								getInterpretationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getInterpretationCount() const;
 
 		/**
 		 * Get a particular interpretation of this feature according to its position in the interpretation ordering.
 		 */
-		AbstractFeatureInterpretation*				getInterpretation(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation*	getInterpretation(unsigned int index) const;
 
-		virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
-		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
 
 		/**
 		* Does nothing since feature has not target relationships at all
 		*/
-		virtual void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc) {}
+		DLL_IMPORT_OR_EXPORT virtual void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc) {}
 
 	protected:
 

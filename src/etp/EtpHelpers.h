@@ -21,7 +21,7 @@ under the License.
 #include "nsDefinitions.h"
 #include "EtpMessages.h"
 
-#if defined(_WIN32) && defined(FESAPI_DLL)
+#if defined(_WIN32) && !defined(FESAPI_STATIC)
 	#ifndef DLL_IMPORT_OR_EXPORT
 		#if defined(FesapiCpp_EXPORTS) || defined(FesapiCppUnderDev_EXPORTS)
 			#define DLL_IMPORT_OR_EXPORT __declspec(dllexport)

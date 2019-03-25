@@ -261,7 +261,7 @@ std::string WellboreFrameRepresentation::getWellboreTrajectoryUuid() const
 
 WellboreTrajectoryRepresentation* WellboreFrameRepresentation::getWellboreTrajectory() const
 {
-	return getEpcDocument()->getResqmlAbstractObjectByUuid<WellboreTrajectoryRepresentation>(getWellboreTrajectoryUuid());
+	return getEpcDocument()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(getWellboreTrajectoryUuid());
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getHdfProxyDor() const
