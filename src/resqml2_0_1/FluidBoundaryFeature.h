@@ -19,11 +19,10 @@ under the License.
 #pragma once
 
 #include "resqml2_0_1/BoundaryFeature.h"
-#include "resqml2_0_1/RockFluidUnitFeature.h"
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT FluidBoundaryFeature : public BoundaryFeature
+	class FluidBoundaryFeature : public BoundaryFeature
 	{
 	public:
 
@@ -54,18 +53,7 @@ namespace RESQML2_0_1_NS
 		//********** INHERITED FROM AbstractObjectWithDcMetadata ***********
 		//******************************************************************
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
-
-	private:
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-
-		// backward relationship
-		RockFluidUnitFeature* rockFluidUnitFeature;
-
-		friend void RockFluidUnitFeature::setFluidBoundaryTop(FluidBoundaryFeature* fluidBoundaryFeature);
-		friend void RockFluidUnitFeature::setFluidBoundaryBottom(FluidBoundaryFeature* fluidBoundaryFeature);
-};
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
+	};
 }
-

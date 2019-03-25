@@ -91,15 +91,16 @@ void RockFluidOrganizationInterpretation::pushBackRockFluidUnitInterpretation(Ro
 	}
 }
 
-bool RockFluidOrganizationInterpretation::hasRockFluidUnitInterpretation() const
+// For now cannot really count cause of the bug http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html
+unsigned int RockFluidOrganizationInterpretation::getRockFluidUnitInterpCount() const
 {
-	return static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit != nullptr;
+	return static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit != nullptr ? 1 : 0;
 }
 
-RockFluidUnitInterpretation* RockFluidOrganizationInterpretation::getRockFluidUnitInterpretation() const
+RockFluidUnitInterpretation* RockFluidOrganizationInterpretation::getRockFluidUnitInterpretation(unsigned int index) const
 {
-	if (!hasRockFluidUnitInterpretation()) {
-		throw invalid_argument("There is no rock fluid organization");
+	if (index >= getRockFluidUnitInterpCount()) {
+		throw range_error("The index is out of range");
 	}
 
 	return epcDocument->getDataObjectByUuid<RockFluidUnitInterpretation>(static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit->UUID);

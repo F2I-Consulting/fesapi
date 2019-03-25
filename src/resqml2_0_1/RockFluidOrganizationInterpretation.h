@@ -58,7 +58,7 @@ namespace RESQML2_0_1_NS
 		~RockFluidOrganizationInterpretation() {}
 		
 		/**
-		* @return The count of grid representation assocaited to this rock fluid organization.
+		* @return The count of grid representation associated to this rock fluid organization.
 		*/
 		DLL_IMPORT_OR_EXPORT unsigned int getGridRepresentationCount() const;
 
@@ -82,8 +82,16 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void pushBackRockFluidUnitInterpretation(class RockFluidUnitInterpretation * rockFluidUnitInterpretation);
 
-		DLL_IMPORT_OR_EXPORT bool hasRockFluidUnitInterpretation() const;
-		DLL_IMPORT_OR_EXPORT class RockFluidUnitInterpretation* getRockFluidUnitInterpretation() const;
+		/**
+		* @return The count of rock fluid unit interp in this rock fluid organization.
+		*/
+		DLL_IMPORT_OR_EXPORT unsigned int getRockFluidUnitInterpCount() const;
+
+		/**
+		* Get a rock fluid unit interp of this rock fluid org interp by means of its index.
+		* @param index	The index of the rock fluid unit interp to get in this rock fluid org interp.
+		*/
+		DLL_IMPORT_OR_EXPORT class RockFluidUnitInterpretation* getRockFluidUnitInterpretation(unsigned int index) const;
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}

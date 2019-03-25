@@ -2121,17 +2121,19 @@ void deserializeRockFluidOrganization(COMMON_NS::EpcDocument & pck)
 			showAllMetadata(grid);
 		}
 
-		RockFluidUnitInterpretation* interp = rockFluidOrgInterp->getRockFluidUnitInterpretation();
-		showAllMetadata(interp);
+		for (unsigned int unitIndex = 0; unitIndex < rockFluidOrgInterp->getRockFluidUnitInterpCount(); ++unitIndex) {
+			RockFluidUnitInterpretation* rockFluidInterp = rockFluidOrgInterp->getRockFluidUnitInterpretation(unitIndex);
+			showAllMetadata(rockFluidInterp);
 
-		RockFluidUnitFeature* feature = static_cast<RockFluidUnitFeature*>(interp->getInterpretedFeature());
-		showAllMetadata(feature);
+			RockFluidUnitFeature* rockFluidFeature = static_cast<RockFluidUnitFeature*>(rockFluidInterp->getInterpretedFeature());
+			showAllMetadata(rockFluidFeature);
 
-		FluidBoundaryFeature* top = feature->getFluidBoundaryTop();
-		showAllMetadata(top);
+			BoundaryFeature* top = rockFluidFeature->getTop();
+			showAllMetadata(top);
 
-		FluidBoundaryFeature* bottom = feature->getFluidBoundaryBottom();
-		showAllMetadata(bottom);
+			BoundaryFeature* bottom = rockFluidFeature->getBottom();
+			showAllMetadata(bottom);
+		}
 	}
 }
 

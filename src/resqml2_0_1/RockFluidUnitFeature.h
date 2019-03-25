@@ -38,7 +38,7 @@ namespace RESQML2_0_1_NS
 		* @param title		A title for the instance to create.
 		*/
 		RockFluidUnitFeature(soap* soapContext, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml2__Phase phase,
-							 class FluidBoundaryFeature* fluidBoundaryTop, class FluidBoundaryFeature* fluidBoundaryBottom);
+							 class BoundaryFeature* top, class BoundaryFeature* bottom);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -50,11 +50,11 @@ namespace RESQML2_0_1_NS
 		*/
 		~RockFluidUnitFeature() {}
 
-		DLL_IMPORT_OR_EXPORT void setFluidBoundaryTop(class FluidBoundaryFeature* fluidBoundaryFeature);
-		DLL_IMPORT_OR_EXPORT class FluidBoundaryFeature* getFluidBoundaryTop() const;
+		DLL_IMPORT_OR_EXPORT void setTop(class BoundaryFeature* top);
+		DLL_IMPORT_OR_EXPORT class BoundaryFeature* getTop() const;
 
-		DLL_IMPORT_OR_EXPORT void setFluidBoundaryBottom(class FluidBoundaryFeature* fluidBoundaryFeature);
-		DLL_IMPORT_OR_EXPORT class FluidBoundaryFeature* getFluidBoundaryBottom() const;
+		DLL_IMPORT_OR_EXPORT void setBottom(class BoundaryFeature* bottom);
+		DLL_IMPORT_OR_EXPORT class BoundaryFeature* getBottom() const;
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}

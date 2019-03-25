@@ -19,10 +19,11 @@ under the License.
 #pragma once
 
 #include "resqml2_0_1/AbstractGeologicFeature.h"
+#include "resqml2_0_1/RockFluidUnitFeature.h"
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT BoundaryFeature : public AbstractGeologicFeature
+	class BoundaryFeature : public AbstractGeologicFeature
 	{
 	public:
 
@@ -48,8 +49,18 @@ namespace RESQML2_0_1_NS
 		BoundaryFeature(gsoap_resqml2_0_1::_resqml2__BoundaryFeature* fromGsoap): AbstractGeologicFeature(fromGsoap) {}
 		virtual ~BoundaryFeature() {}
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
+
+	private:
+		std::vector<epc::Relationship> getAllEpcRelationships() const;
+
+		// backward relationship
+		std::vector<RockFluidUnitFeature*> topOfRockFluidUnitFeatureSet;
+		std::vector<RockFluidUnitFeature*> btmOfRockFluidUnitFeatureSet;
+
+		friend void RockFluidUnitFeature::setTop(BoundaryFeature* top);
+		friend void RockFluidUnitFeature::setBottom(BoundaryFeature* bottom);
 	};
 }
 
