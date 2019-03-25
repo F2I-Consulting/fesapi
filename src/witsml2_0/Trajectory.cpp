@@ -68,7 +68,7 @@ void Trajectory::setWellbore(Wellbore* witsmlWellbore)
 	}
 }
 
-GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml2__ChannelStatus, Trajectory, GrowingStatus, gsoap_eml2_1::soap_new_witsml2__ChannelStatus)
+GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml2__ChannelStatus, Trajectory, GrowingStatus)
 
 GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, DTimTrajStart)
 GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, DTimTrajEnd)
