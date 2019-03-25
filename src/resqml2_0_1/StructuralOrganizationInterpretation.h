@@ -62,7 +62,7 @@ namespace RESQML2_0_1_NS
 
 		unsigned int getFaultInterpretationCount() const;
 
-		class FaultInterpretation* getFaultInterpretation(const unsigned int & index);
+		class FaultInterpretation* getFaultInterpretation(unsigned int index);
 
         /**
         * Add an HorizonInterpretation to this StructuralOrganizationInterpretation.
@@ -70,7 +70,11 @@ namespace RESQML2_0_1_NS
         * @param horizonInterpretation the HorizonInterpretation to add
         * @param stratigraphicRank the rank of the horizon interpretation within this structural organization
         **/
-        void pushBackHorizonInterpretation(class HorizonInterpretation * horizonInterpretation, const int & stratigraphicRank);
+		void pushBackHorizonInterpretation(class HorizonInterpretation * horizonInterpretation, const int & stratigraphicRank);
+
+		unsigned int getHorizonInterpretationCount() const;
+
+		HorizonInterpretation* getHorizonInterpretation(unsigned int index) const;
 
 		/**
         * Add a Frontier interpretation to this StructuralOrganizationInterpretation as a top.
@@ -78,17 +82,29 @@ namespace RESQML2_0_1_NS
         */
 		void pushBackTopFrontierInterpretation(AbstractFeatureInterpretation * topFrontierInterpretation);
 
+		unsigned int getTopFrontierInterpretationCount() const;
+
+		AbstractFeatureInterpretation* getTopFrontierInterpretation(unsigned int index) const;
+
 		/**
         * Add a Frontier interpretation to this StructuralOrganizationInterpretation as a bottom.
         * Does add the inverse relationship i.e. from the included Frontier interpretation to this StructuralOrganizationInterpretation.
         */
         void pushBackBottomFrontierInterpretation(AbstractFeatureInterpretation * bottomFrontierInterpretation);
 
+		unsigned int getBottomFrontierInterpretationCount() const;
+
+		AbstractFeatureInterpretation* getBottomFrontierInterpretation(unsigned int index) const;
+
 		/**
         * Add a Frontier interpretation to this StructuralOrganizationInterpretation as a side.
         * Does add the inverse relationship i.e. from the included Frontier interpretation to this StructuralOrganizationInterpretation.
         */
         void pushBackSideFrontierInterpretation(AbstractFeatureInterpretation * sideFrontierInterpretation);
+
+		unsigned int getSideFrontierInterpretationCount() const;
+
+		AbstractFeatureInterpretation* getSideFrontierInterpretation(unsigned int index) const;
 
     private:
 
