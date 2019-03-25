@@ -17,16 +17,18 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_0_1/FluidBoundaryFeature.h"
+#include "tools/Misc.h"
 
 #include <stdexcept>
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
+using namespace epc;
 
 const char* FluidBoundaryFeature::XML_TAG = "FluidBoundaryFeature";
 
-FluidBoundaryFeature::FluidBoundaryFeature(soap* soapContext, const string & guid, const string & title, const resqml2__FluidContact & fluidContact)
+FluidBoundaryFeature::FluidBoundaryFeature(soap* soapContext, const string & guid, const string & title, const resqml2__FluidContact & fluidContact) : rockFluidUnitFeature(nullptr)
 {
 	if (soapContext == nullptr)
 		throw invalid_argument("The soap context cannot be null.");
@@ -39,4 +41,14 @@ FluidBoundaryFeature::FluidBoundaryFeature(soap* soapContext, const string & gui
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
+std::vector<epc::Relationship> FluidBoundaryFeature::getAllEpcRelationships() const
+{
+	vector<Relationship> result = BoundaryFeature::getAllEpcRelationships();
 
+	return result;
+}
+
+void FluidBoundaryFeature::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+{
+	BoundaryFeature::importRelationshipSetFromEpc(epcDoc);
+}

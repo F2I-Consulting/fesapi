@@ -19,6 +19,7 @@ under the License.
 #pragma once
 
 #include "resqml2_0_1/BoundaryFeature.h"
+#include "resqml2_0_1/RockFluidUnitFeature.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -55,6 +56,16 @@ namespace RESQML2_0_1_NS
 
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
-	};
+
+	private:
+		std::vector<epc::Relationship> getAllEpcRelationships() const;
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+
+		// backward relationship
+		RockFluidUnitFeature* rockFluidUnitFeature;
+
+		friend void RockFluidUnitFeature::setFluidBoundaryTop(FluidBoundaryFeature* fluidBoundaryFeature);
+		friend void RockFluidUnitFeature::setFluidBoundaryBottom(FluidBoundaryFeature* fluidBoundaryFeature);
+};
 }
 

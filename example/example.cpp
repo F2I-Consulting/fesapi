@@ -2120,6 +2120,18 @@ void deserializeRockFluidOrganization(COMMON_NS::EpcDocument & pck)
 			RESQML2_NS::AbstractGridRepresentation* grid = rockFluidOrgInterp->getGridRepresentation(i);
 			showAllMetadata(grid);
 		}
+
+		RockFluidUnitInterpretation* interp = rockFluidOrgInterp->getRockFluidUnitInterpretation();
+		showAllMetadata(interp);
+
+		RockFluidUnitFeature* feature = static_cast<RockFluidUnitFeature*>(interp->getInterpretedFeature());
+		showAllMetadata(feature);
+
+		FluidBoundaryFeature* top = feature->getFluidBoundaryTop();
+		showAllMetadata(top);
+
+		FluidBoundaryFeature* bottom = feature->getFluidBoundaryBottom();
+		showAllMetadata(bottom);
 	}
 }
 

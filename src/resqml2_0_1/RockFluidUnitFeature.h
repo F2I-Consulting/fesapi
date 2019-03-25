@@ -50,7 +50,18 @@ namespace RESQML2_0_1_NS
 		*/
 		~RockFluidUnitFeature() {}
 
+		DLL_IMPORT_OR_EXPORT void setFluidBoundaryTop(class FluidBoundaryFeature* fluidBoundaryFeature);
+		DLL_IMPORT_OR_EXPORT class FluidBoundaryFeature* getFluidBoundaryTop() const;
+
+		DLL_IMPORT_OR_EXPORT void setFluidBoundaryBottom(class FluidBoundaryFeature* fluidBoundaryFeature);
+		DLL_IMPORT_OR_EXPORT class FluidBoundaryFeature* getFluidBoundaryBottom() const;
+
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
+
+	private:
+
+		std::vector<epc::Relationship> getAllEpcRelationships() const;
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 	};
 }

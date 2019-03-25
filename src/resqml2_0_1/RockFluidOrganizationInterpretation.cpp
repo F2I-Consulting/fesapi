@@ -91,6 +91,20 @@ void RockFluidOrganizationInterpretation::pushBackRockFluidUnitInterpretation(Ro
 	}
 }
 
+bool RockFluidOrganizationInterpretation::hasRockFluidUnitInterpretation() const
+{
+	return static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit != nullptr;
+}
+
+RockFluidUnitInterpretation* RockFluidOrganizationInterpretation::getRockFluidUnitInterpretation() const
+{
+	if (!hasRockFluidUnitInterpretation()) {
+		throw invalid_argument("There is no rock fluid organization");
+	}
+
+	return epcDocument->getDataObjectByUuid<RockFluidUnitInterpretation>(static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit->UUID);
+}
+
 vector<Relationship> RockFluidOrganizationInterpretation::getAllEpcRelationships() const
 {
 	vector<Relationship> result = AbstractOrganizationInterpretation::getAllEpcRelationships();
