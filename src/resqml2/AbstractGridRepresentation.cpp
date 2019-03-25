@@ -54,6 +54,7 @@ vector<Relationship> AbstractGridRepresentation::getAllTargetRelationships() con
 	}
 
 	//Fluid
+	gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
 	if (hasCellFluidPhaseUnitIndices()) {
 		Relationship rel(misc::getPartNameFromReference(rep->CellFluidPhaseUnits->FluidOrganization), "", rep->CellFluidPhaseUnits->FluidOrganization->UUID);
 		rel.setDestinationObjectType();

@@ -520,21 +520,10 @@ double WellboreCompletion::getPerforationHistoryEntryBaseMd(const std::string & 
 	return perforationStatusHistory->PerforationMdInterval->MdBase->__item;
 }
 
-std::vector<epc::Relationship> WellboreCompletion::getAllSourceRelationships() const {
-	vector<Relationship> result;
-	return result;
-}
-
 std::vector<epc::Relationship> WellboreCompletion::getAllTargetRelationships() const
 {
-	vector<Relationship> result;
-
-	// XML forward relationship
-	Wellbore* wellbore = getWellbore();
-	Relationship relWellbore(wellbore->getPartNameInEpcDocument(), "", wellbore->getUuid());
-	relWellbore.setDestinationObjectType();
-	result.push_back(relWellbore);
-
+	vector<Relationship> result = WellboreObject::getAllTargetRelationships();
+	
 	WellCompletion* wellCompletion = getWellCompletion();
 	Relationship relWellCompletion(wellCompletion->getPartNameInEpcDocument(), "", wellCompletion->getUuid());
 	relWellCompletion.setDestinationObjectType();
@@ -545,7 +534,7 @@ std::vector<epc::Relationship> WellboreCompletion::getAllTargetRelationships() c
 
 void WellboreCompletion::resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc)
 {
-	WellboreObject::importRelationshipSetFromEpc(epcDoc);
+	WellboreObject::resolveTargetRelationships(epcDoc);
 
 	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellCompletionDor();
 	WellCompletion* wellCompletion = epcDoc->getDataObjectByUuid<WellCompletion>(dor->Uuid);

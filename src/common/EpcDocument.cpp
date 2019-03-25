@@ -1524,7 +1524,7 @@ COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_eml2_1::eml21__DataO
 	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Trajectory)
 	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
-		COMMON_NS::AbstractHdfProxy* result = make_partial_hdf_proxy(getGsoapContext(), dor->UUID, dor->Title);
+		COMMON_NS::AbstractHdfProxy* result = make_partial_hdf_proxy(getGsoapContext(), dor->Uuid, dor->Title);
 		addFesapiWrapperAndDeleteItIfException(result);
 		return result;
 	}
