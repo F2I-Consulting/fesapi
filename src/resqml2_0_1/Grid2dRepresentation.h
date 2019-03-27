@@ -36,9 +36,12 @@ namespace RESQML2_0_1_NS
 		void setSupportingRepresentation(Grid2dRepresentation * supportingRep);
 
 		/**
-		* @param componentIndex	0 is X, 1 is Y and 2 is Z
+		* Get a component of an XYZ structure.
+		*
+		* @param componentIndex		The XYZ structure component index to get : 0 is X, 1 is Y and 2 is Z
+		* @param withoutTranslation	Sometime we jsut wnat to apply rotation but not translation. For example, it is the case for offset which are XYZ "vectors" and not "XYZ" points.
 		*/
-		double getComponentInGlobalCrs(double x, double y, double z, size_t componentIndex) const;
+		double getComponentInGlobalCrs(double x, double y, double z, size_t componentIndex, bool withoutTranslation = false) const;
 
 	public:
 

@@ -21,11 +21,11 @@ under the License.
 using namespace std;
 using namespace resqml2_0_1test;
 
-AbstractSurfaceRepresentationTest::AbstractSurfaceRepresentationTest(const std::string & epcDocPath, const string & uuid, const string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInGlobalCrs) 
-	: AbstractRepresentationTest(epcDocPath, uuid, title, xyzPointCountOfAllPatches, xyzPointsOfAllPatchesInGlobalCrs) {
+AbstractSurfaceRepresentationTest::AbstractSurfaceRepresentationTest(const std::string & epcDocPath, const string & uuid, const string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInLocalCrs) 
+	: AbstractRepresentationTest(epcDocPath, uuid, title, xyzPointCountOfAllPatches, xyzPointsOfAllPatchesInLocalCrs) {
 }
 
-AbstractSurfaceRepresentationTest::AbstractSurfaceRepresentationTest(COMMON_NS::EpcDocument* epcDoc, const string & uuid, const string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInGlobalCrs)
-	: AbstractRepresentationTest(epcDoc, uuid, title, xyzPointCountOfAllPatches, xyzPointsOfAllPatchesInGlobalCrs) {
+AbstractSurfaceRepresentationTest::AbstractSurfaceRepresentationTest(COMMON_NS::EpcDocument* epcDoc, const string & uuid, const string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInLocalCrs)
+	: AbstractRepresentationTest(epcDoc, uuid, title, xyzPointCountOfAllPatches, xyzPointsOfAllPatchesInLocalCrs) {
 }
 

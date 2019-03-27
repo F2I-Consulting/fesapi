@@ -81,7 +81,7 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 
 	// creating the child ijk grid
 	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGrid = epcDoc->createIjkGridExplicitRepresentation(crs, uuid, title, 3, 1, 4);
-	childGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, xyzPointsOfAllPatchesInGlobalCrs, hdfProxy);
+	childGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, xyzPointsOfAllPatchesInLocalCrs, hdfProxy);
 	childGrid->setParentWindow(
 		0, 3, 1, 1,
 		0, 1, 1, 1,
