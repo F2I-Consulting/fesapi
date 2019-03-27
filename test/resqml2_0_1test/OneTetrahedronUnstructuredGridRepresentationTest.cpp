@@ -56,7 +56,7 @@ void OneTetrahedronUnstructuredGridRepresentationTest::initEpcDocHandler() {
 	unsigned char faceRightHandness[4] = { 0, 0, 1, 1 };
 	ULONG64 faceIndicesPerCell[4] = { 0, 1, 2, 3 };
 	ULONG64 nodeIndicesPerCell[12] = { 0, 1, 2, 1, 2, 3, 0, 1, 3, 0, 2, 3 };
-	tetraGrid->setTetrahedraOnlyGeometry(faceRightHandness, this->xyzPointsOfAllPatchesInGlobalCrs, 4, 4, hdfProxy, faceIndicesPerCell, nodeIndicesPerCell);
+	tetraGrid->setTetrahedraOnlyGeometry(faceRightHandness, this->xyzPointsOfAllPatchesInLocalCrs, 4, 4, hdfProxy, faceIndicesPerCell, nodeIndicesPerCell);
 
 	// cleaning
 	delete crsTest;

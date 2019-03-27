@@ -251,14 +251,14 @@ double Grid2dRepresentation::getZOrigin() const
 	return std::numeric_limits<double>::signaling_NaN();
 }
 
-double Grid2dRepresentation::getComponentInGlobalCrs(double x, double y, double z, size_t componentIndex) const
+double Grid2dRepresentation::getComponentInGlobalCrs(double x, double y, double z, size_t componentIndex, bool withoutTranslation) const
 {
 	double result[] = { x, y, z };
 	if (result[componentIndex] != result[componentIndex]) {
 		return result[componentIndex];
 	}
 
-	localCrs->convertXyzPointsToGlobalCrs(result, 1, true);
+	localCrs->convertXyzPointsToGlobalCrs(result, 1, withoutTranslation);
 
 	return result[componentIndex];
 }
@@ -337,17 +337,17 @@ double Grid2dRepresentation::getZJOffset() const
 
 double Grid2dRepresentation::getXJOffsetInGlobalCrs() const
 {
-	return getComponentInGlobalCrs(getXJOffset(), getYJOffset(), getZJOffset(), 0);
+	return getComponentInGlobalCrs(getXJOffset(), getYJOffset(), getZJOffset(), 0, true);
 }
 
 double Grid2dRepresentation::getYJOffsetInGlobalCrs() const
 {
-	return getComponentInGlobalCrs(getXJOffset(), getYJOffset(), getZJOffset(), 1);
+	return getComponentInGlobalCrs(getXJOffset(), getYJOffset(), getZJOffset(), 1, true);
 }
 
 double Grid2dRepresentation::getZJOffsetInGlobalCrs() const
 {
-	return getComponentInGlobalCrs(getXJOffset(), getYJOffset(), getZJOffset(), 2);
+	return getComponentInGlobalCrs(getXJOffset(), getYJOffset(), getZJOffset(), 2, true);
 }
 
 double Grid2dRepresentation::getXIOffset() const
@@ -409,17 +409,17 @@ double Grid2dRepresentation::getZIOffset() const
 
 double Grid2dRepresentation::getXIOffsetInGlobalCrs() const
 {
-	return getComponentInGlobalCrs(getXIOffset(), getYIOffset(), getZIOffset(), 0);
+	return getComponentInGlobalCrs(getXIOffset(), getYIOffset(), getZIOffset(), 0, true);
 }
 
 double Grid2dRepresentation::getYIOffsetInGlobalCrs() const
 {
-	return getComponentInGlobalCrs(getXIOffset(), getYIOffset(), getZIOffset(), 1);
+	return getComponentInGlobalCrs(getXIOffset(), getYIOffset(), getZIOffset(), 1, true);
 }
 
 double Grid2dRepresentation::getZIOffsetInGlobalCrs() const
 {
-	return getComponentInGlobalCrs(getXIOffset(), getYIOffset(), getZIOffset(), 2);
+	return getComponentInGlobalCrs(getXIOffset(), getYIOffset(), getZIOffset(), 2, true);
 }
 
 bool Grid2dRepresentation::isJSpacingConstant() const
