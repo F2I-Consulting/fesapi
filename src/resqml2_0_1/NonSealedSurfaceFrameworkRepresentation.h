@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT NonSealedSurfaceFrameworkRepresentation : public AbstractSurfaceFrameworkRepresentation
+	class NonSealedSurfaceFrameworkRepresentation : public AbstractSurfaceFrameworkRepresentation
 	{
     public:
 
@@ -54,7 +54,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Pushes back a contact representation in the structural framework
 		 */
-		void pushBackNonSealedContactRepresentation(const unsigned int & pointCount, double * points, RESQML2_NS::AbstractLocal3dCrs* crs, COMMON_NS::AbstractHdfProxy* proxy);
+		DLL_IMPORT_OR_EXPORT void pushBackNonSealedContactRepresentation(const unsigned int & pointCount, double * points, RESQML2_NS::AbstractLocal3dCrs* crs, COMMON_NS::AbstractHdfProxy* proxy);
                 
         /**
 		* Pushes back a contact patch in a particular contact representation of the structural framework.
@@ -72,12 +72,12 @@ namespace RESQML2_0_1_NS
                 COMMON_NS::AbstractHdfProxy* proxy);
                 */
 
-		unsigned int getContactCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getContactCount() const;
 
-        static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
-		virtual std::string getHdfProxyUuid() const;
+		DLL_IMPORT_OR_EXPORT virtual std::string getHdfProxyUuid() const;
 
     private:
 
@@ -87,4 +87,3 @@ namespace RESQML2_0_1_NS
             
 	};
 }
-

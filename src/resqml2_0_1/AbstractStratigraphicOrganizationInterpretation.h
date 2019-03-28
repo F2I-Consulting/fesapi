@@ -23,7 +23,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractStratigraphicOrganizationInterpretation : public AbstractOrganizationInterpretation
+	class AbstractStratigraphicOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{
 	protected:
 
@@ -51,20 +51,20 @@ namespace RESQML2_0_1_NS
 		/**
 		* @return The count of grid representation assocaited to this strati organization.
 		*/
-		unsigned int getGridRepresentationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getGridRepresentationCount() const;
 
 		/**
 		* Get a grid representation associated to this strati org interp by means of its index.
 		* @param index	The index of the grid representation to get in the array of grid representaitons of this strati org interp.
 		*/
-		RESQML2_NS::AbstractGridRepresentation* getGridRepresentation(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractGridRepresentation* getGridRepresentation(const unsigned int & index) const;
 
 		/**
 		* Check if a grid representation is wether associated to this strati org interp or not.
 		* @param gridRep	The grid representation to check its assocaition with this strati org interp.
 		* @return			True or false.
 		*/
-		bool isAssociatedToGridRepresentation(RESQML2_NS::AbstractGridRepresentation* gridRep) const;
+		DLL_IMPORT_OR_EXPORT bool isAssociatedToGridRepresentation(RESQML2_NS::AbstractGridRepresentation* gridRep) const;
 
 	private:
 

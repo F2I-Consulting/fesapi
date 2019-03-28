@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT PolylineSetRepresentation : public RESQML2_NS::AbstractRepresentation
+	class PolylineSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	private :
 		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const;
@@ -76,41 +76,41 @@ namespace RESQML2_0_1_NS
 		*/
 		~PolylineSetRepresentation() {}
 
-		std::string getHdfProxyUuid() const;
+		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
 
 		/**
 		* Get the number of polylines in a given patch
 		*/
-		unsigned int getPolylineCountOfPatch(const unsigned int & patchIndex) const;
-		unsigned int getPolylineCountOfAllPatches() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getPolylineCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getPolylineCountOfAllPatches() const;
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
-		void getNodeCountPerPolylineInPatch(const unsigned int & patchIndex, unsigned int * NodeCountPerPolyline) const;
+		DLL_IMPORT_OR_EXPORT void getNodeCountPerPolylineInPatch(const unsigned int & patchIndex, unsigned int * NodeCountPerPolyline) const;
 
 		/**
 		 * Get all the node count par polyline for all teh aptches of the representation.
 		 * @param NodeCountPerPolyline It must be pre-allocated.
 		 */
-		void getNodeCountPerPolylineOfAllPatches(unsigned int * NodeCountPerPolyline) const;
+		DLL_IMPORT_OR_EXPORT void getNodeCountPerPolylineOfAllPatches(unsigned int * NodeCountPerPolyline) const;
 
 		/**
 		* Get the xyz point count in a given patch.
 		*/
-		ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 
 		/**
 		* Get all the XYZ points of a particular patch of this representation.
 		* XYZ points are given in the local CRS.
 		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
 		*/
-		void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
 
 		/**
 		 * Get the number of triangle patch
 		 */
-		unsigned int getPatchCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const;
 
 		/**
 		* Push back a new patch of polylines
@@ -120,7 +120,7 @@ namespace RESQML2_0_1_NS
 		* @param allPolylinesClosedFlag	Indicates the closed flags of all the polylines.
 		* @param proxy					The HDF proxy which defines where the nodes and triangle indices will be stored.
 		*/
-		void pushBackGeometryPatch(
+		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
 				unsigned int * NodeCountPerPolyline, double * nodes,
 				const unsigned int & polylineCount, const bool & allPolylinesClosedFlag,
 				COMMON_NS::AbstractHdfProxy* proxy);
@@ -133,7 +133,7 @@ namespace RESQML2_0_1_NS
 		* @param polylineClosedFlags	Indicates the closed flags for each of the polyline. The count of this array must be polylineCount.
 		* @param proxy					The HDF proxy which defines where the nodes and triangle indices will be stored.
 		*/
-		void pushBackGeometryPatch(
+		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
 				unsigned int * NodeCountPerPolyline, double * nodes,
 				const unsigned int & polylineCount, bool * polylineClosedFlags,
 				COMMON_NS::AbstractHdfProxy* proxy);
@@ -144,8 +144,8 @@ namespace RESQML2_0_1_NS
 		* @param patchIndex	The index of the patch to check.
 		* @return			True if all polylines of the studied patch are closed.
 		*/
-		bool areAllPolylinesClosedOfPatch(const unsigned int & patchIndex) const;
-		bool areAllPolylinesClosedOfAllPatches() const;
+		DLL_IMPORT_OR_EXPORT bool areAllPolylinesClosedOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT bool areAllPolylinesClosedOfAllPatches() const;
 
 		/**
 		* Check if all polylines contained in a single patch are closed or not.
@@ -153,32 +153,30 @@ namespace RESQML2_0_1_NS
 		* @param patchIndex	The index of the patch to check.
 		* @return			True if all polylines of the studied patch are not closed.
 		*/
-		bool areAllPolylinesNonClosedOfPatch(const unsigned int & patchIndex) const;
-		bool areAllPolylinesNonClosedOfAllPatches() const;
+		DLL_IMPORT_OR_EXPORT bool areAllPolylinesNonClosedOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT bool areAllPolylinesNonClosedOfAllPatches() const;
 		
 		/**
 		 * Get all the node count par polyline for all teh aptches of the representation.
 		 * @param NodeCountPerPolyline It must be pre-allocated.
 		 */
-		void getClosedFlagPerPolylineOfPatch(const unsigned int & patchIndex, bool * closedFlagPerPolyline) const;
-		void getClosedFlagPerPolylineOfAllPatches(bool * closedFlagPerPolyline) const;
+		DLL_IMPORT_OR_EXPORT void getClosedFlagPerPolylineOfPatch(const unsigned int & patchIndex, bool * closedFlagPerPolyline) const;
+		DLL_IMPORT_OR_EXPORT void getClosedFlagPerPolylineOfAllPatches(bool * closedFlagPerPolyline) const;
 
 		/**
 		* Indicates if the polylineSet is associated to a particular LineRole.
 		*/
-		bool hasALineRole() const;
+		DLL_IMPORT_OR_EXPORT bool hasALineRole() const;
 
 		/**
 		* Get the role of this polylineSet.
 		* Throw an exception if the polylineSet has no role (see method hasALineRole).
 		*/
-        gsoap_resqml2_0_1::resqml2__LineRole getLineRole() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__LineRole getLineRole() const;
 
 		/**
 		* Set the line role of this instance
 		*/
-		void setLineRole(const gsoap_resqml2_0_1::resqml2__LineRole & lineRole);
-
+		DLL_IMPORT_OR_EXPORT void setLineRole(const gsoap_resqml2_0_1::resqml2__LineRole & lineRole);
 	};
 }
-

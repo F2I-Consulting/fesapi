@@ -26,7 +26,7 @@ namespace RESQML2_0_1_NS
 	* Parent class for a sealed or non-sealed surface framework representation. Each one instantiates a representation set representation.
 	* The difference between the sealed and non-sealed frameworks is that, in the non-sealed case, we do not have all of the contacts, or we have all of the contacts but they are not all sealed.
 	*/
-	class DLL_IMPORT_OR_EXPORT AbstractSurfaceFrameworkRepresentation : public RESQML2_NS::RepresentationSetRepresentation
+	class AbstractSurfaceFrameworkRepresentation : public RESQML2_NS::RepresentationSetRepresentation
 	{
 	protected:
 
@@ -67,7 +67,7 @@ namespace RESQML2_0_1_NS
 		* @param contactIndices	The sealed contacts involved within the identity.
 		* @param proxy			The hdf proxy.
 		*/
-		void pushBackContactIdentity(
+		DLL_IMPORT_OR_EXPORT void pushBackContactIdentity(
 			gsoap_resqml2_0_1::resqml2__IdentityKind kind,
 			unsigned int contactCount, int * contactIndices,
 			COMMON_NS::AbstractHdfProxy * proxy);
@@ -81,7 +81,7 @@ namespace RESQML2_0_1_NS
 		* @param identicalNodesIndexes	The indices of the identical nodes.
 		* @param proxy					The hdf proxy.
 		*/
-		void pushBackContactIdentity(
+		DLL_IMPORT_OR_EXPORT void pushBackContactIdentity(
 			gsoap_resqml2_0_1::resqml2__IdentityKind kind,
 			unsigned int contactCount, int * contactIndices,
 			unsigned int identicalNodesCount, int * identicalNodesIndexes,
@@ -92,13 +92,13 @@ namespace RESQML2_0_1_NS
 		*
 		* @return The count of contacts in this framework.
 		*/
-		virtual unsigned int getContactCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getContactCount() const = 0;
 
 		/**
 		* Get the count of contact identity in this framework.
 		* @return The count of contact identity in this framework.
 		*/
-		unsigned int getContactIdentityCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getContactIdentityCount() const;
 
 		/**
 		* Get the kind of a contact identity located at a particular index.
@@ -106,7 +106,7 @@ namespace RESQML2_0_1_NS
 		* @param ciIndex	The index of the contact identity in the contact identity list. It must be in the interval [0..getContactIdentityCount()[.
 		* @return The kind of the contact identity located at a particular index.
 		*/
-		gsoap_resqml2_0_1::resqml2__IdentityKind getContactIdentityKind(unsigned int ciIndex) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__IdentityKind getContactIdentityKind(unsigned int ciIndex) const;
 
 		/**
 		* Get the count of contact of a particular contact identity.
@@ -114,7 +114,7 @@ namespace RESQML2_0_1_NS
 		* @param ciIndex	The index of the contact identity in the contact identity list. It must be in the interval [0..getContactIdentityCount()[.
 		* @return			The count of contact of a particular contact identity.
 		*/
-		unsigned int getContactCountInContactIdentity(unsigned int ciIndex) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getContactCountInContactIdentity(unsigned int ciIndex) const;
 
 		/**
 		* Get the contact indices of a particular contact identity.
@@ -124,7 +124,7 @@ namespace RESQML2_0_1_NS
 		* @param contactRepIndices	This array must be preallocated with getContactCountOfContactIdentity(). It won't be deleted by fesapi.
 		*							It will be filled in with the desired contact rep indices.
 		*/
-		void getContactIndices(unsigned int ciIndex, unsigned int * contactRepIndices) const;
+		DLL_IMPORT_OR_EXPORT void getContactIndices(unsigned int ciIndex, unsigned int * contactRepIndices) const;
 
 		/*
 		* Check if all nodes of contacts are identical in a contact identity.
@@ -132,7 +132,7 @@ namespace RESQML2_0_1_NS
 		* @param ciIndex	The index of the contact identity in the contact identity list. It must be in the interval [0..getContactIdentityCount()[.
 		* @return			True if all node of contacts are identical else false.
 		*/
-		bool areAllContactNodesIdentical(unsigned int ciIndex) const;
+		DLL_IMPORT_OR_EXPORT bool areAllContactNodesIdentical(unsigned int ciIndex) const;
 
 		/**
 		* Get the count of identical nodes of a particular contact identity.
@@ -141,7 +141,7 @@ namespace RESQML2_0_1_NS
 		* @param ciIndex	The index of the contact identity in the contact identity list. It must be in the interval [0..getContactIdentityCount()[.
 		* @return			The count of identical nodes of a particular contact identity.
 		*/
-		unsigned int getIdenticalContactNodeCount(unsigned int ciIndex) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getIdenticalContactNodeCount(unsigned int ciIndex) const;
 
 		/**
 		* Get the node indices of all contacts which are identical.
@@ -151,7 +151,6 @@ namespace RESQML2_0_1_NS
 		* @param nodeIndices	This array must be preallocated with getIdenticalContactlNodeCount(). It won't be deleted by fesapi.
 		*						It will be filled in with the desired node indices.
 		*/
-		void getIdenticalContactNodeIndices(unsigned int ciIndex, unsigned int * nodeIndices) const;
+		DLL_IMPORT_OR_EXPORT void getIdenticalContactNodeIndices(unsigned int ciIndex, unsigned int * nodeIndices) const;
 	};
 }
-

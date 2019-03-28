@@ -26,7 +26,7 @@ namespace RESQML2_0_1_NS
 	* This class is mainly useful for describing temporal properties on well objects.
 	* The prefered approach to describe temporal properties on Reservoir grids is to use one instance of CategoricalProperty per time step.
 	*/
-	class DLL_IMPORT_OR_EXPORT CategoricalPropertySeries : public CategoricalProperty
+	class CategoricalPropertySeries : public CategoricalProperty
 	{
 	public:
 
@@ -79,11 +79,9 @@ namespace RESQML2_0_1_NS
 		*/
 		virtual ~CategoricalPropertySeries() {}
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
-		std::string getResqmlVersion() const {return "2.0.1";}
+		DLL_IMPORT_OR_EXPORT std::string getResqmlVersion() const {return "2.0.1";}
 	};
 }
-
-

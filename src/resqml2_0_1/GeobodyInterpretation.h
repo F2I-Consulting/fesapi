@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT GeobodyInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
+	class GeobodyInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	public:
 
@@ -52,20 +52,19 @@ namespace RESQML2_0_1_NS
 		/**
 		* Set the geobody 3d shape
 		*/
-		void set3dShape(gsoap_resqml2_0_1::resqml2__Geobody3dShape geobody3dShape);
+		DLL_IMPORT_OR_EXPORT void set3dShape(gsoap_resqml2_0_1::resqml2__Geobody3dShape geobody3dShape);
 
 		/**
 		* check if the 3d shape of this geobody is known
 		*/
-		bool has3dShape() const;
+		DLL_IMPORT_OR_EXPORT bool has3dShape() const;
 
 		/**
 		* get the 3d shape of this geobody
 		*/
-		gsoap_resqml2_0_1::resqml2__Geobody3dShape get3dShape() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__Geobody3dShape get3dShape() const;
 			
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 	};
 }
-

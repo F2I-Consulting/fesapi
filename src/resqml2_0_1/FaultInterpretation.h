@@ -23,7 +23,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT FaultInterpretation : public BoundaryFeatureInterpretation
+	class FaultInterpretation : public BoundaryFeatureInterpretation
 	{
 	public:
 
@@ -61,15 +61,15 @@ namespace RESQML2_0_1_NS
 		*/
 		~FaultInterpretation() {}
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 		
 		/**
 		 * Pushes back a new throw interpretation for this fault interpretation.
 		 * More than one throw kind is necessary if for example the throw is reverse at a time period and then normal at another time period.
 		 * TODO : add a parameter to be able to indicate the time period the throw occured.
 		 */
-		void pushBackThrowInterpretation(const gsoap_resqml2_0_1::resqml2__ThrowKind & throwKind);
+		DLL_IMPORT_OR_EXPORT void pushBackThrowInterpretation(const gsoap_resqml2_0_1::resqml2__ThrowKind & throwKind);
 
 	private:
 		
@@ -81,4 +81,3 @@ namespace RESQML2_0_1_NS
 		friend void StructuralOrganizationInterpretation::pushBackFaultInterpretation(FaultInterpretation * faultInterpretation);
 	};
 }
-

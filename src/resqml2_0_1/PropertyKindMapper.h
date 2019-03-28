@@ -28,7 +28,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT PropertyKindMapper
+	class PropertyKindMapper
 	{
 	public:
 		PropertyKindMapper(COMMON_NS::EpcDocument* epcDoc):epcDocument(epcDoc) {}
@@ -41,7 +41,7 @@ namespace RESQML2_0_1_NS
 		* All others xml files must be local property kinds mapping.
 		* @param directory The directory must not end with any slash
 		*/
-		std::string loadMappingFilesFromDirectory(const std::string & directory);
+		DLL_IMPORT_OR_EXPORT std::string loadMappingFilesFromDirectory(const std::string & directory);
 
 		/**
 		 * Get the name of a resqml standard property kind into a particular application.
@@ -50,53 +50,53 @@ namespace RESQML2_0_1_NS
 		 * @apram	application						The name of the application
 		 * @return	The property kind name in the particular application. Or an empty string if not found.
 		 */
-		std::string getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & resqmlStandardPropertyKindName, const std::string & application) const;
+		DLL_IMPORT_OR_EXPORT std::string getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & resqmlStandardPropertyKindName, const std::string & application) const;
 
 		/**
 		 * @apram	application						The name of the application
 		 * @return	The abstract Resqml root property name if no resqml standard property name have been found for this particular application property kind name.
 		 */
-		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind getResqmlStandardPropertyKindNameFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind getResqmlStandardPropertyKindNameFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application) const;
 
 		/**
 		 * @apram	application						The name of the application
 		 * @return	empty string if not found
 		 */
-		std::string getApplicationPropertyKindNameFromResqmlLocalPropertyKindUuid(const std::string & resqmlLocalPropertyKindUuid, const std::string & application) const;
+		DLL_IMPORT_OR_EXPORT std::string getApplicationPropertyKindNameFromResqmlLocalPropertyKindUuid(const std::string & resqmlLocalPropertyKindUuid, const std::string & application) const;
 
 		/**
 		* @return empty string if not found
 		*/
-		std::string getResqmlLocalPropertyKindUuidFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application) const;
+		DLL_IMPORT_OR_EXPORT std::string getResqmlLocalPropertyKindUuidFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application) const;
 
 		/**
 		* Add a resqml local property type into the EPC document given in constructor if not already present in EPC document.
 		* This addition will also add all needed resqml local property type parent into the EPC document.
 		*/
-		class PropertyKind* addResqmlLocalPropertyKindToEpcDocumentFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application);
+		DLL_IMPORT_OR_EXPORT class PropertyKind* addResqmlLocalPropertyKindToEpcDocumentFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application);
 
 		/**
 		 * Get the title of the parent of a Resqml Standard PropertyKind.
 		 */
-		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind getPropertyKindParentOfResqmlStandardPropertyKindName(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & resqmlStandardPropertyKindName) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind getPropertyKindParentOfResqmlStandardPropertyKindName(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & resqmlStandardPropertyKindName) const;
 
 		/**
 		 * Get the description of a Resqml Standard PropertyKind.
 		 */
-		std::string getDescriptionOfResqmlStandardPropertyKindName(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & resqmlStandardPropertyKindName) const;
+		DLL_IMPORT_OR_EXPORT std::string getDescriptionOfResqmlStandardPropertyKindName(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & resqmlStandardPropertyKindName) const;
 
 		/**
 		* Check if a resqml property kind is a child of another one.
 		* @param child	The resqml property kind which is supposed to be the child
 		* @param parent	The resqml property kind which is supposed to be the parent
 		*/
-		bool isChildOf(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind child, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind parent) const;
+		DLL_IMPORT_OR_EXPORT bool isChildOf(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind child, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind parent) const;
 
 		/**
 		* Check if a resqml property kind is an abstract one or not.
 		* @param resqmlStandardPropertyKindName	The resqml property kind to test
 		*/
-		bool isAbstract(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind resqmlStandardPropertyKindName) const;
+		DLL_IMPORT_OR_EXPORT bool isAbstract(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind resqmlStandardPropertyKindName) const;
 
 	private:
 		COMMON_NS::EpcDocument * epcDocument;
@@ -130,4 +130,3 @@ namespace RESQML2_0_1_NS
 
 	};
 }
-

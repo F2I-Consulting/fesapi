@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT MdDatum : public RESQML2_NS::MdDatum
+	class MdDatum : public RESQML2_NS::MdDatum
 	{
 	public:
 
@@ -64,25 +64,25 @@ namespace RESQML2_0_1_NS
 		/**
 		* Getter of the first ordinal of the reference location.
 		*/
-		double getX() const;
-		double getXInGlobalCrs() const;
+		DLL_IMPORT_OR_EXPORT double getX() const;
+		DLL_IMPORT_OR_EXPORT double getXInGlobalCrs() const;
 
 		/**
 		* Getter of the second ordinal of the reference location.
 		*/
-		double getY() const;
-		double getYInGlobalCrs() const;
+		DLL_IMPORT_OR_EXPORT double getY() const;
+		DLL_IMPORT_OR_EXPORT double getYInGlobalCrs() const;
 
 		/**
 		* Getter of the third ordinal of the reference location.
 		*/
-		double getZ() const;
-		double getZInGlobalCrs() const;
+		DLL_IMPORT_OR_EXPORT double getZ() const;
+		DLL_IMPORT_OR_EXPORT double getZInGlobalCrs() const;
 
 		/**
 		* Getter of the origin kind of the MD.
 		*/
-		gsoap_resqml2_0_1::resqml2__MdReference getOriginKind() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__MdReference getOriginKind() const;
 
 	protected:
 
@@ -92,4 +92,3 @@ namespace RESQML2_0_1_NS
 		std::vector<class WellboreTrajectoryRepresentation*> wellboreTrajectoryRepresentationSet;
 	};
 }
-

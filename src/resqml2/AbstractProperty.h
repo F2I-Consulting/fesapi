@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractProperty: public COMMON_NS::AbstractObject
+	class AbstractProperty: public COMMON_NS::AbstractObject
 	{
 	public:
 
@@ -50,7 +50,7 @@ namespace RESQML2_NS
 		/**
 		 * Set the representation which is associated to the current property.
 		 */
-		void setRepresentation(class AbstractRepresentation * rep);
+		DLL_IMPORT_OR_EXPORT void setRepresentation(class AbstractRepresentation * rep);
 
 		/**
 		* @return	null pointer if no representation is associated to this property. Otherwise return the data object reference of the associated representation.
@@ -60,32 +60,32 @@ namespace RESQML2_NS
 		/**
 		* Getter for the representation which supports this instance values.
 		*/
-		class AbstractRepresentation* getRepresentation() const;
+		DLL_IMPORT_OR_EXPORT class AbstractRepresentation* getRepresentation() const;
 
 		/*
 		* Getter for the uuid of the representation which is described by this property
 		*/
-		std::string getRepresentationUuid() const;
+		DLL_IMPORT_OR_EXPORT std::string getRepresentationUuid() const;
 
 		/*
 		* Getter for the title of the representation which is described by this property
 		*/
-		std::string getRepresentationTitle() const;
+		DLL_IMPORT_OR_EXPORT std::string getRepresentationTitle() const;
 
 		/*
 		* Getter for the content type of the representation which is described by this property
 		*/
-		std::string getRepresentationContentType() const;
+		DLL_IMPORT_OR_EXPORT std::string getRepresentationContentType() const;
 
 		/**
 		 * Set the representation which is associated to the current property.
 		 */
-		void setTimeSeries(class TimeSeries * ts);
+		DLL_IMPORT_OR_EXPORT void setTimeSeries(class TimeSeries * ts);
 
 		/**
 		* Getter for the time series which is associated to this property.
 		*/
-		TimeSeries* getTimeSeries() const;
+		DLL_IMPORT_OR_EXPORT TimeSeries* getTimeSeries() const;
 
 		/**
 		* @return	null pointer if no time series is associated to this property. Otherwise return the data object reference of the associated time series.
@@ -95,12 +95,12 @@ namespace RESQML2_NS
 		/*
 		* Getter for the uuid of the time series which is associated to this property.
 		*/
-		std::string getTimeSeriesUuid() const;
+		DLL_IMPORT_OR_EXPORT std::string getTimeSeriesUuid() const;
 
 		/*
 		* Getter for the uuid of the time series which is associated to this property.
 		*/
-		std::string getTimeSeriesTitle() const;
+		DLL_IMPORT_OR_EXPORT std::string getTimeSeriesTitle() const;
 
 		/**
 		* Set the timestamp of this property by means of an index in a time series
@@ -108,39 +108,39 @@ namespace RESQML2_NS
 		* @param[in]	 timeIndex	The index of the timestamp of the property in the time series.
 		* @param[in]	 ts			The time series which contains the timestamp of this property.
 		*/
-		void setTimeIndex(const unsigned int & timeIndex, class TimeSeries * ts);
+		DLL_IMPORT_OR_EXPORT void setTimeIndex(const unsigned int & timeIndex, class TimeSeries * ts);
 
 		/**
 		* Set the timestep of this property
 		*/
-		void setTimeStep(const unsigned int & timeStep);
+		DLL_IMPORT_OR_EXPORT void setTimeStep(const unsigned int & timeStep);
 
 		/**
 		* Get the timestamp of this property
 		* @return maximum value of unsigned int is returned if no timestamp is allowed.
 		*/
-		time_t getTimestamp() const;
+		DLL_IMPORT_OR_EXPORT time_t getTimestamp() const;
 
 		/**
 		* Get the time index of this property in its assocaited time series
 		*/
-		unsigned int getTimeIndex() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getTimeIndex() const;
 
 		/**
 		* Set the Hdf Proxy where the numerical values are stored.
 		*/
-		void setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
+		DLL_IMPORT_OR_EXPORT void setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
 
 		/**
 		* Getter for the hdf proxy which stores this instance values.
 		*/
-		COMMON_NS::AbstractHdfProxy* getHdfProxy() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractHdfProxy* getHdfProxy() const;
 
 		/*
 		 * Getter for the uuid of the hdf proxy which is used for storing the numerical values of this property.
 		 * An empty string is returned if no hd fproxy is used for storing the numerical values.
 		 */
-		std::string getHdfProxyUuid() const;
+		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
 
 		/**
 		* Getter (in read only mode) of the element count per property value.
@@ -148,17 +148,17 @@ namespace RESQML2_NS
 		* If it is a vectorial one, the it should be more than one.
 		* It is not possible to have some tensor property values (more dimension than a vector).
 		*/
-		unsigned int getElementCountPerValue() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getElementCountPerValue() const;
 
 		/**
-		* Get the kind of elments the property values are attached to.
+		* Get the kind of elements the property values are attached to.
 		*/
-		gsoap_resqml2_0_1::resqml2__IndexableElements getAttachmentKind() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__IndexableElements getAttachmentKind() const;
 
 		/**
 		* Indicates if the property kind attached to this property is either from the standard catalog of Energistics or from a local property kind.
 		*/
-		bool isAssociatedToOneStandardEnergisticsPropertyKind() const;
+		DLL_IMPORT_OR_EXPORT bool isAssociatedToOneStandardEnergisticsPropertyKind() const;
 
 		//*********************************************
 		//****** PROP KIND ****************************
@@ -167,27 +167,27 @@ namespace RESQML2_NS
 		/**
 		* Get the title of the property kind of this property
 		*/
-		std::string getPropertyKindDescription() const;
+		DLL_IMPORT_OR_EXPORT std::string getPropertyKindDescription() const;
 
 		/**
 		* Get the title of the property kind of this property
 		*/
-		std::string getPropertyKindAsString() const;
+		DLL_IMPORT_OR_EXPORT std::string getPropertyKindAsString() const;
 
 		/**
 		* Get the title of the parent of the property kind.
 		*/
-		std::string getPropertyKindParentAsString() const;
+		DLL_IMPORT_OR_EXPORT std::string getPropertyKindParentAsString() const;
 
 		/**
 		* Getter for the energistics property kind which is associated to this intance.
 		*/
-		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind getEnergisticsPropertyKind() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind getEnergisticsPropertyKind() const;
 
 		/**
 		* Set the property kind of the property to a local one.
 		*/
-		void setLocalPropertyKind(class PropertyKind* propKind);
+		DLL_IMPORT_OR_EXPORT void setLocalPropertyKind(class PropertyKind* propKind);
 
 		/**
 		* @return	null pointer if no local property kind is associated to this property. Otherwise return the data object reference of the associated local property kind.
@@ -197,18 +197,18 @@ namespace RESQML2_NS
 		/**
 		* Get the uuid of the local property kind which is associated to this property.
 		*/
-		std::string getLocalPropertyKindUuid() const;
+		DLL_IMPORT_OR_EXPORT std::string getLocalPropertyKindUuid() const;
 
 		/**
 		* Get the title of the local property kind which is associated to this property.
 		*/
-		std::string getLocalPropertyKindTitle() const;
+		DLL_IMPORT_OR_EXPORT std::string getLocalPropertyKindTitle() const;
 
 		/**
 		* Getter for the local property kind which is associated to this instance.
 		* If nullptr is returned then it means this instance is associated to an energistics standard property kind.
 		*/
-		class PropertyKind* getLocalPropertyKind() const;
+		DLL_IMPORT_OR_EXPORT class PropertyKind* getLocalPropertyKind() const;
 
 		/**
 		* Check if the associated local property kind is allowed for this property.

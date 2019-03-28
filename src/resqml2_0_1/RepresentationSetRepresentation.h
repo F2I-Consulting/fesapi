@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation : public RESQML2_NS::RepresentationSetRepresentation
+	class RepresentationSetRepresentation : public RESQML2_NS::RepresentationSetRepresentation
 	{
 	protected:
 		RepresentationSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp) : RESQML2_NS::RepresentationSetRepresentation(interp) {}
@@ -55,4 +55,3 @@ namespace RESQML2_0_1_NS
 		~RepresentationSetRepresentation() {}
 	};
 }
-

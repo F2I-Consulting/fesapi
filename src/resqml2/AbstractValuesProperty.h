@@ -23,7 +23,7 @@ under the License.
 
 namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractValuesProperty : public AbstractProperty
+	class AbstractValuesProperty : public AbstractProperty
 	{
 	protected:
 		/**
@@ -71,12 +71,12 @@ namespace RESQML2_NS
 		/**
 		* Get the number of patches in this values property. It should be the same count as the patch count of the associated representation.
 		*/
-		unsigned int getPatchCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const;
 
 		/**
 		* Get the values datatype in the HDF dataset
 		*/
-		AbstractValuesProperty::hdfDatatypeEnum getValuesHdfDatatype() const;
+		DLL_IMPORT_OR_EXPORT AbstractValuesProperty::hdfDatatypeEnum getValuesHdfDatatype() const;
 
 		/**
 		* Push back a new patch of values for this property where the values have not to be written in the HDF file.
@@ -86,35 +86,35 @@ namespace RESQML2_NS
 		* @param	nullValue			Only relevant for integer hdf5 datasets. Indeed, Resqml (and fesapi) forces null value for floating point to be NaN value.
 		* @return	The name of the hdf5 dataset.
 		*/
-		virtual std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)()) = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)()) = 0;
 
 		/**
 		* Get all the values of the instance which are supposed to be long ones.
 		* Not for continuous property values.
 		* @return the null value
 		*/
-		long getLongValuesOfPatch(const unsigned int & patchIndex, long * values);
+		DLL_IMPORT_OR_EXPORT long getLongValuesOfPatch(const unsigned int & patchIndex, long * values);
 
 		/**
 		* Get the null value of the instance which are supposed to be integer ones.
 		* Not for continuous property values.
 		* @return the null value
 		*/
-		LONG64 getNullValueOfPatch(unsigned int patchIndex);
+		DLL_IMPORT_OR_EXPORT LONG64 getNullValueOfPatch(unsigned int patchIndex);
 
 		/**
 		* Get all the values of the instance which are supposed to be unsigned long ones.
 		* Not for continuous property values.
 		* @return the null value
 		*/
-		unsigned long getULongValuesOfPatch(const unsigned int & patchIndex, unsigned long * values);
+		DLL_IMPORT_OR_EXPORT unsigned long getULongValuesOfPatch(const unsigned int & patchIndex, unsigned long * values);
 
 		/**
 		* Get all the values of the instance which are supposed to be int ones.
 		* Not for continuous property values.
 		* @return the null value
 		*/
-		int getIntValuesOfPatch(const unsigned int & patchIndex, int * values);
+		DLL_IMPORT_OR_EXPORT int getIntValuesOfPatch(const unsigned int & patchIndex, int * values);
 
 		/**
 		* Get some of the values of a particular patch of the instance which are supposed to be int ones. This method makes use of HDF5 hyperslabbing.
@@ -125,7 +125,7 @@ namespace RESQML2_NS
 		* @param numArrayDimensions			The number of dimensions of the HDF5 array to read.
 		* @return the null value
 		*/
-		int getIntValuesOfPatch(
+		DLL_IMPORT_OR_EXPORT int getIntValuesOfPatch(
 			const unsigned int& patchIndex,
 			int* values,
 			unsigned long long* numValuesInEachDimension,
@@ -144,7 +144,7 @@ namespace RESQML2_NS
 		* @param offsetInMiddleDim		The offset value to write in the middle dimension (mainly J dimension).
 		* @param offsetInSlowestDim		The offset value to write in the slowest dimension (mainly K dimension).
 		*/
-		void getIntValuesOf3dPatch(
+		DLL_IMPORT_OR_EXPORT void getIntValuesOf3dPatch(
 			const unsigned int& patchIndex,
 			int* values,
 			const unsigned int& valueCountInFastestDim,
@@ -160,40 +160,40 @@ namespace RESQML2_NS
 		* Not for continuous property values.
 		* @return the null value
 		*/
-		unsigned int getUIntValuesOfPatch(const unsigned int & patchIndex, unsigned int * values);
+		DLL_IMPORT_OR_EXPORT unsigned int getUIntValuesOfPatch(const unsigned int & patchIndex, unsigned int * values);
 		
 		/**
 		* Get all the values of the instance which are supposed to be short ones.
 		* Not for continuous property values.
 		* @return the null value
 		*/
-		short getShortValuesOfPatch(const unsigned int & patchIndex, short * values);
+		DLL_IMPORT_OR_EXPORT short getShortValuesOfPatch(const unsigned int & patchIndex, short * values);
 
 		/**
 		* Get all the values of the instance which are supposed to be unsigned short ones.
 		* Not for continuous property values.
 		* @return the null value
 		*/
-		unsigned short getUShortValuesOfPatch(const unsigned int & patchIndex, unsigned short * values);
+		DLL_IMPORT_OR_EXPORT unsigned short getUShortValuesOfPatch(const unsigned int & patchIndex, unsigned short * values);
 
 		/**
 		* Get all the values of the instance which are supposed to be char ones.
 		* Not for continuous property values.
 		* @return the null value
 		*/
-		char getCharValuesOfPatch(const unsigned int & patchIndex, char * values);
+		DLL_IMPORT_OR_EXPORT char getCharValuesOfPatch(const unsigned int & patchIndex, char * values);
 
 		/**
 		* Get all the values of the instance which are supposed to be unsigned char ones.
 		* Not for continuous property values.
 		* @return the null value
 		*/
-		unsigned char getUCharValuesOfPatch(const unsigned int & patchIndex, unsigned char * values);
+		DLL_IMPORT_OR_EXPORT unsigned char getUCharValuesOfPatch(const unsigned int & patchIndex, unsigned char * values);
 
 		/**
 		* Get the count of all values contained into the underlying HDF5 dataset of this property for a particular patch.
 		*/
-		unsigned int getValuesCountOfPatch (const unsigned int & patchIndex);
+		DLL_IMPORT_OR_EXPORT unsigned int getValuesCountOfPatch (const unsigned int & patchIndex);
 
 		/**
 		* Get the count of values on a specific dimension of the underlying HDF5 dataset of this property.
@@ -201,34 +201,34 @@ namespace RESQML2_NS
 		* @param patchIndex	The index of the patch we want to know the values count in this property.
 		* @return			The number of values, 0 otherwise.
 		*/
-		unsigned int getValuesCountOfDimensionOfPatch(const unsigned int & dimIndex, const unsigned int & patchIndex);
+		DLL_IMPORT_OR_EXPORT unsigned int getValuesCountOfDimensionOfPatch(const unsigned int & dimIndex, const unsigned int & patchIndex);
 
 		/**
 		* Get the count of dimension of the underlying HDF5 dataset of this property.
 		* @param patchIndex	The index of the patch we want to know the dimensions in this property.
 		* @return			The number of values, 0 otherwise.
 		*/
-		unsigned int getDimensionsCountOfPatch(const unsigned int & patchIndex);
+		DLL_IMPORT_OR_EXPORT unsigned int getDimensionsCountOfPatch(const unsigned int & patchIndex);
 
 		/**
 		* Pushes back a new facet to this intance
 		*/
-		void pushBackFacet(const gsoap_resqml2_0_1::resqml2__Facet & facet, const std::string & facetValue);
+		DLL_IMPORT_OR_EXPORT void pushBackFacet(const gsoap_resqml2_0_1::resqml2__Facet & facet, const std::string & facetValue);
 
 		/**
 		* Get the count of facet of this instance
 		*/
-		unsigned int getFacetCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getFacetCount() const;
 
 		/**
 		* Get the facet at a particular index of the facet collection of this instance
 		*/
-		gsoap_resqml2_0_1::resqml2__Facet getFacet(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__Facet getFacet(const unsigned int & index) const;
 
 		/**
 		* Get the facet value at a particular index of the facet collection of this instance.
 		*/
-		std::string getFacetValue(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT std::string getFacetValue(const unsigned int & index) const;
 
 		//***************************
 		//*** For hyperslabbing *****
@@ -240,7 +240,7 @@ namespace RESQML2_NS
 		* @param numArrayDimensions		The number of dimensions of the array to write.
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void createLongHdf5ArrayOfValues(
+		DLL_IMPORT_OR_EXPORT void createLongHdf5ArrayOfValues(
 			unsigned long long* numValues, 
 			const unsigned int& numArrayDimensions, 
 			COMMON_NS::AbstractHdfProxy* proxy
@@ -253,7 +253,7 @@ namespace RESQML2_NS
 		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly K dimension).
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void createLongHdf5Array3dOfValues(
+		DLL_IMPORT_OR_EXPORT void createLongHdf5Array3dOfValues(
 			const unsigned int& valueCountInFastestDim, 
 			const unsigned int& valueCountInMiddleDim, 
 			const unsigned int& valueCountInSlowestDim, 
@@ -271,7 +271,7 @@ namespace RESQML2_NS
 		* @param offsetInSlowestDim		The offset value to write in the slowest dimension (mainly K dimension).
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackLongHdf5SlabArray3dOfValues(
+		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5SlabArray3dOfValues(
 			long* values, 
 			const unsigned int& valueCountInFastestDim, 
 			const unsigned int& valueCountInMiddleDim, 
@@ -291,7 +291,7 @@ namespace RESQML2_NS
 		* @param numArrayDimensions		The number of dimensions of the array to write.
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackLongHdf5SlabArrayOfValues(
+		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5SlabArrayOfValues(
 			long * values, 
 			unsigned long long * numValues,
 			unsigned long long * offsetValues,
@@ -307,7 +307,7 @@ namespace RESQML2_NS
 		* @param offsetValues			The offset values ordered by dimension of the array to write.
 		* @param numArrayDimensions		The number of dimensions of the array to write.
 		*/
-		void getLongValuesOfPatch(
+		DLL_IMPORT_OR_EXPORT void getLongValuesOfPatch(
 			const unsigned int& patchIndex, 
 			long* values, 
 			unsigned long long* numValuesInEachDimension,
@@ -326,7 +326,7 @@ namespace RESQML2_NS
 		* @param offsetInMiddleDim		The offset value to write in the middle dimension (mainly J dimension).
 		* @param offsetInSlowestDim		The offset value to write in the slowest dimension (mainly K dimension).
 		*/
-		void getLongValuesOf3dPatch(
+		DLL_IMPORT_OR_EXPORT void getLongValuesOf3dPatch(
 			const unsigned int& patchIndex, 
 			long* values, 
 			const unsigned int& valueCountInFastestDim, 
@@ -339,4 +339,3 @@ namespace RESQML2_NS
 
 	};
 }
-

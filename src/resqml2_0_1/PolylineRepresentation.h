@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT PolylineRepresentation : public RESQML2_NS::AbstractRepresentation
+	class PolylineRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	private :
 		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const;
@@ -98,65 +98,64 @@ namespace RESQML2_0_1_NS
 		*/
 		~PolylineRepresentation() {}
 
-		std::string getHdfProxyUuid() const;
+		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
 
 		/**
 		* Get the xyz point count in a given patch.
 		*/
-		ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 
 		/**
 		* Get all the XYZ points of a particular patch of this representation.
 		* XYZ points are given in the local CRS.
 		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
 		*/
-		void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
 
 		/**
 		 * @param points		The points which constitute the polyline. Ordered by XYZ and then points.
 		 * @param pointCount	The count of points in the polyline. Must be three times the count of the array of doubles "points".
 		 * @param proxy			The HDf proxy defining the HDF file where the double array will be stored.
 		 */
-		void setGeometry(double * points, const unsigned int & pointCount, COMMON_NS::AbstractHdfProxy* proxy);
+		DLL_IMPORT_OR_EXPORT void setGeometry(double * points, const unsigned int & pointCount, COMMON_NS::AbstractHdfProxy* proxy);
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/**
 		* Indicates if the representaiton is a closed polyline or a non closed polyline.
 		*/
-		bool isClosed() const;
+		DLL_IMPORT_OR_EXPORT bool isClosed() const;
 
 		/**
 		* Indicates if the polyline is associated to a particular LineRole.
 		*/
-		bool hasALineRole() const;
+		DLL_IMPORT_OR_EXPORT bool hasALineRole() const;
 		
 		/**
 		* Indicates wether the instance corresponds to a seismic 2D line or not.
 		*/
-		bool isASeismicLine() const;
+		DLL_IMPORT_OR_EXPORT bool isASeismicLine() const;
 
 		/**
 		* Indicates wether the instance corresponds to a facies 2d line or not.
 		*/
-		bool isAFaciesLine() const;
+		DLL_IMPORT_OR_EXPORT bool isAFaciesLine() const;
 
 		/**
 		* Get the role of this polyline.
 		* Throw an exception if the polyline has no role (see method hasALineRole).
 		*/
-        gsoap_resqml2_0_1::resqml2__LineRole getLineRole() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__LineRole getLineRole() const;
 
 		/**
 		* Set the line role of this instance
 		*/
-		void setLineRole(const gsoap_resqml2_0_1::resqml2__LineRole & lineRole);
+		DLL_IMPORT_OR_EXPORT void setLineRole(const gsoap_resqml2_0_1::resqml2__LineRole & lineRole);
 
-		unsigned int getPatchCount() const {return 1;}
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
 
 	protected:
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
 	};
 }
-

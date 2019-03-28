@@ -25,7 +25,7 @@ namespace RESQML2_0_1_NS
 	/**
 	* This class defines the behaviour of all Resqml2 organizations
 	*/
-	class DLL_IMPORT_OR_EXPORT AbstractOrganizationInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
+	class AbstractOrganizationInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	protected:
 
@@ -51,20 +51,19 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Add a binary contact to the organization interpretation by means of a simple sentence.
 		 */
-		void pushBackBinaryContact(const gsoap_resqml2_0_1::resqml2__ContactRelationship & kind, RESQML2_NS::AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml2__ContactVerb & verb, RESQML2_NS::AbstractFeatureInterpretation* directObject);
+		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(const gsoap_resqml2_0_1::resqml2__ContactRelationship & kind, RESQML2_NS::AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml2__ContactVerb & verb, RESQML2_NS::AbstractFeatureInterpretation* directObject);
 
 		/**
 		 * Add a binary contact to the organization itnerpretation by means of a sentence where the direct object can be qualified.
 		 */
-		void pushBackBinaryContact(const gsoap_resqml2_0_1::resqml2__ContactRelationship & kind, RESQML2_NS::AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml2__ContactVerb & verb, RESQML2_NS::AbstractFeatureInterpretation* directObject,
+		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(const gsoap_resqml2_0_1::resqml2__ContactRelationship & kind, RESQML2_NS::AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml2__ContactVerb & verb, RESQML2_NS::AbstractFeatureInterpretation* directObject,
 				const gsoap_resqml2_0_1::resqml2__ContactSide & directObjectQualifier);
 
         /**
          * Add a binary contact to the organization interpretation by means of a sentence where both the subject and the direct object can be qualified.
          */
-		void pushBackBinaryContact(const gsoap_resqml2_0_1::resqml2__ContactRelationship & kind, RESQML2_NS::AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml2__ContactSide & subjectQualifier,
+		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(const gsoap_resqml2_0_1::resqml2__ContactRelationship & kind, RESQML2_NS::AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml2__ContactSide & subjectQualifier,
                                    const gsoap_resqml2_0_1::resqml2__ContactVerb & verb,
 								   RESQML2_NS::AbstractFeatureInterpretation* directObject, const gsoap_resqml2_0_1::resqml2__ContactSide & directObjectQualifier);
 	};
 }
-

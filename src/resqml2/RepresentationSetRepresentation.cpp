@@ -98,7 +98,12 @@ bool RepresentationSetRepresentation::isHomogeneous() const
 unsigned int RepresentationSetRepresentation::getRepresentationCount() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::_resqml2__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->Representation.size();
+		const size_t count = static_cast<gsoap_resqml2_0_1::_resqml2__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->Representation.size();
+		if (count > (std::numeric_limits<unsigned int>::max)()) {
+			throw range_error("The count is too big.");
+		}
+
+		return static_cast<unsigned int>(count);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -107,7 +112,7 @@ unsigned int RepresentationSetRepresentation::getRepresentationCount() const
 
 RESQML2_NS::AbstractRepresentation* RepresentationSetRepresentation::getRepresentation(const unsigned int & index) const
 {
-	return static_cast<RESQML2_NS::AbstractRepresentation*>(epcDocument->getDataObjectByUuid(getRepresentationUuid(index)));
+	return epcDocument->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(getRepresentationUuid(index));
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* RepresentationSetRepresentation::getRepresentationDor(const unsigned int & index) const

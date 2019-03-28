@@ -23,7 +23,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT WellboreFrameRepresentation : public RESQML2_NS::AbstractRepresentation
+	class WellboreFrameRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	protected:
 		WellboreFrameRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs) : AbstractRepresentation(interp, crs), trajectory(nullptr)
@@ -62,7 +62,7 @@ namespace RESQML2_0_1_NS
 		* @param mdValueCount	The MD values count.
 		* @param proxy			The HDF proxy where to write the MD values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void setMdValues(double * mdValues, const unsigned int & mdValueCount, COMMON_NS::AbstractHdfProxy* proxy);
+		DLL_IMPORT_OR_EXPORT void setMdValues(double * mdValues, const unsigned int & mdValueCount, COMMON_NS::AbstractHdfProxy* proxy);
 
 		/**
 		* Set the MD values of this WellboreFrameRepresentation frame as a regular discretization along the wellbore trajectory.
@@ -70,75 +70,75 @@ namespace RESQML2_0_1_NS
 		* @param incrementMdValue	The increment value between two Measured depth.
 		* @param mdValueCount		The count of md values in this WellboreFrameRepresentation.
 		*/
-		void setMdValues(const double & firstMdValue, const double & incrementMdValue, const unsigned int & mdValueCount);
+		DLL_IMPORT_OR_EXPORT void setMdValues(const double & firstMdValue, const double & incrementMdValue, const unsigned int & mdValueCount);
 
 		/**
 		* Indicates either the MDs are regularly spaced or not (useful for optimization)
 		* Does not verify if the writer has used a generic array to store regular mds.
 		*/
-		bool areMdValuesRegularlySpaced() const;
+		DLL_IMPORT_OR_EXPORT bool areMdValuesRegularlySpaced() const;
 		
 		/**
 		* Indicates the incremetn value between two MDs only if the MDs are regualrly spaced.
 		* Please use areMdValuesRegularlySpaced before using this method.
 		*/
-		double getMdConstantIncrementValue() const;
+		DLL_IMPORT_OR_EXPORT double getMdConstantIncrementValue() const;
 
 		/**
 		* Returns the first MD value of this WellboreFrameRepresentation
 		*/
-		double getMdFirstValue() const;
+		DLL_IMPORT_OR_EXPORT double getMdFirstValue() const;
 		
 		/**
 		* Get the number of Md values in this WellboreFeature frame.
 		*/
-		unsigned int getMdValuesCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getMdValuesCount() const;
 
 		/**
 		* Get the xyz point count in a given patch.
 		*/
-		ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 
 		/**
 		* Get all the XYZ points of a particular patch of this representation.
 		* XYZ points are given in the local CRS.
 		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
 		*/
-		void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
 
 		/**
 		* Get the Measured Depth datatype in the HDF dataset
 		*/
-		RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum getMdHdfDatatype() const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum getMdHdfDatatype() const;
 
 		/**
 		* Get all the md values of the instance which are supposed to be double ones.
 		*/
-		void getMdAsDoubleValues(double * values);
+		DLL_IMPORT_OR_EXPORT void getMdAsDoubleValues(double * values);
 
 		/**
 		* Get all the md values of the instance which are supposed to be float ones.
 		*/
-		void getMdAsFloatValues(float * values);
+		DLL_IMPORT_OR_EXPORT void getMdAsFloatValues(float * values);
 
 		/**
 		* Get the associated resqml wellbore trajectory uuid
 		*/
-		std::string getWellboreTrajectoryUuid() const;
+		DLL_IMPORT_OR_EXPORT std::string getWellboreTrajectoryUuid() const;
 
 		/**
 		* Get the associated resqml wellbore trajector
 		*/
-		class WellboreTrajectoryRepresentation* getWellboreTrajectory() {return trajectory;}
+		DLL_IMPORT_OR_EXPORT class WellboreTrajectoryRepresentation* getWellboreTrajectory() {return trajectory;}
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor() const;
 
-		std::string getHdfProxyUuid() const;
+		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
 
-		unsigned int getPatchCount() const {return 1;}
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 	protected:
 
