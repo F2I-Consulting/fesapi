@@ -27,7 +27,7 @@ namespace RESQML2_0_1_NS
 	/**
 	* This class is a container for other organizations that are consistent to each others.
 	*/
-	class DLL_IMPORT_OR_EXPORT StratigraphicColumnRankInterpretation : public AbstractStratigraphicOrganizationInterpretation
+	class StratigraphicColumnRankInterpretation : public AbstractStratigraphicOrganizationInterpretation
 	{
 	public:
 
@@ -61,14 +61,14 @@ namespace RESQML2_0_1_NS
         * Add a StratiUnitInterp to this StratigraphicColumnRankInterpretation.
         * Does add the inverse relationship i.e. from the included StratiUnitInterp to this StratigraphicColumnRankInterpretation.
         */
-        void pushBackStratiUnitInterpretation(class StratigraphicUnitInterpretation * stratiUnitInterpretation);
+		DLL_IMPORT_OR_EXPORT void pushBackStratiUnitInterpretation(class StratigraphicUnitInterpretation * stratiUnitInterpretation);
 		
-		void setHorizonOfLastContact(class HorizonInterpretation * partOf);
+		DLL_IMPORT_OR_EXPORT void setHorizonOfLastContact(class HorizonInterpretation * partOf);
 
 		/**
 		 * Add a stratigraphic binary contact to the organization interpretation.
 		 */
-		void pushBackStratigraphicBinaryContact(StratigraphicUnitInterpretation* subject, const gsoap_resqml2_0_1::resqml2__ContactMode & subjectContactMode,
+		DLL_IMPORT_OR_EXPORT void pushBackStratigraphicBinaryContact(StratigraphicUnitInterpretation* subject, const gsoap_resqml2_0_1::resqml2__ContactMode & subjectContactMode,
 			StratigraphicUnitInterpretation* directObject, const gsoap_resqml2_0_1::resqml2__ContactMode & directObjectMode,
 			class HorizonInterpretation * partOf = nullptr);
 
@@ -76,64 +76,64 @@ namespace RESQML2_0_1_NS
 		* Indicates if this strati column rank interp is wether a chrono one or not.
 		* One of the consequence is that in a chrono strati column rank interp, each strati unit interp have only one top and only one bottom.
 		*/
-		bool isAChronoStratiRank() const;
+		DLL_IMPORT_OR_EXPORT bool isAChronoStratiRank() const;
 
 		/**
 		* Get the count of contacts in this strati column rank interp.
 		*/
-		unsigned int getContactCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getContactCount() const;
 
 		/**
 		* Get the contact mode between the subject strati unit and the contact located at a particular index.
 		* Most of time the subject strati unit is the strati unit on top of the contact.
 		* @return	proportional contact mode by default or the contact mode of the subject.
 		*/
-		gsoap_resqml2_0_1::resqml2__ContactMode getSubjectContactModeOfContact(const unsigned int & contactIndex) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__ContactMode getSubjectContactModeOfContact(const unsigned int & contactIndex) const;
 
 		/**
 		* Get the strati unt interpretation which is the subject of a particular contact.
 		*/
-		class StratigraphicUnitInterpretation* getSubjectOfContact(const unsigned int & contactIndex) const;
+		DLL_IMPORT_OR_EXPORT class StratigraphicUnitInterpretation* getSubjectOfContact(const unsigned int & contactIndex) const;
 
 		/**
 		* Get the contact mode between the direct object strati unit and the contact located at a particular index.
 		* Most of time the subject strati unit is the strati unit below the contact.
 		* @return	proportional contact mode by default or the contact mode of the direct object.
 		*/
-		gsoap_resqml2_0_1::resqml2__ContactMode getDirectObjectContactModeOfContact(const unsigned int & contactIndex) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__ContactMode getDirectObjectContactModeOfContact(const unsigned int & contactIndex) const;
 
 		/**
 		* Get the strati unt interpretation which is the direct object of a particular contact.
 		*/
-		class StratigraphicUnitInterpretation* getDirectObjectOfContact(const unsigned int & contactIndex) const;
+		DLL_IMPORT_OR_EXPORT class StratigraphicUnitInterpretation* getDirectObjectOfContact(const unsigned int & contactIndex) const;
 
 		/**
 		* Get the horizon interpretation which is the contact between two strati units.
 		*/
-		class HorizonInterpretation* getHorizonInterpretationOfContact(const unsigned int & contactIndex) const;
+		DLL_IMPORT_OR_EXPORT class HorizonInterpretation* getHorizonInterpretationOfContact(const unsigned int & contactIndex) const;
 
 		/**
 		* Get all the stratigraphic unit interpretations contained in this StratigraphicColumnRankInterpretation.
 		*/
-		const std::vector<class StratigraphicUnitInterpretation*> & getStratigraphicUnitInterpretationSet() const;
+		DLL_IMPORT_OR_EXPORT const std::vector<class StratigraphicUnitInterpretation*> & getStratigraphicUnitInterpretationSet() const;
 
 		/**
 		* Get all the stratigraphic occurence interpretations associated with this StratigraphicColumnRankInterpretation.
 		*/
-		const std::vector<class StratigraphicOccurrenceInterpretation*> & getStratigraphicOccurrenceInterpretationSet() const;
+		DLL_IMPORT_OR_EXPORT const std::vector<class StratigraphicOccurrenceInterpretation*> & getStratigraphicOccurrenceInterpretationSet() const;
 
 		/**
 		* Get all the horizon interpretations contained in this StratigraphicColumnRankInterpretation.
 		*/
-		const std::vector<class HorizonInterpretation*> & getHorizonInterpretationSet() const;
+		DLL_IMPORT_OR_EXPORT const std::vector<class HorizonInterpretation*> & getHorizonInterpretationSet() const;
 
 		/**
 		* Get all the stratigraphic column this strati column rank belongs to.
 		*/
-		const std::vector<StratigraphicColumn*> & getStratigraphicColumnSet() const;
+		DLL_IMPORT_OR_EXPORT const std::vector<StratigraphicColumn*> & getStratigraphicColumnSet() const;
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 	private:
 

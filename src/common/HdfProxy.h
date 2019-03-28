@@ -22,7 +22,7 @@ under the License.
 
 namespace COMMON_NS
 {
-	class DLL_IMPORT_OR_EXPORT HdfProxy : public AbstractHdfProxy
+	class HdfProxy : public AbstractHdfProxy
 	{
 	protected:
 
@@ -145,7 +145,7 @@ namespace COMMON_NS
 		/**
 		* Check if the Hdf file is open or not
 		*/
-		bool isOpened() const {return hdfFile != -1;}
+		DLL_IMPORT_OR_EXPORT bool isOpened() const {return hdfFile != -1;}
 
 		/**
 		* Close the file
@@ -201,7 +201,7 @@ namespace COMMON_NS
 		* Set the new compression level which will be used for all data to be written
 		* @param compressionLevel				Lower compression levels are faster but result in less compression. Range [0..9] is allowed.
 		*/
-		void setCompressionLevel(const unsigned int & newCompressionLevel) {if (newCompressionLevel > 9) compressionLevel = 9; else compressionLevel = newCompressionLevel;}
+		DLL_IMPORT_OR_EXPORT void setCompressionLevel(const unsigned int & newCompressionLevel) {if (newCompressionLevel > 9) compressionLevel = 9; else compressionLevel = newCompressionLevel;}
 
 		void writeArrayNdOfFloatValues(const std::string & groupName,
 			const std::string & name,
@@ -601,4 +601,3 @@ namespace COMMON_NS
 		unsigned int compressionLevel;
 	};
 }
-

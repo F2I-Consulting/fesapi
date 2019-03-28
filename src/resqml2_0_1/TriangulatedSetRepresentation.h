@@ -26,7 +26,7 @@ namespace RESQML2_0_1_NS
 	 * A triangulated representation is a representation (most of time a surface) which is constituted by triangles.
 	 * Usually all triangles are connected to each others by means of their nodes and edges.
 	 */
-	class DLL_IMPORT_OR_EXPORT TriangulatedSetRepresentation : public AbstractSurfaceRepresentation
+	class TriangulatedSetRepresentation : public AbstractSurfaceRepresentation
 	{
 	private :
 		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const;
@@ -57,7 +57,7 @@ namespace RESQML2_0_1_NS
 		*/
 		~TriangulatedSetRepresentation() {}
         
-		std::string getHdfProxyUuid() const;
+		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
 
 		/**
 		* Push back a new patch of triangles
@@ -69,31 +69,31 @@ namespace RESQML2_0_1_NS
 		*								The three following values define the 3 vertices of the second triangle and so on...
 		* @param proxy					The HDF proxy which defines where the nodes and triangle indices will be stored.
 		*/
-		void pushBackTrianglePatch(const unsigned int & nodeCount, double * nodes, const unsigned int & triangleCount, unsigned int * triangleNodeIndices, COMMON_NS::AbstractHdfProxy* proxy);
+		DLL_IMPORT_OR_EXPORT void pushBackTrianglePatch(const unsigned int & nodeCount, double * nodes, const unsigned int & triangleCount, unsigned int * triangleNodeIndices, COMMON_NS::AbstractHdfProxy* proxy);
 
 		/**
 		* Get the xyz point count in a given patch.
 		* @param patchIndex	The index of the patch of the representation.
 		*/
-		ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 
 		/**
 		* Get all the XYZ points of a particular patch of this representation.
 		* XYZ points are given in the local CRS.
 		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
 		*/
-		void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
 
         /**
 		* Get the triangle count in a given patch
 		* @param patchIndex	The index of the patch of the representation.
 		*/
-		unsigned int getTriangleCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getTriangleCountOfPatch(const unsigned int & patchIndex) const;
 
         /**
 		* Get the triangle count of all patches of this representation.
 		*/
-		unsigned int getTriangleCountOfAllPatches() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getTriangleCountOfAllPatches() const;
 
 		/**
 		 * Get all the triangle node indices of a particular patch of this representation.
@@ -101,22 +101,21 @@ namespace RESQML2_0_1_NS
 		 * @param patchIndex 			The index of the patch which contains the triangle node indices we want.
 		 * @param triangleNodeIndices	Must be pre-allocated. The count/size of this array should be equal to getTriangleCountOfPatch(patchIndex)*3.
 		 */
-		void getTriangleNodeIndicesOfPatch(const unsigned int & patchIndex, unsigned int * triangleNodeIndices) const;
+		DLL_IMPORT_OR_EXPORT void getTriangleNodeIndicesOfPatch(const unsigned int & patchIndex, unsigned int * triangleNodeIndices) const;
 
 		/**
 		 * Get all the triangle node indices of all patches of this representation.
 		 * See getXyzPointsOfAllPatches method inherited from AbstractRepresentation to read the XYZ coordinates of the triangle nodes.
 		 * @param triangleNodeIndices	Must be pre-allocated. The count/size of this array should be equal to getTriangleCountOfAllPatches()*3.
 		 */
-		void getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const;
+		DLL_IMPORT_OR_EXPORT void getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const;
         
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 		
 		/**
 		* Get the patch count in this representation.
 		*/
-		unsigned int getPatchCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const;
 	};
 }
-

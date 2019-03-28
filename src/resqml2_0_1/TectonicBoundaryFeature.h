@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT TectonicBoundaryFeature : public BoundaryFeature
+	class TectonicBoundaryFeature : public BoundaryFeature
 	{
 	public:
 
@@ -50,10 +50,9 @@ namespace RESQML2_0_1_NS
 		virtual ~TectonicBoundaryFeature() {}
 	
 		// Indicates wether the instance is a fracture (or a fault). This public method is especially needed for SWIG reason.
-		bool isAFracture() const;
+		DLL_IMPORT_OR_EXPORT bool isAFracture() const;
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 	};
 }
-

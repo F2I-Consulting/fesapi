@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT TimeSeries : public COMMON_NS::AbstractObject
+	class TimeSeries : public COMMON_NS::AbstractObject
 	{
 	protected:
 		/**
@@ -47,53 +47,53 @@ namespace RESQML2_NS
 		*/
 		~TimeSeries() {}
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/**
 		* Add a representation values object which uses this property type.
 		* Does not add the inverse relationship i.e. from the representation values object to this property type.
 		*/
-		void pushBackTimestamp(const time_t & timestamp);
+		DLL_IMPORT_OR_EXPORT void pushBackTimestamp(const time_t & timestamp);
 
 		/**
 		* Add a representation values object which uses this property type.
 		* Does not add the inverse relationship i.e. from the representation values object to this property type.
 		*/
-		void pushBackTimestamp(const tm & timestamp);
+		DLL_IMPORT_OR_EXPORT void pushBackTimestamp(const tm & timestamp);
 
 		/**
 		* Get the index of a timestamp in the time series.
 		* @return	uint.max if this timestamp has not been found in this time series.
 		*/
-		unsigned int getTimestampIndex(const time_t & timestamp) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getTimestampIndex(const time_t & timestamp) const;
 
 		/**
 		* Get the index of a timestamp in the time series.
 		* @return	uint.max if this timestamp has not been found in this time series.
 		*/
-		unsigned int getTimestampIndex(const tm & timestamp) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getTimestampIndex(const tm & timestamp) const;
 
 		/**
 		* Get the count of timestamps in this time series.
 		*/
-		unsigned int getTimestampCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getTimestampCount() const;
 
 		/**
 		* Get a timestamp at a particular index of this timeseries.
 		*/
-		time_t getTimestamp(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT time_t getTimestamp(const unsigned int & index) const;
 
 		/**
 		* Get a timestamp as a time structure at a particular index of this timeseries.
 		* It allows to read dates from 1900-01-01T00:00:00
 		*/
-		tm getTimestampAsTimeStructure(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT tm getTimestampAsTimeStructure(const unsigned int & index) const;
 
 		/**
 		* Get all the properties which use this time series
 		*/
-		const std::vector<RESQML2_NS::AbstractProperty*>& getPropertySet() const { return propertySet; }
+		DLL_IMPORT_OR_EXPORT const std::vector<RESQML2_NS::AbstractProperty*>& getPropertySet() const { return propertySet; }
 
 	protected:
 

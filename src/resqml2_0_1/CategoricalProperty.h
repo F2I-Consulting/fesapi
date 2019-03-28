@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT CategoricalProperty : public RESQML2_NS::AbstractValuesProperty
+	class CategoricalProperty : public RESQML2_NS::AbstractValuesProperty
 	{
 	public:
 
@@ -71,8 +71,8 @@ namespace RESQML2_0_1_NS
 		*/
 		virtual ~CategoricalProperty() {}
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/**
 		* Add a 1d array of explicit long values to the property values.
@@ -80,7 +80,7 @@ namespace RESQML2_0_1_NS
 		* @param valueCount				The number of values to write.
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackLongHdf5Array1dOfValues(const long * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5Array1dOfValues(const long * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
 
 		/**
 		* Add a 2d array of explicit long values to the property values.
@@ -89,7 +89,7 @@ namespace RESQML2_0_1_NS
 		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly J dimension).
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackLongHdf5Array2dOfValues(const long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5Array2dOfValues(const long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
 
 		/**
 		* Add a 3d array of explicit long values to the property values.
@@ -99,7 +99,7 @@ namespace RESQML2_0_1_NS
 		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly K dimension).
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackLongHdf5Array3dOfValues(const long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5Array3dOfValues(const long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
 
 		/**
 		* Add an array (potentially multi dimensions) of long values to the property values which will be stored in the HDF file identified by its HDF proxy.
@@ -108,7 +108,7 @@ namespace RESQML2_0_1_NS
 		* @param numDimensionsInArray	The number of dimensions in the array to write.
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackLongHdf5ArrayOfValues(const long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5ArrayOfValues(const long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue);
 
 		/**
 		* Add a 1d array of explicit unsigned short values to the property values.
@@ -116,7 +116,7 @@ namespace RESQML2_0_1_NS
 		* @param valueCount				The number of values to write.
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackUShortHdf5Array1dOfValues(const unsigned short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackUShortHdf5Array1dOfValues(const unsigned short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
 
 		/**
 		* Add a 2d array of explicit unsigned short values to the property values.
@@ -125,7 +125,7 @@ namespace RESQML2_0_1_NS
 		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly J dimension).
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
 
 		/**
 		* Add a 3d array of explicit unsigned short values to the property values.
@@ -135,7 +135,7 @@ namespace RESQML2_0_1_NS
 		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly K dimension).
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
 
 		/**
 		* Add an array (potentially multi dimensions) of unsigned short values to the property values which will be stored in the HDF file identified by its HDF proxy.
@@ -144,19 +144,19 @@ namespace RESQML2_0_1_NS
 		* @param numDimensionsInArray	The number of dimensions in the array to write.
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue);
+		DLL_IMPORT_OR_EXPORT void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue);
 
-		std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & dataset = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
+		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & dataset = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
 
 		/**
 		* Get the string lookup which is associated to this categorical property values.
 		*/
-		class StringTableLookup* getStringLookup() {return stringLookup;}
+		DLL_IMPORT_OR_EXPORT class StringTableLookup* getStringLookup() {return stringLookup;}
 
 		/**
 		* Get the string lookup uuid which is associated to this categorical property values.
 		*/
-		std::string getStringLookupUuid() const;
+		DLL_IMPORT_OR_EXPORT std::string getStringLookupUuid() const;
 
 		/**
 		* Check if the associated local property kind is allowed for this property.
@@ -176,5 +176,3 @@ namespace RESQML2_0_1_NS
 		class StringTableLookup* stringLookup;
 	};
 }
-
-

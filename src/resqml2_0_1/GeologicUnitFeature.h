@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT GeologicUnitFeature : public AbstractGeologicFeature
+	class GeologicUnitFeature : public AbstractGeologicFeature
 	{
 	protected :
 
@@ -50,8 +50,7 @@ namespace RESQML2_0_1_NS
 		GeologicUnitFeature(gsoap_resqml2_0_1::_resqml2__GeologicUnitFeature* fromGsoap): AbstractGeologicFeature(fromGsoap) {}
 		virtual ~GeologicUnitFeature() {}
 	
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 	};
 }
-

@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT TimeSeries : public RESQML2_NS::TimeSeries
+	class TimeSeries : public RESQML2_NS::TimeSeries
 	{
 	public:
 		/**
@@ -55,4 +55,3 @@ namespace RESQML2_0_1_NS
 		gsoap_resqml2_0_1::_resqml2__TimeSeries* getSpecializedGsoapProxy() const;
 	};
 }
-

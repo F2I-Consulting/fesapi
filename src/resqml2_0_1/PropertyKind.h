@@ -23,7 +23,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT PropertyKind : public RESQML2_NS::PropertyKind
+	class PropertyKind : public RESQML2_NS::PropertyKind
 	{
 	private:
 
@@ -93,11 +93,11 @@ namespace RESQML2_0_1_NS
 		*/
 		~PropertyKind() {}
 
-		bool isChildOf(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind standardPropKind) const;
+		DLL_IMPORT_OR_EXPORT bool isChildOf(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind standardPropKind) const;
 
-		bool isAbstract() const;
+		DLL_IMPORT_OR_EXPORT bool isAbstract() const;
 
-		bool isParentPartial() const;
+		DLL_IMPORT_OR_EXPORT bool isParentPartial() const;
 
 	protected:
 		void setXmlParentPropertyKind(RESQML2_NS::PropertyKind* parentPropertyKind);
@@ -107,5 +107,3 @@ namespace RESQML2_0_1_NS
 		friend RESQML2_0_1_NS::PropertyKind* PropertyKindMapper::addResqmlLocalPropertyKindToEpcDocumentFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application);
 	};
 }
-
-

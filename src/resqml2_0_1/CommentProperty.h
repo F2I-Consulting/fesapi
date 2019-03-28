@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT CommentProperty : public RESQML2_NS::AbstractValuesProperty
+	class CommentProperty : public RESQML2_NS::AbstractValuesProperty
 	{
 	public:
 
@@ -65,22 +65,22 @@ namespace RESQML2_0_1_NS
 		*/
 		~CommentProperty() {}
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/**
 		* Add an array of string values to the property values.
 		* @param values					All the property values to set ordered according the topology of the representation it is based on.
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
-		void pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values, COMMON_NS::AbstractHdfProxy* proxy);
+		DLL_IMPORT_OR_EXPORT void pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values, COMMON_NS::AbstractHdfProxy* proxy);
 
-		std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
+		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
 
 		/**
 		* Get all the values of the instance which are supposed to be string ones.
 		*/
-		std::vector<std::string> getStringValuesOfPatch(const unsigned int & patchIndex);
+		DLL_IMPORT_OR_EXPORT std::vector<std::string> getStringValuesOfPatch(const unsigned int & patchIndex);
 
 		/**
 		* Check if the associated local property kind is allowed for this property.
@@ -91,7 +91,5 @@ namespace RESQML2_0_1_NS
 		* Check if the associated standard property kind is allowed for this property.
 		*/
 		bool validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk);
-
 	};
 }
-
