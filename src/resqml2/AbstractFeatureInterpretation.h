@@ -27,7 +27,7 @@ namespace RESQML2_0_1_NS
 
 namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation : public COMMON_NS::AbstractObject
+	class AbstractFeatureInterpretation : public COMMON_NS::AbstractObject
 	{
 	protected:
 
@@ -61,48 +61,48 @@ namespace RESQML2_NS
 		*/
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getInterpretedFeatureDor() const;
 
-		std::string getInterpretedFeatureUuid() const;
+		DLL_IMPORT_OR_EXPORT std::string getInterpretedFeatureUuid() const;
 
 		/**
 		 * Set the feature which is interpreted by the current instance.
 		 */
-		void setInterpretedFeature(AbstractFeature* feature);
+		DLL_IMPORT_OR_EXPORT void setInterpretedFeature(AbstractFeature* feature);
 
 		/**
 		* Get the feature this instance interprets
 		*/
-		AbstractFeature* getInterpretedFeature() const;
+		DLL_IMPORT_OR_EXPORT AbstractFeature* getInterpretedFeature() const;
 
 		/**
 		* Init the domain of the interpretation based on its representations
 		* @param	defaultDomain	The default domain to set when there is no representation set to this interpretation
 		*/
-		const gsoap_resqml2_0_1::resqml2__Domain & initDomain(const gsoap_resqml2_0_1::resqml2__Domain & defaultDomain) const;
+		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml2__Domain & initDomain(const gsoap_resqml2_0_1::resqml2__Domain & defaultDomain) const;
 
 		/**
 		* Set the domain of the interpretation
 		*/
-		gsoap_resqml2_0_1::resqml2__Domain getDomain() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__Domain getDomain() const;
 
 		/**
 		* Get all the representations of this interpretation
 		*/
-		std::vector<AbstractRepresentation*> getRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<AbstractRepresentation*> getRepresentationSet() const;
 
 		/**
 		 * Get the interpretation count of this feature.
 		 */
-		unsigned int 						getRepresentationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int 						getRepresentationCount() const;
 
 		/**
 		 * Get a particular interpretation of this feature according to its position in the interpretation ordering.
 		 */
-		AbstractRepresentation*				getRepresentation(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT AbstractRepresentation*				getRepresentation(const unsigned int & index) const;
 
 		/**
 		* Get all the Grid Connection Set Representation which reference this interpretation.
 		*/
-		std::vector<GridConnectionSetRepresentation *>	getGridConnectionSetRepresentationSet();
+		DLL_IMPORT_OR_EXPORT std::vector<GridConnectionSetRepresentation *>	getGridConnectionSetRepresentationSet();
 
 		/**
 		* Indicates that this interpretation is a frontier of a stack of an organization

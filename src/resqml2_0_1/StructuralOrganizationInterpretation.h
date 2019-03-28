@@ -23,7 +23,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT StructuralOrganizationInterpretation : public AbstractOrganizationInterpretation
+	class StructuralOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{
 	public:
 
@@ -51,18 +51,18 @@ namespace RESQML2_0_1_NS
 		*/
 		~StructuralOrganizationInterpretation() {}
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
         /**
         * Add a FaultInterpretation to this StructuralOrganizationInterpretation.
         * Does add the inverse relationship i.e. from the included FaultInterpretation to this StructuralOrganizationInterpretation.
         */
-        void pushBackFaultInterpretation(class FaultInterpretation * faultInterpretation);
+		DLL_IMPORT_OR_EXPORT void pushBackFaultInterpretation(class FaultInterpretation * faultInterpretation);
 
-		unsigned int getFaultInterpretationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getFaultInterpretationCount() const;
 
-		class FaultInterpretation* getFaultInterpretation(unsigned int index);
+		DLL_IMPORT_OR_EXPORT class FaultInterpretation* getFaultInterpretation(unsigned int index);
 
         /**
         * Add an HorizonInterpretation to this StructuralOrganizationInterpretation.
@@ -70,41 +70,41 @@ namespace RESQML2_0_1_NS
         * @param horizonInterpretation the HorizonInterpretation to add
         * @param stratigraphicRank the rank of the horizon interpretation within this structural organization
         **/
-		void pushBackHorizonInterpretation(class HorizonInterpretation * horizonInterpretation, const int & stratigraphicRank);
+		DLL_IMPORT_OR_EXPORT void pushBackHorizonInterpretation(class HorizonInterpretation * horizonInterpretation, const int & stratigraphicRank);
 
-		unsigned int getHorizonInterpretationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getHorizonInterpretationCount() const;
 
-		HorizonInterpretation* getHorizonInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT HorizonInterpretation* getHorizonInterpretation(unsigned int index) const;
 
 		/**
         * Add a Frontier interpretation to this StructuralOrganizationInterpretation as a top.
         * Does add the inverse relationship i.e. from the included Frontier interpretation to this StructuralOrganizationInterpretation.
         */
-		void pushBackTopFrontierInterpretation(AbstractFeatureInterpretation * topFrontierInterpretation);
+		DLL_IMPORT_OR_EXPORT void pushBackTopFrontierInterpretation(AbstractFeatureInterpretation * topFrontierInterpretation);
 
-		unsigned int getTopFrontierInterpretationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getTopFrontierInterpretationCount() const;
 
-		AbstractFeatureInterpretation* getTopFrontierInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getTopFrontierInterpretation(unsigned int index) const;
 
 		/**
         * Add a Frontier interpretation to this StructuralOrganizationInterpretation as a bottom.
         * Does add the inverse relationship i.e. from the included Frontier interpretation to this StructuralOrganizationInterpretation.
         */
-        void pushBackBottomFrontierInterpretation(AbstractFeatureInterpretation * bottomFrontierInterpretation);
+		DLL_IMPORT_OR_EXPORT  void pushBackBottomFrontierInterpretation(AbstractFeatureInterpretation * bottomFrontierInterpretation);
 
-		unsigned int getBottomFrontierInterpretationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getBottomFrontierInterpretationCount() const;
 
-		AbstractFeatureInterpretation* getBottomFrontierInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getBottomFrontierInterpretation(unsigned int index) const;
 
 		/**
         * Add a Frontier interpretation to this StructuralOrganizationInterpretation as a side.
         * Does add the inverse relationship i.e. from the included Frontier interpretation to this StructuralOrganizationInterpretation.
         */
-        void pushBackSideFrontierInterpretation(AbstractFeatureInterpretation * sideFrontierInterpretation);
+		DLL_IMPORT_OR_EXPORT void pushBackSideFrontierInterpretation(AbstractFeatureInterpretation * sideFrontierInterpretation);
 
-		unsigned int getSideFrontierInterpretationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getSideFrontierInterpretationCount() const;
 
-		AbstractFeatureInterpretation* getSideFrontierInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getSideFrontierInterpretation(unsigned int index) const;
 
 		std::vector<epc::Relationship> getAllSourceRelationships() const;
 		std::vector<epc::Relationship> getAllTargetRelationships() const;

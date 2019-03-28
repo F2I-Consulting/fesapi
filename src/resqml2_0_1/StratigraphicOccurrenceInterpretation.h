@@ -27,7 +27,7 @@ namespace RESQML2_0_1_NS
 	/**
 	* This class is a container for other organizations that are consistent to each others.
 	*/
-	class DLL_IMPORT_OR_EXPORT StratigraphicOccurrenceInterpretation : public AbstractStratigraphicOrganizationInterpretation
+	class StratigraphicOccurrenceInterpretation : public AbstractStratigraphicOrganizationInterpretation
 	{
 	public:
 
@@ -56,19 +56,19 @@ namespace RESQML2_0_1_NS
 		*/
 		~StratigraphicOccurrenceInterpretation() {}
 
-		void setStratigraphicColumnRankInterpretation(class StratigraphicColumnRankInterpretation * stratiColumnRankInterp);
+		DLL_IMPORT_OR_EXPORT void setStratigraphicColumnRankInterpretation(class StratigraphicColumnRankInterpretation * stratiColumnRankInterp);
 
-		class StratigraphicColumnRankInterpretation * getStratigraphicColumnRankInterpretation() const {return stratigraphicColumnRankInterpretation;}
+		DLL_IMPORT_OR_EXPORT class StratigraphicColumnRankInterpretation * getStratigraphicColumnRankInterpretation() const {return stratigraphicColumnRankInterpretation;}
 
 		/**
 		* Get all the stratigraphic occurence interpretations associated with this StratigraphicColumnRankInterpretation.
 		*/
-		std::vector<class WellboreMarkerFrameRepresentation*> getWellboreMarkerFrameRepresentationSet() const { return wellboreMarkerFrameRepresentationSet; }
+		DLL_IMPORT_OR_EXPORT std::vector<class WellboreMarkerFrameRepresentation*> getWellboreMarkerFrameRepresentationSet() const { return wellboreMarkerFrameRepresentationSet; }
 
-		std::string getStratigraphicColumnRankInterpretationUuid() const;
+		DLL_IMPORT_OR_EXPORT std::string getStratigraphicColumnRankInterpretationUuid() const;
                 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
         std::vector<epc::Relationship> getAllSourceRelationships() const;
         std::vector<epc::Relationship> getAllTargetRelationships() const;

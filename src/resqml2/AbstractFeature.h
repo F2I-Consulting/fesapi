@@ -80,4 +80,3 @@ namespace RESQML2_NS
 		friend void AbstractFeatureInterpretation::setInterpretedFeature(RESQML2_NS::AbstractFeature * feature);
 	};
 }
-

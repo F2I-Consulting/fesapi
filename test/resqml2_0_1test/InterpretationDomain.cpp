@@ -42,9 +42,9 @@ InterpretationDomain::InterpretationDomain(EpcDocument* epcDoc, bool init)
 	: AbstractTest(epcDoc)
 {
 	if (init)
-		this->initEpcDoc();
+		initEpcDoc();
 	else
-		this->readEpcDoc();
+		readEpcDoc();
 }
 
 void InterpretationDomain::initEpcDoc() {
@@ -72,4 +72,3 @@ void InterpretationDomain::initEpcDoc() {
 void InterpretationDomain::readEpcDoc() {
 
 }
-

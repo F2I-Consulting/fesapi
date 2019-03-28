@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT IjkGridNoGeometryRepresentation : public AbstractIjkGridRepresentation
+	class IjkGridNoGeometryRepresentation : public AbstractIjkGridRepresentation
 	{
 	public:
 
@@ -50,16 +50,15 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get the xyz point count in a given patch.
 		*/
-		ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 
 		/**
 		* Get all the XYZ points of a particular patch of this representation.
 		* XYZ points are given in the local CRS.
 		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
 		*/
-		void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
 
-		geometryKind getGeometryKind() const;
+		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const;
 	};
 }
-

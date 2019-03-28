@@ -181,6 +181,15 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepresentationOfContactPatch(unsigned int contactIdx, unsigned int cpIndex) const;
 
 		/**
+		* Get the representation index where a particular contact patch has been defined. The index is in the range [0..getRepresentationCount()[.
+		*
+		* @param contactIdx	The index of the contact in the contact list. It must be in the interval [0..getContactCount()[.
+		* @param cpIndex	The index of the contact patch in the contact. It must be in the interval [0..getContactPatchCount()[.
+		* @return			The representation index where the contact patch has been defined.
+		*/
+		DLL_IMPORT_OR_EXPORT unsigned int getRepresentationIndexOfContactPatch(unsigned int contactIdx, unsigned int cpIndex) const;
+
+		/**
 		* Get the count of nodes of a particular contact patch.
 		*
 		* @param contactIdx	The index of the contact in the contact list. It must be in the interval [0..getContactCount()[.

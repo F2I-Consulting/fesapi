@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT SubRepresentation : public RESQML2_NS::SubRepresentation
+	class SubRepresentation : public RESQML2_NS::SubRepresentation
 	{
 	private:
 		/*
@@ -87,41 +87,41 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get the kind of the selected elements for a particular patch of this subrepresentation.
 		*/
-		RESQML2_NS::AbstractRepresentation::indexableElement getElementKindOfPatch(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation::indexableElement getElementKindOfPatch(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex) const;
 
 		/**
 		* Get the count of the selected elements for a particular patch of this subrepresentation.
 		*/
-		ULONG64 getElementCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getElementCountOfPatch(const unsigned int & patchIndex) const;
 
 		/**
 		* Get the indices of the selected elements in the supporting representation for a particular patch of this subrepresentation.
 		* @param	elementIndicesIndex	Must be equal to 0 if the element indices are not pairwise.
 		* @param	elementIndices		This array must be preallocated with getElementCountOfPatch() size.
 		*/
-		void getElementIndicesOfPatch(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex, ULONG64 * elementIndices) const;
+		DLL_IMPORT_OR_EXPORT void getElementIndicesOfPatch(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex, ULONG64 * elementIndices) const;
 
 		/**
 		* Get the indices of the supporting representations of the selected elements for a particular patch of this subrepresentation.
 		* @param	supportingRepresentationIndices	This array must be preallocated with getElementCountOfPatch() size.
 		*/
-		void getSupportingRepresentationIndicesOfPatch(const unsigned int & patchIndex, short * supportingRepresentationIndices) const;
+		DLL_IMPORT_OR_EXPORT void getSupportingRepresentationIndicesOfPatch(const unsigned int & patchIndex, short * supportingRepresentationIndices) const;
 
 		/**
 		* Check if the element of a particular patch are pairwise or not.
 		*/
-		bool areElementIndicesPairwise(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT bool areElementIndicesPairwise(const unsigned int & patchIndex) const;
 
 		/**
 		* Check if the element indices of a particular patch are based on a lattice or not.
 		* @param elementIndicesIndex	In case of pairwise element, allow to select the first or second element indice of the pair.
 		*/
-		bool areElementIndicesBasedOnLattice(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const;
+		DLL_IMPORT_OR_EXPORT bool areElementIndicesBasedOnLattice(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const;
 
-		LONG64 getLatticeElementIndicesStartValue(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const;
-		unsigned int getLatticeElementIndicesDimensionCount(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const;
-		LONG64 getLatticeElementIndicesOffsetValue(const unsigned int & latticeDimensionIndex, const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const;
-		ULONG64 getLatticeElementIndicesOffsetCount(const unsigned int & latticeDimensionIndex, const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const;
+		DLL_IMPORT_OR_EXPORT LONG64 getLatticeElementIndicesStartValue(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getLatticeElementIndicesDimensionCount(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const;
+		DLL_IMPORT_OR_EXPORT LONG64 getLatticeElementIndicesOffsetValue(const unsigned int & latticeDimensionIndex, const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getLatticeElementIndicesOffsetCount(const unsigned int & latticeDimensionIndex, const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const;
 
 		/**
 		* Push back a new patch in the subrepresentation which is based on a lattice definition.
@@ -130,7 +130,7 @@ namespace RESQML2_0_1_NS
 		* @param elementCountInMiddleDimension		Commonly in J dimensionn.
 		* @param elementCountInFastestDimension		Commonly in I dimension.
 		*/
-		void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & originIndex, 
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & originIndex,
 			const unsigned int & elementCountInSlowestDimension,
 			const unsigned int & elementCountInMiddleDimension,
 			const unsigned int & elementCountInFastestDimension);
@@ -143,7 +143,7 @@ namespace RESQML2_0_1_NS
         * @param	proxy					The HDF proxy where the numerical values (indices) are stored.
 		* @param	supportingRepIndices	The indices of the supporting represenation for each elment in the supporting representation. The count must be elementCount.
 		*/
-		void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, ULONG64 * elementIndices, COMMON_NS::AbstractHdfProxy* proxy, short * supportingRepIndices = nullptr);
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, ULONG64 * elementIndices, COMMON_NS::AbstractHdfProxy* proxy, short * supportingRepIndices = nullptr);
 
 		/**
 		* Push back a new patch in the subrepresentation which is constituted by means of pairwise elements.
@@ -154,7 +154,7 @@ namespace RESQML2_0_1_NS
 		* @param elementIndices1	The indices of the second part of the element pair in the supporting representation.
         * @param proxy				The HDF proxy where the numerical values (indices) are stored.
 		*/
-		void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind0, const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind1,
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind0, const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind1,
 			const ULONG64 & elementCount,
 			ULONG64 * elementIndices0, ULONG64 * elementIndices1,
 			COMMON_NS::AbstractHdfProxy* proxy);
@@ -169,15 +169,15 @@ namespace RESQML2_0_1_NS
 		* @param	hdfProxy				The HDF5 proxy where the values are already or will be stored.
 		* @param	supportingRepDataset	The HDF5 dataset name where the element indices are stored. If empty, it won't be exported any information about suppporting rep relying on the fact there is only one suppporting rep for this whole patch.
 		*/
-		void pushBackRefToExistingDataset(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, const std::string & elementDataset,
+		DLL_IMPORT_OR_EXPORT void pushBackRefToExistingDataset(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, const std::string & elementDataset,
 			const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset = "");
 
-		unsigned int getPatchCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const;
 
 		/**
 		* Get the count of the supporting representations of this subrepresentation.
 		*/
-		unsigned int getSupportingRepresentationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getSupportingRepresentationCount() const;
 
 		/**
 		* Get the supporting representation dor located at a specific index of this subrepresentation.

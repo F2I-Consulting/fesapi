@@ -184,10 +184,10 @@ void serializePerforations(COMMON_NS::EpcDocument * pck)
 
 	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980);
 	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 2000);
-	wellboreCompletion->pushBackPerforationHistoryEntry("0", gsoap_eml2_1::witsml2__PerforationStatus__open, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980, 407568645, 1514764800);
-	wellboreCompletion->pushBackPerforationHistoryEntry("0", gsoap_eml2_1::witsml2__PerforationStatus__squeezed, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980, 1514764800);
-	wellboreCompletion->pushBackPerforationHistoryEntry("1", gsoap_eml2_1::witsml2__PerforationStatus__open, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 2000, 410104800);
-	wellboreCompletion->pushBackPerforationHistoryEntry("1", gsoap_eml2_1::witsml2__PerforationStatus__squeezed, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 1995, 1514764800);
+	wellboreCompletion->pushBackPerforationHistory(0, gsoap_eml2_1::witsml2__PerforationStatus__open, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980, 407568645, 1514764800);
+	wellboreCompletion->pushBackPerforationHistory(0, gsoap_eml2_1::witsml2__PerforationStatus__squeezed, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980, 1514764800);
+	wellboreCompletion->pushBackPerforationHistory(1, gsoap_eml2_1::witsml2__PerforationStatus__open, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 2000, 410104800);
+	wellboreCompletion->pushBackPerforationHistory(1, gsoap_eml2_1::witsml2__PerforationStatus__squeezed, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 1995, 1514764800);
 }
 
 void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
@@ -3129,58 +3129,54 @@ void deserializePerforations(COMMON_NS::EpcDocument & pck)
 	
 	for (unsigned int perforationIndex = 0; perforationIndex < wellboreCompletion->getPerforationCount(); ++perforationIndex)
 	{
-		std::string perforationUid = std::to_string(perforationIndex);
-
-		cout << std::endl << "perforation " + perforationUid << ":" << std::endl;
-		if (wellboreCompletion->hasPerforationMdDatum(perforationUid))
+		cout << std::endl << "perforation " + perforationIndex << ":" << std::endl;
+		if (wellboreCompletion->hasPerforationMdDatum(perforationIndex))
 		{
-			cout << "datum: " << wellboreCompletion->getPerforationMdDatum(perforationUid) << std::endl;
+			cout << "datum: " << wellboreCompletion->getPerforationMdDatum(perforationIndex) << std::endl;
 		}
-		if (wellboreCompletion->hasPerforationMdUnit(perforationUid))
+		if (wellboreCompletion->hasPerforationMdUnit(perforationIndex))
 		{
-			cout << "md unit: " << pck.lengthUomToString(wellboreCompletion->getPerforationMdUnit(perforationUid)) << std::endl;
+			cout << "md unit: " << pck.lengthUomToString(wellboreCompletion->getPerforationMdUnit(perforationIndex)) << std::endl;
 		}
-		if (wellboreCompletion->hasPerforationTopMd(perforationUid))
+		if (wellboreCompletion->hasPerforationTopMd(perforationIndex))
 		{
-			cout << "top md: " << wellboreCompletion->getPerforationTopMd(perforationUid) << std::endl;
+			cout << "top md: " << wellboreCompletion->getPerforationTopMd(perforationIndex) << std::endl;
 		}
-		if (wellboreCompletion->hasPerforationBaseMd(perforationUid))
+		if (wellboreCompletion->hasPerforationBaseMd(perforationIndex))
 		{
-			cout << "base md: " << wellboreCompletion->getPerforationBaseMd(perforationUid) << std::endl;
+			cout << "base md: " << wellboreCompletion->getPerforationBaseMd(perforationIndex) << std::endl;
 		}
 
-		for (unsigned int historyEntryIndex = 0; historyEntryIndex < wellboreCompletion->getHistoryEntryCount(perforationUid); ++historyEntryIndex)
+		for (unsigned int historyIndex = 0; historyIndex < wellboreCompletion->getPerforationHistoryCount(perforationIndex); ++historyIndex)
 		{
-			std::string historyEntryUid = std::to_string(historyEntryIndex);
-
-			cout << "history entry " << historyEntryUid << ":" << std::endl;
-			if (wellboreCompletion->hasPerforationHistoryEntryStatus(historyEntryUid, perforationUid))
+			cout << "history entry " << historyIndex << ":" << std::endl;
+			if (wellboreCompletion->hasPerforationHistoryStatus(historyIndex, perforationIndex))
 			{
-				cout << "\tstatus: " << wellboreCompletion->getPerforationHistoryEntryStatusToString(historyEntryUid, perforationUid) << std::endl;
+				cout << "\tstatus: " << wellboreCompletion->getPerforationHistoryStatusToString(historyIndex, perforationIndex) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryEntryStartDate(historyEntryUid, perforationUid))
+			if (wellboreCompletion->hasPerforationHistoryStartDate(historyIndex, perforationIndex))
 			{
-				cout << "\tstart date: " << wellboreCompletion->getPerforationHistoryEntryStartDate(historyEntryUid, perforationUid) << std::endl;
+				cout << "\tstart date: " << wellboreCompletion->getPerforationHistoryStartDate(historyIndex, perforationIndex) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryEntryEndDate(historyEntryUid, perforationUid))
+			if (wellboreCompletion->hasPerforationHistoryEndDate(historyIndex, perforationIndex))
 			{
-				cout << "\tend date: " << wellboreCompletion->getPerforationHistoryEntryEndDate(historyEntryUid, perforationUid) << std::endl;
+				cout << "\tend date: " << wellboreCompletion->getPerforationHistoryEndDate(historyIndex, perforationIndex) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryEntryMdDatum(historyEntryUid, perforationUid))
+			if (wellboreCompletion->hasPerforationHistoryMdDatum(historyIndex, perforationIndex))
 			{
-				cout << "\tend datum: " << wellboreCompletion->getPerforationHistoryEntryMdDatum(historyEntryUid, perforationUid) << std::endl;
+				cout << "\tend datum: " << wellboreCompletion->getPerforationHistoryMdDatum(historyIndex, perforationIndex) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryEntryMdUnit(historyEntryUid, perforationUid))
+			if (wellboreCompletion->hasPerforationHistoryMdUnit(historyIndex, perforationIndex))
 			{
-				cout << "\tend md unit: " << pck.lengthUomToString(wellboreCompletion->getPerforationHistoryEntryMdUnit(historyEntryUid, perforationUid)) << std::endl;
+				cout << "\tend md unit: " << pck.lengthUomToString(wellboreCompletion->getPerforationHistoryMdUnit(historyIndex, perforationIndex)) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryEntryTopMd(historyEntryUid, perforationUid))
+			if (wellboreCompletion->hasPerforationHistoryTopMd(historyIndex, perforationIndex))
 			{
-				cout << "\tend top md: " << wellboreCompletion->getPerforationHistoryEntryTopMd(historyEntryUid, perforationUid) << std::endl;
+				cout << "\tend top md: " << wellboreCompletion->getPerforationHistoryTopMd(historyIndex, perforationIndex) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryEntryBaseMd(historyEntryUid, perforationUid))
+			if (wellboreCompletion->hasPerforationHistoryBaseMd(historyIndex, perforationIndex))
 			{
-				cout << "\tend base md: " << wellboreCompletion->getPerforationHistoryEntryBaseMd(historyEntryUid, perforationUid) << std::endl;
+				cout << "\tend base md: " << wellboreCompletion->getPerforationHistoryBaseMd(historyIndex, perforationIndex) << std::endl;
 			}
 		}
 	}
@@ -3525,7 +3521,7 @@ void deserialize(const string & inputFile)
 		{
 			for (size_t k = 0; k < wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet().size(); k++)
 			{
-				if (wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet()[k]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREWellboreMarkerFrameRepresentation)
+				if (wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet()[k]->getXmlTag() == WellboreMarkerFrameRepresentation::XML_TAG)
 				{
 					WellboreMarkerFrameRepresentation* wmf = static_cast<WellboreMarkerFrameRepresentation*>(wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet()[k]);
 					vector<WellboreMarker*> marketSet = wmf->getWellboreMarkerSet();
@@ -3539,7 +3535,7 @@ void deserialize(const string & inputFile)
 
 					for (size_t l = 0; l < wmf->getPropertySet().size(); ++l)
 					{
-						if (wmf->getPropertySet()[l]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECategoricalProperty)
+						if (wmf->getPropertySet()[l]->getXmlTag() == CategoricalProperty::XML_TAG)
 						{
 							CategoricalProperty* catVal = static_cast<CategoricalProperty*>(wmf->getPropertySet()[l]);
 							if (catVal->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::LONG)
@@ -3798,7 +3794,7 @@ void deserialize(const string & inputFile)
 		if (ijkGrid->getParentGrid() != NULL)
 		{
 			std::cout << "\t PARENT WINDOW" << std::endl;
-			if (ijkGrid->getParentGrid()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREIjkGridRepresentation)
+			if (ijkGrid->getParentGrid()->getXmlTag() == AbstractIjkGridRepresentation::XML_TAG)
 			{
 				for (char dimension = 'i'; dimension < 'l'; ++dimension) {
 					std::cout << "\t\t DIMENSION :" << dimension << std::endl;
@@ -3817,12 +3813,12 @@ void deserialize(const string & inputFile)
 						std::cout << "\t\t Non constant child cell count per interval" << std::endl;
 					}
 				}
-			}
-			else if (ijkGrid->getParentGrid()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREUnstructuredColumnLayerGridRepresentation)
+			}/*
+			else if (ijkGrid->getParentGrid()->getXmlTag() == UnstructuredColumnLayerGridRepresentation::XML_TAG)
 			{
 				std::cout << "\t\t Refined columns count :" << ijkGrid->getParentColumnIndexCount() << std::endl;
-			}
-			else if (ijkGrid->getParentGrid()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREUnstructuredGridRepresentation)
+			}*/
+			else if (ijkGrid->getParentGrid()->getXmlTag() == UnstructuredGridRepresentation::XML_TAG)
 			{
 				std::cout << "\t\t Refined cells count :" << ijkGrid->getParentCellIndexCount() << std::endl;
 			}

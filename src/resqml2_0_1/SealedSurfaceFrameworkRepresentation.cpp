@@ -260,9 +260,20 @@ gsoap_resqml2_0_1::resqml2__ContactPatch* SealedSurfaceFrameworkRepresentation::
 	return contactRep->Contact[cpIndex];
 }
 
-RESQML2_NS::AbstractRepresentation* SealedSurfaceFrameworkRepresentation::getRepresentationOfContactPatch(unsigned int crIndex, unsigned int cpIndex) const
+RESQML2_NS::AbstractRepresentation* SealedSurfaceFrameworkRepresentation::getRepresentationOfContactPatch(unsigned int contactIdx, unsigned int cpIndex) const
 {
-	return getRepresentation(getContactPatch(crIndex, cpIndex)->RepresentationIndex);
+	return getRepresentation(getRepresentationIndexOfContactPatch(contactIdx, cpIndex));
+}
+
+unsigned int SealedSurfaceFrameworkRepresentation::getRepresentationIndexOfContactPatch(unsigned int contactIdx, unsigned int cpIndex) const
+{
+	const ULONG64 index = getContactPatch(contactIdx, cpIndex)->RepresentationIndex;
+
+	if (index > (std::numeric_limits<unsigned int>::max)()) {
+		throw range_error("The index of the representation is too big.");
+	}
+
+	return static_cast<unsigned int>(index);
 }
 
 unsigned int SealedSurfaceFrameworkRepresentation::getContactPatchNodeCount(unsigned int crIndex, unsigned int cpIndex) const

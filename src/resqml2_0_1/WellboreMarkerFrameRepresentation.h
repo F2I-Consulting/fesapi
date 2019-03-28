@@ -27,7 +27,7 @@ namespace WITSML1_4_1_1_NS
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT WellboreMarkerFrameRepresentation : public WellboreFrameRepresentation
+	class WellboreMarkerFrameRepresentation : public WellboreFrameRepresentation
 	{
 	public:
 
@@ -61,37 +61,37 @@ namespace RESQML2_0_1_NS
 		* Pushes back a new WellboreFeature marker to this WellboreFeature marker frame.
 		* One WellboreFeature marker must be added per MD of the WellboreFeature marker frame.
 		*/
-		class WellboreMarker* pushBackNewWellboreMarker(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT class WellboreMarker* pushBackNewWellboreMarker(const std::string & guid, const std::string & title);
 
 		/**
 		* Add a WellboreFeature marker to this WellboreFeature marker frame with a geologic information on the intersected feature.
 		* One WellboreFeature marker must be added per MD of the WellboreFeature marker frame.
 		*/
-		class WellboreMarker* pushBackNewWellboreMarker(const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind & geologicBoundaryKind);
+		DLL_IMPORT_OR_EXPORT class WellboreMarker* pushBackNewWellboreMarker(const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind & geologicBoundaryKind);
 
 		/**
 		* Return the number of wellbore marker for this Wellbore marker frame representation
 		*/
-		unsigned int getWellboreMarkerCount();
+		DLL_IMPORT_OR_EXPORT unsigned int getWellboreMarkerCount();
 
 		/**
 		* Get all the wellbore markers of this well marker frame representation.
 		*/
-		const std::vector<class WellboreMarker*> & getWellboreMarkerSet() const;
+		DLL_IMPORT_OR_EXPORT const std::vector<class WellboreMarker*> & getWellboreMarkerSet() const;
 
-		void setStratigraphicOccurrenceInterpretation(class StratigraphicOccurrenceInterpretation * stratiOccurenceInterp);
+		DLL_IMPORT_OR_EXPORT void setStratigraphicOccurrenceInterpretation(class StratigraphicOccurrenceInterpretation * stratiOccurenceInterp);
 
 		/**
 		* Set the correspondance between the interval of the wellbore marker frame rep and the units of a stratiColRankInterp
 		* @param stratiUnitIndices	The count must be equal to the count of contacts in stratiColRankInterp
 		* @param nullValue			The value which is used to indicate we don't know the related strati units against a particular interval.
 		*/
-		void setIntervalStratigraphicUnits(unsigned int * stratiUnitIndices, const unsigned int & nullValue, class StratigraphicOccurrenceInterpretation* stratiOccurenceInterp);
+		DLL_IMPORT_OR_EXPORT void setIntervalStratigraphicUnits(unsigned int * stratiUnitIndices, const unsigned int & nullValue, class StratigraphicOccurrenceInterpretation* stratiOccurenceInterp);
 
-		class StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation() { return stratigraphicOccurrenceInterpretation; }
+		DLL_IMPORT_OR_EXPORT class StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation() { return stratigraphicOccurrenceInterpretation; }
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		std::vector<epc::Relationship> getAllTargetRelationships() const;
 		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);

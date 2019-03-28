@@ -205,6 +205,11 @@ EpcDocument::EpcDocument(const std::string & fileName, const std::string & prope
 	}
 }
 
+EpcDocument::~EpcDocument()
+{
+	close();
+}
+
 std::string EpcDocument::generateRandomUuidAsString()
 {
 	return GuidTools::generateUidAsString();

@@ -25,7 +25,7 @@ namespace RESQML2_0_1_NS
 	/**
 	* This class is a container for other organizations that are consistent to each others.
 	*/
-	class DLL_IMPORT_OR_EXPORT StratigraphicColumn : public COMMON_NS::AbstractObject
+	class StratigraphicColumn : public COMMON_NS::AbstractObject
 	{
 	public:
 
@@ -55,15 +55,15 @@ namespace RESQML2_0_1_NS
 		*/
 		~StratigraphicColumn() {}
 
-		void pushBackStratiColumnRank(class StratigraphicColumnRankInterpretation * stratiColumnRank);
+		DLL_IMPORT_OR_EXPORT void pushBackStratiColumnRank(class StratigraphicColumnRankInterpretation * stratiColumnRank);
 
 		/**
 		 * Get all the stratigraphic column rank interpretations which are contained in this stratigraphic column.
 		 */
-		std::vector<class StratigraphicColumnRankInterpretation*> getStratigraphicColumnRankInterpretationSet() const {return stratigraphicColumnRankSet;}
+		DLL_IMPORT_OR_EXPORT std::vector<class StratigraphicColumnRankInterpretation*> getStratigraphicColumnRankInterpretationSet() const {return stratigraphicColumnRankSet;}
                 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
         std::vector<epc::Relationship> getAllSourceRelationships() const;
         std::vector<epc::Relationship> getAllTargetRelationships() const;
@@ -80,4 +80,3 @@ namespace RESQML2_0_1_NS
 		friend void EarthModelInterpretation::setStratiColumn(StratigraphicColumn * stratiColumn); 
 	};
 }
-

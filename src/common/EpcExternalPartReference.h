@@ -27,7 +27,7 @@ namespace RESQML2_NS{
 
 namespace COMMON_NS
 {
-	class DLL_IMPORT_OR_EXPORT EpcExternalPartReference : public COMMON_NS::AbstractObject
+	class EpcExternalPartReference : public COMMON_NS::AbstractObject
 	{
 	protected:
 		/**
@@ -62,10 +62,10 @@ namespace COMMON_NS
 		/**
 		* Get the relative path regarding packageDirectoryAbsolutePath where the external resource is located.
 		*/
-		std::string getRelativePath() const { return relativeFilePath; }
+		DLL_IMPORT_OR_EXPORT std::string getRelativePath() const { return relativeFilePath; }
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const;
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const;
 
 		std::vector<epc::Relationship> getAllSourceRelationships() const;
 		std::vector<epc::Relationship> getAllTargetRelationships() const;

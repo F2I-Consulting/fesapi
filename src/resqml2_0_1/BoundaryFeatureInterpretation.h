@@ -23,7 +23,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT BoundaryFeatureInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
+	class BoundaryFeatureInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	public:
 
@@ -49,10 +49,10 @@ namespace RESQML2_0_1_NS
 		BoundaryFeatureInterpretation(gsoap_resqml2_0_1::_resqml2__BoundaryFeatureInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
 		virtual ~BoundaryFeatureInterpretation() {}
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
 
-		virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 	protected:
 		
@@ -61,4 +61,3 @@ namespace RESQML2_0_1_NS
 		friend void WellboreMarker::setBoundaryFeatureInterpretation(BoundaryFeatureInterpretation* interp);
 	};
 }
-

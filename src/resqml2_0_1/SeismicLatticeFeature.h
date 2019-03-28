@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT SeismicLatticeFeature : public AbstractTechnicalFeature
+	class SeismicLatticeFeature : public AbstractTechnicalFeature
 	{
 	public:
 
@@ -66,25 +66,24 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get the crossline index increment between two consecutive crosslines.
 		*/
-		int getCrosslineIncrement() const;
+		DLL_IMPORT_OR_EXPORT int getCrosslineIncrement() const;
 		
 		/**
 		* Get the inline index increment between two consecutive inlines.
 		*/
-		int getInlineIncrement() const;
+		DLL_IMPORT_OR_EXPORT int getInlineIncrement() const;
 		
 		/**
 		* Get the index of the first crossline.
 		*/
-		int getOriginCrossline() const;
+		DLL_IMPORT_OR_EXPORT int getOriginCrossline() const;
 		
 		/**
 		* Get the index of the first inline.
 		*/
-		int getOriginInline() const;
+		DLL_IMPORT_OR_EXPORT int getOriginInline() const;
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 	};
 }
-

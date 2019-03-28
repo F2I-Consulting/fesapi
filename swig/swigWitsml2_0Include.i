@@ -18,9 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 %{
 #include "witsml2_0/Well.h"
-#include "witsml2_0/Wellbore.h"
 #include "witsml2_0/WellCompletion.h"
+#include "witsml2_0/Wellbore.h"
+#include "witsml2_0/WellboreObject.h"
 #include "witsml2_0/WellboreCompletion.h"
+#include "witsml2_0/Trajectory.h"
 %}
 
 //************************
@@ -48,6 +50,56 @@ namespace gsoap_eml2_1
 	enum witsml2__WellboreShape { witsml2__WellboreShape__build_x0020and_x0020hold = 0, witsml2__WellboreShape__deviated = 1, witsml2__WellboreShape__double_x0020kickoff = 2, witsml2__WellboreShape__horizontal = 3, witsml2__WellboreShape__S_shaped = 4, witsml2__WellboreShape__vertical = 5 };
 	enum witsml2__PerforationStatus { witsml2__PerforationStatus__open = 0, witsml2__PerforationStatus__proposed = 1, witsml2__PerforationStatus__squeezed = 2 };
 	enum witsml2__ElevCodeEnum { witsml2__ElevCodeEnum__CF = 0, witsml2__ElevCodeEnum__CV = 1, witsml2__ElevCodeEnum__DF = 2, witsml2__ElevCodeEnum__GL = 3, witsml2__ElevCodeEnum__KB = 4, witsml2__ElevCodeEnum__RB = 5, witsml2__ElevCodeEnum__RT = 6, witsml2__ElevCodeEnum__SF = 7, witsml2__ElevCodeEnum__LAT = 8, witsml2__ElevCodeEnum__SL = 9, witsml2__ElevCodeEnum__MHHW = 10, witsml2__ElevCodeEnum__MHW = 11, witsml2__ElevCodeEnum__MLLW = 12, witsml2__ElevCodeEnum__MLW = 13, witsml2__ElevCodeEnum__MTL = 14, witsml2__ElevCodeEnum__KO = 15, witsml2__ElevCodeEnum__unknown = 16};
+	enum witsml2__TrajStationType {
+		witsml2__TrajStationType__azimuth_x0020on_x0020plane = 0,
+		witsml2__TrajStationType__buildrate_x0020to_x0020delta_MD = 1,
+		witsml2__TrajStationType__buildrate_x0020to_x0020INCL = 2,
+		witsml2__TrajStationType__buildrate_x0020to_x0020MD = 3,
+		witsml2__TrajStationType__buildrate_x0020and_x0020turnrate_x0020to_x0020AZI = 4,
+		witsml2__TrajStationType__buildrate_x0020and_x0020turnrate_x0020to_x0020delta_MD = 5,
+		witsml2__TrajStationType__buildrate_x0020and_x0020turnrate_x0020to_x0020INCL = 6,
+		witsml2__TrajStationType__buildrate_x0020and_x0020turnrate_x0020to_x0020INCL_x0020and_x0020AZI = 7,
+		witsml2__TrajStationType__buildrate_x0020and_x0020turnrate_x0020to_x0020MD = 8,
+		witsml2__TrajStationType__buildrate_x0020and_x0020turnrate_x0020to_x0020TVD = 9,
+		witsml2__TrajStationType__buildrate_x0020TVD = 10,
+		witsml2__TrajStationType__casing_x0020MD = 11,
+		witsml2__TrajStationType__casing_x0020TVD = 12,
+		witsml2__TrajStationType__DLS = 13,
+		witsml2__TrajStationType__DLS_x0020to_x0020AZI_x0020and_x0020MD = 14,
+		witsml2__TrajStationType__DLS_x0020to_x0020AZI_TVD = 15,
+		witsml2__TrajStationType__DLS_x0020to_x0020INCL = 16,
+		witsml2__TrajStationType__DLS_x0020to_x0020INCL_x0020and_x0020AZI = 17,
+		witsml2__TrajStationType__DLS_x0020to_x0020INCL_x0020and_x0020MD = 18,
+		witsml2__TrajStationType__DLS_x0020to_x0020INCL_x0020and_x0020TVD = 19,
+		witsml2__TrajStationType__DLS_x0020to_x0020NS = 20,
+		witsml2__TrajStationType__DLS_x0020and_x0020toolface_x0020to_x0020AZI = 21,
+		witsml2__TrajStationType__DLS_x0020and_x0020toolface_x0020to_x0020delta_MD = 22,
+		witsml2__TrajStationType__DLS_x0020and_x0020toolface_x0020to_x0020INCL = 23,
+		witsml2__TrajStationType__DLS_x0020and_x0020toolface_x0020to_x0020INCL_AZI = 24,
+		witsml2__TrajStationType__DLS_x0020and_x0020toolface_x0020to_x0020MD = 25,
+		witsml2__TrajStationType__DLS_x0020and_x0020toolface_x0020to_x0020TVD = 26,
+		witsml2__TrajStationType__formation_x0020MD = 27,
+		witsml2__TrajStationType__formation_x0020TVD = 28,
+		witsml2__TrajStationType__hold_x0020to_x0020delta_MD = 29,
+		witsml2__TrajStationType__hold_x0020to_x0020MD = 30,
+		witsml2__TrajStationType__hold_x0020to_x0020TVD = 31,
+		witsml2__TrajStationType__INCL_x0020AZI_x0020and_x0020TVD = 32,
+		witsml2__TrajStationType__interpolated = 33,
+		witsml2__TrajStationType__marker_x0020MD = 34,
+		witsml2__TrajStationType__marker_x0020TVD = 35,
+		witsml2__TrajStationType__MD_x0020and_x0020INCL = 36,
+		witsml2__TrajStationType__MD_x0020INCL_x0020and_x0020AZI = 37,
+		witsml2__TrajStationType__N_x0020E_x0020and_x0020TVD = 38,
+		witsml2__TrajStationType__NS_x0020EW_x0020and_x0020TVD = 39,
+		witsml2__TrajStationType__target_x0020center = 40,
+		witsml2__TrajStationType__target_x0020offset = 41,
+		witsml2__TrajStationType__tie_x0020in_x0020point = 42,
+		witsml2__TrajStationType__turnrate_x0020to_x0020AZI = 43,
+		witsml2__TrajStationType__turnrate_x0020to_x0020delta_MD = 44,
+		witsml2__TrajStationType__turnrate_x0020to_x0020MD = 45,
+		witsml2__TrajStationType__turnrate_x0020to_x0020TVD = 46,
+		witsml2__TrajStationType__unknown = 47
+	};
 }
 
 //#ifdef SWIGJAVA
@@ -61,10 +113,14 @@ namespace gsoap_eml2_1
 //#endif
 #if defined(SWIGJAVA) || defined(SWIGCSHARP)
 	%nspace WITSML2_0_NS::AbstractObject;
+	
 	%nspace WITSML2_0_NS::Well;
-	%nspace WITSML2_0_NS::Wellbore;
 	%nspace WITSML2_0_NS::WellCompletion;
+	
+	%nspace WITSML2_0_NS::Wellbore;
+	%nspace WITSML2_0_NS::WellboreObject;
 	%nspace WITSML2_0_NS::WellboreCompletion;
+	%nspace WITSML2_0_NS::Trajectory;
 #endif
 
 namespace WITSML2_0_NS
@@ -172,7 +228,7 @@ namespace WITSML2_0_NS
 			const double & BaseMd, 
 			const std::string & guid = "");
 
-		void pushBackPerforationHistoryEntry(const std::string & perforationGuid,
+		void pushBackPerforationHistory(unsigned int index,
 			gsoap_eml2_1::witsml2__PerforationStatus perforationStatus,
 			const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom MdUnit,
@@ -184,74 +240,75 @@ namespace WITSML2_0_NS
 
 		unsigned int getPerforationCount() const;
 
-		bool hasPerforationMdDatum(const std::string & guid) const;
+		bool hasPerforationMdDatum(unsigned int index) const;
+	
+		std::string getPerforationMdDatum(unsigned int index) const;
 		
-		std::string getPerforationMdDatum(const std::string & guid) const;
+		bool hasPerforationMdUnit(unsigned int index) const;
 		
-		bool hasPerforationMdUnit(const std::string & guid) const;
+		gsoap_eml2_1::eml21__LengthUom getPerforationMdUnit(unsigned int index) const;
 		
-		gsoap_eml2_1::eml21__LengthUom getPerforationMdUnit(const std::string & guid) const;
+		bool hasPerforationTopMd(unsigned int index) const;
 		
-		bool hasPerforationTopMd(const std::string & guid) const;
+		double getPerforationTopMd(unsigned int index) const;
+
+		bool hasPerforationBaseMd(unsigned int index) const;
+
+		double getPerforationBaseMd(unsigned int index) const;
+
+		unsigned int getPerforationHistoryCount(unsigned int index) const;
+
+		bool hasPerforationHistoryStatus(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
+
+		gsoap_eml2_1::witsml2__PerforationStatus getPerforationHistoryStatus(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
+
+		std::string getPerforationHistoryStatusToString(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
+
+		bool hasPerforationHistoryStartDate(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
+
+		time_t getPerforationHistoryStartDate(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
+
+		bool hasPerforationHistoryEndDate(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
+
+		time_t getPerforationHistoryEndDate(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
 		
-		double getPerforationTopMd(const std::string & guid) const;
-
-		bool hasPerforationBaseMd(const std::string & guid) const;
-
-		double getPerforationBaseMd(const std::string & guid) const;
-
-		unsigned int getHistoryEntryCount(const std::string & perforationGuid) const;
-
-		bool hasPerforationHistoryEntryStatus(const std::string & guid,
-			const std::string & perforationGuid) const;
-
-		gsoap_eml2_1::witsml2__PerforationStatus getPerforationHistoryEntryStatus(const std::string & guid,
-			const std::string & perforationGuid) const;
-
-		std::string getPerforationHistoryEntryStatusToString(const std::string & guid,
-			const std::string & perforationGuid) const;
-
-		bool hasPerforationHistoryEntryStartDate(const std::string & guid,
-			const std::string & perforationGuid) const;
-
-		time_t getPerforationHistoryEntryStartDate(const std::string & guid,
-			const std::string & perforationGuid) const;
-
-		bool hasPerforationHistoryEntryEndDate(const std::string & guid,
-			const std::string & perforationGuid) const;
-
-		time_t getPerforationHistoryEntryEndDate(const std::string & guid,
-			const std::string & perforationGuid) const;
+		bool hasPerforationHistoryMdDatum(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
 		
-		bool hasPerforationHistoryEntryMdDatum(const std::string & guid,
-			const std::string & perforationGuid) const;
+		std::string getPerforationHistoryMdDatum(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
 		
-		std::string getPerforationHistoryEntryMdDatum(const std::string & guid,
-			const std::string & perforationGuid) const;
+		bool hasPerforationHistoryMdUnit(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
+
+		gsoap_eml2_1::eml21__LengthUom getPerforationHistoryMdUnit(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
+
+		bool hasPerforationHistoryTopMd(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
+
+		double getPerforationHistoryTopMd(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
 		
-		bool hasPerforationHistoryEntryMdUnit(const std::string & guid,
-			const std::string & perforationGuid) const;
+		bool hasPerforationHistoryBaseMd(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
 
-		gsoap_eml2_1::eml21__LengthUom getPerforationHistoryEntryMdUnit(const std::string & guid,
-			const std::string & perforationGuid) const;
-
-		bool hasPerforationHistoryEntryTopMd(const std::string & guid,
-			const std::string & perforationGuid) const;
-
-		double getPerforationHistoryEntryTopMd(const std::string & guid,
-			const std::string & perforationGuid) const;
-		
-		bool hasPerforationHistoryEntryBaseMd(const std::string & guid,
-			const std::string & perforationGuid) const;
-
-		double getPerforationHistoryEntryBaseMd(const std::string & guid,
-			const std::string & perforationGuid) const;
+		double getPerforationHistoryBaseMd(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
 	};
 	
 	class Trajectory : public WellboreObject
 	{
 	public:
+		void pushBackTrajectoryStation(gsoap_eml2_1::witsml2__TrajStationType kind, double mdValue, gsoap_eml2_1::eml21__LengthUom uom, const std::string & uid = "");
+		unsigned int getTrajectoryStationCount() const;
 	};
-}
 }
 

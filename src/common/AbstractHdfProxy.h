@@ -26,7 +26,7 @@ under the License.
 
 namespace COMMON_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractHdfProxy : public EpcExternalPartReference
+	class AbstractHdfProxy : public EpcExternalPartReference
 	{
 	protected:
 		/**
@@ -64,7 +64,7 @@ namespace COMMON_NS
 		/**
 		 * Check if the Hdf file is open or not
 		 */
-		virtual bool isOpened() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isOpened() const = 0;
 
 		/**
 		 * Close the file
@@ -125,7 +125,7 @@ namespace COMMON_NS
 		 * Set the new compression level which will be used for all data to be written
 		 * @param compressionLevel				Lower compression levels are faster but result in less compression. Range [0..9] is allowed.
 		 */
-		virtual void setCompressionLevel(const unsigned int & newCompressionLevel) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setCompressionLevel(const unsigned int & newCompressionLevel) = 0;
 
 		virtual void writeArrayNdOfFloatValues(const std::string & groupName,
 		  const std::string & name,
@@ -546,4 +546,3 @@ namespace COMMON_NS
 
 	};
 }
-

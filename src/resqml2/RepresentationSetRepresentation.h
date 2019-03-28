@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation : public RESQML2_NS::AbstractRepresentation
+	class RepresentationSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	protected:
 		RepresentationSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp) : AbstractRepresentation(interp, nullptr) {}
@@ -49,37 +49,36 @@ namespace RESQML2_NS
 		*/
 		virtual ~RepresentationSetRepresentation() {}
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const;
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const;
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const {return nullptr;}
 
-
-		ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 
 		/**
 		* Get all the XYZ points of a particular patch of this representation.
 		* XYZ points are given in the local CRS.
 		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
 		*/
-		void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
 
-		unsigned int getPatchCount() const {return 0;}
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 0;}
 
 		/**
 		* Indicates if the representation set contains only one type of representations or several.
 		*/
-		bool isHomogeneous() const;
+		DLL_IMPORT_OR_EXPORT bool isHomogeneous() const;
 
 		/**
 		* Get the count of representations in this representation set.
 		*/
-		unsigned int getRepresentationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getRepresentationCount() const;
 
 		/**
 		* Get a particular representation of this representation set according to its position.
 		*/
-		RESQML2_NS::AbstractRepresentation* getRepresentation(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepresentation(const unsigned int & index) const;
 
 		/**
 		* Get a particular representation dor of this representation set according to its position.
@@ -89,10 +88,10 @@ namespace RESQML2_NS
 		/**
 		* Get a particular representation uuid of this representation set according to its position.
 		*/
-		std::string getRepresentationUuid(const unsigned int & index) const;
-		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
+		DLL_IMPORT_OR_EXPORT std::string getRepresentationUuid(const unsigned int & index) const;
 
-		virtual void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
+		DLL_IMPORT_OR_EXPORT virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
+		DLL_IMPORT_OR_EXPORT virtual void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
 
     protected:
 
@@ -101,4 +100,3 @@ namespace RESQML2_NS
 		friend void RESQML2_NS::AbstractRepresentation::pushBackIntoRepresentationSet(RepresentationSetRepresentation * repSet, bool xml);
 	};
 }
-

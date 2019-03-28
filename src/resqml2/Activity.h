@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT Activity : public COMMON_NS::AbstractObject
+	class Activity : public COMMON_NS::AbstractObject
 	{
 	protected:
 		Activity() : AbstractObject() {}
@@ -42,14 +42,14 @@ namespace RESQML2_NS
 		* Push back a string parameter in the instance.
 		* This parameter must exist in the associated activity template.
 		*/
-		virtual void pushBackParameter(const std::string title,
+		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string title,
 			const std::string & value) = 0;
 
 		/**
 		* Push back an integer parameter in the instance.
 		* This parameter must exist in the associated activity template.
 		*/
-		virtual void pushBackParameter(const std::string title,
+		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string title,
 			const LONG64 & value) = 0;
 
 		/**
@@ -62,39 +62,39 @@ namespace RESQML2_NS
 		/**
 		* Get the count of all the parameters
 		*/
-		virtual unsigned int getParameterCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getParameterCount() const = 0;
 
 		/**
 		* Get the count of all the parameters which have got the same title.
 		*/
-		virtual unsigned int getParameterCount(const std::string & paramTitle) const = 0;
-		virtual const std::string & getParameterTitle(const unsigned int & index) const = 0;
-		virtual std::vector<unsigned int> getParameterIndexOfTitle(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getParameterCount(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual const std::string & getParameterTitle(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<unsigned int> getParameterIndexOfTitle(const std::string & paramTitle) const = 0;
 
-		virtual bool isAFloatingPointQuantityParameter(const std::string & paramTitle) const = 0;
-		virtual bool isAFloatingPointQuantityParameter(const unsigned int & index) const = 0;
-		virtual std::vector<double> getFloatingPointQuantityParameterValue(const std::string & paramTitle) const = 0;
-		virtual double getFloatingPointQuantityParameterValue(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isAFloatingPointQuantityParameter(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isAFloatingPointQuantityParameter(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<double> getFloatingPointQuantityParameterValue(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual double getFloatingPointQuantityParameterValue(const unsigned int & index) const = 0;
 
-		virtual bool isAnIntegerQuantityParameter(const std::string & paramTitle) const = 0;
-		virtual bool isAnIntegerQuantityParameter(const unsigned int & index) const = 0;
-		virtual std::vector<LONG64> getIntegerQuantityParameterValue(const std::string & paramTitle) const = 0;
-		virtual LONG64 getIntegerQuantityParameterValue(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isAnIntegerQuantityParameter(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isAnIntegerQuantityParameter(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<LONG64> getIntegerQuantityParameterValue(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual LONG64 getIntegerQuantityParameterValue(const unsigned int & index) const = 0;
 
-		virtual bool isAStringParameter(const std::string & paramTitle) const = 0;
-		virtual bool isAStringParameter(const unsigned int & index) const = 0;
-		virtual std::vector<std::string> getStringParameterValue(const std::string & paramTitle) const = 0;
-		virtual const std::string & getStringParameterValue(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isAStringParameter(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isAStringParameter(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<std::string> getStringParameterValue(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual const std::string & getStringParameterValue(const unsigned int & index) const = 0;
 
-		virtual bool isAResqmlObjectParameter(const std::string & paramTitle) const = 0;
-		virtual bool isAResqmlObjectParameter(const unsigned int & index) const = 0;
-		virtual std::vector<AbstractObject*> getResqmlObjectParameterValue(const std::string & paramTitle) const = 0;
-		virtual AbstractObject* getResqmlObjectParameterValue(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isAResqmlObjectParameter(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isAResqmlObjectParameter(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<AbstractObject*> getResqmlObjectParameterValue(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual AbstractObject* getResqmlObjectParameterValue(const unsigned int & index) const = 0;
 
 		/**
 		* Set the activity template of the activity
 		**/
-		void setActivityTemplate(class ActivityTemplate* activityTemplate);
+		DLL_IMPORT_OR_EXPORT void setActivityTemplate(class ActivityTemplate* activityTemplate);
 
 		/**
 		* Get the activity template dor of the activity
@@ -104,17 +104,17 @@ namespace RESQML2_NS
 		/**
 		* Get the activity template of the activity
 		**/
-		class ActivityTemplate* getActivityTemplate() const;
+		DLL_IMPORT_OR_EXPORT class ActivityTemplate* getActivityTemplate() const;
 
 		/**
 		* Get all objects which are either input or output of this acitivty
 		**/
-		std::vector<AbstractObject*> getResqmlObjectSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<AbstractObject*> getResqmlObjectSet() const;
 
-		static const char* XML_TAG;
-		std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const {return XML_TAG;}
 
-		std::vector<epc::Relationship> getAllSourceRelationships() const;
-		std::vector<epc::Relationship> getAllTargetRelationships() const;
+		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllSourceRelationships() const;
+		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllTargetRelationships() const;
 	};
 }

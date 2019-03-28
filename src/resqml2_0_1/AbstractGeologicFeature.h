@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractGeologicFeature : public RESQML2_NS::AbstractFeature
+	class AbstractGeologicFeature : public RESQML2_NS::AbstractFeature
 	{
 	protected:
 
@@ -40,9 +40,7 @@ namespace RESQML2_0_1_NS
 		AbstractGeologicFeature(gsoap_resqml2_0_1::resqml2__AbstractGeologicFeature* fromGsoap) : RESQML2_NS::AbstractFeature(fromGsoap) {}
 
 	public:
-
 		virtual ~AbstractGeologicFeature() {}
-
 	};
 }
 

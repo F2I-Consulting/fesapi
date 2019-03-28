@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT PointSetRepresentation : public RESQML2_NS::AbstractRepresentation
+	class PointSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	private :
 		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const;
@@ -56,25 +56,25 @@ namespace RESQML2_0_1_NS
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/**
 		* Get the xyz point count in a given patch.
 		*/
-		ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 
 		/**
 		* Get all the XYZ points of a particular patch of this representation.
 		* XYZ points are given in the local CRS.
 		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
 		*/
-		void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
 
 		/**
 		 * Get the number of triangle patch
 		 */
-		unsigned int getPatchCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const;
 
 		/**
 		* Push back a new patch of polylines
@@ -82,9 +82,8 @@ namespace RESQML2_0_1_NS
 		* @param xyzPoints		The XYZ values of the points of the patch. Ordered by XYZ and then by xyzPointCount. It must be three times xyzPointCount.
 		* @param proxy			The HDF proxy which defines where the XYZ points will be stored.
 		*/
-		void pushBackGeometryPatch(
+		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
 				const unsigned int & xyzPointCount, double * xyzPoints,
 				COMMON_NS::AbstractHdfProxy* proxy);
 	};
 }
-

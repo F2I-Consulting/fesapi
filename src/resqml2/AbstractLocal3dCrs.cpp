@@ -45,7 +45,7 @@ vector<Relationship> AbstractLocal3dCrs::getAllSourceRelationships() const
 	vector<Relationship> result;
 
 	// Geometry/Representation set
-	for (size_t i = 0; i < repSet.size(); i++)
+	for (size_t i = 0; i < repSet.size(); ++i)
 	{
 		Relationship rel(repSet[i]->getPartNameInEpcDocument(), "", repSet[i]->getUuid());
 		rel.setSourceObjectType();
@@ -53,7 +53,7 @@ vector<Relationship> AbstractLocal3dCrs::getAllSourceRelationships() const
 	}
 
 	// MD information set
-	for (size_t i = 0; i < mdDatumSet.size(); i++)
+	for (size_t i = 0; i < mdDatumSet.size(); ++i)
 	{
 		Relationship rel(mdDatumSet[i]->getPartNameInEpcDocument(), "", mdDatumSet[i]->getUuid());
 		rel.setSourceObjectType();
@@ -63,7 +63,7 @@ vector<Relationship> AbstractLocal3dCrs::getAllSourceRelationships() const
 	return result;
 }
 
-void AbstractLocal3dCrs::convertXyzPointsToGlobalCrs(double * xyzPoints, const ULONG64 & xyzPointCount, bool withoutTranslation) const
+void AbstractLocal3dCrs::convertXyzPointsToGlobalCrs(double * xyzPoints, ULONG64 xyzPointCount, bool withoutTranslation) const
 {
 	ULONG64 coordinateCount = xyzPointCount * 3;
 
@@ -80,9 +80,9 @@ void AbstractLocal3dCrs::convertXyzPointsToGlobalCrs(double * xyzPoints, const U
 
 	if (!withoutTranslation)
 	{
-		double originOrdinal1 = getOriginOrdinal1();
-		double originOrdinal2 = getOriginOrdinal2();
-		double originOrdinal3 = getZOffset();
+		const double originOrdinal1 = getOriginOrdinal1();
+		const double originOrdinal2 = getOriginOrdinal2();
+		const double originOrdinal3 = getZOffset();
 		if (originOrdinal1 == .0 && originOrdinal2 == .0 && originOrdinal3 == .0)
 			return;
 
@@ -303,7 +303,7 @@ gsoap_resqml2_0_1::eml20__AxisOrder2d AbstractLocal3dCrs::getAxisOrder() const
 	}
 }
 
-void AbstractLocal3dCrs::setAxisOrder(const gsoap_resqml2_0_1::eml20__AxisOrder2d & axisOrder) const
+void AbstractLocal3dCrs::setAxisOrder(gsoap_resqml2_0_1::eml20__AxisOrder2d axisOrder) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		static_cast<gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs*>(gsoapProxy2_0_1)->ProjectedAxisOrder = axisOrder;

@@ -27,7 +27,7 @@ namespace RESQML2_NS
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT Activity : public RESQML2_NS::Activity
+	class Activity : public RESQML2_NS::Activity
 	{
 	protected:
 		Activity() : RESQML2_NS::Activity() {}
@@ -53,67 +53,67 @@ namespace RESQML2_0_1_NS
 		* Push back a double parameter in the instance.
 		* This parameter must exist in the associated activity template.
 		*/
-		void pushBackParameter(const std::string title,
+		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
 			const double & value, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom = gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc);
 
 		/**
 		* Push back a string parameter in the instance.
 		* This parameter must exist in the associated activity template.
 		*/
-		void pushBackParameter(const std::string title,
+		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
 			const std::string & value);
 
 		/**
 		* Push back an integer parameter in the instance.
 		* This parameter must exist in the associated activity template.
 		*/
-		void pushBackParameter(const std::string title,
+		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
 			const LONG64 & value);
 
 		/**
 		* Push back a resqml object parameter in the instance.
 		* This parameter must exist in the associated activity template.
 		*/
-		void pushBackParameter(const std::string title,
+		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
 			AbstractObject* resqmlObject);
 		
 		/**
 		* Get the count of all the parameters
 		*/
-		unsigned int getParameterCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getParameterCount() const;
 
 		/**
 		* Get the count of all the parameters which have got the same title.
 		*/
-		unsigned int getParameterCount(const std::string & paramTitle) const;
-		const std::string & getParameterTitle(const unsigned int & index) const;
-		std::vector<unsigned int> getParameterIndexOfTitle(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getParameterCount(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT const std::string & getParameterTitle(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT std::vector<unsigned int> getParameterIndexOfTitle(const std::string & paramTitle) const;
 
-		bool isAFloatingPointQuantityParameter(const std::string & paramTitle) const;
-		bool isAFloatingPointQuantityParameter(const unsigned int & index) const;
-		std::vector<double> getFloatingPointQuantityParameterValue(const std::string & paramTitle) const;
-		double getFloatingPointQuantityParameterValue(const unsigned int & index) const;
-		std::vector<gsoap_resqml2_0_1::resqml2__ResqmlUom> getFloatingPointQuantityParameterUom(const std::string & paramTitle) const;
-		gsoap_resqml2_0_1::resqml2__ResqmlUom getFloatingPointQuantityParameterUom(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT bool isAFloatingPointQuantityParameter(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT bool isAFloatingPointQuantityParameter(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT std::vector<double> getFloatingPointQuantityParameterValue(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT double getFloatingPointQuantityParameterValue(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT std::vector<gsoap_resqml2_0_1::resqml2__ResqmlUom> getFloatingPointQuantityParameterUom(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__ResqmlUom getFloatingPointQuantityParameterUom(const unsigned int & index) const;
 
-		bool isAnIntegerQuantityParameter(const std::string & paramTitle) const;
-		bool isAnIntegerQuantityParameter(const unsigned int & index) const;
-		std::vector<LONG64> getIntegerQuantityParameterValue(const std::string & paramTitle) const;
-		LONG64 getIntegerQuantityParameterValue(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT bool isAnIntegerQuantityParameter(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT bool isAnIntegerQuantityParameter(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT std::vector<LONG64> getIntegerQuantityParameterValue(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT LONG64 getIntegerQuantityParameterValue(const unsigned int & index) const;
 
-		bool isAStringParameter(const std::string & paramTitle) const;
-		bool isAStringParameter(const unsigned int & index) const;
-		std::vector<std::string> getStringParameterValue(const std::string & paramTitle) const;
-		const std::string & getStringParameterValue(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT bool isAStringParameter(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT bool isAStringParameter(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT std::vector<std::string> getStringParameterValue(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT const std::string & getStringParameterValue(const unsigned int & index) const;
 
-		bool isAResqmlObjectParameter(const std::string & paramTitle) const;
-		bool isAResqmlObjectParameter(const unsigned int & index) const;
-		std::vector<AbstractObject*> getResqmlObjectParameterValue(const std::string & paramTitle) const;
-		AbstractObject* getResqmlObjectParameterValue(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT bool isAResqmlObjectParameter(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT bool isAResqmlObjectParameter(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT std::vector<AbstractObject*> getResqmlObjectParameterValue(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT AbstractObject* getResqmlObjectParameterValue(const unsigned int & index) const;
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getActivityTemplateDor() const;
 
-		std::string getResqmlVersion() const;
+		DLL_IMPORT_OR_EXPORT std::string getResqmlVersion() const;
 
 		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
 

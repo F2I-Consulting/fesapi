@@ -40,13 +40,6 @@ void AbstractFeatureInterpretationTest::readEpcDoc()
 
 	// remark: following REQUIRE directives are not redundant with "cascade testing" since they cover the partial reference case.
 	AbstractFeatureInterpretation* interpretation = static_cast<AbstractFeatureInterpretation*>(epcDoc->getDataObjectByUuid(this->uuid));
-	REQUIRE( interpretation->getInterpretedFeature()->getUuid() == this->uuidFeature );
-	REQUIRE( interpretation->getInterpretedFeature()->getTitle() == this->titleFeature );
-
-	// partial case handling
-	if (interpretation->getInterpretedFeature()->getGsoapProxy() == nullptr)
-		REQUIRE( interpretation->getInterpretedFeature()->isPartial() );
-	else
-		REQUIRE_FALSE( interpretation->getInterpretedFeature()->isPartial() );
+	REQUIRE( interpretation->getInterpretedFeature()->getUuid() == uuidFeature );
+	REQUIRE( interpretation->getInterpretedFeature()->getTitle() == titleFeature );
 }
-

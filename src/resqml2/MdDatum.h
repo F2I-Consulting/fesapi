@@ -28,7 +28,7 @@ namespace RESQML2_0_1_NS
 
 namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT MdDatum : public COMMON_NS::AbstractObject
+	class MdDatum : public COMMON_NS::AbstractObject
 	{
 	protected :
 
@@ -68,18 +68,18 @@ namespace RESQML2_NS
 		*/
 		virtual ~MdDatum() {}
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/**
 		* Set the local CR Swhere the reference point ordinals are given
 		*/
-		void setLocalCrs(class AbstractLocal3dCrs * localCrs);
+		DLL_IMPORT_OR_EXPORT void setLocalCrs(class AbstractLocal3dCrs * localCrs);
 
 		/**
 		* Get the Local 3d CRS where the reference point ordinals are given
 		*/
-		class AbstractLocal3dCrs * getLocalCrs() const;
+		DLL_IMPORT_OR_EXPORT class AbstractLocal3dCrs * getLocalCrs() const;
 
 		/**
 		* Get the Local 3d CRS dor where the reference point ordinals are given
@@ -89,30 +89,30 @@ namespace RESQML2_NS
 		/**
 		* Get the Local 3d CRS uuid where the reference point ordinals are given
 		*/
-		std::string getLocalCrsUuid() const;
+		DLL_IMPORT_OR_EXPORT std::string getLocalCrsUuid() const;
 
 		/**
 		* Getter of the first ordinal of the reference location.
 		*/
-		virtual double getX() const = 0;
-		virtual double getXInGlobalCrs() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual double getX() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual double getXInGlobalCrs() const = 0;
 
 		/**
 		* Getter of the second ordinal of the reference location.
 		*/
-		virtual double getY() const = 0;
-		virtual double getYInGlobalCrs() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual double getY() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual double getYInGlobalCrs() const = 0;
 
 		/**
 		* Getter of the third ordinal of the reference location.
 		*/
-		virtual double getZ() const = 0;
-		virtual double getZInGlobalCrs() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual double getZ() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual double getZInGlobalCrs() const = 0;
 
 		/**
 		* Getter of the origin kind of the MD.
 		*/
-		virtual gsoap_resqml2_0_1::resqml2__MdReference getOriginKind() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::resqml2__MdReference getOriginKind() const = 0;
 
 		std::vector<epc::Relationship> getAllSourceRelationships() const;
 		std::vector<epc::Relationship> getAllTargetRelationships() const;
