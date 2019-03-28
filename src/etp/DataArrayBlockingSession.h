@@ -27,6 +27,7 @@ namespace ETP_NS
 	class DLL_IMPORT_OR_EXPORT DataArrayBlockingSession : public ETP_NS::AbstractSession
 	{
 	private:
+		websocket::stream<tcp::socket> ws;
 	    tcp::resolver resolver;
 	    std::string host;
 	    std::string port;
@@ -45,6 +46,10 @@ namespace ETP_NS
 				const std::string & host, const std::string & port, const std::string & target);
 
 		virtual ~DataArrayBlockingSession() {}
+
+		boost::asio::io_context& getIoContext() {
+			return ws.get_executor().context();
+		}
 
 		void run();
 

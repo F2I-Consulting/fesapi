@@ -148,11 +148,7 @@ public:
 	FileContentType		fileContentType;											/// ContentTypes file
 	FileRelationship	filePrincipalRelationship;									/// Relationships file
 	PartMap				allFileParts;												/// Set of parts file
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	unordered_map< string, string >			extendedCoreProperties;					/// Set of non standard (extended) core properties
-#else
-	tr1::unordered_map< string, string >			extendedCoreProperties;					/// Set of non standard (extended) core properties
-#endif
 	string				pathName;													/// Pathname of package
 	unzFile				unzipped;
 	zipFile             zf;
@@ -539,12 +535,7 @@ void Package::writePackage()
 		oss << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" << endl;
 
 		// content
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-		for (std::unordered_map< std::string, std::string >::iterator it = d_ptr->extendedCoreProperties.begin(); it != d_ptr->extendedCoreProperties.end(); ++it)
-#else
-		for (std::tr1::unordered_map< std::string, std::string >::iterator it = d_ptr->extendedCoreProperties.begin(); it != d_ptr->extendedCoreProperties.end(); ++it)
-#endif
-		{
+		for (std::unordered_map< std::string, std::string >::iterator it = d_ptr->extendedCoreProperties.begin(); it != d_ptr->extendedCoreProperties.end(); ++it) {
 			oss << "\t<" << it->first << ">" + it->second + "</" + it->first + ">" << endl;
 		}
 

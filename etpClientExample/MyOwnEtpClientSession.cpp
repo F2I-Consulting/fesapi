@@ -16,6 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
+#include "MyOwnEtpClientSession.h"
 
 #include "MyOwnCoreProtocolHandlers.h"
 #include "MyOwnDiscoveryProtocolHandlers.h"
@@ -26,7 +27,7 @@ MyOwnEtpClientSession::MyOwnEtpClientSession(boost::asio::io_context& ioc,
 		const std::string & host, const std::string & port, const std::string & target,
 		const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 		const std::vector<std::string>& supportedObjects)
-	: ETP_NS::ClientSession(ioc, host, port, target, requestedProtocols, supportedObjects)
+	: ETP_NS::PlainClientSession(ioc, host, port, target, requestedProtocols, supportedObjects)
 {
 	setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(this));
 	setDiscoveryProtocolHandlers(std::make_shared<MyOwnDiscoveryProtocolHandlers>(this));

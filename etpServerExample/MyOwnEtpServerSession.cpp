@@ -29,7 +29,7 @@ using namespace std;
 const char* MyOwnEtpServerSession::epcFileName = "../../testingPackageCpp.epc";
 
 MyOwnEtpServerSession::MyOwnEtpServerSession(tcp::socket socket)
-	: ETP_NS::ServerSession(std::move(socket))
+	: ETP_NS::PlainServerSession(std::move(socket))
 {
 	setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(this));
 	setDiscoveryProtocolHandlers(std::make_shared<MyOwnDiscoveryProtocolHandlers>(this));

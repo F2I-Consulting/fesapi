@@ -28,7 +28,7 @@ using namespace ETP_NS;
 
 DataArrayBlockingSession::DataArrayBlockingSession(boost::asio::io_context& ioc,
 		const std::string & host, const std::string & port,  const std::string & target)
-	: AbstractSession(ioc),
+	: ws(ioc),
 	  resolver(ioc),
 	  host(host),
 	  port(port),

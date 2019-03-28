@@ -18,11 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/ClientSession.h"
+#include "etp/PlainClientSession.h"
 
 #include "common/EpcDocument.h"
 
-class MyOwnEtpClientSession : public ETP_NS::ClientSession
+class MyOwnEtpClientSession : public ETP_NS::PlainClientSession
 {
 public:
 

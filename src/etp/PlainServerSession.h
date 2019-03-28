@@ -18,15 +18,21 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/PlainServerSession.h"
+#include "etp/AbstractServerSession.h"
 
-#include "common/AbstractObject.h"
-
-class MyOwnEtpServerSession : public ETP_NS::PlainServerSession
+namespace ETP_NS
 {
-public:
-	static const char* epcFileName;
+	class PlainServerSession : public AbstractServerSession<PlainServerSession>
+	{
+	private:
+		websocket::stream<tcp::socket> ws_;
 
-	MyOwnEtpServerSession(tcp::socket socket);
-	~MyOwnEtpServerSession();
-};
+	public:
+		DLL_IMPORT_OR_EXPORT PlainServerSession(tcp::socket socket);
+
+		virtual ~PlainServerSession() {}
+
+		// Called by the base class
+		DLL_IMPORT_OR_EXPORT websocket::stream<tcp::socket>& ws() { return ws_; }
+	};
+}

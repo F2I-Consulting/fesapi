@@ -16,9 +16,6 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
-
-
 #ifndef PACKAGE_H
 #define PACKAGE_H
 
@@ -40,11 +37,7 @@ namespace epc
 		class CheshireCat;               // Not defined here but in the cpp
 		CheshireCat * d_ptr;              // opaque pointer
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		typedef std::unordered_map<std::string, FilePart> PartMap;
-#else
-		typedef std::tr1::unordered_map<std::string, FilePart> PartMap;
-#endif
 
 		/**
 		* This method allows to write a string content to a non existing part of the package.

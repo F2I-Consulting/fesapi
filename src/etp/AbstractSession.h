@@ -60,23 +60,17 @@ namespace {
 
 namespace ETP_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractSession : public std::enable_shared_from_this<AbstractSession>
+	class AbstractSession : public std::enable_shared_from_this<AbstractSession>
 	{
 	protected:
-	    websocket::stream<tcp::socket> ws;
 		boost::beast::flat_buffer receivedBuffer;
 	    long long messageId = 1;
 	    std::vector<std::shared_ptr<ETP_NS::ProtocolHandlers>> protocolHandlers;
-	    bool webSocketSessionClosed; // open with the websocket handshakr
+	    bool webSocketSessionClosed; // open with the websocket handshake
 		bool etpSessionClosed; // open with the requestSession and openSession message
 		std::vector<std::vector<uint8_t> > sendingQueue;
 
-	    // For client session
-	    AbstractSession(boost::asio::io_context& ioc) : ws(ioc), webSocketSessionClosed(true), etpSessionClosed(true) {
-	    	setCoreProtocolHandlers(std::make_shared<CoreHandlers>(this));
-	    }
-	    // For server session
-	    AbstractSession(tcp::socket socket) : ws(std::move(socket)), webSocketSessionClosed(true), etpSessionClosed(true) {
+	    AbstractSession() : webSocketSessionClosed(true), etpSessionClosed(true) {
 	    	setCoreProtocolHandlers(std::make_shared<CoreHandlers>(this));
 	    }
 
@@ -128,9 +122,7 @@ namespace ETP_NS
 
 		virtual ~AbstractSession() {}
 
-		boost::asio::io_context& getIoContext() {
-			return ws.get_executor().context();
-		}
+		virtual boost::asio::io_context& getIoContext() = 0;
 
 		void flushReceivingBuffer() {
 			receivedBuffer.consume(receivedBuffer.size());
@@ -139,7 +131,7 @@ namespace ETP_NS
 		/**
 		 * Set the Core protocol handlers
 		 */
-	    void setCoreProtocolHandlers(std::shared_ptr<CoreHandlers> coreHandlers) {
+		DLL_IMPORT_OR_EXPORT void setCoreProtocolHandlers(std::shared_ptr<CoreHandlers> coreHandlers) {
 	    	if (protocolHandlers.empty()) {
 	    		protocolHandlers.push_back(coreHandlers);
 	    	}
@@ -151,14 +143,14 @@ namespace ETP_NS
 	    /**
 		 * Set the Discovery protocol handlers
 		 */
-		void setDiscoveryProtocolHandlers(std::shared_ptr<DiscoveryHandlers> discoveryHandlers) {
+		DLL_IMPORT_OR_EXPORT void setDiscoveryProtocolHandlers(std::shared_ptr<DiscoveryHandlers> discoveryHandlers) {
 			while (protocolHandlers.size() < Energistics::Etp::v12::Datatypes::Protocol::Discovery + 1) {
 				protocolHandlers.push_back(nullptr);
 			}
 			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::Discovery] = discoveryHandlers;
 		}
 
-		std::shared_ptr<ETP_NS::ProtocolHandlers> getDiscoveryProtocolHandlers() {
+		DLL_IMPORT_OR_EXPORT std::shared_ptr<ETP_NS::ProtocolHandlers> getDiscoveryProtocolHandlers() {
 			return protocolHandlers.size() > Energistics::Etp::v12::Datatypes::Protocol::Discovery ?
 				protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::Discovery] :
 				nullptr;
@@ -167,7 +159,7 @@ namespace ETP_NS
 		/**
 		 * Set the Store protocol handlers
 		 */
-		void setStoreProtocolHandlers(std::shared_ptr<StoreHandlers> storeHandlers) {
+		DLL_IMPORT_OR_EXPORT void setStoreProtocolHandlers(std::shared_ptr<StoreHandlers> storeHandlers) {
 			while (protocolHandlers.size() < Energistics::Etp::v12::Datatypes::Protocol::Store + 1) {
 				protocolHandlers.push_back(nullptr);
 			}
@@ -177,14 +169,14 @@ namespace ETP_NS
 		/**
 		 * Set the Data Array protocol handlers
 		 */
-		void setDataArrayProtocolHandlers(std::shared_ptr<DataArrayHandlers> dataArrayHandlers) {
+		DLL_IMPORT_OR_EXPORT void setDataArrayProtocolHandlers(std::shared_ptr<DataArrayHandlers> dataArrayHandlers) {
 			while (protocolHandlers.size() < Energistics::Etp::v12::Datatypes::Protocol::DataArray + 1) {
 				protocolHandlers.push_back(nullptr);
 			}
 			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::DataArray] = dataArrayHandlers;
 		}
 
-		void close();
+		DLL_IMPORT_OR_EXPORT void close();
 
 		/**
 		 * Create a default ETP message header from the ETP message body.
@@ -203,7 +195,7 @@ namespace ETP_NS
 			return messageId;
 		}
 
-		void sendCloseFrame() {
+		DLL_IMPORT_OR_EXPORT void sendCloseFrame() {
 			std::vector<uint8_t> empty;
 			sendingQueue.push_back(empty);
 
@@ -225,7 +217,7 @@ namespace ETP_NS
 		/**
 		 * This method is called each time a message is received on the web socket
 		 */
-		void on_read(boost::system::error_code ec, std::size_t bytes_transferred);
+		DLL_IMPORT_OR_EXPORT void on_read(boost::system::error_code ec, std::size_t bytes_transferred);
 
 		void on_write(boost::system::error_code ec, std::size_t bytes_transferred) {
 			if(ec) {
@@ -252,12 +244,12 @@ namespace ETP_NS
 			webSocketSessionClosed = true;
 		}
 
-		bool validateUri(const std::string & uri, bool sendException = false);
-		bool validateDataObjectUri(const std::string & uri, bool sendException = false);
+		DLL_IMPORT_OR_EXPORT bool validateUri(const std::string & uri, bool sendException = false);
+		DLL_IMPORT_OR_EXPORT bool validateDataObjectUri(const std::string & uri, bool sendException = false);
 
-		bool isWebSocketSessionClosed() const { return webSocketSessionClosed;  }
+		DLL_IMPORT_OR_EXPORT bool isWebSocketSessionClosed() const { return webSocketSessionClosed;  }
 
-		void setEtpSessionClosed(bool etpSessionClosed) { this->etpSessionClosed = etpSessionClosed; }
-		bool isEtpSessionClosed() const { return webSocketSessionClosed || etpSessionClosed; }
+		DLL_IMPORT_OR_EXPORT void setEtpSessionClosed(bool etpSessionClosed) { this->etpSessionClosed = etpSessionClosed; }
+		DLL_IMPORT_OR_EXPORT bool isEtpSessionClosed() const { return webSocketSessionClosed || etpSessionClosed; }
 	};
 }

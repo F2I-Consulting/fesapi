@@ -190,10 +190,6 @@ if (WITH_ETP)
 		message(WARNING "The BOOST library (BOOST_SYSTEM_LIBRARY variable) does not look to be a valid file. Please modify it.")
 	endif ()
 	
-	if (WITH_ETP_SSL)
-		find_package (OpenSSL)
-	endif ()
-	
 	add_subdirectory (etpClientExample)
 	add_subdirectory (etpServerExample)
 endif (WITH_ETP)

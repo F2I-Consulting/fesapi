@@ -131,6 +131,12 @@ endif (WIN32)
 
 if (WITH_ETP)
 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${BOOST_SYSTEM_LIBRARY} ${CMAKE_THREAD_LIBS_INIT} ${AVRO_LIBRARY_RELEASE})
+	if (WITH_ETP_SSL)
+		if (NOT TARGET OpenSSL::SSL OR NOT TARGET OpenSSL::Crypto)
+			find_package(OpenSSL REQUIRED)
+		endif()
+		target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+	endif ()
 endif (WITH_ETP)
 
 # ============================================================================
@@ -207,6 +213,17 @@ if (WITH_ETP)
 		${FESAPI_ETP_HEADERS}	
 		${FESAPI_ETP_PROTOCOL_HEADERS}	
 	)
+	
+	if (WITH_ETP_SSL)
+		file (GLOB FESAPI_ETP_SSL_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/etp/ssl/*.cpp)
+		file (GLOB FESAPI_ETP_SSL_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/etp/ssl/*.h)
+		
+		set (ALL_SOURCES_AND_HEADERS
+			${ALL_SOURCES_AND_HEADERS}
+			${FESAPI_ETP_SSL_SOURCES}
+			${FESAPI_ETP_SSL_HEADERS}
+		)
+	endif ()
 endif (WITH_ETP)
 
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${ALL_SOURCES_AND_HEADERS})
@@ -252,6 +269,9 @@ if (WIN32)
 	if (WITH_ETP)
 		source_group ("${ETP_PREFIX}" FILES ${FESAPI_ETP_SOURCES} ${FESAPI_ETP_HEADERS})
 		source_group ("${ETP_PREFIX}\\ProtocolHandlers" FILES ${FESAPI_ETP_PROTOCOL_SOURCES} ${FESAPI_ETP_PROTOCOL_HEADERS})
+		if (WITH_ETP_SSL)
+			source_group ("${ETP_PREFIX}\\ssl" FILES ${FESAPI_ETP_SSL_SOURCES} ${FESAPI_ETP_SSL_HEADERS})
+		endif ()
 	endif (WITH_ETP)
 	
 endif (WIN32)

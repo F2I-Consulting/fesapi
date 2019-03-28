@@ -18,15 +18,28 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/PlainServerSession.h"
+#include "etp/AbstractServerSession.h"
 
-#include "common/AbstractObject.h"
+#if BOOST_VERSION < 107000
+#include <boost/beast/experimental/core/ssl_stream.hpp>
+#else
+#include <boost/beast/ssl.hpp>
+#include <boost/beast/websocket/ssl.hpp>
+#endif
 
-class MyOwnEtpServerSession : public ETP_NS::PlainServerSession
+namespace ETP_NS
 {
-public:
-	static const char* epcFileName;
+	class SslServerSession : public AbstractServerSession<SslServerSession>
+	{
+	private:
+		websocket::stream<boost::beast::ssl_stream<tcp::socket>> ws_;
 
-	MyOwnEtpServerSession(tcp::socket socket);
-	~MyOwnEtpServerSession();
-};
+	public:
+		DLL_IMPORT_OR_EXPORT SslServerSession(boost::beast::ssl_stream<tcp::socket> stream);
+
+		virtual ~SslServerSession() {}
+
+		// Called by the base class
+		DLL_IMPORT_OR_EXPORT websocket::stream<boost::beast::ssl_stream<tcp::socket>>& ws() { return ws_; }
+	};
+}

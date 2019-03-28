@@ -16,17 +16,14 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#pragma once
 
 #include "etp/PlainServerSession.h"
 
-#include "common/AbstractObject.h"
+using namespace ETP_NS;
 
-class MyOwnEtpServerSession : public ETP_NS::PlainServerSession
+PlainServerSession::PlainServerSession(tcp::socket socket)
+	: AbstractServerSession<PlainServerSession>(socket.get_executor().context()),
+	ws_(std::move(socket))
 {
-public:
-	static const char* epcFileName;
-
-	MyOwnEtpServerSession(tcp::socket socket);
-	~MyOwnEtpServerSession();
-};
+	ws_.binary(true);
+}

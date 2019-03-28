@@ -16,17 +16,18 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#pragma once
 
-#include "etp/PlainServerSession.h"
+#include "etp/PlainClientSession.h"
 
-#include "common/AbstractObject.h"
+using namespace ETP_NS;
 
-class MyOwnEtpServerSession : public ETP_NS::PlainServerSession
+PlainClientSession::PlainClientSession(boost::asio::io_context& ioc,
+	const std::string & host, const std::string & port, const std::string & target,
+	const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
+	const std::vector<std::string>& supportedObjects)
+	: AbstractClientSession<PlainClientSession>(ioc, host, port, target,
+		requestedProtocols, supportedObjects),
+		ws_(ioc)
 {
-public:
-	static const char* epcFileName;
-
-	MyOwnEtpServerSession(tcp::socket socket);
-	~MyOwnEtpServerSession();
-};
+	ws_.binary(true);
+}

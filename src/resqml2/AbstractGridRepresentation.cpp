@@ -68,8 +68,6 @@ vector<Relationship> AbstractGridRepresentation::getAllSourceRelationships() con
 {
 	vector<Relationship> result = AbstractRepresentation::getAllSourceRelationships();
 	
-	gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
-	
 	for (size_t i = 0; i < gridConnectionSetRepresentationSet.size(); ++i) {
 		Relationship relRep(gridConnectionSetRepresentationSet[i]->getPartNameInEpcDocument(), "", gridConnectionSetRepresentationSet[i]->getUuid());
 		relRep.setSourceObjectType();

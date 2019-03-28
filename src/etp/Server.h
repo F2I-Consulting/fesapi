@@ -19,7 +19,9 @@ under the License.
 #pragma once
 
 #include <boost/asio/ip/tcp.hpp>
+#include <boost/asio/signal_set.hpp>
 #include <thread>
+#include <stdexcept>
 
 #include "etp/ServerSession.h"
 
@@ -37,36 +39,42 @@ namespace ETP_NS
 		{
 			tcp::acceptor acceptor_;
 			tcp::socket socket_;
+#ifdef WITH_ETP_SSL
+			boost::asio::ssl::context& ctx_;
+#endif
 
 		public:
 			listener(
 				boost::asio::io_context& ioc,
-				tcp::endpoint endpoint) :
-				  acceptor_(ioc)
+#ifdef WITH_ETP_SSL
+				ssl::context& ctx,
+#endif
+				tcp::endpoint endpoint)
+				: acceptor_(ioc)
+#ifdef WITH_ETP_SSL
+				, ctx_(ctx)
+#endif
 				, socket_(ioc)
 			{
-				boost::system::error_code ec;
+				boost::beast::error_code ec;
 
 				// Open the acceptor
 				acceptor_.open(endpoint.protocol(), ec);
-				if(ec)
-				{
+				if(ec) {
 					std::cerr << "listener open : " << ec.message() << std::endl;
 					return;
 				}
 
 				// Allow address reuse
-				acceptor_.set_option(boost::asio::socket_base::reuse_address(true));
-				if(ec)
-				{
+				acceptor_.set_option(boost::asio::socket_base::reuse_address(true), ec);
+				if(ec) {
 					std::cerr << "listener set_option : " << ec.message() << std::endl;
 					return;
 				}
 
 				// Bind to the server address
 				acceptor_.bind(endpoint, ec);
-				if(ec)
-				{
+				if(ec) {
 					std::cerr << "listener bind : " << ec.message() << std::endl;
 					return;
 				}
@@ -74,25 +82,19 @@ namespace ETP_NS
 				// Start listening for connections
 				acceptor_.listen(
 					boost::asio::socket_base::max_listen_connections, ec);
-				if(ec)
-				{
+				if(ec) {
 					std::cerr << "listener listen : " << ec.message() << std::endl;
 					return;
 				}
 			}
 
 			// Start accepting incoming connections
-			void
-			run()
-			{
-				if(! acceptor_.is_open())
-					return;
+			void run() {
+				if (!acceptor_.is_open()) { return; }
 				do_accept();
 			}
 
-			void
-			do_accept()
-			{
+			void do_accept() {
 				acceptor_.async_accept(
 					socket_,
 					std::bind(
@@ -101,14 +103,11 @@ namespace ETP_NS
 						std::placeholders::_1));
 			}
 
-			void on_accept(boost::system::error_code ec)
-			{
-				if(ec)
-				{
+			void on_accept(boost::system::error_code ec) {
+				if(ec) {
 					std::cerr << "listener on_accept : " << ec.message() << std::endl;
 				}
-				else
-				{
+				else {
 					// Create the session and run it
 					std::make_shared<T>(std::move(socket_))->run();
 				}
@@ -123,16 +122,41 @@ namespace ETP_NS
 
 		void listen(const std::string & host, unsigned short port, int threadCount) {
 			if (threadCount < 1) {
-				std::cerr << "You need to run your server on at least one thread." << std::endl;
-				return;
+				throw std::invalid_argument("You need to run your server on at least one thread.");
 			}
+			auto const address = boost::asio::ip::make_address(host);
 
 	    	// The io_context is required for all I/O
 			boost::asio::io_context ioc{threadCount};
 
+#ifdef WITH_ETP_SSL
+			// The SSL context is required, and holds certificates
+			boost::asio::ssl::context ctx{ boost::asio::ssl::context::sslv23 };
+
+			// This holds the self-signed certificate used by the server
+			load_server_certificate(ctx);
+
 			// Create and launch a listening port
-			auto const address = boost::asio::ip::make_address(host);
-			std::make_shared<Server::listener>(ioc, tcp::endpoint{address, port})->run();
+			std::make_shared<listener>(
+				ioc,
+				ctx,
+				tcp::endpoint{ address, port },
+				doc_root)->run();
+#else
+			// Create and launch a listening port
+			std::make_shared<Server::listener>(ioc, tcp::endpoint{ address, port })->run();
+#endif
+
+			// Capture SIGINT and SIGTERM to perform a clean shutdown
+			boost::asio::signal_set signals(ioc, SIGINT, SIGTERM);
+			signals.async_wait(
+				[&](boost::beast::error_code const&, int)
+			{
+				// Stop the `io_context`. This will cause `run()`
+				// to return immediately, eventually destroying the
+				// `io_context` and all of the sockets in it.
+				ioc.stop();
+			});
 
 			// Run the I/O service on the requested number of threads
 			std::vector<std::thread> v;
