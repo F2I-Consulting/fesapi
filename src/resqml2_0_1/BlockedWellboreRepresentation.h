@@ -27,7 +27,7 @@ namespace RESQML2_NS
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT BlockedWellboreRepresentation : public WellboreFrameRepresentation
+	class BlockedWellboreRepresentation : public WellboreFrameRepresentation
 	{
 	private:
 		void init(const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation * traj);
@@ -59,8 +59,8 @@ namespace RESQML2_0_1_NS
 		*/
 		~BlockedWellboreRepresentation() {}
         
-		static const char* XML_TAG;
-		std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const {return XML_TAG;}
 	
 		/**
 		* Set all information about the intersected grid cells. You must first provide MD values of the frame before to use this method.
@@ -72,34 +72,34 @@ namespace RESQML2_0_1_NS
 		* @param localFacePairPerCellIndicesNullValue	The null value used in localFacePerCellIndices in order to indicate that it corresponds to a missing intersection, e.g., when a trajectory originates or terminates within a cell.
 		* @param hdfProxy								The hdf proxy where the numerical values will be stored.
 		*/
-		void setIntevalGridCells(unsigned int * gridIndices, unsigned int gridIndicesNullValue, unsigned int cellCount, ULONG64* cellIndices, unsigned char* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, COMMON_NS::AbstractHdfProxy * hdfProxy);
+		DLL_IMPORT_OR_EXPORT void setIntevalGridCells(unsigned int * gridIndices, unsigned int gridIndicesNullValue, unsigned int cellCount, ULONG64* cellIndices, unsigned char* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, COMMON_NS::AbstractHdfProxy * hdfProxy);
 
 		/**
 		* The number of non-null entries in the grid indices array.
 		*/
-		ULONG64 getCellCount() const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getCellCount() const;
 
 		/**
 		* Size of array = IntervalCount on the wellbore frame rep. The grids (and there indices) are defined using pushBackSupportingGridRepresentation method.
 		* @return nullValue
 		*/
-		unsigned int getGridIndices(unsigned int * gridIndices) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getGridIndices(unsigned int * gridIndices) const;
 
 		/**
 		 * Pushes back a grid representation which is one of the support of this representation.
 		 * And push back this representation as a grid connection information of the grid representation as well.
 		 */
-		void pushBackSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep);
+		DLL_IMPORT_OR_EXPORT void pushBackSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep);
 		
 		/**
 		* Get the count of the supporting grid representations of this grid connection representation.
 		*/
-		unsigned int getSupportingGridRepresentationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getSupportingGridRepresentationCount() const;
 
 		/**
 		* Get the supporting grid representation located at a specific index of this blocked wellbore representation.
 		*/
-		RESQML2_NS::AbstractGridRepresentation* getSupportingGridRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractGridRepresentation* getSupportingGridRepresentation(unsigned int index) const;
 
 		/**
 		* Get the supporting grid representation dor located at a specific index of this blocked wellbore representation.
@@ -109,7 +109,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get the supporting grid representation uuid located at a specific index of this blocked wellbore representation.
 		*/
-		std::string getSupportingGridRepresentationUuid(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT std::string getSupportingGridRepresentationUuid(unsigned int index) const;
 
 	private:
 
@@ -117,4 +117,3 @@ namespace RESQML2_0_1_NS
 		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 	};
 }
-

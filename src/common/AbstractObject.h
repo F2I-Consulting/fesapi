@@ -24,7 +24,7 @@ under the License.
 
 namespace COMMON_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractObject
+	class AbstractObject
 	{
 	private:
 		static char citationFormat[];
@@ -65,12 +65,12 @@ namespace COMMON_NS
 		/**
 		* Get the key of a string value pair at a particular index in the extra metadata set
 		*/
-		std::string getExtraMetadataKeyAtIndexV2_0_1(const unsigned int & index) const;
+		std::string getExtraMetadataKeyAtIndexV2_0_1(unsigned int index) const;
 
 		/**
 		* Get the string value of a string value pair at a particular index in the extra metadata set
 		*/
-		std::string getExtraMetadataStringValueAtIndexV2_0_1(const unsigned int & index) const;
+		std::string getExtraMetadataStringValueAtIndexV2_0_1(unsigned int index) const;
 
 	protected:
 
@@ -157,41 +157,41 @@ namespace COMMON_NS
 		* A partial object just contains a mime type, an uuid and a title as a minimum amount of information.
 		* A partial object is never explicit in an EPC document : it is not a file.
 		*/
-		bool isPartial() const {return partialObject != nullptr;}
+		DLL_IMPORT_OR_EXPORT bool isPartial() const {return partialObject != nullptr;}
 
-		std::string getUuid() const;
-		std::string getTitle() const;
-		std::string getEditor() const;
-		time_t getCreation() const;
+		DLL_IMPORT_OR_EXPORT std::string getUuid() const;
+		DLL_IMPORT_OR_EXPORT std::string getTitle() const;
+		DLL_IMPORT_OR_EXPORT std::string getEditor() const;
+		DLL_IMPORT_OR_EXPORT time_t getCreation() const;
 		/**
 		* Use this method if you want to read some dates out of range of time_t
 		*/
-		tm getCreationAsTimeStructure() const;
-		std::string getOriginator() const;
-		std::string getDescription() const;
-		time_t getLastUpdate() const;
+		DLL_IMPORT_OR_EXPORT tm getCreationAsTimeStructure() const;
+		DLL_IMPORT_OR_EXPORT std::string getOriginator() const;
+		DLL_IMPORT_OR_EXPORT std::string getDescription() const;
+		DLL_IMPORT_OR_EXPORT time_t getLastUpdate() const;
 		/**
 		* Use this method if you want to read some dates out of range of time_t
 		*/
-		tm getLastUpdateAsTimeStructure() const;
-		std::string getFormat() const;
-		std::string getDescriptiveKeywords() const;
-		std::string getVersionString() const;
+		DLL_IMPORT_OR_EXPORT tm getLastUpdateAsTimeStructure() const;
+		DLL_IMPORT_OR_EXPORT std::string getFormat() const;
+		DLL_IMPORT_OR_EXPORT std::string getDescriptiveKeywords() const;
+		DLL_IMPORT_OR_EXPORT std::string getVersionString() const;
 
-		void setTitle(const std::string & title);
-		void setEditor(const std::string & editor);
-		void setCreation(const time_t & creation);
+		DLL_IMPORT_OR_EXPORT void setTitle(const std::string & title);
+		DLL_IMPORT_OR_EXPORT void setEditor(const std::string & editor);
+		DLL_IMPORT_OR_EXPORT void setCreation(const time_t & creation);
 		/**
 		* Use this method if you want to set some dates out of range of time_t
 		*/
-		void setCreation(const tm & creation);
-		void setOriginator(const std::string & originator);
-		void setDescription(const std::string & description);
-		void setLastUpdate(const time_t & lastUpdate);
+		DLL_IMPORT_OR_EXPORT void setCreation(const tm & creation);
+		DLL_IMPORT_OR_EXPORT void setOriginator(const std::string & originator);
+		DLL_IMPORT_OR_EXPORT void setDescription(const std::string & description);
+		DLL_IMPORT_OR_EXPORT void setLastUpdate(const time_t & lastUpdate);
 		/**
 		* Use this method if you want to set some dates out of range of time_t
 		*/
-		void setLastUpdate(const tm & lastUpdate);
+		DLL_IMPORT_OR_EXPORT void setLastUpdate(const tm & lastUpdate);
 		
 		/**
 		* Set the default citation format which is going to be written in each created object.
@@ -200,23 +200,23 @@ namespace COMMON_NS
 		* @param applicationName The application name which is exporting the RESQML objects
 		* @param applicationVersionNumber The application version number which is exporting the RESQML objects
 		*/
-		static void setFormat(const std::string & vendor, const std::string & applicationName, const std::string & applicationVersionNumber);
+		DLL_IMPORT_OR_EXPORT static void setFormat(const std::string & vendor, const std::string & applicationName, const std::string & applicationVersionNumber);
 
-		void setDescriptiveKeywords(const std::string & descriptiveKeywords);
-		void setVersionString(const std::string & versionString);
+		DLL_IMPORT_OR_EXPORT void setDescriptiveKeywords(const std::string & descriptiveKeywords);
+		DLL_IMPORT_OR_EXPORT void setVersionString(const std::string & versionString);
 
 		/**
 		* Set a title and other common metadata for the resqml instance. Set to empty string or zero if you don't want to use.
 		* @param title				The title to set to the resqml instance. Set to empty string if you don't want to set it.
 		*/
-		void setMetadata(const std::string & title, const std::string & editor, const time_t & creation, const std::string & originator,
+		DLL_IMPORT_OR_EXPORT void setMetadata(const std::string & title, const std::string & editor, const time_t & creation, const std::string & originator,
 			const std::string & description, const time_t & lastUpdate, const std::string & descriptiveKeywords);
 
 		/**
 		* Serialize the instance into a stream.
 		* @param stream	The stream must be opened for writing and won't be closed.
 		*/
-		void serializeIntoStream(std::ostream * stream);
+		DLL_IMPORT_OR_EXPORT void serializeIntoStream(std::ostream * stream);
 
 		/**
 		* Get the gsoap proxy which is wrapped by this entity
@@ -241,7 +241,7 @@ namespace COMMON_NS
 		/**
 		 * Return the EPC document which contains this gsoap wrapper.
 		 */
-		COMMON_NS::EpcDocument* getEpcDocument() const {return epcDocument;}
+		DLL_IMPORT_OR_EXPORT COMMON_NS::EpcDocument* getEpcDocument() const {return epcDocument;}
 
 		/**
 		* Get the XML namespace for the tags for the XML serialization of this instance
@@ -251,7 +251,7 @@ namespace COMMON_NS
 		/**
 		* Get the XML tag for the XML serialization of this instance
 		*/
-		virtual std::string getXmlTag() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const = 0;
 
 		/**
 		* Get the XML tag for the XML serialization of this instance
@@ -261,7 +261,7 @@ namespace COMMON_NS
 		/**
 		* Get the content type of the instance according to EPC recommendation
 		*/
-		virtual std::string getContentType() const;
+		DLL_IMPORT_OR_EXPORT virtual std::string getContentType() const;
 		
 		/**
 		* Get part name of this XML top level instance in the EPC document
@@ -271,53 +271,53 @@ namespace COMMON_NS
 		/**
 		* Serialize the gsoap proxy into a string
 		*/
-		std::string serializeIntoString();	
+		DLL_IMPORT_OR_EXPORT std::string serializeIntoString();
 
 		/**
 		* Add an alias for this object
 		*/
-		void addAlias(const std::string & authority, const std::string & title);
+		DLL_IMPORT_OR_EXPORT void addAlias(const std::string & authority, const std::string & title);
 
 		/**
 		* Get the count of aliases in the instance.
 		*/
-		unsigned int getAliasCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getAliasCount() const;
 
 		/**
 		* Get the alias authority at a particular index in the aliases set.
 		*/
-		std::string getAliasAuthorityAtIndex(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT std::string getAliasAuthorityAtIndex(unsigned int index) const;
 
 		/**
 		* Get the alias title at a particular index in the aliases set.
 		*/
-		std::string getAliasTitleAtIndex(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT std::string getAliasTitleAtIndex(unsigned int index) const;
 
 		/**
 		* Get all the activities where the instance is involved.
 		*/
-		const std::vector<RESQML2_NS::Activity*> & getActivitySet() const;
+		DLL_IMPORT_OR_EXPORT const std::vector<RESQML2_NS::Activity*> & getActivitySet() const;
 
 		/**
 		* Get the count of associated activities.
 		*/
-		unsigned int getActivityCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getActivityCount() const;
 
 		/**
 		* Get the associated activity at a particular index.
 		*/
-		RESQML2_NS::Activity* getActivity (const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::Activity* getActivity(unsigned int index) const;
 
 		/**
 		* Push back an extra metadata (not a standard one)
 		*/
-		void pushBackExtraMetadata(const std::string & key, const std::string & value);
+		DLL_IMPORT_OR_EXPORT void pushBackExtraMetadata(const std::string & key, const std::string & value);
 
 		/**
 		* Getter (in read only mode) of all the extra metadata
 		*/
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-		std::unordered_map< std::string, std::string > getExtraMetadataSet() const;
+		DLL_IMPORT_OR_EXPORT std::unordered_map< std::string, std::string > getExtraMetadataSet() const;
 #else
 		std::tr1::unordered_map< std::string, std::string > getExtraMetadataSet() const;
 #endif
@@ -326,25 +326,24 @@ namespace COMMON_NS
 		* Get an extra metadata according its key.
 		* @return An empty vector if the extra metadata does not exist. Or the extra metadata value set if it exists.
 		*/
-		std::vector<std::string> getExtraMetadata(const std::string & key) const;
+		DLL_IMPORT_OR_EXPORT std::vector<std::string> getExtraMetadata(const std::string & key) const;
 
 		/**
 		* Get the count of extra metadata in the instance.
 		*/
-		unsigned int getExtraMetadataCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getExtraMetadataCount() const;
 
 		/**
 		* Get the key of a string value pair at a particular index in the extra metadata set
 		*/
-		std::string getExtraMetadataKeyAtIndex(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT std::string getExtraMetadataKeyAtIndex(unsigned int index) const;
 
 		/**
 		* Get the string value of a string value pair at a particular index in the extra metadata set
 		*/
-		std::string getExtraMetadataStringValueAtIndex(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
 
 		static const char* RESQML_2_0_CONTENT_TYPE_PREFIX;
 		static const char* RESQML_2_0_1_CONTENT_TYPE_PREFIX;
 	};
 }
-

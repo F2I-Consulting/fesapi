@@ -82,7 +82,9 @@ under the License.
 #include "resqml2_0_1/SubRepresentation.h"
 #include "resqml2_0_1/TimeSeries.h"
 #include "resqml2_0_1/ContinuousPropertySeries.h"
-
+#include "resqml2_0_1/RockFluidOrganizationInterpretation.h"
+#include "resqml2_0_1/RockFluidUnitInterpretation.h"
+#include "resqml2_0_1/RockFluidUnitFeature.h"
 #include "resqml2_0_1/PropertyKindMapper.h"
 
 #include "resqml2_0_1/Activity.h"
@@ -182,10 +184,10 @@ void serializePerforations(COMMON_NS::EpcDocument * pck)
 
 	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980);
 	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 2000);
-	wellboreCompletion->pushBackPerforationHistoryEntry("0", gsoap_eml2_1::witsml2__PerforationStatus__open, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980, 407568645, 1514764800);
-	wellboreCompletion->pushBackPerforationHistoryEntry("0", gsoap_eml2_1::witsml2__PerforationStatus__squeezed, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980, 1514764800);
-	wellboreCompletion->pushBackPerforationHistoryEntry("1", gsoap_eml2_1::witsml2__PerforationStatus__open, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 2000, 410104800);
-	wellboreCompletion->pushBackPerforationHistoryEntry("1", gsoap_eml2_1::witsml2__PerforationStatus__squeezed, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 1995, 1514764800);
+	wellboreCompletion->pushBackPerforationHistory(0, gsoap_eml2_1::witsml2__PerforationStatus__open, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980, 407568645, 1514764800);
+	wellboreCompletion->pushBackPerforationHistory(0, gsoap_eml2_1::witsml2__PerforationStatus__squeezed, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980, 1514764800);
+	wellboreCompletion->pushBackPerforationHistory(1, gsoap_eml2_1::witsml2__PerforationStatus__open, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 2000, 410104800);
+	wellboreCompletion->pushBackPerforationHistory(1, gsoap_eml2_1::witsml2__PerforationStatus__squeezed, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 1995, 1514764800);
 }
 
 void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
@@ -251,13 +253,13 @@ void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::Abstra
 	std::vector<unsigned int> region2RepIndices = { 1, 0, 0, 2, 3, 5, 6 }; // face order => top, x plus, btm, x minus, y minus, y plus
 	std::vector<unsigned int> region2PatchIndices = { 0, 1, 2, 0, 0, 0, 0 };
 	bool region2Sides[7] = { false, false, false, true, true, true, true}; //Top face is true, bottom face is false and Frontiers are always on true side flag in this example.
-	svf->pushBackVolumeRegion(stratiUnitB1Interp, "Region 2", 7, region2RepIndices.data(), region2PatchIndices.data(), region2Sides);
+	svf->pushBackVolumeRegion(stratiUnitB1Interp, 7, region2RepIndices.data(), region2PatchIndices.data(), region2Sides);
 
 	//Region 5
 	std::vector<unsigned int> region5RepIndices = { 1, 4, 2, 0, 0, 5, 6 };
 	std::vector<unsigned int> region5PatchIndices = { 1, 0, 1, 3, 2, 1, 1 };
 	bool region5Sides[7] = { false, true, true, true, true, true, true };
-	svf->pushBackVolumeRegion(stratiUnitB1Interp, "Region 5", 7, region5RepIndices.data(), region5PatchIndices.data(), region5Sides);
+	svf->pushBackVolumeRegion(stratiUnitB1Interp, 7, region5RepIndices.data(), region5PatchIndices.data(), region5Sides);
 }
 
 void serializeGeobody(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
@@ -1575,6 +1577,37 @@ void serializeFluidBoundary(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractHdf
 	rep->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
 }
 
+void serializeRockFluidOrganization(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractHdfProxy*)
+{
+	//Top Boundary
+	FluidBoundaryFeature* fluidBoundaryTop = pck.createFluidBoundaryFeature("cd400fa2-4c8b-11e9-be79-3f8079258eaa", "Fluid boundary top", gsoap_resqml2_0_1::resqml2__FluidContact__gas_x0020oil_x0020contact);
+	GenericFeatureInterpretation* interpTop = pck.createGenericFeatureInterpretation(fluidBoundaryTop, "0ab8f2f4-4c96-11e9-999e-c3449b44fef5", "Fluid boundary top interp");
+	PlaneSetRepresentation* repTop = pck.createPlaneSetRepresentation(interpTop, local3dCrs, "ae1d618c-4c96-11e9-8f12-cf7f4da2a08d", "Fluid boundary top PlaneSetRep");
+	repTop->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
+
+	//Bottom Boundary
+	FluidBoundaryFeature* fluidBoundaryBottom = pck.createFluidBoundaryFeature("d332b298-4c8b-11e9-80d8-c760b2e2530d", "Fluid boundary bottom", gsoap_resqml2_0_1::resqml2__FluidContact__gas_x0020oil_x0020contact);
+	GenericFeatureInterpretation* interpBottom = pck.createGenericFeatureInterpretation(fluidBoundaryBottom, "1371efae-4c96-11e9-bcdd-37d8112fd19e", "Fluid boundary bottom interp");
+	PlaneSetRepresentation* repBottom = pck.createPlaneSetRepresentation(interpBottom, local3dCrs, "b54cc3b2-4c96-11e9-b33d-ef2c41476266", "Fluid boundary bottom PlaneSetRep");
+	repBottom->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
+
+	// Unit construction
+	RockFluidUnitFeature* rockFluidFeature = pck.createRockFluidUnit("18a714da-4bf2-11e9-a17e-e74cb7f87d2a", "Rock Fluid Unit", gsoap_resqml2_0_1::resqml2__Phase__oil_x0020column, fluidBoundaryTop, fluidBoundaryBottom);
+	RockFluidUnitInterpretation *rockFluidUnit = pck.createRockFluidUnitInterpretation(rockFluidFeature, "4b73172a-4bf1-11e9-a9f6-9b2813cc56e1", "Rock Fluid Unit interp");
+
+	// Feature
+	OrganizationFeature * rockFluidOrgFeature = pck.createRockFluidModel("311587dd-7abc-425b-a364-908d0508ed61", "Rock Fluid Organization feature");
+	rockFluidOrgFeature->setOriginator("Geosiris");
+
+	// Interp
+	RockFluidOrganizationInterpretation* rockFluidOrgInterp = pck.createRockFluidOrganizationInterpretation(rockFluidOrgFeature, "b5bbfe42-4a63-11e9-9eeb-4f036e6e8141", "Rock Fluid org", rockFluidUnit);
+
+	// Link between ijk grid and rock fuid org
+	IjkGridExplicitRepresentation* singleCellIjkgrid = pck.getDataObjectByUuid<IjkGridExplicitRepresentation>("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b");
+	ULONG64 rockFluidUnitIndice = 0;
+	singleCellIjkgrid->setCellAssociationWithRockFluidOrganizationInterpretation(&rockFluidUnitIndice, 1000, rockFluidOrgInterp);
+}
+
 void deserializePropertyKindMappingFiles(COMMON_NS::EpcDocument * pck)
 {
 	PropertyKindMapper* ptMapper = pck->getPropertyKindMapper();
@@ -1690,7 +1723,7 @@ bool serialize(const string & filePath)
 	serializeActivities(&pck);
 	serializeRepresentationSetRepresentation(&pck, hdfProxy);
 	serializeFluidBoundary(pck, hdfProxy);
-
+	serializeRockFluidOrganization(pck, hdfProxy);
 	// Add an extended core property before to serialize
 	pck.setExtendedCoreProperty("F2I-ExtendedCoreProp", "TestingVersion");
 
@@ -2057,21 +2090,51 @@ void deserializeGeobody(COMMON_NS::EpcDocument * pck)
 
 void deserializeFluidBoundary(COMMON_NS::EpcDocument & pck)
 {
-	FluidBoundaryFeature* fluidBoundary = pck.getDataObjectByUuid<FluidBoundaryFeature>("44a4d87c-3c67-4f98-a314-9d91c4147061");
-	if (fluidBoundary == nullptr) return;
-	showAllMetadata(fluidBoundary);
-	showAllMetadata(fluidBoundary->getInterpretation(0));
-	PlaneSetRepresentation* rep = static_cast<PlaneSetRepresentation*>(fluidBoundary->getInterpretation(0)->getRepresentation(0));
-	showAllMetadata(rep);
-	ULONG64 ptCount = rep->getXyzPointCountOfAllPatches();
-	double* allXyzPoints = new double[ptCount * 3];
-	rep->getXyzPointsOfAllPatchesInGlobalCrs(allXyzPoints);
-	for (size_t i = 0; i < ptCount; ++i) {
-		std::cout << "Point " << i << " X=" << allXyzPoints[i * 3] << std::endl;
-		std::cout << "Point " << i << " Y=" << allXyzPoints[i * 3 + 1] << std::endl;
-		std::cout << "Point " << i << " Z=" << allXyzPoints[i * 3 + 2] << std::endl;
+	std::vector<FluidBoundaryFeature*> fbfSet = pck.getDataObjects<FluidBoundaryFeature>();
+	for (size_t fbfIndex = 0; fbfIndex < fbfSet.size(); ++fbfIndex) {
+		FluidBoundaryFeature* fluidBoundary = fbfSet[fbfIndex];
+		if (fluidBoundary == nullptr) return;
+		showAllMetadata(fluidBoundary);
+		showAllMetadata(fluidBoundary->getInterpretation(0));
+		PlaneSetRepresentation* rep = static_cast<PlaneSetRepresentation*>(fluidBoundary->getInterpretation(0)->getRepresentation(0));
+		showAllMetadata(rep);
+		ULONG64 ptCount = rep->getXyzPointCountOfAllPatches();
+		double* allXyzPoints = new double[ptCount * 3];
+		rep->getXyzPointsOfAllPatchesInGlobalCrs(allXyzPoints);
+		for (size_t i = 0; i < ptCount; ++i) {
+			std::cout << "Point " << i << " X=" << allXyzPoints[i * 3] << std::endl;
+			std::cout << "Point " << i << " Y=" << allXyzPoints[i * 3 + 1] << std::endl;
+			std::cout << "Point " << i << " Z=" << allXyzPoints[i * 3 + 2] << std::endl;
+		}
+		delete[] allXyzPoints;
 	}
-	delete[] allXyzPoints;
+}
+
+void deserializeRockFluidOrganization(COMMON_NS::EpcDocument & pck)
+{
+	std::vector<RockFluidOrganizationInterpretation*> rockFluidOrgInterpSet = pck.getDataObjects<RockFluidOrganizationInterpretation>();
+	for (size_t rfoiIndex = 0; rfoiIndex < rockFluidOrgInterpSet.size(); ++rfoiIndex) {
+		RockFluidOrganizationInterpretation* rockFluidOrgInterp = rockFluidOrgInterpSet[rfoiIndex];
+		showAllMetadata(rockFluidOrgInterp);
+		for (size_t i = 0; i < rockFluidOrgInterp->getGridRepresentationCount(); ++i) {
+			RESQML2_NS::AbstractGridRepresentation* grid = rockFluidOrgInterp->getGridRepresentation(i);
+			showAllMetadata(grid);
+		}
+
+		for (unsigned int unitIndex = 0; unitIndex < rockFluidOrgInterp->getRockFluidUnitInterpCount(); ++unitIndex) {
+			RockFluidUnitInterpretation* rockFluidInterp = rockFluidOrgInterp->getRockFluidUnitInterpretation(unitIndex);
+			showAllMetadata(rockFluidInterp);
+
+			RockFluidUnitFeature* rockFluidFeature = static_cast<RockFluidUnitFeature*>(rockFluidInterp->getInterpretedFeature());
+			showAllMetadata(rockFluidFeature);
+
+			BoundaryFeature* top = rockFluidFeature->getTop();
+			showAllMetadata(top);
+
+			BoundaryFeature* bottom = rockFluidFeature->getBottom();
+			showAllMetadata(bottom);
+		}
+	}
 }
 
 /**
@@ -3059,58 +3122,54 @@ void deserializePerforations(COMMON_NS::EpcDocument & pck)
 	
 	for (unsigned int perforationIndex = 0; perforationIndex < wellboreCompletion->getPerforationCount(); ++perforationIndex)
 	{
-		std::string perforationUid = std::to_string(perforationIndex);
-
-		cout << std::endl << "perforation " + perforationUid << ":" << std::endl;
-		if (wellboreCompletion->hasPerforationMdDatum(perforationUid))
+		cout << std::endl << "perforation " + perforationIndex << ":" << std::endl;
+		if (wellboreCompletion->hasPerforationMdDatum(perforationIndex))
 		{
-			cout << "datum: " << wellboreCompletion->getPerforationMdDatum(perforationUid) << std::endl;
+			cout << "datum: " << wellboreCompletion->getPerforationMdDatum(perforationIndex) << std::endl;
 		}
-		if (wellboreCompletion->hasPerforationMdUnit(perforationUid))
+		if (wellboreCompletion->hasPerforationMdUnit(perforationIndex))
 		{
-			cout << "md unit: " << pck.lengthUomToString(wellboreCompletion->getPerforationMdUnit(perforationUid)) << std::endl;
+			cout << "md unit: " << pck.lengthUomToString(wellboreCompletion->getPerforationMdUnit(perforationIndex)) << std::endl;
 		}
-		if (wellboreCompletion->hasPerforationTopMd(perforationUid))
+		if (wellboreCompletion->hasPerforationTopMd(perforationIndex))
 		{
-			cout << "top md: " << wellboreCompletion->getPerforationTopMd(perforationUid) << std::endl;
+			cout << "top md: " << wellboreCompletion->getPerforationTopMd(perforationIndex) << std::endl;
 		}
-		if (wellboreCompletion->hasPerforationBaseMd(perforationUid))
+		if (wellboreCompletion->hasPerforationBaseMd(perforationIndex))
 		{
-			cout << "base md: " << wellboreCompletion->getPerforationBaseMd(perforationUid) << std::endl;
+			cout << "base md: " << wellboreCompletion->getPerforationBaseMd(perforationIndex) << std::endl;
 		}
 
-		for (unsigned int historyEntryIndex = 0; historyEntryIndex < wellboreCompletion->getHistoryEntryCount(perforationUid); ++historyEntryIndex)
+		for (unsigned int historyIndex = 0; historyIndex < wellboreCompletion->getPerforationHistoryCount(perforationIndex); ++historyIndex)
 		{
-			std::string historyEntryUid = std::to_string(historyEntryIndex);
-
-			cout << "history entry " << historyEntryUid << ":" << std::endl;
-			if (wellboreCompletion->hasPerforationHistoryEntryStatus(historyEntryUid, perforationUid))
+			cout << "history entry " << historyIndex << ":" << std::endl;
+			if (wellboreCompletion->hasPerforationHistoryStatus(historyIndex, perforationIndex))
 			{
-				cout << "\tstatus: " << wellboreCompletion->getPerforationHistoryEntryStatusToString(historyEntryUid, perforationUid) << std::endl;
+				cout << "\tstatus: " << wellboreCompletion->getPerforationHistoryStatusToString(historyIndex, perforationIndex) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryEntryStartDate(historyEntryUid, perforationUid))
+			if (wellboreCompletion->hasPerforationHistoryStartDate(historyIndex, perforationIndex))
 			{
-				cout << "\tstart date: " << wellboreCompletion->getPerforationHistoryEntryStartDate(historyEntryUid, perforationUid) << std::endl;
+				cout << "\tstart date: " << wellboreCompletion->getPerforationHistoryStartDate(historyIndex, perforationIndex) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryEntryEndDate(historyEntryUid, perforationUid))
+			if (wellboreCompletion->hasPerforationHistoryEndDate(historyIndex, perforationIndex))
 			{
-				cout << "\tend date: " << wellboreCompletion->getPerforationHistoryEntryEndDate(historyEntryUid, perforationUid) << std::endl;
+				cout << "\tend date: " << wellboreCompletion->getPerforationHistoryEndDate(historyIndex, perforationIndex) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryEntryMdDatum(historyEntryUid, perforationUid))
+			if (wellboreCompletion->hasPerforationHistoryMdDatum(historyIndex, perforationIndex))
 			{
-				cout << "\tend datum: " << wellboreCompletion->getPerforationHistoryEntryMdDatum(historyEntryUid, perforationUid) << std::endl;
+				cout << "\tend datum: " << wellboreCompletion->getPerforationHistoryMdDatum(historyIndex, perforationIndex) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryEntryMdUnit(historyEntryUid, perforationUid))
+			if (wellboreCompletion->hasPerforationHistoryMdUnit(historyIndex, perforationIndex))
 			{
-				cout << "\tend md unit: " << pck.lengthUomToString(wellboreCompletion->getPerforationHistoryEntryMdUnit(historyEntryUid, perforationUid)) << std::endl;
+				cout << "\tend md unit: " << pck.lengthUomToString(wellboreCompletion->getPerforationHistoryMdUnit(historyIndex, perforationIndex)) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryEntryTopMd(historyEntryUid, perforationUid))
+			if (wellboreCompletion->hasPerforationHistoryTopMd(historyIndex, perforationIndex))
 			{
-				cout << "\tend top md: " << wellboreCompletion->getPerforationHistoryEntryTopMd(historyEntryUid, perforationUid) << std::endl;
+				cout << "\tend top md: " << wellboreCompletion->getPerforationHistoryTopMd(historyIndex, perforationIndex) << std::endl;
 			}
-			if (wellboreCompletion->hasPerforationHistoryEntryBaseMd(historyEntryUid, perforationUid))
+			if (wellboreCompletion->hasPerforationHistoryBaseMd(historyIndex, perforationIndex))
 			{
-				cout << "\tend base md: " << wellboreCompletion->getPerforationHistoryEntryBaseMd(historyEntryUid, perforationUid) << std::endl;
+				cout << "\tend base md: " << wellboreCompletion->getPerforationHistoryBaseMd(historyIndex, perforationIndex) << std::endl;
 			}
 		}
 	}
@@ -3125,8 +3184,7 @@ void deserialize(const string & inputFile)
 	string resqmlResult = pck.deserialize();
 	if (!resqmlResult.empty()) {
 		cerr << resqmlResult << endl;
-		cout << "Press enter to continue..." << endl;
-		cin.get();
+		throw invalid_argument("The epc document is not a valid one");
 	}
 	std::vector<std::string> allUuids = pck.getAllUuids();
 	/*
@@ -3187,6 +3245,7 @@ void deserialize(const string & inputFile)
 
 	deserializeGeobody(&pck);
 	deserializeFluidBoundary(pck);
+	deserializeRockFluidOrganization(pck);
 
 	std::vector<TectonicBoundaryFeature*> faultSet = pck.getFaultSet();
 	std::vector<PolylineSetRepresentation*> faultPolyRep = pck.getFaultPolylineSetRepSet();
@@ -3460,7 +3519,7 @@ void deserialize(const string & inputFile)
 		{
 			for (size_t k = 0; k < wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet().size(); k++)
 			{
-				if (wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet()[k]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREWellboreMarkerFrameRepresentation)
+				if (wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet()[k]->getXmlTag() == WellboreMarkerFrameRepresentation::XML_TAG)
 				{
 					WellboreMarkerFrameRepresentation* wmf = static_cast<WellboreMarkerFrameRepresentation*>(wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet()[k]);
 					vector<WellboreMarker*> marketSet = wmf->getWellboreMarkerSet();
@@ -3474,7 +3533,7 @@ void deserialize(const string & inputFile)
 
 					for (size_t l = 0; l < wmf->getPropertySet().size(); ++l)
 					{
-						if (wmf->getPropertySet()[l]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECategoricalProperty)
+						if (wmf->getPropertySet()[l]->getXmlTag() == CategoricalProperty::XML_TAG)
 						{
 							CategoricalProperty* catVal = static_cast<CategoricalProperty*>(wmf->getPropertySet()[l]);
 							if (catVal->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::LONG)
@@ -3732,7 +3791,7 @@ void deserialize(const string & inputFile)
 		if (ijkGrid->getParentGrid() != NULL)
 		{
 			std::cout << "\t PARENT WINDOW" << std::endl;
-			if (ijkGrid->getParentGrid()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREIjkGridRepresentation)
+			if (ijkGrid->getParentGrid()->getXmlTag() == AbstractIjkGridRepresentation::XML_TAG)
 			{
 				for (char dimension = 'i'; dimension < 'l'; ++dimension) {
 					std::cout << "\t\t DIMENSION :" << dimension << std::endl;
@@ -3751,12 +3810,12 @@ void deserialize(const string & inputFile)
 						std::cout << "\t\t Non constant child cell count per interval" << std::endl;
 					}
 				}
-			}
-			else if (ijkGrid->getParentGrid()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREUnstructuredColumnLayerGridRepresentation)
+			}/*
+			else if (ijkGrid->getParentGrid()->getXmlTag() == UnstructuredColumnLayerGridRepresentation::XML_TAG)
 			{
 				std::cout << "\t\t Refined columns count :" << ijkGrid->getParentColumnIndexCount() << std::endl;
-			}
-			else if (ijkGrid->getParentGrid()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREUnstructuredGridRepresentation)
+			}*/
+			else if (ijkGrid->getParentGrid()->getXmlTag() == UnstructuredGridRepresentation::XML_TAG)
 			{
 				std::cout << "\t\t Refined cells count :" << ijkGrid->getParentCellIndexCount() << std::endl;
 			}
@@ -3959,15 +4018,16 @@ delete [] testingValues2;
 #define filePath "../../testingPackageCpp.epc"
 int main()
 {
-	try {
+	//try {
 		if (serialize(filePath)) {
 			deserialize(filePath);
 		}
-	}
+	/*}
 	catch (const std::invalid_argument & Exp)
 	{
-		std::cerr << "Error : " << Exp.what() << std::endl;
-	}
+		std::cerr << "Error : " << Exp.what() << ".\n";
+		return 1;
+	}*/
 
 	//cout << "Press enter to continue..." << endl;
 	//cin.get();

@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT LocalDepth3dCrs : public RESQML2_NS::AbstractLocal3dCrs
+	class LocalDepth3dCrs : public RESQML2_NS::AbstractLocal3dCrs
 	{
 	private:
 		void init(soap* soapContext, const std::string & guid, const std::string & title,
@@ -139,8 +139,8 @@ namespace RESQML2_0_1_NS
 		//********** INHERITED FROM AbstractObjectWithDcMetadata ***********
 		//******************************************************************
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const {return XML_TAG;}
 	};
 }
 

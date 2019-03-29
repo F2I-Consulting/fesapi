@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT LocalTime3dCrs : public RESQML2_NS::AbstractLocal3dCrs
+	class LocalTime3dCrs : public RESQML2_NS::AbstractLocal3dCrs
 	{
 	private:
 		void init(soap* soapContext, const std::string & guid, const std::string & title,
@@ -144,16 +144,11 @@ namespace RESQML2_0_1_NS
 		*/
 		~LocalTime3dCrs() {}
 
-		gsoap_resqml2_0_1::eml20__TimeUom getUnit() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__TimeUom getUnit() const;
 
-		std::string getUnitAsString() const;
+		DLL_IMPORT_OR_EXPORT std::string getUnitAsString() const;
 
-		//******************************************************************
-		//********** INHERITED FROM AbstractObjectWithDcMetadata ***********
-		//******************************************************************
-
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 	};
 }
-

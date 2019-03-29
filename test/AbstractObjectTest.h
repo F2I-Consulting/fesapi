@@ -18,18 +18,18 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../AbstractTest.h"
+#include "AbstractTest.h"
 #include <iostream>
 
 namespace COMMON_NS {
 	class EpcDocument;
 }
 
-namespace resqml2_0_1test {
+namespace commontest {
 	/**
 	 * Base abstract class for testing a Resqml top level object.
 	 */
-	class AbstractObjectTest : public commontest::AbstractTest {
+	class AbstractObjectTest : public AbstractTest {
 	public:
 		/**
 		 * Creation of a testing object from an EPC document path. At serialize() call,
@@ -59,7 +59,7 @@ namespace resqml2_0_1test {
 		void initEpcDoc();
 
 		/**
-		 * Implementaiton of Abstract::readEpcDoc(). Consistant reading of both uuid and title of the top level Resqml
+		 * Implementation of Abstract::readEpcDoc(). Consistant reading of both uuid and title of the top level Resqml
 		 * object is checked. This method calls readEpcDocHandler().
 		 */
 		void readEpcDoc();

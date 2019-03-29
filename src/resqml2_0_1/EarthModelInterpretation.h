@@ -25,7 +25,7 @@ namespace RESQML2_0_1_NS
 	/**
 	* This class is a container for other organizations that are consistent to each others.
 	*/
-	class DLL_IMPORT_OR_EXPORT EarthModelInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
+	class EarthModelInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	public:
 
@@ -52,16 +52,24 @@ namespace RESQML2_0_1_NS
 		*/
 		~EarthModelInterpretation() {}
 
-        void setStructuralOrganizationInterpretation(class StructuralOrganizationInterpretation * structOrganization);
+		//Structural
 
-		void setStratiColumn(class StratigraphicColumn * stratiColumn);
+		DLL_IMPORT_OR_EXPORT bool hasStructuralOrganizationInterpretation() const;
+
+		DLL_IMPORT_OR_EXPORT class StructuralOrganizationInterpretation* getStructuralOrganizationInterpertation() const;
+
+		DLL_IMPORT_OR_EXPORT void setStructuralOrganizationInterpretation(class StructuralOrganizationInterpretation * structOrganization);
+
+		//Strati column
 
 		/*
 		* Check if a strati column is associated to this earth model interpretation
 		*
 		* @return True if a strati column is associated to this earth model interpretation elsa false.
 		*/
-		bool hasStratiColumn() const;
+		DLL_IMPORT_OR_EXPORT bool hasStratiColumn() const;
+
+		DLL_IMPORT_OR_EXPORT void setStratiColumn(class StratigraphicColumn * stratiColumn);
 
 		/*
 		* Get the strati column associated to this earth model interpretation.
@@ -69,15 +77,28 @@ namespace RESQML2_0_1_NS
 		*
 		* @return The associated stratigraphic column.
 		*/
-		class StratigraphicColumn* getStratiColumn() const;
+		DLL_IMPORT_OR_EXPORT class StratigraphicColumn* getStratiColumn() const;
 
-		void pushBackStratiOccurence(class StratigraphicOccurrenceInterpretation * stratiOccurence);
+		//Strati occurences
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT unsigned int getStratiOccurenceCount() const;
+
+		DLL_IMPORT_OR_EXPORT class StratigraphicOccurrenceInterpretation* getStratiOccurence(unsigned int index) const;
+
+		DLL_IMPORT_OR_EXPORT void pushBackStratiOccurence(class StratigraphicOccurrenceInterpretation * stratiOccurence);
+
+		// Rock Fluid
+		DLL_IMPORT_OR_EXPORT bool hasRockFluidOrganizationInterpretation() const;
+
+		DLL_IMPORT_OR_EXPORT void setRockFluidOrganizationInterpretation(class RockFluidOrganizationInterpretation* rockFluid);
+
+		DLL_IMPORT_OR_EXPORT class RockFluidOrganizationInterpretation* getRockFluidOrganizationInterpretation() const;
+		
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
     private:
-        std::vector<epc::Relationship> getAllEpcRelationships() const;
+		std::vector<epc::Relationship> getAllEpcRelationships() const;
 		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 	};
 }

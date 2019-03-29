@@ -27,7 +27,7 @@ namespace WITSML2_0_NS
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT WellboreFeature : public AbstractTechnicalFeature
+	class WellboreFeature : public AbstractTechnicalFeature
 	{
 	public:
 
@@ -59,11 +59,11 @@ namespace RESQML2_0_1_NS
 		*/
 		~WellboreFeature() {}
 		
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 		
-		WITSML2_0_NS::Wellbore* getWitsmlWellbore() {return witsmlWellbore;}
-		void setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore);
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Wellbore* getWitsmlWellbore() {return witsmlWellbore;}
+		DLL_IMPORT_OR_EXPORT void setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore);
 
 	protected:
 
@@ -74,4 +74,3 @@ namespace RESQML2_0_1_NS
 		WITSML2_0_NS::Wellbore * witsmlWellbore;
 	};
 }
-

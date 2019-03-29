@@ -47,6 +47,8 @@ under the License.
 #include "resqml2_0_1test/WellboreFrameRepresentationTest.h"
 #include "resqml2_0_1test/WellboreRegularFrameRepresentationTest.h"
 #include "resqml2_0_1test/DiscretePropertyUsingLocalKindOnWellFrameTest.h"
+#include "resqml2_0_1test/SeismicLatticeRepresentationTest.h"
+#include "resqml2_0_1test/Grid2dRepresentationTest.h"
 #include "resqml2_0_1test/HorizonOnSeismicLine.h"
 #include "resqml2_0_1test/RightHanded4x3x2ExplicitIjkGrid.h"
 #include "resqml2_0_1test/BigIjkGridExplicitRepresentationTest.h"
@@ -54,23 +56,24 @@ under the License.
 #include "resqml2_0_1test/SubRepresentationOnPartialGridConnectionSet.h"
 #include "resqml2_0_1test/LgrOnRightHanded4x3x2ExplicitIjkGrid.h"
 #include "resqml2_0_1test/InterpretationDomain.h"
+#include "witsml2_0test/WellTest.h"
+#include "witsml2_0test/Trajectory.h"
 
 using namespace commontest;
 using namespace resqml2_0_1test;
+using namespace witsml2_0test;
 
 #define FESAPI_TEST(name, tags, classTest)  TEST_CASE(name, tags)\
 {\
-	classTest* test = new classTest("../../" #classTest ".epc");\
-	test->serialize();\
-	test->deserialize();\
-	delete test;\
+	classTest test("../../" #classTest ".epc");\
+	test.serialize();\
+	test.deserialize();\
 }
 /*
 TEST_CASE( "Deserialize an EPC document", "[epc]")
 {
-	EpcDocumentTest* test = new EpcDocumentTest("../../testingPackageCpp.epc");
-	test->deserialize();
-	delete test;
+	EpcDocumentTest test("../../testingPackageCpp.epc");
+	test.deserialize();
 }
 */
 FESAPI_TEST("Export and import a local depth 3d crs", "[crs]", LocalDepth3dCrsTest)
@@ -134,5 +137,9 @@ FESAPI_TEST("Export and import a wellbore frame (irregular md spacings) with a s
 
 FESAPI_TEST("Export and import a wellbore frame (irregular md spacings) with a single discrete property on node using a local property kind", "[well][property]", DiscretePropertyUsingLocalKindOnWellFrameTest)
 
+FESAPI_TEST("Export and import a seismic lattice feature", "[seismic]", SeismicLatticeRepresentationTest)
+FESAPI_TEST("Export and import a seismic horizon grid 2d rep", "[seismic]", Grid2dRepresentationTest)
 FESAPI_TEST("Export and import an horizon on a seismic line", "[seismic]", HorizonOnSeismicLine)
 
+FESAPI_TEST("Export and import a Witsml well", "[well]", WellTest)
+FESAPI_TEST("Export and import a Witsml trajectory", "[well]", Trajectory)

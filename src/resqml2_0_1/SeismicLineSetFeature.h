@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT SeismicLineSetFeature : public AbstractTechnicalFeature
+	class SeismicLineSetFeature : public AbstractTechnicalFeature
 	{
 	public:
 
@@ -49,8 +49,8 @@ namespace RESQML2_0_1_NS
 		*/
 		~SeismicLineSetFeature() {}
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 	private:
         std::vector<epc::Relationship> getAllEpcRelationships() const;
@@ -61,4 +61,3 @@ namespace RESQML2_0_1_NS
 		friend void SeismicLineFeature::setSeismicLineSet(SeismicLineSetFeature * seisLineSet);
 	};
 }
-
