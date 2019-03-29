@@ -58,6 +58,20 @@ namespace ETP_NS
 				results.begin(),
 				results.end(),
 				std::bind(
+					&SslClientSession::on_ssl_connect,
+					std::static_pointer_cast<SslClientSession>(shared_from_this()),
+					std::placeholders::_1));
+		}
+
+		void on_ssl_connect(boost::system::error_code ec) {
+			if (ec) {
+				std::cerr << "on_ssl_connect : " << ec.message() << std::endl;
+			}
+
+			// Perform the SSL handshake
+			ws_.next_layer().async_handshake(
+				boost::asio::ssl::stream_base::client,
+				std::bind(
 					&AbstractClientSession::on_connect,
 					std::static_pointer_cast<AbstractClientSession>(shared_from_this()),
 					std::placeholders::_1));

@@ -20,17 +20,19 @@ under the License.
 
 #include "etp/EtpHelpers.h"
 
-#include "MyOwnEtpServerSession.h"
+#include "MyOwnEtpPlainServerSession.h"
 #include "Helpers.h"
 
 #include "resqml2/AbstractGridRepresentation.h"
 #include "resqml2/GridConnectionSetRepresentation.h"
 
-MyOwnStoreProtocolHandlers::MyOwnStoreProtocolHandlers(MyOwnEtpServerSession* mySession) : ETP_NS::StoreHandlers(mySession) {}
+#include "globalVariables.h"
+
+MyOwnStoreProtocolHandlers::MyOwnStoreProtocolHandlers(ETP_NS::AbstractSession* mySession) : ETP_NS::StoreHandlers(mySession) {}
 
 void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & getO, int64_t correlationId)
 {
-	COMMON_NS::EpcDocument epcDoc(MyOwnEtpServerSession::epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
+	COMMON_NS::EpcDocument epcDoc(epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
 	std::string resqmlResult = epcDoc.deserialize();
 
 	Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse objResponse;
@@ -53,7 +55,7 @@ void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::
 
 void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & putDataObjects, int64_t correlationId)
 {
-	COMMON_NS::EpcDocument epcDoc(MyOwnEtpServerSession::epcFileName, COMMON_NS::EpcDocument::READ_WRITE);
+	COMMON_NS::EpcDocument epcDoc(epcFileName, COMMON_NS::EpcDocument::READ_WRITE);
 	std::string resqmlResult = epcDoc.deserialize();
 
 	bool isSerializationNeeded = false;

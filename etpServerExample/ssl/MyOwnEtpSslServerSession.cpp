@@ -16,16 +16,25 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#pragma once
 
-#include "etp/ProtocolHandlers/StoreHandlers.h"
+#include "ssl/MyOwnEtpSslServerSession.h"
 
-class MyOwnStoreProtocolHandlers : public ETP_NS::StoreHandlers
+#include "MyOwnCoreProtocolHandlers.h"
+#include "MyOwnDiscoveryProtocolHandlers.h"
+#include "MyOwnStoreProtocolHandlers.h"
+#include "MyOwnDataArrayProtocolHandlers.h"
+
+using namespace std;
+
+MyOwnEtpSslServerSession::MyOwnEtpSslServerSession(tcp::socket socket, boost::asio::ssl::context& ctx)
+	: ETP_NS::SslServerSession(std::move(socket), ctx)
 {
-public:
-	MyOwnStoreProtocolHandlers(ETP_NS::AbstractSession* mySession);
-	~MyOwnStoreProtocolHandlers() {}
+	setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(this));
+	setDiscoveryProtocolHandlers(std::make_shared<MyOwnDiscoveryProtocolHandlers>(this));
+	setStoreProtocolHandlers(std::make_shared<MyOwnStoreProtocolHandlers>(this));
+	setDataArrayProtocolHandlers(std::make_shared<MyOwnDataArrayProtocolHandlers>(this));
+}
 
-    void on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & getO, int64_t correlationId);
-	void on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & putDataObjects, int64_t correlationId);
-};
+MyOwnEtpSslServerSession::~MyOwnEtpSslServerSession()
+{
+}

@@ -18,15 +18,15 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/PlainServerSession.h"
+#include "etp/ssl/SslClientSession.h"
+#include "MyOwnEtpClientSessionEpcBased.h"
 
-#include "common/AbstractObject.h"
-
-class MyOwnEtpServerSession : public ETP_NS::PlainServerSession
+class MyOwnEtpSslClientSession : public ETP_NS::SslClientSession, public MyOwnEtpClientSessionEpcBased
 {
 public:
-	static const char* epcFileName;
-
-	MyOwnEtpServerSession(tcp::socket socket);
-	~MyOwnEtpServerSession();
+	MyOwnEtpSslClientSession(boost::asio::io_context& ioc, boost::asio::ssl::context& ctx,
+		const std::string & host, const std::string & port, const std::string & target,
+		const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
+		const std::vector<std::string>& supportedObjects);
+	~MyOwnEtpSslClientSession();
 };

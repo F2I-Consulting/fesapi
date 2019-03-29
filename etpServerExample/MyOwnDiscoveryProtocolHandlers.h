@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "MyOwnEtpServerSession.h"
+#include "MyOwnEtpPlainServerSession.h"
 
 class MyOwnDiscoveryProtocolHandlers : public ETP_NS::DiscoveryHandlers
 {
@@ -39,7 +39,7 @@ private:
 		std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result);
 
 public:
-	MyOwnDiscoveryProtocolHandlers(MyOwnEtpServerSession* mySession): ETP_NS::DiscoveryHandlers(mySession) {}
+	MyOwnDiscoveryProtocolHandlers(ETP_NS::AbstractSession* mySession): ETP_NS::DiscoveryHandlers(mySession) {}
 	~MyOwnDiscoveryProtocolHandlers() {}
 
 	void on_GetTreeResources(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gtr, int64_t correlationId);

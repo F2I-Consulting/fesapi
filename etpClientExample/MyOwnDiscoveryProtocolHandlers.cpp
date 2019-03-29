@@ -18,6 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnDiscoveryProtocolHandlers.h"
 
+#include "etp/AbstractSession.h"
+#include "MyOwnEtpClientSessionEpcBased.h"
+
 #include <algorithm>
 
 void MyOwnDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse & grr, int64_t correlationId)
@@ -41,7 +44,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energistics::
 		if (std::find(getObjectWhenDiscovered.begin(), getObjectWhenDiscovered.end(), correlationId) != getObjectWhenDiscovered.end()) {
 			size_t openingParenthesis = resource.m_uri.find('(', 5);
 			if (openingParenthesis != std::string::npos) {
-				auto resqmlObj = static_cast<MyOwnEtpClientSession*>(session)->epcDoc.getDataObjectByUuid(resource.m_uri.substr(openingParenthesis + 1, 36));
+				auto resqmlObj = dynamic_cast<MyOwnEtpClientSessionEpcBased*>(session)->epcDoc.getDataObjectByUuid(resource.m_uri.substr(openingParenthesis + 1, 36));
 				if (resqmlObj == nullptr || resqmlObj->isPartial()) {
 					std::cout << "GET OBJECT -----------------------------------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
 					Energistics::Etp::v12::Protocol::Store::GetDataObjects getO;

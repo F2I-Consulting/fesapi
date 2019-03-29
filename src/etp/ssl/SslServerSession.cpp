@@ -21,9 +21,10 @@ under the License.
 
 using namespace ETP_NS;
 
-SslServerSession::SslServerSession(boost::beast::ssl_stream<tcp::socket> stream)
-	: AbstractServerSession<SslServerSession>(stream.get_executor().context()),
-	ws_(std::move(stream))
+SslServerSession::SslServerSession(tcp::socket socket, boost::asio::ssl::context& ctx)
+	: AbstractServerSession<SslServerSession>(socket.get_executor().context()),
+	ws_(std::move(socket), ctx),
+	strand_(ws_.get_executor())
 {
 	ws_.binary(true);
 }

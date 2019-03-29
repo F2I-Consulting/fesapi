@@ -18,14 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/ProtocolHandlers/StoreHandlers.h"
+#include "etp/ssl/SslServerSession.h"
 
-class MyOwnStoreProtocolHandlers : public ETP_NS::StoreHandlers
+class MyOwnEtpSslServerSession : public ETP_NS::SslServerSession
 {
 public:
-	MyOwnStoreProtocolHandlers(ETP_NS::AbstractSession* mySession);
-	~MyOwnStoreProtocolHandlers() {}
-
-    void on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & getO, int64_t correlationId);
-	void on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & putDataObjects, int64_t correlationId);
+	MyOwnEtpSslServerSession(tcp::socket socket, boost::asio::ssl::context& ctx);
+	~MyOwnEtpSslServerSession();
 };

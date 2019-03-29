@@ -156,6 +156,7 @@ namespace ETP_NS
 		{
 			if (ec) {
 				std::cerr << "on_handshake : " << ec.message() << std::endl;
+				return;
 			}
 
 #ifndef NDEBUG

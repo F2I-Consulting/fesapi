@@ -27,6 +27,8 @@ under the License.
 #include "resqml2_0_1/IjkGridExplicitRepresentation.h"
 #include "resqml2_0_1/IjkGridParametricRepresentation.h"
 
+#include "globalVariables.h"
+
 void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlash(COMMON_NS::EpcDocument & epcDoc, const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gr,  int64_t correlationId,
 	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result)
 {
@@ -248,7 +250,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetTreeResources(const Energistics::Etp:
 		return;
 	}
 
-	COMMON_NS::EpcDocument epcDoc(MyOwnEtpServerSession::epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
+	COMMON_NS::EpcDocument epcDoc(epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
 	std::string resqmlResult = epcDoc.deserialize();
 
 	Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse mb;
@@ -282,7 +284,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetGraphResources(const Energistics::Etp
 		return;
 	}
 
-	COMMON_NS::EpcDocument epcDoc(MyOwnEtpServerSession::epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
+	COMMON_NS::EpcDocument epcDoc(epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
 	std::string resqmlResult = epcDoc.deserialize();
 
 	Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse mb;

@@ -46,7 +46,16 @@ namespace ETP_NS
 			return derived().ws().get_executor().context();
 		}
 
-		DLL_IMPORT_OR_EXPORT void run() {
+		/**
+		* This method is done after ssl handshake
+		* or directly if no SSL mode
+		*/
+		void on_handshake(boost::system::error_code ec)
+		{
+			if (ec) {
+				std::cerr << "on_handshake : " << ec.message() << std::endl;
+			}
+
 #ifndef NDEBUG
 			// Show the HTTP request
 			boost::beast::flat_buffer buffer;

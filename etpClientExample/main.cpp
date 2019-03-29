@@ -18,7 +18,15 @@ under the License.
 -----------------------------------------------------------------------*/
 
 #include <thread>
-#include "MyOwnEtpClientSession.h"
+#ifdef WITH_ETP_SSL
+#include "ssl/MyOwnEtpSslClientSession.h"
+#else
+#include "MyOwnEtpPlainClientSession.h"
+#endif
+
+#ifdef WITH_ETP_SSL
+#include "ssl/root_certificates.h"
+#endif
 
 using namespace ETP_NS;
 
@@ -72,8 +80,18 @@ int main(int argc, char **argv)
 		ioc.run(); // Run the I/O service. The call will never return since we have used boost::asio::make_work_guard. We need to reset the worker if we want it to return.
 		std::cerr << "End IOC" << std::endl;
 	});
-	
-	auto clientSession = std::make_shared<MyOwnEtpClientSession>(ioc, argv[1], argv[2], argc < 4 ? "/" : argv[3], requestedProtocols, supportedObjects);
+		 
+#ifdef WITH_ETP_SSL
+		// The SSL context is required, and holds certificates
+		boost::asio::ssl::context ctx{ boost::asio::ssl::context::sslv23_client };
+
+		// This holds the root certificate used for verification
+		load_root_certificates(ctx);
+
+		auto clientSession = std::make_shared<MyOwnEtpSslClientSession>(ioc, ctx, argv[1], argv[2], argc < 4 ? "/" : argv[3], requestedProtocols, supportedObjects);
+#else
+		auto clientSession = std::make_shared<MyOwnEtpPlainClientSession>(ioc, argv[1], argv[2], argc < 4 ? "/" : argv[3], requestedProtocols, supportedObjects);
+#endif
 	clientSession->run();
 	
     // Resetting the work make ioc (in a separate thread) return when there will no more be any uncomplete operations (such as a reading operation for example)

@@ -18,14 +18,13 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/ProtocolHandlers/StoreHandlers.h"
+#include "etp/PlainServerSession.h"
 
-class MyOwnStoreProtocolHandlers : public ETP_NS::StoreHandlers
+#include "common/AbstractObject.h"
+
+class MyOwnEtpPlainServerSession : public ETP_NS::PlainServerSession
 {
 public:
-	MyOwnStoreProtocolHandlers(ETP_NS::AbstractSession* mySession);
-	~MyOwnStoreProtocolHandlers() {}
-
-    void on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & getO, int64_t correlationId);
-	void on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & putDataObjects, int64_t correlationId);
+	MyOwnEtpPlainServerSession(tcp::socket socket);
+	~MyOwnEtpPlainServerSession();
 };

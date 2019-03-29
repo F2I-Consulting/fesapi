@@ -33,13 +33,26 @@ namespace ETP_NS
 	{
 	private:
 		websocket::stream<boost::beast::ssl_stream<tcp::socket>> ws_;
+		boost::asio::strand<boost::asio::io_context::executor_type> strand_;
 
 	public:
-		DLL_IMPORT_OR_EXPORT SslServerSession(boost::beast::ssl_stream<tcp::socket> stream);
+		DLL_IMPORT_OR_EXPORT SslServerSession(tcp::socket socket, boost::asio::ssl::context& ctx);
 
 		virtual ~SslServerSession() {}
 
 		// Called by the base class
 		DLL_IMPORT_OR_EXPORT websocket::stream<boost::beast::ssl_stream<tcp::socket>>& ws() { return ws_; }
+
+		DLL_IMPORT_OR_EXPORT void run() {
+			// Perform the SSL handshake
+			ws_.next_layer().async_handshake(
+				boost::asio::ssl::stream_base::server,
+				boost::asio::bind_executor(
+					strand_,
+					std::bind(
+						&AbstractServerSession::on_handshake,
+						std::static_pointer_cast<AbstractServerSession>(shared_from_this()),
+						std::placeholders::_1)));
+		}
 	};
 }

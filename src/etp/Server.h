@@ -20,10 +20,12 @@ under the License.
 
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio/signal_set.hpp>
+#ifdef WITH_ETP_SSL
+#include <boost/asio/ssl.hpp>
+#endif
+
 #include <thread>
 #include <stdexcept>
-
-#include "etp/ServerSession.h"
 
 using tcp = boost::asio::ip::tcp;               // from <boost/asio/ip/tcp.hpp>
 
@@ -47,7 +49,7 @@ namespace ETP_NS
 			listener(
 				boost::asio::io_context& ioc,
 #ifdef WITH_ETP_SSL
-				ssl::context& ctx,
+				boost::asio::ssl::context& ctx,
 #endif
 				tcp::endpoint endpoint)
 				: acceptor_(ioc)
@@ -109,7 +111,11 @@ namespace ETP_NS
 				}
 				else {
 					// Create the session and run it
-					std::make_shared<T>(std::move(socket_))->run();
+					std::make_shared<T>(std::move(socket_)
+#ifdef WITH_ETP_SSL
+					, ctx_
+#endif
+					)->run();
 				}
 
 				// Accept another connection
@@ -118,9 +124,13 @@ namespace ETP_NS
 		};
 
 	public:
-	    Server() {}
+		Server() {}
 
+#ifdef WITH_ETP_SSL
+		void listen(const std::string & host, unsigned short port, int threadCount, boost::asio::ssl::context & sslContext) {
+#else
 		void listen(const std::string & host, unsigned short port, int threadCount) {
+#endif
 			if (threadCount < 1) {
 				throw std::invalid_argument("You need to run your server on at least one thread.");
 			}
@@ -130,18 +140,8 @@ namespace ETP_NS
 			boost::asio::io_context ioc{threadCount};
 
 #ifdef WITH_ETP_SSL
-			// The SSL context is required, and holds certificates
-			boost::asio::ssl::context ctx{ boost::asio::ssl::context::sslv23 };
-
-			// This holds the self-signed certificate used by the server
-			load_server_certificate(ctx);
-
 			// Create and launch a listening port
-			std::make_shared<listener>(
-				ioc,
-				ctx,
-				tcp::endpoint{ address, port },
-				doc_root)->run();
+			std::make_shared<Server::listener>(ioc, sslContext, tcp::endpoint{ address, port })->run();
 #else
 			// Create and launch a listening port
 			std::make_shared<Server::listener>(ioc, tcp::endpoint{ address, port })->run();

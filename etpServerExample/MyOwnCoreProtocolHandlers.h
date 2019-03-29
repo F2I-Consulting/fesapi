@@ -20,12 +20,12 @@ under the License.
 
 #include "etp/ProtocolHandlers/CoreHandlers.h"
 
-#include "MyOwnEtpServerSession.h"
+#include "etp/AbstractSession.h"
 
 class MyOwnCoreProtocolHandlers : public ETP_NS::CoreHandlers
 {
 public:
-	MyOwnCoreProtocolHandlers(MyOwnEtpServerSession* mySession): ETP_NS::CoreHandlers(mySession) {}
+	MyOwnCoreProtocolHandlers(ETP_NS::AbstractSession* mySession): ETP_NS::CoreHandlers(mySession) {}
 	~MyOwnCoreProtocolHandlers() {}
 
 	void on_RequestSession(const Energistics::Etp::v12::Protocol::Core::RequestSession & rs, int64_t correlationId);

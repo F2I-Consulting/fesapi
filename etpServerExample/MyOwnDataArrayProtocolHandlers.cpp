@@ -20,13 +20,17 @@ under the License.
 
 #include "Helpers.h"
 
+#include "etp/AbstractSession.h"
+
 #include "common/AbstractHdfProxy.h"
+
+#include "globalVariables.h"
 
 void MyOwnDataArrayProtocolHandlers::on_GetDataArray(const Energistics::Etp::v12::Protocol::DataArray::GetDataArray & gda, int64_t correlationId)
 {
 	std::cout << "Data array received uri : " << gda.m_uri << std::endl;
 
-	COMMON_NS::EpcDocument epcDoc(MyOwnEtpServerSession::epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
+	COMMON_NS::EpcDocument epcDoc(epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
 	std::string resqmlResult = epcDoc.deserialize();
 
 	COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(epcDoc, session, gda.m_uri);
@@ -161,7 +165,7 @@ void MyOwnDataArrayProtocolHandlers::on_PutDataArray(const Energistics::Etp::v12
 		std::cout << "Dimension " << i << " with count : " << pda.m_dimensions[i] << std::endl;
 	}
 
-	COMMON_NS::EpcDocument epcDoc(MyOwnEtpServerSession::epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
+	COMMON_NS::EpcDocument epcDoc(epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
 	std::string resqmlResult = epcDoc.deserialize();
 
 	COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(epcDoc, session, pda.m_uri);
@@ -204,7 +208,7 @@ void MyOwnDataArrayProtocolHandlers::on_DescribeDataArray(const Energistics::Etp
 {
 	std::cout << "Describe Data array received uri : " << dda.m_uri << std::endl;
 
-	COMMON_NS::EpcDocument epcDoc(MyOwnEtpServerSession::epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
+	COMMON_NS::EpcDocument epcDoc(epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
 	std::string resqmlResult = epcDoc.deserialize();
 
 	COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(epcDoc, session, dda.m_uri);

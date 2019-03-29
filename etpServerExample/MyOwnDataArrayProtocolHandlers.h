@@ -20,14 +20,12 @@ under the License.
 
 #include "etp/ProtocolHandlers/DataArrayHandlers.h"
 
-#include "MyOwnEtpServerSession.h"
-
 #include "common/AbstractObject.h"
 
 class MyOwnDataArrayProtocolHandlers : public ETP_NS::DataArrayHandlers
 {
 public:
-	MyOwnDataArrayProtocolHandlers(MyOwnEtpServerSession* mySession): ETP_NS::DataArrayHandlers(mySession) {}
+	MyOwnDataArrayProtocolHandlers(ETP_NS::AbstractSession* mySession): ETP_NS::DataArrayHandlers(mySession) {}
 	~MyOwnDataArrayProtocolHandlers() {}
 
     void on_GetDataArray(const Energistics::Etp::v12::Protocol::DataArray::GetDataArray & gda, int64_t correlationId);

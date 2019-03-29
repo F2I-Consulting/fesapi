@@ -166,7 +166,7 @@ namespace COMMON_NS
 		/** Default constructor
 		* It just initializes necessary variables. It does not open anything.
 		*/
-		EpcDocument();
+		DLL_IMPORT_OR_EXPORT EpcDocument();
 
 		/**
 		* Construct an instance, set the file name of the Epc Document and set the rights to access to the companion HDF5 file.
@@ -245,7 +245,7 @@ namespace COMMON_NS
 		* Add a gsoap proxy to serialize with the package
 		* @param xml The XML which is the serialization of the gsoap proxy to add or to replace
 		*/
-		COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentType);
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentType);
 
 		/**
 		* Add a gsoap proxy to serialize with the package

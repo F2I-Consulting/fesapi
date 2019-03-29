@@ -16,16 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
+
 #pragma once
 
-#include "etp/ProtocolHandlers/StoreHandlers.h"
-
-class MyOwnStoreProtocolHandlers : public ETP_NS::StoreHandlers
-{
-public:
-	MyOwnStoreProtocolHandlers(ETP_NS::AbstractSession* mySession);
-	~MyOwnStoreProtocolHandlers() {}
-
-    void on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & getO, int64_t correlationId);
-	void on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & putDataObjects, int64_t correlationId);
-};
+extern const char* epcFileName;

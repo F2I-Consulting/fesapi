@@ -20,14 +20,12 @@ under the License.
 
 #include "etp/ProtocolHandlers/DiscoveryHandlers.h"
 
-#include "MyOwnEtpClientSession.h"
-
 #include "common/AbstractObject.h"
 
 class MyOwnDiscoveryProtocolHandlers : public ETP_NS::DiscoveryHandlers
 {
 public:
-	MyOwnDiscoveryProtocolHandlers(MyOwnEtpClientSession* mySession): ETP_NS::DiscoveryHandlers(mySession) {}
+	MyOwnDiscoveryProtocolHandlers(ETP_NS::AbstractSession* mySession): ETP_NS::DiscoveryHandlers(mySession) {}
 	~MyOwnDiscoveryProtocolHandlers() {}
 
 	std::vector<int64_t> getObjectWhenDiscovered; // all message id in this vector will result in response where the objects are going to be get in addition to be discovered

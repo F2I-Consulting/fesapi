@@ -17,10 +17,19 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
+#ifdef WITH_ETP_SSL
+#include "ssl/MyOwnEtpSslServerSession.h"
+#else
+#include "MyOwnEtpPlainServerSession.h"
+#endif
 #include "etp/Server.h"
-#include "MyOwnEtpServerSession.h"
 
-using namespace ETP_NS;
+#ifdef WITH_ETP_SSL
+#include "ssl/server_certificate.h"
+#endif
+
+#include "globalVariables.h"
+const char* epcFileName = "../../testingPackageCpp.epc";
 
 int main(int argc, char **argv)
 {
@@ -30,13 +39,28 @@ int main(int argc, char **argv)
 
 		return 1;
 	}
+	epcFileName = argv[3];
 
 	const int threadCount = 2;
 
-	Server<MyOwnEtpServerSession> etpServer;
-	MyOwnEtpServerSession::epcFileName = argv[3];
 	std::cout << "Start listening on " << argv[1] << ":" << argv[2] << " with " << threadCount << " threads..." << std::endl;
+
+#ifdef WITH_ETP_SSL
+	ETP_NS::Server<MyOwnEtpSslServerSession> etpServer;
+
+	// The SSL context is required, and holds certificates
+	boost::asio::ssl::context ctx{ boost::asio::ssl::context::sslv23 };
+
+	// This holds the self-signed certificate used by the server
+	load_server_certificate(ctx);
+
+	etpServer.listen(argv[1], std::stoi(argv[2]), threadCount, ctx);
+#else
+	ETP_NS::Server<MyOwnEtpPlainServerSession> etpServer;
+
 	etpServer.listen(argv[1], std::stoi(argv[2]), threadCount);
+#endif
+
 
 #ifdef _WIN32
 	_CrtDumpMemoryLeaks();
