@@ -22,7 +22,9 @@ under the License.
 
 #include "MyOwnDiscoveryProtocolHandlers.h"
 #include "MyOwnEtpPlainClientSession.h"
+#ifdef WITH_ETP_SSL
 #include "ssl/MyOwnEtpSslClientSession.h"
+#endif
 
 #include "etp/EtpHdfProxy.h"
 #include "etp/EtpHelpers.h"
@@ -43,12 +45,14 @@ void setSessionToEtpHdfProxy(ETP_NS::AbstractSession* myOwnEtpSession) {
 					static_cast<MyOwnEtpPlainClientSession*>(myOwnEtpSession)->getPort(),
 					static_cast<MyOwnEtpPlainClientSession*>(myOwnEtpSession)->getTarget());
 			}
+#ifdef WITH_ETP_SSL
 			else if (dynamic_cast<MyOwnEtpSslClientSession*>(myOwnEtpSession) != nullptr) {
 				etpHdfProxy->setSession(myOwnEtpSession->getIoContext(),
 					static_cast<MyOwnEtpSslClientSession*>(myOwnEtpSession)->getHost(),
 					static_cast<MyOwnEtpSslClientSession*>(myOwnEtpSession)->getPort(),
 					static_cast<MyOwnEtpSslClientSession*>(myOwnEtpSession)->getTarget());
 			}
+#endif
 		}
 	}
 }
