@@ -64,6 +64,9 @@ public class FesapiJavaExample {
 	{
 		// WELL
 		Well witsmlWell = pck.createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1");
+		witsmlWell.setNameLegal("Legal Name");
+		witsmlWell.setWaterDepth(0.0, eml21__LengthUom.eml21__LengthUom__0_x002e1_x0020ft);
+		witsmlWell.setTimeZone(true, 0);
 		witsmlWell.pushBackLocation("8cd3c8b2-face-4426-8aea-ae34870bd969", 275, 75, 0);
 		witsmlWell.pushBackDatum("aa92fa8b-d6cc-459e-b456-27fec0c08b24", "well1 msl datum", eml21__WellboreDatumReference.eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", eml21__LengthUom.eml21__LengthUom__m, 0, 5100);
 		witsmlWell.pushBackDatum("d3ac5401-d3e7-4474-b846-070673b210ae", "KB", eml21__WellboreDatumReference.eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", eml21__LengthUom.eml21__LengthUom__m, 15, 5100);
@@ -284,7 +287,7 @@ public class FesapiJavaExample {
 	    	serializeWells(pck);
 	    	
 	    	// RESQML
-	    	LocalDepth3dCrs crs = pck.createLocalDepth3dCrs(UUID.randomUUID().toString(), "UTF8 Crs title : éàç : олег1", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.eml20__LengthUom__m, 5215, eml20__LengthUom.eml20__LengthUom__m, "Unknown", false);
+	    	LocalDepth3dCrs crs = pck.createLocalDepth3dCrs(UUID.randomUUID().toString(), "UTF8 Crs title", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.eml20__LengthUom__m, 5215, eml20__LengthUom.eml20__LengthUom__m, "Unknown", false);
 	    	AbstractHdfProxy hdfProxy = pck.createHdfProxy("", "Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5");
 	    	
 	    	serializeBoundaries(pck, crs, hdfProxy);
@@ -355,11 +358,18 @@ public class FesapiJavaExample {
     			}
     		}
     		
+    		// MATHIEU
     		System.out.println("WITSML WELL");
     		Well witsmlWell = (Well) pck.getDataObjectByUuid("704a287c-5c24-4af3-a97b-bc6670f4e14f");
     		System.out.println("Well title is : " + witsmlWell.getTitle());
     		System.out.println("Location projected X : " + witsmlWell.getLocationProjectedX(0));
     		System.out.println("Location projected Y : " + witsmlWell.getLocationProjectedY(0));
+    		System.out.println("\tnameLegal : " + witsmlWell.getNameLegal());
+            System.out.println("\twaterDepth : " + witsmlWell.getWaterDepthValue() + " (" + witsmlWell.getWaterDepthUom() + ")");
+            if (witsmlWell.hasTimeZone())
+            {
+                System.out.println("\ttimeZone : " + witsmlWell.getTimeZoneHours() + " hours");
+            }
 	    }
 	    finally {
 	        pck.close();
