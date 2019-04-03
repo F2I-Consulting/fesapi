@@ -22,7 +22,7 @@ under the License.
 
 #include <boost/version.hpp>
 #if BOOST_VERSION < 106800
-#include "etp/ssl_stream.hpp"
+#include "etp/ssl/ssl_stream.h"
 #elif BOOST_VERSION < 107000
 #include <boost/beast/experimental/core/ssl_stream.hpp>
 #else

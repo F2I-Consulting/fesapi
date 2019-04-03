@@ -20,6 +20,9 @@
 #include <type_traits>
 #include <utility>
 
+namespace boost {
+namespace beast {
+
 /** C++11 enabled SSL socket wrapper
 
     This wrapper provides an interface identical to `boost::asio::ssl::stream`,
@@ -320,6 +323,9 @@ async_teardown(
     using boost::beast::websocket::async_teardown;
     async_teardown(role,
         *stream.p_, std::forward<TeardownHandler>(handler));
+}
+
+}
 }
 
 #endif
