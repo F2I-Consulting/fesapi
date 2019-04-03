@@ -21,7 +21,9 @@ under the License.
 #include "etp/AbstractClientSession.h"
 
 #include <boost/version.hpp>
-#if BOOST_VERSION < 107000
+#if BOOST_VERSION < 106800
+#include "etp/ssl_stream.hpp"
+#elif BOOST_VERSION < 107000
 #include <boost/beast/experimental/core/ssl_stream.hpp>
 #else
 #include <boost/beast/ssl.hpp>
