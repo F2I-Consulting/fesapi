@@ -63,7 +63,7 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
 
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 0;}
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
 
 		/**
 		* Indicates if the representation set contains only one type of representations or several.

@@ -18,6 +18,10 @@ namespace example
                 LocalDepth3dCrs crs = epc_file.createLocalDepth3dCrs(Guid.NewGuid().ToString(), "UTF8 Crs title : éàç : олег1", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.eml20__LengthUom__m, 5215, eml20__LengthUom.eml20__LengthUom__m, "Unknown", false);
                 System.Console.WriteLine("Serialize : CRS title is " + crs.getTitle());
 				Well well = epc_file.createWell("1425632e-3c22-4845-b431-ecd36da0671e", "Well");
+                well.setNameLegal("Legal Name");
+                well.setWaterDepth(0.0, eml21__LengthUom.eml21__LengthUom__0_x002e1_x0020ft);
+                well.setTimeZone(true, 0);
+
                 System.Console.WriteLine("Serialize : Well title is " + well.getTitle());
                 epc_file.serialize();
                 epc_file.close();
@@ -36,6 +40,12 @@ namespace example
                 System.Console.WriteLine("Deserialize : CRS title is " + crs_set[0].getTitle());
 				Well well = epc_file.getDataObjectByUuid("1425632e-3c22-4845-b431-ecd36da0671e") as Well;
                 System.Console.WriteLine("Deserialize : Well title is " + well.getTitle());
+                System.Console.WriteLine("\tnameLegal : " + well.getNameLegal());
+                System.Console.WriteLine("\twaterDepth : " + well.getWaterDepthValue() + " (" + well.getWaterDepthUom() + ")");
+                if (well.hasTimeZone())
+                {
+                    System.Console.WriteLine("\ttimeZone : " + well.getTimeZoneHours() + " hours");
+                }
             }
         }
 

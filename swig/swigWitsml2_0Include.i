@@ -25,6 +25,23 @@ under the License.
 #include "witsml2_0/Trajectory.h"
 %}
 
+#define GETTER_AND_SETTER_GENERIC_ATTRIBUTE(attributeDatatype, attributeName)\
+	void set##attributeName(const attributeDatatype & value);\
+	attributeDatatype get##attributeName() const;
+#define GETTER_PRESENCE_ATTRIBUTE(attributeName) bool has##attributeName() const;
+#define GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(attributeDatatype, attributeName)\
+	GETTER_AND_SETTER_GENERIC_ATTRIBUTE(attributeDatatype, attributeName)\
+	GETTER_PRESENCE_ATTRIBUTE(attributeName)
+
+#define GETTER_AND_SETTER_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
+	void set##attributeName(double value, uomDatatype uom);\
+	double get##attributeName##Value() const;\
+	uomDatatype get##attributeName##Uom() const;
+#define GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(attributeName, uomDatatype)\
+	GETTER_AND_SETTER_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
+	GETTER_PRESENCE_ATTRIBUTE(attributeName)
+
+
 //************************
 // STD::VECTOR DEFINITIONS
 //************************
@@ -147,17 +164,48 @@ namespace WITSML2_0_NS
 	class Well : public AbstractObject
 	{
 	public:
-		void setOperator(const std::string & operator_);
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NameLegal);
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumLicense)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumGovt)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Field)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Country)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, State)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, County)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Region)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, District)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Block)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Operator)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, OperatorDiv)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, OriginalOperator)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumAPI)
+		
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::eml21__WellStatus, StatusWell)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml2__WellPurpose, PurposeWell)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml2__WellFluid, FluidWell)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml2__WellDirection, DirectionWell)
+		
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(WaterDepth, gsoap_eml2_1::eml21__LengthUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(GroundElevation, gsoap_eml2_1::eml21__LengthUom)
 
-		double getLocationProjectedX(const unsigned int & locationIndex);
-		double getLocationProjectedY(const unsigned int & locationIndex);
-
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(PcInterest, gsoap_eml2_1::eml21__DimensionlessUom)
+		
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimLicense)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimSpud)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimPa)
+		
+		void setTimeZone(bool direction, unsigned short hours, unsigned short minutes = 0);
+		GETTER_PRESENCE_ATTRIBUTE(TimeZone)
+		bool getTimeZoneDirection() const;
+		unsigned short getTimeZoneHours() const;
+		unsigned short getTimeZoneMinutes() const;
+		
+		double getLocationProjectedX(unsigned int locationIndex);
+		double getLocationProjectedY(unsigned int locationIndex);
 		void pushBackLocation(
 			const std::string & guid,
-			const double & projectedX,
-			const double & projectedY,
-			const unsigned int & projectedCrsEpsgCode);
-
+			double projectedX,
+			double projectedY,
+			unsigned int projectedCrsEpsgCode);
 		unsigned int geLocationCount() const;
 		
 		void pushBackDatum(
@@ -166,16 +214,16 @@ namespace WITSML2_0_NS
 			gsoap_eml2_1::eml21__WellboreDatumReference code,
 			const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom elevationUnit,
-			const double & elevation,
-			const unsigned int & verticalCrsEpsgCode);
-
+			double elevation,
+			unsigned int verticalCrsEpsgCode);
+		
 		unsigned int getDatumCount() const;
 		
-		RESQML2_0_1_NS::WellboreFeature* getResqmlWellboreFeature() const { return resqmlWellboreFeature; }
-		
-		const std::vector<class Wellbore*>& getWellbores() const;
+		RESQML2_0_1_NS::WellboreFeature* getResqmlWellboreFeature() const;
 
-		const std::vector<class WellCompletion*>& getWellcompletions();
+		const std::vector<Wellbore*>& getWellbores() const;
+
+		const std::vector<WellCompletion*>& getWellcompletions() const;
 	};
 	
 	class WellboreCompletion;

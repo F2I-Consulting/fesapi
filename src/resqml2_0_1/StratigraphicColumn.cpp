@@ -27,10 +27,11 @@ using namespace epc;
 
 const char* StratigraphicColumn::XML_TAG = "StratigraphicColumn";
 
-StratigraphicColumn::StratigraphicColumn(soap* soapContext, const std::string & guid, const std::string & title) :earthModel(nullptr)
+StratigraphicColumn::StratigraphicColumn(soap* soapContext, const std::string & guid, const std::string & title) : earthModel(nullptr)
 {
-	if (soapContext == nullptr)
+	if (soapContext == nullptr) {
 		throw invalid_argument("The soap context cannot be null.");
+	}
 
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREStratigraphicColumn(soapContext, 1);
 
@@ -45,8 +46,7 @@ void StratigraphicColumn::pushBackStratiColumnRank(StratigraphicColumnRankInterp
 	stratiColumnRank->stratigraphicColumnSet.push_back(this);
 
 	// XML
-	if (updateXml)
-	{
+	if (updateXml) {
 		static_cast<_resqml2__StratigraphicColumn*>(gsoapProxy2_0_1)->Ranks.push_back(stratiColumnRank->newResqmlReference());
 	}
 }
@@ -61,8 +61,7 @@ vector<Relationship> StratigraphicColumn::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 
-	for (size_t i = 0; i < stratigraphicColumnRankSet.size(); ++i)
-	{
+	for (size_t i = 0; i < stratigraphicColumnRankSet.size(); ++i) {
 		Relationship rel(stratigraphicColumnRankSet[i]->getPartNameInEpcDocument(), "", stratigraphicColumnRankSet[i]->getUuid());
 		rel.setDestinationObjectType();
 		result.push_back(rel);
@@ -75,13 +74,23 @@ void StratigraphicColumn::resolveTargetRelationships(COMMON_NS::EpcDocument* epc
 {
 	updateXml = false;
 
-	_resqml2__StratigraphicColumn* stratCol= static_cast<_resqml2__StratigraphicColumn*>(gsoapProxy2_0_1);
-
-	for (unsigned int i = 0; i < stratCol->Ranks.size(); i++)
-	{
-		pushBackStratiColumnRank(static_cast<StratigraphicColumnRankInterpretation*>(epcDoc->getDataObjectByUuid(stratCol->Ranks[i]->UUID)));
+	std::vector<eml20__DataObjectReference *> stratColRanks= static_cast<_resqml2__StratigraphicColumn*>(gsoapProxy2_0_1)->Ranks;
+	for (size_t i = 0; i < stratColRanks.size(); ++i) {
+		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = stratColRanks[i];
+		if (dor != nullptr) {
+			StratigraphicColumnRankInterpretation* interp = epcDoc->getDataObjectByUuid<StratigraphicColumnRankInterpretation>(dor->UUID);
+			if (interp == nullptr) { // partial transfer
+				getEpcDocument()->createPartial(dor);
+				interp = getEpcDocument()->getDataObjectByUuid<StratigraphicColumnRankInterpretation>(dor->UUID);
+			}
+			if (interp == nullptr) {
+				throw invalid_argument("The DOR looks invalid.");
+			}
+			updateXml = false;
+			pushBackStratiColumnRank(interp);
+			updateXml = true;
+		}
 	}
 
 	updateXml = true;
 }
-

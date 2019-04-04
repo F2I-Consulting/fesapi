@@ -53,6 +53,8 @@ vector<Relationship> RepresentationSetRepresentation::getAllTargetRelationships(
 
 void RepresentationSetRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
+	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+
 	const unsigned int repCount = getRepresentationCount();
 	for (unsigned int i = 0; i < repCount; ++i)
 	{
