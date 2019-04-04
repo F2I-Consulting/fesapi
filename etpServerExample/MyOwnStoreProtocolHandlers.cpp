@@ -70,7 +70,7 @@ void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::
 			std::cout << "Create a dummy Grid Connection Set for received IJK Grid Representation." << std::endl;
 			RESQML2_NS::GridConnectionSetRepresentation* gcsr = epcDoc.createGridConnectionSetRepresentation(std::string(), "Dummy GCSR");
 			ULONG64 cellIndexPair[] = { 0, 1 };
-			gcsr->setCellIndexPairs(1, cellIndexPair, -1, epcDoc.getHdfProxy(0));
+			gcsr->setCellIndexPairs(1, cellIndexPair, (std::numeric_limits<unsigned int>::max)(), epcDoc.getHdfProxy(0));
 			gcsr->pushBackSupportingGridRepresentation(static_cast<RESQML2_NS::AbstractGridRepresentation*>(importedObj));
 			isSerializationNeeded = true;
 		}

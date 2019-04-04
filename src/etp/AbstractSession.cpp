@@ -77,7 +77,7 @@ void AbstractSession::on_read(boost::system::error_code ec, std::size_t bytes_tr
 	if (receivedMh.m_messageType == Energistics::Etp::v12::Protocol::Core::Acknowledge::messageTypeId) { // Receive Acknowledge
 		protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::Core]->decodeMessageBody(receivedMh, d);
 	}
-	if (receivedMh.m_messageType == Energistics::Etp::v12::Protocol::Core::ProtocolException::messageTypeId) { // Receive Protocol Exception
+	else if (receivedMh.m_messageType == Energistics::Etp::v12::Protocol::Core::ProtocolException::messageTypeId) { // Receive Protocol Exception
 		protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::Core]->decodeMessageBody(receivedMh, d);
 	}
 	else if (receivedMh.m_protocol < protocolHandlers.size() && protocolHandlers[receivedMh.m_protocol] != nullptr) {

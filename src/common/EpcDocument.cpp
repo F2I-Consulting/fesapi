@@ -1511,10 +1511,7 @@ COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_resqml2_0_1::eml20__
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(RockFluidOrganizationInterpretation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(RockFluidUnitInterpretation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(RockFluidUnitFeature)
-	else if (resqmlContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
-	{
-		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
-	}
+	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(HdfProxy)
 
 	throw invalid_argument("The content type " + resqmlContentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
 }

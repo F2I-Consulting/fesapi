@@ -49,7 +49,7 @@ int main(int argc, char **argv)
 	ETP_NS::Server<MyOwnEtpSslServerSession> etpServer;
 
 	// The SSL context is required, and holds certificates
-	boost::asio::ssl::context ctx{ boost::asio::ssl::context::tls_server };
+	boost::asio::ssl::context ctx{ boost::asio::ssl::context::tlsv12_server };
 
 	// This holds the self-signed certificate used by the server
 	load_server_certificate(ctx);
