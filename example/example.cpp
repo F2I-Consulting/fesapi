@@ -128,6 +128,7 @@ void serializeWells(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* h
 {
 	// WELL
 	witsmlWell = pck->createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1");
+	witsmlWell->setNameLegal("Legal Name");
 	witsmlWell->pushBackLocation("8cd3c8b2-face-4426-8aea-ae34870bd969", 275, 75, 0);
 	witsmlWell->pushBackDatum("aa92fa8b-d6cc-459e-b456-27fec0c08b24", "well1 msl datum", gsoap_eml2_1::eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 0, 5100);
 	witsmlWell->pushBackDatum("d3ac5401-d3e7-4474-b846-070673b210ae", "KB", gsoap_eml2_1::eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 15, 5100);
@@ -1291,8 +1292,8 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 	sealedSurfaceFramework->pushBackContactPatch(7, twoIndicesContact, 2, yPlusFrontierRep, hdfProxy);
 	// Contact 8: fault1Interp1 STOPS AT yPlusFrontierInterp (part above horizon1Interp1)
 	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
-	twoIndicesContact[0] = 6;
-	twoIndicesContact[1] = 9;
+	twoIndicesContact[0] = 8;
+	twoIndicesContact[1] = 11;
 	sealedSurfaceFramework->pushBackContactPatch(8, twoIndicesContact, 2, f1i1triRep, hdfProxy);
 	twoIndicesContact[0] = 1;
 	twoIndicesContact[1] = 3;
@@ -1319,8 +1320,8 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 	twoIndicesContact[0] = 3;
 	twoIndicesContact[1] = 4;
 	sealedSurfaceFramework->pushBackContactPatch(11, twoIndicesContact, 2, h2i1triRep, hdfProxy);
-	twoIndicesContact[0] = 2;
-	twoIndicesContact[1] = 3;
+	twoIndicesContact[0] = 4;
+	twoIndicesContact[1] = 5;
 	sealedSurfaceFramework->pushBackContactPatch(11, twoIndicesContact, 2, xMinusFrontierRep, hdfProxy);
 	// Contact 12: xMinusFrontierInterp STOPS AT yMinusFrontierInterp
 	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
@@ -1427,8 +1428,8 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 	twoIndicesContact[0] = 8;
 	twoIndicesContact[1] = 9;
 	sealedSurfaceFramework->pushBackContactPatch(23, twoIndicesContact, 2, h2i1triRep, hdfProxy);
-	twoIndicesContact[0] = 0;
-	twoIndicesContact[1] = 1;
+	twoIndicesContact[0] = 4;
+	twoIndicesContact[1] = 5;
 	sealedSurfaceFramework->pushBackContactPatch(23, twoIndicesContact, 2, xPlusFrontierRep, hdfProxy);
 	// Contact 24: xPlusFrontierInterp STOPS AT yMinusFrontierInterp
 	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
