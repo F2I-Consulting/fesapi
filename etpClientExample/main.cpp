@@ -83,7 +83,7 @@ int main(int argc, char **argv)
 		 
 #ifdef WITH_ETP_SSL
 		// The SSL context is required, and holds certificates
-		boost::asio::ssl::context ctx{ boost::asio::ssl::context::sslv23_client };
+		boost::asio::ssl::context ctx{ boost::asio::ssl::context::tls_client };
 
 		// This holds the root certificate used for verification
 		load_root_certificates(ctx);

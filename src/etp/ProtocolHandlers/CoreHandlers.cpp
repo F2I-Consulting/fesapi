@@ -24,7 +24,9 @@ using namespace ETP_NS;
 
 void CoreHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d)
 {
-	if (mh.m_messageType != Energistics::Etp::v12::Protocol::Core::Acknowledge::messageTypeId && mh.m_protocol != Energistics::Etp::v12::Datatypes::Protocol::Core) {
+	if (mh.m_messageType != Energistics::Etp::v12::Protocol::Core::ProtocolException::messageTypeId &&
+		mh.m_messageType != Energistics::Etp::v12::Protocol::Core::Acknowledge::messageTypeId &&
+		mh.m_protocol != Energistics::Etp::v12::Datatypes::Protocol::Core) {
 		std::cerr << "Error : This message header does not belong to the protocol Core" << std::endl;
 		return;
 	}
