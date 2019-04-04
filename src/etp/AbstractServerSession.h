@@ -60,7 +60,7 @@ namespace ETP_NS
 			// Show the HTTP request
 			boost::beast::flat_buffer buffer;
 			boost::beast::http::request<boost::beast::http::string_body> req;
-			boost::beast::http::read(ws.next_layer(), buffer, req);
+			boost::beast::http::read(derived().ws().next_layer(), buffer, req);
 			if (boost::beast::websocket::is_upgrade(req))
 			{
 				std::cout << req << std::endl;
@@ -75,8 +75,8 @@ namespace ETP_NS
 				boost::asio::bind_executor(
 					strand,
 					std::bind(
-						&ServerSession::on_accept,
-						std::static_pointer_cast<ServerSession>(shared_from_this()),
+						&AbstractServerSession::on_accept,
+						std::static_pointer_cast<AbstractServerSession>(shared_from_this()),
 						std::placeholders::_1)));
 #else
 			// does not show up the HTTP request
