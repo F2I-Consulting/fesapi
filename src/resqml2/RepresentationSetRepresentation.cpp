@@ -53,14 +53,16 @@ vector<Relationship> RepresentationSetRepresentation::getAllEpcRelationships() c
 
 void RepresentationSetRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
+	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+
 	const unsigned int repCount = getRepresentationCount();
 	for (unsigned int i = 0; i < repCount; ++i)
 	{
 		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getRepresentationDor(i);
-		RESQML2_NS::AbstractRepresentation* rep = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
+		RESQML2_NS::AbstractRepresentation* rep = epcDoc->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
 		if (rep == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dor);
-			rep = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
+			rep = getEpcDocument()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
 		}
 		if (rep == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -71,12 +73,12 @@ void RepresentationSetRepresentation::importRelationshipSetFromEpc(COMMON_NS::Ep
 	}
 }
 
-ULONG64 RepresentationSetRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
+ULONG64 RepresentationSetRepresentation::getXyzPointCountOfPatch(const unsigned int &) const
 {
 	throw logic_error("Not implemented yet.");
 }
 
-void RepresentationSetRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void RepresentationSetRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch.");
@@ -98,7 +100,12 @@ bool RepresentationSetRepresentation::isHomogeneous() const
 unsigned int RepresentationSetRepresentation::getRepresentationCount() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::_resqml2__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->Representation.size();
+		const size_t count = static_cast<gsoap_resqml2_0_1::_resqml2__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->Representation.size();
+		if (count > (std::numeric_limits<unsigned int>::max)()) {
+			throw range_error("The count is too big.");
+		}
+
+		return static_cast<unsigned int>(count);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -107,7 +114,7 @@ unsigned int RepresentationSetRepresentation::getRepresentationCount() const
 
 RESQML2_NS::AbstractRepresentation* RepresentationSetRepresentation::getRepresentation(const unsigned int & index) const
 {
-	return static_cast<RESQML2_NS::AbstractRepresentation*>(epcDocument->getResqmlAbstractObjectByUuid(getRepresentationUuid(index)));
+	return epcDocument->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(getRepresentationUuid(index));
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* RepresentationSetRepresentation::getRepresentationDor(const unsigned int & index) const
@@ -146,4 +153,3 @@ void RepresentationSetRepresentation::pushBackXmlRepresentation(RESQML2_NS::Abst
 		throw logic_error("Not implemented yet");
 	}
 }
-

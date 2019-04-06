@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT SeismicLineFeature : public AbstractTechnicalFeature
+	class SeismicLineFeature : public AbstractTechnicalFeature
 	{
 	public:
 
@@ -59,24 +59,24 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get the trace index increment between two consecutive traces.
 		*/
-		int getTraceIndexIncrement() const;
+		DLL_IMPORT_OR_EXPORT int getTraceIndexIncrement() const;
 		
 		/**
 		* Get the first trace index.
 		*/
-		int getFirstTraceIndex() const;
+		DLL_IMPORT_OR_EXPORT int getFirstTraceIndex() const;
 		
-		void setSeismicLineSet(class SeismicLineSetFeature * seisLineSet);
+		DLL_IMPORT_OR_EXPORT void setSeismicLineSet(class SeismicLineSetFeature * seisLineSet);
 
-		class SeismicLineSetFeature* getSeismicLineSet() {return seismicLineSet;}
+		DLL_IMPORT_OR_EXPORT class SeismicLineSetFeature* getSeismicLineSet() {return seismicLineSet;}
 
 		/**
 		* Get the total count of traces in this seismic line.
 		*/
-		unsigned int getTraceCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getTraceCount() const;
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 	private:
 
@@ -86,4 +86,3 @@ namespace RESQML2_0_1_NS
 		class SeismicLineSetFeature* seismicLineSet;
 	};
 }
-

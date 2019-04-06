@@ -24,7 +24,6 @@ under the License.
 
 #include "resqml2/AbstractRepresentation.h"
 #include "resqml2/AbstractProperty.h"
-#include "prodml2_0/DasAcquisition.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -68,17 +67,6 @@ vector<Relationship> EpcExternalPartReference::getAllEpcRelationships() const
 		}
 	}
 
-	for (size_t i = 0; i < dasAcquisitionSourceObject.size(); ++i) {
-		if (dasAcquisitionSourceObject[i] != nullptr) {
-			Relationship rel(dasAcquisitionSourceObject[i]->getPartNameInEpcDocument(), "", dasAcquisitionSourceObject[i]->getUuid());
-			rel.setExternalPartProxyToMlType();
-			result.push_back(rel);
-		}
-		else {
-			throw domain_error("The das acquisition associated to the external EPC reference cannot be nullptr.");
-		}
-	}
-
 	// External part
 	Relationship relExt(relativeFilePath, "", "Hdf5File", false);
 	relExt.setExternalResourceType();
@@ -87,3 +75,5 @@ vector<Relationship> EpcExternalPartReference::getAllEpcRelationships() const
 	return result;
 }
 
+void EpcExternalPartReference::importRelationshipSetFromEpc(COMMON_NS::EpcDocument*)
+{}

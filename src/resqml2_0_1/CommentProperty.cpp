@@ -48,7 +48,7 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 	setRepresentation(rep);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
@@ -64,7 +64,7 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 	setLocalPropertyKind(localPropKind);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values,
@@ -107,7 +107,7 @@ void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::str
     delete [] cTab;
 }
 
-std::string CommentProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, const long & nullValue)
+std::string CommentProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64)
 {
 	setHdfProxy(hdfProxy);
 	_resqml2__CommentProperty* prop = static_cast<_resqml2__CommentProperty*>(gsoapProxy2_0_1);
@@ -204,6 +204,10 @@ bool CommentProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKind* 
 			return false;
 		}
 		if (epcDocument->getPropertyKindMapper() != nullptr) {
+			if (pk->isParentPartial()) {
+				epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the comment property " + getUuid() + " is right because one if its parent property kind is abstract.");
+				return true;
+			}
 			if (pk->isChildOf(resqml2__ResqmlPropertyKind__continuous) || pk->isChildOf(resqml2__ResqmlPropertyKind__discrete) || pk->isChildOf(resqml2__ResqmlPropertyKind__categorical)) {
 				epcDocument->addWarning("The comment property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which is either a continuous, discrete or categorical standard property kind. This property will be assumed to be a partial one.");
 				changeToPartialObject();
@@ -211,8 +215,11 @@ bool CommentProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKind* 
 			}
 		}
 		else {
-			epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the continuous property " + getUuid() + " is right because no property kind mapping files have been loaded.");
+			epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the comment property " + getUuid() + " is right because no property kind mapping files have been loaded.");
 		}
+	}
+	else {
+		epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the comment property " + getUuid() + " is right because it is abstract.");
 	}
 
 	return true;

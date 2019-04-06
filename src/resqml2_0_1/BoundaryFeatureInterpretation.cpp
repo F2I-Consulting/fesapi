@@ -42,7 +42,7 @@ BoundaryFeatureInterpretation::BoundaryFeatureInterpretation(BoundaryFeature * f
 	setInterpretedFeature(feature);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 vector<Relationship> BoundaryFeatureInterpretation::getAllEpcRelationships() const

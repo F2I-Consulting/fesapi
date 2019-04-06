@@ -20,7 +20,7 @@ under the License.
 
 #include <stdexcept>
 
-#include "witsml2_1/Well.h"
+#include "witsml2_0/Well.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -37,13 +37,14 @@ WellboreFeature::WellboreFeature(soap* soapContext, const string & guid, const s
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREWellboreFeature(soapContext, 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
-void WellboreFeature::setWitsmlWellbore(WITSML2_1_NS::Wellbore * wellbore)
+void WellboreFeature::setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore)
 {
 	witsmlWellbore = wellbore;
 	wellbore->resqmlWellboreFeature = this;
+	wellbore->getWell()->resqmlWellboreFeature = this;
 
 	if (updateXml)
 	{
@@ -78,7 +79,7 @@ void WellboreFeature::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDo
 
 	if (resqmlWellbore->WitsmlWellbore != nullptr && resqmlWellbore->WitsmlWellbore->WitsmlWellbore != nullptr)
 	{
-		WITSML2_1_NS::Wellbore* witsmlWellbore = static_cast<WITSML2_1_NS::Wellbore*>(epcDoc->getResqmlAbstractObjectByUuid(resqmlWellbore->WitsmlWellbore->WitsmlWellbore->UUID));
+		WITSML2_0_NS::Wellbore* witsmlWellbore = static_cast<WITSML2_0_NS::Wellbore*>(epcDoc->getDataObjectByUuid(resqmlWellbore->WitsmlWellbore->WitsmlWellbore->UUID));
 		if (witsmlWellbore != nullptr)
 		{
 			updateXml = false;
@@ -87,4 +88,3 @@ void WellboreFeature::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDo
 		}
 	}
 }
-

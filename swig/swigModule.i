@@ -150,15 +150,14 @@ namespace COMMON_NS
 		std::string getDescriptiveKeywords() const;
 		std::string getVersionString() const;
 		
-		void setMetadata(const std::string & title, const std::string & editor, const time_t & creation, const std::string & originator,
-				const std::string & description, const time_t & lastUpdate, const std::string & format, const std::string & descriptiveKeywords);
+		void setMetadata(const std::string & title, const std::string & editor, const time_t & creation, const std::string & originator, const std::string & description, const time_t & lastUpdate, const std::string & descriptiveKeywords);
 		void setTitle(const std::string & title);
 		void setEditor(const std::string & editor);
 		void setCreation(const time_t & creation);
 		void setOriginator(const std::string & originator);
 		void setDescription(const std::string & description);
 		void setLastUpdate(const time_t & lastUpdate);
-		void setFormat(const std::string & format);
+		static void setFormat(const std::string & vendor, const std::string & applicationName, const std::string & applicationVersionNumber);
 		void setDescriptiveKeywords(const std::string & descriptiveKeywords);
 		void setVersionString(const std::string & versionString);
 				
@@ -166,17 +165,17 @@ namespace COMMON_NS
 		
 		void addAlias(const std::string & authority, const std::string & title);
 		unsigned int getAliasCount() const;
-		std::string getAliasAuthorityAtIndex(const unsigned int & index) const;
-		std::string getAliasTitleAtIndex(const unsigned int & index) const;
+		std::string getAliasAuthorityAtIndex(unsigned int index) const;
+		std::string getAliasTitleAtIndex(unsigned int index) const;
 		
 		void pushBackExtraMetadata(const std::string & key, const std::string & value);
 		
 		unsigned int getExtraMetadataCount() const;
-		std::string getExtraMetadataKeyAtIndex(const unsigned int & index) const;
-		std::string getExtraMetadataStringValueAtIndex(const unsigned int & index) const;
+		std::string getExtraMetadataKeyAtIndex(unsigned int index) const;
+		std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
 
 		unsigned int getActivityCount() const;
-		RESQML2_NS::Activity* getActivity (const unsigned int & index) const;
+		RESQML2_NS::Activity* getActivity (unsigned int index) const;
 	};
 	
 	//************************************
@@ -204,7 +203,7 @@ namespace COMMON_NS
 
 %include "swigResqml2Include.i"
 %include "swigResqml2_0_1Include.i"
-%include "swigWitsml1_4_1_1Include.i"
+%include "swigWitsml2_0Include.i"
 
 %template(StringVector) std::vector< std::string >;
 
@@ -242,39 +241,45 @@ namespace COMMON_NS
 		gsoap_resqml2_0_1::resqml2__ResqmlUom getEnergisticsUnitOfMeasure(const std::string & energisticsUomName) const;
 		std::string getFacet(const gsoap_resqml2_0_1::resqml2__Facet & facet) const;
 		gsoap_resqml2_0_1::resqml2__Facet getFacet(const std::string & facet) const;
-		std::string getWitsmlLengthUom(const gsoap_witsml1_4_1_1::witsml1__LengthUom & witsmlUom) const;
-		std::string getWitsmlWellVerticalCoordinateUom(const gsoap_witsml1_4_1_1::witsml1__WellVerticalCoordinateUom & witsmlUom) const;
-		std::string getWitsmlMeasuredDepthUom(const gsoap_witsml1_4_1_1::witsml1__MeasuredDepthUom & witsmlUom) const;
+		std::string lengthUomToString(const gsoap_eml2_1::eml21__LengthUom & witsmlUom) const;
+		std::string verticalCoordinateUomToString(const gsoap_eml2_1::eml21__VerticalCoordinateUom & witsmlUom) const;
 
-		std::string getWitsmlPlaneAngleUom(const gsoap_witsml1_4_1_1::witsml1__PlaneAngleUom & witsmlUom) const;
+		std::string planeAngleUomToString(const gsoap_eml2_1::eml21__PlaneAngleUom & witsmlUom) const;
 		
 		const std::vector<RESQML2_0_1_NS::LocalDepth3dCrs*> & getLocalDepth3dCrsSet() const;
 		const std::vector<RESQML2_0_1_NS::LocalTime3dCrs*> & getLocalTime3dCrsSet() const;
 		
 		const std::vector<RESQML2_0_1_NS::StratigraphicColumn*> & getStratigraphicColumnSet() const;
 		
+		const std::vector<RESQML2_0_1_NS::FrontierFeature*> & getFrontierSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getFrontierPolylineSetRepSet() const;
+		
 		const std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*> & getFaultSet() const;
 		const std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*> & getFractureSet() const {return fractureSet;}
-		const std::vector<RESQML2_0_1_NS::FrontierFeature*> & getFrontierSet() const;
 		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getFaultPolylineSetRepSet() const;
 		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getFracturePolylineSetRepSet() const;
-		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getFrontierPolylineSetRepSet() const;
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getFaultTriangulatedSetRepSet() const;
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getFractureTriangulatedSetRepSet() const;
 		
-		std::vector<RESQML2_0_1_NS::Horizon*> getHorizonSet() const;
 		unsigned int getGeobodyBoundaryCount() const;
 		RESQML2_0_1_NS::GeneticBoundaryFeature* getGeobodyBoundary(unsigned int index) const;
 		const std::vector<RESQML2_0_1_NS::GeobodyFeature*> & getGeobodySet() const;
-		std::vector<RESQML2_0_1_NS::Grid2dSetRepresentation*> getHorizonGrid2dSetRepSet() const;
+		
+		std::vector<RESQML2_0_1_NS::Horizon*> getHorizonSet() const;
 		std::vector<RESQML2_0_1_NS::Grid2dRepresentation*> getHorizonGrid2dRepSet() const;
 		std::vector<RESQML2_0_1_NS::PolylineRepresentation*> getHorizonPolylineRepSet() const;
 		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getHorizonPolylineSetRepSet() const;
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getHorizonTriangulatedSetRepSet() const;
+		
 		const std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> & getAllTriangulatedSetRepSet() const;
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getUnclassifiedTriangulatedSetRepSet() const;
+		const std::vector<RESQML2_0_1_NS::Grid2dRepresentation*> & getAllGrid2dRepresentationSet() const;
+		const std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> & getAllPolylineSetRepSet() const;
+		const std::vector<RESQML2_0_1_NS::PolylineRepresentation*> & getAllPolylineRepresentationSet() const;
 		
 		const std::vector<RESQML2_0_1_NS::SeismicLineFeature*> & getSeismicLineSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineRepresentation*> getSeismicLinePolylineRepSet() const;
+		std::vector<RESQML2_0_1_NS::IjkGridLatticeRepresentation*> getIjkSeismicCubeGridRepresentationSet() const;
 		
 		const std::vector<RESQML2_0_1_NS::WellboreFeature*> & getWellboreSet() const;
 		std::vector<RESQML2_0_1_NS::WellboreTrajectoryRepresentation*> getWellboreTrajectoryRepresentationSet() const;
@@ -291,9 +296,6 @@ namespace COMMON_NS
 		std::vector<RESQML2_0_1_NS::IjkGridExplicitRepresentation*> getIjkGridExplicitRepresentationSet() const;
 		std::vector<RESQML2_0_1_NS::IjkGridParametricRepresentation*> getIjkGridParametricRepresentationSet() const;
 
-		std::vector<RESQML2_0_1_NS::PolylineRepresentation*> getSeismicLinePolylineRepSet() const;
-		std::vector<RESQML2_0_1_NS::IjkGridLatticeRepresentation*> getIjkSeismicCubeGridRepresentationSet() const;
-		
 		const std::vector<RESQML2_0_1_NS::UnstructuredGridRepresentation*> & getUnstructuredGridRepresentationSet() const;
 		
 		unsigned int getSubRepresentationCount() const;
@@ -305,8 +307,9 @@ namespace COMMON_NS
 		void setExtendedCoreProperty(const std::string & key, const std::string & value);
 		std::string getExtendedCoreProperty(const std::string & key);
 
-		COMMON_NS::AbstractObject* getResqmlAbstractObjectByUuid(const std::string & uuid) const;
-		WITSML1_4_1_1_NS::AbstractObject* getWitsmlAbstractObjectByUuid(const std::string & uuid) const;
+		COMMON_NS::AbstractObject* getDataObjectByUuid(const std::string & uuid) const;
+		
+		std::vector<std::string> getAllUuids() const;
 
 		//************************************
 		//************ HDF *******************
@@ -492,8 +495,7 @@ namespace COMMON_NS
         RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation* createNonSealedSurfaceFrameworkRepresentation(
                 RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp, 
                 const std::string & guid, 
-                const std::string & title,
-                const bool & isSealed);
+                const std::string & title);
 
 		RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* createSealedSurfaceFrameworkRepresentation(
 		        RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp,
@@ -648,38 +650,42 @@ namespace COMMON_NS
 		//************ WITSML ****************
 		//************************************
 		
-		std::vector<WITSML1_4_1_1_NS::Trajectory*> getWitsmlTrajectorySet() const;
-		
-		WITSML1_4_1_1_NS::Well* createWell(
-			const std::string & guid,
-			const std::string & title,
-			const std::string & timeZone);
+		WITSML2_0_NS::Well* createWell(const std::string & guid,
+			const std::string & title);
 
-		WITSML1_4_1_1_NS::Well* createWell(
-			const std::string & guid,
+		WITSML2_0_NS::Well* createWell(const std::string & guid,
 			const std::string & title,
-			const std::string & timeZone,
 			const std::string & operator_,
-			gsoap_witsml1_4_1_1::witsml1__WellStatus statusWell,
-			gsoap_witsml1_4_1_1::witsml1__WellPurpose purposeWell,
-			gsoap_witsml1_4_1_1::witsml1__WellFluid fluidWell,
-			gsoap_witsml1_4_1_1::witsml1__WellDirection directionWell,
-			const time_t & dTimSpud,
-			const std::string & sourceName,
-			const time_t & dTimCreation,
-			const time_t & dTimLastChange,
-			const std::string & comments
+			gsoap_eml2_1::eml21__WellStatus statusWell,
+			gsoap_eml2_1::witsml2__WellDirection directionWell
 		);
 
-		WITSML1_4_1_1_NS::CoordinateReferenceSystem* createCoordinateReferenceSystem(
+		WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
+			const std::string & guid,
+			const std::string & title);
+
+		WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title,
-			const std::string & namingSystem,
-			const std::string & code,
-			const std::string & sourceName,
-			const time_t & dTimCreation,
-			const time_t & dTimLastChange,
-			const std::string & comments);
+			gsoap_eml2_1::eml21__WellStatus statusWellbore,
+			bool isActive,
+			bool achievedTD
+		);
+		
+		WITSML2_0_NS::WellCompletion* createWellCompletion(WITSML2_0_NS::Well* witsmlWell,
+			const std::string & guid,
+			const std::string & title);
+
+		WITSML2_0_NS::WellboreCompletion* createWellboreCompletion(WITSML2_0_NS::Wellbore* witsmlWellbore,
+			WITSML2_0_NS::WellCompletion* wellCompletion,
+			const std::string & guid,
+			const std::string & title,
+			const std::string & wellCompletionName);
+
+		WITSML2_0_NS::Trajectory* createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
+			const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_1::witsml2__ChannelStatus channelStatus);
 				
 		const std::vector<std::string> & getWarnings() const;
 	};

@@ -44,7 +44,7 @@ namespace resqml2_0_1test {
 		 * @param xyzPointCountOfAllPatches count of xyz points in the whole representation (default 0)
 		 * @param xyzPointsOfAllPatchesInGlobalCrs xyz points values (default nullptr)
 		 */
-		AbstractRepresentationTest(const std::string & epcDocPath, const std::string & uuid, const std::string & title, const ULONG64 & xyzPointCountOfAllPatches = 0, double * xyzPointsOfAllPatchesInGlobalCrs = nullptr);
+		AbstractRepresentationTest(const std::string & epcDocPath, const std::string & uuid, const std::string & title, const ULONG64 & xyzPointCountOfAllPatches = 0, double * xyzPointsOfAllPatchesInLocalCrs = nullptr);
 		
 		/**
 		 * Creation of a testing object from an existing EPC document.
@@ -56,7 +56,7 @@ namespace resqml2_0_1test {
 		 * @param xyzPointCountOfAllPatches count of xyz points in the whole representation (default 0)
 		 * @param xyzPointsOfAllPatchesInGlobalCrs xyz points values (default nullptr)
 		 */
-		AbstractRepresentationTest(COMMON_NS::EpcDocument* epcDoc, const std::string & uuid, const std::string & title, const ULONG64 & xyzPointCountOfAllPatches = 0, double * xyzPointsOfAllPatchesInGlobalCrs = nullptr);
+		AbstractRepresentationTest(COMMON_NS::EpcDocument* epcDoc, const std::string & uuid, const std::string & title, const ULONG64 & xyzPointCountOfAllPatches = 0, double * xyzPointsOfAllPatchesInLocalCrs = nullptr);
 		
 		/**
 		 * Overrides (and calls) AbstractObject::readEpcDoc(). 
@@ -65,7 +65,7 @@ namespace resqml2_0_1test {
 		 */
 		void readEpcDoc();
 	protected:
-		double * xyzPointsOfAllPatchesInGlobalCrs;
+		double * xyzPointsOfAllPatchesInLocalCrs;
 		const ULONG64 xyzPointCountOfAllPatches;
 	};
 }

@@ -19,10 +19,11 @@ under the License.
 #pragma once
 
 #include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
+#include "resqml2_0_1/SealedVolumeFrameworkRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT StratigraphicUnitInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
+	class StratigraphicUnitInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	public:
 
@@ -52,16 +53,16 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Indicates if the instance has an information about its deposition mode.
 		 */
-		bool hasDepositionMode() const;
+		DLL_IMPORT_OR_EXPORT bool hasDepositionMode() const;
 
 		/**
 		 * Get the deposition mode of the stratigraphic unit interpretation.
 		 * You should verify its existency using hasDepositionMode() before to call this function.
 		 */
-		gsoap_resqml2_0_1::resqml2__DepositionMode getDepositionMode() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__DepositionMode getDepositionMode() const;
 			
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 	private:
 		
@@ -69,8 +70,9 @@ namespace RESQML2_0_1_NS
 
 		// Backward relationship
 		std::vector<StratigraphicColumnRankInterpretation *> stratigraphicColumnRankSet;
+		std::vector<SealedVolumeFrameworkRepresentation*> svfSet;
 
 		friend void StratigraphicColumnRankInterpretation::pushBackStratiUnitInterpretation(StratigraphicUnitInterpretation * stratiUnitInterpretation);
+		friend void SealedVolumeFrameworkRepresentation::setInterpretationOfVolumeRegion(unsigned int regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp);
 	};
 }
-

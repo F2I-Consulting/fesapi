@@ -23,7 +23,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT UnstructuredGridRepresentation : public RESQML2_NS::AbstractGridRepresentation
+	class UnstructuredGridRepresentation : public RESQML2_NS::AbstractGridRepresentation
 	{
 	private :
 
@@ -118,27 +118,27 @@ namespace RESQML2_0_1_NS
 		/**
 		* Indicates wether the grid has a geometry or not.
 		*/
-		bool hasGeometry() const;
+		DLL_IMPORT_OR_EXPORT bool hasGeometry() const;
 
-		std::string getHdfProxyUuid() const;
+		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
 
 		/**
 		* Get the xyz point count in a given patch.
 		*/
-		ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 
 		/**
 		* Get all the XYZ points of a particular patch of this representation.
 		* XYZ points are given in the local CRS.
 		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
 		*/
-		void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
 
 		/**
 		 * Get all the face indices of all the cells.
-		 * @param faceIndices 			It must be pre allocated with the last value returned by getCumulativeFaceCountOfCells()
+		 * @param faceIndices 			It must be pre allocated with the last value returned by getCumulativeFaceCountPerCell()
 		 */
-		void getFaceIndicesOfCells(ULONG64 * faceIndices) const;
+		DLL_IMPORT_OR_EXPORT void getFaceIndicesOfCells(ULONG64 * faceIndices) const;
 
 		/**
 		* Get the cumulative face count per cell. First value is the count of faces in the first cell.
@@ -147,107 +147,107 @@ namespace RESQML2_0_1_NS
 		* A single face count should be at least 4.
 		* @param cumulativeFaceCountPerCellIndex	It must be pre allocated with getCellCount()
 		*/
-		void getCumulativeFaceCountPerCell(ULONG64 * cumulativeFaceCountPerCell) const;
+		DLL_IMPORT_OR_EXPORT void getCumulativeFaceCountPerCell(ULONG64 * cumulativeFaceCountPerCell) const;
 
 		/**
-		* Less efficient than getCumulativeFaceCountOfCells.
+		* Less efficient than getCumulativeFaceCountPerCell.
 		* Get the face count per cell. First value is the count of faces in the first cell.
 		* Second value is the count of faces in the second cell. etc...
 		* @param faceCountPerCell	It must be pre allocated with getCellCount()
 		*/
-		void getFaceCountPerCell(ULONG64 * faceCountPerCell) const;
+		DLL_IMPORT_OR_EXPORT void getFaceCountPerCell(ULONG64 * faceCountPerCell) const;
 
 		/**
 		* Detect if the face count per cell is constant in the grid.
 		*/
-		bool isFaceCountOfCellsConstant() const;
+		DLL_IMPORT_OR_EXPORT bool isFaceCountOfCellsConstant() const;
 
 		/*
 		* Get the constant face count per cell in the grid.
 		*/
-		unsigned int getConstantFaceCountOfCells() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getConstantFaceCountOfCells() const;
 
 		/**
 		 * Get all the node indices of all the faces.
-		 * @param nodeIndices 			It must be pre allocated with the last value returned by getCumulativeNodeCountOfFaces().
+		 * @param nodeIndices	It must be pre allocated with the last value returned by getCumulativeNodeCountPerFace().
 		 */
-		void getNodeIndicesOfFaces(ULONG64 * nodeIndices) const;
+		DLL_IMPORT_OR_EXPORT void getNodeIndicesOfFaces(ULONG64 * nodeIndices) const;
 
 		/**
 		* Get the cumulative node count per face. First value is the count of nodes in the first face.
 		* Second value is the count of nodes in the first and in the second face. Third value is the count of nodes in the first and in the second and in the third face. Etc...
 		* Count of this array is equal to getFaceCount()
 		* A single node count should be at least 3.
-		* @param nodeCountPerFace	It must be pre allocated with getFaceCount() == last value of getCumulativeFaceCountOfCells()
+		* @param nodeCountPerFace	It must be pre allocated with the last value of getFaceCount().
 		*/
-		void getCumulativeNodeCountPerFace(ULONG64 * nodeCountPerFace) const;
+		DLL_IMPORT_OR_EXPORT void getCumulativeNodeCountPerFace(ULONG64 * nodeCountPerFace) const;
 
 		/**
 		* Less efficient than getCumulativeNodeCountPerFace.
 		* Get the node count per face. First value is the count of nodes in the first face.
 		* Second value is the count of nodes in the second face. etc...
-		* @param nodeCountPerFace	It must be pre allocated with getFaceCount() == last value of getCumulativeFaceCountOfCells()
+		* @param nodeCountPerFace	It must be pre allocated with the last value of getFaceCount().
 		*/
-		void getNodeCountPerFace(ULONG64 * nodeCountPerFace) const;
+		DLL_IMPORT_OR_EXPORT void getNodeCountPerFace(ULONG64 * nodeCountPerFace) const;
 
 		/**
 		* Detect if the node count per face is constant in the grid.
 		*/
-		bool isNodeCountOfFacesConstant() const;
+		DLL_IMPORT_OR_EXPORT bool isNodeCountOfFacesConstant() const;
 
 		/*
 		* Get the constant node count per face in the grid.
 		*/
-		unsigned int getConstantNodeCountOfFaces() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getConstantNodeCountOfFaces() const;
 
 		/**
 		* Load the geoemtry into memory in order to ease access.
 		* Be aware that you must unload by yourself this memory.
 		*/
-		void loadGeometry();
+		DLL_IMPORT_OR_EXPORT void loadGeometry();
 
 		/**
 		* Unload the split information from memory.
 		*/
-		void unloadGeometry();
+		DLL_IMPORT_OR_EXPORT void unloadGeometry();
 
 		/**
 		* This method requires your have already loaded the geometry.
 		* @return The count of faces in a particular cell.
 		*/
-		unsigned int getFaceCountOfCell(const ULONG64 & cellIndex) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getFaceCountOfCell(const ULONG64 & cellIndex) const;
 	
 		/**
 		* This method requires your have already loaded the geometry.
 		* @return The count of nodes in a particular face of a particular cell.
 		*/
-		unsigned int getNodeCountOfFaceOfCell(const ULONG64 & cellIndex, const unsigned int & localFaceIndex) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getNodeCountOfFaceOfCell(const ULONG64 & cellIndex, const unsigned int & localFaceIndex) const;
 
 		/**
 		* This method requires your have already loaded the geometry.
 		* It gets all the node indices of a particular face of a particular cell
 		*/
-		ULONG64 * getNodeIndicesOfFaceOfCell(const ULONG64 & cellIndex, const unsigned int & localFaceIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 * getNodeIndicesOfFaceOfCell(const ULONG64 & cellIndex, const unsigned int & localFaceIndex) const;
 
 		/**
 		 * Get the cell count
 		 */
-		ULONG64 getCellCount() const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getCellCount() const;
 
 		/**
 		 * Get the face count
 		 */
-		ULONG64 getFaceCount() const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getFaceCount() const;
 
 		/**
 		 * Get the node count
 		 */
-		ULONG64 getNodeCount() const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getNodeCount() const;
 
     	/**
 	    * Retrieves orientation i.e. if each cell face is right handed or not
     	*/
-    	void getCellFaceIsRightHanded(unsigned char* cellFaceIsRightHanded) const;
+		DLL_IMPORT_OR_EXPORT void getCellFaceIsRightHanded(unsigned char* cellFaceIsRightHanded) const;
 
 		/**
 		* Set the geometry using some existing hdf5 dataset
@@ -262,7 +262,7 @@ namespace RESQML2_0_1_NS
 		* @param nodeIndicesCumulativeCountPerFace	The path to the hdf5 dataset in the hdf proxy where each item defines the cumulative count of nodes. The count of this array must be eqaul to faceCount.
 		* @param cellShape							A denormalization of the information which gives quick access to the most complex shape of polyhedron encountered in this unstructured grid.
 		*/
-		void setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, ULONG64 pointCount, COMMON_NS::AbstractHdfProxy* proxy,
+		DLL_IMPORT_OR_EXPORT void setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, ULONG64 pointCount, COMMON_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string&faceIndicesCumulativeCountPerCell,
 			ULONG64 faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,
 			const gsoap_resqml2_0_1::resqml2__CellShape & cellShape);
@@ -280,7 +280,7 @@ namespace RESQML2_0_1_NS
 		 * @param nodeIndicesCumulativeCountPerFace	Each item defines the cumulative count of nodes. The count of this array must be eqaul to faceCount.
 		 * @param cellShape							A denormalization of the information which gives quick access to the most complex shape of polyhedron encountered in this unstructured grid.
 		 */
-		void setGeometry(unsigned char * cellFaceIsRightHanded, double * points, ULONG64 pointCount, COMMON_NS::AbstractHdfProxy* proxy,
+		DLL_IMPORT_OR_EXPORT void setGeometry(unsigned char * cellFaceIsRightHanded, double * points, ULONG64 pointCount, COMMON_NS::AbstractHdfProxy* proxy,
 			ULONG64 * faceIndicesPerCell, ULONG64 * faceIndicesCumulativeCountPerCell,
 			ULONG64 faceCount, ULONG64 * nodeIndicesPerFace, ULONG64 * nodeIndicesCumulativeCountPerFace,
 			const gsoap_resqml2_0_1::resqml2__CellShape & cellShape);
@@ -295,7 +295,7 @@ namespace RESQML2_0_1_NS
 		* @param faceIndicesPerCell					The path to the hdf5 dataset in the hdf proxy where each item defines the index of the face of a cell. There must be a count of faceCountPerCell * cellCount.
 		* @param nodeIndicesPerFace					The path to the hdf5 dataset in the hdf proxy where each item defines the index of the node of a face. There must be a count of nodeCountPerFace * faceCount.
 		*/
-		void setTetrahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
+		DLL_IMPORT_OR_EXPORT void setTetrahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
 			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace);
 
@@ -309,7 +309,7 @@ namespace RESQML2_0_1_NS
 		* @param faceIndicesPerCell					Each item defines the index of the face of a cell. There must be a count of faceCountPerCell * cellCount.
 		* @param nodeIndicesPerFace					Each item defines the index of the node of a face. There must be a count of nodeCountPerFace * faceCount.
 		*/
-		void setTetrahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points,
+		DLL_IMPORT_OR_EXPORT void setTetrahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points,
 			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
 			ULONG64 * faceIndicesPerCell, ULONG64 * nodeIndicesPerFace);
 
@@ -323,7 +323,7 @@ namespace RESQML2_0_1_NS
 		* @param faceIndicesPerCell					The path to the hdf5 dataset in the hdf proxy where each item defines the index of the face of a cell. There must be a count of faceCountPerCell * cellCount.
 		* @param nodeIndicesPerFace					The path to the hdf5 dataset in the hdf proxy where each item defines the index of the node of a face. There must be a count of nodeCountPerFace * faceCount.
 		*/
-		void setHexahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
+		DLL_IMPORT_OR_EXPORT void setHexahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
 			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace);
 
@@ -337,14 +337,13 @@ namespace RESQML2_0_1_NS
 		* @param faceIndicesPerCell					Each item defines the index of the face of a cell. There must be a count of faceCountPerCell * cellCount.
 		* @param nodeIndicesPerFace					Each item defines the index of the node of a face. There must be a count of nodeCountPerFace * faceCount.
 		*/
-		void setHexahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points,
+		DLL_IMPORT_OR_EXPORT void setHexahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points,
 			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
 			ULONG64 * faceIndicesPerCell, ULONG64 * nodeIndicesPerFace);
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
-		unsigned int getPatchCount() const {return 1;}
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
 	};
 }
-

@@ -45,7 +45,7 @@ void ActivityTemplateTest::initEpcDocHandler() {
 }
 
 void ActivityTemplateTest::readEpcDocHandler() {
-	ActivityTemplate* activityTemplate = static_cast<ActivityTemplate*>(this->epcDoc->getResqmlAbstractObjectByUuid(this->uuid));
+	ActivityTemplate* activityTemplate = static_cast<ActivityTemplate*>(this->epcDoc->getDataObjectByUuid(this->uuid));
 
 	REQUIRE( activityTemplate->getParameterCount() == this->parameterMap.size() );
 

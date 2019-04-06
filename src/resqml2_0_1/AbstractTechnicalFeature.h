@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractTechnicalFeature : public RESQML2_NS::AbstractFeature
+	class AbstractTechnicalFeature : public RESQML2_NS::AbstractFeature
 	{
 	protected:
 
@@ -40,9 +40,7 @@ namespace RESQML2_0_1_NS
 		AbstractTechnicalFeature(gsoap_resqml2_0_1::resqml2__AbstractTechnicalFeature* fromGsoap) : RESQML2_NS::AbstractFeature(fromGsoap) {}
 
 	public:
-
 		virtual ~AbstractTechnicalFeature() {}
-
 	};
 }
 

@@ -22,12 +22,10 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation : public RESQML2_NS::RepresentationSetRepresentation
+	class RepresentationSetRepresentation : public RESQML2_NS::RepresentationSetRepresentation
 	{
 	protected:
 		RepresentationSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp) : RESQML2_NS::RepresentationSetRepresentation(interp) {}
-
-		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const { return nullptr; }
 
 	public:
 
@@ -57,4 +55,3 @@ namespace RESQML2_0_1_NS
 		~RepresentationSetRepresentation() {}
 	};
 }
-

@@ -277,13 +277,7 @@ void HdfProxy::selectArrayNdOfValues(
 		}
 	}
 
-	H5S_seloper_t selectionMode;
-	if (newSelection)
-		selectionMode = H5S_SELECT_SET;
-	else
-		selectionMode = H5S_SELECT_OR;
-
-	herr_t result = H5Sselect_hyperslab(filespace, selectionMode, offsetInEachDimension, strideInEachDimension, blockCountPerDimension, blockSizeInEachDimension);
+	herr_t result = H5Sselect_hyperslab(filespace, newSelection ? H5S_SELECT_SET : H5S_SELECT_OR, offsetInEachDimension, strideInEachDimension, blockCountPerDimension, blockSizeInEachDimension);
 	if (result < 0) {
 		H5Sclose(filespace);
 		H5Dclose(dataset);
@@ -333,10 +327,10 @@ void HdfProxy::readArrayNdOfValues(
 	}
 }
 
-int HdfProxy::getHdfDatatypeInDataset(const std::string & datasetName) const
+int HdfProxy::getHdfDatatypeInDataset(const std::string & datasetName)
 {
 	if (!isOpened()) {
-		throw invalid_argument("The HDF5 file ust be opened");
+		open();
 	}
 
 	hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT); 
@@ -349,10 +343,10 @@ int HdfProxy::getHdfDatatypeInDataset(const std::string & datasetName) const
 	return native_datatype;
 }
 
-int HdfProxy::getHdfDatatypeClassInDataset(const std::string & datasetName) const
+int HdfProxy::getHdfDatatypeClassInDataset(const std::string & datasetName)
 {
 	if (!isOpened()) {
-		throw invalid_argument("The HDF5 file ust be opened");
+		open();
 	}
 
 	hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
@@ -368,10 +362,10 @@ int HdfProxy::getHdfDatatypeClassInDataset(const std::string & datasetName) cons
 void HdfProxy::writeItemizedListOfList(const string & groupName,
 			const string & name,
 			const int & cumulativeLengthDatatype,
-			void * cumulativeLength,
+			const void * cumulativeLength,
 			const unsigned long long & cumulativeLengthSize,
 			const int & elementsDatatype,
-			void * elements,
+			const void * elements,
 			const unsigned long long & elementsSize)
 {
 	if (!isOpened()) {
@@ -467,8 +461,8 @@ hssize_t HdfProxy::getElementCount(const std::string & datasetName)
 
 void HdfProxy::writeArrayNdOfFloatValues(const string & groupName,
 		const string & name,
-		float * floatValues,
-		hsize_t * numValuesInEachDimension,
+		const float * floatValues,
+		const hsize_t * numValuesInEachDimension,
 		const unsigned int & numDimensions)
 {
 	writeArrayNd(groupName, name, H5T_NATIVE_FLOAT, floatValues, numValuesInEachDimension, numDimensions);
@@ -476,8 +470,8 @@ void HdfProxy::writeArrayNdOfFloatValues(const string & groupName,
 
 void HdfProxy::writeArrayNdOfDoubleValues(const string & groupName,
 		const string & name,
-		double * dblValues,
-		hsize_t * numValuesInEachDimension,
+		const double * dblValues,
+		const hsize_t * numValuesInEachDimension,
 		const unsigned int & numDimensions)
 {
 	writeArrayNd(groupName, name, H5T_NATIVE_DOUBLE, dblValues, numValuesInEachDimension, numDimensions);
@@ -485,8 +479,8 @@ void HdfProxy::writeArrayNdOfDoubleValues(const string & groupName,
 
 void HdfProxy::writeArrayNdOfCharValues(const std::string & groupName,
 		const std::string & name,
-		char * intValues,
-		unsigned long long * numValuesInEachDimension,
+		const char * intValues,
+		const unsigned long long * numValuesInEachDimension,
 		const unsigned int & numDimensions)
 {
 	writeArrayNd(groupName, name, H5T_NATIVE_CHAR, intValues, numValuesInEachDimension, numDimensions);
@@ -494,8 +488,8 @@ void HdfProxy::writeArrayNdOfCharValues(const std::string & groupName,
 
 void HdfProxy::writeArrayNdOfIntValues(const string & groupName,
         const string & name,
-        int * intValues,
-        hsize_t * numValuesInEachDimension,
+        const int * intValues,
+        const hsize_t * numValuesInEachDimension,
         const unsigned int & numDimensions)
 {
 	writeArrayNd(groupName, name, H5T_NATIVE_INT, intValues, numValuesInEachDimension, numDimensions);
@@ -503,8 +497,8 @@ void HdfProxy::writeArrayNdOfIntValues(const string & groupName,
 
 void HdfProxy::writeArrayNdOfGSoapULong64Values(const std::string & groupName,
 		const std::string & name,
-		ULONG64 * ulong64Values,
-		hsize_t * numValuesInEachDimension,
+		const ULONG64 * ulong64Values,
+		const hsize_t * numValuesInEachDimension,
 		const unsigned int & numDimensions)
 {
 	writeArrayNd(groupName, name, H5T_NATIVE_ULLONG, ulong64Values, numValuesInEachDimension, numDimensions);
@@ -513,8 +507,8 @@ void HdfProxy::writeArrayNdOfGSoapULong64Values(const std::string & groupName,
 void HdfProxy::writeArrayNd(const std::string & groupName,
 			const std::string & name,
 			const int & datatype,
-			void * values,
-			unsigned long long * numValuesInEachDimension,
+			const void * values,
+			const unsigned long long * numValuesInEachDimension,
 			const unsigned int & numDimensions)
 {
 	if (!isOpened()) {
@@ -571,7 +565,7 @@ void HdfProxy::createArrayNd(
 	const std::string& groupName,
 	const std::string& datasetName,
 	const int & datatype,
-	unsigned long long* numValuesInEachDimension,
+	const unsigned long long* numValuesInEachDimension,
 	const unsigned int& numDimensions
 ) {
 	if (!isOpened()) {
@@ -624,9 +618,9 @@ void HdfProxy::writeArrayNdSlab(
 	const string& groupName,
 	const string& datasetName,
 	const int & datatype,
-	void* values,
-	hsize_t* numValuesInEachDimension,
-	hsize_t* offsetInEachDimension,
+	const void* values,
+	const hsize_t* numValuesInEachDimension,
+	const hsize_t* offsetInEachDimension,
 	const unsigned int& numDimensions)
 {
 	if (!isOpened()) {
@@ -831,12 +825,9 @@ int HdfProxy::openOrCreateGroupInRootGroup(const string & groupName)
 		H5O_info_t info;
 		herr_t status = H5Oget_info_by_name(rootGroup, groupName.c_str(), &info, H5P_DEFAULT);
 
-		if (status >= 0) {
-			result = H5Gopen(rootGroup, group.c_str(), H5P_DEFAULT);
-		}
-		else {
-			result = H5Gcreate(rootGroup, group.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
-		}
+		result = status >= 0
+			? H5Gopen(rootGroup, group.c_str(), H5P_DEFAULT)
+			: H5Gcreate(rootGroup, group.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 		H5Gclose(rootGroup);
 		rootGroup = result;
 
@@ -1245,4 +1236,3 @@ bool HdfProxy::exist(const std::string & absolutePathInHdfFile) const
 {
 	return H5Oexists_by_name(hdfFile, absolutePathInHdfFile.c_str(), H5P_DEFAULT) > 0;
 }
-

@@ -18,52 +18,48 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "prodml2_0/DasAcquisition.h"
+#include "witsml2_0/AbstractObject.h"
 
-namespace PRODML2_0_NS
+namespace WITSML2_0_NS
 {
-	class DLL_IMPORT_OR_EXPORT DasInstrumentBox : public PRODML2_0_NS::AbstractObject
+	/**
+	* The class is the super class for all wellbore objects (all top level objects pointing to Wellbore)
+	*/
+	class WellboreObject : public WITSML2_0_NS::AbstractObject
 	{
-	public:
+	protected:
 		/**
-		* Default constructor
+		* Constructor for partial transfer
 		*/
-		DasInstrumentBox() {}
+		WellboreObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
-		* @param soap		A gsoap context wihch will manage the memory and the serialization/deserialization of this instance.
-		* @param guid		The guid to set to this instance. If empty then a new guid will be generated.
-		* @param title		A title for the instance to create.
 		*/
-		DasInstrumentBox(soap* soapContext, const std::string & guid, const std::string & title,
-			const std::string & firmwareVersion, const std::string & instrumentName);
+		WellboreObject():WITSML2_0_NS::AbstractObject() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		DasInstrumentBox(gsoap_eml2_1::_prodml2__DasInstrumentBox* fromGsoap) : AbstractObject(fromGsoap) {}
+		WellboreObject(gsoap_eml2_1::eml21__AbstractObject* fromGsoap):WITSML2_0_NS::AbstractObject(fromGsoap) {}
+
+	public:
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
-		~DasInstrumentBox() {}
-		
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		~WellboreObject() {}
 
-	protected:
+		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_1::eml21__DataObjectReference* getWellboreDor() const = 0;
+		DLL_IMPORT_OR_EXPORT class Wellbore* getWellbore() const;
+		DLL_IMPORT_OR_EXPORT virtual void setWellbore(class Wellbore* witsmlWellbore) = 0;
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
+
 		/**
-		* Does nothing since StringTableLookup has not got any forward relationship.
+		* Resolve all relationships of the object in an epc document.
 		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
-		// XML backwards relationships
-		std::vector<class DasAcquisition*> dasAcquisitionSet;
-
-		friend void DasAcquisition::setDasInstrumentBox(DasInstrumentBox* dasInstrumentBox);
 	};
 }
-

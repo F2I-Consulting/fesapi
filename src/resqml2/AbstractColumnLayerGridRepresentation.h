@@ -27,14 +27,14 @@ namespace RESQML2_0_1_NS
 
 namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractColumnLayerGridRepresentation : public RESQML2_NS::AbstractGridRepresentation
+	class AbstractColumnLayerGridRepresentation : public RESQML2_NS::AbstractGridRepresentation
 	{
 	protected:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		AbstractColumnLayerGridRepresentation(COMMON_NS::EpcDocument * epcDoc, gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars) :RESQML2_NS::AbstractGridRepresentation(partialObject, withTruncatedPillars) {}
+		AbstractColumnLayerGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars) :RESQML2_NS::AbstractGridRepresentation(partialObject, withTruncatedPillars) {}
 
 		/**
 		* Default constructor
@@ -60,17 +60,17 @@ namespace RESQML2_NS
 		/**
 		* Get the K layer count of the grid
 		*/
-		unsigned int getKCellCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getKCellCount() const;
 
 		/**
 		* Set the K layer count of the grid
 		*/
-		void setKCellCount(const unsigned int & kCount);
+		DLL_IMPORT_OR_EXPORT void setKCellCount(const unsigned int & kCount);
 
 		/**
 		* Get the K direction of the grid.
 		*/
-		virtual gsoap_resqml2_0_1::resqml2__KDirection getKDirection() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::resqml2__KDirection getKDirection() const = 0;
 
 		/**
 		* Set the stratigraphic organization interpretation which is associated to this grid representation.
@@ -78,7 +78,7 @@ namespace RESQML2_NS
 		* @param nullValue			The value which is used to tell the association between a grid interval and strati unit is unavailable.
 		* @param stratiOrgInterp	The stratigraphic organization interpretation which is associated to this grid representation.
 		*/
-		void setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
+		DLL_IMPORT_OR_EXPORT void setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
 
 		/**
 		* @return	null pointer if no stratigraphic organization interpretation is associated to this grid representation. Otherwise return the data objet reference of the associated stratigraphic organization interpretation.
@@ -88,14 +88,13 @@ namespace RESQML2_NS
 		/**
 		* @return	true if this grid representation has got some association between stratigraphic unit indices and interval. Intervals = layers + K gaps.
 		*/
-		bool hasIntervalStratigraphicUnitIndices() const;
+		DLL_IMPORT_OR_EXPORT bool hasIntervalStratigraphicUnitIndices() const;
 
 		/**
 		* Get the stratigraphic unit indices (regarding the associated stratigraphic organization interpretation) of each interval of this grid representation.
 		* @param stratiUnitIndices	This array must be allocated with a count equal to the count of interval in this grid. It will be filled in with the stratigraphic unit indices ordered as grid intervals are ordered.
 		* @return					The null value is returned. The null value is used to tell the association between a grid interval and strati unit is unavailable.
 		*/
-		ULONG64 getIntervalStratigraphicUnitIndices(ULONG64 * stratiUnitIndices);
+		DLL_IMPORT_OR_EXPORT ULONG64 getIntervalStratigraphicUnitIndices(ULONG64 * stratiUnitIndices);
 	};
 }
-

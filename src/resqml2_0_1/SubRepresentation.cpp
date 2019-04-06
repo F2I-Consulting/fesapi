@@ -39,7 +39,7 @@ void SubRepresentation::init(soap* soapContext, const string & guid, const strin
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORESubRepresentation(soapContext, 1);
 
 	initMandatoryMetadata();
-    setMetadata(guid, title, "", -1, "", "", -1, "", "");
+    setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 SubRepresentation::SubRepresentation(soap* soapContext,	const string & guid, const string & title) :
@@ -174,12 +174,10 @@ void SubRepresentation::pushBackRefToExistingDataset(const gsoap_resqml2_0_1::re
 
 DiscreteProperty* SubRepresentation::getSupportingRepresentationIndicesDiscretePropOfPatch(const unsigned int & patchIndex) const
 {
-	_resqml2__SubRepresentation* rep = getSpecializedGsoapProxy();
-
 	ostringstream oss;
 	oss << "SubRepresentationPatch[" << patchIndex << "]/ElementIndices/SupportingRepresentationIndex";
 	vector<string> uuid = getExtraMetadata(oss.str());
-	return getEpcDocument()->getResqmlAbstractObjectByUuid<DiscreteProperty>(uuid[0]);
+	return getEpcDocument()->getDataObjectByUuid<DiscreteProperty>(uuid[0]);
 }
 
 void SubRepresentation::pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind0, const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind1,

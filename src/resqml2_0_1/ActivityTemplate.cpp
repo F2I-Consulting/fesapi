@@ -32,7 +32,7 @@ ActivityTemplate::ActivityTemplate(soap* soapContext, const string & guid, const
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREActivityTemplate(soapContext, 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 void ActivityTemplate::pushBackParameter(const std::string title,
@@ -40,8 +40,9 @@ void ActivityTemplate::pushBackParameter(const std::string title,
 			const unsigned int & minOccurs, const int & maxOccurs)
 {
 	// Preconditions
-	if (minOccurs > maxOccurs)
+	if (maxOccurs >= 0 && minOccurs > static_cast<unsigned int>(maxOccurs)) {
 		throw invalid_argument("Maximum occurences of a parameter template must be at least equal to the minimum occurences of this same parameter template.");
+	}
 
 	_resqml2__ActivityTemplate* activityTemplate = static_cast<_resqml2__ActivityTemplate*>(gsoapProxy2_0_1);
 
@@ -73,7 +74,7 @@ void ActivityTemplate::pushBackParameter(const std::string title,
 {
 	pushBackParameter(title, resqml2__ParameterKind__dataObject, isInput, isOutput, minOccurs, maxOccurs);
 
-	if (resqmlObjectContentType.size() > 0)
+	if (!resqmlObjectContentType.empty())
 	{
 		_resqml2__ActivityTemplate* activityTemplate = static_cast<_resqml2__ActivityTemplate*>(gsoapProxy2_0_1);
 		activityTemplate->Parameter[activityTemplate->Parameter.size()-1]->DataObjectContentType = soap_new_std__string(gsoapProxy2_0_1->soap, 1);
@@ -85,7 +86,7 @@ bool ActivityTemplate::isAnExistingParameter(const std::string & paramTitle) con
 {
 	_resqml2__ActivityTemplate* activityTemplate = static_cast<_resqml2__ActivityTemplate*>(gsoapProxy2_0_1);
 
-	for (unsigned int i = 0; i < activityTemplate->Parameter.size(); ++i)
+	for (size_t i = 0; i < activityTemplate->Parameter.size(); ++i)
 	{
 		if (activityTemplate->Parameter[i]->Title == paramTitle)
 			return true;
@@ -94,7 +95,7 @@ bool ActivityTemplate::isAnExistingParameter(const std::string & paramTitle) con
 	return false;
 }
 
-const unsigned int ActivityTemplate::getParameterCount() const
+unsigned int ActivityTemplate::getParameterCount() const
 {
 	return static_cast<_resqml2__ActivityTemplate*>(gsoapProxy2_0_1)->Parameter.size();
 }
@@ -169,7 +170,7 @@ const bool & ActivityTemplate::getParameterIsOutput(const std::string & paramTit
 	return param->IsOutput;
 }
 
-const LONG64 ActivityTemplate::getParameterMinOccurences(const unsigned int & index) const
+LONG64 ActivityTemplate::getParameterMinOccurences(const unsigned int & index) const
 {
 	_resqml2__ActivityTemplate* activityTemplate = static_cast<_resqml2__ActivityTemplate*>(gsoapProxy2_0_1);
 
@@ -179,7 +180,7 @@ const LONG64 ActivityTemplate::getParameterMinOccurences(const unsigned int & in
 	return activityTemplate->Parameter[index]->MinOccurs;
 }
 
-const LONG64 ActivityTemplate::getParameterMinOccurences(const std::string & paramTitle) const
+LONG64 ActivityTemplate::getParameterMinOccurences(const std::string & paramTitle) const
 {
 	resqml2__ParameterTemplate* param = getParameterFromTitle(paramTitle);
 
@@ -189,7 +190,7 @@ const LONG64 ActivityTemplate::getParameterMinOccurences(const std::string & par
 	return param->MinOccurs;
 }
 
-const LONG64 ActivityTemplate::getParameterMaxOccurences(const unsigned int & index) const
+LONG64 ActivityTemplate::getParameterMaxOccurences(const unsigned int & index) const
 {
 	_resqml2__ActivityTemplate* activityTemplate = static_cast<_resqml2__ActivityTemplate*>(gsoapProxy2_0_1);
 
@@ -199,7 +200,7 @@ const LONG64 ActivityTemplate::getParameterMaxOccurences(const unsigned int & in
 	return activityTemplate->Parameter[index]->MaxOccurs;
 }
 
-const LONG64 ActivityTemplate::getParameterMaxOccurences(const std::string & paramTitle) const
+LONG64 ActivityTemplate::getParameterMaxOccurences(const std::string & paramTitle) const
 {
 	resqml2__ParameterTemplate* param = getParameterFromTitle(paramTitle);
 
@@ -219,7 +220,7 @@ resqml2__ParameterTemplate* ActivityTemplate::getParameterFromTitle(const std::s
 	_resqml2__ActivityTemplate* activityTemplate = static_cast<_resqml2__ActivityTemplate*>(gsoapProxy2_0_1);
 
 	resqml2__ParameterTemplate* param = nullptr;
-	for (unsigned int i = 0; i < activityTemplate->Parameter.size(); ++i)
+	for (size_t i = 0; i < activityTemplate->Parameter.size(); ++i)
 	{
 		if (activityTemplate->Parameter[i]->Title == paramTitle)
 		{
@@ -235,7 +236,7 @@ vector<Relationship> ActivityTemplate::getAllEpcRelationships() const
 {
 	vector<Relationship> result;
 
-	for (unsigned int i = 0; i < activityInstanceSet.size(); ++i)
+	for (size_t i = 0; i < activityInstanceSet.size(); ++i)
 	{
 		Relationship rel(activityInstanceSet[i]->getPartNameInEpcDocument(), "", activityInstanceSet[i]->getUuid());
 		rel.setSourceObjectType();
@@ -245,3 +246,4 @@ vector<Relationship> ActivityTemplate::getAllEpcRelationships() const
 	return result;
 }
 
+void ActivityTemplate::importRelationshipSetFromEpc(COMMON_NS::EpcDocument *) {}

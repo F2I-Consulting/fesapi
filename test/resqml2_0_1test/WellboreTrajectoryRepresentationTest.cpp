@@ -54,8 +54,8 @@ void WellboreTrajectoryRepresentationTest::initEpcDocHandler() {
 	WellboreInterpretationTest* interpTest = new WellboreInterpretationTest(this->epcDoc, true);
 	MdDatumTest* mdDatumTest = new MdDatumTest(this->epcDoc, true);
 
-	RESQML2_0_1_NS::WellboreInterpretation* interp = static_cast<RESQML2_0_1_NS::WellboreInterpretation*>(this->epcDoc->getResqmlAbstractObjectByUuid(WellboreInterpretationTest::defaultUuid));
-	MdDatum* mdDatum = static_cast<MdDatum*>(this->epcDoc->getResqmlAbstractObjectByUuid(MdDatumTest::defaultUuid));
+	RESQML2_0_1_NS::WellboreInterpretation* interp = static_cast<RESQML2_0_1_NS::WellboreInterpretation*>(this->epcDoc->getDataObjectByUuid(WellboreInterpretationTest::defaultUuid));
+	MdDatum* mdDatum = static_cast<MdDatum*>(this->epcDoc->getDataObjectByUuid(MdDatumTest::defaultUuid));
 
 	// cleaning
 	delete interpTest;
@@ -72,7 +72,7 @@ void WellboreTrajectoryRepresentationTest::initEpcDocHandler() {
 
 void WellboreTrajectoryRepresentationTest::readEpcDocHandler() {
 	// getting the TimeSeries
-	RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj = static_cast<RESQML2_0_1_NS::WellboreTrajectoryRepresentation*>(this->epcDoc->getResqmlAbstractObjectByUuid(this->uuid));
+	RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj = static_cast<RESQML2_0_1_NS::WellboreTrajectoryRepresentation*>(this->epcDoc->getDataObjectByUuid(this->uuid));
 
 	REQUIRE(traj->getMdDatumUuid() == MdDatumTest::defaultUuid);
 	REQUIRE(traj->getXyzPointCountOfAllPatches() == 4);

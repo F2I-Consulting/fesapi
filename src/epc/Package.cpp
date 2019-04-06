@@ -16,9 +16,6 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
-
-
 #include "Package.h"
 
 #include <iostream> 
@@ -158,7 +155,7 @@ public:
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	unordered_map< string, string >			extendedCoreProperties;					/// Set of non standard (extended) core properties
 #else
-	tr1::unordered_map< string, string >	extendedCoreProperties;					/// Set of non standard (extended) core properties
+	tr1::unordered_map< string, string >			extendedCoreProperties;					/// Set of non standard (extended) core properties
 #endif
 	string				pathName;													/// Pathname of package
 	unzFile				unzipped;
@@ -269,7 +266,7 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 	string relFile = extractFile("_rels/.rels", "");
 	d_ptr->filePrincipalRelationship.readFromString(relFile);
 	vector<Relationship> pckRelset = d_ptr->filePrincipalRelationship.getAllRelationship();
-	for (unsigned int i = 0; i < pckRelset.size(); i++)
+	for (size_t i = 0; i < pckRelset.size(); i++)
 	{
 		if (pckRelset[i].getType().compare(CORE_PROP_REL_TYPE) == 0)
 		{
@@ -277,7 +274,7 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 			if (target.size() > 1 && target[0] == '/' && target[1] != '/') { // Rule 8 of A.3 paragraph Open Packaging Conventions (ECMA version)
 				target = target.substr(1);
 			}
-			string corePropFile = extractFile(target.c_str(), "");
+			string corePropFile = extractFile(target, "");
 			d_ptr->fileCoreProperties.readFromString(corePropFile);
 		}
 	}
@@ -289,7 +286,7 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 		FileRelationship extendedCpRelFile;
 		extendedCpRelFile.readFromString(extendedCpRelFilePath);
 		vector<Relationship> extendedCpRelSet = extendedCpRelFile.getAllRelationship();
-		for (unsigned int i = 0; i < extendedCpRelSet.size(); i++)
+		for (size_t i = 0; i < extendedCpRelSet.size(); i++)
 		{
 			std::string target = extendedCpRelSet[i].getTarget();
 			if (target.size() > 1 && target[0] == '/' && target[1] != '/') { // Rule 8 of A.3 paragraph Open Packaging Conventions (ECMA version)
@@ -301,7 +298,7 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 				result.push_back("The extended core properties file " + target + " targeted in docProps/_rels/core.xml.rels is not present in the Epc document");
 				continue;
 			}
-			string extendedCorePropFile = extractFile(target.c_str(), "");
+			string extendedCorePropFile = extractFile(target, "");
 			std::istringstream iss(extendedCorePropFile);
 
 			std::string line;
@@ -437,7 +434,7 @@ void Package::setFileContentType(const FileContentType & pkgFileCT)
 void Package::addContentType(const ContentType & contentType)
 {
 	d_ptr->fileContentType.addContentType(contentType);
-};
+}
 
 void Package::setPrincipalRelationship(const FileRelationship & pkgFileRS)
 {
@@ -557,15 +554,12 @@ void Package::writePackage()
 		// content
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		for (std::unordered_map< std::string, std::string >::iterator it = d_ptr->extendedCoreProperties.begin(); it != d_ptr->extendedCoreProperties.end(); ++it)
-		{
-			oss << "\t<" << it->first << ">" + it->second + "</" + it->first + ">" << endl;
-		}
 #else
-		for (tr1::unordered_map< std::string, std::string >::iterator it = d_ptr->extendedCoreProperties.begin();  it != d_ptr->extendedCoreProperties.end(); ++it)
+		for (std::tr1::unordered_map< std::string, std::string >::iterator it = d_ptr->extendedCoreProperties.begin(); it != d_ptr->extendedCoreProperties.end(); ++it)
+#endif
 		{
 			oss << "\t<" << it->first << ">" + it->second + "</" + it->first + ">" << endl;
 		}
-#endif
 
 		// end tag
 		oss << "</extendedCoreProperties>" << endl;

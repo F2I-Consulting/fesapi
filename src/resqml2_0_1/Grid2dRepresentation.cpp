@@ -41,7 +41,7 @@ Grid2dRepresentation::Grid2dRepresentation(RESQML2_NS::AbstractFeatureInterpreta
 	_resqml2__Grid2dRepresentation* singleGrid2dRep = static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	// Surface role
 	if (interp->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORESeismicLatticeFeature)
@@ -86,7 +86,7 @@ ULONG64 Grid2dRepresentation::getXyzPointCountOfPatch(const unsigned int & patch
 	return getNodeCountAlongIAxis() * getNodeCountAlongJAxis();
 }
 
-void Grid2dRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
+void Grid2dRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double *) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index patch is not in the allowed range of patch.");
@@ -251,14 +251,14 @@ double Grid2dRepresentation::getZOrigin() const
 	return std::numeric_limits<double>::signaling_NaN();
 }
 
-double Grid2dRepresentation::getComponentInGlobalCrs(double x, double y, double z, size_t componentIndex) const
+double Grid2dRepresentation::getComponentInGlobalCrs(double x, double y, double z, size_t componentIndex, bool withoutTranslation) const
 {
 	double result[] = { x, y, z };
 	if (result[componentIndex] != result[componentIndex]) {
 		return result[componentIndex];
 	}
 
-	localCrs->convertXyzPointsToGlobalCrs(result, 1, true);
+	localCrs->convertXyzPointsToGlobalCrs(result, 1, withoutTranslation);
 
 	return result[componentIndex];
 }
@@ -337,17 +337,17 @@ double Grid2dRepresentation::getZJOffset() const
 
 double Grid2dRepresentation::getXJOffsetInGlobalCrs() const
 {
-	return getComponentInGlobalCrs(getXJOffset(), getYJOffset(), getZJOffset(), 0);
+	return getComponentInGlobalCrs(getXJOffset(), getYJOffset(), getZJOffset(), 0, true);
 }
 
 double Grid2dRepresentation::getYJOffsetInGlobalCrs() const
 {
-	return getComponentInGlobalCrs(getXJOffset(), getYJOffset(), getZJOffset(), 1);
+	return getComponentInGlobalCrs(getXJOffset(), getYJOffset(), getZJOffset(), 1, true);
 }
 
 double Grid2dRepresentation::getZJOffsetInGlobalCrs() const
 {
-	return getComponentInGlobalCrs(getXJOffset(), getYJOffset(), getZJOffset(), 2);
+	return getComponentInGlobalCrs(getXJOffset(), getYJOffset(), getZJOffset(), 2, true);
 }
 
 double Grid2dRepresentation::getXIOffset() const
@@ -409,17 +409,17 @@ double Grid2dRepresentation::getZIOffset() const
 
 double Grid2dRepresentation::getXIOffsetInGlobalCrs() const
 {
-	return getComponentInGlobalCrs(getXIOffset(), getYIOffset(), getZIOffset(), 0);
+	return getComponentInGlobalCrs(getXIOffset(), getYIOffset(), getZIOffset(), 0, true);
 }
 
 double Grid2dRepresentation::getYIOffsetInGlobalCrs() const
 {
-	return getComponentInGlobalCrs(getXIOffset(), getYIOffset(), getZIOffset(), 1);
+	return getComponentInGlobalCrs(getXIOffset(), getYIOffset(), getZIOffset(), 1, true);
 }
 
 double Grid2dRepresentation::getZIOffsetInGlobalCrs() const
 {
-	return getComponentInGlobalCrs(getXIOffset(), getYIOffset(), getZIOffset(), 2);
+	return getComponentInGlobalCrs(getXIOffset(), getYIOffset(), getZIOffset(), 2, true);
 }
 
 bool Grid2dRepresentation::isJSpacingConstant() const
@@ -574,12 +574,12 @@ void Grid2dRepresentation::getISpacing(double* const iSpacings) const
 		for (ULONG64 i = 0; i < iSpacingCount; ++i) {
 			iSpacings[i] = .0;
 			if (iIndexOffset > 0) {
-				for (size_t tmp = 0; tmp < iIndexOffset; ++tmp) {
+				for (int tmp = 0; tmp < iIndexOffset; ++tmp) {
 					iSpacings[i] += iSpacingsOnSupportingRep[iIndexOrigin + i * iIndexOffset + tmp];
 				}
 			}
 			else if (iIndexOffset < 0) {
-				for (size_t tmp = 0; tmp > iIndexOffset; --tmp) {
+				for (int tmp = 0; tmp > iIndexOffset; --tmp) {
 					iSpacings[i] += iSpacingsOnSupportingRep[iIndexOrigin - 1 + i * iIndexOffset + tmp];
 				}
 			}
@@ -607,8 +607,7 @@ void Grid2dRepresentation::setGeometryAsArray2dOfLatticePoints3d(
 			xOffsetInSlowestDirection, yOffsetInSlowestDirection, zOffsetInSlowestDirection,
 			spacingInFastestDirection, spacingInSlowestDirection);
 
-	resqml2__Grid2dPatch* patch = static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch;
-	patch = soap_new_resqml2__Grid2dPatch(gsoapProxy2_0_1->soap, 1);
+	resqml2__Grid2dPatch* patch = soap_new_resqml2__Grid2dPatch(gsoapProxy2_0_1->soap, 1);
 	patch->PatchIndex = 0;
 	patch->Geometry = geomPatch;
 	patch->SlowestAxisCount = numPointsInSlowestDirection;
@@ -767,13 +766,11 @@ void Grid2dRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* 
 {
 	AbstractSurfaceRepresentation::importRelationshipSetFromEpc(epcDoc);
 
-	_resqml2__Grid2dRepresentation* singleGrid2dRep = static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1);
-
 	// Base representation
 	const string supportingRepUuid = getSupportingRepresentationUuid();
 	if (!supportingRepUuid.empty())
 	{
-		Grid2dRepresentation* grid2d = epcDoc->getResqmlAbstractObjectByUuid<Grid2dRepresentation>(supportingRepUuid);
+		Grid2dRepresentation* grid2d = epcDoc->getDataObjectByUuid<Grid2dRepresentation>(supportingRepUuid);
 		if (grid2d != nullptr) {
 			setSupportingRepresentation(grid2d);
 		}

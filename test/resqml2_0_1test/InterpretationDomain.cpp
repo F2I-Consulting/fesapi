@@ -42,17 +42,17 @@ InterpretationDomain::InterpretationDomain(EpcDocument* epcDoc, bool init)
 	: AbstractTest(epcDoc)
 {
 	if (init)
-		this->initEpcDoc();
+		initEpcDoc();
 	else
-		this->readEpcDoc();
+		readEpcDoc();
 }
 
 void InterpretationDomain::initEpcDoc() {
 
-	FaultInterpretation* faultInterp = epcDoc->getResqmlAbstractObjectByUuid<FaultInterpretation>(uuidFaultInterpretation);
+	FaultInterpretation* faultInterp = epcDoc->getDataObjectByUuid<FaultInterpretation>(uuidFaultInterpretation);
 	if (faultInterp == nullptr) {
 		FaultInterpretationTest* faultInterpTest = new FaultInterpretationTest(this->epcDoc, true);
-		faultInterp = epcDoc->getResqmlAbstractObjectByUuid<FaultInterpretation>(uuidFaultInterpretation);
+		faultInterp = epcDoc->getDataObjectByUuid<FaultInterpretation>(uuidFaultInterpretation);
 		delete faultInterpTest;
 	}
 
@@ -72,4 +72,3 @@ void InterpretationDomain::initEpcDoc() {
 void InterpretationDomain::readEpcDoc() {
 
 }
-

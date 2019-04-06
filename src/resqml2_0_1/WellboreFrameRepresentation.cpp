@@ -27,8 +27,6 @@ under the License.
 #include "resqml2/AbstractLocal3dCrs.h"
 #include "common/AbstractHdfProxy.h"
 
-#include "witsml2_1/Log.h"
-
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
@@ -37,7 +35,7 @@ using namespace epc;
 const char* WellboreFrameRepresentation::XML_TAG = "WellboreFrameRepresentation";
 
 WellboreFrameRepresentation::WellboreFrameRepresentation(WellboreInterpretation* interp, const string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj) :
-	AbstractRepresentation(interp, traj->getLocalCrs()), trajectory(traj), witsmlLog(nullptr)
+	AbstractRepresentation(interp, traj->getLocalCrs()), trajectory(traj)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREWellboreFrameRepresentation(interp->getGsoapContext(), 1);	
 	_resqml2__WellboreFrameRepresentation* frame = static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
@@ -48,7 +46,7 @@ WellboreFrameRepresentation::WellboreFrameRepresentation(WellboreInterpretation*
 	traj->addWellboreFrameRepresentation(this);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 
@@ -82,13 +80,6 @@ vector<Relationship> WellboreFrameRepresentation::getAllEpcRelationships() const
 	else
 		throw domain_error("The trajectory associated to the WellboreFeature frame cannot be nullptr.");
 
-	if (witsmlLog)
-	{
-		Relationship relWitsmlLog(witsmlLog->getPartNameInEpcDocument(), "", witsmlLog->getUuid());
-		relWitsmlLog.setDestinationObjectType();
-		result.push_back(relWitsmlLog);
-	}
-
 	return result;
 }
 
@@ -97,7 +88,7 @@ void WellboreFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDoc
 	const _resqml2__WellboreFrameRepresentation* const rep = static_cast<const _resqml2__WellboreFrameRepresentation* const>(gsoapProxy2_0_1);
 
 	// need to do that before AbstractRepresentation::importRelationshipSetFromEpc because the trajectory is used for finding the local crs relationship.
-	trajectory = static_cast<WellboreTrajectoryRepresentation* const>(epcDoc->getResqmlAbstractObjectByUuid(rep->Trajectory->UUID));
+	trajectory = static_cast<WellboreTrajectoryRepresentation* const>(epcDoc->getDataObjectByUuid(rep->Trajectory->UUID));
 	if (trajectory != nullptr) {
 		trajectory->addWellboreFrameRepresentation(this);
 	}
@@ -106,16 +97,7 @@ void WellboreFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDoc
 
 	int valuesType = rep->NodeMd->soap_type();
 	if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-		setHdfProxy(static_cast<COMMON_NS::AbstractHdfProxy* const>(epcDoc->getResqmlAbstractObjectByUuid(static_cast<resqml2__DoubleHdf5Array* const>(rep->NodeMd)->Values->HdfProxy->UUID)));
-	}
-
-	if (rep->WitsmlLogReference) {
-		WITSML2_1_NS::Log* tmp = static_cast<WITSML2_1_NS::Log* const>(epcDoc->getResqmlAbstractObjectByUuid(rep->WitsmlLogReference->UUID));
-		if (tmp != nullptr) {
-			updateXml = false;
-			setWitsmlLog(tmp);
-			updateXml = true;
-		}
+		setHdfProxy(static_cast<COMMON_NS::AbstractHdfProxy* const>(epcDoc->getDataObjectByUuid(static_cast<resqml2__DoubleHdf5Array* const>(rep->NodeMd)->Values->HdfProxy->UUID)));
 	}
 }
 
@@ -297,19 +279,15 @@ std::string WellboreFrameRepresentation::getHdfProxyUuid() const
 	{
 		return static_cast<resqml2__DoubleHdf5Array*>(frame->NodeMd)->Values->HdfProxy->UUID;
 	}
-	else
-		return "";
+
+	return std::string();
 }
 
-void WellboreFrameRepresentation::setWitsmlLog(WITSML2_1_NS::Log * witsmlLogToSet)
+ULONG64 WellboreFrameRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
 {
-	witsmlLog = witsmlLogToSet;
-	witsmlLog->resqmlWellboreFrameRepresentation = this;
-
-	if (updateXml)
-	{
-		resqml2__obj_USCOREWellboreFrameRepresentation* resqmlLog = static_cast<resqml2__obj_USCOREWellboreFrameRepresentation*>(gsoapProxy2_0_1);
-		resqmlLog->WitsmlLogReference = witsmlLog->newResqmlReference();
+	if (patchIndex >= getPatchCount()) {
+		throw range_error("The patch index is out of range");
 	}
-}
 
+	return getMdValuesCount();
+}

@@ -42,7 +42,7 @@ SeismicLineFeature::SeismicLineFeature(soap* soapContext, const std::string & gu
 	seismicLine->TraceCount = traceCount;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 int SeismicLineFeature::getTraceIndexIncrement() const
@@ -95,7 +95,7 @@ void SeismicLineFeature::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* ep
 
 	if (seismicLine->IsPartOf)
 	{
-		SeismicLineSetFeature* seisLineSet = static_cast<SeismicLineSetFeature*>(epcDoc->getResqmlAbstractObjectByUuid(seismicLine->IsPartOf->UUID));
+		SeismicLineSetFeature* seisLineSet = static_cast<SeismicLineSetFeature*>(epcDoc->getDataObjectByUuid(seismicLine->IsPartOf->UUID));
 		if (seisLineSet)
 			setSeismicLineSet(seisLineSet);
 	}

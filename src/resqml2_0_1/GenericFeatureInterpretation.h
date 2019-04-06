@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT GenericFeatureInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
+	class GenericFeatureInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	public:
 
@@ -43,8 +43,7 @@ namespace RESQML2_0_1_NS
 
 		~GenericFeatureInterpretation() {}
 	
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 	};
 }
-

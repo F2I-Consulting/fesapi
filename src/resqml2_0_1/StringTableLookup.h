@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT StringTableLookup : public COMMON_NS::AbstractObject
+	class StringTableLookup : public COMMON_NS::AbstractObject
 	{
 	public:
 
@@ -54,70 +54,70 @@ namespace RESQML2_0_1_NS
 		*/
 		~StringTableLookup() {}
 		
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/**
 		* Add a categorical property values object which uses this string lookup.
 		* Does not add the inverse relationship i.e. from the categorical property values object to this string lookup.
 		*/
-		void addCategoricalPropertyValues(class CategoricalProperty* categVal) {categoricalPropertyValuesSet.push_back(categVal);}
+		DLL_IMPORT_OR_EXPORT void addCategoricalPropertyValues(class CategoricalProperty* categVal) {categoricalPropertyValuesSet.push_back(categVal);}
 
 		/**
 		* Check wether a key value is contained within this string lookup or not.
 		*/
-		bool containsKey(const long & longValue);
+		DLL_IMPORT_OR_EXPORT bool containsKey(const long & longValue);
 
 		/**
 		* Get the count of item in the stringTableLookup (in the map).
 		*/
-		unsigned int getItemCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getItemCount() const;
 
 		/**
 		* Get the key of a string value pair at a particular index in the string table lookup (in the map)
 		*/
-		long getKeyAtIndex(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT long getKeyAtIndex(const unsigned int & index) const;
 
 		/**
 		* Get the string value of a string value pair at a particular index in the string table lookup (in the map)
 		*/
-		std::string getStringValueAtIndex(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT std::string getStringValueAtIndex(const unsigned int & index) const;
 
 		/**
 		* Get a string value from its associated key (long) value.
 		* If the key value does not exist, an empty string is returned.
 		*/
-		std::string getStringValue(const long & longValue);
+		DLL_IMPORT_OR_EXPORT std::string getStringValue(const long & longValue);
 
 		/**
 		* Add a pair value to the string lookup.
 		* No verification that the key value (or string value) already exists
 		*/
-		void addValue(const std::string & strValue, const long & longValue);
+		DLL_IMPORT_OR_EXPORT void addValue(const std::string & strValue, const long & longValue);
 
 		/**
 		* Modify the associated string value according to the key (long) value.
 		* If the key value does not exist, nothing is done.
 		*/
-		void setValue(const std::string & strValue, const long & longValue);
+		DLL_IMPORT_OR_EXPORT void setValue(const std::string & strValue, const long & longValue);
 
 		/*
 		* Get the minimum value in this discrete properties. It reads it from file.
 		* @return the minimum value if present in the file otherwise long.max.
 		*/
-		LONG64 getMinimumValue();
+		DLL_IMPORT_OR_EXPORT LONG64 getMinimumValue();
 
 		/*
 		* Get the maximum value in this discrete properties. It reads it from file.
 		* @return the maximum value if present in the file otherwise long.min.
 		*/
-		LONG64 getMaximumValue();
+		DLL_IMPORT_OR_EXPORT LONG64 getMaximumValue();
 
 		/*
 		* Getter for the underlying map of the string lookup.
 		*/
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-		std::unordered_map<long, std::string> getMap() const;
+		DLL_IMPORT_OR_EXPORT std::unordered_map<long, std::string> getMap() const;
 #else
 		std::tr1::unordered_map<long, std::string> getMap() const;
 #endif
@@ -125,13 +125,9 @@ namespace RESQML2_0_1_NS
 	protected:
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		/**
-		* Does nothing since StringTableLookup has not got any forward relationship.
-		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML backwards relationships
 		std::vector<class CategoricalProperty*> categoricalPropertyValuesSet;
 	};
 }
-

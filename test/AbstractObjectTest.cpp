@@ -16,18 +16,17 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1test/AbstractObjectTest.h"
+#include "AbstractObjectTest.h"
 
 #include "catch.hpp"
 #include "AbstractTest.h"
+#include "config.h"
 
 #include "common/EpcDocument.h"
 #include "common/AbstractObject.h"
 
 using namespace std;
-using namespace resqml2_0_1test;
 using namespace commontest;
-using namespace RESQML2_NS;
 
 AbstractObjectTest::AbstractObjectTest(const string & epcDocPath, const string & uuid, const string & title) :
 	AbstractTest(epcDocPath),
@@ -43,21 +42,26 @@ AbstractObjectTest::AbstractObjectTest(COMMON_NS::EpcDocument* epcDoc, const str
 
 void AbstractObjectTest::initEpcDoc()
 {
-	if (this->epcDoc == nullptr)
+	if (epcDoc == nullptr)
 		throw std::logic_error("The EPC document is not initialized.");
 
-	if (this->epcDoc->getResqmlAbstractObjectByUuid(this->uuid) != nullptr)
+	if (epcDoc->getDataObjectByUuid(uuid) != nullptr)
 		return;
 
-	this->initEpcDocHandler();
+	initEpcDocHandler();
+
+	COMMON_NS::AbstractObject* resqmlObject = static_cast<COMMON_NS::AbstractObject*>(epcDoc->getDataObjectByUuid(uuid));
+	resqmlObject->addAlias(authorityAlias, titleAlias);
 }
 
 void AbstractObjectTest::readEpcDoc() {
-	COMMON_NS::AbstractObject* resqmlObject = static_cast<COMMON_NS::AbstractObject*>(this->epcDoc->getResqmlAbstractObjectByUuid(this->uuid));
+	COMMON_NS::AbstractObject* resqmlObject = static_cast<COMMON_NS::AbstractObject*>(epcDoc->getDataObjectByUuid(uuid));
 	REQUIRE(resqmlObject != nullptr);
-	REQUIRE(resqmlObject->getUuid() == this->uuid);
-	REQUIRE( resqmlObject->getTitle() == this->title );
+	REQUIRE(resqmlObject->getUuid() == uuid);
+	REQUIRE(resqmlObject->getTitle() == title);
+	REQUIRE(resqmlObject->getAliasCount() == 1);
+	REQUIRE(resqmlObject->getAliasAuthorityAtIndex(0) == authorityAlias);
+	REQUIRE(resqmlObject->getAliasTitleAtIndex(0) == titleAlias);
 
-	this->readEpcDocHandler();
+	readEpcDocHandler();
 }
-

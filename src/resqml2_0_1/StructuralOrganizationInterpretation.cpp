@@ -24,7 +24,7 @@ under the License.
 #include "resqml2_0_1/FaultInterpretation.h"
 #include "resqml2_0_1/HorizonInterpretation.h"
 #include "resqml2_0_1/EarthModelInterpretation.h"
-
+#include "resqml2/AbstractFeatureInterpretation.h"
 #include "tools/Misc.h"
 
 using namespace std;
@@ -37,13 +37,20 @@ const char* StructuralOrganizationInterpretation::XML_TAG = "StructuralOrganizat
 StructuralOrganizationInterpretation::StructuralOrganizationInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title,
 		const gsoap_resqml2_0_1::resqml2__OrderingCriteria & orderingCriteria)
 {
+	if (orgFeat == nullptr) {
+		throw invalid_argument("The interpreted organization feature cannot be null.");
+	}
+	if (!orgFeat->isPartial() && orgFeat->getKind() != gsoap_resqml2_0_1::resqml2__OrganizationKind__structural) {
+		throw invalid_argument("The kind of the organization feature is not a structural organization.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREStructuralOrganizationInterpretation(orgFeat->getGsoapContext(), 1);
 	
 	static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->OrderingCriteria = orderingCriteria;
 	static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Domain = resqml2__Domain__mixed;
 
     initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	setInterpretedFeature(orgFeat);
 }
@@ -67,11 +74,11 @@ unsigned int StructuralOrganizationInterpretation::getFaultInterpretationCount()
 	return static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Faults.size();
 }
 
-FaultInterpretation* StructuralOrganizationInterpretation::getFaultInterpretation(const unsigned int & index)
+FaultInterpretation* StructuralOrganizationInterpretation::getFaultInterpretation(unsigned int index)
 {
 	_resqml2__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 	if (index < structuralOrganization->Faults.size()) {
-		return static_cast<FaultInterpretation*>(epcDocument->getResqmlAbstractObjectByUuid(structuralOrganization->Faults[index]->UUID));
+		return static_cast<FaultInterpretation*>(epcDocument->getDataObjectByUuid(structuralOrganization->Faults[index]->UUID));
 	}
 	else {
 		throw std::out_of_range("The fault index is out of range.");
@@ -80,7 +87,7 @@ FaultInterpretation* StructuralOrganizationInterpretation::getFaultInterpretatio
 
 void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(HorizonInterpretation * horizonInterpretation, const int & stratigraphicRank)
 {
-    // EPC
+	// EPC
 	horizonInterpretation->structuralOrganizationInterpretationSet.push_back(this);
 
     // XML
@@ -98,6 +105,22 @@ void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(Horizon
 	}
 }
 
+unsigned int StructuralOrganizationInterpretation::getHorizonInterpretationCount() const
+{
+	return static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Horizons.size();
+}
+
+HorizonInterpretation* StructuralOrganizationInterpretation::getHorizonInterpretation(unsigned int index) const
+{
+	_resqml2__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
+	if (index < structuralOrganization->Horizons.size()) {
+		return static_cast<HorizonInterpretation*>(epcDocument->getDataObjectByUuid(structuralOrganization->Horizons[index]->Horizon->UUID));
+	}
+	else {
+		throw std::out_of_range("The fault index is out of range.");
+	}
+}
+
 void StructuralOrganizationInterpretation::pushBackTopFrontierInterpretation(AbstractFeatureInterpretation * topFrontierInterpretation)
 {
     // EPC
@@ -109,6 +132,22 @@ void StructuralOrganizationInterpretation::pushBackTopFrontierInterpretation(Abs
         eml20__DataObjectReference* interpRef = topFrontierInterpretation->newResqmlReference();
         _resqml2__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 		structuralOrganization->TopFrontier.push_back(interpRef);
+	}
+}
+
+unsigned int StructuralOrganizationInterpretation::getTopFrontierInterpretationCount() const
+{
+	return static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->TopFrontier.size();
+}
+
+RESQML2_NS::AbstractFeatureInterpretation* StructuralOrganizationInterpretation::getTopFrontierInterpretation(unsigned int index) const
+{
+	_resqml2__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
+	if (index < structuralOrganization->TopFrontier.size()) {
+		return static_cast<RESQML2_NS::AbstractFeatureInterpretation*>(epcDocument->getDataObjectByUuid(structuralOrganization->TopFrontier[index]->UUID));
+	}
+	else {
+		throw std::out_of_range("The top frontier index is out of range.");
 	}
 }
 
@@ -126,6 +165,22 @@ void StructuralOrganizationInterpretation::pushBackBottomFrontierInterpretation(
 	}
 }
 
+unsigned int StructuralOrganizationInterpretation::getBottomFrontierInterpretationCount() const
+{
+	return static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->BottomFrontier.size();
+}
+
+RESQML2_NS::AbstractFeatureInterpretation* StructuralOrganizationInterpretation::getBottomFrontierInterpretation(unsigned int index) const
+{
+	_resqml2__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
+	if (index < structuralOrganization->BottomFrontier.size()) {
+		return static_cast<RESQML2_NS::AbstractFeatureInterpretation*>(epcDocument->getDataObjectByUuid(structuralOrganization->BottomFrontier[index]->UUID));
+	}
+	else {
+		throw std::out_of_range("The bottom frontier index is out of range.");
+	}
+}
+
 void StructuralOrganizationInterpretation::pushBackSideFrontierInterpretation(AbstractFeatureInterpretation * sideFrontierInterpretation)
 {
     // EPC
@@ -137,6 +192,22 @@ void StructuralOrganizationInterpretation::pushBackSideFrontierInterpretation(Ab
         eml20__DataObjectReference* interpRef = sideFrontierInterpretation->newResqmlReference();
         _resqml2__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 		structuralOrganization->Sides.push_back(interpRef);
+	}
+}
+
+unsigned int StructuralOrganizationInterpretation::getSideFrontierInterpretationCount() const
+{
+	return static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Sides.size();
+}
+
+RESQML2_NS::AbstractFeatureInterpretation* StructuralOrganizationInterpretation::getSideFrontierInterpretation(unsigned int index) const
+{
+	_resqml2__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
+	if (index < structuralOrganization->Sides.size()) {
+		return static_cast<RESQML2_NS::AbstractFeatureInterpretation*>(epcDocument->getDataObjectByUuid(structuralOrganization->Sides[index]->UUID));
+	}
+	else {
+		throw std::out_of_range("The bottom frontier index is out of range.");
 	}
 }
 
@@ -201,7 +272,7 @@ void StructuralOrganizationInterpretation::importRelationshipSetFromEpc(COMMON_N
 	COMMON_NS::AbstractObject* obj = nullptr;
 	for (size_t i = 0; i < interp->Faults.size(); ++i)
 	{
-		obj = epcDoc->getResqmlAbstractObjectByUuid(interp->Faults[i]->UUID);
+		obj = epcDoc->getDataObjectByUuid(interp->Faults[i]->UUID);
 		if (dynamic_cast<FaultInterpretation*>(obj) != nullptr) {
 			pushBackFaultInterpretation(static_cast<FaultInterpretation*>(obj));
 		}
@@ -212,7 +283,7 @@ void StructuralOrganizationInterpretation::importRelationshipSetFromEpc(COMMON_N
 	for (size_t i = 0; i < interp->Horizons.size(); ++i)
 	{
 		if (interp->Horizons[i]->StratigraphicRank != nullptr) {
-			obj = epcDoc->getResqmlAbstractObjectByUuid(interp->Horizons[i]->Horizon->UUID);
+			obj = epcDoc->getDataObjectByUuid(interp->Horizons[i]->Horizon->UUID);
 			if (dynamic_cast<HorizonInterpretation*>(obj) != nullptr) {
 				pushBackHorizonInterpretation(static_cast<HorizonInterpretation*>(obj), *(interp->Horizons[i]->StratigraphicRank));
 			}
@@ -227,7 +298,7 @@ void StructuralOrganizationInterpretation::importRelationshipSetFromEpc(COMMON_N
 
 	for (size_t i = 0; i < interp->TopFrontier.size(); ++i)
 	{
-		obj = epcDoc->getResqmlAbstractObjectByUuid(interp->TopFrontier[i]->UUID);
+		obj = epcDoc->getDataObjectByUuid(interp->TopFrontier[i]->UUID);
 		if (dynamic_cast<AbstractFeatureInterpretation*>(obj) != nullptr) {
 			pushBackTopFrontierInterpretation(static_cast<AbstractFeatureInterpretation*>(obj));
 		}
@@ -237,7 +308,7 @@ void StructuralOrganizationInterpretation::importRelationshipSetFromEpc(COMMON_N
 	}
 	for (size_t i = 0; i < interp->BottomFrontier.size(); ++i)
 	{
-		obj = epcDoc->getResqmlAbstractObjectByUuid(interp->BottomFrontier[i]->UUID);
+		obj = epcDoc->getDataObjectByUuid(interp->BottomFrontier[i]->UUID);
 		if (dynamic_cast<AbstractFeatureInterpretation*>(obj) != nullptr) {
 			pushBackBottomFrontierInterpretation(static_cast<AbstractFeatureInterpretation*>(obj));
 		}
@@ -247,7 +318,7 @@ void StructuralOrganizationInterpretation::importRelationshipSetFromEpc(COMMON_N
 	}
 	for (size_t i = 0; i < interp->Sides.size(); ++i)
 	{
-		obj = epcDoc->getResqmlAbstractObjectByUuid(interp->Sides[i]->UUID);
+		obj = epcDoc->getDataObjectByUuid(interp->Sides[i]->UUID);
 		if (dynamic_cast<AbstractFeatureInterpretation*>(obj) != nullptr) {
 			pushBackSideFrontierInterpretation(static_cast<AbstractFeatureInterpretation*>(obj));
 		}

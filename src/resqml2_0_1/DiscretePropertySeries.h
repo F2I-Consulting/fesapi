@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT DiscretePropertySeries : public DiscreteProperty
+	class DiscretePropertySeries : public DiscreteProperty
 	{
 	public:
 
@@ -73,10 +73,9 @@ namespace RESQML2_0_1_NS
 		*/
 		~DiscretePropertySeries() {}
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		std::string getResqmlVersion() const {return "2.0.1";}
 	};
 }
-

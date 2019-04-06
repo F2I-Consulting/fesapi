@@ -34,7 +34,7 @@ void MdDatum::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	_resqml2__MdDatum* mdInfo = static_cast<_resqml2__MdDatum*>(gsoapProxy2_0_1);
 
-	AbstractObject* localCrs = epcDoc->getResqmlAbstractObjectByUuid(mdInfo->LocalCrs->UUID);
+	AbstractObject* localCrs = epcDoc->getDataObjectByUuid(mdInfo->LocalCrs->UUID);
 	if (dynamic_cast<AbstractLocal3dCrs*>(localCrs) != nullptr) {
 		updateXml = false;
 		setLocalCrs(static_cast<AbstractLocal3dCrs*>(localCrs));
@@ -89,6 +89,6 @@ std::string MdDatum::getLocalCrsUuid() const
 AbstractLocal3dCrs * MdDatum::getLocalCrs() const
 {
 	const string uuidLocalCrs = getLocalCrsUuid();
-	return static_cast<AbstractLocal3dCrs*>(epcDocument->getResqmlAbstractObjectByUuid(uuidLocalCrs));
+	return static_cast<AbstractLocal3dCrs*>(epcDocument->getDataObjectByUuid(uuidLocalCrs));
 }
 

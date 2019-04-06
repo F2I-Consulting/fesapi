@@ -21,9 +21,12 @@ under the License.
 #include "common/EpcDocument.h"
 #include "../catch.hpp"
 
+#include "resqml2_0_1/LocalDepth3dCrs.h"
+
 using namespace resqml2_0_1test;
 using namespace COMMON_NS;
 using namespace std;
+using namespace RESQML2_0_1_NS;
 
 const char* LocalDepth3dCrsTest::defaultUuid = "a8effb2c-c94f-4d88-ae76-581ff14a4b96";
 const char* LocalDepth3dCrsTest::defaultTitle = "Local Depth 3d Crs Test";
@@ -37,18 +40,26 @@ LocalDepth3dCrsTest::LocalDepth3dCrsTest(EpcDocument* epcDoc, bool init)
 	: AbstractLocal3dCrsTest(epcDoc, defaultUuid, defaultTitle)
 {
 	if (init)
-		this->initEpcDoc();
+		initEpcDoc();
 	else
-		this->readEpcDoc();
+		readEpcDoc();
 }
 
 void LocalDepth3dCrsTest::initEpcDocHandler()
 {
-	this->epcDoc->createLocalDepth3dCrs(uuid, title, .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
+	epcDoc->createLocalDepth3dCrs(uuid, title, 1000, 2000, 3000, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__ft, "Unknown", false);
 }
 
 void LocalDepth3dCrsTest::readEpcDocHandler()
 {
 	REQUIRE( epcDoc->getLocalDepth3dCrsSet().size() == 1 );
+	LocalDepth3dCrs* crs = epcDoc->getDataObjectByUuid<LocalDepth3dCrs>(uuid);
+	REQUIRE(crs->getOriginOrdinal1() == 1000);
+	REQUIRE(crs->getOriginOrdinal2() == 2000);
+	REQUIRE(crs->getOriginDepthOrElevation() == 3000);
+	REQUIRE(crs->getProjectedCrsEpsgCode() == 23031);
+	REQUIRE(crs->isVerticalCrsUnknown());
+	REQUIRE(crs->getProjectedCrsUnit() == gsoap_resqml2_0_1::eml20__LengthUom__m);
+	REQUIRE(crs->getVerticalCrsUnit() == gsoap_resqml2_0_1::eml20__LengthUom__ft);
+	REQUIRE(crs->isDepthOriented());
 }
-

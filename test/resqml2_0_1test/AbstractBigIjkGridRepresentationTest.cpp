@@ -38,12 +38,13 @@ AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(
 	const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
 	const double & faultThrow, 
 	const char * defaultUuid, const char * defaultTitle)
-	: iCount(iCount), jCount(jCount), kCount(kCount), faultCount(faultCount), 
-	xMin(xMin), xMax(xMax), yMin(yMin), yMax(yMax), zMin(zMin), zMax(zMax), faultThrow(faultThrow),
-	AbstractIjkGridRepresentationTest(
-		epcDocPath, defaultUuid, defaultTitle, 
+	: AbstractIjkGridRepresentationTest(
+		epcDocPath, defaultUuid, defaultTitle,
 		initNodesCountIjkGridRepresentation(iCount, jCount, kCount, faultCount),
-		initNodesIjkGridRepresentation(iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow)) {
+		initNodesIjkGridRepresentation(iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow)),
+	iCount(iCount), jCount(jCount), kCount(kCount), faultCount(faultCount),
+	xMin(xMin), xMax(xMax), yMin(yMin), yMax(yMax), zMin(zMin), zMax(zMax), faultThrow(faultThrow)
+{
 	if ((iCount < 1) || (jCount < 1) || (kCount < 1))
 	{
 		throw invalid_argument("iCount, jCount and kCount must be >= 1.");
@@ -66,17 +67,17 @@ AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(EpcDo
 	const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
 	const double & faultThrow,
 	const char * defaultUuid, const char * defaultTitle)
-	: iCount(iCount), jCount(jCount), kCount(kCount), faultCount(faultCount),
-	xMin(xMin), xMax(xMax), yMin(yMin), yMax(yMax), zMin(zMin), zMax(zMax), faultThrow(faultThrow), 
-	AbstractIjkGridRepresentationTest(epcDoc, defaultUuid, defaultTitle,
+	: AbstractIjkGridRepresentationTest(epcDoc, defaultUuid, defaultTitle,
 		initNodesCountIjkGridRepresentation(iCount, jCount, kCount, faultCount),
-		initNodesIjkGridRepresentation(iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow)) {
+		initNodesIjkGridRepresentation(iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow)),
+	iCount(iCount), jCount(jCount), kCount(kCount), faultCount(faultCount),
+	xMin(xMin), xMax(xMax), yMin(yMin), yMax(yMax), zMin(zMin), zMax(zMax), faultThrow(faultThrow) {
 	if ((iCount < 1) || (jCount < 1) || (kCount < 1))
 	{
 		throw invalid_argument("iCount, jCount and kCount must be >= 1.");
 	}
 
-	if (faultCount >(iCount - 1))
+	if (faultCount > (iCount - 1))
 	{
 		throw invalid_argument("faultCount must be strictly less than iCount.");
 	}
@@ -87,9 +88,9 @@ AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(EpcDo
 	}
 
 	if (init)
-			this->initEpcDoc();
-		else
-			this->readEpcDoc();
+		initEpcDoc();
+	else
+		readEpcDoc();
 }
 
 ULONG64 AbstractBigIjkGridRepresentationTest::initNodesCountIjkGridRepresentation(const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
@@ -222,7 +223,7 @@ void AbstractBigIjkGridRepresentationTest::initDiscreteProperty(unsigned short *
 
 void AbstractBigIjkGridRepresentationTest::initContinuousProperty(double * continuousPropertyValues)
 {
-	double valueIncr = (iCount - 1) != 0 ? valueIncr = 1. / (iCount - 1) : 0.;
+	double valueIncr = (iCount - 1) != 0 ? 1. / (iCount - 1) : 0.;
 
 	for (unsigned short k = 0; k < kCount; ++k)
 		for (unsigned int j = 0; j < jCount; ++j)

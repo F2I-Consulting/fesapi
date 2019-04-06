@@ -28,8 +28,8 @@ namespace COMMON_NS {
 namespace resqml2_0_1test {
 	class AbstractSurfaceRepresentationTest : public AbstractRepresentationTest {
 	public:
-		AbstractSurfaceRepresentationTest(const std::string & epcDocPath, const std::string & uuid, const std::string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInGlobalCrs);
-		AbstractSurfaceRepresentationTest(COMMON_NS::EpcDocument* epcDoc, const std::string & uuid, const std::string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInGlobalCrs);
+		AbstractSurfaceRepresentationTest(const std::string & epcDocPath, const std::string & uuid, const std::string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInLocalCrs);
+		AbstractSurfaceRepresentationTest(COMMON_NS::EpcDocument* epcDoc, const std::string & uuid, const std::string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInLocalCrs);
 	};
 }
 

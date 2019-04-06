@@ -51,11 +51,11 @@ ActivityCreationTest::ActivityCreationTest(EpcDocument * epcDoc, bool init)
 void ActivityCreationTest::initEpcDocHandler() {
 	// creation of an horizon interpretation
 	HorizonInterpretationTest * horizonInterpretationTest = new HorizonInterpretationTest(this->epcDoc, true);
-	RESQML2_0_1_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_0_1_NS::HorizonInterpretation*>(this->epcDoc->getResqmlAbstractObjectByUuid(HorizonInterpretationTest::defaultUuid));
+	RESQML2_0_1_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_0_1_NS::HorizonInterpretation*>(this->epcDoc->getDataObjectByUuid(HorizonInterpretationTest::defaultUuid));
 
 	// creation of the generic creation activity template
 	ActivityTemplateGenericCreationTest* activityTemplateTest = new ActivityTemplateGenericCreationTest(this->epcDoc, true);
-	ActivityTemplate * activityTemplate = static_cast<ActivityTemplate*>(this->epcDoc->getResqmlAbstractObjectByUuid(ActivityTemplateGenericCreationTest::defaultUuid));
+	ActivityTemplate * activityTemplate = static_cast<ActivityTemplate*>(this->epcDoc->getDataObjectByUuid(ActivityTemplateGenericCreationTest::defaultUuid));
 
 	// creation of the creation activity
 	Activity* activity = this->epcDoc->createActivity(activityTemplate, this->uuid, this->title);
@@ -75,11 +75,11 @@ void ActivityCreationTest::readEpcDocHandler() {
 	ActivityTemplateGenericCreationTest* activityTemplateTest = new ActivityTemplateGenericCreationTest(this->epcDoc, false);
 
 	// getting the activity
-	Activity* activity = static_cast<Activity*>(this->epcDoc->getResqmlAbstractObjectByUuid(defaultUuid));
+	Activity* activity = static_cast<Activity*>(this->epcDoc->getDataObjectByUuid(defaultUuid));
 	REQUIRE( activity != nullptr );
 
 	// getting the horizon interpretation
-	RESQML2_0_1_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_0_1_NS::HorizonInterpretation*>(this->epcDoc->getResqmlAbstractObjectByUuid(HorizonInterpretationTest::defaultUuid));
+	RESQML2_0_1_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_0_1_NS::HorizonInterpretation*>(this->epcDoc->getDataObjectByUuid(HorizonInterpretationTest::defaultUuid));
 	REQUIRE( horizonInterpretation != nullptr );
 
 	// testing the activity

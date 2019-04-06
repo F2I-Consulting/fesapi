@@ -36,7 +36,7 @@ TimeSeries::TimeSeries(soap* soapContext, const string & guid, const string & ti
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORETimeSeries(soapContext, 1);
 	
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 _resqml2__TimeSeries* TimeSeries::getSpecializedGsoapProxy() const

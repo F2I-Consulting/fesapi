@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT GeneticBoundaryFeature : public BoundaryFeature
+	class GeneticBoundaryFeature : public BoundaryFeature
 	{
 	protected :
 
@@ -54,25 +54,24 @@ namespace RESQML2_0_1_NS
 		/**
 		* Indicates wether the instance is an horizon (or a geobody boundary). This public method is especially needed for SWIG reason.
 		*/
-		bool isAnHorizon() const;
+		DLL_IMPORT_OR_EXPORT bool isAnHorizon() const;
 
 		/**
 		* Sets the age of the isntance.
 		*/
-		void setAge(const ULONG64 & age);
+		DLL_IMPORT_OR_EXPORT void setAge(unsigned int age);
 
 		/**
 		* Indicates if the instance has got an age or not.
 		*/
-		bool hasAnAge() const;
+		DLL_IMPORT_OR_EXPORT bool hasAnAge() const;
 
 		/**
 		* @return	The age of the horizon.
 		*/
-		ULONG64 getAge() const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getAge() const;
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 	};
 }
-

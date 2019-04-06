@@ -7,7 +7,7 @@ to you under the Apache License, Version 2.0 (the
 "License"; you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
-  http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing,
 software distributed under the License is distributed on an
@@ -20,9 +20,11 @@ under the License.
 
 #include "common/AbstractObject.h"
 
-namespace PRODML2_0_NS
+#include "witsml2_0/MacroDefinitions.h"
+
+namespace WITSML2_0_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractObject : public COMMON_NS::AbstractObject
+	class AbstractObject : public COMMON_NS::AbstractObject
 	{
 	public:
 
@@ -34,19 +36,24 @@ namespace PRODML2_0_NS
 		/**
 		* Get the XML namespace for the tags for the XML serialization of this instance
 		*/
-		std::string getXmlNamespace() const;
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const;
 
 		/**
 		* Get the content type of the instance according to EPC recommendation
 		*/
-		std::string getContentType() const;
+		DLL_IMPORT_OR_EXPORT std::string getContentType() const;
 
 		/**
 		* Get part name of this XML top level instance in the EPC document
 		*/
-		std::string getPartNameInEpcDocument() const;
+		DLL_IMPORT_OR_EXPORT std::string getPartNameInEpcDocument() const;
 
 	protected:
+
+		/**
+		* Constructor for partial transfer
+		*/
+		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Default constructor

@@ -20,14 +20,13 @@ under the License.
 
 #include "common/EpcExternalPartReference.h"
 #include "resqml2/AbstractRepresentation.h"
-#include "prodml2_0/DasAcquisition.h"
 
 #define CUMULATIVE_LENGTH_DS_NAME "cumulativeLength"
 #define ELEMENTS_DS_NAME "elements"
 
 namespace COMMON_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractHdfProxy : public EpcExternalPartReference
+	class AbstractHdfProxy : public EpcExternalPartReference
 	{
 	protected:
 
@@ -60,7 +59,7 @@ namespace COMMON_NS
 		/**
 		 * Check if the Hdf file is open or not
 		 */
-		virtual bool isOpened() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isOpened() const = 0;
 
 		/**
 		 * Close the file
@@ -71,13 +70,13 @@ namespace COMMON_NS
 		 * Get the used (native) datatype in a dataset
 		* To compare with H5T_NATIVE_INT, H5T_NATIVE_UINT, H5T_NATIVE_FLOAT, etc...
 		 */
-		virtual int getHdfDatatypeInDataset(const std::string & datasetName) const = 0;
+		virtual int getHdfDatatypeInDataset(const std::string & datasetName) = 0;
 
 		/**
 		* Get the used datatype class in a dataset
 		* To compare with H5T_INTEGER, H5T_FLOAT , H5T_STRING , etc...
 		*/
-		virtual int getHdfDatatypeClassInDataset(const std::string & datasetName) const = 0;
+		virtual int getHdfDatatypeClassInDataset(const std::string & datasetName) = 0;
 
 		/**
 		* Write an itemized list of list into the HDF file by means of a single group containing 2 datasets.
@@ -94,10 +93,10 @@ namespace COMMON_NS
 		virtual void writeItemizedListOfList(const std::string & groupName,
 			const std::string & name,
 			const int & cumulativeLengthDatatype,
-			void * cumulativeLength,
+			const void * cumulativeLength,
 			const unsigned long long & cumulativeLengthSize,
 			const int & elementsDatatype,
-			void * elements,
+			const void * elements,
 			const unsigned long long & elementsSize) = 0;
 
 		/**
@@ -116,12 +115,12 @@ namespace COMMON_NS
 		 * Set the new compression level which will be used for all data to be written
 		 * @param compressionLevel				Lower compression levels are faster but result in less compression. Range [0..9] is allowed.
 		 */
-		virtual void setCompressionLevel(const unsigned int & newCompressionLevel) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setCompressionLevel(const unsigned int & newCompressionLevel) = 0;
 
 		virtual void writeArrayNdOfFloatValues(const std::string & groupName,
 		  const std::string & name,
-		  float * floatValues,
-		  unsigned long long * numValuesInEachDimension,
+		  const float * floatValues,
+		  const unsigned long long * numValuesInEachDimension,
 		  const unsigned int & numDimensions) = 0;
 
 		/**
@@ -135,8 +134,8 @@ namespace COMMON_NS
 		 */
 		virtual void writeArrayNdOfDoubleValues(const std::string & groupName,
 		  const std::string & name,
-		  double * dblValues,
-		  unsigned long long * numValuesInEachDimension,
+		  const double * dblValues,
+		  const unsigned long long * numValuesInEachDimension,
 		  const unsigned int & numDimensions) = 0;
 
 		/**
@@ -150,8 +149,8 @@ namespace COMMON_NS
 		*/
 		virtual void writeArrayNdOfCharValues(const std::string & groupName,
 			const std::string & name,
-			char * intValues,
-			unsigned long long * numValuesInEachDimension,
+			const char * intValues,
+			const unsigned long long * numValuesInEachDimension,
 			const unsigned int & numDimensions) = 0;
 
 		/**
@@ -165,8 +164,8 @@ namespace COMMON_NS
 		 */
 		virtual void writeArrayNdOfIntValues(const std::string & groupName,
 		  const std::string & name,
-		  int * intValues,
-		  unsigned long long * numValuesInEachDimension,
+		  const int * intValues,
+		  const unsigned long long * numValuesInEachDimension,
 		  const unsigned int & numDimensions) = 0;
 
 		/**
@@ -180,8 +179,8 @@ namespace COMMON_NS
 		*/
  		virtual void writeArrayNdOfGSoapULong64Values(const std::string & groupName,
 			const std::string & name,
-			ULONG64 * ulong64Values,
-			unsigned long long * numValuesInEachDimension,
+			const ULONG64 * ulong64Values,
+			const unsigned long long * numValuesInEachDimension,
 			const unsigned int & numDimensions) = 0;
 
 		/**
@@ -197,8 +196,8 @@ namespace COMMON_NS
 		virtual void writeArrayNd(const std::string & groupName,
 		  const std::string & name,
 		  const int & datatype,
-		  void * values,
-		  unsigned long long * numValuesInEachDimension,
+		  const void * values,
+		  const unsigned long long * numValuesInEachDimension,
 		  const unsigned int & numDimensions) = 0;
 
 		/**
@@ -214,7 +213,7 @@ namespace COMMON_NS
 		  const std::string& groupName,
 		  const std::string& name,
 		  const int & datatype,
-		  unsigned long long* numValuesInEachDimension,
+		  const unsigned long long* numValuesInEachDimension,
 		  const unsigned int& numDimensions
 		  ) = 0;
 
@@ -231,9 +230,9 @@ namespace COMMON_NS
 		  const std::string& groupName,
 		  const std::string& name,
 		  const int & datatype,
-		  void* values,
-		  unsigned long long* numValuesInEachDimension,
-		  unsigned long long* offsetValuesInEachDimension,
+		  const void* values,
+		  const unsigned long long* numValuesInEachDimension,
+		  const unsigned long long* offsetValuesInEachDimension,
 		  const unsigned int& numDimensions
 		  ) = 0;
 
@@ -320,14 +319,14 @@ namespace COMMON_NS
 		/**
 		 * Read an array Nd of double values stored in a specific dataset
 		 * @param datasetName	The absolute dataset name where to read the values
-		 * @param values 		The values must be pre-allocated.
+		 * @param values 		The values must be pre-allocated and won't be freed by this method.
 		 */
 		virtual void readArrayNdOfDoubleValues(const std::string & datasetName, double* values) = 0;
 
 		/**
 		 * Find the array associated with @p datasetName and read from it.
 		 * @param datasetName                    The name of the array (potentially with multi dimensions).
-		 * @param values                         1d array output of double values ordered firstly by fastest direction.
+		 * @param values                         1d array output of double values ordered firstly by fastest direction. The values must be pre-allocated and won't be freed by this method.
 		 * @param numValuesInEachDimension       Number of values in each dimension of the array to read. They are ordered from fastest index to slowest index.
 		 * @param offsetValuesInEachDimension    Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
 		 * @param numDimensions                  The number of the dimensions of the array to read.
@@ -343,7 +342,7 @@ namespace COMMON_NS
 		/**
 		 * Find the array associated with @p datasetName and read from it.
 		 * @param datasetName					The name of the array (potentially with multi dimensions).
-		 * @param values						1d array output of double values ordered firstly by fastest direction.
+		 * @param values						1d array output of double values ordered firstly by fastest direction. The values must be pre-allocated and won't be freed by this method.
 		 * @param blockCountPerDimension		Number of blocks to select from the dataspace, in each dimension. They are ordered from fastest index to slowest index.
 		 * @param offsetInEachDimension			Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
 		 * @param strideInEachDimension			Number of elements to move from one block to another in each dimension. They are ordered from fastest index to slowest index.
@@ -387,7 +386,7 @@ namespace COMMON_NS
 		 * Considering a given dataset, read the double values corresponding to an existing selected region. 
 		 * @param dataset		ID of the dataset to read from.
 		 * @param filespace		ID of the selected region.
-		 * @param values		1d array output of double values ordered firstly by fastest direction.
+		 * @param values		1d array output of double values ordered firstly by fastest direction. The values must be pre-allocated and won't be freed by this method.
 		 * @param slabSize		Number of values to read.
 		 */
 		virtual void readArrayNdOfDoubleValues(
@@ -406,7 +405,7 @@ namespace COMMON_NS
 		/**
 		 * Find the array associated with @p datasetName and read from it.
 		 * @param datasetName                    The name of the array (potentially with multi dimensions).
-		 * @param values                         1d array output of float values ordered firstly by fastest direction.
+		 * @param values                         1d array output of float values ordered firstly by fastest direction. The values must be pre-allocated and won't be freed by this method.
 		 * @param numValuesInEachDimension       Number of values in each dimension of the array to read. They are ordered from fastest index to slowest index.
 		 * @param offsetValuesInEachDimension    Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
 		 * @param numDimensions                  The number of the dimensions of the array to read.
@@ -421,25 +420,27 @@ namespace COMMON_NS
 
 		/**
 		* TODO : check all possible size of LONG64 on all different platforms
+		* @param values 		The values must be pre-allocated and won't be freed by this method.
 		*/
 		virtual void readArrayNdOfGSoapLong64Values(const std::string & datasetName, LONG64* values) = 0;
 	
 		/**
 		* TODO : check all possible size of ULONG64 on all different platforms
+		* @param values 		The values must be pre-allocated and won't be freed by this method.
 		*/
 		virtual void readArrayNdOfGSoapULong64Values(const std::string & datasetName, ULONG64* values) = 0;
 
 		/**
 		 * Read an array Nd of long values stored in a specific dataset.
 		 * @param datasetName	The absolute dataset name where to read the values
-		 * @param values 		The values must be pre-allocated.
+		 * @param values 		The values must be pre-allocated and won't be freed by this method.
 		 */
 		virtual void readArrayNdOfLongValues(const std::string & datasetName, long* values) = 0;
 
 		/**
 		 * Find the array associated with datasetName and read from it.
 		 * @param datasetName                    The name of the array (potentially with multi dimensions).
-		 * @param values                         1d array output of long values ordered firstly by fastest direction.
+		 * @param values                         1d array output of long values ordered firstly by fastest direction. The values must be pre-allocated and won't be freed by this method.
 		 * @param numValuesInEachDimension       Number of values in each dimension of the array to read. They are ordered from fastest index to slowest index.
 		 * @param offsetValuesInEachDimension    Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
 		 * @param numDimensions                  The number of the dimensions of the array to read.
@@ -455,21 +456,21 @@ namespace COMMON_NS
 		/**
 		 * Read an array Nd of unsigned long values stored in a specific dataset.
 		 * @param datasetName	The absolute dataset name where to read the values
-		 * @param values 		The values must be pre-allocated.
+		 * @param values 		The values must be pre-allocated and won't be freed by this method.
 		 */
 		virtual void readArrayNdOfULongValues(const std::string & datasetName, unsigned long* values) = 0;
 
 		/**
 		 * Read an array Nd of int values stored in a specific dataset.
 		 * @param datasetName	The absolute dataset name where to read the values
-		 * @param values 		The values must be pre-allocated.
+		 * @param values 		The values must be pre-allocated and won't be freed by this method.
 		 */
 		virtual void readArrayNdOfIntValues(const std::string & datasetName, int* values) = 0;
 
 		/**
 		* Find the array associated with datasetName and read from it.
 		* @param datasetName                    The name of the array (potentially with multi dimensions).
-		* @param values                         1d array output of int values ordered firstly by fastest direction.
+		* @param values                         1d array output of int values ordered firstly by fastest direction. The values must be pre-allocated and won't be freed by this method.
 		* @param numValuesInEachDimension       Number of values in each dimension of the array to read. They are ordered from fastest index to slowest index.
 		* @param offsetValuesInEachDimension    Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
 		* @param numDimensions                  The number of the dimensions of the array to read.
@@ -484,36 +485,38 @@ namespace COMMON_NS
 
 		/**
 		 * Read an array Nd of unsigned int values stored in a specific dataset
-		 * Don"t forget to delete the allocated pointer when no more necessary.
+		 * Don't forget to delete the allocated pointer when no more necessary.
 		 * @param datasetName	The absolute dataset name where to read the values
+		 * @param values 		The values must be pre-allocated and won't be freed by this method.
 		 */
 		virtual void readArrayNdOfUIntValues(const std::string & datasetName, unsigned int* values) = 0;
 
 		/**
 		 * Read an array Nd of short values stored in a specific dataset
-		 * Don"t forget to delete the allocated pointer when no more necessary.
+		 * Don't forget to delete the allocated pointer when no more necessary.
 		 * @param datasetName	The absolute dataset name where to read the values
-		 * @param values 		The values must be pre-allocated.
+		 * @param values 		The values must be pre-allocated and won't be freed by this method.
 		 */
 		virtual void readArrayNdOfShortValues(const std::string & datasetName, short* values) = 0;
 
 		/**
 		 * Read an array Nd of unsigned short values stored in a specific dataset.
 		 * @param datasetName	The absolute dataset name where to read the values
-		 * @param values 		The values must be pre-allocated.
+		 * @param values 		The values must be pre-allocated and won't be freed by this method.
 		 */
 		virtual void readArrayNdOfUShortValues(const std::string & datasetName, unsigned short* values) = 0;
 
 		/**
 		 * Read an array Nd of char values stored in a specific dataset.
 		 * @param datasetName	The absolute dataset name where to read the values
-		 * @param values 		The values must be pre-allocated.
+		 * @param values 		The values must be pre-allocated and won't be freed by this method.
 		 */
 		virtual void readArrayNdOfCharValues(const std::string & datasetName, char* values) = 0;
 
 		/**
 		 * Read an array Nd of unsigned char values stored in a specific dataset.
 		 * @param datasetName	The absolute dataset name where to read the values
+		 * @param values 		The values must be pre-allocated and won't be freed by this method.
 		 */
 		virtual void readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values) = 0;
 
@@ -530,8 +533,6 @@ namespace COMMON_NS
   
 		friend void RESQML2_NS::AbstractRepresentation::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
 		friend void RESQML2_NS::AbstractProperty::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
-		friend void PRODML2_0_NS::DasAcquisition::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
 
 	};
 }
-

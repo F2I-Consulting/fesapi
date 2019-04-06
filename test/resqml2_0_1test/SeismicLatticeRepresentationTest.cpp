@@ -48,14 +48,18 @@ SeismicLatticeRepresentationTest::SeismicLatticeRepresentationTest(EpcDocument *
 	: AbstractSurfaceRepresentationTest(epcDocument, defaultUuid, defaultTitle, 8, nullptr)
 {
 	if (init)
-		this->initEpcDoc();
+		initEpcDoc();
 	else
-		this->readEpcDoc();
+		readEpcDoc();
 }
 
 void SeismicLatticeRepresentationTest::initEpcDocHandler()
 {
-	LocalDepth3dCrs * crs = epcDoc->getResqmlAbstractObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
+	LocalDepth3dCrs * crs = epcDoc->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
+	if (crs == nullptr) {
+		LocalDepth3dCrsTest crsTest(epcDoc, true);
+		crs = epcDoc->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
+	}
 
 	SeismicLatticeFeature* seismicLattice = epcDoc->createSeismicLattice(defaultUuidFeature, defaultTitleFeature, 2, 2, 150, 152, 4, 2);
 	GenericFeatureInterpretation* seismicLatticeInterp = epcDoc->createGenericFeatureInterpretation(seismicLattice, defaultUuidInterp, defaultTitleInterp);
@@ -66,29 +70,26 @@ void SeismicLatticeRepresentationTest::initEpcDocHandler()
 void SeismicLatticeRepresentationTest::readEpcDocHandler()
 {
 	// Feature
-	RESQML2_0_1_NS::SeismicLatticeFeature* feature = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::SeismicLatticeFeature>(defaultUuidFeature);
+	RESQML2_0_1_NS::SeismicLatticeFeature* feature = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::SeismicLatticeFeature>(defaultUuidFeature);
 	REQUIRE(feature->getCrosslineIncrement() == 2);
 	REQUIRE(feature->getOriginCrossline() == 152);
 	REQUIRE(feature->getInlineIncrement() == 2);
 	REQUIRE(feature->getOriginInline() == 150);
 
 	// Grid 2D
-	RESQML2_0_1_NS::Grid2dRepresentation* rep = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::Grid2dRepresentation>(defaultUuid);
+	RESQML2_0_1_NS::Grid2dRepresentation* rep = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::Grid2dRepresentation>(defaultUuid);
 	REQUIRE(rep->getSupportingRepresentation() == nullptr);
-	REQUIRE_THROWS(rep->getSeismicSupportOfPatch(0));
+	REQUIRE(rep->getSeismicSupportOfPatch(0) == nullptr);
 	REQUIRE((rep->isISpacingConstant() && rep->isJSpacingConstant()));
 	REQUIRE(rep->getXOrigin() == .0);
+	REQUIRE(rep->getXOriginInGlobalCrs() == 1000);
 	REQUIRE(rep->getYOrigin() == .0);
+	REQUIRE(rep->getYOriginInGlobalCrs() == 2000);
 	REQUIRE(rep->getNodeCountAlongIAxis() == 4);
 	REQUIRE(rep->getNodeCountAlongJAxis() == 2);
-	REQUIRE(rep->getXIOffset() == 1.0);
-	REQUIRE(rep->getYIOffset() == 0.0);
-	REQUIRE(rep->getXIOffset() == 0.0);
-	REQUIRE(rep->getYIOffset() == 1.0);
 	REQUIRE(rep->getISpacing() == 250.0);
 	REQUIRE(rep->getJSpacing() == 200.0);
 	REQUIRE_THROWS(rep->getIndexOriginOnSupportingRepresentation());
 	REQUIRE_THROWS(rep->getIndexOffsetOnSupportingRepresentation(0));
 	REQUIRE_THROWS(rep->getNodeCountOnSupportingRepresentation(1));
 }
-

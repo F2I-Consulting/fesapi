@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractSurfaceRepresentation : public RESQML2_NS::AbstractRepresentation
+	class AbstractSurfaceRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	protected:
 
@@ -107,23 +107,20 @@ namespace RESQML2_0_1_NS
 		 * Push back an outer ring of this representation
 		 * The index of the ring must correspond to the index of the patch it delimits.
 		 */
-		void pushBackOuterRing(PolylineRepresentation * outerRing);
+		DLL_IMPORT_OR_EXPORT void pushBackOuterRing(PolylineRepresentation * outerRing);
 
 		/**
 		* Set the surface role of the representation.
 		* map : Representation support for properties.
 		* pick : Representation support for 3D points picked in 2D or 3D.
 		*/
-		void setSurfaceRole(const gsoap_resqml2_0_1::resqml2__SurfaceRole & surfaceRole);
+		DLL_IMPORT_OR_EXPORT void setSurfaceRole(const gsoap_resqml2_0_1::resqml2__SurfaceRole & surfaceRole);
 
 		/**
 		* Get the surface role of this representation.
 		* map : Representation support for properties.
 		* pick : Representation support for 3D points picked in 2D or 3D.
 		*/
-		const gsoap_resqml2_0_1::resqml2__SurfaceRole & getSurfaceRole() const;
-
-
+		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml2__SurfaceRole & getSurfaceRole() const;
 	};
 }
-

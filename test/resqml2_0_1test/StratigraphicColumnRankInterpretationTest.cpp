@@ -64,7 +64,7 @@ StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretation
 			readEpcDoc();
 }
 
-StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(COMMON_NS::EpcDocument* epcDoc, const std::string & uuid, const std::string & title, const string & uuidFeature, const string & titleFeature, bool init)
+StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(COMMON_NS::EpcDocument*, const std::string & uuid, const std::string & title, const string & uuidFeature, const string & titleFeature, bool)
 	: AbstractFeatureInterpretationTest(epcDocPath, uuid, title, uuidFeature, titleFeature) {
 }
 
@@ -75,10 +75,10 @@ void StratigraphicColumnRankInterpretationTest::initEpcDocHandler() {
 	StratigraphicUnitInterpretationTest* stratiLayerInterpTest = new StratigraphicUnitInterpretationTest(epcDoc, true);
 	StratigraphicUnitInterpretationTest* underburdenInterpTest = new StratigraphicUnitInterpretationTest(epcDoc, defaultUnderburdenInterpUuid, defaultUnderburdenInterpTitle, defaultUnderburdenUuid, defaultUnderburdenTitle, true);
 
-	OrganizationFeature* stratiOrg = epcDoc->getResqmlAbstractObjectByUuid<OrganizationFeature>(StratigraphicOrganizationTest::defaultUuid);
-	StratigraphicUnitInterpretation* overburdenInterp = epcDoc->getResqmlAbstractObjectByUuid<StratigraphicUnitInterpretation>(defaultOverburdenInterpUuid);
-	StratigraphicUnitInterpretation* stratiLayerInterp = epcDoc->getResqmlAbstractObjectByUuid<StratigraphicUnitInterpretation>(StratigraphicUnitInterpretationTest::defaultUuid);
-	StratigraphicUnitInterpretation* underburdenInterp = epcDoc->getResqmlAbstractObjectByUuid<StratigraphicUnitInterpretation>(defaultUnderburdenInterpUuid);
+	OrganizationFeature* stratiOrg = epcDoc->getDataObjectByUuid<OrganizationFeature>(StratigraphicOrganizationTest::defaultUuid);
+	StratigraphicUnitInterpretation* overburdenInterp = epcDoc->getDataObjectByUuid<StratigraphicUnitInterpretation>(defaultOverburdenInterpUuid);
+	StratigraphicUnitInterpretation* stratiLayerInterp = epcDoc->getDataObjectByUuid<StratigraphicUnitInterpretation>(StratigraphicUnitInterpretationTest::defaultUuid);
+	StratigraphicUnitInterpretation* underburdenInterp = epcDoc->getDataObjectByUuid<StratigraphicUnitInterpretation>(defaultUnderburdenInterpUuid);
 
 	// cleaning
 	delete stratiOrgtTest;
@@ -95,7 +95,7 @@ void StratigraphicColumnRankInterpretationTest::initEpcDocHandler() {
 
 void StratigraphicColumnRankInterpretationTest::readEpcDocHandler()
 {
-	StratigraphicColumnRankInterpretation* stratiColumnRank = epcDoc->getResqmlAbstractObjectByUuid<StratigraphicColumnRankInterpretation>(uuid);
+	StratigraphicColumnRankInterpretation* stratiColumnRank = epcDoc->getDataObjectByUuid<StratigraphicColumnRankInterpretation>(uuid);
 	REQUIRE(stratiColumnRank != nullptr);
 	REQUIRE(stratiColumnRank->getStratigraphicUnitInterpretationSet().size() == 3);
 }

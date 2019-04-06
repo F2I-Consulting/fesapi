@@ -28,8 +28,8 @@ namespace COMMON_NS {
 namespace resqml2_0_1test {
 	class AbstractColumnLayerGridRepresentationTest : public AbstractGridRepresentationTest {
 	public:
-		AbstractColumnLayerGridRepresentationTest(const std::string & epcDocPath, const std::string & uuid, const std::string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInGlobalCrs);
-		AbstractColumnLayerGridRepresentationTest(COMMON_NS::EpcDocument * epcDoc, const std::string & uuid, const std::string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInGlobalCrs);
+		AbstractColumnLayerGridRepresentationTest(const std::string & epcDocPath, const std::string & uuid, const std::string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInLocalCrs);
+		AbstractColumnLayerGridRepresentationTest(COMMON_NS::EpcDocument * epcDoc, const std::string & uuid, const std::string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInLocalCrs);
 	};
 }
 

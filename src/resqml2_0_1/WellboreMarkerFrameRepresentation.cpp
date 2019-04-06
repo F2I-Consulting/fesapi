@@ -25,7 +25,7 @@ under the License.
 #include <pwd.h>
 #endif
 
-#include "hdf5.h"
+#include "H5Tpublic.h"
 
 #include "resqml2_0_1/WellboreInterpretation.h"
 #include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
@@ -56,7 +56,7 @@ WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(WellboreInt
 	traj->addWellboreFrameRepresentation(this);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 WellboreMarkerFrameRepresentation::~WellboreMarkerFrameRepresentation()
@@ -165,7 +165,7 @@ void WellboreMarkerFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::
 
 	if (rep->IntervalStratigraphiUnits != nullptr)
 	{
-		setStratigraphicOccurrenceInterpretation(epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation>(rep->IntervalStratigraphiUnits->StratigraphicOrganization->UUID));
+		setStratigraphicOccurrenceInterpretation(epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation>(rep->IntervalStratigraphiUnits->StratigraphicOrganization->UUID));
 	}
 
 	for (size_t i = 0; i < rep->WellboreMarker.size(); ++i)
@@ -173,10 +173,15 @@ void WellboreMarkerFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::
 		WellboreMarker* marker = new WellboreMarker(rep->WellboreMarker[i], this);
 		if (rep->WellboreMarker[i]->Interpretation != nullptr)
 		{
-			marker->setBoundaryFeatureInterpretation(static_cast<BoundaryFeatureInterpretation*>(epcDoc->getResqmlAbstractObjectByUuid(rep->WellboreMarker[i]->Interpretation->UUID)));
+			marker->setBoundaryFeatureInterpretation(static_cast<BoundaryFeatureInterpretation*>(epcDoc->getDataObjectByUuid(rep->WellboreMarker[i]->Interpretation->UUID)));
 		}
 		markerSet.push_back(marker);
 	}
 
 	updateXml = true;
+}
+
+const std::vector<class WellboreMarker*> & WellboreMarkerFrameRepresentation::getWellboreMarkerSet() const
+{
+	return markerSet;
 }

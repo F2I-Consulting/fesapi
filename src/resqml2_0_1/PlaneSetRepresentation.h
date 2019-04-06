@@ -22,11 +22,8 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT PlaneSetRepresentation : public RESQML2_NS::AbstractRepresentation
+	class PlaneSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
-	private :
-		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const {return nullptr;}
-
 	public:
 
 		/**
@@ -54,40 +51,45 @@ namespace RESQML2_0_1_NS
 		*/
 		~PlaneSetRepresentation() {}
 
-		std::string getHdfProxyUuid() const {return "";};
+		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const {return "";};
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
+
+		/**
+		* Get the Local 3d CRS dor where the reference point ordinals are given
+		* It assumes there is only one CRS used by this instance.
+		*/
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor() const;
 
 		/**
 		* Get the xyz point count in a given patch.
 		*/
-		ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 
 		/**
 		* Get all the XYZ points of a particular patch of this representation.
 		* XYZ points are given in the local CRS.
 		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
 		*/
-		void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
 
 		/**
 		 * Get the number of triangle patch
 		 */
-		unsigned int getPatchCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const;
 
 		/**
 		* Push back a new patch which is an horizontal plane
 		* @param zCoordinate	The Z coordinate of the horizontal plane
 		*/
-		void pushBackHorizontalPlaneGeometryPatch(const double & zCoordinate);
+		DLL_IMPORT_OR_EXPORT void pushBackHorizontalPlaneGeometryPatch(const double & zCoordinate);
 
 		/**
 		* Push back a new patch which is not a horizontal plane. It s geometry is given by means of 3 XYZ points.
 		*/
-		void pushBackTiltedPlaneGeometryPatch(const double & x1, const double & y1, const double & z1,
+		DLL_IMPORT_OR_EXPORT void pushBackTiltedPlaneGeometryPatch(const double & x1, const double & y1, const double & z1,
 			const double & x2, const double & y2, const double & z2,
 			const double & x3, const double & y3, const double & z3);
 	};
 }
-

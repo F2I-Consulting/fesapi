@@ -24,6 +24,8 @@ under the License.
 #include "H5Epublic.h"
 #include "H5Fpublic.h"
 
+#include "version_config.h"
+
 #include "epc/Relationship.h"
 #include "epc/FilePart.h"
 
@@ -45,7 +47,6 @@ under the License.
 #include "resqml2_0_1/PointSetRepresentation.h"
 #include "resqml2_0_1/PlaneSetRepresentation.h"
 #include "resqml2_0_1/SeismicLatticeFeature.h"
-#include "resqml2_0_1/Grid2dSetRepresentation.h"
 #include "resqml2_0_1/Grid2dRepresentation.h"
 #include "resqml2_0_1/HdfProxy.h"
 #include "resqml2_0_1/TriangulatedSetRepresentation.h"
@@ -72,10 +73,15 @@ under the License.
 #include "resqml2_0_1/BlockedWellboreRepresentation.h"
 
 #include "resqml2_0_1/EarthModelInterpretation.h"
+#include "resqml2_0_1/RepresentationSetRepresentation.h"
 #include "resqml2_0_1/StructuralOrganizationInterpretation.h"
 #include "resqml2_0_1/NonSealedSurfaceFrameworkRepresentation.h"
 #include "resqml2_0_1/SealedSurfaceFrameworkRepresentation.h"
 #include "resqml2_0_1/SealedVolumeFrameworkRepresentation.h"
+
+#include "resqml2_0_1/RockFluidUnitFeature.h"
+#include "resqml2_0_1/RockFluidUnitInterpretation.h"
+#include "resqml2_0_1/RockFluidOrganizationInterpretation.h"
 
 #include "resqml2_0_1/StratigraphicUnitFeature.h"
 #include "resqml2_0_1/StratigraphicUnitInterpretation.h"
@@ -95,6 +101,8 @@ under the License.
 #include "resqml2_0_1/CategoricalPropertySeries.h"
 #include "resqml2_0_1/DiscretePropertySeries.h"
 
+#include "witsml2_0/Well.h"
+
 #include "witsml2_1/Well.h"
 #include "witsml2_1/Wellbore.h"
 #include "witsml2_1/Trajectory.h"
@@ -104,11 +112,6 @@ under the License.
 #include "witsml2_1/ErrorTermDictionary.h"
 #include "witsml2_1/WeightingFunction.h"
 
-#include "prodml2_0/HdfProxy.h"
-#include "prodml2_0/DasAcquisition.h"
-#include "prodml2_0/FiberOpticalPath.h"
-#include "prodml2_0/DasInstrumentBox.h"
-
 #include "tools/GuidTools.h"
 
 using namespace std;
@@ -116,8 +119,8 @@ using namespace epc;
 using namespace gsoap_resqml2_0_1;
 using namespace COMMON_NS;
 using namespace RESQML2_0_1_NS;
+using namespace WITSML2_0_NS;
 using namespace WITSML2_1_NS;
-using namespace PRODML2_0_NS;
 
 const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 
@@ -137,23 +140,6 @@ const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 	(resqmlContentType.compare(className::XML_TAG) == 0)\
 	{\
 		GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
-	}
-
-/////////////////////
-/////// PRODML //////
-/////////////////////
-#define GET_PRODML_2_0_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
-	gsoap_eml2_1::_prodml2__##className* read = gsoap_eml2_1::soap_new_prodml2__##className(s, 1);\
-	gsoap_eml2_1::soap_read_prodml2__##className(s, read);
-
-#define GET_PRODML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
-	GET_PRODML_2_0_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
-	wrapper = new className(read);
-
-#define CHECK_AND_GET_PRODML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
-	(resqmlContentType.compare(className::XML_TAG) == 0)\
-	{\
-		GET_PRODML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
 	}
 
 /////////////////////
@@ -179,36 +165,33 @@ const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 	{\
 		return createPartial<className>(dor->UUID, dor->Title);\
 	}
+#define CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(className)\
+	(resqmlContentType.compare(className::XML_TAG) == 0)\
+	{\
+		return createPartial<className>(dor->Uuid, dor->Title);\
+	}
 
 namespace // anonymous namespace. Use only in that file.
 {
-	COMMON_NS::AbstractHdfProxy* default_builder(soap* soapContext, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, bool v21)
+	COMMON_NS::AbstractHdfProxy* default_builder(soap* soapContext, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath)
 	{
-		if (v21) return new PRODML2_0_NS::HdfProxy(soapContext, guid, title, packageDirAbsolutePath, externalFilePath);
-		else return new RESQML2_0_1_NS::HdfProxy(soapContext, guid, title, packageDirAbsolutePath, externalFilePath);
+		return new RESQML2_0_1_NS::HdfProxy(soapContext, guid, title, packageDirAbsolutePath, externalFilePath);
 	}
 
 	COMMON_NS::AbstractHdfProxy* default_builder(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath)
 	{
 		return new RESQML2_0_1_NS::HdfProxy(fromGsoap, packageDirAbsolutePath, externalFilePath);
 	}
-
-	PRODML2_0_NS::HdfProxy* default_builder(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath)
-	{
-		return new PRODML2_0_NS::HdfProxy(fromGsoap, packageDirAbsolutePath, externalFilePath);
-	}
 }
 
 EpcDocument::EpcDocument(const string & fileName, const openingMode & hdf5PermissionAccess) :
 	package(nullptr), s(nullptr), propertyKindMapper(nullptr), make_hdf_proxy(&default_builder), make_hdf_proxy_from_gsoap_proxy_2_0_1(&default_builder)
-	, make_hdf_proxy_from_gsoap_proxy_2_1(&default_builder)
 {
 	open(fileName, hdf5PermissionAccess);
 }
 
 EpcDocument::EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, const openingMode & hdf5PermissionAccess) :
 	package(nullptr), s(nullptr), make_hdf_proxy(&default_builder), make_hdf_proxy_from_gsoap_proxy_2_0_1(&default_builder)
-	, make_hdf_proxy_from_gsoap_proxy_2_1(&default_builder)
 {
 	open(fileName, hdf5PermissionAccess);
 
@@ -221,6 +204,11 @@ EpcDocument::EpcDocument(const std::string & fileName, const std::string & prope
 		propertyKindMapper = nullptr;
 		throw invalid_argument("Could not import property kind mappers : " + error);
 	}
+}
+
+EpcDocument::~EpcDocument()
+{
+	close();
 }
 
 std::string EpcDocument::generateRandomUuidAsString()
@@ -238,27 +226,70 @@ soap* EpcDocument::getGsoapContext() const { return s; }
 PropertyKindMapper* EpcDocument::getPropertyKindMapper() const { return propertyKindMapper; }
 
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-const std::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDocument::getResqmlAbstractObjectSet() const { return resqmlAbstractObjectSet; }
+const std::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDocument::getDataObjectSet() const { return dataObjectSet; }
 #else
-const std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDocument::getResqmlAbstractObjectSet() const { return resqmlAbstractObjectSet; }
+const std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* > & EpcDocument::getDataObjectSet() const { return dataObjectSet; }
 #endif
-
-std::vector<PRODML2_0_NS::DasAcquisition*> EpcDocument::getDasAcquisitionSet() const
-{
-	std::vector<PRODML2_0_NS::DasAcquisition*> result;
 
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
+std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > EpcDocument::getDataObjectsGroupedByContentType() const
 #else
-	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
+std::tr1::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > EpcDocument::getDataObjectsGroupedByContentType() const
 #endif
-	{
-		if (it->second->getGsoapType() == SOAP_TYPE_gsoap_eml2_1_prodml2__DasAcquisition) {
-			result.push_back(static_cast<PRODML2_0_NS::DasAcquisition*>(it->second));
+{
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+	std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
+	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
+#else
+	std::tr1::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
+	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
+#endif
+		if (it->second->getContentType().find("x-eml") == std::string::npos) {
+			result[it->second->getContentType()].push_back(it->second);
 		}
 	}
 
 	return result;
+}
+
+std::vector<COMMON_NS::AbstractObject*> EpcDocument::getDataObjectsByContentType(const std::string & contentType) const
+{
+	std::vector<COMMON_NS::AbstractObject*> result;
+
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
+#else
+	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
+#endif
+		if (it->second->getContentType() == contentType) {
+			result.push_back(it->second);
+		}
+	}
+
+	return result;
+}
+
+std::vector<COMMON_NS::AbstractObject*> EpcDocument::getResqml2_0ObjectsByXmlTag(const std::string & xmlTag) const
+{
+	std::vector<COMMON_NS::AbstractObject*> result = getDataObjectsByContentType(COMMON_NS::AbstractObject::RESQML_2_0_CONTENT_TYPE_PREFIX + xmlTag);
+
+	return result.empty() ? getDataObjectsByContentType(COMMON_NS::AbstractObject::RESQML_2_0_1_CONTENT_TYPE_PREFIX + xmlTag) : result;
+}
+
+std::vector<std::string> EpcDocument::getAllUuids() const
+{
+	std::vector<std::string> keys;
+	keys.reserve(dataObjectSet.size());
+
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
+#else
+	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it) {
+#endif
+		keys.push_back(it->first);
+	}
+
+	return keys;
 }
 
 const std::vector<RESQML2_0_1_NS::LocalDepth3dCrs*> & EpcDocument::getLocalDepth3dCrsSet() const { return localDepth3dCrsSet; }
@@ -319,11 +350,13 @@ const std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> & EpcDocument:
 
 const std::vector<resqml2_0_1::Grid2dRepresentation*> & EpcDocument::getAllGrid2dRepresentationSet() const { return grid2dRepresentationSet; }
 
+const std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> & EpcDocument::getAllPolylineSetRepSet() const { return polylineSetRepresentationSet; }
+
 const std::vector<RESQML2_0_1_NS::SeismicLineFeature*> & EpcDocument::getSeismicLineSet() const { return seismicLineSet; }
 
 const std::vector<RESQML2_0_1_NS::WellboreFeature*> & EpcDocument::getWellboreSet() const { return wellboreSet; }
 
-std::vector<RESQML2_0_1_NS::PolylineRepresentation*> EpcDocument::getPolylineRepresentationSet() const { return polylineRepresentationSet; }
+const std::vector<RESQML2_0_1_NS::PolylineRepresentation*> & EpcDocument::getAllPolylineRepresentationSet() const { return polylineRepresentationSet; }
 
 const std::vector<RESQML2_0_1_NS::AbstractIjkGridRepresentation*> & EpcDocument::getIjkGridRepresentationSet() const { return ijkGridRepresentationSet; }
 unsigned int EpcDocument::getIjkGridRepresentationCount() const { return ijkGridRepresentationSet.size(); }
@@ -400,14 +433,14 @@ void EpcDocument::close()
 	}
 
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
+	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
 #else
-	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
+	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
 #endif
 	{
 	  delete it->second;
 	}
-	resqmlAbstractObjectSet.clear();
+	dataObjectSet.clear();
 
 	if (package != nullptr) {
 		delete package;
@@ -433,10 +466,10 @@ void EpcDocument::close()
 	hdfProxySet.clear();
 	wellboreSet.clear();
 	representationSetRepresentationSet.clear();
-	witsmlTrajectorySet.clear();
 	triangulatedSetRepresentationSet.clear();
 	grid2dRepresentationSet.clear();
 	polylineRepresentationSet.clear();
+	polylineSetRepresentationSet.clear();
 	ijkGridRepresentationSet.clear();
 	unstructuredGridRepresentationSet.clear();
 	stratigraphicColumnSet.clear();
@@ -451,19 +484,6 @@ void EpcDocument::setFilePath(const std::string & filePath)
 	herr_t hdf5Err = H5Eset_auto(H5E_DEFAULT, nullptr, nullptr);
 	if (hdf5Err < 0) {
 		throw invalid_argument("The HDF5 error handling could not have been disabled.");
-	}
-
-	if (H5Fis_hdf5(filePath.c_str()) <= 0) { // In case of PRODML2.0, a single HDF5 file can be given without any EPC document
-		// Add .epc extension if it is not already done in parameter
-		size_t dotPos = this->filePath.find_last_of('.');
-		if (dotPos != string::npos) {
-			if (this->filePath.substr(dotPos) != DOCUMENT_EXTENSION) {
-				this->filePath += DOCUMENT_EXTENSION;
-			}
-		}
-		else {
-			this->filePath += DOCUMENT_EXTENSION;
-		}
 	}
 }
 
@@ -509,12 +529,17 @@ gsoap_resqml2_0_1::resqml2__Facet EpcDocument::getFacet(const std::string & face
 		return resqml2__Facet__what;
 }
 
-std::string EpcDocument::getLengthUom(const gsoap_eml2_1::eml21__LengthUom & witsmlUom) const
+std::string EpcDocument::lengthUomToString(const gsoap_eml2_1::eml21__LengthUom & witsmlUom) const
 {
 	return gsoap_eml2_1::soap_eml21__LengthUom2s(s, witsmlUom);
 }
 
-std::string EpcDocument::getWitsmlPlaneAngleUom(const gsoap_eml2_1::eml21__PlaneAngleUom & witsmlUom) const
+std::string EpcDocument::verticalCoordinateUomToString(const gsoap_eml2_1::eml21__VerticalCoordinateUom & witsmlUom) const
+{
+	return gsoap_eml2_1::soap_eml21__VerticalCoordinateUom2s(s, witsmlUom);
+}
+
+std::string EpcDocument::planeAngleUomToString(const gsoap_eml2_1::eml21__PlaneAngleUom & witsmlUom) const
 {
 	return gsoap_eml2_1::soap_eml21__PlaneAngleUom2s(s, witsmlUom);
 }
@@ -547,6 +572,9 @@ void EpcDocument::addGsoapProxy(COMMON_NS::AbstractObject* proxy)
 	}
 	else if (xmlTag.compare(PolylineRepresentation::XML_TAG) == 0) {
 		polylineRepresentationSet.push_back(static_cast<PolylineRepresentation* const>(proxy));
+	}
+	else if (xmlTag.compare(PolylineSetRepresentation::XML_TAG) == 0) {
+		polylineSetRepresentationSet.push_back(static_cast<PolylineSetRepresentation* const>(proxy));
 	}
 	else if (xmlTag.compare(AbstractIjkGridRepresentation::XML_TAG) == 0 || xmlTag.compare(AbstractIjkGridRepresentation::XML_TAG_TRUNCATED) == 0) {
 		ijkGridRepresentationSet.push_back(static_cast<AbstractIjkGridRepresentation* const>(proxy));
@@ -600,8 +628,8 @@ void EpcDocument::addGsoapProxy(COMMON_NS::AbstractObject* proxy)
 		witsmlTrajectorySet.push_back(static_cast<Trajectory* const>(proxy));
 	}
 
-	if (getResqmlAbstractObjectByUuid(proxy->getUuid()) == nullptr) {
-		resqmlAbstractObjectSet[proxy->getUuid()] = proxy;
+	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {
+		dataObjectSet[proxy->getUuid()] = proxy;
 	}
 	else {
 		throw invalid_argument("You cannot have twice the same UUID " + proxy->getUuid() + " for two different Resqml objects in an EPC document");
@@ -629,10 +657,11 @@ void EpcDocument::serialize(bool useZip64)
 	warnings.clear();
 
 	package->openForWriting(filePath, useZip64);
+
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
+	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
 #else
-	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
+	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
 #endif
 	{
 		if (!it->second->isPartial() && it->second->isTopLevelElement()) {
@@ -652,39 +681,8 @@ void EpcDocument::serialize(bool useZip64)
 	package->writePackage();
 }
 
-string EpcDocument::deserializeProdmlHdf5File()
-{
-	string result;
-
-	// The (fake) HDF proxy XML object
-	PRODML2_0_NS::HdfProxy* hdfProxy = new PRODML2_0_NS::HdfProxy(s, getStorageDirectory(), getName() + ".h5");
-	if (hdfProxy != nullptr) {
-		addFesapiWrapperAndDeleteItIfException(hdfProxy);
-	}
-	else {
-		warnings.push_back("The (fake) HDF proxy XML object could not be created.");
-	}
-
-	// The (fake) FiberOpticalPath XML object
-	FiberOpticalPath* fiberOpticalPath = new FiberOpticalPath(s, "00000000-0000-0000-0000-000000000000", "Fake/Virtual Fiber Optical Path", "Fake/Virtual Segment Uid", numeric_limits<double>::quiet_NaN(), gsoap_eml2_1::eml21__LengthUom__Em,
-		"Fake/Virtual Terminator Uid", gsoap_eml2_1::prodml2__TerminationType__termination_x0020at_x0020cable); // Some default fake values because everything is not part of the HDF5 dataset attribute collection so far.
-	addFesapiWrapperAndDeleteItIfException(fiberOpticalPath);
-
-	// The (fake) DasInstrumentBox XML object
-	DasInstrumentBox* dasInstrumentBox = new DasInstrumentBox(s, "00000000-0000-0000-0000-000000000001", "Fake/Virtual DAS Instrument Box", "Fake/Virtual Firmware version", "Fake/Virtual Instrument Name");
-	addFesapiWrapperAndDeleteItIfException(dasInstrumentBox);
-
-	// The (fake) Das Acquisition XML object
-	addFesapiWrapperAndDeleteItIfException(new PRODML2_0_NS::DasAcquisition(fiberOpticalPath, dasInstrumentBox, hdfProxy));
-
-	return result;
-}
-
 string EpcDocument::deserialize()
 {
-	if (H5Fis_hdf5(filePath.c_str()) > 0) { // In case of PRODML2.0, only one HDF5 file can be given without any EPC document
-		return deserializeProdmlHdf5File();
-	}
 	string result;
 	warnings = package->openForReading(filePath);
 
@@ -756,9 +754,7 @@ string EpcDocument::deserialize()
 				warnings.push_back("The content type " + resqmlContentType + " could not be wrapped by fesapi. The related instance will be ignored.");
 			}
 		}
-		else if (it->second.getContentTypeString().find("application/x-prodml+xml;version=2.0;type=") == 0 ||
-			it->second.getContentTypeString().find("application/x-witsml+xml;version=2.0;type=") == 0 ||
-			it->second.getContentTypeString().find("application/x-eml+xml;version=2.1;type=") == 0)
+		else if (it->second.getContentTypeString().find("application/x-eml+xml;version=2.1;type=") == 0)
 		{
 			const string fileStr = package->extractFile(it->second.getExtensionOrPartName().substr(1));
 			if (fileStr.empty()) {
@@ -771,35 +767,7 @@ string EpcDocument::deserialize()
 			const string resqmlContentType = it->second.getContentTypeString().substr(lastEqualCharPos + 1);
 			if (resqmlContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 			{
-				if (it->second.getContentTypeString().find("application/x-eml+xml;version=2.1;type=") != 0) {
-					warnings.push_back("The content type " + resqmlContentType + " belongs to eml 2.1 namespace. However its content type has been set to prodml 2.0 namespace.");
-				}
-
-				// Look for the relative path of the HDF file
-				string relFilePath = "";
-				const size_t slashPos = it->second.getExtensionOrPartName().substr(1).find_last_of("/\\");
-				if (slashPos != string::npos) {
-					relFilePath = it->second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
-				}
-				relFilePath += "_rels" + it->second.getExtensionOrPartName().substr(it->second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
-				if (!package->fileExists(relFilePath)) {
-					addWarning("The HDF proxy " + it->second.getExtensionOrPartName() + " does not look to be associated to any HDF files : there is no rel file for this object. It is going to be withdrawn.");
-					continue;
-				}
-				FileRelationship relFile;
-				relFile.readFromString(package->extractFile(relFilePath));
-				const vector<Relationship> allRels = relFile.getAllRelationship();
-				string hdfRelativeFilePath;
-				for (size_t relIndex = 0; relIndex < allRels.size(); relIndex++) {
-					if (allRels[relIndex].getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
-						hdfRelativeFilePath = allRels[relIndex].getTarget();
-						break;
-					}
-				}
-
-				// Common initialization
-				gsoap_eml2_1::_eml21__EpcExternalPartReference* read = getEpcExternalPartReference_2_1_GsoapProxyFromGsoapContext();
-				wrapper = make_hdf_proxy_from_gsoap_proxy_2_1(read, getStorageDirectory(), hdfRelativeFilePath);
+				throw std::invalid_argument("Not supported yet");
 			}
 			else {
 				wrapper = getResqml2_0_1WrapperFromGsoapContext(resqmlContentType);
@@ -820,9 +788,69 @@ string EpcDocument::deserialize()
 				warnings.push_back("The content type " + resqmlContentType + " could not be wrapped by fesapi. The related instance will be ignored.");
 			}
 		}
+		else if (it->second.getContentTypeString().find("application/x-witsml+xml;version=2.0;type=") == 0)
+		{
+			string fileStr = package->extractFile(it->second.getExtensionOrPartName().substr(1));
+			if (fileStr.empty()) {
+				throw invalid_argument("The EPC document contains the file " + it->second.getExtensionOrPartName().substr(1) + " in its contentType file which cannot be found or cannot be unzipped or is empty.");
+			}
+			istringstream iss(fileStr);
+			setGsoapStream(&iss);
+			WITSML2_0_NS::AbstractObject* wrapper = nullptr;
+			string resqmlContentType = it->second.getContentTypeString().substr(42);
+			if (resqmlContentType.compare(Well::XML_TAG) == 0)
+			{
+				gsoap_eml2_1::_witsml2__Well* read = gsoap_eml2_1::soap_new_witsml2__Well(s, 1);
+				soap_read_witsml2__Well(s, read);
+				wrapper = new Well(read);
+			}
+			else if (resqmlContentType.compare(Wellbore::XML_TAG) == 0)
+			{
+				gsoap_eml2_1::_witsml2__Wellbore* read = gsoap_eml2_1::soap_new_witsml2__Wellbore(s, 1);
+				soap_read_witsml2__Wellbore(s, read);
+				wrapper = new Wellbore(read);
+			}
+			else if (resqmlContentType.compare(WellCompletion::XML_TAG) == 0)
+			{
+				gsoap_eml2_1::_witsml2__WellCompletion* read = gsoap_eml2_1::soap_new_witsml2__WellCompletion(s, 1);
+				soap_read_witsml2__WellCompletion(s, read);
+				wrapper = new WellCompletion(read);
+			}
+			else if (resqmlContentType.compare(WellboreCompletion::XML_TAG) == 0)
+			{
+				gsoap_eml2_1::_witsml2__WellboreCompletion* read = gsoap_eml2_1::soap_new_witsml2__WellboreCompletion(s, 1);
+				soap_read_witsml2__WellboreCompletion(s, read);
+				wrapper = new WellboreCompletion(read);
+			}
+			else if (resqmlContentType.compare(Trajectory::XML_TAG) == 0)
+			{
+				gsoap_eml2_1::_witsml2__Trajectory* read = gsoap_eml2_1::soap_new_witsml2__Trajectory(s, 1);
+				soap_read_witsml2__Trajectory(s, read);
+				wrapper = new Trajectory(read);
+			}
+			
+			if (wrapper != nullptr)
+			{
+				if (s->error != SOAP_OK) {
+					ostringstream oss;
+					soap_stream_fault(s, oss);
+					result += oss.str() + " IN " + it->second.getExtensionOrPartName() + "\n";
+					delete wrapper;
+				}
+				else {
+					addFesapiWrapperAndDeleteItIfException(wrapper);
+				}
+			}
+		}
 	}
 
 	updateAllRelationships();
+
+	// Validate properties
+	const vector<RESQML2_NS::AbstractProperty*> allprops = getDataObjects<RESQML2_NS::AbstractProperty>();
+	for (size_t propIndex = 0; propIndex < allprops.size(); ++propIndex) {
+		allprops[propIndex]->validate();
+	}
 
 	return result;
 }
@@ -861,7 +889,6 @@ COMMON_NS::AbstractObject* EpcDocument::getResqml2_0_1WrapperFromGsoapContext(co
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PointSetRepresentation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PlaneSetRepresentation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PolylineRepresentation)
-	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Grid2dSetRepresentation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Grid2dRepresentation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(TriangulatedSetRepresentation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(BlockedWellboreRepresentation)
@@ -920,13 +947,12 @@ COMMON_NS::AbstractObject* EpcDocument::getResqml2_0_1WrapperFromGsoapContext(co
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GridConnectionSetRepresentation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(TimeSeries)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(RepresentationSetRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(NonSealedSurfaceFrameworkRepresentation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SealedSurfaceFrameworkRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SealedVolumeFrameworkRepresentation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyFeature)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyBoundaryInterpretation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyInterpretation)
-	else if CHECK_AND_GET_PRODML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DasAcquisition)
-	else if CHECK_AND_GET_PRODML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(FiberOpticalPath)
-	else if CHECK_AND_GET_PRODML_2_0_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DasInstrumentBox)
 	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Well)
 	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Wellbore)
 	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Trajectory)
@@ -938,6 +964,9 @@ COMMON_NS::AbstractObject* EpcDocument::getResqml2_0_1WrapperFromGsoapContext(co
 	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ErrorTermDictionary)
 	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WeightingFunction)
 	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WeightingFunctionDictionary)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(RockFluidOrganizationInterpretation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(RockFluidUnitInterpretation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(RockFluidUnitFeature)
 	else if (resqmlContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
@@ -946,9 +975,9 @@ COMMON_NS::AbstractObject* EpcDocument::getResqml2_0_1WrapperFromGsoapContext(co
 	return wrapper;
 }
 
-COMMON_NS::AbstractObject* EpcDocument::getResqmlAbstractObjectByUuid(const std::string & uuid, int & gsoapType) const
+COMMON_NS::AbstractObject* EpcDocument::getDataObjectByUuid(const std::string & uuid, int & gsoapType) const
 {
-	COMMON_NS::AbstractObject* result = getResqmlAbstractObjectByUuid(uuid);
+	COMMON_NS::AbstractObject* result = getDataObjectByUuid(uuid);
 	if (result != nullptr)
 	{
 		gsoapType = result->getGsoapType();
@@ -956,14 +985,14 @@ COMMON_NS::AbstractObject* EpcDocument::getResqmlAbstractObjectByUuid(const std:
 	return result;
 }
 
-COMMON_NS::AbstractObject* EpcDocument::getResqmlAbstractObjectByUuid(const string & uuid) const
+COMMON_NS::AbstractObject* EpcDocument::getDataObjectByUuid(const string & uuid) const
 {
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.find(uuid);
+	std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.find(uuid);
 #else
-	std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.find(uuid);
+	std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.find(uuid);
 #endif
-	return it == resqmlAbstractObjectSet.end() ? nullptr : it->second;
+	return it == dataObjectSet.end() ? nullptr : it->second;
 }
 
 vector<PolylineSetRepresentation*> EpcDocument::getFaultPolylineSetRepSet() const
@@ -1078,26 +1107,6 @@ vector<TriangulatedSetRepresentation*> EpcDocument::getFractureTriangulatedSetRe
 				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORETriangulatedSetRepresentation)
 				{
 					result.push_back(static_cast<TriangulatedSetRepresentation*>(repSet[repIndex]));
-				}
-			}
-		}
-	}
-
-	return result;
-}
-
-vector<Grid2dSetRepresentation*> EpcDocument::getHorizonGrid2dSetRepSet() const
-{
-	vector<Grid2dSetRepresentation*> result;
-
-	vector<Horizon*> horizonSet = getHorizonSet();
-	for (size_t featureIndex = 0; featureIndex < horizonSet.size(); ++featureIndex) {
-		vector<RESQML2_NS::AbstractFeatureInterpretation*> interpSet = horizonSet[featureIndex]->getInterpretationSet();
-		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
-			vector<RESQML2_NS::AbstractRepresentation*> repSet = interpSet[interpIndex]->getRepresentationSet();
-			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
-				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREGrid2dSetRepresentation) {
-					result.push_back(static_cast<Grid2dSetRepresentation*>(repSet[repIndex]));
 				}
 			}
 		}
@@ -1308,7 +1317,7 @@ vector<IjkGridExplicitRepresentation*> EpcDocument::getIjkGridExplicitRepresenta
 std::vector<PolylineRepresentation*> EpcDocument::getSeismicLinePolylineRepSet() const
 {
 	vector<PolylineRepresentation*> result;
-	vector<PolylineRepresentation*> polylineRepSet = getPolylineRepresentationSet();
+	vector<PolylineRepresentation*> polylineRepSet = getAllPolylineRepresentationSet();
 
 	for (size_t i = 0; i < polylineRepSet.size(); ++i) {
 		if (polylineRepSet[i]->isASeismicLine() || polylineRepSet[i]->isAFaciesLine()) {
@@ -1362,9 +1371,9 @@ string EpcDocument::getName() const
 void EpcDocument::updateAllRelationships()
 {
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
+	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
 #else
-	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = resqmlAbstractObjectSet.begin(); it != resqmlAbstractObjectSet.end(); ++it)
+	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
 #endif
 	{
 		if (!it->second->isPartial()) {
@@ -1398,9 +1407,7 @@ std::string EpcDocument::getExtendedCoreProperty(const std::string & key)
 
 COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_resqml2_0_1::eml20__DataObjectReference* dor)
 {
-	addWarning("Create a partial object for object \"" + dor->Title + "\" with UUID " + dor->UUID + " and content type " + dor->ContentType);
-
-	const size_t lastEqualCharPos = dor->ContentType.find_last_of('_'); // The XML tag is after "obj_"
+	const size_t lastEqualCharPos = dor->ContentType.find_last_of('_'); // The XML tag is after "type=obj_"
 	const string resqmlContentType = dor->ContentType.substr(lastEqualCharPos + 1);
 
 	if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(MdDatum)
@@ -1433,7 +1440,6 @@ COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_resqml2_0_1::eml20__
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(PointSetRepresentation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(PlaneSetRepresentation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(PolylineRepresentation)
-	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(Grid2dSetRepresentation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(Grid2dRepresentation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(TriangulatedSetRepresentation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(BlockedWellboreRepresentation)
@@ -1456,11 +1462,32 @@ COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_resqml2_0_1::eml20__
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(GridConnectionSetRepresentation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(TimeSeries)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(RepresentationSetRepresentation)
+	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(NonSealedSurfaceFrameworkRepresentation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(SealedSurfaceFrameworkRepresentation)
+	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(SealedVolumeFrameworkRepresentation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(DeviationSurveyRepresentation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(GeobodyFeature)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(GeobodyBoundaryInterpretation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(GeobodyInterpretation)
+	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(RockFluidOrganizationInterpretation)
+	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(RockFluidUnitInterpretation)
+	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(RockFluidUnitFeature)
+	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
+	{
+		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
+	}
+
+	throw invalid_argument("The content type " + resqmlContentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
+}
+
+COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_eml2_1::eml21__DataObjectReference* dor)
+{
+	const size_t lastEqualCharPos = dor->ContentType.find_last_of('='); // The XML tag is after "type="
+	const string resqmlContentType = dor->ContentType.substr(lastEqualCharPos + 1);
+
+	if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Well)
+	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Wellbore)
+	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Trajectory)
 	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
@@ -1473,9 +1500,9 @@ COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_resqml2_0_1::eml20__
 //************ HDF *******************
 //************************************
 
-COMMON_NS::AbstractHdfProxy* EpcDocument::createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, bool v21)
+COMMON_NS::AbstractHdfProxy* EpcDocument::createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath)
 {
-	COMMON_NS::AbstractHdfProxy* result = make_hdf_proxy(getGsoapContext(), guid, title, packageDirAbsolutePath, externalFilePath, v21);
+	COMMON_NS::AbstractHdfProxy* result = make_hdf_proxy(getGsoapContext(), guid, title, packageDirAbsolutePath, externalFilePath);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -1696,6 +1723,14 @@ StratigraphicUnitFeature* EpcDocument::createStratigraphicUnit(const std::string
 	return result;
 }
 
+RockFluidUnitFeature* EpcDocument::createRockFluidUnit(const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml2__Phase phase,
+													   RESQML2_0_1_NS::FluidBoundaryFeature* fluidBoundaryTop, RESQML2_0_1_NS::FluidBoundaryFeature* fluidBoundaryBottom)
+{
+	RockFluidUnitFeature* result = new RockFluidUnitFeature(getGsoapContext(), guid, title, phase, fluidBoundaryTop, fluidBoundaryBottom);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
 OrganizationFeature* EpcDocument::createStructuralModel(const std::string & guid, const std::string & title)
 {
 	OrganizationFeature* result = new OrganizationFeature(getGsoapContext(), guid, title, resqml2__OrganizationKind__structural);
@@ -1706,6 +1741,13 @@ OrganizationFeature* EpcDocument::createStructuralModel(const std::string & guid
 OrganizationFeature* EpcDocument::createStratigraphicModel(const std::string & guid, const std::string & title)
 {
 	OrganizationFeature* result = new OrganizationFeature(getGsoapContext(), guid, title, resqml2__OrganizationKind__stratigraphic);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+OrganizationFeature* EpcDocument::createRockFluidModel(const std::string & guid, const std::string & title)
+{
+	OrganizationFeature* result = new OrganizationFeature(getGsoapContext(), guid, title, resqml2__OrganizationKind__fluid);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -1799,6 +1841,20 @@ StructuralOrganizationInterpretation* EpcDocument::createStructuralOrganizationI
 StructuralOrganizationInterpretation* EpcDocument::createStructuralOrganizationInterpretationInMeasuredDepth(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title)
 {
 	StructuralOrganizationInterpretation* result = new StructuralOrganizationInterpretation(orgFeat, guid, title, resqml2__OrderingCriteria__measured_x0020depth);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+RockFluidOrganizationInterpretation* EpcDocument::createRockFluidOrganizationInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, RESQML2_0_1_NS::RockFluidUnitInterpretation * rockFluidUnitInterp)
+{
+	RockFluidOrganizationInterpretation* result = new RockFluidOrganizationInterpretation(orgFeat, guid, title, rockFluidUnitInterp);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+RockFluidUnitInterpretation* EpcDocument::createRockFluidUnitInterpretation(RESQML2_0_1_NS::RockFluidUnitFeature * rockFluidUnitFeature, const std::string & guid, const std::string & title)
+{
+	RockFluidUnitInterpretation* result = new RockFluidUnitInterpretation(rockFluidUnitFeature, guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -1984,7 +2040,7 @@ RESQML2_NS::RepresentationSetRepresentation* EpcDocument::createRepresentationSe
         const std::string & guid,
         const std::string & title)
 {
-	RepresentationSetRepresentation* result = new RepresentationSetRepresentation(interp, guid, title);
+	RESQML2_0_1_NS::RepresentationSetRepresentation* result = new RESQML2_0_1_NS::RepresentationSetRepresentation(interp, guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -1993,23 +2049,22 @@ RESQML2_NS::RepresentationSetRepresentation* EpcDocument::createRepresentationSe
 	const std::string & guid,
 	const std::string & title)
 {
-	RepresentationSetRepresentation* result = new RepresentationSetRepresentation(this, guid, title);
+	RESQML2_0_1_NS::RepresentationSetRepresentation* result = new RESQML2_0_1_NS::RepresentationSetRepresentation(this, guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
 
 RESQML2_NS::RepresentationSetRepresentation* EpcDocument::createPartialRepresentationSetRepresentation(const std::string & guid, const std::string & title)
 {
-	return createPartial<RepresentationSetRepresentation>(guid, title);
+	return createPartial<RESQML2_0_1_NS::RepresentationSetRepresentation>(guid, title);
 }
 
 NonSealedSurfaceFrameworkRepresentation* EpcDocument::createNonSealedSurfaceFrameworkRepresentation(
         StructuralOrganizationInterpretation* interp, 
         const std::string & guid,
-        const std::string & title,
-        const bool & isSealed)
+        const std::string & title)
 {
-	NonSealedSurfaceFrameworkRepresentation* result = new NonSealedSurfaceFrameworkRepresentation(interp, guid, title, isSealed);
+	NonSealedSurfaceFrameworkRepresentation* result = new NonSealedSurfaceFrameworkRepresentation(interp, guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2020,6 +2075,17 @@ SealedSurfaceFrameworkRepresentation* EpcDocument::createSealedSurfaceFrameworkR
         const std::string & title)
 {
 	SealedSurfaceFrameworkRepresentation* result = new SealedSurfaceFrameworkRepresentation(interp, guid, title);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation* EpcDocument::createSealedVolumeFrameworkRepresentation(
+	RESQML2_0_1_NS::StratigraphicColumnRankInterpretation* interp,
+	const std::string & guid,
+	const std::string & title,
+	RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* ssf)
+{
+	SealedVolumeFrameworkRepresentation* result = new SealedVolumeFrameworkRepresentation(interp, guid, title, ssf);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2385,79 +2451,21 @@ RESQML2_NS::Activity* EpcDocument::createActivity(RESQML2_NS::ActivityTemplate* 
 //*************** WITSML *************
 //************************************
 
-WITSML2_1_NS::Well* EpcDocument::createWell(
-			const std::string & guid,
-			const std::string & title)
+WITSML2_0_NS::Well* EpcDocument::createWell(const std::string & guid,
+	const std::string & title)
 {
 	Well* result = new Well(getGsoapContext(), guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
 
-WITSML2_1_NS::Well* EpcDocument::createWell(
-			const std::string & guid,
-			const std::string & title,
-			const std::string & operator_,
-			gsoap_eml2_2::eml22__WellStatus statusWell,
-			gsoap_eml2_2::witsml2__WellPurpose purposeWell,
-			gsoap_eml2_2::witsml2__WellFluid fluidWell,
-			gsoap_eml2_2::witsml2__WellDirection directionWell)
-{
-	Well* result = new Well(getGsoapContext(), guid, title, operator_, statusWell, purposeWell, fluidWell, directionWell);
-	addFesapiWrapperAndDeleteItIfException(result);
-	return result;
-}
-
-WITSML2_1_NS::Wellbore* EpcDocument::createWellbore(WITSML2_1_NS::Well* witsmlWell,
-	const std::string & guid,
-	const std::string & title)
-{
-	Wellbore* result = new Wellbore(witsmlWell, guid, title);
-	addFesapiWrapperAndDeleteItIfException(result);
-	return result;
-}
-
-WITSML2_1_NS::Wellbore* EpcDocument::createWellbore(WITSML2_1_NS::Well* witsmlWell,
-	const std::string & guid,
+WITSML2_0_NS::Well* EpcDocument::createWell(const std::string & guid,
 	const std::string & title,
-	gsoap_eml2_2::eml22__WellStatus statusWellbore,
-	const bool & isActive,
-	gsoap_eml2_2::witsml2__WellPurpose purposeWellbore,
-	gsoap_eml2_2::witsml2__WellboreType typeWellbore,
-	const bool & achievedTD)
+	const std::string & operator_,
+	gsoap_eml2_1::eml21__WellStatus statusWell,
+	gsoap_eml2_1::witsml2__WellDirection directionWell)
 {
-	Wellbore* result = new Wellbore(witsmlWell, guid, title, statusWellbore, isActive, purposeWellbore, typeWellbore, achievedTD);
-	addFesapiWrapperAndDeleteItIfException(result);
-	return result;
-}
-
-WITSML2_1_NS::Trajectory* EpcDocument::createTrajectory(WITSML2_1_NS::Wellbore* witsmlWellbore,
-	const std::string & guid,
-	const std::string & title,
-	const gsoap_eml2_2::witsml2__ChannelStatus & growingStatus)
-{
-	Trajectory* result = new Trajectory(witsmlWellbore, guid, title, growingStatus);
-	addFesapiWrapperAndDeleteItIfException(result);
-	return result;
-}
-
-WITSML2_1_NS::Log* EpcDocument::createLog(WITSML2_1_NS::Wellbore* witsmlWellbore,
-	const std::string & guid,
-	const std::string & title)
-{
-	Log* result = new Log(witsmlWellbore, guid, title);
-	addFesapiWrapperAndDeleteItIfException(result);
-	return result;
-}
-
-WITSML2_1_NS::WellboreMarkerSet* EpcDocument::createWellboreMarkerSet(WITSML2_1_NS::Wellbore* witsmlWellbore,
-	const std::string & guid,
-	const std::string & title,
-	const std::string & mdDatum,
-	const double & mdBaseSample,
-	const double & mdTopSample)
-{
-	WellboreMarkerSet* result = new WellboreMarkerSet(witsmlWellbore, guid, title, mdDatum, mdBaseSample, mdTopSample);
+	Well* result = new Well(getGsoapContext(), guid, title, operator_, statusWell, directionWell);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2529,53 +2537,60 @@ WITSML2_1_NS::WeightingFunctionDictionary* EpcDocument::createWeightingFunctionD
 	return result;
 }
 
-//************************************
-//************ PRODML ****************
-//************************************
-
-PRODML2_0_NS::DasAcquisition* EpcDocument::createDasAcquisition(PRODML2_0_NS::FiberOpticalPath* fiberOpticalPath, PRODML2_0_NS::DasInstrumentBox* dasInstrumentBox,
-	const std::string & guid, const std::string & title,
-	const std::string & jobGuid, const std::string & facilityId, const std::string & vendorName,
-	const double & pulseRate, const gsoap_eml2_1::eml21__FrequencyUom & pulseRateUom,
-	const double & pulseWidth, const gsoap_eml2_1::eml21__TimeUom & pulseWidthUom,
-	const double & gaugeLength, const gsoap_eml2_1::eml21__LengthUom & gaugeLengthUom,
-	const double & spatialSamplingInterval, const gsoap_eml2_1::eml21__LengthUom & spatialSamplingIntervalUom,
-	const double & minimumFrequency, const gsoap_eml2_1::eml21__FrequencyUom & minimumFrequencyUom,
-	const double & maximumFrequency, const gsoap_eml2_1::eml21__FrequencyUom & maximumFrequencyUom,
-	const ULONG64 & lociCount, const ULONG64 & startLocusIndex,
-	const std::string & measurementStartIsoTime, bool triggeredMeasurement)
+WITSML2_0_NS::Wellbore* EpcDocument::createPartialWellbore(
+	const std::string & guid,
+	const std::string & title)
 {
-	PRODML2_0_NS::DasAcquisition* result = new PRODML2_0_NS::DasAcquisition(fiberOpticalPath, dasInstrumentBox,
-		guid, title,
-		jobGuid, facilityId, vendorName,
-		pulseRate, pulseRateUom,
-		pulseWidth, pulseWidthUom,
-		gaugeLength, gaugeLengthUom,
-		spatialSamplingInterval, spatialSamplingIntervalUom,
-		minimumFrequency, minimumFrequencyUom,
-		maximumFrequency, maximumFrequencyUom,
-		lociCount, startLocusIndex,
-		measurementStartIsoTime, triggeredMeasurement);
+	return createPartial<WITSML2_0_NS::Wellbore>(guid, title);
+}
+
+WITSML2_0_NS::Wellbore* EpcDocument::createWellbore(WITSML2_0_NS::Well* witsmlWell,
+	const std::string & guid,
+	const std::string & title)
+{
+	Wellbore* result = new Wellbore(witsmlWell, guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
 
-PRODML2_0_NS::FiberOpticalPath* EpcDocument::createFiberOpticalPath(const std::string & guid, const std::string & title,
-	const std::string & firstSegmentUid, const double & firstSegmentLength, const gsoap_eml2_1::eml21__LengthUom & firstSegmentLengthUom,
-	const std::string & terminatorUid, const gsoap_eml2_1::prodml2__TerminationType & terminationType)
+WITSML2_0_NS::Wellbore* EpcDocument::createWellbore(WITSML2_0_NS::Well* witsmlWell,
+	const std::string & guid,
+	const std::string & title,
+	gsoap_eml2_1::eml21__WellStatus statusWellbore,
+	bool isActive,
+	bool achievedTD)
 {
-	PRODML2_0_NS::FiberOpticalPath* result = new PRODML2_0_NS::FiberOpticalPath(getGsoapContext(), guid, title,
-		firstSegmentUid, firstSegmentLength, firstSegmentLengthUom,
-		terminatorUid, terminationType);
+	Wellbore* result = new Wellbore(witsmlWell, guid, title, statusWellbore, isActive, achievedTD);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
 
-PRODML2_0_NS::DasInstrumentBox* EpcDocument::createDasInstrumentBox(const std::string & guid, const std::string & title,
-	const std::string & firmwareVersion, const std::string & instrumentName)
+WITSML2_0_NS::WellCompletion* EpcDocument::createWellCompletion(WITSML2_0_NS::Well* witsmlWell,
+	const std::string & guid,
+	const std::string & title)
 {
-	PRODML2_0_NS::DasInstrumentBox* result = new PRODML2_0_NS::DasInstrumentBox(getGsoapContext(), guid, title,
-		firmwareVersion, instrumentName);
+	WellCompletion* result = new WellCompletion(witsmlWell, guid, title);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_0_NS::WellboreCompletion* EpcDocument::createWellboreCompletion(WITSML2_0_NS::Wellbore* witsmlWellbore,
+	WITSML2_0_NS::WellCompletion* wellCompletion,
+	const std::string & guid,
+	const std::string & title,
+	const std::string & wellCompletionName)
+{
+	WellboreCompletion* result = new WellboreCompletion(witsmlWellbore, wellCompletion, guid, title, wellCompletionName);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_0_NS::Trajectory* EpcDocument::createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
+	const std::string & guid,
+	const std::string & title,
+	gsoap_eml2_1::witsml2__ChannelStatus channelStatus)
+{
+	Trajectory* result = new Trajectory(witsmlWellbore, guid, title, channelStatus);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2588,11 +2603,6 @@ void COMMON_NS::EpcDocument::set_hdf_proxy_builder(HdfProxyBuilder builder)
 void COMMON_NS::EpcDocument::set_hdf_proxy_builder(HdfProxyBuilderFromGsoapProxy2_0_1 builder)
 {
 	make_hdf_proxy_from_gsoap_proxy_2_0_1 = builder;
-}
-
-void COMMON_NS::EpcDocument::set_hdf_proxy_builder(HdfProxyBuilderFromGsoapProxy2_1 builder)
-{
-	make_hdf_proxy_from_gsoap_proxy_2_1 = builder;
 }
 
 int EpcDocument::getGsoapErrorCode() const

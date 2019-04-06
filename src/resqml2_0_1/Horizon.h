@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT Horizon : public GeneticBoundaryFeature
+	class Horizon : public GeneticBoundaryFeature
 	{
 	public:
 
@@ -50,4 +50,3 @@ namespace RESQML2_0_1_NS
 		~Horizon() {}
 	};
 }
-

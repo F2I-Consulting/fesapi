@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT ActivityTemplate : public COMMON_NS::AbstractObject
+	class ActivityTemplate : public COMMON_NS::AbstractObject
 	{
 	protected:
 		ActivityTemplate() : AbstractObject() {}
@@ -42,7 +42,7 @@ namespace RESQML2_NS
 		* Push back a parameter in the activity template instance.
 		* This parameter has an unconstrained type.
 		*/
-		virtual void pushBackParameter(const std::string title,
+		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string title,
 			const bool & isInput, const bool isOutput,
 			const unsigned int & minOccurs, const int & maxOccurs) = 0;
 
@@ -51,7 +51,7 @@ namespace RESQML2_NS
 		* This parameter must be of a data object kind.
 		* @param resqmlObjectContentType	If empty, there is no constraint on the content type of this parameter.
 		*/
-		virtual void pushBackParameter(const std::string title,
+		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string title,
 			const bool & isInput, const bool isOutput,
 			const unsigned int & minOccurs, const int & maxOccurs,
 			const std::string & resqmlObjectContentType) = 0;
@@ -60,28 +60,27 @@ namespace RESQML2_NS
 		* Check if the instance contains a parameter with a particular title
 		* @param paramTitle	The title of the parameter we are looking for into the instance
 		*/
-		virtual bool isAnExistingParameter(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isAnExistingParameter(const std::string & paramTitle) const = 0;
 
-		virtual const unsigned int getParameterCount() const = 0;
-		virtual const std::string & getParameterTitle(const unsigned int & index) const = 0;
-		virtual const bool & getParameterIsInput(const unsigned int & index) const = 0;
-		virtual const bool & getParameterIsInput(const std::string & paramTitle) const = 0;
-		virtual const bool & getParameterIsOutput(const unsigned int & index) const = 0;
-		virtual const bool & getParameterIsOutput(const std::string & paramTitle) const = 0;
-		virtual const LONG64 getParameterMinOccurences(const unsigned int & index) const = 0;
-		virtual const LONG64 getParameterMinOccurences(const std::string & paramTitle) const = 0;
-		virtual const LONG64 getParameterMaxOccurences(const unsigned int & index) const = 0;
-		virtual const LONG64 getParameterMaxOccurences(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getParameterCount() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual const std::string & getParameterTitle(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual const bool & getParameterIsInput(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual const bool & getParameterIsInput(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual const bool & getParameterIsOutput(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual const bool & getParameterIsOutput(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMinOccurences(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMinOccurences(const std::string & paramTitle) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMaxOccurences(const unsigned int & index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMaxOccurences(const std::string & paramTitle) const = 0;
 
-		const std::vector<Activity*> & getActivityInstanceSet() const { return activityInstanceSet; }
+		DLL_IMPORT_OR_EXPORT const std::vector<Activity*> & getActivityInstanceSet() const { return activityInstanceSet; }
 
-		static const char* XML_TAG;
-		std::string getXmlTag() const {return XML_TAG;}
-
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const {return XML_TAG;}
 
 	private:
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc) {}
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc);
 		
         std::vector<Activity*> activityInstanceSet;
 

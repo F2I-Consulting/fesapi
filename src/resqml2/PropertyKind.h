@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_NS
 {
-	class DLL_IMPORT_OR_EXPORT PropertyKind : public COMMON_NS::AbstractObject
+	class PropertyKind : public COMMON_NS::AbstractObject
 	{
 	protected:
 
@@ -51,32 +51,32 @@ namespace RESQML2_NS
 		/**
 		* Getter (in read only mode) of the naming system of this property type
 		*/
-		const std::string & getNamingSystem() const;
+		DLL_IMPORT_OR_EXPORT const std::string & getNamingSystem() const;
 
 		/**
 		* Get the unit of measure of the values of this property kind.
 		*/
-		const gsoap_resqml2_0_1::resqml2__ResqmlUom & getUom() const;
+		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml2__ResqmlUom & getUom() const;
 
 		/**
 		* Get the unit of measure of the values of this property kind as a string.
 		*/
-		std::string getUomAsString() const;
+		DLL_IMPORT_OR_EXPORT std::string getUomAsString() const;
 
 		/**
 		 * Get the title of the parent of this property kind.
 		 */
-		std::string getParentAsString() const;
+		DLL_IMPORT_OR_EXPORT std::string getParentAsString() const;
 
 		/**
 		* Indicates if the property kind which is the parent of this property kind is either from the standard catalog of Energistics or from another local property kind.
 		*/
-		bool isParentAnEnergisticsPropertyKind() const;
+		DLL_IMPORT_OR_EXPORT bool isParentAnEnergisticsPropertyKind() const;
 
 		/**
 		* Getter for the energistics property kind which is associated to this intance.
 		*/
-		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind getParentEnergisticsPropertyKind() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind getParentEnergisticsPropertyKind() const;
 
 		/**
 		* @return	null pointer if no local parent property kind is associated to this property. Otherwise return the data object reference of the associated parent local property kind.
@@ -86,39 +86,44 @@ namespace RESQML2_NS
 		/**
 		* Get the uuid of the local parent property kind which is associated to this property.
 		*/
-		std::string getParentLocalPropertyKindUuid() const;
+		DLL_IMPORT_OR_EXPORT std::string getParentLocalPropertyKindUuid() const;
 
 		/**
 		* Get the uuid of the local parent property kind which is associated to this property.
 		*/
-		std::string getParentLocalPropertyKindTitle() const;
+		DLL_IMPORT_OR_EXPORT std::string getParentLocalPropertyKindTitle() const;
 
 		/**
 		* Getter for the local property kind which is the parent of this instance.
 		* If nullptr is returned then it means this instance is associated to an energistics property kind.
 		*/
-		PropertyKind* getParentLocalPropertyKind() const;
+		DLL_IMPORT_OR_EXPORT PropertyKind* getParentLocalPropertyKind() const;
 
-		void setParentPropertyKind(PropertyKind* parentPropertyKind);
+		DLL_IMPORT_OR_EXPORT void setParentPropertyKind(PropertyKind* parentPropertyKind);
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/**
 		* Add a representation values object which uses this property type.
 		* Does not add the inverse relationship i.e. from the representation values object to this property type.
 		*/
-		void addProperty(class AbstractProperty* repVal) {propertySet.push_back(repVal);}
+		DLL_IMPORT_OR_EXPORT void addProperty(class AbstractProperty* repVal) {propertySet.push_back(repVal);}
 
 		/**
 		* Check if this property kind is a child of a particular standard Energistics Property kind.
 		*/
-		virtual bool isChildOf(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind standardPropKind) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isChildOf(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind standardPropKind) const = 0;
 
 		/**
 		* Check if this property kind is abstract or not.
 		*/
-		virtual bool isAbstract() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isAbstract() const = 0;
+
+		/**
+		* Check if this property kind is partial or if one of its parent is partial.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual bool isParentPartial() const = 0;
 
 	protected:
 		virtual void setXmlParentPropertyKind(PropertyKind* parentPropertyKind) = 0;

@@ -44,7 +44,7 @@ void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const st
 	setRepresentation(rep);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
@@ -103,7 +103,7 @@ std::string ContinuousProperty::getUomAsString() const
 	return gsoap_resqml2_0_1::soap_resqml2__ResqmlUom2s(gsoapProxy2_0_1->soap, getUom());
 }
 
-void ContinuousProperty::pushBackDoubleHdf5Array1dOfValues(double * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy,
+void ContinuousProperty::pushBackDoubleHdf5Array1dOfValues(const double * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy,
 		const double & minimumValue, const double & maximumValue)
 {
 	hsize_t valueCountPerDimension[1] = {valueCount};
@@ -119,7 +119,7 @@ void ContinuousProperty::pushBackDoubleHdf5Array1dOfValues(double * values, cons
 	}
 }
 
-void ContinuousProperty::pushBackDoubleHdf5Array2dOfValues(double * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+void ContinuousProperty::pushBackDoubleHdf5Array2dOfValues(const double * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 			const double & minimumValue, const double & maximumValue)
 {
 	hsize_t valueCountPerDimension[2] = {valueCountInSlowestDim, valueCountInFastestDim};
@@ -135,7 +135,7 @@ void ContinuousProperty::pushBackDoubleHdf5Array2dOfValues(double * values, cons
 	}
 }
 
-void ContinuousProperty::pushBackDoubleHdf5Array3dOfValues(double * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+void ContinuousProperty::pushBackDoubleHdf5Array3dOfValues(const double * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 			const double & minimumValue, const double & maximumValue)
 {
 	hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
@@ -151,7 +151,7 @@ void ContinuousProperty::pushBackDoubleHdf5Array3dOfValues(double * values, cons
 	}
 }
 
-void ContinuousProperty::pushBackDoubleHdf5ArrayOfValues(double * values, hsize_t * numValues, const unsigned int & numArrayDimensions, COMMON_NS::AbstractHdfProxy * proxy,
+void ContinuousProperty::pushBackDoubleHdf5ArrayOfValues(const double * values, hsize_t * numValues, const unsigned int & numArrayDimensions, COMMON_NS::AbstractHdfProxy * proxy,
 	double * minimumValue, double * maximumValue)
 {
 	const string datasetName = pushBackRefToExistingDataset(proxy, "");
@@ -165,7 +165,7 @@ void ContinuousProperty::pushBackDoubleHdf5ArrayOfValues(double * values, hsize_
 		numValues, numArrayDimensions);
 }
 
-void ContinuousProperty::pushBackFloatHdf5Array1dOfValues(float * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy,
+void ContinuousProperty::pushBackFloatHdf5Array1dOfValues(const float * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy,
 	const float & minimumValue, const float & maximumValue)
 {
 	hsize_t valueCountPerDimension[1] = {valueCount};
@@ -181,7 +181,7 @@ void ContinuousProperty::pushBackFloatHdf5Array1dOfValues(float * values, const 
 	}
 }
 
-void ContinuousProperty::pushBackFloatHdf5Array2dOfValues(float * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+void ContinuousProperty::pushBackFloatHdf5Array2dOfValues(const float * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 	const float & minimumValue, const float & maximumValue)
 {
 	hsize_t valueCountPerDimension[2] = {valueCountInSlowestDim, valueCountInFastestDim};
@@ -197,7 +197,7 @@ void ContinuousProperty::pushBackFloatHdf5Array2dOfValues(float * values, const 
 	}
 }
 
-void ContinuousProperty::pushBackFloatHdf5Array3dOfValues(float * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+void ContinuousProperty::pushBackFloatHdf5Array3dOfValues(const float * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
 	const float & minimumValue, const float & maximumValue)
 {
 	hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
@@ -213,7 +213,7 @@ void ContinuousProperty::pushBackFloatHdf5Array3dOfValues(float * values, const 
 	}
 }
 
-std::string ContinuousProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, const long & nullValue)
+std::string ContinuousProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64)
 {
 	setHdfProxy(hdfProxy);
 	gsoap_resqml2_0_1::resqml2__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml2__AbstractValuesProperty*>(gsoapProxy2_0_1);
@@ -276,7 +276,7 @@ void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
 	);
 }
 
-void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(float * values, unsigned long long * numValues, const unsigned int & numArrayDimensions, COMMON_NS::AbstractHdfProxy * proxy,
+void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(const float * values, unsigned long long * numValues, const unsigned int & numArrayDimensions, COMMON_NS::AbstractHdfProxy * proxy,
 	float * minimumValue, float * maximumValue)
 {
 	const string datasetName = pushBackRefToExistingDataset(proxy, string());
@@ -291,7 +291,7 @@ void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(float * values, unsigned
 }
 
 void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(
-	unsigned long long* numValues,
+	const unsigned long long* numValues,
 	const unsigned int& numArrayDimensions, 
 	COMMON_NS::AbstractHdfProxy* proxy)
 {
@@ -442,6 +442,10 @@ bool ContinuousProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKin
 			return false;
 		}
 		if (epcDocument->getPropertyKindMapper() != nullptr) {
+			if (pk->isParentPartial()) {
+				epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the continuous property " + getUuid() + " is right because one if its parent property kind is abstract.");
+				return true;
+			}
 			if (!pk->isChildOf(resqml2__ResqmlPropertyKind__continuous)) {
 				epcDocument->addWarning("The continuous property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which does not derive from the continuous standard property kind. This property will be assumed to be a partial one.");
 				changeToPartialObject();
@@ -451,6 +455,9 @@ bool ContinuousProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKin
 		else {
 			epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the continuous property " + getUuid() + " is right because no property kind mapping files have been loaded.");
 		}
+	}
+	else {
+		epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the continuous property " + getUuid() + " is right because it is abstract.");
 	}
 
 	return true;

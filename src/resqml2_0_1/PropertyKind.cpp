@@ -38,7 +38,7 @@ void PropertyKind::init(soap* soapContext, const std::string & guid, const std::
 	propType->NamingSystem = namingSystem;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 PropertyKind::PropertyKind(soap* soapContext, const string & guid, const string & title,
@@ -103,10 +103,14 @@ void PropertyKind::setXmlParentPropertyKind(RESQML2_NS::PropertyKind* parentProp
 
 bool PropertyKind::isChildOf(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind standardPropKind) const
 {
+	if (isPartial()) {
+		throw std::invalid_argument("The property kind " + getUuid() + " is partial, we cannot consequently get its parents.");
+	}
+
 	if (!isParentAnEnergisticsPropertyKind()) {
 		return getParentLocalPropertyKind()->isChildOf(standardPropKind);
 	}
-	else{
+	else {
 		if (getParentEnergisticsPropertyKind() == standardPropKind) {
 			return true;
 		}
@@ -124,3 +128,18 @@ bool PropertyKind::isAbstract() const
 	return getSpecializedGsoapProxy()->IsAbstract;
 }
 
+bool PropertyKind::isParentPartial() const
+{
+	if (isPartial()) { return true; }
+
+	if (isParentAnEnergisticsPropertyKind()) {
+		return false;
+	}
+
+	RESQML2_NS::PropertyKind* parentPk = getParentLocalPropertyKind();
+	while (!parentPk->isPartial() && !parentPk->isParentAnEnergisticsPropertyKind()) {
+		parentPk = parentPk->getParentLocalPropertyKind();
+	}
+
+	return parentPk->isPartial();
+}

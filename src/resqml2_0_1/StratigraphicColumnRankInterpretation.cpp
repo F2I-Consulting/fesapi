@@ -33,8 +33,12 @@ const char* StratigraphicColumnRankInterpretation::XML_TAG = "StratigraphicColum
 
 StratigraphicColumnRankInterpretation::StratigraphicColumnRankInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank, const gsoap_resqml2_0_1::resqml2__OrderingCriteria & orderingCriteria)
 {
-	if (!orgFeat)
+	if (orgFeat == nullptr) {
 		throw invalid_argument("The interpreted organization feature cannot be null.");
+	}
+	if (!orgFeat->isPartial() && orgFeat->getKind() != gsoap_resqml2_0_1::resqml2__OrganizationKind__stratigraphic) {
+		throw invalid_argument("The kind of the organization feature is not a fluid organization.");
+	}
 
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREStratigraphicColumnRankInterpretation(orgFeat->getGsoapContext(), 1);
 	static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->Domain = resqml2__Domain__mixed;
@@ -42,7 +46,7 @@ StratigraphicColumnRankInterpretation::StratigraphicColumnRankInterpretation(Org
 	static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->OrderingCriteria = orderingCriteria;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	setInterpretedFeature(orgFeat);
 }
@@ -93,7 +97,7 @@ StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getSubje
 
 	resqml2__BinaryContactInterpretationPart* contact = static_cast<resqml2__BinaryContactInterpretationPart*>(static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation[contactIndex]);
 	if (contact->Subject)
-		return static_cast<StratigraphicUnitInterpretation*>(epcDocument->getResqmlAbstractObjectByUuid(contact->Subject->UUID));
+		return static_cast<StratigraphicUnitInterpretation*>(epcDocument->getDataObjectByUuid(contact->Subject->UUID));
 	else
 		return nullptr;
 }
@@ -117,7 +121,7 @@ StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getDirec
 
 	resqml2__BinaryContactInterpretationPart* contact = static_cast<resqml2__BinaryContactInterpretationPart*>(static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation[contactIndex]);
 	if (contact->DirectObject)
-		return static_cast<StratigraphicUnitInterpretation*>(epcDocument->getResqmlAbstractObjectByUuid(contact->DirectObject->UUID));
+		return static_cast<StratigraphicUnitInterpretation*>(epcDocument->getDataObjectByUuid(contact->DirectObject->UUID));
 	else
 		return nullptr;
 }
@@ -129,7 +133,7 @@ HorizonInterpretation* StratigraphicColumnRankInterpretation::getHorizonInterpre
 
 	resqml2__BinaryContactInterpretationPart* contact = static_cast<resqml2__BinaryContactInterpretationPart*>(static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation[contactIndex]);
 	if (contact->PartOf)
-		return static_cast<HorizonInterpretation*>(epcDocument->getResqmlAbstractObjectByUuid(contact->PartOf->UUID));
+		return static_cast<HorizonInterpretation*>(epcDocument->getDataObjectByUuid(contact->PartOf->UUID));
 	else
 		return nullptr;
 }
@@ -179,7 +183,7 @@ void StratigraphicColumnRankInterpretation::importRelationshipSetFromEpc(COMMON_
 	for (unsigned int i = 0; i < interp->StratigraphicUnits.size(); i++)
 	{
 		if (interp->StratigraphicUnits[i]->Unit)
-			pushBackStratiUnitInterpretation(static_cast<StratigraphicUnitInterpretation*>(epcDoc->getResqmlAbstractObjectByUuid(interp->StratigraphicUnits[i]->Unit->UUID)));
+			pushBackStratiUnitInterpretation(static_cast<StratigraphicUnitInterpretation*>(epcDoc->getDataObjectByUuid(interp->StratigraphicUnits[i]->Unit->UUID)));
 		else
 			throw logic_error("Not yet implemented");
 	}
@@ -187,7 +191,7 @@ void StratigraphicColumnRankInterpretation::importRelationshipSetFromEpc(COMMON_
 	for (unsigned int i = 0; i < interp->ContactInterpretation.size(); i++)
 	{
 		if (interp->ContactInterpretation[i]->PartOf) {
-			HorizonInterpretation* horizonInterp = epcDoc->getResqmlAbstractObjectByUuid<HorizonInterpretation>(interp->ContactInterpretation[i]->PartOf->UUID);
+			HorizonInterpretation* horizonInterp = epcDoc->getDataObjectByUuid<HorizonInterpretation>(interp->ContactInterpretation[i]->PartOf->UUID);
 
 			if (horizonInterp == nullptr) {
 				getEpcDocument()->addWarning("The referenced horizon interp \"" + interp->ContactInterpretation[i]->PartOf->Title + "\" (" + interp->ContactInterpretation[i]->PartOf->UUID + ") is missing.");

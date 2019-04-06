@@ -18,29 +18,33 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/RepresentationSetRepresentation.h"
+#include "resqml2_0_1/AbstractSurfaceFrameworkRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT NonSealedSurfaceFrameworkRepresentation : public RepresentationSetRepresentation
+	class NonSealedSurfaceFrameworkRepresentation : public AbstractSurfaceFrameworkRepresentation
 	{
     public:
+
+		/**
+		* Only to be used in partial transfer context
+		*/
+		NonSealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractSurfaceFrameworkRepresentation(partialObject) {}
+
         /**
 		* Creates an instance of this class in a gsoap context.
 		* @param interp     The structural organization interpretation the instance interprets.
 		* @param guid		The guid to set to the horizon. If empty then a new guid will be generated.
 		* @param title      A title for the instance to create.
-		* @param isSealed	Indicates if this representaiton is sealed or not.
 		*/
 		NonSealedSurfaceFrameworkRepresentation(class StructuralOrganizationInterpretation* interp,
                         const std::string & guid, 
-                        const std::string & title,
-                        const bool & isSealed);
+                        const std::string & title);
                 
         /**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		NonSealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::_resqml2__NonSealedSurfaceFrameworkRepresentation* fromGsoap): RepresentationSetRepresentation(fromGsoap) {}
+		NonSealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::_resqml2__NonSealedSurfaceFrameworkRepresentation* fromGsoap): AbstractSurfaceFrameworkRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -50,7 +54,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Pushes back a contact representation in the structural framework
 		 */
-		void pushBackNonSealedContactRepresentation(const unsigned int & pointCount, double * points, RESQML2_NS::AbstractLocal3dCrs* crs, COMMON_NS::AbstractHdfProxy* proxy);
+		DLL_IMPORT_OR_EXPORT void pushBackNonSealedContactRepresentation(const unsigned int & pointCount, double * points, RESQML2_NS::AbstractLocal3dCrs* crs, COMMON_NS::AbstractHdfProxy* proxy);
                 
         /**
 		* Pushes back a contact patch in a particular contact representation of the structural framework.
@@ -68,10 +72,12 @@ namespace RESQML2_0_1_NS
                 COMMON_NS::AbstractHdfProxy* proxy);
                 */
 
-        static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT unsigned int getContactCount() const;
 
-		virtual std::string getHdfProxyUuid() const;
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
+
+		DLL_IMPORT_OR_EXPORT virtual std::string getHdfProxyUuid() const;
 
     private:
 
@@ -81,4 +87,3 @@ namespace RESQML2_0_1_NS
             
 	};
 }
-

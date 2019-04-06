@@ -50,10 +50,10 @@ DiscretePropertyUsingLocalKindOnWellFrameTest::DiscretePropertyUsingLocalKindOnW
 void DiscretePropertyUsingLocalKindOnWellFrameTest::initEpcDocHandler() {
 	// creation
 	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(this->epcDoc, true);
-	RESQML2_0_1_NS::WellboreFrameRepresentation * frame = this->epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::WellboreFrameRepresentation>(WellboreFrameRepresentationTest::defaultUuid);
+	RESQML2_0_1_NS::WellboreFrameRepresentation * frame = this->epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::WellboreFrameRepresentation>(WellboreFrameRepresentationTest::defaultUuid);
 
 	PropertyKindTest * pkTest = new PropertyKindTest(this->epcDoc, true);
-	PropertyKind * propertyKind = this->epcDoc->getResqmlAbstractObjectByUuid<PropertyKind>(PropertyKindTest::defaultUuid);
+	PropertyKind * propertyKind = this->epcDoc->getDataObjectByUuid<PropertyKind>(PropertyKindTest::defaultUuid);
 
 	// getting the hdf proxy
 	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
@@ -79,7 +79,7 @@ void DiscretePropertyUsingLocalKindOnWellFrameTest::readEpcDocHandler() {
 	PropertyKindTest * pkTest = new PropertyKindTest(this->epcDoc, false);
 
 	// getting the DiscreteProperty
-	RESQML2_0_1_NS::DiscreteProperty* discreteProperty = this->epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::DiscreteProperty>(uuid);
+	RESQML2_0_1_NS::DiscreteProperty* discreteProperty = this->epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::DiscreteProperty>(uuid);
 
 	// ************************************
 	// reading the DiscreteProperty

@@ -22,7 +22,7 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT HdfProxy : public COMMON_NS::HdfProxy
+	class HdfProxy : public COMMON_NS::HdfProxy
 	{
 	public:
 		/**
@@ -55,4 +55,3 @@ namespace RESQML2_0_1_NS
 
 	};
 }
-

@@ -22,11 +22,12 @@ under the License.
 #include <limits>
 
 #include "hdf5.h"
-
+#include "tools/Misc.h"
 #include "resqml2_0_1/AbstractStratigraphicOrganizationInterpretation.h"
 #include "common/AbstractHdfProxy.h"
 #include "resqml2_0_1/UnstructuredGridRepresentation.h"
 #include "resqml2_0_1/AbstractIjkGridRepresentation.h"
+#include "resqml2_0_1/RockFluidOrganizationInterpretation.h"
 
 using namespace RESQML2_NS;
 using namespace std;
@@ -37,6 +38,8 @@ const char* AbstractGridRepresentation::XML_TAG = "AbstractGridRepresentation";
 vector<Relationship> AbstractGridRepresentation::getAllEpcRelationships() const
 {
 	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
+	
+	gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
 	
 	for (size_t i = 0; i < gridConnectionSetRepresentationSet.size(); ++i) {
 		Relationship relRep(gridConnectionSetRepresentationSet[i]->getPartNameInEpcDocument(), "", gridConnectionSetRepresentationSet[i]->getUuid());
@@ -70,6 +73,13 @@ vector<Relationship> AbstractGridRepresentation::getAllEpcRelationships() const
 		Relationship relStrati(stratiOrg->getPartNameInEpcDocument(), "", stratiOrg->getUuid());
 		relStrati.setDestinationObjectType();
 		result.push_back(relStrati);
+	}
+
+	//Fluid
+	if(hasCellFluidPhaseUnitIndices()) {
+		Relationship rel(misc::getPartNameFromReference(rep->CellFluidPhaseUnits->FluidOrganization), "", rep->CellFluidPhaseUnits->FluidOrganization->UUID);
+		rel.setDestinationObjectType();
+		result.push_back(rel);
 	}
 
 	return result;
@@ -134,7 +144,7 @@ AbstractGridRepresentation* AbstractGridRepresentation::getParentGrid() const
 	const string parentGridUuid = getParentGridUuid();
 
 	if (!parentGridUuid.empty()) {
-		return static_cast<AbstractGridRepresentation*>(getEpcDocument()->getResqmlAbstractObjectByUuid(parentGridUuid));
+		return static_cast<AbstractGridRepresentation*>(getEpcDocument()->getDataObjectByUuid(parentGridUuid));
 	}
 	
 	return nullptr;
@@ -974,10 +984,10 @@ void AbstractGridRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocu
 	// LGR backward relationships
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getParentGridDor();
 	if (dor != nullptr) {
-		RESQML2_NS::AbstractGridRepresentation* parentGrid = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
+		RESQML2_NS::AbstractGridRepresentation* parentGrid = epcDoc->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
 		if (parentGrid == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dor);
-			parentGrid = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
+			parentGrid = getEpcDocument()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
 		}
 		if (parentGrid == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -986,20 +996,34 @@ void AbstractGridRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocu
 		parentGrid->childGridSet.push_back(this);
 		updateXml = true;
 	}
-
 	// Strati org backward relationships
 	dor = getStratigraphicOrganizationInterpretationDor();
 	if (dor != nullptr) {
-		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = epcDoc->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
+		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
 		if (stratiOrg == nullptr) { // partial transfer
 			getEpcDocument()->createPartial(dor);
-			stratiOrg = getEpcDocument()->getResqmlAbstractObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
+			stratiOrg = getEpcDocument()->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
 		}
 		if (stratiOrg == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
 		}
 		updateXml = false;
 		setCellAssociationWithStratigraphicOrganizationInterpretation(nullptr, 0, stratiOrg);
+		updateXml = true;
+	}
+
+	dor = getRockFluidOrganizationInterpretationDor();
+	if(dor != nullptr) {
+		RESQML2_0_1_NS::RockFluidOrganizationInterpretation* rockFluidOrg = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::RockFluidOrganizationInterpretation>(dor->UUID);
+		if(rockFluidOrg == nullptr) {
+			getEpcDocument()->createPartial(dor);
+			rockFluidOrg = getEpcDocument()->getDataObjectByUuid<RESQML2_0_1_NS::RockFluidOrganizationInterpretation>(dor->UUID);
+		}
+		if(rockFluidOrg == nullptr) {
+			throw invalid_argument("The DOR looks invalid.");
+		}
+		updateXml = false;
+		setCellAssociationWithRockFluidOrganizationInterpretation(nullptr, 0, rockFluidOrg);
 		updateXml = true;
 	}
 }
@@ -1037,6 +1061,39 @@ void AbstractGridRepresentation::setCellAssociationWithStratigraphicOrganization
 	}
 }
 
+void AbstractGridRepresentation::setCellAssociationWithRockFluidOrganizationInterpretation(ULONG64 * rockFluidUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::RockFluidOrganizationInterpretation * rockfluidOrgInterp)
+{
+	// Backward rel
+	if (!rockfluidOrgInterp->isAssociatedToGridRepresentation(this))
+	{
+		rockfluidOrgInterp->gridRepresentationSet.push_back(this);
+	}
+
+	// XML
+	if (updateXml)
+	{
+		if (gsoapProxy2_0_1 != nullptr) {
+			gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
+			rep->CellFluidPhaseUnits = gsoap_resqml2_0_1::soap_new_resqml2__CellFluidPhaseUnits(rep->soap, 1);
+			rep->CellFluidPhaseUnits->FluidOrganization = rockfluidOrgInterp->newResqmlReference();
+
+			gsoap_resqml2_0_1::resqml2__IntegerHdf5Array* xmlDataset = gsoap_resqml2_0_1::soap_new_resqml2__IntegerHdf5Array(rep->soap, 1);
+			xmlDataset->NullValue = nullValue;
+			xmlDataset->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+			xmlDataset->Values->HdfProxy = hdfProxy->newResqmlReference();
+			xmlDataset->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/CellFluidPhaseUnits";
+			rep->CellFluidPhaseUnits->PhaseUnitIndices = xmlDataset;
+
+			// ************ HDF *************
+			hsize_t dim = getCellCount();
+			hdfProxy->writeArrayNd(rep->uuid, "CellFluidPhaseUnits", H5T_NATIVE_ULLONG, rockFluidUnitIndices, &dim, 1);
+		}
+		else {
+			throw logic_error("Not implemented yet");
+		}
+	}
+}
+
 gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractGridRepresentation::getStratigraphicOrganizationInterpretationDor() const
 {
 	if (!hasCellStratigraphicUnitIndices()) {
@@ -1045,6 +1102,20 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractGridRepresentation::getSt
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1)->CellStratigraphicUnits->StratigraphicOrganization;
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
+}
+
+gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractGridRepresentation::getRockFluidOrganizationInterpretationDor() const
+{
+	if (!hasCellFluidPhaseUnitIndices()) {
+		return nullptr;
+	}
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1)->CellFluidPhaseUnits->FluidOrganization;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -1063,6 +1134,18 @@ std::string AbstractGridRepresentation::getStratigraphicOrganizationInterpretati
 	return dor == nullptr ? string() : dor->Title;
 }
 
+std::string AbstractGridRepresentation::getRockFluidOrganizationInterpretationUuid() const
+{
+	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getRockFluidOrganizationInterpretationDor();
+	return dor == nullptr ? string() : dor->UUID;
+}
+
+std::string AbstractGridRepresentation::getRockFluidOrganizationInterpretationTitle() const
+{
+	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getRockFluidOrganizationInterpretationDor();
+	return dor == nullptr ? string() : dor->Title;
+}
+
 RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* AbstractGridRepresentation::getStratigraphicOrganizationInterpretation() const
 {
 	const string stratigraphicOrganizationInterpretationUuid = getStratigraphicOrganizationInterpretationUuid();
@@ -1070,13 +1153,23 @@ RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* AbstractGridRep
 		return nullptr;
 	}
 
-	return static_cast<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation*>(getEpcDocument()->getResqmlAbstractObjectByUuid(stratigraphicOrganizationInterpretationUuid));
+	return static_cast<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation*>(getEpcDocument()->getDataObjectByUuid(stratigraphicOrganizationInterpretationUuid));
 }
 
 bool AbstractGridRepresentation::hasCellStratigraphicUnitIndices() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1)->CellStratigraphicUnits != nullptr;
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
+}
+
+bool AbstractGridRepresentation::hasCellFluidPhaseUnitIndices() const
+{
+	if (gsoapProxy2_0_1 != nullptr) {
+		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1)->CellFluidPhaseUnits != nullptr;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -1102,6 +1195,38 @@ ULONG64 AbstractGridRepresentation::getCellStratigraphicUnitIndices(ULONG64 * st
 	else {
 		throw logic_error("Not implemented yet");
 	}
+}
+
+ULONG64 AbstractGridRepresentation::getCellFluidPhaseUnitIndices(ULONG64 * rockFluidUnitIndices)
+{
+	if (!hasCellFluidPhaseUnitIndices()) {
+		throw invalid_argument("This grid has no CellFluidPhaseUnits information");
+	}
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
+		if (rep->CellFluidPhaseUnits->PhaseUnitIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
+		{
+			hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->CellFluidPhaseUnits->PhaseUnitIndices)->Values->PathInHdfFile, rockFluidUnitIndices);
+			return static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->CellFluidPhaseUnits->PhaseUnitIndices)->NullValue;
+		}
+
+		throw logic_error("Not implemented yet.");
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
+}
+
+RESQML2_0_1_NS::RockFluidOrganizationInterpretation* AbstractGridRepresentation::getRockFluidOrganizationInterpretation() const
+{
+	const string rockfluidOrganizationInterpretationUuid = getRockFluidOrganizationInterpretationUuid();
+	if (rockfluidOrganizationInterpretationUuid.empty()) {
+		return nullptr;
+	}
+
+	return static_cast<RESQML2_0_1_NS::RockFluidOrganizationInterpretation*>(getEpcDocument()->getDataObjectByUuid(rockfluidOrganizationInterpretationUuid));
+
 }
 
 bool AbstractGridRepresentation::isTruncated() const

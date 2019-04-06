@@ -38,10 +38,9 @@ void PolylineSetRepresentation::init(RESQML2_NS::AbstractFeatureInterpretation* 
 									 const std::string & guid, const std::string & title)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREPolylineSetRepresentation(crs->getGsoapContext(), 1);
-	_resqml2__PolylineSetRepresentation* polylineSetRep = static_cast<_resqml2__PolylineSetRepresentation*>(gsoapProxy2_0_1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	// relationships
 	localCrs = crs;
@@ -534,7 +533,6 @@ void PolylineSetRepresentation::getClosedFlagPerPolylineOfPatch(const unsigned i
 	{
 		hid_t datatype = hdfProxy->getHdfDatatypeInDataset(static_cast<resqml2__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile);
 
-		bool result = true;
 		if (H5Tequal(datatype, H5T_NATIVE_CHAR) > 0)
 		{
 			char* tmp = new char[polylineCount];

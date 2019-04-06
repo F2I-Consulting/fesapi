@@ -26,7 +26,7 @@ namespace RESQML2_0_1_NS
 	* This class is one of the only one to be a ResqmlDataObject which is not exported into a single file i.e. not a top level element.
 	* Consequently its behaviour is slightly different than other class. Especially there is no integration of the instances into an EPC document.
 	*/
-	class DLL_IMPORT_OR_EXPORT WellboreMarker : public COMMON_NS::AbstractObject
+	class WellboreMarker : public COMMON_NS::AbstractObject
 	{
 	public:
 
@@ -50,7 +50,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreMarker(gsoap_resqml2_0_1::resqml2__WellboreMarker* fromGsoap, class WellboreMarkerFrameRepresentation* wellboreMarkerFrame) : AbstractObject(fromGsoap), boundaryFeatureInterpretation(nullptr), wellboreMarkerFrameRepresentation(wellboreMarkerFrame)  {}
+		WellboreMarker(gsoap_resqml2_0_1::resqml2__WellboreMarker* fromGsoap, class WellboreMarkerFrameRepresentation* wellboreMarkerFrame) : AbstractObject(fromGsoap), wellboreMarkerFrameRepresentation(wellboreMarkerFrame)  {}
 
 		/**
 		* Destructor
@@ -60,43 +60,41 @@ namespace RESQML2_0_1_NS
 		/**
 		* Indicates if the marker is associated to a particular GeologicBoundaryKind.
 		*/
-		bool hasAGeologicBoundaryKind();
+		DLL_IMPORT_OR_EXPORT bool hasAGeologicBoundaryKind();
 
 		/**
 		* Get the type of the intersected feature of the marker.
 		* Throw an exception if the marker has no GeologicBoundaryKind (see method hasAGeologicBoundaryKind).
 		*/
-		gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind getGeologicBoundaryKind();
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind getGeologicBoundaryKind();
 
-		class WellboreMarkerFrameRepresentation * getWellMarkerFrameRepresentation() {return wellboreMarkerFrameRepresentation;}
+		DLL_IMPORT_OR_EXPORT class WellboreMarkerFrameRepresentation * getWellMarkerFrameRepresentation() const {return wellboreMarkerFrameRepresentation;}
 
 		/**
 		* Get the boundary feature interpretation linked to this well marker.
 		*/
-		class BoundaryFeatureInterpretation* getBoundaryFeatureInterpretation() const {return boundaryFeatureInterpretation;}
+		DLL_IMPORT_OR_EXPORT class BoundaryFeatureInterpretation* getBoundaryFeatureInterpretation() const;
 
 		/**
 		* Get the UUID of the boundary feature interpretation linked to this well marker.
 		* Especially useful in partial transfer mode.
 		*/
-		std::string getBoundaryFeatureInterpretationUuid() const;
+		DLL_IMPORT_OR_EXPORT std::string getBoundaryFeatureInterpretationUuid() const;
 
 		/**
 		* Set the boundary feature interpretation linked to this well marker.
 		*/
-		void setBoundaryFeatureInterpretation(class BoundaryFeatureInterpretation* interp);
+		DLL_IMPORT_OR_EXPORT void setBoundaryFeatureInterpretation(class BoundaryFeatureInterpretation* interp);
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 	private:
 
 		// No need these two inherited methods since WellboreMarker is not an EPC top level element.
 		std::vector<epc::Relationship> getAllEpcRelationships() const {std::vector<epc::Relationship> result; return result;}
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {};
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
-		class BoundaryFeatureInterpretation* boundaryFeatureInterpretation;
 		class WellboreMarkerFrameRepresentation* wellboreMarkerFrameRepresentation;
 	};
 }
-

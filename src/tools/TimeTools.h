@@ -18,6 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
+#include <ctime>
 #include <string>
 
 namespace timeTools
@@ -25,7 +26,19 @@ namespace timeTools
 	/**
 	* Convert an Unix timestamp which is given in microseconds into a date in ISO format.
 	*/
-	std::string convertMicrosecondUnixTimestampToIso(const long long & ts);
+	// No more used because DAS support has been removed
+	// Disabled because it needs to include <cmath> which creates a conflict with gsoap 2.8.81 : see https://github.com/F2I-Consulting/fesapi/issues/90
+	//std::string convertMicrosecondUnixTimestampToIso(long long ts);
+
+	/**
+	* Convert an Unix timestamp which is given in seconds into a date in ISO format.
+	*/
+	std::string convertUnixTimestampToIso(time_t ts);
+
+	/**
+	* Converts a UTC time (given in seconds) represented by a string to a UTC time represented by a time_t type.
+	*/
+	time_t convertIsoToUnixTimestamp(const std::string & s);
 
 	/**
 	* Converts a UTC time represented by a tm``struct to a UTC time represented by a time_t type.

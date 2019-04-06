@@ -25,13 +25,9 @@ namespace RESQML2_NS{
 	class AbstractProperty;
 }
 
-namespace PRODML2_0_NS {
-	class DasAcquisition;
-}
-
 namespace COMMON_NS
 {
-	class DLL_IMPORT_OR_EXPORT EpcExternalPartReference : public COMMON_NS::AbstractObject
+	class EpcExternalPartReference : public COMMON_NS::AbstractObject
 	{
 	public:
 		/**
@@ -60,22 +56,18 @@ namespace COMMON_NS
 		/**
 		* Get the relative path regarding packageDirectoryAbsolutePath where the external resource is located.
 		*/
-		std::string getRelativePath() const { return relativeFilePath; }
+		DLL_IMPORT_OR_EXPORT std::string getRelativePath() const { return relativeFilePath; }
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const;
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const;
 
 	protected:
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		/**
-		* Does nothing since external reference has not forward relationships at all
-		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
+		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		std::vector<RESQML2_NS::AbstractRepresentation*> representationSourceObject;					/// All the representations that use this external reference.
 		std::vector<RESQML2_NS::AbstractProperty*> propertySourceObject;								/// All the properties that use this external reference.
-		std::vector<PRODML2_0_NS::DasAcquisition*> dasAcquisitionSourceObject;							/// All the DAS acquisition that use this external reference.
 		std::string packageDirectoryAbsolutePath;												/// The directory where the EPC document is stored.
 		std::string relativeFilePath;															/// Must be relative to the location of the package
 	};
