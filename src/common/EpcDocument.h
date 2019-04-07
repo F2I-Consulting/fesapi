@@ -26,6 +26,7 @@ under the License.
 #include "proxies/stdsoap2.h"
 #include "proxies/gsoap_resqml2_0_1H.h"
 #include "proxies/gsoap_eml2_1H.h"
+#include "proxies/gsoap_eml2_2H.h"
 
 #include "epc/Package.h"
 
@@ -131,9 +132,18 @@ namespace RESQML2_0_1_NS
 
 }
 
+namespace WITSML2_1_NS
+{
+	class ToolErrorModel;
+	class ToolErrorModelDictionary;
+	class ErrorTerm;
+	class ErrorTermDictionary;
+	class WeightingFunction;
+	class WeightingFunctionDictionary;
+}
+
 namespace WITSML2_0_NS
 {
-	class AbstractObject;
 	class Well;
 	class WellCompletion;
 	class Wellbore;
@@ -1123,7 +1133,41 @@ namespace COMMON_NS
 		//************************************
 		//*************** WITSML *************
 		//************************************
-		
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ToolErrorModel* createPartialToolErrorModel(
+			const std::string & guid,
+			const std::string & title);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ToolErrorModel* createToolErrorModel(
+			const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_2::witsml2__MisalignmentMode misalignmentMode);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ToolErrorModelDictionary* createToolErrorModelDictionary(
+			const std::string & guid,
+			const std::string & title);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ErrorTerm* createErrorTerm(
+			const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_2::witsml2__ErrorPropagationMode propagationMode,
+			WITSML2_1_NS::WeightingFunction* weightingFunction);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ErrorTermDictionary* createErrorTermDictionary(
+			const std::string & guid,
+			const std::string & title);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::WeightingFunction* createWeightingFunction(
+			const std::string & guid,
+			const std::string & title,
+			const std::string & depthFormula,
+			const std::string & inclinationFormula,
+			const std::string & azimuthFormula);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::WeightingFunctionDictionary* createWeightingFunctionDictionary(
+			const std::string & guid,
+			const std::string & title);
+
 		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Well* createWell(const std::string & guid,
 			const std::string & title);
 
