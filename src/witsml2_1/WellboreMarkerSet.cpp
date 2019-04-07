@@ -42,7 +42,7 @@ WellboreMarkerSet::WellboreMarkerSet(
 	gsoapProxy2_2 = soap_new_witsml2__WellboreMarkerSet(witsmlWellbore->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setWellbore(witsmlWellbore);
 }
@@ -54,7 +54,7 @@ gsoap_eml2_2::eml22__DataObjectReference* WellboreMarkerSet::getWellboreDor() co
 
 class Wellbore* WellboreMarkerSet::getWellbore() const
 {
-	return getEpcDocument()->getResqmlAbstractObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
+	return getEpcDocument()->getDataObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
 }
 
 void WellboreMarkerSet::setWellbore(Wellbore* witsmlWellbore)
@@ -76,11 +76,11 @@ void WellboreMarkerSet::setWellbore(Wellbore* witsmlWellbore)
 void WellboreMarkerSet::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	gsoap_eml2_2::eml22__DataObjectReference* dor = getWellboreDor();
-	Wellbore* wellbore = epcDoc->getResqmlAbstractObjectByUuid<Wellbore>(dor->Uuid);
+	Wellbore* wellbore = epcDoc->getDataObjectByUuid<Wellbore>(dor->Uuid);
 	/*
 	if (well == nullptr) { // partial transfer
 	getEpcDocument()->createPartial(dor);
-	well = getEpcDocument()->getResqmlAbstractObjectByUuid<well>(dor->Uuid);
+	well = getEpcDocument()->getDataObjectByUuid<well>(dor->Uuid);
 	}
 	*/
 	if (wellbore == nullptr) {

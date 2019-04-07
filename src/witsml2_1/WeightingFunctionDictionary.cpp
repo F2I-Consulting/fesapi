@@ -38,7 +38,7 @@ WeightingFunctionDictionary::WeightingFunctionDictionary(soap* soapContext,
 	gsoapProxy2_2 = soap_new_witsml2__WeightingFunctionDictionary(soapContext, 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 }
 
 std::string WeightingFunctionDictionary::getWeightingFunctionUuid(unsigned long index) const
@@ -77,7 +77,7 @@ void WeightingFunctionDictionary::importRelationshipSetFromEpc(COMMON_NS::EpcDoc
 
 	updateXml = false;
 	for (size_t index = 0; index < dict->WeightingFunction.size(); ++index) {
-		WeightingFunction* wf = epcDoc->getResqmlAbstractObjectByUuid<WeightingFunction>(getWeightingFunctionUuid(index));
+		WeightingFunction* wf = epcDoc->getDataObjectByUuid<WeightingFunction>(getWeightingFunctionUuid(index));
 		pushBackWeightingFunction(wf);
 		wf->importRelationshipSetFromEpc(epcDoc);
 	}

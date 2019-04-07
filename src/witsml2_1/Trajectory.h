@@ -77,8 +77,6 @@ namespace WITSML2_1_NS
 
 		// XML backwards relationship
 		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* resqmlWellboreTrajectoryRepresentation;
-		
-		friend void RESQML2_0_1_NS::WellboreTrajectoryRepresentation::setWitsmlTrajectory(Trajectory * witsmlTraj);
 	};
 }
 

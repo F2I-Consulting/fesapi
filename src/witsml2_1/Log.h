@@ -70,8 +70,6 @@ namespace WITSML2_1_NS
 
 		// XML backwards relationship
 		RESQML2_0_1_NS::WellboreFrameRepresentation* resqmlWellboreFrameRepresentation;
-		
-		friend void RESQML2_0_1_NS::WellboreFrameRepresentation::setWitsmlLog(Log * witsmlLogToSet);
 	};
 }
 

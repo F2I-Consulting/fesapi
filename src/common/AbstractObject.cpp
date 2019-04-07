@@ -369,7 +369,7 @@ void AbstractObject::setEditor(const std::string & editor)
 		}
 		else if (gsoapProxy2_2 != nullptr) {
 			if (gsoapProxy2_2->Citation->Editor == nullptr)
-				gsoapProxy2_2->Citation->Editor = soap_new_std__string(gsoapProxy2_2->soap, 1);
+				gsoapProxy2_2->Citation->Editor = gsoap_eml2_2::soap_new_std__string(gsoapProxy2_2->soap, 1);
 			gsoapProxy2_2->Citation->Editor->assign(editor);
 		}
 	}
@@ -452,7 +452,7 @@ void AbstractObject::setDescription(const std::string & description)
 		}
 		else if (gsoapProxy2_2 != nullptr) {
 			if (gsoapProxy2_2->Citation->Description == nullptr)
-				gsoapProxy2_2->Citation->Description = soap_new_std__string(gsoapProxy2_2->soap, 1);
+				gsoapProxy2_2->Citation->Description = gsoap_eml2_2::soap_new_std__string(gsoapProxy2_2->soap, 1);
 			gsoapProxy2_2->Citation->Description->assign(description);
 		}
 	}
@@ -529,7 +529,7 @@ void AbstractObject::setDescriptiveKeywords(const std::string & descriptiveKeywo
 		}
 		else if (gsoapProxy2_2 != nullptr) {
 			if (gsoapProxy2_2->Citation->DescriptiveKeywords == nullptr)
-				gsoapProxy2_2->Citation->DescriptiveKeywords = soap_new_std__string(gsoapProxy2_2->soap, 1);
+				gsoapProxy2_2->Citation->DescriptiveKeywords = gsoap_eml2_2::soap_new_std__string(gsoapProxy2_2->soap, 1);
 			gsoapProxy2_2->Citation->DescriptiveKeywords->assign(descriptiveKeywords);
 		}
 	}
@@ -554,7 +554,7 @@ void AbstractObject::setVersionString(const std::string & versionString)
 		}
 		else if (gsoapProxy2_2 != nullptr) {
 			if (gsoapProxy2_2->objectVersion == nullptr)
-				gsoapProxy2_2->objectVersion = soap_new_std__string(gsoapProxy2_2->soap, 1);
+				gsoapProxy2_2->objectVersion = gsoap_eml2_2::soap_new_std__string(gsoapProxy2_2->soap, 1);
 			gsoapProxy2_2->objectVersion->assign(versionString);
 		}
 	}
@@ -859,7 +859,7 @@ std::string AbstractObject::getAliasTitleAtIndex(unsigned int index) const
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		return (static_cast<eml20__AbstractCitedDataObject*>(gsoapProxy2_0_1)->Aliases)[index]->Identifier;
+		return gsoapProxy2_0_1->Aliases[index]->Identifier;
 	}
 	else if (gsoapProxy2_1 != nullptr) {
 		return gsoapProxy2_1->Aliases[index]->Identifier;
@@ -867,6 +867,8 @@ std::string AbstractObject::getAliasTitleAtIndex(unsigned int index) const
 	else if (gsoapProxy2_2 != nullptr) {
 		return gsoapProxy2_2->Aliases[index]->Identifier;
 	}
+
+	throw logic_error("No gsoap proxy in this instance.");
 }
 
 const std::vector<RESQML2_NS::Activity*> & AbstractObject::getActivitySet() const

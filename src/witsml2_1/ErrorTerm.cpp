@@ -44,7 +44,7 @@ ErrorTerm::ErrorTerm(soap* soapContext,
 	setWeightingFunction(weightingFunction);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 }
 
 bool ErrorTerm::isTopLevelElement() const
@@ -59,7 +59,7 @@ std::string ErrorTerm::getWeightingFunctionUuid() const
 
 WeightingFunction* ErrorTerm::getWeightingFunction() const
 {
-	return epcDocument->getResqmlAbstractObjectByUuid<WeightingFunction>(getWeightingFunctionUuid());
+	return epcDocument->getDataObjectByUuid<WeightingFunction>(getWeightingFunctionUuid());
 }
 
 void ErrorTerm::setWeightingFunction(WeightingFunction* weightingFunction)
@@ -108,7 +108,7 @@ vector<Relationship> ErrorTerm::getAllEpcRelationships() const
 
 void ErrorTerm::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
-	WeightingFunction* weightingFunction = epcDoc->getResqmlAbstractObjectByUuid<WeightingFunction>(getWeightingFunctionUuid());
+	WeightingFunction* weightingFunction = epcDoc->getDataObjectByUuid<WeightingFunction>(getWeightingFunctionUuid());
 
 	updateXml = false;
 	setWeightingFunction(weightingFunction);

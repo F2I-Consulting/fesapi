@@ -1133,11 +1133,6 @@ namespace COMMON_NS
 		//************************************
 		//*************** WITSML *************
 		//************************************
-		
-		/**
-		* Get all the witsml trajectories contained into the EPC document
-		*/
-		DLL_IMPORT_OR_EXPORT std::vector<WITSML2_1_NS::Trajectory*> getWitsmlTrajectorySet() const;
 
 		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ToolErrorModel* createPartialToolErrorModel(
 			const std::string & guid,
@@ -1171,6 +1166,7 @@ namespace COMMON_NS
 
 		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::WeightingFunctionDictionary* createWeightingFunctionDictionary(
 			const std::string & guid,
+			const std::string & title);
 
 		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Well* createWell(const std::string & guid,
 			const std::string & title);
@@ -1284,7 +1280,6 @@ namespace COMMON_NS
 		std::vector<RESQML2_NS::RepresentationSetRepresentation*>		representationSetRepresentationSet;
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*>		triangulatedSetRepresentationSet;
 		std::vector<RESQML2_0_1_NS::Grid2dRepresentation*>				grid2dRepresentationSet;
-		std::vector<WITSML2_1_NS::Trajectory*>							witsmlTrajectorySet;
 		std::vector<RESQML2_0_1_NS::PolylineRepresentation*>			polylineRepresentationSet;
 		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*>			polylineSetRepresentationSet;
 		std::vector<RESQML2_0_1_NS::AbstractIjkGridRepresentation*>		ijkGridRepresentationSet;

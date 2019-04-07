@@ -48,7 +48,7 @@ WeightingFunction::WeightingFunction(soap* soapContext,
 	aziFormula->Formula = azimuthFormula;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 }
 
 bool WeightingFunction::isTopLevelElement() const

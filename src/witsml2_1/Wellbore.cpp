@@ -32,14 +32,16 @@ const char* Wellbore::XML_TAG = "Wellbore";
 Wellbore::Wellbore(
 			Well* witsmlWell,
 			const std::string & guid,
-			const std::string & title):resqmlWellboreFeature(nullptr)
+			const std::string & title)
 {
-	if (witsmlWell == nullptr) throw invalid_argument("A wellbore must be associated to a well.");
+	if (witsmlWell == nullptr) {
+		throw invalid_argument("A wellbore must be associated to a well.");
+	}
 
 	gsoapProxy2_2 = soap_new_witsml2__Wellbore(witsmlWell->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setWell(witsmlWell);
 }
@@ -53,14 +55,14 @@ Wellbore::Wellbore(
 		gsoap_eml2_2::witsml2__WellPurpose purposeWellbore,
 		gsoap_eml2_2::witsml2__WellboreType typeWellbore,
 		const bool & achievedTD
-	):resqmlWellboreFeature(nullptr)
+	)
 {
 	if (witsmlWell == nullptr) throw invalid_argument("A wellbore must be associated to a well.");
 
 	gsoapProxy2_2 = soap_new_witsml2__Wellbore(witsmlWell->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setWell(witsmlWell);
 
@@ -89,7 +91,7 @@ gsoap_eml2_2::eml22__DataObjectReference* Wellbore::getWellDor() const
 
 class Well* Wellbore::getWell() const
 {
-	return getEpcDocument()->getResqmlAbstractObjectByUuid<Well>(getWellDor()->Uuid);
+	return getEpcDocument()->getDataObjectByUuid<Well>(getWellDor()->Uuid);
 }
 
 void Wellbore::setWell(Well* witsmlWell)
@@ -121,11 +123,11 @@ void Wellbore::setShape(const witsml2__WellboreShape & shape)
 void Wellbore::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	gsoap_eml2_2::eml22__DataObjectReference* dor = getWellDor();
-	Well* well = epcDoc->getResqmlAbstractObjectByUuid<Well>(dor->Uuid);
+	Well* well = epcDoc->getDataObjectByUuid<Well>(dor->Uuid);
 	/*
 	if (well == nullptr) { // partial transfer
 		getEpcDocument()->createPartial(dor);
-		well = getEpcDocument()->getResqmlAbstractObjectByUuid<well>(dor->Uuid);
+		well = getEpcDocument()->getDataObjectByUuid<well>(dor->Uuid);
 	}
 	*/
 	if (well == nullptr) {
@@ -147,13 +149,6 @@ vector<Relationship> Wellbore::getAllEpcRelationships() const
 	result.push_back(relWell);
 
 	// XML backward relationship
-	if (resqmlWellboreFeature)
-	{
-		Relationship rel(resqmlWellboreFeature->getPartNameInEpcDocument(), "", resqmlWellboreFeature->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
 	for (size_t i = 0; i < trajectorySet.size(); ++i)
 	{
 		Relationship rel(trajectorySet[i]->getPartNameInEpcDocument(), "", trajectorySet[i]->getUuid());
@@ -177,4 +172,3 @@ vector<Relationship> Wellbore::getAllEpcRelationships() const
 
 	return result;
 }
-

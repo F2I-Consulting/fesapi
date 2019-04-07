@@ -39,7 +39,7 @@ ToolErrorModelDictionary::ToolErrorModelDictionary(soap* soapContext,
 	gsoapProxy2_2 = soap_new_witsml2__ToolErrorModelDictionary(soapContext, 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 }
 
 std::string ToolErrorModelDictionary::getToolErrorModelUuid(unsigned long index) const
@@ -65,8 +65,7 @@ void ToolErrorModelDictionary::pushBackToolErrorModel(ToolErrorModel* tem)
 	}
 	tem->toolErrorModelDictionary = this;
 
-	if (updateXml)
-	{
+	if (updateXml) {
 		witsml2__ToolErrorModelDictionary* dict = static_cast<witsml2__ToolErrorModelDictionary*>(gsoapProxy2_2);
 		dict->ToolErrorModel.push_back(static_cast<witsml2__ToolErrorModel*>(tem->getGsoapProxy2_2()));
 	}
@@ -78,7 +77,7 @@ void ToolErrorModelDictionary::importRelationshipSetFromEpc(COMMON_NS::EpcDocume
 
 	updateXml = false;
 	for (size_t index = 0; index < dict->ToolErrorModel.size(); ++index) {
-		ToolErrorModel* tem = epcDoc->getResqmlAbstractObjectByUuid<ToolErrorModel>(getToolErrorModelUuid(index));
+		ToolErrorModel* tem = epcDoc->getDataObjectByUuid<ToolErrorModel>(getToolErrorModelUuid(index));
 		pushBackToolErrorModel(tem);
 		tem->importRelationshipSetFromEpc(epcDoc);
 	}
@@ -93,7 +92,7 @@ vector<Relationship> ToolErrorModelDictionary::getAllEpcRelationships() const
 	vector<string> uuidAlreadyInserted;
 	// XML forward relationship
 	for (size_t index = 0; index < dict->ToolErrorModel.size(); ++index) {
-		ToolErrorModel* tem = getEpcDocument()->getResqmlAbstractObjectByUuid<ToolErrorModel>(getToolErrorModelUuid(index));
+		ToolErrorModel* tem = getEpcDocument()->getDataObjectByUuid<ToolErrorModel>(getToolErrorModelUuid(index));
 		std::vector<ErrorTerm*> ets = tem->getErrorTermSet();
 		for (size_t subIndex = 0; subIndex < ets.size(); ++subIndex) {
 			string errorTermUuid = ets[subIndex]->getUuid();

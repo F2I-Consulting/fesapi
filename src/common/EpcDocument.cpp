@@ -402,8 +402,6 @@ RESQML2_0_1_NS::PointSetRepresentation* EpcDocument::getPointSetRepresentation(c
 const std::vector<COMMON_NS::AbstractHdfProxy*> & EpcDocument::getHdfProxySet() const { return hdfProxySet; }
 unsigned int EpcDocument::getHdfProxyCount() const { return hdfProxySet.size(); }
 
-std::vector<WITSML2_1_NS::Trajectory*> EpcDocument::getWitsmlTrajectorySet() const { return witsmlTrajectorySet; }
-
 void EpcDocument::addWarning(const std::string & warning) { warnings.push_back(warning); }
 const std::vector<std::string> & EpcDocument::getWarnings() const { return warnings; }
 
@@ -624,9 +622,6 @@ void EpcDocument::addGsoapProxy(COMMON_NS::AbstractObject* proxy)
 	else if (xmlTag.compare(PointSetRepresentation::XML_TAG) == 0) {
 		pointSetRepresentationSet.push_back(static_cast<PointSetRepresentation* const>(proxy));
 	}
-	else if (xmlTag.compare(Trajectory::XML_TAG) == 0) {
-		witsmlTrajectorySet.push_back(static_cast<Trajectory* const>(proxy));
-	}
 
 	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {
 		dataObjectSet[proxy->getUuid()] = proxy;
@@ -798,35 +793,35 @@ string EpcDocument::deserialize()
 			setGsoapStream(&iss);
 			WITSML2_0_NS::AbstractObject* wrapper = nullptr;
 			string resqmlContentType = it->second.getContentTypeString().substr(42);
-			if (resqmlContentType.compare(Well::XML_TAG) == 0)
+			if (resqmlContentType.compare(WITSML2_0_NS::Well::XML_TAG) == 0)
 			{
 				gsoap_eml2_1::_witsml2__Well* read = gsoap_eml2_1::soap_new_witsml2__Well(s, 1);
 				soap_read_witsml2__Well(s, read);
-				wrapper = new Well(read);
+				wrapper = new WITSML2_0_NS::Well(read);
 			}
-			else if (resqmlContentType.compare(Wellbore::XML_TAG) == 0)
+			else if (resqmlContentType.compare(WITSML2_0_NS::Wellbore::XML_TAG) == 0)
 			{
 				gsoap_eml2_1::_witsml2__Wellbore* read = gsoap_eml2_1::soap_new_witsml2__Wellbore(s, 1);
 				soap_read_witsml2__Wellbore(s, read);
-				wrapper = new Wellbore(read);
+				wrapper = new WITSML2_0_NS::Wellbore(read);
 			}
-			else if (resqmlContentType.compare(WellCompletion::XML_TAG) == 0)
+			else if (resqmlContentType.compare(WITSML2_0_NS::WellCompletion::XML_TAG) == 0)
 			{
 				gsoap_eml2_1::_witsml2__WellCompletion* read = gsoap_eml2_1::soap_new_witsml2__WellCompletion(s, 1);
 				soap_read_witsml2__WellCompletion(s, read);
-				wrapper = new WellCompletion(read);
+				wrapper = new WITSML2_0_NS::WellCompletion(read);
 			}
-			else if (resqmlContentType.compare(WellboreCompletion::XML_TAG) == 0)
+			else if (resqmlContentType.compare(WITSML2_0_NS::WellboreCompletion::XML_TAG) == 0)
 			{
 				gsoap_eml2_1::_witsml2__WellboreCompletion* read = gsoap_eml2_1::soap_new_witsml2__WellboreCompletion(s, 1);
 				soap_read_witsml2__WellboreCompletion(s, read);
-				wrapper = new WellboreCompletion(read);
+				wrapper = new WITSML2_0_NS::WellboreCompletion(read);
 			}
-			else if (resqmlContentType.compare(Trajectory::XML_TAG) == 0)
+			else if (resqmlContentType.compare(WITSML2_0_NS::Trajectory::XML_TAG) == 0)
 			{
 				gsoap_eml2_1::_witsml2__Trajectory* read = gsoap_eml2_1::soap_new_witsml2__Trajectory(s, 1);
 				soap_read_witsml2__Trajectory(s, read);
-				wrapper = new Trajectory(read);
+				wrapper = new WITSML2_0_NS::Trajectory(read);
 			}
 			
 			if (wrapper != nullptr)
@@ -953,10 +948,6 @@ COMMON_NS::AbstractObject* EpcDocument::getResqml2_0_1WrapperFromGsoapContext(co
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyFeature)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyBoundaryInterpretation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyInterpretation)
-	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Well)
-	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Wellbore)
-	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Trajectory)
-	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Log)
 	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreMarkerSet)
 	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ToolErrorModel)
 	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ToolErrorModelDictionary)
@@ -2454,7 +2445,7 @@ RESQML2_NS::Activity* EpcDocument::createActivity(RESQML2_NS::ActivityTemplate* 
 WITSML2_0_NS::Well* EpcDocument::createWell(const std::string & guid,
 	const std::string & title)
 {
-	Well* result = new Well(getGsoapContext(), guid, title);
+	WITSML2_0_NS::Well* result = new WITSML2_0_NS::Well(getGsoapContext(), guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2465,7 +2456,7 @@ WITSML2_0_NS::Well* EpcDocument::createWell(const std::string & guid,
 	gsoap_eml2_1::eml21__WellStatus statusWell,
 	gsoap_eml2_1::witsml2__WellDirection directionWell)
 {
-	Well* result = new Well(getGsoapContext(), guid, title, operator_, statusWell, directionWell);
+	WITSML2_0_NS::Well* result = new WITSML2_0_NS::Well(getGsoapContext(), guid, title, operator_, statusWell, directionWell);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2548,7 +2539,7 @@ WITSML2_0_NS::Wellbore* EpcDocument::createWellbore(WITSML2_0_NS::Well* witsmlWe
 	const std::string & guid,
 	const std::string & title)
 {
-	Wellbore* result = new Wellbore(witsmlWell, guid, title);
+	WITSML2_0_NS::Wellbore* result = new WITSML2_0_NS::Wellbore(witsmlWell, guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2560,7 +2551,7 @@ WITSML2_0_NS::Wellbore* EpcDocument::createWellbore(WITSML2_0_NS::Well* witsmlWe
 	bool isActive,
 	bool achievedTD)
 {
-	Wellbore* result = new Wellbore(witsmlWell, guid, title, statusWellbore, isActive, achievedTD);
+	WITSML2_0_NS::Wellbore* result = new WITSML2_0_NS::Wellbore(witsmlWell, guid, title, statusWellbore, isActive, achievedTD);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2590,7 +2581,7 @@ WITSML2_0_NS::Trajectory* EpcDocument::createTrajectory(WITSML2_0_NS::Wellbore* 
 	const std::string & title,
 	gsoap_eml2_1::witsml2__ChannelStatus channelStatus)
 {
-	Trajectory* result = new Trajectory(witsmlWellbore, guid, title, channelStatus);
+	WITSML2_0_NS::Trajectory* result = new WITSML2_0_NS::Trajectory(witsmlWellbore, guid, title, channelStatus);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }

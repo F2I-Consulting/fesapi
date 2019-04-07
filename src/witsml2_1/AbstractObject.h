@@ -18,11 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/AbstractObject.h"
+#include "witsml2/AbstractObject.h"
 
 namespace WITSML2_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT AbstractObject : public COMMON_NS::AbstractObject
+	class AbstractObject : public WITSML2_NS::AbstractObject
 	{
 	public:
 
@@ -32,33 +32,22 @@ namespace WITSML2_1_NS
 		~AbstractObject() {}
 
 		/**
-		* Get the XML namespace for the tags for the XML serialization of this instance
-		*/
-		std::string getXmlNamespace() const;
-
-		/**
 		* Get the content type of the instance according to EPC recommendation
 		*/
-		std::string getContentType() const;
-
-		/**
-		* Get part name of this XML top level instance in the EPC document
-		*/
-		std::string getPartNameInEpcDocument() const;
+		DLL_IMPORT_OR_EXPORT std::string getContentType() const;
 
 	protected:
 
 		/**
 		* Constructor for partial transfer
 		*/
-		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Default constructor
 		*/
 		AbstractObject() {}
 
-		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy) : COMMON_NS::AbstractObject(proxy) {}
+		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy) : WITSML2_NS::AbstractObject(proxy) {}
 	};
 }
-

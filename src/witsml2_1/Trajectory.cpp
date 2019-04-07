@@ -39,7 +39,7 @@ Trajectory::Trajectory(Wellbore* witsmlWellbore,
 	gsoapProxy2_2 = soap_new_witsml2__Trajectory(witsmlWellbore->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	static_cast<witsml2__Trajectory*>(gsoapProxy2_2)->GrowingStatus = growingStatus;
 
@@ -53,7 +53,7 @@ gsoap_eml2_2::eml22__DataObjectReference* Trajectory::getWellboreDor() const
 
 class Wellbore* Trajectory::getWellbore() const
 {
-	return getEpcDocument()->getResqmlAbstractObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
+	return getEpcDocument()->getDataObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
 }
 
 void Trajectory::setWellbore(Wellbore* witsmlWellbore)
@@ -110,11 +110,11 @@ witsml2__TrajStationType Trajectory::getTrajStationType(const unsigned int & tra
 void Trajectory::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
 {
 	eml22__DataObjectReference* dor = getWellboreDor();
-	Wellbore* wellbore = epcDoc->getResqmlAbstractObjectByUuid<Wellbore>(dor->Uuid);
+	Wellbore* wellbore = epcDoc->getDataObjectByUuid<Wellbore>(dor->Uuid);
 	/*
 	if (well == nullptr) { // partial transfer
 	getEpcDocument()->createPartial(dor);
-	well = getEpcDocument()->getResqmlAbstractObjectByUuid<well>(dor->Uuid);
+	well = getEpcDocument()->getDataObjectByUuid<well>(dor->Uuid);
 	}
 	*/
 	if (wellbore == nullptr) {

@@ -39,7 +39,7 @@ ErrorTermDictionary::ErrorTermDictionary(soap* soapContext,
 	gsoapProxy2_2 = soap_new_witsml2__ErrorTermDictionary(soapContext, 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 }
 
 std::string ErrorTermDictionary::getErrorTermUuid(unsigned long index) const
@@ -78,7 +78,7 @@ void ErrorTermDictionary::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* e
 
 	updateXml = false;
 	for (size_t index = 0; index < dict->ErrorTerm.size(); ++index) {
-		ErrorTerm* et = epcDoc->getResqmlAbstractObjectByUuid<ErrorTerm>(getErrorTermUuid(index));
+		ErrorTerm* et = epcDoc->getDataObjectByUuid<ErrorTerm>(getErrorTermUuid(index));
 		pushBackErrorTerm(et);
 		et->importRelationshipSetFromEpc(epcDoc);
 	}
@@ -93,7 +93,7 @@ vector<Relationship> ErrorTermDictionary::getAllEpcRelationships() const
 	vector<string> uuidAlreadyInserted;
 	// XML forward relationship
 	for (size_t index = 0; index < dict->ErrorTerm.size(); ++index) {
-		ErrorTerm* et = getEpcDocument()->getResqmlAbstractObjectByUuid<ErrorTerm>(getErrorTermUuid(index));
+		ErrorTerm* et = getEpcDocument()->getDataObjectByUuid<ErrorTerm>(getErrorTermUuid(index));
 		string weightingFunctionUuid = et->getWeightingFunctionUuid();
 		if (std::find(uuidAlreadyInserted.begin(), uuidAlreadyInserted.end(), weightingFunctionUuid) == uuidAlreadyInserted.end()) {
 			Relationship rel(et->getWeightingFunction()->getPartNameInEpcDocument(), "", weightingFunctionUuid);

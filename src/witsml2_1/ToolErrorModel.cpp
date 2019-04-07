@@ -42,7 +42,7 @@ ToolErrorModel::ToolErrorModel(soap* soapContext,
 	static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2)->MisalignmentMode = misalignmentMode;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 }
 
 bool ToolErrorModel::isTopLevelElement() const
@@ -72,7 +72,7 @@ std::vector<ErrorTerm*> ToolErrorModel::getErrorTermSet() const
 	std::vector<ErrorTerm*> result;
 
 	for (size_t index = 0; index < tem->ErrorTermValue.size(); ++index) {
-		result.push_back(epcDocument->getResqmlAbstractObjectByUuid<ErrorTerm>(getErrorTermUuid(index)));
+		result.push_back(epcDocument->getDataObjectByUuid<ErrorTerm>(getErrorTermUuid(index)));
 	}
 
 	return result;
@@ -369,12 +369,12 @@ void ToolErrorModel::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc
 
 	updateXml = false;
 	for (size_t index = 0; index < tem->ErrorTermValue.size(); ++index) {
-		ErrorTerm* et = epcDoc->getResqmlAbstractObjectByUuid<ErrorTerm>(getErrorTermUuid(index));
+		ErrorTerm* et = epcDoc->getDataObjectByUuid<ErrorTerm>(getErrorTermUuid(index));
 		pushBackErrorTerm(et, std::numeric_limits<double>::quiet_NaN(), "");
 	}
 
 	if (tem->Replaces != nullptr) {
-		ToolErrorModel* previousTem = getEpcDocument()->getResqmlAbstractObjectByUuid<ToolErrorModel>(tem->Replaces->Uuid);
+		ToolErrorModel* previousTem = getEpcDocument()->getDataObjectByUuid<ToolErrorModel>(tem->Replaces->Uuid);
 		setReplacedToolErrorModel(previousTem);
 	}
 
@@ -395,7 +395,7 @@ vector<Relationship> ToolErrorModel::getAllEpcRelationships() const
 
 	witsml2__ToolErrorModel* tem = static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2);
 	if (tem->Replaces != nullptr) {
-		ToolErrorModel* previousTem = getEpcDocument()->getResqmlAbstractObjectByUuid<ToolErrorModel>(tem->Replaces->Uuid);
+		ToolErrorModel* previousTem = getEpcDocument()->getDataObjectByUuid<ToolErrorModel>(tem->Replaces->Uuid);
 		Relationship rel(previousTem->getPartNameInEpcDocument(), "", previousTem->getUuid());
 		rel.setDestinationObjectType();
 		result.push_back(rel);

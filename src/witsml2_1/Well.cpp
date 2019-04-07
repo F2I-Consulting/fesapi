@@ -38,7 +38,7 @@ Well::Well(soap* soapContext,
 	gsoapProxy2_2 = soap_new_witsml2__Well(soapContext, 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 }
 
 Well::Well(soap* soapContext,
@@ -51,12 +51,14 @@ Well::Well(soap* soapContext,
 		witsml2__WellDirection directionWell
 	)
 {
-	if (soapContext == nullptr) throw invalid_argument("A soap context must exist.");
+	if (soapContext == nullptr) {
+		throw invalid_argument("A soap context must exist.");
+	}
 
 	gsoapProxy2_2 = soap_new_witsml2__Well(soapContext, 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "", "");
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setOperator(operator_);
 
@@ -77,7 +79,9 @@ Well::Well(soap* soapContext,
 
 void Well::setOperator(const string & operator_) 
 {
-	if (operator_.empty()) throw invalid_argument("You must set a non empty operator.");
+	if (operator_.empty()) {
+		throw invalid_argument("You must set a non empty operator.");
+	}
 
 	witsml2__Well* well = static_cast<witsml2__Well*>(gsoapProxy2_2);
 
@@ -199,4 +203,3 @@ vector<Relationship> Well::getAllEpcRelationships() const
 
 	return result;
 }
-
