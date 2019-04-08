@@ -128,7 +128,9 @@ bool AbstractSession::validateUri(const std::string & uri, bool sendException)
 
 bool AbstractSession::validateDataObjectUri(const std::string & uri, bool sendException)
 {
-	bool result = std::regex_match(uri, std::regex("^eml://(witsml|resqml|prodml|eml)([0-9]{2})/obj_[a-zA-Z0-9]+[(][a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}[)]", std::regex::ECMAScript));
+	bool result = uri.find("resqml20") != std::string::npos
+		? std::regex_match(uri, std::regex("^eml://resqml20/obj_[a-zA-Z0-9]+[(][a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}[)]", std::regex::ECMAScript))
+		: std::regex_match(uri, std::regex("^eml://(witsml|resqml|prodml|eml)([0-9]{2})/[a-zA-Z0-9]+[(][a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}[)]", std::regex::ECMAScript));
 	if (!result) {
 		std::cerr << "The data object URI \"" + uri + "\"  is invalid." << std::endl;
 	}

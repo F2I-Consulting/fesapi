@@ -1277,6 +1277,7 @@ namespace COMMON_NS
 		* It does not work for EpcExternalPartReference content type since this type is related to an external file which must be handled differently.
 		*/
 		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
+		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
 		COMMON_NS::AbstractObject* getWitsml2_1WrapperFromGsoapContext(const std::string & datatype);
 
 		/**

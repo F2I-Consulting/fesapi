@@ -147,20 +147,20 @@ const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 	}
 
 /////////////////////
-/////// WITSML //////
+///// WITSML 2.1 ////
 /////////////////////
-#define GET_WITSML_2_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
-	gsoap_eml2_2::_witsml2__##className* read = gsoap_eml2_2::soap_new_witsml2__##className(s, 1);\
-	gsoap_eml2_2::soap_read_witsml2__##className(s, read);
+#define GET_WITSML_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
+	gsoapNameSpace::_witsml2__##className* read = gsoapNameSpace::soap_new_witsml2__##className(s, 1);\
+	gsoapNameSpace::soap_read_witsml2__##className(s, read);
 
-#define GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
-	GET_WITSML_2_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
-	wrapper = new className(read);
+#define GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
+	GET_WITSML_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
+	wrapper = new classNamespace::className(read);
 
-#define CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
-	(datatype.compare(className::XML_TAG) == 0)\
+#define CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
+	(datatype.compare(classNamespace::className::XML_TAG) == 0)\
 	{\
-		GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
+		GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace);\
 	}
 
 // Create a fesapi partial wrapper based on a content type
@@ -595,7 +595,15 @@ COMMON_NS::AbstractObject* EpcDocument::addOrReplaceGsoapProxy(const std::string
 		wrapper = make_hdf_proxy_from_gsoap_proxy_2_0_1(read, string(), string());
 	}
 	else {
-		wrapper = contentType.find("application/x-resqml+xml;version=2.0;type=obj") != string::npos ? getResqml2_0_1WrapperFromGsoapContext(datatype) : getWitsml2_1WrapperFromGsoapContext(datatype);
+		if (contentType.find("application/x-resqml+xml;version=2.0;type=obj") != string::npos) {
+			wrapper = getResqml2_0_1WrapperFromGsoapContext(datatype);
+		}
+		else if (contentType.find("application/x-witsml+xml;version=2.0;type=") != string::npos) {
+			wrapper = getWitsml2_0WrapperFromGsoapContext(datatype);
+		}
+		else if (contentType.find("application/x-witsml+xml;version=2.1;type=") != string::npos) {
+			wrapper = getWitsml2_1WrapperFromGsoapContext(datatype);
+		}
 	}
 
 	if (wrapper != nullptr) {
@@ -847,38 +855,7 @@ string EpcDocument::deserialize()
 			}
 			istringstream iss(fileStr);
 			setGsoapStream(&iss);
-			WITSML2_0_NS::AbstractObject* wrapper = nullptr;
-			string resqmlContentType = it->second.getContentTypeString().substr(42);
-			if (resqmlContentType.compare(WITSML2_0_NS::Well::XML_TAG) == 0)
-			{
-				gsoap_eml2_1::_witsml2__Well* read = gsoap_eml2_1::soap_new_witsml2__Well(s, 1);
-				soap_read_witsml2__Well(s, read);
-				wrapper = new WITSML2_0_NS::Well(read);
-			}
-			else if (resqmlContentType.compare(WITSML2_0_NS::Wellbore::XML_TAG) == 0)
-			{
-				gsoap_eml2_1::_witsml2__Wellbore* read = gsoap_eml2_1::soap_new_witsml2__Wellbore(s, 1);
-				soap_read_witsml2__Wellbore(s, read);
-				wrapper = new WITSML2_0_NS::Wellbore(read);
-			}
-			else if (resqmlContentType.compare(WITSML2_0_NS::WellCompletion::XML_TAG) == 0)
-			{
-				gsoap_eml2_1::_witsml2__WellCompletion* read = gsoap_eml2_1::soap_new_witsml2__WellCompletion(s, 1);
-				soap_read_witsml2__WellCompletion(s, read);
-				wrapper = new WITSML2_0_NS::WellCompletion(read);
-			}
-			else if (resqmlContentType.compare(WITSML2_0_NS::WellboreCompletion::XML_TAG) == 0)
-			{
-				gsoap_eml2_1::_witsml2__WellboreCompletion* read = gsoap_eml2_1::soap_new_witsml2__WellboreCompletion(s, 1);
-				soap_read_witsml2__WellboreCompletion(s, read);
-				wrapper = new WITSML2_0_NS::WellboreCompletion(read);
-			}
-			else if (resqmlContentType.compare(WITSML2_0_NS::Trajectory::XML_TAG) == 0)
-			{
-				gsoap_eml2_1::_witsml2__Trajectory* read = gsoap_eml2_1::soap_new_witsml2__Trajectory(s, 1);
-				soap_read_witsml2__Trajectory(s, read);
-				wrapper = new WITSML2_0_NS::Trajectory(read);
-			}
+			COMMON_NS::AbstractObject* wrapper = getWitsml2_0WrapperFromGsoapContext(it->second.getContentTypeString().substr(42));
 			
 			if (wrapper != nullptr)
 			{
@@ -901,10 +878,7 @@ string EpcDocument::deserialize()
 			}
 			istringstream iss(fileStr);
 			setGsoapStream(&iss);
-			COMMON_NS::AbstractObject* wrapper = nullptr;
-			string datatype = it->second.getContentTypeString().substr(42);
-
-			wrapper = getWitsml2_1WrapperFromGsoapContext(datatype);
+			COMMON_NS::AbstractObject* wrapper = getWitsml2_1WrapperFromGsoapContext(it->second.getContentTypeString().substr(42));
 
 			if (wrapper != nullptr)
 			{
@@ -1045,16 +1019,29 @@ COMMON_NS::AbstractObject* EpcDocument::getResqml2_0_1WrapperFromGsoapContext(co
 	return wrapper;
 }
 
+COMMON_NS::AbstractObject* EpcDocument::getWitsml2_0WrapperFromGsoapContext(const std::string & datatype)
+{
+	COMMON_NS::AbstractObject* wrapper = nullptr;
+
+	if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Well, gsoap_eml2_1)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, WellCompletion, gsoap_eml2_1)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Wellbore, gsoap_eml2_1)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, WellboreCompletion, gsoap_eml2_1)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Trajectory, gsoap_eml2_1)
+
+		return wrapper;
+}
+
 COMMON_NS::AbstractObject* EpcDocument::getWitsml2_1WrapperFromGsoapContext(const std::string & datatype)
 {
 	COMMON_NS::AbstractObject* wrapper = nullptr;
 
-	if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ToolErrorModel)
-	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ToolErrorModelDictionary)
-	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ErrorTerm)
-	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ErrorTermDictionary)
-	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WeightingFunction)
-	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WeightingFunctionDictionary)
+	if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, ToolErrorModel, gsoap_eml2_2)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, ToolErrorModelDictionary, gsoap_eml2_2)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, ErrorTerm, gsoap_eml2_2)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, ErrorTermDictionary, gsoap_eml2_2)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, WeightingFunction, gsoap_eml2_2)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, WeightingFunctionDictionary, gsoap_eml2_2)
 
 	return wrapper;
 }
