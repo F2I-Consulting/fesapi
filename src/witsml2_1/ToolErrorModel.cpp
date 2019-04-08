@@ -21,6 +21,7 @@ under the License.
 
 #include <stdexcept>
 #include <sstream>
+#include <algorithm>
 
 using namespace std;
 using namespace WITSML2_1_NS;
