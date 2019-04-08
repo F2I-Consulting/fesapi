@@ -60,8 +60,9 @@ WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(WellboreInt
 
 WellboreMarkerFrameRepresentation::~WellboreMarkerFrameRepresentation()
 {
-	for (size_t i = 0; i < markerSet.size(); ++i)
+	for (size_t i = 0; i < markerSet.size(); ++i) {
 		delete markerSet[i];
+	}
 }
 
 WellboreMarker* WellboreMarkerFrameRepresentation::pushBackNewWellboreMarker(const std::string & guid, const std::string & title)
@@ -108,8 +109,9 @@ void WellboreMarkerFrameRepresentation::setStratigraphicOccurrenceInterpretation
 
 void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned int * stratiUnitIndices, const unsigned int & nullValue, StratigraphicOccurrenceInterpretation* stratiOccurenceInterp)
 {
-	if (stratiUnitIndices == nullptr)
+	if (stratiUnitIndices == nullptr) {
 		throw invalid_argument("The strati unit indices cannot be null.");
+	}
 
 	setStratigraphicOccurrenceInterpretation(stratiOccurenceInterp);
 

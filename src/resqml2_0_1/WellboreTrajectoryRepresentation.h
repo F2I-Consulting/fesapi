@@ -20,7 +20,7 @@ under the License.
 
 #include "resqml2/AbstractRepresentation.h"
 
-namespace WITSML1_4_1_1_NS
+namespace WITSML2_1_NS
 {
 	class Trajectory;
 }
@@ -257,7 +257,7 @@ namespace RESQML2_0_1_NS
 	protected:
 
 		// XML forward relationships
-		WITSML1_4_1_1_NS::Trajectory * witsmlTrajectory;
+		WITSML2_1_NS::Trajectory * witsmlTrajectory;
 		
 		// XML backward relationships
 		std::vector<WellboreTrajectoryRepresentation*> childrenTrajSet;

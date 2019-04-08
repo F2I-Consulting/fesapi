@@ -107,6 +107,15 @@ under the License.
 #include "etp/EtpHdfProxy.h"
 #endif
 
+#include "witsml2_1/Well.h"
+#include "witsml2_1/Wellbore.h"
+#include "witsml2_1/Trajectory.h"
+#include "witsml2_1/Log.h"
+#include "witsml2_1/WellboreMarkerSet.h""
+#include "witsml2_1/ToolErrorModelDictionary.h""
+#include "witsml2_1/ErrorTermDictionary.h"
+#include "witsml2_1/WeightingFunction.h"
+
 #include "tools/GuidTools.h"
 
 using namespace std;
@@ -115,9 +124,13 @@ using namespace gsoap_resqml2_0_1;
 using namespace COMMON_NS;
 using namespace RESQML2_0_1_NS;
 using namespace WITSML2_0_NS;
+using namespace WITSML2_1_NS;
 
 const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 
+/////////////////////
+/////// RESQML //////
+/////////////////////
 #define GET_RESQML_2_0_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
 	gsoap_resqml2_0_1::_resqml2__##className* read = gsoap_resqml2_0_1::soap_new_resqml2__obj_USCORE##className(s, 1);\
 	soap_read_resqml2__obj_USCORE##className(s, read);
@@ -133,7 +146,24 @@ const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 		GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
 	}
 
-// Create a fesapi partial wrappe based on a content type
+/////////////////////
+/////// WITSML //////
+/////////////////////
+#define GET_WITSML_2_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
+	gsoap_eml2_2::_witsml2__##className* read = gsoap_eml2_2::soap_new_witsml2__##className(s, 1);\
+	gsoap_eml2_2::soap_read_witsml2__##className(s, read);
+
+#define GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
+	GET_WITSML_2_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
+	wrapper = new className(read);
+
+#define CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
+	(datatype.compare(className::XML_TAG) == 0)\
+	{\
+		GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
+	}
+
+// Create a fesapi partial wrapper based on a content type
 #define CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(className)\
 	(resqmlContentType.compare(className::XML_TAG) == 0)\
 	{\
@@ -556,7 +586,8 @@ COMMON_NS::AbstractObject* EpcDocument::addOrReplaceGsoapProxy(const std::string
 	setGsoapStream(&iss);
 	COMMON_NS::AbstractObject* wrapper = nullptr;
 
-	const size_t lastEqualCharPos = contentType.find_last_of('_'); // The XML tag is after "obj_"
+	size_t lastEqualCharPos = contentType.find_last_of('_'); // The XML tag is after "obj_"
+	if (lastEqualCharPos == string::npos) { lastEqualCharPos = contentType.find_last_of('='); }
 	const string datatype = contentType.substr(lastEqualCharPos+1);
 
 	if (datatype.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0) {
@@ -564,7 +595,7 @@ COMMON_NS::AbstractObject* EpcDocument::addOrReplaceGsoapProxy(const std::string
 		wrapper = make_hdf_proxy_from_gsoap_proxy_2_0_1(read, string(), string());
 	}
 	else {
-		wrapper = getResqml2_0_1WrapperFromGsoapContext(datatype);
+		wrapper = contentType.find("application/x-resqml+xml;version=2.0;type=obj") != string::npos ? getResqml2_0_1WrapperFromGsoapContext(datatype) : getWitsml2_1WrapperFromGsoapContext(datatype);
 	}
 
 	if (wrapper != nullptr) {
@@ -671,6 +702,7 @@ void EpcDocument::addGsoapProxy(COMMON_NS::AbstractObject* proxy)
 	else if (xmlTag.compare(PointSetRepresentation::XML_TAG) == 0) {
 		pointSetRepresentationSet.push_back(static_cast<PointSetRepresentation* const>(proxy));
 	}
+
 	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {
 		dataObjectSet[proxy->getUuid()] = proxy;
 	}
@@ -717,7 +749,7 @@ void EpcDocument::serialize(bool useZip64)
 	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
 #endif
 	{
-		if (!it->second->isPartial()) {
+		if (!it->second->isPartial() && it->second->isTopLevelElement()) {
 			string str = it->second->serializeIntoString();
 
 			epc::FilePart* fp = package->createPart(str, it->second->getPartNameInEpcDocument());
@@ -807,40 +839,6 @@ string EpcDocument::deserialize()
 				warnings.push_back("The content type " + resqmlContentType + " could not be wrapped by fesapi. The related instance will be ignored.");
 			}
 		}
-		else if (it->second.getContentTypeString().find("application/x-eml+xml;version=2.1;type=") == 0)
-		{
-			const string fileStr = package->extractFile(it->second.getExtensionOrPartName().substr(1));
-			if (fileStr.empty()) {
-				throw invalid_argument("The EPC document contains the file " + it->second.getExtensionOrPartName().substr(1) + " in its contentType file which cannot be found or cannot be unzipped or is empty.");
-			}
-			istringstream iss(fileStr);
-			setGsoapStream(&iss);
-			COMMON_NS::AbstractObject* wrapper = nullptr;
-			const size_t lastEqualCharPos = it->second.getContentTypeString().find_last_of('=');
-			const string resqmlContentType = it->second.getContentTypeString().substr(lastEqualCharPos + 1);
-			if (resqmlContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
-			{
-				throw std::invalid_argument("Not supported yet");
-			}
-			else {
-				wrapper = getResqml2_0_1WrapperFromGsoapContext(resqmlContentType);
-			}
-
-			if (wrapper != nullptr) {
-				if (s->error != SOAP_OK) {
-					ostringstream oss;
-					soap_stream_fault(s, oss);
-					result += oss.str() + " IN " + it->second.getExtensionOrPartName() + "\n";
-					delete wrapper;
-				}
-				else {
-					addFesapiWrapperAndDeleteItIfException(wrapper);
-				}
-			}
-			else {
-				warnings.push_back("The content type " + resqmlContentType + " could not be wrapped by fesapi. The related instance will be ignored.");
-			}
-		}
 		else if (it->second.getContentTypeString().find("application/x-witsml+xml;version=2.0;type=") == 0)
 		{
 			string fileStr = package->extractFile(it->second.getExtensionOrPartName().substr(1));
@@ -851,35 +849,35 @@ string EpcDocument::deserialize()
 			setGsoapStream(&iss);
 			WITSML2_0_NS::AbstractObject* wrapper = nullptr;
 			string resqmlContentType = it->second.getContentTypeString().substr(42);
-			if (resqmlContentType.compare(Well::XML_TAG) == 0)
+			if (resqmlContentType.compare(WITSML2_0_NS::Well::XML_TAG) == 0)
 			{
 				gsoap_eml2_1::_witsml2__Well* read = gsoap_eml2_1::soap_new_witsml2__Well(s, 1);
 				soap_read_witsml2__Well(s, read);
-				wrapper = new Well(read);
+				wrapper = new WITSML2_0_NS::Well(read);
 			}
-			else if (resqmlContentType.compare(Wellbore::XML_TAG) == 0)
+			else if (resqmlContentType.compare(WITSML2_0_NS::Wellbore::XML_TAG) == 0)
 			{
 				gsoap_eml2_1::_witsml2__Wellbore* read = gsoap_eml2_1::soap_new_witsml2__Wellbore(s, 1);
 				soap_read_witsml2__Wellbore(s, read);
-				wrapper = new Wellbore(read);
+				wrapper = new WITSML2_0_NS::Wellbore(read);
 			}
-			else if (resqmlContentType.compare(WellCompletion::XML_TAG) == 0)
+			else if (resqmlContentType.compare(WITSML2_0_NS::WellCompletion::XML_TAG) == 0)
 			{
 				gsoap_eml2_1::_witsml2__WellCompletion* read = gsoap_eml2_1::soap_new_witsml2__WellCompletion(s, 1);
 				soap_read_witsml2__WellCompletion(s, read);
-				wrapper = new WellCompletion(read);
+				wrapper = new WITSML2_0_NS::WellCompletion(read);
 			}
-			else if (resqmlContentType.compare(WellboreCompletion::XML_TAG) == 0)
+			else if (resqmlContentType.compare(WITSML2_0_NS::WellboreCompletion::XML_TAG) == 0)
 			{
 				gsoap_eml2_1::_witsml2__WellboreCompletion* read = gsoap_eml2_1::soap_new_witsml2__WellboreCompletion(s, 1);
 				soap_read_witsml2__WellboreCompletion(s, read);
-				wrapper = new WellboreCompletion(read);
+				wrapper = new WITSML2_0_NS::WellboreCompletion(read);
 			}
-			else if (resqmlContentType.compare(Trajectory::XML_TAG) == 0)
+			else if (resqmlContentType.compare(WITSML2_0_NS::Trajectory::XML_TAG) == 0)
 			{
 				gsoap_eml2_1::_witsml2__Trajectory* read = gsoap_eml2_1::soap_new_witsml2__Trajectory(s, 1);
 				soap_read_witsml2__Trajectory(s, read);
-				wrapper = new Trajectory(read);
+				wrapper = new WITSML2_0_NS::Trajectory(read);
 			}
 			
 			if (wrapper != nullptr)
@@ -895,7 +893,35 @@ string EpcDocument::deserialize()
 				}
 			}
 		}
+		else if (it->second.getContentTypeString().find("application/x-witsml+xml;version=2.1;type=") == 0)
+		{
+			string fileStr = package->extractFile(it->second.getExtensionOrPartName().substr(1));
+			if (fileStr.empty()) {
+				throw invalid_argument("The EPC document contains the file " + it->second.getExtensionOrPartName().substr(1) + " in its contentType file which cannot be found or cannot be unzipped or is empty.");
+			}
+			istringstream iss(fileStr);
+			setGsoapStream(&iss);
+			COMMON_NS::AbstractObject* wrapper = nullptr;
+			string datatype = it->second.getContentTypeString().substr(42);
+
+			wrapper = getWitsml2_1WrapperFromGsoapContext(datatype);
+
+			if (wrapper != nullptr)
+			{
+				if (s->error != SOAP_OK) {
+					ostringstream oss;
+					soap_stream_fault(s, oss);
+					result += oss.str() + " IN " + it->second.getExtensionOrPartName() + "\n";
+					delete wrapper;
+				}
+				else {
+					addFesapiWrapperAndDeleteItIfException(wrapper);
+				}
+			}
+		}
 	}
+
+	deserializeContentOfDictionaries();
 
 	updateAllRelationships();
 
@@ -1015,6 +1041,20 @@ COMMON_NS::AbstractObject* EpcDocument::getResqml2_0_1WrapperFromGsoapContext(co
 	{
 		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
 	}
+
+	return wrapper;
+}
+
+COMMON_NS::AbstractObject* EpcDocument::getWitsml2_1WrapperFromGsoapContext(const std::string & datatype)
+{
+	COMMON_NS::AbstractObject* wrapper = nullptr;
+
+	if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ToolErrorModel)
+	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ToolErrorModelDictionary)
+	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ErrorTerm)
+	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ErrorTermDictionary)
+	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WeightingFunction)
+	else if CHECK_AND_GET_WITSML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WeightingFunctionDictionary)
 
 	return wrapper;
 }
@@ -1412,6 +1452,33 @@ string EpcDocument::getName() const
 	return nameSuffixed.substr(0, nameSuffixed.find_last_of("."));
 }
 
+void EpcDocument::deserializeContentOfDictionaries()
+{
+	auto etDictionaries = getDataObjects<ErrorTermDictionary>();
+	for (ErrorTermDictionary* etDictionary : etDictionaries) {
+		auto errorTerms = etDictionary->getErrorTerms();
+		for (ErrorTerm* errorTerm : errorTerms) {
+			addFesapiWrapperAndDeleteItIfException(errorTerm);
+		}
+	}
+
+	auto temDictionaries = getDataObjects<ToolErrorModelDictionary>();
+	for (ToolErrorModelDictionary* temDictionary : temDictionaries) {
+		auto tems = temDictionary->getToolErrorModels();
+		for (ToolErrorModel* tem : tems) {
+			addFesapiWrapperAndDeleteItIfException(tem);
+		}
+	}
+
+	auto wfDictionaries = getDataObjects<WeightingFunctionDictionary>();
+	for (WeightingFunctionDictionary* wfDictionary : wfDictionaries) {
+		auto wefs = wfDictionary->getWeightingFunctions();
+		for (WeightingFunction* wef : wefs) {
+			addFesapiWrapperAndDeleteItIfException(wef);
+		}
+	}
+}
+
 void EpcDocument::updateAllRelationships()
 {
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
@@ -1530,6 +1597,18 @@ COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_eml2_1::eml21__DataO
 		addFesapiWrapperAndDeleteItIfException(result);
 		return result;
 	}
+
+	throw invalid_argument("The content type " + resqmlContentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
+}
+
+COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_eml2_2::eml22__DataObjectReference* dor)
+{
+	const size_t lastEqualCharPos = dor->ContentType.find_last_of('='); // The XML tag is after "type="
+	const string resqmlContentType = dor->ContentType.substr(lastEqualCharPos + 1);
+
+	if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::ToolErrorModel)
+	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::ErrorTerm)
+	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::WeightingFunction)
 
 	throw invalid_argument("The content type " + resqmlContentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
 }
@@ -2492,7 +2571,7 @@ RESQML2_NS::Activity* EpcDocument::createActivity(RESQML2_NS::ActivityTemplate* 
 WITSML2_0_NS::Well* EpcDocument::createWell(const std::string & guid,
 	const std::string & title)
 {
-	Well* result = new Well(getGsoapContext(), guid, title);
+	WITSML2_0_NS::Well* result = new WITSML2_0_NS::Well(getGsoapContext(), guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2503,7 +2582,74 @@ WITSML2_0_NS::Well* EpcDocument::createWell(const std::string & guid,
 	gsoap_eml2_1::eml21__WellStatus statusWell,
 	gsoap_eml2_1::witsml2__WellDirection directionWell)
 {
-	Well* result = new Well(getGsoapContext(), guid, title, operator_, statusWell, directionWell);
+	WITSML2_0_NS::Well* result = new WITSML2_0_NS::Well(getGsoapContext(), guid, title, operator_, statusWell, directionWell);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_1_NS::ToolErrorModel* EpcDocument::createPartialToolErrorModel(
+	const std::string & guid,
+	const std::string & title)
+{
+	return createPartial<WITSML2_1_NS::ToolErrorModel>(guid, title);;
+}
+
+WITSML2_1_NS::ToolErrorModel* EpcDocument::createToolErrorModel(
+	const std::string & guid,
+	const std::string & title,
+	gsoap_eml2_2::witsml2__MisalignmentMode misalignmentMode)
+{
+	ToolErrorModel* result = new ToolErrorModel(getGsoapContext(), guid, title, misalignmentMode);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_1_NS::ToolErrorModelDictionary* EpcDocument::createToolErrorModelDictionary(
+	const std::string & guid,
+	const std::string & title)
+{
+	ToolErrorModelDictionary* result = new ToolErrorModelDictionary(getGsoapContext(), guid, title);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_1_NS::ErrorTerm* EpcDocument::createErrorTerm(
+	const std::string & guid,
+	const std::string & title,
+	gsoap_eml2_2::witsml2__ErrorPropagationMode propagationMode,
+	WeightingFunction* weightingFunction)
+{
+	ErrorTerm* result = new ErrorTerm(getGsoapContext(), guid, title, propagationMode, weightingFunction);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_1_NS::ErrorTermDictionary* EpcDocument::createErrorTermDictionary(
+	const std::string & guid,
+	const std::string & title)
+{
+	ErrorTermDictionary* result = new ErrorTermDictionary(getGsoapContext(), guid, title);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_1_NS::WeightingFunction* EpcDocument::createWeightingFunction(
+	const std::string & guid,
+	const std::string & title,
+	const std::string & depthFormula,
+	const std::string & inclinationFormula,
+	const std::string & azimuthFormula)
+{
+	WeightingFunction* result = new WeightingFunction(getGsoapContext(), guid, title, depthFormula, inclinationFormula, azimuthFormula);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_1_NS::WeightingFunctionDictionary* EpcDocument::createWeightingFunctionDictionary(
+	const std::string & guid,
+	const std::string & title)
+{
+	WeightingFunctionDictionary* result = new WeightingFunctionDictionary(getGsoapContext(), guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2519,7 +2665,7 @@ WITSML2_0_NS::Wellbore* EpcDocument::createWellbore(WITSML2_0_NS::Well* witsmlWe
 	const std::string & guid,
 	const std::string & title)
 {
-	Wellbore* result = new Wellbore(witsmlWell, guid, title);
+	WITSML2_0_NS::Wellbore* result = new WITSML2_0_NS::Wellbore(witsmlWell, guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2531,7 +2677,7 @@ WITSML2_0_NS::Wellbore* EpcDocument::createWellbore(WITSML2_0_NS::Well* witsmlWe
 	bool isActive,
 	bool achievedTD)
 {
-	Wellbore* result = new Wellbore(witsmlWell, guid, title, statusWellbore, isActive, achievedTD);
+	WITSML2_0_NS::Wellbore* result = new WITSML2_0_NS::Wellbore(witsmlWell, guid, title, statusWellbore, isActive, achievedTD);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2561,7 +2707,7 @@ WITSML2_0_NS::Trajectory* EpcDocument::createTrajectory(WITSML2_0_NS::Wellbore* 
 	const std::string & title,
 	gsoap_eml2_1::witsml2__ChannelStatus channelStatus)
 {
-	Trajectory* result = new Trajectory(witsmlWellbore, guid, title, channelStatus);
+	WITSML2_0_NS::Trajectory* result = new WITSML2_0_NS::Trajectory(witsmlWellbore, guid, title, channelStatus);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2611,4 +2757,3 @@ gsoap_eml2_1::_eml21__EpcExternalPartReference* EpcDocument::getEpcExternalPartR
 	gsoap_eml2_1::soap_read_eml21__EpcExternalPartReference(s, read);
 	return read;
 }
-
