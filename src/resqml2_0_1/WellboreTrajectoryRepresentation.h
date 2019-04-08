@@ -38,8 +38,7 @@ namespace RESQML2_0_1_NS
 		* Only to be used in partial transfer context
 		*/
 		WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			AbstractRepresentation(partialObject),
-			witsmlTrajectory(nullptr) {}
+			AbstractRepresentation(partialObject) {}
 
 
 		/**
@@ -59,8 +58,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::_resqml2__WellboreTrajectoryRepresentation* fromGsoap): AbstractRepresentation(fromGsoap),
-				witsmlTrajectory(nullptr) {}
+		WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::_resqml2__WellboreTrajectoryRepresentation* fromGsoap): AbstractRepresentation(fromGsoap) {}
 
 		~WellboreTrajectoryRepresentation() {}
 
@@ -235,9 +233,6 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT bool hasGeometry() const;
 
-		void setWitsmlTrajectory(WITSML1_4_1_1_NS::Trajectory * witsmlTraj);
-		WITSML1_4_1_1_NS::Trajectory * getWitsmlTrajectory() {return witsmlTrajectory;}
-
 		std::vector<epc::Relationship> getAllSourceRelationships() const;
 		std::vector<epc::Relationship> getAllTargetRelationships() const;
 
@@ -254,11 +249,7 @@ namespace RESQML2_0_1_NS
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getDeviationSurveyDor() const;
 		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
 
-	protected:
-
-		// XML forward relationships
-		WITSML2_1_NS::Trajectory * witsmlTrajectory;
-		
+	protected:		
 		// XML backward relationships
 		std::vector<WellboreTrajectoryRepresentation*> childrenTrajSet;
 		std::vector<class WellboreFrameRepresentation*> wellboreFrameRepresentationSet;

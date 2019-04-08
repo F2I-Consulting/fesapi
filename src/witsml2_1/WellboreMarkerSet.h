@@ -24,7 +24,7 @@ under the License.
 
 namespace WITSML2_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT WellboreMarkerSet : public WITSML2_1_NS::AbstractObject
+	class WellboreMarkerSet : public WITSML2_1_NS::AbstractObject
 	{
 	public:
 		/**
@@ -49,18 +49,14 @@ namespace WITSML2_1_NS
 		~WellboreMarkerSet() {}
 
 		gsoap_eml2_2::eml22__DataObjectReference* getWellboreDor() const;
-		class Wellbore* getWellbore() const;
-		void setWellbore(class Wellbore* witsmlWellbore);
+		DLL_IMPORT_OR_EXPORT class Wellbore* getWellbore() const;
+		DLL_IMPORT_OR_EXPORT void setWellbore(class Wellbore* witsmlWellbore);
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
+		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllSourceRelationships() const;
+		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllTargetRelationships() const;
+		DLL_IMPORT_OR_EXPORT void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc);
 
-		/**
-		* Resolve all relationships of the object in an epc document.
-		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 	};
 }
-

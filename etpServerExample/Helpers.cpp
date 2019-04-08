@@ -27,7 +27,7 @@ COMMON_NS::AbstractObject* Helpers::getObjectFromUri(const COMMON_NS::EpcDocumen
 	}
 
 	std::vector<std::string> tokens = tokenize(uri.substr(6), '/');
-	if (tokens[0] != "resqml20" && tokens[0] != "eml20") {
+	if (tokens[0] != "resqml20" && tokens[0] != "eml20" && tokens[0] != "witsml21") {
 		Energistics::Etp::v12::Protocol::Core::ProtocolException error;
 		error.m_errorCode = 2;
 		error.m_errorMessage = "The URI " + uri + "  uses some dataspaces or witsml or prodml. This agent does not support dataspace.";

@@ -36,7 +36,8 @@ Energistics::Etp::v12::Datatypes::Object::Resource ETP_NS::EtpHelpers::buildEtpR
 	result.m_contentType = obj->getContentType();
 	// TODO : change the xml namespace to be the same as the etp one
 	std::string etpNs = obj->getXmlNamespace();
-	if (etpNs[etpNs.size() - 1] != '0') etpNs += '0';
+	if (etpNs == "resqml2") { etpNs += '0'; }
+	else if (etpNs == "witsml2") { etpNs += '1'; }
 	// END TODO
 	result.m_uri = "eml://" + etpNs + "/obj_" + obj->getXmlTag() + "(" + obj->getUuid() + ")";
 	result.m_name = obj->getTitle();

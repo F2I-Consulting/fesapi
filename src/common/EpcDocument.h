@@ -640,6 +640,11 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT std::string getName() const;
 
 		/**
+		* Deserialize the content of dictionaries contained in this EPC document
+		*/
+		void deserializeContentOfDictionaries();
+
+		/**
 		* Try to resolve in memory all the relationshsips which are serialized into Resqml objects of the EPC document
 		*/
 		void updateAllRelationships();
@@ -659,6 +664,7 @@ namespace COMMON_NS
 		*/
 		COMMON_NS::AbstractObject* createPartial(gsoap_resqml2_0_1::eml20__DataObjectReference* dor);
 		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_1::eml21__DataObjectReference* dor);
+		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_2::eml22__DataObjectReference* dor);
 
 		/**
 		* Create a partial object i.e. a data object reference (DOR)
@@ -1271,6 +1277,7 @@ namespace COMMON_NS
 		* It does not work for EpcExternalPartReference content type since this type is related to an external file which must be handled differently.
 		*/
 		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
+		COMMON_NS::AbstractObject* getWitsml2_1WrapperFromGsoapContext(const std::string & datatype);
 
 		/**
 		* Read the Gsoap proxy from the stream associated to the current gsoap context which must contains an EpcExternalPartReference xml document.

@@ -22,10 +22,10 @@ under the License.
 using namespace ETP_NS;
 
 SslClientSession::SslClientSession(boost::asio::io_context& ioc, boost::asio::ssl::context& ctx,
-	const std::string & host, const std::string & port, const std::string & target,
+	const std::string & host, const std::string & port, const std::string & target, const std::string & authorization,
 	const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 	const std::vector<std::string>& supportedObjects)
-	: AbstractClientSession<SslClientSession>(ioc, host, port, target,
+	: AbstractClientSession<SslClientSession>(ioc, host, port, target, authorization,
 		requestedProtocols, supportedObjects),
 	ws_(ioc, ctx)
 {

@@ -73,7 +73,7 @@ void WellboreMarkerSet::setWellbore(Wellbore* witsmlWellbore)
 	}
 }
 
-void WellboreMarkerSet::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void WellboreMarkerSet::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	gsoap_eml2_2::eml22__DataObjectReference* dor = getWellboreDor();
 	Wellbore* wellbore = epcDoc->getDataObjectByUuid<Wellbore>(dor->Uuid);
@@ -91,7 +91,12 @@ void WellboreMarkerSet::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epc
 	updateXml = true;
 }
 
-vector<Relationship> WellboreMarkerSet::getAllEpcRelationships() const
+DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> WellboreMarkerSet::getAllSourceRelationships() const
+{
+	return vector<Relationship>();
+}
+
+DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> WellboreMarkerSet::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 
@@ -103,4 +108,3 @@ vector<Relationship> WellboreMarkerSet::getAllEpcRelationships() const
 
 	return result;
 }
-

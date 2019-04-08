@@ -27,10 +27,10 @@ under the License.
 using namespace std;
 
 MyOwnEtpSslClientSession::MyOwnEtpSslClientSession(boost::asio::io_context& ioc, boost::asio::ssl::context& ctx,
-	const std::string & host, const std::string & port, const std::string & target,
+	const std::string & host, const std::string & port, const std::string & target, const std::string & authorization,
 	const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 	const std::vector<std::string>& supportedObjects)
-	: ETP_NS::SslClientSession(ioc, ctx, host, port, target,
+	: ETP_NS::SslClientSession(ioc, ctx, host, port, target, authorization,
 		requestedProtocols, supportedObjects)
 {
 	setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(this));

@@ -38,6 +38,10 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
+	std::cout << "Give your authorization to pass to the server (or hit enter if no authorization)" << std::endl;
+	std::string authorization;
+	std::getline(std::cin, authorization);
+
 	boost::asio::io_context ioc;
 
 	Energistics::Etp::v12::Datatypes::Version protocolVersion;
@@ -88,9 +92,9 @@ int main(int argc, char **argv)
 		// This holds the root certificate used for verification
 		load_root_certificates(ctx);
 
-		auto clientSession = std::make_shared<MyOwnEtpSslClientSession>(ioc, ctx, argv[1], argv[2], argc < 4 ? "/" : argv[3], requestedProtocols, supportedObjects);
+		auto clientSession = std::make_shared<MyOwnEtpSslClientSession>(ioc, ctx, argv[1], argv[2], argc < 4 ? "/" : argv[3], authorization, requestedProtocols, supportedObjects);
 #else
-		auto clientSession = std::make_shared<MyOwnEtpPlainClientSession>(ioc, argv[1], argv[2], argc < 4 ? "/" : argv[3], requestedProtocols, supportedObjects);
+		auto clientSession = std::make_shared<MyOwnEtpPlainClientSession>(ioc, argv[1], argv[2], argc < 4 ? "/" : argv[3], authorization, requestedProtocols, supportedObjects);
 #endif
 	clientSession->run();
 	

@@ -84,7 +84,38 @@ void ErrorTerm::setWeightingFunction(WeightingFunction* weightingFunction)
 	}
 }
 
-vector<Relationship> ErrorTerm::getAllEpcRelationships() const
+void ErrorTerm::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
+{
+	WeightingFunction* weightingFunction = epcDoc->getDataObjectByUuid<WeightingFunction>(getWeightingFunctionUuid());
+
+	updateXml = false;
+	setWeightingFunction(weightingFunction);
+	updateXml = true;
+}
+
+DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ErrorTerm::getAllSourceRelationships() const
+{
+	witsml2__ErrorTerm* et = static_cast<witsml2__ErrorTerm*>(gsoapProxy2_2);
+	vector<Relationship> result;
+
+	// XML backward relationship
+	for (size_t i = 0; i < toolErrorModelSet.size(); ++i)
+	{
+		Relationship relTem(toolErrorModelSet[i]->getPartNameInEpcDocument(), "", toolErrorModelSet[i]->getUuid());
+		relTem.setSourceObjectType();
+		result.push_back(relTem);
+	}
+
+	if (errorTermDictionary != nullptr) {
+		Relationship rel(errorTermDictionary->getPartNameInEpcDocument(), "", errorTermDictionary->getUuid());
+		rel.setSourceObjectType();
+		result.push_back(rel);
+	}
+
+	return result;
+}
+
+DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ErrorTerm::getAllTargetRelationships() const
 {
 	witsml2__ErrorTerm* et = static_cast<witsml2__ErrorTerm*>(gsoapProxy2_2);
 	vector<Relationship> result;
@@ -95,22 +126,5 @@ vector<Relationship> ErrorTerm::getAllEpcRelationships() const
 	rel.setDestinationObjectType();
 	result.push_back(rel);
 
-	// XML backward relationship
-	for (size_t i = 0; i < toolErrorModelSet.size(); ++i)
-	{
-		Relationship relTem(toolErrorModelSet[i]->getPartNameInEpcDocument(), "", toolErrorModelSet[i]->getUuid());
-		relTem.setSourceObjectType();
-		result.push_back(relTem);
-	}
-
 	return result;
-}
-
-void ErrorTerm::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
-{
-	WeightingFunction* weightingFunction = epcDoc->getDataObjectByUuid<WeightingFunction>(getWeightingFunctionUuid());
-
-	updateXml = false;
-	setWeightingFunction(weightingFunction);
-	updateXml = true;
 }

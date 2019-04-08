@@ -69,19 +69,31 @@ void WeightingFunction::pushBackSource(const std::string & source)
 	}
 }
 
-vector<Relationship> WeightingFunction::getAllEpcRelationships() const
+void WeightingFunction::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc) {}
+
+DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> WeightingFunction::getAllSourceRelationships() const
 {
 	vector<Relationship> result;
 
 	// XML backward relationship
-	for (size_t i = 0; i < errorTermSet.size(); ++i)
-	{
+	for (size_t i = 0; i < errorTermSet.size(); ++i) {
 		Relationship rel(errorTermSet[i]->getPartNameInEpcDocument(), "", errorTermSet[i]->getUuid());
 		rel.setSourceObjectType();
 		result.push_back(rel);
 	}
 
+	if (weightingFunctionDictionary != nullptr) {
+		Relationship rel(weightingFunctionDictionary->getPartNameInEpcDocument(), "", weightingFunctionDictionary->getUuid());
+		rel.setSourceObjectType();
+		result.push_back(rel);
+	}
+
 	return result;
+}
+
+DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> WeightingFunction::getAllTargetRelationships() const
+{
+	return vector<Relationship>();
 }
 
 void WeightingFunction::setSingularityNorthFormula(const std::string & singularityNorthFormula)

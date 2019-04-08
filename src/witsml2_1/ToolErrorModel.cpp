@@ -113,19 +113,6 @@ void ToolErrorModel::setApplication(const std::string & application)
 	tem->Application->assign(application);
 }
 
-void ToolErrorModel::setNote(const std::string & note)
-{
-	witsml2__ToolErrorModel* tem = static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2);
-	if (note.empty()) {
-		throw invalid_argument("Cannot set an empty string");
-	}
-
-	if (tem->Note == nullptr) {
-		tem->Note = soap_new_std__string(gsoapProxy2_2->soap, 1);
-	}
-	tem->Note->assign(note);
-}
-
 void ToolErrorModel::setSource(const std::string & source)
 {
 	witsml2__ToolErrorModel* tem = static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2);
@@ -362,8 +349,7 @@ void ToolErrorModel::pushBackStationaryGyro(gsoap_eml2_2::witsml2__GyroAxisCombi
 	gyro->Range->Uom = gsoap_eml2_2::soap_eml22__PlaneAngleUom2s(gsoapProxy2_2->soap, rangeUom);
 }
 
-
-void ToolErrorModel::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void ToolErrorModel::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	witsml2__ToolErrorModel* tem = static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2);
 
@@ -375,13 +361,39 @@ void ToolErrorModel::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc
 
 	if (tem->Replaces != nullptr) {
 		ToolErrorModel* previousTem = getEpcDocument()->getDataObjectByUuid<ToolErrorModel>(tem->Replaces->Uuid);
+		if (previousTem == nullptr) { // partial transfer
+			getEpcDocument()->createPartial(tem->Replaces);
+			previousTem = getEpcDocument()->getDataObjectByUuid<ToolErrorModel>(tem->Replaces->Uuid);
+		}
+		if (previousTem == nullptr) {
+			throw invalid_argument("The DOR looks invalid.");
+		}
 		setReplacedToolErrorModel(previousTem);
 	}
-
 	updateXml = true;
 }
 
-vector<Relationship> ToolErrorModel::getAllEpcRelationships() const
+DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ToolErrorModel::getAllSourceRelationships() const
+{
+	vector<Relationship> result;
+
+	// XML backward relationship
+	if (nextVersionToolErrorModel != nullptr) {
+		Relationship rel(nextVersionToolErrorModel->getPartNameInEpcDocument(), "", nextVersionToolErrorModel->getUuid());
+		rel.setSourceObjectType();
+		result.push_back(rel);
+	}
+
+	if (toolErrorModelDictionary != nullptr) {
+		Relationship rel(toolErrorModelDictionary->getPartNameInEpcDocument(), "", toolErrorModelDictionary->getUuid());
+		rel.setSourceObjectType();
+		result.push_back(rel);
+	}
+
+	return result;
+}
+
+DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ToolErrorModel::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 
@@ -398,13 +410,6 @@ vector<Relationship> ToolErrorModel::getAllEpcRelationships() const
 		ToolErrorModel* previousTem = getEpcDocument()->getDataObjectByUuid<ToolErrorModel>(tem->Replaces->Uuid);
 		Relationship rel(previousTem->getPartNameInEpcDocument(), "", previousTem->getUuid());
 		rel.setDestinationObjectType();
-		result.push_back(rel);
-	}
-
-	// XML backward relationship
-	if (nextVersionToolErrorModel != nullptr) {
-		Relationship rel(nextVersionToolErrorModel->getPartNameInEpcDocument(), "", nextVersionToolErrorModel->getUuid());
-		rel.setSourceObjectType();
 		result.push_back(rel);
 	}
 

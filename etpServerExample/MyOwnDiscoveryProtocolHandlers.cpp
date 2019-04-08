@@ -50,11 +50,34 @@ void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlash(COMMON_NS::EpcDocu
 		else {
 			Energistics::Etp::v12::Protocol::Discovery::GetTreeResources nextGr = gr;
 			--nextGr.m_context.m_depth;
+			
+			auto objectsGroupedByContentType = epcDoc.getDataObjectsGroupedByContentType();
+			int32_t contentCount = 0;
+			for (auto it = objectsGroupedByContentType.begin(); it != objectsGroupedByContentType.end(); ++it) {
+				if (it->first.find("x-resqml+xml;version=2.0") != std::string::npos) {
+					++contentCount;
+				}
+			}
+			if (contentCount > 0) {
+				nextGr.m_context.m_uri = "eml://resqml20";
+				on_GetEmlColonSlashSlashResqml20(epcDoc, nextGr, correlationId, result, true);
+			}
 
-			nextGr.m_context.m_uri = "eml://resqml20";
-			on_GetEmlColonSlashSlashResqml20(epcDoc, nextGr, correlationId, result, true);
-			nextGr.m_context.m_uri = "eml://eml20";
-			on_GetEmlColonSlashSlashEml20(epcDoc, nextGr, correlationId, result, true);
+			if (epcDoc.getHdfProxyCount() > 0) {
+				nextGr.m_context.m_uri = "eml://eml20";
+				on_GetEmlColonSlashSlashEml20(epcDoc, nextGr, correlationId, result, true);
+			}
+
+			contentCount = 0;
+			for (auto it = objectsGroupedByContentType.begin(); it != objectsGroupedByContentType.end(); ++it) {
+				if (it->first.find("x-witsml+xml;version=2.1") != std::string::npos) {
+					++contentCount;
+				}
+			}
+			if (contentCount > 0) {
+				nextGr.m_context.m_uri = "eml://witsml21";
+				on_GetEmlColonSlashSlashEml20(epcDoc, nextGr, correlationId, result, true);
+			}
 		}
 	}
 }
@@ -67,12 +90,21 @@ void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlashResqml20(COMMON_NS:
 	resource.m_contentType = "";
 
 	if (gr.m_context.m_depth >= 0) {
+		auto objectsGroupedByContentType = epcDoc.getDataObjectsGroupedByContentType();
 		// Self
 		if (gr.m_context.m_depth == 0) {
 			resource.m_uri = gr.m_context.m_uri;
 			resource.m_name = "RESQML2.0 Uri Protocol";
 			resource.m_resourceType = Energistics::Etp::v12::Datatypes::Object::ResourceKind::UriProtocol;
-			resource.m_contentCount.set_int(4); // the current four supported RESQML 2.0 datatypes
+
+			int32_t contentCount = 0;
+			for (auto it = objectsGroupedByContentType.begin(); it != objectsGroupedByContentType.end(); ++it) {
+				if (it->first.find("x-resqml+xml;version=2.0") != std::string::npos) {
+					++contentCount;
+				}
+			}
+			resource.m_contentCount.set_int(contentCount); // the current four supported RESQML 2.0 datatypes
+			
 			if (gr.m_context.m_contentTypes.empty() || std::find(gr.m_context.m_contentTypes.begin(), gr.m_context.m_contentTypes.end(), std::string()) != gr.m_context.m_contentTypes.end()) {
 				result.push_back(resource);
 			}
@@ -83,7 +115,6 @@ void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlashResqml20(COMMON_NS:
 
 			const std::string uriPrefix = "eml://resqml20/obj_";
 
-			auto objectsGroupedByContentType = epcDoc.getDataObjectsGroupedByContentType();
 			for (auto it = objectsGroupedByContentType.begin(); it != objectsGroupedByContentType.end(); ++it) {
 				nextGr.m_context.m_uri = uriPrefix + it->second[0]->getXmlTag();
 				on_GetFolder(epcDoc, nextGr, correlationId, result, true);
@@ -122,6 +153,48 @@ void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlashEml20(COMMON_NS::Ep
 	}
 }
 
+
+void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlashWitsml21(COMMON_NS::EpcDocument & epcDoc, const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gr, int64_t correlationId,
+	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result, bool self)
+{
+	Energistics::Etp::v12::Datatypes::Object::Resource resource;
+	resource.m_objectNotifiable = false;
+	resource.m_contentType = "";
+
+	if (gr.m_context.m_depth >= 0) {
+		auto objectsGroupedByContentType = epcDoc.getDataObjectsGroupedByContentType();
+		// Self
+		if (gr.m_context.m_depth == 0) {
+			resource.m_uri = gr.m_context.m_uri;
+			resource.m_name = "WITSML2.1 Uri Protocol";
+			resource.m_resourceType = Energistics::Etp::v12::Datatypes::Object::ResourceKind::UriProtocol;
+
+			int32_t contentCount = 0;
+			for (auto it = objectsGroupedByContentType.begin(); it != objectsGroupedByContentType.end(); ++it) {
+				if (it->first.find("x-witsml+xml;version=2.1") != std::string::npos) {
+					++contentCount;
+				}
+			}
+			resource.m_contentCount.set_int(contentCount);
+
+			if (gr.m_context.m_contentTypes.empty() || std::find(gr.m_context.m_contentTypes.begin(), gr.m_context.m_contentTypes.end(), std::string()) != gr.m_context.m_contentTypes.end()) {
+				result.push_back(resource);
+			}
+		}
+		else {
+			Energistics::Etp::v12::Protocol::Discovery::GetTreeResources nextGr = gr;
+			--nextGr.m_context.m_depth;
+
+			const std::string uriPrefix = "eml://witsml21/";
+
+			for (auto it = objectsGroupedByContentType.begin(); it != objectsGroupedByContentType.end(); ++it) {
+				nextGr.m_context.m_uri = uriPrefix + it->second[0]->getXmlTag();
+				on_GetFolder(epcDoc, nextGr, correlationId, result, true);
+			}
+		}
+	}
+}
+
 void MyOwnDiscoveryProtocolHandlers::on_GetFolder(COMMON_NS::EpcDocument & epcDoc, const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gtr, int64_t correlationId,
 	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result, bool self)
 {
@@ -129,30 +202,35 @@ void MyOwnDiscoveryProtocolHandlers::on_GetFolder(COMMON_NS::EpcDocument & epcDo
 	resource.m_objectNotifiable = false;
 	resource.m_contentType = "";
 
-	std::string resqml20Datatype = tokenize(gtr.m_context.m_uri, '/')[3];
+	std::string datatype = tokenize(gtr.m_context.m_uri, '/')[3];
 	if (gtr.m_context.m_depth >= 0) {
 
 		// Self
 		if (gtr.m_context.m_depth == 0) {
 			resource.m_uri = gtr.m_context.m_uri;
-			resource.m_name = resqml20Datatype + " Folder";
+			resource.m_name = datatype + " Folder";
 			resource.m_resourceType = Energistics::Etp::v12::Datatypes::Object::ResourceKind::Folder;
 
-			if (resqml20Datatype.substr(4) == COMMON_NS::EpcExternalPartReference::XML_TAG) {
+			if (datatype.substr(4) == COMMON_NS::EpcExternalPartReference::XML_TAG) {
 				resource.m_contentCount.set_int(epcDoc.getHdfProxySet().size());
 			}
 			else {
-				resource.m_contentCount.set_int(epcDoc.getDataObjectsByContentType("application/x-resqml+xml;version=2.0;type=" + resqml20Datatype).size());
-			}
-/*
-			else {
-				Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-				error.m_errorCode = 14;
-				error.m_errorMessage = "The URI " + gr.m_context.m_uri + "  targets a data object " + resqml20Datatype + " which is not supported by this store.";
+				if (gtr.m_context.m_uri.find("/resqml20/") != std::string::npos) {
+					resource.m_contentCount.set_int(epcDoc.getDataObjectsByContentType("application/x-resqml+xml;version=2.0;type=" + datatype).size());
+				}
+				else if (gtr.m_context.m_uri.find("/witsml21/") != std::string::npos) {
+					resource.m_contentCount.set_int(epcDoc.getDataObjectsByContentType("application/x-witsml+xml;version=2.1;type=" + datatype).size());
+				}
+				else {
+					Energistics::Etp::v12::Protocol::Core::ProtocolException error;
+					error.m_errorCode = 14;
+					error.m_errorMessage = "The URI " + gtr.m_context.m_uri + "  targets a data object " + datatype + " which is not supported by this store.";
 
-				session->send(error);
+					session->send(error);
+					return;
+				}
 			}
-			*/
+
 			if (gtr.m_context.m_contentTypes.empty() || std::find(gtr.m_context.m_contentTypes.begin(), gtr.m_context.m_contentTypes.end(), std::string()) != gtr.m_context.m_contentTypes.end()) {
 				result.push_back(resource);
 			}
@@ -165,7 +243,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetFolder(COMMON_NS::EpcDocument & epcDo
 			nextGr.m_context.m_depth = 0;
 			nextGr.m_context.m_contentTypes = gtr.m_context.m_contentTypes;
 
-			if (resqml20Datatype.substr(4) == COMMON_NS::EpcExternalPartReference::XML_TAG) {
+			if (datatype.substr(4) == COMMON_NS::EpcExternalPartReference::XML_TAG) {
 				for (const auto & obj : epcDoc.getHdfProxySet()) {
 					if (!obj->isPartial()) {
 						nextGr.m_context.m_uri = gtr.m_context.m_uri + '(' + obj->getUuid() + ')';
@@ -174,7 +252,22 @@ void MyOwnDiscoveryProtocolHandlers::on_GetFolder(COMMON_NS::EpcDocument & epcDo
 				}
 			}
 			else {
-				auto objs = epcDoc.getDataObjectsByContentType("application/x-resqml+xml;version=2.0;type=" + resqml20Datatype);
+				std::vector<COMMON_NS::AbstractObject*> objs;
+				if (gtr.m_context.m_uri.find("/resqml20/") != std::string::npos) {
+					objs = epcDoc.getDataObjectsByContentType("application/x-resqml+xml;version=2.0;type=" + datatype);
+				}
+				else if (gtr.m_context.m_uri.find("/witsml21/") != std::string::npos) {
+					objs = epcDoc.getDataObjectsByContentType("application/x-witsml+xml;version=2.1;type=" + datatype);
+				}
+				else {
+					Energistics::Etp::v12::Protocol::Core::ProtocolException error;
+					error.m_errorCode = 14;
+					error.m_errorMessage = "The URI " + gtr.m_context.m_uri + "  targets a data object " + datatype + " which is not supported by this store.";
+
+					session->send(error);
+					return;
+				}
+
 				for (const auto & obj : objs) {
 					if (!obj->isPartial()) {
 						nextGr.m_context.m_uri = gtr.m_context.m_uri + '(' + obj->getUuid() + ')';
@@ -227,7 +320,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(COMMON_NS::EpcDocument & e
 			//else erroinfo pattern
 
 			// Source
-			else if (ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources ||
+			if (ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources ||
 				ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf) {
 				Energistics::Etp::v12::Protocol::Discovery::GetGraphResources nextGr = ggr;
 				--nextGr.m_context.m_depth;
@@ -265,6 +358,9 @@ void MyOwnDiscoveryProtocolHandlers::on_GetTreeResources(const Energistics::Etp:
 		}
 		else if (path == "eml20" || path == "eml20/") {
 			on_GetEmlColonSlashSlashEml20(epcDoc, gr, correlationId, mb.m_resources);
+		}
+		else if (path == "witsml21" || path == "witsml21/") {
+			on_GetEmlColonSlashSlashWitsml21(epcDoc, gr, correlationId, mb.m_resources);
 		}
 		else {
 			on_GetFolder(epcDoc, gr, correlationId, mb.m_resources);

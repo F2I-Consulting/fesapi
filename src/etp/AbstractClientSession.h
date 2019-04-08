@@ -36,6 +36,7 @@ namespace ETP_NS
 	    std::string host;
 	    std::string port;
 	    std::string target;
+		std::string authorization;
 	    websocket::response_type responseType; // In order to check handshake sec_websocket_protocol
 	    Energistics::Etp::v12::Protocol::Core::RequestSession requestSession;
 
@@ -47,17 +48,19 @@ namespace ETP_NS
 	     * @param host		The IP address on which the server is listening for etp (websocket) connection
 	     * @param port		The port on which the server is listening for etp (websocket) connection
 	     * @param target	usually "/" but a server can decide to serve etp on a particular target
-	     * @param requestedProtocols An array of protocol IDs that the client expects to communicate on for this session. If the server does not support all of the protocols, the client may or may not continue with the protocols that are supported.
+	     * @param authorization			The HTTP authorization attribute to send to the server. It may be empty if not needed.
+	     * @param requestedProtocols	An array of protocol IDs that the client expects to communicate on for this session. If the server does not support all of the protocols, the client may or may not continue with the protocols that are supported.
 	     * @param supportedObjects		A list of the Data Objects supported by the client. This list MUST be empty if the client is a customer. This field MUST be supplied if the client is a Store and is requesting a customer role for the server.
 	     */
 		AbstractClientSession(boost::asio::io_context& ioc,
-				const std::string & host, const std::string & port, const std::string & target,
+				const std::string & host, const std::string & port, const std::string & target, const std::string & authorization,
 				const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 				const std::vector<std::string>& supportedObjects) :
 			resolver(ioc),
 			host(host),
 			port(port),
-			target(target)
+			target(target),
+			authorization(authorization)
 		{
 			// Build the request session
 			requestSession.m_applicationName = "F2I ETP Client";
@@ -75,6 +78,7 @@ namespace ETP_NS
 		DLL_IMPORT_OR_EXPORT const std::string& getHost() const { return host; }
 		DLL_IMPORT_OR_EXPORT const std::string& getPort() const { return port; }
 		DLL_IMPORT_OR_EXPORT const std::string& getTarget() const { return target; }
+		DLL_IMPORT_OR_EXPORT const std::string& getAuthorization() const { return authorization; }
 
 		DLL_IMPORT_OR_EXPORT void run() {
 			// Look up the domain name
@@ -96,9 +100,10 @@ namespace ETP_NS
 			// Perform the websocket handshake
 			derived().ws().async_handshake_ex(responseType,
 				host + ":" + port, target,
-				[](websocket::request_type& m)
+				[&](websocket::request_type& m)
 			{
 				m.insert(boost::beast::http::field::sec_websocket_protocol, "etp12.energistics.org");
+				m.insert(boost::beast::http::field::authorization, authorization);
 			},
 				std::bind(
 					&AbstractClientSession::on_handshake,

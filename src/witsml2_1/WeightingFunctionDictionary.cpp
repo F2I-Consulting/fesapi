@@ -57,9 +57,27 @@ std::string WeightingFunctionDictionary::getWeightingFunctionUuid(unsigned long 
 	}
 }
 
+WeightingFunction* WeightingFunctionDictionary::getWeightingFunction(unsigned long index) const {
+	witsml2__WeightingFunctionDictionary* dict = static_cast<witsml2__WeightingFunctionDictionary*>(gsoapProxy2_2);
+
+	WeightingFunction* wf = getEpcDocument()->getDataObjectByUuid<WeightingFunction>(dict->WeightingFunction[index]->uuid);
+	return wf == nullptr ? new WITSML2_1_NS::WeightingFunction(dict->WeightingFunction[index]) : wf;
+}
+
+std::vector<WeightingFunction*> WeightingFunctionDictionary::getWeightingFunctions() const {
+	std::vector<WeightingFunction*> result;
+
+	witsml2__WeightingFunctionDictionary* dict = static_cast<witsml2__WeightingFunctionDictionary*>(gsoapProxy2_2);
+	for (size_t index = 0; index < dict->WeightingFunction.size(); ++index) {
+		result.push_back(getWeightingFunction(index));
+	}
+
+	return result;
+}
+
 void WeightingFunctionDictionary::pushBackWeightingFunction(WeightingFunction* wf)
 {
-	if (wf->weightingFunctionDictionary != nullptr) {
+	if (updateXml && wf->weightingFunctionDictionary != nullptr) {
 		throw invalid_argument("Cannot modify the existing dictionary of a weighting function");
 	}
 	wf->weightingFunctionDictionary = this;
@@ -71,7 +89,7 @@ void WeightingFunctionDictionary::pushBackWeightingFunction(WeightingFunction* w
 	}
 }
 
-void WeightingFunctionDictionary::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void WeightingFunctionDictionary::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	witsml2__WeightingFunctionDictionary* dict = static_cast<witsml2__WeightingFunctionDictionary*>(gsoapProxy2_2);
 
@@ -79,14 +97,17 @@ void WeightingFunctionDictionary::importRelationshipSetFromEpc(COMMON_NS::EpcDoc
 	for (size_t index = 0; index < dict->WeightingFunction.size(); ++index) {
 		WeightingFunction* wf = epcDoc->getDataObjectByUuid<WeightingFunction>(getWeightingFunctionUuid(index));
 		pushBackWeightingFunction(wf);
-		wf->importRelationshipSetFromEpc(epcDoc);
+		wf->resolveTargetRelationships(epcDoc);
 	}
 	updateXml = true;
 }
 
-vector<Relationship> WeightingFunctionDictionary::getAllEpcRelationships() const
+DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> WeightingFunctionDictionary::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	return vector<Relationship>();
+}
 
-	return result;
+DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> WeightingFunctionDictionary::getAllTargetRelationships() const
+{
+	return vector<Relationship>();
 }

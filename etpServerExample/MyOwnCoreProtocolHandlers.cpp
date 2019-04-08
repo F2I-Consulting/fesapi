@@ -68,16 +68,6 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 			protocol.m_protocolCapabilities.insert(std::make_pair("MaxGetResourcesResponse", value));
 	    	supportedProtocols.push_back(protocol);
 	    }
-	    else if (rp.m_protocol == Energistics::Etp::v12::Datatypes::Protocol::DirectedDiscovery && rp.m_role == "store") {
-	    	Energistics::Etp::v12::Datatypes::SupportedProtocol protocol;
-	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::DirectedDiscovery;
-			protocol.m_protocolVersion = protocolVersion;
-			protocol.m_role = "store";
-			Energistics::Etp::v12::Datatypes::DataValue value;
-			value.m_item.set_int(1000);
-			protocol.m_protocolCapabilities.insert(std::make_pair("MaxGetResourcesResponse", value));
-	    	supportedProtocols.push_back(protocol);
-	    }
 	}
 
 	if (supportedProtocols.empty()) {
@@ -97,6 +87,12 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 	openSession.m_supportedProtocols = supportedProtocols;
 	std::vector<std::string> supportedObjects;
 	supportedObjects.push_back("application/x-resqml+xml;version=2.0;type=*");
+	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=ErrorTerm");
+	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=ErrorTermDictionary");
+	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=ToolErrorModel");
+	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=ToolErrorModelDictionary");
+	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=WeightingFunction");
+	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=WeightingFunctionDictionary");
 	openSession.m_supportedObjects = supportedObjects;
 
 	session->send(openSession, correlationId);

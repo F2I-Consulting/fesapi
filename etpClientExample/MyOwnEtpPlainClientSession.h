@@ -32,7 +32,7 @@ public:
 	 * @param supportedObjects		A list of the Data Objects supported by the client. This list MUST be empty if the client is a customer. This field MUST be supplied if the client is a Store and is requesting a customer role for the server.
 	 */
 	MyOwnEtpPlainClientSession(boost::asio::io_context& ioc,
-			const std::string & host, const std::string & port, const std::string & target,
+			const std::string & host, const std::string & port, const std::string & target, const std::string & authorization,
 			const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 			const std::vector<std::string>& supportedObjects);
 

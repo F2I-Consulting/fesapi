@@ -58,9 +58,27 @@ std::string ErrorTermDictionary::getErrorTermUuid(unsigned long index) const
 	}
 }
 
+ErrorTerm* ErrorTermDictionary::getErrorTerm(unsigned long index) const {
+	witsml2__ErrorTermDictionary* dict = static_cast<witsml2__ErrorTermDictionary*>(gsoapProxy2_2);
+
+	ErrorTerm* et = getEpcDocument()->getDataObjectByUuid<ErrorTerm>(dict->ErrorTerm[index]->uuid);
+	return et == nullptr ? new WITSML2_1_NS::ErrorTerm(dict->ErrorTerm[index]) : et;
+}
+
+std::vector<ErrorTerm*> ErrorTermDictionary::getErrorTerms() const {
+	std::vector<ErrorTerm*> result;
+
+	witsml2__ErrorTermDictionary* dict = static_cast<witsml2__ErrorTermDictionary*>(gsoapProxy2_2);
+	for (size_t index = 0; index < dict->ErrorTerm.size(); ++index) {
+		result.push_back(getErrorTerm(index));
+	}
+
+	return result;
+}
+
 void ErrorTermDictionary::pushBackErrorTerm(ErrorTerm* et)
 {
-	if (et->errorTermDictionary != nullptr) {
+	if (updateXml && et->errorTermDictionary != nullptr) {
 		throw invalid_argument("Cannot modify the existing dictionary of a ErrorTerm");
 	}
 	et->errorTermDictionary = this;
@@ -72,7 +90,7 @@ void ErrorTermDictionary::pushBackErrorTerm(ErrorTerm* et)
 	}
 }
 
-void ErrorTermDictionary::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void ErrorTermDictionary::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	witsml2__ErrorTermDictionary* dict = static_cast<witsml2__ErrorTermDictionary*>(gsoapProxy2_2);
 
@@ -80,12 +98,17 @@ void ErrorTermDictionary::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* e
 	for (size_t index = 0; index < dict->ErrorTerm.size(); ++index) {
 		ErrorTerm* et = epcDoc->getDataObjectByUuid<ErrorTerm>(getErrorTermUuid(index));
 		pushBackErrorTerm(et);
-		et->importRelationshipSetFromEpc(epcDoc);
+		et->resolveTargetRelationships(epcDoc);
 	}
 	updateXml = true;
 }
 
-vector<Relationship> ErrorTermDictionary::getAllEpcRelationships() const
+DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ErrorTermDictionary::getAllSourceRelationships() const
+{
+	return vector<Relationship>();
+}
+
+DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ErrorTermDictionary::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 	witsml2__ErrorTermDictionary* dict = static_cast<witsml2__ErrorTermDictionary*>(gsoapProxy2_2);

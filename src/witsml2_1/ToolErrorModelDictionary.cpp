@@ -58,9 +58,27 @@ std::string ToolErrorModelDictionary::getToolErrorModelUuid(unsigned long index)
 	}
 }
 
+ToolErrorModel* ToolErrorModelDictionary::getToolErrorModel(unsigned long index) const {
+	witsml2__ToolErrorModelDictionary* dict = static_cast<witsml2__ToolErrorModelDictionary*>(gsoapProxy2_2);
+
+	ToolErrorModel* tem = getEpcDocument()->getDataObjectByUuid<ToolErrorModel>(dict->ToolErrorModel[index]->uuid);
+	return tem == nullptr ? new WITSML2_1_NS::ToolErrorModel(dict->ToolErrorModel[index]) : tem;
+}
+
+std::vector<ToolErrorModel*> ToolErrorModelDictionary::getToolErrorModels() const {
+	std::vector<ToolErrorModel*> result;
+
+	witsml2__ToolErrorModelDictionary* dict = static_cast<witsml2__ToolErrorModelDictionary*>(gsoapProxy2_2);
+	for (size_t index = 0; index < dict->ToolErrorModel.size(); ++index) {
+		result.push_back(getToolErrorModel(index));
+	}
+
+	return result;
+}
+
 void ToolErrorModelDictionary::pushBackToolErrorModel(ToolErrorModel* tem)
 {
-	if (tem->toolErrorModelDictionary != nullptr) {
+	if (updateXml && tem->toolErrorModelDictionary != nullptr) {
 		throw invalid_argument("Cannot modify the existing dictionary of a tool error model");
 	}
 	tem->toolErrorModelDictionary = this;
@@ -71,7 +89,7 @@ void ToolErrorModelDictionary::pushBackToolErrorModel(ToolErrorModel* tem)
 	}
 }
 
-void ToolErrorModelDictionary::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void ToolErrorModelDictionary::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	witsml2__ToolErrorModelDictionary* dict = static_cast<witsml2__ToolErrorModelDictionary*>(gsoapProxy2_2);
 
@@ -79,12 +97,17 @@ void ToolErrorModelDictionary::importRelationshipSetFromEpc(COMMON_NS::EpcDocume
 	for (size_t index = 0; index < dict->ToolErrorModel.size(); ++index) {
 		ToolErrorModel* tem = epcDoc->getDataObjectByUuid<ToolErrorModel>(getToolErrorModelUuid(index));
 		pushBackToolErrorModel(tem);
-		tem->importRelationshipSetFromEpc(epcDoc);
+		tem->resolveTargetRelationships(epcDoc);
 	}
 	updateXml = true;
 }
 
-vector<Relationship> ToolErrorModelDictionary::getAllEpcRelationships() const
+DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ToolErrorModelDictionary::getAllSourceRelationships() const
+{
+	return vector<Relationship>();
+}
+
+DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ToolErrorModelDictionary::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 	witsml2__ToolErrorModelDictionary* dict = static_cast<witsml2__ToolErrorModelDictionary*>(gsoapProxy2_2);

@@ -164,7 +164,6 @@ endif (BUILD_SHARED_LIBS)
 add_subdirectory(src)
 add_subdirectory(example)
 add_subdirectory(doc)
-ADD_SUBDIRECTORY (p7ToWitsml)
 
 set (WITH_ETP OFF CACHE BOOL "Build Fesapi with ETP support.")
 set (WITH_ETP_SSL OFF CACHE BOOL "Build Fesapi with ETP SSL support.")

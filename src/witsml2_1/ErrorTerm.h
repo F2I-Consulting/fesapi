@@ -26,9 +26,17 @@ under the License.
 
 namespace WITSML2_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT ErrorTerm : public WITSML2_1_NS::AbstractObject
+	class ErrorTerm : public WITSML2_1_NS::AbstractObject
 	{
 	public:
+
+		/**
+		* Only to be used in partial transfer context
+		*/
+		ErrorTerm(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
+			WITSML2_1_NS::AbstractObject(partialObject),
+			errorTermDictionary(nullptr) {}
+
 		/**
 		* Creates an instance of this class in a gsoap context.
 		* @param guid		The guid to set to this instance. If empty then a new guid will be generated.
@@ -42,31 +50,28 @@ namespace WITSML2_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		ErrorTerm(gsoap_eml2_2::witsml2__ErrorTerm* fromGsoap) :AbstractObject(fromGsoap) {}
+		ErrorTerm(gsoap_eml2_2::witsml2__ErrorTerm* fromGsoap) :AbstractObject(fromGsoap),
+			errorTermDictionary(nullptr) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~ErrorTerm() {}
 
-		bool isTopLevelElement() const;
+		DLL_IMPORT_OR_EXPORT bool isTopLevelElement() const;
 
-		std::string getWeightingFunctionUuid() const;
-		class WeightingFunction* getWeightingFunction() const;
-		void setWeightingFunction(class WeightingFunction* weightingFunction);
+		DLL_IMPORT_OR_EXPORT std::string getWeightingFunctionUuid() const;
+		DLL_IMPORT_OR_EXPORT class WeightingFunction* getWeightingFunction() const;
+		DLL_IMPORT_OR_EXPORT void setWeightingFunction(class WeightingFunction* weightingFunction);
 
-		/**
-		* Resolve all relationships of the object in an epc document.
-		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllSourceRelationships() const;
+		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllTargetRelationships() const;
+		DLL_IMPORT_OR_EXPORT void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc);
 
-		static const char* XML_TAG;
-		virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 	protected:
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-
 		// XML backwards relationship
 		ErrorTermDictionary* errorTermDictionary;
 		std::vector<WITSML2_1_NS::ToolErrorModel*> toolErrorModelSet;

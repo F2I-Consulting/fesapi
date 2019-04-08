@@ -24,10 +24,10 @@ under the License.
 #include "etp/ProtocolHandlers/DataArrayHandlers.h"
 
 MyOwnEtpPlainClientSession::MyOwnEtpPlainClientSession(boost::asio::io_context& ioc,
-		const std::string & host, const std::string & port, const std::string & target,
+		const std::string & host, const std::string & port, const std::string & target, const std::string & authorization,
 		const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 		const std::vector<std::string>& supportedObjects)
-	: ETP_NS::PlainClientSession(ioc, host, port, target, requestedProtocols, supportedObjects)
+	: ETP_NS::PlainClientSession(ioc, host, port, target, authorization, requestedProtocols, supportedObjects)
 {
 	setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(this));
 	setDiscoveryProtocolHandlers(std::make_shared<MyOwnDiscoveryProtocolHandlers>(this));

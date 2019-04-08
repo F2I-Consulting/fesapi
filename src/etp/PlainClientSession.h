@@ -29,7 +29,7 @@ namespace ETP_NS
 
 	public:
 		DLL_IMPORT_OR_EXPORT PlainClientSession(boost::asio::io_context& ioc,
-			const std::string & host, const std::string & port, const std::string & target,
+			const std::string & host, const std::string & port, const std::string & target, const std::string & authorization,
 			const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 			const std::vector<std::string>& supportedObjects);
 
