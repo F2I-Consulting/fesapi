@@ -58,13 +58,11 @@ namespace WITSML2_0_NS
 			const std::string & guid = "");
 
 		DLL_IMPORT_OR_EXPORT void pushBackPerforationHistory(unsigned int index,
+			const std::string & guid = "");
+
+		DLL_IMPORT_OR_EXPORT void pushBackPerforationHistory(unsigned int index,
 			gsoap_eml2_1::witsml2__PerforationStatus perforationStatus,
-			const std::string & datum,
-			gsoap_eml2_1::eml21__LengthUom MdUnit,
-			const double & TopMd,
-			const double & BaseMd, 
-			const time_t & startDate = -1,
-			const time_t & endDate = -1,
+			const time_t & startDate,
 			const std::string & guid = "");
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPerforationCount() const;
@@ -96,17 +94,27 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT std::string getPerforationHistoryStatusToString(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
 
+		DLL_IMPORT_OR_EXPORT void setPerforationHistoryStatus(unsigned int historyIndex,
+			unsigned int perforationIndex, 
+			gsoap_eml2_1::witsml2__PerforationStatus perforationStatus);
+
 		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryStartDate(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
 
 		DLL_IMPORT_OR_EXPORT time_t getPerforationHistoryStartDate(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
 
+		DLL_IMPORT_OR_EXPORT void setPerforationHistoryStartDate(unsigned int historyIndex,
+			unsigned int perforationIndex, const time_t & startDate) const;
+
 		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryEndDate(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
 
 		DLL_IMPORT_OR_EXPORT time_t getPerforationHistoryEndDate(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
+
+		DLL_IMPORT_OR_EXPORT void setPerforationHistoryEndDate(unsigned int historyIndex,
+			unsigned int perforationIndex, const time_t & endDate) const;
 		
 		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryMdDatum(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
@@ -125,12 +133,30 @@ namespace WITSML2_0_NS
 
 		DLL_IMPORT_OR_EXPORT double getPerforationHistoryTopMd(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
+
+		/**
+		* Perforation history datum is overwritten if exists. For instance if a base md is already defined.
+		*/
+		DLL_IMPORT_OR_EXPORT void setPerforationHistoryTopMd(unsigned int historyIndex,
+			unsigned int perforationIndex,
+			const std::string & datum,
+			gsoap_eml2_1::eml21__LengthUom MdUnit,
+			const double & TopMd);
 		
 		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryBaseMd(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
 
 		DLL_IMPORT_OR_EXPORT double getPerforationHistoryBaseMd(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
+
+		/**
+		* Perforation history datum is overwritten if exists. For instance if a top md is already defined.
+		*/
+		DLL_IMPORT_OR_EXPORT void setPerforationHistoryBaseMd(unsigned int historyIndex,
+			unsigned int perforationIndex,
+			const std::string & datum,
+			gsoap_eml2_1::eml21__LengthUom MdUnit,
+			const double & BaseMd);
 
 		/**
 		* Resolve all relationships of the object in an epc document.
