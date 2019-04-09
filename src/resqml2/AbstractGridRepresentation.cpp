@@ -35,11 +35,38 @@ using namespace epc;
 
 const char* AbstractGridRepresentation::XML_TAG = "AbstractGridRepresentation";
 
-vector<Relationship> AbstractGridRepresentation::getAllEpcRelationships() const
+vector<Relationship> AbstractGridRepresentation::getAllTargetRelationships() const
 {
-	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
-	
+	vector<Relationship> result = AbstractRepresentation::getAllTargetRelationships();
+
+	if (getParentGrid() != nullptr) {
+		Relationship relParent(getParentGrid()->getPartNameInEpcDocument(), "", getParentGrid()->getUuid());
+		relParent.setDestinationObjectType();
+		result.push_back(relParent);
+	}
+
+	// Strati unit
+	if (hasCellStratigraphicUnitIndices()) {
+		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = getStratigraphicOrganizationInterpretation();
+		Relationship relStrati(stratiOrg->getPartNameInEpcDocument(), "", stratiOrg->getUuid());
+		relStrati.setDestinationObjectType();
+		result.push_back(relStrati);
+	}
+
+	//Fluid
 	gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
+	if (hasCellFluidPhaseUnitIndices()) {
+		Relationship rel(misc::getPartNameFromReference(rep->CellFluidPhaseUnits->FluidOrganization), "", rep->CellFluidPhaseUnits->FluidOrganization->UUID);
+		rel.setDestinationObjectType();
+		result.push_back(rel);
+	}
+
+	return result;
+}
+
+vector<Relationship> AbstractGridRepresentation::getAllSourceRelationships() const
+{
+	vector<Relationship> result = AbstractRepresentation::getAllSourceRelationships();
 	
 	for (size_t i = 0; i < gridConnectionSetRepresentationSet.size(); ++i) {
 		Relationship relRep(gridConnectionSetRepresentationSet[i]->getPartNameInEpcDocument(), "", gridConnectionSetRepresentationSet[i]->getUuid());
@@ -53,33 +80,12 @@ vector<Relationship> AbstractGridRepresentation::getAllEpcRelationships() const
 		result.push_back(relBlockedWell);
 	}
 
-	if (getParentGrid() != nullptr) {
-		Relationship relParent(getParentGrid()->getPartNameInEpcDocument(), "", getParentGrid()->getUuid());
-		relParent.setDestinationObjectType();
-		result.push_back(relParent);
-	}
-
 	unsigned int cildGridCount = getChildGridCount();
 	for (unsigned int i = 0; i < cildGridCount; ++i) {
 		AbstractGridRepresentation* childGrid = getChildGrid(i);
 		Relationship relChild(childGrid->getPartNameInEpcDocument(), "", childGrid->getUuid());
 		relChild.setSourceObjectType();
 		result.push_back(relChild);
-	}
-
-	// Strati unit
-	if (hasCellStratigraphicUnitIndices()) {
-		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = getStratigraphicOrganizationInterpretation();
-		Relationship relStrati(stratiOrg->getPartNameInEpcDocument(), "", stratiOrg->getUuid());
-		relStrati.setDestinationObjectType();
-		result.push_back(relStrati);
-	}
-
-	//Fluid
-	if(hasCellFluidPhaseUnitIndices()) {
-		Relationship rel(misc::getPartNameFromReference(rep->CellFluidPhaseUnits->FluidOrganization), "", rep->CellFluidPhaseUnits->FluidOrganization->UUID);
-		rel.setDestinationObjectType();
-		result.push_back(rel);
 	}
 
 	return result;
@@ -977,9 +983,9 @@ void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimensio
 	}
 }
 
-void AbstractGridRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void AbstractGridRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractRepresentation::resolveTargetRelationships(epcDoc);
 
 	// LGR backward relationships
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getParentGridDor();

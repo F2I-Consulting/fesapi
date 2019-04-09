@@ -75,9 +75,9 @@ FaultInterpretation::FaultInterpretation(TectonicBoundaryFeature * fault, const 
 	setInterpretedFeature(fault);
 }
 
-vector<Relationship> FaultInterpretation::getAllEpcRelationships() const
+vector<Relationship> FaultInterpretation::getAllSourceRelationships() const
 {
-	vector<Relationship> result = BoundaryFeatureInterpretation::getAllEpcRelationships();
+	vector<Relationship> result = BoundaryFeatureInterpretation::getAllSourceRelationships();
 
 	for (size_t i = 0; i < structuralOrganizationInterpretationSet.size(); ++i) {
 		if (structuralOrganizationInterpretationSet[i] != nullptr) {

@@ -492,7 +492,7 @@ void IjkGridParametricRepresentation::getParametersOfNodes(double * parameters, 
 	}
 }
 
-string IjkGridParametricRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* IjkGridParametricRepresentation::getHdfProxyDor() const
 {
 	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
 	if (geom == nullptr) {
@@ -501,7 +501,7 @@ string IjkGridParametricRepresentation::getHdfProxyUuid() const
 	resqml2__Point3dParametricArray* points = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
 	if (points->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
 	{
-		return static_cast<resqml2__DoubleHdf5Array*>(points->Parameters)->Values->HdfProxy->UUID;
+		return static_cast<resqml2__DoubleHdf5Array*>(points->Parameters)->Values->HdfProxy;
 	}
 	else
 		throw std::logic_error("Not yet implemented");

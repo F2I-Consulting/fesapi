@@ -222,8 +222,8 @@ namespace COMMON_NS
 	
 		enum openingMode { READ_ONLY = 0, READ_WRITE = 1, OVERWRITE = 2 };
 	
-		EpcDocument(const std::string & fileName, const openingMode & hdf5PermissionAccess = READ_WRITE);
-		EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, const openingMode & hdf5PermissionAccess = READ_WRITE);
+		EpcDocument(const std::string & fileName, const openingMode & permissionAccess = READ_WRITE);
+		EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, const openingMode & permissionAccess = READ_WRITE);
 		
 		void setFilePath(const std::string & filePath);
 

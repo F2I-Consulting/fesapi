@@ -39,7 +39,7 @@ namespace RESQML2_0_1_NS
 		*/
 		AbstractStratigraphicOrganizationInterpretation(gsoap_resqml2_0_1::resqml2__AbstractStratigraphicOrganizationInterpretation* fromGsoap) : AbstractOrganizationInterpretation(fromGsoap) {}
 
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
+		virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
 
 	public:
 

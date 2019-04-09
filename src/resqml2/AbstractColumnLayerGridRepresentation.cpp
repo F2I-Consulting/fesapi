@@ -162,9 +162,9 @@ ULONG64 AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndic
 	}
 }
 
-vector<Relationship> AbstractColumnLayerGridRepresentation::getAllEpcRelationships() const
+vector<Relationship> AbstractColumnLayerGridRepresentation::getAllTargetRelationships() const
 {
-	vector<Relationship> result = AbstractGridRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractGridRepresentation::getAllTargetRelationships();
 
 	// Strati unit
 	if (!hasCellStratigraphicUnitIndices() && hasIntervalStratigraphicUnitIndices())
@@ -178,9 +178,9 @@ vector<Relationship> AbstractColumnLayerGridRepresentation::getAllEpcRelationshi
 	return result;
 }
 
-void AbstractColumnLayerGridRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void AbstractColumnLayerGridRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractGridRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractGridRepresentation::resolveTargetRelationships(epcDoc);
 
 	// Strati org backward relationships
 	if (hasIntervalStratigraphicUnitIndices()) {

@@ -37,7 +37,7 @@ using namespace COMMON_NS;
 const char* WellboreTrajectoryRepresentation::XML_TAG = "WellboreTrajectoryRepresentation";
 
 WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInterpretation* interp, const string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo) :
-	AbstractRepresentation(interp, mdInfo->getLocalCrs()), witsmlTrajectory(nullptr)
+	AbstractRepresentation(interp, mdInfo->getLocalCrs())
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREWellboreTrajectoryRepresentation(interp->getGsoapContext(), 1);	
 	_resqml2__WellboreTrajectoryRepresentation* rep = static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
@@ -58,7 +58,7 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInter
 }
 
 WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInterpretation* interp, const string & guid, const std::string & title, DeviationSurveyRepresentation * deviationSurvey) :
-	AbstractRepresentation(interp, deviationSurvey->getLocalCrs()), witsmlTrajectory(nullptr)
+	AbstractRepresentation(interp, deviationSurvey->getLocalCrs())
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREWellboreTrajectoryRepresentation(interp->getGsoapContext(), 1);
 	_resqml2__WellboreTrajectoryRepresentation* rep = static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
@@ -177,11 +177,29 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints,
 //	}
 //}
 
-vector<Relationship> WellboreTrajectoryRepresentation::getAllEpcRelationships() const
+vector<Relationship> WellboreTrajectoryRepresentation::getAllSourceRelationships() const
 {
-	_resqml2__WellboreTrajectoryRepresentation* rep = static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
-	
-	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractRepresentation::getAllSourceRelationships();
+
+	// XML backward relationship
+	for (size_t i = 0 ; i < childrenTrajSet.size(); ++i) {
+		Relationship relChildrenTraj(childrenTrajSet[i]->getPartNameInEpcDocument(), "", childrenTrajSet[i]->getUuid());
+		relChildrenTraj.setSourceObjectType();
+		result.push_back(relChildrenTraj);
+	}
+
+	for (size_t i = 0; i < wellboreFrameRepresentationSet.size(); ++i) {
+		Relationship relFrame(wellboreFrameRepresentationSet[i]->getPartNameInEpcDocument(), "", wellboreFrameRepresentationSet[i]->getUuid());
+		relFrame.setSourceObjectType();
+		result.push_back(relFrame);
+	}
+
+	return result;
+}
+
+vector<Relationship> WellboreTrajectoryRepresentation::getAllTargetRelationships() const
+{
+	vector<Relationship> result = AbstractRepresentation::getAllTargetRelationships();
 
 	// XML forward relationship
 	RESQML2_NS::MdDatum* mdDatum = getMdDatum();
@@ -203,6 +221,7 @@ vector<Relationship> WellboreTrajectoryRepresentation::getAllEpcRelationships() 
 
 	WellboreTrajectoryRepresentation* parentTraj = getParentTrajectory();
 	if (parentTraj != nullptr) {
+		_resqml2__WellboreTrajectoryRepresentation* rep = static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 		Relationship relParentTraj(parentTraj->getPartNameInEpcDocument(), "", rep->ParentIntersection->ParentTrajectory->UUID);
 		relParentTraj.setDestinationObjectType();
 		result.push_back(relParentTraj);
@@ -224,9 +243,9 @@ vector<Relationship> WellboreTrajectoryRepresentation::getAllEpcRelationships() 
 	return result;
 }
 
-void WellboreTrajectoryRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void WellboreTrajectoryRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractRepresentation::resolveTargetRelationships(epcDoc);
 
 	_resqml2__WellboreTrajectoryRepresentation* rep = static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 
@@ -433,16 +452,15 @@ std::string WellboreTrajectoryRepresentation::getMdDatumUuid() const
 	return static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1)->MdDatum->UUID;
 }
 
-std::string WellboreTrajectoryRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreTrajectoryRepresentation::getHdfProxyDor() const
 {
 	_resqml2__WellboreTrajectoryRepresentation* rep = static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 	if (rep->Geometry != nullptr) {
 		resqml2__ParametricLineGeometry* paramLine = static_cast<resqml2__ParametricLineGeometry*>(rep->Geometry);
-		return static_cast<resqml2__Point3dHdf5Array*>(paramLine->ControlPoints)->Coordinates->HdfProxy->UUID;
+		return static_cast<resqml2__Point3dHdf5Array*>(paramLine->ControlPoints)->Coordinates->HdfProxy;
 	}
-	else {
-		return "";
-	}
+
+	return nullptr;
 }
 
 gsoap_resqml2_0_1::_resqml2__WellboreTrajectoryRepresentation* WellboreTrajectoryRepresentation::getSpecializedGsoapProxy() const

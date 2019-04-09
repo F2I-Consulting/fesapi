@@ -166,81 +166,98 @@ void StratigraphicColumnRankInterpretation::pushBackStratigraphicBinaryContact(S
     contact->Subject->SecondaryQualifier = static_cast<resqml2__ContactMode*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml2__ContactMode)));
     *(contact->Subject->SecondaryQualifier) = subjectContactMode;
 
-	if (partOf)
-	{
+	if (partOf != nullptr) {
 		setHorizonOfLastContact(partOf);
 	}
 }
 		
-void StratigraphicColumnRankInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void StratigraphicColumnRankInterpretation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractStratigraphicOrganizationInterpretation::importRelationshipSetFromEpc(epcDoc);
+	AbstractStratigraphicOrganizationInterpretation::resolveTargetRelationships(epcDoc);
 
 	updateXml = false;
 
 	_resqml2__StratigraphicColumnRankInterpretation* interp = static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1); 
 
-	for (unsigned int i = 0; i < interp->StratigraphicUnits.size(); i++)
-	{
-		if (interp->StratigraphicUnits[i]->Unit)
-			pushBackStratiUnitInterpretation(static_cast<StratigraphicUnitInterpretation*>(epcDoc->getDataObjectByUuid(interp->StratigraphicUnits[i]->Unit->UUID)));
+	for (const auto & stratiUnit : interp->StratigraphicUnits) {
+		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = stratiUnit->Unit;
+		if (dor != nullptr) {
+			StratigraphicUnitInterpretation* stratiUnitInterp = getEpcDocument()->getDataObjectByUuid<StratigraphicUnitInterpretation>(dor->UUID);
+			if (stratiUnitInterp == nullptr) { // partial transfer
+				getEpcDocument()->createPartial(dor);
+				stratiUnitInterp = getEpcDocument()->getDataObjectByUuid<StratigraphicUnitInterpretation>(dor->UUID);
+			}
+			if (stratiUnitInterp == nullptr) {
+				throw invalid_argument("The DOR looks invalid.");
+			}
+			pushBackStratiUnitInterpretation(stratiUnitInterp);
+		}
 		else
-			throw logic_error("Not yet implemented");
+			throw logic_error("Not implemented yet");
 	}
 
-	for (unsigned int i = 0; i < interp->ContactInterpretation.size(); i++)
-	{
-		if (interp->ContactInterpretation[i]->PartOf) {
-			HorizonInterpretation* horizonInterp = epcDoc->getDataObjectByUuid<HorizonInterpretation>(interp->ContactInterpretation[i]->PartOf->UUID);
+	for (const auto & contactInterp : interp->ContactInterpretation) {
+		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = contactInterp->PartOf;
+		if (dor != nullptr) {
+			HorizonInterpretation* horizonInterp = getEpcDocument()->getDataObjectByUuid<HorizonInterpretation>(dor->UUID);
 
-			if (horizonInterp == nullptr) {
-				getEpcDocument()->addWarning("The referenced horizon interp \"" + interp->ContactInterpretation[i]->PartOf->Title + "\" (" + interp->ContactInterpretation[i]->PartOf->UUID + ") is missing.");
-				horizonInterp = epcDoc->createPartialHorizonInterpretation(interp->ContactInterpretation[i]->PartOf->UUID, interp->ContactInterpretation[i]->PartOf->Title);
+			if (horizonInterp == nullptr) { // partial transfer
+				getEpcDocument()->createPartial(dor);
+				horizonInterp = getEpcDocument()->getDataObjectByUuid<HorizonInterpretation>(dor->UUID);
 			}
-
+			if (horizonInterp == nullptr) {
+				throw invalid_argument("The DOR looks invalid.");
+			}
 			setHorizonOfLastContact(horizonInterp);
 		}
 		else
-			throw logic_error("Not yet implemented");
+			throw logic_error("Not implemented yet");
 	}
 
 	updateXml = true;
 }
 
-vector<Relationship> StratigraphicColumnRankInterpretation::getAllEpcRelationships() const
+vector<Relationship> StratigraphicColumnRankInterpretation::getAllSourceRelationships() const
 {
-	vector<Relationship> result = AbstractStratigraphicOrganizationInterpretation::getAllEpcRelationships();
-
-	// forward relationships
-	for (unsigned int i = 0; i < stratigraphicUnitSet.size(); i++)
-	{
-		Relationship rel(stratigraphicUnitSet[i]->getPartNameInEpcDocument(), "", stratigraphicUnitSet[i]->getUuid());
-		rel.setDestinationObjectType();
-		result.push_back(rel);
-	}
-
-	for (unsigned int i = 0; i < horizonInterpretationSet.size(); i++)
-	{
-		Relationship rel(horizonInterpretationSet[i]->getPartNameInEpcDocument(), "", horizonInterpretationSet[i]->getUuid());
-		rel.setDestinationObjectType();
-		result.push_back(rel);
-	}
+	vector<Relationship> result = AbstractStratigraphicOrganizationInterpretation::getAllSourceRelationships();
 
 	// Backward relationships
-	for (unsigned int i = 0; i < stratigraphicColumnSet.size(); i++)
+	for (size_t i = 0; i < stratigraphicColumnSet.size(); i++)
 	{
 		Relationship rel(stratigraphicColumnSet[i]->getPartNameInEpcDocument(), "", stratigraphicColumnSet[i]->getUuid());
 		rel.setSourceObjectType();
 		result.push_back(rel);
 	}
 
-	for (unsigned int i = 0; i < stratigraphicOccurrenceInterpretationSet.size(); i++)
+	for (size_t i = 0; i < stratigraphicOccurrenceInterpretationSet.size(); i++)
 	{
 		Relationship rel(stratigraphicOccurrenceInterpretationSet[i]->getPartNameInEpcDocument(), "", stratigraphicOccurrenceInterpretationSet[i]->getUuid());
 		rel.setSourceObjectType();
 		result.push_back(rel);
 	}
-        
+
+    return result;
+}
+
+vector<Relationship> StratigraphicColumnRankInterpretation::getAllTargetRelationships() const
+{
+	vector<Relationship> result = AbstractStratigraphicOrganizationInterpretation::getAllTargetRelationships();
+
+	// forward relationships
+	for (size_t i = 0; i < stratigraphicUnitSet.size(); i++)
+	{
+		Relationship rel(stratigraphicUnitSet[i]->getPartNameInEpcDocument(), "", stratigraphicUnitSet[i]->getUuid());
+		rel.setDestinationObjectType();
+		result.push_back(rel);
+	}
+
+	for (size_t i = 0; i < horizonInterpretationSet.size(); i++)
+	{
+		Relationship rel(horizonInterpretationSet[i]->getPartNameInEpcDocument(), "", horizonInterpretationSet[i]->getUuid());
+		rel.setDestinationObjectType();
+		result.push_back(rel);
+	}
+
     return result;
 }
 

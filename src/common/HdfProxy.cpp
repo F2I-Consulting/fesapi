@@ -36,7 +36,7 @@ void HdfProxy::open()
 		close();
 	}
 
-	if (getEpcDocument() == nullptr || getEpcDocument()->getHdf5PermissionAccess() == COMMON_NS::EpcDocument::READ_ONLY) { // By default, if no Epc document is available (DAS use case), open in read only mode
+	if (getEpcDocument() == nullptr || getEpcDocument()->getPermissionAccess() == COMMON_NS::EpcDocument::READ_ONLY) { // By default, if no Epc document is available (DAS use case), open in read only mode
 		if (H5Fis_hdf5((packageDirectoryAbsolutePath + relativeFilePath).c_str()) > 0) {
 			hdfFile = H5Fopen((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_RDONLY, H5P_DEFAULT);
 
@@ -52,7 +52,7 @@ void HdfProxy::open()
 			throw invalid_argument("The HDF5 file " + packageDirectoryAbsolutePath + relativeFilePath + " does not exist or is not a valid HDF5 file.");
 		}
 	}
-	else if (getEpcDocument()->getHdf5PermissionAccess() == COMMON_NS::EpcDocument::READ_WRITE) {
+	else if (getEpcDocument()->getPermissionAccess() == COMMON_NS::EpcDocument::READ_WRITE) {
 		hdfFile = H5Fcreate((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_EXCL, H5P_DEFAULT, H5P_DEFAULT);
 
 		if (hdfFile < 0) {
@@ -97,7 +97,7 @@ void HdfProxy::open()
 			}
 		}
 	}
-	else if (getEpcDocument()->getHdf5PermissionAccess() == COMMON_NS::EpcDocument::OVERWRITE) {
+	else if (getEpcDocument()->getPermissionAccess() == COMMON_NS::EpcDocument::OVERWRITE) {
 		hdfFile = H5Fcreate((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
 
 		// create an attribute at the file level to store the uuid of the corresponding resqml hdf proxy.
@@ -162,8 +162,8 @@ void HdfProxy::readArrayNdOfValues(const std::string & datasetName, void* values
 void HdfProxy::readArrayNdOfValues(
 	const std::string & datasetName,
 	void* values,
-	unsigned long long * numValuesInEachDimension,
-	unsigned long long * offsetInEachDimension,
+	const unsigned long long * numValuesInEachDimension,
+	const unsigned long long * offsetInEachDimension,
 	const unsigned int & numDimensions, const hid_t & datatype)
 {
 	readArrayNdOfValues(datasetName, values, numValuesInEachDimension, offsetInEachDimension, nullptr, nullptr, numDimensions, datatype);
@@ -172,10 +172,10 @@ void HdfProxy::readArrayNdOfValues(
 void HdfProxy::readArrayNdOfValues(
 	const std::string & datasetName,
 	void* values,
-	unsigned long long * blockCountPerDimension,
-	unsigned long long * offsetInEachDimension,
-	unsigned long long * strideInEachDimension,
-	unsigned long long * blockSizeInEachDimension,
+	const unsigned long long * blockCountPerDimension,
+	const unsigned long long * offsetInEachDimension,
+	const unsigned long long * strideInEachDimension,
+	const unsigned long long * blockSizeInEachDimension,
 	const unsigned int & numDimensions, const hid_t & datatype)
 {
 	if (!isOpened()) {
@@ -242,10 +242,10 @@ void HdfProxy::readArrayNdOfValues(
 
 void HdfProxy::selectArrayNdOfValues(
 	const std::string & datasetName,
-	unsigned long long * blockCountPerDimension,
-	unsigned long long * offsetInEachDimension,
-	unsigned long long * strideInEachDimension,
-	unsigned long long * blockSizeInEachDimension,
+	const unsigned long long * blockCountPerDimension,
+	const unsigned long long * offsetInEachDimension,
+	const unsigned long long * strideInEachDimension,
+	const unsigned long long * blockSizeInEachDimension,
 	const unsigned int & numDimensions,
 	bool newSelection,
 	int & dataset,
@@ -327,7 +327,7 @@ void HdfProxy::readArrayNdOfValues(
 	}
 }
 
-int HdfProxy::getHdfDatatypeInDataset(const std::string & datasetName)
+AbstractObject::hdfDatatypeEnum HdfProxy::getHdfDatatypeInDataset(const std::string & datasetName)
 {
 	if (!isOpened()) {
 		open();
@@ -340,7 +340,28 @@ int HdfProxy::getHdfDatatypeInDataset(const std::string & datasetName)
 	H5Dclose(dataset);
 	H5Tclose(datatype);
 
-	return native_datatype;
+	if (H5Tequal(native_datatype, H5T_NATIVE_DOUBLE) > 0)
+		return AbstractObject::DOUBLE;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_FLOAT) > 0)
+		return AbstractObject::FLOAT;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_LLONG) > 0)
+		return AbstractObject::LONG;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_ULLONG) > 0)
+		return AbstractObject::ULONG;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_INT) > 0)
+		return AbstractObject::INT;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_UINT) > 0)
+		return AbstractObject::UINT;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_SHORT) > 0)
+		return AbstractObject::SHORT;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_USHORT) > 0)
+		return AbstractObject::USHORT;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_CHAR) > 0)
+		return AbstractObject::CHAR;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_UCHAR) > 0)
+		return AbstractObject::UCHAR;
+
+	return AbstractObject::UNKNOWN; // unknwown datatype...
 }
 
 int HdfProxy::getHdfDatatypeClassInDataset(const std::string & datasetName)
@@ -432,12 +453,67 @@ unsigned int HdfProxy::getDimensionCount(const std::string & datasetName)
 	}
 
 	hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
+	if (dataset < 0) {
+		throw invalid_argument("The dataset " + datasetName + " could not be opened.");
+	}
 
 	hid_t dataspace = H5Dget_space(dataset);
+	if (dataspace < 0) {
+		H5Dclose(dataset);
+		throw invalid_argument("The dataspace for the dataset " + datasetName + " could not be opened.");
+	}
+
 	int result = H5Sget_simple_extent_ndims(dataspace);
 
 	H5Sclose(dataspace);
 	H5Dclose(dataset);
+
+	if (result < 0) {
+		throw invalid_argument("The number of dimensions of the dataspace for the dataset " + datasetName + " could not be read.");
+	}
+
+	return result;
+}
+
+std::vector<unsigned long long> HdfProxy::getElementCountPerDimension(const std::string & datasetName)
+{
+	if (!isOpened()) {
+		open();
+	}
+
+	hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
+	if (dataset < 0) {
+		throw invalid_argument("The dataset " + datasetName + " could not be opened.");
+	}
+
+	hid_t dataspace = H5Dget_space(dataset);
+	if (dataspace < 0) {
+		H5Dclose(dataset);
+		throw invalid_argument("The dataspace for the dataset " + datasetName + " could not be opened.");
+	}
+
+	int ndims = H5Sget_simple_extent_ndims(dataspace);
+	if (ndims < 0) {
+		H5Sclose(dataspace);
+		H5Dclose(dataset);
+		throw invalid_argument("The number of dimensions of the dataspace for the dataset " + datasetName + " could not be read.");
+	}
+
+	hsize_t* dims = new hsize_t[ndims];
+	ndims = H5Sget_simple_extent_dims(dataspace, dims, nullptr);
+
+	H5Sclose(dataspace);
+	H5Dclose(dataset);
+	if (ndims < 0) {
+		delete[] dims;
+		throw invalid_argument("The number of elements in each dimension of the dataspace for the dataset " + datasetName + " could not be read.");
+	}
+
+	std::vector<unsigned long long> result;
+	for (auto i = 0; i < ndims; ++i) {
+		result.push_back(dims[i]);
+	}
+	delete[] dims;
 
 	return result;
 }
@@ -449,12 +525,23 @@ hssize_t HdfProxy::getElementCount(const std::string & datasetName)
 	}
 
     hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
+	if (dataset < 0) {
+		throw invalid_argument("The dataset " + datasetName + " could not be opened.");
+	}
 	
 	hid_t dataspace = H5Dget_space(dataset);
+	if (dataspace < 0) {
+		H5Dclose(dataset);
+		throw invalid_argument("The dataspace for the dataset " + datasetName + " could not be opened.");
+	}
+
 	hssize_t result = H5Sget_simple_extent_npoints(dataspace);
 
 	H5Sclose(dataspace);
 	H5Dclose(dataset);
+	if (result < 0) {
+		throw invalid_argument("The number of elements of the dataspace for the dataset " + datasetName + " could not be read.");
+	}
 
 	return result;
 }
@@ -683,10 +770,10 @@ void HdfProxy::readArrayNdOfDoubleValues(const std::string & datasetName, double
 }
 
 void HdfProxy::readArrayNdOfDoubleValues(
-	  const std::string & datasetName, double* values,
-	  hsize_t * numValuesInEachDimension,
-	  hsize_t * offsetInEachDimension,
-	  const unsigned int & numDimensions)
+	const std::string & datasetName, double* values,
+	const hsize_t * numValuesInEachDimension,
+	const hsize_t * offsetInEachDimension,
+	const unsigned int & numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
 			numValuesInEachDimension, offsetInEachDimension, numDimensions,
@@ -695,10 +782,10 @@ void HdfProxy::readArrayNdOfDoubleValues(
 
 void HdfProxy::readArrayNdOfDoubleValues(
 	const std::string & datasetName, double* values,
-	hsize_t * blockCountPerDimension,
-	hsize_t * offsetInEachDimension,
-	hsize_t * strideInEachDimension,
-	hsize_t * blockSizeInEachDimension,
+	const hsize_t * blockCountPerDimension,
+	const hsize_t * offsetInEachDimension,
+	const hsize_t * strideInEachDimension,
+	const hsize_t * blockSizeInEachDimension,
 	const unsigned int & numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
@@ -722,8 +809,8 @@ void HdfProxy::readArrayNdOfFloatValues(const std::string & datasetName, float* 
 
 void HdfProxy::readArrayNdOfFloatValues(
 	const std::string& datasetName, float* values,
-	hsize_t* numValuesInEachDimension,
-	hsize_t* offsetInEachDimension,
+	const hsize_t* numValuesInEachDimension,
+	const hsize_t* offsetInEachDimension,
 	const unsigned int& numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
@@ -748,8 +835,8 @@ void HdfProxy::readArrayNdOfLongValues(const std::string & datasetName, long* va
 
 void HdfProxy::readArrayNdOfLongValues(
 	const std::string& datasetName, long* values,
-	hsize_t* numValuesInEachDimension,
-	hsize_t* offsetInEachDimension,
+	const hsize_t* numValuesInEachDimension,
+	const hsize_t* offsetInEachDimension,
 	const unsigned int& numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
@@ -769,8 +856,8 @@ void HdfProxy::readArrayNdOfIntValues(const std::string & datasetName, int* valu
 
 void HdfProxy::readArrayNdOfIntValues(
 	const std::string& datasetName, int* values,
-	hsize_t* numValuesInEachDimension,
-	hsize_t* offsetInEachDimension,
+	const hsize_t* numValuesInEachDimension,
+	const hsize_t* offsetInEachDimension,
 	const unsigned int& numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
@@ -887,14 +974,14 @@ void HdfProxy::writeGroupAttribute(const std::string & groupName,
 {
 	const int groupId = openOrCreateGroupInRootGroup(groupName);
 
-	unsigned int maxStringSize = 0;
+	size_t maxStringSize = 0;
 	for (size_t i = 0; i < values.size(); ++i) {
 		if (values[i].size() > maxStringSize) maxStringSize = values[i].size();
 	}
-	maxStringSize++;
+	++maxStringSize;
 	char* concat = new char[maxStringSize * values.size()];
 	for (size_t i = 0; i < values.size(); ++i) {
-		for (unsigned int j = 0; j < maxStringSize; ++j) {
+		for (size_t j = 0; j < maxStringSize; ++j) {
 			concat[j + i*maxStringSize] = values[i].size() > j ? values[i][j] : '\0';
 		}
 	}
@@ -985,13 +1072,13 @@ void HdfProxy::writeDatasetAttribute(const std::string & datasetName,
 {
 	hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
 
-	unsigned int maxStringSize = 0;
+	size_t maxStringSize = 0;
 	for (size_t i = 0; i < values.size(); ++i) {
 		if (values[i].size() > maxStringSize) maxStringSize = values[i].size();
 	}
 	char* concat = new char[maxStringSize * values.size()];
 	for (size_t i = 0; i < values.size(); ++i) {
-		for (unsigned int j = 0; j < maxStringSize; ++j) {
+		for (size_t j = 0; j < maxStringSize; ++j) {
 			concat[j + i*maxStringSize] = values[i].size() > j ? values[i][j] : '\0';
 		}
 	}

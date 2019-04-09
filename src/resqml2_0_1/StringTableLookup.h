@@ -122,12 +122,13 @@ namespace RESQML2_0_1_NS
 		std::tr1::unordered_map<long, std::string> getMap() const;
 #endif
 
+        std::vector<epc::Relationship> getAllSourceRelationships() const;
+        std::vector<epc::Relationship> getAllTargetRelationships() const;
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
+
 	protected:
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-
-		// XML backwards relationships
+		// XML source relationships
 		std::vector<class CategoricalProperty*> categoricalPropertyValuesSet;
 	};
 }

@@ -18,12 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "tools/GuidTools.h"
 
-using namespace std;
-
 #if defined(__gnu_linux__) || defined(__APPLE__)
 
 #include <uuid/uuid.h> // Need package "uuid-dev"
 #include <iostream>
+
+using namespace std;
 
 std::string GuidTools::generateUidAsString()
 {
@@ -32,25 +32,6 @@ std::string GuidTools::generateUidAsString()
     char uuidStr[37];
     uuid_unparse_lower ( uuid, uuidStr );
     return uuidStr;
-}
-
-#elif defined(_WIN32)
-
-#include <Windows.h>
-
-string GuidTools::generateUidAsString()
-{
-	GUID sessionGUID = GUID_NULL;
-	HRESULT hr = CoCreateGuid(&sessionGUID);
-	wchar_t uuidWStr[39];
-	StringFromGUID2(sessionGUID, uuidWStr, 39);
-	uuidWStr[37] = '\0'; // Delete the closing bracket
-	char uuidStr[37];
-	wcstombs(uuidStr, uuidWStr+1, 39); // +1 in order not to take into account the opening bracket
-	for (unsigned int i = 0; i < 37; ++i)
-		uuidStr[i] = tolower(uuidStr[i]);
-
-	return uuidStr;
 }
 
 #endif

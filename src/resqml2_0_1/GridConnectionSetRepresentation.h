@@ -76,7 +76,7 @@ namespace RESQML2_0_1_NS
 		*/
 		~GridConnectionSetRepresentation() {}
 
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		/**
 		* Get the cell index pair count of this grid connection representation

@@ -71,9 +71,9 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackThrowInterpretation(const gsoap_resqml2_0_1::resqml2__ThrowKind & throwKind);
 
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
+
 	private:
-		
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
 
 		// backward relationships
 		std::vector<StructuralOrganizationInterpretation*> structuralOrganizationInterpretationSet;

@@ -95,10 +95,15 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT const std::vector<RESQML2_NS::AbstractProperty*>& getPropertySet() const { return propertySet; }
 
-	protected:
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		/**
+		* Does nothing since StringTableLookup has not got any target relationship.
+		*/
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc) {}
+
+	protected:
 
 		// XML backward relationship
 		std::vector<RESQML2_NS::AbstractProperty*> propertySet;

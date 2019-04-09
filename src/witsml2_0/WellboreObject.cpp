@@ -32,7 +32,13 @@ Wellbore* WellboreObject::getWellbore() const
 	return getEpcDocument()->getDataObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
 }
 
-void WellboreObject::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+std::vector<epc::Relationship> WellboreObject::getAllSourceRelationships() const
+{
+	vector<Relationship> result;
+	return result;
+}
+
+void WellboreObject::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellboreDor();
 	Wellbore* wellbore = epcDoc->getDataObjectByUuid<Wellbore>(dor->Uuid);
@@ -49,7 +55,7 @@ void WellboreObject::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc
 	updateXml = true;
 }
 
-vector<Relationship> WellboreObject::getAllEpcRelationships() const
+vector<Relationship> WellboreObject::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 

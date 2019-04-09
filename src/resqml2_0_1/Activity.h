@@ -111,18 +111,13 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT std::vector<AbstractObject*> getResqmlObjectParameterValue(const std::string & paramTitle) const;
 		DLL_IMPORT_OR_EXPORT AbstractObject* getResqmlObjectParameterValue(const unsigned int & index) const;
 
-		/**
-		* Set the activity template of the activity
-		**/
-		DLL_IMPORT_OR_EXPORT void setActivityTemplate(RESQML2_NS::ActivityTemplate* activityTemplate);
-
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getActivityTemplateDor() const;
 
 		DLL_IMPORT_OR_EXPORT std::string getResqmlVersion() const;
 
-	private:
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
 
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+	private:
 
 		std::vector<gsoap_resqml2_0_1::resqml2__AbstractActivityParameter*> getParameterFromTitle(const std::string & paramTitle) const;
 	};

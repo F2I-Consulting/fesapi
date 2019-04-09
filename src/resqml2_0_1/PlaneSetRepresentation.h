@@ -51,7 +51,7 @@ namespace RESQML2_0_1_NS
 		*/
 		~PlaneSetRepresentation() {}
 
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const {return "";};
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const {return nullptr;}
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}

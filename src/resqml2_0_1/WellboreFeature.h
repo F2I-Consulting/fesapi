@@ -34,7 +34,9 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		WellboreFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :AbstractTechnicalFeature(partialObject) {}
+		WellboreFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
+			AbstractTechnicalFeature(partialObject),
+			witsmlWellbore(nullptr) {}
 
 		/**
 		* Default constructor
@@ -65,10 +67,10 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Wellbore* getWitsmlWellbore() {return witsmlWellbore;}
 		DLL_IMPORT_OR_EXPORT void setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore);
 
-	protected:
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+	protected:
 
 		// XML forward relationship
 		WITSML2_0_NS::Wellbore * witsmlWellbore;

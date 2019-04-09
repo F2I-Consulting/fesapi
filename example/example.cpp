@@ -157,7 +157,7 @@ void serializeWells(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* h
 	double trajectoryTangentVectors[12] = { 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1 };
 	double trajectoryMds[4] = { 0, 325, 500, 1000 };
 	w1i1TrajRep->setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, hdfProxy);
-	
+
 	// WellboreFeature frame
 	WellboreFrameRepresentation* w1i1FrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
 	double logMds[5] = { 0, 250, 500, 750, 1000 };
@@ -591,6 +591,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 	//**************
 	// Subrepresentations
 	//**************
+	/*
 	if (fault1Interp1 != nullptr)
 	{
 		RESQML2_NS::SubRepresentation * faultSubRep = pck->createSubRepresentation(fault1Interp1, "ff248280-fa3d-11e5-a35c-0002a5d5c51b", "Fault Subrep In Grid");
@@ -622,7 +623,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 	};
 	doubleGridSubrep->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml2__IndexableElements__cells, 23, doubleGridSubrepValues, hdfProxy, doubleGridSubrepSupportingRepIndices);
-
+	
 	//**************
 	// Grid Connection
 	//**************
@@ -664,7 +665,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 	gridConnSet432rh->pushBackSupportingGridRepresentation(ijkgrid432rh);
 	gridConnSet432rh->setCellIndexPairs(15, cellConn432, 9999, hdfProxy);
 	gridConnSet432rh->setLocalFacePerCellIndexPairs(15, localFacePerCellIndexPairs432, 9999, hdfProxy);
-
+	*/
 	//**************
 	// Properties
 	//**************
@@ -685,7 +686,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 	discreteProp1OnIjkgridParametric->pushBackUShortHdf5Array3dOfValues(prop1ValuesOnIjkgridParametric, 2, 1, 2, hdfProxy, -1, 0, 3);
 	//Move this prop to another same ninjnk ijk grid
 	discreteProp1OnIjkgridParametric->setRepresentation(ijkgridParametricNotSameLineKind);
-
+	/*
 	//**************
 	// Time Series
 	//**************
@@ -764,6 +765,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 	unsigned char faceRightHandness[4] = { 0, 0, 1, 1 };
 	ULONG64 nodeIndicesPerFace[12] = { 0, 1, 2, 1, 2, 3, 0, 1, 3, 0, 2, 3 };
 	tetraGrid->setTetrahedraOnlyGeometry(faceRightHandness, tetraGridPoints, 4, 4, hdfProxy, faceIndicesPerCell, nodeIndicesPerFace);
+	*/
 }
 
 void serializeRepresentationSetRepresentation(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy*)
@@ -1723,8 +1725,8 @@ bool serialize(const string & filePath)
 	COMMON_NS::AbstractHdfProxy* hdfProxy = pck.createHdfProxy("", "Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5");
 
 	//CRS
-	local3dCrs = pck.createLocalDepth3dCrs("", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
-	localTime3dCrs = pck.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__TimeUom__s, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false); // CRS translation is just for testing;
+	local3dCrs = pck.createLocalDepth3dCrs("f951f4b7-684a-4c1b-bcd7-bc61d939b328", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
+	localTime3dCrs = pck.createLocalTime3dCrs("c898555d-3765-4f14-85e7-85ad897a7346", "Default local time CRS", 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__TimeUom__s, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false); // CRS translation is just for testing;
 
 	// Comment or uncomment below domains/lines you want wether to test or not
 	serializeWells(&pck, hdfProxy);
@@ -1832,8 +1834,9 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation * rep, bool* enabledCe
 				cout << "\tTrying to convert.." << endl;
 				double* values = new double[valueCount];
 				static_cast<ContinuousProperty*>(propVal)->getDoubleValuesOfPatch(0, values);
-				std::cout << "\tFirst value is " << values[0] << endl;
-				std::cout << "\tSecond value is " << values[1] << endl;
+				for (size_t valueIndex = 0; valueIndex < valueCount; ++valueIndex) {
+					std::cout << "\tContinuous value at index " << valueIndex << " == "<< values[valueIndex] << endl;
+				}
 				delete[] values;
 				cout << "\tPress enter to continue..." << endl;
 				cin.get();
@@ -1847,8 +1850,9 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation * rep, bool* enabledCe
 				std::cout << "\tMin value is " << minValue << endl;
 				long* values = new long[valueCount];
 				propVal->getLongValuesOfPatch(0, values);
-				std::cout << "\tFirst value is " << values[0] << endl;
-				std::cout << "\tSecond value is " << values[1] << endl;
+				for (size_t valueIndex = 0; valueIndex < valueCount; ++valueIndex) {
+					std::cout << "\tDiscrete value at index " << valueIndex << " == "<< values[valueIndex] << endl;
+				}
 				delete[] values;
 			}
 		}
@@ -1860,8 +1864,9 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation * rep, bool* enabledCe
 				cout << "\tTrying to convert.." << endl;
 				long* values = new long[valueCount];
 				propVal->getLongValuesOfPatch(0, values);
-				std::cout << "\tFirst value is " << values[0] << endl;
-				std::cout << "\tSecond value is " << values[1] << endl;
+				for (size_t valueIndex = 0; valueIndex < valueCount; ++valueIndex) {
+					std::cout << "\tDiscrete value at index " << valueIndex << " == "<< values[valueIndex] << endl;
+				}
 				delete[] values;
 				cout << "\tPress enter to continue..." << endl;
 				cin.get();
@@ -1875,8 +1880,10 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation * rep, bool* enabledCe
 				std::cout << "\tMin value is " << minValue << endl;
 				double* values = new double[valueCount];
 				continuousProp->getDoubleValuesOfPatch(0, values);
-				std::cout << "\tFirst value is " << values[0] << endl;
-				std::cout << "\tSecond value is " << values[1] << endl;
+				for (size_t valueIndex = 0; valueIndex < valueCount; ++valueIndex) {
+					if (values[valueIndex] < 0)
+					std::cout << "\tContinuous value at index " << valueIndex << " == "<< values[valueIndex] << endl;
+				}
 
 				if (continuousProp->getElementCountPerValue() == 1) {
 					for (size_t cellIndex = 0; cellIndex < valueCount; ++cellIndex) {
@@ -3228,13 +3235,8 @@ void deserialize(const string & inputFile)
 
 	cout << "EXTENDED CORE PROPERTIES" << endl;
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	unordered_map<string, string> & extendedCoreProperty = pck.getExtendedCoreProperty();
 	for (unordered_map<string, string>::const_iterator it = extendedCoreProperty.begin(); it != extendedCoreProperty.end(); ++it) {
-#else
-	tr1::unordered_map<string, string> & extendedCoreProperty = pck.getExtendedCoreProperty();
-	for (tr1::unordered_map<string, string>::const_iterator it = extendedCoreProperty.begin(); it != extendedCoreProperty.end(); ++it) {
-#endif
 		cout << it->first.c_str() << " " << it->second.c_str() << endl;
 	}
 
@@ -3624,6 +3626,7 @@ void deserialize(const string & inputFile)
 
 		showAllMetadata(ijkGrid);
 		if (ijkGrid->isPartial()) {
+			showAllProperties(ijkGrid);
 			continue;
 		}
 		if (ijkGrid->getGeometryKind() != AbstractIjkGridRepresentation::NO_GEOMETRY)
@@ -3936,20 +3939,23 @@ void deserialize(const string & inputFile)
 			unstructuredGridRepSet[i]->getXyzPointsOfAllPatchesInGlobalCrs(gridPoints);
 			std::cout << "DONE" << std::endl;
 			std::cout << "--------------------------------------------------" << std::endl;
-			delete[] gridPoints;
 
 			unstructuredGridRepSet[i]->loadGeometry();
 
-			std::cout << "(in memory) Face count of cell 0 is : " << unstructuredGridRepSet[i]->getFaceCountOfCell(0) << std::endl;
-			if (unstructuredGridRepSet[i]->getCellCount() > 1)
-				std::cout << "(in memory) Face count of cell 1 is : " << unstructuredGridRepSet[i]->getFaceCountOfCell(1) << std::endl;
-			std::cout << "(in memory) Node count of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeCountOfFaceOfCell(0, 0) << std::endl;
-			std::cout << "(in memory) Node indice 0 of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 0)[0] << std::endl;
-			std::cout << "(in memory) Node indice 1 of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 0)[1] << std::endl;
-			std::cout << "(in memory) Node indice 2 of face 0 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 0)[2] << std::endl;
-			std::cout << "(in memory) Node indice 0 of face 1 of cell 0 is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(0, 1)[0] << std::endl;
+			std::cout << "In memory" << std::endl;
+			for (unsigned long cellIndex = 0; cellIndex < unstructuredGridRepSet[i]->getCellCount(); ++cellIndex) {
+				std::cout << "Face count of cell " << cellIndex << " is : " << unstructuredGridRepSet[i]->getFaceCountOfCell(cellIndex) << std::endl;
+				for (unsigned int faceIndex = 0; faceIndex < unstructuredGridRepSet[i]->getFaceCountOfCell(cellIndex); ++faceIndex) {
+					std::cout << "Node count of face " << faceIndex << " of cell " << cellIndex << " is : " << unstructuredGridRepSet[i]->getNodeCountOfFaceOfCell(cellIndex, faceIndex) << std::endl;
+					for (unsigned int nodeIndex = 0; nodeIndex < unstructuredGridRepSet[i]->getNodeCountOfFaceOfCell(cellIndex, faceIndex); ++nodeIndex) {
+						std::cout << "Node indice " << nodeIndex << " of face " << faceIndex << " of cell " << cellIndex << " is : " << unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] << std::endl;
+						std::cout << "X= " <<  gridPoints[unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3] << " Y= " <<  gridPoints[unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3+1 ] << " Z= " <<  gridPoints[unstructuredGridRepSet[i]->getNodeIndicesOfFaceOfCell(cellIndex, faceIndex)[nodeIndex] * 3+ 2 ] << std::endl;
+					}
+				}
+			}
 
 			unstructuredGridRepSet[i]->unloadGeometry();
+			delete[] gridPoints;
 
 			showAllProperties(unstructuredGridRepSet[i]);
 		}

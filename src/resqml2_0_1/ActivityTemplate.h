@@ -88,8 +88,6 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT LONG64 getParameterMaxOccurences(const unsigned int & index) const;
 		DLL_IMPORT_OR_EXPORT LONG64 getParameterMaxOccurences(const std::string & paramTitle) const;
 
-		DLL_IMPORT_OR_EXPORT const std::vector<Activity*> & getActivityInstanceSet() const { return activityInstanceSet; }
-
 		//******************************************************************
 		//******************** MANDATORY FOR GsoapWrapper ******************
 		//******************************************************************
@@ -100,12 +98,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const {return XML_TAG;}
 
 	private:
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc);
-
 		gsoap_resqml2_0_1::resqml2__ParameterTemplate* getParameterFromTitle(const std::string & paramTitle) const;
-		
-        std::vector<Activity*> activityInstanceSet;
 	};
 }
 

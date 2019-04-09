@@ -45,9 +45,9 @@ StratigraphicUnitInterpretation::StratigraphicUnitInterpretation(StratigraphicUn
 	setInterpretedFeature(feature);
 }
 
-vector<Relationship> StratigraphicUnitInterpretation::getAllEpcRelationships() const
+vector<Relationship> StratigraphicUnitInterpretation::getAllSourceRelationships() const
 {
-	vector<Relationship> result = AbstractFeatureInterpretation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractFeatureInterpretation::getAllSourceRelationships();
 
 	for (size_t i = 0; i < stratigraphicColumnRankSet.size(); ++i)
 	{

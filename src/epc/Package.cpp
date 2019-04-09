@@ -38,10 +38,6 @@ under the License.
 
 #include "FilePart.h"
 
-#if (defined(_WIN32) && _MSC_VER < 1600) || (defined(__GNUC__) && (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 6)))
-#include "tools/nullptr_emulation.h"
-#endif
-
 #define CASESENSITIVITY (0)
 
 using namespace std; // in order not to prefix by "std::" for each class in the "std" namespace. Never use "using namespace" in *.h file but only in *.cpp file!!!
@@ -152,21 +148,13 @@ public:
 	FileContentType		fileContentType;											/// ContentTypes file
 	FileRelationship	filePrincipalRelationship;									/// Relationships file
 	PartMap				allFileParts;												/// Set of parts file
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	unordered_map< string, string >			extendedCoreProperties;					/// Set of non standard (extended) core properties
-#else
-	tr1::unordered_map< string, string >			extendedCoreProperties;					/// Set of non standard (extended) core properties
-#endif
 	string				pathName;													/// Pathname of package
 	unzFile				unzipped;
 	zipFile             zf;
 	bool                isZip64;
 #ifdef CACHE_FILE_DESCRIPTOR
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	std::unordered_map< std::string, unz64_s > name2file;
-#else
-	std::tr1::unordered_map< std::string, unz64_s > name2file;
-#endif
 #endif
 };
 
@@ -187,8 +175,7 @@ Package::CheshireCat::~CheshireCat()
 
 void Package::CheshireCat::close()
 {
-	if (unzipped)
-	{
+	if (unzipped != nullptr) {
 		unzClose(unzipped);
 		unzipped = nullptr;
 	}
@@ -209,7 +196,7 @@ Package::~Package()
 	delete d_ptr;
 }
 
-void Package::openForWriting(const std::string & pkgPathName, bool useZip64)
+void Package::openForWriting(const std::string & pkgPathName, int append, bool useZip64)
 {
 	d_ptr->pathName.assign(pkgPathName);
 
@@ -228,7 +215,7 @@ void Package::openForWriting(const std::string & pkgPathName, bool useZip64)
 	addRelationship(relToCoreProp);
 
 	d_ptr->isZip64 = useZip64;
-	d_ptr->zf = useZip64 ? zipOpen64(d_ptr->pathName.c_str(), 0) : zipOpen(d_ptr->pathName.c_str(), 0);
+	d_ptr->zf = useZip64 ? zipOpen64(d_ptr->pathName.c_str(), append) : zipOpen(d_ptr->pathName.c_str(), append);
 
 	if (d_ptr->zf == nullptr) {
 		throw invalid_argument("The file " + pkgPathName + " could not be opened");
@@ -363,11 +350,7 @@ void Package::setFileFileCoreProperties(const FileCoreProperties & pkgFileCP)
 	d_ptr->fileCoreProperties = pkgFileCP;
 }
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 unordered_map< string, string > & Package::getExtendedCoreProperty()
-#else
-tr1::unordered_map< string, string > & Package::getExtendedCoreProperty()
-#endif
 {
 	return d_ptr->extendedCoreProperties;
 }
@@ -539,7 +522,7 @@ void Package::writeStringIntoNewPart(const std::string &input, const std::string
 	}
 }
 
-void Package::writePackage() 
+void Package::writePackage()
 {
 	d_ptr->fileCoreProperties.initDefaultCoreProperties();
 	writeStringIntoNewPart(d_ptr->fileCoreProperties.toString(), "docProps/core.xml");
@@ -552,12 +535,7 @@ void Package::writePackage()
 		oss << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">" << endl;
 
 		// content
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-		for (std::unordered_map< std::string, std::string >::iterator it = d_ptr->extendedCoreProperties.begin(); it != d_ptr->extendedCoreProperties.end(); ++it)
-#else
-		for (std::tr1::unordered_map< std::string, std::string >::iterator it = d_ptr->extendedCoreProperties.begin(); it != d_ptr->extendedCoreProperties.end(); ++it)
-#endif
-		{
+		for (std::unordered_map< std::string, std::string >::iterator it = d_ptr->extendedCoreProperties.begin(); it != d_ptr->extendedCoreProperties.end(); ++it) {
 			oss << "\t<" << it->first << ">" + it->second + "</" + it->first + ">" << endl;
 		}
 
@@ -662,11 +640,7 @@ bool Package::fileExists(const string & filename) const
 string Package::extractFile(const string & filename, const string & password)
 {
 #ifdef CACHE_FILE_DESCRIPTOR
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	std::unordered_map< std::string, unz64_s >::const_iterator it = d_ptr->name2file.find(filename);
-#else
-	std::tr1::unordered_map< std::string, unz64_s >::const_iterator it = d_ptr->name2file.find(filename);
-#endif
 	if (it == d_ptr->name2file.end())
 	{
 		if (!fileExists(filename))

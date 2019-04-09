@@ -68,16 +68,14 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreFeature* getResqmlWellboreFeature() const { return resqmlWellboreFeature; }
 
 		DLL_IMPORT_OR_EXPORT const std::vector<WellboreCompletion *>& getWellboreCompletions() const { return wellboreCompletionSet; }
+
 		DLL_IMPORT_OR_EXPORT const std::vector<Trajectory *>& getTrajectories() const { return trajectorySet; }
 
 		DLL_IMPORT_OR_EXPORT void setShape(gsoap_eml2_1::witsml2__WellboreShape shape);
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-
-		/**
-		* Resolve all relationships of the object in an epc document.
-		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllSourceRelationships() const;
+		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllTargetRelationships() const;
+		DLL_IMPORT_OR_EXPORT void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc);
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}

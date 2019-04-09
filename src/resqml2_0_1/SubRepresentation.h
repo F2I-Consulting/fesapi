@@ -82,7 +82,7 @@ namespace RESQML2_0_1_NS
 		*/
 		~SubRepresentation() {}
 
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		/**
 		* Get the kind of the selected elements for a particular patch of this subrepresentation.

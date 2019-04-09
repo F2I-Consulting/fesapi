@@ -26,6 +26,8 @@ namespace RESQML2_0_1_NS
 	class WellboreFrameRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	protected:
+		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const {return nullptr;}
+
 		WellboreFrameRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs) : AbstractRepresentation(interp, crs), trajectory(nullptr)
 		{}
 
@@ -109,7 +111,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get the Measured Depth datatype in the HDF dataset
 		*/
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum getMdHdfDatatype() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::hdfDatatypeEnum getMdHdfDatatype() const;
 
 		/**
 		* Get all the md values of the instance which are supposed to be double ones.
@@ -122,28 +124,31 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void getMdAsFloatValues(float * values);
 
 		/**
+		* Get the associated resqml wellbore trajectory data object reference
+		*/
+		gsoap_resqml2_0_1::eml20__DataObjectReference * getWellboreTrajectoryDor() const;
+
+		/**
 		* Get the associated resqml wellbore trajectory uuid
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getWellboreTrajectoryUuid() const;
 
 		/**
-		* Get the associated resqml wellbore trajector
+		* Get the associated resqml wellbore trajectory
 		*/
-		DLL_IMPORT_OR_EXPORT class WellboreTrajectoryRepresentation* getWellboreTrajectory() {return trajectory;}
+		DLL_IMPORT_OR_EXPORT class WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor() const;
-
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
-	protected:
+		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
+		virtual void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
 
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+	protected:
 
 		class WellboreTrajectoryRepresentation * trajectory;
 	};

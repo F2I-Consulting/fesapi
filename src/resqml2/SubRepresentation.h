@@ -190,9 +190,12 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getSupportingRepresentationContentType() const;
 
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
+
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
+
 	private:
-		
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+
+		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const {return nullptr;}
 	};
 }

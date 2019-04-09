@@ -228,9 +228,9 @@ resqml2__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ(
 	return geom;
 }
 
-vector<Relationship> AbstractSurfaceRepresentation::getAllEpcRelationships() const
+vector<Relationship> AbstractSurfaceRepresentation::getAllTargetRelationships() const
 {
-	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractRepresentation::getAllTargetRelationships();
 
 	// Outer rings
 	for(vector<PolylineRepresentation*>::const_iterator it = outerRingSet.begin(); it != outerRingSet.end(); ++it) {
@@ -244,9 +244,9 @@ vector<Relationship> AbstractSurfaceRepresentation::getAllEpcRelationships() con
 	return result;
 }
 
-void AbstractSurfaceRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void AbstractSurfaceRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractRepresentation::resolveTargetRelationships(epcDoc);
 
 	resqml2__AbstractSurfaceRepresentation* rep = static_cast<resqml2__AbstractSurfaceRepresentation*>(gsoapProxy2_0_1);
 

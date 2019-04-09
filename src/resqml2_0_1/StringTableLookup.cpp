@@ -40,7 +40,7 @@ StringTableLookup::StringTableLookup(soap* soapContext, const string & guid, con
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
-vector<Relationship> StringTableLookup::getAllEpcRelationships() const
+vector<Relationship> StringTableLookup::getAllSourceRelationships() const
 {
 	vector<Relationship> result;
 
@@ -52,6 +52,12 @@ vector<Relationship> StringTableLookup::getAllEpcRelationships() const
 		result.push_back(rel);
 	}
 
+	return result;
+}
+
+vector<Relationship> StringTableLookup::getAllTargetRelationships() const
+{
+	vector<Relationship> result;
 	return result;
 }
 
@@ -178,4 +184,4 @@ tr1::unordered_map<long, string> StringTableLookup::getMap() const
 	return result;
 }
 
-void StringTableLookup::importRelationshipSetFromEpc(COMMON_NS::EpcDocument*) {}
+void StringTableLookup::resolveTargetRelationships(COMMON_NS::EpcDocument*) {}

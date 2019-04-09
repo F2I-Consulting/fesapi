@@ -58,22 +58,21 @@ void AbstractRepresentation::setXmlInterpretation(AbstractFeatureInterpretation 
 	}
 }
 
-std::string AbstractRepresentation::getHdfProxyUuidFromPointGeometryPatch(gsoap_resqml2_0_1::resqml2__PointGeometry* patch) const
+gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractRepresentation::getHdfProxyDorFromPointGeometryPatch(gsoap_resqml2_0_1::resqml2__PointGeometry* patch) const
 {
-	string result = "";
 	if (patch != nullptr) {
 		if (patch->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dZValueArray) {
 			gsoap_resqml2_0_1::resqml2__Point3dZValueArray* const tmp = static_cast<gsoap_resqml2_0_1::resqml2__Point3dZValueArray* const>(patch->Points);
 			if (tmp->ZValues->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-				return static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array* const>(tmp->ZValues)->Values->HdfProxy->UUID;
+				return static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array* const>(tmp->ZValues)->Values->HdfProxy;
 			}
 		}
 		else if (patch->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array) {
-			return static_cast<gsoap_resqml2_0_1::resqml2__Point3dHdf5Array* const>(patch->Points)->Coordinates->HdfProxy->UUID;
+			return static_cast<gsoap_resqml2_0_1::resqml2__Point3dHdf5Array* const>(patch->Points)->Coordinates->HdfProxy;
 		}
 	}
 
-	return result;
+	return nullptr;
 }
 
 gsoap_resqml2_0_1::resqml2__Seismic2dCoordinates* AbstractRepresentation::getSeismic2dCoordinates(const unsigned int & patchIndex) const
@@ -114,8 +113,8 @@ gsoap_resqml2_0_1::resqml2__Seismic3dCoordinates* AbstractRepresentation::getSei
 	}
 }
 
-gsoap_resqml2_0_1::resqml2__PointGeometry* AbstractRepresentation::createPointGeometryPatch2_0_1(const unsigned int & patchIndex,
-	double * points, hsize_t * numPoints, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy)
+gsoap_resqml2_0_1::resqml2__PointGeometry* AbstractRepresentation::createPointGeometryPatch2_0_1(ULONG64 patchIndex,
+	double * points, hsize_t * numPoints, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		setHdfProxy(proxy);
@@ -179,6 +178,12 @@ std::string AbstractRepresentation::getLocalCrsUuid() const
 COMMON_NS::AbstractHdfProxy * AbstractRepresentation::getHdfProxy() const
 {
 	return hdfProxy;
+}
+
+std::string AbstractRepresentation::getHdfProxyUuid() const
+{
+	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getHdfProxyDor();
+	return dor == nullptr ? string() : dor->UUID;
 }
 
 const std::vector<AbstractProperty*> & AbstractRepresentation::getPropertySet() const
@@ -246,8 +251,7 @@ AbstractFeatureInterpretation* AbstractRepresentation::getInterpretation() const
 gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractRepresentation::getInterpretationDor() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation != nullptr ?
-			static_cast<gsoap_resqml2_0_1::resqml2__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation : nullptr;
+		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -384,7 +388,7 @@ std::set<AbstractRepresentation*> AbstractRepresentation::getAllSeismicSupport()
 {
 	std::set<AbstractRepresentation*> result;
 	const unsigned int patchCount = getPatchCount();
-	for (size_t patchIndex = 0; patchIndex < patchCount; ++patchIndex)
+	for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex)
 	{
 		AbstractRepresentation* seismicSupport = getSeismicSupportOfPatch(patchIndex);
 		if (seismicSupport != nullptr)
@@ -433,7 +437,7 @@ void AbstractRepresentation::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy)
 	proxy->representationSourceObject.push_back(this);
 }
 
-void AbstractRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void AbstractRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getInterpretationDor();
 	if (dor != nullptr) {
@@ -466,15 +470,18 @@ void AbstractRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument
 		updateXml = true;
 	}
 
-	const std::string uuid = getHdfProxyUuid();
-	if (!uuid.empty()) {
-		COMMON_NS::AbstractHdfProxy* const hdfProxy = epcDoc->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(uuid);
-		if (hdfProxy != nullptr) {
-			setHdfProxy(hdfProxy);
+	// Epc External part
+	dor = getHdfProxyDor();
+	if (dor != nullptr) {
+		COMMON_NS::AbstractHdfProxy* hdfProxy = epcDoc->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dor->UUID);
+		if (hdfProxy == nullptr) { // partial transfer
+			getEpcDocument()->createPartial(dor);
+			hdfProxy = getEpcDocument()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dor->UUID);
 		}
-		else {
-			getEpcDocument()->addWarning("The HDF proxy " + uuid + " of the representation " + getUuid() + " is missing");
+		if (hdfProxy == nullptr) {
+			throw invalid_argument("The DOR looks invalid.");
 		}
+		setHdfProxy(hdfProxy);
 	}
 
 	// Seismic support
@@ -482,14 +489,36 @@ void AbstractRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument
 		// Seismic support
 		for (unsigned int patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
 			gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(patchIndex);
-			if (geom && geom->SeismicCoordinates) {
+			if (geom != nullptr && geom->SeismicCoordinates != nullptr) {
 				if (geom->SeismicCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Seismic3dCoordinates) {
 					gsoap_resqml2_0_1::resqml2__Seismic3dCoordinates* const seis3dInfo = static_cast<gsoap_resqml2_0_1::resqml2__Seismic3dCoordinates* const>(geom->SeismicCoordinates);
-					pushBackSeismicSupport(epcDoc->getDataObjectByUuid<AbstractRepresentation>(seis3dInfo->SeismicSupport->UUID));
+
+					gsoap_resqml2_0_1::eml20__DataObjectReference* dor = seis3dInfo->SeismicSupport;
+					RESQML2_NS::AbstractRepresentation* seismicSupport = epcDoc->getDataObjectByUuid<AbstractRepresentation>(dor->UUID);
+					if (seismicSupport == nullptr) { // partial transfer
+						getEpcDocument()->createPartial(dor);
+						seismicSupport = getEpcDocument()->getDataObjectByUuid<AbstractRepresentation>(dor->UUID);
+					}
+					if (seismicSupport == nullptr) {
+						throw invalid_argument("The DOR looks invalid.");
+					}
+
+					pushBackSeismicSupport(seismicSupport);
 				}
 				else if (geom->SeismicCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Seismic2dCoordinates) {
 					gsoap_resqml2_0_1::resqml2__Seismic2dCoordinates* const seis2dInfo = static_cast<gsoap_resqml2_0_1::resqml2__Seismic2dCoordinates* const>(geom->SeismicCoordinates);
-					pushBackSeismicSupport(epcDoc->getDataObjectByUuid<AbstractRepresentation>(seis2dInfo->SeismicSupport->UUID));
+
+					gsoap_resqml2_0_1::eml20__DataObjectReference* dor = seis2dInfo->SeismicSupport;
+					RESQML2_NS::AbstractRepresentation* seismicSupport = epcDoc->getDataObjectByUuid<AbstractRepresentation>(dor->UUID);
+					if (seismicSupport == nullptr) { // partial transfer
+						getEpcDocument()->createPartial(dor);
+						seismicSupport = getEpcDocument()->getDataObjectByUuid<AbstractRepresentation>(dor->UUID);
+					}
+					if (seismicSupport == nullptr) {
+						throw invalid_argument("The DOR looks invalid.");
+					}
+
+					pushBackSeismicSupport(seismicSupport);
 				}
 			}
 		}
@@ -499,7 +528,43 @@ void AbstractRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument
 	}
 }
 
-vector<Relationship> AbstractRepresentation::getAllEpcRelationships() const
+vector<Relationship> AbstractRepresentation::getAllSourceRelationships() const
+{
+	vector<Relationship> result;
+
+	for (size_t i = 0; i < subRepresentationSet.size(); ++i)
+	{
+		Relationship relSubRep(subRepresentationSet[i]->getPartNameInEpcDocument(), "", subRepresentationSet[i]->getUuid());
+		relSubRep.setSourceObjectType();
+		result.push_back(relSubRep);
+	}
+
+	for (size_t i = 0; i < propertySet.size(); ++i)
+	{
+		Relationship relValues(propertySet[i]->getPartNameInEpcDocument(), "", propertySet[i]->getUuid());
+		relValues.setSourceObjectType();
+		result.push_back(relValues);
+	}
+
+	// Seismic backward relationship
+	for (size_t i = 0; i < seismicSupportedRepSet.size(); ++i)
+	{
+		Relationship relSeisSupportedRep(seismicSupportedRepSet[i]->getPartNameInEpcDocument(), "", seismicSupportedRepSet[i]->getUuid());
+		relSeisSupportedRep.setSourceObjectType();
+		result.push_back(relSeisSupportedRep);
+	}
+
+	for (size_t i = 0; i < representationSetRepresentationSet.size(); ++i)
+	{
+		Relationship relOrg(representationSetRepresentationSet[i]->getPartNameInEpcDocument(), "", representationSetRepresentationSet[i]->getUuid());
+		relOrg.setSourceObjectType();
+		result.push_back(relOrg);
+	}
+
+	return result;
+}
+
+vector<Relationship> AbstractRepresentation::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 
@@ -524,20 +589,6 @@ vector<Relationship> AbstractRepresentation::getAllEpcRelationships() const
 		result.push_back(relHdf);
 	}
 
-	for (size_t i = 0; i < subRepresentationSet.size(); ++i)
-	{
-		Relationship relSubRep(subRepresentationSet[i]->getPartNameInEpcDocument(), "", subRepresentationSet[i]->getUuid());
-		relSubRep.setSourceObjectType();
-		result.push_back(relSubRep);
-	}
-
-	for (size_t i = 0; i < propertySet.size(); ++i)
-	{
-		Relationship relValues(propertySet[i]->getPartNameInEpcDocument(), "", propertySet[i]->getUuid());
-		relValues.setSourceObjectType();
-		result.push_back(relValues);
-	}
-
 	// Seismic forward relationship
 	std::set<AbstractRepresentation*> allSeismicSupport = getAllSeismicSupport();
 	for (std::set<AbstractRepresentation*>::iterator it = allSeismicSupport.begin(); it != allSeismicSupport.end(); ++it) {
@@ -545,21 +596,6 @@ vector<Relationship> AbstractRepresentation::getAllEpcRelationships() const
 		Relationship rel(seismicSupport->getPartNameInEpcDocument(), "", seismicSupport->getUuid());
 		rel.setDestinationObjectType();
 		result.push_back(rel);
-	}
-
-	// Seismic backward relationship
-	for (size_t i = 0; i < seismicSupportedRepSet.size(); ++i)
-	{
-		Relationship relSeisSupportedRep(seismicSupportedRepSet[i]->getPartNameInEpcDocument(), "", seismicSupportedRepSet[i]->getUuid());
-		relSeisSupportedRep.setSourceObjectType();
-		result.push_back(relSeisSupportedRep);
-	}
-
-	for (size_t i = 0; i < representationSetRepresentationSet.size(); ++i)
-	{
-		Relationship relOrg(representationSetRepresentationSet[i]->getPartNameInEpcDocument(), "", representationSetRepresentationSet[i]->getUuid());
-		relOrg.setSourceObjectType();
-		result.push_back(relOrg);
 	}
 
 	return result;

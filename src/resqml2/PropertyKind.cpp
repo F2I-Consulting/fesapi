@@ -135,18 +135,9 @@ void PropertyKind::setParentPropertyKind(PropertyKind* parentPropertyKind)
 	}
 }
 
-vector<Relationship> PropertyKind::getAllEpcRelationships() const
+vector<Relationship> PropertyKind::getAllSourceRelationships() const
 {
 	vector<Relationship> result;
-
-	// forward relationships
-	if (!isParentAnEnergisticsPropertyKind())
-	{
-		const PropertyKind* const parentPropertyKind = getParentLocalPropertyKind();
-		Relationship rel(parentPropertyKind->getPartNameInEpcDocument(), "", parentPropertyKind->getUuid());
-		rel.setDestinationObjectType();
-		result.push_back(rel);
-	}
 
 	// backwards relationships
 	for (size_t i = 0; i < propertySet.size(); ++i) {
@@ -164,7 +155,23 @@ vector<Relationship> PropertyKind::getAllEpcRelationships() const
 	return result;
 }
 
-void PropertyKind::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+vector<Relationship> PropertyKind::getAllTargetRelationships() const
+{
+	vector<Relationship> result;
+
+	// forward relationships
+	if (!isParentAnEnergisticsPropertyKind())
+	{
+		const PropertyKind* const parentPropertyKind = getParentLocalPropertyKind();
+		Relationship rel(parentPropertyKind->getPartNameInEpcDocument(), "", parentPropertyKind->getUuid());
+		rel.setDestinationObjectType();
+		result.push_back(rel);
+	}
+
+	return result;
+}
+
+void PropertyKind::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	if (isParentAnEnergisticsPropertyKind()) {
 		return;

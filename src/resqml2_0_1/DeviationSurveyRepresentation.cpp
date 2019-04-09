@@ -115,9 +115,23 @@ void DeviationSurveyRepresentation::setGeometry(double * firstStationLocation, c
 	hdfProxy->writeArrayNdOfDoubleValues(rep->uuid, "inclinations", inclinations, dim, 1);
 }
 
-vector<Relationship> DeviationSurveyRepresentation::getAllEpcRelationships() const
+vector<Relationship> DeviationSurveyRepresentation::getAllSourceRelationships() const
 {	
-	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractRepresentation::getAllSourceRelationships();
+
+	// XML backward relationship
+	for (size_t i = 0; i < wbTrajectoryRepSet.size(); ++i) {
+		Relationship relFrame(wbTrajectoryRepSet[i]->getPartNameInEpcDocument(), "", wbTrajectoryRepSet[i]->getUuid());
+		relFrame.setSourceObjectType();
+		result.push_back(relFrame);
+	}
+
+	return result;
+}
+
+vector<Relationship> DeviationSurveyRepresentation::getAllTargetRelationships() const
+{
+	vector<Relationship> result = AbstractRepresentation::getAllTargetRelationships();
 
 	// XML forward relationship
 	RESQML2_NS::MdDatum* mdDatum = getMdDatum();
@@ -130,19 +144,12 @@ vector<Relationship> DeviationSurveyRepresentation::getAllEpcRelationships() con
 		throw domain_error("The MD information associated to the WellboreFeature trajectory cannot be nullptr.");
 	}
 
-	// XML backward relationship
-	for (size_t i = 0; i < wbTrajectoryRepSet.size(); ++i) {
-		Relationship relFrame(wbTrajectoryRepSet[i]->getPartNameInEpcDocument(), "", wbTrajectoryRepSet[i]->getUuid());
-		relFrame.setSourceObjectType();
-		result.push_back(relFrame);
-	}
-
 	return result;
 }
 
-void DeviationSurveyRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void DeviationSurveyRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractRepresentation::resolveTargetRelationships(epcDoc);
 
 	RESQML2_NS::MdDatum* mdDatum = epcDoc->getDataObjectByUuid<RESQML2_NS::MdDatum>(getMdDatumUuid());
 	if (mdDatum != nullptr) {
@@ -257,26 +264,26 @@ gsoap_resqml2_0_1::eml20__PlaneAngleUom DeviationSurveyRepresentation::getAngleU
 	return static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1)->AngleUom;
 }
 
-std::string DeviationSurveyRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* DeviationSurveyRepresentation::getHdfProxyDor() const
 {
 	_resqml2__DeviationSurveyRepresentation* rep = static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
 	if (rep->Mds != nullptr) {
 		if (rep->Mds->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-			return static_cast<resqml2__DoubleHdf5Array*>(rep->Mds)->Values->HdfProxy->UUID;
+			return static_cast<resqml2__DoubleHdf5Array*>(rep->Mds)->Values->HdfProxy;
 		}
 	}
 	else if (rep->Inclinations != nullptr) {
 		if (rep->Inclinations->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-			return static_cast<resqml2__DoubleHdf5Array*>(rep->Inclinations)->Values->HdfProxy->UUID;
+			return static_cast<resqml2__DoubleHdf5Array*>(rep->Inclinations)->Values->HdfProxy;
 		}
 	}
 	else if (rep->Azimuths != nullptr) {
 		if (rep->Azimuths->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-			return static_cast<resqml2__DoubleHdf5Array*>(rep->Azimuths)->Values->HdfProxy->UUID;
+			return static_cast<resqml2__DoubleHdf5Array*>(rep->Azimuths)->Values->HdfProxy;
 		}
 	}
 
-	return "";
+	return nullptr;
 }
 
 void DeviationSurveyRepresentation::addTrajectory(WellboreTrajectoryRepresentation* trajectory)
@@ -350,4 +357,3 @@ WellboreTrajectoryRepresentation* DeviationSurveyRepresentation::getWellboreTraj
 
 	return wbTrajectoryRepSet[index];
 }
-

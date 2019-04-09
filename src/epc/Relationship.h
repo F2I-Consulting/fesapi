@@ -16,7 +16,6 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
 #ifndef RELATIONSHIP_H
 #define RELATIONSHIP_H
 
@@ -30,7 +29,7 @@ namespace epc
 	class Relationship
 	{
 	private: 
-		bool internalTarget;	/// The target mode indicates wether the destination part is external or internal to the package.
+		bool internalTarget;		/// The target mode indicates wether the destination part is external or internal to the package.
 		std::string target;			/// The target indicates the destination part path.
 		std::string type;			/// The type indicates the name/type of the relationship.
 		std::string id;				/// The id uniquely identify the relationship in the context of the rel file. For epc, it also indicates the uuid of the destiantion object.

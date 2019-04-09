@@ -69,37 +69,44 @@ std::string StratigraphicOccurrenceInterpretation::getStratigraphicColumnRankInt
 	return static_cast<_resqml2__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1)->IsOccurrenceOf->UUID;
 }
 
-vector<Relationship> StratigraphicOccurrenceInterpretation::getAllEpcRelationships() const
+vector<Relationship> StratigraphicOccurrenceInterpretation::getAllSourceRelationships() const
 {
-	vector<Relationship> result = AbstractStratigraphicOrganizationInterpretation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractStratigraphicOrganizationInterpretation::getAllSourceRelationships();
 
-	if (stratigraphicColumnRankInterpretation)
-	{
-		Relationship relStratiRank(stratigraphicColumnRankInterpretation->getPartNameInEpcDocument(), "", stratigraphicColumnRankInterpretation->getUuid());
-		relStratiRank.setDestinationObjectType();
-		result.push_back(relStratiRank);
-	}
-
-	for (unsigned int i = 0; i < earthModelSet.size(); i++)
+	for (size_t i = 0; i < earthModelSet.size(); i++)
 	{
 		Relationship rel(earthModelSet[i]->getPartNameInEpcDocument(), "", earthModelSet[i]->getUuid());
 		rel.setSourceObjectType();
 		result.push_back(rel);
 	}
 
-	for (unsigned int i = 0; i < wellboreMarkerFrameRepresentationSet.size(); i++)
+	for (size_t i = 0; i < wellboreMarkerFrameRepresentationSet.size(); i++)
 	{
 		Relationship rel(wellboreMarkerFrameRepresentationSet[i]->getPartNameInEpcDocument(), "", wellboreMarkerFrameRepresentationSet[i]->getUuid());
 		rel.setSourceObjectType();
 		result.push_back(rel);
 	}
-        
+
+    return result;
+}
+
+vector<Relationship> StratigraphicOccurrenceInterpretation::getAllTargetRelationships() const
+{
+	vector<Relationship> result = AbstractStratigraphicOrganizationInterpretation::getAllTargetRelationships();
+
+	if (stratigraphicColumnRankInterpretation != nullptr)
+	{
+		Relationship relStratiRank(stratigraphicColumnRankInterpretation->getPartNameInEpcDocument(), "", stratigraphicColumnRankInterpretation->getUuid());
+		relStratiRank.setDestinationObjectType();
+		result.push_back(relStratiRank);
+	}
+
     return result;
 }
 	
-void StratigraphicOccurrenceInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void StratigraphicOccurrenceInterpretation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractStratigraphicOrganizationInterpretation::importRelationshipSetFromEpc(epcDoc);
+	AbstractStratigraphicOrganizationInterpretation::resolveTargetRelationships(epcDoc);
 
 	updateXml = false;
 

@@ -29,6 +29,12 @@ namespace COMMON_NS
 {
 	class EpcExternalPartReference : public COMMON_NS::AbstractObject
 	{
+	protected:
+		/**
+		* Only to be used in partial transfer context
+		*/
+		EpcExternalPartReference(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+
 	public:
 		/**
 		* @param packageDirAbsolutePath		The directory where the EPC document is stored. Must end with a slash or back-slash
@@ -61,10 +67,15 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const;
 
-	protected:
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		/**
+		* Does nothing since EPC external part reference has not target relationships at all
+		*/
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
+
+	protected:
 
 		std::vector<RESQML2_NS::AbstractRepresentation*> representationSourceObject;					/// All the representations that use this external reference.
 		std::vector<RESQML2_NS::AbstractProperty*> propertySourceObject;								/// All the properties that use this external reference.

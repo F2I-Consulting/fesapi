@@ -44,9 +44,9 @@ std::string GridConnectionSetRepresentation::getXmlTag() const
 	return XML_TAG;
 }
 
-vector<Relationship> GridConnectionSetRepresentation::getAllEpcRelationships() const
+vector<Relationship> GridConnectionSetRepresentation::getAllTargetRelationships() const
 {
-	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractRepresentation::getAllTargetRelationships();
 
 	const unsigned int supportingGridCount = getSupportingGridRepresentationCount();
 	for (unsigned int i = 0; i < supportingGridCount; ++i)
@@ -99,9 +99,9 @@ void GridConnectionSetRepresentation::pushBackInterpretation(AbstractFeatureInte
 	}
 }
 
-void GridConnectionSetRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void GridConnectionSetRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractRepresentation::resolveTargetRelationships(epcDoc);
 
 	// Supporting grid representation
 	unsigned int supportingGridCount = getSupportingGridRepresentationCount();

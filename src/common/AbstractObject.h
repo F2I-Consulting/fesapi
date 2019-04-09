@@ -20,6 +20,7 @@ under the License.
 
 #include "proxies/gsoap_resqml2_0_1H.h"
 #include "proxies/gsoap_eml2_1H.h"
+#include "proxies/gsoap_eml2_2H.h"
 #include "common/EpcDocument.h"
 
 namespace COMMON_NS
@@ -41,6 +42,8 @@ namespace COMMON_NS
 		* Push back an extra metadata (not a standard one)
 		*/
 		void pushBackExtraMetadataV2_0_1(const std::string & key, const std::string & value);
+		void pushBackExtraMetadataV2_1(const std::string & key, const std::string & value);
+		void pushBackExtraMetadataV2_2(const std::string & key, const std::string & value);
 
 		/**
 		* Getter (in read only mode) of all the extra metadata
@@ -77,10 +80,12 @@ namespace COMMON_NS
 		enum EmlVersion {
 			TWO_DOT_ZERO = 0,
 			TWO_DOT_ONE = 1,
+			TWO_DOT_TWO = 2,
 		};
 		
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;
 		gsoap_eml2_1::eml21__AbstractObject* gsoapProxy2_1;
+		gsoap_eml2_2::eml22__AbstractObject* gsoapProxy2_2;
 		COMMON_NS::EpcDocument* epcDocument;
 		std::vector<RESQML2_NS::Activity*> activitySet;
 
@@ -98,20 +103,14 @@ namespace COMMON_NS
 
 		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy);
 
+		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy);
+
 		friend void COMMON_NS::EpcDocument::addGsoapProxy(AbstractObject* proxy);
 
 		void initMandatoryMetadata();
 		
-		/**
-		* Resolve all relationships of the object in an epc document
-		*/
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc) = 0;
 		friend void COMMON_NS::EpcDocument::updateAllRelationships();
 
-		/**
-		* Return all relationships (backward and forward ones) of the instance using EPC format.
-		*/
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const = 0;
 		friend void COMMON_NS::EpcDocument::serialize(bool useZip64);
 
 		// Only for Activity. Can not use friendness between AbstractObject and Activity for circular dependencies reason.
@@ -135,6 +134,23 @@ namespace COMMON_NS
 		*/
 		void changeToPartialObject();
 
+		/**
+		* Get or create an object from a data object reference
+		*/
+		template <class valueType>
+		valueType* getOrCreateObjectFromDor(gsoap_resqml2_0_1::eml20__DataObjectReference* dor) const
+		{
+			valueType* obj = getEpcDocument()->getDataObjectByUuid<valueType>(dor->UUID);
+			if (obj == nullptr) { // partial transfer
+				getEpcDocument()->createPartial(dor);
+				obj = getEpcDocument()->getDataObjectByUuid<valueType>(dor->UUID);
+			}
+			if (obj == nullptr) {
+				throw std::invalid_argument("The DOR looks invalid.");
+			}
+			return obj;
+		}
+
 		/*
 		* Read an input array which come from XML (and potentially HDF5) and store it into a preallocated output array in memory.
 		* It does not allocate or deallocate memory.
@@ -150,6 +166,9 @@ namespace COMMON_NS
 		ULONG64 getCountOfIntegerArray(gsoap_resqml2_0_1::resqml2__AbstractIntegerArray * arrayInput) const;
 
 	public:
+
+		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG = 3, ULONG = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
+
 		virtual ~AbstractObject() {}
 
 		/**
@@ -159,10 +178,13 @@ namespace COMMON_NS
 		*/
 		DLL_IMPORT_OR_EXPORT bool isPartial() const {return partialObject != nullptr;}
 
+		DLL_IMPORT_OR_EXPORT virtual bool isTopLevelElement() const { return true; }
+
 		DLL_IMPORT_OR_EXPORT std::string getUuid() const;
 		DLL_IMPORT_OR_EXPORT std::string getTitle() const;
 		DLL_IMPORT_OR_EXPORT std::string getEditor() const;
 		DLL_IMPORT_OR_EXPORT time_t getCreation() const;
+
 		/**
 		* Use this method if you want to read some dates out of range of time_t
 		*/
@@ -223,6 +245,13 @@ namespace COMMON_NS
 		*/
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* getGsoapProxy() const;
 
+		gsoap_eml2_2::eml22__AbstractObject* getGsoapProxy2_2() const { return gsoapProxy2_2; }
+
+		/**
+		 * Set the underlying gsoap proxy of this object
+		 */
+		void setGsoapProxy(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy);
+
 		/**
 		* Get the gsoap context where the underlying gsoap proxy is defined.
 		*/
@@ -235,6 +264,7 @@ namespace COMMON_NS
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* newResqmlReference() const;
 		gsoap_eml2_1::eml21__DataObjectReference* newEmlReference() const;
+		gsoap_eml2_2::eml22__DataObjectReference* newEml22Reference() const;
 
 		gsoap_resqml2_0_1::resqml2__ContactElementReference* newResqmlContactElementReference() const;
 
@@ -342,6 +372,20 @@ namespace COMMON_NS
 		* Get the string value of a string value pair at a particular index in the extra metadata set
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
+
+		/**
+		* Return all relationships (backward and forward ones) of the instance using EPC format.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::vector<epc::Relationship> getAllSourceRelationships() const = 0;
+		DLL_IMPORT_OR_EXPORT std::vector<std::string> getAllSourceRelationshipUuids() const;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<epc::Relationship> getAllTargetRelationships() const = 0;
+		DLL_IMPORT_OR_EXPORT std::vector<std::string> getAllTargetRelationshipUuids() const;
+		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllEpcRelationships() const;
+
+		/**
+		* Set the backward relationship to this object on each target of this object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc) = 0;
 
 		static const char* RESQML_2_0_CONTENT_TYPE_PREFIX;
 		static const char* RESQML_2_0_1_CONTENT_TYPE_PREFIX;

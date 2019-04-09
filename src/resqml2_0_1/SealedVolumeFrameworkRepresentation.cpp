@@ -307,9 +307,15 @@ bool SealedVolumeFrameworkRepresentation::getSideFlagOfInternalShellFace(unsigne
 	return getRegionInternalShellFace(regionIndex, internalShellIndex, faceIndex)->SideIsPlus;
 }
 
-vector<Relationship> SealedVolumeFrameworkRepresentation::getAllEpcRelationships() const
+std::vector<epc::Relationship> SealedVolumeFrameworkRepresentation::getAllSourceRelationships() const
 {
-	vector<Relationship> result = RESQML2_NS::RepresentationSetRepresentation::getAllEpcRelationships();
+	vector<Relationship> result;
+	return result;
+}
+
+std::vector<epc::Relationship> SealedVolumeFrameworkRepresentation::getAllTargetRelationships() const
+{
+	vector<Relationship> result = RESQML2_NS::RepresentationSetRepresentation::getAllTargetRelationships();
 
 	SealedSurfaceFrameworkRepresentation* ssf = getSealedStructuralFramework();
 	Relationship relSsf(ssf->getPartNameInEpcDocument(), "", ssf->getUuid());
@@ -326,9 +332,9 @@ vector<Relationship> SealedVolumeFrameworkRepresentation::getAllEpcRelationships
 	return result;
 }
 
-void SealedVolumeFrameworkRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void SealedVolumeFrameworkRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc)
 {
-	RESQML2_NS::RepresentationSetRepresentation::importRelationshipSetFromEpc(epcDoc);
+	RESQML2_NS::RepresentationSetRepresentation::resolveTargetRelationships(epcDoc);
 
 	updateXml = false;
 

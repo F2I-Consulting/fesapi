@@ -52,7 +52,6 @@ WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(WellboreInt
 	setInterpretation(interp);
 
 	frame->Trajectory = traj->newResqmlReference();
-	trajectory = traj;
 	traj->addWellboreFrameRepresentation(this);
 
 	initMandatoryMetadata();
@@ -61,8 +60,9 @@ WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(WellboreInt
 
 WellboreMarkerFrameRepresentation::~WellboreMarkerFrameRepresentation()
 {
-	for (size_t i = 0; i < markerSet.size(); ++i)
+	for (size_t i = 0; i < markerSet.size(); ++i) {
 		delete markerSet[i];
+	}
 }
 
 WellboreMarker* WellboreMarkerFrameRepresentation::pushBackNewWellboreMarker(const std::string & guid, const std::string & title)
@@ -109,8 +109,9 @@ void WellboreMarkerFrameRepresentation::setStratigraphicOccurrenceInterpretation
 
 void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned int * stratiUnitIndices, const unsigned int & nullValue, StratigraphicOccurrenceInterpretation* stratiOccurenceInterp)
 {
-	if (stratiUnitIndices == nullptr)
+	if (stratiUnitIndices == nullptr) {
 		throw invalid_argument("The strati unit indices cannot be null.");
+	}
 
 	setStratigraphicOccurrenceInterpretation(stratiOccurenceInterp);
 
@@ -128,9 +129,9 @@ void WellboreMarkerFrameRepresentation::setIntervalStratigraphicUnits(unsigned i
 	hdfProxy->writeArrayNd(frame->uuid, "IntervalStratigraphicUnits", H5T_NATIVE_UINT, stratiUnitIndices, &dim, 1);
 }
 
-vector<Relationship> WellboreMarkerFrameRepresentation::getAllEpcRelationships() const
+vector<Relationship> WellboreMarkerFrameRepresentation::getAllTargetRelationships() const
 {
-	vector<Relationship> result = WellboreFrameRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = WellboreFrameRepresentation::getAllTargetRelationships();
 
 	// XML forward relationship
 	if (stratigraphicOccurrenceInterpretation != nullptr)
@@ -142,7 +143,7 @@ vector<Relationship> WellboreMarkerFrameRepresentation::getAllEpcRelationships()
 
 	for (size_t i = 0; i < markerSet.size(); ++i)
 	{
-		if (markerSet[i]->getBoundaryFeatureInterpretation())
+		if (markerSet[i]->getBoundaryFeatureInterpretation() != nullptr)
 		{
 			Relationship relBoundaryFeature(markerSet[i]->getBoundaryFeatureInterpretation()->getPartNameInEpcDocument(), "", markerSet[i]->getBoundaryFeatureInterpretation()->getUuid());
 			relBoundaryFeature.setDestinationObjectType();
@@ -153,9 +154,9 @@ vector<Relationship> WellboreMarkerFrameRepresentation::getAllEpcRelationships()
 	return result;
 }
 
-void WellboreMarkerFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void WellboreMarkerFrameRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	WellboreFrameRepresentation::importRelationshipSetFromEpc(epcDoc);
+	WellboreFrameRepresentation::resolveTargetRelationships(epcDoc);
 
 	_resqml2__WellboreMarkerFrameRepresentation* rep = static_cast<_resqml2__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
 

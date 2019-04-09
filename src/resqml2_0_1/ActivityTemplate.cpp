@@ -231,19 +231,3 @@ resqml2__ParameterTemplate* ActivityTemplate::getParameterFromTitle(const std::s
 
 	return param;
 }
-
-vector<Relationship> ActivityTemplate::getAllEpcRelationships() const
-{
-	vector<Relationship> result;
-
-	for (size_t i = 0; i < activityInstanceSet.size(); ++i)
-	{
-		Relationship rel(activityInstanceSet[i]->getPartNameInEpcDocument(), "", activityInstanceSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
-}
-
-void ActivityTemplate::importRelationshipSetFromEpc(COMMON_NS::EpcDocument *) {}

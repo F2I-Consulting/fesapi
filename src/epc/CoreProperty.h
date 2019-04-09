@@ -74,11 +74,6 @@ namespace epc
 		void setTypeProperty(const TypeProperty & corePropertyType);
 
 		/**
-		* Get all the string values. Relevant only for some core properties which can have several string values (such as keywords)
-		*/
-		std::vector<std::string> getAllValue() const;
-
-		/**
 		* Get the first string value of the core property.
 		* Usually this method is the common one for retrieving string value of a core property since most of timeonly one string value is necessary for one core property.
 		*/

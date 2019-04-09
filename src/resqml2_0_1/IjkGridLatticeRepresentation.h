@@ -259,7 +259,7 @@ namespace RESQML2_0_1_NS
 						const double & startCrossline, const double & incrCrossline, const unsigned int & countCrossline,
 			            const unsigned int & countSample, AbstractRepresentation * seismicSupport);
 
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const;
 	};

@@ -55,11 +55,11 @@ void WellboreFeature::setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore)
 	}
 }
 
-vector<Relationship> WellboreFeature::getAllEpcRelationships() const
+vector<Relationship> WellboreFeature::getAllTargetRelationships() const
 {
-	vector<Relationship> result = AbstractTechnicalFeature::getAllEpcRelationships();
+	vector<Relationship> result = AbstractTechnicalFeature::getAllTargetRelationships();
 
-	if (witsmlWellbore)
+	if (witsmlWellbore != nullptr)
 	{
 		Relationship relWellbores(witsmlWellbore->getPartNameInEpcDocument(), "", witsmlWellbore->getUuid());
 		relWellbores.setDestinationObjectType();
@@ -73,7 +73,7 @@ vector<Relationship> WellboreFeature::getAllEpcRelationships() const
 	return result;
 }
 
-void WellboreFeature::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void WellboreFeature::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	resqml2__obj_USCOREWellboreFeature* resqmlWellbore = static_cast<resqml2__obj_USCOREWellboreFeature*>(gsoapProxy2_0_1);
 

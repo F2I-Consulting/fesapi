@@ -149,9 +149,9 @@ RockFluidOrganizationInterpretation* EarthModelInterpretation::getRockFluidOrgan
 	return epcDocument->getDataObjectByUuid<RockFluidOrganizationInterpretation>(static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid->UUID);
 }
 
-vector<Relationship> EarthModelInterpretation::getAllEpcRelationships() const
+vector<Relationship> EarthModelInterpretation::getAllTargetRelationships() const
 {
-	vector<Relationship> result = AbstractFeatureInterpretation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractFeatureInterpretation::getAllTargetRelationships();
 
 	_resqml2__EarthModelInterpretation* interp = static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1);
 
@@ -191,9 +191,9 @@ vector<Relationship> EarthModelInterpretation::getAllEpcRelationships() const
     return result;
 }
 		
-void EarthModelInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void EarthModelInterpretation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractFeatureInterpretation::importRelationshipSetFromEpc(epcDoc);
+	AbstractFeatureInterpretation::resolveTargetRelationships(epcDoc);
 
 	_resqml2__EarthModelInterpretation* interp = static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1);
 

@@ -70,9 +70,9 @@ namespace RESQML2_NS
 		* @param numDimensionsInArray	The number of dimensions in the array to write.
 		* @param proxy					The HDF proxy where to write the points. It must be already opened for writing and won't be closed in this method.
 		*/
-		gsoap_resqml2_0_1::resqml2__PointGeometry* createPointGeometryPatch2_0_1(const unsigned int & patchIndex, double * points, unsigned long long * numPoints, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy);
+		gsoap_resqml2_0_1::resqml2__PointGeometry* createPointGeometryPatch2_0_1(ULONG64 patchIndex, double * points, unsigned long long * numPoints, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy);
 
-		std::string getHdfProxyUuidFromPointGeometryPatch(gsoap_resqml2_0_1::resqml2__PointGeometry* patch) const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDorFromPointGeometryPatch(gsoap_resqml2_0_1::resqml2__PointGeometry* patch) const;
 
 		gsoap_resqml2_0_1::resqml2__Seismic2dCoordinates* getSeismic2dCoordinates(const unsigned int & patchIndex) const;
 
@@ -111,7 +111,8 @@ namespace RESQML2_NS
 		 * Getter for the uuid of the hdf proxy which is used for storing the numerical values of this representation i.e. geometry.
 		 * An empty string is returned if no hdf proxy is used for storing the representation/geometry.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getHdfProxyUuid() const = 0;
+		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
+		virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const = 0;
 
 		/**
 		* Getter (read only) of all the properties which use this representation as support.
@@ -318,10 +319,11 @@ namespace RESQML2_NS
 
 		static const char* XML_TAG;
 
-	protected:
+		virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
+		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
+		virtual void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
 
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+	protected:
 
 		// XML forward relationships
 		class AbstractFeatureInterpretation*				interpretation;

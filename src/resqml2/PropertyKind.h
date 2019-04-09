@@ -120,6 +120,11 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT virtual bool isAbstract() const = 0;
 
+		std::vector<epc::Relationship> getAllSourceRelationships() const;
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
+
+		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
+
 		/**
 		* Check if this property kind is partial or if one of its parent is partial.
 		*/
@@ -127,9 +132,6 @@ namespace RESQML2_NS
 
 	protected:
 		virtual void setXmlParentPropertyKind(PropertyKind* parentPropertyKind) = 0;
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		// XML backward relationship
 		std::vector<class AbstractProperty*> propertySet;

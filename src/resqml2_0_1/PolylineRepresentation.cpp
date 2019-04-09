@@ -83,9 +83,9 @@ PolylineRepresentation::PolylineRepresentation(RESQML2_NS::AbstractFeatureInterp
 	(*static_cast<_resqml2__PolylineRepresentation*>(gsoapProxy2_0_1)->LineRole) = roleKind;
 }
 
-std::string PolylineRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* PolylineRepresentation::getHdfProxyDor() const
 {
-	return getHdfProxyUuidFromPointGeometryPatch(getPointGeometry2_0_1(0));
+	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
 resqml2__PointGeometry* PolylineRepresentation::getPointGeometry2_0_1(const unsigned int & patchIndex) const
@@ -187,12 +187,12 @@ bool PolylineRepresentation::isAFaciesLine() const
 	return getInterpretation() && getInterpretation()->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORESeismicLineFeature;
 }
 
-vector<Relationship> PolylineRepresentation::getAllEpcRelationships() const
+vector<Relationship> PolylineRepresentation::getAllSourceRelationships() const
 {
-	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractRepresentation::getAllSourceRelationships();
 
 	// Outer rings of
-	for(unsigned int i = 0; i < outerRingOfSet.size(); ++i)
+	for(size_t i = 0; i < outerRingOfSet.size(); ++i)
 	{
 		Relationship relOuterRingOf(outerRingOfSet[i]->getPartNameInEpcDocument(), "", outerRingOfSet[i]->getUuid());
 		relOuterRingOf.setSourceObjectType();
@@ -200,7 +200,7 @@ vector<Relationship> PolylineRepresentation::getAllEpcRelationships() const
 	}
 
 	// Inner rings of
-	for(unsigned int i = 0; i < innerRingOfSet.size(); ++i)
+	for(size_t i = 0; i < innerRingOfSet.size(); ++i)
 	{
 		Relationship relInnerRingOf(innerRingOfSet[i]->getPartNameInEpcDocument(), "", innerRingOfSet[i]->getUuid());
 		relInnerRingOf.setSourceObjectType();

@@ -106,15 +106,9 @@ RockFluidUnitInterpretation* RockFluidOrganizationInterpretation::getRockFluidUn
 	return epcDocument->getDataObjectByUuid<RockFluidUnitInterpretation>(static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit->UUID);
 }
 
-vector<Relationship> RockFluidOrganizationInterpretation::getAllEpcRelationships() const
+std::vector<epc::Relationship> RockFluidOrganizationInterpretation::getAllSourceRelationships() const
 {
-	vector<Relationship> result = AbstractOrganizationInterpretation::getAllEpcRelationships();
-
-	// Only one unit for now : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html
-	gsoap_resqml2_0_1::eml20__DataObjectReference * dor = static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit;
-	Relationship relUnit(misc::getPartNameFromReference(dor), "", dor->UUID);
-	relUnit.setDestinationObjectType();
-	result.push_back(relUnit);
+	vector<Relationship> result = AbstractOrganizationInterpretation::getAllSourceRelationships();
 
 	for (size_t i = 0; i < gridRepresentationSet.size(); ++i) {
 		Relationship rel(gridRepresentationSet[i]->getPartNameInEpcDocument(), "", gridRepresentationSet[i]->getUuid());
@@ -132,9 +126,22 @@ vector<Relationship> RockFluidOrganizationInterpretation::getAllEpcRelationships
 	return result;
 }
 
-void RockFluidOrganizationInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+std::vector<epc::Relationship> RockFluidOrganizationInterpretation::getAllTargetRelationships() const
 {
-	AbstractOrganizationInterpretation::importRelationshipSetFromEpc(epcDoc);
+	vector<Relationship> result = AbstractOrganizationInterpretation::getAllTargetRelationships();
+
+	// Only one unit for now : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html
+	gsoap_resqml2_0_1::eml20__DataObjectReference * dor = static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit;
+	Relationship relUnit(misc::getPartNameFromReference(dor), "", dor->UUID);
+	relUnit.setDestinationObjectType();
+	result.push_back(relUnit);
+
+	return result;
+}
+
+void RockFluidOrganizationInterpretation::resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc)
+{
+	AbstractOrganizationInterpretation::resolveTargetRelationships(epcDoc);
 
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit;
 	if (dor != nullptr) {

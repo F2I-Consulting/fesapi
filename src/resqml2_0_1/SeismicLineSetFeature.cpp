@@ -38,7 +38,7 @@ SeismicLineSetFeature::SeismicLineSetFeature(soap* soapContext, const std::strin
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
-std::vector<epc::Relationship> SeismicLineSetFeature::getAllEpcRelationships() const
+std::vector<epc::Relationship> SeismicLineSetFeature::getAllSourceRelationships() const
 {
 	std::vector<epc::Relationship> result;
 

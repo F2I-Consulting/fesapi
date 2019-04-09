@@ -57,7 +57,7 @@ namespace RESQML2_0_1_NS
 		*/
 		~TriangulatedSetRepresentation() {}
         
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		/**
 		* Push back a new patch of triangles

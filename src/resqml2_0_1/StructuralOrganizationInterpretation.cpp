@@ -211,19 +211,33 @@ RESQML2_NS::AbstractFeatureInterpretation* StructuralOrganizationInterpretation:
 	}
 }
 
-vector<Relationship> StructuralOrganizationInterpretation::getAllEpcRelationships() const
+vector<Relationship> StructuralOrganizationInterpretation::getAllSourceRelationships() const
 {
-	vector<Relationship> result = AbstractOrganizationInterpretation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractOrganizationInterpretation::getAllSourceRelationships();
+
+	for (size_t i = 0; i < earthModelSet.size(); ++i)
+    {
+        Relationship rel(earthModelSet[i]->getPartNameInEpcDocument(), "", earthModelSet[i]->getUuid());
+		rel.setSourceObjectType();
+        result.push_back(rel);
+    }
+
+	return result;
+}
+
+vector<Relationship> StructuralOrganizationInterpretation::getAllTargetRelationships() const
+{
+	vector<Relationship> result = AbstractOrganizationInterpretation::getAllTargetRelationships();
 
 	_resqml2__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
-	for (size_t i = 0; i < structuralOrganization->Faults.size(); i++)
+	for (size_t i = 0; i < structuralOrganization->Faults.size(); ++i)
 	{
 		Relationship rel(misc::getPartNameFromReference(structuralOrganization->Faults[i]), "", structuralOrganization->Faults[i]->UUID);
 		rel.setDestinationObjectType();
 		result.push_back(rel);
 	}
         
-	for (size_t i = 0; i < structuralOrganization->Horizons.size(); i++)
+	for (size_t i = 0; i < structuralOrganization->Horizons.size(); ++i)
 	{
 		Relationship rel(misc::getPartNameFromReference(structuralOrganization->Horizons[i]->Horizon), "", structuralOrganization->Horizons[i]->Horizon->UUID);
 		rel.setDestinationObjectType();
@@ -237,33 +251,26 @@ vector<Relationship> StructuralOrganizationInterpretation::getAllEpcRelationship
 		result.push_back(rel);
 	}
         
-	for (size_t i = 0; i < structuralOrganization->TopFrontier.size(); i++)
+	for (size_t i = 0; i < structuralOrganization->TopFrontier.size(); ++i)
 	{
 		Relationship rel(misc::getPartNameFromReference(structuralOrganization->TopFrontier[i]), "", structuralOrganization->TopFrontier[i]->UUID);
 		rel.setDestinationObjectType();
 		result.push_back(rel);
 	}
         
-	for (size_t i = 0; i < structuralOrganization->Sides.size(); i++)
+	for (size_t i = 0; i < structuralOrganization->Sides.size(); ++i)
 	{
 		Relationship rel(misc::getPartNameFromReference(structuralOrganization->Sides[i]), "", structuralOrganization->Sides[i]->UUID);
 		rel.setDestinationObjectType();
 		result.push_back(rel);
 	}
-        
-	for (size_t i = 0; i < earthModelSet.size(); i++)
-    {
-        Relationship rel(earthModelSet[i]->getPartNameInEpcDocument(), "", earthModelSet[i]->getUuid());
-		rel.setSourceObjectType();
-        result.push_back(rel);
-    }
-    
+
 	return result;
 }
 		
-void StructuralOrganizationInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void StructuralOrganizationInterpretation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	AbstractOrganizationInterpretation::importRelationshipSetFromEpc(epcDoc);
+	AbstractOrganizationInterpretation::resolveTargetRelationships(epcDoc);
 
 	updateXml = false;
 

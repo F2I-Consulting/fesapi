@@ -22,10 +22,12 @@ under the License.
 #include <vector>
 #include <limits>
 #include <stdexcept>
+#include <unordered_map>
 
 #include "proxies/stdsoap2.h"
 #include "proxies/gsoap_resqml2_0_1H.h"
 #include "proxies/gsoap_eml2_1H.h"
+#include "proxies/gsoap_eml2_2H.h"
 
 #include "epc/Package.h"
 
@@ -39,7 +41,7 @@ under the License.
 	#if defined(FesapiCpp_EXPORTS) || defined(FesapiCppUnderDev_EXPORTS)
 		#define DLL_IMPORT_OR_EXPORT __declspec(dllexport)
 	#else
-		#define DLL_IMPORT_OR_EXPORT __declspec(dllimport) 
+		#define DLL_IMPORT_OR_EXPORT __declspec(dllimport)
 	#endif
 #else
 	#define DLL_IMPORT_OR_EXPORT
@@ -131,9 +133,18 @@ namespace RESQML2_0_1_NS
 
 }
 
+namespace WITSML2_1_NS
+{
+	class ToolErrorModel;
+	class ToolErrorModelDictionary;
+	class ErrorTerm;
+	class ErrorTermDictionary;
+	class WeightingFunction;
+	class WeightingFunctionDictionary;
+}
+
 namespace WITSML2_0_NS
 {
-	class AbstractObject;
 	class Well;
 	class WellCompletion;
 	class Wellbore;
@@ -151,7 +162,7 @@ namespace COMMON_NS
 	*/
 	class EpcDocument
 	{
-	private :
+	private:
 
 		/**
 		* Necessary to avoid a dependency on GuidTools.h
@@ -160,10 +171,27 @@ namespace COMMON_NS
 		
 	public:
 
-		enum openingMode { READ_ONLY = 0, READ_WRITE = 1, OVERWRITE = 2 };
+		enum openingMode { READ_ONLY = 0, READ_WRITE = 1, OVERWRITE = 2, ETP = 3};
 
-		DLL_IMPORT_OR_EXPORT EpcDocument(const std::string & fileName, const openingMode & hdf5PermissionAccess = READ_ONLY);
-		DLL_IMPORT_OR_EXPORT EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, const openingMode & hdf5PermissionAccess = READ_ONLY);
+		/** Default constructor
+		* It just initializes necessary variables. It does not open anything.
+		*/
+		DLL_IMPORT_OR_EXPORT EpcDocument();
+
+		/**
+		* Construct an instance, set the file name of the Epc Document and set the rights to access to the companion HDF5 file.
+		* @param fileName				The file path of the EPC document to read or write.
+		* @param permissionAccess		The rights when opening the EPC and the HDF5 files.
+		*/
+		DLL_IMPORT_OR_EXPORT EpcDocument(const std::string & fileName, const openingMode & permissionAccess = READ_ONLY);
+
+		/**
+		* Construct an instance, set the file name of the Epc Document, set the rights to access to the companion HDF5 file and indicates where to look for property kind configuration.
+		* @param fileName							The file path of the EPC document to read or write.
+		* @param propertyKindMappingFilesDirectory	The directory where all property kind configuration files are stored.
+		* @param permissionAccess					The rights when opening the EPC and the HDF5 files.
+		*/
+		DLL_IMPORT_OR_EXPORT EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, const openingMode & permissionAccess = READ_ONLY);
 
 		/**
 		* The destructor frees all allocated ressources.
@@ -174,11 +202,15 @@ namespace COMMON_NS
 		typedef COMMON_NS::AbstractHdfProxy* (HdfProxyBuilder)(soap* soapContext, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
 		// A function pointer which allows to build a v2.0.1 abstract hdf proxy in reading mode of an epc document
 		typedef COMMON_NS::AbstractHdfProxy* (HdfProxyBuilderFromGsoapProxy2_0_1)(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
+		// A function pointer which allows to build a partial hdf proxy
+		typedef COMMON_NS::AbstractHdfProxy* (PartialHdfProxyBuilder)(soap* soapContext, const std::string & guid, const std::string & title);
 
 		// Allows a fesapi user to set a different builder of Hdf Proxy than the default one in writing mode of an epc document
 		// This is especially useful when the fesapi users wants to use its own builder for example.
 		DLL_IMPORT_OR_EXPORT void set_hdf_proxy_builder(HdfProxyBuilder builder);
 		DLL_IMPORT_OR_EXPORT void set_hdf_proxy_builder(HdfProxyBuilderFromGsoapProxy2_0_1 builder);
+		DLL_IMPORT_OR_EXPORT void set_hdf_proxy_builder(PartialHdfProxyBuilder builder);
+
 
 		/**
 		* Open an epc document.
@@ -186,13 +218,16 @@ namespace COMMON_NS
 		* Don't forget to call close() before to destroy this object.
 		*/
 		DLL_IMPORT_OR_EXPORT void open(const std::string & fileName, const openingMode & hdf5PermissionAccess = READ_ONLY);
-	
+
 		/**
 		 * Free all ressources contained in this package.
 		 */
 		DLL_IMPORT_OR_EXPORT void close();
 
-		DLL_IMPORT_OR_EXPORT const openingMode & getHdf5PermissionAccess() const;
+		/**
+		* Get the permission access on the EPC file and on the HDF5 file.
+		*/
+		DLL_IMPORT_OR_EXPORT const openingMode & getPermissionAccess() const;
 
 		/**
 		 * Set the file path which will be used for future serialization and deserialization
@@ -215,6 +250,12 @@ namespace COMMON_NS
 		* Get the soap context of the epc document.
 		*/
 		soap* getGsoapContext() const;
+
+		/**
+		* Add a gsoap proxy to serialize with the package
+		* @param xml The XML which is the serialization of the gsoap proxy to add or to replace
+		*/
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentType);
 
 		/**
 		* Add a gsoap proxy to serialize with the package
@@ -418,7 +459,7 @@ namespace COMMON_NS
 		*/
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getFaultTriangulatedSetRepSet() const;
 
-        /**
+		/**
 		* Get all the individual representations of fractures which are associated to a triangulation set topology
 		*/
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getFractureTriangulatedSetRepSet() const;
@@ -439,23 +480,23 @@ namespace COMMON_NS
 		* Get all the geobodies contained into the EPC document
 		*/
 		DLL_IMPORT_OR_EXPORT const std::vector<RESQML2_0_1_NS::GeobodyFeature*> & getGeobodySet() const;
-        
+
 		/**
 		* Get all the individual representations of horizons which are associated to grid 2d set topology
 		*/
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::Grid2dRepresentation*> getHorizonGrid2dRepSet() const;
-        
+
 		/**
 		* Get all the single polyline representations of all the horizons
 		*/
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineRepresentation*> getHorizonPolylineRepSet() const;
-        
+
 		/**
 		* Get all the single polyline representations of all the horizons
 		*/
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getHorizonPolylineSetRepSet() const;
-        
-        /**
+
+		/**
 		* Get all the triangulated set representations of all the horizons
 		*/
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getHorizonTriangulatedSetRepSet() const;
@@ -599,15 +640,16 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT std::string getName() const;
 
 		/**
+		* Deserialize the content of dictionaries contained in this EPC document
+		*/
+		void deserializeContentOfDictionaries();
+
+		/**
 		* Try to resolve in memory all the relationshsips which are serialized into Resqml objects of the EPC document
 		*/
 		void updateAllRelationships();
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		DLL_IMPORT_OR_EXPORT std::unordered_map< std::string, std::string > & getExtendedCoreProperty();
-#else
-		std::tr1::unordered_map< std::string, std::string > & getExtendedCoreProperty();
-#endif
 
 		DLL_IMPORT_OR_EXPORT void setExtendedCoreProperty(const std::string & key, const std::string & value);
 
@@ -622,6 +664,7 @@ namespace COMMON_NS
 		*/
 		COMMON_NS::AbstractObject* createPartial(gsoap_resqml2_0_1::eml20__DataObjectReference* dor);
 		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_1::eml21__DataObjectReference* dor);
+		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_2::eml22__DataObjectReference* dor);
 
 		/**
 		* Create a partial object i.e. a data object reference (DOR)
@@ -666,7 +709,7 @@ namespace COMMON_NS
 			const double & arealRotation,
 			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const unsigned long & projectedEpsgCode,
 			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const unsigned int & verticalEpsgCode, const bool & isUpOriented);
-		
+
 		/**
 		* Creates a local depth 3d CRS which is fully unknown.
 		* @param guid					The guid to set to the local 3d crs. If empty then a new guid will be generated.
@@ -726,7 +769,7 @@ namespace COMMON_NS
 			const double & arealRotation,
 			const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const std::string & projectedUnknownReason,
 			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const unsigned int & verticalEpsgCode, const bool & isUpOriented);
-	
+
 		/**
 		* Creates a local depth 3d CRS which is fully identified by means of EPSG code.
 		* @param guid				The guid to set to the local 3d crs. If empty then a new guid will be generated.
@@ -858,7 +901,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::OrganizationFeature* createRockFluidModel(const std::string & guid, const std::string & title);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::OrganizationFeature* createEarthModel(const std::string & guid, const std::string & title);
-		
+
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::FluidBoundaryFeature* createFluidBoundaryFeature(const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__FluidContact & fluidContact);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::RockFluidUnitFeature* createRockFluidUnit(const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml2__Phase phase, RESQML2_0_1_NS::FluidBoundaryFeature* fluidBoundaryTop, RESQML2_0_1_NS::FluidBoundaryFeature* fluidBoundaryBottom);
@@ -869,8 +912,9 @@ namespace COMMON_NS
 		//************************************
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::GenericFeatureInterpretation* createGenericFeatureInterpretation(RESQML2_NS::AbstractFeature * feature, const std::string & guid, const std::string & title);
-		
+
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::BoundaryFeatureInterpretation* createBoundaryFeatureInterpretation(RESQML2_0_1_NS::BoundaryFeature * feature, const std::string & guid, const std::string & title);
+
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::HorizonInterpretation* createPartialHorizonInterpretation(const std::string & guid, const std::string & title);
 
@@ -1079,13 +1123,13 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousPropertySeries* createContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, RESQML2_NS::PropertyKind * localPropType,
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
-	
+
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DiscreteProperty* createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DiscreteProperty* createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropType);
-	
+
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DiscretePropertySeries* createDiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind,
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
@@ -1097,7 +1141,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
 			RESQML2_0_1_NS::StringTableLookup* strLookup, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind);
-	
+
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
 			RESQML2_0_1_NS::StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropType);
@@ -1119,11 +1163,45 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::ActivityTemplate* createActivityTemplate(const std::string & guid, const std::string & title);
 		
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::Activity* createActivity(RESQML2_NS::ActivityTemplate* activityTemplate, const std::string & guid, const std::string & title);
-		
+
 		//************************************
 		//*************** WITSML *************
 		//************************************
-		
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ToolErrorModel* createPartialToolErrorModel(
+			const std::string & guid,
+			const std::string & title);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ToolErrorModel* createToolErrorModel(
+			const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_2::witsml2__MisalignmentMode misalignmentMode);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ToolErrorModelDictionary* createToolErrorModelDictionary(
+			const std::string & guid,
+			const std::string & title);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ErrorTerm* createErrorTerm(
+			const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_2::witsml2__ErrorPropagationMode propagationMode,
+			WITSML2_1_NS::WeightingFunction* weightingFunction);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ErrorTermDictionary* createErrorTermDictionary(
+			const std::string & guid,
+			const std::string & title);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::WeightingFunction* createWeightingFunction(
+			const std::string & guid,
+			const std::string & title,
+			const std::string & depthFormula,
+			const std::string & inclinationFormula,
+			const std::string & azimuthFormula);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::WeightingFunctionDictionary* createWeightingFunctionDictionary(
+			const std::string & guid,
+			const std::string & title);
+
 		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Well* createWell(const std::string & guid,
 			const std::string & title);
 
@@ -1199,6 +1277,8 @@ namespace COMMON_NS
 		* It does not work for EpcExternalPartReference content type since this type is related to an external file which must be handled differently.
 		*/
 		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
+		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
+		COMMON_NS::AbstractObject* getWitsml2_1WrapperFromGsoapContext(const std::string & datatype);
 
 		/**
 		* Read the Gsoap proxy from the stream associated to the current gsoap context which must contains an EpcExternalPartReference xml document.
@@ -1211,9 +1291,10 @@ namespace COMMON_NS
 	private :
 		static const char * DOCUMENT_EXTENSION;
 
-		openingMode hdf5PermissionAccess;
+		openingMode permissionAccess;
 
 		epc::Package* package;
+
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		std::unordered_map< std::string, COMMON_NS::AbstractObject* > dataObjectSet;
 #else
@@ -1253,5 +1334,6 @@ namespace COMMON_NS
 
 		HdfProxyBuilder* make_hdf_proxy; /// the builder for HDF proxy in writing mode of the epc document
 		HdfProxyBuilderFromGsoapProxy2_0_1* make_hdf_proxy_from_gsoap_proxy_2_0_1; /// the builder for a v2.0.1 HDF proxy in reading mode of the epc document
+		PartialHdfProxyBuilder* make_partial_hdf_proxy;  /// the builder for partial HDF proxy
 	};
 }

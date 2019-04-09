@@ -472,23 +472,6 @@ COMMON_NS::AbstractObject* Activity::getResqmlObjectParameterValue(const unsigne
 	return getEpcDocument()->getDataObjectByUuid(static_cast<resqml2__DataObjectParameter*>(activity->Parameter[index])->DataObject->UUID);
 }
 
-void Activity::setActivityTemplate(RESQML2_NS::ActivityTemplate * activityTemplate)
-{
-	if (activityTemplate == nullptr)
-	{
-		return;
-	}
-
-	// Backward relationship
-	activityTemplate->activityInstanceSet.push_back(this);
-
-	// XML
-	if (updateXml)
-	{
-		static_cast<_resqml2__Activity*>(gsoapProxy2_0_1)->ActivityDescriptor = activityTemplate->newResqmlReference();
-	}
-}
-
 gsoap_resqml2_0_1::eml20__DataObjectReference* Activity::getActivityTemplateDor() const
 {
 	return static_cast<_resqml2__Activity*>(gsoapProxy2_0_1)->ActivityDescriptor;
@@ -499,7 +482,7 @@ std::string Activity::getResqmlVersion() const
 	return "2.0.1";
 }
 
-void Activity::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void Activity::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	_resqml2__Activity* activity = static_cast<_resqml2__Activity*>(gsoapProxy2_0_1);
 

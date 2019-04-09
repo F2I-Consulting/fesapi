@@ -68,28 +68,9 @@ void WellCompletion::setWell(Well* witsmlWell)
 	}
 }
 
-void WellCompletion::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
-{
-	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellDor();
-	Well* well = epcDoc->getDataObjectByUuid<Well>(dor->Uuid);
-
-	if (well == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-	updateXml = false;
-	setWell(well);
-	updateXml = true;
-}
-
-vector<Relationship> WellCompletion::getAllEpcRelationships() const
+std::vector<epc::Relationship> WellCompletion::getAllSourceRelationships() const
 {
 	vector<Relationship> result;
-
-	// XML forward relationship
-	Well* well = getWell();
-	Relationship relWell(well->getPartNameInEpcDocument(), "", well->getUuid());
-	relWell.setDestinationObjectType();
-	result.push_back(relWell);
 
 	// XML backward relationship
 	for (size_t i = 0; i < wellboreCompletionSet.size(); ++i)
@@ -100,4 +81,30 @@ vector<Relationship> WellCompletion::getAllEpcRelationships() const
 	}
 
 	return result;
+}
+
+std::vector<epc::Relationship> WellCompletion::getAllTargetRelationships() const
+{
+	vector<Relationship> result;
+
+	// XML forward relationship
+	Well* well = getWell();
+	Relationship relWell(well->getPartNameInEpcDocument(), "", well->getUuid());
+	relWell.setDestinationObjectType();
+	result.push_back(relWell);
+
+	return result;
+}
+
+void WellCompletion::resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc)
+{
+	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellDor();
+	Well* well = epcDoc->getDataObjectByUuid<Well>(dor->Uuid);
+
+	if (well == nullptr) {
+		throw invalid_argument("The DOR looks invalid.");
+	}
+	updateXml = false;
+	setWell(well);
+	updateXml = true;
 }

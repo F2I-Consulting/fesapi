@@ -41,7 +41,7 @@ string EpcExternalPartReference::getXmlTag() const
 	return XML_TAG;
 }
 
-vector<Relationship> EpcExternalPartReference::getAllEpcRelationships() const
+std::vector<epc::Relationship> EpcExternalPartReference::getAllSourceRelationships() const
 {
 	vector<Relationship> result;
 
@@ -67,7 +67,13 @@ vector<Relationship> EpcExternalPartReference::getAllEpcRelationships() const
 		}
 	}
 
-	// External part
+	return result;
+}
+
+std::vector<epc::Relationship> EpcExternalPartReference::getAllTargetRelationships() const
+{
+	vector<Relationship> result;
+
 	Relationship relExt(relativeFilePath, "", "Hdf5File", false);
 	relExt.setExternalResourceType();
 	result.push_back(relExt);
@@ -75,5 +81,5 @@ vector<Relationship> EpcExternalPartReference::getAllEpcRelationships() const
 	return result;
 }
 
-void EpcExternalPartReference::importRelationshipSetFromEpc(COMMON_NS::EpcDocument*)
+void EpcExternalPartReference::resolveTargetRelationships(COMMON_NS::EpcDocument*)
 {}

@@ -111,7 +111,13 @@ void AbstractProperty::setXmlLocalPropertyKind(class PropertyKind* propKind)
 	}
 }
 
-vector<Relationship> AbstractProperty::getAllEpcRelationships() const
+vector<Relationship> AbstractProperty::getAllSourceRelationships() const
+{
+	vector<Relationship> result;
+	return result;
+}
+
+vector<Relationship> AbstractProperty::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 
@@ -158,7 +164,7 @@ vector<Relationship> AbstractProperty::getAllEpcRelationships() const
 	return result;
 }
 
-void AbstractProperty::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void AbstractProperty::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getRepresentationDor();
 	RESQML2_NS::AbstractRepresentation* rep = epcDoc->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);

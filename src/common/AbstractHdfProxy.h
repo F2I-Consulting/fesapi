@@ -29,6 +29,10 @@ namespace COMMON_NS
 	class AbstractHdfProxy : public EpcExternalPartReference
 	{
 	protected:
+		/**
+		* Only to be used in partial transfer context
+		*/
+		AbstractHdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::EpcExternalPartReference(partialObject) {}
 
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
@@ -47,7 +51,8 @@ namespace COMMON_NS
 		*/
 		void initGsoapProxy(soap* soapContext, const std::string & guid, const std::string & title, const EmlVersion & emlVersion);
 
-	public:  
+	public:
+
 		virtual ~AbstractHdfProxy() {}
 
 		/**
@@ -67,10 +72,9 @@ namespace COMMON_NS
 		virtual void close() = 0;
 
 		/**
-		 * Get the used (native) datatype in a dataset
-		* To compare with H5T_NATIVE_INT, H5T_NATIVE_UINT, H5T_NATIVE_FLOAT, etc...
+		 * Get the datatype in a dataset
 		 */
-		virtual int getHdfDatatypeInDataset(const std::string & datasetName) = 0;
+		virtual AbstractObject::hdfDatatypeEnum getHdfDatatypeInDataset(const std::string & datasetName) = 0;
 
 		/**
 		* Get the used datatype class in a dataset
@@ -104,6 +108,12 @@ namespace COMMON_NS
 		 * @param datasetName	The absolute name of the dataset we want to get the number of dimensions.
 		 */
 		virtual unsigned int getDimensionCount(const std::string & datasetName) = 0;
+
+		/**
+		 * Get the number of elements in each dimension in an HDF dataset of the proxy.
+		 * @param datasetName	The absolute name of the dataset we want to get the number of elements.
+		 */
+		virtual std::vector<unsigned long long> getElementCountPerDimension(const std::string & datasetName) = 0;
 
 		/**
 		 * Get the number of elements in an HDF dataset of the proxy. The number of elements is get from all dimensions.
@@ -188,8 +198,8 @@ namespace COMMON_NS
 		 * @param groupName						The name of the group where to create the array of values.
 		 *										This name must not contain '/' character and must be directly contained in RESQML group.
 		 * @param name							The name of the array (potentially with multi dimensions) of a specific datatype hdf dataset. It must not already exist.
-		 * @param datatype						The specific datatype of the valeus to write.
-		 * @param values							1d array of specific datatype ordered firstly by fastest direction.
+		 * @param datatype						The specific datatype of the values to write.
+		 * @param values						1d array of specific datatype ordered firstly by fastest direction.
 		 * @param numValuesInEachDimension		Number of values in each dimension of the array to write. They are ordered from fastest index to slowest index.
 		 * @param numDimensions					The number of the dimensions of the array to write
 		 */
@@ -332,11 +342,11 @@ namespace COMMON_NS
 		 * @param numDimensions                  The number of the dimensions of the array to read.
 		 */
 		virtual void readArrayNdOfDoubleValues(
-		  const std::string & datasetName,
-		  double* values,
-		  unsigned long long * numValuesInEachDimension,
-		  unsigned long long * offsetInEachDimension,
-		  const unsigned int & numDimensions
+			const std::string & datasetName,
+			double* values,
+			const unsigned long long * numValuesInEachDimension,
+			const unsigned long long * offsetInEachDimension,
+			const unsigned int & numDimensions
 		  ) = 0;
 
 		/**
@@ -352,10 +362,10 @@ namespace COMMON_NS
 		virtual void readArrayNdOfDoubleValues(
 			const std::string & datasetName, 
 			double* values,
-			unsigned long long * blockCountPerDimension,
-			unsigned long long * offsetInEachDimension,
-			unsigned long long * strideInEachDimension,
-			unsigned long long * blockSizeInEachDimension,
+			const unsigned long long * blockCountPerDimension,
+			const unsigned long long * offsetInEachDimension,
+			const unsigned long long * strideInEachDimension,
+			const unsigned long long * blockSizeInEachDimension,
 			const unsigned int & numDimensions) = 0;
 
 		/**
@@ -373,10 +383,10 @@ namespace COMMON_NS
 		 */
 		virtual void selectArrayNdOfValues(
 			const std::string & datasetName,
-			unsigned long long * blockCountPerDimension,
-			unsigned long long * offsetInEachDimension,
-			unsigned long long * strideInEachDimension,
-			unsigned long long * blockSizeInEachDimension,
+			const unsigned long long * blockCountPerDimension,
+			const unsigned long long * offsetInEachDimension,
+			const unsigned long long * strideInEachDimension,
+			const unsigned long long * blockSizeInEachDimension,
 			const unsigned int & numDimensions,
 			bool newSelection,
 			int & dataset,
@@ -411,11 +421,11 @@ namespace COMMON_NS
 		 * @param numDimensions                  The number of the dimensions of the array to read.
 		 */
 		virtual void readArrayNdOfFloatValues(
-		  const std::string & datasetName,
-		  float* values,
-		  unsigned long long * numValuesInEachDimension,
-		  unsigned long long * offsetInEachDimension,
-		  const unsigned int & numDimensions
+			const std::string & datasetName,
+			float* values,
+			const unsigned long long * numValuesInEachDimension,
+			const unsigned long long * offsetInEachDimension,
+			const unsigned int & numDimensions
 		  ) = 0;
 
 		/**
@@ -446,11 +456,11 @@ namespace COMMON_NS
 		 * @param numDimensions                  The number of the dimensions of the array to read.
 		 */
 		virtual void readArrayNdOfLongValues(
-		  const std::string & datasetName,
-		  long* values,
-		  unsigned long long * numValuesInEachDimension,
-		  unsigned long long * offsetInEachDimension,
-		  const unsigned int & numDimensions
+			const std::string & datasetName,
+			long* values,
+			const unsigned long long * numValuesInEachDimension,
+			const unsigned long long * offsetInEachDimension,
+			const unsigned int & numDimensions
 		  ) = 0;
 
 		/**
@@ -478,8 +488,8 @@ namespace COMMON_NS
 		virtual void readArrayNdOfIntValues(
 			const std::string & datasetName,
 			int* values,
-			unsigned long long * numValuesInEachDimension,
-			unsigned long long * offsetInEachDimension,
+			const unsigned long long * numValuesInEachDimension,
+			const unsigned long long * offsetInEachDimension,
 			const unsigned int & numDimensions
 		) = 0;
 

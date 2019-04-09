@@ -46,7 +46,6 @@ void BlockedWellboreRepresentation::init(const std::string & guid, const std::st
 	_resqml2__BlockedWellboreRepresentation* frame = static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 
 	frame->Trajectory = traj->newResqmlReference();
-	trajectory = traj;
 	traj->addWellboreFrameRepresentation(this);
 
 	initMandatoryMetadata();
@@ -64,9 +63,9 @@ BlockedWellboreRepresentation::BlockedWellboreRepresentation(WellboreInterpretat
 	}
 }
 
-vector<Relationship> BlockedWellboreRepresentation::getAllEpcRelationships() const
+vector<Relationship> BlockedWellboreRepresentation::getAllTargetRelationships() const
 {
-	vector<Relationship> result = WellboreFrameRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = WellboreFrameRepresentation::getAllTargetRelationships();
 
 	_resqml2__BlockedWellboreRepresentation* rep = static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 	for (size_t i = 0; i < rep->Grid.size(); ++i) {
@@ -207,9 +206,9 @@ std::string BlockedWellboreRepresentation::getSupportingGridRepresentationUuid(u
 	return getSupportingGridRepresentationDor(index)->UUID;
 }
 
-void BlockedWellboreRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void BlockedWellboreRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	WellboreFrameRepresentation::importRelationshipSetFromEpc(epcDoc);
+	WellboreFrameRepresentation::resolveTargetRelationships(epcDoc);
 
 	_resqml2__BlockedWellboreRepresentation* rep = static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 

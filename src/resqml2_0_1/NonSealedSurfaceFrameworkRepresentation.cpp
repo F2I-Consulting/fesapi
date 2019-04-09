@@ -98,9 +98,8 @@ void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresenta
 	hdfProxy->writeArrayNdOfDoubleValues(getUuid(), oss.str(), points, numValues, 2);
 }
 
-std::string NonSealedSurfaceFrameworkRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* NonSealedSurfaceFrameworkRepresentation::getHdfProxyDor() const
 {
-	string result;
 	_resqml2__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml2__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
 	if (!orgRep->NonSealedContactRepresentation.empty())
@@ -111,17 +110,17 @@ std::string NonSealedSurfaceFrameworkRepresentation::getHdfProxyUuid() const
 			resqml2__PointGeometry* pointGeom = static_cast<resqml2__PointGeometry*>(firstContact->Geometry);
 			if (pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array)
 			{
-				return static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->HdfProxy->UUID;
+				return static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->HdfProxy;
 			}
 		}
 	}
 
-	return result;
+	return nullptr;
 }
 
-vector<Relationship> NonSealedSurfaceFrameworkRepresentation::getAllEpcRelationships() const
+vector<Relationship> NonSealedSurfaceFrameworkRepresentation::getAllTargetRelationships() const
 {
-	vector<Relationship> result = RepresentationSetRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = RepresentationSetRepresentation::getAllTargetRelationships();
         
     // supporting representations of organization sub representations
     for (size_t i = 0; i < supportingRepOfContactPatchSet.size(); ++i)

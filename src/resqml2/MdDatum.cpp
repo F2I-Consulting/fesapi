@@ -30,22 +30,31 @@ using namespace epc;
 
 const char* MdDatum::XML_TAG = "MdDatum";
 
-void MdDatum::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void MdDatum::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	_resqml2__MdDatum* mdInfo = static_cast<_resqml2__MdDatum*>(gsoapProxy2_0_1);
 
-	AbstractObject* localCrs = epcDoc->getDataObjectByUuid(mdInfo->LocalCrs->UUID);
-	if (dynamic_cast<AbstractLocal3dCrs*>(localCrs) != nullptr) {
-		updateXml = false;
-		setLocalCrs(static_cast<AbstractLocal3dCrs*>(localCrs));
-		updateXml = true;
-	}
-	else {
-		throw logic_error("The referenced local crs does not look to be a local crs.");
-	}
+	updateXml = false;
+	setLocalCrs(getOrCreateObjectFromDor<AbstractLocal3dCrs>(mdInfo->LocalCrs));
+	updateXml = true;
 }
 
-vector<Relationship> MdDatum::getAllEpcRelationships() const
+vector<Relationship> MdDatum::getAllSourceRelationships() const
+{
+	vector<Relationship> result;
+
+	// WellboreFeature trajectories
+	for (size_t i = 0; i < wellboreTrajectoryRepresentationSet.size(); ++i)
+	{
+		Relationship rel(wellboreTrajectoryRepresentationSet[i]->getPartNameInEpcDocument(), "", wellboreTrajectoryRepresentationSet[i]->getUuid());
+		rel.setSourceObjectType();
+		result.push_back(rel);
+	}
+
+	return result;
+}
+
+vector<Relationship> MdDatum::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 
@@ -61,16 +70,9 @@ vector<Relationship> MdDatum::getAllEpcRelationships() const
 		throw domain_error("The local CRS associated to the MD information cannot be nullptr.");
 	}
 
-	// WellboreFeature trajectories
-	for (size_t i = 0; i < wellboreTrajectoryRepresentationSet.size(); ++i)
-	{
-		Relationship rel(wellboreTrajectoryRepresentationSet[i]->getPartNameInEpcDocument(), "", wellboreTrajectoryRepresentationSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
 	return result;
 }
+
 
 void MdDatum::setLocalCrs(AbstractLocal3dCrs * localCrs)
 {

@@ -90,10 +90,6 @@ namespace RESQML2_0_1_NS
 			const double & offsetIX, const double & offsetIY, const double & offsetIZ, const double & spacingI,
 			const double & offsetJX, const double & offsetJY, const double & offsetJZ, const double & spacingJ);
 
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-
 		std::vector<PolylineRepresentation*> outerRingSet; // outer rings are ordered as the patches of the representation are ordered.
 
 	public:
@@ -122,5 +118,9 @@ namespace RESQML2_0_1_NS
 		* pick : Representation support for 3D points picked in 2D or 3D.
 		*/
 		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml2__SurfaceRole & getSurfaceRole() const;
+
+		DLL_IMPORT_OR_EXPORT virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
+
+		DLL_IMPORT_OR_EXPORT virtual void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
 	};
 }

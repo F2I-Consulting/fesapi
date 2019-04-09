@@ -11,8 +11,11 @@ configure_file(${FESAPI_ROOT_DIR}/cmake/version_config.h.in ${FESAPI_ROOT_DIR}/s
 set (RESQML_PREFIX_2 "resqml2")
 set (RESQML_PREFIX_2_0_1 "resqml2_0_1")
 set (RESQML_PREFIX_2_1 "resqml2_1")
-set (WITSML_PREFIX "witsml2_0")
+set (WITSML_PREFIX_2 "witsml2")
+set (WITSML_PREFIX_2_0 "witsml2_0")
+SET (WITSML_PREFIX_2_1 "witsml2_1")
 #set (PRODML_PREFIX_2_0 "prodml2_0")
+set (ETP_PREFIX "etp")
 
 add_library (${CPP_LIBRARY_NAME} ${LIB_TYPE} "")
 
@@ -28,12 +31,20 @@ target_compile_options(${CPP_LIBRARY_NAME}	PUBLIC
 
 if (WIN32)
 	if (NOT BUILD_SHARED_LIBS)
-		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE "-DFESAPI_STATIC")
+		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE FESAPI_STATIC)
 	endif ()
 	if (HDF5_BUILT_AS_DYNAMIC_LIB)
-		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE "-DH5_BUILT_AS_DYNAMIC_LIB")
+		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE H5_BUILT_AS_DYNAMIC_LIB)
 	endif ()
 endif (WIN32)
+
+if (WITH_ETP)
+	target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE WITH_ETP)
+	target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE BOOST_ALL_NO_LIB)
+	if (WITH_ETP_SSL)
+		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE WITH_ETP_SSL)
+	endif ()
+endif (WITH_ETP)
 
 # Linker instructions
 if (WIN32)
@@ -120,6 +131,16 @@ ELSEIF (UNIX)
 		SOVERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR})
 endif (WIN32)
 
+if (WITH_ETP)
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${BOOST_SYSTEM_LIBRARY} ${CMAKE_THREAD_LIBS_INIT} ${AVRO_LIBRARY_RELEASE})
+	if (WITH_ETP_SSL)
+		if (NOT TARGET OpenSSL::SSL OR NOT TARGET OpenSSL::Crypto)
+			find_package(OpenSSL REQUIRED)
+		endif()
+		target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+	endif ()
+endif (WITH_ETP)
+
 # ============================================================================
 # Getting source files
 # ============================================================================
@@ -132,7 +153,13 @@ set (FESAPI_COMMON_NS common CACHE STRING "Namespace for common objects")
 #set (FESAPI_PRODML2_0_NS prodml2_0 CACHE STRING "Namespace for prodml2_0 objects")
 set (FESAPI_RESQML2_NS resqml2 CACHE STRING "Namespace for resqml2 objects")
 set (FESAPI_RESQML2_0_1_NS resqml2_0_1 CACHE STRING "Namespace for resqml2_0_1 objects")
-set (FESAPI_WITSML2_0_NS witsml2_0 CACHE STRING "Namespace for witsml1_4_1_1 objects")
+
+set (FESAPI_WITSML2_NS witsml2 CACHE STRING "Namespace for witsml2 objects")
+set (FESAPI_WITSML2_0_NS witsml2_0 CACHE STRING "Namespace for witsml2_0 objects")
+SET (FESAPI_WITSML2_1_NS witsml2_1 CACHE STRING "Namespace for witsml2_1 objects")
+
+set (FESAPI_ETP_NS etp CACHE STRING "Namespace for etp objects")
+
 configure_file(${FESAPI_ROOT_DIR}/cmake/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/nsDefinitions.h) # Overwrite if different
 
 file (GLOB FESAPI_COMMON_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/common/*.cpp)
@@ -156,8 +183,14 @@ file (GLOB FESAPI_RESQML_2_0_1_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREF
 #file (GLOB FESAPI_PRODML_2_0_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_0}/*.cpp)
 #file (GLOB FESAPI_PRODML_2_0_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_0}/*.h)
 
-file (GLOB FESAPI_WITSML_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX}/*.cpp)
-file (GLOB FESAPI_WITSML_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX}/*.h)
+file (GLOB FESAPI_WITSML_2_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2}/*.cpp)
+file (GLOB FESAPI_WITSML_2_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2}/*.h)
+
+file (GLOB FESAPI_WITSML_2_0_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_0}/*.cpp)
+file (GLOB FESAPI_WITSML_2_0_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_0}/*.h)
+
+file (GLOB FESAPI_WITSML_2_1_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/*.cpp)
+file (GLOB FESAPI_WITSML_2_1_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_1}/*.h)
 
 set (ALL_SOURCES_AND_HEADERS
 	${CMAKE_CURRENT_SOURCE_DIR}/nsDefinitions.h
@@ -172,13 +205,43 @@ set (ALL_SOURCES_AND_HEADERS
 	${FESAPI_RESQML_2_HEADERS}
 	${FESAPI_RESQML_2_0_1_SOURCES}
 	${FESAPI_RESQML_2_0_1_HEADERS}
-	${FESAPI_WITSML_SOURCES}
-	${FESAPI_WITSML_HEADERS}
+	${FESAPI_WITSML_2_SOURCES}
+	${FESAPI_WITSML_2_HEADERS}
+	${FESAPI_WITSML_2_0_SOURCES}
+	${FESAPI_WITSML_2_0_HEADERS}
+	${FESAPI_WITSML_2_1_SOURCES}
+	${FESAPI_WITSML_2_1_HEADERS}
 #	${FESAPI_PRODML_2_0_SOURCES}
 #	${FESAPI_PRODML_2_0_HEADERS}
 	${FESAPI_PROXIES_SOURCES}
 	${FESAPI_PROXIES_HEADERS}
 )
+
+if (WITH_ETP)	
+	file (GLOB FESAPI_ETP_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/etp/*.cpp)
+	file (GLOB FESAPI_ETP_PROTOCOL_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/etp/ProtocolHandlers/*.cpp)
+	file (GLOB FESAPI_ETP_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/etp/*.h)
+	file (GLOB FESAPI_ETP_PROTOCOL_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/etp/ProtocolHandlers/*.h)
+
+	set (ALL_SOURCES_AND_HEADERS
+		${ALL_SOURCES_AND_HEADERS}
+		${FESAPI_ETP_SOURCES}
+		${FESAPI_ETP_PROTOCOL_SOURCES}
+		${FESAPI_ETP_HEADERS}	
+		${FESAPI_ETP_PROTOCOL_HEADERS}	
+	)
+	
+	if (WITH_ETP_SSL)
+		file (GLOB FESAPI_ETP_SSL_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/etp/ssl/*.cpp)
+		file (GLOB FESAPI_ETP_SSL_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/etp/ssl/*.h)
+		
+		set (ALL_SOURCES_AND_HEADERS
+			${ALL_SOURCES_AND_HEADERS}
+			${FESAPI_ETP_SSL_SOURCES}
+			${FESAPI_ETP_SSL_HEADERS}
+		)
+	endif ()
+endif (WITH_ETP)
 
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${ALL_SOURCES_AND_HEADERS})
 
@@ -187,9 +250,17 @@ target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_INCLUDE_DIR})
 target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_C_INCLUDE_DIR})
 target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_INCLUDE_DIR})
 
+if (WITH_ETP)
+	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${AVRO_INCLUDE_DIR})
+	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${BOOST_INCLUDE_DIR})
+	if (WITH_ETP_SSL)
+		target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${OPENSSL_INCLUDE_DIR})
+	endif ()
+endif (WITH_ETP)
+
 if (UNIX)
 	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${UUID_INCLUDE_DIR})
-ENDIF (UNIX)
+endif (UNIX)
 
 target_include_directories(${CPP_LIBRARY_NAME} PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
@@ -206,11 +277,22 @@ if (WIN32)
 	
 	source_group ("${RESQML_PREFIX_2_0_1}" FILES ${FESAPI_RESQML_2_0_1_SOURCES} ${FESAPI_RESQML_2_0_1_HEADERS})
 	
-	source_group ("${WITSML_PREFIX}" FILES ${FESAPI_WITSML_SOURCES} ${FESAPI_WITSML_HEADERS})
+	source_group ("${WITSML_PREFIX_2}" FILES ${FESAPI_WITSML_2_SOURCES} ${FESAPI_WITSML_2_HEADERS})
+	source_group ("${WITSML_PREFIX_2_0}" FILES ${FESAPI_WITSML_2_0_SOURCES} ${FESAPI_WITSML_2_0_HEADERS})
+	source_group ("${WITSML_PREFIX_2_1}" FILES ${FESAPI_WITSML_2_1_SOURCES} ${FESAPI_WITSML_2_1_HEADERS})
 	
 #	source_group ("${PRODML_PREFIX_2_0}" FILES ${FESAPI_PRODML_2_0_SOURCES} ${FESAPI_PRODML_2_0_HEADERS})
 	
 	source_group ("proxies" FILES ${FESAPI_PROXIES_SOURCES} ${FESAPI_PROXIES_HEADERS})
+	
+	if (WITH_ETP)
+		source_group ("${ETP_PREFIX}" FILES ${FESAPI_ETP_SOURCES} ${FESAPI_ETP_HEADERS})
+		source_group ("${ETP_PREFIX}\\ProtocolHandlers" FILES ${FESAPI_ETP_PROTOCOL_SOURCES} ${FESAPI_ETP_PROTOCOL_HEADERS})
+		if (WITH_ETP_SSL)
+			source_group ("${ETP_PREFIX}\\ssl" FILES ${FESAPI_ETP_SSL_SOURCES} ${FESAPI_ETP_SSL_HEADERS})
+		endif ()
+	endif (WITH_ETP)
+	
 endif (WIN32)
 
 if (WITH_JAVA_WRAPPING)
@@ -228,7 +310,9 @@ if (WITH_JAVA_WRAPPING)
 	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/common)
 	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2)
 	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2_0_1)
+	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml2)
 	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml2_0)
+	FILE (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml2_1)
 	
 	# Create the dedicated swig files
 	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2JavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigResqml2JavaInclude.i) # Overwrite if different
@@ -296,7 +380,7 @@ if (${WITH_JAVA_WRAPPING})
 	)
 endif (${WITH_JAVA_WRAPPING})
 
-# proxies headers
+# namespaces
 INSTALL (
 	FILES ${FESAPI_ROOT_DIR}/src/nsDefinitions.h
 	DESTINATION include/
@@ -308,7 +392,7 @@ INSTALL (
 	DESTINATION include/proxies/
 )
 
-# main headers
+# common headers
 INSTALL (
 	FILES ${FESAPI_COMMON_HEADERS}
 	DESTINATION include/common
@@ -341,8 +425,17 @@ INSTALL (
 
 # witsml headers
 INSTALL (
-	FILES ${FESAPI_WITSML_HEADERS}
-	DESTINATION include/${WITSML_PREFIX}/
+	FILES ${FESAPI_WITSML_2_HEADERS}
+	DESTINATION include/${WITSML_PREFIX_2}/
+)
+
+INSTALL (
+	FILES ${FESAPI_WITSML_2_0_HEADERS}
+	DESTINATION include/${WITSML_PREFIX_2_0}/
+)
+INSTALL (
+	FILES ${FESAPI_WITSML_2_1_HEADERS}
+	DESTINATION include/${WITSML_PREFIX_2_1}/
 )
 
 # prodml headers
@@ -350,6 +443,15 @@ INSTALL (
 #	FILES ${FESAPI_PRODML_2_0_HEADERS}
 #	DESTINATION include/${PRODML_PREFIX_2_0}/
 #)
+
+# etp header
+IF (WITH_ETP)
+	INSTALL (
+		DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/etp
+		DESTINATION include/
+		FILES_MATCHING PATTERN "*.h"
+	)
+endif (WITH_ETP)
 
 # PropertyTypeMapping.xml
 INSTALL (

@@ -63,9 +63,9 @@ void PointSetRepresentation::pushBackGeometryPatch(
 	static_cast<_resqml2__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch.push_back(patch);
 }
 
-string PointSetRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* PointSetRepresentation::getHdfProxyDor() const
 {
-	return getHdfProxyUuidFromPointGeometryPatch(getPointGeometry2_0_1(0));
+	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
 resqml2__PointGeometry* PointSetRepresentation::getPointGeometry2_0_1(const unsigned int & patchIndex) const

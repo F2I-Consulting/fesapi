@@ -199,6 +199,10 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT bool getSideFlagOfInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const;
 
+		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllSourceRelationships() const;
+		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllTargetRelationships() const;
+		DLL_IMPORT_OR_EXPORT void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc);
+
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const { return XML_TAG; }
 
@@ -219,9 +223,6 @@ namespace RESQML2_0_1_NS
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getStratiUnitInterpDor(unsigned int regionIndex) const;
 		std::string getStratiUnitInterpUuid(unsigned int regionIndex) const;
-
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
 
 		void setXmlSealedSurfaceFramework(class SealedSurfaceFrameworkRepresentation* ssf);
 		void setXmlInterpretationOfVolumeRegion(unsigned int regionIndex, class StratigraphicUnitInterpretation * stratiUnitInterp);

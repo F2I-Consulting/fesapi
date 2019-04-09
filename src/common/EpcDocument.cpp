@@ -103,6 +103,19 @@ under the License.
 
 #include "witsml2_0/Well.h"
 
+#ifdef WITH_ETP
+#include "etp/EtpHdfProxy.h"
+#endif
+
+#include "witsml2_1/Well.h"
+#include "witsml2_1/Wellbore.h"
+#include "witsml2_1/Trajectory.h"
+#include "witsml2_1/Log.h"
+#include "witsml2_1/WellboreMarkerSet.h""
+#include "witsml2_1/ToolErrorModelDictionary.h""
+#include "witsml2_1/ErrorTermDictionary.h"
+#include "witsml2_1/WeightingFunction.h"
+
 #include "tools/GuidTools.h"
 
 using namespace std;
@@ -111,9 +124,13 @@ using namespace gsoap_resqml2_0_1;
 using namespace COMMON_NS;
 using namespace RESQML2_0_1_NS;
 using namespace WITSML2_0_NS;
+using namespace WITSML2_1_NS;
 
 const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 
+/////////////////////
+/////// RESQML //////
+/////////////////////
 #define GET_RESQML_2_0_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
 	gsoap_resqml2_0_1::_resqml2__##className* read = gsoap_resqml2_0_1::soap_new_resqml2__obj_USCORE##className(s, 1);\
 	soap_read_resqml2__obj_USCORE##className(s, read);
@@ -129,7 +146,24 @@ const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 		GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
 	}
 
-// Create a fesapi partial wrappe based on a content type
+/////////////////////
+///// WITSML 2.1 ////
+/////////////////////
+#define GET_WITSML_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
+	gsoapNameSpace::_witsml2__##className* read = gsoapNameSpace::soap_new_witsml2__##className(s, 1);\
+	gsoapNameSpace::soap_read_witsml2__##className(s, read);
+
+#define GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
+	GET_WITSML_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
+	wrapper = new classNamespace::className(read);
+
+#define CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
+	(datatype.compare(classNamespace::className::XML_TAG) == 0)\
+	{\
+		GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace);\
+	}
+
+// Create a fesapi partial wrapper based on a content type
 #define CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(className)\
 	(resqmlContentType.compare(className::XML_TAG) == 0)\
 	{\
@@ -152,19 +186,44 @@ namespace // anonymous namespace. Use only in that file.
 	{
 		return new RESQML2_0_1_NS::HdfProxy(fromGsoap, packageDirAbsolutePath, externalFilePath);
 	}
+
+	COMMON_NS::AbstractHdfProxy* epc_partial_builder(soap* soapContext, const std::string & guid, const std::string & title)
+	{
+		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(soapContext, 1);
+		partialObject->Title = title;
+		partialObject->UUID = guid;
+		partialObject->ContentType = "application/x-resqml+xml;version=2.0;type=obj_EpcExternalPartReference";
+		return new RESQML2_0_1_NS::HdfProxy(partialObject);
+	}
+
+#ifdef WITH_ETP
+	COMMON_NS::AbstractHdfProxy* etp_partial_builder(soap* soapContext, const std::string & guid, const std::string & title)
+	{
+		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(soapContext, 1);
+		partialObject->Title = title;
+		partialObject->UUID = guid;
+		partialObject->ContentType = "application/x-resqml+xml;version=2.0;type=obj_EpcExternalPartReference";
+		return new ETP_NS::EtpHdfProxy(partialObject);
+	}
+#endif
 }
 
-EpcDocument::EpcDocument(const string & fileName, const openingMode & hdf5PermissionAccess) :
-	package(nullptr), s(nullptr), propertyKindMapper(nullptr), make_hdf_proxy(&default_builder), make_hdf_proxy_from_gsoap_proxy_2_0_1(&default_builder)
+EpcDocument::EpcDocument() :
+	package(nullptr), s(nullptr),
+	propertyKindMapper(nullptr), make_hdf_proxy(&default_builder), make_hdf_proxy_from_gsoap_proxy_2_0_1(&default_builder),
+	make_partial_hdf_proxy(&epc_partial_builder)
 {
-	open(fileName, hdf5PermissionAccess);
 }
 
-EpcDocument::EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, const openingMode & hdf5PermissionAccess) :
-	package(nullptr), s(nullptr), make_hdf_proxy(&default_builder), make_hdf_proxy_from_gsoap_proxy_2_0_1(&default_builder)
+EpcDocument::EpcDocument(const string & fileName, const openingMode & permissionAccess) :
+	EpcDocument()
 {
-	open(fileName, hdf5PermissionAccess);
+	open(fileName, permissionAccess);
+}
 
+EpcDocument::EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, const openingMode & permissionAccess) :
+	EpcDocument(fileName, permissionAccess)
+{
 	// Load property kind mapping files
 	propertyKindMapper = new PropertyKindMapper(this);
 	string error = propertyKindMapper->loadMappingFilesFromDirectory(propertyKindMappingFilesDirectory);
@@ -186,9 +245,9 @@ std::string EpcDocument::generateRandomUuidAsString()
 	return GuidTools::generateUidAsString();
 }
 
-const EpcDocument::openingMode & EpcDocument::getHdf5PermissionAccess() const
+const EpcDocument::openingMode & EpcDocument::getPermissionAccess() const
 {
-	return hdf5PermissionAccess;
+	return permissionAccess;
 }
 
 soap* EpcDocument::getGsoapContext() const { return s; }
@@ -375,7 +434,7 @@ unsigned int EpcDocument::getHdfProxyCount() const { return hdfProxySet.size(); 
 void EpcDocument::addWarning(const std::string & warning) { warnings.push_back(warning); }
 const std::vector<std::string> & EpcDocument::getWarnings() const { return warnings; }
 
-void  EpcDocument::open(const std::string & fileName, const openingMode & hdf5PermissionAccess)
+void  EpcDocument::open(const std::string & fileName, const openingMode & permissionAccess)
 {
 	if (fileName.empty()) {
 		throw invalid_argument("The epc document name cannot be empty.");
@@ -384,7 +443,16 @@ void  EpcDocument::open(const std::string & fileName, const openingMode & hdf5Pe
 		throw invalid_argument("The epc document must be closed before to be opened again.");
 	}
 
-	this->hdf5PermissionAccess = hdf5PermissionAccess;
+#ifdef WITH_ETP
+	set_hdf_proxy_builder(permissionAccess == openingMode::ETP ? &etp_partial_builder : &epc_partial_builder);
+#else
+	if (permissionAccess == openingMode::ETP) {
+		throw std::invalid_argument("Enable WITH_ETP in compile definitions if you want to use HDF ETP opening mode.");
+	}
+	set_hdf_proxy_builder(&epc_partial_builder);
+#endif
+
+	this->permissionAccess = permissionAccess;
 	setFilePath(fileName);
 
 	// Below SOAP_XML_IGNORENS is used and should not be -> See gsoap sourceforge bug #1123 
@@ -512,6 +580,56 @@ std::string EpcDocument::planeAngleUomToString(const gsoap_eml2_1::eml21__PlaneA
 	return gsoap_eml2_1::soap_eml21__PlaneAngleUom2s(s, witsmlUom);
 }
 
+COMMON_NS::AbstractObject* EpcDocument::addOrReplaceGsoapProxy(const std::string & xml, const string & contentType)
+{
+	istringstream iss(xml);
+	setGsoapStream(&iss);
+	COMMON_NS::AbstractObject* wrapper = nullptr;
+
+	size_t lastEqualCharPos = contentType.find_last_of('_'); // The XML tag is after "obj_"
+	if (lastEqualCharPos == string::npos) { lastEqualCharPos = contentType.find_last_of('='); }
+	const string datatype = contentType.substr(lastEqualCharPos+1);
+
+	if (datatype.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0) {
+		gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* read = getEpcExternalPartReference_2_0_GsoapProxyFromGsoapContext();
+		wrapper = make_hdf_proxy_from_gsoap_proxy_2_0_1(read, string(), string());
+	}
+	else {
+		if (contentType.find("application/x-resqml+xml;version=2.0;type=obj") != string::npos) {
+			wrapper = getResqml2_0_1WrapperFromGsoapContext(datatype);
+		}
+		else if (contentType.find("application/x-witsml+xml;version=2.0;type=") != string::npos) {
+			wrapper = getWitsml2_0WrapperFromGsoapContext(datatype);
+		}
+		else if (contentType.find("application/x-witsml+xml;version=2.1;type=") != string::npos) {
+			wrapper = getWitsml2_1WrapperFromGsoapContext(datatype);
+		}
+	}
+
+	if (wrapper != nullptr) {
+		if (s->error != SOAP_OK) {
+			ostringstream oss;
+			soap_stream_fault(s, oss);
+			delete wrapper;
+		}
+		else {
+			COMMON_NS::AbstractObject* obj = getDataObjectByUuid(wrapper->getUuid());
+			if (obj == nullptr) {
+				addFesapiWrapperAndDeleteItIfException(wrapper);
+				return wrapper;
+			}
+			else { // replacement
+				obj->setGsoapProxy(wrapper->getGsoapProxy());
+				delete wrapper;
+				return obj;
+			}
+		}
+	}
+
+	warnings.push_back("The content type " + contentType + " could not be wrapped by fesapi. The related instance will be ignored.");
+	return nullptr;
+}
+
 void EpcDocument::addGsoapProxy(COMMON_NS::AbstractObject* proxy)
 {
 	string xmlTag = proxy->getXmlTag();
@@ -592,6 +710,7 @@ void EpcDocument::addGsoapProxy(COMMON_NS::AbstractObject* proxy)
 	else if (xmlTag.compare(PointSetRepresentation::XML_TAG) == 0) {
 		pointSetRepresentationSet.push_back(static_cast<PointSetRepresentation* const>(proxy));
 	}
+
 	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {
 		dataObjectSet[proxy->getUuid()] = proxy;
 	}
@@ -618,17 +737,27 @@ void EpcDocument::addFesapiWrapperAndDeleteItIfException(COMMON_NS::AbstractObje
 
 void EpcDocument::serialize(bool useZip64)
 {
+	if (permissionAccess == openingMode::READ_ONLY) {
+		throw std::invalid_argument("The permission to access to the EPC file is READ ONLY. It cannot be serialized.");
+	}
+#ifdef WITH_ETP
+	else if (permissionAccess == openingMode::ETP) {
+		throw std::invalid_argument("You cannot serialize and EPC document when you are in ETP mode yet.");
+	}
+#endif
+
 	warnings.clear();
 
-	package->openForWriting(filePath, useZip64);
-
+	// Cannot include zip.h for some macro conflict reasons with beast which also includes a port of zlib. Consequently cannot use macros below.
+	// 0 means APPEND_STATUS_CREATE
+	package->openForWriting(filePath, 0, useZip64);
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
 #else
 	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
 #endif
 	{
-		if (!it->second->isPartial()) {
+		if (!it->second->isPartial() && it->second->isTopLevelElement()) {
 			string str = it->second->serializeIntoString();
 
 			epc::FilePart* fp = package->createPart(str, it->second->getPartNameInEpcDocument());
@@ -718,26 +847,18 @@ string EpcDocument::deserialize()
 				warnings.push_back("The content type " + resqmlContentType + " could not be wrapped by fesapi. The related instance will be ignored.");
 			}
 		}
-		else if (it->second.getContentTypeString().find("application/x-eml+xml;version=2.1;type=") == 0)
+		else if (it->second.getContentTypeString().find("application/x-witsml+xml;version=2.0;type=") == 0)
 		{
-			const string fileStr = package->extractFile(it->second.getExtensionOrPartName().substr(1));
+			string fileStr = package->extractFile(it->second.getExtensionOrPartName().substr(1));
 			if (fileStr.empty()) {
 				throw invalid_argument("The EPC document contains the file " + it->second.getExtensionOrPartName().substr(1) + " in its contentType file which cannot be found or cannot be unzipped or is empty.");
 			}
 			istringstream iss(fileStr);
 			setGsoapStream(&iss);
-			COMMON_NS::AbstractObject* wrapper = nullptr;
-			const size_t lastEqualCharPos = it->second.getContentTypeString().find_last_of('=');
-			const string resqmlContentType = it->second.getContentTypeString().substr(lastEqualCharPos + 1);
-			if (resqmlContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
+			COMMON_NS::AbstractObject* wrapper = getWitsml2_0WrapperFromGsoapContext(it->second.getContentTypeString().substr(42));
+			
+			if (wrapper != nullptr)
 			{
-				throw std::invalid_argument("Not supported yet");
-			}
-			else {
-				wrapper = getResqml2_0_1WrapperFromGsoapContext(resqmlContentType);
-			}
-
-			if (wrapper != nullptr) {
 				if (s->error != SOAP_OK) {
 					ostringstream oss;
 					soap_stream_fault(s, oss);
@@ -748,11 +869,8 @@ string EpcDocument::deserialize()
 					addFesapiWrapperAndDeleteItIfException(wrapper);
 				}
 			}
-			else {
-				warnings.push_back("The content type " + resqmlContentType + " could not be wrapped by fesapi. The related instance will be ignored.");
-			}
 		}
-		else if (it->second.getContentTypeString().find("application/x-witsml+xml;version=2.0;type=") == 0)
+		else if (it->second.getContentTypeString().find("application/x-witsml+xml;version=2.1;type=") == 0)
 		{
 			string fileStr = package->extractFile(it->second.getExtensionOrPartName().substr(1));
 			if (fileStr.empty()) {
@@ -760,39 +878,8 @@ string EpcDocument::deserialize()
 			}
 			istringstream iss(fileStr);
 			setGsoapStream(&iss);
-			WITSML2_0_NS::AbstractObject* wrapper = nullptr;
-			string resqmlContentType = it->second.getContentTypeString().substr(42);
-			if (resqmlContentType.compare(Well::XML_TAG) == 0)
-			{
-				gsoap_eml2_1::_witsml2__Well* read = gsoap_eml2_1::soap_new_witsml2__Well(s, 1);
-				soap_read_witsml2__Well(s, read);
-				wrapper = new Well(read);
-			}
-			else if (resqmlContentType.compare(Wellbore::XML_TAG) == 0)
-			{
-				gsoap_eml2_1::_witsml2__Wellbore* read = gsoap_eml2_1::soap_new_witsml2__Wellbore(s, 1);
-				soap_read_witsml2__Wellbore(s, read);
-				wrapper = new Wellbore(read);
-			}
-			else if (resqmlContentType.compare(WellCompletion::XML_TAG) == 0)
-			{
-				gsoap_eml2_1::_witsml2__WellCompletion* read = gsoap_eml2_1::soap_new_witsml2__WellCompletion(s, 1);
-				soap_read_witsml2__WellCompletion(s, read);
-				wrapper = new WellCompletion(read);
-			}
-			else if (resqmlContentType.compare(WellboreCompletion::XML_TAG) == 0)
-			{
-				gsoap_eml2_1::_witsml2__WellboreCompletion* read = gsoap_eml2_1::soap_new_witsml2__WellboreCompletion(s, 1);
-				soap_read_witsml2__WellboreCompletion(s, read);
-				wrapper = new WellboreCompletion(read);
-			}
-			else if (resqmlContentType.compare(Trajectory::XML_TAG) == 0)
-			{
-				gsoap_eml2_1::_witsml2__Trajectory* read = gsoap_eml2_1::soap_new_witsml2__Trajectory(s, 1);
-				soap_read_witsml2__Trajectory(s, read);
-				wrapper = new Trajectory(read);
-			}
-			
+			COMMON_NS::AbstractObject* wrapper = getWitsml2_1WrapperFromGsoapContext(it->second.getContentTypeString().substr(42));
+
 			if (wrapper != nullptr)
 			{
 				if (s->error != SOAP_OK) {
@@ -808,6 +895,8 @@ string EpcDocument::deserialize()
 		}
 	}
 
+	deserializeContentOfDictionaries();
+
 	updateAllRelationships();
 
 	// Validate properties
@@ -815,6 +904,8 @@ string EpcDocument::deserialize()
 	for (size_t propIndex = 0; propIndex < allprops.size(); ++propIndex) {
 		allprops[propIndex]->validate();
 	}
+
+	package->close();
 
 	return result;
 }
@@ -924,6 +1015,33 @@ COMMON_NS::AbstractObject* EpcDocument::getResqml2_0_1WrapperFromGsoapContext(co
 	{
 		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
 	}
+
+	return wrapper;
+}
+
+COMMON_NS::AbstractObject* EpcDocument::getWitsml2_0WrapperFromGsoapContext(const std::string & datatype)
+{
+	COMMON_NS::AbstractObject* wrapper = nullptr;
+
+	if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Well, gsoap_eml2_1)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, WellCompletion, gsoap_eml2_1)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Wellbore, gsoap_eml2_1)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, WellboreCompletion, gsoap_eml2_1)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Trajectory, gsoap_eml2_1)
+
+		return wrapper;
+}
+
+COMMON_NS::AbstractObject* EpcDocument::getWitsml2_1WrapperFromGsoapContext(const std::string & datatype)
+{
+	COMMON_NS::AbstractObject* wrapper = nullptr;
+
+	if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, ToolErrorModel, gsoap_eml2_2)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, ToolErrorModelDictionary, gsoap_eml2_2)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, ErrorTerm, gsoap_eml2_2)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, ErrorTermDictionary, gsoap_eml2_2)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, WeightingFunction, gsoap_eml2_2)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, WeightingFunctionDictionary, gsoap_eml2_2)
 
 	return wrapper;
 }
@@ -1321,6 +1439,33 @@ string EpcDocument::getName() const
 	return nameSuffixed.substr(0, nameSuffixed.find_last_of("."));
 }
 
+void EpcDocument::deserializeContentOfDictionaries()
+{
+	auto etDictionaries = getDataObjects<ErrorTermDictionary>();
+	for (ErrorTermDictionary* etDictionary : etDictionaries) {
+		auto errorTerms = etDictionary->getErrorTerms();
+		for (ErrorTerm* errorTerm : errorTerms) {
+			addFesapiWrapperAndDeleteItIfException(errorTerm);
+		}
+	}
+
+	auto temDictionaries = getDataObjects<ToolErrorModelDictionary>();
+	for (ToolErrorModelDictionary* temDictionary : temDictionaries) {
+		auto tems = temDictionary->getToolErrorModels();
+		for (ToolErrorModel* tem : tems) {
+			addFesapiWrapperAndDeleteItIfException(tem);
+		}
+	}
+
+	auto wfDictionaries = getDataObjects<WeightingFunctionDictionary>();
+	for (WeightingFunctionDictionary* wfDictionary : wfDictionaries) {
+		auto wefs = wfDictionary->getWeightingFunctions();
+		for (WeightingFunction* wef : wefs) {
+			addFesapiWrapperAndDeleteItIfException(wef);
+		}
+	}
+}
+
 void EpcDocument::updateAllRelationships()
 {
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
@@ -1330,17 +1475,12 @@ void EpcDocument::updateAllRelationships()
 #endif
 	{
 		if (!it->second->isPartial()) {
-			it->second->importRelationshipSetFromEpc(this);
+			it->second->resolveTargetRelationships(this);
 		}
 	}
 }
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-unordered_map< string, string > & EpcDocument::getExtendedCoreProperty()
-#else
-tr1::unordered_map< string, string > & EpcDocument::getExtendedCoreProperty()
-#endif
-{
+std::unordered_map< string, string > & EpcDocument::getExtendedCoreProperty() {
 	return package->getExtendedCoreProperty();
 }
 
@@ -1425,10 +1565,7 @@ COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_resqml2_0_1::eml20__
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(RockFluidOrganizationInterpretation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(RockFluidUnitInterpretation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(RockFluidUnitFeature)
-	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
-	{
-		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
-	}
+	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(HdfProxy)
 
 	throw invalid_argument("The content type " + resqmlContentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
 }
@@ -1443,8 +1580,22 @@ COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_eml2_1::eml21__DataO
 	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Trajectory)
 	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
-		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
+		COMMON_NS::AbstractHdfProxy* result = make_partial_hdf_proxy(getGsoapContext(), dor->Uuid, dor->Title);
+		addFesapiWrapperAndDeleteItIfException(result);
+		return result;
 	}
+
+	throw invalid_argument("The content type " + resqmlContentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
+}
+
+COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_eml2_2::eml22__DataObjectReference* dor)
+{
+	const size_t lastEqualCharPos = dor->ContentType.find_last_of('='); // The XML tag is after "type="
+	const string resqmlContentType = dor->ContentType.substr(lastEqualCharPos + 1);
+
+	if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::ToolErrorModel)
+	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::ErrorTerm)
+	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::WeightingFunction)
 
 	throw invalid_argument("The content type " + resqmlContentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
 }
@@ -2407,7 +2558,7 @@ RESQML2_NS::Activity* EpcDocument::createActivity(RESQML2_NS::ActivityTemplate* 
 WITSML2_0_NS::Well* EpcDocument::createWell(const std::string & guid,
 	const std::string & title)
 {
-	Well* result = new Well(getGsoapContext(), guid, title);
+	WITSML2_0_NS::Well* result = new WITSML2_0_NS::Well(getGsoapContext(), guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2418,7 +2569,74 @@ WITSML2_0_NS::Well* EpcDocument::createWell(const std::string & guid,
 	gsoap_eml2_1::eml21__WellStatus statusWell,
 	gsoap_eml2_1::witsml2__WellDirection directionWell)
 {
-	Well* result = new Well(getGsoapContext(), guid, title, operator_, statusWell, directionWell);
+	WITSML2_0_NS::Well* result = new WITSML2_0_NS::Well(getGsoapContext(), guid, title, operator_, statusWell, directionWell);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_1_NS::ToolErrorModel* EpcDocument::createPartialToolErrorModel(
+	const std::string & guid,
+	const std::string & title)
+{
+	return createPartial<WITSML2_1_NS::ToolErrorModel>(guid, title);;
+}
+
+WITSML2_1_NS::ToolErrorModel* EpcDocument::createToolErrorModel(
+	const std::string & guid,
+	const std::string & title,
+	gsoap_eml2_2::witsml2__MisalignmentMode misalignmentMode)
+{
+	ToolErrorModel* result = new ToolErrorModel(getGsoapContext(), guid, title, misalignmentMode);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_1_NS::ToolErrorModelDictionary* EpcDocument::createToolErrorModelDictionary(
+	const std::string & guid,
+	const std::string & title)
+{
+	ToolErrorModelDictionary* result = new ToolErrorModelDictionary(getGsoapContext(), guid, title);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_1_NS::ErrorTerm* EpcDocument::createErrorTerm(
+	const std::string & guid,
+	const std::string & title,
+	gsoap_eml2_2::witsml2__ErrorPropagationMode propagationMode,
+	WeightingFunction* weightingFunction)
+{
+	ErrorTerm* result = new ErrorTerm(getGsoapContext(), guid, title, propagationMode, weightingFunction);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_1_NS::ErrorTermDictionary* EpcDocument::createErrorTermDictionary(
+	const std::string & guid,
+	const std::string & title)
+{
+	ErrorTermDictionary* result = new ErrorTermDictionary(getGsoapContext(), guid, title);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_1_NS::WeightingFunction* EpcDocument::createWeightingFunction(
+	const std::string & guid,
+	const std::string & title,
+	const std::string & depthFormula,
+	const std::string & inclinationFormula,
+	const std::string & azimuthFormula)
+{
+	WeightingFunction* result = new WeightingFunction(getGsoapContext(), guid, title, depthFormula, inclinationFormula, azimuthFormula);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+WITSML2_1_NS::WeightingFunctionDictionary* EpcDocument::createWeightingFunctionDictionary(
+	const std::string & guid,
+	const std::string & title)
+{
+	WeightingFunctionDictionary* result = new WeightingFunctionDictionary(getGsoapContext(), guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2434,7 +2652,7 @@ WITSML2_0_NS::Wellbore* EpcDocument::createWellbore(WITSML2_0_NS::Well* witsmlWe
 	const std::string & guid,
 	const std::string & title)
 {
-	Wellbore* result = new Wellbore(witsmlWell, guid, title);
+	WITSML2_0_NS::Wellbore* result = new WITSML2_0_NS::Wellbore(witsmlWell, guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2446,7 +2664,7 @@ WITSML2_0_NS::Wellbore* EpcDocument::createWellbore(WITSML2_0_NS::Well* witsmlWe
 	bool isActive,
 	bool achievedTD)
 {
-	Wellbore* result = new Wellbore(witsmlWell, guid, title, statusWellbore, isActive, achievedTD);
+	WITSML2_0_NS::Wellbore* result = new WITSML2_0_NS::Wellbore(witsmlWell, guid, title, statusWellbore, isActive, achievedTD);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2476,7 +2694,7 @@ WITSML2_0_NS::Trajectory* EpcDocument::createTrajectory(WITSML2_0_NS::Wellbore* 
 	const std::string & title,
 	gsoap_eml2_1::witsml2__ChannelStatus channelStatus)
 {
-	Trajectory* result = new Trajectory(witsmlWellbore, guid, title, channelStatus);
+	WITSML2_0_NS::Trajectory* result = new WITSML2_0_NS::Trajectory(witsmlWellbore, guid, title, channelStatus);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
@@ -2489,6 +2707,11 @@ void COMMON_NS::EpcDocument::set_hdf_proxy_builder(HdfProxyBuilder builder)
 void COMMON_NS::EpcDocument::set_hdf_proxy_builder(HdfProxyBuilderFromGsoapProxy2_0_1 builder)
 {
 	make_hdf_proxy_from_gsoap_proxy_2_0_1 = builder;
+}
+
+void COMMON_NS::EpcDocument::set_hdf_proxy_builder(PartialHdfProxyBuilder builder)
+{
+	make_partial_hdf_proxy = builder;
 }
 
 int EpcDocument::getGsoapErrorCode() const
@@ -2521,4 +2744,3 @@ gsoap_eml2_1::_eml21__EpcExternalPartReference* EpcDocument::getEpcExternalPartR
 	gsoap_eml2_1::soap_read_eml21__EpcExternalPartReference(s, read);
 	return read;
 }
-

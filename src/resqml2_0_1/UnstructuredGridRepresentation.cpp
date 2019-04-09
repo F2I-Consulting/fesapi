@@ -107,9 +107,9 @@ gsoap_resqml2_0_1::resqml2__PointGeometry* UnstructuredGridRepresentation::getPo
 	return nullptr;
 }
 
-string UnstructuredGridRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* UnstructuredGridRepresentation::getHdfProxyDor() const
 {
-	return getHdfProxyUuidFromPointGeometryPatch(getPointGeometry2_0_1(0));
+	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
 ULONG64 UnstructuredGridRepresentation::getCellCount() const

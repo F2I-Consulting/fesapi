@@ -73,11 +73,11 @@ void SeismicLineFeature::setSeismicLineSet(SeismicLineSetFeature * seisLineSet)
 	}
 }
 
-std::vector<epc::Relationship> SeismicLineFeature::getAllEpcRelationships() const
+std::vector<epc::Relationship> SeismicLineFeature::getAllTargetRelationships() const
 {
 	std::vector<epc::Relationship> result;
 
-	if (seismicLineSet)
+	if (seismicLineSet != nullptr)
 	{
 		Relationship rel(seismicLineSet->getPartNameInEpcDocument(), "", seismicLineSet->getUuid());
 		rel.setDestinationObjectType();
@@ -87,7 +87,7 @@ std::vector<epc::Relationship> SeismicLineFeature::getAllEpcRelationships() cons
 	return result;
 }
 
-void SeismicLineFeature::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void SeismicLineFeature::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	updateXml = false;
 

@@ -64,16 +64,17 @@ void WellboreFrameRepresentation::getXyzPointsOfPatch(const unsigned int & patch
 		throw invalid_argument("The geometry of the representation either does not exist or it is not an explicit one.");
 }
 
-vector<Relationship> WellboreFrameRepresentation::getAllEpcRelationships() const
+vector<Relationship> WellboreFrameRepresentation::getAllTargetRelationships() const
 {
 	_resqml2__WellboreFrameRepresentation* frame = static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
 	
-	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
+	vector<Relationship> result = AbstractRepresentation::getAllTargetRelationships();
 
 	// XML forward relationship
-	if (trajectory)
+	WellboreTrajectoryRepresentation* trajectory = getWellboreTrajectory();
+	if (trajectory != nullptr)
 	{
-		Relationship relTraj(trajectory->getPartNameInEpcDocument(), "", frame->Trajectory->UUID);
+		Relationship relTraj(trajectory->getPartNameInEpcDocument(), "", trajectory->getUuid());
 		relTraj.setDestinationObjectType();
 		result.push_back(relTraj);
 	}
@@ -83,9 +84,11 @@ vector<Relationship> WellboreFrameRepresentation::getAllEpcRelationships() const
 	return result;
 }
 
-void WellboreFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void WellboreFrameRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	const _resqml2__WellboreFrameRepresentation* const rep = static_cast<const _resqml2__WellboreFrameRepresentation* const>(gsoapProxy2_0_1);
+
+	AbstractRepresentation::resolveTargetRelationships(epcDoc);
 
 	// need to do that before AbstractRepresentation::importRelationshipSetFromEpc because the trajectory is used for finding the local crs relationship.
 	trajectory = static_cast<WellboreTrajectoryRepresentation* const>(epcDoc->getDataObjectByUuid(rep->Trajectory->UUID));
@@ -93,7 +96,7 @@ void WellboreFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDoc
 		trajectory->addWellboreFrameRepresentation(this);
 	}
 
-	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+	getOrCreateObjectFromDor<WellboreTrajectoryRepresentation>(getWellboreTrajectoryDor())->addWellboreFrameRepresentation(this);
 
 	int valuesType = rep->NodeMd->soap_type();
 	if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
@@ -118,12 +121,12 @@ void WellboreFrameRepresentation::setMdValues(double * mdValues, const unsigned 
 	frame->NodeCount = mdValueCount;
 
 	// HDF
-	hsize_t dim[] = {mdValueCount};
+	hsize_t dim = mdValueCount;
 	hdfProxy->writeArrayNd(frame->uuid,
 			"mdValues",
 			H5T_NATIVE_DOUBLE,
 			mdValues,
-			dim, 1);
+			&dim, 1);
 }
 
 void WellboreFrameRepresentation::setMdValues(const double & firstMdValue, const double & incrementMdValue, const unsigned int & mdValueCount)
@@ -183,42 +186,21 @@ unsigned int WellboreFrameRepresentation::getMdValuesCount() const
 	return static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->NodeCount;
 }
 
-RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum WellboreFrameRepresentation::getMdHdfDatatype() const
+COMMON_NS::AbstractObject::hdfDatatypeEnum WellboreFrameRepresentation::getMdHdfDatatype() const
 {
 	_resqml2__WellboreFrameRepresentation* frame = static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
-	if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
-	{
-		if (hdfProxy == nullptr)
-			return RESQML2_NS::AbstractValuesProperty::UNKNOWN;
+	if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
+		if (hdfProxy == nullptr) {
+			return COMMON_NS::AbstractObject::UNKNOWN;
+		}
 
-		hid_t dt = hdfProxy->getHdfDatatypeInDataset(static_cast<resqml2__DoubleHdf5Array*>(frame->NodeMd)->Values->PathInHdfFile);
-		if (H5Tequal(dt, H5T_NATIVE_DOUBLE) > 0)
-			return RESQML2_NS::AbstractValuesProperty::DOUBLE;
-		else if (H5Tequal(dt, H5T_NATIVE_FLOAT) > 0)
-			return RESQML2_NS::AbstractValuesProperty::FLOAT;
-		else if (H5Tequal(dt, H5T_NATIVE_LONG) > 0)
-			return RESQML2_NS::AbstractValuesProperty::LONG;
-		else if (H5Tequal(dt, H5T_NATIVE_ULONG) > 0)
-			return RESQML2_NS::AbstractValuesProperty::ULONG;
-		else if (H5Tequal(dt, H5T_NATIVE_INT) > 0)
-			return RESQML2_NS::AbstractValuesProperty::INT;
-		else if (H5Tequal(dt, H5T_NATIVE_UINT) > 0)
-			return RESQML2_NS::AbstractValuesProperty::UINT;
-		else if (H5Tequal(dt, H5T_NATIVE_SHORT) > 0)
-			return RESQML2_NS::AbstractValuesProperty::SHORT;
-		else if (H5Tequal(dt, H5T_NATIVE_USHORT) > 0)
-			return RESQML2_NS::AbstractValuesProperty::USHORT;
-		else if (H5Tequal(dt, H5T_NATIVE_CHAR) > 0)
-			return RESQML2_NS::AbstractValuesProperty::CHAR;
-		else if (H5Tequal(dt, H5T_NATIVE_UCHAR) > 0)
-			return RESQML2_NS::AbstractValuesProperty::UCHAR;
+		return hdfProxy->getHdfDatatypeInDataset(static_cast<resqml2__DoubleHdf5Array*>(frame->NodeMd)->Values->PathInHdfFile);
 	}
-	else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleLatticeArray)
-	{
-		return RESQML2_NS::AbstractValuesProperty::DOUBLE;
+	else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleLatticeArray) {
+		return COMMON_NS::AbstractObject::DOUBLE;
 	}
 
-	return RESQML2_NS::AbstractValuesProperty::UNKNOWN; // unknwown datatype...
+	return COMMON_NS::AbstractObject::UNKNOWN;
 }
 
 void WellboreFrameRepresentation::getMdAsDoubleValues(double * values)
@@ -262,25 +244,35 @@ void WellboreFrameRepresentation::getMdAsFloatValues(float *  values)
 		throw logic_error("The array structure of MD is not supported?");
 }
 
+gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getWellboreTrajectoryDor() const
+{
+	if (gsoapProxy2_0_1 != nullptr) {
+		return static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->Trajectory;
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
+}
+
 std::string WellboreFrameRepresentation::getWellboreTrajectoryUuid() const
 {
-	return static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->Trajectory->UUID;
+	return getWellboreTrajectoryDor()->UUID;
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getLocalCrsDor() const
+WellboreTrajectoryRepresentation* WellboreFrameRepresentation::getWellboreTrajectory() const
 {
-	return trajectory->getLocalCrsDor();
+	return getEpcDocument()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(getWellboreTrajectoryUuid());
 }
 
-std::string WellboreFrameRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getHdfProxyDor() const
 {
 	_resqml2__WellboreFrameRepresentation* frame = static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
 	if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
 	{
-		return static_cast<resqml2__DoubleHdf5Array*>(frame->NodeMd)->Values->HdfProxy->UUID;
+		return static_cast<resqml2__DoubleHdf5Array*>(frame->NodeMd)->Values->HdfProxy;
 	}
 
-	return std::string();
+	return nullptr;
 }
 
 ULONG64 WellboreFrameRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const

@@ -51,7 +51,13 @@ void StratigraphicColumn::pushBackStratiColumnRank(StratigraphicColumnRankInterp
 	}
 }
 
-vector<Relationship> StratigraphicColumn::getAllEpcRelationships() const
+vector<Relationship> StratigraphicColumn::getAllSourceRelationships() const
+{
+	vector<Relationship> result;
+	return result;
+}
+
+vector<Relationship> StratigraphicColumn::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 
@@ -64,7 +70,7 @@ vector<Relationship> StratigraphicColumn::getAllEpcRelationships() const
     return result;
 }
 
-void StratigraphicColumn::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void StratigraphicColumn::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
 	updateXml = false;
 

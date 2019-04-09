@@ -16,30 +16,42 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------
-From Scott Meyers C++ book
------------------------------------------------------------------------*/
-
 #pragma once
 
-#if __cplusplus < 201103L
+#include <memory>
 
-const // It is a const object...
-class nullptr_t
-{
-  public:
-    template<class T>
-    inline operator T*() const // convertible to any type of null non-member pointer...
-    { return 0; }
+#include "nsDefinitions.h"
+#include "etp/EtpMessages.h"
 
-    template<class C, class T>
-    inline operator T C::*() const   // or any type of null member pointer...
-    { return 0; }
-
-  private:
-    void operator&() const;  // Can't take address of nullptr
-
-} nullptr = {};
-
+#if defined(_WIN32) && !defined(FESAPI_STATIC)
+	#ifndef DLL_IMPORT_OR_EXPORT
+		#if defined(FesapiCpp_EXPORTS) || defined(FesapiCppUnderDev_EXPORTS)
+			#define DLL_IMPORT_OR_EXPORT __declspec(dllexport)
+		#else
+			#define DLL_IMPORT_OR_EXPORT __declspec(dllimport)
+		#endif
+	#endif
+#else
+	#define DLL_IMPORT_OR_EXPORT
 #endif
 
+namespace ETP_NS
+{
+	class AbstractSession;
+
+	class DLL_IMPORT_OR_EXPORT ProtocolHandlers : public std::enable_shared_from_this<ProtocolHandlers>
+	{
+	protected:
+		ProtocolHandlers(AbstractSession* mySession): session(mySession) {}
+
+		AbstractSession* session;
+
+		void sendExceptionCode3();
+
+	public:
+		virtual ~ProtocolHandlers() {}
+
+	    virtual void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d) = 0;
+
+	};
+}

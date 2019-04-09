@@ -55,15 +55,15 @@ TriangulatedSetRepresentation::TriangulatedSetRepresentation(RESQML2_NS::Abstrac
 	}
 }
 
-string TriangulatedSetRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* TriangulatedSetRepresentation::getHdfProxyDor() const
 {
 	resqml2__TrianglePatch* patch = static_cast<_resqml2__TriangulatedSetRepresentation*>(gsoapProxy2_0_1)->TrianglePatch[0];
 	if (patch->Triangles->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
 	{
-		return static_cast<resqml2__IntegerHdf5Array*>(patch->Triangles)->Values->HdfProxy->UUID;
+		return static_cast<resqml2__IntegerHdf5Array*>(patch->Triangles)->Values->HdfProxy;
 	}
 
-	return getHdfProxyUuidFromPointGeometryPatch(getPointGeometry2_0_1(0));
+	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
 resqml2__PointGeometry* TriangulatedSetRepresentation::getPointGeometry2_0_1(const unsigned int & patchIndex) const

@@ -74,9 +74,9 @@ BoundaryFeature* RockFluidUnitFeature::getBottom() const
 	return epcDocument->getDataObjectByUuid<BoundaryFeature>(static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryBottom->UUID);
 }
 
-vector<Relationship> RockFluidUnitFeature::getAllEpcRelationships() const
+vector<Relationship> RockFluidUnitFeature::getAllTargetRelationships() const
 {
-	vector<Relationship> result =  GeologicUnitFeature::getAllEpcRelationships();
+	vector<Relationship> result =  GeologicUnitFeature::getAllTargetRelationships();
 
 	_resqml2__RockFluidUnitFeature* interp = static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1);
 
@@ -91,9 +91,9 @@ vector<Relationship> RockFluidUnitFeature::getAllEpcRelationships() const
 	return result;
 }
 
-void RockFluidUnitFeature::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void RockFluidUnitFeature::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	GeologicUnitFeature::importRelationshipSetFromEpc(epcDoc);
+	GeologicUnitFeature::resolveTargetRelationships(epcDoc);
 
 	_resqml2__RockFluidUnitFeature* interp = static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1);
 

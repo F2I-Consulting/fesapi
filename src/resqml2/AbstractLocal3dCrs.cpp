@@ -34,9 +34,13 @@ void AbstractLocal3dCrs::addRepresentation(AbstractRepresentation* rep)
 	repSet.push_back(rep);
 }
 
-void AbstractLocal3dCrs::importRelationshipSetFromEpc(COMMON_NS::EpcDocument*) {}
+vector<Relationship> AbstractLocal3dCrs::getAllTargetRelationships() const
+{
+	vector<Relationship> result;
+	return result;
+}
 
-vector<Relationship> AbstractLocal3dCrs::getAllEpcRelationships() const
+vector<Relationship> AbstractLocal3dCrs::getAllSourceRelationships() const
 {
 	vector<Relationship> result;
 

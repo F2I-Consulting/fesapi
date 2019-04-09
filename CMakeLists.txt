@@ -51,7 +51,7 @@ SET (BUILD_SHARED_LIBS ON CACHE BOOL "Build shared lib")
 SET (ENERGISTICS_SCHEMAS_LOCATION  ${FESAPI_PARENT_DIR}/energistics_schemas CACHE PATH "Energistics schemas path")
 MARK_AS_ADVANCED (ENERGISTICS_SCHEMAS_LOCATION)
 SET (RESQML_SCHEMA_LOCATION ${ENERGISTICS_SCHEMAS_LOCATION}/energyml/data/resqmlv2/v2.0.1/xsd_schemas)
-SET (WITSML_SCHEMA_LOCATION ${ENERGISTICS_SCHEMAS_LOCATION}/WITSML_v1.4.1.1_Data_Schema/witsml_v1.4.1.1_data/xsd_schemas)
+SET (WITSML_SCHEMA_LOCATION ${ENERGISTICS_SCHEMAS_LOCATION}/energyml/data/witsml/v2.0/xsd_schemas)
 
 IF (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 	SET (CMAKE_INSTALL_PREFIX ${FESAPI_BINARY_DIR}/install CACHE PATH "FesapiCpp install prefix" FORCE)
@@ -164,6 +164,36 @@ endif (BUILD_SHARED_LIBS)
 add_subdirectory(src)
 add_subdirectory(example)
 add_subdirectory(doc)
+
+set (WITH_ETP OFF CACHE BOOL "Build Fesapi with ETP support.")
+set (WITH_ETP_SSL OFF CACHE BOOL "Build Fesapi with ETP SSL support.")
+if (WITH_ETP)
+	find_package (Threads)
+
+	# avro DEPENDENCY
+	set (AVRO_INCLUDE_DIR AVRO_INCLUDE_DIR-NOTFOUND CACHE PATH "Path to the directory which contains the avro header files")
+	if (NOT IS_DIRECTORY ${AVRO_INCLUDE_DIR})
+		message(WARNING "The Avro include dir (AVRO_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
+	endif ()
+	set (AVRO_LIBRARY_RELEASE AVRO_LIBRARY_RELEASE-NOTFOUND CACHE FILEPATH "Path to the file which contains the avro library release")
+	if (NOT EXISTS ${AVRO_LIBRARY_RELEASE})
+		message(WARNING "The avro library (AVRO_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
+	endif ()
+
+	# Boost DEPENDENCY
+	set (BOOST_INCLUDE_DIR BOOST_INCLUDE_DIR-NOTFOUND CACHE PATH "Path to the directory which contains the BOOST header files")
+	if (NOT IS_DIRECTORY ${BOOST_INCLUDE_DIR})
+		message(WARNING "The BOOST include dir (BOOST_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
+	endif ()
+	set (BOOST_SYSTEM_LIBRARY BOOST_SYSTEM_LIBRARY-NOTFOUND CACHE FILEPATH "Path to the file which contains the Boost system static library release")
+	if (NOT EXISTS ${BOOST_SYSTEM_LIBRARY})
+		message(WARNING "The BOOST library (BOOST_SYSTEM_LIBRARY variable) does not look to be a valid file. Please modify it.")
+	endif ()
+	
+	add_subdirectory (etpClientExample)
+	add_subdirectory (etpServerExample)
+endif (WITH_ETP)
+
 
 set (WITH_TEST OFF CACHE BOOL "Also build the unit tests.")
 if (WITH_TEST)

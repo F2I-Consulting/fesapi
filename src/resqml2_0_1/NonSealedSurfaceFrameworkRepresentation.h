@@ -77,11 +77,11 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
-		DLL_IMPORT_OR_EXPORT virtual std::string getHdfProxyUuid() const;
+		virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
+
+		std::vector<epc::Relationship> getAllTargetRelationships() const;
 
     private:
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
 
         std::vector<class AbstractRepresentation*> supportingRepOfContactPatchSet;
             

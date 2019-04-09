@@ -259,7 +259,7 @@ unsigned int Well::getDatumCount() const
 	return static_cast<witsml2__Well*>(gsoapProxy2_1)->WellDatum.size();
 }
 
-vector<Relationship> Well::getAllEpcRelationships() const
+std::vector<epc::Relationship> Well::getAllSourceRelationships() const
 {
 	vector<Relationship> result;
 
@@ -288,8 +288,12 @@ vector<Relationship> Well::getAllEpcRelationships() const
 	return result;
 }
 
-void Well::importRelationshipSetFromEpc(COMMON_NS::EpcDocument*)
-{}
+std::vector<epc::Relationship> Well::getAllTargetRelationships() const {
+	vector<Relationship> result;
+	return result;
+}
+
+void Well::resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc) {}
 
 RESQML2_0_1_NS::WellboreFeature* Well::getResqmlWellboreFeature() const
 {

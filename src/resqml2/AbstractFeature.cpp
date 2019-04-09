@@ -38,7 +38,7 @@ unsigned int AbstractFeature::getInterpretationCount() const
 	return static_cast<unsigned int>(interpretationSet.size());
 }
 
-AbstractFeatureInterpretation*	AbstractFeature::getInterpretation(const unsigned int & index) const
+AbstractFeatureInterpretation*	AbstractFeature::getInterpretation(unsigned int index) const
 {
 	if (interpretationSet.size() > index) {
 		return interpretationSet[index];
@@ -47,23 +47,21 @@ AbstractFeatureInterpretation*	AbstractFeature::getInterpretation(const unsigned
 	throw range_error("The interpretation index is out of the range of the interpretation set of the feature.");
 }
 
-vector<Relationship> AbstractFeature::getAllEpcRelationships() const
+vector<Relationship> AbstractFeature::getAllSourceRelationships() const
 {
 	vector<Relationship> result;
 
 	for (size_t i = 0; i < interpretationSet.size(); ++i) {
-		if (interpretationSet[i] != nullptr) {
-			Relationship rel(interpretationSet[i]->getPartNameInEpcDocument(), "", interpretationSet[i]->getUuid());
-			rel.setSourceObjectType();
-			result.push_back(rel);
-		}
-		else {
-			throw domain_error("The interpretation associated to the feature cannot be nullptr.");
-		}
+		Relationship rel(interpretationSet[i]->getPartNameInEpcDocument(), "", interpretationSet[i]->getUuid());
+		rel.setSourceObjectType();
+		result.push_back(rel);
 	}
 
 	return result;
 }
 
-void AbstractFeature::importRelationshipSetFromEpc(COMMON_NS::EpcDocument*)
-{}
+vector<Relationship> AbstractFeature::getAllTargetRelationships() const
+{
+	vector<Relationship> result;
+	return result;
+}
