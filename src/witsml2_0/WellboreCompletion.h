@@ -60,6 +60,11 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT void pushBackPerforationHistory(unsigned int index,
 			const std::string & guid = "");
 
+		DLL_IMPORT_OR_EXPORT void pushBackPerforationHistory(unsigned int index,
+			gsoap_eml2_1::witsml2__PerforationStatus perforationStatus,
+			const time_t & startDate,
+			const std::string & guid = "");
+
 		DLL_IMPORT_OR_EXPORT unsigned int getPerforationCount() const;
 
 		DLL_IMPORT_OR_EXPORT bool hasPerforationMdDatum(unsigned int index) const;

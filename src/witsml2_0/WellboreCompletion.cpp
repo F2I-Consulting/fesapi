@@ -153,6 +153,36 @@ void WellboreCompletion::pushBackPerforationHistory(unsigned int index,
 	perforationSetInterval->PerforationStatusHistory.push_back(perforationStatusHistory);
 }
 
+void WellboreCompletion::pushBackPerforationHistory(unsigned int index,
+	gsoap_eml2_1::witsml2__PerforationStatus perforationStatus,
+	const time_t & startDate,
+	const std::string & guid)
+{
+	witsml2__PerforationSetInterval * perforationSetInterval = getPerforation(index);
+
+	witsml2__PerforationStatusHistory* perforationStatusHistory = soap_new_witsml2__PerforationStatusHistory(gsoapProxy2_1->soap, 1);
+
+	if (guid.size() == 0) {
+		ostringstream oss;
+		oss << perforationSetInterval->PerforationStatusHistory.size();
+		perforationStatusHistory->uid = oss.str();
+	}
+	else {
+		perforationStatusHistory->uid = guid;
+	}
+
+	perforationStatusHistory->PerforationStatus = soap_new_witsml2__PerforationStatus(gsoapProxy2_1->soap, 1);
+	*perforationStatusHistory->PerforationStatus = perforationStatus;
+
+	if (startDate != -1)
+	{
+		perforationStatusHistory->StartDate = soap_new_std__string(gsoapProxy2_1->soap, 1);
+		perforationStatusHistory->StartDate->assign(timeTools::convertUnixTimestampToIso(startDate));
+	}
+
+	perforationSetInterval->PerforationStatusHistory.push_back(perforationStatusHistory);
+}
+
 unsigned int WellboreCompletion::getPerforationCount() const
 {
 	witsml2__WellboreCompletion* wellboreCompletion = static_cast<witsml2__WellboreCompletion*>(gsoapProxy2_1);

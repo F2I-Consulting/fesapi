@@ -40,7 +40,24 @@ under the License.
 #define GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(attributeName, uomDatatype)\
 	GETTER_AND_SETTER_MEASURE_ATTRIBUTE(attributeName, uomDatatype)\
 	GETTER_PRESENCE_ATTRIBUTE(attributeName)
+	
+#define GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR(attributeDatatype, vectorName, attributeName)\
+	void set##vectorName##attributeName(unsigned int index, const attributeDatatype & value);\
+	attributeDatatype get##vectorName##attributeName(unsigned int index) const;	
+	
+#define GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
+	void set##vectorName##attributeName(unsigned int index, double value, uomDatatype uom);\
+	double get##vectorName##attributeName##Value(unsigned int index) const;\
+	uomDatatype get##vectorName##attributeName##Uom(unsigned int index) const;
 
+#define GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName) bool has##vectorName##attributeName(unsigned int index) const;	
+#define GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(attributeDatatype, vectorName, attributeName)\
+	GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR(attributeDatatype, vectorName, attributeName)\
+	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName)	
+	
+#define GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
+	GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
+	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName)
 
 //************************
 // STD::VECTOR DEFINITIONS
@@ -116,6 +133,87 @@ namespace gsoap_eml2_1
 		witsml2__TrajStationType__turnrate_x0020to_x0020MD = 45,
 		witsml2__TrajStationType__turnrate_x0020to_x0020TVD = 46,
 		witsml2__TrajStationType__unknown = 47
+	};
+	enum witsml2__ChannelStatus {
+		witsml2__ChannelStatus__active = 0,
+		witsml2__ChannelStatus__closed = 1,
+		witsml2__ChannelStatus__inactive = 2
+	};
+	enum witsml2__AziRef {
+		witsml2__AziRef__magnetic_x0020north = 0,
+		witsml2__AziRef__grid_x0020north = 1,
+		witsml2__AziRef__true_x0020north = 2
+	};
+	enum witsml2__TypeSurveyTool {
+		witsml2__TypeSurveyTool__gyroscopic_x0020inertial = 0,
+		witsml2__TypeSurveyTool__gyroscopic_x0020MWD = 1,
+		witsml2__TypeSurveyTool__gyroscopic_x0020north_x0020seeking = 2,
+		witsml2__TypeSurveyTool__magnetic_x0020multiple_shot = 3,
+		witsml2__TypeSurveyTool__magnetic_x0020MWD = 4,
+		witsml2__TypeSurveyTool__magnetic_x0020single_shot = 5
+	};
+	enum witsml2__TrajStnCalcAlgorithm {
+		witsml2__TrajStnCalcAlgorithm__average_x0020angle = 0,
+		witsml2__TrajStnCalcAlgorithm__balanced_x0020tangential = 1,
+		witsml2__TrajStnCalcAlgorithm__constant_x0020tool_x0020face = 2,
+		witsml2__TrajStnCalcAlgorithm__custom = 3,
+		witsml2__TrajStnCalcAlgorithm__inertial = 4,
+		witsml2__TrajStnCalcAlgorithm__minimum_x0020curvature = 5,
+		witsml2__TrajStnCalcAlgorithm__radius_x0020of_x0020curvature = 6,
+		witsml2__TrajStnCalcAlgorithm__tangential = 7
+	};
+	enum witsml2__TrajStationStatus {
+		witsml2__TrajStationStatus__open = 0,
+		witsml2__TrajStationStatus__rejected = 1,
+		witsml2__TrajStationStatus__position = 2
+	};
+	enum eml21__AnglePerLengthUom {
+		eml21__AnglePerLengthUom__0_x002e01_x0020dega_x002fft = 0,
+		eml21__AnglePerLengthUom__1_x002f30_x0020dega_x002fft = 1,
+		eml21__AnglePerLengthUom__1_x002f30_x0020dega_x002fm = 2,
+		eml21__AnglePerLengthUom__dega_x002fft = 3,
+		eml21__AnglePerLengthUom__dega_x002fm = 4,
+		eml21__AnglePerLengthUom__rad_x002fft = 5,
+		eml21__AnglePerLengthUom__rad_x002fm = 6,
+		eml21__AnglePerLengthUom__rev_x002fft = 7,
+		eml21__AnglePerLengthUom__rev_x002fm = 8
+	};
+	enum eml21__LinearAccelerationUom {
+		eml21__LinearAccelerationUom__cm_x002fs2 = 0,
+		eml21__LinearAccelerationUom__ft_x002fs2 = 1,
+		eml21__LinearAccelerationUom__Gal = 2,
+		eml21__LinearAccelerationUom__gn = 3,
+		eml21__LinearAccelerationUom__in_x002fs2 = 4,
+		eml21__LinearAccelerationUom__m_x002fs2 = 5,
+		eml21__LinearAccelerationUom__mGal = 6,
+		eml21__LinearAccelerationUom__mgn = 7
+	};
+	enum eml21__MagneticFluxDensityUom {
+		eml21__MagneticFluxDensityUom__T = 'T',
+		eml21__MagneticFluxDensityUom__cgauss = 'U',
+		eml21__MagneticFluxDensityUom__cT = 'V',
+		eml21__MagneticFluxDensityUom__dgauss = 'W',
+		eml21__MagneticFluxDensityUom__dT = 'X',
+		eml21__MagneticFluxDensityUom__Egauss = 'Y',
+		eml21__MagneticFluxDensityUom__ET = 'Z',
+		eml21__MagneticFluxDensityUom__fgauss = 91,
+		eml21__MagneticFluxDensityUom__fT = 92,
+		eml21__MagneticFluxDensityUom__gauss = 93,
+		eml21__MagneticFluxDensityUom__Ggauss = 94,
+		eml21__MagneticFluxDensityUom__GT = 95,
+		eml21__MagneticFluxDensityUom__kgauss = 96,
+		eml21__MagneticFluxDensityUom__kT = 'a',
+		eml21__MagneticFluxDensityUom__mgauss = 'b',
+		eml21__MagneticFluxDensityUom__Mgauss = 'c',
+		eml21__MagneticFluxDensityUom__mT = 'd',
+		eml21__MagneticFluxDensityUom__ngauss = 'e',
+		eml21__MagneticFluxDensityUom__nT = 'f',
+		eml21__MagneticFluxDensityUom__pgauss = 'g',
+		eml21__MagneticFluxDensityUom__pT = 'h',
+		eml21__MagneticFluxDensityUom__Tgauss = 'i',
+		eml21__MagneticFluxDensityUom__TT = 'j',
+		eml21__MagneticFluxDensityUom__ugauss = 'k',
+		eml21__MagneticFluxDensityUom__uT = 'l'
 	};
 }
 
@@ -278,6 +376,11 @@ namespace WITSML2_0_NS
 
 		void pushBackPerforationHistory(unsigned int index,
 			const std::string & guid = "");
+			
+		void pushBackPerforationHistory(unsigned int index,
+			gsoap_eml2_1::witsml2__PerforationStatus perforationStatus,
+			const time_t & startDate,
+			const std::string & guid = "");	
 
 		unsigned int getPerforationCount() const;
 
@@ -370,6 +473,80 @@ namespace WITSML2_0_NS
 	class Trajectory : public WellboreObject
 	{
 	public:
+		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(gsoap_eml2_1::witsml2__ChannelStatus, GrowingStatus)
+
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimTrajStart)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimTrajEnd)
+
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(MdMn, gsoap_eml2_1::eml21__LengthUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(MdMx, gsoap_eml2_1::eml21__LengthUom)
+
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, ServiceCompany)
+
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(MagDeclUsed, gsoap_eml2_1::eml21__PlaneAngleUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(GridConUsed, gsoap_eml2_1::eml21__PlaneAngleUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(AziVertSect, gsoap_eml2_1::eml21__PlaneAngleUom)
+
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(DispNsVertSectOrig, gsoap_eml2_1::eml21__LengthUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(DispEwVertSectOrig, gsoap_eml2_1::eml21__LengthUom)
+
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(bool, Definitive)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(bool, Memory)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(bool, FinalTraj)
+
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml2__AziRef, AziRef)
+
+		GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR(std::string, TrajectoryStation, uid)
+		GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR(gsoap_eml2_1::witsml2__TrajStationType, TrajectoryStation, TypeTrajStation)
+		GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IN_VECTOR(TrajectoryStation, Md, gsoap_eml2_1::eml21__LengthUom)
+
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(bool, TrajectoryStation, ManuallyEntered)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(bool, TrajectoryStation, GravAccelCorUsed)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(bool, TrajectoryStation, MagXAxialCorUsed)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(bool, TrajectoryStation, SagCorUsed)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(bool, TrajectoryStation, MagDrlstrCorUsed)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(bool, TrajectoryStation, InfieldRefCorUsed)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(bool, TrajectoryStation, InterpolatedInfieldRefCorUsed)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(bool, TrajectoryStation, InHoleRefCorUsed)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(bool, TrajectoryStation, AxialMagInterferenceCorUsed)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(bool, TrajectoryStation, CosagCorUsed)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(bool, TrajectoryStation, MSACorUsed)
+
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(std::string, TrajectoryStation, Target)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(std::string, TrajectoryStation, MagModelUsed)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(std::string, TrajectoryStation, MagModelValid)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(std::string, TrajectoryStation, GeoModelUsed)
+
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(time_t, TrajectoryStation, DTimStn)
+
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoap_eml2_1::witsml2__TypeSurveyTool, TrajectoryStation, TypeSurveyTool)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoap_eml2_1::witsml2__TrajStnCalcAlgorithm, TrajectoryStation, CalcAlgorithm)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoap_eml2_1::witsml2__TrajStationStatus, TrajectoryStation, StatusTrajStation)
+
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, Tvd, gsoap_eml2_1::eml21__LengthUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, DispNs, gsoap_eml2_1::eml21__LengthUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, DispEw, gsoap_eml2_1::eml21__LengthUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, VertSect, gsoap_eml2_1::eml21__LengthUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, MdDelta, gsoap_eml2_1::eml21__LengthUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, TvdDelta, gsoap_eml2_1::eml21__LengthUom)
+
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, Incl, gsoap_eml2_1::eml21__PlaneAngleUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, Azi, gsoap_eml2_1::eml21__PlaneAngleUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, Mtf, gsoap_eml2_1::eml21__PlaneAngleUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, Gtf, gsoap_eml2_1::eml21__PlaneAngleUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, DipAngleUncert, gsoap_eml2_1::eml21__PlaneAngleUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, MagDipAngleReference, gsoap_eml2_1::eml21__PlaneAngleUom)
+
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, Dls, gsoap_eml2_1::eml21__AnglePerLengthUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, RateTurn, gsoap_eml2_1::eml21__AnglePerLengthUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, RateBuild, gsoap_eml2_1::eml21__AnglePerLengthUom)
+
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, GravTotalUncert, gsoap_eml2_1::eml21__LinearAccelerationUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, GravTotalFieldReference, gsoap_eml2_1::eml21__LinearAccelerationUom)
+
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, MagTotalUncert, gsoap_eml2_1::eml21__MagneticFluxDensityUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, MagTotalFieldReference, gsoap_eml2_1::eml21__MagneticFluxDensityUom)
+	
 		void pushBackTrajectoryStation(gsoap_eml2_1::witsml2__TrajStationType kind, double mdValue, gsoap_eml2_1::eml21__LengthUom uom, const std::string & uid = "");
 		unsigned int getTrajectoryStationCount() const;
 	};
