@@ -277,13 +277,6 @@ namespace WITSML2_0_NS
 			const std::string & guid = "");
 
 		void pushBackPerforationHistory(unsigned int index,
-			gsoap_eml2_1::witsml2__PerforationStatus perforationStatus,
-			const std::string & datum,
-			gsoap_eml2_1::eml21__LengthUom MdUnit,
-			const double & TopMd,
-			const double & BaseMd, 
-			const time_t & startDate = -1,
-			const time_t & endDate = -1,
 			const std::string & guid = "");
 
 		unsigned int getPerforationCount() const;
@@ -315,17 +308,27 @@ namespace WITSML2_0_NS
 		std::string getPerforationHistoryStatusToString(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
 
+		void setPerforationHistoryStatus(unsigned int historyIndex,
+			unsigned int perforationIndex, 
+			gsoap_eml2_1::witsml2__PerforationStatus perforationStatus);
+
 		bool hasPerforationHistoryStartDate(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
 
 		time_t getPerforationHistoryStartDate(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
 
+		void setPerforationHistoryStartDate(unsigned int historyIndex,
+			unsigned int perforationIndex, const time_t & startDate) const;
+
 		bool hasPerforationHistoryEndDate(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
 
 		time_t getPerforationHistoryEndDate(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
+
+		void setPerforationHistoryEndDate(unsigned int historyIndex,
+			unsigned int perforationIndex, const time_t & endDate) const;
 		
 		bool hasPerforationHistoryMdDatum(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
@@ -344,12 +347,24 @@ namespace WITSML2_0_NS
 
 		double getPerforationHistoryTopMd(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
+
+		void setPerforationHistoryTopMd(unsigned int historyIndex,
+			unsigned int perforationIndex,
+			const std::string & datum,
+			gsoap_eml2_1::eml21__LengthUom MdUnit,
+			const double & TopMd);
 		
 		bool hasPerforationHistoryBaseMd(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
 
 		double getPerforationHistoryBaseMd(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
+
+		void setPerforationHistoryBaseMd(unsigned int historyIndex,
+			unsigned int perforationIndex,
+			const std::string & datum,
+			gsoap_eml2_1::eml21__LengthUom MdUnit,
+			const double & BaseMd);
 	};
 	
 	class Trajectory : public WellboreObject

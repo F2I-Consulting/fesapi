@@ -135,15 +135,7 @@ void WellboreCompletion::pushBackPerforation(const string & datum,
 }
 
 void WellboreCompletion::pushBackPerforationHistory(unsigned int index,
-	gsoap_eml2_1::witsml2__PerforationStatus perforationStatus,
-	const string & datum,
-	gsoap_eml2_1::eml21__LengthUom MdUnit,
-	const double & TopMd,
-	const double & BaseMd,
-	const time_t & startDate,
-	const time_t & endDate,
-	const string & guid
-)
+	const std::string & guid)
 {
 	witsml2__PerforationSetInterval * perforationSetInterval = getPerforation(index);
 
@@ -157,30 +149,6 @@ void WellboreCompletion::pushBackPerforationHistory(unsigned int index,
 	else {
 		perforationStatusHistory->uid = guid;
 	}
-
-	perforationStatusHistory->PerforationStatus = soap_new_witsml2__PerforationStatus(gsoapProxy2_1->soap, 1);
-	*perforationStatusHistory->PerforationStatus = perforationStatus;
-
-	if (startDate != -1)
-	{
-		perforationStatusHistory->StartDate = soap_new_std__string(gsoapProxy2_1->soap, 1);
-		perforationStatusHistory->StartDate->assign(timeTools::convertUnixTimestampToIso(startDate));
-	}
-
-	if (endDate != -1)
-	{
-		perforationStatusHistory->EndDate = soap_new_std__string(gsoapProxy2_1->soap, 1);
-		perforationStatusHistory->EndDate->assign(timeTools::convertUnixTimestampToIso(endDate));
-	}
-
-	perforationStatusHistory->PerforationMdInterval = soap_new_eml21__MdInterval(gsoapProxy2_1->soap, 1);
-	perforationStatusHistory->PerforationMdInterval->datum = datum;
-	perforationStatusHistory->PerforationMdInterval->MdTop = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap, 1);
-	perforationStatusHistory->PerforationMdInterval->MdTop->uom = MdUnit;
-	perforationStatusHistory->PerforationMdInterval->MdTop->__item = TopMd;
-	perforationStatusHistory->PerforationMdInterval->MdBase = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap, 1);
-	perforationStatusHistory->PerforationMdInterval->MdBase->uom = MdUnit;
-	perforationStatusHistory->PerforationMdInterval->MdBase->__item = BaseMd;
 
 	perforationSetInterval->PerforationStatusHistory.push_back(perforationStatusHistory);
 }
@@ -316,6 +284,20 @@ string WellboreCompletion::getPerforationHistoryStatusToString(unsigned int hist
 	return gsoap_eml2_1::soap_witsml2__PerforationStatus2s(gsoapProxy2_1->soap, getPerforationHistoryStatus(historyIndex, perforationIndex));
 }
 
+void WellboreCompletion::setPerforationHistoryStatus(unsigned int historyIndex,
+	unsigned int perforationIndex,
+	gsoap_eml2_1::witsml2__PerforationStatus perforationStatus)
+{
+	witsml2__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
+
+	if (perforationStatusHistory->PerforationStatus == nullptr)
+	{
+		perforationStatusHistory->PerforationStatus = soap_new_witsml2__PerforationStatus(gsoapProxy2_1->soap, 1);
+	}
+
+	*perforationStatusHistory->PerforationStatus = perforationStatus;
+}
+
 bool WellboreCompletion::hasPerforationHistoryStartDate(unsigned int historyIndex,
 	unsigned int perforationIndex) const
 {
@@ -335,6 +317,19 @@ time_t WellboreCompletion::getPerforationHistoryStartDate(unsigned int historyIn
 	return timeTools::convertIsoToUnixTimestamp(startDate);
 }
 
+void WellboreCompletion::setPerforationHistoryStartDate(unsigned int historyIndex,
+	unsigned int perforationIndex, const time_t & startDate) const
+{
+	witsml2__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
+
+	if (perforationStatusHistory->StartDate == nullptr)
+	{
+		perforationStatusHistory->StartDate = soap_new_std__string(gsoapProxy2_1->soap, 1);
+	}
+
+	perforationStatusHistory->StartDate->assign(timeTools::convertUnixTimestampToIso(startDate));
+}
+
 bool WellboreCompletion::hasPerforationHistoryEndDate(unsigned int historyIndex,
 	unsigned int perforationIndex) const
 {
@@ -352,6 +347,19 @@ time_t WellboreCompletion::getPerforationHistoryEndDate(unsigned int historyInde
 	string endDate = *getPerforationHistoryEntry(historyIndex, perforationIndex)->EndDate;
 
 	return timeTools::convertIsoToUnixTimestamp(endDate);
+}
+
+void WellboreCompletion::setPerforationHistoryEndDate(unsigned int historyIndex,
+	unsigned int perforationIndex, const time_t & endDate) const
+{
+	witsml2__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
+
+	if (perforationStatusHistory->EndDate == nullptr)
+	{
+		perforationStatusHistory->EndDate = soap_new_std__string(gsoapProxy2_1->soap, 1);
+	}
+
+	perforationStatusHistory->EndDate->assign(timeTools::convertUnixTimestampToIso(endDate));
 }
 
 bool WellboreCompletion::hasPerforationHistoryMdDatum(unsigned int historyIndex,
@@ -426,6 +434,24 @@ double WellboreCompletion::getPerforationHistoryTopMd(unsigned int historyIndex,
 	return getPerforationHistoryEntry(historyIndex, perforationIndex)->PerforationMdInterval->MdTop->__item;
 }
 
+void WellboreCompletion::setPerforationHistoryTopMd(unsigned int historyIndex,
+	unsigned int perforationIndex,
+	const std::string & datum,
+	gsoap_eml2_1::eml21__LengthUom MdUnit,
+	const double & TopMd)
+{
+	witsml2__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
+
+	if (perforationStatusHistory->PerforationMdInterval == nullptr) {
+		perforationStatusHistory->PerforationMdInterval = soap_new_eml21__MdInterval(gsoapProxy2_1->soap, 1);	
+	}
+
+	perforationStatusHistory->PerforationMdInterval->datum = datum;
+	perforationStatusHistory->PerforationMdInterval->MdTop = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap, 1);
+	perforationStatusHistory->PerforationMdInterval->MdTop->uom = MdUnit;
+	perforationStatusHistory->PerforationMdInterval->MdTop->__item = TopMd;
+}
+
 bool WellboreCompletion::hasPerforationHistoryBaseMd(unsigned int historyIndex,
 	unsigned int perforationIndex) const
 {
@@ -452,6 +478,24 @@ double WellboreCompletion::getPerforationHistoryBaseMd(unsigned int historyIndex
 	}
 
 	return getPerforationHistoryEntry(historyIndex, perforationIndex)->PerforationMdInterval->MdBase->__item;
+}
+
+void WellboreCompletion::setPerforationHistoryBaseMd(unsigned int historyIndex,
+	unsigned int perforationIndex,
+	const std::string & datum,
+	gsoap_eml2_1::eml21__LengthUom MdUnit,
+	const double & BaseMd)
+{
+	witsml2__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
+
+	if (perforationStatusHistory->PerforationMdInterval == nullptr) {
+		perforationStatusHistory->PerforationMdInterval = soap_new_eml21__MdInterval(gsoapProxy2_1->soap, 1);
+	}
+
+	perforationStatusHistory->PerforationMdInterval->datum = datum;
+	perforationStatusHistory->PerforationMdInterval->MdBase = soap_new_eml21__LengthMeasure(gsoapProxy2_1->soap, 1);
+	perforationStatusHistory->PerforationMdInterval->MdBase->uom = MdUnit;
+	perforationStatusHistory->PerforationMdInterval->MdBase->__item = BaseMd;
 }
 
 void WellboreCompletion::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
