@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
+#include "H5Ipublic.h"
+
 #include "common/AbstractHdfProxy.h"
 
 namespace COMMON_NS
@@ -46,7 +48,7 @@ namespace COMMON_NS
 		* @param datatype 		The hdf datatype of the values to read.
 		* 						If the values are not stored in this particular datatype, then hdf library will try to do a conversion.
 		*/
-		void readArrayNdOfValues(const std::string & datasetName, void* values, const int & datatype);
+		void readArrayNdOfValues(const std::string & datasetName, void* values, const hid_t & datatype);
 
 		/**
 		* Find the array associated with @p datasetName and read a portion of it.
@@ -64,7 +66,7 @@ namespace COMMON_NS
 			unsigned long long * numValuesInEachDimension,
 			unsigned long long * offsetInEachDimension,
 			const unsigned int & numDimensions,
-			const int & datatype);
+			const hid_t & datatype);
 
 		/**
 		* Find the array associated with @p datasetName and read from it.
@@ -86,7 +88,7 @@ namespace COMMON_NS
 			unsigned long long * strideInEachDimension,
 			unsigned long long * blockSizeInEachDimension,
 			const unsigned int & numDimensions,
-			const int & datatype);
+			const hid_t & datatype);
 
 		/**
 		* Considering a given dataset, this method selects an hyperslab region to add to an existing selected region or to add to a new selected region.
