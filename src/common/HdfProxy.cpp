@@ -18,10 +18,15 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "common/HdfProxy.h"
 
+#include <algorithm>
+#include <numeric>
 #include <stdexcept>
 #include <sstream>
 
 #include "hdf5.h"
+
+// https://support.hdfgroup.org/HDF5/doc/Advanced/Chunking/index.html
+#define MAX_CHUNK_SIZE 0xffffffff // 2^32 - 1
 
 using namespace std;
 using namespace COMMON_NS;
@@ -380,6 +385,41 @@ int HdfProxy::getHdfDatatypeClassInDataset(const std::string & datasetName)
 	return result;
 }
 
+static vector<unsigned long long> reduceForChunking
+(int datatype,
+ const unsigned long long * numValuesInEachDimension,
+ unsigned int numDimensions)
+{
+	vector<unsigned long long> newValues (numDimensions);
+	for (unsigned int i = 0; i < numDimensions; i++)
+		newValues[i] = numValuesInEachDimension[i];
+
+	// Compute product of all dimensions.
+	unsigned long long product =
+		std::accumulate (newValues.begin(),
+				 newValues.end(),
+				 1ULL,
+				 std::multiplies<unsigned long long>());
+	// Get size in bytes of this datatype.
+	int size = H5Tget_size(datatype);
+
+	// If the total size exceeds the allowed maximum chunk size,
+	// reduce the largest dimension.
+	if (product * size > MAX_CHUNK_SIZE) {
+		// Find largest element.
+		vector<unsigned long long>::iterator it =
+			std::max_element (newValues.begin(),
+					    newValues.end());
+		// How many chunks are required?  Round up.
+		unsigned long long numChunks =
+			(product * size + MAX_CHUNK_SIZE - 1) / MAX_CHUNK_SIZE;
+		// Reduce the largest dimension.
+		*it /= numChunks;
+	}
+
+	return newValues;
+}
+
 void HdfProxy::writeItemizedListOfList(const string & groupName,
 			const string & name,
 			const int & cumulativeLengthDatatype,
@@ -406,7 +446,12 @@ void HdfProxy::writeItemizedListOfList(const string & groupName,
 		// Create dataset and write it into the file.
 		hid_t dcpl = H5Pcreate (H5P_DATASET_CREATE);
 		H5Pset_deflate (dcpl, compressionLevel);
-		H5Pset_chunk (dcpl, 1, &cumulativeLengthSize);
+
+		vector<unsigned long long> newValues =
+			reduceForChunking (cumulativeLengthDatatype,
+					   &cumulativeLengthSize,
+					   1);
+		H5Pset_chunk (dcpl, 1, newValues.data());
 
 		datasetCL = H5Dcreate(grp, CUMULATIVE_LENGTH_DS_NAME, cumulativeLengthDatatype, fspaceCL, H5P_DEFAULT, dcpl, H5P_DEFAULT);
 
@@ -429,7 +474,13 @@ void HdfProxy::writeItemizedListOfList(const string & groupName,
 		// Create dataset and write it into the file.
 		hid_t dcpl = H5Pcreate (H5P_DATASET_CREATE);
 		H5Pset_deflate (dcpl, compressionLevel);
-		H5Pset_chunk (dcpl, 1, &elementsSize);
+
+		vector<unsigned long long> newValues =
+			reduceForChunking (elementsDatatype,
+					   &elementsSize,
+					   1);
+
+		H5Pset_chunk (dcpl, 1, newValues.data());
 
 		datasetE = H5Dcreate(grp, ELEMENTS_DS_NAME, elementsDatatype, fspaceE, H5P_DEFAULT, dcpl, H5P_DEFAULT);
 
@@ -620,7 +671,12 @@ void HdfProxy::writeArrayNd(const std::string & groupName,
 	if (compressionLevel) {
 		hid_t dcpl = H5Pcreate (H5P_DATASET_CREATE);
 		H5Pset_deflate (dcpl, compressionLevel);
-		H5Pset_chunk (dcpl, numDimensions, numValuesInEachDimension);
+		vector<unsigned long long> newValues =
+			reduceForChunking (datatype,
+					   numValuesInEachDimension,
+					   numDimensions);
+
+		H5Pset_chunk (dcpl, numDimensions, newValues.data());
 
 		dataset = H5Dcreate(grp, name.c_str(), datatype, space, H5P_DEFAULT, dcpl, H5P_DEFAULT);
 		H5Pclose(dcpl);
@@ -676,7 +732,13 @@ void HdfProxy::createArrayNd(
 	if (compressionLevel > 0) {
 		hid_t dcpl = H5Pcreate (H5P_DATASET_CREATE);
 		H5Pset_deflate (dcpl, compressionLevel);
-		H5Pset_chunk (dcpl, numDimensions, numValuesInEachDimension);
+
+		vector<unsigned long long> newValues =
+			reduceForChunking (datatype,
+			numValuesInEachDimension,
+			numDimensions);
+
+		H5Pset_chunk (dcpl, numDimensions, newValues.data());
 
 		dataset = H5Dcreate(grp, datasetName.c_str(), datatype, space, H5P_DEFAULT, dcpl, H5P_DEFAULT);
 		H5Pclose(dcpl);

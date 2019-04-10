@@ -62,7 +62,7 @@ bool IjkGridLatticeRepresentation::isASeismicCube() const
     if (!atLeastOneContProp)
         return false;
 
-	return getInterpretation() && getInterpretation()->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORESeismicLatticeFeature;
+    return getInterpretation() && getInterpretation()->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORESeismicLatticeFeature;
 }
 
 bool IjkGridLatticeRepresentation::isAFaciesCube() const
@@ -82,7 +82,7 @@ bool IjkGridLatticeRepresentation::isAFaciesCube() const
     if (!atLeastOneCateProp)
         return false;
 
-	return getInterpretation() && getInterpretation()->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORESeismicLatticeFeature;
+    return getInterpretation() && getInterpretation()->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORESeismicLatticeFeature;
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* IjkGridLatticeRepresentation::getHdfProxyDor() const

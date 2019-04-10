@@ -1468,15 +1468,19 @@ void EpcDocument::deserializeContentOfDictionaries()
 
 void EpcDocument::updateAllRelationships()
 {
+	// Tansform the map values into a vector because we are going to potentially insert new elements in the map when looping.
+	vector<COMMON_NS::AbstractObject*> nonPartialObjects;
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	for (std::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
 #else
 	for (std::tr1::unordered_map< std::string, COMMON_NS::AbstractObject* >::const_iterator it = dataObjectSet.begin(); it != dataObjectSet.end(); ++it)
 #endif
 	{
-		if (!it->second->isPartial()) {
-			it->second->resolveTargetRelationships(this);
-		}
+		nonPartialObjects.push_back(it->second);
+	}
+
+	for (size_t nonPartialObjIndex = 0; nonPartialObjIndex < nonPartialObjects.size(); ++nonPartialObjIndex) {
+		nonPartialObjects[nonPartialObjIndex]->resolveTargetRelationships(this);
 	}
 }
 

@@ -185,10 +185,23 @@ void serializePerforations(COMMON_NS::EpcDocument * pck)
 
 	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980);
 	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 2000);
-	wellboreCompletion->pushBackPerforationHistory(0, gsoap_eml2_1::witsml2__PerforationStatus__open, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980, 407568645, 1514764800);
-	wellboreCompletion->pushBackPerforationHistory(0, gsoap_eml2_1::witsml2__PerforationStatus__squeezed, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980, 1514764800);
-	wellboreCompletion->pushBackPerforationHistory(1, gsoap_eml2_1::witsml2__PerforationStatus__open, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 2000, 410104800);
-	wellboreCompletion->pushBackPerforationHistory(1, gsoap_eml2_1::witsml2__PerforationStatus__squeezed, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 1995, 1514764800);
+	wellboreCompletion->pushBackPerforationHistory(0);
+	wellboreCompletion->setPerforationHistoryStatus(0, 0, gsoap_eml2_1::witsml2__PerforationStatus__open);
+	wellboreCompletion->setPerforationHistoryTopMd(0, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970);
+	wellboreCompletion->setPerforationHistoryBaseMd(0, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1980);
+	wellboreCompletion->setPerforationHistoryStartDate(0, 0, 407568645);
+	wellboreCompletion->setPerforationHistoryEndDate(0, 0, 1514764800);
+	wellboreCompletion->pushBackPerforationHistory(0);
+	wellboreCompletion->setPerforationHistoryStatus(1, 0, gsoap_eml2_1::witsml2__PerforationStatus__squeezed);
+	wellboreCompletion->setPerforationHistoryTopMd(1, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970);
+	wellboreCompletion->setPerforationHistoryBaseMd(1, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1980);
+	wellboreCompletion->setPerforationHistoryStartDate(1, 0, 1514764800);
+	wellboreCompletion->pushBackPerforationHistory(1);
+	wellboreCompletion->setPerforationHistoryStatus(0, 1, gsoap_eml2_1::witsml2__PerforationStatus__open);
+	wellboreCompletion->setPerforationHistoryStartDate(0, 1, 410104800);
+	wellboreCompletion->pushBackPerforationHistory(1);
+	wellboreCompletion->setPerforationHistoryStatus(1, 1, gsoap_eml2_1::witsml2__PerforationStatus__squeezed);
+	wellboreCompletion->setPerforationHistoryStartDate(1, 1, 1514764800);
 }
 
 void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
