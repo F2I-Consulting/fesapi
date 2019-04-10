@@ -164,7 +164,7 @@ bool PolylineRepresentation::isASeismicLine() const
     if (!atLeastOneContProp)
         return false;
 
-	return getInterpretation() && getInterpretation()->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORESeismicLineFeature;
+    return getInterpretation() && getInterpretation()->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORESeismicLineFeature;
 }
 
 bool PolylineRepresentation::isAFaciesLine() const
@@ -184,7 +184,7 @@ bool PolylineRepresentation::isAFaciesLine() const
     if (!atLeastOneCateProp)
         return false;
 
-	return getInterpretation() && getInterpretation()->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORESeismicLineFeature;
+    return getInterpretation() && getInterpretation()->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORESeismicLineFeature;
 }
 
 vector<Relationship> PolylineRepresentation::getAllEpcRelationships() const
