@@ -46,7 +46,7 @@ namespace COMMON_NS
 		* @param datatype 		The hdf datatype of the values to read.
 		* 						If the values are not stored in this particular datatype, then hdf library will try to do a conversion.
 		*/
-		void readArrayNdOfValues(const std::string & datasetName, void* values, const int & datatype);
+		void readArrayNdOfValues(const std::string & datasetName, void* values, const hdf5_hid_t & datatype);
 
 		/**
 		* Find the array associated with @p datasetName and read a portion of it.
@@ -64,7 +64,7 @@ namespace COMMON_NS
 			unsigned long long * numValuesInEachDimension,
 			unsigned long long * offsetInEachDimension,
 			const unsigned int & numDimensions,
-			const int & datatype);
+			const hdf5_hid_t & datatype);
 
 		/**
 		* Find the array associated with @p datasetName and read from it.
@@ -86,7 +86,7 @@ namespace COMMON_NS
 			unsigned long long * strideInEachDimension,
 			unsigned long long * blockSizeInEachDimension,
 			const unsigned int & numDimensions,
-			const int & datatype);
+			const hdf5_hid_t & datatype);
 
 		/**
 		* Considering a given dataset, this method selects an hyperslab region to add to an existing selected region or to add to a new selected region.
@@ -109,8 +109,8 @@ namespace COMMON_NS
 			unsigned long long * blockSizeInEachDimension,
 			const unsigned int & numDimensions,
 			bool newSelection,
-			int & dataset,
-			int & filespace);
+			hdf5_hid_t & dataset,
+			hdf5_hid_t & filespace);
 
 		/**
 		* Considering a given dataset, read the double values corresponding to an existing selected region.
@@ -122,11 +122,11 @@ namespace COMMON_NS
 		* 						If the values are not stored in this particular datatype, then hdf library will try to do a conversion.
 		*/
 		void readArrayNdOfValues(
-			int dataset,
-			int filespace,
+			hdf5_hid_t dataset,
+			hdf5_hid_t filespace,
 			void* values, 
 			unsigned long long slabSize, 
-			const int & datatype);
+			const hdf5_hid_t & datatype);
 
 	public:
 
@@ -156,7 +156,7 @@ namespace COMMON_NS
 		* Get the used (native) datatype in a dataset
 		* To compare with H5T_NATIVE_INT, H5T_NATIVE_UINT, H5T_NATIVE_FLOAT, etc...
 		*/
-		int getHdfDatatypeInDataset(const std::string & groupName);
+		hdf5_hid_t getHdfDatatypeInDataset(const std::string & groupName);
 
 		/**
 		* Get the used datatype class in a dataset
@@ -178,10 +178,10 @@ namespace COMMON_NS
 		*/
 		void writeItemizedListOfList(const std::string & groupName,
 			const std::string & name,
-			const int & cumulativeLengthDatatype,
+			const hdf5_hid_t & cumulativeLengthDatatype,
 			const void * cumulativeLength,
 			const unsigned long long & cumulativeLengthSize,
-			const int & elementsDatatype,
+			const hdf5_hid_t & elementsDatatype,
 			const void * elements,
 			const unsigned long long & elementsSize);
 
@@ -281,7 +281,7 @@ namespace COMMON_NS
 		*/
 		void writeArrayNd(const std::string & groupName,
 			const std::string & name,
-			const int & datatype,
+			const hdf5_hid_t & datatype,
 			const void * values,
 			const unsigned long long * numValuesInEachDimension,
 			const unsigned int & numDimensions);
@@ -298,7 +298,7 @@ namespace COMMON_NS
 		void createArrayNd(
 			const std::string& groupName,
 			const std::string& name,
-			const int & datatype,
+			const hdf5_hid_t & datatype,
 			const unsigned long long* numValuesInEachDimension,
 			const unsigned int& numDimensions
 		);
@@ -316,7 +316,7 @@ namespace COMMON_NS
 		void writeArrayNdSlab(
 			const std::string& groupName,
 			const std::string& name,
-			const int & datatype,
+			const hdf5_hid_t & datatype,
 			const void* values,
 			const unsigned long long* numValuesInEachDimension,
 			const unsigned long long* offsetValuesInEachDimension,
@@ -440,8 +440,8 @@ namespace COMMON_NS
 		* @param slabSize		Number of values to read.
 		*/
 		void readArrayNdOfDoubleValues(
-			int dataset,
-			int filespace,
+			hdf5_hid_t dataset,
+			hdf5_hid_t filespace,
 			void* values,
 			unsigned long long slabSize);
 
@@ -587,16 +587,16 @@ namespace COMMON_NS
 		/**
 		* Allow to force a root group for all newly created groups in inherited hdf proxies.
 		*/
-		virtual int openOrCreateRootGroup();
+		virtual hdf5_hid_t openOrCreateRootGroup();
 
 		/**
 		* Check if an hdf group named as groupName exists in the root group.
 		* If it exists, it returns the latter. If not, it creates this group and then returns it.
 		* Please close the group after having called and used this group.
 		*/
-		int openOrCreateGroupInRootGroup(const std::string & groupName);
+		hdf5_hid_t openOrCreateGroupInRootGroup(const std::string & groupName);
 
-		int hdfFile;
+	        hdf5_hid_t hdfFile;
 
 		unsigned int compressionLevel;
 	};

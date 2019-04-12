@@ -20,6 +20,7 @@ under the License.
 
 #include "common/EpcExternalPartReference.h"
 #include "resqml2/AbstractRepresentation.h"
+#include "common/HidtType.h"
 
 #define CUMULATIVE_LENGTH_DS_NAME "cumulativeLength"
 #define ELEMENTS_DS_NAME "elements"
@@ -70,7 +71,7 @@ namespace COMMON_NS
 		 * Get the used (native) datatype in a dataset
 		* To compare with H5T_NATIVE_INT, H5T_NATIVE_UINT, H5T_NATIVE_FLOAT, etc...
 		 */
-		virtual int getHdfDatatypeInDataset(const std::string & datasetName) = 0;
+		virtual hdf5_hid_t getHdfDatatypeInDataset(const std::string & datasetName) = 0;
 
 		/**
 		* Get the used datatype class in a dataset
@@ -92,10 +93,10 @@ namespace COMMON_NS
 		*/
 		virtual void writeItemizedListOfList(const std::string & groupName,
 			const std::string & name,
-			const int & cumulativeLengthDatatype,
+			const hdf5_hid_t & cumulativeLengthDatatype,
 			const void * cumulativeLength,
 			const unsigned long long & cumulativeLengthSize,
-			const int & elementsDatatype,
+			const hdf5_hid_t & elementsDatatype,
 			const void * elements,
 			const unsigned long long & elementsSize) = 0;
 
@@ -195,7 +196,7 @@ namespace COMMON_NS
 		 */
 		virtual void writeArrayNd(const std::string & groupName,
 		  const std::string & name,
-		  const int & datatype,
+		  const hdf5_hid_t & datatype,
 		  const void * values,
 		  const unsigned long long * numValuesInEachDimension,
 		  const unsigned int & numDimensions) = 0;
@@ -212,7 +213,7 @@ namespace COMMON_NS
 		virtual void createArrayNd(
 		  const std::string& groupName,
 		  const std::string& name,
-		  const int & datatype,
+		  const hdf5_hid_t & datatype,
 		  const unsigned long long* numValuesInEachDimension,
 		  const unsigned int& numDimensions
 		  ) = 0;
@@ -229,7 +230,7 @@ namespace COMMON_NS
 		virtual void writeArrayNdSlab(
 		  const std::string& groupName,
 		  const std::string& name,
-		  const int & datatype,
+		  const hdf5_hid_t & datatype,
 		  const void* values,
 		  const unsigned long long* numValuesInEachDimension,
 		  const unsigned long long* offsetValuesInEachDimension,
@@ -379,8 +380,8 @@ namespace COMMON_NS
 			unsigned long long * blockSizeInEachDimension,
 			const unsigned int & numDimensions,
 			bool newSelection,
-			int & dataset,
-			int & filespace) = 0;
+			hdf5_hid_t & dataset,
+			hdf5_hid_t & filespace) = 0;
 
 		/**
 		 * Considering a given dataset, read the double values corresponding to an existing selected region. 
@@ -390,8 +391,8 @@ namespace COMMON_NS
 		 * @param slabSize		Number of values to read.
 		 */
 		virtual void readArrayNdOfDoubleValues(
-			int dataset,
-			int filespace,
+			hdf5_hid_t dataset,
+			hdf5_hid_t filespace,
 			void* values,
 			unsigned long long slabSize) = 0;
 

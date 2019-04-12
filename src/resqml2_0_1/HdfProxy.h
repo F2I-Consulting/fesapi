@@ -51,7 +51,7 @@ namespace RESQML2_0_1_NS
 		* If it exists, it returns the latter. If not, it creates this group and then returns it.
 		* Please close the group after having called and used this group.
 		*/
-		int openOrCreateRootGroup();
+	        hdf5_hid_t openOrCreateRootGroup();
 
 	};
 }

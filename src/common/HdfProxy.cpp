@@ -58,11 +58,18 @@ void HdfProxy::open()
 		}
 	}
 	else if (getEpcDocument()->getHdf5PermissionAccess() == COMMON_NS::EpcDocument::READ_WRITE) {
-		hdfFile = H5Fcreate((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_EXCL, H5P_DEFAULT, H5P_DEFAULT);
+
+	        hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
+#ifdef H5F_LIBVER_V18
+		H5Pset_libver_bounds (access_props,
+				      H5F_LIBVER_V18, H5F_LIBVER_V18);
+#endif
+
+		hdfFile = H5Fcreate((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_EXCL, H5P_DEFAULT, access_props);
 
 		if (hdfFile < 0) {
 			if (H5Fis_hdf5((packageDirectoryAbsolutePath + relativeFilePath).c_str()) > 0) {
-				hdfFile = H5Fopen((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_RDWR, H5P_DEFAULT);
+				hdfFile = H5Fopen((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_RDWR, access_props);
 
 				// Check the uuid
 				if (getEpcDocument() != nullptr) { // if no Epc document is available (DAS use case), we cannot check any HDF uuid
@@ -103,7 +110,14 @@ void HdfProxy::open()
 		}
 	}
 	else if (getEpcDocument()->getHdf5PermissionAccess() == COMMON_NS::EpcDocument::OVERWRITE) {
-		hdfFile = H5Fcreate((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+
+	        hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
+#ifdef H5F_LIBVER_V18
+		H5Pset_libver_bounds (access_props,
+				      H5F_LIBVER_V18, H5F_LIBVER_V18);
+#endif
+
+		hdfFile = H5Fcreate((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, access_props);
 
 		// create an attribute at the file level to store the uuid of the corresponding resqml hdf proxy.
 		hid_t aid = H5Screate(H5S_SCALAR);
@@ -253,8 +267,8 @@ void HdfProxy::selectArrayNdOfValues(
 	unsigned long long * blockSizeInEachDimension,
 	const unsigned int & numDimensions,
 	bool newSelection,
-	int & dataset,
-	int & filespace)
+	hid_t & dataset,
+	hid_t & filespace)
 {
 	if (!isOpened()) {
 		open();
@@ -291,11 +305,11 @@ void HdfProxy::selectArrayNdOfValues(
 }
 
 void HdfProxy::readArrayNdOfValues(
-	int dataset,
-	int filespace,
+	hid_t dataset,
+	hid_t filespace,
 	void* values, 
 	unsigned long long slabSize, 
-	const int & datatype)
+	const hid_t & datatype)
 {
 	if (!isOpened()) {
 		open();
@@ -332,7 +346,7 @@ void HdfProxy::readArrayNdOfValues(
 	}
 }
 
-int HdfProxy::getHdfDatatypeInDataset(const std::string & datasetName)
+hid_t HdfProxy::getHdfDatatypeInDataset(const std::string & datasetName)
 {
 	if (!isOpened()) {
 		open();
@@ -365,13 +379,21 @@ int HdfProxy::getHdfDatatypeClassInDataset(const std::string & datasetName)
 }
 
 static vector<unsigned long long> reduceForChunking
-(int datatype,
+(hid_t datatype,
  const unsigned long long * numValuesInEachDimension,
  unsigned int numDimensions)
 {
 	vector<unsigned long long> newValues (numDimensions);
 	for (unsigned int i = 0; i < numDimensions; i++)
 		newValues[i] = numValuesInEachDimension[i];
+
+#if 0
+	// Debug output
+	printf ("Start from chunks of size %llu", newValues[0]);
+	for (unsigned int i=1; i <numDimensions; i++)
+		printf (" x %llu", newValues[i]);
+	printf ("\n");
+#endif
 
 	// Compute product of all dimensions.
 	unsigned long long product =
@@ -394,6 +416,14 @@ static vector<unsigned long long> reduceForChunking
 			(product * size + MAX_CHUNK_SIZE - 1) / MAX_CHUNK_SIZE;
 		// Reduce the largest dimension.
 		*it /= numChunks;
+
+#if 0
+		// Debug output.
+		printf ("Try chunks of size %llu", newValues[0]);
+		for (unsigned int i=1; i <numDimensions; i++)
+			printf (" x %llu", newValues[i]);
+		printf ("\n");
+#endif
 	}
 
 	return newValues;
@@ -401,10 +431,10 @@ static vector<unsigned long long> reduceForChunking
 
 void HdfProxy::writeItemizedListOfList(const string & groupName,
 			const string & name,
-			const int & cumulativeLengthDatatype,
+			const hid_t & cumulativeLengthDatatype,
 			const void * cumulativeLength,
 			const unsigned long long & cumulativeLengthSize,
-			const int & elementsDatatype,
+			const hid_t & elementsDatatype,
 			const void * elements,
 			const unsigned long long & elementsSize)
 {
@@ -557,7 +587,7 @@ void HdfProxy::writeArrayNdOfGSoapULong64Values(const std::string & groupName,
 
 void HdfProxy::writeArrayNd(const std::string & groupName,
 			const std::string & name,
-			const int & datatype,
+			const hid_t & datatype,
 			const void * values,
 			const unsigned long long * numValuesInEachDimension,
 			const unsigned int & numDimensions)
@@ -620,7 +650,7 @@ void HdfProxy::writeArrayNd(const std::string & groupName,
 void HdfProxy::createArrayNd(
 	const std::string& groupName,
 	const std::string& datasetName,
-	const int & datatype,
+	const hid_t & datatype,
 	const unsigned long long* numValuesInEachDimension,
 	const unsigned int& numDimensions
 ) {
@@ -679,7 +709,7 @@ void HdfProxy::createArrayNd(
 void HdfProxy::writeArrayNdSlab(
 	const string& groupName,
 	const string& datasetName,
-	const int & datatype,
+	const hid_t & datatype,
 	const void* values,
 	const hsize_t* numValuesInEachDimension,
 	const hsize_t* offsetInEachDimension,
@@ -769,8 +799,8 @@ void HdfProxy::readArrayNdOfDoubleValues(
 }
 
 void HdfProxy::readArrayNdOfDoubleValues(
-	int dataset,
-	int filespace,
+	hid_t dataset,
+	hid_t filespace,
 	void* values,
 	unsigned long long slabSize)
 {
@@ -865,12 +895,12 @@ void HdfProxy::readArrayNdOfUCharValues(const std::string & datasetName, unsigne
 	readArrayNdOfValues(datasetName, values, H5T_NATIVE_UCHAR);
 }
 
-int HdfProxy::openOrCreateRootGroup()
+hid_t HdfProxy::openOrCreateRootGroup()
 {
 	return hdfFile;
 }
 
-int HdfProxy::openOrCreateGroupInRootGroup(const string & groupName)
+hid_t HdfProxy::openOrCreateGroupInRootGroup(const string & groupName)
 {
 	hid_t rootGroup = openOrCreateRootGroup();
 	if (rootGroup < 0) {
@@ -927,7 +957,7 @@ void HdfProxy::writeGroupAttributes(const std::string & groupName,
 		throw std::invalid_argument("The attribute name vector must be the same size as the attritbute value vector.");
 	}
 
-	int groupId = openOrCreateGroupInRootGroup(groupName);
+	hid_t groupId = openOrCreateGroupInRootGroup(groupName);
 
 	hid_t aid = H5Screate(H5S_SCALAR);
 	hid_t atype = H5Tcopy(H5T_C_S1);
@@ -947,7 +977,7 @@ void HdfProxy::writeGroupAttribute(const std::string & groupName,
 	const std::string & attributeName,
 	const std::vector<std::string> & values)
 {
-	const int groupId = openOrCreateGroupInRootGroup(groupName);
+	const hid_t groupId = openOrCreateGroupInRootGroup(groupName);
 
 	unsigned int maxStringSize = 0;
 	for (size_t i = 0; i < values.size(); ++i) {
@@ -983,7 +1013,7 @@ void HdfProxy::writeGroupAttributes(const std::string & groupName,
 		throw std::invalid_argument("The attribute name vector must be the same size as the attritbute value vector.");
 	}
 
-	int groupId = openOrCreateGroupInRootGroup(groupName);
+	hid_t groupId = openOrCreateGroupInRootGroup(groupName);
 
 	hid_t aid = H5Screate(H5S_SCALAR);
 	for (size_t i = 0; i < attributeNames.size(); ++i) {
@@ -1004,7 +1034,7 @@ void HdfProxy::writeGroupAttributes(const std::string & groupName,
 		throw std::invalid_argument("The attribute name vector must be the same size as the attritbute value vector.");
 	}
 
-	int groupId = openOrCreateGroupInRootGroup(groupName);
+	hid_t groupId = openOrCreateGroupInRootGroup(groupName);
 
 	hid_t aid = H5Screate(H5S_SCALAR);
 	for (size_t i = 0; i < attributeNames.size(); ++i) {

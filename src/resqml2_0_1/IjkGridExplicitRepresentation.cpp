@@ -214,7 +214,7 @@ void IjkGridExplicitRepresentation::getXyzPointsOfBlockOfPatch(const unsigned in
 			blockSizeInEachDimension[1] = blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1;
 			blockSizeInEachDimension[2] = 3;
 		
-			int dataset, filespace;
+			hid_t dataset, filespace;
 			hdfProxy->selectArrayNdOfValues(
 				pathInHdfFile,
 				blockCountPerDimension,
