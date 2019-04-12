@@ -22,7 +22,7 @@ target_compile_options(${CPP_LIBRARY_NAME}	PUBLIC
 	$<$<CXX_COMPILER_ID:MSVC>:/W4>
 	$<$<CXX_COMPILER_ID:GNU>:-Wall>
 	$<$<CXX_COMPILER_ID:GNU>:-Wextra>
-	$<$<CXX_COMPILER_ID:GNU>:-Wpedantic>
+	$<$<CXX_COMPILER_ID:GNU>:-pedantic>
 	$<$<CXX_COMPILER_ID:CLANG>:-Weverything>
 )
 
@@ -283,16 +283,20 @@ endif (WITH_DOTNET_WRAPPING)
 # ============================================================================
 # Install FesapiCpp library
 # ============================================================================
+include(GNUInstallDirs)
 
 INSTALL (
 	TARGETS ${CPP_LIBRARY_NAME}
-	DESTINATION lib
+	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
 if (${WITH_JAVA_WRAPPING})
 	INSTALL (
 		FILES ${CMAKE_CURRENT_BINARY_DIR}/fesapiJava-${Fesapi_VERSION}.jar
-		DESTINATION lib
+		LIBRARY
+			DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	)
 endif (${WITH_JAVA_WRAPPING})
 
