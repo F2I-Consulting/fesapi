@@ -29,6 +29,8 @@ under the License.
 #include "epc/Relationship.h"
 #include "epc/FilePart.h"
 
+#include "common/GraphicalInformationSet.h"
+
 #include "resqml2_0_1/PropertyKindMapper.h"
 
 #include "resqml2_0_1/LocalDepth3dCrs.h"
@@ -163,6 +165,23 @@ const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 		GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace);\
 	}
 
+/////////////////////
+////// EML 2.2 //////
+/////////////////////
+#define GET_EML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
+	gsoapNameSpace::_eml22__##className* read = gsoapNameSpace::soap_new_eml22__##className(s, 1);\
+	gsoapNameSpace::soap_read_eml22__##className(s, read);
+
+#define GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
+	GET_EML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
+	wrapper = new classNamespace::className(read);
+
+#define CHECK_AND_GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
+	(datatype.compare(classNamespace::className::XML_TAG) == 0)\
+	{\
+		GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace);\
+	}
+
 // Create a fesapi partial wrapper based on a content type
 #define CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(className)\
 	(resqmlContentType.compare(className::XML_TAG) == 0)\
@@ -209,7 +228,7 @@ namespace // anonymous namespace. Use only in that file.
 }
 
 EpcDocument::EpcDocument() :
-	package(nullptr), s(nullptr),
+	package(nullptr), s(nullptr), graphicalInformationSet(nullptr),
 	propertyKindMapper(nullptr), make_hdf_proxy(&default_builder), make_hdf_proxy_from_gsoap_proxy_2_0_1(&default_builder),
 	make_partial_hdf_proxy(&epc_partial_builder)
 {
@@ -319,6 +338,12 @@ std::vector<std::string> EpcDocument::getAllUuids() const
 	}
 
 	return keys;
+}
+
+
+GraphicalInformationSet* EpcDocument::getGraphicalInformationSet() const
+{
+	return graphicalInformationSet;
 }
 
 const std::vector<RESQML2_0_1_NS::LocalDepth3dCrs*> & EpcDocument::getLocalDepth3dCrsSet() const { return localDepth3dCrsSet; }
@@ -604,6 +629,9 @@ COMMON_NS::AbstractObject* EpcDocument::addOrReplaceGsoapProxy(const std::string
 		else if (contentType.find("application/x-witsml+xml;version=2.1;type=") != string::npos) {
 			wrapper = getWitsml2_1WrapperFromGsoapContext(datatype);
 		}
+		else if (contentType.find("application/x-eml+xml;version=2.2;type=") != string::npos) {
+			wrapper = getEml2_2WrapperFromGsoapContext(datatype);
+		}
 	}
 
 	if (wrapper != nullptr) {
@@ -709,6 +737,12 @@ void EpcDocument::addGsoapProxy(COMMON_NS::AbstractObject* proxy)
 	}
 	else if (xmlTag.compare(PointSetRepresentation::XML_TAG) == 0) {
 		pointSetRepresentationSet.push_back(static_cast<PointSetRepresentation* const>(proxy));
+	}
+	else if (xmlTag.compare(GraphicalInformationSet::XML_TAG) == 0) {
+		if (graphicalInformationSet != nullptr) {
+			throw invalid_argument("You cannot have two GraphicalInformationSet for now. It is not implemented yet.");
+		}
+		graphicalInformationSet = static_cast<GraphicalInformationSet* const>(proxy);
 	}
 
 	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {
@@ -893,6 +927,29 @@ string EpcDocument::deserialize()
 				}
 			}
 		}
+		else if (it->second.getContentTypeString().find("application/x-eml+xml;version=2.2;type=") == 0)
+		{
+			string fileStr = package->extractFile(it->second.getExtensionOrPartName().substr(1));
+			if (fileStr.empty()) {
+				throw invalid_argument("The EPC document contains the file " + it->second.getExtensionOrPartName().substr(1) + " in its contentType file which cannot be found or cannot be unzipped or is empty.");
+			}
+			istringstream iss(fileStr);
+			setGsoapStream(&iss);
+			COMMON_NS::AbstractObject* wrapper = getEml2_2WrapperFromGsoapContext(it->second.getContentTypeString().substr(39));
+
+			if (wrapper != nullptr)
+			{
+				if (s->error != SOAP_OK) {
+					ostringstream oss;
+					soap_stream_fault(s, oss);
+					result += oss.str() + " IN " + it->second.getExtensionOrPartName() + "\n";
+					delete wrapper;
+				}
+				else {
+					addFesapiWrapperAndDeleteItIfException(wrapper);
+				}
+			}
+		}
 	}
 
 	deserializeContentOfDictionaries();
@@ -1042,6 +1099,15 @@ COMMON_NS::AbstractObject* EpcDocument::getWitsml2_1WrapperFromGsoapContext(cons
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, ErrorTermDictionary, gsoap_eml2_2)
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, WeightingFunction, gsoap_eml2_2)
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, WeightingFunctionDictionary, gsoap_eml2_2)
+
+	return wrapper;
+}
+
+COMMON_NS::AbstractObject* EpcDocument::getEml2_2WrapperFromGsoapContext(const std::string & datatype)
+{
+	COMMON_NS::AbstractObject* wrapper = nullptr;
+
+	if CHECK_AND_GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(COMMON_NS, GraphicalInformationSet, gsoap_eml2_2)
 
 	return wrapper;
 }
@@ -2695,6 +2761,13 @@ WITSML2_0_NS::Trajectory* EpcDocument::createTrajectory(WITSML2_0_NS::Wellbore* 
 	gsoap_eml2_1::witsml2__ChannelStatus channelStatus)
 {
 	WITSML2_0_NS::Trajectory* result = new WITSML2_0_NS::Trajectory(witsmlWellbore, guid, title, channelStatus);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+COMMON_NS::GraphicalInformationSet* EpcDocument::createGraphicalInformationSet(const std::string & guid, const std::string & title)
+{
+	common::GraphicalInformationSet* result = new common::GraphicalInformationSet(getGsoapContext(), guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }

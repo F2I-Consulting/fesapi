@@ -55,7 +55,14 @@ GraphicalInformationSet::GraphicalInformationSet(soap* soapContext, const string
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 }
 
-gsoap_eml2_2::eml22__DataObjectReference* GraphicalInformationSet::getTargetObjectDor(const unsigned int & index) const
+unsigned int GraphicalInformationSet::getGraphicalInformationSetCount() const
+{
+	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
+
+	return gis->GraphicalInformation.size();
+}
+
+gsoap_eml2_2::eml22__DataObjectReference* GraphicalInformationSet::getTargetObjectDor(unsigned int index) const
 {
 	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
 
@@ -66,17 +73,23 @@ gsoap_eml2_2::eml22__DataObjectReference* GraphicalInformationSet::getTargetObje
 	return gis->GraphicalInformation[index]->TargetObject;
 }
 
-std::string GraphicalInformationSet::getTargetObjectUuid(const unsigned int & index) const
+std::string GraphicalInformationSet::getTargetObjectUuid(unsigned int index) const
 {
 	return getTargetObjectDor(index)->Uuid;
 }
 
-common::AbstractObject* GraphicalInformationSet::getTargetObject(const unsigned int & index) const
+common::AbstractObject* GraphicalInformationSet::getTargetObject(unsigned int index) const
 {
 	return epcDocument->getDataObjectByUuid(getTargetObjectUuid(index));
 }
 
-vector<Relationship> GraphicalInformationSet::getAllEpcRelationships() const
+vector<Relationship> GraphicalInformationSet::getAllSourceRelationships() const
+{
+	vector<Relationship> result;
+	return result;
+}
+
+vector<Relationship> GraphicalInformationSet::getAllTargetRelationships() const
 {
 	vector<Relationship> result;
 
@@ -189,7 +202,7 @@ double GraphicalInformationSet::getDefaultAlpha(common::AbstractObject* targetOb
 	return color->Alpha;
 }
 
-void GraphicalInformationSet::setDefaultHsvColor(common::AbstractObject* targetObject, const double & hue, const double & saturation, const double & value, const double & alpha)
+void GraphicalInformationSet::setDefaultHsvColor(common::AbstractObject* targetObject, double hue, double saturation, double value, double alpha)
 {
 	gsoap_eml2_2::resqml2__HsvColor* color = nullptr;
 	resqml2__DefaultGraphicalInformation* defaultGraphicalInformationForAllIndexableElements = getDefaultGraphicalInformationForAllIndexableElements(targetObject);

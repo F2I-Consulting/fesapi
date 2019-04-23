@@ -156,6 +156,7 @@ namespace COMMON_NS
 {
 	class AbstractObject;
 	class AbstractHdfProxy;
+	class GraphicalInformationSet;
 
 	/**
 	* This class allows an access to a memory package representing an EPC document.
@@ -414,6 +415,7 @@ namespace COMMON_NS
 			throw std::invalid_argument("The uuid " + uuid + " does not resolve to the expected datatype");
 		}
 
+		DLL_IMPORT_OR_EXPORT GraphicalInformationSet* getGraphicalInformationSet() const;
 		/**
 		* Get all the local 3d depth crs contained into the EPC document
 		*/
@@ -1244,6 +1246,13 @@ namespace COMMON_NS
 			gsoap_eml2_1::witsml2__ChannelStatus channelStatus);
 
 		//************************************
+		//************ EML2.2 ****************
+		//************************************
+
+		DLL_IMPORT_OR_EXPORT GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
+
+
+		//************************************
 		//************* WARNINGS *************
 		//************************************
 
@@ -1279,6 +1288,7 @@ namespace COMMON_NS
 		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
 		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
 		COMMON_NS::AbstractObject* getWitsml2_1WrapperFromGsoapContext(const std::string & datatype);
+		COMMON_NS::AbstractObject* getEml2_2WrapperFromGsoapContext(const std::string & datatype);
 
 		/**
 		* Read the Gsoap proxy from the stream associated to the current gsoap context which must contains an EpcExternalPartReference xml document.
@@ -1305,6 +1315,7 @@ namespace COMMON_NS
 
 		// Better for performance reason to have set of important objects instead of having a global vector of GsoapWrapper
 		// Even if redundant with resqmlAbstractObjectSet
+		GraphicalInformationSet*										graphicalInformationSet;
 		std::vector<RESQML2_0_1_NS::LocalDepth3dCrs*>					localDepth3dCrsSet;
 		std::vector<RESQML2_0_1_NS::LocalTime3dCrs*>					localTime3dCrsSet;
 		std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*>			faultSet;

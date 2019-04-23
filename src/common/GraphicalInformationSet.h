@@ -37,7 +37,7 @@ knowledge of the CeCILL-B license and that you accept its terms.
 
 namespace common
 {
-	class DLL_IMPORT_OR_EXPORT GraphicalInformationSet : public common::AbstractObject
+	class GraphicalInformationSet : public common::AbstractObject
 	{
 	private:
 		gsoap_eml2_2::resqml2__DefaultGraphicalInformation* getDefaultGraphicalInformationForAllIndexableElements(common::AbstractObject* targetObject) const;
@@ -63,48 +63,55 @@ namespace common
 		~GraphicalInformationSet() {}
 
 		/**
+		* @return	Get the size of the GraphicalInformationSet.
+		*/
+		DLL_IMPORT_OR_EXPORT unsigned int getGraphicalInformationSetCount() const;
+
+		/**
 		* @return	Get the data objet reference of the object which receives some graphical information at a particular index of the GraphicalInformationSet.
 		*/
-		gsoap_eml2_2::eml22__DataObjectReference* getTargetObjectDor(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::eml22__DataObjectReference* getTargetObjectDor(unsigned int index) const;
 
 		/**
 		* @return	Get the Uuid of the object which receives some graphical information at a particular index of the GraphicalInformationSet.
 		*/
-		std::string getTargetObjectUuid(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT std::string getTargetObjectUuid(unsigned int index) const;
 
 		/**
 		* Get the object which receives some graphical information at a particular index of the GraphicalInformationSet
 		*/
-		common::AbstractObject* getTargetObject(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT common::AbstractObject* getTargetObject(unsigned int index) const;
 
 		/**
 		* @param targetObject	The object whiwh we want tot est for its presency in the Graphical Information Set
 		* @return true if the Graphical Information Set has graphical information about the target object.
 		*/
-		bool hasGraphicalInformation(const common::AbstractObject* targetObject) const;
+		DLL_IMPORT_OR_EXPORT bool hasGraphicalInformation(const common::AbstractObject* targetObject) const;
 
-		bool hasDefaultColor(common::AbstractObject* targetObject) const;
-		double getDefaultHue(common::AbstractObject* targetObject) const;
-		double getDefaultSaturation(common::AbstractObject* targetObject) const;
-		double getDefaultValue(common::AbstractObject* targetObject) const;
-		double getDefaultAlpha(common::AbstractObject* targetObject) const;
+		DLL_IMPORT_OR_EXPORT bool hasDefaultColor(common::AbstractObject* targetObject) const;
+		DLL_IMPORT_OR_EXPORT double getDefaultHue(common::AbstractObject* targetObject) const;
+		DLL_IMPORT_OR_EXPORT double getDefaultSaturation(common::AbstractObject* targetObject) const;
+		DLL_IMPORT_OR_EXPORT double getDefaultValue(common::AbstractObject* targetObject) const;
+		DLL_IMPORT_OR_EXPORT double getDefaultAlpha(common::AbstractObject* targetObject) const;
 
 		/**
 		* https://en.wikipedia.org/wiki/HSV_color_space
 		* @param targetObject	The object which receives the color
 		* @param alpha			numeric value in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque).
 		*/
-		void setDefaultHsvColor(common::AbstractObject* targetObject, const double & hue, const double & saturation, const double & value, const double & alpha = 1.0);
+		DLL_IMPORT_OR_EXPORT void setDefaultHsvColor(common::AbstractObject* targetObject, double hue, double saturation, double value, double alpha = 1.0);
 
-		static const char* XML_TAG;
-		std::string getXmlTag() const { return XML_TAG; }
-		std::string getXmlNamespace() const {
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const {
 			return "eml22";
 		}
 
 	protected:
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(common::EpcDocument* epcDoc) {}
+		void resolveTargetRelationships(common::EpcDocument* epcDoc) {}
+
+		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllSourceRelationships() const;
+		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllTargetRelationships() const;
 	};
 }
