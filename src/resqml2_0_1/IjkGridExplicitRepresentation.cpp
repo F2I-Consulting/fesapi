@@ -227,10 +227,10 @@ void IjkGridExplicitRepresentation::getXyzPointsOfBlockOfPatch(const unsigned in
 				filespace);
 
 			unsigned long long slab_size = 1;
-			for (unsigned int h = 0; h < 3; ++h) {
+			for (size_t h = 0; h < 3; ++h) {
 				slab_size *= blockSizeInEachDimension[h];
 			}
-			for (unsigned int h = 0; h < 3; ++h) {
+			for (size_t h = 0; h < 3; ++h) {
 				slab_size *= blockCountPerDimension[h];
 			}
 

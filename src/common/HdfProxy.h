@@ -201,7 +201,9 @@ namespace COMMON_NS
 		* Set the new compression level which will be used for all data to be written
 		* @param compressionLevel				Lower compression levels are faster but result in less compression. Range [0..9] is allowed.
 		*/
-		DLL_IMPORT_OR_EXPORT void setCompressionLevel(const unsigned int & newCompressionLevel) {if (newCompressionLevel > 9) compressionLevel = 9; else compressionLevel = newCompressionLevel;}
+		DLL_IMPORT_OR_EXPORT void setCompressionLevel(unsigned int newCompressionLevel) {
+			compressionLevel = newCompressionLevel > 9 ? 9 : newCompressionLevel;
+		}
 
 		void writeArrayNdOfFloatValues(const std::string & groupName,
 			const std::string & name,
