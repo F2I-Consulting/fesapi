@@ -827,7 +827,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlockOfPatch(const unsigned 
 		blockSizeInEachDimension[0] = blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1;
 		blockSizeInEachDimension[1] = blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1;
 
-		int dataset, filespace;
+		hid_t dataset, filespace;
 		hdfProxy->selectArrayNdOfValues(
 			pathInHdfFile,
 			blockCountPerDimension,
@@ -840,10 +840,10 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlockOfPatch(const unsigned 
 			filespace);
 
 		unsigned long long slab_size = 1;
-		for (unsigned int h = 0; h < 2; ++h) {
+		for (size_t h = 0; h < 2; ++h) {
 			slab_size *= blockSizeInEachDimension[h];
 		}
-		for (unsigned int h = 0; h < 2; ++h) {
+		for (size_t h = 0; h < 2; ++h) {
 			slab_size *= blockCountPerDimension[h];
 		}
 
