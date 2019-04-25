@@ -46,7 +46,7 @@ namespace COMMON_NS
 		* @param datatype 		The hdf datatype of the values to read.
 		* 						If the values are not stored in this particular datatype, then hdf library will try to do a conversion.
 		*/
-		void readArrayNdOfValues(const std::string & datasetName, void* values, const hdf5_hid_t & datatype);
+		void readArrayNdOfValues(const std::string & datasetName, void* values, hdf5_hid_t datatype);
 
 		/**
 		* Find the array associated with @p datasetName and read a portion of it.
@@ -63,8 +63,8 @@ namespace COMMON_NS
 			void* values,
 			unsigned long long * numValuesInEachDimension,
 			unsigned long long * offsetInEachDimension,
-			const unsigned int & numDimensions,
-			const hdf5_hid_t & datatype);
+			unsigned int numDimensions,
+			hdf5_hid_t datatype);
 
 		/**
 		* Find the array associated with @p datasetName and read from it.
@@ -85,8 +85,8 @@ namespace COMMON_NS
 			unsigned long long * offsetInEachDimension,
 			unsigned long long * strideInEachDimension,
 			unsigned long long * blockSizeInEachDimension,
-			const unsigned int & numDimensions,
-			const hdf5_hid_t & datatype);
+			unsigned int numDimensions,
+			hdf5_hid_t datatype);
 
 		/**
 		* Considering a given dataset, this method selects an hyperslab region to add to an existing selected region or to add to a new selected region.
@@ -107,7 +107,7 @@ namespace COMMON_NS
 			unsigned long long * offsetInEachDimension,
 			unsigned long long * strideInEachDimension,
 			unsigned long long * blockSizeInEachDimension,
-			const unsigned int & numDimensions,
+			unsigned int numDimensions,
 			bool newSelection,
 			hdf5_hid_t & dataset,
 			hdf5_hid_t & filespace);
@@ -126,7 +126,7 @@ namespace COMMON_NS
 			hdf5_hid_t filespace,
 			void* values, 
 			unsigned long long slabSize, 
-			const hdf5_hid_t & datatype);
+			hdf5_hid_t datatype);
 
 	public:
 
@@ -178,12 +178,12 @@ namespace COMMON_NS
 		*/
 		void writeItemizedListOfList(const std::string & groupName,
 			const std::string & name,
-			const hdf5_hid_t & cumulativeLengthDatatype,
+			hdf5_hid_t cumulativeLengthDatatype,
 			const void * cumulativeLength,
-			const unsigned long long & cumulativeLengthSize,
-			const hdf5_hid_t & elementsDatatype,
+			unsigned long long cumulativeLengthSize,
+			hdf5_hid_t elementsDatatype,
 			const void * elements,
-			const unsigned long long & elementsSize);
+			unsigned long long elementsSize);
 
 		/**
 		* Get the number of dimensions in an HDF dataset of the proxy.
@@ -207,7 +207,7 @@ namespace COMMON_NS
 			const std::string & name,
 			const float * floatValues,
 			const unsigned long long * numValuesInEachDimension,
-			const unsigned int & numDimensions);
+			unsigned int numDimensions);
 
 		/**
 		* Write an array (potentially with multi dimensions) of double values into the HDF file by means of a single dataset.
@@ -222,7 +222,7 @@ namespace COMMON_NS
 			const std::string & name,
 			const double * dblValues,
 			const unsigned long long * numValuesInEachDimension,
-			const unsigned int & numDimensions);
+			unsigned int numDimensions);
 
 		/**
 		* Write an array (potentially with multi dimensions) of char values into the HDF file by means of a single dataset.
@@ -237,7 +237,7 @@ namespace COMMON_NS
 			const std::string & name,
 			const char * intValues,
 			const unsigned long long * numValuesInEachDimension,
-			const unsigned int & numDimensions);
+			unsigned int numDimensions);
 
 		/**
 		* Write an array (potentially with multi dimensions) of int values into the HDF file by means of a single dataset.
@@ -252,7 +252,7 @@ namespace COMMON_NS
 			const std::string & name,
 			const int * intValues,
 			const unsigned long long * numValuesInEachDimension,
-			const unsigned int & numDimensions);
+			unsigned int numDimensions);
 
 		/**
 		* Write an array (potentially with multi dimensions) of gSoap unsigned long 64 values into the HDF file by means of a single dataset.
@@ -267,7 +267,7 @@ namespace COMMON_NS
 			const std::string & name,
 			const ULONG64 * ulong64Values,
 			const unsigned long long * numValuesInEachDimension,
-			const unsigned int & numDimensions);
+			unsigned int numDimensions);
 
 		/**
 		* Write an array (potentially with multi dimensions) of a specific datatype into the HDF file by means of a single dataset.
@@ -281,10 +281,10 @@ namespace COMMON_NS
 		*/
 		void writeArrayNd(const std::string & groupName,
 			const std::string & name,
-			const hdf5_hid_t & datatype,
+			hdf5_hid_t datatype,
 			const void * values,
 			const unsigned long long * numValuesInEachDimension,
-			const unsigned int & numDimensions);
+			unsigned int numDimensions);
 
 		/**
 		* Create an array (potentially with multi dimensions) of a specific datatype into the HDF file. Values are not yet written to this array.
@@ -298,9 +298,9 @@ namespace COMMON_NS
 		void createArrayNd(
 			const std::string& groupName,
 			const std::string& name,
-			const hdf5_hid_t & datatype,
+			hdf5_hid_t datatype,
 			const unsigned long long* numValuesInEachDimension,
-			const unsigned int& numDimensions
+			unsigned int numDimensions
 		);
 
 		/**
@@ -316,11 +316,11 @@ namespace COMMON_NS
 		void writeArrayNdSlab(
 			const std::string& groupName,
 			const std::string& name,
-			const hdf5_hid_t & datatype,
+			hdf5_hid_t datatype,
 			const void* values,
 			const unsigned long long* numValuesInEachDimension,
 			const unsigned long long* offsetValuesInEachDimension,
-			const unsigned int& numDimensions
+			unsigned int numDimensions
 		);
 
 		/**
@@ -411,7 +411,7 @@ namespace COMMON_NS
 		  double* values,
 		  unsigned long long * numValuesInEachDimension,
 		  unsigned long long * offsetInEachDimension,
-		  const unsigned int & numDimensions
+		  unsigned int numDimensions
 		  );
 
 		/**
@@ -430,7 +430,7 @@ namespace COMMON_NS
 			unsigned long long * offsetInEachDimension,
 			unsigned long long * strideInEachDimension,
 			unsigned long long * blockSizeInEachDimension,
-			const unsigned int & numDimensions);
+			unsigned int numDimensions);
 
 		/**
 		* Considering a given dataset, read the double values corresponding to an existing selected region.
@@ -465,7 +465,7 @@ namespace COMMON_NS
 			float* values, 
 			unsigned long long * numValuesInEachDimension,
 			unsigned long long * offsetInEachDimension,
-			const unsigned int & numDimensions
+			unsigned int numDimensions
 		);
 
 		/**
@@ -500,7 +500,7 @@ namespace COMMON_NS
 			long* values, 
 			unsigned long long * numValuesInEachDimension,
 			unsigned long long * offsetInEachDimension,
-			const unsigned int & numDimensions
+			unsigned int numDimensions
 		);
 
 		/**
@@ -530,7 +530,7 @@ namespace COMMON_NS
 			int* values,
 			unsigned long long * numValuesInEachDimension,
 			unsigned long long * offsetInEachDimension,
-			const unsigned int & numDimensions
+			unsigned int numDimensions
 		);
 
 		/**
@@ -596,7 +596,7 @@ namespace COMMON_NS
 		*/
 		hdf5_hid_t openOrCreateGroupInRootGroup(const std::string & groupName);
 
-	        hdf5_hid_t hdfFile;
+	    hdf5_hid_t hdfFile;
 
 		unsigned int compressionLevel;
 	};
