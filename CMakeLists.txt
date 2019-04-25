@@ -26,7 +26,6 @@ if(NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE "Release")
 endif()
 
-# we check if Resqml/Witsml proxies are already provided
 FILE (GLOB FESAPI_PROXIES_SOURCES ${FESAPI_ROOT_DIR}/src/proxies/*.cpp)
 SET (FESAPI_PROXIES_SOURCES
 	${FESAPI_PROXIES_SOURCES}
@@ -34,24 +33,7 @@ SET (FESAPI_PROXIES_SOURCES
 )
 FILE (GLOB FESAPI_PROXIES_HEADERS ${FESAPI_ROOT_DIR}/src/proxies/*.h)
 
-# on Windows checking if the target architecture is 32 bits or 64 bits
-IF (WIN32)
-	STRING (FIND ${CMAKE_GENERATOR} 64 POS)
-	IF (POS EQUAL -1) 
-		#SET (ARCHITECTURE "x86" CACHE STRING "Set dependencies to "x64" (resp. "x86") default values")
-		SET (ARCHITECTURE "x86")
-	ELSE (POS EQUAL -1)
-		#SET (ARCHITECTURE "x64" CACHE STRING "Set dependencies to "x64" (resp. "x86") default values")
-		SET (ARCHITECTURE "x64")
-	ENDIF (POS EQUAL -1) 
-ENDIF (WIN32)
-
-GET_FILENAME_COMPONENT (FESAPI_PARENT_DIR ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
 SET (BUILD_SHARED_LIBS ON CACHE BOOL "Build shared lib")
-SET (ENERGISTICS_SCHEMAS_LOCATION  ${FESAPI_PARENT_DIR}/energistics_schemas CACHE PATH "Energistics schemas path")
-MARK_AS_ADVANCED (ENERGISTICS_SCHEMAS_LOCATION)
-SET (RESQML_SCHEMA_LOCATION ${ENERGISTICS_SCHEMAS_LOCATION}/energyml/data/resqmlv2/v2.0.1/xsd_schemas)
-SET (WITSML_SCHEMA_LOCATION ${ENERGISTICS_SCHEMAS_LOCATION}/WITSML_v1.4.1.1_Data_Schema/witsml_v1.4.1.1_data/xsd_schemas)
 
 IF (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 	SET (CMAKE_INSTALL_PREFIX ${FESAPI_BINARY_DIR}/install CACHE PATH "FesapiCpp install prefix" FORCE)
@@ -63,9 +45,6 @@ IF (UNIX)
 	else ()
 		add_compile_options(-std=c++0x)
 	endif()
-	IF (NOT CMAKE_BUILD_TYPE)
-		SET (CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel" FORCE)
-	ENDIF (NOT CMAKE_BUILD_TYPE)
 	add_compile_options(-fPIC)
 ENDIF (UNIX)
 
@@ -77,7 +56,7 @@ ENDIF (UNIX)
 SET (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
 # hdf5
-# FIND_PACKAGE (HDF5) Do no more try to find HDF5 because it looks to be too much different across different platforms/versions.
+# FIND_PACKAGE (HDF5) is not used because we need debug and release versions of hdf5 for windows build environments. The cmake module does not provide both debug and release library cmake variables.
 SET (HDF5_C_INCLUDE_DIR HDF5_C_INCLUDE_DIR-NOTFOUND CACHE PATH "Path to the directory which contains the HDF5 C header files")
 IF (NOT IS_DIRECTORY ${HDF5_C_INCLUDE_DIR})
 	MESSAGE(WARNING "The HDF5 include dir (HDF5_C_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
@@ -93,6 +72,7 @@ ENDIF ()
 IF (WIN32)
 	SET (HDF5_BUILT_AS_DYNAMIC_LIB ON CACHE BOOL "Is your HDF5 library built as a dynamic library ?")
 ENDIF (WIN32)
+SET (HDF5_1_10 OFF CACHE BOOL "Is your HDF5 library version 1.10 or 1.8 ?")
 
 # Zlib
 FIND_PACKAGE (ZLIB)
