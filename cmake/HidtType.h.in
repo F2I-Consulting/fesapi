@@ -1,0 +1,5 @@
+
+#pragma once
+
+${COMMENT_HDF5_1_8}typedef int hdf5_hid_t;
+${COMMENT_HDF5_1_10}typedef long long hdf5_hid_t;

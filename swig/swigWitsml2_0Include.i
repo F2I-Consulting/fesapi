@@ -392,6 +392,8 @@ namespace WITSML2_0_NS
 		
 		gsoap_eml2_1::eml21__LengthUom getPerforationMdUnit(unsigned int index) const;
 		
+		std::string getPerforationMdUnitAsString(unsigned int index) const;
+		
 		bool hasPerforationTopMd(unsigned int index) const;
 		
 		double getPerforationTopMd(unsigned int index) const;
@@ -443,6 +445,9 @@ namespace WITSML2_0_NS
 			unsigned int perforationIndex) const;
 
 		gsoap_eml2_1::eml21__LengthUom getPerforationHistoryMdUnit(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
+			
+		std::string getPerforationHistoryMdUnitAsString(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
 
 		bool hasPerforationHistoryTopMd(unsigned int historyIndex,

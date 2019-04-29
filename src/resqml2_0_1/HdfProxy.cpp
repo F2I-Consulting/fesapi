@@ -37,7 +37,7 @@ std::string HdfProxy::getXmlNamespace() const
 	return "eml20";
 }
 
-int HdfProxy::openOrCreateRootGroup()
+hid_t HdfProxy::openOrCreateRootGroup()
 {
 	if (!isOpened()) {
 		open();
