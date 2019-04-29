@@ -76,7 +76,7 @@ namespace COMMON_NS
 
 		enum EmlVersion {
 			TWO_DOT_ZERO = 0,
-			TWO_DOT_ONE = 1,
+			TWO_DOT_ONE = 1
 		};
 		
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;

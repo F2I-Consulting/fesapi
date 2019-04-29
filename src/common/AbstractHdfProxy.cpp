@@ -25,7 +25,7 @@ AbstractHdfProxy::AbstractHdfProxy(const std::string & packageDirAbsolutePath, c
 {
 }
 
-void AbstractHdfProxy::initGsoapProxy(soap* soapContext, const std::string & guid, const std::string & title, const EmlVersion & emlVersion)
+void AbstractHdfProxy::initGsoapProxy(soap* soapContext, const std::string & guid, const std::string & title, EmlVersion emlVersion)
 {
 	if (emlVersion == TWO_DOT_ZERO) {
 		gsoapProxy2_0_1 = gsoap_resqml2_0_1::soap_new_eml20__obj_USCOREEpcExternalPartReference(soapContext, 1);
@@ -40,4 +40,3 @@ void AbstractHdfProxy::initGsoapProxy(soap* soapContext, const std::string & gui
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
-

@@ -4,6 +4,15 @@ project (Fesapi_SRC)
 
 configure_file(${FESAPI_ROOT_DIR}/cmake/version_config.h.in ${FESAPI_ROOT_DIR}/src/version_config.h)
 
+if (HDF5_1_10)
+	set (COMMENT_HDF5_1_8 "//")
+	set (COMMENT_HDF5_1_10 "")
+else ()
+	set (COMMENT_HDF5_1_8 "")
+	set (COMMENT_HDF5_1_10 "//")
+endif ()
+configure_file(${FESAPI_ROOT_DIR}/cmake/HidtType.h.in ${FESAPI_ROOT_DIR}/src/common/HidtType.h)
+
 # ============================================================================
 # Getting source files
 # ============================================================================
@@ -295,8 +304,7 @@ INSTALL (
 if (${WITH_JAVA_WRAPPING})
 	INSTALL (
 		FILES ${CMAKE_CURRENT_BINARY_DIR}/fesapiJava-${Fesapi_VERSION}.jar
-		LIBRARY
-			DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	)
 endif (${WITH_JAVA_WRAPPING})
 
