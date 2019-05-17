@@ -242,6 +242,11 @@ eml21__LengthUom WellboreCompletion::getPerforationMdUnit(unsigned int index) co
 	}
 }
 
+string WellboreCompletion::getPerforationMdUnitAsString(unsigned int index) const
+{
+	return gsoap_eml2_1::soap_eml21__LengthUom2s(gsoapProxy2_1->soap, getPerforationMdUnit(index));
+}
+
 bool WellboreCompletion::hasPerforationTopMd(unsigned int index) const
 {
 	witsml2__PerforationSetInterval * perforationSetInterval = getPerforation(index);
@@ -434,6 +439,12 @@ eml21__LengthUom WellboreCompletion::getPerforationHistoryMdUnit(unsigned int hi
 	witsml2__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
 
 	return perforationStatusHistory->PerforationMdInterval->MdBase != nullptr ? perforationStatusHistory->PerforationMdInterval->MdBase->uom : perforationStatusHistory->PerforationMdInterval->MdTop->uom;
+}
+
+string WellboreCompletion::getPerforationHistoryMdUnitAsString(unsigned int historyIndex,
+	unsigned int perforationIndex) const
+{
+	return gsoap_eml2_1::soap_eml21__LengthUom2s(gsoapProxy2_1->soap, getPerforationHistoryMdUnit(historyIndex, perforationIndex));
 }
 
 bool WellboreCompletion::hasPerforationHistoryTopMd(unsigned int historyIndex,

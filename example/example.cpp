@@ -3150,7 +3150,7 @@ void deserializePerforations(COMMON_NS::EpcDocument & pck)
 		}
 		if (wellboreCompletion->hasPerforationMdUnit(perforationIndex))
 		{
-			cout << "md unit: " << pck.lengthUomToString(wellboreCompletion->getPerforationMdUnit(perforationIndex)) << std::endl;
+			cout << "md unit: " << wellboreCompletion->getPerforationMdUnitAsString(perforationIndex) << std::endl;
 		}
 		if (wellboreCompletion->hasPerforationTopMd(perforationIndex))
 		{
@@ -3178,19 +3178,19 @@ void deserializePerforations(COMMON_NS::EpcDocument & pck)
 			}
 			if (wellboreCompletion->hasPerforationHistoryMdDatum(historyIndex, perforationIndex))
 			{
-				cout << "\tend datum: " << wellboreCompletion->getPerforationHistoryMdDatum(historyIndex, perforationIndex) << std::endl;
+				cout << "\tdatum: " << wellboreCompletion->getPerforationHistoryMdDatum(historyIndex, perforationIndex) << std::endl;
 			}
 			if (wellboreCompletion->hasPerforationHistoryMdUnit(historyIndex, perforationIndex))
 			{
-				cout << "\tend md unit: " << pck.lengthUomToString(wellboreCompletion->getPerforationHistoryMdUnit(historyIndex, perforationIndex)) << std::endl;
+				cout << "\tmd unit: " << wellboreCompletion->getPerforationHistoryMdUnitAsString(historyIndex, perforationIndex) << std::endl;
 			}
 			if (wellboreCompletion->hasPerforationHistoryTopMd(historyIndex, perforationIndex))
 			{
-				cout << "\tend top md: " << wellboreCompletion->getPerforationHistoryTopMd(historyIndex, perforationIndex) << std::endl;
+				cout << "\ttop md: " << wellboreCompletion->getPerforationHistoryTopMd(historyIndex, perforationIndex) << std::endl;
 			}
 			if (wellboreCompletion->hasPerforationHistoryBaseMd(historyIndex, perforationIndex))
 			{
-				cout << "\tend base md: " << wellboreCompletion->getPerforationHistoryBaseMd(historyIndex, perforationIndex) << std::endl;
+				cout << "\tbase md: " << wellboreCompletion->getPerforationHistoryBaseMd(historyIndex, perforationIndex) << std::endl;
 			}
 		}
 	}

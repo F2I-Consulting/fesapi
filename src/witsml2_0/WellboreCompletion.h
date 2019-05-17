@@ -73,7 +73,15 @@ namespace WITSML2_0_NS
 		
 		DLL_IMPORT_OR_EXPORT bool hasPerforationMdUnit(unsigned int index) const;
 		
+		/**
+		* Returns md base uom if exists, else returns md top uom. Raises an exception if no md is defined. 
+		*/
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getPerforationMdUnit(unsigned int index) const;
+
+		/**
+		* Returns md base uom (as string) if exists, else returns md top uom (as string). Raises an exception if no md is defined.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getPerforationMdUnitAsString(unsigned int index) const;
 		
 		DLL_IMPORT_OR_EXPORT bool hasPerforationTopMd(unsigned int index) const;
 		
@@ -125,7 +133,16 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryMdUnit(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
 
+		/**
+		* Returns md base uom if exists, else returns md top uom. Raises an exception if no md is defined.
+		*/
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__LengthUom getPerforationHistoryMdUnit(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
+
+		/**
+		* Returns md base uom (as string) if exists, else returns md top uom (as string). Raises an exception if no md is defined.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getPerforationHistoryMdUnitAsString(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
 
 		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryTopMd(unsigned int historyIndex,

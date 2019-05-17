@@ -23,8 +23,6 @@ under the License.
 #include <uuid/uuid.h> // Need package "uuid-dev"
 #include <iostream>
 
-using namespace std;
-
 std::string GuidTools::generateUidAsString()
 {
     uuid_t uuid;

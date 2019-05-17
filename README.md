@@ -11,7 +11,7 @@
 - clang 7
 # Prepare the dependencies
 Download (build and install if necessary) third party libraries:
-- HDF5: All versions of 1.8.* starting from 1.8.18 should be ok. Versions 1.10.* are not supported yet (even if they should work) https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/
+- HDF5: All versions of 1.8.* starting from 1.8.18 and all versions of 1.10.* starting from 1.10.2 should be ok. https://support.hdfgroup.org/ftp/HDF5/releases/
 - MINIZIP : Version 1.1 is needed : it is the official version included in current zlib distribution https://www.zlib.net/ (look into "contrib" folder). You can directly install minizip development package on most of Linux distributions (https://packages.ubuntu.com/xenial/libminizip-dev). On Windows (or older Linux distributions), you can copy the CMakeLists.txt file from fesapi/cmake/minizip to the zlib minizip directory to help you to build minizip (we also provide a copy of minizip 1.1 with cmake files on github : https://github.com/F2I-Consulting/Minizip). It is also highly recommended to link minizip to the same zlib library than the one associated to your HDF5 library.
 - UUID-DEV package *(ONLY FOR LINUX)* : Source code can be found in https://www.kernel.org/pub/linux/utils/util-linux/
 
@@ -25,24 +25,28 @@ Fesapi uses cmake as its build tool. A 3.12 version or later of cmake is require
 - yourPath/fesapiEnv/fesapi defines where is the source code folder
 - yourPath/fesapiEnv/build/theNameYouWant defines where to build the binaries
 - Click on "Configure" button and select your favorite compiler : it will raise several errors.
-- give real path and files to the following cmake variables:
+- give real values, path and files to the following cmake variables:
 	- HDF5
+		- HDF5_1_10 : true if you link to a HDF5 library version 1.10. false (default) if you link to a HDF5 library version 1.8
 		- (ONLY FOR WINDOWS) HD5_BUILT_AS_DYNAMIC_LIB : true if you link to a shared HDF5 library else false
 		- HDF5_C_INCLUDE_DIR : where the HDF5 headers are located
-		- HDF5_C_LIBRARY_RELEASE : the HDF5 library you want to link to
+		- (ONLY FOR WINDOWS) HDF5_C_LIBRARY_DEBUG : Optional, only used by Visual studio Debug configuration, the HDF5 debug library you want to link to .
+		- HDF5_C_LIBRARY_RELEASE : the HDF5 library you want to link to. On Visual studio, it is used on Release configuration. With other compilers, it is the default HDF5 library to link to.
 	- MINIZIP
 		- MINIZIP_INCLUDE_DIR : where the HDF5 headers are located
-		- MINIZIP_LIBRARY_RELEASE : the MINIZIP library you want to link to
+		- (ONLY FOR WINDOWS) MINIZIP_LIBRARY_DEBUG : Optional, only used by Visual studio Debug configuration, the MINIZIP debug library you want to link to
+		- MINIZIP_LIBRARY_RELEASE : the MINIZIP library you want to link to.  On Visual studio, it is used on Release configuration. With other compilers, it is the default HDF5 library to link to.
 	- ZLIB
 		- ZLIB_INCLUDE_DIR : where the zlib headers (commonly zlib.h only) are located. If you use the HDF5 binaries downloaded from HDF Group website, then it should be the same as HDF5_C_INCLUDE_DIR.
-		- ZLIB_LIBRARY_RELEASE : the ZLIB library you want to link to. It must be the same as the one which is linked to HDF5 library and MINIZIP library otherwise you will get a warning from CMake. If you use the HDF5 binaries downloaded from HDF Group website, use the zlib library which lies in the same directory as HDF5_C_LIBRARY_RELEASE.
+		- (ONLY FOR WINDOWS) ZLIB_LIBRARY_DEBUG : Optional, only used by Visual studio Debug configuration, the ZLIB debug library you want to link to
+		- ZLIB_LIBRARY_RELEASE : the ZLIB library you want to link to. It must be the same as the one which is linked to HDF5 library and MINIZIP library otherwise you will get a warning from CMake. If you use the HDF5 binaries downloaded from HDF Group website, use the zlib library which lies in the same directory as HDF5_C_LIBRARY_RELEASE. On Visual studio, it is used on Release configuration. With other compilers, it is the default ZLIB library to link to.
 	- SZIP (it is only required when you statically link to HDF5 AND when HDF5 has been built using SZIP)
 		- SZIP_LIBRARY_RELEASE : the SZIP library you want to link to. This warning can be ignored most of time but it can really create unpredictable bugs in some circumstances (static linking to HDF5 with HDF5 making use of szip).
 	- UUID (ONLY FOR LINUX)
 		- UUID_INCLUDE_DIR : where the UUID headers are located
 		- UUID_LIBRARY_RELEASE : the UUID library you want to link to
 - Click again on "Configure" button. You should no more have errors so you can now click on "Generate" button.
-![alt text](./cmake/cmake.JPG)
+![alt text](./cmake/cmake.PNG)
 - You can now build your solution with your favorite compiler (and linker) using the generated solution in yourPath/fesapiEnv/build/theNameYouWant
 - OPTIONALLY, you can also set the variables WITH_DOTNET_WRAPPING or WITH_JAVA_WRAPPING to true if you want to also generate wrappers on top of fesapi for these two other programming languages. Don't forget to click again on "Configure" button once you changed the value of these two variables.
 	- You will then have to also provide the path to the SWIG executable http://swig.org/download.html in the SWIG_EXECUTABLE variable (and click again on "Configure" button)
