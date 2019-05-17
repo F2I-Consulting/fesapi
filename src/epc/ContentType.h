@@ -65,7 +65,7 @@ namespace epc
 
 		// SETTERS
 		void setContentTypeString(const std::string & ctString) {contentTypeString = ctString;}
-		void setExtensionOrPartName(const std::string & extensionOrPartName) {this->extensionOrPartName = extensionOrPartName;}
+		void setExtensionOrPartName(const std::string & str) {extensionOrPartName = str;}
 
 		std::string toString() const;
 	};

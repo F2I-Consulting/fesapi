@@ -89,12 +89,12 @@ namespace ETP_NS
 		*/
 		void writeItemizedListOfList(const std::string & groupName,
 			const std::string & name,
-			const int & cumulativeLengthDatatype,
+			hdf5_hid_t cumulativeLengthDatatype,
 			const void * cumulativeLength,
-			const unsigned long long & cumulativeLengthSize,
-			const int & elementsDatatype,
+			unsigned long long cumulativeLengthSize,
+			hdf5_hid_t elementsDatatype,
 			const void * elements,
-			const unsigned long long & elementsSize);
+			unsigned long long elementsSize);
 
 		/**
 		* Get the number of dimensions in an HDF dataset of the proxy.
@@ -118,13 +118,13 @@ namespace ETP_NS
 		* Set the new compression level which will be used for all data to be written
 		* @param compressionLevel				Lower compression levels are faster but result in less compression. Range [0..9] is allowed.
 		*/
-		void setCompressionLevel(const unsigned int & newCompressionLevel) { if (newCompressionLevel > 9) compressionLevel = 9; else compressionLevel = newCompressionLevel; }
+		void setCompressionLevel(unsigned int newCompressionLevel) { if (newCompressionLevel > 9) compressionLevel = 9; else compressionLevel = newCompressionLevel; }
 
 		void writeArrayNdOfFloatValues(const std::string & groupName,
 			const std::string & name,
 			const float * floatValues,
 			const unsigned long long * numValuesInEachDimension,
-			const unsigned int & numDimensions);
+			unsigned int numDimensions);
 
 		/**
 		* Write an array (potentially with multi dimensions) of double values into the HDF file by means of a single dataset.
@@ -139,7 +139,7 @@ namespace ETP_NS
 			const std::string & name,
 			const double * dblValues,
 			const unsigned long long * numValuesInEachDimension,
-			const unsigned int & numDimensions);
+			unsigned int numDimensions);
 
 		/**
 		* Write an array (potentially with multi dimensions) of char values into the HDF file by means of a single dataset.
@@ -154,7 +154,7 @@ namespace ETP_NS
 			const std::string & name,
 			const char * intValues,
 			const unsigned long long * numValuesInEachDimension,
-			const unsigned int & numDimensions);
+			unsigned int numDimensions);
 
 		/**
 		* Write an array (potentially with multi dimensions) of int values into the HDF file by means of a single dataset.
@@ -169,7 +169,7 @@ namespace ETP_NS
 			const std::string & name,
 			const int * intValues,
 			const unsigned long long * numValuesInEachDimension,
-			const unsigned int & numDimensions);
+			unsigned int numDimensions);
 
 		/**
 		* Write an array (potentially with multi dimensions) of gSoap unsigned long 64 values into the HDF file by means of a single dataset.
@@ -184,7 +184,7 @@ namespace ETP_NS
 			const std::string & name,
 			const ULONG64 * ulong64Values,
 			const unsigned long long * numValuesInEachDimension,
-			const unsigned int & numDimensions);
+			unsigned int numDimensions);
 
 		/**
 		* Write an array (potentially with multi dimensions) of a specific datatype into the HDF file by means of a single dataset.
@@ -198,10 +198,10 @@ namespace ETP_NS
 		*/
 		void writeArrayNd(const std::string & groupName,
 			const std::string & name,
-			const int & datatype,
+			hdf5_hid_t datatype,
 			const void * values,
 			const unsigned long long * numValuesInEachDimension,
-			const unsigned int & numDimensions);
+			unsigned int numDimensions);
 
 		/**
 		* Create an array (potentially with multi dimensions) of a specific datatype into the HDF file. Values are not yet written to this array.
@@ -215,9 +215,9 @@ namespace ETP_NS
 		void createArrayNd(
 			const std::string& groupName,
 			const std::string& name,
-			const int & datatype,
+			hdf5_hid_t datatype,
 			const unsigned long long* numValuesInEachDimension,
-			const unsigned int& numDimensions
+			unsigned int numDimensions
 		);
 
 		/**
@@ -233,11 +233,11 @@ namespace ETP_NS
 		void writeArrayNdSlab(
 			const std::string& groupName,
 			const std::string& name,
-			const int & datatype,
+			hdf5_hid_t datatype,
 			const void* values,
 			const unsigned long long* numValuesInEachDimension,
 			const unsigned long long* offsetValuesInEachDimension,
-			const unsigned int& numDimensions
+			unsigned int numDimensions
 		);
 
 		/**
@@ -326,9 +326,9 @@ namespace ETP_NS
 		void readArrayNdOfDoubleValues(
 			const std::string & datasetName,
 			double* values,
-			const unsigned long long * numValuesInEachDimension,
-			const unsigned long long * offsetInEachDimension,
-			const unsigned int & numDimensions
+			unsigned long long * numValuesInEachDimension,
+			unsigned long long * offsetInEachDimension,
+			unsigned int numDimensions
 		  );
 
 		/**
@@ -343,22 +343,22 @@ namespace ETP_NS
 		*/
 		void readArrayNdOfDoubleValues(
 			const std::string & datasetName, double* values,
-			const unsigned long long * blockCountPerDimension,
-			const unsigned long long * offsetInEachDimension,
-			const unsigned long long * strideInEachDimension,
-			const unsigned long long * blockSizeInEachDimension,
-			const unsigned int & numDimensions);
+			unsigned long long * blockCountPerDimension,
+			unsigned long long * offsetInEachDimension,
+			unsigned long long * strideInEachDimension,
+			unsigned long long * blockSizeInEachDimension,
+			unsigned int numDimensions);
 
 		void selectArrayNdOfValues(
 			const std::string & datasetName,
-			const unsigned long long * blockCountPerDimension,
-			const unsigned long long * offsetInEachDimension,
-			const unsigned long long * strideInEachDimension,
-			const unsigned long long * blockSizeInEachDimension,
-			const unsigned int & numDimensions,
+			unsigned long long * blockCountPerDimension,
+			unsigned long long * offsetInEachDimension,
+			unsigned long long * strideInEachDimension,
+			unsigned long long * blockSizeInEachDimension,
+			unsigned int numDimensions,
 			bool newSelection,
-			int & dataset,
-			int & filespace);
+			hdf5_hid_t & dataset,
+			hdf5_hid_t & filespace);
 
 		/**
 		* Considering a given dataset, read the double values corresponding to an existing selected region.
@@ -368,8 +368,8 @@ namespace ETP_NS
 		* @param slabSize		Number of values to read.
 		*/
 		void readArrayNdOfDoubleValues(
-			int dataset,
-			int filespace,
+			hdf5_hid_t dataset,
+			hdf5_hid_t filespace,
 			void* values,
 			unsigned long long slabSize);
 
@@ -391,9 +391,9 @@ namespace ETP_NS
 		void readArrayNdOfFloatValues(
 			const std::string & datasetName,
 			float* values,
-			const unsigned long long * numValuesInEachDimension,
-			const unsigned long long * offsetInEachDimension,
-			const unsigned int & numDimensions
+			unsigned long long * numValuesInEachDimension,
+			unsigned long long * offsetInEachDimension,
+			unsigned int numDimensions
 		);
 
 		/**
@@ -424,9 +424,9 @@ namespace ETP_NS
 		void readArrayNdOfLongValues(
 			const std::string & datasetName,
 			long* values,
-			const unsigned long long * numValuesInEachDimension,
-			const unsigned long long * offsetInEachDimension,
-			const unsigned int & numDimensions
+			unsigned long long * numValuesInEachDimension,
+			unsigned long long * offsetInEachDimension,
+			unsigned int numDimensions
 		);
 
 		/**
@@ -454,9 +454,9 @@ namespace ETP_NS
 		void readArrayNdOfIntValues(
 			const std::string & datasetName,
 			int* values,
-			const unsigned long long * numValuesInEachDimension,
-			const unsigned long long * offsetInEachDimension,
-			const unsigned int & numDimensions
+			unsigned long long * numValuesInEachDimension,
+			unsigned long long * offsetInEachDimension,
+			unsigned int numDimensions
 		);
 
 		/**

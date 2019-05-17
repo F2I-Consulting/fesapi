@@ -57,14 +57,13 @@ int EtpHdfProxy::getHdfDatatypeClassInDataset(const std::string & datasetName)
 	throw logic_error("Not implemented yet");
 }
 
-void EtpHdfProxy::writeItemizedListOfList(const string & groupName,
-			const string & name,
-			const int & cumulativeLengthDatatype,
-			const void * cumulativeLength,
-			const unsigned long long & cumulativeLengthSize,
-			const int & elementsDatatype,
-			const void * elements,
-			const unsigned long long & elementsSize)
+void EtpHdfProxy::writeItemizedListOfList(const string & groupName, const std::string & name,
+	hid_t cumulativeLengthDatatype,
+	const void * cumulativeLength,
+	unsigned long long cumulativeLengthSize,
+	hid_t elementsDatatype,
+	const void * elements,
+	unsigned long long elementsSize)
 {
 	throw logic_error("Not implemented yet");
 }
@@ -88,7 +87,7 @@ void EtpHdfProxy::writeArrayNdOfFloatValues(const string & groupName,
 	const string & name,
 	const float * floatValues,
 	const unsigned long long * numValuesInEachDimension,
-	const unsigned int & numDimensions)
+	unsigned int numDimensions)
 {
 	throw logic_error("Not implemented yet");
 }
@@ -97,7 +96,7 @@ void EtpHdfProxy::writeArrayNdOfDoubleValues(const string & groupName,
 	const string & name,
 	const double * dblValues,
 	const unsigned long long * numValuesInEachDimension,
-	const unsigned int & numDimensions)
+	unsigned int numDimensions)
 {
 	throw logic_error("Not implemented yet");
 }
@@ -106,7 +105,7 @@ void EtpHdfProxy::writeArrayNdOfCharValues(const std::string & groupName,
 	const std::string & name,
 	const char * intValues,
 	const unsigned long long * numValuesInEachDimension,
-	const unsigned int & numDimensions)
+	unsigned int numDimensions)
 {
 	throw logic_error("Not implemented yet");
 }
@@ -115,7 +114,7 @@ void EtpHdfProxy::writeArrayNdOfIntValues(const string & groupName,
 	const string & name,
 	const int * intValues,
 	const unsigned long long * numValuesInEachDimension,
-	const unsigned int & numDimensions)
+	unsigned int numDimensions)
 {
 	throw logic_error("Not implemented yet");
 }
@@ -124,17 +123,17 @@ void EtpHdfProxy::writeArrayNdOfGSoapULong64Values(const std::string & groupName
 	const std::string & name,
 	const ULONG64 * ulong64Values,
 	const unsigned long long * numValuesInEachDimension,
-	const unsigned int & numDimensions)
+	unsigned int numDimensions)
 {
 	throw logic_error("Not implemented yet");
 }
 
 void EtpHdfProxy::writeArrayNd(const std::string & groupName,
 	const std::string & name,
-	const int & datatype,
+	hid_t datatype,
 	const void * values,
 	const unsigned long long * numValuesInEachDimension,
-	const unsigned int & numDimensions)
+	unsigned int numDimensions)
 {
 	throw logic_error("Not implemented yet");
 }
@@ -142,9 +141,9 @@ void EtpHdfProxy::writeArrayNd(const std::string & groupName,
 void EtpHdfProxy::createArrayNd(
 	const std::string& groupName,
 	const std::string& datasetName,
-	const int & datatype,
+	hid_t datatype,
 	const unsigned long long* numValuesInEachDimension,
-	const unsigned int& numDimensions)
+	unsigned int numDimensions)
 {
 	throw logic_error("Not implemented yet");
 }
@@ -153,11 +152,11 @@ void EtpHdfProxy::createArrayNd(
 void EtpHdfProxy::writeArrayNdSlab(
 	const string& groupName,
 	const string& datasetName,
-	const int & datatype,
+	hid_t datatype,
 	const void* values,
 	const unsigned long long* numValuesInEachDimension,
 	const unsigned long long* offsetInEachDimension,
-	const unsigned int& numDimensions)
+	unsigned int numDimensions)
 {
 	throw logic_error("Not implemented yet");
 }
@@ -173,41 +172,41 @@ void EtpHdfProxy::readArrayNdOfDoubleValues(const std::string & datasetName, dou
 
 void EtpHdfProxy::readArrayNdOfDoubleValues(
 	const std::string & datasetName, double* values,
-	const unsigned long long * numValuesInEachDimension,
-	const unsigned long long * offsetInEachDimension,
-	const unsigned int & numDimensions)
+	unsigned long long * numValuesInEachDimension,
+	unsigned long long * offsetInEachDimension,
+	unsigned int numDimensions)
 {
 	throw logic_error("Not implemented yet");
 }
 
 void EtpHdfProxy::readArrayNdOfDoubleValues(
 	const std::string & datasetName, double* values,
-	const unsigned long long * blockCountPerDimension,
-	const unsigned long long * offsetInEachDimension,
-	const unsigned long long * strideInEachDimension,
-	const unsigned long long * blockSizeInEachDimension,
-	const unsigned int & numDimensions)
+	unsigned long long * blockCountPerDimension,
+	unsigned long long * offsetInEachDimension,
+	unsigned long long * strideInEachDimension,
+	unsigned long long * blockSizeInEachDimension,
+	unsigned int numDimensions)
 {
 	throw logic_error("Not implemented yet");
 }
 
 void EtpHdfProxy::selectArrayNdOfValues(
 	const std::string & datasetName,
-	const unsigned long long * blockCountPerDimension,
-	const unsigned long long * offsetInEachDimension,
-	const unsigned long long * strideInEachDimension,
-	const unsigned long long * blockSizeInEachDimension,
-	const unsigned int & numDimensions,
+	unsigned long long * blockCountPerDimension,
+	unsigned long long * offsetInEachDimension,
+	unsigned long long * strideInEachDimension,
+	unsigned long long * blockSizeInEachDimension,
+	unsigned int numDimensions,
 	bool newSelection,
-	int & dataset,
-	int & filespace)
+	hid_t & dataset,
+	hid_t & filespace)
 {
 	throw logic_error("Not implemented yet");
 }
 
 void EtpHdfProxy::readArrayNdOfDoubleValues(
-	int dataset,
-	int filespace,
+	hid_t dataset,
+	hid_t filespace,
 	void* values,
 	unsigned long long slabSize)
 {
@@ -225,9 +224,9 @@ void EtpHdfProxy::readArrayNdOfFloatValues(const std::string & datasetName, floa
 
 void EtpHdfProxy::readArrayNdOfFloatValues(
 	const std::string& datasetName, float* values,
-	const unsigned long long* numValuesInEachDimension,
-	const unsigned long long* offsetInEachDimension,
-	const unsigned int& numDimensions)
+	unsigned long long* numValuesInEachDimension,
+	unsigned long long* offsetInEachDimension,
+	unsigned int numDimensions)
 {
 	throw logic_error("Not implemented yet");
 }
@@ -261,9 +260,9 @@ void EtpHdfProxy::readArrayNdOfLongValues(const std::string & datasetName, long*
 
 void EtpHdfProxy::readArrayNdOfLongValues(
 	const std::string& datasetName, long* values,
-	const unsigned long long* numValuesInEachDimension,
-	const unsigned long long* offsetInEachDimension,
-	const unsigned int& numDimensions)
+	unsigned long long* numValuesInEachDimension,
+	unsigned long long* offsetInEachDimension,
+	unsigned int numDimensions)
 {
 	throw logic_error("Not implemented yet");
 }
@@ -288,9 +287,9 @@ void EtpHdfProxy::readArrayNdOfIntValues(const std::string & datasetName, int* v
 
 void EtpHdfProxy::readArrayNdOfIntValues(
 	const std::string& datasetName, int* values,
-	const unsigned long long* numValuesInEachDimension,
-	const unsigned long long* offsetInEachDimension,
-	const unsigned int& numDimensions)
+	unsigned long long* numValuesInEachDimension,
+	unsigned long long* offsetInEachDimension,
+	unsigned int numDimensions)
 {
 	throw logic_error("Not implemented yet");
 }
