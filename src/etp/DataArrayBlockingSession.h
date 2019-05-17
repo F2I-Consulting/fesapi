@@ -80,9 +80,11 @@ namespace ETP_NS
 				return;
 			}
 
-			Energistics::Etp::v12::Protocol::DataArray::GetDataArray gda;
-			gda.m_uri = uri;
-			gda.m_pathInResource = datasetName;
+			Energistics::Etp::v12::Protocol::DataArray::GetDataArrays gda;
+			Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayIdentifier dai;
+			dai.m_uri = uri;
+			dai.m_pathInResource = datasetName;
+			gda.m_dataArrays["0"] = dai;
 			send(gda);
 
 			// Read a message into our buffer
@@ -99,46 +101,53 @@ namespace ETP_NS
 			Energistics::Etp::v12::Datatypes::MessageHeader receivedMh = decodeMessageHeader(d);
 
 			if (receivedMh.m_protocol == Energistics::Etp::v12::Datatypes::Protocol::DataArray &&
-				receivedMh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::DataArray::messageTypeId) {
-				Energistics::Etp::v12::Protocol::DataArray::DataArray da;
-				avro::decode(*d, da);
+				receivedMh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::GetDataArraysResponse::messageTypeId) {
+				Energistics::Etp::v12::Protocol::DataArray::GetDataArraysResponse gdar;
+				avro::decode(*d, gdar);
 				flushReceivingBuffer();
 
-				if (da.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfBoolean) {
-					Energistics::Etp::v12::Datatypes::ArrayOfBoolean& avroArray = da.m_data.m_item.get_ArrayOfBoolean();
-					for (auto i = 0; i < avroArray.m_values.size(); ++i) {
-						values[i] = avroArray.m_values[i];
+				if (gdar.m_dataArrays.size() == 1) {
+					auto dataArray = gdar.m_dataArrays.begin()->second;
+					if (dataArray.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfBoolean) {
+						Energistics::Etp::v12::Datatypes::ArrayOfBoolean& avroArray = dataArray.m_data.m_item.get_ArrayOfBoolean();
+						for (auto i = 0; i < avroArray.m_values.size(); ++i) {
+							values[i] = avroArray.m_values[i];
+						}
+					}
+					else if (dataArray.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::bytes) {
+						std::string& avroValues = dataArray.m_data.m_item.get_bytes();
+						for (auto i = 0; i < avroValues.size(); ++i) {
+							values[i] = avroValues[i];
+						}
+					}
+					else if (dataArray.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfInt) {
+						Energistics::Etp::v12::Datatypes::ArrayOfInt& avroArray = dataArray.m_data.m_item.get_ArrayOfInt();
+						for (auto i = 0; i < avroArray.m_values.size(); ++i) {
+							values[i] = avroArray.m_values[i];
+						}
+					}
+					else if (dataArray.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfLong) {
+						Energistics::Etp::v12::Datatypes::ArrayOfLong& avroArray = dataArray.m_data.m_item.get_ArrayOfLong();
+						for (auto i = 0; i < avroArray.m_values.size(); ++i) {
+							values[i] = avroArray.m_values[i];
+						}
+					}
+					else if (dataArray.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfFloat) {
+						Energistics::Etp::v12::Datatypes::ArrayOfFloat& avroArray = dataArray.m_data.m_item.get_ArrayOfFloat();
+						for (auto i = 0; i < avroArray.m_values.size(); ++i) {
+							values[i] = avroArray.m_values[i];
+						}
+					}
+					else if (dataArray.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfDouble) {
+						Energistics::Etp::v12::Datatypes::ArrayOfDouble& avroArray = dataArray.m_data.m_item.get_ArrayOfDouble();
+						for (auto i = 0; i < avroArray.m_values.size(); ++i) {
+							values[i] = avroArray.m_values[i];
+						}
 					}
 				}
-				else if (da.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::bytes) {
-					std::string& avroValues = da.m_data.m_item.get_bytes();
-					for (auto i = 0; i < avroValues.size(); ++i) {
-						values[i] = avroValues[i];
-					}
-				}
-				else if (da.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfInt) {
-					Energistics::Etp::v12::Datatypes::ArrayOfInt& avroArray = da.m_data.m_item.get_ArrayOfInt();
-					for (auto i = 0; i < avroArray.m_values.size(); ++i) {
-						values[i] = avroArray.m_values[i];
-					}
-				}
-				else if (da.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfLong) {
-					Energistics::Etp::v12::Datatypes::ArrayOfLong& avroArray = da.m_data.m_item.get_ArrayOfLong();
-					for (auto i = 0; i < avroArray.m_values.size(); ++i) {
-						values[i] = avroArray.m_values[i];
-					}
-				}
-				else if (da.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfFloat) {
-					Energistics::Etp::v12::Datatypes::ArrayOfFloat& avroArray = da.m_data.m_item.get_ArrayOfFloat();
-					for (auto i = 0; i < avroArray.m_values.size(); ++i) {
-						values[i] = avroArray.m_values[i];
-					}
-				}
-				else if (da.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfDouble) {
-					Energistics::Etp::v12::Datatypes::ArrayOfDouble& avroArray = da.m_data.m_item.get_ArrayOfDouble();
-					for (auto i = 0; i < avroArray.m_values.size(); ++i) {
-						values[i] = avroArray.m_values[i];
-					}
+
+				for (std::pair < std::string, Energistics::Etp::v12::Datatypes::ErrorInfo > error : gdar.m_errors) {
+					std::cerr << "Reported error : id \"" << error.first  << "\" with code \"" << error.second.m_code << "\" and reason \"" << error.second.m_message << "\"" << std::endl;
 				}
 			}
 			else {

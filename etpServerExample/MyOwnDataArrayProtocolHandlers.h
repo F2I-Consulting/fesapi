@@ -28,7 +28,7 @@ public:
 	MyOwnDataArrayProtocolHandlers(ETP_NS::AbstractSession* mySession): ETP_NS::DataArrayHandlers(mySession) {}
 	~MyOwnDataArrayProtocolHandlers() {}
 
-    void on_GetDataArray(const Energistics::Etp::v12::Protocol::DataArray::GetDataArray & gda, int64_t correlationId);
-	void on_PutDataArray(const Energistics::Etp::v12::Protocol::DataArray::PutDataArray & gda, int64_t correlationId);
-	void on_DescribeDataArray(const Energistics::Etp::v12::Protocol::DataArray::DescribeDataArray & dda, int64_t correlationId);
+    void on_GetDataArrays(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrays & gda, int64_t correlationId);
+	void on_PutDataArrays(const Energistics::Etp::v12::Protocol::DataArray::PutDataArrays & pda, int64_t correlationId);
+	void on_GetDataArrayMetadata(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadata & gdam, int64_t correlationId);
 };
