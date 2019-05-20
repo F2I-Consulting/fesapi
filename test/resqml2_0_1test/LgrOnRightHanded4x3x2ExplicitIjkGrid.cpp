@@ -68,7 +68,7 @@ LgrOnRightHanded4x3x2ExplicitIjkGrid::LgrOnRightHanded4x3x2ExplicitIjkGrid(EpcDo
 
 void LgrOnRightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 	// getting the parent grid
-	RightHanded4x3x2ExplicitIjkGrid* parentGridTest = new RightHanded4x3x2ExplicitIjkGrid(this->epcDoc, true);
+	RightHanded4x3x2ExplicitIjkGrid* parentGridTest = new RightHanded4x3x2ExplicitIjkGrid(epcDoc, true);
 
 	RESQML2_0_1_NS::IjkGridExplicitRepresentation* parentGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
 	RESQML2_0_1_NS::LocalDepth3dCrs* crs = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
@@ -77,7 +77,7 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 	delete parentGridTest;
 
 	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
+	AbstractHdfProxy* hdfProxy = epcDoc->getHdfProxySet()[0];
 
 	// creating the child ijk grid
 	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGrid = epcDoc->createIjkGridExplicitRepresentation(crs, uuid, title, 3, 1, 4);
@@ -132,7 +132,10 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::readEpcDocHandler() {
 	REQUIRE(childGrid->getRegridConstantCellCountPerInterval('i', false) == 1);
 	REQUIRE(childGrid->getRegridConstantCellCountPerInterval('j', false) == 1);
 	REQUIRE(childGrid->getRegridConstantCellCountPerInterval('k', false) == 1);
+	// Child
+	REQUIRE_FALSE(childGrid->hasRegridChildCellWeights('i'));
+	REQUIRE_FALSE(childGrid->hasRegridChildCellWeights('j'));
+	REQUIRE_FALSE(childGrid->hasRegridChildCellWeights('k'));
 
 	delete parentGridTest;
 }
-

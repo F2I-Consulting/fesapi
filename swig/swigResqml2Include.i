@@ -364,7 +364,7 @@ namespace RESQML2_NS
 		ULONG64 getRegridConstantCellCountPerInterval(const char & dimension, const bool & childVsParentCellCount) const;
 		void getRegridCellCountPerInterval(const char & dimension, ULONG64 * childCellCountPerInterval, const bool & childVsParentCellCount) const;
 		bool hasRegridChildCellWeights(const char & dimension) const;
-		void getRegridChildCellWeights(const char & dimension, ULONG64 * childCellWeights) const;
+		void getRegridChildCellWeights(const char & dimension, double * childCellWeights) const;
 		bool hasForcedNonRegridedParentCell() const;
 
 		void setCellAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);

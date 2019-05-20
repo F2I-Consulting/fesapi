@@ -50,16 +50,17 @@ void AbstractTest::deserialize() {
 	epcDoc = new COMMON_NS::EpcDocument(epcDocPath);
 
 	std::string validationResult = epcDoc->deserialize();
-	if (validationResult.size() > 0)
-		cout << "Validation error: " << validationResult << endl; 
-	REQUIRE( validationResult.size() == 0 );
+	if (!validationResult.empty()) {
+		cout << "Validation error: " << validationResult << endl;
+	}
+	REQUIRE( validationResult.empty() );
 	
-	REQUIRE( this->epcDoc->getHdfProxySet().size() == 1 );
+	REQUIRE( epcDoc->getHdfProxySet().size() == 1 );
 
-	vector<string> warningSet = this->epcDoc->getWarnings();
-	if (warningSet.size() > 0) {
-		cout << "EPC document " << this->epcDoc->getName() << ".epc deserialized with " << warningSet.size() << " warning(s)" << endl;
-		for (size_t i=0; i<warningSet.size(); ++i){
+	vector<string> warningSet = epcDoc->getWarnings();
+	if (!warningSet.empty()) {
+		cout << "EPC document " << epcDoc->getName() << ".epc deserialized with " << warningSet.size() << " warning(s)" << endl;
+		for (size_t i=0; i < warningSet.size(); ++i){
 			cout << "Warning " << i+1 << ": " << warningSet[i] << endl;
 		}
 		cout << endl;

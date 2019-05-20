@@ -16,9 +16,6 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-// unitTest.cpp : définit le point d'entrée pour l'application console.
-//
-
 #if defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN
 #endif
@@ -76,6 +73,17 @@ TEST_CASE( "Deserialize an EPC document", "[epc]")
 	test.deserialize();
 }
 */
+
+TEST_CASE("Export and import an empty EPC document", "[epcDoc]")
+{
+	EpcDocumentTest testIn("../../EpcDocumentTest");
+	testIn.serialize();
+
+	// Check that the epc file extension has properly been added at previous step.
+	EpcDocumentTest testOut("../../EpcDocumentTest.epc");
+	testOut.deserialize();	
+}
+
 FESAPI_TEST("Export and import a local depth 3d crs", "[crs]", LocalDepth3dCrsTest)
 
 FESAPI_TEST("Export and import an horizon", "[feature]", HorizonTest)
