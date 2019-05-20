@@ -309,7 +309,7 @@ namespace RESQML2_NS
 		* @param	dimension			It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
 		* @param	childCellWeights	This array must have been preallocated with a size equal to the sum of ChildCellCountPerInterval.
 		*/
-		DLL_IMPORT_OR_EXPORT void getRegridChildCellWeights(const char & dimension, ULONG64 * childCellWeights) const;
+		DLL_IMPORT_OR_EXPORT void getRegridChildCellWeights(const char & dimension, double * childCellWeights) const;
 
 		/**
 		* When a parent windows has been defined, this method checks if some parent cells have been noted to be forced not to be regridded.

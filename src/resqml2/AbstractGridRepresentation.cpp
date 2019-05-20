@@ -899,7 +899,7 @@ bool AbstractGridRepresentation::hasRegridChildCellWeights(const char & dimensio
 	}
 }
 
-void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimension, ULONG64 * childCellWeights) const
+void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimension, double * childCellWeights) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml2__AbstractParentWindow* parentWindow = getParentWindow2_0_1();
@@ -913,7 +913,7 @@ void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimensio
 					if (ijkpw->IRegrid->Intervals != nullptr && ijkpw->IRegrid->Intervals->ChildCellWeights != nullptr)
 					{
 						if (ijkpw->IRegrid->Intervals->ChildCellWeights->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
-							hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(ijkpw->IRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
+							hdfProxy->readArrayNdOfDoubleValues(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(ijkpw->IRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
 						else
 							throw invalid_argument("ChildCellWeights should be in HDF5 file.");
 					}
@@ -925,7 +925,7 @@ void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimensio
 					if (ijkpw->JRegrid->Intervals != nullptr && ijkpw->JRegrid->Intervals->ChildCellWeights != nullptr)
 					{
 						if (ijkpw->JRegrid->Intervals->ChildCellWeights->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
-							hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(ijkpw->JRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
+							hdfProxy->readArrayNdOfDoubleValues(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(ijkpw->JRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
 						else
 							throw invalid_argument("ChildCellWeights should be in HDF5 file.");
 					}
@@ -937,7 +937,7 @@ void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimensio
 					if (ijkpw->KRegrid->Intervals != nullptr && ijkpw->KRegrid->Intervals->ChildCellWeights != nullptr)
 					{
 						if (ijkpw->KRegrid->Intervals->ChildCellWeights->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
-							hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(ijkpw->KRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
+							hdfProxy->readArrayNdOfDoubleValues(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(ijkpw->KRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
 						else
 							throw invalid_argument("ChildCellWeights should be in HDF5 file.");
 					}
@@ -955,7 +955,7 @@ void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimensio
 					if (clpw->KRegrid->Intervals != nullptr  && clpw->KRegrid->Intervals->ChildCellWeights != nullptr)
 					{
 						if (clpw->KRegrid->Intervals->ChildCellWeights->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
-							hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(clpw->KRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
+							hdfProxy->readArrayNdOfDoubleValues(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(clpw->KRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
 						else
 							throw invalid_argument("ChildCellWeights should be in HDF5 file.");
 					}

@@ -453,6 +453,17 @@ void EpcDocument::setFilePath(const std::string & filePath)
 	if (hdf5Err < 0) {
 		throw invalid_argument("The HDF5 error handling could not have been disabled.");
 	}
+
+	// Add .epc extension if it is not already done in parameter
+	size_t dotPos = this->filePath.find_last_of('.');
+	if (dotPos != string::npos) {
+		if (this->filePath.substr(dotPos) != DOCUMENT_EXTENSION) {
+			this->filePath += DOCUMENT_EXTENSION;
+		}
+	}
+	else {
+		this->filePath += DOCUMENT_EXTENSION;
+	}
 }
 
 std::string EpcDocument::getEnergisticsPropertyKindName(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind) const
