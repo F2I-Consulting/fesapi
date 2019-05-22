@@ -37,7 +37,7 @@ StratigraphicOccurrenceInterpretation::StratigraphicOccurrenceInterpretation(Org
 		throw invalid_argument("The interpreted organization feature cannot be null.");
 	}
 	if (!orgFeat->isPartial() && orgFeat->getKind() != gsoap_resqml2_0_1::resqml2__OrganizationKind__stratigraphic) {
-		throw invalid_argument("The kind of the organization feature is not a fluid organization.");
+		throw invalid_argument("The kind of an organization feature linked to a stratigraphic occurrence interpretation must be a stratigraphic one.");
 	}
 
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREStratigraphicOccurrenceInterpretation(orgFeat->getGsoapContext(), 1);
