@@ -7,6 +7,7 @@
 /swig/swigWitsml2_0JavaInclude.i
 /src/nsDefinitions.h
 /src/version_config.h
+/src/common/HidtType.h
 
 ## Ignore csharp swig generated files
 /swig/swigGeneratedCsWrapper.cpp

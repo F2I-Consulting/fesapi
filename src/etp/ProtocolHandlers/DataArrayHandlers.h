@@ -29,13 +29,14 @@ namespace ETP_NS
 
 	    void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d);
 
-	    virtual void on_GetDataArray(const Energistics::Etp::v12::Protocol::DataArray::GetDataArray & gda, int64_t correlationId);
-	    virtual void on_PutDataArray(const Energistics::Etp::v12::Protocol::DataArray::PutDataArray & pda, int64_t correlationId);
-	    virtual void on_GetDataArraySlice(const Energistics::Etp::v12::Protocol::DataArray::GetDataArraySlice & gdas, int64_t correlationId);
-	    virtual void on_PutDataArraySlice(const Energistics::Etp::v12::Protocol::DataArray::PutDataArraySlice & pdas, int64_t correlationId);
-		virtual void on_DescribeDataArray(const Energistics::Etp::v12::Protocol::DataArray::DescribeDataArray & dda, int64_t correlationId);
-		virtual void on_DataArrayMetadata(const Energistics::Etp::v12::Protocol::DataArray::DataArrayMetadata & dam);
-	    virtual void on_DataArray(Energistics::Etp::v12::Protocol::DataArray::DataArray & da);
+	    virtual void on_GetDataArrays(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrays & gda, int64_t correlationId);
+		virtual void on_GetDataArraysResponse(Energistics::Etp::v12::Protocol::DataArray::GetDataArraysResponse & gdar);
+	    virtual void on_PutDataArrays(const Energistics::Etp::v12::Protocol::DataArray::PutDataArrays & pda, int64_t correlationId);
+	    virtual void on_GetDataArraySlices(const Energistics::Etp::v12::Protocol::DataArray::GetDataArraySlices & gdas, int64_t correlationId);
+		virtual void on_GetDataArraySlicesResponse(const Energistics::Etp::v12::Protocol::DataArray::GetDataArraySlicesResponse & gdasr);
+	    virtual void on_PutDataArraySlices(const Energistics::Etp::v12::Protocol::DataArray::PutDataArraySlices & pdas, int64_t correlationId);
+		virtual void on_GetDataArrayMetadata(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadata & gdam, int64_t correlationId);
+		virtual void on_GetDataArrayMetadataResponse(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadataResponse & gdamr);
 
 		virtual ~DataArrayHandlers() {}
 	};

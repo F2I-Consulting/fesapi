@@ -345,6 +345,9 @@ void MyOwnDiscoveryProtocolHandlers::on_GetTreeResources(const Energistics::Etp:
 
 	COMMON_NS::EpcDocument epcDoc(epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
 	std::string resqmlResult = epcDoc.deserialize();
+	if (!resqmlResult.empty()) {
+		std::cerr << "Error when deserializing " << resqmlResult << std::endl;
+	}
 
 	Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse mb;
 
@@ -382,6 +385,9 @@ void MyOwnDiscoveryProtocolHandlers::on_GetGraphResources(const Energistics::Etp
 
 	COMMON_NS::EpcDocument epcDoc(epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
 	std::string resqmlResult = epcDoc.deserialize();
+	if (!resqmlResult.empty()) {
+		std::cerr << "Error when deserializing " << resqmlResult << std::endl;
+	}
 
 	Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse mb;
 	on_GetDataObject(epcDoc, gr, correlationId, mb.m_resources);

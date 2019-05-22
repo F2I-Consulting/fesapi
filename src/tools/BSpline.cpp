@@ -158,4 +158,3 @@ double BSpline::getValueFromParameter(const double & param) const
 		c[splineIndex] * deltaParam2 +
 		d[splineIndex] * deltaParam2 * deltaParam;
 }
-

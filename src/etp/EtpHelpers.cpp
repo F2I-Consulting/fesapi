@@ -40,7 +40,7 @@ Energistics::Etp::v12::Datatypes::Object::Resource ETP_NS::EtpHelpers::buildEtpR
 	else if (etpNs == "witsml2") { etpNs += '1'; }
 	// END TODO
 	result.m_uri = "eml://" + etpNs;
-	if (etpNs == "resqml20") { result.m_uri += "/obj_"; }
+	if (etpNs == "resqml20" || etpNs == "eml20") { result.m_uri += "/obj_"; }
 	else if (etpNs == "witsml21") { result.m_uri += "/"; }
 	result.m_uri += obj->getXmlTag() + "(" + obj->getUuid() + ")";
 	result.m_name = obj->getTitle();

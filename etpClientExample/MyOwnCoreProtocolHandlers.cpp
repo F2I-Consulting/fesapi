@@ -286,10 +286,10 @@ void askUser(ETP_NS::AbstractSession* session)
 		}
 		else if (commandTokens.size() == 3) {
 			if (commandTokens[0] == "GetDataArray") {
-				Energistics::Etp::v12::Protocol::DataArray::GetDataArray gda;
-				gda.m_uri = commandTokens[1];
-				gda.m_pathInResource = commandTokens[2];
-				std::cout << gda.m_pathInResource << std::endl;
+				Energistics::Etp::v12::Protocol::DataArray::GetDataArrays gda;
+				gda.m_dataArrays["0"].m_uri = commandTokens[1];
+				gda.m_dataArrays["0"].m_pathInResource = commandTokens[2];
+				std::cout << gda.m_dataArrays["0"].m_pathInResource << std::endl;
 				session->send(gda);
 			}
 		}

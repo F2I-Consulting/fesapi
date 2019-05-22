@@ -196,7 +196,7 @@ namespace COMMON_NS
 	class HdfProxy : public AbstractHdfProxy
 	{
 	public:
-		void setCompressionLevel(const unsigned int & newCompressionLevel);
+		void setCompressionLevel(unsigned int newCompressionLevel);
 	};
 	
 }

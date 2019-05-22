@@ -20,6 +20,7 @@ under the License.
 
 #include "common/EpcExternalPartReference.h"
 #include "resqml2/AbstractRepresentation.h"
+#include "common/HidtType.h"
 
 #define CUMULATIVE_LENGTH_DS_NAME "cumulativeLength"
 #define ELEMENTS_DS_NAME "elements"
@@ -49,7 +50,7 @@ namespace COMMON_NS
 		* Instantiate and initialize the gsoap proxy v2.0.1.
 		* This method is defined in order to be used in derived class without having to link to generated gsoap files.
 		*/
-		void initGsoapProxy(soap* soapContext, const std::string & guid, const std::string & title, const EmlVersion & emlVersion);
+		void initGsoapProxy(soap* soapContext, const std::string & guid, const std::string & title, EmlVersion emlVersion);
 
 	public:
 
@@ -96,12 +97,12 @@ namespace COMMON_NS
 		*/
 		virtual void writeItemizedListOfList(const std::string & groupName,
 			const std::string & name,
-			const int & cumulativeLengthDatatype,
+			hdf5_hid_t cumulativeLengthDatatype,
 			const void * cumulativeLength,
-			const unsigned long long & cumulativeLengthSize,
-			const int & elementsDatatype,
+			unsigned long long cumulativeLengthSize,
+			hdf5_hid_t elementsDatatype,
 			const void * elements,
-			const unsigned long long & elementsSize) = 0;
+			unsigned long long elementsSize) = 0;
 
 		/**
 		 * Get the number of dimensions in an HDF dataset of the proxy.
@@ -125,13 +126,13 @@ namespace COMMON_NS
 		 * Set the new compression level which will be used for all data to be written
 		 * @param compressionLevel				Lower compression levels are faster but result in less compression. Range [0..9] is allowed.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setCompressionLevel(const unsigned int & newCompressionLevel) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setCompressionLevel(unsigned int newCompressionLevel) = 0;
 
 		virtual void writeArrayNdOfFloatValues(const std::string & groupName,
 		  const std::string & name,
 		  const float * floatValues,
 		  const unsigned long long * numValuesInEachDimension,
-		  const unsigned int & numDimensions) = 0;
+		  unsigned int numDimensions) = 0;
 
 		/**
 		 * Write an array (potentially with multi dimensions) of double values into the HDF file by means of a single dataset.
@@ -146,7 +147,7 @@ namespace COMMON_NS
 		  const std::string & name,
 		  const double * dblValues,
 		  const unsigned long long * numValuesInEachDimension,
-		  const unsigned int & numDimensions) = 0;
+		  unsigned int numDimensions) = 0;
 
 		/**
 		* Write an array (potentially with multi dimensions) of char values into the HDF file by means of a single dataset.
@@ -161,7 +162,7 @@ namespace COMMON_NS
 			const std::string & name,
 			const char * intValues,
 			const unsigned long long * numValuesInEachDimension,
-			const unsigned int & numDimensions) = 0;
+			unsigned int numDimensions) = 0;
 
 		/**
 		 * Write an array (potentially with multi dimensions) of int values into the HDF file by means of a single dataset.
@@ -176,7 +177,7 @@ namespace COMMON_NS
 		  const std::string & name,
 		  const int * intValues,
 		  const unsigned long long * numValuesInEachDimension,
-		  const unsigned int & numDimensions) = 0;
+		  unsigned int numDimensions) = 0;
 
 		/**
 		* Write an array (potentially with multi dimensions) of gSoap unsigned long 64 values into the HDF file by means of a single dataset.
@@ -191,7 +192,7 @@ namespace COMMON_NS
 			const std::string & name,
 			const ULONG64 * ulong64Values,
 			const unsigned long long * numValuesInEachDimension,
-			const unsigned int & numDimensions) = 0;
+			unsigned int numDimensions) = 0;
 
 		/**
 		 * Write an array (potentially with multi dimensions) of a specific datatype into the HDF file by means of a single dataset.
@@ -205,10 +206,10 @@ namespace COMMON_NS
 		 */
 		virtual void writeArrayNd(const std::string & groupName,
 		  const std::string & name,
-		  const int & datatype,
+		  hdf5_hid_t datatype,
 		  const void * values,
 		  const unsigned long long * numValuesInEachDimension,
-		  const unsigned int & numDimensions) = 0;
+		  unsigned int numDimensions) = 0;
 
 		/**
 		 * Create an array (potentially with multi dimensions) of a specific datatype into the HDF file. Values are not yet written to this array.
@@ -222,9 +223,9 @@ namespace COMMON_NS
 		virtual void createArrayNd(
 		  const std::string& groupName,
 		  const std::string& name,
-		  const int & datatype,
+		  hdf5_hid_t datatype,
 		  const unsigned long long* numValuesInEachDimension,
-		  const unsigned int& numDimensions
+		  unsigned int numDimensions
 		  ) = 0;
 
 		/**
@@ -239,11 +240,11 @@ namespace COMMON_NS
 		virtual void writeArrayNdSlab(
 		  const std::string& groupName,
 		  const std::string& name,
-		  const int & datatype,
+		  hdf5_hid_t datatype,
 		  const void* values,
 		  const unsigned long long* numValuesInEachDimension,
 		  const unsigned long long* offsetValuesInEachDimension,
-		  const unsigned int& numDimensions
+		  unsigned int numDimensions
 		  ) = 0;
 
 		/**
@@ -342,11 +343,11 @@ namespace COMMON_NS
 		 * @param numDimensions                  The number of the dimensions of the array to read.
 		 */
 		virtual void readArrayNdOfDoubleValues(
-			const std::string & datasetName,
-			double* values,
-			const unsigned long long * numValuesInEachDimension,
-			const unsigned long long * offsetInEachDimension,
-			const unsigned int & numDimensions
+		  const std::string & datasetName,
+		  double* values,
+		  unsigned long long * numValuesInEachDimension,
+		  unsigned long long * offsetInEachDimension,
+		  unsigned int numDimensions
 		  ) = 0;
 
 		/**
@@ -362,11 +363,11 @@ namespace COMMON_NS
 		virtual void readArrayNdOfDoubleValues(
 			const std::string & datasetName, 
 			double* values,
-			const unsigned long long * blockCountPerDimension,
-			const unsigned long long * offsetInEachDimension,
-			const unsigned long long * strideInEachDimension,
-			const unsigned long long * blockSizeInEachDimension,
-			const unsigned int & numDimensions) = 0;
+			unsigned long long * blockCountPerDimension,
+			unsigned long long * offsetInEachDimension,
+			unsigned long long * strideInEachDimension,
+			unsigned long long * blockSizeInEachDimension,
+			unsigned int numDimensions) = 0;
 
 		/**
 		 * Considering a given dataset, this method selects an hyperslab region to add to an existing selected region or to add to a new selected region.
@@ -383,14 +384,14 @@ namespace COMMON_NS
 		 */
 		virtual void selectArrayNdOfValues(
 			const std::string & datasetName,
-			const unsigned long long * blockCountPerDimension,
-			const unsigned long long * offsetInEachDimension,
-			const unsigned long long * strideInEachDimension,
-			const unsigned long long * blockSizeInEachDimension,
-			const unsigned int & numDimensions,
+			unsigned long long * blockCountPerDimension,
+			unsigned long long * offsetInEachDimension,
+			unsigned long long * strideInEachDimension,
+			unsigned long long * blockSizeInEachDimension,
+			unsigned int numDimensions,
 			bool newSelection,
-			int & dataset,
-			int & filespace) = 0;
+			hdf5_hid_t & dataset,
+			hdf5_hid_t & filespace) = 0;
 
 		/**
 		 * Considering a given dataset, read the double values corresponding to an existing selected region. 
@@ -400,8 +401,8 @@ namespace COMMON_NS
 		 * @param slabSize		Number of values to read.
 		 */
 		virtual void readArrayNdOfDoubleValues(
-			int dataset,
-			int filespace,
+			hdf5_hid_t dataset,
+			hdf5_hid_t filespace,
 			void* values,
 			unsigned long long slabSize) = 0;
 
@@ -421,11 +422,11 @@ namespace COMMON_NS
 		 * @param numDimensions                  The number of the dimensions of the array to read.
 		 */
 		virtual void readArrayNdOfFloatValues(
-			const std::string & datasetName,
-			float* values,
-			const unsigned long long * numValuesInEachDimension,
-			const unsigned long long * offsetInEachDimension,
-			const unsigned int & numDimensions
+		  const std::string & datasetName,
+		  float* values,
+		  unsigned long long * numValuesInEachDimension,
+		  unsigned long long * offsetInEachDimension,
+		  unsigned int numDimensions
 		  ) = 0;
 
 		/**
@@ -456,11 +457,11 @@ namespace COMMON_NS
 		 * @param numDimensions                  The number of the dimensions of the array to read.
 		 */
 		virtual void readArrayNdOfLongValues(
-			const std::string & datasetName,
-			long* values,
-			const unsigned long long * numValuesInEachDimension,
-			const unsigned long long * offsetInEachDimension,
-			const unsigned int & numDimensions
+		  const std::string & datasetName,
+		  long* values,
+		  unsigned long long * numValuesInEachDimension,
+		  unsigned long long * offsetInEachDimension,
+		  unsigned int numDimensions
 		  ) = 0;
 
 		/**
@@ -488,9 +489,9 @@ namespace COMMON_NS
 		virtual void readArrayNdOfIntValues(
 			const std::string & datasetName,
 			int* values,
-			const unsigned long long * numValuesInEachDimension,
-			const unsigned long long * offsetInEachDimension,
-			const unsigned int & numDimensions
+			unsigned long long * numValuesInEachDimension,
+			unsigned long long * offsetInEachDimension,
+			unsigned int numDimensions
 		) = 0;
 
 		/**
