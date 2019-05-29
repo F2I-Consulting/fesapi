@@ -70,7 +70,7 @@ namespace common
 		/**
 		* @return	Get the data objet reference of the object which receives some graphical information at a particular index of the GraphicalInformationSet.
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::eml22__DataObjectReference* getTargetObjectDor(unsigned int index) const;
+		gsoap_eml2_2::eml22__DataObjectReference* getTargetObjectDor(unsigned int index) const;
 
 		/**
 		* @return	Get the Uuid of the object which receives some graphical information at a particular index of the GraphicalInformationSet.

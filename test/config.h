@@ -24,6 +24,10 @@ namespace commontest {
 	// AbstractObject
 	static const char* authorityAlias = "Authorithy Alias Test";
 	static const char* titleAlias = "Alias Test";
+
+	// GraphicalInformationSet
+	static const char* uuidGraphicalInformationSet = "bd361c0b-627d-4b72-a157-a8d6c5845475";
+	static const char* titleGraphicalInformationSet = "Graphical Information Set Test";
 }
 
 namespace resqml2_0_1test {
@@ -33,6 +37,8 @@ namespace resqml2_0_1test {
 	
 	// LocalTime3dCrs
 	static const char* uuidLocalTime3dCrs = "e37f861a-5f2c-4a8a-b62c-4c987cf280e1";
+	static const char* titleLocalTime3dCrs = "Local Time 3d Crs Test";
+
 	
 	// Fault
 	static const char* uuidFault = "8e5874d1-c434-46d1-9d6f-7fef83bf7b70";

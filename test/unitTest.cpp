@@ -28,6 +28,7 @@ under the License.
 #include "catch.hpp"
 
 #include "EpcDocumentTest.h"
+#include "GraphicalInformationSetTest.h"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 #include "resqml2_0_1test/HorizonTest.h"
 #include "resqml2_0_1test/HorizonInterpretationTest.h"
@@ -76,6 +77,9 @@ TEST_CASE( "Deserialize an EPC document", "[epc]")
 	test.deserialize();
 }
 */
+
+FESAPI_TEST("Export and import graphical information set", "[graphical information]", GraphicalInformationSetTest)
+
 FESAPI_TEST("Export and import a local depth 3d crs", "[crs]", LocalDepth3dCrsTest)
 
 FESAPI_TEST("Export and import an horizon", "[feature]", HorizonTest)
