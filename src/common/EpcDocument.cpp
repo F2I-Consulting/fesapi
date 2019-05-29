@@ -228,7 +228,7 @@ namespace // anonymous namespace. Use only in that file.
 }
 
 EpcDocument::EpcDocument() :
-	package(nullptr), s(nullptr), graphicalInformationSet(nullptr),
+	package(nullptr), s(nullptr),
 	propertyKindMapper(nullptr), make_hdf_proxy(&default_builder), make_hdf_proxy_from_gsoap_proxy_2_0_1(&default_builder),
 	make_partial_hdf_proxy(&epc_partial_builder)
 {
@@ -338,12 +338,6 @@ std::vector<std::string> EpcDocument::getAllUuids() const
 	}
 
 	return keys;
-}
-
-
-GraphicalInformationSet* EpcDocument::getGraphicalInformationSet() const
-{
-	return graphicalInformationSet;
 }
 
 const std::vector<RESQML2_0_1_NS::LocalDepth3dCrs*> & EpcDocument::getLocalDepth3dCrsSet() const { return localDepth3dCrsSet; }
@@ -739,10 +733,9 @@ void EpcDocument::addGsoapProxy(COMMON_NS::AbstractObject* proxy)
 		pointSetRepresentationSet.push_back(static_cast<PointSetRepresentation* const>(proxy));
 	}
 	else if (xmlTag.compare(GraphicalInformationSet::XML_TAG) == 0) {
-		if (graphicalInformationSet != nullptr) {
+		if (getDataObjects<GraphicalInformationSet>().size() != 0) {
 			throw invalid_argument("You cannot have two GraphicalInformationSet for now. It is not implemented yet.");
 		}
-		graphicalInformationSet = static_cast<GraphicalInformationSet* const>(proxy);
 	}
 
 	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {

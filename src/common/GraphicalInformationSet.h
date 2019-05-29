@@ -97,6 +97,9 @@ namespace common
 		/**
 		* https://en.wikipedia.org/wiki/HSV_color_space
 		* @param targetObject	The object which receives the color
+		* @param hue			angle in degrees in the range [0, 360]
+		* @param saturation		numeric value in the range [0, 1]
+		* @param value			numeric value in the range [0, 1]
 		* @param alpha			numeric value in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque).
 		*/
 		DLL_IMPORT_OR_EXPORT void setDefaultHsvColor(common::AbstractObject* targetObject, double hue, double saturation, double value, double alpha = 1.0);

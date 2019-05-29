@@ -207,8 +207,25 @@ void serializePerforations(COMMON_NS::EpcDocument * pck)
 
 void serializeGraphicalInformationSet(COMMON_NS::EpcDocument * pck)
 {
-	common::GraphicalInformationSet* graphicalInformationSet = pck->createGraphicalInformationSet("", "Graphical Information Set");
-	graphicalInformationSet->setDefaultHsvColor(horizon1, 0.25, 0.5, 0.75);
+	common::GraphicalInformationSet* graphicalInformationSet = pck->createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
+
+	// fault1 representation is blue
+	graphicalInformationSet->setDefaultHsvColor(fault1, 240., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(fault1Interp1, 240., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(f1i1triRepSinglePatch, 240., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(f1i1triRep, 240., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(f1i1PolyLineRep, 240., 1., 0.5);
+	
+	// horizon1 representation is red
+	graphicalInformationSet->setDefaultHsvColor(horizon1, 0., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(horizon1Interp1, 0., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(h1i1triRep, 0., 1., 0.5);
+	
+	// horizon2 representation is green
+	graphicalInformationSet->setDefaultHsvColor(horizon2, 120., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(horizon2Interp1, 120., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(h2i1triRep, 120., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(h1i1SingleGrid2dRep, 120., 1., 0.5);
 }
 
 void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
@@ -3209,7 +3226,7 @@ void deserializeGraphicalInformationSet(COMMON_NS::EpcDocument & pck)
 {
 	std::cout << "GRAPHICAL INFORMATIONS" << std::endl;
 
-	common::GraphicalInformationSet* graphicalInformationSet = pck.getGraphicalInformationSet();
+	common::GraphicalInformationSet* graphicalInformationSet = pck.getDataObjects<common::GraphicalInformationSet>()[0];
 	for (unsigned int i = 0; i < graphicalInformationSet->getGraphicalInformationSetCount(); ++i)
 	{
 		common::AbstractObject* targetObject = graphicalInformationSet->getTargetObject(i);

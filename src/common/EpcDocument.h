@@ -415,7 +415,6 @@ namespace COMMON_NS
 			throw std::invalid_argument("The uuid " + uuid + " does not resolve to the expected datatype");
 		}
 
-		DLL_IMPORT_OR_EXPORT GraphicalInformationSet* getGraphicalInformationSet() const;
 		/**
 		* Get all the local 3d depth crs contained into the EPC document
 		*/
@@ -1315,7 +1314,6 @@ namespace COMMON_NS
 
 		// Better for performance reason to have set of important objects instead of having a global vector of GsoapWrapper
 		// Even if redundant with resqmlAbstractObjectSet
-		GraphicalInformationSet*										graphicalInformationSet;
 		std::vector<RESQML2_0_1_NS::LocalDepth3dCrs*>					localDepth3dCrsSet;
 		std::vector<RESQML2_0_1_NS::LocalTime3dCrs*>					localTime3dCrsSet;
 		std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*>			faultSet;

@@ -41,7 +41,7 @@ void MdDatum::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 
 vector<Relationship> MdDatum::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 
 	// WellboreFeature trajectories
 	for (size_t i = 0; i < wellboreTrajectoryRepresentationSet.size(); ++i)

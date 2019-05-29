@@ -137,7 +137,7 @@ void PropertyKind::setParentPropertyKind(PropertyKind* parentPropertyKind)
 
 vector<Relationship> PropertyKind::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 
 	// backwards relationships
 	for (size_t i = 0; i < propertySet.size(); ++i) {

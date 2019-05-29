@@ -53,7 +53,7 @@ void StratigraphicColumn::pushBackStratiColumnRank(StratigraphicColumnRankInterp
 
 vector<Relationship> StratigraphicColumn::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 	return result;
 }
 

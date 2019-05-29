@@ -34,6 +34,10 @@ knowledge of the CeCILL-B license and that you accept its terms.
 #include "common/GraphicalInformationSet.h"
 
 #include "tools/Misc.h"
+#include "resqml2/AbstractFeature.h"
+#include "resqml2/AbstractFeatureInterpretation.h"
+#include "resqml2/AbstractRepresentation.h"
+#include "resqml2_0_1/WellboreMarker.h"
 
 #include <stdexcept>
 
@@ -41,6 +45,8 @@ using namespace std;
 using namespace common;
 using namespace gsoap_eml2_2;
 using namespace epc;
+using namespace resqml2;
+using namespace resqml2_0_1;
 
 const char* GraphicalInformationSet::XML_TAG = "GraphicalInformationSet";
 
@@ -204,6 +210,29 @@ double GraphicalInformationSet::getDefaultAlpha(common::AbstractObject* targetOb
 
 void GraphicalInformationSet::setDefaultHsvColor(common::AbstractObject* targetObject, double hue, double saturation, double value, double alpha)
 {
+	if (hue < 0 || hue > 360) {
+		throw std::invalid_argument("hue must be in range [0, 360]");
+	}
+
+	if (saturation < 0 || saturation > 1) {
+		throw std::invalid_argument("saturation must be in range [0, 1]");
+	}
+
+	if (value < 0 || value > 1) {
+		throw std::invalid_argument("value must be in range [0, 1]");
+	}
+
+	if (alpha < 0 || alpha > 1) {
+		throw std::invalid_argument("alpha must be in range [0, 1]");
+	}
+
+	if ((dynamic_cast<AbstractFeature*>(targetObject) == nullptr) &&
+		(dynamic_cast<AbstractFeatureInterpretation*>(targetObject) == nullptr) &&
+		(dynamic_cast<AbstractRepresentation*>(targetObject) == nullptr) &&
+		(dynamic_cast<WellboreMarker*>(targetObject) == nullptr)) {
+		throw std::invalid_argument("The object must be a feature, interpretation, representation or wellbore marker.");
+	}
+
 	gsoap_eml2_2::resqml2__HsvColor* color = nullptr;
 	resqml2__DefaultGraphicalInformation* defaultGraphicalInformationForAllIndexableElements = getDefaultGraphicalInformationForAllIndexableElements(targetObject);
 	if (defaultGraphicalInformationForAllIndexableElements == nullptr) {

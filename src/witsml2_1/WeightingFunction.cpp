@@ -73,7 +73,7 @@ void WeightingFunction::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDo
 
 DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> WeightingFunction::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 
 	// XML backward relationship
 	for (size_t i = 0; i < errorTermSet.size(); ++i) {

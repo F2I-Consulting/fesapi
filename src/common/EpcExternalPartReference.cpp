@@ -43,7 +43,7 @@ string EpcExternalPartReference::getXmlTag() const
 
 std::vector<epc::Relationship> EpcExternalPartReference::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 
 	for (size_t i = 0; i < representationSourceObject.size(); ++i) {
 		if (representationSourceObject[i] != nullptr) {

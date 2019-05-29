@@ -112,7 +112,7 @@ void Wellbore::setShape(witsml2__WellboreShape shape)
 
 std::vector<epc::Relationship> Wellbore::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 
 	// XML backward relationship
 	if (resqmlWellboreFeature != nullptr)

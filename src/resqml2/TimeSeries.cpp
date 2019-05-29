@@ -123,7 +123,7 @@ tm TimeSeries::getTimestampAsTimeStructure(const unsigned int & index) const
 
 vector<Relationship> TimeSeries::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 
 	// backward relationships
 	for (size_t i = 0; i < propertySet.size(); ++i)

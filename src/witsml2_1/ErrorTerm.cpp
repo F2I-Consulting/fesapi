@@ -97,7 +97,7 @@ void ErrorTerm::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ErrorTerm::getAllSourceRelationships() const
 {
 	witsml2__ErrorTerm* et = static_cast<witsml2__ErrorTerm*>(gsoapProxy2_2);
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 
 	// XML backward relationship
 	for (size_t i = 0; i < toolErrorModelSet.size(); ++i)

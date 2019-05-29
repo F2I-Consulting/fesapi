@@ -40,7 +40,7 @@ SeismicLineSetFeature::SeismicLineSetFeature(soap* soapContext, const std::strin
 
 std::vector<epc::Relationship> SeismicLineSetFeature::getAllSourceRelationships() const
 {
-	std::vector<epc::Relationship> result;
+	std::vector<epc::Relationship> result = common::AbstractObject::getAllSourceRelationships();
 
 	for (size_t i = 0; i < seismicLineSet.size(); ++i)
 	{
