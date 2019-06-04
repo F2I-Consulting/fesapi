@@ -28,3 +28,8 @@ string misc::getPartNameFromReference(gsoap_resqml2_0_1::eml20__DataObjectRefere
 	return reference->ContentType.substr(reference->ContentType.rfind('=')+1) + "_" + reference->UUID + ".xml";
 }
 
+string misc::getPartNameFromReference(gsoap_eml2_2::eml22__DataObjectReference * reference)
+{
+	return reference->ContentType.substr(reference->ContentType.rfind('=') + 1) + "_" + reference->Uuid + ".xml";
+}
+

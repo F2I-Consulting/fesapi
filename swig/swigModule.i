@@ -19,6 +19,7 @@ under the License.
 %module fesapi
 
 
+
 #ifdef SWIGJAVA
 	// Notice you must not compile the C++ API with an optimisation superior to -O1 with gcc 4.4.7 in order SWIG to work
 	
@@ -123,6 +124,7 @@ under the License.
 	%nspace COMMON_NS::EpcExternalPartReference;
 	%nspace COMMON_NS::AbstractHdfProxy;
 	%nspace COMMON_NS::HdfProxy;
+	%nspace COMMON_NS::GraphicalInformationSet;
 #endif
 
 namespace RESQML2_NS
@@ -202,7 +204,31 @@ namespace COMMON_NS
 		void setCompressionLevel(unsigned int newCompressionLevel);
 	};
 	
+	class GraphicalInformationSet : public AbstractObject
+	{
+	public:
+		unsigned int getGraphicalInformationSetCount() const;
+		std::string getTargetObjectUuid(unsigned int index) const;
+		AbstractObject* getTargetObject(unsigned int index) const;
+		bool hasGraphicalInformation(const AbstractObject* targetObject) const;
+		
+		bool hasDefaultColor(AbstractObject* targetObject) const;
+		double getDefaultHue(AbstractObject* targetObject) const;
+		double getDefaultSaturation(AbstractObject* targetObject) const;
+		double getDefaultValue(AbstractObject* targetObject) const;
+		double getDefaultAlpha(AbstractObject* targetObject) const;
+		void setDefaultHsvColor(AbstractObject* targetObject, double hue, double saturation, double value, double alpha = 1.0);
+	};
+	
 }
+
+%{
+#define SWIG_FILE_WITH_INIT // In case we use Python Swig Wrapping
+
+#include "common/HdfProxy.h"
+#include "common/GraphicalInformationSet.h"
+
+%}
 
 %include "swigResqml2Include.i"
 %include "swigResqml2_0_1Include.i"
@@ -734,10 +760,16 @@ namespace COMMON_NS
 		RESQML2_0_1_NS::PropertyKindMapper* getPropertyKindMapper() const;
 
 		//************************************
+		//************ EML2.2 ****************
+		//************************************
+
+		COMMON_NS::GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
+
+		//************************************
 		//************* WARNINGS *************
 		//************************************
 
-		void clearWarnings() { warnings.clear();  }
+		void clearWarnings();
 		void addWarning(const std::string & warning);
 		const std::vector<std::string> & getWarnings() const;
 	};

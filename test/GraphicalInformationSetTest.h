@@ -18,19 +18,18 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "proxies/gsoap_resqml2_0_1Stub.h"
-#include "proxies/gsoap_eml2_2Stub.h"
+#include "AbstractObjectTest.h"
+#include <iostream>
 
-namespace misc
-{
-	/**
-	* Get the part name of an object in the epc document based on one of its reference.
-	*/
-	std::string getPartNameFromReference(gsoap_resqml2_0_1::eml20__DataObjectReference * reference);
+namespace commontest {
+	class GraphicalInformationSetTest : public AbstractObjectTest {
+	public:
+		GraphicalInformationSetTest(const std::string & epcDocPath);
+		GraphicalInformationSetTest(COMMON_NS::EpcDocument * epcDoc, bool init);
 
-	/**
-	* Get the part name of an eml 2.2 object in the epc document based on one of its reference.
-	*/
-	std::string getPartNameFromReference(gsoap_eml2_2::eml22__DataObjectReference * reference);
+	protected:
+		void initEpcDocHandler();
+		void readEpcDocHandler();
+	};
 }
 
