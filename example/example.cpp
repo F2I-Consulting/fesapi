@@ -39,6 +39,7 @@ under the License.
 #include "proxies/stdsoap2.h"
 
 #include "common/EpcDocument.h"
+#include "common/GraphicalInformationSet.h"
 #include "resqml2_0_1/LocalDepth3dCrs.h"
 #include "resqml2_0_1/LocalTime3dCrs.h"
 #include "resqml2_0_1/FrontierFeature.h"
@@ -202,6 +203,29 @@ void serializePerforations(COMMON_NS::EpcDocument * pck)
 	wellboreCompletion->pushBackPerforationHistory(1);
 	wellboreCompletion->setPerforationHistoryStatus(1, 1, gsoap_eml2_1::witsml2__PerforationStatus__squeezed);
 	wellboreCompletion->setPerforationHistoryStartDate(1, 1, 1514764800);
+}
+
+void serializeGraphicalInformationSet(COMMON_NS::EpcDocument * pck)
+{
+	common::GraphicalInformationSet* graphicalInformationSet = pck->createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
+
+	// fault1 representation is blue
+	graphicalInformationSet->setDefaultHsvColor(fault1, 240., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(fault1Interp1, 240., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(f1i1triRepSinglePatch, 240., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(f1i1triRep, 240., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(f1i1PolyLineRep, 240., 1., 0.5);
+	
+	// horizon1 representation is red
+	graphicalInformationSet->setDefaultHsvColor(horizon1, 0., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(horizon1Interp1, 0., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(h1i1triRep, 0., 1., 0.5);
+	
+	// horizon2 representation is green
+	graphicalInformationSet->setDefaultHsvColor(horizon2, 120., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(horizon2Interp1, 120., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(h2i1triRep, 120., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(h1i1SingleGrid2dRep, 120., 1., 0.5);
 }
 
 void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
@@ -1740,6 +1764,8 @@ bool serialize(const string & filePath)
 	serializeRepresentationSetRepresentation(&pck, hdfProxy);
 	serializeFluidBoundary(pck, hdfProxy);
 	serializeRockFluidOrganization(pck, hdfProxy);
+	serializeGraphicalInformationSet(&pck);
+
 	// Add an extended core property before to serialize
 	pck.setExtendedCoreProperty("F2I-ExtendedCoreProp", "TestingVersion");
 
@@ -3196,6 +3222,26 @@ void deserializePerforations(COMMON_NS::EpcDocument & pck)
 	}
 }
 
+void deserializeGraphicalInformationSet(COMMON_NS::EpcDocument & pck)
+{
+	std::cout << "GRAPHICAL INFORMATIONS" << std::endl;
+
+	common::GraphicalInformationSet* graphicalInformationSet = pck.getDataObjects<common::GraphicalInformationSet>()[0];
+	for (unsigned int i = 0; i < graphicalInformationSet->getGraphicalInformationSetCount(); ++i)
+	{
+		common::AbstractObject* targetObject = graphicalInformationSet->getTargetObject(i);
+
+		if (graphicalInformationSet->hasGraphicalInformation(targetObject) && graphicalInformationSet->hasDefaultColor(targetObject))
+		{
+			std::cout << "graphical information for: " << targetObject->getTitle() << std::endl;
+			std::cout << "default hue: " << graphicalInformationSet->getDefaultHue(targetObject) << std::endl;
+			std::cout << "default saturation: " << graphicalInformationSet->getDefaultSaturation(targetObject) << std::endl;
+			std::cout << "default value: " << graphicalInformationSet->getDefaultValue(targetObject) << std::endl;
+			std::cout << "default alpha: " << graphicalInformationSet->getDefaultAlpha(targetObject) << std::endl;
+		}
+	}
+}
+
 void deserialize(const string & inputFile)
 {
 	COMMON_NS::EpcDocument pck(inputFile, COMMON_NS::EpcDocument::READ_ONLY);
@@ -3988,6 +4034,9 @@ void deserialize(const string & inputFile)
 			showAllMetadata(timeSeriesSet[i]->getPropertySet()[j]);
 		}
 	}
+
+	// GRAPHICAL INFORMATION
+	deserializeGraphicalInformationSet(pck);
 
 	std::cout << endl << pck.getWarnings().size() << " WARNING(S)" << endl;
 	for (size_t i = 0; i < pck.getWarnings().size(); ++i) {

@@ -309,7 +309,7 @@ bool SealedVolumeFrameworkRepresentation::getSideFlagOfInternalShellFace(unsigne
 
 std::vector<epc::Relationship> SealedVolumeFrameworkRepresentation::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 	return result;
 }
 

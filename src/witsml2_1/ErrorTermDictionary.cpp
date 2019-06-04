@@ -106,7 +106,8 @@ void ErrorTermDictionary::resolveTargetRelationships(COMMON_NS::EpcDocument* epc
 
 DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ErrorTermDictionary::getAllSourceRelationships() const
 {
-	return vector<Relationship>();
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
+	return result;
 }
 
 DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ErrorTermDictionary::getAllTargetRelationships() const

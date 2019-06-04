@@ -261,7 +261,7 @@ unsigned int Well::getDatumCount() const
 
 std::vector<epc::Relationship> Well::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 
 	// XML backward relationship
 	if (resqmlWellboreFeature != nullptr)

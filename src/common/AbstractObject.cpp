@@ -39,6 +39,7 @@ under the License.
 
 #include "resqml2/Activity.h"
 #include "common/AbstractHdfProxy.h"
+#include "common/GraphicalInformationSet.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -1102,6 +1103,23 @@ namespace {
 		}
 		return result;
 	}
+}
+
+std::vector<epc::Relationship> AbstractObject::getAllSourceRelationships() const
+{
+	vector<epc::Relationship> result;
+
+	for (size_t i = 0; i < epcDocument->getDataObjects<GraphicalInformationSet>().size(); ++i)
+	{
+		GraphicalInformationSet * graphicalInformationSet = epcDocument->getDataObjects<GraphicalInformationSet>()[i];
+		if (graphicalInformationSet->hasGraphicalInformation(this)) {
+			epc::Relationship rel(graphicalInformationSet->getPartNameInEpcDocument(), "", graphicalInformationSet->getUuid());
+			rel.setSourceObjectType();
+			result.push_back(rel);
+		}
+	}
+
+	return result;
 }
 
 std::vector<std::string> AbstractObject::getAllSourceRelationshipUuids() const

@@ -104,7 +104,8 @@ void WeightingFunctionDictionary::resolveTargetRelationships(COMMON_NS::EpcDocum
 
 DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> WeightingFunctionDictionary::getAllSourceRelationships() const
 {
-	return vector<Relationship>();
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
+	return result;
 }
 
 DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> WeightingFunctionDictionary::getAllTargetRelationships() const

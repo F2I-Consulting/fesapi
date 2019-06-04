@@ -42,7 +42,7 @@ StringTableLookup::StringTableLookup(soap* soapContext, const string & guid, con
 
 vector<Relationship> StringTableLookup::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 
 	// XML backward relationship
 	for (size_t i = 0; i < categoricalPropertyValuesSet.size(); ++i)

@@ -376,7 +376,7 @@ void ToolErrorModel::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 
 DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ToolErrorModel::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 
 	// XML backward relationship
 	if (nextVersionToolErrorModel != nullptr) {

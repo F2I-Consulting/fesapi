@@ -530,7 +530,7 @@ void AbstractRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* 
 
 vector<Relationship> AbstractRepresentation::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 
 	for (size_t i = 0; i < subRepresentationSet.size(); ++i)
 	{

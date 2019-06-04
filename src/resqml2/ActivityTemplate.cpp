@@ -29,7 +29,7 @@ const char* ActivityTemplate::XML_TAG = "ActivityTemplate";
 
 vector<Relationship> ActivityTemplate::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 
 	for (size_t i = 0; i < activityInstanceSet.size(); ++i) {
 		Relationship rel(activityInstanceSet[i]->getPartNameInEpcDocument(), "", activityInstanceSet[i]->getUuid());

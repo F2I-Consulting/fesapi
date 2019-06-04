@@ -376,7 +376,7 @@ namespace COMMON_NS
 		/**
 		* Return all relationships (backward and forward ones) of the instance using EPC format.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual std::vector<epc::Relationship> getAllSourceRelationships() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
 		DLL_IMPORT_OR_EXPORT std::vector<std::string> getAllSourceRelationshipUuids() const;
 		DLL_IMPORT_OR_EXPORT virtual std::vector<epc::Relationship> getAllTargetRelationships() const = 0;
 		DLL_IMPORT_OR_EXPORT std::vector<std::string> getAllTargetRelationshipUuids() const;

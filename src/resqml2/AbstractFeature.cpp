@@ -49,7 +49,7 @@ AbstractFeatureInterpretation*	AbstractFeature::getInterpretation(unsigned int i
 
 vector<Relationship> AbstractFeature::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 
 	for (size_t i = 0; i < interpretationSet.size(); ++i) {
 		Relationship rel(interpretationSet[i]->getPartNameInEpcDocument(), "", interpretationSet[i]->getUuid());

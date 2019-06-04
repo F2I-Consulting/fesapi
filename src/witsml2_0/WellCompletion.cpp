@@ -70,7 +70,7 @@ void WellCompletion::setWell(Well* witsmlWell)
 
 std::vector<epc::Relationship> WellCompletion::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 
 	// XML backward relationship
 	for (size_t i = 0; i < wellboreCompletionSet.size(); ++i)

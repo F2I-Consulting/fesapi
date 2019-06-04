@@ -93,7 +93,8 @@ void WellboreMarkerSet::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDo
 
 DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> WellboreMarkerSet::getAllSourceRelationships() const
 {
-	return vector<Relationship>();
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
+	return result;
 }
 
 DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> WellboreMarkerSet::getAllTargetRelationships() const

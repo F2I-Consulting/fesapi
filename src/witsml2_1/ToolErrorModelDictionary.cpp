@@ -105,7 +105,8 @@ void ToolErrorModelDictionary::resolveTargetRelationships(COMMON_NS::EpcDocument
 
 DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ToolErrorModelDictionary::getAllSourceRelationships() const
 {
-	return vector<Relationship>();
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
+	return result;
 }
 
 DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ToolErrorModelDictionary::getAllTargetRelationships() const

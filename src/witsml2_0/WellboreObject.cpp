@@ -34,7 +34,7 @@ Wellbore* WellboreObject::getWellbore() const
 
 std::vector<epc::Relationship> WellboreObject::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 	return result;
 }
 

@@ -113,7 +113,7 @@ void AbstractProperty::setXmlLocalPropertyKind(class PropertyKind* propKind)
 
 vector<Relationship> AbstractProperty::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 	return result;
 }
 

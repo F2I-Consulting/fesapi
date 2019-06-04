@@ -48,7 +48,7 @@ void Activity::setActivityTemplate(RESQML2_NS::ActivityTemplate * activityTempla
 
 vector<Relationship> Activity::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 	return result;
 }
 

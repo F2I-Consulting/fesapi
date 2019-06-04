@@ -86,7 +86,7 @@ vector<Relationship> AbstractFeatureInterpretation::getAllTargetRelationships() 
 	
 vector<Relationship> AbstractFeatureInterpretation::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 
 	for (size_t i = 0; i < representationSet.size(); ++i)
 	{

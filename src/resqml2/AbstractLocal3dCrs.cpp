@@ -42,7 +42,7 @@ vector<Relationship> AbstractLocal3dCrs::getAllTargetRelationships() const
 
 vector<Relationship> AbstractLocal3dCrs::getAllSourceRelationships() const
 {
-	vector<Relationship> result;
+	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
 
 	// Geometry/Representation set
 	for (size_t i = 0; i < repSet.size(); ++i)
