@@ -31,8 +31,9 @@ namespace common
 
 	public:
 		/**
-		* @param packageDirAbsolutePath		The directory where the EPC document is stored. Must end with a slash or back-slash
-		* @param externalFilePath			The relative path regarding packageDirectoryAbsolutePath where the external resource is located
+		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
+		* @param guid			The guid to set to graphical information set.
+		* @param title			A title for graphical information set.
 		*/
 		GraphicalInformationSet(soap* soapContext, const std::string & guid, const std::string & title);
 
