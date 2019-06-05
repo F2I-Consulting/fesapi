@@ -145,13 +145,12 @@ bool GraphicalInformationSet::hasGraphicalInformation(const common::AbstractObje
 
 	std::string targetUuid = targetObject->getUuid();
 	for (size_t giIndex = 0; giIndex < gis->GraphicalInformation.size(); ++giIndex) {
-		std::string uuid = getTargetObjectUuid(giIndex);
-		if (uuid.compare(targetUuid) == 0) {
+		if (getTargetObjectUuid(giIndex).compare(targetUuid) == 0) {
 			return true;
 		}
 	}
 
-	return nullptr;
+	return false;
 }
 
 bool GraphicalInformationSet::hasDefaultColor(common::AbstractObject* targetObject) const
