@@ -786,7 +786,26 @@ gsoap_resqml2_0_1::resqml2__AbstractIntegerArray* AbstractGridRepresentation::ge
 
 bool AbstractGridRepresentation::isRegridCellCountPerIntervalConstant(const char & dimension, const bool & childVsParentCellCount) const {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return getCellCountPerInterval2_0_1(dimension, childVsParentCellCount)->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray;
+		gsoap_resqml2_0_1::resqml2__AbstractIntegerArray* cellCountPerInterval = getCellCountPerInterval2_0_1(dimension, childVsParentCellCount);
+		if (cellCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray) {
+			return true;
+		}
+		else if (cellCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
+			const ULONG64 intervalCount = getRegridIntervalCount(dimension);
+			ULONG64* values = new ULONG64[intervalCount];
+			getRegridCellCountPerInterval(dimension, values, childVsParentCellCount);
+
+			for (ULONG64 index = 1; index < intervalCount; ++index) {
+				if (values[index] != values[0]) {
+					delete[] values;
+					return false;
+				}
+			}
+
+			delete[] values;
+			return true;
+		}
+		return false;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -796,11 +815,20 @@ bool AbstractGridRepresentation::isRegridCellCountPerIntervalConstant(const char
 ULONG64 AbstractGridRepresentation::getRegridConstantCellCountPerInterval(const char & dimension, const bool & childVsParentCellCount) const {
 	if (gsoapProxy2_0_1 != nullptr) {
 		const gsoap_resqml2_0_1::resqml2__AbstractIntegerArray* const cellCountPerInterval = getCellCountPerInterval2_0_1(dimension, childVsParentCellCount);
-		if (cellCountPerInterval->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray) {
-			throw invalid_argument("The regrid child cell count per interval is not constant.");
+		if (cellCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray) {
+			return static_cast<const gsoap_resqml2_0_1::resqml2__IntegerConstantArray* const>(cellCountPerInterval)->Value;
 		}
-
-		return static_cast<const gsoap_resqml2_0_1::resqml2__IntegerConstantArray* const>(cellCountPerInterval)->Value;
+		else if (cellCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
+			const ULONG64 intervalCount = getRegridIntervalCount(dimension);
+			ULONG64* values = new ULONG64[intervalCount];
+			getRegridCellCountPerInterval(dimension, values, childVsParentCellCount);
+			ULONG64 result = values[0];
+			delete[] values;
+			return result;
+		}
+		else {
+			throw logic_error("Not implemented yet");
+		}	
 	}
 	else {
 		throw logic_error("Not implemented yet");

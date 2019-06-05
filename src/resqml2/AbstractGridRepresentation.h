@@ -180,16 +180,16 @@ namespace RESQML2_NS
 		/**
 		* Indicates that this grid takes place into another IJK parent grid.
 		* @param	iCellIndexRegridStart				Identifies the first Cell by its i dimension of the regrid window.
-		* @param	constantChildCellCountPerIInterval	The constant count of cells per i interval in this (child) grid.
-		* @param	constantParentCellCountPerIInterval	The constant count of cells per i interval in the parent grid.
+		* @param	constantChildCellCountPerIInterval	The constant count of cells for the unique i interval in this (child) grid.
+		* @param	constantParentCellCountPerIInterval	The constant count of cells for the unique i interval in the parent grid.
 		* @param	iIntervalCount						The count of intervals on i dimension. An interval is a portion of cells to regrid which is independant to other portion of cell.
 		* @param	jCellIndexRegridStart				Identifies the first Cell by its j dimension of the regrid window.
-		* @param	constantChildCellCountPerJInterval	The constant count of cells per j interval in this (child) grid.
-		* @param	constantParentCellCountPerJInterval	The constant count of cells per j interval in the parent grid.
+		* @param	constantChildCellCountPerJInterval	The constant count of cells for the unique j interval in this (child) grid.
+		* @param	constantParentCellCountPerJInterval	The constant count of cells for the unique j interval in the parent grid.
 		* @param	jIntervalCount						The count of intervals on j dimension. An interval is a portion of cells to regrid which is independant to other portion of cell.
 		* @param	kCellIndexRegridStart				Identifies the first Cell by its k dimension of the regrid window.
-		* @param	constantChildCellCountPerKInterval	The constant count of cells per k interval in this (child) grid.
-		* @param	constantParentCellCountPerKInterval	The constant count of cells per k interval in the parent grid.
+		* @param	constantChildCellCountPerKInterval	The constant count of cells for the unique k interval in this (child) grid.
+		* @param	constantParentCellCountPerKInterval	The constant count of cells for the unique k interval in the parent grid.
 		* @param	kIntervalCount						The count of intervals on k dimension. An interval is a portion of cells to regrid which is independant to other portion of cell.
 		* @param	parentGrid							The parent grid which is regridded.
 		* @param	iChildCellWeights					The weights that are proportional to the relative i sizes of child cells within each i interval. The weights need not to be normalized. The count of double values must be equal to the count of all child cells on i dimension (sum of child cells per interval).
