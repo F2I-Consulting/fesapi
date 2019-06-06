@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1test/BoundaryFeatureInterpretationTest.h"
+#include "AbstractObjectTest.h"
 #include <iostream>
 
 namespace COMMON_NS {
@@ -26,8 +26,10 @@ namespace COMMON_NS {
 }
 
 namespace resqml2_0_1test {
-	class HorizonInterpretationTest : public BoundaryFeatureInterpretationTest {
+	class HorizonInterpretationTest : public commontest::AbstractObjectTest {
 	public:
+		static const char* horizonUuid;
+		static const char* horizonTitle;
 		static const char* defaultUuid;
 		static const char* defaultTitle;
 
@@ -37,7 +39,6 @@ namespace resqml2_0_1test {
 		* @param epcDocPath the path of the .epc file (including .epc extension)
 		*/
 		HorizonInterpretationTest(const std::string & epcDocPath);
-		HorizonInterpretationTest(const std::string & epcDocPath, const std::string & uuid, const std::string & title, const std::string & uuidFeature, const std::string & titleFeature);
 
 		/**
 		* Creation of a testing object from an existing EPC document.
@@ -46,7 +47,6 @@ namespace resqml2_0_1test {
 		* created for reading purpose. According to init value a iniEpcDoc() or readEpcDoc() is called.
 		*/
 		HorizonInterpretationTest(COMMON_NS::EpcDocument * epcDocument, bool init);
-		HorizonInterpretationTest(COMMON_NS::EpcDocument * epcDocument, bool init, const std::string & uuid, const std::string & title, const std::string & uuidFeature, const std::string & titleFeature);
 	protected:
 		void initEpcDocHandler();
 		void readEpcDocHandler();

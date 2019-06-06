@@ -34,22 +34,21 @@ const char* StratigraphicColumnTest::defaultUuid = "b407ddc5-67a7-437a-aa24-baf0
 const char* StratigraphicColumnTest::defaultTitle = "Strati Column";
 
 StratigraphicColumnTest::StratigraphicColumnTest(const string & epcDocPath)
-	: AbstractResqmlDataObjectTest(epcDocPath, defaultUuid, defaultTitle) {
+	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
 StratigraphicColumnTest::StratigraphicColumnTest(EpcDocument* epcDoc, bool init)
-	: AbstractResqmlDataObjectTest(epcDoc, defaultUuid, defaultTitle) {
+	: commontest::AbstractObjectTest(epcDoc) {
 	if (init)
-			this->initEpcDoc();
-		else
-			this->readEpcDoc();
+		initEpcDoc();
+	else
+		readEpcDoc();
 }
 
 void StratigraphicColumnTest::initEpcDocHandler() {
-	StratigraphicColumn* stratiColumn = this->epcDoc->createStratigraphicColumn(uuid, title);
+	StratigraphicColumn* stratiColumn = epcDoc->createStratigraphicColumn(defaultUuid, defaultTitle);
 	REQUIRE(stratiColumn != nullptr);
 }
 
 void StratigraphicColumnTest::readEpcDocHandler() {
 }
-

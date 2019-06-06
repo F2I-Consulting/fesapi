@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1test/AbstractResqmlDataObjectTest.h"
+#include "AbstractObjectTest.h"
 #include <string>
 
 namespace COMMON_NS {
@@ -26,11 +26,12 @@ namespace COMMON_NS {
 }
 
 namespace resqml2_0_1test {
-	class GridConnectionSetOnPartialGridSet : public AbstractResqmlDataObjectTest {
+	class GridConnectionSetOnPartialGridSet : public commontest::AbstractObjectTest {
 	public:
-
 		static const char* defaultUuid;
 		static const char* defaultTitle;
+		static const char* unstructuredGridUuid;
+		static const char* unstructuredGridTitle;
 
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,

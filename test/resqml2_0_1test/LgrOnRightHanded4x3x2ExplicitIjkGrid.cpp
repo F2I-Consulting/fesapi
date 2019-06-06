@@ -20,7 +20,6 @@ under the License.
 
 #include <stdexcept>
 
-#include "resqml2_0_1test/AbstractIjkGridRepresentationTest.h"
 #include "resqml2_0_1test/RightHanded4x3x2ExplicitIjkGrid.h"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 
@@ -38,7 +37,7 @@ using namespace RESQML2_NS;
 
 const char* LgrOnRightHanded4x3x2ExplicitIjkGrid::defaultUuid = "11852778-139e-4fa3-bb34-70c4014553f7";
 const char* LgrOnRightHanded4x3x2ExplicitIjkGrid::defaultTitle = "LGR";
-const ULONG64 LgrOnRightHanded4x3x2ExplicitIjkGrid::nodesCountIjkGridRepresentation = 40;
+const unsigned long long LgrOnRightHanded4x3x2ExplicitIjkGrid::nodesCountIjkGridRepresentation = 40;
 double LgrOnRightHanded4x3x2ExplicitIjkGrid::nodesIjkGridRepresentation[] = {
 	0, 50, 300, 50, 50, 300, 100, 50, 300, 150, 50, 300, //IJ0K0
 	0,  0, 300, 50,  0, 300, 100,  0, 300, 150,  0, 300, //IJ1K0
@@ -53,11 +52,11 @@ double LgrOnRightHanded4x3x2ExplicitIjkGrid::nodesIjkGridRepresentation[] = {
 };
 
 LgrOnRightHanded4x3x2ExplicitIjkGrid::LgrOnRightHanded4x3x2ExplicitIjkGrid(const string & epcDocPath)
-	: AbstractIjkGridRepresentationTest(epcDocPath, defaultUuid, defaultTitle, nodesCountIjkGridRepresentation, nodesIjkGridRepresentation) {
+	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
 LgrOnRightHanded4x3x2ExplicitIjkGrid::LgrOnRightHanded4x3x2ExplicitIjkGrid(EpcDocument* epcDoc, bool init)
-	: AbstractIjkGridRepresentationTest(epcDoc, defaultUuid, defaultTitle, nodesCountIjkGridRepresentation, nodesIjkGridRepresentation) {
+	: commontest::AbstractObjectTest(epcDoc) {
 	if (init) {
 		initEpcDoc();
 	}
@@ -68,20 +67,17 @@ LgrOnRightHanded4x3x2ExplicitIjkGrid::LgrOnRightHanded4x3x2ExplicitIjkGrid(EpcDo
 
 void LgrOnRightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 	// getting the parent grid
-	RightHanded4x3x2ExplicitIjkGrid* parentGridTest = new RightHanded4x3x2ExplicitIjkGrid(epcDoc, true);
+	RightHanded4x3x2ExplicitIjkGrid parentGridTest(epcDoc, true);
 
 	RESQML2_0_1_NS::IjkGridExplicitRepresentation* parentGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
 	RESQML2_0_1_NS::LocalDepth3dCrs* crs = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 
-	// cleaning
-	delete parentGridTest;
-
 	// getting the hdf proxy
 	AbstractHdfProxy* hdfProxy = epcDoc->getHdfProxySet()[0];
 
-	// creating a child ijk grid with constant cell count per interval
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGrid = epcDoc->createIjkGridExplicitRepresentation(crs, uuid, title, 3, 1, 4);
-	childGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, xyzPointsOfAllPatchesInLocalCrs, hdfProxy);
+	// creating the child ijk grid
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGrid = epcDoc->createIjkGridExplicitRepresentation(crs, defaultUuid, defaultTitle, 3, 1, 4);
+	childGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, hdfProxy);
 	childGrid->setParentWindow(
 		0, 3, 1, 1,
 		0, 1, 1, 1,
@@ -114,12 +110,16 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 }
 
 void LgrOnRightHanded4x3x2ExplicitIjkGrid::readEpcDocHandler() {
-	RightHanded4x3x2ExplicitIjkGrid* parentGridTest = new RightHanded4x3x2ExplicitIjkGrid(this->epcDoc, false);
+	RightHanded4x3x2ExplicitIjkGrid* parentGridTest = new RightHanded4x3x2ExplicitIjkGrid(epcDoc, false);
 
 	// getting the childGrid
+<<<<<<< HEAD
 	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(uuid);
 	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridHdf5 = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>("38930b30-1325-424e-a1e9-666fa50bfa4f");
 	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridNonConstant = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>("eaf36330-4c0b-40f8-bf07-b2818f09a229");
+=======
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(defaultUuid);
+>>>>>>> Support for multirealization properties
 	RESQML2_0_1_NS::IjkGridExplicitRepresentation* parentGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
 
 	REQUIRE(childGrid->getCellCount() == 12);

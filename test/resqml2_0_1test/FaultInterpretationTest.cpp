@@ -17,11 +17,9 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "FaultInterpretationTest.h"
-#include "FaultTest.h"
 #include "resqml2_0_1/TectonicBoundaryFeature.h"
 #include "resqml2_0_1/FaultInterpretation.h"
 #include "../catch.hpp"
-#include "../config.h"
 #include "AbstractObjectTest.h"
 
 using namespace std;
@@ -29,39 +27,37 @@ using namespace resqml2_0_1test;
 using namespace COMMON_NS;
 using namespace RESQML2_0_1_NS;
 
+const char* FaultInterpretationTest::faultUuid = "a2e84855-738e-462a-82c5-863abd058be1";
+const char* FaultInterpretationTest::faultTitle = "Fault";
+const char* FaultInterpretationTest::defaultUuid = "91f90343-2581-48c5-893f-667a2995088c";
+const char* FaultInterpretationTest::defaultTitle = "FaultInterpretationTest";
+
 FaultInterpretationTest::FaultInterpretationTest(const string & epcDocPath)
-	: BoundaryFeatureInterpretationTest(epcDocPath, uuidFaultInterpretation, titleFaultInterpretation, uuidFault, titleFault)
+	: commontest::AbstractObjectTest(epcDocPath)
 {
 }
 
 FaultInterpretationTest::FaultInterpretationTest(EpcDocument * epcDoc, bool init)
-	: BoundaryFeatureInterpretationTest(epcDoc, uuidFaultInterpretation, titleFaultInterpretation, uuidFault, titleFault)
+	: commontest::AbstractObjectTest(epcDoc)
 {
 	if (init)
-		this->initEpcDoc();
+		initEpcDoc();
 	else
-		this->readEpcDoc();
+		readEpcDoc();
 }
 
 void FaultInterpretationTest::initEpcDocHandler()
 {
 	// creating dependencies
-	FaultTest* faultTest = new FaultTest(this->epcDoc, true);
+	TectonicBoundaryFeature* fault = epcDoc->createFault(faultUuid, faultTitle);
 
-	TectonicBoundaryFeature* fault = static_cast<TectonicBoundaryFeature*>(this->epcDoc->getDataObjectByUuid(uuidFault));
-	FaultInterpretation* FaultInterp = this->epcDoc->createFaultInterpretation(fault, this->uuid, this->title);
-	REQUIRE( FaultInterp != nullptr );
-
-	// cleaning
-	delete faultTest;
+	FaultInterpretation* faultInterp = epcDoc->createFaultInterpretation(fault, defaultUuid, defaultTitle);
+	REQUIRE(faultInterp != nullptr);
 }
 
 void FaultInterpretationTest::readEpcDocHandler()
 {
-	// reading dependencies
-	FaultTest* faultTest = new FaultTest(this->epcDoc, false);
-
-	// cleaning
-	delete faultTest;
+	// getting the fault interpretation
+	FaultInterpretation* faultInterp = epcDoc->getDataObjectByUuid<FaultInterpretation>(defaultUuid);
+	REQUIRE(faultInterp != nullptr);
 }
-

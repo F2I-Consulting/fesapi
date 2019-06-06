@@ -26,19 +26,15 @@ under the License.
 
 #include "EpcDocumentTest.h"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
-#include "resqml2_0_1test/HorizonTest.h"
 #include "resqml2_0_1test/HorizonInterpretationTest.h"
 #include "resqml2_0_1test/FaultSinglePatchTriangulatedSetRepresentationTest.h"
 #include "resqml2_0_1test/FaultMultiPatchTriangulatedSetRepresentationTest.h"
-#include "resqml2_0_1test/FaultSingleAndMultiPatchTriangulatedSetRepresentationTest.h"
 #include "resqml2_0_1test/ActivityTemplateGenericCreationTest.h"
 #include "resqml2_0_1test/ActivityCreationTest.h"
 #include "resqml2_0_1test/OneTetrahedronUnstructuredGridRepresentationTest.h"
-#include "resqml2_0_1test/UnstructuredFromIjkGridRepresentationTest.h"
 #include "resqml2_0_1test/TimeSeriesTest.h"
 #include "resqml2_0_1test/CommentProperty.h"
 #include "resqml2_0_1test/ContinuousPropertyOnWellFrameTest.h"
-#include "resqml2_0_1test/ContinuousPropertySeriesTest.h"
 #include "resqml2_0_1test/GridConnectionSetOnPartialGridSet.h"
 #include "resqml2_0_1test/WellboreMarkerFrameRepresentationTest.h"
 #include "resqml2_0_1test/WellboreFrameRepresentationTest.h"
@@ -53,6 +49,7 @@ under the License.
 #include "resqml2_0_1test/SubRepresentationOnPartialGridConnectionSet.h"
 #include "resqml2_0_1test/LgrOnRightHanded4x3x2ExplicitIjkGrid.h"
 #include "resqml2_0_1test/InterpretationDomain.h"
+#include "resqml2_0_1test/MultirealPropertyTest.h"
 #include "witsml2_0test/WellTest.h"
 #include "witsml2_0test/Trajectory.h"
 
@@ -86,15 +83,11 @@ TEST_CASE("Export and import an empty EPC document", "[epcDoc]")
 
 FESAPI_TEST("Export and import a local depth 3d crs", "[crs]", LocalDepth3dCrsTest)
 
-FESAPI_TEST("Export and import an horizon", "[feature]", HorizonTest)
-
 FESAPI_TEST("Export and import an horizon interpretation", "[interpretation]", HorizonInterpretationTest)
 
 FESAPI_TEST("Export and import a single patch triangulated set fault representation", "[representation]", FaultSinglePatchTriangulatedSetRepresentationTest)
 
 FESAPI_TEST("Export and import a multi patch triangulated set fault representation", "[representation]", FaultMultiPatchTriangulatedSetRepresentationTest)
-
-FESAPI_TEST("Export and import a single and multi patch triangulated set fault representation", "[representation]", FaultSingleAndMultiPatchTriangulatedSetRepresentationTest)
 
 FESAPI_TEST("Export a multi domains interpreation", "[interpretation]", InterpretationDomain)
 
@@ -126,12 +119,7 @@ FESAPI_TEST("Export and import an unstructured grid", "[grid]", OneTetrahedronUn
 
 FESAPI_TEST("Export and import a subrepresenation on a partial grid connection set", "[grid]", SubRepresentationOnPartialGridConnectionSet)
 
-// fail
-//FESAPI_TEST("Ijk to unstructured grid", "[grid]", UnstructuredFromIjkGridRepresentationTest)
-
 FESAPI_TEST("Export and import a time series", "[property]", TimeSeriesTest)
-
-FESAPI_TEST("Export and import continuous property series", "[property]", ContinuousPropertySeriesTest)
 
 // fail
 //FESAPI_TEST("Export and import grid connection set on partial grid", "[property]", GridConnectionSetOnPartialGridSet)
@@ -151,3 +139,5 @@ FESAPI_TEST("Export and import an horizon on a seismic line", "[seismic]", Horiz
 
 FESAPI_TEST("Export and import a Witsml well", "[well]", WellTest)
 FESAPI_TEST("Export and import a Witsml trajectory", "[well]", Trajectory)
+
+FESAPI_TEST("Export and import some multi realization properties", "[property]", MultirealPropertyTest)

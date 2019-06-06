@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "BoundaryFeatureInterpretationTest.h"
+#include "AbstractObjectTest.h"
 #include <iostream>
 
 namespace COMMON_NS {
@@ -28,8 +28,13 @@ namespace COMMON_NS {
 namespace resqml2_0_1test {
 	class FaultTest;
 
-	class FaultInterpretationTest : public BoundaryFeatureInterpretationTest {
+	class FaultInterpretationTest : public commontest::AbstractObjectTest {
 	public:
+		static const char* faultUuid;
+		static const char* faultTitle;
+		static const char* defaultUuid;
+		static const char* defaultTitle;
+
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,
 		* exising .epc file will be erased. 

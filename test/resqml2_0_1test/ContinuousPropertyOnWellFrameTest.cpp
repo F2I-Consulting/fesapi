@@ -34,28 +34,28 @@ const char* ContinuousPropertyOnWellFrameTest::defaultUuid = "6e4ca2c9-6780-44bd
 const char* ContinuousPropertyOnWellFrameTest::defaultTitle = "Continuous Property on well frame Test";
 
 ContinuousPropertyOnWellFrameTest::ContinuousPropertyOnWellFrameTest(const string & epcDocPath)
-	: ContinuousPropertyTest(epcDocPath, defaultUuid, defaultTitle, WellboreFrameRepresentationTest::defaultUuid, WellboreFrameRepresentationTest::defaultTitle) {
+	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
 ContinuousPropertyOnWellFrameTest::ContinuousPropertyOnWellFrameTest(EpcDocument * epcDoc, bool init)
-	: ContinuousPropertyTest(epcDoc, defaultUuid, defaultTitle, WellboreFrameRepresentationTest::defaultUuid, WellboreFrameRepresentationTest::defaultTitle) {
+	: commontest::AbstractObjectTest(epcDoc) {
 	if (init)
-		this->initEpcDoc();
+		initEpcDoc();
 	else
-		this->readEpcDoc();
+		readEpcDoc();
 }
 
 void ContinuousPropertyOnWellFrameTest::initEpcDocHandler() {
-	// creating an IJK grid
-	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(this->epcDoc, true);
-	RESQML2_0_1_NS::WellboreFrameRepresentation * frame = static_cast<RESQML2_0_1_NS::WellboreFrameRepresentation *>(this->epcDoc->getDataObjectByUuid(WellboreFrameRepresentationTest::defaultUuid));
+	// creating a wellbore frame
+	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(epcDoc, true);
+	RESQML2_0_1_NS::WellboreFrameRepresentation * frame = static_cast<RESQML2_0_1_NS::WellboreFrameRepresentation *>(epcDoc->getDataObjectByUuid(WellboreFrameRepresentationTest::defaultUuid));
 
 	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
+	AbstractHdfProxy* hdfProxy = epcDoc->getHdfProxySet()[0];
 
 	// creating the ContinuousProperty
 	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = epcDoc->createContinuousProperty(
-		frame, this->uuid, this->title,
+		frame, defaultUuid, defaultTitle,
 		1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__nodes,
 		gsoap_resqml2_0_1::resqml2__ResqmlUom__m,
@@ -70,10 +70,10 @@ void ContinuousPropertyOnWellFrameTest::initEpcDocHandler() {
 
 void ContinuousPropertyOnWellFrameTest::readEpcDocHandler() {
 	// reading dependencies
-	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(this->epcDoc, false);
+	WellboreFrameRepresentationTest * frameTest = new WellboreFrameRepresentationTest(epcDoc, false);
 
 	// getting the ContinuousPropertySeries
-	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = this->epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::ContinuousProperty>(uuid);
+	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::ContinuousProperty>(defaultUuid);
 
 	// ************************************
 	// reading the ContinuousProperty
@@ -94,14 +94,13 @@ void ContinuousPropertyOnWellFrameTest::readEpcDocHandler() {
 	// getValuesCountOfPatch
 	REQUIRE(continuousProperty->getValuesCountOfPatch(0) == 5);
 
-	double* values = new double[5];
+	double values[] = { 0,0,0,0,0 };
 	continuousProperty->getDoubleValuesOfPatch(0, values);
 	REQUIRE(values[0] == 0.1);
 	REQUIRE(values[1] == 1.2);
 	REQUIRE(values[2] == 2.3);
 	REQUIRE(values[3] == 3.4);
 	REQUIRE(values[4] == 4.5);
-	delete[] values;
 
 	// cleaning
 	delete frameTest;
