@@ -16,16 +16,27 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "AbstractSurfaceRepresentationTest.h"
+#pragma once
 
-using namespace std;
-using namespace resqml2_0_1test;
+#include "AbstractObjectTest.h"
+#include <iostream>
 
-AbstractSurfaceRepresentationTest::AbstractSurfaceRepresentationTest(const std::string & epcDocPath, const string & uuid, const string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInLocalCrs) 
-	: AbstractRepresentationTest(epcDocPath, uuid, title, xyzPointCountOfAllPatches, xyzPointsOfAllPatchesInLocalCrs) {
+namespace COMMON_NS {
+	class EpcDocument;
 }
 
-AbstractSurfaceRepresentationTest::AbstractSurfaceRepresentationTest(COMMON_NS::EpcDocument* epcDoc, const string & uuid, const string & title, const ULONG64 & xyzPointCountOfAllPatches, double * xyzPointsOfAllPatchesInLocalCrs)
-	: AbstractRepresentationTest(epcDoc, uuid, title, xyzPointCountOfAllPatches, xyzPointsOfAllPatchesInLocalCrs) {
-}
+namespace resqml2_0_1test {
+	class MultirealPropertyTest : public commontest::AbstractObjectTest {
+	public:
+		static const char* defaultUuidReal0;
+		static const char* defaultUuidReal1;
+		static const char* defaultUuidReal10;
+		static const char* defaultUuidReal15;
 
+		MultirealPropertyTest(const std::string & epcDocPath);
+		MultirealPropertyTest(COMMON_NS::EpcDocument * epcDoc, bool init);
+	protected:
+		void initEpcDocHandler();
+		void readEpcDocHandler();
+	};
+}

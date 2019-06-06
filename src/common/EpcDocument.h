@@ -162,8 +162,8 @@ namespace COMMON_NS
 
 		enum openingMode { READ_ONLY = 0, READ_WRITE = 1, OVERWRITE = 2 };
 
-		DLL_IMPORT_OR_EXPORT EpcDocument(const std::string & fileName, const openingMode & hdf5PermissionAccess = READ_ONLY);
-		DLL_IMPORT_OR_EXPORT EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, const openingMode & hdf5PermissionAccess = READ_ONLY);
+		DLL_IMPORT_OR_EXPORT EpcDocument(const std::string & fileName, openingMode hdfPermissionAccess = READ_ONLY);
+		DLL_IMPORT_OR_EXPORT EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, openingMode hdfPermissionAccess = READ_ONLY);
 
 		/**
 		* The destructor frees all allocated ressources.
@@ -185,7 +185,7 @@ namespace COMMON_NS
 		* If already opened, the epc document must be closed before to open a new one.
 		* Don't forget to call close() before to destroy this object.
 		*/
-		DLL_IMPORT_OR_EXPORT void open(const std::string & fileName, const openingMode & hdf5PermissionAccess = READ_ONLY);
+		DLL_IMPORT_OR_EXPORT void open(const std::string & fileName, const openingMode & hdfPermissionAccess = READ_ONLY);
 	
 		/**
 		 * Free all ressources contained in this package.
@@ -198,7 +198,7 @@ namespace COMMON_NS
 		 * Set the file path which will be used for future serialization and deserialization
 		 * Will add the standard epc extension to the filePath is not already present.
 		 */
-		DLL_IMPORT_OR_EXPORT void setFilePath(const std::string & filePath);
+		DLL_IMPORT_OR_EXPORT void setFilePath(const std::string & fp);
 
 		/**
 		* Serialize the package by serializing all the gsoap wrappers and by zipping the package.

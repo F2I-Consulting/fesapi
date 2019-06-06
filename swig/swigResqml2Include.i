@@ -481,6 +481,10 @@ namespace RESQML2_NS
 		
 		gsoap_resqml2_0_1::resqml2__IndexableElements getAttachmentKind() const;
 		
+		bool hasRealizationIndex() const;
+		ULONG64 getRealizationIndex() const;
+		void setRealizationIndex(ULONG64 realizationIndex);
+		
 		void setTimeIndex(const unsigned int & timeIndex, TimeSeries * ts);
 		void setTimeStep(const unsigned int & timeStep);
 		TimeSeries* getTimeSeries() const;

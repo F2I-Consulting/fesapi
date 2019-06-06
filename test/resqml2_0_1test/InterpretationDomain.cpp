@@ -26,7 +26,6 @@ under the License.
 
 #include "resqml2_0_1/FaultInterpretation.h"
 #include <stdexcept>
-#include "../config.h"
 
 using namespace std;
 using namespace resqml2_0_1test;
@@ -49,11 +48,10 @@ InterpretationDomain::InterpretationDomain(EpcDocument* epcDoc, bool init)
 
 void InterpretationDomain::initEpcDoc() {
 
-	FaultInterpretation* faultInterp = epcDoc->getDataObjectByUuid<FaultInterpretation>(uuidFaultInterpretation);
+	FaultInterpretation* faultInterp = epcDoc->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
 	if (faultInterp == nullptr) {
-		FaultInterpretationTest* faultInterpTest = new FaultInterpretationTest(this->epcDoc, true);
-		faultInterp = epcDoc->getDataObjectByUuid<FaultInterpretation>(uuidFaultInterpretation);
-		delete faultInterpTest;
+		FaultInterpretationTest faultInterpTest(epcDoc, true);
+		faultInterp = epcDoc->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
 	}
 
 	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml2__Domain__mixed);

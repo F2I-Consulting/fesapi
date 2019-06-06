@@ -36,15 +36,15 @@ const char* MdDatumTest::defaultUuid = "aa4da18f-5cc8-4bbb-841a-30e4031376fa";
 const char* MdDatumTest::defaultTitle = "Md Datum";
 
 MdDatumTest::MdDatumTest(const string & epcDocPath)
-	: AbstractResqmlDataObjectTest(epcDocPath, defaultUuid, defaultTitle) {
+	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
 MdDatumTest::MdDatumTest(EpcDocument* epcDoc, bool init)
-	: AbstractResqmlDataObjectTest(epcDoc, defaultUuid, defaultTitle) {
+	: commontest::AbstractObjectTest(epcDoc) {
 	if (init)
-			this->initEpcDoc();
-		else
-			this->readEpcDoc();
+		initEpcDoc();
+	else
+		readEpcDoc();
 }
 
 void MdDatumTest::initEpcDocHandler() {
@@ -54,7 +54,7 @@ void MdDatumTest::initEpcDocHandler() {
 	// cleaning
 	delete crsTest;
 
-	MdDatum* mdDatum = epcDoc->createMdDatum(uuid, title, crs, gsoap_resqml2_0_1::resqml2__MdReference__mean_x0020sea_x0020level, 275, 75, 0);
+	MdDatum* mdDatum = epcDoc->createMdDatum(defaultUuid, defaultTitle, crs, gsoap_resqml2_0_1::resqml2__MdReference__mean_x0020sea_x0020level, 275, 75, 0);
 	REQUIRE(mdDatum != nullptr);
 }
 

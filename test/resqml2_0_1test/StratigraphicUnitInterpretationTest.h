@@ -18,14 +18,14 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1test/AbstractFeatureInterpretationTest.h"
+#include "AbstractObjectTest.h"
 
 namespace COMMON_NS {
 	class EpcDocument;
 }
 
 namespace resqml2_0_1test {
-	class StratigraphicUnitInterpretationTest : public AbstractFeatureInterpretationTest {
+	class StratigraphicUnitInterpretationTest : public commontest::AbstractObjectTest {
 	public:
 		static const char* defaultUuid;
 		static const char* defaultTitle;
@@ -36,7 +36,6 @@ namespace resqml2_0_1test {
 		* @param epcDocPath the path of the .epc file (including .epc extension)
 		*/
 		StratigraphicUnitInterpretationTest(const std::string & epcDocPath);
-		StratigraphicUnitInterpretationTest(const std::string & epcDocPath, const std::string & uuid, const std::string & title, const std::string & uuidFeature, const std::string & titleFeature);
 
 		/**
 		* Creation of a testing object from an existing EPC document.
@@ -45,10 +44,8 @@ namespace resqml2_0_1test {
 		* created for reading purpose. According to init value a iniEpcDoc() or readEpcDoc() is called.
 		*/
 		StratigraphicUnitInterpretationTest(COMMON_NS::EpcDocument* epcDoc, bool init);
-		StratigraphicUnitInterpretationTest(COMMON_NS::EpcDocument* epcDoc, const std::string & uuid, const std::string & title, const std::string & uuidFeature, const std::string & titleFeature, bool init);
 	protected:
 		void initEpcDocHandler();
 		void readEpcDocHandler();
 	};
 }
-

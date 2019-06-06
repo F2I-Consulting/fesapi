@@ -33,24 +33,20 @@ namespace commontest {
 	public:
 		/**
 		 * Creation of a testing object from an EPC document path. At serialize() call,
-		 * exising .epc file will be erased. 
+		 * existing .epc file will be erased. 
 		 * @param epcDocPath the path of the .epc file (including .epc extension)
-		 * @param uuid the uuid of the Resqml top level object to test
-		 * @param title the title of the Resqml top level object to test
 		 */
-		AbstractObjectTest(const std::string & epcDocPath, const std::string & uuid, const std::string & title);
+		AbstractObjectTest(const std::string & epcDocPath);
 
 		/**
-		 * Creation of a testing object from an existing EPC document.
+		 * Creation of a test from an existing EPC document.
 		 * Remark: no virtual method should be called in base class constructor (since at the base constructor call.
-		 * it is not possible to decide which implemntation of virtual method run). Thus, no facilities is provided here to 
-		 * directly call iniEpcDoc() or readEpcDoc() depending on the purpose of this testing object (created for initialization or reading purpose).
-		 * Such iniEpcDoc() and readEpcDoc() calls should be made in child classes.
+		 * it is not possible to decide which implementation of virtual method run). Thus, no facilities is provided here to 
+		 * directly call initEpcDoc() or readEpcDoc() depending on the purpose of this testing object (created for initialization or reading purpose).
+		 * Such initEpcDoc() and readEpcDoc() calls should be made in child classes.
 		 * @param epcDoc an existing EPC document
-		 * @param uuid the uuid of the Resqml top level object to test
-		 * @param title the title of the Resqml top level object to test
 		 */
-		AbstractObjectTest(COMMON_NS::EpcDocument * epcDoc, const std::string & uuid, const std::string & title);
+		AbstractObjectTest(COMMON_NS::EpcDocument * epcDoc);
 		
 		/**
 		 * Implementation of AbstractTest::initEpcDoc(). It is checked that the Resqml object to create does not
@@ -64,9 +60,6 @@ namespace commontest {
 		 */
 		void readEpcDoc();
 	protected:
-		const std::string uuid;
-		const std::string title;
-
 		/** 
 		 * As top level Resqml object initialization differs from one unit test to another, 
 		 * it is virtual in this most general testing class.
