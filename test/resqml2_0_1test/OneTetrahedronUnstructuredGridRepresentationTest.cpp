@@ -17,7 +17,6 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "OneTetrahedronUnstructuredGridRepresentationTest.h"
-#include "../config.h"
 #include "../catch.hpp"
 #include "LocalDepth3dCrsTest.h"
 #include "resqml2_0_1/LocalDepth3dCrs.h"
@@ -30,33 +29,37 @@ using namespace COMMON_NS;
 using namespace resqml2_0_1test;
 using namespace RESQML2_NS;
 
+const char* OneTetrahedronUnstructuredGridRepresentationTest::defaultUuid = "6f1d493d-3da5-43ab-8f57-a508f9590eb8";
+const char* OneTetrahedronUnstructuredGridRepresentationTest::defaultTitle = "One Tetrahedron Unstructured Grid Representation Test";
+double OneTetrahedronUnstructuredGridRepresentationTest::nodes[] = { 0,0,300, 700,0,350, 0,150,300, 0,0,500 };
+
 OneTetrahedronUnstructuredGridRepresentationTest::OneTetrahedronUnstructuredGridRepresentationTest(const string & epcDocPath)
-	: UnstructuredGridRepresentationTest(epcDocPath, uuidOneTetrahedronUnstructuredGridRepresentation, titleOneTetrahedronUnstructuredGridRepresentation, nodesCountOneTetrahedronUnstructuredGridRepresentation, nodesOneTetrahedronUnstructuredGridRepresentation) {
+	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
 OneTetrahedronUnstructuredGridRepresentationTest::OneTetrahedronUnstructuredGridRepresentationTest(EpcDocument * epcDoc, bool init)
-	: UnstructuredGridRepresentationTest(epcDoc, uuidOneTetrahedronUnstructuredGridRepresentation, titleOneTetrahedronUnstructuredGridRepresentation, nodesCountOneTetrahedronUnstructuredGridRepresentation, nodesOneTetrahedronUnstructuredGridRepresentation) {
+	: commontest::AbstractObjectTest(epcDoc) {
 	if (init)
-		this->initEpcDoc();
+		initEpcDoc();
 	else
-		this->readEpcDoc();
+		readEpcDoc();
 }
 
 void OneTetrahedronUnstructuredGridRepresentationTest::initEpcDocHandler() {
 	// getting the local depth 3d crs
-	LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(this->epcDoc, true);
-	RESQML2_0_1_NS::LocalDepth3dCrs* crs = static_cast<RESQML2_0_1_NS::LocalDepth3dCrs*>(this->epcDoc->getDataObjectByUuid(LocalDepth3dCrsTest::defaultUuid));
+	LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(epcDoc, true);
+	RESQML2_0_1_NS::LocalDepth3dCrs* crs = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 
 	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
+	AbstractHdfProxy* hdfProxy = epcDoc->getHdfProxySet()[0];
 
 	// creating the unstructured grid
-	RESQML2_0_1_NS::UnstructuredGridRepresentation* tetraGrid = this->epcDoc->createUnstructuredGridRepresentation(crs, this->uuid, this->title, 1);
+	RESQML2_0_1_NS::UnstructuredGridRepresentation* tetraGrid = epcDoc->createUnstructuredGridRepresentation(crs, defaultUuid, defaultTitle, 1);
 	REQUIRE(tetraGrid != nullptr);
 	unsigned char faceRightHandness[4] = { 0, 0, 1, 1 };
 	ULONG64 faceIndicesPerCell[4] = { 0, 1, 2, 3 };
 	ULONG64 nodeIndicesPerCell[12] = { 0, 1, 2, 1, 2, 3, 0, 1, 3, 0, 2, 3 };
-	tetraGrid->setTetrahedraOnlyGeometry(faceRightHandness, this->xyzPointsOfAllPatchesInLocalCrs, 4, 4, hdfProxy, faceIndicesPerCell, nodeIndicesPerCell);
+	tetraGrid->setTetrahedraOnlyGeometry(faceRightHandness, nodes, 4, 4, hdfProxy, faceIndicesPerCell, nodeIndicesPerCell);
 
 	// cleaning
 	delete crsTest;
@@ -64,13 +67,10 @@ void OneTetrahedronUnstructuredGridRepresentationTest::initEpcDocHandler() {
 
 void OneTetrahedronUnstructuredGridRepresentationTest::readEpcDocHandler() {
 	// reading the local depth 3d crs
-	LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(this->epcDoc, false);
+	LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(epcDoc, false);
 
 	// getting the unstructured grid
-	RESQML2_0_1_NS::UnstructuredGridRepresentation * unstructuredGrid = static_cast<RESQML2_0_1_NS::UnstructuredGridRepresentation*>(this->epcDoc->getDataObjectByUuid(uuidOneTetrahedronUnstructuredGridRepresentation));
-	
-	// getHdfProxyUuid
-	REQUIRE( unstructuredGrid->getHdfProxyUuid() == uuidHdfProxy);
+	RESQML2_0_1_NS::UnstructuredGridRepresentation * unstructuredGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::UnstructuredGridRepresentation>(defaultUuid);
 
 	// getXyzPointCountOfPatch
 	REQUIRE_THROWS( unstructuredGrid->getXyzPointCountOfPatch(1));
@@ -193,4 +193,3 @@ void OneTetrahedronUnstructuredGridRepresentationTest::readEpcDocHandler() {
 	// cleaning
 	delete crsTest;
 }
-

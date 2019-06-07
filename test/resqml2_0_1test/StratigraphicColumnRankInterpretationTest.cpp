@@ -49,44 +49,30 @@ const char* StratigraphicColumnRankInterpretationTest::defaultUnderburdenInterpU
 const char* StratigraphicColumnRankInterpretationTest::defaultUnderburdenInterpTitle = "Underburden Interp";
 
 StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(const string & epcDocPath)
-	: AbstractFeatureInterpretationTest(epcDocPath, defaultUuid, defaultTitle, StratigraphicOrganizationTest::defaultUuid, StratigraphicOrganizationTest::defaultTitle) {
-}
-
-StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(const string & epcDocPath, const std::string & uuid, const std::string & title, const string & uuidFeature, const string & titleFeature)
-	: AbstractFeatureInterpretationTest(epcDocPath, uuid, title, uuidFeature, titleFeature) {
+	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
 StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(EpcDocument* epcDoc, bool init)
-	: AbstractFeatureInterpretationTest(epcDoc, defaultUuid, defaultTitle, StratigraphicOrganizationTest::defaultUuid, StratigraphicOrganizationTest::defaultTitle) {
+	: commontest::AbstractObjectTest(epcDoc) {
 	if (init)
-			initEpcDoc();
-		else
-			readEpcDoc();
-}
-
-StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(COMMON_NS::EpcDocument*, const std::string & uuid, const std::string & title, const string & uuidFeature, const string & titleFeature, bool)
-	: AbstractFeatureInterpretationTest(epcDocPath, uuid, title, uuidFeature, titleFeature) {
+		initEpcDoc();
+	else
+		readEpcDoc();
 }
 
 void StratigraphicColumnRankInterpretationTest::initEpcDocHandler() {
 	// creating dependencies
-	StratigraphicOrganizationTest* stratiOrgtTest = new StratigraphicOrganizationTest(epcDoc, true);
-	StratigraphicUnitInterpretationTest* overburdenInterpTest = new StratigraphicUnitInterpretationTest(epcDoc, defaultOverburdenInterpUuid, defaultOverburdenInterpTitle, defaultOverburdenUuid, defaultOverburdenTitle, true);
-	StratigraphicUnitInterpretationTest* stratiLayerInterpTest = new StratigraphicUnitInterpretationTest(epcDoc, true);
-	StratigraphicUnitInterpretationTest* underburdenInterpTest = new StratigraphicUnitInterpretationTest(epcDoc, defaultUnderburdenInterpUuid, defaultUnderburdenInterpTitle, defaultUnderburdenUuid, defaultUnderburdenTitle, true);
+	StratigraphicOrganizationTest stratiOrgtTest(epcDoc, true);
+	StratigraphicUnitInterpretationTest overburdenInterpTest(epcDoc, true);
+	StratigraphicUnitInterpretationTest stratiLayerInterpTest(epcDoc, true);
+	StratigraphicUnitInterpretationTest underburdenInterpTest(epcDoc, true);
 
 	OrganizationFeature* stratiOrg = epcDoc->getDataObjectByUuid<OrganizationFeature>(StratigraphicOrganizationTest::defaultUuid);
 	StratigraphicUnitInterpretation* overburdenInterp = epcDoc->getDataObjectByUuid<StratigraphicUnitInterpretation>(defaultOverburdenInterpUuid);
 	StratigraphicUnitInterpretation* stratiLayerInterp = epcDoc->getDataObjectByUuid<StratigraphicUnitInterpretation>(StratigraphicUnitInterpretationTest::defaultUuid);
 	StratigraphicUnitInterpretation* underburdenInterp = epcDoc->getDataObjectByUuid<StratigraphicUnitInterpretation>(defaultUnderburdenInterpUuid);
 
-	// cleaning
-	delete stratiOrgtTest;
-	delete overburdenInterpTest;
-	delete stratiLayerInterpTest;
-	delete underburdenInterpTest;
-
-	StratigraphicColumnRankInterpretation* stratiColumnRank = epcDoc->createStratigraphicColumnRankInterpretationInApparentDepth(stratiOrg, uuid, title, 0);
+	StratigraphicColumnRankInterpretation* stratiColumnRank = epcDoc->createStratigraphicColumnRankInterpretationInApparentDepth(stratiOrg, defaultUuid, defaultTitle, 0);
 	REQUIRE(stratiColumnRank != nullptr);
 	stratiColumnRank->pushBackStratiUnitInterpretation(overburdenInterp);
 	stratiColumnRank->pushBackStratiUnitInterpretation(stratiLayerInterp);
@@ -95,8 +81,7 @@ void StratigraphicColumnRankInterpretationTest::initEpcDocHandler() {
 
 void StratigraphicColumnRankInterpretationTest::readEpcDocHandler()
 {
-	StratigraphicColumnRankInterpretation* stratiColumnRank = epcDoc->getDataObjectByUuid<StratigraphicColumnRankInterpretation>(uuid);
+	StratigraphicColumnRankInterpretation* stratiColumnRank = epcDoc->getDataObjectByUuid<StratigraphicColumnRankInterpretation>(defaultUuid);
 	REQUIRE(stratiColumnRank != nullptr);
 	REQUIRE(stratiColumnRank->getStratigraphicUnitInterpretationSet().size() == 3);
 }
-

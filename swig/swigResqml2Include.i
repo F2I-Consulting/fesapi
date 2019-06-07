@@ -326,33 +326,34 @@ namespace RESQML2_NS
 	{
 	public:
 		unsigned int getGridConnectionSetRepresentationCount() const;
-		GridConnectionSetRepresentation* getGridConnectionSetRepresentation(const unsigned int & index) const;
+		GridConnectionSetRepresentation* getGridConnectionSetRepresentation(unsigned int index) const;
 		virtual ULONG64 getCellCount() const = 0;
 		
 		std::string getParentGridUuid() const;
 		AbstractGridRepresentation* getParentGrid() const;
 		unsigned int getChildGridCount() const;
-		AbstractGridRepresentation* getChildGrid(const unsigned int & index) const;
-		void setParentWindow(ULONG64 * cellIndices, const ULONG64 & cellIndexCount, RESQML2_0_1_NS::UnstructuredGridRepresentation* parentGrid);
-		void setParentWindow(unsigned int * columnIndices, const unsigned int & columnIndexCount,
-			const unsigned int & kLayerIndexRegridStart,
-			unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval,  const unsigned int & intervalCount,
-			AbstractColumnLayerGridRepresentation* parentGrid, double * childCellWeights = nullptr);
+		AbstractGridRepresentation* getChildGrid(unsigned int index) const;
+		void setParentWindow(ULONG64 * cellIndices, ULONG64 cellIndexCount, RESQML2_0_1_NS::UnstructuredGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr);
+		void setParentWindow(unsigned int * columnIndices, unsigned int columnIndexCount,
+			unsigned int kLayerIndexRegridStart,
+			unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval,  unsigned int intervalCount,
+			class AbstractColumnLayerGridRepresentation* parentGrid,
+			COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * childCellWeights = nullptr);
 		void setParentWindow(
-			const unsigned int & iCellIndexRegridStart, unsigned int * childCellCountPerIInterval, unsigned int * parentCellCountPerIInterval,  const unsigned int & iIntervalCount,
-			const unsigned int & jCellIndexRegridStart, unsigned int * childCellCountPerJInterval, unsigned int * parentCellCountPerJInterval,  const unsigned int & jIntervalCount,
-			const unsigned int & kCellIndexRegridStart, unsigned int * childCellCountPerKInterval, unsigned int * parentCellCountPerKInterval,  const unsigned int & kIntervalCount,
-			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
+			unsigned int iCellIndexRegridStart, unsigned int * childCellCountPerIInterval, unsigned int * parentCellCountPerIInterval,  unsigned int iIntervalCount,
+			unsigned int jCellIndexRegridStart, unsigned int * childCellCountPerJInterval, unsigned int * parentCellCountPerJInterval,  unsigned int jIntervalCount,
+			unsigned int kCellIndexRegridStart, unsigned int * childCellCountPerKInterval, unsigned int * parentCellCountPerKInterval,  unsigned int kIntervalCount,
+			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 		void setParentWindow(
-			const unsigned int & iCellIndexRegridStart, unsigned int constantChildCellCountPerIInterval, unsigned int constantParentCellCountPerIInterval, const unsigned int & iIntervalCount,
-			const unsigned int & jCellIndexRegridStart, unsigned int constantChildCellCountPerJInterval, unsigned int constantParentCellCountPerJInterval, const unsigned int & jIntervalCount,
-			const unsigned int & kCellIndexRegridStart, unsigned int constantChildCellCountPerKInterval, unsigned int constantParentCellCountPerKInterval, const unsigned int & kIntervalCount,
-			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
+			unsigned int iCellIndexRegridStart, unsigned int constantChildCellCountPerIInterval, unsigned int constantParentCellCountPerIInterval, unsigned int iIntervalCount,
+			unsigned int jCellIndexRegridStart, unsigned int constantChildCellCountPerJInterval, unsigned int constantParentCellCountPerJInterval, unsigned int jIntervalCount,
+			unsigned int kCellIndexRegridStart, unsigned int constantChildCellCountPerKInterval, unsigned int constantParentCellCountPerKInterval, unsigned int kIntervalCount,
+			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 		void setParentWindow(
-			const unsigned int & iCellIndexRegridStart, unsigned int iChildCellCount, unsigned int iParentCellCount,
-			const unsigned int & jCellIndexRegridStart, unsigned int jChildCellCount, unsigned int jParentCellCount,
-			const unsigned int & kCellIndexRegridStart, unsigned int kChildCellCount, unsigned int kParentCellCount,
-			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
+			unsigned int iCellIndexRegridStart, unsigned int iChildCellCount, unsigned int iParentCellCount,
+			unsigned int jCellIndexRegridStart, unsigned int jChildCellCount, unsigned int jParentCellCount,
+			unsigned int kCellIndexRegridStart, unsigned int kChildCellCount, unsigned int kParentCellCount,
+			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 		void setForcedNonRegridedParentCell(ULONG64 * cellIndices, const ULONG64 & cellIndexCount);	
 		LONG64 getParentCellIndexCount() const;
 		void getParentCellIndices(ULONG64 * parentCellIndices) const;
@@ -480,6 +481,10 @@ namespace RESQML2_NS
 		unsigned int getElementCountPerValue() const;
 		
 		gsoap_resqml2_0_1::resqml2__IndexableElements getAttachmentKind() const;
+		
+		bool hasRealizationIndex() const;
+		ULONG64 getRealizationIndex() const;
+		void setRealizationIndex(ULONG64 realizationIndex);
 		
 		void setTimeIndex(const unsigned int & timeIndex, TimeSeries * ts);
 		void setTimeStep(const unsigned int & timeStep);

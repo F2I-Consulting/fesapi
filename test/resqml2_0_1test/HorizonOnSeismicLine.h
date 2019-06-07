@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractRepresentationTest.h"
+#include "AbstractObjectTest.h"
 #include <string>
 
 namespace COMMON_NS {
@@ -26,7 +26,7 @@ namespace COMMON_NS {
 }
 
 namespace resqml2_0_1test {
-	class HorizonOnSeismicLine : public AbstractRepresentationTest {
+	class HorizonOnSeismicLine : public commontest::AbstractObjectTest {
 	public:
 		static const char* defaultUuid;
 		static const char* defaultTitle;

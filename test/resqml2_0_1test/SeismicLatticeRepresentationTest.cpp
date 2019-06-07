@@ -18,13 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_0_1test/SeismicLatticeRepresentationTest.h"
 #include "../catch.hpp"
-#include "../config.h" 
 #include "resqml2_0_1/SeismicLatticeFeature.h"
 #include "resqml2_0_1/GenericFeatureInterpretation.h"
 #include "resqml2_0_1/Grid2dRepresentation.h"
 #include "resqml2_0_1/LocalDepth3dCrs.h"
 #include "common/HdfProxy.h"
-#include "resqml2_0_1test/AbstractFeatureTest.h"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 
 using namespace std;
@@ -40,12 +38,12 @@ const char* SeismicLatticeRepresentationTest::defaultUuid = "c218fe9a-5080-4322-
 const char* SeismicLatticeRepresentationTest::defaultTitle = "Seismic Grid 2d Representation";
 
 SeismicLatticeRepresentationTest::SeismicLatticeRepresentationTest(const string & epcDocPath)
-	: AbstractSurfaceRepresentationTest(epcDocPath, defaultUuid, defaultTitle, 8, nullptr)
+	: commontest::AbstractObjectTest(epcDocPath)
 {
 }
 
 SeismicLatticeRepresentationTest::SeismicLatticeRepresentationTest(EpcDocument * epcDocument, bool init)
-	: AbstractSurfaceRepresentationTest(epcDocument, defaultUuid, defaultTitle, 8, nullptr)
+	: commontest::AbstractObjectTest(epcDocument)
 {
 	if (init)
 		initEpcDoc();
@@ -63,7 +61,7 @@ void SeismicLatticeRepresentationTest::initEpcDocHandler()
 
 	SeismicLatticeFeature* seismicLattice = epcDoc->createSeismicLattice(defaultUuidFeature, defaultTitleFeature, 2, 2, 150, 152, 4, 2);
 	GenericFeatureInterpretation* seismicLatticeInterp = epcDoc->createGenericFeatureInterpretation(seismicLattice, defaultUuidInterp, defaultTitleInterp);
-	Grid2dRepresentation* seismicLatticeRep = epcDoc->createGrid2dRepresentation(seismicLatticeInterp, crs, uuid, title);
+	Grid2dRepresentation* seismicLatticeRep = epcDoc->createGrid2dRepresentation(seismicLatticeInterp, crs, defaultUuid, defaultTitle);
 	seismicLatticeRep->setGeometryAsArray2dOfLatticePoints3d(4, 2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 250, 200);
 }
 

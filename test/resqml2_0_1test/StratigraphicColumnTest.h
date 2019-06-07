@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1test/AbstractResqmlDataObjectTest.h"
+#include "AbstractObjectTest.h"
 #include <iostream>
 
 namespace COMMON_NS {
@@ -26,7 +26,7 @@ namespace COMMON_NS {
 }
 
 namespace resqml2_0_1test {
-	class StratigraphicColumnTest : public AbstractResqmlDataObjectTest {
+	class StratigraphicColumnTest : public commontest::AbstractObjectTest {
 	public:
 		static const char* defaultUuid;
 		static const char* defaultTitle;
@@ -50,4 +50,3 @@ namespace resqml2_0_1test {
 		void readEpcDocHandler();
 	};
 }
-

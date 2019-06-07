@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractIjkGridRepresentationTest.h"
+#include "AbstractObjectTest.h"
 #include <iostream>
 
 namespace COMMON_NS {
@@ -26,7 +26,7 @@ namespace COMMON_NS {
 }
 
 namespace resqml2_0_1test {
-	class AbstractBigIjkGridRepresentationTest : public AbstractIjkGridRepresentationTest {
+	class AbstractBigIjkGridRepresentationTest : public commontest::AbstractObjectTest {
 	public:
 		const unsigned int iCount;
 		const unsigned int jCount;
@@ -43,22 +43,19 @@ namespace resqml2_0_1test {
 
 		AbstractBigIjkGridRepresentationTest(
 			const std::string & epcDocPath,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount, 
-			const unsigned int & faultCount, 
-			const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
-			const double & faultThrow,
-			const char * defaultUuid, const char * defaultTitle);
+			unsigned int iCount, unsigned int jCount, unsigned int kCount, 
+			unsigned int faultCount, 
+			double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
+			double faultThrow);
 
 		AbstractBigIjkGridRepresentationTest(COMMON_NS::EpcDocument * epcDoc, bool init,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
-			const unsigned int & faultCount,
-			const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
-			const double & faultThrow,
-			const char * defaultUuid, const char * defaultTitle);
+			unsigned int iCount, unsigned int jCount, unsigned int kCount,
+			unsigned int faultCount,
+			double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
+			double faultThrow);
 
 		~AbstractBigIjkGridRepresentationTest() {
-			if (nodesIjkGridRepresentation != nullptr)
-			{
+			if (nodesIjkGridRepresentation != nullptr) {
 				delete[] nodesIjkGridRepresentation;
 			}
 		}
@@ -73,8 +70,7 @@ namespace resqml2_0_1test {
 		 * @param kCount number of cells in the K direction.
 		 * @param faultCount number of faults. Faults are parallel to YZ plane (they fit with i-interfaces). faultCount in [0; iCount[.
 		 */
-		ULONG64 initNodesCountIjkGridRepresentation(const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
-			const unsigned int & faultCount);
+		unsigned long long initNodesCountIjkGridRepresentation(unsigned int iCount, unsigned int jCount, unsigned int kCount, unsigned int faultCount);
 
 		/**
 		 * Initialize generated grid geometry. Result is stored into class variable nodesIjkGridRepresentation.
@@ -91,10 +87,10 @@ namespace resqml2_0_1test {
 		 * @param faultThrow length of the fault throw along z axis.
 		 * @return nodesIjkGridRepresentation.
 		 */
-		double * initNodesIjkGridRepresentation(const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
-			const unsigned int & faultCount,
-			const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
-			const double & faultThrow);
+		double * initNodesIjkGridRepresentation(unsigned int iCount, unsigned int jCount, unsigned int kCount,
+			unsigned int faultCount,
+			double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
+			double faultThrow);
 		
 		/**
 		 * Initialize split coordinate lines informations.
@@ -123,4 +119,3 @@ namespace resqml2_0_1test {
 		void initContinuousProperty(double * continuousPropertyValues);
 	};
 }
-

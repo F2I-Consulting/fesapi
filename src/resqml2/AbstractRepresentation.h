@@ -325,7 +325,7 @@ namespace RESQML2_NS
 
 		// XML forward relationships
 		class AbstractFeatureInterpretation*				interpretation;
-		COMMON_NS::AbstractHdfProxy * 							hdfProxy;
+		COMMON_NS::AbstractHdfProxy * 						hdfProxy;
 		class AbstractLocal3dCrs *							localCrs;
 
 		// XML backward relationships

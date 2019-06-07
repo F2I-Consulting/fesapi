@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "FaultSinglePatchTriangulatedSetRepresentationTest.h"
 #include "../catch.hpp"
-#include "../config.h" 
 #include "resqml2_0_1/TriangulatedSetRepresentation.h"
 #include "resqml2_0_1/FaultInterpretation.h"
 #include "resqml2_0_1/LocalDepth3dCrs.h"
@@ -31,13 +30,16 @@ using namespace resqml2_0_1test;
 using namespace COMMON_NS;
 using namespace RESQML2_0_1_NS;
 
+const char* FaultSinglePatchTriangulatedSetRepresentationTest::defaultUuid = "110124ae-ff4e-478c-90c1-30900e01485e";
+const char* FaultSinglePatchTriangulatedSetRepresentationTest::defaultTitle = "FaultSinglePatchTriangulatedSetRepresentationTest";
+
 FaultSinglePatchTriangulatedSetRepresentationTest::FaultSinglePatchTriangulatedSetRepresentationTest(const string & epcDocPath)
-	: TriangulatedSetRepresentationTest(epcDocPath, uuidFaultSinglePatchTriangulatedSetRepresentation, titleFaultSinglePatchTriangulatedSetRepresentation, nodesCountFaultSinglePatchTriangulatedSetRepresentation, nodesFaultSinglePatchTriangulatedSetRepresentation)
+	: commontest::AbstractObjectTest(epcDocPath)
 {
 }
 
 FaultSinglePatchTriangulatedSetRepresentationTest::FaultSinglePatchTriangulatedSetRepresentationTest(EpcDocument * epcDocument, bool init)
-	: TriangulatedSetRepresentationTest(epcDocument, uuidFaultSinglePatchTriangulatedSetRepresentation, titleFaultSinglePatchTriangulatedSetRepresentation, nodesCountFaultSinglePatchTriangulatedSetRepresentation, nodesFaultSinglePatchTriangulatedSetRepresentation)
+	: commontest::AbstractObjectTest(epcDocument)
 {
 	if (init)
 		initEpcDoc();
@@ -47,10 +49,10 @@ FaultSinglePatchTriangulatedSetRepresentationTest::FaultSinglePatchTriangulatedS
 
 void FaultSinglePatchTriangulatedSetRepresentationTest::initEpcDocHandler()
 {
-	FaultInterpretation * interp = epcDoc->getDataObjectByUuid<FaultInterpretation>(uuidFaultInterpretation);
+	FaultInterpretation * interp = epcDoc->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
 	if (interp == nullptr) {
 		FaultInterpretationTest interpTest(epcDoc, true);
-		interp = epcDoc->getDataObjectByUuid<FaultInterpretation>(uuidFaultInterpretation);
+		interp = epcDoc->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
 	}
 
 	LocalDepth3dCrs * crs = epcDoc->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
@@ -59,24 +61,36 @@ void FaultSinglePatchTriangulatedSetRepresentationTest::initEpcDocHandler()
 		crs = epcDoc->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 	}
 
-	TriangulatedSetRepresentation* rep = epcDoc->createTriangulatedSetRepresentation(interp, crs, uuid, title);
+	TriangulatedSetRepresentation* rep = epcDoc->createTriangulatedSetRepresentation(interp, crs, defaultUuid, defaultTitle);
 	REQUIRE( rep != nullptr );
 
+	double nodesFaultSinglePatchTriangulatedSetRepresentation[] = {
+		150, 0, 200,
+		150, 100, 200,
+		150, 200, 200,
+		250, 0, 300,
+		250, 100, 300,
+		250, 200, 300,
+		300, 0, 350,
+		300, 100, 350,
+		300, 200, 350,
+		450, 0, 500,
+		450, 100, 500,
+		450, 200, 500,
+		500, 0, 550,
+		500, 100, 550,
+		500, 200, 550,
+		600, 0, 650,
+		600, 100, 650,
+		600, 200, 650 };
 	unsigned int triangleNodeIndexFault[60] = {0,4,3, 0,1,4, 1,2,4, 2,5,4,
 		3,7,6, 3,4,7, 4,5,7, 5,8,7,
 		6,10,9, 6,7,10, 7,8,10, 8,11,10,
 		9,13,12, 9,10,13, 10,11,13, 11,14,13,
 		12,16,15, 12,13,16, 13,14,16, 14,17,16 };
-	rep->pushBackTrianglePatch(18, xyzPointsOfAllPatchesInLocalCrs, 20, triangleNodeIndexFault, epcDoc->getHdfProxySet()[0]);
+	rep->pushBackTrianglePatch(18, nodesFaultSinglePatchTriangulatedSetRepresentation, 20, triangleNodeIndexFault, epcDoc->getHdfProxySet()[0]);
 }
 
 void FaultSinglePatchTriangulatedSetRepresentationTest::readEpcDocHandler()
 {
-	// reading dependencies
-	FaultInterpretationTest * interpTest = new FaultInterpretationTest(epcDoc, false);
-	LocalDepth3dCrsTest * crsTest = new LocalDepth3dCrsTest(epcDoc, false);
-
-	// cleaning
-	delete interpTest;
-	delete crsTest;
 }

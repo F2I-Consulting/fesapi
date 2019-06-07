@@ -28,6 +28,8 @@ namespace COMMON_NS {
 namespace witsml2_0test {
 	class WellTest : public commontest::AbstractObjectTest {
 	public:
+		static const char* defaultUuid;
+		static const char* defaultTitle;
 		static const time_t defaultTimestamp;
 
 		/**

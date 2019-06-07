@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractResqmlDataObjectTest.h"
+#include "AbstractObjectTest.h"
 #include <string>
 
 namespace COMMON_NS {
@@ -26,7 +26,7 @@ namespace COMMON_NS {
 }
 
 namespace resqml2_0_1test {
-	class PropertyKindTest : public AbstractResqmlDataObjectTest {
+	class PropertyKindTest : public commontest::AbstractObjectTest {
 	public:
 		static const char* defaultUuid;
 		static const char* defaultTitle;

@@ -19,11 +19,9 @@ under the License.
 #include "AbstractTest.h"
 #include "common/EpcDocument.h"
 #include "catch.hpp"
-#include "config.h"
 
 using namespace std;
 using namespace commontest;
-using namespace resqml2_0_1test;
 
 AbstractTest::AbstractTest(const string & epcDocPath) :
 	epcDoc(nullptr),
@@ -37,7 +35,7 @@ AbstractTest::AbstractTest(COMMON_NS::EpcDocument* epcDoc) :
 
 void AbstractTest::serialize() {
 	epcDoc = new COMMON_NS::EpcDocument(epcDocPath, COMMON_NS::EpcDocument::OVERWRITE);
-	epcDoc->createHdfProxy(uuidHdfProxy, titleHdfProxy, epcDoc->getStorageDirectory(), epcDoc->getName() + ".h5");
+	epcDoc->createHdfProxy("75f5b460-3ccb-4102-a06e-e9c1019769b2", "Hdf Proxy Test", epcDoc->getStorageDirectory(), epcDoc->getName() + ".h5");
 
 	initEpcDoc();
 	
@@ -71,4 +69,3 @@ void AbstractTest::deserialize() {
 
 	delete epcDoc;
 }
-

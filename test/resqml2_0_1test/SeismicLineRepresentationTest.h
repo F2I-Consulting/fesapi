@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractSurfaceRepresentationTest.h"
+#include "AbstractObjectTest.h"
 #include <string>
 
 namespace COMMON_NS {
@@ -26,7 +26,7 @@ namespace COMMON_NS {
 }
 
 namespace resqml2_0_1test {
-	class SeismicLineRepresentationTest : public AbstractSurfaceRepresentationTest {
+	class SeismicLineRepresentationTest : public commontest::AbstractObjectTest {
 	public:
 		static const char* defaultUuidFeatureSet;
 		static const char* defaultTitleFeatureSet;
@@ -56,5 +56,3 @@ namespace resqml2_0_1test {
 		void readEpcDocHandler();
 	};
 }
-
-
