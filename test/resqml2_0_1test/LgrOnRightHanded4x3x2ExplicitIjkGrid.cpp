@@ -85,8 +85,8 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 		parentGrid);
 
 	// creating the same child ijk grid using HDF5 datasets
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridHdf5 = epcDoc->createIjkGridExplicitRepresentation(crs, "38930b30-1325-424e-a1e9-666fa50bfa4f", title, 3, 1, 4);
-	childGridHdf5->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, xyzPointsOfAllPatchesInLocalCrs, hdfProxy);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridHdf5 = epcDoc->createIjkGridExplicitRepresentation(crs, "38930b30-1325-424e-a1e9-666fa50bfa4f", "Child grid HDF5", 3, 1, 4);
+	childGridHdf5->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, hdfProxy);
 	unsigned int one = 1;
 	unsigned int three = 3;
 	unsigned int twotwo[] = { 2,2 };
@@ -97,9 +97,8 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 		0, twotwo, oneone, 2,
 		parentGrid);
 
-	// creating a non constant cell count per interval child ijk grid
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridNonConstant = epcDoc->createIjkGridExplicitRepresentation(crs, "eaf36330-4c0b-40f8-bf07-b2818f09a229", title, 4, 1, 4);
-	childGridNonConstant->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, xyzPointsOfAllPatchesInLocalCrs, hdfProxy);
+	// creating a non constant cell count per interval child ijk grid without geometry
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridNonConstant = epcDoc->createIjkGridExplicitRepresentation(crs, "eaf36330-4c0b-40f8-bf07-b2818f09a229", "Child grid irregular refinement", 4, 1, 4);
 	unsigned int onetwo[] = { 1,2 };
 	unsigned int twothree[] = { 1,2 };
 	childGridNonConstant->setParentWindow(
@@ -113,14 +112,10 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::readEpcDocHandler() {
 	RightHanded4x3x2ExplicitIjkGrid* parentGridTest = new RightHanded4x3x2ExplicitIjkGrid(epcDoc, false);
 
 	// getting the childGrid
-<<<<<<< HEAD
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(uuid);
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridHdf5 = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>("38930b30-1325-424e-a1e9-666fa50bfa4f");
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridNonConstant = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>("eaf36330-4c0b-40f8-bf07-b2818f09a229");
-=======
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(defaultUuid);
->>>>>>> Support for multirealization properties
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* parentGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
+	RESQML2_0_1_NS::AbstractIjkGridRepresentation* childGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>(defaultUuid);
+	RESQML2_0_1_NS::AbstractIjkGridRepresentation* childGridHdf5 = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>("38930b30-1325-424e-a1e9-666fa50bfa4f");
+	RESQML2_0_1_NS::AbstractIjkGridRepresentation* childGridNonConstant = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>("eaf36330-4c0b-40f8-bf07-b2818f09a229");
+	RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
 
 	REQUIRE(childGrid->getCellCount() == 12);
 	REQUIRE(childGrid->getPillarCount() == 8);

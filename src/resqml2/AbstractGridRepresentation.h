@@ -37,8 +37,8 @@ namespace RESQML2_NS
 		* @param	 forceConstantCellCountPerInterval	If true, will assume that the child and parent cell count per interval are constant. Then it will use constant xml array instead of hdf5 array for storage.
 		*												The method will consequently only consider the first cell count per interval value in childCellCountPerInterval and parentCellCountPerInterval as the constant ones.
 		**/
-		gsoap_resqml2_0_1::resqml2__Regrid* createRegrid(const unsigned int & indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval,  const unsigned int & intervalCount, double * childCellWeights,
-			const std::string & dimension, bool forceConstantCellCountPerInterval = false);
+		gsoap_resqml2_0_1::resqml2__Regrid* createRegrid(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount, double * childCellWeights,
+			const std::string & dimension, COMMON_NS::AbstractHdfProxy * proxy = nullptr, bool forceConstantCellCountPerInterval = false);
 
 		/*
 		* @param	dimension					It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
@@ -82,9 +82,9 @@ namespace RESQML2_NS
 		//************************************************************
 
 		/**
-		* Get the vector of all grid connection set rep asociated to this grid instance.
+		* Get the vector of all grid connection set rep associated to this grid instance.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::GridConnectionSetRepresentation*> getGridConnectionSetRepresentationSet() const {return gridConnectionSetRepresentationSet;}
+		DLL_IMPORT_OR_EXPORT const std::vector<RESQML2_NS::GridConnectionSetRepresentation*>& getGridConnectionSetRepresentationSet() const {return gridConnectionSetRepresentationSet;}
 
 		/**
 		 * Get the GridConnectionSetRepresentation count into this EPC document which are associated to this grid.
@@ -96,7 +96,7 @@ namespace RESQML2_NS
 		 * Get a particular ijk parametric grid according to its position in the EPC document.
 		 * It is mainly used in SWIG context for parsing the vector from a non C++ language.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::GridConnectionSetRepresentation* getGridConnectionSetRepresentation(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::GridConnectionSetRepresentation* getGridConnectionSetRepresentation(unsigned int index) const;
 
 
 		//************************************************************
@@ -129,12 +129,13 @@ namespace RESQML2_NS
 		/**
 		* Return the count of child grid in this grid.
 		*/
-		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation* getChildGrid(const unsigned int & index) const {return childGridSet[index];}
+		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation* getChildGrid(unsigned int index) const;
 
 		/**
 		* Indicates that this grid takes place into another unstructured parent grid.
+		* @param	proxy						The HDF proxy where to store the numerical values. If null, then the proxy will be the current one of the grid and if also null, it will be the one of the parent grid.
 		*/
-		DLL_IMPORT_OR_EXPORT void setParentWindow(ULONG64 * cellIndices, const ULONG64 & cellIndexCount, RESQML2_0_1_NS::UnstructuredGridRepresentation* parentGrid);
+		DLL_IMPORT_OR_EXPORT void setParentWindow(ULONG64 * cellIndices, ULONG64 cellIndexCount, RESQML2_0_1_NS::UnstructuredGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr);
 
 		/**
 		* Indicates that this grid takes place into another Column Layer parent grid.
@@ -145,12 +146,14 @@ namespace RESQML2_NS
 		* @param	parentCellCountPerInterval	The count of cells per interval in the parent grid.
 		* @param	intervalCount				The count of intervals. An interval is a portion of cells to regrid which is independant to other portion of cell. Intervals are the same for all the columns.
 		* @param	parentGrid					The parent grid which is regridded.
+		* @param	proxy						The HDF proxy where to store the numerical values. If null, then the proxy will be the current one of the grid and if also null, it will be the one of the parent grid.
 		* @param	childCellWeights			The weights that are proportional to the relative sizes of child cells within each interval. The weights need not to be normalized. The count of double values must be equal to the count of all child cells per column (sum of child cells per interval).
 		*/
-		DLL_IMPORT_OR_EXPORT void setParentWindow(unsigned int * columnIndices, const unsigned int & columnIndexCount,
-			const unsigned int & kLayerIndexRegridStart,
-			unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval,  const unsigned int & intervalCount,
-			class AbstractColumnLayerGridRepresentation* parentGrid, double * childCellWeights = nullptr);
+		DLL_IMPORT_OR_EXPORT void setParentWindow(unsigned int * columnIndices, unsigned int columnIndexCount,
+			unsigned int kLayerIndexRegridStart,
+			unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval,  unsigned int intervalCount,
+			class AbstractColumnLayerGridRepresentation* parentGrid,
+			COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * childCellWeights = nullptr);
 
 		/**
 		* Indicates that this grid takes place into another IJK parent grid.
@@ -167,63 +170,66 @@ namespace RESQML2_NS
 		* @param	parentCellCountPerKInterval	The count of cells per k interval in the parent grid.
 		* @param	kIntervalCount				The count of intervals on k dimension. An interval is a portion of cells to regrid which is independant to other portion of cell.
 		* @param	parentGrid					The parent grid which is regridded.
+		* @param	proxy						The HDF proxy where to store the numerical values. If null, then the proxy will be the current one of the grid and if also null, it will be the one of the parent grid.
 		* @param	iChildCellWeights			The weights that are proportional to the relative i sizes of child cells within each i interval. The weights need not to be normalized. The count of double values must be equal to the count of all child cells on i dimension (sum of child cells per interval).
 		* @param	jChildCellWeights			The weights that are proportional to the relative j sizes of child cells within each j interval. The weights need not to be normalized. The count of double values must be equal to the count of all child cells on j dimension (sum of child cells per interval).
 		* @param	kChildCellWeights			The weights that are proportional to the relative k sizes of child cells within each k interval. The weights need not to be normalized. The count of double values must be equal to the count of all child cells on k dimension (sum of child cells per interval).
 		*/
 		DLL_IMPORT_OR_EXPORT void setParentWindow(
-			const unsigned int & iCellIndexRegridStart, unsigned int * childCellCountPerIInterval, unsigned int * parentCellCountPerIInterval,  const unsigned int & iIntervalCount,
-			const unsigned int & jCellIndexRegridStart, unsigned int * childCellCountPerJInterval, unsigned int * parentCellCountPerJInterval,  const unsigned int & jIntervalCount,
-			const unsigned int & kCellIndexRegridStart, unsigned int * childCellCountPerKInterval, unsigned int * parentCellCountPerKInterval,  const unsigned int & kIntervalCount,
-			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
+			unsigned int iCellIndexRegridStart, unsigned int * childCellCountPerIInterval, unsigned int * parentCellCountPerIInterval,  unsigned int iIntervalCount,
+			unsigned int jCellIndexRegridStart, unsigned int * childCellCountPerJInterval, unsigned int * parentCellCountPerJInterval,  unsigned int jIntervalCount,
+			unsigned int kCellIndexRegridStart, unsigned int * childCellCountPerKInterval, unsigned int * parentCellCountPerKInterval,  unsigned int kIntervalCount,
+			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 
 		/**
 		* Indicates that this grid takes place into another IJK parent grid.
 		* @param	iCellIndexRegridStart				Identifies the first Cell by its i dimension of the regrid window.
-		* @param	constantChildCellCountPerIInterval	The constant count of cells for the unique i interval in this (child) grid.
-		* @param	constantParentCellCountPerIInterval	The constant count of cells for the unique i interval in the parent grid.
+		* @param	constantChildCellCountPerIInterval	The constant count of cells per i interval in this (child) grid.
+		* @param	constantParentCellCountPerIInterval	The constant count of cells per i interval in the parent grid.
 		* @param	iIntervalCount						The count of intervals on i dimension. An interval is a portion of cells to regrid which is independant to other portion of cell.
 		* @param	jCellIndexRegridStart				Identifies the first Cell by its j dimension of the regrid window.
-		* @param	constantChildCellCountPerJInterval	The constant count of cells for the unique j interval in this (child) grid.
-		* @param	constantParentCellCountPerJInterval	The constant count of cells for the unique j interval in the parent grid.
+		* @param	constantChildCellCountPerJInterval	The constant count of cells per j interval in this (child) grid.
+		* @param	constantParentCellCountPerJInterval	The constant count of cells per j interval in the parent grid.
 		* @param	jIntervalCount						The count of intervals on j dimension. An interval is a portion of cells to regrid which is independant to other portion of cell.
 		* @param	kCellIndexRegridStart				Identifies the first Cell by its k dimension of the regrid window.
-		* @param	constantChildCellCountPerKInterval	The constant count of cells for the unique k interval in this (child) grid.
-		* @param	constantParentCellCountPerKInterval	The constant count of cells for the unique k interval in the parent grid.
+		* @param	constantChildCellCountPerKInterval	The constant count of cells per k interval in this (child) grid.
+		* @param	constantParentCellCountPerKInterval	The constant count of cells per k interval in the parent grid.
 		* @param	kIntervalCount						The count of intervals on k dimension. An interval is a portion of cells to regrid which is independant to other portion of cell.
 		* @param	parentGrid							The parent grid which is regridded.
+		* @param	proxy								The HDF proxy where to store the child cell weights values. If null, then the proxy will be the current one of the grid and if also null, it will be the one of the parent grid.
 		* @param	iChildCellWeights					The weights that are proportional to the relative i sizes of child cells within each i interval. The weights need not to be normalized. The count of double values must be equal to the count of all child cells on i dimension (sum of child cells per interval).
 		* @param	jChildCellWeights					The weights that are proportional to the relative j sizes of child cells within each j interval. The weights need not to be normalized. The count of double values must be equal to the count of all child cells on j dimension (sum of child cells per interval).
 		* @param	kChildCellWeights					The weights that are proportional to the relative k sizes of child cells within each k interval. The weights need not to be normalized. The count of double values must be equal to the count of all child cells on k dimension (sum of child cells per interval).
 		*/
 		DLL_IMPORT_OR_EXPORT void setParentWindow(
-			const unsigned int & iCellIndexRegridStart, unsigned int constantChildCellCountPerIInterval, unsigned int constantParentCellCountPerIInterval, const unsigned int & iIntervalCount,
-			const unsigned int & jCellIndexRegridStart, unsigned int constantChildCellCountPerJInterval, unsigned int constantParentCellCountPerJInterval, const unsigned int & jIntervalCount,
-			const unsigned int & kCellIndexRegridStart, unsigned int constantChildCellCountPerKInterval, unsigned int constantParentCellCountPerKInterval, const unsigned int & kIntervalCount,
-			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
+			unsigned int iCellIndexRegridStart, unsigned int constantChildCellCountPerIInterval, unsigned int constantParentCellCountPerIInterval, unsigned int iIntervalCount,
+			unsigned int jCellIndexRegridStart, unsigned int constantChildCellCountPerJInterval, unsigned int constantParentCellCountPerJInterval, unsigned int jIntervalCount,
+			unsigned int kCellIndexRegridStart, unsigned int constantChildCellCountPerKInterval, unsigned int constantParentCellCountPerKInterval, unsigned int kIntervalCount,
+			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 
 		/**
 		* Indicates that this grid takes place into another IJK parent grid.
 		* This method assumes there is only one regrid interval per dimension.
 		* @param	iCellIndexRegridStart		Identifies the first Cell by its i dimension of the regrid window.
-		* @param	iChildCellCount				The count of cells per i interval in this (child) grid.
-		* @param	iParentCellCount			The count of cells per i interval in the parent grid.
+		* @param	iChildCellCount				The count of cells for the unique i interval in this (child) grid.
+		* @param	iParentCellCount			The count of cells for the unique i interval in the parent grid.
 		* @param	jCellIndexRegridStart		Identifies the first Cell by its j dimension of the regrid window.
-		* @param	jChildCellCount				The count of cells per j interval in this (child) grid.
-		* @param	jParentCellCount			The count of cells per j interval in the parent grid.
+		* @param	jChildCellCount				The count of cells for the unique j interval in this (child) grid.
+		* @param	jParentCellCount			The count of cells for the unique j interval in the parent grid.
 		* @param	kCellIndexRegridStart		Identifies the first Cell by its k dimension of the regrid window.
-		* @param	kChildCellCount				The count of cells per k interval in this (child) grid.
-		* @param	kParentCellCount			The count of cells per k interval in the parent grid.
+		* @param	kChildCellCount				The count of cells for the unique k interval in this (child) grid.
+		* @param	kParentCellCount			The count of cells for the unique k interval in the parent grid.
 		* @param	parentGrid					The parent grid which is regridded.
+		* @param	proxy						The HDF proxy where to store the child cell weights values. If null, then the proxy will be the current one of the grid and if also null, it will be the one of the parent grid.
 		* @param	iChildCellWeights			The weights that are proportional to the relative i sizes of child cells. The weights need not to be normalized. The count of double values must be equal to iChildCellCount.
 		* @param	jChildCellWeights			The weights that are proportional to the relative j sizes of child cells. The weights need not to be normalized. The count of double values must be equal to jChildCellCount.
 		* @param	kChildCellWeights			The weights that are proportional to the relative k sizes of child cells. The weights need not to be normalized. The count of double values must be equal to kChildCellCount.
 		*/
 		DLL_IMPORT_OR_EXPORT void setParentWindow(
-			const unsigned int & iCellIndexRegridStart, unsigned int iChildCellCount, unsigned int iParentCellCount,
-			const unsigned int & jCellIndexRegridStart, unsigned int jChildCellCount, unsigned int jParentCellCount,
-			const unsigned int & kCellIndexRegridStart, unsigned int kChildCellCount, unsigned int kParentCellCount,
-			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
+			unsigned int iCellIndexRegridStart, unsigned int iChildCellCount, unsigned int iParentCellCount,
+			unsigned int jCellIndexRegridStart, unsigned int jChildCellCount, unsigned int jParentCellCount,
+			unsigned int kCellIndexRegridStart, unsigned int kChildCellCount, unsigned int kParentCellCount,
+			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 
 		/**
 		* When a parent windows has been defined, this method allows to force some parent cells to be noted as non regridded.
