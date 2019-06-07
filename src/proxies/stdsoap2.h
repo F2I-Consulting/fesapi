@@ -1,5 +1,5 @@
 /*
-        stdsoap2.h 2.8.81
+        stdsoap2.h 2.8.84
 
         gSOAP runtime engine
 
@@ -31,7 +31,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_VERSION 20881
+#define GSOAP_VERSION 20884
 
 #ifdef WITH_SOAPDEFS_H
 # include "soapdefs.h"          /* include user-defined stuff in soapdefs.h */
@@ -1378,12 +1378,6 @@ extern "C" {
 #endif
 
 #ifdef __APPLE__
-# ifdef __cplusplus
-#  ifndef isnan
-extern "C" int isnan(double);
-extern "C" int isinf(double);
-#  endif
-# endif
 # ifndef HAVE_ISNAN
 #  define HAVE_ISNAN
 # endif
