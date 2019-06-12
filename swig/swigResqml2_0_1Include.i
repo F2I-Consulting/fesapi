@@ -2969,6 +2969,14 @@ namespace RESQML2_0_1_NS
 		
 		unsigned int getColumnCount() const;
 		unsigned int getPillarCount() const;
+		
+		unsigned int getIPillarFromGlobalIndex(unsigned int globalIndex) const;
+		unsigned int getJPillarFromGlobalIndex(unsigned int globalIndex) const;
+		unsigned int getGlobalIndexPillarFromIjIndex(unsigned int iPillar, unsigned int jPillar) const;
+		unsigned int getIColumnFromGlobalIndex(unsigned int globalIndex) const;
+		unsigned int getJColumnFromGlobalIndex(unsigned int globalIndex) const;
+		unsigned int getGlobalIndexColumnFromIjIndex(unsigned int iColumn, unsigned int jColumn) const;
+		unsigned int getGlobalIndexCellFromIjkIndex(unsigned int iCell, unsigned int jCell, unsigned int kCell) const;
 
 		bool isRightHanded() const;
 
@@ -2979,7 +2987,7 @@ namespace RESQML2_0_1_NS
 		
 		void loadSplitInformation();
 		void unloadSplitInformation();
-		ULONG64 getXyzPointIndexFromCellCorner(const unsigned int & iCell, const unsigned int & jCell, const unsigned int & kCell, const unsigned int & corner) const;
+		ULONG64 getXyzPointIndexFromCellCorner(unsigned int iCell, unsigned int jCell, unsigned int kCell, unsigned int corner) const;
 		
 		void getPillarGeometryIsDefined(bool * pillarGeometryIsDefined, bool reverseIAxis = false, bool reverseJAxis = false) const;
 		bool hasEnabledCellInformation() const;
@@ -2988,6 +2996,8 @@ namespace RESQML2_0_1_NS
 		
 		void getXyzPointsOfKInterfaceOfPatch(const unsigned int & kInterface, const unsigned int & patchIndex, double * xyzPoints);
 		virtual void getXyzPointsOfKInterfaceSequenceOfPatch(const unsigned int & kInterfaceStart, const unsigned int & kInterfaceEnd, const unsigned int & patchIndex, double * xyzPoints);
+		
+		virtual bool isNodeGeometryCompressed() const;
 		
 		gsoap_resqml2_0_1::resqml2__KDirection getKDirection() const;
 		

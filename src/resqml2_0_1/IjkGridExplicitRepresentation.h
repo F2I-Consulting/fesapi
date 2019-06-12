@@ -118,6 +118,11 @@ namespace RESQML2_0_1_NS
 			const std::string & splitCoordinateLineColumnCumulativeCount = "", const std::string & splitCoordinateLineColumns = "",
 			const std::string & definedPillars = "");
 
+		/**
+		* Check wether the node geometry dataset is compressed or not.
+		*/
+		DLL_IMPORT_OR_EXPORT bool isNodeGeometryCompressed() const;
+
 		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const;
 	};
 }

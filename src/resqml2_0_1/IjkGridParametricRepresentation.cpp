@@ -89,22 +89,20 @@ void IjkGridParametricRepresentation::BSpline::checkIfParametersIncreaseOrDecrea
 
 	// initialization
 	for (size_t i = 0; i < parameter.size() - 1; ++i) {
-		if (parameter[i] == parameter[i] &&
-			parameter[i + 1] == parameter[i + 1]) {
-			if (parameter[i + 1] > parameter[i]) {
-				areParametersIncreasing = true;
-				break;
-			}
-			else if (parameter[i + 1] < parameter[i]) {
-				areParametersIncreasing = false;
-				break;
-			}
-			else {
-				throw invalid_argument("Control points with equal parameter are not supported yet.");
-			}
+		if (parameter[i] != parameter[i] || parameter[i + 1] != parameter[i + 1]) {
+			throw invalid_argument("Control points with NaN parameter are not supported yet.");
+		}
+
+		if (parameter[i + 1] > parameter[i]) {
+			areParametersIncreasing = true;
+			break;
+		}
+		else if (parameter[i + 1] < parameter[i]) {
+			areParametersIncreasing = false;
+			break;
 		}
 		else {
-			throw invalid_argument("Control points with NaN parameter are not supported yet.");
+			throw invalid_argument("Control points with equal parameter are not supported yet.");
 		}
 	}
 
@@ -191,10 +189,13 @@ unsigned int IjkGridParametricRepresentation::getControlPointMaxCountPerPillar()
 	}
 	resqml2__Point3dParametricArray* points = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
 	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__ParametricLineArray) {
-		return static_cast<resqml2__ParametricLineArray*>(points->ParametricLines)->KnotCount;
+		const ULONG64 result = static_cast<resqml2__ParametricLineArray*>(points->ParametricLines)->KnotCount;
+		if (result > (std::numeric_limits<unsigned int>::max)())
+			throw std::out_of_range("There are too many knot counts");
+		return static_cast<unsigned int>(result);
 	}
-	else
-		throw std::logic_error("Not yet implemented");
+
+	throw std::logic_error("Not yet implemented");
 }
 
 void IjkGridParametricRepresentation::getControlPoints(double * controlPoints, bool reverseIAxis, bool reverseJAxis, bool reverseKAxis) const
@@ -1981,4 +1982,19 @@ gsoap_resqml2_0_1::resqml2__KDirection IjkGridParametricRepresentation::computeK
 	return result < 0
 		? gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__down  // arbitrary default
 		: static_cast<gsoap_resqml2_0_1::resqml2__KDirection>(result);
+}
+
+bool IjkGridParametricRepresentation::isNodeGeometryCompressed() const {
+	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
+	if (geom == nullptr) {
+		throw invalid_argument("There is no geometry on this grid.");
+	}
+	resqml2__Point3dParametricArray* points = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
+
+	if (points->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
+		return hdfProxy->isCompressed(static_cast<resqml2__DoubleHdf5Array*>(points->Parameters)->Values->PathInHdfFile);
+	}
+	else {
+		throw logic_error("Non floating point coordinate line parameters are not implemented yet");
+	}
 }

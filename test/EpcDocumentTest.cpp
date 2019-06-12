@@ -29,4 +29,3 @@ EpcDocumentTest::EpcDocumentTest(const string & epcDocPath)
 EpcDocumentTest::EpcDocumentTest(EpcDocument * epcDoc)
 	: AbstractTest(epcDoc) {
 }
-
