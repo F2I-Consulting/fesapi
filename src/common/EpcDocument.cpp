@@ -1661,7 +1661,12 @@ COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_resqml2_0_1::eml20__
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(RockFluidOrganizationInterpretation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(RockFluidUnitInterpretation)
 	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(RockFluidUnitFeature)
-	else if CREATE_RESQML_2_0_1_FESAPI_PARTIAL_WRAPPER(HdfProxy)
+	else if (resqmlContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
+	{
+		COMMON_NS::AbstractHdfProxy* result = make_partial_hdf_proxy(getGsoapContext(), dor->UUID, dor->Title);
+		addFesapiWrapperAndDeleteItIfException(result);
+		return result;
+	}
 
 	throw invalid_argument("The content type " + resqmlContentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
 }
@@ -1674,7 +1679,7 @@ COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_eml2_1::eml21__DataO
 	if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Well)
 	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Wellbore)
 	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Trajectory)
-	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
+	else if (resqmlContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		COMMON_NS::AbstractHdfProxy* result = make_partial_hdf_proxy(getGsoapContext(), dor->Uuid, dor->Title);
 		addFesapiWrapperAndDeleteItIfException(result);
@@ -1692,6 +1697,12 @@ COMMON_NS::AbstractObject* EpcDocument::createPartial(gsoap_eml2_2::eml22__DataO
 	if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::ToolErrorModel)
 	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::ErrorTerm)
 	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::WeightingFunction)
+	else if (resqmlContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
+	{
+		COMMON_NS::AbstractHdfProxy* result = make_partial_hdf_proxy(getGsoapContext(), dor->Uuid, dor->Title);
+		addFesapiWrapperAndDeleteItIfException(result);
+		return result;
+	}
 
 	throw invalid_argument("The content type " + resqmlContentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
 }

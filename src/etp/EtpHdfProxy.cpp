@@ -429,3 +429,7 @@ bool EtpHdfProxy::exist(const std::string & absolutePathInHdfFile) const
 	throw logic_error("Not implemented yet");
 }
 
+bool EtpHdfProxy::isCompressed(const std::string & datasetName)
+{
+	throw logic_error("Not implemented yet");
+}
