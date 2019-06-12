@@ -19,11 +19,9 @@ under the License.
 #include "AbstractTest.h"
 #include "common/EpcDocument.h"
 #include "catch.hpp"
-#include "config.h"
 
 using namespace std;
 using namespace commontest;
-using namespace resqml2_0_1test;
 
 AbstractTest::AbstractTest(const string & epcDocPath) :
 	epcDoc(nullptr),
@@ -37,7 +35,7 @@ AbstractTest::AbstractTest(COMMON_NS::EpcDocument* epcDoc) :
 
 void AbstractTest::serialize() {
 	epcDoc = new COMMON_NS::EpcDocument(epcDocPath, COMMON_NS::EpcDocument::OVERWRITE);
-	epcDoc->createHdfProxy(uuidHdfProxy, titleHdfProxy, epcDoc->getStorageDirectory(), epcDoc->getName() + ".h5");
+	epcDoc->createHdfProxy("75f5b460-3ccb-4102-a06e-e9c1019769b2", "Hdf Proxy Test", epcDoc->getStorageDirectory(), epcDoc->getName() + ".h5");
 
 	initEpcDoc();
 	
@@ -50,16 +48,17 @@ void AbstractTest::deserialize() {
 	epcDoc = new COMMON_NS::EpcDocument(epcDocPath);
 
 	std::string validationResult = epcDoc->deserialize();
-	if (validationResult.size() > 0)
-		cout << "Validation error: " << validationResult << endl; 
-	REQUIRE( validationResult.size() == 0 );
+	if (!validationResult.empty()) {
+		cout << "Validation error: " << validationResult << endl;
+	}
+	REQUIRE( validationResult.empty() );
 	
-	REQUIRE( this->epcDoc->getHdfProxySet().size() == 1 );
+	REQUIRE( epcDoc->getHdfProxySet().size() == 1 );
 
-	vector<string> warningSet = this->epcDoc->getWarnings();
-	if (warningSet.size() > 0) {
-		cout << "EPC document " << this->epcDoc->getName() << ".epc deserialized with " << warningSet.size() << " warning(s)" << endl;
-		for (size_t i=0; i<warningSet.size(); ++i){
+	vector<string> warningSet = epcDoc->getWarnings();
+	if (!warningSet.empty()) {
+		cout << "EPC document " << epcDoc->getName() << ".epc deserialized with " << warningSet.size() << " warning(s)" << endl;
+		for (size_t i=0; i < warningSet.size(); ++i){
 			cout << "Warning " << i+1 << ": " << warningSet[i] << endl;
 		}
 		cout << endl;
@@ -70,4 +69,3 @@ void AbstractTest::deserialize() {
 
 	delete epcDoc;
 }
-

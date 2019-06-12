@@ -20,7 +20,6 @@ under the License.
 
 #include "catch.hpp"
 
-#include "config.h"
 #include "resqml2_0_1test/WellboreInterpretationTest.h"
 #include "resqml2_0_1test/WellboreTrajectoryRepresentationTest.h"
 
@@ -38,41 +37,36 @@ const char* WellboreFrameRepresentationTest::defaultUuid = "0047500b-cf08-47c0-8
 const char* WellboreFrameRepresentationTest::defaultTitle = "Wellbore Frame Representation";
 
 WellboreFrameRepresentationTest::WellboreFrameRepresentationTest(const string & epcDocPath)
-	: AbstractRepresentationTest(epcDocPath, defaultUuid, defaultTitle) {
+	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
 WellboreFrameRepresentationTest::WellboreFrameRepresentationTest(EpcDocument * epcDoc, bool init)
-	: AbstractRepresentationTest(epcDoc, defaultUuid, defaultTitle) {
+	: commontest::AbstractObjectTest(epcDoc) {
 	if (init)
-		this->initEpcDoc();
+		initEpcDoc();
 	else
-		this->readEpcDoc();
+		readEpcDoc();
 }
 
 void WellboreFrameRepresentationTest::initEpcDocHandler() {
 	// creating dependencies
-	WellboreInterpretationTest * interpTest = new WellboreInterpretationTest(this->epcDoc, true);
-	WellboreTrajectoryRepresentationTest * trajTest = new WellboreTrajectoryRepresentationTest(this->epcDoc, true);
+	WellboreTrajectoryRepresentationTest trajTest(epcDoc, true);
 
-	WellboreInterpretation * interp = static_cast<WellboreInterpretation*>(this->epcDoc->getDataObjectByUuid(WellboreInterpretationTest::defaultUuid));
-	WellboreTrajectoryRepresentation * traj = static_cast<WellboreTrajectoryRepresentation*>(this->epcDoc->getDataObjectByUuid(WellboreTrajectoryRepresentationTest::defaultUuid));
-
-	// cleaning
-	delete interpTest;
-	delete trajTest;
+	WellboreInterpretation * interp = static_cast<WellboreInterpretation*>(epcDoc->getDataObjectByUuid(WellboreInterpretationTest::defaultUuid));
+	WellboreTrajectoryRepresentation * traj = static_cast<WellboreTrajectoryRepresentation*>(epcDoc->getDataObjectByUuid(WellboreTrajectoryRepresentationTest::defaultUuid));
 
 	// getting the hdf proxy
-	COMMON_NS::AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
+	COMMON_NS::AbstractHdfProxy* hdfProxy = epcDoc->getHdfProxySet()[0];
 	REQUIRE(hdfProxy != nullptr);
 
 	// WellboreFeature frame
-	WellboreFrameRepresentation* w1i1FrameRep = this->epcDoc->createWellboreFrameRepresentation(interp, uuid, title, traj);
+	WellboreFrameRepresentation* w1i1FrameRep = epcDoc->createWellboreFrameRepresentation(interp, defaultUuid, defaultTitle, traj);
 	double logMds[5] = { 0, 250, 500, 750, 1200 };
 	w1i1FrameRep->setMdValues(logMds, 5, hdfProxy);
 }
 
 void WellboreFrameRepresentationTest::readEpcDocHandler() {
-	WellboreFrameRepresentation* w1i1FrameRep = this->epcDoc->getDataObjectByUuid<WellboreFrameRepresentation>(defaultUuid);
+	WellboreFrameRepresentation* w1i1FrameRep = epcDoc->getDataObjectByUuid<WellboreFrameRepresentation>(defaultUuid);
 	REQUIRE(w1i1FrameRep != nullptr);
 
 	REQUIRE(w1i1FrameRep->areMdValuesRegularlySpaced() == false);
@@ -89,4 +83,3 @@ void WellboreFrameRepresentationTest::readEpcDocHandler() {
 
 	delete[] logMds;
 }
-

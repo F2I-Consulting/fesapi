@@ -18,14 +18,14 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractLocal3dCrsTest.h"
+#include "AbstractObjectTest.h"
 
 namespace COMMON_NS {
 	class EpcDocument;
 }
 
 namespace resqml2_0_1test {
-	class LocalTime3dCrs : public AbstractLocal3dCrsTest {
+	class LocalTime3dCrs : public commontest::AbstractObjectTest {
 	public:
 		static const char* defaultUuid;
 		static const char* defaultTitle;

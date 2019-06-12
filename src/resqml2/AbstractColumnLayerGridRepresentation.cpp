@@ -37,7 +37,11 @@ unsigned int AbstractColumnLayerGridRepresentation::getKCellCount() const
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		return isTruncated() ? static_cast<resqml2__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->Nk : static_cast<resqml2__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->Nk;
+		const ULONG64 result = isTruncated() ? static_cast<resqml2__AbstractTruncatedColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->Nk : static_cast<resqml2__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_0_1)->Nk;
+		if (result > (std::numeric_limits<unsigned int>::max)()) {
+			throw range_error("The K cell count is superior to unsigned int max");
+		}
+		return static_cast<unsigned int>(result);
 	}
 	else {
 		throw logic_error("Only version 2_0_1 is implemented yet");

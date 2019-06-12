@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_0_1test/Grid2dRepresentationTest.h"
 #include "../catch.hpp"
-#include "../config.h" 
 #include "resqml2_0_1/Horizon.h"
 #include "resqml2_0_1/HorizonInterpretation.h"
 #include "resqml2_0_1/Grid2dRepresentation.h"
@@ -40,12 +39,12 @@ const char* Grid2dRepresentationTest::defaultUuid = "6cbfb84d-f5c8-4595-9e7f-b00
 const char* Grid2dRepresentationTest::defaultTitle = "Grid 2d Representation";
 
 Grid2dRepresentationTest::Grid2dRepresentationTest(const string & epcDocPath)
-	: AbstractSurfaceRepresentationTest(epcDocPath, defaultUuid, defaultTitle, 8, nullptr)
+	: commontest::AbstractObjectTest(epcDocPath)
 {
 }
 
 Grid2dRepresentationTest::Grid2dRepresentationTest(EpcDocument * epcDocument, bool init)
-	: AbstractSurfaceRepresentationTest(epcDocument, defaultUuid, defaultTitle, 8, nullptr)
+	: commontest::AbstractObjectTest(epcDocument)
 {
 	if (init)
 		initEpcDoc();
@@ -63,7 +62,7 @@ void Grid2dRepresentationTest::initEpcDocHandler()
 
 	Horizon* feature = epcDoc->createHorizon(defaultUuidFeature, defaultTitleFeature);
 	HorizonInterpretation* interp = epcDoc->createHorizonInterpretation(feature, defaultUuidInterp, defaultTitleInterp);
-	Grid2dRepresentation* rep = epcDoc->createGrid2dRepresentation(interp, crs, uuid, title);
+	Grid2dRepresentation* rep = epcDoc->createGrid2dRepresentation(interp, crs, defaultUuid, defaultTitle);
 
 	Grid2dRepresentation* supportingRep = epcDoc->getDataObjectByUuid<Grid2dRepresentation>(SeismicLatticeRepresentationTest::defaultUuid);
 	if (supportingRep == nullptr) {

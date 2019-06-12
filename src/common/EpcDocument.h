@@ -230,7 +230,7 @@ namespace COMMON_NS
 		 * Set the file path which will be used for future serialization and deserialization
 		 * Will add the standard epc extension to the filePath is not already present.
 		 */
-		DLL_IMPORT_OR_EXPORT void setFilePath(const std::string & filePath);
+		DLL_IMPORT_OR_EXPORT void setFilePath(const std::string & fp);
 
 		/**
 		* Serialize the package by serializing all the gsoap wrappers and by zipping the package.

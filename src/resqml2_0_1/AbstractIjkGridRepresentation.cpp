@@ -496,7 +496,7 @@ void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool re
 	}
 }
 
-unsigned int AbstractIjkGridRepresentation::getIPillarFromGlobalIndex(const unsigned int & globalIndex) const
+unsigned int AbstractIjkGridRepresentation::getIPillarFromGlobalIndex(unsigned int globalIndex) const
 {
 	if (globalIndex >= getPillarCount())
 		throw invalid_argument("The pillar index is out of range.");
@@ -504,7 +504,7 @@ unsigned int AbstractIjkGridRepresentation::getIPillarFromGlobalIndex(const unsi
 	return globalIndex % (getICellCount() + 1);
 }
 
-unsigned int AbstractIjkGridRepresentation::getJPillarFromGlobalIndex(const unsigned int & globalIndex) const
+unsigned int AbstractIjkGridRepresentation::getJPillarFromGlobalIndex(unsigned int globalIndex) const
 {
 	if (globalIndex >= getPillarCount())
 		throw invalid_argument("The pillar index is out of range.");
@@ -512,7 +512,7 @@ unsigned int AbstractIjkGridRepresentation::getJPillarFromGlobalIndex(const unsi
 	return globalIndex / (getICellCount() + 1);
 }
 
-unsigned int AbstractIjkGridRepresentation::getGlobalIndexPillarFromIjIndex(const unsigned int & iPillar, const unsigned int & jPillar) const
+unsigned int AbstractIjkGridRepresentation::getGlobalIndexPillarFromIjIndex(unsigned int iPillar, unsigned int jPillar) const
 {
 	if (iPillar > getICellCount())
 		throw invalid_argument("The pillar I index is out of range.");
@@ -522,7 +522,7 @@ unsigned int AbstractIjkGridRepresentation::getGlobalIndexPillarFromIjIndex(cons
 	return iPillar + (getICellCount() + 1) * jPillar;
 }
 
-unsigned int AbstractIjkGridRepresentation::getIColumnFromGlobalIndex(const unsigned int & globalIndex) const
+unsigned int AbstractIjkGridRepresentation::getIColumnFromGlobalIndex(unsigned int globalIndex) const
 {
 	if (globalIndex >= getColumnCount())
 		throw invalid_argument("The column index is out of range.");
@@ -530,7 +530,7 @@ unsigned int AbstractIjkGridRepresentation::getIColumnFromGlobalIndex(const unsi
 	return globalIndex % getICellCount();
 }
 
-unsigned int AbstractIjkGridRepresentation::getJColumnFromGlobalIndex(const unsigned int & globalIndex) const
+unsigned int AbstractIjkGridRepresentation::getJColumnFromGlobalIndex(unsigned int globalIndex) const
 {
 	if (globalIndex >= getColumnCount())
 		throw invalid_argument("The column index is out of range.");
@@ -538,7 +538,7 @@ unsigned int AbstractIjkGridRepresentation::getJColumnFromGlobalIndex(const unsi
 	return globalIndex / getICellCount();
 }
 
-unsigned int AbstractIjkGridRepresentation::getGlobalIndexColumnFromIjIndex(const unsigned int & iColumn, const unsigned int & jColumn) const
+unsigned int AbstractIjkGridRepresentation::getGlobalIndexColumnFromIjIndex(unsigned int iColumn, unsigned int jColumn) const
 {
 	if (iColumn >= getICellCount())
 		throw invalid_argument("The column I index is out of range.");
@@ -548,7 +548,7 @@ unsigned int AbstractIjkGridRepresentation::getGlobalIndexColumnFromIjIndex(cons
 	return iColumn + getICellCount() * jColumn;
 }
 
-unsigned int AbstractIjkGridRepresentation::getGlobalIndexCellFromIjkIndex(const unsigned int & iCell, const unsigned int & jCell, const unsigned int & kCell) const
+unsigned int AbstractIjkGridRepresentation::getGlobalIndexCellFromIjkIndex(unsigned int iCell, unsigned int jCell, unsigned int kCell) const
 {
 	if (iCell >= getICellCount())
 		throw invalid_argument("The cell I index is out of range.");
@@ -569,8 +569,7 @@ void AbstractIjkGridRepresentation::loadSplitInformation()
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
-	if (geom->SplitCoordinateLines != nullptr)
-	{
+	if (geom->SplitCoordinateLines != nullptr) {
 		// Read the split information
 		unsigned int* splitPillars = new unsigned int [getSplitCoordinateLineCount()];
 		getPillarsOfSplitCoordinateLines(splitPillars);
@@ -584,19 +583,16 @@ void AbstractIjkGridRepresentation::loadSplitInformation()
 		splittedColumns.first = 0;
 		for (unsigned int splitColumnIndex = 0;
 			splitColumnIndex < columnIndexCumulativeCountPerSplitCoordinateLine[0];
-			++splitColumnIndex)
-		{
+			++splitColumnIndex) {
 			splittedColumns.second.push_back(splitColumnIndices[splitColumnIndex]);
 		}
 		splitInformation[splitPillars[0]].push_back(splittedColumns);
-		for (unsigned int splitCoordinateLineIndex = 1; splitCoordinateLineIndex < getSplitCoordinateLineCount(); ++splitCoordinateLineIndex)
-		{
+		for (unsigned int splitCoordinateLineIndex = 1; splitCoordinateLineIndex < getSplitCoordinateLineCount(); ++splitCoordinateLineIndex) {
 			splittedColumns.first = splitCoordinateLineIndex;
 			splittedColumns.second.clear();
 			for (unsigned int splitColumnIndex = columnIndexCumulativeCountPerSplitCoordinateLine[splitCoordinateLineIndex-1];
 				splitColumnIndex < columnIndexCumulativeCountPerSplitCoordinateLine[splitCoordinateLineIndex];
-				++splitColumnIndex)
-			{
+				++splitColumnIndex) {
 				splittedColumns.second.push_back(splitColumnIndices[splitColumnIndex]);
 			}
 			splitInformation[splitPillars[splitCoordinateLineIndex]].push_back(splittedColumns);
@@ -608,7 +604,7 @@ void AbstractIjkGridRepresentation::loadSplitInformation()
 	}
 }
 
-void AbstractIjkGridRepresentation::loadBlockInformation(const unsigned int & iInterfaceStart, const unsigned int & iInterfaceEnd, const unsigned int & jInterfaceStart, const unsigned int & jInterfaceEnd, const unsigned int & kInterfaceStart, const unsigned int & kInterfaceEnd)
+void AbstractIjkGridRepresentation::loadBlockInformation(unsigned int iInterfaceStart, unsigned int iInterfaceEnd, unsigned int jInterfaceStart, unsigned int jInterfaceEnd, unsigned int kInterfaceStart, unsigned int kInterfaceEnd)
 {
 	if (splitInformation == nullptr)
 		throw invalid_argument("The split information must have been loaded first.");
@@ -642,27 +638,21 @@ void AbstractIjkGridRepresentation::loadBlockInformation(const unsigned int & iI
 
 	// seting mapping between global and local (to the block) split coordinate lines index
 	unsigned int splitCoordinateLineHdfLocalIndex = (iInterfaceEnd - iInterfaceStart + 1) * (jInterfaceEnd - jInterfaceStart + 1);
-	for (unsigned int jPillarIndex = jInterfaceStart; jPillarIndex <= jInterfaceEnd; ++jPillarIndex)
-	{
-		for (unsigned int iPillarIndex = iInterfaceStart; iPillarIndex <= iInterfaceEnd; iPillarIndex++)
-		{
-			unsigned int pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
+	for (unsigned int jPillarIndex = jInterfaceStart; jPillarIndex <= jInterfaceEnd; ++jPillarIndex) {
+		for (unsigned int iPillarIndex = iInterfaceStart; iPillarIndex <= iInterfaceEnd; iPillarIndex++) {
+			const unsigned int pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
 
-			if (splitInformation[pillarIndex].size() != 0)
-			{
+			if (!splitInformation[pillarIndex].empty()) {
 				// here is a split pillar
 
 				// traversing all split coordinate lines corresponding to the current splitted pillar
-				for (unsigned int splitCoordinateLineIndex = 0; splitCoordinateLineIndex < splitInformation[pillarIndex].size(); ++splitCoordinateLineIndex)
-				{
+				for (unsigned int splitCoordinateLineIndex = 0; splitCoordinateLineIndex < splitInformation[pillarIndex].size(); ++splitCoordinateLineIndex) {
 					// traversing adjacent columns, it current column is in the bloc, corresponding coordinate line is added to the selected region
-					for (unsigned int columnIndex = 0; columnIndex < splitInformation[pillarIndex][splitCoordinateLineIndex].second.size(); ++columnIndex)
-					{
-						unsigned int iColumnIndex = getIColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
-						unsigned int jColumnIndex = getJColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
+					for (unsigned int columnIndex = 0; columnIndex < splitInformation[pillarIndex][splitCoordinateLineIndex].second.size(); ++columnIndex) {
+						const unsigned int iColumnIndex = getIColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
+						const unsigned int jColumnIndex = getJColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
 
-						if ((iColumnIndex >= iInterfaceStart && iColumnIndex < iInterfaceEnd) && (jColumnIndex >= jInterfaceStart && jColumnIndex < jInterfaceEnd))
-						{
+						if ((iColumnIndex >= iInterfaceStart && iColumnIndex < iInterfaceEnd) && (jColumnIndex >= jInterfaceStart && jColumnIndex < jInterfaceEnd)) {
 							// here is a split coordinate line impacting the bloc
 							(blockInformation->globalToLocalSplitCoordinateLinesIndex)[splitInformation[pillarIndex][splitCoordinateLineIndex].first] = splitCoordinateLineHdfLocalIndex;
 							++splitCoordinateLineHdfLocalIndex;
@@ -718,7 +708,7 @@ unsigned int AbstractIjkGridRepresentation::getFaceCount() const
 	return faceCount;
 }
 
-bool AbstractIjkGridRepresentation::isColumnEdgeSplitted(const unsigned int & iColumn, const unsigned int & jColumn, const unsigned int & edge) const
+bool AbstractIjkGridRepresentation::isColumnEdgeSplitted(unsigned int iColumn, unsigned int jColumn, unsigned int edge) const
 {
 	if (splitInformation == nullptr)
 		throw invalid_argument("The split information must have been loaded first.");
@@ -754,45 +744,40 @@ bool AbstractIjkGridRepresentation::isColumnEdgeSplitted(const unsigned int & iC
 	// Check split on first pillar of the column edge
 	bool result = false;
 	unsigned int pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
-	if (splitInformation[pillarIndex].size() != 0)
-	{
+	if (!splitInformation[pillarIndex].empty()) {
 		unsigned int columnIndex = getGlobalIndexColumnFromIjIndex(iColumn, jColumn);
-		for (size_t columnSet = 0; columnSet < splitInformation[pillarIndex].size(); ++columnSet)
-			for (size_t column = 0; column < splitInformation[pillarIndex][columnSet].second.size(); ++column)
-			{
-				if (splitInformation[pillarIndex][columnSet].second[column] == columnIndex)
-				{
+		for (size_t columnSet = 0; columnSet < splitInformation[pillarIndex].size(); ++columnSet) {
+			for (size_t column = 0; column < splitInformation[pillarIndex][columnSet].second.size(); ++column) {
+				if (splitInformation[pillarIndex][columnSet].second[column] == columnIndex) {
 					result = true;
-					for (size_t otherColumn = 0; otherColumn < splitInformation[pillarIndex][columnSet].second.size(); ++otherColumn)
-					{
+					for (size_t otherColumn = 0; otherColumn < splitInformation[pillarIndex][columnSet].second.size(); ++otherColumn) {
 						if (splitInformation[pillarIndex][columnSet].second[otherColumn] == otherColumnIndex)
 							result = false;
 					}
-					if (result == true)
+					if (result == true) {
 						return true;
-					else
-					{
+					}
+					else {
 						columnSet = splitInformation[pillarIndex].size();
 						break;
 					}
 				}
-				else if  (splitInformation[pillarIndex][columnSet].second[column] == otherColumnIndex)
-				{
+				else if (splitInformation[pillarIndex][columnSet].second[column] == otherColumnIndex) {
 					result = true;
-					for (size_t otherColumn = 0; otherColumn < splitInformation[pillarIndex][columnSet].second.size(); ++otherColumn)
-					{
+					for (size_t otherColumn = 0; otherColumn < splitInformation[pillarIndex][columnSet].second.size(); ++otherColumn) {
 						if (splitInformation[pillarIndex][columnSet].second[otherColumn] == columnIndex)
 							result = false;
 					}
-					if (result == true)
+					if (result == true) {
 						return true;
-					else
-					{
+					}
+					else {
 						columnSet = splitInformation[pillarIndex].size();
 						break;
 					}
 				}
 			}
+		}
 	}
 
 	// Check split on second pillar of the column edge
@@ -804,37 +789,32 @@ bool AbstractIjkGridRepresentation::isColumnEdgeSplitted(const unsigned int & iC
 		++jPillarIndex;
 
 	pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
-	if (splitInformation[pillarIndex].size() != 0)
-	{
+	if (!splitInformation[pillarIndex].empty()) {
 		unsigned int columnIndex = getGlobalIndexColumnFromIjIndex(iColumn, jColumn);
-		for (size_t columnSet = 0; columnSet < splitInformation[pillarIndex].size(); ++columnSet)
-			for (size_t column = 0; column < splitInformation[pillarIndex][columnSet].second.size(); ++column)
-			{
-				if (splitInformation[pillarIndex][columnSet].second[column] == columnIndex)
-				{
-					for (size_t otherColumn = 0; otherColumn < splitInformation[pillarIndex][columnSet].second.size(); ++otherColumn)
-					{
+		for (size_t columnSet = 0; columnSet < splitInformation[pillarIndex].size(); ++columnSet) {
+			for (size_t column = 0; column < splitInformation[pillarIndex][columnSet].second.size(); ++column) {
+				if (splitInformation[pillarIndex][columnSet].second[column] == columnIndex) {
+					for (size_t otherColumn = 0; otherColumn < splitInformation[pillarIndex][columnSet].second.size(); ++otherColumn) {
 						if (splitInformation[pillarIndex][columnSet].second[otherColumn] == otherColumnIndex)
 							return false;
 					}
 					return true;
 				}
-				else if (splitInformation[pillarIndex][columnSet].second[column] == otherColumnIndex)
-				{
-					for (size_t otherColumn = 0; otherColumn < splitInformation[pillarIndex][columnSet].second.size(); ++otherColumn)
-					{
+				else if (splitInformation[pillarIndex][columnSet].second[column] == otherColumnIndex) {
+					for (size_t otherColumn = 0; otherColumn < splitInformation[pillarIndex][columnSet].second.size(); ++otherColumn) {
 						if (splitInformation[pillarIndex][columnSet].second[otherColumn] == columnIndex)
 							return false;
 					}
 					return true;
 				}
 			}
+		}
 	}
 
 	return result;
 }
 
-ULONG64 AbstractIjkGridRepresentation::getXyzPointIndexFromCellCorner(const unsigned int & iCell, const unsigned int & jCell, const unsigned int & kCell, const unsigned int & corner) const
+ULONG64 AbstractIjkGridRepresentation::getXyzPointIndexFromCellCorner(unsigned int iCell, unsigned int jCell, unsigned int kCell, unsigned int corner) const
 {
 	if (splitInformation == nullptr)
 		throw invalid_argument("The split information must have been loaded first.");
@@ -858,23 +838,21 @@ ULONG64 AbstractIjkGridRepresentation::getXyzPointIndexFromCellCorner(const unsi
 		++kPointIndex;
 
 	unsigned int pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
-	if (splitInformation[pillarIndex].size() != 0)
-	{
+	if (!splitInformation[pillarIndex].empty()) {
 		unsigned int columnIndex = getGlobalIndexColumnFromIjIndex(iCell, jCell);
-		for (size_t columnSet = 0; columnSet < splitInformation[pillarIndex].size(); ++columnSet)
-			for (size_t column = 0; column < splitInformation[pillarIndex][columnSet].second.size(); ++column)
-			{
-				if (splitInformation[pillarIndex][columnSet].second[column] == columnIndex)
-				{
-					return (getICellCount()+1) * (getJCellCount()+1) + splitInformation[pillarIndex][columnSet].first + kPointIndex * ((getICellCount()+1) * (getJCellCount()+1) + getSplitCoordinateLineCount()); // splitted point
+		for (size_t columnSet = 0; columnSet < splitInformation[pillarIndex].size(); ++columnSet) {
+			for (size_t column = 0; column < splitInformation[pillarIndex][columnSet].second.size(); ++column) {
+				if (splitInformation[pillarIndex][columnSet].second[column] == columnIndex) {
+					return (getICellCount() + 1) * (getJCellCount() + 1) + splitInformation[pillarIndex][columnSet].first + kPointIndex * ((getICellCount() + 1) * (getJCellCount() + 1) + getSplitCoordinateLineCount()); // splitted point
 				}
 			}
+		}
 	}
 
 	return iPillarIndex + jPillarIndex * (getICellCount()+1) + kPointIndex * ((getICellCount()+1) * (getJCellCount()+1) + getSplitCoordinateLineCount()); // non splitted point
 }
 
-void AbstractIjkGridRepresentation::getXyzPointOfBlockFromCellCorner(const unsigned int & iCell, const unsigned int & jCell, const unsigned int & kCell, const unsigned int & corner,
+void AbstractIjkGridRepresentation::getXyzPointOfBlockFromCellCorner(unsigned int iCell, unsigned int jCell, unsigned int kCell, unsigned int corner,
 	const double* xyzPoints, double & x, double & y, double & z) const
 {
 	if (splitInformation == nullptr)
@@ -898,14 +876,11 @@ void AbstractIjkGridRepresentation::getXyzPointOfBlockFromCellCorner(const unsig
 	ULONG64 pointIndex;
 
 	unsigned int pillarIndex = getGlobalIndexPillarFromIjIndex(iPillarIndex, jPillarIndex);
-	if (splitInformation[pillarIndex].size() != 0)
-	{
+	if (!splitInformation[pillarIndex].empty()) {
 		unsigned int columnIndex = getGlobalIndexColumnFromIjIndex(iCell, jCell);
-		for (size_t columnSet = 0; columnSet < splitInformation[pillarIndex].size(); ++columnSet)
-			for (size_t column = 0; column < splitInformation[pillarIndex][columnSet].second.size(); ++column)
-			{
-				if (splitInformation[pillarIndex][columnSet].second[column] == columnIndex)
-				{
+		for (size_t columnSet = 0; columnSet < splitInformation[pillarIndex].size(); ++columnSet) {
+			for (size_t column = 0; column < splitInformation[pillarIndex][columnSet].second.size(); ++column) {
+				if (splitInformation[pillarIndex][columnSet].second[column] == columnIndex) {
 					pointIndex = (blockInformation->globalToLocalSplitCoordinateLinesIndex)[splitInformation[pillarIndex][columnSet].first] + kPointIndex * ((blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) * (blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1) + getBlockSplitCoordinateLineCount()); // splitted point
 					x = xyzPoints[3 * pointIndex];
 					y = xyzPoints[3 * pointIndex + 1];
@@ -913,6 +888,7 @@ void AbstractIjkGridRepresentation::getXyzPointOfBlockFromCellCorner(const unsig
 					return;
 				}
 			}
+		}
 	}
 
 	iPillarIndex -= blockInformation->iInterfaceStart;
@@ -924,7 +900,7 @@ void AbstractIjkGridRepresentation::getXyzPointOfBlockFromCellCorner(const unsig
 	z = xyzPoints[3 * pointIndex + 2];
 }
 
-ULONG64 AbstractIjkGridRepresentation::getXyzPointCountOfKInterfaceOfPatch(const unsigned int & patchIndex) const
+ULONG64 AbstractIjkGridRepresentation::getXyzPointCountOfKInterfaceOfPatch(unsigned int patchIndex) const
 {
 	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(patchIndex));
 	if (geom == nullptr) {
@@ -942,7 +918,7 @@ ULONG64 AbstractIjkGridRepresentation::getXyzPointCountOfBlock() const
 	return (blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1) * (blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1) * (blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1) + (blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1) * getBlockSplitCoordinateLineCount();
 }
 
-void AbstractIjkGridRepresentation::getXyzPointsOfKInterfaceOfPatch(const unsigned int & kInterface, const unsigned int & patchIndex, double * xyzPoints)
+void AbstractIjkGridRepresentation::getXyzPointsOfKInterfaceOfPatch(unsigned int kInterface, unsigned int patchIndex, double * xyzPoints)
 {
 	getXyzPointsOfKInterfaceSequenceOfPatch(kInterface, kInterface, patchIndex, xyzPoints);
 }

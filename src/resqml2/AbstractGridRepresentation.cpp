@@ -91,7 +91,7 @@ vector<Relationship> AbstractGridRepresentation::getAllSourceRelationships() con
 	return result;
 }
 
-RESQML2_NS::GridConnectionSetRepresentation* AbstractGridRepresentation::getGridConnectionSetRepresentation(const unsigned int & index) const
+RESQML2_NS::GridConnectionSetRepresentation* AbstractGridRepresentation::getGridConnectionSetRepresentation(unsigned int index) const
 {
 	if (gridConnectionSetRepresentationSet.size() > index) {
 		return gridConnectionSetRepresentationSet[index];
@@ -156,8 +156,17 @@ AbstractGridRepresentation* AbstractGridRepresentation::getParentGrid() const
 	return nullptr;
 }
 
-gsoap_resqml2_0_1::resqml2__Regrid* AbstractGridRepresentation::createRegrid(const unsigned int & indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, const unsigned int & intervalCount, double * childCellWeights,
-	const std::string & dimension, bool forceConstantCellCountPerInterval)
+AbstractGridRepresentation* AbstractGridRepresentation::getChildGrid(unsigned int index) const
+{
+	if (childGridSet.size() > index) {
+		return childGridSet[index];
+	}
+
+	throw std::out_of_range("The child grid index is out of range.");
+}
+
+gsoap_resqml2_0_1::resqml2__Regrid* AbstractGridRepresentation::createRegrid(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount, double * childCellWeights,
+	const std::string & dimension, COMMON_NS::AbstractHdfProxy * proxy, bool forceConstantCellCountPerInterval)
 {
 	gsoap_resqml2_0_1::resqml2__Regrid* regrid = gsoap_resqml2_0_1::soap_new_resqml2__Regrid(gsoapProxy2_0_1->soap, 1);
 	regrid->InitialIndexOnParentGrid = indexRegridStart;
@@ -178,7 +187,26 @@ gsoap_resqml2_0_1::resqml2__Regrid* AbstractGridRepresentation::createRegrid(con
 		xmlParentCountPerInterval->Count = intervalCount;
 		regrid->Intervals->ParentCountPerInterval = xmlParentCountPerInterval;
 	}
-	else if (hdfProxy != nullptr) {
+	else {
+
+		if (proxy != nullptr) {
+			if (proxy != hdfProxy) {
+				setHdfProxy(proxy);
+			}
+		}
+		else {
+			if (hdfProxy == nullptr) {
+				COMMON_NS::AbstractHdfProxy* const tmp = getParentGrid()->getHdfProxy();
+				if (tmp != nullptr) {
+					setHdfProxy(tmp);
+				}
+			}
+		}
+
+		if (hdfProxy == nullptr) {
+			throw invalid_argument("No Hdf Proxy has been found");
+		}
+
 		gsoap_resqml2_0_1::resqml2__IntegerHdf5Array* hdf5ChildCountPerInterval = gsoap_resqml2_0_1::soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
 		regrid->Intervals->ChildCountPerInterval = hdf5ChildCountPerInterval;
 		hdf5ChildCountPerInterval->NullValue = (numeric_limits<unsigned int>::max)();
@@ -198,11 +226,26 @@ gsoap_resqml2_0_1::resqml2__Regrid* AbstractGridRepresentation::createRegrid(con
 		hdfProxy->writeArrayNd(gsoapProxy2_0_1->uuid, "ParentWindow_" + dimension + "Regrid_ChildCountPerInterval", H5T_NATIVE_UINT, childCellCountPerInterval, &numValues, 1);
 		hdfProxy->writeArrayNd(gsoapProxy2_0_1->uuid, "ParentWindow_" + dimension + "Regrid_ParentCountPerInterval", H5T_NATIVE_UINT, parentCellCountPerInterval, &numValues, 1);
 	}
-	else {
-		throw invalid_argument("The HDF proxy is missing.");
-	}
 	
 	if (childCellWeights != nullptr) {
+		if (proxy != nullptr) {
+			if (proxy != hdfProxy) {
+				setHdfProxy(proxy);
+			}
+		}
+		else {
+			if (hdfProxy == nullptr) {
+				COMMON_NS::AbstractHdfProxy* const tmp = getParentGrid()->getHdfProxy();
+				if (tmp != nullptr) {
+					setHdfProxy(tmp);
+				}
+			}
+		}
+
+		if (hdfProxy == nullptr) {
+			throw invalid_argument("No Hdf Proxy has been found");
+		}
+
 		gsoap_resqml2_0_1::resqml2__DoubleHdf5Array* hdf5ChildCellWeights = gsoap_resqml2_0_1::soap_new_resqml2__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
 		regrid->Intervals->ChildCellWeights = hdf5ChildCellWeights;
 		hdf5ChildCellWeights->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
@@ -220,8 +263,26 @@ gsoap_resqml2_0_1::resqml2__Regrid* AbstractGridRepresentation::createRegrid(con
 	return regrid;
 }
 
-void AbstractGridRepresentation::setParentWindow(ULONG64 * cellIndices, const ULONG64 & cellIndexCount, RESQML2_0_1_NS::UnstructuredGridRepresentation* parentGrid)
+void AbstractGridRepresentation::setParentWindow(ULONG64 * cellIndices, ULONG64 cellIndexCount, RESQML2_0_1_NS::UnstructuredGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy)
 {
+	if (cellIndexCount == 0 || cellIndices == nullptr || parentGrid == nullptr) {
+		throw invalid_argument("One of the mandatory method parameter is zero or null");
+	}
+
+	if (proxy != nullptr) {
+		if (proxy != hdfProxy) {
+			setHdfProxy(proxy);
+		}
+	}
+	else {
+		if (hdfProxy == nullptr) {
+			COMMON_NS::AbstractHdfProxy* const tmp = parentGrid->getHdfProxy();
+			if (tmp != nullptr) {
+				setHdfProxy(tmp);
+			}
+		}
+	}
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
 
@@ -229,7 +290,25 @@ void AbstractGridRepresentation::setParentWindow(ULONG64 * cellIndices, const UL
 		rep->ParentWindow = cpw;
 
 		cpw->ParentGrid = parentGrid->newResqmlReference();
-		if (cellIndexCount > 1 && hdfProxy != nullptr) {
+		if (cellIndexCount > 1) {
+			if (proxy != nullptr) {
+				if (proxy != hdfProxy) {
+					setHdfProxy(proxy);
+				}
+			}
+			else {
+				if (hdfProxy == nullptr) {
+					COMMON_NS::AbstractHdfProxy* const tmp = parentGrid->getHdfProxy();
+					if (tmp != nullptr) {
+						setHdfProxy(tmp);
+					}
+				}
+			}
+
+			if (hdfProxy == nullptr) {
+				throw invalid_argument("No Hdf Proxy has been found");
+			}
+
 			gsoap_resqml2_0_1::resqml2__IntegerHdf5Array* hdf5CellIndices = gsoap_resqml2_0_1::soap_new_resqml2__IntegerHdf5Array(rep->soap, 1);
 			cpw->CellIndices = hdf5CellIndices;
 
@@ -242,7 +321,7 @@ void AbstractGridRepresentation::setParentWindow(ULONG64 * cellIndices, const UL
 			hsize_t numValues = cellIndexCount;
 			hdfProxy->writeArrayNdOfGSoapULong64Values(gsoapProxy2_0_1->uuid, "ParentWindow_CellIndices", cellIndices, &numValues, 1);
 		}
-		else if (cellIndexCount == 1) {
+		else { // cellIndexCount == 1
 			gsoap_resqml2_0_1::resqml2__IntegerConstantArray* xmlCellIndices = gsoap_resqml2_0_1::soap_new_resqml2__IntegerConstantArray(rep->soap, 1);
 			xmlCellIndices->Value = *cellIndices;
 			xmlCellIndices->Count = 1;
@@ -252,23 +331,22 @@ void AbstractGridRepresentation::setParentWindow(ULONG64 * cellIndices, const UL
 	else {
 		throw logic_error("Not implemented yet");
 	}
-
-	if (cellIndexCount == 0) {
-		throw invalid_argument("Cannot regrid an empty list of cells.");
-	}
-	if (hdfProxy == nullptr) {
-		throw invalid_argument("The HDF proxy is missing.");
-	}
 	
 	// LGR backward relationships
 	parentGrid->childGridSet.push_back(this);
 }
 
-void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, const unsigned int & columnIndexCount,
-			const unsigned int & kLayerIndexRegridStart,
-			unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval,  const unsigned int & intervalCount,
-			AbstractColumnLayerGridRepresentation* parentGrid, double * childCellWeights)
+void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, unsigned int columnIndexCount,
+	unsigned int kLayerIndexRegridStart,
+	unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount,
+	AbstractColumnLayerGridRepresentation* parentGrid,
+	COMMON_NS::AbstractHdfProxy * proxy, double * childCellWeights)
 {
+	if (columnIndexCount == 0 || columnIndices == nullptr ||
+		childCellCountPerInterval == nullptr || parentCellCountPerInterval == nullptr || intervalCount == 0 || parentGrid == nullptr) {
+		throw invalid_argument("One of the mandatory method parameter is zero or null");
+	}
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
 
@@ -278,8 +356,26 @@ void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, c
 		clpw->ParentGrid = parentGrid->newResqmlReference();
 
 		// COLUMN INDICES
-		if (columnIndexCount > 1 && hdfProxy != nullptr)
+		if (columnIndexCount > 1)
 		{
+			if (proxy != nullptr) {
+				if (proxy != hdfProxy) {
+					setHdfProxy(proxy);
+				}
+			}
+			else {
+				if (hdfProxy == nullptr) {
+					COMMON_NS::AbstractHdfProxy* const tmp = parentGrid->getHdfProxy();
+					if (tmp != nullptr) {
+						setHdfProxy(tmp);
+					}
+				}
+			}
+
+			if (hdfProxy == nullptr) {
+				throw invalid_argument("No Hdf Proxy has been found");
+			}
+
 			gsoap_resqml2_0_1::resqml2__IntegerHdf5Array* hdf5ColumnIndices = gsoap_resqml2_0_1::soap_new_resqml2__IntegerHdf5Array(rep->soap, 1);
 			clpw->ColumnIndices = hdf5ColumnIndices;
 
@@ -301,17 +397,10 @@ void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, c
 		}
 
 		// K Regrid
-		clpw->KRegrid = createRegrid(kLayerIndexRegridStart, childCellCountPerInterval, parentCellCountPerInterval, intervalCount, childCellWeights, "K");
+		clpw->KRegrid = createRegrid(kLayerIndexRegridStart, childCellCountPerInterval, parentCellCountPerInterval, intervalCount, childCellWeights, "K", proxy);
 	}
 	else {
 		throw logic_error("Not implemented yet");
-	}
-
-	if (columnIndexCount == 0) {
-		throw invalid_argument("Cannot regrid an empty list of columns.");
-	}
-	if (hdfProxy == nullptr) {
-		throw invalid_argument("The HDF proxy is missing.");
 	}
 
 	// LGR backward relationships
@@ -319,11 +408,18 @@ void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, c
 }
 
 void AbstractGridRepresentation::setParentWindow(
-	const unsigned int & iCellIndexRegridStart, unsigned int * childCellCountPerIInterval, unsigned int * parentCellCountPerIInterval,  const unsigned int & iIntervalCount,
-	const unsigned int & jCellIndexRegridStart, unsigned int * childCellCountPerJInterval, unsigned int * parentCellCountPerJInterval,  const unsigned int & jIntervalCount,
-	const unsigned int & kCellIndexRegridStart, unsigned int * childCellCountPerKInterval, unsigned int * parentCellCountPerKInterval,  const unsigned int & kIntervalCount,
-	RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights, double * jChildCellWeights, double * kChildCellWeights)
+	unsigned int iCellIndexRegridStart, unsigned int * childCellCountPerIInterval, unsigned int * parentCellCountPerIInterval, unsigned int iIntervalCount,
+	unsigned int jCellIndexRegridStart, unsigned int * childCellCountPerJInterval, unsigned int * parentCellCountPerJInterval, unsigned int jIntervalCount,
+	unsigned int kCellIndexRegridStart, unsigned int * childCellCountPerKInterval, unsigned int * parentCellCountPerKInterval, unsigned int kIntervalCount,
+	RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy, double * iChildCellWeights, double * jChildCellWeights, double * kChildCellWeights)
 {
+	if (childCellCountPerIInterval == nullptr || parentCellCountPerIInterval == nullptr || iIntervalCount == 0 ||
+		childCellCountPerJInterval == nullptr || parentCellCountPerJInterval == nullptr || jIntervalCount == 0 ||
+		childCellCountPerKInterval == nullptr || parentCellCountPerKInterval == nullptr || kIntervalCount == 0 ||
+		parentGrid == nullptr) {
+		throw invalid_argument("One of the mandatory method parameter is zero or null");
+	}
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
 
@@ -333,9 +429,9 @@ void AbstractGridRepresentation::setParentWindow(
 		ijkpw->ParentGrid = parentGrid->newResqmlReference();
 	
 		// Regrids
-		ijkpw->IRegrid = createRegrid(iCellIndexRegridStart, childCellCountPerIInterval, parentCellCountPerIInterval, iIntervalCount, iChildCellWeights, "I");
-		ijkpw->JRegrid = createRegrid(jCellIndexRegridStart, childCellCountPerJInterval, parentCellCountPerJInterval, jIntervalCount, jChildCellWeights, "J");
-		ijkpw->KRegrid = createRegrid(kCellIndexRegridStart, childCellCountPerKInterval, parentCellCountPerKInterval, kIntervalCount, kChildCellWeights, "K");
+		ijkpw->IRegrid = createRegrid(iCellIndexRegridStart, childCellCountPerIInterval, parentCellCountPerIInterval, iIntervalCount, iChildCellWeights, "I", proxy);
+		ijkpw->JRegrid = createRegrid(jCellIndexRegridStart, childCellCountPerJInterval, parentCellCountPerJInterval, jIntervalCount, jChildCellWeights, "J", proxy);
+		ijkpw->KRegrid = createRegrid(kCellIndexRegridStart, childCellCountPerKInterval, parentCellCountPerKInterval, kIntervalCount, kChildCellWeights, "K", proxy);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -346,11 +442,18 @@ void AbstractGridRepresentation::setParentWindow(
 }
 
 void AbstractGridRepresentation::setParentWindow(
-	const unsigned int & iCellIndexRegridStart, unsigned int constantChildCellCountPerIInterval, unsigned int constantParentCellCountPerIInterval, const unsigned int & iIntervalCount,
-	const unsigned int & jCellIndexRegridStart, unsigned int constantChildCellCountPerJInterval, unsigned int constantParentCellCountPerJInterval, const unsigned int & jIntervalCount,
-	const unsigned int & kCellIndexRegridStart, unsigned int constantChildCellCountPerKInterval, unsigned int constantParentCellCountPerKInterval, const unsigned int & kIntervalCount,
-	RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights, double * jChildCellWeights, double * kChildCellWeights)
+	unsigned int iCellIndexRegridStart, unsigned int constantChildCellCountPerIInterval, unsigned int constantParentCellCountPerIInterval, unsigned int iIntervalCount,
+	unsigned int jCellIndexRegridStart, unsigned int constantChildCellCountPerJInterval, unsigned int constantParentCellCountPerJInterval, unsigned int jIntervalCount,
+	unsigned int kCellIndexRegridStart, unsigned int constantChildCellCountPerKInterval, unsigned int constantParentCellCountPerKInterval, unsigned int kIntervalCount,
+	RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy, double * iChildCellWeights, double * jChildCellWeights, double * kChildCellWeights)
 {
+	if (constantChildCellCountPerIInterval == 0 || constantParentCellCountPerIInterval == 0 || iIntervalCount == 0 ||
+		constantChildCellCountPerJInterval == 0 || constantParentCellCountPerJInterval == 0 || jIntervalCount == 0 ||
+		constantChildCellCountPerKInterval == 0 || constantParentCellCountPerKInterval == 0 || kIntervalCount == 0 ||
+		parentGrid == nullptr) {
+		throw invalid_argument("One of the mandatory method parameter is zero or null");
+	}
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
 
@@ -360,9 +463,9 @@ void AbstractGridRepresentation::setParentWindow(
 		ijkpw->ParentGrid = parentGrid->newResqmlReference();
 
 		// Regrids
-		ijkpw->IRegrid = createRegrid(iCellIndexRegridStart, &constantChildCellCountPerIInterval, &constantParentCellCountPerIInterval, iIntervalCount, iChildCellWeights, "I", true);
-		ijkpw->JRegrid = createRegrid(jCellIndexRegridStart, &constantChildCellCountPerJInterval, &constantParentCellCountPerJInterval, jIntervalCount, jChildCellWeights, "J", true);
-		ijkpw->KRegrid = createRegrid(kCellIndexRegridStart, &constantChildCellCountPerKInterval, &constantParentCellCountPerKInterval, kIntervalCount, kChildCellWeights, "K", true);
+		ijkpw->IRegrid = createRegrid(iCellIndexRegridStart, &constantChildCellCountPerIInterval, &constantParentCellCountPerIInterval, iIntervalCount, iChildCellWeights, "I", proxy, true);
+		ijkpw->JRegrid = createRegrid(jCellIndexRegridStart, &constantChildCellCountPerJInterval, &constantParentCellCountPerJInterval, jIntervalCount, jChildCellWeights, "J", proxy, true);
+		ijkpw->KRegrid = createRegrid(kCellIndexRegridStart, &constantChildCellCountPerKInterval, &constantParentCellCountPerKInterval, kIntervalCount, kChildCellWeights, "K", proxy, true);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -373,16 +476,16 @@ void AbstractGridRepresentation::setParentWindow(
 }
 
 void AbstractGridRepresentation::setParentWindow(
-	const unsigned int & iCellIndexRegridStart, unsigned int iChildCellCount, unsigned int iParentCellCount,
-	const unsigned int & jCellIndexRegridStart, unsigned int jChildCellCount, unsigned int jParentCellCount,
-	const unsigned int & kCellIndexRegridStart, unsigned int kChildCellCount, unsigned int kParentCellCount,
-	RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, double * iChildCellWeights, double * jChildCellWeights, double * kChildCellWeights)
+	unsigned int iCellIndexRegridStart, unsigned int iChildCellCount, unsigned int iParentCellCount,
+	unsigned int jCellIndexRegridStart, unsigned int jChildCellCount, unsigned int jParentCellCount,
+	unsigned int kCellIndexRegridStart, unsigned int kChildCellCount, unsigned int kParentCellCount,
+	RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy, double * iChildCellWeights, double * jChildCellWeights, double * kChildCellWeights)
 {
 	setParentWindow(
 		iCellIndexRegridStart, &iChildCellCount, &iParentCellCount, 1,
 		jCellIndexRegridStart, &jChildCellCount, &jParentCellCount, 1,
 		kCellIndexRegridStart, &kChildCellCount, &kParentCellCount, 1,
-		parentGrid, iChildCellWeights, jChildCellWeights, kChildCellWeights);
+		parentGrid, proxy, iChildCellWeights, jChildCellWeights, kChildCellWeights);
 }
 
 void AbstractGridRepresentation::setForcedNonRegridedParentCell(ULONG64 * cellIndices, const ULONG64 & cellIndexCount)
@@ -792,7 +895,26 @@ gsoap_resqml2_0_1::resqml2__AbstractIntegerArray* AbstractGridRepresentation::ge
 
 bool AbstractGridRepresentation::isRegridCellCountPerIntervalConstant(const char & dimension, const bool & childVsParentCellCount) const {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return getCellCountPerInterval2_0_1(dimension, childVsParentCellCount)->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray;
+		gsoap_resqml2_0_1::resqml2__AbstractIntegerArray* cellCountPerInterval = getCellCountPerInterval2_0_1(dimension, childVsParentCellCount);
+		if (cellCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray) {
+			return true;
+		}
+		else if (cellCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
+			const ULONG64 intervalCount = getRegridIntervalCount(dimension);
+			ULONG64* values = new ULONG64[intervalCount];
+			getRegridCellCountPerInterval(dimension, values, childVsParentCellCount);
+
+			for (ULONG64 index = 1; index < intervalCount; ++index) {
+				if (values[index] != values[0]) {
+					delete[] values;
+					return false;
+				}
+			}
+
+			delete[] values;
+			return true;
+		}
+		return false;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -802,11 +924,20 @@ bool AbstractGridRepresentation::isRegridCellCountPerIntervalConstant(const char
 ULONG64 AbstractGridRepresentation::getRegridConstantCellCountPerInterval(const char & dimension, const bool & childVsParentCellCount) const {
 	if (gsoapProxy2_0_1 != nullptr) {
 		const gsoap_resqml2_0_1::resqml2__AbstractIntegerArray* const cellCountPerInterval = getCellCountPerInterval2_0_1(dimension, childVsParentCellCount);
-		if (cellCountPerInterval->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray) {
-			throw invalid_argument("The regrid child cell count per interval is not constant.");
+		if (cellCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray) {
+			return static_cast<const gsoap_resqml2_0_1::resqml2__IntegerConstantArray* const>(cellCountPerInterval)->Value;
 		}
-
-		return static_cast<const gsoap_resqml2_0_1::resqml2__IntegerConstantArray* const>(cellCountPerInterval)->Value;
+		else if (cellCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
+			const ULONG64 intervalCount = getRegridIntervalCount(dimension);
+			ULONG64* values = new ULONG64[intervalCount];
+			getRegridCellCountPerInterval(dimension, values, childVsParentCellCount);
+			ULONG64 result = values[0];
+			delete[] values;
+			return result;
+		}
+		else {
+			throw logic_error("Not implemented yet");
+		}	
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -905,7 +1036,7 @@ bool AbstractGridRepresentation::hasRegridChildCellWeights(const char & dimensio
 	}
 }
 
-void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimension, ULONG64 * childCellWeights) const
+void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimension, double * childCellWeights) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml2__AbstractParentWindow* parentWindow = getParentWindow2_0_1();
@@ -919,7 +1050,7 @@ void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimensio
 					if (ijkpw->IRegrid->Intervals != nullptr && ijkpw->IRegrid->Intervals->ChildCellWeights != nullptr)
 					{
 						if (ijkpw->IRegrid->Intervals->ChildCellWeights->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
-							hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(ijkpw->IRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
+							hdfProxy->readArrayNdOfDoubleValues(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(ijkpw->IRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
 						else
 							throw invalid_argument("ChildCellWeights should be in HDF5 file.");
 					}
@@ -931,7 +1062,7 @@ void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimensio
 					if (ijkpw->JRegrid->Intervals != nullptr && ijkpw->JRegrid->Intervals->ChildCellWeights != nullptr)
 					{
 						if (ijkpw->JRegrid->Intervals->ChildCellWeights->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
-							hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(ijkpw->JRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
+							hdfProxy->readArrayNdOfDoubleValues(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(ijkpw->JRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
 						else
 							throw invalid_argument("ChildCellWeights should be in HDF5 file.");
 					}
@@ -943,7 +1074,7 @@ void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimensio
 					if (ijkpw->KRegrid->Intervals != nullptr && ijkpw->KRegrid->Intervals->ChildCellWeights != nullptr)
 					{
 						if (ijkpw->KRegrid->Intervals->ChildCellWeights->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
-							hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(ijkpw->KRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
+							hdfProxy->readArrayNdOfDoubleValues(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(ijkpw->KRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
 						else
 							throw invalid_argument("ChildCellWeights should be in HDF5 file.");
 					}
@@ -961,7 +1092,7 @@ void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimensio
 					if (clpw->KRegrid->Intervals != nullptr  && clpw->KRegrid->Intervals->ChildCellWeights != nullptr)
 					{
 						if (clpw->KRegrid->Intervals->ChildCellWeights->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
-							hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(clpw->KRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
+							hdfProxy->readArrayNdOfDoubleValues(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(clpw->KRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
 						else
 							throw invalid_argument("ChildCellWeights should be in HDF5 file.");
 					}

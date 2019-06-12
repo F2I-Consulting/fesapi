@@ -17,7 +17,6 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_0_1test/GridConnectionSetOnPartialGridSet.h"
-#include "../config.h"
 #include "../catch.hpp"
 #include "resqml2_0_1/AbstractIjkGridRepresentation.h"
 #include "resqml2_0_1/UnstructuredGridRepresentation.h"
@@ -31,27 +30,29 @@ using namespace RESQML2_NS;
 
 const char* GridConnectionSetOnPartialGridSet::defaultUuid = "a6fa81a3-f703-4026-9b28-606311761235";
 const char* GridConnectionSetOnPartialGridSet::defaultTitle = "Grid Connection Set multi grids";
+const char* GridConnectionSetOnPartialGridSet::unstructuredGridUuid = "34073470-145e-4923-abe0-def81092b174";
+const char* GridConnectionSetOnPartialGridSet::unstructuredGridTitle = "Partial Unstructured Grid";
 
 GridConnectionSetOnPartialGridSet::GridConnectionSetOnPartialGridSet(const string & epcDocPath)
-	: AbstractResqmlDataObjectTest(epcDocPath, defaultUuid, defaultTitle) {
+	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
 GridConnectionSetOnPartialGridSet::GridConnectionSetOnPartialGridSet(COMMON_NS::EpcDocument * epcDoc, bool init)
-	: AbstractResqmlDataObjectTest(epcDoc, defaultUuid, defaultTitle) {
+	: commontest::AbstractObjectTest(epcDoc) {
 		if (init)
-			this->initEpcDoc();
+			initEpcDoc();
 		else
-			this->readEpcDoc();
+			readEpcDoc();
 }
 
 void GridConnectionSetOnPartialGridSet::initEpcDocHandler() {
 	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
+	AbstractHdfProxy* hdfProxy = epcDoc->getHdfProxySet()[0];
 
 	// Unstructured grid
-	RESQML2_0_1_NS::UnstructuredGridRepresentation* partialGrid = this->epcDoc->createPartialUnstructuredGridRepresentation(uuidPartialUnstructuredGridRepresentation, titlePartialUnstructuredGridRepresentation);
+	RESQML2_0_1_NS::UnstructuredGridRepresentation* partialGrid = epcDoc->createPartialUnstructuredGridRepresentation(unstructuredGridUuid, unstructuredGridTitle);
 	REQUIRE( partialGrid != nullptr );
-	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = this->epcDoc->createContinuousProperty(partialGrid, "62d7e07d-5e17-4e42-b4b2-a4c26204cba2", "Continuous prop on partial unstructured grid", 1,
+	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = epcDoc->createContinuousProperty(partialGrid, "62d7e07d-5e17-4e42-b4b2-a4c26204cba2", "Continuous prop on partial unstructured grid", 1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, 
 		gsoap_resqml2_0_1::resqml2__ResqmlUom__m, 
 		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
@@ -79,7 +80,7 @@ void GridConnectionSetOnPartialGridSet::initEpcDocHandler() {
 	continuousPropertyOnTruncIjk->pushBackDoubleHdf5Array1dOfValues(continuousPropOnTruncIjkValues, 6, hdfProxy);
 
 	// Grid Connection Set on one grid
-	RESQML2_NS::GridConnectionSetRepresentation* gcs = this->epcDoc->createGridConnectionSetRepresentation("c0214c71-eed8-4ea2-9de4-f7508caeb3c6", "Single grid gcs");
+	RESQML2_NS::GridConnectionSetRepresentation* gcs = epcDoc->createGridConnectionSetRepresentation("c0214c71-eed8-4ea2-9de4-f7508caeb3c6", "Single grid gcs");
 	gcs->pushBackSupportingGridRepresentation(partialGrid);
 	ULONG64 cellConn[2] = {
 		1, 2
@@ -87,7 +88,7 @@ void GridConnectionSetOnPartialGridSet::initEpcDocHandler() {
 	gcs->setCellIndexPairs(1, cellConn, -1, hdfProxy);
 
 	// Grid Connection Set on several grid
-	RESQML2_NS::GridConnectionSetRepresentation* gcsMultiGrids = this->epcDoc->createGridConnectionSetRepresentation(defaultUuid, defaultTitle);
+	RESQML2_NS::GridConnectionSetRepresentation* gcsMultiGrids = epcDoc->createGridConnectionSetRepresentation(defaultUuid, defaultTitle);
 	gcsMultiGrids->pushBackSupportingGridRepresentation(partialGrid);
 	gcsMultiGrids->pushBackSupportingGridRepresentation(partialIjkGrid);
 	gcsMultiGrids->pushBackSupportingGridRepresentation(partialTruncIjkGrid);
@@ -104,7 +105,7 @@ void GridConnectionSetOnPartialGridSet::initEpcDocHandler() {
 void GridConnectionSetOnPartialGridSet::readEpcDocHandler() {
 	// getting the ContinuousProperty
 	RESQML2_NS::GridConnectionSetRepresentation* gcsSingleGrid = epcDoc->getDataObjectByUuid<RESQML2_NS::GridConnectionSetRepresentation>("c0214c71-eed8-4ea2-9de4-f7508caeb3c6");
-	RESQML2_NS::GridConnectionSetRepresentation* gcsMultiGrids = epcDoc->getDataObjectByUuid<RESQML2_NS::GridConnectionSetRepresentation>(uuid);
+	RESQML2_NS::GridConnectionSetRepresentation* gcsMultiGrids = epcDoc->getDataObjectByUuid<RESQML2_NS::GridConnectionSetRepresentation>(defaultUuid);
 
 	// checking that the supporting representation is partial
 	REQUIRE(!gcsSingleGrid->isBasedOnMultiGrids());

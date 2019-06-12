@@ -374,7 +374,12 @@ std::vector<RESQML2_0_1_NS::GeneticBoundaryFeature*> EpcDocument::getGeobodyBoun
 
 unsigned int EpcDocument::getGeobodyBoundaryCount() const
 {
-	return getGeobodyBoundarySet().size();
+	size_t result = getGeobodyBoundarySet().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("The geobody boundary count is superior to unsigned int max");
+	}
+	return static_cast<unsigned int>(result);
 }
 
 RESQML2_0_1_NS::GeneticBoundaryFeature* EpcDocument::getGeobodyBoundary(unsigned int index) const
@@ -382,7 +387,7 @@ RESQML2_0_1_NS::GeneticBoundaryFeature* EpcDocument::getGeobodyBoundary(unsigned
 	std::vector<RESQML2_0_1_NS::GeneticBoundaryFeature*> allgb = getGeobodyBoundarySet();
 
 	if (index >= allgb.size()) {
-		throw range_error("The index of the geobody boundary is out of range");
+		throw out_of_range("The index of the geobody boundary is out of range");
 	}
 
 	return allgb[index];
@@ -407,7 +412,17 @@ const std::vector<RESQML2_0_1_NS::WellboreFeature*> & EpcDocument::getWellboreSe
 const std::vector<RESQML2_0_1_NS::PolylineRepresentation*> & EpcDocument::getAllPolylineRepresentationSet() const { return polylineRepresentationSet; }
 
 const std::vector<RESQML2_0_1_NS::AbstractIjkGridRepresentation*> & EpcDocument::getIjkGridRepresentationSet() const { return ijkGridRepresentationSet; }
-unsigned int EpcDocument::getIjkGridRepresentationCount() const { return ijkGridRepresentationSet.size(); }
+
+unsigned int EpcDocument::getIjkGridRepresentationCount() const
+{
+	size_t result = ijkGridRepresentationSet.size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("The Ijk Grid Representation count is superior to unsigned int max");
+	}
+	return static_cast<unsigned int>(result);
+}
+
 RESQML2_0_1_NS::AbstractIjkGridRepresentation* EpcDocument::getIjkGridRepresentation(const unsigned int & i) const
 {
 	if (i >= getIjkGridRepresentationCount()) {
@@ -426,7 +441,16 @@ const std::vector<RESQML2_0_1_NS::OrganizationFeature*> & EpcDocument::getOrgani
 const std::vector<RESQML2_NS::TimeSeries*> & EpcDocument::getTimeSeriesSet() const { return timeSeriesSet; }
 
 const std::vector<RESQML2_NS::SubRepresentation*> & EpcDocument::getSubRepresentationSet() const { return subRepresentationSet; }
-unsigned int EpcDocument::getSubRepresentationCount() const { return subRepresentationSet.size(); }
+
+unsigned int EpcDocument::getSubRepresentationCount() const {
+	size_t result = subRepresentationSet.size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("The SubRepresentation count is superior to unsigned int max");
+	}
+	return static_cast<unsigned int>(result);
+}
+
 RESQML2_NS::SubRepresentation* EpcDocument::getSubRepresentation(const unsigned int & index) const
 {
 	if (index >= getSubRepresentationCount()) {
@@ -437,7 +461,17 @@ RESQML2_NS::SubRepresentation* EpcDocument::getSubRepresentation(const unsigned 
 }
 
 const std::vector<RESQML2_0_1_NS::PointSetRepresentation*> & EpcDocument::getPointSetRepresentationSet() const { return pointSetRepresentationSet; }
-unsigned int EpcDocument::getPointSetRepresentationCount() const { return pointSetRepresentationSet.size(); }
+
+unsigned int EpcDocument::getPointSetRepresentationCount() const
+{
+	size_t result = pointSetRepresentationSet.size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("The PointSet Representation count is superior to unsigned int max");
+	}
+	return static_cast<unsigned int>(result);
+}
+
 RESQML2_0_1_NS::PointSetRepresentation* EpcDocument::getPointSetRepresentation(const unsigned int & index) const
 {
 	if (index >= getPointSetRepresentationCount()) {
@@ -448,7 +482,15 @@ RESQML2_0_1_NS::PointSetRepresentation* EpcDocument::getPointSetRepresentation(c
 }
 
 const std::vector<COMMON_NS::AbstractHdfProxy*> & EpcDocument::getHdfProxySet() const { return hdfProxySet; }
-unsigned int EpcDocument::getHdfProxyCount() const { return hdfProxySet.size(); }
+
+unsigned int EpcDocument::getHdfProxyCount() const {
+	size_t result = hdfProxySet.size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("The Hdf Proxy count is superior to unsigned int max");
+	}
+	return static_cast<unsigned int>(result);
+}
 
 void EpcDocument::addWarning(const std::string & warning) { warnings.push_back(warning); }
 const std::vector<std::string> & EpcDocument::getWarnings() const { return warnings; }
@@ -531,14 +573,25 @@ void EpcDocument::close()
 	frontierSet.clear();
 }
 
-void EpcDocument::setFilePath(const std::string & filePath)
+void EpcDocument::setFilePath(const std::string & fp)
 {
-	this->filePath = filePath;
+	filePath = fp;
 
 	// Turn off HDF5 diagnostic messages
 	herr_t hdf5Err = H5Eset_auto(H5E_DEFAULT, nullptr, nullptr);
 	if (hdf5Err < 0) {
 		throw invalid_argument("The HDF5 error handling could not have been disabled.");
+	}
+
+	// Add .epc extension if it is not already done in parameter
+	size_t dotPos = this->filePath.find_last_of('.');
+	if (dotPos != string::npos) {
+		if (filePath.substr(dotPos) != DOCUMENT_EXTENSION) {
+			filePath += DOCUMENT_EXTENSION;
+		}
+	}
+	else {
+		filePath += DOCUMENT_EXTENSION;
 	}
 }
 
@@ -1129,17 +1182,12 @@ vector<PolylineSetRepresentation*> EpcDocument::getFaultPolylineSetRepSet() cons
 {
 	vector<PolylineSetRepresentation*> result;
 
-	vector<TectonicBoundaryFeature*> faultSet = getFaultSet();
-	for (size_t featureIndex = 0; featureIndex < faultSet.size(); featureIndex++)
-	{
+	for (size_t featureIndex = 0; featureIndex < faultSet.size(); ++featureIndex) {
 		vector<RESQML2_NS::AbstractFeatureInterpretation*> interpSet = faultSet[featureIndex]->getInterpretationSet();
-		for (size_t interpIndex = 0; interpIndex < interpSet.size(); interpIndex++)
-		{
+		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
 			vector<RESQML2_NS::AbstractRepresentation*> repSet = interpSet[interpIndex]->getRepresentationSet();
-			for (size_t repIndex = 0; repIndex < repSet.size(); repIndex++)
-			{
-				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREPolylineSetRepresentation)
-				{
+			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
+				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREPolylineSetRepresentation) {
 					result.push_back(static_cast<PolylineSetRepresentation*>(repSet[repIndex]));
 				}
 			}
@@ -1153,17 +1201,12 @@ vector<PolylineSetRepresentation*> EpcDocument::getFracturePolylineSetRepSet() c
 {
 	vector<PolylineSetRepresentation*> result;
 
-	vector<TectonicBoundaryFeature*> fractureSet = getFractureSet();
-	for (size_t featureIndex = 0; featureIndex < fractureSet.size(); featureIndex++)
-	{
+	for (size_t featureIndex = 0; featureIndex < fractureSet.size(); ++featureIndex) {
 		vector<RESQML2_NS::AbstractFeatureInterpretation*> interpSet = fractureSet[featureIndex]->getInterpretationSet();
-		for (size_t interpIndex = 0; interpIndex < interpSet.size(); interpIndex++)
-		{
+		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
 			vector<RESQML2_NS::AbstractRepresentation*> repSet = interpSet[interpIndex]->getRepresentationSet();
-			for (size_t repIndex = 0; repIndex < repSet.size(); repIndex++)
-			{
-				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREPolylineSetRepresentation)
-				{
+			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
+				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREPolylineSetRepresentation) {
 					result.push_back(static_cast<PolylineSetRepresentation*>(repSet[repIndex]));
 				}
 			}
@@ -1177,17 +1220,12 @@ vector<PolylineSetRepresentation*> EpcDocument::getFrontierPolylineSetRepSet() c
 {
 	vector<PolylineSetRepresentation*> result;
 
-	vector<FrontierFeature*> frontierSet = getFrontierSet();
-	for (size_t featureIndex = 0; featureIndex < frontierSet.size(); featureIndex++)
-	{
+	for (size_t featureIndex = 0; featureIndex < frontierSet.size(); ++featureIndex) {
 		vector<RESQML2_NS::AbstractFeatureInterpretation*> interpSet = frontierSet[featureIndex]->getInterpretationSet();
-		for (size_t interpIndex = 0; interpIndex < interpSet.size(); interpIndex++)
-		{
+		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
 			vector<RESQML2_NS::AbstractRepresentation*> repSet = interpSet[interpIndex]->getRepresentationSet();
-			for (size_t repIndex = 0; repIndex < repSet.size(); repIndex++)
-			{
-				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREPolylineSetRepresentation)
-				{
+			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
+				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREPolylineSetRepresentation) {
 					result.push_back(static_cast<PolylineSetRepresentation*>(repSet[repIndex]));
 				}
 			}
@@ -1201,17 +1239,12 @@ vector<TriangulatedSetRepresentation*> EpcDocument::getFaultTriangulatedSetRepSe
 {
 	vector<TriangulatedSetRepresentation*> result;
 
-	vector<TectonicBoundaryFeature*> faultSet = getFaultSet();
-	for (size_t featureIndex = 0; featureIndex < faultSet.size(); featureIndex++)
-	{
+	for (size_t featureIndex = 0; featureIndex < faultSet.size(); ++featureIndex) {
 		vector<RESQML2_NS::AbstractFeatureInterpretation*> interpSet = faultSet[featureIndex]->getInterpretationSet();
-		for (size_t interpIndex = 0; interpIndex < interpSet.size(); interpIndex++)
-		{
+		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
 			vector<RESQML2_NS::AbstractRepresentation*> repSet = interpSet[interpIndex]->getRepresentationSet();
-			for (size_t repIndex = 0; repIndex < repSet.size(); repIndex++)
-			{
-				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORETriangulatedSetRepresentation)
-				{
+			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
+				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORETriangulatedSetRepresentation) {
 					result.push_back(static_cast<TriangulatedSetRepresentation*>(repSet[repIndex]));
 				}
 			}
@@ -1225,17 +1258,12 @@ vector<TriangulatedSetRepresentation*> EpcDocument::getFractureTriangulatedSetRe
 {
 	vector<TriangulatedSetRepresentation*> result;
 
-	vector<TectonicBoundaryFeature*> fractureSet = getFractureSet();
-	for (size_t featureIndex = 0; featureIndex < fractureSet.size(); featureIndex++)
-	{
+	for (size_t featureIndex = 0; featureIndex < fractureSet.size(); ++featureIndex) {
 		vector<RESQML2_NS::AbstractFeatureInterpretation*> interpSet = fractureSet[featureIndex]->getInterpretationSet();
-		for (size_t interpIndex = 0; interpIndex < interpSet.size(); interpIndex++)
-		{
+		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
 			vector<RESQML2_NS::AbstractRepresentation*> repSet = interpSet[interpIndex]->getRepresentationSet();
-			for (size_t repIndex = 0; repIndex < repSet.size(); repIndex++)
-			{
-				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORETriangulatedSetRepresentation)
-				{
+			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
+				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORETriangulatedSetRepresentation) {
 					result.push_back(static_cast<TriangulatedSetRepresentation*>(repSet[repIndex]));
 				}
 			}
@@ -1401,13 +1429,18 @@ const std::vector<RESQML2_NS::RepresentationSetRepresentation*> & EpcDocument::g
 
 unsigned int EpcDocument::getRepresentationSetRepresentationCount() const
 {
-	return representationSetRepresentationSet.size();
+	size_t result = representationSetRepresentationSet.size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("The RepresentationSetRepresentation count is superior to unsigned int max");
+	}
+	return static_cast<unsigned int>(result);
 }
 
 RESQML2_NS::RepresentationSetRepresentation* EpcDocument::getRepresentationSetRepresentation(const unsigned int & index) const
 {
 	if (index >= getRepresentationSetRepresentationCount()) {
-		throw range_error("The index of the representation set representaiton is out of range");
+		throw out_of_range("The index of the representation set representaiton is out of range");
 	}
 
 	return representationSetRepresentationSet[index];
@@ -1476,7 +1509,7 @@ vector<IjkGridLatticeRepresentation*> EpcDocument::getIjkSeismicCubeGridRepresen
 COMMON_NS::AbstractHdfProxy* EpcDocument::getHdfProxy(const unsigned int & index) const
 {
 	if (index >= hdfProxySet.size()) {
-		throw range_error("The index of the requested hdf proxy is out of range");
+		throw out_of_range("The index of the requested hdf proxy is out of range");
 	}
 
 	return hdfProxySet[index];

@@ -20,15 +20,46 @@ under the License.
 
 #include "resqml2_0_1/AbstractIjkGridRepresentation.h"
 
-#include "tools/BSpline.h"
-
 namespace RESQML2_0_1_NS
 {
+	/**
+	* An IJK Grid parametric representation define the cell corner positions by means of parameters along the pillars of the grid.
+	* Adjacent cell corner are supposed to be located the same so they are not repeated unless you define split lines or split nodes.
+	*/
 	class IjkGridParametricRepresentation : public AbstractIjkGridRepresentation
 	{
 	private:
 		void getXyzPointsOfPatchFromParametricPoints(gsoap_resqml2_0_1::resqml2__Point3dParametricArray* parametricPoint3d, double * xyzPoints) const;
 	
+		/**
+		* From https://en.wikipedia.org/w/index.php?title=Spline_%28mathematics%29&oldid=288288033#Algorithm_for_computing_natural_cubic_splines
+		*/
+		class BSpline
+		{
+		public:
+			BSpline() {};
+			BSpline(const std::vector<double> & parametersAtControlPoint, const std::vector<double> & valuesAtControlPoint);
+			~BSpline() {}
+
+			double getValueFromParameter(double param) const;
+			void setParameterAndValueAtControlPoint(const std::vector<double> & parametersAtControlPoint, const std::vector<double> & valuesAtControlPoint);
+
+		private:
+
+			void checkIfParametersIncreaseOrDecrease();
+			std::size_t getSplineIndexFromParameter(double param) const;
+
+			bool areParametersIncreasing;
+
+			// basically each of set of 5 double describe a spline
+			std::vector<double> a;
+			std::vector<double> b;
+			std::vector<double> c;
+			std::vector<double> d;
+			std::vector<double> parameter; //named x in the wiki link
+
+		};
+
 		class PillarInformation
 		{
 		public:
@@ -40,7 +71,7 @@ namespace RESQML2_0_1_NS
 			double * controlPointParameters;
 			short * pillarKind;
 			unsigned int* pillarOfSplitCoordLines;
-			std::vector< std::vector< geometry::BSpline > > splines;
+			std::vector< std::vector< BSpline > > splines;
 
 			PillarInformation():maxControlPointCount(0), parametricLineCount(0), splitLineCount(0),
 					controlPoints(nullptr), controlPointParameters(nullptr), pillarKind(nullptr), pillarOfSplitCoordLines(nullptr) {}
@@ -64,7 +95,7 @@ namespace RESQML2_0_1_NS
 		void loadPillarInformation(PillarInformation & pillarInfo) const;
 
 		/**
-		* Compute the K Direction of the gid according to its contorl points.
+		* Compute the K Direction of the gid according to its control points.
 		*/
 		gsoap_resqml2_0_1::resqml2__KDirection computeKDirection(double * controlPoints, const unsigned int & controlPointCountPerPillar);
 	protected:
@@ -261,6 +292,11 @@ namespace RESQML2_0_1_NS
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, const unsigned int & controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
 			const unsigned long & splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns);
+
+		/**
+		* Check wether the node geometry dataset is compressed or not.
+		*/
+		DLL_IMPORT_OR_EXPORT bool isNodeGeometryCompressed() const;
 
 		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const;
 	};

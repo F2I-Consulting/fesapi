@@ -74,4 +74,3 @@ namespace commontest {
 		const std::string epcDocPath;
 	};
 }
-

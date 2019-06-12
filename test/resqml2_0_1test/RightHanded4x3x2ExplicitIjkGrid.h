@@ -18,18 +18,18 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractIjkGridRepresentationTest.h"
+#include "AbstractObjectTest.h"
 
 namespace COMMON_NS {
 	class EpcDocument;
 }
 
 namespace resqml2_0_1test {
-	class RightHanded4x3x2ExplicitIjkGrid : public AbstractIjkGridRepresentationTest {
+	class RightHanded4x3x2ExplicitIjkGrid : public commontest::AbstractObjectTest {
 	public:
 		static const char* defaultUuid;
 		static const char* defaultTitle;
-		static const ULONG64 nodesCountIjkGridRepresentation;
+		static const unsigned long long nodesCountIjkGridRepresentation;
 		static double nodesIjkGridRepresentation[];
 
 		/**

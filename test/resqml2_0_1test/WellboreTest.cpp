@@ -23,7 +23,6 @@ under the License.
 #include "catch.hpp"
 #include "common/EpcDocument.h"
 #include "resqml2_0_1/WellboreFeature.h"
-#include "config.h"
 
 using namespace std;
 using namespace resqml2_0_1test;
@@ -34,22 +33,21 @@ const char* WellboreTest::defaultUuid = "9058a950-35c7-44e6-9671-0f1ba13118cf";
 const char* WellboreTest::defaultTitle = "Wellbore Test";
 
 WellboreTest::WellboreTest(const string & epcDocPath)
-	: AbstractFeatureTest(epcDocPath, defaultUuid, defaultTitle) {
+	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
 WellboreTest::WellboreTest(EpcDocument* epcDoc, bool init)
-	: AbstractFeatureTest(epcDoc, defaultUuid, defaultTitle) {
+	: commontest::AbstractObjectTest(epcDoc) {
 	if (init)
-		this->initEpcDoc();
+		initEpcDoc();
 	else
-		this->readEpcDoc();
+		readEpcDoc();
 }
 
 void WellboreTest::initEpcDocHandler() {
-	WellboreFeature* wellbore = this->epcDoc->createWellboreFeature(this->uuid, this->title);
+	WellboreFeature* wellbore = epcDoc->createWellboreFeature(defaultUuid, defaultTitle);
 	REQUIRE(wellbore != nullptr);
 }
 
 void WellboreTest::readEpcDocHandler() {
 }
-

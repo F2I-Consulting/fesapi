@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "UnstructuredGridRepresentationTest.h"
+#include "AbstractObjectTest.h"
 #include <iostream>
 
 namespace COMMON_NS {
@@ -26,8 +26,12 @@ namespace COMMON_NS {
 }
 
 namespace resqml2_0_1test {
-	class OneTetrahedronUnstructuredGridRepresentationTest : public UnstructuredGridRepresentationTest {
+	class OneTetrahedronUnstructuredGridRepresentationTest : public commontest::AbstractObjectTest {
 	public:
+		static const char* defaultUuid;
+		static const char* defaultTitle;
+		static double nodes[];
+
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,
 		* exising .epc file will be erased. 
