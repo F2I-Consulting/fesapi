@@ -43,6 +43,7 @@ under the License.
 #include "resqml2_0_1test/SeismicLatticeRepresentationTest.h"
 #include "resqml2_0_1test/Grid2dRepresentationTest.h"
 #include "resqml2_0_1test/HorizonOnSeismicLine.h"
+#include "resqml2_0_1test/CompressedIjkGridExplicitRepresentationTest.h"
 #include "resqml2_0_1test/RightHanded4x3x2ExplicitIjkGrid.h"
 #include "resqml2_0_1test/BigIjkGridExplicitRepresentationTest.h"
 #include "resqml2_0_1test/BigIjkGridParametricRepresentationTest.h"
@@ -94,6 +95,8 @@ FESAPI_TEST("Export a multi domains interpreation", "[interpretation]", Interpre
 FESAPI_TEST("Export and import a generic creation activity template", "[activity]", ActivityTemplateGenericCreationTest)
 
 FESAPI_TEST("Export and import an activity", "[activity]", ActivityCreationTest)
+
+FESAPI_TEST("Export and import a compressed ijk grid", "[grid]", CompressedIjkGridExplicitRepresentationTest)
 
 FESAPI_TEST("Export and import a 4*3*2 explicit right handed ijk grid", "[grid]", RightHanded4x3x2ExplicitIjkGrid)
 
