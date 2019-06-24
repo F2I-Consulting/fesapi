@@ -144,7 +144,7 @@ AbstractGridRepresentation* AbstractGridRepresentation::getParentGrid() const
 	const string parentGridUuid = getParentGridUuid();
 
 	if (!parentGridUuid.empty()) {
-		return static_cast<AbstractGridRepresentation*>(getEpcDocument()->getDataObjectByUuid(parentGridUuid));
+		return static_cast<AbstractGridRepresentation*>(getRepository()->getDataObjectByUuid(parentGridUuid));
 	}
 	
 	return nullptr;
@@ -1108,17 +1108,17 @@ void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimensio
 	}
 }
 
-void AbstractGridRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void AbstractGridRepresentation::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
-	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractRepresentation::resolveTargetRelationships(epcDoc);
 
 	// LGR backward relationships
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getParentGridDor();
 	if (dor != nullptr) {
 		RESQML2_NS::AbstractGridRepresentation* parentGrid = epcDoc->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
 		if (parentGrid == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			parentGrid = getEpcDocument()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
+			getRepository()->createPartial(dor);
+			parentGrid = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
 		}
 		if (parentGrid == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -1132,8 +1132,8 @@ void AbstractGridRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocu
 	if (dor != nullptr) {
 		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
 		if (stratiOrg == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			stratiOrg = getEpcDocument()->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
+			getRepository()->createPartial(dor);
+			stratiOrg = getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
 		}
 		if (stratiOrg == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -1147,8 +1147,8 @@ void AbstractGridRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocu
 	if(dor != nullptr) {
 		RESQML2_0_1_NS::RockFluidOrganizationInterpretation* rockFluidOrg = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::RockFluidOrganizationInterpretation>(dor->UUID);
 		if(rockFluidOrg == nullptr) {
-			getEpcDocument()->createPartial(dor);
-			rockFluidOrg = getEpcDocument()->getDataObjectByUuid<RESQML2_0_1_NS::RockFluidOrganizationInterpretation>(dor->UUID);
+			getRepository()->createPartial(dor);
+			rockFluidOrg = getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::RockFluidOrganizationInterpretation>(dor->UUID);
 		}
 		if(rockFluidOrg == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -1284,7 +1284,7 @@ RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* AbstractGridRep
 		return nullptr;
 	}
 
-	return static_cast<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation*>(getEpcDocument()->getDataObjectByUuid(stratigraphicOrganizationInterpretationUuid));
+	return static_cast<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation*>(getRepository()->getDataObjectByUuid(stratigraphicOrganizationInterpretationUuid));
 }
 
 bool AbstractGridRepresentation::hasCellStratigraphicUnitIndices() const
@@ -1356,7 +1356,7 @@ RESQML2_0_1_NS::RockFluidOrganizationInterpretation* AbstractGridRepresentation:
 		return nullptr;
 	}
 
-	return static_cast<RESQML2_0_1_NS::RockFluidOrganizationInterpretation*>(getEpcDocument()->getDataObjectByUuid(rockfluidOrganizationInterpretationUuid));
+	return static_cast<RESQML2_0_1_NS::RockFluidOrganizationInterpretation*>(getRepository()->getDataObjectByUuid(rockfluidOrganizationInterpretationUuid));
 
 }
 

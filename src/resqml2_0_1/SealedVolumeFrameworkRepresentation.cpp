@@ -179,7 +179,7 @@ std::string SealedVolumeFrameworkRepresentation::getSealedStructuralFrameworkUui
 
 SealedSurfaceFrameworkRepresentation* SealedVolumeFrameworkRepresentation::getSealedStructuralFramework() const
 {
-	return epcDocument->getDataObjectByUuid<SealedSurfaceFrameworkRepresentation>(getSealedStructuralFrameworkUuid());
+	return repository->getDataObjectByUuid<SealedSurfaceFrameworkRepresentation>(getSealedStructuralFrameworkUuid());
 }
 
 gsoap_resqml2_0_1::resqml2__VolumeRegion* SealedVolumeFrameworkRepresentation::getRegion(unsigned int regionIndex) const
@@ -202,7 +202,7 @@ std::string SealedVolumeFrameworkRepresentation::getStratiUnitInterpUuid(unsigne
 
 StratigraphicUnitInterpretation* SealedVolumeFrameworkRepresentation::getStratiUnitInterp(unsigned int regionIndex) const
 {
-	return epcDocument->getDataObjectByUuid<StratigraphicUnitInterpretation>(getStratiUnitInterpUuid(regionIndex));
+	return repository->getDataObjectByUuid<StratigraphicUnitInterpretation>(getStratiUnitInterpUuid(regionIndex));
 }
 
 unsigned int SealedVolumeFrameworkRepresentation::getRegionCount() const
@@ -326,17 +326,17 @@ vector<Relationship> SealedVolumeFrameworkRepresentation::getAllEpcRelationships
 	return result;
 }
 
-void SealedVolumeFrameworkRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void SealedVolumeFrameworkRepresentation::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
-	RESQML2_NS::RepresentationSetRepresentation::importRelationshipSetFromEpc(epcDoc);
+	RESQML2_NS::RepresentationSetRepresentation::resolveTargetRelationships(epcDoc);
 
 	updateXml = false;
 
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getSealedStructuralFrameworkDor();
 	SealedSurfaceFrameworkRepresentation* ssf = epcDoc->getDataObjectByUuid<SealedSurfaceFrameworkRepresentation>(dor->UUID);
 	if (ssf == nullptr) { // partial transfer
-		getEpcDocument()->createPartial(dor);
-		ssf = getEpcDocument()->getDataObjectByUuid<SealedSurfaceFrameworkRepresentation>(dor->UUID);
+		getRepository()->createPartial(dor);
+		ssf = getRepository()->getDataObjectByUuid<SealedSurfaceFrameworkRepresentation>(dor->UUID);
 	}
 	if (ssf == nullptr) {
 		throw invalid_argument("The DOR looks invalid.");
@@ -347,8 +347,8 @@ void SealedVolumeFrameworkRepresentation::importRelationshipSetFromEpc(COMMON_NS
 		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getStratiUnitInterpDor(regionIdx);
 		StratigraphicUnitInterpretation* sui = epcDoc->getDataObjectByUuid<StratigraphicUnitInterpretation>(dor->UUID);
 		if (sui == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			sui = getEpcDocument()->getDataObjectByUuid<StratigraphicUnitInterpretation>(dor->UUID);
+			getRepository()->createPartial(dor);
+			sui = getRepository()->getDataObjectByUuid<StratigraphicUnitInterpretation>(dor->UUID);
 		}
 		if (sui == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");

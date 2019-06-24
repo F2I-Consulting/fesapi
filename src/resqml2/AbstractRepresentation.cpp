@@ -314,7 +314,7 @@ unsigned int AbstractRepresentation::getFaultSubRepresentationCount() const
 
 SubRepresentation* AbstractRepresentation::getFaultSubRepresentation(const unsigned int & index) const
 {
-	std::vector<RESQML2_NS::SubRepresentation*> tmp = getFaultSubRepresentationSet();
+	const std::vector<RESQML2_NS::SubRepresentation*> tmp = getFaultSubRepresentationSet();
 
 	if (index >= tmp.size()) {
 		throw range_error("The fault subrepresentation at the specified index is out of range.");
@@ -327,7 +327,7 @@ ULONG64 AbstractRepresentation::getXyzPointCountOfAllPatches() const
 {
 	ULONG64 result = 0;
 
-	unsigned int patchCount = getPatchCount();
+	const unsigned int patchCount = getPatchCount();
 	for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex)
 	{
 		result += getXyzPointCountOfPatch(patchIndex);
@@ -345,7 +345,7 @@ void AbstractRepresentation::getXyzPointsOfPatchInGlobalCrs(const unsigned int &
 
 void AbstractRepresentation::getXyzPointsOfAllPatches(double * xyzPoints) const
 {
-	unsigned int patchCount = getPatchCount();
+	const unsigned int patchCount = getPatchCount();
 	getXyzPointsOfPatch(0, xyzPoints);
 	for (unsigned int patchIndex = 1; patchIndex < patchCount; patchIndex++)
 	{
@@ -373,7 +373,7 @@ AbstractRepresentation* AbstractRepresentation::getSeismicSupportOfPatch(const u
 			return nullptr;
 		}
 
-		return getEpcDocument()->getDataObjectByUuid<AbstractRepresentation>(geom->SeismicCoordinates->SeismicSupport->UUID);
+		return getRepository()->getDataObjectByUuid<AbstractRepresentation>(geom->SeismicCoordinates->SeismicSupport->UUID);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -433,14 +433,14 @@ void AbstractRepresentation::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy)
 	proxy->representationSourceObject.push_back(this);
 }
 
-void AbstractRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void AbstractRepresentation::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getInterpretationDor();
 	if (dor != nullptr) {
 		RESQML2_NS::AbstractFeatureInterpretation* interp = epcDoc->getDataObjectByUuid<RESQML2_NS::AbstractFeatureInterpretation>(dor->UUID);
 		if (interp == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			interp = getEpcDocument()->getDataObjectByUuid<RESQML2_NS::AbstractFeatureInterpretation>(dor->UUID);
+			getRepository()->createPartial(dor);
+			interp = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractFeatureInterpretation>(dor->UUID);
 		}
 		if (interp == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -455,8 +455,8 @@ void AbstractRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument
 	if (dor != nullptr) {
 		localCrs = epcDoc->getDataObjectByUuid<AbstractLocal3dCrs>(dor->UUID);
 		if (localCrs == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			localCrs = getEpcDocument()->getDataObjectByUuid<AbstractLocal3dCrs>(dor->UUID);
+			getRepository()->createPartial(dor);
+			localCrs = getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(dor->UUID);
 		}
 		if (localCrs == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -473,7 +473,7 @@ void AbstractRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument
 			setHdfProxy(hdfProxy);
 		}
 		else {
-			getEpcDocument()->addWarning("The HDF proxy " + uuid + " of the representation " + getUuid() + " is missing");
+			getRepository()->addWarning("The HDF proxy " + uuid + " of the representation " + getUuid() + " is missing");
 		}
 	}
 

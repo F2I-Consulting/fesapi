@@ -170,7 +170,7 @@ namespace RESQML2_0_1_NS
 
 	protected:
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		virtual void resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc);
 
 		// XML forward relationship
 		class StringTableLookup* stringLookup;

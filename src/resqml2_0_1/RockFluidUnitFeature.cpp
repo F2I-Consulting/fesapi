@@ -55,7 +55,7 @@ void RockFluidUnitFeature::setTop(BoundaryFeature* top)
 
 BoundaryFeature* RockFluidUnitFeature::getTop() const
 {
-	return epcDocument->getDataObjectByUuid<BoundaryFeature>(static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryTop->UUID);
+	return repository->getDataObjectByUuid<BoundaryFeature>(static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryTop->UUID);
 }
 
 void RockFluidUnitFeature::setBottom(BoundaryFeature* bottom)
@@ -71,7 +71,7 @@ void RockFluidUnitFeature::setBottom(BoundaryFeature* bottom)
 
 BoundaryFeature* RockFluidUnitFeature::getBottom() const
 {
-	return epcDocument->getDataObjectByUuid<BoundaryFeature>(static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryBottom->UUID);
+	return repository->getDataObjectByUuid<BoundaryFeature>(static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryBottom->UUID);
 }
 
 vector<Relationship> RockFluidUnitFeature::getAllEpcRelationships() const
@@ -91,9 +91,9 @@ vector<Relationship> RockFluidUnitFeature::getAllEpcRelationships() const
 	return result;
 }
 
-void RockFluidUnitFeature::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void RockFluidUnitFeature::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
-	GeologicUnitFeature::importRelationshipSetFromEpc(epcDoc);
+	GeologicUnitFeature::resolveTargetRelationships(epcDoc);
 
 	_resqml2__RockFluidUnitFeature* interp = static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1);
 
@@ -102,8 +102,8 @@ void RockFluidUnitFeature::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* 
 	{
 		BoundaryFeature* feature = epcDoc->getDataObjectByUuid<BoundaryFeature>(dor->UUID);
 		if (feature == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			feature = getEpcDocument()->getDataObjectByUuid<BoundaryFeature>(dor->UUID);
+			getRepository()->createPartial(dor);
+			feature = getRepository()->getDataObjectByUuid<BoundaryFeature>(dor->UUID);
 		}
 		if (feature == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -118,8 +118,8 @@ void RockFluidUnitFeature::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* 
 	{
 		BoundaryFeature* feature = epcDoc->getDataObjectByUuid<BoundaryFeature>(dor->UUID);
 		if (feature == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			feature = getEpcDocument()->getDataObjectByUuid<BoundaryFeature>(dor->UUID);
+			getRepository()->createPartial(dor);
+			feature = getRepository()->getDataObjectByUuid<BoundaryFeature>(dor->UUID);
 		}
 		if (feature == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");

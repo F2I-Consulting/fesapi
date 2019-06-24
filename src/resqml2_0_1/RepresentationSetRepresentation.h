@@ -42,7 +42,7 @@ namespace RESQML2_0_1_NS
 		RepresentationSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, const std::string & guid, const std::string & title);
 
 		// To use if the representation set representation is not linked to any interpretation
-		RepresentationSetRepresentation(COMMON_NS::EpcDocument* epcDoc, const std::string & guid, const std::string & title);
+		RepresentationSetRepresentation(COMMON_NS::DataObjectRepository* epcDoc, const std::string & guid, const std::string & title);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.

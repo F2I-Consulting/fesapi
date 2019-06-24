@@ -83,17 +83,17 @@ vector<Relationship> WellboreFrameRepresentation::getAllEpcRelationships() const
 	return result;
 }
 
-void WellboreFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void WellboreFrameRepresentation::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
 	const _resqml2__WellboreFrameRepresentation* const rep = static_cast<const _resqml2__WellboreFrameRepresentation* const>(gsoapProxy2_0_1);
 
-	// need to do that before AbstractRepresentation::importRelationshipSetFromEpc because the trajectory is used for finding the local crs relationship.
+	// need to do that before AbstractRepresentation::resolveTargetRelationships because the trajectory is used for finding the local crs relationship.
 	trajectory = static_cast<WellboreTrajectoryRepresentation* const>(epcDoc->getDataObjectByUuid(rep->Trajectory->UUID));
 	if (trajectory != nullptr) {
 		trajectory->addWellboreFrameRepresentation(this);
 	}
 
-	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractRepresentation::resolveTargetRelationships(epcDoc);
 
 	int valuesType = rep->NodeMd->soap_type();
 	if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {

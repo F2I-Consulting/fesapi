@@ -80,7 +80,7 @@ gsoap_eml2_1::eml21__DataObjectReference* Wellbore::getWellDor() const
 
 class Well* Wellbore::getWell() const
 {
-	return getEpcDocument()->getDataObjectByUuid<Well>(getWellDor()->Uuid);
+	return getRepository()->getDataObjectByUuid<Well>(getWellDor()->Uuid);
 }
 
 
@@ -110,7 +110,7 @@ void Wellbore::setShape(witsml2__WellboreShape shape)
 	*wellbore->Shape = shape;
 }
 
-void Wellbore::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void Wellbore::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
 	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellDor();
 	Well* well = epcDoc->getDataObjectByUuid<Well>(dor->Uuid);

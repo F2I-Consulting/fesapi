@@ -98,7 +98,7 @@ namespace RESQML2_NS
 	protected:
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		void resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc);
 
 		// XML backward relationship
 		std::vector<RESQML2_NS::AbstractProperty*> propertySet;

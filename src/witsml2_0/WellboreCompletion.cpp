@@ -62,7 +62,7 @@ gsoap_eml2_1::eml21__DataObjectReference* WellboreCompletion::getWellCompletionD
 
 class WellCompletion* WellboreCompletion::getWellCompletion() const
 {
-	return getEpcDocument()->getDataObjectByUuid<WellCompletion>(getWellCompletionDor()->Uuid);
+	return getRepository()->getDataObjectByUuid<WellCompletion>(getWellCompletionDor()->Uuid);
 }
 
 void WellboreCompletion::setWellbore(Wellbore* witsmlWellbore)
@@ -539,9 +539,9 @@ void WellboreCompletion::setPerforationHistoryBaseMd(unsigned int historyIndex,
 	perforationStatusHistory->PerforationMdInterval->MdBase->__item = BaseMd;
 }
 
-void WellboreCompletion::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void WellboreCompletion::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
-	WellboreObject::importRelationshipSetFromEpc(epcDoc);
+	WellboreObject::resolveTargetRelationships(epcDoc);
 
 	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellCompletionDor();
 	WellCompletion* wellCompletion = epcDoc->getDataObjectByUuid<WellCompletion>(dor->Uuid);

@@ -64,7 +64,7 @@ vector<Relationship> StratigraphicColumn::getAllEpcRelationships() const
     return result;
 }
 
-void StratigraphicColumn::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void StratigraphicColumn::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
 	updateXml = false;
 
@@ -74,8 +74,8 @@ void StratigraphicColumn::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* e
 		if (dor != nullptr) {
 			StratigraphicColumnRankInterpretation* interp = epcDoc->getDataObjectByUuid<StratigraphicColumnRankInterpretation>(dor->UUID);
 			if (interp == nullptr) { // partial transfer
-				getEpcDocument()->createPartial(dor);
-				interp = getEpcDocument()->getDataObjectByUuid<StratigraphicColumnRankInterpretation>(dor->UUID);
+				getRepository()->createPartial(dor);
+				interp = getRepository()->getDataObjectByUuid<StratigraphicColumnRankInterpretation>(dor->UUID);
 			}
 			if (interp == nullptr) {
 				throw invalid_argument("The DOR looks invalid.");

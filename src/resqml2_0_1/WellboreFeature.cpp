@@ -73,7 +73,7 @@ vector<Relationship> WellboreFeature::getAllEpcRelationships() const
 	return result;
 }
 
-void WellboreFeature::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void WellboreFeature::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
 	resqml2__obj_USCOREWellboreFeature* resqmlWellbore = static_cast<resqml2__obj_USCOREWellboreFeature*>(gsoapProxy2_0_1);
 

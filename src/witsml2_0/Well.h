@@ -142,7 +142,7 @@ namespace WITSML2_0_NS
 
 		DLL_IMPORT_OR_EXPORT unsigned int getDatumCount() const;
 		
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		void resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc);
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
 

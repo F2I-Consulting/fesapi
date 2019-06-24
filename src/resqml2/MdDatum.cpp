@@ -30,7 +30,7 @@ using namespace epc;
 
 const char* MdDatum::XML_TAG = "MdDatum";
 
-void MdDatum::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void MdDatum::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
 	_resqml2__MdDatum* mdInfo = static_cast<_resqml2__MdDatum*>(gsoapProxy2_0_1);
 
@@ -89,6 +89,6 @@ std::string MdDatum::getLocalCrsUuid() const
 AbstractLocal3dCrs * MdDatum::getLocalCrs() const
 {
 	const string uuidLocalCrs = getLocalCrsUuid();
-	return static_cast<AbstractLocal3dCrs*>(epcDocument->getDataObjectByUuid(uuidLocalCrs));
+	return static_cast<AbstractLocal3dCrs*>(repository->getDataObjectByUuid(uuidLocalCrs));
 }
 

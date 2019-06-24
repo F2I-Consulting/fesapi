@@ -68,7 +68,7 @@ namespace RESQML2_NS
 	protected:
 
 		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		virtual void resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc);
 
 		std::vector<AbstractFeatureInterpretation*> interpretationSet; /// All the interpretations of the feature
 

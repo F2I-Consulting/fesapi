@@ -97,7 +97,7 @@ StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getSubje
 
 	resqml2__BinaryContactInterpretationPart* contact = static_cast<resqml2__BinaryContactInterpretationPart*>(static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation[contactIndex]);
 	if (contact->Subject)
-		return static_cast<StratigraphicUnitInterpretation*>(epcDocument->getDataObjectByUuid(contact->Subject->UUID));
+		return static_cast<StratigraphicUnitInterpretation*>(repository->getDataObjectByUuid(contact->Subject->UUID));
 	else
 		return nullptr;
 }
@@ -121,7 +121,7 @@ StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getDirec
 
 	resqml2__BinaryContactInterpretationPart* contact = static_cast<resqml2__BinaryContactInterpretationPart*>(static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation[contactIndex]);
 	if (contact->DirectObject)
-		return static_cast<StratigraphicUnitInterpretation*>(epcDocument->getDataObjectByUuid(contact->DirectObject->UUID));
+		return static_cast<StratigraphicUnitInterpretation*>(repository->getDataObjectByUuid(contact->DirectObject->UUID));
 	else
 		return nullptr;
 }
@@ -133,7 +133,7 @@ HorizonInterpretation* StratigraphicColumnRankInterpretation::getHorizonInterpre
 
 	resqml2__BinaryContactInterpretationPart* contact = static_cast<resqml2__BinaryContactInterpretationPart*>(static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation[contactIndex]);
 	if (contact->PartOf)
-		return static_cast<HorizonInterpretation*>(epcDocument->getDataObjectByUuid(contact->PartOf->UUID));
+		return static_cast<HorizonInterpretation*>(repository->getDataObjectByUuid(contact->PartOf->UUID));
 	else
 		return nullptr;
 }
@@ -172,15 +172,15 @@ void StratigraphicColumnRankInterpretation::pushBackStratigraphicBinaryContact(S
 	}
 }
 		
-void StratigraphicColumnRankInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void StratigraphicColumnRankInterpretation::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
-	AbstractStratigraphicOrganizationInterpretation::importRelationshipSetFromEpc(epcDoc);
+	AbstractStratigraphicOrganizationInterpretation::resolveTargetRelationships(epcDoc);
 
 	updateXml = false;
 
 	_resqml2__StratigraphicColumnRankInterpretation* interp = static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1); 
 
-	for (unsigned int i = 0; i < interp->StratigraphicUnits.size(); i++)
+	for (size_t i = 0; i < interp->StratigraphicUnits.size(); i++)
 	{
 		if (interp->StratigraphicUnits[i]->Unit)
 			pushBackStratiUnitInterpretation(static_cast<StratigraphicUnitInterpretation*>(epcDoc->getDataObjectByUuid(interp->StratigraphicUnits[i]->Unit->UUID)));
@@ -188,14 +188,18 @@ void StratigraphicColumnRankInterpretation::importRelationshipSetFromEpc(COMMON_
 			throw logic_error("Not yet implemented");
 	}
 
-	for (unsigned int i = 0; i < interp->ContactInterpretation.size(); i++)
+	for (size_t i = 0; i < interp->ContactInterpretation.size(); i++)
 	{
 		if (interp->ContactInterpretation[i]->PartOf) {
-			HorizonInterpretation* horizonInterp = epcDoc->getDataObjectByUuid<HorizonInterpretation>(interp->ContactInterpretation[i]->PartOf->UUID);
+			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = interp->ContactInterpretation[i]->PartOf;
+			HorizonInterpretation* horizonInterp = epcDoc->getDataObjectByUuid<HorizonInterpretation>(dor->UUID);
 
 			if (horizonInterp == nullptr) {
-				getEpcDocument()->addWarning("The referenced horizon interp \"" + interp->ContactInterpretation[i]->PartOf->Title + "\" (" + interp->ContactInterpretation[i]->PartOf->UUID + ") is missing.");
-				horizonInterp = epcDoc->createPartialHorizonInterpretation(interp->ContactInterpretation[i]->PartOf->UUID, interp->ContactInterpretation[i]->PartOf->Title);
+				getRepository()->createPartial(dor);
+				horizonInterp = epcDoc->getDataObjectByUuid<HorizonInterpretation>(dor->UUID);
+			}
+			if (horizonInterp == nullptr) {
+				throw invalid_argument("The DOR looks invalid.");
 			}
 
 			setHorizonOfLastContact(horizonInterp);

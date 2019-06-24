@@ -122,7 +122,7 @@ namespace RESQML2_NS
 		virtual void setXmlLocalCrs(RESQML2_NS::AbstractLocal3dCrs * localCrs) = 0;
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		void resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc);
 
 		// XML backward relationship
 		std::vector<RESQML2_0_1_NS::WellboreTrajectoryRepresentation*> wellboreTrajectoryRepresentationSet;

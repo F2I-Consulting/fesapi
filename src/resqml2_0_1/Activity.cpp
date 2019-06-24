@@ -453,7 +453,7 @@ vector<COMMON_NS::AbstractObject*> Activity::getResqmlObjectParameterValue(const
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DataObjectParameter)
 			throw invalid_argument("The parameter " + paramTitle + " contains some non double values.");
 		else
-			result.push_back(getEpcDocument()->getDataObjectByUuid(static_cast<resqml2__DataObjectParameter*>(param[i])->DataObject->UUID));
+			result.push_back(getRepository()->getDataObjectByUuid(static_cast<resqml2__DataObjectParameter*>(param[i])->DataObject->UUID));
 	}
 
 	return result;
@@ -469,7 +469,7 @@ COMMON_NS::AbstractObject* Activity::getResqmlObjectParameterValue(const unsigne
 	if (activity->Parameter[index]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DataObjectParameter)
 		throw invalid_argument("The parameter index is not in the parameter range.");
 
-	return getEpcDocument()->getDataObjectByUuid(static_cast<resqml2__DataObjectParameter*>(activity->Parameter[index])->DataObject->UUID);
+	return getRepository()->getDataObjectByUuid(static_cast<resqml2__DataObjectParameter*>(activity->Parameter[index])->DataObject->UUID);
 }
 
 void Activity::setActivityTemplate(RESQML2_NS::ActivityTemplate * activityTemplate)
@@ -499,7 +499,7 @@ std::string Activity::getResqmlVersion() const
 	return "2.0.1";
 }
 
-void Activity::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void Activity::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
 	_resqml2__Activity* activity = static_cast<_resqml2__Activity*>(gsoapProxy2_0_1);
 

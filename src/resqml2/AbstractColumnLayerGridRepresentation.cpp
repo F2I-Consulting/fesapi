@@ -182,17 +182,17 @@ vector<Relationship> AbstractColumnLayerGridRepresentation::getAllEpcRelationshi
 	return result;
 }
 
-void AbstractColumnLayerGridRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void AbstractColumnLayerGridRepresentation::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
-	AbstractGridRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractGridRepresentation::resolveTargetRelationships(epcDoc);
 
 	// Strati org backward relationships
 	if (hasIntervalStratigraphicUnitIndices()) {
 		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getStratigraphicOrganizationInterpretationDor();
-		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = getEpcDocument()->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
+		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
 		if (stratiOrg == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			stratiOrg = getEpcDocument()->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
+			getRepository()->createPartial(dor);
+			stratiOrg = getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
 		}
 		if (stratiOrg == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");

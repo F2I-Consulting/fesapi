@@ -153,9 +153,9 @@ vector<Relationship> WellboreMarkerFrameRepresentation::getAllEpcRelationships()
 	return result;
 }
 
-void WellboreMarkerFrameRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void WellboreMarkerFrameRepresentation::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
-	WellboreFrameRepresentation::importRelationshipSetFromEpc(epcDoc);
+	WellboreFrameRepresentation::resolveTargetRelationships(epcDoc);
 
 	_resqml2__WellboreMarkerFrameRepresentation* rep = static_cast<_resqml2__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
 

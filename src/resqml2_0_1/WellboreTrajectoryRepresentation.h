@@ -248,7 +248,7 @@ namespace RESQML2_0_1_NS
 	protected:
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		void resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc);
 
 		// XML forward relationships
 		WITSML1_4_1_1_NS::Trajectory * witsmlTrajectory;

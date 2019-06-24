@@ -76,7 +76,7 @@ std::string WellboreMarker::getBoundaryFeatureInterpretationUuid() const
 
 BoundaryFeatureInterpretation* WellboreMarker::getBoundaryFeatureInterpretation() const
 {
-	return getWellMarkerFrameRepresentation()->getEpcDocument()->getDataObjectByUuid<BoundaryFeatureInterpretation>(getBoundaryFeatureInterpretationUuid());
+	return getWellMarkerFrameRepresentation()->getRepository()->getDataObjectByUuid<BoundaryFeatureInterpretation>(getBoundaryFeatureInterpretationUuid());
 }
 
 void WellboreMarker::setBoundaryFeatureInterpretation(BoundaryFeatureInterpretation* interp)
@@ -92,5 +92,5 @@ void WellboreMarker::setBoundaryFeatureInterpretation(BoundaryFeatureInterpretat
 	}
 }
 
-void WellboreMarker::importRelationshipSetFromEpc(COMMON_NS::EpcDocument*)
+void WellboreMarker::resolveTargetRelationships(COMMON_NS::DataObjectRepository*)
 {}

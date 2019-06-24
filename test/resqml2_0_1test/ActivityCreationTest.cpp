@@ -36,29 +36,29 @@ using namespace RESQML2_NS;
 const char* ActivityCreationTest::defaultUuid = "705cd6f5-8ee8-427b-adde-04b0b6afcdf0";
 const char* ActivityCreationTest::defaultTitle = "Activity Creation";
 
-ActivityCreationTest::ActivityCreationTest(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath) {
+ActivityCreationTest::ActivityCreationTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
 }
 
-ActivityCreationTest::ActivityCreationTest(EpcDocument * epcDoc, bool init)
-	: commontest::AbstractObjectTest(epcDoc) {
-		if (init)
-			initEpcDoc();
-		else
-			readEpcDoc();
+ActivityCreationTest::ActivityCreationTest(DataObjectRepository * repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
+	if (init)
+		initRepo();
+	else
+		readRepo();
 }
 
-void ActivityCreationTest::initEpcDocHandler() {
+void ActivityCreationTest::initRepoHandler() {
 	// creation of an horizon interpretation
-	HorizonInterpretationTest * horizonInterpretationTest = new HorizonInterpretationTest(epcDoc, true);
-	RESQML2_0_1_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_0_1_NS::HorizonInterpretation*>(epcDoc->getDataObjectByUuid(HorizonInterpretationTest::defaultUuid));
+	HorizonInterpretationTest * horizonInterpretationTest = new HorizonInterpretationTest(repo, true);
+	RESQML2_0_1_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_0_1_NS::HorizonInterpretation*>(repo->getDataObjectByUuid(HorizonInterpretationTest::defaultUuid));
 
 	// creation of the generic creation activity template
-	ActivityTemplateGenericCreationTest* activityTemplateTest = new ActivityTemplateGenericCreationTest(epcDoc, true);
-	ActivityTemplate * activityTemplate = static_cast<ActivityTemplate*>(epcDoc->getDataObjectByUuid(ActivityTemplateGenericCreationTest::defaultUuid));
+	ActivityTemplateGenericCreationTest* activityTemplateTest = new ActivityTemplateGenericCreationTest(repo, true);
+	ActivityTemplate * activityTemplate = static_cast<ActivityTemplate*>(repo->getDataObjectByUuid(ActivityTemplateGenericCreationTest::defaultUuid));
 
 	// creation of the creation activity
-	Activity* activity = epcDoc->createActivity(activityTemplate, defaultUuid, defaultTitle);
+	Activity* activity = repo->createActivity(activityTemplate, defaultUuid, defaultTitle);
 	REQUIRE( activity != nullptr );
 
 	// creation of activity parameters
@@ -69,17 +69,17 @@ void ActivityCreationTest::initEpcDocHandler() {
 	delete activityTemplateTest;
 }
 
-void ActivityCreationTest::readEpcDocHandler() {
+void ActivityCreationTest::readRepoHandler() {
 	// reading dependencies
-	HorizonInterpretationTest horizonInterpretationTest(epcDoc, false);
-	ActivityTemplateGenericCreationTest activityTemplateTest(epcDoc, false);
+	HorizonInterpretationTest horizonInterpretationTest(repo, false);
+	ActivityTemplateGenericCreationTest activityTemplateTest(repo, false);
 
 	// getting the activity
-	Activity* activity = epcDoc->getDataObjectByUuid<Activity>(defaultUuid);
+	Activity* activity = repo->getDataObjectByUuid<Activity>(defaultUuid);
 	REQUIRE( activity != nullptr );
 
 	// getting the horizon interpretation
-	RESQML2_0_1_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_0_1_NS::HorizonInterpretation*>(epcDoc->getDataObjectByUuid(HorizonInterpretationTest::defaultUuid));
+	RESQML2_0_1_NS::HorizonInterpretation * horizonInterpretation = static_cast<RESQML2_0_1_NS::HorizonInterpretation*>(repo->getDataObjectByUuid(HorizonInterpretationTest::defaultUuid));
 	REQUIRE( horizonInterpretation != nullptr );
 
 	// testing the activity

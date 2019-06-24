@@ -116,7 +116,7 @@ namespace RESQML2_NS
 
 		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
 		
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		virtual void resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc);
 
 		// XML backward relationship
 		std::vector<AbstractRepresentation *>						representationSet;

@@ -77,8 +77,11 @@ namespace epc
 
 		/**
 		* Open the package for writing purpose
+		* @param pkgPathName	contain on Windows XP a filename like "c:\\zlib\\zlib113.zip" or on an Unix computer "zlib/zlib113.zip".
+		* @param append			if the file pathname exist and append==APPEND_STATUS_ADDINZIP, we will add files in existing zip (be sure you don't add file that doesn't exist). Else an ovewrite or a creation of the file will be done.
+		* If the zipfile cannot be opened, an invalid_argument exception is thrown.
 		*/
-		void openForWriting(const std::string & pkgPathName, bool useZip64 = false);
+		void openForWriting(const std::string & pkgPathName, int append, bool useZip64 = false);
 
 		/**
 		* Open the package for reading purpose

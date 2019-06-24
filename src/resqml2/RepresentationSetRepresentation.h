@@ -95,7 +95,7 @@ namespace RESQML2_NS
 		void pushBackXmlRepresentation(RESQML2_NS::AbstractRepresentation* rep);
 
 		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		virtual void resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc);
 
 		friend void RESQML2_NS::AbstractRepresentation::pushBackIntoRepresentationSet(RepresentationSetRepresentation * repSet, bool xml);
 	};

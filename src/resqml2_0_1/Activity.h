@@ -122,7 +122,7 @@ namespace RESQML2_0_1_NS
 
 	private:
 
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		void resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc);
 
 		std::vector<gsoap_resqml2_0_1::resqml2__AbstractActivityParameter*> getParameterFromTitle(const std::string & paramTitle) const;
 	};

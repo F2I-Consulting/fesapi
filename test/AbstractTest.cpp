@@ -24,48 +24,50 @@ using namespace std;
 using namespace commontest;
 
 AbstractTest::AbstractTest(const string & epcDocPath) :
-	epcDoc(nullptr),
+	repo(nullptr),
 	epcDocPath(epcDocPath) {
 }
 
-AbstractTest::AbstractTest(COMMON_NS::EpcDocument* epcDoc) :
-	epcDoc(epcDoc),
-	epcDocPath(epcDoc->getStorageDirectory()) {
+AbstractTest::AbstractTest(COMMON_NS::DataObjectRepository* repo_) :
+	repo(repo_) {
 }
 
 void AbstractTest::serialize() {
-	epcDoc = new COMMON_NS::EpcDocument(epcDocPath, COMMON_NS::EpcDocument::OVERWRITE);
-	epcDoc->createHdfProxy("75f5b460-3ccb-4102-a06e-e9c1019769b2", "Hdf Proxy Test", epcDoc->getStorageDirectory(), epcDoc->getName() + ".h5");
+	COMMON_NS::EpcDocument epcDocument(epcDocPath);
+	repo = new COMMON_NS::DataObjectRepository();
+	repo->createHdfProxy("75f5b460-3ccb-4102-a06e-e9c1019769b2", "Hdf Proxy Test", epcDocument.getStorageDirectory(), epcDocument.getName() + ".h5", COMMON_NS::DataObjectRepository::OVERWRITE);
 
-	initEpcDoc();
+	initRepo();
 	
-	epcDoc->serialize();
-	epcDoc->close();
-	delete epcDoc;
+	epcDocument.serializeFrom(*repo);
+	epcDocument.close();
+
+	delete repo;
 }
 
 void AbstractTest::deserialize() {
-	epcDoc = new COMMON_NS::EpcDocument(epcDocPath);
+	COMMON_NS::EpcDocument epcDocument(epcDocPath);
+	repo = new COMMON_NS::DataObjectRepository();
 
-	std::string validationResult = epcDoc->deserialize();
+	std::string validationResult = epcDocument.deserializeInto(*repo);
 	if (!validationResult.empty()) {
 		cout << "Validation error: " << validationResult << endl;
 	}
 	REQUIRE( validationResult.empty() );
 	
-	REQUIRE( epcDoc->getHdfProxySet().size() == 1 );
+	REQUIRE( repo->getHdfProxySet().size() == 1 );
 
-	vector<string> warningSet = epcDoc->getWarnings();
+	vector<string> warningSet = repo->getWarnings();
 	if (!warningSet.empty()) {
-		cout << "EPC document " << epcDoc->getName() << ".epc deserialized with " << warningSet.size() << " warning(s)" << endl;
+		cout << "EPC document " << epcDocument.getName() << ".epc deserialized with " << warningSet.size() << " warning(s)" << endl;
 		for (size_t i=0; i < warningSet.size(); ++i){
 			cout << "Warning " << i+1 << ": " << warningSet[i] << endl;
 		}
 		cout << endl;
 	}
 
-	readEpcDoc();
-	epcDoc->close();
+	readRepo();
+	epcDocument.close();
 
-	delete epcDoc;
+	delete repo;
 }

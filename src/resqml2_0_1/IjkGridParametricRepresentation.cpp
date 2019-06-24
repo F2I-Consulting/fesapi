@@ -628,6 +628,45 @@ void IjkGridParametricRepresentation::getParametersOfNodes(double * parameters, 
 	}
 }
 
+void IjkGridParametricRepresentation::getParametersOfNodesOfKInterfaceSequenceOfPatch(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, unsigned int patchIndex, double * parameters)
+{
+	if (kInterfaceStart > getKCellCount() || kInterfaceEnd > getKCellCount())
+		throw range_error("kInterfaceStart and/or kInterfaceEnd is/are out of boundaries.");
+	if (kInterfaceStart > kInterfaceEnd)
+		throw range_error("kInterfaceStart > kInterfaceEnd");
+
+	if (patchIndex >= getPatchCount())
+		throw range_error("An ijk grid has a maximum of one patch.");
+
+	if (parameters == nullptr)
+		throw invalid_argument("xyzPoints must be allocated.");
+
+	gsoap_resqml2_0_1::resqml2__PointGeometry const * const geom = getPointGeometry2_0_1(0);
+	if (geom == nullptr) {
+		throw invalid_argument("There is no geometry on this grid.");
+	}
+	resqml2__Point3dParametricArray const * const parametricPoint3d = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
+
+	// parameters : ordered
+	if (parametricPoint3d->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
+		const std::string pathInHdfFile = static_cast<resqml2__DoubleHdf5Array*>(parametricPoint3d->Parameters)->Values->PathInHdfFile;
+
+		unsigned long long* const numValuesInEachDimension = new unsigned long long[2];
+		numValuesInEachDimension[0] = kInterfaceEnd - kInterfaceStart + 1;
+		numValuesInEachDimension[1] = getXyzPointCountOfKInterfaceOfPatch(patchIndex);
+		unsigned long long* const offsetInEachDimension = new unsigned long long[2];
+		offsetInEachDimension[0] = kInterfaceStart;
+		offsetInEachDimension[1] = 0;
+		hdfProxy->readArrayNdOfDoubleValues(pathInHdfFile, parameters,
+			numValuesInEachDimension, offsetInEachDimension, 2);
+		delete[] numValuesInEachDimension;
+		delete[] offsetInEachDimension;
+	}
+	else {
+		throw logic_error("Only floating point parameters stored in an HDF5 dataset are supported for now.");
+	}
+}
+
 string IjkGridParametricRepresentation::getHdfProxyUuid() const
 {
 	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
@@ -661,52 +700,25 @@ ULONG64 IjkGridParametricRepresentation::getXyzPointCountOfPatch(const unsigned 
 
 void IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch(const unsigned int & kInterfaceStart, const unsigned int & kInterfaceEnd, const unsigned int & patchIndex, double * xyzPoints)
 {
-	if ( kInterfaceStart > getKCellCount() || kInterfaceEnd > getKCellCount())
-		throw range_error("kInterfaceStart and/or kInterfaceEnd is/are out of boundaries.");
-	if (kInterfaceStart > kInterfaceEnd)
-		throw range_error("kInterfaceStart > kInterfaceEnd");
-	
-	if (patchIndex >= getPatchCount())
-		throw range_error("An ijk grid has a maximum of one patch.");
-
-	if (xyzPoints == nullptr)
+	if (xyzPoints == nullptr) {
 		throw invalid_argument("xyzPoints must be allocated.");
-
-	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
-	if (geom == nullptr) {
-		throw invalid_argument("There is no geometry on this grid.");
 	}
-	resqml2__Point3dParametricArray* parametricPoint3d = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
+	if (patchIndex >= getPatchCount()) {
+		throw range_error("An ijk grid has a maximum of one patch.");
+	}
 
+	// Get the parameters
+	const ULONG64 xyzPointCount = getXyzPointCountOfKInterfaceOfPatch(patchIndex);
+	double * const parameters = new double[xyzPointCount * (kInterfaceEnd - kInterfaceStart + 1)];
+	getParametersOfNodesOfKInterfaceSequenceOfPatch(kInterfaceStart, kInterfaceEnd, patchIndex, parameters);
+
+	// Convert the parameters into XYZ points
 	if (pillarInformation == nullptr)
 	{
 		pillarInformation = new PillarInformation();
 		loadPillarInformation(*pillarInformation);
 	}
-	
-	ULONG64 xyzPointCount = getXyzPointCountOfKInterfaceOfPatch(patchIndex);
-
-	// parameters : ordered
-	double * parameters = new double[xyzPointCount * (kInterfaceEnd - kInterfaceStart + 1)];
-	if (parametricPoint3d->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-		const std::string pathInHdfFile = static_cast<resqml2__DoubleHdf5Array*>(parametricPoint3d->Parameters)->Values->PathInHdfFile;
-	
-		unsigned long long* numValuesInEachDimension = new unsigned long long[2];
-		numValuesInEachDimension[0] = kInterfaceEnd - kInterfaceStart + 1;
-		numValuesInEachDimension[1] = xyzPointCount;
-		unsigned long long* offsetInEachDimension = new unsigned long long[2];
-		offsetInEachDimension[0] = kInterfaceStart;
-		offsetInEachDimension[1] = 0;
-		hdfProxy->readArrayNdOfDoubleValues(pathInHdfFile, parameters,
-			numValuesInEachDimension, offsetInEachDimension, 2);
-		delete[] numValuesInEachDimension;
-		delete[] offsetInEachDimension;
-	}
-	else {
-		delete[] parameters;
-		throw logic_error("Non floating point coordinate line parameters are not implemented yet");
-	}
-
+	resqml2__Point3dParametricArray const * const parametricPoint3d = static_cast<resqml2__Point3dParametricArray*>(getPointGeometry2_0_1(patchIndex)->Points);
 	if (parametricPoint3d->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__ParametricLineArray) {
 		//Mapping
 		size_t paramIndex = 0;

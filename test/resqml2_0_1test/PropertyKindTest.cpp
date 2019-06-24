@@ -30,26 +30,26 @@ using namespace RESQML2_NS;
 const char* PropertyKindTest::defaultUuid = "f1effef1-6bc7-4e82-829b-797713b60cdc";
 const char* PropertyKindTest::defaultTitle = "Property Kind Test";
 
-PropertyKindTest::PropertyKindTest(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath) {
+PropertyKindTest::PropertyKindTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
 }
 
-PropertyKindTest::PropertyKindTest(EpcDocument* epcDoc, bool init)
-	: commontest::AbstractObjectTest(epcDoc) {
+PropertyKindTest::PropertyKindTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void PropertyKindTest::initEpcDocHandler() {
-	PropertyKind* propertyKind = epcDoc->createPropertyKind(defaultUuid, defaultTitle, "F2I", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__index);
+void PropertyKindTest::initRepoHandler() {
+	PropertyKind* propertyKind = repo->createPropertyKind(defaultUuid, defaultTitle, "F2I", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__index);
 	REQUIRE(propertyKind != nullptr);
 }
 
-void PropertyKindTest::readEpcDocHandler() {
+void PropertyKindTest::readRepoHandler() {
 	// getting the PropertyKind
-	PropertyKind* propertyKind = epcDoc->getDataObjectByUuid<PropertyKind>(defaultUuid);
+	PropertyKind* propertyKind = repo->getDataObjectByUuid<PropertyKind>(defaultUuid);
 
 	REQUIRE(propertyKind->getNamingSystem().compare("F2I") == 0);
 	REQUIRE(propertyKind->getUom() == gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc);

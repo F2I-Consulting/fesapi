@@ -56,13 +56,13 @@ void AbstractFeatureInterpretation::setInterpretedFeature(RESQML2_NS::AbstractFe
 	}
 }
 
-void AbstractFeatureInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void AbstractFeatureInterpretation::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getInterpretedFeatureDor();
 	RESQML2_NS::AbstractFeature* interpretedFeature = epcDoc->getDataObjectByUuid<AbstractFeature>(dor->UUID);
 	if (interpretedFeature == nullptr) { // partial transfer
-		getEpcDocument()->createPartial(dor);
-		interpretedFeature = getEpcDocument()->getDataObjectByUuid<AbstractFeature>(dor->UUID);
+		getRepository()->createPartial(dor);
+		interpretedFeature = getRepository()->getDataObjectByUuid<AbstractFeature>(dor->UUID);
 	}
 	if (interpretedFeature == nullptr) {
 		throw invalid_argument("The DOR looks invalid.");
@@ -146,7 +146,7 @@ std::string AbstractFeatureInterpretation::getInterpretedFeatureUuid() const
 
 RESQML2_NS::AbstractFeature* AbstractFeatureInterpretation::getInterpretedFeature() const
 {
-	return static_cast<RESQML2_NS::AbstractFeature*>(epcDocument->getDataObjectByUuid(getInterpretedFeatureUuid()));
+	return static_cast<RESQML2_NS::AbstractFeature*>(repository->getDataObjectByUuid(getInterpretedFeatureUuid()));
 }
 
 const gsoap_resqml2_0_1::resqml2__Domain & AbstractFeatureInterpretation::initDomain(const gsoap_resqml2_0_1::resqml2__Domain & defaultDomain) const

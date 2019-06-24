@@ -103,7 +103,7 @@ RockFluidUnitInterpretation* RockFluidOrganizationInterpretation::getRockFluidUn
 		throw range_error("The index is out of range");
 	}
 
-	return epcDocument->getDataObjectByUuid<RockFluidUnitInterpretation>(static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit->UUID);
+	return repository->getDataObjectByUuid<RockFluidUnitInterpretation>(static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit->UUID);
 }
 
 vector<Relationship> RockFluidOrganizationInterpretation::getAllEpcRelationships() const
@@ -132,16 +132,16 @@ vector<Relationship> RockFluidOrganizationInterpretation::getAllEpcRelationships
 	return result;
 }
 
-void RockFluidOrganizationInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void RockFluidOrganizationInterpretation::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
-	AbstractOrganizationInterpretation::importRelationshipSetFromEpc(epcDoc);
+	AbstractOrganizationInterpretation::resolveTargetRelationships(epcDoc);
 
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit;
 	if (dor != nullptr) {
 		RockFluidUnitInterpretation* interp = epcDoc->getDataObjectByUuid<RockFluidUnitInterpretation>(dor->UUID);
 		if (interp == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			interp = getEpcDocument()->getDataObjectByUuid<RockFluidUnitInterpretation>(dor->UUID);
+			getRepository()->createPartial(dor);
+			interp = getRepository()->getDataObjectByUuid<RockFluidUnitInterpretation>(dor->UUID);
 		}
 		if (interp == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");

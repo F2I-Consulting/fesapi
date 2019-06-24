@@ -87,7 +87,7 @@ std::vector<epc::Relationship> SeismicLineFeature::getAllEpcRelationships() cons
 	return result;
 }
 
-void SeismicLineFeature::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void SeismicLineFeature::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
 	updateXml = false;
 

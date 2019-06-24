@@ -256,7 +256,7 @@ namespace RESQML2_NS
 		void setXmlLocalPropertyKind(class PropertyKind* propKind);
 
 		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc);
+		virtual void resolveTargetRelationships(COMMON_NS::DataObjectRepository * epcDoc);
 
 		class AbstractLocal3dCrs *		local3dCrs;			/// The used local 3D CRS in case the property values need one.
 	};

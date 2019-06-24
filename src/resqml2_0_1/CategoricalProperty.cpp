@@ -23,10 +23,12 @@ under the License.
 
 #include "hdf5.h"
 
+#include "common/AbstractHdfProxy.h"
+#include "common/EnumStringMapper.h"
+
 #include "resqml2/AbstractRepresentation.h"
 #include "resqml2_0_1/PropertyKind.h"
 #include "resqml2_0_1/StringTableLookup.h"
-#include "common/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -97,9 +99,9 @@ vector<Relationship> CategoricalProperty::getAllEpcRelationships() const
 	return result;
 }
 
-void CategoricalProperty::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void CategoricalProperty::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
-	AbstractValuesProperty:: importRelationshipSetFromEpc(epcDoc);
+	AbstractValuesProperty:: resolveTargetRelationships(epcDoc);
 
 	_resqml2__CategoricalProperty* prop = static_cast<_resqml2__CategoricalProperty*>(gsoapProxy2_0_1);
 	stringLookup = static_cast<StringTableLookup*>(epcDoc->getDataObjectByUuid(prop->Lookup->UUID));
@@ -185,32 +187,32 @@ bool CategoricalProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKi
 
 	if (!pk->isPartial()) {
 		if (pk->isAbstract()) {
-			epcDocument->addWarning("The categorical property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which is abstract. This property will be assumed to be a partial one.");
+			repository->addWarning("The categorical property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which is abstract. This property will be assumed to be a partial one.");
 			changeToPartialObject();
 			return false;
 		}
-		if (epcDocument->getPropertyKindMapper() != nullptr) {
+		if (repository->getPropertyKindMapper() != nullptr) {
 			if (pk->isParentPartial()) {
-				epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the categorical property " + getUuid() + " is right because one if its parent property kind is abstract.");
+				repository->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the categorical property " + getUuid() + " is right because one if its parent property kind is abstract.");
 				return true;
 			}
 			if (!pk->isChildOf(resqml2__ResqmlPropertyKind__categorical)) {
 				if (!pk->isChildOf(resqml2__ResqmlPropertyKind__discrete)) {
-					epcDocument->addWarning("The categorical property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
+					repository->addWarning("The categorical property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
 					changeToPartialObject();
 					return false;
 				}
 				else {
-					epcDocument->addWarning("The categorical property " + getUuid() + " is associated to a discrete local property kind " + pk->getUuid() + ".");
+					repository->addWarning("The categorical property " + getUuid() + " is associated to a discrete local property kind " + pk->getUuid() + ".");
 				}
 			}
 		}
 		else {
-			epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the categorical property " + getUuid() + " is right because no property kind mapping files have been loaded.");
+			repository->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the categorical property " + getUuid() + " is right because no property kind mapping files have been loaded.");
 		}
 	}
 	else {
-		epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the categorical property " + getUuid() + " is right because it is abstract.");
+		repository->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the categorical property " + getUuid() + " is right because it is abstract.");
 	}
 
 	return true;
@@ -218,26 +220,29 @@ bool CategoricalProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKi
 
 bool CategoricalProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk)
 {
-	PropertyKindMapper* pkMapper = epcDocument->getPropertyKindMapper();
+	COMMON_NS::EnumStringMapper tmp;
+	std::string pkName = tmp.getEnergisticsPropertyKindName(pk);
+
+	PropertyKindMapper* pkMapper = repository->getPropertyKindMapper();
 	if (pkMapper != nullptr) {
 		if (pkMapper->isAbstract(pk)) {
-			epcDocument->addWarning("The categorical property " + getUuid() + " cannot be associated to a resqml property kind \"" + epcDocument->getEnergisticsPropertyKindName(pk) + "\" which is abstract. This property will be assumed to be a partial one.");
+			repository->addWarning("The categorical property " + getUuid() + " cannot be associated to a resqml property kind \"" + pkName + "\" which is abstract. This property will be assumed to be a partial one.");
 			changeToPartialObject();
 			return false;
 		}
 		if (!pkMapper->isChildOf(pk, resqml2__ResqmlPropertyKind__categorical)) {
 			if (!pkMapper->isChildOf(pk, resqml2__ResqmlPropertyKind__discrete)) {
-				epcDocument->addWarning("The categorical property " + getUuid() + " cannot be associated to a resqml property kind \"" + epcDocument->getEnergisticsPropertyKindName(pk) + "\" which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
+				repository->addWarning("The categorical property " + getUuid() + " cannot be associated to a resqml property kind \"" + pkName + "\" which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
 				changeToPartialObject();
 				return false;
 			}
 			else {
-				getEpcDocument()->addWarning("The categorical property " + getUuid() + " is associated to a discrete resqml property kind \"" + epcDocument->getEnergisticsPropertyKindName(pk) + "\".");
+				getRepository()->addWarning("The categorical property " + getUuid() + " is associated to a discrete resqml property kind \"" + pkName + "\".");
 			}
 		}
 	}
 	else {
-		epcDocument->addWarning("Cannot verify if the resqml property kind \"" + epcDocument->getEnergisticsPropertyKindName(pk) + "\" of the categorical property " + getUuid() + " is right because no property kind mapping files have been loaded.");
+		repository->addWarning("Cannot verify if the resqml property kind \"" + pkName + "\" of the categorical property " + getUuid() + " is right because no property kind mapping files have been loaded.");
 	}
 
 	return true;

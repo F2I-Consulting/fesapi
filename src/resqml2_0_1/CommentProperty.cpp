@@ -23,9 +23,11 @@ under the License.
 
 #include "hdf5.h"
 
+#include "common/AbstractHdfProxy.h"
+#include "common/EnumStringMapper.h"
+
 #include "resqml2/AbstractRepresentation.h"
 #include "resqml2_0_1/PropertyKind.h"
-#include "common/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -199,27 +201,27 @@ bool CommentProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKind* 
 
 	if (!pk->isPartial()) {
 		if (pk->isAbstract()) {
-			epcDocument->addWarning("The comment property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which is abstract. This property will be assumed to be a partial one.");
+			repository->addWarning("The comment property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which is abstract. This property will be assumed to be a partial one.");
 			changeToPartialObject();
 			return false;
 		}
-		if (epcDocument->getPropertyKindMapper() != nullptr) {
+		if (repository->getPropertyKindMapper() != nullptr) {
 			if (pk->isParentPartial()) {
-				epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the comment property " + getUuid() + " is right because one if its parent property kind is abstract.");
+				repository->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the comment property " + getUuid() + " is right because one if its parent property kind is abstract.");
 				return true;
 			}
 			if (pk->isChildOf(resqml2__ResqmlPropertyKind__continuous) || pk->isChildOf(resqml2__ResqmlPropertyKind__discrete) || pk->isChildOf(resqml2__ResqmlPropertyKind__categorical)) {
-				epcDocument->addWarning("The comment property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which is either a continuous, discrete or categorical standard property kind. This property will be assumed to be a partial one.");
+				repository->addWarning("The comment property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which is either a continuous, discrete or categorical standard property kind. This property will be assumed to be a partial one.");
 				changeToPartialObject();
 				return false;
 			}
 		}
 		else {
-			epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the comment property " + getUuid() + " is right because no property kind mapping files have been loaded.");
+			repository->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the comment property " + getUuid() + " is right because no property kind mapping files have been loaded.");
 		}
 	}
 	else {
-		epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the comment property " + getUuid() + " is right because it is abstract.");
+		repository->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the comment property " + getUuid() + " is right because it is abstract.");
 	}
 
 	return true;
@@ -227,21 +229,24 @@ bool CommentProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKind* 
 
 bool CommentProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk)
 {
-	PropertyKindMapper* pkMapper = epcDocument->getPropertyKindMapper();
+	COMMON_NS::EnumStringMapper tmp;
+	std::string pkName = tmp.getEnergisticsPropertyKindName(pk);
+
+	PropertyKindMapper* pkMapper = repository->getPropertyKindMapper();
 	if (pkMapper != nullptr) {
 		if (pkMapper->isAbstract(pk)) {
-			epcDocument->addWarning("The comment property " + getUuid() + " cannot be associated to a resqml property kind \"" + epcDocument->getEnergisticsPropertyKindName(pk) + "\" which is abstract. This property will be assumed to be a partial one.");
+			repository->addWarning("The comment property " + getUuid() + " cannot be associated to a resqml property kind \"" + pkName + "\" which is abstract. This property will be assumed to be a partial one.");
 			changeToPartialObject();
 			return false;
 		}
 		if (pkMapper->isChildOf(pk, resqml2__ResqmlPropertyKind__continuous) || pkMapper->isChildOf(pk, resqml2__ResqmlPropertyKind__discrete) || pkMapper->isChildOf(pk, resqml2__ResqmlPropertyKind__categorical)) {
-			epcDocument->addWarning("The comment property " + getUuid() + " cannot be associated to a resqml property kind \"" + epcDocument->getEnergisticsPropertyKindName(pk) + "\" which is either a continuous, discrete or categorical standard property kind. This property will be assumed to be a partial one.");
+			repository->addWarning("The comment property " + getUuid() + " cannot be associated to a resqml property kind \"" + pkName + "\" which is either a continuous, discrete or categorical standard property kind. This property will be assumed to be a partial one.");
 			changeToPartialObject();
 			return false;
 		}
 	}
 	else {
-		epcDocument->addWarning("Cannot verify if the resqml property kind \"" + epcDocument->getEnergisticsPropertyKindName(pk) + "\" of the comment property " + getUuid() + " is right because no property kind mapping files have been loaded.");
+		repository->addWarning("Cannot verify if the resqml property kind \"" + pkName + "\" of the comment property " + getUuid() + " is right because no property kind mapping files have been loaded.");
 	}
 
 	return true;

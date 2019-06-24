@@ -65,5 +65,5 @@ vector<Relationship> AbstractFeature::getAllEpcRelationships() const
 	return result;
 }
 
-void AbstractFeature::importRelationshipSetFromEpc(COMMON_NS::EpcDocument*)
+void AbstractFeature::resolveTargetRelationships(COMMON_NS::DataObjectRepository*)
 {}

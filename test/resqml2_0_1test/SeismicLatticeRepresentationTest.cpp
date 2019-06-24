@@ -37,45 +37,45 @@ const char* SeismicLatticeRepresentationTest::defaultTitleInterp = "Seismic Latt
 const char* SeismicLatticeRepresentationTest::defaultUuid = "c218fe9a-5080-4322-82fc-d7a1efb6da99";
 const char* SeismicLatticeRepresentationTest::defaultTitle = "Seismic Grid 2d Representation";
 
-SeismicLatticeRepresentationTest::SeismicLatticeRepresentationTest(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath)
+SeismicLatticeRepresentationTest::SeismicLatticeRepresentationTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath)
 {
 }
 
-SeismicLatticeRepresentationTest::SeismicLatticeRepresentationTest(EpcDocument * epcDocument, bool init)
-	: commontest::AbstractObjectTest(epcDocument)
+SeismicLatticeRepresentationTest::SeismicLatticeRepresentationTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo)
 {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void SeismicLatticeRepresentationTest::initEpcDocHandler()
+void SeismicLatticeRepresentationTest::initRepoHandler()
 {
-	LocalDepth3dCrs * crs = epcDoc->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
+	LocalDepth3dCrs * crs = repo->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 	if (crs == nullptr) {
-		LocalDepth3dCrsTest crsTest(epcDoc, true);
-		crs = epcDoc->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
+		LocalDepth3dCrsTest crsTest(repo, true);
+		crs = repo->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 	}
 
-	SeismicLatticeFeature* seismicLattice = epcDoc->createSeismicLattice(defaultUuidFeature, defaultTitleFeature, 2, 2, 150, 152, 4, 2);
-	GenericFeatureInterpretation* seismicLatticeInterp = epcDoc->createGenericFeatureInterpretation(seismicLattice, defaultUuidInterp, defaultTitleInterp);
-	Grid2dRepresentation* seismicLatticeRep = epcDoc->createGrid2dRepresentation(seismicLatticeInterp, crs, defaultUuid, defaultTitle);
+	SeismicLatticeFeature* seismicLattice = repo->createSeismicLattice(defaultUuidFeature, defaultTitleFeature, 2, 2, 150, 152, 4, 2);
+	GenericFeatureInterpretation* seismicLatticeInterp = repo->createGenericFeatureInterpretation(seismicLattice, defaultUuidInterp, defaultTitleInterp);
+	Grid2dRepresentation* seismicLatticeRep = repo->createGrid2dRepresentation(seismicLatticeInterp, crs, defaultUuid, defaultTitle);
 	seismicLatticeRep->setGeometryAsArray2dOfLatticePoints3d(4, 2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 250, 200);
 }
 
-void SeismicLatticeRepresentationTest::readEpcDocHandler()
+void SeismicLatticeRepresentationTest::readRepoHandler()
 {
 	// Feature
-	RESQML2_0_1_NS::SeismicLatticeFeature* feature = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::SeismicLatticeFeature>(defaultUuidFeature);
+	RESQML2_0_1_NS::SeismicLatticeFeature* feature = repo->getDataObjectByUuid<RESQML2_0_1_NS::SeismicLatticeFeature>(defaultUuidFeature);
 	REQUIRE(feature->getCrosslineIncrement() == 2);
 	REQUIRE(feature->getOriginCrossline() == 152);
 	REQUIRE(feature->getInlineIncrement() == 2);
 	REQUIRE(feature->getOriginInline() == 150);
 
 	// Grid 2D
-	RESQML2_0_1_NS::Grid2dRepresentation* rep = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::Grid2dRepresentation>(defaultUuid);
+	RESQML2_0_1_NS::Grid2dRepresentation* rep = repo->getDataObjectByUuid<RESQML2_0_1_NS::Grid2dRepresentation>(defaultUuid);
 	REQUIRE(rep->getSupportingRepresentation() == nullptr);
 	REQUIRE(rep->getSeismicSupportOfPatch(0) == nullptr);
 	REQUIRE((rep->isISpacingConstant() && rep->isJSpacingConstant()));

@@ -34,28 +34,28 @@ const char* MultirealPropertyTest::defaultUuidReal1 = "10b8a552-5b0c-4829-a528-0
 const char* MultirealPropertyTest::defaultUuidReal10 = "aef9556b-b5c1-44e1-ad95-fcab6ae09353";
 const char* MultirealPropertyTest::defaultUuidReal15 = "0efeafbf-17f7-4517-9457-c54dcb59524a";
 
-MultirealPropertyTest::MultirealPropertyTest(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath) {
+MultirealPropertyTest::MultirealPropertyTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
 }
 
-MultirealPropertyTest::MultirealPropertyTest(EpcDocument * epcDoc, bool init)
-	: commontest::AbstractObjectTest(epcDoc) {
+MultirealPropertyTest::MultirealPropertyTest(DataObjectRepository * repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void MultirealPropertyTest::initEpcDocHandler() {
+void MultirealPropertyTest::initRepoHandler() {
 	// creating an IJK grid
-	IjkGridExplicitRepresentationTest ijkTest(epcDoc, true);
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation * ijkGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(IjkGridExplicitRepresentationTest::defaultUuid);
+	IjkGridExplicitRepresentationTest ijkTest(repo, true);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation * ijkGrid = repo->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(IjkGridExplicitRepresentationTest::defaultUuid);
 
 	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = epcDoc->getHdfProxySet()[0];
+	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
 	// creating the ContinuousProperty real 0
-	RESQML2_0_1_NS::ContinuousProperty* continuousPropertyReal0 = epcDoc->createContinuousProperty(
+	RESQML2_0_1_NS::ContinuousProperty* continuousPropertyReal0 = repo->createContinuousProperty(
 		ijkGrid, defaultUuidReal0, "real0",
 		1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells,
@@ -67,7 +67,7 @@ void MultirealPropertyTest::initEpcDocHandler() {
 	continuousPropertyReal0->setRealizationIndex(0);
 
 	// creating the ContinuousProperty real 1
-	RESQML2_0_1_NS::ContinuousProperty* continuousPropertyReal1 = epcDoc->createContinuousProperty(
+	RESQML2_0_1_NS::ContinuousProperty* continuousPropertyReal1 = repo->createContinuousProperty(
 		ijkGrid, defaultUuidReal1, "real1",
 		1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells,
@@ -80,7 +80,7 @@ void MultirealPropertyTest::initEpcDocHandler() {
 	continuousPropertyReal1->setRealizationIndex(1);
 
 	// creating the ContinuousProperty real 10
-	RESQML2_0_1_NS::ContinuousProperty* continuousPropertyReal10 = epcDoc->createContinuousProperty(
+	RESQML2_0_1_NS::ContinuousProperty* continuousPropertyReal10 = repo->createContinuousProperty(
 		ijkGrid, defaultUuidReal10, "real10",
 		1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells,
@@ -93,7 +93,7 @@ void MultirealPropertyTest::initEpcDocHandler() {
 	continuousPropertyReal10->setRealizationIndex(0);
 
 	// creating the ContinuousProperty real 15
-	RESQML2_0_1_NS::ContinuousProperty* continuousPropertyReal15 = epcDoc->createContinuousProperty(
+	RESQML2_0_1_NS::ContinuousProperty* continuousPropertyReal15 = repo->createContinuousProperty(
 		ijkGrid, defaultUuidReal15, "real15",
 		1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells,
@@ -106,5 +106,5 @@ void MultirealPropertyTest::initEpcDocHandler() {
 	continuousPropertyReal15->setRealizationIndex(0);
 }
 
-void MultirealPropertyTest::readEpcDocHandler() {
+void MultirealPropertyTest::readRepoHandler() {
 }

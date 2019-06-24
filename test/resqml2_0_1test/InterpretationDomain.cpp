@@ -32,41 +32,41 @@ using namespace resqml2_0_1test;
 using namespace COMMON_NS;
 using namespace RESQML2_0_1_NS;
 
-InterpretationDomain::InterpretationDomain(const string & epcDocPath)
-	: AbstractTest(epcDocPath)
+InterpretationDomain::InterpretationDomain(const string & repoPath)
+	: AbstractTest(repoPath)
 {
 }
 
-InterpretationDomain::InterpretationDomain(EpcDocument* epcDoc, bool init)
-	: AbstractTest(epcDoc)
+InterpretationDomain::InterpretationDomain(DataObjectRepository* repo, bool init)
+	: AbstractTest(repo)
 {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void InterpretationDomain::initEpcDoc() {
+void InterpretationDomain::initRepo() {
 
-	FaultInterpretation* faultInterp = epcDoc->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
+	FaultInterpretation* faultInterp = repo->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
 	if (faultInterp == nullptr) {
-		FaultInterpretationTest faultInterpTest(epcDoc, true);
-		faultInterp = epcDoc->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
+		FaultInterpretationTest faultInterpTest(repo, true);
+		faultInterp = repo->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
 	}
 
 	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml2__Domain__mixed);
 	faultInterp->initDomain(gsoap_resqml2_0_1::resqml2__Domain__time);
 	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml2__Domain__time);
 
-	FaultSinglePatchTriangulatedSetRepresentationTest* repTest = new FaultSinglePatchTriangulatedSetRepresentationTest(epcDoc, true);
+	FaultSinglePatchTriangulatedSetRepresentationTest* repTest = new FaultSinglePatchTriangulatedSetRepresentationTest(repo, true);
 	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml2__Domain__depth);
-	resqml2_0_1test::PolylineSetRepresentation* polylineRepTest = new resqml2_0_1test::PolylineSetRepresentation(epcDoc, true);
+	resqml2_0_1test::PolylineSetRepresentation* polylineRepTest = new resqml2_0_1test::PolylineSetRepresentation(repo, true);
 	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml2__Domain__mixed);
 
 	delete repTest;
 	delete polylineRepTest;
 }
 
-void InterpretationDomain::readEpcDoc() {
+void InterpretationDomain::readRepo() {
 
 }

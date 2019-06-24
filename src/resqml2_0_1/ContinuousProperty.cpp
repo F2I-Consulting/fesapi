@@ -23,9 +23,11 @@ under the License.
 
 #include "hdf5.h"
 
+#include "common/AbstractHdfProxy.h"
+#include "common/EnumStringMapper.h"
+
 #include "resqml2/AbstractRepresentation.h"
 #include "resqml2_0_1/PropertyKind.h"
-#include "common/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -437,27 +439,27 @@ bool ContinuousProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKin
 
 	if (!pk->isPartial()) {
 		if (pk->isAbstract()) {
-			epcDocument->addWarning("The continuous property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which is abstract. This property will be assumed to be a partial one.");
+			repository->addWarning("The continuous property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which is abstract. This property will be assumed to be a partial one.");
 			changeToPartialObject();
 			return false;
 		}
-		if (epcDocument->getPropertyKindMapper() != nullptr) {
+		if (repository->getPropertyKindMapper() != nullptr) {
 			if (pk->isParentPartial()) {
-				epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the continuous property " + getUuid() + " is right because one if its parent property kind is abstract.");
+				repository->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the continuous property " + getUuid() + " is right because one if its parent property kind is abstract.");
 				return true;
 			}
 			if (!pk->isChildOf(resqml2__ResqmlPropertyKind__continuous)) {
-				epcDocument->addWarning("The continuous property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which does not derive from the continuous standard property kind. This property will be assumed to be a partial one.");
+				repository->addWarning("The continuous property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which does not derive from the continuous standard property kind. This property will be assumed to be a partial one.");
 				changeToPartialObject();
 				return false;
 			}
 		}
 		else {
-			epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the continuous property " + getUuid() + " is right because no property kind mapping files have been loaded.");
+			repository->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the continuous property " + getUuid() + " is right because no property kind mapping files have been loaded.");
 		}
 	}
 	else {
-		epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the continuous property " + getUuid() + " is right because it is abstract.");
+		repository->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the continuous property " + getUuid() + " is right because it is abstract.");
 	}
 
 	return true;
@@ -465,21 +467,24 @@ bool ContinuousProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKin
 
 bool ContinuousProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk)
 {
-	PropertyKindMapper* pkMapper = epcDocument->getPropertyKindMapper();
+	COMMON_NS::EnumStringMapper tmp;
+	std::string pkName = tmp.getEnergisticsPropertyKindName(pk);
+
+	PropertyKindMapper* pkMapper = repository->getPropertyKindMapper();
 	if (pkMapper != nullptr) {
 		if (pkMapper->isAbstract(pk)) {
-			epcDocument->addWarning("The continuous property " + getUuid() + " cannot be associated to a resqml property kind \"" + epcDocument->getEnergisticsPropertyKindName(pk) + "\" which is abstract. This property will be assumed to be a partial one.");
+			repository->addWarning("The continuous property " + getUuid() + " cannot be associated to a resqml property kind \"" + pkName + "\" which is abstract. This property will be assumed to be a partial one.");
 			changeToPartialObject();
 			return false;
 		}
 		if (!pkMapper->isChildOf(pk, resqml2__ResqmlPropertyKind__continuous)) {
-			epcDocument->addWarning("The continuous property " + getUuid() + " cannot be associated to a resqml property kind \"" + epcDocument->getEnergisticsPropertyKindName(pk) + "\" which does not derive from the continuous standard property kind. This property will be assumed to be a partial one.");
+			repository->addWarning("The continuous property " + getUuid() + " cannot be associated to a resqml property kind \"" + pkName + "\" which does not derive from the continuous standard property kind. This property will be assumed to be a partial one.");
 			changeToPartialObject();
 			return false;
 		}
 	}
 	else {
-		epcDocument->addWarning("Cannot verify if the resqml property kind \"" + epcDocument->getEnergisticsPropertyKindName(pk) + "\" of the continuous property " + getUuid() + " is right because no property kind mapping files have been loaded.");
+		repository->addWarning("Cannot verify if the resqml property kind \"" + pkName + "\" of the continuous property " + getUuid() + " is right because no property kind mapping files have been loaded.");
 	}
 
 	return true;

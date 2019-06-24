@@ -21,6 +21,8 @@ under the License.
 #include <stdexcept>
 #include <algorithm>
 
+#include "common/EnumStringMapper.h"
+
 #include "resqml2/SubRepresentation.h"
 #include "resqml2_0_1/UnstructuredGridRepresentation.h"
 #include "resqml2_0_1/IjkGridExplicitRepresentation.h"
@@ -158,13 +160,13 @@ vector<Relationship> AbstractProperty::getAllEpcRelationships() const
 	return result;
 }
 
-void AbstractProperty::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void AbstractProperty::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getRepresentationDor();
 	RESQML2_NS::AbstractRepresentation* rep = epcDoc->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
 	if (rep == nullptr) { // partial transfer
-		getEpcDocument()->createPartial(dor);
-		rep = getEpcDocument()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
+		getRepository()->createPartial(dor);
+		rep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
 	}
 	if (rep == nullptr) {
 		throw invalid_argument("The DOR looks invalid.");
@@ -177,8 +179,8 @@ void AbstractProperty::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcD
 	if (dor != nullptr) {
 		TimeSeries* ts = epcDoc->getDataObjectByUuid<TimeSeries>(dor->UUID);
 		if (ts == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			ts = getEpcDocument()->getDataObjectByUuid<TimeSeries>(dor->UUID);
+			getRepository()->createPartial(dor);
+			ts = getRepository()->getDataObjectByUuid<TimeSeries>(dor->UUID);
 		}
 		if (ts == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -244,7 +246,7 @@ void AbstractProperty::setRepresentation(AbstractRepresentation * rep)
 
 AbstractRepresentation* AbstractProperty::getRepresentation() const
 {
-	return getEpcDocument()->getDataObjectByUuid<AbstractRepresentation>(getRepresentationUuid());
+	return getRepository()->getDataObjectByUuid<AbstractRepresentation>(getRepresentationUuid());
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractProperty::getRepresentationDor() const
@@ -274,7 +276,7 @@ std::string AbstractProperty::getRepresentationContentType() const
 
 TimeSeries* AbstractProperty::getTimeSeries() const
 {
-	return static_cast<TimeSeries*>(epcDocument->getDataObjectByUuid(getTimeSeriesUuid()));
+	return static_cast<TimeSeries*>(repository->getDataObjectByUuid(getTimeSeriesUuid()));
 }
 
 void AbstractProperty::setTimeSeries(TimeSeries * ts)
@@ -406,7 +408,7 @@ void AbstractProperty::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy)
 
 COMMON_NS::AbstractHdfProxy* AbstractProperty::getHdfProxy() const
 {
-	return static_cast<COMMON_NS::AbstractHdfProxy*>(epcDocument->getDataObjectByUuid(getHdfProxyUuid()));
+	return static_cast<COMMON_NS::AbstractHdfProxy*>(repository->getDataObjectByUuid(getHdfProxyUuid()));
 }
 
 std::string AbstractProperty::getHdfProxyUuid() const
@@ -487,8 +489,8 @@ bool AbstractProperty::isAssociatedToOneStandardEnergisticsPropertyKind() const
 std::string AbstractProperty::getPropertyKindDescription() const
 {
 	if (isAssociatedToOneStandardEnergisticsPropertyKind()) {
-		if (epcDocument->getPropertyKindMapper() != nullptr) {
-			return epcDocument->getPropertyKindMapper()->getDescriptionOfResqmlStandardPropertyKindName(getEnergisticsPropertyKind());
+		if (repository->getPropertyKindMapper() != nullptr) {
+			return repository->getPropertyKindMapper()->getDescriptionOfResqmlStandardPropertyKindName(getEnergisticsPropertyKind());
 		}
 		else {
 			throw std::invalid_argument("You must load the property kind mapping files if you want to get the parent property kind.");
@@ -502,7 +504,8 @@ std::string AbstractProperty::getPropertyKindDescription() const
 std::string AbstractProperty::getPropertyKindAsString() const
 {
 	if (isAssociatedToOneStandardEnergisticsPropertyKind()) {
-		return epcDocument->getEnergisticsPropertyKindName(getEnergisticsPropertyKind());
+		COMMON_NS::EnumStringMapper tmp;
+		return tmp.getEnergisticsPropertyKindName(getEnergisticsPropertyKind());
 	}
 	else {
 		return getLocalPropertyKind()->getTitle();
@@ -512,9 +515,10 @@ std::string AbstractProperty::getPropertyKindAsString() const
 std::string AbstractProperty::getPropertyKindParentAsString() const
 {
 	if (isAssociatedToOneStandardEnergisticsPropertyKind()) {
-		if (epcDocument->getPropertyKindMapper() != nullptr) {
-			gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind propKindEnum = epcDocument->getPropertyKindMapper()->getPropertyKindParentOfResqmlStandardPropertyKindName(getEnergisticsPropertyKind());
-			return epcDocument->getEnergisticsPropertyKindName(propKindEnum);
+		if (repository->getPropertyKindMapper() != nullptr) {
+			gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind propKindEnum = repository->getPropertyKindMapper()->getPropertyKindParentOfResqmlStandardPropertyKindName(getEnergisticsPropertyKind());
+			COMMON_NS::EnumStringMapper tmp;
+			return tmp.getEnergisticsPropertyKindName(propKindEnum);
 		}
 		else {
 			throw std::invalid_argument("You must load the property kind mapping files if you want to get the parent property kind.");
@@ -583,7 +587,7 @@ std::string AbstractProperty::getLocalPropertyKindTitle() const
 
 PropertyKind* AbstractProperty::getLocalPropertyKind() const
 {
-	return getEpcDocument()->getDataObjectByUuid<PropertyKind>(getLocalPropertyKindUuid());
+	return getRepository()->getDataObjectByUuid<PropertyKind>(getLocalPropertyKindUuid());
 }
 
 bool AbstractProperty::hasRealizationIndex() const

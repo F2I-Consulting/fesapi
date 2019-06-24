@@ -80,7 +80,7 @@ namespace RESQML2_NS
 
 	private:
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc);
+		void resolveTargetRelationships(COMMON_NS::DataObjectRepository * epcDoc);
 		
         std::vector<Activity*> activityInstanceSet;
 

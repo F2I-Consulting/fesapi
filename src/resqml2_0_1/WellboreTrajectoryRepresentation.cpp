@@ -224,9 +224,9 @@ vector<Relationship> WellboreTrajectoryRepresentation::getAllEpcRelationships() 
 	return result;
 }
 
-void WellboreTrajectoryRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void WellboreTrajectoryRepresentation::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
-	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractRepresentation::resolveTargetRelationships(epcDoc);
 
 	_resqml2__WellboreTrajectoryRepresentation* rep = static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 
@@ -242,8 +242,8 @@ void WellboreTrajectoryRepresentation::importRelationshipSetFromEpc(COMMON_NS::E
 	{
 		DeviationSurveyRepresentation* dsr = epcDoc->getDataObjectByUuid<DeviationSurveyRepresentation>(dsrDor->UUID);
 		if (dsr == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dsrDor);
-			dsr = getEpcDocument()->getDataObjectByUuid<DeviationSurveyRepresentation>(dsrDor->UUID);
+			getRepository()->createPartial(dsrDor);
+			dsr = getRepository()->getDataObjectByUuid<DeviationSurveyRepresentation>(dsrDor->UUID);
 		}
 		if (dsr == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -278,7 +278,7 @@ WellboreTrajectoryRepresentation* WellboreTrajectoryRepresentation::getParentTra
 		return nullptr;
 	}
 
-	return getEpcDocument()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(rep->ParentIntersection->ParentTrajectory->UUID);
+	return getRepository()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(rep->ParentIntersection->ParentTrajectory->UUID);
 }
 
 const double& WellboreTrajectoryRepresentation::getParentTrajectoryMd() const
@@ -425,7 +425,7 @@ void WellboreTrajectoryRepresentation::setMdDatum(RESQML2_NS::MdDatum* mdDatum)
 
 RESQML2_NS::MdDatum * WellboreTrajectoryRepresentation::getMdDatum() const
 {
-	return static_cast<RESQML2_NS::MdDatum*>(getEpcDocument()->getDataObjectByUuid(getMdDatumUuid()));
+	return static_cast<RESQML2_NS::MdDatum*>(getRepository()->getDataObjectByUuid(getMdDatumUuid()));
 }
 
 std::string WellboreTrajectoryRepresentation::getMdDatumUuid() const
@@ -481,5 +481,5 @@ DeviationSurveyRepresentation* WellboreTrajectoryRepresentation::getDeviationSur
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dsDor = getDeviationSurveyDor();
 
-	return dsDor == nullptr ? nullptr : epcDocument->getDataObjectByUuid<DeviationSurveyRepresentation>(dsDor->UUID);
+	return dsDor == nullptr ? nullptr : repository->getDataObjectByUuid<DeviationSurveyRepresentation>(dsDor->UUID);
 }

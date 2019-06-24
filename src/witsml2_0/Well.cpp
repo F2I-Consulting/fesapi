@@ -288,7 +288,7 @@ vector<Relationship> Well::getAllEpcRelationships() const
 	return result;
 }
 
-void Well::importRelationshipSetFromEpc(COMMON_NS::EpcDocument*)
+void Well::resolveTargetRelationships(COMMON_NS::DataObjectRepository*)
 {}
 
 RESQML2_0_1_NS::WellboreFeature* Well::getResqmlWellboreFeature() const

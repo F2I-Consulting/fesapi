@@ -35,39 +35,39 @@ const char* HorizonInterpretationTest::horizonTitle = "Horizon";
 const char* HorizonInterpretationTest::defaultUuid = "4b256b37-4013-47f9-b6c3-4460abc6e421";
 const char* HorizonInterpretationTest::defaultTitle = "Horizon Interpretation";
 
-HorizonInterpretationTest::HorizonInterpretationTest(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath)
+HorizonInterpretationTest::HorizonInterpretationTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath)
 {
 }
 
-HorizonInterpretationTest::HorizonInterpretationTest(EpcDocument * epcDoc, bool init)
-	: commontest::AbstractObjectTest(epcDoc)
+HorizonInterpretationTest::HorizonInterpretationTest(DataObjectRepository * repo, bool init)
+	: commontest::AbstractObjectTest(repo)
 {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
 
-void HorizonInterpretationTest::initEpcDocHandler()
+void HorizonInterpretationTest::initRepoHandler()
 {
 	// creating dependencies
-	Horizon* horizon = epcDoc->getDataObjectByUuid<Horizon>(horizonUuid);
+	Horizon* horizon = repo->getDataObjectByUuid<Horizon>(horizonUuid);
 	if (horizon == nullptr) {
-		horizon = epcDoc->createHorizon(horizonUuid, horizonTitle);
+		horizon = repo->createHorizon(horizonUuid, horizonTitle);
 	}
 
-	HorizonInterpretation* horizonInterp = epcDoc->getDataObjectByUuid<HorizonInterpretation>(defaultUuid);
+	HorizonInterpretation* horizonInterp = repo->getDataObjectByUuid<HorizonInterpretation>(defaultUuid);
 	if (horizonInterp == nullptr) {
-		horizonInterp = epcDoc->createHorizonInterpretation(horizon, defaultUuid, defaultTitle);
+		horizonInterp = repo->createHorizonInterpretation(horizon, defaultUuid, defaultTitle);
 	}
 	REQUIRE( horizonInterp != nullptr );
 }
 
-void HorizonInterpretationTest::readEpcDocHandler()
+void HorizonInterpretationTest::readRepoHandler()
 {
 	// getting the horizon interpretation
-	HorizonInterpretation* horizonInterp = epcDoc->getDataObjectByUuid<HorizonInterpretation>(defaultUuid);
+	HorizonInterpretation* horizonInterp = repo->getDataObjectByUuid<HorizonInterpretation>(defaultUuid);
 	REQUIRE(horizonInterp != nullptr);
 }

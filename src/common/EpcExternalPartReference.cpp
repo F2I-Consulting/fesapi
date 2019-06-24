@@ -32,10 +32,6 @@ using namespace epc;
 
 const char* EpcExternalPartReference::XML_TAG = "EpcExternalPartReference";
 
-EpcExternalPartReference::EpcExternalPartReference(const string & packageDirAbsolutePath, const string & externalFilePath) :
-		packageDirectoryAbsolutePath(packageDirAbsolutePath), relativeFilePath(externalFilePath) {
-}
-
 string EpcExternalPartReference::getXmlTag() const
 {
 	return XML_TAG;
@@ -67,13 +63,8 @@ vector<Relationship> EpcExternalPartReference::getAllEpcRelationships() const
 		}
 	}
 
-	// External part
-	Relationship relExt(relativeFilePath, "", "Hdf5File", false);
-	relExt.setExternalResourceType();
-	result.push_back(relExt);
-
 	return result;
 }
 
-void EpcExternalPartReference::importRelationshipSetFromEpc(COMMON_NS::EpcDocument*)
+void EpcExternalPartReference::resolveTargetRelationships(COMMON_NS::DataObjectRepository*)
 {}

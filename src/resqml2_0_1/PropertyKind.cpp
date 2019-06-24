@@ -114,8 +114,8 @@ bool PropertyKind::isChildOf(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind stan
 		if (getParentEnergisticsPropertyKind() == standardPropKind) {
 			return true;
 		}
-		else if (epcDocument->getPropertyKindMapper() != nullptr) {
-			return epcDocument->getPropertyKindMapper()->isChildOf(getParentEnergisticsPropertyKind(), standardPropKind);
+		else if (repository->getPropertyKindMapper() != nullptr) {
+			return repository->getPropertyKindMapper()->isChildOf(getParentEnergisticsPropertyKind(), standardPropKind);
 		}
 		else {
 			throw std::invalid_argument("You must load the property kind mapping files if you want to get the standard parent property kind.");

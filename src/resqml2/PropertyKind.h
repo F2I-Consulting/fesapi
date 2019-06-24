@@ -129,7 +129,7 @@ namespace RESQML2_NS
 		virtual void setXmlParentPropertyKind(PropertyKind* parentPropertyKind) = 0;
 
 		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		void resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc);
 
 		// XML backward relationship
 		std::vector<class AbstractProperty*> propertySet;

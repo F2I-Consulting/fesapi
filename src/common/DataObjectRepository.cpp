@@ -1,0 +1,2159 @@
+/*-----------------------------------------------------------------------
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"; you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-----------------------------------------------------------------------*/
+#include "common/DataObjectRepository.h"
+
+#include <algorithm>
+#include <functional>
+
+#include "resqml2_0_1/PropertyKindMapper.h"
+
+#include "resqml2_0_1/LocalDepth3dCrs.h"
+#include "resqml2_0_1/LocalTime3dCrs.h"
+#include "resqml2_0_1/Horizon.h"
+#include "resqml2_0_1/FluidBoundaryFeature.h"
+#include "resqml2_0_1/TectonicBoundaryFeature.h"
+#include "resqml2_0_1/FrontierFeature.h"
+#include "resqml2_0_1/GeobodyFeature.h"
+#include "resqml2_0_1/GenericFeatureInterpretation.h"
+#include "resqml2_0_1/FaultInterpretation.h"
+#include "resqml2_0_1/HorizonInterpretation.h"
+#include "resqml2_0_1/GeobodyBoundaryInterpretation.h"
+#include "resqml2_0_1/GeobodyInterpretation.h"
+#include "resqml2_0_1/PolylineSetRepresentation.h"
+#include "resqml2_0_1/PointSetRepresentation.h"
+#include "resqml2_0_1/PlaneSetRepresentation.h"
+#include "resqml2_0_1/SeismicLatticeFeature.h"
+#include "resqml2_0_1/Grid2dRepresentation.h"
+#include "resqml2_0_1/HdfProxy.h"
+#include "resqml2_0_1/TriangulatedSetRepresentation.h"
+#include "resqml2_0_1/WellboreFeature.h"
+#include "resqml2_0_1/WellboreInterpretation.h"
+#include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
+#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
+#include "resqml2_0_1/DeviationSurveyRepresentation.h"
+#include "resqml2_0_1/MdDatum.h"
+#include "resqml2_0_1/PolylineRepresentation.h"
+#include "resqml2_0_1/SubRepresentation.h"
+#include "resqml2_0_1/GridConnectionSetRepresentation.h"
+#include "resqml2_0_1/TimeSeries.h"
+#include "resqml2_0_1/PropertyKind.h"
+#include "resqml2_0_1/ContinuousProperty.h"
+#include "resqml2_0_1/CategoricalProperty.h"
+#include "resqml2_0_1/DiscreteProperty.h"
+#include "resqml2_0_1/CommentProperty.h"
+#include "resqml2_0_1/StringTableLookup.h"
+#include "resqml2_0_1/SeismicLineFeature.h"
+#include "resqml2_0_1/SeismicLineSetFeature.h"
+#include "resqml2_0_1/OrganizationFeature.h"
+
+#include "resqml2_0_1/BlockedWellboreRepresentation.h"
+
+#include "resqml2_0_1/EarthModelInterpretation.h"
+#include "resqml2_0_1/RepresentationSetRepresentation.h"
+#include "resqml2_0_1/StructuralOrganizationInterpretation.h"
+#include "resqml2_0_1/NonSealedSurfaceFrameworkRepresentation.h"
+#include "resqml2_0_1/SealedSurfaceFrameworkRepresentation.h"
+#include "resqml2_0_1/SealedVolumeFrameworkRepresentation.h"
+
+#include "resqml2_0_1/RockFluidUnitFeature.h"
+#include "resqml2_0_1/RockFluidUnitInterpretation.h"
+#include "resqml2_0_1/RockFluidOrganizationInterpretation.h"
+
+#include "resqml2_0_1/StratigraphicUnitFeature.h"
+#include "resqml2_0_1/StratigraphicUnitInterpretation.h"
+#include "resqml2_0_1/StratigraphicColumn.h"
+#include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
+#include "resqml2_0_1/StratigraphicOccurrenceInterpretation.h"
+
+#include "resqml2_0_1/IjkGridExplicitRepresentation.h"
+#include "resqml2_0_1/IjkGridParametricRepresentation.h"
+#include "resqml2_0_1/IjkGridLatticeRepresentation.h"
+#include "resqml2_0_1/IjkGridNoGeometryRepresentation.h"
+#include "resqml2_0_1/UnstructuredGridRepresentation.h"
+
+#include "resqml2_0_1/Activity.h"
+#include "resqml2_0_1/ActivityTemplate.h"
+#include "resqml2_0_1/ContinuousPropertySeries.h"
+#include "resqml2_0_1/CategoricalPropertySeries.h"
+#include "resqml2_0_1/DiscretePropertySeries.h"
+
+#include "witsml2_0/Well.h"
+
+#include "tools/GuidTools.h"
+
+using namespace std;
+using namespace COMMON_NS;
+using namespace RESQML2_0_1_NS;
+using namespace WITSML2_0_NS;
+
+namespace {
+	class SameVersion {
+	private:
+		std::string version;
+	public:
+		SameVersion(const std::string & version_) {
+			version = version_;
+		}
+		bool operator()(COMMON_NS::AbstractObject const * dataObj) const
+		{
+			return dataObj->getVersion() == version;
+		}
+	};
+
+	bool hasNoVersion(COMMON_NS::AbstractObject const * dataObj) {
+		return !dataObj->hasVersion();
+	}
+}
+
+// Create a fesapi partial wrapper based on a content type
+#define CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(className)\
+	(resqmlContentType.compare(className::XML_TAG) == 0)\
+	{\
+		return dor->VersionString == nullptr ? createPartial<className>(dor->UUID, dor->Title) : createPartial<className>(dor->UUID, dor->Title, *dor->VersionString);\
+	}
+#define CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(className)\
+	(resqmlContentType.compare(className::XML_TAG) == 0)\
+	{\
+		return dor->VersionString == nullptr ? createPartial<className>(dor->Uuid, dor->Title) : createPartial<className>(dor->Uuid, dor->Title, *dor->VersionString);\
+	}
+
+/////////////////////
+/////// RESQML //////
+/////////////////////
+#define GET_RESQML_2_0_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
+	gsoap_resqml2_0_1::_resqml2__##className* read = gsoap_resqml2_0_1::soap_new_resqml2__obj_USCORE##className(gsoapContext, 1);\
+	soap_read_resqml2__obj_USCORE##className(gsoapContext, read);
+
+
+#define GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
+	GET_RESQML_2_0_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
+	wrapper = new className(read);
+
+#define CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
+	(resqmlContentType.compare(className::XML_TAG) == 0)\
+	{\
+		GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
+	}
+
+/////////////////////
+///// WITSML 2.1 ////
+/////////////////////
+#define GET_WITSML_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
+	gsoapNameSpace::_witsml2__##className* read = gsoapNameSpace::soap_new_witsml2__##className(gsoapContext, 1);\
+	gsoapNameSpace::soap_read_witsml2__##className(gsoapContext, read);
+
+#define GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
+	GET_WITSML_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
+	wrapper = new classNamespace::className(read);
+
+#define CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
+	(datatype.compare(classNamespace::className::XML_TAG) == 0)\
+	{\
+		GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace);\
+	}
+
+DataObjectRepository::DataObjectRepository() :
+	propertyKindMapper(nullptr)
+{
+	// Below SOAP_XML_IGNORENS is used and should not be -> See gsoap sourceforge bug #1123 
+	gsoapContext = soap_new2(SOAP_XML_STRICT | SOAP_C_UTFSTRING | SOAP_XML_IGNORENS, SOAP_XML_TREE | SOAP_XML_INDENT | SOAP_XML_CANONICAL | SOAP_C_UTFSTRING); // new context with option
+}
+
+DataObjectRepository::DataObjectRepository(const std::string & propertyKindMappingFilesDirectory)
+{
+	// Below SOAP_XML_IGNORENS is used and should not be -> See gsoap sourceforge bug #1123 
+	gsoapContext = soap_new2(SOAP_XML_STRICT | SOAP_C_UTFSTRING | SOAP_XML_IGNORENS, SOAP_XML_TREE | SOAP_XML_INDENT | SOAP_XML_CANONICAL | SOAP_C_UTFSTRING); // new context with option
+
+	// Load property kind mapping files
+	propertyKindMapper = new PropertyKindMapper(this);
+	string error = propertyKindMapper->loadMappingFilesFromDirectory(propertyKindMappingFilesDirectory);
+	if (error.size() != 0)
+	{
+		delete propertyKindMapper;
+		propertyKindMapper = nullptr;
+		throw invalid_argument("Could not import property kind mappers : " + error);
+	}
+}
+
+DataObjectRepository::~DataObjectRepository()
+{
+	clear();
+
+	soap_destroy(gsoapContext); // remove deserialized C++ objects
+	soap_end(gsoapContext); // remove deserialized data
+	soap_done(gsoapContext); // finalize last use of the context
+	soap_free(gsoapContext); // Free the context
+}
+
+void DataObjectRepository::clear()
+{
+	if (propertyKindMapper != nullptr) {
+		delete propertyKindMapper;
+		propertyKindMapper = nullptr;
+	}
+
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it)
+#else
+	for (std::tr1::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it)
+#endif
+	{
+		for (size_t i = 0; i < it->second.size(); ++i) {
+			delete it->second[i];
+		}
+	}
+	dataObjects.clear();
+
+	warnings.clear();
+}
+
+void DataObjectRepository::updateAllRelationships()
+{
+	// Tansform the map values into a vector because we are going to potentially insert new elements in the map when looping.
+	vector<COMMON_NS::AbstractObject*> nonPartialObjects;
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it)
+#else
+	for (std::tr1::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it)
+#endif
+	{
+		for (size_t i = 0; i < it->second.size(); ++i) {
+			if (!it->second[i]->isPartial()) {
+				nonPartialObjects.push_back(it->second[i]);
+			}
+		}
+	}
+
+	for (size_t nonPartialObjIndex = 0; nonPartialObjIndex < nonPartialObjects.size(); ++nonPartialObjIndex) {
+		nonPartialObjects[nonPartialObjIndex]->resolveTargetRelationships(this);
+	}
+}
+
+std::string DataObjectRepository::generateRandomUuidAsString()
+{
+	return GuidTools::generateUidAsString();
+}
+
+void DataObjectRepository::addOrReplaceDataObject(COMMON_NS::AbstractObject* proxy)
+{
+	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {
+		dataObjects[proxy->getUuid()].push_back(proxy);
+	}
+	else {
+		std::vector< COMMON_NS::AbstractObject* >& versions = dataObjects[proxy->getUuid()];
+		std::vector< COMMON_NS::AbstractObject* >::iterator same = proxy->hasVersion()
+			? std::find_if(versions.begin(), versions.end(), SameVersion(proxy->getVersion()))
+			: std::find_if(versions.begin(), versions.end(), hasNoVersion);
+		
+		if (same == versions.end()) {
+			dataObjects[proxy->getUuid()].push_back(proxy);
+		}
+		else {
+			if (proxy->getContentType() != (*same)->getContentType()) {
+				throw invalid_argument("Cannot replace " + proxy->getUuid() + " with a different content type : " + proxy->getContentType() + " vs " + (*same)->getContentType());
+			}
+			delete *same;
+			*same = proxy;
+		}
+	}
+	proxy->repository = this;
+}
+
+COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const std::string & xml, const string & contentType)
+{
+	istringstream iss(xml);
+	setGsoapStream(&iss);
+
+	size_t lastEqualCharPos = contentType.find_last_of('_'); // The XML tag is after "obj_"
+	if (lastEqualCharPos == string::npos) { lastEqualCharPos = contentType.find_last_of('='); }
+	const string datatype = contentType.substr(lastEqualCharPos + 1);
+
+	// By default, create a RESQML2_0_1_NS::HdfProxy to manage numerical values.
+	// If you want a different one, call addOrReplaceEpcExternalPartReference2_0 directly with the type you want as template parameter.
+	if (contentType.find("application/x-eml+xml;version=2.0;type=obj") != string::npos) {
+		return addOrReplaceEpcExternalPartReference2_0<RESQML2_0_1_NS::HdfProxy>(xml);
+	}
+
+	COMMON_NS::AbstractObject* wrapper = nullptr;
+	if (contentType.find("application/x-resqml+xml;version=2.0;type=obj") != string::npos) {
+		wrapper = getResqml2_0_1WrapperFromGsoapContext(datatype);
+	}
+	else if (contentType.find("application/x-witsml+xml;version=2.0;type=") != string::npos) {
+		wrapper = getWitsml2_0WrapperFromGsoapContext(datatype);
+	}
+
+	if (wrapper != nullptr) {
+		if (gsoapContext->error != SOAP_OK) {
+			ostringstream oss;
+			soap_stream_fault(gsoapContext, oss);
+			delete wrapper;
+		}
+		else {
+			addOrReplaceDataObject(wrapper);
+			return wrapper;
+		}
+	}
+
+	addWarning("The content type " + contentType + " could not be wrapped by fesapi. The related instance will be ignored.");
+	return nullptr;
+}
+
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataObjectRepository::getDataObjectsGroupedByContentType() const
+#else
+std::tr1::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataObjectRepository::getDataObjectsGroupedByContentType() const
+#endif
+{
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+	std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
+	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
+#else
+	std::tr1::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
+	for (std::tr1::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
+#endif
+		for (size_t i = 0; i < it->second.size(); ++i) {
+			std::string contentType = it->second[i]->getContentType();
+			if (contentType.find("x-eml") == std::string::npos) {
+				result[contentType].push_back(it->second[i]);
+			}
+		}
+	}
+
+	return result;
+}
+
+std::vector<COMMON_NS::AbstractObject*> DataObjectRepository::getDataObjectsByContentType(const std::string & contentType) const
+{
+	std::vector<COMMON_NS::AbstractObject*> result;
+
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
+#else
+	for (std::tr1::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
+#endif
+		for (size_t i = 0; i < it->second.size(); ++i) {
+			if (it->second[i]->getContentType() == contentType) {
+				result.push_back(it->second[i]);
+			}
+		}
+	}
+
+	return result;
+}
+
+COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuid(const string & uuid) const
+{
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+	std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.find(uuid);
+#else
+	std::tr1::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.find(uuid);
+#endif
+
+	return it == dataObjects.end() || it->second.empty() ? nullptr : it->second[0];
+}
+
+COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuidAndVersion(const string & uuid, const std::string & version) const
+{
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+	std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.find(uuid);
+#else
+	std::tr1::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.find(uuid);
+#endif
+
+	if (it == dataObjects.end() || it->second.empty()) {
+		return nullptr;
+	}
+	
+	std::vector< COMMON_NS::AbstractObject* >::const_iterator vectIt = std::find_if(it->second.begin(), it->second.end(), SameVersion(version));
+	return vectIt == it->second.end() ? nullptr : *vectIt;
+}
+
+void DataObjectRepository::addWarning(const std::string & warning)
+{
+	warnings.push_back(warning);
+}
+
+const std::vector<std::string> & DataObjectRepository::getWarnings() const
+{
+	return warnings;
+}
+
+COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor)
+{
+	const size_t lastEqualCharPos = dor->ContentType.find_last_of('_'); // The XML tag is after "type=obj_"
+	const string resqmlContentType = dor->ContentType.substr(lastEqualCharPos + 1);
+
+	if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(MdDatum)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(Activity)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(ActivityTemplate)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(SeismicLatticeFeature)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(SeismicLineFeature)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(SeismicLineSetFeature)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(FrontierFeature)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(LocalDepth3dCrs)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(LocalTime3dCrs)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(TectonicBoundaryFeature)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(GeneticBoundaryFeature)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(BoundaryFeature)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(WellboreFeature)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(StratigraphicUnitFeature)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(StratigraphicColumn)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(GenericFeatureInterpretation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(BoundaryFeatureInterpretation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(WellboreInterpretation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(FaultInterpretation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(HorizonInterpretation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(StratigraphicUnitInterpretation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(StratigraphicColumnRankInterpretation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(StratigraphicOccurrenceInterpretation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(WellboreFrameRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(WellboreMarkerFrameRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(WellboreTrajectoryRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(PolylineSetRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(PointSetRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(PlaneSetRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(PolylineRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(Grid2dRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(TriangulatedSetRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(BlockedWellboreRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(AbstractIjkGridRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(UnstructuredGridRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(PropertyKind)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(ContinuousProperty)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(ContinuousPropertySeries)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(CategoricalProperty)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(CategoricalPropertySeries)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(DiscreteProperty)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(DiscretePropertySeries)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(CommentProperty)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(StringTableLookup)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(EarthModelInterpretation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(OrganizationFeature)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(StructuralOrganizationInterpretation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(FluidBoundaryFeature)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(SubRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(GridConnectionSetRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(TimeSeries)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(RepresentationSetRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(NonSealedSurfaceFrameworkRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(SealedSurfaceFrameworkRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(SealedVolumeFrameworkRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(DeviationSurveyRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(GeobodyFeature)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(GeobodyBoundaryInterpretation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(GeobodyInterpretation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(RockFluidOrganizationInterpretation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(RockFluidUnitInterpretation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(RockFluidUnitFeature)
+	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
+	{
+		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
+	}
+
+	throw invalid_argument("The content type " + resqmlContentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
+}
+
+COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_1::eml21__DataObjectReference const * dor)
+{
+	const size_t lastEqualCharPos = dor->ContentType.find_last_of('='); // The XML tag is after "type="
+	const string resqmlContentType = dor->ContentType.substr(lastEqualCharPos + 1);
+
+	if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Well)
+	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Wellbore)
+	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Trajectory)
+	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
+	{
+		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
+	}
+
+	throw invalid_argument("The content type " + resqmlContentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
+}
+
+//************************************
+//************ HDF *******************
+//************************************
+
+COMMON_NS::AbstractHdfProxy* DataObjectRepository::createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess)
+{
+	COMMON_NS::AbstractHdfProxy* result = new RESQML2_0_1_NS::HdfProxy(getGsoapContext(), guid, title, packageDirAbsolutePath, externalFilePath, hdfPermissionAccess);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+//************************************
+//************ CRS *******************
+//************************************
+
+LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+	double originOrdinal1, double originOrdinal2, double originOrdinal3,
+	double arealRotation,
+	gsoap_resqml2_0_1::eml20__LengthUom projectedUom, unsigned long projectedEpsgCode,
+	gsoap_resqml2_0_1::eml20__LengthUom verticalUom, unsigned int verticalEpsgCode, bool isUpOriented)
+{
+	LocalDepth3dCrs* result = new LocalDepth3dCrs(getGsoapContext(), guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
+		projectedUom, projectedEpsgCode,
+		verticalUom, verticalEpsgCode, isUpOriented);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_0_1_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+	const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
+	const double & arealRotation,
+	const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const std::string & projectedUnknownReason,
+	const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const std::string & verticalUnknownReason, const bool & isUpOriented)
+{
+	LocalDepth3dCrs* result = new LocalDepth3dCrs(getGsoapContext(), guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
+		projectedUom, projectedUnknownReason,
+		verticalUom, verticalUnknownReason, isUpOriented);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_0_1_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+	const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
+	const double & arealRotation,
+	const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const unsigned long & projectedEpsgCode,
+	const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const std::string & verticalUnknownReason, const bool & isUpOriented)
+{
+	LocalDepth3dCrs* result = new LocalDepth3dCrs(getGsoapContext(), guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
+		projectedUom, projectedEpsgCode,
+		verticalUom, verticalUnknownReason, isUpOriented);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_0_1_NS::LocalDepth3dCrs* DataObjectRepository::createLocalDepth3dCrs(const std::string & guid, const std::string & title,
+	const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
+	const double & arealRotation,
+	const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const std::string & projectedUnknownReason,
+	const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const unsigned int & verticalEpsgCode, const bool & isUpOriented)
+{
+	LocalDepth3dCrs* result = new LocalDepth3dCrs(getGsoapContext(), guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
+		projectedUom, projectedUnknownReason,
+		verticalUom, verticalEpsgCode, isUpOriented);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::string & guid, const std::string & title,
+	const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
+	const double & arealRotation,
+	const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const unsigned long & projectedEpsgCode,
+	const gsoap_resqml2_0_1::eml20__TimeUom & timeUom,
+	const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const unsigned int & verticalEpsgCode, const bool & isUpOriented)
+{
+	LocalTime3dCrs* result = new LocalTime3dCrs(getGsoapContext(), guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
+		projectedUom, projectedEpsgCode,
+		timeUom,
+		verticalUom, verticalEpsgCode, isUpOriented);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::string & guid, const std::string & title,
+	const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
+	const double & arealRotation,
+	const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const std::string & projectedUnknownReason,
+	const gsoap_resqml2_0_1::eml20__TimeUom & timeUom,
+	const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const std::string & verticalUnknownReason, const bool & isUpOriented)
+{
+	LocalTime3dCrs* result = new LocalTime3dCrs(getGsoapContext(), guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
+		projectedUom, projectedUnknownReason,
+		timeUom,
+		verticalUom, verticalUnknownReason, isUpOriented);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::string & guid, const std::string & title,
+	const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
+	const double & arealRotation,
+	const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const unsigned long & projectedEpsgCode,
+	const gsoap_resqml2_0_1::eml20__TimeUom & timeUom,
+	const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const std::string & verticalUnknownReason, const bool & isUpOriented)
+{
+	LocalTime3dCrs* result = new LocalTime3dCrs(getGsoapContext(), guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
+		projectedUom, projectedEpsgCode,
+		timeUom,
+		verticalUom, verticalUnknownReason, isUpOriented);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+LocalTime3dCrs* DataObjectRepository::createLocalTime3dCrs(const std::string & guid, const std::string & title,
+	const double & originOrdinal1, const double & originOrdinal2, const double & originOrdinal3,
+	const double & arealRotation,
+	const gsoap_resqml2_0_1::eml20__LengthUom & projectedUom, const std::string & projectedUnknownReason,
+	const gsoap_resqml2_0_1::eml20__TimeUom & timeUom,
+	const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const unsigned int & verticalEpsgCode, const bool & isUpOriented)
+{
+	LocalTime3dCrs* result = new LocalTime3dCrs(getGsoapContext(), guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation,
+		projectedUom, projectedUnknownReason,
+		timeUom,
+		verticalUom, verticalEpsgCode, isUpOriented);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_NS::MdDatum* DataObjectRepository::createMdDatum(const std::string & guid, const std::string & title,
+	RESQML2_NS::AbstractLocal3dCrs * locCrs, const gsoap_resqml2_0_1::resqml2__MdReference & originKind,
+	const double & referenceLocationOrdinal1, const double & referenceLocationOrdinal2, const double & referenceLocationOrdinal3)
+{
+	MdDatum* result = new MdDatum(getGsoapContext(), guid, title, locCrs, originKind, referenceLocationOrdinal1, referenceLocationOrdinal2, referenceLocationOrdinal3);
+	addOrReplaceDataObject(result);
+	return result;
+}
+//************************************
+//************ FEATURE ***************
+//************************************
+
+BoundaryFeature* DataObjectRepository::createBoundaryFeature(const std::string & guid, const std::string & title)
+{
+	BoundaryFeature* result = new BoundaryFeature(getGsoapContext(), guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+Horizon* DataObjectRepository::createHorizon(const std::string & guid, const std::string & title)
+{
+	Horizon* result = new Horizon(getGsoapContext(), guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+GeneticBoundaryFeature* DataObjectRepository::createGeobodyBoundaryFeature(const std::string & guid, const std::string & title)
+{
+	GeneticBoundaryFeature* result = new GeneticBoundaryFeature(getGsoapContext(), guid, title, false);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_0_1_NS::GeobodyFeature* DataObjectRepository::createGeobodyFeature(const std::string & guid, const std::string & title)
+{
+	GeobodyFeature* result = new GeobodyFeature(getGsoapContext(), guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+TectonicBoundaryFeature* DataObjectRepository::createFault(const std::string & guid, const std::string & title)
+{
+	TectonicBoundaryFeature* result = new TectonicBoundaryFeature(getGsoapContext(), guid, title, false);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+TectonicBoundaryFeature* DataObjectRepository::createFracture(const std::string & guid, const std::string & title)
+{
+	TectonicBoundaryFeature* result = new TectonicBoundaryFeature(getGsoapContext(), guid, title, true);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+WellboreFeature* DataObjectRepository::createWellboreFeature(const std::string & guid, const std::string & title)
+{
+	WellboreFeature* result = new WellboreFeature(getGsoapContext(), guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+SeismicLatticeFeature* DataObjectRepository::createSeismicLattice(const std::string & guid, const std::string & title,
+	const int & inlineIncrement, const int & crosslineIncrement,
+	const unsigned int & originInline, const unsigned int & originCrossline,
+	const unsigned int & inlineCount, const unsigned int & crosslineCount)
+{
+	SeismicLatticeFeature* result = new SeismicLatticeFeature(getGsoapContext(), guid, title, inlineIncrement, crosslineIncrement, originInline, originCrossline, inlineCount, crosslineCount);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+SeismicLineFeature* DataObjectRepository::createSeismicLine(const std::string & guid, const std::string & title,
+	const int & traceIndexIncrement, const unsigned int & firstTraceIndex, const unsigned int & traceCount)
+{
+	SeismicLineFeature* result = new SeismicLineFeature(getGsoapContext(), guid, title, traceIndexIncrement, firstTraceIndex, traceCount);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+SeismicLineSetFeature* DataObjectRepository::createSeismicLineSet(const std::string & guid, const std::string & title)
+{
+	SeismicLineSetFeature* result = new SeismicLineSetFeature(getGsoapContext(), guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+FrontierFeature* DataObjectRepository::createFrontier(const std::string & guid, const std::string & title)
+{
+	FrontierFeature* result = new FrontierFeature(getGsoapContext(), guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+StratigraphicUnitFeature* DataObjectRepository::createStratigraphicUnit(const std::string & guid, const std::string & title)
+{
+	StratigraphicUnitFeature* result = new StratigraphicUnitFeature(getGsoapContext(), guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RockFluidUnitFeature* DataObjectRepository::createRockFluidUnit(const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml2__Phase phase,
+	RESQML2_0_1_NS::FluidBoundaryFeature* fluidBoundaryTop, RESQML2_0_1_NS::FluidBoundaryFeature* fluidBoundaryBottom)
+{
+	RockFluidUnitFeature* result = new RockFluidUnitFeature(getGsoapContext(), guid, title, phase, fluidBoundaryTop, fluidBoundaryBottom);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+OrganizationFeature* DataObjectRepository::createStructuralModel(const std::string & guid, const std::string & title)
+{
+	OrganizationFeature* result = new OrganizationFeature(getGsoapContext(), guid, title, gsoap_resqml2_0_1::resqml2__OrganizationKind__structural);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+OrganizationFeature* DataObjectRepository::createStratigraphicModel(const std::string & guid, const std::string & title)
+{
+	OrganizationFeature* result = new OrganizationFeature(getGsoapContext(), guid, title, gsoap_resqml2_0_1::resqml2__OrganizationKind__stratigraphic);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+OrganizationFeature* DataObjectRepository::createRockFluidModel(const std::string & guid, const std::string & title)
+{
+	OrganizationFeature* result = new OrganizationFeature(getGsoapContext(), guid, title, gsoap_resqml2_0_1::resqml2__OrganizationKind__fluid);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+OrganizationFeature* DataObjectRepository::createEarthModel(const std::string & guid, const std::string & title)
+{
+	OrganizationFeature* result = new OrganizationFeature(getGsoapContext(), guid, title, gsoap_resqml2_0_1::resqml2__OrganizationKind__earth_x0020model);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+FluidBoundaryFeature* DataObjectRepository::createFluidBoundaryFeature(const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__FluidContact & fluidContact)
+{
+	FluidBoundaryFeature* result = new FluidBoundaryFeature(getGsoapContext(), guid, title, fluidContact);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+//************************************
+//************ INTERPRETATION ********
+//************************************
+
+GenericFeatureInterpretation* DataObjectRepository::createGenericFeatureInterpretation(RESQML2_NS::AbstractFeature * feature, const std::string & guid, const std::string & title)
+{
+	GenericFeatureInterpretation* result = new GenericFeatureInterpretation(feature, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+BoundaryFeatureInterpretation* DataObjectRepository::createBoundaryFeatureInterpretation(RESQML2_0_1_NS::BoundaryFeature * feature, const std::string & guid, const std::string & title)
+{
+	BoundaryFeatureInterpretation* result = new BoundaryFeatureInterpretation(feature, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+HorizonInterpretation* DataObjectRepository::createPartialHorizonInterpretation(const std::string & guid, const std::string & title)
+{
+	return createPartial<HorizonInterpretation>(guid, title);
+}
+
+HorizonInterpretation* DataObjectRepository::createHorizonInterpretation(Horizon * horizon, const std::string & guid, const std::string & title)
+{
+	HorizonInterpretation* result = new HorizonInterpretation(horizon, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_0_1_NS::GeobodyBoundaryInterpretation* DataObjectRepository::createGeobodyBoundaryInterpretation(RESQML2_0_1_NS::GeneticBoundaryFeature * geobodyBoundary, const std::string & guid, const std::string & title)
+{
+	GeobodyBoundaryInterpretation* result = new GeobodyBoundaryInterpretation(geobodyBoundary, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+FaultInterpretation* DataObjectRepository::createFaultInterpretation(TectonicBoundaryFeature * fault, const std::string & guid, const std::string & title)
+{
+	FaultInterpretation* result = new FaultInterpretation(fault, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+WellboreInterpretation* DataObjectRepository::createWellboreInterpretation(WellboreFeature * wellbore, const std::string & guid, const std::string & title, bool isDrilled)
+{
+	WellboreInterpretation* result = new WellboreInterpretation(wellbore, guid, title, isDrilled);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+EarthModelInterpretation* DataObjectRepository::createEarthModelInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title)
+{
+	EarthModelInterpretation* result = new EarthModelInterpretation(orgFeat, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+StructuralOrganizationInterpretation* DataObjectRepository::createStructuralOrganizationInterpretationInAge(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title)
+{
+	StructuralOrganizationInterpretation* result = new StructuralOrganizationInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml2__OrderingCriteria__age);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+StructuralOrganizationInterpretation* DataObjectRepository::createStructuralOrganizationInterpretationInApparentDepth(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title)
+{
+	StructuralOrganizationInterpretation* result = new StructuralOrganizationInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml2__OrderingCriteria__apparent_x0020depth);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+StructuralOrganizationInterpretation* DataObjectRepository::createStructuralOrganizationInterpretationInMeasuredDepth(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title)
+{
+	StructuralOrganizationInterpretation* result = new StructuralOrganizationInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml2__OrderingCriteria__measured_x0020depth);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RockFluidOrganizationInterpretation* DataObjectRepository::createRockFluidOrganizationInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, RESQML2_0_1_NS::RockFluidUnitInterpretation * rockFluidUnitInterp)
+{
+	RockFluidOrganizationInterpretation* result = new RockFluidOrganizationInterpretation(orgFeat, guid, title, rockFluidUnitInterp);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RockFluidUnitInterpretation* DataObjectRepository::createRockFluidUnitInterpretation(RESQML2_0_1_NS::RockFluidUnitFeature * rockFluidUnitFeature, const std::string & guid, const std::string & title)
+{
+	RockFluidUnitInterpretation* result = new RockFluidUnitInterpretation(rockFluidUnitFeature, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+StratigraphicColumn* DataObjectRepository::createStratigraphicColumn(const std::string & guid, const std::string & title)
+{
+	StratigraphicColumn* result = new StratigraphicColumn(getGsoapContext(), guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_0_1_NS::GeobodyInterpretation* DataObjectRepository::createGeobodyInterpretation(RESQML2_0_1_NS::GeobodyFeature * geobody, const std::string & guid, const std::string & title)
+{
+	GeobodyInterpretation* result = new GeobodyInterpretation(geobody, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+StratigraphicUnitInterpretation* DataObjectRepository::createStratigraphicUnitInterpretation(StratigraphicUnitFeature * stratiUnitFeature, const std::string & guid, const std::string & title)
+{
+	StratigraphicUnitInterpretation* result = new StratigraphicUnitInterpretation(stratiUnitFeature, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+StratigraphicColumnRankInterpretation* DataObjectRepository::createStratigraphicColumnRankInterpretationInAge(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank)
+{
+	StratigraphicColumnRankInterpretation* result = new StratigraphicColumnRankInterpretation(orgFeat, guid, title, rank, gsoap_resqml2_0_1::resqml2__OrderingCriteria__age);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+StratigraphicColumnRankInterpretation* DataObjectRepository::createStratigraphicColumnRankInterpretationInApparentDepth(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const unsigned long & rank)
+{
+	StratigraphicColumnRankInterpretation* result = new StratigraphicColumnRankInterpretation(orgFeat, guid, title, rank, gsoap_resqml2_0_1::resqml2__OrderingCriteria__apparent_x0020depth);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+StratigraphicOccurrenceInterpretation* DataObjectRepository::createStratigraphicOccurrenceInterpretationInAge(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title)
+{
+	StratigraphicOccurrenceInterpretation* result = new StratigraphicOccurrenceInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml2__OrderingCriteria__age);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+StratigraphicOccurrenceInterpretation* DataObjectRepository::createStratigraphicOccurrenceInterpretationInApparentDepth(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title)
+{
+	StratigraphicOccurrenceInterpretation* result = new StratigraphicOccurrenceInterpretation(orgFeat, guid, title, gsoap_resqml2_0_1::resqml2__OrderingCriteria__apparent_x0020depth);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+//************************************
+//************ REPRESENTATION ********
+//************************************
+
+TriangulatedSetRepresentation* DataObjectRepository::createTriangulatedSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+	const std::string & guid, const std::string & title)
+{
+	TriangulatedSetRepresentation* result = new TriangulatedSetRepresentation(interp, crs, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+PolylineSetRepresentation* DataObjectRepository::createPolylineSetRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
+	const std::string & guid, const std::string & title)
+{
+	PolylineSetRepresentation* result = new PolylineSetRepresentation(crs, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+PolylineSetRepresentation* DataObjectRepository::createPolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+	const std::string & guid, const std::string & title)
+{
+	PolylineSetRepresentation* result = new PolylineSetRepresentation(interp, crs, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+PolylineSetRepresentation* DataObjectRepository::createPolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+	const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__LineRole & roleKind)
+{
+	PolylineSetRepresentation* result = new PolylineSetRepresentation(interp, crs, guid, title, roleKind);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+PointSetRepresentation* DataObjectRepository::createPointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+	const std::string & guid, const std::string & title)
+{
+	PointSetRepresentation* result = new PointSetRepresentation(interp, crs, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+PlaneSetRepresentation* DataObjectRepository::createPlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+	const std::string & guid, const std::string & title)
+{
+	PlaneSetRepresentation* result = new PlaneSetRepresentation(interp, crs, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+PolylineRepresentation* DataObjectRepository::createPolylineRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
+	const std::string & guid, const std::string & title, bool isClosed)
+{
+	PolylineRepresentation* result = new PolylineRepresentation(crs, guid, title, isClosed);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+PolylineRepresentation* DataObjectRepository::createPolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+	const std::string & guid, const std::string & title, bool isClosed)
+{
+	PolylineRepresentation* result = new PolylineRepresentation(interp, crs, guid, title, isClosed);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+PolylineRepresentation* DataObjectRepository::createPolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+	const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__LineRole & roleKind, bool isClosed)
+{
+	PolylineRepresentation* result = new PolylineRepresentation(interp, crs, guid, title, roleKind, isClosed);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+Grid2dRepresentation* DataObjectRepository::createGrid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+	const std::string & guid, const std::string & title)
+{
+	Grid2dRepresentation* result = new Grid2dRepresentation(interp, crs, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+WellboreTrajectoryRepresentation* DataObjectRepository::createWellboreTrajectoryRepresentation(WellboreInterpretation* interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo)
+{
+	WellboreTrajectoryRepresentation* result = new WellboreTrajectoryRepresentation(interp, guid, title, mdInfo);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+WellboreTrajectoryRepresentation* DataObjectRepository::createWellboreTrajectoryRepresentation(WellboreInterpretation* interp, const std::string & guid, const std::string & title, DeviationSurveyRepresentation * deviationSurvey)
+{
+	WellboreTrajectoryRepresentation* result = new WellboreTrajectoryRepresentation(interp, guid, title, deviationSurvey);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_0_1_NS::DeviationSurveyRepresentation* DataObjectRepository::createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo)
+{
+	DeviationSurveyRepresentation* result = new DeviationSurveyRepresentation(interp, guid, title, isFinal, mdInfo);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+WellboreFrameRepresentation* DataObjectRepository::createWellboreFrameRepresentation(WellboreInterpretation* interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
+{
+	WellboreFrameRepresentation* result = new WellboreFrameRepresentation(interp, guid, title, traj);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+WellboreMarkerFrameRepresentation* DataObjectRepository::createWellboreMarkerFrameRepresentation(WellboreInterpretation* interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
+{
+	WellboreMarkerFrameRepresentation* result = new WellboreMarkerFrameRepresentation(interp, guid, title, traj);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+BlockedWellboreRepresentation* DataObjectRepository::createBlockedWellboreRepresentation(WellboreInterpretation* interp,
+	const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
+{
+	BlockedWellboreRepresentation* result = new BlockedWellboreRepresentation(interp, guid, title, traj);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_NS::RepresentationSetRepresentation* DataObjectRepository::createRepresentationSetRepresentation(
+	AbstractOrganizationInterpretation* interp,
+	const std::string & guid,
+	const std::string & title)
+{
+	RESQML2_0_1_NS::RepresentationSetRepresentation* result = new RESQML2_0_1_NS::RepresentationSetRepresentation(interp, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_NS::RepresentationSetRepresentation* DataObjectRepository::createRepresentationSetRepresentation(
+	const std::string & guid,
+	const std::string & title)
+{
+	RESQML2_0_1_NS::RepresentationSetRepresentation* result = new RESQML2_0_1_NS::RepresentationSetRepresentation(this, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_NS::RepresentationSetRepresentation* DataObjectRepository::createPartialRepresentationSetRepresentation(const std::string & guid, const std::string & title)
+{
+	return createPartial<RESQML2_0_1_NS::RepresentationSetRepresentation>(guid, title);
+}
+
+NonSealedSurfaceFrameworkRepresentation* DataObjectRepository::createNonSealedSurfaceFrameworkRepresentation(
+	StructuralOrganizationInterpretation* interp,
+	const std::string & guid,
+	const std::string & title)
+{
+	NonSealedSurfaceFrameworkRepresentation* result = new NonSealedSurfaceFrameworkRepresentation(interp, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+SealedSurfaceFrameworkRepresentation* DataObjectRepository::createSealedSurfaceFrameworkRepresentation(
+	StructuralOrganizationInterpretation* interp,
+	const std::string & guid,
+	const std::string & title)
+{
+	SealedSurfaceFrameworkRepresentation* result = new SealedSurfaceFrameworkRepresentation(interp, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation* DataObjectRepository::createSealedVolumeFrameworkRepresentation(
+	RESQML2_0_1_NS::StratigraphicColumnRankInterpretation* interp,
+	const std::string & guid,
+	const std::string & title,
+	RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* ssf)
+{
+	SealedVolumeFrameworkRepresentation* result = new SealedVolumeFrameworkRepresentation(interp, guid, title, ssf);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+AbstractIjkGridRepresentation* DataObjectRepository::createPartialIjkGridRepresentation(const std::string & guid, const std::string & title)
+{
+	return createPartial<AbstractIjkGridRepresentation>(guid, title);
+}
+
+AbstractIjkGridRepresentation* DataObjectRepository::createPartialTruncatedIjkGridRepresentation(const std::string & guid, const std::string & title)
+{
+	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(getGsoapContext(), 1);
+	dor->UUID = guid;
+	dor->Title = title;
+	AbstractIjkGridRepresentation* result = new AbstractIjkGridRepresentation(dor, true);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+IjkGridExplicitRepresentation* DataObjectRepository::createIjkGridExplicitRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
+	const std::string & guid, const std::string & title,
+	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount)
+{
+	IjkGridExplicitRepresentation* result = new IjkGridExplicitRepresentation(getGsoapContext(), crs, guid, title, iCount, jCount, kCount);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+IjkGridExplicitRepresentation* DataObjectRepository::createIjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+	const std::string & guid, const std::string & title,
+	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount)
+{
+	IjkGridExplicitRepresentation* result = new IjkGridExplicitRepresentation(interp, crs, guid, title, iCount, jCount, kCount);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+IjkGridParametricRepresentation* DataObjectRepository::createIjkGridParametricRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
+	const std::string & guid, const std::string & title,
+	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount)
+{
+	IjkGridParametricRepresentation* result = new IjkGridParametricRepresentation(getGsoapContext(), crs, guid, title, iCount, jCount, kCount);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+IjkGridParametricRepresentation* DataObjectRepository::createIjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+	const std::string & guid, const std::string & title,
+	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount)
+{
+	IjkGridParametricRepresentation* result = new IjkGridParametricRepresentation(interp, crs, guid, title, iCount, jCount, kCount);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+IjkGridLatticeRepresentation* DataObjectRepository::createIjkGridLatticeRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
+	const std::string & guid, const std::string & title,
+	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount)
+{
+	IjkGridLatticeRepresentation* result = new IjkGridLatticeRepresentation(getGsoapContext(), crs, guid, title, iCount, jCount, kCount);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+IjkGridLatticeRepresentation* DataObjectRepository::createIjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+	const std::string & guid, const std::string & title,
+	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount)
+{
+	IjkGridLatticeRepresentation* result = new IjkGridLatticeRepresentation(interp, crs, guid, title, iCount, jCount, kCount);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_0_1_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjkGridNoGeometryRepresentation(
+	const std::string & guid, const std::string & title,
+	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount)
+{
+	IjkGridNoGeometryRepresentation* result = new IjkGridNoGeometryRepresentation(getGsoapContext(), guid, title, iCount, jCount, kCount);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_0_1_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+	const std::string & guid, const std::string & title,
+	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount)
+{
+	IjkGridNoGeometryRepresentation* result = new IjkGridNoGeometryRepresentation(interp, guid, title, iCount, jCount, kCount);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+UnstructuredGridRepresentation* DataObjectRepository::createPartialUnstructuredGridRepresentation(const std::string & guid, const std::string & title)
+{
+	return createPartial<UnstructuredGridRepresentation>(guid, title);
+}
+
+UnstructuredGridRepresentation* DataObjectRepository::createUnstructuredGridRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
+	const std::string & guid, const std::string & title,
+	const ULONG64 & cellCount)
+{
+	UnstructuredGridRepresentation* result = new UnstructuredGridRepresentation(getGsoapContext(), crs, guid, title, cellCount);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_NS::SubRepresentation* DataObjectRepository::createPartialSubRepresentation(const std::string & guid, const std::string & title)
+{
+	return createPartial<SubRepresentation>(guid, title);
+}
+
+RESQML2_NS::SubRepresentation* DataObjectRepository::createSubRepresentation(const std::string & guid, const std::string & title)
+{
+	RESQML2_NS::SubRepresentation* result = new SubRepresentation(getGsoapContext(), guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_NS::SubRepresentation* DataObjectRepository::createSubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+	const std::string & guid, const std::string & title)
+{
+	RESQML2_NS::SubRepresentation* result = new SubRepresentation(interp, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_NS::GridConnectionSetRepresentation* DataObjectRepository::createPartialGridConnectionSetRepresentation(const std::string & guid, const std::string & title)
+{
+	return createPartial<GridConnectionSetRepresentation>(guid, title);
+}
+
+RESQML2_NS::GridConnectionSetRepresentation* DataObjectRepository::createGridConnectionSetRepresentation(const std::string & guid, const std::string & title)
+{
+	RESQML2_NS::GridConnectionSetRepresentation* result = new GridConnectionSetRepresentation(getGsoapContext(), guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_NS::GridConnectionSetRepresentation* DataObjectRepository::createGridConnectionSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+	const std::string & guid, const std::string & title)
+{
+	RESQML2_NS::GridConnectionSetRepresentation* result = new GridConnectionSetRepresentation(interp, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+//************************************
+//************* PROPERTIES ***********
+//************************************
+
+RESQML2_NS::TimeSeries* DataObjectRepository::createTimeSeries(const std::string & guid, const std::string & title)
+{
+	RESQML2_NS::TimeSeries* result = new RESQML2_0_1_NS::TimeSeries(getGsoapContext(), guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_NS::TimeSeries* DataObjectRepository::createPartialTimeSeries(const std::string & guid, const std::string & title)
+{
+	return createPartial<TimeSeries>(guid, title);
+}
+
+StringTableLookup* DataObjectRepository::createStringTableLookup(const std::string & guid, const std::string & title)
+{
+	StringTableLookup* result = new StringTableLookup(getGsoapContext(), guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
+	const std::string & namingSystem, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & parentEnergisticsPropertyKind)
+{
+	RESQML2_NS::PropertyKind* result = new RESQML2_0_1_NS::PropertyKind(getGsoapContext(), guid, title, namingSystem, uom, parentEnergisticsPropertyKind);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
+	const std::string & namingSystem, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, RESQML2_NS::PropertyKind * parentPropType)
+{
+	RESQML2_NS::PropertyKind* result = new RESQML2_0_1_NS::PropertyKind(getGsoapContext(), guid, title, namingSystem, uom, parentPropType);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
+	const std::string & namingSystem, const std::string & nonStandardUom, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & parentEnergisticsPropertyKind)
+{
+	RESQML2_NS::PropertyKind* result = new RESQML2_0_1_NS::PropertyKind(getGsoapContext(), guid, title, namingSystem, nonStandardUom, parentEnergisticsPropertyKind);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
+	const std::string & namingSystem, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * parentPropType)
+{
+	RESQML2_NS::PropertyKind* result = new RESQML2_0_1_NS::PropertyKind(getGsoapContext(), guid, title, namingSystem, nonStandardUom, parentPropType);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_NS::PropertyKind* DataObjectRepository::createPartialPropertyKind(const std::string & guid, const std::string & title)
+{
+	return createPartial<PropertyKind>(guid, title);
+}
+
+CommentProperty* DataObjectRepository::createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind)
+{
+	CommentProperty* result = new CommentProperty(rep, guid, title, dimension, attachmentKind, energisticsPropertyKind);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+CommentProperty* DataObjectRepository::createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropType)
+{
+	CommentProperty* result = new CommentProperty(rep, guid, title, dimension, attachmentKind, localPropType);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+ContinuousProperty* DataObjectRepository::createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind)
+{
+	ContinuousProperty* result = new ContinuousProperty(rep, guid, title, dimension, attachmentKind, uom, energisticsPropertyKind);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+ContinuousProperty* DataObjectRepository::createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, RESQML2_NS::PropertyKind * localPropType)
+{
+	ContinuousProperty* result = new ContinuousProperty(rep, guid, title, dimension, attachmentKind, uom, localPropType);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+ContinuousProperty* DataObjectRepository::createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const std::string & nonStandardUom, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind)
+{
+	ContinuousProperty* result = new ContinuousProperty(rep, guid, title, dimension, attachmentKind, nonStandardUom, energisticsPropertyKind);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+ContinuousProperty* DataObjectRepository::createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * localPropType)
+{
+	ContinuousProperty* result = new ContinuousProperty(rep, guid, title, dimension, attachmentKind, nonStandardUom, localPropType);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+ContinuousPropertySeries* DataObjectRepository::createContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind,
+	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
+{
+	ContinuousPropertySeries* result = new ContinuousPropertySeries(rep, guid, title, dimension, attachmentKind, uom, energisticsPropertyKind, ts, useInterval);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+ContinuousPropertySeries* DataObjectRepository::createContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, RESQML2_NS::PropertyKind * localPropType,
+	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
+{
+	ContinuousPropertySeries* result = new ContinuousPropertySeries(rep, guid, title, dimension, attachmentKind, uom, localPropType, ts, useInterval);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+DiscreteProperty* DataObjectRepository::createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind)
+{
+	DiscreteProperty* result = new DiscreteProperty(rep, guid, title, dimension, attachmentKind, energisticsPropertyKind);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+DiscreteProperty* DataObjectRepository::createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropType)
+{
+	DiscreteProperty* result = new DiscreteProperty(rep, guid, title, dimension, attachmentKind, localPropType);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+DiscretePropertySeries* DataObjectRepository::createDiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind,
+	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
+{
+	DiscretePropertySeries* result = new DiscretePropertySeries(rep, guid, title, dimension, attachmentKind, energisticsPropertyKind, ts, useInterval);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+DiscretePropertySeries* DataObjectRepository::createDiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropType,
+	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
+{
+	DiscretePropertySeries* result = new DiscretePropertySeries(rep, guid, title, dimension, attachmentKind, localPropType, ts, useInterval);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+CategoricalProperty* DataObjectRepository::createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
+	StringTableLookup* strLookup, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind)
+{
+	CategoricalProperty* result = new CategoricalProperty(rep, guid, title, dimension, attachmentKind, strLookup, energisticsPropertyKind);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+CategoricalProperty* DataObjectRepository::createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
+	StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropType)
+{
+	CategoricalProperty* result = new CategoricalProperty(rep, guid, title, dimension, attachmentKind, strLookup, localPropType);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+CategoricalPropertySeries* DataObjectRepository::createCategoricalPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
+	StringTableLookup* strLookup, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind,
+	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
+{
+	CategoricalPropertySeries* result = new CategoricalPropertySeries(rep, guid, title, dimension, attachmentKind, strLookup, energisticsPropertyKind, ts, useInterval);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+CategoricalPropertySeries* DataObjectRepository::createCategoricalPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
+	StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropType,
+	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
+{
+	CategoricalPropertySeries* result = new CategoricalPropertySeries(rep, guid, title, dimension, attachmentKind, strLookup, localPropType, ts, useInterval);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+//************************************
+//************* ACTIVITIES ***********
+//************************************
+
+RESQML2_NS::ActivityTemplate* DataObjectRepository::createActivityTemplate(const std::string & guid, const std::string & title)
+{
+	ActivityTemplate* result = new ActivityTemplate(getGsoapContext(), guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+RESQML2_NS::Activity* DataObjectRepository::createActivity(RESQML2_NS::ActivityTemplate* activityTemplate, const std::string & guid, const std::string & title)
+{
+	Activity* result = new Activity(activityTemplate, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+//************************************
+//*************** WITSML *************
+//************************************
+
+WITSML2_0_NS::Well* DataObjectRepository::createWell(const std::string & guid,
+	const std::string & title)
+{
+	Well* result = new Well(getGsoapContext(), guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+WITSML2_0_NS::Well* DataObjectRepository::createWell(const std::string & guid,
+	const std::string & title,
+	const std::string & operator_,
+	gsoap_eml2_1::eml21__WellStatus statusWell,
+	gsoap_eml2_1::witsml2__WellDirection directionWell)
+{
+	Well* result = new Well(getGsoapContext(), guid, title, operator_, statusWell, directionWell);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+WITSML2_0_NS::Wellbore* DataObjectRepository::createPartialWellbore(
+	const std::string & guid,
+	const std::string & title)
+{
+	return createPartial<WITSML2_0_NS::Wellbore>(guid, title);
+}
+
+WITSML2_0_NS::Wellbore* DataObjectRepository::createWellbore(WITSML2_0_NS::Well* witsmlWell,
+	const std::string & guid,
+	const std::string & title)
+{
+	Wellbore* result = new Wellbore(witsmlWell, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+WITSML2_0_NS::Wellbore* DataObjectRepository::createWellbore(WITSML2_0_NS::Well* witsmlWell,
+	const std::string & guid,
+	const std::string & title,
+	gsoap_eml2_1::eml21__WellStatus statusWellbore,
+	bool isActive,
+	bool achievedTD)
+{
+	Wellbore* result = new Wellbore(witsmlWell, guid, title, statusWellbore, isActive, achievedTD);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+WITSML2_0_NS::WellCompletion* DataObjectRepository::createWellCompletion(WITSML2_0_NS::Well* witsmlWell,
+	const std::string & guid,
+	const std::string & title)
+{
+	WellCompletion* result = new WellCompletion(witsmlWell, guid, title);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+WITSML2_0_NS::WellboreCompletion* DataObjectRepository::createWellboreCompletion(WITSML2_0_NS::Wellbore* witsmlWellbore,
+	WITSML2_0_NS::WellCompletion* wellCompletion,
+	const std::string & guid,
+	const std::string & title,
+	const std::string & wellCompletionName)
+{
+	WellboreCompletion* result = new WellboreCompletion(witsmlWellbore, wellCompletion, guid, title, wellCompletionName);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+WITSML2_0_NS::Trajectory* DataObjectRepository::createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
+	const std::string & guid,
+	const std::string & title,
+	gsoap_eml2_1::witsml2__ChannelStatus channelStatus)
+{
+	Trajectory* result = new Trajectory(witsmlWellbore, guid, title, channelStatus);
+	addOrReplaceDataObject(result);
+	return result;
+}
+
+std::vector<RESQML2_0_1_NS::LocalDepth3dCrs*> DataObjectRepository::getLocalDepth3dCrsSet() const { return getDataObjects<RESQML2_0_1_NS::LocalDepth3dCrs>(); }
+
+std::vector<RESQML2_0_1_NS::LocalTime3dCrs*> DataObjectRepository::getLocalTime3dCrsSet() const { return getDataObjects<RESQML2_0_1_NS::LocalTime3dCrs>(); }
+
+std::vector<RESQML2_0_1_NS::StratigraphicColumn*> DataObjectRepository::getStratigraphicColumnSet() const { return getDataObjects<RESQML2_0_1_NS::StratigraphicColumn>(); }
+
+namespace {
+	bool isAFracture(RESQML2_0_1_NS::TectonicBoundaryFeature* tbf) { return tbf->isAFracture(); }
+}
+
+std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*> DataObjectRepository::getFaultSet() const
+{
+	std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*> result = getDataObjects<RESQML2_0_1_NS::TectonicBoundaryFeature>();
+
+	result.erase(std::remove_if(result.begin(), result.end(), isAFracture), result.end());
+
+	return result;
+}
+
+std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*> DataObjectRepository::getFractureSet() const
+{
+	std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*> result = getDataObjects<RESQML2_0_1_NS::TectonicBoundaryFeature>();
+
+	result.erase(std::remove_if(result.begin(), result.end(), std::not1(std::ptr_fun(isAFracture))), result.end());
+
+	return result;
+}
+vector<PolylineSetRepresentation*> DataObjectRepository::getFaultPolylineSetRepSet() const
+{
+	const std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*> faultSet = getFaultSet();
+
+	vector<PolylineSetRepresentation*> result;
+
+	for (size_t featureIndex = 0; featureIndex < faultSet.size(); ++featureIndex) {
+		const vector<RESQML2_NS::AbstractFeatureInterpretation*> interpSet = faultSet[featureIndex]->getInterpretationSet();
+		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
+			const vector<RESQML2_NS::AbstractRepresentation*> repSet = interpSet[interpIndex]->getRepresentationSet();
+			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
+				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREPolylineSetRepresentation) {
+					result.push_back(static_cast<PolylineSetRepresentation*>(repSet[repIndex]));
+				}
+			}
+		}
+	}
+
+	return result;
+}
+
+vector<PolylineSetRepresentation*> DataObjectRepository::getFracturePolylineSetRepSet() const
+{
+	const std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*> fractureSet = getFractureSet();
+
+	vector<PolylineSetRepresentation*> result;
+
+	for (size_t featureIndex = 0; featureIndex < fractureSet.size(); ++featureIndex) {
+		const vector<RESQML2_NS::AbstractFeatureInterpretation*> interpSet = fractureSet[featureIndex]->getInterpretationSet();
+		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
+			const vector<RESQML2_NS::AbstractRepresentation*> repSet = interpSet[interpIndex]->getRepresentationSet();
+			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
+				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREPolylineSetRepresentation) {
+					result.push_back(static_cast<PolylineSetRepresentation*>(repSet[repIndex]));
+				}
+			}
+		}
+	}
+
+	return result;
+}
+
+vector<PolylineSetRepresentation*> DataObjectRepository::getFrontierPolylineSetRepSet() const
+{
+	const std::vector<RESQML2_0_1_NS::FrontierFeature*> frontierSet = getFrontierSet();
+
+	vector<PolylineSetRepresentation*> result;
+
+	for (size_t featureIndex = 0; featureIndex < frontierSet.size(); ++featureIndex) {
+		const vector<RESQML2_NS::AbstractFeatureInterpretation*> interpSet = frontierSet[featureIndex]->getInterpretationSet();
+		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
+			const vector<RESQML2_NS::AbstractRepresentation*> repSet = interpSet[interpIndex]->getRepresentationSet();
+			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
+				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREPolylineSetRepresentation) {
+					result.push_back(static_cast<PolylineSetRepresentation*>(repSet[repIndex]));
+				}
+			}
+		}
+	}
+
+	return result;
+}
+
+vector<TriangulatedSetRepresentation*> DataObjectRepository::getFaultTriangulatedSetRepSet() const
+{
+	const std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*> faultSet = getFaultSet();
+	vector<TriangulatedSetRepresentation*> result;
+
+	for (size_t featureIndex = 0; featureIndex < faultSet.size(); ++featureIndex) {
+		const vector<RESQML2_NS::AbstractFeatureInterpretation*> interpSet = faultSet[featureIndex]->getInterpretationSet();
+		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
+			const vector<RESQML2_NS::AbstractRepresentation*> repSet = interpSet[interpIndex]->getRepresentationSet();
+			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
+				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORETriangulatedSetRepresentation) {
+					result.push_back(static_cast<TriangulatedSetRepresentation*>(repSet[repIndex]));
+				}
+			}
+		}
+	}
+
+	return result;
+}
+
+vector<TriangulatedSetRepresentation*> DataObjectRepository::getFractureTriangulatedSetRepSet() const
+{
+	const std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*> fractureSet = getFractureSet();
+
+	vector<TriangulatedSetRepresentation*> result;
+
+	for (size_t featureIndex = 0; featureIndex < fractureSet.size(); ++featureIndex) {
+		const vector<RESQML2_NS::AbstractFeatureInterpretation*> interpSet = fractureSet[featureIndex]->getInterpretationSet();
+		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
+			const vector<RESQML2_NS::AbstractRepresentation*> repSet = interpSet[interpIndex]->getRepresentationSet();
+			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
+				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORETriangulatedSetRepresentation) {
+					result.push_back(static_cast<TriangulatedSetRepresentation*>(repSet[repIndex]));
+				}
+			}
+		}
+	}
+
+	return result;
+}
+
+std::vector<RESQML2_0_1_NS::Horizon*> DataObjectRepository::getHorizonSet() const
+{
+	std::vector<RESQML2_0_1_NS::Horizon*> result;
+
+	const std::vector<RESQML2_0_1_NS::GeneticBoundaryFeature*> geneticBoundarySet = getDataObjects<RESQML2_0_1_NS::GeneticBoundaryFeature>();
+
+	for (size_t i = 0; i < geneticBoundarySet.size(); ++i) {
+		if (geneticBoundarySet[i]->isAnHorizon()) {
+			result.push_back(static_cast<RESQML2_0_1_NS::Horizon*>(geneticBoundarySet[i]));
+		}
+	}
+
+	return result;
+}
+
+namespace {
+	bool isAnHorizon(RESQML2_0_1_NS::GeneticBoundaryFeature* gbf) { return gbf->isAnHorizon(); }
+}
+
+std::vector<RESQML2_0_1_NS::GeneticBoundaryFeature*> DataObjectRepository::getGeobodyBoundarySet() const
+{
+	std::vector<RESQML2_0_1_NS::GeneticBoundaryFeature*> result = getDataObjects<RESQML2_0_1_NS::GeneticBoundaryFeature>();
+
+	result.erase(std::remove_if(result.begin(), result.end(), isAnHorizon), result.end());
+
+	return result;
+}
+
+unsigned int DataObjectRepository::getGeobodyBoundaryCount() const
+{
+	size_t result = getGeobodyBoundarySet().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("The geobody boundary count is superior to unsigned int max");
+	}
+	return static_cast<unsigned int>(result);
+}
+
+RESQML2_0_1_NS::GeneticBoundaryFeature* DataObjectRepository::getGeobodyBoundary(unsigned int index) const
+{
+	std::vector<RESQML2_0_1_NS::GeneticBoundaryFeature*> allgb = getGeobodyBoundarySet();
+
+	if (index >= allgb.size()) {
+		throw out_of_range("The index of the geobody boundary is out of range");
+	}
+
+	return allgb[index];
+}
+
+std::vector<RESQML2_0_1_NS::GeobodyFeature*> DataObjectRepository::getGeobodySet() const { return getDataObjects<RESQML2_0_1_NS::GeobodyFeature>(); }
+
+vector<Grid2dRepresentation*> DataObjectRepository::getHorizonGrid2dRepSet() const
+{
+	vector<Grid2dRepresentation*> result;
+
+	const vector<Horizon*> horizonSet = getHorizonSet();
+	for (size_t featureIndex = 0; featureIndex < horizonSet.size(); ++featureIndex) {
+		const vector<RESQML2_NS::AbstractFeatureInterpretation*> interpSet = horizonSet[featureIndex]->getInterpretationSet();
+		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
+			const vector<RESQML2_NS::AbstractRepresentation*> repSet = interpSet[interpIndex]->getRepresentationSet();
+			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
+				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREGrid2dRepresentation) {
+					result.push_back(static_cast<Grid2dRepresentation*>(repSet[repIndex]));
+				}
+			}
+		}
+	}
+
+	return result;
+}
+
+std::vector<PolylineRepresentation*> DataObjectRepository::getHorizonPolylineRepSet() const
+{
+	vector<PolylineRepresentation*> result;
+
+	const vector<Horizon*> horizonSet = getHorizonSet();
+	for (size_t featureIndex = 0; featureIndex < horizonSet.size(); ++featureIndex) {
+		const vector<RESQML2_NS::AbstractFeatureInterpretation*> interpSet = horizonSet[featureIndex]->getInterpretationSet();
+		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
+			const vector<RESQML2_NS::AbstractRepresentation*> repSet = interpSet[interpIndex]->getRepresentationSet();
+			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
+				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREPolylineRepresentation) {
+					result.push_back(static_cast<PolylineRepresentation*>(repSet[repIndex]));
+				}
+			}
+		}
+	}
+
+	return result;
+}
+
+std::vector<PolylineSetRepresentation*> DataObjectRepository::getHorizonPolylineSetRepSet() const
+{
+	vector<PolylineSetRepresentation*> result;
+
+	const vector<Horizon*> horizonSet = getHorizonSet();
+	for (size_t featureIndex = 0; featureIndex < horizonSet.size(); ++featureIndex) {
+		const vector<RESQML2_NS::AbstractFeatureInterpretation*> interpSet = horizonSet[featureIndex]->getInterpretationSet();
+		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
+			const vector<RESQML2_NS::AbstractRepresentation*> repSet = interpSet[interpIndex]->getRepresentationSet();
+			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
+				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREPolylineSetRepresentation) {
+					result.push_back(static_cast<PolylineSetRepresentation*>(repSet[repIndex]));
+				}
+			}
+		}
+	}
+
+	return result;
+}
+
+vector<TriangulatedSetRepresentation*> DataObjectRepository::getHorizonTriangulatedSetRepSet() const
+{
+	vector<TriangulatedSetRepresentation*> result;
+
+	const vector<Horizon*> horizonSet = getHorizonSet();
+	for (size_t featureIndex = 0; featureIndex < horizonSet.size(); ++featureIndex) {
+		const vector<RESQML2_NS::AbstractFeatureInterpretation*> interpSet = horizonSet[featureIndex]->getInterpretationSet();
+		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
+			const vector<RESQML2_NS::AbstractRepresentation*> repSet = interpSet[interpIndex]->getRepresentationSet();
+			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
+				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORETriangulatedSetRepresentation) {
+					TriangulatedSetRepresentation* rep = static_cast<TriangulatedSetRepresentation*>(repSet[repIndex]);
+					result.push_back(rep);
+				}
+			}
+		}
+	}
+
+	return result;
+}
+
+std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> DataObjectRepository::getAllTriangulatedSetRepSet() const { return getDataObjects<RESQML2_0_1_NS::TriangulatedSetRepresentation>(); }
+
+std::vector<RESQML2_0_1_NS::Grid2dRepresentation*> DataObjectRepository::getAllGrid2dRepresentationSet() const { return getDataObjects<RESQML2_0_1_NS::Grid2dRepresentation>(); }
+
+std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> DataObjectRepository::getAllPolylineSetRepSet() const { return getDataObjects<RESQML2_0_1_NS::PolylineSetRepresentation>(); }
+
+namespace {
+	bool isClassified(RESQML2_0_1_NS::TriangulatedSetRepresentation* tsr) {
+		RESQML2_NS::AbstractFeatureInterpretation const * const interp = tsr->getInterpretation();
+		if (interp == nullptr) {
+			return false;
+		}
+
+		if (!interp->isPartial()) {
+			const int soapType = interp->getGsoapType();
+			if (soapType != SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREFaultInterpretation &&
+				soapType != SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREHorizonInterpretation) {
+				return false;
+			}
+		}
+		else {
+			const std::string contentType = tsr->getInterpretationContentType();
+			if (contentType.find("Horizon") == string::npos &&
+				contentType.find("Fault") == string::npos) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+}
+
+std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> DataObjectRepository::getUnclassifiedTriangulatedSetRepSet() const
+{
+	std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> result = getDataObjects<RESQML2_0_1_NS::TriangulatedSetRepresentation>();
+
+	result.erase(std::remove_if(result.begin(), result.end(), isClassified), result.end());
+
+	return result;
+}
+
+std::vector<RESQML2_0_1_NS::SeismicLineFeature*> DataObjectRepository::getSeismicLineSet() const { return getDataObjects<RESQML2_0_1_NS::SeismicLineFeature>(); }
+
+std::vector<RESQML2_0_1_NS::WellboreFeature*> DataObjectRepository::getWellboreSet() const { return getDataObjects<RESQML2_0_1_NS::WellboreFeature>(); }
+
+vector<WellboreTrajectoryRepresentation*> DataObjectRepository::getWellboreTrajectoryRepresentationSet() const
+{
+	vector<WellboreTrajectoryRepresentation*> result;
+
+	const std::vector<RESQML2_0_1_NS::WellboreFeature*> wellboreSet = getWellboreSet();
+
+	for (size_t featureIndex = 0; featureIndex < wellboreSet.size(); ++featureIndex) {
+		const std::vector<RESQML2_NS::AbstractFeatureInterpretation*> interpSet = wellboreSet[featureIndex]->getInterpretationSet();
+		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
+			const std::vector<RESQML2_NS::AbstractRepresentation*> repSet = interpSet[interpIndex]->getRepresentationSet();
+			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
+				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREWellboreTrajectoryRepresentation) {
+					result.push_back(static_cast<WellboreTrajectoryRepresentation*>(repSet[repIndex]));
+				}
+			}
+		}
+	}
+
+	return result;
+}
+
+vector<DeviationSurveyRepresentation*> DataObjectRepository::getDeviationSurveyRepresentationSet() const
+{
+	vector<DeviationSurveyRepresentation*> result;
+
+	const std::vector<RESQML2_0_1_NS::WellboreFeature*> wellboreSet = getWellboreSet();
+
+	for (size_t featureIndex = 0; featureIndex < wellboreSet.size(); ++featureIndex) {
+		const std::vector<RESQML2_NS::AbstractFeatureInterpretation*> interpSet = wellboreSet[featureIndex]->getInterpretationSet();
+		for (size_t interpIndex = 0; interpIndex < interpSet.size(); ++interpIndex) {
+			const std::vector<RESQML2_NS::AbstractRepresentation*> repSet = interpSet[interpIndex]->getRepresentationSet();
+			for (size_t repIndex = 0; repIndex < repSet.size(); ++repIndex) {
+				if (repSet[repIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREDeviationSurveyRepresentation) {
+					result.push_back(static_cast<DeviationSurveyRepresentation*>(repSet[repIndex]));
+				}
+			}
+		}
+	}
+
+	return result;
+}
+
+std::vector<RESQML2_NS::RepresentationSetRepresentation*> DataObjectRepository::getRepresentationSetRepresentationSet() const { return getDataObjects<RESQML2_NS::RepresentationSetRepresentation>(); }
+
+unsigned int DataObjectRepository::getRepresentationSetRepresentationCount() const
+{
+	const size_t result = getDataObjects<RESQML2_NS::RepresentationSetRepresentation>().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("The RepresentationSetRepresentation count is superior to unsigned int max");
+	}
+	return static_cast<unsigned int>(result);
+}
+
+RESQML2_NS::RepresentationSetRepresentation* DataObjectRepository::getRepresentationSetRepresentation(unsigned int index) const
+{
+	const std::vector<RESQML2_NS::RepresentationSetRepresentation*> result = getDataObjects<RESQML2_NS::RepresentationSetRepresentation>();
+
+	if (index >= result.size()) {
+		throw out_of_range("The index of the representation set representation is out of range");
+	}
+
+	return result[index];
+}
+
+std::vector<RESQML2_0_1_NS::PolylineRepresentation*> DataObjectRepository::getAllPolylineRepresentationSet() const { return getDataObjects<RESQML2_0_1_NS::PolylineRepresentation>(); }
+
+namespace {
+	bool isSeismicOrFaciesLine(RESQML2_0_1_NS::PolylineRepresentation* pr) {
+		return pr->isASeismicLine() || pr->isAFaciesLine();
+	}
+}
+
+std::vector<PolylineRepresentation*> DataObjectRepository::getSeismicLinePolylineRepSet() const
+{
+	std::vector<RESQML2_0_1_NS::PolylineRepresentation*> result = getDataObjects<RESQML2_0_1_NS::PolylineRepresentation>();
+
+	result.erase(std::remove_if(result.begin(), result.end(), std::not1(std::ptr_fun(isSeismicOrFaciesLine))), result.end());
+
+	return result;
+}
+
+std::vector<RESQML2_0_1_NS::AbstractIjkGridRepresentation*> DataObjectRepository::getIjkGridRepresentationSet() const { return getDataObjects<RESQML2_0_1_NS::AbstractIjkGridRepresentation>(); }
+
+unsigned int DataObjectRepository::getIjkGridRepresentationCount() const
+{
+	const size_t result = getDataObjects<RESQML2_0_1_NS::AbstractIjkGridRepresentation>().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("The Ijk Grid Representation count is superior to unsigned int max");
+	}
+	return static_cast<unsigned int>(result);
+}
+
+RESQML2_0_1_NS::AbstractIjkGridRepresentation* DataObjectRepository::getIjkGridRepresentation(unsigned int index) const
+{
+	const std::vector<RESQML2_0_1_NS::AbstractIjkGridRepresentation*> result = getDataObjects<RESQML2_0_1_NS::AbstractIjkGridRepresentation>();
+
+	if (index >= result.size()) {
+		throw out_of_range("The index of the ijk grid is out of range");
+	}
+
+	return result[index];
+}
+
+std::vector<RESQML2_0_1_NS::IjkGridParametricRepresentation*> DataObjectRepository::getIjkGridParametricRepresentationSet() const { return getDataObjects<RESQML2_0_1_NS::IjkGridParametricRepresentation>(); }
+
+std::vector<RESQML2_0_1_NS::IjkGridExplicitRepresentation*> DataObjectRepository::getIjkGridExplicitRepresentationSet() const { return getDataObjects<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(); }
+
+namespace {
+	bool isSeismicOrFaciesCube(RESQML2_0_1_NS::IjkGridLatticeRepresentation* Ijkglr) {
+		return Ijkglr->isASeismicCube() || Ijkglr->isAFaciesCube();
+	}
+}
+
+vector<IjkGridLatticeRepresentation*> DataObjectRepository::getIjkSeismicCubeGridRepresentationSet() const
+{
+	std::vector<RESQML2_0_1_NS::IjkGridLatticeRepresentation*> result = getDataObjects<RESQML2_0_1_NS::IjkGridLatticeRepresentation>();
+
+	result.erase(std::remove_if(result.begin(), result.end(), std::not1(std::ptr_fun(isSeismicOrFaciesCube))), result.end());
+
+	return result;
+}
+
+std::vector<RESQML2_0_1_NS::UnstructuredGridRepresentation*> DataObjectRepository::getUnstructuredGridRepresentationSet() const { return getDataObjects<RESQML2_0_1_NS::UnstructuredGridRepresentation>(); }
+
+std::vector<RESQML2_0_1_NS::FrontierFeature*> DataObjectRepository::getFrontierSet() const { return getDataObjects<RESQML2_0_1_NS::FrontierFeature>(); }
+
+std::vector<RESQML2_0_1_NS::OrganizationFeature*> DataObjectRepository::getOrganizationSet() const { return getDataObjects<RESQML2_0_1_NS::OrganizationFeature>(); }
+
+std::vector<RESQML2_NS::TimeSeries*> DataObjectRepository::getTimeSeriesSet() const { return getDataObjects<RESQML2_NS::TimeSeries>(); }
+
+std::vector<RESQML2_NS::SubRepresentation*> DataObjectRepository::getSubRepresentationSet() const { return getDataObjects<RESQML2_NS::SubRepresentation>(); }
+
+unsigned int DataObjectRepository::getSubRepresentationCount() const {
+	const size_t result = getDataObjects<RESQML2_NS::SubRepresentation>().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("The subrepresentation count is superior to unsigned int max");
+	}
+	return static_cast<unsigned int>(result);
+}
+
+RESQML2_NS::SubRepresentation* DataObjectRepository::getSubRepresentation(unsigned int index) const
+{
+	const std::vector<RESQML2_NS::SubRepresentation*> result = getDataObjects<RESQML2_NS::SubRepresentation>();
+
+	if (index >= result.size()) {
+		throw out_of_range("The index of the subrepresentation is out of range");
+	}
+
+	return result[index];
+}
+
+std::vector<RESQML2_0_1_NS::PointSetRepresentation*> DataObjectRepository::getPointSetRepresentationSet() const { return getDataObjects<RESQML2_0_1_NS::PointSetRepresentation>(); }
+
+unsigned int DataObjectRepository::getPointSetRepresentationCount() const
+{
+	const size_t result = getDataObjects<RESQML2_0_1_NS::PointSetRepresentation>().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("The PointSet Representation count is superior to unsigned int max");
+	}
+	return static_cast<unsigned int>(result);
+}
+
+RESQML2_0_1_NS::PointSetRepresentation* DataObjectRepository::getPointSetRepresentation(unsigned int index) const
+{
+	const std::vector<RESQML2_0_1_NS::PointSetRepresentation*> result = getDataObjects<RESQML2_0_1_NS::PointSetRepresentation>();
+
+	if (index >= result.size()) {
+		throw out_of_range("The point set representation index is out of range.");
+	}
+
+	return result[index];
+}
+
+std::vector<COMMON_NS::AbstractHdfProxy*> DataObjectRepository::getHdfProxySet() const { return getDataObjects<COMMON_NS::AbstractHdfProxy>(); }
+
+unsigned int DataObjectRepository::getHdfProxyCount() const {
+	const size_t result = getDataObjects<COMMON_NS::AbstractHdfProxy>().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("The Hdf Proxy count is superior to unsigned int max");
+	}
+	return static_cast<unsigned int>(result);
+}
+
+COMMON_NS::AbstractHdfProxy* DataObjectRepository::getHdfProxy(unsigned int index) const
+{
+	const std::vector<COMMON_NS::AbstractHdfProxy*> result = getDataObjects<COMMON_NS::AbstractHdfProxy>();
+
+	if (index >= result.size()) {
+		throw out_of_range("The index of the requested hdf proxy is out of range");
+	}
+
+	return result[index];
+}
+
+COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType)
+{
+	COMMON_NS::AbstractObject* wrapper = nullptr;
+
+	if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(MdDatum)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Activity)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ActivityTemplate)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SeismicLatticeFeature)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SeismicLineFeature)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SeismicLineSetFeature)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(FrontierFeature)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(LocalDepth3dCrs)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(LocalTime3dCrs)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(TectonicBoundaryFeature)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeneticBoundaryFeature)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(BoundaryFeature)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreFeature)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StratigraphicUnitFeature)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StratigraphicColumn)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GenericFeatureInterpretation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(BoundaryFeatureInterpretation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreInterpretation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(FaultInterpretation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(HorizonInterpretation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StratigraphicUnitInterpretation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StratigraphicColumnRankInterpretation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StratigraphicOccurrenceInterpretation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreFrameRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreMarkerFrameRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreTrajectoryRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PolylineSetRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PointSetRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PlaneSetRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PolylineRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(Grid2dRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(TriangulatedSetRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(BlockedWellboreRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DeviationSurveyRepresentation)
+	else if (resqmlContentType.compare(AbstractIjkGridRepresentation::XML_TAG) == 0)
+	{
+		GET_RESQML_2_0_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(IjkGridRepresentation)
+
+			if (read->Geometry != nullptr) {
+				switch (read->Geometry->Points->soap_type()) {
+				case SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array:
+					wrapper = new IjkGridExplicitRepresentation(read); break;
+				case SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dParametricArray:
+					wrapper = new IjkGridParametricRepresentation(read); break;
+				case SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dLatticeArray:
+					wrapper = new IjkGridLatticeRepresentation(read); break;
+				}
+			}
+			else {
+				wrapper = new IjkGridNoGeometryRepresentation(read);
+			}
+	}
+	else if (resqmlContentType.compare(AbstractIjkGridRepresentation::XML_TAG_TRUNCATED) == 0)
+	{
+		GET_RESQML_2_0_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(TruncatedIjkGridRepresentation)
+
+			if (read->Geometry != nullptr) {
+				switch (read->Geometry->Points->soap_type()) {
+				case SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array:
+					wrapper = new IjkGridExplicitRepresentation(read); break;
+				case SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dParametricArray:
+					wrapper = new IjkGridParametricRepresentation(read); break;
+				case SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dLatticeArray:
+					wrapper = new IjkGridLatticeRepresentation(read); break;
+				}
+			}
+			else {
+				wrapper = new IjkGridNoGeometryRepresentation(read);
+			}
+	}
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(UnstructuredGridRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PropertyKind)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ContinuousProperty)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ContinuousPropertySeries)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(CategoricalProperty)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(CategoricalPropertySeries)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DiscreteProperty)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DiscretePropertySeries)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(CommentProperty)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StringTableLookup)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(EarthModelInterpretation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(OrganizationFeature)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(StructuralOrganizationInterpretation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(FluidBoundaryFeature)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SubRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GridConnectionSetRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(TimeSeries)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(RepresentationSetRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(NonSealedSurfaceFrameworkRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SealedSurfaceFrameworkRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SealedVolumeFrameworkRepresentation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyFeature)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyBoundaryInterpretation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(GeobodyInterpretation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(RockFluidOrganizationInterpretation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(RockFluidUnitInterpretation)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(RockFluidUnitFeature)
+	else if (resqmlContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
+	{
+		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
+	}
+
+	return wrapper;
+}
+
+COMMON_NS::AbstractObject* DataObjectRepository::getWitsml2_0WrapperFromGsoapContext(const std::string & datatype)
+{
+	COMMON_NS::AbstractObject* wrapper = nullptr;
+
+	if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Well, gsoap_eml2_1)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, WellCompletion, gsoap_eml2_1)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Wellbore, gsoap_eml2_1)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, WellboreCompletion, gsoap_eml2_1)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Trajectory, gsoap_eml2_1)
+
+	return wrapper;
+}
+
+int DataObjectRepository::getGsoapErrorCode() const
+{
+	return gsoapContext->error;
+}
+
+std::string DataObjectRepository::getGsoapErrorMessage() const
+{
+	ostringstream oss;
+	soap_stream_fault(gsoapContext, oss);
+	return oss.str();
+}

@@ -81,7 +81,7 @@ namespace COMMON_NS
 		
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;
 		gsoap_eml2_1::eml21__AbstractObject* gsoapProxy2_1;
-		COMMON_NS::EpcDocument* epcDocument;
+		COMMON_NS::DataObjectRepository* repository;
 		std::vector<RESQML2_NS::Activity*> activitySet;
 
 		bool updateXml; /// Indicate whether methods update the XML (gSoap) or only the C++ classes of the API.
@@ -98,21 +98,21 @@ namespace COMMON_NS
 
 		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy);
 
-		friend void COMMON_NS::EpcDocument::addGsoapProxy(AbstractObject* proxy);
+		friend void COMMON_NS::DataObjectRepository::addOrReplaceDataObject(AbstractObject* proxy);
 
 		void initMandatoryMetadata();
 		
 		/**
 		* Resolve all relationships of the object in an epc document
 		*/
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc) = 0;
-		friend void COMMON_NS::EpcDocument::updateAllRelationships();
+		virtual void resolveTargetRelationships(COMMON_NS::DataObjectRepository * epcDoc) = 0;
+		friend void COMMON_NS::DataObjectRepository::updateAllRelationships();
 
 		/**
 		* Return all relationships (backward and forward ones) of the instance using EPC format.
 		*/
 		virtual std::vector<epc::Relationship> getAllEpcRelationships() const = 0;
-		friend void COMMON_NS::EpcDocument::serialize(bool useZip64);
+		friend void COMMON_NS::EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64);
 
 		// Only for Activity. Can not use friendness between AbstractObject and Activity for circular dependencies reason.
 		static void addActivityToResqmlObject(RESQML2_NS::Activity* activity, AbstractObject* resqmlObject);
@@ -176,7 +176,8 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT tm getLastUpdateAsTimeStructure() const;
 		DLL_IMPORT_OR_EXPORT std::string getFormat() const;
 		DLL_IMPORT_OR_EXPORT std::string getDescriptiveKeywords() const;
-		DLL_IMPORT_OR_EXPORT std::string getVersionString() const;
+		DLL_IMPORT_OR_EXPORT bool hasVersion() const;
+		DLL_IMPORT_OR_EXPORT std::string getVersion() const;
 
 		DLL_IMPORT_OR_EXPORT void setTitle(const std::string & title);
 		DLL_IMPORT_OR_EXPORT void setEditor(const std::string & editor);
@@ -203,7 +204,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT static void setFormat(const std::string & vendor, const std::string & applicationName, const std::string & applicationVersionNumber);
 
 		DLL_IMPORT_OR_EXPORT void setDescriptiveKeywords(const std::string & descriptiveKeywords);
-		DLL_IMPORT_OR_EXPORT void setVersionString(const std::string & versionString);
+		DLL_IMPORT_OR_EXPORT void setVersion(const std::string & version);
 
 		/**
 		* Set a title and other common metadata for the resqml instance. Set to empty string or zero if you don't want to use.
@@ -217,6 +218,11 @@ namespace COMMON_NS
 		* @param stream	The stream must be opened for writing and won't be closed.
 		*/
 		DLL_IMPORT_OR_EXPORT void serializeIntoStream(std::ostream * stream);
+
+		/**
+		* Set the underlying gsoap proxy of this object
+		*/
+		void setGsoapProxy(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy);
 
 		/**
 		* Get the gsoap proxy which is wrapped by this entity
@@ -241,7 +247,7 @@ namespace COMMON_NS
 		/**
 		 * Return the EPC document which contains this gsoap wrapper.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::EpcDocument* getEpcDocument() const {return epcDocument;}
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectRepository* getRepository() const {return repository;}
 
 		/**
 		* Get the XML namespace for the tags for the XML serialization of this instance

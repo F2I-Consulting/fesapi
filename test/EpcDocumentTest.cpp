@@ -26,6 +26,6 @@ EpcDocumentTest::EpcDocumentTest(const string & epcDocPath)
 	: AbstractTest(epcDocPath) {
 }
 
-EpcDocumentTest::EpcDocumentTest(EpcDocument * epcDoc)
-	: AbstractTest(epcDoc) {
+EpcDocumentTest::EpcDocumentTest(DataObjectRepository * repo)
+	: AbstractTest(repo) {
 }

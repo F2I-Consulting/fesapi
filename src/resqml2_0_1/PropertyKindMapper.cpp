@@ -63,12 +63,12 @@ string PropertyKindMapper::loadMappingFilesFromDirectory(const string & director
 					std::ifstream file( (directory + "/PropertyKindMapping.xml").c_str() );
 
 					if ( file ) {
-						epcDocument->getGsoapContext()->is = &file;
-						gsoap_resqml2_0_1::_ptm__standardEnergisticsPropertyTypeSet* read = gsoap_resqml2_0_1::soap_new_ptm__standardEnergisticsPropertyTypeSet(epcDocument->getGsoapContext(), 1);
-						soap_read_ptm__standardEnergisticsPropertyTypeSet(epcDocument->getGsoapContext(), read);
+						dataObjRepo->getGsoapContext()->is = &file;
+						gsoap_resqml2_0_1::_ptm__standardEnergisticsPropertyTypeSet* read = gsoap_resqml2_0_1::soap_new_ptm__standardEnergisticsPropertyTypeSet(dataObjRepo->getGsoapContext(), 1);
+						soap_read_ptm__standardEnergisticsPropertyTypeSet(dataObjRepo->getGsoapContext(), read);
 						file.close();
 
-						if (epcDocument->getGsoapContext()->error == SOAP_OK) {
+						if (dataObjRepo->getGsoapContext()->error == SOAP_OK) {
 							for (size_t propIndex = 0; propIndex < read->standardEnergisticsPropertyType.size(); ++propIndex)
 							{
 								resqmlStandardPropertyKindNameToApplicationPropertyKindName[read->standardEnergisticsPropertyType[propIndex]->name] = read->standardEnergisticsPropertyType[propIndex];
@@ -81,7 +81,7 @@ string PropertyKindMapper::loadMappingFilesFromDirectory(const string & director
 						}
 						else {
 							ostringstream oss;
-							soap_stream_fault(epcDocument->getGsoapContext(), oss);
+							soap_stream_fault(dataObjRepo->getGsoapContext(), oss);
 							return oss.str() + " in PropertyKindMapping.xml";
 						}
 					}
@@ -93,12 +93,12 @@ string PropertyKindMapper::loadMappingFilesFromDirectory(const string & director
 					std::ifstream file( (directory + "/" + fileName).c_str() );
 
 					if ( file ) {
-						epcDocument->getGsoapContext()->is = &file;
-						gsoap_resqml2_0_1::_resqml2__PropertyKind* read = gsoap_resqml2_0_1::soap_new_resqml2__obj_USCOREPropertyKind(epcDocument->getGsoapContext(), 1);
-						soap_read_resqml2__obj_USCOREPropertyKind(epcDocument->getGsoapContext(), read);
+						dataObjRepo->getGsoapContext()->is = &file;
+						gsoap_resqml2_0_1::_resqml2__PropertyKind* read = gsoap_resqml2_0_1::soap_new_resqml2__obj_USCOREPropertyKind(dataObjRepo->getGsoapContext(), 1);
+						soap_read_resqml2__obj_USCOREPropertyKind(dataObjRepo->getGsoapContext(), read);
 						file.close();
 
-						if (epcDocument->getGsoapContext()->error == SOAP_OK) {
+						if (dataObjRepo->getGsoapContext()->error == SOAP_OK) {
 							resqmlLocalPropertyKindUuidToResqmlLocalPropertyKind[read->uuid] = read;
 							for (size_t aliasIndex = 0; aliasIndex < read->Aliases.size(); ++aliasIndex) {
 								if (read->Aliases[aliasIndex]->authority) {
@@ -110,7 +110,7 @@ string PropertyKindMapper::loadMappingFilesFromDirectory(const string & director
 						}
 						else {
 							ostringstream oss;
-							soap_stream_fault(epcDocument->getGsoapContext(), oss);
+							soap_stream_fault(dataObjRepo->getGsoapContext(), oss);
 							return oss.str() + " in " + fileName;
 						}
 					}
@@ -138,7 +138,7 @@ string PropertyKindMapper::loadMappingFilesFromDirectory(const string & director
 #endif
 }
 
-std::string PropertyKindMapper::getDescriptionOfResqmlStandardPropertyKindName(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & resqmlStandardPropertyKindName) const
+std::string PropertyKindMapper::getDescriptionOfResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind resqmlStandardPropertyKindName) const
 {
 #if (defined(_WIN32) && _MSC_VER >= 1600)
 	std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*>::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
@@ -157,7 +157,7 @@ std::string PropertyKindMapper::getDescriptionOfResqmlStandardPropertyKindName(c
 	return "";
 }
 
-std::string PropertyKindMapper::getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & resqmlStandardPropertyKindName, const std::string & application) const
+std::string PropertyKindMapper::getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind resqmlStandardPropertyKindName, const std::string & application) const
 {
 #if (defined(_WIN32) && _MSC_VER >= 1600)
 	std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*>::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
@@ -295,7 +295,7 @@ PropertyKind* PropertyKindMapper::addResqmlLocalPropertyKindToEpcDocumentFromApp
 #endif
 	if (cit != value.end())
 	{
-		if (epcDocument->getDataObjectByUuid(cit->second) == nullptr)
+		if (dataObjRepo->getDataObjectByUuid(cit->second) == nullptr)
 		{
 			gsoap_resqml2_0_1::_resqml2__PropertyKind* propType = resqmlLocalPropertyKindUuidToResqmlLocalPropertyKind[cit->second];
 
@@ -304,7 +304,7 @@ PropertyKind* PropertyKindMapper::addResqmlLocalPropertyKindToEpcDocumentFromApp
 
 			while (propType->ParentPropertyKind->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__LocalPropertyKind)
 			{
-				if (epcDocument->getDataObjectByUuid(static_cast<gsoap_resqml2_0_1::resqml2__LocalPropertyKind*>(propType->ParentPropertyKind)->LocalPropertyKind->UUID) == nullptr)
+				if (dataObjRepo->getDataObjectByUuid(static_cast<gsoap_resqml2_0_1::resqml2__LocalPropertyKind*>(propType->ParentPropertyKind)->LocalPropertyKind->UUID) == nullptr)
 				{
 					propType = resqmlLocalPropertyKindUuidToResqmlLocalPropertyKind[static_cast<gsoap_resqml2_0_1::resqml2__LocalPropertyKind*>(propType->ParentPropertyKind)->LocalPropertyKind->UUID];
 					toAdd.push_back(propType);
@@ -314,15 +314,15 @@ PropertyKind* PropertyKindMapper::addResqmlLocalPropertyKindToEpcDocumentFromApp
 			}
 
 			std::vector<PropertyKind*> added;
-			for (unsigned int toAddIndex = 0; toAddIndex < toAdd.size(); toAddIndex++)
+			for (size_t toAddIndex = 0; toAddIndex < toAdd.size(); toAddIndex++)
 			{
 				PropertyKind* wrappedPropType = new PropertyKind(toAdd[toAddIndex]);
-				epcDocument->addGsoapProxy(wrappedPropType);
+				dataObjRepo->addOrReplaceDataObject(wrappedPropType);
 				added.push_back(wrappedPropType);
 			}
-			for (unsigned int addedIndex = 0; addedIndex < added.size(); addedIndex++)
+			for (size_t addedIndex = 0; addedIndex < added.size(); addedIndex++)
 			{
-				added[addedIndex]->importRelationshipSetFromEpc(epcDocument);
+				added[addedIndex]->resolveTargetRelationships(dataObjRepo);
 			}
 			return added[0];
 		}
@@ -331,7 +331,7 @@ PropertyKind* PropertyKindMapper::addResqmlLocalPropertyKindToEpcDocumentFromApp
 	return nullptr;
 }
 
-gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind PropertyKindMapper::getPropertyKindParentOfResqmlStandardPropertyKindName(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & resqmlStandardPropertyKindName) const
+gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind PropertyKindMapper::getPropertyKindParentOfResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind resqmlStandardPropertyKindName) const
 {
 #if (defined(_WIN32) && _MSC_VER >= 1600)
 	std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*>::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);

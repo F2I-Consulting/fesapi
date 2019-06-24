@@ -20,6 +20,8 @@ under the License.
 
 #include <stdexcept>
 
+#include "common/EnumStringMapper.h"
+
 #include "resqml2/AbstractValuesProperty.h"
 
 using namespace std;
@@ -66,7 +68,8 @@ std::string PropertyKind::getParentAsString() const
 	else
 	{
 		gsoap_resqml2_0_1::_resqml2__PropertyKind* propType = static_cast<gsoap_resqml2_0_1::_resqml2__PropertyKind*>(gsoapProxy2_0_1);
-		return epcDocument->getEnergisticsPropertyKindName(static_cast<gsoap_resqml2_0_1::resqml2__StandardPropertyKind*>(propType->ParentPropertyKind)->Kind);
+		COMMON_NS::EnumStringMapper tmp;
+		return tmp.getEnergisticsPropertyKindName(static_cast<gsoap_resqml2_0_1::resqml2__StandardPropertyKind*>(propType->ParentPropertyKind)->Kind);
 	}
 }
 
@@ -98,7 +101,7 @@ gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind PropertyKind::getParentEnergistic
 
 PropertyKind* PropertyKind::getParentLocalPropertyKind() const
 {
-	return static_cast<PropertyKind*>(epcDocument->getDataObjectByUuid(getParentLocalPropertyKindUuid()));
+	return static_cast<PropertyKind*>(repository->getDataObjectByUuid(getParentLocalPropertyKindUuid()));
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* PropertyKind::getParentLocalPropertyKindDor() const
@@ -164,7 +167,7 @@ vector<Relationship> PropertyKind::getAllEpcRelationships() const
 	return result;
 }
 
-void PropertyKind::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void PropertyKind::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
 	if (isParentAnEnergisticsPropertyKind()) {
 		return;

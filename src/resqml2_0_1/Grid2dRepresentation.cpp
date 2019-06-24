@@ -762,9 +762,9 @@ vector<Relationship> Grid2dRepresentation::getAllEpcRelationships() const
 	return result;
 }
 
-void Grid2dRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void Grid2dRepresentation::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
-	AbstractSurfaceRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractSurfaceRepresentation::resolveTargetRelationships(epcDoc);
 
 	// Base representation
 	const string supportingRepUuid = getSupportingRepresentationUuid();

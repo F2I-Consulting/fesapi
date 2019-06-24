@@ -39,32 +39,32 @@ const char* BigIjkGridExplicitRepresentationTest::continuousPropertyUuid = "a4e8
 const char* BigIjkGridExplicitRepresentationTest::continuousPropertyTitle = "Explicit IJK Grid Continuous Property";
 
 BigIjkGridExplicitRepresentationTest::BigIjkGridExplicitRepresentationTest(
-	const string & epcDocPath,
+	const string & repoPath,
 	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
 	const unsigned int & faultCount,
 	const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
 	const double & faultThrow)
-	: AbstractBigIjkGridRepresentationTest(epcDocPath, iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow) {
+	: AbstractBigIjkGridRepresentationTest(repoPath, iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow) {
 }
 
-BigIjkGridExplicitRepresentationTest::BigIjkGridExplicitRepresentationTest(EpcDocument * epcDoc, bool init,
+BigIjkGridExplicitRepresentationTest::BigIjkGridExplicitRepresentationTest(DataObjectRepository * repo, bool init,
 	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
 	const unsigned int & faultCount,
 	const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
 	const double & faultThrow)
-	: AbstractBigIjkGridRepresentationTest(epcDoc, init, iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow) {
+	: AbstractBigIjkGridRepresentationTest(repo, init, iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow) {
 }
 
-void BigIjkGridExplicitRepresentationTest::initEpcDocHandler() {
+void BigIjkGridExplicitRepresentationTest::initRepoHandler() {
 	// getting the local depth 3d crs
-	LocalDepth3dCrsTest crsTest(epcDoc, true);
-	RESQML2_0_1_NS::LocalDepth3dCrs* crs = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
+	LocalDepth3dCrsTest crsTest(repo, true);
+	RESQML2_0_1_NS::LocalDepth3dCrs* crs = repo->getDataObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 
 	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = epcDoc->getHdfProxySet()[0];
+	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
 	// creating the ijk grid
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = epcDoc->createIjkGridExplicitRepresentation(crs, defaultUuid, defaultTitle, iCount, jCount, kCount);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = repo->createIjkGridExplicitRepresentation(crs, defaultUuid, defaultTitle, iCount, jCount, kCount);
 	REQUIRE(ijkGrid != nullptr);
 	unsigned int * pillarOfCoordinateLine = new unsigned int[faultCount * (jCount + 1)];
 	unsigned int * splitCoordinateLineColumnCumulativeCount = new unsigned int[faultCount * (jCount + 1)];
@@ -75,7 +75,7 @@ void BigIjkGridExplicitRepresentationTest::initEpcDocHandler() {
 		faultCount * (jCount + 1), pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// adding a discrete property
-	RESQML2_0_1_NS::DiscreteProperty* discreteProperty = epcDoc->createDiscreteProperty(
+	RESQML2_0_1_NS::DiscreteProperty* discreteProperty = repo->createDiscreteProperty(
 		ijkGrid, discretePropertyUuid, discretePropertyTitle,
 		1, 
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, 
@@ -85,7 +85,7 @@ void BigIjkGridExplicitRepresentationTest::initEpcDocHandler() {
 	discreteProperty->pushBackUShortHdf5Array3dOfValues(discretePropertyValues, iCount, jCount, kCount, hdfProxy, -1);
 
 	// adding a continuous property
-	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = epcDoc->createContinuousProperty(
+	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = repo->createContinuousProperty(
 		ijkGrid, continuousPropertyUuid, continuousPropertyTitle,
 		1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells,
@@ -103,5 +103,5 @@ void BigIjkGridExplicitRepresentationTest::initEpcDocHandler() {
 	delete[] continuousPropertyValues;
 }
 
-void BigIjkGridExplicitRepresentationTest::readEpcDocHandler() {
+void BigIjkGridExplicitRepresentationTest::readRepoHandler() {
 }

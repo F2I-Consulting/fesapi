@@ -51,9 +51,9 @@ vector<Relationship> RepresentationSetRepresentation::getAllEpcRelationships() c
 	return result;
 }
 
-void RepresentationSetRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void RepresentationSetRepresentation::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
-	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractRepresentation::resolveTargetRelationships(epcDoc);
 
 	const unsigned int repCount = getRepresentationCount();
 	for (unsigned int i = 0; i < repCount; ++i)
@@ -61,8 +61,8 @@ void RepresentationSetRepresentation::importRelationshipSetFromEpc(COMMON_NS::Ep
 		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getRepresentationDor(i);
 		RESQML2_NS::AbstractRepresentation* rep = epcDoc->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
 		if (rep == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			rep = getEpcDocument()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
+			getRepository()->createPartial(dor);
+			rep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
 		}
 		if (rep == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
@@ -114,7 +114,7 @@ unsigned int RepresentationSetRepresentation::getRepresentationCount() const
 
 RESQML2_NS::AbstractRepresentation* RepresentationSetRepresentation::getRepresentation(const unsigned int & index) const
 {
-	return epcDocument->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(getRepresentationUuid(index));
+	return repository->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(getRepresentationUuid(index));
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* RepresentationSetRepresentation::getRepresentationDor(const unsigned int & index) const

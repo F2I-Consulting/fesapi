@@ -33,35 +33,35 @@ using namespace RESQML2_0_1_NS;
 const char* FaultSinglePatchTriangulatedSetRepresentationTest::defaultUuid = "110124ae-ff4e-478c-90c1-30900e01485e";
 const char* FaultSinglePatchTriangulatedSetRepresentationTest::defaultTitle = "FaultSinglePatchTriangulatedSetRepresentationTest";
 
-FaultSinglePatchTriangulatedSetRepresentationTest::FaultSinglePatchTriangulatedSetRepresentationTest(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath)
+FaultSinglePatchTriangulatedSetRepresentationTest::FaultSinglePatchTriangulatedSetRepresentationTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath)
 {
 }
 
-FaultSinglePatchTriangulatedSetRepresentationTest::FaultSinglePatchTriangulatedSetRepresentationTest(EpcDocument * epcDocument, bool init)
-	: commontest::AbstractObjectTest(epcDocument)
+FaultSinglePatchTriangulatedSetRepresentationTest::FaultSinglePatchTriangulatedSetRepresentationTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo)
 {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void FaultSinglePatchTriangulatedSetRepresentationTest::initEpcDocHandler()
+void FaultSinglePatchTriangulatedSetRepresentationTest::initRepoHandler()
 {
-	FaultInterpretation * interp = epcDoc->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
+	FaultInterpretation * interp = repo->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
 	if (interp == nullptr) {
-		FaultInterpretationTest interpTest(epcDoc, true);
-		interp = epcDoc->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
+		FaultInterpretationTest interpTest(repo, true);
+		interp = repo->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
 	}
 
-	LocalDepth3dCrs * crs = epcDoc->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
+	LocalDepth3dCrs * crs = repo->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 	if (crs == nullptr) {
-		LocalDepth3dCrsTest crsTest(epcDoc, true);
-		crs = epcDoc->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
+		LocalDepth3dCrsTest crsTest(repo, true);
+		crs = repo->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 	}
 
-	TriangulatedSetRepresentation* rep = epcDoc->createTriangulatedSetRepresentation(interp, crs, defaultUuid, defaultTitle);
+	TriangulatedSetRepresentation* rep = repo->createTriangulatedSetRepresentation(interp, crs, defaultUuid, defaultTitle);
 	REQUIRE( rep != nullptr );
 
 	double nodesFaultSinglePatchTriangulatedSetRepresentation[] = {
@@ -88,9 +88,9 @@ void FaultSinglePatchTriangulatedSetRepresentationTest::initEpcDocHandler()
 		6,10,9, 6,7,10, 7,8,10, 8,11,10,
 		9,13,12, 9,10,13, 10,11,13, 11,14,13,
 		12,16,15, 12,13,16, 13,14,16, 14,17,16 };
-	rep->pushBackTrianglePatch(18, nodesFaultSinglePatchTriangulatedSetRepresentation, 20, triangleNodeIndexFault, epcDoc->getHdfProxySet()[0]);
+	rep->pushBackTrianglePatch(18, nodesFaultSinglePatchTriangulatedSetRepresentation, 20, triangleNodeIndexFault, repo->getHdfProxySet()[0]);
 }
 
-void FaultSinglePatchTriangulatedSetRepresentationTest::readEpcDocHandler()
+void FaultSinglePatchTriangulatedSetRepresentationTest::readRepoHandler()
 {
 }

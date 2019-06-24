@@ -246,8 +246,8 @@ ULONG64 PolylineSetRepresentation::getXyzPointCountOfPatch(const unsigned int & 
 	if (patchIndex >= getPatchCount())
 		throw range_error("The index of the patch is not in the allowed range of patch.");
 
-	unsigned int polylineCount = getPolylineCountOfPatch(patchIndex);
-	unsigned int* nodeCountPerPolyline = new unsigned int[polylineCount];
+	const unsigned int polylineCount = getPolylineCountOfPatch(patchIndex);
+	unsigned int* const nodeCountPerPolyline = new unsigned int[polylineCount];
 
 	getNodeCountPerPolylineInPatch(patchIndex, nodeCountPerPolyline);
 

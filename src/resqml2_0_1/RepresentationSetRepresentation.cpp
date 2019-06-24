@@ -43,7 +43,7 @@ RepresentationSetRepresentation::RepresentationSetRepresentation(RESQML2_NS::Abs
 	setInterpretation(interp);
 }
 
-RepresentationSetRepresentation::RepresentationSetRepresentation(COMMON_NS::EpcDocument* epcDoc, const std::string & guid, const std::string & title)
+RepresentationSetRepresentation::RepresentationSetRepresentation(COMMON_NS::DataObjectRepository* epcDoc, const std::string & guid, const std::string & title)
 {
 	if (epcDoc == nullptr) {
 		throw invalid_argument("The epc document cannot be NULL.");

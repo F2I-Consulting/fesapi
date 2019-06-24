@@ -39,52 +39,52 @@ const char* SeismicLineRepresentationTest::defaultTitleInterp = "Seismic Line In
 const char* SeismicLineRepresentationTest::defaultUuid = "99bd4f3e-8f52-43ae-98fb-ab60371e838e";
 const char* SeismicLineRepresentationTest::defaultTitle = "Seismic Line Representation";
 
-SeismicLineRepresentationTest::SeismicLineRepresentationTest(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath)
+SeismicLineRepresentationTest::SeismicLineRepresentationTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath)
 {
 }
 
-SeismicLineRepresentationTest::SeismicLineRepresentationTest(EpcDocument * epcDocument, bool init)
-	: commontest::AbstractObjectTest(epcDocument)
+SeismicLineRepresentationTest::SeismicLineRepresentationTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo)
 {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void SeismicLineRepresentationTest::initEpcDocHandler()
+void SeismicLineRepresentationTest::initRepoHandler()
 {
-	LocalDepth3dCrs * crs = epcDoc->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
+	LocalDepth3dCrs * crs = repo->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 	if (crs == nullptr) {
-		LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(epcDoc, true);
-		crs = epcDoc->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
+		LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(repo, true);
+		crs = repo->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 		delete crsTest;
 	}
 
-	COMMON_NS::AbstractHdfProxy * hdfProxy = epcDoc->getHdfProxy(0);
+	COMMON_NS::AbstractHdfProxy * hdfProxy = repo->getHdfProxy(0);
 
-	SeismicLineSetFeature* seismicLineSet = epcDoc->createSeismicLineSet(defaultUuidFeatureSet, defaultTitleFeatureSet);
+	SeismicLineSetFeature* seismicLineSet = repo->createSeismicLineSet(defaultUuidFeatureSet, defaultTitleFeatureSet);
 
 	// Seismic Line
-	SeismicLineFeature* seismicLine = epcDoc->createSeismicLine(defaultUuidFeature, defaultTitleFeature, 1, 0, 5);
+	SeismicLineFeature* seismicLine = repo->createSeismicLine(defaultUuidFeature, defaultTitleFeature, 1, 0, 5);
 	seismicLine->setSeismicLineSet(seismicLineSet);
-	GenericFeatureInterpretation* seismicLineInterp = epcDoc->createGenericFeatureInterpretation(seismicLine, defaultUuidInterp, defaultTitleInterp);
-	PolylineRepresentation* seismicLineRep = epcDoc->createPolylineRepresentation(seismicLineInterp, crs, defaultUuid, defaultTitle);
+	GenericFeatureInterpretation* seismicLineInterp = repo->createGenericFeatureInterpretation(seismicLine, defaultUuidInterp, defaultTitleInterp);
+	PolylineRepresentation* seismicLineRep = repo->createPolylineRepresentation(seismicLineInterp, crs, defaultUuid, defaultTitle);
 	double seismicLinePoints[15] = { 0, 100, 0, 150, 110, 0, 300, 120, 0, 450, 130, 0, 600, 140, 0 };
 	seismicLineRep->setGeometry(seismicLinePoints, 5, hdfProxy);
 }
 
-void SeismicLineRepresentationTest::readEpcDocHandler()
+void SeismicLineRepresentationTest::readRepoHandler()
 {
 	// Feature
-	RESQML2_0_1_NS::SeismicLineFeature* feature = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::SeismicLineFeature>(defaultUuidFeature);
+	RESQML2_0_1_NS::SeismicLineFeature* feature = repo->getDataObjectByUuid<RESQML2_0_1_NS::SeismicLineFeature>(defaultUuidFeature);
 	REQUIRE(feature->getFirstTraceIndex() == 0);
 	REQUIRE(feature->getTraceCount() == 5);
 	REQUIRE(feature->getTraceIndexIncrement() == 1);
 
 	// Grid 2D
-	RESQML2_0_1_NS::PolylineRepresentation* rep = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::PolylineRepresentation>(defaultUuid);
+	RESQML2_0_1_NS::PolylineRepresentation* rep = repo->getDataObjectByUuid<RESQML2_0_1_NS::PolylineRepresentation>(defaultUuid);
 	REQUIRE(rep->getSeismicSupportOfPatch(0) == nullptr);
 	REQUIRE(rep->getXyzPointCountOfAllPatches() == 5);
 }

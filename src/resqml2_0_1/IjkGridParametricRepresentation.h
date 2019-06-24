@@ -208,6 +208,15 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void getParametersOfNodes(double * parameters, bool reverseIAxis = false, bool reverseJAxis= false, bool reverseKAxis= false) const;
 
 		/**
+		* Get all the parameters of a particular sequence of K interfaces of a particular patch of this representation.
+		* @param kInterfaceStart	The K index of the starting interface taken from zero to kCellCount.
+		* @param kInterfaceEnd		The K index of the ending interface taken from zero to kCellCount
+		* @param patchIndex			The index of the patch. It is generally zero.
+		* @param parameters			It must be pre allocated with a size of getXyzPointCountOfKInterfaceOfPatch * (kInterfaceEnd - kInterfaceStart + 1).
+		*/
+		DLL_IMPORT_OR_EXPORT void getParametersOfNodesOfKInterfaceSequenceOfPatch(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, unsigned int patchIndex, double * parameters);
+
+		/**
 		* Set the geometry of the IJK grid as parametric pillar nodes where no pillar is splitted.
 		* Defined pillars are deduced from pillarKind == -1;
 		* @param mostComplexPillarGeometry					The most complex pillar shape which we can find on this ijk grid.

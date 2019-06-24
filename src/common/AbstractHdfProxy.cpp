@@ -20,8 +20,8 @@ under the License.
 
 using namespace COMMON_NS;
 
-AbstractHdfProxy::AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
-	EpcExternalPartReference(packageDirAbsolutePath, externalFilePath)
+AbstractHdfProxy::AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess) :
+	packageDirectoryAbsolutePath(packageDirAbsolutePath), relativeFilePath(externalFilePath), openingMode(hdfPermissionAccess)
 {
 }
 
@@ -38,5 +38,17 @@ void AbstractHdfProxy::initGsoapProxy(soap* soapContext, const std::string & gui
 	}
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
+}
+
+std::vector<epc::Relationship> AbstractHdfProxy::getAllEpcRelationships() const
+{
+	std::vector<epc::Relationship> result = EpcExternalPartReference::getAllEpcRelationships();
+
+	// External part
+	epc::Relationship relExt(relativeFilePath, "", "Hdf5File", false);
+	relExt.setExternalResourceType();
+	result.push_back(relExt);
+
+	return result;
 }

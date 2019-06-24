@@ -34,28 +34,28 @@ const char* IjkGridExplicitRepresentationTest::defaultTitle = "Ijk Grid Represen
 const unsigned long long IjkGridExplicitRepresentationTest::nodesCountIjkGridRepresentation = 16;
 double IjkGridExplicitRepresentationTest::nodesIjkGridRepresentation[] = { 0, 0, 300, 375, 0, 300, 700, 0, 350, 0, 150, 300, 375, 150, 300, 700, 150, 350, /* SPLIT*/ 375, 0, 350, 375, 150, 350, 0, 0, 500, 375, 0, 500, 700, 0, 550, 0, 150, 500, 375, 150, 500, 700, 150, 550, /* SPLIT*/ 375, 0, 550, 375, 150, 550 };
 
-IjkGridExplicitRepresentationTest::IjkGridExplicitRepresentationTest(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath) {
+IjkGridExplicitRepresentationTest::IjkGridExplicitRepresentationTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
 }
 
-IjkGridExplicitRepresentationTest::IjkGridExplicitRepresentationTest(EpcDocument * epcDoc, bool init)
-	: commontest::AbstractObjectTest(epcDoc) {
+IjkGridExplicitRepresentationTest::IjkGridExplicitRepresentationTest(DataObjectRepository * repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void IjkGridExplicitRepresentationTest::initEpcDocHandler() {
+void IjkGridExplicitRepresentationTest::initRepoHandler() {
 	// getting the local depth 3d crs
-	LocalDepth3dCrsTest crsTest(epcDoc, true);
-	RESQML2_0_1_NS::LocalDepth3dCrs* crs = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
+	LocalDepth3dCrsTest crsTest(repo, true);
+	RESQML2_0_1_NS::LocalDepth3dCrs* crs = repo->getDataObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 
 	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = epcDoc->getHdfProxySet()[0];
+	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
 	// creating the ijk grid
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = epcDoc->createIjkGridExplicitRepresentation(crs, defaultUuid, defaultTitle, 2, 1, 1);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = repo->createIjkGridExplicitRepresentation(crs, defaultUuid, defaultTitle, 2, 1, 1);
 	REQUIRE( ijkGrid != nullptr );
 	unsigned int pillarOfCoordinateLine[2] = {1,4};
 	unsigned int splitCoordinateLineColumnCumulativeCount[2] = {1,2};
@@ -64,9 +64,9 @@ void IjkGridExplicitRepresentationTest::initEpcDocHandler() {
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 }
 
-void IjkGridExplicitRepresentationTest::readEpcDocHandler() {
+void IjkGridExplicitRepresentationTest::readRepoHandler() {
 	// checking number of points in the geometry
-	RESQML2_0_1_NS::AbstractIjkGridRepresentation* representation = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>(defaultUuid);
+	RESQML2_0_1_NS::AbstractIjkGridRepresentation* representation = repo->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>(defaultUuid);
 	REQUIRE(representation->getXyzPointCountOfAllPatches() == nodesCountIjkGridRepresentation);
 	REQUIRE_FALSE(representation->isNodeGeometryCompressed());
 

@@ -39,6 +39,7 @@ under the License.
 #include "proxies/stdsoap2.h"
 
 #include "common/EpcDocument.h"
+#include "common/EnumStringMapper.h"
 #include "resqml2_0_1/LocalDepth3dCrs.h"
 #include "resqml2_0_1/LocalTime3dCrs.h"
 #include "resqml2_0_1/FrontierFeature.h"
@@ -124,7 +125,7 @@ SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = nullptr;
 WITSML2_0_NS::Well* witsmlWell = nullptr;
 WITSML2_0_NS::Wellbore* witsmlWellbore = nullptr;
 
-void serializeWells(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
+void serializeWells(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
 	// WELL
 	witsmlWell = pck->createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1");
@@ -174,7 +175,7 @@ void serializeWells(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* h
 	discreteProp->pushBackCharHdf5Array1dOfValues(unitNumbers, 5, hdfProxy, -1);
 }
 
-void serializePerforations(COMMON_NS::EpcDocument * pck)
+void serializePerforations(COMMON_NS::DataObjectRepository * pck)
 {
 	// WELL COMPLETION
 	WITSML2_0_NS::WellCompletion* wellCompletion = pck->createWellCompletion(witsmlWell, "6593d580-2f44-4b18-97ce-8a9cf42a0414", "WellCompletion1");
@@ -204,7 +205,7 @@ void serializePerforations(COMMON_NS::EpcDocument * pck)
 	wellboreCompletion->setPerforationHistoryStartDate(1, 1, 1514764800);
 }
 
-void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
+void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
 	// Build the Stratigraphic column
 	StratigraphicColumn* stratiColumn = pck->createStratigraphicColumn("7f6666a0-fa3b-11e5-a509-0002a5d5c51b", "Stratigraphic column");
@@ -276,7 +277,7 @@ void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::Abstra
 	svf->pushBackVolumeRegion(stratiUnitB1Interp, 7, region5RepIndices.data(), region5PatchIndices.data(), region5Sides);
 }
 
-void serializeGeobody(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
+void serializeGeobody(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
 	// 2D
 	GeneticBoundaryFeature* geobodyBoundary = pck->createGeobodyBoundaryFeature("6d3c158c-303f-4b0d-bfc0-9ce4102ea616", "Geobody boundary");
@@ -294,7 +295,7 @@ void serializeGeobody(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy*
 	//RESQML2_NS::SubRepresentation* geobodyGraphEdge = pck->createSubRepresentation(geobodyBoundaryInterp, "7e0450aa-c39d-49f8-bee4-62fc42bb849d", "Geobody graph edge");
 }
 
-void serializeBoundaries(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
+void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
 	// Seismic Lattice
 	SeismicLatticeFeature* seismicLattice = pck->createSeismicLattice("eb6a5e97-4d86-4809-b136-051f34cfcb51", "Seismic lattice", 2, 2, 150, 152, 4, 2);
@@ -326,7 +327,7 @@ void serializeBoundaries(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfPro
 	horizon1->setCreation(timeStruct);
 	horizon1->setAge(300000000);
 	horizon2 = pck->createHorizon("fd7950a6-f62e-4e47-96c4-048820a61c59", "Horizon2");
-	horizon2->setVersionString("my version string");
+	horizon2->setVersion("my version");
 	fault1 = pck->createFault("1424bcc2-3d9d-4f30-b1f9-69dcb897e33b", "Fault1");
 	fault1->setMetadata("", "philippe", 148526020, "philippe", "", 148526100, "");
 
@@ -472,7 +473,7 @@ void serializeBoundaries(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfPro
 #endif
 }
 
-void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
+void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
 	OrganizationFeature * earthModel = pck->createEarthModel("f2060ce0-fa3d-11e5-8620-0002a5d5c51b", "Grid");
 	EarthModelInterpretation * earthModelInterp = pck->createEarthModelInterpretation(earthModel, "f5cd7520-fa3d-11e5-b65b-0002a5d5c51b", "Grid interp");
@@ -766,7 +767,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 	tetraGrid->setTetrahedraOnlyGeometry(faceRightHandness, tetraGridPoints, 4, 4, hdfProxy, faceIndicesPerCell, nodeIndicesPerFace);
 }
 
-void serializeRepresentationSetRepresentation(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy*)
+void serializeRepresentationSetRepresentation(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdfProxy*)
 {
 	RESQML2_NS::RepresentationSetRepresentation* result = pck->createRepresentationSetRepresentation("", "Testing Representation set");
 	cout << "is homogeneous : " << result->isHomogeneous() << endl;
@@ -782,7 +783,7 @@ void serializeRepresentationSetRepresentation(COMMON_NS::EpcDocument * pck, COMM
 	cout << "is homogeneous : " << result->isHomogeneous() << endl;
 }
 
-void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
+void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
 	// =========================================================================
 	// =========================================================================
@@ -1548,7 +1549,7 @@ void serializeStructuralModel(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractH
 		hdfProxy);
 }
 
-void serializeActivities(COMMON_NS::EpcDocument * epcDoc)
+void serializeActivities(COMMON_NS::DataObjectRepository * epcDoc)
 {
 	/********************
 	* Activity Template
@@ -1583,7 +1584,7 @@ void serializeActivities(COMMON_NS::EpcDocument * epcDoc)
 
 }
 
-void serializeFluidBoundary(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractHdfProxy*)
+void serializeFluidBoundary(COMMON_NS::DataObjectRepository & pck, COMMON_NS::AbstractHdfProxy*)
 {
 	FluidBoundaryFeature* fluidBoundary = pck.createFluidBoundaryFeature("44a4d87c-3c67-4f98-a314-9d91c4147061", "Fluid boundary", gsoap_resqml2_0_1::resqml2__FluidContact__gas_x0020oil_x0020contact);
 	GenericFeatureInterpretation* interp = pck.createGenericFeatureInterpretation(fluidBoundary, "d06df5e4-3c56-4abd-836f-2abb5e58e13b", "Fluid boundary interp");
@@ -1591,7 +1592,7 @@ void serializeFluidBoundary(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractHdf
 	rep->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
 }
 
-void serializeRockFluidOrganization(COMMON_NS::EpcDocument & pck, COMMON_NS::AbstractHdfProxy*)
+void serializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck, COMMON_NS::AbstractHdfProxy*)
 {
 	//Top Boundary
 	FluidBoundaryFeature* fluidBoundaryTop = pck.createFluidBoundaryFeature("cd400fa2-4c8b-11e9-be79-3f8079258eaa", "Fluid boundary top", gsoap_resqml2_0_1::resqml2__FluidContact__gas_x0020oil_x0020contact);
@@ -1622,7 +1623,7 @@ void serializeRockFluidOrganization(COMMON_NS::EpcDocument & pck, COMMON_NS::Abs
 	singleCellIjkgrid->setCellAssociationWithRockFluidOrganizationInterpretation(&rockFluidUnitIndice, 1000, rockFluidOrgInterp);
 }
 
-void deserializePropertyKindMappingFiles(COMMON_NS::EpcDocument * pck)
+void deserializePropertyKindMappingFiles(COMMON_NS::DataObjectRepository * pck)
 {
 	PropertyKindMapper* ptMapper = pck->getPropertyKindMapper();
 
@@ -1716,35 +1717,36 @@ void deserializeActivity(COMMON_NS::AbstractObject* resqmlObject)
 
 bool serialize(const string & filePath)
 {
-	COMMON_NS::EpcDocument pck(filePath, COMMON_NS::EpcDocument::OVERWRITE);
+	COMMON_NS::EpcDocument pck(filePath);
+	COMMON_NS::DataObjectRepository repo;
 
 	COMMON_NS::AbstractObject::setFormat("F2I-CONSULTING", "Fesapi Example", FESAPI_VERSION);
 
-	COMMON_NS::AbstractHdfProxy* hdfProxy = pck.createHdfProxy("", "Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5");
+	COMMON_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5", COMMON_NS::DataObjectRepository::OVERWRITE);
 
 	//CRS
-	local3dCrs = pck.createLocalDepth3dCrs("", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
-	localTime3dCrs = pck.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__TimeUom__s, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false); // CRS translation is just for testing;
+	local3dCrs = repo.createLocalDepth3dCrs("", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
+	localTime3dCrs = repo.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__TimeUom__s, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false); // CRS translation is just for testing;
 
 	// Comment or uncomment below domains/lines you want wether to test or not
-	serializeWells(&pck, hdfProxy);
-	serializePerforations(&pck);
-	serializeBoundaries(&pck, hdfProxy);
-	serializeGeobody(&pck, hdfProxy);
-	serializeStructuralModel(pck, hdfProxy);
-	serializeStratigraphicModel(&pck, hdfProxy);
-	serializeGrid(&pck, hdfProxy);
-	serializeActivities(&pck);
-	serializeRepresentationSetRepresentation(&pck, hdfProxy);
-	serializeFluidBoundary(pck, hdfProxy);
-	serializeRockFluidOrganization(pck, hdfProxy);
+	serializeWells(&repo, hdfProxy);
+	serializePerforations(&repo);
+	serializeBoundaries(&repo, hdfProxy);
+	serializeGeobody(&repo, hdfProxy);
+	serializeStructuralModel(repo, hdfProxy);
+	serializeStratigraphicModel(&repo, hdfProxy);
+	serializeGrid(&repo, hdfProxy);
+	serializeActivities(&repo);
+	serializeRepresentationSetRepresentation(&repo, hdfProxy);
+	serializeFluidBoundary(repo, hdfProxy);
+	serializeRockFluidOrganization(repo, hdfProxy);
 	// Add an extended core property before to serialize
 	pck.setExtendedCoreProperty("F2I-ExtendedCoreProp", "TestingVersion");
 
 	hdfProxy->close();
 
 	cout << "Start serialization of " << pck.getName() << " in " << (pck.getStorageDirectory().empty() ? "working directory." : pck.getStorageDirectory()) << endl;
-	pck.serialize();
+	pck.serializeFrom(repo);
 	return true;
 }
 
@@ -1763,9 +1765,8 @@ void showAllMetadata(COMMON_NS::AbstractObject * obj, const std::string & prefix
 		std::cout << prefix << "Creation date is (unix timestamp) : " << creation << std::endl;
 		tm creationTm = obj->getCreationAsTimeStructure();
 		std::cout << prefix << "Creation date is (struct tm) : " << 1900 + creationTm.tm_year << "-" << creationTm.tm_mon + 1 << "-" << creationTm.tm_mday << "T" << creationTm.tm_hour << ":" << creationTm.tm_min << ":" << creationTm.tm_sec << std::endl;
-		std::string versionString = obj->getVersionString();
-		if (!versionString.empty()) {
-			std::cout << prefix << "VersionString is : " << versionString << std::endl;
+		if (obj->hasVersion()) {
+			std::cout << prefix << "version is : " << obj->getVersion() << std::endl;
 		}
 		std::cout << prefix << "--------------------------------------------------" << std::endl;
 
@@ -1976,7 +1977,7 @@ void deserializeStratiColumn(StratigraphicColumn * stratiColumn)
 	}
 }
 
-void deserializeSealedSurfaceFramework(const COMMON_NS::EpcDocument & pck)
+void deserializeSealedSurfaceFramework(const COMMON_NS::DataObjectRepository & pck)
 {
 	const std::vector<RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation*> ssfVec = pck.getDataObjects<RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation>();
 
@@ -2058,7 +2059,7 @@ void deserializeSealedSurfaceFramework(const COMMON_NS::EpcDocument & pck)
 	}
 }
 
-void deserializeSealedVolumeFramework(const COMMON_NS::EpcDocument & pck)
+void deserializeSealedVolumeFramework(const COMMON_NS::DataObjectRepository & pck)
 {
 	const std::vector<RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation*> svfVec = pck.getDataObjects<RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation>();
 
@@ -2085,7 +2086,7 @@ void deserializeSealedVolumeFramework(const COMMON_NS::EpcDocument & pck)
 	}
 }
 
-void deserializeGeobody(COMMON_NS::EpcDocument * pck)
+void deserializeGeobody(COMMON_NS::DataObjectRepository * pck)
 {
 	//2d
 	std::vector<GeneticBoundaryFeature*> geobodyBoundarySet = pck->getGeobodyBoundarySet();
@@ -2102,7 +2103,7 @@ void deserializeGeobody(COMMON_NS::EpcDocument * pck)
 	}
 }
 
-void deserializeFluidBoundary(COMMON_NS::EpcDocument & pck)
+void deserializeFluidBoundary(COMMON_NS::DataObjectRepository & pck)
 {
 	std::vector<FluidBoundaryFeature*> fbfSet = pck.getDataObjects<FluidBoundaryFeature>();
 	for (size_t fbfIndex = 0; fbfIndex < fbfSet.size(); ++fbfIndex) {
@@ -2124,7 +2125,7 @@ void deserializeFluidBoundary(COMMON_NS::EpcDocument & pck)
 	}
 }
 
-void deserializeRockFluidOrganization(COMMON_NS::EpcDocument & pck)
+void deserializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck)
 {
 	std::vector<RockFluidOrganizationInterpretation*> rockFluidOrgInterpSet = pck.getDataObjects<RockFluidOrganizationInterpretation>();
 	for (size_t rfoiIndex = 0; rfoiIndex < rockFluidOrgInterpSet.size(); ++rfoiIndex) {
@@ -2157,7 +2158,7 @@ void deserializeRockFluidOrganization(COMMON_NS::EpcDocument & pck)
 * and then layer by layer.
 * @param pck	An EPC document containine the IJK grid to deserialize.
 */
-void deserializeGridHyperslabbingInterfaceSequence(COMMON_NS::EpcDocument & pck)
+void deserializeGridHyperslabbingInterfaceSequence(COMMON_NS::DataObjectRepository & pck)
 {
 	cout << endl << "BEGIN: IJK GRID REP (hyperslabbing)" << std::endl;
 	unsigned int ijkGridCount = pck.getIjkGridRepresentationCount();
@@ -2447,7 +2448,7 @@ void displayBlockCellGeometry(AbstractIjkGridRepresentation* ijkGrid,
 * layer by layer.
 * @param pck	An EPC document containing the IJK grid to deserialize.
 */
-void deserializeGridHyperslabbingBlock(COMMON_NS::EpcDocument & pck)
+void deserializeGridHyperslabbingBlock(COMMON_NS::DataObjectRepository & pck)
 {
 	cout << endl << "BEGIN: IJK GRID REP (block hyperslabbing)" << endl;
 
@@ -3113,7 +3114,7 @@ void discretePropertyHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, 
 	std::cout << endl << "END: IJK GRID REP (hyperslabbed and non-hyperslabbed property reading comparison)" << std::endl;
 }
 
-void deserializePerforations(COMMON_NS::EpcDocument & pck)
+void deserializePerforations(COMMON_NS::DataObjectRepository & pck)
 {
 	cout << endl << "PERFORATIONS" << endl;
 
@@ -3191,40 +3192,34 @@ void deserializePerforations(COMMON_NS::EpcDocument & pck)
 
 void deserialize(const string & inputFile)
 {
-	COMMON_NS::EpcDocument pck(inputFile, COMMON_NS::EpcDocument::READ_ONLY);
-	//COMMON_NS::EpcDocument pck(inputFile, "C:/Users/Philippe/dev/fesapiEnv/fesapi/resources", COMMON_NS::EpcDocument::READ_ONLY);
-	//COMMON_NS::EpcDocument pck(inputFile, "/home/philippe/dev/fesapi/resources", COMMON_NS::EpcDocument::READ_ONLY);
+	COMMON_NS::EpcDocument pck(inputFile);
+	//COMMON_NS::EpcDocument pck(inputFile, "C:/Users/Philippe/dev/fesapiEnv/fesapi/resources");
+	//COMMON_NS::EpcDocument pck(inputFile, "/home/philippe/dev/fesapi/resources");
 	cout << "Start deserialization of " << pck.getName() << " in " << (pck.getStorageDirectory().empty() ? "working directory." : pck.getStorageDirectory()) << endl;
-	string resqmlResult = pck.deserialize();
+	COMMON_NS::DataObjectRepository repo;
+	string resqmlResult = pck.deserializeInto(repo);
 	if (!resqmlResult.empty()) {
 		cerr << resqmlResult << endl;
 		throw invalid_argument("The epc document is not a valid one");
 	}
-	std::vector<std::string> allUuids = pck.getAllUuids();
-	/*
-	std::cout << "********************** UUIDS **********************" << std::endl;
-	for (size_t index = 0; index < allUuids.size(); ++index) {
-		std::cout << allUuids[index] << std::endl;
-	}
-	std::cout << "***************************************************" << std::endl;
-	*/
 
-	unsigned int hdfProxyCount = pck.getHdfProxyCount();
-	cout << "There are " << pck.getHdfProxyCount() << " hdf files associated to this epc document." << endl;
+	unsigned int hdfProxyCount = repo.getHdfProxyCount();
+	cout << "There are " << repo.getHdfProxyCount() << " hdf files associated to this epc document." << endl;
 	for (unsigned int hdfProxyIndex = 0; hdfProxyIndex < hdfProxyCount; ++hdfProxyIndex) {
-		cout << "Hdf file relative path : " << pck.getHdfProxy(hdfProxyIndex)->getRelativePath() << endl;
+		cout << "Hdf file relative path : " << repo.getHdfProxy(hdfProxyIndex)->getRelativePath() << endl;
 	}
-	for (size_t warningIndex = 0; warningIndex < pck.getWarnings().size(); ++warningIndex) {
-		cout << "Warning #" << warningIndex << " : " << pck.getWarnings()[warningIndex] << endl;
+	for (size_t warningIndex = 0; warningIndex < repo.getWarnings().size(); ++warningIndex) {
+		cout << "Warning #" << warningIndex << " : " << repo.getWarnings()[warningIndex] << endl;
 	}
 
 #if !defined(OFFICIAL)
 	//deserializePropertyKindMappingFiles(&pck);
 #endif
 
+	COMMON_NS::EnumStringMapper enumStrMapper;
 	cout << "MAPPING ENUM VS STRING" << endl;
-	cout << "rock permeability == " << pck.getEnergisticsPropertyKindName(pck.getEnergisticsPropertyKind("rock permeability")) << endl;
-	cout << "m (meter) == " << pck.getEnergisticsUnitOfMeasureName(pck.getEnergisticsUnitOfMeasure("m")) << endl;
+	cout << "rock permeability == " << enumStrMapper.getEnergisticsPropertyKindName(enumStrMapper.getEnergisticsPropertyKind("rock permeability")) << endl;
+	cout << "m (meter) == " << enumStrMapper.getEnergisticsUnitOfMeasureName(enumStrMapper.getEnergisticsUnitOfMeasure("m")) << endl;
 
 	cout << "EXTENDED CORE PROPERTIES" << endl;
 
@@ -3239,7 +3234,7 @@ void deserialize(const string & inputFile)
 	}
 
 	cout << "CRS" << endl;
-	vector<LocalDepth3dCrs*> depthCrsSet = pck.getLocalDepth3dCrsSet();
+	vector<LocalDepth3dCrs*> depthCrsSet = repo.getLocalDepth3dCrsSet();
 	for (size_t i = 0; i < depthCrsSet.size(); ++i) {
 		cout << "Title is : " << depthCrsSet[i]->getTitle() << endl;
 		if (depthCrsSet[i]->isProjectedCrsDefinedWithEpsg())
@@ -3247,7 +3242,7 @@ void deserialize(const string & inputFile)
 		else if (depthCrsSet[i]->isProjectedCrsUnknown())
 			cout << "Projected : Unknown." << "Reason is:" << depthCrsSet[i]->getProjectedCrsUnknownReason() << endl;
 	}
-	vector<LocalTime3dCrs*> timeCrsSet = pck.getLocalTime3dCrsSet();
+	vector<LocalTime3dCrs*> timeCrsSet = repo.getLocalTime3dCrsSet();
 	for (size_t i = 0; i < timeCrsSet.size(); ++i) {
 		cout << "Title is : " << timeCrsSet[i]->getTitle() << endl;
 		if (timeCrsSet[i]->isVerticalCrsDefinedWithEpsg())
@@ -3257,26 +3252,26 @@ void deserialize(const string & inputFile)
 	}
 	cout << endl;
 
-	deserializeGeobody(&pck);
-	deserializeFluidBoundary(pck);
-	deserializeRockFluidOrganization(pck);
+	deserializeGeobody(&repo);
+	deserializeFluidBoundary(repo);
+	deserializeRockFluidOrganization(repo);
 
-	std::vector<TectonicBoundaryFeature*> faultSet = pck.getFaultSet();
-	std::vector<PolylineSetRepresentation*> faultPolyRep = pck.getFaultPolylineSetRepSet();
-	std::vector<TriangulatedSetRepresentation*> faultTriRepSet = pck.getFaultTriangulatedSetRepSet();
-	std::vector<Horizon*> horizonSet = pck.getHorizonSet();
-	std::vector<Grid2dRepresentation*> horizonGrid2dSet = pck.getHorizonGrid2dRepSet();
-	std::vector<TriangulatedSetRepresentation*> horizonTriRepSet = pck.getHorizonTriangulatedSetRepSet();
-	std::vector<TriangulatedSetRepresentation*> unclassifiedTriRepSet = pck.getUnclassifiedTriangulatedSetRepSet();
-	std::vector<PolylineRepresentation*> horizonSinglePolylineRepSet = pck.getHorizonPolylineRepSet();
-	std::vector<WellboreFeature*> wellboreSet = pck.getWellboreSet();
-	std::vector<WellboreTrajectoryRepresentation*> wellboreCubicTrajSet = pck.getWellboreTrajectoryRepresentationSet();
-	std::vector<UnstructuredGridRepresentation*> unstructuredGridRepSet = pck.getUnstructuredGridRepresentationSet();
-	std::vector<RESQML2_NS::TimeSeries*> timeSeriesSet = pck.getTimeSeriesSet();
-	std::vector<StratigraphicColumn*> stratiColumnSet = pck.getStratigraphicColumnSet();
-	std::vector<RESQML2_NS::RepresentationSetRepresentation*> representationSetRepresentationSet = pck.getRepresentationSetRepresentationSet();
-	std::vector<RESQML2_NS::SubRepresentation*> subRepresentationSet = pck.getSubRepresentationSet();
-	std::vector<PolylineSetRepresentation*> frontierPolyRep = pck.getFrontierPolylineSetRepSet();
+	std::vector<TectonicBoundaryFeature*> faultSet = repo.getFaultSet();
+	std::vector<PolylineSetRepresentation*> faultPolyRep = repo.getFaultPolylineSetRepSet();
+	std::vector<TriangulatedSetRepresentation*> faultTriRepSet = repo.getFaultTriangulatedSetRepSet();
+	std::vector<Horizon*> horizonSet = repo.getHorizonSet();
+	std::vector<Grid2dRepresentation*> horizonGrid2dSet = repo.getHorizonGrid2dRepSet();
+	std::vector<TriangulatedSetRepresentation*> horizonTriRepSet = repo.getHorizonTriangulatedSetRepSet();
+	std::vector<TriangulatedSetRepresentation*> unclassifiedTriRepSet = repo.getUnclassifiedTriangulatedSetRepSet();
+	std::vector<PolylineRepresentation*> horizonSinglePolylineRepSet = repo.getHorizonPolylineRepSet();
+	std::vector<WellboreFeature*> wellboreSet = repo.getWellboreSet();
+	std::vector<WellboreTrajectoryRepresentation*> wellboreCubicTrajSet = repo.getWellboreTrajectoryRepresentationSet();
+	std::vector<UnstructuredGridRepresentation*> unstructuredGridRepSet = repo.getUnstructuredGridRepresentationSet();
+	std::vector<RESQML2_NS::TimeSeries*> timeSeriesSet = repo.getTimeSeriesSet();
+	std::vector<StratigraphicColumn*> stratiColumnSet = repo.getStratigraphicColumnSet();
+	std::vector<RESQML2_NS::RepresentationSetRepresentation*> representationSetRepresentationSet = repo.getRepresentationSetRepresentationSet();
+	std::vector<RESQML2_NS::SubRepresentation*> subRepresentationSet = repo.getSubRepresentationSet();
+	std::vector<PolylineSetRepresentation*> frontierPolyRep = repo.getFrontierPolylineSetRepSet();
 
 	std::cout << "RepresentationSetRepresentation" << endl;
 	for (size_t i = 0; i < representationSetRepresentationSet.size(); i++) {
@@ -3509,8 +3504,8 @@ void deserialize(const string & inputFile)
 		showAllProperties(horizonSinglePolylineRepSet[i]);
 	}
 
-	deserializeSealedSurfaceFramework(pck);
-	deserializeSealedVolumeFramework(pck);
+	deserializeSealedSurfaceFramework(repo);
+	deserializeSealedVolumeFramework(repo);
 	
 	std::cout << "STRATI COLUMN" << endl;
 	for (size_t i = 0; i < stratiColumnSet.size(); i++)
@@ -3570,7 +3565,7 @@ void deserialize(const string & inputFile)
 		}
 	}
 
-	deserializePerforations(pck);
+	deserializePerforations(repo);
 
 	std::cout << endl << "WELLBORES CUBIC TRAJ" << endl;
 	for (size_t i = 0; i < wellboreCubicTrajSet.size(); i++)
@@ -3617,10 +3612,10 @@ void deserialize(const string & inputFile)
 	}
 
 	std::cout << endl << "IJK GRID REP" << endl;
-	unsigned int ijkGridCount = pck.getIjkGridRepresentationCount();
+	unsigned int ijkGridCount = repo.getIjkGridRepresentationCount();
 	for (unsigned int ijkGridIdx = 0; ijkGridIdx < ijkGridCount; ++ijkGridIdx)
 	{
-		AbstractIjkGridRepresentation* ijkGrid = pck.getIjkGridRepresentation(ijkGridIdx);
+		AbstractIjkGridRepresentation* ijkGrid = repo.getIjkGridRepresentation(ijkGridIdx);
 
 		showAllMetadata(ijkGrid);
 		if (ijkGrid->isPartial()) {
@@ -3874,10 +3869,10 @@ void deserialize(const string & inputFile)
 	}
 
 	// Testing k-layers hyperslabbing
-	deserializeGridHyperslabbingInterfaceSequence(pck);
+	deserializeGridHyperslabbingInterfaceSequence(repo);
 
 	// Testing block hyperslabbing
-	deserializeGridHyperslabbingBlock(pck);
+	deserializeGridHyperslabbingBlock(repo);
 	
 	
 	// ====================
@@ -3989,9 +3984,9 @@ void deserialize(const string & inputFile)
 		}
 	}
 
-	std::cout << endl << pck.getWarnings().size() << " WARNING(S)" << endl;
-	for (size_t i = 0; i < pck.getWarnings().size(); ++i) {
-		std::cout << i << " - " << pck.getWarnings()[i] << endl;
+	std::cout << endl << repo.getWarnings().size() << " WARNING(S)" << endl;
+	for (size_t i = 0; i < repo.getWarnings().size(); ++i) {
+		std::cout << i << " - " << repo.getWarnings()[i] << endl;
 	}
 
 	pck.close();

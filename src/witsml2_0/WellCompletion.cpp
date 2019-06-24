@@ -49,7 +49,7 @@ gsoap_eml2_1::eml21__DataObjectReference* WellCompletion::getWellDor() const
 
 class Well* WellCompletion::getWell() const
 {
-	return getEpcDocument()->getDataObjectByUuid<Well>(getWellDor()->Uuid);
+	return getRepository()->getDataObjectByUuid<Well>(getWellDor()->Uuid);
 }
 
 void WellCompletion::setWell(Well* witsmlWell)
@@ -68,7 +68,7 @@ void WellCompletion::setWell(Well* witsmlWell)
 	}
 }
 
-void WellCompletion::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void WellCompletion::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
 {
 	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellDor();
 	Well* well = epcDoc->getDataObjectByUuid<Well>(dor->Uuid);
