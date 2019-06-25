@@ -129,6 +129,11 @@ namespace RESQML2_0_1_NS
 
 }
 
+namespace RESQML2_2_NS
+{
+	class DiscreteColorMap;
+}
+
 namespace WITSML2_1_NS
 {
 	class ToolErrorModel;
@@ -1246,6 +1251,7 @@ namespace COMMON_NS
 
 		DLL_IMPORT_OR_EXPORT GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
 
+		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::DiscreteColorMap* createDiscreteColorMap(const std::string & guid, const std::string & title);
 
 		//************************************
 		//************* WARNINGS *************
@@ -1281,6 +1287,7 @@ namespace COMMON_NS
 		* It does not work for EpcExternalPartReference content type since this type is related to an external file which must be handled differently.
 		*/
 		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
+		COMMON_NS::AbstractObject* getResqml2_2WrapperFromGsoapContext(const std::string & resqmlContentType);
 		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
 		COMMON_NS::AbstractObject* getWitsml2_1WrapperFromGsoapContext(const std::string & datatype);
 		COMMON_NS::AbstractObject* getEml2_2WrapperFromGsoapContext(const std::string & datatype);

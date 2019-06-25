@@ -38,7 +38,6 @@ namespace resqml2_0_1test {
 	// LocalTime3dCrs
 	static const char* uuidLocalTime3dCrs = "e37f861a-5f2c-4a8a-b62c-4c987cf280e1";
 	static const char* titleLocalTime3dCrs = "Local Time 3d Crs Test";
-
 	
 	// Fault
 	static const char* uuidFault = "8e5874d1-c434-46d1-9d6f-7fef83bf7b70";
@@ -97,6 +96,12 @@ namespace resqml2_0_1test {
 	// Partial UstructuredGridRepresentation
 	static const char* uuidPartialUnstructuredGridRepresentation = "94da1dd5-a82b-4c88-a86b-2dc930c17125";
 	static const char* titlePartialUnstructuredGridRepresentation = "Partial Unstructured Grid Representation Test";
+}
+
+namespace resqml2_2test {
+	// DiscreteColorMap
+	static const char* uuidDiscreteColorMap = "e5e1a185-6437-460b-8f65-7f48e9db2653";
+	static const char* titleDiscreteColorMap = "Discrete Color Map Test";
 }
 
 namespace witsml2_0test {

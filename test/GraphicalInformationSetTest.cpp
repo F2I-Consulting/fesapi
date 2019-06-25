@@ -42,7 +42,6 @@ GraphicalInformationSetTest::GraphicalInformationSetTest(EpcDocument * epcDoc, b
 }
 
 void GraphicalInformationSetTest::initEpcDocHandler() {
-	LocalTime3dCrs* crs = epcDoc->createLocalTime3dCrs(uuidLocalTime3dCrs, titleLocalTime3dCrs, 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__TimeUom__s, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
 	Horizon* feature = epcDoc->createHorizon(uuidHorizon0, titleHorizon0);
 
 	GraphicalInformationSet* graphicalInformationSet = epcDoc->createGraphicalInformationSet(uuid, title);
@@ -53,9 +52,8 @@ void GraphicalInformationSetTest::initEpcDocHandler() {
 	REQUIRE_THROWS(graphicalInformationSet->setDefaultHsvColor(feature, 361, 0., 0.));
 	REQUIRE_THROWS(graphicalInformationSet->setDefaultHsvColor(feature, 0., 1.1, 0.));
 	REQUIRE_THROWS(graphicalInformationSet->setDefaultHsvColor(feature, 0., 0., -1.));
-	REQUIRE_THROWS(graphicalInformationSet->setDefaultHsvColor(crs, 240., 1., 0.5));
 
-	graphicalInformationSet->setDefaultHsvColor(feature, 0., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(feature, 0., 1., 0.5, 1., "blue");
 }
 
 void GraphicalInformationSetTest::readEpcDocHandler() {
@@ -72,5 +70,66 @@ void GraphicalInformationSetTest::readEpcDocHandler() {
 	REQUIRE(graphicalInformationSet->getDefaultSaturation(feature) == 1.);
 	REQUIRE(graphicalInformationSet->getDefaultValue(feature) == 0.5);
 	REQUIRE(graphicalInformationSet->getDefaultAlpha(feature) == 1.);
+	REQUIRE(graphicalInformationSet->hasDefaultColorTitle(feature) == true);
+	REQUIRE(graphicalInformationSet->getDefaultColorTitle(feature) == "blue");
+
+	double hue, saturation, value;
+	GraphicalInformationSet::rgbToHsv(1., 0., 0., hue, saturation, value); // red
+	REQUIRE(hue == 0.);
+	REQUIRE(saturation == 1.);
+	REQUIRE(value == 1.);
+	GraphicalInformationSet::rgbToHsv(0., 1., 0., hue, saturation, value); // green
+	REQUIRE(hue == 120.);
+	REQUIRE(saturation == 1.);
+	REQUIRE(value == 1.);
+	GraphicalInformationSet::rgbToHsv(0., 0., 1., hue, saturation, value); // blue
+	REQUIRE(hue == 240.);
+	REQUIRE(saturation == 1.);
+	REQUIRE(value == 1.);
+
+	GraphicalInformationSet::rgbToHsv((unsigned int) 255, (unsigned int) 0, (unsigned int) 0, hue, saturation, value); // red
+	REQUIRE(hue == 0.);
+	REQUIRE(saturation == 1.);
+	REQUIRE(value == 1.);
+	GraphicalInformationSet::rgbToHsv((unsigned int) 0, (unsigned int) 255, (unsigned int) 0, hue, saturation, value); // green
+	REQUIRE(hue == 120.);
+	REQUIRE(saturation == 1.);
+	REQUIRE(value == 1.);
+	GraphicalInformationSet::rgbToHsv((unsigned int)  0, (unsigned int)  0, (unsigned int)  255, hue, saturation, value); // blue
+	REQUIRE(hue == 240.);
+	REQUIRE(saturation == 1.);
+	REQUIRE(value == 1.);
+
+	double red, green, blue;
+	GraphicalInformationSet::hsvToRgb(0., 1., 1., red, green, blue); // red
+	REQUIRE(red == 1.);
+	REQUIRE(green == 0.);
+	REQUIRE(blue == 0.);
+	GraphicalInformationSet::hsvToRgb(120., 1., 1., red, green, blue); // green
+	REQUIRE(red == 0.);
+	REQUIRE(green == 1.);
+	REQUIRE(blue == 0.);
+	GraphicalInformationSet::hsvToRgb(240., 1., 1., red, green, blue); // blue
+	REQUIRE(red == 0.);
+	REQUIRE(green == 0.);
+	REQUIRE(blue == 1.);
+
+	unsigned int r, g, b;
+	GraphicalInformationSet::hsvToRgb(0., 1., 1., r, g, b); // red
+	REQUIRE(r == 255);
+	REQUIRE(g == 0);
+	REQUIRE(b == 0);
+	GraphicalInformationSet::hsvToRgb(360., 1., 1., r, g, b); // red
+	REQUIRE(r == 255);
+	REQUIRE(g == 0);
+	REQUIRE(b == 0);
+	GraphicalInformationSet::hsvToRgb(120., 1., 1., r, g, b); // green
+	REQUIRE(r == 0);
+	REQUIRE(g == 255);
+	REQUIRE(b == 0);
+	GraphicalInformationSet::hsvToRgb(240., 1., 1., r, g, b); // blue
+	REQUIRE(r == 0);
+	REQUIRE(g == 0);
+	REQUIRE(b == 255);
 }
 

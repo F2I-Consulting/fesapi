@@ -91,6 +91,8 @@ under the License.
 #include "resqml2_0_1/Activity.h"
 #include "resqml2_0_1/ActivityTemplate.h"
 
+#include "resqml2_2/DiscreteColorMap.h"
+
 #include "witsml2_0/Well.h"
 
 #include "tools/TimeTools.h"
@@ -121,6 +123,7 @@ WellboreFeature* wellbore1 = nullptr;
 WellboreInterpretation* wellbore1Interp1 = nullptr;
 StratigraphicColumnRankInterpretation* stratiColumnRank0 = nullptr;
 SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = nullptr;
+DiscreteProperty* discreteProp1 = nullptr;
 
 WITSML2_0_NS::Well* witsmlWell = nullptr;
 WITSML2_0_NS::Wellbore* witsmlWellbore = nullptr;
@@ -207,25 +210,32 @@ void serializePerforations(COMMON_NS::EpcDocument * pck)
 
 void serializeGraphicalInformationSet(COMMON_NS::EpcDocument * pck)
 {
-	common::GraphicalInformationSet* graphicalInformationSet = pck->createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
+	COMMON_NS::GraphicalInformationSet* graphicalInformationSet = pck->createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
 
 	// fault1 representation is blue
-	graphicalInformationSet->setDefaultHsvColor(fault1, 240., 1., 0.5);
-	graphicalInformationSet->setDefaultHsvColor(fault1Interp1, 240., 1., 0.5);
-	graphicalInformationSet->setDefaultHsvColor(f1i1triRepSinglePatch, 240., 1., 0.5);
-	graphicalInformationSet->setDefaultHsvColor(f1i1triRep, 240., 1., 0.5);
-	graphicalInformationSet->setDefaultHsvColor(f1i1PolyLineRep, 240., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(fault1, 240., 1., 1., 1., "blue");
+	graphicalInformationSet->setDefaultHsvColor(fault1Interp1, 240., 1., 1., 1., "blue");
+	graphicalInformationSet->setDefaultHsvColor(f1i1triRepSinglePatch, 240., 1., 1., 1., "blue");
+	graphicalInformationSet->setDefaultHsvColor(f1i1triRep, 240., 1., 1., 1., "blue");
+	graphicalInformationSet->setDefaultHsvColor(f1i1PolyLineRep, 240., 1., 1., 1., "blue");
 	
 	// horizon1 representation is red
-	graphicalInformationSet->setDefaultHsvColor(horizon1, 0., 1., 0.5);
-	graphicalInformationSet->setDefaultHsvColor(horizon1Interp1, 0., 1., 0.5);
-	graphicalInformationSet->setDefaultHsvColor(h1i1triRep, 0., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(horizon1, 0., 1., 1., 1., "red");
+	graphicalInformationSet->setDefaultHsvColor(horizon1Interp1, 0., 1., 1., 1., "red");
+	graphicalInformationSet->setDefaultHsvColor(h1i1triRep, 0., 1., 1., 1., "red");
 	
 	// horizon2 representation is green
-	graphicalInformationSet->setDefaultHsvColor(horizon2, 120., 1., 0.5);
-	graphicalInformationSet->setDefaultHsvColor(horizon2Interp1, 120., 1., 0.5);
-	graphicalInformationSet->setDefaultHsvColor(h2i1triRep, 120., 1., 0.5);
-	graphicalInformationSet->setDefaultHsvColor(h1i1SingleGrid2dRep, 120., 1., 0.5);
+	graphicalInformationSet->setDefaultHsvColor(horizon2, 120., 1., 1., 1., "green");
+	graphicalInformationSet->setDefaultHsvColor(horizon2Interp1, 120., 1., 1., 1., "green");
+	graphicalInformationSet->setDefaultHsvColor(h2i1triRep, 120., 1., 1., 1., "green");
+	graphicalInformationSet->setDefaultHsvColor(h1i1SingleGrid2dRep, 120., 1., 1., 1., "green");
+
+	RESQML2_2_NS::DiscreteColorMap* discreteColorMap = pck->createDiscreteColorMap("3daf4661-ae8f-4357-adee-0b0159bdd0a9", "Discrete color map 1");
+	unsigned int rgbColors[6] = { 255, 0, 0, 0, 0, 255 };
+	double alphas[2] = { 1., 1. };
+	std::string titles[2] = { "red", "blue" };
+	discreteColorMap->setRgbColors(2, rgbColors, alphas, titles);
+	graphicalInformationSet->setDiscreteColorMap(discreteProp1, discreteColorMap);
 }
 
 void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
@@ -694,7 +704,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 	// Properties
 	//**************
 	RESQML2_NS::PropertyKind * propType1 = pck->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__discrete);
-	DiscreteProperty* discreteProp1 = pck->createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
+	discreteProp1 = pck->createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, propType1);
 	//long prop1Values[2] = {0,1};
 	//discreteProp1->pushBackLongHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, -1);
@@ -3226,18 +3236,39 @@ void deserializeGraphicalInformationSet(COMMON_NS::EpcDocument & pck)
 {
 	std::cout << "GRAPHICAL INFORMATIONS" << std::endl;
 
-	common::GraphicalInformationSet* graphicalInformationSet = pck.getDataObjects<common::GraphicalInformationSet>()[0];
+	COMMON_NS::GraphicalInformationSet* graphicalInformationSet = pck.getDataObjects<COMMON_NS::GraphicalInformationSet>()[0];
 	for (unsigned int i = 0; i < graphicalInformationSet->getGraphicalInformationSetCount(); ++i)
 	{
-		common::AbstractObject* targetObject = graphicalInformationSet->getTargetObject(i);
+		COMMON_NS::AbstractObject* targetObject = graphicalInformationSet->getTargetObject(i);
 
-		if (graphicalInformationSet->hasGraphicalInformation(targetObject) && graphicalInformationSet->hasDefaultColor(targetObject))
+		std::cout << "graphical information for: " << targetObject->getTitle() << std::endl;
+
+		if (graphicalInformationSet->hasDefaultColor(targetObject))
 		{
-			std::cout << "graphical information for: " << targetObject->getTitle() << std::endl;
 			std::cout << "default hue: " << graphicalInformationSet->getDefaultHue(targetObject) << std::endl;
 			std::cout << "default saturation: " << graphicalInformationSet->getDefaultSaturation(targetObject) << std::endl;
 			std::cout << "default value: " << graphicalInformationSet->getDefaultValue(targetObject) << std::endl;
 			std::cout << "default alpha: " << graphicalInformationSet->getDefaultAlpha(targetObject) << std::endl;
+			if (graphicalInformationSet->hasDefaultColorTitle(targetObject))
+			{
+				std::cout << "default color title: " << graphicalInformationSet->getDefaultColorTitle(targetObject) << std::endl;
+			}
+		}
+
+		if (graphicalInformationSet->hasDiscreteColorMap(targetObject))
+		{
+			RESQML2_2_NS::DiscreteColorMap* discreteColorMap = graphicalInformationSet->getDiscreteColorMap(targetObject);
+			std::cout << "discrete color map title: " << discreteColorMap->getTitle() << std::endl;
+			unsigned int r, g, b;
+			for (unsigned int i = 0; i < discreteColorMap->getColorCount(); ++i) {
+				discreteColorMap->getRgbColor(i, r, g, b);
+				std::cout << i << ": (" << r << ", " << g << ", " << b << ", ";
+				std::cout << discreteColorMap->getAlpha(i);
+				if (discreteColorMap->hasColorTitle(i)) {
+					std::cout << ", " << discreteColorMap->getColorTitle(i);
+				}
+				std::cout << ")" << std::endl;
+			}
 		}
 	}
 }

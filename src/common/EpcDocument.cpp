@@ -103,6 +103,8 @@ under the License.
 #include "resqml2_0_1/CategoricalPropertySeries.h"
 #include "resqml2_0_1/DiscretePropertySeries.h"
 
+#include "resqml2_2/DiscreteColorMap.h"
+
 #include "witsml2_0/Well.h"
 
 #ifdef WITH_ETP
@@ -125,14 +127,15 @@ using namespace epc;
 using namespace gsoap_resqml2_0_1;
 using namespace COMMON_NS;
 using namespace RESQML2_0_1_NS;
+using namespace RESQML2_2_NS;
 using namespace WITSML2_0_NS;
 using namespace WITSML2_1_NS;
 
 const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 
-/////////////////////
-/////// RESQML //////
-/////////////////////
+///////////////////////////
+/////// RESQML 2.0.1 //////
+///////////////////////////
 #define GET_RESQML_2_0_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
 	gsoap_resqml2_0_1::_resqml2__##className* read = gsoap_resqml2_0_1::soap_new_resqml2__obj_USCORE##className(s, 1);\
 	soap_read_resqml2__obj_USCORE##className(s, read);
@@ -146,6 +149,24 @@ const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 	(resqmlContentType.compare(className::XML_TAG) == 0)\
 	{\
 		GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
+	}
+
+///////////////////////////
+/////// RESQML 2.2 //////
+///////////////////////////
+#define GET_RESQML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
+	gsoap_eml2_2::_resqml2__##className* read = gsoap_eml2_2::soap_new_resqml2__##className(s, 1);\
+	soap_read_resqml2__##className(s, read);
+
+
+#define GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
+	GET_RESQML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
+	wrapper = new className(read);
+
+#define CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
+	(resqmlContentType.compare(className::XML_TAG) == 0)\
+	{\
+		GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
 	}
 
 /////////////////////
@@ -617,6 +638,9 @@ COMMON_NS::AbstractObject* EpcDocument::addOrReplaceGsoapProxy(const std::string
 		if (contentType.find("application/x-resqml+xml;version=2.0;type=obj") != string::npos) {
 			wrapper = getResqml2_0_1WrapperFromGsoapContext(datatype);
 		}
+		if (contentType.find("application/x-resqml+xml;version=2.2;type=obj") != string::npos) {
+			wrapper = getResqml2_2WrapperFromGsoapContext(datatype);
+		}
 		else if (contentType.find("application/x-witsml+xml;version=2.0;type=") != string::npos) {
 			wrapper = getWitsml2_0WrapperFromGsoapContext(datatype);
 		}
@@ -943,6 +967,29 @@ string EpcDocument::deserialize()
 				}
 			}
 		}
+		else if (it->second.getContentTypeString().find("application/x-resqml+xml;version=2.2;type=") == 0)
+		{
+			string fileStr = package->extractFile(it->second.getExtensionOrPartName().substr(1));
+			if (fileStr.empty()) {
+				throw invalid_argument("The EPC document contains the file " + it->second.getExtensionOrPartName().substr(1) + " in its contentType file which cannot be found or cannot be unzipped or is empty.");
+			}
+			istringstream iss(fileStr);
+			setGsoapStream(&iss);
+			COMMON_NS::AbstractObject* wrapper = getResqml2_2WrapperFromGsoapContext(it->second.getContentTypeString().substr(42));
+
+			if (wrapper != nullptr)
+			{
+				if (s->error != SOAP_OK) {
+					ostringstream oss;
+					soap_stream_fault(s, oss);
+					result += oss.str() + " IN " + it->second.getExtensionOrPartName() + "\n";
+					delete wrapper;
+				}
+				else {
+					addFesapiWrapperAndDeleteItIfException(wrapper);
+				}
+			}
+		}
 	}
 
 	deserializeContentOfDictionaries();
@@ -1069,6 +1116,15 @@ COMMON_NS::AbstractObject* EpcDocument::getResqml2_0_1WrapperFromGsoapContext(co
 	return wrapper;
 }
 
+COMMON_NS::AbstractObject* EpcDocument::getResqml2_2WrapperFromGsoapContext(const std::string & resqmlContentType)
+{
+	COMMON_NS::AbstractObject* wrapper = nullptr;
+
+	if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DiscreteColorMap)
+
+	return wrapper;
+}
+
 COMMON_NS::AbstractObject* EpcDocument::getWitsml2_0WrapperFromGsoapContext(const std::string & datatype)
 {
 	COMMON_NS::AbstractObject* wrapper = nullptr;
@@ -1079,7 +1135,7 @@ COMMON_NS::AbstractObject* EpcDocument::getWitsml2_0WrapperFromGsoapContext(cons
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, WellboreCompletion, gsoap_eml2_1)
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Trajectory, gsoap_eml2_1)
 
-		return wrapper;
+	return wrapper;
 }
 
 COMMON_NS::AbstractObject* EpcDocument::getWitsml2_1WrapperFromGsoapContext(const std::string & datatype)
@@ -2764,7 +2820,14 @@ WITSML2_0_NS::Trajectory* EpcDocument::createTrajectory(WITSML2_0_NS::Wellbore* 
 
 COMMON_NS::GraphicalInformationSet* EpcDocument::createGraphicalInformationSet(const std::string & guid, const std::string & title)
 {
-	common::GraphicalInformationSet* result = new common::GraphicalInformationSet(getGsoapContext(), guid, title);
+	COMMON_NS::GraphicalInformationSet* result = new common::GraphicalInformationSet(getGsoapContext(), guid, title);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+RESQML2_2_NS::DiscreteColorMap* EpcDocument::createDiscreteColorMap(const std::string & guid, const std::string & title)
+{
+	RESQML2_2_NS::DiscreteColorMap* result = new RESQML2_2_NS::DiscreteColorMap(getGsoapContext(), guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }

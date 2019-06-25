@@ -20,14 +20,15 @@ under the License.
 
 #include "common/AbstractObject.h"
 
-namespace common
+namespace COMMON_NS
 {
-	class GraphicalInformationSet : public common::AbstractObject
+	class GraphicalInformationSet : public AbstractObject
 	{
 	private:
-		gsoap_eml2_2::resqml2__DefaultGraphicalInformation* getDefaultGraphicalInformationForAllIndexableElements(common::AbstractObject* targetObject) const;
-		gsoap_eml2_2::resqml2__GraphicalInformationForWholeObject* getDefaultGraphicalInformation(common::AbstractObject* targetObject) const;
-		gsoap_eml2_2::resqml2__HsvColor* getDefaultColor(common::AbstractObject* targetObject) const;
+		gsoap_eml2_2::resqml2__DefaultGraphicalInformation* getDefaultGraphicalInformationForAllIndexableElements(AbstractObject* targetObject) const;
+		gsoap_eml2_2::resqml2__GraphicalInformationForWholeObject* getDefaultGraphicalInformation(AbstractObject* targetObject) const;
+		gsoap_eml2_2::resqml2__HsvColor* getDefaultColor(AbstractObject* targetObject) const;
+		gsoap_eml2_2::resqml2__ColorInformation* getColorInformation(AbstractObject* targetObject) const;
 
 	public:
 		/**
@@ -41,7 +42,7 @@ namespace common
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		GraphicalInformationSet(gsoap_eml2_2::_eml22__GraphicalInformationSet* fromGsoap) :
-			common::AbstractObject(fromGsoap) {}
+			AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -49,46 +50,166 @@ namespace common
 		~GraphicalInformationSet() {}
 
 		/**
-		* @return	Get the size of the GraphicalInformationSet.
+		* @return	the size of the GraphicalInformationSet.
 		*/
 		DLL_IMPORT_OR_EXPORT unsigned int getGraphicalInformationSetCount() const;
 
 		/**
-		* @return	Get the data objet reference of the object which receives some graphical information at a particular index of the GraphicalInformationSet.
+		* @return	the data objet reference of the object which receives some graphical information at a particular index of the GraphicalInformationSet.
 		*/
 		gsoap_eml2_2::eml22__DataObjectReference* getTargetObjectDor(unsigned int index) const;
 
 		/**
-		* @return	Get the Uuid of the object which receives some graphical information at a particular index of the GraphicalInformationSet.
+		* @return	the Uuid of the object which receives some graphical information at a particular index of the GraphicalInformationSet.
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getTargetObjectUuid(unsigned int index) const;
 
 		/**
-		* Get the object which receives some graphical information at a particular index of the GraphicalInformationSet
+		* @return	the object which receives some graphical information at a particular index of the GraphicalInformationSet
 		*/
-		DLL_IMPORT_OR_EXPORT common::AbstractObject* getTargetObject(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractObject* getTargetObject(unsigned int index) const;
 
 		/**
-		* @param targetObject	The object whiwh we want tot est for its presency in the Graphical Information Set
-		* @return true if the Graphical Information Set has graphical information about the target object.
+		* @param targetObject	the object whiwh we want to test for its presency in the Graphical Information Set
+		* @return				true if the Graphical Information Set has graphical information about the target object.
 		*/
-		DLL_IMPORT_OR_EXPORT bool hasGraphicalInformation(const common::AbstractObject* targetObject) const;
+		DLL_IMPORT_OR_EXPORT bool hasGraphicalInformation(const AbstractObject* targetObject) const;
 
-		DLL_IMPORT_OR_EXPORT bool hasDefaultColor(common::AbstractObject* targetObject) const;
-		DLL_IMPORT_OR_EXPORT double getDefaultHue(common::AbstractObject* targetObject) const;
-		DLL_IMPORT_OR_EXPORT double getDefaultSaturation(common::AbstractObject* targetObject) const;
-		DLL_IMPORT_OR_EXPORT double getDefaultValue(common::AbstractObject* targetObject) const;
-		DLL_IMPORT_OR_EXPORT double getDefaultAlpha(common::AbstractObject* targetObject) const;
+		DLL_IMPORT_OR_EXPORT bool hasDefaultColor(AbstractObject* targetObject) const;
+
+		/**
+		 * @param targetObject	the object which carry the default color
+		 * @return				hue in the range [0, 360]
+		 */
+		DLL_IMPORT_OR_EXPORT double getDefaultHue(AbstractObject* targetObject) const;
+		
+		/**
+		 * @param targetObject	the object which carry the default color
+		 * @return				saturation in the range [0, 1]
+		 */
+		DLL_IMPORT_OR_EXPORT double getDefaultSaturation(AbstractObject* targetObject) const;
+		
+		/**
+		 * @param targetObject	the object which carry the default color
+		 * @return				value in the range [0, 1]
+		 */
+		DLL_IMPORT_OR_EXPORT double getDefaultValue(AbstractObject* targetObject) const;
+
+		/**
+		 * @param targetObject	the object which carry the default color
+		 * @return				alpha in the range [0, 1] (0 means transparent and 1 means opaque)
+		 */
+		DLL_IMPORT_OR_EXPORT double getDefaultAlpha(AbstractObject* targetObject) const;
+
+		/**
+		 * @param targetObject	the object which carry the default color
+		 * @param red			(output parameter) red value in the range [0, 1]
+		 * @param green			(output parameter) green value in the range [0, 1]
+		 * @param blue			(output parameter) blue value in the range [0, 1]
+		 */
+		DLL_IMPORT_OR_EXPORT void getDefaultRgbColor(AbstractObject* targetObject, double & red, double & green, double & blue) const;
+
+		/**
+		 * @param targetObject	the object which carry the default color
+		 * @param red			(output parameter) red value in the range [0, 255]
+		 * @param green			(output parameter) green value in the range [0, 255]
+		 * @param blue			(output parameter) blue value in the range [0, 255]
+		 */
+		DLL_IMPORT_OR_EXPORT void getDefaultRgbColor(AbstractObject* targetObject, unsigned int & red, unsigned int & green, unsigned int & blue) const;
+
+		DLL_IMPORT_OR_EXPORT bool hasDefaultColorTitle(AbstractObject* targetObject) const;
+		DLL_IMPORT_OR_EXPORT std::string getDefaultColorTitle(AbstractObject* targetObject) const;
 
 		/**
 		* https://en.wikipedia.org/wiki/HSV_color_space
-		* @param targetObject	The object which receives the color
+		* @param targetObject	the object which receives the color
 		* @param hue			angle in degrees in the range [0, 360]
 		* @param saturation		numeric value in the range [0, 1]
 		* @param value			numeric value in the range [0, 1]
-		* @param alpha			numeric value in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque).
+		* @param alpha			numeric value in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). Default value is 1.
+		* @param colorTitle		title for the given color. It is not set if title is empty
 		*/
-		DLL_IMPORT_OR_EXPORT void setDefaultHsvColor(common::AbstractObject* targetObject, double hue, double saturation, double value, double alpha = 1.0);
+		DLL_IMPORT_OR_EXPORT void setDefaultHsvColor(AbstractObject* targetObject, double hue, double saturation, double value, double alpha = 1.0, std::string colorTitle = "");
+
+		/**
+		* https://en.wikipedia.org/wiki/RGB_color_space
+		* @param targetObject	The object which receives the color
+		* @param red			numeric value in the range [0, 1]
+		* @param green			numeric value in the range [0, 1]
+		* @param blue			numeric value in the range [0, 1]
+		* @param alpha			numeric value in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). Default value is 1.
+		* @param colorTitle		title for the given color. It is not set if title is empty
+		*/
+		DLL_IMPORT_OR_EXPORT void setDefaultRgbColor(AbstractObject* targetObject, double red, double green, double blue, double alpha = 1.0, std::string colorTitle = "");
+
+		/**
+		* https://en.wikipedia.org/wiki/RGB_color_space
+		* @param targetObject	The object which receives the color
+		* @param red			numeric value in the range [0, 255]
+		* @param green			numeric value in the range [0, 255]
+		* @param blue			numeric value in the range [0, 255]
+		* @param alpha			numeric value in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). Default value is 1.
+		* @param colorTitle		title for the given color. It is not set if title is empty
+		*/
+		DLL_IMPORT_OR_EXPORT void setDefaultRgbColor(AbstractObject* targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha = 1.0, std::string colorTitle = "");
+
+		DLL_IMPORT_OR_EXPORT bool hasDiscreteColorMap(AbstractObject* targetObject) const;
+
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::eml22__DataObjectReference* getDiscreteColorMapDor(AbstractObject* targetObject) const;
+		DLL_IMPORT_OR_EXPORT std::string getDiscreteColorMapUuid(AbstractObject* targetObject) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::DiscreteColorMap* getDiscreteColorMap(AbstractObject* targetObject) const;
+
+		DLL_IMPORT_OR_EXPORT double getColorMapMinIndex(AbstractObject* targetObject) const;
+		DLL_IMPORT_OR_EXPORT double getColorMapMaxIndex(AbstractObject* targetObject) const;
+
+		DLL_IMPORT_OR_EXPORT void setDiscreteColorMap(AbstractObject* targetObject, RESQML2_2_NS::DiscreteColorMap* discreteColorMap, bool useReverseMapping = false);
+
+		/**
+		 * https://en.wikipedia.org/wiki/HSL_and_HSV#From_RGB
+		 * note: no range check is done on parameters
+		 * @param red			numeric value in the range [0, 1]
+		 * @param green			numeric value in the range [0, 1]
+		 * @param blue			numeric value in the range [0, 1]
+		 * @param hue			(output parameter) angle in degrees in the range [0, 360]
+		 * @param saturation	(output parameter) numeric value in the range [0, 1]
+		 * @param value			(output parameter) numeric value in the range [0, 1]
+		 */
+		DLL_IMPORT_OR_EXPORT static void rgbToHsv(double red, double green, double blue, double & hue, double & saturation, double & value);
+		
+		/**
+		 * note: no range check is done on parameters
+		 * @param red			numeric value in the range [0, 255]
+		 * @param green			numeric value in the range [0, 255]
+		 * @param blue			numeric value in the range [0, 255]
+		 * @param hue			(output parameter) angle in degrees in the range [0, 360]
+		 * @param saturation	(output parameter) numeric value in the range [0, 1]
+		 * @param value			(output parameter) numeric value in the range [0, 1]
+		 */
+		DLL_IMPORT_OR_EXPORT static void rgbToHsv(unsigned int red, unsigned int green, unsigned int blue, double & hue, double & saturation, double & value);
+		
+		/**
+		 * https://en.wikipedia.org/wiki/HSL_and_HSV#HSV_to_RGB
+		 * note: no range check is done on parameters
+		 * @param hue			angle in degrees in the range [0, 360]
+		 * @param saturation	numeric value in the range [0, 1]
+		 * @param value			numeric value in the range [0, 1]
+		 * @param red			(output parameter) numeric value in the range [0, 1]
+		 * @param green			(output parameter) numeric value in the range [0, 1]
+		 * @param blue			(output parameter) numeric value in the range [0, 1]
+		 */
+		DLL_IMPORT_OR_EXPORT static void hsvToRgb(double hue, double saturation, double value, double & red, double & green, double & blue);
+		
+		/**
+		 * https://stackoverflow.com/questions/1914115/converting-color-value-from-float-0-1-to-byte-0-255
+		 * note: no range check is done on parameters
+		 * @param hue			angle in degrees in the range [0, 360]
+		 * @param saturation	numeric value in the range [0, 1]
+		 * @param value			numeric value in the range [0, 1]
+		 * @param red			(output parameter) numeric value in the range [0, 255]
+		 * @param green			(output parameter) numeric value in the range [0, 255]
+		 * @param blue			(output parameter) numeric value in the range [0, 255]
+		 */
+		DLL_IMPORT_OR_EXPORT static void hsvToRgb(double hue, double saturation, double value, unsigned int & red, unsigned int & green, unsigned int & blue);
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const { return XML_TAG; }
@@ -98,7 +219,7 @@ namespace common
 
 	protected:
 
-		void resolveTargetRelationships(common::EpcDocument* epcDoc) {}
+		void resolveTargetRelationships(EpcDocument* epcDoc) {}
 
 		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllSourceRelationships() const;
 		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllTargetRelationships() const;
