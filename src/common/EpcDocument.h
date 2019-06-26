@@ -132,6 +132,7 @@ namespace RESQML2_0_1_NS
 namespace RESQML2_2_NS
 {
 	class DiscreteColorMap;
+	class ContinuousColorMap;
 }
 
 namespace WITSML2_1_NS
@@ -1252,6 +1253,9 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::DiscreteColorMap* createDiscreteColorMap(const std::string & guid, const std::string & title);
+
+		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::ContinuousColorMap* createContinuousColorMap(const std::string & guid, const std::string & title,
+			gsoap_eml2_2::resqml2__InterpolationDomain interpolationDomain, gsoap_eml2_2::resqml2__InterpolationMethod interpolationMethod);
 
 		//************************************
 		//************* WARNINGS *************

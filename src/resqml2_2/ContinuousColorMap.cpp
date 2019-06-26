@@ -34,7 +34,7 @@ ContinuousColorMap::ContinuousColorMap(soap* soapContext, const string& guid, co
 	if (soapContext == nullptr)
 		throw invalid_argument("The soap context cannot be null.");
 
-	gsoapProxy2_2 = gsoap_eml2_2::soap_new_resqml2__ContinuousColorMap(soapContext, 1);
+	gsoapProxy2_2 = soap_new_resqml2__ContinuousColorMap(soapContext, 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -54,7 +54,7 @@ void ContinuousColorMap::setHsvColors(unsigned int colorCount,
 	resqml2__ContinuousColorMap* const continuousColorMap = static_cast<resqml2__ContinuousColorMap*>(gsoapProxy2_2);
 
 	for (size_t colorIndex = 0; colorIndex < colorCount; ++colorIndex) {
-		if (hsvColors[3 * colorIndex] < 0 || hsvColors[3 * colorIndex] >= 360) {
+		if (hsvColors[3 * colorIndex] < 0 || hsvColors[3 * colorIndex] > 360) {
 			throw invalid_argument("hue must be in range [0, 360]");
 		}
 
@@ -72,14 +72,14 @@ void ContinuousColorMap::setHsvColors(unsigned int colorCount,
 
 		resqml2__ContinuousColorMapEntry* continuousColorMapEntry = soap_new_resqml2__ContinuousColorMapEntry(gsoapProxy2_2->soap, 1);
 		indices != nullptr ? continuousColorMapEntry->Index = indices[colorIndex] : continuousColorMapEntry->Index = colorIndex;
-		gsoap_eml2_2::resqml2__HsvColor* color = gsoap_eml2_2::soap_new_resqml2__HsvColor(gsoapProxy2_2->soap, 1);
+		resqml2__HsvColor* color = soap_new_resqml2__HsvColor(gsoapProxy2_2->soap, 1);
 		color->Hue = hsvColors[3 * colorIndex];
 		color->Saturation = hsvColors[3 * colorIndex + 1];
 		color->Value = hsvColors[3 * colorIndex + 2];
 		color->Alpha = alphas != nullptr ? alphas[colorIndex] : 1.0;
 
 		if (colorTitles != nullptr) {
-			color->Title = gsoap_eml2_2::soap_new_std__string(gsoapProxy2_2->soap, 1);
+			color->Title = soap_new_std__string(gsoapProxy2_2->soap, 1);
 			*color->Title = colorTitles[colorIndex];
 		}
 
@@ -88,167 +88,125 @@ void ContinuousColorMap::setHsvColors(unsigned int colorCount,
 	}
 }
 
-void ContinuousColorMap::setRgbColors(unsigned int colorCount,
-	double const* rgbColors, double const* alphas, string const* colorTitles,
-	double const* indices)
-{
-	double* hsvColors = new double[((int)colorCount) * 3];
-	for (size_t colorIndex = 0; colorIndex < colorCount; ++colorIndex) {
-		if (rgbColors[3 * colorIndex] < 0 || rgbColors[3 * colorIndex] > 1) {
-			throw invalid_argument("red must be in range [0, 1]");
-		}
-
-		if (rgbColors[3 * colorIndex + 1] < 0 || rgbColors[3 * colorIndex + 1] > 1) {
-			throw invalid_argument("green must be in range [0, 1]");
-		}
-
-		if (rgbColors[3 * colorIndex + 2] < 0 || rgbColors[3 * colorIndex + 2] > 1) {
-			throw invalid_argument("blue must be in range [0, 1]");
-		}
-
-		GraphicalInformationSet::rgbToHsv(rgbColors[3 * colorIndex], rgbColors[3 * colorIndex + 1], rgbColors[3 * colorIndex + 2],
-			hsvColors[3 * colorIndex], hsvColors[3 * colorIndex + 1], hsvColors[3 * colorIndex + 2]);
-	}
-
-	setHsvColors(colorCount, hsvColors, alphas, colorTitles, indices);
-
-	delete[] hsvColors;
-}
-
-void ContinuousColorMap::setRgbColors(unsigned int colorCount,
-	unsigned int const* rgbColors, double const* alphas, string const* colorTitles,
-	double const* indices)
-{
-	double* hsvColors = new double[((int)colorCount) * 3];
-	for (size_t colorIndex = 0; colorIndex < colorCount; ++colorIndex) {
-		if (rgbColors[3 * colorIndex] < 0 || rgbColors[3 * colorIndex] > 255) {
-			throw invalid_argument("red must be in range [0, 1]");
-		}
-
-		if (rgbColors[3 * colorIndex + 1] < 0 || rgbColors[3 * colorIndex + 1] > 255) {
-			throw invalid_argument("green must be in range [0, 1]");
-		}
-
-		if (rgbColors[3 * colorIndex + 2] < 0 || rgbColors[3 * colorIndex + 2] > 255) {
-			throw invalid_argument("blue must be in range [0, 1]");
-		}
-
-		// TODO to test
-		GraphicalInformationSet::rgbToHsv(rgbColors[3 * colorIndex], rgbColors[3 * colorIndex + 1], rgbColors[3 * colorIndex + 2],
-			hsvColors[3 * colorIndex], hsvColors[3 * colorIndex + 1], hsvColors[3 * colorIndex + 2]);
-	}
-
-	setHsvColors(colorCount, hsvColors, alphas, colorTitles, indices);
-
-	delete[] hsvColors;
-}
-
 unsigned int ContinuousColorMap::getColorCount() const
 {
 	resqml2__ContinuousColorMap const* const continuousColorMap = static_cast<resqml2__ContinuousColorMap*>(gsoapProxy2_2);
 	return continuousColorMap->Entry.size();
 }
 
-double ContinuousColorMap::getHue(double colorIndex) const
+resqml2__InterpolationDomain ContinuousColorMap::getInterpolationDomain()
 {
-	resqml2__HsvColor const* const color = getColor(colorIndex);
-	if (color == nullptr) {
-		throw invalid_argument("There is no such color index");
-	}
-	
-	return color->Hue;
+	resqml2__ContinuousColorMap const* const continuousColorMap = static_cast<resqml2__ContinuousColorMap*>(gsoapProxy2_2);
+	return continuousColorMap->InterpolationDomain;
 }
 
-double ContinuousColorMap::getSaturation(double colorIndex) const
+std::string ContinuousColorMap::getInterpolationDomainAsString()
 {
-	resqml2__HsvColor const* const color = getColor(colorIndex);
-	if (color == nullptr) {
-		throw invalid_argument("There is no such color index");
-	}
-	return color->Saturation;
+	return soap_resqml2__InterpolationDomain2s(gsoapProxy2_2->soap, getInterpolationDomain());
 }
 
-double ContinuousColorMap::getValue(double colorIndex) const
+resqml2__InterpolationMethod ContinuousColorMap::getInterpolationMethod()
 {
-	resqml2__HsvColor const* const color = getColor(colorIndex);
-	if (color == nullptr) {
-		throw invalid_argument("There is no such color index");
-	}
-
-	return color->Value;
+	resqml2__ContinuousColorMap const* const continuousColorMap = static_cast<resqml2__ContinuousColorMap*>(gsoapProxy2_2);
+	return continuousColorMap->InterpolationMethod;
 }
 
-double ContinuousColorMap::getAlpha(double colorIndex) const
+std::string ContinuousColorMap::getInterpolationMethodAsString()
 {
-	resqml2__HsvColor const* const color = getColor(colorIndex);
-	if (color == nullptr) {
-		throw invalid_argument("There is no such color index");
+	return soap_resqml2__InterpolationMethod2s(gsoapProxy2_2->soap, getInterpolationMethod());
+}
+
+void ContinuousColorMap::setNanHsvColor(double hue, double saturation, double value, double alpha, std::string colorTitle)
+{
+	if (hue < 0 || hue > 360) {
+		throw invalid_argument("hue must be in range [0, 360]");
 	}
 
-	return color->Alpha;
-}
-
-void ContinuousColorMap::getRgbColor(double colorIndex, double& red, double& green, double& blue) const
-{
-	GraphicalInformationSet::hsvToRgb(getHue(colorIndex), getSaturation(colorIndex), getValue(colorIndex), red, green, blue);
-}
-
-void ContinuousColorMap::getRgbColor(double colorIndex, unsigned int& red, unsigned int& green, unsigned int& blue) const
-{
-	GraphicalInformationSet::hsvToRgb(getHue(colorIndex), getSaturation(colorIndex), getValue(colorIndex), red, green, blue);
-}
-
-bool ContinuousColorMap::hasColorTitle(double colorIndex) const
-{
-	resqml2__HsvColor const* const color = getColor(colorIndex);
-	if (color == nullptr) {
-		throw invalid_argument("There is no such color index");
-	}
-	
-	return color->Title != nullptr;
-}
-std::string ContinuousColorMap::getColorTitle(double colorIndex) const
-{
-	resqml2__HsvColor const* const color = getColor(colorIndex);
-	if (color == nullptr) {
-		throw invalid_argument("There is no such color index");
+	if (saturation < 0 || saturation > 1) {
+		throw invalid_argument("saturation must be in range [0, 1]");
 	}
 
-	if (!hasColorTitle(colorIndex)) {
-		throw invalid_argument("This color as no title");
+	if (value < 0 || value > 1) {
+		throw invalid_argument("value must be in range [0, 1]");
 	}
 
-	return *color->Title;
-}
-
-vector<Relationship> ContinuousColorMap::getAllSourceRelationships() const
-{
-	vector<Relationship> result;
-
-	for (size_t i = 0; i < graphicalInformationSetSet.size(); ++i) {
-		Relationship rel(graphicalInformationSetSet[i]->getPartNameInEpcDocument(), "", graphicalInformationSetSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
+	if (alpha < 0 || alpha > 1) {
+		throw invalid_argument("alpha must be in range [0, 1]");
 	}
 
-	return result;
+	resqml2__ContinuousColorMap * const continuousColorMap = static_cast<resqml2__ContinuousColorMap*>(gsoapProxy2_2);
+
+	if (continuousColorMap->NaNColor == nullptr) {
+		continuousColorMap->NaNColor = soap_new_resqml2__HsvColor(gsoapProxy2_2->soap, 1);
+	}
+
+	continuousColorMap->NaNColor->Hue = hue;
+	continuousColorMap->NaNColor->Saturation = saturation;
+	continuousColorMap->NaNColor->Value = value;
+	continuousColorMap->NaNColor->Alpha = alpha;
+	if (colorTitle != "") {
+		continuousColorMap->NaNColor->Title = soap_new_std__string(gsoapProxy2_2->soap, 1);
+		*continuousColorMap->NaNColor->Title = colorTitle;
+	}
 }
 
-vector<Relationship> ContinuousColorMap::getAllTargetRelationships() const
+void ContinuousColorMap::setNanRgbColor(double red, double green, double blue, double alpha, std::string colorTitle)
 {
-	vector<Relationship> result;
-	return result;
+	if (red < 0 || red > 1) {
+		throw invalid_argument("red must be in range [0, 1]");
+	}
+
+	if (green < 0 || green > 1) {
+		throw invalid_argument("green must be in range [0, 1]");
+	}
+
+	if (blue < 0 || blue > 1) {
+		throw invalid_argument("blue must be in range [0, 1]");
+	}
+
+	if (alpha < 0 || alpha > 1) {
+		throw invalid_argument("alpha must be in range [0, 1]");
+	}
+
+	double hue, saturation, value;
+	GraphicalInformationSet::rgbToHsv(red, green, blue, hue, saturation, value);
+
+	setNanHsvColor(hue, saturation, value, alpha, colorTitle);
+}
+
+void ContinuousColorMap::setNanRgbColor(unsigned int red, unsigned int green, unsigned int blue, double alpha, std::string colorTitle)
+{
+	if (red < 0 || red > 255) {
+		throw invalid_argument("red must be in range [0, 255]");
+	}
+
+	if (green < 0 || green > 255) {
+		throw invalid_argument("green must be in range [0, 255]");
+	}
+
+	if (blue < 0 || blue > 255) {
+		throw invalid_argument("blue must be in range [0, 255]");
+	}
+
+	if (alpha < 0 || alpha > 255) {
+		throw invalid_argument("alpha must be in range [0, 255]");
+	}
+
+	double hue, saturation, value;
+	GraphicalInformationSet::rgbToHsv(red, green, blue, hue, saturation, value);
+
+	setNanHsvColor(hue, saturation, value, alpha, colorTitle);
 }
 
 void ContinuousColorMap::computeMinMax(LONG64& min, LONG64& max) const
 {
-	resqml2__DiscreteColorMap* discreteColorMap = static_cast<resqml2__DiscreteColorMap*>(gsoapProxy2_2);
+	resqml2__ContinuousColorMap* continuousColorMap = static_cast<resqml2__ContinuousColorMap*>(gsoapProxy2_2);
 
-	min = discreteColorMap->Entry[0]->index;
+	min = continuousColorMap->Entry[0]->Index;
 	max = min;
 
-	for (size_t colorIndex = 1; colorIndex < discreteColorMap->Entry.size(); ++colorIndex) {
-		const LONG64 index = discreteColorMap->Entry[colorIndex]->index;
+	for (size_t colorIndex = 1; colorIndex < continuousColorMap->Entry.size(); ++colorIndex) {
+		const LONG64 index = continuousColorMap->Entry[colorIndex]->Index;
 		if (index < min) {
 			min = index;
 		}

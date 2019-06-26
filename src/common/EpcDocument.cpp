@@ -104,6 +104,7 @@ under the License.
 #include "resqml2_0_1/DiscretePropertySeries.h"
 
 #include "resqml2_2/DiscreteColorMap.h"
+#include "resqml2_2/ContinuousColorMap.h"
 
 #include "witsml2_0/Well.h"
 
@@ -2818,16 +2819,24 @@ WITSML2_0_NS::Trajectory* EpcDocument::createTrajectory(WITSML2_0_NS::Wellbore* 
 	return result;
 }
 
-COMMON_NS::GraphicalInformationSet* EpcDocument::createGraphicalInformationSet(const std::string & guid, const std::string & title)
+GraphicalInformationSet* EpcDocument::createGraphicalInformationSet(const std::string & guid, const std::string & title)
 {
-	COMMON_NS::GraphicalInformationSet* result = new common::GraphicalInformationSet(getGsoapContext(), guid, title);
+	GraphicalInformationSet* result = new common::GraphicalInformationSet(getGsoapContext(), guid, title);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }
 
-RESQML2_2_NS::DiscreteColorMap* EpcDocument::createDiscreteColorMap(const std::string & guid, const std::string & title)
+DiscreteColorMap* EpcDocument::createDiscreteColorMap(const std::string & guid, const std::string & title)
 {
-	RESQML2_2_NS::DiscreteColorMap* result = new RESQML2_2_NS::DiscreteColorMap(getGsoapContext(), guid, title);
+	DiscreteColorMap* result = new RESQML2_2_NS::DiscreteColorMap(getGsoapContext(), guid, title);
+	addFesapiWrapperAndDeleteItIfException(result);
+	return result;
+}
+
+ContinuousColorMap* EpcDocument::createContinuousColorMap(const std::string& guid, const std::string& title,
+	gsoap_eml2_2::resqml2__InterpolationDomain interpolationDomain, gsoap_eml2_2::resqml2__InterpolationMethod interpolationMethod)
+{
+	ContinuousColorMap* result = new RESQML2_2_NS::ContinuousColorMap(getGsoapContext(), guid, title, interpolationDomain, interpolationMethod);
 	addFesapiWrapperAndDeleteItIfException(result);
 	return result;
 }

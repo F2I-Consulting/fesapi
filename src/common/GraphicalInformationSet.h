@@ -154,15 +154,22 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void setDefaultRgbColor(AbstractObject* targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha = 1.0, std::string colorTitle = "");
 
 		DLL_IMPORT_OR_EXPORT bool hasDiscreteColorMap(AbstractObject* targetObject) const;
-
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::eml22__DataObjectReference* getDiscreteColorMapDor(AbstractObject* targetObject) const;
 		DLL_IMPORT_OR_EXPORT std::string getDiscreteColorMapUuid(AbstractObject* targetObject) const;
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::DiscreteColorMap* getDiscreteColorMap(AbstractObject* targetObject) const;
+		DLL_IMPORT_OR_EXPORT void setDiscreteColorMap(AbstractObject* targetObject, RESQML2_2_NS::DiscreteColorMap* discreteColorMap,  
+			const LONG64 & valueVectorIndex = 0, bool useReverseMapping = false, bool useLogarithmicMapping = false);
 
+		DLL_IMPORT_OR_EXPORT bool hasContinuousColorMap(AbstractObject* targetObject) const;
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::eml22__DataObjectReference* getContinuousColorMapDor(AbstractObject* targetObject) const;
+		DLL_IMPORT_OR_EXPORT std::string getContinuousColorMapUuid(AbstractObject* targetObject) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::ContinuousColorMap* getContinuousColorMap(AbstractObject* targetObject) const;
+		DLL_IMPORT_OR_EXPORT void setContinuousColorMap(AbstractObject* targetObject, RESQML2_2_NS::ContinuousColorMap* continuousColorMap, 
+			const LONG64& valueVectorIndex = 0, bool useReverseMapping = false, bool useLogarithmicMapping = false);
+		
 		DLL_IMPORT_OR_EXPORT double getColorMapMinIndex(AbstractObject* targetObject) const;
 		DLL_IMPORT_OR_EXPORT double getColorMapMaxIndex(AbstractObject* targetObject) const;
 
-		DLL_IMPORT_OR_EXPORT void setDiscreteColorMap(AbstractObject* targetObject, RESQML2_2_NS::DiscreteColorMap* discreteColorMap, bool useReverseMapping = false);
 
 		/**
 		 * https://en.wikipedia.org/wiki/HSL_and_HSV#From_RGB

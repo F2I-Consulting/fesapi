@@ -92,6 +92,7 @@ under the License.
 #include "resqml2_0_1/ActivityTemplate.h"
 
 #include "resqml2_2/DiscreteColorMap.h"
+#include "resqml2_2/ContinuousColorMap.h"
 
 #include "witsml2_0/Well.h"
 
@@ -124,6 +125,7 @@ WellboreInterpretation* wellbore1Interp1 = nullptr;
 StratigraphicColumnRankInterpretation* stratiColumnRank0 = nullptr;
 SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = nullptr;
 DiscreteProperty* discreteProp1 = nullptr;
+ContinuousProperty* contColMapContProp = nullptr;
 
 WITSML2_0_NS::Well* witsmlWell = nullptr;
 WITSML2_0_NS::Wellbore* witsmlWellbore = nullptr;
@@ -208,9 +210,13 @@ void serializePerforations(COMMON_NS::EpcDocument * pck)
 	wellboreCompletion->setPerforationHistoryStartDate(1, 1, 1514764800);
 }
 
-void serializeGraphicalInformationSet(COMMON_NS::EpcDocument * pck)
+void serializeGraphicalInformationSet(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
 	COMMON_NS::GraphicalInformationSet* graphicalInformationSet = pck->createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
+
+	// *************
+	// Default color
+	// *************
 
 	// fault1 representation is blue
 	graphicalInformationSet->setDefaultHsvColor(fault1, 240., 1., 1., 1., "blue");
@@ -230,12 +236,44 @@ void serializeGraphicalInformationSet(COMMON_NS::EpcDocument * pck)
 	graphicalInformationSet->setDefaultHsvColor(h2i1triRep, 120., 1., 1., 1., "green");
 	graphicalInformationSet->setDefaultHsvColor(h1i1SingleGrid2dRep, 120., 1., 1., 1., "green");
 
-	RESQML2_2_NS::DiscreteColorMap* discreteColorMap = pck->createDiscreteColorMap("3daf4661-ae8f-4357-adee-0b0159bdd0a9", "Discrete color map 1");
+	// ******************
+	// Discrete color map
+	// ******************
+
+	RESQML2_2_NS::DiscreteColorMap* discrColMap = pck->createDiscreteColorMap("3daf4661-ae8f-4357-adee-0b0159bdd0a9", "Discrete color map 1");
 	unsigned int rgbColors[6] = { 255, 0, 0, 0, 0, 255 };
 	double alphas[2] = { 1., 1. };
 	std::string titles[2] = { "red", "blue" };
-	discreteColorMap->setRgbColors(2, rgbColors, alphas, titles);
-	graphicalInformationSet->setDiscreteColorMap(discreteProp1, discreteColorMap);
+	discrColMap->setRgbColors(2, rgbColors, alphas, titles);
+	graphicalInformationSet->setDiscreteColorMap(discreteProp1, discrColMap);
+
+	// ********************
+	// Continuous color map
+	// ********************
+
+	Horizon* contColMapHrz = pck->createHorizon("b9ec6ec9-2766-4af7-889e-5565b5fa5022", "Horizon for continuous color map");
+	HorizonInterpretation* contColMapHrzInterp = pck->createHorizonInterpretation(contColMapHrz, "34b69c81-6cfa-4531-be5b-f6bd9b74802f", "Horizon interpretation for continuous color map");
+	Grid2dRepresentation* contColMapGrid2dRep = pck->createGrid2dRepresentation(contColMapHrzInterp, local3dCrs, "", "100x10 grid 2d for continuous color map");
+	const unsigned int numPointInFastestDirection = 50;
+	const unsigned int numPointsInSlowestDirection = 100;
+	contColMapGrid2dRep->setGeometryAsArray2dOfLatticePoints3d(numPointInFastestDirection, numPointsInSlowestDirection, 0., 0., 0., 1., 1., 0., 1., 1., 0., 1., 1.);
+
+	contColMapContProp = pck->createContinuousProperty(contColMapGrid2dRep, "c2be50b6-08d2-461b-81a4-73dbb04ba605", "Continuous property for continuous color map", 2,
+		gsoap_resqml2_0_1::resqml2__IndexableElements__nodes, "continuousColorMapIndex", gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__continuous);
+	double* values = new double[numPointInFastestDirection * numPointsInSlowestDirection];
+	for (size_t slowestIndex = 0; slowestIndex < numPointsInSlowestDirection; ++slowestIndex) {
+		for (size_t fastestIndex = 0; fastestIndex < numPointInFastestDirection; ++fastestIndex) {
+			values[fastestIndex + slowestIndex * numPointInFastestDirection] = fastestIndex * (1. / (numPointInFastestDirection - 1));
+		}
+	}
+	contColMapContProp->pushBackDoubleHdf5Array2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
+	delete[] values;
+
+	RESQML2_2_NS::ContinuousColorMap* contColMap = pck->createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", gsoap_eml2_2::resqml2__InterpolationDomain__rgb, gsoap_eml2_2::resqml2__InterpolationMethod__linear);
+	unsigned int contColMapRgbColors[6] = {0, 255, 0, 255, 0, 0 };
+	std::string contColMapColTitles[2] = { "green", "red" };
+	contColMap->setRgbColors(2, contColMapRgbColors, alphas, titles);
+	graphicalInformationSet->setContinuousColorMap(contColMapContProp, contColMap);
 }
 
 void serializeStratigraphicModel(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
@@ -1774,7 +1812,7 @@ bool serialize(const string & filePath)
 	serializeRepresentationSetRepresentation(&pck, hdfProxy);
 	serializeFluidBoundary(pck, hdfProxy);
 	serializeRockFluidOrganization(pck, hdfProxy);
-	serializeGraphicalInformationSet(&pck);
+	serializeGraphicalInformationSet(&pck, hdfProxy);
 
 	// Add an extended core property before to serialize
 	pck.setExtendedCoreProperty("F2I-ExtendedCoreProp", "TestingVersion");

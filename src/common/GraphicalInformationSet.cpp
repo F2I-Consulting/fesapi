@@ -23,7 +23,9 @@ under the License.
 #include "resqml2/AbstractFeatureInterpretation.h"
 #include "resqml2/AbstractRepresentation.h"
 #include "resqml2_0_1/WellboreMarker.h"
+#include "resqml2_2/AbstractColorMap.h"
 #include "resqml2_2/DiscreteColorMap.h"
+#include "resqml2_2/ContinuousColorMap.h"
 
 #include <stdexcept>
 
@@ -392,13 +394,13 @@ void GraphicalInformationSet::setDefaultRgbColor(AbstractObject* targetObject, u
 
 bool GraphicalInformationSet::hasDiscreteColorMap(AbstractObject* targetObject) const
 {
-	resqml2__ColorInformation* colorInformation = getColorInformation(targetObject);
+	resqml2__ColorInformation const * const colorInformation = getColorInformation(targetObject);
 	return colorInformation != nullptr && colorInformation->DiscreteColorMap != nullptr;
 }
 
 gsoap_eml2_2::eml22__DataObjectReference* GraphicalInformationSet::getDiscreteColorMapDor(AbstractObject* targetObject) const
 {
-	resqml2__ColorInformation* colorInformation = getColorInformation(targetObject);
+	resqml2__ColorInformation const * const colorInformation = getColorInformation(targetObject);
 
 	if (colorInformation == nullptr || colorInformation->DiscreteColorMap == nullptr) {
 		throw invalid_argument("This object has no discrete color map");
@@ -415,6 +417,103 @@ std::string GraphicalInformationSet::getDiscreteColorMapUuid(AbstractObject* tar
 DiscreteColorMap* GraphicalInformationSet::getDiscreteColorMap(AbstractObject* targetObject) const
 {
 	return epcDocument->getDataObjectByUuid<DiscreteColorMap>(getDiscreteColorMapUuid(targetObject));
+}
+
+// TODO do not test that ContinuousColorMap exists, make the assumption that
+// a same ColorInformation can connect to both DiscreteColorMap and ContinuousColorMap
+// TODO can I reset a relation to a DiscreteColorMap?
+void GraphicalInformationSet::setDiscreteColorMap(AbstractObject* targetObject, DiscreteColorMap* discreteColorMap, 
+	const LONG64& valueVectorIndex, bool useReverseMapping, bool useLogarithmicMapping)
+{
+	if (discreteColorMap == nullptr) {
+		throw invalid_argument("The discrete color map cannot be null");
+	}
+
+	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
+
+	resqml2__ColorInformation* colorInformation = getColorInformation(targetObject);
+	if (colorInformation == nullptr) {
+		colorInformation = soap_new_resqml2__ColorInformation(gsoapProxy2_2->soap, 1);
+		colorInformation->TargetObject = targetObject->newEml22Reference();
+		gis->GraphicalInformation.push_back(colorInformation);
+	}
+
+	LONG64 min, max;
+	discreteColorMap->computeMinMax(min, max);
+	if (colorInformation->MinMax == nullptr) {
+		colorInformation->MinMax = soap_new_resqml2__MinMax(gsoapProxy2_2->soap, 1);
+	}
+	colorInformation->MinMax->Minimum = min;
+	colorInformation->MinMax->Maximum = max;
+
+	colorInformation->UseReverseMapping = useReverseMapping;
+	colorInformation->UseLogarithmicMapping = useLogarithmicMapping;
+	colorInformation->ValueVectorIndex = valueVectorIndex;
+
+	discreteColorMap->graphicalInformationSetSet.push_back(this);
+	colorInformation->DiscreteColorMap = discreteColorMap->newEml22Reference();
+}
+
+bool GraphicalInformationSet::hasContinuousColorMap(AbstractObject* targetObject) const
+{
+	resqml2__ColorInformation const * const colorInformation = getColorInformation(targetObject);
+	return colorInformation != nullptr && colorInformation->ContinuousColorMap != nullptr;
+}
+
+gsoap_eml2_2::eml22__DataObjectReference* GraphicalInformationSet::getContinuousColorMapDor(AbstractObject* targetObject) const
+{
+	resqml2__ColorInformation const* const colorInformation = getColorInformation(targetObject);
+
+	if (colorInformation == nullptr || colorInformation->ContinuousColorMap == nullptr) {
+		throw invalid_argument("This object has no continuous color map");
+	}
+
+	return colorInformation->ContinuousColorMap;
+}
+
+std::string GraphicalInformationSet::getContinuousColorMapUuid(AbstractObject* targetObject) const
+{
+	return getContinuousColorMapDor(targetObject)->Uuid;
+}
+
+ContinuousColorMap* GraphicalInformationSet::getContinuousColorMap(AbstractObject* targetObject) const
+{
+	return epcDocument->getDataObjectByUuid<ContinuousColorMap>(getContinuousColorMapUuid(targetObject));
+}
+
+// TODO do not test that ContinuousColorMap exists, make the assumption that
+// a same ColorInformation can connect to both DiscreteColorMap and ContinuousColorMap
+// TODO can I reset a relation to a DiscreteColorMap?
+void GraphicalInformationSet::setContinuousColorMap(AbstractObject* targetObject, ContinuousColorMap* continuousColorMap, 
+	const LONG64& valueVectorIndex, bool useReverseMapping, bool useLogarithmicMapping)
+{
+	if (continuousColorMap == nullptr) {
+		throw invalid_argument("The continuous color map cannot be null");
+	}
+
+	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
+
+	resqml2__ColorInformation* colorInformation = getColorInformation(targetObject);
+	if (colorInformation == nullptr) {
+		colorInformation = soap_new_resqml2__ColorInformation(gsoapProxy2_2->soap, 1);
+		colorInformation->TargetObject = targetObject->newEml22Reference();
+		gis->GraphicalInformation.push_back(colorInformation);
+	}
+
+	LONG64 min, max;
+	continuousColorMap->computeMinMax(min, max);
+	if (colorInformation->MinMax == nullptr) {
+		colorInformation->MinMax = soap_new_resqml2__MinMax(gsoapProxy2_2->soap, 1);
+	}
+	colorInformation->MinMax->Minimum = min;
+	colorInformation->MinMax->Maximum = max;
+
+	colorInformation->UseReverseMapping = useReverseMapping;
+	colorInformation->UseLogarithmicMapping = useLogarithmicMapping;
+	colorInformation->ValueVectorIndex = valueVectorIndex;
+
+	continuousColorMap->graphicalInformationSetSet.push_back(this);
+	colorInformation->ContinuousColorMap = continuousColorMap->newEml22Reference();
 }
 
 double GraphicalInformationSet::getColorMapMinIndex(AbstractObject* targetObject) const
@@ -447,40 +546,6 @@ double GraphicalInformationSet::getColorMapMaxIndex(AbstractObject* targetObject
 	}
 
 	return colorInformation->MinMax->Maximum;
-}
-
-// TODO do not test that ContinuousColorMap exists, make the assumption that
-// a same ColorInformation can connect to both DiscreteColorMap and ContinuousColorMap
-// TODO can I reset a relation to a DiscreteColorMap?
-void GraphicalInformationSet::setDiscreteColorMap(AbstractObject* targetObject, DiscreteColorMap* discreteColorMap, bool useReverseMapping)
-{
-	if (discreteColorMap == nullptr) {
-		throw invalid_argument("The discrete color map cannot be null");
-	}
-
-	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
-
-	resqml2__ColorInformation* colorInformation = getColorInformation(targetObject);
-	if (colorInformation == nullptr) {
-		colorInformation = soap_new_resqml2__ColorInformation(gsoapProxy2_2->soap, 1);	
-		colorInformation->TargetObject = targetObject->newEml22Reference();
-		gis->GraphicalInformation.push_back(colorInformation);
-	}
-
-	LONG64 min, max;
-	discreteColorMap->computeMinMax(min, max);
-	if (colorInformation->MinMax == nullptr) {
-		colorInformation->MinMax = soap_new_resqml2__MinMax(gsoapProxy2_2->soap, 1);
-	}
-	colorInformation->MinMax->Minimum = min;
-	colorInformation->MinMax->Maximum = max;
-	
-	colorInformation->UseReverseMapping = useReverseMapping;
-	colorInformation->UseLogarithmicMapping = false;
-	colorInformation->ValueVectorIndex = 0;
-	
-	discreteColorMap->graphicalInformationSetSet.push_back(this);
-	colorInformation->DiscreteColorMap = discreteColorMap->newEml22Reference();
 }
 
 void GraphicalInformationSet::rgbToHsv(double red, double green, double blue, double & hue, double & saturation, double & value)
