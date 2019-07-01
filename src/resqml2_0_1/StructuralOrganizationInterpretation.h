@@ -106,16 +106,7 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getSideFrontierInterpretation(unsigned int index) const;
 
-    private:
-
-        std::vector<epc::Relationship> getAllEpcRelationships() const;	
-		void resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc);
-
-        // backward relationships
-        std::vector<EarthModelInterpretation *> earthModelSet;
-		std::vector<RESQML2_NS::GridConnectionSetRepresentation *> gridConnectionSet;
-
-		friend void EarthModelInterpretation::setStructuralOrganizationInterpretation(StructuralOrganizationInterpretation * structOrganization);
+    private:	
+		void loadTargetRelationships() const;
 	};
 }
-

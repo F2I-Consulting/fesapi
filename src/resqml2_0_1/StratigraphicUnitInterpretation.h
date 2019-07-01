@@ -63,16 +63,5 @@ namespace RESQML2_0_1_NS
 			
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
-
-	private:
-		
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-
-		// Backward relationship
-		std::vector<StratigraphicColumnRankInterpretation *> stratigraphicColumnRankSet;
-		std::vector<SealedVolumeFrameworkRepresentation*> svfSet;
-
-		friend void StratigraphicColumnRankInterpretation::pushBackStratiUnitInterpretation(StratigraphicUnitInterpretation * stratiUnitInterpretation);
-		friend void SealedVolumeFrameworkRepresentation::setInterpretationOfVolumeRegion(unsigned int regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp);
 	};
 }

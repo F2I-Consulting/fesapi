@@ -67,9 +67,7 @@ void HorizonOnSeismicLine::initRepoHandler()
 		seismicLineRep = repo->getDataObjectByUuid<PolylineRepresentation>(SeismicLineRepresentationTest::defaultUuid);
 	}
 
-	RESQML2_NS::AbstractLocal3dCrs * crs = seismicLineRep->getLocalCrs();;
-
-	PolylineRepresentation* h1i1SinglePolylineRep = repo->createPolylineRepresentation(horizonInterp, crs, defaultUuid, defaultTitle);
+	PolylineRepresentation* h1i1SinglePolylineRep = repo->createPolylineRepresentation(horizonInterp, defaultUuid, defaultTitle);
 	h1i1SinglePolylineRep->setGeometry(defaultXyzPoints, 4, hdfProxy);
 	double seismicLineAbscissa[4] = { 0.0, 1.0, 3.0, 4.0 };
 	h1i1SinglePolylineRep->addSeismic2dCoordinatesToPatch(0, seismicLineAbscissa, seismicLineRep, hdfProxy);

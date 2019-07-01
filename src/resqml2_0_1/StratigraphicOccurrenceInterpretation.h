@@ -47,7 +47,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		StratigraphicOccurrenceInterpretation(gsoap_resqml2_0_1::_resqml2__StratigraphicOccurrenceInterpretation* fromGsoap) : AbstractStratigraphicOrganizationInterpretation(fromGsoap), stratigraphicColumnRankInterpretation(nullptr) {}
+		StratigraphicOccurrenceInterpretation(gsoap_resqml2_0_1::_resqml2__StratigraphicOccurrenceInterpretation* fromGsoap) : AbstractStratigraphicOrganizationInterpretation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -56,12 +56,12 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT void setStratigraphicColumnRankInterpretation(class StratigraphicColumnRankInterpretation * stratiColumnRankInterp);
 
-		DLL_IMPORT_OR_EXPORT class StratigraphicColumnRankInterpretation * getStratigraphicColumnRankInterpretation() const {return stratigraphicColumnRankInterpretation;}
+		DLL_IMPORT_OR_EXPORT class StratigraphicColumnRankInterpretation * getStratigraphicColumnRankInterpretation() const;
 
 		/**
 		* Get all the stratigraphic occurence interpretations associated with this StratigraphicColumnRankInterpretation.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<class WellboreMarkerFrameRepresentation*> getWellboreMarkerFrameRepresentationSet() const { return wellboreMarkerFrameRepresentationSet; }
+		DLL_IMPORT_OR_EXPORT std::vector<class WellboreMarkerFrameRepresentation const *> getWellboreMarkerFrameRepresentationSet() const;
 
 		DLL_IMPORT_OR_EXPORT std::string getStratigraphicColumnRankInterpretationUuid() const;
                 
@@ -69,19 +69,6 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 	private:
-
-        std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc);
-
-		// Forward relationship
-		class StratigraphicColumnRankInterpretation * stratigraphicColumnRankInterpretation;
-
-		// Backward relationship
-		std::vector<EarthModelInterpretation *> earthModelSet;
-		std::vector<WellboreMarkerFrameRepresentation *> wellboreMarkerFrameRepresentationSet;
-
-		friend void EarthModelInterpretation::pushBackStratiOccurence(StratigraphicOccurrenceInterpretation * stratiOccurence);
-		friend void WellboreMarkerFrameRepresentation::setStratigraphicOccurrenceInterpretation(StratigraphicOccurrenceInterpretation * stratiOccurenceInterp);
+		void loadTargetRelationships() const;
 	};
 }
-

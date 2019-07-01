@@ -43,4 +43,3 @@ GeobodyBoundaryInterpretation::GeobodyBoundaryInterpretation(GeneticBoundaryFeat
 
 	setInterpretedFeature(geobodyBoundary);
 }
-

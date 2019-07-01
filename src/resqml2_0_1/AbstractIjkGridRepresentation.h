@@ -36,7 +36,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
 		*/
-		void init(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
+		void init(COMMON_NS::DataObjectRepository * repo,
 				const std::string & guid, const std::string & title,
 				const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
 				bool withTruncatedPillars);
@@ -73,7 +73,7 @@ namespace RESQML2_0_1_NS
 		gsoap_resqml2_0_1::_resqml2__IjkGridRepresentation* getSpecializedGsoapProxy() const;
 		gsoap_resqml2_0_1::_resqml2__TruncatedIjkGridRepresentation* getSpecializedTruncatedGsoapProxy() const;
 
-		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const;
+		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
 
 		std::vector< std::pair< unsigned int, std::vector<unsigned int> > >* splitInformation;
 
@@ -86,14 +86,14 @@ namespace RESQML2_0_1_NS
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
 		*/
-		AbstractIjkGridRepresentation(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
+		AbstractIjkGridRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
+			unsigned int iCount, unsigned int jCount, unsigned int kCount,
 			bool withTruncatedPillars = false);
 
-		AbstractIjkGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+		AbstractIjkGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
+			unsigned int iCount, unsigned int jCount, unsigned int kCount,
 			bool withTruncatedPillars = false);
 
 		/**
@@ -354,7 +354,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__KDirection getKDirection() const;
 
 		DLL_IMPORT_OR_EXPORT virtual geometryKind getGeometryKind() const { return UNKNOWN; }
-		DLL_IMPORT_OR_EXPORT virtual std::string getHdfProxyUuid() const { throw std::logic_error("Partial object"); }
+		virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const { throw std::logic_error("Partial object"); }
 		DLL_IMPORT_OR_EXPORT virtual ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
 

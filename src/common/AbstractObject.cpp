@@ -50,7 +50,7 @@ const char* AbstractObject::RESQML_2_0_1_CONTENT_TYPE_PREFIX = "application/x-re
 AbstractObject::AbstractObject() :
 	partialObject(nullptr), gsoapProxy2_0_1(nullptr),
 	gsoapProxy2_1(nullptr),
-	repository(nullptr), updateXml(true) {
+	repository(nullptr) {
 }
 
 /**
@@ -59,19 +59,19 @@ AbstractObject::AbstractObject() :
 AbstractObject::AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
 	partialObject(partialObject), gsoapProxy2_0_1(nullptr),
 	gsoapProxy2_1(nullptr),
-	repository(nullptr), updateXml(true) {
+	repository(nullptr) {
 }
 
 AbstractObject::AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy):
 	partialObject(nullptr), gsoapProxy2_0_1(proxy),
 	gsoapProxy2_1(nullptr),
-	repository(nullptr), updateXml(true) {
+	repository(nullptr) {
 }
 
 AbstractObject::AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) :
 	partialObject(nullptr), gsoapProxy2_0_1(nullptr),
 	gsoapProxy2_1(proxy),
-	repository(nullptr), updateXml(true) {
+	repository(nullptr) {
 }
 
 void AbstractObject::cannotBePartial() const
@@ -771,24 +771,6 @@ RESQML2_NS::Activity* AbstractObject::getActivity(unsigned int index) const
 	return activitySet[index];
 }
 
-void AbstractObject::addActivityToResqmlObject(RESQML2_NS::Activity* activity, AbstractObject* resqmlObject)
-{
-	if (activity == nullptr)
-	{
-		throw invalid_argument("The activity cannot be null");
-	}
-	if (resqmlObject == nullptr)
-	{
-		throw invalid_argument("The resqml object to add cannot be null");
-	}
-
-	bool alreadyInserted = (std::find(resqmlObject->activitySet.begin(), resqmlObject->activitySet.end(), activity) != resqmlObject->activitySet.end()); // In case the resqml object is both input and output of the activity
-	if (!alreadyInserted)
-	{
-		resqmlObject->activitySet.push_back(activity);
-	}
-}
-
 void AbstractObject::pushBackExtraMetadataV2_0_1(const std::string & key, const std::string & value)
 {
 	gsoap_resqml2_0_1::resqml2__NameValuePair* stringPair = gsoap_resqml2_0_1::soap_new_resqml2__NameValuePair(gsoapProxy2_0_1->soap, 1);
@@ -929,6 +911,39 @@ std::string AbstractObject::getExtraMetadataStringValueAtIndex(unsigned int inde
 	}
 }
 
+void AbstractObject::readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml2__AbstractDoubleArray * arrayInput, double * arrayOutput) const
+{
+	long soapType = arrayInput->soap_type();
+	if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
+	{
+		COMMON_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(arrayInput)->Values->HdfProxy->UUID);
+		if (hdfProxy == nullptr) {
+			throw invalid_argument("The hdf proxy " + static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(arrayInput)->Values->HdfProxy->UUID + " is not available.");
+		}
+		hdfProxy->readArrayNdOfDoubleValues(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(arrayInput)->Values->PathInHdfFile, arrayOutput);
+	}
+	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleConstantArray)
+	{
+		gsoap_resqml2_0_1::resqml2__DoubleConstantArray* constantArray = static_cast<gsoap_resqml2_0_1::resqml2__DoubleConstantArray*>(arrayInput);
+		for (size_t i = 0; i < constantArray->Count; ++i) {
+			arrayOutput[i] = constantArray->Value;
+		}
+	}
+	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleLatticeArray)
+	{
+		gsoap_resqml2_0_1::resqml2__DoubleLatticeArray* latticeArray = static_cast<gsoap_resqml2_0_1::resqml2__DoubleLatticeArray*>(arrayInput);
+		if (latticeArray->Offset.size() > 1) {
+			throw invalid_argument("The integer lattice array contains more than one offset.");
+		}
+		for (size_t i = 0; i <= latticeArray->Offset[0]->Count; ++i) {
+			arrayOutput[i] = latticeArray->StartValue + (i * latticeArray->Offset[0]->Value);
+		}
+	}
+	else
+		throw invalid_argument("The integer array type is not supported yet.");
+}
+
+
 void AbstractObject::readArrayNdOfUIntValues(gsoap_resqml2_0_1::resqml2__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const
 {
 	long soapType = arrayInput->soap_type();
@@ -997,4 +1012,26 @@ ULONG64 AbstractObject::getCountOfIntegerArray(gsoap_resqml2_0_1::resqml2__Abstr
 	}
 	else
 		throw invalid_argument("The integer array type is not supported yet.");
+}
+
+void AbstractObject::convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor) const
+{
+	const AbstractObject * targetObj = getRepository()->getDataObjectByUuid(dor->UUID);
+	if (targetObj == nullptr) { // partial transfer
+		getRepository()->createPartial(dor);
+		targetObj = getRepository()->getDataObjectByUuid(dor->UUID);
+		if (targetObj == nullptr) {
+			throw invalid_argument("The DOR looks invalid.");
+		}
+	}
+	getRepository()->addRelationship(this, targetObj);
+}
+
+COMMON_NS::AbstractHdfProxy* AbstractObject::getHdfProxyFromDataset(gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset, bool throwException) const
+{
+	COMMON_NS::AbstractHdfProxy * hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
+	if (throwException && hdfProxy == nullptr) {
+		throw invalid_argument("The HDF proxy is missing.");
+	}
+	return hdfProxy;
 }

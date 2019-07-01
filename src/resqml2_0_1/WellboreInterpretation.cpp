@@ -36,7 +36,7 @@ WellboreInterpretation::WellboreInterpretation(WellboreFeature * WellboreFeature
 	wbInterp->IsDrilled = isDrilled;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setInterpretedFeature(WellboreFeature);
 }
@@ -46,16 +46,7 @@ bool WellboreInterpretation::isDrilled() const
 	return static_cast<_resqml2__WellboreInterpretation*>(gsoapProxy2_0_1)->IsDrilled;
 }
 
-std::vector<WellboreTrajectoryRepresentation*> WellboreInterpretation::getWellboreTrajectoryRepresentationSet() const
+std::vector<WellboreTrajectoryRepresentation const*> WellboreInterpretation::getWellboreTrajectoryRepresentationSet() const
 {
-	std::vector<WellboreTrajectoryRepresentation*> result;
-
-	for (unsigned int i = 0; i < representationSet.size(); ++i)
-	{
-		if (representationSet[i]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREWellboreTrajectoryRepresentation)
-			result.push_back(static_cast<WellboreTrajectoryRepresentation*>(representationSet[i]));
-	}
-
-	return result;
+	return getRepository()->getSourceObjects<WellboreTrajectoryRepresentation>(this);
 }
-

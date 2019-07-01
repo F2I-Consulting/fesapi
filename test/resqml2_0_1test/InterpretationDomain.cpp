@@ -46,8 +46,8 @@ InterpretationDomain::InterpretationDomain(DataObjectRepository* repo, bool init
 		readRepo();
 }
 
-void InterpretationDomain::initRepo() {
-
+void InterpretationDomain::initRepo()
+{
 	FaultInterpretation* faultInterp = repo->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
 	if (faultInterp == nullptr) {
 		FaultInterpretationTest faultInterpTest(repo, true);
@@ -58,13 +58,10 @@ void InterpretationDomain::initRepo() {
 	faultInterp->initDomain(gsoap_resqml2_0_1::resqml2__Domain__time);
 	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml2__Domain__time);
 
-	FaultSinglePatchTriangulatedSetRepresentationTest* repTest = new FaultSinglePatchTriangulatedSetRepresentationTest(repo, true);
+	FaultSinglePatchTriangulatedSetRepresentationTest repTest(repo, true);
 	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml2__Domain__depth);
-	resqml2_0_1test::PolylineSetRepresentation* polylineRepTest = new resqml2_0_1test::PolylineSetRepresentation(repo, true);
+	resqml2_0_1test::PolylineSetRepresentation polylineRepTest(repo, true);
 	REQUIRE(faultInterp->getDomain() == gsoap_resqml2_0_1::resqml2__Domain__mixed);
-
-	delete repTest;
-	delete polylineRepTest;
 }
 
 void InterpretationDomain::readRepo() {

@@ -70,14 +70,10 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 	RightHanded4x3x2ExplicitIjkGrid parentGridTest(repo, true);
 
 	RESQML2_0_1_NS::IjkGridExplicitRepresentation* parentGrid = repo->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
-	RESQML2_0_1_NS::LocalDepth3dCrs* crs = repo->getDataObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-
-	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
 	// creating the child ijk grid
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGrid = repo->createIjkGridExplicitRepresentation(crs, defaultUuid, defaultTitle, 3, 1, 4);
-	childGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, hdfProxy);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, 3, 1, 4);
+	childGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, nullptr);
 	childGrid->setParentWindow(
 		0, 3, 1, 1,
 		0, 1, 1, 1,
@@ -85,8 +81,8 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 		parentGrid);
 
 	// creating the same child ijk grid using HDF5 datasets
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridHdf5 = repo->createIjkGridExplicitRepresentation(crs, "38930b30-1325-424e-a1e9-666fa50bfa4f", "Child grid HDF5", 3, 1, 4);
-	childGridHdf5->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, hdfProxy);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridHdf5 = repo->createIjkGridExplicitRepresentation("38930b30-1325-424e-a1e9-666fa50bfa4f", "Child grid HDF5", 3, 1, 4);
+	childGridHdf5->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, nullptr);
 	unsigned int one = 1;
 	unsigned int three = 3;
 	unsigned int twotwo[] = { 2,2 };
@@ -98,7 +94,7 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 		parentGrid);
 
 	// creating a non constant cell count per interval child ijk grid without geometry
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridNonConstant = repo->createIjkGridExplicitRepresentation(crs, "eaf36330-4c0b-40f8-bf07-b2818f09a229", "Child grid irregular refinement", 4, 1, 4);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridNonConstant = repo->createIjkGridExplicitRepresentation("eaf36330-4c0b-40f8-bf07-b2818f09a229", "Child grid irregular refinement", 4, 1, 4);
 	unsigned int onetwo[] = { 1,2 };
 	unsigned int twothree[] = { 1,2 };
 	childGridNonConstant->setParentWindow(

@@ -28,26 +28,26 @@ using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace epc;
 
-MdDatum::MdDatum(soap* soapContext, const string & guid, const string & title,
-			RESQML2_NS::AbstractLocal3dCrs * locCrs, const resqml2__MdReference & originKind,
-			const double & referenceLocationOrdinal1, const double & referenceLocationOrdinal2, const double & referenceLocationOrdinal3)
+MdDatum::MdDatum(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title,
+	RESQML2_NS::AbstractLocal3dCrs * locCrs, resqml2__MdReference originKind,
+	double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3)
 {
-	if (soapContext == nullptr)
-		throw invalid_argument("The soap context must exist");
+	if (repo == nullptr)
+		throw invalid_argument("The repo must exist");
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREMdDatum(soapContext, 1);
+	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREMdDatum(repo->getGsoapContext(), 1);
 	_resqml2__MdDatum* mdInfo = static_cast<_resqml2__MdDatum*>(gsoapProxy2_0_1);
-	
-	setLocalCrs(locCrs);
 
 	mdInfo->MdReference = originKind;
-	mdInfo->Location = soap_new_resqml2__Point3d(soapContext, 1);
+	mdInfo->Location = soap_new_resqml2__Point3d(repo->getGsoapContext(), 1);
 	mdInfo->Location->Coordinate1 = referenceLocationOrdinal1;
 	mdInfo->Location->Coordinate2 = referenceLocationOrdinal2;
 	mdInfo->Location->Coordinate3 = referenceLocationOrdinal3;
 	
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	setLocalCrs(locCrs);
 }
 
 void MdDatum::setXmlLocalCrs(RESQML2_NS::AbstractLocal3dCrs * localCrs)

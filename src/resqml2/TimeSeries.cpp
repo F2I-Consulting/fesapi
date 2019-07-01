@@ -121,20 +121,10 @@ tm TimeSeries::getTimestampAsTimeStructure(const unsigned int & index) const
 	throw out_of_range("The index is out of range");
 }
 
-vector<Relationship> TimeSeries::getAllEpcRelationships() const
+std::vector<RESQML2_NS::AbstractProperty const *> TimeSeries::getPropertySet() const
 {
-	vector<Relationship> result;
-
-	// backward relationships
-	for (size_t i = 0; i < propertySet.size(); ++i)
-	{
-		Relationship rel(propertySet[i]->getPartNameInEpcDocument(), "", propertySet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
+	return getRepository()->getSourceObjects<AbstractProperty>(this);
 }
 
-void TimeSeries::resolveTargetRelationships(COMMON_NS::DataObjectRepository*)
+void TimeSeries::loadTargetRelationships() const
 {}

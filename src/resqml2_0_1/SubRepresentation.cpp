@@ -34,18 +34,20 @@ using namespace epc;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-void SubRepresentation::init(soap* soapContext, const string & guid, const string & title)
+void SubRepresentation::init(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
 {
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORESubRepresentation(soapContext, 1);
+	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORESubRepresentation(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
-    setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	repo->addOrReplaceDataObject(this);
 }
 
-SubRepresentation::SubRepresentation(soap* soapContext,	const string & guid, const string & title) :
+SubRepresentation::SubRepresentation(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title) :
 	RESQML2_NS::SubRepresentation(static_cast<RESQML2_NS::AbstractFeatureInterpretation*>(nullptr))
 {
-	init(soapContext, guid, title);
+	init(repo, guid, title);
 }
 
 SubRepresentation::SubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
@@ -56,7 +58,7 @@ SubRepresentation::SubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* 
 		throw invalid_argument("The interpretation of the subrepresentation cannot be null.");
 	}
 
-	init(interp->getGsoapContext(), guid, title);
+	init(interp->getRepository(), guid, title);
 
 	// relationhsips
 	setInterpretation(interp);
@@ -124,10 +126,10 @@ void SubRepresentation::pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::
 	pushBackRefToExistingDataset(elementKind, elementCount, "/RESQML/" + rep->uuid + "/" + ossForHdf.str(), (std::numeric_limits<unsigned int>::max)(), proxy, supportingRepDataset);
 
 	// ************ HDF ************		
-	hsize_t numValues[] = {elementCount};
-	hdfProxy->writeArrayNdOfGSoapULong64Values(rep->uuid, ossForHdf.str(), elementIndices, numValues, 1);
+	hsize_t numValues[] = { elementCount };
+	proxy->writeArrayNdOfGSoapULong64Values(rep->uuid, ossForHdf.str(), elementIndices, numValues, 1);
 	if (supportingRepIndices != nullptr) {
-		hdfProxy->writeArrayNd(rep->uuid, ossForHdfSupRep.str(), H5T_NATIVE_SHORT, supportingRepIndices, numValues, 1);
+		proxy->writeArrayNd(rep->uuid, ossForHdfSupRep.str(), H5T_NATIVE_SHORT, supportingRepIndices, numValues, 1);
 	}
 }
 
@@ -135,41 +137,44 @@ void SubRepresentation::pushBackRefToExistingDataset(const gsoap_resqml2_0_1::re
 	const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset)
 {
 	_resqml2__SubRepresentation* rep = getSpecializedGsoapProxy();
-	
-  setHdfProxy(proxy);
-  
-  resqml2__SubRepresentationPatch* patch = soap_new_resqml2__SubRepresentationPatch(gsoapProxy2_0_1->soap, 1);
 
-  // XML
-  patch->PatchIndex = rep->SubRepresentationPatch.size();
-  rep->SubRepresentationPatch.push_back(patch);
-  patch->Count = elementCount;
-  resqml2__ElementIndices* elements = soap_new_resqml2__ElementIndices(gsoapProxy2_0_1->soap, 1);
-  patch->ElementIndices.push_back(elements);
-  elements->IndexableElement = elementKind;
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
+	getRepository()->addRelationship(this, proxy);
 
-  resqml2__IntegerHdf5Array * integerArray = soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
-  eml20__Hdf5Dataset * resqmlHDF5dataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
-  resqmlHDF5dataset->HdfProxy = hdfProxy->newResqmlReference();
-  if (elementDataset.empty()) {
-    ostringstream ossForHdf;
-    ossForHdf << "subrepresentation_elementIndices0_patch" << patch->PatchIndex;
-    resqmlHDF5dataset->PathInHdfFile = "/RESQML/" + rep->uuid + "/" + ossForHdf.str();
-  }
-  else {
-	  resqmlHDF5dataset->PathInHdfFile = elementDataset;
-  }
-  integerArray->Values = resqmlHDF5dataset;
-  integerArray->NullValue = nullValue;
-  elements->Indices = integerArray;
+	resqml2__SubRepresentationPatch* patch = soap_new_resqml2__SubRepresentationPatch(gsoapProxy2_0_1->soap, 1);
 
-  if (!supportingRepDataset.empty()) {
-	  DiscreteProperty* discreteProp = getRepository()->createDiscreteProperty(this, "", "SupportingRepresentationIndex", 1, elementKind, resqml2__ResqmlPropertyKind__index);
-	  ostringstream oss;
-	  oss << "SubRepresentationPatch[" << rep->SubRepresentationPatch.size() - 1 << "]/ElementIndices/SupportingRepresentationIndex";
-	  pushBackExtraMetadata(oss.str(), discreteProp->getUuid());
-	  discreteProp->pushBackRefToExistingDataset(proxy, supportingRepDataset, nullValue);
-  }
+	// XML
+	patch->PatchIndex = rep->SubRepresentationPatch.size();
+	rep->SubRepresentationPatch.push_back(patch);
+	patch->Count = elementCount;
+	resqml2__ElementIndices* elements = soap_new_resqml2__ElementIndices(gsoapProxy2_0_1->soap, 1);
+	patch->ElementIndices.push_back(elements);
+	elements->IndexableElement = elementKind;
+
+	resqml2__IntegerHdf5Array * integerArray = soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	eml20__Hdf5Dataset * resqmlHDF5dataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	resqmlHDF5dataset->HdfProxy = proxy->newResqmlReference();
+	if (elementDataset.empty()) {
+		ostringstream ossForHdf;
+		ossForHdf << "subrepresentation_elementIndices0_patch" << patch->PatchIndex;
+		resqmlHDF5dataset->PathInHdfFile = "/RESQML/" + rep->uuid + "/" + ossForHdf.str();
+	}
+	else {
+		resqmlHDF5dataset->PathInHdfFile = elementDataset;
+	}
+	integerArray->Values = resqmlHDF5dataset;
+	integerArray->NullValue = nullValue;
+	elements->Indices = integerArray;
+
+	if (!supportingRepDataset.empty()) {
+		DiscreteProperty* discreteProp = getRepository()->createDiscreteProperty(this, "", "SupportingRepresentationIndex", 1, elementKind, resqml2__ResqmlPropertyKind__index);
+		ostringstream oss;
+		oss << "SubRepresentationPatch[" << rep->SubRepresentationPatch.size() - 1 << "]/ElementIndices/SupportingRepresentationIndex";
+		pushBackExtraMetadata(oss.str(), discreteProp->getUuid());
+		discreteProp->pushBackRefToExistingDataset(proxy, supportingRepDataset, nullValue);
+	}
 }
 
 DiscreteProperty* SubRepresentation::getSupportingRepresentationIndicesDiscretePropOfPatch(const unsigned int & patchIndex) const
@@ -195,35 +200,35 @@ void SubRepresentation::pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::
 	resqml2__ElementIndices* elements = soap_new_resqml2__ElementIndices(gsoapProxy2_0_1->soap, 1);
 	patch->ElementIndices.push_back(elements);
 	elements->IndexableElement = elementKind1;
-	
+
 	ostringstream ossForHdf;
 	ossForHdf << "subrepresentation_elementIndices1_patch" << patch->PatchIndex;
 	resqml2__IntegerHdf5Array * integerArray = soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
-    eml20__Hdf5Dataset * resqmlHDF5dataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
-    resqmlHDF5dataset->HdfProxy = hdfProxy->newResqmlReference();
-    resqmlHDF5dataset->PathInHdfFile = "/RESQML/" + rep->uuid + "/" + ossForHdf.str();
+	eml20__Hdf5Dataset * resqmlHDF5dataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	resqmlHDF5dataset->HdfProxy = proxy->newResqmlReference();
+	resqmlHDF5dataset->PathInHdfFile = "/RESQML/" + rep->uuid + "/" + ossForHdf.str();
 	integerArray->Values = resqmlHDF5dataset;
 	integerArray->NullValue = (std::numeric_limits<unsigned int>::max)();
 	elements->Indices = integerArray;
 
 	// ************ HDF ************		
-	hsize_t numValues[] = {elementCount};
-	hdfProxy->writeArrayNdOfGSoapULong64Values(rep->uuid, ossForHdf.str(), elementIndices1, numValues, 1);
+	hsize_t numValues[] = { elementCount };
+	proxy->writeArrayNdOfGSoapULong64Values(rep->uuid, ossForHdf.str(), elementIndices1, numValues, 1);
 }
 
-string SubRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* SubRepresentation::getHdfProxyDor() const
 {
 	_resqml2__SubRepresentation* rep = getSpecializedGsoapProxy();
 
 	if (!rep->SubRepresentationPatch.empty()) {
 		if (!rep->SubRepresentationPatch[0]->ElementIndices.empty()) {
 			if (rep->SubRepresentationPatch[0]->ElementIndices[0]->Indices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-				return static_cast<resqml2__IntegerHdf5Array*>(rep->SubRepresentationPatch[0]->ElementIndices[0]->Indices)->Values->HdfProxy->UUID;
+				return static_cast<resqml2__IntegerHdf5Array*>(rep->SubRepresentationPatch[0]->ElementIndices[0]->Indices)->Values->HdfProxy;
 			}
 		}
 	}
 
-	return "";
+	return nullptr;
 }
 
 RESQML2_NS::AbstractRepresentation::indexableElement SubRepresentation::getElementKindOfPatch(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex) const
@@ -350,7 +355,9 @@ void SubRepresentation::getElementIndicesOfPatch(const unsigned int & patchIndex
 	}
 
 	if (rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-		hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<resqml2__IntegerHdf5Array*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices)->Values->PathInHdfFile, elementIndices);
+		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__IntegerHdf5Array*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices)->Values;
+		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, elementIndices);
 	}
 	else {
 		throw logic_error("Not yet implemented");
@@ -414,12 +421,11 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* SubRepresentation::getSupportingR
 	return result;
 }
 
-void SubRepresentation::pushBackXmlSupportingRepresentation(RESQML2_NS::AbstractRepresentation * supportingRep)
+void SubRepresentation::pushBackXmlSupportingRepresentation(RESQML2_NS::AbstractRepresentation const * supportingRep)
 {
 	_resqml2__SubRepresentation* rep = getSpecializedGsoapProxy();
 	if (rep->SupportingRepresentation == nullptr) {
 		rep->SupportingRepresentation = supportingRep->newResqmlReference();
-		supportingRep->pushBackSubRepresentation(this);
 	}
 	else {
 		if (getSupportingRepresentationCount() == 1) {
@@ -430,4 +436,3 @@ void SubRepresentation::pushBackXmlSupportingRepresentation(RESQML2_NS::Abstract
 		pushBackExtraMetadata("SupportingRepresentation", supportingRep->getUuid());
 	}
 }
-

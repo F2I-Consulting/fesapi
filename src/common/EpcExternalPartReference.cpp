@@ -37,34 +37,5 @@ string EpcExternalPartReference::getXmlTag() const
 	return XML_TAG;
 }
 
-vector<Relationship> EpcExternalPartReference::getAllEpcRelationships() const
-{
-	vector<Relationship> result;
-
-	for (size_t i = 0; i < representationSourceObject.size(); ++i) {
-		if (representationSourceObject[i] != nullptr) {
-			Relationship rel(representationSourceObject[i]->getPartNameInEpcDocument(), "", representationSourceObject[i]->getUuid());
-			rel.setExternalPartProxyToMlType();
-			result.push_back(rel);
-		}
-		else {
-			throw domain_error("The representation associated to the external EPC reference cannot be nullptr.");
-		}
-	}
-
-	for (size_t i = 0; i < propertySourceObject.size(); ++i) {
-		if (propertySourceObject[i] != nullptr) {
-			Relationship rel(propertySourceObject[i]->getPartNameInEpcDocument(), "", propertySourceObject[i]->getUuid());
-			rel.setExternalPartProxyToMlType();
-			result.push_back(rel);
-		}
-		else {
-			throw domain_error("The property associated to the external EPC reference cannot be nullptr.");
-		}
-	}
-
-	return result;
-}
-
-void EpcExternalPartReference::resolveTargetRelationships(COMMON_NS::DataObjectRepository*)
+void EpcExternalPartReference::loadTargetRelationships() const
 {}

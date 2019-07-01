@@ -47,20 +47,13 @@ IjkGridExplicitRepresentationTest::IjkGridExplicitRepresentationTest(DataObjectR
 }
 
 void IjkGridExplicitRepresentationTest::initRepoHandler() {
-	// getting the local depth 3d crs
-	LocalDepth3dCrsTest crsTest(repo, true);
-	RESQML2_0_1_NS::LocalDepth3dCrs* crs = repo->getDataObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-
-	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
-
 	// creating the ijk grid
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = repo->createIjkGridExplicitRepresentation(crs, defaultUuid, defaultTitle, 2, 1, 1);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, 2, 1, 1);
 	REQUIRE( ijkGrid != nullptr );
 	unsigned int pillarOfCoordinateLine[2] = {1,4};
 	unsigned int splitCoordinateLineColumnCumulativeCount[2] = {1,2};
 	unsigned int splitCoordinateLineColumns[2] = {1,1};
-	ijkGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, hdfProxy,
+	ijkGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, nullptr,
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 }
 

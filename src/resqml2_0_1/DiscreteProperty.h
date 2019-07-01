@@ -179,12 +179,12 @@ namespace RESQML2_0_1_NS
 		* Get the minimum value in this discrete properties. It reads it from file.
 		* @return the minimum value if present in the file otherwise long.max.
 		*/
-		DLL_IMPORT_OR_EXPORT LONG64 getMinimumValue();
+		DLL_IMPORT_OR_EXPORT LONG64 getMinimumValue() const;
 
 		/*
 		* Get the maximum value in this discrete properties. It reads it from file.
 		* @return the maximum value if present in the file otherwise long.min.
 		*/
-		DLL_IMPORT_OR_EXPORT LONG64 getMaximumValue();
+		DLL_IMPORT_OR_EXPORT LONG64 getMaximumValue() const;
 	};
 }

@@ -47,10 +47,10 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 	xmlStandardPropKind->Kind = energisticsPropertyKind;
 	prop->PropertyKind = xmlStandardPropKind;
 
-	setRepresentation(rep);
-
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	setRepresentation(rep);
 }
 
 CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
@@ -61,12 +61,12 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
 
+	initMandatoryMetadata();
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
 	setRepresentation(rep);
 
 	setLocalPropertyKind(localPropKind);
-
-	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values,
@@ -111,7 +111,7 @@ void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::str
 
 std::string CommentProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64)
 {
-	setHdfProxy(hdfProxy);
+	getRepository()->addRelationship(this, hdfProxy);
 	_resqml2__CommentProperty* prop = static_cast<_resqml2__CommentProperty*>(gsoapProxy2_0_1);
 
 	resqml2__PatchOfValues* patch = soap_new_resqml2__PatchOfValues(gsoapProxy2_0_1->soap, 1);

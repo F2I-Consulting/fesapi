@@ -42,19 +42,19 @@ namespace RESQML2_NS
 		* Push back a parameter in the activity template instance.
 		* This parameter has an unconstrained type.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string title,
-			const bool & isInput, const bool isOutput,
-			const unsigned int & minOccurs, const int & maxOccurs) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string & title,
+			bool isInput, bool isOutput,
+			unsigned int minOccurs, int maxOccurs) = 0;
 
 		/**
 		* Push back a parameter in the activity template instance.
 		* This parameter must be of a data object kind.
 		* @param resqmlObjectContentType	If empty, there is no constraint on the content type of this parameter.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string title,
-			const bool & isInput, const bool isOutput,
-			const unsigned int & minOccurs, const int & maxOccurs,
-			const std::string & resqmlObjectContentType) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string & title,
+			bool isInput, bool isOutput,
+			unsigned int minOccurs, int maxOccurs,
+			std::string resqmlObjectContentType) = 0;
 
 		/**
 		* Check if the instance contains a parameter with a particular title
@@ -73,18 +73,12 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMaxOccurences(const unsigned int & index) const = 0;
 		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMaxOccurences(const std::string & paramTitle) const = 0;
 
-		DLL_IMPORT_OR_EXPORT const std::vector<Activity*> & getActivityInstanceSet() const { return activityInstanceSet; }
+		DLL_IMPORT_OR_EXPORT const std::vector<Activity const *>& getActivityInstanceSet() const;
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const {return XML_TAG;}
 
 	private:
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void resolveTargetRelationships(COMMON_NS::DataObjectRepository * epcDoc);
-		
-        std::vector<Activity*> activityInstanceSet;
-
-		friend void RESQML2_0_1_NS::Activity::setActivityTemplate(RESQML2_NS::ActivityTemplate* activityTemplate);
+		void loadTargetRelationships() const;
 	};
 }
-

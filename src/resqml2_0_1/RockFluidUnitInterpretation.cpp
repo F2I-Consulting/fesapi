@@ -28,8 +28,9 @@ const char* RockFluidUnitInterpretation::XML_TAG = "RockFluidUnitInterpretation"
 
 RockFluidUnitInterpretation::RockFluidUnitInterpretation(RockFluidUnitFeature * feature, const string & guid, const string & title)
 {
-	if (feature == nullptr)
+	if (feature == nullptr) {
 		throw invalid_argument("The interpreted feature cannot be null.");
+	}
 
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORERockFluidUnitInterpretation(feature->getGsoapContext(), 1);
 	//static_cast<_resqml2__RockFluidUnitInterpretation*>(gsoapProxy2_0_1)->Phase = ??;
@@ -38,25 +39,6 @@ RockFluidUnitInterpretation::RockFluidUnitInterpretation(RockFluidUnitFeature * 
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	setInterpretedFeature(feature);
-}
-
-vector<Relationship> RockFluidUnitInterpretation::getAllEpcRelationships() const
-{
-	vector<Relationship> result = AbstractFeatureInterpretation::getAllEpcRelationships();
-
-	for (size_t i = 0; i < rockFluidOrganizationInterpSet.size(); ++i)
-	{
-		if (rockFluidOrganizationInterpSet[i] != nullptr)
-		{
-			Relationship rel(rockFluidOrganizationInterpSet[i]->getPartNameInEpcDocument(), "", rockFluidOrganizationInterpSet[i]->getUuid());
-			rel.setSourceObjectType();
-			result.push_back(rel);
-		}
-		else
-			throw domain_error("The rockFluidOrganization Interpretation associated to this interpretation cannot be nullptr.");
-	}
-
-	return result;
 }
 
 bool RockFluidUnitInterpretation::hasPhase() const
@@ -71,4 +53,3 @@ gsoap_resqml2_0_1::resqml2__Phase RockFluidUnitInterpretation::getPhase() const
 
 	return *static_cast<_resqml2__RockFluidUnitInterpretation*>(gsoapProxy2_0_1)->Phase;
 }
-

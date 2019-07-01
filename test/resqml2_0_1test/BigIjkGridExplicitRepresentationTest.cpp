@@ -56,22 +56,15 @@ BigIjkGridExplicitRepresentationTest::BigIjkGridExplicitRepresentationTest(DataO
 }
 
 void BigIjkGridExplicitRepresentationTest::initRepoHandler() {
-	// getting the local depth 3d crs
-	LocalDepth3dCrsTest crsTest(repo, true);
-	RESQML2_0_1_NS::LocalDepth3dCrs* crs = repo->getDataObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-
-	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
-
 	// creating the ijk grid
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = repo->createIjkGridExplicitRepresentation(crs, defaultUuid, defaultTitle, iCount, jCount, kCount);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, iCount, jCount, kCount);
 	REQUIRE(ijkGrid != nullptr);
 	unsigned int * pillarOfCoordinateLine = new unsigned int[faultCount * (jCount + 1)];
 	unsigned int * splitCoordinateLineColumnCumulativeCount = new unsigned int[faultCount * (jCount + 1)];
 	unsigned int * splitCoordinateLineColumns = new unsigned int[(faultCount * (jCount + 1)) + (faultCount * (jCount - 1))];
 	initSplitCoordinateLine(pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 	initNodesIjkGridRepresentation(iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow);
-	ijkGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, hdfProxy,
+	ijkGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, nullptr,
 		faultCount * (jCount + 1), pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// adding a discrete property
@@ -82,7 +75,7 @@ void BigIjkGridExplicitRepresentationTest::initRepoHandler() {
 		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__index);
 	unsigned short * discretePropertyValues = new unsigned short[iCount * jCount * kCount];
 	initDiscreteProperty(discretePropertyValues);
-	discreteProperty->pushBackUShortHdf5Array3dOfValues(discretePropertyValues, iCount, jCount, kCount, hdfProxy, -1);
+	discreteProperty->pushBackUShortHdf5Array3dOfValues(discretePropertyValues, iCount, jCount, kCount, nullptr, -1);
 
 	// adding a continuous property
 	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = repo->createContinuousProperty(
@@ -93,7 +86,7 @@ void BigIjkGridExplicitRepresentationTest::initRepoHandler() {
 		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
 	double * continuousPropertyValues = new double[iCount * jCount * kCount];
 	initContinuousProperty(continuousPropertyValues);
-	continuousProperty->pushBackDoubleHdf5Array1dOfValues(continuousPropertyValues, iCount * jCount * kCount, hdfProxy);
+	continuousProperty->pushBackDoubleHdf5Array1dOfValues(continuousPropertyValues, iCount * jCount * kCount, nullptr);
 
 	// cleaning
 	delete[] pillarOfCoordinateLine;

@@ -24,14 +24,19 @@ namespace RESQML2_0_1_NS
 {
 	class CategoricalProperty : public RESQML2_NS::AbstractValuesProperty
 	{
+	protected:
+
+		/**
+		* Default constructor
+		*/
+		CategoricalProperty() {}
+
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
 		CategoricalProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractValuesProperty(partialObject) {}
-
-		CategoricalProperty(StringTableLookup* strLookup): stringLookup(strLookup) {}
 
 		/**
 		* Creates an instance of this class which is of a well known Energistics property kind.
@@ -64,7 +69,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		CategoricalProperty(gsoap_resqml2_0_1::_resqml2__CategoricalProperty* fromGsoap): AbstractValuesProperty(fromGsoap), stringLookup(nullptr) {}
+		CategoricalProperty(gsoap_resqml2_0_1::_resqml2__CategoricalProperty* fromGsoap): AbstractValuesProperty(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -151,7 +156,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get the string lookup which is associated to this categorical property values.
 		*/
-		DLL_IMPORT_OR_EXPORT class StringTableLookup* getStringLookup() {return stringLookup;}
+		DLL_IMPORT_OR_EXPORT class StringTableLookup* getStringLookup();
 
 		/**
 		* Get the string lookup uuid which is associated to this categorical property values.
@@ -169,10 +174,6 @@ namespace RESQML2_0_1_NS
 		bool validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk);
 
 	protected:
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		virtual void resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc);
-
-		// XML forward relationship
-		class StringTableLookup* stringLookup;
+		virtual void loadTargetRelationships() const;
 	};
 }

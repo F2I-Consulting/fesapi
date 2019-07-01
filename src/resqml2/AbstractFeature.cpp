@@ -19,18 +19,42 @@ under the License.
 #include "resqml2/AbstractFeature.h"
 
 #include <stdexcept>
+#include <algorithm>
 
 using namespace RESQML2_NS;
 using namespace std;
 using namespace epc;
 
-std::vector<AbstractFeatureInterpretation*> AbstractFeature::getInterpretationSet() const
+namespace {
+	class DifferentFeature {
+	private:
+		COMMON_NS::AbstractObject const * obj;
+	public:
+		DifferentFeature(COMMON_NS::AbstractObject const * obj_):obj(obj_)
+		{}
+
+		bool operator()(AbstractFeatureInterpretation const * dataObj) const
+		{
+			gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = dataObj->getInterpretedFeatureDor();
+			return dor->UUID != obj->getUuid() || 
+				(obj->hasVersion() && (dor->VersionString == nullptr || *dor->VersionString != obj->getVersion())) ||
+				(!obj->hasVersion() && dor->VersionString != nullptr);
+		}
+	};
+}
+
+std::vector<AbstractFeatureInterpretation const *> AbstractFeature::getInterpretationSet() const
 {
-	return interpretationSet;
+	std::vector<AbstractFeatureInterpretation const *> result = getRepository()->getSourceObjects<AbstractFeatureInterpretation>(this);
+	result.erase(std::remove_if(result.begin(), result.end(), DifferentFeature(this)), result.end());
+
+	return result;
 }
 
 unsigned int AbstractFeature::getInterpretationCount() const
 {
+	const std::vector<AbstractFeatureInterpretation const*>& interpretationSet = getInterpretationSet();
+
 	if (interpretationSet.size() > (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("There are too many interpretations for this feature.");
 	}
@@ -38,8 +62,10 @@ unsigned int AbstractFeature::getInterpretationCount() const
 	return static_cast<unsigned int>(interpretationSet.size());
 }
 
-AbstractFeatureInterpretation*	AbstractFeature::getInterpretation(const unsigned int & index) const
+AbstractFeatureInterpretation const *	AbstractFeature::getInterpretation(unsigned int index) const
 {
+	const std::vector<AbstractFeatureInterpretation const*>& interpretationSet = getInterpretationSet();
+
 	if (interpretationSet.size() > index) {
 		return interpretationSet[index];
 	}
@@ -47,23 +73,5 @@ AbstractFeatureInterpretation*	AbstractFeature::getInterpretation(const unsigned
 	throw range_error("The interpretation index is out of the range of the interpretation set of the feature.");
 }
 
-vector<Relationship> AbstractFeature::getAllEpcRelationships() const
-{
-	vector<Relationship> result;
-
-	for (size_t i = 0; i < interpretationSet.size(); ++i) {
-		if (interpretationSet[i] != nullptr) {
-			Relationship rel(interpretationSet[i]->getPartNameInEpcDocument(), "", interpretationSet[i]->getUuid());
-			rel.setSourceObjectType();
-			result.push_back(rel);
-		}
-		else {
-			throw domain_error("The interpretation associated to the feature cannot be nullptr.");
-		}
-	}
-
-	return result;
-}
-
-void AbstractFeature::resolveTargetRelationships(COMMON_NS::DataObjectRepository*)
+void AbstractFeature::loadTargetRelationships() const
 {}

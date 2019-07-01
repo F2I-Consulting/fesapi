@@ -32,6 +32,8 @@ namespace RESQML2_0_1_NS
 	protected:
 		Activity() : RESQML2_NS::Activity() {}
 
+		void loadTargetRelationships() const;
+
 	public:
 
 		/**
@@ -121,10 +123,6 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT std::string getResqmlVersion() const;
 
 	private:
-
-		void resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc);
-
 		std::vector<gsoap_resqml2_0_1::resqml2__AbstractActivityParameter*> getParameterFromTitle(const std::string & paramTitle) const;
 	};
 }
-

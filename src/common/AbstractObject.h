@@ -84,8 +84,6 @@ namespace COMMON_NS
 		COMMON_NS::DataObjectRepository* repository;
 		std::vector<RESQML2_NS::Activity*> activitySet;
 
-		bool updateXml; /// Indicate whether methods update the XML (gSoap) or only the C++ classes of the API.
-
 		//Default constructor
 		AbstractObject();
 
@@ -103,19 +101,12 @@ namespace COMMON_NS
 		void initMandatoryMetadata();
 		
 		/**
-		* Resolve all relationships of the object in an epc document
+		* Read the forward relationships of this dataobject and update the rels of the associated datarepository.
 		*/
-		virtual void resolveTargetRelationships(COMMON_NS::DataObjectRepository * epcDoc) = 0;
+		virtual void loadTargetRelationships() const = 0;
 		friend void COMMON_NS::DataObjectRepository::updateAllRelationships();
 
-		/**
-		* Return all relationships (backward and forward ones) of the instance using EPC format.
-		*/
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const = 0;
 		friend void COMMON_NS::EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64);
-
-		// Only for Activity. Can not use friendness between AbstractObject and Activity for circular dependencies reason.
-		static void addActivityToResqmlObject(RESQML2_NS::Activity* activity, AbstractObject* resqmlObject);
 
 		/**
 		* It is too dangerous for now to modify the uuid because too much things depend on it. That's why this method is only protected : it is only used by derived class constructor.
@@ -139,6 +130,12 @@ namespace COMMON_NS
 		* Read an input array which come from XML (and potentially HDF5) and store it into a preallocated output array in memory.
 		* It does not allocate or deallocate memory.
 		*/
+		void readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml2__AbstractDoubleArray * arrayInput, double * arrayOutput) const;
+
+		/*
+		* Read an input array which come from XML (and potentially HDF5) and store it into a preallocated output array in memory.
+		* It does not allocate or deallocate memory.
+		*/
 		void readArrayNdOfUIntValues(gsoap_resqml2_0_1::resqml2__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const;
 
 		/*
@@ -148,6 +145,39 @@ namespace COMMON_NS
 		* @return			The count of item in the array of integer.
 		*/
 		ULONG64 getCountOfIntegerArray(gsoap_resqml2_0_1::resqml2__AbstractIntegerArray * arrayInput) const;
+
+		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor) const;
+
+		// Check that the content type of the DOR is OK with the datatype in memory.
+		template <class valueType>
+		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor) const
+		{
+			valueType const * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->UUID);
+			if (targetObj == nullptr) { // partial transfer
+				getRepository()->createPartial(dor);
+				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->UUID);
+				if (targetObj == nullptr) {
+					throw invalid_argument("The DOR looks invalid.");
+				}
+			}
+			getRepository()->addRelationship(this, targetObj);
+		}
+
+		template <class valueType>
+		void convertDorIntoRel(gsoap_eml2_1::eml21__DataObjectReference const * dor) const
+		{
+			valueType const * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
+			if (targetObj == nullptr) { // partial transfer
+				getRepository()->createPartial(dor);
+				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
+				if (targetObj == nullptr) {
+					throw invalid_argument("The DOR looks invalid.");
+				}
+			}
+			getRepository()->addRelationship(this, targetObj);
+		}
+
+		COMMON_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset, bool throwException = true) const;
 
 	public:
 		virtual ~AbstractObject() {}
@@ -245,7 +275,7 @@ namespace COMMON_NS
 		gsoap_resqml2_0_1::resqml2__ContactElementReference* newResqmlContactElementReference() const;
 
 		/**
-		 * Return the EPC document which contains this gsoap wrapper.
+		 * Return the data object repository document which contains this gsoap wrapper.
 		 */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectRepository* getRepository() const {return repository;}
 

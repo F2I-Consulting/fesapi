@@ -28,10 +28,7 @@ using namespace epc;
 
 const char* Wellbore::XML_TAG = "Wellbore";
 
-Wellbore::Wellbore(
-			Well* witsmlWell,
-			const std::string & guid,
-			const std::string & title):resqmlWellboreFeature(nullptr)
+Wellbore::Wellbore( Well* witsmlWell, const std::string & guid, const std::string & title)
 {
 	if (witsmlWell == nullptr) throw invalid_argument("A wellbore must be associated to a well.");
 
@@ -50,7 +47,7 @@ Wellbore::Wellbore(
 		gsoap_eml2_1::eml21__WellStatus statusWellbore,
 		bool isActive,
 		bool achievedTD
-	):resqmlWellboreFeature(nullptr)
+	)
 {
 	if (witsmlWell == nullptr) throw invalid_argument("A wellbore must be associated to a well.");
 
@@ -58,8 +55,6 @@ Wellbore::Wellbore(
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
-
-	setWell(witsmlWell);
 
 	witsml2__Wellbore* wellbore = static_cast<witsml2__Wellbore*>(gsoapProxy2_1);
 
@@ -71,6 +66,8 @@ Wellbore::Wellbore(
 
 	wellbore->AchievedTD = (bool *)soap_malloc(wellbore->soap, sizeof(bool));
 	*wellbore->AchievedTD = achievedTD;
+
+	setWell(witsmlWell);
 }
 
 gsoap_eml2_1::eml21__DataObjectReference* Wellbore::getWellDor() const
@@ -89,15 +86,14 @@ void Wellbore::setWell(Well* witsmlWell)
 	if (witsmlWell == nullptr) {
 		throw invalid_argument("Cannot set a null witsml Well to a witsml wellbore");
 	}
-
-	// EPC
-	witsmlWell->wellboreSet.push_back(this);
-
-	// XML
-	if (updateXml) {
-		witsml2__Wellbore* wellbore = static_cast<witsml2__Wellbore*>(gsoapProxy2_1);
-		wellbore->Well = witsmlWell->newEmlReference();
+	if (getRepository() == nullptr) {
+		witsmlWell->getRepository()->addOrReplaceDataObject(this);
 	}
+
+	getRepository()->addRelationship(this, witsmlWell);
+
+	witsml2__Wellbore* wellbore = static_cast<witsml2__Wellbore*>(gsoapProxy2_1);
+	wellbore->Well = witsmlWell->newEmlReference();
 }
 
 void Wellbore::setShape(witsml2__WellboreShape shape)
@@ -110,44 +106,22 @@ void Wellbore::setShape(witsml2__WellboreShape shape)
 	*wellbore->Shape = shape;
 }
 
-void Wellbore::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
+void Wellbore::loadTargetRelationships() const
 {
-	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellDor();
-	Well* well = epcDoc->getDataObjectByUuid<Well>(dor->Uuid);
-
-	if (well == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-	updateXml = false;
-	setWell(well);
-	updateXml = true;
+	convertDorIntoRel<Well>(getWellDor());
 }
 
-vector<Relationship> Wellbore::getAllEpcRelationships() const
+std::vector<RESQML2_0_1_NS::WellboreFeature const *> Wellbore::getResqmlWellboreFeature() const
 {
-	vector<Relationship> result;
-
-	// XML forward relationship
-	Well* well = getWell();
-	Relationship relWell(well->getPartNameInEpcDocument(), "", well->getUuid());
-	relWell.setDestinationObjectType();
-	result.push_back(relWell);
-
-	// XML backward relationship
-	if (resqmlWellboreFeature != nullptr)
-	{
-		Relationship rel(resqmlWellboreFeature->getPartNameInEpcDocument(), "", resqmlWellboreFeature->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	for (size_t i = 0; i < wellboreCompletionSet.size(); ++i)
-	{
-		Relationship relWellboreCompletion(wellboreCompletionSet[i]->getPartNameInEpcDocument(), "", wellboreCompletionSet[i]->getUuid());
-		relWellboreCompletion.setSourceObjectType();
-		result.push_back(relWellboreCompletion);
-	}
-
-	return result;
+	return getRepository()->getSourceObjects<RESQML2_0_1_NS::WellboreFeature>(this);
 }
 
+std::vector<WellboreCompletion const *> Wellbore::getWellboreCompletions() const
+{
+	return getRepository()->getSourceObjects<WellboreCompletion>(this);
+}
+
+std::vector<Trajectory const *> Wellbore::getTrajectories() const
+{
+	return getRepository()->getSourceObjects<Trajectory>(this);
+}

@@ -17,8 +17,10 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractTest.h"
+
 #include "common/EpcDocument.h"
 #include "catch.hpp"
+#include "resqml2_0_1/LocalDepth3dCrs.h"
 
 using namespace std;
 using namespace commontest;
@@ -35,7 +37,8 @@ AbstractTest::AbstractTest(COMMON_NS::DataObjectRepository* repo_) :
 void AbstractTest::serialize() {
 	COMMON_NS::EpcDocument epcDocument(epcDocPath);
 	repo = new COMMON_NS::DataObjectRepository();
-	repo->createHdfProxy("75f5b460-3ccb-4102-a06e-e9c1019769b2", "Hdf Proxy Test", epcDocument.getStorageDirectory(), epcDocument.getName() + ".h5", COMMON_NS::DataObjectRepository::OVERWRITE);
+	repo->setDefaultHdfProxy(repo->createHdfProxy("75f5b460-3ccb-4102-a06e-e9c1019769b2", "Hdf Proxy Test", epcDocument.getStorageDirectory(), epcDocument.getName() + ".h5", COMMON_NS::DataObjectRepository::OVERWRITE));
+	repo->setDefaultCrs(repo->createLocalDepth3dCrs("7b40b49e-b783-4b3f-8380-b3bdc42e8ae7", "Default CRS", 1000, 2000, 3000, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__ft, "Unknown", false));
 
 	initRepo();
 	

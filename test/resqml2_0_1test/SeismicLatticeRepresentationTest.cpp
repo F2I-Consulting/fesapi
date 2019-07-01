@@ -53,15 +53,9 @@ SeismicLatticeRepresentationTest::SeismicLatticeRepresentationTest(DataObjectRep
 
 void SeismicLatticeRepresentationTest::initRepoHandler()
 {
-	LocalDepth3dCrs * crs = repo->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-	if (crs == nullptr) {
-		LocalDepth3dCrsTest crsTest(repo, true);
-		crs = repo->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-	}
-
 	SeismicLatticeFeature* seismicLattice = repo->createSeismicLattice(defaultUuidFeature, defaultTitleFeature, 2, 2, 150, 152, 4, 2);
 	GenericFeatureInterpretation* seismicLatticeInterp = repo->createGenericFeatureInterpretation(seismicLattice, defaultUuidInterp, defaultTitleInterp);
-	Grid2dRepresentation* seismicLatticeRep = repo->createGrid2dRepresentation(seismicLatticeInterp, crs, defaultUuid, defaultTitle);
+	Grid2dRepresentation* seismicLatticeRep = repo->createGrid2dRepresentation(seismicLatticeInterp, defaultUuid, defaultTitle);
 	seismicLatticeRep->setGeometryAsArray2dOfLatticePoints3d(4, 2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 250, 200);
 }
 

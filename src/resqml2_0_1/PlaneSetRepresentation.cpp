@@ -32,18 +32,18 @@ using namespace gsoap_resqml2_0_1;
 
 const char* PlaneSetRepresentation::XML_TAG = "PlaneSetRepresentation";
 
-PlaneSetRepresentation::PlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+PlaneSetRepresentation::PlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 		const std::string & guid, const std::string & title):
-	AbstractRepresentation(interp, crs)
+	AbstractRepresentation(interp)
 {
+	if (interp == nullptr) {
+		throw invalid_argument("You must provide an interpretation");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREPlaneSetRepresentation(interp->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
-
-	// relationhsips
-	localCrs = crs;
-	localCrs->addRepresentation(this);
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setInterpretation(interp);
 }
@@ -60,20 +60,31 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* PlaneSetRepresentation::getLocalC
 	return result;
 }
 
-void PlaneSetRepresentation::pushBackHorizontalPlaneGeometryPatch(const double & zCoordinate)
+void PlaneSetRepresentation::pushBackHorizontalPlaneGeometryPatch(double zCoordinate, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+	}
+
 	resqml2__HorizontalPlaneGeometry* patch = soap_new_resqml2__HorizontalPlaneGeometry(gsoapProxy2_0_1->soap, 1);
 	patch->LocalCrs = localCrs->newResqmlReference();
 	patch->Coordinate = zCoordinate;
 
 	static_cast<_resqml2__PlaneSetRepresentation*>(gsoapProxy2_0_1)->Planes.push_back(patch);
+
+	getRepository()->addRelationship(this, localCrs);
 }
 
 void PlaneSetRepresentation::pushBackTiltedPlaneGeometryPatch(
-	const double & x1, const double & y1, const double & z1,
-	const double & x2, const double & y2, const double & z2,
-	const double & x3, const double & y3, const double & z3)
+	double x1, double y1, double z1,
+	double x2, double y2, double z2,
+	double x3, double y3, double z3,
+	RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+	}
+
 	resqml2__TiltedPlaneGeometry* patch = soap_new_resqml2__TiltedPlaneGeometry(gsoapProxy2_0_1->soap, 1);
 	patch->LocalCrs = localCrs->newResqmlReference();
 
@@ -92,6 +103,8 @@ void PlaneSetRepresentation::pushBackTiltedPlaneGeometryPatch(
 	patch->Plane[0]->Point3d[2]->Coordinate3 = z3;
 
 	static_cast<_resqml2__PlaneSetRepresentation*>(gsoapProxy2_0_1)->Planes.push_back(patch);
+
+	getRepository()->addRelationship(this, localCrs);
 }
 
 ULONG64 PlaneSetRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const

@@ -25,9 +25,8 @@ namespace RESQML2_0_1_NS
 	class PolylineSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	private :
-		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const;
-		void init(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
-				  const std::string & guid, const std::string & title);
+		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
+		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
 
 	public:
 
@@ -38,33 +37,29 @@ namespace RESQML2_0_1_NS
 		
 		/**
 		* Creates an instance of this class in a gsoap context.
-		* @param crs							The local CRS where the geometry of this representation is given.
 		* @param guid							The guid to set to the new instance. If empty then a new guid will be generated.
 		* @param title							A title for the instance to create.
 		*/
-		PolylineSetRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
-				const std::string & guid, const std::string & title);
+		PolylineSetRepresentation(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
 
 		/**
 		* Creates an instance of this class in a gsoap context.
 		* @param interp							The interpretation this representation represents.
-		* @param crs							The local CRS where the geometry of this representation is given.
 		* @param guid							The guid to set to the new instance. If empty then a new guid will be generated.
 		* @param title							A title for the instance to create.
 		*/
-		PolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
-				const std::string & guid, const std::string & title);
+		PolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+			const std::string & guid, const std::string & title);
 
 		/**
 		* Creates an instance of this class in a gsoap context.
 		* @param interp							The interpretation this representation represents.
-		* @param crs							The local CRS where the geometry of this representation is given.
 		* @param guid							The guid to set to the new instance. If empty then a new guid will be generated.
 		* @param title							A title for the instance to create.
 		* @param roleKind						Indicates the role of this representation.
 		*/
-		PolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
-				const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__LineRole & roleKind);
+		PolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+			const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml2__LineRole roleKind);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -76,7 +71,7 @@ namespace RESQML2_0_1_NS
 		*/
 		~PolylineSetRepresentation() {}
 
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		/**
 		* Get the number of polylines in a given patch
@@ -87,7 +82,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
-		DLL_IMPORT_OR_EXPORT void getNodeCountPerPolylineInPatch(const unsigned int & patchIndex, unsigned int * NodeCountPerPolyline) const;
+		DLL_IMPORT_OR_EXPORT void getNodeCountPerPolylineInPatch(unsigned int patchIndex, unsigned int * nodeCountPerPolyline) const;
 
 		/**
 		 * Get all the node count par polyline for all teh aptches of the representation.
@@ -121,9 +116,9 @@ namespace RESQML2_0_1_NS
 		* @param proxy					The HDF proxy which defines where the nodes and triangle indices will be stored.
 		*/
 		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
-				unsigned int * NodeCountPerPolyline, double * nodes,
-				const unsigned int & polylineCount, const bool & allPolylinesClosedFlag,
-				COMMON_NS::AbstractHdfProxy* proxy);
+			unsigned int * nodeCountPerPolyline, double * nodes,
+			unsigned int polylineCount, bool allPolylinesClosedFlag,
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		* Push back a new patch of polylines
@@ -134,9 +129,9 @@ namespace RESQML2_0_1_NS
 		* @param proxy					The HDF proxy which defines where the nodes and triangle indices will be stored.
 		*/
 		DLL_IMPORT_OR_EXPORT void pushBackGeometryPatch(
-				unsigned int * NodeCountPerPolyline, double * nodes,
-				const unsigned int & polylineCount, bool * polylineClosedFlags,
-				COMMON_NS::AbstractHdfProxy* proxy);
+			unsigned int * nodeCountPerPolyline, double * nodes,
+			unsigned int polylineCount, bool * polylineClosedFlags,
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		* Check if all polylines contained in a single patch are closed or not.
@@ -144,7 +139,7 @@ namespace RESQML2_0_1_NS
 		* @param patchIndex	The index of the patch to check.
 		* @return			True if all polylines of the studied patch are closed.
 		*/
-		DLL_IMPORT_OR_EXPORT bool areAllPolylinesClosedOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT bool areAllPolylinesClosedOfPatch(unsigned int patchIndex) const;
 		DLL_IMPORT_OR_EXPORT bool areAllPolylinesClosedOfAllPatches() const;
 
 		/**

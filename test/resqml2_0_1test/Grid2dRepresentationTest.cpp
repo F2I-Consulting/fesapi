@@ -54,15 +54,9 @@ Grid2dRepresentationTest::Grid2dRepresentationTest(DataObjectRepository* repo, b
 
 void Grid2dRepresentationTest::initRepoHandler()
 {
-	LocalDepth3dCrs * crs = repo->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-	if (crs == nullptr) {
-		LocalDepth3dCrsTest crsTest(repo, true);
-		crs = repo->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-	}
-
 	Horizon* feature = repo->createHorizon(defaultUuidFeature, defaultTitleFeature);
 	HorizonInterpretation* interp = repo->createHorizonInterpretation(feature, defaultUuidInterp, defaultTitleInterp);
-	Grid2dRepresentation* rep = repo->createGrid2dRepresentation(interp, crs, defaultUuid, defaultTitle);
+	Grid2dRepresentation* rep = repo->createGrid2dRepresentation(interp, defaultUuid, defaultTitle);
 
 	Grid2dRepresentation* supportingRep = repo->getDataObjectByUuid<Grid2dRepresentation>(SeismicLatticeRepresentationTest::defaultUuid);
 	if (supportingRep == nullptr) {

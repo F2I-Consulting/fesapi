@@ -57,7 +57,7 @@ void CompressedIjkGridExplicitRepresentationTest::initRepoHandler() {
 	hdfProxy->setCompressionLevel(6);
 
 	// creating the ijk grid
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = repo->createIjkGridExplicitRepresentation(crs, defaultUuid, defaultTitle, 2, 1, 1);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, 2, 1, 1);
 	REQUIRE( ijkGrid != nullptr );
 	unsigned int pillarOfCoordinateLine[2] = {1,4};
 	unsigned int splitCoordinateLineColumnCumulativeCount[2] = {1,2};

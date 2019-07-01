@@ -33,14 +33,13 @@ namespace RESQML2_NS
 
 		/**
 		* Default constructor
-		* Set the relationship with an AbstractRepresentation and a local property type.
 		*/
-		AbstractProperty(): local3dCrs(nullptr) {}
+		AbstractProperty() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractProperty(gsoap_resqml2_0_1::resqml2__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap), local3dCrs(nullptr) {}
+		AbstractProperty(gsoap_resqml2_0_1::resqml2__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -76,11 +75,6 @@ namespace RESQML2_NS
 		* Getter for the content type of the representation which is described by this property
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getRepresentationContentType() const;
-
-		/**
-		* Set the Hdf Proxy where the numerical values are stored.
-		*/
-		DLL_IMPORT_OR_EXPORT void setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
 
 		/**
 		* Getter for the hdf proxy which stores this instance values.
@@ -251,14 +245,7 @@ namespace RESQML2_NS
 
 	protected:
 
-		void setXmlRepresentation(class AbstractRepresentation * rep);
-		void setXmlTimeSeries(TimeSeries * ts);
-		void setXmlLocalPropertyKind(class PropertyKind* propKind);
-
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-		virtual void resolveTargetRelationships(COMMON_NS::DataObjectRepository * epcDoc);
-
-		class AbstractLocal3dCrs *		local3dCrs;			/// The used local 3D CRS in case the property values need one.
+		virtual void loadTargetRelationships() const;
 	};
 }
 

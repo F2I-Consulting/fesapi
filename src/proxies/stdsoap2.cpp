@@ -1,5 +1,5 @@
 /*
-        stdsoap2.c[pp] 2.8.85
+        stdsoap2.c[pp] 2.8.86
 
         gSOAP runtime engine
 
@@ -31,7 +31,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_LIB_VERSION 20885
+#define GSOAP_LIB_VERSION 20886
 
 #ifdef AS400
 # pragma convert(819)   /* EBCDIC to ASCII */
@@ -65,10 +65,10 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 #endif
 
 #ifdef __cplusplus
-SOAP_SOURCE_STAMP("@(#) stdsoap2.cpp ver 2.8.85 2019-06-24 00:00:00 GMT")
+SOAP_SOURCE_STAMP("@(#) stdsoap2.cpp ver 2.8.86 2019-06-24 00:00:00 GMT")
 extern "C" {
 #else
-SOAP_SOURCE_STAMP("@(#) stdsoap2.c ver 2.8.85 2019-06-24 00:00:00 GMT")
+SOAP_SOURCE_STAMP("@(#) stdsoap2.c ver 2.8.86 2019-06-24 00:00:00 GMT")
 #endif
 
 /* 8bit character representing unknown character entity or multibyte data */
@@ -4430,8 +4430,8 @@ ssl_auth_init(struct soap *soap)
     DH_free(dh);
   }
   /* enable all TSLv1 protocols and disable SSLv3 by default if no SSL/TLS flags are set */
-  if (!(soap->ssl_flags & SOAP_SSLv3_TLSv1))
-    soap->ssl_flags = SOAP_TLSv1;
+  if ((soap->ssl_flags & SOAP_SSLv3_TLSv1) == 0)
+    soap->ssl_flags |= SOAP_TLSv1;
 #if OPENSSL_VERSION_NUMBER >= 0x10101000L
   if ((soap->ssl_flags & SOAP_SSLv3))
     minv = SSL3_VERSION;
@@ -4560,8 +4560,8 @@ ssl_auth_init(struct soap *soap)
       gnutls_certificate_server_set_request(soap->session, GNUTLS_CERT_REQUEST);
     gnutls_session_enable_compatibility_mode(soap->session);
     /* enable all TSLv1 protocols and disable SSLv3 by default if no SSL/TLS flags are set */
-    if (!(soap->ssl_flags & SOAP_SSLv3_TLSv1))
-      soap->ssl_flags = SOAP_TLSv1;
+    if ((soap->ssl_flags & SOAP_SSLv3_TLSv1) == 0)
+      soap->ssl_flags |= SOAP_TLSv1;
 #if GNUTLS_VERSION_NUMBER < 0x030300
     if ((soap->ssl_flags & SOAP_SSLv3))
       *protocol++ = GNUTLS_SSL3;
@@ -4594,8 +4594,8 @@ ssl_auth_init(struct soap *soap)
     if (err == GSK_OK)
       err = gsk_attribute_set_enum(soap->ctx, GSK_PROTOCOL_SSLV2, GSK_PROTOCOL_SSLV2_OFF); 
     /* enable all TSLv1 protocols and disable SSLv3 by default if no SSL/TLS flags are set */
-    if (!(soap->ssl_flags & SOAP_SSLv3_TLSv1))
-      soap->ssl_flags = SOAP_TLSv1;
+    if ((soap->ssl_flags & SOAP_SSLv3_TLSv1) == 0)
+      soap->ssl_flags |= SOAP_TLSv1;
     if (err == GSK_OK)
     {
       if ((soap->ssl_flags & SOAP_SSLv3))

@@ -55,24 +55,15 @@ SeismicLineRepresentationTest::SeismicLineRepresentationTest(DataObjectRepositor
 
 void SeismicLineRepresentationTest::initRepoHandler()
 {
-	LocalDepth3dCrs * crs = repo->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-	if (crs == nullptr) {
-		LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(repo, true);
-		crs = repo->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-		delete crsTest;
-	}
-
-	COMMON_NS::AbstractHdfProxy * hdfProxy = repo->getHdfProxy(0);
-
 	SeismicLineSetFeature* seismicLineSet = repo->createSeismicLineSet(defaultUuidFeatureSet, defaultTitleFeatureSet);
 
 	// Seismic Line
 	SeismicLineFeature* seismicLine = repo->createSeismicLine(defaultUuidFeature, defaultTitleFeature, 1, 0, 5);
 	seismicLine->setSeismicLineSet(seismicLineSet);
 	GenericFeatureInterpretation* seismicLineInterp = repo->createGenericFeatureInterpretation(seismicLine, defaultUuidInterp, defaultTitleInterp);
-	PolylineRepresentation* seismicLineRep = repo->createPolylineRepresentation(seismicLineInterp, crs, defaultUuid, defaultTitle);
+	PolylineRepresentation* seismicLineRep = repo->createPolylineRepresentation(seismicLineInterp, defaultUuid, defaultTitle);
 	double seismicLinePoints[15] = { 0, 100, 0, 150, 110, 0, 300, 120, 0, 450, 130, 0, 600, 140, 0 };
-	seismicLineRep->setGeometry(seismicLinePoints, 5, hdfProxy);
+	seismicLineRep->setGeometry(seismicLinePoints, 5, nullptr);
 }
 
 void SeismicLineRepresentationTest::readRepoHandler()

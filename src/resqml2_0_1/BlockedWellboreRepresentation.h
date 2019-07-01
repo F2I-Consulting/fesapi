@@ -112,8 +112,6 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT std::string getSupportingGridRepresentationUuid(unsigned int index) const;
 
 	private:
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc);
+		void loadTargetRelationships() const;
 	};
 }

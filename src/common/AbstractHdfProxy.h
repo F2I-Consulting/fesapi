@@ -50,9 +50,7 @@ namespace COMMON_NS
 		* Instantiate and initialize the gsoap proxy v2.0.1.
 		* This method is defined in order to be used in derived class without having to link to generated gsoap files.
 		*/
-		void initGsoapProxy(soap* soapContext, const std::string & guid, const std::string & title, EmlVersion emlVersion);
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
+		void initGsoapProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, EmlVersion emlVersion);
 
 	public:  
 		virtual ~AbstractHdfProxy() {}
@@ -563,9 +561,5 @@ namespace COMMON_NS
 		* Check wether a dataset is compressed or not.
 		*/
 		virtual bool isCompressed(const std::string & datasetName) = 0;
-  
-		friend void RESQML2_NS::AbstractRepresentation::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
-		friend void RESQML2_NS::AbstractProperty::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
-
 	};
 }

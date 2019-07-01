@@ -23,7 +23,6 @@ under the License.
 #include "resqml2_0_1/StratigraphicUnitInterpretation.h"
 
 using namespace std;
-using namespace epc;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
@@ -70,14 +69,13 @@ void SealedVolumeFrameworkRepresentation::setSealedSurfaceFramework(SealedSurfac
 	if (ssf == nullptr) {
 		throw invalid_argument("Cannot set a null SealedSurfaceFrameworkRepresentation");
 	}
-
-	// EPC
-	ssf->svfSet.push_back(this);
-
-	// XML
-	if (updateXml) {
-		setXmlSealedSurfaceFramework(ssf);
+	if (getRepository() == nullptr) {
+		ssf->getRepository()->addOrReplaceDataObject(this);
 	}
+
+	getRepository()->addRelationship(this, ssf);
+
+	setXmlSealedSurfaceFramework(ssf);
 }
 
 void SealedVolumeFrameworkRepresentation::setXmlSealedSurfaceFramework(class SealedSurfaceFrameworkRepresentation* ssf)
@@ -99,13 +97,9 @@ void SealedVolumeFrameworkRepresentation::setInterpretationOfVolumeRegion(unsign
 		throw range_error("The region index is out of range.");
 	}
 
-	// EPC
-	stratiUnitInterp->svfSet.push_back(this);
+	getRepository()->addRelationship(this, stratiUnitInterp);
 
-	// XML
-	if (updateXml) {
-		setXmlInterpretationOfVolumeRegion(regionIndex, stratiUnitInterp);
-	}
+	setXmlInterpretationOfVolumeRegion(regionIndex, stratiUnitInterp);
 }
 
 void SealedVolumeFrameworkRepresentation::setXmlInterpretationOfVolumeRegion(unsigned int regionIndex, StratigraphicUnitInterpretation * stratiUnitInterp)
@@ -307,54 +301,15 @@ bool SealedVolumeFrameworkRepresentation::getSideFlagOfInternalShellFace(unsigne
 	return getRegionInternalShellFace(regionIndex, internalShellIndex, faceIndex)->SideIsPlus;
 }
 
-vector<Relationship> SealedVolumeFrameworkRepresentation::getAllEpcRelationships() const
+void SealedVolumeFrameworkRepresentation::loadTargetRelationships() const
 {
-	vector<Relationship> result = RESQML2_NS::RepresentationSetRepresentation::getAllEpcRelationships();
+	RESQML2_NS::RepresentationSetRepresentation::loadTargetRelationships();
 
-	SealedSurfaceFrameworkRepresentation* ssf = getSealedStructuralFramework();
-	Relationship relSsf(ssf->getPartNameInEpcDocument(), "", ssf->getUuid());
-	relSsf.setDestinationObjectType();
-	result.push_back(relSsf);
+	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getSealedStructuralFrameworkDor();
+	convertDorIntoRel<SealedSurfaceFrameworkRepresentation>(dor);
 
 	for (size_t regionIdx = 0; regionIdx < getRegionCount(); ++regionIdx) {
-		StratigraphicUnitInterpretation* stratiUnitInterp = getStratiUnitInterp(regionIdx);
-		Relationship relSii(stratiUnitInterp->getPartNameInEpcDocument(), "", stratiUnitInterp->getUuid());
-		relSii.setDestinationObjectType();
-		result.push_back(relSii);
+		dor = getStratiUnitInterpDor(regionIdx);
+		convertDorIntoRel<StratigraphicUnitInterpretation>(dor);
 	}
-
-	return result;
-}
-
-void SealedVolumeFrameworkRepresentation::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
-{
-	RESQML2_NS::RepresentationSetRepresentation::resolveTargetRelationships(epcDoc);
-
-	updateXml = false;
-
-	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getSealedStructuralFrameworkDor();
-	SealedSurfaceFrameworkRepresentation* ssf = epcDoc->getDataObjectByUuid<SealedSurfaceFrameworkRepresentation>(dor->UUID);
-	if (ssf == nullptr) { // partial transfer
-		getRepository()->createPartial(dor);
-		ssf = getRepository()->getDataObjectByUuid<SealedSurfaceFrameworkRepresentation>(dor->UUID);
-	}
-	if (ssf == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-	setSealedSurfaceFramework(ssf);
-
-	for (size_t regionIdx = 0; regionIdx < getRegionCount(); ++regionIdx) {
-		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getStratiUnitInterpDor(regionIdx);
-		StratigraphicUnitInterpretation* sui = epcDoc->getDataObjectByUuid<StratigraphicUnitInterpretation>(dor->UUID);
-		if (sui == nullptr) { // partial transfer
-			getRepository()->createPartial(dor);
-			sui = getRepository()->getDataObjectByUuid<StratigraphicUnitInterpretation>(dor->UUID);
-		}
-		if (sui == nullptr) {
-			throw invalid_argument("The DOR looks invalid.");
-		}
-		setInterpretationOfVolumeRegion(regionIdx, sui);
-	}
-
-	updateXml = true;
 }

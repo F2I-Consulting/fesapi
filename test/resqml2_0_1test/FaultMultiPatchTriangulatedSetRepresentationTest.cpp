@@ -50,13 +50,9 @@ FaultMultiPatchTriangulatedSetRepresentationTest::FaultMultiPatchTriangulatedSet
 void FaultMultiPatchTriangulatedSetRepresentationTest::initRepoHandler()
 {
 	FaultInterpretationTest * interpTest = new FaultInterpretationTest(repo, true);
-
-	LocalDepth3dCrsTest * crsTest = new LocalDepth3dCrsTest(repo, true);
-
 	FaultInterpretation* interp = repo->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
-	LocalDepth3dCrs* crs = repo->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 
-	TriangulatedSetRepresentation* rep = repo->createTriangulatedSetRepresentation(interp, crs, defaultUuid, defaultTitle);
+	TriangulatedSetRepresentation* rep = repo->createTriangulatedSetRepresentation(interp, defaultUuid, defaultTitle);
 	REQUIRE( rep != nullptr );
 
 	// Patch 0
@@ -87,7 +83,6 @@ void FaultMultiPatchTriangulatedSetRepresentationTest::initRepoHandler()
 
 	// cleaning
 	delete interpTest;
-	delete crsTest;
 }
 
 void FaultMultiPatchTriangulatedSetRepresentationTest::readRepoHandler()

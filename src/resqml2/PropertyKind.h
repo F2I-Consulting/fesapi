@@ -105,12 +105,6 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/**
-		* Add a representation values object which uses this property type.
-		* Does not add the inverse relationship i.e. from the representation values object to this property type.
-		*/
-		DLL_IMPORT_OR_EXPORT void addProperty(class AbstractProperty* repVal) {propertySet.push_back(repVal);}
-
-		/**
 		* Check if this property kind is a child of a particular standard Energistics Property kind.
 		*/
 		DLL_IMPORT_OR_EXPORT virtual bool isChildOf(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind standardPropKind) const = 0;
@@ -128,15 +122,6 @@ namespace RESQML2_NS
 	protected:
 		virtual void setXmlParentPropertyKind(PropertyKind* parentPropertyKind) = 0;
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc);
-
-		// XML backward relationship
-		std::vector<class AbstractProperty*> propertySet;
-		std::vector<PropertyKind*> childPropertyKind;
-
-		friend void AbstractProperty::setLocalPropertyKind(PropertyKind* propKind);
+		void loadTargetRelationships() const;
 	};
 }
-
-

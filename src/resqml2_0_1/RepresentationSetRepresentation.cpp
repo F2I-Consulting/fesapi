@@ -43,17 +43,18 @@ RepresentationSetRepresentation::RepresentationSetRepresentation(RESQML2_NS::Abs
 	setInterpretation(interp);
 }
 
-RepresentationSetRepresentation::RepresentationSetRepresentation(COMMON_NS::DataObjectRepository* epcDoc, const std::string & guid, const std::string & title)
+RepresentationSetRepresentation::RepresentationSetRepresentation(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title)
 {
-	if (epcDoc == nullptr) {
-		throw invalid_argument("The epc document cannot be NULL.");
+	if (repo == nullptr) {
+		throw invalid_argument("The repo cannot be NULL.");
 	}
 
 	// proxy constructor
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORERepresentationSetRepresentation(epcDoc->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORERepresentationSetRepresentation(repo->getGsoapContext(), 1);
 	static_cast<_resqml2__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->IsHomogeneous = true;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
-}
 
+	repo->addOrReplaceDataObject(this);
+}

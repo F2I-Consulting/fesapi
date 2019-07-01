@@ -49,10 +49,10 @@ DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, con
 	xmlStandardPropKind->Kind = energisticsPropertyKind;
 	prop->PropertyKind = xmlStandardPropKind;
 
-	setRepresentation(rep);
-
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	setRepresentation(rep);
 }
 
 DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
@@ -63,12 +63,12 @@ DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, con
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
 
+	initMandatoryMetadata();
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
 	setRepresentation(rep);
 
 	setLocalPropertyKind(localPropKind);
-
-	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 void DiscreteProperty::pushBackLongHdf5Array1dOfValues(const long * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy,
@@ -296,6 +296,9 @@ std::string DiscreteProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHd
 void DiscreteProperty::pushBackLongHdf5ArrayOfValues(const long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy,
 	const long & nullValue, const long & minimumValue, const long & maximumValue)
 {
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
 
 	// HDF
@@ -320,6 +323,9 @@ void DiscreteProperty::pushBackLongHdf5ArrayOfValues(const long * values, unsign
 
 void DiscreteProperty::pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const int & nullValue, const int &  minimumValue, const int &  maximumValue)
 {
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
 
 	// HDF
@@ -343,6 +349,9 @@ void DiscreteProperty::pushBackIntHdf5ArrayOfValues(const int * values, unsigned
 
 void DiscreteProperty::pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const short & nullValue, const short &  minimumValue, const short &  maximumValue)
 {
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
 
 	// HDF
@@ -366,6 +375,9 @@ void DiscreteProperty::pushBackShortHdf5ArrayOfValues(const short * values, unsi
 
 void DiscreteProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue, const unsigned short &  minimumValue, const unsigned short &  maximumValue)
 {
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
 
 	// HDF
@@ -389,6 +401,9 @@ void DiscreteProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * va
 
 void DiscreteProperty::pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const char & nullValue, const char &  minimumValue, const char &  maximumValue)
 {
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
 
 	// HDF
@@ -479,14 +494,14 @@ bool DiscreteProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1::
 	return true;
 }
 
-LONG64 DiscreteProperty::getMinimumValue()
+LONG64 DiscreteProperty::getMinimumValue() const
 {
 	_resqml2__DiscreteProperty* prop = static_cast<_resqml2__DiscreteProperty*>(gsoapProxy2_0_1);
 
 	return prop->MinimumValue.empty() ? (std::numeric_limits<LONG64>::max)() : prop->MinimumValue[0];
 }
 
-LONG64 DiscreteProperty::getMaximumValue()
+LONG64 DiscreteProperty::getMaximumValue() const
 {
 	_resqml2__DiscreteProperty* prop = static_cast<_resqml2__DiscreteProperty*>(gsoapProxy2_0_1);
 

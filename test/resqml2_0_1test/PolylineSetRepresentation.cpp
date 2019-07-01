@@ -63,9 +63,9 @@ void PolylineSetRepresentation::initRepoHandler() {
 		crs = repo->getDataObjectByUuid<RESQML2_0_1_NS::LocalTime3dCrs>(LocalTime3dCrs::defaultUuid);
 	}
 
-	RESQML2_0_1_NS::PolylineSetRepresentation* rep = repo->createPolylineSetRepresentation(interp, crs, defaultUuid, defaultTitle);
+	RESQML2_0_1_NS::PolylineSetRepresentation* rep = repo->createPolylineSetRepresentation(interp, defaultUuid, defaultTitle);
 	REQUIRE(rep != nullptr);
-	rep->pushBackGeometryPatch(numNodesPerPolylinePerPatch, polylinePoints, 2, false, repo->getHdfProxySet()[0]);
+	rep->pushBackGeometryPatch(numNodesPerPolylinePerPatch, polylinePoints, 2, false, nullptr, crs);
 }
 
 void PolylineSetRepresentation::readRepoHandler()

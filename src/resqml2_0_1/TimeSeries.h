@@ -34,12 +34,12 @@ namespace RESQML2_0_1_NS
 		}
 
 		/**
-		* Creates a local property type which derives from a standard Energistics property type.
-		* @param epcDoc							the epc document where this intance will be stored.
+		* Creates a time series
+		* @param repo							the repo where this intance will be stored.
 		* @param guid							The guid to set to the local 3d crs. If empty then a new guid will be generated.
 		* @param title							The title of the instance.
 		*/
-		TimeSeries(soap* soapContext, const std::string & guid, const std::string & title);
+		TimeSeries(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 		 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.

@@ -151,10 +151,28 @@ namespace COMMON_NS
 	{
 	private:
 
+		/**
+		* The key is the UUID.
+		* The value is a vector storing all various versions of this data object
+		*/
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > dataObjects;
 #else
 		std::tr1::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > dataObjects;
+#endif
+
+		// Forward relationships
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject const * > > forwardRels;
+#else
+		std::tr1::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject const * > > forwardRels;
+#endif
+
+		// Backward relationships. It is redundant with forward relationships but it allows more performance.
+#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
+		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject const * > > backwardRels;
+#else
+		std::tr1::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject const * > > backwardRels;
 #endif
 
 		soap* gsoapContext;
@@ -162,6 +180,9 @@ namespace COMMON_NS
 		std::vector<std::string> warnings;
 
 		RESQML2_0_1_NS::PropertyKindMapper* propertyKindMapper;
+
+		COMMON_NS::AbstractHdfProxy* defaultHdfProxy;
+		RESQML2_NS::AbstractLocal3dCrs* defaultCrs;
 		
 		/**
 		* Necessary to avoid a dependency on GuidTools.h
@@ -190,6 +211,19 @@ namespace COMMON_NS
 		*/
 		std::string getGsoapErrorMessage() const;
 
+		template <class valueType>
+		std::vector<valueType const *> getObjsFilteredOnDatatype(const std::vector< COMMON_NS::AbstractObject const * >& objs) const
+		{
+			std::vector<valueType const *> result;
+			for (size_t i = 0; i < objs.size(); ++i) {
+				valueType const * castedObj = dynamic_cast<valueType const *>(objs[i]);
+				if (castedObj != nullptr) {
+					result.push_back(castedObj);
+				}
+			}
+			return result;
+		}
+
 	public:
 
 		DLL_IMPORT_OR_EXPORT DataObjectRepository();
@@ -207,12 +241,44 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void clear();
 
 		/**
+		* Add a directed relationship between two objects.
+		* Source and target are defined by Energistics data model. Usually, the simplest is to look at Energistics UML diagrams. Another way is to rely on XSD/XML : explicit relationships are contained by the source objects and point to target objects.
+		* @param source	The source object of the relationship
+		*/
+		DLL_IMPORT_OR_EXPORT void addRelationship(COMMON_NS::AbstractObject const * source, COMMON_NS::AbstractObject const * target);
+
+		/**
+		* Get the target objects of a particular data objects.
+		* Throw an exception if the target objects have not been defined yet.
+		*/
+		DLL_IMPORT_OR_EXPORT const std::vector< COMMON_NS::AbstractObject const * >& getTargetObjects(COMMON_NS::AbstractObject const * dataObj) const;
+
+		template <class valueType>
+		std::vector<valueType const *> getTargetObjects(COMMON_NS::AbstractObject const * dataObj) const
+		{
+			return getObjsFilteredOnDatatype<valueType>(getTargetObjects(dataObj));
+		}
+
+		/**
+		* Get the source objects of a particular data objects.
+		* Throw an exception if the source objects have not been defined yet.
+		*/
+		DLL_IMPORT_OR_EXPORT const std::vector< COMMON_NS::AbstractObject const * >& getSourceObjects(COMMON_NS::AbstractObject const * dataObj) const;
+
+		template <class valueType>
+		std::vector<valueType const *> getSourceObjects(COMMON_NS::AbstractObject const * dataObj) const
+		{
+			return getObjsFilteredOnDatatype<valueType>(getSourceObjects(dataObj));
+		}
+
+		/**
 		* Update all the relationships based on the contained dataobjects
 		*/
 		DLL_IMPORT_OR_EXPORT void updateAllRelationships();
 
 		/**
 		* Add or replace (based on UUID and version) a dataobject in the repository.
+		* It does not update the rel of the added or replaced data object.
 		* @param proxy	The dataobject to add or replace.
 		*/
 		DLL_IMPORT_OR_EXPORT void addOrReplaceDataObject(COMMON_NS::AbstractObject* proxy);
@@ -322,6 +388,18 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::LocalTime3dCrs*> getLocalTime3dCrsSet() const;
 
 		/**
+		* Get the default CRS for writing.
+		* It is used in all writing methods where no explicit CRS is given.
+		*/
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractLocal3dCrs* getDefaultCrs() const { return defaultCrs; }
+
+		/**
+		* Set a default CRS for writing.
+		* It will be used in all writing methods where no explicit CRS is given.
+		*/
+		DLL_IMPORT_OR_EXPORT void setDefaultCrs(RESQML2_NS::AbstractLocal3dCrs* crs) { defaultCrs = crs; }
+
+		/**
 		* DEPRECATED : use getDataObjects template method
 		* Get all the stratigraphic columns contained into the EPC document
 		*/
@@ -340,27 +418,27 @@ namespace COMMON_NS
 		/**
 		* Get all the individual representations of faults which are associated to a polyline topology
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getFaultPolylineSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation const *> getFaultPolylineSetRepSet() const;
 
 		/**
 		* Get all the individual representations of fractures which are associated to a polyline topology
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getFracturePolylineSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation const *> getFracturePolylineSetRepSet() const;
 
 		/**
 		* Get all the individual representations of frontiers which are associated to a polyline set topology
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getFrontierPolylineSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation const *> getFrontierPolylineSetRepSet() const;
 
 		/**
 		* Get all the individual representations of faults which are associated to a triangulation set topology
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getFaultTriangulatedSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation const *> getFaultTriangulatedSetRepSet() const;
 
 		/**
 		* Get all the individual representations of fractures which are associated to a triangulation set topology
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getFractureTriangulatedSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation const *> getFractureTriangulatedSetRepSet() const;
 
 		/**
 		* Get all the horizons contained into the EPC document
@@ -383,22 +461,22 @@ namespace COMMON_NS
 		/**
 		* Get all the individual representations of horizons which are associated to grid 2d set topology
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::Grid2dRepresentation*> getHorizonGrid2dRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::Grid2dRepresentation const *> getHorizonGrid2dRepSet() const;
 
 		/**
 		* Get all the single polyline representations of all the horizons
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineRepresentation*> getHorizonPolylineRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineRepresentation const *> getHorizonPolylineRepSet() const;
 
 		/**
 		* Get all the single polyline representations of all the horizons
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation*> getHorizonPolylineSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation const *> getHorizonPolylineSetRepSet() const;
 
 		/**
 		* Get all the triangulated set representations of all the horizons
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getHorizonTriangulatedSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation const *> getHorizonTriangulatedSetRepSet() const;
 
 		/**
 		* DEPRECATED : use getDataObjects template method
@@ -438,12 +516,12 @@ namespace COMMON_NS
 		/**
 		* Get all the trajectory representations of all wellbores.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::WellboreTrajectoryRepresentation*> getWellboreTrajectoryRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::WellboreTrajectoryRepresentation const *> getWellboreTrajectoryRepresentationSet() const;
 
 		/**
 		* Get all the devaition survey of all wellbores.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::DeviationSurveyRepresentation*> getDeviationSurveyRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::DeviationSurveyRepresentation const *> getDeviationSurveyRepresentationSet() const;
 
 		/**
 		* DEPRECATED : use getDataObjects template method
@@ -544,6 +622,18 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT std::vector<COMMON_NS::AbstractHdfProxy*> getHdfProxySet() const;
 		DLL_IMPORT_OR_EXPORT unsigned int getHdfProxyCount() const;
 		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractHdfProxy* getHdfProxy(unsigned int index) const;
+
+		/**
+		* Get the default hdf proxy for writing.
+		* It is used in all writing methods where no explicit HDF proxy is given.
+		*/
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractHdfProxy* getDefaultHdfProxy() const { return defaultHdfProxy; }
+
+		/**
+		* Set a default hdf proxy for writing.
+		* It will be used in all writing methods where no explicit HDF proxy is given.
+		*/
+		DLL_IMPORT_OR_EXPORT void setDefaultHdfProxy(COMMON_NS::AbstractHdfProxy* hdfProxy) { defaultHdfProxy = hdfProxy; }
 
 		/**
 		* Get a data object from the repository by means of its uuid.
@@ -921,34 +1011,34 @@ namespace COMMON_NS
 
 		//************ REPRESENTATION ********
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::TriangulatedSetRepresentation* createTriangulatedSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::TriangulatedSetRepresentation* createTriangulatedSetRepresentation(const std::string & guid, const std::string & title);
+
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::TriangulatedSetRepresentation* createTriangulatedSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PolylineSetRepresentation* createPolylineSetRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PolylineSetRepresentation* createPolylineSetRepresentation(const std::string & guid, const std::string & title);
+
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PolylineSetRepresentation* createPolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PolylineSetRepresentation* createPolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PolylineSetRepresentation* createPolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+			const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml2__LineRole roleKind);
+
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PointSetRepresentation* createPointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PolylineSetRepresentation* createPolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
-			const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__LineRole & roleKind);
-
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PointSetRepresentation* createPointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PlaneSetRepresentation* createPlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PlaneSetRepresentation* createPlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
-			const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PolylineRepresentation* createPolylineRepresentation(const std::string & guid, const std::string & title, bool isClosed = false);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PolylineRepresentation* createPolylineRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PolylineRepresentation* createPolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title, bool isClosed = false);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PolylineRepresentation* createPolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
-			const std::string & guid, const std::string & title, bool isClosed = false);
-
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PolylineRepresentation* createPolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PolylineRepresentation* createPolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__LineRole & roleKind, bool isClosed = false);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::Grid2dRepresentation* createGrid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::Grid2dRepresentation* createGrid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo);
@@ -994,42 +1084,38 @@ namespace COMMON_NS
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::AbstractIjkGridRepresentation* createPartialTruncatedIjkGridRepresentation(const std::string & guid, const std::string & title);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
-			const std::string & guid, const std::string & title,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(const std::string & guid, const std::string & title,
+			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
+			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
-			const std::string & guid, const std::string & title,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(const std::string & guid, const std::string & title,
+			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
+			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
-			const std::string & guid, const std::string & title,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(const std::string & guid, const std::string & title,
+			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
+			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(
 			const std::string & guid, const std::string & title,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
+			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount);
+			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::UnstructuredGridRepresentation* createPartialUnstructuredGridRepresentation(const std::string & guid, const std::string & title);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
-			const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(const std::string & guid, const std::string & title,
 			const ULONG64 & cellCount);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::SubRepresentation* createPartialSubRepresentation(const std::string & guid, const std::string & title);

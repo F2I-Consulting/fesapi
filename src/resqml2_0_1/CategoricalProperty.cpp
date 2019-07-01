@@ -40,7 +40,6 @@ const char* CategoricalProperty::XML_TAG = "CategoricalProperty";
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
 	StringTableLookup* strLookup, const resqml2__ResqmlPropertyKind & energisticsPropertyKind)
-	: stringLookup(strLookup)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORECategoricalProperty(rep->getGsoapContext(), 1);	
 	_resqml2__CategoricalProperty* prop = static_cast<_resqml2__CategoricalProperty*>(gsoapProxy2_0_1);
@@ -51,62 +50,40 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	xmlStandardPropKind->Kind = energisticsPropertyKind;
 	prop->PropertyKind = xmlStandardPropKind;
 
-	stringLookup->addCategoricalPropertyValues(this);
-	prop->Lookup = stringLookup->newResqmlReference();
-
-	setRepresentation(rep);
-
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	prop->Lookup = strLookup->newResqmlReference();
+	getRepository()->addRelationship(this, strLookup);
+
+	setRepresentation(rep);
 }
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
 	StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropKind)
-	:stringLookup(strLookup)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORECategoricalProperty(rep->getGsoapContext(), 1);	
 	_resqml2__CategoricalProperty* prop = static_cast<_resqml2__CategoricalProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
 
-	stringLookup->addCategoricalPropertyValues(this);
-	prop->Lookup = stringLookup->newResqmlReference();
+	initMandatoryMetadata();
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	prop->Lookup = strLookup->newResqmlReference();
+	getRepository()->addRelationship(this, strLookup);
 
 	setRepresentation(rep);
 
 	setLocalPropertyKind(localPropKind);
-
-	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
-vector<Relationship> CategoricalProperty::getAllEpcRelationships() const
+void CategoricalProperty::loadTargetRelationships() const
 {
-	vector<Relationship> result = AbstractValuesProperty::getAllEpcRelationships();
+	AbstractValuesProperty::loadTargetRelationships();
 
-	_resqml2__CategoricalProperty* prop = static_cast<_resqml2__CategoricalProperty*>(gsoapProxy2_0_1);
-
-	if (stringLookup)
-	{
-		Relationship rel(stringLookup->getPartNameInEpcDocument(), "", prop->Lookup->UUID);
-		rel.setDestinationObjectType();
-		result.push_back(rel);
-	}
-	else
-		throw domain_error("The string lookup associated to the categorical property values cannot be nullptr.");
-
-	return result;
-}
-
-void CategoricalProperty::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
-{
-	AbstractValuesProperty:: resolveTargetRelationships(epcDoc);
-
-	_resqml2__CategoricalProperty* prop = static_cast<_resqml2__CategoricalProperty*>(gsoapProxy2_0_1);
-	stringLookup = static_cast<StringTableLookup*>(epcDoc->getDataObjectByUuid(prop->Lookup->UUID));
-	if (stringLookup)
-		stringLookup->addCategoricalPropertyValues(this);
+	convertDorIntoRel<StringTableLookup>(static_cast<_resqml2__CategoricalProperty*>(gsoapProxy2_0_1)->Lookup);
 }
 
 void CategoricalProperty::pushBackLongHdf5Array1dOfValues(const long * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
@@ -129,6 +106,9 @@ void CategoricalProperty::pushBackLongHdf5Array3dOfValues(const long * values, c
 
 void CategoricalProperty::pushBackLongHdf5ArrayOfValues(const long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
 {
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue);
 
 	// HDF
@@ -159,6 +139,9 @@ void CategoricalProperty::pushBackUShortHdf5Array3dOfValues(const unsigned short
 
 void CategoricalProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue)
 {
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue);
 
 	// HDF
@@ -248,3 +231,7 @@ bool CategoricalProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_
 	return true;
 }
 
+StringTableLookup* CategoricalProperty::getStringLookup()
+{
+	return getRepository()->getDataObjectByUuid<StringTableLookup>(getStringLookupUuid());
+}

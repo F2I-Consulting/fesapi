@@ -25,30 +25,20 @@ AbstractHdfProxy::AbstractHdfProxy(const std::string & packageDirAbsolutePath, c
 {
 }
 
-void AbstractHdfProxy::initGsoapProxy(soap* soapContext, const std::string & guid, const std::string & title, EmlVersion emlVersion)
+void AbstractHdfProxy::initGsoapProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, EmlVersion emlVersion)
 {
 	if (emlVersion == TWO_DOT_ZERO) {
-		gsoapProxy2_0_1 = gsoap_resqml2_0_1::soap_new_eml20__obj_USCOREEpcExternalPartReference(soapContext, 1);
+		gsoapProxy2_0_1 = gsoap_resqml2_0_1::soap_new_eml20__obj_USCOREEpcExternalPartReference(repo->getGsoapContext(), 1);
 		static_cast<gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* const>(gsoapProxy2_0_1)->MimeType = "application/x-hdf5";
 	}
 	else {
-		gsoapProxy2_1 = gsoap_eml2_1::soap_new_eml21__EpcExternalPartReference(soapContext, 1);
-		static_cast<gsoap_eml2_1::_eml21__EpcExternalPartReference* const>(gsoapProxy2_1)->MimeType = gsoap_eml2_1::soap_new_std__string(soapContext, 1);
+		gsoapProxy2_1 = gsoap_eml2_1::soap_new_eml21__EpcExternalPartReference(repo->getGsoapContext(), 1);
+		static_cast<gsoap_eml2_1::_eml21__EpcExternalPartReference* const>(gsoapProxy2_1)->MimeType = gsoap_eml2_1::soap_new_std__string(repo->getGsoapContext(), 1);
 		static_cast<gsoap_eml2_1::_eml21__EpcExternalPartReference* const>(gsoapProxy2_1)->MimeType->assign("application/x-hdf5");
 	}
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
-}
 
-std::vector<epc::Relationship> AbstractHdfProxy::getAllEpcRelationships() const
-{
-	std::vector<epc::Relationship> result = EpcExternalPartReference::getAllEpcRelationships();
-
-	// External part
-	epc::Relationship relExt(relativeFilePath, "", "Hdf5File", false);
-	relExt.setExternalResourceType();
-	result.push_back(relExt);
-
-	return result;
+	repo->addOrReplaceDataObject(this);
 }

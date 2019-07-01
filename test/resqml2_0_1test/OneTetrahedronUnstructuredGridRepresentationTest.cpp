@@ -46,29 +46,16 @@ OneTetrahedronUnstructuredGridRepresentationTest::OneTetrahedronUnstructuredGrid
 }
 
 void OneTetrahedronUnstructuredGridRepresentationTest::initRepoHandler() {
-	// getting the local depth 3d crs
-	LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(repo, true);
-	RESQML2_0_1_NS::LocalDepth3dCrs* crs = repo->getDataObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-
-	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
-
 	// creating the unstructured grid
-	RESQML2_0_1_NS::UnstructuredGridRepresentation* tetraGrid = repo->createUnstructuredGridRepresentation(crs, defaultUuid, defaultTitle, 1);
+	RESQML2_0_1_NS::UnstructuredGridRepresentation* tetraGrid = repo->createUnstructuredGridRepresentation(defaultUuid, defaultTitle, 1);
 	REQUIRE(tetraGrid != nullptr);
 	unsigned char faceRightHandness[4] = { 0, 0, 1, 1 };
 	ULONG64 faceIndicesPerCell[4] = { 0, 1, 2, 3 };
 	ULONG64 nodeIndicesPerCell[12] = { 0, 1, 2, 1, 2, 3, 0, 1, 3, 0, 2, 3 };
-	tetraGrid->setTetrahedraOnlyGeometry(faceRightHandness, nodes, 4, 4, hdfProxy, faceIndicesPerCell, nodeIndicesPerCell);
-
-	// cleaning
-	delete crsTest;
+	tetraGrid->setTetrahedraOnlyGeometry(faceRightHandness, nodes, 4, 4, nullptr, faceIndicesPerCell, nodeIndicesPerCell);
 }
 
 void OneTetrahedronUnstructuredGridRepresentationTest::readRepoHandler() {
-	// reading the local depth 3d crs
-	LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(repo, false);
-
 	// getting the unstructured grid
 	RESQML2_0_1_NS::UnstructuredGridRepresentation * unstructuredGrid = repo->getDataObjectByUuid<RESQML2_0_1_NS::UnstructuredGridRepresentation>(defaultUuid);
 
@@ -189,7 +176,4 @@ void OneTetrahedronUnstructuredGridRepresentationTest::readRepoHandler() {
 
 	// getPatchCount
 	REQUIRE( unstructuredGrid->getPatchCount() == 1);
-
-	// cleaning
-	delete crsTest;
 }

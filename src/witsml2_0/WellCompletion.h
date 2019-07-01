@@ -46,22 +46,15 @@ namespace WITSML2_0_NS
 
 		DLL_IMPORT_OR_EXPORT void setWell(class Well* witsmlWell);
 
-		/**
-		* Resolve all relationships of the object in an epc document.
-		*/
-		void resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc);
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-
-		DLL_IMPORT_OR_EXPORT const std::vector<WellboreCompletion*>& getWellboreCompletions() const { return wellboreCompletionSet; }
+		DLL_IMPORT_OR_EXPORT std::vector<WellboreCompletion const *> getWellboreCompletions() const;
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	protected:
-		// backwards relationships
-		std::vector<WellboreCompletion* > wellboreCompletionSet;
-
-		friend void WellboreCompletion::setWellCompletion(WellCompletion * wellCompletion);
+		/**
+		* Resolve all relationships of the object in the repository.
+		*/
+		void loadTargetRelationships() const;
 	};
 }

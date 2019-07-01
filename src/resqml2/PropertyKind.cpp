@@ -131,56 +131,31 @@ std::string PropertyKind::getParentLocalPropertyKindTitle() const
 
 void PropertyKind::setParentPropertyKind(PropertyKind* parentPropertyKind)
 {
-	parentPropertyKind->childPropertyKind.push_back(this);
-
-	if (updateXml) {
-		setXmlParentPropertyKind(parentPropertyKind);
+	if (parentPropertyKind == nullptr) {
+		throw invalid_argument("The parent property kind cannot be null");
 	}
+	if (getRepository() == nullptr) {
+		parentPropertyKind->getRepository()->addOrReplaceDataObject(this);
+	}
+	getRepository()->addRelationship(this, parentPropertyKind);
+
+	setXmlParentPropertyKind(parentPropertyKind);
 }
 
-vector<Relationship> PropertyKind::getAllEpcRelationships() const
-{
-	vector<Relationship> result;
-
-	// forward relationships
-	if (!isParentAnEnergisticsPropertyKind())
-	{
-		const PropertyKind* const parentPropertyKind = getParentLocalPropertyKind();
-		Relationship rel(parentPropertyKind->getPartNameInEpcDocument(), "", parentPropertyKind->getUuid());
-		rel.setDestinationObjectType();
-		result.push_back(rel);
-	}
-
-	// backwards relationships
-	for (size_t i = 0; i < propertySet.size(); ++i) {
-		Relationship rel(propertySet[i]->getPartNameInEpcDocument(), "", propertySet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	for (size_t i = 0; i < childPropertyKind.size(); ++i) {
-		Relationship rel(childPropertyKind[i]->getPartNameInEpcDocument(), "", childPropertyKind[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
-}
-
-void PropertyKind::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
+void PropertyKind::loadTargetRelationships() const
 {
 	if (isParentAnEnergisticsPropertyKind()) {
 		return;
 	}
 
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getParentLocalPropertyKindDor();
-	RESQML2_NS::PropertyKind* parentPk = epcDoc->getDataObjectByUuid<PropertyKind>(dor->UUID);
+	RESQML2_NS::PropertyKind* parentPk = getRepository()->getDataObjectByUuid<PropertyKind>(dor->UUID);
 	if (parentPk == nullptr) {
-		epcDoc->createPartial(dor);
-		parentPk = epcDoc->getDataObjectByUuid<PropertyKind>(dor->UUID);
+		getRepository()->createPartial(dor);
+		parentPk = getRepository()->getDataObjectByUuid<PropertyKind>(dor->UUID);
 		if (parentPk == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
 		}
 	}
-	parentPk->childPropertyKind.push_back(this);
+	getRepository()->addRelationship(this, parentPk);
 }

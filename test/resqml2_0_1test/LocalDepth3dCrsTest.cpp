@@ -51,7 +51,7 @@ void LocalDepth3dCrsTest::initRepoHandler()
 
 void LocalDepth3dCrsTest::readRepoHandler()
 {
-	REQUIRE( repo->getLocalDepth3dCrsSet().size() == 1 );
+	REQUIRE( repo->getLocalDepth3dCrsSet().size() == 2 );
 	LocalDepth3dCrs* crs = repo->getDataObjectByUuid<LocalDepth3dCrs>(defaultUuid);
 	REQUIRE(crs->getOriginOrdinal1() == 1000);
 	REQUIRE(crs->getOriginOrdinal2() == 2000);

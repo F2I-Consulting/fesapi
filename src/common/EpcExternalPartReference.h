@@ -57,12 +57,6 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const;
 
 	protected:
-
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc);
-
-		std::vector<RESQML2_NS::AbstractRepresentation*> representationSourceObject;					/// All the representations that use this external reference.
-		std::vector<RESQML2_NS::AbstractProperty*> propertySourceObject;								/// All the properties that use this external reference.
+		void loadTargetRelationships() const;
 	};
 }
-

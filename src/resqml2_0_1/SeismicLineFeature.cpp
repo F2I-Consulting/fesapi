@@ -27,14 +27,14 @@ using namespace epc;
 
 const char* SeismicLineFeature::XML_TAG = "SeismicLineFeature";
 
-SeismicLineFeature::SeismicLineFeature(soap* soapContext, const std::string & guid, const std::string & title,
-			const int & traceIndexIncrement, const int & firstTraceIndex, const unsigned int & traceCount):
-	seismicLineSet(nullptr)
+SeismicLineFeature::SeismicLineFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
+	int traceIndexIncrement, int firstTraceIndex, unsigned int traceCount)
 {
-	if (soapContext == nullptr)
+	if (repo == nullptr) {
 		throw invalid_argument("The soap context cannot be null.");
+	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORESeismicLineFeature(soapContext, 1);
+	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORESeismicLineFeature(repo->getGsoapContext(), 1);
 	_resqml2__SeismicLineFeature* seismicLine = static_cast<_resqml2__SeismicLineFeature*>(gsoapProxy2_0_1);
 
 	seismicLine->TraceIndexIncrement = traceIndexIncrement;
@@ -43,6 +43,8 @@ SeismicLineFeature::SeismicLineFeature(soap* soapContext, const std::string & gu
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	repo->addOrReplaceDataObject(this);
 }
 
 int SeismicLineFeature::getTraceIndexIncrement() const
@@ -62,44 +64,23 @@ unsigned int SeismicLineFeature::getTraceCount() const
 
 void SeismicLineFeature::setSeismicLineSet(SeismicLineSetFeature * seisLineSet)
 {
-	// EPC
-	seismicLineSet = seisLineSet;
-	seisLineSet->seismicLineSet.push_back(this);
+	getRepository()->addRelationship(this, seisLineSet);
 
-	// XML
-	if (updateXml)
-	{
-		static_cast<_resqml2__SeismicLineFeature*>(gsoapProxy2_0_1)->IsPartOf = seisLineSet->newResqmlReference();
-	}
+	static_cast<_resqml2__SeismicLineFeature*>(gsoapProxy2_0_1)->IsPartOf = seisLineSet->newResqmlReference();
 }
 
-std::vector<epc::Relationship> SeismicLineFeature::getAllEpcRelationships() const
+SeismicLineSetFeature* SeismicLineFeature::getSeismicLineSet() const
 {
-	std::vector<epc::Relationship> result;
-
-	if (seismicLineSet)
-	{
-		Relationship rel(seismicLineSet->getPartNameInEpcDocument(), "", seismicLineSet->getUuid());
-		rel.setDestinationObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
-}
-
-void SeismicLineFeature::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
-{
-	updateXml = false;
-
 	_resqml2__SeismicLineFeature* seismicLine = static_cast<_resqml2__SeismicLineFeature*>(gsoapProxy2_0_1);
 
-	if (seismicLine->IsPartOf)
-	{
-		SeismicLineSetFeature* seisLineSet = static_cast<SeismicLineSetFeature*>(epcDoc->getDataObjectByUuid(seismicLine->IsPartOf->UUID));
-		if (seisLineSet)
-			setSeismicLineSet(seisLineSet);
-	}
-
-	updateXml = true;
+	return seismicLine->IsPartOf == nullptr ? nullptr : getRepository()->getDataObjectByUuid<SeismicLineSetFeature>(seismicLine->IsPartOf->UUID);
 }
 
+void SeismicLineFeature::loadTargetRelationships() const
+{
+	_resqml2__SeismicLineFeature* seismicLine = static_cast<_resqml2__SeismicLineFeature*>(gsoapProxy2_0_1);
+
+	if (seismicLine->IsPartOf != nullptr) {
+		convertDorIntoRel<SeismicLineSetFeature>(seismicLine->IsPartOf);
+	}
+}

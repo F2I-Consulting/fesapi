@@ -171,6 +171,36 @@ void EpcDocument::setFilePath(const std::string & fp)
 	}
 }
 
+namespace {
+	std::vector<epc::Relationship> getAllEpcRelationships(const DataObjectRepository & repo, COMMON_NS::AbstractObject const * dataObj) {
+		std::vector<epc::Relationship> result;
+
+		const std::vector<COMMON_NS::AbstractObject const *>& srcObj = repo.getSourceObjects(dataObj);
+		for (size_t index = 0; index < srcObj.size(); ++index) {
+			Relationship relRep(srcObj[index]->getPartNameInEpcDocument(), "", srcObj[index]->getUuid());
+			relRep.setSourceObjectType();
+			result.push_back(relRep);
+		}
+
+		const std::vector<COMMON_NS::AbstractObject const *>& targetObj = repo.getTargetObjects(dataObj);
+		for (size_t index = 0; index < targetObj.size(); ++index) {
+			Relationship relRep(targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
+			relRep.setDestinationObjectType();
+			result.push_back(relRep);
+		}
+
+		// External part
+		COMMON_NS::AbstractHdfProxy const * hdfProxy = dynamic_cast<COMMON_NS::AbstractHdfProxy const *>(dataObj);
+		if (hdfProxy != nullptr) {
+			epc::Relationship relExt(hdfProxy->getRelativePath(), "", "Hdf5File", false);
+			relExt.setExternalResourceType();
+			result.push_back(relExt);
+		}
+
+		return result;
+	}
+}
+
 void EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64)
 {
 	// Cannot include zip.h for some macro conflict reasons with beast which also includes a port of zlib. Consequently cannot use macros below.
@@ -186,17 +216,16 @@ void EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64
 #endif
 	{
 		for (size_t i = 0; i < it->second.size(); ++i) {
-			if (!it->second[i]->isPartial()) {
+			if (!it->second[i]->isPartial() && dynamic_cast<WellboreMarker*>(it->second[i]) == nullptr) {
 				const string str = it->second[i]->serializeIntoString();
 
-				epc::FilePart* fp = package->createPart(str, it->second[i]->getPartNameInEpcDocument());
-				const std::vector<epc::Relationship> relSet = it->second[i]->getAllEpcRelationships();
+				epc::FilePart* const fp = package->createPart(str, it->second[i]->getPartNameInEpcDocument());
+				const std::vector<epc::Relationship>& relSet = getAllEpcRelationships(repo, it->second[i]);
 				for (size_t relIndex = 0; relIndex < relSet.size(); ++relIndex) {
 					fp->addRelationship(relSet[relIndex]);
 				}
 
-				epc::ContentType contentType(false, it->second[i]->getContentType(), it->second[i]->getPartNameInEpcDocument());
-				package->addContentType(contentType);
+				package->addContentType(epc::ContentType(false, it->second[i]->getContentType(), it->second[i]->getPartNameInEpcDocument()));
 			}
 		}
 	}
