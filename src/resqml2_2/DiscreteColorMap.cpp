@@ -28,7 +28,7 @@ using namespace RESQML2_2_NS;
 
 const char* DiscreteColorMap::XML_TAG = "DiscreteColorMap";
 
-DiscreteColorMap::DiscreteColorMap(soap* soapContext, const string& guid, const string& title)
+DiscreteColorMap::DiscreteColorMap(soap* soapContext, string const& guid, string const& title)
 {
 	if (soapContext == nullptr)
 		throw invalid_argument("The soap context cannot be null.");

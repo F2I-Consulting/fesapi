@@ -22,6 +22,8 @@ under the License.
 #include "resqml2/AbstractFeature.h"
 #include "resqml2/AbstractFeatureInterpretation.h"
 #include "resqml2/AbstractRepresentation.h"
+#include "resqml2/AbstractValuesProperty.h"
+#include "resqml2/PropertyKind.h"
 #include "resqml2_0_1/WellboreMarker.h"
 #include "resqml2_2/AbstractColorMap.h"
 #include "resqml2_2/DiscreteColorMap.h"
@@ -39,7 +41,7 @@ using namespace RESQML2_2_NS;
 
 const char* GraphicalInformationSet::XML_TAG = "GraphicalInformationSet";
 
-GraphicalInformationSet::GraphicalInformationSet(soap* soapContext, const string & guid, const string & title)
+GraphicalInformationSet::GraphicalInformationSet(soap* soapContext, string const& guid, string const& title)
 {
 	if (soapContext == nullptr)
 		throw invalid_argument("The soap context cannot be null.");
@@ -120,7 +122,7 @@ vector<Relationship> GraphicalInformationSet::getAllTargetRelationships() const
 	return result;
 }
 
-resqml2__DefaultGraphicalInformation* GraphicalInformationSet::getDefaultGraphicalInformationForAllIndexableElements(AbstractObject* targetObject) const
+resqml2__DefaultGraphicalInformation* GraphicalInformationSet::getDefaultGraphicalInformationForAllIndexableElements(AbstractObject const* targetObject) const
 {
 	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
 
@@ -136,7 +138,7 @@ resqml2__DefaultGraphicalInformation* GraphicalInformationSet::getDefaultGraphic
 	return nullptr;
 }
 
-resqml2__GraphicalInformationForWholeObject* GraphicalInformationSet::getDefaultGraphicalInformation(AbstractObject* targetObject) const
+resqml2__GraphicalInformationForWholeObject* GraphicalInformationSet::getDefaultGraphicalInformation(AbstractObject const* targetObject) const
 {
 	resqml2__DefaultGraphicalInformation* defaultGraphicalInformationForAllIndexableElements = getDefaultGraphicalInformationForAllIndexableElements(targetObject);
 
@@ -151,14 +153,33 @@ resqml2__GraphicalInformationForWholeObject* GraphicalInformationSet::getDefault
 	return nullptr;
 }
 
-resqml2__HsvColor* GraphicalInformationSet::getDefaultColor(AbstractObject* targetObject) const
+resqml2__HsvColor* GraphicalInformationSet::getDefaultColor(AbstractObject const* targetObject) const
 {
+	if (targetObject == nullptr) {
+		throw invalid_argument("The target object cannot be null");
+	}
+
 	resqml2__GraphicalInformationForWholeObject* result = getDefaultGraphicalInformation(targetObject);
-	return result != nullptr && result->ConstantColor != nullptr ? result->ConstantColor : nullptr;
+
+	if (result != nullptr && result->ConstantColor != nullptr) {
+		return result->ConstantColor;
+	}
+	else if (dynamic_cast<AbstractValuesProperty const*>(targetObject) != nullptr) {
+		AbstractValuesProperty const* property = static_cast<AbstractValuesProperty const*>(targetObject);
+		if (!property->isAssociatedToOneStandardEnergisticsPropertyKind()) {
+			return getDefaultColor(property->getLocalPropertyKind());
+		}
+	}
+
+	return nullptr;
 }
 
-resqml2__ColorInformation* GraphicalInformationSet::getColorInformation(AbstractObject* targetObject) const
+resqml2__ColorInformation* GraphicalInformationSet::getColorInformation(AbstractObject const* targetObject) const
 {
+	if (targetObject == nullptr) {
+		throw invalid_argument("The target object cannot be null");
+	}
+
 	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
 
 	string targetUuid = targetObject->getUuid();
@@ -173,27 +194,52 @@ resqml2__ColorInformation* GraphicalInformationSet::getColorInformation(Abstract
 	return nullptr;
 }
 
-bool GraphicalInformationSet::hasGraphicalInformation(const AbstractObject* targetObject) const
+bool GraphicalInformationSet::hasDirectGraphicalInformation(const AbstractObject const* targetObject) const
 {
+	if (targetObject == nullptr) {
+		throw invalid_argument("The target object cannot be null");
+	}
+
 	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
 
 	string targetUuid = targetObject->getUuid();
 	for (size_t giIndex = 0; giIndex < gis->GraphicalInformation.size(); ++giIndex) {
-		string uuid = getTargetObjectUuid(giIndex);
-		if (uuid.compare(targetUuid) == 0) {
+		if (getTargetObjectUuid(giIndex).compare(targetUuid) == 0) {
 			return true;
 		}
 	}
 
-	return nullptr;
+	return false;
 }
 
-bool GraphicalInformationSet::hasDefaultColor(AbstractObject* targetObject) const
+bool GraphicalInformationSet::hasGraphicalInformation(const AbstractObject const* targetObject) const
 {
+	if (targetObject == nullptr) {
+		throw invalid_argument("The target object cannot be null");
+	}
+
+	if (hasDirectGraphicalInformation(targetObject)) {
+		return true;
+	} else if (dynamic_cast<AbstractValuesProperty const*>(targetObject) != nullptr) {
+		AbstractValuesProperty const* property = static_cast<AbstractValuesProperty const*>(targetObject);
+		if (!property->isAssociatedToOneStandardEnergisticsPropertyKind()) {
+			return hasDirectGraphicalInformation(property->getLocalPropertyKind());
+		}
+	}
+
+	return false;
+}
+
+bool GraphicalInformationSet::hasDefaultColor(AbstractObject const* targetObject) const
+{
+	if (targetObject == nullptr) {
+		throw invalid_argument("The target object cannot be null");
+	}
+
 	return getDefaultColor(targetObject) != nullptr;
 }
 
-double GraphicalInformationSet::getDefaultHue(AbstractObject* targetObject) const
+double GraphicalInformationSet::getDefaultHue(AbstractObject const* targetObject) const
 {
 	resqml2__HsvColor* color = getDefaultColor(targetObject);
 	if (color == nullptr) {
@@ -203,7 +249,7 @@ double GraphicalInformationSet::getDefaultHue(AbstractObject* targetObject) cons
 	return color->Hue;
 }
 
-double GraphicalInformationSet::getDefaultSaturation(AbstractObject* targetObject) const
+double GraphicalInformationSet::getDefaultSaturation(AbstractObject const* targetObject) const
 {
 	resqml2__HsvColor* color = getDefaultColor(targetObject);
 	if (color == nullptr) {
@@ -213,7 +259,7 @@ double GraphicalInformationSet::getDefaultSaturation(AbstractObject* targetObjec
 	return color->Saturation;
 }
 
-double GraphicalInformationSet::getDefaultValue(AbstractObject* targetObject) const
+double GraphicalInformationSet::getDefaultValue(AbstractObject const* targetObject) const
 {
 	resqml2__HsvColor* color = getDefaultColor(targetObject);
 	if (color == nullptr) {
@@ -223,7 +269,7 @@ double GraphicalInformationSet::getDefaultValue(AbstractObject* targetObject) co
 	return color->Value;
 }
 
-double GraphicalInformationSet::getDefaultAlpha(AbstractObject* targetObject) const
+double GraphicalInformationSet::getDefaultAlpha(AbstractObject const* targetObject) const
 {
 	resqml2__HsvColor* color = getDefaultColor(targetObject);
 	if (color == nullptr) {
@@ -233,17 +279,17 @@ double GraphicalInformationSet::getDefaultAlpha(AbstractObject* targetObject) co
 	return color->Alpha;
 }
 
-void GraphicalInformationSet::getDefaultRgbColor(AbstractObject* targetObject, double & red, double & green, double & blue) const
+void GraphicalInformationSet::getDefaultRgbColor(AbstractObject const* targetObject, double & red, double & green, double & blue) const
 {
 	hsvToRgb(getDefaultHue(targetObject), getDefaultSaturation(targetObject), getDefaultValue(targetObject), red, green, blue);
 }
 
-void GraphicalInformationSet::getDefaultRgbColor(AbstractObject* targetObject, unsigned int & red, unsigned int & green, unsigned int & blue) const
+void GraphicalInformationSet::getDefaultRgbColor(AbstractObject const* targetObject, unsigned int & red, unsigned int & green, unsigned int & blue) const
 {
 	hsvToRgb(getDefaultHue(targetObject), getDefaultSaturation(targetObject), getDefaultValue(targetObject), red, green, blue);
 }
 
-bool GraphicalInformationSet::hasDefaultColorTitle(AbstractObject* targetObject) const
+bool GraphicalInformationSet::hasDefaultColorTitle(AbstractObject const* targetObject) const
 {
 	resqml2__HsvColor* color = getDefaultColor(targetObject);
 	if (color == nullptr) {
@@ -253,7 +299,7 @@ bool GraphicalInformationSet::hasDefaultColorTitle(AbstractObject* targetObject)
 	return color->Title != nullptr;
 }
 
-std::string GraphicalInformationSet::getDefaultColorTitle(AbstractObject* targetObject) const
+std::string GraphicalInformationSet::getDefaultColorTitle(AbstractObject const* targetObject) const
 {
 	resqml2__HsvColor* color = getDefaultColor(targetObject);
 	if (color == nullptr) {
@@ -267,8 +313,12 @@ std::string GraphicalInformationSet::getDefaultColorTitle(AbstractObject* target
 	return *color->Title;
 }
 
-void GraphicalInformationSet::setDefaultHsvColor(AbstractObject* targetObject, double hue, double saturation, double value, double alpha, string colorTitle)
+void GraphicalInformationSet::setDefaultHsvColor(AbstractObject const* targetObject, double hue, double saturation, double value, double alpha, string const& colorTitle)
 {
+	if (targetObject == nullptr) {
+		throw invalid_argument("The target object cannot be null");
+	}
+
 	if (hue < 0 || hue >= 360) {
 		throw invalid_argument("hue must be in range [0, 360]");
 	}
@@ -285,10 +335,10 @@ void GraphicalInformationSet::setDefaultHsvColor(AbstractObject* targetObject, d
 		throw invalid_argument("alpha must be in range [0, 1]");
 	}
 
-	if ((dynamic_cast<AbstractFeature*>(targetObject) == nullptr) &&
-		(dynamic_cast<AbstractFeatureInterpretation*>(targetObject) == nullptr) &&
-		(dynamic_cast<AbstractRepresentation*>(targetObject) == nullptr) &&
-		(dynamic_cast<WellboreMarker*>(targetObject) == nullptr)) {
+	if ((dynamic_cast<AbstractFeature const*>(targetObject) == nullptr) &&
+		(dynamic_cast<AbstractFeatureInterpretation const*>(targetObject) == nullptr) &&
+		(dynamic_cast<AbstractRepresentation const*>(targetObject) == nullptr) &&
+		(dynamic_cast<WellboreMarker const*>(targetObject) == nullptr)) {
 		throw invalid_argument("The object must be a feature, interpretation, representation or wellbore marker.");
 	}
 
@@ -345,8 +395,12 @@ void GraphicalInformationSet::setDefaultHsvColor(AbstractObject* targetObject, d
 * @param alpha			numeric value in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). Default value is 1.
 * @param colorTitle		title for the given HSV color
 */
-void GraphicalInformationSet::setDefaultRgbColor(AbstractObject* targetObject, double red, double green, double blue, double alpha, std::string colorTitle)
+void GraphicalInformationSet::setDefaultRgbColor(AbstractObject const* targetObject, double red, double green, double blue, double alpha, std::string const& colorTitle)
 {
+	if (targetObject == nullptr) {
+		throw invalid_argument("The target object cannot be null");
+	}
+
 	if (red < 0 || red > 1) {
 		throw invalid_argument("red must be in range [0, 1]");
 	}
@@ -373,8 +427,12 @@ void GraphicalInformationSet::setDefaultRgbColor(AbstractObject* targetObject, d
 * @param alpha			numeric value in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). Default value is 1.
 * @param colorTitle		title for the given HSV color
 */
-void GraphicalInformationSet::setDefaultRgbColor(AbstractObject* targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha, std::string colorTitle)
+void GraphicalInformationSet::setDefaultRgbColor(AbstractObject const* targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha, std::string const& colorTitle)
 {
+	if (targetObject == nullptr) {
+		throw invalid_argument("The target object cannot be null");
+	}
+
 	if (red < 0 || red > 255) {
 		throw invalid_argument("red must be in range [0, 255]");
 	}
@@ -392,39 +450,67 @@ void GraphicalInformationSet::setDefaultRgbColor(AbstractObject* targetObject, u
 	setDefaultHsvColor(targetObject, hue, saturation, value, alpha, colorTitle);
 }
 
-bool GraphicalInformationSet::hasDiscreteColorMap(AbstractObject* targetObject) const
+bool GraphicalInformationSet::hasDiscreteColorMap(AbstractObject const* targetObject) const
 {
-	resqml2__ColorInformation const * const colorInformation = getColorInformation(targetObject);
-	return colorInformation != nullptr && colorInformation->DiscreteColorMap != nullptr;
+	if (targetObject == nullptr) {
+		throw invalid_argument("The target object cannot be null");
+	}
+
+	resqml2__ColorInformation const* const colorInformation = getColorInformation(targetObject);
+
+	if (colorInformation != nullptr && colorInformation->DiscreteColorMap != nullptr) {
+		return true;
+	}
+	else if (dynamic_cast<AbstractValuesProperty const*>(targetObject) != nullptr) {
+		AbstractValuesProperty const* property = static_cast<AbstractValuesProperty const*>(targetObject);
+		if (!property->isAssociatedToOneStandardEnergisticsPropertyKind()) {
+			return hasDiscreteColorMap(property->getLocalPropertyKind());
+		}
+	}
+
+	return false;
 }
 
-gsoap_eml2_2::eml22__DataObjectReference* GraphicalInformationSet::getDiscreteColorMapDor(AbstractObject* targetObject) const
+gsoap_eml2_2::eml22__DataObjectReference* GraphicalInformationSet::getDiscreteColorMapDor(AbstractObject const* targetObject) const
 {
-	resqml2__ColorInformation const * const colorInformation = getColorInformation(targetObject);
+	if (targetObject == nullptr) {
+		throw invalid_argument("The target object cannot be null");
+	}
 
-	if (colorInformation == nullptr || colorInformation->DiscreteColorMap == nullptr) {
+	if (!hasDiscreteColorMap(targetObject)) {
 		throw invalid_argument("This object has no discrete color map");
 	}
 
-	return colorInformation->DiscreteColorMap;
+	resqml2__ColorInformation const* const colorInformation = getColorInformation(targetObject);
+
+	if (colorInformation != nullptr && colorInformation->DiscreteColorMap != nullptr) {
+		return colorInformation->DiscreteColorMap;
+	}
+	else {
+		AbstractValuesProperty const* property = static_cast<AbstractValuesProperty const*>(targetObject);
+		if (!property->isAssociatedToOneStandardEnergisticsPropertyKind()) {
+			return getDiscreteColorMapDor(property->getLocalPropertyKind());
+		}
+	}
 }
 
-std::string GraphicalInformationSet::getDiscreteColorMapUuid(AbstractObject* targetObject) const
+std::string GraphicalInformationSet::getDiscreteColorMapUuid(AbstractObject const* targetObject) const
 {
 	return getDiscreteColorMapDor(targetObject)->Uuid;
 }
 
-DiscreteColorMap* GraphicalInformationSet::getDiscreteColorMap(AbstractObject* targetObject) const
+DiscreteColorMap* GraphicalInformationSet::getDiscreteColorMap(AbstractObject const* targetObject) const
 {
 	return epcDocument->getDataObjectByUuid<DiscreteColorMap>(getDiscreteColorMapUuid(targetObject));
 }
 
-// TODO do not test that ContinuousColorMap exists, make the assumption that
-// a same ColorInformation can connect to both DiscreteColorMap and ContinuousColorMap
-// TODO can I reset a relation to a DiscreteColorMap?
-void GraphicalInformationSet::setDiscreteColorMap(AbstractObject* targetObject, DiscreteColorMap* discreteColorMap, 
-	const LONG64& valueVectorIndex, bool useReverseMapping, bool useLogarithmicMapping)
+void GraphicalInformationSet::setDiscreteColorMap(AbstractObject const* targetObject, DiscreteColorMap* discreteColorMap, 
+	LONG64 valueVectorIndex, bool useReverseMapping, bool useLogarithmicMapping)
 {
+	if (targetObject == nullptr) {
+		throw invalid_argument("The target object cannot be null");
+	}
+
 	if (discreteColorMap == nullptr) {
 		throw invalid_argument("The discrete color map cannot be null");
 	}
@@ -454,39 +540,67 @@ void GraphicalInformationSet::setDiscreteColorMap(AbstractObject* targetObject, 
 	colorInformation->DiscreteColorMap = discreteColorMap->newEml22Reference();
 }
 
-bool GraphicalInformationSet::hasContinuousColorMap(AbstractObject* targetObject) const
+bool GraphicalInformationSet::hasContinuousColorMap(AbstractObject const* targetObject) const
 {
+	if (targetObject == nullptr) {
+		throw invalid_argument("The target object cannot be null");
+	}
+
 	resqml2__ColorInformation const * const colorInformation = getColorInformation(targetObject);
-	return colorInformation != nullptr && colorInformation->ContinuousColorMap != nullptr;
+
+	if (colorInformation != nullptr && colorInformation->ContinuousColorMap != nullptr) {
+		return true;
+	}
+	else if (dynamic_cast<AbstractValuesProperty const*>(targetObject) != nullptr) {
+		AbstractValuesProperty const* property = static_cast<AbstractValuesProperty const*>(targetObject);
+		if (!property->isAssociatedToOneStandardEnergisticsPropertyKind()) {
+			return hasContinuousColorMap(property->getLocalPropertyKind());
+		}
+	}
+
+	return false;
 }
 
-gsoap_eml2_2::eml22__DataObjectReference* GraphicalInformationSet::getContinuousColorMapDor(AbstractObject* targetObject) const
+gsoap_eml2_2::eml22__DataObjectReference* GraphicalInformationSet::getContinuousColorMapDor(AbstractObject const* targetObject) const
 {
-	resqml2__ColorInformation const* const colorInformation = getColorInformation(targetObject);
+	if (targetObject == nullptr) {
+		throw invalid_argument("The target object cannot be null");
+	}
 
-	if (colorInformation == nullptr || colorInformation->ContinuousColorMap == nullptr) {
+	if (!hasContinuousColorMap(targetObject)) {
 		throw invalid_argument("This object has no continuous color map");
 	}
 
-	return colorInformation->ContinuousColorMap;
+	resqml2__ColorInformation const* const colorInformation = getColorInformation(targetObject);
+
+	if (colorInformation != nullptr && colorInformation->ContinuousColorMap != nullptr) {
+		return colorInformation->ContinuousColorMap;
+	}
+	else {
+		AbstractValuesProperty const* property = static_cast<AbstractValuesProperty const*>(targetObject);
+		if (!property->isAssociatedToOneStandardEnergisticsPropertyKind()) {
+			return getContinuousColorMapDor(property->getLocalPropertyKind());
+		}
+	}
 }
 
-std::string GraphicalInformationSet::getContinuousColorMapUuid(AbstractObject* targetObject) const
+std::string GraphicalInformationSet::getContinuousColorMapUuid(AbstractObject const* targetObject) const
 {
 	return getContinuousColorMapDor(targetObject)->Uuid;
 }
 
-ContinuousColorMap* GraphicalInformationSet::getContinuousColorMap(AbstractObject* targetObject) const
+ContinuousColorMap* GraphicalInformationSet::getContinuousColorMap(AbstractObject const* targetObject) const
 {
 	return epcDocument->getDataObjectByUuid<ContinuousColorMap>(getContinuousColorMapUuid(targetObject));
 }
 
-// TODO do not test that ContinuousColorMap exists, make the assumption that
-// a same ColorInformation can connect to both DiscreteColorMap and ContinuousColorMap
-// TODO can I reset a relation to a DiscreteColorMap?
-void GraphicalInformationSet::setContinuousColorMap(AbstractObject* targetObject, ContinuousColorMap* continuousColorMap, 
-	const LONG64& valueVectorIndex, bool useReverseMapping, bool useLogarithmicMapping)
+void GraphicalInformationSet::setContinuousColorMap(AbstractObject const* targetObject, ContinuousColorMap* continuousColorMap, 
+	LONG64 valueVectorIndex, bool useReverseMapping, bool useLogarithmicMapping)
 {
+	if (targetObject == nullptr) {
+		throw invalid_argument("The target object cannot be null");
+	}
+
 	if (continuousColorMap == nullptr) {
 		throw invalid_argument("The continuous color map cannot be null");
 	}
@@ -516,7 +630,7 @@ void GraphicalInformationSet::setContinuousColorMap(AbstractObject* targetObject
 	colorInformation->ContinuousColorMap = continuousColorMap->newEml22Reference();
 }
 
-double GraphicalInformationSet::getColorMapMinIndex(AbstractObject* targetObject) const
+double GraphicalInformationSet::getColorMapMinIndex(AbstractObject const* targetObject) const
 {
 	resqml2__ColorInformation* colorInformation = getColorInformation(targetObject);
 
@@ -531,7 +645,7 @@ double GraphicalInformationSet::getColorMapMinIndex(AbstractObject* targetObject
 	return colorInformation->MinMax->Minimum;
 }
 
-double GraphicalInformationSet::getColorMapMaxIndex(AbstractObject* targetObject) const
+double GraphicalInformationSet::getColorMapMaxIndex(AbstractObject const* targetObject) const
 {
 	resqml2__ColorInformation* colorInformation = getColorInformation(targetObject);
 

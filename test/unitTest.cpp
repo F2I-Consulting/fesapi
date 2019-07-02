@@ -58,6 +58,7 @@ under the License.
 #include "resqml2_0_1test/LgrOnRightHanded4x3x2ExplicitIjkGrid.h"
 #include "resqml2_0_1test/InterpretationDomain.h"
 #include "resqml2_2test/DiscreteColorMapTest.h"
+#include "resqml2_2test/ContinuousColorMapTest.h"
 #include "witsml2_0test/WellTest.h"
 #include "witsml2_0test/Trajectory.h"
 
@@ -82,6 +83,7 @@ TEST_CASE( "Deserialize an EPC document", "[epc]")
 
 FESAPI_TEST("Export and import graphical information set", "[graphical information]", GraphicalInformationSetTest)
 FESAPI_TEST("Export and import discrete color map on a discrete property", "[graphical information][color map][discrete color map]", DiscreteColorMapTest)
+FESAPI_TEST("Export and import continuous color map on a discrete property", "[graphical information][color map][continuous color map]", ContinuousColorMapTest)
 
 FESAPI_TEST("Export and import a local depth 3d crs", "[crs]", LocalDepth3dCrsTest)
 

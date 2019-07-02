@@ -36,7 +36,7 @@ namespace RESQML2_2_NS
 		* @param guid			The guid to set to graphical information set.
 		* @param title			A title for graphical information set.
 		*/
-		DiscreteColorMap(soap* soapContext, const std::string & guid, const std::string & title);
+		DiscreteColorMap(soap* soapContext, std::string const& guid, std::string const& title);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -69,7 +69,7 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const { return XML_TAG; }
 
 	protected:
-		friend void COMMON_NS::GraphicalInformationSet::setDiscreteColorMap(COMMON_NS::AbstractObject* targetObject, DiscreteColorMap* discreteColorMap,
-			const LONG64& valueVectorIndex, bool useReverseMapping, bool useLogarithmicMapping);
+		friend void COMMON_NS::GraphicalInformationSet::setDiscreteColorMap(COMMON_NS::AbstractObject const* targetObject, DiscreteColorMap* discreteColorMap,
+			LONG64 valueVectorIndex, bool useReverseMapping, bool useLogarithmicMapping);
 	};
 }

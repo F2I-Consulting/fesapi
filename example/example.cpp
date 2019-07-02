@@ -124,6 +124,8 @@ WellboreFeature* wellbore1 = nullptr;
 WellboreInterpretation* wellbore1Interp1 = nullptr;
 StratigraphicColumnRankInterpretation* stratiColumnRank0 = nullptr;
 SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = nullptr;
+IjkGridExplicitRepresentation* ijkgrid = nullptr;
+RESQML2_NS::PropertyKind* propType1 = nullptr;
 DiscreteProperty* discreteProp1 = nullptr;
 ContinuousProperty* contColMapContProp = nullptr;
 
@@ -210,7 +212,7 @@ void serializePerforations(COMMON_NS::EpcDocument * pck)
 	wellboreCompletion->setPerforationHistoryStartDate(1, 1, 1514764800);
 }
 
-void serializeGraphicalInformationSet(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
+void serializeGraphicalInformationSet(COMMON_NS::EpcDocument* pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
 	COMMON_NS::GraphicalInformationSet* graphicalInformationSet = pck->createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
 
@@ -224,12 +226,12 @@ void serializeGraphicalInformationSet(COMMON_NS::EpcDocument * pck, COMMON_NS::A
 	graphicalInformationSet->setDefaultHsvColor(f1i1triRepSinglePatch, 240., 1., 1., 1., "blue");
 	graphicalInformationSet->setDefaultHsvColor(f1i1triRep, 240., 1., 1., 1., "blue");
 	graphicalInformationSet->setDefaultHsvColor(f1i1PolyLineRep, 240., 1., 1., 1., "blue");
-	
+
 	// horizon1 representation is red
 	graphicalInformationSet->setDefaultHsvColor(horizon1, 0., 1., 1., 1., "red");
 	graphicalInformationSet->setDefaultHsvColor(horizon1Interp1, 0., 1., 1., 1., "red");
 	graphicalInformationSet->setDefaultHsvColor(h1i1triRep, 0., 1., 1., 1., "red");
-	
+
 	// horizon2 representation is green
 	graphicalInformationSet->setDefaultHsvColor(horizon2, 120., 1., 1., 1., "green");
 	graphicalInformationSet->setDefaultHsvColor(horizon2Interp1, 120., 1., 1., 1., "green");
@@ -240,12 +242,28 @@ void serializeGraphicalInformationSet(COMMON_NS::EpcDocument * pck, COMMON_NS::A
 	// Discrete color map
 	// ******************
 
-	RESQML2_2_NS::DiscreteColorMap* discrColMap = pck->createDiscreteColorMap("3daf4661-ae8f-4357-adee-0b0159bdd0a9", "Discrete color map 1");
-	unsigned int rgbColors[6] = { 255, 0, 0, 0, 0, 255 };
-	double alphas[2] = { 1., 1. };
-	std::string titles[2] = { "red", "blue" };
-	discrColMap->setRgbColors(2, rgbColors, alphas, titles);
+	// associating a discrete color map to property kind propType1
+	RESQML2_2_NS::DiscreteColorMap* propKindDiscrColMap = pck->createDiscreteColorMap("d808d79c-2cad-4c4f-9712-3b3ab4aa3f4a", "Property kind discrete color map");
+	unsigned int propKindDiscrColMapRgbColors[9] = { 0, 0, 255, 255, 255, 255, 255, 0, 0 };
+	double propKindDiscrColMapAlphas[3] = { 1., 1., 1. };
+	std::string propKindDiscrColMapTitles[3] = { "blue", "white", "red" };
+	propKindDiscrColMap->setRgbColors(3, propKindDiscrColMapRgbColors, propKindDiscrColMapAlphas, propKindDiscrColMapTitles);
+	graphicalInformationSet->setDiscreteColorMap(propType1, propKindDiscrColMap);
+
+	// associating a discrete color map to dicreteProp1
+	RESQML2_2_NS::DiscreteColorMap* discrColMap = pck->createDiscreteColorMap("3daf4661-ae8f-4357-adee-0b0159bdd0a9", "Discrete color map");
+	unsigned int discrColMapRgbColors[18] = { 255, 0, 0, 0, 255, 0, 0, 0, 255, 169, 84, 27, 0, 0, 0, 255, 255, 255 };
+	double discrColMapAlphas[6] = { 1., 1., 1., 1., 1., 1. };
+	std::string discrColMapTitles[6] = { "red", "green", "blue", "orange", "black", "white"};
+	discrColMap->setRgbColors(6, discrColMapRgbColors, discrColMapAlphas, discrColMapTitles);
 	graphicalInformationSet->setDiscreteColorMap(discreteProp1, discrColMap);
+
+	// creating a new discrete property of type propType1 without associating it to a discrete color map.
+	// Thus, its associated discrete color map remains the one associated to propType1
+	DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(ijkgrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex", 1,
+		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, propType1);
+	unsigned short prop2Values[2] = { 0, 1 };
+	discreteProp2->pushBackUShortHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, -1);
 
 	// ********************
 	// Continuous color map
@@ -253,10 +271,14 @@ void serializeGraphicalInformationSet(COMMON_NS::EpcDocument * pck, COMMON_NS::A
 
 	Horizon* contColMapHrz = pck->createHorizon("b9ec6ec9-2766-4af7-889e-5565b5fa5022", "Horizon for continuous color map");
 	HorizonInterpretation* contColMapHrzInterp = pck->createHorizonInterpretation(contColMapHrz, "34b69c81-6cfa-4531-be5b-f6bd9b74802f", "Horizon interpretation for continuous color map");
-	Grid2dRepresentation* contColMapGrid2dRep = pck->createGrid2dRepresentation(contColMapHrzInterp, local3dCrs, "", "100x10 grid 2d for continuous color map");
+	Grid2dRepresentation* contColMapGrid2dRep = pck->createGrid2dRepresentation(contColMapHrzInterp, local3dCrs, "4e56b0e4-2cd1-4efa-97dd-95f72bcf9f80", "100x10 grid 2d for continuous color map");
 	const unsigned int numPointInFastestDirection = 50;
 	const unsigned int numPointsInSlowestDirection = 100;
-	contColMapGrid2dRep->setGeometryAsArray2dOfLatticePoints3d(numPointInFastestDirection, numPointsInSlowestDirection, 0., 0., 0., 1., 1., 0., 1., 1., 0., 1., 1.);
+	contColMapGrid2dRep->setGeometryAsArray2dOfLatticePoints3d(numPointInFastestDirection, numPointsInSlowestDirection,
+		0., 0., 0.,
+		1., 0., 0.,
+		0., 1., 0.,
+		1., 1.);
 
 	contColMapContProp = pck->createContinuousProperty(contColMapGrid2dRep, "c2be50b6-08d2-461b-81a4-73dbb04ba605", "Continuous property for continuous color map", 2,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__nodes, "continuousColorMapIndex", gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__continuous);
@@ -272,7 +294,7 @@ void serializeGraphicalInformationSet(COMMON_NS::EpcDocument * pck, COMMON_NS::A
 	RESQML2_2_NS::ContinuousColorMap* contColMap = pck->createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", gsoap_eml2_2::resqml2__InterpolationDomain__rgb, gsoap_eml2_2::resqml2__InterpolationMethod__linear);
 	unsigned int contColMapRgbColors[6] = {0, 255, 0, 255, 0, 0 };
 	std::string contColMapColTitles[2] = { "green", "red" };
-	contColMap->setRgbColors(2, contColMapRgbColors, alphas, titles);
+	contColMap->setRgbColors(2, contColMapRgbColors, discrColMapAlphas, contColMapColTitles);
 	graphicalInformationSet->setContinuousColorMap(contColMapContProp, contColMap);
 }
 
@@ -556,7 +578,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 	singleCellIjkgrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, singleCellIjkgridNodes, hdfProxy);
 	
 	// TWO SUGARS EXPLICIT
-	IjkGridExplicitRepresentation* ijkgrid = pck->createIjkGridExplicitRepresentation(earthModelInterp, local3dCrs, "df2103a0-fa3d-11e5-b8d4-0002a5d5c51b", "Two faulted sugar cubes (explicit geometry)", 2, 1, 1);
+	ijkgrid = pck->createIjkGridExplicitRepresentation(earthModelInterp, local3dCrs, "df2103a0-fa3d-11e5-b8d4-0002a5d5c51b", "Two faulted sugar cubes (explicit geometry)", 2, 1, 1);
 	double nodes[48] = { 0, 0, 300, 375, 0, 300, 700, 0, 350, 0, 150, 300, 375, 150, 300, 700, 150, 350, /* SPLIT*/ 375, 0, 350, 375, 150, 350,
 		0, 0, 500, 375, 0, 500, 700, 0, 550, 0, 150, 500, 375, 150, 500, 700, 150, 550, /* SPLIT*/ 375, 0, 550, 375, 150, 550 };
 	unsigned int pillarOfCoordinateLine[2] = { 1, 4 };
@@ -741,7 +763,7 @@ void serializeGrid(COMMON_NS::EpcDocument * pck, COMMON_NS::AbstractHdfProxy* hd
 	//**************
 	// Properties
 	//**************
-	RESQML2_NS::PropertyKind * propType1 = pck->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__discrete);
+	propType1 = pck->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__discrete);
 	discreteProp1 = pck->createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, propType1);
 	//long prop1Values[2] = {0,1};
@@ -3281,29 +3303,41 @@ void deserializeGraphicalInformationSet(COMMON_NS::EpcDocument & pck)
 
 		std::cout << "graphical information for: " << targetObject->getTitle() << std::endl;
 
-		if (graphicalInformationSet->hasDefaultColor(targetObject))
-		{
+		if (graphicalInformationSet->hasDefaultColor(targetObject)) {
 			std::cout << "default hue: " << graphicalInformationSet->getDefaultHue(targetObject) << std::endl;
 			std::cout << "default saturation: " << graphicalInformationSet->getDefaultSaturation(targetObject) << std::endl;
 			std::cout << "default value: " << graphicalInformationSet->getDefaultValue(targetObject) << std::endl;
 			std::cout << "default alpha: " << graphicalInformationSet->getDefaultAlpha(targetObject) << std::endl;
-			if (graphicalInformationSet->hasDefaultColorTitle(targetObject))
-			{
+			if (graphicalInformationSet->hasDefaultColorTitle(targetObject)) {
 				std::cout << "default color title: " << graphicalInformationSet->getDefaultColorTitle(targetObject) << std::endl;
 			}
 		}
 
-		if (graphicalInformationSet->hasDiscreteColorMap(targetObject))
-		{
+		if (graphicalInformationSet->hasDiscreteColorMap(targetObject)) {
 			RESQML2_2_NS::DiscreteColorMap* discreteColorMap = graphicalInformationSet->getDiscreteColorMap(targetObject);
 			std::cout << "discrete color map title: " << discreteColorMap->getTitle() << std::endl;
 			unsigned int r, g, b;
-			for (unsigned int i = 0; i < discreteColorMap->getColorCount(); ++i) {
-				discreteColorMap->getRgbColor(i, r, g, b);
+			for (unsigned int colorIndex = 0; colorIndex < discreteColorMap->getColorCount(); ++colorIndex) {
+				discreteColorMap->getRgbColor(colorIndex, r, g, b);
+				std::cout << colorIndex  << ": (" << r << ", " << g << ", " << b << ", ";
+				std::cout << discreteColorMap->getAlpha(colorIndex);
+				if (discreteColorMap->hasColorTitle(colorIndex)) {
+					std::cout << ", " << discreteColorMap->getColorTitle(colorIndex);
+				}
+				std::cout << ")" << std::endl;
+			}
+		}
+
+		if (graphicalInformationSet->hasContinuousColorMap(targetObject)) {
+			RESQML2_2_NS::ContinuousColorMap* continuousColorMap = graphicalInformationSet->getContinuousColorMap(targetObject);
+			std::cout << "continuous color map title: " << continuousColorMap->getTitle() << std::endl;
+			unsigned int r, g, b;
+			for (unsigned int i = 0; i < continuousColorMap->getColorCount(); ++i) {
+				continuousColorMap->getRgbColor(i, r, g, b);
 				std::cout << i << ": (" << r << ", " << g << ", " << b << ", ";
-				std::cout << discreteColorMap->getAlpha(i);
-				if (discreteColorMap->hasColorTitle(i)) {
-					std::cout << ", " << discreteColorMap->getColorTitle(i);
+				std::cout << continuousColorMap->getAlpha(i);
+				if (continuousColorMap->hasColorTitle(i)) {
+					std::cout << ", " << continuousColorMap->getColorTitle(i);
 				}
 				std::cout << ")" << std::endl;
 			}
@@ -3513,12 +3547,14 @@ void deserialize(const string & inputFile)
 		std::cout << "Third zValue is : " << zValues[2] << std::endl;
 		std::cout << "Fourth zValue is : " << zValues[3] << std::endl;
 		std::cout << "Fifth zValue is : " << zValues[4] << std::endl;
-		horizonGrid2dSet[i]->getSupportingRepresentation()->getZValuesInGlobalCrs(zValues);
-		std::cout << "Supporting Representation first zValue is : " << zValues[0] << std::endl;
-		std::cout << "Supporting Representation second zValue is : " << zValues[1] << std::endl;
-		std::cout << "Supporting Representation third zValue is : " << zValues[2] << std::endl;
-		std::cout << "Supporting Representation fourth zValue is : " << zValues[3] << std::endl;
-		std::cout << "Supporting Representation fifth zValue is : " << zValues[4] << std::endl;
+		if (horizonGrid2dSet[i]->getSupportingRepresentation() != nullptr) {
+			horizonGrid2dSet[i]->getSupportingRepresentation()->getZValuesInGlobalCrs(zValues);
+			std::cout << "Supporting Representation first zValue is : " << zValues[0] << std::endl;
+			std::cout << "Supporting Representation second zValue is : " << zValues[1] << std::endl;
+			std::cout << "Supporting Representation third zValue is : " << zValues[2] << std::endl;
+			std::cout << "Supporting Representation fourth zValue is : " << zValues[3] << std::endl;
+			std::cout << "Supporting Representation fifth zValue is : " << zValues[4] << std::endl;
+		}
 		delete[] zValues;
 		cout << "XIOffset : " << horizonGrid2dSet[i]->getXIOffsetInGlobalCrs() << endl;
 		cout << "YIOffset : " << horizonGrid2dSet[i]->getYIOffsetInGlobalCrs() << endl;

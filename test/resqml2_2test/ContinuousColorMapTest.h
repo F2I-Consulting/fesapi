@@ -22,27 +22,27 @@ under the License.
 #include <iostream>
 
 namespace resqml2_2test {
-	class DiscreteColorMapTest : public commontest::AbstractObjectTest {
+	class ContinuousColorMapTest : public commontest::AbstractObjectTest {
 	public:
+		static char const* uuidHorizon;
+		static char const* titleHorizon;
+		static char const* uuidHorizonInterpretation;
+		static char const* titleHorizonInterpretation;
+		static char const* uuidGrid2dRepresentation;
+		static char const* titleGrid2dRepresentation;
+		static char const* uuidContinuousProperty;
+		static char const* titleContinuousProperty;
 		static char const* uuidOrganizationFeature;
 		static char const* titleOrganizationFeature;
 		static char const* uuidEarthModelInterpretation;
 		static char const* titleEarthModelInterpretation;
 		static char const* uuidLocalDepth3dCrs;
 		static char const* titleLocalDepth3dCrs;
-		static char const* uuidIjkGridExplicitRepresentation;
-		static char const* titleIjkGridExplicitRepresentation;
-		static char const* uuidPropertyKind;
-		static char const* titlePropertyKind;
-		static char const* uuidDiscreteProperty;
-		static char const* titleDiscreteProperty;
 		static char const* uuidGraphicalInformationSet;
 		static char const* titleGraphicalInformationSet;
-		static char const* uuidPropertyKindDiscreteColorMap;
-		static char const* titlePropertyKindDiscreteColorMap;
 
-		DiscreteColorMapTest(const std::string & epcDocPath);
-		DiscreteColorMapTest(COMMON_NS::EpcDocument * epcDoc, bool init);
+		ContinuousColorMapTest(const std::string & epcDocPath);
+		ContinuousColorMapTest(COMMON_NS::EpcDocument * epcDoc, bool init);
 
 	protected:
 		void initEpcDocHandler();

@@ -1122,6 +1122,7 @@ COMMON_NS::AbstractObject* EpcDocument::getResqml2_2WrapperFromGsoapContext(cons
 	COMMON_NS::AbstractObject* wrapper = nullptr;
 
 	if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DiscreteColorMap)
+	if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ContinuousColorMap)
 
 	return wrapper;
 }

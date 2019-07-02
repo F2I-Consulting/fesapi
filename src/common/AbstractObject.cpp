@@ -1114,7 +1114,7 @@ std::vector<epc::Relationship> AbstractObject::getAllSourceRelationships() const
 	for (size_t i = 0; i < epcDocument->getDataObjects<GraphicalInformationSet>().size(); ++i)
 	{
 		GraphicalInformationSet * graphicalInformationSet = epcDocument->getDataObjects<GraphicalInformationSet>()[i];
-		if (graphicalInformationSet->hasGraphicalInformation(this)) {
+		if (graphicalInformationSet->hasDirectGraphicalInformation(this)) {
 			epc::Relationship rel(graphicalInformationSet->getPartNameInEpcDocument(), "", graphicalInformationSet->getUuid());
 			rel.setSourceObjectType();
 			result.push_back(rel);

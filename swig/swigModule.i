@@ -207,14 +207,42 @@ namespace COMMON_NS
 		unsigned int getGraphicalInformationSetCount() const;
 		std::string getTargetObjectUuid(unsigned int index) const;
 		AbstractObject* getTargetObject(unsigned int index) const;
-		bool hasGraphicalInformation(const AbstractObject* targetObject) const;
+		bool hasGraphicalInformation(AbstractObject const* targetObject) const;
+	
+		bool hasDefaultColor(AbstractObject const* targetObject) const;
+		double getDefaultHue(AbstractObject const* targetObject) const;
+		double getDefaultSaturation(AbstractObject const* targetObject) const;
+		double getDefaultValue(AbstractObject const* targetObject) const;
+		double getDefaultAlpha(AbstractObject const* targetObject) const;
+		void getDefaultRgbColor(AbstractObject const* targetObject, double& red, double& green, double& blue) const;
+		void getDefaultRgbColor(AbstractObject const* targetObject, unsigned int& red, unsigned int& green, unsigned int& blue) const;
+		bool hasDefaultColorTitle(AbstractObject const* targetObject) const;
+		std::string getDefaultColorTitle(AbstractObject const* targetObject) const;
+		void setDefaultHsvColor(AbstractObject const* targetObject, double hue, double saturation, double value, double alpha = 1.0, std::string const& colorTitle = "");
+		void setDefaultRgbColor(AbstractObject const* targetObject, double red, double green, double blue, double alpha = 1.0, std::string const& colorTitle = "");
+		void setDefaultRgbColor(AbstractObject const* targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha = 1.0, std::string const& colorTitle = "");
+	
+		bool hasDiscreteColorMap(AbstractObject const* targetObject) const;
+		gsoap_eml2_2::eml22__DataObjectReference* getDiscreteColorMapDor(AbstractObject const* targetObject) const;
+		std::string getDiscreteColorMapUuid(AbstractObject const* targetObject) const;
+		RESQML2_2_NS::DiscreteColorMap* getDiscreteColorMap(AbstractObject const* targetObject) const;
+		void setDiscreteColorMap(AbstractObject const* targetObject, RESQML2_2_NS::DiscreteColorMap* discreteColorMap,
+			LONG64 valueVectorIndex = 0, bool useReverseMapping = false, bool useLogarithmicMapping = false);
 		
-		bool hasDefaultColor(AbstractObject* targetObject) const;
-		double getDefaultHue(AbstractObject* targetObject) const;
-		double getDefaultSaturation(AbstractObject* targetObject) const;
-		double getDefaultValue(AbstractObject* targetObject) const;
-		double getDefaultAlpha(AbstractObject* targetObject) const;
-		void setDefaultHsvColor(AbstractObject* targetObject, double hue, double saturation, double value, double alpha = 1.0);
+		bool hasContinuousColorMap(AbstractObject const* targetObject) const;
+		gsoap_eml2_2::eml22__DataObjectReference* getContinuousColorMapDor(AbstractObject const* targetObject) const;
+		std::string getContinuousColorMapUuid(AbstractObject const* targetObject) const;
+		RESQML2_2_NS::ContinuousColorMap* getContinuousColorMap(AbstractObject const* targetObject) const;
+		void setContinuousColorMap(AbstractObject const* targetObject, RESQML2_2_NS::ContinuousColorMap* continuousColorMap,
+			LONG64 valueVectorIndex = 0, bool useReverseMapping = false, bool useLogarithmicMapping = false);
+
+		double getColorMapMinIndex(AbstractObject const* targetObject) const;
+		double getColorMapMaxIndex(AbstractObject const* targetObject) const;
+
+		static void rgbToHsv(double red, double green, double blue, double& hue, double& saturation, double& value);
+		static void rgbToHsv(unsigned int red, unsigned int green, unsigned int blue, double& hue, double& saturation, double& value);
+		static void hsvToRgb(double hue, double saturation, double value, double& red, double& green, double& blue);
+		static void hsvToRgb(double hue, double saturation, double value, unsigned int& red, unsigned int& green, unsigned int& blue);
 	};
 	
 }

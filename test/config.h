@@ -102,6 +102,10 @@ namespace resqml2_2test {
 	// DiscreteColorMap
 	static const char* uuidDiscreteColorMap = "e5e1a185-6437-460b-8f65-7f48e9db2653";
 	static const char* titleDiscreteColorMap = "Discrete Color Map Test";
+
+	// ContinuousColorMap
+	static const char* uuidContinuousColorMap = "eb20132f-1e99-42c3-bfaf-40e317b5bc8b";
+	static const char* titleContinuousColorMap = "Continuous Color Map Test";
 }
 
 namespace witsml2_0test {

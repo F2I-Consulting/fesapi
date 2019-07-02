@@ -37,28 +37,30 @@ using namespace RESQML2_0_1_NS;
 using namespace resqml2_2test;
 using namespace gsoap_resqml2_0_1;
 
-// PropertyKind
-const char* DiscreteColorMapTest::uuidPropertyKind = "478278a5-827b-4a67-b5d8-d3dc18ef4525";
-const char* DiscreteColorMapTest::titlePropertyKind = "Property Kind";
-const char* DiscreteColorMapTest::uuidOrganizationFeature = "ceefeac1-21b1-4a31-b74b-ab1e64eacf80";
-const char* DiscreteColorMapTest::titleOrganizationFeature = "Organization Feature";
-const char* DiscreteColorMapTest::uuidEarthModelInterpretation = "8f6afd90-71e1-4a1e-891f-9c628feeb980";
-const char* DiscreteColorMapTest::titleEarthModelInterpretation = "Earth Model Interpretation";
-const char* DiscreteColorMapTest::uuidLocalDepth3dCrs = "69aa7e50-1538-4818-93a4-11fcfdc2292e";
-const char* DiscreteColorMapTest::titleLocalDepth3dCrs = "Loacl Depth 3d Crs";
-const char* DiscreteColorMapTest::uuidIjkGridExplicitRepresentation = "fd0e5b96-ca00-4f8e-bf7a-a5609b511044";
-const char* DiscreteColorMapTest::titleIjkGridExplicitRepresentation = "Ijk Grid Explicit Representation";
-const char* DiscreteColorMapTest::uuidDiscreteProperty = "7594850b-ab54-4c95-af9c-06f6a1175ad6";
-const char* DiscreteColorMapTest::titleDiscreteProperty = "Discrete Property";
-const char* DiscreteColorMapTest::uuidGraphicalInformationSet = "fb32a2a3-8ee6-4526-80dc-d247f13fcecc";
-const char* DiscreteColorMapTest::titleGraphicalInformationSet = "Graphical Information Set";
+char const* DiscreteColorMapTest::uuidPropertyKind = "478278a5-827b-4a67-b5d8-d3dc18ef4525";
+char const* DiscreteColorMapTest::titlePropertyKind = "Property Kind";
+char const* DiscreteColorMapTest::uuidOrganizationFeature = "ceefeac1-21b1-4a31-b74b-ab1e64eacf80";
+char const* DiscreteColorMapTest::titleOrganizationFeature = "Organization Feature";
+char const* DiscreteColorMapTest::uuidEarthModelInterpretation = "8f6afd90-71e1-4a1e-891f-9c628feeb980";
+char const* DiscreteColorMapTest::titleEarthModelInterpretation = "Earth Model Interpretation";
+char const* DiscreteColorMapTest::uuidLocalDepth3dCrs = "69aa7e50-1538-4818-93a4-11fcfdc2292e";
+char const* DiscreteColorMapTest::titleLocalDepth3dCrs = "Loacl Depth 3d Crs";
+char const* DiscreteColorMapTest::uuidIjkGridExplicitRepresentation = "fd0e5b96-ca00-4f8e-bf7a-a5609b511044";
+char const* DiscreteColorMapTest::titleIjkGridExplicitRepresentation = "Ijk Grid Explicit Representation";
+char const* DiscreteColorMapTest::uuidDiscreteProperty = "7594850b-ab54-4c95-af9c-06f6a1175ad6";
+char const* DiscreteColorMapTest::titleDiscreteProperty = "Discrete Property";
+char const* DiscreteColorMapTest::uuidGraphicalInformationSet = "fb32a2a3-8ee6-4526-80dc-d247f13fcecc";
+char const* DiscreteColorMapTest::titleGraphicalInformationSet = "Graphical Information Set";
+char const* DiscreteColorMapTest::uuidPropertyKindDiscreteColorMap = "ab67d54c-4924-4c24-9be8-2924df6c5072";
+char const* DiscreteColorMapTest::titlePropertyKindDiscreteColorMap = "Property Kind Discrete Color Map";
+
 
 DiscreteColorMapTest::DiscreteColorMapTest(const string & epcDocPath)
 	: AbstractObjectTest(epcDocPath, uuidDiscreteColorMap, titleDiscreteColorMap) {
 }
 
 DiscreteColorMapTest::DiscreteColorMapTest(EpcDocument * epcDoc, bool init)
-	: AbstractObjectTest(epcDoc, uuidDiscreteColorMap, uuidDiscreteColorMap) {
+	: AbstractObjectTest(epcDoc, uuidDiscreteColorMap, titleDiscreteColorMap) {
 	if (init)
 		initEpcDoc();
 	else
@@ -89,19 +91,30 @@ void DiscreteColorMapTest::initEpcDocHandler() {
 	unsigned short prop1Values[2] = { 0, 1 };
 	discreteProperty->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, -1);
 
-	// creating the discrete color map
-	DiscreteColorMap* discreteColorMap = epcDoc->createDiscreteColorMap(uuid, title);
-	REQUIRE(discreteColorMap != nullptr);
-	unsigned int rgbColors[6] = { 256, 0, 0, 0, 0, 255 };
-	double alphas[2] = { 1., 1. };
-	std::string titles[2] = { "red", "blue" };
-	REQUIRE_THROWS(discreteColorMap->setRgbColors(2, rgbColors, alphas, titles));
-	rgbColors[0] = 255;
-	discreteColorMap->setRgbColors(2, rgbColors, alphas, titles);
+	// associating a discrete color map to the discrete property kind
+	DiscreteColorMap* discreteColorMap1 = epcDoc->createDiscreteColorMap(uuidPropertyKindDiscreteColorMap, titlePropertyKindDiscreteColorMap);
+	REQUIRE(discreteColorMap1 != nullptr);
+	unsigned int rgbColors1[6] = { 0, 0, 256, 255, 0, 0 };
+	double alphas1[2] = { 1., 1. };
+	std::string titles1[2] = { "blue", "red" };
+	REQUIRE_THROWS(discreteColorMap1->setRgbColors(2, rgbColors1, alphas1, titles1));
+	rgbColors1[2] = 255;
+	discreteColorMap1->setRgbColors(2, rgbColors1, alphas1, titles1);
+	GraphicalInformationSet* graphicalInformationSet = epcDoc->createGraphicalInformationSet(uuidGraphicalInformationSet, titleGraphicalInformationSet);
+	graphicalInformationSet->setDiscreteColorMap(propertyKind, discreteColorMap1);
+	REQUIRE(graphicalInformationSet->hasDiscreteColorMap(discreteProperty) == true);
+	REQUIRE(graphicalInformationSet->getDiscreteColorMapUuid(discreteProperty) == discreteColorMap1->getUuid());
 
 	// associating the discrete color map to the discrete property
-	GraphicalInformationSet* graphicalInformationSet = epcDoc->createGraphicalInformationSet(uuidGraphicalInformationSet, titleGraphicalInformationSet);
-	graphicalInformationSet->setDiscreteColorMap(discreteProperty, discreteColorMap);
+	DiscreteColorMap* discreteColorMap2 = epcDoc->createDiscreteColorMap(uuid, title);
+	REQUIRE(discreteColorMap2 != nullptr);
+	unsigned int rgbColors2[6] = { 255, 0, 0, 0, 0, 255 };
+	double alphas2[2] = { 1., 1. };
+	std::string titles2[2] = { "red", "blue" };
+	discreteColorMap2->setRgbColors(2, rgbColors2, alphas2, titles2);
+	graphicalInformationSet->setDiscreteColorMap(discreteProperty, discreteColorMap2);
+	REQUIRE(graphicalInformationSet->hasDiscreteColorMap(discreteProperty) == true);
+	REQUIRE(graphicalInformationSet->getDiscreteColorMapUuid(discreteProperty) == discreteColorMap2->getUuid());
 }
 
 void DiscreteColorMapTest::readEpcDocHandler() {

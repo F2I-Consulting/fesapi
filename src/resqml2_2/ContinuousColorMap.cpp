@@ -28,7 +28,7 @@ using namespace RESQML2_2_NS;
 
 const char* ContinuousColorMap::XML_TAG = "ContinuousColorMap";
 
-ContinuousColorMap::ContinuousColorMap(soap* soapContext, const string& guid, const string& title, 
+ContinuousColorMap::ContinuousColorMap(soap* soapContext, string const& guid, string const& title, 
 	resqml2__InterpolationDomain interpolationDomain, resqml2__InterpolationMethod interpolationMethod)
 {
 	if (soapContext == nullptr)
@@ -116,7 +116,7 @@ std::string ContinuousColorMap::getInterpolationMethodAsString()
 	return soap_resqml2__InterpolationMethod2s(gsoapProxy2_2->soap, getInterpolationMethod());
 }
 
-void ContinuousColorMap::setNanHsvColor(double hue, double saturation, double value, double alpha, std::string colorTitle)
+void ContinuousColorMap::setNanHsvColor(double hue, double saturation, double value, double alpha, std::string const& colorTitle)
 {
 	if (hue < 0 || hue > 360) {
 		throw invalid_argument("hue must be in range [0, 360]");
@@ -150,7 +150,7 @@ void ContinuousColorMap::setNanHsvColor(double hue, double saturation, double va
 	}
 }
 
-void ContinuousColorMap::setNanRgbColor(double red, double green, double blue, double alpha, std::string colorTitle)
+void ContinuousColorMap::setNanRgbColor(double red, double green, double blue, double alpha, std::string const& colorTitle)
 {
 	if (red < 0 || red > 1) {
 		throw invalid_argument("red must be in range [0, 1]");
@@ -174,7 +174,7 @@ void ContinuousColorMap::setNanRgbColor(double red, double green, double blue, d
 	setNanHsvColor(hue, saturation, value, alpha, colorTitle);
 }
 
-void ContinuousColorMap::setNanRgbColor(unsigned int red, unsigned int green, unsigned int blue, double alpha, std::string colorTitle)
+void ContinuousColorMap::setNanRgbColor(unsigned int red, unsigned int green, unsigned int blue, double alpha, std::string const& colorTitle)
 {
 	if (red < 0 || red > 255) {
 		throw invalid_argument("red must be in range [0, 255]");
