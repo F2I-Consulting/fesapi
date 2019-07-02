@@ -78,15 +78,6 @@ void AbstractProperty::loadTargetRelationships() const
 		}
 		repository->addRelationship(this, pk);
 	}
-
-	string uuidHdfProxy = getHdfProxyUuid();
-	if (!uuidHdfProxy.empty()) {
-		COMMON_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(uuidHdfProxy);
-		if (hdfProxy == nullptr) {
-			throw invalid_argument("The referenced hdf proxy (" + uuidHdfProxy + ") is missing.");
-		}
-		repository->addRelationship(this, hdfProxy);
-	}
 }
 
 bool AbstractProperty::validate()
@@ -311,56 +302,6 @@ unsigned int AbstractProperty::getTimeIndex() const
 	else {
 		throw logic_error("Not implemented yet");
 	}
-}
-
-COMMON_NS::AbstractHdfProxy* AbstractProperty::getHdfProxy() const
-{
-	return static_cast<COMMON_NS::AbstractHdfProxy*>(repository->getDataObjectByUuid(getHdfProxyUuid()));
-}
-
-std::string AbstractProperty::getHdfProxyUuid() const
-{
-	if (gsoapProxy2_0_1 != nullptr) {
-		if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREPointsProperty)
-		{
-			gsoap_resqml2_0_1::_resqml2__PointsProperty* prop = static_cast<gsoap_resqml2_0_1::_resqml2__PointsProperty*>(gsoapProxy2_0_1);
-			gsoap_resqml2_0_1::resqml2__PatchOfPoints* firstPatch = prop->PatchOfPoints[0];
-
-			int valuesType = firstPatch->Points->soap_type();
-			if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array) {
-				return static_cast<gsoap_resqml2_0_1::resqml2__Point3dHdf5Array*>(firstPatch->Points)->Coordinates->HdfProxy->UUID;
-			}
-			else {
-				return "";
-			}
-		}
-		else {
-			gsoap_resqml2_0_1::resqml2__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml2__AbstractValuesProperty*>(gsoapProxy2_0_1);
-			gsoap_resqml2_0_1::resqml2__PatchOfValues* firstPatch = prop->PatchOfValues[0];
-
-			int valuesType = firstPatch->Values->soap_type();
-			if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__BooleanHdf5Array) {
-				return static_cast<gsoap_resqml2_0_1::resqml2__BooleanHdf5Array*>(firstPatch->Values)->Values->HdfProxy->UUID;
-			}
-			else if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-				return static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(firstPatch->Values)->Values->HdfProxy->UUID;
-			}
-			else if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-				return static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(firstPatch->Values)->Values->HdfProxy->UUID;
-			}
-			else if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__StringHdf5Array) {
-				return static_cast<gsoap_resqml2_0_1::resqml2__StringHdf5Array*>(firstPatch->Values)->Values->HdfProxy->UUID;
-			}
-			else {
-				return "";
-			}
-		}
-	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
-
-	return "";
 }
 
 unsigned int AbstractProperty::getElementCountPerValue() const

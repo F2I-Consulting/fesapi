@@ -464,9 +464,6 @@ namespace RESQML2_NS
 		AbstractRepresentation* getRepresentation();
 		void setRepresentation(AbstractRepresentation * rep);
 		
-		std::string getHdfProxyUuid() const;
-		COMMON_NS::AbstractHdfProxy* getHdfProxy();
-		
 		std::string getPropertyKindDescription() const;
 		std::string getPropertyKindAsString() const;
 		std::string getPropertyKindParentAsString() const;

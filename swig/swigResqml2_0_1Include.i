@@ -3199,7 +3199,7 @@ namespace RESQML2_0_1_NS
 	{
 	public:
 		void pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values, COMMON_NS::AbstractHdfProxy * proxy);
-		std::vector<std::string> getStringValuesOfPatch(const unsigned int & patchIndex);
+		std::vector<std::string> getStringValuesOfPatch(unsigned int patchIndex);
 	};
 	
 #ifdef SWIGPYTHON

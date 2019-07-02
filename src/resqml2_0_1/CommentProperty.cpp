@@ -140,23 +140,17 @@ std::string CommentProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdf
 	return xmlValues->Values->PathInHdfFile;
 }
 
-std::vector<std::string> CommentProperty::getStringValuesOfPatch(const unsigned int & patchIndex)
+std::vector<std::string> CommentProperty::getStringValuesOfPatch(unsigned int patchIndex)
 {
-	// Check that the hdf proxy has been resolved.
-	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
-	if (hdfProxy == nullptr) {
-		throw invalid_argument("The hdf proxy does not exist");
-	}
-
 	std::vector<std::string> result;
 
-	// Look for the hdf dataset name where the comments are stored.
-	_resqml2__CommentProperty* prop = static_cast<_resqml2__CommentProperty*>(gsoapProxy2_0_1);
-	resqml2__StringHdf5Array* hdfValues = static_cast<resqml2__StringHdf5Array*>(prop->PatchOfValues[patchIndex]->Values);
-	const std::string datasetName = hdfValues->Values->PathInHdfFile;
+	// Look for the hdf where the comments are stored.
+	_resqml2__CommentProperty const * prop = static_cast<_resqml2__CommentProperty*>(gsoapProxy2_0_1);
+	eml20__Hdf5Dataset const * dataset = static_cast<resqml2__StringHdf5Array*>(prop->PatchOfValues[patchIndex]->Values)->Values;
+	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
 	// Check if the hdf dataset really contains constant length string.
-	std::vector<hsize_t> dims = hdfProxy->readArrayDimensions (datasetName);
+	std::vector<hsize_t> dims = hdfProxy->readArrayDimensions (dataset->PathInHdfFile);
 	if (dims.size() != 2) {
 		return result;
 	}
@@ -170,7 +164,7 @@ std::vector<std::string> CommentProperty::getStringValuesOfPatch(const unsigned 
 
 	// Read all char/strings from the hdf dataset
 	unsigned char* values = new unsigned char[nbStrings * stringLength];
-	hdfProxy->readArrayNdOfUCharValues (datasetName, values);
+	hdfProxy->readArrayNdOfUCharValues (dataset->PathInHdfFile, values);
 
 	for (unsigned int stringIndex = 0; stringIndex < nbStrings; ++stringIndex) {
 		std::string comment = string();
@@ -251,4 +245,3 @@ bool CommentProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1::r
 
 	return true;
 }
-

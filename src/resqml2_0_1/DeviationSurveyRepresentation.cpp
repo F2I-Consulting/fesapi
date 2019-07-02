@@ -296,7 +296,13 @@ std::vector<WellboreTrajectoryRepresentation const *> DeviationSurveyRepresentat
 
 unsigned int DeviationSurveyRepresentation::getWellboreTrajectoryRepresentationCount() const
 {
-	return getWellboreTrajectoryRepresentationSet().size();
+	const size_t result = getWellboreTrajectoryRepresentationSet().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("There are too many associated WellboreTrajectoryRepresentation.");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 WellboreTrajectoryRepresentation const * DeviationSurveyRepresentation::getWellboreTrajectoryRepresentation(const unsigned int & index) const

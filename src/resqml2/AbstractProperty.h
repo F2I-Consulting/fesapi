@@ -77,17 +77,6 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT std::string getRepresentationContentType() const;
 
 		/**
-		* Getter for the hdf proxy which stores this instance values.
-		*/
-		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractHdfProxy* getHdfProxy() const;
-
-		/*
-		 * Getter for the uuid of the hdf proxy which is used for storing the numerical values of this property.
-		 * An empty string is returned if no hd fproxy is used for storing the numerical values.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
-
-		/**
 		* Getter (in read only mode) of the element count per property value.
 		* If the property is a scalar one then it should be one.
 		* If it is a vectorial one, the it should be more than one.
@@ -248,4 +237,3 @@ namespace RESQML2_NS
 		virtual void loadTargetRelationships() const;
 	};
 }
-

@@ -80,7 +80,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get all the values of the instance which are supposed to be string ones.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<std::string> getStringValuesOfPatch(const unsigned int & patchIndex);
+		DLL_IMPORT_OR_EXPORT std::vector<std::string> getStringValuesOfPatch(unsigned int patchIndex);
 
 		/**
 		* Check if the associated local property kind is allowed for this property.

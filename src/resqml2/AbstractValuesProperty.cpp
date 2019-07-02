@@ -539,3 +539,34 @@ void AbstractValuesProperty::getLongValuesOf3dPatch(
 		3
 	);
 }
+
+void AbstractValuesProperty::loadTargetRelationships() const
+{
+	AbstractProperty::loadTargetRelationships();
+
+	gsoap_resqml2_0_1::resqml2__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml2__AbstractValuesProperty*>(gsoapProxy2_0_1);
+	
+	for (size_t patchIndex = 0; patchIndex < prop->PatchOfValues.size(); ++patchIndex) {
+		gsoap_resqml2_0_1::resqml2__PatchOfValues* patch = prop->PatchOfValues[patchIndex];
+
+		gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = nullptr;
+
+		int valuesType = patch->Values->soap_type();
+		if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__BooleanHdf5Array) {
+			dor = static_cast<gsoap_resqml2_0_1::resqml2__BooleanHdf5Array*>(patch->Values)->Values->HdfProxy;
+		}
+		else if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
+			dor = static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(patch->Values)->Values->HdfProxy;
+		}
+		else if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
+			dor = static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(patch->Values)->Values->HdfProxy;
+		}
+		else if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__StringHdf5Array) {
+			dor = static_cast<gsoap_resqml2_0_1::resqml2__StringHdf5Array*>(patch->Values)->Values->HdfProxy;
+		}
+		else {
+			throw logic_error("The type of the property values is not implemented yet.");
+		}
+		convertDorIntoRel<COMMON_NS::AbstractHdfProxy>(dor);
+	}
+}
