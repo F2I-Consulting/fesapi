@@ -150,7 +150,12 @@ void askUser(ETP_NS::AbstractSession* session)
 		}
 		else if (commandTokens[0] == "GetDataObject") {
 			Energistics::Etp::v12::Protocol::Store::GetDataObjects getO;
-			getO.m_uris = tokenize(commandTokens[1], ',');
+			std::vector<std::string> tokens = tokenize(commandTokens[1], ',');
+			std::map<std::string, std::string> tokenMaps;
+			for (size_t i = 0; i < tokens.size(); ++i) {
+				tokenMaps[std::to_string(i)] = tokens[i];
+			}
+			getO.m_uris = tokenMaps;
 			session->send(getO);
 		}
 		else if (commandTokens[0] == "PutDataObject") {
@@ -172,7 +177,7 @@ void askUser(ETP_NS::AbstractSession* session)
 				2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 			Energistics::Etp::v12::Datatypes::Object::DataObject dataObject = ETP_NS::EtpHelpers::buildEtpDataObjectFromEnergisticsObject(ijkgrid);
-			putDataObjects.m_dataObjects.push_back(dataObject);
+			putDataObjects.m_dataObjects["0"] = dataObject;
 
 			session->send(putDataObjects, 0, 0x10); // 0x10 requires Acknowledge from the store
 		}

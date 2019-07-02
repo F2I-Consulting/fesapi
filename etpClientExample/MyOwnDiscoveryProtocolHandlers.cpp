@@ -25,6 +25,9 @@ under the License.
 
 void MyOwnDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse & grr, int64_t correlationId)
 {
+	Energistics::Etp::v12::Protocol::Store::GetDataObjects getO;
+	unsigned int index = 0;
+
 	std::cout << grr.m_resources.size() << " resources received." << std::endl;
 	for (Energistics::Etp::v12::Datatypes::Object::Resource resource : grr.m_resources) {
 		std::cout << "*************************************************" << std::endl;
@@ -46,12 +49,15 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energistics::
 			if (openingParenthesis != std::string::npos) {
 				auto resqmlObj = dynamic_cast<MyOwnEtpClientSessionEpcBased*>(session)->epcDoc.getDataObjectByUuid(resource.m_uri.substr(openingParenthesis + 1, 36));
 				if (resqmlObj == nullptr || resqmlObj->isPartial()) {
-					std::cout << "GET OBJECT -----------------------------------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
-					Energistics::Etp::v12::Protocol::Store::GetDataObjects getO;
-					getO.m_uris.push_back(resource.m_uri);
-					session->send(getO);
+					std::cout << "GET OBJECT -----------------------------------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;			
+					getO.m_uris[std::to_string(index)] = resource.m_uri;
+					++index;
 				}
 			}
 		}
+	}
+
+	if (!getO.m_uris.empty()) {
+		session->send(getO);
 	}
 }
