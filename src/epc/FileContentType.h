@@ -22,25 +22,16 @@ under the License.
 #ifndef FILE_CONTENT_TYPE_H
 #define FILE_CONTENT_TYPE_H
 
-#if defined(_WIN32) || defined(__APPLE__)
 #include <unordered_map>
-#else
-#include <tr1/unordered_map>
-#endif
 
 #include "ContentType.h"
 
 namespace epc
 {
-
 	class FileContentType
 	{
     public:
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		typedef std::unordered_map<std::string, ContentType> ContentTypeMap;
-#else
-		typedef std::tr1::unordered_map<std::string, ContentType> ContentTypeMap;
-#endif
 
 	private:
 		static const char* header;

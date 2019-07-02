@@ -47,11 +47,7 @@ namespace COMMON_NS
 		/**
 		* Getter (in read only mode) of all the extra metadata
 		*/
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		std::unordered_map< std::string, std::string > getExtraMetadataSetV2_0_1() const;
-#else
-		std::tr1::unordered_map< std::string, std::string > getExtraMetadataSetV2_0_1() const;
-#endif
 
 		/**
 		* Get an extra metadata according its key.
@@ -352,11 +348,7 @@ namespace COMMON_NS
 		/**
 		* Getter (in read only mode) of all the extra metadata
 		*/
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		DLL_IMPORT_OR_EXPORT std::unordered_map< std::string, std::string > getExtraMetadataSet() const;
-#else
-		std::tr1::unordered_map< std::string, std::string > getExtraMetadataSet() const;
-#endif
 
 		/**
 		* Get an extra metadata according its key.

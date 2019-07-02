@@ -207,13 +207,8 @@ void EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64
 	// 0 means APPEND_STATUS_CREATE
 	package->openForWriting(filePath, 0, useZip64);
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	const std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > dataObjects = repo.getDataObjects();
 	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it)
-#else
-	const std::tr1::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > dataObjects = repo.getDataObjects();
-	for (std::tr1::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it)
-#endif
 	{
 		for (size_t i = 0; i < it->second.size(); ++i) {
 			if (!it->second[i]->isPartial() && dynamic_cast<WellboreMarker*>(it->second[i]) == nullptr) {
@@ -311,11 +306,7 @@ string EpcDocument::getName() const
 	return nameSuffixed.substr(0, nameSuffixed.find_last_of("."));
 }
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 unordered_map< string, string > & EpcDocument::getExtendedCoreProperty()
-#else
-tr1::unordered_map< string, string > & EpcDocument::getExtendedCoreProperty()
-#endif
 {
 	return package->getExtendedCoreProperty();
 }

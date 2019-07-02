@@ -86,11 +86,7 @@ namespace COMMON_NS
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getName() const;
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		DLL_IMPORT_OR_EXPORT std::unordered_map< std::string, std::string > & getExtendedCoreProperty();
-#else
-		std::tr1::unordered_map< std::string, std::string > & getExtendedCoreProperty();
-#endif
 
 		DLL_IMPORT_OR_EXPORT void setExtendedCoreProperty(const std::string & key, const std::string & value);
 

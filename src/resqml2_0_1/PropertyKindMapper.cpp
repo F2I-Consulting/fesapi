@@ -144,8 +144,6 @@ std::string PropertyKindMapper::getDescriptionOfResqmlStandardPropertyKindName(g
 	std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*>::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
 #elif defined(__APPLE__)
 	std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::hash<int> >::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
-#else
-	std::tr1::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::tr1::hash<int> >::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
 #endif
 
 	if (cit != resqmlStandardPropertyKindNameToApplicationPropertyKindName.end())
@@ -163,8 +161,6 @@ std::string PropertyKindMapper::getApplicationPropertyKindNameFromResqmlStandard
 	std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*>::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
 #elif defined(__APPLE__)
 	std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::hash<int> >::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
-#else
-	std::tr1::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::tr1::hash<int> >::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
 #endif
 	if (cit != resqmlStandardPropertyKindNameToApplicationPropertyKindName.end())
 	{
@@ -182,13 +178,8 @@ std::string PropertyKindMapper::getApplicationPropertyKindNameFromResqmlStandard
 
 gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind PropertyKindMapper::getResqmlStandardPropertyKindNameFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application) const
 {
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	std::unordered_map<std::string, std::unordered_map<std::string, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind> >::const_iterator cit1 = applicationPropertyKindNameToResqmlStandardPropertyKindName.find (application);
 	std::unordered_map<std::string, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind> value;
-#else
-	std::tr1::unordered_map<std::string, std::tr1::unordered_map<std::string, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind> >::const_iterator cit1 = applicationPropertyKindNameToResqmlStandardPropertyKindName.find(application);
-	std::tr1::unordered_map<std::string, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind> value;
-#endif
 	if (cit1 != applicationPropertyKindNameToResqmlStandardPropertyKindName.end())
 		value =  cit1->second;
 	else
@@ -207,32 +198,19 @@ gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind PropertyKindMapper::getResqmlStan
 
 std::string PropertyKindMapper::getApplicationPropertyKindNameFromResqmlLocalPropertyKindUuid(const std::string & resqmlLocalPropertyKindUuid, const std::string & application) const
 {
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	std::unordered_map<std::string, std::unordered_map<std::string, std::string> >::const_iterator cit1 = resqmlLocalPropertyKindUuidToApplicationPropertyKindName.find (application);
 	std::unordered_map<std::string, std::string> value;
-#else
-	std::tr1::unordered_map<std::string, std::tr1::unordered_map<std::string, std::string> >::const_iterator cit1 = resqmlLocalPropertyKindUuidToApplicationPropertyKindName.find(application);
-	std::tr1::unordered_map<std::string, std::string> value;
-#endif
 	if (cit1 != resqmlLocalPropertyKindUuidToApplicationPropertyKindName.end())
 		value =  cit1->second;
 	else
 		return "";
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	std::unordered_map<std::string, std::string>::const_iterator cit = value.find (resqmlLocalPropertyKindUuid);
-#else
-	std::tr1::unordered_map<std::string, std::string>::const_iterator cit = value.find(resqmlLocalPropertyKindUuid);
-#endif
 	if (cit != value.end())
 		return cit->second;
 	else
 	{
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		std::unordered_map<std::string, gsoap_resqml2_0_1::_resqml2__PropertyKind*>::const_iterator cit2 = resqmlLocalPropertyKindUuidToResqmlLocalPropertyKind.find(resqmlLocalPropertyKindUuid);
-#else
-		std::tr1::unordered_map<std::string, gsoap_resqml2_0_1::_resqml2__PropertyKind*>::const_iterator cit2 = resqmlLocalPropertyKindUuidToResqmlLocalPropertyKind.find(resqmlLocalPropertyKindUuid);
-#endif
 		if (cit2 != resqmlLocalPropertyKindUuidToResqmlLocalPropertyKind.end())
 		{
 			if (cit2->second->ParentPropertyKind->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__LocalPropertyKind)
@@ -251,23 +229,14 @@ std::string PropertyKindMapper::getApplicationPropertyKindNameFromResqmlLocalPro
 
 std::string PropertyKindMapper::getResqmlLocalPropertyKindUuidFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application) const
 {
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	std::unordered_map<std::string, std::unordered_map<std::string, std::string> >::const_iterator cit1 = applicationPropertyKindNameToResqmlLocalPropertyKindUuid.find (application);
 	std::unordered_map<std::string, std::string> value;
-#else
-	std::tr1::unordered_map<std::string, std::tr1::unordered_map<std::string, std::string> >::const_iterator cit1 = applicationPropertyKindNameToResqmlLocalPropertyKindUuid.find(application);
-	std::tr1::unordered_map<std::string, std::string> value;
-#endif
 	if (cit1 != applicationPropertyKindNameToResqmlLocalPropertyKindUuid.end())
 		value =  cit1->second;
 	else
 		return "";
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	std::unordered_map<std::string, std::string>::const_iterator cit = value.find (applicationPropertyKindName);
-#else
-	std::tr1::unordered_map<std::string, std::string>::const_iterator cit = value.find(applicationPropertyKindName);
-#endif
 	if (cit != value.end())
 		return cit->second;
 	else
@@ -276,23 +245,14 @@ std::string PropertyKindMapper::getResqmlLocalPropertyKindUuidFromApplicationPro
 
 PropertyKind* PropertyKindMapper::addResqmlLocalPropertyKindToEpcDocumentFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application)
 {
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	std::unordered_map<std::string, std::unordered_map<std::string, std::string> >::const_iterator cit1 = applicationPropertyKindNameToResqmlLocalPropertyKindUuid.find (application);
 	std::unordered_map<std::string, std::string> value;
-#else
-	std::tr1::unordered_map<std::string, std::tr1::unordered_map<std::string, std::string> >::const_iterator cit1 = applicationPropertyKindNameToResqmlLocalPropertyKindUuid.find(application);
-	std::tr1::unordered_map<std::string, std::string> value;
-#endif
 	if (cit1 != applicationPropertyKindNameToResqmlLocalPropertyKindUuid.end())
 		value =  cit1->second;
 	else
 		return nullptr;
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	std::unordered_map<std::string, std::string>::const_iterator cit = value.find (applicationPropertyKindName);
-#else
-	std::tr1::unordered_map<std::string, std::string>::const_iterator cit = value.find(applicationPropertyKindName);
-#endif
 	if (cit != value.end())
 	{
 		if (dataObjRepo->getDataObjectByUuid(cit->second) == nullptr)
@@ -337,8 +297,6 @@ gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind PropertyKindMapper::getPropertyKi
 	std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*>::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
 #elif defined(__APPLE__)
 	std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::hash<int> >::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
-#else
-	std::tr1::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::tr1::hash<int> >::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
 #endif
 
 	if (cit != resqmlStandardPropertyKindNameToApplicationPropertyKindName.end()) {
@@ -369,8 +327,6 @@ bool PropertyKindMapper::isAbstract(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKi
 	std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*>::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find(resqmlStandardPropertyKindName);
 #elif defined(__APPLE__)
 	std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::hash<int> >::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find(resqmlStandardPropertyKindName);
-#else
-	std::tr1::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::tr1::hash<int> >::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find(resqmlStandardPropertyKindName);
 #endif
 
 	if (cit != resqmlStandardPropertyKindNameToApplicationPropertyKindName.end()) {
@@ -384,4 +340,3 @@ bool PropertyKindMapper::isAbstract(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKi
 
 	return true;
 }
-
