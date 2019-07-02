@@ -215,10 +215,13 @@ unsigned int GridConnectionSetRepresentation::getCellIndexPairCountFromInterpret
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml2__IntegerHdf5Array*>(rep->ConnectionInterpretations->InterpretationIndices->Elements)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
 			const signed long long faultIndexCount = hdfProxy->getElementCount(dataset->PathInHdfFile);
-			unsigned int * const faultIndices = new unsigned int[faultIndexCount];
+			if (faultIndexCount < 0) {
+				throw invalid_argument("The HDF5 library could not read the element count of this dataset.");
+			}
+			unsigned int * const faultIndices = new unsigned int[static_cast<size_t>(faultIndexCount)];
 
 			hdfProxy->readArrayNdOfUIntValues(dataset->PathInHdfFile, faultIndices);
-			for (size_t i = 0; i < faultIndexCount; ++i) {
+			for (size_t i = 0; i < static_cast<size_t>(faultIndexCount); ++i) {
 				if (faultIndices[i] == interpretationIndex) {
 					result++;
 				}

@@ -675,13 +675,13 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	//short prop1Values[2] = { 0, 1 };
 	//discreteProp1->pushBackShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, -1);
 	unsigned short prop1Values[2] = { 0, 1 };
-	discreteProp1->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, -1);
+	discreteProp1->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
 
 
 	DiscreteProperty* discreteProp1OnIjkgridParametric = pck->createDiscreteProperty(ijkgridParametric, "eb3dbf6c-5745-4e41-9d09-672f6fbab414", "Four sugar cubes cellIndex", 1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, propType1);
 	unsigned short prop1ValuesOnIjkgridParametric[4] = { 0, 1, 2, 3 };
-	discreteProp1OnIjkgridParametric->pushBackUShortHdf5Array3dOfValues(prop1ValuesOnIjkgridParametric, 2, 1, 2, hdfProxy, -1, 0, 3);
+	discreteProp1OnIjkgridParametric->pushBackUShortHdf5Array3dOfValues(prop1ValuesOnIjkgridParametric, 2, 1, 2, hdfProxy, 1111, 0, 3);
 	//Move this prop to another same ninjnk ijk grid
 	discreteProp1OnIjkgridParametric->setRepresentation(ijkgridParametricNotSameLineKind);
 
@@ -2130,7 +2130,7 @@ void deserializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck)
 	for (size_t rfoiIndex = 0; rfoiIndex < rockFluidOrgInterpSet.size(); ++rfoiIndex) {
 		RockFluidOrganizationInterpretation* rockFluidOrgInterp = rockFluidOrgInterpSet[rfoiIndex];
 		showAllMetadata(rockFluidOrgInterp);
-		for (size_t i = 0; i < rockFluidOrgInterp->getGridRepresentationCount(); ++i) {
+		for (unsigned int i = 0; i < rockFluidOrgInterp->getGridRepresentationCount(); ++i) {
 			RESQML2_NS::AbstractGridRepresentation const * grid = rockFluidOrgInterp->getGridRepresentation(i);
 			showAllMetadata(grid);
 		}
@@ -3136,7 +3136,7 @@ void deserializePerforations(COMMON_NS::DataObjectRepository & pck)
 	
 	for (unsigned int perforationIndex = 0; perforationIndex < wellboreCompletion->getPerforationCount(); ++perforationIndex)
 	{
-		cout << std::endl << "perforation " + perforationIndex << ":" << std::endl;
+		cout << std::endl << "perforation " << perforationIndex << ":" << std::endl;
 		if (wellboreCompletion->hasPerforationMdDatum(perforationIndex))
 		{
 			cout << "datum: " << wellboreCompletion->getPerforationMdDatum(perforationIndex) << std::endl;
@@ -3222,13 +3222,8 @@ void deserialize(const string & inputFile)
 
 	cout << "EXTENDED CORE PROPERTIES" << endl;
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	unordered_map<string, string> & extendedCoreProperty = pck.getExtendedCoreProperty();
 	for (unordered_map<string, string>::const_iterator it = extendedCoreProperty.begin(); it != extendedCoreProperty.end(); ++it) {
-#else
-	tr1::unordered_map<string, string> & extendedCoreProperty = pck.getExtendedCoreProperty();
-	for (tr1::unordered_map<string, string>::const_iterator it = extendedCoreProperty.begin(); it != extendedCoreProperty.end(); ++it) {
-#endif
 		cout << it->first.c_str() << " " << it->second.c_str() << endl;
 	}
 

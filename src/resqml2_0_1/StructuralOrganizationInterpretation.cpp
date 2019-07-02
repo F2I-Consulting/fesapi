@@ -66,7 +66,13 @@ void StructuralOrganizationInterpretation::pushBackFaultInterpretation(FaultInte
 
 unsigned int StructuralOrganizationInterpretation::getFaultInterpretationCount() const
 {
-	return static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Faults.size();
+	const size_t result = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Faults.size();
+
+	if (result > (numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("There are too many associated fault interpretations.");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 FaultInterpretation* StructuralOrganizationInterpretation::getFaultInterpretation(unsigned int index)
@@ -97,7 +103,13 @@ void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(Horizon
 
 unsigned int StructuralOrganizationInterpretation::getHorizonInterpretationCount() const
 {
-	return static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Horizons.size();
+	const size_t result = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Horizons.size();
+
+	if (result > (numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("There are too many associated horizon interpretations.");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 HorizonInterpretation* StructuralOrganizationInterpretation::getHorizonInterpretation(unsigned int index) const
@@ -122,7 +134,13 @@ void StructuralOrganizationInterpretation::pushBackTopFrontierInterpretation(Abs
 
 unsigned int StructuralOrganizationInterpretation::getTopFrontierInterpretationCount() const
 {
-	return static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->TopFrontier.size();
+	const size_t result = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->TopFrontier.size();
+
+	if (result > (numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("There are too many associated top frontier interpretations.");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 RESQML2_NS::AbstractFeatureInterpretation* StructuralOrganizationInterpretation::getTopFrontierInterpretation(unsigned int index) const
@@ -147,7 +165,13 @@ void StructuralOrganizationInterpretation::pushBackBottomFrontierInterpretation(
 
 unsigned int StructuralOrganizationInterpretation::getBottomFrontierInterpretationCount() const
 {
-	return static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->BottomFrontier.size();
+	const size_t result = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->BottomFrontier.size();
+
+	if (result > (numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("There are too many associated bottom frontier interpretations.");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 RESQML2_NS::AbstractFeatureInterpretation* StructuralOrganizationInterpretation::getBottomFrontierInterpretation(unsigned int index) const
@@ -172,7 +196,13 @@ void StructuralOrganizationInterpretation::pushBackSideFrontierInterpretation(Ab
 
 unsigned int StructuralOrganizationInterpretation::getSideFrontierInterpretationCount() const
 {
-	return static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Sides.size();
+	const size_t result = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Sides.size();
+
+	if (result > (numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("There are too many associated side frontier interpretations.");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 RESQML2_NS::AbstractFeatureInterpretation* StructuralOrganizationInterpretation::getSideFrontierInterpretation(unsigned int index) const
@@ -192,7 +222,6 @@ void StructuralOrganizationInterpretation::loadTargetRelationships() const
 
 	_resqml2__StructuralOrganizationInterpretation* interp = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 
-	COMMON_NS::AbstractObject* obj = nullptr;
 	for (size_t i = 0; i < interp->Faults.size(); ++i) {
 		convertDorIntoRel<FaultInterpretation>(interp->Faults[i]);
 	}
