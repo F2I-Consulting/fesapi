@@ -24,6 +24,8 @@ under the License.
 namespace resqml2_2test {
 	class DiscreteColorMapTest : public commontest::AbstractObjectTest {
 	public:
+		static char const* defaultUuid;
+		static char const* defaultTitle;
 		static char const* uuidOrganizationFeature;
 		static char const* titleOrganizationFeature;
 		static char const* uuidEarthModelInterpretation;

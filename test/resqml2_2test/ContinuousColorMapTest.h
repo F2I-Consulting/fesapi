@@ -24,6 +24,8 @@ under the License.
 namespace resqml2_2test {
 	class ContinuousColorMapTest : public commontest::AbstractObjectTest {
 	public:
+		static char const* defaultUuid;
+		static char const* defaultTitle;
 		static char const* uuidHorizon;
 		static char const* titleHorizon;
 		static char const* uuidHorizonInterpretation;

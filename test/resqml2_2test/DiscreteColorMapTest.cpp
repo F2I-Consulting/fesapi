@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "DiscreteColorMapTest.h"
 #include "catch.hpp"
-#include "../config.h"
 #include "common/AbstractHdfProxy.h"
 #include "common/GraphicalInformationSet.h"
 #include "resqml2/PropertyKind.h"
@@ -37,6 +36,8 @@ using namespace RESQML2_0_1_NS;
 using namespace resqml2_2test;
 using namespace gsoap_resqml2_0_1;
 
+char const* DiscreteColorMapTest::defaultUuid = "62075ce2-1b89-4f80-963e-2770bfc39baf";
+char const* DiscreteColorMapTest::defaultTitle = "Discrete Color Map";
 char const* DiscreteColorMapTest::uuidPropertyKind = "478278a5-827b-4a67-b5d8-d3dc18ef4525";
 char const* DiscreteColorMapTest::titlePropertyKind = "Property Kind";
 char const* DiscreteColorMapTest::uuidOrganizationFeature = "ceefeac1-21b1-4a31-b74b-ab1e64eacf80";
@@ -56,11 +57,11 @@ char const* DiscreteColorMapTest::titlePropertyKindDiscreteColorMap = "Property 
 
 
 DiscreteColorMapTest::DiscreteColorMapTest(const string & epcDocPath)
-	: AbstractObjectTest(epcDocPath, uuidDiscreteColorMap, titleDiscreteColorMap) {
+	: AbstractObjectTest(epcDocPath) {
 }
 
 DiscreteColorMapTest::DiscreteColorMapTest(EpcDocument * epcDoc, bool init)
-	: AbstractObjectTest(epcDoc, uuidDiscreteColorMap, titleDiscreteColorMap) {
+	: AbstractObjectTest(epcDoc) {
 	if (init)
 		initEpcDoc();
 	else
@@ -106,7 +107,7 @@ void DiscreteColorMapTest::initEpcDocHandler() {
 	REQUIRE(graphicalInformationSet->getDiscreteColorMapUuid(discreteProperty) == discreteColorMap1->getUuid());
 
 	// associating the discrete color map to the discrete property
-	DiscreteColorMap* discreteColorMap2 = epcDoc->createDiscreteColorMap(uuid, title);
+	DiscreteColorMap* discreteColorMap2 = epcDoc->createDiscreteColorMap(defaultUuid, defaultTitle);
 	REQUIRE(discreteColorMap2 != nullptr);
 	unsigned int rgbColors2[6] = { 255, 0, 0, 0, 0, 255 };
 	double alphas2[2] = { 1., 1. };
@@ -122,7 +123,7 @@ void DiscreteColorMapTest::readEpcDocHandler() {
 	DiscreteProperty* discreteProperty = epcDoc->getDataObjectByUuid<DiscreteProperty>(uuidDiscreteProperty);
 	REQUIRE(graphicalInformationSet->hasDiscreteColorMap(discreteProperty));
 	DiscreteColorMap* discreteColorMap = graphicalInformationSet->getDiscreteColorMap(discreteProperty);
-	REQUIRE(discreteColorMap->getUuid() == uuidDiscreteColorMap);
+	REQUIRE(discreteColorMap->getUuid() == defaultUuid);
 	double r, g, b;
 	discreteColorMap->getRgbColor(0, r, g, b);
 	REQUIRE(r == 1.); // 255 is converted to 1. since we ask for double red value

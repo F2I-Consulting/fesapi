@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "GraphicalInformationSetTest.h"
 #include "catch.hpp"
-#include "config.h"
 #include "common/GraphicalInformationSet.h"
 #include "resqml2_0_1/Horizon.h"
 #include "resqml2_0_1/LocalTime3dCrs.h"
@@ -27,14 +26,18 @@ using namespace std;
 using namespace COMMON_NS;
 using namespace RESQML2_0_1_NS;
 using namespace commontest;
-using namespace resqml2_0_1test;
+
+const char* GraphicalInformationSetTest::defaultUuid = "b4a247f5-aeab-46c3-8afc-bce6420d47a8";
+const char* GraphicalInformationSetTest::defaultTitle = "Graphical Information Set";
+const char* GraphicalInformationSetTest::uuidHorizon = "6cd16ac5-e321-467c-9d1d-a554c5529937";
+const char* GraphicalInformationSetTest::titleHorzon = "Horizon";
 
 GraphicalInformationSetTest::GraphicalInformationSetTest(const string & epcDocPath)
-	: AbstractObjectTest(epcDocPath, uuidGraphicalInformationSet, titleGraphicalInformationSet) {
+	: AbstractObjectTest(epcDocPath) {
 }
 
 GraphicalInformationSetTest::GraphicalInformationSetTest(EpcDocument * epcDoc, bool init)
-	: AbstractObjectTest(epcDoc, uuidGraphicalInformationSet, titleGraphicalInformationSet) {
+	: AbstractObjectTest(epcDoc) {
 	if (init)
 		initEpcDoc();
 	else
@@ -42,9 +45,9 @@ GraphicalInformationSetTest::GraphicalInformationSetTest(EpcDocument * epcDoc, b
 }
 
 void GraphicalInformationSetTest::initEpcDocHandler() {
-	Horizon* feature = epcDoc->createHorizon(uuidHorizon0, titleHorizon0);
+	Horizon* feature = epcDoc->createHorizon(uuidHorizon, titleHorzon);
 
-	GraphicalInformationSet* graphicalInformationSet = epcDoc->createGraphicalInformationSet(uuid, title);
+	GraphicalInformationSet* graphicalInformationSet = epcDoc->createGraphicalInformationSet(defaultUuid, defaultTitle);
 	REQUIRE(graphicalInformationSet != nullptr);
 	
 	REQUIRE(graphicalInformationSet->hasGraphicalInformation(feature) == false);
@@ -59,11 +62,11 @@ void GraphicalInformationSetTest::initEpcDocHandler() {
 void GraphicalInformationSetTest::readEpcDocHandler() {
 	REQUIRE(epcDoc->getDataObjects<GraphicalInformationSet>().size() == 1);
 	GraphicalInformationSet * graphicalInformationSet = epcDoc->getDataObjects<GraphicalInformationSet>()[0];
-	REQUIRE(graphicalInformationSet->getUuid() == uuid);
+	REQUIRE(graphicalInformationSet->getUuid() == defaultUuid);
 	
 	REQUIRE(graphicalInformationSet->getGraphicalInformationSetCount() == 1);
 	Horizon* feature = static_cast<Horizon *>(graphicalInformationSet->getTargetObject(0));
-	REQUIRE(feature->getUuid() == uuidHorizon0);
+	REQUIRE(feature->getUuid() == uuidHorizon);
 	REQUIRE(graphicalInformationSet->hasGraphicalInformation(feature) == true);
 	REQUIRE(graphicalInformationSet->hasDefaultColor(feature) == true);
 	REQUIRE(graphicalInformationSet->getDefaultHue(feature) == 0.);

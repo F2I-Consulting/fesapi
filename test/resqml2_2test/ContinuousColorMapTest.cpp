@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "ContinuousColorMapTest.h"
 #include "catch.hpp"
-#include "../config.h"
 #include "common/AbstractHdfProxy.h"
 #include "common/GraphicalInformationSet.h"
 #include "resqml2/PropertyKind.h"
@@ -39,6 +38,8 @@ using namespace RESQML2_0_1_NS;
 using namespace resqml2_2test;
 using namespace gsoap_resqml2_0_1;
 
+char const* ContinuousColorMapTest::defaultUuid = "8187ebb5-6d6d-4182-8d0e-8bcb9a5060e9";
+char const* ContinuousColorMapTest::defaultTitle = "Continuous Color Map";
 char const* ContinuousColorMapTest::uuidHorizon = "e860f1ac-2aa9-4721-b2b9-7e47c186c704";
 char const* ContinuousColorMapTest::titleHorizon = "Horizon";
 char const* ContinuousColorMapTest::uuidHorizonInterpretation = "d8a2ae13-eef9-497b-870c-e43f92b2f336";
@@ -57,11 +58,11 @@ char const* ContinuousColorMapTest::uuidGraphicalInformationSet = "3b5c1be9-d2a0
 char const* ContinuousColorMapTest::titleGraphicalInformationSet = "Graphical Information Set";
 
 ContinuousColorMapTest::ContinuousColorMapTest(const string & epcDocPath)
-	: AbstractObjectTest(epcDocPath, uuidContinuousColorMap, titleContinuousColorMap) {
+	: AbstractObjectTest(epcDocPath) {
 }
 
 ContinuousColorMapTest::ContinuousColorMapTest(EpcDocument * epcDoc, bool init)
-	: AbstractObjectTest(epcDoc, uuidContinuousColorMap, titleContinuousColorMap) {
+	: AbstractObjectTest(epcDoc) {
 	if (init)
 		initEpcDoc();
 	else
@@ -93,7 +94,7 @@ void ContinuousColorMapTest::initEpcDocHandler() {
 	continuousProperty->pushBackDoubleHdf5Array2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 
 	// creating the continuous color map
-	RESQML2_2_NS::ContinuousColorMap* continuousColorMap = epcDoc->createContinuousColorMap(uuidContinuousColorMap, titleContinuousColorMap, gsoap_eml2_2::resqml2__InterpolationDomain__rgb, gsoap_eml2_2::resqml2__InterpolationMethod__linear);
+	RESQML2_2_NS::ContinuousColorMap* continuousColorMap = epcDoc->createContinuousColorMap(defaultUuid, defaultTitle, gsoap_eml2_2::resqml2__InterpolationDomain__rgb, gsoap_eml2_2::resqml2__InterpolationMethod__linear);
 	REQUIRE(continuousColorMap != nullptr);
 	unsigned int rgbColors[6] = { 0, 256, 0, 255, 0, 0 };
 	std::string titles[2] = { "green", "red" };
@@ -112,7 +113,7 @@ void ContinuousColorMapTest::readEpcDocHandler() {
 	ContinuousProperty* continuousProperty = epcDoc->getDataObjectByUuid<ContinuousProperty>(uuidContinuousProperty);
 	REQUIRE(graphicalInformationSet->hasContinuousColorMap(continuousProperty));
 	ContinuousColorMap* continuousColorMap = graphicalInformationSet->getContinuousColorMap(continuousProperty);
-	REQUIRE(continuousColorMap->getUuid() == uuidContinuousColorMap);
+	REQUIRE(continuousColorMap->getUuid() == defaultUuid);
 	double r, g, b;
 	continuousColorMap->getRgbColor(0, r, g, b);
 	REQUIRE(r == 0.); // 255 is converted to 1. since we ask for double red value

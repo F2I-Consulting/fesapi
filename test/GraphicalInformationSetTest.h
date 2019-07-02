@@ -24,6 +24,11 @@ under the License.
 namespace commontest {
 	class GraphicalInformationSetTest : public AbstractObjectTest {
 	public:
+		static const char* defaultUuid;
+		static const char* defaultTitle;
+		static const char* GraphicalInformationSetTest::uuidHorizon;
+		static const char* GraphicalInformationSetTest::titleHorzon;
+
 		GraphicalInformationSetTest(const std::string & epcDocPath);
 		GraphicalInformationSetTest(COMMON_NS::EpcDocument * epcDoc, bool init);
 
