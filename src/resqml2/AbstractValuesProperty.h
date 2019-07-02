@@ -27,11 +27,11 @@ namespace RESQML2_NS
 	{
 	protected:
 		/**
-		* Get the path in the hdf file of the dataset which contains the property values of a particular patch.
+		* Get the dataset which contains the property values of a particular patch.
 		* @param patchIndex	The corresponding patch index of the dataset to get.
-		* @param  nullValue	If possible, this function will set this parameter to the Resqml null value of the dataset. If not, it will return long.min
+		* @param nullValue	If possible, this function will set this parameter to the Resqml null value of the dataset. If not, it will return long.min
 		*/
-		std::string getPathInHdfFileOfPatch(unsigned int patchIndex, LONG64 & nullValue) const;
+		gsoap_resqml2_0_1::eml20__Hdf5Dataset const * getDatasetOfPatch(unsigned int patchIndex, LONG64 & nullValue) const;
 
 		/**
 		* Push back a new patch of integer values for this property where the values have not to be written in the HDF file.

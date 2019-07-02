@@ -108,15 +108,13 @@ namespace COMMON_NS
 		virtual void loadTargetRelationships() const = 0;
 		friend void COMMON_NS::DataObjectRepository::updateAllRelationships();
 
-		friend void COMMON_NS::EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64);
-
 		/**
 		* It is too dangerous for now to modify the uuid because too much things depend on it. That's why this method is only protected : it is only used by derived class constructor.
 		* Set a title and other common metadata for the resqml instance. Set to empty string or zero if you don't want to use.
 		* @param title				The title to set to the resqml instance. Set to empty string if you don't want to set it.
 		*/
-		void setMetadata(const std::string & guid, const std::string & title, const std::string & editor, const time_t & creation, const std::string & originator,
-			const std::string & description, const time_t & lastUpdate, const std::string & descriptiveKeywords);
+		void setMetadata(const std::string & guid, const std::string & title, const std::string & editor, time_t creation, const std::string & originator,
+			const std::string & description, time_t lastUpdate, const std::string & descriptiveKeywords);
 
 		/**
 		* Throw an exception if the instance if partial.
@@ -159,7 +157,7 @@ namespace COMMON_NS
 				getRepository()->createPartial(dor);
 				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->UUID);
 				if (targetObj == nullptr) {
-					throw invalid_argument("The DOR looks invalid.");
+					throw std::invalid_argument("The DOR looks invalid.");
 				}
 			}
 			getRepository()->addRelationship(this, targetObj);
@@ -173,7 +171,7 @@ namespace COMMON_NS
 				getRepository()->createPartial(dor);
 				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
 				if (targetObj == nullptr) {
-					throw invalid_argument("The DOR looks invalid.");
+					throw std::invalid_argument("The DOR looks invalid.");
 				}
 			}
 			getRepository()->addRelationship(this, targetObj);
@@ -213,14 +211,14 @@ namespace COMMON_NS
 
 		DLL_IMPORT_OR_EXPORT void setTitle(const std::string & title);
 		DLL_IMPORT_OR_EXPORT void setEditor(const std::string & editor);
-		DLL_IMPORT_OR_EXPORT void setCreation(const time_t & creation);
+		DLL_IMPORT_OR_EXPORT void setCreation(time_t creation);
 		/**
 		* Use this method if you want to set some dates out of range of time_t
 		*/
 		DLL_IMPORT_OR_EXPORT void setCreation(const tm & creation);
 		DLL_IMPORT_OR_EXPORT void setOriginator(const std::string & originator);
 		DLL_IMPORT_OR_EXPORT void setDescription(const std::string & description);
-		DLL_IMPORT_OR_EXPORT void setLastUpdate(const time_t & lastUpdate);
+		DLL_IMPORT_OR_EXPORT void setLastUpdate(time_t lastUpdate);
 		/**
 		* Use this method if you want to set some dates out of range of time_t
 		*/
@@ -242,8 +240,8 @@ namespace COMMON_NS
 		* Set a title and other common metadata for the resqml instance. Set to empty string or zero if you don't want to use.
 		* @param title				The title to set to the resqml instance. Set to empty string if you don't want to set it.
 		*/
-		DLL_IMPORT_OR_EXPORT void setMetadata(const std::string & title, const std::string & editor, const time_t & creation, const std::string & originator,
-			const std::string & description, const time_t & lastUpdate, const std::string & descriptiveKeywords);
+		DLL_IMPORT_OR_EXPORT void setMetadata(const std::string & title, const std::string & editor, time_t creation, const std::string & originator,
+			const std::string & description, time_t lastUpdate, const std::string & descriptiveKeywords);
 
 		/**
 		* Serialize the instance into a stream.

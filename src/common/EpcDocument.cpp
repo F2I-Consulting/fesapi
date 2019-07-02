@@ -244,7 +244,7 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo)
 	// Read all RESQML objects
 	const FileContentType::ContentTypeMap contentTypes = package->getFileContentType().getAllContentType();
 	// 14 equals "application/x-".size()
-	for(FileContentType::ContentTypeMap::const_iterator it=contentTypes.begin(); it != contentTypes.end(); ++it)
+	for (FileContentType::ContentTypeMap::const_iterator it=contentTypes.begin(); it != contentTypes.end(); ++it)
 	{
 		std::string contentType = it->second.getContentTypeString();
 		if (contentType.find("resqml", 14) != std::string::npos ||

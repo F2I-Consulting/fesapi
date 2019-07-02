@@ -348,7 +348,7 @@ void AbstractObject::setEditor(const std::string & editor)
 	}
 }
 
-void AbstractObject::setCreation(const time_t & creation)
+void AbstractObject::setCreation(time_t creation)
 {
 	if (creation > 0) {
 		setCreation(*gmtime(&creation));
@@ -421,7 +421,7 @@ void AbstractObject::setDescription(const std::string & description)
 	}
 }
 
-void AbstractObject::setLastUpdate(const time_t & lastUpdate)
+void AbstractObject::setLastUpdate(time_t lastUpdate)
 {
 	if (partialObject != nullptr)
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
@@ -524,15 +524,15 @@ void AbstractObject::initMandatoryMetadata()
 	setMetadata(std::string(), std::string(), std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
-void AbstractObject::setMetadata(const std::string & guid, const std::string & title, const std::string & editor, const time_t & creation, const std::string & originator,
-				const std::string & description, const time_t & lastUpdate, const std::string & descriptiveKeywords)
+void AbstractObject::setMetadata(const std::string & guid, const std::string & title, const std::string & editor, time_t creation, const std::string & originator,
+				const std::string & description, time_t lastUpdate, const std::string & descriptiveKeywords)
 {
 	setUuid(guid);
 	setMetadata(title, editor, creation, originator, description, lastUpdate, descriptiveKeywords);
 }
 
-void AbstractObject::setMetadata(const std::string & title, const std::string & editor, const time_t & creation, const std::string & originator,
-	const std::string & description, const time_t & lastUpdate, const std::string & descriptiveKeywords)
+void AbstractObject::setMetadata(const std::string & title, const std::string & editor, time_t creation, const std::string & originator,
+	const std::string & description, time_t lastUpdate, const std::string & descriptiveKeywords)
 {
 	if (partialObject != nullptr)
 		throw invalid_argument("The wrapped gsoap proxy must not be null");

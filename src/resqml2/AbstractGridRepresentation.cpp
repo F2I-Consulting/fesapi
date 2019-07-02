@@ -41,6 +41,17 @@ std::vector<RESQML2_NS::GridConnectionSetRepresentation const *> AbstractGridRep
 	return repository->getSourceObjects<RESQML2_NS::GridConnectionSetRepresentation>(this);
 }
 
+unsigned int AbstractGridRepresentation::getGridConnectionSetRepresentationCount() const
+{
+	const size_t result = getGridConnectionSetRepresentationSet().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("The count of the GridConnectionSet Representations is too big.");
+	}
+
+	return static_cast<unsigned int>(result);
+}
+
 RESQML2_NS::GridConnectionSetRepresentation const * AbstractGridRepresentation::getGridConnectionSetRepresentation(unsigned int index) const
 {
 	const std::vector<RESQML2_NS::GridConnectionSetRepresentation const *>& gridConnectionSetRepresentationSet = getGridConnectionSetRepresentationSet();
@@ -111,6 +122,16 @@ AbstractGridRepresentation* AbstractGridRepresentation::getParentGrid() const
 std::vector<RESQML2_NS::AbstractGridRepresentation const *> AbstractGridRepresentation::getChildGridSet() const
 {
 	return repository->getSourceObjects<RESQML2_NS::AbstractGridRepresentation>(this);
+}
+
+unsigned int AbstractGridRepresentation::getChildGridCount() const {
+	const size_t result = getChildGridSet().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("The count of the child grids is too big.");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 AbstractGridRepresentation const * AbstractGridRepresentation::getChildGrid(unsigned int index) const

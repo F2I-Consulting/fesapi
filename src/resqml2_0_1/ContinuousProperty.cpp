@@ -363,28 +363,20 @@ void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
 
 void ContinuousProperty::getDoubleValuesOfPatch(unsigned int patchIndex, double * values) const
 {
-	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
-	if (hdfProxy == nullptr) {
-		throw invalid_argument("The hdf proxy does not exist");
-	}
+	_resqml2__ContinuousProperty const * prop = static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1);
+	eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(prop->PatchOfValues[patchIndex]->Values) ->Values;
+	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
-	_resqml2__ContinuousProperty* prop = static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1);
-	resqml2__DoubleHdf5Array* hdfValues = static_cast<resqml2__DoubleHdf5Array*>(prop->PatchOfValues[patchIndex]->Values);
-
-	hdfProxy->readArrayNdOfDoubleValues(hdfValues->Values->PathInHdfFile, values);
+	hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, values);
 }
 
 void ContinuousProperty::getFloatValuesOfPatch(unsigned int patchIndex, float * values) const
 {
-	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
-	if (hdfProxy == nullptr) {
-		throw invalid_argument("The hdf proxy does not exist");
-	}
+	_resqml2__ContinuousProperty const * prop = static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1);
+	eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(prop->PatchOfValues[patchIndex]->Values)->Values;
+	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
-	_resqml2__ContinuousProperty* prop = static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1);
-	resqml2__DoubleHdf5Array* hdfValues = static_cast<resqml2__DoubleHdf5Array*>(prop->PatchOfValues[patchIndex]->Values);
-
-	hdfProxy->readArrayNdOfFloatValues(hdfValues->Values->PathInHdfFile, values);
+	hdfProxy->readArrayNdOfFloatValues(dataset->PathInHdfFile, values);
 }
 
 void ContinuousProperty::getFloatValuesOfPatch(
@@ -394,16 +386,12 @@ void ContinuousProperty::getFloatValuesOfPatch(
 	unsigned long long* offsetInEachDimension,
 	unsigned int numArrayDimensions) const
 {
-	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
-	if (hdfProxy == nullptr) {
-		throw invalid_argument("The hdf proxy does not exist");
-	}
-
-	_resqml2__ContinuousProperty* prop = static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1);
-	resqml2__DoubleHdf5Array* hdfValues = static_cast<resqml2__DoubleHdf5Array*>(prop->PatchOfValues[patchIndex]->Values);
+	_resqml2__ContinuousProperty const * prop = static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1);
+	eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(prop->PatchOfValues[patchIndex]->Values)->Values;
+	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
 	hdfProxy->readArrayNdOfFloatValues(
-        hdfValues->Values->PathInHdfFile, 
+		dataset->PathInHdfFile,
 		values, 
 		numValuesInEachDimension,
 		offsetInEachDimension,
@@ -504,4 +492,3 @@ bool ContinuousProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1
 
 	return true;
 }
-

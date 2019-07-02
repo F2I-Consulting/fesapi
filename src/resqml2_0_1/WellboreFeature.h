@@ -64,8 +64,5 @@ namespace RESQML2_0_1_NS
 		
 		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Wellbore* getWitsmlWellbore() const ;
 		DLL_IMPORT_OR_EXPORT void setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore);
-
-	protected:
-		void resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc);
 	};
 }

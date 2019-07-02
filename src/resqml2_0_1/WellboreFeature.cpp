@@ -59,13 +59,3 @@ WITSML2_0_NS::Wellbore* WellboreFeature::getWitsmlWellbore() const
 		? getRepository()->getDataObjectByUuid<WITSML2_0_NS::Wellbore>(resqmlWellbore->WitsmlWellbore->WitsmlWellbore->UUID)
 		: nullptr;
 }
-
-void WellboreFeature::resolveTargetRelationships(COMMON_NS::DataObjectRepository* epcDoc)
-{
-	resqml2__obj_USCOREWellboreFeature* resqmlWellbore = static_cast<resqml2__obj_USCOREWellboreFeature*>(gsoapProxy2_0_1);
-
-	if (resqmlWellbore->WitsmlWellbore != nullptr && resqmlWellbore->WitsmlWellbore->WitsmlWellbore != nullptr)
-	{
-		convertDorIntoRel<WITSML2_0_NS::Wellbore>(resqmlWellbore->WitsmlWellbore->WitsmlWellbore);
-	}
-}

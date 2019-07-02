@@ -73,7 +73,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMaxOccurences(const unsigned int & index) const = 0;
 		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMaxOccurences(const std::string & paramTitle) const = 0;
 
-		DLL_IMPORT_OR_EXPORT const std::vector<Activity const *>& getActivityInstanceSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<Activity const *> getActivityInstanceSet() const;
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const {return XML_TAG;}

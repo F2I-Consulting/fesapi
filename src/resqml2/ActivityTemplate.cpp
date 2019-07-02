@@ -27,7 +27,7 @@ using namespace epc;
 
 const char* ActivityTemplate::XML_TAG = "ActivityTemplate";
 
-const std::vector<Activity const *>& ActivityTemplate::getActivityInstanceSet() const
+std::vector<Activity const *> ActivityTemplate::getActivityInstanceSet() const
 {
 	return getRepository()->getSourceObjects<Activity>(this);
 }
