@@ -25,9 +25,7 @@ namespace RESQML2_NS
 	class RepresentationSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	protected:
-		RepresentationSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp) : AbstractRepresentation(interp) {}
-
-		RepresentationSetRepresentation() : AbstractRepresentation(static_cast<class AbstractFeatureInterpretation*>(nullptr)) {}
+		RepresentationSetRepresentation() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.

@@ -56,7 +56,7 @@ void UnstructuredGridRepresentation::init(COMMON_NS::DataObjectRepository* repo,
 UnstructuredGridRepresentation::UnstructuredGridRepresentation(COMMON_NS::DataObjectRepository* repo,
 	const std::string & guid, const std::string & title,
 	ULONG64 cellCount):
-	AbstractGridRepresentation(static_cast<RESQML2_NS::AbstractFeatureInterpretation*>(nullptr), false), constantNodeCountPerFace(0), constantFaceCountPerCell(0),
+	AbstractGridRepresentation(false), constantNodeCountPerFace(0), constantFaceCountPerCell(0),
 	cumulativeNodeCountPerFace(nullptr), cumulativeFaceCountPerCell(nullptr),
 	nodeIndicesOfFaces(nullptr), faceIndicesOfCells(nullptr)
 {
@@ -66,7 +66,7 @@ UnstructuredGridRepresentation::UnstructuredGridRepresentation(COMMON_NS::DataOb
 UnstructuredGridRepresentation::UnstructuredGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title,
 	ULONG64 cellCount):
-	AbstractGridRepresentation(interp, false), constantNodeCountPerFace(0), constantFaceCountPerCell(0),
+	AbstractGridRepresentation(false), constantNodeCountPerFace(0), constantFaceCountPerCell(0),
 	cumulativeNodeCountPerFace(nullptr), cumulativeFaceCountPerCell(nullptr),
 	nodeIndicesOfFaces(nullptr), faceIndicesOfCells(nullptr)
 {

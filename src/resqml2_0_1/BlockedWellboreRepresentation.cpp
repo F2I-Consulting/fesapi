@@ -36,7 +36,7 @@ using namespace gsoap_resqml2_0_1;
 
 const char* BlockedWellboreRepresentation::XML_TAG = "BlockedWellboreRepresentation";
 
-void BlockedWellboreRepresentation::init(const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
+void BlockedWellboreRepresentation::init(const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation const * traj)
 {
 	if (traj == nullptr) {
 		throw invalid_argument("The wellbore trajectory of a blocked wellbore cannot be null.");
@@ -54,9 +54,8 @@ void BlockedWellboreRepresentation::init(const std::string & guid, const std::st
 	getRepository()->addRelationship(this, traj);
 }
 
-BlockedWellboreRepresentation::BlockedWellboreRepresentation(WellboreInterpretation* interp,
-	const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj) :
-	WellboreFrameRepresentation(interp)
+BlockedWellboreRepresentation::BlockedWellboreRepresentation(WellboreInterpretation const * interp,
+	const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation  const * traj)
 {
 	init(guid, title, traj);
 

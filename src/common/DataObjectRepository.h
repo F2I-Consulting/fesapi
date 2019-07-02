@@ -23,6 +23,7 @@ under the License.
 #else
 #include <tr1/unordered_map>
 #endif
+#include <sstream>
 
 #include "proxies/gsoap_resqml2_0_1Stub.h"
 #include "proxies/gsoap_eml2_1Stub.h"
@@ -192,8 +193,9 @@ namespace COMMON_NS
 		/**
 		* Set the stream of the curent gsoap context.
 		*/
-		void setGsoapStream(std::istream * inputStream) { gsoapContext->is = inputStream; }/**
+		void setGsoapStream(std::istream * inputStream) { gsoapContext->is = inputStream; }
 
+		/**
 		* Read the Gsoap proxy from the stream associated to the current gsoap context and wrap this gsoap proxy into a fesapi wrapper.
 		* It does not add this fesapi wrapper to the current instance.
 		* It does not work for EpcExternalPartReference content type since this type is related to an external file which must be handled differently.
@@ -328,7 +330,7 @@ namespace COMMON_NS
 #if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		const std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > & getDataObjects() const
 #else
-		const std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > & getDataObjects() const
+		const std::tr1::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > & getDataObjects() const
 #endif 
 		{
 			return dataObjects;
@@ -1041,17 +1043,17 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::Grid2dRepresentation* createGrid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo);
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::DeviationSurveyRepresentation* deviationSurvey);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum const * mdInfo);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::DeviationSurveyRepresentation const * deviationSurvey);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum const * mdInfo);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation const * traj);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation const * traj);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::BlockedWellboreRepresentation* createBlockedWellboreRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp,
-			const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::BlockedWellboreRepresentation* createBlockedWellboreRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp,
+			const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation const * traj);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::RepresentationSetRepresentation* createRepresentationSetRepresentation(
 			RESQML2_0_1_NS::AbstractOrganizationInterpretation* interp,

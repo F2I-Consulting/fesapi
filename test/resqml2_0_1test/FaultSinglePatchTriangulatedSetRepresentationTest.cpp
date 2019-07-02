@@ -55,12 +55,6 @@ void FaultSinglePatchTriangulatedSetRepresentationTest::initRepoHandler()
 		interp = repo->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
 	}
 
-	LocalDepth3dCrs * crs = repo->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-	if (crs == nullptr) {
-		LocalDepth3dCrsTest crsTest(repo, true);
-		crs = repo->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-	}
-
 	TriangulatedSetRepresentation* rep = repo->createTriangulatedSetRepresentation(interp, defaultUuid, defaultTitle);
 	REQUIRE( rep != nullptr );
 

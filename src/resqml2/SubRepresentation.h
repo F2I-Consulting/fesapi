@@ -34,7 +34,7 @@ namespace RESQML2_NS
 		{
 		}
 
-		SubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp) : RESQML2_NS::AbstractRepresentation(interp) {}
+		SubRepresentation() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.

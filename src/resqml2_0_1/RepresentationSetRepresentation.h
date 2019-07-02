@@ -24,9 +24,6 @@ namespace RESQML2_0_1_NS
 {
 	class RepresentationSetRepresentation : public RESQML2_NS::RepresentationSetRepresentation
 	{
-	protected:
-		RepresentationSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp) : RESQML2_NS::RepresentationSetRepresentation(interp) {}
-
 	public:
 
 		/**

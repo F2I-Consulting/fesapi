@@ -37,8 +37,7 @@ SealedSurfaceFrameworkRepresentation::SealedSurfaceFrameworkRepresentation(
         StructuralOrganizationInterpretation* interp,
         const std::string & guid,
         const std::string & title
-        ):
-	AbstractSurfaceFrameworkRepresentation(interp)
+        )
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The structural organization interpretation cannot be null.");

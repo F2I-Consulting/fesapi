@@ -44,15 +44,13 @@ void SubRepresentation::init(COMMON_NS::DataObjectRepository* repo, const string
 	repo->addOrReplaceDataObject(this);
 }
 
-SubRepresentation::SubRepresentation(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title) :
-	RESQML2_NS::SubRepresentation(static_cast<RESQML2_NS::AbstractFeatureInterpretation*>(nullptr))
+SubRepresentation::SubRepresentation(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
 {
 	init(repo, guid, title);
 }
 
 SubRepresentation::SubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-	const string & guid, const string & title) :
-	RESQML2_NS::SubRepresentation(interp)
+	const string & guid, const string & title)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The interpretation of the subrepresentation cannot be null.");

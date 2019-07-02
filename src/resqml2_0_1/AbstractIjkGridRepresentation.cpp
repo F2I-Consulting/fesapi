@@ -75,7 +75,7 @@ AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(COMMON_NS::DataObje
 	const std::string & guid, const std::string & title,
 	unsigned int iCount, unsigned int jCount, unsigned int kCount,
 	bool withTruncatedPillars) :
-	RESQML2_NS::AbstractColumnLayerGridRepresentation(static_cast<RESQML2_NS::AbstractFeatureInterpretation*>(nullptr), withTruncatedPillars), splitInformation(nullptr), blockInformation(nullptr)
+	RESQML2_NS::AbstractColumnLayerGridRepresentation(withTruncatedPillars), splitInformation(nullptr), blockInformation(nullptr)
 {
 	init(repo, guid, title, iCount, jCount, kCount, withTruncatedPillars);
 }
@@ -84,7 +84,7 @@ AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(RESQML2_NS::Abstrac
 	const std::string & guid, const std::string & title,
 	unsigned int iCount, unsigned int jCount, unsigned int kCount,
 	bool withTruncatedPillars) :
-	RESQML2_NS::AbstractColumnLayerGridRepresentation(interp, withTruncatedPillars), splitInformation(nullptr), blockInformation(nullptr)
+	RESQML2_NS::AbstractColumnLayerGridRepresentation(withTruncatedPillars), splitInformation(nullptr), blockInformation(nullptr)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The interpretation of the IJK grid cannot be null.");

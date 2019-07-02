@@ -35,7 +35,7 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class in a gsoap context.
 		*/
-		GridConnectionSetRepresentation(class AbstractFeatureInterpretation* interp) : AbstractRepresentation(interp) {}
+		GridConnectionSetRepresentation() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.

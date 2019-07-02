@@ -2821,9 +2821,9 @@ namespace RESQML2_0_1_NS
 		gsoap_resqml2_0_1::eml20__LengthUom getMdUom() const;
 		gsoap_resqml2_0_1::eml20__PlaneAngleUom getAngleUom() const;
 
-		void getMdValues(double* values);
-		void getInclinations(double* values);
-		void getAzimuths(double* values);
+		void getMdValues(double* values) const;
+		void getInclinations(double* values) const;
+		void getAzimuths(double* values) const;
 
 		unsigned int getWellboreFrameRepresentationCount() const;
 		class WellboreFrameRepresentation* getWellboreFrameRepresentation(unsigned int index) const;

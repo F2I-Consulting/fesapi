@@ -30,8 +30,7 @@ namespace {
 	private:
 		COMMON_NS::AbstractObject const * obj;
 	public:
-		DifferentFeature(COMMON_NS::AbstractObject const * obj_):obj(obj_)
-		{}
+		explicit DifferentFeature(COMMON_NS::AbstractObject const * obj_) : obj(obj_) {}
 
 		bool operator()(AbstractFeatureInterpretation const * dataObj) const
 		{

@@ -32,8 +32,6 @@ const char* MdDatum::XML_TAG = "MdDatum";
 
 void MdDatum::loadTargetRelationships() const
 {
-	_resqml2__MdDatum* mdInfo = static_cast<_resqml2__MdDatum*>(gsoapProxy2_0_1);
-
 	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getLocalCrsDor();
 	if (dor != nullptr) {
 		AbstractLocal3dCrs* localCrs = getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(dor->UUID);

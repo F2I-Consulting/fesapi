@@ -35,8 +35,7 @@ using namespace epc;
 const char* TriangulatedSetRepresentation::XML_TAG = "TriangulatedSetRepresentation";
 
 TriangulatedSetRepresentation::TriangulatedSetRepresentation(COMMON_NS::DataObjectRepository* repo,
-	const std::string & guid, const std::string & title) :
-	AbstractSurfaceRepresentation(static_cast<RESQML2_NS::AbstractFeatureInterpretation*>(nullptr))
+	const std::string & guid, const std::string & title)
 {
 	if (repo == nullptr) {
 		throw invalid_argument("The repo cannot be null.");
@@ -51,8 +50,7 @@ TriangulatedSetRepresentation::TriangulatedSetRepresentation(COMMON_NS::DataObje
 }
 
 TriangulatedSetRepresentation::TriangulatedSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-		const std::string & guid, const std::string & title):
-	AbstractSurfaceRepresentation(interp)
+		const std::string & guid, const std::string & title)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The interpretation of the subrepresentation cannot be null.");

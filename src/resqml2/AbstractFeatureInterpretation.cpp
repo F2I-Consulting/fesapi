@@ -137,8 +137,7 @@ namespace {
 	private:
 		AbstractFeatureInterpretation const * interp;
 	public:
-		DifferentInterp(AbstractFeatureInterpretation const * interp_) :interp(interp_)
-		{}
+		explicit DifferentInterp(AbstractFeatureInterpretation const * interp_) : interp(interp_) {}
 
 		bool operator()(AbstractRepresentation const * rep) const
 		{

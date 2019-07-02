@@ -107,9 +107,8 @@ namespace {
 	private:
 		std::string version;
 	public:
-		SameVersion(const std::string & version_) {
-			version = version_;
-		}
+		explicit SameVersion(const std::string & version_): version(version_) {}
+
 		bool operator()(COMMON_NS::AbstractObject const * dataObj) const
 		{
 			return dataObj->getVersion() == version;
@@ -921,33 +920,33 @@ Grid2dRepresentation* DataObjectRepository::createGrid2dRepresentation(RESQML2_N
 	return new Grid2dRepresentation(interp, guid, title);
 }
 
-WellboreTrajectoryRepresentation* DataObjectRepository::createWellboreTrajectoryRepresentation(WellboreInterpretation* interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo)
+WellboreTrajectoryRepresentation* DataObjectRepository::createWellboreTrajectoryRepresentation(WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum const * mdInfo)
 {
 	return new WellboreTrajectoryRepresentation(interp, guid, title, mdInfo);
 }
 
-WellboreTrajectoryRepresentation* DataObjectRepository::createWellboreTrajectoryRepresentation(WellboreInterpretation* interp, const std::string & guid, const std::string & title, DeviationSurveyRepresentation * deviationSurvey)
+WellboreTrajectoryRepresentation* DataObjectRepository::createWellboreTrajectoryRepresentation(WellboreInterpretation const * interp, const std::string & guid, const std::string & title, DeviationSurveyRepresentation const * deviationSurvey)
 {
 	return new WellboreTrajectoryRepresentation(interp, guid, title, deviationSurvey);
 }
 
-RESQML2_0_1_NS::DeviationSurveyRepresentation* DataObjectRepository::createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo)
+RESQML2_0_1_NS::DeviationSurveyRepresentation* DataObjectRepository::createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum const * mdInfo)
 {
 	return new DeviationSurveyRepresentation(interp, guid, title, isFinal, mdInfo);
 }
 
-WellboreFrameRepresentation* DataObjectRepository::createWellboreFrameRepresentation(WellboreInterpretation* interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
+WellboreFrameRepresentation* DataObjectRepository::createWellboreFrameRepresentation(WellboreInterpretation const * interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation const * traj)
 {
 	return new WellboreFrameRepresentation(interp, guid, title, traj);
 }
 
-WellboreMarkerFrameRepresentation* DataObjectRepository::createWellboreMarkerFrameRepresentation(WellboreInterpretation* interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
+WellboreMarkerFrameRepresentation* DataObjectRepository::createWellboreMarkerFrameRepresentation(WellboreInterpretation const * interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation const * traj)
 {
 	return new WellboreMarkerFrameRepresentation(interp, guid, title, traj);
 }
 
-BlockedWellboreRepresentation* DataObjectRepository::createBlockedWellboreRepresentation(WellboreInterpretation* interp,
-	const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
+BlockedWellboreRepresentation* DataObjectRepository::createBlockedWellboreRepresentation(WellboreInterpretation const * interp,
+	const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation const * traj)
 {
 	return new BlockedWellboreRepresentation(interp, guid, title, traj);
 }

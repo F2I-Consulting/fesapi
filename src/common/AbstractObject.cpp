@@ -274,6 +274,8 @@ bool AbstractObject::hasVersion() const
 		return gsoapProxy2_0_1->Citation->VersionString != nullptr;
 	else if (gsoapProxy2_1 != nullptr)
 		return gsoapProxy2_1->objectVersion != nullptr;
+
+	throw logic_error("The object does not lookg to be initialized");
 }
 
 std::string AbstractObject::getVersion() const
@@ -288,6 +290,8 @@ std::string AbstractObject::getVersion() const
 		return *gsoapProxy2_0_1->Citation->VersionString;
 	else if (gsoapProxy2_1 != nullptr)
 		return *gsoapProxy2_1->objectVersion;
+
+	throw logic_error("The object does not lookg to be initialized");
 }
 
 void AbstractObject::setUuid(const std::string & uuid)

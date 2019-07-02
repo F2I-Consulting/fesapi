@@ -26,8 +26,7 @@ namespace RESQML2_0_1_NS
 	class WellboreFrameRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	protected:
-		WellboreFrameRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp) : AbstractRepresentation(interp)
-		{}
+		WellboreFrameRepresentation() {}
 
 	public:
 
@@ -46,7 +45,7 @@ namespace RESQML2_0_1_NS
 		* @param title		A title for the instance to create.
 		* @param traj		The trajectory this WellboreFeature frame is based on.
 		*/
-		WellboreFrameRepresentation(class WellboreInterpretation* interp, const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation * traj);
+		WellboreFrameRepresentation(class WellboreInterpretation const * interp, const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation const * traj);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.

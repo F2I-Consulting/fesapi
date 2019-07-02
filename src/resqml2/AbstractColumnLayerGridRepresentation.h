@@ -39,7 +39,7 @@ namespace RESQML2_NS
 		/**
 		* Default constructor
 		*/
-		AbstractColumnLayerGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, bool withTruncatedPillars) : RESQML2_NS::AbstractGridRepresentation(interp, withTruncatedPillars) {}
+		AbstractColumnLayerGridRepresentation(bool withTruncatedPillars) : RESQML2_NS::AbstractGridRepresentation(withTruncatedPillars) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.

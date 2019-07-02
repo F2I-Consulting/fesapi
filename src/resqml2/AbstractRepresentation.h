@@ -34,10 +34,9 @@ namespace RESQML2_NS
 		AbstractRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/** 
-		* Set the domain of the interpretation according to the local CRS
-		* Does not set relationship with interp and crs because the gsoap proxy is not allocated yet. This must be done at concrete class level.
+		* Defatul constructor
 		*/
-		AbstractRepresentation(class AbstractFeatureInterpretation*	interp) {}
+		AbstractRepresentation() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -129,7 +128,7 @@ namespace RESQML2_NS
 		 * Set the interpretation which is associated to this representation.
 		 * And push back this representation as a representation of the interpreation as well.
 		 */
-		DLL_IMPORT_OR_EXPORT void setInterpretation(class AbstractFeatureInterpretation * interp);
+		DLL_IMPORT_OR_EXPORT void setInterpretation(class AbstractFeatureInterpretation const * interp);
 
 		/**
 		* Get the interpretation of this representation

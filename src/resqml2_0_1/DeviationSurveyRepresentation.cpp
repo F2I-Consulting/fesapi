@@ -35,8 +35,7 @@ using namespace COMMON_NS;
 
 const char* DeviationSurveyRepresentation::XML_TAG = "DeviationSurveyRepresentation";
 
-DeviationSurveyRepresentation::DeviationSurveyRepresentation(WellboreInterpretation* interp, const string & guid, const std::string & title, bool isFinal, RESQML2_NS::MdDatum * mdInfo) :
-	AbstractRepresentation(interp)
+DeviationSurveyRepresentation::DeviationSurveyRepresentation(WellboreInterpretation const * interp, const string & guid, const std::string & title, bool isFinal, RESQML2_NS::MdDatum const * mdInfo)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREDeviationSurveyRepresentation(interp->getGsoapContext(), 1);	
 	_resqml2__DeviationSurveyRepresentation* rep = static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
@@ -138,7 +137,7 @@ void DeviationSurveyRepresentation::getXyzPointsOfPatch(const unsigned int & pat
 	throw logic_error("Fesapi does not know yet to transform Md/Dip/Azim values into XYZ values.");
 }
 
-void DeviationSurveyRepresentation::getMdValues(double * values)
+void DeviationSurveyRepresentation::getMdValues(double * values) const
 {		
 	_resqml2__DeviationSurveyRepresentation* rep = static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
 	if (rep->Mds->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
@@ -151,7 +150,7 @@ void DeviationSurveyRepresentation::getMdValues(double * values)
 	}
 }
 
-void DeviationSurveyRepresentation::getInclinations(double* values)
+void DeviationSurveyRepresentation::getInclinations(double* values) const
 {
 	_resqml2__DeviationSurveyRepresentation* rep = static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
 	if (rep->Inclinations->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
@@ -164,7 +163,7 @@ void DeviationSurveyRepresentation::getInclinations(double* values)
 	}
 }
 
-void DeviationSurveyRepresentation::getAzimuths(double* values)
+void DeviationSurveyRepresentation::getAzimuths(double* values) const
 {
 	_resqml2__DeviationSurveyRepresentation* rep = static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
 	if (rep->Azimuths->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
@@ -177,7 +176,7 @@ void DeviationSurveyRepresentation::getAzimuths(double* values)
 	}
 }
 
-void DeviationSurveyRepresentation::setMdDatum(RESQML2_NS::MdDatum* mdDatum)
+void DeviationSurveyRepresentation::setMdDatum(RESQML2_NS::MdDatum const * mdDatum)
 {
 	if (mdDatum == nullptr) {
 		throw invalid_argument("The md Datum is missing.");

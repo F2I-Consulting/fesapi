@@ -33,8 +33,7 @@ using namespace gsoap_resqml2_0_1;
 const char* PointSetRepresentation::XML_TAG = "PointSetRepresentation";
 
 PointSetRepresentation::PointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-		const std::string & guid, const std::string & title):
-	AbstractRepresentation(interp)
+		const std::string & guid, const std::string & title)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("You must provide an interpretation");

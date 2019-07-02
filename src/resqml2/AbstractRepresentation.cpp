@@ -189,7 +189,7 @@ AbstractValuesProperty const * AbstractRepresentation::getValuesProperty(unsigne
 	}
 }
 
-void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation * interp)
+void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation const * interp)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("Cannot set a null interpretation to a representation");

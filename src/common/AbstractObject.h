@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
+#include <stdexcept>
+
 #include "proxies/gsoap_resqml2_0_1H.h"
 #include "proxies/gsoap_eml2_1H.h"
 #include "common/EpcDocument.h"

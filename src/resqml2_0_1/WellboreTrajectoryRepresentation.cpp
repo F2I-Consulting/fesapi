@@ -36,8 +36,7 @@ using namespace COMMON_NS;
 
 const char* WellboreTrajectoryRepresentation::XML_TAG = "WellboreTrajectoryRepresentation";
 
-WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInterpretation* interp, const string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo) :
-	AbstractRepresentation(interp)
+WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInterpretation const * interp, const string & guid, const std::string & title, RESQML2_NS::MdDatum const * mdInfo)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREWellboreTrajectoryRepresentation(interp->getGsoapContext(), 1);	
 	_resqml2__WellboreTrajectoryRepresentation* rep = static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
@@ -53,8 +52,7 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInter
 	setInterpretation(interp);
 }
 
-WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInterpretation* interp, const string & guid, const std::string & title, DeviationSurveyRepresentation * deviationSurvey) :
-	AbstractRepresentation(interp)
+WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInterpretation const * interp, const string & guid, const std::string & title, DeviationSurveyRepresentation const * deviationSurvey)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREWellboreTrajectoryRepresentation(interp->getGsoapContext(), 1);
 	_resqml2__WellboreTrajectoryRepresentation* rep = static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
@@ -343,7 +341,7 @@ void WellboreTrajectoryRepresentation::getTangentVectors(double* tangentVectors)
 	hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, tangentVectors);
 }
 
-void WellboreTrajectoryRepresentation::setMdDatum(RESQML2_NS::MdDatum* mdDatum)
+void WellboreTrajectoryRepresentation::setMdDatum(RESQML2_NS::MdDatum const * mdDatum)
 {
 	if (mdDatum == nullptr) {
 		throw invalid_argument("The md Datum is missing.");

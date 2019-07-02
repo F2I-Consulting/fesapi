@@ -43,8 +43,7 @@ using namespace epc;
 
 const char* WellboreMarkerFrameRepresentation::XML_TAG = "WellboreMarkerFrameRepresentation";
 
-WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(WellboreInterpretation* interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj):
-	WellboreFrameRepresentation(interp)
+WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(WellboreInterpretation const * interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation const * traj)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREWellboreMarkerFrameRepresentation(interp->getGsoapContext(), 1);	
 	_resqml2__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml2__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);

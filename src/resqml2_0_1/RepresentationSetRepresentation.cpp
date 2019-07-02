@@ -25,8 +25,7 @@ using namespace epc;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-RepresentationSetRepresentation::RepresentationSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, const std::string & guid, const string & title) :
-	RESQML2_NS::RepresentationSetRepresentation(interp)
+RepresentationSetRepresentation::RepresentationSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, const std::string & guid, const string & title)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The linked interpretation cannot be null. Please use another constructor.");

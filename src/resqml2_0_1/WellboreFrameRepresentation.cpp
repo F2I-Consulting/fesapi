@@ -34,8 +34,7 @@ using namespace epc;
 
 const char* WellboreFrameRepresentation::XML_TAG = "WellboreFrameRepresentation";
 
-WellboreFrameRepresentation::WellboreFrameRepresentation(WellboreInterpretation* interp, const string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj) :
-	AbstractRepresentation(interp)
+WellboreFrameRepresentation::WellboreFrameRepresentation(WellboreInterpretation const * interp, const string & guid, const std::string & title, WellboreTrajectoryRepresentation const * traj)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREWellboreFrameRepresentation(interp->getGsoapContext(), 1);	
 	_resqml2__WellboreFrameRepresentation* frame = static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
@@ -126,13 +125,13 @@ double WellboreFrameRepresentation::getMdFirstValue() const
 {
 	_resqml2__WellboreFrameRepresentation* frame = static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
 	if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
-	{		
-		double* values = new double[getMdValuesCount()];
+	{
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(frame->NodeMd)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
 		if (hdfProxy == nullptr) {
 			throw invalid_argument("The HDF proxy is missing.");
 		}
+		double* values = new double[getMdValuesCount()];
 		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, values);
 		double result = values[0];
 		delete [] values;

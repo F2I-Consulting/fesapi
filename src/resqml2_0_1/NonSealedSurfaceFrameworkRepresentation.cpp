@@ -38,11 +38,11 @@ const char* NonSealedSurfaceFrameworkRepresentation::XML_TAG = "NonSealedSurface
 NonSealedSurfaceFrameworkRepresentation::NonSealedSurfaceFrameworkRepresentation(
         StructuralOrganizationInterpretation* interp,
         const std::string & guid, 
-        const std::string & title):
-	AbstractSurfaceFrameworkRepresentation(interp)
+        const std::string & title)
 {
-	if (interp == nullptr)
+	if (interp == nullptr) {
 		throw invalid_argument("The structural organization interpretation cannot be null.");
+	}
 
 	// proxy constructor
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORENonSealedSurfaceFrameworkRepresentation(interp->getGsoapContext(), 1);	

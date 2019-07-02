@@ -47,12 +47,12 @@ namespace RESQML2_0_1_NS
 		* @param title					A title for the instance to create.
 		* @param mdInfo					The MD information of the trajectory, mainly the well reference point.
 		*/
-		WellboreTrajectoryRepresentation(class WellboreInterpretation* interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo);
+		WellboreTrajectoryRepresentation(class WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum const * mdInfo);
 
 		/**
 		* Creates an instance with an existing deviation survey as its origin.
 		*/
-		WellboreTrajectoryRepresentation(class WellboreInterpretation* interp, const std::string & guid, const std::string & title, DeviationSurveyRepresentation* deviationSurvey);
+		WellboreTrajectoryRepresentation(class WellboreInterpretation const * interp, const std::string & guid, const std::string & title, DeviationSurveyRepresentation const * deviationSurvey);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -106,7 +106,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Set the Md datum of this trajectory
 		*/
-		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum* mdDatum);
+		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum const * mdDatum);
 
 		/**
 		* Getter of the md information associated to this WellboreFeature trajectory representation.

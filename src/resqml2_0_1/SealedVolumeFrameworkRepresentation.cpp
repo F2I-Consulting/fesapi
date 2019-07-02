@@ -31,8 +31,7 @@ const char* SealedVolumeFrameworkRepresentation::XML_TAG = "SealedVolumeFramewor
 SealedVolumeFrameworkRepresentation::SealedVolumeFrameworkRepresentation(StratigraphicColumnRankInterpretation* interp,
 	const std::string & guid,
 	const std::string & title,
-	SealedSurfaceFrameworkRepresentation* ssf) :
-	RESQML2_NS::RepresentationSetRepresentation(interp)
+	SealedSurfaceFrameworkRepresentation* ssf)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The Stratigraphic Column Rank Interpretation cannot be null.");

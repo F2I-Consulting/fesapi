@@ -48,15 +48,13 @@ void PolylineRepresentation::init(COMMON_NS::DataObjectRepository * repo, const 
 	repo->addOrReplaceDataObject(this);
 }
 
-PolylineRepresentation::PolylineRepresentation(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, bool isClosed):
-	AbstractRepresentation(static_cast<RESQML2_NS::AbstractFeatureInterpretation*>(nullptr))
+PolylineRepresentation::PolylineRepresentation(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, bool isClosed)
 {
 	init(repo, guid, title, isClosed);
 }
 
 PolylineRepresentation::PolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-	const std::string & guid, const std::string & title, bool isClosed):
-	AbstractRepresentation(interp)
+	const std::string & guid, const std::string & title, bool isClosed)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("You must provide an interpretation");
@@ -68,8 +66,7 @@ PolylineRepresentation::PolylineRepresentation(RESQML2_NS::AbstractFeatureInterp
 
 PolylineRepresentation::PolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title, resqml2__LineRole roleKind,
-	bool isClosed):
-	AbstractRepresentation(interp)
+	bool isClosed)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("You must provide an interpretation");

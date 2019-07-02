@@ -47,7 +47,7 @@ namespace RESQML2_0_1_NS
 		* @param isFinal				Used to indicate that this is a final version of the deviation survey, as distinct from the interim interpretations.
 		* @param mdInfo					The MD information of the survey, mainly the well reference point.
 		*/
-		DeviationSurveyRepresentation(class WellboreInterpretation* interp, const std::string & guid, const std::string & title, bool isFinal, RESQML2_NS::MdDatum * mdInfo);
+		DeviationSurveyRepresentation(class WellboreInterpretation const * interp, const std::string & guid, const std::string & title, bool isFinal, RESQML2_NS::MdDatum const * mdInfo);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -79,7 +79,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Set the Md datum of this trajectory
 		*/
-		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum* mdDatum);
+		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum const * mdDatum);
 
 		/**
 		* @return	null pointer if no md datum is associated to this representation. Otherwise return the data object reference of the associated md datum.
@@ -128,14 +128,14 @@ namespace RESQML2_0_1_NS
 		* Uom is given by getMdUom().
 		* @param values	It must preallocated with a count of getXyzPointCountOfPatch(0)
 		*/
-		DLL_IMPORT_OR_EXPORT void getMdValues(double* values);
+		DLL_IMPORT_OR_EXPORT void getMdValues(double* values) const;
 
 		/**
 		* Getter of the inclination double values associated to each trajectory station of this WellboreFeature trajectory representation.
 		* Uom is given by getAngleUom().
 		* @param values	It must preallocated with a count of getXyzPointCountOfPatch(0)
 		*/
-		DLL_IMPORT_OR_EXPORT void getInclinations(double* values);
+		DLL_IMPORT_OR_EXPORT void getInclinations(double* values) const;
 
 		/**
 		* Getter of the azimuth double values associated to each trajectory station of this WellboreFeature trajectory representation.
@@ -143,7 +143,7 @@ namespace RESQML2_0_1_NS
 		* Uom is given by getAngleUom().
 		* @param values	It must preallocated with a count of getXyzPointCountOfPatch(0)
 		*/
-		DLL_IMPORT_OR_EXPORT void getAzimuths(double* values);
+		DLL_IMPORT_OR_EXPORT void getAzimuths(double* values) const;
 
 		/**
 		* Getter of all the wellbore frame representations of associated wellbore trajectory which share the same md datum and md uom.

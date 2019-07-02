@@ -33,8 +33,7 @@ using namespace gsoap_resqml2_0_1;
 const char* Grid2dRepresentation::XML_TAG = "Grid2dRepresentation";
 
 Grid2dRepresentation::Grid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-	const string & guid, const std::string & title):
-	AbstractSurfaceRepresentation(interp)
+	const string & guid, const std::string & title)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREGrid2dRepresentation(interp->getGsoapContext(), 1);
 	_resqml2__Grid2dRepresentation* singleGrid2dRep = static_cast<_resqml2__Grid2dRepresentation*>(gsoapProxy2_0_1);

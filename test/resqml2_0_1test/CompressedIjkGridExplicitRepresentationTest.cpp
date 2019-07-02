@@ -48,10 +48,6 @@ CompressedIjkGridExplicitRepresentationTest::CompressedIjkGridExplicitRepresenta
 }
 
 void CompressedIjkGridExplicitRepresentationTest::initRepoHandler() {
-	// getting the local depth 3d crs
-	LocalDepth3dCrsTest crsTest(repo, true);
-	RESQML2_0_1_NS::LocalDepth3dCrs* crs = repo->getDataObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-
 	// getting the hdf proxy
 	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 	hdfProxy->setCompressionLevel(6);

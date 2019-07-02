@@ -35,7 +35,7 @@ namespace RESQML2_0_1_NS
 		* Default constructor
 		* Set the gsoap proxy to nullptr.
 		*/
-		AbstractSurfaceRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp) : RESQML2_NS::AbstractRepresentation(interp) {}
+		AbstractSurfaceRepresentation() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
