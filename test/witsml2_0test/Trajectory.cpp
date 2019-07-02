@@ -21,18 +21,20 @@ under the License.
 #include "common/EpcDocument.h"
 #include "witsml2_0/Well.h"
 #include <stdexcept>
-#include "../config.h"
 
 using namespace std;
 using namespace witsml2_0test;
 using namespace COMMON_NS;
 
+const char* Trajectory::defaultUuid = "b4f02547-9fca-49ef-83a9-c96a802c857e";
+const char* Trajectory::defaultTitle = "Witsml Trajectory Test";
+
 Trajectory::Trajectory(const string & epcDocPath)
-	: AbstractObjectTest(epcDocPath, uuidTraj, titleTraj) {
+	: AbstractObjectTest(epcDocPath) {
 }
 
 Trajectory::Trajectory(EpcDocument* epcDoc, bool init)
-	: AbstractObjectTest(epcDoc, uuidTraj, titleTraj) {
+	: AbstractObjectTest(epcDoc) {
 	if (init)
 		initEpcDoc();
 	else
@@ -41,14 +43,14 @@ Trajectory::Trajectory(EpcDocument* epcDoc, bool init)
 
 void Trajectory::initEpcDocHandler() {
 	WITSML2_0_NS::Wellbore* wellbore = epcDoc->createPartialWellbore("", "");
-	WITSML2_0_NS::Trajectory* traj = epcDoc->createTrajectory(wellbore, uuid, title, gsoap_eml2_1::witsml2__ChannelStatus__inactive);
+	WITSML2_0_NS::Trajectory* traj = epcDoc->createTrajectory(wellbore, defaultUuid, defaultTitle, gsoap_eml2_1::witsml2__ChannelStatus__inactive);
 	traj->pushBackTrajectoryStation(gsoap_eml2_1::witsml2__TrajStationType__unknown, 250, gsoap_eml2_1::eml21__LengthUom__m);
 	traj->pushBackTrajectoryStation(gsoap_eml2_1::witsml2__TrajStationType__DLS, 500, gsoap_eml2_1::eml21__LengthUom__ft, "my Uid");
 	traj->setTrajectoryStationAzi(1, 15, gsoap_eml2_1::eml21__PlaneAngleUom__dega);
 }
 
 void Trajectory::readEpcDocHandler() {
-	WITSML2_0_NS::Trajectory* traj = epcDoc->getDataObjectByUuid<WITSML2_0_NS::Trajectory>(uuid);
+	WITSML2_0_NS::Trajectory* traj = epcDoc->getDataObjectByUuid<WITSML2_0_NS::Trajectory>(defaultUuid);
 	REQUIRE(traj != nullptr);
 	REQUIRE(traj->getGrowingStatus() == gsoap_eml2_1::witsml2__ChannelStatus__inactive);
 	REQUIRE(traj->getTrajectoryStationCount() == 2);

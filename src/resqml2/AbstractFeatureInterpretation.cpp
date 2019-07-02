@@ -211,15 +211,21 @@ vector<AbstractRepresentation*> AbstractFeatureInterpretation::getRepresentation
 
 unsigned int AbstractFeatureInterpretation::getRepresentationCount() const
 {
-	return representationSet.size();
+	size_t result = representationSet.size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw range_error("The representation count is superior to unsigned int max");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 AbstractRepresentation*	AbstractFeatureInterpretation::getRepresentation(const unsigned int & index) const
 {
 	if (representationSet.size() > index)
 		return representationSet[index];
-	else
-		throw range_error("The representation index you are requesting is out of range.");
+	
+	throw range_error("The representation index you are requesting is out of range.");
 }
 
 vector<GridConnectionSetRepresentation *> AbstractFeatureInterpretation::getGridConnectionSetRepresentationSet()
@@ -241,5 +247,3 @@ void AbstractFeatureInterpretation::setSideFrontierOf(RESQML2_0_1_NS::Structural
 {
 	isSideFrontierSet.push_back(structOrg);
 }
-
-

@@ -504,5 +504,10 @@ namespace ETP_NS
 		* Check wether an absolute path exists in the hdf file or not.
 		*/
 		bool exist(const std::string & absolutePathInHdfFile) const;
+
+		/**
+		* Check wether a dataset is compressed or not.
+		*/
+		bool isCompressed(const std::string & datasetName);
 	};
 }

@@ -20,7 +20,6 @@ under the License.
 
 #include "catch.hpp"
 #include "AbstractTest.h"
-#include "config.h"
 
 #include "common/EpcDocument.h"
 #include "common/AbstractObject.h"
@@ -28,40 +27,20 @@ under the License.
 using namespace std;
 using namespace commontest;
 
-AbstractObjectTest::AbstractObjectTest(const string & epcDocPath, const string & uuid, const string & title) :
-	AbstractTest(epcDocPath),
-	uuid(uuid),
-	title(title) {
+AbstractObjectTest::AbstractObjectTest(const string & epcDocPath) :
+	AbstractTest(epcDocPath) {
 }
 
-AbstractObjectTest::AbstractObjectTest(COMMON_NS::EpcDocument* epcDoc, const string & uuid, const string & title) :
-	AbstractTest(epcDoc),
-	uuid(uuid),
-	title(title) {
+AbstractObjectTest::AbstractObjectTest(COMMON_NS::EpcDocument* epcDoc) :
+	AbstractTest(epcDoc) {
 }
 
 void AbstractObjectTest::initEpcDoc()
 {
-	if (epcDoc == nullptr)
-		throw std::logic_error("The EPC document is not initialized.");
-
-	if (epcDoc->getDataObjectByUuid(uuid) != nullptr)
-		return;
-
+	REQUIRE(epcDoc != nullptr);
 	initEpcDocHandler();
-
-	COMMON_NS::AbstractObject* resqmlObject = static_cast<COMMON_NS::AbstractObject*>(epcDoc->getDataObjectByUuid(uuid));
-	resqmlObject->addAlias(authorityAlias, titleAlias);
 }
 
 void AbstractObjectTest::readEpcDoc() {
-	COMMON_NS::AbstractObject* resqmlObject = static_cast<COMMON_NS::AbstractObject*>(epcDoc->getDataObjectByUuid(uuid));
-	REQUIRE(resqmlObject != nullptr);
-	REQUIRE(resqmlObject->getUuid() == uuid);
-	REQUIRE(resqmlObject->getTitle() == title);
-	REQUIRE(resqmlObject->getAliasCount() == 1);
-	REQUIRE(resqmlObject->getAliasAuthorityAtIndex(0) == authorityAlias);
-	REQUIRE(resqmlObject->getAliasTitleAtIndex(0) == titleAlias);
-
 	readEpcDocHandler();
 }

@@ -30,4 +30,3 @@ namespace commontest {
 		void readEpcDoc() {}
 	};
 }
-

@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractSurfaceRepresentationTest.h"
+#include "AbstractObjectTest.h"
 #include <string>
 
 namespace COMMON_NS {
@@ -26,7 +26,7 @@ namespace COMMON_NS {
 }
 
 namespace resqml2_0_1test {
-	class Grid2dRepresentationTest : public AbstractSurfaceRepresentationTest {
+	class Grid2dRepresentationTest : public commontest::AbstractObjectTest {
 	public:
 		static const char* defaultUuidFeature;
 		static const char* defaultTitleFeature;

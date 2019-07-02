@@ -38,15 +38,15 @@ void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::
 	Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse objResponse;
 
 	for (const auto & uri : getO.m_uris) {
-		std::cout << "Store received URI : " << uri << std::endl;
+		std::cout << "Store received URI : " << uri.second << std::endl;
 
-		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(epcDoc, session, uri);
+		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(epcDoc, session, uri.second);
 		if (obj == nullptr) {
 			continue;
 		}
 
 		Energistics::Etp::v12::Datatypes::Object::DataObject dataObject = ETP_NS::EtpHelpers::buildEtpDataObjectFromEnergisticsObject(obj);
-		objResponse.m_dataObjects.push_back(dataObject);
+		objResponse.m_dataObjects[uri.first] = dataObject;
 	}
 	session->send(objResponse, correlationId, 0x01 | 0x02);
 
@@ -60,13 +60,13 @@ void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::
 
 	bool isSerializationNeeded = false;
 	for (const auto & dataObject : putDataObjects.m_dataObjects) {
-		std::cout << "Store received data object : " << dataObject.m_resource.m_contentType << " (" << dataObject.m_resource.m_uri << ")" << std::endl;
+		std::cout << "Store received data object : " << dataObject.second.m_resource.m_contentType << " (" << dataObject.second.m_resource.m_uri << ")" << std::endl;
 
-		COMMON_NS::AbstractObject* importedObj = epcDoc.addOrReplaceGsoapProxy(dataObject.m_data, dataObject.m_resource.m_contentType);
+		COMMON_NS::AbstractObject* importedObj = epcDoc.addOrReplaceGsoapProxy(dataObject.second.m_data, dataObject.second.m_resource.m_contentType);
 
 		importedObj->resolveTargetRelationships(&epcDoc);
 
-		if (dataObject.m_resource.m_contentType == "application/x-resqml+xml;version=2.0;type=obj_IjkGridRepresentation") {
+		if (dataObject.second.m_resource.m_contentType == "application/x-resqml+xml;version=2.0;type=obj_IjkGridRepresentation") {
 			std::cout << "Create a dummy Grid Connection Set for received IJK Grid Representation." << std::endl;
 			RESQML2_NS::GridConnectionSetRepresentation* gcsr = epcDoc.createGridConnectionSetRepresentation(std::string(), "Dummy GCSR");
 			ULONG64 cellIndexPair[] = { 0, 1 };

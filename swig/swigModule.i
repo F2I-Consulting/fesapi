@@ -279,7 +279,7 @@ namespace COMMON_NS
 		EpcDocument(const std::string & fileName, const openingMode & permissionAccess = READ_WRITE);
 		EpcDocument(const std::string & fileName, const std::string & propertyKindMappingFilesDirectory, const openingMode & permissionAccess = READ_WRITE);
 		
-		void setFilePath(const std::string & filePath);
+		void setFilePath(const std::string & fp);
 
 		virtual void serialize(bool useZip64 = false);
 		virtual std::string deserialize();

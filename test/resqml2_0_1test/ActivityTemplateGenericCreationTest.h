@@ -18,15 +18,16 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "ActivityTemplateTest.h"
+#include "AbstractObjectTest.h"
 #include <iostream>
+#include <map>
 
 namespace COMMON_NS {
 	class EpcDocument;
 }
 
 namespace resqml2_0_1test {
-	class ActivityTemplateGenericCreationTest : public ActivityTemplateTest {
+	class ActivityTemplateGenericCreationTest : public commontest::AbstractObjectTest {
 	public:
 		static const char* defaultUuid;
 		static const char* defaultTitle;
@@ -45,6 +46,18 @@ namespace resqml2_0_1test {
 		* created for reading purpose. According to init value a iniEpcDoc() or readEpcDoc() is called.
 		*/
 		ActivityTemplateGenericCreationTest(COMMON_NS::EpcDocument * epcDoc, bool init);
+	protected:
+		struct ParameterTest {
+			std::string title;
+			bool isInput;
+			bool isOutput;
+			int minOccurs;
+			int maxOccurs;
+		};
+
+		std::map<std::string, ParameterTest> parameterMap;
+
+		void initEpcDocHandler();
+		void readEpcDocHandler();
 	};
 }
-

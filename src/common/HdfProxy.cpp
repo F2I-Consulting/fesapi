@@ -1413,3 +1413,41 @@ bool HdfProxy::exist(const std::string & absolutePathInHdfFile) const
 {
 	return H5Oexists_by_name(hdfFile, absolutePathInHdfFile.c_str(), H5P_DEFAULT) > 0;
 }
+
+bool HdfProxy::isCompressed(const std::string & datasetName)
+{
+	if (!isOpened()) {
+		open();
+	}
+
+	hid_t dataset_id = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
+	if (dataset_id < 0) {
+		throw invalid_argument("The resqml dataset " + datasetName + " could not be opened.");
+	}
+	/* Retrieve filter information. */
+	hid_t plist_id = H5Dget_create_plist(dataset_id);
+	bool compressed = false;
+
+	int numfilt = H5Pget_nfilters(plist_id);
+	if (numfilt < 0) {
+		throw invalid_argument("The filters cannot be got on the resqml dataset " + datasetName);
+	}
+	for (unsigned i = 0; i < static_cast<unsigned>(numfilt); ++i) {
+		size_t nelmts = 0;
+		unsigned flags, filter_info;
+		H5Z_filter_t filter_type = H5Pget_filter(plist_id, i, &flags, &nelmts, nullptr, 0, nullptr, &filter_info);
+		printf("Filter Type: ");
+		if (filter_type == H5Z_FILTER_DEFLATE ||
+			filter_type == H5Z_FILTER_SZIP ||
+			filter_type == H5Z_FILTER_NBIT ||
+			filter_type == H5Z_FILTER_SCALEOFFSET) {
+			compressed = true;
+			break;
+		}
+	}
+
+	H5Dclose(dataset_id);
+	H5Pclose(plist_id);
+
+	return compressed;
+}

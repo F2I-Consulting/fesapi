@@ -321,20 +321,18 @@ void IjkGridExplicitRepresentation::getXyzPointsOfPatch(const unsigned int & pat
 		throw range_error("An ijk grid has a maximum of one patch.");
 
 	resqml2__PointGeometry* pointGeom = getPointGeometry2_0_1(patchIndex);
-	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array)
-	{
+	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array) {
 		hdfProxy->readArrayNdOfDoubleValues(static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->PathInHdfFile, xyzPoints);
 	}
 	else {
-		throw invalid_argument("The geometry of the grid either does not exist or it is not an explicit one.");
+		throw invalid_argument("The geometry of the grid either does not exist or is not an explicit one.");
 	}
 
 	// Truncation
 	if (isTruncated()) {
 		resqml2__AbstractGridGeometry* truncatedGeom = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridGeometry*>(pointGeom);
 		if (truncatedGeom->AdditionalGridPoints.size() == 1 && truncatedGeom->AdditionalGridPoints[0]->Attachment == resqml2__GridGeometryAttachment__nodes) {
-			if (truncatedGeom->AdditionalGridPoints[0]->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array)
-			{
+			if (truncatedGeom->AdditionalGridPoints[0]->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array) {
 				xyzPoints += getXyzPointCountOfPatch(patchIndex) - static_cast<gsoap_resqml2_0_1::_resqml2__TruncatedIjkGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->TruncationNodeCount;
 				hdfProxy->readArrayNdOfDoubleValues(static_cast<resqml2__Point3dHdf5Array*>(truncatedGeom->AdditionalGridPoints[0]->Points)->Coordinates->PathInHdfFile, xyzPoints);
 			}
@@ -501,3 +499,12 @@ AbstractIjkGridRepresentation::geometryKind IjkGridExplicitRepresentation::getGe
 	return EXPLICIT;
 }
 
+bool IjkGridExplicitRepresentation::isNodeGeometryCompressed() const {
+	resqml2__PointGeometry* pointGeom = getPointGeometry2_0_1(0);
+	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array) {
+		return hdfProxy->isCompressed(static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->PathInHdfFile);
+	}
+	else {
+		throw invalid_argument("The geometry of the grid either does not exist or is not an explicit one.");
+	}
+}

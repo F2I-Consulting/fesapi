@@ -594,6 +594,11 @@ namespace COMMON_NS
 		*/
 		bool exist(const std::string & absolutePathInHdfFile) const;
 
+		/**
+		* Check wether a dataset is compressed or not.
+		*/
+		bool isCompressed(const std::string & datasetName);
+
 	protected:
 		
 		/**

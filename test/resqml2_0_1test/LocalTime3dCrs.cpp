@@ -17,7 +17,6 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "LocalTime3dCrs.h"
-#include "../config.h"
 #include "common/EpcDocument.h"
 #include "../catch.hpp"
 
@@ -29,26 +28,25 @@ const char* LocalTime3dCrs::defaultUuid = "8f8285a7-f1e7-4964-a9e1-e815c82c65e0"
 const char* LocalTime3dCrs::defaultTitle = "Local Time 3d Crs Test";
 
 LocalTime3dCrs::LocalTime3dCrs(const string & epcDocPath)
-	: AbstractLocal3dCrsTest(epcDocPath, defaultUuid, defaultTitle)
+	: commontest::AbstractObjectTest(epcDocPath)
 {
 }
 
 LocalTime3dCrs::LocalTime3dCrs(EpcDocument* epcDoc, bool init)
-	: AbstractLocal3dCrsTest(epcDoc, defaultUuid, defaultTitle)
+	: commontest::AbstractObjectTest(epcDoc)
 {
 	if (init)
-		this->initEpcDoc();
+		initEpcDoc();
 	else
-		this->readEpcDoc();
+		readEpcDoc();
 }
 
 void LocalTime3dCrs::initEpcDocHandler()
 {
-	epcDoc->createLocalTime3dCrs(uuid, title, 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__TimeUom__s, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
+	epcDoc->createLocalTime3dCrs(defaultUuid, defaultTitle, 1.0, 0.1, 15, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__TimeUom__s, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
 }
 
 void LocalTime3dCrs::readEpcDocHandler()
 {
 	REQUIRE( epcDoc->getLocalTime3dCrsSet().size() == 1 );
 }
-

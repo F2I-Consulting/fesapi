@@ -21,21 +21,22 @@ under the License.
 #include "common/EpcDocument.h"
 #include "witsml2_0/Well.h"
 #include <stdexcept>
-#include "../config.h"
 
 using namespace std;
 using namespace witsml2_0test;
 using namespace COMMON_NS;
 using namespace WITSML2_0_NS;
 
+const char* WellTest::defaultUuid = "4b4ef814-a891-46f5-bf10-3cc30be396a5";
+const char* WellTest::defaultTitle = "Witsml Well Test";
 const time_t WellTest::defaultTimestamp = 1553268493; // 2019-03-22T15:28:13+00:00
 
 WellTest::WellTest(const string & epcDocPath)
-	: AbstractObjectTest(epcDocPath, uuidWell, titleWell) {
+	: AbstractObjectTest(epcDocPath) {
 }
 
 WellTest::WellTest(EpcDocument* epcDoc, bool init)
-	: AbstractObjectTest(epcDoc, uuidWell, titleWell) {
+	: AbstractObjectTest(epcDoc) {
 	if (init)
 		initEpcDoc();
 	else
@@ -43,7 +44,7 @@ WellTest::WellTest(EpcDocument* epcDoc, bool init)
 }
 
 void WellTest::initEpcDocHandler() {
-	Well* well = epcDoc->createWell(uuid, title);
+	Well* well = epcDoc->createWell(defaultUuid, defaultTitle);
 	REQUIRE(well != nullptr);
 	well->setBlock("my Block");
 	// No county
@@ -56,7 +57,7 @@ void WellTest::initEpcDocHandler() {
 }
 
 void WellTest::readEpcDocHandler() {
-	Well* well = epcDoc->getDataObjectByUuid<Well>(uuid);
+	Well* well = epcDoc->getDataObjectByUuid<Well>(defaultUuid);
 	REQUIRE(well != nullptr);
 	REQUIRE(well->hasBlock());
 	REQUIRE(well->getBlock() == "my Block");

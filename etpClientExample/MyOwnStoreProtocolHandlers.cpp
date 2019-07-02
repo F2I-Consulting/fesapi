@@ -26,14 +26,22 @@ void MyOwnStoreProtocolHandlers::on_GetDataObjectsResponse(const Energistics::Et
 	for (const auto & graphResource : obj.m_dataObjects) {
 		std::cout << "*************************************************" << std::endl;
 		std::cout << "Resource received : " << std::endl;
-		std::cout << "uri : " << graphResource.m_resource.m_uri << std::endl;
-		std::cout << "contentType : " << graphResource.m_resource.m_contentType << std::endl;
-		std::cout << "name : " << graphResource.m_resource.m_name << std::endl;
-		std::cout << "type : " << static_cast<size_t>(graphResource.m_resource.m_resourceType) << std::endl;
+		std::cout << "uri : " << graphResource.second.m_resource.m_uri << std::endl;
+		std::cout << "contentType : " << graphResource.second.m_resource.m_contentType << std::endl;
+		std::cout << "name : " << graphResource.second.m_resource.m_name << std::endl;
+		std::cout << "type : " << static_cast<size_t>(graphResource.second.m_resource.m_resourceType) << std::endl;
 		std::cout << "*************************************************" << std::endl;
 
-		COMMON_NS::AbstractObject* importedObj = dynamic_cast<MyOwnEtpClientSessionEpcBased*>(session)->epcDoc.addOrReplaceGsoapProxy(graphResource.m_data, graphResource.m_resource.m_contentType);
+		COMMON_NS::AbstractObject* importedObj = dynamic_cast<MyOwnEtpClientSessionEpcBased*>(session)->epcDoc.addOrReplaceGsoapProxy(graphResource.second.m_data, graphResource.second.m_resource.m_contentType);
 
 		importedObj->resolveTargetRelationships(&dynamic_cast<MyOwnEtpClientSessionEpcBased*>(session)->epcDoc);
+	}
+
+	for (const auto & error : obj.m_errors) {
+		std::cout << "*************************************************" << std::endl;
+		std::cout << "Resource NOT received : " << std::endl;
+		std::cout << "key : " << error.first << std::endl;
+		std::cout << "message : " << error.second.m_message << std::endl;
+		std::cout << "code : " << error.second.m_code << std::endl;
 	}
 }

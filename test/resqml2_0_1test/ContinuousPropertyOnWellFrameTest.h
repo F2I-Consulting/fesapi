@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "ContinuousPropertyTest.h"
+#include "AbstractObjectTest.h"
 #include <iostream>
 
 namespace COMMON_NS {
@@ -26,7 +26,7 @@ namespace COMMON_NS {
 }
 
 namespace resqml2_0_1test {
-	class ContinuousPropertyOnWellFrameTest : public ContinuousPropertyTest {
+	class ContinuousPropertyOnWellFrameTest : public commontest::AbstractObjectTest {
 	public:
 
 		static const char* defaultUuid;

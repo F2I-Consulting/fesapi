@@ -182,10 +182,8 @@ resqml2__ColorInformation* GraphicalInformationSet::getColorInformation(Abstract
 
 	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
 
-	string targetUuid = targetObject->getUuid();
 	for (size_t giIndex = 0; giIndex < gis->GraphicalInformation.size(); ++giIndex) {
-		string uuid = getTargetObjectUuid(giIndex);
-		if (uuid.compare(targetUuid) == 0 &&
+		if (getTargetObjectUuid(giIndex).compare(targetObject->getUuid()) == 0 &&
 			gis->GraphicalInformation[giIndex]->soap_type() == SOAP_TYPE_gsoap_eml2_2_resqml2__ColorInformation) {
 			return static_cast<resqml2__ColorInformation*>(gis->GraphicalInformation[giIndex]);
 		}

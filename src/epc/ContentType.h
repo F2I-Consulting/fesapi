@@ -56,7 +56,7 @@ namespace epc
 		// *  A segment shall include at least one non-dot character.
 
 		ContentType(){};
-		ContentType(const bool & isAssociatedToAnExtension, const std::string & contentType, const std::string & extensionOrPartName);
+		ContentType(bool isAssociatedToAnExt, const std::string & contentType, const std::string & extOrPartName);
 		~ContentType() {};
 
 		// GETTTERS
@@ -65,7 +65,7 @@ namespace epc
 
 		// SETTERS
 		void setContentTypeString(const std::string & ctString) {contentTypeString = ctString;}
-		void setExtensionOrPartName(const std::string & str) {extensionOrPartName = str;}
+		void setExtensionOrPartName(const std::string & extOrPartName) {extensionOrPartName = extOrPartName;}
 
 		std::string toString() const;
 	};

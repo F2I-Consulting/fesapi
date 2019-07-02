@@ -16,23 +16,21 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
-
 #include "ContentType.h"
 
 using namespace std; // in order not to prefix by "std::" for each class in the "std" namespace. Never use "using namespace" in *.h file but only in*.cpp file!!!
 using namespace epc; // in order not to prefix by "epc::" for each class in the "epc" namespace. Never use "using namespace" in *.h file but only in*.cpp file!!!
 
-ContentType::ContentType(const bool & isAssociatedToAnExtension, const std::string & contentType, const std::string & extensionOrPartName):
-	contentTypeString(contentType), extensionOrPartName(extensionOrPartName), isAssociatedToAnExtension(isAssociatedToAnExtension)
+ContentType::ContentType(bool isAssociatedToAnExt, const std::string & contentType, const std::string & extOrPartName):
+	contentTypeString(contentType), extensionOrPartName(extOrPartName), isAssociatedToAnExtension(isAssociatedToAnExt)
 {
 	// Add the first character as slash if we forgot to add it
 	if (!isAssociatedToAnExtension && extensionOrPartName[0] != '/')
-		this->extensionOrPartName = '/' + extensionOrPartName;
+		extensionOrPartName = '/' + extensionOrPartName;
 
 	// delete star and dot from extension if we forgot not to give them for an extension
 	if (isAssociatedToAnExtension && (extensionOrPartName[0] == '*' || extensionOrPartName[0] == '.'))
-		this->extensionOrPartName = extensionOrPartName.substr(1);
+		extensionOrPartName = extensionOrPartName.substr(1);
 }
 
 const std::string & ContentType::getContentTypeString() const
@@ -47,10 +45,10 @@ const std::string & ContentType::getExtensionOrPartName() const
 
 std::string ContentType::toString() const
 {
-	if (isAssociatedToAnExtension)
-		return "<Default Extension=\"" + extensionOrPartName + "\" ContentType=\"" + contentTypeString + "\" />";
-	else
-		return "<Override PartName=\"" + extensionOrPartName + "\" ContentType=\"" + contentTypeString + "\"/>";
+	const string resultPrefix = isAssociatedToAnExtension
+		? "<Default Extension=\""
+		: "<Override PartName=\"";
+	return resultPrefix + extensionOrPartName + "\" ContentType=\"" + contentTypeString + "\"/>";
 }
 
 

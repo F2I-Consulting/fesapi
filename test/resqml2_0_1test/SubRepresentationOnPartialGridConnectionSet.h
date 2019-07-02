@@ -18,14 +18,14 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1test/AbstractRepresentationTest.h"
+#include "AbstractObjectTest.h"
 
 namespace COMMON_NS {
 	class EpcDocument;
 }
 
 namespace resqml2_0_1test {
-	class SubRepresentationOnPartialGridConnectionSet : public AbstractRepresentationTest {
+	class SubRepresentationOnPartialGridConnectionSet : public commontest::AbstractObjectTest {
 	public:
 		static const char* defaultUuid;
 		static const char* defaultTitle;

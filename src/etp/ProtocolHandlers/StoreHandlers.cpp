@@ -98,16 +98,24 @@ void StoreHandlers::on_GetDataObjectsResponse(const Energistics::Etp::v12::Proto
 	for (const auto& graphResource : obj.m_dataObjects) {
 		std::cout << "*************************************************" << std::endl;
 		std::cout << "Resource received : " << std::endl;
-		std::cout << "uri : " << graphResource.m_resource.m_uri << std::endl;
-		std::cout << "contentType : " << graphResource.m_resource.m_contentType << std::endl;
-		std::cout << "name : " << graphResource.m_resource.m_name << std::endl;
-		std::cout << "type : " << static_cast<size_t>(graphResource.m_resource.m_resourceType) << std::endl;
+		std::cout << "uri : " << graphResource.second.m_resource.m_uri << std::endl;
+		std::cout << "contentType : " << graphResource.second.m_resource.m_contentType << std::endl;
+		std::cout << "name : " << graphResource.second.m_resource.m_name << std::endl;
+		std::cout << "type : " << static_cast<size_t>(graphResource.second.m_resource.m_resourceType) << std::endl;
 		//std::cout << "sourceCount : " << graphResource.m_resource.m_sourceCount << std::endl;
 		//std::cout << "targetCount : " << graphResource.m_resource.m_targetCount << std::endl;
 		//std::cout << "contentCount : " << graphResource.m_resource.m_contentCount << std::endl;
 		//std::cout << "lastChanged : " << graphResource.m_resource.m_lastChanged << std::endl;
 		std::cout << "*************************************************" << std::endl;
-		std::cout << graphResource.m_data << std::endl;
+		std::cout << graphResource.second.m_data << std::endl;
 		std::cout << "*************************************************" << std::endl;
+	}
+
+	for (const auto& error : obj.m_errors) {
+		std::cout << "*************************************************" << std::endl;
+		std::cout << "Resource non received : " << std::endl;
+		std::cout << "key : " << error.first << std::endl;
+		std::cout << "message : " << error.second.m_message << std::endl;
+		std::cout << "code : " << error.second.m_code << std::endl;
 	}
 }

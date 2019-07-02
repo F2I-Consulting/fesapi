@@ -541,6 +541,11 @@ namespace COMMON_NS
 		* Check wether an absolute path exists in the hdf file or not.
 		*/
 		virtual bool exist(const std::string & absolutePathInHdfFile) const = 0;
+
+		/**
+		* Check wether a dataset is compressed or not.
+		*/
+		virtual bool isCompressed(const std::string & datasetName) = 0;
   
 		friend void RESQML2_NS::AbstractRepresentation::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
 		friend void RESQML2_NS::AbstractProperty::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);

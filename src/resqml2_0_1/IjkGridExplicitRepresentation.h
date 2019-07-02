@@ -22,6 +22,10 @@ under the License.
 
 namespace RESQML2_0_1_NS
 {
+	/**
+	* An IJK Grid explicit representation defines each cell corner position by means of XYZ coordinates.
+	* Adjacent cell corner are supposed to be located the same so they are not repeated unless you define split lines or split nodes.
+	*/
 	class IjkGridExplicitRepresentation : public AbstractIjkGridRepresentation
 	{
 	public:
@@ -113,6 +117,11 @@ namespace RESQML2_0_1_NS
 			const unsigned long & splitCoordinateLineCount = 0, const std::string & pillarOfCoordinateLine = "",
 			const std::string & splitCoordinateLineColumnCumulativeCount = "", const std::string & splitCoordinateLineColumns = "",
 			const std::string & definedPillars = "");
+
+		/**
+		* Check wether the node geometry dataset is compressed or not.
+		*/
+		DLL_IMPORT_OR_EXPORT bool isNodeGeometryCompressed() const;
 
 		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const;
 	};

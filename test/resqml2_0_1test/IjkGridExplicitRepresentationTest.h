@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractIjkGridRepresentationTest.h"
+#include "AbstractObjectTest.h"
 #include <iostream>
 
 namespace COMMON_NS {
@@ -26,11 +26,11 @@ namespace COMMON_NS {
 }
 
 namespace resqml2_0_1test {
-	class IjkGridExplicitRepresentationTest : public AbstractIjkGridRepresentationTest {
+	class IjkGridExplicitRepresentationTest : public commontest::AbstractObjectTest {
 	public:
 		static const char* defaultUuid;
 		static const char* defaultTitle;
-		static const ULONG64 nodesCountIjkGridRepresentation;
+		static const unsigned long long nodesCountIjkGridRepresentation;
 		static double nodesIjkGridRepresentation[];
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,
@@ -51,4 +51,3 @@ namespace resqml2_0_1test {
 		void readEpcDocHandler();
 	};
 }
-

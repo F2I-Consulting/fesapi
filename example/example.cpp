@@ -3780,6 +3780,12 @@ void deserialize(const string & inputFile)
 			showAllProperties(ijkGrid);
 			continue;
 		}
+		std::cout << "This ijk grid is ";
+		if (!ijkGrid->isNodeGeometryCompressed()) {
+			std::cout << "not ";
+		}
+		std::cout << "compressed." << std::endl;
+
 		if (ijkGrid->getGeometryKind() != AbstractIjkGridRepresentation::NO_GEOMETRY)
 		{
 			if (ijkGrid->getGeometryKind() == AbstractIjkGridRepresentation::LATTICE) {

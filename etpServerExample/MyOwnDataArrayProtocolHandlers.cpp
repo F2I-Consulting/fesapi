@@ -39,8 +39,6 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrays(const Energistics::Etp::v1
 
 		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(epcDoc, session, dai.m_uri);
 		if (obj == nullptr) {
-			gdaResponse.m_errors[element.first].m_uri = dai.m_uri;
-			gdaResponse.m_errors[element.first].m_pathInResource = dai.m_pathInResource;
 			gdaResponse.m_errors[element.first].m_message = "The URI cannot be resolved to an object in the store";
 			gdaResponse.m_errors[element.first].m_code = 9;
 			continue;
@@ -48,8 +46,6 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrays(const Energistics::Etp::v1
 
 		COMMON_NS::AbstractHdfProxy* hdfProxy = dynamic_cast<COMMON_NS::AbstractHdfProxy*>(obj);
 		if (hdfProxy == nullptr) {
-			gdaResponse.m_errors[element.first].m_uri = dai.m_uri;
-			gdaResponse.m_errors[element.first].m_pathInResource = dai.m_pathInResource;
 			gdaResponse.m_errors[element.first].m_message = "The URI points to an object which is not an HDF proxy";
 			gdaResponse.m_errors[element.first].m_code = 9;
 			continue;
@@ -221,8 +217,6 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrayMetadata(const Energistics::
 
 		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(epcDoc, session, dai.m_uri);
 		if (obj == nullptr) {
-			gdamResponse.m_errors[element.first].m_uri = dai.m_uri;
-			gdamResponse.m_errors[element.first].m_pathInResource = dai.m_pathInResource;
 			gdamResponse.m_errors[element.first].m_message = "The URI cannot be resolved to an object in the store";
 			gdamResponse.m_errors[element.first].m_code = 9;
 			continue;
@@ -230,8 +224,6 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrayMetadata(const Energistics::
 
 		COMMON_NS::AbstractHdfProxy* hdfProxy = dynamic_cast<COMMON_NS::AbstractHdfProxy*>(obj);
 		if (hdfProxy == nullptr) {
-			gdamResponse.m_errors[element.first].m_uri = dai.m_uri;
-			gdamResponse.m_errors[element.first].m_pathInResource = dai.m_pathInResource;
 			gdamResponse.m_errors[element.first].m_message = "The URI points to an object which is not an HDF proxy";
 			gdamResponse.m_errors[element.first].m_code = 9;
 			continue;

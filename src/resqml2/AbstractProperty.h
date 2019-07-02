@@ -78,8 +78,61 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT std::string getRepresentationContentType() const;
 
 		/**
-		 * Set the representation which is associated to the current property.
+		* Set the Hdf Proxy where the numerical values are stored.
+		*/
+		DLL_IMPORT_OR_EXPORT void setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
+
+		/**
+		* Getter for the hdf proxy which stores this instance values.
+		*/
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractHdfProxy* getHdfProxy() const;
+
+		/*
+		 * Getter for the uuid of the hdf proxy which is used for storing the numerical values of this property.
+		 * An empty string is returned if no hd fproxy is used for storing the numerical values.
 		 */
+		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
+
+		/**
+		* Getter (in read only mode) of the element count per property value.
+		* If the property is a scalar one then it should be one.
+		* If it is a vectorial one, the it should be more than one.
+		* It is not possible to have some tensor property values (more dimension than a vector).
+		*/
+		DLL_IMPORT_OR_EXPORT unsigned int getElementCountPerValue() const;
+
+		/**
+		* Get the kind of elements the property values are attached to.
+		*/
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__IndexableElements getAttachmentKind() const;
+
+		//*********************************************
+		//****** REALIZATION DIMENSION ****************
+		//*********************************************
+
+		/**
+		* Check if this property has a realization index.
+		*/
+		DLL_IMPORT_OR_EXPORT bool hasRealizationIndex() const;
+
+		/**
+		* Get the realization index of this property.
+		* You should have verified before that this property actually has a realization index.
+		*/
+		DLL_IMPORT_OR_EXPORT ULONG64 getRealizationIndex() const;
+
+		/**
+		* Set the realization index of this property
+		*/
+		DLL_IMPORT_OR_EXPORT void setRealizationIndex(ULONG64 realizationIndex);
+
+		//*********************************************
+		//****** TIME DIMENSION ***********************
+		//*********************************************
+
+		/**
+		* Set the representation which is associated to the current property.
+		*/
 		DLL_IMPORT_OR_EXPORT void setTimeSeries(class TimeSeries * ts);
 
 		/**
@@ -126,43 +179,14 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT unsigned int getTimeIndex() const;
 
-		/**
-		* Set the Hdf Proxy where the numerical values are stored.
-		*/
-		DLL_IMPORT_OR_EXPORT void setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
-
-		/**
-		* Getter for the hdf proxy which stores this instance values.
-		*/
-		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractHdfProxy* getHdfProxy() const;
-
-		/*
-		 * Getter for the uuid of the hdf proxy which is used for storing the numerical values of this property.
-		 * An empty string is returned if no hd fproxy is used for storing the numerical values.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
-
-		/**
-		* Getter (in read only mode) of the element count per property value.
-		* If the property is a scalar one then it should be one.
-		* If it is a vectorial one, the it should be more than one.
-		* It is not possible to have some tensor property values (more dimension than a vector).
-		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getElementCountPerValue() const;
-
-		/**
-		* Get the kind of elements the property values are attached to.
-		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__IndexableElements getAttachmentKind() const;
+		//*********************************************
+		//****** PROP KIND ****************************
+		//*********************************************
 
 		/**
 		* Indicates if the property kind attached to this property is either from the standard catalog of Energistics or from a local property kind.
 		*/
 		DLL_IMPORT_OR_EXPORT bool isAssociatedToOneStandardEnergisticsPropertyKind() const;
-
-		//*********************************************
-		//****** PROP KIND ****************************
-		//*********************************************
 
 		/**
 		* Get the title of the property kind of this property

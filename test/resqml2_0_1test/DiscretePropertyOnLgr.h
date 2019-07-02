@@ -18,16 +18,15 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractValuesPropertyTest.h"
+#include "AbstractObjectTest.h"
 
 namespace COMMON_NS {
 	class EpcDocument;
 }
 
 namespace resqml2_0_1test {
-	class DiscretePropertyOnLgr : public AbstractValuesPropertyTest {
+	class DiscretePropertyOnLgr : public commontest::AbstractObjectTest {
 	public:
-
 		static const char* defaultUuid;
 		static const char* defaultTitle;
 

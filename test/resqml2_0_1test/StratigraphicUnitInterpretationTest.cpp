@@ -37,23 +37,15 @@ const char* StratigraphicUnitInterpretationTest::defaultUuid = "65abde7d-d6ab-42
 const char* StratigraphicUnitInterpretationTest::defaultTitle = "Strati Unit Interp";
 
 StratigraphicUnitInterpretationTest::StratigraphicUnitInterpretationTest(const string & epcDocPath)
-	: AbstractFeatureInterpretationTest(epcDocPath, defaultUuid, defaultTitle, StratigraphicUnitTest::defaultUuid, StratigraphicUnitTest::defaultTitle) {
-}
-
-StratigraphicUnitInterpretationTest::StratigraphicUnitInterpretationTest(const string & epcDocPath, const std::string & uuid, const std::string & title, const string & uuidFeature, const string & titleFeature)
-	: AbstractFeatureInterpretationTest(epcDocPath, uuid, title, uuidFeature, titleFeature) {
+	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
 StratigraphicUnitInterpretationTest::StratigraphicUnitInterpretationTest(EpcDocument* epcDoc, bool init)
-	: AbstractFeatureInterpretationTest(epcDoc, defaultUuid, defaultTitle, StratigraphicUnitTest::defaultUuid, StratigraphicUnitTest::defaultTitle) {
+	: commontest::AbstractObjectTest(epcDoc) {
 	if (init)
-			initEpcDoc();
-		else
-			readEpcDoc();
-}
-
-StratigraphicUnitInterpretationTest::StratigraphicUnitInterpretationTest(COMMON_NS::EpcDocument*, const std::string & uuid, const std::string & title, const string & uuidFeature, const string & titleFeature, bool)
-	: AbstractFeatureInterpretationTest(epcDocPath, uuid, title, uuidFeature, titleFeature) {
+		initEpcDoc();
+	else
+		readEpcDoc();
 }
 
 void StratigraphicUnitInterpretationTest::initEpcDocHandler() {
@@ -65,10 +57,9 @@ void StratigraphicUnitInterpretationTest::initEpcDocHandler() {
 	// cleaning
 	delete stratiUnitTest;
 
-	StratigraphicUnitInterpretation* stratiUnitInterp = epcDoc->createStratigraphicUnitInterpretation(stratiUnit, uuid, title);
+	StratigraphicUnitInterpretation* stratiUnitInterp = epcDoc->createStratigraphicUnitInterpretation(stratiUnit, defaultUuid, defaultTitle);
 	REQUIRE(stratiUnitInterp != nullptr);
 }
 
 void StratigraphicUnitInterpretationTest::readEpcDocHandler() {
 }
-

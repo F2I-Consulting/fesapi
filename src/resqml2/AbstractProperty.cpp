@@ -592,3 +592,40 @@ PropertyKind* AbstractProperty::getLocalPropertyKind() const
 	return getEpcDocument()->getDataObjectByUuid<PropertyKind>(getLocalPropertyKindUuid());
 }
 
+bool AbstractProperty::hasRealizationIndex() const
+{
+	if (gsoapProxy2_0_1 != nullptr) {
+		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->RealizationIndex != nullptr;
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
+}
+
+ULONG64 AbstractProperty::getRealizationIndex() const
+{
+	if (!hasRealizationIndex()) {
+		throw invalid_argument("This property has not got any realization index");
+	}
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		return *static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->RealizationIndex;
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
+}
+
+void AbstractProperty::setRealizationIndex(ULONG64 realizationIndex)
+{
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml2__AbstractProperty* prop = static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1);
+		if (prop->RealizationIndex == nullptr) {
+			prop->RealizationIndex = static_cast<ULONG64*>(soap_malloc(prop->soap, sizeof(ULONG64)));
+		}
+		*prop->RealizationIndex = realizationIndex;
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
+}

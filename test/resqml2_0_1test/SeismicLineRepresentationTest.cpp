@@ -18,13 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_0_1test/SeismicLineRepresentationTest.h"
 #include "../catch.hpp"
-#include "../config.h" 
 #include "resqml2_0_1/SeismicLineFeature.h"
 #include "resqml2_0_1/GenericFeatureInterpretation.h"
 #include "resqml2_0_1/PolylineRepresentation.h"
 #include "resqml2_0_1/LocalDepth3dCrs.h"
 #include "common/AbstractHdfProxy.h"
-#include "resqml2_0_1test/AbstractFeatureTest.h"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 
 using namespace std;
@@ -42,12 +40,12 @@ const char* SeismicLineRepresentationTest::defaultUuid = "99bd4f3e-8f52-43ae-98f
 const char* SeismicLineRepresentationTest::defaultTitle = "Seismic Line Representation";
 
 SeismicLineRepresentationTest::SeismicLineRepresentationTest(const string & epcDocPath)
-	: AbstractSurfaceRepresentationTest(epcDocPath, defaultUuid, defaultTitle, 5, nullptr)
+	: commontest::AbstractObjectTest(epcDocPath)
 {
 }
 
 SeismicLineRepresentationTest::SeismicLineRepresentationTest(EpcDocument * epcDocument, bool init)
-	: AbstractSurfaceRepresentationTest(epcDocument, defaultUuid, defaultTitle, 5, nullptr)
+	: commontest::AbstractObjectTest(epcDocument)
 {
 	if (init)
 		initEpcDoc();
@@ -59,7 +57,7 @@ void SeismicLineRepresentationTest::initEpcDocHandler()
 {
 	LocalDepth3dCrs * crs = epcDoc->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 	if (crs == nullptr) {
-		LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(this->epcDoc, true);
+		LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(epcDoc, true);
 		crs = epcDoc->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
 		delete crsTest;
 	}
@@ -90,4 +88,3 @@ void SeismicLineRepresentationTest::readEpcDocHandler()
 	REQUIRE(rep->getSeismicSupportOfPatch(0) == nullptr);
 	REQUIRE(rep->getXyzPointCountOfAllPatches() == 5);
 }
-
