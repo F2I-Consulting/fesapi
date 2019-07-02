@@ -18,15 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 #include <unordered_map>
-#else
-#include <tr1/unordered_map>
-#endif
 #include <sstream>
 
-#include "proxies/gsoap_resqml2_0_1Stub.h"
-#include "proxies/gsoap_eml2_1Stub.h"
+#include "proxies/gsoap_resqml2_0_1H.h"
+#include "proxies/gsoap_eml2_1H.h"
 
 #include "nsDefinitions.h"
 
@@ -156,25 +152,13 @@ namespace COMMON_NS
 		* The key is the UUID.
 		* The value is a vector storing all various versions of this data object
 		*/
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > dataObjects;
-#else
-		std::tr1::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > dataObjects;
-#endif
 
 		// Forward relationships
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject const * > > forwardRels;
-#else
-		std::tr1::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject const * > > forwardRels;
-#endif
 
 		// Backward relationships. It is redundant with forward relationships but it allows more performance.
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject const * > > backwardRels;
-#else
-		std::tr1::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject const * > > backwardRels;
-#endif
 
 		soap* gsoapContext;
 
@@ -327,24 +311,13 @@ namespace COMMON_NS
 		* Get all the data objects which are part of this repository.
 		* They are in a map wher the key is the UUID of the objects and the value is all different versions of this data object.
 		*/
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-		const std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > & getDataObjects() const
-#else
-		const std::tr1::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > & getDataObjects() const
-#endif 
-		{
-			return dataObjects;
-		}
+		const std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > & getDataObjects() const { return dataObjects; }
 
 		/**
 		* Group Data objects by content type
 		* @return A map where the key is a content type and where the value is the collection of Data objects of this content type
 		*/
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		DLL_IMPORT_OR_EXPORT std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > getDataObjectsGroupedByContentType() const;
-#else
-		std::tr1::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > getDataObjectsGroupedByContentType() const;
-#endif
 
 		/**
 		* Get Data objects which honor this content type
@@ -362,11 +335,7 @@ namespace COMMON_NS
 		{
 			std::vector<valueType*> result;
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 			for (std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
-#else
-			for (std::tr1::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
-#endif
 				for (size_t i = 0; i < it->second.size(); ++i) {
 					if (dynamic_cast<valueType*>(it->second[i]) != nullptr) {
 						result.push_back(static_cast<valueType*>(it->second[i]));

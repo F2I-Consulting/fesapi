@@ -208,12 +208,7 @@ void DataObjectRepository::clear()
 		propertyKindMapper = nullptr;
 	}
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it)
-#else
-	for (std::tr1::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it)
-#endif
-	{
+	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
 		for (size_t i = 0; i < it->second.size(); ++i) {
 			delete it->second[i];
 		}
@@ -273,12 +268,7 @@ void DataObjectRepository::updateAllRelationships()
 {
 	// Tansform the map values into a vector because we are going to potentially insert new elements in the map when looping.
 	vector<COMMON_NS::AbstractObject*> nonPartialObjects;
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
-	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it)
-#else
-	for (std::tr1::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it)
-#endif
-	{
+	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
 		for (size_t i = 0; i < it->second.size(); ++i) {
 			if (!it->second[i]->isPartial()) {
 				nonPartialObjects.push_back(it->second[i]);
@@ -364,19 +354,10 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 	return nullptr;
 }
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataObjectRepository::getDataObjectsGroupedByContentType() const
-#else
-std::tr1::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataObjectRepository::getDataObjectsGroupedByContentType() const
-#endif
 {
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
 	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
-#else
-	std::tr1::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
-	for (std::tr1::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
-#endif
 		for (size_t i = 0; i < it->second.size(); ++i) {
 			std::string contentType = it->second[i]->getContentType();
 			if (contentType.find("x-eml") == std::string::npos) {
@@ -392,11 +373,7 @@ std::vector<COMMON_NS::AbstractObject*> DataObjectRepository::getDataObjectsByCo
 {
 	std::vector<COMMON_NS::AbstractObject*> result;
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
-#else
-	for (std::tr1::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
-#endif
 		for (size_t i = 0; i < it->second.size(); ++i) {
 			if (it->second[i]->getContentType() == contentType) {
 				result.push_back(it->second[i]);
@@ -409,22 +386,14 @@ std::vector<COMMON_NS::AbstractObject*> DataObjectRepository::getDataObjectsByCo
 
 COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuid(const string & uuid) const
 {
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.find(uuid);
-#else
-	std::tr1::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.find(uuid);
-#endif
 
 	return it == dataObjects.end() || it->second.empty() ? nullptr : it->second[0];
 }
 
 COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuidAndVersion(const string & uuid, const std::string & version) const
 {
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.find(uuid);
-#else
-	std::tr1::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.find(uuid);
-#endif
 
 	if (it == dataObjects.end() || it->second.empty()) {
 		return nullptr;

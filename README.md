@@ -4,7 +4,11 @@
  - In this folder create the three following folders
 	 - build
 	 - fesapi (Git clone this repository into this folder "fesapi". You should then have a path fesapiEnv/fesapi/src)
-	 - dependencies
+	 - dependencies 
+  - The following compilers are known to work
+    - gcc from version 4.4
+	- visual studio from version 2015
+	- clang from version 5.0
 # Prepare the dependencies
 Download (build and install if necessary) third party libraries:
 - HDF5: All versions of 1.8.* starting from 1.8.18 and all versions of 1.10.* starting from 1.10.2 should be ok. https://support.hdfgroup.org/ftp/HDF5/releases/
