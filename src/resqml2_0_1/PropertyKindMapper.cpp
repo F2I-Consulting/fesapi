@@ -56,7 +56,7 @@ string PropertyKindMapper::loadMappingFilesFromDirectory(const string & director
 	do {
 		string fileName = currentFile->d_name;
 #endif
-		unsigned int pos = fileName.find_last_of('.');
+		const size_t pos = fileName.find_last_of('.');
 		if (pos < fileName.size()) {
 			if (fileName.substr(pos).compare(".xml") == 0 && fileName.find("PropertyKind") != std::string::npos) {
 				if (fileName.compare("PropertyKindMapping.xml") == 0) {
@@ -140,9 +140,9 @@ string PropertyKindMapper::loadMappingFilesFromDirectory(const string & director
 
 std::string PropertyKindMapper::getDescriptionOfResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind resqmlStandardPropertyKindName) const
 {
-#if (defined(_WIN32) && _MSC_VER >= 1600)
+#if !defined(__APPLE__)
 	std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*>::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
-#elif defined(__APPLE__)
+#else
 	std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::hash<int> >::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
 #endif
 
@@ -157,9 +157,9 @@ std::string PropertyKindMapper::getDescriptionOfResqmlStandardPropertyKindName(g
 
 std::string PropertyKindMapper::getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind resqmlStandardPropertyKindName, const std::string & application) const
 {
-#if (defined(_WIN32) && _MSC_VER >= 1600)
+#if !defined(__APPLE__)
 	std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*>::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
-#elif defined(__APPLE__)
+#else
 	std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::hash<int> >::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
 #endif
 	if (cit != resqmlStandardPropertyKindNameToApplicationPropertyKindName.end())
@@ -289,9 +289,9 @@ PropertyKind* PropertyKindMapper::addResqmlLocalPropertyKindToEpcDocumentFromApp
 
 gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind PropertyKindMapper::getPropertyKindParentOfResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind resqmlStandardPropertyKindName) const
 {
-#if (defined(_WIN32) && _MSC_VER >= 1600)
+#if !defined(__APPLE__)
 	std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*>::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
-#elif defined(__APPLE__)
+#else
 	std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::hash<int> >::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find (resqmlStandardPropertyKindName);
 #endif
 
@@ -319,9 +319,9 @@ bool PropertyKindMapper::isChildOf(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKin
 
 bool PropertyKindMapper::isAbstract(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind resqmlStandardPropertyKindName) const
 {
-#if (defined(_WIN32) && _MSC_VER >= 1600)
+#if !defined(__APPLE__)
 	std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*>::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find(resqmlStandardPropertyKindName);
-#elif defined(__APPLE__)
+#else
 	std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::hash<int> >::const_iterator cit = resqmlStandardPropertyKindNameToApplicationPropertyKindName.find(resqmlStandardPropertyKindName);
 #endif
 

@@ -18,11 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#if defined(_WIN32) || defined(__APPLE__)
 #include <unordered_map>
-#else
-#include <tr1/unordered_map>
-#endif
 
 #include "common/DataObjectRepository.h"
 
@@ -102,7 +98,7 @@ namespace RESQML2_0_1_NS
 		COMMON_NS::DataObjectRepository * dataObjRepo;
 
 
-#if (defined(_WIN32) && _MSC_VER >= 1600)
+#if !defined(__APPLE__)
 		std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*> resqmlStandardPropertyKindNameToApplicationPropertyKindName;
 		std::unordered_map<std::string, std::unordered_map<std::string, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind> > applicationPropertyKindNameToResqmlStandardPropertyKindName; // First key string is the application name Second key string is the application property kind name.
 
@@ -110,7 +106,7 @@ namespace RESQML2_0_1_NS
 		std::unordered_map<std::string, std::unordered_map<std::string, std::string> > applicationPropertyKindNameToResqmlLocalPropertyKindUuid;
 
 		std::unordered_map<std::string, gsoap_resqml2_0_1::_resqml2__PropertyKind*> resqmlLocalPropertyKindUuidToResqmlLocalPropertyKind;
-#elif defined(__APPLE__)
+#else
 		std::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::hash<int> > resqmlStandardPropertyKindNameToApplicationPropertyKindName;
 		std::unordered_map<std::string, std::unordered_map<std::string, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind> > applicationPropertyKindNameToResqmlStandardPropertyKindName;
 

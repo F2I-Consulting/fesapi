@@ -3369,10 +3369,10 @@ namespace RESQML2_0_1_NS
 		void pushBackLongHdf5Array3dOfValues(const long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
 		void pushBackLongHdf5ArrayOfValues(const long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue);
 
-		void pushBackUShortHdf5Array1dOfValues(const unsigned short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
-		void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
-		void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
-		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue);
+		void pushBackUShortHdf5Array1dOfValues(const unsigned short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, unsigned short nullValue);
+		void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, unsigned short nullValue);
+		void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, unsigned short nullValue);
+		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 		
 	};
 	

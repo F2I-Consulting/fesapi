@@ -119,25 +119,25 @@ void CategoricalProperty::pushBackLongHdf5ArrayOfValues(const long * values, uns
 		numValues, numDimensionsInArray);
 }
 
-void CategoricalProperty::pushBackUShortHdf5Array1dOfValues(const unsigned short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackUShortHdf5Array1dOfValues(const unsigned short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, unsigned short nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCount };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, nullValue);
 }
 
-void CategoricalProperty::pushBackUShortHdf5Array2dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackUShortHdf5Array2dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, unsigned short nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
-void CategoricalProperty::pushBackUShortHdf5Array3dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackUShortHdf5Array3dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, unsigned short nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-void CategoricalProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue)
+void CategoricalProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
