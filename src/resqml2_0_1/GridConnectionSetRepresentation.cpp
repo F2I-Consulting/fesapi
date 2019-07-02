@@ -214,11 +214,11 @@ unsigned int GridConnectionSetRepresentation::getCellIndexPairCountFromInterpret
 		{
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml2__IntegerHdf5Array*>(rep->ConnectionInterpretations->InterpretationIndices->Elements)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
-			const unsigned int faultIndexCount = hdfProxy->getElementCount(dataset->PathInHdfFile);
+			const signed long long faultIndexCount = hdfProxy->getElementCount(dataset->PathInHdfFile);
 			unsigned int * const faultIndices = new unsigned int[faultIndexCount];
 
 			hdfProxy->readArrayNdOfUIntValues(dataset->PathInHdfFile, faultIndices);
-			for (unsigned int i = 0; i < faultIndexCount; ++i) {
+			for (size_t i = 0; i < faultIndexCount; ++i) {
 				if (faultIndices[i] == interpretationIndex) {
 					result++;
 				}
@@ -378,7 +378,13 @@ unsigned int GridConnectionSetRepresentation::getInterpretationCount() const
 	_resqml2__GridConnectionSetRepresentation* rep = static_cast<_resqml2__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 
 	if (rep->ConnectionInterpretations != nullptr) {
-		return rep->ConnectionInterpretations->FeatureInterpretation.size();
+		const size_t result = rep->ConnectionInterpretations->FeatureInterpretation.size();
+
+		if (result > (numeric_limits<unsigned int>::max)()) {
+			throw out_of_range("There are too many associated interpretations.");
+		}
+
+		return static_cast<unsigned int>(result);
 	}
 
 	return 0;
@@ -495,7 +501,13 @@ void GridConnectionSetRepresentation::pushBackXmlInterpretation(RESQML2_NS::Abst
 
 unsigned int GridConnectionSetRepresentation::getSupportingGridRepresentationCount() const
 {
-	return static_cast<_resqml2__GridConnectionSetRepresentation*>(gsoapProxy2_0_1)->Grid.size(); 
+	const size_t result = static_cast<_resqml2__GridConnectionSetRepresentation*>(gsoapProxy2_0_1)->Grid.size();
+
+	if (result > (numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("There are too many supporting grid representations.");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* GridConnectionSetRepresentation::getSupportingGridRepresentationDor(unsigned int index) const
@@ -507,4 +519,3 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* GridConnectionSetRepresentation::
 	}
 	return rep->Grid[index];
 }
-
