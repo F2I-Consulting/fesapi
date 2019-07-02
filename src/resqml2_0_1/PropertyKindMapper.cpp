@@ -185,11 +185,7 @@ gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind PropertyKindMapper::getResqmlStan
 	else
 		return gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__RESQML_x0020root_x0020property;
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 	std::unordered_map<std::string, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind>::const_iterator cit = value.find (applicationPropertyKindName);
-#else
-	std::tr1::unordered_map<std::string, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind>::const_iterator cit = value.find(applicationPropertyKindName);
-#endif
 	if (cit != value.end())
 		return cit->second;
 	else

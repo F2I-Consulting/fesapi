@@ -145,15 +145,9 @@ LONG64 StringTableLookup::getMaximumValue()
 	return max;
 }
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 unordered_map<long, string> StringTableLookup::getMap() const
 {
 	unordered_map<long, string> result;
-#else
-tr1::unordered_map<long, string> StringTableLookup::getMap() const
-{
-	tr1::unordered_map<long, string> result;
-#endif
 
 	_resqml2__StringTableLookup* stringLookup = static_cast<_resqml2__StringTableLookup*>(gsoapProxy2_0_1);
 

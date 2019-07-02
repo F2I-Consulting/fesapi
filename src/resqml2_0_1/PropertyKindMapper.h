@@ -118,14 +118,6 @@ namespace RESQML2_0_1_NS
 		std::unordered_map<std::string, std::unordered_map<std::string, std::string> > applicationPropertyKindNameToResqmlLocalPropertyKindUuid;
 
 		std::unordered_map<std::string, gsoap_resqml2_0_1::_resqml2__PropertyKind*> resqmlLocalPropertyKindUuidToResqmlLocalPropertyKind;
-#else
-		std::tr1::unordered_map<gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind, gsoap_resqml2_0_1::ptm__standardEnergisticsPropertyType*, std::tr1::hash<int> > resqmlStandardPropertyKindNameToApplicationPropertyKindName;
-		std::tr1::unordered_map< std::string, std::tr1::unordered_map<std::string, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind> > applicationPropertyKindNameToResqmlStandardPropertyKindName;
-
-		std::tr1::unordered_map< std::string, std::tr1::unordered_map<std::string, std::string> > resqmlLocalPropertyKindUuidToApplicationPropertyKindName;
-		std::tr1::unordered_map< std::string, std::tr1::unordered_map<std::string, std::string> > applicationPropertyKindNameToResqmlLocalPropertyKindUuid;
-
-		std::tr1::unordered_map<std::string, gsoap_resqml2_0_1::_resqml2__PropertyKind*> resqmlLocalPropertyKindUuidToResqmlLocalPropertyKind;
 #endif
 
 	};
