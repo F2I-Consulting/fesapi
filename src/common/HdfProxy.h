@@ -26,18 +26,18 @@ namespace COMMON_NS
 	{
 	protected:
 
-		HdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
-			COMMON_NS::AbstractHdfProxy(fromGsoap, packageDirAbsolutePath, externalFilePath), hdfFile(-1), compressionLevel(0) {}
+		HdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
+			COMMON_NS::AbstractHdfProxy(fromGsoap), hdfFile(-1), compressionLevel(0) {}
 
-		HdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
-			COMMON_NS::AbstractHdfProxy(fromGsoap, packageDirAbsolutePath, externalFilePath), hdfFile(-1), compressionLevel(0) {}
+		HdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
+			COMMON_NS::AbstractHdfProxy(fromGsoap), hdfFile(-1), compressionLevel(0) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
 		* @packageDirAbsolutePath	The directory where the EPC document is stored. Must end with a slash or back-slash
 		* @relativeFilePath			The relative file path of the associated HDF file. It is relative to the location of the package
 		*/
-		HdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
+		HdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::READ_ONLY);
 
 		/**
 		* Read an array Nd of float values stored in a specific dataset.

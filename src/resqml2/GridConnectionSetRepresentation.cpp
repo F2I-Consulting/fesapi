@@ -44,44 +44,15 @@ std::string GridConnectionSetRepresentation::getXmlTag() const
 	return XML_TAG;
 }
 
-vector<Relationship> GridConnectionSetRepresentation::getAllTargetRelationships() const
-{
-	vector<Relationship> result = AbstractRepresentation::getAllTargetRelationships();
-
-	const unsigned int supportingGridCount = getSupportingGridRepresentationCount();
-	for (unsigned int i = 0; i < supportingGridCount; ++i)
-	{
-		AbstractGridRepresentation* grid = getSupportingGridRepresentation(i);
-		Relationship relSupportingGrid(grid->getPartNameInEpcDocument(), "", grid->getUuid());
-		relSupportingGrid.setDestinationObjectType();
-		result.push_back(relSupportingGrid);
-	}
-    
-	const unsigned int interpCount = getInterpretationCount();
-	for (unsigned int i = 0; i < interpCount; ++i)
-	{
-		AbstractFeatureInterpretation* interp = getInterpretationFromIndex(i);
-		Relationship relInterp(interp->getPartNameInEpcDocument(), "", interp->getUuid());
-		relInterp.setDestinationObjectType();
-		result.push_back(relInterp);
-	}
-
-	return result;
-}
-
 void GridConnectionSetRepresentation::pushBackSupportingGridRepresentation(AbstractGridRepresentation * supportingGridRep)
 {
 	if (supportingGridRep == nullptr) {
 		throw invalid_argument("The supporting Grid Representation cannot be null.");
 	}
 
-	// EPC
-	supportingGridRep->gridConnectionSetRepresentationSet.push_back(this);
+	getRepository()->addRelationship(this, supportingGridRep);
 
-	// XML
-	if (updateXml) {
-		pushBackXmlSupportingGridRepresentation(supportingGridRep);
-	}
+	pushBackXmlSupportingGridRepresentation(supportingGridRep);
 }
 
 void GridConnectionSetRepresentation::pushBackInterpretation(AbstractFeatureInterpretation* interp)
@@ -90,47 +61,39 @@ void GridConnectionSetRepresentation::pushBackInterpretation(AbstractFeatureInte
 		throw invalid_argument("The interpretation to push back cannot be null.");
 	}
 
-	if (std::find(interp->gridConnectionSetRepresentationSet.begin(), interp->gridConnectionSetRepresentationSet.end(), this) == interp->gridConnectionSetRepresentationSet.end()) {
-		interp->gridConnectionSetRepresentationSet.push_back(this);
-	}
+	getRepository()->addRelationship(this, interp);
 
-	if (updateXml) {
-		pushBackXmlInterpretation(interp);
-	}
+	pushBackXmlInterpretation(interp);
 }
 
-void GridConnectionSetRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
+void GridConnectionSetRepresentation::loadTargetRelationships() const
 {
-	AbstractRepresentation::resolveTargetRelationships(epcDoc);
+	AbstractRepresentation::loadTargetRelationships();
 
 	// Supporting grid representation
 	unsigned int supportingGridCount = getSupportingGridRepresentationCount();
 	for (unsigned int i = 0; i < supportingGridCount; ++i) {
 		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getSupportingGridRepresentationDor(i);
-		RESQML2_NS::AbstractGridRepresentation* supportingGridRep = epcDoc->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
+		RESQML2_NS::AbstractGridRepresentation* supportingGridRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
 		if (supportingGridRep == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			supportingGridRep = getEpcDocument()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
+			getRepository()->createPartial(dor);
+			supportingGridRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
+			if (supportingGridRep == nullptr) {
+				throw invalid_argument("The DOR looks invalid.");
+			}
 		}
-		if (supportingGridRep == nullptr) {
-			throw invalid_argument("The DOR looks invalid.");
-		}
-		updateXml = false;
-		pushBackSupportingGridRepresentation(supportingGridRep);
-		updateXml = true;
+		getRepository()->addRelationship(this, supportingGridRep);
 	}
 
 	if (isAssociatedToInterpretations()) {
-		updateXml = false;
 		unsigned int interpCount = getInterpretationCount();
 		for (unsigned int i = 0; i < interpCount; ++i) {
-			RESQML2_NS::AbstractFeatureInterpretation* interp = epcDocument->getDataObjectByUuid<AbstractFeatureInterpretation>(getInterpretationUuidFromIndex(i));
+			RESQML2_NS::AbstractFeatureInterpretation* interp = getRepository()->getDataObjectByUuid<AbstractFeatureInterpretation>(getInterpretationUuidFromIndex(i));
 			if (interp == nullptr) {
 				throw logic_error("The referenced interpretation is either not a resqml grid interpretation or it is partial and not implemented yet");
 			}
-			pushBackInterpretation(interp);
+			getRepository()->addRelationship(this, interp);
 		}
-		updateXml = true;
 	}
 }
 
@@ -140,14 +103,17 @@ void GridConnectionSetRepresentation::setCellIndexPairs(ULONG64 cellIndexPairCou
 		throw std::invalid_argument("The XML null value cannot be greater than a 64 bits signed integer cause of gsoap mappings");
 	}
 
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
 	const std::string uuid = getUuid();
-	setCellIndexPairsUsingExistingDataset(cellIndexPairCount, "/RESQML/" + getUuid() + "/CellIndexPairs", cellIndexPairNullValue, proxy, gridIndexPairNullValue, gridIndexPair != nullptr ? "/RESQML/" + getUuid() + "/GridIndexPairs" : "");
+	setCellIndexPairsUsingExistingDataset(cellIndexPairCount, "/RESQML/" + uuid + "/CellIndexPairs", cellIndexPairNullValue, proxy, gridIndexPairNullValue, gridIndexPair != nullptr ? "/RESQML/" + getUuid() + "/GridIndexPairs" : "");
 
 	// ************ HDF ************		
 	hsize_t numValues[] = { cellIndexPairCount, 2 };
-	hdfProxy->writeArrayNd(uuid, "CellIndexPairs", H5T_NATIVE_ULLONG, cellIndexPair, numValues, 2);
+	proxy->writeArrayNd(uuid, "CellIndexPairs", H5T_NATIVE_ULLONG, cellIndexPair, numValues, 2);
 	if (gridIndexPair != nullptr) {
-		hdfProxy->writeArrayNd(uuid, "GridIndexPairs", H5T_NATIVE_USHORT, gridIndexPair, numValues, 2);
+		proxy->writeArrayNd(uuid, "GridIndexPairs", H5T_NATIVE_USHORT, gridIndexPair, numValues, 2);
 	}
 }
 
@@ -163,12 +129,12 @@ void GridConnectionSetRepresentation::getXyzPointsOfPatch(const unsigned int &, 
 
 AbstractFeatureInterpretation * GridConnectionSetRepresentation::getInterpretationFromIndex(const unsigned int & interpretationIndex) const
 {
-	return static_cast<AbstractFeatureInterpretation*>(epcDocument->getDataObjectByUuid(getInterpretationUuidFromIndex(interpretationIndex)));
+	return static_cast<AbstractFeatureInterpretation*>(repository->getDataObjectByUuid(getInterpretationUuidFromIndex(interpretationIndex)));
 }
 
 AbstractGridRepresentation* GridConnectionSetRepresentation::getSupportingGridRepresentation(unsigned int index) const 
 {
-	return static_cast<AbstractGridRepresentation*>(epcDocument->getDataObjectByUuid(getSupportingGridRepresentationUuid(index)));
+	return static_cast<AbstractGridRepresentation*>(repository->getDataObjectByUuid(getSupportingGridRepresentationUuid(index)));
 }
 
 std::string GridConnectionSetRepresentation::getSupportingGridRepresentationUuid(unsigned int index) const

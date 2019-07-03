@@ -49,7 +49,7 @@ gsoap_eml2_1::eml21__DataObjectReference* WellCompletion::getWellDor() const
 
 class Well* WellCompletion::getWell() const
 {
-	return getEpcDocument()->getDataObjectByUuid<Well>(getWellDor()->Uuid);
+	return getRepository()->getDataObjectByUuid<Well>(getWellDor()->Uuid);
 }
 
 void WellCompletion::setWell(Well* witsmlWell)
@@ -57,54 +57,22 @@ void WellCompletion::setWell(Well* witsmlWell)
 	if (witsmlWell == nullptr) {
 		throw invalid_argument("Cannot set a null witsml Well to a witsml well completion");
 	}
-
-	// EPC
-	witsmlWell->wellCompletionSet.push_back(this);
-
-	// XML
-	if (updateXml) {
-		witsml2__WellCompletion* wellCompletion = static_cast<witsml2__WellCompletion*>(gsoapProxy2_1);
-		wellCompletion->Well = witsmlWell->newEmlReference();
-	}
-}
-
-std::vector<epc::Relationship> WellCompletion::getAllSourceRelationships() const
-{
-	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
-
-	// XML backward relationship
-	for (size_t i = 0; i < wellboreCompletionSet.size(); ++i)
-	{
-		Relationship relWellboreCompletion(wellboreCompletionSet[i]->getPartNameInEpcDocument(), "", wellboreCompletionSet[i]->getUuid());
-		relWellboreCompletion.setSourceObjectType();
-		result.push_back(relWellboreCompletion);
+	if (getRepository() == nullptr) {
+		witsmlWell->getRepository()->addOrReplaceDataObject(this);
 	}
 
-	return result;
+	getRepository()->addRelationship(this, witsmlWell);
+
+	witsml2__WellCompletion* wellCompletion = static_cast<witsml2__WellCompletion*>(gsoapProxy2_1);
+	wellCompletion->Well = witsmlWell->newEmlReference();
 }
 
-std::vector<epc::Relationship> WellCompletion::getAllTargetRelationships() const
+std::vector<WellboreCompletion const *> WellCompletion::getWellboreCompletions() const
 {
-	vector<Relationship> result;
-
-	// XML forward relationship
-	Well* well = getWell();
-	Relationship relWell(well->getPartNameInEpcDocument(), "", well->getUuid());
-	relWell.setDestinationObjectType();
-	result.push_back(relWell);
-
-	return result;
+	return getRepository()->getSourceObjects<WellboreCompletion>(this);
 }
 
-void WellCompletion::resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc)
+void WellCompletion::loadTargetRelationships() const
 {
-	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellDor();
-	Well* well = epcDoc->getDataObjectByUuid<Well>(dor->Uuid);
-
-	if (well == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-	updateXml = false;
-	setWell(well);
-	updateXml = true;
+	convertDorIntoRel<Well>(getWellDor());
 }

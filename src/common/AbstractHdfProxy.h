@@ -35,26 +35,51 @@ namespace COMMON_NS
 		*/
 		AbstractHdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::EpcExternalPartReference(partialObject) {}
 
+		std::string packageDirectoryAbsolutePath;												/// The directory where the EPC document is stored.
+		std::string relativeFilePath;															/// Must be relative to the location of the package
+		DataObjectRepository::openingMode openingMode;
+
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
 		*/
-		AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
+		AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::READ_ONLY);
 
-		AbstractHdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
-			EpcExternalPartReference(fromGsoap, packageDirAbsolutePath, externalFilePath) {}
+		AbstractHdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
+			EpcExternalPartReference(fromGsoap), openingMode(DataObjectRepository::READ_ONLY) {}
 
-		AbstractHdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
-			EpcExternalPartReference(fromGsoap, packageDirAbsolutePath, externalFilePath) {}
+		AbstractHdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
+			EpcExternalPartReference(fromGsoap), openingMode(DataObjectRepository::READ_ONLY) {}
 
 		/**
 		* Instantiate and initialize the gsoap proxy v2.0.1.
 		* This method is defined in order to be used in derived class without having to link to generated gsoap files.
 		*/
-		void initGsoapProxy(soap* soapContext, const std::string & guid, const std::string & title, EmlVersion emlVersion);
+		void initGsoapProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, EmlVersion emlVersion);
 
 	public:
 
 		virtual ~AbstractHdfProxy() {}
+
+		/**
+		* Set the root of the path where to resolve relativeFilePath.
+		* It must be the folder path containing the EPC file if this HDF5 file is associated to an EPC file.
+		*/
+		DLL_IMPORT_OR_EXPORT void setRootPath(const std::string& rootPath) { packageDirectoryAbsolutePath = rootPath; }
+
+		/**
+		* Set the relative path regarding packageDirectoryAbsolutePath where the HDF5 file is located.
+		*/
+		DLL_IMPORT_OR_EXPORT void setRelativePath(const std::string& relPath) { relativeFilePath = relPath; }
+
+		/**
+		* Set the rights when opening the HDF5 file.
+		*/
+		DLL_IMPORT_OR_EXPORT void setOpeningMode(DataObjectRepository::openingMode openingMode_) { openingMode = openingMode_; }
+
+		/**
+		* Get the relative path regarding packageDirectoryAbsolutePath where the HDF5 file is located.
+		*/
+		DLL_IMPORT_OR_EXPORT const std::string& getRelativePath() const { return relativeFilePath; }
 
 		/**
 		* Open the file for reading and writing.
@@ -546,9 +571,5 @@ namespace COMMON_NS
 		* Check wether a dataset is compressed or not.
 		*/
 		virtual bool isCompressed(const std::string & datasetName) = 0;
-  
-		friend void RESQML2_NS::AbstractRepresentation::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
-		friend void RESQML2_NS::AbstractProperty::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
-
 	};
 }

@@ -42,6 +42,11 @@ namespace WITSML2_0_NS
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		WellboreObject(gsoap_eml2_1::eml21__AbstractObject* fromGsoap):WITSML2_0_NS::AbstractObject(fromGsoap) {}
+		
+		/**
+		* Resolve all relationships of the object in a repository.
+		*/
+		void loadTargetRelationships() const;
 
 	public:
 
@@ -53,9 +58,5 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT virtual gsoap_eml2_1::eml21__DataObjectReference* getWellboreDor() const = 0;
 		DLL_IMPORT_OR_EXPORT class Wellbore* getWellbore() const;
 		DLL_IMPORT_OR_EXPORT virtual void setWellbore(class Wellbore* witsmlWellbore) = 0;
-
-		DLL_IMPORT_OR_EXPORT virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
-		DLL_IMPORT_OR_EXPORT virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
-		DLL_IMPORT_OR_EXPORT virtual void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc);
 	};
 }

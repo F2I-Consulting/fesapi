@@ -26,10 +26,7 @@ namespace RESQML2_0_1_NS
 	class WellboreFrameRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	protected:
-		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const {return nullptr;}
-
-		WellboreFrameRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs) : AbstractRepresentation(interp, crs), trajectory(nullptr)
-		{}
+		WellboreFrameRepresentation() {}
 
 	public:
 
@@ -48,12 +45,12 @@ namespace RESQML2_0_1_NS
 		* @param title		A title for the instance to create.
 		* @param traj		The trajectory this WellboreFeature frame is based on.
 		*/
-		WellboreFrameRepresentation(class WellboreInterpretation* interp, const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation * traj);
+		WellboreFrameRepresentation(class WellboreInterpretation const * interp, const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation const * traj);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml2__WellboreFrameRepresentation* fromGsoap): AbstractRepresentation(fromGsoap), trajectory(nullptr)
+		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml2__WellboreFrameRepresentation* fromGsoap): AbstractRepresentation(fromGsoap)
 		{}
 
 		~WellboreFrameRepresentation() {}
@@ -64,7 +61,7 @@ namespace RESQML2_0_1_NS
 		* @param mdValueCount	The MD values count.
 		* @param proxy			The HDF proxy where to write the MD values. It must be already opened for writing and won't be closed in this method.
 		*/
-		DLL_IMPORT_OR_EXPORT void setMdValues(double * mdValues, const unsigned int & mdValueCount, COMMON_NS::AbstractHdfProxy* proxy);
+		DLL_IMPORT_OR_EXPORT void setMdValues(double * mdValues, unsigned int mdValueCount, COMMON_NS::AbstractHdfProxy* proxy);
 
 		/**
 		* Set the MD values of this WellboreFrameRepresentation frame as a regular discretization along the wellbore trajectory.
@@ -111,22 +108,17 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get the Measured Depth datatype in the HDF dataset
 		*/
-		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject::hdfDatatypeEnum getMdHdfDatatype() const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum getMdHdfDatatype() const;
 
 		/**
 		* Get all the md values of the instance which are supposed to be double ones.
 		*/
-		DLL_IMPORT_OR_EXPORT void getMdAsDoubleValues(double * values);
+		DLL_IMPORT_OR_EXPORT void getMdAsDoubleValues(double * values) const;
 
 		/**
 		* Get all the md values of the instance which are supposed to be float ones.
 		*/
-		DLL_IMPORT_OR_EXPORT void getMdAsFloatValues(float * values);
-
-		/**
-		* Get the associated resqml wellbore trajectory data object reference
-		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference * getWellboreTrajectoryDor() const;
+		DLL_IMPORT_OR_EXPORT void getMdAsFloatValues(float * values) const;
 
 		/**
 		* Get the associated resqml wellbore trajectory uuid
@@ -134,9 +126,11 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT std::string getWellboreTrajectoryUuid() const;
 
 		/**
-		* Get the associated resqml wellbore trajectory
+		* Get the associated resqml wellbore trajector
 		*/
 		DLL_IMPORT_OR_EXPORT class WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
+
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor() const;
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
@@ -144,12 +138,5 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
-
-		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
-		virtual void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
-
-	protected:
-
-		class WellboreTrajectoryRepresentation * trajectory;
 	};
 }

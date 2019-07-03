@@ -32,22 +32,22 @@ using namespace RESQML2_0_1_NS;
 const char* WellboreTest::defaultUuid = "9058a950-35c7-44e6-9671-0f1ba13118cf";
 const char* WellboreTest::defaultTitle = "Wellbore Test";
 
-WellboreTest::WellboreTest(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath) {
+WellboreTest::WellboreTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
 }
 
-WellboreTest::WellboreTest(EpcDocument* epcDoc, bool init)
-	: commontest::AbstractObjectTest(epcDoc) {
+WellboreTest::WellboreTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void WellboreTest::initEpcDocHandler() {
-	WellboreFeature* wellbore = epcDoc->createWellboreFeature(defaultUuid, defaultTitle);
+void WellboreTest::initRepoHandler() {
+	WellboreFeature* wellbore = repo->createWellboreFeature(defaultUuid, defaultTitle);
 	REQUIRE(wellbore != nullptr);
 }
 
-void WellboreTest::readEpcDocHandler() {
+void WellboreTest::readRepoHandler() {
 }

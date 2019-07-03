@@ -29,40 +29,10 @@ using namespace epc;
 
 Wellbore* WellboreObject::getWellbore() const
 {
-	return getEpcDocument()->getDataObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
+	return getRepository()->getDataObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
 }
 
-std::vector<epc::Relationship> WellboreObject::getAllSourceRelationships() const
+void WellboreObject::loadTargetRelationships() const
 {
-	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
-	return result;
-}
-
-void WellboreObject::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
-{
-	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellboreDor();
-	Wellbore* wellbore = epcDoc->getDataObjectByUuid<Wellbore>(dor->Uuid);
-	if (wellbore == nullptr) { // partial transfer
-		getEpcDocument()->createPartial(dor);
-		wellbore = getEpcDocument()->getDataObjectByUuid<Wellbore>(dor->Uuid);
-	}
-	if (wellbore == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-
-	updateXml = false;
-	setWellbore(wellbore);
-	updateXml = true;
-}
-
-vector<Relationship> WellboreObject::getAllTargetRelationships() const
-{
-	vector<Relationship> result;
-
-	Wellbore* wellbore = getWellbore();
-	Relationship relWellbore(wellbore->getPartNameInEpcDocument(), "", wellbore->getUuid());
-	relWellbore.setDestinationObjectType();
-	result.push_back(relWellbore);
-
-	return result;
+	convertDorIntoRel<Wellbore>(getWellboreDor());
 }

@@ -53,12 +53,6 @@ namespace RESQML2_NS
 		virtual ~AbstractLocal3dCrs() {}
 
 		/**
-		* Add a geometrical representation which is based on this local CRS
-		* Does not add the inverse relationship i.e. from the geometrical representation to this local CRS.
-		*/
-		void addRepresentation(class AbstractRepresentation* rep);
-
-		/**
 		* Get the first origin ordinal (usually called X) of the local CRS in the global projected CRS.
 		*/
 		DLL_IMPORT_OR_EXPORT double getOriginOrdinal1() const;
@@ -160,24 +154,9 @@ namespace RESQML2_NS
 
 		void convertXyzPointsToGlobalCrs(double * xyzPoints, ULONG64 xyzPointCount, bool withoutTranslation = false) const;
 
-		std::vector<epc::Relationship> getAllSourceRelationships() const;
-		std::vector<epc::Relationship> getAllTargetRelationships() const;
-		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc) {}
-
 	protected:
-
-		// XML backward relationship
-		std::vector<class AbstractRepresentation*> repSet;
-		std::vector<MdDatum*> mdDatumSet;
-
-	private:
-		/**
-		* Add a md information which is based on this local CRS
-		* Does not add the inverse relationship i.e. from the md information to this local CRS.
-		*/
-		void addMdDatum(MdDatum* mdInfo);
-
-		friend void MdDatum::setLocalCrs(AbstractLocal3dCrs * localCrs);
+		
+		void loadTargetRelationships() const;
 	};
 }
 

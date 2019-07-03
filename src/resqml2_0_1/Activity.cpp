@@ -19,6 +19,7 @@ under the License.
 #include "resqml2_0_1/Activity.h"
 
 #include "resqml2_0_1/ActivityTemplate.h"
+#include "resqml2_0_1/StringTableLookup.h"
 
 #include <algorithm>
 #include <stdexcept>
@@ -26,12 +27,12 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 Activity::Activity(RESQML2_NS::ActivityTemplate* activityTemplate, const string & guid, const string & title)
 {
-	if (activityTemplate == nullptr)
+	if (activityTemplate == nullptr) {
 		throw invalid_argument("The activity template of an activity must be not null.");
+	}
 
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREActivity(activityTemplate->getGsoapContext(), 1);
 
@@ -129,19 +130,14 @@ void Activity::pushBackParameter(const std::string title, AbstractObject* resqml
 			throw invalid_argument("The parameter template " + title + " does not allow a data object datatype.");
 	}
 
-	//Backward relationship
-	COMMON_NS::AbstractObject::addActivityToResqmlObject(this, resqmlObject);
+	getRepository()->addRelationship(this, resqmlObject);
 
-	// XML
-	if (updateXml)
-	{
-		_resqml2__Activity* activity = static_cast<_resqml2__Activity*>(gsoapProxy2_0_1);
+	_resqml2__Activity* activity = static_cast<_resqml2__Activity*>(gsoapProxy2_0_1);
 
-		resqml2__DataObjectParameter* dop = soap_new_resqml2__DataObjectParameter(activity->soap, 1);
-		dop->Title = title;
-		dop->DataObject = resqmlObject->newResqmlReference();
-		activity->Parameter.push_back(dop);
-	}
+	resqml2__DataObjectParameter* dop = soap_new_resqml2__DataObjectParameter(activity->soap, 1);
+	dop->Title = title;
+	dop->DataObject = resqmlObject->newResqmlReference();
+	activity->Parameter.push_back(dop);
 }
 
 unsigned int Activity::getParameterCount() const
@@ -453,7 +449,7 @@ vector<COMMON_NS::AbstractObject*> Activity::getResqmlObjectParameterValue(const
 		if (param[i]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DataObjectParameter)
 			throw invalid_argument("The parameter " + paramTitle + " contains some non double values.");
 		else
-			result.push_back(getEpcDocument()->getDataObjectByUuid(static_cast<resqml2__DataObjectParameter*>(param[i])->DataObject->UUID));
+			result.push_back(getRepository()->getDataObjectByUuid(static_cast<resqml2__DataObjectParameter*>(param[i])->DataObject->UUID));
 	}
 
 	return result;
@@ -469,7 +465,21 @@ COMMON_NS::AbstractObject* Activity::getResqmlObjectParameterValue(const unsigne
 	if (activity->Parameter[index]->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DataObjectParameter)
 		throw invalid_argument("The parameter index is not in the parameter range.");
 
-	return getEpcDocument()->getDataObjectByUuid(static_cast<resqml2__DataObjectParameter*>(activity->Parameter[index])->DataObject->UUID);
+	return getRepository()->getDataObjectByUuid(static_cast<resqml2__DataObjectParameter*>(activity->Parameter[index])->DataObject->UUID);
+}
+
+void Activity::setActivityTemplate(RESQML2_NS::ActivityTemplate * activityTemplate)
+{
+	if (activityTemplate == nullptr) {
+		return;
+	}
+	if (getRepository() == nullptr) {
+		activityTemplate->getRepository()->addOrReplaceDataObject(this);
+	}
+
+	getRepository()->addRelationship(this, activityTemplate);
+
+	static_cast<_resqml2__Activity*>(gsoapProxy2_0_1)->ActivityDescriptor = activityTemplate->newResqmlReference();
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* Activity::getActivityTemplateDor() const
@@ -482,32 +492,18 @@ std::string Activity::getResqmlVersion() const
 	return "2.0.1";
 }
 
-void Activity::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
+void Activity::loadTargetRelationships() const
 {
 	_resqml2__Activity* activity = static_cast<_resqml2__Activity*>(gsoapProxy2_0_1);
 
 	// Activity template
-	RESQML2_NS::ActivityTemplate* activityTemplate = epcDoc->getDataObjectByUuid<RESQML2_NS::ActivityTemplate>(activity->ActivityDescriptor->UUID);
-	if (activityTemplate != nullptr) {
-		updateXml = false;
-		setActivityTemplate(static_cast<RESQML2_NS::ActivityTemplate*>(activityTemplate));
-		updateXml = true;
-	}
-	else {
-		throw logic_error("The referenced activity template does not look to be an activity template.");
+	if (activity->ActivityDescriptor != nullptr) {
+		convertDorIntoRel<ActivityTemplate>(activity->ActivityDescriptor);
 	}
 
 	for (size_t i = 0; i < activity->Parameter.size(); ++i) {
 		if (activity->Parameter[i]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DataObjectParameter) {
-			resqml2__DataObjectParameter* dop = static_cast<resqml2__DataObjectParameter*>(activity->Parameter[i]);
-			if (dop->DataObject == nullptr) {
-				throw domain_error("The resqml object of a data object parameter cannot be null.");
-			}
-
-			updateXml = false;
-			pushBackParameter(dop->Title, epcDoc->getDataObjectByUuid(dop->DataObject->UUID));
-			updateXml = true;
+			convertDorIntoRel(static_cast<resqml2__DataObjectParameter*>(activity->Parameter[i])->DataObject);
 		}
 	}
 }
-

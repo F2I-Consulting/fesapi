@@ -26,11 +26,11 @@ namespace RESQML2_0_1_NS
 	{
 	private:
 		/*
-		* @param soapContext	The soap context where the underlying gsoap proxy will be created.
-		* @param guid			The guid to set to this instance.
-		* @param title			A title for the instance to init.
+		* @param repo		The repo where the underlying gsoap proxy will be created.
+		* @param guid		The guid to set to this instance.
+		* @param title		A title for the instance to init.
 		*/
-		void init(soap* soapContext, const std::string & guid, const std::string & title);
+		void init(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 
 		gsoap_resqml2_0_1::_resqml2__SubRepresentation* getSpecializedGsoapProxy() const;
 
@@ -43,7 +43,7 @@ namespace RESQML2_0_1_NS
 		* Push back a representation which is one of the support of this subrepresentation.
 		* And push back this representation as a subrepresenation of the representation as well.
 		*/
-		void pushBackXmlSupportingRepresentation(RESQML2_NS::AbstractRepresentation * supportingRep);
+		void pushBackXmlSupportingRepresentation(RESQML2_NS::AbstractRepresentation const * supportingRep);
 
 		class DiscreteProperty* getSupportingRepresentationIndicesDiscretePropOfPatch(const unsigned int & patchIndex) const;
 
@@ -57,11 +57,11 @@ namespace RESQML2_0_1_NS
 
 		/**
 		* Creates an instance of this class in a gsoap context. This instance is not linked to any interpretation.
-		* @param soapContext	The soap context where the underlying gsoap proxy will be created.
-		* @param guid			The guid to set to this instance.
-		* @param title			A title for the instance to create.
+		* @param repo	The repo where the underlying gsoap proxy will be created.
+		* @param guid	The guid to set to this instance.
+		* @param title	A title for the instance to create.
 		*/
-		SubRepresentation(soap* soapContext, const std::string & guid, const std::string & title);
+		SubRepresentation(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 
 		/**
 		* Creates an instance of this class in a gsoap context. This instance must be linked to an interpretation.

@@ -18,10 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/AbstractGridRepresentation.h"
 #include "resqml2_0_1/AbstractOrganizationInterpretation.h"
-#include "resqml2_0_1/EarthModelInterpretation.h"
-#include "resqml2_0_1/OrganizationFeature.h"
+
+namespace RESQML2_NS
+{
+	class AbstractGridRepresentation;
+}
 
 namespace RESQML2_0_1_NS
 {
@@ -57,6 +59,8 @@ namespace RESQML2_0_1_NS
 		*/
 		~RockFluidOrganizationInterpretation() {}
 		
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::AbstractGridRepresentation const *> getGridRepresentationSet() const;
+
 		/**
 		* @return The count of grid representation associated to this rock fluid organization.
 		*/
@@ -66,7 +70,7 @@ namespace RESQML2_0_1_NS
 		* Get a grid representation associated to this rock fluid org interp by means of its index.
 		* @param index	The index of the grid representation to get in the array of grid representaitons of this rock fluid org interp.
 		*/
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractGridRepresentation* getGridRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractGridRepresentation const * getGridRepresentation(unsigned int index) const;
 
 		/**
 		* Check if a grid representation is wether associated to this rock fluid org interp or not.
@@ -93,20 +97,10 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT class RockFluidUnitInterpretation* getRockFluidUnitInterpretation(unsigned int index) const;
 
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllSourceRelationships() const;
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllTargetRelationships() const;
-		DLL_IMPORT_OR_EXPORT void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc);
-
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 	private:
-
-		// backward relationships
-		std::vector<EarthModelInterpretation *> earthModelSet;
-		std::vector<RESQML2_NS::AbstractGridRepresentation *> gridRepresentationSet;
-
-		friend void RESQML2_NS::AbstractGridRepresentation::setCellAssociationWithRockFluidOrganizationInterpretation(ULONG64 * fluidUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::RockFluidOrganizationInterpretation * rockFluidOrgInterp);
-		friend void RESQML2_0_1_NS::EarthModelInterpretation::setRockFluidOrganizationInterpretation(RockFluidOrganizationInterpretation * rockFluid);
+		void loadTargetRelationships() const;
 	};
 }

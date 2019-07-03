@@ -317,11 +317,11 @@ namespace WITSML2_0_NS
 		
 		unsigned int getDatumCount() const;
 		
-		RESQML2_0_1_NS::WellboreFeature* getResqmlWellboreFeature() const;
+		std::vector<RESQML2_0_1_NS::WellboreFeature const *> getResqmlWellboreFeatures() const;
 
-		const std::vector<Wellbore*>& getWellbores() const;
+		std::vector<Wellbore const *> getWellbores() const;
 
-		const std::vector<WellCompletion*>& getWellcompletions() const;
+		std::vector<WellCompletion const *> getWellcompletions() const;
 	};
 	
 	class WellboreCompletion;
@@ -333,12 +333,12 @@ namespace WITSML2_0_NS
 
 		void setWell(class Well* witsmlWell);
 
-		RESQML2_0_1_NS::WellboreFeature* getResqmlWellboreFeature() const;
+		std::vector<RESQML2_0_1_NS::WellboreFeature const *> getResqmlWellboreFeature() const;
 
-		const std::vector<class WellboreCompletion *>& getWellboreCompletions() const;
-		const std::vector<class Trajectory *>& getTrajectories() const;
+		std::vector<class WellboreCompletion const *> getWellboreCompletions() const;
+		std::vector<class Trajectory const *> getTrajectories() const;
 
-		void setShape(const gsoap_eml2_1::witsml2__WellboreShape & shape);
+		void setShape(gsoap_eml2_1::witsml2__WellboreShape shape);
 	};
 	
 	class WellboreCompletion;
@@ -350,7 +350,7 @@ namespace WITSML2_0_NS
 
 		void setWell(class Well* witsmlWell);
 		
-		const std::vector<class WellboreCompletion*>& getWellboreCompletions() const;
+		std::vector<class WellboreCompletion const *> getWellboreCompletions() const;
 	};
 	
 	class WellboreObject : public AbstractObject

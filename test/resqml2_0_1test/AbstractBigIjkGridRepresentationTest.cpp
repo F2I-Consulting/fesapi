@@ -32,12 +32,12 @@ using namespace resqml2_0_1test;
 using namespace RESQML2_NS;
 
 AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(
-	const string & epcDocPath,
+	const string & repoPath,
 	unsigned int iCount, unsigned int jCount, unsigned int kCount,
 	unsigned int faultCount,
 	double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
 	double faultThrow) :
-	commontest::AbstractObjectTest(epcDocPath),
+	commontest::AbstractObjectTest(repoPath),
 	iCount(iCount), jCount(jCount), kCount(kCount), faultCount(faultCount),
 	xMin(xMin), xMax(xMax), yMin(yMin), yMax(yMax), zMin(zMin), zMax(zMax), faultThrow(faultThrow)
 {
@@ -57,12 +57,12 @@ AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(
 	}
 }
 
-AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(EpcDocument * epcDoc, bool init,
+AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(DataObjectRepository * repo, bool init,
 	unsigned int iCount, unsigned int jCount, unsigned int kCount,
 	unsigned int faultCount,
 	double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
 	double faultThrow) :
-	commontest::AbstractObjectTest(epcDoc),
+	commontest::AbstractObjectTest(repo),
 	iCount(iCount), jCount(jCount), kCount(kCount), faultCount(faultCount),
 	xMin(xMin), xMax(xMax), yMin(yMin), yMax(yMax), zMin(zMin), zMax(zMax), faultThrow(faultThrow) {
 	if ((iCount < 1) || (jCount < 1) || (kCount < 1))
@@ -81,9 +81,9 @@ AbstractBigIjkGridRepresentationTest::AbstractBigIjkGridRepresentationTest(EpcDo
 	}
 
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
 unsigned long long AbstractBigIjkGridRepresentationTest::initNodesCountIjkGridRepresentation(unsigned int iCount, unsigned int jCount, unsigned int kCount,

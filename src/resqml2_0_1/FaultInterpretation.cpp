@@ -44,10 +44,11 @@ FaultInterpretation::FaultInterpretation(TectonicBoundaryFeature * fault, const 
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREFaultInterpretation(fault->getGsoapContext(), 1);
 	_resqml2__FaultInterpretation* interp = static_cast<_resqml2__FaultInterpretation*>(gsoapProxy2_0_1);
 	interp->Domain = resqml2__Domain__mixed;
-	setInterpretedFeature(fault);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	setInterpretedFeature(fault);
 }
 
 FaultInterpretation::FaultInterpretation(TectonicBoundaryFeature * fault, const string & guid, const string & title,
@@ -75,24 +76,6 @@ FaultInterpretation::FaultInterpretation(TectonicBoundaryFeature * fault, const 
 	setInterpretedFeature(fault);
 }
 
-vector<Relationship> FaultInterpretation::getAllSourceRelationships() const
-{
-	vector<Relationship> result = BoundaryFeatureInterpretation::getAllSourceRelationships();
-
-	for (size_t i = 0; i < structuralOrganizationInterpretationSet.size(); ++i) {
-		if (structuralOrganizationInterpretationSet[i] != nullptr) {
-			Relationship rel(structuralOrganizationInterpretationSet[i]->getPartNameInEpcDocument(), "", structuralOrganizationInterpretationSet[i]->getUuid());
-			rel.setSourceObjectType();
-			result.push_back(rel);
-		}
-		else {
-			throw domain_error("The structural Organization Interpretation associated to the fault interpretation cannot be nullptr.");
-		}
-	}
-
-	return result;
-}
-
 void FaultInterpretation::pushBackThrowInterpretation(const gsoap_resqml2_0_1::resqml2__ThrowKind & throwKind)
 {
 	_resqml2__FaultInterpretation* interp = static_cast<_resqml2__FaultInterpretation*>(gsoapProxy2_0_1);
@@ -102,4 +85,3 @@ void FaultInterpretation::pushBackThrowInterpretation(const gsoap_resqml2_0_1::r
 
 	interp->ThrowInterpretation.push_back(throwInterp);
 }
-

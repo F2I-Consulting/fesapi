@@ -48,7 +48,7 @@ unsigned int AbstractColumnLayerGridRepresentation::getKCellCount() const
 	}
 }
 
-void AbstractColumnLayerGridRepresentation::setKCellCount(const unsigned int & kCount)
+void AbstractColumnLayerGridRepresentation::setKCellCount(unsigned int kCount)
 {
 	if (isPartial()) {
 		throw logic_error("Partial object");
@@ -67,46 +67,43 @@ void AbstractColumnLayerGridRepresentation::setKCellCount(const unsigned int & k
 	}
 }
 
-void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation * stratiOrgInterp)
+void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, ULONG64 nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation * stratiOrgInterp, COMMON_NS::AbstractHdfProxy * hdfProxy)
 {
 	if (isTruncated()) {
 		throw invalid_argument("A truncated grid cannot be linked to a strati columnumn in Resqml2");
 	}
 
-	// Backward rel
-	if (!stratiOrgInterp->isAssociatedToGridRepresentation(this))
-	{
-		stratiOrgInterp->gridRepresentationSet.push_back(this);
+	if (hdfProxy == nullptr) {
+		hdfProxy = getRepository()->getDefaultHdfProxy();
+	}
+	getRepository()->addRelationship(this, hdfProxy);
+
+	getRepository()->addRelationship(this, stratiOrgInterp);
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		resqml2__AbstractColumnLayerGridRepresentation* rep = static_cast<resqml2__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_0_1);
+		rep->IntervalStratigraphicUnits = soap_new_resqml2__IntervalStratigraphicUnits(rep->soap, 1);
+		rep->IntervalStratigraphicUnits->StratigraphicOrganization = stratiOrgInterp->newResqmlReference();
+
+		resqml2__IntegerHdf5Array* xmlDataset = soap_new_resqml2__IntegerHdf5Array(rep->soap, 1);
+		xmlDataset->NullValue = nullValue;
+		xmlDataset->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+		xmlDataset->Values->HdfProxy = hdfProxy->newResqmlReference();
+		xmlDataset->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/IntervalStratigraphicUnits";
+		rep->IntervalStratigraphicUnits->UnitIndices = xmlDataset;
+	}
+	else {
+		throw logic_error("Only version 2_0_1 is implemented yet");
 	}
 
-	// XML
-	if (updateXml)
-	{
-		if (gsoapProxy2_0_1 != nullptr) {
-			resqml2__AbstractColumnLayerGridRepresentation* rep = static_cast<resqml2__AbstractColumnLayerGridRepresentation*>(gsoapProxy2_0_1);
-			rep->IntervalStratigraphicUnits = soap_new_resqml2__IntervalStratigraphicUnits(rep->soap, 1);
-			rep->IntervalStratigraphicUnits->StratigraphicOrganization = stratiOrgInterp->newResqmlReference();
-
-			resqml2__IntegerHdf5Array* xmlDataset = soap_new_resqml2__IntegerHdf5Array(rep->soap, 1);
-			xmlDataset->NullValue = nullValue;
-			xmlDataset->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
-			xmlDataset->Values->HdfProxy = hdfProxy->newResqmlReference();
-			xmlDataset->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/IntervalStratigraphicUnits";
-			rep->IntervalStratigraphicUnits->UnitIndices = xmlDataset;
-		}
-		else {
-			throw logic_error("Only version 2_0_1 is implemented yet");
-		}
-
-		// ************ HDF *************
-		hsize_t dim = getKCellCount();
-		hdfProxy->writeArrayNd(getUuid(), "IntervalStratigraphicUnits", H5T_NATIVE_ULLONG, stratiUnitIndices, &dim, 1);
-	}
+	// ************ HDF *************
+	hsize_t dim = getKCellCount();
+	hdfProxy->writeArrayNd(getUuid(), "IntervalStratigraphicUnits", H5T_NATIVE_ULLONG, stratiUnitIndices, &dim, 1);
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractColumnLayerGridRepresentation::getStratigraphicOrganizationInterpretationDor() const
+gsoap_resqml2_0_1::eml20__DataObjectReference const * AbstractColumnLayerGridRepresentation::getStratigraphicOrganizationInterpretationDor() const
 {
-	gsoap_resqml2_0_1::eml20__DataObjectReference* result = RESQML2_NS::AbstractGridRepresentation::getStratigraphicOrganizationInterpretationDor();
+	gsoap_resqml2_0_1::eml20__DataObjectReference const * result = RESQML2_NS::AbstractGridRepresentation::getStratigraphicOrganizationInterpretationDor();
 	if (result != nullptr) {
 		return result;
 	}
@@ -155,7 +152,9 @@ ULONG64 AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndic
 
 		if (rep->IntervalStratigraphicUnits->UnitIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
 		{
-			hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<resqml2__IntegerHdf5Array*>(rep->IntervalStratigraphicUnits->UnitIndices)->Values->PathInHdfFile, stratiUnitIndices);
+			eml20__Hdf5Dataset const * dataset = static_cast<resqml2__IntegerHdf5Array*>(rep->IntervalStratigraphicUnits->UnitIndices)->Values;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, stratiUnitIndices);
 			return static_cast<resqml2__IntegerHdf5Array*>(rep->IntervalStratigraphicUnits->UnitIndices)->NullValue;
 		}
 
@@ -166,40 +165,21 @@ ULONG64 AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndic
 	}
 }
 
-vector<Relationship> AbstractColumnLayerGridRepresentation::getAllTargetRelationships() const
+void AbstractColumnLayerGridRepresentation::loadTargetRelationships() const
 {
-	vector<Relationship> result = AbstractGridRepresentation::getAllTargetRelationships();
-
-	// Strati unit
-	if (!hasCellStratigraphicUnitIndices() && hasIntervalStratigraphicUnitIndices())
-	{
-		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = getStratigraphicOrganizationInterpretation();
-		Relationship relStrati(stratiOrg->getPartNameInEpcDocument(), "", stratiOrg->getUuid());
-		relStrati.setDestinationObjectType();
-		result.push_back(relStrati);
-	}
-
-	return result;
-}
-
-void AbstractColumnLayerGridRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
-{
-	AbstractGridRepresentation::resolveTargetRelationships(epcDoc);
+	AbstractGridRepresentation::loadTargetRelationships();
 
 	// Strati org backward relationships
 	if (hasIntervalStratigraphicUnitIndices()) {
-		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getStratigraphicOrganizationInterpretationDor();
-		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = getEpcDocument()->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
+		gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getStratigraphicOrganizationInterpretationDor();
+		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
 		if (stratiOrg == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			stratiOrg = getEpcDocument()->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
+			getRepository()->createPartial(dor);
+			stratiOrg = getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
+			if (stratiOrg == nullptr) {
+				throw invalid_argument("The DOR looks invalid.");
+			}
 		}
-		if (stratiOrg == nullptr) {
-			throw invalid_argument("The DOR looks invalid.");
-		}
-		updateXml = false;
-		setIntervalAssociationWithStratigraphicOrganizationInterpretation(nullptr, 0, stratiOrg);
-		updateXml = true;
+		repository->addRelationship(this, stratiOrg);
 	}
 }
-

@@ -44,10 +44,10 @@ WellboreCompletion::WellboreCompletion(Wellbore* witsmlWellbore,
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
+	static_cast<witsml2__WellboreCompletion*>(gsoapProxy2_1)->NameWellCompletion = wellCompletionName;
+
 	setWellbore(witsmlWellbore);
 	setWellCompletion(wellCompletion);
-
-	static_cast<witsml2__WellboreCompletion*>(gsoapProxy2_1)->NameWellCompletion = wellCompletionName;
 }
 
 gsoap_eml2_1::eml21__DataObjectReference* WellboreCompletion::getWellboreDor() const
@@ -62,7 +62,7 @@ gsoap_eml2_1::eml21__DataObjectReference* WellboreCompletion::getWellCompletionD
 
 class WellCompletion* WellboreCompletion::getWellCompletion() const
 {
-	return getEpcDocument()->getDataObjectByUuid<WellCompletion>(getWellCompletionDor()->Uuid);
+	return getRepository()->getDataObjectByUuid<WellCompletion>(getWellCompletionDor()->Uuid);
 }
 
 void WellboreCompletion::setWellbore(Wellbore* witsmlWellbore)
@@ -70,15 +70,14 @@ void WellboreCompletion::setWellbore(Wellbore* witsmlWellbore)
 	if (witsmlWellbore == nullptr) {
 		throw invalid_argument("Cannot set a null witsml well bore to a witsml wellbore completion");
 	}
-
-	// EPC
-	witsmlWellbore->wellboreCompletionSet.push_back(this);
-
-	// XML
-	if (updateXml) {
-		witsml2__WellboreCompletion* wellboreCompletion = static_cast<witsml2__WellboreCompletion*>(gsoapProxy2_1);
-		wellboreCompletion->ReferenceWellbore = witsmlWellbore->newEmlReference();
+	if (getRepository() == nullptr) {
+		witsmlWellbore->getRepository()->addOrReplaceDataObject(this);
 	}
+
+	getRepository()->addRelationship(this, witsmlWellbore);
+
+	witsml2__WellboreCompletion* wellboreCompletion = static_cast<witsml2__WellboreCompletion*>(gsoapProxy2_1);
+	wellboreCompletion->ReferenceWellbore = witsmlWellbore->newEmlReference();
 }
 
 void WellboreCompletion::setWellCompletion(WellCompletion* wellCompletion)
@@ -86,15 +85,15 @@ void WellboreCompletion::setWellCompletion(WellCompletion* wellCompletion)
 	if (wellCompletion == nullptr) {
 		throw invalid_argument("Cannot set a null witsml well completion to a witsml wellbore completion");
 	}
+	if (getRepository() == nullptr) {
+		wellCompletion->getRepository()->addOrReplaceDataObject(this);
+	}
 
-	// EPC
-	wellCompletion->wellboreCompletionSet.push_back(this);
+	getRepository()->addRelationship(this, wellCompletion);
 
 	// XML
-	if (updateXml) {
-		witsml2__WellboreCompletion* wellboreCompletion = static_cast<witsml2__WellboreCompletion*>(gsoapProxy2_1);
-		wellboreCompletion->WellCompletion = wellCompletion->newEmlReference();
-	}
+	witsml2__WellboreCompletion* wellboreCompletion = static_cast<witsml2__WellboreCompletion*>(gsoapProxy2_1);
+	wellboreCompletion->WellCompletion = wellCompletion->newEmlReference();
 }
 
 void WellboreCompletion::pushBackPerforation(const string & datum,
@@ -539,32 +538,11 @@ void WellboreCompletion::setPerforationHistoryBaseMd(unsigned int historyIndex,
 	perforationStatusHistory->PerforationMdInterval->MdBase->__item = BaseMd;
 }
 
-std::vector<epc::Relationship> WellboreCompletion::getAllTargetRelationships() const
+void WellboreCompletion::loadTargetRelationships() const
 {
-	vector<Relationship> result = WellboreObject::getAllTargetRelationships();
-	
-	WellCompletion* wellCompletion = getWellCompletion();
-	Relationship relWellCompletion(wellCompletion->getPartNameInEpcDocument(), "", wellCompletion->getUuid());
-	relWellCompletion.setDestinationObjectType();
-	result.push_back(relWellCompletion);
+	WellboreObject::loadTargetRelationships();
 
-	return result;
-}
-
-void WellboreCompletion::resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc)
-{
-	WellboreObject::resolveTargetRelationships(epcDoc);
-
-	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellCompletionDor();
-	WellCompletion* wellCompletion = epcDoc->getDataObjectByUuid<WellCompletion>(dor->Uuid);
-
-	if (wellCompletion == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-
-	updateXml = false;
-	setWellCompletion(wellCompletion);
-	updateXml = true;
+	convertDorIntoRel<WellCompletion>(getWellCompletionDor());
 }
 
 gsoap_eml2_1::witsml2__PerforationSetInterval* WellboreCompletion::getPerforation(unsigned int index) const

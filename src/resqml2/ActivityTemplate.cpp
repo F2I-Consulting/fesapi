@@ -27,21 +27,10 @@ using namespace epc;
 
 const char* ActivityTemplate::XML_TAG = "ActivityTemplate";
 
-vector<Relationship> ActivityTemplate::getAllSourceRelationships() const
+std::vector<Activity const *> ActivityTemplate::getActivityInstanceSet() const
 {
-	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
-
-	for (size_t i = 0; i < activityInstanceSet.size(); ++i) {
-		Relationship rel(activityInstanceSet[i]->getPartNameInEpcDocument(), "", activityInstanceSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
+	return getRepository()->getSourceObjects<Activity>(this);
 }
 
-vector<Relationship> ActivityTemplate::getAllTargetRelationships() const
-{
-	vector<Relationship> result;
-	return result;
-}
+void ActivityTemplate::loadTargetRelationships() const
+{}

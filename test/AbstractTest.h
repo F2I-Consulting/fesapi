@@ -23,7 +23,7 @@ under the License.
 #include "nsDefinitions.h"
 
 namespace COMMON_NS {
-	class EpcDocument;
+	class DataObjectRepository;
 }
 
 namespace commontest {
@@ -40,37 +40,37 @@ namespace commontest {
 		AbstractTest(const std::string & epcDocPath);
 		
 		/**
-		 * Creation of a testing object from an existing EPC document.
-		 * @param epcDoc an existing EPC document
+		 * Creation of a testing object from an existing repository.
+		 * @param repo an existing repository
 		 */
-		AbstractTest(COMMON_NS::EpcDocument * epcDoc);
+		AbstractTest(COMMON_NS::DataObjectRepository * repo);
 
 		virtual ~AbstractTest() {}
 
 		/**
 		 * This methods runs a serailization test. It handles the creation of an EPC document,
-		 * calls initEpcDoc() and serialize the EPC document. The EPC document is deleted at the very end
+		 * calls initRepo() and serialize the EPC document. The EPC document is deleted at the very end
 		 * of this method.
 		 */
 		void serialize();
 
 		/** 
 		 * This methods runs a deserialization test. It handles the deserialization of an existing EPC document
-		 * and calls readEpcDoc(). The EPC document is deleted at the very end of this method.
+		 * and calls readRepo(). The EPC document is deleted at the very end of this method.
 		 */
 		void deserialize();
 	
 		/** 
 		 * As initialization differs from one unit test to another, it is virtual in this most general testing class.
 		 */ 
-		virtual void initEpcDoc() = 0;
+		virtual void initRepo() = 0;
 
 		/** 
 		 * As reading differs from one unit test to another, it is virtual in this most general testing class.
 		 */
-		virtual void readEpcDoc() = 0;
+		virtual void readRepo() = 0;
 	protected:
-		COMMON_NS::EpcDocument* epcDoc;
+		COMMON_NS::DataObjectRepository* repo;
 		const std::string epcDocPath;
 	};
 }

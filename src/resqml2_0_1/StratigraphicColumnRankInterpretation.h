@@ -115,42 +115,27 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get all the stratigraphic unit interpretations contained in this StratigraphicColumnRankInterpretation.
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector<class StratigraphicUnitInterpretation*> & getStratigraphicUnitInterpretationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class StratigraphicUnitInterpretation const *> getStratigraphicUnitInterpretationSet() const;
 
 		/**
 		* Get all the stratigraphic occurence interpretations associated with this StratigraphicColumnRankInterpretation.
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector<class StratigraphicOccurrenceInterpretation*> & getStratigraphicOccurrenceInterpretationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class StratigraphicOccurrenceInterpretation const *> getStratigraphicOccurrenceInterpretationSet() const;
 
 		/**
 		* Get all the horizon interpretations contained in this StratigraphicColumnRankInterpretation.
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector<class HorizonInterpretation*> & getHorizonInterpretationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class HorizonInterpretation const *> getHorizonInterpretationSet() const;
 
 		/**
 		* Get all the stratigraphic column this strati column rank belongs to.
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector<StratigraphicColumn*> & getStratigraphicColumnSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<StratigraphicColumn const *> getStratigraphicColumnSet() const;
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
-        std::vector<epc::Relationship> getAllSourceRelationships() const;
-        std::vector<epc::Relationship> getAllTargetRelationships() const;
-		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
-
 	private:
-
-        // forward relationships
-        std::vector<class StratigraphicUnitInterpretation*> stratigraphicUnitSet;
-        std::vector<class HorizonInterpretation*> horizonInterpretationSet;
-
-		// Backward relationship
-		std::vector<StratigraphicColumn *> stratigraphicColumnSet;
-		std::vector<StratigraphicOccurrenceInterpretation *> stratigraphicOccurrenceInterpretationSet;
-
-		friend void StratigraphicColumn::pushBackStratiColumnRank(StratigraphicColumnRankInterpretation * stratiColumnRank);
-		friend void StratigraphicOccurrenceInterpretation::setStratigraphicColumnRankInterpretation(StratigraphicColumnRankInterpretation * stratiColumnRankInterp);
+		void loadTargetRelationships() const;
 	};
 }
-

@@ -30,57 +30,34 @@ using namespace epc;
 
 const char* MdDatum::XML_TAG = "MdDatum";
 
-void MdDatum::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
+void MdDatum::loadTargetRelationships() const
 {
-	_resqml2__MdDatum* mdInfo = static_cast<_resqml2__MdDatum*>(gsoapProxy2_0_1);
-
-	updateXml = false;
-	setLocalCrs(getOrCreateObjectFromDor<AbstractLocal3dCrs>(mdInfo->LocalCrs));
-	updateXml = true;
-}
-
-vector<Relationship> MdDatum::getAllSourceRelationships() const
-{
-	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
-
-	// WellboreFeature trajectories
-	for (size_t i = 0; i < wellboreTrajectoryRepresentationSet.size(); ++i)
-	{
-		Relationship rel(wellboreTrajectoryRepresentationSet[i]->getPartNameInEpcDocument(), "", wellboreTrajectoryRepresentationSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
+	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getLocalCrsDor();
+	if (dor != nullptr) {
+		AbstractLocal3dCrs* localCrs = getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(dor->UUID);
+		if (localCrs == nullptr) { // partial transfer
+			getRepository()->createPartial(dor);
+			localCrs = getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(dor->UUID);
+			if (localCrs == nullptr) {
+				throw invalid_argument("The DOR looks invalid.");
+			}
+		}
+		getRepository()->addRelationship(this, localCrs);
 	}
-
-	return result;
 }
-
-vector<Relationship> MdDatum::getAllTargetRelationships() const
-{
-	vector<Relationship> result;
-
-	// local 3d CRS
-	AbstractLocal3dCrs* localCrs = getLocalCrs();
-	if (localCrs != nullptr)
-	{
-		Relationship relLocalCrs(localCrs->getPartNameInEpcDocument(), "", getLocalCrsUuid());
-		relLocalCrs.setDestinationObjectType();
-		result.push_back(relLocalCrs);
-	}
-	else {
-		throw domain_error("The local CRS associated to the MD information cannot be nullptr.");
-	}
-
-	return result;
-}
-
 
 void MdDatum::setLocalCrs(AbstractLocal3dCrs * localCrs)
 {
-	localCrs->addMdDatum(this);
-
-	if (updateXml) {
-		setXmlLocalCrs(localCrs);
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
 	}
+	if (getRepository() == nullptr) {
+		localCrs->getRepository()->addOrReplaceDataObject(this);
+	}
+
+	setXmlLocalCrs(localCrs);
+
+	getRepository()->addRelationship(this, localCrs);
 }
 
 std::string MdDatum::getLocalCrsUuid() const
@@ -91,6 +68,5 @@ std::string MdDatum::getLocalCrsUuid() const
 AbstractLocal3dCrs * MdDatum::getLocalCrs() const
 {
 	const string uuidLocalCrs = getLocalCrsUuid();
-	return static_cast<AbstractLocal3dCrs*>(epcDocument->getDataObjectByUuid(uuidLocalCrs));
+	return static_cast<AbstractLocal3dCrs*>(repository->getDataObjectByUuid(uuidLocalCrs));
 }
-

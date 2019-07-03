@@ -21,7 +21,7 @@ under the License.
 #include "catch.hpp"
 #include "AbstractTest.h"
 
-#include "common/EpcDocument.h"
+#include "common/DataObjectRepository.h"
 #include "common/AbstractObject.h"
 
 using namespace std;
@@ -31,16 +31,16 @@ AbstractObjectTest::AbstractObjectTest(const string & epcDocPath) :
 	AbstractTest(epcDocPath) {
 }
 
-AbstractObjectTest::AbstractObjectTest(COMMON_NS::EpcDocument* epcDoc) :
-	AbstractTest(epcDoc) {
+AbstractObjectTest::AbstractObjectTest(COMMON_NS::DataObjectRepository* repo) :
+	AbstractTest(repo) {
 }
 
-void AbstractObjectTest::initEpcDoc()
+void AbstractObjectTest::initRepo()
 {
-	REQUIRE(epcDoc != nullptr);
-	initEpcDocHandler();
+	REQUIRE(repo != nullptr);
+	initRepoHandler();
 }
 
-void AbstractObjectTest::readEpcDoc() {
-	readEpcDocHandler();
+void AbstractObjectTest::readRepo() {
+	readRepoHandler();
 }

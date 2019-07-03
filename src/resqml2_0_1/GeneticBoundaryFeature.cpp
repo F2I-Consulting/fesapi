@@ -23,17 +23,19 @@ using namespace RESQML2_0_1_NS;
 
 const char* GeneticBoundaryFeature::XML_TAG = "GeneticBoundaryFeature";
 
-GeneticBoundaryFeature::GeneticBoundaryFeature(soap* soapContext, const string & guid, const string & title, bool isAnHorizon)
+GeneticBoundaryFeature::GeneticBoundaryFeature(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title, bool isAnHorizon)
 {
-	if (soapContext == nullptr)
+	if (repo == nullptr)
 		throw invalid_argument("The soap context cannot be null.");
 
-	gsoapProxy2_0_1 = gsoap_resqml2_0_1::soap_new_resqml2__obj_USCOREGeneticBoundaryFeature(soapContext, 1);
+	gsoapProxy2_0_1 = gsoap_resqml2_0_1::soap_new_resqml2__obj_USCOREGeneticBoundaryFeature(repo->getGsoapContext(), 1);
 	gsoap_resqml2_0_1::_resqml2__GeneticBoundaryFeature* horizon = static_cast<gsoap_resqml2_0_1::_resqml2__GeneticBoundaryFeature*>(gsoapProxy2_0_1);
 	horizon->GeneticBoundaryKind = isAnHorizon ? gsoap_resqml2_0_1::resqml2__GeneticBoundaryKind__horizon : gsoap_resqml2_0_1::resqml2__GeneticBoundaryKind__geobody_x0020boundary;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	repo->addOrReplaceDataObject(this);
 }
 
 bool GeneticBoundaryFeature::isAnHorizon() const

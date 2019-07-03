@@ -39,14 +39,14 @@ namespace RESQML2_0_1_NS
 		*/
 		AbstractStratigraphicOrganizationInterpretation(gsoap_resqml2_0_1::resqml2__AbstractStratigraphicOrganizationInterpretation* fromGsoap) : AbstractOrganizationInterpretation(fromGsoap) {}
 
-		virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
-
 	public:
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		virtual ~AbstractStratigraphicOrganizationInterpretation() {}
+
+		std::vector<RESQML2_NS::AbstractGridRepresentation const *> getGridRepresentations() const;
 
 		/**
 		* @return The count of grid representation assocaited to this strati organization.
@@ -57,7 +57,7 @@ namespace RESQML2_0_1_NS
 		* Get a grid representation associated to this strati org interp by means of its index.
 		* @param index	The index of the grid representation to get in the array of grid representaitons of this strati org interp.
 		*/
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractGridRepresentation* getGridRepresentation(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractGridRepresentation const * getGridRepresentation(unsigned int index) const;
 
 		/**
 		* Check if a grid representation is wether associated to this strati org interp or not.
@@ -65,14 +65,5 @@ namespace RESQML2_0_1_NS
 		* @return			True or false.
 		*/
 		DLL_IMPORT_OR_EXPORT bool isAssociatedToGridRepresentation(RESQML2_NS::AbstractGridRepresentation* gridRep) const;
-
-	private:
-
-		// Backward relationship
-		std::vector<RESQML2_NS::AbstractGridRepresentation *> gridRepresentationSet;
-
-		friend void RESQML2_NS::AbstractGridRepresentation::setCellAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, AbstractStratigraphicOrganizationInterpretation * stratiOrgInterp);
-		friend void RESQML2_NS::AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
 	};
 }
-

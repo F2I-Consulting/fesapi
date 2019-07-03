@@ -29,36 +29,17 @@ using namespace epc;
 
 const char* StringTableLookup::XML_TAG = "StringTableLookup";
 
-StringTableLookup::StringTableLookup(soap* soapContext, const string & guid, const string & title)
+StringTableLookup::StringTableLookup(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
 {
-	if (soapContext == nullptr)
-		throw invalid_argument("The soap context cannot be null.");
+	if (repo == nullptr)
+		throw invalid_argument("The repo cannot be null.");
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREStringTableLookup(soapContext, 1);
+	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREStringTableLookup(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
-}
 
-vector<Relationship> StringTableLookup::getAllSourceRelationships() const
-{
-	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
-
-	// XML backward relationship
-	for (size_t i = 0; i < categoricalPropertyValuesSet.size(); ++i)
-	{
-		Relationship rel(categoricalPropertyValuesSet[i]->getPartNameInEpcDocument(), "", categoricalPropertyValuesSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
-}
-
-vector<Relationship> StringTableLookup::getAllTargetRelationships() const
-{
-	vector<Relationship> result;
-	return result;
+	repo->addOrReplaceDataObject(this);
 }
 
 unsigned int StringTableLookup::getItemCount() const
@@ -109,7 +90,7 @@ std::string StringTableLookup::getStringValue(const long & longValue)
 		}
 	}
 
-	return std::string();
+	return "";
 }
 
 void StringTableLookup::addValue(const string & strValue, const long & longValue)
@@ -164,24 +145,17 @@ LONG64 StringTableLookup::getMaximumValue()
 	return max;
 }
 
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 unordered_map<long, string> StringTableLookup::getMap() const
 {
 	unordered_map<long, string> result;
-#else
-tr1::unordered_map<long, string> StringTableLookup::getMap() const
-{
-	tr1::unordered_map<long, string> result;
-#endif
 
 	_resqml2__StringTableLookup* stringLookup = static_cast<_resqml2__StringTableLookup*>(gsoapProxy2_0_1);
 
-	for (size_t i = 0; i < stringLookup->Value.size(); ++i)
-	{
+	for (size_t i = 0; i < stringLookup->Value.size(); ++i) {
 		result[stringLookup->Value[i]->Key] = stringLookup->Value[i]->Value;
 	}
 
 	return result;
 }
 
-void StringTableLookup::resolveTargetRelationships(COMMON_NS::EpcDocument*) {}
+void StringTableLookup::loadTargetRelationships() const {}

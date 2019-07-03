@@ -53,7 +53,7 @@ namespace RESQML2_NS
 		/**
 		* Get all the interpretations of this feature
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<AbstractFeatureInterpretation*> 	getInterpretationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<AbstractFeatureInterpretation const *> getInterpretationSet() const;
 
 		/**
 		 * Get the interpretation count of this feature.
@@ -63,20 +63,10 @@ namespace RESQML2_NS
 		/**
 		 * Get a particular interpretation of this feature according to its position in the interpretation ordering.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation*	getInterpretation(unsigned int index) const;
-
-		DLL_IMPORT_OR_EXPORT virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
-		DLL_IMPORT_OR_EXPORT virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
-
-		/**
-		* Does nothing since feature has not target relationships at all
-		*/
-		DLL_IMPORT_OR_EXPORT virtual void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc) {}
+		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation const*	getInterpretation(unsigned int index) const;
 
 	protected:
 
-		std::vector<AbstractFeatureInterpretation*> interpretationSet; /// All the interpretations of the feature
-
-		friend void AbstractFeatureInterpretation::setInterpretedFeature(RESQML2_NS::AbstractFeature * feature);
+		virtual void loadTargetRelationships() const;
 	};
 }

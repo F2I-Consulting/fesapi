@@ -65,12 +65,16 @@ resqml2__Point3dFromRepresentationLatticeArray* AbstractSurfaceRepresentation::g
 }
 
 resqml2__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfLatticePoints3d(
-			const unsigned int & numPointsInFastestDirection, const unsigned int & numPointsInSlowestDirection,
-			const double & xOrigin, const double & yOrigin, const double & zOrigin,
-			const double & xOffsetInFastestDirection, const double & yOffsetInFastestDirection, const double & zOffsetInFastestDirection,
-			const double & xOffsetInSlowestDirection, const double & yOffsetInSlowestDirection, const double & zOffsetInSlowestDirection,
-			const double & spacingInFastestDirection, const double & spacingInSlowestDirection)
+			unsigned int numPointsInFastestDirection, unsigned int numPointsInSlowestDirection,
+			double xOrigin, double yOrigin, double zOrigin,
+			double xOffsetInFastestDirection, double yOffsetInFastestDirection, double zOffsetInFastestDirection,
+			double xOffsetInSlowestDirection, double yOffsetInSlowestDirection, double zOffsetInSlowestDirection,
+			double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
 {
+	if (localCrs == nullptr) {
+		throw invalid_argument("The CRS cannot be the null pointer");
+	}
+
 	resqml2__PointGeometry* geom = soap_new_resqml2__PointGeometry(gsoapProxy2_0_1->soap, 1);
 	geom->LocalCrs = localCrs->newResqmlReference();
 
@@ -111,13 +115,22 @@ resqml2__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfLatticePoi
 }
 
 resqml2__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ(
-		const unsigned int & patchIndex,double * zValues,
-		const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy * proxy,
-		Grid2dRepresentation * supportingRepresentation,
-		const unsigned int & startGlobalIndex,
-		const int & indexIncrementI, const int & indexIncrementJ)
+		unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs const * localCrs,
+		unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy * proxy,
+		Grid2dRepresentation const * supportingRepresentation,
+		unsigned int startGlobalIndex,
+		int indexIncrementI, int indexIncrementJ)
 {
-	setHdfProxy(proxy);
+	if (localCrs == nullptr) {
+		throw invalid_argument("The CRS cannot be the null pointer");
+	}
+
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
+	getRepository()->addRelationship(this, proxy);
+
+	getRepository()->addRelationship(this, supportingRepresentation);
 
 	resqml2__PointGeometry* geom = soap_new_resqml2__PointGeometry(gsoapProxy2_0_1->soap, 1);
 	geom->LocalCrs = localCrs->newResqmlReference();
@@ -145,7 +158,7 @@ resqml2__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ(
 	// Z Values
 	resqml2__DoubleHdf5Array* xmlZValues = soap_new_resqml2__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
 	xmlZValues->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
-	xmlZValues->Values->HdfProxy = hdfProxy->newResqmlReference();
+	xmlZValues->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream oss3;
 	oss3 << "points_patch" << patchIndex;
 	xmlZValues->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + oss3.str();
@@ -153,23 +166,31 @@ resqml2__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ(
 
 	// HDF
 	hsize_t dim[] = {numJ, numI};
-	hdfProxy->writeArrayNdOfDoubleValues(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNdOfDoubleValues(gsoapProxy2_0_1->uuid,
 			oss3.str(),
 			zValues,
 			dim, 2);
 
 	geom->Points = xmlPoints;
+
 	return geom;
 }
 
 resqml2__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ(
-		const unsigned int & patchIndex, double * zValues,
-		const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy * proxy,
-		const double & originX, const double & originY, const double & originZ,
-		const double & offsetIX, const double & offsetIY, const double & offsetIZ, const double & spacingI,
-		const double & offsetJX, const double & offsetJY, const double & offsetJZ, const double & spacingJ)
+		unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs const * localCrs,
+		unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy * proxy,
+		double originX, double originY, double originZ,
+		double offsetIX, double offsetIY, double offsetIZ, double spacingI,
+		double offsetJX, double offsetJY, double offsetJZ, double spacingJ)
 {
-	setHdfProxy(proxy);
+	if (localCrs == nullptr) {
+		throw invalid_argument("The CRS cannot be the null pointer");
+	}
+
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
+	getRepository()->addRelationship(this, proxy);
 
 	resqml2__PointGeometry* geom = soap_new_resqml2__PointGeometry(gsoapProxy2_0_1->soap, 1);
 	geom->LocalCrs = localCrs->newResqmlReference();
@@ -211,7 +232,7 @@ resqml2__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ(
 	// Z Values
 	resqml2__DoubleHdf5Array* xmlZValues = soap_new_resqml2__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
 	xmlZValues->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
-	xmlZValues->Values->HdfProxy = hdfProxy->newResqmlReference();
+	xmlZValues->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream oss3;
 	oss3 << "points_patch" << patchIndex;
 	xmlZValues->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + oss3.str();
@@ -219,41 +240,35 @@ resqml2__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ(
 
 	// HDF
 	hsize_t dim[] = {numJ, numI};
-	hdfProxy->writeArrayNdOfDoubleValues(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNdOfDoubleValues(gsoapProxy2_0_1->uuid,
 			oss3.str(),
 			zValues,
 			dim, 2);
 
 	geom->Points = xmlPoints;
+
 	return geom;
 }
 
-vector<Relationship> AbstractSurfaceRepresentation::getAllTargetRelationships() const
+void AbstractSurfaceRepresentation::loadTargetRelationships() const
 {
-	vector<Relationship> result = AbstractRepresentation::getAllTargetRelationships();
-
-	// Outer rings
-	for(vector<PolylineRepresentation*>::const_iterator it = outerRingSet.begin(); it != outerRingSet.end(); ++it) {
-		if (it == outerRingSet.begin() || std::find(outerRingSet.begin(), it, *it) != outerRingSet.end()) { //  No need to add the rel twice
-			Relationship relOuterRing((*it)->getPartNameInEpcDocument(), "", (*it)->getUuid());
-			relOuterRing.setDestinationObjectType();
-			result.push_back(relOuterRing);
-		}
-	}
-
-	return result;
-}
-
-void AbstractSurfaceRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
-{
-	AbstractRepresentation::resolveTargetRelationships(epcDoc);
+	AbstractRepresentation::loadTargetRelationships();
 
 	resqml2__AbstractSurfaceRepresentation* rep = static_cast<resqml2__AbstractSurfaceRepresentation*>(gsoapProxy2_0_1);
 
 	for (size_t i = 0; i < rep->Boundaries.size(); ++i) {
 		if (rep->Boundaries[i]->OuterRing != nullptr) {
 			if (rep->Boundaries[i]->OuterRing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREPolylineRepresentation) {
-				pushBackOuterRing(static_cast<PolylineRepresentation*>(epcDoc->getDataObjectByUuid(rep->Boundaries[i]->OuterRing->UUID)));
+				gsoap_resqml2_0_1::eml20__DataObjectReference* dor = rep->Boundaries[i]->OuterRing;
+				PolylineRepresentation const * outerRing = getRepository()->getDataObjectByUuid<PolylineRepresentation>(dor->UUID);
+				if (outerRing == nullptr) { // partial transfer
+					getRepository()->createPartial(dor);
+					outerRing = getRepository()->getDataObjectByUuid<PolylineRepresentation>(dor->UUID);
+					if (outerRing == nullptr) {
+						throw invalid_argument("The DOR looks invalid.");
+					}
+				}
+				getRepository()->addRelationship(this, outerRing);
 			}
 		}
 	}
@@ -268,6 +283,5 @@ void AbstractSurfaceRepresentation::pushBackOuterRing(PolylineRepresentation * o
 	boundary->OuterRing = outerRing->newResqmlReference();
 	rep->Boundaries.push_back(boundary);
 
-	outerRingSet.push_back(outerRing);
-	outerRing->pushBackRepresentationOuterRing(this);
+	getRepository()->addRelationship(this, outerRing);
 }

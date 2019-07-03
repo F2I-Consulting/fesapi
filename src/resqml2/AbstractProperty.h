@@ -33,14 +33,13 @@ namespace RESQML2_NS
 
 		/**
 		* Default constructor
-		* Set the relationship with an AbstractRepresentation and a local property type.
 		*/
-		AbstractProperty(): local3dCrs(nullptr) {}
+		AbstractProperty() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractProperty(gsoap_resqml2_0_1::resqml2__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap), local3dCrs(nullptr) {}
+		AbstractProperty(gsoap_resqml2_0_1::resqml2__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -76,22 +75,6 @@ namespace RESQML2_NS
 		* Getter for the content type of the representation which is described by this property
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getRepresentationContentType() const;
-
-		/**
-		* Set the Hdf Proxy where the numerical values are stored.
-		*/
-		DLL_IMPORT_OR_EXPORT void setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
-
-		/**
-		* Getter for the hdf proxy which stores this instance values.
-		*/
-		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractHdfProxy* getHdfProxy() const;
-
-		/*
-		 * Getter for the uuid of the hdf proxy which is used for storing the numerical values of this property.
-		 * An empty string is returned if no hd fproxy is used for storing the numerical values.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
 
 		/**
 		* Getter (in read only mode) of the element count per property value.
@@ -244,10 +227,6 @@ namespace RESQML2_NS
 		*/
 		virtual bool validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk) = 0;
 
-		std::vector<epc::Relationship> getAllSourceRelationships() const;
-		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
-
-		virtual void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc);
 		/**
 		* Check if the associated property kind is allowed for this property.
 		*/
@@ -255,11 +234,6 @@ namespace RESQML2_NS
 
 	protected:
 
-		void setXmlRepresentation(class AbstractRepresentation * rep);
-		void setXmlTimeSeries(TimeSeries * ts);
-		void setXmlLocalPropertyKind(class PropertyKind* propKind);
-
-		class AbstractLocal3dCrs *		local3dCrs;			/// The used local 3D CRS in case the property values need one.
+		virtual void loadTargetRelationships() const;
 	};
 }
-

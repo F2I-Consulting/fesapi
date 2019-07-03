@@ -23,109 +23,65 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* RockFluidUnitFeature::XML_TAG = "RockFluidUnitFeature";
 
-RockFluidUnitFeature::RockFluidUnitFeature(soap* soapContext, const string & guid, const string & title, gsoap_resqml2_0_1::resqml2__Phase phase, BoundaryFeature* top, BoundaryFeature* bottom)
+RockFluidUnitFeature::RockFluidUnitFeature(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title, gsoap_resqml2_0_1::resqml2__Phase phase, BoundaryFeature* top, BoundaryFeature* bottom)
 {
-	if (soapContext == nullptr)
-		throw invalid_argument("The soap context cannot be null.");
+	if (repo == nullptr)
+		throw invalid_argument("The repo cannot be null.");
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORERockFluidUnitFeature(soapContext, 1);
+	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORERockFluidUnitFeature(repo->getGsoapContext(), 1);
 	_resqml2__RockFluidUnitFeature* rfuf = static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1);
 	rfuf->Phase = phase;
-	setTop(top);
-	setBottom(bottom);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	repo->addOrReplaceDataObject(this);
+	setTop(top);
+	setBottom(bottom);
 }
 
 void RockFluidUnitFeature::setTop(BoundaryFeature* top)
 {
-	// epc
-	top->topOfRockFluidUnitFeatureSet.push_back(this);
+	getRepository()->addRelationship(this, top);
 
-	//XML
-	if(updateXml) {
-		static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryTop = top->newResqmlReference();
-	}
+	static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryTop = top->newResqmlReference();
 }
 
 BoundaryFeature* RockFluidUnitFeature::getTop() const
 {
-	return epcDocument->getDataObjectByUuid<BoundaryFeature>(static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryTop->UUID);
+	return repository->getDataObjectByUuid<BoundaryFeature>(static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryTop->UUID);
 }
 
 void RockFluidUnitFeature::setBottom(BoundaryFeature* bottom)
 {
-	// epc
-	bottom->btmOfRockFluidUnitFeatureSet.push_back(this);
+	getRepository()->addRelationship(this, bottom);
 
-	//XML
-	if(updateXml) {
-		static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryBottom = bottom->newResqmlReference();
-	}
+	static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryBottom = bottom->newResqmlReference();
 }
 
 BoundaryFeature* RockFluidUnitFeature::getBottom() const
 {
-	return epcDocument->getDataObjectByUuid<BoundaryFeature>(static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryBottom->UUID);
+	return repository->getDataObjectByUuid<BoundaryFeature>(static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryBottom->UUID);
 }
 
-vector<Relationship> RockFluidUnitFeature::getAllTargetRelationships() const
+void RockFluidUnitFeature::loadTargetRelationships() const
 {
-	vector<Relationship> result =  GeologicUnitFeature::getAllTargetRelationships();
+	GeologicUnitFeature::loadTargetRelationships();
 
 	_resqml2__RockFluidUnitFeature* interp = static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1);
 
-	Relationship relTop(misc::getPartNameFromReference(interp->FluidBoundaryTop), "", interp->FluidBoundaryTop->UUID);
-	relTop.setDestinationObjectType();
-	result.push_back(relTop);
-
-	Relationship relBtm(misc::getPartNameFromReference(interp->FluidBoundaryBottom), "", interp->FluidBoundaryBottom->UUID);
-	relBtm.setDestinationObjectType();
-	result.push_back(relBtm);
-
-	return result;
-}
-
-void RockFluidUnitFeature::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
-{
-	GeologicUnitFeature::resolveTargetRelationships(epcDoc);
-
-	_resqml2__RockFluidUnitFeature* interp = static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1);
-
-	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = interp->FluidBoundaryTop;
+	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = interp->FluidBoundaryTop;
 	if(dor != nullptr)
 	{
-		BoundaryFeature* feature = epcDoc->getDataObjectByUuid<BoundaryFeature>(dor->UUID);
-		if (feature == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			feature = getEpcDocument()->getDataObjectByUuid<BoundaryFeature>(dor->UUID);
-		}
-		if (feature == nullptr) {
-			throw invalid_argument("The DOR looks invalid.");
-		}
-		updateXml = false;
-		setTop(feature);
-		updateXml = true;
+		convertDorIntoRel<BoundaryFeature>(dor);
 	}
 
 	dor = interp->FluidBoundaryBottom;
 	if(dor != nullptr)
 	{
-		BoundaryFeature* feature = epcDoc->getDataObjectByUuid<BoundaryFeature>(dor->UUID);
-		if (feature == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			feature = getEpcDocument()->getDataObjectByUuid<BoundaryFeature>(dor->UUID);
-		}
-		if (feature == nullptr) {
-			throw invalid_argument("The DOR looks invalid.");
-		}
-		updateXml = false;
-		setBottom(feature);
-		updateXml = true;
+		convertDorIntoRel<BoundaryFeature>(dor);
 	}
 }

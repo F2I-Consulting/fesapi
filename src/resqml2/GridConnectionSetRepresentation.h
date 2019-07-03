@@ -35,7 +35,7 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class in a gsoap context.
 		*/
-		GridConnectionSetRepresentation(class AbstractFeatureInterpretation* interp) : AbstractRepresentation(interp, nullptr) {}
+		GridConnectionSetRepresentation() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -241,7 +241,7 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
 
-		std::vector<epc::Relationship> getAllTargetRelationships() const;
-		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
+	private:
+		void loadTargetRelationships() const;
 	};
 }

@@ -27,14 +27,14 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* HorizonInterpretation::XML_TAG = "HorizonInterpretation";
 
 HorizonInterpretation::HorizonInterpretation(Horizon * horizon, const string & guid, const string & title)
 {
-	if (!horizon)
+	if (horizon == nullptr) {
 		throw invalid_argument("The interpreted horizon cannot be null.");
+	}
 
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREHorizonInterpretation(horizon->getGsoapContext(), 1);
 
@@ -45,25 +45,3 @@ HorizonInterpretation::HorizonInterpretation(Horizon * horizon, const string & g
 
 	setInterpretedFeature(horizon);
 }
-
-vector<Relationship> HorizonInterpretation::getAllSourceRelationships() const
-{
-	vector<Relationship> result = BoundaryFeatureInterpretation::getAllSourceRelationships();
-
-	for (size_t i = 0; i < structuralOrganizationInterpretationSet.size(); ++i)
-	{
-		Relationship rel(structuralOrganizationInterpretationSet[i]->getPartNameInEpcDocument(), "", structuralOrganizationInterpretationSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	for (size_t i = 0; i < stratigraphicColumnRankInterpretationSet.size(); ++i)
-	{
-		Relationship rel(stratigraphicColumnRankInterpretationSet[i]->getPartNameInEpcDocument(), "", stratigraphicColumnRankInterpretationSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-        
-	return result;
-}
-
