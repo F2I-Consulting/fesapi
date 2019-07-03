@@ -20,10 +20,7 @@ under the License.
 
 #include "resqml2_0_1/WellboreFrameRepresentation.h"
 
-namespace WITSML1_4_1_1_NS
-{
-	class FormationMarker;
-}
+#include "resqml2_0_1/WellboreMarker.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -46,27 +43,15 @@ namespace RESQML2_0_1_NS
 		* @param title		A title for the instance to create.
 		* @param traj		The trajectory this WellboreFeature frame is based on.
 		*/
-		WellboreMarkerFrameRepresentation(class WellboreInterpretation* interp, const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation * traj);
+		WellboreMarkerFrameRepresentation(class WellboreInterpretation const * interp, const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation const * traj);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreMarkerFrameRepresentation(gsoap_resqml2_0_1::_resqml2__WellboreMarkerFrameRepresentation* fromGsoap) : WellboreFrameRepresentation(fromGsoap), stratigraphicOccurrenceInterpretation(nullptr) {}
+		WellboreMarkerFrameRepresentation(gsoap_resqml2_0_1::_resqml2__WellboreMarkerFrameRepresentation* fromGsoap);
 
 		// clean the owned markers
-		~WellboreMarkerFrameRepresentation();
-
-		/**
-		* Pushes back a new WellboreFeature marker to this WellboreFeature marker frame.
-		* One WellboreFeature marker must be added per MD of the WellboreFeature marker frame.
-		*/
-		DLL_IMPORT_OR_EXPORT class WellboreMarker* pushBackNewWellboreMarker(const std::string & guid, const std::string & title);
-
-		/**
-		* Add a WellboreFeature marker to this WellboreFeature marker frame with a geologic information on the intersected feature.
-		* One WellboreFeature marker must be added per MD of the WellboreFeature marker frame.
-		*/
-		DLL_IMPORT_OR_EXPORT class WellboreMarker* pushBackNewWellboreMarker(const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind & geologicBoundaryKind);
+		~WellboreMarkerFrameRepresentation() {}
 
 		/**
 		* Return the number of wellbore marker for this Wellbore marker frame representation
@@ -76,7 +61,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get all the wellbore markers of this well marker frame representation.
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector<class WellboreMarker*> & getWellboreMarkerSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class WellboreMarker const *> getWellboreMarkerSet() const;
 
 		DLL_IMPORT_OR_EXPORT void setStratigraphicOccurrenceInterpretation(class StratigraphicOccurrenceInterpretation * stratiOccurenceInterp);
 
@@ -85,24 +70,24 @@ namespace RESQML2_0_1_NS
 		* @param stratiUnitIndices	The count must be equal to the count of contacts in stratiColRankInterp
 		* @param nullValue			The value which is used to indicate we don't know the related strati units against a particular interval.
 		*/
-		DLL_IMPORT_OR_EXPORT void setIntervalStratigraphicUnits(unsigned int * stratiUnitIndices, const unsigned int & nullValue, class StratigraphicOccurrenceInterpretation* stratiOccurenceInterp);
+		DLL_IMPORT_OR_EXPORT void setIntervalStratigraphicUnits(unsigned int * stratiUnitIndices, unsigned int nullValue, class StratigraphicOccurrenceInterpretation* stratiOccurenceInterp, COMMON_NS::AbstractHdfProxy* proxy);
 
-		DLL_IMPORT_OR_EXPORT class StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation() { return stratigraphicOccurrenceInterpretation; }
+		DLL_IMPORT_OR_EXPORT class StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation();
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	protected:
+		void loadTargetRelationships() const;
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+	private:
+		/**
+		* Pushes back a new WellboreFeature marker to this WellboreFeature marker frame.
+		* One WellboreFeature marker must be added per MD of the WellboreFeature marker frame.
+		*/
+		void pushBackNewWellboreMarker(class WellboreMarker * marker);
 
-		// XML forward relationships
-		std::vector<WITSML1_4_1_1_NS::FormationMarker*> witsmlFormationMarkerSet;
-		class StratigraphicOccurrenceInterpretation* stratigraphicOccurrenceInterpretation;
-
-		// only memory relationship
-		std::vector<class WellboreMarker*> markerSet;
+		friend WellboreMarker::WellboreMarker(class WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title);
+		friend WellboreMarker::WellboreMarker(class WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind geologicBoundaryKind);
 	};
 }
-

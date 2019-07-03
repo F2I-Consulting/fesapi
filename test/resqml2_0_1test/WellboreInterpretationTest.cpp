@@ -37,26 +37,26 @@ WellboreInterpretationTest::WellboreInterpretationTest(const string & epcDocPath
 {
 }
 
-WellboreInterpretationTest::WellboreInterpretationTest(EpcDocument * epcDoc, bool init)
-	: commontest::AbstractObjectTest(epcDoc)
+WellboreInterpretationTest::WellboreInterpretationTest(DataObjectRepository * repo, bool init)
+	: commontest::AbstractObjectTest(repo)
 {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void WellboreInterpretationTest::initEpcDocHandler()
+void WellboreInterpretationTest::initRepoHandler()
 {
 	// creating dependencies
-	WellboreTest wellboreTest(epcDoc, true);
+	WellboreTest wellboreTest(repo, true);
 
-	WellboreFeature* wellbore = static_cast<WellboreFeature*>(epcDoc->getDataObjectByUuid(WellboreTest::defaultUuid));
+	WellboreFeature* wellbore = static_cast<WellboreFeature*>(repo->getDataObjectByUuid(WellboreTest::defaultUuid));
 
-	WellboreInterpretation* WellboreInterp = epcDoc->createWellboreInterpretation(wellbore, defaultUuid, defaultTitle, true);
+	WellboreInterpretation* WellboreInterp = repo->createWellboreInterpretation(wellbore, defaultUuid, defaultTitle, true);
 	REQUIRE( WellboreInterp != nullptr );
 }
 
-void WellboreInterpretationTest::readEpcDocHandler()
+void WellboreInterpretationTest::readRepoHandler()
 {
 }

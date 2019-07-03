@@ -30,13 +30,13 @@ namespace RESQML2_0_1_NS
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
 		*/
-		void init(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
+		void init(COMMON_NS::DataObjectRepository* repo,
 				const std::string & guid, const std::string & title,
-				const ULONG64 & cellCount);
+				ULONG64 cellCount);
 		
 		gsoap_resqml2_0_1::_resqml2__UnstructuredGridRepresentation* getSpecializedGsoapProxy() const;
 
-		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const;
+		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
 
 		/**
 		* Set a geometry using some existing hdf5 dataset. This geometry only contains polyedra with constant face count per cell and constant node count per face.
@@ -51,7 +51,7 @@ namespace RESQML2_0_1_NS
 		* @param nodeCountPerFace					The constant node count per face.
 		*/
 		void setConstantCellShapeGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
-			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
+			ULONG64 pointCount, ULONG64 faceCount, RESQML2_NS::AbstractLocal3dCrs const * localCrs, COMMON_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, ULONG64 faceCountPerCell,
 			const std::string& nodeIndicesPerFace, ULONG64 nodeCountPerFace);
 
@@ -68,7 +68,7 @@ namespace RESQML2_0_1_NS
 		* @param nodeCountPerFace					The constant node count per face.
 		*/
 		void setConstantCellShapeGeometry(unsigned char * cellFaceIsRightHanded, double * points,
-			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
+			ULONG64 pointCount, ULONG64 faceCount, RESQML2_NS::AbstractLocal3dCrs const * localCrs, COMMON_NS::AbstractHdfProxy* proxy,
 			ULONG64 * faceIndicesPerCell, ULONG64 faceCountPerCell,
 			ULONG64 * nodeIndicesPerFace, ULONG64 nodeCountPerFace);
 
@@ -94,13 +94,13 @@ namespace RESQML2_0_1_NS
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
 		*/
-		UnstructuredGridRepresentation(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
+		UnstructuredGridRepresentation(COMMON_NS::DataObjectRepository* repo,
 			const std::string & guid, const std::string & title,
-			const ULONG64 & cellCount);
+			ULONG64 cellCount);
 
-		UnstructuredGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+		UnstructuredGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
-			const ULONG64 & cellCount);
+			ULONG64 cellCount);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -120,7 +120,7 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT bool hasGeometry() const;
 
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		/**
 		* Get the xyz point count in a given patch.
@@ -215,7 +215,7 @@ namespace RESQML2_0_1_NS
 		* This method requires your have already loaded the geometry.
 		* @return The count of faces in a particular cell.
 		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getFaceCountOfCell(const ULONG64 & cellIndex) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getFaceCountOfCell(ULONG64 cellIndex) const;
 	
 		/**
 		* This method requires your have already loaded the geometry.
@@ -263,9 +263,9 @@ namespace RESQML2_0_1_NS
 		* @param cellShape							A denormalization of the information which gives quick access to the most complex shape of polyhedron encountered in this unstructured grid.
 		*/
 		DLL_IMPORT_OR_EXPORT void setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, ULONG64 pointCount, COMMON_NS::AbstractHdfProxy* proxy,
-			const std::string& faceIndicesPerCell, const std::string&faceIndicesCumulativeCountPerCell,
+			const std::string& faceIndicesPerCell, const std::string& faceIndicesCumulativeCountPerCell,
 			ULONG64 faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,
-			const gsoap_resqml2_0_1::resqml2__CellShape & cellShape);
+			gsoap_resqml2_0_1::resqml2__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
 
 		/**
 		 * Set the geometry and creates corresponding HDF5 datasets.
@@ -283,7 +283,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void setGeometry(unsigned char * cellFaceIsRightHanded, double * points, ULONG64 pointCount, COMMON_NS::AbstractHdfProxy* proxy,
 			ULONG64 * faceIndicesPerCell, ULONG64 * faceIndicesCumulativeCountPerCell,
 			ULONG64 faceCount, ULONG64 * nodeIndicesPerFace, ULONG64 * nodeIndicesCumulativeCountPerFace,
-			const gsoap_resqml2_0_1::resqml2__CellShape & cellShape);
+			gsoap_resqml2_0_1::resqml2__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
 
 		/**
 		* Set a geometry which is only defined by means of tetrahedra using some existing hdf5 dataset. This geometry only contains tetrahedra.
@@ -297,7 +297,7 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void setTetrahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
 			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
-			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace);
+			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
 
 		/**
 		* Set a geometry which is only defined by means of tetrahedra and creates corresponding HDF5 datasets. This geometry only contains tetrahedra.
@@ -311,7 +311,7 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void setTetrahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points,
 			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
-			ULONG64 * faceIndicesPerCell, ULONG64 * nodeIndicesPerFace);
+			ULONG64 * faceIndicesPerCell, ULONG64 * nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
 
 		/**
 		* Set a geometry which is only defined by means of tetrahedra using some existing hdf5 dataset. This geometry only contains hexahedra.
@@ -325,7 +325,7 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void setHexahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
 			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
-			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace);
+			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
 
 		/**
 		* Set a geometry which is only defined by means of tetrahedra and creates corresponding HDF5 datasets. This geometry only contains hexahedra.
@@ -339,7 +339,7 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void setHexahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points,
 			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
-			ULONG64 * faceIndicesPerCell, ULONG64 * nodeIndicesPerFace);
+			ULONG64 * faceIndicesPerCell, ULONG64 * nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}

@@ -32,32 +32,32 @@ const char* FaultInterpretationTest::faultTitle = "Fault";
 const char* FaultInterpretationTest::defaultUuid = "91f90343-2581-48c5-893f-667a2995088c";
 const char* FaultInterpretationTest::defaultTitle = "FaultInterpretationTest";
 
-FaultInterpretationTest::FaultInterpretationTest(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath)
+FaultInterpretationTest::FaultInterpretationTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath)
 {
 }
 
-FaultInterpretationTest::FaultInterpretationTest(EpcDocument * epcDoc, bool init)
-	: commontest::AbstractObjectTest(epcDoc)
+FaultInterpretationTest::FaultInterpretationTest(DataObjectRepository * repo, bool init)
+	: commontest::AbstractObjectTest(repo)
 {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void FaultInterpretationTest::initEpcDocHandler()
+void FaultInterpretationTest::initRepoHandler()
 {
 	// creating dependencies
-	TectonicBoundaryFeature* fault = epcDoc->createFault(faultUuid, faultTitle);
+	TectonicBoundaryFeature* fault = repo->createFault(faultUuid, faultTitle);
 
-	FaultInterpretation* faultInterp = epcDoc->createFaultInterpretation(fault, defaultUuid, defaultTitle);
+	FaultInterpretation* faultInterp = repo->createFaultInterpretation(fault, defaultUuid, defaultTitle);
 	REQUIRE(faultInterp != nullptr);
 }
 
-void FaultInterpretationTest::readEpcDocHandler()
+void FaultInterpretationTest::readRepoHandler()
 {
 	// getting the fault interpretation
-	FaultInterpretation* faultInterp = epcDoc->getDataObjectByUuid<FaultInterpretation>(defaultUuid);
+	FaultInterpretation* faultInterp = repo->getDataObjectByUuid<FaultInterpretation>(defaultUuid);
 	REQUIRE(faultInterp != nullptr);
 }

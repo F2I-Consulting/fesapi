@@ -34,32 +34,32 @@ SubRepresentationOnPartialGridConnectionSet::SubRepresentationOnPartialGridConne
 	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
-SubRepresentationOnPartialGridConnectionSet::SubRepresentationOnPartialGridConnectionSet(COMMON_NS::EpcDocument * epcDoc, bool init)
-	: commontest::AbstractObjectTest(epcDoc) {
+SubRepresentationOnPartialGridConnectionSet::SubRepresentationOnPartialGridConnectionSet(COMMON_NS::DataObjectRepository * repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void SubRepresentationOnPartialGridConnectionSet::initEpcDocHandler()
+void SubRepresentationOnPartialGridConnectionSet::initRepoHandler()
 {
 	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = epcDoc->getHdfProxySet()[0];
+	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
-	RESQML2_NS::GridConnectionSetRepresentation* partialGcsr = epcDoc->createPartialGridConnectionSetRepresentation("00a7d22f-4746-409b-87dc-5bdb83660d27", "GCSR");
+	RESQML2_NS::GridConnectionSetRepresentation* partialGcsr = repo->createPartialGridConnectionSetRepresentation("00a7d22f-4746-409b-87dc-5bdb83660d27", "GCSR");
 	REQUIRE(partialGcsr != nullptr);
-	RESQML2_NS::SubRepresentation* subRep = epcDoc->createSubRepresentation(defaultUuid, defaultTitle);
+	RESQML2_NS::SubRepresentation* subRep = repo->createSubRepresentation(defaultUuid, defaultTitle);
 	subRep->pushBackSupportingRepresentation(partialGcsr);
 
 	ULONG64 elements[2] = { 1, 2 };
 	subRep->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml2__IndexableElements__cells, 2, elements, hdfProxy);
 }
 
-void SubRepresentationOnPartialGridConnectionSet::readEpcDocHandler()
+void SubRepresentationOnPartialGridConnectionSet::readRepoHandler()
 {
 	// getting the subrep
-	RESQML2_NS::SubRepresentation* subRep = epcDoc->getDataObjectByUuid<RESQML2_NS::SubRepresentation>(defaultUuid);
+	RESQML2_NS::SubRepresentation* subRep = repo->getDataObjectByUuid<RESQML2_NS::SubRepresentation>(defaultUuid);
 
 	REQUIRE(subRep->getSupportingRepresentation(0)->isPartial());
 	REQUIRE(subRep->getSupportingRepresentation(0)->getXmlTag().compare("GridConnectionSetRepresentation") == 0);

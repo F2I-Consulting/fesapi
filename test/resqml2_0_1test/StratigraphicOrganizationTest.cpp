@@ -38,18 +38,18 @@ StratigraphicOrganizationTest::StratigraphicOrganizationTest(const string & epcD
 	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
-StratigraphicOrganizationTest::StratigraphicOrganizationTest(EpcDocument* epcDoc, bool init)
-	: commontest::AbstractObjectTest(epcDoc) {
+StratigraphicOrganizationTest::StratigraphicOrganizationTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void StratigraphicOrganizationTest::initEpcDocHandler() {
-	OrganizationFeature* stratiOrg = epcDoc->createStratigraphicModel(defaultUuid, defaultTitle);
+void StratigraphicOrganizationTest::initRepoHandler() {
+	OrganizationFeature* stratiOrg = repo->createStratigraphicModel(defaultUuid, defaultTitle);
 	REQUIRE(stratiOrg != nullptr);
 }
 
-void StratigraphicOrganizationTest::readEpcDocHandler() {
+void StratigraphicOrganizationTest::readRepoHandler() {
 }

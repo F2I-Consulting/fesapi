@@ -49,7 +49,7 @@ gsoap_eml2_1::eml21__DataObjectReference* WellCompletion::getWellDor() const
 
 class Well* WellCompletion::getWell() const
 {
-	return getEpcDocument()->getDataObjectByUuid<Well>(getWellDor()->Uuid);
+	return getRepository()->getDataObjectByUuid<Well>(getWellDor()->Uuid);
 }
 
 void WellCompletion::setWell(Well* witsmlWell)
@@ -57,47 +57,22 @@ void WellCompletion::setWell(Well* witsmlWell)
 	if (witsmlWell == nullptr) {
 		throw invalid_argument("Cannot set a null witsml Well to a witsml well completion");
 	}
-
-	// EPC
-	witsmlWell->wellCompletionSet.push_back(this);
-
-	// XML
-	if (updateXml) {
-		witsml2__WellCompletion* wellCompletion = static_cast<witsml2__WellCompletion*>(gsoapProxy2_1);
-		wellCompletion->Well = witsmlWell->newEmlReference();
+	if (getRepository() == nullptr) {
+		witsmlWell->getRepository()->addOrReplaceDataObject(this);
 	}
+
+	getRepository()->addRelationship(this, witsmlWell);
+
+	witsml2__WellCompletion* wellCompletion = static_cast<witsml2__WellCompletion*>(gsoapProxy2_1);
+	wellCompletion->Well = witsmlWell->newEmlReference();
 }
 
-void WellCompletion::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+std::vector<WellboreCompletion const *> WellCompletion::getWellboreCompletions() const
 {
-	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellDor();
-	Well* well = epcDoc->getDataObjectByUuid<Well>(dor->Uuid);
-
-	if (well == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-	updateXml = false;
-	setWell(well);
-	updateXml = true;
+	return getRepository()->getSourceObjects<WellboreCompletion>(this);
 }
 
-vector<Relationship> WellCompletion::getAllEpcRelationships() const
+void WellCompletion::loadTargetRelationships() const
 {
-	vector<Relationship> result;
-
-	// XML forward relationship
-	Well* well = getWell();
-	Relationship relWell(well->getPartNameInEpcDocument(), "", well->getUuid());
-	relWell.setDestinationObjectType();
-	result.push_back(relWell);
-
-	// XML backward relationship
-	for (size_t i = 0; i < wellboreCompletionSet.size(); ++i)
-	{
-		Relationship relWellboreCompletion(wellboreCompletionSet[i]->getPartNameInEpcDocument(), "", wellboreCompletionSet[i]->getUuid());
-		relWellboreCompletion.setSourceObjectType();
-		result.push_back(relWellboreCompletion);
-	}
-
-	return result;
+	convertDorIntoRel<Well>(getWellDor());
 }

@@ -35,14 +35,14 @@ namespace WITSML2_0_NS
 
 		/**
 		* Creates an instance of this class in a gsoap context.
-		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
-		* @param guid		The guid to set to this instance. If empty then a new guid will be generated.
+		* @param repo	The dataobject repo where the underlying gsoap proxy is going to be created.
+		* @param guid	The guid to set to this instance. If empty then a new guid will be generated.
 		*/
-		Well(soap* soapContext,
+		Well(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid,
 			const std::string & title);
 
-		Well(soap* soapContext,
+		Well(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid,
 			const std::string & title,
 			const std::string & operator_,
@@ -141,30 +141,18 @@ namespace WITSML2_0_NS
 			unsigned int verticalCrsEpsgCode);
 
 		DLL_IMPORT_OR_EXPORT unsigned int getDatumCount() const;
-		
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::WellboreFeature const *> getResqmlWellboreFeatures() const;
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreFeature* getResqmlWellboreFeature() const;
+		DLL_IMPORT_OR_EXPORT std::vector<Wellbore const *> getWellbores() const;
 
-		DLL_IMPORT_OR_EXPORT const std::vector<Wellbore*>& getWellbores() const;
-
-		DLL_IMPORT_OR_EXPORT const std::vector<WellCompletion*>& getWellcompletions() const;
+		DLL_IMPORT_OR_EXPORT std::vector<WellCompletion const *> getWellcompletions() const;
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 	protected:
 
-		// backwards relationship
-		RESQML2_0_1_NS::WellboreFeature* resqmlWellboreFeature;
-		std::vector<Wellbore*> wellboreSet;
-		std::vector<WellCompletion* > wellCompletionSet;
-
-		friend void RESQML2_0_1_NS::WellboreFeature::setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore);
-		friend void Wellbore::setWell(Well* witsmlWell);
-		friend void WellCompletion::setWell(Well* witsmlWell);
+		void loadTargetRelationships() const;
 	};
 }
-

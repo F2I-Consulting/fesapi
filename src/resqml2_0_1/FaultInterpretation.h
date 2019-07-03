@@ -19,7 +19,6 @@ under the License.
 #pragma once
 
 #include "resqml2_0_1/BoundaryFeatureInterpretation.h"
-#include "resqml2_0_1/StructuralOrganizationInterpretation.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -70,14 +69,5 @@ namespace RESQML2_0_1_NS
 		 * TODO : add a parameter to be able to indicate the time period the throw occured.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackThrowInterpretation(const gsoap_resqml2_0_1::resqml2__ThrowKind & throwKind);
-
-	private:
-		
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-
-		// backward relationships
-		std::vector<StructuralOrganizationInterpretation*> structuralOrganizationInterpretationSet;
-
-		friend void StructuralOrganizationInterpretation::pushBackFaultInterpretation(FaultInterpretation * faultInterpretation);
 	};
 }

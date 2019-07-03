@@ -115,6 +115,6 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const {return XML_TAG;}
 
 	protected:
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
+		void loadTargetRelationships() const;
 	};
 }

@@ -31,8 +31,8 @@ under the License.
 using namespace std;
 using namespace COMMON_NS;
 
-HdfProxy::HdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
-	AbstractHdfProxy(packageDirAbsolutePath, externalFilePath), hdfFile(-1), compressionLevel(0) {}
+HdfProxy::HdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess) :
+	AbstractHdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess), hdfFile(-1), compressionLevel(0) {}
 
 void HdfProxy::open()
 {
@@ -40,23 +40,21 @@ void HdfProxy::open()
 		close();
 	}
 
-	if (getEpcDocument() == nullptr || getEpcDocument()->getHdf5PermissionAccess() == COMMON_NS::EpcDocument::READ_ONLY) { // By default, if no Epc document is available (DAS use case), open in read only mode
+	if (openingMode == COMMON_NS::DataObjectRepository::READ_ONLY) {
 		if (H5Fis_hdf5((packageDirectoryAbsolutePath + relativeFilePath).c_str()) > 0) {
 			hdfFile = H5Fopen((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_RDONLY, H5P_DEFAULT);
 
-			if (getEpcDocument() != nullptr) { // if no Epc document is available (DAS use case), we cannot check any HDF uuid
-				// Check the uuid
-				string hdfUuid = readStringAttribute(".", "uuid");
-				if (getUuid() != hdfUuid) {
-					getEpcDocument()->addWarning("The uuid \"" + hdfUuid + "\" attribute of the HDF5 file is not the same as the uuid \"" + getUuid() + "\" of the xml EpcExternalPart.");
-				}
+			// Check the uuid
+			string hdfUuid = readStringAttribute(".", "uuid");
+			if (getUuid() != hdfUuid) {
+				getRepository()->addWarning("The uuid \"" + hdfUuid + "\" attribute of the HDF5 file is not the same as the uuid \"" + getUuid() + "\" of the xml EpcExternalPart.");
 			}
 		}
 		else {
 			throw invalid_argument("The HDF5 file " + packageDirectoryAbsolutePath + relativeFilePath + " does not exist or is not a valid HDF5 file.");
 		}
 	}
-	else if (getEpcDocument()->getHdf5PermissionAccess() == COMMON_NS::EpcDocument::READ_WRITE) {
+	else if (openingMode == COMMON_NS::DataObjectRepository::READ_WRITE) {
 
 	        hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
 #ifdef H5F_LIBVER_V18
@@ -70,12 +68,9 @@ void HdfProxy::open()
 			if (H5Fis_hdf5((packageDirectoryAbsolutePath + relativeFilePath).c_str()) > 0) {
 				hdfFile = H5Fopen((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_RDWR, access_props);
 
-				// Check the uuid
-				if (getEpcDocument() != nullptr) { // if no Epc document is available (DAS use case), we cannot check any HDF uuid
-					string hdfUuid = readStringAttribute(".", "uuid");
-					if (getUuid() != hdfUuid) {
-						getEpcDocument()->addWarning("The uuid \"" + hdfUuid + "\" attribute of the HDF5 file is not the same as the uuid \"" + getUuid() + "\" of the xml EpcExternalPart.");
-					}
+				string hdfUuid = readStringAttribute(".", "uuid");
+				if (getUuid() != hdfUuid) {
+					getRepository()->addWarning("The uuid \"" + hdfUuid + "\" attribute of the HDF5 file is not the same as the uuid \"" + getUuid() + "\" of the xml EpcExternalPart.");
 				}
 			}
 			else {
@@ -108,7 +103,7 @@ void HdfProxy::open()
 			}
 		}
 	}
-	else if (getEpcDocument()->getHdf5PermissionAccess() == COMMON_NS::EpcDocument::OVERWRITE) {
+	else if (openingMode == COMMON_NS::DataObjectRepository::OVERWRITE) {
 
 	        hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
 #ifdef H5F_LIBVER_V18

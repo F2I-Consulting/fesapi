@@ -31,17 +31,17 @@ using namespace std;
 using namespace gsoap_resqml2_0_1;
 using namespace RESQML2_0_1_NS;
 
-IjkGridLatticeRepresentation::IjkGridLatticeRepresentation(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
-			const std::string & guid, const std::string & title,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount):
-			AbstractIjkGridRepresentation(soapContext, crs, guid, title, iCount, jCount, kCount)
+IjkGridLatticeRepresentation::IjkGridLatticeRepresentation(COMMON_NS::DataObjectRepository * repo,
+	const std::string & guid, const std::string & title,
+	unsigned int iCount, unsigned int jCount, unsigned int kCount):
+	AbstractIjkGridRepresentation(repo, guid, title, iCount, jCount, kCount)
 {
 }
 
-IjkGridLatticeRepresentation::IjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
-		const std::string & guid, const std::string & title,
-		const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount):
-	AbstractIjkGridRepresentation(interp, crs, guid, title, iCount, jCount, kCount)
+IjkGridLatticeRepresentation::IjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+	const std::string & guid, const std::string & title,
+	unsigned int iCount, unsigned int jCount, unsigned int kCount):
+	AbstractIjkGridRepresentation(interp, guid, title, iCount, jCount, kCount)
 {
 }
 
@@ -50,8 +50,8 @@ bool IjkGridLatticeRepresentation::isASeismicCube() const
 	// A Seismic cube is defined by an IjkGridRepresentation that has a feature of type SeismicLatticeFeature and that
 	// has at least one continuous property (amplitude).
 	bool atLeastOneContProp = false;
-	vector<RESQML2_NS::AbstractValuesProperty*> allValuesProperty = getValuesPropertySet();
-    for (unsigned int propIndex = 0; propIndex < allValuesProperty.size(); ++propIndex)
+	vector<RESQML2_NS::AbstractValuesProperty const *> allValuesProperty = getValuesPropertySet();
+    for (size_t propIndex = 0; propIndex < allValuesProperty.size(); ++propIndex)
     {
         if (allValuesProperty[propIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREContinuousProperty)
         {
@@ -70,8 +70,8 @@ bool IjkGridLatticeRepresentation::isAFaciesCube() const
 	// A Facies cube is defined by an IjkGridRepresentation that has a feature of type SeismicLatticeFeature and that
 	// has at least one categorical property (facies).
 	bool atLeastOneCateProp = false;
-	vector<RESQML2_NS::AbstractValuesProperty*> allValuesProperty = getValuesPropertySet();
-    for (unsigned int propIndex = 0; propIndex < allValuesProperty.size(); ++propIndex)
+	vector<RESQML2_NS::AbstractValuesProperty const *> allValuesProperty = getValuesPropertySet();
+    for (size_t propIndex = 0; propIndex < allValuesProperty.size(); ++propIndex)
     {
         if (allValuesProperty[propIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECategoricalProperty)
         {
@@ -85,9 +85,9 @@ bool IjkGridLatticeRepresentation::isAFaciesCube() const
     return getInterpretation() && getInterpretation()->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORESeismicLatticeFeature;
 }
 
-string IjkGridLatticeRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* IjkGridLatticeRepresentation::getHdfProxyDor() const
 {
-	return getHdfProxyUuidFromPointGeometryPatch(getPointGeometry2_0_1(0));
+	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
 ULONG64 IjkGridLatticeRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
@@ -138,7 +138,7 @@ double IjkGridLatticeRepresentation::getXOriginInGlobalCrs() const
 	if (result[0] != result[0])
 		return result[0];
 
-	localCrs->convertXyzPointsToGlobalCrs(result, 1);
+	getLocalCrs()->convertXyzPointsToGlobalCrs(result, 1);
 
 	return result[0];
 }
@@ -158,7 +158,7 @@ double IjkGridLatticeRepresentation::getYOriginInGlobalCrs() const
 	if (result[0] != result[0])
 		return result[0];
 
-	localCrs->convertXyzPointsToGlobalCrs(result, 1);
+	getLocalCrs()->convertXyzPointsToGlobalCrs(result, 1);
 
 	return result[1];
 }
@@ -175,8 +175,13 @@ double IjkGridLatticeRepresentation::getZOrigin() const
 double IjkGridLatticeRepresentation::getZOriginInGlobalCrs() const
 {
 	double result = getZOrigin();
-	if (result != result || localCrs->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORELocalTime3dCrs)
+	if (result != result) {
 		return result;
+	}
+	RESQML2_NS::AbstractLocal3dCrs const * localCrs = getLocalCrs();
+	if (localCrs->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORELocalTime3dCrs) {
+		return result;
+	}
 
 	return result + localCrs->getOriginDepthOrElevation();
 }
@@ -409,14 +414,18 @@ int IjkGridLatticeRepresentation::getCrosslineKOffset() const
 }
 
 void IjkGridLatticeRepresentation::setGeometryAsCoordinateLineNodes(
-	const resqml2__PillarShape & mostComplexPillarGeometry,
-	const resqml2__KDirection & kDirectionKind,
-	const bool & isRightHanded,
-	const double & originX, const double & originY, const double & originZ,
-	const double & directionIX, const double & directionIY, const double & directionIZ, const double & spacingI,
-	const double & directionJX, const double & directionJY, const double & directionJZ, const double & spacingJ,
-	const double & directionKX, const double & directionKY, const double & directionKZ, const double & spacingK)
+	resqml2__PillarShape mostComplexPillarGeometry,
+	resqml2__KDirection kDirectionKind,
+	bool isRightHanded,
+	double originX, double originY, double originZ,
+	double directionIX, double directionIY, double directionIZ, double spacingI,
+	double directionJX, double directionJY, double directionJZ, double spacingJ,
+	double directionKX, double directionKY, double directionKZ, double spacingK, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
 {
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+	}
+
 	resqml2__IjkGridGeometry* geom = soap_new_resqml2__IjkGridGeometry(gsoapProxy2_0_1->soap, 1);
 	geom->LocalCrs = localCrs->newResqmlReference();
 	if (!isTruncated()) {
@@ -483,17 +492,17 @@ void IjkGridLatticeRepresentation::setGeometryAsCoordinateLineNodes(
 	xmlSpacingI->Count = getICellCount(); // number of cells on I axis
 	xmlSpacingI->Value = spacingI;
 
-	return;
+	getRepository()->addRelationship(this, localCrs);
 }
 
 void IjkGridLatticeRepresentation::addSeismic3dCoordinatesToPatch(
-								const unsigned int patchIndex,
-								const double & startInline, const double & incrInline, const unsigned int & countInline,
-								const double & startCrossline, const double & incrCrossline, const unsigned int & countCrossline,
-								const unsigned int & countSample, AbstractRepresentation * seismicSupport)
+	unsigned int patchIndex,
+	double startInline, double incrInline, unsigned int countInline,
+	double startCrossline, double incrCrossline, unsigned int countCrossline,
+	unsigned int countSample, RESQML2_NS::AbstractRepresentation * seismicSupport)
 {
 	resqml2__PointGeometry* geom = getPointGeometry2_0_1(patchIndex);
-	if (!geom)
+	if (geom == nullptr)
 		throw invalid_argument("The patchIndex does not identify a point geometry.");
 
 	if (geom->SeismicCoordinates == nullptr)
@@ -503,7 +512,7 @@ void IjkGridLatticeRepresentation::addSeismic3dCoordinatesToPatch(
 	resqml2__Seismic3dCoordinates* patch = static_cast<resqml2__Seismic3dCoordinates*>(geom->SeismicCoordinates);
 
 	patch->SeismicSupport = seismicSupport->newResqmlReference();
-	pushBackSeismicSupport(seismicSupport);
+	getRepository()->addRelationship(this, seismicSupport);
 
 	// inlines XML
 	resqml2__DoubleLatticeArray* inlineValues = soap_new_resqml2__DoubleLatticeArray(gsoapProxy2_0_1->soap, 1);
@@ -550,4 +559,3 @@ AbstractIjkGridRepresentation::geometryKind IjkGridLatticeRepresentation::getGeo
 {
 	return LATTICE;
 }
-

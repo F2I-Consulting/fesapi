@@ -40,26 +40,26 @@ StratigraphicUnitInterpretationTest::StratigraphicUnitInterpretationTest(const s
 	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
-StratigraphicUnitInterpretationTest::StratigraphicUnitInterpretationTest(EpcDocument* epcDoc, bool init)
-	: commontest::AbstractObjectTest(epcDoc) {
+StratigraphicUnitInterpretationTest::StratigraphicUnitInterpretationTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void StratigraphicUnitInterpretationTest::initEpcDocHandler() {
+void StratigraphicUnitInterpretationTest::initRepoHandler() {
 	// creating dependencies
-	StratigraphicUnitTest* stratiUnitTest = new StratigraphicUnitTest(epcDoc, true);
+	StratigraphicUnitTest* stratiUnitTest = new StratigraphicUnitTest(repo, true);
 
-	StratigraphicUnitFeature* stratiUnit = static_cast<StratigraphicUnitFeature*>(this->epcDoc->getDataObjectByUuid(StratigraphicUnitTest::defaultTitle));
+	StratigraphicUnitFeature* stratiUnit = static_cast<StratigraphicUnitFeature*>(this->repo->getDataObjectByUuid(StratigraphicUnitTest::defaultTitle));
 
 	// cleaning
 	delete stratiUnitTest;
 
-	StratigraphicUnitInterpretation* stratiUnitInterp = epcDoc->createStratigraphicUnitInterpretation(stratiUnit, defaultUuid, defaultTitle);
+	StratigraphicUnitInterpretation* stratiUnitInterp = repo->createStratigraphicUnitInterpretation(stratiUnit, defaultUuid, defaultTitle);
 	REQUIRE(stratiUnitInterp != nullptr);
 }
 
-void StratigraphicUnitInterpretationTest::readEpcDocHandler() {
+void StratigraphicUnitInterpretationTest::readRepoHandler() {
 }

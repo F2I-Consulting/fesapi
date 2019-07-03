@@ -37,47 +37,45 @@ const char* HorizonOnSeismicLine::defaultUuid = "c9bea300-6231-4acb-8b7c-77e4099
 const char* HorizonOnSeismicLine::defaultTitle = "Horizon on seismic line";
 double HorizonOnSeismicLine::defaultXyzPoints[12] = { 0, 100, 300, 150, 110, 300, 450, 130, 350, 600, 140, 350 };
 
-HorizonOnSeismicLine::HorizonOnSeismicLine(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath)
+HorizonOnSeismicLine::HorizonOnSeismicLine(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath)
 {
 }
 
-HorizonOnSeismicLine::HorizonOnSeismicLine(EpcDocument * epcDocument, bool init)
-	: commontest::AbstractObjectTest(epcDocument)
+HorizonOnSeismicLine::HorizonOnSeismicLine(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo)
 {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void HorizonOnSeismicLine::initEpcDocHandler()
+void HorizonOnSeismicLine::initRepoHandler()
 {
-	COMMON_NS::AbstractHdfProxy * hdfProxy = epcDoc->getHdfProxy(0);
+	COMMON_NS::AbstractHdfProxy * hdfProxy = repo->getHdfProxy(0);
 
-	HorizonInterpretation* horizonInterp = epcDoc->getDataObjectByUuid<HorizonInterpretation>(HorizonInterpretationTest::defaultUuid);
+	HorizonInterpretation* horizonInterp = repo->getDataObjectByUuid<HorizonInterpretation>(HorizonInterpretationTest::defaultUuid);
 	if (horizonInterp == nullptr) {
-		HorizonInterpretationTest horizonInterpTest(epcDoc, true);
-		horizonInterp = epcDoc->getDataObjectByUuid<HorizonInterpretation>(HorizonInterpretationTest::defaultUuid);
+		HorizonInterpretationTest horizonInterpTest(repo, true);
+		horizonInterp = repo->getDataObjectByUuid<HorizonInterpretation>(HorizonInterpretationTest::defaultUuid);
 	}
 	
-	PolylineRepresentation* seismicLineRep = epcDoc->getDataObjectByUuid<PolylineRepresentation>(SeismicLineRepresentationTest::defaultUuid);
+	PolylineRepresentation* seismicLineRep = repo->getDataObjectByUuid<PolylineRepresentation>(SeismicLineRepresentationTest::defaultUuid);
 	if (seismicLineRep == nullptr) {
-		SeismicLineRepresentationTest seismicLineRepresentationTest(epcDoc, true);
-		seismicLineRep = epcDoc->getDataObjectByUuid<PolylineRepresentation>(SeismicLineRepresentationTest::defaultUuid);
+		SeismicLineRepresentationTest seismicLineRepresentationTest(repo, true);
+		seismicLineRep = repo->getDataObjectByUuid<PolylineRepresentation>(SeismicLineRepresentationTest::defaultUuid);
 	}
 
-	RESQML2_NS::AbstractLocal3dCrs * crs = seismicLineRep->getLocalCrs();;
-
-	PolylineRepresentation* h1i1SinglePolylineRep = epcDoc->createPolylineRepresentation(horizonInterp, crs, defaultUuid, defaultTitle);
+	PolylineRepresentation* h1i1SinglePolylineRep = repo->createPolylineRepresentation(horizonInterp, defaultUuid, defaultTitle);
 	h1i1SinglePolylineRep->setGeometry(defaultXyzPoints, 4, hdfProxy);
 	double seismicLineAbscissa[4] = { 0.0, 1.0, 3.0, 4.0 };
 	h1i1SinglePolylineRep->addSeismic2dCoordinatesToPatch(0, seismicLineAbscissa, seismicLineRep, hdfProxy);
 }
 
-void HorizonOnSeismicLine::readEpcDocHandler()
+void HorizonOnSeismicLine::readRepoHandler()
 {
-	PolylineRepresentation* h1i1SinglePolylineRep = epcDoc->getDataObjectByUuid<PolylineRepresentation>(defaultUuid);
+	PolylineRepresentation* h1i1SinglePolylineRep = repo->getDataObjectByUuid<PolylineRepresentation>(defaultUuid);
 	REQUIRE(h1i1SinglePolylineRep->getSeismicSupportOfPatch(0) != nullptr);
 
 	double seismicLineAbscissa[4] = { -1.0, -1.0, -1.0, -1.0 };

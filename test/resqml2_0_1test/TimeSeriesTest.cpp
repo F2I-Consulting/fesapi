@@ -32,16 +32,16 @@ TimeSeriesTest::TimeSeriesTest(const string & epcDocPath)
 	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
-TimeSeriesTest::TimeSeriesTest(EpcDocument * epcDoc, bool init)
-	: commontest::AbstractObjectTest(epcDoc) {
+TimeSeriesTest::TimeSeriesTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void TimeSeriesTest::initEpcDocHandler() {
-	TimeSeries* timeSeries = epcDoc->createTimeSeries(defaultUuid, inputTile);
+void TimeSeriesTest::initRepoHandler() {
+	TimeSeries* timeSeries = repo->createTimeSeries(defaultUuid, inputTile);
 	REQUIRE( timeSeries != nullptr );
 
 	timeSeries->pushBackTimestamp(1378217895);
@@ -49,8 +49,8 @@ void TimeSeriesTest::initEpcDocHandler() {
 	timeSeries->pushBackTimestamp(1441289895);
 }
 
-void TimeSeriesTest::readEpcDocHandler() {
-	vector<TimeSeries*> timeSeriesSet = epcDoc->getTimeSeriesSet();
+void TimeSeriesTest::readRepoHandler() {
+	vector<TimeSeries*> timeSeriesSet = repo->getTimeSeriesSet();
 	REQUIRE(timeSeriesSet.size() == 1);
 
 	// getting the TimeSeries

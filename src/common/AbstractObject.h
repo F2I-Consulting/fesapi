@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
+#include <stdexcept>
+
 #include "proxies/gsoap_resqml2_0_1H.h"
 #include "proxies/gsoap_eml2_1H.h"
 #include "common/EpcDocument.h"
@@ -45,11 +47,7 @@ namespace COMMON_NS
 		/**
 		* Getter (in read only mode) of all the extra metadata
 		*/
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		std::unordered_map< std::string, std::string > getExtraMetadataSetV2_0_1() const;
-#else
-		std::tr1::unordered_map< std::string, std::string > getExtraMetadataSetV2_0_1() const;
-#endif
 
 		/**
 		* Get an extra metadata according its key.
@@ -81,10 +79,7 @@ namespace COMMON_NS
 		
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;
 		gsoap_eml2_1::eml21__AbstractObject* gsoapProxy2_1;
-		COMMON_NS::EpcDocument* epcDocument;
-		std::vector<RESQML2_NS::Activity*> activitySet;
-
-		bool updateXml; /// Indicate whether methods update the XML (gSoap) or only the C++ classes of the API.
+		COMMON_NS::DataObjectRepository* repository;
 
 		//Default constructor
 		AbstractObject();
@@ -98,32 +93,23 @@ namespace COMMON_NS
 
 		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy);
 
-		friend void COMMON_NS::EpcDocument::addGsoapProxy(AbstractObject* proxy);
+		friend void COMMON_NS::DataObjectRepository::addOrReplaceDataObject(AbstractObject* proxy);
 
 		void initMandatoryMetadata();
 		
 		/**
-		* Resolve all relationships of the object in an epc document
+		* Read the forward relationships of this dataobject and update the rels of the associated datarepository.
 		*/
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument * epcDoc) = 0;
-		friend void COMMON_NS::EpcDocument::updateAllRelationships();
-
-		/**
-		* Return all relationships (backward and forward ones) of the instance using EPC format.
-		*/
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const = 0;
-		friend void COMMON_NS::EpcDocument::serialize(bool useZip64);
-
-		// Only for Activity. Can not use friendness between AbstractObject and Activity for circular dependencies reason.
-		static void addActivityToResqmlObject(RESQML2_NS::Activity* activity, AbstractObject* resqmlObject);
+		virtual void loadTargetRelationships() const = 0;
+		friend void COMMON_NS::DataObjectRepository::updateAllRelationships();
 
 		/**
 		* It is too dangerous for now to modify the uuid because too much things depend on it. That's why this method is only protected : it is only used by derived class constructor.
 		* Set a title and other common metadata for the resqml instance. Set to empty string or zero if you don't want to use.
 		* @param title				The title to set to the resqml instance. Set to empty string if you don't want to set it.
 		*/
-		void setMetadata(const std::string & guid, const std::string & title, const std::string & editor, const time_t & creation, const std::string & originator,
-			const std::string & description, const time_t & lastUpdate, const std::string & descriptiveKeywords);
+		void setMetadata(const std::string & guid, const std::string & title, const std::string & editor, time_t creation, const std::string & originator,
+			const std::string & description, time_t lastUpdate, const std::string & descriptiveKeywords);
 
 		/**
 		* Throw an exception if the instance if partial.
@@ -139,6 +125,12 @@ namespace COMMON_NS
 		* Read an input array which come from XML (and potentially HDF5) and store it into a preallocated output array in memory.
 		* It does not allocate or deallocate memory.
 		*/
+		void readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml2__AbstractDoubleArray * arrayInput, double * arrayOutput) const;
+
+		/*
+		* Read an input array which come from XML (and potentially HDF5) and store it into a preallocated output array in memory.
+		* It does not allocate or deallocate memory.
+		*/
 		void readArrayNdOfUIntValues(gsoap_resqml2_0_1::resqml2__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const;
 
 		/*
@@ -148,6 +140,39 @@ namespace COMMON_NS
 		* @return			The count of item in the array of integer.
 		*/
 		ULONG64 getCountOfIntegerArray(gsoap_resqml2_0_1::resqml2__AbstractIntegerArray * arrayInput) const;
+
+		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor) const;
+
+		// Check that the content type of the DOR is OK with the datatype in memory.
+		template <class valueType>
+		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor) const
+		{
+			valueType const * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->UUID);
+			if (targetObj == nullptr) { // partial transfer
+				getRepository()->createPartial(dor);
+				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->UUID);
+				if (targetObj == nullptr) {
+					throw std::invalid_argument("The DOR looks invalid.");
+				}
+			}
+			getRepository()->addRelationship(this, targetObj);
+		}
+
+		template <class valueType>
+		void convertDorIntoRel(gsoap_eml2_1::eml21__DataObjectReference const * dor) const
+		{
+			valueType const * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
+			if (targetObj == nullptr) { // partial transfer
+				getRepository()->createPartial(dor);
+				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
+				if (targetObj == nullptr) {
+					throw std::invalid_argument("The DOR looks invalid.");
+				}
+			}
+			getRepository()->addRelationship(this, targetObj);
+		}
+
+		COMMON_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset, bool throwException = true) const;
 
 	public:
 		virtual ~AbstractObject() {}
@@ -176,18 +201,19 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT tm getLastUpdateAsTimeStructure() const;
 		DLL_IMPORT_OR_EXPORT std::string getFormat() const;
 		DLL_IMPORT_OR_EXPORT std::string getDescriptiveKeywords() const;
-		DLL_IMPORT_OR_EXPORT std::string getVersionString() const;
+		DLL_IMPORT_OR_EXPORT bool hasVersion() const;
+		DLL_IMPORT_OR_EXPORT std::string getVersion() const;
 
 		DLL_IMPORT_OR_EXPORT void setTitle(const std::string & title);
 		DLL_IMPORT_OR_EXPORT void setEditor(const std::string & editor);
-		DLL_IMPORT_OR_EXPORT void setCreation(const time_t & creation);
+		DLL_IMPORT_OR_EXPORT void setCreation(time_t creation);
 		/**
 		* Use this method if you want to set some dates out of range of time_t
 		*/
 		DLL_IMPORT_OR_EXPORT void setCreation(const tm & creation);
 		DLL_IMPORT_OR_EXPORT void setOriginator(const std::string & originator);
 		DLL_IMPORT_OR_EXPORT void setDescription(const std::string & description);
-		DLL_IMPORT_OR_EXPORT void setLastUpdate(const time_t & lastUpdate);
+		DLL_IMPORT_OR_EXPORT void setLastUpdate(time_t lastUpdate);
 		/**
 		* Use this method if you want to set some dates out of range of time_t
 		*/
@@ -203,20 +229,25 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT static void setFormat(const std::string & vendor, const std::string & applicationName, const std::string & applicationVersionNumber);
 
 		DLL_IMPORT_OR_EXPORT void setDescriptiveKeywords(const std::string & descriptiveKeywords);
-		DLL_IMPORT_OR_EXPORT void setVersionString(const std::string & versionString);
+		DLL_IMPORT_OR_EXPORT void setVersion(const std::string & version);
 
 		/**
 		* Set a title and other common metadata for the resqml instance. Set to empty string or zero if you don't want to use.
 		* @param title				The title to set to the resqml instance. Set to empty string if you don't want to set it.
 		*/
-		DLL_IMPORT_OR_EXPORT void setMetadata(const std::string & title, const std::string & editor, const time_t & creation, const std::string & originator,
-			const std::string & description, const time_t & lastUpdate, const std::string & descriptiveKeywords);
+		DLL_IMPORT_OR_EXPORT void setMetadata(const std::string & title, const std::string & editor, time_t creation, const std::string & originator,
+			const std::string & description, time_t lastUpdate, const std::string & descriptiveKeywords);
 
 		/**
 		* Serialize the instance into a stream.
 		* @param stream	The stream must be opened for writing and won't be closed.
 		*/
 		DLL_IMPORT_OR_EXPORT void serializeIntoStream(std::ostream * stream);
+
+		/**
+		* Set the underlying gsoap proxy of this object
+		*/
+		void setGsoapProxy(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy);
 
 		/**
 		* Get the gsoap proxy which is wrapped by this entity
@@ -239,9 +270,9 @@ namespace COMMON_NS
 		gsoap_resqml2_0_1::resqml2__ContactElementReference* newResqmlContactElementReference() const;
 
 		/**
-		 * Return the EPC document which contains this gsoap wrapper.
+		 * Return the data object repository document which contains this gsoap wrapper.
 		 */
-		DLL_IMPORT_OR_EXPORT COMMON_NS::EpcDocument* getEpcDocument() const {return epcDocument;}
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectRepository* getRepository() const {return repository;}
 
 		/**
 		* Get the XML namespace for the tags for the XML serialization of this instance
@@ -296,7 +327,7 @@ namespace COMMON_NS
 		/**
 		* Get all the activities where the instance is involved.
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector<RESQML2_NS::Activity*> & getActivitySet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::Activity const *> getActivitySet() const;
 
 		/**
 		* Get the count of associated activities.
@@ -306,7 +337,7 @@ namespace COMMON_NS
 		/**
 		* Get the associated activity at a particular index.
 		*/
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::Activity* getActivity(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::Activity const * getActivity(unsigned int index) const;
 
 		/**
 		* Push back an extra metadata (not a standard one)
@@ -316,11 +347,7 @@ namespace COMMON_NS
 		/**
 		* Getter (in read only mode) of all the extra metadata
 		*/
-#if (defined(_WIN32) && _MSC_VER >= 1600) || defined(__APPLE__)
 		DLL_IMPORT_OR_EXPORT std::unordered_map< std::string, std::string > getExtraMetadataSet() const;
-#else
-		std::tr1::unordered_map< std::string, std::string > getExtraMetadataSet() const;
-#endif
 
 		/**
 		* Get an extra metadata according its key.

@@ -72,7 +72,7 @@ TEST_CASE( "Deserialize an EPC document", "[epc]")
 }
 */
 
-TEST_CASE("Export and import an empty EPC document", "[epcDoc]")
+TEST_CASE("Export and import an empty EPC document", "[repo]")
 {
 	EpcDocumentTest testIn("../../EpcDocumentTest");
 	testIn.serialize();

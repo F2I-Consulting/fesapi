@@ -32,43 +32,46 @@ using namespace gsoap_resqml2_0_1;
 
 const char* PointSetRepresentation::XML_TAG = "PointSetRepresentation";
 
-PointSetRepresentation::PointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
-		const std::string & guid, const std::string & title):
-	AbstractRepresentation(interp, crs)
+PointSetRepresentation::PointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+		const std::string & guid, const std::string & title)
 {
+	if (interp == nullptr) {
+		throw invalid_argument("You must provide an interpretation");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREPointSetRepresentation(interp->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
-
-	// relationhsips
-	localCrs = crs;
-	localCrs->addRepresentation(this);
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setInterpretation(interp);
 }
 
 void PointSetRepresentation::pushBackGeometryPatch(
-	const unsigned int & xyzPointCount, double * xyzPoints,
-	COMMON_NS::AbstractHdfProxy * proxy)
+	unsigned int xyzPointCount, double * xyzPoints,
+	COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	resqml2__NodePatch* patch = soap_new_resqml2__NodePatch(gsoapProxy2_0_1->soap, 1);
 	patch->PatchIndex = static_cast<_resqml2__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch.size();
 	patch->Count = xyzPointCount;
 
 	// XYZ points
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+	}
 	hsize_t pointCountDims[] = {xyzPointCount};
-	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, xyzPoints, pointCountDims, 1, proxy);
+	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, xyzPoints, localCrs, pointCountDims, 1, proxy);
 
 	static_cast<_resqml2__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch.push_back(patch);
+	getRepository()->addRelationship(this, localCrs);
 }
 
-string PointSetRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* PointSetRepresentation::getHdfProxyDor() const
 {
-	return getHdfProxyUuidFromPointGeometryPatch(getPointGeometry2_0_1(0));
+	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
-resqml2__PointGeometry* PointSetRepresentation::getPointGeometry2_0_1(const unsigned int & patchIndex) const
+resqml2__PointGeometry* PointSetRepresentation::getPointGeometry2_0_1(unsigned int patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The index of the patch is not in the allowed range of patch.");
@@ -94,7 +97,9 @@ void PointSetRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex
 	resqml2__PointGeometry* pointGeom = getPointGeometry2_0_1(patchIndex);
 	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array)
 	{
-		hdfProxy->readArrayNdOfDoubleValues(static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->PathInHdfFile, xyzPoints);
+		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates;
+		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, xyzPoints);
 	}
 	else
 		throw invalid_argument("The geometry of the representation either does not exist or it is not an explicit one.");
@@ -104,5 +109,3 @@ unsigned int PointSetRepresentation::getPatchCount() const
 {
     return static_cast<_resqml2__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch.size();
 }
-
-

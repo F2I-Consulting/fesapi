@@ -27,16 +27,16 @@ namespace RESQML2_0_1_NS
 	public:
 		/**
 		* Creates an instance of this class in a gsoap context.
-		* @param soapContext		The soap context where the underlying gsoap proxy is going to be created.
+		* @param repo				The repo where the underlying gsoap proxy is going to be created.
 		* @param guid				The guid of the underlying gsoap proxy to be created.
 		* @param title				The title of the underlying gsoap proxy to be created.
 		* @packageDirAbsolutePath	The directory where the EPC document is stored. Must end with a slash or back-slash
 		* @relativeFilePath			The relative file path of the associated HDF file. It is relative to the location of the package
 		*/
-		HdfProxy(soap* soapContext, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
+		HdfProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::READ_ONLY);
 
-		HdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) : 
-			COMMON_NS::HdfProxy(fromGsoap, packageDirAbsolutePath, externalFilePath) {}
+		HdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
+			COMMON_NS::HdfProxy(fromGsoap) {}
 
 		~HdfProxy() {}
 

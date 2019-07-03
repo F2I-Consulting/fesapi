@@ -22,7 +22,7 @@ under the License.
 #include <iostream>
 
 namespace COMMON_NS {
-	class EpcDocument;
+	class DataObjectRepository;
 }
 
 namespace resqml2_0_1test {
@@ -31,11 +31,11 @@ namespace resqml2_0_1test {
 		static const char* defaultUuid;
 		static const char* defaultTitle;
 
-		WellboreFrameRepresentationTest(const std::string & epcDocPath);
-		WellboreFrameRepresentationTest(COMMON_NS::EpcDocument * epcDoc, bool init);
+		WellboreFrameRepresentationTest(const std::string & repoPath);
+		WellboreFrameRepresentationTest(COMMON_NS::DataObjectRepository * repo, bool init);
 	protected:
-		void initEpcDocHandler();
-		void readEpcDocHandler();
+		void initRepoHandler();
+		void readRepoHandler();
 	};
 }
 

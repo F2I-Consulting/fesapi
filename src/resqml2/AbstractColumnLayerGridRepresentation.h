@@ -39,7 +39,7 @@ namespace RESQML2_NS
 		/**
 		* Default constructor
 		*/
-		AbstractColumnLayerGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs, bool withTruncatedPillars) : RESQML2_NS::AbstractGridRepresentation(interp, crs, withTruncatedPillars) {}
+		AbstractColumnLayerGridRepresentation(bool withTruncatedPillars) : RESQML2_NS::AbstractGridRepresentation(withTruncatedPillars) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -47,8 +47,7 @@ namespace RESQML2_NS
 		AbstractColumnLayerGridRepresentation(gsoap_resqml2_0_1::resqml2__AbstractColumnLayerGridRepresentation* fromGsoap, bool withTruncatedPillars) : RESQML2_NS::AbstractGridRepresentation(fromGsoap, withTruncatedPillars) {}
 		AbstractColumnLayerGridRepresentation(gsoap_resqml2_0_1::resqml2__AbstractTruncatedColumnLayerGridRepresentation* fromGsoap, bool withTruncatedPillars) : RESQML2_NS::AbstractGridRepresentation(fromGsoap, withTruncatedPillars) {}
 
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		void loadTargetRelationships() const;
 
 	public:
 
@@ -65,7 +64,7 @@ namespace RESQML2_NS
 		/**
 		* Set the K layer count of the grid
 		*/
-		DLL_IMPORT_OR_EXPORT void setKCellCount(const unsigned int & kCount);
+		DLL_IMPORT_OR_EXPORT void setKCellCount(unsigned int kCount);
 
 		/**
 		* Get the K direction of the grid.
@@ -78,12 +77,12 @@ namespace RESQML2_NS
 		* @param nullValue			The value which is used to tell the association between a grid interval and strati unit is unavailable.
 		* @param stratiOrgInterp	The stratigraphic organization interpretation which is associated to this grid representation.
 		*/
-		DLL_IMPORT_OR_EXPORT void setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
+		DLL_IMPORT_OR_EXPORT void setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, ULONG64 nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, COMMON_NS::AbstractHdfProxy * hdfProxy = nullptr);
 
 		/**
 		* @return	null pointer if no stratigraphic organization interpretation is associated to this grid representation. Otherwise return the data objet reference of the associated stratigraphic organization interpretation.
 		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getStratigraphicOrganizationInterpretationDor() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference const * getStratigraphicOrganizationInterpretationDor() const;
 
 		/**
 		* @return	true if this grid representation has got some association between stratigraphic unit indices and interval. Intervals = layers + K gaps.

@@ -29,34 +29,10 @@ using namespace epc;
 
 Wellbore* WellboreObject::getWellbore() const
 {
-	return getEpcDocument()->getDataObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
+	return getRepository()->getDataObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
 }
 
-void WellboreObject::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void WellboreObject::loadTargetRelationships() const
 {
-	gsoap_eml2_1::eml21__DataObjectReference* dor = getWellboreDor();
-	Wellbore* wellbore = epcDoc->getDataObjectByUuid<Wellbore>(dor->Uuid);
-	if (wellbore == nullptr) { // partial transfer
-		getEpcDocument()->createPartial(dor);
-		wellbore = getEpcDocument()->getDataObjectByUuid<Wellbore>(dor->Uuid);
-	}
-	if (wellbore == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-
-	updateXml = false;
-	setWellbore(wellbore);
-	updateXml = true;
-}
-
-vector<Relationship> WellboreObject::getAllEpcRelationships() const
-{
-	vector<Relationship> result;
-
-	Wellbore* wellbore = getWellbore();
-	Relationship relWellbore(wellbore->getPartNameInEpcDocument(), "", wellbore->getUuid());
-	relWellbore.setDestinationObjectType();
-	result.push_back(relWellbore);
-
-	return result;
+	convertDorIntoRel<Wellbore>(getWellboreDor());
 }

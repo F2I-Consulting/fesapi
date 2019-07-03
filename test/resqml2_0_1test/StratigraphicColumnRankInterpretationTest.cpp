@@ -48,40 +48,40 @@ const char* StratigraphicColumnRankInterpretationTest::defaultUnderburdenTitle =
 const char* StratigraphicColumnRankInterpretationTest::defaultUnderburdenInterpUuid = "1914478a-e50b-4808-ad62-11201992024d";
 const char* StratigraphicColumnRankInterpretationTest::defaultUnderburdenInterpTitle = "Underburden Interp";
 
-StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath) {
+StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
 }
 
-StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(EpcDocument* epcDoc, bool init)
-	: commontest::AbstractObjectTest(epcDoc) {
+StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void StratigraphicColumnRankInterpretationTest::initEpcDocHandler() {
+void StratigraphicColumnRankInterpretationTest::initRepoHandler() {
 	// creating dependencies
-	StratigraphicOrganizationTest stratiOrgtTest(epcDoc, true);
-	StratigraphicUnitInterpretationTest overburdenInterpTest(epcDoc, true);
-	StratigraphicUnitInterpretationTest stratiLayerInterpTest(epcDoc, true);
-	StratigraphicUnitInterpretationTest underburdenInterpTest(epcDoc, true);
+	StratigraphicOrganizationTest stratiOrgtTest(repo, true);
+	StratigraphicUnitInterpretationTest overburdenInterpTest(repo, true);
+	StratigraphicUnitInterpretationTest stratiLayerInterpTest(repo, true);
+	StratigraphicUnitInterpretationTest underburdenInterpTest(repo, true);
 
-	OrganizationFeature* stratiOrg = epcDoc->getDataObjectByUuid<OrganizationFeature>(StratigraphicOrganizationTest::defaultUuid);
-	StratigraphicUnitInterpretation* overburdenInterp = epcDoc->getDataObjectByUuid<StratigraphicUnitInterpretation>(defaultOverburdenInterpUuid);
-	StratigraphicUnitInterpretation* stratiLayerInterp = epcDoc->getDataObjectByUuid<StratigraphicUnitInterpretation>(StratigraphicUnitInterpretationTest::defaultUuid);
-	StratigraphicUnitInterpretation* underburdenInterp = epcDoc->getDataObjectByUuid<StratigraphicUnitInterpretation>(defaultUnderburdenInterpUuid);
+	OrganizationFeature* stratiOrg = repo->getDataObjectByUuid<OrganizationFeature>(StratigraphicOrganizationTest::defaultUuid);
+	StratigraphicUnitInterpretation* overburdenInterp = repo->getDataObjectByUuid<StratigraphicUnitInterpretation>(defaultOverburdenInterpUuid);
+	StratigraphicUnitInterpretation* stratiLayerInterp = repo->getDataObjectByUuid<StratigraphicUnitInterpretation>(StratigraphicUnitInterpretationTest::defaultUuid);
+	StratigraphicUnitInterpretation* underburdenInterp = repo->getDataObjectByUuid<StratigraphicUnitInterpretation>(defaultUnderburdenInterpUuid);
 
-	StratigraphicColumnRankInterpretation* stratiColumnRank = epcDoc->createStratigraphicColumnRankInterpretationInApparentDepth(stratiOrg, defaultUuid, defaultTitle, 0);
+	StratigraphicColumnRankInterpretation* stratiColumnRank = repo->createStratigraphicColumnRankInterpretationInApparentDepth(stratiOrg, defaultUuid, defaultTitle, 0);
 	REQUIRE(stratiColumnRank != nullptr);
 	stratiColumnRank->pushBackStratiUnitInterpretation(overburdenInterp);
 	stratiColumnRank->pushBackStratiUnitInterpretation(stratiLayerInterp);
 	stratiColumnRank->pushBackStratiUnitInterpretation(underburdenInterp);
 }
 
-void StratigraphicColumnRankInterpretationTest::readEpcDocHandler()
+void StratigraphicColumnRankInterpretationTest::readRepoHandler()
 {
-	StratigraphicColumnRankInterpretation* stratiColumnRank = epcDoc->getDataObjectByUuid<StratigraphicColumnRankInterpretation>(defaultUuid);
+	StratigraphicColumnRankInterpretation* stratiColumnRank = repo->getDataObjectByUuid<StratigraphicColumnRankInterpretation>(defaultUuid);
 	REQUIRE(stratiColumnRank != nullptr);
 	REQUIRE(stratiColumnRank->getStratigraphicUnitInterpretationSet().size() == 3);
 }

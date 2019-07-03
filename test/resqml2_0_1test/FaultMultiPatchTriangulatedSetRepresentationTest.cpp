@@ -33,63 +33,58 @@ using namespace RESQML2_0_1_NS;
 const char* FaultMultiPatchTriangulatedSetRepresentationTest::defaultUuid = "4b8503e8-28e5-44c5-877d-b9eb3295b2b9";
 const char* FaultMultiPatchTriangulatedSetRepresentationTest::defaultTitle = "FaultMultiPatchTriangulatedSetRepresentationTest";
 
-FaultMultiPatchTriangulatedSetRepresentationTest::FaultMultiPatchTriangulatedSetRepresentationTest(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath)
+FaultMultiPatchTriangulatedSetRepresentationTest::FaultMultiPatchTriangulatedSetRepresentationTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath)
 {
 }
 
-FaultMultiPatchTriangulatedSetRepresentationTest::FaultMultiPatchTriangulatedSetRepresentationTest(EpcDocument * epcDocument, bool init)
-	: commontest::AbstractObjectTest(epcDocument)
+FaultMultiPatchTriangulatedSetRepresentationTest::FaultMultiPatchTriangulatedSetRepresentationTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo)
 {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void FaultMultiPatchTriangulatedSetRepresentationTest::initEpcDocHandler()
+void FaultMultiPatchTriangulatedSetRepresentationTest::initRepoHandler()
 {
-	FaultInterpretationTest * interpTest = new FaultInterpretationTest(epcDoc, true);
+	FaultInterpretationTest * interpTest = new FaultInterpretationTest(repo, true);
+	FaultInterpretation* interp = repo->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
 
-	LocalDepth3dCrsTest * crsTest = new LocalDepth3dCrsTest(epcDoc, true);
-
-	FaultInterpretation* interp = epcDoc->getDataObjectByUuid<FaultInterpretation>(FaultInterpretationTest::defaultUuid);
-	LocalDepth3dCrs* crs = epcDoc->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-
-	TriangulatedSetRepresentation* rep = epcDoc->createTriangulatedSetRepresentation(interp, crs, defaultUuid, defaultTitle);
+	TriangulatedSetRepresentation* rep = repo->createTriangulatedSetRepresentation(interp, defaultUuid, defaultTitle);
 	REQUIRE( rep != nullptr );
 
 	// Patch 0
 	double explicitPointsFault1Patch0[18] = {150, 0, 200, 150, 100, 200, 150, 200, 200,
 		250, 0, 300, 250, 100, 300, 250, 200, 300};
 	unsigned int triangleNodeIndexFaultPatch0[12] = {0,4,3, 0,1,4, 1,2,4, 2,5,4};
-	rep->pushBackTrianglePatch(6, explicitPointsFault1Patch0, 4, triangleNodeIndexFaultPatch0, epcDoc->getHdfProxySet()[0]);
+	rep->pushBackTrianglePatch(6, explicitPointsFault1Patch0, 4, triangleNodeIndexFaultPatch0, repo->getHdfProxySet()[0]);
 	// Patch 1
 	double explicitPointsFault1Patch1[18] = {250, 0, 300, 250, 100, 300, 250, 200, 300,
 		300, 0, 350, 300, 100, 350, 300, 200, 350};
 	unsigned int triangleNodeIndexFaultPatch1[12] = {6,10,9, 6,7,10, 7,8,10, 8,11,10};
-	rep->pushBackTrianglePatch(6, explicitPointsFault1Patch1, 4, triangleNodeIndexFaultPatch1, epcDoc->getHdfProxySet()[0]);
+	rep->pushBackTrianglePatch(6, explicitPointsFault1Patch1, 4, triangleNodeIndexFaultPatch1, repo->getHdfProxySet()[0]);
 	// Patch 2
 	double explicitPointsFault1Patch2[18] = {300, 0, 350, 300, 100, 350, 300, 200, 350,
 		450, 0, 500, 450, 100, 500, 450, 200, 500};
 	unsigned int triangleNodeIndexFaultPatch2[12] = {12,16,15, 12,13,16, 13,14,16, 14,17,16};
-	rep->pushBackTrianglePatch(6, explicitPointsFault1Patch2, 4, triangleNodeIndexFaultPatch2, epcDoc->getHdfProxySet()[0]);
+	rep->pushBackTrianglePatch(6, explicitPointsFault1Patch2, 4, triangleNodeIndexFaultPatch2, repo->getHdfProxySet()[0]);
 	// Patch 3
 	double explicitPointsFault1Patch3[18] = {450, 0, 500, 450, 100, 500, 450, 200, 500,
 		500, 0, 550, 500, 100, 550 ,500, 200, 550};
 	unsigned int triangleNodeIndexFaultPatch3[12] = {18,22,21, 18,19,22, 19,20,22, 20,23,22};
-	rep->pushBackTrianglePatch(6, explicitPointsFault1Patch3, 4, triangleNodeIndexFaultPatch3, epcDoc->getHdfProxySet()[0]);
+	rep->pushBackTrianglePatch(6, explicitPointsFault1Patch3, 4, triangleNodeIndexFaultPatch3, repo->getHdfProxySet()[0]);
 	// Patch 4
 	double explicitPointsFault1Patch4[18] = {500, 0, 550, 500, 100, 550 ,500, 200, 550,
 		600, 0, 650, 600, 100, 650, 600, 200, 650};
 	unsigned int triangleNodeIndexFaultPatch4[12] = {24,28,27, 24,25,28, 25,26,28, 26,29,28};
-	rep->pushBackTrianglePatch(6, explicitPointsFault1Patch4, 4, triangleNodeIndexFaultPatch4, epcDoc->getHdfProxySet()[0]);
+	rep->pushBackTrianglePatch(6, explicitPointsFault1Patch4, 4, triangleNodeIndexFaultPatch4, repo->getHdfProxySet()[0]);
 
 	// cleaning
 	delete interpTest;
-	delete crsTest;
 }
 
-void FaultMultiPatchTriangulatedSetRepresentationTest::readEpcDocHandler()
+void FaultMultiPatchTriangulatedSetRepresentationTest::readRepoHandler()
 {
 }

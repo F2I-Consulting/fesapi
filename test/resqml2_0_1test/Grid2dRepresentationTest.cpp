@@ -38,46 +38,40 @@ const char* Grid2dRepresentationTest::defaultTitleInterp = "Horizon Interp";
 const char* Grid2dRepresentationTest::defaultUuid = "6cbfb84d-f5c8-4595-9e7f-b003d0fe81c2";
 const char* Grid2dRepresentationTest::defaultTitle = "Grid 2d Representation";
 
-Grid2dRepresentationTest::Grid2dRepresentationTest(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath)
+Grid2dRepresentationTest::Grid2dRepresentationTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath)
 {
 }
 
-Grid2dRepresentationTest::Grid2dRepresentationTest(EpcDocument * epcDocument, bool init)
-	: commontest::AbstractObjectTest(epcDocument)
+Grid2dRepresentationTest::Grid2dRepresentationTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo)
 {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void Grid2dRepresentationTest::initEpcDocHandler()
+void Grid2dRepresentationTest::initRepoHandler()
 {
-	LocalDepth3dCrs * crs = epcDoc->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-	if (crs == nullptr) {
-		LocalDepth3dCrsTest crsTest(epcDoc, true);
-		crs = epcDoc->getDataObjectByUuid<LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-	}
+	Horizon* feature = repo->createHorizon(defaultUuidFeature, defaultTitleFeature);
+	HorizonInterpretation* interp = repo->createHorizonInterpretation(feature, defaultUuidInterp, defaultTitleInterp);
+	Grid2dRepresentation* rep = repo->createGrid2dRepresentation(interp, defaultUuid, defaultTitle);
 
-	Horizon* feature = epcDoc->createHorizon(defaultUuidFeature, defaultTitleFeature);
-	HorizonInterpretation* interp = epcDoc->createHorizonInterpretation(feature, defaultUuidInterp, defaultTitleInterp);
-	Grid2dRepresentation* rep = epcDoc->createGrid2dRepresentation(interp, crs, defaultUuid, defaultTitle);
-
-	Grid2dRepresentation* supportingRep = epcDoc->getDataObjectByUuid<Grid2dRepresentation>(SeismicLatticeRepresentationTest::defaultUuid);
+	Grid2dRepresentation* supportingRep = repo->getDataObjectByUuid<Grid2dRepresentation>(SeismicLatticeRepresentationTest::defaultUuid);
 	if (supportingRep == nullptr) {
-		SeismicLatticeRepresentationTest seisTest(epcDoc, true);
-		supportingRep = epcDoc->getDataObjectByUuid<Grid2dRepresentation>(SeismicLatticeRepresentationTest::defaultUuid);
+		SeismicLatticeRepresentationTest seisTest(repo, true);
+		supportingRep = repo->getDataObjectByUuid<Grid2dRepresentation>(SeismicLatticeRepresentationTest::defaultUuid);
 	}
 
 	double zValues[8] = { 300, 300, 350, 350, 300, 300, 350, 350 };
-	rep->setGeometryAsArray2dOfExplicitZ(zValues, 4, 2, epcDoc->getHdfProxySet()[0], supportingRep);
+	rep->setGeometryAsArray2dOfExplicitZ(zValues, 4, 2, repo->getHdfProxySet()[0], supportingRep);
 }
 
-void Grid2dRepresentationTest::readEpcDocHandler()
+void Grid2dRepresentationTest::readRepoHandler()
 {
 	// Grid 2D
-	RESQML2_0_1_NS::Grid2dRepresentation* rep = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::Grid2dRepresentation>(defaultUuid);
+	RESQML2_0_1_NS::Grid2dRepresentation* rep = repo->getDataObjectByUuid<RESQML2_0_1_NS::Grid2dRepresentation>(defaultUuid);
 	REQUIRE(rep->getSupportingRepresentation() != nullptr);
 	REQUIRE(rep->getSeismicSupportOfPatch(0) == nullptr);
 	REQUIRE((rep->isISpacingConstant() && rep->isJSpacingConstant()));

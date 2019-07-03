@@ -25,9 +25,7 @@ namespace RESQML2_NS
 	class RepresentationSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	protected:
-		RepresentationSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp) : AbstractRepresentation(interp, nullptr) {}
-
-		RepresentationSetRepresentation() : AbstractRepresentation(nullptr, static_cast<RESQML2_NS::AbstractLocal3dCrs*>(nullptr)) {}
+		RepresentationSetRepresentation() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -52,7 +50,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const;
 
-		std::string getHdfProxyUuid() const {return "";}
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const { return nullptr; }
 
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 
@@ -78,7 +76,7 @@ namespace RESQML2_NS
 		/**
 		* Get a particular representation of this representation set according to its position.
 		*/
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepresentation(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepresentation(unsigned int index) const;
 
 		/**
 		* Get a particular representation dor of this representation set according to its position.
@@ -90,13 +88,9 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getRepresentationUuid(const unsigned int & index) const;
 
+		DLL_IMPORT_OR_EXPORT void pushBack(RESQML2_NS::AbstractRepresentation* rep);
+
     protected:
-
-		void pushBackXmlRepresentation(RESQML2_NS::AbstractRepresentation* rep);
-
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-
-		friend void RESQML2_NS::AbstractRepresentation::pushBackIntoRepresentationSet(RepresentationSetRepresentation * repSet, bool xml);
+		virtual void loadTargetRelationships() const;
 	};
 }

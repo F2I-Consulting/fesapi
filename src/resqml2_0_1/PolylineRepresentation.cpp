@@ -35,14 +35,9 @@ using namespace epc;
 
 const char* PolylineRepresentation::XML_TAG = "PolylineRepresentation";
 
-void PolylineRepresentation::init(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
-			const std::string & guid, const std::string & title, bool isClosed)
+void PolylineRepresentation::init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, bool isClosed)
 {
-	if (crs == nullptr) {
-		throw invalid_argument("The CRS of a polyline representation cannot be null");
-	}
-
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREPolylineRepresentation(crs->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREPolylineRepresentation(repo->getGsoapContext(), 1);
 	_resqml2__PolylineRepresentation* polylineRep = static_cast<_resqml2__PolylineRepresentation*>(gsoapProxy2_0_1);
 
 	polylineRep->IsClosed = isClosed;
@@ -50,45 +45,45 @@ void PolylineRepresentation::init(RESQML2_NS::AbstractFeatureInterpretation* int
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	// relationships
-	localCrs = crs;
-	localCrs->addRepresentation(this);
+	repo->addOrReplaceDataObject(this);
+}
 
-	if (interp != nullptr) {
-		setInterpretation(interp);
+PolylineRepresentation::PolylineRepresentation(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, bool isClosed)
+{
+	init(repo, guid, title, isClosed);
+}
+
+PolylineRepresentation::PolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+	const std::string & guid, const std::string & title, bool isClosed)
+{
+	if (interp == nullptr) {
+		throw invalid_argument("You must provide an interpretation");
 	}
+	init(interp->getRepository(), guid, title, isClosed);
+
+	setInterpretation(interp);
 }
 
-PolylineRepresentation::PolylineRepresentation(RESQML2_NS::AbstractLocal3dCrs * crs,
-			const std::string & guid, const std::string & title, bool isClosed):
-	AbstractRepresentation(nullptr, crs)
+PolylineRepresentation::PolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+	const std::string & guid, const std::string & title, resqml2__LineRole roleKind,
+	bool isClosed)
 {
-	init(nullptr, crs, guid, title, isClosed);
-}
-
-PolylineRepresentation::PolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
-			const std::string & guid, const std::string & title, bool isClosed):
-	AbstractRepresentation(interp, crs)
-{
-	init(interp, crs, guid, title, isClosed);
-}
-
-PolylineRepresentation::PolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
-			const std::string & guid, const std::string & title, const resqml2__LineRole & roleKind,
-			bool isClosed):
-	AbstractRepresentation(interp, crs)
-{
-	init(interp, crs, guid, title, isClosed);
+	if (interp == nullptr) {
+		throw invalid_argument("You must provide an interpretation");
+	}
+	init(interp->getRepository(), guid, title, isClosed);
 	static_cast<_resqml2__PolylineRepresentation*>(gsoapProxy2_0_1)->LineRole = (resqml2__LineRole*)soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml2__LineRole));
 	(*static_cast<_resqml2__PolylineRepresentation*>(gsoapProxy2_0_1)->LineRole) = roleKind;
+
+	setInterpretation(interp);
 }
 
-std::string PolylineRepresentation::getHdfProxyUuid() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* PolylineRepresentation::getHdfProxyDor() const
 {
-	return getHdfProxyUuidFromPointGeometryPatch(getPointGeometry2_0_1(0));
+	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
-resqml2__PointGeometry* PolylineRepresentation::getPointGeometry2_0_1(const unsigned int & patchIndex) const
+resqml2__PointGeometry* PolylineRepresentation::getPointGeometry2_0_1(unsigned int patchIndex) const
 {
 	if (patchIndex == 0)
 		return static_cast<_resqml2__PolylineRepresentation*>(gsoapProxy2_0_1)->NodePatch->Geometry;
@@ -112,21 +107,27 @@ void PolylineRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex
 	resqml2__PointGeometry* pointGeom = getPointGeometry2_0_1(patchIndex);
 	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array)
 	{
-		hdfProxy->readArrayNdOfDoubleValues(static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->PathInHdfFile, xyzPoints);
+		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates;
+		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, xyzPoints);
 	}
 	else
 		throw invalid_argument("The geometry of the representation either does not exist or it is not an explicit one.");
 }
 
-void PolylineRepresentation::setGeometry(double * points, const unsigned int & pointCount, COMMON_NS::AbstractHdfProxy * proxy)
+void PolylineRepresentation::setGeometry(double * points, unsigned int pointCount, COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	_resqml2__PolylineRepresentation* polylineRep = static_cast<_resqml2__PolylineRepresentation*>(gsoapProxy2_0_1);
 	polylineRep->NodePatch = soap_new_resqml2__NodePatch(gsoapProxy2_0_1->soap, 1);
 	polylineRep->NodePatch->Count = pointCount;
 	polylineRep->NodePatch->PatchIndex = 0;
 
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+	}
 	hsize_t pointCountDims[] = {pointCount};
-	polylineRep->NodePatch->Geometry = createPointGeometryPatch2_0_1(0, points, pointCountDims, 1, proxy);
+	polylineRep->NodePatch->Geometry = createPointGeometryPatch2_0_1(0, points, localCrs, pointCountDims, 1, proxy);
+	getRepository()->addRelationship(this, localCrs);
 }
 
 bool PolylineRepresentation::isClosed() const
@@ -152,7 +153,7 @@ bool PolylineRepresentation::isASeismicLine() const
 	// A Seismic line is defined by an PolylineRepresentation that has a feature of type SeismicLineFeature and that
 	// has at least one continuous property (amplitude).
 	bool atLeastOneContProp = false;
-	vector<RESQML2_NS::AbstractValuesProperty*> allValuesProperty = getValuesPropertySet();
+	vector<RESQML2_NS::AbstractValuesProperty const *> allValuesProperty = getValuesPropertySet();
     for (unsigned int propIndex = 0; propIndex < allValuesProperty.size(); ++propIndex)
     {
         if (allValuesProperty[propIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREContinuousProperty)
@@ -161,8 +162,9 @@ bool PolylineRepresentation::isASeismicLine() const
             break;
         }
     }
-    if (!atLeastOneContProp)
-        return false;
+	if (!atLeastOneContProp) {
+		return false;
+	}
 
     return getInterpretation() && getInterpretation()->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORESeismicLineFeature;
 }
@@ -172,7 +174,7 @@ bool PolylineRepresentation::isAFaciesLine() const
 	// A Facies line is defined by an PolylineRepresentation that has a feature of type SeismicLineFeature and that
 	// has at least one categorical property (facies).
 	bool atLeastOneCateProp = false;
-	vector<RESQML2_NS::AbstractValuesProperty*> allValuesProperty = getValuesPropertySet();
+	vector<RESQML2_NS::AbstractValuesProperty const *> allValuesProperty = getValuesPropertySet();
     for (unsigned int propIndex = 0; propIndex < allValuesProperty.size(); ++propIndex)
     {
         if (allValuesProperty[propIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECategoricalProperty)
@@ -187,34 +189,10 @@ bool PolylineRepresentation::isAFaciesLine() const
     return getInterpretation() && getInterpretation()->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORESeismicLineFeature;
 }
 
-vector<Relationship> PolylineRepresentation::getAllEpcRelationships() const
+void PolylineRepresentation::setLineRole(gsoap_resqml2_0_1::resqml2__LineRole lineRole)
 {
-	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
-
-	// Outer rings of
-	for(unsigned int i = 0; i < outerRingOfSet.size(); ++i)
-	{
-		Relationship relOuterRingOf(outerRingOfSet[i]->getPartNameInEpcDocument(), "", outerRingOfSet[i]->getUuid());
-		relOuterRingOf.setSourceObjectType();
-		result.push_back(relOuterRingOf);
-	}
-
-	// Inner rings of
-	for(unsigned int i = 0; i < innerRingOfSet.size(); ++i)
-	{
-		Relationship relInnerRingOf(innerRingOfSet[i]->getPartNameInEpcDocument(), "", innerRingOfSet[i]->getUuid());
-		relInnerRingOf.setSourceObjectType();
-		result.push_back(relInnerRingOf);
-	}
-
-	return result;
-}
-
-void PolylineRepresentation::setLineRole(const gsoap_resqml2_0_1::resqml2__LineRole & lineRole)
-{
-	if (hasALineRole() == false)
+	if (!hasALineRole())
 		static_cast<_resqml2__PolylineRepresentation*>(gsoapProxy2_0_1)->LineRole = (resqml2__LineRole*)soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml2__LineRole));
 
 	(*static_cast<_resqml2__PolylineRepresentation*>(gsoapProxy2_0_1)->LineRole) = lineRole;
 }
-

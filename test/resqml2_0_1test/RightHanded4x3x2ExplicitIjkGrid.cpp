@@ -53,33 +53,26 @@ double RightHanded4x3x2ExplicitIjkGrid::nodesIjkGridRepresentation[] = {
 	375, 0, 550, 375, 50, 550, 375, 100, 550, 375, 150, 550 // SPLIT K2
 };
 
-RightHanded4x3x2ExplicitIjkGrid::RightHanded4x3x2ExplicitIjkGrid(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath) {
+RightHanded4x3x2ExplicitIjkGrid::RightHanded4x3x2ExplicitIjkGrid(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
 }
 
-RightHanded4x3x2ExplicitIjkGrid::RightHanded4x3x2ExplicitIjkGrid(EpcDocument * epcDoc, bool init)
-	: commontest::AbstractObjectTest(epcDoc) {
+RightHanded4x3x2ExplicitIjkGrid::RightHanded4x3x2ExplicitIjkGrid(DataObjectRepository * repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void RightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
-	// getting the local depth 3d crs
-	LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(epcDoc, true);
-	RESQML2_0_1_NS::LocalDepth3dCrs* crs = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-
-	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = epcDoc->getHdfProxySet()[0];
-
+void RightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 	// creating the ijk grid
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = epcDoc->createIjkGridExplicitRepresentation(crs, defaultUuid, defaultTitle, 4, 3, 2);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, 4, 3, 2);
 	REQUIRE(ijkGrid != nullptr);
 	unsigned int pillarOfCoordinateLine[4] = { 17, 12, 7, 2 };
 	unsigned int splitCoordinateLineColumnCumulativeCount[4] = { 1, 3, 5, 6 };
 	unsigned int splitCoordinateLineColumns[6] = { 10, 10, 6, 6, 2, 2 };
-	ijkGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, hdfProxy,
+	ijkGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, nullptr,
 		4, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// Enabling cell
@@ -90,7 +83,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 	ijkGrid->setEnabledCells(enabledCells);
 
 	// Grid connection set representation
-	RESQML2_NS::GridConnectionSetRepresentation * gridConnSet432 = epcDoc->createGridConnectionSetRepresentation("a3d1462a-04e3-4374-921b-a4a1e9ba3ea3", "GridConnectionSetRepresentation");
+	RESQML2_NS::GridConnectionSetRepresentation * gridConnSet432 = repo->createGridConnectionSetRepresentation("a3d1462a-04e3-4374-921b-a4a1e9ba3ea3", "GridConnectionSetRepresentation");
 	gridConnSet432->pushBackSupportingGridRepresentation(ijkGrid);
 	ULONG64 cellConn432[30] = {
 		1, 9999, 5, 9999, 9, 9999,
@@ -99,7 +92,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 		13, 14, 17, 18, 21, 22,
 		9999, 14, 9999, 18, 9999, 22
 	};
-	gridConnSet432->setCellIndexPairs(15, cellConn432, 9999, hdfProxy);
+	gridConnSet432->setCellIndexPairs(15, cellConn432, 9999, nullptr);
 	int localFacePerCellIndexPairs432[30] = {
 		3, 9999, 3, 9999, 3, 9999,
 		3, 5, 3, 5, 3, 5,
@@ -107,33 +100,30 @@ void RightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 		3, 5, 3, 5, 3, 5,
 		9999, 5, 9999, 5, 9999, 5
 	};
-	gridConnSet432->setLocalFacePerCellIndexPairs(15, localFacePerCellIndexPairs432, 9999, hdfProxy);
+	gridConnSet432->setLocalFacePerCellIndexPairs(15, localFacePerCellIndexPairs432, 9999, nullptr);
 
 	// Discrete property
-	RESQML2_0_1_NS::DiscreteProperty* discreteProp = epcDoc->createDiscreteProperty(ijkGrid, "0a8fb2aa-d1e1-4914-931c-e9e6bf2aabe5", "Cell index", 1,
+	RESQML2_0_1_NS::DiscreteProperty* discreteProp = repo->createDiscreteProperty(ijkGrid, "0a8fb2aa-d1e1-4914-931c-e9e6bf2aabe5", "Cell index", 1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__index);
 	long discretePropValues[24] = {
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
 	};
-	discreteProp->pushBackLongHdf5Array3dOfValues(discretePropValues, 4, 3, 2, hdfProxy, -1);
+	discreteProp->pushBackLongHdf5Array3dOfValues(discretePropValues, 4, 3, 2, nullptr, -1);
 
 	// Continuous property
-	RESQML2_0_1_NS::ContinuousProperty* continuousProp = epcDoc->createContinuousProperty(ijkGrid, "de5a71cc-879d-4cda-8fb3-146c70539cf9", "Amplitude", 1,
+	RESQML2_0_1_NS::ContinuousProperty* continuousProp = repo->createContinuousProperty(ijkGrid, "de5a71cc-879d-4cda-8fb3-146c70539cf9", "Amplitude", 1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__amplitude);
 	double continuousPropValues[24] = {
 		0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.5, 0.4, 0.3, 0.2, 0.1, 0.0,
 		1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.5, 1.4, 1.3, 1.2, 1.1, 1.0
 	};
-	continuousProp->pushBackDoubleHdf5Array3dOfValues(continuousPropValues, 4, 3, 2, hdfProxy);
-
-	// cleaning
-	delete crsTest;
+	continuousProp->pushBackDoubleHdf5Array3dOfValues(continuousPropValues, 4, 3, 2, nullptr);
 }
 
-void RightHanded4x3x2ExplicitIjkGrid::readEpcDocHandler() {
+void RightHanded4x3x2ExplicitIjkGrid::readRepoHandler() {
 	// getting the subrep
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(defaultUuid);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkGrid = repo->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(defaultUuid);
 
 	REQUIRE(ijkGrid->getCellCount() == 24);
 	REQUIRE(ijkGrid->getPillarCount() == 20);

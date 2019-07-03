@@ -46,15 +46,15 @@ ContinuousPropertySeries::ContinuousPropertySeries(RESQML2_NS::AbstractRepresent
 	xmlStandardPropKind->Kind = energisticsPropertyKind;
 	prop->PropertyKind = xmlStandardPropKind;
 
+	initMandatoryMetadata();
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
 	setRepresentation(rep);
 
 	prop->SeriesTimeIndices = soap_new_resqml2__TimeIndices(gsoapProxy2_0_1->soap, 1);
 	prop->SeriesTimeIndices->TimeIndexCount = ts->getTimestampCount();
 	prop->SeriesTimeIndices->UseInterval = useInterval;
 	setTimeSeries(ts);
-
-	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 ContinuousPropertySeries::ContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
@@ -68,6 +68,9 @@ ContinuousPropertySeries::ContinuousPropertySeries(RESQML2_NS::AbstractRepresent
 	prop->Count = dimension;
 	prop->UOM = uom;
 
+	initMandatoryMetadata();
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
 	setRepresentation(rep);
 
 	prop->SeriesTimeIndices = soap_new_resqml2__TimeIndices(gsoapProxy2_0_1->soap, 1);
@@ -76,8 +79,4 @@ ContinuousPropertySeries::ContinuousPropertySeries(RESQML2_NS::AbstractRepresent
 	setTimeSeries(ts);
 
 	setLocalPropertyKind(localPropKind);
-
-	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
-

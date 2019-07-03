@@ -40,27 +40,17 @@ namespace RESQML2_0_1_NS
 
 		/**
 		* Creates an instance of this class in a gsoap context.
-		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
+		* @param repo			The repository where the underlying gsoap proxy is going to be created.
 		* @param guid			The guid to set to the boundary horizon. If empty then a new guid will be generated.
 		* @param title			A title for the instance to create.
 		*/
-		BoundaryFeature(soap* soapContext, const std::string & guid, const std::string & title);
+		BoundaryFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
 
 		BoundaryFeature(gsoap_resqml2_0_1::_resqml2__BoundaryFeature* fromGsoap): AbstractGeologicFeature(fromGsoap) {}
 		virtual ~BoundaryFeature() {}
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
-
-	private:
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-
-		// backward relationship
-		std::vector<RockFluidUnitFeature*> topOfRockFluidUnitFeatureSet;
-		std::vector<RockFluidUnitFeature*> btmOfRockFluidUnitFeatureSet;
-
-		friend void RockFluidUnitFeature::setTop(BoundaryFeature* top);
-		friend void RockFluidUnitFeature::setBottom(BoundaryFeature* bottom);
 	};
 }
 

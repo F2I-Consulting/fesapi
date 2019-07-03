@@ -26,12 +26,10 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* StratigraphicOccurrenceInterpretation::XML_TAG = "StratigraphicOccurrenceInterpretation";
 
-StratigraphicOccurrenceInterpretation::StratigraphicOccurrenceInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__OrderingCriteria & orderingCriteria):
-	stratigraphicColumnRankInterpretation(nullptr)
+StratigraphicOccurrenceInterpretation::StratigraphicOccurrenceInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__OrderingCriteria & orderingCriteria)
 {
 	if (orgFeat == nullptr) {
 		throw invalid_argument("The interpreted organization feature cannot be null.");
@@ -45,23 +43,22 @@ StratigraphicOccurrenceInterpretation::StratigraphicOccurrenceInterpretation(Org
 	static_cast<_resqml2__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1)->OrderingCriteria = orderingCriteria;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setInterpretedFeature(orgFeat);
 }
 
 void StratigraphicOccurrenceInterpretation::setStratigraphicColumnRankInterpretation(StratigraphicColumnRankInterpretation * stratiColumnRankInterp)
 {
-	// EPC
-	stratigraphicColumnRankInterpretation = stratiColumnRankInterp;
-	stratiColumnRankInterp->stratigraphicOccurrenceInterpretationSet.push_back(this);
+	getRepository()->addRelationship(this, stratiColumnRankInterp);
 
-    // XML
-	if (updateXml)
-	{
-		_resqml2__StratigraphicOccurrenceInterpretation* interp = static_cast<_resqml2__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1);
-		interp->IsOccurrenceOf = stratiColumnRankInterp->newResqmlReference();
-	}
+	_resqml2__StratigraphicOccurrenceInterpretation* interp = static_cast<_resqml2__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1);
+	interp->IsOccurrenceOf = stratiColumnRankInterp->newResqmlReference();
+}
+
+StratigraphicColumnRankInterpretation * StratigraphicOccurrenceInterpretation::getStratigraphicColumnRankInterpretation() const
+{
+	return getRepository()->getDataObjectByUuid<StratigraphicColumnRankInterpretation>(getStratigraphicColumnRankInterpretationUuid());
 }
 
 std::string StratigraphicOccurrenceInterpretation::getStratigraphicColumnRankInterpretationUuid() const
@@ -69,47 +66,19 @@ std::string StratigraphicOccurrenceInterpretation::getStratigraphicColumnRankInt
 	return static_cast<_resqml2__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1)->IsOccurrenceOf->UUID;
 }
 
-vector<Relationship> StratigraphicOccurrenceInterpretation::getAllEpcRelationships() const
+std::vector<class WellboreMarkerFrameRepresentation const *> StratigraphicOccurrenceInterpretation::getWellboreMarkerFrameRepresentationSet() const
 {
-	vector<Relationship> result = AbstractStratigraphicOrganizationInterpretation::getAllEpcRelationships();
-
-	if (stratigraphicColumnRankInterpretation)
-	{
-		Relationship relStratiRank(stratigraphicColumnRankInterpretation->getPartNameInEpcDocument(), "", stratigraphicColumnRankInterpretation->getUuid());
-		relStratiRank.setDestinationObjectType();
-		result.push_back(relStratiRank);
-	}
-
-	for (unsigned int i = 0; i < earthModelSet.size(); i++)
-	{
-		Relationship rel(earthModelSet[i]->getPartNameInEpcDocument(), "", earthModelSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	for (unsigned int i = 0; i < wellboreMarkerFrameRepresentationSet.size(); i++)
-	{
-		Relationship rel(wellboreMarkerFrameRepresentationSet[i]->getPartNameInEpcDocument(), "", wellboreMarkerFrameRepresentationSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-        
-    return result;
+	return getRepository()->getSourceObjects<WellboreMarkerFrameRepresentation>(this);
 }
 	
-void StratigraphicOccurrenceInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void StratigraphicOccurrenceInterpretation::loadTargetRelationships() const
 {
-	AbstractStratigraphicOrganizationInterpretation::importRelationshipSetFromEpc(epcDoc);
-
-	updateXml = false;
+	AbstractStratigraphicOrganizationInterpretation::loadTargetRelationships();
 
 	_resqml2__StratigraphicOccurrenceInterpretation* interp = static_cast<_resqml2__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1); 
 
-	if (interp->IsOccurrenceOf)
+	if (interp->IsOccurrenceOf != nullptr)
 	{
-		setStratigraphicColumnRankInterpretation(static_cast<StratigraphicColumnRankInterpretation*>(epcDoc->getDataObjectByUuid(interp->IsOccurrenceOf->UUID)));
+		convertDorIntoRel<StratigraphicColumnRankInterpretation>(interp->IsOccurrenceOf);
 	}
-
-	updateXml = true;
 }
-

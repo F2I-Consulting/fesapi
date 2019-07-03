@@ -26,10 +26,10 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 
 
-HdfProxy::HdfProxy(soap* soapContext, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
-	COMMON_NS::HdfProxy(packageDirAbsolutePath, externalFilePath)
+HdfProxy::HdfProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess) :
+	COMMON_NS::HdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess)
 {
-	initGsoapProxy(soapContext, guid, title, TWO_DOT_ZERO);
+	initGsoapProxy(repo, guid, title, TWO_DOT_ZERO);
 }
 
 std::string HdfProxy::getXmlNamespace() const
@@ -48,4 +48,3 @@ hid_t HdfProxy::openOrCreateRootGroup()
 
 	return status >= 0 ? H5Gopen(hdfFile, "/RESQML", H5P_DEFAULT) : H5Gcreate(hdfFile, "/RESQML", H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 }
-

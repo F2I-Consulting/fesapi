@@ -24,17 +24,29 @@ under the License.
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace std;
-using namespace epc;
+
+std::vector<RESQML2_NS::AbstractGridRepresentation const *> AbstractStratigraphicOrganizationInterpretation::getGridRepresentations() const
+{
+	return getRepository()->getSourceObjects<RESQML2_NS::AbstractGridRepresentation>(this);
+}
 
 unsigned int AbstractStratigraphicOrganizationInterpretation::getGridRepresentationCount() const
 {
-	return gridRepresentationSet.size();
+	const size_t count = getGridRepresentations().size();
+
+	if (count > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("Too moch associated grids");
+	}
+
+	return count;
 }
 
-RESQML2_NS::AbstractGridRepresentation* AbstractStratigraphicOrganizationInterpretation::getGridRepresentation(const unsigned int & index) const
+RESQML2_NS::AbstractGridRepresentation const * AbstractStratigraphicOrganizationInterpretation::getGridRepresentation(unsigned int index) const
 {
-	if (index >= getGridRepresentationCount()) {
-		throw range_error("The index of the grid representation to get is out of range.");
+	const std::vector<RESQML2_NS::AbstractGridRepresentation const *>& gridRepresentationSet = getGridRepresentations();
+
+	if (index >= gridRepresentationSet.size()) {
+		throw out_of_range("The index of the grid representation to get is out of range.");
 	}
 
 	return gridRepresentationSet[index];
@@ -42,19 +54,7 @@ RESQML2_NS::AbstractGridRepresentation* AbstractStratigraphicOrganizationInterpr
 
 bool AbstractStratigraphicOrganizationInterpretation::isAssociatedToGridRepresentation(RESQML2_NS::AbstractGridRepresentation* gridRep) const
 {
+	const std::vector<RESQML2_NS::AbstractGridRepresentation const *>& gridRepresentationSet = getGridRepresentations();
+
 	return find(gridRepresentationSet.begin(), gridRepresentationSet.end(), gridRep) != gridRepresentationSet.end();
 }
-
-vector<Relationship> AbstractStratigraphicOrganizationInterpretation::getAllEpcRelationships() const
-{
-	vector<Relationship> result = AbstractOrganizationInterpretation::getAllEpcRelationships();
-
-	for (size_t i = 0; i < gridRepresentationSet.size(); ++i) {
-		Relationship relRep(gridRepresentationSet[i]->getPartNameInEpcDocument(), "", gridRepresentationSet[i]->getUuid());
-		relRep.setSourceObjectType();
-		result.push_back(relRep);
-	}
-
-	return result;
-}
-

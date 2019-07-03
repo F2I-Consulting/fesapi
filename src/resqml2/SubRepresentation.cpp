@@ -34,43 +34,23 @@ using namespace RESQML2_NS;
 
 const char* SubRepresentation::XML_TAG = "SubRepresentation";
 
-vector<Relationship> SubRepresentation::getAllEpcRelationships() const
+void SubRepresentation::loadTargetRelationships() const
 {
-	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
-
-	const unsigned int supRepCount = getSupportingRepresentationCount();
-	for (unsigned int supRepIndex = 0; supRepIndex < supRepCount; ++supRepIndex) {
-		AbstractRepresentation* supportingRep = getSupportingRepresentation(supRepIndex);
-		if (!supportingRep->isPartial())
-		{
-			Relationship rel(supportingRep->getPartNameInEpcDocument(), "", supportingRep->getUuid());
-			rel.setDestinationObjectType();
-			result.push_back(rel);
-		}
-	}
-    
-	return result;
-}
-
-void SubRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
-{
-	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractRepresentation::loadTargetRelationships();
 
 	// Supporting representation
 	const unsigned int supRepCount = getSupportingRepresentationCount();
 	for (unsigned int supRepIndex = 0; supRepIndex < supRepCount; ++supRepIndex) {
 		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getSupportingRepresentationDor(supRepIndex);
-		RESQML2_NS::AbstractRepresentation* supportingRep = epcDoc->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
+		RESQML2_NS::AbstractRepresentation* supportingRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
 		if (supportingRep == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			supportingRep = getEpcDocument()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
+			getRepository()->createPartial(dor);
+			supportingRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
+			if (supportingRep == nullptr) {
+				throw invalid_argument("The DOR looks invalid.");
+			}
 		}
-		if (supportingRep == nullptr) {
-			throw invalid_argument("The DOR looks invalid.");
-		}
-		updateXml = false;
-		supportingRep->pushBackSubRepresentation(this);
-		updateXml = true;
+		getRepository()->addRelationship(this, supportingRep);
 	}
 }
 
@@ -103,18 +83,14 @@ void SubRepresentation::pushBackSupportingRepresentation(AbstractRepresentation 
 		throw invalid_argument("The supporting Representation cannot be null.");
 	}
 
-	// EPC
-	supportingRep->pushBackSubRepresentation(this);
+	getRepository()->addRelationship(this, supportingRep);
 
-	// XML
-	if (updateXml) {
-		pushBackXmlSupportingRepresentation(supportingRep);
-	}
+	pushBackXmlSupportingRepresentation(supportingRep);
 }
 
 AbstractRepresentation* SubRepresentation::getSupportingRepresentation(unsigned int index) const
 {
-	return static_cast<AbstractRepresentation*>(epcDocument->getDataObjectByUuid(getSupportingRepresentationUuid(index)));
+	return static_cast<AbstractRepresentation*>(repository->getDataObjectByUuid(getSupportingRepresentationUuid(index)));
 }
 
 std::string SubRepresentation::getSupportingRepresentationUuid(unsigned int index) const

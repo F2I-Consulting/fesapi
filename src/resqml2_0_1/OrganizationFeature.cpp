@@ -26,17 +26,19 @@ using namespace gsoap_resqml2_0_1;
 
 const char* OrganizationFeature::XML_TAG = "OrganizationFeature";
 
-OrganizationFeature::OrganizationFeature(soap* soapContext, const std::string & guid, const string & title, const resqml2__OrganizationKind & orgType)
+OrganizationFeature::OrganizationFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const string & title, resqml2__OrganizationKind orgType)
 {
-	if (soapContext == nullptr) {
-		throw invalid_argument("The soap context cannot be null.");
+	if (repo == nullptr) {
+		throw invalid_argument("The repo cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREOrganizationFeature(soapContext, 1);
+	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREOrganizationFeature(repo->getGsoapContext(), 1);
 	static_cast<_resqml2__OrganizationFeature*>(gsoapProxy2_0_1)->OrganizationKind = orgType;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	repo->addOrReplaceDataObject(this);
 }
 
 gsoap_resqml2_0_1::resqml2__OrganizationKind OrganizationFeature::getKind() const {

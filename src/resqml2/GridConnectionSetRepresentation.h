@@ -35,7 +35,7 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class in a gsoap context.
 		*/
-		GridConnectionSetRepresentation(class AbstractFeatureInterpretation* interp) : AbstractRepresentation(interp, nullptr) {}
+		GridConnectionSetRepresentation() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -54,8 +54,6 @@ namespace RESQML2_NS
         
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const;
-
-		DLL_IMPORT_OR_EXPORT virtual std::string getHdfProxyUuid() const = 0;
 
 		/**
 		* Get the cell index pair count of this grid connection representation
@@ -244,8 +242,6 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
 
 	private:
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
+		void loadTargetRelationships() const;
 	};
 }

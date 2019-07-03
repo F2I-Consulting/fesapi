@@ -1,5 +1,5 @@
 /*
-        stdsoap2.h 2.8.84
+        stdsoap2.h 2.8.86
 
         gSOAP runtime engine
 
@@ -31,7 +31,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_VERSION 20884
+#define GSOAP_VERSION 20886
 
 #ifdef WITH_SOAPDEFS_H
 # include "soapdefs.h"          /* include user-defined stuff in soapdefs.h */
@@ -1776,7 +1776,7 @@ typedef soap_int32 soap_mode;
 #define SOAP_TLSv1                              (SOAP_TLSv1_0 | SOAP_TLSv1_1 | SOAP_TLSv1_2 | SOAP_TLSv1_3)
 #define SOAP_SSLv3_TLSv1                        (SOAP_SSLv3 | SOAP_TLSv1)
 
-#define SOAP_SSL_CLIENT                         0x8000  /* client context flag for internal use */
+#define SOAP_SSL_CLIENT                         (0x8000)  /* client context flag for internal use */
 
 #define SOAP_SSL_DEFAULT                        SOAP_SSL_REQUIRE_SERVER_AUTHENTICATION
  
@@ -2916,8 +2916,9 @@ struct SOAP_CMAC soap
   unsigned int ipv6_multicast_if; /* in_addr_t in6addr->sin6_scope_id IPv6 value */
   char* ipv4_multicast_if; /* IP_MULTICAST_IF IPv4 setsockopt interface_addr */
   unsigned char ipv4_multicast_ttl; /* IP_MULTICAST_TTL value 0..255 */
-  int client_port; /* when nonnegative, client binds to this port before connect */
-  const char *client_interface; /* when non-NULL, use this client address */
+  const char *client_addr; /* when non-NULL, client binds to this address before connect */
+  int client_port; /* when nonnegative (and client_addr not set), client binds to this port before connect */
+  const char *client_interface; /* when non-NULL, override client-side interface address using this address */
   union {
     struct sockaddr addr;
     struct sockaddr_in in;

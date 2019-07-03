@@ -34,42 +34,29 @@ namespace COMMON_NS
 		* @param packageDirAbsolutePath		The directory where the EPC document is stored. Must end with a slash or back-slash
 		* @param externalFilePath			The relative path regarding packageDirectoryAbsolutePath where the external resource is located
 		*/
-		EpcExternalPartReference(const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
+		EpcExternalPartReference() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		EpcExternalPartReference(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath):
-			COMMON_NS::AbstractObject(fromGsoap), packageDirectoryAbsolutePath(packageDirAbsolutePath), relativeFilePath(externalFilePath) {}
+		EpcExternalPartReference(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap):
+			COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		EpcExternalPartReference(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
-			COMMON_NS::AbstractObject(fromGsoap), packageDirectoryAbsolutePath(packageDirAbsolutePath), relativeFilePath(externalFilePath) {}
+		EpcExternalPartReference(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
+			COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~EpcExternalPartReference() {}
 
-		/**
-		* Get the relative path regarding packageDirectoryAbsolutePath where the external resource is located.
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getRelativePath() const { return relativeFilePath; }
-
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const;
 
 	protected:
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-
-		std::vector<RESQML2_NS::AbstractRepresentation*> representationSourceObject;					/// All the representations that use this external reference.
-		std::vector<RESQML2_NS::AbstractProperty*> propertySourceObject;								/// All the properties that use this external reference.
-		std::string packageDirectoryAbsolutePath;												/// The directory where the EPC document is stored.
-		std::string relativeFilePath;															/// Must be relative to the location of the package
+		void loadTargetRelationships() const;
 	};
 }
-
