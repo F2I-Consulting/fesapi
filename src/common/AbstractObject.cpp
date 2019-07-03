@@ -754,25 +754,33 @@ std::string AbstractObject::getAliasTitleAtIndex(unsigned int index) const
 	}
 }
 
-const std::vector<RESQML2_NS::Activity*> & AbstractObject::getActivitySet() const
+std::vector<RESQML2_NS::Activity const *> AbstractObject::getActivitySet() const
 {
-	return activitySet;
+	return getRepository()->getSourceObjects<RESQML2_NS::Activity>(this);
 }
 
 unsigned int AbstractObject::getActivityCount() const
 {
-	return activitySet.size();
+	const size_t result = getActivitySet().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("There are too many associated activities.");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
-RESQML2_NS::Activity* AbstractObject::getActivity(unsigned int index) const
+RESQML2_NS::Activity const * AbstractObject::getActivity(unsigned int index) const
 {
-	if (partialObject != nullptr)
-			throw invalid_argument("The wrapped gsoap proxy must not be null");
+	if (partialObject != nullptr) {
+		throw invalid_argument("The wrapped gsoap proxy must not be null");
+	}
 
-		if (getActivityCount() <= index)
-			throw out_of_range("The index is out of range.");
+	const std::vector<RESQML2_NS::Activity const *>& activites = getActivitySet();
+	if (index >= activites.size())
+		throw out_of_range("The index is out of range.");
 
-	return activitySet[index];
+	return activites[index];
 }
 
 void AbstractObject::pushBackExtraMetadataV2_0_1(const std::string & key, const std::string & value)

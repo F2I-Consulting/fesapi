@@ -80,7 +80,6 @@ namespace COMMON_NS
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;
 		gsoap_eml2_1::eml21__AbstractObject* gsoapProxy2_1;
 		COMMON_NS::DataObjectRepository* repository;
-		std::vector<RESQML2_NS::Activity*> activitySet;
 
 		//Default constructor
 		AbstractObject();
@@ -328,7 +327,7 @@ namespace COMMON_NS
 		/**
 		* Get all the activities where the instance is involved.
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector<RESQML2_NS::Activity*> & getActivitySet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::Activity const *> getActivitySet() const;
 
 		/**
 		* Get the count of associated activities.
@@ -338,7 +337,7 @@ namespace COMMON_NS
 		/**
 		* Get the associated activity at a particular index.
 		*/
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::Activity* getActivity(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::Activity const * getActivity(unsigned int index) const;
 
 		/**
 		* Push back an extra metadata (not a standard one)

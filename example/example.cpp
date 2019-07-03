@@ -1640,11 +1640,11 @@ void deserializePropertyKindMappingFiles(COMMON_NS::DataObjectRepository * pck)
 
 void deserializeActivity(COMMON_NS::AbstractObject const * resqmlObject)
 {
-	if (resqmlObject->getActivitySet().size())
+	if (!resqmlObject->getActivitySet().empty())
 		cout << "Activities for object " << resqmlObject->getTitle() << endl;
-	for (unsigned int i = 0; i < resqmlObject->getActivitySet().size(); ++i)
+	for (size_t i = 0; i < resqmlObject->getActivitySet().size(); ++i)
 	{
-		RESQML2_NS::Activity* activity = resqmlObject->getActivitySet()[i];
+		RESQML2_NS::Activity const * activity = resqmlObject->getActivitySet()[i];
 		cout << "Activity : " << activity->getTitle() << endl;
 		cout << "Activity Template : " << activity->getActivityTemplate()->getTitle() << endl;
 		for (unsigned int j = 0; j < activity->getActivityTemplate()->getParameterCount(); ++j)
@@ -1655,45 +1655,34 @@ void deserializeActivity(COMMON_NS::AbstractObject const * resqmlObject)
 			cout << "Parameter max occurs : " << activity->getActivityTemplate()->getParameterMaxOccurences(paramTitle) << endl;
 			cout << "Parameter is input : " << activity->getActivityTemplate()->getParameterIsInput(paramTitle) << endl;
 			cout << "Parameter is output : " << activity->getActivityTemplate()->getParameterIsOutput(paramTitle) << endl;
-			if (activity->getParameterCount(paramTitle) > 0)
-			{
-				if (activity->isAFloatingPointQuantityParameter(paramTitle) == true)
-				{
+			if (activity->getParameterCount(paramTitle) > 0) {
+				if (activity->isAFloatingPointQuantityParameter(paramTitle)) {
 					vector<double> vals = activity->getFloatingPointQuantityParameterValue(paramTitle);
-					for (unsigned int k = 0; k < vals.size(); ++k)
-					{
+					for (size_t k = 0; k < vals.size(); ++k) {
 						cout << "Double value : " << vals[k] << endl;
 					}
 				}
-				else if (activity->isAnIntegerQuantityParameter(paramTitle) == true)
-				{
+				else if (activity->isAnIntegerQuantityParameter(paramTitle)) {
 					vector<LONG64> vals = activity->getIntegerQuantityParameterValue(paramTitle);
-					for (unsigned int k = 0; k < vals.size(); ++k)
-					{
+					for (size_t k = 0; k < vals.size(); ++k) {
 						cout << "Integer value : " << vals[k] << endl;
 					}
 				}
-				else if (activity->isAStringParameter(paramTitle) == true)
-				{
+				else if (activity->isAStringParameter(paramTitle)) {
 					vector<string> vals = activity->getStringParameterValue(paramTitle);
-					for (unsigned int k = 0; k < vals.size(); ++k)
-					{
+					for (size_t k = 0; k < vals.size(); ++k) {
 						cout << "String value : " << vals[k] << endl;
 					}
 				}
-				else if (activity->isAResqmlObjectParameter(paramTitle) == true)
-				{
+				else if (activity->isAResqmlObjectParameter(paramTitle)) {
 					vector<COMMON_NS::AbstractObject*> vals = activity->getResqmlObjectParameterValue(paramTitle);
-					for (unsigned int k = 0; k < vals.size(); ++k)
-					{
+					for (size_t k = 0; k < vals.size(); ++k) {
 						cout << "Object title : " << vals[k]->getTitle() << endl;
 					}
 				}
-				else
-				{
-					vector<unsigned int> paramIndex = activity->getParameterIndexOfTitle(paramTitle);
-					for (unsigned int k = 0; k < paramIndex.size(); ++k)
-					{
+				else {
+					const vector<unsigned int> & paramIndex = activity->getParameterIndexOfTitle(paramTitle);
+					for (size_t k = 0; k < paramIndex.size(); ++k) {
 						if (activity->isAFloatingPointQuantityParameter(paramIndex[k]))
 							cout << "Floating Point value : " << activity->getFloatingPointQuantityParameterValue(paramIndex[k]);
 						else if (activity->isAnIntegerQuantityParameter(paramIndex[k]))

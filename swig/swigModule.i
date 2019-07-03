@@ -178,7 +178,7 @@ namespace COMMON_NS
 		std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
 
 		unsigned int getActivityCount() const;
-		RESQML2_NS::Activity* getActivity (unsigned int index) const;
+		RESQML2_NS::Activity const * getActivity (unsigned int index) const;
 	};
 	
 	//************************************
