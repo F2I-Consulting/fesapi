@@ -100,9 +100,9 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::resqml2__MdReference getOriginKind() const = 0;
 
+		void loadTargetRelationships() const;
+
 	protected:
 		virtual void setXmlLocalCrs(RESQML2_NS::AbstractLocal3dCrs * localCrs) = 0;
-
-		void loadTargetRelationships() const;
 	};
 }

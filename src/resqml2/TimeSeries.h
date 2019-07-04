@@ -95,7 +95,6 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::AbstractProperty const *> getPropertySet() const;
 
-	protected:
 		void loadTargetRelationships() const;
 	};
 }

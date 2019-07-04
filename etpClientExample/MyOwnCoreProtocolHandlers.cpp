@@ -34,8 +34,8 @@ under the License.
 #include <resqml2_0_1/ContinuousPropertySeries.h>
 
 void setSessionToEtpHdfProxy(ETP_NS::AbstractSession* myOwnEtpSession) {
-	COMMON_NS::EpcDocument& epcDoc = dynamic_cast<MyOwnEtpClientSessionEpcBased*>(myOwnEtpSession)->epcDoc;
-	for (const auto & hdfProxy : epcDoc.getHdfProxySet())
+	COMMON_NS::DataObjectRepository& repo = dynamic_cast<MyOwnEtpClientSessionEpcBased*>(myOwnEtpSession)->repo;
+	for (const auto & hdfProxy : repo.getHdfProxySet())
 	{
 		ETP_NS::EtpHdfProxy* etpHdfProxy = dynamic_cast<ETP_NS::EtpHdfProxy*>(hdfProxy);
 		if (etpHdfProxy != nullptr && etpHdfProxy->getSession() == nullptr) {
@@ -162,12 +162,14 @@ void askUser(ETP_NS::AbstractSession* session)
 			Energistics::Etp::v12::Protocol::Store::PutDataObjects putDataObjects;
 			
 			// Fake the creation of an IJK Grid
-			COMMON_NS::EpcDocument epcDoc("../../fakeForIjkGrid.epc", COMMON_NS::EpcDocument::OVERWRITE);
-			COMMON_NS::AbstractHdfProxy* hdfProxy = epcDoc.createHdfProxy("", "Hdf Proxy", epcDoc.getStorageDirectory(), epcDoc.getName() + ".h5");
+			COMMON_NS::DataObjectRepository repo;
+			COMMON_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Hdf Proxy", "../..", "fakeForIjkGrid.h5", COMMON_NS::DataObjectRepository::OVERWRITE);
+			repo.setDefaultHdfProxy(hdfProxy);
 
-			RESQML2_0_1_NS::LocalDepth3dCrs* local3dCrs = epcDoc.createLocalDepth3dCrs("f951f4b7-684a-4c1b-bcd7-bc61d939b328", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
+			RESQML2_0_1_NS::LocalDepth3dCrs* local3dCrs = repo.createLocalDepth3dCrs("f951f4b7-684a-4c1b-bcd7-bc61d939b328", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);
+			repo.setDefaultCrs(local3dCrs);
 
-			RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkgrid = epcDoc.createIjkGridExplicitRepresentation(local3dCrs, "", "Put IJK Grid", 2, 1, 1);
+			RESQML2_0_1_NS::IjkGridExplicitRepresentation* ijkgrid = repo.createIjkGridExplicitRepresentation("", "Put IJK Grid", 2, 1, 1);
 			double nodes[48] = { 0, 0, 300, 375, 0, 300, 700, 0, 350, 0, 150, 300, 375, 150, 300, 700, 150, 350, /* SPLIT*/ 375, 0, 350, 375, 150, 350,
 				0, 0, 500, 375, 0, 500, 700, 0, 550, 0, 150, 500, 375, 150, 500, 700, 150, 550, /* SPLIT*/ 375, 0, 550, 375, 150, 550 };
 			unsigned int pillarOfCoordinateLine[2] = { 1, 4 };
@@ -185,8 +187,8 @@ void askUser(ETP_NS::AbstractSession* session)
 		if (commandTokens.size() == 1) {
 			if (commandTokens[0] == "GetXyzOfIjkGrids") {
 				setSessionToEtpHdfProxy(session);
-				COMMON_NS::EpcDocument& epcDoc = dynamic_cast<MyOwnEtpClientSessionEpcBased*>(session)->epcDoc;
-				auto ijkGridSet = epcDoc.getIjkGridRepresentationSet();
+				COMMON_NS::DataObjectRepository& repo = dynamic_cast<MyOwnEtpClientSessionEpcBased*>(session)->repo;
+				auto ijkGridSet = repo.getIjkGridRepresentationSet();
 				for (const auto & ijkGrid : ijkGridSet) {
 					if (ijkGrid->isPartial()) {
 						std::cout << "Partial Ijk Grid " << ijkGrid->getTitle() << " : " << ijkGrid->getUuid() << std::endl;
@@ -215,8 +217,8 @@ void askUser(ETP_NS::AbstractSession* session)
 					//*****************
 					auto propSet = ijkGrid->getPropertySet();
 					for (const auto & prop : propSet) {
-						RESQML2_0_1_NS::ContinuousProperty* continuousProp = dynamic_cast<RESQML2_0_1_NS::ContinuousProperty*>(prop);
-						if (continuousProp != nullptr && dynamic_cast<RESQML2_0_1_NS::ContinuousPropertySeries*>(continuousProp) == nullptr &&
+						RESQML2_0_1_NS::ContinuousProperty const * continuousProp = dynamic_cast<RESQML2_0_1_NS::ContinuousProperty const *>(prop);
+						if (continuousProp != nullptr && dynamic_cast<RESQML2_0_1_NS::ContinuousPropertySeries const *>(continuousProp) == nullptr &&
 							continuousProp->getAttachmentKind() == gsoap_resqml2_0_1::resqml2__IndexableElements::resqml2__IndexableElements__cells) {
 							std::cout << "Continuous property " << prop->getTitle() << " : " << prop->getUuid() << std::endl;
 							auto cellCount = ijkGrid->getCellCount();
@@ -237,22 +239,24 @@ void askUser(ETP_NS::AbstractSession* session)
 			}
 			else if (commandTokens[0] == "List") {
 				std::cout << "*** START LISTING ***" << std::endl;
-				COMMON_NS::EpcDocument& epcDoc = dynamic_cast<MyOwnEtpClientSessionEpcBased*>(session)->epcDoc;
-				for (const auto& entryPair : epcDoc.getDataObjectSet()) {
-					if (!entryPair.second->isPartial()) {
-						std::cout << entryPair.first << " : " << entryPair.second->getTitle() << std::endl;
-						std::cout << "*** SOURCE REL ***" << std::endl;
-						for (const auto& uuid : entryPair.second->getAllSourceRelationshipUuids()) {
-							std::cout << uuid << " : " << epcDoc.getDataObjectByUuid(uuid)->getXmlTag() << std::endl;
+				COMMON_NS::DataObjectRepository& repo = dynamic_cast<MyOwnEtpClientSessionEpcBased*>(session)->repo;
+				for (const auto& entryPair : repo.getDataObjects()) {
+					for (const auto obj : entryPair.second) {
+						if (!obj->isPartial()) {
+							std::cout << entryPair.first << " : " << obj->getTitle() << std::endl;
+							std::cout << "*** SOURCE REL ***" << std::endl;
+							for (auto srcObj : obj->getRepository()->getSourceObjects(obj)) {
+								std::cout << srcObj->getUuid() << " : " << srcObj->getXmlTag() << std::endl;
+							}
+							std::cout << "*** TARGET REL ***" << std::endl;
+							for (auto targetObj : obj->getRepository()->getTargetObjects(obj)) {
+								std::cout << targetObj->getUuid() << " : " << targetObj->getXmlTag() << std::endl;
+							}
+							std::cout << std::endl;
 						}
-						std::cout << "*** TARGET REL ***" << std::endl;
-						for (const auto& uuid : entryPair.second->getAllTargetRelationshipUuids()) {
-							std::cout << uuid << " : " << epcDoc.getDataObjectByUuid(uuid)->getXmlTag() << std::endl;
+						else {
+							std::cout << "PARTIAL " << entryPair.first << " : " << obj->getTitle() << std::endl;
 						}
-						std::cout << std::endl;
-					}
-					else {
-						std::cout << "PARTIAL " << entryPair.first << " : " << entryPair.second->getTitle() << std::endl;
 					}
 				}
 				std::cout << "*** END LISTING ***" << std::endl;
@@ -301,12 +305,10 @@ void askUser(ETP_NS::AbstractSession* session)
 	}
 
 	session->close();
-	dynamic_cast<MyOwnEtpClientSessionEpcBased*>(session)->epcDoc.close();
 }
 
 void MyOwnCoreProtocolHandlers::on_OpenSession(const Energistics::Etp::v12::Protocol::Core::OpenSession & os, int64_t correlationId)
 {
-	dynamic_cast<MyOwnEtpClientSessionEpcBased*>(session)->epcDoc.open("../../fakeForEtpClient.epc", COMMON_NS::EpcDocument::ETP);
 	// Ask the user about what he wants to do on another thread
 	// The main thread is on reading mode
 	std::thread askUserThread(askUser, session);

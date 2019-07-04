@@ -29,16 +29,18 @@ using namespace epc;
 
 const char* WeightingFunctionDictionary::XML_TAG = "WeightingFunctionDictionary";
 
-WeightingFunctionDictionary::WeightingFunctionDictionary(soap* soapContext,
+WeightingFunctionDictionary::WeightingFunctionDictionary(COMMON_NS::DataObjectRepository * repo,
 	const std::string & guid,
 	const std::string & title)
 {
-	if (soapContext == nullptr) throw invalid_argument("A WeightingFunctionDictionary must be associated to a soap context.");
+	if (repo == nullptr) throw invalid_argument("A WeightingFunctionDictionary must be associated to a repo.");
 
-	gsoapProxy2_2 = soap_new_witsml2__WeightingFunctionDictionary(soapContext, 1);
+	gsoapProxy2_2 = soap_new_witsml2__WeightingFunctionDictionary(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	repo->addOrReplaceDataObject(this);
 }
 
 std::string WeightingFunctionDictionary::getWeightingFunctionUuid(unsigned long index) const
@@ -60,7 +62,7 @@ std::string WeightingFunctionDictionary::getWeightingFunctionUuid(unsigned long 
 WeightingFunction* WeightingFunctionDictionary::getWeightingFunction(unsigned long index) const {
 	witsml2__WeightingFunctionDictionary* dict = static_cast<witsml2__WeightingFunctionDictionary*>(gsoapProxy2_2);
 
-	WeightingFunction* wf = getEpcDocument()->getDataObjectByUuid<WeightingFunction>(dict->WeightingFunction[index]->uuid);
+	WeightingFunction* wf = getRepository()->getDataObjectByUuid<WeightingFunction>(dict->WeightingFunction[index]->uuid);
 	return wf == nullptr ? new WITSML2_1_NS::WeightingFunction(dict->WeightingFunction[index]) : wf;
 }
 
@@ -77,38 +79,22 @@ std::vector<WeightingFunction*> WeightingFunctionDictionary::getWeightingFunctio
 
 void WeightingFunctionDictionary::pushBackWeightingFunction(WeightingFunction* wf)
 {
-	if (updateXml && wf->weightingFunctionDictionary != nullptr) {
-		throw invalid_argument("Cannot modify the existing dictionary of a weighting function");
-	}
-	wf->weightingFunctionDictionary = this;
+	getRepository()->addRelationship(this, wf);
 
-	if (updateXml)
-	{
-		witsml2__WeightingFunctionDictionary* dict = static_cast<witsml2__WeightingFunctionDictionary*>(gsoapProxy2_2);
-		dict->WeightingFunction.push_back(static_cast<witsml2__WeightingFunction*>(wf->getGsoapProxy2_2()));
-	}
+	witsml2__WeightingFunctionDictionary* dict = static_cast<witsml2__WeightingFunctionDictionary*>(gsoapProxy2_2);
+	dict->WeightingFunction.push_back(static_cast<witsml2__WeightingFunction*>(wf->getGsoapProxy2_2()));
 }
 
-void WeightingFunctionDictionary::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
+void WeightingFunctionDictionary::loadTargetRelationships() const
 {
 	witsml2__WeightingFunctionDictionary* dict = static_cast<witsml2__WeightingFunctionDictionary*>(gsoapProxy2_2);
 
-	updateXml = false;
 	for (size_t index = 0; index < dict->WeightingFunction.size(); ++index) {
-		WeightingFunction* wf = epcDoc->getDataObjectByUuid<WeightingFunction>(getWeightingFunctionUuid(index));
-		pushBackWeightingFunction(wf);
-		wf->resolveTargetRelationships(epcDoc);
+		WeightingFunction* wf = getRepository()->getDataObjectByUuid<WeightingFunction>(dict->WeightingFunction[index]->uuid);
+		if (wf == nullptr) {
+			wf = new WeightingFunction(dict->WeightingFunction[index]);
+			getRepository()->addOrReplaceDataObject(wf);
+		}
+		getRepository()->addRelationship(this, wf);
 	}
-	updateXml = true;
-}
-
-DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> WeightingFunctionDictionary::getAllSourceRelationships() const
-{
-	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
-	return result;
-}
-
-DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> WeightingFunctionDictionary::getAllTargetRelationships() const
-{
-	return vector<Relationship>();
 }

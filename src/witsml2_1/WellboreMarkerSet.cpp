@@ -25,7 +25,6 @@ under the License.
 using namespace std;
 using namespace WITSML2_1_NS;
 using namespace gsoap_eml2_2;
-using namespace epc;
 
 const char* WellboreMarkerSet::XML_TAG = "WellboreMarkerSet";
 
@@ -54,7 +53,7 @@ gsoap_eml2_2::eml22__DataObjectReference* WellboreMarkerSet::getWellboreDor() co
 
 class Wellbore* WellboreMarkerSet::getWellbore() const
 {
-	return getEpcDocument()->getDataObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
+	return getRepository()->getDataObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
 }
 
 void WellboreMarkerSet::setWellbore(Wellbore* witsmlWellbore)
@@ -62,50 +61,19 @@ void WellboreMarkerSet::setWellbore(Wellbore* witsmlWellbore)
 	if (witsmlWellbore == nullptr) {
 		throw invalid_argument("Cannot set a null witsml Wellbore to a witsml wellbore marker set");
 	}
+	if (getRepository() == nullptr) {
+		witsmlWellbore->getRepository()->addOrReplaceDataObject(this);
+	}
 
 	// EPC
-	witsmlWellbore->wellboreMarkerSetSet.push_back(this);
+	getRepository()->addRelationship(this, witsmlWellbore);
 
 	// XML
-	if (updateXml) {
-		witsml2__WellboreMarkerSet* wms = static_cast<witsml2__WellboreMarkerSet*>(gsoapProxy2_2);
-		wms->Wellbore = witsmlWellbore->newEml22Reference();
-	}
+	witsml2__WellboreMarkerSet* wms = static_cast<witsml2__WellboreMarkerSet*>(gsoapProxy2_2);
+	wms->Wellbore = witsmlWellbore->newEml22Reference();
 }
 
 void WellboreMarkerSet::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
 {
-	gsoap_eml2_2::eml22__DataObjectReference* dor = getWellboreDor();
-	Wellbore* wellbore = epcDoc->getDataObjectByUuid<Wellbore>(dor->Uuid);
-	/*
-	if (well == nullptr) { // partial transfer
-	getEpcDocument()->createPartial(dor);
-	well = getEpcDocument()->getDataObjectByUuid<well>(dor->Uuid);
-	}
-	*/
-	if (wellbore == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-	updateXml = false;
-	setWellbore(wellbore);
-	updateXml = true;
-}
-
-DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> WellboreMarkerSet::getAllSourceRelationships() const
-{
-	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
-	return result;
-}
-
-DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> WellboreMarkerSet::getAllTargetRelationships() const
-{
-	vector<Relationship> result;
-
-	// XML forward relationship
-	Wellbore* wellbore = getWellbore();
-	Relationship relWellbore(wellbore->getPartNameInEpcDocument(), "", wellbore->getUuid());
-	relWellbore.setDestinationObjectType();
-	result.push_back(relWellbore);
-
-	return result;
+	convertDorIntoRel<Wellbore>(getWellboreDor());
 }

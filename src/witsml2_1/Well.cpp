@@ -24,24 +24,25 @@ under the License.
 using namespace std;
 using namespace WITSML2_1_NS;
 using namespace gsoap_eml2_2;
-using namespace epc;
 using namespace COMMON_NS;
 
 const char* Well::XML_TAG = "Well";
 
-Well::Well(soap* soapContext,
+Well::Well(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid,
 			const std::string & title)
 {
-	if (soapContext == nullptr) throw invalid_argument("A soap context must exist.");
+	if (repo == nullptr) throw invalid_argument("A repo must exist.");
 
-	gsoapProxy2_2 = soap_new_witsml2__Well(soapContext, 1);
+	gsoapProxy2_2 = soap_new_witsml2__Well(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	repo->addOrReplaceDataObject(this);
 }
 
-Well::Well(soap* soapContext,
+Well::Well(COMMON_NS::DataObjectRepository * repo,
 		const std::string & guid,
 		const std::string & title,
 		const std::string & operator_,
@@ -51,11 +52,11 @@ Well::Well(soap* soapContext,
 		witsml2__WellDirection directionWell
 	)
 {
-	if (soapContext == nullptr) {
-		throw invalid_argument("A soap context must exist.");
+	if (repo == nullptr) {
+		throw invalid_argument("A repo must exist.");
 	}
 
-	gsoapProxy2_2 = soap_new_witsml2__Well(soapContext, 1);
+	gsoapProxy2_2 = soap_new_witsml2__Well(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -64,17 +65,19 @@ Well::Well(soap* soapContext,
 
 	witsml2__Well* well = static_cast<witsml2__Well*>(gsoapProxy2_2);
 
-	well->StatusWell = (eml22__WellStatus *)soap_malloc(soapContext, sizeof(eml22__WellStatus));
+	well->StatusWell = (eml22__WellStatus *)soap_malloc(repo->getGsoapContext(), sizeof(eml22__WellStatus));
 	*well->StatusWell = statusWell;
 
-	well->PurposeWell = (witsml2__WellPurpose *)soap_malloc(soapContext, sizeof(witsml2__WellPurpose));
+	well->PurposeWell = (witsml2__WellPurpose *)soap_malloc(repo->getGsoapContext(), sizeof(witsml2__WellPurpose));
 	*well->PurposeWell = purposeWell;
 
-	well->FluidWell = (witsml2__WellFluid *)soap_malloc(soapContext, sizeof(witsml2__WellFluid));
+	well->FluidWell = (witsml2__WellFluid *)soap_malloc(repo->getGsoapContext(), sizeof(witsml2__WellFluid));
 	*well->FluidWell = fluidWell;
 
-	well->DirectionWell = (witsml2__WellDirection *)soap_malloc(soapContext, sizeof(witsml2__WellDirection));
+	well->DirectionWell = (witsml2__WellDirection *)soap_malloc(repo->getGsoapContext(), sizeof(witsml2__WellDirection));
 	*well->DirectionWell = directionWell;
+
+	repo->addOrReplaceDataObject(this);
 }
 
 void Well::setOperator(const string & operator_) 
@@ -187,19 +190,4 @@ void Well::pushBackDatum(
 unsigned int Well::getDatumCount() const
 {
 	return static_cast<witsml2__Well*>(gsoapProxy2_2)->WellDatum.size();
-}
-
-vector<Relationship> Well::getAllEpcRelationships() const
-{
-	vector<Relationship> result;
-
-	// XML backward relationship
-	for (size_t i = 0; i < wellboreSet.size(); ++i)
-	{
-		Relationship relWellbore(wellboreSet[i]->getPartNameInEpcDocument(), "", wellboreSet[i]->getUuid());
-		relWellbore.setSourceObjectType();
-		result.push_back(relWellbore);
-	}
-
-	return result;
 }

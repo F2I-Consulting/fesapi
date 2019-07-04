@@ -174,20 +174,6 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
     contactRep->Contact.push_back(contactPatch);
 }
 
-std::string SealedSurfaceFrameworkRepresentation::getHdfProxyUuid() const
-{
-    string result;
-    _resqml2__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml2__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
-
-    if (!orgRep->SealedContactRepresentation.empty() && static_cast<resqml2__SealedContactRepresentationPart*>(orgRep->SealedContactRepresentation[0])->IdenticalNodeIndices != nullptr)
-    {
-        resqml2__SealedContactRepresentationPart *sealedContactRep = static_cast<resqml2__SealedContactRepresentationPart*>(orgRep->SealedContactRepresentation[0]);
-        result = static_cast<resqml2__IntegerHdf5Array *>(sealedContactRep->IdenticalNodeIndices)->Values->HdfProxy->UUID;
-    }
-
-    return result;
-}
-
 unsigned int SealedSurfaceFrameworkRepresentation::getContactCount() const
 {
 	_resqml2__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml2__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);

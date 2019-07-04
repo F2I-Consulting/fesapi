@@ -31,16 +31,18 @@ using namespace epc;
 
 const char* ToolErrorModelDictionary::XML_TAG = "ToolErrorModelDictionary";
 
-ToolErrorModelDictionary::ToolErrorModelDictionary(soap* soapContext,
+ToolErrorModelDictionary::ToolErrorModelDictionary(COMMON_NS::DataObjectRepository * repo,
 	const std::string & guid,
 	const std::string & title)
 {
-	if (soapContext == nullptr) throw invalid_argument("A Tool Error Model Dictionary must be associated to a soap context.");
+	if (repo == nullptr) throw invalid_argument("A Tool Error Model Dictionary must be associated to a repo.");
 
-	gsoapProxy2_2 = soap_new_witsml2__ToolErrorModelDictionary(soapContext, 1);
+	gsoapProxy2_2 = soap_new_witsml2__ToolErrorModelDictionary(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	repo->addOrReplaceDataObject(this);
 }
 
 std::string ToolErrorModelDictionary::getToolErrorModelUuid(unsigned long index) const
@@ -62,7 +64,7 @@ std::string ToolErrorModelDictionary::getToolErrorModelUuid(unsigned long index)
 ToolErrorModel* ToolErrorModelDictionary::getToolErrorModel(unsigned long index) const {
 	witsml2__ToolErrorModelDictionary* dict = static_cast<witsml2__ToolErrorModelDictionary*>(gsoapProxy2_2);
 
-	ToolErrorModel* tem = getEpcDocument()->getDataObjectByUuid<ToolErrorModel>(dict->ToolErrorModel[index]->uuid);
+	ToolErrorModel* tem = getRepository()->getDataObjectByUuid<ToolErrorModel>(dict->ToolErrorModel[index]->uuid);
 	return tem == nullptr ? new WITSML2_1_NS::ToolErrorModel(dict->ToolErrorModel[index]) : tem;
 }
 
@@ -79,56 +81,22 @@ std::vector<ToolErrorModel*> ToolErrorModelDictionary::getToolErrorModels() cons
 
 void ToolErrorModelDictionary::pushBackToolErrorModel(ToolErrorModel* tem)
 {
-	if (updateXml && tem->toolErrorModelDictionary != nullptr) {
-		throw invalid_argument("Cannot modify the existing dictionary of a tool error model");
-	}
-	tem->toolErrorModelDictionary = this;
+	getRepository()->addRelationship(this, tem);
 
-	if (updateXml) {
-		witsml2__ToolErrorModelDictionary* dict = static_cast<witsml2__ToolErrorModelDictionary*>(gsoapProxy2_2);
-		dict->ToolErrorModel.push_back(static_cast<witsml2__ToolErrorModel*>(tem->getGsoapProxy2_2()));
-	}
+	witsml2__ToolErrorModelDictionary* dict = static_cast<witsml2__ToolErrorModelDictionary*>(gsoapProxy2_2);
+	dict->ToolErrorModel.push_back(static_cast<witsml2__ToolErrorModel*>(tem->getGsoapProxy2_2()));
 }
 
-void ToolErrorModelDictionary::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
+void ToolErrorModelDictionary::loadTargetRelationships() const
 {
 	witsml2__ToolErrorModelDictionary* dict = static_cast<witsml2__ToolErrorModelDictionary*>(gsoapProxy2_2);
 
-	updateXml = false;
 	for (size_t index = 0; index < dict->ToolErrorModel.size(); ++index) {
-		ToolErrorModel* tem = epcDoc->getDataObjectByUuid<ToolErrorModel>(getToolErrorModelUuid(index));
-		pushBackToolErrorModel(tem);
-		tem->resolveTargetRelationships(epcDoc);
-	}
-	updateXml = true;
-}
-
-DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ToolErrorModelDictionary::getAllSourceRelationships() const
-{
-	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
-	return result;
-}
-
-DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ToolErrorModelDictionary::getAllTargetRelationships() const
-{
-	vector<Relationship> result;
-	witsml2__ToolErrorModelDictionary* dict = static_cast<witsml2__ToolErrorModelDictionary*>(gsoapProxy2_2);
-
-	vector<string> uuidAlreadyInserted;
-	// XML forward relationship
-	for (size_t index = 0; index < dict->ToolErrorModel.size(); ++index) {
-		ToolErrorModel* tem = getEpcDocument()->getDataObjectByUuid<ToolErrorModel>(getToolErrorModelUuid(index));
-		std::vector<ErrorTerm*> ets = tem->getErrorTermSet();
-		for (size_t subIndex = 0; subIndex < ets.size(); ++subIndex) {
-			string errorTermUuid = ets[subIndex]->getUuid();
-			if (std::find(uuidAlreadyInserted.begin(), uuidAlreadyInserted.end(), errorTermUuid) == uuidAlreadyInserted.end()) {
-				Relationship rel(ets[subIndex]->getPartNameInEpcDocument(), "", errorTermUuid);
-				rel.setDestinationObjectType();
-				result.push_back(rel);
-				uuidAlreadyInserted.push_back(errorTermUuid);
-			}
+		ToolErrorModel* tem = getRepository()->getDataObjectByUuid<ToolErrorModel>(dict->ToolErrorModel[index]->uuid);
+		if (tem == nullptr) {
+			tem = new ToolErrorModel(dict->ToolErrorModel[index]);
+			getRepository()->addOrReplaceDataObject(tem);
 		}
+		getRepository()->addRelationship(this, tem);
 	}
-
-	return result;
 }

@@ -486,8 +486,7 @@ namespace RESQML2_NS
 	class AbstractValuesProperty : public RESQML2_NS::AbstractProperty
 	{
 	public:
-		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG = 3, ULONG = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
-		AbstractValuesProperty::hdfDatatypeEnum getValuesHdfDatatype() const;
+		COMMON_NS::AbstractObject::hdfDatatypeEnum getValuesHdfDatatype() const;
 		virtual std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64 nullValue) = 0;
 		
 		long getLongValuesOfPatch(unsigned int patchIndex, long * values) const;

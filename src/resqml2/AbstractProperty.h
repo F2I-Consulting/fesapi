@@ -232,8 +232,6 @@ namespace RESQML2_NS
 		*/
 		bool validate();
 
-	protected:
-
 		virtual void loadTargetRelationships() const;
 	};
 }

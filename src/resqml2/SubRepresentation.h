@@ -190,7 +190,6 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getSupportingRepresentationContentType() const;
 
-	private:
 		void loadTargetRelationships() const;
 	};
 }

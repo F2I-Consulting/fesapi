@@ -206,7 +206,7 @@ void serializePerforations(COMMON_NS::DataObjectRepository * pck)
 	wellboreCompletion->setPerforationHistoryStartDate(1, 1, 1514764800);
 }
 
-void serializeGraphicalInformationSet(COMMON_NS::EpcDocument * pck)
+void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * pck)
 {
 	common::GraphicalInformationSet* graphicalInformationSet = pck->createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
 
@@ -1753,7 +1753,7 @@ bool serialize(const string & filePath)
 	serializeRepresentationSetRepresentation(&repo, hdfProxy);
 	serializeFluidBoundary(repo, hdfProxy);
 	serializeRockFluidOrganization(repo, hdfProxy);
-	serializeGraphicalInformationSet(&pck);
+	serializeGraphicalInformationSet(&repo);
 	// Add an extended core property before to serialize
 	pck.setExtendedCoreProperty("F2I-ExtendedCoreProp", "TestingVersion");
 
@@ -3209,7 +3209,7 @@ void deserializePerforations(COMMON_NS::DataObjectRepository & pck)
 	}
 }
 
-void deserializeGraphicalInformationSet(COMMON_NS::EpcDocument & pck)
+void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 {
 	std::cout << "GRAPHICAL INFORMATIONS" << std::endl;
 
@@ -4023,7 +4023,7 @@ void deserialize(const string & inputFile)
 	}
 
 	// GRAPHICAL INFORMATION
-	deserializeGraphicalInformationSet(pck);
+	deserializeGraphicalInformationSet(repo);
 
 	std::cout << endl << repo.getWarnings().size() << " WARNING(S)" << endl;
 	for (size_t i = 0; i < repo.getWarnings().size(); ++i) {

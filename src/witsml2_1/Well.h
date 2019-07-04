@@ -27,14 +27,14 @@ namespace WITSML2_1_NS
 	public:
 		/**
 		* Creates an instance of this class in a gsoap context.
-		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
-		* @param guid		The guid to set to this instance. If empty then a new guid will be generated.
+		* @param repo	The repo where the underlying gsoap proxy is going to be created.
+		* @param guid	The guid to set to this instance. If empty then a new guid will be generated.
 		*/
-		Well(soap* soapContext,
+		Well(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid,
 			const std::string & title);
 
-		Well(soap* soapContext,
+		Well(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid,
 			const std::string & title,
 			const std::string & operator_,
@@ -77,26 +77,11 @@ namespace WITSML2_1_NS
 			const unsigned int & verticalCrsEpsgCode);
 
 		unsigned int getDatumCount() const;
-		
-		/**
-		* Resolve all relationships of the object in an epc document.
-		* Does nothing since there is no forward relationship.
-		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc) {}
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-
-		const std::vector<Wellbore*>& getWellbores() const { return wellboreSet; }
 
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
 
-	protected:
-
-		// backwards relationship
-		std::vector<Wellbore*> wellboreSet;
-
-		friend void Wellbore::setWell(Well* witsmlWell);
+	private:
+		void loadTargetRelationships() const {}
 	};
 }
-

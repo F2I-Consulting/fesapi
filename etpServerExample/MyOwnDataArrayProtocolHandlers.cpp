@@ -28,8 +28,9 @@ under the License.
 
 void MyOwnDataArrayProtocolHandlers::on_GetDataArrays(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrays & gda, int64_t correlationId)
 {
-	COMMON_NS::EpcDocument epcDoc(epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
-	std::string resqmlResult = epcDoc.deserialize();
+	COMMON_NS::EpcDocument epcDoc(epcFileName);
+	COMMON_NS::DataObjectRepository repo;
+	std::string resqmlResult = epcDoc.deserializeInto(repo);
 
 	Energistics::Etp::v12::Protocol::DataArray::GetDataArraysResponse gdaResponse;
 
@@ -37,7 +38,7 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrays(const Energistics::Etp::v1
 		Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayIdentifier& dai = element.second;
 		std::cout << "Data array received uri : " << dai.m_uri << std::endl;
 
-		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(epcDoc, session, dai.m_uri);
+		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(repo, session, dai.m_uri);
 		if (obj == nullptr) {
 			gdaResponse.m_errors[element.first].m_message = "The URI cannot be resolved to an object in the store";
 			gdaResponse.m_errors[element.first].m_code = 9;
@@ -56,7 +57,7 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrays(const Energistics::Etp::v1
 		Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArray da;
 		da.m_dimensions.reserve(elemCountPerDim.size());
 		unsigned long long globalElemCount = 1;
-		for (auto i = 0; i < elemCountPerDim.size(); ++i) {
+		for (size_t i = 0; i < elemCountPerDim.size(); ++i) {
 			da.m_dimensions.push_back(elemCountPerDim[i]);
 			globalElemCount *= elemCountPerDim[i];
 		}
@@ -162,8 +163,9 @@ void MyOwnDataArrayProtocolHandlers::on_PutDataArrays(const Energistics::Etp::v1
 {
 	std::cout << "on_PutDataArray : DO ALMOST NOTHING FOR NOW" << std::endl;
 
-	COMMON_NS::EpcDocument epcDoc(epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
-	std::string resqmlResult = epcDoc.deserialize();
+	COMMON_NS::EpcDocument epcDoc(epcFileName);
+	COMMON_NS::DataObjectRepository repo;
+	std::string resqmlResult = epcDoc.deserializeInto(repo);
 
 	for (Energistics::Etp::v12::Datatypes::DataArrayTypes::PutDataArraysType pdat : pda.m_dataArrays) {
 		std::cout << "PutDataArray in resource " << pdat.m_uri << " at path " << pdat.m_pathInResource << std::endl;;
@@ -171,7 +173,7 @@ void MyOwnDataArrayProtocolHandlers::on_PutDataArrays(const Energistics::Etp::v1
 			std::cout << "Dimension " << i << " with count : " << pdat.m_dimensions[i] << std::endl;
 		}
 
-		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(epcDoc, session, pdat.m_uri);
+		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(repo, session, pdat.m_uri);
 		if (obj == nullptr) {
 			continue;
 		}
@@ -206,8 +208,9 @@ void MyOwnDataArrayProtocolHandlers::on_PutDataArrays(const Energistics::Etp::v1
 
 void MyOwnDataArrayProtocolHandlers::on_GetDataArrayMetadata(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadata & gdam, int64_t correlationId)
 {
-	COMMON_NS::EpcDocument epcDoc(epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
-	std::string resqmlResult = epcDoc.deserialize();
+	COMMON_NS::EpcDocument epcDoc(epcFileName);
+	COMMON_NS::DataObjectRepository repo;
+	std::string resqmlResult = epcDoc.deserializeInto(repo);
 
 	Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadataResponse gdamResponse;
 
@@ -215,7 +218,7 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrayMetadata(const Energistics::
 		Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayIdentifier& dai = element.second;
 		std::cout << "GetDataArrayMetadata received uri : " << dai.m_uri << std::endl;
 
-		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(epcDoc, session, dai.m_uri);
+		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(repo, session, dai.m_uri);
 		if (obj == nullptr) {
 			gdamResponse.m_errors[element.first].m_message = "The URI cannot be resolved to an object in the store";
 			gdamResponse.m_errors[element.first].m_code = 9;

@@ -178,15 +178,15 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
+		/**
+		* Resolve all relationships of the object in an epc document.
+		*/
+		void loadTargetRelationships() const;
+
 	private:
 		gsoap_eml2_1::witsml2__PerforationSetInterval* getPerforation(unsigned int index) const;
 
 		gsoap_eml2_1::witsml2__PerforationStatusHistory* getPerforationHistoryEntry(unsigned int index,
 			unsigned int perforationIndex) const;
-
-		/**
-		* Resolve all relationships of the object in an epc document.
-		*/
-		void loadTargetRelationships() const;
 	};
 }

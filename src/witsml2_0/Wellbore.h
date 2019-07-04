@@ -75,8 +75,6 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
-	protected:
-
 		/**
 		* Resolve all relationships of the object in the repository.
 		*/

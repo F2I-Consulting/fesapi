@@ -226,14 +226,13 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT bool hasGeometry() const;
 
+		void loadTargetRelationships() const;
+
 	private:
 
 		/**
 		* Get the information to resolve the associated deviation survey. It can return a null pointer.
 		*/
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getDeviationSurveyDor() const;
-
-	protected:
-		void loadTargetRelationships() const;
 	};
 }

@@ -2844,7 +2844,7 @@ namespace RESQML2_0_1_NS
 		double getMdFirstValue() const;
 
 		unsigned int getMdValuesCount() const;
-		RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum getMdHdfDatatype() const;
+		COMMON_NS::AbstractObject::hdfDatatypeEnum getMdHdfDatatype() const;
 		void getMdAsDoubleValues(double * values) const;
 		void getMdAsFloatValues(float * values) const;
 		

@@ -25,5 +25,5 @@ namespace ETP_NS {
 }
 
 namespace Helpers {
-	COMMON_NS::AbstractObject* getObjectFromUri(const COMMON_NS::EpcDocument & epcDoc, ETP_NS::AbstractSession* session, const std::string & uri);
+	COMMON_NS::AbstractObject* getObjectFromUri(const COMMON_NS::DataObjectRepository & repo, ETP_NS::AbstractSession* session, const std::string & uri);
 };

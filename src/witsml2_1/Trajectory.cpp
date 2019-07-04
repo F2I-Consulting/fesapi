@@ -25,14 +25,13 @@ under the License.
 using namespace std;
 using namespace WITSML2_1_NS;
 using namespace gsoap_eml2_2;
-using namespace epc;
 
 const char* Trajectory::XML_TAG = "Trajectory";
 
 Trajectory::Trajectory(Wellbore* witsmlWellbore,
 	const std::string & guid,
 	const std::string & title,
-	const witsml2__ChannelStatus & growingStatus) :resqmlWellboreTrajectoryRepresentation(nullptr)
+	witsml2__ChannelStatus growingStatus)
 {
 	if (witsmlWellbore == nullptr) throw invalid_argument("A trajectory must be associated to a well.");
 
@@ -53,7 +52,7 @@ gsoap_eml2_2::eml22__DataObjectReference* Trajectory::getWellboreDor() const
 
 class Wellbore* Trajectory::getWellbore() const
 {
-	return getEpcDocument()->getDataObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
+	return getRepository()->getDataObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
 }
 
 void Trajectory::setWellbore(Wellbore* witsmlWellbore)
@@ -61,38 +60,37 @@ void Trajectory::setWellbore(Wellbore* witsmlWellbore)
 	if (witsmlWellbore == nullptr) {
 		throw invalid_argument("Cannot set a null witsml Wellbore to a witsml trajectory");
 	}
-
-	// EPC
-	witsmlWellbore->trajectorySet.push_back(this);
-
-	// XML
-	if (updateXml) {
-		witsml2__Trajectory* traj = static_cast<witsml2__Trajectory*>(gsoapProxy2_2);
-		traj->Wellbore = witsmlWellbore->newEml22Reference();
+	if (getRepository() == nullptr) {
+		witsmlWellbore->getRepository()->addOrReplaceDataObject(this);
 	}
+
+	getRepository()->addRelationship(this, witsmlWellbore);
+
+	witsml2__Trajectory* traj = static_cast<witsml2__Trajectory*>(gsoapProxy2_2);
+	traj->Wellbore = witsmlWellbore->newEml22Reference();
 }
 
-witsml2__TrajectoryStation* Trajectory::getTrajectoryStation(const unsigned int & trajStationIndex) const
+witsml2__TrajectoryStation* Trajectory::getTrajectoryStation(unsigned int trajStationIndex) const
 {
 	witsml2__Trajectory* traj = static_cast<witsml2__Trajectory*>(gsoapProxy2_2);
 	if (traj->TrajectoryStation.size() <= trajStationIndex) {
-		throw range_error("The trajectory station is out of range");
+		throw out_of_range("The trajectory station is out of range");
 	}
 
 	return traj->TrajectoryStation[trajStationIndex];
 }
 
-double Trajectory::getMd(const unsigned int & trajStationIndex) const
+double Trajectory::getMd(unsigned int trajStationIndex) const
 {
 	return getTrajectoryStation(trajStationIndex)->Md->__item;
 }
 
-eml22__LengthUom Trajectory::getMdUom(const unsigned int & trajStationIndex) const
+eml22__LengthUom Trajectory::getMdUom(unsigned int trajStationIndex) const
 {
 	return getTrajectoryStation(trajStationIndex)->Md->uom;
 }
 
-std::string Trajectory::getMdDatum(const unsigned int & trajStationIndex) const
+std::string Trajectory::getMdDatum(unsigned int trajStationIndex) const
 {
 	return getTrajectoryStation(trajStationIndex)->Md->datum;
 }
@@ -102,47 +100,12 @@ unsigned int Trajectory::getTrajectoryStationCount() const
 	return static_cast<witsml2__Trajectory*>(gsoapProxy2_2)->TrajectoryStation.size();
 }
 
-witsml2__TrajStationType Trajectory::getTrajStationType(const unsigned int & trajStationIndex) const
+witsml2__TrajStationType Trajectory::getTrajStationType(unsigned int trajStationIndex) const
 {
 	return getTrajectoryStation(trajStationIndex)->TypeTrajStation;
 }
 
-void Trajectory::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void Trajectory::loadTargetRelationships() const
 {
-	eml22__DataObjectReference* dor = getWellboreDor();
-	Wellbore* wellbore = epcDoc->getDataObjectByUuid<Wellbore>(dor->Uuid);
-	/*
-	if (well == nullptr) { // partial transfer
-	getEpcDocument()->createPartial(dor);
-	well = getEpcDocument()->getDataObjectByUuid<well>(dor->Uuid);
-	}
-	*/
-	if (wellbore == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-	updateXml = false;
-	setWellbore(wellbore);
-	updateXml = true;
+	convertDorIntoRel<Wellbore>(getWellboreDor());
 }
-
-vector<Relationship> Trajectory::getAllEpcRelationships() const
-{
-	vector<Relationship> result;
-
-	// XML forward relationship
-	Wellbore* wellbore = getWellbore();
-	Relationship relWellbore(wellbore->getPartNameInEpcDocument(), "", wellbore->getUuid());
-	relWellbore.setDestinationObjectType();
-	result.push_back(relWellbore);
-
-	// XML backward relationship
-	if (resqmlWellboreTrajectoryRepresentation != nullptr)
-	{
-		Relationship rel(resqmlWellboreTrajectoryRepresentation->getPartNameInEpcDocument(), "", resqmlWellboreTrajectoryRepresentation->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
-}
-

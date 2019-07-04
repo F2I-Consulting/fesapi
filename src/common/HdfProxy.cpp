@@ -340,20 +340,41 @@ void HdfProxy::readArrayNdOfValues(
 	}
 }
 
-hid_t HdfProxy::getHdfDatatypeInDataset(const std::string & datasetName)
+AbstractObject::hdfDatatypeEnum HdfProxy::getHdfDatatypeInDataset(const std::string & datasetName)
 {
 	if (!isOpened()) {
 		open();
 	}
 
-	hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT); 
-	hid_t datatype = H5Dget_type(dataset); 
-	hid_t native_datatype =  H5Tget_native_type(datatype, H5T_DIR_ASCEND); 
+	hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
+	hid_t datatype = H5Dget_type(dataset);
+	hid_t native_datatype = H5Tget_native_type(datatype, H5T_DIR_ASCEND);
 
 	H5Dclose(dataset);
 	H5Tclose(datatype);
 
-	return native_datatype;
+	if (H5Tequal(native_datatype, H5T_NATIVE_DOUBLE) > 0)
+		return AbstractObject::DOUBLE;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_FLOAT) > 0)
+		return AbstractObject::FLOAT;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_LLONG) > 0)
+		return AbstractObject::LONG;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_ULLONG) > 0)
+		return AbstractObject::ULONG;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_INT) > 0)
+		return AbstractObject::INT;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_UINT) > 0)
+		return AbstractObject::UINT;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_SHORT) > 0)
+		return AbstractObject::SHORT;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_USHORT) > 0)
+		return AbstractObject::USHORT;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_CHAR) > 0)
+		return AbstractObject::CHAR;
+	else if (H5Tequal(native_datatype, H5T_NATIVE_UCHAR) > 0)
+		return AbstractObject::UCHAR;
+
+	return AbstractObject::UNKNOWN; // unknwown datatype...
 }
 
 int HdfProxy::getHdfDatatypeClassInDataset(const std::string & datasetName)
@@ -516,6 +537,49 @@ unsigned int HdfProxy::getDimensionCount(const std::string & datasetName)
 
 	H5Sclose(dataspace);
 	H5Dclose(dataset);
+
+	return result;
+}
+
+std::vector<unsigned long long> HdfProxy::getElementCountPerDimension(const std::string & datasetName)
+{
+	if (!isOpened()) {
+		open();
+	}
+
+	hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
+	if (dataset < 0) {
+		throw invalid_argument("The dataset " + datasetName + " could not be opened.");
+	}
+
+	hid_t dataspace = H5Dget_space(dataset);
+	if (dataspace < 0) {
+		H5Dclose(dataset);
+		throw invalid_argument("The dataspace for the dataset " + datasetName + " could not be opened.");
+	}
+
+	int ndims = H5Sget_simple_extent_ndims(dataspace);
+	if (ndims < 0) {
+		H5Sclose(dataspace);
+		H5Dclose(dataset);
+		throw invalid_argument("The number of dimensions of the dataspace for the dataset " + datasetName + " could not be read.");
+	}
+
+	hsize_t* dims = new hsize_t[ndims];
+	ndims = H5Sget_simple_extent_dims(dataspace, dims, nullptr);
+
+	H5Sclose(dataspace);
+	H5Dclose(dataset);
+	if (ndims < 0) {
+		delete[] dims;
+		throw invalid_argument("The number of elements in each dimension of the dataspace for the dataset " + datasetName + " could not be read.");
+	}
+
+	std::vector<unsigned long long> result;
+	for (auto i = 0; i < ndims; ++i) {
+		result.push_back(dims[i]);
+	}
+	delete[] dims;
 
 	return result;
 }

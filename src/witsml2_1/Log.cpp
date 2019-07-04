@@ -24,13 +24,12 @@ under the License.
 using namespace std;
 using namespace WITSML2_1_NS;
 using namespace gsoap_eml2_2;
-using namespace epc;
 
 const char* Log::XML_TAG = "Log";
 
 Log::Log(Wellbore* witsmlWellbore,
 		const std::string & guid,
-		const std::string & title):resqmlWellboreFrameRepresentation(nullptr)
+		const std::string & title)
 {
 	if (witsmlWellbore == nullptr) throw invalid_argument("A log must be associated to a well.");
 
@@ -49,7 +48,7 @@ gsoap_eml2_2::eml22__DataObjectReference* Log::getWellboreDor() const
 
 class Wellbore* Log::getWellbore() const
 {
-	return getEpcDocument()->getDataObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
+	return getRepository()->getDataObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
 }
 
 void Log::setWellbore(Wellbore* witsmlWellbore)
@@ -57,52 +56,18 @@ void Log::setWellbore(Wellbore* witsmlWellbore)
 	if (witsmlWellbore == nullptr) {
 		throw invalid_argument("Cannot set a null witsml Wellbore to a witsml log");
 	}
+	if (getRepository() == nullptr) {
+		witsmlWellbore->getRepository()->addOrReplaceDataObject(this);
+	}
 
-	// EPC
-	witsmlWellbore->logSet.push_back(this);
+	getRepository()->addRelationship(this, witsmlWellbore);
 
 	// XML
-	if (updateXml) {
-		witsml2__Log* log = static_cast<witsml2__Log*>(gsoapProxy2_2);
-		log->Wellbore = witsmlWellbore->newEml22Reference();
-	}
+	witsml2__Log* log = static_cast<witsml2__Log*>(gsoapProxy2_2);
+	log->Wellbore = witsmlWellbore->newEml22Reference();
 }
 
-void Log::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void Log::loadTargetRelationships() const
 {
-	gsoap_eml2_2::eml22__DataObjectReference* dor = getWellboreDor();
-	Wellbore* wellbore = epcDoc->getDataObjectByUuid<Wellbore>(dor->Uuid);
-	/*
-	if (well == nullptr) { // partial transfer
-	getEpcDocument()->createPartial(dor);
-	well = getEpcDocument()->getDataObjectByUuid<well>(dor->Uuid);
-	}
-	*/
-	if (wellbore == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-	updateXml = false;
-	setWellbore(wellbore);
-	updateXml = true;
-}
-
-vector<Relationship> Log::getAllEpcRelationships() const
-{
-	vector<Relationship> result;
-
-	// XML forward relationship
-	Wellbore* wellbore = getWellbore();
-	Relationship relWellbore(wellbore->getPartNameInEpcDocument(), "", wellbore->getUuid());
-	relWellbore.setDestinationObjectType();
-	result.push_back(relWellbore);
-
-	// XML backward relationship
-	if (resqmlWellboreFrameRepresentation != nullptr)
-	{
-		Relationship rel(resqmlWellboreFrameRepresentation->getPartNameInEpcDocument(), "", resqmlWellboreFrameRepresentation->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
+	convertDorIntoRel<Wellbore>(getWellboreDor());
 }

@@ -101,8 +101,6 @@ namespace RESQML2_NS
 		 * Get a particular interpretation of this feature according to its position in the interpretation ordering.
 		 */
 		DLL_IMPORT_OR_EXPORT AbstractRepresentation const * getRepresentation(unsigned int index) const;
-
-	protected:
 		
 		virtual void loadTargetRelationships() const;
 	};

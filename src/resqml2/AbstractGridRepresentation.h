@@ -522,9 +522,9 @@ namespace RESQML2_NS
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-	protected:
-
 		void loadTargetRelationships() const;
+
+	protected:
 
 		bool withTruncatedPillars;
 	};

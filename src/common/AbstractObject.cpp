@@ -555,7 +555,7 @@ void AbstractObject::setDescriptiveKeywords(const std::string & descriptiveKeywo
 
 void AbstractObject::setVersion(const std::string & version)
 {
-	if (!versionString.empty())
+	if (!version.empty())
 	{
 		if (gsoapProxy2_0_1 != nullptr) {
 			if (gsoapProxy2_0_1->Citation->VersionString == nullptr)
@@ -1075,55 +1075,6 @@ std::string AbstractObject::getExtraMetadataStringValueAtIndex(unsigned int inde
 	throw logic_error("Not implemented yet.");
 }
 
-std::vector<epc::Relationship> AbstractObject::getAllEpcRelationships() const
-{
-	std::vector<epc::Relationship> sourceRels = getAllSourceRelationships();
-	std::vector<epc::Relationship> result = getAllTargetRelationships();
-
-	result.insert( result.end(), sourceRels.begin(), sourceRels.end() );
-	return result;
-}
-
-namespace {
-	std::vector<std::string> getAllRelationshipUuids(const std::vector<epc::Relationship> & rels) {
-		std::vector<std::string> result;
-		for (size_t i = 0; i < rels.size(); ++i) {
-			if (rels[i].isInternalTarget()) {
-				std::string uuid = rels[i].getId();
-				result.push_back(uuid[0] == '_' ? uuid.substr(1) : uuid);
-			}
-		}
-		return result;
-	}
-}
-
-std::vector<epc::Relationship> AbstractObject::getAllSourceRelationships() const
-{
-	vector<epc::Relationship> result;
-
-	for (size_t i = 0; i < epcDocument->getDataObjects<GraphicalInformationSet>().size(); ++i)
-	{
-		GraphicalInformationSet * graphicalInformationSet = epcDocument->getDataObjects<GraphicalInformationSet>()[i];
-		if (graphicalInformationSet->hasGraphicalInformation(this)) {
-			epc::Relationship rel(graphicalInformationSet->getPartNameInEpcDocument(), "", graphicalInformationSet->getUuid());
-			rel.setSourceObjectType();
-			result.push_back(rel);
-		}
-	}
-
-	return result;
-}
-
-std::vector<std::string> AbstractObject::getAllSourceRelationshipUuids() const
-{
-	return getAllRelationshipUuids(getAllSourceRelationships());
-}
-
-std::vector<std::string> AbstractObject::getAllTargetRelationshipUuids() const
-{
-	return getAllRelationshipUuids(getAllTargetRelationships());
-}
-
 void AbstractObject::readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml2__AbstractDoubleArray * arrayInput, double * arrayOutput) const
 {
 	long soapType = arrayInput->soap_type();
@@ -1233,6 +1184,19 @@ void AbstractObject::convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectRefer
 	if (targetObj == nullptr) { // partial transfer
 		getRepository()->createPartial(dor);
 		targetObj = getRepository()->getDataObjectByUuid(dor->UUID);
+		if (targetObj == nullptr) {
+			throw invalid_argument("The DOR looks invalid.");
+		}
+	}
+	getRepository()->addRelationship(this, targetObj);
+}
+
+void AbstractObject::convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor) const
+{
+	const AbstractObject * targetObj = getRepository()->getDataObjectByUuid(dor->Uuid);
+	if (targetObj == nullptr) { // partial transfer
+		getRepository()->createPartial(dor);
+		targetObj = getRepository()->getDataObjectByUuid(dor->Uuid);
 		if (targetObj == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
 		}

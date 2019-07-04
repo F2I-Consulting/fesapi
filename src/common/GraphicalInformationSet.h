@@ -31,11 +31,11 @@ namespace common
 
 	public:
 		/**
-		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
-		* @param guid			The guid to set to graphical information set.
-		* @param title			A title for graphical information set.
+		* @param repo		The repository where the underlying gsoap proxy is going to be created.
+		* @param guid		The guid to set to graphical information set.
+		* @param title		A title for graphical information set.
 		*/
-		GraphicalInformationSet(soap* soapContext, const std::string & guid, const std::string & title);
+		GraphicalInformationSet(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -96,11 +96,6 @@ namespace common
 			return "eml22";
 		}
 
-	protected:
-
-		void resolveTargetRelationships(common::EpcDocument* epcDoc) {}
-
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllSourceRelationships() const;
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllTargetRelationships() const;
+		void loadTargetRelationships() const;
 	};
 }

@@ -30,35 +30,35 @@ using namespace epc;
 
 const char* ToolErrorModel::XML_TAG = "ToolErrorModel";
 
-ToolErrorModel::ToolErrorModel(soap* soapContext,
+ToolErrorModel::ToolErrorModel(COMMON_NS::DataObjectRepository * repo,
 	const std::string & guid,
 	const std::string & title,
-	gsoap_eml2_2::witsml2__MisalignmentMode misalignmentMode) :
-	toolErrorModelDictionary(nullptr),
-	nextVersionToolErrorModel(nullptr)
+	gsoap_eml2_2::witsml2__MisalignmentMode misalignmentMode)
 {
-	if (soapContext == nullptr) throw invalid_argument("A Tool Error Model must be associated to a soap context.");
+	if (repo == nullptr) throw invalid_argument("A Tool Error Model must be associated to a repo.");
 
-	gsoapProxy2_2 = soap_new_witsml2__ToolErrorModel(soapContext, 1);
+	gsoapProxy2_2 = soap_new_witsml2__ToolErrorModel(repo->getGsoapContext(), 1);
 	static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2)->MisalignmentMode = misalignmentMode;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	repo->addOrReplaceDataObject(this);
 }
 
 bool ToolErrorModel::isTopLevelElement() const
 {
-	return toolErrorModelDictionary == nullptr;
+	return getRepository()->getSourceObjects<ToolErrorModelDictionary>(this).empty();
 }
 
-std::string ToolErrorModel::getErrorTermUuid(unsigned long index) const
+gsoap_eml2_2::eml22__DataObjectReference* ToolErrorModel::getErrorTermDor(unsigned long index) const
 {
 	if (gsoapProxy2_2 != nullptr) {
 		witsml2__ToolErrorModel* tem = static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2);
 		if (index < tem->ErrorTermValue.size()) {
-			return tem->ErrorTermValue[index]->ErrorTerm->Uuid;
+			return tem->ErrorTermValue[index]->ErrorTerm;
 		}
-		else{
+		else {
 			throw range_error("The index of error term is out of range");
 		}
 	}
@@ -67,13 +67,18 @@ std::string ToolErrorModel::getErrorTermUuid(unsigned long index) const
 	}
 }
 
+std::string ToolErrorModel::getErrorTermUuid(unsigned long index) const
+{
+	return getErrorTermDor(index)->Uuid;
+}
+
 std::vector<ErrorTerm*> ToolErrorModel::getErrorTermSet() const
 {
 	witsml2__ToolErrorModel* tem = static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2);
 	std::vector<ErrorTerm*> result;
 
 	for (size_t index = 0; index < tem->ErrorTermValue.size(); ++index) {
-		result.push_back(epcDocument->getDataObjectByUuid<ErrorTerm>(getErrorTermUuid(index)));
+		result.push_back(getRepository()->getDataObjectByUuid<ErrorTerm>(getErrorTermUuid(index)));
 	}
 
 	return result;
@@ -83,22 +88,17 @@ void ToolErrorModel::pushBackErrorTerm(ErrorTerm* errorTerm, double magnitude, g
 {
 	witsml2__ToolErrorModel* tem = static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2);
 
-	if (std::find(errorTerm->toolErrorModelSet.begin(), errorTerm->toolErrorModelSet.end(), this) == errorTerm->toolErrorModelSet.end()) {
-		errorTerm->toolErrorModelSet.push_back(this);
-	}
+	getRepository()->addRelationship(this, errorTerm);
 
-	if (updateXml)
-	{
-		witsml2__ErrorTermValue* etv = soap_new_witsml2__ErrorTermValue(getGsoapContext(), 1);
-		tem->ErrorTermValue.push_back(etv);
+	witsml2__ErrorTermValue* etv = soap_new_witsml2__ErrorTermValue(getGsoapContext(), 1);
+	tem->ErrorTermValue.push_back(etv);
 
-		eml22__GenericMeasure* gm = soap_new_eml22__GenericMeasure(getGsoapContext(), 1);
-		etv->Magnitude = gm;
-		gm->uom = soap_eml22__UomEnum2s(gsoapProxy2_2->soap, uom);
-		gm->__item = magnitude;
+	eml22__GenericMeasure* gm = soap_new_eml22__GenericMeasure(getGsoapContext(), 1);
+	etv->Magnitude = gm;
+	gm->uom = soap_eml22__UomEnum2s(gsoapProxy2_2->soap, uom);
+	gm->__item = magnitude;
 
-		etv->ErrorTerm = errorTerm->newEml22Reference();
-	}
+	etv->ErrorTerm = errorTerm->newEml22Reference();
 }
 
 void ToolErrorModel::setApplication(const std::string & application)
@@ -178,11 +178,9 @@ void ToolErrorModel::setReplacedToolErrorModel(ToolErrorModel* replaces)
 		throw invalid_argument("The replaced Tool Error Model to set cannot be null");
 	}
 
-	replaces->nextVersionToolErrorModel = this;
+	getRepository()->addRelationship(this, replaces);
 
-	if (updateXml) {
-		static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2)->Replaces = replaces->newEml22Reference();
-	}
+	static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2)->Replaces = replaces->newEml22Reference();
 }
 
 void ToolErrorModel::setAuthorization(const std::string & approvalAuthority,
@@ -350,69 +348,15 @@ void ToolErrorModel::pushBackStationaryGyro(gsoap_eml2_2::witsml2__GyroAxisCombi
 	gyro->Range->Uom = gsoap_eml2_2::soap_eml22__PlaneAngleUom2s(gsoapProxy2_2->soap, rangeUom);
 }
 
-void ToolErrorModel::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
+void ToolErrorModel::loadTargetRelationships() const
 {
-	witsml2__ToolErrorModel* tem = static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2);
+	witsml2__ToolErrorModel const * tem = static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2);
 
-	updateXml = false;
 	for (size_t index = 0; index < tem->ErrorTermValue.size(); ++index) {
-		ErrorTerm* et = epcDoc->getDataObjectByUuid<ErrorTerm>(getErrorTermUuid(index));
-		pushBackErrorTerm(et, std::numeric_limits<double>::quiet_NaN(), "");
+		convertDorIntoRel<ErrorTerm>(getErrorTermDor(index));
 	}
 
 	if (tem->Replaces != nullptr) {
-		ToolErrorModel* previousTem = getEpcDocument()->getDataObjectByUuid<ToolErrorModel>(tem->Replaces->Uuid);
-		if (previousTem == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(tem->Replaces);
-			previousTem = getEpcDocument()->getDataObjectByUuid<ToolErrorModel>(tem->Replaces->Uuid);
-		}
-		if (previousTem == nullptr) {
-			throw invalid_argument("The DOR looks invalid.");
-		}
-		setReplacedToolErrorModel(previousTem);
+		convertDorIntoRel<ToolErrorModel>(tem->Replaces);
 	}
-	updateXml = true;
-}
-
-DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ToolErrorModel::getAllSourceRelationships() const
-{
-	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
-
-	// XML backward relationship
-	if (nextVersionToolErrorModel != nullptr) {
-		Relationship rel(nextVersionToolErrorModel->getPartNameInEpcDocument(), "", nextVersionToolErrorModel->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	if (toolErrorModelDictionary != nullptr) {
-		Relationship rel(toolErrorModelDictionary->getPartNameInEpcDocument(), "", toolErrorModelDictionary->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
-}
-
-DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ToolErrorModel::getAllTargetRelationships() const
-{
-	vector<Relationship> result;
-
-	// XML forward relationship
-	std::vector<ErrorTerm*> ets = getErrorTermSet();
-	for (size_t index = 0; index < ets.size(); ++index) {
-		Relationship rel(ets[index]->getPartNameInEpcDocument(), "", ets[index]->getUuid());
-		rel.setDestinationObjectType();
-		result.push_back(rel);
-	}
-
-	witsml2__ToolErrorModel* tem = static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2);
-	if (tem->Replaces != nullptr) {
-		ToolErrorModel* previousTem = getEpcDocument()->getDataObjectByUuid<ToolErrorModel>(tem->Replaces->Uuid);
-		Relationship rel(previousTem->getPartNameInEpcDocument(), "", previousTem->getUuid());
-		rel.setDestinationObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
 }

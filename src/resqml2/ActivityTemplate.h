@@ -78,7 +78,6 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const {return XML_TAG;}
 
-	private:
 		void loadTargetRelationships() const;
 	};
 }

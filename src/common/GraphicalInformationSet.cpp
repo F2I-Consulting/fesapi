@@ -35,15 +35,17 @@ using namespace resqml2_0_1;
 
 const char* GraphicalInformationSet::XML_TAG = "GraphicalInformationSet";
 
-GraphicalInformationSet::GraphicalInformationSet(soap* soapContext, const string & guid, const string & title)
+GraphicalInformationSet::GraphicalInformationSet(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
 {
-	if (soapContext == nullptr)
-		throw invalid_argument("The soap context cannot be null.");
+	if (repo == nullptr)
+		throw invalid_argument("The repo cannot be null.");
 
-	gsoapProxy2_2 = gsoap_eml2_2::soap_new_eml22__GraphicalInformationSet(soapContext, 1);
+	gsoapProxy2_2 = gsoap_eml2_2::soap_new_eml22__GraphicalInformationSet(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	repo->addOrReplaceDataObject(this);
 }
 
 unsigned int GraphicalInformationSet::getGraphicalInformationSetCount() const
@@ -77,29 +79,7 @@ std::string GraphicalInformationSet::getTargetObjectUuid(unsigned int index) con
 
 common::AbstractObject* GraphicalInformationSet::getTargetObject(unsigned int index) const
 {
-	return epcDocument->getDataObjectByUuid(getTargetObjectUuid(index));
-}
-
-vector<Relationship> GraphicalInformationSet::getAllSourceRelationships() const
-{
-	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
-	return result;
-}
-
-vector<Relationship> GraphicalInformationSet::getAllTargetRelationships() const
-{
-	vector<Relationship> result;
-
-	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
-
-	for (size_t giIndex = 0; giIndex < gis->GraphicalInformation.size(); ++giIndex) {
-		gsoap_eml2_2::eml22__DataObjectReference* dor = getTargetObjectDor(giIndex);
-		Relationship relFop(misc::getPartNameFromReference(dor), "", dor->Uuid);
-		relFop.setDestinationObjectType();
-		result.push_back(relFop);
-	}
-
-	return result;
+	return getRepository()->getDataObjectByUuid(getTargetObjectUuid(index));
 }
 
 gsoap_eml2_2::resqml2__DefaultGraphicalInformation* GraphicalInformationSet::getDefaultGraphicalInformationForAllIndexableElements(common::AbstractObject* targetObject) const
@@ -260,4 +240,12 @@ void GraphicalInformationSet::setDefaultHsvColor(common::AbstractObject* targetO
 	color->Saturation = saturation;
 	color->Value = value;
 	color->Alpha = alpha;
+}
+
+void GraphicalInformationSet::loadTargetRelationships() const
+{
+	const unsigned int count = getGraphicalInformationSetCount();
+	for (unsigned int index = 0; index < count; ++index) {
+		convertDorIntoRel(getTargetObjectDor(index));
+	}
 }

@@ -32,35 +32,37 @@ using namespace epc;
 
 const char* ErrorTerm::XML_TAG = "ErrorTerm";
 
-ErrorTerm::ErrorTerm(soap* soapContext,
+ErrorTerm::ErrorTerm(COMMON_NS::DataObjectRepository * repo,
 		const std::string & guid,
 		const std::string & title,
 		gsoap_eml2_2::witsml2__ErrorPropagationMode propagationMode,
-		WeightingFunction* weightingFunction) : errorTermDictionary(nullptr)
+		WeightingFunction* weightingFunction)
 {
-	if (soapContext == nullptr) throw invalid_argument("An Error Term must be associated to a soap context.");
+	if (repo == nullptr) throw invalid_argument("An Error Term must be associated to a repo.");
 
-	gsoapProxy2_2 = soap_new_witsml2__ErrorTerm(soapContext, 1);
+	gsoapProxy2_2 = soap_new_witsml2__ErrorTerm(repo->getGsoapContext(), 1);
 	static_cast<witsml2__ErrorTerm*>(gsoapProxy2_2)->PropagationMode = propagationMode;
 	setWeightingFunction(weightingFunction);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	repo->addOrReplaceDataObject(this);
 }
 
 bool ErrorTerm::isTopLevelElement() const
 {
-	return errorTermDictionary == nullptr;
+	return getRepository()->getSourceObjects<ErrorTermDictionary>(this).empty();
 }
 
-std::string ErrorTerm::getWeightingFunctionUuid() const
+gsoap_eml2_2::eml22__DataObjectReference* ErrorTerm::getWeightingFunctionDor() const
 {
-	return static_cast<witsml2__ErrorTerm*>(gsoapProxy2_2)->WeightingFunction->Uuid;
+	return static_cast<witsml2__ErrorTerm*>(gsoapProxy2_2)->WeightingFunction;
 }
 
 WeightingFunction* ErrorTerm::getWeightingFunction() const
 {
-	return epcDocument->getDataObjectByUuid<WeightingFunction>(getWeightingFunctionUuid());
+	return getRepository()->getDataObjectByUuid<WeightingFunction>(getWeightingFunctionDor()->Uuid);
 }
 
 void ErrorTerm::setWeightingFunction(WeightingFunction* weightingFunction)
@@ -68,64 +70,18 @@ void ErrorTerm::setWeightingFunction(WeightingFunction* weightingFunction)
 	if (weightingFunction == nullptr)
 		throw invalid_argument("The weighting function cannot be null.");
 
-	// EPC
-	if (std::find(weightingFunction->errorTermSet.begin(), weightingFunction->errorTermSet.end(), this) == weightingFunction->errorTermSet.end()) {
-		weightingFunction->errorTermSet.push_back(this);
-	}
+	getRepository()->addRelationship(this, weightingFunction);
 
 	// XMl
-	if (updateXml)
-	{
-		if (gsoapProxy2_2 != nullptr) {
-			static_cast<witsml2__ErrorTerm*>(gsoapProxy2_2)->WeightingFunction = weightingFunction->newEml22Reference();
-		}
-		else {
-			throw logic_error("Not implemented yet");
-		}
+	if (gsoapProxy2_2 != nullptr) {
+		static_cast<witsml2__ErrorTerm*>(gsoapProxy2_2)->WeightingFunction = weightingFunction->newEml22Reference();
+	}
+	else {
+		throw logic_error("Not implemented yet");
 	}
 }
 
-void ErrorTerm::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
+void ErrorTerm::loadTargetRelationships() const
 {
-	WeightingFunction* weightingFunction = epcDoc->getDataObjectByUuid<WeightingFunction>(getWeightingFunctionUuid());
-
-	updateXml = false;
-	setWeightingFunction(weightingFunction);
-	updateXml = true;
-}
-
-DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ErrorTerm::getAllSourceRelationships() const
-{
-	witsml2__ErrorTerm* et = static_cast<witsml2__ErrorTerm*>(gsoapProxy2_2);
-	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
-
-	// XML backward relationship
-	for (size_t i = 0; i < toolErrorModelSet.size(); ++i)
-	{
-		Relationship relTem(toolErrorModelSet[i]->getPartNameInEpcDocument(), "", toolErrorModelSet[i]->getUuid());
-		relTem.setSourceObjectType();
-		result.push_back(relTem);
-	}
-
-	if (errorTermDictionary != nullptr) {
-		Relationship rel(errorTermDictionary->getPartNameInEpcDocument(), "", errorTermDictionary->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
-}
-
-DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ErrorTerm::getAllTargetRelationships() const
-{
-	witsml2__ErrorTerm* et = static_cast<witsml2__ErrorTerm*>(gsoapProxy2_2);
-	vector<Relationship> result;
-
-	// XML Forward relationship
-	WeightingFunction* weightingFunction = getWeightingFunction();
-	Relationship rel(weightingFunction->getPartNameInEpcDocument(), "", weightingFunction->getUuid());
-	rel.setDestinationObjectType();
-	result.push_back(rel);
-
-	return result;
+	convertDorIntoRel<WeightingFunction>(getWeightingFunctionDor());
 }

@@ -301,8 +301,6 @@ namespace RESQML2_NS
 
 		static const char* XML_TAG;
 
-	protected:
-
 		virtual void loadTargetRelationships() const;
 	};
 }

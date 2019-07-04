@@ -103,12 +103,6 @@ namespace COMMON_NS
 		friend void COMMON_NS::DataObjectRepository::addOrReplaceDataObject(AbstractObject* proxy);
 
 		void initMandatoryMetadata();
-		
-		/**
-		* Read the forward relationships of this dataobject and update the rels of the associated datarepository.
-		*/
-		virtual void loadTargetRelationships() const = 0;
-		friend void COMMON_NS::DataObjectRepository::updateAllRelationships();
 
 		/**
 		* It is too dangerous for now to modify the uuid because too much things depend on it. That's why this method is only protected : it is only used by derived class constructor.
@@ -167,6 +161,8 @@ namespace COMMON_NS
 
 		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor) const;
 
+		void convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor) const;
+
 		// Check that the content type of the DOR is OK with the datatype in memory.
 		template <class valueType>
 		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor) const
@@ -184,6 +180,20 @@ namespace COMMON_NS
 
 		template <class valueType>
 		void convertDorIntoRel(gsoap_eml2_1::eml21__DataObjectReference const * dor) const
+		{
+			valueType const * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
+			if (targetObj == nullptr) { // partial transfer
+				getRepository()->createPartial(dor);
+				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
+				if (targetObj == nullptr) {
+					throw std::invalid_argument("The DOR looks invalid.");
+				}
+			}
+			getRepository()->addRelationship(this, targetObj);
+		}
+
+		template <class valueType>
+		void convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor) const
 		{
 			valueType const * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
 			if (targetObj == nullptr) { // partial transfer
@@ -285,11 +295,6 @@ namespace COMMON_NS
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* getGsoapProxy() const;
 
 		gsoap_eml2_2::eml22__AbstractObject* getGsoapProxy2_2() const { return gsoapProxy2_2; }
-
-		/**
-		 * Set the underlying gsoap proxy of this object
-		 */
-		void setGsoapProxy(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy);
 
 		/**
 		* Get the gsoap context where the underlying gsoap proxy is defined.
@@ -406,21 +411,12 @@ namespace COMMON_NS
 		/**
 		* Get the string value of a string value pair at a particular index in the extra metadata set
 		*/
-		DLL_IMPORT_OR_EXPORT std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
-
+		DLL_IMPORT_OR_EXPORT std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;	
+		
 		/**
-		* Return all relationships (backward and forward ones) of the instance using EPC format.
+		* Read the forward relationships of this dataobject and update the rels of the associated datarepository.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
-		DLL_IMPORT_OR_EXPORT std::vector<std::string> getAllSourceRelationshipUuids() const;
-		DLL_IMPORT_OR_EXPORT virtual std::vector<epc::Relationship> getAllTargetRelationships() const = 0;
-		DLL_IMPORT_OR_EXPORT std::vector<std::string> getAllTargetRelationshipUuids() const;
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllEpcRelationships() const;
-
-		/**
-		* Set the backward relationship to this object on each target of this object.
-		*/
-		DLL_IMPORT_OR_EXPORT virtual void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc) = 0;
+		virtual void loadTargetRelationships() const = 0;
 
 		static const char* RESQML_2_0_CONTENT_TYPE_PREFIX;
 		static const char* RESQML_2_0_1_CONTENT_TYPE_PREFIX;

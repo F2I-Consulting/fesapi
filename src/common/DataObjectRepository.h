@@ -23,6 +23,7 @@ under the License.
 
 #include "proxies/gsoap_resqml2_0_1H.h"
 #include "proxies/gsoap_eml2_1H.h"
+#include "proxies/gsoap_eml2_2H.h"
 
 #include "nsDefinitions.h"
 
@@ -123,7 +124,16 @@ namespace RESQML2_0_1_NS
 	class RockFluidOrganizationInterpretation;
 	class RockFluidUnitInterpretation;
 	class RockFluidUnitFeature;
+}
 
+namespace WITSML2_1_NS
+{
+	class ToolErrorModel;
+	class ToolErrorModelDictionary;
+	class ErrorTerm;
+	class ErrorTermDictionary;
+	class WeightingFunction;
+	class WeightingFunctionDictionary;
 }
 
 namespace WITSML2_0_NS
@@ -140,6 +150,7 @@ namespace COMMON_NS
 {
 	class AbstractObject;
 	class AbstractHdfProxy;
+	class GraphicalInformationSet;
 
 	/**
 	* This abstract class acts as a buffer between the RESQML (business) classes and the persisted data.
@@ -186,6 +197,8 @@ namespace COMMON_NS
 		*/
 		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
 		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
+		COMMON_NS::AbstractObject* getWitsml2_1WrapperFromGsoapContext(const std::string & datatype);
+		COMMON_NS::AbstractObject* getEml2_2WrapperFromGsoapContext(const std::string & datatype);
 
 		/**
 		* Get the error code of the current gsoap context.
@@ -673,6 +686,11 @@ namespace COMMON_NS
 		* Create a partial object in this repository based on a EML2.1 Data Object Reference
 		*/
 		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_1::eml21__DataObjectReference const * dor);
+
+		/**
+		* Create a partial object in this repository based on a EML2.2 Data Object Reference
+		*/
+		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_2::eml22__DataObjectReference const * dor);
 
 		/**
 		* Create a partial object i.e. a data object reference (DOR) based on an UUID + a title.
@@ -1192,6 +1210,40 @@ namespace COMMON_NS
 
 		//*************** WITSML *************
 
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ToolErrorModel* createPartialToolErrorModel(
+			const std::string & guid,
+			const std::string & title);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ToolErrorModel* createToolErrorModel(
+			const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_2::witsml2__MisalignmentMode misalignmentMode);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ToolErrorModelDictionary* createToolErrorModelDictionary(
+			const std::string & guid,
+			const std::string & title);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ErrorTerm* createErrorTerm(
+			const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_2::witsml2__ErrorPropagationMode propagationMode,
+			WITSML2_1_NS::WeightingFunction* weightingFunction);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ErrorTermDictionary* createErrorTermDictionary(
+			const std::string & guid,
+			const std::string & title);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::WeightingFunction* createWeightingFunction(
+			const std::string & guid,
+			const std::string & title,
+			const std::string & depthFormula,
+			const std::string & inclinationFormula,
+			const std::string & azimuthFormula);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::WeightingFunctionDictionary* createWeightingFunctionDictionary(
+			const std::string & guid,
+			const std::string & title);
+
 		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Well* createWell(const std::string & guid,
 			const std::string & title);
 
@@ -1232,6 +1284,12 @@ namespace COMMON_NS
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::witsml2__ChannelStatus channelStatus);
+
+		//************************************
+		//************ EML2.2 ****************
+		//************************************
+
+		DLL_IMPORT_OR_EXPORT GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
 
 		//************************************
 		//***** STANDARD PROP KIND ***********

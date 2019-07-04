@@ -317,8 +317,8 @@ void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeom
 		{
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml2__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hid_t dt = hdfProxy->getHdfDatatypeInDataset(static_cast<resqml2__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values->PathInHdfFile);
-			if (H5Tequal(dt, H5T_NATIVE_CHAR) > 0) {
+			COMMON_NS::AbstractObject::hdfDatatypeEnum dt = hdfProxy->getHdfDatatypeInDataset(static_cast<resqml2__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values->PathInHdfFile);
+			if (dt == COMMON_NS::AbstractObject::CHAR) {
 				char* tmp = new char[pillarCount];
 				hdfProxy->readArrayNdOfCharValues(static_cast<resqml2__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values->PathInHdfFile, tmp);
 				for (unsigned int i = 0; i < pillarCount; ++i) {
@@ -326,7 +326,7 @@ void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeom
 				}
 				delete[] tmp;
 			}
-			else if (H5Tequal(dt, H5T_NATIVE_UCHAR) > 0) {
+			else if (dt == COMMON_NS::AbstractObject::UCHAR) {
 				unsigned char* tmp = new unsigned char[pillarCount];
 				hdfProxy->readArrayNdOfUCharValues(static_cast<resqml2__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values->PathInHdfFile, tmp);
 				for (unsigned int i = 0; i < pillarCount; ++i) {
@@ -335,7 +335,7 @@ void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeom
 				delete[] tmp;
 			}
 			else {
-				throw std::logic_error("Not yet implemented");
+				throw std::logic_error("Not implemented yet");
 			}
 		}
 		else if (geom->PillarGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__BooleanConstantArray) {

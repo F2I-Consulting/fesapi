@@ -21,6 +21,8 @@ under the License.
 #include <algorithm>
 #include <functional>
 
+#include "common/GraphicalInformationSet.h"
+
 #include "resqml2_0_1/PropertyKindMapper.h"
 
 #include "resqml2_0_1/LocalDepth3dCrs.h"
@@ -95,12 +97,20 @@ under the License.
 
 #include "witsml2_0/Well.h"
 
+#include "witsml2_1/Well.h"
+#include "witsml2_1/Wellbore.h"
+#include "witsml2_1/Trajectory.h"
+#include "witsml2_1/Log.h"
+#include "witsml2_1/WellboreMarkerSet.h""
+#include "witsml2_1/ToolErrorModelDictionary.h""
+#include "witsml2_1/ErrorTermDictionary.h"
+#include "witsml2_1/WeightingFunction.h"
+
 #include "tools/GuidTools.h"
 
 using namespace std;
 using namespace COMMON_NS;
 using namespace RESQML2_0_1_NS;
-using namespace WITSML2_0_NS;
 
 namespace {
 	class SameVersion {
@@ -130,6 +140,11 @@ namespace {
 	(resqmlContentType.compare(className::XML_TAG) == 0)\
 	{\
 		return dor->VersionString == nullptr ? createPartial<className>(dor->Uuid, dor->Title) : createPartial<className>(dor->Uuid, dor->Title, *dor->VersionString);\
+	}
+#define CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(className)\
+	(resqmlContentType.compare(className::XML_TAG) == 0)\
+	{\
+		return dor->ObjectVersion == nullptr ? createPartial<className>(dor->Uuid, dor->Title) : createPartial<className>(dor->Uuid, dor->Title, *dor->ObjectVersion);\
 	}
 
 /////////////////////
@@ -166,6 +181,23 @@ namespace {
 	{\
 		GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace);\
 	}
+
+/////////////////////
+////// EML 2.2 //////
+/////////////////////
+#define GET_EML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
+	gsoapNameSpace::_eml22__##className* read = gsoapNameSpace::soap_new_eml22__##className(gsoapContext, 1);\
+	gsoapNameSpace::soap_read_eml22__##className(gsoapContext, read);
+
+#define GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
+	GET_EML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
+	wrapper = new classNamespace::className(read);
+
+#define CHECK_AND_GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
+	(datatype.compare(classNamespace::className::XML_TAG) == 0)\
+	{\
+		GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace);\
+}
 
 DataObjectRepository::DataObjectRepository() :
 	propertyKindMapper(nullptr), defaultHdfProxy(nullptr), defaultCrs(nullptr)
@@ -337,6 +369,12 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 	else if (contentType.find("application/x-witsml+xml;version=2.0;type=") != string::npos) {
 		wrapper = getWitsml2_0WrapperFromGsoapContext(datatype);
 	}
+	else if (contentType.find("application/x-witsml+xml;version=2.1;type=") != string::npos) {
+		wrapper = getWitsml2_1WrapperFromGsoapContext(datatype);
+	}
+	else if (contentType.find("application/x-eml+xml;version=2.2;type=") != string::npos) {
+		wrapper = getEml2_2WrapperFromGsoapContext(datatype);
+	}
 
 	if (wrapper != nullptr) {
 		if (gsoapContext->error != SOAP_OK) {
@@ -497,6 +535,22 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_1::eml
 	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Wellbore)
 	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Trajectory)
 	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
+	{
+		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
+	}
+
+	throw invalid_argument("The content type " + resqmlContentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
+}
+
+COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_2::eml22__DataObjectReference const * dor)
+{
+	const size_t lastEqualCharPos = dor->ContentType.find_last_of('='); // The XML tag is after "type="
+	const string resqmlContentType = dor->ContentType.substr(lastEqualCharPos + 1);
+
+	if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::ToolErrorModel)
+	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::ErrorTerm)
+	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::WeightingFunction)
+	else if (resqmlContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
 	}
@@ -1249,7 +1303,7 @@ RESQML2_NS::Activity* DataObjectRepository::createActivity(RESQML2_NS::ActivityT
 WITSML2_0_NS::Well* DataObjectRepository::createWell(const std::string & guid,
 	const std::string & title)
 {
-	return new Well(this, guid, title);
+	return new WITSML2_0_NS::Well(this, guid, title);
 }
 
 WITSML2_0_NS::Well* DataObjectRepository::createWell(const std::string & guid,
@@ -1258,7 +1312,7 @@ WITSML2_0_NS::Well* DataObjectRepository::createWell(const std::string & guid,
 	gsoap_eml2_1::eml21__WellStatus statusWell,
 	gsoap_eml2_1::witsml2__WellDirection directionWell)
 {
-	return new Well(this, guid, title, operator_, statusWell, directionWell);
+	return new WITSML2_0_NS::Well(this, guid, title, operator_, statusWell, directionWell);
 }
 
 WITSML2_0_NS::Wellbore* DataObjectRepository::createPartialWellbore(
@@ -1272,7 +1326,7 @@ WITSML2_0_NS::Wellbore* DataObjectRepository::createWellbore(WITSML2_0_NS::Well*
 	const std::string & guid,
 	const std::string & title)
 {
-	return new Wellbore(witsmlWell, guid, title);
+	return new WITSML2_0_NS::Wellbore(witsmlWell, guid, title);
 }
 
 WITSML2_0_NS::Wellbore* DataObjectRepository::createWellbore(WITSML2_0_NS::Well* witsmlWell,
@@ -1282,14 +1336,14 @@ WITSML2_0_NS::Wellbore* DataObjectRepository::createWellbore(WITSML2_0_NS::Well*
 	bool isActive,
 	bool achievedTD)
 {
-	return new Wellbore(witsmlWell, guid, title, statusWellbore, isActive, achievedTD);
+	return new WITSML2_0_NS::Wellbore(witsmlWell, guid, title, statusWellbore, isActive, achievedTD);
 }
 
 WITSML2_0_NS::WellCompletion* DataObjectRepository::createWellCompletion(WITSML2_0_NS::Well* witsmlWell,
 	const std::string & guid,
 	const std::string & title)
 {
-	return new WellCompletion(witsmlWell, guid, title);
+	return new WITSML2_0_NS::WellCompletion(witsmlWell, guid, title);
 }
 
 WITSML2_0_NS::WellboreCompletion* DataObjectRepository::createWellboreCompletion(WITSML2_0_NS::Wellbore* witsmlWellbore,
@@ -1298,7 +1352,7 @@ WITSML2_0_NS::WellboreCompletion* DataObjectRepository::createWellboreCompletion
 	const std::string & title,
 	const std::string & wellCompletionName)
 {
-	return new WellboreCompletion(witsmlWellbore, wellCompletion, guid, title, wellCompletionName);
+	return new WITSML2_0_NS::WellboreCompletion(witsmlWellbore, wellCompletion, guid, title, wellCompletionName);
 }
 
 WITSML2_0_NS::Trajectory* DataObjectRepository::createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
@@ -1306,7 +1360,67 @@ WITSML2_0_NS::Trajectory* DataObjectRepository::createTrajectory(WITSML2_0_NS::W
 	const std::string & title,
 	gsoap_eml2_1::witsml2__ChannelStatus channelStatus)
 {
-	return new Trajectory(witsmlWellbore, guid, title, channelStatus);
+	return new WITSML2_0_NS::Trajectory(witsmlWellbore, guid, title, channelStatus);
+}
+
+COMMON_NS::GraphicalInformationSet* DataObjectRepository::createGraphicalInformationSet(const std::string & guid, const std::string & title)
+{
+	return new COMMON_NS::GraphicalInformationSet(this, guid, title);
+}
+
+WITSML2_1_NS::ToolErrorModel* DataObjectRepository::createPartialToolErrorModel(
+	const std::string & guid,
+	const std::string & title)
+{
+	return createPartial<WITSML2_1_NS::ToolErrorModel>(guid, title);;
+}
+
+WITSML2_1_NS::ToolErrorModel* DataObjectRepository::createToolErrorModel(
+	const std::string & guid,
+	const std::string & title,
+	gsoap_eml2_2::witsml2__MisalignmentMode misalignmentMode)
+{
+	return new WITSML2_1_NS::ToolErrorModel(this, guid, title, misalignmentMode);
+}
+
+WITSML2_1_NS::ToolErrorModelDictionary* DataObjectRepository::createToolErrorModelDictionary(
+	const std::string & guid,
+	const std::string & title)
+{
+	return new WITSML2_1_NS::ToolErrorModelDictionary(this, guid, title);
+}
+
+WITSML2_1_NS::ErrorTerm* DataObjectRepository::createErrorTerm(
+	const std::string & guid,
+	const std::string & title,
+	gsoap_eml2_2::witsml2__ErrorPropagationMode propagationMode,
+	WITSML2_1_NS::WeightingFunction* weightingFunction)
+{
+	return new WITSML2_1_NS::ErrorTerm(this, guid, title, propagationMode, weightingFunction);
+}
+
+WITSML2_1_NS::ErrorTermDictionary* DataObjectRepository::createErrorTermDictionary(
+	const std::string & guid,
+	const std::string & title)
+{
+	return new WITSML2_1_NS::ErrorTermDictionary(this, guid, title);
+}
+
+WITSML2_1_NS::WeightingFunction* DataObjectRepository::createWeightingFunction(
+	const std::string & guid,
+	const std::string & title,
+	const std::string & depthFormula,
+	const std::string & inclinationFormula,
+	const std::string & azimuthFormula)
+{
+	return new WITSML2_1_NS::WeightingFunction(this, guid, title, depthFormula, inclinationFormula, azimuthFormula);
+}
+
+WITSML2_1_NS::WeightingFunctionDictionary* DataObjectRepository::createWeightingFunctionDictionary(
+	const std::string & guid,
+	const std::string & title)
+{
+	return new WITSML2_1_NS::WeightingFunctionDictionary(this, guid, title);
 }
 
 std::vector<RESQML2_0_1_NS::LocalDepth3dCrs*> DataObjectRepository::getLocalDepth3dCrsSet() const { return getDataObjects<RESQML2_0_1_NS::LocalDepth3dCrs>(); }
@@ -1934,6 +2048,29 @@ COMMON_NS::AbstractObject* DataObjectRepository::getWitsml2_0WrapperFromGsoapCon
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Wellbore, gsoap_eml2_1)
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, WellboreCompletion, gsoap_eml2_1)
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Trajectory, gsoap_eml2_1)
+
+	return wrapper;
+}
+
+COMMON_NS::AbstractObject* DataObjectRepository::getWitsml2_1WrapperFromGsoapContext(const std::string & datatype)
+{
+	COMMON_NS::AbstractObject* wrapper = nullptr;
+
+	if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, ToolErrorModel, gsoap_eml2_2)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, ToolErrorModelDictionary, gsoap_eml2_2)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, ErrorTerm, gsoap_eml2_2)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, ErrorTermDictionary, gsoap_eml2_2)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, WeightingFunction, gsoap_eml2_2)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_1_NS, WeightingFunctionDictionary, gsoap_eml2_2)
+
+	return wrapper;
+}
+
+COMMON_NS::AbstractObject* DataObjectRepository::getEml2_2WrapperFromGsoapContext(const std::string & datatype)
+{
+	COMMON_NS::AbstractObject* wrapper = nullptr;
+
+	if CHECK_AND_GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(COMMON_NS, GraphicalInformationSet, gsoap_eml2_2)
 
 	return wrapper;
 }

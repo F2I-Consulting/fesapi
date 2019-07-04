@@ -65,8 +65,6 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation const*	getInterpretation(unsigned int index) const;
 
-	protected:
-
 		virtual void loadTargetRelationships() const;
 	};
 }

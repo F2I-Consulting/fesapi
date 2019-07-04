@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/EpcDocument.h"
+#include "common/DataObjectRepository.h"
 
 class MyOwnEtpClientSessionEpcBased
 {
@@ -27,5 +27,5 @@ public:
 	MyOwnEtpClientSessionEpcBased() {}
 	~MyOwnEtpClientSessionEpcBased() {}
 
-	COMMON_NS::EpcDocument epcDoc;
+	COMMON_NS::DataObjectRepository repo;
 };

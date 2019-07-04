@@ -32,15 +32,16 @@ MyOwnStoreProtocolHandlers::MyOwnStoreProtocolHandlers(ETP_NS::AbstractSession* 
 
 void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & getO, int64_t correlationId)
 {
-	COMMON_NS::EpcDocument epcDoc(epcFileName, COMMON_NS::EpcDocument::READ_ONLY);
-	std::string resqmlResult = epcDoc.deserialize();
+	COMMON_NS::EpcDocument epcDoc(epcFileName);
+	COMMON_NS::DataObjectRepository repo;
+	std::string resqmlResult = epcDoc.deserializeInto(repo);
 
 	Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse objResponse;
 
 	for (const auto & uri : getO.m_uris) {
 		std::cout << "Store received URI : " << uri.second << std::endl;
 
-		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(epcDoc, session, uri.second);
+		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(repo, session, uri.second);
 		if (obj == nullptr) {
 			continue;
 		}
@@ -55,29 +56,30 @@ void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::
 
 void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & putDataObjects, int64_t correlationId)
 {
-	COMMON_NS::EpcDocument epcDoc(epcFileName, COMMON_NS::EpcDocument::READ_WRITE);
-	std::string resqmlResult = epcDoc.deserialize();
+	COMMON_NS::EpcDocument epcDoc(epcFileName);
+	COMMON_NS::DataObjectRepository repo;
+	std::string resqmlResult = epcDoc.deserializeInto(repo);
 
 	bool isSerializationNeeded = false;
 	for (const auto & dataObject : putDataObjects.m_dataObjects) {
 		std::cout << "Store received data object : " << dataObject.second.m_resource.m_contentType << " (" << dataObject.second.m_resource.m_uri << ")" << std::endl;
 
-		COMMON_NS::AbstractObject* importedObj = epcDoc.addOrReplaceGsoapProxy(dataObject.second.m_data, dataObject.second.m_resource.m_contentType);
+		COMMON_NS::AbstractObject* importedObj = repo.addOrReplaceGsoapProxy(dataObject.second.m_data, dataObject.second.m_resource.m_contentType);
 
-		importedObj->resolveTargetRelationships(&epcDoc);
+		importedObj->loadTargetRelationships();
 
 		if (dataObject.second.m_resource.m_contentType == "application/x-resqml+xml;version=2.0;type=obj_IjkGridRepresentation") {
 			std::cout << "Create a dummy Grid Connection Set for received IJK Grid Representation." << std::endl;
-			RESQML2_NS::GridConnectionSetRepresentation* gcsr = epcDoc.createGridConnectionSetRepresentation(std::string(), "Dummy GCSR");
+			RESQML2_NS::GridConnectionSetRepresentation* gcsr = repo.createGridConnectionSetRepresentation(std::string(), "Dummy GCSR");
 			ULONG64 cellIndexPair[] = { 0, 1 };
-			gcsr->setCellIndexPairs(1, cellIndexPair, (std::numeric_limits<unsigned int>::max)(), epcDoc.getHdfProxy(0));
+			gcsr->setCellIndexPairs(1, cellIndexPair, (std::numeric_limits<unsigned int>::max)(), repo.getHdfProxy(0));
 			gcsr->pushBackSupportingGridRepresentation(static_cast<RESQML2_NS::AbstractGridRepresentation*>(importedObj));
 			isSerializationNeeded = true;
 		}
 	}
 
 	if (isSerializationNeeded) {
-		epcDoc.serialize();
+		epcDoc.serializeFrom(repo);
 	}
 	epcDoc.close();
 }

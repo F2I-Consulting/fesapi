@@ -47,7 +47,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energistics::
 		if (std::find(getObjectWhenDiscovered.begin(), getObjectWhenDiscovered.end(), correlationId) != getObjectWhenDiscovered.end()) {
 			size_t openingParenthesis = resource.m_uri.find('(', 5);
 			if (openingParenthesis != std::string::npos) {
-				auto resqmlObj = dynamic_cast<MyOwnEtpClientSessionEpcBased*>(session)->epcDoc.getDataObjectByUuid(resource.m_uri.substr(openingParenthesis + 1, 36));
+				auto resqmlObj = dynamic_cast<MyOwnEtpClientSessionEpcBased*>(session)->repo.getDataObjectByUuid(resource.m_uri.substr(openingParenthesis + 1, 36));
 				if (resqmlObj == nullptr || resqmlObj->isPartial()) {
 					std::cout << "GET OBJECT -----------------------------------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;			
 					getO.m_uris[std::to_string(index)] = resource.m_uri;

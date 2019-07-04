@@ -151,44 +151,23 @@ unsigned int WellboreFrameRepresentation::getMdValuesCount() const
 	return static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->NodeCount;
 }
 
-RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum WellboreFrameRepresentation::getMdHdfDatatype() const
+COMMON_NS::AbstractObject::hdfDatatypeEnum WellboreFrameRepresentation::getMdHdfDatatype() const
 {
 	_resqml2__WellboreFrameRepresentation* frame = static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
-	if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
-	{
+	if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(frame->NodeMd)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
 		if (hdfProxy == nullptr) {
-			throw invalid_argument("The HDF proxy is missing.");
+			return COMMON_NS::AbstractObject::UNKNOWN;
 		}
-		hid_t dt = hdfProxy->getHdfDatatypeInDataset(dataset->PathInHdfFile);
-		if (H5Tequal(dt, H5T_NATIVE_DOUBLE) > 0)
-			return RESQML2_NS::AbstractValuesProperty::DOUBLE;
-		else if (H5Tequal(dt, H5T_NATIVE_FLOAT) > 0)
-			return RESQML2_NS::AbstractValuesProperty::FLOAT;
-		else if (H5Tequal(dt, H5T_NATIVE_LONG) > 0)
-			return RESQML2_NS::AbstractValuesProperty::LONG;
-		else if (H5Tequal(dt, H5T_NATIVE_ULONG) > 0)
-			return RESQML2_NS::AbstractValuesProperty::ULONG;
-		else if (H5Tequal(dt, H5T_NATIVE_INT) > 0)
-			return RESQML2_NS::AbstractValuesProperty::INT;
-		else if (H5Tequal(dt, H5T_NATIVE_UINT) > 0)
-			return RESQML2_NS::AbstractValuesProperty::UINT;
-		else if (H5Tequal(dt, H5T_NATIVE_SHORT) > 0)
-			return RESQML2_NS::AbstractValuesProperty::SHORT;
-		else if (H5Tequal(dt, H5T_NATIVE_USHORT) > 0)
-			return RESQML2_NS::AbstractValuesProperty::USHORT;
-		else if (H5Tequal(dt, H5T_NATIVE_CHAR) > 0)
-			return RESQML2_NS::AbstractValuesProperty::CHAR;
-		else if (H5Tequal(dt, H5T_NATIVE_UCHAR) > 0)
-			return RESQML2_NS::AbstractValuesProperty::UCHAR;
+
+		return hdfProxy->getHdfDatatypeInDataset(static_cast<resqml2__DoubleHdf5Array*>(frame->NodeMd)->Values->PathInHdfFile);
 	}
-	else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleLatticeArray)
-	{
-		return RESQML2_NS::AbstractValuesProperty::DOUBLE;
+	else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleLatticeArray) {
+		return COMMON_NS::AbstractObject::DOUBLE;
 	}
 
-	return RESQML2_NS::AbstractValuesProperty::UNKNOWN; // unknwown datatype...
+	return COMMON_NS::AbstractObject::UNKNOWN;
 }
 
 void WellboreFrameRepresentation::getMdAsDoubleValues(double * values) const

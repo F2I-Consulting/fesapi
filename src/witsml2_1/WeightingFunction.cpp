@@ -30,30 +30,32 @@ using namespace epc;
 
 const char* WeightingFunction::XML_TAG = "WeightingFunction";
 
-WeightingFunction::WeightingFunction(soap* soapContext,
+WeightingFunction::WeightingFunction(COMMON_NS::DataObjectRepository * repo,
 		const std::string & guid,
 		const std::string & title,
 		const std::string & depthFormula,
 		const std::string & inclinationFormula,
-		const std::string & azimuthFormula) : weightingFunctionDictionary(nullptr)
+		const std::string & azimuthFormula)
 {
-	if (soapContext == nullptr) throw invalid_argument("A Weighting Function must be associated to a soap context.");
+	if (repo == nullptr) throw invalid_argument("A Weighting Function must be associated to a repo.");
 
-	gsoapProxy2_2 = soap_new_witsml2__WeightingFunction(soapContext, 1);
+	gsoapProxy2_2 = soap_new_witsml2__WeightingFunction(repo->getGsoapContext(), 1);
 	static_cast<witsml2__WeightingFunction*>(gsoapProxy2_2)->DepthFormula = depthFormula;
 	static_cast<witsml2__WeightingFunction*>(gsoapProxy2_2)->InclinationFormula = inclinationFormula;
 
-	witsml2__AzimuthFormula* aziFormula = soap_new_witsml2__AzimuthFormula(soapContext, 1);
+	witsml2__AzimuthFormula* aziFormula = soap_new_witsml2__AzimuthFormula(repo->getGsoapContext(), 1);
 	static_cast<witsml2__WeightingFunction*>(gsoapProxy2_2)->AzimuthFormula = aziFormula;
 	aziFormula->Formula = azimuthFormula;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	repo->addOrReplaceDataObject(this);
 }
 
 bool WeightingFunction::isTopLevelElement() const
 {
-	return weightingFunctionDictionary == nullptr;
+	return getRepository()->getSourceObjects<WeightingFunctionDictionary>(this).empty();
 }
 
 void WeightingFunction::setKind(gsoap_eml2_2::witsml2__ErrorKind errorKind)
@@ -67,33 +69,6 @@ void WeightingFunction::pushBackSource(const std::string & source)
 	if (!source.empty()) {
 		static_cast<witsml2__WeightingFunction*>(gsoapProxy2_2)->Source.push_back(source);
 	}
-}
-
-void WeightingFunction::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc) {}
-
-DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> WeightingFunction::getAllSourceRelationships() const
-{
-	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
-
-	// XML backward relationship
-	for (size_t i = 0; i < errorTermSet.size(); ++i) {
-		Relationship rel(errorTermSet[i]->getPartNameInEpcDocument(), "", errorTermSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	if (weightingFunctionDictionary != nullptr) {
-		Relationship rel(weightingFunctionDictionary->getPartNameInEpcDocument(), "", weightingFunctionDictionary->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
-}
-
-DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> WeightingFunction::getAllTargetRelationships() const
-{
-	return vector<Relationship>();
 }
 
 void WeightingFunction::setSingularityNorthFormula(const std::string & singularityNorthFormula)

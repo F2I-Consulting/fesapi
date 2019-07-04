@@ -92,8 +92,6 @@ namespace RESQML2_0_1_NS
 			double offsetIX, double offsetIY, double offsetIZ, double spacingI,
 			double offsetJX, double offsetJY, double offsetJZ, double spacingJ);
 
-		virtual void loadTargetRelationships() const;
-
 	public:
 
 		/**
@@ -120,5 +118,7 @@ namespace RESQML2_0_1_NS
 		* pick : Representation support for 3D points picked in 2D or 3D.
 		*/
 		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml2__SurfaceRole & getSurfaceRole() const;
+
+		virtual void loadTargetRelationships() const;
 	};
 }

@@ -50,56 +50,37 @@ unsigned int AbstractValuesProperty::getPatchCount() const
 	return static_cast<unsigned int>(result);
 }
 
-AbstractValuesProperty::hdfDatatypeEnum AbstractValuesProperty::getValuesHdfDatatype() const
+COMMON_NS::AbstractObject::hdfDatatypeEnum AbstractValuesProperty::getValuesHdfDatatype() const
 {
-	gsoap_resqml2_0_1::eml20__Hdf5Dataset* dataset = nullptr;
+	LONG64 nullValue = (numeric_limits<LONG64>::min)();
+	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(0, nullValue);
+	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+
+	hid_t dt = -1;
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml2__PatchOfValues const * firstPatch = static_cast<gsoap_resqml2_0_1::resqml2__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues[0];
-		const int valuesType = firstPatch->Values->soap_type();
+		gsoap_resqml2_0_1::resqml2__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml2__AbstractValuesProperty*>(gsoapProxy2_0_1);
+
+		gsoap_resqml2_0_1::resqml2__PatchOfValues* firstPatch = prop->PatchOfValues[0];
+		int valuesType = firstPatch->Values->soap_type();
 		if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__BooleanHdf5Array) {
-			dataset = static_cast<gsoap_resqml2_0_1::resqml2__BooleanHdf5Array*>(firstPatch->Values)->Values;
+			return hdfProxy->getHdfDatatypeInDataset(static_cast<gsoap_resqml2_0_1::resqml2__BooleanHdf5Array*>(firstPatch->Values)->Values->PathInHdfFile);
 		}
 		else if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-			dataset = static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(firstPatch->Values)->Values;
+			return hdfProxy->getHdfDatatypeInDataset(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(firstPatch->Values)->Values->PathInHdfFile);
 		}
 		else if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-			dataset = static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(firstPatch->Values)->Values;
+			return hdfProxy->getHdfDatatypeInDataset(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(firstPatch->Values)->Values->PathInHdfFile);
 		}
 		else if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__StringHdf5Array) {
-			dataset = static_cast<gsoap_resqml2_0_1::resqml2__StringHdf5Array*>(firstPatch->Values)->Values;
+			return hdfProxy->getHdfDatatypeInDataset(static_cast<gsoap_resqml2_0_1::resqml2__StringHdf5Array*>(firstPatch->Values)->Values->PathInHdfFile);
 		}
 		else {
-			return AbstractValuesProperty::UNKNOWN;
+			return COMMON_NS::AbstractObject::UNKNOWN;
 		}
 	}
 	else {
 		throw logic_error("Not implemented yet");
 	}
-
-	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-	const hid_t dt = hdfProxy->getHdfDatatypeInDataset(dataset->PathInHdfFile);
-	if (H5Tequal(dt, H5T_NATIVE_DOUBLE) > 0)
-		return AbstractValuesProperty::DOUBLE;
-	else if (H5Tequal(dt, H5T_NATIVE_FLOAT) > 0)
-		return AbstractValuesProperty::FLOAT;
-	else if (H5Tequal(dt, H5T_NATIVE_LLONG) > 0)
-		return AbstractValuesProperty::LONG;
-	else if (H5Tequal(dt, H5T_NATIVE_ULLONG) > 0)
-		return AbstractValuesProperty::ULONG;
-	else if (H5Tequal(dt, H5T_NATIVE_INT) > 0)
-		return AbstractValuesProperty::INT;
-	else if (H5Tequal(dt, H5T_NATIVE_UINT) > 0)
-		return AbstractValuesProperty::UINT;
-	else if (H5Tequal(dt, H5T_NATIVE_SHORT) > 0)
-		return AbstractValuesProperty::SHORT;
-	else if (H5Tequal(dt, H5T_NATIVE_USHORT) > 0)
-		return AbstractValuesProperty::USHORT;
-	else if (H5Tequal(dt, H5T_NATIVE_CHAR) > 0)
-		return AbstractValuesProperty::CHAR;
-	else if (H5Tequal(dt, H5T_NATIVE_UCHAR) > 0)
-		return AbstractValuesProperty::UCHAR;
-
-	return AbstractValuesProperty::UNKNOWN; // unknwown datatype...
 }
 
 std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64 nullValue)

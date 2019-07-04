@@ -185,7 +185,6 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
 
-	protected:
 		void loadTargetRelationships() const;
 	};
 }

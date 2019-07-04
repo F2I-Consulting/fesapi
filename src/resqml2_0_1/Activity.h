@@ -32,8 +32,6 @@ namespace RESQML2_0_1_NS
 	protected:
 		Activity() : RESQML2_NS::Activity() {}
 
-		void loadTargetRelationships() const;
-
 	public:
 
 		/**
@@ -121,6 +119,8 @@ namespace RESQML2_0_1_NS
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getActivityTemplateDor() const;
 
 		DLL_IMPORT_OR_EXPORT std::string getResqmlVersion() const;
+
+		void loadTargetRelationships() const;
 
 	private:
 		std::vector<gsoap_resqml2_0_1::resqml2__AbstractActivityParameter*> getParameterFromTitle(const std::string & paramTitle) const;
