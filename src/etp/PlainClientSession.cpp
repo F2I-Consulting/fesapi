@@ -21,11 +21,11 @@ under the License.
 
 using namespace ETP_NS;
 
-PlainClientSession::PlainClientSession(boost::asio::io_context& ioc,
+PlainClientSession::PlainClientSession(
 	const std::string & host, const std::string & port, const std::string & target, const std::string & authorization,
 	const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 	const std::vector<std::string>& supportedObjects)
-	: AbstractClientSession<PlainClientSession>(ioc, host, port, target, authorization,
+	: AbstractClientSession<PlainClientSession>(host, port, target, authorization,
 		requestedProtocols, supportedObjects),
 		ws_(ioc)
 {

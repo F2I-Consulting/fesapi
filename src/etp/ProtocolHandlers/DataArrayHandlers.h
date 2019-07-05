@@ -25,7 +25,7 @@ namespace ETP_NS
 	class DLL_IMPORT_OR_EXPORT DataArrayHandlers : public ProtocolHandlers
 	{
 	public:
-		DataArrayHandlers(AbstractSession* mySession): ProtocolHandlers(mySession) {}
+		DataArrayHandlers(std::shared_ptr<AbstractSession> mySession): ProtocolHandlers(mySession) {}
 
 	    void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d);
 

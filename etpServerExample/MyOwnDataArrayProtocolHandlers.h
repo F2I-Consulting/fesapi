@@ -24,8 +24,11 @@ under the License.
 
 class MyOwnDataArrayProtocolHandlers : public ETP_NS::DataArrayHandlers
 {
+private:
+	COMMON_NS::DataObjectRepository* repo;
+
 public:
-	MyOwnDataArrayProtocolHandlers(ETP_NS::AbstractSession* mySession): ETP_NS::DataArrayHandlers(mySession) {}
+	MyOwnDataArrayProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, COMMON_NS::DataObjectRepository* repo_): ETP_NS::DataArrayHandlers(mySession), repo(repo_) {}
 	~MyOwnDataArrayProtocolHandlers() {}
 
     void on_GetDataArrays(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrays & gda, int64_t correlationId);

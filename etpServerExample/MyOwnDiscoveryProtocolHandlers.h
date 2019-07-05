@@ -24,26 +24,29 @@ under the License.
 class MyOwnDiscoveryProtocolHandlers : public ETP_NS::DiscoveryHandlers
 {
 private:
-	void on_GetEmlColonSlashSlash(COMMON_NS::DataObjectRepository & repo, const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gtr, int64_t correlationId,
+	
+	COMMON_NS::DataObjectRepository* repo;
+	
+	void on_GetEmlColonSlashSlash(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gtr, int64_t correlationId,
 		std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result);
 
-	void on_GetEmlColonSlashSlashResqml20(COMMON_NS::DataObjectRepository & repo, const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gtr, int64_t correlationId,
+	void on_GetEmlColonSlashSlashResqml20(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gtr, int64_t correlationId,
 		std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result, bool self = false);
 	
-	void on_GetEmlColonSlashSlashEml20(COMMON_NS::DataObjectRepository & repo, const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gtr, int64_t correlationId,
+	void on_GetEmlColonSlashSlashEml20(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gtr, int64_t correlationId,
 		std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result, bool self = false);
 
-	void on_GetEmlColonSlashSlashWitsml21(COMMON_NS::DataObjectRepository & repo, const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gtr, int64_t correlationId,
+	void on_GetEmlColonSlashSlashWitsml21(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gtr, int64_t correlationId,
 		std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result, bool self = false);
 
-	void on_GetFolder(COMMON_NS::DataObjectRepository & repo, const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gtr, int64_t correlationId,
+	void on_GetFolder(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gtr, int64_t correlationId,
 		std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result, bool self = false);
 
-	void on_GetDataObject(COMMON_NS::DataObjectRepository & repo, const Energistics::Etp::v12::Protocol::Discovery::GetGraphResources & ggr, int64_t correlationId,
+	void on_GetDataObject(const Energistics::Etp::v12::Protocol::Discovery::GetGraphResources & ggr, int64_t correlationId,
 		std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result);
 
 public:
-	MyOwnDiscoveryProtocolHandlers(ETP_NS::AbstractSession* mySession): ETP_NS::DiscoveryHandlers(mySession) {}
+	MyOwnDiscoveryProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, COMMON_NS::DataObjectRepository* repo_): ETP_NS::DiscoveryHandlers(mySession), repo(repo_) {}
 	~MyOwnDiscoveryProtocolHandlers() {}
 
 	void on_GetTreeResources(const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gtr, int64_t correlationId);

@@ -18,15 +18,15 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnStoreProtocolHandlers.h"
 
+#include "etp/AbstractSession.h"
 #include "etp/EtpHelpers.h"
 
-#include "MyOwnEtpPlainServerSession.h"
 #include "Helpers.h"
 
 #include "resqml2/AbstractGridRepresentation.h"
 #include "resqml2/GridConnectionSetRepresentation.h"
 
-MyOwnStoreProtocolHandlers::MyOwnStoreProtocolHandlers(ETP_NS::AbstractSession* mySession) : ETP_NS::StoreHandlers(mySession) {}
+MyOwnStoreProtocolHandlers::MyOwnStoreProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, COMMON_NS::DataObjectRepository* repo_) : ETP_NS::StoreHandlers(mySession), repo(repo_) {}
 
 void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & getO, int64_t correlationId)
 {
@@ -35,13 +35,7 @@ void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::
 	for (const auto & uri : getO.m_uris) {
 		std::cout << "Store received URI : " << uri.second << std::endl;
 
-		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(
-#ifdef WITH_ETP_SSL
-			static_cast<MyOwnEtpSslServerSession*>(session)->repo
-#else
-			static_cast<MyOwnEtpPlainServerSession*>(session)->repo
-#endif
-			, session, uri.second);
+		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(repo, session, uri.second);
 		if (obj == nullptr) {
 			continue;
 		}
@@ -57,33 +51,15 @@ void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::
 	for (const auto & dataObject : putDataObjects.m_dataObjects) {
 		std::cout << "Store received data object : " << dataObject.second.m_resource.m_contentType << " (" << dataObject.second.m_resource.m_uri << ")" << std::endl;
 
-		COMMON_NS::AbstractObject* importedObj = 
-#ifdef WITH_ETP_SSL
-			static_cast<MyOwnEtpSslServerSession*>(session)->repo
-#else
-			static_cast<MyOwnEtpPlainServerSession*>(session)->repo
-#endif
-			.addOrReplaceGsoapProxy(dataObject.second.m_data, dataObject.second.m_resource.m_contentType);
+		COMMON_NS::AbstractObject* importedObj = repo->addOrReplaceGsoapProxy(dataObject.second.m_data, dataObject.second.m_resource.m_contentType);
 
 		importedObj->loadTargetRelationships();
 
 		if (dataObject.second.m_resource.m_contentType == "application/x-resqml+xml;version=2.0;type=obj_IjkGridRepresentation") {
 			std::cout << "Create a dummy Grid Connection Set for received IJK Grid Representation." << std::endl;
-			RESQML2_NS::GridConnectionSetRepresentation* gcsr = 
-#ifdef WITH_ETP_SSL
-				static_cast<MyOwnEtpSslServerSession*>(session)->repo
-#else
-				static_cast<MyOwnEtpPlainServerSession*>(session)->repo
-#endif
-				.createGridConnectionSetRepresentation(std::string(), "Dummy GCSR");
+			RESQML2_NS::GridConnectionSetRepresentation* gcsr = repo->createGridConnectionSetRepresentation(std::string(), "Dummy GCSR");
 			ULONG64 cellIndexPair[] = { 0, 1 };
-			gcsr->setCellIndexPairs(1, cellIndexPair, (std::numeric_limits<unsigned int>::max)(), 
-#ifdef WITH_ETP_SSL
-				static_cast<MyOwnEtpSslServerSession*>(session)->repo
-#else
-				static_cast<MyOwnEtpPlainServerSession*>(session)->repo
-#endif
-				.getHdfProxy(0));
+			gcsr->setCellIndexPairs(1, cellIndexPair, (std::numeric_limits<unsigned int>::max)(), repo->getHdfProxy(0));
 			gcsr->pushBackSupportingGridRepresentation(static_cast<RESQML2_NS::AbstractGridRepresentation*>(importedObj));
 		}
 	}

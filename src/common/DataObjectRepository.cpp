@@ -624,7 +624,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_resqml2_0_1
 	const string uuid = dor->UUID;
 	const string title = dor->Title;
 
-	if (dor->VersionString != nullptr) {
+	if (dor->VersionString == nullptr) {
 		return createPartial(uuid, title, contentType);
 	}
 	else {
@@ -639,7 +639,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_1::eml
 	const string uuid = dor->Uuid;
 	const string title = dor->Title;
 
-	if (dor->VersionString != nullptr) {
+	if (dor->VersionString == nullptr) {
 		return createPartial(uuid, title, contentType);
 	}
 	else {
@@ -654,7 +654,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_2::eml
 	const string uuid = dor->Uuid;
 	const string title = dor->Title;
 
-	if (dor->ObjectVersion != nullptr) {
+	if (dor->ObjectVersion == nullptr) {
 		return createPartial(uuid, title, contentType);
 	}
 	else {

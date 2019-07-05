@@ -18,9 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 
 #ifdef WITH_ETP_SSL
-#include "ssl/MyOwnEtpSslServerSession.h"
+#include "etp/ssl/SslServerSession.h"
 #else
-#include "MyOwnEtpPlainServerSession.h"
+#include "etp/PlainServerSession.h"
 #endif
 #include "Server.h"
 
@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 	}
 
 #ifdef WITH_ETP_SSL
-	Server<MyOwnEtpSslServerSession> etpServer(repo);
+	Server<ETP_NS::SslServerSession> etpServer(repo);
 
 	// The SSL context is required, and holds certificates
 	boost::asio::ssl::context ctx{ boost::asio::ssl::context::tlsv12_server };
@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 
 	etpServer.listen(argv[1], std::stoi(argv[2]), threadCount, ctx);
 #else
-	Server<MyOwnEtpPlainServerSession> etpServer(repo);
+	Server<ETP_NS::PlainServerSession> etpServer(repo);
 
 	etpServer.listen(argv[1], std::stoi(argv[2]), threadCount);
 #endif

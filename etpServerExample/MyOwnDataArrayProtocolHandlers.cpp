@@ -20,8 +20,6 @@ under the License.
 
 #include "Helpers.h"
 
-#include "MyOwnEtpPlainServerSession.h"
-
 #include "etp/AbstractSession.h"
 
 #include "common/AbstractHdfProxy.h"
@@ -34,13 +32,7 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrays(const Energistics::Etp::v1
 		Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayIdentifier& dai = element.second;
 		std::cout << "Data array received uri : " << dai.m_uri << std::endl;
 
-		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(
-#ifdef WITH_ETP_SSL
-			static_cast<MyOwnEtpSslServerSession*>(session)->repo
-#else
-			static_cast<MyOwnEtpPlainServerSession*>(session)->repo
-#endif
-			, session, dai.m_uri);
+		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(repo, session, dai.m_uri);
 		if (obj == nullptr) {
 			gdaResponse.m_errors[element.first].m_message = "The URI cannot be resolved to an object in the store";
 			gdaResponse.m_errors[element.first].m_code = 9;
@@ -170,13 +162,7 @@ void MyOwnDataArrayProtocolHandlers::on_PutDataArrays(const Energistics::Etp::v1
 			std::cout << "Dimension " << i << " with count : " << pdat.m_dimensions[i] << std::endl;
 		}
 
-		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(
-#ifdef WITH_ETP_SSL
-			static_cast<MyOwnEtpSslServerSession*>(session)->repo
-#else
-			static_cast<MyOwnEtpPlainServerSession*>(session)->repo
-#endif
-			, session, pdat.m_uri);
+		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(repo, session, pdat.m_uri);
 		if (obj == nullptr) {
 			continue;
 		}
@@ -216,13 +202,7 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrayMetadata(const Energistics::
 		Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArrayIdentifier& dai = element.second;
 		std::cout << "GetDataArrayMetadata received uri : " << dai.m_uri << std::endl;
 
-		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(
-#ifdef WITH_ETP_SSL
-			static_cast<MyOwnEtpSslServerSession*>(session)->repo
-#else
-			static_cast<MyOwnEtpPlainServerSession*>(session)->repo
-#endif
-			, session, dai.m_uri);
+		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(repo, session, dai.m_uri);
 		if (obj == nullptr) {
 			gdamResponse.m_errors[element.first].m_message = "The URI cannot be resolved to an object in the store";
 			gdamResponse.m_errors[element.first].m_code = 9;

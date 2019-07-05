@@ -24,9 +24,12 @@ under the License.
 
 class MyOwnCoreProtocolHandlers : public ETP_NS::CoreHandlers
 {
+private:
+	COMMON_NS::DataObjectRepository* repo;
+
 public:
-	MyOwnCoreProtocolHandlers(ETP_NS::AbstractSession* mySession): ETP_NS::CoreHandlers(mySession) {}
-	~MyOwnCoreProtocolHandlers() {}
+	MyOwnCoreProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, COMMON_NS::DataObjectRepository* repo_): ETP_NS::CoreHandlers(mySession), repo(repo_) { std::cout << "create here\n"; }
+	~MyOwnCoreProtocolHandlers();
 
 	void on_OpenSession(const Energistics::Etp::v12::Protocol::Core::OpenSession & os, int64_t correlationId);
 };

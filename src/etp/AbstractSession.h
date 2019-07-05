@@ -71,7 +71,6 @@ namespace ETP_NS
 		std::vector<std::vector<uint8_t> > sendingQueue;
 
 	    AbstractSession() : webSocketSessionClosed(true), etpSessionClosed(true) {
-	    	setCoreProtocolHandlers(std::make_shared<CoreHandlers>(this));
 	    }
 
 		virtual void run() = 0;

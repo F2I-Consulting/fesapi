@@ -21,7 +21,7 @@ under the License.
 
 #include "etp/AbstractSession.h"
 
-COMMON_NS::AbstractObject* Helpers::getObjectFromUri(const COMMON_NS::DataObjectRepository & repo, ETP_NS::AbstractSession* session, const std::string & uri) {
+COMMON_NS::AbstractObject* Helpers::getObjectFromUri(COMMON_NS::DataObjectRepository const * repo, std::shared_ptr<ETP_NS::AbstractSession> session, const std::string & uri) {
 	if (!session->validateDataObjectUri(uri, true)) {
 		return nullptr;
 	}
@@ -38,7 +38,7 @@ COMMON_NS::AbstractObject* Helpers::getObjectFromUri(const COMMON_NS::DataObject
 
 	tokens = tokenize(tokens[1], '(');
 	tokens[1].pop_back();
-	COMMON_NS::AbstractObject* result = repo.getDataObjectByUuid(tokens[1]);
+	COMMON_NS::AbstractObject* result = repo->getDataObjectByUuid(tokens[1]);
 	if (result == nullptr) {
 		Energistics::Etp::v12::Protocol::Core::ProtocolException error;
 		error.m_errorCode = 11;

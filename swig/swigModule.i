@@ -214,6 +214,7 @@ namespace COMMON_NS
 
 %{
 #include "common/EnumStringMapper.h"
+#include "common/EpcDocument.h"
 %}
 
 namespace RESQML2_NS

@@ -18,8 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnStoreProtocolHandlers.h"
 
-#include "etp/AbstractSession.h"
-#include "MyOwnEtpClientSessionEpcBased.h"
+#include "common/AbstractObject.h"
 
 void MyOwnStoreProtocolHandlers::on_GetDataObjectsResponse(const Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse & obj, int64_t correlationId)
 {
@@ -32,7 +31,7 @@ void MyOwnStoreProtocolHandlers::on_GetDataObjectsResponse(const Energistics::Et
 		std::cout << "type : " << static_cast<size_t>(graphResource.second.m_resource.m_resourceType) << std::endl;
 		std::cout << "*************************************************" << std::endl;
 
-		COMMON_NS::AbstractObject* importedObj = dynamic_cast<MyOwnEtpClientSessionEpcBased*>(session)->repo.addOrReplaceGsoapProxy(graphResource.second.m_data, graphResource.second.m_resource.m_contentType);
+		COMMON_NS::AbstractObject* importedObj = repo->addOrReplaceGsoapProxy(graphResource.second.m_data, graphResource.second.m_resource.m_contentType);
 
 		importedObj->loadTargetRelationships();
 	}

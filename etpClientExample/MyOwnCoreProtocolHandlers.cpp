@@ -21,10 +21,6 @@ under the License.
 #include <thread>
 
 #include "MyOwnDiscoveryProtocolHandlers.h"
-#include "MyOwnEtpPlainClientSession.h"
-#ifdef WITH_ETP_SSL
-#include "ssl/MyOwnEtpSslClientSession.h"
-#endif
 
 #include "etp/EtpHdfProxy.h"
 #include "etp/EtpHelpers.h"
@@ -33,17 +29,20 @@ under the License.
 #include <resqml2_0_1/IjkGridExplicitRepresentation.h>
 #include <resqml2_0_1/ContinuousPropertySeries.h>
 
-void setSessionToEtpHdfProxy(ETP_NS::AbstractSession* myOwnEtpSession) {
-	COMMON_NS::DataObjectRepository& repo = dynamic_cast<MyOwnEtpClientSessionEpcBased*>(myOwnEtpSession)->repo;
+MyOwnCoreProtocolHandlers::~MyOwnCoreProtocolHandlers() {
+}
+
+/*
+void setSessionToEtpHdfProxy(ETP_NS::AbstractSession* myOwnEtpSession, COMMON_NS::DataObjectRepository& repo) {
 	for (const auto & hdfProxy : repo.getHdfProxySet())
 	{
 		ETP_NS::EtpHdfProxy* etpHdfProxy = dynamic_cast<ETP_NS::EtpHdfProxy*>(hdfProxy);
 		if (etpHdfProxy != nullptr && etpHdfProxy->getSession() == nullptr) {
-			if (dynamic_cast<MyOwnEtpPlainClientSession*>(myOwnEtpSession) != nullptr) {
+			if (dynamic_cast<ETP_NS::AbstractClientSession*>(myOwnEtpSession) != nullptr) {
 				etpHdfProxy->setSession(myOwnEtpSession->getIoContext(),
-					static_cast<MyOwnEtpPlainClientSession*>(myOwnEtpSession)->getHost(),
-					static_cast<MyOwnEtpPlainClientSession*>(myOwnEtpSession)->getPort(),
-					static_cast<MyOwnEtpPlainClientSession*>(myOwnEtpSession)->getTarget());
+					static_cast<ETP_NS::AbstractClientSession*>(myOwnEtpSession)->getHost(),
+					static_cast<ETP_NS::AbstractClientSession*>(myOwnEtpSession)->getPort(),
+					static_cast<ETP_NS::AbstractClientSession*>(myOwnEtpSession)->getTarget());
 			}
 #ifdef WITH_ETP_SSL
 			else if (dynamic_cast<MyOwnEtpSslClientSession*>(myOwnEtpSession) != nullptr) {
@@ -56,7 +55,7 @@ void setSessionToEtpHdfProxy(ETP_NS::AbstractSession* myOwnEtpSession) {
 		}
 	}
 }
-
+*/
 void printHelp()
 {
 	std::cout << "List of available commands :" << std::endl;
@@ -72,7 +71,7 @@ void printHelp()
 	std::cout << "\tquit" << std::endl << "\t\tQuit the session." << std::endl << std::endl;
 }
 
-void askUser(ETP_NS::AbstractSession* session)
+void askUser(std::shared_ptr<ETP_NS::AbstractSession> session, COMMON_NS::DataObjectRepository* repo)
 {
 	std::string buffer;
 
@@ -183,12 +182,10 @@ void askUser(ETP_NS::AbstractSession* session)
 
 			session->send(putDataObjects, 0, 0x10); // 0x10 requires Acknowledge from the store
 		}
-
 		if (commandTokens.size() == 1) {
 			if (commandTokens[0] == "GetXyzOfIjkGrids") {
-				setSessionToEtpHdfProxy(session);
-				COMMON_NS::DataObjectRepository& repo = dynamic_cast<MyOwnEtpClientSessionEpcBased*>(session)->repo;
-				auto ijkGridSet = repo.getIjkGridRepresentationSet();
+				//setSessionToEtpHdfProxy(session);
+				auto ijkGridSet = repo->getIjkGridRepresentationSet();
 				for (const auto & ijkGrid : ijkGridSet) {
 					if (ijkGrid->isPartial()) {
 						std::cout << "Partial Ijk Grid " << ijkGrid->getTitle() << " : " << ijkGrid->getUuid() << std::endl;
@@ -239,8 +236,7 @@ void askUser(ETP_NS::AbstractSession* session)
 			}
 			else if (commandTokens[0] == "List") {
 				std::cout << "*** START LISTING ***" << std::endl;
-				COMMON_NS::DataObjectRepository& repo = dynamic_cast<MyOwnEtpClientSessionEpcBased*>(session)->repo;
-				for (const auto& entryPair : repo.getDataObjects()) {
+				for (const auto& entryPair : repo->getDataObjects()) {
 					for (const auto obj : entryPair.second) {
 						if (!obj->isPartial()) {
 							std::cout << entryPair.first << " : " << obj->getTitle() << std::endl;
@@ -311,6 +307,6 @@ void MyOwnCoreProtocolHandlers::on_OpenSession(const Energistics::Etp::v12::Prot
 {
 	// Ask the user about what he wants to do on another thread
 	// The main thread is on reading mode
-	std::thread askUserThread(askUser, session);
+	std::thread askUserThread(askUser, session, repo);
 	askUserThread.detach(); // Detach the thread since we don't want it to be a blocking one.
 }

@@ -16,21 +16,19 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "MyOwnEtpPlainClientSession.h"
+#pragma once
 
-#include "MyOwnCoreProtocolHandlers.h"
-#include "MyOwnDiscoveryProtocolHandlers.h"
-#include "MyOwnStoreProtocolHandlers.h"
+#include "etp/PlainClientSession.h"
+
+#include "etp/ProtocolHandlers/CoreHandlers.h"
+#include "etp/ProtocolHandlers/DiscoveryHandlers.h"
+#include "etp/ProtocolHandlers/StoreHandlers.h"
 #include "etp/ProtocolHandlers/DataArrayHandlers.h"
 
-MyOwnEtpPlainClientSession::MyOwnEtpPlainClientSession(boost::asio::io_context& ioc,
-		const std::string & host, const std::string & port, const std::string & target, const std::string & authorization,
-		const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
-		const std::vector<std::string>& supportedObjects)
-	: ETP_NS::PlainClientSession(ioc, host, port, target, authorization, requestedProtocols, supportedObjects)
+namespace ETP_NS
 {
-	setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(this));
-	setDiscoveryProtocolHandlers(std::make_shared<MyOwnDiscoveryProtocolHandlers>(this));
-	setStoreProtocolHandlers(std::make_shared<MyOwnStoreProtocolHandlers>(this));
-	setDataArrayProtocolHandlers(std::make_shared<ETP_NS::DataArrayHandlers>(this));
+	namespace ClientSessionLaunchers
+	{
+		DLL_IMPORT_OR_EXPORT std::shared_ptr<ETP_NS::PlainClientSession> createClientSession(const std::string & host, const std::string & port, const std::string & target, const std::string & authorization);
+	}
 }

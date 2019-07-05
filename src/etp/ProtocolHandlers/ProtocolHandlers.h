@@ -42,9 +42,9 @@ namespace ETP_NS
 	class DLL_IMPORT_OR_EXPORT ProtocolHandlers : public std::enable_shared_from_this<ProtocolHandlers>
 	{
 	protected:
-		ProtocolHandlers(AbstractSession* mySession): session(mySession) {}
+		ProtocolHandlers(std::shared_ptr<AbstractSession> mySession): session(mySession) {}
 
-		AbstractSession* session;
+		std::shared_ptr<AbstractSession> session;
 
 		void sendExceptionCode3();
 

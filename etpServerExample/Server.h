@@ -30,6 +30,11 @@ under the License.
 
 #include "common/DataObjectRepository.h"
 
+#include "MyOwnCoreProtocolHandlers.h"
+#include "MyOwnDiscoveryProtocolHandlers.h"
+#include "MyOwnStoreProtocolHandlers.h"
+#include "MyOwnDataArrayProtocolHandlers.h"
+
 using tcp = boost::asio::ip::tcp;               // from <boost/asio/ip/tcp.hpp>
 
 template <class T>
@@ -120,12 +125,20 @@ private:
 				std::cerr << "listener on_accept : " << ec.message() << std::endl;
 			}
 			else {
-				// Create the session and run it
+				// Create the session
 				std::shared_ptr<T> session = std::make_shared<T>(std::move(socket_)
 #ifdef WITH_ETP_SSL
 					, ctx_
 #endif
-				, repo);
+				);
+
+				// Set Handlers of the session
+				session->setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(session));
+				session->setDiscoveryProtocolHandlers(std::make_shared<MyOwnDiscoveryProtocolHandlers>(session, &repo));
+				session->setStoreProtocolHandlers(std::make_shared<MyOwnStoreProtocolHandlers>(session, &repo));
+				session->setDataArrayProtocolHandlers(std::make_shared<MyOwnDataArrayProtocolHandlers>(session, &repo));
+
+				// Run session
 				session->run();
 				sessions.push_back(session);
 				std::cout << "Opening the session " << sessions.size() << std::endl;
@@ -138,6 +151,8 @@ private:
 
 public:
 	Server(COMMON_NS::DataObjectRepository & repo_): repo(repo_) {}
+
+	std::vector< std::shared_ptr<T> >& getSessions() { return sessions; }
 
 #ifdef WITH_ETP_SSL
 	void listen(const std::string & host, unsigned short port, int threadCount, boost::asio::ssl::context & sslContext) {
