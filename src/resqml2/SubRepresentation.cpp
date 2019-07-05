@@ -29,7 +29,6 @@ under the License.
 #include "resqml2_0_1/AbstractIjkGridRepresentation.h"
 
 using namespace std;
-using namespace epc;
 using namespace RESQML2_NS;
 
 const char* SubRepresentation::XML_TAG = "SubRepresentation";

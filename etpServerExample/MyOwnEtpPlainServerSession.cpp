@@ -26,8 +26,8 @@ under the License.
 
 using namespace std;
 
-MyOwnEtpPlainServerSession::MyOwnEtpPlainServerSession(tcp::socket socket)
-	: ETP_NS::PlainServerSession(std::move(socket))
+MyOwnEtpPlainServerSession::MyOwnEtpPlainServerSession(tcp::socket socket, COMMON_NS::DataObjectRepository& repo_)
+	: ETP_NS::PlainServerSession(std::move(socket)), repo(repo_)
 {
 	setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(this));
 	setDiscoveryProtocolHandlers(std::make_shared<MyOwnDiscoveryProtocolHandlers>(this));

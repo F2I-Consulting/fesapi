@@ -24,7 +24,7 @@ under the License.
 
 namespace WITSML2_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT Trajectory : public WITSML2_1_NS::AbstractObject
+	class Trajectory : public WITSML2_1_NS::AbstractObject
 	{
 	private:
 		gsoap_eml2_2::witsml2__TrajectoryStation* getTrajectoryStation(unsigned int trajStationIndex) const;
@@ -49,16 +49,16 @@ namespace WITSML2_1_NS
 		*/
 		~Trajectory() {}
 
-		unsigned int getTrajectoryStationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getTrajectoryStationCount() const;
 
-		double getMd(unsigned int trajStationIndex) const;
+		DLL_IMPORT_OR_EXPORT double getMd(unsigned int trajStationIndex) const;
 		gsoap_eml2_2::eml22__LengthUom getMdUom(unsigned int trajStationIndex) const;
-		std::string getMdDatum(unsigned int trajStationIndex) const;
+		DLL_IMPORT_OR_EXPORT std::string getMdDatum(unsigned int trajStationIndex) const;
 
 		gsoap_eml2_2::witsml2__TrajStationType getTrajStationType(unsigned int trajStationIndex) const;
 
 		gsoap_eml2_2::eml22__DataObjectReference* getWellboreDor() const;
-		class Wellbore* getWellbore() const;
+		DLL_IMPORT_OR_EXPORT class Wellbore* getWellbore() const;
 		void setWellbore(class Wellbore* witsmlWellbore);
 
 		static const char* XML_TAG;

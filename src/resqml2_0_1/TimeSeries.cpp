@@ -25,7 +25,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 TimeSeries::TimeSeries(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
 {

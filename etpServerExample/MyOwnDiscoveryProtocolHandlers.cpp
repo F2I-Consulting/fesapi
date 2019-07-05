@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnDiscoveryProtocolHandlers.h"
 
+#include "MyOwnEtpPlainServerSession.h"
+
 #include "etp/EtpHelpers.h"
 
 #include "common/AbstractHdfProxy.h"
@@ -26,8 +28,6 @@ under the License.
 #include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
 #include "resqml2_0_1/IjkGridExplicitRepresentation.h"
 #include "resqml2_0_1/IjkGridParametricRepresentation.h"
-
-#include "globalVariables.h"
 
 void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlash(COMMON_NS::DataObjectRepository & repo, const Energistics::Etp::v12::Protocol::Discovery::GetTreeResources & gr,  int64_t correlationId,
 	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result)
@@ -343,37 +343,58 @@ void MyOwnDiscoveryProtocolHandlers::on_GetTreeResources(const Energistics::Etp:
 		return;
 	}
 
-	COMMON_NS::EpcDocument epcDoc(epcFileName);
-	COMMON_NS::DataObjectRepository repo;
-	std::string resqmlResult = epcDoc.deserializeInto(repo);
-	if (!resqmlResult.empty()) {
-		std::cerr << "Error when deserializing " << resqmlResult << std::endl;
-	}
-
 	Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse mb;
 
 	if (gr.m_context.m_uri == "eml://") {
-		on_GetEmlColonSlashSlash(repo, gr, correlationId, mb.m_resources);
+		on_GetEmlColonSlashSlash(
+#ifdef WITH_ETP_SSL
+			static_cast<MyOwnEtpSslServerSession*>(session)->repo
+#else
+			static_cast<MyOwnEtpPlainServerSession*>(session)->repo
+#endif
+		, gr, correlationId, mb.m_resources);
 	}
 	else {
 		const std::string path = gr.m_context.m_uri.substr(6);
 		if (path == "resqml20" || path == "resqml20/") {
-			on_GetEmlColonSlashSlashResqml20(repo, gr, correlationId, mb.m_resources);
+			on_GetEmlColonSlashSlashResqml20(
+#ifdef WITH_ETP_SSL
+				static_cast<MyOwnEtpSslServerSession*>(session)->repo
+#else
+				static_cast<MyOwnEtpPlainServerSession*>(session)->repo
+#endif
+				, gr, correlationId, mb.m_resources);
 		}
 		else if (path == "eml20" || path == "eml20/") {
-			on_GetEmlColonSlashSlashEml20(repo, gr, correlationId, mb.m_resources);
+			on_GetEmlColonSlashSlashEml20(
+#ifdef WITH_ETP_SSL
+				static_cast<MyOwnEtpSslServerSession*>(session)->repo
+#else
+				static_cast<MyOwnEtpPlainServerSession*>(session)->repo
+#endif
+				, gr, correlationId, mb.m_resources);
 		}
 		else if (path == "witsml21" || path == "witsml21/") {
-			on_GetEmlColonSlashSlashWitsml21(repo, gr, correlationId, mb.m_resources);
+			on_GetEmlColonSlashSlashWitsml21(
+#ifdef WITH_ETP_SSL
+				static_cast<MyOwnEtpSslServerSession*>(session)->repo
+#else
+				static_cast<MyOwnEtpPlainServerSession*>(session)->repo
+#endif
+				, gr, correlationId, mb.m_resources);
 		}
 		else {
-			on_GetFolder(repo, gr, correlationId, mb.m_resources);
+			on_GetFolder(
+#ifdef WITH_ETP_SSL
+				static_cast<MyOwnEtpSslServerSession*>(session)->repo
+#else
+				static_cast<MyOwnEtpPlainServerSession*>(session)->repo
+#endif
+				, gr, correlationId, mb.m_resources);
 		}
 	}
 
 	session->send(mb, correlationId, 0x01 | 0x02);
-
-	epcDoc.close();
 }
 
 void MyOwnDiscoveryProtocolHandlers::on_GetGraphResources(const Energistics::Etp::v12::Protocol::Discovery::GetGraphResources & gr, int64_t correlationId)
@@ -384,17 +405,14 @@ void MyOwnDiscoveryProtocolHandlers::on_GetGraphResources(const Energistics::Etp
 		return;
 	}
 
-	COMMON_NS::EpcDocument epcDoc(epcFileName);
-	COMMON_NS::DataObjectRepository repo;
-	std::string resqmlResult = epcDoc.deserializeInto(repo);
-	if (!resqmlResult.empty()) {
-		std::cerr << "Error when deserializing " << resqmlResult << std::endl;
-	}
-
 	Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse mb;
-	on_GetDataObject(repo, gr, correlationId, mb.m_resources);
+	on_GetDataObject(
+#ifdef WITH_ETP_SSL
+		static_cast<MyOwnEtpSslServerSession*>(session)->repo
+#else
+		static_cast<MyOwnEtpPlainServerSession*>(session)->repo
+#endif
+		, gr, correlationId, mb.m_resources);
 
 	session->send(mb, correlationId, 0x01 | 0x02);
-
-	epcDoc.close();
 }

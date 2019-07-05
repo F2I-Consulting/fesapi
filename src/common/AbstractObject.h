@@ -18,12 +18,15 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
+#include <unordered_map>
+#include <vector>
 #include <stdexcept>
 
 #include "proxies/gsoap_resqml2_0_1H.h"
 #include "proxies/gsoap_eml2_1H.h"
 #include "proxies/gsoap_eml2_2H.h"
-#include "common/EpcDocument.h"
+
+#include "common/DataObjectRepository.h"
 
 namespace COMMON_NS
 {
@@ -45,7 +48,7 @@ namespace COMMON_NS
 		*/
 		void pushBackExtraMetadataV2_0_1(const std::string & key, const std::string & value);
 		void pushBackExtraMetadataV2_1(const std::string & key, const std::string & value);
-				void pushBackExtraMetadataV2_2(const std::string & key, const std::string & value);
+		void pushBackExtraMetadataV2_2(const std::string & key, const std::string & value);
 
 		/**
 		* Getter (in read only mode) of all the extra metadata
@@ -121,23 +124,6 @@ namespace COMMON_NS
 		* Transform a non partial object into a partial one
 		*/
 		void changeToPartialObject();
-
-		/**
-		* Get or create an object from a data object reference
-		*/
-		template <class valueType>
-		valueType* getOrCreateObjectFromDor(gsoap_resqml2_0_1::eml20__DataObjectReference* dor) const
-		{
-			valueType* obj = getEpcDocument()->getDataObjectByUuid<valueType>(dor->UUID);
-			if (obj == nullptr) { // partial transfer
-				getEpcDocument()->createPartial(dor);
-				obj = getEpcDocument()->getDataObjectByUuid<valueType>(dor->UUID);
-			}
-			if (obj == nullptr) {
-				throw std::invalid_argument("The DOR looks invalid.");
-			}
-			return obj;
-		}
 
 		/*
 		* Read an input array which come from XML (and potentially HDF5) and store it into a preallocated output array in memory.

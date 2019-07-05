@@ -25,7 +25,6 @@ under the License.
 
 using namespace std;
 using namespace RESQML2_NS;
-using namespace epc;
 
 const char* Activity::XML_TAG = "Activity";
 

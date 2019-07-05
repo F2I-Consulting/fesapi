@@ -74,7 +74,13 @@ namespace COMMON_NS
 		* Unzip the package (dataobjects + relationships) into a data repository
 		* @return			An empty string if everything's ok otherwise the error string.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string deserializeInto(DataObjectRepository & repo);
+		DLL_IMPORT_OR_EXPORT std::string deserializeInto(DataObjectRepository & repo);
+
+		/**
+		* Unzip the package (dataobjects + relationships) into a data repository by only creating partila objects.
+		* @return			An empty string if everything's ok otherwise the error string.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string deserializePartiallyInto(DataObjectRepository & repo);
 
 		/**
 		* Get the absolute path of the directory where the epc document is stored.

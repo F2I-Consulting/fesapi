@@ -186,13 +186,13 @@ namespace ETP_NS
 		 */
 		template<typename T> int64_t send(const T & mb, int64_t correlationId = 0, int32_t messageFlags = 0)
 		{
-			int64_t messageId = encode(mb, correlationId, messageFlags); // put the message to write in the queue
+			int64_t msgId = encode(mb, correlationId, messageFlags); // put the message to write in the queue
 
 			if(sendingQueue.size() == 1) {
 				do_write();
 			}
 
-			return messageId;
+			return msgId;
 		}
 
 		DLL_IMPORT_OR_EXPORT void sendCloseFrame() {
@@ -249,7 +249,7 @@ namespace ETP_NS
 
 		DLL_IMPORT_OR_EXPORT bool isWebSocketSessionClosed() const { return webSocketSessionClosed;  }
 
-		DLL_IMPORT_OR_EXPORT void setEtpSessionClosed(bool etpSessionClosed) { this->etpSessionClosed = etpSessionClosed; }
+		DLL_IMPORT_OR_EXPORT void setEtpSessionClosed(bool etpSessionClosed_) { etpSessionClosed = etpSessionClosed_; }
 		DLL_IMPORT_OR_EXPORT bool isEtpSessionClosed() const { return webSocketSessionClosed || etpSessionClosed; }
 	};
 }

@@ -20,11 +20,13 @@ under the License.
 
 #include "etp/PlainServerSession.h"
 
-#include "common/AbstractObject.h"
+#include "common/DataObjectRepository.h"
 
 class MyOwnEtpPlainServerSession : public ETP_NS::PlainServerSession
 {
 public:
-	MyOwnEtpPlainServerSession(tcp::socket socket);
+	MyOwnEtpPlainServerSession(tcp::socket socket, COMMON_NS::DataObjectRepository& repo_);
 	~MyOwnEtpPlainServerSession();
+
+	COMMON_NS::DataObjectRepository& repo;
 };

@@ -25,7 +25,6 @@ under the License.
 #include "tools/Misc.h"
 
 using namespace std;
-using namespace epc;
 using namespace RESQML2_NS;
 
 const char* RepresentationSetRepresentation::XML_TAG = "RepresentationSetRepresentation";

@@ -18,7 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "MyOwnEtpPlainServerSession.h"
+#include "etp/AbstractSession.h"
+#include "common/DataObjectRepository.h"
 
 class MyOwnDiscoveryProtocolHandlers : public ETP_NS::DiscoveryHandlers
 {

@@ -27,7 +27,7 @@ under the License.
 
 namespace WITSML2_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT Log : public WITSML2_1_NS::AbstractObject
+	class Log : public WITSML2_1_NS::AbstractObject
 	{
 	public:
 		/**
@@ -49,7 +49,7 @@ namespace WITSML2_1_NS
 		~Log() {}
 
 		gsoap_eml2_2::eml22__DataObjectReference* getWellboreDor() const;
-		class Wellbore* getWellbore() const;
+		DLL_IMPORT_OR_EXPORT class Wellbore* getWellbore() const;
 		void setWellbore(class Wellbore* witsmlWellbore);
 
 		static const char* XML_TAG;

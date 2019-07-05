@@ -678,6 +678,16 @@ namespace COMMON_NS
 		}
 
 		/**
+		* Create a partial object i.e. a data object reference (DOR) based on an UUID + a title + a content type
+		*/
+		COMMON_NS::AbstractObject* createPartial(const std::string & uuid, const std::string & title, const std::string & contentType);
+
+		/**
+		* Create a partial object i.e. a data object reference (DOR) based on an UUID + a title + a content type + a version
+		*/
+		COMMON_NS::AbstractObject* createPartial(const std::string & uuid, const std::string & title, const std::string & contentType, const std::string & version);
+
+		/**
 		* Create a partial object in this repository based on a RESQML2.0 Data Object Reference
 		*/
 		COMMON_NS::AbstractObject* createPartial(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor);

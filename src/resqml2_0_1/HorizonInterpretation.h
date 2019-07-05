@@ -56,17 +56,5 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
-
-        std::vector<epc::Relationship> getAllSourceRelationships() const;
-
-    private:
-
-        // backward relationships
-        std::vector<class StructuralOrganizationInterpretation*> structuralOrganizationInterpretationSet;
-        std::vector<class StratigraphicColumnRankInterpretation*> stratigraphicColumnRankInterpretationSet;
-
-		friend void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(HorizonInterpretation * horizonInterpretation, const int & stratigraphicRank);
-		friend void StratigraphicColumnRankInterpretation::setHorizonOfLastContact(HorizonInterpretation * partOf);
 	};
 }
-

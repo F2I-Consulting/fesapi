@@ -27,7 +27,6 @@ under the License.
 using namespace std;
 using namespace WITSML2_1_NS;
 using namespace gsoap_eml2_2;
-using namespace epc;
 
 const char* ToolErrorModelDictionary::XML_TAG = "ToolErrorModelDictionary";
 

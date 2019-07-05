@@ -37,7 +37,6 @@ under the License.
 
 using namespace RESQML2_NS;
 using namespace std;
-using namespace epc;
 
 void AbstractProperty::loadTargetRelationships() const
 {

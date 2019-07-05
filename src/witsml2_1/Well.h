@@ -22,7 +22,7 @@ under the License.
 
 namespace WITSML2_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT Well : public WITSML2_1_NS::AbstractObject
+	class Well : public WITSML2_1_NS::AbstractObject
 	{
 	public:
 		/**
@@ -54,18 +54,18 @@ namespace WITSML2_1_NS
 		*/
 		~Well() {}
 
-		void setOperator(const std::string & operator_);
+		DLL_IMPORT_OR_EXPORT void setOperator(const std::string & operator_);
 
-		double getLocationProjectedX(const unsigned int & locationIndex);
-		double getLocationProjectedY(const unsigned int & locationIndex);
+		DLL_IMPORT_OR_EXPORT double getLocationProjectedX(const unsigned int & locationIndex);
+		DLL_IMPORT_OR_EXPORT double getLocationProjectedY(const unsigned int & locationIndex);
 
-		void pushBackLocation(
+		DLL_IMPORT_OR_EXPORT void pushBackLocation(
 			const std::string & guid,
 			const double & projectedX,
 			const double & projectedY,
 			const unsigned int & projectedCrsEpsgCode);
 
-		unsigned int geLocationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int geLocationCount() const;
 		
 		void pushBackDatum(
 			const std::string & guid, 
@@ -76,7 +76,7 @@ namespace WITSML2_1_NS
 			const double & elevation,
 			const unsigned int & verticalCrsEpsgCode);
 
-		unsigned int getDatumCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getDatumCount() const;
 
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}

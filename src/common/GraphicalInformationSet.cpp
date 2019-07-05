@@ -29,7 +29,6 @@ under the License.
 using namespace std;
 using namespace common;
 using namespace gsoap_eml2_2;
-using namespace epc;
 using namespace resqml2;
 using namespace resqml2_0_1;
 
