@@ -130,6 +130,10 @@ namespace RESQML2_NS
 	class Activity;
 }
 
+#ifdef SWIGJAVA
+	%include "swigResqml2JavaInclude.i"
+#endif
+
 namespace COMMON_NS
 {
 	%nodefaultctor; // Disable creation of default constructors

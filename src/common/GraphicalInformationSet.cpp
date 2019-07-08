@@ -161,17 +161,7 @@ resqml2__HsvColor* GraphicalInformationSet::getDefaultColor(AbstractObject const
 
 	resqml2__GraphicalInformationForWholeObject* result = getDefaultGraphicalInformation(targetObject);
 
-	if (result != nullptr && result->ConstantColor != nullptr) {
-		return result->ConstantColor;
-	}
-	else if (dynamic_cast<AbstractValuesProperty const*>(targetObject) != nullptr) {
-		AbstractValuesProperty const* property = static_cast<AbstractValuesProperty const*>(targetObject);
-		if (!property->isAssociatedToOneStandardEnergisticsPropertyKind()) {
-			return getDefaultColor(property->getLocalPropertyKind());
-		}
-	}
-
-	return nullptr;
+	return result != nullptr && result->ConstantColor != nullptr ? result->ConstantColor : nullptr;
 }
 
 resqml2__ColorInformation* GraphicalInformationSet::getColorInformation(AbstractObject const* targetObject) const
@@ -513,6 +503,11 @@ void GraphicalInformationSet::setDiscreteColorMap(AbstractObject const* targetOb
 		throw invalid_argument("The discrete color map cannot be null");
 	}
 
+	if ((dynamic_cast<AbstractValuesProperty const*>(targetObject) == nullptr) &&
+		(dynamic_cast<PropertyKind const*>(targetObject) == nullptr)) {
+		throw invalid_argument("The object must be a property or property kind.");
+	}
+
 	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
 
 	resqml2__ColorInformation* colorInformation = getColorInformation(targetObject);
@@ -601,6 +596,11 @@ void GraphicalInformationSet::setContinuousColorMap(AbstractObject const* target
 
 	if (continuousColorMap == nullptr) {
 		throw invalid_argument("The continuous color map cannot be null");
+	}
+
+	if ((dynamic_cast<AbstractValuesProperty const*>(targetObject) == nullptr) &&
+		(dynamic_cast<PropertyKind const*>(targetObject) == nullptr)) {
+		throw invalid_argument("The object must be a property or property kind.");
 	}
 
 	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);

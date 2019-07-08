@@ -71,7 +71,7 @@ namespace COMMON_NS
 
 		/**
 		 * @param targetObject	the object we want to test for having some graphical informations
-		 * @return				true if the target object (or its property kind) has some graphical informations
+		 * @return				true if the target object has some graphical informations
 		 */
 		bool hasDirectGraphicalInformation(AbstractObject const* targetObject) const;
 
@@ -83,43 +83,37 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT bool hasGraphicalInformation(AbstractObject const* targetObject) const;
 
 		/**
-		 * @param targetObject	the object we want to test for having a default color. If it has not and it is a property,
-								we also check that property kind has one
-		 * @return				true if the target object (or its property kind) has one
+		 * @param targetObject	the object we want to test for having a default color
+		 * @return				true if the target object has one
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasDefaultColor(AbstractObject const* targetObject) const;
 
 		/**
-		 * @param targetObject	the object for which we look for the default hue. If it has not and it is a property,
-								we also look for its property kind default hue
+		 * @param targetObject	the object for which we look for the default hue
 		 * @return				hue in the range [0, 360]
 		 */
 		DLL_IMPORT_OR_EXPORT double getDefaultHue(AbstractObject const* targetObject) const;
 
 		/**
-		 * @param targetObject	the object for which we look for the default saturation. If it has not and it is a property,
-								we also look for its property kind default saturation
+		 * @param targetObject	the object for which we look for the default saturation
 		 * @return				saturation in the range [0, 1]
 		 */
 		DLL_IMPORT_OR_EXPORT double getDefaultSaturation(AbstractObject const* targetObject) const;
 
 		/**
-		 * @param targetObject	the object for which we look for the default color value. If it has not and it is a property,
-								we also look for its property kind default color value
+		 * @param targetObject	the object for which we look for the default color value
 		 * @return				value in the range [0, 1]
 		 */
 		DLL_IMPORT_OR_EXPORT double getDefaultValue(AbstractObject const* targetObject) const;
 
 		/**
-		 * @param targetObject	the object for which we look for the default alpha. If it has not and it is a property,
-								we also look for its property kind default alpha
+		 * @param targetObject	the object for which we look for the default alpha
 		 * @return				alpha in the range [0, 1] (0 means transparent and 1 means opaque)
 		 */
 		DLL_IMPORT_OR_EXPORT double getDefaultAlpha(AbstractObject const* targetObject) const;
 
 		/**
-		 * @param targetObject	the object for which we look for the default rgb color. If it has not and it is a property,
-								we also look for its property kind default rgb color
+		 * @param targetObject	the object for which we look for the default rgb color
 		 * @param red			(output parameter) red value in the range [0, 1]
 		 * @param green			(output parameter) green value in the range [0, 1]
 		 * @param blue			(output parameter) blue value in the range [0, 1]
@@ -127,8 +121,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void getDefaultRgbColor(AbstractObject const* targetObject, double& red, double& green, double& blue) const;
 
 		/**
-		 * @param targetObject	the object for which we look for the default rgb color. If it has not and it is a property,
-								we also look for its property kind default rgb color
+		 * @param targetObject	the object for which we look for the default rgb color
 		 * @param red			(output parameter) red value in the range [0, 255]
 		 * @param green			(output parameter) green value in the range [0, 255]
 		 * @param blue			(output parameter) blue value in the range [0, 255]
@@ -136,15 +129,13 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void getDefaultRgbColor(AbstractObject const* targetObject, unsigned int& red, unsigned int& green, unsigned int& blue) const;
 
 		/**
-		 * @param targetObject	the object for which we look for a default title. If it has not and it is a property,
-								we also look for its property kind default title
-		 * @return				true if the target object (or its property kind) has a default title
+		 * @param targetObject	the object for which we look for a default title
+		 * @return				true if the target object has a default title
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasDefaultColorTitle(AbstractObject const* targetObject) const;
 
 		/**
-		 * @param targetObject	the object for which we look for a default title. If it has not and it is a property,
-								we also look for its property kind default title
+		 * @param targetObject	the object for which we look for a default title
 		 * @return				the default title
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getDefaultColorTitle(AbstractObject const* targetObject) const;

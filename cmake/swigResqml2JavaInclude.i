@@ -450,6 +450,10 @@ namespace COMMON_NS
 		$javaclassname ret = ($javaclassname) fesapiJNI.resqml2_instantiateConcreteObject(cPtr, $owner);
 		return ret;
 	}
+	
+	%typemap(javaimports) SWIGTYPE %{
+		import com.f2i.energisticsStandardsApi.*;
+	%}
 }
 
 namespace RESQML2_NS
