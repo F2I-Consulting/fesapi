@@ -25,7 +25,6 @@ under the License.
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace std;
-using namespace epc;
 
 const char* GenericFeatureInterpretation::XML_TAG = "GenericFeatureInterpretation";
 
@@ -35,12 +34,12 @@ GenericFeatureInterpretation::GenericFeatureInterpretation(RESQML2_NS::AbstractF
 		throw invalid_argument("The interpreted feature cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREGenericFeatureInterpretation(feature->getGsoapContext(), 1);	
-	setInterpretedFeature(feature);
+	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREGenericFeatureInterpretation(feature->getGsoapContext(), 1);
 
 	static_cast<_resqml2__GenericFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = resqml2__Domain__mixed;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
-}
 
+	setInterpretedFeature(feature);
+}

@@ -22,7 +22,7 @@ under the License.
 #include <iostream>
 
 namespace COMMON_NS {
-	class EpcDocument;
+	class DataObjectRepository;
 }
 
 namespace resqml2_0_1test {
@@ -33,10 +33,10 @@ namespace resqml2_0_1test {
 		static const char* defaultUuidReal10;
 		static const char* defaultUuidReal15;
 
-		MultirealPropertyTest(const std::string & epcDocPath);
-		MultirealPropertyTest(COMMON_NS::EpcDocument * epcDoc, bool init);
+		MultirealPropertyTest(const std::string & repoPath);
+		MultirealPropertyTest(COMMON_NS::DataObjectRepository * repo, bool init);
 	protected:
-		void initEpcDocHandler();
-		void readEpcDocHandler();
+		void initRepoHandler();
+		void readRepoHandler();
 	};
 }

@@ -34,22 +34,23 @@ under the License.
 using namespace std;
 using namespace COMMON_NS;
 using namespace gsoap_eml2_2;
-using namespace epc;
 using namespace RESQML2_NS;
 using namespace RESQML2_0_1_NS;
 using namespace RESQML2_2_NS;
 
 const char* GraphicalInformationSet::XML_TAG = "GraphicalInformationSet";
 
-GraphicalInformationSet::GraphicalInformationSet(soap* soapContext, string const& guid, string const& title)
+GraphicalInformationSet::GraphicalInformationSet(COMMON_NS::DataObjectRepository* repo, string const& guid, string const& title)
 {
-	if (soapContext == nullptr)
-		throw invalid_argument("The soap context cannot be null.");
+	if (repo == nullptr)
+		throw invalid_argument("The repo cannot be null.");
 
-	gsoapProxy2_2 = soap_new_eml22__GraphicalInformationSet(soapContext, 1);
+	gsoapProxy2_2 = gsoap_eml2_2::soap_new_eml22__GraphicalInformationSet(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	repo->addOrReplaceDataObject(this);
 }
 
 unsigned int GraphicalInformationSet::getGraphicalInformationSetCount() const
@@ -83,43 +84,7 @@ string GraphicalInformationSet::getTargetObjectUuid(unsigned int index) const
 
 AbstractObject* GraphicalInformationSet::getTargetObject(unsigned int index) const
 {
-	return epcDocument->getDataObjectByUuid(getTargetObjectUuid(index));
-}
-
-vector<Relationship> GraphicalInformationSet::getAllSourceRelationships() const
-{
-	vector<Relationship> result = AbstractObject::getAllSourceRelationships();
-	return result;
-}
-
-vector<Relationship> GraphicalInformationSet::getAllTargetRelationships() const
-{
-	vector<Relationship> result;
-
-	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
-
-	for (size_t giIndex = 0; giIndex < gis->GraphicalInformation.size(); ++giIndex) {
-		eml22__DataObjectReference* dor = getTargetObjectDor(giIndex);
-		Relationship relFop(misc::getPartNameFromReference(dor), "", dor->Uuid);
-		relFop.setDestinationObjectType();
-		result.push_back(relFop);
-
-		if (resqml2__ColorInformation* colorInformation = dynamic_cast<resqml2__ColorInformation*>(gis->GraphicalInformation[giIndex])) {
-			if (colorInformation->DiscreteColorMap != nullptr) {
-				Relationship relFop(misc::getPartNameFromReference(colorInformation->DiscreteColorMap), "", colorInformation->DiscreteColorMap->Uuid);
-				relFop.setDestinationObjectType();
-				result.push_back(relFop);
-			}
-
-			if (colorInformation->ContinuousColorMap != nullptr) {
-				Relationship relFop(misc::getPartNameFromReference(colorInformation->ContinuousColorMap), "", colorInformation->ContinuousColorMap->Uuid);
-				relFop.setDestinationObjectType();
-				result.push_back(relFop);
-			}
-		}
-	}
-
-	return result;
+	return getRepository()->getDataObjectByUuid(getTargetObjectUuid(index));
 }
 
 resqml2__DefaultGraphicalInformation* GraphicalInformationSet::getDefaultGraphicalInformationForAllIndexableElements(AbstractObject const* targetObject) const
@@ -757,4 +722,12 @@ void GraphicalInformationSet::hsvToRgb(double hue, double saturation, double val
 	blue = floor(b == 1.0 ? 255 : b * 256.0);
 }
 
+void GraphicalInformationSet::loadTargetRelationships() const
+{
+	const unsigned int count = getGraphicalInformationSetCount();
+	for (unsigned int index = 0; index < count; ++index) {
+		convertDorIntoRel(getTargetObjectDor(index));
+	}
 
+	//TODO: relations vers color map
+}

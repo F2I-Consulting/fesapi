@@ -25,7 +25,6 @@ under the License.
 #include "catch.hpp"
 
 #include "EpcDocumentTest.h"
-#include "GraphicalInformationSetTest.h"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 #include "resqml2_0_1test/HorizonInterpretationTest.h"
 #include "resqml2_0_1test/FaultSinglePatchTriangulatedSetRepresentationTest.h"
@@ -80,7 +79,7 @@ FESAPI_TEST("Export and import graphical information set", "[graphical informati
 FESAPI_TEST("Export and import discrete color map on a discrete property", "[graphical information][color map][discrete color map]", DiscreteColorMapTest)
 FESAPI_TEST("Export and import continuous color map on a discrete property", "[graphical information][color map][continuous color map]", ContinuousColorMapTest)
 
-TEST_CASE("Export and import an empty EPC document", "[epcDoc]")
+TEST_CASE("Export and import an empty EPC document", "[repo]")
 {
 	EpcDocumentTest testIn("../../EpcDocumentTest");
 	testIn.serialize();

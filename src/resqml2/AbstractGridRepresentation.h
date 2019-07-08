@@ -38,7 +38,7 @@ namespace RESQML2_NS
 		*												The method will consequently only consider the first cell count per interval value in childCellCountPerInterval and parentCellCountPerInterval as the constant ones.
 		**/
 		gsoap_resqml2_0_1::resqml2__Regrid* createRegrid(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount, double * childCellWeights,
-			const std::string & dimension, COMMON_NS::AbstractHdfProxy * proxy = nullptr, bool forceConstantCellCountPerInterval = false);
+			const std::string & dimension, COMMON_NS::AbstractHdfProxy * proxy, bool forceConstantCellCountPerInterval = false);
 
 		/*
 		* @param	dimension					It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
@@ -58,7 +58,7 @@ namespace RESQML2_NS
 		/**
 		* Default constructor
 		*/
-		AbstractGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs, bool withTruncatedPillars) : AbstractRepresentation(interp, crs), withTruncatedPillars(withTruncatedPillars){}
+		AbstractGridRepresentation(bool withTruncatedPillars) : withTruncatedPillars(withTruncatedPillars){}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -84,19 +84,19 @@ namespace RESQML2_NS
 		/**
 		* Get the vector of all grid connection set rep associated to this grid instance.
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector<RESQML2_NS::GridConnectionSetRepresentation*>& getGridConnectionSetRepresentationSet() const {return gridConnectionSetRepresentationSet;}
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::GridConnectionSetRepresentation const *> getGridConnectionSetRepresentationSet() const;
 
 		/**
 		 * Get the GridConnectionSetRepresentation count into this EPC document which are associated to this grid.
 		 * It is mainly used in SWIG context for parsing the vector from a non C++ language.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getGridConnectionSetRepresentationCount() const {return static_cast<unsigned int>(gridConnectionSetRepresentationSet.size());}
+		DLL_IMPORT_OR_EXPORT unsigned int getGridConnectionSetRepresentationCount() const;
 
 		/**
 		 * Get a particular ijk parametric grid according to its position in the EPC document.
 		 * It is mainly used in SWIG context for parsing the vector from a non C++ language.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::GridConnectionSetRepresentation* getGridConnectionSetRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::GridConnectionSetRepresentation const * getGridConnectionSetRepresentation(unsigned int index) const;
 
 
 		//************************************************************
@@ -122,14 +122,19 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT std::string getParentGridUuid() const;
 
 		/**
-		* Return the count of child grid in this grid.
+		* Get the vector of all child grids
 		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getChildGridCount() const {return static_cast<unsigned int>(childGridSet.size());}
+		std::vector<RESQML2_NS::AbstractGridRepresentation const *> getChildGridSet() const;
 
 		/**
 		* Return the count of child grid in this grid.
 		*/
-		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation* getChildGrid(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getChildGridCount() const;
+
+		/**
+		* Return the count of child grid in this grid.
+		*/
+		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation const * getChildGrid(unsigned int index) const;
 
 		/**
 		* Indicates that this grid takes place into another unstructured parent grid.
@@ -343,7 +348,7 @@ namespace RESQML2_NS
 		/**
 		* @return	null pointer if no stratigraphic organization interpretation is associated to this grid representation. Otherwise return the data objet reference of the associated stratigraphic organization interpretation.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getStratigraphicOrganizationInterpretationDor() const;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::eml20__DataObjectReference const * getStratigraphicOrganizationInterpretationDor() const;
 
 		/**
 		* @return	empty string if no stratigraphic organization interpretation is associated to this grid representation. Otherwise return the uuid of the associated stratigraphic organization interpretation.
@@ -387,7 +392,7 @@ namespace RESQML2_NS
 		/**
 		* @return	null pointer if no rock fluid organization interpretation is associated to this grid representation. Otherwise return the data objet reference of the associated rock fluid organization interpretation.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getRockFluidOrganizationInterpretationDor() const;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::eml20__DataObjectReference const * getRockFluidOrganizationInterpretationDor() const;
 
 		/**
 		* @return	empty string if no rock fluid organization interpretation is associated to this grid representation. Otherwise return the uuid of the associated rock fluid organization interpretation.
@@ -517,22 +522,10 @@ namespace RESQML2_NS
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
-		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
-
-		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
+		void loadTargetRelationships() const;
 
 	protected:
 
 		bool withTruncatedPillars;
-
-		std::vector<AbstractGridRepresentation*> childGridSet;
-
-		std::vector<RESQML2_NS::GridConnectionSetRepresentation*> gridConnectionSetRepresentationSet;
-		std::vector<RESQML2_0_1_NS::BlockedWellboreRepresentation*> blockedWellboreRepresentationSet;
-
-		friend void GridConnectionSetRepresentation::pushBackSupportingGridRepresentation(AbstractGridRepresentation * supportingGridRep);
-		friend void RESQML2_0_1_NS::BlockedWellboreRepresentation::pushBackSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep);
-
 	};
 }

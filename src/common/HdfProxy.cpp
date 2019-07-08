@@ -31,8 +31,8 @@ under the License.
 using namespace std;
 using namespace COMMON_NS;
 
-HdfProxy::HdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
-	AbstractHdfProxy(packageDirAbsolutePath, externalFilePath), hdfFile(-1), compressionLevel(0) {}
+HdfProxy::HdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess) :
+	AbstractHdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess), hdfFile(-1), compressionLevel(0) {}
 
 void HdfProxy::open()
 {
@@ -40,40 +40,37 @@ void HdfProxy::open()
 		close();
 	}
 
-	if (getEpcDocument() == nullptr || getEpcDocument()->getPermissionAccess() == COMMON_NS::EpcDocument::READ_ONLY) { // By default, if no Epc document is available (DAS use case), open in read only mode
+	if (openingMode == COMMON_NS::DataObjectRepository::READ_ONLY) {
 		if (H5Fis_hdf5((packageDirectoryAbsolutePath + relativeFilePath).c_str()) > 0) {
 			hdfFile = H5Fopen((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_RDONLY, H5P_DEFAULT);
 
-			if (getEpcDocument() != nullptr) { // if no Epc document is available (DAS use case), we cannot check any HDF uuid
-				// Check the uuid
-				string hdfUuid = readStringAttribute(".", "uuid");
-				if (getUuid() != hdfUuid) {
-					getEpcDocument()->addWarning("The uuid \"" + hdfUuid + "\" attribute of the HDF5 file is not the same as the uuid \"" + getUuid() + "\" of the xml EpcExternalPart.");
-				}
+			// Check the uuid
+			string hdfUuid = readStringAttribute(".", "uuid");
+			if (getUuid() != hdfUuid) {
+				getRepository()->addWarning("The uuid \"" + hdfUuid + "\" attribute of the HDF5 file is not the same as the uuid \"" + getUuid() + "\" of the xml EpcExternalPart.");
 			}
 		}
 		else {
 			throw invalid_argument("The HDF5 file " + packageDirectoryAbsolutePath + relativeFilePath + " does not exist or is not a valid HDF5 file.");
 		}
 	}
-	else if (getEpcDocument()->getPermissionAccess() == COMMON_NS::EpcDocument::READ_WRITE) {
-		hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
+	else if (openingMode == COMMON_NS::DataObjectRepository::READ_WRITE) {
+
+	        hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
 #ifdef H5F_LIBVER_V18
 		H5Pset_libver_bounds (access_props,
 				      H5F_LIBVER_V18, H5F_LIBVER_V18);
 #endif
+
 		hdfFile = H5Fcreate((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_EXCL, H5P_DEFAULT, access_props);
 
 		if (hdfFile < 0) {
 			if (H5Fis_hdf5((packageDirectoryAbsolutePath + relativeFilePath).c_str()) > 0) {
 				hdfFile = H5Fopen((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_RDWR, access_props);
 
-				// Check the uuid
-				if (getEpcDocument() != nullptr) { // if no Epc document is available (DAS use case), we cannot check any HDF uuid
-					string hdfUuid = readStringAttribute(".", "uuid");
-					if (getUuid() != hdfUuid) {
-						getEpcDocument()->addWarning("The uuid \"" + hdfUuid + "\" attribute of the HDF5 file is not the same as the uuid \"" + getUuid() + "\" of the xml EpcExternalPart.");
-					}
+				string hdfUuid = readStringAttribute(".", "uuid");
+				if (getUuid() != hdfUuid) {
+					getRepository()->addWarning("The uuid \"" + hdfUuid + "\" attribute of the HDF5 file is not the same as the uuid \"" + getUuid() + "\" of the xml EpcExternalPart.");
 				}
 			}
 			else {
@@ -106,12 +103,14 @@ void HdfProxy::open()
 			}
 		}
 	}
-	else if (getEpcDocument()->getPermissionAccess() == COMMON_NS::EpcDocument::OVERWRITE) {
-		hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
+	else if (openingMode == COMMON_NS::DataObjectRepository::OVERWRITE) {
+
+	        hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
 #ifdef H5F_LIBVER_V18
 		H5Pset_libver_bounds (access_props,
 				      H5F_LIBVER_V18, H5F_LIBVER_V18);
 #endif
+
 		hdfFile = H5Fcreate((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, access_props);
 
 		// create an attribute at the file level to store the uuid of the corresponding resqml hdf proxy.
@@ -347,9 +346,9 @@ AbstractObject::hdfDatatypeEnum HdfProxy::getHdfDatatypeInDataset(const std::str
 		open();
 	}
 
-	hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT); 
-	hid_t datatype = H5Dget_type(dataset); 
-	hid_t native_datatype =  H5Tget_native_type(datatype, H5T_DIR_ASCEND); 
+	hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
+	hid_t datatype = H5Dget_type(dataset);
+	hid_t native_datatype = H5Tget_native_type(datatype, H5T_DIR_ASCEND);
 
 	H5Dclose(dataset);
 	H5Tclose(datatype);
@@ -532,24 +531,12 @@ unsigned int HdfProxy::getDimensionCount(const std::string & datasetName)
 	}
 
 	hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
-	if (dataset < 0) {
-		throw invalid_argument("The dataset " + datasetName + " could not be opened.");
-	}
 
 	hid_t dataspace = H5Dget_space(dataset);
-	if (dataspace < 0) {
-		H5Dclose(dataset);
-		throw invalid_argument("The dataspace for the dataset " + datasetName + " could not be opened.");
-	}
-
 	int result = H5Sget_simple_extent_ndims(dataspace);
 
 	H5Sclose(dataspace);
 	H5Dclose(dataset);
-
-	if (result < 0) {
-		throw invalid_argument("The number of dimensions of the dataspace for the dataset " + datasetName + " could not be read.");
-	}
 
 	return result;
 }
@@ -604,23 +591,12 @@ hssize_t HdfProxy::getElementCount(const std::string & datasetName)
 	}
 
     hid_t dataset = H5Dopen(hdfFile, datasetName.c_str(), H5P_DEFAULT);
-	if (dataset < 0) {
-		throw invalid_argument("The dataset " + datasetName + " could not be opened.");
-	}
 	
 	hid_t dataspace = H5Dget_space(dataset);
-	if (dataspace < 0) {
-		H5Dclose(dataset);
-		throw invalid_argument("The dataspace for the dataset " + datasetName + " could not be opened.");
-	}
-
 	hssize_t result = H5Sget_simple_extent_npoints(dataspace);
 
 	H5Sclose(dataspace);
 	H5Dclose(dataset);
-	if (result < 0) {
-		throw invalid_argument("The number of elements of the dataspace for the dataset " + datasetName + " could not be read.");
-	}
 
 	return result;
 }
@@ -737,8 +713,8 @@ void HdfProxy::createArrayNd(
 	const std::string& datasetName,
 	hid_t datatype,
 	const unsigned long long* numValuesInEachDimension,
-	unsigned int numDimensions)
-{
+	unsigned int numDimensions
+) {
 	if (!isOpened()) {
 		open();
 	}
@@ -1068,10 +1044,10 @@ void HdfProxy::writeGroupAttribute(const std::string & groupName,
 	for (size_t i = 0; i < values.size(); ++i) {
 		if (values[i].size() > maxStringSize) maxStringSize = values[i].size();
 	}
-	++maxStringSize;
+	maxStringSize++;
 	char* concat = new char[maxStringSize * values.size()];
 	for (size_t i = 0; i < values.size(); ++i) {
-		for (size_t j = 0; j < maxStringSize; ++j) {
+		for (unsigned int j = 0; j < maxStringSize; ++j) {
 			concat[j + i*maxStringSize] = values[i].size() > j ? values[i][j] : '\0';
 		}
 	}
@@ -1168,7 +1144,7 @@ void HdfProxy::writeDatasetAttribute(const std::string & datasetName,
 	}
 	char* concat = new char[maxStringSize * values.size()];
 	for (size_t i = 0; i < values.size(); ++i) {
-		for (size_t j = 0; j < maxStringSize; ++j) {
+		for (unsigned int j = 0; j < maxStringSize; ++j) {
 			concat[j + i*maxStringSize] = values[i].size() > j ? values[i][j] : '\0';
 		}
 	}

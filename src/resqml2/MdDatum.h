@@ -42,20 +42,6 @@ namespace RESQML2_NS
 		*/
 		MdDatum(gsoap_resqml2_0_1::_resqml2__MdDatum* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
-	private :
-
-		/**
-		* Add a Wellbore trajectory which uses this MD information
-		* Does not add the inverse relationship i.e. from the Wellbore trajectory to this MD information.
-		*/
-		void addWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj) { wellboreTrajectoryRepresentationSet.push_back(traj); }
-
-		/**
-		* Add a Deviation Survey which uses this MD information
-		* Does not add the inverse relationship i.e. from the deviation survey to this MD information.
-		*/
-		void addDeviationSurveyRepresentation(RESQML2_0_1_NS::DeviationSurveyRepresentation* deviationSurvey)  { deviationSurveyRepresentationSet.push_back(deviationSurvey); }
-
 	public:
 
 		/**
@@ -114,21 +100,9 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::resqml2__MdReference getOriginKind() const = 0;
 
-		std::vector<epc::Relationship> getAllSourceRelationships() const;
-		std::vector<epc::Relationship> getAllTargetRelationships() const;
-
-		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
+		void loadTargetRelationships() const;
 
 	protected:
-
-		friend void RESQML2_0_1_NS::WellboreTrajectoryRepresentation::setMdDatum(RESQML2_NS::MdDatum* mdDatum);
-		friend void RESQML2_0_1_NS::DeviationSurveyRepresentation::setMdDatum(RESQML2_NS::MdDatum* mdDatum);
-
 		virtual void setXmlLocalCrs(RESQML2_NS::AbstractLocal3dCrs * localCrs) = 0;
-
-		// XML backward relationship
-		std::vector<RESQML2_0_1_NS::WellboreTrajectoryRepresentation*> wellboreTrajectoryRepresentationSet;
-		std::vector<RESQML2_0_1_NS::DeviationSurveyRepresentation*> deviationSurveyRepresentationSet;
 	};
 }
-

@@ -30,29 +30,38 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* TriangulatedSetRepresentation::XML_TAG = "TriangulatedSetRepresentation";
 
-TriangulatedSetRepresentation::TriangulatedSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
-		const std::string & guid, const std::string & title):
-	AbstractSurfaceRepresentation(interp, crs)
+TriangulatedSetRepresentation::TriangulatedSetRepresentation(COMMON_NS::DataObjectRepository* repo,
+	const std::string & guid, const std::string & title)
 {
-	if (crs == nullptr) {
-		throw invalid_argument("The local CRS of the TriangulatedSetRepresentation cannot be null.");
+	if (repo == nullptr) {
+		throw invalid_argument("The repo cannot be null.");
 	}
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORETriangulatedSetRepresentation(crs->getGsoapContext(), 1);
+
+	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORETriangulatedSetRepresentation(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	localCrs = crs;
-	localCrs->addRepresentation(this);
+	repo->addOrReplaceDataObject(this);
+}
+
+TriangulatedSetRepresentation::TriangulatedSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+		const std::string & guid, const std::string & title)
+{
+	if (interp == nullptr) {
+		throw invalid_argument("The interpretation of the subrepresentation cannot be null.");
+	}
+
+	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORETriangulatedSetRepresentation(interp->getGsoapContext(), 1);
+
+	initMandatoryMetadata();
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	// relationhsips
-	if (interp != nullptr) {
-		setInterpretation(interp);
-	}
+	setInterpretation(interp);
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* TriangulatedSetRepresentation::getHdfProxyDor() const
@@ -66,7 +75,7 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* TriangulatedSetRepresentation::ge
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }
 
-resqml2__PointGeometry* TriangulatedSetRepresentation::getPointGeometry2_0_1(const unsigned int & patchIndex) const
+resqml2__PointGeometry* TriangulatedSetRepresentation::getPointGeometry2_0_1(unsigned int patchIndex) const
 {
 	_resqml2__TriangulatedSetRepresentation* triRep = static_cast<_resqml2__TriangulatedSetRepresentation*>(gsoapProxy2_0_1);
 	
@@ -77,9 +86,9 @@ resqml2__PointGeometry* TriangulatedSetRepresentation::getPointGeometry2_0_1(con
 }
 
 void TriangulatedSetRepresentation::pushBackTrianglePatch(
-	const unsigned int & nodeCount, double * nodes,
-	const unsigned int & triangleCount, unsigned int * triangleNodeIndices,
-	COMMON_NS::AbstractHdfProxy * proxy)
+	unsigned int nodeCount, double * nodes,
+	unsigned int triangleCount, unsigned int * triangleNodeIndices,
+	COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	_resqml2__TriangulatedSetRepresentation* triRep = static_cast<_resqml2__TriangulatedSetRepresentation*>(gsoapProxy2_0_1);
 
@@ -87,10 +96,19 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 	patch->PatchIndex = triRep->TrianglePatch.size();
 	triRep->TrianglePatch.push_back(patch);
 
+
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+	}
 	hsize_t pointCountDims[] = {nodeCount};
 	patch->NodeCount = nodeCount;
-	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, pointCountDims, 1, proxy);
-	patch->Geometry->LocalCrs = localCrs->newResqmlReference();
+	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, pointCountDims, 1, proxy);
+	getRepository()->addRelationship(this, localCrs);
+
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
+	getRepository()->addRelationship(this, proxy);
 
 	patch->Count = triangleCount;
 	resqml2__IntegerHdf5Array* hdfTriangles = soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
@@ -126,7 +144,9 @@ void TriangulatedSetRepresentation::getXyzPointsOfPatch(const unsigned int & pat
 	resqml2__PointGeometry* pointGeom = getPointGeometry2_0_1(patchIndex);
 	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array)
 	{
-		hdfProxy->readArrayNdOfDoubleValues(static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->PathInHdfFile, xyzPoints);
+		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates;
+		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, xyzPoints);
 	}
 	else
 		throw invalid_argument("The geometry of the representation either does not exist or it is not an explicit one.");
@@ -156,10 +176,7 @@ unsigned int TriangulatedSetRepresentation::getTriangleCountOfAllPatches() const
 void TriangulatedSetRepresentation::getTriangleNodeIndicesOfPatch(const unsigned int & patchIndex, unsigned int * triangleNodeIndices) const
 {
 	_resqml2__TriangulatedSetRepresentation* triRep = static_cast<_resqml2__TriangulatedSetRepresentation*>(gsoapProxy2_0_1);
-	if (triRep->TrianglePatch[patchIndex]->Triangles->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
-	{
-		hdfProxy->readArrayNdOfUIntValues(static_cast<resqml2__IntegerHdf5Array*>(triRep->TrianglePatch[patchIndex]->Triangles)->Values->PathInHdfFile, triangleNodeIndices);
-	}
+	readArrayNdOfUIntValues(triRep->TrianglePatch[patchIndex]->Triangles, triangleNodeIndices);
 }
 
 void TriangulatedSetRepresentation::getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const

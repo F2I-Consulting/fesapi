@@ -34,9 +34,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		StratigraphicOccurrenceInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			AbstractStratigraphicOrganizationInterpretation(partialObject),
-			stratigraphicColumnRankInterpretation(nullptr) {}
+		StratigraphicOccurrenceInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractStratigraphicOrganizationInterpretation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -49,7 +47,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		StratigraphicOccurrenceInterpretation(gsoap_resqml2_0_1::_resqml2__StratigraphicOccurrenceInterpretation* fromGsoap) : AbstractStratigraphicOrganizationInterpretation(fromGsoap), stratigraphicColumnRankInterpretation(nullptr) {}
+		StratigraphicOccurrenceInterpretation(gsoap_resqml2_0_1::_resqml2__StratigraphicOccurrenceInterpretation* fromGsoap) : AbstractStratigraphicOrganizationInterpretation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -58,32 +56,18 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT void setStratigraphicColumnRankInterpretation(class StratigraphicColumnRankInterpretation * stratiColumnRankInterp);
 
-		DLL_IMPORT_OR_EXPORT class StratigraphicColumnRankInterpretation * getStratigraphicColumnRankInterpretation() const {return stratigraphicColumnRankInterpretation;}
+		DLL_IMPORT_OR_EXPORT class StratigraphicColumnRankInterpretation * getStratigraphicColumnRankInterpretation() const;
 
 		/**
 		* Get all the stratigraphic occurence interpretations associated with this StratigraphicColumnRankInterpretation.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<class WellboreMarkerFrameRepresentation*> getWellboreMarkerFrameRepresentationSet() const { return wellboreMarkerFrameRepresentationSet; }
+		DLL_IMPORT_OR_EXPORT std::vector<class WellboreMarkerFrameRepresentation const *> getWellboreMarkerFrameRepresentationSet() const;
 
 		DLL_IMPORT_OR_EXPORT std::string getStratigraphicColumnRankInterpretationUuid() const;
                 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
-        std::vector<epc::Relationship> getAllSourceRelationships() const;
-        std::vector<epc::Relationship> getAllTargetRelationships() const;
-		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
-
-	private:
-		// Forward relationship
-		class StratigraphicColumnRankInterpretation * stratigraphicColumnRankInterpretation;
-
-		// Backward relationship
-		std::vector<EarthModelInterpretation *> earthModelSet;
-		std::vector<WellboreMarkerFrameRepresentation *> wellboreMarkerFrameRepresentationSet;
-
-		friend void EarthModelInterpretation::pushBackStratiOccurence(StratigraphicOccurrenceInterpretation * stratiOccurence);
-		friend void WellboreMarkerFrameRepresentation::setStratigraphicOccurrenceInterpretation(StratigraphicOccurrenceInterpretation * stratiOccurenceInterp);
+		void loadTargetRelationships() const;
 	};
 }
-

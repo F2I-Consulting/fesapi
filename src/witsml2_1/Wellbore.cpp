@@ -25,7 +25,6 @@ under the License.
 using namespace std;
 using namespace WITSML2_1_NS;
 using namespace gsoap_eml2_2;
-using namespace epc;
 
 const char* Wellbore::XML_TAG = "Wellbore";
 
@@ -91,7 +90,7 @@ gsoap_eml2_2::eml22__DataObjectReference* Wellbore::getWellDor() const
 
 class Well* Wellbore::getWell() const
 {
-	return getEpcDocument()->getDataObjectByUuid<Well>(getWellDor()->Uuid);
+	return getRepository()->getDataObjectByUuid<Well>(getWellDor()->Uuid);
 }
 
 void Wellbore::setWell(Well* witsmlWell)
@@ -99,15 +98,14 @@ void Wellbore::setWell(Well* witsmlWell)
 	if (witsmlWell == nullptr) {
 		throw invalid_argument("Cannot set a null witsml Well to a witsml wellbore");
 	}
-
-	// EPC
-	witsmlWell->wellboreSet.push_back(this);
-
-	// XML
-	if (updateXml) {
-		witsml2__Wellbore* wellbore = static_cast<witsml2__Wellbore*>(gsoapProxy2_2);
-		wellbore->Well = witsmlWell->newEml22Reference();
+	if (getRepository() == nullptr) {
+		witsmlWell->getRepository()->addOrReplaceDataObject(this);
 	}
+
+	getRepository()->addRelationship(this, witsmlWell);
+
+	witsml2__Wellbore* wellbore = static_cast<witsml2__Wellbore*>(gsoapProxy2_2);
+	wellbore->Well = witsmlWell->newEml22Reference();
 }
 
 void Wellbore::setShape(const witsml2__WellboreShape & shape)
@@ -120,55 +118,7 @@ void Wellbore::setShape(const witsml2__WellboreShape & shape)
 	*wellbore->Shape = shape;
 }
 
-void Wellbore::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void Wellbore::loadTargetRelationships() const
 {
-	gsoap_eml2_2::eml22__DataObjectReference* dor = getWellDor();
-	Well* well = epcDoc->getDataObjectByUuid<Well>(dor->Uuid);
-	/*
-	if (well == nullptr) { // partial transfer
-		getEpcDocument()->createPartial(dor);
-		well = getEpcDocument()->getDataObjectByUuid<well>(dor->Uuid);
-	}
-	*/
-	if (well == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-	updateXml = false;
-	setWell(well);
-	updateXml = true;
-}
-
-vector<Relationship> Wellbore::getAllEpcRelationships() const
-{
-	vector<Relationship> result;
-
-	// XML forward relationship
-	Well* well = getWell();
-	Relationship relWell(well->getPartNameInEpcDocument(), "", well->getUuid());
-	relWell.setDestinationObjectType();
-	result.push_back(relWell);
-
-	// XML backward relationship
-	for (size_t i = 0; i < trajectorySet.size(); ++i)
-	{
-		Relationship rel(trajectorySet[i]->getPartNameInEpcDocument(), "", trajectorySet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	for (size_t i = 0; i < logSet.size(); ++i)
-	{
-		Relationship rel(logSet[i]->getPartNameInEpcDocument(), "", logSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	for (size_t i = 0; i < wellboreMarkerSetSet.size(); ++i)
-	{
-		Relationship rel(wellboreMarkerSetSet[i]->getPartNameInEpcDocument(), "", wellboreMarkerSetSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
+	convertDorIntoRel<Well>(getWellDor());
 }

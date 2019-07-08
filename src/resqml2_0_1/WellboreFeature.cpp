@@ -25,66 +25,36 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* WellboreFeature::XML_TAG = "WellboreFeature";
 
-WellboreFeature::WellboreFeature(soap* soapContext, const string & guid, const std::string & title) :witsmlWellbore(nullptr)
+WellboreFeature::WellboreFeature(COMMON_NS::DataObjectRepository* repo, const string & guid, const std::string & title)
 {
-	if (soapContext == nullptr)
-		throw invalid_argument("The soap context cannot be null.");
+	if (repo == nullptr)
+		throw invalid_argument("The repo cannot be null.");
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREWellboreFeature(soapContext, 1);
+	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREWellboreFeature(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	repo->addOrReplaceDataObject(this);
 }
 
 void WellboreFeature::setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore)
 {
-	witsmlWellbore = wellbore;
-	wellbore->resqmlWellboreFeature = this;
-	wellbore->getWell()->resqmlWellboreFeature = this;
+	getRepository()->addRelationship(this, wellbore);
 
-	if (updateXml)
-	{
-		resqml2__obj_USCOREWellboreFeature* resqmlWellbore = static_cast<resqml2__obj_USCOREWellboreFeature*>(gsoapProxy2_0_1);
-		resqmlWellbore->WitsmlWellbore = soap_new_resqml2__WitsmlWellboreReference(gsoapProxy2_0_1->soap, 1);
-		resqmlWellbore->WitsmlWellbore->WitsmlWellbore = wellbore->newResqmlReference();
-		resqmlWellbore->WitsmlWellbore->WitsmlWell = wellbore->getWell()->newResqmlReference();
-	}
+	resqml2__obj_USCOREWellboreFeature* resqmlWellbore = static_cast<resqml2__obj_USCOREWellboreFeature*>(gsoapProxy2_0_1);
+	resqmlWellbore->WitsmlWellbore = soap_new_resqml2__WitsmlWellboreReference(gsoapProxy2_0_1->soap, 1);
+	resqmlWellbore->WitsmlWellbore->WitsmlWellbore = wellbore->newResqmlReference();
+	resqmlWellbore->WitsmlWellbore->WitsmlWell = wellbore->getWell()->newResqmlReference();
 }
 
-vector<Relationship> WellboreFeature::getAllTargetRelationships() const
-{
-	vector<Relationship> result = AbstractTechnicalFeature::getAllTargetRelationships();
-
-	if (witsmlWellbore != nullptr)
-	{
-		Relationship relWellbores(witsmlWellbore->getPartNameInEpcDocument(), "", witsmlWellbore->getUuid());
-		relWellbores.setDestinationObjectType();
-		result.push_back(relWellbores);
-
-		Relationship relWells(witsmlWellbore->getWell()->getPartNameInEpcDocument(), "", witsmlWellbore->getWell()->getUuid());
-		relWells.setDestinationObjectType();
-		result.push_back(relWells);
-	}
-
-	return result;
-}
-
-void WellboreFeature::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
+WITSML2_0_NS::Wellbore* WellboreFeature::getWitsmlWellbore() const
 {
 	resqml2__obj_USCOREWellboreFeature* resqmlWellbore = static_cast<resqml2__obj_USCOREWellboreFeature*>(gsoapProxy2_0_1);
-
-	if (resqmlWellbore->WitsmlWellbore != nullptr && resqmlWellbore->WitsmlWellbore->WitsmlWellbore != nullptr)
-	{
-		WITSML2_0_NS::Wellbore* witsmlWellbore = static_cast<WITSML2_0_NS::Wellbore*>(epcDoc->getDataObjectByUuid(resqmlWellbore->WitsmlWellbore->WitsmlWellbore->UUID));
-		if (witsmlWellbore != nullptr)
-		{
-			updateXml = false;
-			setWitsmlWellbore(witsmlWellbore);
-			updateXml = true;
-		}
-	}
+	return resqmlWellbore->WitsmlWellbore != nullptr && resqmlWellbore->WitsmlWellbore->WitsmlWellbore
+		? getRepository()->getDataObjectByUuid<WITSML2_0_NS::Wellbore>(resqmlWellbore->WitsmlWellbore->WitsmlWellbore->UUID)
+		: nullptr;
 }

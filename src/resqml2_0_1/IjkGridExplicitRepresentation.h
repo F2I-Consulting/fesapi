@@ -31,16 +31,16 @@ namespace RESQML2_0_1_NS
 	public:
 
 		/**
-		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
+		* @param repo	The repo where the underlying gsoap proxy is going to be created.
 		*/
-		IjkGridExplicitRepresentation(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
+		IjkGridExplicitRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
+			unsigned int iCount, unsigned int jCount, unsigned int kCount,
 			bool withTruncatedPillars = false);
 
-		IjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+		IjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
+			unsigned int iCount, unsigned int jCount, unsigned int kCount,
 			bool withTruncatedPillars = false);
 
 		/**
@@ -100,23 +100,24 @@ namespace RESQML2_0_1_NS
 		* @param splitCoordinateLineColumns					For each split coordinate line, indicates which columns are incident to it. Count is the last value in the splitCoordinateLineColumnCumulativeCount array.
 		*													Columns are identified by their absolute 1d index (iColumn + jColumn*iColumnCount) where *Column* == *Cell*.
 		* @param definedPillars								For each pillar : 0 if pillar is not defined (i.e points equal to NaN) else the pillar is defined.  This information overrides any pillar geometry information. If null, then all pillars are assumed to be defined.
+		* @param localCrs									The local CRS where the points are given. If nullptr then the default CRS will be used.
 		*/
 		DLL_IMPORT_OR_EXPORT void setGeometryAsCoordinateLineNodes(
-			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-			double * points, COMMON_NS::AbstractHdfProxy* proxy,
-			const unsigned long & splitCoordinateLineCount = 0, unsigned int * pillarOfCoordinateLine = nullptr,
+			gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
+			double * points, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned long splitCoordinateLineCount = 0, unsigned int * pillarOfCoordinateLine = nullptr,
 			unsigned int * splitCoordinateLineColumnCumulativeCount = nullptr, unsigned int * splitCoordinateLineColumns = nullptr,
-			char * definedPillars = nullptr);
+			char * definedPillars = nullptr, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
 
 		/**
 		* Same as setGeometryAsCoordinateLineNodes where the hdf datasets are already written in the the file.
 		*/
 		DLL_IMPORT_OR_EXPORT void setGeometryAsCoordinateLineNodesUsingExistingDatasets(
-			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-			const std::string & points, COMMON_NS::AbstractHdfProxy* proxy,
-			const unsigned long & splitCoordinateLineCount = 0, const std::string & pillarOfCoordinateLine = "",
+			gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
+			const std::string & points, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned long splitCoordinateLineCount = 0, const std::string & pillarOfCoordinateLine = "",
 			const std::string & splitCoordinateLineColumnCumulativeCount = "", const std::string & splitCoordinateLineColumns = "",
-			const std::string & definedPillars = "");
+			const std::string & definedPillars = "", RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
 
 		/**
 		* Check wether the node geometry dataset is compressed or not.

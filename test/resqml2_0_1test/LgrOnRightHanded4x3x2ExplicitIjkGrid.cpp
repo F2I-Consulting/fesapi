@@ -51,33 +51,29 @@ double LgrOnRightHanded4x3x2ExplicitIjkGrid::nodesIjkGridRepresentation[] = {
 	0,  0, 500, 50,  0, 500, 100,  0, 500, 150,  0, 500  //IJ1K4
 };
 
-LgrOnRightHanded4x3x2ExplicitIjkGrid::LgrOnRightHanded4x3x2ExplicitIjkGrid(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath) {
+LgrOnRightHanded4x3x2ExplicitIjkGrid::LgrOnRightHanded4x3x2ExplicitIjkGrid(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
 }
 
-LgrOnRightHanded4x3x2ExplicitIjkGrid::LgrOnRightHanded4x3x2ExplicitIjkGrid(EpcDocument* epcDoc, bool init)
-	: commontest::AbstractObjectTest(epcDoc) {
+LgrOnRightHanded4x3x2ExplicitIjkGrid::LgrOnRightHanded4x3x2ExplicitIjkGrid(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init) {
-		initEpcDoc();
+		initRepo();
 	}
 	else {
-		readEpcDoc();
+		readRepo();
 	}
 }
 
-void LgrOnRightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
+void LgrOnRightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 	// getting the parent grid
-	RightHanded4x3x2ExplicitIjkGrid parentGridTest(epcDoc, true);
+	RightHanded4x3x2ExplicitIjkGrid parentGridTest(repo, true);
 
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* parentGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
-	RESQML2_0_1_NS::LocalDepth3dCrs* crs = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-
-	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = epcDoc->getHdfProxySet()[0];
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* parentGrid = repo->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
 
 	// creating the child ijk grid
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGrid = epcDoc->createIjkGridExplicitRepresentation(crs, defaultUuid, defaultTitle, 3, 1, 4);
-	childGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, hdfProxy);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, 3, 1, 4);
+	childGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, nullptr);
 	childGrid->setParentWindow(
 		0, 3, 1, 1,
 		0, 1, 1, 1,
@@ -85,8 +81,8 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 		parentGrid);
 
 	// creating the same child ijk grid using HDF5 datasets
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridHdf5 = epcDoc->createIjkGridExplicitRepresentation(crs, "38930b30-1325-424e-a1e9-666fa50bfa4f", "Child grid HDF5", 3, 1, 4);
-	childGridHdf5->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, hdfProxy);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridHdf5 = repo->createIjkGridExplicitRepresentation("38930b30-1325-424e-a1e9-666fa50bfa4f", "Child grid HDF5", 3, 1, 4);
+	childGridHdf5->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, nullptr);
 	unsigned int one = 1;
 	unsigned int three = 3;
 	unsigned int twotwo[] = { 2,2 };
@@ -98,7 +94,7 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 		parentGrid);
 
 	// creating a non constant cell count per interval child ijk grid without geometry
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridNonConstant = epcDoc->createIjkGridExplicitRepresentation(crs, "eaf36330-4c0b-40f8-bf07-b2818f09a229", "Child grid irregular refinement", 4, 1, 4);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridNonConstant = repo->createIjkGridExplicitRepresentation("eaf36330-4c0b-40f8-bf07-b2818f09a229", "Child grid irregular refinement", 4, 1, 4);
 	unsigned int onetwo[] = { 1,2 };
 	unsigned int twothree[] = { 1,2 };
 	childGridNonConstant->setParentWindow(
@@ -108,14 +104,14 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
 		parentGrid);
 }
 
-void LgrOnRightHanded4x3x2ExplicitIjkGrid::readEpcDocHandler() {
-	RightHanded4x3x2ExplicitIjkGrid* parentGridTest = new RightHanded4x3x2ExplicitIjkGrid(epcDoc, false);
+void LgrOnRightHanded4x3x2ExplicitIjkGrid::readRepoHandler() {
+	RightHanded4x3x2ExplicitIjkGrid* parentGridTest = new RightHanded4x3x2ExplicitIjkGrid(repo, false);
 
 	// getting the childGrid
-	RESQML2_0_1_NS::AbstractIjkGridRepresentation* childGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>(defaultUuid);
-	RESQML2_0_1_NS::AbstractIjkGridRepresentation* childGridHdf5 = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>("38930b30-1325-424e-a1e9-666fa50bfa4f");
-	RESQML2_0_1_NS::AbstractIjkGridRepresentation* childGridNonConstant = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>("eaf36330-4c0b-40f8-bf07-b2818f09a229");
-	RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
+	RESQML2_0_1_NS::AbstractIjkGridRepresentation* childGrid = repo->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>(defaultUuid);
+	RESQML2_0_1_NS::AbstractIjkGridRepresentation* childGridHdf5 = repo->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>("38930b30-1325-424e-a1e9-666fa50bfa4f");
+	RESQML2_0_1_NS::AbstractIjkGridRepresentation* childGridNonConstant = repo->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>("eaf36330-4c0b-40f8-bf07-b2818f09a229");
+	RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid = repo->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
 
 	REQUIRE(childGrid->getCellCount() == 12);
 	REQUIRE(childGrid->getPillarCount() == 8);

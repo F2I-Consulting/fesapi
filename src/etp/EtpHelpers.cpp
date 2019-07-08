@@ -46,8 +46,8 @@ Energistics::Etp::v12::Datatypes::Object::Resource ETP_NS::EtpHelpers::buildEtpR
 	result.m_name = obj->getTitle();
 
 	result.m_contentCount.set_null();
-	result.m_sourceCount.set_int(obj->getAllSourceRelationshipUuids().size());
-	result.m_targetCount.set_int(obj->getAllTargetRelationshipUuids().size());
+	result.m_sourceCount.set_int(obj->getRepository()->getSourceObjects(obj).size());
+	result.m_targetCount.set_int(obj->getRepository()->getTargetObjects(obj).size());
 
 	return result;
 }

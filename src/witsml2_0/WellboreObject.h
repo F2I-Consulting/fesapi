@@ -54,8 +54,9 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT class Wellbore* getWellbore() const;
 		DLL_IMPORT_OR_EXPORT virtual void setWellbore(class Wellbore* witsmlWellbore) = 0;
 
-		DLL_IMPORT_OR_EXPORT virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
-		DLL_IMPORT_OR_EXPORT virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
-		DLL_IMPORT_OR_EXPORT virtual void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc);
+		/**
+		* Resolve all relationships of the object in a repository.
+		*/
+		void loadTargetRelationships() const;
 	};
 }

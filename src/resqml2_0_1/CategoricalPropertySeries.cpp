@@ -29,7 +29,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* CategoricalPropertySeries::XML_TAG = "CategoricalPropertySeries";
 
@@ -37,7 +36,6 @@ CategoricalPropertySeries::CategoricalPropertySeries(RESQML2_NS::AbstractReprese
 	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
 	StringTableLookup* strLookup, const resqml2__ResqmlPropertyKind & energisticsPropertyKind,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
-	: CategoricalProperty(strLookup)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORECategoricalPropertySeries(rep->getGsoapContext(), 1);	
 	_resqml2__CategoricalPropertySeries* prop = static_cast<_resqml2__CategoricalPropertySeries*>(gsoapProxy2_0_1);
@@ -48,8 +46,8 @@ CategoricalPropertySeries::CategoricalPropertySeries(RESQML2_NS::AbstractReprese
 	xmlStandardPropKind->Kind = energisticsPropertyKind;
 	prop->PropertyKind = xmlStandardPropKind;
 
-	stringLookup->addCategoricalPropertyValues(this);
-	prop->Lookup = stringLookup->newResqmlReference();
+	initMandatoryMetadata();
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	setRepresentation(rep);
 
@@ -58,23 +56,22 @@ CategoricalPropertySeries::CategoricalPropertySeries(RESQML2_NS::AbstractReprese
 	prop->SeriesTimeIndices->UseInterval = useInterval;
 	setTimeSeries(ts);
 
-	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	getRepository()->addRelationship(this, strLookup);
+	prop->Lookup = strLookup->newResqmlReference();
 }
 
 CategoricalPropertySeries::CategoricalPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
 	StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropKind,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
-	:CategoricalProperty(strLookup)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORECategoricalPropertySeries(rep->getGsoapContext(), 1);	
 	_resqml2__CategoricalPropertySeries* prop = static_cast<_resqml2__CategoricalPropertySeries*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
 
-	stringLookup->addCategoricalPropertyValues(this);
-	prop->Lookup = stringLookup->newResqmlReference();
+	initMandatoryMetadata();
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
 	setRepresentation(rep);
 
@@ -85,7 +82,6 @@ CategoricalPropertySeries::CategoricalPropertySeries(RESQML2_NS::AbstractReprese
 
 	setLocalPropertyKind(localPropKind);
 
-	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	getRepository()->addRelationship(this, strLookup);
+	prop->Lookup = strLookup->newResqmlReference();
 }
-

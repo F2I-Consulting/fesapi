@@ -27,20 +27,21 @@ under the License.
 using namespace std;
 using namespace WITSML2_1_NS;
 using namespace gsoap_eml2_2;
-using namespace epc;
 
 const char* ErrorTermDictionary::XML_TAG = "ErrorTermDictionary";
 
-ErrorTermDictionary::ErrorTermDictionary(soap* soapContext,
+ErrorTermDictionary::ErrorTermDictionary(COMMON_NS::DataObjectRepository * repo,
 	const std::string & guid,
 	const std::string & title)
 {
-	if (soapContext == nullptr) throw invalid_argument("A ErrorTermDictionary must be associated to a soap context.");
+	if (repo == nullptr) throw invalid_argument("A ErrorTermDictionary must be associated to a repo.");
 
-	gsoapProxy2_2 = soap_new_witsml2__ErrorTermDictionary(soapContext, 1);
+	gsoapProxy2_2 = soap_new_witsml2__ErrorTermDictionary(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	repo->addOrReplaceDataObject(this);
 }
 
 std::string ErrorTermDictionary::getErrorTermUuid(unsigned long index) const
@@ -62,7 +63,7 @@ std::string ErrorTermDictionary::getErrorTermUuid(unsigned long index) const
 ErrorTerm* ErrorTermDictionary::getErrorTerm(unsigned long index) const {
 	witsml2__ErrorTermDictionary* dict = static_cast<witsml2__ErrorTermDictionary*>(gsoapProxy2_2);
 
-	ErrorTerm* et = getEpcDocument()->getDataObjectByUuid<ErrorTerm>(dict->ErrorTerm[index]->uuid);
+	ErrorTerm* et = getRepository()->getDataObjectByUuid<ErrorTerm>(dict->ErrorTerm[index]->uuid);
 	return et == nullptr ? new WITSML2_1_NS::ErrorTerm(dict->ErrorTerm[index]) : et;
 }
 
@@ -79,54 +80,22 @@ std::vector<ErrorTerm*> ErrorTermDictionary::getErrorTerms() const {
 
 void ErrorTermDictionary::pushBackErrorTerm(ErrorTerm* et)
 {
-	if (updateXml && et->errorTermDictionary != nullptr) {
-		throw invalid_argument("Cannot modify the existing dictionary of a ErrorTerm");
-	}
-	et->errorTermDictionary = this;
+	getRepository()->addRelationship(this, et);
 
-	if (updateXml)
-	{
-		witsml2__ErrorTermDictionary* dict = static_cast<witsml2__ErrorTermDictionary*>(gsoapProxy2_2);
-		dict->ErrorTerm.push_back(static_cast<witsml2__ErrorTerm*>(et->getGsoapProxy2_2()));
-	}
+	witsml2__ErrorTermDictionary* dict = static_cast<witsml2__ErrorTermDictionary*>(gsoapProxy2_2);
+	dict->ErrorTerm.push_back(static_cast<witsml2__ErrorTerm*>(et->getGsoapProxy2_2()));
 }
 
-void ErrorTermDictionary::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
+void ErrorTermDictionary::loadTargetRelationships() const
 {
 	witsml2__ErrorTermDictionary* dict = static_cast<witsml2__ErrorTermDictionary*>(gsoapProxy2_2);
 
-	updateXml = false;
 	for (size_t index = 0; index < dict->ErrorTerm.size(); ++index) {
-		ErrorTerm* et = epcDoc->getDataObjectByUuid<ErrorTerm>(getErrorTermUuid(index));
-		pushBackErrorTerm(et);
-		et->resolveTargetRelationships(epcDoc);
-	}
-	updateXml = true;
-}
-
-DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ErrorTermDictionary::getAllSourceRelationships() const
-{
-	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
-	return result;
-}
-
-DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> ErrorTermDictionary::getAllTargetRelationships() const
-{
-	vector<Relationship> result;
-	witsml2__ErrorTermDictionary* dict = static_cast<witsml2__ErrorTermDictionary*>(gsoapProxy2_2);
-
-	vector<string> uuidAlreadyInserted;
-	// XML forward relationship
-	for (size_t index = 0; index < dict->ErrorTerm.size(); ++index) {
-		ErrorTerm* et = getEpcDocument()->getDataObjectByUuid<ErrorTerm>(getErrorTermUuid(index));
-		string weightingFunctionUuid = et->getWeightingFunctionUuid();
-		if (std::find(uuidAlreadyInserted.begin(), uuidAlreadyInserted.end(), weightingFunctionUuid) == uuidAlreadyInserted.end()) {
-			Relationship rel(et->getWeightingFunction()->getPartNameInEpcDocument(), "", weightingFunctionUuid);
-			rel.setDestinationObjectType();
-			result.push_back(rel);
-			uuidAlreadyInserted.push_back(weightingFunctionUuid);
+		ErrorTerm* et = getRepository()->getDataObjectByUuid<ErrorTerm>(dict->ErrorTerm[index]->uuid);
+		if (et == nullptr) {
+			et = new ErrorTerm(dict->ErrorTerm[index]);
+			getRepository()->addOrReplaceDataObject(et);
 		}
+		getRepository()->addRelationship(this, et);
 	}
-
-	return result;
 }

@@ -26,21 +26,20 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* WellboreMarker::XML_TAG = "WellboreMarker";
 
-WellboreMarker::WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title):
-	wellboreMarkerFrameRepresentation(wellboreMarkerFrame)
+WellboreMarker::WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__WellboreMarker(wellboreMarkerFrame->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	wellboreMarkerFrame->pushBackNewWellboreMarker(this);
 }
 
-WellboreMarker::WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind & geologicBoundaryKind):
-	wellboreMarkerFrameRepresentation(wellboreMarkerFrame)
+WellboreMarker::WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind geologicBoundaryKind)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__WellboreMarker(wellboreMarkerFrame->getGsoapContext(), 1);	
 	resqml2__WellboreMarker* marker = static_cast<resqml2__WellboreMarker*>(gsoapProxy2_0_1);
@@ -49,15 +48,17 @@ WellboreMarker::WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarker
 	*(marker->GeologicBoundaryKind) = geologicBoundaryKind;
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	wellboreMarkerFrame->pushBackNewWellboreMarker(this);
 }
 
-bool WellboreMarker::hasAGeologicBoundaryKind()
+bool WellboreMarker::hasAGeologicBoundaryKind() const
 {
 	return static_cast<resqml2__WellboreMarker*>(gsoapProxy2_0_1)->GeologicBoundaryKind != nullptr;
 }
 
-resqml2__GeologicBoundaryKind WellboreMarker::getGeologicBoundaryKind()
+resqml2__GeologicBoundaryKind WellboreMarker::getGeologicBoundaryKind() const
 {
 	if (!hasAGeologicBoundaryKind()) {
 		throw invalid_argument("The marker has not a Geologic Boundary Kind.");
@@ -71,26 +72,27 @@ std::string WellboreMarker::getBoundaryFeatureInterpretationUuid() const
 	if (static_cast<resqml2__WellboreMarker*>(gsoapProxy2_0_1)->Interpretation != nullptr)
 		return static_cast<resqml2__WellboreMarker*>(gsoapProxy2_0_1)->Interpretation->UUID;
 
-	return string();
+	return "";
 }
 
 BoundaryFeatureInterpretation* WellboreMarker::getBoundaryFeatureInterpretation() const
 {
-	return getWellMarkerFrameRepresentation()->getEpcDocument()->getDataObjectByUuid<BoundaryFeatureInterpretation>(getBoundaryFeatureInterpretationUuid());
+	return getWellMarkerFrameRepresentation()->getRepository()->getDataObjectByUuid<BoundaryFeatureInterpretation>(getBoundaryFeatureInterpretationUuid());
 }
 
 void WellboreMarker::setBoundaryFeatureInterpretation(BoundaryFeatureInterpretation* interp)
 {
-	// EPC
-	interp->wellboreMarkerSet.push_back(this);
+	getRepository()->addRelationship(this, interp);
 
-    // XML
-	if (updateXml)
-	{
-        resqml2__WellboreMarker* marker = static_cast<resqml2__WellboreMarker*>(gsoapProxy2_0_1);
-		marker->Interpretation = interp->newResqmlReference();
-	}
+    resqml2__WellboreMarker* marker = static_cast<resqml2__WellboreMarker*>(gsoapProxy2_0_1);
+	marker->Interpretation = interp->newResqmlReference();
 }
 
-void WellboreMarker::resolveTargetRelationships(COMMON_NS::EpcDocument*)
+void WellboreMarker::loadTargetRelationships() const
 {}
+
+WellboreMarkerFrameRepresentation const * WellboreMarker::getWellMarkerFrameRepresentation() const
+{
+	const vector<WellboreMarkerFrameRepresentation const *> wmfr = getRepository()->getSourceObjects<WellboreMarkerFrameRepresentation>(this);
+	return wmfr.size() == 1 ? wmfr[0] : nullptr;
+}

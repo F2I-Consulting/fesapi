@@ -32,7 +32,7 @@ namespace WITSML2_1_NS
 		* Creates an instance of this class in a gsoap context.
 		* @param guid		The guid to set to this instance. If empty then a new guid will be generated.
 		*/
-		ToolErrorModelDictionary(soap* soapContext,
+		ToolErrorModelDictionary(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid,
 			const std::string & title);
 
@@ -54,9 +54,7 @@ namespace WITSML2_1_NS
 		/**
 		* Resolve all relationships of the object in an epc document.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllSourceRelationships() const;
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllTargetRelationships() const;
-		DLL_IMPORT_OR_EXPORT void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc);
+		void loadTargetRelationships() const;
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}

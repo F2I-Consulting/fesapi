@@ -30,7 +30,7 @@ namespace RESQML2_0_1_NS
 	class BlockedWellboreRepresentation : public WellboreFrameRepresentation
 	{
 	private:
-		void init(const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation * traj);
+		void init(const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation const * traj);
 
 	public:
 
@@ -46,8 +46,8 @@ namespace RESQML2_0_1_NS
         * @param title	A title for the instance to create.
         * @param traj	The wellbore trajectory this intance is based on.
 		*/
-		BlockedWellboreRepresentation(class WellboreInterpretation* interp,
-			const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation * traj);
+		BlockedWellboreRepresentation(class WellboreInterpretation const * interp,
+			const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation const * traj);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -111,8 +111,6 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getSupportingGridRepresentationUuid(unsigned int index) const;
 
-		std::vector<epc::Relationship> getAllTargetRelationships() const;
-
-		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
+		void loadTargetRelationships() const;
 	};
 }

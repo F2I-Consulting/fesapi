@@ -21,6 +21,7 @@ under the License.
 
 #include <vector>
 #include <string>
+
 #include <unordered_map>
 
 #include "FileCoreProperties.h"
@@ -36,7 +37,6 @@ namespace epc
 	private :
 		class CheshireCat;               // Not defined here but in the cpp
 		CheshireCat * d_ptr;              // opaque pointer
-
 		typedef std::unordered_map<std::string, FilePart> PartMap;
 
 		/**
@@ -172,9 +172,6 @@ namespace epc
          */
 		std::string extractFile(const std::string & filename, const std::string & password = "");
 
-		/**
-		* Write the content in memory into disk and close the zip file in memory.
-		*/
 		void writePackage();
 	};
 }

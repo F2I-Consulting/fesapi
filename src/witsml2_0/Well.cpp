@@ -26,38 +26,39 @@ under the License.
 using namespace std;
 using namespace WITSML2_0_NS;
 using namespace gsoap_eml2_1;
-using namespace epc;
 using namespace COMMON_NS;
 
 const char* Well::XML_TAG = "Well";
 
-Well::Well(soap* soapContext,
+Well::Well(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid,
-			const std::string & title):resqmlWellboreFeature(nullptr)
+			const std::string & title)
 {
-	if (soapContext == nullptr) {
-		throw invalid_argument("A soap context must exist.");
+	if (repo == nullptr) {
+		throw invalid_argument("A repo must exist.");
 	}
 
-	gsoapProxy2_1 = soap_new_witsml2__Well(soapContext, 1);
+	gsoapProxy2_1 = soap_new_witsml2__Well(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	repo->addOrReplaceDataObject(this);
 }
 
-Well::Well(soap* soapContext,
+Well::Well(COMMON_NS::DataObjectRepository * repo,
 		const std::string & guid,
 		const std::string & title,
 		const std::string & operator_,
 		eml21__WellStatus statusWell,
 		witsml2__WellDirection directionWell
-	):resqmlWellboreFeature(nullptr)
+	)
 {
-	if (soapContext == nullptr) {
-		throw invalid_argument("A soap context must exist.");
+	if (repo == nullptr) {
+		throw invalid_argument("A repo must exist.");
 	}
 
-	gsoapProxy2_1 = soap_new_witsml2__Well(soapContext, 1);
+	gsoapProxy2_1 = soap_new_witsml2__Well(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -66,11 +67,13 @@ Well::Well(soap* soapContext,
 
 	witsml2__Well* well = static_cast<witsml2__Well*>(gsoapProxy2_1);
 
-	well->StatusWell = (eml21__WellStatus *)soap_malloc(soapContext, sizeof(eml21__WellStatus));
+	well->StatusWell = (eml21__WellStatus *)soap_malloc(gsoapProxy2_1->soap, sizeof(eml21__WellStatus));
 	*well->StatusWell = statusWell;
 
-	well->DirectionWell = (witsml2__WellDirection *)soap_malloc(soapContext, sizeof(witsml2__WellDirection));
+	well->DirectionWell = (witsml2__WellDirection *)soap_malloc(gsoapProxy2_1->soap, sizeof(witsml2__WellDirection));
 	*well->DirectionWell = directionWell;
+
+	repo->addOrReplaceDataObject(this);
 }
 
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, NameLegal, soap_new_std__string)
@@ -259,53 +262,20 @@ unsigned int Well::getDatumCount() const
 	return static_cast<witsml2__Well*>(gsoapProxy2_1)->WellDatum.size();
 }
 
-std::vector<epc::Relationship> Well::getAllSourceRelationships() const
+void Well::loadTargetRelationships() const
+{}
+
+std::vector<RESQML2_0_1_NS::WellboreFeature const *> Well::getResqmlWellboreFeatures() const
 {
-	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
-
-	// XML backward relationship
-	if (resqmlWellboreFeature != nullptr)
-	{
-		Relationship rel(resqmlWellboreFeature->getPartNameInEpcDocument(), "", resqmlWellboreFeature->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	for (size_t i = 0; i < wellboreSet.size(); ++i)
-	{
-		Relationship relWellbore(wellboreSet[i]->getPartNameInEpcDocument(), "", wellboreSet[i]->getUuid());
-		relWellbore.setSourceObjectType();
-		result.push_back(relWellbore);
-	}
-
-	for (size_t i = 0; i < wellCompletionSet.size(); ++i)
-	{
-		Relationship relWellCompletion(wellCompletionSet[i]->getPartNameInEpcDocument(), "", wellCompletionSet[i]->getUuid());
-		relWellCompletion.setSourceObjectType();
-		result.push_back(relWellCompletion);
-	}
-
-	return result;
+	return getRepository()->getSourceObjects<RESQML2_0_1_NS::WellboreFeature>(this);
 }
 
-std::vector<epc::Relationship> Well::getAllTargetRelationships() const {
-	vector<Relationship> result;
-	return result;
+std::vector<Wellbore const *> Well::getWellbores() const
+{
+	return getRepository()->getSourceObjects<Wellbore>(this);
 }
 
-void Well::resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc) {}
-
-RESQML2_0_1_NS::WellboreFeature* Well::getResqmlWellboreFeature() const
+std::vector<WellCompletion const *> Well::getWellcompletions() const
 {
-	return resqmlWellboreFeature;
-}
-
-const std::vector<Wellbore*>& Well::getWellbores() const
-{
-	return wellboreSet;
-}
-
-const std::vector<WellCompletion*>& Well::getWellcompletions() const
-{
-	return wellCompletionSet;
+	return getRepository()->getSourceObjects<WellCompletion>(this);
 }

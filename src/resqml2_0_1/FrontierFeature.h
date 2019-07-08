@@ -33,11 +33,11 @@ namespace RESQML2_0_1_NS
 
 		/**
 		* Creates an instance of this class in an EPC document.
-		* @param soapContext The soap context where the underlying gsoap proxy is going to be created.
+		* @param repo	The repo where the underlying gsoap proxy is going to be created.
 		* @param guid	A guid for the instance to create.
 		* @param title	A title for the instance to create.
 		*/
-		FrontierFeature(soap* soapContext, const std::string & guid, const std::string & title);
+		FrontierFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.

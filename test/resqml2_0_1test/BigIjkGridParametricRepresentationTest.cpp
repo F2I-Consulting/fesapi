@@ -39,20 +39,20 @@ const char* BigIjkGridParametricRepresentationTest::continuousPropertyUuid = "78
 const char* BigIjkGridParametricRepresentationTest::continuousPropertyTitle = "Parametric IJK Grid Continuous Property";
 
 BigIjkGridParametricRepresentationTest::BigIjkGridParametricRepresentationTest(
-	const string & epcDocPath,
+	const string & repoPath,
 	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
 	const unsigned int & faultCount,
 	const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
 	const double & faultThrow)
-	: AbstractBigIjkGridRepresentationTest(epcDocPath, iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow) {
+	: AbstractBigIjkGridRepresentationTest(repoPath, iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow) {
 }
 
-BigIjkGridParametricRepresentationTest::BigIjkGridParametricRepresentationTest(EpcDocument * epcDoc, bool init,
+BigIjkGridParametricRepresentationTest::BigIjkGridParametricRepresentationTest(DataObjectRepository * repo, bool init,
 	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
 	const unsigned int & faultCount,
 	const double & xMin, const double & xMax, const double & yMin, const double & yMax, const double & zMin, const double & zMax,
 	const double & faultThrow)
-	: AbstractBigIjkGridRepresentationTest(epcDoc, init, iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow) {
+	: AbstractBigIjkGridRepresentationTest(repo, init, iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow) {
 }
 
 void BigIjkGridParametricRepresentationTest::initParametersAndControlPoints(double * parameters, double * controlPoints)
@@ -70,16 +70,9 @@ void BigIjkGridParametricRepresentationTest::initParametersAndControlPoints(doub
 	}
 }
 
-void BigIjkGridParametricRepresentationTest::initEpcDocHandler() {
-	// getting the local depth 3d crs
-	LocalDepth3dCrsTest* crsTest = new LocalDepth3dCrsTest(epcDoc, true);
-	RESQML2_0_1_NS::LocalDepth3dCrs* crs = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-
-	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = epcDoc->getHdfProxySet()[0];
-
+void BigIjkGridParametricRepresentationTest::initRepoHandler() {
 	// creating the ijk grid
-	RESQML2_0_1_NS::IjkGridParametricRepresentation* ijkGrid = epcDoc->createIjkGridParametricRepresentation(crs, defaultUuid, defaultTitle, iCount, jCount, kCount);
+	RESQML2_0_1_NS::IjkGridParametricRepresentation* ijkGrid = repo->createIjkGridParametricRepresentation(defaultUuid, defaultTitle, iCount, jCount, kCount);
 	REQUIRE(ijkGrid != nullptr);
 	double * parameters = new double[initNodesCountIjkGridRepresentation(iCount, jCount, kCount, faultCount)]; 
 	double * controlPoints = new double[(iCount + 1) * (jCount + 1) * 3];
@@ -90,21 +83,21 @@ void BigIjkGridParametricRepresentationTest::initEpcDocHandler() {
 	initParametersAndControlPoints(parameters, controlPoints);
 	initSplitCoordinateLine(pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
-	ijkGrid->setGeometryAsParametricSplittedPillarNodes(false, parameters, controlPoints, NULL, 1, 0, hdfProxy,
+	ijkGrid->setGeometryAsParametricSplittedPillarNodes(false, parameters, controlPoints, NULL, 1, 0, nullptr,
 		faultCount * (jCount + 1), pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// adding a discrete property
-	RESQML2_0_1_NS::DiscreteProperty* discreteProperty = epcDoc->createDiscreteProperty(
+	RESQML2_0_1_NS::DiscreteProperty* discreteProperty = repo->createDiscreteProperty(
 		ijkGrid, discretePropertyUuid, discretePropertyTitle,
 		1, 
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, 
 		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__index);
 	unsigned short * discretePropertyValues = new unsigned short[iCount * jCount * kCount];
 	initDiscreteProperty(discretePropertyValues);
-	discreteProperty->pushBackUShortHdf5Array3dOfValues(discretePropertyValues, iCount, jCount, kCount, hdfProxy, -1);
+	discreteProperty->pushBackUShortHdf5Array3dOfValues(discretePropertyValues, iCount, jCount, kCount, nullptr, -1);
 
 	// adding a continuous property
-	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = epcDoc->createContinuousProperty(
+	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = repo->createContinuousProperty(
 		ijkGrid, continuousPropertyUuid, continuousPropertyTitle,
 		1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells,
@@ -112,10 +105,9 @@ void BigIjkGridParametricRepresentationTest::initEpcDocHandler() {
 		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
 	double * continuousPropertyValues = new double[iCount * jCount * kCount];
 	initContinuousProperty(continuousPropertyValues);
-	continuousProperty->pushBackDoubleHdf5Array1dOfValues(continuousPropertyValues, iCount * jCount * kCount, hdfProxy);
+	continuousProperty->pushBackDoubleHdf5Array1dOfValues(continuousPropertyValues, iCount * jCount * kCount, nullptr);
 
 	// cleaning
-	delete crsTest;
 	delete[] parameters;
 	delete[] controlPoints;
 	delete[] pillarOfCoordinateLine;
@@ -125,6 +117,6 @@ void BigIjkGridParametricRepresentationTest::initEpcDocHandler() {
 	delete[] continuousPropertyValues;
 }
 
-void BigIjkGridParametricRepresentationTest::readEpcDocHandler() {
+void BigIjkGridParametricRepresentationTest::readRepoHandler() {
 }
 

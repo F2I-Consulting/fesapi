@@ -23,21 +23,22 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* ActivityTemplate::XML_TAG = "ActivityTemplate";
 
-ActivityTemplate::ActivityTemplate(soap* soapContext, const string & guid, const string & title)
+ActivityTemplate::ActivityTemplate(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title)
 {
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREActivityTemplate(soapContext, 1);
+	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREActivityTemplate(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	repo->addOrReplaceDataObject(this);
 }
 
-void ActivityTemplate::pushBackParameter(const std::string title,
-			const bool & isInput, const bool isOutput,
-			const unsigned int & minOccurs, const int & maxOccurs)
+void ActivityTemplate::pushBackParameter(const std::string & title,
+	bool isInput, bool isOutput,
+	unsigned int minOccurs, int maxOccurs)
 {
 	// Preconditions
 	if (maxOccurs >= 0 && minOccurs > static_cast<unsigned int>(maxOccurs)) {
@@ -56,10 +57,10 @@ void ActivityTemplate::pushBackParameter(const std::string title,
 	activityTemplate->Parameter.push_back(param);
 }
 
-void ActivityTemplate::pushBackParameter(const std::string title,
-			const resqml2__ParameterKind & kind,
-			const bool & isInput, const bool isOutput,
-			const unsigned int & minOccurs, const int & maxOccurs)
+void ActivityTemplate::pushBackParameter(const std::string & title,
+			resqml2__ParameterKind kind,
+			bool isInput, bool isOutput,
+			unsigned int minOccurs, int maxOccurs)
 {
 	pushBackParameter(title, isInput, isOutput, minOccurs, maxOccurs);
 
@@ -67,10 +68,10 @@ void ActivityTemplate::pushBackParameter(const std::string title,
 	activityTemplate->Parameter[activityTemplate->Parameter.size()-1]->AllowedKind.push_back(kind);
 }
 
-void ActivityTemplate::pushBackParameter(const std::string title,
-	const bool & isInput, const bool isOutput,
-	const unsigned int & minOccurs, const int & maxOccurs,
-	const std::string & resqmlObjectContentType)
+void ActivityTemplate::pushBackParameter(const std::string & title,
+	bool isInput, bool isOutput,
+	unsigned int minOccurs, int maxOccurs,
+	std::string resqmlObjectContentType)
 {
 	pushBackParameter(title, resqml2__ParameterKind__dataObject, isInput, isOutput, minOccurs, maxOccurs);
 

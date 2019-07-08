@@ -20,7 +20,7 @@ under the License.
 
 #include "resqml2/AbstractRepresentation.h"
 
-namespace WITSML2_1_NS
+namespace WITSML1_4_1_1_NS
 {
 	class Trajectory;
 }
@@ -37,8 +37,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			AbstractRepresentation(partialObject) {}
+		WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :AbstractRepresentation(partialObject) {}
 
 
 		/**
@@ -48,12 +47,12 @@ namespace RESQML2_0_1_NS
 		* @param title					A title for the instance to create.
 		* @param mdInfo					The MD information of the trajectory, mainly the well reference point.
 		*/
-		WellboreTrajectoryRepresentation(class WellboreInterpretation* interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo);
+		WellboreTrajectoryRepresentation(class WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum const * mdInfo);
 
 		/**
 		* Creates an instance with an existing deviation survey as its origin.
 		*/
-		WellboreTrajectoryRepresentation(class WellboreInterpretation* interp, const std::string & guid, const std::string & title, DeviationSurveyRepresentation* deviationSurvey);
+		WellboreTrajectoryRepresentation(class WellboreInterpretation const * interp, const std::string & guid, const std::string & title, DeviationSurveyRepresentation const * deviationSurvey);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -73,7 +72,7 @@ namespace RESQML2_0_1_NS
 		* @param proxy							The HDF proxy which indicates in which HDF5 file the control points and its parameters will be stored.
 		*										It must be already opened for writing and won't be closed.
 		*/
-		DLL_IMPORT_OR_EXPORT void setGeometry(double * controlPoints, const double & startMd, const double & endMd, const unsigned int & controlPointCount, const int & lineKind, COMMON_NS::AbstractHdfProxy* proxy);
+		DLL_IMPORT_OR_EXPORT void setGeometry(double * controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/*
 		*  Set the geometry of the representation by means of one natural cubic parametric line.
@@ -83,21 +82,21 @@ namespace RESQML2_0_1_NS
 		* @param proxy							The HDF proxy which indicates in which HDF5 file the control points and its parameters will be stored.
 		*										It must be already opened for writing and won't be closed.
 		*/
-		DLL_IMPORT_OR_EXPORT void setGeometry(double * controlPoints, double* controlPointParameters, const unsigned int & controlPointCount,
-			COMMON_NS::AbstractHdfProxy* proxy);
+		DLL_IMPORT_OR_EXPORT void setGeometry(double * controlPoints, double* controlPointParameters, unsigned int controlPointCount,
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/*
 		*  Set the geometry of the representation by means of one cubic parametric line.
 		* @param controlPoints					All the control points of all the cubic parametric lines. They are ordered by parametric line first.
 		* @param tangentVectors					All the tangent vectors of all the control points of all the cubic parametric lines. They are ordered according to the control points.
-		* @param controlPointCount				The count of control points and control point parameters and tangent vectors per cubic parametric line.
 		* @param controlPointParameters			The arrays of control point parameters (ordered regarding the control points). It corresponds to the MD values in a WellboreFeature context.
+		* @param controlPointCount				The count of control points and control point parameters and tangent vectors per cubic parametric line.
 		* @param proxy							The HDF proxy which indicates in which HDF5 file the parameters and the tangent vectors will be stored.
 		*										It must be already opened for writing and won't be closed.
 		*/
 		DLL_IMPORT_OR_EXPORT void setGeometry(double * controlPoints,
-			double * tangentVectors, double* controlPointParameters, const unsigned int & controlPointCount,
-			COMMON_NS::AbstractHdfProxy* proxy);
+			double * tangentVectors, double* controlPointParameters, unsigned int controlPointCount,
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
 		* 0 for vertical, 1 for linear spline, 2 for natural cubic spline, 3 for cubic spline, 4 for z linear cubic spline, 5 for minimum-curvature spline, (-1) for null: no line
@@ -107,7 +106,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Set the Md datum of this trajectory
 		*/
-		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum* mdDatum);
+		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum const * mdDatum);
 
 		/**
 		* Getter of the md information associated to this WellboreFeature trajectory representation.
@@ -144,7 +143,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Getter of the md double values associated to each trajectory station of this WellboreFeature trajectory representation.
 		*/
-		DLL_IMPORT_OR_EXPORT void getMdValues(double* values);
+		DLL_IMPORT_OR_EXPORT void getMdValues(double* values) const;
 
 		/**
 		* Get the measured depth for the start of the wellbore trajectory. Range may often be from kickoff to TD, but this is not necessary.
@@ -170,7 +169,7 @@ namespace RESQML2_0_1_NS
 		* Add a trajectory parent to this trajectory in case of trajectory branching.
 		* Does add the inverse relationship i.e. from the parent trajectory to this trajecotry
 		*/
-		DLL_IMPORT_OR_EXPORT void addParentTrajectory(const double & kickoffMd, const double & parentMd, WellboreTrajectoryRepresentation* parentTrajRep);
+		DLL_IMPORT_OR_EXPORT void addParentTrajectory(double kickoffMd, double parentMd, WellboreTrajectoryRepresentation* parentTrajRep);
 
 		/**
 		* Get the parent trajectory of this trajectory
@@ -181,36 +180,30 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get the MD on the parent wellbore trajectory where this trajectory is starting.
 		*/
-		DLL_IMPORT_OR_EXPORT const double& getParentTrajectoryMd() const;
+		DLL_IMPORT_OR_EXPORT double getParentTrajectoryMd() const;
 
 		/**
 		* Get a set of all children trajectories of this trajectory
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector<WellboreTrajectoryRepresentation*> & getChildrenTrajectorySet() const;
-
-		/**
-		* Add a Wellbore frame representation to this trajectory.
-		* Does not add the inverse relationship i.e. from the WellboreFeature frame to this trajectory
-		*/
-		DLL_IMPORT_OR_EXPORT void addWellboreFrameRepresentation(class WellboreFrameRepresentation* WellboreFrameRepresentation) {wellboreFrameRepresentationSet.push_back(WellboreFrameRepresentation);}
+		DLL_IMPORT_OR_EXPORT std::vector<WellboreTrajectoryRepresentation const *> getChildrenTrajectorySet() const;
 
 		/**
 		* Getter (in read only mode) of all the associated Wellbore frame representations
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector<class WellboreFrameRepresentation*>& getWellboreFrameRepresentationSet() const {return wellboreFrameRepresentationSet;}
+		DLL_IMPORT_OR_EXPORT std::vector<class WellboreFrameRepresentation const *> getWellboreFrameRepresentationSet() const;
 
 		/**
 		* Get the count of wellbore frame representation which are associated with this wellbore trajectory.
 		* Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
 		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getWellboreFrameRepresentationCount() const {return static_cast<unsigned int>(wellboreFrameRepresentationSet.size());}
+		DLL_IMPORT_OR_EXPORT unsigned int getWellboreFrameRepresentationCount() const;
 
 		/**
 		* Get a particular wellbore frame representation of this wellbore trajectory representation according to its position in the EPC document.
 		* Necessary for now in SWIG context because I mm not sure if I can always wrap a vector of polymorphic class yet.
 		* Throw an out of bound exception if the index is superior or equal to the count of wellbore frame representation.
 		*/
-		DLL_IMPORT_OR_EXPORT class WellboreFrameRepresentation* getWellboreFrameRepresentation(const unsigned int & index) const {return wellboreFrameRepresentationSet[index];}
+		DLL_IMPORT_OR_EXPORT class WellboreFrameRepresentation const * getWellboreFrameRepresentation(unsigned int index) const;
 
 		/**
 		* Set the deviation survey which is the source of this trajectory.
@@ -233,26 +226,13 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT bool hasGeometry() const;
 
-		std::vector<epc::Relationship> getAllSourceRelationships() const;
-		std::vector<epc::Relationship> getAllTargetRelationships() const;
+		void loadTargetRelationships() const;
 
 	private:
-		/**
-		* Add a children parent to this trajectory in case of trajectory branching.
-		* Does not add the inverse relationship i.e. from the children trajectory to this trajectory
-		*/
-		void addChildrenTrajectory(WellboreTrajectoryRepresentation* childrenTraj) { childrenTrajSet.push_back(childrenTraj); }
 
 		/**
 		* Get the information to resolve the associated deviation survey. It can return a null pointer.
 		*/
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getDeviationSurveyDor() const;
-		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
-
-	protected:		
-		// XML backward relationships
-		std::vector<WellboreTrajectoryRepresentation*> childrenTrajSet;
-		std::vector<class WellboreFrameRepresentation*> wellboreFrameRepresentationSet;
 	};
 }
-

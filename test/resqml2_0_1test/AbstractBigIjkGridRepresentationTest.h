@@ -22,7 +22,7 @@ under the License.
 #include <iostream>
 
 namespace COMMON_NS {
-	class EpcDocument;
+	class DataObjectRepository;
 }
 
 namespace resqml2_0_1test {
@@ -42,13 +42,13 @@ namespace resqml2_0_1test {
 		double* nodesIjkGridRepresentation;
 
 		AbstractBigIjkGridRepresentationTest(
-			const std::string & epcDocPath,
+			const std::string & repoPath,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount, 
 			unsigned int faultCount, 
 			double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
 			double faultThrow);
 
-		AbstractBigIjkGridRepresentationTest(COMMON_NS::EpcDocument * epcDoc, bool init,
+		AbstractBigIjkGridRepresentationTest(COMMON_NS::DataObjectRepository * repo, bool init,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount,
 			unsigned int faultCount,
 			double xMin, double xMax, double yMin, double yMax, double zMin, double zMax,
@@ -60,8 +60,8 @@ namespace resqml2_0_1test {
 			}
 		}
 	protected:
-		virtual void initEpcDocHandler() = 0;
-		virtual void readEpcDocHandler() = 0;
+		virtual void initRepoHandler() = 0;
+		virtual void readRepoHandler() = 0;
 
 		/**
 		 * Get the number of nodes (including splitted ones) of the generated grid. 

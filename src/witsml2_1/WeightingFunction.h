@@ -34,14 +34,13 @@ namespace WITSML2_1_NS
 		* Only to be used in partial transfer context
 		*/
 		WeightingFunction(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			WITSML2_1_NS::AbstractObject(partialObject),
-			weightingFunctionDictionary(nullptr) {}
+			WITSML2_1_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
 		* @param guid		The guid to set to this instance. If empty then a new guid will be generated.
 		*/
-		WeightingFunction(soap* soapContext,
+		WeightingFunction(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid,
 			const std::string & title,
 			const std::string & depthFormula,
@@ -51,8 +50,7 @@ namespace WITSML2_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WeightingFunction(gsoap_eml2_2::witsml2__WeightingFunction* fromGsoap) :AbstractObject(fromGsoap),
-			weightingFunctionDictionary(nullptr) {}
+		WeightingFunction(gsoap_eml2_2::witsml2__WeightingFunction* fromGsoap) :AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -67,21 +65,9 @@ namespace WITSML2_1_NS
 		DLL_IMPORT_OR_EXPORT void setSingularityEastFormula(const std::string & singularityEastFormula);
 		DLL_IMPORT_OR_EXPORT void setSingularityVerticalFormula(const std::string & singularityVerticalFormula);
 
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllSourceRelationships() const;
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllTargetRelationships() const;
-		DLL_IMPORT_OR_EXPORT void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc);
+		void loadTargetRelationships() const {}
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
-
-	protected:
-
-		// XML backwards relationship
-		WeightingFunctionDictionary* weightingFunctionDictionary;
-		std::vector<ErrorTerm*> errorTermSet;
-
-		friend void ErrorTerm::setWeightingFunction(WeightingFunction* weightingFunction);
-		friend void WeightingFunctionDictionary::pushBackWeightingFunction(class WeightingFunction* wf);
 	};
 }
-

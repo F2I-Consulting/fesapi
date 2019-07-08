@@ -17,13 +17,16 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_0_1/RockFluidOrganizationInterpretation.h"
-#include "resqml2_0_1/RockFluidUnitInterpretation.h"
+
 #include <algorithm>
+
+#include "resqml2_0_1/OrganizationFeature.h"
+#include "resqml2_0_1/RockFluidUnitInterpretation.h"
+#include "resqml2/AbstractGridRepresentation.h"
 
 #include "tools/Misc.h"
 
 using namespace std;
-using namespace epc;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
@@ -50,9 +53,14 @@ RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(Organiz
 	setInterpretedFeature(orgFeat);
 }
 
+std::vector<RESQML2_NS::AbstractGridRepresentation const *> RockFluidOrganizationInterpretation::getGridRepresentationSet() const
+{
+	return getRepository()->getSourceObjects<RESQML2_NS::AbstractGridRepresentation>(this);
+}
+
 unsigned int RockFluidOrganizationInterpretation::getGridRepresentationCount() const
 {
-	const size_t count = gridRepresentationSet.size();
+	const size_t count = getGridRepresentationSet().size();
 	if (count > (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("Too much grid representations.");
 	}
@@ -60,9 +68,11 @@ unsigned int RockFluidOrganizationInterpretation::getGridRepresentationCount() c
 	return static_cast<unsigned int>(count);
 }
 
-RESQML2_NS::AbstractGridRepresentation* RockFluidOrganizationInterpretation::getGridRepresentation(unsigned int index) const
+RESQML2_NS::AbstractGridRepresentation const * RockFluidOrganizationInterpretation::getGridRepresentation(unsigned int index) const
 {
-	if (index >= getGridRepresentationCount()) {
+	const std::vector<RESQML2_NS::AbstractGridRepresentation const *>& gridRepresentationSet = getGridRepresentationSet();
+
+	if (index >= gridRepresentationSet.size()) {
 		throw range_error("The index of the grid representation to get is out of range.");
 	}
 
@@ -71,24 +81,17 @@ RESQML2_NS::AbstractGridRepresentation* RockFluidOrganizationInterpretation::get
 
 bool RockFluidOrganizationInterpretation::isAssociatedToGridRepresentation(RESQML2_NS::AbstractGridRepresentation* gridRep) const
 {
+	const std::vector<RESQML2_NS::AbstractGridRepresentation const *>& gridRepresentationSet = getGridRepresentationSet();
 	return find(gridRepresentationSet.begin(), gridRepresentationSet.end(), gridRep) != gridRepresentationSet.end();
 }
 
 void RockFluidOrganizationInterpretation::pushBackRockFluidUnitInterpretation(RockFluidUnitInterpretation * rockFluidUnitInterpretation)
 {
-	if (updateXml && static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit != nullptr) {
+	if (static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit != nullptr) {
 		throw logic_error("Fesapi for now only supports one unit in a Rock fluid organization");
 	}
 
-	// EPC
-	rockFluidUnitInterpretation->rockFluidOrganizationInterpSet.push_back(this);
-
-	// XML
-	// For now cannot really push back but only set cause of the bug http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html
-	if (updateXml)
-	{
-		static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit = rockFluidUnitInterpretation->newResqmlReference();
-	}
+	static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit = rockFluidUnitInterpretation->newResqmlReference();
 }
 
 // For now cannot really count cause of the bug http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html
@@ -103,58 +106,15 @@ RockFluidUnitInterpretation* RockFluidOrganizationInterpretation::getRockFluidUn
 		throw range_error("The index is out of range");
 	}
 
-	return epcDocument->getDataObjectByUuid<RockFluidUnitInterpretation>(static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit->UUID);
+	return repository->getDataObjectByUuid<RockFluidUnitInterpretation>(static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit->UUID);
 }
 
-std::vector<epc::Relationship> RockFluidOrganizationInterpretation::getAllSourceRelationships() const
+void RockFluidOrganizationInterpretation::loadTargetRelationships() const
 {
-	vector<Relationship> result = AbstractOrganizationInterpretation::getAllSourceRelationships();
-
-	for (size_t i = 0; i < gridRepresentationSet.size(); ++i) {
-		Relationship rel(gridRepresentationSet[i]->getPartNameInEpcDocument(), "", gridRepresentationSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	for (size_t i = 0; i < earthModelSet.size(); ++i)
-	{
-		Relationship rel(earthModelSet[i]->getPartNameInEpcDocument(), "", earthModelSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
-}
-
-std::vector<epc::Relationship> RockFluidOrganizationInterpretation::getAllTargetRelationships() const
-{
-	vector<Relationship> result = AbstractOrganizationInterpretation::getAllTargetRelationships();
-
-	// Only one unit for now : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html
-	gsoap_resqml2_0_1::eml20__DataObjectReference * dor = static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit;
-	Relationship relUnit(misc::getPartNameFromReference(dor), "", dor->UUID);
-	relUnit.setDestinationObjectType();
-	result.push_back(relUnit);
-
-	return result;
-}
-
-void RockFluidOrganizationInterpretation::resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc)
-{
-	AbstractOrganizationInterpretation::resolveTargetRelationships(epcDoc);
+	AbstractOrganizationInterpretation::loadTargetRelationships();
 
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit;
 	if (dor != nullptr) {
-		RockFluidUnitInterpretation* interp = epcDoc->getDataObjectByUuid<RockFluidUnitInterpretation>(dor->UUID);
-		if (interp == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			interp = getEpcDocument()->getDataObjectByUuid<RockFluidUnitInterpretation>(dor->UUID);
-		}
-		if (interp == nullptr) {
-			throw invalid_argument("The DOR looks invalid.");
-		}
-		updateXml = false;
-		pushBackRockFluidUnitInterpretation(interp);
-		updateXml = true;
+		convertDorIntoRel<RockFluidUnitInterpretation>(dor);
 	}
 }

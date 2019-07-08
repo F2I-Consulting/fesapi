@@ -27,7 +27,6 @@ under the License.
 #include "common/AbstractHdfProxy.h"
 
 using namespace std;
-using namespace epc;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
@@ -37,8 +36,7 @@ SealedSurfaceFrameworkRepresentation::SealedSurfaceFrameworkRepresentation(
         StructuralOrganizationInterpretation* interp,
         const std::string & guid,
         const std::string & title
-        ):
-	AbstractSurfaceFrameworkRepresentation(interp)
+        )
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The structural organization interpretation cannot be null.");
@@ -55,7 +53,6 @@ SealedSurfaceFrameworkRepresentation::SealedSurfaceFrameworkRepresentation(
     initMandatoryMetadata();
     setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	// XML relationships
     setInterpretation(interp);
 }
 
@@ -85,11 +82,11 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
 	if (identicalNodes == nullptr) {
 		throw invalid_argument("The array of identical nodes cannot be null.");
 	}
-	if (proxy == nullptr) {
-		throw invalid_argument("The HDF proxy cannot be null.");
-	}
 
-    setHdfProxy(proxy);
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
+	getRepository()->addRelationship(this, proxy);
 
 	pushBackContact(kind);
 	resqml2__SealedContactRepresentationPart* contactRep = static_cast<_resqml2__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1)->SealedContactRepresentation.back();
@@ -126,7 +123,11 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
 		throw invalid_argument("The supporting representation cannot be null.");
 	}
 
-    setHdfProxy(proxy);
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
+	getRepository()->addRelationship(this, proxy);
+
     _resqml2__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml2__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
 	if (contactIndex >= orgRep->SealedContactRepresentation.size()) {
@@ -190,19 +191,6 @@ gsoap_resqml2_0_1::resqml2__SealedContactRepresentationPart* SealedSurfaceFramew
 	}
 
 	return static_cast<_resqml2__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1)->SealedContactRepresentation[crIndex];
-}
-
-gsoap_resqml2_0_1::eml20__DataObjectReference* SealedSurfaceFrameworkRepresentation::getHdfProxyDor() const
-{
-	_resqml2__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml2__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
-
-	if (orgRep->SealedContactRepresentation.size() > 0 && static_cast<resqml2__SealedContactRepresentationPart*>(orgRep->SealedContactRepresentation[0])->IdenticalNodeIndices != nullptr)
-	{
-		resqml2__SealedContactRepresentationPart *sealedContactRep = static_cast<resqml2__SealedContactRepresentationPart*>(orgRep->SealedContactRepresentation[0]);
-		return static_cast<resqml2__IntegerHdf5Array *>(sealedContactRep->IdenticalNodeIndices)->Values->HdfProxy;
-	}
-
-	return nullptr;
 }
 
 gsoap_resqml2_0_1::resqml2__IdentityKind SealedSurfaceFrameworkRepresentation::getContactPatchIdentityKind(unsigned int crIndex) const
@@ -289,23 +277,4 @@ unsigned int SealedSurfaceFrameworkRepresentation::getContactPatchNodeCount(unsi
 void SealedSurfaceFrameworkRepresentation::getContactPatchNodeIndices(unsigned int crIndex, unsigned int cpIndex, unsigned int * nodeIndices) const
 {
 	readArrayNdOfUIntValues(getContactPatch(crIndex, cpIndex)->SupportingRepresentationNodes, nodeIndices);
-}
-
-std::vector<epc::Relationship> SealedSurfaceFrameworkRepresentation::getAllSourceRelationships() const
-{
-	vector<Relationship> result = AbstractSurfaceFrameworkRepresentation::getAllSourceRelationships();
-
-	for (size_t i = 0; i < svfSet.size(); ++i)
-	{
-		if (svfSet[i] != nullptr)
-		{
-			Relationship rel(svfSet[i]->getPartNameInEpcDocument(), "", svfSet[i]->getUuid());
-			rel.setSourceObjectType();
-			result.push_back(rel);
-		}
-		else
-			throw domain_error("The Sealed Volume Framework Representation associated to this interpretation cannot be nullptr.");
-	}
-
-	return result;
 }

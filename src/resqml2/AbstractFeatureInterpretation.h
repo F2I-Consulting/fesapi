@@ -47,8 +47,6 @@ namespace RESQML2_NS
 		*/
 		AbstractFeatureInterpretation(gsoap_resqml2_0_1::resqml2__AbstractFeatureInterpretation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
-		void setInterpretedFeatureInXml(RESQML2_NS::AbstractFeature* feature);
-
 	public:
 
 		/**
@@ -59,7 +57,7 @@ namespace RESQML2_NS
 		/**
 		* @return	null pointer if no interpreted feature is associated to this interpretation. Otherwise return the data objet reference of the associated interpreted feature.
 		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getInterpretedFeatureDor() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference const * getInterpretedFeatureDor() const;
 
 		DLL_IMPORT_OR_EXPORT std::string getInterpretedFeatureUuid() const;
 
@@ -87,48 +85,23 @@ namespace RESQML2_NS
 		/**
 		* Get all the representations of this interpretation
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<AbstractRepresentation*> getRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<AbstractRepresentation const *> getRepresentationSet() const;
 
 		/**
 		 * Get the interpretation count of this feature.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int 						getRepresentationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getRepresentationCount() const;
+		
+		/**
+		* Get all the Grid Connection Set Representation which reference this interpretation.
+		*/
+		DLL_IMPORT_OR_EXPORT std::vector<GridConnectionSetRepresentation const *> getGridConnectionSetRepresentationSet() const;
 
 		/**
 		 * Get a particular interpretation of this feature according to its position in the interpretation ordering.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractRepresentation*				getRepresentation(const unsigned int & index) const;
-
-		/**
-		* Get all the Grid Connection Set Representation which reference this interpretation.
-		*/
-		DLL_IMPORT_OR_EXPORT std::vector<GridConnectionSetRepresentation *>	getGridConnectionSetRepresentationSet();
-
-		/**
-		* Indicates that this interpretation is a frontier of a stack of an organization
-		* BE CAREFUL : Does not add back this instance to the organization. It is assumed it is already done.
-		*/
-		void setBottomFrontierOf(RESQML2_0_1_NS::StructuralOrganizationInterpretation* structOrg);
-		void setTopFrontierOf(RESQML2_0_1_NS::StructuralOrganizationInterpretation* structOrg);
-		void setSideFrontierOf(RESQML2_0_1_NS::StructuralOrganizationInterpretation* structOrg);
-
-		virtual std::vector<epc::Relationship> getAllSourceRelationships() const;
-		virtual std::vector<epc::Relationship> getAllTargetRelationships() const;
-
-		virtual void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
+		DLL_IMPORT_OR_EXPORT AbstractRepresentation const * getRepresentation(unsigned int index) const;
 		
-	protected:
-
-		// XML backward relationship
-		std::vector<AbstractRepresentation *>						representationSet;
-		std::vector<GridConnectionSetRepresentation *>				gridConnectionSetRepresentationSet;
-
-		std::vector<RESQML2_0_1_NS::StructuralOrganizationInterpretation *>	isBottomFrontierSet;
-		std::vector<RESQML2_0_1_NS::StructuralOrganizationInterpretation *>	isTopFrontierSet;
-		std::vector<RESQML2_0_1_NS::StructuralOrganizationInterpretation *>	isSideFrontierSet;
-
-		friend void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation * interp);
-		friend void GridConnectionSetRepresentation::pushBackInterpretation(AbstractFeatureInterpretation* interp);
+		virtual void loadTargetRelationships() const;
 	};
 }
-

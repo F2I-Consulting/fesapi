@@ -23,22 +23,22 @@ under the License.
 
 #include "hdf5.h"
 
+#include "common/AbstractHdfProxy.h"
+#include "common/EnumStringMapper.h"
+
 #include "resqml2/AbstractRepresentation.h"
 #include "resqml2_0_1/PropertyKind.h"
 #include "resqml2_0_1/StringTableLookup.h"
-#include "common/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* CategoricalProperty::XML_TAG = "CategoricalProperty";
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
 	StringTableLookup* strLookup, const resqml2__ResqmlPropertyKind & energisticsPropertyKind)
-	: stringLookup(strLookup)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORECategoricalProperty(rep->getGsoapContext(), 1);	
 	_resqml2__CategoricalProperty* prop = static_cast<_resqml2__CategoricalProperty*>(gsoapProxy2_0_1);
@@ -49,62 +49,40 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	xmlStandardPropKind->Kind = energisticsPropertyKind;
 	prop->PropertyKind = xmlStandardPropKind;
 
-	stringLookup->addCategoricalPropertyValues(this);
-	prop->Lookup = stringLookup->newResqmlReference();
-
-	setRepresentation(rep);
-
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	prop->Lookup = strLookup->newResqmlReference();
+	getRepository()->addRelationship(this, strLookup);
+
+	setRepresentation(rep);
 }
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
 	StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropKind)
-	:stringLookup(strLookup)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORECategoricalProperty(rep->getGsoapContext(), 1);	
 	_resqml2__CategoricalProperty* prop = static_cast<_resqml2__CategoricalProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
 
-	stringLookup->addCategoricalPropertyValues(this);
-	prop->Lookup = stringLookup->newResqmlReference();
+	initMandatoryMetadata();
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
+	prop->Lookup = strLookup->newResqmlReference();
+	getRepository()->addRelationship(this, strLookup);
 
 	setRepresentation(rep);
 
 	setLocalPropertyKind(localPropKind);
-
-	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
-vector<Relationship> CategoricalProperty::getAllTargetRelationships() const
+void CategoricalProperty::loadTargetRelationships() const
 {
-	vector<Relationship> result = AbstractValuesProperty::getAllTargetRelationships();
+	AbstractValuesProperty::loadTargetRelationships();
 
-	_resqml2__CategoricalProperty* prop = static_cast<_resqml2__CategoricalProperty*>(gsoapProxy2_0_1);
-
-	if (stringLookup != nullptr)
-	{
-		Relationship rel(stringLookup->getPartNameInEpcDocument(), "", prop->Lookup->UUID);
-		rel.setDestinationObjectType();
-		result.push_back(rel);
-	}
-	else
-		throw domain_error("The string lookup associated to the categorical property values cannot be nullptr.");
-
-	return result;
-}
-
-void CategoricalProperty::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
-{
-	AbstractValuesProperty:: resolveTargetRelationships(epcDoc);
-
-	_resqml2__CategoricalProperty* prop = static_cast<_resqml2__CategoricalProperty*>(gsoapProxy2_0_1);
-	stringLookup = static_cast<StringTableLookup*>(epcDoc->getDataObjectByUuid(prop->Lookup->UUID));
-	if (stringLookup)
-		stringLookup->addCategoricalPropertyValues(this);
+	convertDorIntoRel<StringTableLookup>(static_cast<_resqml2__CategoricalProperty*>(gsoapProxy2_0_1)->Lookup);
 }
 
 void CategoricalProperty::pushBackLongHdf5Array1dOfValues(const long * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
@@ -127,6 +105,9 @@ void CategoricalProperty::pushBackLongHdf5Array3dOfValues(const long * values, c
 
 void CategoricalProperty::pushBackLongHdf5ArrayOfValues(const long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
 {
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue);
 
 	// HDF
@@ -137,26 +118,29 @@ void CategoricalProperty::pushBackLongHdf5ArrayOfValues(const long * values, uns
 		numValues, numDimensionsInArray);
 }
 
-void CategoricalProperty::pushBackUShortHdf5Array1dOfValues(const unsigned short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackUShortHdf5Array1dOfValues(const unsigned short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, unsigned short nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCount };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, nullValue);
 }
 
-void CategoricalProperty::pushBackUShortHdf5Array2dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackUShortHdf5Array2dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, unsigned short nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInFastestDim };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, nullValue);
 }
 
-void CategoricalProperty::pushBackUShortHdf5Array3dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
+void CategoricalProperty::pushBackUShortHdf5Array3dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, unsigned short nullValue)
 {
 	hsize_t valueCountPerDimension[3] = { valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim };
 	pushBackUShortHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, nullValue);
 }
 
-void CategoricalProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue)
+void CategoricalProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
 {
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue);
 
 	// HDF
@@ -185,32 +169,32 @@ bool CategoricalProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKi
 
 	if (!pk->isPartial()) {
 		if (pk->isAbstract()) {
-			epcDocument->addWarning("The categorical property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which is abstract. This property will be assumed to be a partial one.");
+			repository->addWarning("The categorical property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which is abstract. This property will be assumed to be a partial one.");
 			changeToPartialObject();
 			return false;
 		}
-		if (epcDocument->getPropertyKindMapper() != nullptr) {
+		if (repository->getPropertyKindMapper() != nullptr) {
 			if (pk->isParentPartial()) {
-				epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the categorical property " + getUuid() + " is right because one if its parent property kind is abstract.");
+				repository->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the categorical property " + getUuid() + " is right because one if its parent property kind is abstract.");
 				return true;
 			}
 			if (!pk->isChildOf(resqml2__ResqmlPropertyKind__categorical)) {
 				if (!pk->isChildOf(resqml2__ResqmlPropertyKind__discrete)) {
-					epcDocument->addWarning("The categorical property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
+					repository->addWarning("The categorical property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
 					changeToPartialObject();
 					return false;
 				}
 				else {
-					epcDocument->addWarning("The categorical property " + getUuid() + " is associated to a discrete local property kind " + pk->getUuid() + ".");
+					repository->addWarning("The categorical property " + getUuid() + " is associated to a discrete local property kind " + pk->getUuid() + ".");
 				}
 			}
 		}
 		else {
-			epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the categorical property " + getUuid() + " is right because no property kind mapping files have been loaded.");
+			repository->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the categorical property " + getUuid() + " is right because no property kind mapping files have been loaded.");
 		}
 	}
 	else {
-		epcDocument->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the categorical property " + getUuid() + " is right because it is abstract.");
+		repository->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the categorical property " + getUuid() + " is right because it is abstract.");
 	}
 
 	return true;
@@ -218,28 +202,35 @@ bool CategoricalProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKi
 
 bool CategoricalProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk)
 {
-	PropertyKindMapper* pkMapper = epcDocument->getPropertyKindMapper();
+	COMMON_NS::EnumStringMapper tmp;
+	std::string pkName = tmp.getEnergisticsPropertyKindName(pk);
+
+	PropertyKindMapper* pkMapper = repository->getPropertyKindMapper();
 	if (pkMapper != nullptr) {
 		if (pkMapper->isAbstract(pk)) {
-			epcDocument->addWarning("The categorical property " + getUuid() + " cannot be associated to a resqml property kind \"" + epcDocument->getEnergisticsPropertyKindName(pk) + "\" which is abstract. This property will be assumed to be a partial one.");
+			repository->addWarning("The categorical property " + getUuid() + " cannot be associated to a resqml property kind \"" + pkName + "\" which is abstract. This property will be assumed to be a partial one.");
 			changeToPartialObject();
 			return false;
 		}
 		if (!pkMapper->isChildOf(pk, resqml2__ResqmlPropertyKind__categorical)) {
 			if (!pkMapper->isChildOf(pk, resqml2__ResqmlPropertyKind__discrete)) {
-				epcDocument->addWarning("The categorical property " + getUuid() + " cannot be associated to a resqml property kind \"" + epcDocument->getEnergisticsPropertyKindName(pk) + "\" which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
+				repository->addWarning("The categorical property " + getUuid() + " cannot be associated to a resqml property kind \"" + pkName + "\" which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
 				changeToPartialObject();
 				return false;
 			}
 			else {
-				getEpcDocument()->addWarning("The categorical property " + getUuid() + " is associated to a discrete resqml property kind \"" + epcDocument->getEnergisticsPropertyKindName(pk) + "\".");
+				getRepository()->addWarning("The categorical property " + getUuid() + " is associated to a discrete resqml property kind \"" + pkName + "\".");
 			}
 		}
 	}
 	else {
-		epcDocument->addWarning("Cannot verify if the resqml property kind \"" + epcDocument->getEnergisticsPropertyKindName(pk) + "\" of the categorical property " + getUuid() + " is right because no property kind mapping files have been loaded.");
+		repository->addWarning("Cannot verify if the resqml property kind \"" + pkName + "\" of the categorical property " + getUuid() + " is right because no property kind mapping files have been loaded.");
 	}
 
 	return true;
 }
 
+StringTableLookup* CategoricalProperty::getStringLookup()
+{
+	return getRepository()->getDataObjectByUuid<StringTableLookup>(getStringLookupUuid());
+}

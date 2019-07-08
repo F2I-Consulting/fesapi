@@ -27,17 +27,17 @@ using namespace std;
 using namespace gsoap_resqml2_0_1;
 using namespace RESQML2_0_1_NS;
 
-IjkGridNoGeometryRepresentation::IjkGridNoGeometryRepresentation(soap* soapContext,
-			const std::string & guid, const std::string & title,
-			const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount):
-			AbstractIjkGridRepresentation(soapContext, nullptr, guid, title, iCount, jCount, kCount)
+IjkGridNoGeometryRepresentation::IjkGridNoGeometryRepresentation(COMMON_NS::DataObjectRepository * repo,
+	const std::string & guid, const std::string & title,
+	unsigned int iCount, unsigned int jCount, unsigned int kCount):
+	AbstractIjkGridRepresentation(repo, guid, title, iCount, jCount, kCount)
 {
 }
 
 IjkGridNoGeometryRepresentation::IjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-		const std::string & guid, const std::string & title,
-		const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount):
-	AbstractIjkGridRepresentation(interp, nullptr, guid, title, iCount, jCount, kCount)
+	const std::string & guid, const std::string & title,
+	unsigned int iCount, unsigned int jCount, unsigned int kCount):
+	AbstractIjkGridRepresentation(interp, guid, title, iCount, jCount, kCount)
 {
 }
 

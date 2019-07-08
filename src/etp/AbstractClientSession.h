@@ -32,6 +32,7 @@ namespace ETP_NS
 	class AbstractClientSession : public ETP_NS::AbstractSession
 	{
 	protected:
+		boost::asio::io_context ioc;
 	    tcp::resolver resolver;
 	    std::string host;
 	    std::string port;
@@ -52,7 +53,7 @@ namespace ETP_NS
 	     * @param requestedProtocols	An array of protocol IDs that the client expects to communicate on for this session. If the server does not support all of the protocols, the client may or may not continue with the protocols that are supported.
 	     * @param supportedObjects		A list of the Data Objects supported by the client. This list MUST be empty if the client is a customer. This field MUST be supplied if the client is a Store and is requesting a customer role for the server.
 	     */
-		AbstractClientSession(boost::asio::io_context& ioc,
+		AbstractClientSession(
 				const std::string & host, const std::string & port, const std::string & target, const std::string & authorization,
 				const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 				const std::vector<std::string>& supportedObjects) :
@@ -72,7 +73,7 @@ namespace ETP_NS
 		virtual ~AbstractClientSession() {}
 
 		boost::asio::io_context& getIoContext() {
-			return derived().ws().get_executor().context();
+			return ioc;
 		}
 
 		DLL_IMPORT_OR_EXPORT const std::string& getHost() const { return host; }
@@ -81,6 +82,15 @@ namespace ETP_NS
 		DLL_IMPORT_OR_EXPORT const std::string& getAuthorization() const { return authorization; }
 
 		DLL_IMPORT_OR_EXPORT void run() {
+			// We run the io_service off in its own thread so that it operates completely asynchronously with respect to the rest of the program.
+			// This is particularly important regarding "std::future" usage in DataArrayBlockingSession
+			auto work = boost::asio::make_work_guard(ioc);
+			std::thread thread([this]() {
+				std::cerr << "Start IOC" << std::endl;
+				this->getIoContext().run(); // Run the I/O service. The call will never return since we have used boost::asio::make_work_guard. We need to reset the worker if we want it to return.
+				std::cerr << "End IOC" << std::endl;
+			});
+
 			// Look up the domain name
 			resolver.async_resolve(
 				host,
@@ -90,6 +100,12 @@ namespace ETP_NS
 					std::static_pointer_cast<AbstractClientSession>(shared_from_this()),
 					std::placeholders::_1,
 					std::placeholders::_2));
+
+			// Resetting the work make ioc (in a separate thread) return when there will no more be any uncomplete operations (such as a reading operation for example)
+			// ioc does no more honor boost::asio::make_work_guard.
+			work.reset();
+			// Wait for ioc.run() (in the other thread) to return
+			thread.join();
 		}
 
 		void on_connect(boost::system::error_code ec) {

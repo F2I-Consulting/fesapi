@@ -21,6 +21,8 @@ under the License.
 #include <stdexcept>
 #include <algorithm>
 
+#include "common/EnumStringMapper.h"
+
 #include "resqml2/SubRepresentation.h"
 #include "resqml2_0_1/UnstructuredGridRepresentation.h"
 #include "resqml2_0_1/IjkGridExplicitRepresentation.h"
@@ -35,11 +37,65 @@ under the License.
 
 using namespace RESQML2_NS;
 using namespace std;
-using namespace epc;
 
-
-void AbstractProperty::setXmlRepresentation(RESQML2_NS::AbstractRepresentation * rep)
+void AbstractProperty::loadTargetRelationships() const
 {
+	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getRepresentationDor();
+	RESQML2_NS::AbstractRepresentation* rep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
+	if (rep == nullptr) { // partial transfer
+		getRepository()->createPartial(dor);
+		rep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
+		if (rep == nullptr) {
+			throw invalid_argument("The DOR looks invalid.");
+		}
+	}
+	repository->addRelationship(this, rep);
+
+	dor = getTimeSeriesDor();
+	if (dor != nullptr) {
+		TimeSeries* ts = getRepository()->getDataObjectByUuid<TimeSeries>(dor->UUID);
+		if (ts == nullptr) { // partial transfer
+			getRepository()->createPartial(dor);
+			ts = getRepository()->getDataObjectByUuid<TimeSeries>(dor->UUID);
+			if (ts == nullptr) {
+				throw invalid_argument("The DOR looks invalid.");
+			}
+		}
+		repository->addRelationship(this, ts);
+	}
+
+	if (!isAssociatedToOneStandardEnergisticsPropertyKind())
+	{
+		dor = getLocalPropertyKindDor();
+		RESQML2_NS::PropertyKind* pk = getRepository()->getDataObjectByUuid<PropertyKind>(dor->UUID);
+		if (pk == nullptr) {
+			getRepository()->createPartial(dor);
+			pk = getRepository()->getDataObjectByUuid<PropertyKind>(dor->UUID);
+			if (pk == nullptr) {
+				throw invalid_argument("The DOR looks invalid.");
+			}
+		}
+		repository->addRelationship(this, pk);
+	}
+}
+
+bool AbstractProperty::validate()
+{
+	return isAssociatedToOneStandardEnergisticsPropertyKind() ? validatePropertyKindAssociation(getEnergisticsPropertyKind()) : validatePropertyKindAssociation(getLocalPropertyKind());
+}
+
+void AbstractProperty::setRepresentation(AbstractRepresentation * rep)
+{
+	if (rep == nullptr) {
+		throw invalid_argument("The representation of this property values cannot be null.");
+	}
+	if (getRepository() == nullptr) {
+		rep->getRepository()->addOrReplaceDataObject(this);
+	}
+
+	getRepository()->addRelationship(this, rep);
+
+	// XML
 	if (gsoapProxy2_0_1 != nullptr) {
 		static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->SupportingRepresentation = rep->newResqmlReference();
 	}
@@ -48,8 +104,53 @@ void AbstractProperty::setXmlRepresentation(RESQML2_NS::AbstractRepresentation *
 	}
 }
 
-void AbstractProperty::setXmlTimeSeries(TimeSeries * ts)
+AbstractRepresentation* AbstractProperty::getRepresentation() const
 {
+	return getRepository()->getDataObjectByUuid<AbstractRepresentation>(getRepresentationUuid());
+}
+
+gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractProperty::getRepresentationDor() const
+{
+	if (gsoapProxy2_0_1 != nullptr) {
+		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->SupportingRepresentation;
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
+}
+
+std::string AbstractProperty::getRepresentationUuid() const
+{
+	return getRepresentationDor()->UUID;
+}
+
+std::string AbstractProperty::getRepresentationTitle() const
+{
+	return getRepresentationDor()->Title;
+}
+
+std::string AbstractProperty::getRepresentationContentType() const
+{
+	return getRepresentationDor()->ContentType;
+}
+
+TimeSeries* AbstractProperty::getTimeSeries() const
+{
+	return static_cast<TimeSeries*>(repository->getDataObjectByUuid(getTimeSeriesUuid()));
+}
+
+void AbstractProperty::setTimeSeries(TimeSeries * ts)
+{
+	if (ts == nullptr) {
+		throw invalid_argument("The time series of this property values cannot be null.");
+	}
+	if (getRepository() == nullptr) {
+		ts->getRepository()->addOrReplaceDataObject(this);
+	}
+
+	getRepository()->addRelationship(this, ts);
+
+	// XML
 	if (gsoapProxy2_0_1 != nullptr) {
 		if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECategoricalPropertySeries)
 		{
@@ -96,205 +197,6 @@ void AbstractProperty::setXmlTimeSeries(TimeSeries * ts)
 	}
 	else {
 		throw logic_error("Not implemented yet");
-	}
-}
-
-void AbstractProperty::setXmlLocalPropertyKind(class PropertyKind* propKind)
-{
-	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml2__LocalPropertyKind* xmlLocalPropKind = gsoap_resqml2_0_1::soap_new_resqml2__LocalPropertyKind(gsoapProxy2_0_1->soap, 1);
-		xmlLocalPropKind->LocalPropertyKind = propKind->newResqmlReference();
-		static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->PropertyKind = xmlLocalPropKind;
-	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
-}
-
-vector<Relationship> AbstractProperty::getAllSourceRelationships() const
-{
-	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
-	return result;
-}
-
-vector<Relationship> AbstractProperty::getAllTargetRelationships() const
-{
-	vector<Relationship> result;
-
-	// XML forward relationship
-	AbstractRepresentation* representation = getRepresentation();
-	Relationship relRep(representation->getPartNameInEpcDocument(), "", representation->getUuid());
-	relRep.setDestinationObjectType();
-	result.push_back(relRep);
-
-	if (local3dCrs != nullptr)
-	{
-		Relationship relCrs(local3dCrs->getPartNameInEpcDocument(), "", local3dCrs->getUuid());
-		relCrs.setDestinationObjectType();
-		result.push_back(relCrs);
-	}
-
-	TimeSeries* timeSeries = getTimeSeries();
-	if (timeSeries != nullptr)
-	{
-		Relationship relTs(timeSeries->getPartNameInEpcDocument(), "", timeSeries->getUuid());
-		relTs.setDestinationObjectType();
-		result.push_back(relTs);
-	}
-
-	COMMON_NS::AbstractHdfProxy* hdfProxy = getHdfProxy();
-	if (hdfProxy != nullptr)
-	{
-		Relationship relHdf(hdfProxy->getPartNameInEpcDocument(), "", hdfProxy->getUuid());
-		relHdf.setMlToExternalPartProxyType();
-		result.push_back(relHdf);
-	}
-
-	if (isAssociatedToOneStandardEnergisticsPropertyKind() == false)
-	{
-		PropertyKind* pk = getLocalPropertyKind();
-		if (pk != nullptr)
-		{
-			Relationship relPropType(pk->getPartNameInEpcDocument(), "", pk->getUuid());
-			relPropType.setDestinationObjectType();
-			result.push_back(relPropType);
-		}
-	}
-
-	return result;
-}
-
-void AbstractProperty::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
-{
-	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getRepresentationDor();
-	RESQML2_NS::AbstractRepresentation* rep = epcDoc->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
-	if (rep == nullptr) { // partial transfer
-		getEpcDocument()->createPartial(dor);
-		rep = getEpcDocument()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
-	}
-	if (rep == nullptr) {
-		throw invalid_argument("The DOR looks invalid.");
-	}
-	updateXml = false;
-	setRepresentation(rep);
-	updateXml = true;
-
-	dor = getTimeSeriesDor();
-	if (dor != nullptr) {
-		TimeSeries* ts = epcDoc->getDataObjectByUuid<TimeSeries>(dor->UUID);
-		if (ts == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			ts = getEpcDocument()->getDataObjectByUuid<TimeSeries>(dor->UUID);
-		}
-		if (ts == nullptr) {
-			throw invalid_argument("The DOR looks invalid.");
-		}
-		updateXml = false;
-		setTimeSeries(ts);
-		updateXml = true;
-	}
-
-	if (!isAssociatedToOneStandardEnergisticsPropertyKind())
-	{
-		dor = getLocalPropertyKindDor();
-		RESQML2_NS::PropertyKind* pk = epcDoc->getDataObjectByUuid<PropertyKind>(dor->UUID);
-		if (pk == nullptr) {
-			epcDoc->createPartial(dor);
-			pk = epcDoc->getDataObjectByUuid<PropertyKind>(dor->UUID);
-			if (pk == nullptr) {
-				throw invalid_argument("The DOR looks invalid.");
-			}
-		}
-
-		updateXml = false;
-		setLocalPropertyKind(pk);
-		updateXml = true;
-	}
-
-	string uuidHdfProxy = getHdfProxyUuid();
-	if (!uuidHdfProxy.empty()) {
-		COMMON_NS::AbstractHdfProxy* hdfProxy = epcDoc->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(uuidHdfProxy);
-		if (hdfProxy == nullptr) {
-			epcDoc->addWarning("The referenced hdf proxy (" + uuidHdfProxy + ") is missing.");
-		}
-		updateXml = false;
-		setHdfProxy(hdfProxy);
-		updateXml = true;
-	}
-}
-
-bool AbstractProperty::validate()
-{
-	return isAssociatedToOneStandardEnergisticsPropertyKind() ? validatePropertyKindAssociation(getEnergisticsPropertyKind()) : validatePropertyKindAssociation(getLocalPropertyKind());
-}
-
-void AbstractProperty::setRepresentation(AbstractRepresentation * rep)
-{
-	if (rep == nullptr) {
-		throw invalid_argument("The representation of this property values cannot be null.");
-	}
-
-	// EPC
-	gsoap_resqml2_0_1::eml20__DataObjectReference* repDor = getRepresentationDor();
-	if (repDor != nullptr) { // already associated to a representation -> Need to remove existing association
-		std::vector<AbstractProperty*>& currentRepPropertySet = getRepresentation()->propertySet;
-		currentRepPropertySet.erase(remove(currentRepPropertySet.begin(), currentRepPropertySet.end(), this), currentRepPropertySet.end());
-	}
-	rep->propertySet.push_back(this);
-
-	// XML
-	if (updateXml) {
-		setXmlRepresentation(rep);
-	}
-}
-
-AbstractRepresentation* AbstractProperty::getRepresentation() const
-{
-	return getEpcDocument()->getDataObjectByUuid<AbstractRepresentation>(getRepresentationUuid());
-}
-
-gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractProperty::getRepresentationDor() const
-{
-	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->SupportingRepresentation;
-	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
-}
-
-std::string AbstractProperty::getRepresentationUuid() const
-{
-	return getRepresentationDor()->UUID;
-}
-
-std::string AbstractProperty::getRepresentationTitle() const
-{
-	return getRepresentationDor()->Title;
-}
-
-std::string AbstractProperty::getRepresentationContentType() const
-{
-	return getRepresentationDor()->ContentType;
-}
-
-TimeSeries* AbstractProperty::getTimeSeries() const
-{
-	return static_cast<TimeSeries*>(epcDocument->getDataObjectByUuid(getTimeSeriesUuid()));
-}
-
-void AbstractProperty::setTimeSeries(TimeSeries * ts)
-{
-	if (ts == nullptr) {
-		throw invalid_argument("The time series of this property values cannot be null.");
-	}
-
-	// EPC
-	ts->propertySet.push_back(this);
-
-	// XML
-	if (updateXml) {
-		setXmlTimeSeries(ts);
 	}
 }
 
@@ -401,65 +303,6 @@ unsigned int AbstractProperty::getTimeIndex() const
 	}
 }
 
-void AbstractProperty::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy)
-{
-	if (proxy == nullptr) {
-		throw invalid_argument("The hdf proxy of property " + getUuid() + " cannot be null");
-	}
-
-	proxy->propertySourceObject.push_back(this);
-}
-
-COMMON_NS::AbstractHdfProxy* AbstractProperty::getHdfProxy() const
-{
-	return static_cast<COMMON_NS::AbstractHdfProxy*>(epcDocument->getDataObjectByUuid(getHdfProxyUuid()));
-}
-
-std::string AbstractProperty::getHdfProxyUuid() const
-{
-	if (gsoapProxy2_0_1 != nullptr) {
-		if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREPointsProperty)
-		{
-			gsoap_resqml2_0_1::_resqml2__PointsProperty* prop = static_cast<gsoap_resqml2_0_1::_resqml2__PointsProperty*>(gsoapProxy2_0_1);
-			gsoap_resqml2_0_1::resqml2__PatchOfPoints* firstPatch = prop->PatchOfPoints[0];
-
-			int valuesType = firstPatch->Points->soap_type();
-			if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array) {
-				return static_cast<gsoap_resqml2_0_1::resqml2__Point3dHdf5Array*>(firstPatch->Points)->Coordinates->HdfProxy->UUID;
-			}
-			else {
-				return "";
-			}
-		}
-		else {
-			gsoap_resqml2_0_1::resqml2__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml2__AbstractValuesProperty*>(gsoapProxy2_0_1);
-			gsoap_resqml2_0_1::resqml2__PatchOfValues* firstPatch = prop->PatchOfValues[0];
-
-			int valuesType = firstPatch->Values->soap_type();
-			if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__BooleanHdf5Array) {
-				return static_cast<gsoap_resqml2_0_1::resqml2__BooleanHdf5Array*>(firstPatch->Values)->Values->HdfProxy->UUID;
-			}
-			else if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-				return static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(firstPatch->Values)->Values->HdfProxy->UUID;
-			}
-			else if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-				return static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(firstPatch->Values)->Values->HdfProxy->UUID;
-			}
-			else if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__StringHdf5Array) {
-				return static_cast<gsoap_resqml2_0_1::resqml2__StringHdf5Array*>(firstPatch->Values)->Values->HdfProxy->UUID;
-			}
-			else {
-				return "";
-			}
-		}
-	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
-
-	return "";
-}
-
 unsigned int AbstractProperty::getElementCountPerValue() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -493,8 +336,8 @@ bool AbstractProperty::isAssociatedToOneStandardEnergisticsPropertyKind() const
 std::string AbstractProperty::getPropertyKindDescription() const
 {
 	if (isAssociatedToOneStandardEnergisticsPropertyKind()) {
-		if (epcDocument->getPropertyKindMapper() != nullptr) {
-			return epcDocument->getPropertyKindMapper()->getDescriptionOfResqmlStandardPropertyKindName(getEnergisticsPropertyKind());
+		if (repository->getPropertyKindMapper() != nullptr) {
+			return repository->getPropertyKindMapper()->getDescriptionOfResqmlStandardPropertyKindName(getEnergisticsPropertyKind());
 		}
 		else {
 			throw std::invalid_argument("You must load the property kind mapping files if you want to get the parent property kind.");
@@ -508,7 +351,8 @@ std::string AbstractProperty::getPropertyKindDescription() const
 std::string AbstractProperty::getPropertyKindAsString() const
 {
 	if (isAssociatedToOneStandardEnergisticsPropertyKind()) {
-		return epcDocument->getEnergisticsPropertyKindName(getEnergisticsPropertyKind());
+		COMMON_NS::EnumStringMapper tmp;
+		return tmp.getEnergisticsPropertyKindName(getEnergisticsPropertyKind());
 	}
 	else {
 		return getLocalPropertyKind()->getTitle();
@@ -518,9 +362,10 @@ std::string AbstractProperty::getPropertyKindAsString() const
 std::string AbstractProperty::getPropertyKindParentAsString() const
 {
 	if (isAssociatedToOneStandardEnergisticsPropertyKind()) {
-		if (epcDocument->getPropertyKindMapper() != nullptr) {
-			gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind propKindEnum = epcDocument->getPropertyKindMapper()->getPropertyKindParentOfResqmlStandardPropertyKindName(getEnergisticsPropertyKind());
-			return epcDocument->getEnergisticsPropertyKindName(propKindEnum);
+		if (repository->getPropertyKindMapper() != nullptr) {
+			gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind propKindEnum = repository->getPropertyKindMapper()->getPropertyKindParentOfResqmlStandardPropertyKindName(getEnergisticsPropertyKind());
+			COMMON_NS::EnumStringMapper tmp;
+			return tmp.getEnergisticsPropertyKindName(propKindEnum);
 		}
 		else {
 			throw std::invalid_argument("You must load the property kind mapping files if you want to get the parent property kind.");
@@ -552,13 +397,20 @@ void AbstractProperty::setLocalPropertyKind(PropertyKind* propKind)
 	if (propKind == nullptr) {
 		throw invalid_argument("The local property kind of this property cannot be null.");
 	}
+	if (getRepository() == nullptr) {
+		propKind->getRepository()->addOrReplaceDataObject(this);
+	}
 
-	// EPC
-	propKind->propertySet.push_back(this);
+	getRepository()->addRelationship(this, propKind);
 
 	// XML
-	if (updateXml) {
-		setXmlLocalPropertyKind(propKind);
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml2__LocalPropertyKind* xmlLocalPropKind = gsoap_resqml2_0_1::soap_new_resqml2__LocalPropertyKind(gsoapProxy2_0_1->soap, 1);
+		xmlLocalPropKind->LocalPropertyKind = propKind->newResqmlReference();
+		static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->PropertyKind = xmlLocalPropKind;
+	}
+	else {
+		throw logic_error("Not implemented yet");
 	}
 }
 
@@ -589,7 +441,7 @@ std::string AbstractProperty::getLocalPropertyKindTitle() const
 
 PropertyKind* AbstractProperty::getLocalPropertyKind() const
 {
-	return getEpcDocument()->getDataObjectByUuid<PropertyKind>(getLocalPropertyKindUuid());
+	return getRepository()->getDataObjectByUuid<PropertyKind>(getLocalPropertyKindUuid());
 }
 
 bool AbstractProperty::hasRealizationIndex() const

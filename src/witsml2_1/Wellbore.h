@@ -62,33 +62,11 @@ namespace WITSML2_1_NS
 
 		DLL_IMPORT_OR_EXPORT void setWell(class Well* witsmlWell);
 
-		DLL_IMPORT_OR_EXPORT const std::vector<Trajectory*>& getTrajectories() const {return trajectorySet;}
-
-		DLL_IMPORT_OR_EXPORT const std::vector<Log*>& getLogs() const {return logSet;}
-
-		DLL_IMPORT_OR_EXPORT const std::vector<WellboreMarkerSet*>& getWellboreMarkerSets() const { return wellboreMarkerSetSet; }
-
 		DLL_IMPORT_OR_EXPORT void setShape(const gsoap_eml2_2::witsml2__WellboreShape & shape);
-
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllEpcRelationships() const;
-
-		/**
-		* Resolve all relationships of the object in an epc document.
-		*/
-		DLL_IMPORT_OR_EXPORT void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
-	protected:
-
-		// XML backwards relationship
-		std::vector<WITSML2_1_NS::Trajectory*> trajectorySet;
-		std::vector<WITSML2_1_NS::Log*> logSet;
-		std::vector<WITSML2_1_NS::WellboreMarkerSet*> wellboreMarkerSetSet;
-		
-		friend void WITSML2_1_NS::Trajectory::setWellbore(Wellbore* witsmlWellbore);
-		friend void WITSML2_1_NS::Log::setWellbore(Wellbore* witsmlWellbore);
-		friend void WITSML2_1_NS::WellboreMarkerSet::setWellbore(Wellbore* witsmlWellbore);
+		void loadTargetRelationships() const;
 	};
 }

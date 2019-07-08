@@ -27,40 +27,8 @@ under the License.
 
 using namespace std;
 using namespace RESQML2_NS;
-using namespace epc;
 
-void AbstractLocal3dCrs::addRepresentation(AbstractRepresentation* rep)
-{
-	repSet.push_back(rep);
-}
-
-vector<Relationship> AbstractLocal3dCrs::getAllTargetRelationships() const
-{
-	vector<Relationship> result;
-	return result;
-}
-
-vector<Relationship> AbstractLocal3dCrs::getAllSourceRelationships() const
-{
-	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
-
-	// Geometry/Representation set
-	for (size_t i = 0; i < repSet.size(); ++i)
-	{
-		Relationship rel(repSet[i]->getPartNameInEpcDocument(), "", repSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	// MD information set
-	for (size_t i = 0; i < mdDatumSet.size(); ++i)
-	{
-		Relationship rel(mdDatumSet[i]->getPartNameInEpcDocument(), "", mdDatumSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
+void AbstractLocal3dCrs::loadTargetRelationships() const {
 }
 
 void AbstractLocal3dCrs::convertXyzPointsToGlobalCrs(double * xyzPoints, ULONG64 xyzPointCount, bool withoutTranslation) const
@@ -93,12 +61,6 @@ void AbstractLocal3dCrs::convertXyzPointsToGlobalCrs(double * xyzPoints, ULONG64
 			xyzPoints[i + 2] += originOrdinal3;
 		}
 	}
-}
-
-void AbstractLocal3dCrs::addMdDatum(MdDatum* mdInfo)
-{
-	if (find(mdDatumSet.begin(), mdDatumSet.end(), mdInfo) != mdDatumSet.end())
-		mdDatumSet.push_back(mdInfo);
 }
 
 double AbstractLocal3dCrs::getOriginOrdinal1() const

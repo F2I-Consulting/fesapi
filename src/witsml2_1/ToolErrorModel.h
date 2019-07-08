@@ -36,15 +36,13 @@ namespace WITSML2_1_NS
 		* Only to be used in partial transfer context
 		*/
 		ToolErrorModel(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			WITSML2_1_NS::AbstractObject(partialObject),
-			toolErrorModelDictionary(nullptr),
-			nextVersionToolErrorModel(nullptr) {}
+			WITSML2_1_NS::AbstractObject(partialObject) {}
 		
 		/**
 		* Creates an instance of this class in a gsoap context.
 		* @param guid		The guid to set to this instance. If empty then a new guid will be generated.
 		*/
-		ToolErrorModel(soap* soapContext,
+		ToolErrorModel(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_2::witsml2__MisalignmentMode misalignmentMode);
@@ -52,9 +50,7 @@ namespace WITSML2_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		ToolErrorModel(gsoap_eml2_2::witsml2__ToolErrorModel* fromGsoap) : AbstractObject(fromGsoap),
-			toolErrorModelDictionary(nullptr),
-			nextVersionToolErrorModel(nullptr) {}
+		ToolErrorModel(gsoap_eml2_2::witsml2__ToolErrorModel* fromGsoap) : AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -63,6 +59,7 @@ namespace WITSML2_1_NS
 
 		DLL_IMPORT_OR_EXPORT bool isTopLevelElement() const;
 
+		gsoap_eml2_2::eml22__DataObjectReference* getErrorTermDor(unsigned long index) const;
 		DLL_IMPORT_OR_EXPORT std::string getErrorTermUuid(unsigned long index) const;
 		DLL_IMPORT_OR_EXPORT std::vector<class ErrorTerm*> getErrorTermSet() const;
 		DLL_IMPORT_OR_EXPORT void pushBackErrorTerm(class ErrorTerm* errorTerm, double magnitude, gsoap_eml2_2::eml22__UomEnum uom);
@@ -107,19 +104,10 @@ namespace WITSML2_1_NS
 		DLL_IMPORT_OR_EXPORT void pushBackStationaryGyro(gsoap_eml2_2::witsml2__GyroAxisCombination axisCombination,
 			double start, bool startInclusive, double end, bool endInclusive, gsoap_eml2_2::eml22__PlaneAngleUom rangeUom);
 
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllSourceRelationships() const;
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllTargetRelationships() const;
-		DLL_IMPORT_OR_EXPORT void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc);
+		void loadTargetRelationships() const;
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
-	protected:
-
-		// XML backwards relationship
-		ToolErrorModelDictionary* toolErrorModelDictionary;
-		ToolErrorModel* nextVersionToolErrorModel;
-
-		friend void WITSML2_1_NS::ToolErrorModelDictionary::pushBackToolErrorModel(ToolErrorModel* tem);
 	};
 }

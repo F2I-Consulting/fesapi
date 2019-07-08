@@ -34,14 +34,13 @@ namespace WITSML2_1_NS
 		* Only to be used in partial transfer context
 		*/
 		ErrorTerm(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			WITSML2_1_NS::AbstractObject(partialObject),
-			errorTermDictionary(nullptr) {}
+			WITSML2_1_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
 		* @param guid		The guid to set to this instance. If empty then a new guid will be generated.
 		*/
-		ErrorTerm(soap* soapContext,
+		ErrorTerm(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_2::witsml2__ErrorPropagationMode propagationMode,
@@ -50,8 +49,7 @@ namespace WITSML2_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		ErrorTerm(gsoap_eml2_2::witsml2__ErrorTerm* fromGsoap) :AbstractObject(fromGsoap),
-			errorTermDictionary(nullptr) {}
+		ErrorTerm(gsoap_eml2_2::witsml2__ErrorTerm* fromGsoap) :AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -60,24 +58,14 @@ namespace WITSML2_1_NS
 
 		DLL_IMPORT_OR_EXPORT bool isTopLevelElement() const;
 
-		DLL_IMPORT_OR_EXPORT std::string getWeightingFunctionUuid() const;
+		gsoap_eml2_2::eml22__DataObjectReference* getWeightingFunctionDor() const;
 		DLL_IMPORT_OR_EXPORT class WeightingFunction* getWeightingFunction() const;
 		DLL_IMPORT_OR_EXPORT void setWeightingFunction(class WeightingFunction* weightingFunction);
 
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllSourceRelationships() const;
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllTargetRelationships() const;
-		DLL_IMPORT_OR_EXPORT void resolveTargetRelationships(COMMON_NS::EpcDocument * epcDoc);
+		void loadTargetRelationships() const;
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
-
-	protected:
-		// XML backwards relationship
-		ErrorTermDictionary* errorTermDictionary;
-		std::vector<WITSML2_1_NS::ToolErrorModel*> toolErrorModelSet;
-
-		friend void WITSML2_1_NS::ToolErrorModel::pushBackErrorTerm(class ErrorTerm* errorTerm, double magnitude, gsoap_eml2_2::eml22__UomEnum uom);
-		friend void WITSML2_1_NS::ErrorTermDictionary::pushBackErrorTerm(ErrorTerm* et);
 	};
 }
 

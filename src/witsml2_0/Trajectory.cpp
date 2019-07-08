@@ -58,14 +58,13 @@ void Trajectory::setWellbore(Wellbore* witsmlWellbore)
 	if (witsmlWellbore == nullptr) {
 		throw invalid_argument("Cannot set a null witsml wellbore to a witsml trajectory");
 	}
-
-	// EPC
-	witsmlWellbore->trajectorySet.push_back(this);
-
-	// XML
-	if (updateXml) {
-		static_cast<witsml2__Trajectory*>(gsoapProxy2_1)->Wellbore = witsmlWellbore->newEmlReference();
+	if (getRepository() == nullptr) {
+		witsmlWellbore->getRepository()->addOrReplaceDataObject(this);
 	}
+
+	getRepository()->addRelationship(this, witsmlWellbore);
+
+	static_cast<witsml2__Trajectory*>(gsoapProxy2_1)->Wellbore = witsmlWellbore->newEmlReference();
 }
 
 GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml2__ChannelStatus, Trajectory, GrowingStatus)

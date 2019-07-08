@@ -38,18 +38,18 @@ StratigraphicUnitTest::StratigraphicUnitTest(const string & epcDocPath)
 	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
-StratigraphicUnitTest::StratigraphicUnitTest(EpcDocument* epcDoc, bool init)
-	: commontest::AbstractObjectTest(epcDoc) {
+StratigraphicUnitTest::StratigraphicUnitTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void StratigraphicUnitTest::initEpcDocHandler() {
-	StratigraphicUnitFeature* stratiUnit = epcDoc->createStratigraphicUnit(defaultUuid, defaultTitle);
+void StratigraphicUnitTest::initRepoHandler() {
+	StratigraphicUnitFeature* stratiUnit = repo->createStratigraphicUnit(defaultUuid, defaultTitle);
 	REQUIRE(stratiUnit != nullptr);
 }
 
-void StratigraphicUnitTest::readEpcDocHandler() {
+void StratigraphicUnitTest::readRepoHandler() {
 }

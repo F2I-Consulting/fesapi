@@ -27,7 +27,7 @@ under the License.
 
 namespace WITSML2_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT Log : public WITSML2_1_NS::AbstractObject
+	class Log : public WITSML2_1_NS::AbstractObject
 	{
 	public:
 		/**
@@ -41,7 +41,7 @@ namespace WITSML2_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		Log(gsoap_eml2_2::witsml2__Log* fromGsoap) :AbstractObject(fromGsoap), resqmlWellboreFrameRepresentation(nullptr) {}
+		Log(gsoap_eml2_2::witsml2__Log* fromGsoap) :AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -49,27 +49,12 @@ namespace WITSML2_1_NS
 		~Log() {}
 
 		gsoap_eml2_2::eml22__DataObjectReference* getWellboreDor() const;
-		class Wellbore* getWellbore() const;
+		DLL_IMPORT_OR_EXPORT class Wellbore* getWellbore() const;
 		void setWellbore(class Wellbore* witsmlWellbore);
-
-		RESQML2_0_1_NS::WellboreFrameRepresentation* getResqmlWellboreFrameRepresentation() const {return resqmlWellboreFrameRepresentation;}
-
-		/**
-		* Resolve all relationships of the object in an epc document.
-		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
 
-	protected:
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-
-	protected:
-
-		// XML backwards relationship
-		RESQML2_0_1_NS::WellboreFrameRepresentation* resqmlWellboreFrameRepresentation;
+		void loadTargetRelationships() const;
 	};
 }
-

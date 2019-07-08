@@ -37,18 +37,18 @@ StratigraphicColumnTest::StratigraphicColumnTest(const string & epcDocPath)
 	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
-StratigraphicColumnTest::StratigraphicColumnTest(EpcDocument* epcDoc, bool init)
-	: commontest::AbstractObjectTest(epcDoc) {
+StratigraphicColumnTest::StratigraphicColumnTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void StratigraphicColumnTest::initEpcDocHandler() {
-	StratigraphicColumn* stratiColumn = epcDoc->createStratigraphicColumn(defaultUuid, defaultTitle);
+void StratigraphicColumnTest::initRepoHandler() {
+	StratigraphicColumn* stratiColumn = repo->createStratigraphicColumn(defaultUuid, defaultTitle);
 	REQUIRE(stratiColumn != nullptr);
 }
 
-void StratigraphicColumnTest::readEpcDocHandler() {
+void StratigraphicColumnTest::readRepoHandler() {
 }

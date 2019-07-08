@@ -19,6 +19,7 @@ under the License.
 #include "resqml2/AbstractGridRepresentation.h"
 
 #include <stdexcept>
+#include <algorithm>
 #include <limits>
 
 #include "hdf5.h"
@@ -31,68 +32,29 @@ under the License.
 
 using namespace RESQML2_NS;
 using namespace std;
-using namespace epc;
 
 const char* AbstractGridRepresentation::XML_TAG = "AbstractGridRepresentation";
 
-vector<Relationship> AbstractGridRepresentation::getAllTargetRelationships() const
+std::vector<RESQML2_NS::GridConnectionSetRepresentation const *> AbstractGridRepresentation::getGridConnectionSetRepresentationSet() const
 {
-	vector<Relationship> result = AbstractRepresentation::getAllTargetRelationships();
-
-	if (getParentGrid() != nullptr) {
-		Relationship relParent(getParentGrid()->getPartNameInEpcDocument(), "", getParentGrid()->getUuid());
-		relParent.setDestinationObjectType();
-		result.push_back(relParent);
-	}
-
-	// Strati unit
-	if (hasCellStratigraphicUnitIndices()) {
-		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = getStratigraphicOrganizationInterpretation();
-		Relationship relStrati(stratiOrg->getPartNameInEpcDocument(), "", stratiOrg->getUuid());
-		relStrati.setDestinationObjectType();
-		result.push_back(relStrati);
-	}
-
-	//Fluid
-	gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
-	if (hasCellFluidPhaseUnitIndices()) {
-		Relationship rel(misc::getPartNameFromReference(rep->CellFluidPhaseUnits->FluidOrganization), "", rep->CellFluidPhaseUnits->FluidOrganization->UUID);
-		rel.setDestinationObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
+	return repository->getSourceObjects<RESQML2_NS::GridConnectionSetRepresentation>(this);
 }
 
-vector<Relationship> AbstractGridRepresentation::getAllSourceRelationships() const
+unsigned int AbstractGridRepresentation::getGridConnectionSetRepresentationCount() const
 {
-	vector<Relationship> result = AbstractRepresentation::getAllSourceRelationships();
-	
-	for (size_t i = 0; i < gridConnectionSetRepresentationSet.size(); ++i) {
-		Relationship relRep(gridConnectionSetRepresentationSet[i]->getPartNameInEpcDocument(), "", gridConnectionSetRepresentationSet[i]->getUuid());
-		relRep.setSourceObjectType();
-		result.push_back(relRep);
+	const size_t result = getGridConnectionSetRepresentationSet().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("The count of the GridConnectionSet Representations is too big.");
 	}
 
-	for (size_t i = 0; i < blockedWellboreRepresentationSet.size(); ++i) {
-		Relationship relBlockedWell(blockedWellboreRepresentationSet[i]->getPartNameInEpcDocument(), "", blockedWellboreRepresentationSet[i]->getUuid());
-		relBlockedWell.setSourceObjectType();
-		result.push_back(relBlockedWell);
-	}
-
-	unsigned int cildGridCount = getChildGridCount();
-	for (unsigned int i = 0; i < cildGridCount; ++i) {
-		AbstractGridRepresentation* childGrid = getChildGrid(i);
-		Relationship relChild(childGrid->getPartNameInEpcDocument(), "", childGrid->getUuid());
-		relChild.setSourceObjectType();
-		result.push_back(relChild);
-	}
-
-	return result;
+	return static_cast<unsigned int>(result);
 }
 
-RESQML2_NS::GridConnectionSetRepresentation* AbstractGridRepresentation::getGridConnectionSetRepresentation(unsigned int index) const
+RESQML2_NS::GridConnectionSetRepresentation const * AbstractGridRepresentation::getGridConnectionSetRepresentation(unsigned int index) const
 {
+	const std::vector<RESQML2_NS::GridConnectionSetRepresentation const *>& gridConnectionSetRepresentationSet = getGridConnectionSetRepresentationSet();
+
 	if (gridConnectionSetRepresentationSet.size() > index) {
 		return gridConnectionSetRepresentationSet[index];
 	}
@@ -150,14 +112,31 @@ AbstractGridRepresentation* AbstractGridRepresentation::getParentGrid() const
 	const string parentGridUuid = getParentGridUuid();
 
 	if (!parentGridUuid.empty()) {
-		return static_cast<AbstractGridRepresentation*>(getEpcDocument()->getDataObjectByUuid(parentGridUuid));
+		return static_cast<AbstractGridRepresentation*>(getRepository()->getDataObjectByUuid(parentGridUuid));
 	}
 	
 	return nullptr;
 }
 
-AbstractGridRepresentation* AbstractGridRepresentation::getChildGrid(unsigned int index) const
+std::vector<RESQML2_NS::AbstractGridRepresentation const *> AbstractGridRepresentation::getChildGridSet() const
 {
+	return repository->getSourceObjects<RESQML2_NS::AbstractGridRepresentation>(this);
+}
+
+unsigned int AbstractGridRepresentation::getChildGridCount() const {
+	const size_t result = getChildGridSet().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("The count of the child grids is too big.");
+	}
+
+	return static_cast<unsigned int>(result);
+}
+
+AbstractGridRepresentation const * AbstractGridRepresentation::getChildGrid(unsigned int index) const
+{
+	const std::vector<RESQML2_NS::AbstractGridRepresentation const *>& childGridSet = getChildGridSet();
+
 	if (childGridSet.size() > index) {
 		return childGridSet[index];
 	}
@@ -189,67 +168,47 @@ gsoap_resqml2_0_1::resqml2__Regrid* AbstractGridRepresentation::createRegrid(uns
 	}
 	else {
 
-		if (proxy != nullptr) {
-			if (proxy != hdfProxy) {
-				setHdfProxy(proxy);
-			}
+		if (proxy == nullptr) {
+			proxy = getRepository()->getDefaultHdfProxy();
 		}
-		else {
-			if (hdfProxy == nullptr) {
-				COMMON_NS::AbstractHdfProxy* const tmp = getParentGrid()->getHdfProxy();
-				if (tmp != nullptr) {
-					setHdfProxy(tmp);
-				}
-			}
-		}
-
-		if (hdfProxy == nullptr) {
+		if (proxy == nullptr) {
 			throw invalid_argument("No Hdf Proxy has been found");
 		}
+		getRepository()->addRelationship(this, proxy);
 
 		gsoap_resqml2_0_1::resqml2__IntegerHdf5Array* hdf5ChildCountPerInterval = gsoap_resqml2_0_1::soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
 		regrid->Intervals->ChildCountPerInterval = hdf5ChildCountPerInterval;
 		hdf5ChildCountPerInterval->NullValue = (numeric_limits<unsigned int>::max)();
 		hdf5ChildCountPerInterval->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
-		hdf5ChildCountPerInterval->Values->HdfProxy = hdfProxy->newResqmlReference();
+		hdf5ChildCountPerInterval->Values->HdfProxy = proxy->newResqmlReference();
 		hdf5ChildCountPerInterval->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/ParentWindow_" + dimension + "Regrid_ChildCountPerInterval";
 
 		gsoap_resqml2_0_1::resqml2__IntegerHdf5Array* hdf5ParentCountPerInterval = gsoap_resqml2_0_1::soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
 		regrid->Intervals->ParentCountPerInterval = hdf5ParentCountPerInterval;
 		hdf5ParentCountPerInterval->NullValue = (numeric_limits<unsigned int>::max)();
 		hdf5ParentCountPerInterval->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
-		hdf5ParentCountPerInterval->Values->HdfProxy = hdfProxy->newResqmlReference();
+		hdf5ParentCountPerInterval->Values->HdfProxy = proxy->newResqmlReference();
 		hdf5ParentCountPerInterval->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/ParentWindow_" + dimension + "Regrid_ParentCountPerInterval";
 		
 		// HDF
 		hsize_t numValues = intervalCount;
-		hdfProxy->writeArrayNd(gsoapProxy2_0_1->uuid, "ParentWindow_" + dimension + "Regrid_ChildCountPerInterval", H5T_NATIVE_UINT, childCellCountPerInterval, &numValues, 1);
-		hdfProxy->writeArrayNd(gsoapProxy2_0_1->uuid, "ParentWindow_" + dimension + "Regrid_ParentCountPerInterval", H5T_NATIVE_UINT, parentCellCountPerInterval, &numValues, 1);
+		proxy->writeArrayNd(gsoapProxy2_0_1->uuid, "ParentWindow_" + dimension + "Regrid_ChildCountPerInterval", H5T_NATIVE_UINT, childCellCountPerInterval, &numValues, 1);
+		proxy->writeArrayNd(gsoapProxy2_0_1->uuid, "ParentWindow_" + dimension + "Regrid_ParentCountPerInterval", H5T_NATIVE_UINT, parentCellCountPerInterval, &numValues, 1);
 	}
 	
 	if (childCellWeights != nullptr) {
-		if (proxy != nullptr) {
-			if (proxy != hdfProxy) {
-				setHdfProxy(proxy);
-			}
+		if (proxy == nullptr) {
+			proxy = getRepository()->getDefaultHdfProxy();
 		}
-		else {
-			if (hdfProxy == nullptr) {
-				COMMON_NS::AbstractHdfProxy* const tmp = getParentGrid()->getHdfProxy();
-				if (tmp != nullptr) {
-					setHdfProxy(tmp);
-				}
-			}
-		}
-
-		if (hdfProxy == nullptr) {
+		if (proxy == nullptr) {
 			throw invalid_argument("No Hdf Proxy has been found");
 		}
+		getRepository()->addRelationship(this, proxy);
 
 		gsoap_resqml2_0_1::resqml2__DoubleHdf5Array* hdf5ChildCellWeights = gsoap_resqml2_0_1::soap_new_resqml2__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
 		regrid->Intervals->ChildCellWeights = hdf5ChildCellWeights;
 		hdf5ChildCellWeights->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
-		hdf5ChildCellWeights->Values->HdfProxy = hdfProxy->newResqmlReference();
+		hdf5ChildCellWeights->Values->HdfProxy = proxy->newResqmlReference();
 		hdf5ChildCellWeights->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/ParentWindow_" + dimension + "Regrid_ChildCellWeights";
 		
 		// HDF
@@ -257,7 +216,7 @@ gsoap_resqml2_0_1::resqml2__Regrid* AbstractGridRepresentation::createRegrid(uns
 		for (unsigned int i = 0; i < intervalCount; ++i) {
 			numValues += childCellCountPerInterval[i];
 		}
-		hdfProxy->writeArrayNdOfDoubleValues(gsoapProxy2_0_1->uuid, "ParentWindow_" + dimension + "Regrid_ChildCellWeights", childCellWeights, &numValues, 1);
+		proxy->writeArrayNdOfDoubleValues(gsoapProxy2_0_1->uuid, "ParentWindow_" + dimension + "Regrid_ChildCellWeights", childCellWeights, &numValues, 1);
 	}
 
 	return regrid;
@@ -269,20 +228,6 @@ void AbstractGridRepresentation::setParentWindow(ULONG64 * cellIndices, ULONG64 
 		throw invalid_argument("One of the mandatory method parameter is zero or null");
 	}
 
-	if (proxy != nullptr) {
-		if (proxy != hdfProxy) {
-			setHdfProxy(proxy);
-		}
-	}
-	else {
-		if (hdfProxy == nullptr) {
-			COMMON_NS::AbstractHdfProxy* const tmp = parentGrid->getHdfProxy();
-			if (tmp != nullptr) {
-				setHdfProxy(tmp);
-			}
-		}
-	}
-
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
 
@@ -291,35 +236,26 @@ void AbstractGridRepresentation::setParentWindow(ULONG64 * cellIndices, ULONG64 
 
 		cpw->ParentGrid = parentGrid->newResqmlReference();
 		if (cellIndexCount > 1) {
-			if (proxy != nullptr) {
-				if (proxy != hdfProxy) {
-					setHdfProxy(proxy);
-				}
-			}
-			else {
-				if (hdfProxy == nullptr) {
-					COMMON_NS::AbstractHdfProxy* const tmp = parentGrid->getHdfProxy();
-					if (tmp != nullptr) {
-						setHdfProxy(tmp);
-					}
-				}
-			}
 
-			if (hdfProxy == nullptr) {
+			if (proxy == nullptr) {
+				proxy = getRepository()->getDefaultHdfProxy();
+			}
+			if (proxy == nullptr) {
 				throw invalid_argument("No Hdf Proxy has been found");
 			}
+			getRepository()->addRelationship(this, proxy);
 
 			gsoap_resqml2_0_1::resqml2__IntegerHdf5Array* hdf5CellIndices = gsoap_resqml2_0_1::soap_new_resqml2__IntegerHdf5Array(rep->soap, 1);
 			cpw->CellIndices = hdf5CellIndices;
 
 			hdf5CellIndices->NullValue = (numeric_limits<ULONG64>::max)();
 			hdf5CellIndices->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(rep->soap, 1);
-			hdf5CellIndices->Values->HdfProxy = hdfProxy->newResqmlReference();
+			hdf5CellIndices->Values->HdfProxy = proxy->newResqmlReference();
 			hdf5CellIndices->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/ParentWindow_CellIndices";
 		
 			// HDF
 			hsize_t numValues = cellIndexCount;
-			hdfProxy->writeArrayNdOfGSoapULong64Values(gsoapProxy2_0_1->uuid, "ParentWindow_CellIndices", cellIndices, &numValues, 1);
+			proxy->writeArrayNdOfGSoapULong64Values(gsoapProxy2_0_1->uuid, "ParentWindow_CellIndices", cellIndices, &numValues, 1);
 		}
 		else { // cellIndexCount == 1
 			gsoap_resqml2_0_1::resqml2__IntegerConstantArray* xmlCellIndices = gsoap_resqml2_0_1::soap_new_resqml2__IntegerConstantArray(rep->soap, 1);
@@ -332,8 +268,7 @@ void AbstractGridRepresentation::setParentWindow(ULONG64 * cellIndices, ULONG64 
 		throw logic_error("Not implemented yet");
 	}
 	
-	// LGR backward relationships
-	parentGrid->childGridSet.push_back(this);
+	repository->addRelationship(this, parentGrid);
 }
 
 void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, unsigned int columnIndexCount,
@@ -358,35 +293,25 @@ void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, u
 		// COLUMN INDICES
 		if (columnIndexCount > 1)
 		{
-			if (proxy != nullptr) {
-				if (proxy != hdfProxy) {
-					setHdfProxy(proxy);
-				}
+			if (proxy == nullptr) {
+				proxy = getRepository()->getDefaultHdfProxy();
 			}
-			else {
-				if (hdfProxy == nullptr) {
-					COMMON_NS::AbstractHdfProxy* const tmp = parentGrid->getHdfProxy();
-					if (tmp != nullptr) {
-						setHdfProxy(tmp);
-					}
-				}
-			}
-
-			if (hdfProxy == nullptr) {
+			if (proxy == nullptr) {
 				throw invalid_argument("No Hdf Proxy has been found");
 			}
+			getRepository()->addRelationship(this, proxy);
 
 			gsoap_resqml2_0_1::resqml2__IntegerHdf5Array* hdf5ColumnIndices = gsoap_resqml2_0_1::soap_new_resqml2__IntegerHdf5Array(rep->soap, 1);
 			clpw->ColumnIndices = hdf5ColumnIndices;
 
 			hdf5ColumnIndices->NullValue = (numeric_limits<unsigned int>::max)();
 			hdf5ColumnIndices->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(rep->soap, 1);
-			hdf5ColumnIndices->Values->HdfProxy = hdfProxy->newResqmlReference();
+			hdf5ColumnIndices->Values->HdfProxy = proxy->newResqmlReference();
 			hdf5ColumnIndices->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/ParentWindow_ColumnIndices";
 
 			// HDF
 			hsize_t numValues = columnIndexCount;
-			hdfProxy->writeArrayNd(gsoapProxy2_0_1->uuid, "ParentWindow_ColumnIndices", H5T_NATIVE_UINT, columnIndices, &numValues, 1);
+			proxy->writeArrayNd(gsoapProxy2_0_1->uuid, "ParentWindow_ColumnIndices", H5T_NATIVE_UINT, columnIndices, &numValues, 1);
 		}
 		else if (columnIndexCount == 1)
 		{
@@ -403,8 +328,7 @@ void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, u
 		throw logic_error("Not implemented yet");
 	}
 
-	// LGR backward relationships
-	parentGrid->childGridSet.push_back(this);
+	repository->addRelationship(this, parentGrid);
 }
 
 void AbstractGridRepresentation::setParentWindow(
@@ -437,8 +361,7 @@ void AbstractGridRepresentation::setParentWindow(
 		throw logic_error("Not implemented yet");
 	}
 
-	// LGR backward relationships
-	parentGrid->childGridSet.push_back(this);
+	repository->addRelationship(this, parentGrid);
 }
 
 void AbstractGridRepresentation::setParentWindow(
@@ -471,8 +394,7 @@ void AbstractGridRepresentation::setParentWindow(
 		throw logic_error("Not implemented yet");
 	}
 
-	// LGR backward relationships
-	parentGrid->childGridSet.push_back(this);
+	repository->addRelationship(this, parentGrid);
 }
 
 void AbstractGridRepresentation::setParentWindow(
@@ -496,17 +418,20 @@ void AbstractGridRepresentation::setForcedNonRegridedParentCell(ULONG64 * cellIn
 		if (parentWindow != nullptr)
 		{
 			gsoap_resqml2_0_1::resqml2__AbstractIntegerArray* xmlCellIndices = nullptr;
-			if (cellIndexCount > 1 && hdfProxy != nullptr)
+
+			COMMON_NS::AbstractHdfProxy * proxy = getRepository()->getDefaultHdfProxy();
+			if (cellIndexCount > 1 && proxy != nullptr)
 			{
+				getRepository()->addRelationship(this, proxy);
 				xmlCellIndices = gsoap_resqml2_0_1::soap_new_resqml2__IntegerHdf5Array(parentWindow->soap, 1);
 				static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(xmlCellIndices)->NullValue = (numeric_limits<ULONG64>::max)();
 				static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(xmlCellIndices)->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(parentWindow->soap, 1);
-				static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(xmlCellIndices)->Values->HdfProxy = hdfProxy->newResqmlReference();
+				static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(xmlCellIndices)->Values->HdfProxy = proxy->newResqmlReference();
 				static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(xmlCellIndices)->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/ParentWindow_CellIndices";
 			
 				// HDF
 				hsize_t numValues = cellIndexCount;
-				hdfProxy->writeArrayNdOfGSoapULong64Values(gsoapProxy2_0_1->uuid, "ParentWindow_CellIndices", cellIndices, &numValues, 1);
+				proxy->writeArrayNdOfGSoapULong64Values(gsoapProxy2_0_1->uuid, "ParentWindow_CellIndices", cellIndices, &numValues, 1);
 			}
 			else if (cellIndexCount == 1)
 			{
@@ -571,8 +496,10 @@ void AbstractGridRepresentation::setCellOverlap(const ULONG64 & parentChildCellP
 
 		if (parentWindow != nullptr)
 		{
-			if (parentChildCellPairCount > 0 && hdfProxy != nullptr)
+			COMMON_NS::AbstractHdfProxy * proxy = getRepository()->getDefaultHdfProxy();
+			if (parentChildCellPairCount > 0 && proxy != nullptr)
 			{
+				getRepository()->addRelationship(this, proxy);
 				parentWindow->CellOverlap = gsoap_resqml2_0_1::soap_new_resqml2__CellOverlap(gsoapProxy2_0_1->soap, 1);
 
 				gsoap_resqml2_0_1::resqml2__IntegerHdf5Array* hdf5CellPairs = gsoap_resqml2_0_1::soap_new_resqml2__IntegerHdf5Array(parentWindow->soap, 1);
@@ -581,12 +508,12 @@ void AbstractGridRepresentation::setCellOverlap(const ULONG64 & parentChildCellP
 				parentWindow->CellOverlap->__CellOverlap_sequence->ParentChildCellPairs = hdf5CellPairs;
 				hdf5CellPairs->NullValue = (numeric_limits<ULONG64>::max)();
 				hdf5CellPairs->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(parentWindow->soap, 1);
-				hdf5CellPairs->Values->HdfProxy = hdfProxy->newResqmlReference();
+				hdf5CellPairs->Values->HdfProxy = proxy->newResqmlReference();
 				hdf5CellPairs->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/ParentWindow_CellOverlap";
 		
 				// HDF
 				hsize_t numValues[] = {parentChildCellPairCount, 2};
-				hdfProxy->writeArrayNdOfGSoapULong64Values(gsoapProxy2_0_1->uuid, "ParentWindow_CellOverlap", parentChildCellPair, numValues, 2);
+				proxy->writeArrayNdOfGSoapULong64Values(gsoapProxy2_0_1->uuid, "ParentWindow_CellOverlap", parentChildCellPair, numValues, 2);
 			}
 			else if (parentChildCellPairCount == 0)
 				throw invalid_argument("Cannot give cell overlap information with an empty list of cell pairs.");
@@ -602,12 +529,12 @@ void AbstractGridRepresentation::setCellOverlap(const ULONG64 & parentChildCellP
 				gsoap_resqml2_0_1::resqml2__DoubleHdf5Array* hdf5OverlapVolume = gsoap_resqml2_0_1::soap_new_resqml2__DoubleHdf5Array(parentWindow->soap, 1);
 				parentWindow->CellOverlap->__CellOverlap_sequence->OverlapVolume->__OverlapVolume_sequence->OverlapVolumes = hdf5OverlapVolume;
 				hdf5OverlapVolume->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(parentWindow->soap, 1);
-				hdf5OverlapVolume->Values->HdfProxy = hdfProxy->newResqmlReference();
+				hdf5OverlapVolume->Values->HdfProxy = proxy->newResqmlReference();
 				hdf5OverlapVolume->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/ParentWindow_OverlapVolume";
 		
 				// HDF
 				hsize_t numValues = parentChildCellPairCount;
-				hdfProxy->writeArrayNdOfDoubleValues(gsoapProxy2_0_1->uuid, "ParentWindow_OverlapVolume", overlapVolumes, &numValues, 1);
+				proxy->writeArrayNdOfDoubleValues(gsoapProxy2_0_1->uuid, "ParentWindow_OverlapVolume", overlapVolumes, &numValues, 1);
 			}
 		}
 		else {
@@ -631,7 +558,9 @@ LONG64 AbstractGridRepresentation::getParentCellIndexCount() const
 				gsoap_resqml2_0_1::resqml2__CellParentWindow* cpw = static_cast<gsoap_resqml2_0_1::resqml2__CellParentWindow*>(parentWindow);
 				if (cpw->CellIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
 				{
-					return hdfProxy->getElementCount(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(cpw->CellIndices)->Values->PathInHdfFile);
+					gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(cpw->CellIndices)->Values;
+					COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+					return hdfProxy->getElementCount(dataset->PathInHdfFile);
 				}
 				else
 					throw invalid_argument("This list of cells can only be stored in HDF5 file.");
@@ -659,7 +588,9 @@ void AbstractGridRepresentation::getParentCellIndices(ULONG64 * parentCellIndice
 			{
 				gsoap_resqml2_0_1::resqml2__CellParentWindow* cpw = static_cast<gsoap_resqml2_0_1::resqml2__CellParentWindow*>(parentWindow);
 				if (cpw->CellIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-					hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(cpw->CellIndices)->Values->PathInHdfFile, parentCellIndices);
+					gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(cpw->CellIndices)->Values;
+					COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+					hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, parentCellIndices);
 				}
 				else
 					throw invalid_argument("This list of cells can only be stored in HDF5 file.");
@@ -687,7 +618,9 @@ LONG64 AbstractGridRepresentation::getParentColumnIndexCount() const
 			{
 				gsoap_resqml2_0_1::resqml2__ColumnLayerParentWindow* clpw = static_cast<gsoap_resqml2_0_1::resqml2__ColumnLayerParentWindow*>(parentWindow);
 				if (clpw->ColumnIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-					return hdfProxy->getElementCount(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(clpw->ColumnIndices)->Values->PathInHdfFile);
+					gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(clpw->ColumnIndices)->Values;
+					COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+					return hdfProxy->getElementCount(dataset->PathInHdfFile);
 				}
 				else {
 					throw invalid_argument("This list of columns can only be stored in HDF5 file.");
@@ -717,7 +650,9 @@ void AbstractGridRepresentation::getParentColumnIndices(ULONG64 * parentColumnIn
 			{
 				gsoap_resqml2_0_1::resqml2__ColumnLayerParentWindow* clpw = static_cast<gsoap_resqml2_0_1::resqml2__ColumnLayerParentWindow*>(parentWindow);
 				if (clpw->ColumnIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-					return hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(clpw->ColumnIndices)->Values->PathInHdfFile, parentColumnIndices);
+					gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(clpw->ColumnIndices)->Values;
+					COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+					return hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, parentColumnIndices);
 				}
 				else {
 					throw invalid_argument("This list of columns can only be stored in HDF5 file.");
@@ -947,7 +882,7 @@ ULONG64 AbstractGridRepresentation::getRegridConstantCellCountPerInterval(const 
 void AbstractGridRepresentation::getRegridCellCountPerInterval(const char & dimension, ULONG64 * childCellCountPerInterval, const bool & childVsParentCellCount) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		const gsoap_resqml2_0_1::resqml2__AbstractIntegerArray* const childCountPerInterval = getCellCountPerInterval2_0_1(dimension, childVsParentCellCount);
+		gsoap_resqml2_0_1::resqml2__AbstractIntegerArray const * childCountPerInterval = getCellCountPerInterval2_0_1(dimension, childVsParentCellCount);
 
 		if (childCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray) {
 			for (ULONG64 i = 0; i < static_cast<const gsoap_resqml2_0_1::resqml2__IntegerConstantArray* const>(childCountPerInterval)->Count; ++i) {
@@ -955,7 +890,9 @@ void AbstractGridRepresentation::getRegridCellCountPerInterval(const char & dime
 			}
 		}
 		else if (childCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-			hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<const gsoap_resqml2_0_1::resqml2__IntegerHdf5Array* const>(childCountPerInterval)->Values->PathInHdfFile, childCellCountPerInterval);
+			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array const *>(childCountPerInterval)->Values;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, childCellCountPerInterval);
 		}
 		else  {
 			throw logic_error("Not implemented yet");
@@ -1049,8 +986,11 @@ void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimensio
 				{
 					if (ijkpw->IRegrid->Intervals != nullptr && ijkpw->IRegrid->Intervals->ChildCellWeights != nullptr)
 					{
-						if (ijkpw->IRegrid->Intervals->ChildCellWeights->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
-							hdfProxy->readArrayNdOfDoubleValues(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(ijkpw->IRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
+						if (ijkpw->IRegrid->Intervals->ChildCellWeights->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
+							gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(ijkpw->IRegrid->Intervals->ChildCellWeights)->Values;
+							COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+							hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, childCellWeights);
+						}
 						else
 							throw invalid_argument("ChildCellWeights should be in HDF5 file.");
 					}
@@ -1061,8 +1001,11 @@ void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimensio
 				{
 					if (ijkpw->JRegrid->Intervals != nullptr && ijkpw->JRegrid->Intervals->ChildCellWeights != nullptr)
 					{
-						if (ijkpw->JRegrid->Intervals->ChildCellWeights->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
-							hdfProxy->readArrayNdOfDoubleValues(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(ijkpw->JRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
+						if (ijkpw->JRegrid->Intervals->ChildCellWeights->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
+							gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(ijkpw->JRegrid->Intervals->ChildCellWeights)->Values;
+							COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+							hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, childCellWeights);
+						}
 						else
 							throw invalid_argument("ChildCellWeights should be in HDF5 file.");
 					}
@@ -1073,8 +1016,11 @@ void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimensio
 				{
 					if (ijkpw->KRegrid->Intervals != nullptr && ijkpw->KRegrid->Intervals->ChildCellWeights != nullptr)
 					{
-						if (ijkpw->KRegrid->Intervals->ChildCellWeights->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
-							hdfProxy->readArrayNdOfDoubleValues(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(ijkpw->KRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
+						if (ijkpw->KRegrid->Intervals->ChildCellWeights->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
+							gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(ijkpw->KRegrid->Intervals->ChildCellWeights)->Values;
+							COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+							hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, childCellWeights);
+						}
 						else
 							throw invalid_argument("ChildCellWeights should be in HDF5 file.");
 					}
@@ -1091,8 +1037,11 @@ void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimensio
 					gsoap_resqml2_0_1::resqml2__ColumnLayerParentWindow* clpw = static_cast<gsoap_resqml2_0_1::resqml2__ColumnLayerParentWindow*>(parentWindow);
 					if (clpw->KRegrid->Intervals != nullptr  && clpw->KRegrid->Intervals->ChildCellWeights != nullptr)
 					{
-						if (clpw->KRegrid->Intervals->ChildCellWeights->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
-							hdfProxy->readArrayNdOfDoubleValues(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(clpw->KRegrid->Intervals->ChildCellWeights)->Values->PathInHdfFile, childCellWeights);
+						if (clpw->KRegrid->Intervals->ChildCellWeights->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
+							gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(clpw->KRegrid->Intervals->ChildCellWeights)->Values;
+							COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+							hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, childCellWeights);
+						}
 						else
 							throw invalid_argument("ChildCellWeights should be in HDF5 file.");
 					}
@@ -1114,124 +1063,107 @@ void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimensio
 	}
 }
 
-void AbstractGridRepresentation::resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc)
+void AbstractGridRepresentation::loadTargetRelationships() const
 {
-	AbstractRepresentation::resolveTargetRelationships(epcDoc);
+	AbstractRepresentation::loadTargetRelationships();
 
 	// LGR backward relationships
-	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getParentGridDor();
+	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getParentGridDor();
 	if (dor != nullptr) {
-		RESQML2_NS::AbstractGridRepresentation* parentGrid = epcDoc->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
+		RESQML2_NS::AbstractGridRepresentation* parentGrid = repository->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
 		if (parentGrid == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			parentGrid = getEpcDocument()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
+			getRepository()->createPartial(dor);
+			parentGrid = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
 		}
 		if (parentGrid == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
 		}
-		updateXml = false;
-		parentGrid->childGridSet.push_back(this);
-		updateXml = true;
+		repository->addRelationship(this, parentGrid);
 	}
 	// Strati org backward relationships
 	dor = getStratigraphicOrganizationInterpretationDor();
 	if (dor != nullptr) {
-		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
+		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrg = repository->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
 		if (stratiOrg == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			stratiOrg = getEpcDocument()->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
+			getRepository()->createPartial(dor);
+			stratiOrg = getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation>(dor->UUID);
 		}
 		if (stratiOrg == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
 		}
-		updateXml = false;
-		setCellAssociationWithStratigraphicOrganizationInterpretation(nullptr, 0, stratiOrg);
-		updateXml = true;
+		repository->addRelationship(this, stratiOrg);
 	}
 
 	dor = getRockFluidOrganizationInterpretationDor();
 	if(dor != nullptr) {
-		RESQML2_0_1_NS::RockFluidOrganizationInterpretation* rockFluidOrg = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::RockFluidOrganizationInterpretation>(dor->UUID);
+		RESQML2_0_1_NS::RockFluidOrganizationInterpretation* rockFluidOrg = repository->getDataObjectByUuid<RESQML2_0_1_NS::RockFluidOrganizationInterpretation>(dor->UUID);
 		if(rockFluidOrg == nullptr) {
-			getEpcDocument()->createPartial(dor);
-			rockFluidOrg = getEpcDocument()->getDataObjectByUuid<RESQML2_0_1_NS::RockFluidOrganizationInterpretation>(dor->UUID);
+			getRepository()->createPartial(dor);
+			rockFluidOrg = getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::RockFluidOrganizationInterpretation>(dor->UUID);
 		}
 		if(rockFluidOrg == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
 		}
-		updateXml = false;
-		setCellAssociationWithRockFluidOrganizationInterpretation(nullptr, 0, rockFluidOrg);
-		updateXml = true;
+		repository->addRelationship(this, rockFluidOrg);
 	}
 }
 
 void AbstractGridRepresentation::setCellAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation * stratiOrgInterp)
 {
-	// Backward rel
-	if (!stratiOrgInterp->isAssociatedToGridRepresentation(this))
-	{
-		stratiOrgInterp->gridRepresentationSet.push_back(this);
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
+		rep->CellStratigraphicUnits = gsoap_resqml2_0_1::soap_new_resqml2__CellStratigraphicUnits(rep->soap, 1);
+		rep->CellStratigraphicUnits->StratigraphicOrganization = stratiOrgInterp->newResqmlReference();
+
+		COMMON_NS::AbstractHdfProxy * proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw invalid_argument("The HDF proxy is missing.");
+		}
+		gsoap_resqml2_0_1::resqml2__IntegerHdf5Array* xmlDataset = gsoap_resqml2_0_1::soap_new_resqml2__IntegerHdf5Array(rep->soap, 1);
+		xmlDataset->NullValue = nullValue;
+		xmlDataset->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+		xmlDataset->Values->HdfProxy = proxy->newResqmlReference();
+		xmlDataset->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/CellStratigraphicUnits";
+		rep->CellStratigraphicUnits->UnitIndices = xmlDataset;
+
+		// ************ HDF *************
+		hsize_t dim = getCellCount();
+		proxy->writeArrayNd(rep->uuid, "CellStratigraphicUnits", H5T_NATIVE_ULLONG, stratiUnitIndices, &dim, 1);
 	}
-
-	// XML
-	if (updateXml)
-	{
-		if (gsoapProxy2_0_1 != nullptr) {
-			gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
-			rep->CellStratigraphicUnits = gsoap_resqml2_0_1::soap_new_resqml2__CellStratigraphicUnits(rep->soap, 1);
-			rep->CellStratigraphicUnits->StratigraphicOrganization = stratiOrgInterp->newResqmlReference();
-
-			gsoap_resqml2_0_1::resqml2__IntegerHdf5Array* xmlDataset = gsoap_resqml2_0_1::soap_new_resqml2__IntegerHdf5Array(rep->soap, 1);
-			xmlDataset->NullValue = nullValue;
-			xmlDataset->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
-			xmlDataset->Values->HdfProxy = hdfProxy->newResqmlReference();
-			xmlDataset->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/CellStratigraphicUnits";
-			rep->CellStratigraphicUnits->UnitIndices = xmlDataset;
-
-			// ************ HDF *************
-			hsize_t dim = getCellCount();
-			hdfProxy->writeArrayNd(rep->uuid, "CellStratigraphicUnits", H5T_NATIVE_ULLONG, stratiUnitIndices, &dim, 1);
-		}
-		else {
-			throw logic_error("Not implemented yet");
-		}
+	else {
+		throw logic_error("Not implemented yet");
 	}
 }
 
 void AbstractGridRepresentation::setCellAssociationWithRockFluidOrganizationInterpretation(ULONG64 * rockFluidUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::RockFluidOrganizationInterpretation * rockfluidOrgInterp)
 {
-	// Backward rel
-	if (!rockfluidOrgInterp->isAssociatedToGridRepresentation(this))
-	{
-		rockfluidOrgInterp->gridRepresentationSet.push_back(this);
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
+		rep->CellFluidPhaseUnits = gsoap_resqml2_0_1::soap_new_resqml2__CellFluidPhaseUnits(rep->soap, 1);
+		rep->CellFluidPhaseUnits->FluidOrganization = rockfluidOrgInterp->newResqmlReference();
+
+		COMMON_NS::AbstractHdfProxy * proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw invalid_argument("The HDF proxy is missing.");
+		}
+		gsoap_resqml2_0_1::resqml2__IntegerHdf5Array* xmlDataset = gsoap_resqml2_0_1::soap_new_resqml2__IntegerHdf5Array(rep->soap, 1);
+		xmlDataset->NullValue = nullValue;
+		xmlDataset->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+		xmlDataset->Values->HdfProxy = proxy->newResqmlReference();
+		xmlDataset->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/CellFluidPhaseUnits";
+		rep->CellFluidPhaseUnits->PhaseUnitIndices = xmlDataset;
+
+		// ************ HDF *************
+		hsize_t dim = getCellCount();
+		proxy->writeArrayNd(rep->uuid, "CellFluidPhaseUnits", H5T_NATIVE_ULLONG, rockFluidUnitIndices, &dim, 1);
 	}
-
-	// XML
-	if (updateXml)
-	{
-		if (gsoapProxy2_0_1 != nullptr) {
-			gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
-			rep->CellFluidPhaseUnits = gsoap_resqml2_0_1::soap_new_resqml2__CellFluidPhaseUnits(rep->soap, 1);
-			rep->CellFluidPhaseUnits->FluidOrganization = rockfluidOrgInterp->newResqmlReference();
-
-			gsoap_resqml2_0_1::resqml2__IntegerHdf5Array* xmlDataset = gsoap_resqml2_0_1::soap_new_resqml2__IntegerHdf5Array(rep->soap, 1);
-			xmlDataset->NullValue = nullValue;
-			xmlDataset->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
-			xmlDataset->Values->HdfProxy = hdfProxy->newResqmlReference();
-			xmlDataset->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/CellFluidPhaseUnits";
-			rep->CellFluidPhaseUnits->PhaseUnitIndices = xmlDataset;
-
-			// ************ HDF *************
-			hsize_t dim = getCellCount();
-			hdfProxy->writeArrayNd(rep->uuid, "CellFluidPhaseUnits", H5T_NATIVE_ULLONG, rockFluidUnitIndices, &dim, 1);
-		}
-		else {
-			throw logic_error("Not implemented yet");
-		}
+	else {
+		throw logic_error("Not implemented yet");
 	}
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractGridRepresentation::getStratigraphicOrganizationInterpretationDor() const
+gsoap_resqml2_0_1::eml20__DataObjectReference const * AbstractGridRepresentation::getStratigraphicOrganizationInterpretationDor() const
 {
 	if (!hasCellStratigraphicUnitIndices()) {
 		return nullptr;
@@ -1245,7 +1177,7 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractGridRepresentation::getSt
 	}
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractGridRepresentation::getRockFluidOrganizationInterpretationDor() const
+gsoap_resqml2_0_1::eml20__DataObjectReference const * AbstractGridRepresentation::getRockFluidOrganizationInterpretationDor() const
 {
 	if (!hasCellFluidPhaseUnitIndices()) {
 		return nullptr;
@@ -1261,26 +1193,26 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractGridRepresentation::getRo
 
 std::string AbstractGridRepresentation::getStratigraphicOrganizationInterpretationUuid() const
 {
-	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getStratigraphicOrganizationInterpretationDor();
-	return dor == nullptr ? string() : dor->UUID;
+	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getStratigraphicOrganizationInterpretationDor();
+	return dor == nullptr ? "" : dor->UUID;
 }
 
 std::string AbstractGridRepresentation::getStratigraphicOrganizationInterpretationTitle() const
 {
-	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getStratigraphicOrganizationInterpretationDor();
-	return dor == nullptr ? string() : dor->Title;
+	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getStratigraphicOrganizationInterpretationDor();
+	return dor == nullptr ? "" : dor->Title;
 }
 
 std::string AbstractGridRepresentation::getRockFluidOrganizationInterpretationUuid() const
 {
-	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getRockFluidOrganizationInterpretationDor();
-	return dor == nullptr ? string() : dor->UUID;
+	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getRockFluidOrganizationInterpretationDor();
+	return dor == nullptr ? "" : dor->UUID;
 }
 
 std::string AbstractGridRepresentation::getRockFluidOrganizationInterpretationTitle() const
 {
-	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getRockFluidOrganizationInterpretationDor();
-	return dor == nullptr ? string() : dor->Title;
+	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getRockFluidOrganizationInterpretationDor();
+	return dor == nullptr ? "" : dor->Title;
 }
 
 RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* AbstractGridRepresentation::getStratigraphicOrganizationInterpretation() const
@@ -1290,7 +1222,7 @@ RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* AbstractGridRep
 		return nullptr;
 	}
 
-	return static_cast<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation*>(getEpcDocument()->getDataObjectByUuid(stratigraphicOrganizationInterpretationUuid));
+	return static_cast<RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation*>(getRepository()->getDataObjectByUuid(stratigraphicOrganizationInterpretationUuid));
 }
 
 bool AbstractGridRepresentation::hasCellStratigraphicUnitIndices() const
@@ -1323,7 +1255,9 @@ ULONG64 AbstractGridRepresentation::getCellStratigraphicUnitIndices(ULONG64 * st
 		gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
 		if (rep->CellStratigraphicUnits->UnitIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
 		{
-			hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->CellStratigraphicUnits->UnitIndices)->Values->PathInHdfFile, stratiUnitIndices);
+			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->CellStratigraphicUnits->UnitIndices)->Values;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, stratiUnitIndices);
 			return static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->CellStratigraphicUnits->UnitIndices)->NullValue;
 		}
 
@@ -1344,7 +1278,9 @@ ULONG64 AbstractGridRepresentation::getCellFluidPhaseUnitIndices(ULONG64 * rockF
 		gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1);
 		if (rep->CellFluidPhaseUnits->PhaseUnitIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
 		{
-			hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->CellFluidPhaseUnits->PhaseUnitIndices)->Values->PathInHdfFile, rockFluidUnitIndices);
+			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->CellFluidPhaseUnits->PhaseUnitIndices)->Values;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, rockFluidUnitIndices);
 			return static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->CellFluidPhaseUnits->PhaseUnitIndices)->NullValue;
 		}
 
@@ -1362,7 +1298,7 @@ RESQML2_0_1_NS::RockFluidOrganizationInterpretation* AbstractGridRepresentation:
 		return nullptr;
 	}
 
-	return static_cast<RESQML2_0_1_NS::RockFluidOrganizationInterpretation*>(getEpcDocument()->getDataObjectByUuid(rockfluidOrganizationInterpretationUuid));
+	return static_cast<RESQML2_0_1_NS::RockFluidOrganizationInterpretation*>(getRepository()->getDataObjectByUuid(rockfluidOrganizationInterpretationUuid));
 
 }
 
@@ -1397,7 +1333,9 @@ void AbstractGridRepresentation::getNodeIndicesOfTruncatedFaces(ULONG64 * nodeIn
 
 		if (rep->TruncationCells->NodesPerTruncationFace->Elements->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
 		{
-			hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->TruncationCells->NodesPerTruncationFace->Elements)->Values->PathInHdfFile, nodeIndices);
+			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->TruncationCells->NodesPerTruncationFace->Elements)->Values;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, nodeIndices);
 		}
 		else
 			throw logic_error("Not yet implemented");
@@ -1418,7 +1356,9 @@ void AbstractGridRepresentation::getCumulativeNodeCountPerTruncatedFace(ULONG64 
 
 		if (rep->TruncationCells->NodesPerTruncationFace->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
 		{
-			hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->TruncationCells->NodesPerTruncationFace->CumulativeLength)->Values->PathInHdfFile, nodeCountPerFace);
+			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->TruncationCells->NodesPerTruncationFace->CumulativeLength)->Values;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, nodeCountPerFace);
 		}
 		else if (rep->TruncationCells->NodesPerTruncationFace->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerLatticeArray)
 		{
@@ -1479,7 +1419,9 @@ void AbstractGridRepresentation::getTruncatedCellIndices(ULONG64* cellIndices) c
 
 		if (rep->TruncationCells->ParentCellIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
 		{
-			hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->TruncationCells->ParentCellIndices)->Values->PathInHdfFile, cellIndices);
+			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->TruncationCells->ParentCellIndices)->Values;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, cellIndices);
 		}
 		else if (rep->TruncationCells->ParentCellIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray)
 		{
@@ -1507,7 +1449,9 @@ void AbstractGridRepresentation::getTruncatedFaceIndicesOfTruncatedCells(ULONG64
 
 		if (rep->TruncationCells->TruncationFacesPerCell->Elements->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
 		{
-			hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->TruncationCells->TruncationFacesPerCell->Elements)->Values->PathInHdfFile, faceIndices);
+			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->TruncationCells->TruncationFacesPerCell->Elements)->Values;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, faceIndices);
 		}
 		else
 			throw logic_error("Not yet implemented");
@@ -1529,7 +1473,9 @@ void AbstractGridRepresentation::getCumulativeTruncatedFaceCountPerTruncatedCell
 
 		if (rep->TruncationCells->TruncationFacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
 		{
-			hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->TruncationCells->TruncationFacesPerCell->CumulativeLength)->Values->PathInHdfFile, cumulativeFaceCountPerCell);
+			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->TruncationCells->TruncationFacesPerCell->CumulativeLength)->Values;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, cumulativeFaceCountPerCell);
 		}
 		else if (rep->TruncationCells->TruncationFacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerLatticeArray)
 		{
@@ -1578,7 +1524,9 @@ void AbstractGridRepresentation::getNonTruncatedFaceIndicesOfTruncatedCells(ULON
 
 		if (rep->TruncationCells->LocalFacesPerCell->Elements->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
 		{
-			hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->TruncationCells->LocalFacesPerCell->Elements)->Values->PathInHdfFile, faceIndices);
+			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->TruncationCells->LocalFacesPerCell->Elements)->Values;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, faceIndices);
 		}
 		else
 			throw logic_error("Not yet implemented");
@@ -1600,7 +1548,9 @@ void AbstractGridRepresentation::getCumulativeNonTruncatedFaceCountPerTruncatedC
 
 		if (rep->TruncationCells->LocalFacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
 		{
-			hdfProxy->readArrayNdOfGSoapULong64Values(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->TruncationCells->LocalFacesPerCell->CumulativeLength)->Values->PathInHdfFile, cumulativeFaceCountPerCell);
+			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(rep->TruncationCells->LocalFacesPerCell->CumulativeLength)->Values;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, cumulativeFaceCountPerCell);
 		}
 		else if (rep->TruncationCells->LocalFacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerLatticeArray)
 		{
@@ -1649,7 +1599,9 @@ void AbstractGridRepresentation::getTruncatedFaceIsRightHanded(unsigned char* ce
 
 		if (rep->TruncationCells->TruncationCellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__BooleanHdf5Array)
 		{
-			hdfProxy->readArrayNdOfUCharValues(static_cast<gsoap_resqml2_0_1::resqml2__BooleanHdf5Array*>(rep->TruncationCells->TruncationCellFaceIsRightHanded)->Values->PathInHdfFile, cellFaceIsRightHanded);
+			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml2__BooleanHdf5Array*>(rep->TruncationCells->TruncationCellFaceIsRightHanded)->Values;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			hdfProxy->readArrayNdOfUCharValues(dataset->PathInHdfFile, cellFaceIsRightHanded);
 		}
 		else if (rep->TruncationCells->TruncationCellFaceIsRightHanded->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__BooleanConstantArray)
 		{
@@ -1665,4 +1617,3 @@ void AbstractGridRepresentation::getTruncatedFaceIsRightHanded(unsigned char* ce
 		throw logic_error("Not implemented yet");
 	}
 }
-

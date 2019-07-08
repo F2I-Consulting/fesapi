@@ -94,7 +94,7 @@ namespace RESQML2_NS
 		/**
 		* Set the activity template of the activity
 		**/
-		DLL_IMPORT_OR_EXPORT void setActivityTemplate(class ActivityTemplate* activityTemplate);
+		DLL_IMPORT_OR_EXPORT virtual void setActivityTemplate(class ActivityTemplate* activityTemplate) = 0;
 
 		/**
 		* Get the activity template dor of the activity
@@ -114,7 +114,6 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const {return XML_TAG;}
 
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllSourceRelationships() const;
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllTargetRelationships() const;
+		void loadTargetRelationships() const;
 	};
 }

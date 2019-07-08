@@ -24,10 +24,10 @@ under the License.
 
 namespace WITSML2_1_NS
 {
-	class DLL_IMPORT_OR_EXPORT Trajectory : public WITSML2_1_NS::AbstractObject
+	class Trajectory : public WITSML2_1_NS::AbstractObject
 	{
 	private:
-		gsoap_eml2_2::witsml2__TrajectoryStation* getTrajectoryStation(const unsigned int & trajStationIndex) const;
+		gsoap_eml2_2::witsml2__TrajectoryStation* getTrajectoryStation(unsigned int trajStationIndex) const;
 
 	public:
 		/**
@@ -37,46 +37,33 @@ namespace WITSML2_1_NS
 		Trajectory(class Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title,
-			const gsoap_eml2_2::witsml2__ChannelStatus & growingStatus);
+			gsoap_eml2_2::witsml2__ChannelStatus growingStatus);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		Trajectory(gsoap_eml2_2::witsml2__Trajectory* fromGsoap):AbstractObject(fromGsoap), resqmlWellboreTrajectoryRepresentation(nullptr) {}
+		Trajectory(gsoap_eml2_2::witsml2__Trajectory* fromGsoap):AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~Trajectory() {}
 
-		unsigned int getTrajectoryStationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getTrajectoryStationCount() const;
 
-		double getMd(const unsigned int & trajStationIndex) const;
-		gsoap_eml2_2::eml22__LengthUom getMdUom(const unsigned int & trajStationIndex) const;
-		std::string getMdDatum(const unsigned int & trajStationIndex) const;
+		DLL_IMPORT_OR_EXPORT double getMd(unsigned int trajStationIndex) const;
+		gsoap_eml2_2::eml22__LengthUom getMdUom(unsigned int trajStationIndex) const;
+		DLL_IMPORT_OR_EXPORT std::string getMdDatum(unsigned int trajStationIndex) const;
 
-		gsoap_eml2_2::witsml2__TrajStationType getTrajStationType(const unsigned int & trajStationIndex) const;
+		gsoap_eml2_2::witsml2__TrajStationType getTrajStationType(unsigned int trajStationIndex) const;
 
 		gsoap_eml2_2::eml22__DataObjectReference* getWellboreDor() const;
-		class Wellbore* getWellbore() const;
+		DLL_IMPORT_OR_EXPORT class Wellbore* getWellbore() const;
 		void setWellbore(class Wellbore* witsmlWellbore);
-
-		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* getResqmlWellboreTrajectoryRepresentation() const {return resqmlWellboreTrajectoryRepresentation;}
-
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-
-		/**
-		* Resolve all relationships of the object in an epc document.
-		*/
-		void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
 
 		static const char* XML_TAG;
 		virtual std::string getXmlTag() const {return XML_TAG;}
 
-	protected:
-
-		// XML backwards relationship
-		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* resqmlWellboreTrajectoryRepresentation;
+		void loadTargetRelationships() const;
 	};
 }
-

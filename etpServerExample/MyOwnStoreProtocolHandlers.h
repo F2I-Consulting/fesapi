@@ -20,10 +20,16 @@ under the License.
 
 #include "etp/ProtocolHandlers/StoreHandlers.h"
 
+#include "common/DataObjectRepository.h"
+
 class MyOwnStoreProtocolHandlers : public ETP_NS::StoreHandlers
 {
+private:
+
+	COMMON_NS::DataObjectRepository* repo;
+
 public:
-	MyOwnStoreProtocolHandlers(ETP_NS::AbstractSession* mySession);
+	MyOwnStoreProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, COMMON_NS::DataObjectRepository* repo_);
 	~MyOwnStoreProtocolHandlers() {}
 
     void on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & getO, int64_t correlationId);

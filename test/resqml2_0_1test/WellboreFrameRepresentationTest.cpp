@@ -40,33 +40,33 @@ WellboreFrameRepresentationTest::WellboreFrameRepresentationTest(const string & 
 	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
-WellboreFrameRepresentationTest::WellboreFrameRepresentationTest(EpcDocument * epcDoc, bool init)
-	: commontest::AbstractObjectTest(epcDoc) {
+WellboreFrameRepresentationTest::WellboreFrameRepresentationTest(DataObjectRepository * repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void WellboreFrameRepresentationTest::initEpcDocHandler() {
+void WellboreFrameRepresentationTest::initRepoHandler() {
 	// creating dependencies
-	WellboreTrajectoryRepresentationTest trajTest(epcDoc, true);
+	WellboreTrajectoryRepresentationTest trajTest(repo, true);
 
-	WellboreInterpretation * interp = static_cast<WellboreInterpretation*>(epcDoc->getDataObjectByUuid(WellboreInterpretationTest::defaultUuid));
-	WellboreTrajectoryRepresentation * traj = static_cast<WellboreTrajectoryRepresentation*>(epcDoc->getDataObjectByUuid(WellboreTrajectoryRepresentationTest::defaultUuid));
+	WellboreInterpretation * interp = static_cast<WellboreInterpretation*>(repo->getDataObjectByUuid(WellboreInterpretationTest::defaultUuid));
+	WellboreTrajectoryRepresentation * traj = static_cast<WellboreTrajectoryRepresentation*>(repo->getDataObjectByUuid(WellboreTrajectoryRepresentationTest::defaultUuid));
 
 	// getting the hdf proxy
-	COMMON_NS::AbstractHdfProxy* hdfProxy = epcDoc->getHdfProxySet()[0];
+	COMMON_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 	REQUIRE(hdfProxy != nullptr);
 
 	// WellboreFeature frame
-	WellboreFrameRepresentation* w1i1FrameRep = epcDoc->createWellboreFrameRepresentation(interp, defaultUuid, defaultTitle, traj);
+	WellboreFrameRepresentation* w1i1FrameRep = repo->createWellboreFrameRepresentation(interp, defaultUuid, defaultTitle, traj);
 	double logMds[5] = { 0, 250, 500, 750, 1200 };
 	w1i1FrameRep->setMdValues(logMds, 5, hdfProxy);
 }
 
-void WellboreFrameRepresentationTest::readEpcDocHandler() {
-	WellboreFrameRepresentation* w1i1FrameRep = epcDoc->getDataObjectByUuid<WellboreFrameRepresentation>(defaultUuid);
+void WellboreFrameRepresentationTest::readRepoHandler() {
+	WellboreFrameRepresentation* w1i1FrameRep = repo->getDataObjectByUuid<WellboreFrameRepresentation>(defaultUuid);
 	REQUIRE(w1i1FrameRep != nullptr);
 
 	REQUIRE(w1i1FrameRep->areMdValuesRegularlySpaced() == false);

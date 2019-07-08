@@ -93,21 +93,8 @@ namespace RESQML2_NS
 		/**
 		* Get all the properties which use this time series
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector<RESQML2_NS::AbstractProperty*>& getPropertySet() const { return propertySet; }
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::AbstractProperty const *> getPropertySet() const;
 
-		std::vector<epc::Relationship> getAllSourceRelationships() const;
-		std::vector<epc::Relationship> getAllTargetRelationships() const;
-
-		/**
-		* Does nothing since StringTableLookup has not got any target relationship.
-		*/
-		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc) {}
-
-	protected:
-
-		// XML backward relationship
-		std::vector<RESQML2_NS::AbstractProperty*> propertySet;
-
-		friend void AbstractProperty::setTimeSeries(TimeSeries * ts);
+		void loadTargetRelationships() const;
 	};
 }

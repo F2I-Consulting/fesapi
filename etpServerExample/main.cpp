@@ -18,18 +18,18 @@ under the License.
 -----------------------------------------------------------------------*/
 
 #ifdef WITH_ETP_SSL
-#include "ssl/MyOwnEtpSslServerSession.h"
+#include "etp/ssl/SslServerSession.h"
 #else
-#include "MyOwnEtpPlainServerSession.h"
+#include "etp/PlainServerSession.h"
 #endif
-#include "etp/Server.h"
+#include "Server.h"
 
 #ifdef WITH_ETP_SSL
 #include "ssl/server_certificate.h"
 #endif
 
-#include "globalVariables.h"
-const char* epcFileName = "../../testingPackageCpp.epc";
+#include "common/DataObjectRepository.h"
+#include "common/EpcDocument.h"
 
 int main(int argc, char **argv)
 {
@@ -39,14 +39,20 @@ int main(int argc, char **argv)
 
 		return 1;
 	}
-	epcFileName = argv[3];
 
 	const int threadCount = 2;
 
 	std::cout << "Start listening on " << argv[1] << ":" << argv[2] << " with " << threadCount << " threads..." << std::endl;
 
+	COMMON_NS::EpcDocument epcDoc(argv[3]);
+	COMMON_NS::DataObjectRepository repo;
+	std::string resqmlResult = epcDoc.deserializeInto(repo);
+	if (!resqmlResult.empty()) {
+		std::cerr << "Error when deserializing " << resqmlResult << std::endl;
+	}
+
 #ifdef WITH_ETP_SSL
-	ETP_NS::Server<MyOwnEtpSslServerSession> etpServer;
+	Server<ETP_NS::SslServerSession> etpServer(repo);
 
 	// The SSL context is required, and holds certificates
 	boost::asio::ssl::context ctx{ boost::asio::ssl::context::tlsv12_server };
@@ -56,11 +62,12 @@ int main(int argc, char **argv)
 
 	etpServer.listen(argv[1], std::stoi(argv[2]), threadCount, ctx);
 #else
-	ETP_NS::Server<MyOwnEtpPlainServerSession> etpServer;
+	Server<ETP_NS::PlainServerSession> etpServer(repo);
 
 	etpServer.listen(argv[1], std::stoi(argv[2]), threadCount);
 #endif
 
+	epcDoc.close();
 
 #ifdef _WIN32
 	_CrtDumpMemoryLeaks();

@@ -38,6 +38,10 @@ under the License.
 
 #include "FilePart.h"
 
+#if (defined(_WIN32) && _MSC_VER < 1600) || (defined(__GNUC__) && (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 6)))
+#include "tools/nullptr_emulation.h"
+#endif
+
 #define CASESENSITIVITY (0)
 
 using namespace std; // in order not to prefix by "std::" for each class in the "std" namespace. Never use "using namespace" in *.h file but only in *.cpp file!!!
@@ -147,8 +151,9 @@ public:
 	FileCoreProperties	fileCoreProperties;											/// Core Properties file
 	FileContentType		fileContentType;											/// ContentTypes file
 	FileRelationship	filePrincipalRelationship;									/// Relationships file
-	PartMap				allFileParts;												/// Set of parts file
-	unordered_map< string, string >			extendedCoreProperties;					/// Set of non standard (extended) core properties
+	PartMap				allFileParts;
+	std::unordered_map< string, string >			extendedCoreProperties;					/// Set of non standard (extended) core properties
+
 	string				pathName;													/// Pathname of package
 	unzFile				unzipped;
 	zipFile             zf;
@@ -175,7 +180,8 @@ Package::CheshireCat::~CheshireCat()
 
 void Package::CheshireCat::close()
 {
-	if (unzipped != nullptr) {
+	if (unzipped)
+	{
 		unzClose(unzipped);
 		unzipped = nullptr;
 	}
@@ -522,7 +528,7 @@ void Package::writeStringIntoNewPart(const std::string &input, const std::string
 	}
 }
 
-void Package::writePackage()
+void Package::writePackage() 
 {
 	d_ptr->fileCoreProperties.initDefaultCoreProperties();
 	writeStringIntoNewPart(d_ptr->fileCoreProperties.toString(), "docProps/core.xml");

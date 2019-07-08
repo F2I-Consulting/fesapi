@@ -31,29 +31,29 @@ using namespace RESQML2_NS;
 const char* ActivityTemplateGenericCreationTest::defaultUuid = "a41c63bf-78cb-454b-8018-c9df060c5cf3";
 const char* ActivityTemplateGenericCreationTest::defaultTitle = "GenericCreationActivity";
 
-ActivityTemplateGenericCreationTest::ActivityTemplateGenericCreationTest(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath) {
+ActivityTemplateGenericCreationTest::ActivityTemplateGenericCreationTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
 		ParameterTest creationInput = {"CreationInput", true, false, 0, -1};
 		parameterMap.insert(std::pair<std::string, ParameterTest>("CreationInput", creationInput));
 		ParameterTest creationOutput = {"CreationOutput", false, true, 1, -1};
 		parameterMap.insert(std::pair<std::string, ParameterTest>("CreationOutput", creationOutput));
 }
 
-ActivityTemplateGenericCreationTest::ActivityTemplateGenericCreationTest(EpcDocument * epcDoc, bool init)
-	: commontest::AbstractObjectTest(epcDoc) {
+ActivityTemplateGenericCreationTest::ActivityTemplateGenericCreationTest(DataObjectRepository * repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 		ParameterTest creationInput = {"CreationInput", true, false, 0, -1};
 		parameterMap.insert(std::pair<std::string, ParameterTest>("CreationInput", creationInput));
 		ParameterTest creationOutput = {"CreationOutput", false, true, 1, -1};
 		parameterMap.insert(std::pair<std::string, ParameterTest>("CreationOutput", creationOutput));
 		
 		if (init)
-			initEpcDoc();
+			initRepo();
 		else
-			readEpcDoc();
+			readRepo();
 }
 
-void ActivityTemplateGenericCreationTest::initEpcDocHandler() {
-	ActivityTemplate*  genericCreationActivityTemplate = epcDoc->createActivityTemplate(defaultUuid, defaultTitle);
+void ActivityTemplateGenericCreationTest::initRepoHandler() {
+	ActivityTemplate*  genericCreationActivityTemplate = repo->createActivityTemplate(defaultUuid, defaultTitle);
 	REQUIRE(genericCreationActivityTemplate != nullptr);
 
 	for (std::map<string, ParameterTest>::iterator it = parameterMap.begin(); it != parameterMap.end(); ++it)
@@ -62,8 +62,8 @@ void ActivityTemplateGenericCreationTest::initEpcDocHandler() {
 	}
 }
 
-void ActivityTemplateGenericCreationTest::readEpcDocHandler() {
-	ActivityTemplate* activityTemplate = static_cast<ActivityTemplate*>(epcDoc->getDataObjectByUuid(defaultUuid));
+void ActivityTemplateGenericCreationTest::readRepoHandler() {
+	ActivityTemplate* activityTemplate = static_cast<ActivityTemplate*>(repo->getDataObjectByUuid(defaultUuid));
 
 	REQUIRE(activityTemplate->getParameterCount() == parameterMap.size());
 

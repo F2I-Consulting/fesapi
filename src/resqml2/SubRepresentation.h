@@ -34,14 +34,14 @@ namespace RESQML2_NS
 		{
 		}
 
-		SubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp) : RESQML2_NS::AbstractRepresentation(interp, nullptr) {}
+		SubRepresentation() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		SubRepresentation(gsoap_resqml2_0_1::_resqml2__SubRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
-		virtual void pushBackXmlSupportingRepresentation(AbstractRepresentation * supportingRep) = 0;
+		virtual void pushBackXmlSupportingRepresentation(AbstractRepresentation const * supportingRep) = 0;
 
 	public:
 
@@ -190,12 +190,6 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getSupportingRepresentationContentType() const;
 
-		std::vector<epc::Relationship> getAllTargetRelationships() const;
-
-		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc);
-
-	private:
-
-		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const {return nullptr;}
+		void loadTargetRelationships() const;
 	};
 }
