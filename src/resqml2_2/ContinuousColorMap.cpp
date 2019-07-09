@@ -22,19 +22,18 @@ under the License.
 
 using namespace std;
 using namespace gsoap_eml2_2;
-using namespace epc;
-using namespace common;
+using namespace COMMON_NS;
 using namespace RESQML2_2_NS;
 
 const char* ContinuousColorMap::XML_TAG = "ContinuousColorMap";
 
-ContinuousColorMap::ContinuousColorMap(soap* soapContext, string const& guid, string const& title, 
+ContinuousColorMap::ContinuousColorMap(COMMON_NS::DataObjectRepository* repo, string const& guid, string const& title,
 	resqml2__InterpolationDomain interpolationDomain, resqml2__InterpolationMethod interpolationMethod)
 {
-	if (soapContext == nullptr)
-		throw invalid_argument("The soap context cannot be null.");
+	if (repo == nullptr)
+		throw invalid_argument("The repository cannot be null.");
 
-	gsoapProxy2_2 = soap_new_resqml2__ContinuousColorMap(soapContext, 1);
+	gsoapProxy2_2 = soap_new_resqml2__ContinuousColorMap(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -42,6 +41,8 @@ ContinuousColorMap::ContinuousColorMap(soap* soapContext, string const& guid, st
 	resqml2__ContinuousColorMap* continuousColorMap = static_cast<resqml2__ContinuousColorMap*>(gsoapProxy2_2);
 	continuousColorMap->InterpolationDomain = interpolationDomain;
 	continuousColorMap->InterpolationMethod = interpolationMethod;
+
+	repo->addOrReplaceDataObject(this);
 }
 
 void ContinuousColorMap::setHsvColors(unsigned int colorCount,

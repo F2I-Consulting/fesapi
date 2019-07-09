@@ -32,22 +32,22 @@ const char* GraphicalInformationSetTest::defaultTitle = "Graphical Information S
 const char* GraphicalInformationSetTest::uuidHorizon = "6cd16ac5-e321-467c-9d1d-a554c5529937";
 const char* GraphicalInformationSetTest::titleHorzon = "Horizon";
 
-GraphicalInformationSetTest::GraphicalInformationSetTest(const string & epcDocPath)
-	: AbstractObjectTest(epcDocPath) {
+GraphicalInformationSetTest::GraphicalInformationSetTest(const string & repoPath)
+	: AbstractObjectTest(repoPath) {
 }
 
-GraphicalInformationSetTest::GraphicalInformationSetTest(EpcDocument * epcDoc, bool init)
-	: AbstractObjectTest(epcDoc) {
+GraphicalInformationSetTest::GraphicalInformationSetTest(COMMON_NS::DataObjectRepository* repo, bool init)
+	: AbstractObjectTest(repo) {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void GraphicalInformationSetTest::initEpcDocHandler() {
-	Horizon* feature = epcDoc->createHorizon(uuidHorizon, titleHorzon);
+void GraphicalInformationSetTest::initRepoHandler() {
+	Horizon* feature = repo->createHorizon(uuidHorizon, titleHorzon);
 
-	GraphicalInformationSet* graphicalInformationSet = epcDoc->createGraphicalInformationSet(defaultUuid, defaultTitle);
+	GraphicalInformationSet* graphicalInformationSet = repo->createGraphicalInformationSet(defaultUuid, defaultTitle);
 	REQUIRE(graphicalInformationSet != nullptr);
 	
 	REQUIRE(graphicalInformationSet->hasGraphicalInformation(feature) == false);
@@ -59,9 +59,9 @@ void GraphicalInformationSetTest::initEpcDocHandler() {
 	graphicalInformationSet->setDefaultHsvColor(feature, 0., 1., 0.5, 1., "blue");
 }
 
-void GraphicalInformationSetTest::readEpcDocHandler() {
-	REQUIRE(epcDoc->getDataObjects<GraphicalInformationSet>().size() == 1);
-	GraphicalInformationSet * graphicalInformationSet = epcDoc->getDataObjects<GraphicalInformationSet>()[0];
+void GraphicalInformationSetTest::readRepoHandler() {
+	REQUIRE(repo->getDataObjects<GraphicalInformationSet>().size() == 1);
+	GraphicalInformationSet * graphicalInformationSet = repo->getDataObjects<GraphicalInformationSet>()[0];
 	REQUIRE(graphicalInformationSet->getUuid() == defaultUuid);
 	
 	REQUIRE(graphicalInformationSet->getGraphicalInformationSetCount() == 1);

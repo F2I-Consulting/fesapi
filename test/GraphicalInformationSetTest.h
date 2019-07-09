@@ -29,12 +29,12 @@ namespace commontest {
 		static const char* GraphicalInformationSetTest::uuidHorizon;
 		static const char* GraphicalInformationSetTest::titleHorzon;
 
-		GraphicalInformationSetTest(const std::string & epcDocPath);
-		GraphicalInformationSetTest(COMMON_NS::EpcDocument * epcDoc, bool init);
+		GraphicalInformationSetTest(const std::string & repoPath);
+		GraphicalInformationSetTest(COMMON_NS::DataObjectRepository* repo, bool init);
 
 	protected:
-		void initEpcDocHandler();
-		void readEpcDocHandler();
+		void initRepoHandler();
+		void readRepoHandler();
 	};
 }
 

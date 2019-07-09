@@ -22,28 +22,8 @@ under the License.
 
 using namespace std;
 using namespace gsoap_eml2_2;
-using namespace epc;
 using namespace COMMON_NS;
 using namespace RESQML2_2_NS;
-
-vector<Relationship> AbstractColorMap::getAllSourceRelationships() const
-{
-	vector<Relationship> result;
-
-	for (size_t i = 0; i < graphicalInformationSetSet.size(); ++i) {
-		Relationship rel(graphicalInformationSetSet[i]->getPartNameInEpcDocument(), "", graphicalInformationSetSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
-}
-
-vector<Relationship> AbstractColorMap::getAllTargetRelationships() const
-{
-	vector<Relationship> result;
-	return result;
-}
 
 void AbstractColorMap::setRgbColors(unsigned int colorCount,
 	double const* rgbColors, double const* alphas, string const* colorTitles,

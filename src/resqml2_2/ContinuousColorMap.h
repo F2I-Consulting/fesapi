@@ -32,11 +32,16 @@ namespace RESQML2_2_NS
 		gsoap_eml2_2::resqml2__HsvColor* getColor(double colorIndex) const;
 	public:
 		/**
+		 * Only to be used in partial transfer context
+		 */
+		ContinuousColorMap(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractColorMap(partialObject) {}
+
+		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
 		* @param guid			The guid to set to graphical information set.
 		* @param title			A title for graphical information set.
 		*/
-		ContinuousColorMap(soap* soapContext, std::string const& guid, std::string const& title,
+		ContinuousColorMap(COMMON_NS::DataObjectRepository *repo, std::string const& guid, std::string const& title,
 			gsoap_eml2_2::resqml2__InterpolationDomain interpolationDomain, gsoap_eml2_2::resqml2__InterpolationMethod interpolationMethod);
 
 		/**
@@ -104,9 +109,5 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const { return XML_TAG; }
-
-	protected:
-		friend void COMMON_NS::GraphicalInformationSet::setContinuousColorMap(COMMON_NS::AbstractObject const* targetObject, ContinuousColorMap* continuousColorMap,
-			LONG64 valueVectorIndex, bool useReverseMapping, bool useLogarithmicMapping);
 	};
 }

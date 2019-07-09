@@ -272,7 +272,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * pck, COM
 
 	Horizon* contColMapHrz = pck->createHorizon("b9ec6ec9-2766-4af7-889e-5565b5fa5022", "Horizon for continuous color map");
 	HorizonInterpretation* contColMapHrzInterp = pck->createHorizonInterpretation(contColMapHrz, "34b69c81-6cfa-4531-be5b-f6bd9b74802f", "Horizon interpretation for continuous color map");
-	Grid2dRepresentation* contColMapGrid2dRep = pck->createGrid2dRepresentation(contColMapHrzInterp, local3dCrs, "4e56b0e4-2cd1-4efa-97dd-95f72bcf9f80", "100x10 grid 2d for continuous color map");
+	Grid2dRepresentation* contColMapGrid2dRep = pck->createGrid2dRepresentation(contColMapHrzInterp, "4e56b0e4-2cd1-4efa-97dd-95f72bcf9f80", "100x10 grid 2d for continuous color map");
 	const unsigned int numPointInFastestDirection = 50;
 	const unsigned int numPointsInSlowestDirection = 100;
 	contColMapGrid2dRep->setGeometryAsArray2dOfLatticePoints3d(numPointInFastestDirection, numPointsInSlowestDirection,

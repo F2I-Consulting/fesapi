@@ -22,21 +22,22 @@ under the License.
 
 using namespace std;
 using namespace gsoap_eml2_2;
-using namespace epc;
-using namespace common;
+using namespace COMMON_NS;
 using namespace RESQML2_2_NS;
 
 const char* DiscreteColorMap::XML_TAG = "DiscreteColorMap";
 
-DiscreteColorMap::DiscreteColorMap(soap* soapContext, string const& guid, string const& title)
+DiscreteColorMap::DiscreteColorMap(COMMON_NS::DataObjectRepository* repo, string const& guid, string const& title)
 {
-	if (soapContext == nullptr)
-		throw invalid_argument("The soap context cannot be null.");
+	if (repo == nullptr)
+		throw invalid_argument("The repository cannot be null.");
 
-	gsoapProxy2_2 = soap_new_resqml2__DiscreteColorMap(soapContext, 1);
+	gsoapProxy2_2 = soap_new_resqml2__DiscreteColorMap(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	repo->addOrReplaceDataObject(this);
 }
 
 void DiscreteColorMap::setHsvColors(unsigned int colorCount,

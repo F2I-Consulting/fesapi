@@ -56,26 +56,24 @@ char const* DiscreteColorMapTest::uuidPropertyKindDiscreteColorMap = "ab67d54c-4
 char const* DiscreteColorMapTest::titlePropertyKindDiscreteColorMap = "Property Kind Discrete Color Map";
 
 
-DiscreteColorMapTest::DiscreteColorMapTest(const string & epcDocPath)
-	: AbstractObjectTest(epcDocPath) {
+DiscreteColorMapTest::DiscreteColorMapTest(const string & repoPath)
+	: AbstractObjectTest(repoPath) {
 }
 
-DiscreteColorMapTest::DiscreteColorMapTest(EpcDocument * epcDoc, bool init)
-	: AbstractObjectTest(epcDoc) {
+DiscreteColorMapTest::DiscreteColorMapTest(COMMON_NS::DataObjectRepository* repo, bool init)
+	: AbstractObjectTest(repo) {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void DiscreteColorMapTest::initEpcDocHandler() {
+void DiscreteColorMapTest::initRepoHandler() {
 	// creating an ijk grid
-	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
-	OrganizationFeature* organizationFeature = epcDoc->createEarthModel(uuidOrganizationFeature, titleOrganizationFeature);
-	EarthModelInterpretation* earthModelInterp = epcDoc->createEarthModelInterpretation(organizationFeature, uuidEarthModelInterpretation, titleEarthModelInterpretation);
-	LocalDepth3dCrs* local3dCrs = epcDoc->createLocalDepth3dCrs(uuidLocalDepth3dCrs, titleLocalDepth3dCrs, 
-		.0, .0, .0, .0, eml20__LengthUom__m, 23031, eml20__LengthUom__m, "Unknown", false);
-	IjkGridExplicitRepresentation* ijkgrid = epcDoc->createIjkGridExplicitRepresentation(earthModelInterp, local3dCrs, uuidIjkGridExplicitRepresentation, titleIjkGridExplicitRepresentation, 2, 1, 1);
+	AbstractHdfProxy* hdfProxy =  repo->getHdfProxySet()[0];
+	OrganizationFeature* organizationFeature =  repo->createEarthModel(uuidOrganizationFeature, titleOrganizationFeature);
+	EarthModelInterpretation* earthModelInterp = repo->createEarthModelInterpretation(organizationFeature, uuidEarthModelInterpretation, titleEarthModelInterpretation);
+	IjkGridExplicitRepresentation* ijkgrid = repo->createIjkGridExplicitRepresentation(earthModelInterp, uuidIjkGridExplicitRepresentation, titleIjkGridExplicitRepresentation, 2, 1, 1);
 	double nodes[48] = { 0, 0, 300, 375, 0, 300, 700, 0, 350, 0, 150, 300, 375, 150, 300, 700, 150, 350, /* SPLIT*/ 375, 0, 350, 375, 150, 350,
 		0, 0, 500, 375, 0, 500, 700, 0, 550, 0, 150, 500, 375, 150, 500, 700, 150, 550, /* SPLIT*/ 375, 0, 550, 375, 150, 550 };
 	unsigned int pillarOfCoordinateLine[2] = { 1, 4 };
@@ -85,15 +83,15 @@ void DiscreteColorMapTest::initEpcDocHandler() {
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// assotiating a discrete property to the ijk grid
-	PropertyKind* propertyKind = epcDoc->createPropertyKind(uuidPropertyKind, titlePropertyKind, "urn:resqml:f2i-consulting.com", 
+	PropertyKind* propertyKind = repo->createPropertyKind(uuidPropertyKind, titlePropertyKind, "urn:resqml:f2i-consulting.com", 
 		resqml2__ResqmlUom__Euc, resqml2__ResqmlPropertyKind__discrete);
-	DiscreteProperty* discreteProperty = epcDoc->createDiscreteProperty(ijkgrid, uuidDiscreteProperty, titleDiscreteProperty, 1,
+	DiscreteProperty* discreteProperty = repo->createDiscreteProperty(ijkgrid, uuidDiscreteProperty, titleDiscreteProperty, 1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, propertyKind);
 	unsigned short prop1Values[2] = { 0, 1 };
 	discreteProperty->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, -1);
 
 	// associating a discrete color map to the discrete property kind
-	DiscreteColorMap* discreteColorMap1 = epcDoc->createDiscreteColorMap(uuidPropertyKindDiscreteColorMap, titlePropertyKindDiscreteColorMap);
+	DiscreteColorMap* discreteColorMap1 = repo->createDiscreteColorMap(uuidPropertyKindDiscreteColorMap, titlePropertyKindDiscreteColorMap);
 	REQUIRE(discreteColorMap1 != nullptr);
 	unsigned int rgbColors1[6] = { 0, 0, 256, 255, 0, 0 };
 	double alphas1[2] = { 1., 1. };
@@ -101,13 +99,13 @@ void DiscreteColorMapTest::initEpcDocHandler() {
 	REQUIRE_THROWS(discreteColorMap1->setRgbColors(2, rgbColors1, alphas1, titles1));
 	rgbColors1[2] = 255;
 	discreteColorMap1->setRgbColors(2, rgbColors1, alphas1, titles1);
-	GraphicalInformationSet* graphicalInformationSet = epcDoc->createGraphicalInformationSet(uuidGraphicalInformationSet, titleGraphicalInformationSet);
+	GraphicalInformationSet* graphicalInformationSet = repo->createGraphicalInformationSet(uuidGraphicalInformationSet, titleGraphicalInformationSet);
 	graphicalInformationSet->setDiscreteColorMap(propertyKind, discreteColorMap1);
 	REQUIRE(graphicalInformationSet->hasDiscreteColorMap(discreteProperty) == true);
 	REQUIRE(graphicalInformationSet->getDiscreteColorMapUuid(discreteProperty) == discreteColorMap1->getUuid());
 
 	// associating the discrete color map to the discrete property
-	DiscreteColorMap* discreteColorMap2 = epcDoc->createDiscreteColorMap(defaultUuid, defaultTitle);
+	DiscreteColorMap* discreteColorMap2 = repo->createDiscreteColorMap(defaultUuid, defaultTitle);
 	REQUIRE(discreteColorMap2 != nullptr);
 	unsigned int rgbColors2[6] = { 255, 0, 0, 0, 0, 255 };
 	double alphas2[2] = { 1., 1. };
@@ -118,9 +116,9 @@ void DiscreteColorMapTest::initEpcDocHandler() {
 	REQUIRE(graphicalInformationSet->getDiscreteColorMapUuid(discreteProperty) == discreteColorMap2->getUuid());
 }
 
-void DiscreteColorMapTest::readEpcDocHandler() {
-	GraphicalInformationSet * graphicalInformationSet = epcDoc->getDataObjects<GraphicalInformationSet>()[0];
-	DiscreteProperty* discreteProperty = epcDoc->getDataObjectByUuid<DiscreteProperty>(uuidDiscreteProperty);
+void DiscreteColorMapTest::readRepoHandler() {
+	GraphicalInformationSet * graphicalInformationSet = repo->getDataObjects<GraphicalInformationSet>()[0];
+	DiscreteProperty* discreteProperty = repo->getDataObjectByUuid<DiscreteProperty>(uuidDiscreteProperty);
 	REQUIRE(graphicalInformationSet->hasDiscreteColorMap(discreteProperty));
 	DiscreteColorMap* discreteColorMap = graphicalInformationSet->getDiscreteColorMap(discreteProperty);
 	REQUIRE(discreteColorMap->getUuid() == defaultUuid);

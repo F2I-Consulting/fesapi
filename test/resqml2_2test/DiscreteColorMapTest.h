@@ -43,12 +43,12 @@ namespace resqml2_2test {
 		static char const* uuidPropertyKindDiscreteColorMap;
 		static char const* titlePropertyKindDiscreteColorMap;
 
-		DiscreteColorMapTest(const std::string & epcDocPath);
-		DiscreteColorMapTest(COMMON_NS::EpcDocument * epcDoc, bool init);
+		DiscreteColorMapTest(const std::string & repoPath);
+		DiscreteColorMapTest(COMMON_NS::DataObjectRepository* repo, bool init);
 
 	protected:
-		void initEpcDocHandler();
-		void readEpcDocHandler();
+		void initRepoHandler();
+		void readRepoHandler();
 	};
 }
 

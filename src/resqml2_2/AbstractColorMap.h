@@ -32,6 +32,11 @@ namespace RESQML2_2_NS
 
 	protected:
 		/**
+		 * Only to be used in partial transfer context
+		 */
+		AbstractColorMap(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+
+		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		AbstractColorMap(gsoap_eml2_2::resqml2__DiscreteColorMap* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
@@ -42,13 +47,6 @@ namespace RESQML2_2_NS
 		* Set the gsoap proxy to nullptr from superclass constructor
 		*/
 		AbstractColorMap() {}
-
-		std::vector<COMMON_NS::GraphicalInformationSet*> graphicalInformationSetSet;
-
-		void resolveTargetRelationships(COMMON_NS::EpcDocument* epcDoc) {}
-
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllSourceRelationships() const;
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllTargetRelationships() const;
 
 	public:
 		/**
@@ -133,6 +131,8 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT std::string getColorTitle(double colorIndex) const;
 
 		virtual void computeMinMax(LONG64& min, LONG64& max) const = 0;
+
+		void loadTargetRelationships() const {};
 
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const {
 			return "resqml22";

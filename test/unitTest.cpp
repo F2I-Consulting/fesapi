@@ -25,6 +25,7 @@ under the License.
 #include "catch.hpp"
 
 #include "EpcDocumentTest.h"
+#include "GraphicalInformationSetTest.h"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 #include "resqml2_0_1test/HorizonInterpretationTest.h"
 #include "resqml2_0_1test/FaultSinglePatchTriangulatedSetRepresentationTest.h"

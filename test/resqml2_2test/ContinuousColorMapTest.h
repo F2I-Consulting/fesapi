@@ -43,12 +43,12 @@ namespace resqml2_2test {
 		static char const* uuidGraphicalInformationSet;
 		static char const* titleGraphicalInformationSet;
 
-		ContinuousColorMapTest(const std::string & epcDocPath);
-		ContinuousColorMapTest(COMMON_NS::EpcDocument * epcDoc, bool init);
+		ContinuousColorMapTest(const std::string & repoPath);
+		ContinuousColorMapTest(COMMON_NS::DataObjectRepository* repo, bool init);
 
 	protected:
-		void initEpcDocHandler();
-		void readEpcDocHandler();
+		void initRepoHandler();
+		void readRepoHandler();
 	};
 }
 

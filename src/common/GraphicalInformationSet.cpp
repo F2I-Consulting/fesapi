@@ -124,7 +124,7 @@ resqml2__HsvColor* GraphicalInformationSet::getDefaultColor(AbstractObject const
 		throw invalid_argument("The target object cannot be null");
 	}
 
-	resqml2__GraphicalInformationForWholeObject* result = getDefaultGraphicalInformation(targetObject);
+	resqml2__GraphicalInformationForWholeObject const* result = getDefaultGraphicalInformation(targetObject);
 
 	return result != nullptr && result->ConstantColor != nullptr ? result->ConstantColor : nullptr;
 }
@@ -135,7 +135,7 @@ resqml2__ColorInformation* GraphicalInformationSet::getColorInformation(Abstract
 		throw invalid_argument("The target object cannot be null");
 	}
 
-	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
+	_eml22__GraphicalInformationSet const* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
 
 	for (size_t giIndex = 0; giIndex < gis->GraphicalInformation.size(); ++giIndex) {
 		if (getTargetObjectUuid(giIndex).compare(targetObject->getUuid()) == 0 &&
@@ -300,6 +300,7 @@ void GraphicalInformationSet::setDefaultHsvColor(AbstractObject const* targetObj
 	if (defaultGraphicalInformationForAllIndexableElements == nullptr) {
 		_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
 		defaultGraphicalInformationForAllIndexableElements = soap_new_resqml2__DefaultGraphicalInformation(gsoapProxy2_2->soap, 1);
+		getRepository()->addRelationship(this, targetObject);
 		defaultGraphicalInformationForAllIndexableElements->TargetObject = targetObject->newEml22Reference();
 		defaultGraphicalInformationForAllIndexableElements->ViewerKind = soap_resqml2__ViewerKind2s(gsoapProxy2_2->soap, resqml2__ViewerKind__3d);
 		gis->GraphicalInformation.push_back(defaultGraphicalInformationForAllIndexableElements);
@@ -454,7 +455,7 @@ std::string GraphicalInformationSet::getDiscreteColorMapUuid(AbstractObject cons
 
 DiscreteColorMap* GraphicalInformationSet::getDiscreteColorMap(AbstractObject const* targetObject) const
 {
-	return epcDocument->getDataObjectByUuid<DiscreteColorMap>(getDiscreteColorMapUuid(targetObject));
+	return getRepository()->getDataObjectByUuid<DiscreteColorMap>(getDiscreteColorMapUuid(targetObject));
 }
 
 void GraphicalInformationSet::setDiscreteColorMap(AbstractObject const* targetObject, DiscreteColorMap* discreteColorMap, 
@@ -478,6 +479,7 @@ void GraphicalInformationSet::setDiscreteColorMap(AbstractObject const* targetOb
 	resqml2__ColorInformation* colorInformation = getColorInformation(targetObject);
 	if (colorInformation == nullptr) {
 		colorInformation = soap_new_resqml2__ColorInformation(gsoapProxy2_2->soap, 1);
+		getRepository()->addRelationship(this, targetObject);
 		colorInformation->TargetObject = targetObject->newEml22Reference();
 		gis->GraphicalInformation.push_back(colorInformation);
 	}
@@ -494,7 +496,7 @@ void GraphicalInformationSet::setDiscreteColorMap(AbstractObject const* targetOb
 	colorInformation->UseLogarithmicMapping = useLogarithmicMapping;
 	colorInformation->ValueVectorIndex = valueVectorIndex;
 
-	discreteColorMap->graphicalInformationSetSet.push_back(this);
+	getRepository()->addRelationship(this, discreteColorMap);
 	colorInformation->DiscreteColorMap = discreteColorMap->newEml22Reference();
 }
 
@@ -549,7 +551,7 @@ std::string GraphicalInformationSet::getContinuousColorMapUuid(AbstractObject co
 
 ContinuousColorMap* GraphicalInformationSet::getContinuousColorMap(AbstractObject const* targetObject) const
 {
-	return epcDocument->getDataObjectByUuid<ContinuousColorMap>(getContinuousColorMapUuid(targetObject));
+	return getRepository()->getDataObjectByUuid<ContinuousColorMap>(getContinuousColorMapUuid(targetObject));
 }
 
 void GraphicalInformationSet::setContinuousColorMap(AbstractObject const* targetObject, ContinuousColorMap* continuousColorMap, 
@@ -573,6 +575,7 @@ void GraphicalInformationSet::setContinuousColorMap(AbstractObject const* target
 	resqml2__ColorInformation* colorInformation = getColorInformation(targetObject);
 	if (colorInformation == nullptr) {
 		colorInformation = soap_new_resqml2__ColorInformation(gsoapProxy2_2->soap, 1);
+		getRepository()->addRelationship(this, targetObject);
 		colorInformation->TargetObject = targetObject->newEml22Reference();
 		gis->GraphicalInformation.push_back(colorInformation);
 	}
@@ -589,7 +592,7 @@ void GraphicalInformationSet::setContinuousColorMap(AbstractObject const* target
 	colorInformation->UseLogarithmicMapping = useLogarithmicMapping;
 	colorInformation->ValueVectorIndex = valueVectorIndex;
 
-	continuousColorMap->graphicalInformationSetSet.push_back(this);
+	getRepository()->addRelationship(this, continuousColorMap);
 	colorInformation->ContinuousColorMap = continuousColorMap->newEml22Reference();
 }
 
@@ -724,10 +727,18 @@ void GraphicalInformationSet::hsvToRgb(double hue, double saturation, double val
 
 void GraphicalInformationSet::loadTargetRelationships() const
 {
-	const unsigned int count = getGraphicalInformationSetCount();
-	for (unsigned int index = 0; index < count; ++index) {
-		convertDorIntoRel(getTargetObjectDor(index));
-	}
+	_eml22__GraphicalInformationSet const* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
 
-	//TODO: relations vers color map
+	for (size_t giIndex = 0; giIndex < gis->GraphicalInformation.size(); ++giIndex) {
+		convertDorIntoRel(getTargetObjectDor(giIndex));
+		if (gis->GraphicalInformation[giIndex]->soap_type() == SOAP_TYPE_gsoap_eml2_2_resqml2__ColorInformation) {
+			resqml2__ColorInformation const* colorInformation = static_cast<resqml2__ColorInformation*>(gis->GraphicalInformation[giIndex]);
+			if (colorInformation->DiscreteColorMap != nullptr) {
+				convertDorIntoRel<RESQML2_2_NS::DiscreteColorMap>(colorInformation->DiscreteColorMap);
+			}
+			if (colorInformation->ContinuousColorMap != nullptr) {
+				convertDorIntoRel<RESQML2_2_NS::ContinuousColorMap>(colorInformation->ContinuousColorMap);
+			}
+		}
+	}
 }

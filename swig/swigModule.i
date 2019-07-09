@@ -134,6 +134,10 @@ namespace RESQML2_NS
 	%include "swigResqml2JavaInclude.i"
 #endif
 
+%{
+#include "common/GraphicalInformationSet.h"
+%}
+
 namespace COMMON_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
@@ -215,7 +219,7 @@ namespace COMMON_NS
 		std::string getTargetObjectUuid(unsigned int index) const;
 		AbstractObject* getTargetObject(unsigned int index) const;
 		bool hasGraphicalInformation(AbstractObject const* targetObject) const;
-	
+		
 		bool hasDefaultColor(AbstractObject const* targetObject) const;
 		double getDefaultHue(AbstractObject const* targetObject) const;
 		double getDefaultSaturation(AbstractObject const* targetObject) const;
@@ -228,14 +232,14 @@ namespace COMMON_NS
 		void setDefaultHsvColor(AbstractObject const* targetObject, double hue, double saturation, double value, double alpha = 1.0, std::string const& colorTitle = "");
 		void setDefaultRgbColor(AbstractObject const* targetObject, double red, double green, double blue, double alpha = 1.0, std::string const& colorTitle = "");
 		void setDefaultRgbColor(AbstractObject const* targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha = 1.0, std::string const& colorTitle = "");
-	
+
 		bool hasDiscreteColorMap(AbstractObject const* targetObject) const;
 		gsoap_eml2_2::eml22__DataObjectReference* getDiscreteColorMapDor(AbstractObject const* targetObject) const;
 		std::string getDiscreteColorMapUuid(AbstractObject const* targetObject) const;
 		RESQML2_2_NS::DiscreteColorMap* getDiscreteColorMap(AbstractObject const* targetObject) const;
 		void setDiscreteColorMap(AbstractObject const* targetObject, RESQML2_2_NS::DiscreteColorMap* discreteColorMap,
 			LONG64 valueVectorIndex = 0, bool useReverseMapping = false, bool useLogarithmicMapping = false);
-		
+
 		bool hasContinuousColorMap(AbstractObject const* targetObject) const;
 		gsoap_eml2_2::eml22__DataObjectReference* getContinuousColorMapDor(AbstractObject const* targetObject) const;
 		std::string getContinuousColorMapUuid(AbstractObject const* targetObject) const;

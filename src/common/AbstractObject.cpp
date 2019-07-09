@@ -57,29 +57,25 @@ AbstractObject::AbstractObject() :
 /**
 * Only for partial transfer
 */
-AbstractObject::AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
-	partialObject(partialObject), gsoapProxy2_0_1(nullptr),
+AbstractObject::AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_):
+	partialObject(partialObject_), gsoapProxy2_0_1(nullptr),
 	gsoapProxy2_1(nullptr), gsoapProxy2_2(nullptr),
-	repository(nullptr) {
-}
+	repository(nullptr) {}
 
 AbstractObject::AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy):
 	partialObject(nullptr), gsoapProxy2_0_1(proxy),
 	gsoapProxy2_1(nullptr), gsoapProxy2_2(nullptr),
-	repository(nullptr) {
-}
+	repository(nullptr) {}
 
 AbstractObject::AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) :
 	partialObject(nullptr), gsoapProxy2_0_1(nullptr),
 	gsoapProxy2_1(proxy), gsoapProxy2_2(nullptr),
-	repository(nullptr) {
-}
+	repository(nullptr) {}
 
 AbstractObject::AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy) :
 	partialObject(nullptr), gsoapProxy2_0_1(nullptr),
 	gsoapProxy2_1(nullptr), gsoapProxy2_2(proxy),
-	repository(nullptr) {
-}
+	repository(nullptr) {}
 
 void AbstractObject::cannotBePartial() const
 {

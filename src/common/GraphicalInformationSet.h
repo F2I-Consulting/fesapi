@@ -32,6 +32,11 @@ namespace COMMON_NS
 
 	public:
 		/**
+		* Only to be used in partial transfer context
+		*/
+		GraphicalInformationSet(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject): AbstractObject(partialObject) {}
+
+		/**
 		* @param repo		The repository where the underlying gsoap proxy is going to be created.
 		* @param guid		The guid to set to graphical information set.
 		* @param title		A title for graphical information set.

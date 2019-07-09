@@ -57,28 +57,26 @@ char const* ContinuousColorMapTest::titleLocalDepth3dCrs = "Loacl Depth 3d Crs";
 char const* ContinuousColorMapTest::uuidGraphicalInformationSet = "3b5c1be9-d2a0-4bd3-806f-883d928d1a7d";
 char const* ContinuousColorMapTest::titleGraphicalInformationSet = "Graphical Information Set";
 
-ContinuousColorMapTest::ContinuousColorMapTest(const string & epcDocPath)
-	: AbstractObjectTest(epcDocPath) {
+ContinuousColorMapTest::ContinuousColorMapTest(const string & repoPath)
+	: AbstractObjectTest(repoPath) {
 }
 
-ContinuousColorMapTest::ContinuousColorMapTest(EpcDocument * epcDoc, bool init)
-	: AbstractObjectTest(epcDoc) {
+ContinuousColorMapTest::ContinuousColorMapTest(COMMON_NS::DataObjectRepository* repo, bool init)
+	: AbstractObjectTest(repo) {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void ContinuousColorMapTest::initEpcDocHandler() {
+void ContinuousColorMapTest::initRepoHandler() {
 	// creating a grid 2d representation
-	Horizon* horizon = epcDoc->createHorizon(uuidHorizon,titleHorizonInterpretation);
-	HorizonInterpretation* horizonInterpretation = epcDoc->createHorizonInterpretation(horizon, uuidHorizonInterpretation, titleHorizonInterpretation);
-	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
-	OrganizationFeature* organizationFeature = epcDoc->createEarthModel(uuidOrganizationFeature, titleOrganizationFeature);
-	EarthModelInterpretation* earthModelInterp = epcDoc->createEarthModelInterpretation(organizationFeature, uuidEarthModelInterpretation, titleEarthModelInterpretation);
-	LocalDepth3dCrs* local3dCrs = epcDoc->createLocalDepth3dCrs(uuidLocalDepth3dCrs, titleLocalDepth3dCrs,
-		.0, .0, .0, .0, eml20__LengthUom__m, 23031, eml20__LengthUom__m, "Unknown", false);
-	Grid2dRepresentation* grid2dRepresentation = epcDoc->createGrid2dRepresentation(horizonInterpretation, local3dCrs, uuidGrid2dRepresentation, titleGrid2dRepresentation);
+	Horizon* horizon = repo->createHorizon(uuidHorizon,titleHorizonInterpretation);
+	HorizonInterpretation* horizonInterpretation = repo->createHorizonInterpretation(horizon, uuidHorizonInterpretation, titleHorizonInterpretation);
+	AbstractHdfProxy* hdfProxy = this->repo->getHdfProxySet()[0];
+	OrganizationFeature* organizationFeature = repo->createEarthModel(uuidOrganizationFeature, titleOrganizationFeature);
+	EarthModelInterpretation* earthModelInterp = repo->createEarthModelInterpretation(organizationFeature, uuidEarthModelInterpretation, titleEarthModelInterpretation);
+	Grid2dRepresentation* grid2dRepresentation = repo->createGrid2dRepresentation(horizonInterpretation, uuidGrid2dRepresentation, titleGrid2dRepresentation);
 	const unsigned int numPointInFastestDirection = 2;
 	const unsigned int numPointsInSlowestDirection = 1;
 	grid2dRepresentation->setGeometryAsArray2dOfLatticePoints3d(numPointInFastestDirection, numPointsInSlowestDirection,
@@ -88,13 +86,13 @@ void ContinuousColorMapTest::initEpcDocHandler() {
 		1., 1.);
 
 	// assotiating a Continuous property to the grid 2d representation
-	ContinuousProperty* continuousProperty = epcDoc->createContinuousProperty(grid2dRepresentation, uuidContinuousProperty, titleContinuousProperty, 2,
+	ContinuousProperty* continuousProperty = repo->createContinuousProperty(grid2dRepresentation, uuidContinuousProperty, titleContinuousProperty, 2,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__nodes, "continuousColorMapIndex", gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__continuous);
 	double values[2] = { 0., 1. };
 	continuousProperty->pushBackDoubleHdf5Array2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 
 	// creating the continuous color map
-	RESQML2_2_NS::ContinuousColorMap* continuousColorMap = epcDoc->createContinuousColorMap(defaultUuid, defaultTitle, gsoap_eml2_2::resqml2__InterpolationDomain__rgb, gsoap_eml2_2::resqml2__InterpolationMethod__linear);
+	RESQML2_2_NS::ContinuousColorMap* continuousColorMap = repo->createContinuousColorMap(defaultUuid, defaultTitle, gsoap_eml2_2::resqml2__InterpolationDomain__rgb, gsoap_eml2_2::resqml2__InterpolationMethod__linear);
 	REQUIRE(continuousColorMap != nullptr);
 	unsigned int rgbColors[6] = { 0, 256, 0, 255, 0, 0 };
 	std::string titles[2] = { "green", "red" };
@@ -104,13 +102,13 @@ void ContinuousColorMapTest::initEpcDocHandler() {
 	continuousColorMap->setRgbColors(2, rgbColors, alphas, titles);
 
 	// associating the Continuous color map to the Continuous property
-	GraphicalInformationSet* graphicalInformationSet = epcDoc->createGraphicalInformationSet(uuidGraphicalInformationSet, titleGraphicalInformationSet);
+	GraphicalInformationSet* graphicalInformationSet = repo->createGraphicalInformationSet(uuidGraphicalInformationSet, titleGraphicalInformationSet);
 	graphicalInformationSet->setContinuousColorMap(continuousProperty, continuousColorMap);
 }
 
-void ContinuousColorMapTest::readEpcDocHandler() {
-	GraphicalInformationSet * graphicalInformationSet = epcDoc->getDataObjects<GraphicalInformationSet>()[0];
-	ContinuousProperty* continuousProperty = epcDoc->getDataObjectByUuid<ContinuousProperty>(uuidContinuousProperty);
+void ContinuousColorMapTest::readRepoHandler() {
+	GraphicalInformationSet * graphicalInformationSet = repo->getDataObjects<GraphicalInformationSet>()[0];
+	ContinuousProperty* continuousProperty = repo->getDataObjectByUuid<ContinuousProperty>(uuidContinuousProperty);
 	REQUIRE(graphicalInformationSet->hasContinuousColorMap(continuousProperty));
 	ContinuousColorMap* continuousColorMap = graphicalInformationSet->getContinuousColorMap(continuousProperty);
 	REQUIRE(continuousColorMap->getUuid() == defaultUuid);
