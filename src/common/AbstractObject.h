@@ -18,7 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include <unordered_map>
 #include <stdexcept>
 
 #include "common/DataObjectRepository.h"
