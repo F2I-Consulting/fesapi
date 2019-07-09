@@ -19,7 +19,6 @@ under the License.
 #pragma once
 
 #include "common/EpcExternalPartReference.h"
-#include "resqml2/AbstractRepresentation.h"
 #include "common/HidtType.h"
 
 #define CUMULATIVE_LENGTH_DS_NAME "cumulativeLength"

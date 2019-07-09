@@ -24,92 +24,16 @@ under the License.
 #include "H5Epublic.h"
 #include "H5Fpublic.h"
 
-#include "version_config.h"
-
 #include "epc/Relationship.h"
 #include "epc/FilePart.h"
 
-#include "resqml2_0_1/PropertyKindMapper.h"
-
-#include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "resqml2_0_1/LocalTime3dCrs.h"
-#include "resqml2_0_1/Horizon.h"
-#include "resqml2_0_1/FluidBoundaryFeature.h"
-#include "resqml2_0_1/TectonicBoundaryFeature.h"
-#include "resqml2_0_1/FrontierFeature.h"
-#include "resqml2_0_1/GeobodyFeature.h"
-#include "resqml2_0_1/GenericFeatureInterpretation.h"
-#include "resqml2_0_1/FaultInterpretation.h"
-#include "resqml2_0_1/HorizonInterpretation.h"
-#include "resqml2_0_1/GeobodyBoundaryInterpretation.h"
-#include "resqml2_0_1/GeobodyInterpretation.h"
-#include "resqml2_0_1/PolylineSetRepresentation.h"
-#include "resqml2_0_1/PointSetRepresentation.h"
-#include "resqml2_0_1/PlaneSetRepresentation.h"
-#include "resqml2_0_1/SeismicLatticeFeature.h"
-#include "resqml2_0_1/Grid2dRepresentation.h"
+#include "resqml2_0_1/WellboreMarker.h"
 #include "resqml2_0_1/HdfProxy.h"
-#include "resqml2_0_1/TriangulatedSetRepresentation.h"
-#include "resqml2_0_1/WellboreFeature.h"
-#include "resqml2_0_1/WellboreInterpretation.h"
-#include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
-#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
-#include "resqml2_0_1/DeviationSurveyRepresentation.h"
-#include "resqml2_0_1/MdDatum.h"
-#include "resqml2_0_1/PolylineRepresentation.h"
-#include "resqml2_0_1/SubRepresentation.h"
-#include "resqml2_0_1/GridConnectionSetRepresentation.h"
-#include "resqml2_0_1/TimeSeries.h"
-#include "resqml2_0_1/PropertyKind.h"
-#include "resqml2_0_1/ContinuousProperty.h"
-#include "resqml2_0_1/CategoricalProperty.h"
-#include "resqml2_0_1/DiscreteProperty.h"
-#include "resqml2_0_1/CommentProperty.h"
-#include "resqml2_0_1/StringTableLookup.h"
-#include "resqml2_0_1/SeismicLineFeature.h"
-#include "resqml2_0_1/SeismicLineSetFeature.h"
-#include "resqml2_0_1/OrganizationFeature.h"
-
-#include "resqml2_0_1/BlockedWellboreRepresentation.h"
-
-#include "resqml2_0_1/EarthModelInterpretation.h"
-#include "resqml2_0_1/RepresentationSetRepresentation.h"
-#include "resqml2_0_1/StructuralOrganizationInterpretation.h"
-#include "resqml2_0_1/NonSealedSurfaceFrameworkRepresentation.h"
-#include "resqml2_0_1/SealedSurfaceFrameworkRepresentation.h"
-#include "resqml2_0_1/SealedVolumeFrameworkRepresentation.h"
-
-#include "resqml2_0_1/RockFluidUnitFeature.h"
-#include "resqml2_0_1/RockFluidUnitInterpretation.h"
-#include "resqml2_0_1/RockFluidOrganizationInterpretation.h"
-
-#include "resqml2_0_1/StratigraphicUnitFeature.h"
-#include "resqml2_0_1/StratigraphicUnitInterpretation.h"
-#include "resqml2_0_1/StratigraphicColumn.h"
-#include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
-#include "resqml2_0_1/StratigraphicOccurrenceInterpretation.h"
-
-#include "resqml2_0_1/IjkGridExplicitRepresentation.h"
-#include "resqml2_0_1/IjkGridParametricRepresentation.h"
-#include "resqml2_0_1/IjkGridLatticeRepresentation.h"
-#include "resqml2_0_1/IjkGridNoGeometryRepresentation.h"
-#include "resqml2_0_1/UnstructuredGridRepresentation.h"
-
-#include "resqml2_0_1/Activity.h"
-#include "resqml2_0_1/ActivityTemplate.h"
-#include "resqml2_0_1/ContinuousPropertySeries.h"
-#include "resqml2_0_1/CategoricalPropertySeries.h"
-#include "resqml2_0_1/DiscretePropertySeries.h"
-
-#include "witsml2_0/Well.h"
-
-#include "tools/GuidTools.h"
+#include "resqml2/AbstractProperty.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
-using namespace WITSML2_0_NS;
 
 const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 
@@ -210,7 +134,7 @@ void EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64
 	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it)
 	{
 		for (size_t i = 0; i < it->second.size(); ++i) {
-			if (!it->second[i]->isPartial() && dynamic_cast<WellboreMarker*>(it->second[i]) == nullptr) {
+			if (!it->second[i]->isPartial() && dynamic_cast<RESQML2_0_1_NS::WellboreMarker*>(it->second[i]) == nullptr) {
 				const string str = it->second[i]->serializeIntoString();
 
 				epc::FilePart* const fp = package->createPart(str, it->second[i]->getPartNameInEpcDocument());
