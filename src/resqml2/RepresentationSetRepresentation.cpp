@@ -19,6 +19,7 @@ under the License.
 #include "resqml2/RepresentationSetRepresentation.h"
 
 #include <stdexcept>
+#include <limits>
 
 #include "resqml2/AbstractLocal3dCrs.h"
 
