@@ -28,7 +28,6 @@ under the License.
 using namespace std;
 using namespace COMMON_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* EpcExternalPartReference::XML_TAG = "EpcExternalPartReference";
 

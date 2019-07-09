@@ -21,7 +21,6 @@ under the License.
 #include "resqml2/AbstractFeatureInterpretation.h"
 
 using namespace std;
-using namespace epc;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 

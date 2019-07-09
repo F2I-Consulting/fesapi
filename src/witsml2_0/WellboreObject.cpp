@@ -25,7 +25,6 @@ under the License.
 using namespace std;
 using namespace WITSML2_0_NS;
 using namespace gsoap_eml2_1;
-using namespace epc;
 
 Wellbore* WellboreObject::getWellbore() const
 {

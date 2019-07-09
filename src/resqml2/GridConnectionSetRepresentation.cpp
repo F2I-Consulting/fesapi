@@ -33,7 +33,6 @@ under the License.
 #include "resqml2_0_1/StructuralOrganizationInterpretation.h"
 
 using namespace std;
-using namespace epc;
 using namespace RESQML2_NS;
 using namespace gsoap_resqml2_0_1;
 

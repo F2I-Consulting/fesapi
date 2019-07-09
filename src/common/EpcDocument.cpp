@@ -106,7 +106,6 @@ under the License.
 #include "tools/GuidTools.h"
 
 using namespace std;
-using namespace epc;
 using namespace gsoap_resqml2_0_1;
 using namespace COMMON_NS;
 using namespace RESQML2_0_1_NS;
@@ -136,7 +135,7 @@ void  EpcDocument::open(const std::string & fileName)
 
 	setFilePath(fileName);
 
-	package = new Package();
+	package = new epc::Package();
 }
 
 void EpcDocument::close()
@@ -177,14 +176,14 @@ namespace {
 
 		const std::vector<COMMON_NS::AbstractObject const *>& srcObj = repo.getSourceObjects(dataObj);
 		for (size_t index = 0; index < srcObj.size(); ++index) {
-			Relationship relRep(srcObj[index]->getPartNameInEpcDocument(), "", srcObj[index]->getUuid());
+			epc::Relationship relRep(srcObj[index]->getPartNameInEpcDocument(), "", srcObj[index]->getUuid());
 			relRep.setSourceObjectType();
 			result.push_back(relRep);
 		}
 
 		const std::vector<COMMON_NS::AbstractObject const *>& targetObj = repo.getTargetObjects(dataObj);
 		for (size_t index = 0; index < targetObj.size(); ++index) {
-			Relationship relRep(targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
+			epc::Relationship relRep(targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
 			relRep.setDestinationObjectType();
 			result.push_back(relRep);
 		}
@@ -237,9 +236,9 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo)
 	}
 
 	// Read all RESQML objects
-	const FileContentType::ContentTypeMap contentTypes = package->getFileContentType().getAllContentType();
+	const epc::FileContentType::ContentTypeMap contentTypes = package->getFileContentType().getAllContentType();
 	// 14 equals "application/x-".size()
-	for (FileContentType::ContentTypeMap::const_iterator it=contentTypes.begin(); it != contentTypes.end(); ++it)
+	for (epc::FileContentType::ContentTypeMap::const_iterator it=contentTypes.begin(); it != contentTypes.end(); ++it)
 	{
 		std::string contentType = it->second.getContentTypeString();
 		if (contentType.find("resqml", 14) != std::string::npos ||
@@ -266,9 +265,9 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo)
 					result += "The HDF proxy " + it->second.getExtensionOrPartName() + " does not look to be associated to any HDF files : there is no rel file for this object. It is going to be withdrawn.\n";
 					continue;
 				}
-				FileRelationship relFile;
+				epc::FileRelationship relFile;
 				relFile.readFromString(package->extractFile(relFilePath));
-				const vector<Relationship> allRels = relFile.getAllRelationship();
+				const vector<epc::Relationship> allRels = relFile.getAllRelationship();
 				for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
 					if (allRels[relIndex].getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
 						static_cast<RESQML2_0_1_NS::HdfProxy*>(wrapper)->setRelativePath(allRels[relIndex].getTarget());
