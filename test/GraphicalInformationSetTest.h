@@ -26,8 +26,8 @@ namespace commontest {
 	public:
 		static const char* defaultUuid;
 		static const char* defaultTitle;
-		static const char* GraphicalInformationSetTest::uuidHorizon;
-		static const char* GraphicalInformationSetTest::titleHorzon;
+		static const char* uuidHorizon;
+		static const char* titleHorzon;
 
 		GraphicalInformationSetTest(const std::string & repoPath);
 		GraphicalInformationSetTest(COMMON_NS::DataObjectRepository* repo, bool init);

@@ -387,15 +387,15 @@ void GraphicalInformationSet::setDefaultRgbColor(AbstractObject const* targetObj
 		throw invalid_argument("The target object cannot be null");
 	}
 
-	if (red < 0 || red > 255) {
+	if (red > 255) {
 		throw invalid_argument("red must be in range [0, 255]");
 	}
 
-	if (green < 0 || green > 255) {
+	if (green > 255) {
 		throw invalid_argument("green must be in range [0, 255]");
 	}
 
-	if (blue < 0 || blue > 255) {
+	if (blue > 255) {
 		throw invalid_argument("blue must be in range [0, 255]");
 	}
 
@@ -446,6 +446,8 @@ gsoap_eml2_2::eml22__DataObjectReference* GraphicalInformationSet::getDiscreteCo
 			return getDiscreteColorMapDor(property->getLocalPropertyKind());
 		}
 	}
+
+	throw invalid_argument("This object has no discrete color map");
 }
 
 std::string GraphicalInformationSet::getDiscreteColorMapUuid(AbstractObject const* targetObject) const
@@ -542,6 +544,8 @@ gsoap_eml2_2::eml22__DataObjectReference* GraphicalInformationSet::getContinuous
 			return getContinuousColorMapDor(property->getLocalPropertyKind());
 		}
 	}
+
+	throw invalid_argument("This object has no continuous color map");
 }
 
 std::string GraphicalInformationSet::getContinuousColorMapUuid(AbstractObject const* targetObject) const
