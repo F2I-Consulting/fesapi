@@ -29,9 +29,9 @@ namespace COMMON_NS
 	class AbstractObject
 	{
 	private:
-		static char citationFormat[];
-
 		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject; // only in case of partial transfer
+
+		static char citationFormat[];
 
 		/**
 		* Set a uuid. If the input uuid is empty then a random uuid will be set.
@@ -79,7 +79,7 @@ namespace COMMON_NS
 			TWO_DOT_ONE = 1,
 			TWO_DOT_TWO = 2,
 		};
-		
+
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;
 		gsoap_eml2_1::eml21__AbstractObject* gsoapProxy2_1;
 		gsoap_eml2_2::eml22__AbstractObject* gsoapProxy2_2;
@@ -91,7 +91,7 @@ namespace COMMON_NS
 		/**
 		* Constructor for partial transfer
 		*/
-		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject);
+		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_);
 
 		AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy);
 

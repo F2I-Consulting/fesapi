@@ -20,6 +20,7 @@ under the License.
 
 #include <vector>
 #include <string>
+#include <limits>
 
 #include "witsml2_1/ToolErrorModelDictionary.h"
 

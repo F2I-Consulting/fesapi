@@ -138,7 +138,7 @@ namespace std {
    %template(StratigraphicUnitInterpretationVector) vector<RESQML2_0_1_NS::StratigraphicUnitInterpretation*>;
    %template(StratigraphicOccurrenceInterpretationVector) vector<RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation*>;
    %template(HorizonInterpretationVector) vector<RESQML2_0_1_NS::HorizonInterpretation*>;
-   %template(Grid2dRepresentationVector) vector<RESQML2_0_1_NS::Grid2dRepresentation*>;
+   %template(ConstGrid2dRepresentationVector) vector<RESQML2_0_1_NS::Grid2dRepresentation const*>;
    %template(PolylineRepresentationVector) vector<RESQML2_0_1_NS::PolylineRepresentation*>;
    %template(PolylineSetRepresentationVector) vector<RESQML2_0_1_NS::PolylineSetRepresentation*>;
    %template(TriangulatedSetRepresentationVector) vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*>;
