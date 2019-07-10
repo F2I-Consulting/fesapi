@@ -20,8 +20,6 @@ under the License.
 
 #include "resqml2_0_1/AbstractSurfaceFrameworkRepresentation.h"
 
-#include "resqml2_0_1/SealedVolumeFrameworkRepresentation.h"
-
 namespace RESQML2_NS {
 	class AbstractHdfProxy;
 }
@@ -51,9 +49,6 @@ namespace RESQML2_0_1_NS
 		* @return			A contact patch from its index in a contact of this framework.
 		*/
 		gsoap_resqml2_0_1::resqml2__ContactPatch* getContactPatch(unsigned int contactIdx, unsigned int cpIndex) const;
-		
-		friend void SealedVolumeFrameworkRepresentation::setSealedSurfaceFramework(SealedSurfaceFrameworkRepresentation* ssf);
-		std::vector<SealedVolumeFrameworkRepresentation*> svfSet;
 
 	public:
 

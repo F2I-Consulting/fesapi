@@ -35,8 +35,7 @@ const char* SealedSurfaceFrameworkRepresentation::XML_TAG = "SealedSurfaceFramew
 SealedSurfaceFrameworkRepresentation::SealedSurfaceFrameworkRepresentation(
         StructuralOrganizationInterpretation* interp,
         const std::string & guid,
-        const std::string & title
-        )
+        const std::string & title)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The structural organization interpretation cannot be null.");
