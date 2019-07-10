@@ -177,15 +177,15 @@ void ContinuousColorMap::setNanRgbColor(double red, double green, double blue, d
 
 void ContinuousColorMap::setNanRgbColor(unsigned int red, unsigned int green, unsigned int blue, double alpha, std::string const& colorTitle)
 {
-	if (red < 0 || red > 255) {
-		throw invalid_argument("red must be in range [0, 255]");
+	if (red > 255) {
+		 throw invalid_argument("red must be in range [0, 255]");
 	}
 
-	if (green < 0 || green > 255) {
+	if (green > 255) {
 		throw invalid_argument("green must be in range [0, 255]");
 	}
 
-	if (blue < 0 || blue > 255) {
+	if (blue > 255) {
 		throw invalid_argument("blue must be in range [0, 255]");
 	}
 
