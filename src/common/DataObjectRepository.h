@@ -22,7 +22,8 @@ under the License.
 #include <sstream>
 
 #include "proxies/gsoap_resqml2_0_1H.h"
-#include "proxies/gsoap_eml2_1H.h"
+#include "proxies/gsoap_eml2_1H.h""
+#include "proxies/gsoap_eml2_2H.h"
 
 #include "nsDefinitions.h"
 
@@ -123,7 +124,12 @@ namespace RESQML2_0_1_NS
 	class RockFluidOrganizationInterpretation;
 	class RockFluidUnitInterpretation;
 	class RockFluidUnitFeature;
+}
 
+namespace RESQML2_2_NS
+{
+	class DiscreteColorMap;
+	class ContinuousColorMap;
 }
 
 namespace WITSML2_0_NS
@@ -185,6 +191,7 @@ namespace COMMON_NS
 		* It does not work for EpcExternalPartReference content type since this type is related to an external file which must be handled differently.
 		*/
 		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
+		COMMON_NS::AbstractObject* getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType);
 		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
 
 		/**
@@ -673,6 +680,11 @@ namespace COMMON_NS
 		* Create a partial object in this repository based on a EML2.1 Data Object Reference
 		*/
 		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_1::eml21__DataObjectReference const * dor);
+
+		/**
+		* Create a partial object in this repository based on a EML2.1 Data Object Reference
+		*/
+		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_2::eml22__DataObjectReference const * dor);
 
 		/**
 		* Create a partial object i.e. a data object reference (DOR) based on an UUID + a title.
@@ -1232,6 +1244,18 @@ namespace COMMON_NS
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::witsml2__ChannelStatus channelStatus);
+
+		//************************************
+		//************ EML2.2 ****************
+		//************************************
+
+		DLL_IMPORT_OR_EXPORT GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
+
+		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::DiscreteColorMap* createDiscreteColorMap(const std::string& guid, const std::string& title);
+
+		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::ContinuousColorMap* createContinuousColorMap(const std::string& guid, const std::string& title,
+			gsoap_eml2_2::resqml2__InterpolationDomain interpolationDomain, gsoap_eml2_2::resqml2__InterpolationMethod interpolationMethod);
+
 
 		//************************************
 		//***** STANDARD PROP KIND ***********

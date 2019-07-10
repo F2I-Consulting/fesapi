@@ -54,23 +54,25 @@ AbstractObject::AbstractObject() :
 /**
 * Only for partial transfer
 */
-AbstractObject::AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
-	partialObject(partialObject), gsoapProxy2_0_1(nullptr),
-	gsoapProxy2_1(nullptr),
-	repository(nullptr) {
-}
+AbstractObject::AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_):
+	partialObject(partialObject_), gsoapProxy2_0_1(nullptr),
+	gsoapProxy2_1(nullptr), gsoapProxy2_2(nullptr),
+	repository(nullptr) {}
 
 AbstractObject::AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy):
 	partialObject(nullptr), gsoapProxy2_0_1(proxy),
-	gsoapProxy2_1(nullptr),
-	repository(nullptr) {
-}
+	gsoapProxy2_1(nullptr), gsoapProxy2_2(nullptr),
+	repository(nullptr) {}
 
 AbstractObject::AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) :
 	partialObject(nullptr), gsoapProxy2_0_1(nullptr),
-	gsoapProxy2_1(proxy),
-	repository(nullptr) {
-}
+	gsoapProxy2_1(proxy), gsoapProxy2_2(nullptr),
+	repository(nullptr) {}
+
+AbstractObject::AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy) :
+	partialObject(nullptr), gsoapProxy2_0_1(nullptr),
+	gsoapProxy2_1(nullptr), gsoapProxy2_2(proxy),
+	repository(nullptr) {}
 
 void AbstractObject::cannotBePartial() const
 {
@@ -657,14 +659,19 @@ string AbstractObject::getContentType() const
 		return "application/x-eml+xml;version=2.0;type=obj_" + getXmlTag();
 	else if (xmlNs == "eml21")
 		return "application/x-eml+xml;version=2.1;type=" + getXmlTag();
+	else if (xmlNs == "eml22")
+		return "application/x-eml+xml;version=2.2;type=" + getXmlTag();
+	else if (xmlNs == "resqml22")
+		return "application/x-resqml+xml;version=2.2;type=" + getXmlTag();
 	else
 		throw invalid_argument("unknown xml namespace");
 }
 
 std::string AbstractObject::getPartNameInEpcDocument() const
 {
-	std::string result = getXmlTag() + "_" + getUuid() + ".xml";
-	return getXmlNamespace() == "eml21" ? result : "obj_" + result;
+	const std::string result = getXmlTag() + "_" + getUuid() + ".xml";
+	const std::string xmlNs = getXmlNamespace();
+	return xmlNs == "eml21" || xmlNs == "eml22" || xmlNs == "resqml22" ? result : "obj_" + result;
 }
 
 string AbstractObject::serializeIntoString()

@@ -93,6 +93,9 @@ under the License.
 #include "resqml2_0_1/CategoricalPropertySeries.h"
 #include "resqml2_0_1/DiscretePropertySeries.h"
 
+#include "resqml2_2/DiscreteColorMap.h"
+#include "resqml2_2/ContinuousColorMap.h"
+
 #include "witsml2_0/Well.h"
 
 #include "tools/GuidTools.h"
@@ -101,6 +104,7 @@ using namespace std;
 using namespace COMMON_NS;
 using namespace RESQML2_0_1_NS;
 using namespace WITSML2_0_NS;
+using namespace RESQML2_2_NS;
 
 namespace {
 	class SameVersion {
@@ -148,6 +152,23 @@ namespace {
 	(resqmlContentType.compare(className::XML_TAG) == 0)\
 	{\
 		GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
+	}
+
+///////////////////////////
+/////// RESQML 2.2 //////
+///////////////////////////
+#define GET_RESQML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
+	gsoap_eml2_2::_resqml2__##className* read = gsoap_eml2_2::soap_new_resqml2__##className(gsoapContext, 1);\
+	soap_read_resqml2__##className(gsoapContext, read);
+
+#define GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
+	GET_RESQML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
+	wrapper = new className(read);
+
+#define CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
+	(resqmlContentType.compare(className::XML_TAG) == 0)\
+	{\
+		GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
 	}
 
 /////////////////////
@@ -346,6 +367,9 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 		}
 		wrapper = getResqml2_0_1WrapperFromGsoapContext(datatype);
 	}
+	else if (contentType.find("application/x-resqml+xml;version=2.2;type=") != string::npos) {
+		wrapper = getResqml2_2WrapperFromGsoapContext(datatype);
+	}
 	else if (contentType.find("application/x-witsml+xml;version=2.0;type=") != string::npos) {
 		wrapper = getWitsml2_0WrapperFromGsoapContext(datatype);
 	}
@@ -514,6 +538,20 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_1::eml
 	}
 
 	throw invalid_argument("The content type " + resqmlContentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
+}
+
+COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_2::eml22__DataObjectReference const * dor)
+{
+	const size_t lastEqualCharPos = dor->ContentType.find_last_of('='); // The XML tag is after "type="
+	const string resqmlContentType = dor->ContentType.substr(lastEqualCharPos + 1);
+
+	if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(COMMON_NS::GraphicalInformationSet)
+	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::DiscreteColorMap)
+	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::ContinuousColorMap)
+	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
+	{
+		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
+	}
 }
 
 //************************************
@@ -1318,7 +1356,23 @@ WITSML2_0_NS::Trajectory* DataObjectRepository::createTrajectory(WITSML2_0_NS::W
 	const std::string & title,
 	gsoap_eml2_1::witsml2__ChannelStatus channelStatus)
 {
-	return new Trajectory(witsmlWellbore, guid, title, channelStatus);
+	return new WITSML2_0_NS::Trajectory(witsmlWellbore, guid, title, channelStatus);
+}
+
+COMMON_NS::GraphicalInformationSet* DataObjectRepository::createGraphicalInformationSet(const std::string & guid, const std::string & title)
+{
+	return new COMMON_NS::GraphicalInformationSet(this, guid, title);
+}
+
+RESQML2_2_NS::DiscreteColorMap* DataObjectRepository::createDiscreteColorMap(const std::string& guid, const std::string& title)
+{
+	return new RESQML2_2_NS::DiscreteColorMap(this, guid, title);
+}
+
+RESQML2_2_NS::ContinuousColorMap* DataObjectRepository::createContinuousColorMap(const std::string& guid, const std::string& title,
+	gsoap_eml2_2::resqml2__InterpolationDomain interpolationDomain, gsoap_eml2_2::resqml2__InterpolationMethod interpolationMethod)
+{
+	return new RESQML2_2_NS::ContinuousColorMap(this, guid, title, interpolationDomain, interpolationMethod);
 }
 
 std::vector<RESQML2_0_1_NS::LocalDepth3dCrs*> DataObjectRepository::getLocalDepth3dCrsSet() const { return getDataObjects<RESQML2_0_1_NS::LocalDepth3dCrs>(); }
@@ -1933,6 +1987,16 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapC
 	{
 		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
 	}
+
+	return wrapper;
+}
+
+COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType)
+{
+	COMMON_NS::AbstractObject* wrapper = nullptr;
+
+	if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DiscreteColorMap)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ContinuousColorMap)
 
 	return wrapper;
 }
