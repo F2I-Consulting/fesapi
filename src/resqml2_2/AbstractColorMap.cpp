@@ -29,7 +29,7 @@ void AbstractColorMap::setRgbColors(unsigned int colorCount,
 	double const* rgbColors, double const* alphas, vector<string> const& colorTitles,
 	double const* indices)
 {
-	double* hsvColors = new double[((double)colorCount) * 3];
+	double* hsvColors = new double[colorCount * 3];
 	for (size_t colorIndex = 0; colorIndex < colorCount; ++colorIndex) {
 		if (rgbColors[3 * colorIndex] < 0 || rgbColors[3 * colorIndex] > 1) {
 			throw invalid_argument("red must be in range [0, 1]");
@@ -56,7 +56,7 @@ void AbstractColorMap::setRgbColors(unsigned int colorCount,
 	unsigned int const* rgbColors, double const* alphas, vector<string> const& colorTitles,
 	double const* indices)
 {
-	double* hsvColors = new double[((double)colorCount) * 3];
+	double* hsvColors = new double[colorCount * 3];
 	for (size_t colorIndex = 0; colorIndex < colorCount; ++colorIndex) {
 		if (rgbColors[3 * colorIndex] > 255) {
 			throw invalid_argument("red must be in range [0, 255]");
