@@ -95,7 +95,7 @@ void DiscreteColorMapTest::initRepoHandler() {
 	REQUIRE(discreteColorMap1 != nullptr);
 	unsigned int rgbColors1[6] = { 0, 0, 256, 255, 0, 0 };
 	double alphas1[2] = { 1., 1. };
-	std::string titles1[2] = { "blue", "red" };
+	vector<string> titles1 = { "blue", "red" };
 	REQUIRE_THROWS(discreteColorMap1->setRgbColors(2, rgbColors1, alphas1, titles1));
 	rgbColors1[2] = 255;
 	discreteColorMap1->setRgbColors(2, rgbColors1, alphas1, titles1);
@@ -109,7 +109,7 @@ void DiscreteColorMapTest::initRepoHandler() {
 	REQUIRE(discreteColorMap2 != nullptr);
 	unsigned int rgbColors2[6] = { 255, 0, 0, 0, 0, 255 };
 	double alphas2[2] = { 1., 1. };
-	std::string titles2[2] = { "red", "blue" };
+	vector<string> titles2 = { "red", "blue" };
 	discreteColorMap2->setRgbColors(2, rgbColors2, alphas2, titles2);
 	graphicalInformationSet->setDiscreteColorMap(discreteProperty, discreteColorMap2);
 	REQUIRE(graphicalInformationSet->hasDiscreteColorMap(discreteProperty) == true);

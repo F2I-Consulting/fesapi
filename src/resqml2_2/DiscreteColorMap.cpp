@@ -41,7 +41,7 @@ DiscreteColorMap::DiscreteColorMap(COMMON_NS::DataObjectRepository* repo, string
 }
 
 void DiscreteColorMap::setHsvColors(unsigned int colorCount,
-	double const* hsvColors, double const* alphas, string const* colorTitles,
+	double const* hsvColors, double const* alphas, vector<string> const& colorTitles,
 	double const* indices)
 {
 	if (colorCount == 0)
@@ -74,7 +74,7 @@ void DiscreteColorMap::setHsvColors(unsigned int colorCount,
 		color->Value = hsvColors[3 * colorIndex + 2];
 		color->Alpha = alphas != nullptr ? alphas[colorIndex] : 1.0;
 
-		if (colorTitles != nullptr) {
+		if (!colorTitles.empty()) {
 			color->Title = soap_new_std__string(gsoapProxy2_2->soap, 1);
 			*color->Title = colorTitles[colorIndex];
 		}

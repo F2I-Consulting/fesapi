@@ -213,9 +213,9 @@ void serializePerforations(COMMON_NS::DataObjectRepository * pck)
 	wellboreCompletion->setPerforationHistoryStartDate(1, 1, 1514764800);
 }
 
-void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdfProxy * hdfProxy)
+void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, COMMON_NS::AbstractHdfProxy * hdfProxy)
 {
-	COMMON_NS::GraphicalInformationSet* graphicalInformationSet = pck->createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
+	COMMON_NS::GraphicalInformationSet* graphicalInformationSet = repo->createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
 
 	// *************
 	// Default color
@@ -244,24 +244,24 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * pck, COM
 	// ******************
 
 	// associating a discrete color map to property kind propType1
-	RESQML2_2_NS::DiscreteColorMap* propKindDiscrColMap = pck->createDiscreteColorMap("d808d79c-2cad-4c4f-9712-3b3ab4aa3f4a", "Property kind discrete color map");
+	RESQML2_2_NS::DiscreteColorMap* propKindDiscrColMap = repo->createDiscreteColorMap("d808d79c-2cad-4c4f-9712-3b3ab4aa3f4a", "Property kind discrete color map");
 	unsigned int propKindDiscrColMapRgbColors[9] = { 0, 0, 255, 255, 255, 255, 255, 0, 0 };
 	double propKindDiscrColMapAlphas[3] = { 1., 1., 1. };
-	std::string propKindDiscrColMapTitles[3] = { "blue", "white", "red" };
+	vector<string> propKindDiscrColMapTitles = { "blue", "white", "red" };
 	propKindDiscrColMap->setRgbColors(3, propKindDiscrColMapRgbColors, propKindDiscrColMapAlphas, propKindDiscrColMapTitles);
 	graphicalInformationSet->setDiscreteColorMap(propType1, propKindDiscrColMap);
 
 	// associating a discrete color map to dicreteProp1
-	RESQML2_2_NS::DiscreteColorMap* discrColMap = pck->createDiscreteColorMap("3daf4661-ae8f-4357-adee-0b0159bdd0a9", "Discrete color map");
+	RESQML2_2_NS::DiscreteColorMap* discrColMap = repo->createDiscreteColorMap("3daf4661-ae8f-4357-adee-0b0159bdd0a9", "Discrete color map");
 	unsigned int discrColMapRgbColors[18] = { 255, 0, 0, 0, 255, 0, 0, 0, 255, 169, 84, 27, 0, 0, 0, 255, 255, 255 };
 	double discrColMapAlphas[6] = { 1., 1., 1., 1., 1., 1. };
-	std::string discrColMapTitles[6] = { "red", "green", "blue", "orange", "black", "white"};
+	vector<string> discrColMapTitles = { "red", "green", "blue", "orange", "black", "white"};
 	discrColMap->setRgbColors(6, discrColMapRgbColors, discrColMapAlphas, discrColMapTitles);
 	graphicalInformationSet->setDiscreteColorMap(discreteProp1, discrColMap);
 
 	// creating a new discrete property of type propType1 without associating it to a discrete color map.
 	// Thus, its associated discrete color map remains the one associated to propType1
-	DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(ijkgrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex", 1,
+	DiscreteProperty* discreteProp2 = repo->createDiscreteProperty(ijkgrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex", 1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, propType1);
 	unsigned short prop2Values[2] = { 0, 1 };
 	discreteProp2->pushBackUShortHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, -1);
@@ -270,9 +270,9 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * pck, COM
 	// Continuous color map
 	// ********************
 
-	Horizon* contColMapHrz = pck->createHorizon("b9ec6ec9-2766-4af7-889e-5565b5fa5022", "Horizon for continuous color map");
-	HorizonInterpretation* contColMapHrzInterp = pck->createHorizonInterpretation(contColMapHrz, "34b69c81-6cfa-4531-be5b-f6bd9b74802f", "Horizon interpretation for continuous color map");
-	Grid2dRepresentation* contColMapGrid2dRep = pck->createGrid2dRepresentation(contColMapHrzInterp, "4e56b0e4-2cd1-4efa-97dd-95f72bcf9f80", "100x10 grid 2d for continuous color map");
+	Horizon* contColMapHrz = repo->createHorizon("b9ec6ec9-2766-4af7-889e-5565b5fa5022", "Horizon for continuous color map");
+	HorizonInterpretation* contColMapHrzInterp = repo->createHorizonInterpretation(contColMapHrz, "34b69c81-6cfa-4531-be5b-f6bd9b74802f", "Horizon interpretation for continuous color map");
+	Grid2dRepresentation* contColMapGrid2dRep = repo->createGrid2dRepresentation(contColMapHrzInterp, "4e56b0e4-2cd1-4efa-97dd-95f72bcf9f80", "100x10 grid 2d for continuous color map");
 	const unsigned int numPointInFastestDirection = 50;
 	const unsigned int numPointsInSlowestDirection = 100;
 	contColMapGrid2dRep->setGeometryAsArray2dOfLatticePoints3d(numPointInFastestDirection, numPointsInSlowestDirection,
@@ -281,7 +281,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * pck, COM
 		0., 1., 0.,
 		1., 1.);
 
-	contColMapContProp = pck->createContinuousProperty(contColMapGrid2dRep, "c2be50b6-08d2-461b-81a4-73dbb04ba605", "Continuous property for continuous color map", 2,
+	contColMapContProp = repo->createContinuousProperty(contColMapGrid2dRep, "c2be50b6-08d2-461b-81a4-73dbb04ba605", "Continuous property for continuous color map", 2,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__nodes, "continuousColorMapIndex", gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__continuous);
 	double* values = new double[numPointInFastestDirection * numPointsInSlowestDirection];
 	for (size_t slowestIndex = 0; slowestIndex < numPointsInSlowestDirection; ++slowestIndex) {
@@ -292,10 +292,11 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * pck, COM
 	contColMapContProp->pushBackDoubleHdf5Array2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 	delete[] values;
 
-	RESQML2_2_NS::ContinuousColorMap* contColMap = pck->createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", gsoap_eml2_2::resqml2__InterpolationDomain__rgb, gsoap_eml2_2::resqml2__InterpolationMethod__linear);
+	RESQML2_2_NS::ContinuousColorMap* contColMap = repo->createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", gsoap_eml2_2::resqml2__InterpolationDomain__rgb, gsoap_eml2_2::resqml2__InterpolationMethod__linear);
 	unsigned int contColMapRgbColors[6] = {0, 255, 0, 255, 0, 0 };
-	std::string contColMapColTitles[2] = { "green", "red" };
-	contColMap->setRgbColors(2, contColMapRgbColors, discrColMapAlphas, contColMapColTitles);
+	vector<string> contColMapColTitles = { "green", "red" };
+	double contColMapAlphas[2] = { 1., 1. };
+	contColMap->setRgbColors(2, contColMapRgbColors, contColMapAlphas, contColMapColTitles);
 	graphicalInformationSet->setContinuousColorMap(contColMapContProp, contColMap);
 }
 

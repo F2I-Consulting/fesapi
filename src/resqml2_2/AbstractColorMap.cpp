@@ -26,7 +26,7 @@ using namespace COMMON_NS;
 using namespace RESQML2_2_NS;
 
 void AbstractColorMap::setRgbColors(unsigned int colorCount,
-	double const* rgbColors, double const* alphas, string const* colorTitles,
+	double const* rgbColors, double const* alphas, vector<string> const& colorTitles,
 	double const* indices)
 {
 	double* hsvColors = new double[((double)colorCount) * 3];
@@ -53,7 +53,7 @@ void AbstractColorMap::setRgbColors(unsigned int colorCount,
 }
 
 void AbstractColorMap::setRgbColors(unsigned int colorCount,
-	unsigned int const* rgbColors, double const* alphas, string const* colorTitles,
+	unsigned int const* rgbColors, double const* alphas, vector<string> const& colorTitles,
 	double const* indices)
 {
 	double* hsvColors = new double[((double)colorCount) * 3];

@@ -54,11 +54,11 @@ namespace RESQML2_2_NS
 		* @param colorCount		the size (number of colors) of the color map
 		* @param hsvColors		array (of size colorCount * 3) of HSV colors with hsvColors[3*i] is the hue, hsvColors[3*i + 1] is the saturation and hsvColors[3*i + 2] is the value of the ith color (hue is in range [0, 360] while saturation and value are in range [0, 1])
 		* @param alpha			array (of size colorCount) of numeric values in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). If alphas == nullptr (default value), default alpha value is 1.
-		* @param colorTitle		array (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
+		* @param colorTitle		vector (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
 		* @param indices		array (of size solorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
 		*/
 		virtual DLL_IMPORT_OR_EXPORT void setHsvColors(unsigned int colorCount,
-			double const* hsvColors, double const* alphas = nullptr, std::string const* colorTitles = nullptr,
+			double const* hsvColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
 			double const* indices = nullptr) = 0;
 
 		/**
@@ -66,11 +66,11 @@ namespace RESQML2_2_NS
 		* @param colorCount		the size (number of colors) of the color map
 		* @param rgbColors		array (of size colorCount * 3) of RGB colors with hsvColors[3*i] is red componant, hsvColors[3*i + 1] is green component and hsvColors[3*i + 2] is blue component of the ith color (red, green and blue are in range [0, 1])
 		* @param alpha			array (of size colorCount) of numeric values in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). If alphas == nullptr (default value), default alpha value is 1.
-		* @param colorTitle		array (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
+		* @param colorTitle		vector (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
 		* @param indices		array (of size solorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
 		*/
 		DLL_IMPORT_OR_EXPORT void setRgbColors(unsigned int colorCount,
-			double const* rgbColors, double const* alphas = nullptr, std::string const* colorTitles = nullptr,
+			double const* rgbColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
 			double const* indices = nullptr);
 
 		/**
@@ -78,11 +78,11 @@ namespace RESQML2_2_NS
 		* @param colorCount		the size (number of colors) of the color map
 		* @param rgbColors		array (of size colorCount * 3) of RGB colors with hsvColors[3*i] is red componant, hsvColors[3*i + 1] is green component and hsvColors[3*i + 2] is blue component of the ith color (red, green and blue are in range [0, 255])
 		* @param alpha			array (of size colorCount) of numeric values in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). If alphas == nullptr (default value), default alpha value is 1.
-		* @param colorTitle		array (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
+		* @param colorTitle		vector (of size colorCount) of color titles. Titles are not set if colorTitles == nullptr (default value)
 		* @param indices		array (of size solorCount) of color indices. These indices are cast to unsigned int in the case of a discrete color map. If indices == nullptr (default value), indices are set from 0 to colorCount - 1
 		*/
 		DLL_IMPORT_OR_EXPORT void setRgbColors(unsigned int colorCount,
-			unsigned int const* rgbColors, double const* alphas = nullptr, std::string const* colorTitles = nullptr,
+			unsigned int const* rgbColors, double const* alphas = nullptr, std::vector<std::string> const& colorTitles = std::vector<std::string>(),
 			double const* indices = nullptr);
 
 		virtual DLL_IMPORT_OR_EXPORT unsigned int getColorCount() const = 0;

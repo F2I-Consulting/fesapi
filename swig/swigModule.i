@@ -123,6 +123,7 @@ under the License.
 	%nspace COMMON_NS::EpcExternalPartReference;
 	%nspace COMMON_NS::AbstractHdfProxy;
 	%nspace COMMON_NS::HdfProxy;
+	%nspace COMMON_NS::GraphicalInformationSet;
 #endif
 
 namespace RESQML2_NS
@@ -134,10 +135,6 @@ namespace RESQML2_NS
 	%include "swigResqml2JavaInclude.i"
 #endif
 
-%{
-#include "common/GraphicalInformationSet.h"
-%}
-
 namespace COMMON_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
@@ -146,6 +143,8 @@ namespace COMMON_NS
 	{
 	public:
 		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG = 3, ULONG = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
+	
+		
 	
 		COMMON_NS::DataObjectRepository* getRepository() const;
 	
@@ -211,7 +210,28 @@ namespace COMMON_NS
 	public:
 		void setCompressionLevel(unsigned int newCompressionLevel);
 	};
-	
+}
+
+%include "swigResqml2Include.i"
+%include "swigResqml2_0_1Include.i"
+%include "swigResqml2_2Include.i"
+%include "swigWitsml2_0Include.i"
+
+%template(StringVector) std::vector< std::string >;
+
+%{
+#include "common/EnumStringMapper.h"
+#include "common/EpcDocument.h"
+#include "common/GraphicalInformationSet.h"
+%}
+
+namespace RESQML2_NS
+{
+	class Activity;
+}
+
+namespace COMMON_NS
+{
 	class GraphicalInformationSet : public AbstractObject
 	{
 	public:
@@ -255,33 +275,16 @@ namespace COMMON_NS
 		static void hsvToRgb(double hue, double saturation, double value, double& red, double& green, double& blue);
 		static void hsvToRgb(double hue, double saturation, double value, unsigned int& red, unsigned int& green, unsigned int& blue);
 	};
-}
-
-%include "swigResqml2Include.i"
-%include "swigResqml2_0_1Include.i"
-%include "swigWitsml2_0Include.i"
-
-%template(StringVector) std::vector< std::string >;
-
-%{
-#include "common/EnumStringMapper.h"
-#include "common/EpcDocument.h"
-%}
-
-namespace RESQML2_NS
-{
-	class Activity;
-}
-
-namespace COMMON_NS
-{
-	%typemap(javafinalize) DataObjectRepository %{
-	%}
+	
 	class DataObjectRepository
 	{
 	public:
 	
 		enum openingMode { READ_ONLY = 0, READ_WRITE = 1, OVERWRITE = 2 };
+		
+		DataObjectRepository();
+		
+		void clear();
 		
 		std::vector<RESQML2_0_1_NS::LocalDepth3dCrs*> getLocalDepth3dCrsSet() const;
 
@@ -781,6 +784,17 @@ namespace COMMON_NS
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::witsml2__ChannelStatus channelStatus);
+
+		//************************************
+		//************ EML2.2 ****************
+		//************************************
+
+		COMMON_NS::GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
+
+		RESQML2_2_NS::DiscreteColorMap* createDiscreteColorMap(const std::string& guid, const std::string& title);
+
+		RESQML2_2_NS::ContinuousColorMap* createContinuousColorMap(const std::string& guid, const std::string& title,
+			gsoap_eml2_2::resqml2__InterpolationDomain interpolationDomain, gsoap_eml2_2::resqml2__InterpolationMethod interpolationMethod);
 
 		//************************************
 		//***** STANDARD PROP KIND ***********

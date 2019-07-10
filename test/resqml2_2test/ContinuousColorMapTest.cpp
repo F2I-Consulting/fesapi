@@ -95,7 +95,7 @@ void ContinuousColorMapTest::initRepoHandler() {
 	RESQML2_2_NS::ContinuousColorMap* continuousColorMap = repo->createContinuousColorMap(defaultUuid, defaultTitle, gsoap_eml2_2::resqml2__InterpolationDomain__rgb, gsoap_eml2_2::resqml2__InterpolationMethod__linear);
 	REQUIRE(continuousColorMap != nullptr);
 	unsigned int rgbColors[6] = { 0, 256, 0, 255, 0, 0 };
-	std::string titles[2] = { "green", "red" };
+	vector<string> titles = { "green", "red" };
 	double alphas[2] = { 1., 1. };
 	REQUIRE_THROWS(continuousColorMap->setRgbColors(2, rgbColors, alphas, titles));
 	rgbColors[1] = 255;

@@ -139,7 +139,7 @@ namespace COMMON_NS
 		* Destructor.
 		* Close the hdf file.
 		*/
-		~HdfProxy() {close();}
+		virtual ~HdfProxy() {close();}
 
 		/**
 		* Open the file for reading and writing.

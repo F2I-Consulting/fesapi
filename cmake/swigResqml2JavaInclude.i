@@ -87,6 +87,18 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
     {
         ret = new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.TimeSeries(cPtr, owner);
     }
+	else if (type.equals("GraphicalInformationSet"))
+	{
+		ret = new com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.GraphicalInformationSet(cPtr, owner);
+	}
+	else if (type.equals("DiscreteColorMap"))
+	{
+		ret = new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.DiscreteColorMap(cPtr, owner);
+	}
+	else if (type.equals("ContinuousColorMap"))
+	{
+		ret = new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.ContinuousColorMap(cPtr, owner);
+	}
 	else if (type.equals("Well"))
 	{
 		ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Well(cPtr, owner);
@@ -102,7 +114,8 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 	else if (type.equals("WellboreCompletion"))
 	{
 		ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellboreCompletion(cPtr, owner);
-	}else
+	}
+	else
     {
 	throw new IllegalArgumentException("Encountered type " + type + " that is not known to be a Resqml or Witsml concrete class");
     }
