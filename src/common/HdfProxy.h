@@ -20,6 +20,8 @@ under the License.
 
 #include "common/AbstractHdfProxy.h"
 
+#include <unordered_map>
+
 namespace COMMON_NS
 {
 	class HdfProxy : public AbstractHdfProxy
@@ -27,10 +29,10 @@ namespace COMMON_NS
 	protected:
 
 		HdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
-			COMMON_NS::AbstractHdfProxy(fromGsoap), hdfFile(-1), compressionLevel(0) {}
+			COMMON_NS::AbstractHdfProxy(fromGsoap), hdfFile(-1), compressionLevel(0), openedGroups() {}
 
 		HdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
-			COMMON_NS::AbstractHdfProxy(fromGsoap), hdfFile(-1), compressionLevel(0) {}
+			COMMON_NS::AbstractHdfProxy(fromGsoap), hdfFile(-1), compressionLevel(0), openedGroups() {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -134,7 +136,7 @@ namespace COMMON_NS
 		* Destructor.
 		* Close the hdf file.
 		*/
-		~HdfProxy() {close();}
+		virtual ~HdfProxy() {close();}
 
 		/**
 		* Open the file for reading and writing.
@@ -599,12 +601,14 @@ namespace COMMON_NS
 		/**
 		* Check if an hdf group named as groupName exists in the root group.
 		* If it exists, it returns the latter. If not, it creates this group and then returns it.
-		* Please close the group after having called and used this group.
+		* Do not close opened or created HDF5 group. They are automatically managed by fesapi.
 		*/
 		hdf5_hid_t openOrCreateGroupInRootGroup(const std::string & groupName);
 
 	    hdf5_hid_t hdfFile;
 
 		unsigned int compressionLevel;
+
+		std::unordered_map< std::string, hdf5_hid_t > openedGroups;
 	};
 }

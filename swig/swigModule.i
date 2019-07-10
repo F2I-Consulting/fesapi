@@ -222,8 +222,6 @@ namespace RESQML2_NS
 
 namespace COMMON_NS
 {
-	%typemap(javafinalize) DataObjectRepository %{
-	%}
 	class DataObjectRepository
 	{
 	public:

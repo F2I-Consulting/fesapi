@@ -174,7 +174,7 @@ void UnstructuredGridRepresentation::getFaceIndicesOfCells(ULONG64 * faceIndices
 	}
 }
 
-void UnstructuredGridRepresentation::getCumulativeFaceCountPerCell(ULONG64 * cumulativeFaceCountPerCell) const
+void UnstructuredGridRepresentation::getCumulativeFaceCountPerCell(ULONG64 * cumulativeFaceCountPerCell_) const
 {
 	_resqml2__UnstructuredGridRepresentation* grid = getSpecializedGsoapProxy();
 	if (grid->Geometry == nullptr)
@@ -183,23 +183,23 @@ void UnstructuredGridRepresentation::getCumulativeFaceCountPerCell(ULONG64 * cum
 	{
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__IntegerHdf5Array*>(grid->Geometry->FacesPerCell->CumulativeLength)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, cumulativeFaceCountPerCell);
+		hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, cumulativeFaceCountPerCell_);
 	}
 	else if (grid->Geometry->FacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerLatticeArray)
 	{
-		cumulativeFaceCountPerCell[0] = static_cast<resqml2__IntegerLatticeArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->StartValue;
+		cumulativeFaceCountPerCell_[0] = static_cast<resqml2__IntegerLatticeArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->StartValue;
 		const LONG64 offsetValue = static_cast<resqml2__IntegerLatticeArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->Offset[0]->Value;
 		const ULONG64 cellCount = getCellCount();
 		for (ULONG64 cumulativeFaceCountPerCellIndex = 1; cumulativeFaceCountPerCellIndex < cellCount; ++cumulativeFaceCountPerCellIndex)
 		{
-			cumulativeFaceCountPerCell[cumulativeFaceCountPerCellIndex] = cumulativeFaceCountPerCell[cumulativeFaceCountPerCellIndex - 1] + offsetValue;
+			cumulativeFaceCountPerCell_[cumulativeFaceCountPerCellIndex] = cumulativeFaceCountPerCell_[cumulativeFaceCountPerCellIndex - 1] + offsetValue;
 		}
 	}
 	else if (grid->Geometry->FacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray)
 	{
 		if (getCellCount() > 1)
 			throw range_error("The cumulative length of faces count per cells cannot be constant if there is more than one cell in the grid");
-		cumulativeFaceCountPerCell[0] = static_cast<resqml2__IntegerConstantArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->Value;
+		cumulativeFaceCountPerCell_[0] = static_cast<resqml2__IntegerConstantArray*>(grid->Geometry->FacesPerCell->CumulativeLength)->Value;
 	}
 }
 
