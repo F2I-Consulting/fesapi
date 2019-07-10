@@ -20,9 +20,7 @@ under the License.
 
 #include <stdexcept>
 
-#include "proxies/gsoap_resqml2_0_1H.h"
-#include "proxies/gsoap_eml2_1H.h"
-#include "common/EpcDocument.h"
+#include "common/DataObjectRepository.h"
 
 namespace COMMON_NS
 {
@@ -369,8 +367,5 @@ namespace COMMON_NS
 		* Get the string value of a string value pair at a particular index in the extra metadata set
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
-
-		static const char* RESQML_2_0_CONTENT_TYPE_PREFIX;
-		static const char* RESQML_2_0_1_CONTENT_TYPE_PREFIX;
 	};
 }

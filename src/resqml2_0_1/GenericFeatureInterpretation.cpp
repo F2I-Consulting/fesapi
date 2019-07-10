@@ -25,7 +25,6 @@ under the License.
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace std;
-using namespace epc;
 
 const char* GenericFeatureInterpretation::XML_TAG = "GenericFeatureInterpretation";
 

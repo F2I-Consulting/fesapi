@@ -19,13 +19,13 @@ under the License.
 #include "resqml2/RepresentationSetRepresentation.h"
 
 #include <stdexcept>
+#include <limits>
 
 #include "resqml2/AbstractLocal3dCrs.h"
 
 #include "tools/Misc.h"
 
 using namespace std;
-using namespace epc;
 using namespace RESQML2_NS;
 
 const char* RepresentationSetRepresentation::XML_TAG = "RepresentationSetRepresentation";

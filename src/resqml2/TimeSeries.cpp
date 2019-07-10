@@ -26,7 +26,6 @@ under the License.
 
 using namespace std;
 using namespace RESQML2_NS;
-using namespace epc;
 
 const char* TimeSeries::XML_TAG = "TimeSeries";
 

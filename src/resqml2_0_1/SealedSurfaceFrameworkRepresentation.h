@@ -52,11 +52,6 @@ namespace RESQML2_0_1_NS
 		*/
 		gsoap_resqml2_0_1::resqml2__ContactPatch* getContactPatch(unsigned int contactIdx, unsigned int cpIndex) const;
 
-		std::vector<epc::Relationship> getAllEpcRelationships() const;
-
-		friend void SealedVolumeFrameworkRepresentation::setSealedSurfaceFramework(SealedSurfaceFrameworkRepresentation* ssf);
-		std::vector<SealedVolumeFrameworkRepresentation*> svfSet;
-
 	public:
 
 		/**

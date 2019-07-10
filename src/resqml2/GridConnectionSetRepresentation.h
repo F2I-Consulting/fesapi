@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
+#include <limits>
+
 #include "resqml2/AbstractRepresentation.h"
 
 namespace RESQML2_NS

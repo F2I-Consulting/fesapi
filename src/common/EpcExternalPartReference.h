@@ -20,11 +20,6 @@ under the License.
 
 #include "common/AbstractObject.h"
 
-namespace RESQML2_NS{
-	class AbstractRepresentation;
-	class AbstractProperty;
-}
-
 namespace COMMON_NS
 {
 	class EpcExternalPartReference : public COMMON_NS::AbstractObject

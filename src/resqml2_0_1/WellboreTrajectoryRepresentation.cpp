@@ -31,7 +31,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 using namespace COMMON_NS;
 
 const char* WellboreTrajectoryRepresentation::XML_TAG = "WellboreTrajectoryRepresentation";

@@ -28,7 +28,6 @@ under the License.
 using namespace gsoap_resqml2_0_1;
 using namespace RESQML2_NS;
 using namespace std;
-using namespace epc;
 
 unsigned int AbstractColumnLayerGridRepresentation::getKCellCount() const
 {

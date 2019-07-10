@@ -26,7 +26,6 @@ under the License.
 using namespace std;
 using namespace WITSML2_0_NS;
 using namespace gsoap_eml2_1;
-using namespace epc;
 
 const char* WellboreCompletion::XML_TAG = "WellboreCompletion";
 

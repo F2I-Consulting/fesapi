@@ -27,7 +27,6 @@ under the License.
 #include "common/AbstractHdfProxy.h"
 
 using namespace std;
-using namespace epc;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
@@ -36,8 +35,7 @@ const char* SealedSurfaceFrameworkRepresentation::XML_TAG = "SealedSurfaceFramew
 SealedSurfaceFrameworkRepresentation::SealedSurfaceFrameworkRepresentation(
         StructuralOrganizationInterpretation* interp,
         const std::string & guid,
-        const std::string & title
-        )
+        const std::string & title)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The structural organization interpretation cannot be null.");

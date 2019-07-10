@@ -326,12 +326,24 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 
 	// By default, create a RESQML2_0_1_NS::HdfProxy to manage numerical values.
 	// If you want a different one, call addOrReplaceEpcExternalPartReference2_0 directly with the type you want as template parameter.
-	if (contentType.find("application/x-eml+xml;version=2.0;type=obj") != string::npos) {
+	if (contentType.find("application/x-eml+xml;version=2.0;type=obj_") != string::npos) {
 		return addOrReplaceEpcExternalPartReference2_0<RESQML2_0_1_NS::HdfProxy>(xml);
 	}
 
 	COMMON_NS::AbstractObject* wrapper = nullptr;
-	if (contentType.find("application/x-resqml+xml;version=2.0;type=obj") != string::npos) {
+	if (contentType.find("application/x-resqml+xml;version=2.0;type=obj_") != string::npos) {
+		wrapper = getResqml2_0_1WrapperFromGsoapContext(datatype);
+	}
+	else if (contentType.find("application/x-resqml+xml;version=2.0.1;type=obj_") != string::npos) {
+		if (contentType != "application/x-resqml+xml;version=2.0.1;type=obj_Activity" &&
+			contentType != "application/x-resqml+xml;version=2.0.1;type=obj_ActivityTemplate" &&
+			contentType != "application/x-resqml+xml;version=2.0.1;type=obj_CategoricalPropertySeries" &&
+			contentType != "application/x-resqml+xml;version=2.0.1;type=obj_CommentPropertySeries" &&
+			contentType != "application/x-resqml+xml;version=2.0.1;type=obj_ContinuousPropertySeries" &&
+			contentType != "application/x-resqml+xml;version=2.0.1;type=obj_StreamlinesFeature" &&
+			contentType != "application/x-resqml+xml;version=2.0.1;type=obj_StreamlinesRepresentation") {
+			addWarning("Content type \"" + contentType + "\" does not belong to 2.0.1. Probably to 2.0? Please fix your ccontent type or ask exporter to fix it.");
+		}
 		wrapper = getResqml2_0_1WrapperFromGsoapContext(datatype);
 	}
 	else if (contentType.find("application/x-witsml+xml;version=2.0;type=") != string::npos) {
