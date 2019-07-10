@@ -74,7 +74,6 @@ void ContinuousColorMapTest::initRepoHandler() {
 	Horizon* horizon = repo->createHorizon(uuidHorizon,titleHorizonInterpretation);
 	HorizonInterpretation* horizonInterpretation = repo->createHorizonInterpretation(horizon, uuidHorizonInterpretation, titleHorizonInterpretation);
 	AbstractHdfProxy* hdfProxy = this->repo->getHdfProxySet()[0];
-	OrganizationFeature* organizationFeature = repo->createEarthModel(uuidOrganizationFeature, titleOrganizationFeature);
 	Grid2dRepresentation* grid2dRepresentation = repo->createGrid2dRepresentation(horizonInterpretation, uuidGrid2dRepresentation, titleGrid2dRepresentation);
 	const unsigned int numPointInFastestDirection = 2;
 	const unsigned int numPointsInSlowestDirection = 1;
