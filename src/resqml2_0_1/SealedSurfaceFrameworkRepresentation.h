@@ -20,8 +20,6 @@ under the License.
 
 #include "resqml2_0_1/AbstractSurfaceFrameworkRepresentation.h"
 
-#include "resqml2_0_1/SealedVolumeFrameworkRepresentation.h"
-
 namespace RESQML2_NS {
 	class AbstractHdfProxy;
 }
