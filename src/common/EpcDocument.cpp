@@ -222,9 +222,9 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo)
 	}
 
 	// Read all RESQML objects
-	const FileContentType::ContentTypeMap contentTypes = package->getFileContentType().getAllContentType();
+	const epc::FileContentType::ContentTypeMap contentTypes = package->getFileContentType().getAllContentType();
 	// 14 equals "application/x-".size()
-	for (FileContentType::ContentTypeMap::const_iterator it = contentTypes.begin(); it != contentTypes.end(); ++it)
+	for (epc::FileContentType::ContentTypeMap::const_iterator it = contentTypes.begin(); it != contentTypes.end(); ++it)
 	{
 		std::string contentType = it->second.getContentTypeString();
 		if (contentType.find("resqml", 14) != std::string::npos ||
@@ -251,9 +251,9 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo)
 					result += "The HDF proxy " + it->second.getExtensionOrPartName() + " does not look to be associated to any HDF files : there is no rel file for this object. It is going to be withdrawn.\n";
 					continue;
 				}
-				FileRelationship relFile;
+				epc::FileRelationship relFile;
 				relFile.readFromString(package->extractFile(relFilePath));
-				const vector<Relationship> allRels = relFile.getAllRelationship();
+				const vector<epc::Relationship> allRels = relFile.getAllRelationship();
 				for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
 					if (allRels[relIndex].getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
 						static_cast<RESQML2_0_1_NS::HdfProxy*>(wrapper)->setRelativePath(allRels[relIndex].getTarget());
