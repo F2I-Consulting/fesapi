@@ -147,7 +147,7 @@ resqml2__ColorInformation* GraphicalInformationSet::getColorInformation(Abstract
 	return nullptr;
 }
 
-bool GraphicalInformationSet::hasDirectGraphicalInformation(const AbstractObject const* targetObject) const
+bool GraphicalInformationSet::hasDirectGraphicalInformation(AbstractObject const* targetObject) const
 {
 	if (targetObject == nullptr) {
 		throw invalid_argument("The target object cannot be null");
@@ -165,7 +165,7 @@ bool GraphicalInformationSet::hasDirectGraphicalInformation(const AbstractObject
 	return false;
 }
 
-bool GraphicalInformationSet::hasGraphicalInformation(const AbstractObject const* targetObject) const
+bool GraphicalInformationSet::hasGraphicalInformation(AbstractObject const* targetObject) const
 {
 	if (targetObject == nullptr) {
 		throw invalid_argument("The target object cannot be null");
@@ -334,7 +334,7 @@ void GraphicalInformationSet::setDefaultHsvColor(AbstractObject const* targetObj
 	color->Value = value;
 	color->Alpha = alpha;
 
-	if (colorTitle != "") {
+	if (!colorTitle.empty()) {
 		color->Title = gsoap_eml2_2::soap_new_std__string(gsoapProxy2_2->soap, 1);
 		*color->Title = colorTitle;
 	}
@@ -671,7 +671,7 @@ void GraphicalInformationSet::hsvToRgb(double hue, double saturation, double val
 {
 	double c = value * saturation;
 	double hprim = hue / 60.;
-	double x = c * (1. - abs(fmod(hprim,2) - 1.));
+	double x = c * (1. - fabs(fmod(hprim,2) - 1.));
 	double m = value - c;
 
 	if (0. <= hprim && hprim <= 1.) {

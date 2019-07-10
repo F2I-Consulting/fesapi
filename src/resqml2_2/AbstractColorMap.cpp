@@ -58,15 +58,15 @@ void AbstractColorMap::setRgbColors(unsigned int colorCount,
 {
 	double* hsvColors = new double[((double)colorCount) * 3];
 	for (size_t colorIndex = 0; colorIndex < colorCount; ++colorIndex) {
-		if (rgbColors[3 * colorIndex] < 0 || rgbColors[3 * colorIndex] > 255) {
+		if (rgbColors[3 * colorIndex] > 255) {
 			throw invalid_argument("red must be in range [0, 255]");
 		}
 
-		if (rgbColors[3 * colorIndex + 1] < 0 || rgbColors[3 * colorIndex + 1] > 255) {
+		if (rgbColors[3 * colorIndex + 1] > 255) {
 			throw invalid_argument("green must be in range [0, 255]");
 		}
 
-		if (rgbColors[3 * colorIndex + 2] < 0 || rgbColors[3 * colorIndex + 2] > 255) {
+		if (rgbColors[3 * colorIndex + 2] > 255) {
 			throw invalid_argument("blue must be in range [0, 255]");
 		}
 
@@ -83,7 +83,7 @@ double AbstractColorMap::getHue(double colorIndex) const
 {
 	resqml2__HsvColor const* const color = getColor(colorIndex);
 	if (color == nullptr) {
-		throw invalid_argument("There is no such color index");
+		throw out_of_range("There is no such color index");
 	}
 
 	return color->Hue;

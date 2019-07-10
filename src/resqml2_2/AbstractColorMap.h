@@ -49,6 +49,8 @@ namespace RESQML2_2_NS
 		AbstractColorMap() {}
 
 	public:
+		virtual ~AbstractColorMap() {}
+
 		/**
 		* https://en.wikipedia.org/wiki/HSV_color_space
 		* @param colorCount		the size (number of colors) of the color map
