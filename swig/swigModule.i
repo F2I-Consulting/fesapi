@@ -808,12 +808,6 @@ namespace COMMON_NS
 		RESQML2_0_1_NS::PropertyKindMapper* getPropertyKindMapper() const;
 
 		//************************************
-		//************ EML2.2 ****************
-		//************************************
-
-		COMMON_NS::GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
-
-		//************************************
 		//************* WARNINGS *************
 		//************************************
 

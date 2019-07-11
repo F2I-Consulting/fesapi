@@ -42,20 +42,23 @@ const char* GraphicalInformationSet::XML_TAG = "GraphicalInformationSet";
 
 GraphicalInformationSet::GraphicalInformationSet(COMMON_NS::DataObjectRepository* repo, string const& guid, string const& title)
 {
-	if (soapContext == nullptr)
-		throw invalid_argument("The soap context cannot be null.");
+	if (repo == nullptr) {
+		throw invalid_argument("The repo cannot be null.");
+	}
 
-	gsoapProxy2_2 = gsoap_eml2_2::soap_new_eml22__GraphicalInformationSet(soapContext, 1);
+	gsoapProxy2_2 = gsoap_eml2_2::soap_new_eml22__GraphicalInformationSet(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	repo->addOrReplaceDataObject(this);
 }
 
 unsigned int GraphicalInformationSet::getGraphicalInformationSetCount() const
 {
-	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
+	_eml22__GraphicalInformationSet const * gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
 
-	size_t count = gis->GraphicalInformation.size();
+	const size_t count = gis->GraphicalInformation.size();
 	
 	if (count > (numeric_limits<unsigned int>::max)()) {
 		throw range_error("The graphical information set count is out of range.");
@@ -66,7 +69,7 @@ unsigned int GraphicalInformationSet::getGraphicalInformationSetCount() const
 
 eml22__DataObjectReference* GraphicalInformationSet::getTargetObjectDor(unsigned int index) const
 {
-	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
+	_eml22__GraphicalInformationSet const * gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
 
 	if (index >= gis->GraphicalInformation.size()) {
 		throw range_error("The index if out of range in GraphicalInformationSet");
@@ -82,29 +85,7 @@ string GraphicalInformationSet::getTargetObjectUuid(unsigned int index) const
 
 AbstractObject* GraphicalInformationSet::getTargetObject(unsigned int index) const
 {
-	return epcDocument->getDataObjectByUuid(getTargetObjectUuid(index));
-}
-
-vector<Relationship> GraphicalInformationSet::getAllSourceRelationships() const
-{
-	vector<Relationship> result = common::AbstractObject::getAllSourceRelationships();
-	return result;
-}
-
-vector<Relationship> GraphicalInformationSet::getAllTargetRelationships() const
-{
-	vector<Relationship> result;
-
-	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
-
-	for (size_t giIndex = 0; giIndex < gis->GraphicalInformation.size(); ++giIndex) {
-		gsoap_eml2_2::eml22__DataObjectReference* dor = getTargetObjectDor(giIndex);
-		Relationship relFop(misc::getPartNameFromReference(dor), "", dor->Uuid);
-		relFop.setDestinationObjectType();
-		result.push_back(relFop);
-	}
-
-	return result;
+	return getRepository()->getDataObjectByUuid(getTargetObjectUuid(index));
 }
 
 resqml2__DefaultGraphicalInformation* GraphicalInformationSet::getDefaultGraphicalInformationForAllIndexableElements(AbstractObject const* targetObject) const

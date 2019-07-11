@@ -296,11 +296,6 @@ namespace COMMON_NS
 			return "eml22";
 		}
 
-	protected:
-
-		void resolveTargetRelationships(common::EpcDocument* epcDoc) {}
-
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllSourceRelationships() const;
-		DLL_IMPORT_OR_EXPORT std::vector<epc::Relationship> getAllTargetRelationships() const;
+		void loadTargetRelationships() const;
 	};
 }

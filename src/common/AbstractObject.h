@@ -41,6 +41,8 @@ namespace COMMON_NS
 		* Push back an extra metadata (not a standard one)
 		*/
 		void pushBackExtraMetadataV2_0_1(const std::string & key, const std::string & value);
+		void pushBackExtraMetadataV2_1(const std::string & key, const std::string & value);
+		void pushBackExtraMetadataV2_2(const std::string & key, const std::string & value);
 
 		/**
 		* Getter (in read only mode) of all the extra metadata
@@ -77,6 +79,7 @@ namespace COMMON_NS
 
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;
 		gsoap_eml2_1::eml21__AbstractObject* gsoapProxy2_1;
+		gsoap_eml2_2::eml22__AbstractObject* gsoapProxy2_2;
 		COMMON_NS::DataObjectRepository* repository;
 
 		//Default constructor
@@ -90,6 +93,8 @@ namespace COMMON_NS
 		AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy);
 
 		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy);
+
+		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy);
 
 		friend void COMMON_NS::DataObjectRepository::addOrReplaceDataObject(AbstractObject* proxy);
 
@@ -141,6 +146,8 @@ namespace COMMON_NS
 
 		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor) const;
 
+		void convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor) const;
+
 		// Check that the content type of the DOR is OK with the datatype in memory.
 		template <class valueType>
 		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor) const
@@ -158,6 +165,20 @@ namespace COMMON_NS
 
 		template <class valueType>
 		void convertDorIntoRel(gsoap_eml2_1::eml21__DataObjectReference const * dor) const
+		{
+			valueType const * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
+			if (targetObj == nullptr) { // partial transfer
+				getRepository()->createPartial(dor);
+				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
+				if (targetObj == nullptr) {
+					throw std::invalid_argument("The DOR looks invalid.");
+				}
+			}
+			getRepository()->addRelationship(this, targetObj);
+		}
+
+		template <class valueType>
+		void convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor) const
 		{
 			valueType const * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
 			if (targetObj == nullptr) { // partial transfer
@@ -264,6 +285,7 @@ namespace COMMON_NS
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* newResqmlReference() const;
 		gsoap_eml2_1::eml21__DataObjectReference* newEmlReference() const;
+		gsoap_eml2_2::eml22__DataObjectReference* newEml22Reference() const;
 
 		gsoap_resqml2_0_1::resqml2__ContactElementReference* newResqmlContactElementReference() const;
 

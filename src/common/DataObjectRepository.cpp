@@ -135,6 +135,11 @@ namespace {
 	{\
 		return dor->VersionString == nullptr ? createPartial<className>(dor->Uuid, dor->Title) : createPartial<className>(dor->Uuid, dor->Title, *dor->VersionString);\
 	}
+#define CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(className)\
+	(contentType.compare(className::XML_TAG) == 0)\
+	{\
+		return dor->ObjectVersion == nullptr ? createPartial<className>(dor->Uuid, dor->Title) : createPartial<className>(dor->Uuid, dor->Title, *dor->ObjectVersion);\
+	}
 
 /////////////////////
 /////// RESQML //////
@@ -186,6 +191,21 @@ namespace {
 	(datatype.compare(classNamespace::className::XML_TAG) == 0)\
 	{\
 		GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace);\
+	}
+
+/////////////////////
+////// EML 2.2 //////
+/////////////////////
+#define GET_EML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
+	gsoapNameSpace::_eml22__##className* read = gsoapNameSpace::soap_new_eml22__##className(gsoapContext, 1);\
+	gsoapNameSpace::soap_read_eml22__##className(gsoapContext, read);
+#define GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
+	GET_EML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
+	wrapper = new classNamespace::className(read);
+#define CHECK_AND_GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
+	(datatype.compare(classNamespace::className::XML_TAG) == 0)\
+	{\
+		GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace);\
 	}
 
 DataObjectRepository::DataObjectRepository() :
@@ -373,6 +393,9 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 	else if (contentType.find("application/x-witsml+xml;version=2.0;type=") != string::npos) {
 		wrapper = getWitsml2_0WrapperFromGsoapContext(datatype);
 	}
+	else if (contentType.find("application/x-eml+xml;version=2.2;type=") != string::npos) {
+		wrapper = getEml2_2WrapperFromGsoapContext(datatype);
+	}
 
 	if (wrapper != nullptr) {
 		if (gsoapContext->error != SOAP_OK) {
@@ -543,7 +566,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_1::eml
 COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_2::eml22__DataObjectReference const * dor)
 {
 	const size_t lastEqualCharPos = dor->ContentType.find_last_of('='); // The XML tag is after "type="
-	const string resqmlContentType = dor->ContentType.substr(lastEqualCharPos + 1);
+	const string contentType = dor->ContentType.substr(lastEqualCharPos + 1);
 
 	if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(COMMON_NS::GraphicalInformationSet)
 	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::DiscreteColorMap)
@@ -2012,6 +2035,13 @@ COMMON_NS::AbstractObject* DataObjectRepository::getWitsml2_0WrapperFromGsoapCon
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Trajectory, gsoap_eml2_1)
 
 	return wrapper;
+}
+
+COMMON_NS::AbstractObject* DataObjectRepository::getEml2_2WrapperFromGsoapContext(const std::string & datatype)
+{
+	COMMON_NS::AbstractObject* wrapper = nullptr;
+	if CHECK_AND_GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(COMMON_NS, GraphicalInformationSet, gsoap_eml2_2)
+		return wrapper;
 }
 
 int DataObjectRepository::getGsoapErrorCode() const

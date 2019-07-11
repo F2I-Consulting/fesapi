@@ -22,7 +22,7 @@ under the License.
 #include <sstream>
 
 #include "proxies/gsoap_resqml2_0_1H.h"
-#include "proxies/gsoap_eml2_1H.h""
+#include "proxies/gsoap_eml2_1H.h"
 #include "proxies/gsoap_eml2_2H.h"
 
 #include "nsDefinitions.h"
@@ -146,6 +146,7 @@ namespace COMMON_NS
 {
 	class AbstractObject;
 	class AbstractHdfProxy;
+	class GraphicalInformationSet;
 
 	/**
 	* This abstract class acts as a buffer between the RESQML (business) classes and the persisted data.
@@ -193,6 +194,7 @@ namespace COMMON_NS
 		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
 		COMMON_NS::AbstractObject* getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType);
 		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
+		COMMON_NS::AbstractObject* getEml2_2WrapperFromGsoapContext(const std::string & datatype);
 
 		/**
 		* Get the error code of the current gsoap context.
