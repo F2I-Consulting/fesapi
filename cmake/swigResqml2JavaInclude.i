@@ -102,7 +102,8 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 	else if (type.equals("WellboreCompletion"))
 	{
 		ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellboreCompletion(cPtr, owner);
-	}else
+	}
+	else
     {
 	throw new IllegalArgumentException("Encountered type " + type + " that is not known to be a Resqml or Witsml concrete class");
     }
@@ -450,6 +451,10 @@ namespace COMMON_NS
 		$javaclassname ret = ($javaclassname) fesapiJNI.resqml2_instantiateConcreteObject(cPtr, $owner);
 		return ret;
 	}
+	
+	%typemap(javaimports) SWIGTYPE %{
+		import com.f2i.energisticsStandardsApi.*;
+	%}
 }
 
 namespace RESQML2_NS
