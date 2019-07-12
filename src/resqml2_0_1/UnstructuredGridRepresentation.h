@@ -147,7 +147,7 @@ namespace RESQML2_0_1_NS
 		* A single face count should be at least 4.
 		* @param cumulativeFaceCountPerCellIndex	It must be pre allocated with getCellCount()
 		*/
-		DLL_IMPORT_OR_EXPORT void getCumulativeFaceCountPerCell(ULONG64 * cumulativeFaceCountPerCell) const;
+		DLL_IMPORT_OR_EXPORT void getCumulativeFaceCountPerCell(ULONG64 * cumulativeFaceCountPerCell_) const;
 
 		/**
 		* Less efficient than getCumulativeFaceCountPerCell.

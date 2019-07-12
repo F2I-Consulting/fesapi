@@ -27,8 +27,12 @@ SET(CMAKE_INSTALL_RPATH "\$ORIGIN/${CMAKE_INSTALL_LIBDIR}")
 # which point to directories outside the build tree to the install RPATH
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
+if (WITH_EXPERIMENTAL)
+	target_compile_definitions(example PRIVATE "-DWITH_EXPERIMENTAL")
+endif(WITH_EXPERIMENTAL)
+
 add_dependencies (example ${CPP_LIBRARY_NAME})
-target_link_libraries (example PRIVATE ${CPP_LIBRARY_NAME})
+target_link_libraries (example ${CPP_LIBRARY_NAME})
 if (WIN32)
 	set_target_properties (example PROPERTIES
 		LINK_FLAGS "/INCREMENTAL:NO"

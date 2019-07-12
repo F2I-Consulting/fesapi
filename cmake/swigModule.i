@@ -19,6 +19,7 @@ under the License.
 %module fesapi
 
 
+
 #ifdef SWIGJAVA
 	// Notice you must not compile the C++ API with an optimisation superior to -O1 with gcc 4.4.7 in order SWIG to work
 	
@@ -123,7 +124,6 @@ under the License.
 	%nspace COMMON_NS::EpcExternalPartReference;
 	%nspace COMMON_NS::AbstractHdfProxy;
 	%nspace COMMON_NS::HdfProxy;
-	%nspace COMMON_NS::GraphicalInformationSet;
 #endif
 
 namespace RESQML2_NS
@@ -212,6 +212,10 @@ namespace COMMON_NS
 	};
 }
 
+%{
+#define SWIG_FILE_WITH_INIT // In case we use Python Swig Wrapping
+%}
+
 %include "swigResqml2Include.i"
 %include "swigResqml2_0_1Include.i"
 %include "swigResqml2_2Include.i"
@@ -222,7 +226,6 @@ namespace COMMON_NS
 %{
 #include "common/EnumStringMapper.h"
 #include "common/EpcDocument.h"
-#include "common/GraphicalInformationSet.h"
 %}
 
 namespace RESQML2_NS
@@ -232,50 +235,6 @@ namespace RESQML2_NS
 
 namespace COMMON_NS
 {
-	class GraphicalInformationSet : public AbstractObject
-	{
-	public:
-		unsigned int getGraphicalInformationSetCount() const;
-		std::string getTargetObjectUuid(unsigned int index) const;
-		AbstractObject* getTargetObject(unsigned int index) const;
-		bool hasGraphicalInformation(AbstractObject const* targetObject) const;
-		
-		bool hasDefaultColor(AbstractObject const* targetObject) const;
-		double getDefaultHue(AbstractObject const* targetObject) const;
-		double getDefaultSaturation(AbstractObject const* targetObject) const;
-		double getDefaultValue(AbstractObject const* targetObject) const;
-		double getDefaultAlpha(AbstractObject const* targetObject) const;
-		void getDefaultRgbColor(AbstractObject const* targetObject, double& red, double& green, double& blue) const;
-		void getDefaultRgbColor(AbstractObject const* targetObject, unsigned int& red, unsigned int& green, unsigned int& blue) const;
-		bool hasDefaultColorTitle(AbstractObject const* targetObject) const;
-		std::string getDefaultColorTitle(AbstractObject const* targetObject) const;
-		void setDefaultHsvColor(AbstractObject const* targetObject, double hue, double saturation, double value, double alpha = 1.0, std::string const& colorTitle = "");
-		void setDefaultRgbColor(AbstractObject const* targetObject, double red, double green, double blue, double alpha = 1.0, std::string const& colorTitle = "");
-		void setDefaultRgbColor(AbstractObject const* targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha = 1.0, std::string const& colorTitle = "");
-
-		bool hasDiscreteColorMap(AbstractObject const* targetObject) const;
-		gsoap_eml2_2::eml22__DataObjectReference* getDiscreteColorMapDor(AbstractObject const* targetObject) const;
-		std::string getDiscreteColorMapUuid(AbstractObject const* targetObject) const;
-		RESQML2_2_NS::DiscreteColorMap* getDiscreteColorMap(AbstractObject const* targetObject) const;
-		void setDiscreteColorMap(AbstractObject const* targetObject, RESQML2_2_NS::DiscreteColorMap* discreteColorMap,
-			LONG64 valueVectorIndex = 0, bool useReverseMapping = false, bool useLogarithmicMapping = false);
-
-		bool hasContinuousColorMap(AbstractObject const* targetObject) const;
-		gsoap_eml2_2::eml22__DataObjectReference* getContinuousColorMapDor(AbstractObject const* targetObject) const;
-		std::string getContinuousColorMapUuid(AbstractObject const* targetObject) const;
-		RESQML2_2_NS::ContinuousColorMap* getContinuousColorMap(AbstractObject const* targetObject) const;
-		void setContinuousColorMap(AbstractObject const* targetObject, RESQML2_2_NS::ContinuousColorMap* continuousColorMap,
-			LONG64 valueVectorIndex = 0, bool useReverseMapping = false, bool useLogarithmicMapping = false);
-
-		double getColorMapMinIndex(AbstractObject const* targetObject) const;
-		double getColorMapMaxIndex(AbstractObject const* targetObject) const;
-
-		static void rgbToHsv(double red, double green, double blue, double& hue, double& saturation, double& value);
-		static void rgbToHsv(unsigned int red, unsigned int green, unsigned int blue, double& hue, double& saturation, double& value);
-		static void hsvToRgb(double hue, double saturation, double value, double& red, double& green, double& blue);
-		static void hsvToRgb(double hue, double saturation, double value, unsigned int& red, unsigned int& green, unsigned int& blue);
-	};
-	
 	class DataObjectRepository
 	{
 	public:
@@ -786,17 +745,6 @@ namespace COMMON_NS
 			gsoap_eml2_1::witsml2__ChannelStatus channelStatus);
 
 		//************************************
-		//************ EML2.2 ****************
-		//************************************
-
-		COMMON_NS::GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
-
-		RESQML2_2_NS::DiscreteColorMap* createDiscreteColorMap(const std::string& guid, const std::string& title);
-
-		RESQML2_2_NS::ContinuousColorMap* createContinuousColorMap(const std::string& guid, const std::string& title,
-			gsoap_eml2_2::resqml2__InterpolationDomain interpolationDomain, gsoap_eml2_2::resqml2__InterpolationMethod interpolationMethod);
-
-		//************************************
 		//***** STANDARD PROP KIND ***********
 		//************************************
 		
@@ -806,7 +754,7 @@ namespace COMMON_NS
 		//************* WARNINGS *************
 		//************************************
 
-		void clearWarnings() { warnings.clear();  }
+		void clearWarnings();
 		void addWarning(const std::string & warning);
 		const std::vector<std::string> & getWarnings() const;
 	};

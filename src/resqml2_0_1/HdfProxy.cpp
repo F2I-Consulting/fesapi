@@ -25,6 +25,7 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 
+const char* HdfProxy::RESQML_ROOT_GROUP = "/RESQML";
 
 HdfProxy::HdfProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess) :
 	COMMON_NS::HdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess)
@@ -42,9 +43,16 @@ hid_t HdfProxy::openOrCreateRootGroup()
 	if (!isOpened()) {
 		open();
 	}
-
+	
+	if (openedGroups.find(RESQML_ROOT_GROUP) != openedGroups.end()) {
+		return openedGroups.at(RESQML_ROOT_GROUP);
+	}
+	
 	H5O_info_t info;
-	herr_t status = H5Oget_info_by_name(hdfFile, "/RESQML", &info, H5P_DEFAULT);
-
-	return status >= 0 ? H5Gopen(hdfFile, "/RESQML", H5P_DEFAULT) : H5Gcreate(hdfFile, "/RESQML", H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+	herr_t status = H5Oget_info_by_name(hdfFile, RESQML_ROOT_GROUP, &info, H5P_DEFAULT);
+	
+	hid_t result =  status >= 0 ? H5Gopen(hdfFile, RESQML_ROOT_GROUP, H5P_DEFAULT) : H5Gcreate(hdfFile, RESQML_ROOT_GROUP, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+	openedGroups[RESQML_ROOT_GROUP] = result;
+	return result;
+	
 }

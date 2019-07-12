@@ -52,6 +52,8 @@ namespace RESQML2_0_1_NS
 		std::string getXmlNamespace() const;
 
 	private:
+		static const char * RESQML_ROOT_GROUP;
+
 		/**
 		* Check if a hdf group named "RESQML" exists as a child of the root of the HDF file.
 		* If it exists, it returns the latter. If not, it creates this group and then returns it.

@@ -44,7 +44,9 @@ namespace COMMON_NS
 		*/
 		void pushBackExtraMetadataV2_0_1(const std::string & key, const std::string & value);
 		void pushBackExtraMetadataV2_1(const std::string & key, const std::string & value);
+#if WITH_EXPERIMENTAL
 		void pushBackExtraMetadataV2_2(const std::string & key, const std::string & value);
+#endif
 
 		/**
 		* Getter (in read only mode) of all the extra metadata
@@ -82,7 +84,9 @@ namespace COMMON_NS
 
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;
 		gsoap_eml2_1::eml21__AbstractObject* gsoapProxy2_1;
+#if WITH_EXPERIMENTAL
 		gsoap_eml2_2::eml22__AbstractObject* gsoapProxy2_2;
+#endif
 		COMMON_NS::DataObjectRepository* repository;
 
 		//Default constructor
@@ -97,7 +101,9 @@ namespace COMMON_NS
 
 		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy);
 
+#if WITH_EXPERIMENTAL
 		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy);
+#endif
 
 		friend void COMMON_NS::DataObjectRepository::addOrReplaceDataObject(AbstractObject* proxy);
 
@@ -143,7 +149,9 @@ namespace COMMON_NS
 
 		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor) const;
 
+#if WITH_EXPERIMENTAL
 		void convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor) const;
+#endif
 
 		// Check that the content type of the DOR is OK with the datatype in memory.
 		template <class valueType>
@@ -174,6 +182,7 @@ namespace COMMON_NS
 			getRepository()->addRelationship(this, targetObj);
 		}
 
+#if WITH_EXPERIMENTAL
 		template <class valueType>
 		void convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor) const
 		{
@@ -187,6 +196,7 @@ namespace COMMON_NS
 			}
 			getRepository()->addRelationship(this, targetObj);
 		}
+#endif
 
 		COMMON_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset, bool throwException = true) const;
 
@@ -291,6 +301,10 @@ namespace COMMON_NS
 		gsoap_resqml2_0_1::eml20__DataObjectReference* newResqmlReference() const;
 		gsoap_eml2_1::eml21__DataObjectReference* newEmlReference() const;
 		gsoap_eml2_2::eml22__DataObjectReference* newEml22Reference() const;
+
+#if WITH_EXPERIMENTAL
+		gsoap_eml2_2::eml22__DataObjectReference* newEml22Reference() const;
+#endif
 
 		gsoap_resqml2_0_1::resqml2__ContactElementReference* newResqmlContactElementReference() const;
 

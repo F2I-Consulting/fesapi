@@ -174,6 +174,7 @@ if (WITH_ETP)
 	add_subdirectory (etpServerExample)
 endif (WITH_ETP)
 
+set (WITH_EXPERIMENTAL OFF CACHE BOOL "Compile some experimental functionalities.")
 
 set (WITH_TEST OFF CACHE BOOL "Also build the unit tests.")
 if (WITH_TEST)

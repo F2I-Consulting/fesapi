@@ -42,8 +42,9 @@ const char* GraphicalInformationSet::XML_TAG = "GraphicalInformationSet";
 
 GraphicalInformationSet::GraphicalInformationSet(COMMON_NS::DataObjectRepository* repo, string const& guid, string const& title)
 {
-	if (repo == nullptr)
+	if (repo == nullptr) {
 		throw invalid_argument("The repo cannot be null.");
+	}
 
 	gsoapProxy2_2 = gsoap_eml2_2::soap_new_eml22__GraphicalInformationSet(repo->getGsoapContext(), 1);
 
@@ -55,9 +56,9 @@ GraphicalInformationSet::GraphicalInformationSet(COMMON_NS::DataObjectRepository
 
 unsigned int GraphicalInformationSet::getGraphicalInformationSetCount() const
 {
-	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
+	_eml22__GraphicalInformationSet const * gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
 
-	size_t count = gis->GraphicalInformation.size();
+	const size_t count = gis->GraphicalInformation.size();
 	
 	if (count > (numeric_limits<unsigned int>::max)()) {
 		throw range_error("The graphical information set count is out of range.");
@@ -68,7 +69,7 @@ unsigned int GraphicalInformationSet::getGraphicalInformationSetCount() const
 
 eml22__DataObjectReference* GraphicalInformationSet::getTargetObjectDor(unsigned int index) const
 {
-	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
+	_eml22__GraphicalInformationSet const * gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
 
 	if (index >= gis->GraphicalInformation.size()) {
 		throw range_error("The index if out of range in GraphicalInformationSet");

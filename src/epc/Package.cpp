@@ -159,13 +159,22 @@ public:
 #endif
 };
 
-Package::CheshireCat::CheshireCat() : unzipped(nullptr), zf(nullptr), isZip64(false)
+Package::CheshireCat::CheshireCat() : 
+	fileCoreProperties(), fileContentType(), filePrincipalRelationship(), allFileParts(), extendedCoreProperties(), pathName(),
+	unzipped(nullptr), zf(nullptr), isZip64(false)
+#ifdef CACHE_FILE_DESCRIPTOR
+	, name2file()
+#endif
 {
 }
 
 
 Package::CheshireCat::CheshireCat(const FileCoreProperties & pkgFileCP, const FileContentType & pkgFileCT, const FileRelationship & pkgFileRS, const PartMap & pkgFileP, const string & pkgPathName) :
-fileCoreProperties(pkgFileCP), fileContentType(pkgFileCT), filePrincipalRelationship(pkgFileRS), allFileParts(pkgFileP), pathName(pkgPathName), unzipped(nullptr), zf(nullptr), isZip64(false)
+	fileCoreProperties(pkgFileCP), fileContentType(pkgFileCT), filePrincipalRelationship(pkgFileRS), allFileParts(pkgFileP), extendedCoreProperties(), pathName(pkgPathName),
+	unzipped(nullptr), zf(nullptr), isZip64(false)
+#ifdef CACHE_FILE_DESCRIPTOR
+	, name2file()
+#endif
 {
 }
 

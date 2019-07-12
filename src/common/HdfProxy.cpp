@@ -32,7 +32,7 @@ using namespace std;
 using namespace COMMON_NS;
 
 HdfProxy::HdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess) :
-	AbstractHdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess), hdfFile(-1), compressionLevel(0) {}
+	AbstractHdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess), hdfFile(-1), compressionLevel(0), openedGroups() {}
 
 void HdfProxy::open()
 {
@@ -148,6 +148,13 @@ void HdfProxy::open()
 
 void HdfProxy::close()
 {
+	for (std::unordered_map< std::string, hid_t >::const_iterator it = openedGroups.begin(); it != openedGroups.end(); ++it) {
+		if (H5Gclose(it->second) < 0) {
+			throw invalid_argument("The HDF5 group " + it->first + " could not have been closed.");
+		}
+	}
+	openedGroups.clear();
+
 	if (hdfFile != -1) {
 		H5Fclose(hdfFile);
 		hdfFile = -1;
@@ -462,7 +469,6 @@ void HdfProxy::writeItemizedListOfList(const string & groupName,
 
 	hid_t parentGrp = openOrCreateGroupInRootGroup(groupName);
 	hid_t grp = H5Gcreate(parentGrp, name.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
-	H5Gclose(parentGrp);
 
 	// ************* CUMULATIVE LENGTH *************
 	// Create dataspace for the dataset in the file.
@@ -665,7 +671,6 @@ void HdfProxy::writeArrayNd(const std::string & groupName,
 	// Create the data space
 	hid_t space = H5Screate_simple(numDimensions, numValuesInEachDimension, nullptr);
 	if (space < 0) {
-		H5Gclose(grp);
 		throw invalid_argument("The dataspace for the dataset " + name + " could not be created.");
 	}
 
@@ -686,7 +691,6 @@ void HdfProxy::writeArrayNd(const std::string & groupName,
 		H5Pclose(dcpl);
 		if (dataset < 0) {
 			H5Sclose(space);
-			H5Gclose(grp);
 			throw invalid_argument("The dataset " + name + " could not be created.");
 		}
 	}
@@ -694,7 +698,6 @@ void HdfProxy::writeArrayNd(const std::string & groupName,
 		dataset = H5Dcreate (grp, name.c_str(), datatype, space, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 		if (dataset < 0) {
 			H5Sclose(space);
-			H5Gclose(grp);
 			throw invalid_argument("The dataset " + name + " could not be created.");
 		}
 	}
@@ -702,7 +705,6 @@ void HdfProxy::writeArrayNd(const std::string & groupName,
 	error = H5Dwrite(dataset, datatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, values);
 	H5Sclose(space);
 	H5Dclose(dataset);
-	H5Gclose(grp);
 	if (error < 0) {
 		throw invalid_argument("The data could not be written in dataset " + name);
 	}
@@ -727,7 +729,6 @@ void HdfProxy::createArrayNd(
 	// Create the data space
 	hid_t space = H5Screate_simple(numDimensions, numValuesInEachDimension, nullptr);
 	if (space < 0) {
-		H5Gclose(grp);
 		throw invalid_argument("The dataspace for the dataset " + datasetName + " could not be created.");
 	}
 
@@ -748,7 +749,6 @@ void HdfProxy::createArrayNd(
 		H5Pclose(dcpl);
 		if (dataset < 0) {			
 			H5Sclose(space);
-			H5Gclose(grp);
 			throw invalid_argument("The dataset " + datasetName + " could not be created.");
 		}
 	}
@@ -756,16 +756,13 @@ void HdfProxy::createArrayNd(
 		dataset = H5Dcreate(grp, datasetName.c_str(), datatype, space, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 		if (dataset < 0) {
 			H5Sclose(space);
-			H5Gclose(grp);
 			throw invalid_argument("The dataset " + datasetName + " could not be created.");
 		}
 	}
 
 	H5Sclose(space);
 	H5Dclose(dataset);
-	H5Gclose(grp);
 }
-
 
 void HdfProxy::writeArrayNdSlab(
 	const string& groupName,
@@ -794,7 +791,6 @@ void HdfProxy::writeArrayNdSlab(
 	if (errorCode < 0) {
 		H5Sclose(filespace);
 		H5Dclose(dataset);
-		H5Gclose(grp);
 		throw invalid_argument("The slab of dataset " + datasetName + " could not have been selected");
 	}
 
@@ -806,7 +802,6 @@ void HdfProxy::writeArrayNdSlab(
 	if (memspace < 0) {
 		H5Sclose(filespace);
 		H5Dclose(dataset);
-		H5Gclose(grp);
 		throw invalid_argument("The dataspace for the slab of the dataset " + datasetName + " could not be created.");
 	}
 
@@ -823,7 +818,6 @@ void HdfProxy::writeArrayNdSlab(
 	H5Sclose(memspace);
 	H5Sclose(filespace);
 	H5Dclose(dataset);
-	H5Gclose(grp);
 
 	if (errorCode < 0) {
 		throw invalid_argument("The data could not be written in dataset slab " + datasetName);
@@ -963,7 +957,11 @@ hid_t HdfProxy::openOrCreateRootGroup()
 
 hid_t HdfProxy::openOrCreateGroupInRootGroup(const string & groupName)
 {
-	hid_t rootGroup = openOrCreateRootGroup();
+	if (openedGroups.find(groupName) != openedGroups.end()) {
+		return openedGroups.at(groupName);
+	}
+
+	const hid_t rootGroup = openOrCreateRootGroup();
 	if (rootGroup < 0) {
 		throw invalid_argument("The root group could not be opened or created in the hdf file.");
 	}
@@ -972,22 +970,27 @@ hid_t HdfProxy::openOrCreateGroupInRootGroup(const string & groupName)
 	ss.str(groupName);
 	std::string group;
 	hid_t result = -1;
+	hid_t subRootGroup = rootGroup;
 	while (std::getline(ss, group, '/')) {
 		if (group.empty()) continue;
 
 		H5O_info_t info;
-		herr_t status = H5Oget_info_by_name(rootGroup, groupName.c_str(), &info, H5P_DEFAULT);
+		herr_t status = H5Oget_info_by_name(subRootGroup, groupName.c_str(), &info, H5P_DEFAULT);
 
 		result = status >= 0
-			? H5Gopen(rootGroup, group.c_str(), H5P_DEFAULT)
-			: H5Gcreate(rootGroup, group.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
-		H5Gclose(rootGroup);
-		rootGroup = result;
+			? H5Gopen(subRootGroup, group.c_str(), H5P_DEFAULT)
+			: H5Gcreate(subRootGroup, group.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+		if (subRootGroup != rootGroup) { // We don't want to close the rootGroup which is the file or a well known group which should be kept opened for performance reasons.
+			H5Gclose(subRootGroup);
+		}
+		subRootGroup = result;
 
 		if (result < 0) {
 			return result;
 		}
 	}
+
+	openedGroups[groupName] = result;
 	return result;
 }
 
@@ -1030,8 +1033,6 @@ void HdfProxy::writeGroupAttributes(const std::string & groupName,
 	}
 	H5Sclose(aid);
 	H5Tclose(atype);
-
-	H5Gclose(groupId);
 }
 
 void HdfProxy::writeGroupAttribute(const std::string & groupName,
@@ -1062,8 +1063,6 @@ void HdfProxy::writeGroupAttribute(const std::string & groupName,
 	H5Aclose(attribute_id);
 	H5Sclose(aid);
 	H5Tclose(atype);
-
-	H5Gclose(groupId);
 }
 
 void HdfProxy::writeGroupAttributes(const std::string & groupName,
@@ -1083,8 +1082,6 @@ void HdfProxy::writeGroupAttributes(const std::string & groupName,
 		H5Aclose(attribute_id);
 	}
 	H5Sclose(aid);
-
-	H5Gclose(groupId);
 }
 
 void HdfProxy::writeGroupAttributes(const std::string & groupName,
@@ -1104,8 +1101,6 @@ void HdfProxy::writeGroupAttributes(const std::string & groupName,
 		H5Aclose(attribute_id);
 	}
 	H5Sclose(aid);
-
-	H5Gclose(groupId);
 }
 
 void HdfProxy::writeDatasetAttributes(const std::string & datasetName,
