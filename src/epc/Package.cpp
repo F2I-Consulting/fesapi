@@ -38,10 +38,6 @@ under the License.
 
 #include "FilePart.h"
 
-#if (defined(_WIN32) && _MSC_VER < 1600) || (defined(__GNUC__) && (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 6)))
-#include "tools/nullptr_emulation.h"
-#endif
-
 #define CASESENSITIVITY (0)
 
 using namespace std; // in order not to prefix by "std::" for each class in the "std" namespace. Never use "using namespace" in *.h file but only in *.cpp file!!!
@@ -163,13 +159,22 @@ public:
 #endif
 };
 
-Package::CheshireCat::CheshireCat() : unzipped(nullptr), zf(nullptr), isZip64(false)
+Package::CheshireCat::CheshireCat() : 
+	fileCoreProperties(), fileContentType(), filePrincipalRelationship(), allFileParts(), extendedCoreProperties(), pathName(),
+	unzipped(nullptr), zf(nullptr), isZip64(false)
+#ifdef CACHE_FILE_DESCRIPTOR
+	, name2file()
+#endif
 {
 }
 
 
 Package::CheshireCat::CheshireCat(const FileCoreProperties & pkgFileCP, const FileContentType & pkgFileCT, const FileRelationship & pkgFileRS, const PartMap & pkgFileP, const string & pkgPathName) :
-fileCoreProperties(pkgFileCP), fileContentType(pkgFileCT), filePrincipalRelationship(pkgFileRS), allFileParts(pkgFileP), pathName(pkgPathName), unzipped(nullptr), zf(nullptr), isZip64(false)
+	fileCoreProperties(pkgFileCP), fileContentType(pkgFileCT), filePrincipalRelationship(pkgFileRS), allFileParts(pkgFileP), extendedCoreProperties(), pathName(pkgPathName),
+	unzipped(nullptr), zf(nullptr), isZip64(false)
+#ifdef CACHE_FILE_DESCRIPTOR
+	, name2file()
+#endif
 {
 }
 

@@ -6,9 +6,7 @@ regarding copyright ownership.  The ASF licenses this file
 to you under the Apache License, Version 2.0 (the
 "License"; you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
-
-  http://www.apache.org/licenses/LICENSE-2.0
-
+http://www.apache.org/licenses/LICENSE-2.0
 Unless required by applicable law or agreed to in writing,
 software distributed under the License is distributed on an
 "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -91,6 +89,12 @@ under the License.
 #include "resqml2_0_1/Activity.h"
 #include "resqml2_0_1/ActivityTemplate.h"
 
+#ifdef WITH_EXPERIMENTAL
+#include "common/GraphicalInformationSet.h"
+#include "resqml2_2/DiscreteColorMap.h"
+#include "resqml2_2/ContinuousColorMap.h"
+#endif
+
 #include "witsml2_0/Well.h"
 
 #include "tools/TimeTools.h"
@@ -121,6 +125,10 @@ WellboreFeature* wellbore1 = nullptr;
 WellboreInterpretation* wellbore1Interp1 = nullptr;
 StratigraphicColumnRankInterpretation* stratiColumnRank0 = nullptr;
 SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = nullptr;
+IjkGridExplicitRepresentation* ijkgrid = nullptr;
+RESQML2_NS::PropertyKind* propType1 = nullptr;
+DiscreteProperty* discreteProp1 = nullptr;
+ContinuousProperty* contColMapContProp = nullptr;
 
 WITSML2_0_NS::Well* witsmlWell = nullptr;
 WITSML2_0_NS::Wellbore* witsmlWellbore = nullptr;
@@ -158,7 +166,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHd
 	double trajectoryTangentVectors[12] = { 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1 };
 	double trajectoryMds[4] = { 0, 325, 500, 1000 };
 	w1i1TrajRep->setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, hdfProxy);
-	
+
 	// WellboreFeature frame
 	WellboreFrameRepresentation* w1i1FrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
 	double logMds[5] = { 0, 250, 500, 750, 1000 };
@@ -204,6 +212,95 @@ void serializePerforations(COMMON_NS::DataObjectRepository * pck)
 	wellboreCompletion->setPerforationHistoryStatus(1, 1, gsoap_eml2_1::witsml2__PerforationStatus__squeezed);
 	wellboreCompletion->setPerforationHistoryStartDate(1, 1, 1514764800);
 }
+
+#ifdef WITH_EXPERIMENTAL
+void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, COMMON_NS::AbstractHdfProxy * hdfProxy)
+{
+	COMMON_NS::GraphicalInformationSet* graphicalInformationSet = repo->createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
+
+	// *************
+	// Default color
+	// *************
+
+	// fault1 representation is blue
+	graphicalInformationSet->setDefaultHsvColor(fault1, 240., 1., 1., 1., "blue");
+	graphicalInformationSet->setDefaultHsvColor(fault1Interp1, 240., 1., 1., 1., "blue");
+	graphicalInformationSet->setDefaultHsvColor(f1i1triRepSinglePatch, 240., 1., 1., 1., "blue");
+	graphicalInformationSet->setDefaultHsvColor(f1i1triRep, 240., 1., 1., 1., "blue");
+	graphicalInformationSet->setDefaultHsvColor(f1i1PolyLineRep, 240., 1., 1., 1., "blue");
+
+	// horizon1 representation is red
+	graphicalInformationSet->setDefaultHsvColor(horizon1, 0., 1., 1., 1., "red");
+	graphicalInformationSet->setDefaultHsvColor(horizon1Interp1, 0., 1., 1., 1., "red");
+	graphicalInformationSet->setDefaultHsvColor(h1i1triRep, 0., 1., 1., 1., "red");
+
+	// horizon2 representation is green
+	graphicalInformationSet->setDefaultHsvColor(horizon2, 120., 1., 1., 1., "green");
+	graphicalInformationSet->setDefaultHsvColor(horizon2Interp1, 120., 1., 1., 1., "green");
+	graphicalInformationSet->setDefaultHsvColor(h2i1triRep, 120., 1., 1., 1., "green");
+	graphicalInformationSet->setDefaultHsvColor(h1i1SingleGrid2dRep, 120., 1., 1., 1., "green");
+
+	// ******************
+	// Discrete color map
+	// ******************
+
+	// associating a discrete color map to property kind propType1
+	RESQML2_2_NS::DiscreteColorMap* propKindDiscrColMap = repo->createDiscreteColorMap("d808d79c-2cad-4c4f-9712-3b3ab4aa3f4a", "Property kind discrete color map");
+	unsigned int propKindDiscrColMapRgbColors[9] = { 0, 0, 255, 255, 255, 255, 255, 0, 0 };
+	double propKindDiscrColMapAlphas[3] = { 1., 1., 1. };
+	vector<string> propKindDiscrColMapTitles = { "blue", "white", "red" };
+	propKindDiscrColMap->setRgbColors(3, propKindDiscrColMapRgbColors, propKindDiscrColMapAlphas, propKindDiscrColMapTitles);
+	graphicalInformationSet->setDiscreteColorMap(propType1, propKindDiscrColMap);
+
+	// associating a discrete color map to dicreteProp1
+	RESQML2_2_NS::DiscreteColorMap* discrColMap = repo->createDiscreteColorMap("3daf4661-ae8f-4357-adee-0b0159bdd0a9", "Discrete color map");
+	unsigned int discrColMapRgbColors[18] = { 255, 0, 0, 0, 255, 0, 0, 0, 255, 169, 84, 27, 0, 0, 0, 255, 255, 255 };
+	double discrColMapAlphas[6] = { 1., 1., 1., 1., 1., 1. };
+	vector<string> discrColMapTitles = { "red", "green", "blue", "orange", "black", "white" };
+	discrColMap->setRgbColors(6, discrColMapRgbColors, discrColMapAlphas, discrColMapTitles);
+	graphicalInformationSet->setDiscreteColorMap(discreteProp1, discrColMap);
+
+	// creating a new discrete property of type propType1 without associating it to a discrete color map.
+	// Thus, its associated discrete color map remains the one associated to propType1
+	DiscreteProperty* discreteProp2 = repo->createDiscreteProperty(ijkgrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex", 1,
+		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, propType1);
+	unsigned short prop2Values[2] = { 0, 1 };
+	discreteProp2->pushBackUShortHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, -1);
+
+	// ********************
+	// Continuous color map
+	// ********************
+
+	Horizon* contColMapHrz = repo->createHorizon("b9ec6ec9-2766-4af7-889e-5565b5fa5022", "Horizon for continuous color map");
+	HorizonInterpretation* contColMapHrzInterp = repo->createHorizonInterpretation(contColMapHrz, "34b69c81-6cfa-4531-be5b-f6bd9b74802f", "Horizon interpretation for continuous color map");
+	Grid2dRepresentation* contColMapGrid2dRep = repo->createGrid2dRepresentation(contColMapHrzInterp, "4e56b0e4-2cd1-4efa-97dd-95f72bcf9f80", "100x10 grid 2d for continuous color map");
+	const unsigned int numPointInFastestDirection = 50;
+	const unsigned int numPointsInSlowestDirection = 100;
+	contColMapGrid2dRep->setGeometryAsArray2dOfLatticePoints3d(numPointInFastestDirection, numPointsInSlowestDirection,
+		0., 0., 0.,
+		1., 0., 0.,
+		0., 1., 0.,
+		1., 1.);
+
+	contColMapContProp = repo->createContinuousProperty(contColMapGrid2dRep, "c2be50b6-08d2-461b-81a4-73dbb04ba605", "Continuous property for continuous color map", 2,
+		gsoap_resqml2_0_1::resqml2__IndexableElements__nodes, "continuousColorMapIndex", gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__continuous);
+	double* values = new double[numPointInFastestDirection * numPointsInSlowestDirection];
+	for (size_t slowestIndex = 0; slowestIndex < numPointsInSlowestDirection; ++slowestIndex) {
+		for (size_t fastestIndex = 0; fastestIndex < numPointInFastestDirection; ++fastestIndex) {
+			values[fastestIndex + slowestIndex * numPointInFastestDirection] = fastestIndex * (1. / (numPointInFastestDirection - 1));
+		}
+	}
+	contColMapContProp->pushBackDoubleHdf5Array2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
+	delete[] values;
+
+	RESQML2_2_NS::ContinuousColorMap* contColMap = repo->createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", gsoap_eml2_2::resqml2__InterpolationDomain__rgb, gsoap_eml2_2::resqml2__InterpolationMethod__linear);
+	unsigned int contColMapRgbColors[6] = { 0, 255, 0, 255, 0, 0 };
+	vector<string> contColMapColTitles = { "green", "red" };
+	double contColMapAlphas[2] = { 1., 1. };
+	contColMap->setRgbColors(2, contColMapRgbColors, contColMapAlphas, contColMapColTitles);
+	graphicalInformationSet->setContinuousColorMap(contColMapContProp, contColMap);
+}
+#endif
 
 void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
@@ -267,7 +364,7 @@ void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * pck, COMMON_N
 	//Region 2
 	std::vector<unsigned int> region2RepIndices = { 1, 0, 0, 2, 3, 5, 6 }; // face order => top, x plus, btm, x minus, y minus, y plus
 	std::vector<unsigned int> region2PatchIndices = { 0, 1, 2, 0, 0, 0, 0 };
-	bool region2Sides[7] = { false, false, false, true, true, true, true}; //Top face is true, bottom face is false and Frontiers are always on true side flag in this example.
+	bool region2Sides[7] = { false, false, false, true, true, true, true }; //Top face is true, bottom face is false and Frontiers are always on true side flag in this example.
 	svf->pushBackVolumeRegion(stratiUnitB1Interp, 7, region2RepIndices.data(), region2PatchIndices.data(), region2Sides);
 
 	//Region 5
@@ -348,7 +445,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, COMMON_NS::Abstr
 
 #if defined(OFFICIAL)
 	h1i1SingleGrid2dRep = pck->createGrid2dRepresentation(horizon1Interp1, local3dCrs, "", "Horizon1 Interp1 Grid2dRep");
-	double zValues [8] = {300, 300, 350, 350, 300, 300, 350, 350};
+	double zValues[8] = { 300, 300, 350, 350, 300, 300, 350, 350 };
 	h1i1SingleGrid2dRep->setGeometryAsArray2dOfExplicitZ(zValues, 4, 2, hdfProxy, seismicLatticeRep);
 #else
 	h1i1SingleGrid2dRep = pck->createGrid2dRepresentation(horizon1Interp1, "", "Horizon1 Interp1 Grid2dRep");
@@ -481,9 +578,9 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	double singleCellIjkgridNodes[24] = { 0, 0, 300, 700, 0, 350, 0, 150, 300, 700, 150, 350,
 		0, 0, 500, 700, 0, 550, 0, 150, 500, 700, 150, 550 };
 	singleCellIjkgrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, singleCellIjkgridNodes, hdfProxy);
-	
+
 	// TWO SUGARS EXPLICIT
-	IjkGridExplicitRepresentation* ijkgrid = pck->createIjkGridExplicitRepresentation(earthModelInterp, "df2103a0-fa3d-11e5-b8d4-0002a5d5c51b", "Two faulted sugar cubes (explicit geometry)", 2, 1, 1);
+	ijkgrid = pck->createIjkGridExplicitRepresentation(earthModelInterp, "df2103a0-fa3d-11e5-b8d4-0002a5d5c51b", "Two faulted sugar cubes (explicit geometry)", 2, 1, 1);
 	double nodes[48] = { 0, 0, 300, 375, 0, 300, 700, 0, 350, 0, 150, 300, 375, 150, 300, 700, 150, 350, /* SPLIT*/ 375, 0, 350, 375, 150, 350,
 		0, 0, 500, 375, 0, 500, 700, 0, 550, 0, 150, 500, 375, 150, 500, 700, 150, 550, /* SPLIT*/ 375, 0, 550, 375, 150, 550 };
 	unsigned int pillarOfCoordinateLine[2] = { 1, 4 };
@@ -586,7 +683,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0
 	};
 	ijkgrid432rh->setEnabledCells(enabledCells32rh);
-	
+
 	//**************
 	// Subrepresentations
 	//**************
@@ -667,8 +764,8 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	//**************
 	// Properties
 	//**************
-	RESQML2_NS::PropertyKind * propType1 = pck->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__discrete);
-	DiscreteProperty* discreteProp1 = pck->createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
+	propType1 = pck->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__discrete);
+	discreteProp1 = pck->createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, propType1);
 	//long prop1Values[2] = {0,1};
 	//discreteProp1->pushBackLongHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, -1);
@@ -736,7 +833,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		0, 1, 1,
 		0, 3, 1,
 		ijkgrid);
-	
+
 	//**************
 	// Stratigraphy
 	//**************
@@ -936,7 +1033,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__frontier_x0020feature_x0020to_x0020frontier_x0020feature, xPlusFrontierInterp,
 		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
 		yPlusFrontierInterp);
-	
+
 	// =========================================================================
 	// =========================================================================
 	// SurfaceFramework
@@ -1728,6 +1825,9 @@ bool serialize(const string & filePath)
 	serializeRepresentationSetRepresentation(&repo, hdfProxy);
 	serializeFluidBoundary(repo, hdfProxy);
 	serializeRockFluidOrganization(repo, hdfProxy);
+#ifdef WITH_EXPERIMENTAL
+	serializeGraphicalInformationSet(&repo, hdfProxy);
+#endif
 	// Add an extended core property before to serialize
 	pck.setExtendedCoreProperty("F2I-ExtendedCoreProp", "TestingVersion");
 
@@ -2363,16 +2463,16 @@ void deserializeGridHyperslabbingInterfaceSequence(COMMON_NS::DataObjectReposito
 }
 
 /**
- * Display the cell geometry of an IJK grid block.
- * @param ijkGrid			An IJK grid.
- * @param iInterfaceStart	Sarting i interface of the block.
- * @param iInterfaceEnd		Ending i interface of the block.
- * @param jInterfaceStart	Sarting j interface of the block.
- * @param jInterfaceEnd		Ending j interface of the block.
- * @param kInterfaceStart	Sarting k interface of the block.
- * @param kInterfaceEnd		Ending k interface of the block.
- * @param xyzPoints			The geometry of the block.
- */
+* Display the cell geometry of an IJK grid block.
+* @param ijkGrid			An IJK grid.
+* @param iInterfaceStart	Sarting i interface of the block.
+* @param iInterfaceEnd		Ending i interface of the block.
+* @param jInterfaceStart	Sarting j interface of the block.
+* @param jInterfaceEnd		Ending j interface of the block.
+* @param kInterfaceStart	Sarting k interface of the block.
+* @param kInterfaceEnd		Ending k interface of the block.
+* @param xyzPoints			The geometry of the block.
+*/
 void displayBlockCellGeometry(AbstractIjkGridRepresentation* ijkGrid,
 	unsigned int iInterfaceStart, unsigned int iInterfaceEnd,
 	unsigned int jInterfaceStart, unsigned int jInterfaceEnd,
@@ -2432,7 +2532,7 @@ void displayBlockCellGeometry(AbstractIjkGridRepresentation* ijkGrid,
 
 /**
 * Deserialize IJK grid explicit representations packed in a given EPC document.
-* This method read grid geometry block by using hyperslabbing methods. Each block is read 
+* This method read grid geometry block by using hyperslabbing methods. Each block is read
 * layer by layer.
 * @param pck	An EPC document containing the IJK grid to deserialize.
 */
@@ -2469,7 +2569,7 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::DataObjectRepository & pck)
 	// Keep for testing
 	/*cout << "All xyz points:" << endl;
 	for (unsigned int index = 0; index < xyzPointCountOfBlock; ++index)
-		std::cout << "(" << xyzPoints[3 * index] << " " << xyzPoints[3 * index + 1] << " " << xyzPoints[3 * index + 2] << ") ";
+	std::cout << "(" << xyzPoints[3 * index] << " " << xyzPoints[3 * index + 1] << " " << xyzPoints[3 * index + 2] << ") ";
 	std::cout << std::endl;*/
 
 	displayBlockCellGeometry(ijkGrid,
@@ -2805,7 +2905,7 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::DataObjectRepository & pck)
 	// Keep for testing
 	/*cout << "All xyz points:" << endl;
 	for (unsigned int index = 0; index < xyzPointCountOfBlock; ++index)
-		std::cout << "(" << xyzPoints[3 * index] << " " << xyzPoints[3 * index + 1] << " " << xyzPoints[3 * index + 2] << ") ";
+	std::cout << "(" << xyzPoints[3 * index] << " " << xyzPoints[3 * index + 1] << " " << xyzPoints[3 * index + 2] << ") ";
 	std::cout << std::endl;*/
 
 	displayBlockCellGeometry(ijkGrid,
@@ -2911,12 +3011,12 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::DataObjectRepository & pck)
 }
 
 /**
- * This method provides a time comparison betweeen hyperslabbed and non-hyperslabbed versions of IJK grid geometry reading.
- * This method is relevant only if the pillar information loading is forced at each
- * IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch call!
- * @param ijkGrid	an IJK grid representation
- * @param nbIter	number of geometry reading iteration
- */
+* This method provides a time comparison betweeen hyperslabbed and non-hyperslabbed versions of IJK grid geometry reading.
+* This method is relevant only if the pillar information loading is forced at each
+* IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch call!
+* @param ijkGrid	an IJK grid representation
+* @param nbIter	number of geometry reading iteration
+*/
 void ijkGridHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, unsigned int nbIter)
 {
 	if (ijkGrid == nullptr)
@@ -3019,12 +3119,12 @@ void ijkGridHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, unsigned 
 }
 
 /**
- * This method provides a time comparison betweeen hyperslabbed and non-hyperslabbed versions of IJK grid discrete property reading.
- * It is assumed that poperty is cell centric.
- * @param ijkGrid	an IJK grid representation
- * @param prop		a dicrete property
- * @param nbIter		number of geometry reading iteration
- */
+* This method provides a time comparison betweeen hyperslabbed and non-hyperslabbed versions of IJK grid discrete property reading.
+* It is assumed that poperty is cell centric.
+* @param ijkGrid	an IJK grid representation
+* @param prop		a dicrete property
+* @param nbIter		number of geometry reading iteration
+*/
 void discretePropertyHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, DiscreteProperty* prop, unsigned int nbIter)
 {
 	if (ijkGrid == nullptr)
@@ -3120,9 +3220,9 @@ void deserializePerforations(COMMON_NS::DataObjectRepository & pck)
 
 	witsmlWellbore = wellboreCompletion->getWellbore();
 	std::cout << "Associated with witsml well bore " << witsmlWellbore->getTitle()
-			<< " with GUID " << witsmlWellbore->getUuid() << " and witsml well " << witsmlWellbore->getWell()->getTitle()
-			<< " with GUID " << witsmlWellbore->getWell()->getUuid() << std::endl;
-	
+		<< " with GUID " << witsmlWellbore->getUuid() << " and witsml well " << witsmlWellbore->getWell()->getTitle()
+		<< " with GUID " << witsmlWellbore->getWell()->getUuid() << std::endl;
+
 	for (unsigned int perforationIndex = 0; perforationIndex < wellboreCompletion->getPerforationCount(); ++perforationIndex)
 	{
 		cout << std::endl << "perforation " << perforationIndex << ":" << std::endl;
@@ -3177,6 +3277,61 @@ void deserializePerforations(COMMON_NS::DataObjectRepository & pck)
 		}
 	}
 }
+
+#ifdef WITH_EXPERIMENTAL
+void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
+{
+	std::cout << "GRAPHICAL INFORMATIONS" << std::endl;
+
+	COMMON_NS::GraphicalInformationSet* graphicalInformationSet = pck.getDataObjects<COMMON_NS::GraphicalInformationSet>()[0];
+	for (unsigned int i = 0; i < graphicalInformationSet->getGraphicalInformationSetCount(); ++i)
+	{
+		COMMON_NS::AbstractObject* targetObject = graphicalInformationSet->getTargetObject(i);
+
+		std::cout << "graphical information for: " << targetObject->getTitle() << std::endl;
+
+		if (graphicalInformationSet->hasDefaultColor(targetObject)) {
+			std::cout << "default hue: " << graphicalInformationSet->getDefaultHue(targetObject) << std::endl;
+			std::cout << "default saturation: " << graphicalInformationSet->getDefaultSaturation(targetObject) << std::endl;
+			std::cout << "default value: " << graphicalInformationSet->getDefaultValue(targetObject) << std::endl;
+			std::cout << "default alpha: " << graphicalInformationSet->getDefaultAlpha(targetObject) << std::endl;
+			if (graphicalInformationSet->hasDefaultColorTitle(targetObject)) {
+				std::cout << "default color title: " << graphicalInformationSet->getDefaultColorTitle(targetObject) << std::endl;
+			}
+		}
+
+		if (graphicalInformationSet->hasDiscreteColorMap(targetObject)) {
+			RESQML2_2_NS::DiscreteColorMap* discreteColorMap = graphicalInformationSet->getDiscreteColorMap(targetObject);
+			std::cout << "discrete color map title: " << discreteColorMap->getTitle() << std::endl;
+			unsigned int r, g, b;
+			for (unsigned int colorIndex = 0; colorIndex < discreteColorMap->getColorCount(); ++colorIndex) {
+				discreteColorMap->getRgbColor(colorIndex, r, g, b);
+				std::cout << colorIndex << ": (" << r << ", " << g << ", " << b << ", ";
+				std::cout << discreteColorMap->getAlpha(colorIndex);
+				if (discreteColorMap->hasColorTitle(colorIndex)) {
+					std::cout << ", " << discreteColorMap->getColorTitle(colorIndex);
+				}
+				std::cout << ")" << std::endl;
+			}
+		}
+
+		if (graphicalInformationSet->hasContinuousColorMap(targetObject)) {
+			RESQML2_2_NS::ContinuousColorMap* continuousColorMap = graphicalInformationSet->getContinuousColorMap(targetObject);
+			std::cout << "continuous color map title: " << continuousColorMap->getTitle() << std::endl;
+			unsigned int r, g, b;
+			for (unsigned int mapIndex = 0; mapIndex < continuousColorMap->getColorCount(); ++mapIndex) {
+				continuousColorMap->getRgbColor(mapIndex, r, g, b);
+				std::cout << mapIndex << ": (" << r << ", " << g << ", " << b << ", ";
+				std::cout << continuousColorMap->getAlpha(mapIndex);
+				if (continuousColorMap->hasColorTitle(mapIndex)) {
+					std::cout << ", " << continuousColorMap->getColorTitle(mapIndex);
+				}
+				std::cout << ")" << std::endl;
+			}
+		}
+	}
+}
+#endif
 
 void deserialize(const string & inputFile)
 {
@@ -3286,22 +3441,22 @@ void deserialize(const string & inputFile)
 			std::cout << "All polylines of the fault are closed" << endl;
 		}
 		/*
-				std::cout << "\tSEISMIC INFO" << endl;
-				double* inlines = new double[nodeCount];
-				faultPolyRep[i]->getInlinesOfPointsOfPatch(0, inlines);
-				for (unsigned int index = 0; index < nodeCount; index++)
-				{
-				std::cout << "\tinline : " << inlines[index] << std::endl;
-				}
-				delete [] inlines;
-				double* crosslines = new double[nodeCount];;
-				faultPolyRep[i]->getCrosslinesOfPointsOfPatch(0, crosslines);
-				for (unsigned int index = 0; index < nodeCount; index++)
-				{
-				std::cout << "\tcrossline : " << crosslines[index] << std::endl;
-				}
-				delete [] crosslines;
-				*/
+		std::cout << "\tSEISMIC INFO" << endl;
+		double* inlines = new double[nodeCount];
+		faultPolyRep[i]->getInlinesOfPointsOfPatch(0, inlines);
+		for (unsigned int index = 0; index < nodeCount; index++)
+		{
+		std::cout << "\tinline : " << inlines[index] << std::endl;
+		}
+		delete [] inlines;
+		double* crosslines = new double[nodeCount];;
+		faultPolyRep[i]->getCrosslinesOfPointsOfPatch(0, crosslines);
+		for (unsigned int index = 0; index < nodeCount; index++)
+		{
+		std::cout << "\tcrossline : " << crosslines[index] << std::endl;
+		}
+		delete [] crosslines;
+		*/
 
 		showAllProperties(faultPolyRep[i]);
 
@@ -3374,12 +3529,14 @@ void deserialize(const string & inputFile)
 		std::cout << "Third zValue is : " << zValues[2] << std::endl;
 		std::cout << "Fourth zValue is : " << zValues[3] << std::endl;
 		std::cout << "Fifth zValue is : " << zValues[4] << std::endl;
-		horizonGrid2dSet[i]->getSupportingRepresentation()->getZValuesInGlobalCrs(zValues);
-		std::cout << "Supporting Representation first zValue is : " << zValues[0] << std::endl;
-		std::cout << "Supporting Representation second zValue is : " << zValues[1] << std::endl;
-		std::cout << "Supporting Representation third zValue is : " << zValues[2] << std::endl;
-		std::cout << "Supporting Representation fourth zValue is : " << zValues[3] << std::endl;
-		std::cout << "Supporting Representation fifth zValue is : " << zValues[4] << std::endl;
+		if (horizonGrid2dSet[i]->getSupportingRepresentation() != nullptr) {
+			horizonGrid2dSet[i]->getSupportingRepresentation()->getZValuesInGlobalCrs(zValues);
+			std::cout << "Supporting Representation first zValue is : " << zValues[0] << std::endl;
+			std::cout << "Supporting Representation second zValue is : " << zValues[1] << std::endl;
+			std::cout << "Supporting Representation third zValue is : " << zValues[2] << std::endl;
+			std::cout << "Supporting Representation fourth zValue is : " << zValues[3] << std::endl;
+			std::cout << "Supporting Representation fifth zValue is : " << zValues[4] << std::endl;
+		}
 		delete[] zValues;
 		cout << "XIOffset : " << horizonGrid2dSet[i]->getXIOffsetInGlobalCrs() << endl;
 		cout << "YIOffset : " << horizonGrid2dSet[i]->getYIOffsetInGlobalCrs() << endl;
@@ -3467,7 +3624,7 @@ void deserialize(const string & inputFile)
 	for (size_t i = 0; i < horizonSinglePolylineRepSet.size(); i++)
 	{
 		showAllMetadata(horizonSinglePolylineRepSet[i]);
-		
+
 		const unsigned int patchCount = horizonSinglePolylineRepSet[i]->getPatchCount();
 		for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex) {
 			RESQML2_NS::AbstractRepresentation* seismicSupport = horizonSinglePolylineRepSet[i]->getSeismicSupportOfPatch(patchIndex);
@@ -3483,13 +3640,13 @@ void deserialize(const string & inputFile)
 				delete[] lineAbscissa;
 			}
 		}
-				
+
 		showAllProperties(horizonSinglePolylineRepSet[i]);
 	}
 
 	deserializeSealedSurfaceFramework(repo);
 	deserializeSealedVolumeFramework(repo);
-	
+
 	std::cout << "STRATI COLUMN" << endl;
 	for (size_t i = 0; i < stratiColumnSet.size(); i++)
 	{
@@ -3809,10 +3966,10 @@ void deserialize(const string & inputFile)
 					}
 				}
 			}/*
-			else if (ijkGrid->getParentGrid()->getXmlTag() == UnstructuredColumnLayerGridRepresentation::XML_TAG)
-			{
-				std::cout << "\t\t Refined columns count :" << ijkGrid->getParentColumnIndexCount() << std::endl;
-			}*/
+			 else if (ijkGrid->getParentGrid()->getXmlTag() == UnstructuredColumnLayerGridRepresentation::XML_TAG)
+			 {
+			 std::cout << "\t\t Refined columns count :" << ijkGrid->getParentColumnIndexCount() << std::endl;
+			 }*/
 			else if (ijkGrid->getParentGrid()->getXmlTag() == UnstructuredGridRepresentation::XML_TAG)
 			{
 				std::cout << "\t\t Refined cells count :" << ijkGrid->getParentCellIndexCount() << std::endl;
@@ -3856,8 +4013,8 @@ void deserialize(const string & inputFile)
 
 	// Testing block hyperslabbing
 	deserializeGridHyperslabbingBlock(repo);
-	
-	
+
+
 	// ====================
 	// Timing hyperslabbing (time consuming)
 
@@ -3868,13 +4025,13 @@ void deserialize(const string & inputFile)
 	//// FOUR SUGARS PARAMETRIC
 	//AbstractIjkGridRepresentation* ijkgridParametric = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("37c45c00-fa3e-11e5-a21e-0002a5d5c51b"));
 	//ijkGridHyperslabingTiming(ijkgridParametric, 250000);
-	
+
 	//// Four sugar cubes cellIndex
 	//DiscreteProperty* discreteProp1OnIjkgridParametric = static_cast<DiscreteProperty*>(pck.getDataObjectByUuid("eb3dbf6c-5745-4e41-9d09-672f6fbab414"));
 	//discretePropertyHyperslabingTiming(ijkgridParametric, discreteProp1OnIjkgridParametric, 250000);
-	
+
 	// ====================
-	
+
 
 	std::cout << endl << "UNSTRUCTURED GRID REP" << endl;
 	for (size_t i = 0; i < unstructuredGridRepSet.size(); ++i)
@@ -3967,6 +4124,11 @@ void deserialize(const string & inputFile)
 		}
 	}
 
+#ifdef WITH_EXPERIMENTAL
+	// GRAPHICAL INFORMATION
+	deserializeGraphicalInformationSet(repo);
+#endif
+
 	std::cout << endl << repo.getWarnings().size() << " WARNING(S)" << endl;
 	for (size_t i = 0; i < repo.getWarnings().size(); ++i) {
 		std::cout << i << " - " << repo.getWarnings()[i] << endl;
@@ -3977,22 +4139,17 @@ void deserialize(const string & inputFile)
 
 /*
 #include <ctime>
-
 // Performance testing
 int main(int argc, char **argv)
 {
 string filePath("../../testingPackageCpp.epc");
 COMMON_NS::EpcDocument pck(filePath, COMMON_NS::EpcDocument::OVERWRITE);
-
 COMMON_NS::AbstractHdfProxy* hdfProxy = pck.createHdfProxy("", "Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5" );
-
 unsigned long long dims2[3] = {152, 1000, 1000};
 float * testingValues2 = new float[152000000];
-
 std::clock_t startClock;
 time_t startTime;
 double duration;
-
 for (unsigned int i = 0; i < 20; ++i) {
 startClock = std::clock();
 startTime = time(0);
@@ -4002,12 +4159,8 @@ hdfProxy->writeArrayNdOfFloatValues("testingGroup", datasetName.str(), testingVa
 std::cout<<"duration (clock) : "<< ( std::clock() - startClock ) / (double) CLOCKS_PER_SEC <<'\n';
 std::cout<<"duration (time) : "<< difftime(time(0), startTime)<<'\n';
 }
-
-
 pck.serialize();
-
 hdfProxy->close();
-
 delete [] testingValues2;
 }
 */
@@ -4017,14 +4170,14 @@ delete [] testingValues2;
 int main()
 {
 	//try {
-		if (serialize(filePath)) {
-			deserialize(filePath);
-		}
+	if (serialize(filePath)) {
+		deserialize(filePath);
+	}
 	/*}
 	catch (const std::invalid_argument & Exp)
 	{
-		std::cerr << "Error : " << Exp.what() << ".\n";
-		return 1;
+	std::cerr << "Error : " << Exp.what() << ".\n";
+	return 1;
 	}*/
 
 	//cout << "Press enter to continue..." << endl;

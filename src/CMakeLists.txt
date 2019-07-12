@@ -17,13 +17,17 @@ configure_file(${FESAPI_ROOT_DIR}/cmake/HidtType.h.in ${FESAPI_ROOT_DIR}/src/com
 # Getting source files
 # ============================================================================
 
+add_library (${CPP_LIBRARY_NAME} ${LIB_TYPE} "")
+
 set (RESQML_PREFIX_2 "resqml2")
 set (RESQML_PREFIX_2_0_1 "resqml2_0_1")
 set (RESQML_PREFIX_2_1 "resqml2_1")
-set (WITSML_PREFIX "witsml2_0")
+if (WITH_EXPERIMENTAL)
+	set (RESQML_PREFIX_2_2 "resqml2_2")
+	target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE "-DWITH_EXPERIMENTAL")
+endif(WITH_EXPERIMENTAL)
+set (WITSML_PREFIX_2_0 "witsml2_0")
 #set (PRODML_PREFIX_2_0 "prodml2_0")
-
-add_library (${CPP_LIBRARY_NAME} ${LIB_TYPE} "")
 
 target_compile_options(${CPP_LIBRARY_NAME}	PUBLIC
 	$<$<CXX_COMPILER_ID:MSVC>:/bigobj>
@@ -141,11 +145,19 @@ set (FESAPI_COMMON_NS common CACHE STRING "Namespace for common objects")
 #set (FESAPI_PRODML2_0_NS prodml2_0 CACHE STRING "Namespace for prodml2_0 objects")
 set (FESAPI_RESQML2_NS resqml2 CACHE STRING "Namespace for resqml2 objects")
 set (FESAPI_RESQML2_0_1_NS resqml2_0_1 CACHE STRING "Namespace for resqml2_0_1 objects")
-set (FESAPI_WITSML2_0_NS witsml2_0 CACHE STRING "Namespace for witsml1_4_1_1 objects")
+if (WITH_EXPERIMENTAL)
+	set (FESAPI_RESQML2_2_NS resqml2_2 CACHE STRING "Namespace for resqml2_2 objects")
+endif(WITH_EXPERIMENTAL)
+set (FESAPI_WITSML2_0_NS witsml2_0 CACHE STRING "Namespace for witsml2_0 objects")
+
 configure_file(${FESAPI_ROOT_DIR}/cmake/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/nsDefinitions.h) # Overwrite if different
 
 file (GLOB FESAPI_COMMON_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/common/*.cpp)
 file (GLOB FESAPI_COMMON_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/common/*.h)
+if (NOT WITH_EXPERIMENTAL)
+	list(REMOVE_ITEM FESAPI_COMMON_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/common/GraphicalInformationSet.cpp")
+	list(REMOVE_ITEM FESAPI_COMMON_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/common/GraphicalInformationSet.h")
+endif ()
 
 file (GLOB FESAPI_TOOLS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tools/*.cpp)
 file (GLOB FESAPI_TOOLS_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/tools/*.h)
@@ -162,11 +174,19 @@ file (GLOB FESAPI_RESQML_2_0_1_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREF
 #file (GLOB FESAPI_RESQML_2_1_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_1}/*.cpp)
 #file (GLOB FESAPI_RESQML_2_1_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_1}/*.h)
 
+if (WITH_EXPERIMENTAL)
+	file (GLOB FESAPI_RESQML_2_2_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_2}/*.cpp)
+	file (GLOB FESAPI_RESQML_2_2_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${RESQML_PREFIX_2_2}/*.h)
+else ()
+	set (FESAPI_RESQML_2_2_SOURCES "")
+	set (FESAPI_RESQML_2_2_HEADERS "")
+endif()
+
 #file (GLOB FESAPI_PRODML_2_0_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_0}/*.cpp)
 #file (GLOB FESAPI_PRODML_2_0_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_0}/*.h)
 
-file (GLOB FESAPI_WITSML_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX}/*.cpp)
-file (GLOB FESAPI_WITSML_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX}/*.h)
+file (GLOB FESAPI_WITSML_2_0_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_0}/*.cpp)
+file (GLOB FESAPI_WITSML_2_0_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2_0}/*.h)
 
 set (ALL_SOURCES_AND_HEADERS
 	${CMAKE_CURRENT_SOURCE_DIR}/nsDefinitions.h
@@ -181,8 +201,10 @@ set (ALL_SOURCES_AND_HEADERS
 	${FESAPI_RESQML_2_HEADERS}
 	${FESAPI_RESQML_2_0_1_SOURCES}
 	${FESAPI_RESQML_2_0_1_HEADERS}
-	${FESAPI_WITSML_SOURCES}
-	${FESAPI_WITSML_HEADERS}
+	${FESAPI_RESQML_2_2_SOURCES}
+	${FESAPI_RESQML_2_2_HEADERS}
+	${FESAPI_WITSML_2_0_SOURCES}
+	${FESAPI_WITSML_2_0_HEADERS}
 #	${FESAPI_PRODML_2_0_SOURCES}
 #	${FESAPI_PRODML_2_0_HEADERS}
 	${FESAPI_PROXIES_SOURCES}
@@ -198,7 +220,7 @@ target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_INCLUDE_DIR})
 
 if (UNIX)
 	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${UUID_INCLUDE_DIR})
-ENDIF (UNIX)
+endif (UNIX)
 
 target_include_directories(${CPP_LIBRARY_NAME} PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
@@ -214,8 +236,11 @@ if (WIN32)
 	source_group ("${RESQML_PREFIX_2}" FILES ${FESAPI_RESQML_2_SOURCES} ${FESAPI_RESQML_2_HEADERS})
 	
 	source_group ("${RESQML_PREFIX_2_0_1}" FILES ${FESAPI_RESQML_2_0_1_SOURCES} ${FESAPI_RESQML_2_0_1_HEADERS})
+if (WITH_EXPERIMENTAL)
+	source_group ("${RESQML_PREFIX_2_2}" FILES ${FESAPI_RESQML_2_2_SOURCES} ${FESAPI_RESQML_2_2_HEADERS})
+endif(WITH_EXPERIMENTAL)
 	
-	source_group ("${WITSML_PREFIX}" FILES ${FESAPI_WITSML_SOURCES} ${FESAPI_WITSML_HEADERS})
+	source_group ("${WITSML_PREFIX_2_0}" FILES ${FESAPI_WITSML_2_0_SOURCES} ${FESAPI_WITSML_2_0_HEADERS})
 	
 #	source_group ("${PRODML_PREFIX_2_0}" FILES ${FESAPI_PRODML_2_0_SOURCES} ${FESAPI_PRODML_2_0_HEADERS})
 	
@@ -237,10 +262,17 @@ if (WITH_JAVA_WRAPPING)
 	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/common)
 	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2)
 	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2_0_1)
+	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2_2)
 	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml2_0)
 	
 	# Create the dedicated swig files
+if (WITH_EXPERIMENTAL)
+	configure_file(${FESAPI_ROOT_DIR}/cmake/swigModule_experimental.i ${FESAPI_ROOT_DIR}/swig/swigModule.i) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2JavaInclude_experimental.i ${FESAPI_ROOT_DIR}/swig/swigResqml2JavaInclude.i) # Overwrite if different
+else ()
+	configure_file(${FESAPI_ROOT_DIR}/cmake/swigModule.i ${FESAPI_ROOT_DIR}/swig/swigModule.i) # Overwrite if different
 	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2JavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigResqml2JavaInclude.i) # Overwrite if different
+endif()
 	configure_file(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR}/java/example/FesapiJavaExample.java) # Overwrite if different
 
 	# Filling
@@ -272,7 +304,13 @@ if (WITH_DOTNET_WRAPPING)
 	execute_process(COMMAND powershell "Remove-Item ${FESAPI_ROOT_DIR}/cs/src/* -recurse -exclude .gitignore")
 	
 	# Create the dedicated swig files
+if (WITH_EXPERIMENTAL)
+	configure_file(${FESAPI_ROOT_DIR}/cmake/swigModule_experimental.i ${FESAPI_ROOT_DIR}/swig/swigModule.i) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2CsInclude_experimental.i ${FESAPI_ROOT_DIR}/swig/swigResqml2CsInclude.i) # Overwrite if different
+else ()
+	configure_file(${FESAPI_ROOT_DIR}/cmake/swigModule.i ${FESAPI_ROOT_DIR}/swig/swigModule.i) # Overwrite if different
 	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2CsInclude.i ${FESAPI_ROOT_DIR}/swig/swigResqml2CsInclude.i) # Overwrite if different
+endif()
 	configure_file(${FESAPI_ROOT_DIR}/cmake/Program.cs ${FESAPI_ROOT_DIR}/cs/example/Program.cs) # Overwrite if different
 	
 	# Filling
@@ -351,10 +389,17 @@ INSTALL (
 	DESTINATION include/${RESQML_PREFIX_2_0_1}/
 )
 
+if (WITH_EXPERIMENTAL)
+	INSTALL (
+		FILES ${FESAPI_RESQML_2_2_HEADERS}
+		DESTINATION include/${RESQML_PREFIX_2_2}/
+	)
+endif(WITH_EXPERIMENTAL)
+
 # witsml headers
 INSTALL (
-	FILES ${FESAPI_WITSML_HEADERS}
-	DESTINATION include/${WITSML_PREFIX}/
+	FILES ${FESAPI_WITSML_2_0_HEADERS}
+	DESTINATION include/${WITSML_PREFIX_2_0}/
 )
 
 # prodml headers
