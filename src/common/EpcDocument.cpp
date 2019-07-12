@@ -37,10 +37,11 @@ using namespace COMMON_NS;
 
 const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 
-EpcDocument::EpcDocument(const string& fileName, DataObjectRepository::openingMode hdfPermissionAccess_) :
-	package(nullptr), hdfPermissionAccess(hdfPermissionAccess_)
+EpcDocument::EpcDocument(const string& fileName, DataObjectRepository::openingMode hdfPermissionAccess_)
 {
+	package = nullptr;
 	open(fileName);
+	hdfPermissionAccess = hdfPermissionAccess_;
 }
 
 EpcDocument::~EpcDocument()

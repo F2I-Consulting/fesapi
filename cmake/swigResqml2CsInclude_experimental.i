@@ -87,6 +87,18 @@ public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject res
     {
         ret = new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.TimeSeries(cPtr, owner);
     }
+	else if (type.equals("GraphicalInformationSet"))
+	{
+		ret = new f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.GraphicalInformationSet(cPtr, owner);
+	}
+	else if (type.equals("DiscreteColorMap"))
+	{
+		ret = new f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.DiscreteColorMap(cPtr, owner);
+	}
+	else if (type.equals("ContinuousColorMap"))
+	{
+		ret = new f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.ContinuousColorMap(cPtr, owner);
+	}
 	else if (type == "Well")
 	{
 		ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Well(cPtr, owner);

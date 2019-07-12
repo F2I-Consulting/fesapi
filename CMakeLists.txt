@@ -145,6 +145,7 @@ add_subdirectory(src)
 add_subdirectory(example)
 add_subdirectory(doc)
 
+set (WITH_EXPERIMENTAL OFF CACHE BOOL "Compile some experimental functionalities.")
 set (WITH_TEST OFF CACHE BOOL "Also build the unit tests.")
 if (WITH_TEST)
 	enable_testing()

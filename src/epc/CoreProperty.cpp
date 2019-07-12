@@ -16,8 +16,6 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
-
 #include "CoreProperty.h"
 
 #include <sstream>
@@ -26,17 +24,17 @@ using namespace std; // in order not to prefix by "std::" for each class in the 
 using namespace epc; // in order not to prefix by "epc::" for each class in the "epc" namespace. Never use "using namespace" in *.h file but only in*.cpp file!!!
 
 CoreProperty::CoreProperty() :
-	type(undefinedCoreProperty)
+	type(undefinedCoreProperty), value()
 {
 }
 
 CoreProperty::CoreProperty(const TypeProperty & pType):
-	type(pType)
+	type(pType), value()
 {
 }
 
 CoreProperty::CoreProperty(const TypeProperty & pType, const string & pValue):
-	type(pType)
+	type(pType), value()
 {
 	value.push_back(pValue);
 }

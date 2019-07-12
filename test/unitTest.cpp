@@ -25,7 +25,6 @@ under the License.
 #include "catch.hpp"
 
 #include "EpcDocumentTest.h"
-#include "GraphicalInformationSetTest.h"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 #include "resqml2_0_1test/HorizonInterpretationTest.h"
 #include "resqml2_0_1test/FaultSinglePatchTriangulatedSetRepresentationTest.h"
@@ -51,15 +50,19 @@ under the License.
 #include "resqml2_0_1test/SubRepresentationOnPartialGridConnectionSet.h"
 #include "resqml2_0_1test/LgrOnRightHanded4x3x2ExplicitIjkGrid.h"
 #include "resqml2_0_1test/InterpretationDomain.h"
-#include "resqml2_2test/DiscreteColorMapTest.h"
-#include "resqml2_2test/ContinuousColorMapTest.h"
 #include "resqml2_0_1test/MultirealPropertyTest.h"
 #include "witsml2_0test/WellTest.h"
 #include "witsml2_0test/Trajectory.h"
 
+#ifdef WITH_EXPERIMENTAL
+#include "GraphicalInformationSetTest.h"
+#include "resqml2_2test/DiscreteColorMapTest.h"
+#include "resqml2_2test/ContinuousColorMapTest.h"
+using namespace resqml2_2test;
+#endif
+
 using namespace commontest;
 using namespace resqml2_0_1test;
-using namespace resqml2_2test;
 using namespace witsml2_0test;
 
 #define FESAPI_TEST(name, tags, classTest)  TEST_CASE(name, tags)\
@@ -76,9 +79,11 @@ TEST_CASE( "Deserialize an EPC document", "[epc]")
 }
 */
 
+#ifdef WITH_EXPERIMENTAL
 FESAPI_TEST("Export and import graphical information set", "[graphical information]", GraphicalInformationSetTest)
 FESAPI_TEST("Export and import discrete color map on a discrete property", "[graphical information][color map][discrete color map]", DiscreteColorMapTest)
 FESAPI_TEST("Export and import continuous color map on a discrete property", "[graphical information][color map][continuous color map]", ContinuousColorMapTest)
+#endif
 
 TEST_CASE("Export and import an empty EPC document", "[repo]")
 {

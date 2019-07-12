@@ -37,7 +37,6 @@ under the License.
 #include "proxies/stdsoap2.h"
 
 #include "common/EpcDocument.h"
-#include "common/GraphicalInformationSet.h"
 #include "common/EnumStringMapper.h"
 #include "resqml2_0_1/LocalDepth3dCrs.h"
 #include "resqml2_0_1/LocalTime3dCrs.h"
@@ -90,8 +89,11 @@ under the License.
 #include "resqml2_0_1/Activity.h"
 #include "resqml2_0_1/ActivityTemplate.h"
 
+#ifdef WITH_EXPERIMENTAL
+#include "common/GraphicalInformationSet.h"
 #include "resqml2_2/DiscreteColorMap.h"
 #include "resqml2_2/ContinuousColorMap.h"
+#endif
 
 #include "witsml2_0/Well.h"
 
@@ -211,6 +213,7 @@ void serializePerforations(COMMON_NS::DataObjectRepository * pck)
 	wellboreCompletion->setPerforationHistoryStartDate(1, 1, 1514764800);
 }
 
+#ifdef WITH_EXPERIMENTAL
 void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, COMMON_NS::AbstractHdfProxy * hdfProxy)
 {
 	COMMON_NS::GraphicalInformationSet* graphicalInformationSet = repo->createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
@@ -297,6 +300,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, CO
 	contColMap->setRgbColors(2, contColMapRgbColors, contColMapAlphas, contColMapColTitles);
 	graphicalInformationSet->setContinuousColorMap(contColMapContProp, contColMap);
 }
+#endif
 
 void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
@@ -1821,7 +1825,9 @@ bool serialize(const string & filePath)
 	serializeRepresentationSetRepresentation(&repo, hdfProxy);
 	serializeFluidBoundary(repo, hdfProxy);
 	serializeRockFluidOrganization(repo, hdfProxy);
+#ifdef WITH_EXPERIMENTAL
 	serializeGraphicalInformationSet(&repo, hdfProxy);
+#endif
 	// Add an extended core property before to serialize
 	pck.setExtendedCoreProperty("F2I-ExtendedCoreProp", "TestingVersion");
 
@@ -3272,6 +3278,7 @@ void deserializePerforations(COMMON_NS::DataObjectRepository & pck)
 	}
 }
 
+#ifdef WITH_EXPERIMENTAL
 void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 {
 	std::cout << "GRAPHICAL INFORMATIONS" << std::endl;
@@ -3312,18 +3319,19 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 			RESQML2_2_NS::ContinuousColorMap* continuousColorMap = graphicalInformationSet->getContinuousColorMap(targetObject);
 			std::cout << "continuous color map title: " << continuousColorMap->getTitle() << std::endl;
 			unsigned int r, g, b;
-			for (unsigned int i = 0; i < continuousColorMap->getColorCount(); ++i) {
-				continuousColorMap->getRgbColor(i, r, g, b);
-				std::cout << i << ": (" << r << ", " << g << ", " << b << ", ";
-				std::cout << continuousColorMap->getAlpha(i);
-				if (continuousColorMap->hasColorTitle(i)) {
-					std::cout << ", " << continuousColorMap->getColorTitle(i);
+			for (unsigned int mapIndex = 0; mapIndex < continuousColorMap->getColorCount(); ++mapIndex) {
+				continuousColorMap->getRgbColor(mapIndex, r, g, b);
+				std::cout << mapIndex << ": (" << r << ", " << g << ", " << b << ", ";
+				std::cout << continuousColorMap->getAlpha(mapIndex);
+				if (continuousColorMap->hasColorTitle(mapIndex)) {
+					std::cout << ", " << continuousColorMap->getColorTitle(mapIndex);
 				}
 				std::cout << ")" << std::endl;
 			}
 		}
 	}
 }
+#endif
 
 void deserialize(const string & inputFile)
 {
@@ -4116,8 +4124,10 @@ void deserialize(const string & inputFile)
 		}
 	}
 
+#ifdef WITH_EXPERIMENTAL
 	// GRAPHICAL INFORMATION
 	deserializeGraphicalInformationSet(repo);
+#endif
 
 	std::cout << endl << repo.getWarnings().size() << " WARNING(S)" << endl;
 	for (size_t i = 0; i < repo.getWarnings().size(); ++i) {

@@ -30,7 +30,7 @@ FileRelationship::FileRelationship()
 {
 }
 
-FileRelationship::FileRelationship(const Relationship & frRelationship) : pathName("_rels\\.rels")
+FileRelationship::FileRelationship(const Relationship & frRelationship) : pathName("_rels\\.rels"), relationship()
 {
 	relationship.push_back(frRelationship);
 }
