@@ -698,6 +698,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_1::eml
 	}
 }
 
+#if WITH_EXPERIMENTAL
 COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_2::eml22__DataObjectReference const * dor)
 {
 	const size_t lastEqualCharPos = dor->ContentType.find_last_of('='); // The XML tag is after "type="
@@ -711,23 +712,6 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_2::eml
 	else {
 		return createPartial(uuid, title, contentType, *dor->ObjectVersion);
 	}
-}
-
-#if WITH_EXPERIMENTAL
-COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_2::eml22__DataObjectReference const * dor)
-{
-	const size_t lastEqualCharPos = dor->ContentType.find_last_of('='); // The XML tag is after "type="
-	const string contentType = dor->ContentType.substr(lastEqualCharPos + 1);
-
-	if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(COMMON_NS::GraphicalInformationSet)
-	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::DiscreteColorMap)
-	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::ContinuousColorMap)
-	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
-	{
-		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
-	}
-
-	throw invalid_argument("The content type " + contentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
 }
 #endif
 

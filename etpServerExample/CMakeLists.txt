@@ -3,6 +3,11 @@ cmake_minimum_required (VERSION 3.2)
 project (Fesapi_ETP_Server_Example)
 
 add_executable (etpServerExample "")
+
+if (WITH_EXPERIMENTAL)
+	target_compile_definitions(etpServerExample PRIVATE "-DWITH_EXPERIMENTAL")
+endif(WITH_EXPERIMENTAL)
+
 # ============================================================================
 # include directories
 # ============================================================================

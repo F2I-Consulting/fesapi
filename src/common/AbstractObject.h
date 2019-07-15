@@ -300,7 +300,6 @@ namespace COMMON_NS
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* newResqmlReference() const;
 		gsoap_eml2_1::eml21__DataObjectReference* newEmlReference() const;
-		gsoap_eml2_2::eml22__DataObjectReference* newEml22Reference() const;
 
 #if WITH_EXPERIMENTAL
 		gsoap_eml2_2::eml22__DataObjectReference* newEml22Reference() const;

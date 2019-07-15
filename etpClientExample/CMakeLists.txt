@@ -3,6 +3,11 @@ cmake_minimum_required (VERSION 3.2)
 project (Fesapi_ETP_Client_Example)
 
 add_executable (etpClientExample "")
+
+if (WITH_EXPERIMENTAL)
+	target_compile_definitions(etpClientExample PRIVATE "-DWITH_EXPERIMENTAL")
+endif(WITH_EXPERIMENTAL)
+
 # ============================================================================
 # include directories
 # ============================================================================
