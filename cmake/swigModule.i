@@ -238,6 +238,8 @@ namespace COMMON_NS
 		
 		DataObjectRepository();
 		
+		DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);
+		
 		void clear();
 		
 		std::vector<RESQML2_0_1_NS::LocalDepth3dCrs*> getLocalDepth3dCrsSet() const;
@@ -759,6 +761,8 @@ namespace COMMON_NS
 	public:
 	
 		EpcDocument(const std::string & fileName);
+		
+		EpcDocument(const std::string & fileName, DataObjectRepository::openingMode hdfPermissionAccess_ = DataObjectRepository::READ_ONLY);
 		
 		void setFilePath(const std::string & fp);
 
