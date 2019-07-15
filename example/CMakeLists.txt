@@ -31,13 +31,17 @@ SET(CMAKE_SKIP_BUILD_RPATH  FALSE)
 # (but later on when installing)
 SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
 
-SET(CMAKE_INSTALL_RPATH "\$ORIGIN/lib")
+SET(CMAKE_INSTALL_RPATH "\$ORIGIN/${CMAKE_INSTALL_LIBDIR}")
 
 # add the automatically determined parts of the RPATH
 # which point to directories outside the build tree to the install RPATH
 SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 ADD_EXECUTABLE (example ${CMAKE_CURRENT_SOURCE_DIR}/example.cpp)
+if (WITH_EXPERIMENTAL)
+	target_compile_definitions(example PRIVATE "-DWITH_EXPERIMENTAL")
+endif(WITH_EXPERIMENTAL)
+
 ADD_DEPENDENCIES (example ${CPP_LIBRARY_NAME})
 TARGET_LINK_LIBRARIES (example ${CPP_LIBRARY_NAME})
 IF (WIN32)

@@ -20,7 +20,6 @@ under the License.
 
 #include <stdexcept>
 
-#include "resqml2_0_1test/AbstractIjkGridRepresentationTest.h"
 #include "resqml2_0_1test/RightHanded4x3x2ExplicitIjkGrid.h"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 
@@ -38,7 +37,7 @@ using namespace RESQML2_NS;
 
 const char* LgrOnRightHanded4x3x2ExplicitIjkGrid::defaultUuid = "11852778-139e-4fa3-bb34-70c4014553f7";
 const char* LgrOnRightHanded4x3x2ExplicitIjkGrid::defaultTitle = "LGR";
-const ULONG64 LgrOnRightHanded4x3x2ExplicitIjkGrid::nodesCountIjkGridRepresentation = 40;
+const unsigned long long LgrOnRightHanded4x3x2ExplicitIjkGrid::nodesCountIjkGridRepresentation = 40;
 double LgrOnRightHanded4x3x2ExplicitIjkGrid::nodesIjkGridRepresentation[] = {
 	0, 50, 300, 50, 50, 300, 100, 50, 300, 150, 50, 300, //IJ0K0
 	0,  0, 300, 50,  0, 300, 100,  0, 300, 150,  0, 300, //IJ1K0
@@ -52,87 +51,126 @@ double LgrOnRightHanded4x3x2ExplicitIjkGrid::nodesIjkGridRepresentation[] = {
 	0,  0, 500, 50,  0, 500, 100,  0, 500, 150,  0, 500  //IJ1K4
 };
 
-LgrOnRightHanded4x3x2ExplicitIjkGrid::LgrOnRightHanded4x3x2ExplicitIjkGrid(const string & epcDocPath)
-	: AbstractIjkGridRepresentationTest(epcDocPath, defaultUuid, defaultTitle, nodesCountIjkGridRepresentation, nodesIjkGridRepresentation) {
+LgrOnRightHanded4x3x2ExplicitIjkGrid::LgrOnRightHanded4x3x2ExplicitIjkGrid(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
 }
 
-LgrOnRightHanded4x3x2ExplicitIjkGrid::LgrOnRightHanded4x3x2ExplicitIjkGrid(EpcDocument* epcDoc, bool init)
-	: AbstractIjkGridRepresentationTest(epcDoc, defaultUuid, defaultTitle, nodesCountIjkGridRepresentation, nodesIjkGridRepresentation) {
+LgrOnRightHanded4x3x2ExplicitIjkGrid::LgrOnRightHanded4x3x2ExplicitIjkGrid(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init) {
-		this->initEpcDoc();
+		initRepo();
 	}
 	else {
-		this->readEpcDoc();
+		readRepo();
 	}
 }
 
-void LgrOnRightHanded4x3x2ExplicitIjkGrid::initEpcDocHandler() {
+void LgrOnRightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 	// getting the parent grid
-	RightHanded4x3x2ExplicitIjkGrid* parentGridTest = new RightHanded4x3x2ExplicitIjkGrid(this->epcDoc, true);
+	RightHanded4x3x2ExplicitIjkGrid parentGridTest(repo, true);
 
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* parentGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
-	RESQML2_0_1_NS::LocalDepth3dCrs* crs = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::LocalDepth3dCrs>(LocalDepth3dCrsTest::defaultUuid);
-
-	// cleaning
-	delete parentGridTest;
-
-	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* parentGrid = repo->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
 
 	// creating the child ijk grid
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGrid = epcDoc->createIjkGridExplicitRepresentation(crs, uuid, title, 3, 1, 4);
-	childGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, xyzPointsOfAllPatchesInLocalCrs, hdfProxy);
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, 3, 1, 4);
+	childGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, nullptr);
 	childGrid->setParentWindow(
 		0, 3, 1, 1,
 		0, 1, 1, 1,
 		0, 2, 1, 2,
 		parentGrid);
 
-	// Discrete Property
-	RESQML2_0_1_NS::DiscreteProperty* discreteProp = epcDoc->createDiscreteProperty(childGrid, "65169116-4330-4a88-b698-f127454a7106", "Cell index", 1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__index);
-	long discretePropValues[12] = {
-		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
-	};
-	discreteProp->pushBackLongHdf5Array3dOfValues(discretePropValues, 3, 1, 4, hdfProxy, -1);
+	// creating the same child ijk grid using HDF5 datasets
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridHdf5 = repo->createIjkGridExplicitRepresentation("38930b30-1325-424e-a1e9-666fa50bfa4f", "Child grid HDF5", 3, 1, 4);
+	childGridHdf5->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, nullptr);
+	unsigned int one = 1;
+	unsigned int three = 3;
+	unsigned int twotwo[] = { 2,2 };
+	unsigned int oneone[] = { 1,1 };
+	childGridHdf5->setParentWindow(
+		0, &three, &one, one,
+		0, &one, &one, one,
+		0, twotwo, oneone, 2,
+		parentGrid);
 
-	// Continuous property
-	RESQML2_0_1_NS::ContinuousProperty* continuousProp = epcDoc->createContinuousProperty(childGrid, "a8e1720e-2b58-4329-9317-534bf8abca29", "Amplitude", 1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__amplitude);
-	double continuousPropValues[12] = {
-		0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.5, 0.4, 0.3, 0.2, 0.1, 0.0
-	};
-	continuousProp->pushBackDoubleHdf5Array3dOfValues(continuousPropValues, 3, 1, 4, hdfProxy);
+	// creating a non constant cell count per interval child ijk grid without geometry
+	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridNonConstant = repo->createIjkGridExplicitRepresentation("eaf36330-4c0b-40f8-bf07-b2818f09a229", "Child grid irregular refinement", 4, 1, 4);
+	unsigned int onetwo[] = { 1,2 };
+	unsigned int twothree[] = { 1,2 };
+	childGridNonConstant->setParentWindow(
+		0, onetwo, oneone, 2,
+		0, &one, &one, one,
+		0, twothree, oneone, 2,
+		parentGrid);
 }
 
-void LgrOnRightHanded4x3x2ExplicitIjkGrid::readEpcDocHandler() {
-	RightHanded4x3x2ExplicitIjkGrid* parentGridTest = new RightHanded4x3x2ExplicitIjkGrid(this->epcDoc, false);
+void LgrOnRightHanded4x3x2ExplicitIjkGrid::readRepoHandler() {
+	RightHanded4x3x2ExplicitIjkGrid* parentGridTest = new RightHanded4x3x2ExplicitIjkGrid(repo, false);
 
 	// getting the childGrid
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(uuid);
-	RESQML2_0_1_NS::IjkGridExplicitRepresentation* parentGrid = epcDoc->getDataObjectByUuid<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
+	RESQML2_0_1_NS::AbstractIjkGridRepresentation* childGrid = repo->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>(defaultUuid);
+	RESQML2_0_1_NS::AbstractIjkGridRepresentation* childGridHdf5 = repo->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>("38930b30-1325-424e-a1e9-666fa50bfa4f");
+	RESQML2_0_1_NS::AbstractIjkGridRepresentation* childGridNonConstant = repo->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>("eaf36330-4c0b-40f8-bf07-b2818f09a229");
+	RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid = repo->getDataObjectByUuid<RESQML2_0_1_NS::AbstractIjkGridRepresentation>(RightHanded4x3x2ExplicitIjkGrid::defaultUuid);
 
 	REQUIRE(childGrid->getCellCount() == 12);
 	REQUIRE(childGrid->getPillarCount() == 8);
-	REQUIRE(parentGrid->getChildGridCount() == 1);
 	REQUIRE(childGrid->getParentGrid() == parentGrid);
+	REQUIRE(childGridHdf5->getCellCount() == 12);
+	REQUIRE(childGridHdf5->getPillarCount() == 8);
+	REQUIRE(childGridHdf5->getParentGrid() == parentGrid);
+	REQUIRE(childGridNonConstant->getCellCount() == 16);
+	REQUIRE(childGridNonConstant->getPillarCount() == 10);
+	REQUIRE(childGridNonConstant->getParentGrid() == parentGrid);
+	REQUIRE(parentGrid->getChildGridCount() == 3);
 	// Child
 	REQUIRE(childGrid->isRegridCellCountPerIntervalConstant('i', true));
 	REQUIRE(childGrid->isRegridCellCountPerIntervalConstant('j', true));
 	REQUIRE(childGrid->isRegridCellCountPerIntervalConstant('k', true));
+	REQUIRE(childGridHdf5->isRegridCellCountPerIntervalConstant('i', true));
+	REQUIRE(childGridHdf5->isRegridCellCountPerIntervalConstant('j', true));
+	REQUIRE(childGridHdf5->isRegridCellCountPerIntervalConstant('k', true));
+	REQUIRE_FALSE(childGridNonConstant->isRegridCellCountPerIntervalConstant('i', true));
+	REQUIRE(childGridNonConstant->isRegridCellCountPerIntervalConstant('j', true));
+	REQUIRE_FALSE(childGridNonConstant->isRegridCellCountPerIntervalConstant('k', true));
 	// Parent
 	REQUIRE(childGrid->isRegridCellCountPerIntervalConstant('i', false));
 	REQUIRE(childGrid->isRegridCellCountPerIntervalConstant('j', false));
 	REQUIRE(childGrid->isRegridCellCountPerIntervalConstant('k', false));
+	REQUIRE(childGridHdf5->isRegridCellCountPerIntervalConstant('i', false));
+	REQUIRE(childGridHdf5->isRegridCellCountPerIntervalConstant('j', false));
+	REQUIRE(childGridHdf5->isRegridCellCountPerIntervalConstant('k', false));
+	REQUIRE(childGridNonConstant->isRegridCellCountPerIntervalConstant('i', false));
+	REQUIRE(childGridNonConstant->isRegridCellCountPerIntervalConstant('j', false));
+	REQUIRE(childGridNonConstant->isRegridCellCountPerIntervalConstant('k', false));
 	// Child
 	REQUIRE(childGrid->getRegridConstantCellCountPerInterval('i', true) == 3);
 	REQUIRE(childGrid->getRegridConstantCellCountPerInterval('j', true) == 1);
 	REQUIRE(childGrid->getRegridConstantCellCountPerInterval('k', true) == 2);
+	REQUIRE(childGridHdf5->getRegridConstantCellCountPerInterval('i', true) == 3);
+	REQUIRE(childGridHdf5->getRegridConstantCellCountPerInterval('j', true) == 1);
+	REQUIRE(childGridHdf5->getRegridConstantCellCountPerInterval('k', true) == 2);
+	REQUIRE(childGridNonConstant->getRegridConstantCellCountPerInterval('j', true) == 1);
 	// Parent
 	REQUIRE(childGrid->getRegridConstantCellCountPerInterval('i', false) == 1);
 	REQUIRE(childGrid->getRegridConstantCellCountPerInterval('j', false) == 1);
 	REQUIRE(childGrid->getRegridConstantCellCountPerInterval('k', false) == 1);
+	REQUIRE(childGridHdf5->getRegridConstantCellCountPerInterval('i', false) == 1);
+	REQUIRE(childGridHdf5->getRegridConstantCellCountPerInterval('j', false) == 1);
+	REQUIRE(childGridHdf5->getRegridConstantCellCountPerInterval('k', false) == 1);
+	REQUIRE(childGridNonConstant->getRegridConstantCellCountPerInterval('i', false) == 1);
+	REQUIRE(childGridNonConstant->getRegridConstantCellCountPerInterval('j', false) == 1);
+	REQUIRE(childGridNonConstant->getRegridConstantCellCountPerInterval('k', false) == 1);
+	// Child
+	REQUIRE_FALSE(childGrid->hasRegridChildCellWeights('i'));
+	REQUIRE_FALSE(childGrid->hasRegridChildCellWeights('j'));
+	REQUIRE_FALSE(childGrid->hasRegridChildCellWeights('k'));
+	REQUIRE_FALSE(childGridHdf5->hasRegridChildCellWeights('i'));
+	REQUIRE_FALSE(childGridHdf5->hasRegridChildCellWeights('j'));
+	REQUIRE_FALSE(childGridHdf5->hasRegridChildCellWeights('k'));
+	REQUIRE_FALSE(childGridNonConstant->hasRegridChildCellWeights('i'));
+	REQUIRE_FALSE(childGridNonConstant->hasRegridChildCellWeights('j'));
+	REQUIRE_FALSE(childGridNonConstant->hasRegridChildCellWeights('k'));
 
 	delete parentGridTest;
 }
-

@@ -18,14 +18,14 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1test/AbstractFeatureInterpretationTest.h"
+#include "AbstractObjectTest.h"
 
 namespace COMMON_NS {
-	class EpcDocument;
+	class DataObjectRepository;
 }
 
 namespace resqml2_0_1test {
-	class StratigraphicColumnRankInterpretationTest : public AbstractFeatureInterpretationTest {
+	class StratigraphicColumnRankInterpretationTest : public commontest::AbstractObjectTest {
 	public:
 		static const char* defaultUuid;
 		static const char* defaultTitle;
@@ -43,22 +43,20 @@ namespace resqml2_0_1test {
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,
 		* exising .epc file will be erased. 
-		* @param epcDocPath the path of the .epc file (including .epc extension)
+		* @param repoPath the path of the .epc file (including .epc extension)
 		*/
-		StratigraphicColumnRankInterpretationTest(const std::string & epcDocPath);
-		StratigraphicColumnRankInterpretationTest(const std::string & epcDocPath, const std::string & uuid, const std::string & title, const std::string & uuidFeature, const std::string & titleFeature);
+		StratigraphicColumnRankInterpretationTest(const std::string & repoPath);
 
 		/**
 		* Creation of a testing object from an existing EPC document.
-		* @param epcDoc an existing EPC document
+		* @param repo an existing EPC document
 		* @param init true if this object is created for initialization purpose else false if it is 
-		* created for reading purpose. According to init value a iniEpcDoc() or readEpcDoc() is called.
+		* created for reading purpose. According to init value a inirepo() or readRepo() is called.
 		*/
-		StratigraphicColumnRankInterpretationTest(COMMON_NS::EpcDocument* epcDoc, bool init);
-		StratigraphicColumnRankInterpretationTest(COMMON_NS::EpcDocument* epcDoc, const std::string & uuid, const std::string & title, const std::string & uuidFeature, const std::string & titleFeature, bool init);
+		StratigraphicColumnRankInterpretationTest(COMMON_NS::DataObjectRepository* repo, bool init);
 	protected:
-		void initEpcDocHandler();
-		void readEpcDocHandler();
+		void initRepoHandler();
+		void readRepoHandler();
 	};
 }
 

@@ -21,39 +21,19 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* BoundaryFeature::XML_TAG = "BoundaryFeature";
 
-BoundaryFeature::BoundaryFeature(soap* soapContext, const string & guid, const string & title)
+BoundaryFeature::BoundaryFeature(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title)
 {
-	if (soapContext == nullptr) {
-		throw invalid_argument("The soap context must exist");
+	if (repo == nullptr) {
+		throw invalid_argument("The repo must exist");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREBoundaryFeature(soapContext, 1);
+	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREBoundaryFeature(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
-}
 
-std::vector<epc::Relationship> BoundaryFeature::getAllEpcRelationships() const
-{
-	vector<Relationship> result = AbstractGeologicFeature::getAllEpcRelationships();
-
-	for (size_t i = 0; i < topOfRockFluidUnitFeatureSet.size(); ++i)
-	{
-		Relationship rel(topOfRockFluidUnitFeatureSet[i]->getPartNameInEpcDocument(), "", topOfRockFluidUnitFeatureSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	for (size_t i = 0; i < btmOfRockFluidUnitFeatureSet.size(); ++i)
-	{
-		Relationship rel(btmOfRockFluidUnitFeatureSet[i]->getPartNameInEpcDocument(), "", btmOfRockFluidUnitFeatureSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
+	repo->addOrReplaceDataObject(this);
 }

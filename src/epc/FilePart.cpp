@@ -27,11 +27,11 @@ under the License.
 using namespace std;
 using namespace epc;
 
-FilePart::FilePart():finalPathName(string())
+FilePart::FilePart():finalPathName(), fileRelationship()
 {}
 
 FilePart::FilePart(const string & outputPartPath):
-	finalPathName(outputPartPath)
+	finalPathName(outputPartPath), fileRelationship()
 {
 	string directoryOfPart(outputPartPath);
 

@@ -1,5 +1,5 @@
 /*
-        stdsoap2.h 2.8.81
+        stdsoap2.h 2.8.87
 
         gSOAP runtime engine
 
@@ -31,7 +31,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 --------------------------------------------------------------------------------
 */
 
-#define GSOAP_VERSION 20881
+#define GSOAP_VERSION 20887
 
 #ifdef WITH_SOAPDEFS_H
 # include "soapdefs.h"          /* include user-defined stuff in soapdefs.h */
@@ -1378,12 +1378,6 @@ extern "C" {
 #endif
 
 #ifdef __APPLE__
-# ifdef __cplusplus
-#  ifndef isnan
-extern "C" int isnan(double);
-extern "C" int isinf(double);
-#  endif
-# endif
 # ifndef HAVE_ISNAN
 #  define HAVE_ISNAN
 # endif
@@ -1782,7 +1776,7 @@ typedef soap_int32 soap_mode;
 #define SOAP_TLSv1                              (SOAP_TLSv1_0 | SOAP_TLSv1_1 | SOAP_TLSv1_2 | SOAP_TLSv1_3)
 #define SOAP_SSLv3_TLSv1                        (SOAP_SSLv3 | SOAP_TLSv1)
 
-#define SOAP_SSL_CLIENT                         0x8000  /* client context flag for internal use */
+#define SOAP_SSL_CLIENT                         (0x8000)  /* client context flag for internal use */
 
 #define SOAP_SSL_DEFAULT                        SOAP_SSL_REQUIRE_SERVER_AUTHENTICATION
  
@@ -2705,6 +2699,7 @@ struct SOAP_CMAC soap
   int accept_timeout;           /* user-definable, when > 0, sets socket accept() timeout in seconds, < 0 in usec */
   int socket_flags;             /* user-definable socket recv() and send() flags, e.g. set to MSG_NOSIGNAL to disable sigpipe */
   int connect_flags;            /* user-definable connect() SOL_SOCKET sockopt flags, e.g. set to SO_DEBUG to debug socket */
+  int connect_retry;            /* number of times to retry connecting (exponential backoff), zero by default */
   int bind_flags;               /* user-definable bind() SOL_SOCKET sockopt flags, e.g. set to SO_REUSEADDR to enable reuse */
   short bind_inet6;             /* user-definable, when > 0 use AF_INET6 instead of PF_UNSPEC (only with -DWITH_IPV6) */
   short bind_v6only;            /* user-definable, when > 0 use IPPROTO_IPV6 sockopt IPV6_V6ONLY (only with -DWITH_IPV6) */
@@ -2922,8 +2917,10 @@ struct SOAP_CMAC soap
   unsigned int ipv6_multicast_if; /* in_addr_t in6addr->sin6_scope_id IPv6 value */
   char* ipv4_multicast_if; /* IP_MULTICAST_IF IPv4 setsockopt interface_addr */
   unsigned char ipv4_multicast_ttl; /* IP_MULTICAST_TTL value 0..255 */
+  const char *client_addr; /* when non-NULL, client binds to this address before connect */
+  const char *client_addr_ipv6; /* WITH_IPV6: when non-NULL and client_addr is non-NULL and when connecting to a IPv6 server, client binds to this IPv6 address instead of client_addr */
   int client_port; /* when nonnegative, client binds to this port before connect */
-  const char *client_interface; /* when non-NULL, use this client address */
+  const char *client_interface; /* when non-NULL, override client-side interface address using this address */
   union {
     struct sockaddr addr;
     struct sockaddr_in in;

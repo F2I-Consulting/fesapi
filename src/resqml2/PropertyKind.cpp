@@ -20,11 +20,12 @@ under the License.
 
 #include <stdexcept>
 
+#include "common/EnumStringMapper.h"
+
 #include "resqml2/AbstractValuesProperty.h"
 
 using namespace std;
 using namespace RESQML2_NS;
-using namespace epc;
 
 const char* PropertyKind::XML_TAG = "PropertyKind";
 
@@ -66,7 +67,8 @@ std::string PropertyKind::getParentAsString() const
 	else
 	{
 		gsoap_resqml2_0_1::_resqml2__PropertyKind* propType = static_cast<gsoap_resqml2_0_1::_resqml2__PropertyKind*>(gsoapProxy2_0_1);
-		return epcDocument->getEnergisticsPropertyKindName(static_cast<gsoap_resqml2_0_1::resqml2__StandardPropertyKind*>(propType->ParentPropertyKind)->Kind);
+		COMMON_NS::EnumStringMapper tmp;
+		return tmp.getEnergisticsPropertyKindName(static_cast<gsoap_resqml2_0_1::resqml2__StandardPropertyKind*>(propType->ParentPropertyKind)->Kind);
 	}
 }
 
@@ -98,7 +100,7 @@ gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind PropertyKind::getParentEnergistic
 
 PropertyKind* PropertyKind::getParentLocalPropertyKind() const
 {
-	return static_cast<PropertyKind*>(epcDocument->getDataObjectByUuid(getParentLocalPropertyKindUuid()));
+	return static_cast<PropertyKind*>(repository->getDataObjectByUuid(getParentLocalPropertyKindUuid()));
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* PropertyKind::getParentLocalPropertyKindDor() const
@@ -128,56 +130,31 @@ std::string PropertyKind::getParentLocalPropertyKindTitle() const
 
 void PropertyKind::setParentPropertyKind(PropertyKind* parentPropertyKind)
 {
-	parentPropertyKind->childPropertyKind.push_back(this);
-
-	if (updateXml) {
-		setXmlParentPropertyKind(parentPropertyKind);
+	if (parentPropertyKind == nullptr) {
+		throw invalid_argument("The parent property kind cannot be null");
 	}
+	if (getRepository() == nullptr) {
+		parentPropertyKind->getRepository()->addOrReplaceDataObject(this);
+	}
+	getRepository()->addRelationship(this, parentPropertyKind);
+
+	setXmlParentPropertyKind(parentPropertyKind);
 }
 
-vector<Relationship> PropertyKind::getAllEpcRelationships() const
-{
-	vector<Relationship> result;
-
-	// forward relationships
-	if (!isParentAnEnergisticsPropertyKind())
-	{
-		const PropertyKind* const parentPropertyKind = getParentLocalPropertyKind();
-		Relationship rel(parentPropertyKind->getPartNameInEpcDocument(), "", parentPropertyKind->getUuid());
-		rel.setDestinationObjectType();
-		result.push_back(rel);
-	}
-
-	// backwards relationships
-	for (size_t i = 0; i < propertySet.size(); ++i) {
-		Relationship rel(propertySet[i]->getPartNameInEpcDocument(), "", propertySet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	for (size_t i = 0; i < childPropertyKind.size(); ++i) {
-		Relationship rel(childPropertyKind[i]->getPartNameInEpcDocument(), "", childPropertyKind[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
-}
-
-void PropertyKind::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void PropertyKind::loadTargetRelationships() const
 {
 	if (isParentAnEnergisticsPropertyKind()) {
 		return;
 	}
 
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getParentLocalPropertyKindDor();
-	RESQML2_NS::PropertyKind* parentPk = epcDoc->getDataObjectByUuid<PropertyKind>(dor->UUID);
+	RESQML2_NS::PropertyKind* parentPk = getRepository()->getDataObjectByUuid<PropertyKind>(dor->UUID);
 	if (parentPk == nullptr) {
-		epcDoc->createPartial(dor);
-		parentPk = epcDoc->getDataObjectByUuid<PropertyKind>(dor->UUID);
+		getRepository()->createPartial(dor);
+		parentPk = getRepository()->getDataObjectByUuid<PropertyKind>(dor->UUID);
 		if (parentPk == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
 		}
 	}
-	parentPk->childPropertyKind.push_back(this);
+	getRepository()->addRelationship(this, parentPk);
 }

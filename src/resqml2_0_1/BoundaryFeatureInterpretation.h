@@ -51,12 +51,5 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
-
-	protected:
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-		
-        std::vector<WellboreMarker*> wellboreMarkerSet;
-
-		friend void WellboreMarker::setBoundaryFeatureInterpretation(BoundaryFeatureInterpretation* interp);
 	};
 }

@@ -28,7 +28,6 @@ under the License.
 #include "resqml2_0_1test/LocalTime3dCrs.h"
 
 #include <stdexcept>
-#include "../config.h"
 
 using namespace std;
 using namespace resqml2_0_1test;
@@ -39,38 +38,36 @@ const char* PolylineSetRepresentation::defaultTitle = "Polyline represenation (i
 unsigned int PolylineSetRepresentation::numNodesPerPolylinePerPatch[] = { 3, 2 };
 double PolylineSetRepresentation::polylinePoints[] = { 150, 0, 200, 300, 0, 350, 450, 0, 500, 150, 200, 200, 450, 200, 500 };
 
-PolylineSetRepresentation::PolylineSetRepresentation(const string & epcDocPath)
-	: AbstractSurfaceRepresentationTest(epcDocPath, defaultUuid, defaultTitle, 5, polylinePoints) {
+PolylineSetRepresentation::PolylineSetRepresentation(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
 }
 
-PolylineSetRepresentation::PolylineSetRepresentation(EpcDocument* epcDoc, bool init)
-	: AbstractSurfaceRepresentationTest(epcDoc, defaultUuid, defaultTitle, 5, polylinePoints) {
+PolylineSetRepresentation::PolylineSetRepresentation(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-		this->initEpcDoc();
+		initRepo();
 	else
-		this->readEpcDoc();
+		readRepo();
 }
 
-void PolylineSetRepresentation::initEpcDocHandler() {
-	RESQML2_0_1_NS::FaultInterpretation * interp = static_cast<RESQML2_0_1_NS::FaultInterpretation*>(this->epcDoc->getDataObjectByUuid(uuidFaultInterpretation));
+void PolylineSetRepresentation::initRepoHandler() {
+	RESQML2_0_1_NS::FaultInterpretation * interp = repo->getDataObjectByUuid<RESQML2_0_1_NS::FaultInterpretation>(FaultInterpretationTest::defaultUuid);
 	if (interp == nullptr) {
-		FaultInterpretationTest * interpTest = new FaultInterpretationTest(this->epcDoc, true);
-		interp = static_cast<RESQML2_0_1_NS::FaultInterpretation*>(this->epcDoc->getDataObjectByUuid(uuidFaultInterpretation));
-		delete interpTest;
+		FaultInterpretationTest interpTest(repo, true);
+		interp = repo->getDataObjectByUuid<RESQML2_0_1_NS::FaultInterpretation>(FaultInterpretationTest::defaultUuid);
 	}
 
-	RESQML2_0_1_NS::LocalTime3dCrs * crs = static_cast<RESQML2_0_1_NS::LocalTime3dCrs *>(this->epcDoc->getDataObjectByUuid(LocalTime3dCrs::defaultUuid));
+	RESQML2_0_1_NS::LocalTime3dCrs * crs = repo->getDataObjectByUuid<RESQML2_0_1_NS::LocalTime3dCrs>(LocalTime3dCrs::defaultUuid);
 	if (crs == nullptr) {
-		LocalTime3dCrs * crsTest = new LocalTime3dCrs(this->epcDoc, true);
-		crs = static_cast<RESQML2_0_1_NS::LocalTime3dCrs *>(this->epcDoc->getDataObjectByUuid(LocalTime3dCrs::defaultUuid));
-		delete crsTest;
+		LocalTime3dCrs crsTest(repo, true);
+		crs = repo->getDataObjectByUuid<RESQML2_0_1_NS::LocalTime3dCrs>(LocalTime3dCrs::defaultUuid);
 	}
 
-	RESQML2_0_1_NS::PolylineSetRepresentation* rep = epcDoc->createPolylineSetRepresentation(interp, crs, defaultUuid, defaultTitle);
+	RESQML2_0_1_NS::PolylineSetRepresentation* rep = repo->createPolylineSetRepresentation(interp, defaultUuid, defaultTitle);
 	REQUIRE(rep != nullptr);
-	rep->pushBackGeometryPatch(numNodesPerPolylinePerPatch, polylinePoints, 2, false, epcDoc->getHdfProxySet()[0]);
+	rep->pushBackGeometryPatch(numNodesPerPolylinePerPatch, polylinePoints, 2, false, nullptr, crs);
 }
 
-void PolylineSetRepresentation::readEpcDocHandler() {
+void PolylineSetRepresentation::readRepoHandler()
+{
 }
-

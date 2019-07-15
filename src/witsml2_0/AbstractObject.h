@@ -63,4 +63,3 @@ namespace WITSML2_0_NS
 		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) : COMMON_NS::AbstractObject(proxy) {}
 	};
 }
-

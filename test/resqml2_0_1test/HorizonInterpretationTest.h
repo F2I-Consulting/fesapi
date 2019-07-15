@@ -18,38 +18,38 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1test/BoundaryFeatureInterpretationTest.h"
+#include "AbstractObjectTest.h"
 #include <iostream>
 
 namespace COMMON_NS {
-	class EpcDocument;
+	class DataObjectRepository;
 }
 
 namespace resqml2_0_1test {
-	class HorizonInterpretationTest : public BoundaryFeatureInterpretationTest {
+	class HorizonInterpretationTest : public commontest::AbstractObjectTest {
 	public:
+		static const char* horizonUuid;
+		static const char* horizonTitle;
 		static const char* defaultUuid;
 		static const char* defaultTitle;
 
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,
 		* exising .epc file will be erased. 
-		* @param epcDocPath the path of the .epc file (including .epc extension)
+		* @param repoPath the path of the .epc file (including .epc extension)
 		*/
-		HorizonInterpretationTest(const std::string & epcDocPath);
-		HorizonInterpretationTest(const std::string & epcDocPath, const std::string & uuid, const std::string & title, const std::string & uuidFeature, const std::string & titleFeature);
+		HorizonInterpretationTest(const std::string & repoPath);
 
 		/**
 		* Creation of a testing object from an existing EPC document.
-		* @param epcDoc an existing EPC document
+		* @param repo an existing EPC document
 		* @param init true if this object is created for initialization purpose else false if it is 
-		* created for reading purpose. According to init value a iniEpcDoc() or readEpcDoc() is called.
+		* created for reading purpose. According to init value a inirepo() or readRepo() is called.
 		*/
-		HorizonInterpretationTest(COMMON_NS::EpcDocument * epcDocument, bool init);
-		HorizonInterpretationTest(COMMON_NS::EpcDocument * epcDocument, bool init, const std::string & uuid, const std::string & title, const std::string & uuidFeature, const std::string & titleFeature);
+		HorizonInterpretationTest(COMMON_NS::DataObjectRepository* repo, bool init);
 	protected:
-		void initEpcDocHandler();
-		void readEpcDocHandler();
+		void initRepoHandler();
+		void readRepoHandler();
 	};
 }
 

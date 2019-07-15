@@ -19,7 +19,7 @@ under the License.
 #pragma once
 
 #include "common/EpcExternalPartReference.h"
-#include "resqml2/AbstractRepresentation.h"
+#include "common/HidtType.h"
 
 #define CUMULATIVE_LENGTH_DS_NAME "cumulativeLength"
 #define ELEMENTS_DS_NAME "elements"
@@ -30,25 +30,50 @@ namespace COMMON_NS
 	{
 	protected:
 
+		std::string packageDirectoryAbsolutePath;												/// The directory where the EPC document is stored.
+		std::string relativeFilePath;															/// Must be relative to the location of the package
+		DataObjectRepository::openingMode openingMode;
+
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
 		*/
-		AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath);
+		AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::READ_ONLY);
 
-		AbstractHdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
-			EpcExternalPartReference(fromGsoap, packageDirAbsolutePath, externalFilePath) {}
+		AbstractHdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
+			EpcExternalPartReference(fromGsoap), openingMode(DataObjectRepository::READ_ONLY) {}
 
-		AbstractHdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap, const std::string & packageDirAbsolutePath, const std::string & externalFilePath) :
-			EpcExternalPartReference(fromGsoap, packageDirAbsolutePath, externalFilePath) {}
+		AbstractHdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
+			EpcExternalPartReference(fromGsoap), openingMode(DataObjectRepository::READ_ONLY) {}
 
 		/**
 		* Instantiate and initialize the gsoap proxy v2.0.1.
 		* This method is defined in order to be used in derived class without having to link to generated gsoap files.
 		*/
-		void initGsoapProxy(soap* soapContext, const std::string & guid, const std::string & title, const EmlVersion & emlVersion);
+		void initGsoapProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, EmlVersion emlVersion);
 
 	public:  
 		virtual ~AbstractHdfProxy() {}
+
+		/**
+		* Set the root of the path where to resolve relativeFilePath.
+		* It must be the folder path containing the EPC file if this HDF5 file is associated to an EPC file.
+		*/
+		DLL_IMPORT_OR_EXPORT void setRootPath(const std::string& rootPath) { packageDirectoryAbsolutePath = rootPath; }
+
+		/**
+		* Set the relative path regarding packageDirectoryAbsolutePath where the HDF5 file is located.
+		*/
+		DLL_IMPORT_OR_EXPORT void setRelativePath(const std::string& relPath) { relativeFilePath = relPath; }
+
+		/**
+		* Set the rights when opening the HDF5 file.
+		*/
+		DLL_IMPORT_OR_EXPORT void setOpeningMode(DataObjectRepository::openingMode openingMode_) { openingMode = openingMode_; }
+
+		/**
+		* Get the relative path regarding packageDirectoryAbsolutePath where the HDF5 file is located.
+		*/
+		DLL_IMPORT_OR_EXPORT const std::string& getRelativePath() const { return relativeFilePath; }
 
 		/**
 		* Open the file for reading and writing.
@@ -70,7 +95,7 @@ namespace COMMON_NS
 		 * Get the used (native) datatype in a dataset
 		* To compare with H5T_NATIVE_INT, H5T_NATIVE_UINT, H5T_NATIVE_FLOAT, etc...
 		 */
-		virtual int getHdfDatatypeInDataset(const std::string & datasetName) = 0;
+		virtual hdf5_hid_t getHdfDatatypeInDataset(const std::string & datasetName) = 0;
 
 		/**
 		* Get the used datatype class in a dataset
@@ -92,12 +117,12 @@ namespace COMMON_NS
 		*/
 		virtual void writeItemizedListOfList(const std::string & groupName,
 			const std::string & name,
-			const int & cumulativeLengthDatatype,
+			hdf5_hid_t cumulativeLengthDatatype,
 			const void * cumulativeLength,
-			const unsigned long long & cumulativeLengthSize,
-			const int & elementsDatatype,
+			unsigned long long cumulativeLengthSize,
+			hdf5_hid_t elementsDatatype,
 			const void * elements,
-			const unsigned long long & elementsSize) = 0;
+			unsigned long long elementsSize) = 0;
 
 		/**
 		 * Get the number of dimensions in an HDF dataset of the proxy.
@@ -115,13 +140,13 @@ namespace COMMON_NS
 		 * Set the new compression level which will be used for all data to be written
 		 * @param compressionLevel				Lower compression levels are faster but result in less compression. Range [0..9] is allowed.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual void setCompressionLevel(const unsigned int & newCompressionLevel) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setCompressionLevel(unsigned int newCompressionLevel) = 0;
 
 		virtual void writeArrayNdOfFloatValues(const std::string & groupName,
 		  const std::string & name,
 		  const float * floatValues,
 		  const unsigned long long * numValuesInEachDimension,
-		  const unsigned int & numDimensions) = 0;
+		  unsigned int numDimensions) = 0;
 
 		/**
 		 * Write an array (potentially with multi dimensions) of double values into the HDF file by means of a single dataset.
@@ -136,7 +161,7 @@ namespace COMMON_NS
 		  const std::string & name,
 		  const double * dblValues,
 		  const unsigned long long * numValuesInEachDimension,
-		  const unsigned int & numDimensions) = 0;
+		  unsigned int numDimensions) = 0;
 
 		/**
 		* Write an array (potentially with multi dimensions) of char values into the HDF file by means of a single dataset.
@@ -151,7 +176,7 @@ namespace COMMON_NS
 			const std::string & name,
 			const char * intValues,
 			const unsigned long long * numValuesInEachDimension,
-			const unsigned int & numDimensions) = 0;
+			unsigned int numDimensions) = 0;
 
 		/**
 		 * Write an array (potentially with multi dimensions) of int values into the HDF file by means of a single dataset.
@@ -166,7 +191,7 @@ namespace COMMON_NS
 		  const std::string & name,
 		  const int * intValues,
 		  const unsigned long long * numValuesInEachDimension,
-		  const unsigned int & numDimensions) = 0;
+		  unsigned int numDimensions) = 0;
 
 		/**
 		* Write an array (potentially with multi dimensions) of gSoap unsigned long 64 values into the HDF file by means of a single dataset.
@@ -181,7 +206,7 @@ namespace COMMON_NS
 			const std::string & name,
 			const ULONG64 * ulong64Values,
 			const unsigned long long * numValuesInEachDimension,
-			const unsigned int & numDimensions) = 0;
+			unsigned int numDimensions) = 0;
 
 		/**
 		 * Write an array (potentially with multi dimensions) of a specific datatype into the HDF file by means of a single dataset.
@@ -195,10 +220,10 @@ namespace COMMON_NS
 		 */
 		virtual void writeArrayNd(const std::string & groupName,
 		  const std::string & name,
-		  const int & datatype,
+		  hdf5_hid_t datatype,
 		  const void * values,
 		  const unsigned long long * numValuesInEachDimension,
-		  const unsigned int & numDimensions) = 0;
+		  unsigned int numDimensions) = 0;
 
 		/**
 		 * Create an array (potentially with multi dimensions) of a specific datatype into the HDF file. Values are not yet written to this array.
@@ -212,9 +237,9 @@ namespace COMMON_NS
 		virtual void createArrayNd(
 		  const std::string& groupName,
 		  const std::string& name,
-		  const int & datatype,
+		  hdf5_hid_t datatype,
 		  const unsigned long long* numValuesInEachDimension,
-		  const unsigned int& numDimensions
+		  unsigned int numDimensions
 		  ) = 0;
 
 		/**
@@ -229,11 +254,11 @@ namespace COMMON_NS
 		virtual void writeArrayNdSlab(
 		  const std::string& groupName,
 		  const std::string& name,
-		  const int & datatype,
+		  hdf5_hid_t datatype,
 		  const void* values,
 		  const unsigned long long* numValuesInEachDimension,
 		  const unsigned long long* offsetValuesInEachDimension,
-		  const unsigned int& numDimensions
+		  unsigned int numDimensions
 		  ) = 0;
 
 		/**
@@ -336,7 +361,7 @@ namespace COMMON_NS
 		  double* values,
 		  unsigned long long * numValuesInEachDimension,
 		  unsigned long long * offsetInEachDimension,
-		  const unsigned int & numDimensions
+		  unsigned int numDimensions
 		  ) = 0;
 
 		/**
@@ -356,7 +381,7 @@ namespace COMMON_NS
 			unsigned long long * offsetInEachDimension,
 			unsigned long long * strideInEachDimension,
 			unsigned long long * blockSizeInEachDimension,
-			const unsigned int & numDimensions) = 0;
+			unsigned int numDimensions) = 0;
 
 		/**
 		 * Considering a given dataset, this method selects an hyperslab region to add to an existing selected region or to add to a new selected region.
@@ -377,10 +402,10 @@ namespace COMMON_NS
 			unsigned long long * offsetInEachDimension,
 			unsigned long long * strideInEachDimension,
 			unsigned long long * blockSizeInEachDimension,
-			const unsigned int & numDimensions,
+			unsigned int numDimensions,
 			bool newSelection,
-			int & dataset,
-			int & filespace) = 0;
+			hdf5_hid_t & dataset,
+			hdf5_hid_t & filespace) = 0;
 
 		/**
 		 * Considering a given dataset, read the double values corresponding to an existing selected region. 
@@ -390,8 +415,8 @@ namespace COMMON_NS
 		 * @param slabSize		Number of values to read.
 		 */
 		virtual void readArrayNdOfDoubleValues(
-			int dataset,
-			int filespace,
+			hdf5_hid_t dataset,
+			hdf5_hid_t filespace,
 			void* values,
 			unsigned long long slabSize) = 0;
 
@@ -415,7 +440,7 @@ namespace COMMON_NS
 		  float* values,
 		  unsigned long long * numValuesInEachDimension,
 		  unsigned long long * offsetInEachDimension,
-		  const unsigned int & numDimensions
+		  unsigned int numDimensions
 		  ) = 0;
 
 		/**
@@ -450,7 +475,7 @@ namespace COMMON_NS
 		  long* values,
 		  unsigned long long * numValuesInEachDimension,
 		  unsigned long long * offsetInEachDimension,
-		  const unsigned int & numDimensions
+		  unsigned int numDimensions
 		  ) = 0;
 
 		/**
@@ -480,7 +505,7 @@ namespace COMMON_NS
 			int* values,
 			unsigned long long * numValuesInEachDimension,
 			unsigned long long * offsetInEachDimension,
-			const unsigned int & numDimensions
+			unsigned int numDimensions
 		) = 0;
 
 		/**
@@ -530,9 +555,10 @@ namespace COMMON_NS
 		* Check wether an absolute path exists in the hdf file or not.
 		*/
 		virtual bool exist(const std::string & absolutePathInHdfFile) const = 0;
-  
-		friend void RESQML2_NS::AbstractRepresentation::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
-		friend void RESQML2_NS::AbstractProperty::setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
 
+		/**
+		* Check wether a dataset is compressed or not.
+		*/
+		virtual bool isCompressed(const std::string & datasetName) = 0;
 	};
 }

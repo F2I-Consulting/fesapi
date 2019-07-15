@@ -17,7 +17,6 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "ActivityTemplateGenericCreationTest.h"
-#include "../config.h"
 #include "common/EpcDocument.h"
 #include "resqml2_0_1/ActivityTemplate.h"
 #include "../catch.hpp"
@@ -25,31 +24,56 @@ under the License.
 using namespace std;
 using namespace COMMON_NS;
 using namespace resqml2_0_1test;
-using namespace RESQML2_0_1_NS;
+using namespace RESQML2_NS;
 
 // ***************************************************************
 // two followings values are conventions, they must not be changed
 const char* ActivityTemplateGenericCreationTest::defaultUuid = "a41c63bf-78cb-454b-8018-c9df060c5cf3";
 const char* ActivityTemplateGenericCreationTest::defaultTitle = "GenericCreationActivity";
 
-ActivityTemplateGenericCreationTest::ActivityTemplateGenericCreationTest(const string & epcDocPath)
-	: ActivityTemplateTest(epcDocPath, defaultUuid, defaultTitle) {
+ActivityTemplateGenericCreationTest::ActivityTemplateGenericCreationTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
 		ParameterTest creationInput = {"CreationInput", true, false, 0, -1};
-		this->parameterMap.insert(std::pair<std::string, ParameterTest>("CreationInput", creationInput));
+		parameterMap.insert(std::pair<std::string, ParameterTest>("CreationInput", creationInput));
 		ParameterTest creationOutput = {"CreationOutput", false, true, 1, -1};
-		this->parameterMap.insert(std::pair<std::string, ParameterTest>("CreationOutput", creationOutput));
+		parameterMap.insert(std::pair<std::string, ParameterTest>("CreationOutput", creationOutput));
 }
 
-ActivityTemplateGenericCreationTest::ActivityTemplateGenericCreationTest(EpcDocument * epcDoc, bool init)
-	: ActivityTemplateTest(epcDoc, defaultUuid, defaultTitle) {
+ActivityTemplateGenericCreationTest::ActivityTemplateGenericCreationTest(DataObjectRepository * repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 		ParameterTest creationInput = {"CreationInput", true, false, 0, -1};
-		this->parameterMap.insert(std::pair<std::string, ParameterTest>("CreationInput", creationInput));
+		parameterMap.insert(std::pair<std::string, ParameterTest>("CreationInput", creationInput));
 		ParameterTest creationOutput = {"CreationOutput", false, true, 1, -1};
-		this->parameterMap.insert(std::pair<std::string, ParameterTest>("CreationOutput", creationOutput));
+		parameterMap.insert(std::pair<std::string, ParameterTest>("CreationOutput", creationOutput));
 		
 		if (init)
-			this->initEpcDoc();
+			initRepo();
 		else
-			this->readEpcDoc();
+			readRepo();
 }
 
+void ActivityTemplateGenericCreationTest::initRepoHandler() {
+	ActivityTemplate*  genericCreationActivityTemplate = repo->createActivityTemplate(defaultUuid, defaultTitle);
+	REQUIRE(genericCreationActivityTemplate != nullptr);
+
+	for (std::map<string, ParameterTest>::iterator it = parameterMap.begin(); it != parameterMap.end(); ++it)
+	{
+		genericCreationActivityTemplate->pushBackParameter((*it).second.title, (*it).second.isInput, (*it).second.isOutput, (*it).second.minOccurs, (*it).second.maxOccurs);
+	}
+}
+
+void ActivityTemplateGenericCreationTest::readRepoHandler() {
+	ActivityTemplate* activityTemplate = static_cast<ActivityTemplate*>(repo->getDataObjectByUuid(defaultUuid));
+
+	REQUIRE(activityTemplate->getParameterCount() == parameterMap.size());
+
+	std::string parameterTitle;
+	for (unsigned int i = 0; i<activityTemplate->getParameterCount(); i++)
+	{
+		parameterTitle = activityTemplate->getParameterTitle(i);
+		REQUIRE(activityTemplate->getParameterIsInput(parameterTitle) == parameterMap[parameterTitle].isInput);
+		REQUIRE(activityTemplate->getParameterIsOutput(parameterTitle) == parameterMap[parameterTitle].isOutput);
+		REQUIRE(activityTemplate->getParameterMinOccurences(parameterTitle) == parameterMap[parameterTitle].minOccurs);
+		REQUIRE(activityTemplate->getParameterMaxOccurences(parameterTitle) == parameterMap[parameterTitle].maxOccurs);
+	}
+}

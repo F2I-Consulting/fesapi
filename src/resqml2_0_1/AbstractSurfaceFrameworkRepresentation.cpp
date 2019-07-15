@@ -29,11 +29,8 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
-AbstractSurfaceFrameworkRepresentation::AbstractSurfaceFrameworkRepresentation(StructuralOrganizationInterpretation* interp):
-	RESQML2_NS::RepresentationSetRepresentation(interp)
-{}
+AbstractSurfaceFrameworkRepresentation::AbstractSurfaceFrameworkRepresentation() {}
 
 void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 	gsoap_resqml2_0_1::resqml2__IdentityKind kind,

@@ -35,7 +35,7 @@ namespace RESQML2_0_1_NS
 		* Default constructor
 		* Set the gsoap proxy to nullptr.
 		*/
-		AbstractSurfaceRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs) : RESQML2_NS::AbstractRepresentation(interp, crs) {}
+		AbstractSurfaceRepresentation() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -52,49 +52,47 @@ namespace RESQML2_0_1_NS
 		* Creates an array 2d of lattice points 3d.
 		*/
 		gsoap_resqml2_0_1::resqml2__PointGeometry* createArray2dOfLatticePoints3d(
-			const unsigned int & numPointsInFastestDirection, const unsigned int & numPointsInSlowestDirection,
-			const double & xOrigin, const double & yOrigin, const double & zOrigin,
-			const double & xOffsetInFastestDirection, const double & yOffsetInFastestDirection, const double & zOffsetInFastestDirection,
-			const double & xOffsetInSlowestDirection, const double & yOffsetInSlowestDirection, const double & zOffsetInSlowestDirection,
-			const double & spacingInFastestDirection, const double & spacingInSlowestDirection);
+			unsigned int numPointsInFastestDirection, unsigned int numPointsInSlowestDirection,
+			double xOrigin, double yOrigin, double zOrigin,
+			double xOffsetInFastestDirection, double yOffsetInFastestDirection, double zOffsetInFastestDirection,
+			double xOffsetInSlowestDirection, double yOffsetInSlowestDirection, double zOffsetInSlowestDirection,
+			double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs const * localCrs);
 
 		/**
 		* Creates a geometry for a grid 2d representation which derives from another existing grid 2d representation.
 		* @param	zValues							All the z values to add. It must be numI * numJ count.
+		* @param	localCrs						The lcoal cRS where the Z values are.
 		* @param	numI							Number of z values in the first dimension of the array to add.
 		* @param	numJ							Number of z values in the second dimension of the array to add.
-		* @param	AbstractHdfProxy						The hdf proxy which indicates the hdf file where the values will be stored.
+		* @param	AbstractHdfProxy				The hdf proxy which indicates the hdf file where the values will be stored.
 		* @param	supportingRepresentation		The lattice grid representation these Z values use as a support.
 		* @param	startGlobalIndex				The first global (representation) index of the baseLatticeGridRepresentation where a z value will be stored.
 		* @param	indexIncrementI					The constant index increment between two consecutive nodes on the first dimension of the baseLatticeGridRepresentation where z values will be stored.
 		* @param	indexIncrementJ					The constant index increment between two consecutive nodes on the second dimension of the baseLatticeGridRepresentation where z values will be stored.
 		*/
 		gsoap_resqml2_0_1::resqml2__PointGeometry* createArray2dOfExplicitZ(
-			const unsigned int & patchIndex, double * zValues,
-			const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy* proxy,
-			class Grid2dRepresentation * supportingRepresentation,
-			const unsigned int & startGlobalIndex = 0,
-			const int & indexIncrementI = 1, const int & indexIncrementJ = 1);
+			unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs const * localCrs,
+			unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy* proxy,
+			class Grid2dRepresentation const * supportingRepresentation,
+			unsigned int startGlobalIndex = 0,
+			int indexIncrementI = 1, int indexIncrementJ = 1);
 
 		/**
 		* Push back a geometry for a grid 2d representation which defines its own support. This geoemtry does not derive from another existing grid 2d representation.
 		* @param	zValues							All the z values to add. It must be numI * numJ count.
+		* @param	localCrs						The lcoal cRS where the Z values are.
 		* @param	numI							Number of z values in the first dimension of the array to add.
 		* @param	numJ							Number of z values in the second dimension of the array to add.
-		* @param	AbstractHdfProxy						The hdf proxy which indicates the hdf file where the values will be stored.
+		* @param	AbstractHdfProxy				The hdf proxy which indicates the hdf file where the values will be stored.
 		*/
 		gsoap_resqml2_0_1::resqml2__PointGeometry* createArray2dOfExplicitZ(
-			const unsigned int & patchIndex, double * zValues,
-			const unsigned int & numI, const unsigned int & numJ, COMMON_NS::AbstractHdfProxy* proxy,
-			const double & originX, const double & originY, const double & originZ,
-			const double & offsetIX, const double & offsetIY, const double & offsetIZ, const double & spacingI,
-			const double & offsetJX, const double & offsetJY, const double & offsetJZ, const double & spacingJ);
+			unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs const * localCrs,
+			unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy* proxy,
+			double originX, double originY, double originZ,
+			double offsetIX, double offsetIY, double offsetIZ, double spacingI,
+			double offsetJX, double offsetJY, double offsetJZ, double spacingJ);
 
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-
-		std::vector<PolylineRepresentation*> outerRingSet; // outer rings are ordered as the patches of the representation are ordered.
+		virtual void loadTargetRelationships() const;
 
 	public:
 

@@ -38,7 +38,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Default constructor
 		*/
-		AbstractSurfaceFrameworkRepresentation(class StructuralOrganizationInterpretation* interp);
+		AbstractSurfaceFrameworkRepresentation();
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.

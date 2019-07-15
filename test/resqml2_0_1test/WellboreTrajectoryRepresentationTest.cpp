@@ -37,42 +37,37 @@ using namespace RESQML2_NS;
 const char* WellboreTrajectoryRepresentationTest::defaultUuid = "35e83350-5b68-4c1d-bfd8-21791a9c4c41";
 const char* WellboreTrajectoryRepresentationTest::defaultTitle = "Wellbore Representation Test";
 
-WellboreTrajectoryRepresentationTest::WellboreTrajectoryRepresentationTest(const string & epcDocPath)
-	: AbstractRepresentationTest(epcDocPath, defaultUuid, defaultTitle) {
+WellboreTrajectoryRepresentationTest::WellboreTrajectoryRepresentationTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
 }
 
-WellboreTrajectoryRepresentationTest::WellboreTrajectoryRepresentationTest(EpcDocument* epcDoc, bool init)
-	: AbstractRepresentationTest(epcDoc, defaultUuid, defaultTitle) {
+WellboreTrajectoryRepresentationTest::WellboreTrajectoryRepresentationTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-			this->initEpcDoc();
-		else
-			this->readEpcDoc();
+		initRepo();
+	else
+		readRepo();
 }
 
-void WellboreTrajectoryRepresentationTest::initEpcDocHandler() {
+void WellboreTrajectoryRepresentationTest::initRepoHandler() {
 	// getting the local depth 3d crs
-	WellboreInterpretationTest* interpTest = new WellboreInterpretationTest(this->epcDoc, true);
-	MdDatumTest* mdDatumTest = new MdDatumTest(this->epcDoc, true);
+	WellboreInterpretationTest interpTest(repo, true);
+	MdDatumTest mdDatumTest(repo, true);
 
-	RESQML2_0_1_NS::WellboreInterpretation* interp = static_cast<RESQML2_0_1_NS::WellboreInterpretation*>(this->epcDoc->getDataObjectByUuid(WellboreInterpretationTest::defaultUuid));
-	MdDatum* mdDatum = static_cast<MdDatum*>(this->epcDoc->getDataObjectByUuid(MdDatumTest::defaultUuid));
-
-	// cleaning
-	delete interpTest;
-	delete mdDatumTest;
+	RESQML2_0_1_NS::WellboreInterpretation* interp = static_cast<RESQML2_0_1_NS::WellboreInterpretation*>(repo->getDataObjectByUuid(WellboreInterpretationTest::defaultUuid));
+	MdDatum* mdDatum = static_cast<MdDatum*>(repo->getDataObjectByUuid(MdDatumTest::defaultUuid));
 
 	// creating the representation
-	RESQML2_0_1_NS::WellboreTrajectoryRepresentation* rep = epcDoc->createWellboreTrajectoryRepresentation(interp, this->uuid, this->title, mdDatum);
+	RESQML2_0_1_NS::WellboreTrajectoryRepresentation* rep = repo->createWellboreTrajectoryRepresentation(interp, defaultUuid, defaultTitle, mdDatum);
 	double controlPoints[12] = { 275, 75, 0, 275, 75, 325, 275, 75, 500, 275, 75, 1000 };
 	double trajectoryTangentVectors[12] = { 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1 };
 	double trajectoryMds[4] = { 0, 325, 500, 1000 };
-	rep->setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, epcDoc->getHdfProxySet()[0]);
-
+	rep->setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, repo->getHdfProxySet()[0]);
 }
 
-void WellboreTrajectoryRepresentationTest::readEpcDocHandler() {
+void WellboreTrajectoryRepresentationTest::readRepoHandler() {
 	// getting the TimeSeries
-	RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj = static_cast<RESQML2_0_1_NS::WellboreTrajectoryRepresentation*>(this->epcDoc->getDataObjectByUuid(this->uuid));
+	RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj = static_cast<RESQML2_0_1_NS::WellboreTrajectoryRepresentation*>(repo->getDataObjectByUuid(defaultUuid));
 
 	REQUIRE(traj->getMdDatumUuid() == MdDatumTest::defaultUuid);
 	REQUIRE(traj->getXyzPointCountOfAllPatches() == 4);
@@ -89,4 +84,3 @@ void WellboreTrajectoryRepresentationTest::readEpcDocHandler() {
 	REQUIRE(controlPoints[2] == 0);
 	REQUIRE(controlPoints[3] == 275);
 }
-

@@ -27,7 +27,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* DiscretePropertySeries::XML_TAG = "DiscretePropertySeries";
 
@@ -45,15 +44,15 @@ DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentatio
 	xmlStandardPropKind->Kind = energisticsPropertyKind;
 	prop->PropertyKind = xmlStandardPropKind;
 
+	initMandatoryMetadata();
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
 	setRepresentation(rep);
 
 	prop->SeriesTimeIndices = soap_new_resqml2__TimeIndices(gsoapProxy2_0_1->soap, 1);
 	prop->SeriesTimeIndices->TimeIndexCount = ts->getTimestampCount();
 	prop->SeriesTimeIndices->UseInterval = useInterval;
 	setTimeSeries(ts);
-
-	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
 
 DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
@@ -66,6 +65,9 @@ DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentatio
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
 
+	initMandatoryMetadata();
+	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+
 	setRepresentation(rep);
 
 	prop->SeriesTimeIndices = soap_new_resqml2__TimeIndices(gsoapProxy2_0_1->soap, 1);
@@ -74,8 +76,4 @@ DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentatio
 	setTimeSeries(ts);
 
 	setLocalPropertyKind(localPropKind);
-
-	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 }
-

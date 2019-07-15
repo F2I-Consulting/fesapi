@@ -30,13 +30,12 @@ under the License.
 #include "tools/Misc.h"
 
 using namespace std;
-using namespace epc;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* BlockedWellboreRepresentation::XML_TAG = "BlockedWellboreRepresentation";
 
-void BlockedWellboreRepresentation::init(const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
+void BlockedWellboreRepresentation::init(const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation const * traj)
 {
 	if (traj == nullptr) {
 		throw invalid_argument("The wellbore trajectory of a blocked wellbore cannot be null.");
@@ -45,37 +44,23 @@ void BlockedWellboreRepresentation::init(const std::string & guid, const std::st
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREBlockedWellboreRepresentation(traj->getGsoapContext(), 1);
 	_resqml2__BlockedWellboreRepresentation* frame = static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 
-	frame->Trajectory = traj->newResqmlReference();
-	trajectory = traj;
-	traj->addWellboreFrameRepresentation(this);
-
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
+
+	traj->getRepository()->addOrReplaceDataObject(this);
+
+	frame->Trajectory = traj->newResqmlReference();
+	getRepository()->addRelationship(this, traj);
 }
 
-BlockedWellboreRepresentation::BlockedWellboreRepresentation(WellboreInterpretation* interp,
-	const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation * traj) :
-	WellboreFrameRepresentation(interp, nullptr)
+BlockedWellboreRepresentation::BlockedWellboreRepresentation(WellboreInterpretation const * interp,
+	const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation  const * traj)
 {
 	init(guid, title, traj);
 
 	if (interp != nullptr) {
 		setInterpretation(interp);
 	}
-}
-
-vector<Relationship> BlockedWellboreRepresentation::getAllEpcRelationships() const
-{
-	vector<Relationship> result = WellboreFrameRepresentation::getAllEpcRelationships();
-
-	_resqml2__BlockedWellboreRepresentation* rep = static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
-	for (size_t i = 0; i < rep->Grid.size(); ++i) {
-		Relationship relSupportingGrid(misc::getPartNameFromReference(rep->Grid[i]), "", rep->Grid[i]->UUID);
-		relSupportingGrid.setDestinationObjectType();
-		result.push_back(relSupportingGrid);
-	}
-
-	return result;
 }
 
 void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int * gridIndices, unsigned int gridIndicesNullValue, unsigned int cellCount, ULONG64* cellIndices, unsigned char* localFacePairPerCellIndices, unsigned char localFacePairPerCellIndicesNullValue, COMMON_NS::AbstractHdfProxy * hdfProxy)
@@ -100,7 +85,7 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int * gridIndic
 	_resqml2__BlockedWellboreRepresentation* rep = static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 	rep->CellCount = cellCount;
 
-	setHdfProxy(hdfProxy);
+	getRepository()->addRelationship(this, hdfProxy);
 
 	// gridIndices
 	// XML
@@ -161,11 +146,13 @@ unsigned int BlockedWellboreRepresentation::getGridIndices(unsigned int * gridIn
 	_resqml2__BlockedWellboreRepresentation* rep = static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 
 	if (rep->GridIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-		hdfProxy->readArrayNdOfUIntValues(static_cast<resqml2__IntegerHdf5Array*>(rep->GridIndices)->Values->PathInHdfFile, gridIndices);
+		gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<resqml2__IntegerHdf5Array*>(rep->GridIndices)->Values;
+		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		hdfProxy->readArrayNdOfUIntValues(dataset->PathInHdfFile, gridIndices);
 		return static_cast<resqml2__IntegerHdf5Array*>(rep->GridIndices)->NullValue;
 	}
 	else if (rep->GridIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray) {
-		unsigned int intervalCount = getMdValuesCount() - 1;
+		const unsigned int intervalCount = getMdValuesCount() - 1;
 		for (unsigned int i = 0; i < intervalCount; ++i) {
 			gridIndices[i] = static_cast<resqml2__IntegerConstantArray*>(rep->GridIndices)->Value;
 		}
@@ -184,12 +171,10 @@ void BlockedWellboreRepresentation::pushBackSupportingGridRepresentation(RESQML2
 	}
 
 	// EPC
-	supportingGridRep->blockedWellboreRepresentationSet.push_back(this);
+	getRepository()->addRelationship(this, supportingGridRep);
 
 	// XML
-	if (updateXml) {
-		static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->Grid.push_back(supportingGridRep->newResqmlReference());
-	}
+	static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->Grid.push_back(supportingGridRep->newResqmlReference());
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* BlockedWellboreRepresentation::getSupportingGridRepresentationDor(unsigned int index) const
@@ -207,19 +192,25 @@ std::string BlockedWellboreRepresentation::getSupportingGridRepresentationUuid(u
 	return getSupportingGridRepresentationDor(index)->UUID;
 }
 
-void BlockedWellboreRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void BlockedWellboreRepresentation::loadTargetRelationships() const
 {
-	WellboreFrameRepresentation::importRelationshipSetFromEpc(epcDoc);
+	WellboreFrameRepresentation::loadTargetRelationships();
 
 	_resqml2__BlockedWellboreRepresentation* rep = static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 
 	// Supporting grid representation
-	updateXml = false;
 	for (size_t i = 0; i < rep->Grid.size(); ++i) {
-		RESQML2_NS::AbstractGridRepresentation* supportingGridRep = epcDocument->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(rep->Grid[i]->UUID);
-		pushBackSupportingGridRepresentation(supportingGridRep);
+		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = rep->Grid[i];
+		RESQML2_NS::AbstractGridRepresentation const * supportingGridRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
+		if (supportingGridRep == nullptr) { // partial transfer
+			getRepository()->createPartial(dor);
+			supportingGridRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
+			if (supportingGridRep == nullptr) {
+				throw invalid_argument("The DOR looks invalid.");
+			}
+		}
+		getRepository()->addRelationship(this, supportingGridRep);
 	}
-	updateXml = true;
 
 }
 
@@ -230,6 +221,5 @@ unsigned int BlockedWellboreRepresentation::getSupportingGridRepresentationCount
 
 RESQML2_NS::AbstractGridRepresentation* BlockedWellboreRepresentation::getSupportingGridRepresentation(unsigned int index) const
 {
-	return epcDocument->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(getSupportingGridRepresentationUuid(index));
+	return repository->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(getSupportingGridRepresentationUuid(index));
 }
-

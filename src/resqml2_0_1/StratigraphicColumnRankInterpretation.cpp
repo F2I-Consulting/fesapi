@@ -27,7 +27,6 @@ under the License.
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* StratigraphicColumnRankInterpretation::XML_TAG = "StratigraphicColumnRankInterpretation";
 
@@ -37,7 +36,7 @@ StratigraphicColumnRankInterpretation::StratigraphicColumnRankInterpretation(Org
 		throw invalid_argument("The interpreted organization feature cannot be null.");
 	}
 	if (!orgFeat->isPartial() && orgFeat->getKind() != gsoap_resqml2_0_1::resqml2__OrganizationKind__stratigraphic) {
-		throw invalid_argument("The kind of the organization feature is not a fluid organization.");
+		throw invalid_argument("The kind of an organization feature linked to a stratigraphic column rank interpretation must be a stratigraphic one.");
 	}
 
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREStratigraphicColumnRankInterpretation(orgFeat->getGsoapContext(), 1);
@@ -53,19 +52,13 @@ StratigraphicColumnRankInterpretation::StratigraphicColumnRankInterpretation(Org
 
 void StratigraphicColumnRankInterpretation::pushBackStratiUnitInterpretation(StratigraphicUnitInterpretation * stratiUnitInterpretation)
 {
-	// EPC
-	stratigraphicUnitSet.push_back(stratiUnitInterpretation);
-	stratiUnitInterpretation->stratigraphicColumnRankSet.push_back(this);
+	getRepository()->addRelationship(this, stratiUnitInterpretation);
 
-    // XML
-	if (updateXml)
-	{
-        _resqml2__StratigraphicColumnRankInterpretation* stratigraphicColumnRankInterpretation = static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1); 
-		resqml2__StratigraphicUnitInterpretationIndex* stratiUnitInterpRef = soap_new_resqml2__StratigraphicUnitInterpretationIndex(gsoapProxy2_0_1->soap, 1);
-		stratiUnitInterpRef->Index = stratigraphicColumnRankInterpretation->StratigraphicUnits.size();
-		stratiUnitInterpRef->Unit = stratiUnitInterpretation->newResqmlReference();
-		stratigraphicColumnRankInterpretation->StratigraphicUnits.push_back(stratiUnitInterpRef);
-	}
+    _resqml2__StratigraphicColumnRankInterpretation* stratigraphicColumnRankInterpretation = static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1); 
+	resqml2__StratigraphicUnitInterpretationIndex* stratiUnitInterpRef = soap_new_resqml2__StratigraphicUnitInterpretationIndex(gsoapProxy2_0_1->soap, 1);
+	stratiUnitInterpRef->Index = stratigraphicColumnRankInterpretation->StratigraphicUnits.size();
+	stratiUnitInterpRef->Unit = stratiUnitInterpretation->newResqmlReference();
+	stratigraphicColumnRankInterpretation->StratigraphicUnits.push_back(stratiUnitInterpRef);
 }
 
 bool StratigraphicColumnRankInterpretation::isAChronoStratiRank() const
@@ -97,7 +90,7 @@ StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getSubje
 
 	resqml2__BinaryContactInterpretationPart* contact = static_cast<resqml2__BinaryContactInterpretationPart*>(static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation[contactIndex]);
 	if (contact->Subject)
-		return static_cast<StratigraphicUnitInterpretation*>(epcDocument->getDataObjectByUuid(contact->Subject->UUID));
+		return static_cast<StratigraphicUnitInterpretation*>(repository->getDataObjectByUuid(contact->Subject->UUID));
 	else
 		return nullptr;
 }
@@ -121,7 +114,7 @@ StratigraphicUnitInterpretation* StratigraphicColumnRankInterpretation::getDirec
 
 	resqml2__BinaryContactInterpretationPart* contact = static_cast<resqml2__BinaryContactInterpretationPart*>(static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation[contactIndex]);
 	if (contact->DirectObject)
-		return static_cast<StratigraphicUnitInterpretation*>(epcDocument->getDataObjectByUuid(contact->DirectObject->UUID));
+		return static_cast<StratigraphicUnitInterpretation*>(repository->getDataObjectByUuid(contact->DirectObject->UUID));
 	else
 		return nullptr;
 }
@@ -133,24 +126,18 @@ HorizonInterpretation* StratigraphicColumnRankInterpretation::getHorizonInterpre
 
 	resqml2__BinaryContactInterpretationPart* contact = static_cast<resqml2__BinaryContactInterpretationPart*>(static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1)->ContactInterpretation[contactIndex]);
 	if (contact->PartOf)
-		return static_cast<HorizonInterpretation*>(epcDocument->getDataObjectByUuid(contact->PartOf->UUID));
+		return static_cast<HorizonInterpretation*>(repository->getDataObjectByUuid(contact->PartOf->UUID));
 	else
 		return nullptr;
 }
 
 void StratigraphicColumnRankInterpretation::setHorizonOfLastContact(HorizonInterpretation * partOf)
 {
-	// EPC
-	horizonInterpretationSet.push_back(partOf);
-	partOf->stratigraphicColumnRankInterpretationSet.push_back(this);
+	getRepository()->addRelationship(this, partOf);
 
-    // XML
-	if (updateXml)
-	{
-		resqml2__AbstractOrganizationInterpretation* org = static_cast<resqml2__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
-        resqml2__BinaryContactInterpretationPart* contact = static_cast<resqml2__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
-		contact->PartOf = partOf->newResqmlReference();
-	}
+	resqml2__AbstractOrganizationInterpretation* org = static_cast<resqml2__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
+    resqml2__BinaryContactInterpretationPart* contact = static_cast<resqml2__BinaryContactInterpretationPart*>(org->ContactInterpretation[org->ContactInterpretation.size() - 1]);
+	contact->PartOf = partOf->newResqmlReference();
 }
 
 void StratigraphicColumnRankInterpretation::pushBackStratigraphicBinaryContact(StratigraphicUnitInterpretation* subject, const gsoap_resqml2_0_1::resqml2__ContactMode & subjectContactMode,
@@ -166,101 +153,49 @@ void StratigraphicColumnRankInterpretation::pushBackStratigraphicBinaryContact(S
     contact->Subject->SecondaryQualifier = static_cast<resqml2__ContactMode*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml2__ContactMode)));
     *(contact->Subject->SecondaryQualifier) = subjectContactMode;
 
-	if (partOf)
+	if (partOf != nullptr)
 	{
 		setHorizonOfLastContact(partOf);
 	}
 }
 		
-void StratigraphicColumnRankInterpretation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
+void StratigraphicColumnRankInterpretation::loadTargetRelationships() const
 {
-	AbstractStratigraphicOrganizationInterpretation::importRelationshipSetFromEpc(epcDoc);
-
-	updateXml = false;
+	AbstractStratigraphicOrganizationInterpretation::loadTargetRelationships();
 
 	_resqml2__StratigraphicColumnRankInterpretation* interp = static_cast<_resqml2__StratigraphicColumnRankInterpretation*>(gsoapProxy2_0_1); 
 
-	for (unsigned int i = 0; i < interp->StratigraphicUnits.size(); i++)
+	for (size_t i = 0; i < interp->StratigraphicUnits.size(); ++i)
 	{
-		if (interp->StratigraphicUnits[i]->Unit)
-			pushBackStratiUnitInterpretation(static_cast<StratigraphicUnitInterpretation*>(epcDoc->getDataObjectByUuid(interp->StratigraphicUnits[i]->Unit->UUID)));
-		else
-			throw logic_error("Not yet implemented");
-	}
-
-	for (unsigned int i = 0; i < interp->ContactInterpretation.size(); i++)
-	{
-		if (interp->ContactInterpretation[i]->PartOf) {
-			HorizonInterpretation* horizonInterp = epcDoc->getDataObjectByUuid<HorizonInterpretation>(interp->ContactInterpretation[i]->PartOf->UUID);
-
-			if (horizonInterp == nullptr) {
-				getEpcDocument()->addWarning("The referenced horizon interp \"" + interp->ContactInterpretation[i]->PartOf->Title + "\" (" + interp->ContactInterpretation[i]->PartOf->UUID + ") is missing.");
-				horizonInterp = epcDoc->createPartialHorizonInterpretation(interp->ContactInterpretation[i]->PartOf->UUID, interp->ContactInterpretation[i]->PartOf->Title);
-			}
-
-			setHorizonOfLastContact(horizonInterp);
+		if (interp->StratigraphicUnits[i]->Unit != nullptr) {
+			convertDorIntoRel<StratigraphicUnitInterpretation>(interp->StratigraphicUnits[i]->Unit);
 		}
-		else
-			throw logic_error("Not yet implemented");
 	}
 
-	updateXml = true;
-}
-
-vector<Relationship> StratigraphicColumnRankInterpretation::getAllEpcRelationships() const
-{
-	vector<Relationship> result = AbstractStratigraphicOrganizationInterpretation::getAllEpcRelationships();
-
-	// forward relationships
-	for (unsigned int i = 0; i < stratigraphicUnitSet.size(); i++)
+	for (size_t i = 0; i < interp->ContactInterpretation.size(); ++i)
 	{
-		Relationship rel(stratigraphicUnitSet[i]->getPartNameInEpcDocument(), "", stratigraphicUnitSet[i]->getUuid());
-		rel.setDestinationObjectType();
-		result.push_back(rel);
+		if (interp->ContactInterpretation[i]->PartOf != nullptr) {
+			convertDorIntoRel<HorizonInterpretation>(interp->ContactInterpretation[i]->PartOf);
+		}
 	}
-
-	for (unsigned int i = 0; i < horizonInterpretationSet.size(); i++)
-	{
-		Relationship rel(horizonInterpretationSet[i]->getPartNameInEpcDocument(), "", horizonInterpretationSet[i]->getUuid());
-		rel.setDestinationObjectType();
-		result.push_back(rel);
-	}
-
-	// Backward relationships
-	for (unsigned int i = 0; i < stratigraphicColumnSet.size(); i++)
-	{
-		Relationship rel(stratigraphicColumnSet[i]->getPartNameInEpcDocument(), "", stratigraphicColumnSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	for (unsigned int i = 0; i < stratigraphicOccurrenceInterpretationSet.size(); i++)
-	{
-		Relationship rel(stratigraphicOccurrenceInterpretationSet[i]->getPartNameInEpcDocument(), "", stratigraphicOccurrenceInterpretationSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-        
-    return result;
 }
 
-const std::vector<class StratigraphicUnitInterpretation*> & StratigraphicColumnRankInterpretation::getStratigraphicUnitInterpretationSet() const
+std::vector<StratigraphicUnitInterpretation const *> StratigraphicColumnRankInterpretation::getStratigraphicUnitInterpretationSet() const
 {
-	return stratigraphicUnitSet;
+	return getRepository()->getTargetObjects<StratigraphicUnitInterpretation>(this);
 }
 
-const std::vector<class StratigraphicOccurrenceInterpretation*> & StratigraphicColumnRankInterpretation::getStratigraphicOccurrenceInterpretationSet() const
+std::vector<StratigraphicOccurrenceInterpretation const *> StratigraphicColumnRankInterpretation::getStratigraphicOccurrenceInterpretationSet() const
 {
-	return stratigraphicOccurrenceInterpretationSet;
+	return getRepository()->getSourceObjects<StratigraphicOccurrenceInterpretation>(this);
 }
 
-const std::vector<class HorizonInterpretation*> & StratigraphicColumnRankInterpretation::getHorizonInterpretationSet() const
+std::vector<HorizonInterpretation const *> StratigraphicColumnRankInterpretation::getHorizonInterpretationSet() const
 {
-	return horizonInterpretationSet;
+	return getRepository()->getTargetObjects<HorizonInterpretation>(this);
 }
 
-const std::vector<StratigraphicColumn*> & StratigraphicColumnRankInterpretation::getStratigraphicColumnSet() const
+std::vector<StratigraphicColumn const *> StratigraphicColumnRankInterpretation::getStratigraphicColumnSet() const
 {
-	return stratigraphicColumnSet;
+	return getRepository()->getSourceObjects<StratigraphicColumn>(this);
 }
-

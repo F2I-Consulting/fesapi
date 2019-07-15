@@ -313,14 +313,14 @@ namespace RESQML2_0_1_NS
 		* @param patchIndex	The index of the patch we want the values from.
 		* @param values		The array (pointer) of values must be preallocated.
 		*/
-		DLL_IMPORT_OR_EXPORT void getDoubleValuesOfPatch(const unsigned int & patchIndex, double * values);
+		DLL_IMPORT_OR_EXPORT void getDoubleValuesOfPatch(unsigned int patchIndex, double * values) const ;
 
 		/**
 		* Get all the values of a particular patch of the instance which are supposed to be float ones.
 		* @param patchIndex	The index of the patch we want the values from.
 		* @param values		The array (pointer) of values must be preallocated.
 		*/
-		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(const unsigned int & patchIndex, float * values);
+		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(unsigned int patchIndex, float * values) const;
 
 		/**
 		* Get some of the values of a particular patch of the instance which are supposed to be float ones. This method makes use of HDF5 hyperslabbing.
@@ -331,12 +331,12 @@ namespace RESQML2_0_1_NS
 		* @param numArrayDimensions			The number of dimensions of the HDF5 array to read.
 		*/
 		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(
-			const unsigned int& patchIndex, 
+			unsigned int patchIndex, 
 			float* values, 
 			unsigned long long* numValuesInEachDimension,
 			unsigned long long* offsetInEachDimension,
-			const unsigned int& numArrayDimensions
-		);
+			unsigned int numArrayDimensions
+		) const;
 
 		/**
 		* Get some of the values of a particular patch of the instance which are supposed to be float ones. This method makes use of HDF5 hyperslabbing.
@@ -350,27 +350,27 @@ namespace RESQML2_0_1_NS
 		* @param offsetInSlowestDim		The offset value to read in the slowest dimension (mainly K dimension).
 		*/
 		DLL_IMPORT_OR_EXPORT void getFloatValuesOf3dPatch(
-			const unsigned int& patchIndex, 
+			unsigned int patchIndex, 
 			float* values, 
-			const ULONG64& valueCountInFastestDim,
-			const ULONG64& valueCountInMiddleDim,
-			const ULONG64& valueCountInSlowestDim,
-			const ULONG64& offsetInFastestDim,
-			const ULONG64& offsetInMiddleDim,
-			const ULONG64& offsetInSlowestDim
-		);
+			ULONG64 valueCountInFastestDim,
+			ULONG64 valueCountInMiddleDim,
+			ULONG64 valueCountInSlowestDim,
+			ULONG64 offsetInFastestDim,
+			ULONG64 offsetInMiddleDim,
+			ULONG64 offsetInSlowestDim
+		) const;
 
 		/*
 		* Get the minimum value in this continuous properties. It reads it from file.
 		* @return the minimum value if present in the file otherwise NaN.
 		*/
-		DLL_IMPORT_OR_EXPORT double getMinimumValue();
+		DLL_IMPORT_OR_EXPORT double getMinimumValue() const;
 
 		/*
 		* Get the maximum value in this discrete properties. It reads it from file.
 		* @return the maximum value if present in the file otherwise NaN.
 		*/
-		DLL_IMPORT_OR_EXPORT double getMaximumValue();
+		DLL_IMPORT_OR_EXPORT double getMaximumValue() const;
 
 		/**
 		* Check if the associated local property kind is allowed for this property.

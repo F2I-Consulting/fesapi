@@ -17,57 +17,60 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractTest.h"
+
 #include "common/EpcDocument.h"
 #include "catch.hpp"
-#include "config.h"
+#include "resqml2_0_1/LocalDepth3dCrs.h"
 
 using namespace std;
 using namespace commontest;
-using namespace resqml2_0_1test;
 
 AbstractTest::AbstractTest(const string & epcDocPath) :
-	epcDoc(nullptr),
+	repo(nullptr),
 	epcDocPath(epcDocPath) {
 }
 
-AbstractTest::AbstractTest(COMMON_NS::EpcDocument* epcDoc) :
-	epcDoc(epcDoc),
-	epcDocPath(epcDoc->getStorageDirectory()) {
+AbstractTest::AbstractTest(COMMON_NS::DataObjectRepository* repo_) :
+	repo(repo_) {
 }
 
 void AbstractTest::serialize() {
-	epcDoc = new COMMON_NS::EpcDocument(epcDocPath, COMMON_NS::EpcDocument::OVERWRITE);
-	epcDoc->createHdfProxy(uuidHdfProxy, titleHdfProxy, epcDoc->getStorageDirectory(), epcDoc->getName() + ".h5");
+	COMMON_NS::EpcDocument epcDocument(epcDocPath);
+	repo = new COMMON_NS::DataObjectRepository();
+	repo->setDefaultHdfProxy(repo->createHdfProxy("75f5b460-3ccb-4102-a06e-e9c1019769b2", "Hdf Proxy Test", epcDocument.getStorageDirectory(), epcDocument.getName() + ".h5", COMMON_NS::DataObjectRepository::OVERWRITE));
+	repo->setDefaultCrs(repo->createLocalDepth3dCrs("7b40b49e-b783-4b3f-8380-b3bdc42e8ae7", "Default CRS", 1000, 2000, 3000, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__ft, "Unknown", false));
 
-	initEpcDoc();
+	initRepo();
 	
-	epcDoc->serialize();
-	epcDoc->close();
-	delete epcDoc;
+	epcDocument.serializeFrom(*repo);
+	epcDocument.close();
+
+	delete repo;
 }
 
 void AbstractTest::deserialize() {
-	epcDoc = new COMMON_NS::EpcDocument(epcDocPath);
+	COMMON_NS::EpcDocument epcDocument(epcDocPath);
+	repo = new COMMON_NS::DataObjectRepository();
 
-	std::string validationResult = epcDoc->deserialize();
-	if (validationResult.size() > 0)
-		cout << "Validation error: " << validationResult << endl; 
-	REQUIRE( validationResult.size() == 0 );
+	std::string validationResult = epcDocument.deserializeInto(*repo);
+	if (!validationResult.empty()) {
+		cout << "Validation error: " << validationResult << endl;
+	}
+	REQUIRE( validationResult.empty() );
 	
-	REQUIRE( this->epcDoc->getHdfProxySet().size() == 1 );
+	REQUIRE( repo->getHdfProxySet().size() == 1 );
 
-	vector<string> warningSet = this->epcDoc->getWarnings();
-	if (warningSet.size() > 0) {
-		cout << "EPC document " << this->epcDoc->getName() << ".epc deserialized with " << warningSet.size() << " warning(s)" << endl;
-		for (size_t i=0; i<warningSet.size(); ++i){
+	vector<string> warningSet = repo->getWarnings();
+	if (!warningSet.empty()) {
+		cout << "EPC document " << epcDocument.getName() << ".epc deserialized with " << warningSet.size() << " warning(s)" << endl;
+		for (size_t i=0; i < warningSet.size(); ++i){
 			cout << "Warning " << i+1 << ": " << warningSet[i] << endl;
 		}
 		cout << endl;
 	}
 
-	readEpcDoc();
-	epcDoc->close();
+	readRepo();
+	epcDocument.close();
 
-	delete epcDoc;
+	delete repo;
 }
-

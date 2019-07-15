@@ -32,19 +32,152 @@ using namespace std;
 using namespace gsoap_resqml2_0_1;
 using namespace RESQML2_0_1_NS;
 
-IjkGridParametricRepresentation::IjkGridParametricRepresentation(soap* soapContext, RESQML2_NS::AbstractLocal3dCrs * crs,
+/// From  https://en.wikipedia.org/w/index.php?title=Spline_%28mathematics%29&oldid=288288033#Algorithm_for_computing_natural_cubic_splines
+IjkGridParametricRepresentation::BSpline::BSpline(const vector<double> & parametersAtControlPoint, const std::vector<double> & valuesAtControlPoint)
+{
+	setParameterAndValueAtControlPoint(parametersAtControlPoint, valuesAtControlPoint);
+}
+
+void IjkGridParametricRepresentation::BSpline::setParameterAndValueAtControlPoint(const std::vector<double> & parametersAtControlPoint, const std::vector<double> & valuesAtControlPoint)
+{
+	a = valuesAtControlPoint;
+	parameter = parametersAtControlPoint;
+
+	checkIfParametersIncreaseOrDecrease();
+
+	vector<double> h(parametersAtControlPoint.size() - 1);
+	for (size_t i = 0; i < parametersAtControlPoint.size() - 1; ++i) {
+		h[i] = parametersAtControlPoint[i + 1] - parametersAtControlPoint[i];
+	}
+
+	vector<double> alpha(h.size());
+	alpha[0] = numeric_limits<double>::signaling_NaN();
+	for (size_t i = 1; i < h.size(); ++i) {
+		alpha[i] = 3.0 * (valuesAtControlPoint[i + 1] - valuesAtControlPoint[i]) / h[i] - 3.0 * (valuesAtControlPoint[i] - valuesAtControlPoint[i - 1]) / h[i - 1];
+	}
+
+	c.resize(parametersAtControlPoint.size());
+	vector<double> l(parametersAtControlPoint.size());
+	vector<double> mu(parametersAtControlPoint.size());
+	vector<double> z(parametersAtControlPoint.size());
+	l[0] = 1;
+	mu[0] = 0;
+	z[0] = 0;
+	for (size_t i = 1; i < h.size(); ++i) {
+		l[i] = 2 * (parametersAtControlPoint[i + 1] - parametersAtControlPoint[i - 1]) - h[i - 1] * mu[i - 1];
+		mu[i] = h[i] / l[i];
+		z[i] = (alpha[i] - h[i - 1] * z[i - 1]) / l[i];
+	}
+
+	l[l.size() - 1] = 1;
+	z[z.size() - 1] = 0;
+	c[c.size() - 1] = 0;
+	b.resize(h.size());
+	d.resize(h.size());
+	for (int i = h.size() - 1; i >= 0; --i) {
+		c[i] = z[i] - mu[i] * c[i + 1];
+		b[i] = (valuesAtControlPoint[i + 1] - valuesAtControlPoint[i]) / h[i] - h[i] * (c[i + 1] + 2 * c[i]) / 3;
+		d[i] = (c[i + 1] - c[i]) / (3 * h[i]);
+	}
+}
+
+void IjkGridParametricRepresentation::BSpline::checkIfParametersIncreaseOrDecrease()
+{
+	if (parameter.empty() || parameter.size() != a.size()) {
+		throw invalid_argument("Given parameter or value array are inconsistent.");
+	}
+
+	// initialization
+	for (size_t i = 0; i < parameter.size() - 1; ++i) {
+		if (parameter[i] != parameter[i] || parameter[i + 1] != parameter[i + 1]) {
+			throw invalid_argument("Control points with NaN parameter are not supported yet.");
+		}
+
+		if (parameter[i + 1] > parameter[i]) {
+			areParametersIncreasing = true;
+			break;
+		}
+		else if (parameter[i + 1] < parameter[i]) {
+			areParametersIncreasing = false;
+			break;
+		}
+		else {
+			throw invalid_argument("Control points with equal parameter are not supported yet.");
+		}
+	}
+
+	// Checking
+	if (areParametersIncreasing) {
+		for (size_t i = 0; i < parameter.size() - 1; ++i) {
+			if (parameter[i + 1] <= parameter[i]) {
+				throw invalid_argument("Control points are not ordered increasingly.");
+			}
+		}
+	}
+	else {
+		for (size_t i = 0; i < parameter.size() - 1; ++i) {
+			if (parameter[i + 1] >= parameter[i]) {
+				throw invalid_argument("Control points are not ordered decreasingly.");
+			}
+		}
+	}
+}
+
+size_t IjkGridParametricRepresentation::BSpline::getSplineIndexFromParameter(double param) const
+{
+	size_t splineIndex = 0;
+	if (areParametersIncreasing) {
+		if (param <= parameter[0]) {
+			return 0; // extrapolation if param < parameter[0]
+		}
+		while (splineIndex < parameter.size() && parameter[splineIndex] < param) {
+			splineIndex++;
+		}
+	}
+	else {
+		if (param >= parameter[0]) {
+			return 0; // extrapolation if param < parameter[0]
+		}
+		while (splineIndex < parameter.size() && parameter[splineIndex] > param) {
+			splineIndex++;
+		}
+	}
+
+	return splineIndex == parameter.size()
+		? splineIndex - 2 // extrapolation
+		: splineIndex - 1; // interpolation
+}
+
+double IjkGridParametricRepresentation::BSpline::getValueFromParameter(double param) const
+{
+	if (param != param) {
+		throw invalid_argument("Cannot return a value for a NaN parameter.");
+	}
+
+	const size_t splineIndex = getSplineIndexFromParameter(param);
+
+	const double deltaParam = param - parameter[splineIndex];
+	const double deltaParam2 = deltaParam * deltaParam;
+
+	return a[splineIndex] +
+		b[splineIndex] * deltaParam +
+		c[splineIndex] * deltaParam2 +
+		d[splineIndex] * deltaParam2 * deltaParam;
+}
+
+IjkGridParametricRepresentation::IjkGridParametricRepresentation(COMMON_NS::DataObjectRepository * repo,
 	const std::string & guid, const std::string & title,
-	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
+	unsigned int iCount, unsigned int jCount, unsigned int kCount,
 	bool withTruncatedPillars) :
-	AbstractIjkGridRepresentation(soapContext, crs, guid, title, iCount, jCount, kCount, withTruncatedPillars), pillarInformation(nullptr)
+	AbstractIjkGridRepresentation(repo, guid, title, iCount, jCount, kCount, withTruncatedPillars), pillarInformation(nullptr)
 {
 }
 
-IjkGridParametricRepresentation::IjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, RESQML2_NS::AbstractLocal3dCrs * crs,
+IjkGridParametricRepresentation::IjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title,
-	const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
+	unsigned int iCount, unsigned int jCount, unsigned int kCount,
 	bool withTruncatedPillars) :
-	AbstractIjkGridRepresentation(interp, crs, guid, title, iCount, jCount, kCount, withTruncatedPillars), pillarInformation(nullptr)
+	AbstractIjkGridRepresentation(interp, guid, title, iCount, jCount, kCount, withTruncatedPillars), pillarInformation(nullptr)
 {
 }
 
@@ -56,10 +189,13 @@ unsigned int IjkGridParametricRepresentation::getControlPointMaxCountPerPillar()
 	}
 	resqml2__Point3dParametricArray* points = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
 	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__ParametricLineArray) {
-		return static_cast<resqml2__ParametricLineArray*>(points->ParametricLines)->KnotCount;
+		const ULONG64 result = static_cast<resqml2__ParametricLineArray*>(points->ParametricLines)->KnotCount;
+		if (result > (std::numeric_limits<unsigned int>::max)())
+			throw std::out_of_range("There are too many knot counts");
+		return static_cast<unsigned int>(result);
 	}
-	else
-		throw std::logic_error("Not yet implemented");
+
+	throw std::logic_error("Not yet implemented");
 }
 
 void IjkGridParametricRepresentation::getControlPoints(double * controlPoints, bool reverseIAxis, bool reverseJAxis, bool reverseKAxis) const
@@ -72,7 +208,9 @@ void IjkGridParametricRepresentation::getControlPoints(double * controlPoints, b
 	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__ParametricLineArray) {
 		resqml2__ParametricLineArray* paramLineArray = static_cast<resqml2__ParametricLineArray*>(points->ParametricLines);
 		if (paramLineArray->ControlPoints->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array) {
-			hdfProxy->readArrayNdOfDoubleValues(static_cast<resqml2__Point3dHdf5Array*>(paramLineArray->ControlPoints)->Coordinates->PathInHdfFile, controlPoints);
+			eml20__Hdf5Dataset const * dataset = static_cast<resqml2__Point3dHdf5Array*>(paramLineArray->ControlPoints)->Coordinates;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, controlPoints);
 		}
 		else
 			throw std::logic_error("Not yet implemented");
@@ -176,7 +314,9 @@ void IjkGridParametricRepresentation::getControlPointParameters(double * control
 			throw invalid_argument("The grid does not contain any control point parameters.");
 		if (paramLineArray->ControlPointParameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
 		{
-			hdfProxy->readArrayNdOfDoubleValues(static_cast<resqml2__DoubleHdf5Array*>(paramLineArray->ControlPointParameters)->Values->PathInHdfFile, controlPointParameters);
+			eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(paramLineArray->ControlPointParameters)->Values;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, controlPointParameters);
 		}
 		else
 			throw std::logic_error("Not yet implemented");
@@ -273,8 +413,10 @@ bool IjkGridParametricRepresentation::isParametricLineKindConstant() const
 		}
 		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
 		{
+			eml20__Hdf5Dataset const * dataset = static_cast<resqml2__IntegerHdf5Array*>(paramLineArray->LineKindIndices)->Values;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 			short * pillarKind = new short [getPillarCount()];
-			hdfProxy->readArrayNdOfShortValues(static_cast<resqml2__IntegerHdf5Array*>(paramLineArray->LineKindIndices)->Values->PathInHdfFile, pillarKind);
+			hdfProxy->readArrayNdOfShortValues(dataset->PathInHdfFile, pillarKind);
 			short firstPillarKind = pillarKind[0];
 			size_t pillarIndex = 0;
 			while (pillarIndex < getPillarCount()) {
@@ -319,8 +461,10 @@ short IjkGridParametricRepresentation::getConstantParametricLineKind() const
 		}
 		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
 		{
+			eml20__Hdf5Dataset const * dataset = static_cast<resqml2__IntegerHdf5Array*>(paramLineArray->LineKindIndices)->Values;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 			short * pillarKind = new short [getPillarCount()];
-			hdfProxy->readArrayNdOfShortValues(static_cast<resqml2__IntegerHdf5Array*>(paramLineArray->LineKindIndices)->Values->PathInHdfFile, pillarKind);
+			hdfProxy->readArrayNdOfShortValues(dataset->PathInHdfFile, pillarKind);
 			short firstPillarKind = pillarKind[0];
 			delete [] pillarKind;
 			return firstPillarKind;
@@ -344,7 +488,9 @@ void IjkGridParametricRepresentation::getParametricLineKind(short * pillarKind, 
 		resqml2__ParametricLineArray* paramLineArray = static_cast<resqml2__ParametricLineArray*>(points->ParametricLines);
 		if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
 		{
-			hdfProxy->readArrayNdOfShortValues(static_cast<resqml2__IntegerHdf5Array*>(paramLineArray->LineKindIndices)->Values->PathInHdfFile, pillarKind);
+			eml20__Hdf5Dataset const * dataset = static_cast<resqml2__IntegerHdf5Array*>(paramLineArray->LineKindIndices)->Values;
+			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+			hdfProxy->readArrayNdOfShortValues(dataset->PathInHdfFile, pillarKind);
 		}
 		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray)
 		{
@@ -419,7 +565,9 @@ void IjkGridParametricRepresentation::getParametersOfNodes(double * parameters, 
 	resqml2__Point3dParametricArray* points = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
 	if (points->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
 	{
-		hdfProxy->readArrayNdOfDoubleValues(static_cast<resqml2__DoubleHdf5Array*>(points->Parameters)->Values->PathInHdfFile, parameters);
+		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(points->Parameters)->Values;
+		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, parameters);
 	}
 	else
 		throw std::logic_error("Not yet implemented");
@@ -492,7 +640,47 @@ void IjkGridParametricRepresentation::getParametersOfNodes(double * parameters, 
 	}
 }
 
-string IjkGridParametricRepresentation::getHdfProxyUuid() const
+void IjkGridParametricRepresentation::getParametersOfNodesOfKInterfaceSequenceOfPatch(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, unsigned int patchIndex, double * parameters)
+{
+	if (kInterfaceStart > getKCellCount() || kInterfaceEnd > getKCellCount())
+		throw range_error("kInterfaceStart and/or kInterfaceEnd is/are out of boundaries.");
+	if (kInterfaceStart > kInterfaceEnd)
+		throw range_error("kInterfaceStart > kInterfaceEnd");
+
+	if (patchIndex >= getPatchCount())
+		throw range_error("An ijk grid has a maximum of one patch.");
+
+	if (parameters == nullptr)
+		throw invalid_argument("xyzPoints must be allocated.");
+
+	gsoap_resqml2_0_1::resqml2__PointGeometry const * const geom = getPointGeometry2_0_1(0);
+	if (geom == nullptr) {
+		throw invalid_argument("There is no geometry on this grid.");
+	}
+	resqml2__Point3dParametricArray const * const parametricPoint3d = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
+
+	// parameters : ordered
+	if (parametricPoint3d->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
+		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(parametricPoint3d->Parameters)->Values;
+		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+
+		unsigned long long* const numValuesInEachDimension = new unsigned long long[2];
+		numValuesInEachDimension[0] = kInterfaceEnd - kInterfaceStart + 1;
+		numValuesInEachDimension[1] = getXyzPointCountOfKInterfaceOfPatch(patchIndex);
+		unsigned long long* const offsetInEachDimension = new unsigned long long[2];
+		offsetInEachDimension[0] = kInterfaceStart;
+		offsetInEachDimension[1] = 0;
+		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, parameters,
+			numValuesInEachDimension, offsetInEachDimension, 2);
+		delete[] numValuesInEachDimension;
+		delete[] offsetInEachDimension;
+	}
+	else {
+		throw logic_error("Only floating point parameters stored in an HDF5 dataset are supported for now.");
+	}
+}
+
+gsoap_resqml2_0_1::eml20__DataObjectReference* IjkGridParametricRepresentation::getHdfProxyDor() const
 {
 	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
 	if (geom == nullptr) {
@@ -501,7 +689,7 @@ string IjkGridParametricRepresentation::getHdfProxyUuid() const
 	resqml2__Point3dParametricArray* points = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
 	if (points->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
 	{
-		return static_cast<resqml2__DoubleHdf5Array*>(points->Parameters)->Values->HdfProxy->UUID;
+		return static_cast<resqml2__DoubleHdf5Array*>(points->Parameters)->Values->HdfProxy;
 	}
 	else
 		throw std::logic_error("Not yet implemented");
@@ -525,52 +713,25 @@ ULONG64 IjkGridParametricRepresentation::getXyzPointCountOfPatch(const unsigned 
 
 void IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch(const unsigned int & kInterfaceStart, const unsigned int & kInterfaceEnd, const unsigned int & patchIndex, double * xyzPoints)
 {
-	if ( kInterfaceStart > getKCellCount() || kInterfaceEnd > getKCellCount())
-		throw range_error("kInterfaceStart and/or kInterfaceEnd is/are out of boundaries.");
-	if (kInterfaceStart > kInterfaceEnd)
-		throw range_error("kInterfaceStart > kInterfaceEnd");
-	
-	if (patchIndex >= getPatchCount())
-		throw range_error("An ijk grid has a maximum of one patch.");
-
-	if (xyzPoints == nullptr)
+	if (xyzPoints == nullptr) {
 		throw invalid_argument("xyzPoints must be allocated.");
-
-	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
-	if (geom == nullptr) {
-		throw invalid_argument("There is no geometry on this grid.");
 	}
-	resqml2__Point3dParametricArray* parametricPoint3d = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
+	if (patchIndex >= getPatchCount()) {
+		throw range_error("An ijk grid has a maximum of one patch.");
+	}
 
+	// Get the parameters
+	const ULONG64 xyzPointCount = getXyzPointCountOfKInterfaceOfPatch(patchIndex);
+	double * const parameters = new double[xyzPointCount * (kInterfaceEnd - kInterfaceStart + 1)];
+	getParametersOfNodesOfKInterfaceSequenceOfPatch(kInterfaceStart, kInterfaceEnd, patchIndex, parameters);
+
+	// Convert the parameters into XYZ points
 	if (pillarInformation == nullptr)
 	{
 		pillarInformation = new PillarInformation();
 		loadPillarInformation(*pillarInformation);
 	}
-	
-	ULONG64 xyzPointCount = getXyzPointCountOfKInterfaceOfPatch(patchIndex);
-
-	// parameters : ordered
-	double * parameters = new double[xyzPointCount * (kInterfaceEnd - kInterfaceStart + 1)];
-	if (parametricPoint3d->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-		const std::string pathInHdfFile = static_cast<resqml2__DoubleHdf5Array*>(parametricPoint3d->Parameters)->Values->PathInHdfFile;
-	
-		unsigned long long* numValuesInEachDimension = new unsigned long long[2];
-		numValuesInEachDimension[0] = kInterfaceEnd - kInterfaceStart + 1;
-		numValuesInEachDimension[1] = xyzPointCount;
-		unsigned long long* offsetInEachDimension = new unsigned long long[2];
-		offsetInEachDimension[0] = kInterfaceStart;
-		offsetInEachDimension[1] = 0;
-		hdfProxy->readArrayNdOfDoubleValues(pathInHdfFile, parameters,
-			numValuesInEachDimension, offsetInEachDimension, 2);
-		delete[] numValuesInEachDimension;
-		delete[] offsetInEachDimension;
-	}
-	else {
-		delete[] parameters;
-		throw logic_error("Non floating point coordinate line parameters are not implemented yet");
-	}
-
+	resqml2__Point3dParametricArray const * const parametricPoint3d = static_cast<resqml2__Point3dParametricArray*>(getPointGeometry2_0_1(patchIndex)->Points);
 	if (parametricPoint3d->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__ParametricLineArray) {
 		//Mapping
 		size_t paramIndex = 0;
@@ -811,9 +972,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlockOfPatch(const unsigned 
 
 	// parameters : ordered
 	double * parameters = new double[getXyzPointCountOfBlock()];
-	if (parametricPoint3d->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-		const std::string pathInHdfFile = static_cast<resqml2__DoubleHdf5Array*>(parametricPoint3d->Parameters)->Values->PathInHdfFile;
-	
+	if (parametricPoint3d->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {	
 		unsigned long long* blockCountPerDimension = new unsigned long long[2];
 		blockCountPerDimension[0] = 1;
 		blockCountPerDimension[1] = blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1;
@@ -827,9 +986,12 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlockOfPatch(const unsigned 
 		blockSizeInEachDimension[0] = blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1;
 		blockSizeInEachDimension[1] = blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1;
 
-		int dataset, filespace;
+		eml20__Hdf5Dataset const * xmlDataset = static_cast<resqml2__DoubleHdf5Array*>(parametricPoint3d->Parameters)->Values;
+		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(xmlDataset);
+
+		hid_t dataset, filespace;
 		hdfProxy->selectArrayNdOfValues(
-			pathInHdfFile,
+			xmlDataset->PathInHdfFile,
 			blockCountPerDimension,
 			offsetPerDimension,
 			strideInEachDimension,
@@ -840,10 +1002,10 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlockOfPatch(const unsigned 
 			filespace);
 
 		unsigned long long slab_size = 1;
-		for (unsigned int h = 0; h < 2; ++h) {
+		for (size_t h = 0; h < 2; ++h) {
 			slab_size *= blockSizeInEachDimension[h];
 		}
-		for (unsigned int h = 0; h < 2; ++h) {
+		for (size_t h = 0; h < 2; ++h) {
 			slab_size *= blockCountPerDimension[h];
 		}
 
@@ -860,10 +1022,10 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlockOfPatch(const unsigned 
 					// here is a split pillar
 
 					// traversing all split coordinate lines corresponding to the current splitted pillar
-					for (unsigned int splitCoordinateLineIndex = 0; splitCoordinateLineIndex < splitInformation[pillarIndex].size(); ++splitCoordinateLineIndex)
+					for (size_t splitCoordinateLineIndex = 0; splitCoordinateLineIndex < splitInformation[pillarIndex].size(); ++splitCoordinateLineIndex)
 					{
 						// traversing adjacent columns, it current column is in the bloc, corresponding coordinate line is added to the selected region
-						for (unsigned int columnIndex = 0; columnIndex < splitInformation[pillarIndex][splitCoordinateLineIndex].second.size(); ++columnIndex)
+						for (size_t columnIndex = 0; columnIndex < splitInformation[pillarIndex][splitCoordinateLineIndex].second.size(); ++columnIndex)
 						{
 							unsigned int iColumnIndex = getIColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
 							unsigned int jColumnIndex = getJColumnFromGlobalIndex(splitInformation[pillarIndex][splitCoordinateLineIndex].second[columnIndex]);
@@ -884,7 +1046,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlockOfPatch(const unsigned 
 								blockSizeInEachDimension[1] = 1;
 							
 								hdfProxy->selectArrayNdOfValues(
-									pathInHdfFile,
+									xmlDataset->PathInHdfFile,
 									blockCountPerDimension,
 									offsetPerDimension,
 									strideInEachDimension,
@@ -1148,8 +1310,10 @@ void IjkGridParametricRepresentation::getXyzPointsOfPatch(const unsigned int & p
 		if (truncatedGeom->AdditionalGridPoints.size() == 1 && truncatedGeom->AdditionalGridPoints[0]->Attachment == resqml2__GridGeometryAttachment__nodes) {
 			if (truncatedGeom->AdditionalGridPoints[0]->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array)
 			{
+				eml20__Hdf5Dataset const * xmlDataset = static_cast<resqml2__Point3dHdf5Array*>(truncatedGeom->AdditionalGridPoints[0]->Points)->Coordinates;
+				COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(xmlDataset);
 				xyzPoints += getXyzPointCountOfPatch(patchIndex) - static_cast<gsoap_resqml2_0_1::_resqml2__TruncatedIjkGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->TruncationNodeCount;
-				hdfProxy->readArrayNdOfDoubleValues(static_cast<resqml2__Point3dHdf5Array*>(truncatedGeom->AdditionalGridPoints[0]->Points)->Coordinates->PathInHdfFile, xyzPoints);
+				hdfProxy->readArrayNdOfDoubleValues(xmlDataset->PathInHdfFile, xyzPoints);
 			}
 			else {
 				throw invalid_argument("The additional grid points must be explicit ones for now. Parametric additional points are not supported yet for example.");
@@ -1162,33 +1326,33 @@ void IjkGridParametricRepresentation::getXyzPointsOfPatch(const unsigned int & p
 }
 
 void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNodes(
-			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const bool & isRightHanded,
-			double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy* proxy)
+	gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, bool isRightHanded,
+	double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy* proxy, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
 {
 	setGeometryAsParametricSplittedPillarNodes(mostComplexPillarGeometry, isRightHanded, parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, pillarKind, proxy,
-		0, nullptr, nullptr, nullptr);
+		0, nullptr, nullptr, nullptr, localCrs);
 }
 
 void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNodesUsingExistingDatasets(
-	const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, COMMON_NS::AbstractHdfProxy* proxy)
+	gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
+	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, COMMON_NS::AbstractHdfProxy* proxy, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
 {
 	setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(mostComplexPillarGeometry, kDirectionKind, isRightHanded, parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, pillarKind, definedPillars, proxy,
-		0, "", "", "");
+		0, "", "", "", localCrs);
 }
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes(
-			const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const bool & isRightHanded,
-			double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy * proxy,
-			const unsigned long & splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
-			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns)
+	gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, bool isRightHanded,
+	double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy * proxy,
+	unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
+	unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
 {
 	if (pillarKind == nullptr) {
 		throw invalid_argument("The kind of the coordinate lines cannot be null.");
 	}
 
 	setGeometryAsParametricSplittedPillarNodes(isRightHanded, parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, 2, proxy,
-		splitCoordinateLineCount, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
+		splitCoordinateLineCount, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns, localCrs);
 
 	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 	if (geom == nullptr) {
@@ -1204,6 +1368,10 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	xmlDefinedPillars->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/PillarGeometryIsDefined";
 
 	// HDF Pillar defined
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
+	getRepository()->addRelationship(this, proxy);
 	const unsigned int pillarCount = getPillarCount();
 	unsigned char * definedPillars = new unsigned char[pillarCount];
 	for (unsigned int i = 0; i < pillarCount; ++i) {
@@ -1212,7 +1380,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	hsize_t * pillarGeometryIsDefinedCount = new hsize_t[2];
 	pillarGeometryIsDefinedCount[0] = getJCellCount() + 1;
 	pillarGeometryIsDefinedCount[1] = getICellCount() + 1;
-	hdfProxy->writeArrayNd(gsoapProxy2_0_1->uuid, "PillarGeometryIsDefined", H5T_NATIVE_UCHAR, definedPillars, pillarGeometryIsDefinedCount, 2);
+	proxy->writeArrayNd(gsoapProxy2_0_1->uuid, "PillarGeometryIsDefined", H5T_NATIVE_UCHAR, definedPillars, pillarGeometryIsDefinedCount, 2);
 	delete [] pillarGeometryIsDefinedCount;
 	delete [] definedPillars;
 
@@ -1235,23 +1403,26 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	hsize_t * lineKindCount = new hsize_t[2];
 	lineKindCount[0] = getJCellCount() + 1;
 	lineKindCount[1] = getICellCount() + 1;
-	hdfProxy->writeArrayNd(gsoapProxy2_0_1->uuid, "LineKindIndices", H5T_NATIVE_SHORT, pillarKind, lineKindCount, 2);
+	proxy->writeArrayNd(gsoapProxy2_0_1->uuid, "LineKindIndices", H5T_NATIVE_SHORT, pillarKind, lineKindCount, 2);
 	delete [] lineKindCount;
 }
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
-	const gsoap_resqml2_0_1::resqml2__PillarShape & mostComplexPillarGeometry, const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, const unsigned int & controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, COMMON_NS::AbstractHdfProxy* proxy,
-	const unsigned long & splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
-	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns)
+	gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
+	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, COMMON_NS::AbstractHdfProxy* proxy,
+	unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
+	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
 {
 	if (pillarKind.empty())
 		throw invalid_argument("The kind of the coordinate lines cannot be null.");
 	if (definedPillars.empty())
 		throw invalid_argument("The defined pillars cannot be null.");
 
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
 	setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(kDirectionKind, isRightHanded, parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, 2, proxy,
-		splitCoordinateLineCount, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
+		splitCoordinateLineCount, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns, localCrs);
 
 	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 	if (geom == nullptr) {
@@ -1282,10 +1453,10 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	xmlLineKinds->Values->PathInHdfFile = pillarKind;
 }
 
-void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes(const bool & isRightHanded,
-	double * parameters, double * controlPoints, double * controlPointParameters, const unsigned int & controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy * proxy,
-	const unsigned long & splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
-	unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns)
+void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes(bool isRightHanded,
+	double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy * proxy,
+	unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
+	unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
 {
 	if (parameters == nullptr) {
 		throw invalid_argument("The parameters of the nodes of the ijk grid cannot be null.");
@@ -1297,13 +1468,16 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		throw invalid_argument("The definition of the split coordinate lines is incomplete.");
 	}
 
-	gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind = computeKDirection(controlPoints, controlPointCountPerPillar);
+	gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind = computeKDirection(controlPoints, controlPointCountPerPillar, localCrs == nullptr ? getRepository()->getDefaultCrs() : localCrs);
 
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
 	const std::string hdfDatasetPrefix = "/RESQML/" + gsoapProxy2_0_1->uuid;
 	setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(kDirectionKind, isRightHanded,
 		hdfDatasetPrefix + "/PointParameters", hdfDatasetPrefix + "/ControlPoints", controlPointParameters != nullptr ? hdfDatasetPrefix + "/controlPointParameters" : "", controlPointCountPerPillar, pillarKind, proxy,
 		splitCoordinateLineCount, hdfDatasetPrefix + "/PillarIndices",
-		hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + CUMULATIVE_LENGTH_DS_NAME, hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + ELEMENTS_DS_NAME);
+		hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + CUMULATIVE_LENGTH_DS_NAME, hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + ELEMENTS_DS_NAME, localCrs);
 
 	if (splitCoordinateLineCount == 0) {
 		// HDF
@@ -1312,7 +1486,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		numValues[1] = getJCellCount() + 1;
 		numValues[2] = getICellCount() + 1;
 
-		hdfProxy->writeArrayNdOfDoubleValues(gsoapProxy2_0_1->uuid, "PointParameters", parameters, numValues, 3);
+		proxy->writeArrayNdOfDoubleValues(gsoapProxy2_0_1->uuid, "PointParameters", parameters, numValues, 3);
 		delete[] numValues;
 	}
 	else {
@@ -1321,16 +1495,16 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		numValues[0] = getKCellCount() + 1;
 		numValues[1] = (getJCellCount() + 1) * (getICellCount() + 1) + splitCoordinateLineCount;
 
-		hdfProxy->writeArrayNdOfDoubleValues(gsoapProxy2_0_1->uuid, "PointParameters", parameters, numValues, 2);
+		proxy->writeArrayNdOfDoubleValues(gsoapProxy2_0_1->uuid, "PointParameters", parameters, numValues, 2);
 		delete[] numValues;
 
 		// split coordinate lines
 		numValues = new hsize_t[1];
 		numValues[0] = splitCoordinateLineCount;
-		hdfProxy->writeArrayNd(gsoapProxy2_0_1->uuid, "PillarIndices", H5T_NATIVE_UINT, pillarOfCoordinateLine, numValues, 1);
+		proxy->writeArrayNd(gsoapProxy2_0_1->uuid, "PillarIndices", H5T_NATIVE_UINT, pillarOfCoordinateLine, numValues, 1);
 		delete[] numValues;
 
-		hdfProxy->writeItemizedListOfList(gsoapProxy2_0_1->uuid, "ColumnsPerSplitCoordinateLine", H5T_NATIVE_UINT, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineCount, H5T_NATIVE_UINT, splitCoordinateLineColumns, splitCoordinateLineColumnCumulativeCount[splitCoordinateLineCount - 1]);
+		proxy->writeItemizedListOfList(gsoapProxy2_0_1->uuid, "ColumnsPerSplitCoordinateLine", H5T_NATIVE_UINT, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineCount, H5T_NATIVE_UINT, splitCoordinateLineColumns, splitCoordinateLineColumnCumulativeCount[splitCoordinateLineCount - 1]);
 	}
 
 	// *********************************
@@ -1342,7 +1516,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	controlPointCount[1] = getJCellCount() + 1;
 	controlPointCount[2] = getICellCount() + 1;
 	controlPointCount[3] = 3; // 3 for X, Y and Z
-	hdfProxy->writeArrayNd(gsoapProxy2_0_1->uuid, "ControlPoints", H5T_NATIVE_DOUBLE, controlPoints, controlPointCount, 4);
+	proxy->writeArrayNd(gsoapProxy2_0_1->uuid, "ControlPoints", H5T_NATIVE_DOUBLE, controlPoints, controlPointCount, 4);
 	delete[] controlPointCount;
 
 	// *********************************
@@ -1354,20 +1528,17 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		controlPointParamCount[0] = controlPointCountPerPillar;
 		controlPointParamCount[1] = getJCellCount() + 1;
 		controlPointParamCount[2] = getICellCount() + 1;
-		hdfProxy->writeArrayNd(gsoapProxy2_0_1->uuid, "controlPointParameters", H5T_NATIVE_DOUBLE, controlPointParameters, controlPointParamCount, 3);
+		proxy->writeArrayNd(gsoapProxy2_0_1->uuid, "controlPointParameters", H5T_NATIVE_DOUBLE, controlPointParameters, controlPointParamCount, 3);
 		delete[] controlPointParamCount;
 	}
 }
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
-	const gsoap_resqml2_0_1::resqml2__KDirection & kDirectionKind, const bool & isRightHanded,
-	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, const unsigned int & controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
-	const unsigned long & splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
-	const std::string &  splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns)
+	gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
+	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
+	unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
+	const std::string &  splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
 {
-	if (proxy == nullptr) {
-		throw invalid_argument("The hdf proxy cannot be null.");
-	}
 	if (controlPointCountPerPillar < 1) {
 		throw invalid_argument("The max count of control points per coordinate line of the ijk grid cannot be less than one.");
 	}
@@ -1375,7 +1546,9 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		throw range_error("The kind of the coordinate lines is out of range.");
 	}
 
-	setHdfProxy(proxy);
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+	}
 
 	resqml2__IjkGridGeometry* geom = soap_new_resqml2__IjkGridGeometry(gsoapProxy2_0_1->soap, 1);
 	geom->LocalCrs = localCrs->newResqmlReference();
@@ -1386,16 +1559,13 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		getSpecializedTruncatedGsoapProxy()->Geometry = geom;
 	}
 	geom->GridIsRighthanded = isRightHanded;
-	if (pillarKind > 1 || controlPointCountPerPillar > 2)
-	{
+	if (pillarKind > 1 || controlPointCountPerPillar > 2) {
 		geom->PillarShape = resqml2__PillarShape__curved;
 	}
-	else if (pillarKind == 1)
-	{
+	else if (pillarKind == 1) {
 		geom->PillarShape = resqml2__PillarShape__straight;
 	}
-	else
-	{
+	else {
 		geom->PillarShape = resqml2__PillarShape__vertical;
 	}
 	geom->KDirection = kDirectionKind;
@@ -1406,6 +1576,10 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	xmlDefinedPillars->Value = true;
 	xmlDefinedPillars->Count = getPillarCount();
 
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
+	getRepository()->addRelationship(this, proxy);
 	// XML parametric nodes
 	resqml2__Point3dParametricArray* xmlPoints = soap_new_resqml2__Point3dParametricArray(gsoapProxy2_0_1->soap, 1);
 	geom->Points = xmlPoints;
@@ -1477,6 +1651,8 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		xmlcontrolPointParams->Values->HdfProxy = proxy->newResqmlReference();
 		xmlcontrolPointParams->Values->PathInHdfFile = controlPointParameters;
 	}
+
+	getRepository()->addRelationship(this, localCrs);
 }
 
 void IjkGridParametricRepresentation::loadPillarInformation(IjkGridParametricRepresentation::PillarInformation & pillarInfo) const
@@ -1523,9 +1699,9 @@ void IjkGridParametricRepresentation::loadPillarInformation(IjkGridParametricRep
 	}
 
 	// Spline creation
-	geometry::BSpline spline;
+	BSpline spline;
 	for (unsigned int parametricLineIndex = 0; parametricLineIndex < pillarInfo.parametricLineCount; ++parametricLineIndex) {
-		vector<geometry::BSpline> xyzSplines;
+		vector<BSpline> xyzSplines;
 		if (pillarInfo.pillarKind[parametricLineIndex] == 2 || pillarInfo.pillarKind[parametricLineIndex] == 4) { // X and Y natural cubic spline
 			vector<double> parameters;
 			vector<double> xValues;
@@ -1572,7 +1748,9 @@ void IjkGridParametricRepresentation::getXyzPointsOfPatchFromParametricPoints(gs
 	// parameters : ordered
 	double * parameters = new double[getXyzPointCountOfPatch(0)];
 	if (parametricPoint3d->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-		hdfProxy->readArrayNdOfDoubleValues(static_cast<resqml2__DoubleHdf5Array*>(parametricPoint3d->Parameters)->Values->PathInHdfFile, parameters);
+		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(parametricPoint3d->Parameters)->Values;
+		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, parameters);
 	}
 	else {
 		delete[] parameters;
@@ -1811,7 +1989,7 @@ namespace {
 	}
 }
 
-gsoap_resqml2_0_1::resqml2__KDirection IjkGridParametricRepresentation::computeKDirection(double * controlPoints, const unsigned int & controlPointCountPerPillar) {
+gsoap_resqml2_0_1::resqml2__KDirection IjkGridParametricRepresentation::computeKDirection(double * controlPoints, unsigned int controlPointCountPerPillar, RESQML2_NS::AbstractLocal3dCrs const * localCrs) {
 	if (controlPoints == nullptr) {
 		throw invalid_argument("The control points cannot be null.");
 	}
@@ -1824,7 +2002,7 @@ gsoap_resqml2_0_1::resqml2__KDirection IjkGridParametricRepresentation::computeK
 	}
 	
 	// CRS
-	const bool isCrsDepthOriented = getLocalCrs()->isDepthOriented();
+	const bool isCrsDepthOriented = localCrs->isDepthOriented();
 
 	// Initialization
 	short result = -1;
@@ -1846,4 +2024,21 @@ gsoap_resqml2_0_1::resqml2__KDirection IjkGridParametricRepresentation::computeK
 	return result < 0
 		? gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__down  // arbitrary default
 		: static_cast<gsoap_resqml2_0_1::resqml2__KDirection>(result);
+}
+
+bool IjkGridParametricRepresentation::isNodeGeometryCompressed() const {
+	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
+	if (geom == nullptr) {
+		throw invalid_argument("There is no geometry on this grid.");
+	}
+	resqml2__Point3dParametricArray* points = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
+
+	if (points->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
+		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(points->Parameters)->Values;
+		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
+		return hdfProxy->isCompressed(dataset->PathInHdfFile);
+	}
+	else {
+		throw logic_error("Non floating point coordinate line parameters are not implemented yet");
+	}
 }

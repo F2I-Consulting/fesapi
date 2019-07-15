@@ -31,48 +31,36 @@ namespace RESQML2_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		AbstractRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject), interpretation(nullptr), hdfProxy(nullptr), localCrs(nullptr) {}
+		AbstractRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/** 
-		* Set the domain of the interpretation according to the local CRS
-		* Does not set relationship with interp and crs because the gsoap proxy is not allocated yet. This must be done at concrete class level.
+		* Defatul constructor
 		*/
-		AbstractRepresentation(class AbstractFeatureInterpretation*	interp, class AbstractLocal3dCrs * crs);
+		AbstractRepresentation() {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractRepresentation(gsoap_resqml2_0_1::resqml2__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap), interpretation(nullptr), hdfProxy(nullptr), localCrs(nullptr) {}
-
-		/**
-		* Create if necessary (i.e if it does not already exist) a link from a seismic suport rep to this instance.
-		* Only updates memory, no XML.
-		* @param seismicSupport	The seismic representation which is a seismic support for this instance.
-		*/
-		void pushBackSeismicSupport(AbstractRepresentation * seismicSupport);
-
-		/**
-		* Set the interpretation of the isntance only at the XML level
-		*/
-		void setXmlInterpretation(class AbstractFeatureInterpretation * interp);
+		AbstractRepresentation(gsoap_resqml2_0_1::resqml2__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		* Get the point geometry of a specific patch of the representation.
 		* @return	nullptr if there is no point geometry for this particular patch otherwise the found point geometry.
 		*/
-		virtual gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(const unsigned int & patchIndex) const;
+		virtual gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
 
 		/**
 		* Creates a point geometry patch.
 		* @param patchIndex				The index of the patch which will contain this geometry.
 		* @param points					All the points to set ordered according the topology of the representation it is based on. It should be 3 * numPoints sized.
+		* @param localCrs				The local CRS where the points lie on.
 		* @param numPoints				The number of points for each dimension of the array to write.
 		* @param numDimensionsInArray	The number of dimensions in the array to write.
 		* @param proxy					The HDF proxy where to write the points. It must be already opened for writing and won't be closed in this method.
 		*/
-		gsoap_resqml2_0_1::resqml2__PointGeometry* createPointGeometryPatch2_0_1(const unsigned int & patchIndex, double * points, unsigned long long * numPoints, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy);
+		gsoap_resqml2_0_1::resqml2__PointGeometry* createPointGeometryPatch2_0_1(unsigned int patchIndex, double * points, class AbstractLocal3dCrs* localCrs, unsigned long long * numPoints, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy);
 
-		std::string getHdfProxyUuidFromPointGeometryPatch(gsoap_resqml2_0_1::resqml2__PointGeometry* patch) const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDorFromPointGeometryPatch(gsoap_resqml2_0_1::resqml2__PointGeometry* patch) const;
 
 		gsoap_resqml2_0_1::resqml2__Seismic2dCoordinates* getSeismic2dCoordinates(const unsigned int & patchIndex) const;
 
@@ -102,26 +90,26 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getLocalCrsUuid() const;
 
-		/**
-		* Getter (read/write access) for the hdf Proxy
-		*/
-		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractHdfProxy* getHdfProxy() const;
-
 		/*
-		 * Getter for the uuid of the hdf proxy which is used for storing the numerical values of this representation i.e. geometry.
-		 * An empty string is returned if no hdf proxy is used for storing the representation/geometry.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getHdfProxyUuid() const = 0;
+		* Getter for the uuid of the hdf proxy which is used for storing the numerical values of this representation i.e. geometry.
+		* An empty string is returned if no hdf proxy is used for storing the representation/geometry.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const {
+			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getHdfProxyDor();
+			return dor == nullptr ? "" : dor->UUID;
+		}
+
+		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const = 0;
 
 		/**
 		* Getter (read only) of all the properties which use this representation as support.
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector<class AbstractProperty*> & getPropertySet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class AbstractProperty  const *> getPropertySet() const;
 
 		/**
 		* Getter of all the properties values which use this representation as support.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<class AbstractValuesProperty*> getValuesPropertySet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class AbstractValuesProperty const *> getValuesPropertySet() const;
 
 		/**
 		* Getter of the count of values properties which use this representation as support.
@@ -134,13 +122,13 @@ namespace RESQML2_NS
 		* Necessary for now in SWIG context because I ma not sure if I can always wrap a vector of polymorphic class yet.
 		* Throw an out of bound exception if the index is superior or equal to the count of values property.
 		*/
-		DLL_IMPORT_OR_EXPORT class AbstractValuesProperty* getValuesProperty(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT class AbstractValuesProperty const * getValuesProperty(unsigned int index) const;
 
 		/**
 		 * Set the interpretation which is associated to this representation.
 		 * And push back this representation as a representation of the interpreation as well.
 		 */
-		DLL_IMPORT_OR_EXPORT void setInterpretation(class AbstractFeatureInterpretation * interp);
+		DLL_IMPORT_OR_EXPORT void setInterpretation(class AbstractFeatureInterpretation const * interp);
 
 		/**
 		* Get the interpretation of this representation
@@ -163,16 +151,9 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT std::string getInterpretationContentType() const;
 
 		/**
-		* DO NOT USE THIS METHOD EXCEPT IF YOU REALLY KNOW WHAT YOU ARE DOING.
-		* Push back a subrepresentation to this representation.
-		* Does not add the inverse relationship i.e. from the subrepresentation to this representation.
-		*/
-		void pushBackSubRepresentation(class SubRepresentation* subRep);
-
-		/**
 		* Get all the subrepresentations of this instance.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<SubRepresentation*> getSubRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<SubRepresentation const *> getSubRepresentationSet() const;
 
 		/**
 		 * Get the subrepresentation count into this EPC document.
@@ -184,12 +165,12 @@ namespace RESQML2_NS
 		 * Get a particular subrepresentation according to its position in the EPC document.
 		 * It is mainly used in SWIG context for parsing the vector from a non C++ language.
 		 */
-		DLL_IMPORT_OR_EXPORT SubRepresentation* getSubRepresentation(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT SubRepresentation const * getSubRepresentation(unsigned int index) const;
 
 		/**
 		* Get all the subrepresentations of this instance which represent a fault.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<SubRepresentation*> getFaultSubRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<SubRepresentation const *> getFaultSubRepresentationSet() const;
 
 		/**
 		 * Get the subrepresentation count into this EPC document which are representations of a fault.
@@ -201,7 +182,7 @@ namespace RESQML2_NS
 		 * Get a particular fault subrepresentation according to its position in the EPC document.
 		 * It is mainly used in SWIG context for parsing the vector from a non C++ language.
 		 */
-		DLL_IMPORT_OR_EXPORT SubRepresentation* getFaultSubRepresentation(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT SubRepresentation const * getFaultSubRepresentation(unsigned int index) const;
         
 		/**
 		* Get the xyz point count in a given patch.
@@ -258,9 +239,13 @@ namespace RESQML2_NS
 		/**
 		* Pushes back this representaiton into a representation set
 		* @param repSet	The representation set representation which will contain this representation.
-		* @param xml	If set to true (default), then xml relationships will be updated. If set to no, only memory (and epc) relationships will be updated.
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackIntoRepresentationSet(class RepresentationSetRepresentation * repSet, bool xml = true);
+		DLL_IMPORT_OR_EXPORT void pushBackIntoRepresentationSet(class RepresentationSetRepresentation * repSet);
+
+		/**
+		* Get all the subrepresentations of this instance which represent a fault.
+		*/
+		DLL_IMPORT_OR_EXPORT std::vector<RepresentationSetRepresentation const *> getRepresentationSetRespresentationSet() const;
 
 		/**
 		 * Get the count of representation set representations which contain this representation
@@ -270,9 +255,7 @@ namespace RESQML2_NS
 		/**
 		 * Get the parent representation set representations at the specified index of the representation set representation list.
 		 */
-		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation* getRepresentationSetRepresentation(const ULONG64  & index) const;
-
-		DLL_IMPORT_OR_EXPORT void setHdfProxy(COMMON_NS::AbstractHdfProxy * proxy);
+		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation const * getRepresentationSetRepresentation(const ULONG64  & index) const;
 
 		/**
 		* Push back a patch of seismic 3D coordinates info.
@@ -300,40 +283,26 @@ namespace RESQML2_NS
 		* @param patchIndex		The index of the geometry patch which stores the seismic coordinates
 		* @param values			The array where the abscissa are going to be stored. The count of this array must be equal to getXyzPointCountOfPatch(patchIndex).
 		*/
-		DLL_IMPORT_OR_EXPORT void getSeismicLineAbscissaOfPointsOfPatch(const unsigned int & patchIndex, double* values);
+		DLL_IMPORT_OR_EXPORT void getSeismicLineAbscissaOfPointsOfPatch(unsigned int patchIndex, double* values) const;
 
 		/**
 		* Get all the inline coordinates of the points of a specific patch related to seismic lattice.
 		* @param patchIndex		The index of the geometry patch which stores the seismic coordinates
 		* @param values			The array where the inlines coordinates are going to be stored. The count of this array must be equal to getXyzPointCountOfPatch(patchIndex).
 		*/
-		DLL_IMPORT_OR_EXPORT void getInlinesOfPointsOfPatch(const unsigned int & patchIndex, double * values);
+		DLL_IMPORT_OR_EXPORT void getInlinesOfPointsOfPatch(unsigned int patchIndex, double * values) const;
 
 		/**
 		* Get all the crossline coordinates of the points of a specific patch related to seismic lattice.
 		* @param patchIndex		The index of the geometry patch which stores the seismic coordinates
 		* @param values			The array where the crossline coordinates are going to be stored. The count of this array must be equal to getXyzPointCountOfPatch(patchIndex).
 		*/
-		DLL_IMPORT_OR_EXPORT void getCrosslinesOfPointsOfPatch(const unsigned int & patchIndex, double * values);
+		DLL_IMPORT_OR_EXPORT void getCrosslinesOfPointsOfPatch(unsigned int patchIndex, double * values) const;
 
 		static const char* XML_TAG;
 
 	protected:
 
-		virtual std::vector<epc::Relationship> getAllEpcRelationships() const;
-		virtual void importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc);
-
-		// XML forward relationships
-		class AbstractFeatureInterpretation*				interpretation;
-		COMMON_NS::AbstractHdfProxy * 							hdfProxy;
-		class AbstractLocal3dCrs *							localCrs;
-
-		// XML backward relationships
-		std::vector<SubRepresentation*>						subRepresentationSet;
-		std::vector<AbstractProperty*>						propertySet;
-		std::vector<AbstractRepresentation*> 				seismicSupportedRepSet;
-		std::vector<class RepresentationSetRepresentation*>	representationSetRepresentationSet;
-
-		friend void AbstractProperty::setRepresentation(AbstractRepresentation * rep);
+		virtual void loadTargetRelationships() const;
 	};
 }

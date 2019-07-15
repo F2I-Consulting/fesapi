@@ -23,23 +23,13 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 using namespace gsoap_resqml2_0_1;
-using namespace epc;
 
 const char* ActivityTemplate::XML_TAG = "ActivityTemplate";
 
-vector<Relationship> ActivityTemplate::getAllEpcRelationships() const
+std::vector<Activity const *> ActivityTemplate::getActivityInstanceSet() const
 {
-	vector<Relationship> result;
-
-	for (size_t i = 0; i < activityInstanceSet.size(); ++i)
-	{
-		Relationship rel(activityInstanceSet[i]->getPartNameInEpcDocument(), "", activityInstanceSet[i]->getUuid());
-		rel.setSourceObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
+	return getRepository()->getSourceObjects<Activity>(this);
 }
 
-void ActivityTemplate::importRelationshipSetFromEpc(COMMON_NS::EpcDocument *)
+void ActivityTemplate::loadTargetRelationships() const
 {}

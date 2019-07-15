@@ -27,7 +27,6 @@ under the License.
 #include "common/AbstractHdfProxy.h"
 
 using namespace std;
-using namespace epc;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
@@ -36,9 +35,7 @@ const char* SealedSurfaceFrameworkRepresentation::XML_TAG = "SealedSurfaceFramew
 SealedSurfaceFrameworkRepresentation::SealedSurfaceFrameworkRepresentation(
         StructuralOrganizationInterpretation* interp,
         const std::string & guid,
-        const std::string & title
-        ):
-	AbstractSurfaceFrameworkRepresentation(interp)
+        const std::string & title)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The structural organization interpretation cannot be null.");
@@ -55,7 +52,6 @@ SealedSurfaceFrameworkRepresentation::SealedSurfaceFrameworkRepresentation(
     initMandatoryMetadata();
     setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	// XML relationships
     setInterpretation(interp);
 }
 
@@ -85,11 +81,11 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
 	if (identicalNodes == nullptr) {
 		throw invalid_argument("The array of identical nodes cannot be null.");
 	}
-	if (proxy == nullptr) {
-		throw invalid_argument("The HDF proxy cannot be null.");
-	}
 
-    setHdfProxy(proxy);
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
+	getRepository()->addRelationship(this, proxy);
 
 	pushBackContact(kind);
 	resqml2__SealedContactRepresentationPart* contactRep = static_cast<_resqml2__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1)->SealedContactRepresentation.back();
@@ -126,7 +122,11 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
 		throw invalid_argument("The supporting representation cannot be null.");
 	}
 
-    setHdfProxy(proxy);
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
+	getRepository()->addRelationship(this, proxy);
+
     _resqml2__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml2__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
 	if (contactIndex >= orgRep->SealedContactRepresentation.size()) {
@@ -290,23 +290,4 @@ unsigned int SealedSurfaceFrameworkRepresentation::getContactPatchNodeCount(unsi
 void SealedSurfaceFrameworkRepresentation::getContactPatchNodeIndices(unsigned int crIndex, unsigned int cpIndex, unsigned int * nodeIndices) const
 {
 	readArrayNdOfUIntValues(getContactPatch(crIndex, cpIndex)->SupportingRepresentationNodes, nodeIndices);
-}
-
-vector<Relationship> SealedSurfaceFrameworkRepresentation::getAllEpcRelationships() const
-{
-	vector<Relationship> result = AbstractSurfaceFrameworkRepresentation::getAllEpcRelationships();
-
-	for (size_t i = 0; i < svfSet.size(); ++i)
-	{
-		if (svfSet[i] != nullptr)
-		{
-			Relationship rel(svfSet[i]->getPartNameInEpcDocument(), "", svfSet[i]->getUuid());
-			rel.setSourceObjectType();
-			result.push_back(rel);
-		}
-		else
-			throw domain_error("The Sealed Volume Framework Representation associated to this interpretation cannot be nullptr.");
-	}
-
-	return result;
 }

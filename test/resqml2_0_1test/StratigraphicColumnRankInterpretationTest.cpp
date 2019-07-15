@@ -48,55 +48,40 @@ const char* StratigraphicColumnRankInterpretationTest::defaultUnderburdenTitle =
 const char* StratigraphicColumnRankInterpretationTest::defaultUnderburdenInterpUuid = "1914478a-e50b-4808-ad62-11201992024d";
 const char* StratigraphicColumnRankInterpretationTest::defaultUnderburdenInterpTitle = "Underburden Interp";
 
-StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(const string & epcDocPath)
-	: AbstractFeatureInterpretationTest(epcDocPath, defaultUuid, defaultTitle, StratigraphicOrganizationTest::defaultUuid, StratigraphicOrganizationTest::defaultTitle) {
+StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
 }
 
-StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(const string & epcDocPath, const std::string & uuid, const std::string & title, const string & uuidFeature, const string & titleFeature)
-	: AbstractFeatureInterpretationTest(epcDocPath, uuid, title, uuidFeature, titleFeature) {
-}
-
-StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(EpcDocument* epcDoc, bool init)
-	: AbstractFeatureInterpretationTest(epcDoc, defaultUuid, defaultTitle, StratigraphicOrganizationTest::defaultUuid, StratigraphicOrganizationTest::defaultTitle) {
+StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
 	if (init)
-			initEpcDoc();
-		else
-			readEpcDoc();
+		initRepo();
+	else
+		readRepo();
 }
 
-StratigraphicColumnRankInterpretationTest::StratigraphicColumnRankInterpretationTest(COMMON_NS::EpcDocument*, const std::string & uuid, const std::string & title, const string & uuidFeature, const string & titleFeature, bool)
-	: AbstractFeatureInterpretationTest(epcDocPath, uuid, title, uuidFeature, titleFeature) {
-}
-
-void StratigraphicColumnRankInterpretationTest::initEpcDocHandler() {
+void StratigraphicColumnRankInterpretationTest::initRepoHandler() {
 	// creating dependencies
-	StratigraphicOrganizationTest* stratiOrgtTest = new StratigraphicOrganizationTest(epcDoc, true);
-	StratigraphicUnitInterpretationTest* overburdenInterpTest = new StratigraphicUnitInterpretationTest(epcDoc, defaultOverburdenInterpUuid, defaultOverburdenInterpTitle, defaultOverburdenUuid, defaultOverburdenTitle, true);
-	StratigraphicUnitInterpretationTest* stratiLayerInterpTest = new StratigraphicUnitInterpretationTest(epcDoc, true);
-	StratigraphicUnitInterpretationTest* underburdenInterpTest = new StratigraphicUnitInterpretationTest(epcDoc, defaultUnderburdenInterpUuid, defaultUnderburdenInterpTitle, defaultUnderburdenUuid, defaultUnderburdenTitle, true);
+	StratigraphicOrganizationTest stratiOrgtTest(repo, true);
+	StratigraphicUnitInterpretationTest overburdenInterpTest(repo, true);
+	StratigraphicUnitInterpretationTest stratiLayerInterpTest(repo, true);
+	StratigraphicUnitInterpretationTest underburdenInterpTest(repo, true);
 
-	OrganizationFeature* stratiOrg = epcDoc->getDataObjectByUuid<OrganizationFeature>(StratigraphicOrganizationTest::defaultUuid);
-	StratigraphicUnitInterpretation* overburdenInterp = epcDoc->getDataObjectByUuid<StratigraphicUnitInterpretation>(defaultOverburdenInterpUuid);
-	StratigraphicUnitInterpretation* stratiLayerInterp = epcDoc->getDataObjectByUuid<StratigraphicUnitInterpretation>(StratigraphicUnitInterpretationTest::defaultUuid);
-	StratigraphicUnitInterpretation* underburdenInterp = epcDoc->getDataObjectByUuid<StratigraphicUnitInterpretation>(defaultUnderburdenInterpUuid);
+	OrganizationFeature* stratiOrg = repo->getDataObjectByUuid<OrganizationFeature>(StratigraphicOrganizationTest::defaultUuid);
+	StratigraphicUnitInterpretation* overburdenInterp = repo->getDataObjectByUuid<StratigraphicUnitInterpretation>(defaultOverburdenInterpUuid);
+	StratigraphicUnitInterpretation* stratiLayerInterp = repo->getDataObjectByUuid<StratigraphicUnitInterpretation>(StratigraphicUnitInterpretationTest::defaultUuid);
+	StratigraphicUnitInterpretation* underburdenInterp = repo->getDataObjectByUuid<StratigraphicUnitInterpretation>(defaultUnderburdenInterpUuid);
 
-	// cleaning
-	delete stratiOrgtTest;
-	delete overburdenInterpTest;
-	delete stratiLayerInterpTest;
-	delete underburdenInterpTest;
-
-	StratigraphicColumnRankInterpretation* stratiColumnRank = epcDoc->createStratigraphicColumnRankInterpretationInApparentDepth(stratiOrg, uuid, title, 0);
+	StratigraphicColumnRankInterpretation* stratiColumnRank = repo->createStratigraphicColumnRankInterpretationInApparentDepth(stratiOrg, defaultUuid, defaultTitle, 0);
 	REQUIRE(stratiColumnRank != nullptr);
 	stratiColumnRank->pushBackStratiUnitInterpretation(overburdenInterp);
 	stratiColumnRank->pushBackStratiUnitInterpretation(stratiLayerInterp);
 	stratiColumnRank->pushBackStratiUnitInterpretation(underburdenInterp);
 }
 
-void StratigraphicColumnRankInterpretationTest::readEpcDocHandler()
+void StratigraphicColumnRankInterpretationTest::readRepoHandler()
 {
-	StratigraphicColumnRankInterpretation* stratiColumnRank = epcDoc->getDataObjectByUuid<StratigraphicColumnRankInterpretation>(uuid);
+	StratigraphicColumnRankInterpretation* stratiColumnRank = repo->getDataObjectByUuid<StratigraphicColumnRankInterpretation>(defaultUuid);
 	REQUIRE(stratiColumnRank != nullptr);
 	REQUIRE(stratiColumnRank->getStratigraphicUnitInterpretationSet().size() == 3);
 }
-

@@ -21,46 +21,47 @@ under the License.
 #include "common/EpcDocument.h"
 #include "witsml2_0/Well.h"
 #include <stdexcept>
-#include "../config.h"
 
 using namespace std;
 using namespace witsml2_0test;
 using namespace COMMON_NS;
 using namespace WITSML2_0_NS;
 
+const char* WellTest::defaultUuid = "4b4ef814-a891-46f5-bf10-3cc30be396a5";
+const char* WellTest::defaultTitle = "Witsml Well Test";
 const time_t WellTest::defaultTimestamp = 1553268493; // 2019-03-22T15:28:13+00:00
 
 WellTest::WellTest(const string & epcDocPath)
-	: AbstractObjectTest(epcDocPath, uuidWell, titleWell) {
+	: AbstractObjectTest(epcDocPath) {
 }
 
-WellTest::WellTest(EpcDocument* epcDoc, bool init)
-	: AbstractObjectTest(epcDoc, uuidWell, titleWell) {
+WellTest::WellTest(DataObjectRepository* repo, bool init)
+	: AbstractObjectTest(repo) {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void WellTest::initEpcDocHandler() {
-	Well* well = epcDoc->createWell(uuid, title);
+void WellTest::initRepoHandler() {
+	Well* well = repo->createWell(defaultUuid, defaultTitle);
 	REQUIRE(well != nullptr);
 	well->setBlock("my Block");
 	// No county
 	well->setDTimLicense(defaultTimestamp);
 	well->setGroundElevation(10, gsoap_eml2_1::eml21__LengthUom__m);
-	REQUIRE_THROWS(well->setTimeZone(true, -1));
+	REQUIRE_THROWS(well->setTimeZone(true, 24));
 	REQUIRE_THROWS(well->setTimeZone(true, 22, 65));
 	well->setTimeZone(true, 0); // time zone == 'Z'
 	well->setStatusWell(gsoap_eml2_1::eml21__WellStatus__active);
 }
 
-void WellTest::readEpcDocHandler() {
-	Well* well = epcDoc->getDataObjectByUuid<Well>(uuid);
+void WellTest::readRepoHandler() {
+	Well* well = repo->getDataObjectByUuid<Well>(defaultUuid);
 	REQUIRE(well != nullptr);
 	REQUIRE(well->hasBlock());
 	REQUIRE(well->getBlock() == "my Block");
-	REQUIRE(!well->hasCounty());
+	REQUIRE_FALSE(well->hasCounty());
 	REQUIRE(well->getDTimLicense() == defaultTimestamp);
 	REQUIRE(well->getGroundElevationValue() == 10);
 	REQUIRE(well->getGroundElevationUom() == gsoap_eml2_1::eml21__LengthUom__m);

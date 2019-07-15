@@ -25,7 +25,7 @@ namespace RESQML2_0_1_NS
 	class GridConnectionSetRepresentation : public RESQML2_NS::GridConnectionSetRepresentation
 	{
 	protected:
-		void init(soap* soapContext, const std::string & guid, const std::string & title);
+		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
 
 		/**
 		* Pushes back an interpretation which can be mapped with some connections.
@@ -59,11 +59,11 @@ namespace RESQML2_0_1_NS
 
 		/**
 		* Creates an instance of this class in a gsoap context.
-		* @param interp	The interpretation the instance represents.
+		* @param repo	The repo where this instance will be stored.
 		* @param guid	A guid for the instance to create.
 		* @param title	A title for the instance to create.
 		*/
-		GridConnectionSetRepresentation(soap* soapContext,
+		GridConnectionSetRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title);
 
 		/**
@@ -76,7 +76,7 @@ namespace RESQML2_0_1_NS
 		*/
 		~GridConnectionSetRepresentation() {}
 
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		/**
 		* Get the cell index pair count of this grid connection representation
@@ -211,4 +211,3 @@ namespace RESQML2_0_1_NS
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getSupportingGridRepresentationDor(unsigned int index) const;
 	};
 }
-

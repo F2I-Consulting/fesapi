@@ -19,13 +19,13 @@ under the License.
 #include "resqml2/RepresentationSetRepresentation.h"
 
 #include <stdexcept>
+#include <limits>
 
 #include "resqml2/AbstractLocal3dCrs.h"
 
 #include "tools/Misc.h"
 
 using namespace std;
-using namespace epc;
 using namespace RESQML2_NS;
 
 const char* RepresentationSetRepresentation::XML_TAG = "RepresentationSetRepresentation";
@@ -35,41 +35,23 @@ std::string RepresentationSetRepresentation::getXmlTag() const
 	return XML_TAG;
 }
 
-vector<Relationship> RepresentationSetRepresentation::getAllEpcRelationships() const
+void RepresentationSetRepresentation::loadTargetRelationships() const
 {
-	vector<Relationship> result = AbstractRepresentation::getAllEpcRelationships();
-
-	const unsigned int repCount = getRepresentationCount();
-	for (size_t i = 0; i < repCount; ++i)
-	{
-		AbstractRepresentation* rep = getRepresentation(i);
-		Relationship rel(rep->getPartNameInEpcDocument(), "", rep->getUuid());
-		rel.setDestinationObjectType();
-		result.push_back(rel);
-	}
-
-	return result;
-}
-
-void RepresentationSetRepresentation::importRelationshipSetFromEpc(COMMON_NS::EpcDocument* epcDoc)
-{
-	AbstractRepresentation::importRelationshipSetFromEpc(epcDoc);
+	AbstractRepresentation::loadTargetRelationships();
 
 	const unsigned int repCount = getRepresentationCount();
 	for (unsigned int i = 0; i < repCount; ++i)
 	{
 		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getRepresentationDor(i);
-		RESQML2_NS::AbstractRepresentation* rep = epcDoc->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
+		RESQML2_NS::AbstractRepresentation* rep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
 		if (rep == nullptr) { // partial transfer
-			getEpcDocument()->createPartial(dor);
-			rep = getEpcDocument()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
+			getRepository()->createPartial(dor);
+			rep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);
+			if (rep == nullptr) {
+				throw invalid_argument("The DOR looks invalid.");
+			}
 		}
-		if (rep == nullptr) {
-			throw invalid_argument("The DOR looks invalid.");
-		}
-		updateXml = false;
-		rep->pushBackIntoRepresentationSet(this, false);
-		updateXml = true;
+		getRepository()->addRelationship(this, rep);
 	}
 }
 
@@ -112,9 +94,9 @@ unsigned int RepresentationSetRepresentation::getRepresentationCount() const
 	}
 }
 
-RESQML2_NS::AbstractRepresentation* RepresentationSetRepresentation::getRepresentation(const unsigned int & index) const
+RESQML2_NS::AbstractRepresentation* RepresentationSetRepresentation::getRepresentation(unsigned int index) const
 {
-	return epcDocument->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(getRepresentationUuid(index));
+	return repository->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(getRepresentationUuid(index));
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* RepresentationSetRepresentation::getRepresentationDor(const unsigned int & index) const
@@ -136,8 +118,10 @@ std::string RepresentationSetRepresentation::getRepresentationUuid(const unsigne
 	return getRepresentationDor(index)->UUID;
 }
 
-void RepresentationSetRepresentation::pushBackXmlRepresentation(RESQML2_NS::AbstractRepresentation* rep)
+void RepresentationSetRepresentation::pushBack(RESQML2_NS::AbstractRepresentation* rep)
 {
+	getRepository()->addRelationship(this, rep);
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::_resqml2__RepresentationSetRepresentation* rsr = static_cast<gsoap_resqml2_0_1::_resqml2__RepresentationSetRepresentation*>(gsoapProxy2_0_1);
 

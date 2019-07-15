@@ -17,7 +17,6 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2_0_1test/SubRepresentationOnPartialGridConnectionSet.h"
-#include "../config.h"
 #include "../catch.hpp"
 #include "resqml2_0_1/GridConnectionSetRepresentation.h"
 #include "resqml2_0_1/SubRepresentation.h"
@@ -32,39 +31,38 @@ const char* SubRepresentationOnPartialGridConnectionSet::defaultUuid = "4c698ca0
 const char* SubRepresentationOnPartialGridConnectionSet::defaultTitle = "SubRepresentation On Partial GridConnectionSet";
 
 SubRepresentationOnPartialGridConnectionSet::SubRepresentationOnPartialGridConnectionSet(const string & epcDocPath)
-	: AbstractRepresentationTest(epcDocPath, defaultUuid, defaultTitle) {
+	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
-SubRepresentationOnPartialGridConnectionSet::SubRepresentationOnPartialGridConnectionSet(COMMON_NS::EpcDocument * epcDoc, bool init)
-	: AbstractRepresentationTest(epcDoc, defaultUuid, defaultTitle) {
-		if (init)
-			this->initEpcDoc();
-		else
-			this->readEpcDoc();
+SubRepresentationOnPartialGridConnectionSet::SubRepresentationOnPartialGridConnectionSet(COMMON_NS::DataObjectRepository * repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
+	if (init)
+		initRepo();
+	else
+		readRepo();
 }
 
-void SubRepresentationOnPartialGridConnectionSet::initEpcDocHandler()
+void SubRepresentationOnPartialGridConnectionSet::initRepoHandler()
 {
 	// getting the hdf proxy
-	AbstractHdfProxy* hdfProxy = this->epcDoc->getHdfProxySet()[0];
+	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
-	RESQML2_NS::GridConnectionSetRepresentation* partialGcsr = this->epcDoc->createPartialGridConnectionSetRepresentation("00a7d22f-4746-409b-87dc-5bdb83660d27", "GCSR");
+	RESQML2_NS::GridConnectionSetRepresentation* partialGcsr = repo->createPartialGridConnectionSetRepresentation("00a7d22f-4746-409b-87dc-5bdb83660d27", "GCSR");
 	REQUIRE(partialGcsr != nullptr);
-	RESQML2_NS::SubRepresentation* subRep = epcDoc->createSubRepresentation(this->uuid, this->title);
+	RESQML2_NS::SubRepresentation* subRep = repo->createSubRepresentation(defaultUuid, defaultTitle);
 	subRep->pushBackSupportingRepresentation(partialGcsr);
 
 	ULONG64 elements[2] = { 1, 2 };
 	subRep->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml2__IndexableElements__cells, 2, elements, hdfProxy);
 }
 
-void SubRepresentationOnPartialGridConnectionSet::readEpcDocHandler()
+void SubRepresentationOnPartialGridConnectionSet::readRepoHandler()
 {
 	// getting the subrep
-	RESQML2_NS::SubRepresentation* subRep = epcDoc->getDataObjectByUuid<RESQML2_NS::SubRepresentation>(this->uuid);
+	RESQML2_NS::SubRepresentation* subRep = repo->getDataObjectByUuid<RESQML2_NS::SubRepresentation>(defaultUuid);
 
 	REQUIRE(subRep->getSupportingRepresentation(0)->isPartial());
 	REQUIRE(subRep->getSupportingRepresentation(0)->getXmlTag().compare("GridConnectionSetRepresentation") == 0);
 	REQUIRE(subRep->getSupportingRepresentation(0)->getUuid().compare("00a7d22f-4746-409b-87dc-5bdb83660d27") == 0);
 	REQUIRE(subRep->getSupportingRepresentation(0)->getTitle().compare("GCSR") == 0);
 }
-

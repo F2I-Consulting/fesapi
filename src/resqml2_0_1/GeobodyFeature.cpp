@@ -24,14 +24,15 @@ using namespace gsoap_resqml2_0_1;
 
 const char* GeobodyFeature::XML_TAG = "GeobodyFeature";
 
-GeobodyFeature::GeobodyFeature(soap* soapContext, const string & guid, const string & title)
+GeobodyFeature::GeobodyFeature(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title)
 {
-	if (soapContext == nullptr)
-		throw invalid_argument("The soap context cannot be null.");
+	if (repo == nullptr)
+		throw invalid_argument("The repo cannot be null.");
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREGeobodyFeature(soapContext, 1);
+	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREGeobodyFeature(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
-}
 
+	repo->addOrReplaceDataObject(this);
+}

@@ -29,7 +29,6 @@ under the License.
 #include "resqml2/AbstractLocal3dCrs.h"
 
 using namespace std;
-using namespace epc;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
@@ -38,11 +37,11 @@ const char* NonSealedSurfaceFrameworkRepresentation::XML_TAG = "NonSealedSurface
 NonSealedSurfaceFrameworkRepresentation::NonSealedSurfaceFrameworkRepresentation(
         StructuralOrganizationInterpretation* interp,
         const std::string & guid, 
-        const std::string & title):
-	AbstractSurfaceFrameworkRepresentation(interp)
+        const std::string & title)
 {
-	if (interp == nullptr)
+	if (interp == nullptr) {
 		throw invalid_argument("The structural organization interpretation cannot be null.");
+	}
 
 	// proxy constructor
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORENonSealedSurfaceFrameworkRepresentation(interp->getGsoapContext(), 1);	
@@ -53,27 +52,27 @@ NonSealedSurfaceFrameworkRepresentation::NonSealedSurfaceFrameworkRepresentation
     orgRep->RepresentedInterpretation->UUID.assign(interp->getUuid());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setInterpretation(interp);
 }
 
-void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresentation(const unsigned int & pointCount, double * points, RESQML2_NS::AbstractLocal3dCrs* crs, COMMON_NS::AbstractHdfProxy * proxy)
+void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresentation(unsigned int pointCount, double * points, COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (pointCount == 0)
 		throw invalid_argument("Contact point count cannot be zero.");
 	if (points == nullptr)
 		throw invalid_argument("The contact points cannot be null.");
-	if (proxy == nullptr)
-		throw invalid_argument("The HDF proxy cannot be null.");
 
-	if (localCrs == nullptr)
-	{
-		localCrs = crs;
-		localCrs->addRepresentation(this);
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
+	getRepository()->addRelationship(this, proxy);
+
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
 	}
 
-	setHdfProxy(proxy);
 	_resqml2__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml2__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
 	resqml2__NonSealedContactRepresentationPart* contactRep = soap_new_resqml2__NonSealedContactRepresentationPart(gsoapProxy2_0_1->soap, 1);
@@ -85,7 +84,7 @@ void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresenta
 	resqml2__Point3dHdf5Array* contactGeomPoints = soap_new_resqml2__Point3dHdf5Array(gsoapProxy2_0_1->soap, 1);
 	contactGeom->Points = contactGeomPoints;
 	contactGeomPoints->Coordinates = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
-	contactGeomPoints->Coordinates->HdfProxy = hdfProxy->newResqmlReference();
+	contactGeomPoints->Coordinates->HdfProxy = proxy->newResqmlReference();
 	ostringstream oss;
 	oss << "points_contact_representation" << orgRep->NonSealedContactRepresentation.size()-1;
 	contactGeomPoints->Coordinates->PathInHdfFile = "/RESQML/" + getUuid() + "/" + oss.str();
@@ -95,7 +94,9 @@ void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresenta
 	numValues[0] = pointCount;
 	numValues[1] = 3; // 3 for X, Y and Z
 
-	hdfProxy->writeArrayNdOfDoubleValues(getUuid(), oss.str(), points, numValues, 2);
+	proxy->writeArrayNdOfDoubleValues(getUuid(), oss.str(), points, numValues, 2);
+
+	getRepository()->addRelationship(this, localCrs);
 }
 
 std::string NonSealedSurfaceFrameworkRepresentation::getHdfProxyUuid() const
@@ -116,21 +117,6 @@ std::string NonSealedSurfaceFrameworkRepresentation::getHdfProxyUuid() const
 		}
 	}
 
-	return result;
-}
-
-vector<Relationship> NonSealedSurfaceFrameworkRepresentation::getAllEpcRelationships() const
-{
-	vector<Relationship> result = RepresentationSetRepresentation::getAllEpcRelationships();
-        
-    // supporting representations of organization sub representations
-    for (size_t i = 0; i < supportingRepOfContactPatchSet.size(); ++i)
-    {
-		Relationship rel(supportingRepOfContactPatchSet[i]->getPartNameInEpcDocument(), "", supportingRepOfContactPatchSet[i]->getUuid());
-		rel.setDestinationObjectType();
-		result.push_back(rel);
-    }
-        
 	return result;
 }
 

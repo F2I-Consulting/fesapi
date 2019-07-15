@@ -17,7 +17,6 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "TimeSeriesTest.h"
-#include "../config.h"
 #include "../catch.hpp"
 #include "resqml2/TimeSeries.h"
 
@@ -30,19 +29,19 @@ const char* TimeSeriesTest::defaultUuid = "0b8fc144-8e71-4f2a-a062-60c2d17fdc12"
 const char* TimeSeriesTest::inputTile = "Time Series";
 
 TimeSeriesTest::TimeSeriesTest(const string & epcDocPath)
-	: AbstractResqmlDataObjectTest(epcDocPath, defaultUuid, inputTile) {
+	: commontest::AbstractObjectTest(epcDocPath) {
 }
 
-TimeSeriesTest::TimeSeriesTest(EpcDocument * epcDoc, bool init)
-	: AbstractResqmlDataObjectTest(epcDoc, defaultUuid, inputTile) {
-		if (init)
-			this->initEpcDoc();
-		else
-			this->readEpcDoc();
+TimeSeriesTest::TimeSeriesTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo) {
+	if (init)
+		initRepo();
+	else
+		readRepo();
 }
 
-void TimeSeriesTest::initEpcDocHandler() {
-	TimeSeries* timeSeries = this->epcDoc->createTimeSeries(this->uuid, this->title);
+void TimeSeriesTest::initRepoHandler() {
+	TimeSeries* timeSeries = repo->createTimeSeries(defaultUuid, inputTile);
 	REQUIRE( timeSeries != nullptr );
 
 	timeSeries->pushBackTimestamp(1378217895);
@@ -50,8 +49,8 @@ void TimeSeriesTest::initEpcDocHandler() {
 	timeSeries->pushBackTimestamp(1441289895);
 }
 
-void TimeSeriesTest::readEpcDocHandler() {
-	vector<TimeSeries*> timeSeriesSet = this->epcDoc->getTimeSeriesSet();
+void TimeSeriesTest::readRepoHandler() {
+	vector<TimeSeries*> timeSeriesSet = repo->getTimeSeriesSet();
 	REQUIRE(timeSeriesSet.size() == 1);
 
 	// getting the TimeSeries
@@ -73,4 +72,3 @@ void TimeSeriesTest::readEpcDocHandler() {
 	REQUIRE( timeSeries->getTimestamp(1) == 1409753895 );
 	REQUIRE( timeSeries->getTimestamp(2) == 1441289895 );
 }
-

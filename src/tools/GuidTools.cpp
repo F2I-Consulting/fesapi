@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "tools/GuidTools.h"
 
-using namespace std;
-
 #if defined(__gnu_linux__) || defined(__APPLE__)
 
 #include <uuid/uuid.h> // Need package "uuid-dev"
@@ -38,7 +36,7 @@ std::string GuidTools::generateUidAsString()
 
 #include <Windows.h>
 
-string GuidTools::generateUidAsString()
+std::string GuidTools::generateUidAsString()
 {
 	GUID sessionGUID = GUID_NULL;
 	HRESULT hr = CoCreateGuid(&sessionGUID);

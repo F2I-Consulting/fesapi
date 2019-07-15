@@ -17,7 +17,6 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "LocalDepth3dCrsTest.h"
-#include "../config.h"
 #include "common/EpcDocument.h"
 #include "../catch.hpp"
 
@@ -31,29 +30,29 @@ using namespace RESQML2_0_1_NS;
 const char* LocalDepth3dCrsTest::defaultUuid = "a8effb2c-c94f-4d88-ae76-581ff14a4b96";
 const char* LocalDepth3dCrsTest::defaultTitle = "Local Depth 3d Crs Test";
 
-LocalDepth3dCrsTest::LocalDepth3dCrsTest(const string & epcDocPath)
-	: AbstractLocal3dCrsTest(epcDocPath, defaultUuid, defaultTitle)
+LocalDepth3dCrsTest::LocalDepth3dCrsTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath)
 {
 }
 
-LocalDepth3dCrsTest::LocalDepth3dCrsTest(EpcDocument* epcDoc, bool init)
-	: AbstractLocal3dCrsTest(epcDoc, defaultUuid, defaultTitle)
+LocalDepth3dCrsTest::LocalDepth3dCrsTest(DataObjectRepository* repo, bool init)
+	: commontest::AbstractObjectTest(repo)
 {
 	if (init)
-		initEpcDoc();
+		initRepo();
 	else
-		readEpcDoc();
+		readRepo();
 }
 
-void LocalDepth3dCrsTest::initEpcDocHandler()
+void LocalDepth3dCrsTest::initRepoHandler()
 {
-	epcDoc->createLocalDepth3dCrs(uuid, title, 1000, 2000, 3000, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__ft, "Unknown", false);
+	repo->createLocalDepth3dCrs(defaultUuid, defaultTitle, 1000, 2000, 3000, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__ft, "Unknown", false);
 }
 
-void LocalDepth3dCrsTest::readEpcDocHandler()
+void LocalDepth3dCrsTest::readRepoHandler()
 {
-	REQUIRE( epcDoc->getLocalDepth3dCrsSet().size() == 1 );
-	LocalDepth3dCrs* crs = epcDoc->getDataObjectByUuid<LocalDepth3dCrs>(uuid);
+	REQUIRE( repo->getLocalDepth3dCrsSet().size() == 2 );
+	LocalDepth3dCrs* crs = repo->getDataObjectByUuid<LocalDepth3dCrs>(defaultUuid);
 	REQUIRE(crs->getOriginOrdinal1() == 1000);
 	REQUIRE(crs->getOriginOrdinal2() == 2000);
 	REQUIRE(crs->getOriginDepthOrElevation() == 3000);
