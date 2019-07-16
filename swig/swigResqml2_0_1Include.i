@@ -151,6 +151,7 @@ namespace std {
    %template(WellboreMarkerFrameRepresentationVector) vector<RESQML2_0_1_NS::WellboreMarkerFrameRepresentation*>;
    %template(UnstructuredGridRepresentationVector) vector<RESQML2_0_1_NS::UnstructuredGridRepresentation*>;
    %template(WellboreMarkerVector) vector<RESQML2_0_1_NS::WellboreMarker*>;
+   %template(ConstWellboreMarkerVector) vector<RESQML2_0_1_NS::WellboreMarker const*>;
    %template(IjkGridExplicitRepresentationVector) vector<RESQML2_0_1_NS::IjkGridExplicitRepresentation*>;
    %template(IjkGridParametricRepresentationVector) vector<RESQML2_0_1_NS::IjkGridParametricRepresentation*>;
    %template(IjkGridLatticeRepresentationVector) vector<RESQML2_0_1_NS::IjkGridLatticeRepresentation*>;
