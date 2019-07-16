@@ -133,13 +133,16 @@ namespace std {
    %template(LocalTime3dCrsVector) vector<RESQML2_0_1_NS::LocalTime3dCrs*>;
    %template(StratigraphicColumnVector) vector<RESQML2_0_1_NS::StratigraphicColumn*>;
    %template(StratigraphicColumnRankInterpretationVector) vector<RESQML2_0_1_NS::StratigraphicColumnRankInterpretation*>;
+   %template(ConstStratigraphicColumnRankInterpretationVector) vector<RESQML2_0_1_NS::StratigraphicColumnRankInterpretation const*>;
    %template(TectonicBoundaryFeatureVector) vector<RESQML2_0_1_NS::TectonicBoundaryFeature*>;
    %template(HorizonVector) vector<RESQML2_0_1_NS::Horizon*>;
    %template(GeobodyFeatureVector) vector<RESQML2_0_1_NS::GeobodyFeature*>;
    %template(FrontierVector) vector<RESQML2_0_1_NS::FrontierFeature*>;
    %template(StratigraphicUnitInterpretationVector) vector<RESQML2_0_1_NS::StratigraphicUnitInterpretation*>;
+   %template(ConstStratigraphicUnitInterpretationVector) vector<RESQML2_0_1_NS::StratigraphicUnitInterpretation const*>;
    %template(StratigraphicOccurrenceInterpretationVector) vector<RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation*>;
    %template(HorizonInterpretationVector) vector<RESQML2_0_1_NS::HorizonInterpretation*>;
+   %template(ConstHorizonInterpretationVector) vector<RESQML2_0_1_NS::HorizonInterpretation const*>;
    %template(ConstGrid2dRepresentationVector) vector<RESQML2_0_1_NS::Grid2dRepresentation const*>;
    %template(PolylineRepresentationVector) vector<RESQML2_0_1_NS::PolylineRepresentation*>;
    %template(PolylineSetRepresentationVector) vector<RESQML2_0_1_NS::PolylineSetRepresentation*>;
@@ -147,6 +150,7 @@ namespace std {
    %template(SeismicLineFeatureVector) vector<RESQML2_0_1_NS::SeismicLineFeature*>;
    %template(WellboreFeatureVector) vector<RESQML2_0_1_NS::WellboreFeature*>;
    %template(WellboreTrajectoryRepresentationVector) vector<RESQML2_0_1_NS::WellboreTrajectoryRepresentation*>;
+   %template(ConstWellboreTrajectoryRepresentationVector) vector<RESQML2_0_1_NS::WellboreTrajectoryRepresentation const*>;
    %template(DeviationSurveyRepresentationVector) vector<RESQML2_0_1_NS::DeviationSurveyRepresentation*>;
    %template(WellboreMarkerFrameRepresentationVector) vector<RESQML2_0_1_NS::WellboreMarkerFrameRepresentation*>;
    %template(UnstructuredGridRepresentationVector) vector<RESQML2_0_1_NS::UnstructuredGridRepresentation*>;
