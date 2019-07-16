@@ -820,12 +820,10 @@ namespace COMMON_NS
 	
 		EpcDocument(const std::string & fileName);
 		
-		EpcDocument(const std::string & fileName, DataObjectRepository::openingMode hdfPermissionAccess_ = DataObjectRepository::READ_ONLY);
-		
 		void setFilePath(const std::string & fp);
 
 		virtual void serializeFrom(const DataObjectRepository & repo, bool useZip64 = false);
-		virtual std::string deserializeInto(DataObjectRepository & repo);
+		virtual std::string deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::READ_ONLY);
 		void close();
 		std::string getStorageDirectory() const;
 		std::string getName() const;

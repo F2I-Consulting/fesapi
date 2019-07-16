@@ -37,11 +37,10 @@ using namespace COMMON_NS;
 
 const char* EpcDocument::DOCUMENT_EXTENSION = ".epc";
 
-EpcDocument::EpcDocument(const string& fileName, DataObjectRepository::openingMode hdfPermissionAccess_)
+EpcDocument::EpcDocument(const string& fileName)
 {
 	package = nullptr;
 	open(fileName);
-	hdfPermissionAccess = hdfPermissionAccess_;
 }
 
 EpcDocument::~EpcDocument()
@@ -152,7 +151,7 @@ void EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64
 	package->writePackage();
 }
 
-string EpcDocument::deserializeInto(DataObjectRepository & repo)
+string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess)
 {
 	std::string result;
 	vector<string> warningsDuringReading = package->openForReading(filePath);
