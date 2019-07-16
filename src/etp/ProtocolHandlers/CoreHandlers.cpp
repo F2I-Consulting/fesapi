@@ -80,6 +80,7 @@ void CoreHandlers::on_RequestSession(const Energistics::Etp::v12::Protocol::Core
 
 void CoreHandlers::on_OpenSession(const Energistics::Etp::v12::Protocol::Core::OpenSession & os, int64_t correlationId)
 {
+	std::cout << "The session has been opened with the default core protocol handlers. You probably want to use your own." << std::endl;
 }
 
 void CoreHandlers::on_CloseSession(const Energistics::Etp::v12::Protocol::Core::CloseSession & cs, int64_t correlationId)
@@ -90,7 +91,7 @@ void CoreHandlers::on_CloseSession(const Energistics::Etp::v12::Protocol::Core::
 
 void CoreHandlers::on_ProtocolException(const Energistics::Etp::v12::Protocol::Core::ProtocolException & pe, int64_t correlationId)
 {
-	std::cout << "EXCEPTION for message_id " << correlationId << " with error code "  << pe.m_errorCode << " : " << pe.m_errorMessage << std::endl;
+	std::cout << "EXCEPTION received for message_id " << correlationId << " with error code "  << pe.m_errorCode << " : " << pe.m_errorMessage << std::endl;
 }
 
 void CoreHandlers::on_Acknowledge(const Energistics::Etp::v12::Protocol::Core::Acknowledge & ack, int64_t correlationId)

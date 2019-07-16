@@ -73,8 +73,6 @@ namespace ETP_NS
 	    AbstractSession() : webSocketSessionClosed(true), etpSessionClosed(true) {
 	    }
 
-		virtual void run() = 0;
-
 		/**
 		 * Write the current buffer on the web socket
 		 */
@@ -120,6 +118,8 @@ namespace ETP_NS
 	public:
 
 		virtual ~AbstractSession() {}
+
+		virtual void run() = 0;
 
 		virtual boost::asio::io_context& getIoContext() = 0;
 

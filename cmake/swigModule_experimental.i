@@ -18,8 +18,6 @@ under the License.
 -----------------------------------------------------------------------*/
 %module fesapi
 
-
-
 #ifdef SWIGJAVA
 	// Notice you must not compile the C++ API with an optimisation superior to -O1 with gcc 4.4.7 in order SWIG to work
 	
@@ -36,26 +34,17 @@ under the License.
 	SWIG_JAVABODY_PROXY(public, public, SWIGTYPE)
 	SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 	
-	// http://www.swig.org/Doc3.0/SWIGDocumentation.html#Java_proper_enums
+	/* http://www.swig.org/Doc3.0/SWIGDocumentation.html#Java_proper_enums */
 	%include "enums.swg"
 	%javaconst(1);
 #endif
 
-//************************
-// STD STRING
-//************************
-
 #ifdef SWIGCSHARP
-	%include "std_string.i"
 	SWIG_CSBODY_PROXY(public, public, SWIGTYPE)
 	SWIG_CSBODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
-#else
-	%include "std_string.i"
 #endif
 
-//************************
-// POD C ARRAYS
-//************************
+/* POD C ARRAYS */
 %include "carrays_indexing64bits.i"
 #ifdef SWIGJAVA // Use functions instead of classes in java in order to avoid premature garbage collection
 	%array_functions(unsigned long long, ULongLongArray);
@@ -86,15 +75,14 @@ under the License.
 	%array_class(unsigned char, UCharArray);
 	%array_class(bool, BoolArray);
 #endif
-// Example below of premature garbage collection
-// DoubleArray myDoubleArray = new DoubleArray(100);
-// myOperations(myDoubleArray.cast());
-// myDoubleArray can be GC after cast and before myOperations has finished.
+/*
+Example below of premature garbage collection
+DoubleArray myDoubleArray = new DoubleArray(100);
+myOperations(myDoubleArray.cast());
+myDoubleArray can be GC after cast and before myOperations has finished.
+*/
 
-//************************
-// EXCEPTIONS
-//************************
-
+/* EXCEPTIONS */
 %include "exception.i"
 %exception {
     try {
@@ -136,6 +124,8 @@ namespace RESQML2_NS
 	%include "swigResqml2JavaInclude.i"
 #endif
 
+%include "std_string.i"
+
 namespace COMMON_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
@@ -143,6 +133,8 @@ namespace COMMON_NS
 	class AbstractObject
 	{
 	public:
+		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG = 3, ULONG = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
+	
 		COMMON_NS::DataObjectRepository* getRepository() const;
 	
 		bool isPartial() const;
@@ -187,9 +179,7 @@ namespace COMMON_NS
 		RESQML2_NS::Activity const * getActivity (unsigned int index) const;
 	};
 	
-	//************************************
-	//************ HDF *******************
-	//************************************
+	/* HDF */
 	class EpcExternalPartReference : public AbstractObject
 	{
 		std::string getRelativePath();
@@ -213,12 +203,14 @@ namespace COMMON_NS
 #define SWIG_FILE_WITH_INIT // In case we use Python Swig Wrapping
 %}
 
+%include "std_vector.i"
+%template(StringVector) std::vector< std::string >;
+
 %include "swigResqml2Include.i"
 %include "swigResqml2_0_1Include.i"
 %include "swigResqml2_2Include.i"
 %include "swigWitsml2_0Include.i"
-
-%template(StringVector) std::vector< std::string >;
+%include "swigEtp1_2Include.i"
 
 %{
 #include "common/EnumStringMapper.h"
@@ -390,10 +382,7 @@ namespace COMMON_NS
 		
 		COMMON_NS::AbstractHdfProxy* createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess);
 
-
-		//************ CRS *******************
-
-
+		/* CRS */
 		RESQML2_0_1_NS::LocalDepth3dCrs* createLocalDepth3dCrs(const std::string & guid, const std::string & title,
 			double originOrdinal1, double originOrdinal2, double originOrdinal3,
 			double arealRotation,
@@ -457,7 +446,7 @@ namespace COMMON_NS
 			RESQML2_NS::AbstractLocal3dCrs * locCrs, const gsoap_resqml2_0_1::resqml2__MdReference & originKind,
 			const double & referenceLocationOrdinal1, const double & referenceLocationOrdinal2, const double & referenceLocationOrdinal3);
 
-		//************ FEATURE ***************
+		/* FEATURE */
 
 		RESQML2_0_1_NS::BoundaryFeature* createBoundaryFeature(const std::string & guid, const std::string & title);
 
@@ -499,7 +488,7 @@ namespace COMMON_NS
 
 		RESQML2_0_1_NS::RockFluidUnitFeature* createRockFluidUnit(const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml2__Phase phase, RESQML2_0_1_NS::FluidBoundaryFeature* fluidBoundaryTop, RESQML2_0_1_NS::FluidBoundaryFeature* fluidBoundaryBottom);
 
-		//************ INTERPRETATION ********
+		/* INTERPRETATION */
 
 		RESQML2_0_1_NS::GenericFeatureInterpretation* createGenericFeatureInterpretation(RESQML2_NS::AbstractFeature * feature, const std::string & guid, const std::string & title);
 
@@ -533,7 +522,7 @@ namespace COMMON_NS
 		RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInAge(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
 		RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation* createStratigraphicOccurrenceInterpretationInApparentDepth(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
 
-		//************ REPRESENTATION ********
+		/* REPRESENTATION */
 
 		RESQML2_0_1_NS::TriangulatedSetRepresentation* createTriangulatedSetRepresentation(const std::string & guid, const std::string & title);
 			
@@ -657,7 +646,7 @@ namespace COMMON_NS
 		RESQML2_NS::GridConnectionSetRepresentation* createGridConnectionSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
-		//************* PROPERTIES ***********
+		/* PROPERTIES */
 
 		RESQML2_NS::TimeSeries* createTimeSeries(const std::string & guid, const std::string & title);
 
@@ -737,13 +726,13 @@ namespace COMMON_NS
 			RESQML2_0_1_NS::StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropType,
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
-		//************* ACTIVITIES ***********
+		/* ACTIVITIES */
 
 		RESQML2_NS::ActivityTemplate* createActivityTemplate(const std::string & guid, const std::string & title);
 
 		RESQML2_NS::Activity* createActivity(RESQML2_NS::ActivityTemplate* activityTemplate, const std::string & guid, const std::string & title);
 
-		//*************** WITSML *************
+		/* WITSML */
 
 		WITSML2_0_NS::Well* createWell(const std::string & guid,
 			const std::string & title);
@@ -785,10 +774,8 @@ namespace COMMON_NS
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::witsml2__ChannelStatus channelStatus);
-
-		//************************************
-		//************ EML2.2 ****************
-		//************************************
+			
+		/* EML2.2 */
 
 		COMMON_NS::GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
 
@@ -797,15 +784,11 @@ namespace COMMON_NS
 		RESQML2_2_NS::ContinuousColorMap* createContinuousColorMap(const std::string& guid, const std::string& title,
 			gsoap_eml2_2::resqml2__InterpolationDomain interpolationDomain, gsoap_eml2_2::resqml2__InterpolationMethod interpolationMethod);
 
-		//************************************
-		//***** STANDARD PROP KIND ***********
-		//************************************
+		/* STANDARD PROP KIND */
 		
 		RESQML2_0_1_NS::PropertyKindMapper* getPropertyKindMapper() const;
 
-		//************************************
-		//************* WARNINGS *************
-		//************************************
+		/* WARNINGS */
 
 		void clearWarnings();
 		void addWarning(const std::string & warning);

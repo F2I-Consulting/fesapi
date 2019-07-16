@@ -28,6 +28,8 @@ namespace ETP_NS
 		websocket::stream<tcp::socket> ws_;
 
 	public:
+		DLL_IMPORT_OR_EXPORT PlainClientSession(): ws_(ioc) {}
+
 		DLL_IMPORT_OR_EXPORT PlainClientSession(
 			const std::string & host, const std::string & port, const std::string & target, const std::string & authorization,
 			const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,

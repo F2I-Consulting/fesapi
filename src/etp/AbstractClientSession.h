@@ -45,6 +45,14 @@ namespace ETP_NS
 		Derived& derived() { return static_cast<Derived&>(*this); }
 
 	public:
+		AbstractClientSession() :
+			ioc(),
+			resolver(ioc),
+			host(),
+			port(),
+			target(),
+			authorization() {}
+
 	    /**
 	     * @param host		The IP address on which the server is listening for etp (websocket) connection
 	     * @param port		The port on which the server is listening for etp (websocket) connection
@@ -57,6 +65,7 @@ namespace ETP_NS
 				const std::string & host, const std::string & port, const std::string & target, const std::string & authorization,
 				const std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> & requestedProtocols,
 				const std::vector<std::string>& supportedObjects) :
+			ioc(),
 			resolver(ioc),
 			host(host),
 			port(port),

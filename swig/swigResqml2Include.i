@@ -29,18 +29,9 @@ typedef unsigned long long	ULONG64;
 
 typedef long long 				time_t;
 
-
-//************************
-// STD::VECTOR DEFINITIONS
-//************************
-
 namespace RESQML2_NS {
 	class Activity;
 }
-
-// Don't try to create vector of polymorphic data unless you really know what you are doing.
-// Use C array approach instead.
-%include "std_vector.i"
 
 #ifdef SWIGPYTHON
 namespace RESQML2_NS
@@ -81,11 +72,6 @@ namespace RESQML2_NS
 namespace RESQML2_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
-
-	
-	//************************************
-	//************ Activity **************
-	//************************************
 
 	class ActivityTemplate : public COMMON_NS::AbstractObject
 	{
@@ -145,10 +131,6 @@ namespace RESQML2_NS
 		ActivityTemplate* getActivityTemplate() const;
 	};
 	
-	//************************************
-	//************ CRS *******************
-	//************************************
-	
 	class AbstractLocal3dCrs : public COMMON_NS::AbstractObject
 	{
 	public:
@@ -192,10 +174,6 @@ namespace RESQML2_NS
 		
 		virtual gsoap_resqml2_0_1::resqml2__MdReference getOriginKind() const = 0;
 	};
-	
-	//************************************
-	//************ FEATURE ***************
-	//************************************
 
 	class AbstractFeatureInterpretation;
 	class AbstractFeature : public COMMON_NS::AbstractObject
@@ -204,10 +182,6 @@ namespace RESQML2_NS
 		unsigned int getInterpretationCount() const;
 		AbstractFeatureInterpretation* getInterpretation(const unsigned int & index) const;
 	};
-	
-	//************************************
-	//************ INTERPRETATION ********
-	//************************************
 
 	class AbstractRepresentation;
 	class AbstractFeatureInterpretation : public COMMON_NS::AbstractObject
@@ -221,10 +195,6 @@ namespace RESQML2_NS
 		const gsoap_resqml2_0_1::resqml2__Domain & initDomain(const gsoap_resqml2_0_1::resqml2__Domain & defaultDomain) const;
 		gsoap_resqml2_0_1::resqml2__Domain getDomain() const;
 	};
-
-	//************************************
-	//************ REPRESENTATION ********
-	//************************************
 	
 	class AbstractValuesProperty;
 	class SubRepresentation;
@@ -430,10 +400,6 @@ namespace RESQML2_NS
 		AbstractGridRepresentation* getSupportingGridRepresentation(unsigned int index);
 		std::string getSupportingGridRepresentationUuid(unsigned int index) const;
 	};
-
-	//************************************
-	//************** PROPERTY ************
-	//************************************
 	
 	class PropertyKind : public COMMON_NS::AbstractObject
 	{
@@ -587,6 +553,4 @@ namespace RESQML2_NS
 			unsigned int offsetInSlowestDim
 		) const;
 	};
-	
 }
-

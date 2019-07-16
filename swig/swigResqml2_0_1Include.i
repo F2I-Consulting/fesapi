@@ -87,10 +87,6 @@ under the License.
 #include "resqml2_0_1/HdfProxy.h"
 %}
 
-//************************
-// STD::VECTOR DEFINITIONS
-//************************
-
 namespace RESQML2_0_1_NS {
 	class LocalDepth3dCrs;
 	class LocalTime3dCrs;

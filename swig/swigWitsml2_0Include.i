@@ -59,10 +59,6 @@ under the License.
 	GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName, uomDatatype)\
 	GETTER_PRESENCE_ATTRIBUTE_IN_VECTOR(vectorName, attributeName)
 
-//************************
-// STD::VECTOR DEFINITIONS
-//************************
-
 %include "std_vector.i"
 namespace std {
 	%template(WellboreVector) vector<WITSML2_0_NS::Wellbore*>;
@@ -556,4 +552,3 @@ namespace WITSML2_0_NS
 		unsigned int getTrajectoryStationCount() const;
 	};
 }
-
