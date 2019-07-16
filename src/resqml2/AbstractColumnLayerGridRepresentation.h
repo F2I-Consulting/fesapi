@@ -95,5 +95,14 @@ namespace RESQML2_NS
 		* @return					The null value is returned. The null value is used to tell the association between a grid interval and strati unit is unavailable.
 		*/
 		DLL_IMPORT_OR_EXPORT ULONG64 getIntervalStratigraphicUnitIndices(ULONG64 * stratiUnitIndices);
+
+		/**
+		* The returned value is not computed. It is just read from the DataObject.
+		* Since it is denormalized information, inconsistency (mainly due to non synchronized information) might occur.
+		* If you want to be sure, compute this value again from the pillar kind indices.
+		*
+		* @return The most complex pillar geometry which we can find on this grid.
+		*/
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__PillarShape getMostComplexPillarGeometry() const;
 	};
 }

@@ -3769,6 +3769,19 @@ void deserialize(const string & inputFile)
 
 		if (ijkGrid->getGeometryKind() != AbstractIjkGridRepresentation::NO_GEOMETRY)
 		{
+			std::cout << "Most complex pillar geometry is ";
+			gsoap_resqml2_0_1::resqml2__PillarShape mostcomplexPillarGeom = ijkGrid->getMostComplexPillarGeometry();
+			if (mostcomplexPillarGeom == gsoap_resqml2_0_1::resqml2__PillarShape__vertical) {
+				std::cout << "vertical";
+			}
+			else if (mostcomplexPillarGeom == gsoap_resqml2_0_1::resqml2__PillarShape__straight) {
+				std::cout << "straight";
+			}
+			else if (mostcomplexPillarGeom == gsoap_resqml2_0_1::resqml2__PillarShape__curved) {
+				std::cout << "curved";
+			}
+			std::cout << std::endl;
+
 			if (ijkGrid->getGeometryKind() == AbstractIjkGridRepresentation::LATTICE) {
 				std::cout << "This 3d grid has a lattice geometry." << std::endl;
 			}
