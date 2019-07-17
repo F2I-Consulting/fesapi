@@ -75,7 +75,7 @@ SeismicLineSetFeature* SeismicLineFeature::getSeismicLineSet() const
 	return seismicLine->IsPartOf == nullptr ? nullptr : getRepository()->getDataObjectByUuid<SeismicLineSetFeature>(seismicLine->IsPartOf->UUID);
 }
 
-void SeismicLineFeature::loadTargetRelationships() const
+void SeismicLineFeature::loadTargetRelationships()
 {
 	_resqml2__SeismicLineFeature* seismicLine = static_cast<_resqml2__SeismicLineFeature*>(gsoapProxy2_0_1);
 

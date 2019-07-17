@@ -53,17 +53,17 @@ namespace RESQML2_0_1_NS
 		*/
 		~StratigraphicColumn() {}
 
-		DLL_IMPORT_OR_EXPORT void pushBackStratiColumnRank(class StratigraphicColumnRankInterpretation const * stratiColumnRank);
+		DLL_IMPORT_OR_EXPORT void pushBackStratiColumnRank(class StratigraphicColumnRankInterpretation * stratiColumnRank);
 
 		/**
 		 * Get all the stratigraphic column rank interpretations which are contained in this stratigraphic column.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<class StratigraphicColumnRankInterpretation const *> getStratigraphicColumnRankInterpretationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class StratigraphicColumnRankInterpretation *> getStratigraphicColumnRankInterpretationSet() const;
                 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
     private:
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 	};
 }

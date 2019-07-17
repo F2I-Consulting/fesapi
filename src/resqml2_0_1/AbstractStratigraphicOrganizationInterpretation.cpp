@@ -25,7 +25,7 @@ using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace std;
 
-std::vector<RESQML2_NS::AbstractGridRepresentation const *> AbstractStratigraphicOrganizationInterpretation::getGridRepresentations() const
+std::vector<RESQML2_NS::AbstractGridRepresentation *> AbstractStratigraphicOrganizationInterpretation::getGridRepresentations() const
 {
 	return getRepository()->getSourceObjects<RESQML2_NS::AbstractGridRepresentation>(this);
 }
@@ -41,9 +41,9 @@ unsigned int AbstractStratigraphicOrganizationInterpretation::getGridRepresentat
 	return count;
 }
 
-RESQML2_NS::AbstractGridRepresentation const * AbstractStratigraphicOrganizationInterpretation::getGridRepresentation(unsigned int index) const
+RESQML2_NS::AbstractGridRepresentation * AbstractStratigraphicOrganizationInterpretation::getGridRepresentation(unsigned int index) const
 {
-	const std::vector<RESQML2_NS::AbstractGridRepresentation const *>& gridRepresentationSet = getGridRepresentations();
+	const std::vector<RESQML2_NS::AbstractGridRepresentation *>& gridRepresentationSet = getGridRepresentations();
 
 	if (index >= gridRepresentationSet.size()) {
 		throw out_of_range("The index of the grid representation to get is out of range.");
@@ -54,7 +54,7 @@ RESQML2_NS::AbstractGridRepresentation const * AbstractStratigraphicOrganization
 
 bool AbstractStratigraphicOrganizationInterpretation::isAssociatedToGridRepresentation(RESQML2_NS::AbstractGridRepresentation* gridRep) const
 {
-	const std::vector<RESQML2_NS::AbstractGridRepresentation const *>& gridRepresentationSet = getGridRepresentations();
+	const std::vector<RESQML2_NS::AbstractGridRepresentation *>& gridRepresentationSet = getGridRepresentations();
 
 	return find(gridRepresentationSet.begin(), gridRepresentationSet.end(), gridRep) != gridRepresentationSet.end();
 }

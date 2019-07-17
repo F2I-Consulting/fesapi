@@ -91,6 +91,6 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBack(RESQML2_NS::AbstractRepresentation* rep);
 
     protected:
-		virtual void loadTargetRelationships() const;
+		virtual void loadTargetRelationships();
 	};
 }

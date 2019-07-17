@@ -164,7 +164,7 @@ ULONG64 AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndic
 	}
 }
 
-void AbstractColumnLayerGridRepresentation::loadTargetRelationships() const
+void AbstractColumnLayerGridRepresentation::loadTargetRelationships()
 {
 	AbstractGridRepresentation::loadTargetRelationships();
 

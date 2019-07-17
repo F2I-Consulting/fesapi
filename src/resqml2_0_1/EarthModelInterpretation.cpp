@@ -132,7 +132,7 @@ RockFluidOrganizationInterpretation* EarthModelInterpretation::getRockFluidOrgan
 	return repository->getDataObjectByUuid<RockFluidOrganizationInterpretation>(static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid->UUID);
 }
 		
-void EarthModelInterpretation::loadTargetRelationships() const
+void EarthModelInterpretation::loadTargetRelationships()
 {
 	AbstractFeatureInterpretation::loadTargetRelationships();
 

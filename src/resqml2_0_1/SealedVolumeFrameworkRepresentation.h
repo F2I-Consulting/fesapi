@@ -220,7 +220,7 @@ namespace RESQML2_0_1_NS
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getStratiUnitInterpDor(unsigned int regionIndex) const;
 		std::string getStratiUnitInterpUuid(unsigned int regionIndex) const;
 
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 
 		void setXmlSealedSurfaceFramework(class SealedSurfaceFrameworkRepresentation* ssf);
 		void setXmlInterpretationOfVolumeRegion(unsigned int regionIndex, class StratigraphicUnitInterpretation * stratiUnitInterp);

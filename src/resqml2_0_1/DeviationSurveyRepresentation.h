@@ -47,7 +47,7 @@ namespace RESQML2_0_1_NS
 		* @param isFinal				Used to indicate that this is a final version of the deviation survey, as distinct from the interim interpretations.
 		* @param mdInfo					The MD information of the survey, mainly the well reference point.
 		*/
-		DeviationSurveyRepresentation(class WellboreInterpretation const * interp, const std::string & guid, const std::string & title, bool isFinal, RESQML2_NS::MdDatum const * mdInfo);
+		DeviationSurveyRepresentation(class WellboreInterpretation * interp, const std::string & guid, const std::string & title, bool isFinal, RESQML2_NS::MdDatum * mdInfo);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -79,7 +79,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Set the Md datum of this trajectory
 		*/
-		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum const * mdDatum);
+		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum * mdDatum);
 
 		/**
 		* @return	null pointer if no md datum is associated to this representation. Otherwise return the data object reference of the associated md datum.
@@ -148,7 +148,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Getter of all the wellbore frame representations of associated wellbore trajectory which share the same md datum and md uom.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<class WellboreFrameRepresentation const *> getWellboreFrameRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class WellboreFrameRepresentation *> getWellboreFrameRepresentationSet() const;
 
 		/**
 		* Get the count of all the wellbore frame representations of associated wellbore trajectory which share the same md datum and md uom.
@@ -161,12 +161,12 @@ namespace RESQML2_0_1_NS
 		* Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
 		* Throw an out of bound exception if the index is superior or equal to the count of wellbore frame representation.
 		*/
-		DLL_IMPORT_OR_EXPORT class WellboreFrameRepresentation const * getWellboreFrameRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT class WellboreFrameRepresentation * getWellboreFrameRepresentation(unsigned int index) const;
 
 		/**
 		* Getter (in read only mode) of all the wellbore trajectories which are associated to this deviation survey.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<class WellboreTrajectoryRepresentation const *> getWellboreTrajectoryRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class WellboreTrajectoryRepresentation *> getWellboreTrajectoryRepresentationSet() const;
 
 		/**
 		* Get the count of all the wellbore trajectories which are associated to this deviation survey.
@@ -179,13 +179,13 @@ namespace RESQML2_0_1_NS
 		* Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
 		* Throw an out of bound exception if the index is superior or equal to the count of wellbore frame representation.
 		*/
-		DLL_IMPORT_OR_EXPORT class WellboreTrajectoryRepresentation const * getWellboreTrajectoryRepresentation(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT class WellboreTrajectoryRepresentation * getWellboreTrajectoryRepresentation(unsigned int index) const;
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
 
 	protected:
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 	};
 }

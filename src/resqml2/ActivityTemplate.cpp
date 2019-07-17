@@ -26,10 +26,10 @@ using namespace gsoap_resqml2_0_1;
 
 const char* ActivityTemplate::XML_TAG = "ActivityTemplate";
 
-std::vector<Activity const *> ActivityTemplate::getActivityInstanceSet() const
+std::vector<Activity *> ActivityTemplate::getActivityInstanceSet() const
 {
 	return getRepository()->getSourceObjects<Activity>(this);
 }
 
-void ActivityTemplate::loadTargetRelationships() const
+void ActivityTemplate::loadTargetRelationships()
 {}

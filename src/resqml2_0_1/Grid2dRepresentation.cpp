@@ -614,7 +614,7 @@ void Grid2dRepresentation::setGeometryAsArray2dOfLatticePoints3d(
 			double xOrigin, double yOrigin, double zOrigin,
 			double xOffsetInFastestDirection, double yOffsetInFastestDirection, double zOffsetInFastestDirection,
 			double xOffsetInSlowestDirection, double yOffsetInSlowestDirection, double zOffsetInSlowestDirection,
-			double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
+			double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -640,7 +640,7 @@ void Grid2dRepresentation::setGeometryAsArray2dOfLatticePoints3d(
 void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
 		double * zValues,
 		unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy * proxy,
-		Grid2dRepresentation * supportingGrid2dRepresentation, RESQML2_NS::AbstractLocal3dCrs const * localCrs,
+		Grid2dRepresentation * supportingGrid2dRepresentation, RESQML2_NS::AbstractLocal3dCrs * localCrs,
 		unsigned int startIndexI, unsigned int startIndexJ,
 		int indexIncrementI, int indexIncrementJ)
 {
@@ -671,7 +671,7 @@ void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
 				unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy * proxy,
 				double originX, double originY, double originZ,
 				double offsetIX, double offsetIY, double offsetIZ, double spacingI,
-				double offsetJX, double offsetJY, double offsetJZ, double spacingJ, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
+				double offsetJX, double offsetJY, double offsetJZ, double spacingJ, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -769,7 +769,7 @@ int Grid2dRepresentation::getIndexOffsetOnSupportingRepresentation(const unsigne
 	throw invalid_argument("It does not exist supporting representation for this representation.");
 }
 
-void Grid2dRepresentation::loadTargetRelationships() const
+void Grid2dRepresentation::loadTargetRelationships()
 {
 	AbstractSurfaceRepresentation::loadTargetRelationships();
 

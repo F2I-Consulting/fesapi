@@ -36,5 +36,5 @@ string EpcExternalPartReference::getXmlTag() const
 	return XML_TAG;
 }
 
-void EpcExternalPartReference::loadTargetRelationships() const
+void EpcExternalPartReference::loadTargetRelationships()
 {}

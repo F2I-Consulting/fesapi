@@ -65,10 +65,10 @@ namespace WITSML2_0_NS
 
 		DLL_IMPORT_OR_EXPORT void setWell(class Well* witsmlWell);
 
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::WellboreFeature const *> getResqmlWellboreFeature() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::WellboreFeature *> getResqmlWellboreFeature() const;
 
-		DLL_IMPORT_OR_EXPORT std::vector<WellboreCompletion const *> getWellboreCompletions() const;
-		DLL_IMPORT_OR_EXPORT std::vector<Trajectory const *> getTrajectories() const;
+		DLL_IMPORT_OR_EXPORT std::vector<WellboreCompletion *> getWellboreCompletions() const;
+		DLL_IMPORT_OR_EXPORT std::vector<Trajectory *> getTrajectories() const;
 
 		DLL_IMPORT_OR_EXPORT void setShape(gsoap_eml2_1::witsml2__WellboreShape shape);
 
@@ -80,6 +80,6 @@ namespace WITSML2_0_NS
 		/**
 		* Resolve all relationships of the object in the repository.
 		*/
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 	};
 }

@@ -46,7 +46,7 @@ namespace RESQML2_0_1_NS
 		*/
 		virtual ~AbstractStratigraphicOrganizationInterpretation() {}
 
-		std::vector<RESQML2_NS::AbstractGridRepresentation const *> getGridRepresentations() const;
+		std::vector<RESQML2_NS::AbstractGridRepresentation *> getGridRepresentations() const;
 
 		/**
 		* @return The count of grid representation assocaited to this strati organization.
@@ -57,7 +57,7 @@ namespace RESQML2_0_1_NS
 		* Get a grid representation associated to this strati org interp by means of its index.
 		* @param index	The index of the grid representation to get in the array of grid representaitons of this strati org interp.
 		*/
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractGridRepresentation const * getGridRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractGridRepresentation * getGridRepresentation(unsigned int index) const;
 
 		/**
 		* Check if a grid representation is wether associated to this strati org interp or not.

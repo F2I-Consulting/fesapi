@@ -109,7 +109,7 @@ namespace COMMON_NS
 		/**
 		* Read the forward relationships of this dataobject and update the rels of the associated datarepository.
 		*/
-		virtual void loadTargetRelationships() const = 0;
+		virtual void loadTargetRelationships() = 0;
 		friend void COMMON_NS::DataObjectRepository::updateAllRelationships();
 
 		/**
@@ -150,17 +150,17 @@ namespace COMMON_NS
 		*/
 		ULONG64 getCountOfIntegerArray(gsoap_resqml2_0_1::resqml2__AbstractIntegerArray * arrayInput) const;
 
-		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor) const;
+		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor);
 
 #if WITH_EXPERIMENTAL
-		void convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor) const;
+		void convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor);
 #endif
 
 		// Check that the content type of the DOR is OK with the datatype in memory.
 		template <class valueType>
-		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor) const
+		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor)
 		{
-			valueType const * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->UUID);
+			valueType * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->UUID);
 			if (targetObj == nullptr) { // partial transfer
 				getRepository()->createPartial(dor);
 				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->UUID);
@@ -172,9 +172,9 @@ namespace COMMON_NS
 		}
 
 		template <class valueType>
-		void convertDorIntoRel(gsoap_eml2_1::eml21__DataObjectReference const * dor) const
+		void convertDorIntoRel(gsoap_eml2_1::eml21__DataObjectReference const * dor)
 		{
-			valueType const * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
+			valueType * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
 			if (targetObj == nullptr) { // partial transfer
 				getRepository()->createPartial(dor);
 				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
@@ -187,9 +187,9 @@ namespace COMMON_NS
 
 #if WITH_EXPERIMENTAL
 		template <class valueType>
-		void convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor) const
+		void convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor)
 		{
-			valueType const * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
+			valueType * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
 			if (targetObj == nullptr) { // partial transfer
 				getRepository()->createPartial(dor);
 				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
@@ -360,7 +360,7 @@ namespace COMMON_NS
 		/**
 		* Get all the activities where the instance is involved.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::Activity const *> getActivitySet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::Activity *> getActivitySet() const;
 
 		/**
 		* Get the count of associated activities.
@@ -370,7 +370,7 @@ namespace COMMON_NS
 		/**
 		* Get the associated activity at a particular index.
 		*/
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::Activity const * getActivity(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::Activity * getActivity(unsigned int index) const;
 
 		/**
 		* Push back an extra metadata (not a standard one)

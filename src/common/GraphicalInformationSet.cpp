@@ -267,7 +267,7 @@ std::string GraphicalInformationSet::getDefaultColorTitle(AbstractObject const* 
 	return *color->Title;
 }
 
-void GraphicalInformationSet::setDefaultHsvColor(AbstractObject const* targetObject, double hue, double saturation, double value, double alpha, string const& colorTitle)
+void GraphicalInformationSet::setDefaultHsvColor(AbstractObject * targetObject, double hue, double saturation, double value, double alpha, string const& colorTitle)
 {
 	if (targetObject == nullptr) {
 		throw invalid_argument("The target object cannot be null");
@@ -289,10 +289,10 @@ void GraphicalInformationSet::setDefaultHsvColor(AbstractObject const* targetObj
 		throw invalid_argument("alpha must be in range [0, 1]");
 	}
 
-	if ((dynamic_cast<AbstractFeature const*>(targetObject) == nullptr) &&
-		(dynamic_cast<AbstractFeatureInterpretation const*>(targetObject) == nullptr) &&
-		(dynamic_cast<AbstractRepresentation const*>(targetObject) == nullptr) &&
-		(dynamic_cast<WellboreMarker const*>(targetObject) == nullptr)) {
+	if ((dynamic_cast<AbstractFeature *>(targetObject) == nullptr) &&
+		(dynamic_cast<AbstractFeatureInterpretation *>(targetObject) == nullptr) &&
+		(dynamic_cast<AbstractRepresentation *>(targetObject) == nullptr) &&
+		(dynamic_cast<WellboreMarker *>(targetObject) == nullptr)) {
 		throw invalid_argument("The object must be a feature, interpretation, representation or wellbore marker.");
 	}
 
@@ -350,7 +350,7 @@ void GraphicalInformationSet::setDefaultHsvColor(AbstractObject const* targetObj
 * @param alpha			numeric value in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). Default value is 1.
 * @param colorTitle		title for the given HSV color
 */
-void GraphicalInformationSet::setDefaultRgbColor(AbstractObject const* targetObject, double red, double green, double blue, double alpha, std::string const& colorTitle)
+void GraphicalInformationSet::setDefaultRgbColor(AbstractObject* targetObject, double red, double green, double blue, double alpha, std::string const& colorTitle)
 {
 	if (targetObject == nullptr) {
 		throw invalid_argument("The target object cannot be null");
@@ -382,7 +382,7 @@ void GraphicalInformationSet::setDefaultRgbColor(AbstractObject const* targetObj
 * @param alpha			numeric value in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). Default value is 1.
 * @param colorTitle		title for the given HSV color
 */
-void GraphicalInformationSet::setDefaultRgbColor(AbstractObject const* targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha, std::string const& colorTitle)
+void GraphicalInformationSet::setDefaultRgbColor(AbstractObject* targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha, std::string const& colorTitle)
 {
 	if (targetObject == nullptr) {
 		throw invalid_argument("The target object cannot be null");
@@ -461,7 +461,7 @@ DiscreteColorMap* GraphicalInformationSet::getDiscreteColorMap(AbstractObject co
 	return getRepository()->getDataObjectByUuid<DiscreteColorMap>(getDiscreteColorMapUuid(targetObject));
 }
 
-void GraphicalInformationSet::setDiscreteColorMap(AbstractObject const* targetObject, DiscreteColorMap* discreteColorMap, 
+void GraphicalInformationSet::setDiscreteColorMap(AbstractObject* targetObject, DiscreteColorMap* discreteColorMap, 
 	LONG64 valueVectorIndex, bool useReverseMapping, bool useLogarithmicMapping)
 {
 	if (targetObject == nullptr) {
@@ -472,8 +472,8 @@ void GraphicalInformationSet::setDiscreteColorMap(AbstractObject const* targetOb
 		throw invalid_argument("The discrete color map cannot be null");
 	}
 
-	if ((dynamic_cast<AbstractValuesProperty const*>(targetObject) == nullptr) &&
-		(dynamic_cast<PropertyKind const*>(targetObject) == nullptr)) {
+	if ((dynamic_cast<AbstractValuesProperty*>(targetObject) == nullptr) &&
+		(dynamic_cast<PropertyKind*>(targetObject) == nullptr)) {
 		throw invalid_argument("The object must be a property or property kind.");
 	}
 
@@ -559,7 +559,7 @@ ContinuousColorMap* GraphicalInformationSet::getContinuousColorMap(AbstractObjec
 	return getRepository()->getDataObjectByUuid<ContinuousColorMap>(getContinuousColorMapUuid(targetObject));
 }
 
-void GraphicalInformationSet::setContinuousColorMap(AbstractObject const* targetObject, ContinuousColorMap* continuousColorMap, 
+void GraphicalInformationSet::setContinuousColorMap(AbstractObject* targetObject, ContinuousColorMap* continuousColorMap, 
 	LONG64 valueVectorIndex, bool useReverseMapping, bool useLogarithmicMapping)
 {
 	if (targetObject == nullptr) {
@@ -730,7 +730,7 @@ void GraphicalInformationSet::hsvToRgb(double hue, double saturation, double val
 	blue = floor(b == 1.0 ? 255 : b * 256.0);
 }
 
-void GraphicalInformationSet::loadTargetRelationships() const
+void GraphicalInformationSet::loadTargetRelationships()
 {
 	_eml22__GraphicalInformationSet const* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
 

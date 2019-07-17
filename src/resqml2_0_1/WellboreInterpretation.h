@@ -62,7 +62,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get all the trajectory representations of this interpretation
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<class WellboreTrajectoryRepresentation const*> getWellboreTrajectoryRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class WellboreTrajectoryRepresentation *> getWellboreTrajectoryRepresentationSet() const;
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}

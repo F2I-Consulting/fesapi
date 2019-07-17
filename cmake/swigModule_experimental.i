@@ -184,7 +184,7 @@ namespace COMMON_NS
 		std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
 
 		unsigned int getActivityCount() const;
-		RESQML2_NS::Activity const * getActivity (unsigned int index) const;
+		RESQML2_NS::Activity * getActivity (unsigned int index) const;
 	};
 	
 	//************************************
@@ -250,22 +250,22 @@ namespace COMMON_NS
 		void getDefaultRgbColor(AbstractObject const* targetObject, unsigned int& red, unsigned int& green, unsigned int& blue) const;
 		bool hasDefaultColorTitle(AbstractObject const* targetObject) const;
 		std::string getDefaultColorTitle(AbstractObject const* targetObject) const;
-		void setDefaultHsvColor(AbstractObject const* targetObject, double hue, double saturation, double value, double alpha = 1.0, std::string const& colorTitle = "");
-		void setDefaultRgbColor(AbstractObject const* targetObject, double red, double green, double blue, double alpha = 1.0, std::string const& colorTitle = "");
-		void setDefaultRgbColor(AbstractObject const* targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha = 1.0, std::string const& colorTitle = "");
+		void setDefaultHsvColor(AbstractObject * targetObject, double hue, double saturation, double value, double alpha = 1.0, std::string const& colorTitle = "");
+		void setDefaultRgbColor(AbstractObject * targetObject, double red, double green, double blue, double alpha = 1.0, std::string const& colorTitle = "");
+		void setDefaultRgbColor(AbstractObject * targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha = 1.0, std::string const& colorTitle = "");
 
 		bool hasDiscreteColorMap(AbstractObject const* targetObject) const;
 		gsoap_eml2_2::eml22__DataObjectReference* getDiscreteColorMapDor(AbstractObject const* targetObject) const;
 		std::string getDiscreteColorMapUuid(AbstractObject const* targetObject) const;
 		RESQML2_2_NS::DiscreteColorMap* getDiscreteColorMap(AbstractObject const* targetObject) const;
-		void setDiscreteColorMap(AbstractObject const* targetObject, RESQML2_2_NS::DiscreteColorMap* discreteColorMap,
+		void setDiscreteColorMap(AbstractObject * targetObject, RESQML2_2_NS::DiscreteColorMap* discreteColorMap,
 			LONG64 valueVectorIndex = 0, bool useReverseMapping = false, bool useLogarithmicMapping = false);
 
 		bool hasContinuousColorMap(AbstractObject const* targetObject) const;
 		gsoap_eml2_2::eml22__DataObjectReference* getContinuousColorMapDor(AbstractObject const* targetObject) const;
 		std::string getContinuousColorMapUuid(AbstractObject const* targetObject) const;
 		RESQML2_2_NS::ContinuousColorMap* getContinuousColorMap(AbstractObject const* targetObject) const;
-		void setContinuousColorMap(AbstractObject const* targetObject, RESQML2_2_NS::ContinuousColorMap* continuousColorMap,
+		void setContinuousColorMap(AbstractObject * targetObject, RESQML2_2_NS::ContinuousColorMap* continuousColorMap,
 			LONG64 valueVectorIndex = 0, bool useReverseMapping = false, bool useLogarithmicMapping = false);
 
 		double getColorMapMinIndex(AbstractObject const* targetObject) const;
@@ -301,15 +301,15 @@ namespace COMMON_NS
 
 		std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*> getFractureSet() const;
 
-		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation const *> getFaultPolylineSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation *> getFaultPolylineSetRepSet() const;
 
-		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation const *> getFracturePolylineSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation *> getFracturePolylineSetRepSet() const;
 
-		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation const *> getFrontierPolylineSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation *> getFrontierPolylineSetRepSet() const;
 
-		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation const *> getFaultTriangulatedSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation *> getFaultTriangulatedSetRepSet() const;
 
-		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation const *> getFractureTriangulatedSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation *> getFractureTriangulatedSetRepSet() const;
 
 		std::vector<RESQML2_0_1_NS::Horizon*> getHorizonSet() const;
 
@@ -319,13 +319,13 @@ namespace COMMON_NS
 
 		std::vector<RESQML2_0_1_NS::GeobodyFeature*> getGeobodySet() const;
 
-		std::vector<RESQML2_0_1_NS::Grid2dRepresentation const *> getHorizonGrid2dRepSet() const;
+		std::vector<RESQML2_0_1_NS::Grid2dRepresentation *> getHorizonGrid2dRepSet() const;
 
-		std::vector<RESQML2_0_1_NS::PolylineRepresentation const *> getHorizonPolylineRepSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineRepresentation *> getHorizonPolylineRepSet() const;
 
-		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation const *> getHorizonPolylineSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation *> getHorizonPolylineSetRepSet() const;
 
-		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation const *> getHorizonTriangulatedSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation *> getHorizonTriangulatedSetRepSet() const;
 
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getAllTriangulatedSetRepSet() const;
 
@@ -339,9 +339,9 @@ namespace COMMON_NS
 
 		std::vector<RESQML2_0_1_NS::WellboreFeature*> getWellboreSet();
 
-		std::vector<RESQML2_0_1_NS::WellboreTrajectoryRepresentation const *> getWellboreTrajectoryRepresentationSet() const;
+		std::vector<RESQML2_0_1_NS::WellboreTrajectoryRepresentation *> getWellboreTrajectoryRepresentationSet() const;
 
-		std::vector<RESQML2_0_1_NS::DeviationSurveyRepresentation const *> getDeviationSurveyRepresentationSet() const;
+		std::vector<RESQML2_0_1_NS::DeviationSurveyRepresentation *> getDeviationSurveyRepresentationSet() const;
 
 		std::vector<RESQML2_NS::RepresentationSetRepresentation*> getRepresentationSetRepresentationSet() const;
 
@@ -566,17 +566,17 @@ namespace COMMON_NS
 		RESQML2_0_1_NS::Grid2dRepresentation* createGrid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
-		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum const * mdInfo);
-		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::DeviationSurveyRepresentation const * deviationSurvey);
+		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo);
+		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::DeviationSurveyRepresentation * deviationSurvey);
 
-		RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum const * mdInfo);
+		RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo);
 
-		RESQML2_0_1_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation const * traj);
+		RESQML2_0_1_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
 
-		RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation const * traj);
+		RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
 
-		RESQML2_0_1_NS::BlockedWellboreRepresentation* createBlockedWellboreRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp,
-			const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation const * traj);
+		RESQML2_0_1_NS::BlockedWellboreRepresentation* createBlockedWellboreRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp,
+			const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
 
 		RESQML2_NS::RepresentationSetRepresentation* createRepresentationSetRepresentation(
 			RESQML2_0_1_NS::AbstractOrganizationInterpretation* interp,
