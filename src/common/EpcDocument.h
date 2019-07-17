@@ -39,7 +39,7 @@ namespace COMMON_NS
 	{		
 	public:
 
-		DLL_IMPORT_OR_EXPORT EpcDocument(const std::string & fileName, DataObjectRepository::openingMode hdfPermissionAccess_ = DataObjectRepository::READ_ONLY);
+		DLL_IMPORT_OR_EXPORT EpcDocument(const std::string & fileName);
 
 		/**
 		* The destructor frees all allocated ressources.
@@ -74,7 +74,7 @@ namespace COMMON_NS
 		* Unzip the package (dataobjects + relationships) into a data repository
 		* @return			An empty string if everything's ok otherwise the error string.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string deserializeInto(DataObjectRepository & repo);
+		DLL_IMPORT_OR_EXPORT virtual std::string deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::READ_ONLY);
 
 		/**
 		* Get the absolute path of the directory where the epc document is stored.
@@ -101,6 +101,5 @@ namespace COMMON_NS
 
 		epc::Package* package;
 		std::string filePath;
-		DataObjectRepository::openingMode hdfPermissionAccess;
 	};
 }

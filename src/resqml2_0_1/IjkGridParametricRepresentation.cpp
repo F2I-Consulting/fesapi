@@ -1076,6 +1076,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlockOfPatch(const unsigned 
 		delete[] blockSizeInEachDimension;
 	}
 	else {
+		delete[] parameters;
 		throw logic_error("Non floating point coordinate line parameters are not implemented yet");
 	}
 
