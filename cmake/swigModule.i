@@ -239,8 +239,6 @@ namespace COMMON_NS
 		DataObjectRepository();
 		DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);
 		
-		DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);
-		
 		void clear();
 		
 		std::vector<RESQML2_0_1_NS::LocalDepth3dCrs*> getLocalDepth3dCrsSet() const;
