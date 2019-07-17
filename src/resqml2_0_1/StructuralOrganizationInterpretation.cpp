@@ -215,7 +215,7 @@ RESQML2_NS::AbstractFeatureInterpretation* StructuralOrganizationInterpretation:
 	}
 }
 		
-void StructuralOrganizationInterpretation::loadTargetRelationships() const
+void StructuralOrganizationInterpretation::loadTargetRelationships()
 {
 	AbstractOrganizationInterpretation::loadTargetRelationships();
 

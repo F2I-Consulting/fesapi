@@ -31,7 +31,7 @@ Wellbore* WellboreObject::getWellbore() const
 	return getRepository()->getDataObjectByUuid<Wellbore>(getWellboreDor()->Uuid);
 }
 
-void WellboreObject::loadTargetRelationships() const
+void WellboreObject::loadTargetRelationships()
 {
 	convertDorIntoRel<Wellbore>(getWellboreDor());
 }

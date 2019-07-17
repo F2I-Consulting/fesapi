@@ -461,10 +461,10 @@ namespace RESQML2_NS
 	class TimeSeries : public COMMON_NS::AbstractObject
 	{
 	public:
-		void pushBackTimestamp(const time_t & timestamp);
-		unsigned int getTimestampIndex(const time_t & timestamp) const;
+		void pushBackTimestamp(time_t timestamp);
+		unsigned int getTimestampIndex(time_t timestamp) const;
 		unsigned int getTimestampCount() const;
-		time_t getTimestamp(const unsigned int & index) const;
+		time_t getTimestamp(unsigned int index) const;
 	};
 	
 	class AbstractProperty: public COMMON_NS::AbstractObject

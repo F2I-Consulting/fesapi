@@ -40,19 +40,19 @@ StratigraphicColumn::StratigraphicColumn(COMMON_NS::DataObjectRepository* repo, 
 	repo->addOrReplaceDataObject(this);
 }
 
-void StratigraphicColumn::pushBackStratiColumnRank(StratigraphicColumnRankInterpretation const * stratiColumnRank)
+void StratigraphicColumn::pushBackStratiColumnRank(StratigraphicColumnRankInterpretation * stratiColumnRank)
 {
 	getRepository()->addRelationship(this, stratiColumnRank);
 
 	static_cast<_resqml2__StratigraphicColumn*>(gsoapProxy2_0_1)->Ranks.push_back(stratiColumnRank->newResqmlReference());
 }
 
-std::vector<class StratigraphicColumnRankInterpretation const *> StratigraphicColumn::getStratigraphicColumnRankInterpretationSet() const
+std::vector<class StratigraphicColumnRankInterpretation *> StratigraphicColumn::getStratigraphicColumnRankInterpretationSet() const
 {
 	return getRepository()->getSourceObjects<StratigraphicColumnRankInterpretation>(this);
 }
 
-void StratigraphicColumn::loadTargetRelationships() const
+void StratigraphicColumn::loadTargetRelationships()
 {
 	const std::vector<eml20__DataObjectReference *>& stratColRanks= static_cast<_resqml2__StratigraphicColumn*>(gsoapProxy2_0_1)->Ranks;
 	for (size_t i = 0; i < stratColRanks.size(); ++i) {

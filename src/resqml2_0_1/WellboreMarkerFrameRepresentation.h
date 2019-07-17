@@ -43,7 +43,7 @@ namespace RESQML2_0_1_NS
 		* @param title		A title for the instance to create.
 		* @param traj		The trajectory this WellboreFeature frame is based on.
 		*/
-		WellboreMarkerFrameRepresentation(class WellboreInterpretation const * interp, const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation const * traj);
+		WellboreMarkerFrameRepresentation(class WellboreInterpretation * interp, const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation * traj);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -61,7 +61,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get all the wellbore markers of this well marker frame representation.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<class WellboreMarker const *> getWellboreMarkerSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class WellboreMarker *> getWellboreMarkerSet() const;
 
 		DLL_IMPORT_OR_EXPORT void setStratigraphicOccurrenceInterpretation(class StratigraphicOccurrenceInterpretation * stratiOccurenceInterp);
 
@@ -78,7 +78,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	protected:
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 
 	private:
 		/**

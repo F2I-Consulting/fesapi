@@ -161,12 +161,12 @@ std::string AbstractRepresentation::getLocalCrsUuid() const
 	return dor == nullptr ? "" : dor->UUID;
 }
 
-std::vector<AbstractProperty const *> AbstractRepresentation::getPropertySet() const
+std::vector<AbstractProperty *> AbstractRepresentation::getPropertySet() const
 {
 	return getRepository()->getSourceObjects<RESQML2_NS::AbstractProperty>(this);
 }
 
-std::vector<AbstractValuesProperty const *> AbstractRepresentation::getValuesPropertySet() const
+std::vector<AbstractValuesProperty *> AbstractRepresentation::getValuesPropertySet() const
 {
 	return getRepository()->getSourceObjects<RESQML2_NS::AbstractValuesProperty>(this);
 }
@@ -176,9 +176,9 @@ unsigned int AbstractRepresentation::getValuesPropertyCount() const
 	return getValuesPropertySet().size();
 }
 
-AbstractValuesProperty const * AbstractRepresentation::getValuesProperty(unsigned int index) const
+AbstractValuesProperty * AbstractRepresentation::getValuesProperty(unsigned int index) const
 {
-	const std::vector<AbstractValuesProperty const *>& propSet = getValuesPropertySet();
+	const std::vector<AbstractValuesProperty *>& propSet = getValuesPropertySet();
 
 	if (propSet.size() > index) {
 		return propSet[index];
@@ -188,7 +188,7 @@ AbstractValuesProperty const * AbstractRepresentation::getValuesProperty(unsigne
 	}
 }
 
-void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation const * interp)
+void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation * interp)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("Cannot set a null interpretation to a representation");
@@ -235,7 +235,7 @@ std::string AbstractRepresentation::getInterpretationContentType() const
 	return dor == nullptr ? string() : dor->ContentType;
 }
 
-std::vector<SubRepresentation const *> AbstractRepresentation::getSubRepresentationSet() const
+std::vector<SubRepresentation *> AbstractRepresentation::getSubRepresentationSet() const
 {
 	return repository->getSourceObjects<SubRepresentation>(this);
 }
@@ -245,9 +245,9 @@ unsigned int AbstractRepresentation::getSubRepresentationCount() const
 	return getSubRepresentationSet().size();
 }
 
-SubRepresentation const * AbstractRepresentation::getSubRepresentation(unsigned int index) const
+SubRepresentation * AbstractRepresentation::getSubRepresentation(unsigned int index) const
 {
-	const std::vector<SubRepresentation const *>& subRepresentationSet = getSubRepresentationSet();
+	const std::vector<SubRepresentation *>& subRepresentationSet = getSubRepresentationSet();
 
 	if (index >= subRepresentationSet.size()) {
 		throw range_error("The subrepresentation at the specified index is out of range.");
@@ -256,11 +256,11 @@ SubRepresentation const * AbstractRepresentation::getSubRepresentation(unsigned 
 	return subRepresentationSet[index];
 }
 
-std::vector<SubRepresentation const *> AbstractRepresentation::getFaultSubRepresentationSet() const
+std::vector<SubRepresentation *> AbstractRepresentation::getFaultSubRepresentationSet() const
 {
-	std::vector<SubRepresentation const *> result;
+	std::vector<SubRepresentation *> result;
 
-	const std::vector<SubRepresentation const *>& subRepresentationSet = getSubRepresentationSet();
+	const std::vector<SubRepresentation *>& subRepresentationSet = getSubRepresentationSet();
 	for (size_t i = 0; i <subRepresentationSet.size(); ++i) {
 		if (subRepresentationSet[i]->getInterpretation() != nullptr && subRepresentationSet[i]->getInterpretation()->getXmlTag() == "FaultInterpretation") {
 			result.push_back(subRepresentationSet[i]);
@@ -275,9 +275,9 @@ unsigned int AbstractRepresentation::getFaultSubRepresentationCount() const
 	return getFaultSubRepresentationSet().size();
 }
 
-SubRepresentation const * AbstractRepresentation::getFaultSubRepresentation(unsigned int index) const
+SubRepresentation * AbstractRepresentation::getFaultSubRepresentation(unsigned int index) const
 {
-	const std::vector<RESQML2_NS::SubRepresentation const *>& tmp = getFaultSubRepresentationSet();
+	const std::vector<RESQML2_NS::SubRepresentation *>& tmp = getFaultSubRepresentationSet();
 
 	if (index >= tmp.size()) {
 		throw range_error("The fault subrepresentation at the specified index is out of range.");
@@ -366,7 +366,7 @@ void AbstractRepresentation::pushBackIntoRepresentationSet(RepresentationSetRepr
 	repSet->pushBack(this);
 }
 
-std::vector<RepresentationSetRepresentation const *> AbstractRepresentation::getRepresentationSetRespresentationSet() const
+std::vector<RepresentationSetRepresentation *> AbstractRepresentation::getRepresentationSetRespresentationSet() const
 {
 	return repository->getTargetObjects<RepresentationSetRepresentation>(this);
 }
@@ -376,9 +376,9 @@ ULONG64 AbstractRepresentation::getRepresentationSetRepresentationCount() const
 	return getRepresentationSetRespresentationSet().size();
 }
 
-RepresentationSetRepresentation const * AbstractRepresentation::getRepresentationSetRepresentation(const ULONG64  & index) const
+RepresentationSetRepresentation * AbstractRepresentation::getRepresentationSetRepresentation(const ULONG64  & index) const
 {
-	const std::vector<RESQML2_NS::RepresentationSetRepresentation const *>& representationSetRepresentationSet = getRepresentationSetRespresentationSet();
+	const std::vector<RESQML2_NS::RepresentationSetRepresentation *>& representationSetRepresentationSet = getRepresentationSetRespresentationSet();
 
 	if (index >= getRepresentationSetRepresentationCount()) {
 		throw range_error("The index of the representation set representation is out of range.");
@@ -387,7 +387,7 @@ RepresentationSetRepresentation const * AbstractRepresentation::getRepresentatio
 	return representationSetRepresentationSet[index];
 }
 
-void AbstractRepresentation::loadTargetRelationships() const
+void AbstractRepresentation::loadTargetRelationships()
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getInterpretationDor();
 	if (dor != nullptr) {

@@ -300,7 +300,7 @@ bool SealedVolumeFrameworkRepresentation::getSideFlagOfInternalShellFace(unsigne
 	return getRegionInternalShellFace(regionIndex, internalShellIndex, faceIndex)->SideIsPlus;
 }
 
-void SealedVolumeFrameworkRepresentation::loadTargetRelationships() const
+void SealedVolumeFrameworkRepresentation::loadTargetRelationships()
 {
 	RESQML2_NS::RepresentationSetRepresentation::loadTargetRelationships();
 

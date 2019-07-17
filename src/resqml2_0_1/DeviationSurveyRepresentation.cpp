@@ -35,7 +35,7 @@ using namespace COMMON_NS;
 
 const char* DeviationSurveyRepresentation::XML_TAG = "DeviationSurveyRepresentation";
 
-DeviationSurveyRepresentation::DeviationSurveyRepresentation(WellboreInterpretation const * interp, const string & guid, const std::string & title, bool isFinal, RESQML2_NS::MdDatum const * mdInfo)
+DeviationSurveyRepresentation::DeviationSurveyRepresentation(WellboreInterpretation * interp, const string & guid, const std::string & title, bool isFinal, RESQML2_NS::MdDatum * mdInfo)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREDeviationSurveyRepresentation(interp->getGsoapContext(), 1);	
 	_resqml2__DeviationSurveyRepresentation* rep = static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
@@ -111,7 +111,7 @@ void DeviationSurveyRepresentation::setGeometry(double * firstStationLocation, c
 	proxy->writeArrayNdOfDoubleValues(rep->uuid, "inclinations", inclinations, dim, 1);
 }
 
-void DeviationSurveyRepresentation::loadTargetRelationships() const
+void DeviationSurveyRepresentation::loadTargetRelationships()
 {
 	AbstractRepresentation::loadTargetRelationships();
 
@@ -176,7 +176,7 @@ void DeviationSurveyRepresentation::getAzimuths(double* values) const
 	}
 }
 
-void DeviationSurveyRepresentation::setMdDatum(RESQML2_NS::MdDatum const * mdDatum)
+void DeviationSurveyRepresentation::setMdDatum(RESQML2_NS::MdDatum * mdDatum)
 {
 	if (mdDatum == nullptr) {
 		throw invalid_argument("The md Datum is missing.");
@@ -242,14 +242,14 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* DeviationSurveyRepresentation::ge
 	return nullptr;
 }
 
-vector<WellboreFrameRepresentation const *> DeviationSurveyRepresentation::getWellboreFrameRepresentationSet() const
+vector<WellboreFrameRepresentation *> DeviationSurveyRepresentation::getWellboreFrameRepresentationSet() const
 {
-	vector<WellboreFrameRepresentation const *> result;
+	vector<WellboreFrameRepresentation *> result;
 
-	const vector<WellboreTrajectoryRepresentation const *>& trajectories = getWellboreTrajectoryRepresentationSet();
+	const vector<WellboreTrajectoryRepresentation *>& trajectories = getWellboreTrajectoryRepresentationSet();
 	for (size_t index = 0; index < trajectories.size(); ++index) {
 		if (trajectories[index]->getMdDatumUuid() == getMdDatumUuid() && trajectories[index]->getMdUom() == getMdUom()) {
-			vector<WellboreFrameRepresentation const *> tmp = trajectories[index]->getWellboreFrameRepresentationSet();
+			vector<WellboreFrameRepresentation *> tmp = trajectories[index]->getWellboreFrameRepresentationSet();
 			result.insert(result.end(), tmp.begin(), tmp.end());
 		}
 	}
@@ -259,7 +259,7 @@ vector<WellboreFrameRepresentation const *> DeviationSurveyRepresentation::getWe
 
 unsigned int DeviationSurveyRepresentation::getWellboreFrameRepresentationCount() const
 {
-	const vector<WellboreTrajectoryRepresentation const *>& trajectories = getWellboreTrajectoryRepresentationSet();
+	const vector<WellboreTrajectoryRepresentation *>& trajectories = getWellboreTrajectoryRepresentationSet();
 	unsigned int result = 0;
 	for (size_t index = 0; index < trajectories.size(); ++index) {
 		if (trajectories[index]->getMdDatumUuid() == getMdDatumUuid() && trajectories[index]->getMdUom() == getMdUom()) {
@@ -270,11 +270,11 @@ unsigned int DeviationSurveyRepresentation::getWellboreFrameRepresentationCount(
 	return result;
 }
 
-WellboreFrameRepresentation const * DeviationSurveyRepresentation::getWellboreFrameRepresentation(unsigned int index) const
+WellboreFrameRepresentation * DeviationSurveyRepresentation::getWellboreFrameRepresentation(unsigned int index) const
 {
-	const vector<WellboreTrajectoryRepresentation const *>& trajectories = getWellboreTrajectoryRepresentationSet();
+	const vector<WellboreTrajectoryRepresentation *>& trajectories = getWellboreTrajectoryRepresentationSet();
 	for (size_t trajIndex = 0; trajIndex < trajectories.size(); ++trajIndex) {
-		WellboreTrajectoryRepresentation const * traj = trajectories[trajIndex];
+		WellboreTrajectoryRepresentation * traj = trajectories[trajIndex];
 		if (traj->getMdDatumUuid() == getMdDatumUuid() && traj->getMdUom() == getMdUom()) {
 			unsigned int count = traj->getWellboreFrameRepresentationCount();
 			if (index < count) {
@@ -289,7 +289,7 @@ WellboreFrameRepresentation const * DeviationSurveyRepresentation::getWellboreFr
 	throw out_of_range("The index is out of range");
 }
 
-std::vector<WellboreTrajectoryRepresentation const *> DeviationSurveyRepresentation::getWellboreTrajectoryRepresentationSet() const
+std::vector<WellboreTrajectoryRepresentation *> DeviationSurveyRepresentation::getWellboreTrajectoryRepresentationSet() const
 {
 	return getRepository()->getSourceObjects<WellboreTrajectoryRepresentation>(this);
 }
@@ -305,9 +305,9 @@ unsigned int DeviationSurveyRepresentation::getWellboreTrajectoryRepresentationC
 	return static_cast<unsigned int>(result);
 }
 
-WellboreTrajectoryRepresentation const * DeviationSurveyRepresentation::getWellboreTrajectoryRepresentation(const unsigned int & index) const
+WellboreTrajectoryRepresentation * DeviationSurveyRepresentation::getWellboreTrajectoryRepresentation(unsigned int index) const
 {
-	const std::vector<WellboreTrajectoryRepresentation const *>& wbTrajectoryRepSet = getWellboreTrajectoryRepresentationSet();
+	const std::vector<WellboreTrajectoryRepresentation *>& wbTrajectoryRepSet = getWellboreTrajectoryRepresentationSet();
 
 	if (index >= wbTrajectoryRepSet.size())
 	{

@@ -159,7 +159,7 @@ void StratigraphicColumnRankInterpretation::pushBackStratigraphicBinaryContact(S
 	}
 }
 		
-void StratigraphicColumnRankInterpretation::loadTargetRelationships() const
+void StratigraphicColumnRankInterpretation::loadTargetRelationships()
 {
 	AbstractStratigraphicOrganizationInterpretation::loadTargetRelationships();
 
@@ -180,22 +180,22 @@ void StratigraphicColumnRankInterpretation::loadTargetRelationships() const
 	}
 }
 
-std::vector<StratigraphicUnitInterpretation const *> StratigraphicColumnRankInterpretation::getStratigraphicUnitInterpretationSet() const
+std::vector<StratigraphicUnitInterpretation *> StratigraphicColumnRankInterpretation::getStratigraphicUnitInterpretationSet() const
 {
 	return getRepository()->getTargetObjects<StratigraphicUnitInterpretation>(this);
 }
 
-std::vector<StratigraphicOccurrenceInterpretation const *> StratigraphicColumnRankInterpretation::getStratigraphicOccurrenceInterpretationSet() const
+std::vector<StratigraphicOccurrenceInterpretation *> StratigraphicColumnRankInterpretation::getStratigraphicOccurrenceInterpretationSet() const
 {
 	return getRepository()->getSourceObjects<StratigraphicOccurrenceInterpretation>(this);
 }
 
-std::vector<HorizonInterpretation const *> StratigraphicColumnRankInterpretation::getHorizonInterpretationSet() const
+std::vector<HorizonInterpretation *> StratigraphicColumnRankInterpretation::getHorizonInterpretationSet() const
 {
 	return getRepository()->getTargetObjects<HorizonInterpretation>(this);
 }
 
-std::vector<StratigraphicColumn const *> StratigraphicColumnRankInterpretation::getStratigraphicColumnSet() const
+std::vector<StratigraphicColumn *> StratigraphicColumnRankInterpretation::getStratigraphicColumnSet() const
 {
 	return getRepository()->getSourceObjects<StratigraphicColumn>(this);
 }

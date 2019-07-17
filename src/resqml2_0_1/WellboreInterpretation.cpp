@@ -46,7 +46,7 @@ bool WellboreInterpretation::isDrilled() const
 	return static_cast<_resqml2__WellboreInterpretation*>(gsoapProxy2_0_1)->IsDrilled;
 }
 
-std::vector<WellboreTrajectoryRepresentation const*> WellboreInterpretation::getWellboreTrajectoryRepresentationSet() const
+std::vector<WellboreTrajectoryRepresentation*> WellboreInterpretation::getWellboreTrajectoryRepresentationSet() const
 {
 	return getRepository()->getSourceObjects<WellboreTrajectoryRepresentation>(this);
 }

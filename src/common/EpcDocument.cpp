@@ -98,14 +98,14 @@ namespace {
 	std::vector<epc::Relationship> getAllEpcRelationships(const DataObjectRepository & repo, COMMON_NS::AbstractObject const * dataObj) {
 		std::vector<epc::Relationship> result;
 
-		const std::vector<COMMON_NS::AbstractObject const *>& srcObj = repo.getSourceObjects(dataObj);
+		const std::vector<COMMON_NS::AbstractObject *>& srcObj = repo.getSourceObjects(dataObj);
 		for (size_t index = 0; index < srcObj.size(); ++index) {
 			epc::Relationship relRep(srcObj[index]->getPartNameInEpcDocument(), "", srcObj[index]->getUuid());
 			relRep.setSourceObjectType();
 			result.push_back(relRep);
 		}
 
-		const std::vector<COMMON_NS::AbstractObject const *>& targetObj = repo.getTargetObjects(dataObj);
+		const std::vector<COMMON_NS::AbstractObject *>& targetObj = repo.getTargetObjects(dataObj);
 		for (size_t index = 0; index < targetObj.size(); ++index) {
 			epc::Relationship relRep(targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
 			relRep.setDestinationObjectType();
@@ -173,8 +173,8 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 				result += "The content type " + contentType + " should belong to eml and not to resqml since obj_EpcExternalPartReference is part of COMMON and not part of RESQML.\n";
 				contentType = "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference";
 			}
-			COMMON_NS::AbstractObject* wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), it->second.getContentTypeString());
-			if (it->second.getContentTypeString() == "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference") {
+			COMMON_NS::AbstractObject* wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
+			if (contentType == "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference") {
 				static_cast<RESQML2_0_1_NS::HdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
 				static_cast<RESQML2_0_1_NS::HdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
 

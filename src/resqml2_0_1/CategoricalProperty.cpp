@@ -78,7 +78,7 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	setLocalPropertyKind(localPropKind);
 }
 
-void CategoricalProperty::loadTargetRelationships() const
+void CategoricalProperty::loadTargetRelationships()
 {
 	AbstractValuesProperty::loadTargetRelationships();
 

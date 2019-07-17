@@ -157,4 +157,4 @@ unordered_map<long, string> StringTableLookup::getMap() const
 	return result;
 }
 
-void StringTableLookup::loadTargetRelationships() const {}
+void StringTableLookup::loadTargetRelationships() {}

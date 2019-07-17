@@ -28,7 +28,7 @@ under the License.
 using namespace std;
 using namespace RESQML2_NS;
 
-void AbstractLocal3dCrs::loadTargetRelationships() const {
+void AbstractLocal3dCrs::loadTargetRelationships() {
 }
 
 void AbstractLocal3dCrs::convertXyzPointsToGlobalCrs(double * xyzPoints, ULONG64 xyzPointCount, bool withoutTranslation) const

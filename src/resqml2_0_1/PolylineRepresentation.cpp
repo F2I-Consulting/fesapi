@@ -152,7 +152,7 @@ bool PolylineRepresentation::isASeismicLine() const
 	// A Seismic line is defined by an PolylineRepresentation that has a feature of type SeismicLineFeature and that
 	// has at least one continuous property (amplitude).
 	bool atLeastOneContProp = false;
-	vector<RESQML2_NS::AbstractValuesProperty const *> allValuesProperty = getValuesPropertySet();
+	vector<RESQML2_NS::AbstractValuesProperty *> allValuesProperty = getValuesPropertySet();
     for (unsigned int propIndex = 0; propIndex < allValuesProperty.size(); ++propIndex)
     {
         if (allValuesProperty[propIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREContinuousProperty)
@@ -173,7 +173,7 @@ bool PolylineRepresentation::isAFaciesLine() const
 	// A Facies line is defined by an PolylineRepresentation that has a feature of type SeismicLineFeature and that
 	// has at least one categorical property (facies).
 	bool atLeastOneCateProp = false;
-	vector<RESQML2_NS::AbstractValuesProperty const *> allValuesProperty = getValuesPropertySet();
+	vector<RESQML2_NS::AbstractValuesProperty *> allValuesProperty = getValuesPropertySet();
     for (unsigned int propIndex = 0; propIndex < allValuesProperty.size(); ++propIndex)
     {
         if (allValuesProperty[propIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECategoricalProperty)

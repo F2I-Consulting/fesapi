@@ -141,7 +141,7 @@ void PropertyKind::setParentPropertyKind(PropertyKind* parentPropertyKind)
 	setXmlParentPropertyKind(parentPropertyKind);
 }
 
-void PropertyKind::loadTargetRelationships() const
+void PropertyKind::loadTargetRelationships()
 {
 	if (isParentAnEnergisticsPropertyKind()) {
 		return;

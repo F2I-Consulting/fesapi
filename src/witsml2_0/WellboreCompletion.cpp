@@ -537,7 +537,7 @@ void WellboreCompletion::setPerforationHistoryBaseMd(unsigned int historyIndex,
 	perforationStatusHistory->PerforationMdInterval->MdBase->__item = BaseMd;
 }
 
-void WellboreCompletion::loadTargetRelationships() const
+void WellboreCompletion::loadTargetRelationships()
 {
 	WellboreObject::loadTargetRelationships();
 

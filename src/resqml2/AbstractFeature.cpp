@@ -41,9 +41,9 @@ namespace {
 	};
 }
 
-std::vector<AbstractFeatureInterpretation const *> AbstractFeature::getInterpretationSet() const
+std::vector<AbstractFeatureInterpretation *> AbstractFeature::getInterpretationSet() const
 {
-	std::vector<AbstractFeatureInterpretation const *> result = getRepository()->getSourceObjects<AbstractFeatureInterpretation>(this);
+	std::vector<AbstractFeatureInterpretation *> result = getRepository()->getSourceObjects<AbstractFeatureInterpretation>(this);
 	result.erase(std::remove_if(result.begin(), result.end(), DifferentFeature(this)), result.end());
 
 	return result;
@@ -51,7 +51,7 @@ std::vector<AbstractFeatureInterpretation const *> AbstractFeature::getInterpret
 
 unsigned int AbstractFeature::getInterpretationCount() const
 {
-	const std::vector<AbstractFeatureInterpretation const*>& interpretationSet = getInterpretationSet();
+	const std::vector<AbstractFeatureInterpretation*>& interpretationSet = getInterpretationSet();
 
 	if (interpretationSet.size() > (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("There are too many interpretations for this feature.");
@@ -60,9 +60,9 @@ unsigned int AbstractFeature::getInterpretationCount() const
 	return static_cast<unsigned int>(interpretationSet.size());
 }
 
-AbstractFeatureInterpretation const *	AbstractFeature::getInterpretation(unsigned int index) const
+AbstractFeatureInterpretation *	AbstractFeature::getInterpretation(unsigned int index) const
 {
-	const std::vector<AbstractFeatureInterpretation const*>& interpretationSet = getInterpretationSet();
+	const std::vector<AbstractFeatureInterpretation*>& interpretationSet = getInterpretationSet();
 
 	if (interpretationSet.size() > index) {
 		return interpretationSet[index];
@@ -71,5 +71,5 @@ AbstractFeatureInterpretation const *	AbstractFeature::getInterpretation(unsigne
 	throw range_error("The interpretation index is out of the range of the interpretation set of the feature.");
 }
 
-void AbstractFeature::loadTargetRelationships() const
+void AbstractFeature::loadTargetRelationships()
 {}

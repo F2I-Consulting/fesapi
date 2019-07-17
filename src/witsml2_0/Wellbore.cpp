@@ -105,22 +105,22 @@ void Wellbore::setShape(witsml2__WellboreShape shape)
 	*wellbore->Shape = shape;
 }
 
-void Wellbore::loadTargetRelationships() const
+void Wellbore::loadTargetRelationships()
 {
 	convertDorIntoRel<Well>(getWellDor());
 }
 
-std::vector<RESQML2_0_1_NS::WellboreFeature const *> Wellbore::getResqmlWellboreFeature() const
+std::vector<RESQML2_0_1_NS::WellboreFeature *> Wellbore::getResqmlWellboreFeature() const
 {
 	return getRepository()->getSourceObjects<RESQML2_0_1_NS::WellboreFeature>(this);
 }
 
-std::vector<WellboreCompletion const *> Wellbore::getWellboreCompletions() const
+std::vector<WellboreCompletion *> Wellbore::getWellboreCompletions() const
 {
 	return getRepository()->getSourceObjects<WellboreCompletion>(this);
 }
 
-std::vector<Trajectory const *> Wellbore::getTrajectories() const
+std::vector<Trajectory *> Wellbore::getTrajectories() const
 {
 	return getRepository()->getSourceObjects<Trajectory>(this);
 }

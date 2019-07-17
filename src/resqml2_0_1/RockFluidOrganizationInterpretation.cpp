@@ -53,7 +53,7 @@ RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(Organiz
 	setInterpretedFeature(orgFeat);
 }
 
-std::vector<RESQML2_NS::AbstractGridRepresentation const *> RockFluidOrganizationInterpretation::getGridRepresentationSet() const
+std::vector<RESQML2_NS::AbstractGridRepresentation *> RockFluidOrganizationInterpretation::getGridRepresentationSet() const
 {
 	return getRepository()->getSourceObjects<RESQML2_NS::AbstractGridRepresentation>(this);
 }
@@ -68,9 +68,9 @@ unsigned int RockFluidOrganizationInterpretation::getGridRepresentationCount() c
 	return static_cast<unsigned int>(count);
 }
 
-RESQML2_NS::AbstractGridRepresentation const * RockFluidOrganizationInterpretation::getGridRepresentation(unsigned int index) const
+RESQML2_NS::AbstractGridRepresentation * RockFluidOrganizationInterpretation::getGridRepresentation(unsigned int index) const
 {
-	const std::vector<RESQML2_NS::AbstractGridRepresentation const *>& gridRepresentationSet = getGridRepresentationSet();
+	const std::vector<RESQML2_NS::AbstractGridRepresentation *>& gridRepresentationSet = getGridRepresentationSet();
 
 	if (index >= gridRepresentationSet.size()) {
 		throw range_error("The index of the grid representation to get is out of range.");
@@ -81,7 +81,7 @@ RESQML2_NS::AbstractGridRepresentation const * RockFluidOrganizationInterpretati
 
 bool RockFluidOrganizationInterpretation::isAssociatedToGridRepresentation(RESQML2_NS::AbstractGridRepresentation* gridRep) const
 {
-	const std::vector<RESQML2_NS::AbstractGridRepresentation const *>& gridRepresentationSet = getGridRepresentationSet();
+	const std::vector<RESQML2_NS::AbstractGridRepresentation *>& gridRepresentationSet = getGridRepresentationSet();
 	return find(gridRepresentationSet.begin(), gridRepresentationSet.end(), gridRep) != gridRepresentationSet.end();
 }
 
@@ -109,7 +109,7 @@ RockFluidUnitInterpretation* RockFluidOrganizationInterpretation::getRockFluidUn
 	return repository->getDataObjectByUuid<RockFluidUnitInterpretation>(static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit->UUID);
 }
 
-void RockFluidOrganizationInterpretation::loadTargetRelationships() const
+void RockFluidOrganizationInterpretation::loadTargetRelationships()
 {
 	AbstractOrganizationInterpretation::loadTargetRelationships();
 

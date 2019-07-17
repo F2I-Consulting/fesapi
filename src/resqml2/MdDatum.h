@@ -103,6 +103,6 @@ namespace RESQML2_NS
 	protected:
 		virtual void setXmlLocalCrs(RESQML2_NS::AbstractLocal3dCrs * localCrs) = 0;
 
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 	};
 }

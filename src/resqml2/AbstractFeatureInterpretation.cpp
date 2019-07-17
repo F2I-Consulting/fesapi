@@ -50,7 +50,7 @@ void AbstractFeatureInterpretation::setInterpretedFeature(AbstractFeature * feat
 	}
 }
 
-void AbstractFeatureInterpretation::loadTargetRelationships() const
+void AbstractFeatureInterpretation::loadTargetRelationships()
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getInterpretedFeatureDor();
 	AbstractFeature* interpretedFeature = getRepository()->getDataObjectByUuid<AbstractFeature>(dor->UUID);
@@ -84,7 +84,7 @@ AbstractFeature* AbstractFeatureInterpretation::getInterpretedFeature() const
 	return static_cast<AbstractFeature*>(repository->getDataObjectByUuid(getInterpretedFeatureUuid()));
 }
 
-const gsoap_resqml2_0_1::resqml2__Domain & AbstractFeatureInterpretation::initDomain(const gsoap_resqml2_0_1::resqml2__Domain & defaultDomain) const
+const gsoap_resqml2_0_1::resqml2__Domain & AbstractFeatureInterpretation::initDomain(gsoap_resqml2_0_1::resqml2__Domain defaultDomain) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		const unsigned int repCount = getRepresentationCount();
@@ -150,9 +150,9 @@ namespace {
 	};
 }
 
-vector<AbstractRepresentation const *> AbstractFeatureInterpretation::getRepresentationSet() const
+vector<AbstractRepresentation *> AbstractFeatureInterpretation::getRepresentationSet() const
 {
-	std::vector<AbstractRepresentation const *> result = repository->getSourceObjects<AbstractRepresentation>(this);
+	std::vector<AbstractRepresentation *> result = repository->getSourceObjects<AbstractRepresentation>(this);
 	result.erase(std::remove_if(result.begin(), result.end(), DifferentInterp(this)), result.end());
 
 	return result;
@@ -169,9 +169,9 @@ unsigned int AbstractFeatureInterpretation::getRepresentationCount() const
 	return static_cast<unsigned int>(result);
 }
 
-AbstractRepresentation const * AbstractFeatureInterpretation::getRepresentation(unsigned int index) const
+AbstractRepresentation * AbstractFeatureInterpretation::getRepresentation(unsigned int index) const
 {
-	const std::vector<AbstractRepresentation const*>& representationSet = getRepresentationSet();
+	const std::vector<AbstractRepresentation*>& representationSet = getRepresentationSet();
 
 	if (representationSet.size() > index)
 		return representationSet[index];
@@ -179,7 +179,7 @@ AbstractRepresentation const * AbstractFeatureInterpretation::getRepresentation(
 	throw range_error("The representation index you are requesting is out of range.");
 }
 
-std::vector<GridConnectionSetRepresentation const *> AbstractFeatureInterpretation::getGridConnectionSetRepresentationSet() const
+std::vector<GridConnectionSetRepresentation *> AbstractFeatureInterpretation::getGridConnectionSetRepresentationSet() const
 {
 	return getRepository()->getSourceObjects<GridConnectionSetRepresentation>(this);
 }

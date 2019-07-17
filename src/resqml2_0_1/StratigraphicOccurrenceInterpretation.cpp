@@ -66,12 +66,12 @@ std::string StratigraphicOccurrenceInterpretation::getStratigraphicColumnRankInt
 	return static_cast<_resqml2__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1)->IsOccurrenceOf->UUID;
 }
 
-std::vector<class WellboreMarkerFrameRepresentation const *> StratigraphicOccurrenceInterpretation::getWellboreMarkerFrameRepresentationSet() const
+std::vector<class WellboreMarkerFrameRepresentation *> StratigraphicOccurrenceInterpretation::getWellboreMarkerFrameRepresentationSet() const
 {
 	return getRepository()->getSourceObjects<WellboreMarkerFrameRepresentation>(this);
 }
 	
-void StratigraphicOccurrenceInterpretation::loadTargetRelationships() const
+void StratigraphicOccurrenceInterpretation::loadTargetRelationships()
 {
 	AbstractStratigraphicOrganizationInterpretation::loadTargetRelationships();
 

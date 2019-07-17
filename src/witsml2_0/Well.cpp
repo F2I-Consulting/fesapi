@@ -262,20 +262,20 @@ unsigned int Well::getDatumCount() const
 	return static_cast<witsml2__Well*>(gsoapProxy2_1)->WellDatum.size();
 }
 
-void Well::loadTargetRelationships() const
+void Well::loadTargetRelationships()
 {}
 
-std::vector<RESQML2_0_1_NS::WellboreFeature const *> Well::getResqmlWellboreFeatures() const
+std::vector<RESQML2_0_1_NS::WellboreFeature *> Well::getResqmlWellboreFeatures() const
 {
 	return getRepository()->getSourceObjects<RESQML2_0_1_NS::WellboreFeature>(this);
 }
 
-std::vector<Wellbore const *> Well::getWellbores() const
+std::vector<Wellbore *> Well::getWellbores() const
 {
 	return getRepository()->getSourceObjects<Wellbore>(this);
 }
 
-std::vector<WellCompletion const *> Well::getWellcompletions() const
+std::vector<WellCompletion *> Well::getWellcompletions() const
 {
 	return getRepository()->getSourceObjects<WellCompletion>(this);
 }

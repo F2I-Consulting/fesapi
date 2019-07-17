@@ -391,7 +391,7 @@ void UnstructuredGridRepresentation::getCellFaceIsRightHanded(unsigned char* cel
 void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, ULONG64 pointCount, COMMON_NS::AbstractHdfProxy* proxy,
 	const std::string& faceIndicesPerCell, const std::string&faceIndicesCumulativeCountPerCell,
 	ULONG64 faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,
-	gsoap_resqml2_0_1::resqml2__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
+	gsoap_resqml2_0_1::resqml2__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (cellFaceIsRightHanded.empty())
 		throw invalid_argument("The cellFaceIsRightHanded dataset path information cannot be empty.");
@@ -479,7 +479,7 @@ void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std:
 void UnstructuredGridRepresentation::setGeometry(unsigned char * cellFaceIsRightHanded, double * points, ULONG64 pointCount, COMMON_NS::AbstractHdfProxy * proxy,
 	ULONG64 * faceIndicesPerCell, ULONG64 * faceIndicesCumulativeCountPerCell,
 	ULONG64 faceCount, ULONG64 * nodeIndicesPerFace, ULONG64 * nodeIndicesCumulativeCountPerFace,
-	gsoap_resqml2_0_1::resqml2__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
+	gsoap_resqml2_0_1::resqml2__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (cellFaceIsRightHanded == nullptr)
 		throw invalid_argument("The cellFaceIsRightHanded information cannot be null.");
@@ -520,7 +520,7 @@ void UnstructuredGridRepresentation::setGeometry(unsigned char * cellFaceIsRight
 }
 
 void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
-	ULONG64 pointCount, ULONG64 faceCount, RESQML2_NS::AbstractLocal3dCrs const * localCrs, COMMON_NS::AbstractHdfProxy* proxy,
+	ULONG64 pointCount, ULONG64 faceCount, RESQML2_NS::AbstractLocal3dCrs * localCrs, COMMON_NS::AbstractHdfProxy* proxy,
 	const std::string& faceIndicesPerCell, ULONG64 faceCountPerCell,
 	const std::string& nodeIndicesPerFace, ULONG64 nodeCountPerFace)
 {
@@ -624,7 +624,7 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDa
 }
 
 void UnstructuredGridRepresentation::setConstantCellShapeGeometry(unsigned char * cellFaceIsRightHanded, double * points,
-	ULONG64 pointCount, ULONG64 faceCount, RESQML2_NS::AbstractLocal3dCrs const * localCrs, COMMON_NS::AbstractHdfProxy* proxy,
+	ULONG64 pointCount, ULONG64 faceCount, RESQML2_NS::AbstractLocal3dCrs * localCrs, COMMON_NS::AbstractHdfProxy* proxy,
 	ULONG64 * faceIndicesPerCell, ULONG64 faceCountPerCell,
 	ULONG64 * nodeIndicesPerFace, ULONG64 nodeCountPerFace)
 {
@@ -675,7 +675,7 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometry(unsigned char 
 
 void UnstructuredGridRepresentation::setTetrahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
 	ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
-	const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
+	const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	setConstantCellShapeGeometryUsingExistingDatasets(cellFaceIsRightHanded, points,
 		pointCount, faceCount, localCrs, proxy,
@@ -684,7 +684,7 @@ void UnstructuredGridRepresentation::setTetrahedraOnlyGeometryUsingExistingDatas
 }
 
 void UnstructuredGridRepresentation::setTetrahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points, ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy * proxy,
-	ULONG64 * faceIndicesPerCell, ULONG64 * nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
+	ULONG64 * faceIndicesPerCell, ULONG64 * nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	setConstantCellShapeGeometry(cellFaceIsRightHanded, points,
 		pointCount, faceCount, localCrs, proxy,
@@ -694,7 +694,7 @@ void UnstructuredGridRepresentation::setTetrahedraOnlyGeometry(unsigned char * c
 
 void UnstructuredGridRepresentation::setHexahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
 	ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
-	const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
+	const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	setConstantCellShapeGeometryUsingExistingDatasets(cellFaceIsRightHanded, points,
 		pointCount, faceCount, localCrs, proxy,
@@ -703,7 +703,7 @@ void UnstructuredGridRepresentation::setHexahedraOnlyGeometryUsingExistingDatase
 }
 
 void UnstructuredGridRepresentation::setHexahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points, ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy * proxy,
-	ULONG64 * faceIndicesPerCell, ULONG64 * nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
+	ULONG64 * faceIndicesPerCell, ULONG64 * nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	setConstantCellShapeGeometry(cellFaceIsRightHanded, points,
 		pointCount, faceCount, localCrs, proxy,

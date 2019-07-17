@@ -35,7 +35,7 @@ std::string RepresentationSetRepresentation::getXmlTag() const
 	return XML_TAG;
 }
 
-void RepresentationSetRepresentation::loadTargetRelationships() const
+void RepresentationSetRepresentation::loadTargetRelationships()
 {
 	AbstractRepresentation::loadTargetRelationships();
 

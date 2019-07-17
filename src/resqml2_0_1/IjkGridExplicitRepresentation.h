@@ -107,7 +107,7 @@ namespace RESQML2_0_1_NS
 			double * points, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned long splitCoordinateLineCount = 0, unsigned int * pillarOfCoordinateLine = nullptr,
 			unsigned int * splitCoordinateLineColumnCumulativeCount = nullptr, unsigned int * splitCoordinateLineColumns = nullptr,
-			char * definedPillars = nullptr, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			char * definedPillars = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
 		* Same as setGeometryAsCoordinateLineNodes where the hdf datasets are already written in the the file.
@@ -117,7 +117,7 @@ namespace RESQML2_0_1_NS
 			const std::string & points, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned long splitCoordinateLineCount = 0, const std::string & pillarOfCoordinateLine = "",
 			const std::string & splitCoordinateLineColumnCumulativeCount = "", const std::string & splitCoordinateLineColumns = "",
-			const std::string & definedPillars = "", RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			const std::string & definedPillars = "", RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
 		* Check wether the node geometry dataset is compressed or not.

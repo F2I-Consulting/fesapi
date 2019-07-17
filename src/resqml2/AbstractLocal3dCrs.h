@@ -156,7 +156,7 @@ namespace RESQML2_NS
 
 	protected:
 		
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 	};
 }
 
