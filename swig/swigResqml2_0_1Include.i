@@ -378,11 +378,6 @@ namespace gsoap_resqml2_0_1
 		resqml2__ThrowKind__scissor = 4,
 		resqml2__ThrowKind__variable = 5
 	};
-	enum resqml2__PillarShape {
-		resqml2__PillarShape__vertical = 0,
-		resqml2__PillarShape__straight = 1,
-		resqml2__PillarShape__curved = 2
-	};
 	enum resqml2__KDirection {
 		resqml2__KDirection__down = 0,
 		resqml2__KDirection__up = 1,

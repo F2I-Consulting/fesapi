@@ -284,6 +284,7 @@ namespace COMMON_NS
 		enum openingMode { READ_ONLY = 0, READ_WRITE = 1, OVERWRITE = 2 };
 		
 		DataObjectRepository();
+		DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);
 		
 		DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);
 		
