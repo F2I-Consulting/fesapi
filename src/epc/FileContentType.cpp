@@ -52,8 +52,7 @@ std::string FileContentType::toString() const
 	oss << header << endl;
 	
 	// CONTENT
-	for(ContentTypeMap::const_iterator i=contentTypeMap.begin(); i!=contentTypeMap.end(); i++)
-	{
+	for(ContentTypeMap::const_iterator i=contentTypeMap.begin(); i!=contentTypeMap.end(); ++i) {
 		oss << "\t" << i->second.toString() << endl;
 	}
 

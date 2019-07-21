@@ -119,7 +119,7 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT virtual bool isParentPartial() const = 0;
 
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 
 	protected:
 		virtual void setXmlParentPropertyKind(PropertyKind* parentPropertyKind) = 0;

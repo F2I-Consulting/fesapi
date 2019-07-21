@@ -120,7 +120,7 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT std::string getResqmlVersion() const;
 
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 
 	private:
 		std::vector<gsoap_resqml2_0_1::resqml2__AbstractActivityParameter*> getParameterFromTitle(const std::string & paramTitle) const;

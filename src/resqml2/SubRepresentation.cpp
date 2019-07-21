@@ -33,7 +33,7 @@ using namespace RESQML2_NS;
 
 const char* SubRepresentation::XML_TAG = "SubRepresentation";
 
-void SubRepresentation::loadTargetRelationships() const
+void SubRepresentation::loadTargetRelationships()
 {
 	AbstractRepresentation::loadTargetRelationships();
 

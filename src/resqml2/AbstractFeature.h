@@ -53,7 +53,7 @@ namespace RESQML2_NS
 		/**
 		* Get all the interpretations of this feature
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<AbstractFeatureInterpretation const *> getInterpretationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<AbstractFeatureInterpretation *> getInterpretationSet() const;
 
 		/**
 		 * Get the interpretation count of this feature.
@@ -63,7 +63,7 @@ namespace RESQML2_NS
 		/**
 		 * Get a particular interpretation of this feature according to its position in the interpretation ordering.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation const*	getInterpretation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation *	getInterpretation(unsigned int index) const;
 
 		virtual void loadTargetRelationships() const;
 	};

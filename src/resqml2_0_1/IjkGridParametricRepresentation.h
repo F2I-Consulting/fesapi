@@ -232,7 +232,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void setGeometryAsParametricNonSplittedPillarNodes(
 			gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind,
-			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
 		* Same as setGeometryAsParametricNonSplittedPillarNodes where the hdf datasets are already written in the the file.
@@ -241,7 +241,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void setGeometryAsParametricNonSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars,
-			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
 		* Set the geometry of the IJK grid as parametric pillar nodes where at least one pillar is supposed to be splitted
@@ -263,7 +263,7 @@ namespace RESQML2_0_1_NS
 			gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
 			unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
-			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
 		* Same as setGeometryAsParametricSplittedPillarNodes where the hdf datasets are already written in the the file.
@@ -273,7 +273,7 @@ namespace RESQML2_0_1_NS
 			gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, COMMON_NS::AbstractHdfProxy* proxy,
 			unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
-			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
 		* Set the geometry of the IJK grid as parametric pillar nodes where at least one pillar is supposed to be splitted and where all pillars are of the same kind.
@@ -293,7 +293,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void setGeometryAsParametricSplittedPillarNodes(bool isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
 			unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
-			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
 		* Same as setGeometryAsParametricSplittedPillarNodes where the hdf datasets are already written in the the file.
@@ -302,7 +302,7 @@ namespace RESQML2_0_1_NS
 			gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
 			unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
-			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
 		* Check wether the node geometry dataset is compressed or not.

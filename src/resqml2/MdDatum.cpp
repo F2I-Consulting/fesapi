@@ -29,7 +29,7 @@ using namespace gsoap_resqml2_0_1;
 
 const char* MdDatum::XML_TAG = "MdDatum";
 
-void MdDatum::loadTargetRelationships() const
+void MdDatum::loadTargetRelationships()
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getLocalCrsDor();
 	if (dor != nullptr) {

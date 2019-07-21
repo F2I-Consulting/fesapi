@@ -175,7 +175,7 @@ namespace COMMON_NS
 		std::string getExtraMetadataStringValueAtIndex(unsigned int index) const;
 
 		unsigned int getActivityCount() const;
-		RESQML2_NS::Activity const * getActivity (unsigned int index) const;
+		RESQML2_NS::Activity * getActivity (unsigned int index) const;
 	};
 	
 	/* HDF */
@@ -221,7 +221,7 @@ namespace RESQML2_NS
 }
 
 namespace COMMON_NS
-{
+{	
 	class DataObjectRepository
 	{
 	public:
@@ -229,6 +229,7 @@ namespace COMMON_NS
 		enum openingMode { READ_ONLY = 0, READ_WRITE = 1, OVERWRITE = 2 };
 		
 		DataObjectRepository();
+		DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);
 		
 		void clear();
 		
@@ -245,15 +246,15 @@ namespace COMMON_NS
 
 		std::vector<RESQML2_0_1_NS::TectonicBoundaryFeature*> getFractureSet() const;
 
-		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation const *> getFaultPolylineSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation *> getFaultPolylineSetRepSet() const;
 
-		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation const *> getFracturePolylineSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation *> getFracturePolylineSetRepSet() const;
 
-		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation const *> getFrontierPolylineSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation *> getFrontierPolylineSetRepSet() const;
 
-		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation const *> getFaultTriangulatedSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation *> getFaultTriangulatedSetRepSet() const;
 
-		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation const *> getFractureTriangulatedSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation *> getFractureTriangulatedSetRepSet() const;
 
 		std::vector<RESQML2_0_1_NS::Horizon*> getHorizonSet() const;
 
@@ -263,13 +264,13 @@ namespace COMMON_NS
 
 		std::vector<RESQML2_0_1_NS::GeobodyFeature*> getGeobodySet() const;
 
-		std::vector<RESQML2_0_1_NS::Grid2dRepresentation const *> getHorizonGrid2dRepSet() const;
+		std::vector<RESQML2_0_1_NS::Grid2dRepresentation *> getHorizonGrid2dRepSet() const;
 
-		std::vector<RESQML2_0_1_NS::PolylineRepresentation const *> getHorizonPolylineRepSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineRepresentation *> getHorizonPolylineRepSet() const;
 
-		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation const *> getHorizonPolylineSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::PolylineSetRepresentation *> getHorizonPolylineSetRepSet() const;
 
-		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation const *> getHorizonTriangulatedSetRepSet() const;
+		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation *> getHorizonTriangulatedSetRepSet() const;
 
 		std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> getAllTriangulatedSetRepSet() const;
 
@@ -283,9 +284,9 @@ namespace COMMON_NS
 
 		std::vector<RESQML2_0_1_NS::WellboreFeature*> getWellboreSet();
 
-		std::vector<RESQML2_0_1_NS::WellboreTrajectoryRepresentation const *> getWellboreTrajectoryRepresentationSet() const;
+		std::vector<RESQML2_0_1_NS::WellboreTrajectoryRepresentation *> getWellboreTrajectoryRepresentationSet() const;
 
-		std::vector<RESQML2_0_1_NS::DeviationSurveyRepresentation const *> getDeviationSurveyRepresentationSet() const;
+		std::vector<RESQML2_0_1_NS::DeviationSurveyRepresentation *> getDeviationSurveyRepresentationSet() const;
 
 		std::vector<RESQML2_NS::RepresentationSetRepresentation*> getRepresentationSetRepresentationSet() const;
 
@@ -507,17 +508,17 @@ namespace COMMON_NS
 		RESQML2_0_1_NS::Grid2dRepresentation* createGrid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
-		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum const * mdInfo);
-		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::DeviationSurveyRepresentation const * deviationSurvey);
+		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo);
+		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::DeviationSurveyRepresentation * deviationSurvey);
 
-		RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum const * mdInfo);
+		RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo);
 
-		RESQML2_0_1_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation const * traj);
+		RESQML2_0_1_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
 
-		RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation const * traj);
+		RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
 
-		RESQML2_0_1_NS::BlockedWellboreRepresentation* createBlockedWellboreRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp,
-			const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation const * traj);
+		RESQML2_0_1_NS::BlockedWellboreRepresentation* createBlockedWellboreRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp,
+			const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
 
 		RESQML2_NS::RepresentationSetRepresentation* createRepresentationSetRepresentation(
 			RESQML2_0_1_NS::AbstractOrganizationInterpretation* interp,
@@ -748,7 +749,7 @@ namespace COMMON_NS
 		void setFilePath(const std::string & fp);
 
 		virtual void serializeFrom(const DataObjectRepository & repo, bool useZip64 = false);
-		virtual std::string deserializeInto(DataObjectRepository & repo);
+		virtual std::string deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::READ_ONLY);
 		void close();
 		std::string getStorageDirectory() const;
 		std::string getName() const;

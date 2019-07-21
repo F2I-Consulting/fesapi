@@ -331,6 +331,6 @@ namespace RESQML2_NS
 			unsigned int offsetInSlowestDim
 		) const;
 
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 	};
 }

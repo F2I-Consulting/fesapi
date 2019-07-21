@@ -492,7 +492,7 @@ std::string Activity::getResqmlVersion() const
 	return "2.0.1";
 }
 
-void Activity::loadTargetRelationships() const
+void Activity::loadTargetRelationships()
 {
 	_resqml2__Activity* activity = static_cast<_resqml2__Activity*>(gsoapProxy2_0_1);
 

@@ -520,7 +520,7 @@ void AbstractValuesProperty::getLongValuesOf3dPatch(
 	);
 }
 
-void AbstractValuesProperty::loadTargetRelationships() const
+void AbstractValuesProperty::loadTargetRelationships()
 {
 	AbstractProperty::loadTargetRelationships();
 

@@ -281,7 +281,7 @@ namespace RESQML2_0_1_NS
 			double xOrigin, double yOrigin, double zOrigin,
 			double xOffsetInFastestDirection, double yOffsetInFastestDirection, double zOffsetInFastestDirection,
 			double xOffsetInSlowestDirection, double yOffsetInSlowestDirection, double zOffsetInSlowestDirection,
-			double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
 		* Set the geometry patch for a lattice 2d grid.
@@ -290,7 +290,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void setGeometryAsArray2dOfExplicitZ(
 			double * zValues,
 			unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy* proxy,
-			Grid2dRepresentation * supportingGrid2dRepresentation, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr,
+			Grid2dRepresentation * supportingGrid2dRepresentation, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr,
 			unsigned int startIndexI = 0, unsigned int startIndexJ = 0,
 			int indexIncrementI = 1, int indexIncrementJ = 1);
 
@@ -303,7 +303,7 @@ namespace RESQML2_0_1_NS
 			unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy* proxy,
 			double originX, double originY, double originZ,
 			double offsetIX, double offsetIY, double offsetIZ, double spacingI,
-			double offsetJX, double offsetJY, double offsetJZ, double spacingJ, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			double offsetJX, double offsetJY, double offsetJZ, double spacingJ, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference const * getSupportingRepresentationDor() const;
 
@@ -341,6 +341,6 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
 
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 	};
 }

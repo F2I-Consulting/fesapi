@@ -33,7 +33,7 @@ using namespace gsoap_resqml2_0_1;
 
 const char* WellboreFrameRepresentation::XML_TAG = "WellboreFrameRepresentation";
 
-WellboreFrameRepresentation::WellboreFrameRepresentation(WellboreInterpretation const * interp, const string & guid, const std::string & title, WellboreTrajectoryRepresentation const * traj)
+WellboreFrameRepresentation::WellboreFrameRepresentation(WellboreInterpretation * interp, const string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
 {
 	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREWellboreFrameRepresentation(interp->getGsoapContext(), 1);	
 	_resqml2__WellboreFrameRepresentation* frame = static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1);

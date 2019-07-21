@@ -35,7 +35,7 @@ using namespace gsoap_resqml2_0_1;
 
 const char* BlockedWellboreRepresentation::XML_TAG = "BlockedWellboreRepresentation";
 
-void BlockedWellboreRepresentation::init(const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation const * traj)
+void BlockedWellboreRepresentation::init(const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
 {
 	if (traj == nullptr) {
 		throw invalid_argument("The wellbore trajectory of a blocked wellbore cannot be null.");
@@ -53,8 +53,8 @@ void BlockedWellboreRepresentation::init(const std::string & guid, const std::st
 	getRepository()->addRelationship(this, traj);
 }
 
-BlockedWellboreRepresentation::BlockedWellboreRepresentation(WellboreInterpretation const * interp,
-	const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation  const * traj)
+BlockedWellboreRepresentation::BlockedWellboreRepresentation(WellboreInterpretation * interp,
+	const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation  * traj)
 {
 	init(guid, title, traj);
 
@@ -192,7 +192,7 @@ std::string BlockedWellboreRepresentation::getSupportingGridRepresentationUuid(u
 	return getSupportingGridRepresentationDor(index)->UUID;
 }
 
-void BlockedWellboreRepresentation::loadTargetRelationships() const
+void BlockedWellboreRepresentation::loadTargetRelationships()
 {
 	WellboreFrameRepresentation::loadTargetRelationships();
 
@@ -201,7 +201,7 @@ void BlockedWellboreRepresentation::loadTargetRelationships() const
 	// Supporting grid representation
 	for (size_t i = 0; i < rep->Grid.size(); ++i) {
 		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = rep->Grid[i];
-		RESQML2_NS::AbstractGridRepresentation const * supportingGridRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
+		RESQML2_NS::AbstractGridRepresentation * supportingGridRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);
 		if (supportingGridRep == nullptr) { // partial transfer
 			getRepository()->createPartial(dor);
 			supportingGridRep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractGridRepresentation>(dor->UUID);

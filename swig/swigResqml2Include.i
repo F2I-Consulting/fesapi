@@ -69,6 +69,15 @@ namespace RESQML2_NS
 	%nspace RESQML2_NS::TimeSeries;
 #endif
 
+namespace gsoap_resqml2_0_1
+{
+	enum resqml2__PillarShape {
+		resqml2__PillarShape__vertical = 0,
+		resqml2__PillarShape__straight = 1,
+		resqml2__PillarShape__curved = 2
+	};
+}
+
 namespace RESQML2_NS
 {
 	%nodefaultctor; // Disable creation of default constructors
@@ -364,6 +373,7 @@ namespace RESQML2_NS
 		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* getStratigraphicOrganizationInterpretation() const;
 		bool hasIntervalStratigraphicUnitIndices() const;
 		ULONG64 getIntervalStratigraphicUnitIndices(ULONG64 * stratiUnitIndices);
+		gsoap_resqml2_0_1::resqml2__PillarShape getMostComplexPillarGeometry() const;
 	};
 	
 	class GridConnectionSetRepresentation : public RESQML2_NS::AbstractRepresentation
@@ -413,10 +423,10 @@ namespace RESQML2_NS
 	class TimeSeries : public COMMON_NS::AbstractObject
 	{
 	public:
-		void pushBackTimestamp(const time_t & timestamp);
-		unsigned int getTimestampIndex(const time_t & timestamp) const;
+		void pushBackTimestamp(time_t timestamp);
+		unsigned int getTimestampIndex(time_t timestamp) const;
 		unsigned int getTimestampCount() const;
-		time_t getTimestamp(const unsigned int & index) const;
+		time_t getTimestamp(unsigned int index) const;
 	};
 	
 	class AbstractProperty: public COMMON_NS::AbstractObject

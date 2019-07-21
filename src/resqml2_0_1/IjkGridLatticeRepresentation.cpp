@@ -50,7 +50,7 @@ bool IjkGridLatticeRepresentation::isASeismicCube() const
 	// A Seismic cube is defined by an IjkGridRepresentation that has a feature of type SeismicLatticeFeature and that
 	// has at least one continuous property (amplitude).
 	bool atLeastOneContProp = false;
-	vector<RESQML2_NS::AbstractValuesProperty const *> allValuesProperty = getValuesPropertySet();
+	vector<RESQML2_NS::AbstractValuesProperty *> allValuesProperty = getValuesPropertySet();
     for (size_t propIndex = 0; propIndex < allValuesProperty.size(); ++propIndex)
     {
         if (allValuesProperty[propIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREContinuousProperty)
@@ -70,7 +70,7 @@ bool IjkGridLatticeRepresentation::isAFaciesCube() const
 	// A Facies cube is defined by an IjkGridRepresentation that has a feature of type SeismicLatticeFeature and that
 	// has at least one categorical property (facies).
 	bool atLeastOneCateProp = false;
-	vector<RESQML2_NS::AbstractValuesProperty const *> allValuesProperty = getValuesPropertySet();
+	vector<RESQML2_NS::AbstractValuesProperty *> allValuesProperty = getValuesPropertySet();
     for (size_t propIndex = 0; propIndex < allValuesProperty.size(); ++propIndex)
     {
         if (allValuesProperty[propIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECategoricalProperty)
@@ -420,7 +420,7 @@ void IjkGridLatticeRepresentation::setGeometryAsCoordinateLineNodes(
 	double originX, double originY, double originZ,
 	double directionIX, double directionIY, double directionIZ, double spacingI,
 	double directionJX, double directionJY, double directionJZ, double spacingJ,
-	double directionKX, double directionKY, double directionKZ, double spacingK, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
+	double directionKX, double directionKY, double directionKZ, double spacingK, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();

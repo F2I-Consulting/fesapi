@@ -75,7 +75,7 @@ namespace RESQML2_NS
 		* Init the domain of the interpretation based on its representations
 		* @param	defaultDomain	The default domain to set when there is no representation set to this interpretation
 		*/
-		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml2__Domain & initDomain(const gsoap_resqml2_0_1::resqml2__Domain & defaultDomain) const;
+		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml2__Domain & initDomain(gsoap_resqml2_0_1::resqml2__Domain defaultDomain) const;
 
 		/**
 		* Set the domain of the interpretation
@@ -85,7 +85,7 @@ namespace RESQML2_NS
 		/**
 		* Get all the representations of this interpretation
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<AbstractRepresentation const *> getRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<AbstractRepresentation *> getRepresentationSet() const;
 
 		/**
 		 * Get the interpretation count of this feature.
@@ -95,13 +95,13 @@ namespace RESQML2_NS
 		/**
 		* Get all the Grid Connection Set Representation which reference this interpretation.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<GridConnectionSetRepresentation const *> getGridConnectionSetRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<GridConnectionSetRepresentation *> getGridConnectionSetRepresentationSet() const;
 
 		/**
 		 * Get a particular interpretation of this feature according to its position in the interpretation ordering.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractRepresentation const * getRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractRepresentation * getRepresentation(unsigned int index) const;
 		
-		virtual void loadTargetRelationships() const;
+		virtual void loadTargetRelationships();
 	};
 }

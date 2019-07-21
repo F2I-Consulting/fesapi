@@ -68,7 +68,7 @@ resqml2__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfLatticePoi
 			double xOrigin, double yOrigin, double zOrigin,
 			double xOffsetInFastestDirection, double yOffsetInFastestDirection, double zOffsetInFastestDirection,
 			double xOffsetInSlowestDirection, double yOffsetInSlowestDirection, double zOffsetInSlowestDirection,
-			double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
+			double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (localCrs == nullptr) {
 		throw invalid_argument("The CRS cannot be the null pointer");
@@ -114,9 +114,9 @@ resqml2__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfLatticePoi
 }
 
 resqml2__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ(
-		unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs const * localCrs,
+		unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs * localCrs,
 		unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy * proxy,
-		Grid2dRepresentation const * supportingRepresentation,
+		Grid2dRepresentation * supportingRepresentation,
 		unsigned int startGlobalIndex,
 		int indexIncrementI, int indexIncrementJ)
 {
@@ -176,7 +176,7 @@ resqml2__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ(
 }
 
 resqml2__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ(
-		unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs const * localCrs,
+		unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs * localCrs,
 		unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy * proxy,
 		double originX, double originY, double originZ,
 		double offsetIX, double offsetIY, double offsetIZ, double spacingI,
@@ -249,7 +249,7 @@ resqml2__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ(
 	return geom;
 }
 
-void AbstractSurfaceRepresentation::loadTargetRelationships() const
+void AbstractSurfaceRepresentation::loadTargetRelationships()
 {
 	AbstractRepresentation::loadTargetRelationships();
 
@@ -259,7 +259,7 @@ void AbstractSurfaceRepresentation::loadTargetRelationships() const
 		if (rep->Boundaries[i]->OuterRing != nullptr) {
 			if (rep->Boundaries[i]->OuterRing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREPolylineRepresentation) {
 				gsoap_resqml2_0_1::eml20__DataObjectReference* dor = rep->Boundaries[i]->OuterRing;
-				PolylineRepresentation const * outerRing = getRepository()->getDataObjectByUuid<PolylineRepresentation>(dor->UUID);
+				PolylineRepresentation * outerRing = getRepository()->getDataObjectByUuid<PolylineRepresentation>(dor->UUID);
 				if (outerRing == nullptr) { // partial transfer
 					getRepository()->createPartial(dor);
 					outerRing = getRepository()->getDataObjectByUuid<PolylineRepresentation>(dor->UUID);

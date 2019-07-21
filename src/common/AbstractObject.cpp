@@ -963,7 +963,7 @@ std::string AbstractObject::getAliasTitleAtIndex(unsigned int index) const
 	throw invalid_argument("No underlying gsoap proxy.");
 }
 
-std::vector<RESQML2_NS::Activity const *> AbstractObject::getActivitySet() const
+std::vector<RESQML2_NS::Activity *> AbstractObject::getActivitySet() const
 {
 	return getRepository()->getSourceObjects<RESQML2_NS::Activity>(this);
 }
@@ -979,13 +979,13 @@ unsigned int AbstractObject::getActivityCount() const
 	return static_cast<unsigned int>(result);
 }
 
-RESQML2_NS::Activity const * AbstractObject::getActivity(unsigned int index) const
+RESQML2_NS::Activity * AbstractObject::getActivity(unsigned int index) const
 {
 	if (partialObject != nullptr) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 	}
 
-	const std::vector<RESQML2_NS::Activity const *>& activites = getActivitySet();
+	const std::vector<RESQML2_NS::Activity *>& activites = getActivitySet();
 	if (index >= activites.size())
 		throw out_of_range("The index is out of range.");
 
@@ -1261,9 +1261,9 @@ ULONG64 AbstractObject::getCountOfIntegerArray(gsoap_resqml2_0_1::resqml2__Abstr
 		throw invalid_argument("The integer array type is not supported yet.");
 }
 
-void AbstractObject::convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor) const
+void AbstractObject::convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor)
 {
-	const AbstractObject * targetObj = getRepository()->getDataObjectByUuid(dor->UUID);
+	AbstractObject * targetObj = getRepository()->getDataObjectByUuid(dor->UUID);
 	if (targetObj == nullptr) { // partial transfer
 		getRepository()->createPartial(dor);
 		targetObj = getRepository()->getDataObjectByUuid(dor->UUID);
@@ -1275,9 +1275,10 @@ void AbstractObject::convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectRefer
 }
 
 #if WITH_EXPERIMENTAL
-void AbstractObject::convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor) const
+
+void AbstractObject::convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor)
 {
-	const AbstractObject * targetObj = getRepository()->getDataObjectByUuid(dor->Uuid);
+	AbstractObject * targetObj = getRepository()->getDataObjectByUuid(dor->Uuid);
 	if (targetObj == nullptr) { // partial transfer
 		getRepository()->createPartial(dor);
 		targetObj = getRepository()->getDataObjectByUuid(dor->Uuid);

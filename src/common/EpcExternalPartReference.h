@@ -57,6 +57,6 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const;
 
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 	};
 }

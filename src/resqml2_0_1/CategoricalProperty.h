@@ -173,6 +173,6 @@ namespace RESQML2_0_1_NS
 		*/
 		bool validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk);
 
-		virtual void loadTargetRelationships() const;
+		virtual void loadTargetRelationships();
 	};
 }

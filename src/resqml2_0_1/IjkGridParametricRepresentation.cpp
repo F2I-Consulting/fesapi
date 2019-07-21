@@ -1076,6 +1076,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlockOfPatch(const unsigned 
 		delete[] blockSizeInEachDimension;
 	}
 	else {
+		delete[] parameters;
 		throw logic_error("Non floating point coordinate line parameters are not implemented yet");
 	}
 
@@ -1327,7 +1328,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfPatch(const unsigned int & p
 
 void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNodes(
 	gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, bool isRightHanded,
-	double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy* proxy, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
+	double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy* proxy, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	setGeometryAsParametricSplittedPillarNodes(mostComplexPillarGeometry, isRightHanded, parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, pillarKind, proxy,
 		0, nullptr, nullptr, nullptr, localCrs);
@@ -1335,7 +1336,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNo
 
 void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNodesUsingExistingDatasets(
 	gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
-	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, COMMON_NS::AbstractHdfProxy* proxy, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
+	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, COMMON_NS::AbstractHdfProxy* proxy, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(mostComplexPillarGeometry, kDirectionKind, isRightHanded, parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, pillarKind, definedPillars, proxy,
 		0, "", "", "", localCrs);
@@ -1345,7 +1346,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 	double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy * proxy,
 	unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
-	unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
+	unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (pillarKind == nullptr) {
 		throw invalid_argument("The kind of the coordinate lines cannot be null.");
@@ -1411,7 +1412,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
 	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, COMMON_NS::AbstractHdfProxy* proxy,
 	unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
-	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
+	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (pillarKind.empty())
 		throw invalid_argument("The kind of the coordinate lines cannot be null.");
@@ -1456,7 +1457,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes(bool isRightHanded,
 	double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy * proxy,
 	unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
-	unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
+	unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (parameters == nullptr) {
 		throw invalid_argument("The parameters of the nodes of the ijk grid cannot be null.");
@@ -1537,7 +1538,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
 	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
 	unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
-	const std::string &  splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
+	const std::string &  splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (controlPointCountPerPillar < 1) {
 		throw invalid_argument("The max count of control points per coordinate line of the ijk grid cannot be less than one.");

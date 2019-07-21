@@ -84,7 +84,7 @@ namespace RESQML2_NS
 		/**
 		* Get the vector of all grid connection set rep associated to this grid instance.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::GridConnectionSetRepresentation const *> getGridConnectionSetRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::GridConnectionSetRepresentation *> getGridConnectionSetRepresentationSet() const;
 
 		/**
 		 * Get the GridConnectionSetRepresentation count into this EPC document which are associated to this grid.
@@ -96,7 +96,7 @@ namespace RESQML2_NS
 		 * Get a particular ijk parametric grid according to its position in the EPC document.
 		 * It is mainly used in SWIG context for parsing the vector from a non C++ language.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::GridConnectionSetRepresentation const * getGridConnectionSetRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::GridConnectionSetRepresentation * getGridConnectionSetRepresentation(unsigned int index) const;
 
 
 		//************************************************************
@@ -124,7 +124,7 @@ namespace RESQML2_NS
 		/**
 		* Get the vector of all child grids
 		*/
-		std::vector<RESQML2_NS::AbstractGridRepresentation const *> getChildGridSet() const;
+		std::vector<RESQML2_NS::AbstractGridRepresentation *> getChildGridSet() const;
 
 		/**
 		* Return the count of child grid in this grid.
@@ -134,7 +134,7 @@ namespace RESQML2_NS
 		/**
 		* Return the count of child grid in this grid.
 		*/
-		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation const * getChildGrid(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation * getChildGrid(unsigned int index) const;
 
 		/**
 		* Indicates that this grid takes place into another unstructured parent grid.

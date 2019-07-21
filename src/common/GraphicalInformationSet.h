@@ -154,7 +154,7 @@ namespace COMMON_NS
 		* @param alpha			numeric value in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). Default value is 1.
 		* @param colorTitle		title for the given color. It is not set if title is empty
 		*/
-		DLL_IMPORT_OR_EXPORT void setDefaultHsvColor(AbstractObject const* targetObject, double hue, double saturation, double value, double alpha = 1.0, std::string const& colorTitle = "");
+		DLL_IMPORT_OR_EXPORT void setDefaultHsvColor(AbstractObject* targetObject, double hue, double saturation, double value, double alpha = 1.0, std::string const& colorTitle = "");
 
 		/**
 		* https://en.wikipedia.org/wiki/RGB_color_space
@@ -165,7 +165,7 @@ namespace COMMON_NS
 		* @param alpha			numeric value in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). Default value is 1.
 		* @param colorTitle		title for the given color. It is not set if title is empty
 		*/
-		DLL_IMPORT_OR_EXPORT void setDefaultRgbColor(AbstractObject const* targetObject, double red, double green, double blue, double alpha = 1.0, std::string const& colorTitle = "");
+		DLL_IMPORT_OR_EXPORT void setDefaultRgbColor(AbstractObject* targetObject, double red, double green, double blue, double alpha = 1.0, std::string const& colorTitle = "");
 
 		/**
 		* https://en.wikipedia.org/wiki/RGB_color_space
@@ -176,7 +176,7 @@ namespace COMMON_NS
 		* @param alpha			numeric value in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). Default value is 1.
 		* @param colorTitle		title for the given color. It is not set if title is empty
 		*/
-		DLL_IMPORT_OR_EXPORT void setDefaultRgbColor(AbstractObject const* targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha = 1.0, std::string const& colorTitle = "");
+		DLL_IMPORT_OR_EXPORT void setDefaultRgbColor(AbstractObject* targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha = 1.0, std::string const& colorTitle = "");
 
 		/**
 		 * @param targetObject	the object for wich we look for a discrete color map. If it has not and it is a property,
@@ -206,7 +206,7 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::DiscreteColorMap* getDiscreteColorMap(AbstractObject const* targetObject) const;
 
-		DLL_IMPORT_OR_EXPORT void setDiscreteColorMap(AbstractObject const* targetObject, RESQML2_2_NS::DiscreteColorMap* discreteColorMap,
+		DLL_IMPORT_OR_EXPORT void setDiscreteColorMap(AbstractObject* targetObject, RESQML2_2_NS::DiscreteColorMap* discreteColorMap,
 			LONG64 valueVectorIndex = 0, bool useReverseMapping = false, bool useLogarithmicMapping = false);
 
 		/**
@@ -237,7 +237,7 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::ContinuousColorMap* getContinuousColorMap(AbstractObject const* targetObject) const;
 
-		DLL_IMPORT_OR_EXPORT void setContinuousColorMap(AbstractObject const* targetObject, RESQML2_2_NS::ContinuousColorMap* continuousColorMap,
+		DLL_IMPORT_OR_EXPORT void setContinuousColorMap(AbstractObject* targetObject, RESQML2_2_NS::ContinuousColorMap* continuousColorMap,
 			LONG64 valueVectorIndex = 0, bool useReverseMapping = false, bool useLogarithmicMapping = false);
 
 		DLL_IMPORT_OR_EXPORT double getColorMapMinIndex(AbstractObject const* targetObject) const;
@@ -296,6 +296,6 @@ namespace COMMON_NS
 			return "eml22";
 		}
 
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 	};
 }

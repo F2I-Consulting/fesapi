@@ -130,6 +130,7 @@ namespace RESQML2_2_NS
 	class DiscreteColorMap;
 	class ContinuousColorMap;
 }
+#endif
 
 namespace WITSML2_1_NS
 {
@@ -174,10 +175,10 @@ namespace COMMON_NS
 		std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > dataObjects;
 
 		// Forward relationships
-		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject const * > > forwardRels;
+		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject * > > forwardRels;
 
 		// Backward relationships. It is redundant with forward relationships but it allows more performance.
-		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject const * > > backwardRels;
+		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject * > > backwardRels;
 
 		soap* gsoapContext;
 
@@ -222,11 +223,11 @@ namespace COMMON_NS
 		std::string getGsoapErrorMessage() const;
 
 		template <class valueType>
-		std::vector<valueType const *> getObjsFilteredOnDatatype(const std::vector< COMMON_NS::AbstractObject const * >& objs) const
+		std::vector<valueType *> getObjsFilteredOnDatatype(const std::vector< COMMON_NS::AbstractObject * >& objs) const
 		{
-			std::vector<valueType const *> result;
+			std::vector<valueType *> result;
 			for (size_t i = 0; i < objs.size(); ++i) {
-				valueType const * castedObj = dynamic_cast<valueType const *>(objs[i]);
+				valueType * castedObj = dynamic_cast<valueType *>(objs[i]);
 				if (castedObj != nullptr) {
 					result.push_back(castedObj);
 				}
@@ -255,16 +256,16 @@ namespace COMMON_NS
 		* Source and target are defined by Energistics data model. Usually, the simplest is to look at Energistics UML diagrams. Another way is to rely on XSD/XML : explicit relationships are contained by the source objects and point to target objects.
 		* @param source	The source object of the relationship
 		*/
-		DLL_IMPORT_OR_EXPORT void addRelationship(COMMON_NS::AbstractObject const * source, COMMON_NS::AbstractObject const * target);
+		DLL_IMPORT_OR_EXPORT void addRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target);
 
 		/**
 		* Get the target objects of a particular data objects.
 		* Throw an exception if the target objects have not been defined yet.
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector< COMMON_NS::AbstractObject const * >& getTargetObjects(COMMON_NS::AbstractObject const * dataObj) const;
+		DLL_IMPORT_OR_EXPORT const std::vector< COMMON_NS::AbstractObject * >& getTargetObjects(COMMON_NS::AbstractObject const * dataObj) const;
 
 		template <class valueType>
-		std::vector<valueType const *> getTargetObjects(COMMON_NS::AbstractObject const * dataObj) const
+		std::vector<valueType *> getTargetObjects(COMMON_NS::AbstractObject const * dataObj) const
 		{
 			return getObjsFilteredOnDatatype<valueType>(getTargetObjects(dataObj));
 		}
@@ -273,10 +274,10 @@ namespace COMMON_NS
 		* Get the source objects of a particular data objects.
 		* Throw an exception if the source objects have not been defined yet.
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector< COMMON_NS::AbstractObject const * >& getSourceObjects(COMMON_NS::AbstractObject const * dataObj) const;
+		DLL_IMPORT_OR_EXPORT const std::vector< COMMON_NS::AbstractObject * >& getSourceObjects(COMMON_NS::AbstractObject const * dataObj) const;
 
 		template <class valueType>
-		std::vector<valueType const *> getSourceObjects(COMMON_NS::AbstractObject const * dataObj) const
+		std::vector<valueType *> getSourceObjects(COMMON_NS::AbstractObject const * dataObj) const
 		{
 			return getObjsFilteredOnDatatype<valueType>(getSourceObjects(dataObj));
 		}
@@ -413,27 +414,27 @@ namespace COMMON_NS
 		/**
 		* Get all the individual representations of faults which are associated to a polyline topology
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation const *> getFaultPolylineSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation *> getFaultPolylineSetRepSet() const;
 
 		/**
 		* Get all the individual representations of fractures which are associated to a polyline topology
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation const *> getFracturePolylineSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation *> getFracturePolylineSetRepSet() const;
 
 		/**
 		* Get all the individual representations of frontiers which are associated to a polyline set topology
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation const *> getFrontierPolylineSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation *> getFrontierPolylineSetRepSet() const;
 
 		/**
 		* Get all the individual representations of faults which are associated to a triangulation set topology
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation const *> getFaultTriangulatedSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation *> getFaultTriangulatedSetRepSet() const;
 
 		/**
 		* Get all the individual representations of fractures which are associated to a triangulation set topology
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation const *> getFractureTriangulatedSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation *> getFractureTriangulatedSetRepSet() const;
 
 		/**
 		* Get all the horizons contained into the EPC document
@@ -456,22 +457,22 @@ namespace COMMON_NS
 		/**
 		* Get all the individual representations of horizons which are associated to grid 2d set topology
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::Grid2dRepresentation const *> getHorizonGrid2dRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::Grid2dRepresentation *> getHorizonGrid2dRepSet() const;
 
 		/**
 		* Get all the single polyline representations of all the horizons
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineRepresentation const *> getHorizonPolylineRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineRepresentation *> getHorizonPolylineRepSet() const;
 
 		/**
 		* Get all the single polyline representations of all the horizons
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation const *> getHorizonPolylineSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::PolylineSetRepresentation *> getHorizonPolylineSetRepSet() const;
 
 		/**
 		* Get all the triangulated set representations of all the horizons
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation const *> getHorizonTriangulatedSetRepSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation *> getHorizonTriangulatedSetRepSet() const;
 
 		/**
 		* DEPRECATED : use getDataObjects template method
@@ -511,12 +512,12 @@ namespace COMMON_NS
 		/**
 		* Get all the trajectory representations of all wellbores.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::WellboreTrajectoryRepresentation const *> getWellboreTrajectoryRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::WellboreTrajectoryRepresentation *> getWellboreTrajectoryRepresentationSet() const;
 
 		/**
 		* Get all the devaition survey of all wellbores.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::DeviationSurveyRepresentation const *> getDeviationSurveyRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::DeviationSurveyRepresentation *> getDeviationSurveyRepresentationSet() const;
 
 		/**
 		* DEPRECATED : use getDataObjects template method
@@ -1053,17 +1054,17 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::Grid2dRepresentation* createGrid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum const * mdInfo);
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::DeviationSurveyRepresentation const * deviationSurvey);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::DeviationSurveyRepresentation * deviationSurvey);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum const * mdInfo);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation const * traj);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation const * traj);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::BlockedWellboreRepresentation* createBlockedWellboreRepresentation(RESQML2_0_1_NS::WellboreInterpretation const * interp,
-			const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation const * traj);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::BlockedWellboreRepresentation* createBlockedWellboreRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp,
+			const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::RepresentationSetRepresentation* createRepresentationSetRepresentation(
 			RESQML2_0_1_NS::AbstractOrganizationInterpretation* interp,

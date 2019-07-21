@@ -50,7 +50,7 @@ ActivityTemplate* Activity::getActivityTemplate() const
 	return getRepository()->getDataObjectByUuid<RESQML2_NS::ActivityTemplate>(getActivityTemplateDor()->UUID);
 }
 
-void Activity::loadTargetRelationships() const
+void Activity::loadTargetRelationships()
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getActivityTemplateDor();
 	RESQML2_NS::ActivityTemplate* targetObj = getRepository()->getDataObjectByUuid<ActivityTemplate>(dor->UUID);

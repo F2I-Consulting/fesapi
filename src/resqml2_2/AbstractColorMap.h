@@ -134,7 +134,7 @@ namespace RESQML2_2_NS
 
 		virtual void computeMinMax(LONG64& min, LONG64& max) const = 0;
 
-		void loadTargetRelationships() const {};
+		void loadTargetRelationships() {};
 
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const {
 			return "resqml22";

@@ -106,6 +106,6 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation* getSideFrontierInterpretation(unsigned int index) const;
 
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 	};
 }

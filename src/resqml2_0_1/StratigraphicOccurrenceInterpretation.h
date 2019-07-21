@@ -61,13 +61,13 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get all the stratigraphic occurence interpretations associated with this StratigraphicColumnRankInterpretation.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<class WellboreMarkerFrameRepresentation const *> getWellboreMarkerFrameRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class WellboreMarkerFrameRepresentation *> getWellboreMarkerFrameRepresentationSet() const;
 
 		DLL_IMPORT_OR_EXPORT std::string getStratigraphicColumnRankInterpretationUuid() const;
                 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 	};
 }

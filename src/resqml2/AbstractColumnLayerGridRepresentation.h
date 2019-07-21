@@ -95,5 +95,13 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT ULONG64 getIntervalStratigraphicUnitIndices(ULONG64 * stratiUnitIndices);
 
 		void loadTargetRelationships() const;
+		/**
+		* The returned value is not computed. It is just read from the DataObject.
+		* Since it is denormalized information, inconsistency (mainly due to non synchronized information) might occur.
+		* If you want to be sure, compute this value again from the pillar kind indices.
+		*
+		* @return The most complex pillar geometry which we can find on this grid.
+		*/
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__PillarShape getMostComplexPillarGeometry() const;
 	};
 }

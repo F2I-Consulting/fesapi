@@ -65,7 +65,7 @@ void GridConnectionSetRepresentation::pushBackInterpretation(AbstractFeatureInte
 	pushBackXmlInterpretation(interp);
 }
 
-void GridConnectionSetRepresentation::loadTargetRelationships() const
+void GridConnectionSetRepresentation::loadTargetRelationships()
 {
 	AbstractRepresentation::loadTargetRelationships();
 

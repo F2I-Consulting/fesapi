@@ -57,6 +57,6 @@ namespace WITSML2_0_NS
 		/**
 		* Resolve all relationships of the object in a repository.
 		*/
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 	};
 }

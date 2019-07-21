@@ -160,11 +160,11 @@ ULONG64 AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndic
 		throw logic_error("Not implemented yet.");
 	}
 	else {
-		throw logic_error("Only version 2_0_1 is implemented yet");
+		throw logic_error("Only version 2_0_1 is implemented for now");
 	}
 }
 
-void AbstractColumnLayerGridRepresentation::loadTargetRelationships() const
+void AbstractColumnLayerGridRepresentation::loadTargetRelationships()
 {
 	AbstractGridRepresentation::loadTargetRelationships();
 
@@ -181,4 +181,20 @@ void AbstractColumnLayerGridRepresentation::loadTargetRelationships() const
 		}
 		repository->addRelationship(this, stratiOrg);
 	}
+}
+
+gsoap_resqml2_0_1::resqml2__PillarShape AbstractColumnLayerGridRepresentation::getMostComplexPillarGeometry() const
+{
+	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
+
+	if (geom == nullptr) {
+		throw invalid_argument("This grid has no point geoemtry.");
+	}
+
+	gsoap_resqml2_0_1::resqml2__AbstractColumnLayerGridGeometry* specializedGeom = dynamic_cast<gsoap_resqml2_0_1::resqml2__AbstractColumnLayerGridGeometry*>(geom);
+	if (geom == nullptr) {
+		throw invalid_argument("This grid has no AbstractColumnLayerGrid Geometry.");
+	}
+
+	return specializedGeom->PillarShape;
 }

@@ -56,7 +56,7 @@ namespace RESQML2_0_1_NS
 			double xOrigin, double yOrigin, double zOrigin,
 			double xOffsetInFastestDirection, double yOffsetInFastestDirection, double zOffsetInFastestDirection,
 			double xOffsetInSlowestDirection, double yOffsetInSlowestDirection, double zOffsetInSlowestDirection,
-			double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs const * localCrs);
+			double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs * localCrs);
 
 		/**
 		* Creates a geometry for a grid 2d representation which derives from another existing grid 2d representation.
@@ -71,9 +71,9 @@ namespace RESQML2_0_1_NS
 		* @param	indexIncrementJ					The constant index increment between two consecutive nodes on the second dimension of the baseLatticeGridRepresentation where z values will be stored.
 		*/
 		gsoap_resqml2_0_1::resqml2__PointGeometry* createArray2dOfExplicitZ(
-			unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs const * localCrs,
+			unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs * localCrs,
 			unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy* proxy,
-			class Grid2dRepresentation const * supportingRepresentation,
+			class Grid2dRepresentation * supportingRepresentation,
 			unsigned int startGlobalIndex = 0,
 			int indexIncrementI = 1, int indexIncrementJ = 1);
 
@@ -86,7 +86,7 @@ namespace RESQML2_0_1_NS
 		* @param	AbstractHdfProxy				The hdf proxy which indicates the hdf file where the values will be stored.
 		*/
 		gsoap_resqml2_0_1::resqml2__PointGeometry* createArray2dOfExplicitZ(
-			unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs const * localCrs,
+			unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs * localCrs,
 			unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy* proxy,
 			double originX, double originY, double originZ,
 			double offsetIX, double offsetIY, double offsetIZ, double spacingI,
@@ -119,6 +119,6 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml2__SurfaceRole & getSurfaceRole() const;
 
-		virtual void loadTargetRelationships() const;
+		virtual void loadTargetRelationships();
 	};
 }

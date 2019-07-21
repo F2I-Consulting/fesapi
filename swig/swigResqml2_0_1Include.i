@@ -367,11 +367,6 @@ namespace gsoap_resqml2_0_1
 		resqml2__ThrowKind__scissor = 4,
 		resqml2__ThrowKind__variable = 5
 	};
-	enum resqml2__PillarShape {
-		resqml2__PillarShape__vertical = 0,
-		resqml2__PillarShape__straight = 1,
-		resqml2__PillarShape__curved = 2
-	};
 	enum resqml2__KDirection {
 		resqml2__KDirection__down = 0,
 		resqml2__KDirection__up = 1,
@@ -2462,7 +2457,7 @@ namespace RESQML2_0_1_NS
 	{
 	public:
 		bool isDrilled() const;
-		std::vector<WellboreTrajectoryRepresentation const *> getWellboreTrajectoryRepresentationSet() const;
+		std::vector<WellboreTrajectoryRepresentation *> getWellboreTrajectoryRepresentationSet() const;
 	};
 	
 #ifdef SWIGPYTHON
@@ -2540,10 +2535,10 @@ namespace RESQML2_0_1_NS
 		bool isAChronoStratiRank() const;
 		StratigraphicUnitInterpretation* getSubjectOfContact(const unsigned int & contactIndex) const;
 		StratigraphicUnitInterpretation* getDirectObjectOfContact(const unsigned int & contactIndex) const;
-		std::vector<class StratigraphicUnitInterpretation const *> getStratigraphicUnitInterpretationSet() const;
-		std::vector<class StratigraphicOccurrenceInterpretation const *> getStratigraphicOccurrenceInterpretationSet() const;
-        std::vector<class HorizonInterpretation const *> getHorizonInterpretationSet() const;
-		std::vector<StratigraphicColumn const *> getStratigraphicColumnSet() const;
+		std::vector<class StratigraphicUnitInterpretation *> getStratigraphicUnitInterpretationSet() const;
+		std::vector<class StratigraphicOccurrenceInterpretation *> getStratigraphicOccurrenceInterpretationSet() const;
+        std::vector<class HorizonInterpretation *> getHorizonInterpretationSet() const;
+		std::vector<StratigraphicColumn *> getStratigraphicColumnSet() const;
 	};
 	
 	class WellboreMarkerFrameRepresentation;	
@@ -2557,7 +2552,7 @@ namespace RESQML2_0_1_NS
 		StratigraphicColumnRankInterpretation * getStratigraphicColumnRankInterpretation() const;
 		std::string getStratigraphicColumnRankInterpretationUuid() const;
 		
-		std::vector<class WellboreMarkerFrameRepresentation const *> getWellboreMarkerFrameRepresentationSet() const;
+		std::vector<class WellboreMarkerFrameRepresentation *> getWellboreMarkerFrameRepresentationSet() const;
 	};
 
 #ifdef SWIGPYTHON
@@ -2566,8 +2561,8 @@ namespace RESQML2_0_1_NS
 	class StratigraphicColumn : public COMMON_NS::AbstractObject
 	{
 	public:
-		void pushBackStratiColumnRank(StratigraphicColumnRankInterpretation const * stratiColumnRank);
-		std::vector<class StratigraphicColumnRankInterpretation const *> getStratigraphicColumnRankInterpretationSet() const;
+		void pushBackStratiColumnRank(StratigraphicColumnRankInterpretation * stratiColumnRank);
+		std::vector<class StratigraphicColumnRankInterpretation *> getStratigraphicColumnRankInterpretationSet() const;
 	};
 
 #ifdef SWIGPYTHON
@@ -2720,12 +2715,12 @@ namespace RESQML2_0_1_NS
 			double xOrigin, double yOrigin, double zOrigin,
 			double xOffsetInFastestDirection, double yOffsetInFastestDirection, double zOffsetInFastestDirection,
 			double xOffsetInSlowestDirection, double yOffsetInSlowestDirection, double zOffsetInSlowestDirection,
-			double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			double spacingInFastestDirection, double spacingInSlowestDirection, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsArray2dOfExplicitZ(
 			double * zValues,
 			unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy* proxy,
-			Grid2dRepresentation * supportingGrid2dRepresentation, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr,
+			Grid2dRepresentation * supportingGrid2dRepresentation, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr,
 			unsigned int startIndexI = 0, unsigned int startIndexJ = 0,
 			int indexIncrementI = 1, int indexIncrementJ = 1);
 
@@ -2734,7 +2729,7 @@ namespace RESQML2_0_1_NS
 			unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy* proxy,
 			double originX, double originY, double originZ,
 			double offsetIX, double offsetIY, double offsetIZ, double spacingI,
-			double offsetJX, double offsetJY, double offsetJZ, double spacingJ, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			double offsetJX, double offsetJY, double offsetJZ, double spacingJ, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 		
 		Grid2dRepresentation*  getSupportingRepresentation();
 		std::string getSupportingRepresentationUuid() const;
@@ -2778,7 +2773,7 @@ namespace RESQML2_0_1_NS
 		void addParentTrajectory(double kickoffMd, double parentMd, WellboreTrajectoryRepresentation* parentTrajRep);
 		WellboreTrajectoryRepresentation* getParentTrajectory() const;
 		double getParentTrajectoryMd() const;
-		std::vector<WellboreTrajectoryRepresentation const *> getChildrenTrajectorySet() const;
+		std::vector<WellboreTrajectoryRepresentation *> getChildrenTrajectorySet() const;
 
 		bool hasGeometry() const;
 		int getGeometryKind() const;
@@ -2871,7 +2866,7 @@ namespace RESQML2_0_1_NS
 	{
 	public:		
 		unsigned int getWellboreMarkerCount();
-		std::vector<WellboreMarker const *> getWellboreMarkerSet() const;
+		std::vector<WellboreMarker *> getWellboreMarkerSet() const;
 
 		void setIntervalStratigraphicUnits(unsigned int * stratiUnitIndices, unsigned int nullValue, class StratigraphicOccurrenceInterpretation* stratiOccurenceInterp, COMMON_NS::AbstractHdfProxy* proxy);
 		StratigraphicOccurrenceInterpretation* getStratigraphicOccurrenceInterpretation();
@@ -2940,28 +2935,28 @@ namespace RESQML2_0_1_NS
 		void setGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points, ULONG64 pointCount, COMMON_NS::AbstractHdfProxy* proxy,
 			const std::string& faceIndicesPerCell, const std::string& faceIndicesCumulativeCountPerCell,
 			ULONG64 faceCount, const std::string& nodeIndicesPerFace, const std::string& nodeIndicesCumulativeCountPerFace,
-			gsoap_resqml2_0_1::resqml2__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			gsoap_resqml2_0_1::resqml2__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometry(unsigned char * cellFaceIsRightHanded, double * points, ULONG64 pointCount, COMMON_NS::AbstractHdfProxy* proxy,
 			ULONG64 * faceIndicesPerCell, ULONG64 * faceIndicesCumulativeCountPerCell,
 			ULONG64 faceCount, ULONG64 * nodeIndicesPerFace, ULONG64 * nodeIndicesCumulativeCountPerFace,
-			gsoap_resqml2_0_1::resqml2__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			gsoap_resqml2_0_1::resqml2__CellShape cellShape, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setTetrahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
 			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
-			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setTetrahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points,
 			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
-			ULONG64 * faceIndicesPerCell, ULONG64 * nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			ULONG64 * faceIndicesPerCell, ULONG64 * nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setHexahedraOnlyGeometryUsingExistingDatasets(const std::string& cellFaceIsRightHanded, const std::string& points,
 			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
-			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			const std::string& faceIndicesPerCell, const std::string& nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setHexahedraOnlyGeometry(unsigned char * cellFaceIsRightHanded, double * points,
 			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
-			ULONG64 * faceIndicesPerCell, ULONG64 * nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			ULONG64 * faceIndicesPerCell, ULONG64 * nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 	};
 	
 #ifdef SWIGPYTHON
@@ -3056,7 +3051,7 @@ namespace RESQML2_0_1_NS
 			double originX, double originY, double originZ,
 			double directionIX, double directionIY, double directionIZ, double spacingI,
 			double directionJX, double directionJY, double directionJZ, double spacingJ,
-			double directionKX, double directionKY, double directionKZ, double spacingK, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			double directionKX, double directionKY, double directionKZ, double spacingK, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void addSeismic3dCoordinatesToPatch(
 			unsigned int patchIndex,
@@ -3076,14 +3071,14 @@ namespace RESQML2_0_1_NS
 			double * points, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned long splitCoordinateLineCount = 0, unsigned int * pillarOfCoordinateLine = nullptr,
 			unsigned int * splitCoordinateLineColumnCumulativeCount = nullptr, unsigned int * splitCoordinateLineColumns = nullptr,
-			char * definedPillars = nullptr, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			char * definedPillars = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsCoordinateLineNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & points, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned long splitCoordinateLineCount = 0, const std::string & pillarOfCoordinateLine = "",
 			const std::string & splitCoordinateLineColumnCumulativeCount = "", const std::string & splitCoordinateLineColumns = "",
-			const std::string & definedPillars = "", RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			const std::string & definedPillars = "", RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 	};
 
 #ifdef SWIGPYTHON
@@ -3102,35 +3097,35 @@ namespace RESQML2_0_1_NS
 		void setGeometryAsParametricNonSplittedPillarNodes(
 			gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind,
-			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricNonSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars,
-			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricSplittedPillarNodes(
 			gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
 			unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
-			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, COMMON_NS::AbstractHdfProxy* proxy,
 			unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
-			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricSplittedPillarNodes(bool isRightHanded,
 			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
 			unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
-			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		void setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
 			gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
 			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
 			unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
-			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs const * localCrs = nullptr);
+			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 	};
 	
 #ifdef SWIGPYTHON

@@ -35,7 +35,7 @@ using namespace std;
 
 const char* AbstractGridRepresentation::XML_TAG = "AbstractGridRepresentation";
 
-std::vector<RESQML2_NS::GridConnectionSetRepresentation const *> AbstractGridRepresentation::getGridConnectionSetRepresentationSet() const
+std::vector<RESQML2_NS::GridConnectionSetRepresentation *> AbstractGridRepresentation::getGridConnectionSetRepresentationSet() const
 {
 	return repository->getSourceObjects<RESQML2_NS::GridConnectionSetRepresentation>(this);
 }
@@ -51,9 +51,9 @@ unsigned int AbstractGridRepresentation::getGridConnectionSetRepresentationCount
 	return static_cast<unsigned int>(result);
 }
 
-RESQML2_NS::GridConnectionSetRepresentation const * AbstractGridRepresentation::getGridConnectionSetRepresentation(unsigned int index) const
+RESQML2_NS::GridConnectionSetRepresentation * AbstractGridRepresentation::getGridConnectionSetRepresentation(unsigned int index) const
 {
-	const std::vector<RESQML2_NS::GridConnectionSetRepresentation const *>& gridConnectionSetRepresentationSet = getGridConnectionSetRepresentationSet();
+	const std::vector<RESQML2_NS::GridConnectionSetRepresentation *>& gridConnectionSetRepresentationSet = getGridConnectionSetRepresentationSet();
 
 	if (gridConnectionSetRepresentationSet.size() > index) {
 		return gridConnectionSetRepresentationSet[index];
@@ -118,7 +118,7 @@ AbstractGridRepresentation* AbstractGridRepresentation::getParentGrid() const
 	return nullptr;
 }
 
-std::vector<RESQML2_NS::AbstractGridRepresentation const *> AbstractGridRepresentation::getChildGridSet() const
+std::vector<RESQML2_NS::AbstractGridRepresentation *> AbstractGridRepresentation::getChildGridSet() const
 {
 	return repository->getSourceObjects<RESQML2_NS::AbstractGridRepresentation>(this);
 }
@@ -133,9 +133,9 @@ unsigned int AbstractGridRepresentation::getChildGridCount() const {
 	return static_cast<unsigned int>(result);
 }
 
-AbstractGridRepresentation const * AbstractGridRepresentation::getChildGrid(unsigned int index) const
+AbstractGridRepresentation * AbstractGridRepresentation::getChildGrid(unsigned int index) const
 {
-	const std::vector<RESQML2_NS::AbstractGridRepresentation const *>& childGridSet = getChildGridSet();
+	const std::vector<RESQML2_NS::AbstractGridRepresentation *>& childGridSet = getChildGridSet();
 
 	if (childGridSet.size() > index) {
 		return childGridSet[index];
@@ -1063,7 +1063,7 @@ void AbstractGridRepresentation::getRegridChildCellWeights(const char & dimensio
 	}
 }
 
-void AbstractGridRepresentation::loadTargetRelationships() const
+void AbstractGridRepresentation::loadTargetRelationships()
 {
 	AbstractRepresentation::loadTargetRelationships();
 

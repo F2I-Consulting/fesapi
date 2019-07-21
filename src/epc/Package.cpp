@@ -569,13 +569,13 @@ void Package::writePackage()
 	writeStringIntoNewPart(d_ptr->fileContentType.toString(), "[Content_Types].xml");
 	
 	// write Principal Relationships file.
-	if (!d_ptr->filePrincipalRelationship.isEmpty())
+	if (!d_ptr->filePrincipalRelationship.isEmpty()) {
 		writeStringIntoNewPart(d_ptr->filePrincipalRelationship.toString(), "_rels/.rels");
+	}
 	
 	// Write all the part relationships
-	for (PartMap::iterator i = d_ptr->allFileParts.begin(); i != d_ptr->allFileParts.end(); i++){
-		if (!i->second.getFileRelationship().isEmpty())
-		{
+	for (PartMap::iterator i = d_ptr->allFileParts.begin(); i != d_ptr->allFileParts.end(); ++i) {
+		if (!i->second.getFileRelationship().isEmpty()) {
 			writeStringIntoNewPart(i->second.getFileRelationship().toString(), i->second.getFileRelationship().getPathName());
 		}
 	}
