@@ -55,6 +55,6 @@ namespace WITSML2_1_NS
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 	};
 }

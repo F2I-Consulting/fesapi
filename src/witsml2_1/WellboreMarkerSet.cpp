@@ -73,7 +73,7 @@ void WellboreMarkerSet::setWellbore(Wellbore* witsmlWellbore)
 	wms->Wellbore = witsmlWellbore->newEml22Reference();
 }
 
-void WellboreMarkerSet::loadTargetRelationships() const
+void WellboreMarkerSet::loadTargetRelationships()
 {
 	convertDorIntoRel<Wellbore>(getWellboreDor());
 }

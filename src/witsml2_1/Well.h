@@ -82,6 +82,6 @@ namespace WITSML2_1_NS
 		virtual std::string getXmlTag() const {return XML_TAG;}
 
 	private:
-		void loadTargetRelationships() const {}
+		void loadTargetRelationships() {}
 	};
 }

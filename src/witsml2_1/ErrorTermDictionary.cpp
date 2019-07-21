@@ -86,7 +86,7 @@ void ErrorTermDictionary::pushBackErrorTerm(ErrorTerm* et)
 	dict->ErrorTerm.push_back(static_cast<witsml2__ErrorTerm*>(et->getGsoapProxy2_2()));
 }
 
-void ErrorTermDictionary::loadTargetRelationships() const
+void ErrorTermDictionary::loadTargetRelationships()
 {
 	witsml2__ErrorTermDictionary* dict = static_cast<witsml2__ErrorTermDictionary*>(gsoapProxy2_2);
 

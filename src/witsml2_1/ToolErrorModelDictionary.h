@@ -54,7 +54,7 @@ namespace WITSML2_1_NS
 		/**
 		* Resolve all relationships of the object in an epc document.
 		*/
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}

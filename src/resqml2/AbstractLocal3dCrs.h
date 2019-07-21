@@ -154,7 +154,6 @@ namespace RESQML2_NS
 
 		void convertXyzPointsToGlobalCrs(double * xyzPoints, ULONG64 xyzPointCount, bool withoutTranslation = false) const;
 
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 	};
 }
-

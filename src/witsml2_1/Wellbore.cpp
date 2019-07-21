@@ -118,7 +118,7 @@ void Wellbore::setShape(const witsml2__WellboreShape & shape)
 	*wellbore->Shape = shape;
 }
 
-void Wellbore::loadTargetRelationships() const
+void Wellbore::loadTargetRelationships()
 {
 	convertDorIntoRel<Well>(getWellDor());
 }

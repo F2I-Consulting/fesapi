@@ -105,7 +105,7 @@ namespace WITSML2_1_NS
 		DLL_IMPORT_OR_EXPORT void pushBackStationaryGyro(gsoap_eml2_2::witsml2__GyroAxisCombination axisCombination,
 			double start, bool startInclusive, double end, bool endInclusive, gsoap_eml2_2::eml22__PlaneAngleUom rangeUom);
 
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}

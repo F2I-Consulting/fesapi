@@ -80,7 +80,7 @@ void ErrorTerm::setWeightingFunction(WeightingFunction* weightingFunction)
 	}
 }
 
-void ErrorTerm::loadTargetRelationships() const
+void ErrorTerm::loadTargetRelationships()
 {
 	convertDorIntoRel<WeightingFunction>(getWeightingFunctionDor());
 }

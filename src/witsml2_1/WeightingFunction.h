@@ -65,7 +65,7 @@ namespace WITSML2_1_NS
 		DLL_IMPORT_OR_EXPORT void setSingularityEastFormula(const std::string & singularityEastFormula);
 		DLL_IMPORT_OR_EXPORT void setSingularityVerticalFormula(const std::string & singularityVerticalFormula);
 
-		void loadTargetRelationships() const {}
+		void loadTargetRelationships() {}
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}

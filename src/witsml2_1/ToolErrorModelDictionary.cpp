@@ -86,7 +86,7 @@ void ToolErrorModelDictionary::pushBackToolErrorModel(ToolErrorModel* tem)
 	dict->ToolErrorModel.push_back(static_cast<witsml2__ToolErrorModel*>(tem->getGsoapProxy2_2()));
 }
 
-void ToolErrorModelDictionary::loadTargetRelationships() const
+void ToolErrorModelDictionary::loadTargetRelationships()
 {
 	witsml2__ToolErrorModelDictionary* dict = static_cast<witsml2__ToolErrorModelDictionary*>(gsoapProxy2_2);
 

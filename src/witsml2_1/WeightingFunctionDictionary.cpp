@@ -84,7 +84,7 @@ void WeightingFunctionDictionary::pushBackWeightingFunction(WeightingFunction* w
 	dict->WeightingFunction.push_back(static_cast<witsml2__WeightingFunction*>(wf->getGsoapProxy2_2()));
 }
 
-void WeightingFunctionDictionary::loadTargetRelationships() const
+void WeightingFunctionDictionary::loadTargetRelationships()
 {
 	witsml2__WeightingFunctionDictionary* dict = static_cast<witsml2__WeightingFunctionDictionary*>(gsoapProxy2_2);
 

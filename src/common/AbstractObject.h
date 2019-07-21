@@ -415,6 +415,6 @@ namespace COMMON_NS
 		/**
 		* Read the forward relationships of this dataobject and update the rels of the associated datarepository.
 		*/
-		virtual void loadTargetRelationships() const = 0;
+		virtual void loadTargetRelationships() = 0;
 	};
 }

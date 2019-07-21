@@ -716,24 +716,6 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_2::eml
 }
 #endif
 
-#if WITH_EXPERIMENTAL
-COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_2::eml22__DataObjectReference const * dor)
-{
-	const size_t lastEqualCharPos = dor->ContentType.find_last_of('='); // The XML tag is after "type="
-	const string contentType = dor->ContentType.substr(lastEqualCharPos + 1);
-
-	if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(COMMON_NS::GraphicalInformationSet)
-	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::DiscreteColorMap)
-	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::ContinuousColorMap)
-	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
-	{
-		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
-	}
-
-	throw invalid_argument("The content type " + contentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
-}
-#endif
-
 //************************************
 //************ HDF *******************
 //************************************
@@ -1555,7 +1537,6 @@ RESQML2_2_NS::ContinuousColorMap* DataObjectRepository::createContinuousColorMap
 {
 	return new RESQML2_2_NS::ContinuousColorMap(this, guid, title, interpolationDomain, interpolationMethod);
 }
-#endif
 
 WITSML2_1_NS::ToolErrorModel* DataObjectRepository::createPartialToolErrorModel(
 	const std::string & guid,
@@ -1610,23 +1591,6 @@ WITSML2_1_NS::WeightingFunctionDictionary* DataObjectRepository::createWeighting
 	const std::string & title)
 {
 	return new WITSML2_1_NS::WeightingFunctionDictionary(this, guid, title);
-}
-
-#if WITH_EXPERIMENTAL
-COMMON_NS::GraphicalInformationSet* DataObjectRepository::createGraphicalInformationSet(const std::string & guid, const std::string & title)
-{
-	return new COMMON_NS::GraphicalInformationSet(this, guid, title);
-}
-
-RESQML2_2_NS::DiscreteColorMap* DataObjectRepository::createDiscreteColorMap(const std::string& guid, const std::string& title)
-{
-	return new RESQML2_2_NS::DiscreteColorMap(this, guid, title);
-}
-
-RESQML2_2_NS::ContinuousColorMap* DataObjectRepository::createContinuousColorMap(const std::string& guid, const std::string& title,
-	gsoap_eml2_2::resqml2__InterpolationDomain interpolationDomain, gsoap_eml2_2::resqml2__InterpolationMethod interpolationMethod)
-{
-	return new RESQML2_2_NS::ContinuousColorMap(this, guid, title, interpolationDomain, interpolationMethod);
 }
 #endif
 

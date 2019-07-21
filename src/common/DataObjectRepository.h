@@ -130,7 +130,6 @@ namespace RESQML2_2_NS
 	class DiscreteColorMap;
 	class ContinuousColorMap;
 }
-#endif
 
 namespace WITSML2_1_NS
 {

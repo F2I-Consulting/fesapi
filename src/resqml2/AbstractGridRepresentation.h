@@ -522,7 +522,7 @@ namespace RESQML2_NS
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 
 	protected:
 

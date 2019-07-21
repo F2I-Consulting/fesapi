@@ -41,7 +41,6 @@ EpcDocument::EpcDocument(const string& fileName)
 {
 	package = nullptr;
 	open(fileName);
-	hdfPermissionAccess = hdfPermissionAccess_;
 }
 
 EpcDocument::~EpcDocument()
@@ -214,7 +213,7 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 	return result;
 }
 
-std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo)
+std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess)
 {
 	std::string result;
 	vector<string> warningsDuringReading = package->openForReading(filePath);

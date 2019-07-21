@@ -105,7 +105,7 @@ witsml2__TrajStationType Trajectory::getTrajStationType(unsigned int trajStation
 	return getTrajectoryStation(trajStationIndex)->TypeTrajStation;
 }
 
-void Trajectory::loadTargetRelationships() const
+void Trajectory::loadTargetRelationships()
 {
 	convertDorIntoRel<Wellbore>(getWellboreDor());
 }

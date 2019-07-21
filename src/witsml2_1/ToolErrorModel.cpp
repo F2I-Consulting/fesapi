@@ -347,7 +347,7 @@ void ToolErrorModel::pushBackStationaryGyro(gsoap_eml2_2::witsml2__GyroAxisCombi
 	gyro->Range->Uom = gsoap_eml2_2::soap_eml22__PlaneAngleUom2s(gsoapProxy2_2->soap, rangeUom);
 }
 
-void ToolErrorModel::loadTargetRelationships() const
+void ToolErrorModel::loadTargetRelationships()
 {
 	witsml2__ToolErrorModel const * tem = static_cast<witsml2__ToolErrorModel*>(gsoapProxy2_2);
 

@@ -94,7 +94,8 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT ULONG64 getIntervalStratigraphicUnitIndices(ULONG64 * stratiUnitIndices);
 
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
+
 		/**
 		* The returned value is not computed. It is just read from the DataObject.
 		* Since it is denormalized information, inconsistency (mainly due to non synchronized information) might occur.

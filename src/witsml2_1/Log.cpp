@@ -67,7 +67,7 @@ void Log::setWellbore(Wellbore* witsmlWellbore)
 	log->Wellbore = witsmlWellbore->newEml22Reference();
 }
 
-void Log::loadTargetRelationships() const
+void Log::loadTargetRelationships()
 {
 	convertDorIntoRel<Wellbore>(getWellboreDor());
 }
