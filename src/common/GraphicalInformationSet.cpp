@@ -497,7 +497,11 @@ void GraphicalInformationSet::setDiscreteColorMap(AbstractObject* targetObject, 
 
 	colorInformation->UseReverseMapping = useReverseMapping;
 	colorInformation->UseLogarithmicMapping = useLogarithmicMapping;
-	colorInformation->ValueVectorIndex = valueVectorIndex;
+
+	if (colorInformation->ValueVectorIndex == nullptr) {
+		colorInformation->ValueVectorIndex = soap_new_LONG64(gsoapProxy2_2->soap, 1);
+	}
+	*colorInformation->ValueVectorIndex = valueVectorIndex;
 
 	getRepository()->addRelationship(this, discreteColorMap);
 	colorInformation->DiscreteColorMap = discreteColorMap->newEml22Reference();
@@ -595,7 +599,11 @@ void GraphicalInformationSet::setContinuousColorMap(AbstractObject* targetObject
 
 	colorInformation->UseReverseMapping = useReverseMapping;
 	colorInformation->UseLogarithmicMapping = useLogarithmicMapping;
-	colorInformation->ValueVectorIndex = valueVectorIndex;
+	
+	if (colorInformation->ValueVectorIndex == nullptr) {
+		colorInformation->ValueVectorIndex = soap_new_LONG64(gsoapProxy2_2->soap, 1);
+	}
+	*colorInformation->ValueVectorIndex = valueVectorIndex;
 
 	getRepository()->addRelationship(this, continuousColorMap);
 	colorInformation->ContinuousColorMap = continuousColorMap->newEml22Reference();
