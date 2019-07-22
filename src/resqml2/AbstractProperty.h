@@ -234,6 +234,6 @@ namespace RESQML2_NS
 
 	protected:
 
-		virtual void loadTargetRelationships() const;
+		virtual void loadTargetRelationships();
 	};
 }

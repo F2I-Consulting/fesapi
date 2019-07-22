@@ -351,7 +351,7 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodesUsingExistin
 	const std::string & points, COMMON_NS::AbstractHdfProxy* proxy,
 	const unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns,
-	const std::string & definedPillars, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
+	const std::string & definedPillars, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (points.empty()) {
 		throw invalid_argument("The points HDF dataset of the ijk grid cannot be empty.");
@@ -445,7 +445,7 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodes(
 	double * points, COMMON_NS::AbstractHdfProxy * proxy,
 	unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
 	unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns,
-	char * definedPillars, RESQML2_NS::AbstractLocal3dCrs const * localCrs)
+	char * definedPillars, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	if (points == nullptr) {
 		throw invalid_argument("The points of the ijk grid cannot be null.");

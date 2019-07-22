@@ -104,12 +104,12 @@ namespace RESQML2_NS
 		/**
 		* Getter (read only) of all the properties which use this representation as support.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<class AbstractProperty  const *> getPropertySet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class AbstractProperty *> getPropertySet() const;
 
 		/**
 		* Getter of all the properties values which use this representation as support.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<class AbstractValuesProperty const *> getValuesPropertySet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class AbstractValuesProperty *> getValuesPropertySet() const;
 
 		/**
 		* Getter of the count of values properties which use this representation as support.
@@ -122,13 +122,13 @@ namespace RESQML2_NS
 		* Necessary for now in SWIG context because I ma not sure if I can always wrap a vector of polymorphic class yet.
 		* Throw an out of bound exception if the index is superior or equal to the count of values property.
 		*/
-		DLL_IMPORT_OR_EXPORT class AbstractValuesProperty const * getValuesProperty(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT class AbstractValuesProperty * getValuesProperty(unsigned int index) const;
 
 		/**
 		 * Set the interpretation which is associated to this representation.
 		 * And push back this representation as a representation of the interpreation as well.
 		 */
-		DLL_IMPORT_OR_EXPORT void setInterpretation(class AbstractFeatureInterpretation const * interp);
+		DLL_IMPORT_OR_EXPORT void setInterpretation(class AbstractFeatureInterpretation * interp);
 
 		/**
 		* Get the interpretation of this representation
@@ -153,7 +153,7 @@ namespace RESQML2_NS
 		/**
 		* Get all the subrepresentations of this instance.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<SubRepresentation const *> getSubRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<SubRepresentation *> getSubRepresentationSet() const;
 
 		/**
 		 * Get the subrepresentation count into this EPC document.
@@ -165,12 +165,12 @@ namespace RESQML2_NS
 		 * Get a particular subrepresentation according to its position in the EPC document.
 		 * It is mainly used in SWIG context for parsing the vector from a non C++ language.
 		 */
-		DLL_IMPORT_OR_EXPORT SubRepresentation const * getSubRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT SubRepresentation * getSubRepresentation(unsigned int index) const;
 
 		/**
 		* Get all the subrepresentations of this instance which represent a fault.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<SubRepresentation const *> getFaultSubRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<SubRepresentation *> getFaultSubRepresentationSet() const;
 
 		/**
 		 * Get the subrepresentation count into this EPC document which are representations of a fault.
@@ -182,7 +182,7 @@ namespace RESQML2_NS
 		 * Get a particular fault subrepresentation according to its position in the EPC document.
 		 * It is mainly used in SWIG context for parsing the vector from a non C++ language.
 		 */
-		DLL_IMPORT_OR_EXPORT SubRepresentation const * getFaultSubRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT SubRepresentation * getFaultSubRepresentation(unsigned int index) const;
         
 		/**
 		* Get the xyz point count in a given patch.
@@ -245,7 +245,7 @@ namespace RESQML2_NS
 		/**
 		* Get all the subrepresentations of this instance which represent a fault.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RepresentationSetRepresentation const *> getRepresentationSetRespresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RepresentationSetRepresentation *> getRepresentationSetRespresentationSet() const;
 
 		/**
 		 * Get the count of representation set representations which contain this representation
@@ -255,7 +255,7 @@ namespace RESQML2_NS
 		/**
 		 * Get the parent representation set representations at the specified index of the representation set representation list.
 		 */
-		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation const * getRepresentationSetRepresentation(const ULONG64  & index) const;
+		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation * getRepresentationSetRepresentation(const ULONG64  & index) const;
 
 		/**
 		* Push back a patch of seismic 3D coordinates info.
@@ -303,6 +303,6 @@ namespace RESQML2_NS
 
 	protected:
 
-		virtual void loadTargetRelationships() const;
+		virtual void loadTargetRelationships();
 	};
 }

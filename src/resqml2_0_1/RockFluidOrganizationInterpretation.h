@@ -59,7 +59,7 @@ namespace RESQML2_0_1_NS
 		*/
 		~RockFluidOrganizationInterpretation() {}
 		
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::AbstractGridRepresentation const *> getGridRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::AbstractGridRepresentation *> getGridRepresentationSet() const;
 
 		/**
 		* @return The count of grid representation associated to this rock fluid organization.
@@ -70,7 +70,7 @@ namespace RESQML2_0_1_NS
 		* Get a grid representation associated to this rock fluid org interp by means of its index.
 		* @param index	The index of the grid representation to get in the array of grid representaitons of this rock fluid org interp.
 		*/
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractGridRepresentation const * getGridRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractGridRepresentation * getGridRepresentation(unsigned int index) const;
 
 		/**
 		* Check if a grid representation is wether associated to this rock fluid org interp or not.
@@ -101,6 +101,6 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 	private:
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 	};
 }

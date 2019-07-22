@@ -98,14 +98,14 @@ namespace {
 	std::vector<epc::Relationship> getAllEpcRelationships(const DataObjectRepository & repo, COMMON_NS::AbstractObject const * dataObj) {
 		std::vector<epc::Relationship> result;
 
-		const std::vector<COMMON_NS::AbstractObject const *>& srcObj = repo.getSourceObjects(dataObj);
+		const std::vector<COMMON_NS::AbstractObject *>& srcObj = repo.getSourceObjects(dataObj);
 		for (size_t index = 0; index < srcObj.size(); ++index) {
 			epc::Relationship relRep(srcObj[index]->getPartNameInEpcDocument(), "", srcObj[index]->getUuid());
 			relRep.setSourceObjectType();
 			result.push_back(relRep);
 		}
 
-		const std::vector<COMMON_NS::AbstractObject const *>& targetObj = repo.getTargetObjects(dataObj);
+		const std::vector<COMMON_NS::AbstractObject *>& targetObj = repo.getTargetObjects(dataObj);
 		for (size_t index = 0; index < targetObj.size(); ++index) {
 			epc::Relationship relRep(targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
 			relRep.setDestinationObjectType();

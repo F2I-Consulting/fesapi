@@ -43,7 +43,7 @@ namespace RESQML2_NS
 		*/
 		std::string pushBackRefToExistingIntegerDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
 
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 
 	public:
 

@@ -113,6 +113,6 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT std::unordered_map<long, std::string> getMap() const;
 
 	protected:
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 	};
 }

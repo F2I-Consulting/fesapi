@@ -29,7 +29,7 @@ using namespace RESQML2_NS;
 
 const char* TimeSeries::XML_TAG = "TimeSeries";
 
-void TimeSeries::pushBackTimestamp(const time_t & timestamp)
+void TimeSeries::pushBackTimestamp(time_t timestamp)
 {
 	pushBackTimestamp(*gmtime(&timestamp));
 }
@@ -46,7 +46,7 @@ void TimeSeries::pushBackTimestamp(const tm & timestamp)
 	}
 }
 
-unsigned int TimeSeries::getTimestampIndex(const time_t & timestamp) const
+unsigned int TimeSeries::getTimestampIndex(time_t timestamp) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::_resqml2__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml2__TimeSeries*>(gsoapProxy2_0_1);
@@ -98,13 +98,13 @@ unsigned int TimeSeries::getTimestampCount() const
 	}
 }
 
-time_t TimeSeries::getTimestamp(const unsigned int & index) const
+time_t TimeSeries::getTimestamp(unsigned int index) const
 {
 	tm temp = getTimestampAsTimeStructure(index);
 	return timeTools::timegm(&temp);
 }
 
-tm TimeSeries::getTimestampAsTimeStructure(const unsigned int & index) const
+tm TimeSeries::getTimestampAsTimeStructure(unsigned int index) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::_resqml2__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml2__TimeSeries*>(gsoapProxy2_0_1);
@@ -120,10 +120,10 @@ tm TimeSeries::getTimestampAsTimeStructure(const unsigned int & index) const
 	throw out_of_range("The index is out of range");
 }
 
-std::vector<RESQML2_NS::AbstractProperty const *> TimeSeries::getPropertySet() const
+std::vector<RESQML2_NS::AbstractProperty *> TimeSeries::getPropertySet() const
 {
 	return getRepository()->getSourceObjects<AbstractProperty>(this);
 }
 
-void TimeSeries::loadTargetRelationships() const
+void TimeSeries::loadTargetRelationships()
 {}

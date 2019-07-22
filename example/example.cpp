@@ -1866,7 +1866,7 @@ void showAllMetadata(COMMON_NS::AbstractObject const * obj, const std::string & 
 
 void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* enabledCells = nullptr)
 {
-	std::vector<RESQML2_NS::AbstractValuesProperty const *> propertyValuesSet = rep->getValuesPropertySet();
+	std::vector<RESQML2_NS::AbstractValuesProperty *> propertyValuesSet = rep->getValuesPropertySet();
 	if (propertyValuesSet.empty() == false)
 		cout << "PROPERTIES" << std::endl;
 	for (size_t propIndex = 0; propIndex < propertyValuesSet.size(); ++propIndex)
@@ -1985,7 +1985,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 	std::cout << "\t--------------------------------------------------" << std::endl;
 }
 
-void showAllSubRepresentations(const vector<RESQML2_NS::SubRepresentation const *> & subRepSet)
+void showAllSubRepresentations(const vector<RESQML2_NS::SubRepresentation *> & subRepSet)
 {
 	if (!subRepSet.empty()) {
 		cout << "SUBREPRESENTATIONS" << std::endl;
@@ -2042,13 +2042,13 @@ void deserializeStratiColumn(StratigraphicColumn * stratiColumn)
 			showAllMetadata(stratiColumnRankInterp->getDirectObjectOfContact(contactIndex));
 		}
 
-		vector<StratigraphicOccurrenceInterpretation const*> soiSet = stratiColumnRankInterp->getStratigraphicOccurrenceInterpretationSet();
+		vector<StratigraphicOccurrenceInterpretation*> soiSet = stratiColumnRankInterp->getStratigraphicOccurrenceInterpretationSet();
 		for (size_t soiIndex = 0; soiIndex < soiSet.size(); ++soiIndex) {
-			vector<WellboreMarkerFrameRepresentation const *> markerFrameSet = soiSet[soiIndex]->getWellboreMarkerFrameRepresentationSet();
+			vector<WellboreMarkerFrameRepresentation *> markerFrameSet = soiSet[soiIndex]->getWellboreMarkerFrameRepresentationSet();
 			for (size_t markerFrameIndex = 0; markerFrameIndex < markerFrameSet.size(); ++markerFrameIndex) {
-				WellboreMarkerFrameRepresentation const * markerFrame = markerFrameSet[markerFrameIndex];
+				WellboreMarkerFrameRepresentation * markerFrame = markerFrameSet[markerFrameIndex];
 				showAllMetadata(markerFrame);
-				vector<WellboreMarker const *> markerSet = markerFrame->getWellboreMarkerSet();
+				vector<WellboreMarker *> markerSet = markerFrame->getWellboreMarkerSet();
 				double* doubleMds = new double[markerFrame->getMdValuesCount()];
 				markerFrame->getMdAsDoubleValues(doubleMds);
 				for (size_t mIndex = 0; mIndex < markerSet.size(); ++mIndex) {
@@ -3283,50 +3283,53 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 {
 	std::cout << "GRAPHICAL INFORMATIONS" << std::endl;
 
-	COMMON_NS::GraphicalInformationSet* graphicalInformationSet = pck.getDataObjects<COMMON_NS::GraphicalInformationSet>()[0];
-	for (unsigned int i = 0; i < graphicalInformationSet->getGraphicalInformationSetCount(); ++i)
-	{
-		COMMON_NS::AbstractObject* targetObject = graphicalInformationSet->getTargetObject(i);
+	std::vector<COMMON_NS::GraphicalInformationSet*> gisSet = pck.getDataObjects<COMMON_NS::GraphicalInformationSet>();
+	for (unsigned int gisIndex = 0; gisIndex < gisSet.size(); ++gisIndex) {
+		COMMON_NS::GraphicalInformationSet* graphicalInformationSet = gisSet[gisIndex];
+		for (unsigned int i = 0; i < graphicalInformationSet->getGraphicalInformationSetCount(); ++i)
+		{
+			COMMON_NS::AbstractObject* targetObject = graphicalInformationSet->getTargetObject(i);
 
-		std::cout << "graphical information for: " << targetObject->getTitle() << std::endl;
+			std::cout << "graphical information for: " << targetObject->getTitle() << std::endl;
 
-		if (graphicalInformationSet->hasDefaultColor(targetObject)) {
-			std::cout << "default hue: " << graphicalInformationSet->getDefaultHue(targetObject) << std::endl;
-			std::cout << "default saturation: " << graphicalInformationSet->getDefaultSaturation(targetObject) << std::endl;
-			std::cout << "default value: " << graphicalInformationSet->getDefaultValue(targetObject) << std::endl;
-			std::cout << "default alpha: " << graphicalInformationSet->getDefaultAlpha(targetObject) << std::endl;
-			if (graphicalInformationSet->hasDefaultColorTitle(targetObject)) {
-				std::cout << "default color title: " << graphicalInformationSet->getDefaultColorTitle(targetObject) << std::endl;
-			}
-		}
-
-		if (graphicalInformationSet->hasDiscreteColorMap(targetObject)) {
-			RESQML2_2_NS::DiscreteColorMap* discreteColorMap = graphicalInformationSet->getDiscreteColorMap(targetObject);
-			std::cout << "discrete color map title: " << discreteColorMap->getTitle() << std::endl;
-			unsigned int r, g, b;
-			for (unsigned int colorIndex = 0; colorIndex < discreteColorMap->getColorCount(); ++colorIndex) {
-				discreteColorMap->getRgbColor(colorIndex, r, g, b);
-				std::cout << colorIndex << ": (" << r << ", " << g << ", " << b << ", ";
-				std::cout << discreteColorMap->getAlpha(colorIndex);
-				if (discreteColorMap->hasColorTitle(colorIndex)) {
-					std::cout << ", " << discreteColorMap->getColorTitle(colorIndex);
+			if (graphicalInformationSet->hasDefaultColor(targetObject)) {
+				std::cout << "default hue: " << graphicalInformationSet->getDefaultHue(targetObject) << std::endl;
+				std::cout << "default saturation: " << graphicalInformationSet->getDefaultSaturation(targetObject) << std::endl;
+				std::cout << "default value: " << graphicalInformationSet->getDefaultValue(targetObject) << std::endl;
+				std::cout << "default alpha: " << graphicalInformationSet->getDefaultAlpha(targetObject) << std::endl;
+				if (graphicalInformationSet->hasDefaultColorTitle(targetObject)) {
+					std::cout << "default color title: " << graphicalInformationSet->getDefaultColorTitle(targetObject) << std::endl;
 				}
-				std::cout << ")" << std::endl;
 			}
-		}
 
-		if (graphicalInformationSet->hasContinuousColorMap(targetObject)) {
-			RESQML2_2_NS::ContinuousColorMap* continuousColorMap = graphicalInformationSet->getContinuousColorMap(targetObject);
-			std::cout << "continuous color map title: " << continuousColorMap->getTitle() << std::endl;
-			unsigned int r, g, b;
-			for (unsigned int mapIndex = 0; mapIndex < continuousColorMap->getColorCount(); ++mapIndex) {
-				continuousColorMap->getRgbColor(mapIndex, r, g, b);
-				std::cout << mapIndex << ": (" << r << ", " << g << ", " << b << ", ";
-				std::cout << continuousColorMap->getAlpha(mapIndex);
-				if (continuousColorMap->hasColorTitle(mapIndex)) {
-					std::cout << ", " << continuousColorMap->getColorTitle(mapIndex);
+			if (graphicalInformationSet->hasDiscreteColorMap(targetObject)) {
+				RESQML2_2_NS::DiscreteColorMap* discreteColorMap = graphicalInformationSet->getDiscreteColorMap(targetObject);
+				std::cout << "discrete color map title: " << discreteColorMap->getTitle() << std::endl;
+				unsigned int r, g, b;
+				for (unsigned int colorIndex = 0; colorIndex < discreteColorMap->getColorCount(); ++colorIndex) {
+					discreteColorMap->getRgbColor(colorIndex, r, g, b);
+					std::cout << colorIndex << ": (" << r << ", " << g << ", " << b << ", ";
+					std::cout << discreteColorMap->getAlpha(colorIndex);
+					if (discreteColorMap->hasColorTitle(colorIndex)) {
+						std::cout << ", " << discreteColorMap->getColorTitle(colorIndex);
+					}
+					std::cout << ")" << std::endl;
 				}
-				std::cout << ")" << std::endl;
+			}
+
+			if (graphicalInformationSet->hasContinuousColorMap(targetObject)) {
+				RESQML2_2_NS::ContinuousColorMap* continuousColorMap = graphicalInformationSet->getContinuousColorMap(targetObject);
+				std::cout << "continuous color map title: " << continuousColorMap->getTitle() << std::endl;
+				unsigned int r, g, b;
+				for (unsigned int mapIndex = 0; mapIndex < continuousColorMap->getColorCount(); ++mapIndex) {
+					continuousColorMap->getRgbColor(mapIndex, r, g, b);
+					std::cout << mapIndex << ": (" << r << ", " << g << ", " << b << ", ";
+					std::cout << continuousColorMap->getAlpha(mapIndex);
+					if (continuousColorMap->hasColorTitle(mapIndex)) {
+						std::cout << ", " << continuousColorMap->getColorTitle(mapIndex);
+					}
+					std::cout << ")" << std::endl;
+				}
 			}
 		}
 	}
@@ -3395,21 +3398,21 @@ void deserialize(const string & inputFile)
 	deserializeRockFluidOrganization(repo);
 
 	std::vector<TectonicBoundaryFeature*> faultSet = repo.getFaultSet();
-	std::vector<PolylineSetRepresentation const *> faultPolyRep = repo.getFaultPolylineSetRepSet();
-	std::vector<TriangulatedSetRepresentation const *> faultTriRepSet = repo.getFaultTriangulatedSetRepSet();
+	std::vector<PolylineSetRepresentation *> faultPolyRep = repo.getFaultPolylineSetRepSet();
+	std::vector<TriangulatedSetRepresentation *> faultTriRepSet = repo.getFaultTriangulatedSetRepSet();
 	std::vector<Horizon*> horizonSet = repo.getHorizonSet();
-	std::vector<Grid2dRepresentation const *> horizonGrid2dSet = repo.getHorizonGrid2dRepSet();
-	std::vector<TriangulatedSetRepresentation const *> horizonTriRepSet = repo.getHorizonTriangulatedSetRepSet();
+	std::vector<Grid2dRepresentation *> horizonGrid2dSet = repo.getHorizonGrid2dRepSet();
+	std::vector<TriangulatedSetRepresentation *> horizonTriRepSet = repo.getHorizonTriangulatedSetRepSet();
 	std::vector<TriangulatedSetRepresentation*> unclassifiedTriRepSet = repo.getUnclassifiedTriangulatedSetRepSet();
-	std::vector<PolylineRepresentation const *> horizonSinglePolylineRepSet = repo.getHorizonPolylineRepSet();
+	std::vector<PolylineRepresentation *> horizonSinglePolylineRepSet = repo.getHorizonPolylineRepSet();
 	std::vector<WellboreFeature*> wellboreSet = repo.getWellboreSet();
-	std::vector<WellboreTrajectoryRepresentation const *> wellboreCubicTrajSet = repo.getWellboreTrajectoryRepresentationSet();
+	std::vector<WellboreTrajectoryRepresentation *> wellboreCubicTrajSet = repo.getWellboreTrajectoryRepresentationSet();
 	std::vector<UnstructuredGridRepresentation*> unstructuredGridRepSet = repo.getUnstructuredGridRepresentationSet();
 	std::vector<RESQML2_NS::TimeSeries*> timeSeriesSet = repo.getTimeSeriesSet();
 	std::vector<StratigraphicColumn*> stratiColumnSet = repo.getStratigraphicColumnSet();
 	std::vector<RESQML2_NS::RepresentationSetRepresentation*> representationSetRepresentationSet = repo.getRepresentationSetRepresentationSet();
 	std::vector<RESQML2_NS::SubRepresentation*> subRepresentationSet = repo.getSubRepresentationSet();
-	std::vector<PolylineSetRepresentation const *> frontierPolyRep = repo.getFrontierPolylineSetRepSet();
+	std::vector<PolylineSetRepresentation *> frontierPolyRep = repo.getFrontierPolylineSetRepSet();
 
 	std::cout << "RepresentationSetRepresentation" << endl;
 	for (size_t i = 0; i < representationSetRepresentationSet.size(); i++) {
@@ -3671,7 +3674,7 @@ void deserialize(const string & inputFile)
 				if (wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet()[k]->getXmlTag() == WellboreMarkerFrameRepresentation::XML_TAG)
 				{
 					WellboreMarkerFrameRepresentation const * wmf = static_cast<WellboreMarkerFrameRepresentation const *>(wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet()[k]);
-					vector<WellboreMarker const *> marketSet = wmf->getWellboreMarkerSet();
+					vector<WellboreMarker *> marketSet = wmf->getWellboreMarkerSet();
 					for (size_t markerIndex = 0; markerIndex < marketSet.size(); ++markerIndex)
 					{
 						std::cout << "marker : " << marketSet[markerIndex]->getTitle() << std::endl;
@@ -3727,7 +3730,7 @@ void deserialize(const string & inputFile)
 		delete[] xyzPt;
 		std::cout << "LOGS" << endl;
 		std::cout << "--------------------------------------------------" << std::endl;
-		std::vector<WellboreFrameRepresentation const *> wellboreFrameSet = wellboreCubicTrajSet[i]->getWellboreFrameRepresentationSet();
+		std::vector<WellboreFrameRepresentation *> wellboreFrameSet = wellboreCubicTrajSet[i]->getWellboreFrameRepresentationSet();
 		for (size_t j = 0; j < wellboreFrameSet.size(); j++)
 		{
 			showAllMetadata(wellboreFrameSet[j]);
@@ -4112,7 +4115,7 @@ void deserialize(const string & inputFile)
 	}
 
 	std::cout << endl << "ONLY PARTIAL SUBREPRESENTATIONS" << endl;
-	vector<RESQML2_NS::SubRepresentation const *> onlyPartialSubReps;
+	vector<RESQML2_NS::SubRepresentation *> onlyPartialSubReps;
 	for (size_t i = 0; i < subRepresentationSet.size(); ++i) {
 		if (subRepresentationSet[i]->isPartial()) {
 			onlyPartialSubReps.push_back(subRepresentationSet[i]);

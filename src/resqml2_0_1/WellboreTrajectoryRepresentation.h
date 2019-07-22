@@ -47,12 +47,12 @@ namespace RESQML2_0_1_NS
 		* @param title					A title for the instance to create.
 		* @param mdInfo					The MD information of the trajectory, mainly the well reference point.
 		*/
-		WellboreTrajectoryRepresentation(class WellboreInterpretation const * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum const * mdInfo);
+		WellboreTrajectoryRepresentation(class WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo);
 
 		/**
 		* Creates an instance with an existing deviation survey as its origin.
 		*/
-		WellboreTrajectoryRepresentation(class WellboreInterpretation const * interp, const std::string & guid, const std::string & title, DeviationSurveyRepresentation const * deviationSurvey);
+		WellboreTrajectoryRepresentation(class WellboreInterpretation * interp, const std::string & guid, const std::string & title, DeviationSurveyRepresentation * deviationSurvey);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -106,7 +106,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Set the Md datum of this trajectory
 		*/
-		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum const * mdDatum);
+		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum * mdDatum);
 
 		/**
 		* Getter of the md information associated to this WellboreFeature trajectory representation.
@@ -185,12 +185,12 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get a set of all children trajectories of this trajectory
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<WellboreTrajectoryRepresentation const *> getChildrenTrajectorySet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<WellboreTrajectoryRepresentation *> getChildrenTrajectorySet() const;
 
 		/**
 		* Getter (in read only mode) of all the associated Wellbore frame representations
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<class WellboreFrameRepresentation const *> getWellboreFrameRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class WellboreFrameRepresentation *> getWellboreFrameRepresentationSet() const;
 
 		/**
 		* Get the count of wellbore frame representation which are associated with this wellbore trajectory.
@@ -203,7 +203,7 @@ namespace RESQML2_0_1_NS
 		* Necessary for now in SWIG context because I mm not sure if I can always wrap a vector of polymorphic class yet.
 		* Throw an out of bound exception if the index is superior or equal to the count of wellbore frame representation.
 		*/
-		DLL_IMPORT_OR_EXPORT class WellboreFrameRepresentation const * getWellboreFrameRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT class WellboreFrameRepresentation * getWellboreFrameRepresentation(unsigned int index) const;
 
 		/**
 		* Set the deviation survey which is the source of this trajectory.
@@ -234,6 +234,6 @@ namespace RESQML2_0_1_NS
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getDeviationSurveyDor() const;
 
 	protected:
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 	};
 }

@@ -98,6 +98,6 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
     private:
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 	};
 }

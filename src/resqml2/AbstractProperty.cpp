@@ -38,7 +38,7 @@ under the License.
 using namespace RESQML2_NS;
 using namespace std;
 
-void AbstractProperty::loadTargetRelationships() const
+void AbstractProperty::loadTargetRelationships()
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getRepresentationDor();
 	RESQML2_NS::AbstractRepresentation* rep = getRepository()->getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>(dor->UUID);

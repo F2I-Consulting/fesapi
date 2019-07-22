@@ -88,11 +88,11 @@ void WellboreMarker::setBoundaryFeatureInterpretation(BoundaryFeatureInterpretat
 	marker->Interpretation = interp->newResqmlReference();
 }
 
-void WellboreMarker::loadTargetRelationships() const
+void WellboreMarker::loadTargetRelationships()
 {}
 
 WellboreMarkerFrameRepresentation const * WellboreMarker::getWellMarkerFrameRepresentation() const
 {
-	const vector<WellboreMarkerFrameRepresentation const *> wmfr = getRepository()->getSourceObjects<WellboreMarkerFrameRepresentation>(this);
+	const vector<WellboreMarkerFrameRepresentation *> wmfr = getRepository()->getSourceObjects<WellboreMarkerFrameRepresentation>(this);
 	return wmfr.size() == 1 ? wmfr[0] : nullptr;
 }

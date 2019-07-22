@@ -122,6 +122,6 @@ namespace RESQML2_NS
 	protected:
 		virtual void setXmlParentPropertyKind(PropertyKind* parentPropertyKind) = 0;
 
-		void loadTargetRelationships() const;
+		void loadTargetRelationships();
 	};
 }

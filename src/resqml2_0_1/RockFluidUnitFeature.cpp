@@ -67,7 +67,7 @@ BoundaryFeature* RockFluidUnitFeature::getBottom() const
 	return repository->getDataObjectByUuid<BoundaryFeature>(static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryBottom->UUID);
 }
 
-void RockFluidUnitFeature::loadTargetRelationships() const
+void RockFluidUnitFeature::loadTargetRelationships()
 {
 	GeologicUnitFeature::loadTargetRelationships();
 

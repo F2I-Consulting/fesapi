@@ -66,12 +66,12 @@ void WellCompletion::setWell(Well* witsmlWell)
 	wellCompletion->Well = witsmlWell->newEmlReference();
 }
 
-std::vector<WellboreCompletion const *> WellCompletion::getWellboreCompletions() const
+std::vector<WellboreCompletion *> WellCompletion::getWellboreCompletions() const
 {
 	return getRepository()->getSourceObjects<WellboreCompletion>(this);
 }
 
-void WellCompletion::loadTargetRelationships() const
+void WellCompletion::loadTargetRelationships()
 {
 	convertDorIntoRel<Well>(getWellDor());
 }
