@@ -191,7 +191,7 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 				}
 				epc::FileRelationship relFile;
 				relFile.readFromString(package->extractFile(relFilePath));
-				const vector<epc::Relationship> allRels = relFile.getAllRelationship();
+				const vector<epc::Relationship>& allRels = relFile.getAllRelationship();
 				for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
 					if (allRels[relIndex].getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
 						static_cast<RESQML2_0_1_NS::HdfProxy*>(wrapper)->setRelativePath(allRels[relIndex].getTarget());
@@ -224,6 +224,38 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 	// Read all RESQML objects
 	const epc::FileContentType::ContentTypeMap contentTypes = package->getFileContentType().getAllContentType();
 	// 14 equals "application/x-".size()
+	for (epc::FileContentType::ContentTypeMap::const_iterator it = contentTypes.begin(); it != contentTypes.end(); ++it) {
+		if (!it->second.isAssociatedToAnExtension) {
+			std::string contentType = it->second.getContentTypeString();
+			if (contentType.find("resqml", 14) != std::string::npos ||
+				contentType.find("eml", 14) != std::string::npos ||
+				contentType.find("witsml", 14) != std::string::npos)
+			{
+				const std::string relPartName = "rels/" + it->second.getExtensionOrPartName().substr(1) + ".rels";
+
+				COMMON_NS::AbstractObject* wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
+			}
+		}
+	}
+
+	deserializeRelFiles(repo);
+
+	return result;
+}
+
+namespace {
+
+	std::string extractUuidFromFileName(std::string fileName) {
+		return fileName.substr(fileName.find_last_of('_') + 1, 36);
+	}
+
+}
+
+void EpcDocument::deserializeRelFiles(DataObjectRepository & repo)
+{
+	// Read all RESQML objects
+	const epc::FileContentType::ContentTypeMap contentTypes = package->getFileContentType().getAllContentType();
+	// 14 equals "application/x-".size()
 	for (epc::FileContentType::ContentTypeMap::const_iterator it = contentTypes.begin(); it != contentTypes.end(); ++it)
 	{
 		std::string contentType = it->second.getContentTypeString();
@@ -231,48 +263,31 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 			contentType.find("eml", 14) != std::string::npos ||
 			contentType.find("witsml", 14) != std::string::npos)
 		{
-			if (contentType == "application/x-resqml+xml;version=2.0;type=obj_EpcExternalPartReference") {
-				result += "The content type " + contentType + " should belong to eml and not to resqml since obj_EpcExternalPartReference is part of COMMON and not part of RESQML.\n";
-				contentType = "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference";
+			// Look for the relative path of the file
+			string relFilePath = "";
+			const size_t slashPos = it->second.getExtensionOrPartName().substr(1).find_last_of("/\\");
+			if (slashPos != string::npos) {
+				relFilePath = it->second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
 			}
-			COMMON_NS::AbstractObject* wrapper = repo.createPartial(it->first.substr(it->first.size() - 40, 36), "Unknown Title", contentType);
-			if (it->second.getContentTypeString() == "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference") {
-				static_cast<RESQML2_0_1_NS::HdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
-				static_cast<RESQML2_0_1_NS::HdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
+			relFilePath += "_rels" + it->second.getExtensionOrPartName().substr(it->second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
+			if (!package->fileExists(relFilePath)) {
+				throw invalid_argument("The associate rel file does not exist : " + relFilePath);
+			}
 
-				// Look for the relative path of the HDF file
-				string relFilePath = "";
-				const size_t slashPos = it->second.getExtensionOrPartName().substr(1).find_last_of("/\\");
-				if (slashPos != string::npos) {
-					relFilePath = it->second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
-				}
-				relFilePath += "_rels" + it->second.getExtensionOrPartName().substr(it->second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
-				if (!package->fileExists(relFilePath)) {
-					result += "The HDF proxy " + it->second.getExtensionOrPartName() + " does not look to be associated to any HDF files : there is no rel file for this object. It is going to be withdrawn.\n";
-					continue;
-				}
-				epc::FileRelationship relFile;
-				relFile.readFromString(package->extractFile(relFilePath));
-				const vector<epc::Relationship> allRels = relFile.getAllRelationship();
-				for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
-					if (allRels[relIndex].getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
-						static_cast<RESQML2_0_1_NS::HdfProxy*>(wrapper)->setRelativePath(allRels[relIndex].getTarget());
-						break;
-					}
+			// Read Relationshsips
+			epc::FileRelationship relFile;
+			relFile.readFromString(package->extractFile(relFilePath));
+			const vector<epc::Relationship>& allRels = relFile.getAllRelationship();
+			for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
+				const epc::Relationship & rel = allRels[relIndex];
+				if (rel.getType() == "http://schemas.energistics.org/package/2012/relationships/destinationObject") {
+					COMMON_NS::AbstractObject* source = repo.getDataObjectByUuid(extractUuidFromFileName(it->first));
+					COMMON_NS::AbstractObject* destination = repo.getDataObjectByUuid(extractUuidFromFileName(rel.getTarget()));
+					repo.addRelationship(source, destination);
 				}
 			}
 		}
 	}
-
-	repo.updateAllRelationships();
-
-	// Validate properties
-	const vector<RESQML2_NS::AbstractProperty*> allprops = repo.getDataObjects<RESQML2_NS::AbstractProperty>();
-	for (size_t propIndex = 0; propIndex < allprops.size(); ++propIndex) {
-		allprops[propIndex]->validate();
-	}
-
-	return result;
 }
 
 string EpcDocument::getStorageDirectory() const

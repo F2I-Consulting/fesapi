@@ -141,7 +141,7 @@ namespace {
 
 // Create a fesapi partial wrapper based on a content type
 #define CREATE_FESAPI_PARTIAL_WRAPPER(className)\
-	(contentType.compare(className::XML_TAG) == 0)\
+	(datatype.compare(className::XML_TAG) == 0)\
 	{\
 		return createPartial<className>(uuid, title);\
 	}
@@ -509,6 +509,10 @@ const std::vector<std::string> & DataObjectRepository::getWarnings() const
 
 COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string & uuid, const std::string & title, const std::string & contentType)
 {
+	size_t lastEqualCharPos = contentType.find_last_of('_'); // The XML tag is after "obj_"
+	if (lastEqualCharPos == string::npos) { lastEqualCharPos = contentType.find_last_of('='); }
+	const string datatype = contentType.substr(lastEqualCharPos + 1);
+
 	if CREATE_FESAPI_PARTIAL_WRAPPER(MdDatum)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(Activity)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(ActivityTemplate)
@@ -574,6 +578,8 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Well)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Wellbore)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Trajectory)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::WellCompletion)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::WellboreCompletion)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::ToolErrorModel)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::ErrorTerm)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::WeightingFunction)
@@ -582,7 +588,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::ContinuousColorMap)
 	else if (contentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
-		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
+		throw invalid_argument("Please handle this type outside of this method since it is not only XML related.");
 	}
 
 	throw invalid_argument("The content type " + contentType + " of the partial object to create has not been recognized by fesapi.");
@@ -663,7 +669,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::ContinuousColorMap)
 	else if (contentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
-		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
+		throw invalid_argument("Please handle this type outside of this method since it is not only XML related.");
 	}
 
 	throw invalid_argument("The content type " + contentType + " of the partial object to create has not been recognized by fesapi.");

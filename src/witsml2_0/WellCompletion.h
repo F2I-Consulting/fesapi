@@ -26,6 +26,12 @@ namespace WITSML2_0_NS
 	class WellCompletion : public WITSML2_0_NS::AbstractObject
 	{
 	public:
+
+		/**
+		* Only to be used in partial transfer context
+		*/
+		WellCompletion(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::AbstractObject(partialObject) {}
+
 		WellCompletion(class Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title);

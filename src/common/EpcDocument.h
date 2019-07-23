@@ -76,7 +76,6 @@ namespace COMMON_NS
 		*/
 		DLL_IMPORT_OR_EXPORT virtual std::string deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::READ_ONLY);
 
-
 		/**
 		* Unzip the package (dataobjects + relationships) into a data repository by only creating partila objects.
 		* @return			An empty string if everything's ok otherwise the error string.
@@ -105,6 +104,8 @@ namespace COMMON_NS
 
 	private :
 		static const char * DOCUMENT_EXTENSION;
+
+		void deserializeRelFiles(DataObjectRepository & repo);
 
 		epc::Package* package;
 		std::string filePath;

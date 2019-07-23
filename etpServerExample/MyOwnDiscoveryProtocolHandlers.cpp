@@ -243,10 +243,8 @@ void MyOwnDiscoveryProtocolHandlers::on_GetFolder(const Energistics::Etp::v12::P
 
 			if (datatype.substr(4) == COMMON_NS::EpcExternalPartReference::XML_TAG) {
 				for (const auto & obj : repo->getHdfProxySet()) {
-					if (!obj->isPartial()) {
-						nextGr.m_context.m_uri = gtr.m_context.m_uri + '(' + obj->getUuid() + ')';
-						on_GetDataObject(nextGr, correlationId, result);
-					}
+					nextGr.m_context.m_uri = gtr.m_context.m_uri + '(' + obj->getUuid() + ')';
+					on_GetDataObject(nextGr, correlationId, result);
 				}
 			}
 			else {
@@ -267,10 +265,8 @@ void MyOwnDiscoveryProtocolHandlers::on_GetFolder(const Energistics::Etp::v12::P
 				}
 
 				for (const auto & obj : objs) {
-					if (!obj->isPartial()) {
-						nextGr.m_context.m_uri = gtr.m_context.m_uri + '(' + obj->getUuid() + ')';
-						on_GetDataObject( nextGr, correlationId, result);
-					}
+					nextGr.m_context.m_uri = gtr.m_context.m_uri + '(' + obj->getUuid() + ')';
+					on_GetDataObject( nextGr, correlationId, result);
 				}
 			}
 		}
@@ -289,33 +285,27 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v1
 		COMMON_NS::AbstractObject* obj = repo->getDataObjectByUuid(ggr.m_context.m_uri.substr(openingParenthesis + 1, 36));
 
 		// Self
-		if (!obj->isPartial()) {
-			if (ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self ||
-				ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf ||
-				ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
-				if (ggr.m_context.m_contentTypes.empty() || std::find(ggr.m_context.m_contentTypes.begin(), ggr.m_context.m_contentTypes.end(), obj->getContentType()) != ggr.m_context.m_contentTypes.end()) {
-					result.push_back(ETP_NS::EtpHelpers::buildEtpResourceFromEnergisticsObject(obj));
-				}
+		if (ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self ||
+			ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf ||
+			ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
+			if (ggr.m_context.m_contentTypes.empty() || std::find(ggr.m_context.m_contentTypes.begin(), ggr.m_context.m_contentTypes.end(), obj->getContentType()) != ggr.m_context.m_contentTypes.end()) {
+				result.push_back(ETP_NS::EtpHelpers::buildEtpResourceFromEnergisticsObject(obj));
 			}
 		}
-		//else erroinfo pattern
 
 		if (ggr.m_context.m_depth >= 1) {
-			if (!obj->isPartial()) {
-				// Target
-				if (ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets ||
-					ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
-					Energistics::Etp::v12::Protocol::Discovery::GetGraphResources nextGr = ggr;
-					--nextGr.m_context.m_depth;
-					nextGr.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
+			// Target
+			if (ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets ||
+				ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf) {
+				Energistics::Etp::v12::Protocol::Discovery::GetGraphResources nextGr = ggr;
+				--nextGr.m_context.m_depth;
+				nextGr.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
 
-					for (auto targetObj : obj->getRepository()->getTargetObjects(obj)) {
-						nextGr.m_context.m_uri = ggr.m_context.m_uri.substr(0, openingParenthesis) + '(' + targetObj->getUuid() + ')';
-						on_GetDataObject(nextGr, correlationId, result);
-					}
+				for (auto targetObj : obj->getRepository()->getTargetObjects(obj)) {
+					nextGr.m_context.m_uri = ggr.m_context.m_uri.substr(0, openingParenthesis) + '(' + targetObj->getUuid() + ')';
+					on_GetDataObject(nextGr, correlationId, result);
 				}
 			}
-			//else erroinfo pattern
 
 			// Source
 			if (ggr.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources ||

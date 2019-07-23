@@ -25,6 +25,12 @@ namespace WITSML2_0_NS
 	class WellboreCompletion : public WITSML2_0_NS::WellboreObject
 	{
 	public:
+
+		/**
+		* Only to be used in partial transfer context
+		*/
+		WellboreCompletion(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::WellboreObject(partialObject) {}
+
 		WellboreCompletion(class Wellbore* witsmlWellbore,
 			class WellCompletion* wellCompletion,
 			const std::string & guid,

@@ -25,9 +25,6 @@ Energistics::Etp::v12::Datatypes::Object::Resource ETP_NS::EtpHelpers::buildEtpR
 	if (obj == nullptr) {
 		throw std::invalid_argument("Cannot build resource from a null object.");
 	}
-	if (obj->isPartial()) {
-		throw std::invalid_argument("Cannot build resource from a partial object.");
-	}
 
 	Energistics::Etp::v12::Datatypes::Object::Resource result;
 

@@ -46,7 +46,7 @@ int main(int argc, char **argv)
 
 	COMMON_NS::EpcDocument epcDoc(argv[3]);
 	COMMON_NS::DataObjectRepository repo;
-	std::string resqmlResult = epcDoc.deserializeInto(repo);
+	std::string resqmlResult = epcDoc.deserializePartiallyInto(repo);
 	if (!resqmlResult.empty()) {
 		std::cerr << "Error when deserializing " << resqmlResult << std::endl;
 	}
