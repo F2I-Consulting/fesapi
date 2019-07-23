@@ -499,7 +499,7 @@ void GraphicalInformationSet::setDiscreteColorMap(AbstractObject* targetObject, 
 	colorInformation->UseLogarithmicMapping = useLogarithmicMapping;
 
 	if (colorInformation->ValueVectorIndex == nullptr) {
-		colorInformation->ValueVectorIndex = soap_new_LONG64(gsoapProxy2_2->soap, 1);
+		colorInformation->ValueVectorIndex = soap_new_LONG64(gsoapProxy2_2->soap);
 	}
 	*colorInformation->ValueVectorIndex = valueVectorIndex;
 
@@ -601,7 +601,7 @@ void GraphicalInformationSet::setContinuousColorMap(AbstractObject* targetObject
 	colorInformation->UseLogarithmicMapping = useLogarithmicMapping;
 	
 	if (colorInformation->ValueVectorIndex == nullptr) {
-		colorInformation->ValueVectorIndex = soap_new_LONG64(gsoapProxy2_2->soap, 1);
+		colorInformation->ValueVectorIndex = soap_new_LONG64(gsoapProxy2_2->soap);
 	}
 	*colorInformation->ValueVectorIndex = valueVectorIndex;
 
