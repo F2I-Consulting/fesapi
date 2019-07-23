@@ -146,7 +146,7 @@ namespace {
 		return createPartial<className>(uuid, title);\
 	}
 #define CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(className)\
-	(contentType.compare(className::XML_TAG) == 0)\
+	(datatype.compare(className::XML_TAG) == 0)\
 	{\
 		return createPartial<className>(uuid, title, version);\
 	}
@@ -313,8 +313,11 @@ void DataObjectRepository::addRelationship(COMMON_NS::AbstractObject * source, C
 	RESQML2_NS::AbstractLocal3dCrs const * crs = dynamic_cast<RESQML2_NS::AbstractLocal3dCrs const *>(target);
 	if (crs != nullptr) {
 		RESQML2_NS::AbstractRepresentation const * rep = dynamic_cast<RESQML2_NS::AbstractRepresentation const *>(source);
-		if (rep != nullptr && rep->getInterpretation() != nullptr) {
-			rep->getInterpretation()->initDomain(gsoap_resqml2_0_1::resqml2__Domain__mixed);
+		if (rep != nullptr && !rep->isPartial()) {
+			RESQML2_NS::AbstractFeatureInterpretation * interp = rep->getInterpretation();
+			if (interp != nullptr && !interp->isPartial()) {
+				interp->initDomain(gsoap_resqml2_0_1::resqml2__Domain__mixed);
+			}
 		}
 	}
 }
@@ -596,6 +599,10 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 
 COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string & uuid, const std::string & title, const std::string & contentType, const std::string & version)
 {
+	size_t lastEqualCharPos = contentType.find_last_of('_'); // The XML tag is after "obj_"
+	if (lastEqualCharPos == string::npos) { lastEqualCharPos = contentType.find_last_of('='); }
+	const string datatype = contentType.substr(lastEqualCharPos + 1);
+
 	if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(MdDatum)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(Activity)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(ActivityTemplate)

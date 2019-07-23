@@ -704,15 +704,11 @@ void AbstractObject::setMetadata(const std::string & title, const std::string & 
 
 void AbstractObject::serializeIntoStream(ostream * stream)
 {
-	if (partialObject != nullptr) {
-		throw invalid_argument("The wrapped gsoap proxy must not be null");
-	}
-
 	if (stream == nullptr) {
 		throw invalid_argument("The stream where the entity will be stored cannot be null.");
 	}
 
-	string xmlTagIncludingNamespace = getXmlNamespace() + ":"+ getXmlTag();
+	string xmlTagIncludingNamespace = getXmlNamespace() + ":" + getXmlTag();
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoapProxy2_0_1->soap->os = stream;
@@ -737,6 +733,9 @@ void AbstractObject::serializeIntoStream(ostream * stream)
 			soap_end_send(gsoapProxy2_2->soap));
 	}
 #endif
+	else {
+		throw invalid_argument("Cannot serialize a partial object.");
+	}
 }
 
 gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* AbstractObject::getGsoapProxy() const {

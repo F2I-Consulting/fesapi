@@ -213,6 +213,14 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 	return result;
 }
 
+namespace {
+
+	std::string extractUuidFromFileName(std::string fileName) {
+		return fileName.substr(fileName.find_last_of('_') + 1, 36);
+	}
+
+}
+
 std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess)
 {
 	std::string result;
@@ -231,9 +239,35 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 				contentType.find("eml", 14) != std::string::npos ||
 				contentType.find("witsml", 14) != std::string::npos)
 			{
-				const std::string relPartName = "rels/" + it->second.getExtensionOrPartName().substr(1) + ".rels";
+				if (contentType == "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference") {
+					COMMON_NS::AbstractObject* wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
+					static_cast<RESQML2_0_1_NS::HdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
+					static_cast<RESQML2_0_1_NS::HdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
 
-				COMMON_NS::AbstractObject* wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
+					// Look for the relative path of the HDF file
+					string relFilePath = "";
+					const size_t slashPos = it->second.getExtensionOrPartName().substr(1).find_last_of("/\\");
+					if (slashPos != string::npos) {
+						relFilePath = it->second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
+					}
+					relFilePath += "_rels" + it->second.getExtensionOrPartName().substr(it->second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
+					if (!package->fileExists(relFilePath)) {
+						result += "The HDF proxy " + it->second.getExtensionOrPartName() + " does not look to be associated to any HDF files : there is no rel file for this object. It is going to be withdrawn.\n";
+						continue;
+					}
+					epc::FileRelationship relFile;
+					relFile.readFromString(package->extractFile(relFilePath));
+					const vector<epc::Relationship>& allRels = relFile.getAllRelationship();
+					for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
+						if (allRels[relIndex].getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
+							static_cast<RESQML2_0_1_NS::HdfProxy*>(wrapper)->setRelativePath(allRels[relIndex].getTarget());
+							break;
+						}
+					}
+				}
+				else {
+					repo.createPartial(extractUuidFromFileName(it->first), "Partial title", contentType);
+				}
 			}
 		}
 	}
@@ -241,14 +275,6 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 	deserializeRelFiles(repo);
 
 	return result;
-}
-
-namespace {
-
-	std::string extractUuidFromFileName(std::string fileName) {
-		return fileName.substr(fileName.find_last_of('_') + 1, 36);
-	}
-
 }
 
 void EpcDocument::deserializeRelFiles(DataObjectRepository & repo)
