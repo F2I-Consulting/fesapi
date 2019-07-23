@@ -140,7 +140,7 @@ namespace std {
    %template(StratigraphicUnitInterpretationVector) vector<RESQML2_0_1_NS::StratigraphicUnitInterpretation*>;
    %template(StratigraphicOccurrenceInterpretationVector) vector<RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation*>;
    %template(HorizonInterpretationVector) vector<RESQML2_0_1_NS::HorizonInterpretation*>;
-   %template(ConstGrid2dRepresentationVector) vector<RESQML2_0_1_NS::Grid2dRepresentation const*>;
+   %template(Grid2dRepresentationVector) vector<RESQML2_0_1_NS::Grid2dRepresentation*>;
    %template(PolylineRepresentationVector) vector<RESQML2_0_1_NS::PolylineRepresentation*>;
    %template(PolylineSetRepresentationVector) vector<RESQML2_0_1_NS::PolylineSetRepresentation*>;
    %template(TriangulatedSetRepresentationVector) vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*>;
@@ -2858,8 +2858,11 @@ namespace RESQML2_0_1_NS
 	class WellboreMarker : public COMMON_NS::AbstractObject
 	{
 	public:
+		WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title);
+		WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind geologicBoundaryKind);
 		bool hasAGeologicBoundaryKind() const;
 		gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind getGeologicBoundaryKind() const;
+		WellboreMarkerFrameRepresentation const * getWellMarkerFrameRepresentation() const;
 		BoundaryFeatureInterpretation* getBoundaryFeatureInterpretation() const;
 		std::string getBoundaryFeatureInterpretationUuid() const;
 		void setBoundaryFeatureInterpretation(BoundaryFeatureInterpretation* interp);

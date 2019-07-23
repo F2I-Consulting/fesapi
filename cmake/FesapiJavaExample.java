@@ -19,7 +19,7 @@ under the License.
 package com.f2i.energisticsStandardsApi.example;
 
 import java.util.UUID;
-import com.f2i.energisticsStandardsApi.ConstGrid2dRepresentationVector;
+import com.f2i.energisticsStandardsApi.Grid2dRepresentationVector;
 import com.f2i.energisticsStandardsApi.LocalDepth3dCrsVector;
 import com.f2i.energisticsStandardsApi.SWIGTYPE_p_double;
 import com.f2i.energisticsStandardsApi.SWIGTYPE_p_unsigned_int;
@@ -472,7 +472,7 @@ public class FesapiJavaExample {
 			LocalDepth3dCrsVector crs_set = repo.getLocalDepth3dCrsSet();
 			System.out.println("CRS title is " + crs_set.get(0).getTitle());
 
-			ConstGrid2dRepresentationVector horizonGrid2dSet = repo.getHorizonGrid2dRepSet();
+			Grid2dRepresentationVector horizonGrid2dSet = repo.getHorizonGrid2dRepSet();
 			System.out.println("HORIZONS GRID 2D REP");
 			for (int i = 0; i < horizonGrid2dSet.size(); i++) {
 				Grid2dRepresentation horizonGrid2d = horizonGrid2dSet.get(i);

@@ -274,7 +274,7 @@ time_t AbstractProperty::getTimestamp() const
 	TimeSeries* timeSeries = getTimeSeries();
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		if (timeSeries && static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex) {
+		if (timeSeries && static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex != nullptr) {
 			return timeSeries->getTimestamp(static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->Index);
 		}
 		else {
@@ -291,7 +291,7 @@ unsigned int AbstractProperty::getTimeIndex() const
 	TimeSeries* timeSeries = getTimeSeries();
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		if (timeSeries && static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex) {
+		if (timeSeries && static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex != nullptr) {
 			return static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->Index;
 		}
 		else {
