@@ -97,7 +97,19 @@ namespace RESQML2_0_1_NS
 		/**
 		* Compute the K Direction of the gid according to its control points.
 		*/
-		gsoap_resqml2_0_1::resqml2__KDirection computeKDirection(double * controlPoints, unsigned int controlPointCountPerPillar, RESQML2_NS::AbstractLocal3dCrs const * localCrs);
+		gsoap_resqml2_0_1::resqml2__KDirection computeKDirection(double const * controlPoints, unsigned int controlPointCountPerPillar, short * pillarKind, RESQML2_NS::AbstractLocal3dCrs const * localCrs);
+
+		void setGeometryAsParametricSplittedPillarNodesWithoutPillarKindUsingExistingDatasets(
+			gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
+			const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, COMMON_NS::AbstractHdfProxy* proxy,
+			unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
+			const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs);
+	
+		void writeGeometryOnHdf(double const * parameters,
+			double const * controlPoints, double const * controlPointParameters, unsigned int controlPointCountPerPillar,
+			unsigned long splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
+			unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, COMMON_NS::AbstractHdfProxy * proxy);
+
 	protected:
 		PillarInformation* pillarInformation;
 	
@@ -291,9 +303,9 @@ namespace RESQML2_0_1_NS
 		* @param splitCoordinateLineColumns					For each split coordinate line, indicates the grid columns which are splitted by this coordinate line.
 		*/
 		DLL_IMPORT_OR_EXPORT void setGeometryAsParametricSplittedPillarNodes(bool isRightHanded,
-			double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
-			unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
-			unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
+			double const * parameters, double const * controlPoints, double const * controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
+			unsigned long splitCoordinateLineCount, unsigned int const * pillarOfCoordinateLine,
+			unsigned int const * splitCoordinateLineColumnCumulativeCount, unsigned int const * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
 		/**
 		* Same as setGeometryAsParametricSplittedPillarNodes where the hdf datasets are already written in the the file.
