@@ -47,10 +47,10 @@ PlaneSetRepresentation::PlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterp
 	setInterpretation(interp);
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* PlaneSetRepresentation::getLocalCrsDor() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* PlaneSetRepresentation::getLocalCrsDor(unsigned int patchIndex) const
 {
 	_resqml2__PlaneSetRepresentation* rep = static_cast<_resqml2__PlaneSetRepresentation*>(gsoapProxy2_0_1);
-	gsoap_resqml2_0_1::eml20__DataObjectReference* result = rep->Planes[0]->LocalCrs;
+	gsoap_resqml2_0_1::eml20__DataObjectReference* result = rep->Planes[patchIndex]->LocalCrs;
 	for (size_t geomIndex = 1; geomIndex < rep->Planes.size(); ++geomIndex) {
 		if (result->UUID != rep->Planes[geomIndex]->LocalCrs->UUID) {
 			throw std::invalid_argument("A multi CRS plane set representaiton is not supported yet");
