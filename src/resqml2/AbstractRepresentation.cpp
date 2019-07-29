@@ -137,7 +137,7 @@ gsoap_resqml2_0_1::resqml2__PointGeometry* AbstractRepresentation::createPointGe
 
 AbstractLocal3dCrs * AbstractRepresentation::getLocalCrs(unsigned int patchIndex) const
 {
-	const std::string & uuid = getLocalCrsUuid();
+	const std::string & uuid = getLocalCrsUuid(patchIndex);
 	return uuid.empty() ? nullptr : getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(uuid);
 }
 
