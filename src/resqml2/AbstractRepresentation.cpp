@@ -137,7 +137,8 @@ gsoap_resqml2_0_1::resqml2__PointGeometry* AbstractRepresentation::createPointGe
 
 AbstractLocal3dCrs * AbstractRepresentation::getLocalCrs() const
 {
-	return getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(getLocalCrsUuid());
+	const std::string & uuid = getLocalCrsUuid();
+	return uuid.empty() ? nullptr : getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(uuid);
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractRepresentation::getLocalCrsDor() const
