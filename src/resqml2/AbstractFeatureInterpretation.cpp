@@ -91,13 +91,17 @@ const gsoap_resqml2_0_1::resqml2__Domain & AbstractFeatureInterpretation::initDo
 		bool isTimeDomain = false;
 		bool isDepthDomain = false;
 		for (unsigned int repIndex = 0; repIndex < repCount && (!isTimeDomain || !isDepthDomain); ++repIndex) {
-			AbstractLocal3dCrs* local3dCrs = getRepresentation(repIndex)->getLocalCrs();
-			if (local3dCrs != nullptr) {
-				if (local3dCrs->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORELocalTime3dCrs) {
-					isTimeDomain = true;
-				}
-				else if (local3dCrs->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORELocalDepth3dCrs) {
-					isDepthDomain = true;
+			AbstractRepresentation const * rep = getRepresentation(repIndex);
+			const unsigned int patchCount = rep->getPatchCount();
+			for (unsigned int patchIndex = 0; patchIndex < patchCount && (!isTimeDomain || !isDepthDomain); ++patchIndex) {
+				AbstractLocal3dCrs* local3dCrs = rep->getLocalCrs(patchIndex);
+				if (local3dCrs != nullptr) {
+					if (local3dCrs->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORELocalTime3dCrs) {
+						isTimeDomain = true;
+					}
+					else if (local3dCrs->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORELocalDepth3dCrs) {
+						isDepthDomain = true;
+					}
 				}
 			}
 		}

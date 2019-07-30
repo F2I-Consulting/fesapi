@@ -240,9 +240,9 @@ std::string WellboreFrameRepresentation::getWellboreTrajectoryUuid() const
 	return static_cast<_resqml2__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->Trajectory->UUID;
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getLocalCrsDor() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getLocalCrsDor(unsigned int patchIndex) const
 {
-	return getWellboreTrajectory()->getLocalCrsDor();
+	return getWellboreTrajectory()->getLocalCrsDor(patchIndex);
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getHdfProxyDor() const

@@ -135,16 +135,16 @@ gsoap_resqml2_0_1::resqml2__PointGeometry* AbstractRepresentation::createPointGe
 	}
 }
 
-AbstractLocal3dCrs * AbstractRepresentation::getLocalCrs() const
+AbstractLocal3dCrs * AbstractRepresentation::getLocalCrs(unsigned int patchIndex) const
 {
-	const std::string & uuid = getLocalCrsUuid();
+	const std::string & uuid = getLocalCrsUuid(patchIndex);
 	return uuid.empty() ? nullptr : getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(uuid);
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractRepresentation::getLocalCrsDor() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractRepresentation::getLocalCrsDor(unsigned int patchIndex) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml2__PointGeometry* pointGeom = getPointGeometry2_0_1(0);
+		gsoap_resqml2_0_1::resqml2__PointGeometry* pointGeom = getPointGeometry2_0_1(patchIndex);
 		if (pointGeom != nullptr) {
 			return pointGeom->LocalCrs;
 		}
@@ -156,9 +156,9 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractRepresentation::getLocalC
 	return nullptr;
 }
 
-std::string AbstractRepresentation::getLocalCrsUuid() const
+std::string AbstractRepresentation::getLocalCrsUuid(unsigned int patchIndex) const
 {
-	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getLocalCrsDor();
+	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getLocalCrsDor(patchIndex);
 	return dor == nullptr ? "" : dor->UUID;
 }
 
@@ -304,7 +304,7 @@ void AbstractRepresentation::getXyzPointsOfPatchInGlobalCrs(const unsigned int &
 {
 	getXyzPointsOfPatch(patchIndex, xyzPoints);
 
-	getLocalCrs()->convertXyzPointsToGlobalCrs(xyzPoints, getXyzPointCountOfPatch(patchIndex));
+	getLocalCrs(patchIndex)->convertXyzPointsToGlobalCrs(xyzPoints, getXyzPointCountOfPatch(patchIndex));
 }
 
 void AbstractRepresentation::getXyzPointsOfAllPatches(double * xyzPoints) const
@@ -318,11 +318,50 @@ void AbstractRepresentation::getXyzPointsOfAllPatches(double * xyzPoints) const
 	}
 }
 
+bool AbstractRepresentation::isInSingleLocalCrs() const
+{
+	const unsigned int patchCount = getPatchCount();
+	if (patchCount < 2) {
+		return true;
+	}
+	AbstractLocal3dCrs const * localCrsRef = getLocalCrs(0);
+
+	for (unsigned int patchIndex = 1; patchIndex < patchCount; ++patchIndex) {
+		if (getLocalCrs(patchIndex) != localCrsRef) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool AbstractRepresentation::isInSingleGlobalCrs() const
+{
+	const unsigned int patchCount = getPatchCount();
+	if (patchCount < 2) {
+		return true;
+	}
+	AbstractLocal3dCrs const * localCrs = getLocalCrs(0);
+	const LONG64 epsgCode = localCrs->isProjectedCrsDefinedWithEpsg() ? localCrs->getProjectedCrsEpsgCode() : -1;
+
+	for (unsigned int patchIndex = 1; patchIndex < patchCount; ++patchIndex) {
+		localCrs = getLocalCrs(patchIndex);
+		if (epsgCode != (localCrs->isProjectedCrsDefinedWithEpsg() ? localCrs->getProjectedCrsEpsgCode() : -1)) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 void AbstractRepresentation::getXyzPointsOfAllPatchesInGlobalCrs(double * xyzPoints) const
 {
+	if (!isInSingleGlobalCrs()) {
+		throw invalid_argument("The representation is not inside a single global CRS.");
+	}
 	getXyzPointsOfAllPatches(xyzPoints);
 
-	getLocalCrs()->convertXyzPointsToGlobalCrs(xyzPoints, getXyzPointCountOfAllPatches());
+	getLocalCrs(0)->convertXyzPointsToGlobalCrs(xyzPoints, getXyzPointCountOfAllPatches());
 }
 
 AbstractRepresentation* AbstractRepresentation::getSeismicSupportOfPatch(const unsigned int & patchIndex) const
@@ -395,11 +434,12 @@ void AbstractRepresentation::loadTargetRelationships()
 		convertDorIntoRel<RESQML2_NS::AbstractFeatureInterpretation>(dor);
 	}
 
-	// TODO : Currently, only one CRS per representation is supported. It can be multiple (for example, if two patches are in different CRS)
-	// Look at how seismic support relationships are set below for solving this TODO!
-	dor = getLocalCrsDor();
-	if (dor != nullptr) {
-		convertDorIntoRel<RESQML2_NS::AbstractLocal3dCrs>(dor);
+	// CRS
+	for (unsigned int patchIndex = 0; patchIndex < getPatchCount(); ++patchIndex) {
+		dor = getLocalCrsDor(patchIndex);
+		if (dor != nullptr) {
+			convertDorIntoRel<RESQML2_NS::AbstractLocal3dCrs>(dor);
+		}
 	}
 
 	// TODO : Currently, only one HDF proxy per representation is supported. It can be multiple (for example, regarding IJK parametric grid, parameters in one hdf proxy and control points in another one)

@@ -259,9 +259,10 @@ double Grid2dRepresentation::getComponentInGlobalCrs(double x, double y, double 
 		return result[componentIndex];
 	}
 
+	// there can be only one patch in a 2d grid repesentation
 	RESQML2_NS::AbstractLocal3dCrs* localCrs = componentIndex != 2 && getSupportingRepresentationDor() != nullptr
-		? getSupportingRepresentation()->getLocalCrs()
-		: getLocalCrs();
+		? getSupportingRepresentation()->getLocalCrs(0)
+		: getLocalCrs(0);
 
 	localCrs->convertXyzPointsToGlobalCrs(result, 1, withoutTranslation);
 
