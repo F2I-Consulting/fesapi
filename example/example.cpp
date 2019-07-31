@@ -3349,7 +3349,7 @@ void deserialize(const string & inputFile)
 		throw invalid_argument("The epc document is not a valid one");
 	}
 
-	unsigned int hdfProxyCount = repo.getHdfProxyCount();
+	const unsigned int hdfProxyCount = repo.getHdfProxyCount();
 	cout << "There are " << repo.getHdfProxyCount() << " hdf files associated to this epc document." << endl;
 	for (unsigned int hdfProxyIndex = 0; hdfProxyIndex < hdfProxyCount; ++hdfProxyIndex) {
 		cout << "Hdf file relative path : " << repo.getHdfProxy(hdfProxyIndex)->getRelativePath() << endl;
