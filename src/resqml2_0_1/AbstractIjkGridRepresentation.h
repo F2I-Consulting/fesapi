@@ -38,8 +38,7 @@ namespace RESQML2_0_1_NS
 		*/
 		void init(COMMON_NS::DataObjectRepository * repo,
 				const std::string & guid, const std::string & title,
-				const unsigned int & iCount, const unsigned int & jCount, const unsigned int & kCount,
-				bool withTruncatedPillars);
+				unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
 		class BlockInformation
 		{
@@ -241,7 +240,7 @@ namespace RESQML2_0_1_NS
 		 * The enabledCells array must have a count of getCellCount() and must follow the index ordering i then j then k.
 		 * A zero value in enabledCells means that the corresponding cell is disabled. A non zero value means that the corresponding cell is enabled.
 		 */
-		DLL_IMPORT_OR_EXPORT void setEnabledCells(unsigned char* enabledCells);
+		DLL_IMPORT_OR_EXPORT void setEnabledCells(unsigned char* enabledCells, COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		* Load the split information into memory to speed up processes.
