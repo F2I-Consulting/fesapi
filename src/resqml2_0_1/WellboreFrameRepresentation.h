@@ -130,7 +130,7 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT class WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const;
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 

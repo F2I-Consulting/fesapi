@@ -138,7 +138,8 @@ double IjkGridLatticeRepresentation::getXOriginInGlobalCrs() const
 	if (result[0] != result[0])
 		return result[0];
 
-	getLocalCrs()->convertXyzPointsToGlobalCrs(result, 1);
+	// Only one patch is allowed for an IJK Grid lattice
+	getLocalCrs(0)->convertXyzPointsToGlobalCrs(result, 1);
 
 	return result[0];
 }
@@ -158,7 +159,8 @@ double IjkGridLatticeRepresentation::getYOriginInGlobalCrs() const
 	if (result[0] != result[0])
 		return result[0];
 
-	getLocalCrs()->convertXyzPointsToGlobalCrs(result, 1);
+	// Only one patch is allowed for an IJK Grid lattice
+	getLocalCrs(0)->convertXyzPointsToGlobalCrs(result, 1);
 
 	return result[1];
 }
@@ -178,7 +180,8 @@ double IjkGridLatticeRepresentation::getZOriginInGlobalCrs() const
 	if (result != result) {
 		return result;
 	}
-	RESQML2_NS::AbstractLocal3dCrs const * localCrs = getLocalCrs();
+	// Only one patch is allowed for an IJK Grid lattice
+	RESQML2_NS::AbstractLocal3dCrs const * localCrs = getLocalCrs(0);
 	if (localCrs->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORELocalTime3dCrs) {
 		return result;
 	}
