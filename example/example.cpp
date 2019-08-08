@@ -299,6 +299,8 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, CO
 	double contColMapAlphas[2] = { 1., 1. };
 	contColMap->setRgbColors(2, contColMapRgbColors, contColMapAlphas, contColMapColTitles);
 	graphicalInformationSet->setContinuousColorMap(contColMapContProp, contColMap);
+	graphicalInformationSet->setColorMapMinMax(contColMapContProp, 0., 1.);
+	graphicalInformationSet->setValueVectorIndex(contColMapContProp, 1);
 }
 #endif
 
@@ -3315,6 +3317,13 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 					}
 					std::cout << ")" << std::endl;
 				}
+				if (graphicalInformationSet->hasColorMapMinMax(targetObject)) {
+					std::cout << "min: " << graphicalInformationSet->getColorMapMin(targetObject) << std::endl;
+					std::cout << "min: " << graphicalInformationSet->getColorMapMax(targetObject) << std::endl;
+				}
+				if (graphicalInformationSet->hasValueVectorIndex(targetObject)) {
+					std::cout << "value vector index: " << graphicalInformationSet->getValueVectorIndex(targetObject) << std::endl;
+				}
 			}
 
 			if (graphicalInformationSet->hasContinuousColorMap(targetObject)) {
@@ -3329,6 +3338,13 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 						std::cout << ", " << continuousColorMap->getColorTitle(mapIndex);
 					}
 					std::cout << ")" << std::endl;
+				}
+				if (graphicalInformationSet->hasColorMapMinMax(targetObject)) {
+					std::cout << "min: " << graphicalInformationSet->getColorMapMin(targetObject) << std::endl;
+					std::cout << "min: " << graphicalInformationSet->getColorMapMax(targetObject) << std::endl;
+				}
+				if (graphicalInformationSet->hasValueVectorIndex(targetObject)) {
+					std::cout << "value vector index: " << graphicalInformationSet->getValueVectorIndex(targetObject) << std::endl;
 				}
 			}
 		}

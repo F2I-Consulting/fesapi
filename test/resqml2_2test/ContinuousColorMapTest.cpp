@@ -102,6 +102,8 @@ void ContinuousColorMapTest::initRepoHandler() {
 	// associating the Continuous color map to the Continuous property
 	GraphicalInformationSet* graphicalInformationSet = repo->createGraphicalInformationSet(uuidGraphicalInformationSet, titleGraphicalInformationSet);
 	graphicalInformationSet->setContinuousColorMap(continuousProperty, continuousColorMap);
+	graphicalInformationSet->setColorMapMinMax(continuousProperty, 0., 1.);
+	graphicalInformationSet->setValueVectorIndex(continuousProperty, 1);
 }
 
 void ContinuousColorMapTest::readRepoHandler() {
@@ -119,5 +121,8 @@ void ContinuousColorMapTest::readRepoHandler() {
 	REQUIRE(r == 1.);
 	REQUIRE(g == 0.);
 	REQUIRE(b == 0.); // 255 is converted to 1. since we ask for double blue value
+	REQUIRE(graphicalInformationSet->getColorMapMin(continuousProperty) == 0.);
+	REQUIRE(graphicalInformationSet->getColorMapMax(continuousProperty) == 1.);
+	REQUIRE(graphicalInformationSet->getValueVectorIndex(continuousProperty) == 1);
 }
 

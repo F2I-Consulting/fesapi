@@ -132,8 +132,6 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT bool hasColorTitle(double colorIndex) const;
 		DLL_IMPORT_OR_EXPORT std::string getColorTitle(double colorIndex) const;
 
-		virtual void computeMinMax(LONG64& min, LONG64& max) const = 0;
-
 		void loadTargetRelationships() {};
 
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const {
