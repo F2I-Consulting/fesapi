@@ -3319,7 +3319,7 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 				}
 				if (graphicalInformationSet->hasColorMapMinMax(targetObject)) {
 					std::cout << "min: " << graphicalInformationSet->getColorMapMin(targetObject) << std::endl;
-					std::cout << "min: " << graphicalInformationSet->getColorMapMax(targetObject) << std::endl;
+					std::cout << "max: " << graphicalInformationSet->getColorMapMax(targetObject) << std::endl;
 				}
 				if (graphicalInformationSet->hasValueVectorIndex(targetObject)) {
 					std::cout << "value vector index: " << graphicalInformationSet->getValueVectorIndex(targetObject) << std::endl;
@@ -3341,7 +3341,7 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 				}
 				if (graphicalInformationSet->hasColorMapMinMax(targetObject)) {
 					std::cout << "min: " << graphicalInformationSet->getColorMapMin(targetObject) << std::endl;
-					std::cout << "min: " << graphicalInformationSet->getColorMapMax(targetObject) << std::endl;
+					std::cout << "max: " << graphicalInformationSet->getColorMapMax(targetObject) << std::endl;
 				}
 				if (graphicalInformationSet->hasValueVectorIndex(targetObject)) {
 					std::cout << "value vector index: " << graphicalInformationSet->getValueVectorIndex(targetObject) << std::endl;

@@ -663,7 +663,7 @@ LONG64 GraphicalInformationSet::setValueVectorIndex(AbstractObject const* target
 	}
 
 	if (colorInformation->ValueVectorIndex == nullptr) {
-		colorInformation->ValueVectorIndex = soap_new_LONG64(gsoapProxy2_2->soap);
+		colorInformation->ValueVectorIndex = static_cast<LONG64*>(soap_malloc(getGsoapContext(), sizeof(LONG64)));
 	}
 	*colorInformation->ValueVectorIndex = valueVectorIndex;
 }
