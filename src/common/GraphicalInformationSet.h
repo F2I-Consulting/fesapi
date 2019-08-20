@@ -278,7 +278,7 @@ namespace COMMON_NS
 		/**
 		 * @param targetObject	the object for wich we want to set value vector index to look when mapping with a color map.
 		 */
-		DLL_IMPORT_OR_EXPORT LONG64 setValueVectorIndex(AbstractObject const* targetObject, LONG64 valueVectorIndex);
+		DLL_IMPORT_OR_EXPORT void setValueVectorIndex(AbstractObject const* targetObject, LONG64 valueVectorIndex);
 
 		/**
 		 * https://en.wikipedia.org/wiki/HSL_and_HSV#From_RGB

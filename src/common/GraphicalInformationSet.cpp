@@ -655,7 +655,7 @@ LONG64 GraphicalInformationSet::getValueVectorIndex(AbstractObject const* target
 	return *colorInformation->ValueVectorIndex;
 }
 
-LONG64 GraphicalInformationSet::setValueVectorIndex(AbstractObject const* targetObject, LONG64 valueVectorIndex) {
+void GraphicalInformationSet::setValueVectorIndex(AbstractObject const* targetObject, LONG64 valueVectorIndex) {
 	resqml2__ColorInformation* colorInformation = getColorInformation(targetObject);
 
 	if (colorInformation == nullptr) {
@@ -663,7 +663,7 @@ LONG64 GraphicalInformationSet::setValueVectorIndex(AbstractObject const* target
 	}
 
 	if (colorInformation->ValueVectorIndex == nullptr) {
-		colorInformation->ValueVectorIndex = static_cast<LONG64*>(soap_malloc(getGsoapContext(), sizeof(LONG64)));
+		colorInformation->ValueVectorIndex = soap_new_LONG64(gsoapProxy2_2->soap);
 	}
 	*colorInformation->ValueVectorIndex = valueVectorIndex;
 }
