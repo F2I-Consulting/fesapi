@@ -462,7 +462,7 @@ DiscreteColorMap* GraphicalInformationSet::getDiscreteColorMap(AbstractObject co
 }
 
 void GraphicalInformationSet::setDiscreteColorMap(AbstractObject* targetObject, DiscreteColorMap* discreteColorMap, 
-	LONG64 valueVectorIndex, bool useReverseMapping, bool useLogarithmicMapping)
+	bool useReverseMapping, bool useLogarithmicMapping)
 {
 	if (targetObject == nullptr) {
 		throw invalid_argument("The target object cannot be null");
@@ -487,21 +487,8 @@ void GraphicalInformationSet::setDiscreteColorMap(AbstractObject* targetObject, 
 		gis->GraphicalInformation.push_back(colorInformation);
 	}
 
-	LONG64 min, max;
-	discreteColorMap->computeMinMax(min, max);
-	if (colorInformation->MinMax == nullptr) {
-		colorInformation->MinMax = soap_new_resqml2__MinMax(gsoapProxy2_2->soap, 1);
-	}
-	colorInformation->MinMax->Minimum = min;
-	colorInformation->MinMax->Maximum = max;
-
 	colorInformation->UseReverseMapping = useReverseMapping;
 	colorInformation->UseLogarithmicMapping = useLogarithmicMapping;
-
-	if (colorInformation->ValueVectorIndex == nullptr) {
-		colorInformation->ValueVectorIndex = soap_new_LONG64(gsoapProxy2_2->soap);
-	}
-	*colorInformation->ValueVectorIndex = valueVectorIndex;
 
 	getRepository()->addRelationship(this, discreteColorMap);
 	colorInformation->DiscreteColorMap = discreteColorMap->newEml22Reference();
@@ -564,7 +551,7 @@ ContinuousColorMap* GraphicalInformationSet::getContinuousColorMap(AbstractObjec
 }
 
 void GraphicalInformationSet::setContinuousColorMap(AbstractObject* targetObject, ContinuousColorMap* continuousColorMap, 
-	LONG64 valueVectorIndex, bool useReverseMapping, bool useLogarithmicMapping)
+	bool useReverseMapping, bool useLogarithmicMapping)
 {
 	if (targetObject == nullptr) {
 		throw invalid_argument("The target object cannot be null");
@@ -589,27 +576,47 @@ void GraphicalInformationSet::setContinuousColorMap(AbstractObject* targetObject
 		gis->GraphicalInformation.push_back(colorInformation);
 	}
 
-	LONG64 min, max;
-	continuousColorMap->computeMinMax(min, max);
-	if (colorInformation->MinMax == nullptr) {
-		colorInformation->MinMax = soap_new_resqml2__MinMax(gsoapProxy2_2->soap, 1);
-	}
-	colorInformation->MinMax->Minimum = min;
-	colorInformation->MinMax->Maximum = max;
-
 	colorInformation->UseReverseMapping = useReverseMapping;
 	colorInformation->UseLogarithmicMapping = useLogarithmicMapping;
 	
-	if (colorInformation->ValueVectorIndex == nullptr) {
-		colorInformation->ValueVectorIndex = soap_new_LONG64(gsoapProxy2_2->soap);
-	}
-	*colorInformation->ValueVectorIndex = valueVectorIndex;
-
 	getRepository()->addRelationship(this, continuousColorMap);
 	colorInformation->ContinuousColorMap = continuousColorMap->newEml22Reference();
 }
 
-double GraphicalInformationSet::getColorMapMinIndex(AbstractObject const* targetObject) const
+bool GraphicalInformationSet::hasColorMapMinMax(AbstractObject const* targetObject) const
+{
+	resqml2__ColorInformation* colorInformation = getColorInformation(targetObject);
+
+	if (colorInformation == nullptr) {
+		throw invalid_argument("This object has no color information");
+	}
+
+	return colorInformation->MinMax != nullptr;
+}
+
+double GraphicalInformationSet::getColorMapMin(AbstractObject const* targetObject) const
+{
+	if (!hasColorMapMinMax(targetObject)) {
+		throw invalid_argument("The color information associated to the target object have no minimum value");
+	}
+
+	resqml2__ColorInformation* colorInformation = getColorInformation(targetObject);
+
+	return colorInformation->MinMax->Minimum;
+}
+
+double GraphicalInformationSet::getColorMapMax(AbstractObject const* targetObject) const
+{
+	if (!hasColorMapMinMax(targetObject)) {
+		throw invalid_argument("The color information associated to the target object have no maximum value");
+	}
+
+	resqml2__ColorInformation* colorInformation = getColorInformation(targetObject);
+
+	return colorInformation->MinMax->Maximum;
+}
+
+void GraphicalInformationSet::setColorMapMinMax(AbstractObject const* targetObject, double min, double max) const
 {
 	resqml2__ColorInformation* colorInformation = getColorInformation(targetObject);
 
@@ -618,27 +625,47 @@ double GraphicalInformationSet::getColorMapMinIndex(AbstractObject const* target
 	}
 
 	if (colorInformation->MinMax == nullptr) {
-		throw invalid_argument("No min index is defined");
+		colorInformation->MinMax = soap_new_resqml2__MinMax(gsoapProxy2_2->soap, 1);
 	}
-
-	return colorInformation->MinMax->Minimum;
+	colorInformation->MinMax->Minimum = min;
+	colorInformation->MinMax->Maximum = max;
 }
 
-double GraphicalInformationSet::getColorMapMaxIndex(AbstractObject const* targetObject) const
+bool GraphicalInformationSet::hasValueVectorIndex(AbstractObject const* targetObject)
 {
+	if (targetObject == nullptr) {
+		throw invalid_argument("The target object cannot be null");
+	}
+
+	resqml2__ColorInformation const* const colorInformation = getColorInformation(targetObject);
+
+	if (colorInformation == nullptr) {
+		throw invalid_argument("The target object have no color information (it is not related to any continuous or discrete color map)");
+	}
+
+	return colorInformation->ValueVectorIndex != nullptr;
+}
+
+LONG64 GraphicalInformationSet::getValueVectorIndex(AbstractObject const* targetObject) {
+	if (!hasValueVectorIndex(targetObject)) {
+		throw invalid_argument("The color information associated to the target object have no value vector index");
+	}
+
+	resqml2__ColorInformation const* const colorInformation = getColorInformation(targetObject);
+	return *colorInformation->ValueVectorIndex;
+}
+
+void GraphicalInformationSet::setValueVectorIndex(AbstractObject const* targetObject, LONG64 valueVectorIndex) {
 	resqml2__ColorInformation* colorInformation = getColorInformation(targetObject);
 
-	if (colorInformation == nullptr)
-	{
+	if (colorInformation == nullptr) {
 		throw invalid_argument("This object has no color information");
 	}
 
-	if (colorInformation->MinMax == nullptr)
-	{
-		throw invalid_argument("No max index is defined");
+	if (colorInformation->ValueVectorIndex == nullptr) {
+		colorInformation->ValueVectorIndex = soap_new_LONG64(gsoapProxy2_2->soap);
 	}
-
-	return colorInformation->MinMax->Maximum;
+	*colorInformation->ValueVectorIndex = valueVectorIndex;
 }
 
 void GraphicalInformationSet::rgbToHsv(double red, double green, double blue, double & hue, double & saturation, double & value)

@@ -207,7 +207,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::DiscreteColorMap* getDiscreteColorMap(AbstractObject const* targetObject) const;
 
 		DLL_IMPORT_OR_EXPORT void setDiscreteColorMap(AbstractObject* targetObject, RESQML2_2_NS::DiscreteColorMap* discreteColorMap,
-			LONG64 valueVectorIndex = 0, bool useReverseMapping = false, bool useLogarithmicMapping = false);
+			bool useReverseMapping = false, bool useLogarithmicMapping = false);
 
 		/**
 		 * @param targetObject	the object for wich we look for a continuous color map. If it has not and it is a property,
@@ -238,10 +238,47 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::ContinuousColorMap* getContinuousColorMap(AbstractObject const* targetObject) const;
 
 		DLL_IMPORT_OR_EXPORT void setContinuousColorMap(AbstractObject* targetObject, RESQML2_2_NS::ContinuousColorMap* continuousColorMap,
-			LONG64 valueVectorIndex = 0, bool useReverseMapping = false, bool useLogarithmicMapping = false);
+			bool useReverseMapping = false, bool useLogarithmicMapping = false);
 
-		DLL_IMPORT_OR_EXPORT double getColorMapMinIndex(AbstractObject const* targetObject) const;
-		DLL_IMPORT_OR_EXPORT double getColorMapMaxIndex(AbstractObject const* targetObject) const;
+		/**
+		 * @param targetObject	the object for wich we look for the min or max value to map with a color map.
+		 * @return				true if min and max exists else false
+		 */
+		DLL_IMPORT_OR_EXPORT bool hasColorMapMinMax(AbstractObject const* targetObject) const;
+		
+		/**
+		 * @param targetObject	the object for wich we look for the min value to map with a color map.
+		 * @return				the min value
+		 */
+		DLL_IMPORT_OR_EXPORT double getColorMapMin(AbstractObject const* targetObject) const;
+		
+		/**
+		 * @param targetObject	the object for wich we look for the max value to map with a color map.
+		 * @return				the max value
+		 */
+		DLL_IMPORT_OR_EXPORT double getColorMapMax(AbstractObject const* targetObject) const;
+		
+		/**
+		 * @param targetObject	the object for wich we want to set the min and max values to map with a color map.
+		 */
+		DLL_IMPORT_OR_EXPORT void setColorMapMinMax(AbstractObject const* targetObject, double min, double max) const;
+
+		/**
+		 * @param targetObject	the object for wich we look for a value vector index to look when mapping with a color map.
+		 * @return				true if value vector index exists else false
+		 */
+		DLL_IMPORT_OR_EXPORT bool hasValueVectorIndex(AbstractObject const* targetObject);
+
+		/**
+		 * @param targetObject	the object for wich we look for a value vector index to look when mapping with a color map.
+		 * @param				the value vector index
+		 */
+		DLL_IMPORT_OR_EXPORT LONG64 getValueVectorIndex(AbstractObject const* targetObject);
+
+		/**
+		 * @param targetObject	the object for wich we want to set value vector index to look when mapping with a color map.
+		 */
+		DLL_IMPORT_OR_EXPORT void setValueVectorIndex(AbstractObject const* targetObject, LONG64 valueVectorIndex);
 
 		/**
 		 * https://en.wikipedia.org/wiki/HSL_and_HSV#From_RGB
