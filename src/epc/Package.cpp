@@ -244,22 +244,6 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 		throw invalid_argument("Cannot unzip " + pkgPathName + ". Please verify the path of the file and if you can open it with a third party archiver.");
     }
 
-#ifdef CACHE_FILE_DESCRIPTOR
-	// Speedup part lookup, by caching zipped file descriptor using file name
-
-#ifndef UNZ_MAXFILENAMEINZIP
-#define UNZ_MAXFILENAMEINZIP (256)
-#endif
-
-    char current_filename[UNZ_MAXFILENAMEINZIP+1];
-	int err = unzGoToFirstFile(d_ptr->unzipped);
-    while (err == UNZ_OK)
-    {
-		d_ptr->name2file[current_filename] = *(unz64_s*)d_ptr->unzipped;
-		err = unzGoToNextFile(d_ptr->unzipped);
-    }
-#endif
-
 	// Package relationships : core properties
 	string relFile = extractFile("_rels/.rels", "");
 	d_ptr->filePrincipalRelationship.readFromString(relFile);
