@@ -57,7 +57,8 @@ void FileCoreProperties::initDefaultCoreProperties()
         uid_t uid;
                 
         uid = geteuid ();
-        pw = getpwuid (uid);
+        pw = getpwuid (uid);	// may rise a false positive memory leak with Valgrind
+								// (https://stackoverflow.com/questions/40226297/struct-passwd-is-source-of-memory-leak-how-to-properly-free?rq=1)
         if (pw)
         	setCreator(pw->pw_name);
         else
