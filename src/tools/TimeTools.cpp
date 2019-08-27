@@ -65,6 +65,8 @@ time_t timeTools::convertIsoToUnixTimestamp(const std::string & s)
 	std::istringstream iss(s);
 	iss >> std::get_time(&tm, "%Y-%m-%dT%H:%M:%S");
 #endif
+	tm.tm_isdst = -1;
+	mktime(&tm);
 	return timeTools::timegm(&tm);
 }
 

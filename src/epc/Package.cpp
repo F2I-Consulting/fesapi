@@ -155,7 +155,7 @@ public:
 	zipFile             zf;
 	bool                isZip64;
 #ifdef CACHE_FILE_DESCRIPTOR
-	std::unordered_map< std::string, unz64_s > name2file;
+	std::unordered_map< std::string, unzFile > name2file;
 #endif
 };
 
@@ -635,18 +635,18 @@ bool Package::fileExists(const string & filename) const
 string Package::extractFile(const string & filename, const string & password)
 {
 #ifdef CACHE_FILE_DESCRIPTOR
-	std::unordered_map< std::string, unz64_s >::const_iterator it = d_ptr->name2file.find(filename);
+	std::unordered_map< std::string, unzFile >::const_iterator it = d_ptr->name2file.find(filename);
 	if (it == d_ptr->name2file.end())
 	{
 		if (!fileExists(filename))
 		{
 			throw invalid_argument("The file " + filename + " does not exist in the EPC document.");
 		}
-		d_ptr->name2file[filename] = *(unz64_s*)d_ptr->unzipped;
+		d_ptr->name2file[filename] = (d_ptr->unzipped);
 	}
 	else
 	{
-		*(unz64_s*)d_ptr->unzipped = it->second;
+		d_ptr->unzipped = it->second;
 	}
 #else
 	if (!fileExists(filename))
