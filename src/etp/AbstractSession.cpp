@@ -18,8 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 
 #include "etp/AbstractSession.h"
-
+#if (defined(_WIN32) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9))))
 #include <regex>
+#endif
 
 using namespace ETP_NS;
 
@@ -106,11 +107,17 @@ void AbstractSession::close()
 
 bool AbstractSession::validateUri(const std::string & uri, bool sendException)
 {
+	// Regular expressions are not handled before GCC 4.9
+	// https://stackoverflow.com/questions/12530406/is-gcc-4-8-or-earlier-buggy-about-regular-expressions
+#if (defined(_WIN32) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9))))
 	bool result = std::regex_match(uri, std::regex("^eml://((witsml|resqml|prodml|eml)([0-9]{2}))?/?", std::regex::ECMAScript)) ||
 		std::regex_match(uri, std::regex("^eml://(witsml|resqml|prodml|eml)([0-9]{2})/obj_[a-zA-Z0-9]+", std::regex::ECMAScript)) ||
 		std::regex_match(uri, std::regex("^eml://(witsml|resqml|prodml|eml)([0-9]{2})/[a-zA-Z0-9]+", std::regex::ECMAScript)) ||
 		std::regex_match(uri, std::regex("^eml://(witsml|resqml|prodml|eml)([0-9]{2})/[a-zA-Z0-9]+[(][a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}[)]", std::regex::ECMAScript)) ||
 		std::regex_match(uri, std::regex("^eml://(witsml|resqml|prodml|eml)([0-9]{2})/obj_[a-zA-Z0-9]+[(][a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}[)]", std::regex::ECMAScript));
+#else
+	return true;
+#endif
 	if (!result) {
 		std::cerr << "The URI \"" + uri + "\"  is invalid." << std::endl;
 	}
@@ -128,9 +135,15 @@ bool AbstractSession::validateUri(const std::string & uri, bool sendException)
 
 bool AbstractSession::validateDataObjectUri(const std::string & uri, bool sendException)
 {
+	// Regular expressions are not handled before GCC 4.9
+	// https://stackoverflow.com/questions/12530406/is-gcc-4-8-or-earlier-buggy-about-regular-expressions
+#if (defined(_WIN32) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9))))
 	bool result = (uri.find("resqml20") != std::string::npos || uri.find("eml20") != std::string::npos)
 		? std::regex_match(uri, std::regex("^eml://(resqml20|eml20)/obj_[a-zA-Z0-9]+[(][a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}[)]", std::regex::ECMAScript))
 		: std::regex_match(uri, std::regex("^eml://(witsml|resqml|prodml|eml)([0-9]{2})/[a-zA-Z0-9]+[(][a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}[)]", std::regex::ECMAScript));
+#else 
+	return true;
+#endif
 	if (!result) {
 		std::cerr << "The data object URI \"" + uri + "\"  is invalid." << std::endl;
 	}
