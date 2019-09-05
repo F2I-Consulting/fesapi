@@ -90,24 +90,6 @@ unsigned int DiscreteColorMap::getColorCount() const
 	return discreteColorMap->Entry.size();
 }
 
-void DiscreteColorMap::computeMinMax(LONG64& min, LONG64& max) const
-{
-	resqml2__DiscreteColorMap* discreteColorMap = static_cast<resqml2__DiscreteColorMap*>(gsoapProxy2_2);
-
-	min = discreteColorMap->Entry[0]->index;
-	max = min;
-
-	for (size_t colorIndex = 1; colorIndex < discreteColorMap->Entry.size(); ++colorIndex) {
-		const LONG64 index = discreteColorMap->Entry[colorIndex]->index;
-		if (index < min) {
-			min = index;
-		}
-		else if (index > max) {
-			max = index;
-		}
-	}
-}
-
 resqml2__HsvColor* DiscreteColorMap::getColor(double colorIndex) const
 {
 	resqml2__DiscreteColorMap const* const discreteColorMap = static_cast<resqml2__DiscreteColorMap*>(gsoapProxy2_2);

@@ -251,17 +251,23 @@ namespace COMMON_NS
 		std::string getDiscreteColorMapUuid(AbstractObject const* targetObject) const;
 		RESQML2_2_NS::DiscreteColorMap* getDiscreteColorMap(AbstractObject const* targetObject) const;
 		void setDiscreteColorMap(AbstractObject * targetObject, RESQML2_2_NS::DiscreteColorMap* discreteColorMap,
-			LONG64 valueVectorIndex = 0, bool useReverseMapping = false, bool useLogarithmicMapping = false);
+			bool useReverseMapping = false, bool useLogarithmicMapping = false);
 
 		bool hasContinuousColorMap(AbstractObject const* targetObject) const;
 		gsoap_eml2_2::eml22__DataObjectReference* getContinuousColorMapDor(AbstractObject const* targetObject) const;
 		std::string getContinuousColorMapUuid(AbstractObject const* targetObject) const;
 		RESQML2_2_NS::ContinuousColorMap* getContinuousColorMap(AbstractObject const* targetObject) const;
 		void setContinuousColorMap(AbstractObject * targetObject, RESQML2_2_NS::ContinuousColorMap* continuousColorMap,
-			LONG64 valueVectorIndex = 0, bool useReverseMapping = false, bool useLogarithmicMapping = false);
+			bool useReverseMapping = false, bool useLogarithmicMapping = false);
 
-		double getColorMapMinIndex(AbstractObject const* targetObject) const;
-		double getColorMapMaxIndex(AbstractObject const* targetObject) const;
+		bool hasColorMapMinMax(AbstractObject const* targetObject) const;
+		double getColorMapMin(AbstractObject const* targetObject) const;
+		double getColorMapMax(AbstractObject const* targetObject) const;
+		void setColorMapMinMax(AbstractObject const* targetObject, double min, double max) const;
+
+		bool hasValueVectorIndex(AbstractObject const* targetObject);
+		LONG64 getValueVectorIndex(AbstractObject const* targetObject);
+		setValueVectorIndex(AbstractObject const* targetObject, LONG64 valueVectorIndex);
 
 		static void rgbToHsv(double red, double green, double blue, double& hue, double& saturation, double& value);
 		static void rgbToHsv(unsigned int red, unsigned int green, unsigned int blue, double& hue, double& saturation, double& value);
@@ -276,7 +282,7 @@ namespace COMMON_NS
 		enum openingMode { READ_ONLY = 0, READ_WRITE = 1, OVERWRITE = 2 };
 		
 		DataObjectRepository();
-		DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);
+		DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);		
 		
 		void clear();
 		

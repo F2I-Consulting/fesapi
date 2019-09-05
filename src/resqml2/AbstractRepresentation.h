@@ -78,17 +78,17 @@ namespace RESQML2_NS
 		/**
 		* Getter (read/write access) for the localCrs
 		*/
-		DLL_IMPORT_OR_EXPORT class AbstractLocal3dCrs* getLocalCrs() const;
+		DLL_IMPORT_OR_EXPORT class AbstractLocal3dCrs* getLocalCrs(unsigned int patchIndex) const;
 
 		/**
 		* Get the Local 3d CRS dor where the reference point ordinals are given
 		*/
-		virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor() const;
+		virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const;
 		
 		/**
 		* Get the Local 3d CRS uuid where the reference point ordinals are given
 		*/
-		DLL_IMPORT_OR_EXPORT std::string getLocalCrsUuid() const;
+		DLL_IMPORT_OR_EXPORT std::string getLocalCrsUuid(unsigned int patchIndex) const;
 
 		/*
 		* Getter for the uuid of the hdf proxy which is used for storing the numerical values of this representation i.e. geometry.
@@ -214,6 +214,16 @@ namespace RESQML2_NS
 		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
 		*/
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfAllPatches(double * xyzPoints) const;
+
+		/**
+		* Check if the representation (i.e. all its patches/geometries) is defined in a single local CRS.
+		*/
+		DLL_IMPORT_OR_EXPORT bool isInSingleLocalCrs() const;
+
+		/**
+		* Check if the representation (i.e. all its patches/geometries) is defined in a single global CRS.
+		*/
+		DLL_IMPORT_OR_EXPORT bool isInSingleGlobalCrs() const;
 
 		/**
 		* Get all the XYZ points of all patches of this individual representation

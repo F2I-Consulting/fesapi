@@ -13684,8 +13684,8 @@ class SOAP_CMAC resqml2__AlphaInformation : public eml22__AbstractGraphicalInfor
         bool UseLogarithmicMapping;
         /// Required element 'resqml2:UseReverseMapping' of XML schema type 'xsd:boolean'
         bool UseReverseMapping;
-        /// Required element 'resqml2:ValueVectorIndex' of XML schema type 'xsd:integer'
-        LONG64 ValueVectorIndex;
+        /// Optional element 'resqml2:ValueVectorIndex' of XML schema type 'xsd:integer'
+        LONG64 *ValueVectorIndex;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml2__AlphaInformation
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml2__AlphaInformation; }
@@ -13760,12 +13760,12 @@ class SOAP_CMAC resqml2__ColorInformation : public eml22__AbstractGraphicalInfor
         bool UseLogarithmicMapping;
         /// Required element 'resqml2:UseReverseMapping' of XML schema type 'xsd:boolean'
         bool UseReverseMapping;
-        /// Required element 'resqml2:ValueVectorIndex' of XML schema type 'xsd:integer'
-        LONG64 ValueVectorIndex;
-        /// Optional element 'resqml2:DiscreteColorMap' of XML schema type 'eml22:DataObjectReference'
-        eml22__DataObjectReference *DiscreteColorMap;
+        /// Optional element 'resqml2:ValueVectorIndex' of XML schema type 'xsd:integer'
+        LONG64 *ValueVectorIndex;
         /// Optional element 'resqml2:ContinuousColorMap' of XML schema type 'eml22:DataObjectReference'
         eml22__DataObjectReference *ContinuousColorMap;
+        /// Optional element 'resqml2:DiscreteColorMap' of XML schema type 'eml22:DataObjectReference'
+        eml22__DataObjectReference *DiscreteColorMap;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml2__ColorInformation
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml2__ColorInformation; }
@@ -13785,7 +13785,7 @@ class SOAP_CMAC resqml2__ColorInformation : public eml22__AbstractGraphicalInfor
         virtual resqml2__ColorInformation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml2__ColorInformation); }
       public:
         /// Constructor with default initializations
-        resqml2__ColorInformation() : MinMax(), UseLogarithmicMapping(), UseReverseMapping(), ValueVectorIndex(), DiscreteColorMap(), ContinuousColorMap() { }
+        resqml2__ColorInformation() : MinMax(), UseLogarithmicMapping(), UseReverseMapping(), ValueVectorIndex(), ContinuousColorMap(), DiscreteColorMap() { }
         virtual ~resqml2__ColorInformation() { }
         /// Friend allocator used by soap_new_resqml2__ColorInformation(struct soap*, int)
         friend SOAP_FMAC1 resqml2__ColorInformation * SOAP_FMAC2 soap_instantiate_resqml2__ColorInformation(struct soap*, int, const char*, const char*, size_t*);
@@ -13798,10 +13798,10 @@ class SOAP_CMAC resqml2__ColorInformation : public eml22__AbstractGraphicalInfor
 /* complex XML schema type 'resqml2:ColorMapDictionary': */
 class SOAP_CMAC resqml2__ColorMapDictionary : public eml22__AbstractObject {
       public:
-        /// Optional element 'resqml2:DiscreteColorMap' of XML schema type 'resqml2:DiscreteColorMap'
-        std::vector<resqml2__DiscreteColorMap *> DiscreteColorMap;
         /// Optional element 'resqml2:ContinuousColorMap' of XML schema type 'resqml2:ContinuousColorMap'
         std::vector<resqml2__ContinuousColorMap *> ContinuousColorMap;
+        /// Optional element 'resqml2:DiscreteColorMap' of XML schema type 'resqml2:DiscreteColorMap'
+        std::vector<resqml2__DiscreteColorMap *> DiscreteColorMap;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml2__ColorMapDictionary
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml2__ColorMapDictionary; }
@@ -13821,7 +13821,7 @@ class SOAP_CMAC resqml2__ColorMapDictionary : public eml22__AbstractObject {
         virtual resqml2__ColorMapDictionary *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml2__ColorMapDictionary); }
       public:
         /// Constructor with default initializations
-        resqml2__ColorMapDictionary() : DiscreteColorMap(), ContinuousColorMap() { }
+        resqml2__ColorMapDictionary() : ContinuousColorMap(), DiscreteColorMap() { }
         virtual ~resqml2__ColorMapDictionary() { }
         /// Friend allocator used by soap_new_resqml2__ColorMapDictionary(struct soap*, int)
         friend SOAP_FMAC1 resqml2__ColorMapDictionary * SOAP_FMAC2 soap_instantiate_resqml2__ColorMapDictionary(struct soap*, int, const char*, const char*, size_t*);
@@ -13838,10 +13838,10 @@ class SOAP_CMAC resqml2__ContinuousColorMap : public eml22__AbstractObject {
         enum resqml2__InterpolationDomain InterpolationDomain;
         /// Required element 'resqml2:InterpolationMethod' of XML schema type 'resqml2:InterpolationMethod'
         enum resqml2__InterpolationMethod InterpolationMethod;
-        /// Optional element 'resqml2:NaNColor' of XML schema type 'resqml2:HsvColor'
-        resqml2__HsvColor *NaNColor;
         /// Required element 'resqml2:Entry' of XML schema type 'resqml2:ContinuousColorMapEntry'
         std::vector<resqml2__ContinuousColorMapEntry *> Entry;
+        /// Optional element 'resqml2:NaNColor' of XML schema type 'resqml2:HsvColor'
+        resqml2__HsvColor *NaNColor;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml2__ContinuousColorMap
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml2__ContinuousColorMap; }
@@ -13861,7 +13861,7 @@ class SOAP_CMAC resqml2__ContinuousColorMap : public eml22__AbstractObject {
         virtual resqml2__ContinuousColorMap *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml2__ContinuousColorMap); }
       public:
         /// Constructor with default initializations
-        resqml2__ContinuousColorMap() : InterpolationDomain(), InterpolationMethod(), NaNColor(), Entry() { }
+        resqml2__ContinuousColorMap() : InterpolationDomain(), InterpolationMethod(), Entry(), NaNColor() { }
         virtual ~resqml2__ContinuousColorMap() { }
         /// Friend allocator used by soap_new_resqml2__ContinuousColorMap(struct soap*, int)
         friend SOAP_FMAC1 resqml2__ContinuousColorMap * SOAP_FMAC2 soap_instantiate_resqml2__ContinuousColorMap(struct soap*, int, const char*, const char*, size_t*);
@@ -13886,8 +13886,8 @@ class SOAP_CMAC resqml2__ContourLineSetInformation : public eml22__AbstractGraph
         resqml2__GraphicalInformationForEdges *MinorLineGraphicalInformation;
         /// Optional element 'resqml2:ShowMajorLineEvery' of XML schema type 'xsd:integer'
         LONG64 *ShowMajorLineEvery;
-        /// Required element 'resqml2:ValueVectorIndex' of XML schema type 'xsd:integer'
-        LONG64 ValueVectorIndex;
+        /// Optional element 'resqml2:ValueVectorIndex' of XML schema type 'xsd:integer'
+        LONG64 *ValueVectorIndex;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml2__ContourLineSetInformation
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml2__ContourLineSetInformation; }
@@ -14184,8 +14184,8 @@ class SOAP_CMAC resqml2__SizeInformation : public eml22__AbstractGraphicalInform
         bool UseLogarithmicMapping;
         /// Required element 'resqml2:UseReverseMapping' of XML schema type 'xsd:boolean'
         bool UseReverseMapping;
-        /// Required element 'resqml2:ValueVectorIndex' of XML schema type 'xsd:integer'
-        LONG64 ValueVectorIndex;
+        /// Optional element 'resqml2:ValueVectorIndex' of XML schema type 'xsd:integer'
+        LONG64 *ValueVectorIndex;
       public:
         /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml2__SizeInformation
         virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml2__SizeInformation; }
@@ -44736,15 +44736,15 @@ typedef witsml2__WellboreGeology _witsml2__WellboreGeology;
 
 #endif
 
-/* resqml2__ContinuousColorMap * has binding name 'PointerToresqml2__ContinuousColorMap' for type 'resqml2:ContinuousColorMap' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml2__ContinuousColorMap
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml2__ContinuousColorMap (-1390)
+/* resqml2__DiscreteColorMap * has binding name 'PointerToresqml2__DiscreteColorMap' for type 'resqml2:DiscreteColorMap' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml2__DiscreteColorMap
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml2__DiscreteColorMap (-1390)
 
 #endif
 
-/* resqml2__DiscreteColorMap * has binding name 'PointerToresqml2__DiscreteColorMap' for type 'resqml2:DiscreteColorMap' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml2__DiscreteColorMap
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml2__DiscreteColorMap (-1388)
+/* resqml2__ContinuousColorMap * has binding name 'PointerToresqml2__ContinuousColorMap' for type 'resqml2:ContinuousColorMap' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml2__ContinuousColorMap
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml2__ContinuousColorMap (-1388)
 
 #endif
 
@@ -46038,15 +46038,15 @@ typedef witsml2__WellboreGeology _witsml2__WellboreGeology;
 
 #endif
 
-/* std::vector<resqml2__ContinuousColorMap *>  has binding name 'std__vectorTemplateOfPointerToresqml2__ContinuousColorMap' for type 'resqml2:ContinuousColorMap' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml2__ContinuousColorMap
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml2__ContinuousColorMap (-1391)
+/* std::vector<resqml2__DiscreteColorMap *>  has binding name 'std__vectorTemplateOfPointerToresqml2__DiscreteColorMap' for type 'resqml2:DiscreteColorMap' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml2__DiscreteColorMap
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml2__DiscreteColorMap (-1391)
 
 #endif
 
-/* std::vector<resqml2__DiscreteColorMap *>  has binding name 'std__vectorTemplateOfPointerToresqml2__DiscreteColorMap' for type 'resqml2:DiscreteColorMap' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml2__DiscreteColorMap
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml2__DiscreteColorMap (-1389)
+/* std::vector<resqml2__ContinuousColorMap *>  has binding name 'std__vectorTemplateOfPointerToresqml2__ContinuousColorMap' for type 'resqml2:ContinuousColorMap' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml2__ContinuousColorMap
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml2__ContinuousColorMap (-1389)
 
 #endif
 

@@ -383,8 +383,12 @@ gsoap_resqml2_0_1::_resqml2__WellboreTrajectoryRepresentation* WellboreTrajector
 	return static_cast<_resqml2__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreTrajectoryRepresentation::getLocalCrsDor() const
+gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreTrajectoryRepresentation::getLocalCrsDor(unsigned int patchIndex) const
 {
+	if (patchIndex > 0) {
+		throw out_of_range("There is no more than one patch in a wellbore trajectory.");
+	}
+
 	_resqml2__WellboreTrajectoryRepresentation* rep = getSpecializedGsoapProxy();
 	return rep->Geometry != nullptr ? static_cast<resqml2__ParametricLineGeometry*>(rep->Geometry)->LocalCrs : nullptr;
 }

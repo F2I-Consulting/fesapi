@@ -199,24 +199,6 @@ void ContinuousColorMap::setNanRgbColor(unsigned int red, unsigned int green, un
 	setNanHsvColor(hue, saturation, value, alpha, colorTitle);
 }
 
-void ContinuousColorMap::computeMinMax(LONG64& min, LONG64& max) const
-{
-	resqml2__ContinuousColorMap* continuousColorMap = static_cast<resqml2__ContinuousColorMap*>(gsoapProxy2_2);
-
-	min = continuousColorMap->Entry[0]->Index;
-	max = min;
-
-	for (size_t colorIndex = 1; colorIndex < continuousColorMap->Entry.size(); ++colorIndex) {
-		const LONG64 index = continuousColorMap->Entry[colorIndex]->Index;
-		if (index < min) {
-			min = index;
-		}
-		else if (index > max) {
-			max = index;
-		}
-	}
-}
-
 resqml2__HsvColor* ContinuousColorMap::getColor(double colorIndex) const
 {
 	resqml2__ContinuousColorMap const* const continuousColorMap = static_cast<resqml2__ContinuousColorMap*>(gsoapProxy2_2);

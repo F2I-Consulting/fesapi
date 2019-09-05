@@ -105,8 +105,6 @@ namespace RESQML2_2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT void setNanRgbColor(unsigned int red, unsigned int green, unsigned int blue, double alpha = 1, std::string const& colorTitle = "");
 
-		void computeMinMax(LONG64& min, LONG64& max) const;
-
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const { return XML_TAG; }
 	};

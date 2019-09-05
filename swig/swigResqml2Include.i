@@ -216,8 +216,8 @@ namespace RESQML2_NS
 		
 		AbstractFeatureInterpretation* getInterpretation() const;
 		std::string getInterpretationUuid() const;
-		AbstractLocal3dCrs * getLocalCrs();
-		std::string getLocalCrsUuid() const;
+		AbstractLocal3dCrs * getLocalCrs(unsigned int patchIndex);
+		std::string getLocalCrsUuid(unsigned int patchIndex) const;
 		unsigned int getValuesPropertyCount() const;
 		AbstractValuesProperty* getValuesProperty(const unsigned int & index) const;
 		
@@ -231,6 +231,8 @@ namespace RESQML2_NS
 		void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
 		void getXyzPointsOfPatchInGlobalCrs(const unsigned int & patchIndex, double * xyzPoints) const;
 		void getXyzPointsOfAllPatches(double * xyzPoints) const;
+		bool isInSingleLocalCrs() const;
+		bool isInSingleGlobalCrs() const;
 		void getXyzPointsOfAllPatchesInGlobalCrs(double * xyzPoints) const;
 		virtual unsigned int getPatchCount() const;
 		

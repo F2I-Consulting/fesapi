@@ -299,6 +299,8 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, CO
 	double contColMapAlphas[2] = { 1., 1. };
 	contColMap->setRgbColors(2, contColMapRgbColors, contColMapAlphas, contColMapColTitles);
 	graphicalInformationSet->setContinuousColorMap(contColMapContProp, contColMap);
+	graphicalInformationSet->setColorMapMinMax(contColMapContProp, 0., 1.);
+	graphicalInformationSet->setValueVectorIndex(contColMapContProp, 1);
 }
 #endif
 
@@ -421,6 +423,8 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, COMMON_NS::Abstr
 	timeStruct.tm_mday = 8;
 	timeStruct.tm_mon = 1;
 	timeStruct.tm_year = 0;
+	timeStruct.tm_isdst = -1;
+	mktime(&timeStruct);
 	horizon1->setCreation(timeStruct);
 	horizon1->setAge(300000000);
 	horizon2 = pck->createHorizon("fd7950a6-f62e-4e47-96c4-048820a61c59", "Horizon2");
@@ -794,6 +798,8 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	timeStruct.tm_mday = 8;
 	timeStruct.tm_mon = 1;
 	timeStruct.tm_year = 0;
+	timeStruct.tm_isdst = -1;
+	mktime(&timeStruct); 
 	timeSeries->pushBackTimestamp(timeStruct);
 	timeSeries->pushBackTimestamp(1409753895);
 	timeSeries->pushBackTimestamp(1441289895);
@@ -3321,6 +3327,13 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 					}
 					std::cout << ")" << std::endl;
 				}
+				if (graphicalInformationSet->hasColorMapMinMax(targetObject)) {
+					std::cout << "min: " << graphicalInformationSet->getColorMapMin(targetObject) << std::endl;
+					std::cout << "max: " << graphicalInformationSet->getColorMapMax(targetObject) << std::endl;
+				}
+				if (graphicalInformationSet->hasValueVectorIndex(targetObject)) {
+					std::cout << "value vector index: " << graphicalInformationSet->getValueVectorIndex(targetObject) << std::endl;
+				}
 			}
 
 			if (graphicalInformationSet->hasContinuousColorMap(targetObject)) {
@@ -3335,6 +3348,13 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 						std::cout << ", " << continuousColorMap->getColorTitle(mapIndex);
 					}
 					std::cout << ")" << std::endl;
+				}
+				if (graphicalInformationSet->hasColorMapMinMax(targetObject)) {
+					std::cout << "min: " << graphicalInformationSet->getColorMapMin(targetObject) << std::endl;
+					std::cout << "max: " << graphicalInformationSet->getColorMapMax(targetObject) << std::endl;
+				}
+				if (graphicalInformationSet->hasValueVectorIndex(targetObject)) {
+					std::cout << "value vector index: " << graphicalInformationSet->getValueVectorIndex(targetObject) << std::endl;
 				}
 			}
 		}
@@ -3355,7 +3375,7 @@ void deserialize(const string & inputFile)
 		throw invalid_argument("The epc document is not a valid one");
 	}
 
-	unsigned int hdfProxyCount = repo.getHdfProxyCount();
+	const unsigned int hdfProxyCount = repo.getHdfProxyCount();
 	cout << "There are " << repo.getHdfProxyCount() << " hdf files associated to this epc document." << endl;
 	for (unsigned int hdfProxyIndex = 0; hdfProxyIndex < hdfProxyCount; ++hdfProxyIndex) {
 		cout << "Hdf file relative path : " << repo.getHdfProxy(hdfProxyIndex)->getRelativePath() << endl;

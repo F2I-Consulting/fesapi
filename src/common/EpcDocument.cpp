@@ -100,21 +100,25 @@ namespace {
 
 		const std::vector<COMMON_NS::AbstractObject *>& srcObj = repo.getSourceObjects(dataObj);
 		for (size_t index = 0; index < srcObj.size(); ++index) {
-			epc::Relationship relRep(srcObj[index]->getPartNameInEpcDocument(), "", srcObj[index]->getUuid());
-			relRep.setSourceObjectType();
-			result.push_back(relRep);
+			if (!srcObj[index]->isPartial()) {
+				epc::Relationship relRep(srcObj[index]->getPartNameInEpcDocument(), "", srcObj[index]->getUuid());
+				relRep.setSourceObjectType();
+				result.push_back(relRep);
+			}
 		}
 
 		const std::vector<COMMON_NS::AbstractObject *>& targetObj = repo.getTargetObjects(dataObj);
 		for (size_t index = 0; index < targetObj.size(); ++index) {
-			epc::Relationship relRep(targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
-			relRep.setDestinationObjectType();
-			result.push_back(relRep);
+			if (!targetObj[index]->isPartial()) {
+				epc::Relationship relRep(targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
+				relRep.setDestinationObjectType();
+				result.push_back(relRep);
+			}
 		}
 
 		// External part
 		COMMON_NS::AbstractHdfProxy const * hdfProxy = dynamic_cast<COMMON_NS::AbstractHdfProxy const *>(dataObj);
-		if (hdfProxy != nullptr) {
+		if (hdfProxy != nullptr && !hdfProxy->isPartial()) {
 			epc::Relationship relExt(hdfProxy->getRelativePath(), "", "Hdf5File", false);
 			relExt.setExternalResourceType();
 			result.push_back(relExt);

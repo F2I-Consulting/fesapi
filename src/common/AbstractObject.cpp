@@ -484,7 +484,8 @@ void AbstractObject::setOriginator(const std::string & originator)
 		uid_t uid;
 
 		uid = geteuid();
-		pw = getpwuid(uid);
+		pw = getpwuid(uid);	// may rise a false positive memory leak with Valgrind
+							// (https://stackoverflow.com/questions/40226297/struct-passwd-is-source-of-memory-leak-how-to-properly-free?rq=1)
 		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->Citation->Originator = pw != nullptr ? pw->pw_name : "unknown";
 		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->Citation->Originator = pw != nullptr ? pw->pw_name : "unknown";
 #if WITH_EXPERIMENTAL

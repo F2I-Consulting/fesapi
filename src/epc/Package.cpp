@@ -155,7 +155,7 @@ public:
 	zipFile             zf;
 	bool                isZip64;
 #ifdef CACHE_FILE_DESCRIPTOR
-	std::unordered_map< std::string, unz64_s > name2file;
+	std::unordered_map< std::string, unzFile > name2file;
 #endif
 };
 
@@ -243,22 +243,6 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 	if (d_ptr->unzipped == nullptr) {
 		throw invalid_argument("Cannot unzip " + pkgPathName + ". Please verify the path of the file and if you can open it with a third party archiver.");
     }
-
-#ifdef CACHE_FILE_DESCRIPTOR
-	// Speedup part lookup, by caching zipped file descriptor using file name
-
-#ifndef UNZ_MAXFILENAMEINZIP
-#define UNZ_MAXFILENAMEINZIP (256)
-#endif
-
-    char current_filename[UNZ_MAXFILENAMEINZIP+1];
-	int err = unzGoToFirstFile(d_ptr->unzipped);
-    while (err == UNZ_OK)
-    {
-		d_ptr->name2file[current_filename] = *(unz64_s*)d_ptr->unzipped;
-		err = unzGoToNextFile(d_ptr->unzipped);
-    }
-#endif
 
 	// Package relationships : core properties
 	string relFile = extractFile("_rels/.rels", "");
@@ -651,18 +635,18 @@ bool Package::fileExists(const string & filename) const
 string Package::extractFile(const string & filename, const string & password)
 {
 #ifdef CACHE_FILE_DESCRIPTOR
-	std::unordered_map< std::string, unz64_s >::const_iterator it = d_ptr->name2file.find(filename);
+	std::unordered_map< std::string, unzFile >::const_iterator it = d_ptr->name2file.find(filename);
 	if (it == d_ptr->name2file.end())
 	{
 		if (!fileExists(filename))
 		{
 			throw invalid_argument("The file " + filename + " does not exist in the EPC document.");
 		}
-		d_ptr->name2file[filename] = *(unz64_s*)d_ptr->unzipped;
+		d_ptr->name2file[filename] = (d_ptr->unzipped);
 	}
 	else
 	{
-		*(unz64_s*)d_ptr->unzipped = it->second;
+		d_ptr->unzipped = it->second;
 	}
 #else
 	if (!fileExists(filename))
