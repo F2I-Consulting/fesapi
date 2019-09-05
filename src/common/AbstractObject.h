@@ -290,7 +290,9 @@ namespace COMMON_NS
 		*/
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* getGsoapProxy() const;
 
+#if WITH_EXPERIMENTAL
 		gsoap_eml2_2::eml22__AbstractObject* getGsoapProxy2_2() const { return gsoapProxy2_2; }
+#endif
 
 		/**
 		* Get the gsoap context where the underlying gsoap proxy is defined.

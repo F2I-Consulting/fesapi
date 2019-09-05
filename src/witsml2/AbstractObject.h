@@ -56,7 +56,9 @@ namespace WITSML2_NS
 		AbstractObject() {}
 
 		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) : COMMON_NS::AbstractObject(proxy) {}
+#if WITH_EXPERIMENTAL
 		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy) : COMMON_NS::AbstractObject(proxy) {}
+#endif
+
 	};
 }
-

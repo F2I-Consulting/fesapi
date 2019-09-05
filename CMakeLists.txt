@@ -32,6 +32,11 @@ SET (FESAPI_PROXIES_SOURCES
 	${CMAKE_CURRENT_SOURCE_DIR}/src/proxies/struct_tm.cpp
 )
 FILE (GLOB FESAPI_PROXIES_HEADERS ${FESAPI_ROOT_DIR}/src/proxies/*.h)
+if (NOT WITH_EXPERIMENTAL)
+	list(REMOVE_ITEM FESAPI_PROXIES_SOURCES "${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_2C.cpp")
+	list(REMOVE_ITEM FESAPI_PROXIES_HEADERS "${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_2H.h")
+	list(REMOVE_ITEM FESAPI_PROXIES_HEADERS "${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_2Stub.h")
+endif ()
 
 SET (BUILD_SHARED_LIBS ON CACHE BOOL "Build shared lib")
 
@@ -161,14 +166,7 @@ if (WITH_ETP)
 	endif ()
 
 	# Boost DEPENDENCY
-	set (BOOST_INCLUDE_DIR BOOST_INCLUDE_DIR-NOTFOUND CACHE PATH "Path to the directory which contains the BOOST header files")
-	if (NOT IS_DIRECTORY ${BOOST_INCLUDE_DIR})
-		message(WARNING "The BOOST include dir (BOOST_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
-	endif ()
-	set (BOOST_SYSTEM_LIBRARY BOOST_SYSTEM_LIBRARY-NOTFOUND CACHE FILEPATH "Path to the file which contains the Boost system static library release")
-	if (NOT EXISTS ${BOOST_SYSTEM_LIBRARY})
-		message(WARNING "The BOOST library (BOOST_SYSTEM_LIBRARY variable) does not look to be a valid file. Please modify it.")
-	endif ()
+	find_package(Boost 1.68.0 REQUIRED system)
 	
 	add_subdirectory (etpClientExample)
 	add_subdirectory (etpServerExample)

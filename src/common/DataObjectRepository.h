@@ -1233,6 +1233,7 @@ namespace COMMON_NS
 
 		//*************** WITSML *************
 
+#if WITH_EXPERIMENTAL
 		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::ToolErrorModel* createPartialToolErrorModel(
 			const std::string & guid,
 			const std::string & title);
@@ -1266,7 +1267,7 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT WITSML2_1_NS::WeightingFunctionDictionary* createWeightingFunctionDictionary(
 			const std::string & guid,
 			const std::string & title);
-
+#endif
 		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Well* createWell(const std::string & guid,
 			const std::string & title);
 

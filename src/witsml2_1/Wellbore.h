@@ -40,29 +40,29 @@ namespace WITSML2_1_NS
 		Wellbore(class Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title,
-			gsoap_eml2_2::eml22__WellStatus statusWellbore,
+			gsoap_eml2_1::eml21__WellStatus statusWellbore,
 			const bool & isActive,
-			gsoap_eml2_2::witsml2__WellPurpose purposeWellbore,
-			gsoap_eml2_2::witsml2__WellboreType typeWellbore,
+			gsoap_eml2_1::witsml2__WellPurpose purposeWellbore,
+			gsoap_eml2_1::witsml2__WellboreType typeWellbore,
 			const bool & achievedTD
 		);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		Wellbore(gsoap_eml2_2::witsml2__Wellbore* fromGsoap):AbstractObject(fromGsoap) {}
+		Wellbore(gsoap_eml2_1::witsml2__Wellbore* fromGsoap):AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~Wellbore() {}
 
-		gsoap_eml2_2::eml22__DataObjectReference* getWellDor() const;
+		gsoap_eml2_1::eml21__DataObjectReference* getWellDor() const;
 		DLL_IMPORT_OR_EXPORT class Well* getWell() const;
 
 		DLL_IMPORT_OR_EXPORT void setWell(class Well* witsmlWell);
 
-		DLL_IMPORT_OR_EXPORT void setShape(const gsoap_eml2_2::witsml2__WellboreShape & shape);
+		DLL_IMPORT_OR_EXPORT void setShape(const gsoap_eml2_1::witsml2__WellboreShape & shape);
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}

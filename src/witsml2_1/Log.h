@@ -41,14 +41,14 @@ namespace WITSML2_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		Log(gsoap_eml2_2::witsml2__Log* fromGsoap) :AbstractObject(fromGsoap) {}
+		Log(gsoap_eml2_1::witsml2__Log* fromGsoap) :AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~Log() {}
 
-		gsoap_eml2_2::eml22__DataObjectReference* getWellboreDor() const;
+		gsoap_eml2_1::eml21__DataObjectReference* getWellboreDor() const;
 		DLL_IMPORT_OR_EXPORT class Wellbore* getWellbore() const;
 		void setWellbore(class Wellbore* witsmlWellbore);
 
