@@ -41,7 +41,7 @@ namespace WITSML2_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreMarkerSet(gsoap_eml2_1::witsml2__WellboreMarkerSet* fromGsoap) :AbstractObject(fromGsoap) {}
+		WellboreMarkerSet(gsoap_eml2_2::witsml2__WellboreMarkerSet* fromGsoap) :AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

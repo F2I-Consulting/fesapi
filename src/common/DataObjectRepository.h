@@ -207,9 +207,9 @@ namespace COMMON_NS
 #if WITH_EXPERIMENTAL
 		COMMON_NS::AbstractObject* getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType);
 		COMMON_NS::AbstractObject* getEml2_2WrapperFromGsoapContext(const std::string & datatype);
+		COMMON_NS::AbstractObject* getWitsml2_1WrapperFromGsoapContext(const std::string & datatype);
 #endif
 		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
-		COMMON_NS::AbstractObject* getWitsml2_1WrapperFromGsoapContext(const std::string & datatype);
 
 		/**
 		* Get the error code of the current gsoap context.

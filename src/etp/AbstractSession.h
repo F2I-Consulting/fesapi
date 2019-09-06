@@ -105,7 +105,7 @@ namespace ETP_NS
 			std::cout << "*************************************************" << std::endl;
 #endif
 
-			std::auto_ptr<avro::OutputStream> out = avro::memoryOutputStream();
+			avro::OutputStreamPtr out = avro::memoryOutputStream();
 			avro::EncoderPtr e = avro::binaryEncoder();
 			e->init(*out);
 			avro::encode(*e, mh);

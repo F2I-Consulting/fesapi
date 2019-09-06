@@ -15,7 +15,7 @@ endif(WITH_EXPERIMENTAL)
 target_include_directories(etpClientExample PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(etpClientExample PRIVATE ${FESAPI_ROOT_DIR}/src/)
 target_include_directories(etpClientExample PRIVATE ${AVRO_INCLUDE_DIR})
-target_include_directories(etpClientExample PRIVATE ${BOOST_INCLUDE_DIR})
+target_include_directories(etpClientExample PRIVATE ${Boost_INCLUDE_DIR})
 if (WITH_ETP_SSL)
 	target_compile_definitions(etpClientExample PRIVATE WITH_ETP_SSL)
 	if (NOT TARGET OpenSSL::SSL OR NOT TARGET OpenSSL::Crypto)
@@ -58,7 +58,7 @@ target_sources(etpClientExample PRIVATE ${ALL_CPP_FILES} ${ALL_H_FILES})
 target_compile_definitions(etpClientExample PRIVATE BOOST_ALL_NO_LIB)
 	
 add_dependencies (etpClientExample ${CPP_LIBRARY_NAME})
-target_link_libraries (etpClientExample PRIVATE ${CPP_LIBRARY_NAME} ${BOOST_SYSTEM_LIBRARY} ${CMAKE_THREAD_LIBS_INIT} ${AVRO_LIBRARY_RELEASE})
+target_link_libraries (etpClientExample PRIVATE ${CPP_LIBRARY_NAME} ${Boost_SYSTEM_LIBRARY} ${CMAKE_THREAD_LIBS_INIT} ${AVRO_LIBRARY_RELEASE})
 if (WIN32)
 	set_target_properties (etpClientExample PROPERTIES
 		LINK_FLAGS "/INCREMENTAL:NO"

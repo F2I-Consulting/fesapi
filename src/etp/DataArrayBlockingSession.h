@@ -94,7 +94,7 @@ namespace ETP_NS
 
 			if (bytes_transferred == 0) return;
 
-			std::auto_ptr<avro::InputStream> in = avro::memoryInputStream(static_cast<const uint8_t*>(receivedBuffer.data().data()), bytes_transferred);
+			avro::InputStreamPtr in = avro::memoryInputStream(static_cast<const uint8_t*>(receivedBuffer.data().data()), bytes_transferred);
 			avro::DecoderPtr d = avro::binaryDecoder();
 			d->init(*in);
 

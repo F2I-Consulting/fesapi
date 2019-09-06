@@ -27,7 +27,7 @@ namespace WITSML2_1_NS
 	class Trajectory : public WITSML2_1_NS::AbstractObject
 	{
 	private:
-		gsoap_eml2_1::witsml2__TrajectoryStation* getTrajectoryStation(unsigned int trajStationIndex) const;
+		gsoap_eml2_2::witsml2__TrajectoryStation* getTrajectoryStation(unsigned int trajStationIndex) const;
 
 	public:
 		/**
@@ -37,12 +37,12 @@ namespace WITSML2_1_NS
 		Trajectory(class Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title,
-			gsoap_eml2_1::witsml2__ChannelStatus growingStatus);
+			gsoap_eml2_2::witsml2__ChannelStatus growingStatus);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		Trajectory(gsoap_eml2_1::witsml2__Trajectory* fromGsoap):AbstractObject(fromGsoap) {}
+		Trajectory(gsoap_eml2_2::witsml2__Trajectory* fromGsoap):AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -52,12 +52,12 @@ namespace WITSML2_1_NS
 		DLL_IMPORT_OR_EXPORT unsigned int getTrajectoryStationCount() const;
 
 		DLL_IMPORT_OR_EXPORT double getMd(unsigned int trajStationIndex) const;
-		gsoap_eml2_1::eml22__LengthUom getMdUom(unsigned int trajStationIndex) const;
+		gsoap_eml2_2::eml22__LengthUom getMdUom(unsigned int trajStationIndex) const;
 		DLL_IMPORT_OR_EXPORT std::string getMdDatum(unsigned int trajStationIndex) const;
 
-		gsoap_eml2_1::witsml2__TrajStationType getTrajStationType(unsigned int trajStationIndex) const;
+		gsoap_eml2_2::witsml2__TrajStationType getTrajStationType(unsigned int trajStationIndex) const;
 
-		gsoap_eml2_1::eml22__DataObjectReference* getWellboreDor() const;
+		gsoap_eml2_2::eml22__DataObjectReference* getWellboreDor() const;
 		DLL_IMPORT_OR_EXPORT class Wellbore* getWellbore() const;
 		void setWellbore(class Wellbore* witsmlWellbore);
 

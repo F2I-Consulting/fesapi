@@ -166,7 +166,10 @@ if (WITH_ETP)
 	endif ()
 
 	# Boost DEPENDENCY
-	find_package(Boost 1.68.0 REQUIRED system)
+	find_package(Boost 1.66.0 REQUIRED system)
+	if (Boost_MINOR_VERSION GREATER 69)
+		message(ERROR ": The Boost library cannot be superior to 1.69.0.")
+	endif ()
 	
 	add_subdirectory (etpClientExample)
 	add_subdirectory (etpServerExample)

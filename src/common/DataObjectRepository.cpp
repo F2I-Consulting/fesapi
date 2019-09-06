@@ -21,8 +21,6 @@ under the License.
 #include <algorithm>
 #include <functional>
 
-#include "common/GraphicalInformationSet.h"
-
 #include "resqml2_0_1/PropertyKindMapper.h"
 
 #include "resqml2_0_1/LocalDepth3dCrs.h"
@@ -96,11 +94,9 @@ under the License.
 #include "resqml2_0_1/DiscretePropertySeries.h"
 
 #if WITH_EXPERIMENTAL
+#include "common/GraphicalInformationSet.h"
 #include "resqml2_2/DiscreteColorMap.h"
 #include "resqml2_2/ContinuousColorMap.h"
-#endif
-
-#include "witsml2_0/Well.h"
 
 #include "witsml2_1/Well.h"
 #include "witsml2_1/Wellbore.h"
@@ -110,6 +106,9 @@ under the License.
 #include "witsml2_1/ToolErrorModelDictionary.h""
 #include "witsml2_1/ErrorTermDictionary.h"
 #include "witsml2_1/WeightingFunction.h"
+#endif
+
+#include "witsml2_0/Well.h"
 
 #include "tools/GuidTools.h"
 
@@ -423,15 +422,15 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 	else if (contentType.find("application/x-witsml+xml;version=2.0;type=") != string::npos) {
 		wrapper = getWitsml2_0WrapperFromGsoapContext(datatype);
 	}
-	else if (contentType.find("application/x-witsml+xml;version=2.1;type=") != string::npos) {
-		wrapper = getWitsml2_1WrapperFromGsoapContext(datatype);
-	}
 #if WITH_EXPERIMENTAL
 	else if (contentType.find("application/x-resqml+xml;version=2.2;type=") != string::npos) {
 		wrapper = getResqml2_2WrapperFromGsoapContext(datatype);
 	}
 	else if (contentType.find("application/x-eml+xml;version=2.2;type=") != string::npos) {
 		wrapper = getEml2_2WrapperFromGsoapContext(datatype);
+	}
+	else if (contentType.find("application/x-witsml+xml;version=2.1;type=") != string::npos) {
+		wrapper = getWitsml2_1WrapperFromGsoapContext(datatype);
 	}
 #endif
 
@@ -583,12 +582,14 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Trajectory)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::WellCompletion)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::WellboreCompletion)
+#if WITH_EXPERIMENTAL
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::ToolErrorModel)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::ErrorTerm)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::WeightingFunction)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(COMMON_NS::GraphicalInformationSet)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::DiscreteColorMap)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::ContinuousColorMap)
+#endif
 	else if (contentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		throw invalid_argument("Please handle this type outside of this method since it is not only XML related.");
@@ -668,12 +669,14 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Well)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Wellbore)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Trajectory)
+#if WITH_EXPERIMENTAL
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_1_NS::ToolErrorModel)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_1_NS::ErrorTerm)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_1_NS::WeightingFunction)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(COMMON_NS::GraphicalInformationSet)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::DiscreteColorMap)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::ContinuousColorMap)
+#endif
 	else if (contentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		throw invalid_argument("Please handle this type outside of this method since it is not only XML related.");
@@ -2236,6 +2239,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getWitsml2_0WrapperFromGsoapCon
 	return wrapper;
 }
 
+#if WITH_EXPERIMENTAL
 COMMON_NS::AbstractObject* DataObjectRepository::getWitsml2_1WrapperFromGsoapContext(const std::string & datatype)
 {
 	COMMON_NS::AbstractObject* wrapper = nullptr;
@@ -2250,7 +2254,6 @@ COMMON_NS::AbstractObject* DataObjectRepository::getWitsml2_1WrapperFromGsoapCon
 	return wrapper;
 }
 
-#if WITH_EXPERIMENTAL
 COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType)
 {
 	COMMON_NS::AbstractObject* wrapper = nullptr;

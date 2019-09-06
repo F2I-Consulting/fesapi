@@ -38,16 +38,16 @@ namespace WITSML2_1_NS
 			const std::string & guid,
 			const std::string & title,
 			const std::string & operator_,
-			gsoap_eml2_1::eml21__WellStatus statusWell,
-			gsoap_eml2_1::witsml2__WellPurpose purposeWell,
-			gsoap_eml2_1::witsml2__WellFluid fluidWell,
-			gsoap_eml2_1::witsml2__WellDirection directionWell
+			gsoap_eml2_2::eml22__WellStatus statusWell,
+			gsoap_eml2_2::witsml2__WellPurpose purposeWell,
+			gsoap_eml2_2::witsml2__WellFluid fluidWell,
+			gsoap_eml2_2::witsml2__WellDirection directionWell
 		);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		Well(gsoap_eml2_1::witsml2__Well* fromGsoap):AbstractObject(fromGsoap)  {}
+		Well(gsoap_eml2_2::witsml2__Well* fromGsoap):AbstractObject(fromGsoap)  {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -70,9 +70,9 @@ namespace WITSML2_1_NS
 		void pushBackDatum(
 			const std::string & guid, 
 			const std::string & title,
-			gsoap_eml2_1::eml21__WellboreDatumReference code,
+			gsoap_eml2_2::eml22__WellboreDatumReference code,
 			const std::string & datum,
-			gsoap_eml2_1::eml21__LengthUom elevationUnit,
+			gsoap_eml2_2::eml22__LengthUom elevationUnit,
 			const double & elevation,
 			const unsigned int & verticalCrsEpsgCode);
 

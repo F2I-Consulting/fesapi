@@ -50,13 +50,15 @@ Wellbore::Wellbore(
 		const std::string & guid,
 		const std::string & title,
 		gsoap_eml2_2::eml22__WellStatus statusWellbore,
-		const bool & isActive,
+		bool isActive,
 		gsoap_eml2_2::witsml2__WellPurpose purposeWellbore,
 		gsoap_eml2_2::witsml2__WellboreType typeWellbore,
-		const bool & achievedTD
+		bool achievedTD
 	)
 {
-	if (witsmlWell == nullptr) throw invalid_argument("A wellbore must be associated to a well.");
+	if (witsmlWell == nullptr) {
+		throw invalid_argument("A wellbore must be associated to a well.");
+	}
 
 	gsoapProxy2_2 = soap_new_witsml2__Wellbore(witsmlWell->getGsoapContext(), 1);
 

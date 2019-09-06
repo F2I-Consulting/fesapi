@@ -6,6 +6,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <array>
 
 #include "boost/any.hpp"
 #include "avro/Specific.hh"
@@ -2139,7 +2140,7 @@ namespace Energistics {
 		namespace v12 {		
 			namespace Datatypes {			
 				struct Uuid{				
-					boost::array<uint8_t, 16> m_array;
+					std::array<uint8_t, 16> m_array;
 				};				
 			};			
 		};		
