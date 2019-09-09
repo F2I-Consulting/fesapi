@@ -55,7 +55,6 @@ COMMON_NS::AbstractObject::hdfDatatypeEnum AbstractValuesProperty::getValuesHdfD
 	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(0, nullValue);
 	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
-	hid_t dt = -1;
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml2__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml2__AbstractValuesProperty*>(gsoapProxy2_0_1);
 

@@ -306,7 +306,6 @@ bool PolylineSetRepresentation::areAllPolylinesClosedOfPatch(unsigned int patchI
 		unsigned int polylineCount = getPolylineCountOfPatch(patchIndex);
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__BooleanHdf5Array*>(patch->ClosedPolylines)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		COMMON_NS::AbstractObject::hdfDatatypeEnum datatype = hdfProxy->getHdfDatatypeInDataset(dataset->PathInHdfFile);
 
 		bool result = true;
 		long* tmp = new long[polylineCount];
@@ -354,7 +353,6 @@ bool PolylineSetRepresentation::areAllPolylinesNonClosedOfPatch(const unsigned i
 		unsigned int polylineCount = getPolylineCountOfPatch(patchIndex);
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__BooleanHdf5Array*>(patch->ClosedPolylines)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hid_t datatype = hdfProxy->getHdfDatatypeInDataset(dataset->PathInHdfFile);
 
 		bool result = true;
 		long* tmp = new long[polylineCount];

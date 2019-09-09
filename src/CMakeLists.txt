@@ -279,14 +279,10 @@ endif (WITH_ETP)
 
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${ALL_SOURCES_AND_HEADERS})
 
-target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_INCLUDE_DIRS})
-target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_INCLUDE_DIR})
-target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_C_INCLUDE_DIR})
-target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_INCLUDE_DIR})
+target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_INCLUDE_DIRS} ${ZLIB_INCLUDE_DIR} ${HDF5_C_INCLUDE_DIR} ${MINIZIP_INCLUDE_DIR})
 
 if (WITH_ETP)
-	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${AVRO_INCLUDE_DIR})
-	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${Boost_INCLUDE_DIR})
+	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${AVRO_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
 	if (WITH_ETP_SSL)
 		target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${OPENSSL_INCLUDE_DIR})
 	endif ()

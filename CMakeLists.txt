@@ -142,14 +142,6 @@ else (BUILD_SHARED_LIBS)
 	set (LIB_TYPE STATIC)
 endif (BUILD_SHARED_LIBS)
 
-# ============================================================================
-# including subdirectories
-# ============================================================================
-
-add_subdirectory(src)
-add_subdirectory(example)
-add_subdirectory(doc)
-
 set (WITH_ETP OFF CACHE BOOL "Build Fesapi with ETP support.")
 set (WITH_ETP_SSL OFF CACHE BOOL "Build Fesapi with ETP SSL support.")
 if (WITH_ETP)
@@ -176,6 +168,14 @@ if (WITH_ETP)
 endif (WITH_ETP)
 
 set (WITH_EXPERIMENTAL OFF CACHE BOOL "Compile some experimental functionalities.")
+
+# ============================================================================
+# including subdirectories
+# ============================================================================
+
+add_subdirectory(src)
+add_subdirectory(example)
+add_subdirectory(doc)
 
 set (WITH_TEST OFF CACHE BOOL "Also build the unit tests.")
 if (WITH_TEST)

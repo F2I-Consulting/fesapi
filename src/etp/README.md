@@ -10,8 +10,7 @@ We advise you to install these third party libraries respectively into
  - Enable the CMAKE variable called WITH_ETP
  - give real path and files to the following cmake variables:
 	- BOOST
-		- BOOST_INCLUDE_DIR : where the "boost" directory containing all BOOST headers is located
-		- BOOST_SYSTEM_LIBRARY : the BOOST system library you want to link to
+		- Boost_INCLUDE_DIR : the directory where you can find the directory named "boost" which contain all BOOST headers
 	- MINIZIP
 		- AVRO_INCLUDE_DIR : where the "avro" directory containing all AVRO headers is located
 		- AVRO_LIBRARY_RELEASE : the AVRO system library you want to link to
