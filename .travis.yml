@@ -25,29 +25,6 @@ matrix:
             - cmake --build . -- -j 2
             - ./example/example
             - ctest -V
-        - os: linux
-          name: "FesapiCpp with dynamic HDF5 (clang 5.0.0)"
-          sudo: required
-          dist: trusty
-          compiler: clang
-          script:
-            - cmake --version
-            - mkdir ../build
-            - cd ../build
-            - cmake $TRAVIS_BUILD_DIR
-                -DUUID_INCLUDE_DIR=/usr/include
-                -DUUID_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libuuid.so
-                -DHDF5_C_INCLUDE_DIR=/usr/include
-                -DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libhdf5.so
-                -DMINIZIP_INCLUDE_DIR=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.1-linux-ubuntu1604-x86_64-gcc540/include
-                -DMINIZIP_LIBRARY_RELEASE=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.1-linux-ubuntu1604-x86_64-gcc540/lib/libminizip.a
-                -DZLIB_INCLUDE_DIR=/usr/include
-                -DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so
-                -DWITH_EXPERIMENTAL=TRUE
-                -DWITH_TEST=TRUE
-            - cmake --build . -- -j 2
-            - ./example/example
-            - ctest -V
 addons:
   apt:
     packages:
