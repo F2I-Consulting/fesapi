@@ -24,7 +24,6 @@ matrix:
                 -DWITH_TEST=TRUE
             - cmake --build . -- -j 2
             - ./example/example
-            - ctest -V
 addons:
   apt:
     packages:
