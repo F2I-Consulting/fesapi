@@ -20,6 +20,11 @@ under the License.
 
 #include "common/AbstractObject.h"
 
+namespace RESQML2_0_1_NS
+{
+	class PropertySet;
+}
+
 namespace RESQML2_NS
 {
 	class AbstractProperty: public COMMON_NS::AbstractObject
@@ -79,8 +84,8 @@ namespace RESQML2_NS
 		/**
 		* Getter (in read only mode) of the element count per property value.
 		* If the property is a scalar one then it should be one.
-		* If it is a vectorial one, the it should be more than one.
-		* It is not possible to have some tensor property values (more dimension than a vector).
+		* If it is a vectorial one, then it should be more than one.
+		* It is not possible to have some tensor property values (more dimensions than a vector).
 		*/
 		DLL_IMPORT_OR_EXPORT unsigned int getElementCountPerValue() const;
 
@@ -88,6 +93,15 @@ namespace RESQML2_NS
 		* Get the kind of elements the property values are attached to.
 		*/
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__IndexableElements getAttachmentKind() const;
+
+		/**
+		* Get all property sets which contain this property
+		*/
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PropertySet *> getPropertySets() const;
+
+		DLL_IMPORT_OR_EXPORT unsigned int getPropertySetCount() const;
+
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::PropertySet * getPropertySet(unsigned int index) const;
 
 		//*********************************************
 		//****** REALIZATION DIMENSION ****************

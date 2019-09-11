@@ -69,9 +69,8 @@ gsoap_resqml2_0_1::eml20__DataObjectReference const * AbstractFeatureInterpretat
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->InterpretedFeature;
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("Not implemented yet");
 }
 
 std::string AbstractFeatureInterpretation::getInterpretedFeatureUuid() const

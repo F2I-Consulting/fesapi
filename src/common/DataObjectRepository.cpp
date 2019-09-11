@@ -53,6 +53,7 @@ under the License.
 #include "resqml2_0_1/GridConnectionSetRepresentation.h"
 #include "resqml2_0_1/TimeSeries.h"
 #include "resqml2_0_1/PropertyKind.h"
+#include "resqml2_0_1/PropertySet.h"
 #include "resqml2_0_1/ContinuousProperty.h"
 #include "resqml2_0_1/CategoricalProperty.h"
 #include "resqml2_0_1/DiscreteProperty.h"
@@ -522,6 +523,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_resqml2_0_1
 	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(AbstractIjkGridRepresentation)
 	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(UnstructuredGridRepresentation)
 	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(PropertyKind)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(PropertySet)
 	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(ContinuousProperty)
 	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(ContinuousPropertySeries)
 	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(CategoricalProperty)
@@ -1206,6 +1208,12 @@ RESQML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::st
 RESQML2_NS::PropertyKind* DataObjectRepository::createPartialPropertyKind(const std::string & guid, const std::string & title)
 {
 	return createPartial<PropertyKind>(guid, title);
+}
+
+RESQML2_NS::PropertySet* DataObjectRepository::createPropertySet(const std::string & guid, const std::string & title,
+	bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_resqml2_0_1::resqml2__TimeSetKind timeSetKind)
+{
+	return new RESQML2_0_1_NS::PropertySet(this, guid, title, hasMultipleRealizations, hasSinglePropertyKind, timeSetKind);
 }
 
 CommentProperty* DataObjectRepository::createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
@@ -1996,6 +2004,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapC
 	}
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(UnstructuredGridRepresentation)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PropertyKind)
+	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PropertySet)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ContinuousProperty)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ContinuousPropertySeries)
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(CategoricalProperty)

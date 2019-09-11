@@ -77,6 +77,7 @@ namespace RESQML2_NS
 	%nspace RESQML2_NS::GridConnectionSetRepresentation;
 	%nspace RESQML2_NS::MdDatum;
 	%nspace RESQML2_NS::PropertyKind;
+	%nspace RESQML2_NS::PropertySet;
 	%nspace RESQML2_NS::RepresentationSetRepresentation;
 	%nspace RESQML2_NS::SubRepresentation;
 	%nspace RESQML2_NS::TimeSeries;
@@ -88,6 +89,11 @@ namespace gsoap_resqml2_0_1
 		resqml2__PillarShape__vertical = 0,
 		resqml2__PillarShape__straight = 1,
 		resqml2__PillarShape__curved = 2
+	};
+	enum resqml2__TimeSetKind {
+		resqml2__TimeSetKind__single_x0020time = 0,
+		resqml2__TimeSetKind__equivalent_x0020times = 1,
+		resqml2__TimeSetKind__not_x0020a_x0020time_x0020set = 2
 	};
 }
 
@@ -460,6 +466,26 @@ namespace RESQML2_NS
 		std::string getUomAsString() const;
 	};
 	
+	class PropertySet : public COMMON_NS::AbstractObject
+	{
+	public:
+		void setParent(PropertySet * parent);
+		std::string getParentUuid() const;
+		PropertySet * getParent() const;
+
+		unsigned int getChildrenCount() const;
+		PropertySet* getChildren(unsigned int index) const;
+
+		void pushBackProperty(RESQML2_NS::AbstractProperty * prop);
+
+		unsigned int getPropertyCount() const;
+		RESQML2_NS::AbstractProperty* getProperty(unsigned int index) const;
+
+		virtual bool hasMultipleRealizations() const = 0;
+		virtual bool hasSinglePropertyKind() const = 0;
+		virtual gsoap_resqml2_0_1::resqml2__TimeSetKind getTimeSetKind() const = 0;
+	};
+	
 	class TimeSeries : public COMMON_NS::AbstractObject
 	{
 	public:
@@ -488,6 +514,10 @@ namespace RESQML2_NS
 		unsigned int getElementCountPerValue() const;
 		
 		gsoap_resqml2_0_1::resqml2__IndexableElements getAttachmentKind() const;
+		
+		std::vector<RESQML2_NS::PropertySet *> getPropertySets() const;
+		unsigned int getPropertySetCount() const;
+		RESQML2_NS::PropertySet * getPropertySet(unsigned int index) const;
 		
 		bool hasRealizationIndex() const;
 		ULONG64 getRealizationIndex() const;

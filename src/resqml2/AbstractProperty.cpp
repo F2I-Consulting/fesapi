@@ -24,6 +24,7 @@ under the License.
 #include "common/EnumStringMapper.h"
 
 #include "resqml2/SubRepresentation.h"
+#include "resqml2_0_1/PropertySet.h"
 #include "resqml2_0_1/UnstructuredGridRepresentation.h"
 #include "resqml2_0_1/IjkGridExplicitRepresentation.h"
 #include "resqml2_0_1/IjkGridParametricRepresentation.h"
@@ -277,13 +278,11 @@ time_t AbstractProperty::getTimestamp() const
 		if (timeSeries && static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex != nullptr) {
 			return timeSeries->getTimestamp(static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->Index);
 		}
-		else {
-			throw invalid_argument("This property does not have any timestamp.");
-		}
+
+		throw invalid_argument("This property does not have any timestamp.");
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("Not implemented yet");
 }
 
 unsigned int AbstractProperty::getTimeIndex() const
@@ -294,13 +293,11 @@ unsigned int AbstractProperty::getTimeIndex() const
 		if (timeSeries && static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex != nullptr) {
 			return static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->Index;
 		}
-		else {
-			throw invalid_argument("This property does not have any timestamp.");
-		}
+
+		throw invalid_argument("This property does not have any timestamp.");
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("Not implemented yet");
 }
 
 unsigned int AbstractProperty::getElementCountPerValue() const
@@ -308,9 +305,8 @@ unsigned int AbstractProperty::getElementCountPerValue() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->Count;
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("Not implemented yet");
 }
 
 gsoap_resqml2_0_1::resqml2__IndexableElements AbstractProperty::getAttachmentKind() const
@@ -318,9 +314,35 @@ gsoap_resqml2_0_1::resqml2__IndexableElements AbstractProperty::getAttachmentKin
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->IndexableElement;
 	}
-	else {
-		throw logic_error("Not implemented yet");
+
+	throw logic_error("Not implemented yet");
+}
+
+std::vector<RESQML2_NS::PropertySet *> AbstractProperty::getPropertySets() const
+{
+	return repository->getSourceObjects<RESQML2_NS::PropertySet>(this);
+}
+
+unsigned int AbstractProperty::getPropertySetCount() const
+{
+	const std::vector<RESQML2_NS::PropertySet *> & propSets = getPropertySets();
+
+	if (propSets.size() > (std::numeric_limits<unsigned int>::max)()) {
+		throw range_error("Too much property set containing this property");
 	}
+
+	return static_cast<unsigned int>(propSets.size());
+}
+
+RESQML2_NS::PropertySet * AbstractProperty::getPropertySet(unsigned int index) const
+{
+	const std::vector<RESQML2_NS::PropertySet *> & propSets = getPropertySets();
+
+	if (index < propSets.size()) {
+		return propSets[index];
+	}
+
+	throw out_of_range("The index of the prop Set is out of range");
 }
 
 bool AbstractProperty::isAssociatedToOneStandardEnergisticsPropertyKind() const
@@ -328,9 +350,8 @@ bool AbstractProperty::isAssociatedToOneStandardEnergisticsPropertyKind() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->PropertyKind->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__StandardPropertyKind;
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("Not implemented yet");
 }
 
 std::string AbstractProperty::getPropertyKindDescription() const
@@ -339,13 +360,11 @@ std::string AbstractProperty::getPropertyKindDescription() const
 		if (repository->getPropertyKindMapper() != nullptr) {
 			return repository->getPropertyKindMapper()->getDescriptionOfResqmlStandardPropertyKindName(getEnergisticsPropertyKind());
 		}
-		else {
-			throw std::invalid_argument("You must load the property kind mapping files if you want to get the parent property kind.");
-		}
+
+		throw std::invalid_argument("You must load the property kind mapping files if you want to get the parent property kind.");
 	}
-	else {
-		return getLocalPropertyKind()->getDescription();
-	}
+
+	return getLocalPropertyKind()->getDescription();
 }
 
 std::string AbstractProperty::getPropertyKindAsString() const
@@ -354,9 +373,8 @@ std::string AbstractProperty::getPropertyKindAsString() const
 		COMMON_NS::EnumStringMapper tmp;
 		return tmp.getEnergisticsPropertyKindName(getEnergisticsPropertyKind());
 	}
-	else {
-		return getLocalPropertyKind()->getTitle();
-	}
+
+	return getLocalPropertyKind()->getTitle();
 }
 
 std::string AbstractProperty::getPropertyKindParentAsString() const
@@ -367,13 +385,11 @@ std::string AbstractProperty::getPropertyKindParentAsString() const
 			COMMON_NS::EnumStringMapper tmp;
 			return tmp.getEnergisticsPropertyKindName(propKindEnum);
 		}
-		else {
-			throw std::invalid_argument("You must load the property kind mapping files if you want to get the parent property kind.");
-		}
+
+		throw std::invalid_argument("You must load the property kind mapping files if you want to get the parent property kind.");
 	}
-	else {
-		return getLocalPropertyKind()->getParentAsString();
-	}
+
+	return getLocalPropertyKind()->getParentAsString();
 }
 
 gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind AbstractProperty::getEnergisticsPropertyKind() const
@@ -384,9 +400,8 @@ gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind AbstractProperty::getEnergisticsP
 			gsoap_resqml2_0_1::resqml2__AbstractProperty* prop = static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1);
 			return static_cast<gsoap_resqml2_0_1::resqml2__StandardPropertyKind*>(prop->PropertyKind)->Kind;
 		}
-		else {
-			throw logic_error("Not implemented yet");
-		}
+			
+		throw logic_error("Not implemented yet");
 	}
 	
 	throw invalid_argument("The property kind of this property is not an Energistics one.");

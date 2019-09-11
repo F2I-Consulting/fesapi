@@ -54,6 +54,7 @@ namespace RESQML2_NS
 	class GridConnectionSetRepresentation;
 	class MdDatum;
 	class PropertyKind;
+	class PropertySet;
 	class SubRepresentation;
 	class TimeSeries;
 	class RepresentationSetRepresentation;
@@ -108,6 +109,7 @@ namespace RESQML2_0_1_NS
 	class SealedSurfaceFrameworkRepresentation;
 	class SealedVolumeFrameworkRepresentation;
 	class StringTableLookup;
+	class PropertySet;
 	class CommentProperty;
 	class ContinuousProperty;
 	class ContinuousPropertySeries;
@@ -1149,6 +1151,9 @@ namespace COMMON_NS
 			const std::string & namingSystem, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * parentPropType);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::PropertyKind* createPartialPropertyKind(const std::string & guid, const std::string & title);
+
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::PropertySet* createPropertySet(const std::string & guid, const std::string & title,
+			bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_resqml2_0_1::resqml2__TimeSetKind timeSetKind);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CommentProperty* createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind);

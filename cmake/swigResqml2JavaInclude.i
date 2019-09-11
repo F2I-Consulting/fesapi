@@ -75,6 +75,10 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
     {
         ret = new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PropertyKind(cPtr, owner);
     }
+    else if (type.equals("PropertySet"))
+    {
+        ret = new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PropertySet(cPtr, owner);
+    }
     else if (type.equals("StratigraphicColumn"))
     {
         ret = new com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StratigraphicColumn(cPtr, owner);

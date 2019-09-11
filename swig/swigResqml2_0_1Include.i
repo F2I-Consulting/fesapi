@@ -72,6 +72,7 @@ under the License.
 #include "resqml2_0_1/TimeSeries.h"
 
 #include "resqml2_0_1/PropertyKind.h"
+#include "resqml2_0_1/PropertySet.h"
 #include "resqml2_0_1/StringTableLookup.h"
 #include "resqml2_0_1/DiscreteProperty.h"
 #include "resqml2_0_1/DiscretePropertySeries.h"
@@ -124,6 +125,7 @@ namespace RESQML2_0_1_NS {
 	class IjkGridLatticeRepresentation;
 	class IjkGridNoGeometryRepresentation;
 	class SubRepresentation;
+	class PropertySet;
 }
 
 // Don't try to create vector of polymorphic data unless you really know what you are doing.
@@ -155,6 +157,8 @@ namespace std {
    %template(IjkGridParametricRepresentationVector) vector<RESQML2_0_1_NS::IjkGridParametricRepresentation*>;
    %template(IjkGridLatticeRepresentationVector) vector<RESQML2_0_1_NS::IjkGridLatticeRepresentation*>;
    %template(IjkGridNoGeometryRepresentationVector) vector<RESQML2_0_1_NS::IjkGridNoGeometryRepresentation*>;
+   %template(SubRepresentationVector) vector<RESQML2_0_1_NS::SubRepresentation*>;
+   %template(PropertySetVector) vector<RESQML2_0_1_NS::PropertySet*>;
 }
 
 namespace gsoap_resqml2_0_1
@@ -2108,7 +2112,7 @@ namespace gsoap_resqml2_0_1
 	};
 }
 
-namespace WITSML2_01_4_1_1_NS {
+namespace WITSML2_0_NS {
 	class Wellbore;
 //	class Trajectory;
 //	class Log;
@@ -2180,6 +2184,7 @@ namespace RESQML2_0_1_NS
 	%nspace RESQML2_0_1_NS::GridConnectionSetRepresentation;
 	%nspace RESQML2_0_1_NS::TimeSeries;
 	%nspace RESQML2_0_1_NS::PropertyKind;
+	%nspace RESQML2_0_1_NS::PropertySet;
 	%nspace RESQML2_0_1_NS::StringTableLookup;
 	%nspace RESQML2_0_1_NS::CommentProperty;
 	%nspace RESQML2_0_1_NS::ContinuousProperty;
@@ -3188,6 +3193,14 @@ namespace RESQML2_0_1_NS
 		
 		LONG64 getMinimumValue();
 		LONG64 getMaximumValue();
+	};
+	
+#ifdef SWIGPYTHON
+	%rename(Resqml2_0_1_PropertySet) PropertySet;
+#endif	
+	class PropertySet : public RESQML2_NS::PropertySet
+	{
+	public:
 	};
 	
 #ifdef SWIGPYTHON

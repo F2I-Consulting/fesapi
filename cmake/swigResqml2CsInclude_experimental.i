@@ -75,6 +75,10 @@ public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject res
     {
         ret = new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PropertyKind(cPtr, owner);
     }
+    else if (type == "PropertySet")
+    {
+        ret = new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PropertySet(cPtr, owner);
+    }
     else if (type == "StratigraphicColumn")
     {
         ret = new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.StratigraphicColumn(cPtr, owner);
