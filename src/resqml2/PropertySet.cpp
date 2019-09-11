@@ -18,6 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "resqml2/PropertySet.h"
 
+#include <limits>
+
 #include "resqml2/AbstractProperty.h"
 
 using namespace std;
