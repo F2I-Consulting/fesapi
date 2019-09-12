@@ -633,6 +633,9 @@ namespace COMMON_NS
 
 		RESQML2_NS::PropertyKind* createPartialPropertyKind(const std::string & guid, const std::string & title);
 
+		RESQML2_NS::PropertySet* createPropertySet(const std::string & guid, const std::string & title,
+			bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_resqml2_0_1::resqml2__TimeSetKind timeSetKind);
+
 		RESQML2_0_1_NS::CommentProperty* createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind);
 

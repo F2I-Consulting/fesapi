@@ -70,6 +70,7 @@ under the License.
 #include "resqml2_0_1/PropertyKind.h"
 #include "resqml2_0_1/WellboreMarker.h"
 #include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
+#include "resqml2_0_1/PropertySet.h"
 #include "resqml2_0_1/ContinuousProperty.h"
 #include "resqml2_0_1/DiscreteProperty.h"
 #include "resqml2_0_1/CategoricalProperty.h"
@@ -558,7 +559,7 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, COMMON_NS::Abstr
 	//**************
 	// Properties
 	//**************
-	RESQML2_NS::PropertyKind * propType1 = pck->createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__continuous);
+	propType1 = pck->createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__continuous);
 	ContinuousProperty* contProp1 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 2,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__nodes, "exoticMeter", propType1);
 	double prop1Values[16] = { 301, 302, 301, 302, 351, 352, 351, 352, 301, 302, 301, 302, 351, 352, 351, 352 };
@@ -771,13 +772,16 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	propType1 = pck->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__discrete);
 	discreteProp1 = pck->createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, propType1);
-	//long prop1Values[2] = {0,1};
-	//discreteProp1->pushBackLongHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, -1);
-	//short prop1Values[2] = { 0, 1 };
-	//discreteProp1->pushBackShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, -1);
 	unsigned short prop1Values[2] = { 0, 1 };
 	discreteProp1->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
+	DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(ijkgrid, "", "Two faulted sugar cubes other cellIndex", 1,
+		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, propType1);
+	unsigned short prop2Values[2] = { 10, 11 };
+	discreteProp2->pushBackUShortHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
 
+	RESQML2_NS::PropertySet* propSet = pck->createPropertySet("", "Testing property set", false, true,gsoap_resqml2_0_1::resqml2__TimeSetKind__not_x0020a_x0020time_x0020set);
+	propSet->pushBackProperty(discreteProp1);
+	propSet->pushBackProperty(discreteProp2);
 
 	DiscreteProperty* discreteProp1OnIjkgridParametric = pck->createDiscreteProperty(ijkgridParametric, "eb3dbf6c-5745-4e41-9d09-672f6fbab414", "Four sugar cubes cellIndex", 1,
 		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, propType1);
@@ -1873,29 +1877,32 @@ void showAllMetadata(COMMON_NS::AbstractObject const * obj, const std::string & 
 void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* enabledCells = nullptr)
 {
 	std::vector<RESQML2_NS::AbstractValuesProperty *> propertyValuesSet = rep->getValuesPropertySet();
-	if (propertyValuesSet.empty() == false)
+	if (!propertyValuesSet.empty()) {
 		cout << "PROPERTIES" << std::endl;
-	for (size_t propIndex = 0; propIndex < propertyValuesSet.size(); ++propIndex)
-	{
+	}
+	for (size_t propIndex = 0; propIndex < propertyValuesSet.size(); ++propIndex) {
 		std::cout << "\t--------------------------------------------------" << std::endl;
 		RESQML2_NS::AbstractValuesProperty const * propVal = propertyValuesSet[propIndex];
 		showAllMetadata(propVal, "\t");
 
+		std::vector<RESQML2_NS::PropertySet *> propSets = propVal->getPropertySets();
+		for (size_t propSetIndex = 0; propSetIndex < propSets.size(); ++propSetIndex) {
+			RESQML2_NS::PropertySet* propSet = propSets[propSetIndex];
+			std::cout << "\tContained in property set : ";
+			showAllMetadata(propSet, "\t");
+		}
+
 		std::cout << "\tProperty kind is : " << propVal->getPropertyKindAsString() << std::endl;
-		if (propVal->isAssociatedToOneStandardEnergisticsPropertyKind() == true)
-		{
+		if (propVal->isAssociatedToOneStandardEnergisticsPropertyKind()) {
 			std::cout << "\tProperty kind is an Energistics one" << std::endl;
 		}
-		else
-		{
+		else {
 			std::cout << "\tProperty kind is not an Energistics one" << std::endl;
-			if (propVal->getLocalPropertyKind()->isParentAnEnergisticsPropertyKind() == true)
-			{
+			if (propVal->getLocalPropertyKind()->isParentAnEnergisticsPropertyKind()) {
 				std::cout << "\t\tProperty kind parent is an Energistics one" << std::endl;
 				std::cout << "\t\tProperty kind parent is : " << propVal->getLocalPropertyKind()->getParentAsString() << std::endl;
 			}
-			else
-			{
+			else {
 				std::cout << "\t\tProperty kind parent is not an Energistics one" << std::endl;
 				std::cout << "\t\tProperty kind parent is : " << propVal->getLocalPropertyKind()->getParentLocalPropertyKind()->getTitle() << std::endl;
 			}
@@ -1904,8 +1911,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 		// Dimension
 		unsigned int dimCount = propVal->getDimensionsCountOfPatch(0);
 		std::cout << "\tDimension count is : " << dimCount << std::endl;
-		for (unsigned int dimIndex = 0; dimIndex < dimCount; ++dimIndex)
-		{
+		for (unsigned int dimIndex = 0; dimIndex < dimCount; ++dimIndex) {
 			std::cout << "\tValues count in dimension " << dimIndex << " is : " << propVal->getValuesCountOfDimensionOfPatch(dimIndex, 0) << std::endl;
 		}
 		unsigned int valueCount = propVal->getValuesCountOfPatch(0);
@@ -1913,16 +1919,13 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 
 		// Datatype
 		std::cout << "\tDatatype is : " << propVal->getValuesHdfDatatype() << std::endl;
-		if (propVal->getValuesHdfDatatype() == 0)
-		{
+		if (propVal->getValuesHdfDatatype() == 0) {
 			cerr << "\tERROR !!!!! The hdf datatype is unknown" << endl;
 			cout << "\tPress enter to continue..." << endl;
 			cin.get();
 		}
-		else if (propVal->getValuesHdfDatatype() > 2)
-		{
-			if (dynamic_cast<DiscreteProperty const *>(propVal) == nullptr && dynamic_cast<CategoricalProperty const *>(propVal) == nullptr)
-			{
+		else if (propVal->getValuesHdfDatatype() > 2) {
+			if (dynamic_cast<DiscreteProperty const *>(propVal) == nullptr && dynamic_cast<CategoricalProperty const *>(propVal) == nullptr) {
 				cerr << "\tERROR !!!!! The continuous property is linked to an integer HDF5 dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
 				double* values = new double[valueCount];
@@ -1933,8 +1936,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 				cout << "\tPress enter to continue..." << endl;
 				cin.get();
 			}
-			else if (dynamic_cast<DiscreteProperty const *>(propVal) != nullptr)
-			{
+			else if (dynamic_cast<DiscreteProperty const *>(propVal) != nullptr) {
 				DiscreteProperty const * discreteProp = static_cast<DiscreteProperty const *>(propVal);
 				const LONG64 maxValue = discreteProp->getMaximumValue();
 				const LONG64 minValue = discreteProp->getMinimumValue();
@@ -1947,10 +1949,8 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 				delete[] values;
 			}
 		}
-		else
-		{
-			if (dynamic_cast<ContinuousProperty const *>(propVal) == nullptr)
-			{
+		else {
+			if (dynamic_cast<ContinuousProperty const *>(propVal) == nullptr) {
 				cerr << "\tERROR !!!!! The discrete or categorical property is linked to a floating point HDF5 dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
 				long* values = new long[valueCount];
@@ -1961,8 +1961,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 				cout << "\tPress enter to continue..." << endl;
 				cin.get();
 			}
-			else
-			{
+			else {
 				ContinuousProperty const * continuousProp = static_cast<ContinuousProperty const *>(propVal);
 				const double maxValue = continuousProp->getMaximumValue();
 				const double minValue = continuousProp->getMinimumValue();
