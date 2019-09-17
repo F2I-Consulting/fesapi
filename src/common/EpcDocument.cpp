@@ -354,3 +354,22 @@ std::string EpcDocument::getExtendedCoreProperty(const std::string & key)
 
 	return string();
 }
+
+std::string EpcDocument::resolvePartial(AbstractObject* partialObj) const
+{
+	if (!package->isOpenedForReading()) {
+		package->openForReading(filePath);
+	}
+
+	const epc::FileContentType::ContentTypeMap contentTypes = package->getFileContentType().getAllContentType();
+	// 14 equals "application/x-".size()
+	for (epc::FileContentType::ContentTypeMap::const_iterator it = contentTypes.begin(); it != contentTypes.end(); ++it)
+	{
+		if (it->first.find(partialObj->getUuid()) != std::string::npos)
+		{
+			return package->extractFile(it->second.getExtensionOrPartName().substr(1));
+		}
+	}
+
+	return "";
+}

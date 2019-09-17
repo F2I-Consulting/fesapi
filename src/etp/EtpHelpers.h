@@ -43,11 +43,19 @@ namespace ETP_NS
 	namespace EtpHelpers {
 
 		/**
-		* Build and return an ETP resource from an Energistics object.
-		* @param obj	The input Energistics obj
-		* @return		The ETP resource built from the Energistics object
+		* Build and return an URI from an Energistics object.
+		* @param obj		The input Energistics obj
+		* @return			The URI built from the Energistics object
 		*/
-		DLL_IMPORT_OR_EXPORT Energistics::Etp::v12::Datatypes::Object::Resource buildEtpResourceFromEnergisticsObject(const COMMON_NS::AbstractObject * const obj);
+		DLL_IMPORT_OR_EXPORT std::string buildUriFromEnergisticsObject(const COMMON_NS::AbstractObject * const obj);
+
+		/**
+		* Build and return an ETP resource from an Energistics object.
+		* @param obj		The input Energistics obj
+		* @param countRels	Indicate if the returned resource contain the count of source or target relationships.
+		* @return			The ETP resource built from the Energistics object
+		*/
+		DLL_IMPORT_OR_EXPORT Energistics::Etp::v12::Datatypes::Object::Resource buildEtpResourceFromEnergisticsObject(const COMMON_NS::AbstractObject * const obj, bool countRels = true);
 
 		/**
 		* Build and return an ETP data object from an Energistics object.
@@ -55,5 +63,10 @@ namespace ETP_NS
 		* @return		The ETP data object built from the Energistics object
 		*/
 		DLL_IMPORT_OR_EXPORT Energistics::Etp::v12::Datatypes::Object::DataObject buildEtpDataObjectFromEnergisticsObject(COMMON_NS::AbstractObject * obj);
+
+		/**
+		* Build a protocol exception message which only contains a single error message (not a messsage map).
+		*/
+		DLL_IMPORT_OR_EXPORT Energistics::Etp::v12::Protocol::Core::ProtocolException buildSingleMessageProtocolException(int32_t m_code, const std::string & m_message);
 	}
 }

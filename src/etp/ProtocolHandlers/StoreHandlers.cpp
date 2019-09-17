@@ -19,6 +19,7 @@ under the License.
 #include  "etp/ProtocolHandlers/StoreHandlers.h"
 
 #include "etp/AbstractSession.h"
+#include "etp/EtpHelpers.h"
 
 using namespace ETP_NS;
 
@@ -63,34 +64,21 @@ void StoreHandlers::on_GetDataObjects(const Energistics::Etp::v12::Protocol::Sto
 {
 	std::cout << "on_GetDataObject" << std::endl;
 
-	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-	error.m_errorCode = 7;
-	error.m_errorMessage = "The StoreHandlers::on_GetDataObject method has not been overriden by the agent.";
-
-	session->send(error);
+	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The StoreHandlers::on_GetDataObject method has not been overriden by the agent."));
 }
 
 void StoreHandlers::on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & putO, int64_t correlationId)
 {
 	std::cout << "on_PutDataObject" << std::endl;
 
-	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-	error.m_errorCode = 7;
-	error.m_errorMessage = "The StoreHandlers::on_PutDataObject method has not been overriden by the agent.";
-
-	session->send(error);
+	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The StoreHandlers::on_PutDataObject method has not been overriden by the agent."));
 }
 
 void StoreHandlers::on_DeleteDataObjects(const Energistics::Etp::v12::Protocol::Store::DeleteDataObjects & deleteO, int64_t correlationId)
 {
 	std::cout << "on_DeleteDataObject" << std::endl;
 
-	// Build GetResourcesResponse message
-	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-	error.m_errorCode = 7;
-	error.m_errorMessage = "The StoreHandlers::on_DeleteDataObject method has not been overriden by the agent.";
-
-	session->send(error);
+	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The StoreHandlers::on_DeleteDataObject method has not been overriden by the agent."));
 }
 
 void StoreHandlers::on_GetDataObjectsResponse(const Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse & obj, int64_t correlationId)
@@ -101,7 +89,6 @@ void StoreHandlers::on_GetDataObjectsResponse(const Energistics::Etp::v12::Proto
 		std::cout << "uri : " << graphResource.second.m_resource.m_uri << std::endl;
 		std::cout << "contentType : " << graphResource.second.m_resource.m_contentType << std::endl;
 		std::cout << "name : " << graphResource.second.m_resource.m_name << std::endl;
-		std::cout << "type : " << static_cast<size_t>(graphResource.second.m_resource.m_resourceType) << std::endl;
 		//std::cout << "sourceCount : " << graphResource.m_resource.m_sourceCount << std::endl;
 		//std::cout << "targetCount : " << graphResource.m_resource.m_targetCount << std::endl;
 		//std::cout << "contentCount : " << graphResource.m_resource.m_contentCount << std::endl;
@@ -109,13 +96,5 @@ void StoreHandlers::on_GetDataObjectsResponse(const Energistics::Etp::v12::Proto
 		std::cout << "*************************************************" << std::endl;
 		std::cout << graphResource.second.m_data << std::endl;
 		std::cout << "*************************************************" << std::endl;
-	}
-
-	for (const auto& error : obj.m_errors) {
-		std::cout << "*************************************************" << std::endl;
-		std::cout << "Resource non received : " << std::endl;
-		std::cout << "key : " << error.first << std::endl;
-		std::cout << "message : " << error.second.m_message << std::endl;
-		std::cout << "code : " << error.second.m_code << std::endl;
 	}
 }

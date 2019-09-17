@@ -28,20 +28,11 @@ void MyOwnStoreProtocolHandlers::on_GetDataObjectsResponse(const Energistics::Et
 		std::cout << "uri : " << graphResource.second.m_resource.m_uri << std::endl;
 		std::cout << "contentType : " << graphResource.second.m_resource.m_contentType << std::endl;
 		std::cout << "name : " << graphResource.second.m_resource.m_name << std::endl;
-		std::cout << "type : " << static_cast<size_t>(graphResource.second.m_resource.m_resourceType) << std::endl;
 		std::cout << "xml : " << graphResource.second.m_data << std::endl;
 		std::cout << "*************************************************" << std::endl;
 
 		COMMON_NS::AbstractObject* importedObj = repo->addOrReplaceGsoapProxy(graphResource.second.m_data, graphResource.second.m_resource.m_contentType);
 
 		importedObj->loadTargetRelationships();
-	}
-
-	for (const auto & error : obj.m_errors) {
-		std::cout << "*************************************************" << std::endl;
-		std::cout << "Resource NOT received : " << std::endl;
-		std::cout << "key : " << error.first << std::endl;
-		std::cout << "message : " << error.second.m_message << std::endl;
-		std::cout << "code : " << error.second.m_code << std::endl;
 	}
 }

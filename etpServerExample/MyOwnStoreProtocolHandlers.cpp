@@ -20,30 +20,49 @@ under the License.
 
 #include "etp/AbstractSession.h"
 #include "etp/EtpHelpers.h"
+#include "etp/EtpException.h"
 
 #include "Helpers.h"
 
 #include "resqml2/AbstractGridRepresentation.h"
 #include "resqml2/GridConnectionSetRepresentation.h"
 
-MyOwnStoreProtocolHandlers::MyOwnStoreProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, COMMON_NS::DataObjectRepository* repo_) : ETP_NS::StoreHandlers(mySession), repo(repo_) {}
+MyOwnStoreProtocolHandlers::MyOwnStoreProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, COMMON_NS::DataObjectRepository* repo_) :
+	ETP_NS::StoreHandlers(mySession), repo(repo_) {}
 
 void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & getO, int64_t correlationId)
 {
 	Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse objResponse;
 
-	for (const auto & uri : getO.m_uris) {
-		std::cout << "Store received URI : " << uri.second << std::endl;
+	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
+	for (const auto & pair : getO.m_uris) {
+		std::cout << "Store received URI : " << pair.second << std::endl;
 
-		COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(repo, session, uri.second);
-		if (obj == nullptr) {
-			continue;
+		try
+		{
+			COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(repo, session, pair.second);
+
+			if (obj->isPartial()) {
+				obj = repo->resolvePartial(obj);
+			}
+
+			Energistics::Etp::v12::Datatypes::Object::DataObject dataObject = ETP_NS::EtpHelpers::buildEtpDataObjectFromEnergisticsObject(obj);
+			objResponse.m_dataObjects[pair.first] = dataObject;
 		}
-
-		Energistics::Etp::v12::Datatypes::Object::DataObject dataObject = ETP_NS::EtpHelpers::buildEtpDataObjectFromEnergisticsObject(obj);
-		objResponse.m_dataObjects[uri.first] = dataObject;
+		catch (ETP_NS::EtpException& ex)
+		{
+			pe.m_errors[pair.first].m_message = ex.what();
+			pe.m_errors[pair.first].m_code = ex.getErrorCode();
+		}
 	}
-	session->send(objResponse, correlationId, 0x01 | 0x02);
+
+	if (!pe.m_errors.empty()) {
+		session->send(objResponse, correlationId, 0x01);
+		session->send(pe, correlationId, 0x01 | 0x02);
+	}
+	else {
+		session->send(objResponse, correlationId, 0x01 | 0x02);
+	}
 }
 
 void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & putDataObjects, int64_t correlationId)

@@ -21,6 +21,8 @@ under the License.
 #include <algorithm>
 #include <functional>
 
+#include "common/DataFeeder.h"
+
 #include "resqml2_0_1/PropertyKindMapper.h"
 
 #include "resqml2_0_1/LocalDepth3dCrs.h"
@@ -356,12 +358,12 @@ void DataObjectRepository::updateAllRelationships()
 	}
 }
 
-std::string DataObjectRepository::generateRandomUuidAsString()
+std::string DataObjectRepository::generateRandomUuidAsString() const
 {
 	return GuidTools::generateUidAsString();
 }
 
-void DataObjectRepository::addOrReplaceDataObject(COMMON_NS::AbstractObject* proxy)
+COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_NS::AbstractObject* proxy, bool replaceOnlyContent)
 {
 	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {
 		dataObjects[proxy->getUuid()].push_back(proxy);
@@ -381,11 +383,18 @@ void DataObjectRepository::addOrReplaceDataObject(COMMON_NS::AbstractObject* pro
 			if (proxy->getContentType() != (*same)->getContentType()) {
 				throw invalid_argument("Cannot replace " + proxy->getUuid() + " with a different content type : " + proxy->getContentType() + " vs " + (*same)->getContentType());
 			}
-			delete *same;
-			*same = proxy;
+			if (!replaceOnlyContent) {
+				delete *same;
+				*same = proxy;
+			}
+			else {
+				(*same)->setGsoapProxy(proxy->getGsoapProxy());
+				return *same;
+			}
 		}
 	}
 	proxy->repository = this;
+	return proxy;
 }
 
 COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const std::string & xml, const string & contentType)
@@ -441,8 +450,11 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 			delete wrapper;
 		}
 		else {
-			addOrReplaceDataObject(wrapper);
-			return wrapper;
+			COMMON_NS::AbstractObject* wrapperInRepo = addOrReplaceDataObject(wrapper, true);
+			if (wrapperInRepo != wrapper) {
+				delete wrapper;
+			}
+			return wrapperInRepo;
 		}
 	}
 
@@ -455,8 +467,20 @@ std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataO
 	std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
 	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
 		for (size_t i = 0; i < it->second.size(); ++i) {
+			result[it->second[i]->getContentType()].push_back(it->second[i]);
+		}
+	}
+
+	return result;
+}
+
+std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataObjectRepository::getDataObjectsGroupedByContentType(const std::string & filter) const
+{
+	std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
+	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
+		for (size_t i = 0; i < it->second.size(); ++i) {
 			std::string contentType = it->second[i]->getContentType();
-			if (contentType.find("x-eml") == std::string::npos) {
+			if (contentType.find(filter) != std::string::npos) {
 				result[contentType].push_back(it->second[i]);
 			}
 		}
@@ -464,6 +488,7 @@ std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataO
 
 	return result;
 }
+
 
 std::vector<COMMON_NS::AbstractObject*> DataObjectRepository::getDataObjectsByContentType(const std::string & contentType) const
 {
@@ -2283,4 +2308,21 @@ std::string DataObjectRepository::getGsoapErrorMessage() const
 	ostringstream oss;
 	soap_stream_fault(gsoapContext, oss);
 	return oss.str();
+}
+
+void DataObjectRepository::registerDataFeeder(COMMON_NS::DataFeeder * dataFeeder)
+{
+	dataFeeders.push_back(dataFeeder);
+}
+
+COMMON_NS::AbstractObject* DataObjectRepository::resolvePartial(COMMON_NS::AbstractObject * partialObj)
+{
+	for (size_t i = 0; i < dataFeeders.size(); ++i) {
+		std::string xml = dataFeeders[i]->resolvePartial(partialObj);
+		if (!xml.empty()) {
+			return addOrReplaceGsoapProxy(xml, partialObj->getContentType());
+		}
+	}
+
+	return nullptr;
 }

@@ -19,6 +19,7 @@ under the License.
 #include  "etp/ProtocolHandlers/CoreHandlers.h"
 
 #include "etp/AbstractSession.h"
+#include "etp/EtpHelpers.h"
 
 using namespace ETP_NS;
 
@@ -71,11 +72,7 @@ void CoreHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes::Mes
 
 void CoreHandlers::on_RequestSession(const Energistics::Etp::v12::Protocol::Core::RequestSession & rs, int64_t correlationId)
 {
-	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-	error.m_errorCode = 2;
-	error.m_errorMessage = "The Core::on_RequestSession method has not been overriden by the agent.";
-
-	session->send(error);
+	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(2, "The Core::on_RequestSession method has not been overriden by the agent."));
 }
 
 void CoreHandlers::on_OpenSession(const Energistics::Etp::v12::Protocol::Core::OpenSession & os, int64_t correlationId)
@@ -91,7 +88,18 @@ void CoreHandlers::on_CloseSession(const Energistics::Etp::v12::Protocol::Core::
 
 void CoreHandlers::on_ProtocolException(const Energistics::Etp::v12::Protocol::Core::ProtocolException & pe, int64_t correlationId)
 {
-	std::cout << "EXCEPTION received for message_id " << correlationId << " with error code "  << pe.m_errorCode << " : " << pe.m_errorMessage << std::endl;
+	if (!pe.m_error.is_null()) {
+		const Energistics::Etp::v12::Datatypes::ErrorInfo& errorInfo = pe.m_error.get_ErrorInfo();
+		std::cout << "EXCEPTION received for message_id " << correlationId << " with error code " << errorInfo.m_code << " : " << errorInfo.m_message << std::endl;
+	}
+
+	for (const auto& error : pe.m_errors) {
+		std::cout << "*************************************************" << std::endl;
+		std::cout << "Resource non received : " << std::endl;
+		std::cout << "key : " << error.first << std::endl;
+		std::cout << "message : " << error.second.m_message << std::endl;
+		std::cout << "code : " << error.second.m_code << std::endl;
+	}
 }
 
 void CoreHandlers::on_Acknowledge(const Energistics::Etp::v12::Protocol::Core::Acknowledge & ack, int64_t correlationId)

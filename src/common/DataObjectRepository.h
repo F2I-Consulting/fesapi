@@ -156,6 +156,7 @@ namespace COMMON_NS
 {
 	class AbstractObject;
 	class AbstractHdfProxy;
+	class DataFeeder;
 #if WITH_EXPERIMENTAL
 	class GraphicalInformationSet;
 #endif
@@ -188,10 +189,12 @@ namespace COMMON_NS
 		COMMON_NS::AbstractHdfProxy* defaultHdfProxy;
 		RESQML2_NS::AbstractLocal3dCrs* defaultCrs;
 		
+		std::vector<COMMON_NS::DataFeeder*> dataFeeders;
+
 		/**
 		* Necessary to avoid a dependency on GuidTools.h
 		*/
-		std::string generateRandomUuidAsString();
+		std::string generateRandomUuidAsString() const;
 
 		/**
 		* Set the stream of the curent gsoap context.
@@ -258,6 +261,18 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void addRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target);
 
 		/**
+		* Register a data feeder to allow partial objects resolution.
+		* It is your responsability to manage the memory of your data feeder. DataObject repository won't never free memory of a data feeder.
+		*/
+		DLL_IMPORT_OR_EXPORT void registerDataFeeder(COMMON_NS::DataFeeder * dataFeeder);
+
+		/**
+		* Resolve a partial object thanks to a data feeder into this data repository.
+		* This method needs some registered data feeder in order to work.
+		*/
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* resolvePartial(COMMON_NS::AbstractObject * partialObj);
+
+		/**
 		* Get the target objects of a particular data objects.
 		* Throw an exception if the target objects have not been defined yet.
 		*/
@@ -289,9 +304,10 @@ namespace COMMON_NS
 		/**
 		* Add or replace (based on UUID and version) a dataobject in the repository.
 		* It does not update the rel of the added or replaced data object.
-		* @param proxy	The dataobject to add or replace.
+		* @param proxy				The dataobject to add or replace.
+		* @param replaceOnlyContent If true, it does not replace the full object (not the pointer) but only replace the content of the object.
 		*/
-		DLL_IMPORT_OR_EXPORT void addOrReplaceDataObject(COMMON_NS::AbstractObject* proxy);
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceDataObject(COMMON_NS::AbstractObject* proxy, bool replaceOnlyContent = false);
 
 		/**
 		* This method allows to use a different behaviour for gettting numerical data from where they are persisted.
@@ -344,8 +360,15 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > getDataObjectsGroupedByContentType() const;
 
 		/**
+		* Group Data objects by content type abed on a filtered list of the repository
+		* @param filter A string that the returned Dataobject must contain in their content type.
+		* @return A map where the key is a content type and where the value is the collection of Data objects of this content type
+		*/
+		DLL_IMPORT_OR_EXPORT std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > getDataObjectsGroupedByContentType(const std::string & filter) const;
+
+		/**
 		* Get Data objects which honor this content type
-		* @return The vector of Data objects in this EPC Document which honor the content type
+		* @return The vector of Data objects in this repository which honor the content type
 		*/
 		DLL_IMPORT_OR_EXPORT std::vector<COMMON_NS::AbstractObject*> getDataObjectsByContentType(const std::string & contentType) const;
 

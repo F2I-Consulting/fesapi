@@ -26,6 +26,7 @@ under the License.
 #include "epc/Package.h"
 
 #include "common/DataObjectRepository.h"
+#include "common/DataFeeder.h"
 
 namespace COMMON_NS
 {
@@ -35,7 +36,7 @@ namespace COMMON_NS
 	/**
 	* This class allows an access to a memory package representing an EPC document.
 	*/
-	class EpcDocument
+	class EpcDocument : public DataFeeder
 	{		
 	public:
 
@@ -101,6 +102,8 @@ namespace COMMON_NS
 		* @return An empty string if the extended core property does not exist. Or the extended core property value if it exists
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getExtendedCoreProperty(const std::string & key);
+
+		DLL_IMPORT_OR_EXPORT std::string resolvePartial(AbstractObject* partialObj) const;
 
 	private :
 		static const char * DOCUMENT_EXTENSION;

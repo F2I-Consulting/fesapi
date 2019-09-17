@@ -233,6 +233,11 @@ void Package::openForWriting(const std::string & pkgPathName, int append, bool u
 	}
 }
 
+bool Package::isOpenedForWriting() const
+{
+	return d_ptr->zf != nullptr;
+}
+
 std::vector<std::string> Package::openForReading(const std::string & pkgPathName)
 {
 	std::vector<std::string> result;
@@ -308,6 +313,11 @@ std::vector<std::string> Package::openForReading(const std::string & pkgPathName
 	d_ptr->fileContentType.readFromString(contentTypeFile);
 
 	return result;
+}
+
+bool Package::isOpenedForReading() const
+{
+	return d_ptr->unzipped != nullptr;
 }
 
 void Package::close()
@@ -660,18 +670,3 @@ string Package::extractFile(const string & filename, const string & password)
 	else
 		return do_extract_currentfile(d_ptr->unzipped, nullptr);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

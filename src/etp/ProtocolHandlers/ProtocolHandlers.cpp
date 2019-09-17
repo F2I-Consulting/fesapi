@@ -19,13 +19,10 @@ under the License.
 #include  "etp/ProtocolHandlers/ProtocolHandlers.h"
 
 #include "etp/AbstractSession.h"
+#include "etp/EtpHelpers.h"
 
 using namespace ETP_NS;
 
 void ProtocolHandlers::sendExceptionCode3() {
-	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-	error.m_errorCode = 3;
-	error.m_errorMessage = "The message type ID is invalid for the given protocol.";
-
-	session->send(error);
+	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(3, "The message type ID is invalid for the given protocol."));
 }

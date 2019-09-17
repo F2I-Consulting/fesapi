@@ -19,6 +19,7 @@ under the License.
 #include  "etp/ProtocolHandlers/DataArrayHandlers.h"
 
 #include "etp/AbstractSession.h"
+#include "etp/EtpHelpers.h"
 
 using namespace ETP_NS;
 
@@ -85,13 +86,7 @@ void DataArrayHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes
 
 void DataArrayHandlers::on_GetDataArrays(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrays & gdas, int64_t correlationId)
 {
-	std::cout << "on_GetDataArrays" << std::endl;
-
-	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-	error.m_errorCode = 7;
-	error.m_errorMessage = "The DataArrayHandlers::on_GetDataArrays method has not been overriden by the agent.";
-
-	session->send(error);
+	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_GetDataArrays method has not been overriden by the agent."));
 }
 
 void DataArrayHandlers::on_GetDataArraysResponse(Energistics::Etp::v12::Protocol::DataArray::GetDataArraysResponse & gdar)
@@ -152,24 +147,12 @@ void DataArrayHandlers::on_GetDataArraysResponse(Energistics::Etp::v12::Protocol
 
 void DataArrayHandlers::on_PutDataArrays(const Energistics::Etp::v12::Protocol::DataArray::PutDataArrays & pda, int64_t correlationId)
 {
-	std::cout << "on_PutDataArrays" << std::endl;
-
-	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-	error.m_errorCode = 7;
-	error.m_errorMessage = "The DataArrayHandlers::on_PutDataArrays method has not been overriden by the agent.";
-
-	session->send(error);
+	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_PutDataArrays method has not been overriden by the agent."));
 }
 
 void DataArrayHandlers::on_GetDataArraySlices(const Energistics::Etp::v12::Protocol::DataArray::GetDataArraySlices & gdas, int64_t correlationId)
 {
-	std::cout << "on_GetDataArraySlice" << std::endl;
-
-	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-	error.m_errorCode = 7;
-	error.m_errorMessage = "The DataArrayHandlers::on_GetDataArraySlice method has not been overriden by the agent.";
-
-	session->send(error);
+	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_GetDataArraySlice method has not been overriden by the agent."));
 }
 
 void DataArrayHandlers::on_GetDataArraySlicesResponse(const Energistics::Etp::v12::Protocol::DataArray::GetDataArraySlicesResponse & gdasr)
@@ -179,24 +162,12 @@ void DataArrayHandlers::on_GetDataArraySlicesResponse(const Energistics::Etp::v1
 
 void DataArrayHandlers::on_PutDataArraySlices(const Energistics::Etp::v12::Protocol::DataArray::PutDataArraySlices & pdas, int64_t correlationId)
 {
-	std::cout << "on_PutDataArraySlices" << std::endl;
-
-	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-	error.m_errorCode = 7;
-	error.m_errorMessage = "The DataArrayHandlers::on_PutDataArraySlices method has not been overriden by the agent.";
-
-	session->send(error);
+	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_PutDataArraySlices method has not been overriden by the agent."));
 }
 
 void DataArrayHandlers::on_GetDataArrayMetadata(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadata & gdam, int64_t correlationId)
 {
-	std::cout << "on_GetDataArrayMetadata" << std::endl;
-
-	Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-	error.m_errorCode = 7;
-	error.m_errorMessage = "The DataArrayHandlers::on_GetDataArrayMetadata method has not been overriden by the agent.";
-
-	session->send(error);
+	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_GetDataArrayMetadata method has not been overriden by the agent."));
 }
 
 void DataArrayHandlers::on_GetDataArrayMetadataResponse(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadataResponse & gdamr)

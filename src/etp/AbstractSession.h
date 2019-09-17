@@ -64,13 +64,15 @@ namespace ETP_NS
 	{
 	protected:
 		boost::beast::flat_buffer receivedBuffer;
-	    long long messageId = 1;
+	    long long messageId;
 	    std::vector<std::shared_ptr<ETP_NS::ProtocolHandlers>> protocolHandlers;
 	    bool webSocketSessionClosed; // open with the websocket handshake
 		bool etpSessionClosed; // open with the requestSession and openSession message
 		std::vector<std::vector<uint8_t> > sendingQueue;
 
-	    AbstractSession() : webSocketSessionClosed(true), etpSessionClosed(true) {
+	    AbstractSession() : receivedBuffer(), messageId(1), protocolHandlers(),
+			webSocketSessionClosed(true), etpSessionClosed(true),
+			sendingQueue() {
 	    }
 
 		/**
@@ -182,6 +184,8 @@ namespace ETP_NS
 		 * Encode this created default ETP message header + the ETP message body into the session buffer.
 		 * Write/send this session buffer on the web socket.
 		 * @param mb The ETP message body to send
+		 * @param correlationId The ID of the message which this messag is answering to.
+		 * @param messageFlags The message flags to be sent within the header
 		 */
 		template<typename T> int64_t send(const T & mb, int64_t correlationId = 0, int32_t messageFlags = 0)
 		{
@@ -243,8 +247,8 @@ namespace ETP_NS
 			webSocketSessionClosed = true;
 		}
 
-		DLL_IMPORT_OR_EXPORT bool validateUri(const std::string & uri, bool sendException = false);
-		DLL_IMPORT_OR_EXPORT bool validateDataObjectUri(const std::string & uri, bool sendException = false);
+		DLL_IMPORT_OR_EXPORT Energistics::Etp::v12::Datatypes::ErrorInfo validateUri(const std::string & uri, bool sendException = false);
+		DLL_IMPORT_OR_EXPORT Energistics::Etp::v12::Datatypes::ErrorInfo validateDataObjectUri(const std::string & uri, bool sendException = false);
 
 		DLL_IMPORT_OR_EXPORT bool isWebSocketSessionClosed() const { return webSocketSessionClosed;  }
 

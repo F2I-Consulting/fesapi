@@ -19,6 +19,7 @@ under the License.
 #include "MyOwnCoreProtocolHandlers.h"
 
 #include "etp/AbstractSession.h"
+#include "etp/EtpHelpers.h"
 #include "tools/GuidTools.h"
 
 void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::Protocol::Core::RequestSession & rs, int64_t correlationId)
@@ -71,11 +72,7 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 	}
 
 	if (supportedProtocols.empty()) {
-		Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-		error.m_errorCode = 2;
-		error.m_errorMessage = "The server does not support any of the requested protocols.";
-
-		session->send(error);
+		session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The server does not support any of the requested protocols."));
 		return;
 	}
 

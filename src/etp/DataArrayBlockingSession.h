@@ -145,10 +145,6 @@ namespace ETP_NS
 						}
 					}
 				}
-
-				for (std::pair < std::string, Energistics::Etp::v12::Datatypes::ErrorInfo > error : gdar.m_errors) {
-					std::cerr << "Reported error : id \"" << error.first  << "\" with code \"" << error.second.m_code << "\" and reason \"" << error.second.m_message << "\"" << std::endl;
-				}
 			}
 			else {
 				flushReceivingBuffer();

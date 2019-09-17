@@ -105,7 +105,7 @@ namespace COMMON_NS
 		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy);
 #endif
 
-		friend void COMMON_NS::DataObjectRepository::addOrReplaceDataObject(AbstractObject* proxy);
+		friend COMMON_NS::AbstractObject* COMMON_NS::DataObjectRepository::addOrReplaceDataObject(AbstractObject* proxy, bool replaceOnlyContent);
 
 		void initMandatoryMetadata();
 
@@ -215,7 +215,13 @@ namespace COMMON_NS
 		* A partial object just contains a mime type, an uuid and a title as a minimum amount of information.
 		* A partial object is never explicit in an EPC document : it is not a file.
 		*/
-		DLL_IMPORT_OR_EXPORT bool isPartial() const {return partialObject != nullptr;}
+		DLL_IMPORT_OR_EXPORT bool isPartial() const {return partialObject != nullptr
+			&& gsoapProxy2_0_1 == nullptr && gsoapProxy2_1 == nullptr
+#if WITH_EXPERIMENTAL
+			&& gsoapProxy2_2 == nullptr
+#endif
+			;
+		}
 
 		DLL_IMPORT_OR_EXPORT virtual bool isTopLevelElement() const { return true; }
 

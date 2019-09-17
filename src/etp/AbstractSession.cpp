@@ -22,6 +22,8 @@ under the License.
 #include <regex>
 #endif
 
+#include "etp/EtpHelpers.h"
+
 using namespace ETP_NS;
 
 Energistics::Etp::v12::Datatypes::MessageHeader AbstractSession::decodeMessageHeader(avro::DecoderPtr decoder)
@@ -74,7 +76,6 @@ void AbstractSession::on_read(boost::system::error_code ec, std::size_t bytes_tr
 		send(acknowledge, receivedMh.m_messageId);
 	}
 
-
 	if (receivedMh.m_messageType == Energistics::Etp::v12::Protocol::Core::Acknowledge::messageTypeId) { // Receive Acknowledge
 		protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::Core]->decodeMessageBody(receivedMh, d);
 	}
@@ -86,12 +87,7 @@ void AbstractSession::on_read(boost::system::error_code ec, std::size_t bytes_tr
 	}
 	else {
 		flushReceivingBuffer();
-
-		Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-		error.m_errorCode = 4;
-		error.m_errorMessage = "The agent does not support the protocol " + std::to_string(receivedMh.m_protocol) + " identified in a message header.";
-
-		send(error);
+		send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(4, "The agent does not support the protocol " + std::to_string(receivedMh.m_protocol) + " identified in a message header."));
 	}
 
 	do_read();
@@ -105,8 +101,10 @@ void AbstractSession::close()
 	send(closeSession);
 }
 
-bool AbstractSession::validateUri(const std::string & uri, bool sendException)
+Energistics::Etp::v12::Datatypes::ErrorInfo AbstractSession::validateUri(const std::string & uri, bool sendException)
 {
+	Energistics::Etp::v12::Datatypes::ErrorInfo errorInfo;
+	errorInfo.m_code = -1;
 	// Regular expressions are not handled before GCC 4.9
 	// https://stackoverflow.com/questions/12530406/is-gcc-4-8-or-earlier-buggy-about-regular-expressions
 #if (defined(_WIN32) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9))))
@@ -120,21 +118,24 @@ bool AbstractSession::validateUri(const std::string & uri, bool sendException)
 	}
 
 	if (!result && sendException) {
-		Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-		error.m_errorCode = 9;
-		error.m_errorMessage = "The URI " + uri + "  is invalid.";
+		errorInfo.m_code = 9;
+		errorInfo.m_message = "The URI " + uri + "  is invalid.";
 
-		send(error);
+		if (sendException) {
+			Energistics::Etp::v12::Protocol::Core::ProtocolException error;
+			error.m_error.set_ErrorInfo(errorInfo);
+			send(error);
+		}
 	}
-
-	return result;
-#else
-	return true;
 #endif
+	return errorInfo;
+
 }
 
-bool AbstractSession::validateDataObjectUri(const std::string & uri, bool sendException)
+Energistics::Etp::v12::Datatypes::ErrorInfo AbstractSession::validateDataObjectUri(const std::string & uri, bool sendException)
 {
+	Energistics::Etp::v12::Datatypes::ErrorInfo errorInfo;
+	errorInfo.m_code = -1;
 	// Regular expressions are not handled before GCC 4.9
 	// https://stackoverflow.com/questions/12530406/is-gcc-4-8-or-earlier-buggy-about-regular-expressions
 #if (defined(_WIN32) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9))))
@@ -146,15 +147,15 @@ bool AbstractSession::validateDataObjectUri(const std::string & uri, bool sendEx
 	}
 
 	if (!result && sendException) {
-		Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-		error.m_errorCode = 9;
-		error.m_errorMessage = "The data object URI " + uri + "  is invalid.";
+		errorInfo.m_code = 9;
+		errorInfo.m_message = "The data object URI " + uri + "  is invalid.";
 
-		send(error);
+		if (sendException) {
+			Energistics::Etp::v12::Protocol::Core::ProtocolException error;
+			error.m_error.set_ErrorInfo(errorInfo);
+			send(error);
+		}
 	}
-
-	return result;
-#else 
-	return true;
 #endif
+	return errorInfo;
 }

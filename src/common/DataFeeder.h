@@ -18,21 +18,20 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/ProtocolHandlers/StoreHandlers.h"
-
-#include "common/DataObjectRepository.h"
-#include "common/DataFeeder.h"
-
-class MyOwnStoreProtocolHandlers : public ETP_NS::StoreHandlers
+namespace COMMON_NS
 {
-private:
+	class AbstractObject;
 
-	COMMON_NS::DataObjectRepository* repo;
+	/**
+	* This class allows an access to a memory package representing an EPC document.
+	*/
+	class DataFeeder
+	{		
+	public:
 
-public:
-	MyOwnStoreProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, COMMON_NS::DataObjectRepository* repo_);
-	~MyOwnStoreProtocolHandlers() {}
-
-    void on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & getO, int64_t correlationId);
-	void on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & putDataObjects, int64_t correlationId);
-};
+		/**
+		* Resolve a partial object to a non partial one.
+		*/
+		virtual std::string resolvePartial(AbstractObject* partialObj) const = 0;
+	};
+}

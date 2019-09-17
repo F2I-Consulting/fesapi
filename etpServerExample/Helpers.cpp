@@ -20,31 +20,24 @@ under the License.
 #include "Helpers.h"
 
 #include "etp/AbstractSession.h"
+#include "etp/EtpException.h"
 
 COMMON_NS::AbstractObject* Helpers::getObjectFromUri(COMMON_NS::DataObjectRepository const * repo, std::shared_ptr<ETP_NS::AbstractSession> session, const std::string & uri) {
-	if (!session->validateDataObjectUri(uri, true)) {
-		return nullptr;
+	Energistics::Etp::v12::Datatypes::ErrorInfo error = session->validateDataObjectUri(uri, false);
+	if (error.m_code > -1) {
+		throw ETP_NS::EtpException(error.m_code, error.m_message);
 	}
 
 	std::vector<std::string> tokens = tokenize(uri.substr(6), '/');
 	if (tokens[0] != "resqml20" && tokens[0] != "eml20" && tokens[0] != "witsml21") {
-		Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-		error.m_errorCode = 2;
-		error.m_errorMessage = "The URI " + uri + "  uses some dataspaces or witsml or prodml. This agent does not support dataspace.";
-
-		session->send(error);
-		return nullptr;
+		throw ETP_NS::EtpException(2, "The URI " + uri + "  uses some dataspaces or witsml or prodml. This agent does not support dataspace.");
 	}
 
 	tokens = tokenize(tokens[1], '(');
 	tokens[1].pop_back();
 	COMMON_NS::AbstractObject* result = repo->getDataObjectByUuid(tokens[1]);
 	if (result == nullptr) {
-		Energistics::Etp::v12::Protocol::Core::ProtocolException error;
-		error.m_errorCode = 11;
-		error.m_errorMessage = tokens[1] + " cannot be resolved as a data object in this store";
-
-		session->send(error);
+		throw ETP_NS::EtpException(11, tokens[1] + " cannot be resolved as a data object in this store");
 	}
 
 	return result;
