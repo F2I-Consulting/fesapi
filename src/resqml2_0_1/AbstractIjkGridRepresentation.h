@@ -66,13 +66,13 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml2__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), blockInformation(nullptr) {}
-		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml2__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), blockInformation(nullptr) {}
+		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), blockInformation(nullptr) {}
+		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), blockInformation(nullptr) {}
 
-		gsoap_resqml2_0_1::_resqml2__IjkGridRepresentation* getSpecializedGsoapProxy() const;
-		gsoap_resqml2_0_1::_resqml2__TruncatedIjkGridRepresentation* getSpecializedTruncatedGsoapProxy() const;
+		gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* getSpecializedGsoapProxy() const;
+		gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* getSpecializedTruncatedGsoapProxy() const;
 
-		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
+		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
 
 		std::vector< std::pair< unsigned int, std::vector<unsigned int> > >* splitInformation;
 
@@ -350,7 +350,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get the K direction of the grid.
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__KDirection getKDirection() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__KDirection getKDirection() const;
 
 		DLL_IMPORT_OR_EXPORT virtual geometryKind getGeometryKind() const { return UNKNOWN; }
 		virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const { throw std::logic_error("Partial object"); }

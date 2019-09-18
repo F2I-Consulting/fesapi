@@ -47,13 +47,13 @@ namespace WITSML2_0_NS
 			const std::string & title,
 			const std::string & operator_,
 			gsoap_eml2_1::eml21__WellStatus statusWell,
-			gsoap_eml2_1::witsml2__WellDirection directionWell
+			gsoap_eml2_1::witsml20__WellDirection directionWell
 		);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		Well(gsoap_eml2_1::witsml2__Well* fromGsoap):AbstractObject(fromGsoap)  {}
+		Well(gsoap_eml2_1::witsml20__Well* fromGsoap):AbstractObject(fromGsoap)  {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -77,9 +77,9 @@ namespace WITSML2_0_NS
 
 		// Optional enum
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::eml21__WellStatus, StatusWell)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml2__WellPurpose, PurposeWell)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml2__WellFluid, FluidWell)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml2__WellDirection, DirectionWell)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellPurpose, PurposeWell)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellFluid, FluidWell)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellDirection, DirectionWell)
 
 		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(WaterDepth, gsoap_eml2_1::eml21__LengthUom)
 		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(GroundElevation, gsoap_eml2_1::eml21__LengthUom)

@@ -39,7 +39,7 @@ namespace RESQML2_0_1_NS
 		*/
 		ActivityTemplate(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
 
-		ActivityTemplate(gsoap_resqml2_0_1::_resqml2__ActivityTemplate* fromGsoap) : RESQML2_NS::ActivityTemplate(fromGsoap) {}
+		ActivityTemplate(gsoap_resqml2_0_1::_resqml20__ActivityTemplate* fromGsoap) : RESQML2_NS::ActivityTemplate(fromGsoap) {}
 		virtual ~ActivityTemplate() {}
 		
 		/**
@@ -55,7 +55,7 @@ namespace RESQML2_0_1_NS
 		* This parameter must not be of a data object kind.
 		*/
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string & title,
-			gsoap_resqml2_0_1::resqml2__ParameterKind kind,
+			gsoap_resqml2_0_1::resqml20__ParameterKind kind,
 			bool isInput, bool isOutput,
 			unsigned int minOccurs, int maxOccurs);
 
@@ -77,8 +77,8 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT unsigned int getParameterCount() const;
 		DLL_IMPORT_OR_EXPORT const std::string & getParameterTitle(const unsigned int & index) const;
-		DLL_IMPORT_OR_EXPORT const std::vector<gsoap_resqml2_0_1::resqml2__ParameterKind> & getParameterAllowedKinds(const unsigned int & index) const;
-		DLL_IMPORT_OR_EXPORT const std::vector<gsoap_resqml2_0_1::resqml2__ParameterKind> & getParameterAllowedKinds(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT const std::vector<gsoap_resqml2_0_1::resqml20__ParameterKind> & getParameterAllowedKinds(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT const std::vector<gsoap_resqml2_0_1::resqml20__ParameterKind> & getParameterAllowedKinds(const std::string & paramTitle) const;
 		DLL_IMPORT_OR_EXPORT const bool & getParameterIsInput(const unsigned int & index) const;
 		DLL_IMPORT_OR_EXPORT const bool & getParameterIsInput(const std::string & paramTitle) const;
 		DLL_IMPORT_OR_EXPORT const bool & getParameterIsOutput(const unsigned int & index) const;
@@ -92,12 +92,12 @@ namespace RESQML2_0_1_NS
 		//******************** MANDATORY FOR GsoapWrapper ******************
 		//******************************************************************
 		
-		DLL_IMPORT_OR_EXPORT std::string getResqmlVersion() const;
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespaceVersion() const;
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const {return XML_TAG;}
 
 	private:
-		gsoap_resqml2_0_1::resqml2__ParameterTemplate* getParameterFromTitle(const std::string & paramTitle) const;
+		gsoap_resqml2_0_1::resqml20__ParameterTemplate* getParameterFromTitle(const std::string & paramTitle) const;
 	};
 }

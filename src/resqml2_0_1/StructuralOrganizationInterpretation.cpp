@@ -34,19 +34,19 @@ using namespace gsoap_resqml2_0_1;
 const char* StructuralOrganizationInterpretation::XML_TAG = "StructuralOrganizationInterpretation";
 
 StructuralOrganizationInterpretation::StructuralOrganizationInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title,
-		const gsoap_resqml2_0_1::resqml2__OrderingCriteria & orderingCriteria)
+		const gsoap_resqml2_0_1::resqml20__OrderingCriteria & orderingCriteria)
 {
 	if (orgFeat == nullptr) {
 		throw invalid_argument("The interpreted organization feature cannot be null.");
 	}
-	if (!orgFeat->isPartial() && orgFeat->getKind() != gsoap_resqml2_0_1::resqml2__OrganizationKind__structural) {
+	if (!orgFeat->isPartial() && orgFeat->getKind() != gsoap_resqml2_0_1::resqml20__OrganizationKind__structural) {
 		throw invalid_argument("The kind of the organization feature is not a structural organization.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREStructuralOrganizationInterpretation(orgFeat->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStructuralOrganizationInterpretation(orgFeat->getGsoapContext(), 1);
 	
-	static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->OrderingCriteria = orderingCriteria;
-	static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Domain = resqml2__Domain__mixed;
+	static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->OrderingCriteria = orderingCriteria;
+	static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
 
     initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -59,13 +59,13 @@ void StructuralOrganizationInterpretation::pushBackFaultInterpretation(FaultInte
 	getRepository()->addRelationship(this, faultInterpretation);
 
     eml20__DataObjectReference* faultInterpRef = faultInterpretation->newResqmlReference();
-    _resqml2__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
+    _resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 	structuralOrganization->Faults.push_back(faultInterpRef);
 }
 
 unsigned int StructuralOrganizationInterpretation::getFaultInterpretationCount() const
 {
-	const size_t result = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Faults.size();
+	const size_t result = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Faults.size();
 
 	if (result > (numeric_limits<unsigned int>::max)()) {
 		throw out_of_range("There are too many associated fault interpretations.");
@@ -76,7 +76,7 @@ unsigned int StructuralOrganizationInterpretation::getFaultInterpretationCount()
 
 FaultInterpretation* StructuralOrganizationInterpretation::getFaultInterpretation(unsigned int index)
 {
-	_resqml2__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
+	_resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 	if (index < structuralOrganization->Faults.size()) {
 		return static_cast<FaultInterpretation*>(repository->getDataObjectByUuid(structuralOrganization->Faults[index]->UUID));
 	}
@@ -89,9 +89,9 @@ void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(Horizon
 {
 	getRepository()->addRelationship(this, horizonInterpretation);
 
-	_resqml2__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
+	_resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 
-	resqml2__HorizonInterpretationIndex* horizonInterpListElement = soap_new_resqml2__HorizonInterpretationIndex(gsoapProxy2_0_1->soap, 1);
+	resqml20__HorizonInterpretationIndex* horizonInterpListElement = soap_new_resqml20__HorizonInterpretationIndex(gsoapProxy2_0_1->soap, 1);
 	horizonInterpListElement->StratigraphicRank = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(ULONG64)));
 	*(horizonInterpListElement->StratigraphicRank) = stratigraphicRank;
 	horizonInterpListElement->Index = structuralOrganization->Horizons.size();
@@ -102,7 +102,7 @@ void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(Horizon
 
 unsigned int StructuralOrganizationInterpretation::getHorizonInterpretationCount() const
 {
-	const size_t result = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Horizons.size();
+	const size_t result = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Horizons.size();
 
 	if (result > (numeric_limits<unsigned int>::max)()) {
 		throw out_of_range("There are too many associated horizon interpretations.");
@@ -113,7 +113,7 @@ unsigned int StructuralOrganizationInterpretation::getHorizonInterpretationCount
 
 HorizonInterpretation* StructuralOrganizationInterpretation::getHorizonInterpretation(unsigned int index) const
 {
-	_resqml2__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
+	_resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 	if (index < structuralOrganization->Horizons.size()) {
 		return static_cast<HorizonInterpretation*>(repository->getDataObjectByUuid(structuralOrganization->Horizons[index]->Horizon->UUID));
 	}
@@ -127,13 +127,13 @@ void StructuralOrganizationInterpretation::pushBackTopFrontierInterpretation(Abs
 	getRepository()->addRelationship(this, topFrontierInterpretation);
 
     eml20__DataObjectReference* interpRef = topFrontierInterpretation->newResqmlReference();
-    _resqml2__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
+    _resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 	structuralOrganization->TopFrontier.push_back(interpRef);
 }
 
 unsigned int StructuralOrganizationInterpretation::getTopFrontierInterpretationCount() const
 {
-	const size_t result = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->TopFrontier.size();
+	const size_t result = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->TopFrontier.size();
 
 	if (result > (numeric_limits<unsigned int>::max)()) {
 		throw out_of_range("There are too many associated top frontier interpretations.");
@@ -144,7 +144,7 @@ unsigned int StructuralOrganizationInterpretation::getTopFrontierInterpretationC
 
 RESQML2_NS::AbstractFeatureInterpretation* StructuralOrganizationInterpretation::getTopFrontierInterpretation(unsigned int index) const
 {
-	_resqml2__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
+	_resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 	if (index < structuralOrganization->TopFrontier.size()) {
 		return static_cast<RESQML2_NS::AbstractFeatureInterpretation*>(repository->getDataObjectByUuid(structuralOrganization->TopFrontier[index]->UUID));
 	}
@@ -158,13 +158,13 @@ void StructuralOrganizationInterpretation::pushBackBottomFrontierInterpretation(
 	getRepository()->addRelationship(this, bottomFrontierInterpretation);
 
     eml20__DataObjectReference* interpRef = bottomFrontierInterpretation->newResqmlReference();
-    _resqml2__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
+    _resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 	structuralOrganization->BottomFrontier.push_back(interpRef);
 }
 
 unsigned int StructuralOrganizationInterpretation::getBottomFrontierInterpretationCount() const
 {
-	const size_t result = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->BottomFrontier.size();
+	const size_t result = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->BottomFrontier.size();
 
 	if (result > (numeric_limits<unsigned int>::max)()) {
 		throw out_of_range("There are too many associated bottom frontier interpretations.");
@@ -175,7 +175,7 @@ unsigned int StructuralOrganizationInterpretation::getBottomFrontierInterpretati
 
 RESQML2_NS::AbstractFeatureInterpretation* StructuralOrganizationInterpretation::getBottomFrontierInterpretation(unsigned int index) const
 {
-	_resqml2__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
+	_resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 	if (index < structuralOrganization->BottomFrontier.size()) {
 		return static_cast<RESQML2_NS::AbstractFeatureInterpretation*>(repository->getDataObjectByUuid(structuralOrganization->BottomFrontier[index]->UUID));
 	}
@@ -189,13 +189,13 @@ void StructuralOrganizationInterpretation::pushBackSideFrontierInterpretation(Ab
 	getRepository()->addRelationship(this, sideFrontierInterpretation);
 
     eml20__DataObjectReference* interpRef = sideFrontierInterpretation->newResqmlReference();
-    _resqml2__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
+    _resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 	structuralOrganization->Sides.push_back(interpRef);
 }
 
 unsigned int StructuralOrganizationInterpretation::getSideFrontierInterpretationCount() const
 {
-	const size_t result = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Sides.size();
+	const size_t result = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Sides.size();
 
 	if (result > (numeric_limits<unsigned int>::max)()) {
 		throw out_of_range("There are too many associated side frontier interpretations.");
@@ -206,7 +206,7 @@ unsigned int StructuralOrganizationInterpretation::getSideFrontierInterpretation
 
 RESQML2_NS::AbstractFeatureInterpretation* StructuralOrganizationInterpretation::getSideFrontierInterpretation(unsigned int index) const
 {
-	_resqml2__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
+	_resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 	if (index < structuralOrganization->Sides.size()) {
 		return static_cast<RESQML2_NS::AbstractFeatureInterpretation*>(repository->getDataObjectByUuid(structuralOrganization->Sides[index]->UUID));
 	}
@@ -219,7 +219,7 @@ void StructuralOrganizationInterpretation::loadTargetRelationships()
 {
 	AbstractOrganizationInterpretation::loadTargetRelationships();
 
-	_resqml2__StructuralOrganizationInterpretation* interp = static_cast<_resqml2__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
+	_resqml20__StructuralOrganizationInterpretation* interp = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 
 	for (size_t i = 0; i < interp->Faults.size(); ++i) {
 		convertDorIntoRel<FaultInterpretation>(interp->Faults[i]);

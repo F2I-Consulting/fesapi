@@ -44,8 +44,8 @@ NonSealedSurfaceFrameworkRepresentation::NonSealedSurfaceFrameworkRepresentation
 	}
 
 	// proxy constructor
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORENonSealedSurfaceFrameworkRepresentation(interp->getGsoapContext(), 1);	
-	_resqml2__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml2__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORENonSealedSurfaceFrameworkRepresentation(interp->getGsoapContext(), 1);	
+	_resqml20__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
 	orgRep->IsHomogeneous = true;
 	orgRep->RepresentedInterpretation = soap_new_eml20__DataObjectReference(gsoapProxy2_0_1->soap, 1);
@@ -73,15 +73,15 @@ void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresenta
 		localCrs = getRepository()->getDefaultCrs();
 	}
 
-	_resqml2__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml2__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
+	_resqml20__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
-	resqml2__NonSealedContactRepresentationPart* contactRep = soap_new_resqml2__NonSealedContactRepresentationPart(gsoapProxy2_0_1->soap, 1);
+	resqml20__NonSealedContactRepresentationPart* contactRep = soap_new_resqml20__NonSealedContactRepresentationPart(gsoapProxy2_0_1->soap, 1);
 	contactRep->Index = orgRep->NonSealedContactRepresentation.size();
 	orgRep->NonSealedContactRepresentation.push_back(contactRep);
-	resqml2__PointGeometry* contactGeom = soap_new_resqml2__PointGeometry(gsoapProxy2_0_1->soap, 1);
+	resqml20__PointGeometry* contactGeom = soap_new_resqml20__PointGeometry(gsoapProxy2_0_1->soap, 1);
 	contactRep->Geometry = contactGeom;
 	contactGeom->LocalCrs = localCrs->newResqmlReference();
-	resqml2__Point3dHdf5Array* contactGeomPoints = soap_new_resqml2__Point3dHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dHdf5Array* contactGeomPoints = soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap, 1);
 	contactGeom->Points = contactGeomPoints;
 	contactGeomPoints->Coordinates = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
 	contactGeomPoints->Coordinates->HdfProxy = proxy->newResqmlReference();
@@ -102,17 +102,17 @@ void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresenta
 std::string NonSealedSurfaceFrameworkRepresentation::getHdfProxyUuid() const
 {
 	string result;
-	_resqml2__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml2__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
+	_resqml20__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
 	if (!orgRep->NonSealedContactRepresentation.empty())
 	{
-		resqml2__NonSealedContactRepresentationPart* firstContact = static_cast<resqml2__NonSealedContactRepresentationPart*>(orgRep->NonSealedContactRepresentation[0]);
-		if (firstContact->Geometry->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__PointGeometry)
+		resqml20__NonSealedContactRepresentationPart* firstContact = static_cast<resqml20__NonSealedContactRepresentationPart*>(orgRep->NonSealedContactRepresentation[0]);
+		if (firstContact->Geometry->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__PointGeometry)
 		{
-			resqml2__PointGeometry* pointGeom = static_cast<resqml2__PointGeometry*>(firstContact->Geometry);
-			if (pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array)
+			resqml20__PointGeometry* pointGeom = static_cast<resqml20__PointGeometry*>(firstContact->Geometry);
+			if (pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array)
 			{
-				return static_cast<resqml2__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->HdfProxy->UUID;
+				return static_cast<resqml20__Point3dHdf5Array*>(pointGeom->Points)->Coordinates->HdfProxy->UUID;
 			}
 		}
 	}
@@ -122,7 +122,7 @@ std::string NonSealedSurfaceFrameworkRepresentation::getHdfProxyUuid() const
 
 unsigned int NonSealedSurfaceFrameworkRepresentation::getContactCount() const
 {
-	_resqml2__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml2__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
+	_resqml20__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
 	if (orgRep->NonSealedContactRepresentation.size() > (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("There are too much contact representations for fesapi");

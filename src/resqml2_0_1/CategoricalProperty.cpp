@@ -37,15 +37,15 @@ using namespace gsoap_resqml2_0_1;
 const char* CategoricalProperty::XML_TAG = "CategoricalProperty";
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
-	StringTableLookup* strLookup, const resqml2__ResqmlPropertyKind & energisticsPropertyKind)
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
+	StringTableLookup* strLookup, const resqml20__ResqmlPropertyKind & energisticsPropertyKind)
 {
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORECategoricalProperty(rep->getGsoapContext(), 1);	
-	_resqml2__CategoricalProperty* prop = static_cast<_resqml2__CategoricalProperty*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECategoricalProperty(rep->getGsoapContext(), 1);	
+	_resqml20__CategoricalProperty* prop = static_cast<_resqml20__CategoricalProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
 
-	resqml2__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml2__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
+	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
 	xmlStandardPropKind->Kind = energisticsPropertyKind;
 	prop->PropertyKind = xmlStandardPropKind;
 
@@ -59,11 +59,11 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 }
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
 	StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropKind)
 {
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORECategoricalProperty(rep->getGsoapContext(), 1);	
-	_resqml2__CategoricalProperty* prop = static_cast<_resqml2__CategoricalProperty*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECategoricalProperty(rep->getGsoapContext(), 1);	
+	_resqml20__CategoricalProperty* prop = static_cast<_resqml20__CategoricalProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
 
@@ -82,7 +82,7 @@ void CategoricalProperty::loadTargetRelationships()
 {
 	AbstractValuesProperty::loadTargetRelationships();
 
-	convertDorIntoRel<StringTableLookup>(static_cast<_resqml2__CategoricalProperty*>(gsoapProxy2_0_1)->Lookup);
+	convertDorIntoRel<StringTableLookup>(static_cast<_resqml20__CategoricalProperty*>(gsoapProxy2_0_1)->Lookup);
 }
 
 void CategoricalProperty::pushBackLongHdf5Array1dOfValues(const long * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue)
@@ -158,7 +158,7 @@ std::string CategoricalProperty::pushBackRefToExistingDataset(COMMON_NS::Abstrac
 
 std::string CategoricalProperty::getStringLookupUuid() const
 {
-	return static_cast<_resqml2__CategoricalProperty*>(gsoapProxy2_0_1)->Lookup->UUID;
+	return static_cast<_resqml20__CategoricalProperty*>(gsoapProxy2_0_1)->Lookup->UUID;
 }
 
 bool CategoricalProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKind* pk)
@@ -178,8 +178,8 @@ bool CategoricalProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKi
 				repository->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the categorical property " + getUuid() + " is right because one if its parent property kind is abstract.");
 				return true;
 			}
-			if (!pk->isChildOf(resqml2__ResqmlPropertyKind__categorical)) {
-				if (!pk->isChildOf(resqml2__ResqmlPropertyKind__discrete)) {
+			if (!pk->isChildOf(resqml20__ResqmlPropertyKind__categorical)) {
+				if (!pk->isChildOf(resqml20__ResqmlPropertyKind__discrete)) {
 					repository->addWarning("The categorical property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
 					changeToPartialObject();
 					return false;
@@ -200,7 +200,7 @@ bool CategoricalProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKi
 	return true;
 }
 
-bool CategoricalProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk)
+bool CategoricalProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & pk)
 {
 	COMMON_NS::EnumStringMapper tmp;
 	std::string pkName = tmp.getEnergisticsPropertyKindName(pk);
@@ -212,8 +212,8 @@ bool CategoricalProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_
 			changeToPartialObject();
 			return false;
 		}
-		if (!pkMapper->isChildOf(pk, resqml2__ResqmlPropertyKind__categorical)) {
-			if (!pkMapper->isChildOf(pk, resqml2__ResqmlPropertyKind__discrete)) {
+		if (!pkMapper->isChildOf(pk, resqml20__ResqmlPropertyKind__categorical)) {
+			if (!pkMapper->isChildOf(pk, resqml20__ResqmlPropertyKind__discrete)) {
 				repository->addWarning("The categorical property " + getUuid() + " cannot be associated to a resqml property kind \"" + pkName + "\" which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
 				changeToPartialObject();
 				return false;

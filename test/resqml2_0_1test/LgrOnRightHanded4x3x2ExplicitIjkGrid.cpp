@@ -73,7 +73,7 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 
 	// creating the child ijk grid
 	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGrid = repo->createIjkGridExplicitRepresentation(defaultUuid, defaultTitle, 3, 1, 4);
-	childGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, nullptr);
+	childGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape__vertical, gsoap_resqml2_0_1::resqml20__KDirection__down, false, nodesIjkGridRepresentation, nullptr);
 	childGrid->setParentWindow(
 		0, 3, 1, 1,
 		0, 1, 1, 1,
@@ -82,7 +82,7 @@ void LgrOnRightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 
 	// creating the same child ijk grid using HDF5 datasets
 	RESQML2_0_1_NS::IjkGridExplicitRepresentation* childGridHdf5 = repo->createIjkGridExplicitRepresentation("38930b30-1325-424e-a1e9-666fa50bfa4f", "Child grid HDF5", 3, 1, 4);
-	childGridHdf5->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, nullptr);
+	childGridHdf5->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape__vertical, gsoap_resqml2_0_1::resqml20__KDirection__down, false, nodesIjkGridRepresentation, nullptr);
 	unsigned int one = 1;
 	unsigned int three = 3;
 	unsigned int twotwo[] = { 2,2 };

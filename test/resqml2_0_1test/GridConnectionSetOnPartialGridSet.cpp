@@ -53,9 +53,9 @@ void GridConnectionSetOnPartialGridSet::initRepoHandler() {
 	RESQML2_0_1_NS::UnstructuredGridRepresentation* partialGrid = repo->createPartialUnstructuredGridRepresentation(unstructuredGridUuid, unstructuredGridTitle);
 	REQUIRE( partialGrid != nullptr );
 	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = repo->createContinuousProperty(partialGrid, "62d7e07d-5e17-4e42-b4b2-a4c26204cba2", "Continuous prop on partial unstructured grid", 1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, 
-		gsoap_resqml2_0_1::resqml2__ResqmlUom__m, 
-		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, 
+		gsoap_resqml2_0_1::resqml20__ResqmlUom__m, 
+		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	double continuousProp1Values[6] = { 0, 1, 2, 3, 4, 5 };
 	continuousProperty->pushBackDoubleHdf5Array1dOfValues(continuousProp1Values, 6, hdfProxy);
 
@@ -63,9 +63,9 @@ void GridConnectionSetOnPartialGridSet::initRepoHandler() {
 	RESQML2_0_1_NS::AbstractIjkGridRepresentation* partialIjkGrid = repo->createPartialIjkGridRepresentation("b0ec8bf4-9b93-428b-a814-87c38887f6d0", "PartialIjk Grid");
 	REQUIRE(partialIjkGrid != nullptr);
 	RESQML2_0_1_NS::ContinuousProperty* continuousPropertyOnIjk = repo->createContinuousProperty(partialIjkGrid, "b20299b9-6881-4b91-ae2f-a87213437dce", "Continuous prop on partial ijk grid", 1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells,
-		gsoap_resqml2_0_1::resqml2__ResqmlUom__m,
-		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
+		gsoap_resqml2_0_1::resqml20__ResqmlUom__m,
+		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	double continuousPropOnIjkValues[6] = { 0, 1, 2, 3, 4, 5 };
 	continuousPropertyOnIjk->pushBackDoubleHdf5Array1dOfValues(continuousPropOnIjkValues, 6, hdfProxy);
 
@@ -73,9 +73,9 @@ void GridConnectionSetOnPartialGridSet::initRepoHandler() {
 	RESQML2_0_1_NS::AbstractIjkGridRepresentation* partialTruncIjkGrid = repo->createPartialTruncatedIjkGridRepresentation("def167fb-89b2-45bc-92ff-01d228142350", "PartialIjk Grid");
 	REQUIRE(partialIjkGrid != nullptr);
 	RESQML2_0_1_NS::ContinuousProperty* continuousPropertyOnTruncIjk = repo->createContinuousProperty(partialTruncIjkGrid, "4caa8e9a-00b3-40c2-9460-72cb8790393a", "Continuous prop on partial truncated ijk grid", 1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells,
-		gsoap_resqml2_0_1::resqml2__ResqmlUom__m,
-		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
+		gsoap_resqml2_0_1::resqml20__ResqmlUom__m,
+		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	double continuousPropOnTruncIjkValues[6] = { 0, 1, 2, 3, 4, 5 };
 	continuousPropertyOnTruncIjk->pushBackDoubleHdf5Array1dOfValues(continuousPropOnTruncIjkValues, 6, hdfProxy);
 

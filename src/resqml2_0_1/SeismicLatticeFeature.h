@@ -56,7 +56,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		SeismicLatticeFeature(gsoap_resqml2_0_1::_resqml2__SeismicLatticeFeature* fromGsoap): AbstractTechnicalFeature(fromGsoap) {}
+		SeismicLatticeFeature(gsoap_resqml2_0_1::_resqml20__SeismicLatticeFeature* fromGsoap): AbstractTechnicalFeature(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is manged by the gsoap context.

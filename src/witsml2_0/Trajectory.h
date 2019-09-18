@@ -33,12 +33,12 @@ namespace WITSML2_0_NS
 		Trajectory(class Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title,
-			gsoap_eml2_1::witsml2__ChannelStatus channelStatus);
+			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
 	
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		Trajectory(gsoap_eml2_1::witsml2__Trajectory* fromGsoap) :WellboreObject(fromGsoap) {}
+		Trajectory(gsoap_eml2_1::witsml20__Trajectory* fromGsoap) :WellboreObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -48,7 +48,7 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__DataObjectReference* getWellboreDor() const;
 		DLL_IMPORT_OR_EXPORT void setWellbore(class Wellbore* witsmlWellbore);
 
-		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(gsoap_eml2_1::witsml2__ChannelStatus, GrowingStatus)
+		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(gsoap_eml2_1::witsml20__ChannelStatus, GrowingStatus)
 
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimTrajStart)
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimTrajEnd)
@@ -69,7 +69,7 @@ namespace WITSML2_0_NS
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(bool, Memory)
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(bool, FinalTraj)
 
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml2__AziRef, AziRef)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__AziRef, AziRef)
 
 		//***************************************
 		// ******* TRAJECTORY STATIONS **********
@@ -77,7 +77,7 @@ namespace WITSML2_0_NS
 
 		// Mandatory
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR(std::string, TrajectoryStation, uid)
-		GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR(gsoap_eml2_1::witsml2__TrajStationType, TrajectoryStation, TypeTrajStation)
+		GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR(gsoap_eml2_1::witsml20__TrajStationType, TrajectoryStation, TypeTrajStation)
 		GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IN_VECTOR(TrajectoryStation, Md, gsoap_eml2_1::eml21__LengthUom)
 
 		// Optional bool
@@ -103,9 +103,9 @@ namespace WITSML2_0_NS
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(time_t, TrajectoryStation, DTimStn)
 
 		// Optional enum
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoap_eml2_1::witsml2__TypeSurveyTool, TrajectoryStation, TypeSurveyTool)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoap_eml2_1::witsml2__TrajStnCalcAlgorithm, TrajectoryStation, CalcAlgorithm)
-		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoap_eml2_1::witsml2__TrajStationStatus, TrajectoryStation, StatusTrajStation)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoap_eml2_1::witsml20__TypeSurveyTool, TrajectoryStation, TypeSurveyTool)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoap_eml2_1::witsml20__TrajStnCalcAlgorithm, TrajectoryStation, CalcAlgorithm)
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoap_eml2_1::witsml20__TrajStationStatus, TrajectoryStation, StatusTrajStation)
 
 		// Optional Length Measure
 		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, Tvd, gsoap_eml2_1::eml21__LengthUom)
@@ -144,7 +144,7 @@ namespace WITSML2_0_NS
 		* @param mdValue	The Measured Depth uom of the trajectory station
 		* @param uid		The uid of the trajectory station. Automatically set to its index if empty.
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackTrajectoryStation(gsoap_eml2_1::witsml2__TrajStationType kind, double mdValue, gsoap_eml2_1::eml21__LengthUom uom, const std::string & uid = "");
+		DLL_IMPORT_OR_EXPORT void pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType kind, double mdValue, gsoap_eml2_1::eml21__LengthUom uom, const std::string & uid = "");
 
 		/**
 		* Get the count of trajectory stations in this trajectory

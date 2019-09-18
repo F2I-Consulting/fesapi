@@ -32,8 +32,8 @@ SeismicLatticeFeature::SeismicLatticeFeature(COMMON_NS::DataObjectRepository* re
 	if (repo == nullptr)
 		throw invalid_argument("The repo cannot be null.");
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORESeismicLatticeFeature(repo->getGsoapContext(), 1);
-	_resqml2__SeismicLatticeFeature* seismicLattice = static_cast<_resqml2__SeismicLatticeFeature*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESeismicLatticeFeature(repo->getGsoapContext(), 1);
+	_resqml20__SeismicLatticeFeature* seismicLattice = static_cast<_resqml20__SeismicLatticeFeature*>(gsoapProxy2_0_1);
 
 	seismicLattice->InlineIndexIncrement = inlineIncrement;
 	seismicLattice->CrosslineIndexIncrement = crosslineIncrement;
@@ -50,22 +50,22 @@ SeismicLatticeFeature::SeismicLatticeFeature(COMMON_NS::DataObjectRepository* re
 
 int SeismicLatticeFeature::getCrosslineIncrement() const
 {
-	return static_cast<_resqml2__SeismicLatticeFeature*>(gsoapProxy2_0_1)->CrosslineIndexIncrement;
+	return static_cast<_resqml20__SeismicLatticeFeature*>(gsoapProxy2_0_1)->CrosslineIndexIncrement;
 }
 		
 int SeismicLatticeFeature::getInlineIncrement() const
 {
-	return static_cast<_resqml2__SeismicLatticeFeature*>(gsoapProxy2_0_1)->InlineIndexIncrement;
+	return static_cast<_resqml20__SeismicLatticeFeature*>(gsoapProxy2_0_1)->InlineIndexIncrement;
 }
 		
 int SeismicLatticeFeature::getOriginCrossline() const
 {
-	return static_cast<_resqml2__SeismicLatticeFeature*>(gsoapProxy2_0_1)->FirstCrosslineIndex;
+	return static_cast<_resqml20__SeismicLatticeFeature*>(gsoapProxy2_0_1)->FirstCrosslineIndex;
 }
 		
 int SeismicLatticeFeature::getOriginInline() const
 {
-	return static_cast<_resqml2__SeismicLatticeFeature*>(gsoapProxy2_0_1)->FirstInlineIndex;
+	return static_cast<_resqml20__SeismicLatticeFeature*>(gsoapProxy2_0_1)->FirstInlineIndex;
 }
 
 

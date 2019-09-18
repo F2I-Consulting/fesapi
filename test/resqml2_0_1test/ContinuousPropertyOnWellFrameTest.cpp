@@ -57,9 +57,9 @@ void ContinuousPropertyOnWellFrameTest::initRepoHandler() {
 	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = repo->createContinuousProperty(
 		frame, defaultUuid, defaultTitle,
 		1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__nodes,
-		gsoap_resqml2_0_1::resqml2__ResqmlUom__m,
-		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__nodes,
+		gsoap_resqml2_0_1::resqml20__ResqmlUom__m,
+		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	REQUIRE(continuousProperty != nullptr);
 	double values[5] = { 0.1, 1.2, 2.3, 3.4, 4.5 };
 	continuousProperty->pushBackDoubleHdf5Array1dOfValues(values, 5, hdfProxy);
@@ -82,14 +82,14 @@ void ContinuousPropertyOnWellFrameTest::readRepoHandler() {
 	REQUIRE(continuousProperty->getElementCountPerValue() == 1);
 
 	// getAttachmentKind
-	REQUIRE(continuousProperty->getAttachmentKind() == gsoap_resqml2_0_1::resqml2__IndexableElements__nodes);
+	REQUIRE(continuousProperty->getAttachmentKind() == gsoap_resqml2_0_1::resqml20__IndexableElements__nodes);
 
 	// getUom
-	REQUIRE(continuousProperty->getUom() == gsoap_resqml2_0_1::resqml2__ResqmlUom__m);
+	REQUIRE(continuousProperty->getUom() == gsoap_resqml2_0_1::resqml20__ResqmlUom__m);
 
 	// getEnergisticsPropertyKind
 	REQUIRE(continuousProperty->isAssociatedToOneStandardEnergisticsPropertyKind());
-	REQUIRE(continuousProperty->getEnergisticsPropertyKind() == gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
+	REQUIRE(continuousProperty->getEnergisticsPropertyKind() == gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 
 	// getValuesCountOfPatch
 	REQUIRE(continuousProperty->getValuesCountOfPatch(0) == 5);

@@ -45,7 +45,7 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractFeatureInterpretation(gsoap_resqml2_0_1::resqml2__AbstractFeatureInterpretation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		AbstractFeatureInterpretation(gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 	public:
 
@@ -75,12 +75,12 @@ namespace RESQML2_NS
 		* Init the domain of the interpretation based on its representations
 		* @param	defaultDomain	The default domain to set when there is no representation set to this interpretation
 		*/
-		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml2__Domain & initDomain(gsoap_resqml2_0_1::resqml2__Domain defaultDomain) const;
+		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml20__Domain & initDomain(gsoap_resqml2_0_1::resqml20__Domain defaultDomain) const;
 
 		/**
 		* Set the domain of the interpretation
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__Domain getDomain() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__Domain getDomain() const;
 
 		/**
 		* Get all the representations of this interpretation

@@ -28,17 +28,17 @@ using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 MdDatum::MdDatum(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title,
-	RESQML2_NS::AbstractLocal3dCrs * locCrs, resqml2__MdReference originKind,
+	RESQML2_NS::AbstractLocal3dCrs * locCrs, resqml20__MdReference originKind,
 	double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3)
 {
 	if (repo == nullptr)
 		throw invalid_argument("The repo must exist");
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREMdDatum(repo->getGsoapContext(), 1);
-	_resqml2__MdDatum* mdInfo = static_cast<_resqml2__MdDatum*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREMdDatum(repo->getGsoapContext(), 1);
+	_resqml20__MdDatum* mdInfo = static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1);
 
 	mdInfo->MdReference = originKind;
-	mdInfo->Location = soap_new_resqml2__Point3d(repo->getGsoapContext(), 1);
+	mdInfo->Location = soap_new_resqml20__Point3d(repo->getGsoapContext(), 1);
 	mdInfo->Location->Coordinate1 = referenceLocationOrdinal1;
 	mdInfo->Location->Coordinate2 = referenceLocationOrdinal2;
 	mdInfo->Location->Coordinate3 = referenceLocationOrdinal3;
@@ -51,13 +51,13 @@ MdDatum::MdDatum(COMMON_NS::DataObjectRepository * repo, const string & guid, co
 
 void MdDatum::setXmlLocalCrs(RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
-	_resqml2__MdDatum* mdDatum = static_cast<_resqml2__MdDatum*>(gsoapProxy2_0_1);
+	_resqml20__MdDatum* mdDatum = static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1);
 	mdDatum->LocalCrs = localCrs->newResqmlReference();
 }
 
 double MdDatum::getX() const
 {
-	return static_cast<_resqml2__MdDatum*>(gsoapProxy2_0_1)->Location->Coordinate1;
+	return static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1)->Location->Coordinate1;
 }
 
 double MdDatum::getXInGlobalCrs() const
@@ -73,7 +73,7 @@ double MdDatum::getXInGlobalCrs() const
 
 double MdDatum::getY() const
 {
-	return static_cast<_resqml2__MdDatum*>(gsoapProxy2_0_1)->Location->Coordinate2;
+	return static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1)->Location->Coordinate2;
 }
 
 double MdDatum::getYInGlobalCrs() const
@@ -89,25 +89,25 @@ double MdDatum::getYInGlobalCrs() const
 
 double MdDatum::getZ() const
 {
-	return static_cast<_resqml2__MdDatum*>(gsoapProxy2_0_1)->Location->Coordinate3;
+	return static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1)->Location->Coordinate3;
 }
 
 double MdDatum::getZInGlobalCrs() const
 {
 	double originOrdinal3 = .0;
 	RESQML2_NS::AbstractLocal3dCrs* localCrs = getLocalCrs();
-	if (localCrs->getGsoapType() != SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORELocalTime3dCrs)
+	if (localCrs->getGsoapType() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCORELocalTime3dCrs)
 		originOrdinal3 = localCrs->getOriginDepthOrElevation();
 	return getZ() + originOrdinal3;
 }
 
-gsoap_resqml2_0_1::resqml2__MdReference MdDatum::getOriginKind() const
+gsoap_resqml2_0_1::resqml20__MdReference MdDatum::getOriginKind() const
 {
-	return static_cast<_resqml2__MdDatum*>(gsoapProxy2_0_1)->MdReference;
+	return static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1)->MdReference;
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* MdDatum::getLocalCrsDor() const
 {
-	return static_cast<_resqml2__MdDatum*>(gsoapProxy2_0_1)->LocalCrs;
+	return static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1)->LocalCrs;
 }
 

@@ -43,7 +43,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		PlaneSetRepresentation(gsoap_resqml2_0_1::_resqml2__PlaneSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
+		PlaneSetRepresentation(gsoap_resqml2_0_1::_resqml20__PlaneSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

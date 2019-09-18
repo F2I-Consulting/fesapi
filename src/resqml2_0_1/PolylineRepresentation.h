@@ -25,7 +25,7 @@ namespace RESQML2_0_1_NS
 	class PolylineRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	private :
-		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
+		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
 
 		void init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, bool isClosed = false);
 
@@ -45,7 +45,7 @@ namespace RESQML2_0_1_NS
 		* @param isClosed				Indicates wether this line representaiton is closed or not.
 		*/
 		PolylineRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
-			const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml2__LineRole roleKind,
+			const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__LineRole roleKind,
 			bool isClosed = false);
 
 		/**
@@ -71,7 +71,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		PolylineRepresentation(gsoap_resqml2_0_1::_resqml2__PolylineRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
+		PolylineRepresentation(gsoap_resqml2_0_1::_resqml20__PolylineRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -126,12 +126,12 @@ namespace RESQML2_0_1_NS
 		* Get the role of this polyline.
 		* Throw an exception if the polyline has no role (see method hasALineRole).
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__LineRole getLineRole() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__LineRole getLineRole() const;
 
 		/**
 		* Set the line role of this instance
 		*/
-		DLL_IMPORT_OR_EXPORT void setLineRole(gsoap_resqml2_0_1::resqml2__LineRole lineRole);
+		DLL_IMPORT_OR_EXPORT void setLineRole(gsoap_resqml2_0_1::resqml20__LineRole lineRole);
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
 	};

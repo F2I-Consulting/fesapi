@@ -25,10 +25,10 @@ namespace COMMON_NS
 	class GraphicalInformationSet : public AbstractObject
 	{
 	private:
-		gsoap_eml2_2::resqml2__DefaultGraphicalInformation* getDefaultGraphicalInformationForAllIndexableElements(AbstractObject const* targetObject) const;
-		gsoap_eml2_2::resqml2__GraphicalInformationForWholeObject* getDefaultGraphicalInformation(AbstractObject const* targetObject) const;
-		gsoap_eml2_2::resqml2__HsvColor* getDefaultColor(AbstractObject const* targetObject) const;
-		gsoap_eml2_2::resqml2__ColorInformation* getColorInformation(AbstractObject const* targetObject) const;
+		gsoap_eml2_2::resqml22__DefaultGraphicalInformation* getDefaultGraphicalInformationForAllIndexableElements(AbstractObject const* targetObject) const;
+		gsoap_eml2_2::resqml22__GraphicalInformationForWholeObject* getDefaultGraphicalInformation(AbstractObject const* targetObject) const;
+		gsoap_eml2_2::resqml22__HsvColor* getDefaultColor(AbstractObject const* targetObject) const;
+		gsoap_eml2_2::resqml22__ColorInformation* getColorInformation(AbstractObject const* targetObject) const;
 
 	public:
 		/**

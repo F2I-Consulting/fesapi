@@ -52,7 +52,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		DeviationSurveyRepresentation(gsoap_resqml2_0_1::_resqml2__DeviationSurveyRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
+		DeviationSurveyRepresentation(gsoap_resqml2_0_1::_resqml20__DeviationSurveyRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
 
 		~DeviationSurveyRepresentation() {}
 

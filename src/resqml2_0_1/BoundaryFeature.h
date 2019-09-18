@@ -46,7 +46,7 @@ namespace RESQML2_0_1_NS
 		*/
 		BoundaryFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
 
-		BoundaryFeature(gsoap_resqml2_0_1::_resqml2__BoundaryFeature* fromGsoap): AbstractGeologicFeature(fromGsoap) {}
+		BoundaryFeature(gsoap_resqml2_0_1::_resqml20__BoundaryFeature* fromGsoap): AbstractGeologicFeature(fromGsoap) {}
 		virtual ~BoundaryFeature() {}
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

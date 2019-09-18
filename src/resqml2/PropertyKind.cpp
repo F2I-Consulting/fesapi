@@ -32,17 +32,17 @@ const char* PropertyKind::XML_TAG = "PropertyKind";
 const std::string & PropertyKind::getNamingSystem() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::_resqml2__PropertyKind*>(gsoapProxy2_0_1)->NamingSystem;
+		return static_cast<gsoap_resqml2_0_1::_resqml20__PropertyKind*>(gsoapProxy2_0_1)->NamingSystem;
 	}
 	else {
 		throw logic_error("Not implemented yet");
 	}
 }
 
-const gsoap_resqml2_0_1::resqml2__ResqmlUom & PropertyKind::getUom() const
+const gsoap_resqml2_0_1::resqml20__ResqmlUom & PropertyKind::getUom() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::_resqml2__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom;
+		return static_cast<gsoap_resqml2_0_1::_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -52,7 +52,7 @@ const gsoap_resqml2_0_1::resqml2__ResqmlUom & PropertyKind::getUom() const
 std::string PropertyKind::getUomAsString() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return gsoap_resqml2_0_1::soap_resqml2__ResqmlUom2s(gsoapProxy2_0_1->soap, getUom());
+		return gsoap_resqml2_0_1::soap_resqml20__ResqmlUom2s(gsoapProxy2_0_1->soap, getUom());
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -66,29 +66,29 @@ std::string PropertyKind::getParentAsString() const
 	}
 	else
 	{
-		gsoap_resqml2_0_1::_resqml2__PropertyKind* propType = static_cast<gsoap_resqml2_0_1::_resqml2__PropertyKind*>(gsoapProxy2_0_1);
+		gsoap_resqml2_0_1::_resqml20__PropertyKind* propType = static_cast<gsoap_resqml2_0_1::_resqml20__PropertyKind*>(gsoapProxy2_0_1);
 		COMMON_NS::EnumStringMapper tmp;
-		return tmp.getEnergisticsPropertyKindName(static_cast<gsoap_resqml2_0_1::resqml2__StandardPropertyKind*>(propType->ParentPropertyKind)->Kind);
+		return tmp.getEnergisticsPropertyKindName(static_cast<gsoap_resqml2_0_1::resqml20__StandardPropertyKind*>(propType->ParentPropertyKind)->Kind);
 	}
 }
 
 bool PropertyKind::isParentAnEnergisticsPropertyKind() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::_resqml2__PropertyKind*>(gsoapProxy2_0_1)->ParentPropertyKind->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__StandardPropertyKind;
+		return static_cast<gsoap_resqml2_0_1::_resqml20__PropertyKind*>(gsoapProxy2_0_1)->ParentPropertyKind->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__StandardPropertyKind;
 	}
 	else {
 		throw logic_error("Not implemented yet");
 	}
 }
 
-gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind PropertyKind::getParentEnergisticsPropertyKind() const
+gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind PropertyKind::getParentEnergisticsPropertyKind() const
 {
 	if (isParentAnEnergisticsPropertyKind())
 	{
 		if (gsoapProxy2_0_1 != nullptr) {
-			gsoap_resqml2_0_1::_resqml2__PropertyKind* propKind = static_cast<gsoap_resqml2_0_1::_resqml2__PropertyKind*>(gsoapProxy2_0_1);
-			return static_cast<gsoap_resqml2_0_1::resqml2__StandardPropertyKind*>(propKind->ParentPropertyKind)->Kind;
+			gsoap_resqml2_0_1::_resqml20__PropertyKind* propKind = static_cast<gsoap_resqml2_0_1::_resqml20__PropertyKind*>(gsoapProxy2_0_1);
+			return static_cast<gsoap_resqml2_0_1::resqml20__StandardPropertyKind*>(propKind->ParentPropertyKind)->Kind;
 		}
 		else {
 			throw logic_error("Not implemented yet");
@@ -110,8 +110,8 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* PropertyKind::getParentLocalPrope
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::_resqml2__PropertyKind* propKind = static_cast<gsoap_resqml2_0_1::_resqml2__PropertyKind*>(gsoapProxy2_0_1);
-		return static_cast<gsoap_resqml2_0_1::resqml2__LocalPropertyKind*>(propKind->ParentPropertyKind)->LocalPropertyKind;
+		gsoap_resqml2_0_1::_resqml20__PropertyKind* propKind = static_cast<gsoap_resqml2_0_1::_resqml20__PropertyKind*>(gsoapProxy2_0_1);
+		return static_cast<gsoap_resqml2_0_1::resqml20__LocalPropertyKind*>(propKind->ParentPropertyKind)->LocalPropertyKind;
 	}
 	else {
 		throw logic_error("Not implemented yet");

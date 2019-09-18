@@ -98,7 +98,7 @@ void AbstractProperty::setRepresentation(AbstractRepresentation * rep)
 
 	// XML
 	if (gsoapProxy2_0_1 != nullptr) {
-		static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->SupportingRepresentation = rep->newResqmlReference();
+		static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->SupportingRepresentation = rep->newResqmlReference();
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -113,7 +113,7 @@ AbstractRepresentation* AbstractProperty::getRepresentation() const
 gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractProperty::getRepresentationDor() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->SupportingRepresentation;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->SupportingRepresentation;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -153,43 +153,43 @@ void AbstractProperty::setTimeSeries(TimeSeries * ts)
 
 	// XML
 	if (gsoapProxy2_0_1 != nullptr) {
-		if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECategoricalPropertySeries)
+		if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCORECategoricalPropertySeries)
 		{
-			if (static_cast<gsoap_resqml2_0_1::_resqml2__CategoricalPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices != nullptr) {
-				static_cast<gsoap_resqml2_0_1::_resqml2__CategoricalPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices->TimeSeries = ts->newResqmlReference();
+			if (static_cast<gsoap_resqml2_0_1::_resqml20__CategoricalPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices != nullptr) {
+				static_cast<gsoap_resqml2_0_1::_resqml20__CategoricalPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices->TimeSeries = ts->newResqmlReference();
 			}
 			else {
 				throw invalid_argument("The time series cannot be set on a property without time indices.");
 			}
 		}
-		else if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECommentPropertySeries)
+		else if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCORECommentPropertySeries)
 		{
-			if (static_cast<gsoap_resqml2_0_1::_resqml2__CommentPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices != nullptr)
-				static_cast<gsoap_resqml2_0_1::_resqml2__CommentPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices->TimeSeries = ts->newResqmlReference();
+			if (static_cast<gsoap_resqml2_0_1::_resqml20__CommentPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices != nullptr)
+				static_cast<gsoap_resqml2_0_1::_resqml20__CommentPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices->TimeSeries = ts->newResqmlReference();
 			else {
 				throw invalid_argument("The time series cannot be set on a property without time indices.");
 			}
 		}
-		else if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREContinuousPropertySeries)
+		else if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCOREContinuousPropertySeries)
 		{
-			if (static_cast<gsoap_resqml2_0_1::_resqml2__ContinuousPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices != nullptr)
-				static_cast<gsoap_resqml2_0_1::_resqml2__ContinuousPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices->TimeSeries = ts->newResqmlReference();
+			if (static_cast<gsoap_resqml2_0_1::_resqml20__ContinuousPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices != nullptr)
+				static_cast<gsoap_resqml2_0_1::_resqml20__ContinuousPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices->TimeSeries = ts->newResqmlReference();
 			else {
 				throw invalid_argument("The time series cannot be set on a property without time indices.");
 			}
 		}
-		else if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREDiscretePropertySeries)
+		else if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCOREDiscretePropertySeries)
 		{
-			if (static_cast<gsoap_resqml2_0_1::_resqml2__DiscretePropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices != nullptr)
-				static_cast<gsoap_resqml2_0_1::_resqml2__DiscretePropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices->TimeSeries = ts->newResqmlReference();
+			if (static_cast<gsoap_resqml2_0_1::_resqml20__DiscretePropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices != nullptr)
+				static_cast<gsoap_resqml2_0_1::_resqml20__DiscretePropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices->TimeSeries = ts->newResqmlReference();
 			else {
 				throw invalid_argument("The time series cannot be set on a property without time indices.");
 			}
 		}
 		else
 		{
-			if (static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex) {
-				static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->TimeSeries = ts->newResqmlReference();
+			if (static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex) {
+				static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->TimeSeries = ts->newResqmlReference();
 			}
 			else {
 				throw invalid_argument("The time series cannot be set on a property without time indices.");
@@ -204,25 +204,25 @@ void AbstractProperty::setTimeSeries(TimeSeries * ts)
 gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractProperty::getTimeSeriesDor() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECategoricalPropertySeries) {
-			if (static_cast<gsoap_resqml2_0_1::_resqml2__CategoricalPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices != nullptr)
-				return static_cast<gsoap_resqml2_0_1::_resqml2__CategoricalPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices->TimeSeries;
+		if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCORECategoricalPropertySeries) {
+			if (static_cast<gsoap_resqml2_0_1::_resqml20__CategoricalPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices != nullptr)
+				return static_cast<gsoap_resqml2_0_1::_resqml20__CategoricalPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices->TimeSeries;
 		}
-		else if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECommentPropertySeries) {
-			if (static_cast<gsoap_resqml2_0_1::_resqml2__CommentPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices != nullptr)
-				return static_cast<gsoap_resqml2_0_1::_resqml2__CommentPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices->TimeSeries;
+		else if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCORECommentPropertySeries) {
+			if (static_cast<gsoap_resqml2_0_1::_resqml20__CommentPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices != nullptr)
+				return static_cast<gsoap_resqml2_0_1::_resqml20__CommentPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices->TimeSeries;
 		}
-		else if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREContinuousPropertySeries) {
-			if (static_cast<gsoap_resqml2_0_1::_resqml2__ContinuousPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices != nullptr)
-				return static_cast<gsoap_resqml2_0_1::_resqml2__ContinuousPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices->TimeSeries;
+		else if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCOREContinuousPropertySeries) {
+			if (static_cast<gsoap_resqml2_0_1::_resqml20__ContinuousPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices != nullptr)
+				return static_cast<gsoap_resqml2_0_1::_resqml20__ContinuousPropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices->TimeSeries;
 		}
-		else if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREDiscretePropertySeries) {
-			if (static_cast<gsoap_resqml2_0_1::_resqml2__DiscretePropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices != nullptr)
-				return static_cast<gsoap_resqml2_0_1::_resqml2__DiscretePropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices->TimeSeries;
+		else if (gsoapProxy2_0_1->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCOREDiscretePropertySeries) {
+			if (static_cast<gsoap_resqml2_0_1::_resqml20__DiscretePropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices != nullptr)
+				return static_cast<gsoap_resqml2_0_1::_resqml20__DiscretePropertySeries*>(gsoapProxy2_0_1)->SeriesTimeIndices->TimeSeries;
 		}
 		else {
-			if (static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex)
-				return static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->TimeSeries;
+			if (static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex)
+				return static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->TimeSeries;
 		}
 	}
 	else {
@@ -247,8 +247,8 @@ std::string AbstractProperty::getTimeSeriesTitle() const
 void AbstractProperty::setTimeIndex(const unsigned int & timeIndex, TimeSeries * ts)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex = gsoap_resqml2_0_1::soap_new_resqml2__TimeIndex(gsoapProxy2_0_1->soap, 1);
-		static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->Index = timeIndex;
+		static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex = gsoap_resqml2_0_1::soap_new_resqml20__TimeIndex(gsoapProxy2_0_1->soap, 1);
+		static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->Index = timeIndex;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -260,10 +260,10 @@ void AbstractProperty::setTimeIndex(const unsigned int & timeIndex, TimeSeries *
 void AbstractProperty::setTimeStep(const unsigned int & timeStep)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		if (static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeStep == nullptr) {
-			static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeStep = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(ULONG64)));
+		if (static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeStep == nullptr) {
+			static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeStep = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(ULONG64)));
 		}
-		*(static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeStep) = timeStep;
+		*(static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeStep) = timeStep;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -275,8 +275,8 @@ time_t AbstractProperty::getTimestamp() const
 	TimeSeries* timeSeries = getTimeSeries();
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		if (timeSeries && static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex != nullptr) {
-			return timeSeries->getTimestamp(static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->Index);
+		if (timeSeries && static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex != nullptr) {
+			return timeSeries->getTimestamp(static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->Index);
 		}
 
 		throw invalid_argument("This property does not have any timestamp.");
@@ -290,8 +290,8 @@ unsigned int AbstractProperty::getTimeIndex() const
 	TimeSeries* timeSeries = getTimeSeries();
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		if (timeSeries && static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex != nullptr) {
-			return static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->Index;
+		if (timeSeries && static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex != nullptr) {
+			return static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex->Index;
 		}
 
 		throw invalid_argument("This property does not have any timestamp.");
@@ -303,16 +303,16 @@ unsigned int AbstractProperty::getTimeIndex() const
 unsigned int AbstractProperty::getElementCountPerValue() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->Count;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->Count;
 	}
 
 	throw logic_error("Not implemented yet");
 }
 
-gsoap_resqml2_0_1::resqml2__IndexableElements AbstractProperty::getAttachmentKind() const
+gsoap_resqml2_0_1::resqml20__IndexableElements AbstractProperty::getAttachmentKind() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->IndexableElement;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->IndexableElement;
 	}
 
 	throw logic_error("Not implemented yet");
@@ -348,7 +348,7 @@ RESQML2_NS::PropertySet * AbstractProperty::getPropertySet(unsigned int index) c
 bool AbstractProperty::isAssociatedToOneStandardEnergisticsPropertyKind() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->PropertyKind->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__StandardPropertyKind;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->PropertyKind->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__StandardPropertyKind;
 	}
 
 	throw logic_error("Not implemented yet");
@@ -381,7 +381,7 @@ std::string AbstractProperty::getPropertyKindParentAsString() const
 {
 	if (isAssociatedToOneStandardEnergisticsPropertyKind()) {
 		if (repository->getPropertyKindMapper() != nullptr) {
-			gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind propKindEnum = repository->getPropertyKindMapper()->getPropertyKindParentOfResqmlStandardPropertyKindName(getEnergisticsPropertyKind());
+			gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind propKindEnum = repository->getPropertyKindMapper()->getPropertyKindParentOfResqmlStandardPropertyKindName(getEnergisticsPropertyKind());
 			COMMON_NS::EnumStringMapper tmp;
 			return tmp.getEnergisticsPropertyKindName(propKindEnum);
 		}
@@ -392,13 +392,13 @@ std::string AbstractProperty::getPropertyKindParentAsString() const
 	return getLocalPropertyKind()->getParentAsString();
 }
 
-gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind AbstractProperty::getEnergisticsPropertyKind() const
+gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind AbstractProperty::getEnergisticsPropertyKind() const
 {
 	if (isAssociatedToOneStandardEnergisticsPropertyKind())
 	{
 		if (gsoapProxy2_0_1 != nullptr) {
-			gsoap_resqml2_0_1::resqml2__AbstractProperty* prop = static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1);
-			return static_cast<gsoap_resqml2_0_1::resqml2__StandardPropertyKind*>(prop->PropertyKind)->Kind;
+			gsoap_resqml2_0_1::resqml20__AbstractProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1);
+			return static_cast<gsoap_resqml2_0_1::resqml20__StandardPropertyKind*>(prop->PropertyKind)->Kind;
 		}
 			
 		throw logic_error("Not implemented yet");
@@ -420,9 +420,9 @@ void AbstractProperty::setLocalPropertyKind(PropertyKind* propKind)
 
 	// XML
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml2__LocalPropertyKind* xmlLocalPropKind = gsoap_resqml2_0_1::soap_new_resqml2__LocalPropertyKind(gsoapProxy2_0_1->soap, 1);
+		gsoap_resqml2_0_1::resqml20__LocalPropertyKind* xmlLocalPropKind = gsoap_resqml2_0_1::soap_new_resqml20__LocalPropertyKind(gsoapProxy2_0_1->soap, 1);
 		xmlLocalPropKind->LocalPropertyKind = propKind->newResqmlReference();
-		static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->PropertyKind = xmlLocalPropKind;
+		static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->PropertyKind = xmlLocalPropKind;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -433,8 +433,8 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractProperty::getLocalPropert
 {
 	if (!isAssociatedToOneStandardEnergisticsPropertyKind()) {
 		if (gsoapProxy2_0_1 != nullptr) {
-			gsoap_resqml2_0_1::resqml2__AbstractProperty* prop = static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1);
-			return static_cast<gsoap_resqml2_0_1::resqml2__LocalPropertyKind*>(prop->PropertyKind)->LocalPropertyKind;
+			gsoap_resqml2_0_1::resqml20__AbstractProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1);
+			return static_cast<gsoap_resqml2_0_1::resqml20__LocalPropertyKind*>(prop->PropertyKind)->LocalPropertyKind;
 		}
 		else {
 			throw logic_error("Not implemented yet");
@@ -462,7 +462,7 @@ PropertyKind* AbstractProperty::getLocalPropertyKind() const
 bool AbstractProperty::hasRealizationIndex() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->RealizationIndex != nullptr;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->RealizationIndex != nullptr;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -476,7 +476,7 @@ ULONG64 AbstractProperty::getRealizationIndex() const
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		return *static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1)->RealizationIndex;
+		return *static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->RealizationIndex;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -486,7 +486,7 @@ ULONG64 AbstractProperty::getRealizationIndex() const
 void AbstractProperty::setRealizationIndex(ULONG64 realizationIndex)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml2__AbstractProperty* prop = static_cast<gsoap_resqml2_0_1::resqml2__AbstractProperty*>(gsoapProxy2_0_1);
+		gsoap_resqml2_0_1::resqml20__AbstractProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1);
 		if (prop->RealizationIndex == nullptr) {
 			prop->RealizationIndex = static_cast<ULONG64*>(soap_malloc(prop->soap, sizeof(ULONG64)));
 		}

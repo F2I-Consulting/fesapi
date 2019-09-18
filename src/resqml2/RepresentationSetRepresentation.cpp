@@ -72,7 +72,7 @@ void RepresentationSetRepresentation::getXyzPointsOfPatch(const unsigned int & p
 bool RepresentationSetRepresentation::isHomogeneous() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::_resqml2__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->IsHomogeneous;
+		return static_cast<gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->IsHomogeneous;
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -82,7 +82,7 @@ bool RepresentationSetRepresentation::isHomogeneous() const
 unsigned int RepresentationSetRepresentation::getRepresentationCount() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		const size_t count = static_cast<gsoap_resqml2_0_1::_resqml2__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->Representation.size();
+		const size_t count = static_cast<gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->Representation.size();
 		if (count > (std::numeric_limits<unsigned int>::max)()) {
 			throw range_error("The count is too big.");
 		}
@@ -106,7 +106,7 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* RepresentationSetRepresentation::
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::_resqml2__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->Representation[index];
+		return static_cast<gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->Representation[index];
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -123,7 +123,7 @@ void RepresentationSetRepresentation::pushBack(RESQML2_NS::AbstractRepresentatio
 	getRepository()->addRelationship(this, rep);
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::_resqml2__RepresentationSetRepresentation* rsr = static_cast<gsoap_resqml2_0_1::_resqml2__RepresentationSetRepresentation*>(gsoapProxy2_0_1);
+		gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation* rsr = static_cast<gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation*>(gsoapProxy2_0_1);
 
 		rsr->Representation.push_back(rep->newResqmlReference());
 		if (isHomogeneous() && getRepresentationCount() > 1)

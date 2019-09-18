@@ -33,7 +33,7 @@ WellCompletion::WellCompletion(Well* witsmlWell,
 {
 	if (witsmlWell == nullptr) throw invalid_argument("A well must be associated to a well completion.");
 
-	gsoapProxy2_1 = soap_new_witsml2__WellCompletion(witsmlWell->getGsoapContext(), 1);
+	gsoapProxy2_1 = soap_new_witsml20__WellCompletion(witsmlWell->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -43,7 +43,7 @@ WellCompletion::WellCompletion(Well* witsmlWell,
 
 gsoap_eml2_1::eml21__DataObjectReference* WellCompletion::getWellDor() const
 {
-	return static_cast<witsml2__WellCompletion*>(gsoapProxy2_1)->Well;
+	return static_cast<witsml20__WellCompletion*>(gsoapProxy2_1)->Well;
 }
 
 class Well* WellCompletion::getWell() const
@@ -62,7 +62,7 @@ void WellCompletion::setWell(Well* witsmlWell)
 
 	getRepository()->addRelationship(this, witsmlWell);
 
-	witsml2__WellCompletion* wellCompletion = static_cast<witsml2__WellCompletion*>(gsoapProxy2_1);
+	witsml20__WellCompletion* wellCompletion = static_cast<witsml20__WellCompletion*>(gsoapProxy2_1);
 	wellCompletion->Well = witsmlWell->newEmlReference();
 }
 

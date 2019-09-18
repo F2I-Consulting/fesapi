@@ -36,8 +36,8 @@ void LocalDepth3dCrs::init(COMMON_NS::DataObjectRepository * repo, const std::st
 		throw invalid_argument("The soap context where the local CRS will be instantiated must exist.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORELocalDepth3dCrs(repo->getGsoapContext(), 1);
-	_resqml2__LocalDepth3dCrs* local3dCrs = static_cast<_resqml2__LocalDepth3dCrs*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORELocalDepth3dCrs(repo->getGsoapContext(), 1);
+	_resqml20__LocalDepth3dCrs* local3dCrs = static_cast<_resqml20__LocalDepth3dCrs*>(gsoapProxy2_0_1);
 	local3dCrs->ArealRotation = soap_new_eml20__PlaneAngleMeasure(gsoapProxy2_0_1->soap, 1);
 	local3dCrs->ArealRotation->__item = arealRotation;
 	local3dCrs->ArealRotation->uom = eml20__PlaneAngleUom__rad;
@@ -65,7 +65,7 @@ LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const s
 		throw invalid_argument("An EPSG code cannot be set to 0.");
 	}
 	init(repo, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation, projectedUom, verticalUom, isUpOriented);
-	_resqml2__LocalDepth3dCrs* local3dCrs = static_cast<_resqml2__LocalDepth3dCrs*>(gsoapProxy2_0_1);
+	_resqml20__LocalDepth3dCrs* local3dCrs = static_cast<_resqml20__LocalDepth3dCrs*>(gsoapProxy2_0_1);
 
 	// Projected CRS
 	eml20__ProjectedCrsEpsgCode* projCrs = soap_new_eml20__ProjectedCrsEpsgCode(gsoapProxy2_0_1->soap, 1);
@@ -85,7 +85,7 @@ LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const s
 			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const std::string & verticalUnknownReason, const bool & isUpOriented)
 {
 	init(repo, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation, projectedUom, verticalUom, isUpOriented);
-	_resqml2__LocalDepth3dCrs* local3dCrs = static_cast<_resqml2__LocalDepth3dCrs*>(gsoapProxy2_0_1);
+	_resqml20__LocalDepth3dCrs* local3dCrs = static_cast<_resqml20__LocalDepth3dCrs*>(gsoapProxy2_0_1);
 
 	// Projected CRS
 	eml20__ProjectedUnknownCrs* projCrs = soap_new_eml20__ProjectedUnknownCrs(gsoapProxy2_0_1->soap, 1);
@@ -108,7 +108,7 @@ LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const s
 		throw invalid_argument("An EPSG code cannot be set to 0.");
 	}
 	init(repo, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation, projectedUom, verticalUom, isUpOriented);
-	_resqml2__LocalDepth3dCrs* local3dCrs = static_cast<_resqml2__LocalDepth3dCrs*>(gsoapProxy2_0_1);
+	_resqml20__LocalDepth3dCrs* local3dCrs = static_cast<_resqml20__LocalDepth3dCrs*>(gsoapProxy2_0_1);
 
 	// Projected CRS
 	eml20__ProjectedCrsEpsgCode* projCrs = soap_new_eml20__ProjectedCrsEpsgCode(gsoapProxy2_0_1->soap, 1);
@@ -131,7 +131,7 @@ LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const s
 		throw invalid_argument("An EPSG code cannot be set to 0.");
 	}
 	init(repo, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation, projectedUom, verticalUom, isUpOriented);
-	_resqml2__LocalDepth3dCrs* local3dCrs = static_cast<_resqml2__LocalDepth3dCrs*>(gsoapProxy2_0_1);
+	_resqml20__LocalDepth3dCrs* local3dCrs = static_cast<_resqml20__LocalDepth3dCrs*>(gsoapProxy2_0_1);
 
 	// Projected CRS
 	eml20__ProjectedUnknownCrs* projCrs = soap_new_eml20__ProjectedUnknownCrs(gsoapProxy2_0_1->soap, 1);

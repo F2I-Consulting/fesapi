@@ -41,8 +41,8 @@ void BlockedWellboreRepresentation::init(const std::string & guid, const std::st
 		throw invalid_argument("The wellbore trajectory of a blocked wellbore cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREBlockedWellboreRepresentation(traj->getGsoapContext(), 1);
-	_resqml2__BlockedWellboreRepresentation* frame = static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREBlockedWellboreRepresentation(traj->getGsoapContext(), 1);
+	_resqml20__BlockedWellboreRepresentation* frame = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -82,14 +82,14 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int * gridIndic
 		throw invalid_argument("The local Face Per Cell Indices cannot be null.");
 	}
 
-	_resqml2__BlockedWellboreRepresentation* rep = static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
+	_resqml20__BlockedWellboreRepresentation* rep = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 	rep->CellCount = cellCount;
 
 	getRepository()->addRelationship(this, hdfProxy);
 
 	// gridIndices
 	// XML
-	resqml2__IntegerHdf5Array* xmlGridIndices = soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array* xmlGridIndices = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
 	xmlGridIndices->NullValue = gridIndicesNullValue;
 	xmlGridIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
 	xmlGridIndices->Values->HdfProxy = hdfProxy->newResqmlReference();
@@ -105,7 +105,7 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int * gridIndic
 
 	// cellIndices
 	// XML
-	resqml2__IntegerHdf5Array* xmlCellIndices = soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array* xmlCellIndices = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
 	xmlCellIndices->NullValue = -1;
 	xmlCellIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
 	xmlCellIndices->Values->HdfProxy = hdfProxy->newResqmlReference();
@@ -121,7 +121,7 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int * gridIndic
 
 	// localFacePairPerCellIndices
 	// XML
-	resqml2__IntegerHdf5Array* xmlLocalFacePairPerCellIndices = soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array* xmlLocalFacePairPerCellIndices = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
 	xmlLocalFacePairPerCellIndices->NullValue = localFacePairPerCellIndicesNullValue;
 	xmlLocalFacePairPerCellIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
 	xmlLocalFacePairPerCellIndices->Values->HdfProxy = hdfProxy->newResqmlReference();
@@ -138,23 +138,23 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int * gridIndic
 
 ULONG64 BlockedWellboreRepresentation::getCellCount() const
 {
-	return static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->CellCount;
+	return static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->CellCount;
 }
 
 unsigned int BlockedWellboreRepresentation::getGridIndices(unsigned int * gridIndices) const
 {
-	_resqml2__BlockedWellboreRepresentation* rep = static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
+	_resqml20__BlockedWellboreRepresentation* rep = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 
-	if (rep->GridIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-		gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<resqml2__IntegerHdf5Array*>(rep->GridIndices)->Values;
+	if (rep->GridIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+		gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->GridIndices)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 		hdfProxy->readArrayNdOfUIntValues(dataset->PathInHdfFile, gridIndices);
-		return static_cast<resqml2__IntegerHdf5Array*>(rep->GridIndices)->NullValue;
+		return static_cast<resqml20__IntegerHdf5Array*>(rep->GridIndices)->NullValue;
 	}
-	else if (rep->GridIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray) {
+	else if (rep->GridIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray) {
 		const unsigned int intervalCount = getMdValuesCount() - 1;
 		for (unsigned int i = 0; i < intervalCount; ++i) {
-			gridIndices[i] = static_cast<resqml2__IntegerConstantArray*>(rep->GridIndices)->Value;
+			gridIndices[i] = static_cast<resqml20__IntegerConstantArray*>(rep->GridIndices)->Value;
 		}
 	}
 	else {
@@ -174,12 +174,12 @@ void BlockedWellboreRepresentation::pushBackSupportingGridRepresentation(RESQML2
 	getRepository()->addRelationship(this, supportingGridRep);
 
 	// XML
-	static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->Grid.push_back(supportingGridRep->newResqmlReference());
+	static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->Grid.push_back(supportingGridRep->newResqmlReference());
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* BlockedWellboreRepresentation::getSupportingGridRepresentationDor(unsigned int index) const
 {
-	_resqml2__BlockedWellboreRepresentation* rep = static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
+	_resqml20__BlockedWellboreRepresentation* rep = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 
 	if (index >= rep->Grid.size()) {
 		throw range_error("The requested index is out of range of the available supporting grid representations.");
@@ -196,7 +196,7 @@ void BlockedWellboreRepresentation::loadTargetRelationships()
 {
 	WellboreFrameRepresentation::loadTargetRelationships();
 
-	_resqml2__BlockedWellboreRepresentation* rep = static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
+	_resqml20__BlockedWellboreRepresentation* rep = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 
 	// Supporting grid representation
 	for (size_t i = 0; i < rep->Grid.size(); ++i) {
@@ -216,7 +216,7 @@ void BlockedWellboreRepresentation::loadTargetRelationships()
 
 unsigned int BlockedWellboreRepresentation::getSupportingGridRepresentationCount() const
 {
-	return static_cast<_resqml2__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->Grid.size();
+	return static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->Grid.size();
 }
 
 RESQML2_NS::AbstractGridRepresentation* BlockedWellboreRepresentation::getSupportingGridRepresentation(unsigned int index) const

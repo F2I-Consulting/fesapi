@@ -48,7 +48,7 @@ namespace RESQML2_0_1_NS
 		*/
 		Activity(RESQML2_NS::ActivityTemplate* activityTemplate, const std::string & guid, const std::string & title);
 
-		Activity(gsoap_resqml2_0_1::_resqml2__Activity* fromGsoap) : RESQML2_NS::Activity(fromGsoap) {}
+		Activity(gsoap_resqml2_0_1::_resqml20__Activity* fromGsoap) : RESQML2_NS::Activity(fromGsoap) {}
 		virtual ~Activity() {}
 
 		/**
@@ -56,7 +56,7 @@ namespace RESQML2_0_1_NS
 		* This parameter must exist in the associated activity template.
 		*/
 		DLL_IMPORT_OR_EXPORT void pushBackParameter(const std::string title,
-			const double & value, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom = gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc);
+			const double & value, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom = gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc);
 
 		/**
 		* Push back a string parameter in the instance.
@@ -95,8 +95,8 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT bool isAFloatingPointQuantityParameter(const unsigned int & index) const;
 		DLL_IMPORT_OR_EXPORT std::vector<double> getFloatingPointQuantityParameterValue(const std::string & paramTitle) const;
 		DLL_IMPORT_OR_EXPORT double getFloatingPointQuantityParameterValue(const unsigned int & index) const;
-		DLL_IMPORT_OR_EXPORT std::vector<gsoap_resqml2_0_1::resqml2__ResqmlUom> getFloatingPointQuantityParameterUom(const std::string & paramTitle) const;
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__ResqmlUom getFloatingPointQuantityParameterUom(const unsigned int & index) const;
+		DLL_IMPORT_OR_EXPORT std::vector<gsoap_resqml2_0_1::resqml20__ResqmlUom> getFloatingPointQuantityParameterUom(const std::string & paramTitle) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlUom getFloatingPointQuantityParameterUom(const unsigned int & index) const;
 
 		DLL_IMPORT_OR_EXPORT bool isAnIntegerQuantityParameter(const std::string & paramTitle) const;
 		DLL_IMPORT_OR_EXPORT bool isAnIntegerQuantityParameter(const unsigned int & index) const;
@@ -120,9 +120,9 @@ namespace RESQML2_0_1_NS
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getActivityTemplateDor() const;
 
-		DLL_IMPORT_OR_EXPORT std::string getResqmlVersion() const;
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespaceVersion() const;
 
 	private:
-		std::vector<gsoap_resqml2_0_1::resqml2__AbstractActivityParameter*> getParameterFromTitle(const std::string & paramTitle) const;
+		std::vector<gsoap_resqml2_0_1::resqml20__AbstractActivityParameter*> getParameterFromTitle(const std::string & paramTitle) const;
 	};
 }

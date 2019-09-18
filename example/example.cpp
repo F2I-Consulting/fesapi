@@ -159,7 +159,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHd
 	wellbore1Interp1 = pck->createWellboreInterpretation(wellbore1, "", "Wellbore1 Interp1", false);
 
 	// Representation
-	RESQML2_NS::MdDatum* mdInfo = pck->createMdDatum("", "md Info", local3dCrs, gsoap_resqml2_0_1::resqml2__MdReference__mean_x0020sea_x0020level, 275, 75, 0);
+	RESQML2_NS::MdDatum* mdInfo = pck->createMdDatum("", "md Info", local3dCrs, gsoap_resqml2_0_1::resqml20__MdReference__mean_x0020sea_x0020level, 275, 75, 0);
 
 	//Geometry	
 	w1i1TrajRep = pck->createWellboreTrajectoryRepresentation(wellbore1Interp1, "", "Wellbore1 Interp1 TrajRep", mdInfo);
@@ -176,10 +176,10 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHd
 	WellboreFrameRepresentation* w1i1RegularFrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
 	w1i1RegularFrameRep->setMdValues(0, 200, 6);
 
-	RESQML2_NS::PropertyKind * unitNumberPropType = pck->createPropertyKind("", "Unit number", "urn:resqml:F2I.com:testingAPI", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__discrete);
+	RESQML2_NS::PropertyKind * unitNumberPropType = pck->createPropertyKind("", "Unit number", "urn:resqml:F2I.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__discrete);
 
 	DiscreteProperty* discreteProp = pck->createDiscreteProperty(w1i1FrameRep, "61c2917c-2334-4205-824e-d4f4a0cf6d8e", "Wellbore1 Interp1 FrameRep IntervalIndex", 1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__intervals, unitNumberPropType);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__intervals, unitNumberPropType);
 	char unitNumbers[5] = { 0, 1, 2, 3, 4 };
 	discreteProp->pushBackCharHdf5Array1dOfValues(unitNumbers, 5, hdfProxy, -1);
 }
@@ -196,21 +196,21 @@ void serializePerforations(COMMON_NS::DataObjectRepository * pck)
 	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980);
 	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 2000);
 	wellboreCompletion->pushBackPerforationHistory(0);
-	wellboreCompletion->setPerforationHistoryStatus(0, 0, gsoap_eml2_1::witsml2__PerforationStatus__open);
+	wellboreCompletion->setPerforationHistoryStatus(0, 0, gsoap_eml2_1::witsml20__PerforationStatus__open);
 	wellboreCompletion->setPerforationHistoryTopMd(0, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970);
 	wellboreCompletion->setPerforationHistoryBaseMd(0, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1980);
 	wellboreCompletion->setPerforationHistoryStartDate(0, 0, 407568645);
 	wellboreCompletion->setPerforationHistoryEndDate(0, 0, 1514764800);
 	wellboreCompletion->pushBackPerforationHistory(0);
-	wellboreCompletion->setPerforationHistoryStatus(1, 0, gsoap_eml2_1::witsml2__PerforationStatus__squeezed);
+	wellboreCompletion->setPerforationHistoryStatus(1, 0, gsoap_eml2_1::witsml20__PerforationStatus__squeezed);
 	wellboreCompletion->setPerforationHistoryTopMd(1, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970);
 	wellboreCompletion->setPerforationHistoryBaseMd(1, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1980);
 	wellboreCompletion->setPerforationHistoryStartDate(1, 0, 1514764800);
 	wellboreCompletion->pushBackPerforationHistory(1);
-	wellboreCompletion->setPerforationHistoryStatus(0, 1, gsoap_eml2_1::witsml2__PerforationStatus__open);
+	wellboreCompletion->setPerforationHistoryStatus(0, 1, gsoap_eml2_1::witsml20__PerforationStatus__open);
 	wellboreCompletion->setPerforationHistoryStartDate(0, 1, 410104800);
 	wellboreCompletion->pushBackPerforationHistory(1);
-	wellboreCompletion->setPerforationHistoryStatus(1, 1, gsoap_eml2_1::witsml2__PerforationStatus__squeezed);
+	wellboreCompletion->setPerforationHistoryStatus(1, 1, gsoap_eml2_1::witsml20__PerforationStatus__squeezed);
 	wellboreCompletion->setPerforationHistoryStartDate(1, 1, 1514764800);
 }
 
@@ -264,7 +264,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, CO
 	// creating a new discrete property of type propType1 without associating it to a discrete color map.
 	// Thus, its associated discrete color map remains the one associated to propType1
 	DiscreteProperty* discreteProp2 = repo->createDiscreteProperty(ijkgrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex", 1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, propType1);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, propType1);
 	unsigned short prop2Values[2] = { 0, 1 };
 	discreteProp2->pushBackUShortHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, -1);
 
@@ -284,7 +284,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, CO
 		1., 1.);
 
 	contColMapContProp = repo->createContinuousProperty(contColMapGrid2dRep, "c2be50b6-08d2-461b-81a4-73dbb04ba605", "Continuous property for continuous color map", 2,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__nodes, "continuousColorMapIndex", gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__continuous);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__nodes, "continuousColorMapIndex", gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__continuous);
 	double* values = new double[numPointInFastestDirection * numPointsInSlowestDirection];
 	for (size_t slowestIndex = 0; slowestIndex < numPointsInSlowestDirection; ++slowestIndex) {
 		for (size_t fastestIndex = 0; fastestIndex < numPointInFastestDirection; ++fastestIndex) {
@@ -294,7 +294,7 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, CO
 	contColMapContProp->pushBackDoubleHdf5Array2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 	delete[] values;
 
-	RESQML2_2_NS::ContinuousColorMap* contColMap = repo->createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", gsoap_eml2_2::resqml2__InterpolationDomain__rgb, gsoap_eml2_2::resqml2__InterpolationMethod__linear);
+	RESQML2_2_NS::ContinuousColorMap* contColMap = repo->createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", gsoap_eml2_2::resqml22__InterpolationDomain__rgb, gsoap_eml2_2::resqml22__InterpolationMethod__linear);
 	unsigned int contColMapRgbColors[6] = { 0, 255, 0, 255, 0, 0 };
 	vector<string> contColMapColTitles = { "green", "red" };
 	double contColMapAlphas[2] = { 1., 1. };
@@ -337,16 +337,16 @@ void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * pck, COMMON_N
 	stratiColumnRank1->pushBackStratiUnitInterpretation(stratiUnitB1Interp);
 	stratiColumnRank1->pushBackStratiUnitInterpretation(stratiUnitB2Interp);
 	minimalStratiColumnRank->pushBackStratiUnitInterpretation(stratiUnitB1Interp);
-	stratiColumnRank0->pushBackStratigraphicBinaryContact(stratiUnitAInterp, gsoap_resqml2_0_1::resqml2__ContactMode__proportional, stratiUnitBInterp, gsoap_resqml2_0_1::resqml2__ContactMode__proportional, horizon2Interp1);
+	stratiColumnRank0->pushBackStratigraphicBinaryContact(stratiUnitAInterp, gsoap_resqml2_0_1::resqml20__ContactMode__proportional, stratiUnitBInterp, gsoap_resqml2_0_1::resqml20__ContactMode__proportional, horizon2Interp1);
 
 	// WellboreFeature marker frame
 	if (wellbore1Interp1 != nullptr) {
 		WellboreMarkerFrameRepresentation* wmf = pck->createWellboreMarkerFrameRepresentation(wellbore1Interp1, "657d5e6b-1752-425d-b3e7-237037fa11eb", "Wellbore Marker Frame", w1i1TrajRep);
 		double markerMdValues[2] = { 350, 550 };
 		wmf->setMdValues(markerMdValues, 2, hdfProxy);
-		WellboreMarker* marker0 = new WellboreMarker(wmf, "624f9f17-6797-4d78-b3fc-9ca2c8174bcd", "", gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__horizon);
+		WellboreMarker* marker0 = new WellboreMarker(wmf, "624f9f17-6797-4d78-b3fc-9ca2c8174bcd", "", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
 		marker0->setBoundaryFeatureInterpretation(horizon1Interp1);
-		WellboreMarker* marker1 = new WellboreMarker(wmf, "3611725e-4d9b-4d3e-87e6-58fcd238f5a8", "testing Fault", gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__fault);
+		WellboreMarker* marker1 = new WellboreMarker(wmf, "3611725e-4d9b-4d3e-87e6-58fcd238f5a8", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
 		marker1->setBoundaryFeatureInterpretation(fault1Interp1);
 	}
 
@@ -559,15 +559,15 @@ void serializeBoundaries(COMMON_NS::DataObjectRepository * pck, COMMON_NS::Abstr
 	//**************
 	// Properties
 	//**************
-	propType1 = pck->createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__continuous);
+	propType1 = pck->createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__continuous);
 	ContinuousProperty* contProp1 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 2,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__nodes, "exoticMeter", propType1);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__nodes, "exoticMeter", propType1);
 	double prop1Values[16] = { 301, 302, 301, 302, 351, 352, 351, 352, 301, 302, 301, 302, 351, 352, 351, 352 };
 	contProp1->pushBackDoubleHdf5Array2dOfValues(prop1Values, 2, 8, hdfProxy);
 
-	RESQML2_NS::PropertyKind * propType2 = pck->createPropertyKind("7372f8f6-b1fd-4263-b9a8-699d9cbf7da6", "propType2", "urn:resqml:f2i.com:testingAPI", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, propType1);
+	RESQML2_NS::PropertyKind * propType2 = pck->createPropertyKind("7372f8f6-b1fd-4263-b9a8-699d9cbf7da6", "propType2", "urn:resqml:f2i.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, propType1);
 	ContinuousProperty* contProp2 = pck->createContinuousProperty(h1i1SingleGrid2dRep, "d3efb337-19f8-4b91-8b4f-3698afe17f01", "Horizon1 Interp1 Grid2dRep Prop2", 1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__nodes, gsoap_resqml2_0_1::resqml2__ResqmlUom__ft, propType2);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__nodes, gsoap_resqml2_0_1::resqml20__ResqmlUom__ft, propType2);
 	double prop2Values[8] = { 302, 302, 352, 352, 302, 302, 352, 352 };
 	contProp2->pushBackDoubleHdf5Array1dOfValues(prop2Values, 8, hdfProxy);
 #endif
@@ -582,7 +582,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	IjkGridExplicitRepresentation* singleCellIjkgrid = pck->createIjkGridExplicitRepresentation("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b", "One unfaulted sugar cube", 1, 1, 1);
 	double singleCellIjkgridNodes[24] = { 0, 0, 300, 700, 0, 350, 0, 150, 300, 700, 150, 350,
 		0, 0, 500, 700, 0, 550, 0, 150, 500, 700, 150, 550 };
-	singleCellIjkgrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, singleCellIjkgridNodes, hdfProxy);
+	singleCellIjkgrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape__vertical, gsoap_resqml2_0_1::resqml20__KDirection__down, false, singleCellIjkgridNodes, hdfProxy);
 
 	// TWO SUGARS EXPLICIT
 	ijkgrid = pck->createIjkGridExplicitRepresentation(earthModelInterp, "df2103a0-fa3d-11e5-b8d4-0002a5d5c51b", "Two faulted sugar cubes (explicit geometry)", 2, 1, 1);
@@ -591,7 +591,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	unsigned int pillarOfCoordinateLine[2] = { 1, 4 };
 	unsigned int splitCoordinateLineColumnCumulativeCount[2] = { 1, 2 };
 	unsigned int splitCoordinateLineColumns[2] = { 1, 1 };
-	ijkgrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodes, hdfProxy,
+	ijkgrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape__vertical, gsoap_resqml2_0_1::resqml20__KDirection__down, false, nodes, hdfProxy,
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// FOUR SUGARS PARAMETRIC
@@ -622,13 +622,13 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		1000, 400, nan, nan, nan, nan,
 		nan, 600, nan, nan, nan, nan };
 	short pillarKind[6] = { 1, 4, 0, 0, 0, 0 };
-	ijkgridParametricNotSameLineKind->setGeometryAsParametricSplittedPillarNodes(gsoap_resqml2_0_1::resqml2__PillarShape__straight, false, parameters, controlPointsNotSameLineKind, controlPointParametersNotSameLineKind, 3, pillarKind, hdfProxy,
+	ijkgridParametricNotSameLineKind->setGeometryAsParametricSplittedPillarNodes(gsoap_resqml2_0_1::resqml20__PillarShape__straight, false, parameters, controlPointsNotSameLineKind, controlPointParametersNotSameLineKind, 3, pillarKind, hdfProxy,
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// FOUR SUGARS PARAMETRIC different line kind an one cubic pillar : A copy
 	IjkGridParametricRepresentation* ijkgridParametricNotSameLineKindCopy = pck->createIjkGridParametricRepresentation("46efd88c-87e1-4e00-bbdd-4c7bcc941749", "Copy of Four faulted sugar cubes with one cubic pillar", 2, 1, 2);
 	const std::string hdfDatasetPrefix = "/RESQML/" + ijkgridParametricNotSameLineKind->getUuid();
-	ijkgridParametricNotSameLineKindCopy->setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(gsoap_resqml2_0_1::resqml2__PillarShape__straight, gsoap_resqml2_0_1::resqml2__KDirection__down, false,
+	ijkgridParametricNotSameLineKindCopy->setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(gsoap_resqml2_0_1::resqml20__PillarShape__straight, gsoap_resqml2_0_1::resqml20__KDirection__down, false,
 		hdfDatasetPrefix + "/PointParameters", hdfDatasetPrefix + "/ControlPoints", hdfDatasetPrefix + "/controlPointParameters", 3, hdfDatasetPrefix + "/LineKindIndices", hdfDatasetPrefix + "/PillarGeometryIsDefined", hdfProxy,
 		2, hdfDatasetPrefix + "/PillarIndices",
 		hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + CUMULATIVE_LENGTH_DS_NAME, hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + ELEMENTS_DS_NAME);
@@ -655,7 +655,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	unsigned int pillarOfCoordinateLine432[4] = { 2, 7, 12, 17 };
 	unsigned int splitCoordinateLineColumnCumulativeCount432[4] = { 1, 3, 5, 6 };
 	unsigned int splitCoordinateLineColumns432[6] = { 2, 2, 6, 6, 10, 10 };
-	ijkgrid432->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodes432, hdfProxy,
+	ijkgrid432->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape__vertical, gsoap_resqml2_0_1::resqml20__KDirection__down, false, nodes432, hdfProxy,
 		4, pillarOfCoordinateLine432, splitCoordinateLineColumnCumulativeCount432, splitCoordinateLineColumns432);
 
 
@@ -681,7 +681,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	unsigned int pillarOfCoordinateLine432rh[4] = { 17, 12, 7, 2 };
 	unsigned int splitCoordinateLineColumnCumulativeCount432rh[4] = { 1, 3, 5, 6 };
 	unsigned int splitCoordinateLineColumns432rh[6] = { 10, 10, 6, 6, 2, 2 };
-	ijkgrid432rh->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, true, nodes432rh, hdfProxy,
+	ijkgrid432rh->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape__vertical, gsoap_resqml2_0_1::resqml20__KDirection__down, true, nodes432rh, hdfProxy,
 		4, pillarOfCoordinateLine432rh, splitCoordinateLineColumnCumulativeCount432rh, splitCoordinateLineColumns432rh);
 	unsigned char enabledCells32rh[24] = {
 		0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
@@ -697,7 +697,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		RESQML2_NS::SubRepresentation * faultSubRep = pck->createSubRepresentation(fault1Interp1, "ff248280-fa3d-11e5-a35c-0002a5d5c51b", "Fault Subrep In Grid");
 		faultSubRep->pushBackSupportingRepresentation(ijkgrid);
 		ULONG64 faultPillar[2] = { 1, 4 };
-		faultSubRep->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml2__IndexableElements__pillars, 2, faultPillar, hdfProxy);
+		faultSubRep->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements__pillars, 2, faultPillar, hdfProxy);
 	}
 
 	RESQML2_NS::SubRepresentation * actnum = pck->createSubRepresentation("323001d0-468c-41d7-abec-7d12c3c9428b", "ACTNUM");
@@ -706,7 +706,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22
 	};
-	actnum->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml2__IndexableElements__cells, 21, actnumValues, hdfProxy);
+	actnum->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements__cells, 21, actnumValues, hdfProxy);
 
 	// Double grid subrep
 	RESQML2_NS::SubRepresentation * doubleGridSubrep = pck->createSubRepresentation("f6d23b9c-e45d-4638-9601-ae3b682129a0", "TEST MULTI GRIDS SUBREP");
@@ -722,7 +722,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 	};
-	doubleGridSubrep->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml2__IndexableElements__cells, 23, doubleGridSubrepValues, hdfProxy, doubleGridSubrepSupportingRepIndices);
+	doubleGridSubrep->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements__cells, 23, doubleGridSubrepValues, hdfProxy, doubleGridSubrepSupportingRepIndices);
 
 	//**************
 	// Grid Connection
@@ -769,22 +769,22 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	//**************
 	// Properties
 	//**************
-	propType1 = pck->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__discrete);
+	propType1 = pck->createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__discrete);
 	discreteProp1 = pck->createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, propType1);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, propType1);
 	unsigned short prop1Values[2] = { 0, 1 };
 	discreteProp1->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
 	DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(ijkgrid, "", "Two faulted sugar cubes other cellIndex", 1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, propType1);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, propType1);
 	unsigned short prop2Values[2] = { 10, 11 };
 	discreteProp2->pushBackUShortHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
 
-	RESQML2_NS::PropertySet* propSet = pck->createPropertySet("", "Testing property set", false, true,gsoap_resqml2_0_1::resqml2__TimeSetKind__not_x0020a_x0020time_x0020set);
+	RESQML2_NS::PropertySet* propSet = pck->createPropertySet("", "Testing property set", false, true,gsoap_resqml2_0_1::resqml20__TimeSetKind__not_x0020a_x0020time_x0020set);
 	propSet->pushBackProperty(discreteProp1);
 	propSet->pushBackProperty(discreteProp2);
 
 	DiscreteProperty* discreteProp1OnIjkgridParametric = pck->createDiscreteProperty(ijkgridParametric, "eb3dbf6c-5745-4e41-9d09-672f6fbab414", "Four sugar cubes cellIndex", 1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, propType1);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, propType1);
 	unsigned short prop1ValuesOnIjkgridParametric[4] = { 0, 1, 2, 3 };
 	discreteProp1OnIjkgridParametric->pushBackUShortHdf5Array3dOfValues(prop1ValuesOnIjkgridParametric, 2, 1, 2, hdfProxy, 1111, 0, 3);
 	//Move this prop to another same ninjnk ijk grid
@@ -807,17 +807,17 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	timeSeries->pushBackTimestamp(1409753895);
 	timeSeries->pushBackTimestamp(1441289895);
 	ContinuousProperty* continuousPropTime0 = pck->createContinuousProperty(ijkgrid, "18027a00-fa3e-11e5-8255-0002a5d5c51b", "Time Series Property", 1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, gsoap_resqml2_0_1::resqml2__ResqmlUom__m, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	continuousPropTime0->setTimeIndex(0, timeSeries);
 	double valuesTime0[2] = { 0, 1 };
 	continuousPropTime0->pushBackDoubleHdf5Array3dOfValues(valuesTime0, 2, 1, 1, hdfProxy);
 	ContinuousProperty* continuousPropTime1 = pck->createContinuousProperty(ijkgrid, "1ba54340-fa3e-11e5-9534-0002a5d5c51b", "Time Series Property", 1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, gsoap_resqml2_0_1::resqml2__ResqmlUom__m, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	continuousPropTime1->setTimeIndex(1, timeSeries);
 	double valuesTime1[2] = { 2, 3 };
 	continuousPropTime1->pushBackDoubleHdf5Array3dOfValues(valuesTime1, 2, 1, 1, hdfProxy);
 	ContinuousProperty* continuousPropTime2 = pck->createContinuousProperty(ijkgrid, "203db720-fa3e-11e5-bf9d-0002a5d5c51b", "Time Series Property ", 1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, gsoap_resqml2_0_1::resqml2__ResqmlUom__m, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	continuousPropTime2->setTimeIndex(2, timeSeries);
 	double valuesTime2[2] = { 3, 4 };
 	continuousPropTime2->pushBackDoubleHdf5Array3dOfValues(valuesTime2, 2, 1, 1, hdfProxy);
@@ -826,9 +826,9 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		ijkgrid,
 		"2648f4e0-fa3e-11e5-ab1c-0002a5d5c51b", "Testing continuous property series",
 		1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells,
-		gsoap_resqml2_0_1::resqml2__ResqmlUom__m,
-		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length,
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
+		gsoap_resqml2_0_1::resqml20__ResqmlUom__m,
+		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length,
 		timeSeries);
 	double valuesTime[6] = { 0, 1, 2, 3, 3, 4 };
 	continuousPropertySeries->pushBackDoubleHdf5Array1dOfValues(valuesTime, 6, hdfProxy);
@@ -853,7 +853,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	// Partial transfer
 	UnstructuredGridRepresentation* partialGrid = pck->createPartialUnstructuredGridRepresentation("", "Partial Grid");
 	ContinuousProperty* continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "Testing partial property", 1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, gsoap_resqml2_0_1::resqml2__ResqmlUom__m, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	double continuousProp1Values[6] = { 0, 1, 2, 3, 4, 5 };
 	continuousProp1->pushBackDoubleHdf5Array1dOfValues(continuousProp1Values, 6, hdfProxy);
 
@@ -861,7 +861,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	RESQML2_NS::SubRepresentation * subRepOfUnstructuredGrid = pck->createSubRepresentation("", "Subrep On Partial grid");
 	subRepOfUnstructuredGrid->pushBackSupportingRepresentation(partialGrid);
 	ULONG64 nodeIndex[2] = { 0, 1 };
-	subRepOfUnstructuredGrid->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml2__IndexableElements__nodes, 2, nodeIndex, hdfProxy);
+	subRepOfUnstructuredGrid->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements__nodes, 2, nodeIndex, hdfProxy);
 
 	// Tetra grid
 	UnstructuredGridRepresentation* tetraGrid = pck->createUnstructuredGridRepresentation("9283cd33-5e52-4110-b7b1-616abde2b303", "One tetrahedron grid", 1);
@@ -933,115 +933,115 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	// Binary contact interpretation
 
 	// Contact 0: fault1Interp1 HANGING_WALL_SIDE SPLITS horizon1Interp1 BOTH_SIDES
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020genetic_x0020boundary, fault1Interp1, gsoap_resqml2_0_1::resqml2__ContactSide__hanging_x0020wall,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__splits,
-		horizon1Interp1, gsoap_resqml2_0_1::resqml2__ContactSide__both);
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020genetic_x0020boundary, fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__hanging_x0020wall,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__splits,
+		horizon1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__both);
 	// Contact 1: fault1Interp1 FOOT_WALL_SIDE SPLITS horizon1Interp1 BOTH_SIDES
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020genetic_x0020boundary, fault1Interp1, gsoap_resqml2_0_1::resqml2__ContactSide__footwall,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__splits,
-		horizon1Interp1, gsoap_resqml2_0_1::resqml2__ContactSide__both);
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020genetic_x0020boundary, fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__footwall,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__splits,
+		horizon1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__both);
 	// Contact 2: fault1Interp1 HANGING_WALL_SIDE SPLITS horizon2Interp1 BOTH_SIDES
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020genetic_x0020boundary, fault1Interp1, gsoap_resqml2_0_1::resqml2__ContactSide__hanging_x0020wall,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__splits,
-		horizon2Interp1, gsoap_resqml2_0_1::resqml2__ContactSide__both);
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020genetic_x0020boundary, fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__hanging_x0020wall,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__splits,
+		horizon2Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__both);
 	// Contact 3: fault1Interp1 FOOT_WALL_SIDE SPLITS horizon2Interp1 BOTH_SIDES
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020genetic_x0020boundary, fault1Interp1, gsoap_resqml2_0_1::resqml2__ContactSide__footwall,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__splits,
-		horizon2Interp1, gsoap_resqml2_0_1::resqml2__ContactSide__both);
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020genetic_x0020boundary, fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__footwall,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__splits,
+		horizon2Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__both);
 
 	// Contact 4: horizon1Interp1 STOPS AT yMinusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		yMinusFrontierInterp);
 	// Contact 5: fault1Interp1 STOPS AT yMinusFrontierInterp (part above horizon1Interp1)
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		yMinusFrontierInterp);
 	// Contact 6: horizon2Interp1 STOPS AT yMinusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		yMinusFrontierInterp);
 
 	// Contact 7: horizon1Interp1 STOPS AT yPlusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		yPlusFrontierInterp);
 	// Contact 8: fault1Interp1 STOPS AT yPlusFrontierInterp (part above horizon1Interp1)
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		yPlusFrontierInterp);
 	// Contact 9: horizon2Interp1 STOPS AT yPlusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		yPlusFrontierInterp);
 
 	// Contact 10: horizon1Interp1 STOPS AT xMinusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		xMinusFrontierInterp);
 	// Contact 11: horizon2Interp1 STOPS AT xMinusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		xMinusFrontierInterp);
 	// Contact 12: xMinusFrontierInterp STOPS AT yMinusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__frontier_x0020feature_x0020to_x0020frontier_x0020feature, xMinusFrontierInterp,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__frontier_x0020feature_x0020to_x0020frontier_x0020feature, xMinusFrontierInterp,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		yMinusFrontierInterp);
 	// Contact 13: xMinusFrontierInterp STOPS AT yPlusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__frontier_x0020feature_x0020to_x0020frontier_x0020feature, xMinusFrontierInterp,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__frontier_x0020feature_x0020to_x0020frontier_x0020feature, xMinusFrontierInterp,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		yPlusFrontierInterp);
 
 	// Contact 14: fault1Interp1 STOPS AT yMinusFrontierInterp (part below horizon1Interp1)
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		yMinusFrontierInterp);
 	// Contact 15: fault1Interp1 STOPS AT yPlusFrontierInterp (part above horizon1Interp1)
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		yPlusFrontierInterp);
 
 	// Contact 16: horizon1Interp1 STOPS AT yMinusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		yMinusFrontierInterp);
 	// Contact 17: fault1Interp1 STOPS AT yMinusFrontierInterp (part below horizon2Interp1)
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		yMinusFrontierInterp);
 	// Contact 18: horizon2Interp1 STOPS AT yMinusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		yMinusFrontierInterp);
 
 	// Contact 19: horizon1Interp1 STOPS AT yPlusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		yPlusFrontierInterp);
 	// Contact 20: fault1Interp1 STOPS AT yPlusFrontierInterp (part below horizon2Interp1)
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		yPlusFrontierInterp);
 	// Contact 21: horizon2Interp1 STOPS AT yPlusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		yPlusFrontierInterp);
 
 	// Contact 22: horizon1Interp1 STOPS AT xPlusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		xPlusFrontierInterp);
 	// Contact 23: horizon2Interp1 STOPS AT xPlusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		xPlusFrontierInterp);
 	// Contact 24: xPlusFrontierInterp STOPS AT yMinusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__frontier_x0020feature_x0020to_x0020frontier_x0020feature, xPlusFrontierInterp,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__frontier_x0020feature_x0020to_x0020frontier_x0020feature, xPlusFrontierInterp,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		yMinusFrontierInterp);
 	// Contact 25: xPlusFrontierInterp STOPS AT yPlusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml2__ContactRelationship__frontier_x0020feature_x0020to_x0020frontier_x0020feature, xPlusFrontierInterp,
-		gsoap_resqml2_0_1::resqml2__ContactVerb__stops_x0020at,
+	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__frontier_x0020feature_x0020to_x0020frontier_x0020feature, xPlusFrontierInterp,
+		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
 		yPlusFrontierInterp);
 
 	// =========================================================================
@@ -1109,7 +1109,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	//	2, 2, 2
 	//};
 	//sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
-	singlePatchFault1SealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	singlePatchFault1SealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 
 	// Contact 0 Patch 0
 	int indexSetContact0Patch0[3] = { 3, 4, 5 };
@@ -1137,7 +1137,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 
 	// Contact 1
 	//sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
-	singlePatchFault1SealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	singlePatchFault1SealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 
 	// Contact 1 Patch 0
 	int indexSetContact1Patch0[3] = { 6, 7, 8 };
@@ -1165,7 +1165,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 
 	// Contact 2
 	//sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
-	singlePatchFault1SealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	singlePatchFault1SealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 
 	// Contact 2 Patch 0
 	int indexSetContact2Patch0[3] = { 9, 10, 11 };
@@ -1193,7 +1193,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 
 	// Contact 3
 	//sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
-	singlePatchFault1SealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	singlePatchFault1SealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 
 	// Contact 3 Patch 0
 	int indexSetContact3Patch0[3] = { 12, 13, 14 };
@@ -1230,7 +1230,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	//        2,2,2
 	//    };
 	//sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 
 	// Contact 0 Patch 0
 	//int * indexSetContact0Patch0 = new int[3];
@@ -1267,7 +1267,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 
 	// Contact 1
 	//sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 
 	// Contact 1 Patch 0
 	//int * indexSetContact1Patch0 = new int[3];
@@ -1304,7 +1304,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 
 	// Contact 2
 	//sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 
 	// Contact 2 Patch 0
 	//int * indexSetContact2Patch0 = new int[3];
@@ -1341,7 +1341,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 
 	// Contact 3
 	//sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml__IdentityKind__COLOCATION, 3, 3, contactIdenticalNodes, hdfProxy);
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 
 	// Contact 3 Patch 0
 	//int * indexSetContact3Patch0 = new int[3];
@@ -1377,14 +1377,14 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 		f1i1triRep, hdfProxy);
 
 	// Contact 4: horizon1Interp1 STOPS AT yMinusFrontierInterp
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	int twoIndicesContact[2] = { 3, 0 };
 	sealedSurfaceFramework->pushBackContactPatch(4, twoIndicesContact, 2, h1i1triRep, hdfProxy);
 	twoIndicesContact[0] = 0;
 	twoIndicesContact[1] = 1;
 	sealedSurfaceFramework->pushBackContactPatch(4, twoIndicesContact, 2, yMinusFrontierRep, hdfProxy);
 	// Contact 5: fault1Interp1 STOPS AT yMinusFrontierInterp (part above horizon1Interp1)
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	twoIndicesContact[0] = 6;
 	twoIndicesContact[1] = 9;
 	sealedSurfaceFramework->pushBackContactPatch(5, twoIndicesContact, 2, f1i1triRep, hdfProxy);
@@ -1392,7 +1392,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	twoIndicesContact[1] = 3;
 	sealedSurfaceFramework->pushBackContactPatch(5, twoIndicesContact, 2, yMinusFrontierRep, hdfProxy);
 	// Contact 6: horizon2Interp1 STOPS AT yMinusFrontierInterp
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	twoIndicesContact[0] = 3;
 	twoIndicesContact[1] = 0;
 	sealedSurfaceFramework->pushBackContactPatch(6, twoIndicesContact, 2, h2i1triRep, hdfProxy);
@@ -1401,7 +1401,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	sealedSurfaceFramework->pushBackContactPatch(6, twoIndicesContact, 2, yMinusFrontierRep, hdfProxy);
 
 	// Contact 7: horizon1Interp1 STOPS AT yPlusFrontierInterp
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	twoIndicesContact[0] = 4;
 	twoIndicesContact[1] = 2;
 	sealedSurfaceFramework->pushBackContactPatch(7, twoIndicesContact, 2, h1i1triRep, hdfProxy);
@@ -1409,7 +1409,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	twoIndicesContact[1] = 1;
 	sealedSurfaceFramework->pushBackContactPatch(7, twoIndicesContact, 2, yPlusFrontierRep, hdfProxy);
 	// Contact 8: fault1Interp1 STOPS AT yPlusFrontierInterp (part above horizon1Interp1)
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	twoIndicesContact[0] = 8;
 	twoIndicesContact[1] = 11;
 	sealedSurfaceFramework->pushBackContactPatch(8, twoIndicesContact, 2, f1i1triRep, hdfProxy);
@@ -1417,7 +1417,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	twoIndicesContact[1] = 3;
 	sealedSurfaceFramework->pushBackContactPatch(8, twoIndicesContact, 2, yPlusFrontierRep, hdfProxy);
 	// Contact 9: horizon2Interp1 STOPS AT yPlusFrontierInterp
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	twoIndicesContact[0] = 4;
 	twoIndicesContact[1] = 2;
 	sealedSurfaceFramework->pushBackContactPatch(9, twoIndicesContact, 2, h2i1triRep, hdfProxy);
@@ -1426,7 +1426,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	sealedSurfaceFramework->pushBackContactPatch(9, twoIndicesContact, 2, yPlusFrontierRep, hdfProxy);
 
 	// Contact 10: horizon1Interp1 STOPS AT xMinusFrontierInterp
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	twoIndicesContact[0] = 3;
 	twoIndicesContact[1] = 4;
 	sealedSurfaceFramework->pushBackContactPatch(10, twoIndicesContact, 2, h1i1triRep, hdfProxy);
@@ -1434,7 +1434,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	twoIndicesContact[1] = 1;
 	sealedSurfaceFramework->pushBackContactPatch(10, twoIndicesContact, 2, xMinusFrontierRep, hdfProxy);
 	// Contact 11: horizon2Interp1 STOPS AT xMinusFrontierInterp
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	twoIndicesContact[0] = 3;
 	twoIndicesContact[1] = 4;
 	sealedSurfaceFramework->pushBackContactPatch(11, twoIndicesContact, 2, h2i1triRep, hdfProxy);
@@ -1442,7 +1442,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	twoIndicesContact[1] = 5;
 	sealedSurfaceFramework->pushBackContactPatch(11, twoIndicesContact, 2, xMinusFrontierRep, hdfProxy);
 	// Contact 12: xMinusFrontierInterp STOPS AT yMinusFrontierInterp
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	int threeIndicesContact[3] = { 0,2,4 };
 	sealedSurfaceFramework->pushBackContactPatch(12, threeIndicesContact, 2, yMinusFrontierRep, hdfProxy);
 	threeIndicesContact[0] = 0;
@@ -1450,7 +1450,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	threeIndicesContact[2] = 4;
 	sealedSurfaceFramework->pushBackContactPatch(12, threeIndicesContact, 2, xMinusFrontierRep, hdfProxy);
 	// Contact 13: xMinusFrontierInterp STOPS AT yPlusFrontierInterp
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	threeIndicesContact[0] = 0;
 	threeIndicesContact[1] = 2;
 	threeIndicesContact[2] = 4;
@@ -1461,7 +1461,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	sealedSurfaceFramework->pushBackContactPatch(13, threeIndicesContact, 2, xMinusFrontierRep, hdfProxy);
 
 	// Contact 14: fault1Interp1 STOPS AT yMinusFrontierInterp (part below horizon1Interp1)
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	twoIndicesContact[0] = 12;
 	twoIndicesContact[1] = 15;
 	sealedSurfaceFramework->pushBackContactPatch(14, twoIndicesContact, 2, f1i1triRep, hdfProxy);
@@ -1472,7 +1472,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	twoIndicesContact[1] = 8;
 	sealedSurfaceFramework->pushBackContactPatch(14, twoIndicesContact, 2, yMinusFrontierRep, hdfProxy);
 	// Contact 15: fault1Interp1 STOPS AT yPlusFrontierInterp (part above horizon1Interp1)
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	twoIndicesContact[0] = 14;
 	twoIndicesContact[1] = 17;
 	sealedSurfaceFramework->pushBackContactPatch(15, twoIndicesContact, 2, f1i1triRep, hdfProxy);
@@ -1484,7 +1484,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	sealedSurfaceFramework->pushBackContactPatch(15, twoIndicesContact, 2, yPlusFrontierRep, hdfProxy);
 
 	// Contact 16: horizon1Interp1 STOPS AT yMinusFrontierInterp
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	twoIndicesContact[0] = 5;
 	twoIndicesContact[1] = 8;
 	sealedSurfaceFramework->pushBackContactPatch(16, twoIndicesContact, 2, h1i1triRep, hdfProxy);
@@ -1492,7 +1492,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	twoIndicesContact[1] = 7;
 	sealedSurfaceFramework->pushBackContactPatch(16, twoIndicesContact, 2, yMinusFrontierRep, hdfProxy);
 	// Contact 17: fault1Interp1 STOPS AT yMinusFrontierInterp (part below horizon2Interp1)
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	twoIndicesContact[0] = 18;
 	twoIndicesContact[1] = 21;
 	sealedSurfaceFramework->pushBackContactPatch(17, twoIndicesContact, 2, f1i1triRep, hdfProxy);
@@ -1500,7 +1500,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	twoIndicesContact[1] = 10;
 	sealedSurfaceFramework->pushBackContactPatch(17, twoIndicesContact, 2, yMinusFrontierRep, hdfProxy);
 	// Contact 18: horizon2Interp1 STOPS AT yMinusFrontierInterp
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	twoIndicesContact[0] = 5;
 	twoIndicesContact[1] = 8;
 	sealedSurfaceFramework->pushBackContactPatch(18, twoIndicesContact, 2, h2i1triRep, hdfProxy);
@@ -1509,7 +1509,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	sealedSurfaceFramework->pushBackContactPatch(18, twoIndicesContact, 2, yMinusFrontierRep, hdfProxy);
 
 	// Contact 19: horizon1Interp1 STOPS AT yPlusFrontierInterp
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	twoIndicesContact[0] = 7;
 	twoIndicesContact[1] = 9;
 	sealedSurfaceFramework->pushBackContactPatch(19, twoIndicesContact, 2, h1i1triRep, hdfProxy);
@@ -1517,7 +1517,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	twoIndicesContact[1] = 7;
 	sealedSurfaceFramework->pushBackContactPatch(19, twoIndicesContact, 2, yPlusFrontierRep, hdfProxy);
 	// Contact 20: fault1Interp1 STOPS AT yPlusFrontierInterp (part below horizon2Interp1)
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	twoIndicesContact[0] = 20;
 	twoIndicesContact[1] = 23;
 	sealedSurfaceFramework->pushBackContactPatch(20, twoIndicesContact, 2, f1i1triRep, hdfProxy);
@@ -1525,7 +1525,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	twoIndicesContact[1] = 10;
 	sealedSurfaceFramework->pushBackContactPatch(20, twoIndicesContact, 2, yPlusFrontierRep, hdfProxy);
 	// Contact 21: horizon2Interp1 STOPS AT yPlusFrontierInterp
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	twoIndicesContact[0] = 7;
 	twoIndicesContact[1] = 9;
 	sealedSurfaceFramework->pushBackContactPatch(21, twoIndicesContact, 2, h2i1triRep, hdfProxy);
@@ -1534,7 +1534,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	sealedSurfaceFramework->pushBackContactPatch(21, twoIndicesContact, 2, yPlusFrontierRep, hdfProxy);
 
 	// Contact 22: horizon1Interp1 STOPS AT xPlusFrontierInterp
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	twoIndicesContact[0] = 8;
 	twoIndicesContact[1] = 9;
 	sealedSurfaceFramework->pushBackContactPatch(22, twoIndicesContact, 2, h1i1triRep, hdfProxy);
@@ -1542,7 +1542,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	twoIndicesContact[1] = 1;
 	sealedSurfaceFramework->pushBackContactPatch(22, twoIndicesContact, 2, xPlusFrontierRep, hdfProxy);
 	// Contact 23: horizon2Interp1 STOPS AT xPlusFrontierInterp
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	twoIndicesContact[0] = 8;
 	twoIndicesContact[1] = 9;
 	sealedSurfaceFramework->pushBackContactPatch(23, twoIndicesContact, 2, h2i1triRep, hdfProxy);
@@ -1550,7 +1550,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	twoIndicesContact[1] = 5;
 	sealedSurfaceFramework->pushBackContactPatch(23, twoIndicesContact, 2, xPlusFrontierRep, hdfProxy);
 	// Contact 24: xPlusFrontierInterp STOPS AT yMinusFrontierInterp
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	threeIndicesContact[0] = 7;
 	threeIndicesContact[1] = 9;
 	threeIndicesContact[2] = 11;
@@ -1560,7 +1560,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	threeIndicesContact[2] = 4;
 	sealedSurfaceFramework->pushBackContactPatch(24, threeIndicesContact, 2, xPlusFrontierRep, hdfProxy);
 	// Contact 25: xPlusFrontierInterp STOPS AT yPlusFrontierInterp
-	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml2__IdentityKind__colocation);
+	sealedSurfaceFramework->pushBackContact(gsoap_resqml2_0_1::resqml20__IdentityKind__colocation);
 	threeIndicesContact[0] = 7;
 	threeIndicesContact[1] = 9;
 	threeIndicesContact[2] = 11;
@@ -1590,7 +1590,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	//            2, contact_0_1_contactRepresentations,
 	//            3, contact_0_1_IdenticalNodes, hdfProxy);
 	singlePatchFault1SealedSurfaceFramework->pushBackContactIdentity(
-		gsoap_resqml2_0_1::resqml2__IdentityKind__previous_x0020colocation,
+		gsoap_resqml2_0_1::resqml20__IdentityKind__previous_x0020colocation,
 		2, contact_0_1_contactRepresentations,
 		hdfProxy);
 
@@ -1607,7 +1607,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	//            2, contact_2_3_contactRepresentations,
 	//            3, contact_2_3_IdenticalNodes, hdfProxy);
 	singlePatchFault1SealedSurfaceFramework->pushBackContactIdentity(
-		gsoap_resqml2_0_1::resqml2__IdentityKind__previous_x0020colocation,
+		gsoap_resqml2_0_1::resqml20__IdentityKind__previous_x0020colocation,
 		2, contact_2_3_contactRepresentations,
 		hdfProxy);
 
@@ -1629,7 +1629,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	//            2, contact_0_1_contactRepresentations,
 	//            3, contact_0_1_IdenticalNodes, hdfProxy);
 	sealedSurfaceFramework->pushBackContactIdentity(
-		gsoap_resqml2_0_1::resqml2__IdentityKind__previous_x0020colocation,
+		gsoap_resqml2_0_1::resqml20__IdentityKind__previous_x0020colocation,
 		2, contact_0_1_contactRepresentations,
 		hdfProxy);
 
@@ -1648,7 +1648,7 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	//            2, contact_2_3_contactRepresentations,
 	//            3, contact_2_3_IdenticalNodes, hdfProxy);
 	sealedSurfaceFramework->pushBackContactIdentity(
-		gsoap_resqml2_0_1::resqml2__IdentityKind__previous_x0020colocation,
+		gsoap_resqml2_0_1::resqml20__IdentityKind__previous_x0020colocation,
 		2, contact_2_3_contactRepresentations,
 		hdfProxy);
 }
@@ -1690,7 +1690,7 @@ void serializeActivities(COMMON_NS::DataObjectRepository * epcDoc)
 
 void serializeFluidBoundary(COMMON_NS::DataObjectRepository & pck, COMMON_NS::AbstractHdfProxy*)
 {
-	FluidBoundaryFeature* fluidBoundary = pck.createFluidBoundaryFeature("44a4d87c-3c67-4f98-a314-9d91c4147061", "Fluid boundary", gsoap_resqml2_0_1::resqml2__FluidContact__gas_x0020oil_x0020contact);
+	FluidBoundaryFeature* fluidBoundary = pck.createFluidBoundaryFeature("44a4d87c-3c67-4f98-a314-9d91c4147061", "Fluid boundary", gsoap_resqml2_0_1::resqml20__FluidContact__gas_x0020oil_x0020contact);
 	GenericFeatureInterpretation* interp = pck.createGenericFeatureInterpretation(fluidBoundary, "d06df5e4-3c56-4abd-836f-2abb5e58e13b", "Fluid boundary interp");
 	PlaneSetRepresentation* rep = pck.createPlaneSetRepresentation(interp, "4df87ed5-ea4d-4a00-99a2-828a56c9dd02", "Fluid boundary PlaneSetRep");
 	rep->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
@@ -1699,19 +1699,19 @@ void serializeFluidBoundary(COMMON_NS::DataObjectRepository & pck, COMMON_NS::Ab
 void serializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck, COMMON_NS::AbstractHdfProxy*)
 {
 	//Top Boundary
-	FluidBoundaryFeature* fluidBoundaryTop = pck.createFluidBoundaryFeature("cd400fa2-4c8b-11e9-be79-3f8079258eaa", "Fluid boundary top", gsoap_resqml2_0_1::resqml2__FluidContact__gas_x0020oil_x0020contact);
+	FluidBoundaryFeature* fluidBoundaryTop = pck.createFluidBoundaryFeature("cd400fa2-4c8b-11e9-be79-3f8079258eaa", "Fluid boundary top", gsoap_resqml2_0_1::resqml20__FluidContact__gas_x0020oil_x0020contact);
 	GenericFeatureInterpretation* interpTop = pck.createGenericFeatureInterpretation(fluidBoundaryTop, "0ab8f2f4-4c96-11e9-999e-c3449b44fef5", "Fluid boundary top interp");
 	PlaneSetRepresentation* repTop = pck.createPlaneSetRepresentation(interpTop, "ae1d618c-4c96-11e9-8f12-cf7f4da2a08d", "Fluid boundary top PlaneSetRep");
 	repTop->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
 
 	//Bottom Boundary
-	FluidBoundaryFeature* fluidBoundaryBottom = pck.createFluidBoundaryFeature("d332b298-4c8b-11e9-80d8-c760b2e2530d", "Fluid boundary bottom", gsoap_resqml2_0_1::resqml2__FluidContact__gas_x0020oil_x0020contact);
+	FluidBoundaryFeature* fluidBoundaryBottom = pck.createFluidBoundaryFeature("d332b298-4c8b-11e9-80d8-c760b2e2530d", "Fluid boundary bottom", gsoap_resqml2_0_1::resqml20__FluidContact__gas_x0020oil_x0020contact);
 	GenericFeatureInterpretation* interpBottom = pck.createGenericFeatureInterpretation(fluidBoundaryBottom, "1371efae-4c96-11e9-bcdd-37d8112fd19e", "Fluid boundary bottom interp");
 	PlaneSetRepresentation* repBottom = pck.createPlaneSetRepresentation(interpBottom, "b54cc3b2-4c96-11e9-b33d-ef2c41476266", "Fluid boundary bottom PlaneSetRep");
 	repBottom->pushBackTiltedPlaneGeometryPatch(100, 100, 400, 200, 200, 410, 150, 150, 450);
 
 	// Unit construction
-	RockFluidUnitFeature* rockFluidFeature = pck.createRockFluidUnit("18a714da-4bf2-11e9-a17e-e74cb7f87d2a", "Rock Fluid Unit", gsoap_resqml2_0_1::resqml2__Phase__oil_x0020column, fluidBoundaryTop, fluidBoundaryBottom);
+	RockFluidUnitFeature* rockFluidFeature = pck.createRockFluidUnit("18a714da-4bf2-11e9-a17e-e74cb7f87d2a", "Rock Fluid Unit", gsoap_resqml2_0_1::resqml20__Phase__oil_x0020column, fluidBoundaryTop, fluidBoundaryBottom);
 	RockFluidUnitInterpretation *rockFluidUnit = pck.createRockFluidUnitInterpretation(rockFluidFeature, "4b73172a-4bf1-11e9-a9f6-9b2813cc56e1", "Rock Fluid Unit interp");
 
 	// Feature
@@ -1731,10 +1731,10 @@ void deserializePropertyKindMappingFiles(COMMON_NS::DataObjectRepository * pck)
 {
 	PropertyKindMapper* ptMapper = pck->getPropertyKindMapper();
 
-	cout << "Application property kind name for azimuth : " << ptMapper->getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__azimuth, "Petrel") << endl;
-	cout << "Application property kind name for azimuth : " << ptMapper->getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__gamma_x0020ray_x0020API_x0020unit, "Petrel") << endl;
-	cout << "Application property kind name for azimuth : " << ptMapper->getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__gamma_x0020ray_x0020API_x0020unit, "Sismage") << endl;
-	cout << "Application property kind name for dip : " << ptMapper->getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__dip, "myApplication") << endl;
+	cout << "Application property kind name for azimuth : " << ptMapper->getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__azimuth, "Petrel") << endl;
+	cout << "Application property kind name for azimuth : " << ptMapper->getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__gamma_x0020ray_x0020API_x0020unit, "Petrel") << endl;
+	cout << "Application property kind name for azimuth : " << ptMapper->getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__gamma_x0020ray_x0020API_x0020unit, "Sismage") << endl;
+	cout << "Application property kind name for dip : " << ptMapper->getApplicationPropertyKindNameFromResqmlStandardPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__dip, "myApplication") << endl;
 
 	cout << "Standard property for Petrel \"Dip Azimuth\" : " << ptMapper->getResqmlStandardPropertyKindNameFromApplicationPropertyKindName("Dip Azimuth", "Petrel") << endl;
 	cout << "Standard property for Application property Absolute temperature : " << ptMapper->getResqmlStandardPropertyKindNameFromApplicationPropertyKindName("Absolute temperature", "myApplication") << endl;
@@ -3792,14 +3792,14 @@ void deserialize(const string & inputFile)
 		if (ijkGrid->getGeometryKind() != AbstractIjkGridRepresentation::NO_GEOMETRY)
 		{
 			std::cout << "Most complex pillar geometry is ";
-			gsoap_resqml2_0_1::resqml2__PillarShape mostcomplexPillarGeom = ijkGrid->getMostComplexPillarGeometry();
-			if (mostcomplexPillarGeom == gsoap_resqml2_0_1::resqml2__PillarShape__vertical) {
+			gsoap_resqml2_0_1::resqml20__PillarShape mostcomplexPillarGeom = ijkGrid->getMostComplexPillarGeometry();
+			if (mostcomplexPillarGeom == gsoap_resqml2_0_1::resqml20__PillarShape__vertical) {
 				std::cout << "vertical";
 			}
-			else if (mostcomplexPillarGeom == gsoap_resqml2_0_1::resqml2__PillarShape__straight) {
+			else if (mostcomplexPillarGeom == gsoap_resqml2_0_1::resqml20__PillarShape__straight) {
 				std::cout << "straight";
 			}
-			else if (mostcomplexPillarGeom == gsoap_resqml2_0_1::resqml2__PillarShape__curved) {
+			else if (mostcomplexPillarGeom == gsoap_resqml2_0_1::resqml20__PillarShape__curved) {
 				std::cout << "curved";
 			}
 			std::cout << std::endl;

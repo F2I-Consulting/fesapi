@@ -28,7 +28,7 @@ namespace RESQML2_2_NS
 		/**
 		 * @param colorIndex	index of a color in the color map. It is cast to unsigned int in the case of a discrete color map 
 		 */
-		virtual gsoap_eml2_2::resqml2__HsvColor* getColor(double colorIndex) const = 0;
+		virtual gsoap_eml2_2::resqml22__HsvColor* getColor(double colorIndex) const = 0;
 
 	protected:
 		/**
@@ -39,8 +39,8 @@ namespace RESQML2_2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractColorMap(gsoap_eml2_2::resqml2__DiscreteColorMap* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-		AbstractColorMap(gsoap_eml2_2::resqml2__ContinuousColorMap* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		AbstractColorMap(gsoap_eml2_2::resqml22__DiscreteColorMap* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		AbstractColorMap(gsoap_eml2_2::resqml22__ContinuousColorMap* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		* Default constructor

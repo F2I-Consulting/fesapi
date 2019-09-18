@@ -37,16 +37,16 @@ namespace RESQML2_NS
 		* @param	 forceConstantCellCountPerInterval	If true, will assume that the child and parent cell count per interval are constant. Then it will use constant xml array instead of hdf5 array for storage.
 		*												The method will consequently only consider the first cell count per interval value in childCellCountPerInterval and parentCellCountPerInterval as the constant ones.
 		**/
-		gsoap_resqml2_0_1::resqml2__Regrid* createRegrid(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount, double * childCellWeights,
+		gsoap_resqml2_0_1::resqml20__Regrid* createRegrid(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount, double * childCellWeights,
 			const std::string & dimension, COMMON_NS::AbstractHdfProxy * proxy, bool forceConstantCellCountPerInterval = false);
 
 		/*
 		* @param	dimension					It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
 		* @param	childVsParentCellCount		If true return the child cell count per interval. If false return the parent cell count per interval.
 		*/
-		gsoap_resqml2_0_1::resqml2__AbstractIntegerArray* getCellCountPerInterval2_0_1(const char & dimension, const bool & childVsParentCellCount) const;
+		gsoap_resqml2_0_1::resqml20__AbstractIntegerArray* getCellCountPerInterval2_0_1(const char & dimension, const bool & childVsParentCellCount) const;
 
-		gsoap_resqml2_0_1::resqml2__AbstractParentWindow* getParentWindow2_0_1() const;
+		gsoap_resqml2_0_1::resqml20__AbstractParentWindow* getParentWindow2_0_1() const;
 
 	protected:
 
@@ -63,7 +63,7 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractGridRepresentation(gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation* fromGsoap, bool withTruncatedPillars) : AbstractRepresentation(fromGsoap), withTruncatedPillars(withTruncatedPillars) {}
+		AbstractGridRepresentation(gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation* fromGsoap, bool withTruncatedPillars) : AbstractRepresentation(fromGsoap), withTruncatedPillars(withTruncatedPillars) {}
 
 	public:
 

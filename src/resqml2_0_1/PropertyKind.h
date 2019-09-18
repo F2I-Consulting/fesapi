@@ -45,7 +45,7 @@ namespace RESQML2_0_1_NS
 		* @param parentEnergisticsPropertyKind	The name of the parent property type in the Energistics property dictionary.
 		*/
 		PropertyKind(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & parentEnergisticsPropertyKind);
+			const std::string & namingSystem, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & parentEnergisticsPropertyKind);
 
 		/**
 		* Creates a local property type which uses a standard uom and which derives from another local property type.
@@ -56,7 +56,7 @@ namespace RESQML2_0_1_NS
 		* @param parentPropType					The local parent property type in the EPC document.
 		*/
 		PropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, RESQML2_NS::PropertyKind * parentPropType);
+			const std::string & namingSystem, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, RESQML2_NS::PropertyKind * parentPropType);
 
 		/**
 		* Creates a local property type which uses a non standard uom and which derives from a standard Energistics property type.
@@ -68,7 +68,7 @@ namespace RESQML2_0_1_NS
 		* @param parentEnergisticsPropertyKind	The name of the parent property type in the Energistics property dictionary.
 		*/
 		PropertyKind(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const std::string & nonStandardUom, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & parentEnergisticsPropertyKind);
+			const std::string & namingSystem, const std::string & nonStandardUom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & parentEnergisticsPropertyKind);
 
 		/**
 		* Creates a local property type which uses a non standard uom which derives from another local property type.
@@ -84,14 +84,14 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		PropertyKind(gsoap_resqml2_0_1::_resqml2__PropertyKind* fromGsoap) :RESQML2_NS::PropertyKind(fromGsoap) {}
+		PropertyKind(gsoap_resqml2_0_1::_resqml20__PropertyKind* fromGsoap) :RESQML2_NS::PropertyKind(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~PropertyKind() {}
 
-		DLL_IMPORT_OR_EXPORT bool isChildOf(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind standardPropKind) const;
+		DLL_IMPORT_OR_EXPORT bool isChildOf(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind standardPropKind) const;
 
 		DLL_IMPORT_OR_EXPORT bool isAbstract() const;
 
@@ -100,7 +100,7 @@ namespace RESQML2_0_1_NS
 	protected:
 		void setXmlParentPropertyKind(RESQML2_NS::PropertyKind* parentPropertyKind);
 		
-		gsoap_resqml2_0_1::_resqml2__PropertyKind* getSpecializedGsoapProxy() const;
+		gsoap_resqml2_0_1::_resqml20__PropertyKind* getSpecializedGsoapProxy() const;
 
 		friend RESQML2_0_1_NS::PropertyKind* PropertyKindMapper::addResqmlLocalPropertyKindToEpcDocumentFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application);
 	};

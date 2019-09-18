@@ -53,7 +53,7 @@ namespace WITSML2_0_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		Wellbore(gsoap_eml2_1::witsml2__Wellbore* fromGsoap):AbstractObject(fromGsoap) {}
+		Wellbore(gsoap_eml2_1::witsml20__Wellbore* fromGsoap):AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -70,7 +70,7 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT std::vector<WellboreCompletion *> getWellboreCompletions() const;
 		DLL_IMPORT_OR_EXPORT std::vector<Trajectory *> getTrajectories() const;
 
-		DLL_IMPORT_OR_EXPORT void setShape(gsoap_eml2_1::witsml2__WellboreShape shape);
+		DLL_IMPORT_OR_EXPORT void setShape(gsoap_eml2_1::witsml20__WellboreShape shape);
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}

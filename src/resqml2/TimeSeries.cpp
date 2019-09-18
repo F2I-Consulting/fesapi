@@ -37,9 +37,9 @@ void TimeSeries::pushBackTimestamp(time_t timestamp)
 void TimeSeries::pushBackTimestamp(const tm & timestamp)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml2__Timestamp* ts = gsoap_resqml2_0_1::soap_new_resqml2__Timestamp(gsoapProxy2_0_1->soap, 1);
+		gsoap_resqml2_0_1::resqml20__Timestamp* ts = gsoap_resqml2_0_1::soap_new_resqml20__Timestamp(gsoapProxy2_0_1->soap, 1);
 		ts->DateTime = timestamp;
-		static_cast<gsoap_resqml2_0_1::_resqml2__TimeSeries*>(gsoapProxy2_0_1)->Time.push_back(ts);
+		static_cast<gsoap_resqml2_0_1::_resqml20__TimeSeries*>(gsoapProxy2_0_1)->Time.push_back(ts);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -49,7 +49,7 @@ void TimeSeries::pushBackTimestamp(const tm & timestamp)
 unsigned int TimeSeries::getTimestampIndex(time_t timestamp) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::_resqml2__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml2__TimeSeries*>(gsoapProxy2_0_1);
+		gsoap_resqml2_0_1::_resqml20__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml20__TimeSeries*>(gsoapProxy2_0_1);
 
 		for (size_t result = 0; result < timeSeries->Time.size(); ++result) {
 			if (timeTools::timegm(&timeSeries->Time[result]->DateTime) == timestamp) {
@@ -67,7 +67,7 @@ unsigned int TimeSeries::getTimestampIndex(time_t timestamp) const
 unsigned int TimeSeries::getTimestampIndex(const tm & timestamp) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::_resqml2__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml2__TimeSeries*>(gsoapProxy2_0_1);
+		gsoap_resqml2_0_1::_resqml20__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml20__TimeSeries*>(gsoapProxy2_0_1);
 
 		for (size_t result = 0; result < timeSeries->Time.size(); ++result) {
 			// Very basic equality check between two tm
@@ -91,7 +91,7 @@ unsigned int TimeSeries::getTimestampIndex(const tm & timestamp) const
 unsigned int TimeSeries::getTimestampCount() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::_resqml2__TimeSeries*>(gsoapProxy2_0_1)->Time.size();
+		return static_cast<gsoap_resqml2_0_1::_resqml20__TimeSeries*>(gsoapProxy2_0_1)->Time.size();
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -107,7 +107,7 @@ time_t TimeSeries::getTimestamp(unsigned int index) const
 tm TimeSeries::getTimestampAsTimeStructure(unsigned int index) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::_resqml2__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml2__TimeSeries*>(gsoapProxy2_0_1);
+		gsoap_resqml2_0_1::_resqml20__TimeSeries* timeSeries = static_cast<gsoap_resqml2_0_1::_resqml20__TimeSeries*>(gsoapProxy2_0_1);
 
 		if (timeSeries->Time.size() > index) {
 			return timeSeries->Time[index]->DateTime;

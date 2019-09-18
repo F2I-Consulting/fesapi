@@ -47,7 +47,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		StringTableLookup(gsoap_resqml2_0_1::_resqml2__StringTableLookup* fromGsoap) : AbstractObject(fromGsoap) {}
+		StringTableLookup(gsoap_resqml2_0_1::_resqml20__StringTableLookup* fromGsoap) : AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

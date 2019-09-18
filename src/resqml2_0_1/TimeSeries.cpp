@@ -32,7 +32,7 @@ TimeSeries::TimeSeries(COMMON_NS::DataObjectRepository* repo, const string & gui
 		throw invalid_argument("The repo cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORETimeSeries(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORETimeSeries(repo->getGsoapContext(), 1);
 	
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -40,10 +40,10 @@ TimeSeries::TimeSeries(COMMON_NS::DataObjectRepository* repo, const string & gui
 	repo->addOrReplaceDataObject(this);
 }
 
-_resqml2__TimeSeries* TimeSeries::getSpecializedGsoapProxy() const
+_resqml20__TimeSeries* TimeSeries::getSpecializedGsoapProxy() const
 {
 	if (isPartial() == true)
 		throw logic_error("Partial object");
 
-	return static_cast<_resqml2__TimeSeries*>(gsoapProxy2_0_1);
+	return static_cast<_resqml20__TimeSeries*>(gsoapProxy2_0_1);
 }

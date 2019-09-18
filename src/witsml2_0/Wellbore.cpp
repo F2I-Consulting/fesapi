@@ -31,7 +31,7 @@ Wellbore::Wellbore( Well* witsmlWell, const std::string & guid, const std::strin
 {
 	if (witsmlWell == nullptr) throw invalid_argument("A wellbore must be associated to a well.");
 
-	gsoapProxy2_1 = soap_new_witsml2__Wellbore(witsmlWell->getGsoapContext(), 1);
+	gsoapProxy2_1 = soap_new_witsml20__Wellbore(witsmlWell->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -50,12 +50,12 @@ Wellbore::Wellbore(
 {
 	if (witsmlWell == nullptr) throw invalid_argument("A wellbore must be associated to a well.");
 
-	gsoapProxy2_1 = soap_new_witsml2__Wellbore(witsmlWell->getGsoapContext(), 1);
+	gsoapProxy2_1 = soap_new_witsml20__Wellbore(witsmlWell->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	witsml2__Wellbore* wellbore = static_cast<witsml2__Wellbore*>(gsoapProxy2_1);
+	witsml20__Wellbore* wellbore = static_cast<witsml20__Wellbore*>(gsoapProxy2_1);
 
 	wellbore->StatusWellbore = (eml21__WellStatus *)soap_malloc(wellbore->soap, sizeof(eml21__WellStatus));
 	*wellbore->StatusWellbore = statusWellbore;
@@ -71,7 +71,7 @@ Wellbore::Wellbore(
 
 gsoap_eml2_1::eml21__DataObjectReference* Wellbore::getWellDor() const
 {
-	return static_cast<witsml2__Wellbore*>(gsoapProxy2_1)->Well;
+	return static_cast<witsml20__Wellbore*>(gsoapProxy2_1)->Well;
 }
 
 class Well* Wellbore::getWell() const
@@ -91,16 +91,16 @@ void Wellbore::setWell(Well* witsmlWell)
 
 	getRepository()->addRelationship(this, witsmlWell);
 
-	witsml2__Wellbore* wellbore = static_cast<witsml2__Wellbore*>(gsoapProxy2_1);
+	witsml20__Wellbore* wellbore = static_cast<witsml20__Wellbore*>(gsoapProxy2_1);
 	wellbore->Well = witsmlWell->newEmlReference();
 }
 
-void Wellbore::setShape(witsml2__WellboreShape shape)
+void Wellbore::setShape(witsml20__WellboreShape shape)
 {
-	witsml2__Wellbore* wellbore = static_cast<witsml2__Wellbore*>(gsoapProxy2_1);
+	witsml20__Wellbore* wellbore = static_cast<witsml20__Wellbore*>(gsoapProxy2_1);
 
 	if (wellbore->Shape == nullptr) {
-		wellbore->Shape = soap_new_witsml2__WellboreShape(gsoapProxy2_1->soap, 1);
+		wellbore->Shape = soap_new_witsml20__WellboreShape(gsoapProxy2_1->soap, 1);
 	}
 	*wellbore->Shape = shape;
 }

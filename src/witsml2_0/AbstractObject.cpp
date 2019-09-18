@@ -23,7 +23,7 @@ using namespace WITSML2_0_NS;
 
 std::string AbstractObject::getXmlNamespace() const
 {
-	return "witsml2";
+	return "witsml20";
 }
 
 string AbstractObject::getContentType() const

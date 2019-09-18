@@ -38,14 +38,14 @@ using namespace gsoap_resqml2_0_1;
 const char* DiscreteProperty::XML_TAG = "DiscreteProperty";
 
 DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const resqml2__ResqmlPropertyKind & energisticsPropertyKind)
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const resqml20__ResqmlPropertyKind & energisticsPropertyKind)
 {
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREDiscreteProperty(rep->getGsoapContext(), 1);	
-	_resqml2__DiscreteProperty* prop = static_cast<_resqml2__DiscreteProperty*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREDiscreteProperty(rep->getGsoapContext(), 1);	
+	_resqml20__DiscreteProperty* prop = static_cast<_resqml20__DiscreteProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
 
-	resqml2__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml2__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
+	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
 	xmlStandardPropKind->Kind = energisticsPropertyKind;
 	prop->PropertyKind = xmlStandardPropKind;
 
@@ -56,10 +56,10 @@ DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, con
 }
 
 DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropKind)
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropKind)
 {
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREDiscreteProperty(rep->getGsoapContext(), 1);	
-	_resqml2__DiscreteProperty* prop = static_cast<_resqml2__DiscreteProperty*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREDiscreteProperty(rep->getGsoapContext(), 1);	
+	_resqml20__DiscreteProperty* prop = static_cast<_resqml20__DiscreteProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
 
@@ -275,7 +275,7 @@ std::string DiscreteProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHd
 {
 	const string result = pushBackRefToExistingDataset(proxy, datasetName, nullValue);
 
-	_resqml2__DiscreteProperty* prop = static_cast<_resqml2__DiscreteProperty*>(gsoapProxy2_0_1);
+	_resqml20__DiscreteProperty* prop = static_cast<_resqml20__DiscreteProperty*>(gsoapProxy2_0_1);
 
 	if (prop->Count == 1)
 	{
@@ -442,8 +442,8 @@ bool DiscreteProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKind*
 				repository->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the discrete property " + getUuid() + " is right because one if its parent property kind is abstract.");
 				return true;
 			}
-			if (!pk->isChildOf(resqml2__ResqmlPropertyKind__discrete)) {
-				if (!pk->isChildOf(resqml2__ResqmlPropertyKind__categorical)) {
+			if (!pk->isChildOf(resqml20__ResqmlPropertyKind__discrete)) {
+				if (!pk->isChildOf(resqml20__ResqmlPropertyKind__categorical)) {
 					repository->addWarning("The discrete property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
 					changeToPartialObject();
 					return false;
@@ -464,7 +464,7 @@ bool DiscreteProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKind*
 	return true;
 }
 
-bool DiscreteProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk)
+bool DiscreteProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & pk)
 {
 	COMMON_NS::EnumStringMapper tmp;
 	std::string pkName = tmp.getEnergisticsPropertyKindName(pk);
@@ -476,8 +476,8 @@ bool DiscreteProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1::
 			changeToPartialObject();
 			return false;
 		}
-		if (!pkMapper->isChildOf(pk, resqml2__ResqmlPropertyKind__discrete)) {
-			if (!pkMapper->isChildOf(pk, resqml2__ResqmlPropertyKind__categorical)) {
+		if (!pkMapper->isChildOf(pk, resqml20__ResqmlPropertyKind__discrete)) {
+			if (!pkMapper->isChildOf(pk, resqml20__ResqmlPropertyKind__categorical)) {
 				repository->addWarning("The discrete property " + getUuid() + " cannot be associated to a resqml property kind \"" + pkName + "\" which does not derive from the discrete or categorical standard property kind. This property will be assumed to be a partial one.");
 				changeToPartialObject();
 				return false;
@@ -496,14 +496,14 @@ bool DiscreteProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1::
 
 LONG64 DiscreteProperty::getMinimumValue() const
 {
-	_resqml2__DiscreteProperty* prop = static_cast<_resqml2__DiscreteProperty*>(gsoapProxy2_0_1);
+	_resqml20__DiscreteProperty* prop = static_cast<_resqml20__DiscreteProperty*>(gsoapProxy2_0_1);
 
 	return prop->MinimumValue.empty() ? (std::numeric_limits<LONG64>::max)() : prop->MinimumValue[0];
 }
 
 LONG64 DiscreteProperty::getMaximumValue() const
 {
-	_resqml2__DiscreteProperty* prop = static_cast<_resqml2__DiscreteProperty*>(gsoapProxy2_0_1);
+	_resqml20__DiscreteProperty* prop = static_cast<_resqml20__DiscreteProperty*>(gsoapProxy2_0_1);
 
 	return prop->MaximumValue.empty() ? (std::numeric_limits<LONG64>::min)() : prop->MaximumValue[0];
 }

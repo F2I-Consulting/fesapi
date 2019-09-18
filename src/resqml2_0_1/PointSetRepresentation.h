@@ -25,7 +25,7 @@ namespace RESQML2_0_1_NS
 	class PointSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	private :
-		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
+		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
 
 	public:
 
@@ -46,7 +46,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		PointSetRepresentation(gsoap_resqml2_0_1::_resqml2__PointSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
+		PointSetRepresentation(gsoap_resqml2_0_1::_resqml20__PointSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

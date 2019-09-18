@@ -30,7 +30,7 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		RepresentationSetRepresentation(gsoap_resqml2_0_1::_resqml2__RepresentationSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
+		RepresentationSetRepresentation(gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
 	public:
 

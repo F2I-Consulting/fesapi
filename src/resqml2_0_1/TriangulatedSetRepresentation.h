@@ -29,7 +29,7 @@ namespace RESQML2_0_1_NS
 	class TriangulatedSetRepresentation : public AbstractSurfaceRepresentation
 	{
 	private :
-		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
+		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
 	public:
 
 		/**
@@ -52,7 +52,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		TriangulatedSetRepresentation(gsoap_resqml2_0_1::_resqml2__TriangulatedSetRepresentation* fromGsoap): AbstractSurfaceRepresentation(fromGsoap) {}
+		TriangulatedSetRepresentation(gsoap_resqml2_0_1::_resqml20__TriangulatedSetRepresentation* fromGsoap): AbstractSurfaceRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

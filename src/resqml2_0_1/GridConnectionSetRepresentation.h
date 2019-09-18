@@ -69,7 +69,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		GridConnectionSetRepresentation(gsoap_resqml2_0_1::_resqml2__GridConnectionSetRepresentation* fromGsoap) : RESQML2_NS::GridConnectionSetRepresentation(fromGsoap) {}
+		GridConnectionSetRepresentation(gsoap_resqml2_0_1::_resqml20__GridConnectionSetRepresentation* fromGsoap) : RESQML2_NS::GridConnectionSetRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

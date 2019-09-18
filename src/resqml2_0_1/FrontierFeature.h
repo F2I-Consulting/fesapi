@@ -42,7 +42,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		FrontierFeature(gsoap_resqml2_0_1::_resqml2__FrontierFeature* fromGsoap): AbstractTechnicalFeature(fromGsoap) {}
+		FrontierFeature(gsoap_resqml2_0_1::_resqml20__FrontierFeature* fromGsoap): AbstractTechnicalFeature(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
