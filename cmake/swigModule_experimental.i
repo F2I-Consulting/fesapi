@@ -805,7 +805,7 @@ namespace COMMON_NS
 		RESQML2_2_NS::DiscreteColorMap* createDiscreteColorMap(const std::string& guid, const std::string& title);
 
 		RESQML2_2_NS::ContinuousColorMap* createContinuousColorMap(const std::string& guid, const std::string& title,
-			gsoap_eml2_2::resqml20__InterpolationDomain interpolationDomain, gsoap_eml2_2::resqml20__InterpolationMethod interpolationMethod);
+			gsoap_eml2_2::resqml22__InterpolationDomain interpolationDomain, gsoap_eml2_2::resqml22__InterpolationMethod interpolationMethod);
 
 		//************************************
 		//***** STANDARD PROP KIND ***********
