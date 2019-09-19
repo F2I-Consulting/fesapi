@@ -53,7 +53,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		FaultInterpretation(gsoap_resqml2_0_1::_resqml2__FaultInterpretation* fromGsoap): BoundaryFeatureInterpretation(fromGsoap) {}
+		FaultInterpretation(gsoap_resqml2_0_1::_resqml20__FaultInterpretation* fromGsoap): BoundaryFeatureInterpretation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -68,6 +68,6 @@ namespace RESQML2_0_1_NS
 		 * More than one throw kind is necessary if for example the throw is reverse at a time period and then normal at another time period.
 		 * TODO : add a parameter to be able to indicate the time period the throw occured.
 		 */
-		DLL_IMPORT_OR_EXPORT void pushBackThrowInterpretation(const gsoap_resqml2_0_1::resqml2__ThrowKind & throwKind);
+		DLL_IMPORT_OR_EXPORT void pushBackThrowInterpretation(const gsoap_resqml2_0_1::resqml20__ThrowKind & throwKind);
 	};
 }

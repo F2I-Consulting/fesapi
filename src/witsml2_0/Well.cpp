@@ -38,7 +38,7 @@ Well::Well(COMMON_NS::DataObjectRepository * repo,
 		throw invalid_argument("A repo must exist.");
 	}
 
-	gsoapProxy2_1 = soap_new_witsml2__Well(repo->getGsoapContext(), 1);
+	gsoapProxy2_1 = soap_new_witsml20__Well(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -51,26 +51,26 @@ Well::Well(COMMON_NS::DataObjectRepository * repo,
 		const std::string & title,
 		const std::string & operator_,
 		eml21__WellStatus statusWell,
-		witsml2__WellDirection directionWell
+		witsml20__WellDirection directionWell
 	)
 {
 	if (repo == nullptr) {
 		throw invalid_argument("A repo must exist.");
 	}
 
-	gsoapProxy2_1 = soap_new_witsml2__Well(repo->getGsoapContext(), 1);
+	gsoapProxy2_1 = soap_new_witsml20__Well(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	setOperator(operator_);
 
-	witsml2__Well* well = static_cast<witsml2__Well*>(gsoapProxy2_1);
+	witsml20__Well* well = static_cast<witsml20__Well*>(gsoapProxy2_1);
 
 	well->StatusWell = (eml21__WellStatus *)soap_malloc(gsoapProxy2_1->soap, sizeof(eml21__WellStatus));
 	*well->StatusWell = statusWell;
 
-	well->DirectionWell = (witsml2__WellDirection *)soap_malloc(gsoapProxy2_1->soap, sizeof(witsml2__WellDirection));
+	well->DirectionWell = (witsml20__WellDirection *)soap_malloc(gsoapProxy2_1->soap, sizeof(witsml20__WellDirection));
 	*well->DirectionWell = directionWell;
 
 	repo->addOrReplaceDataObject(this);
@@ -93,12 +93,12 @@ GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Well, NumAPI, soa
 
 // Optional enum
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::eml21__WellStatus, Well, StatusWell, gsoap_eml2_1::soap_new_eml21__WellStatus)
-GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml2__WellPurpose, Well, PurposeWell, gsoap_eml2_1::soap_new_witsml2__WellPurpose)
-GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml2__WellFluid, Well, FluidWell, gsoap_eml2_1::soap_new_witsml2__WellFluid)
-GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml2__WellDirection, Well, DirectionWell, gsoap_eml2_1::soap_new_witsml2__WellDirection)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml20__WellPurpose, Well, PurposeWell, gsoap_eml2_1::soap_new_witsml20__WellPurpose)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml20__WellFluid, Well, FluidWell, gsoap_eml2_1::soap_new_witsml20__WellFluid)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml20__WellDirection, Well, DirectionWell, gsoap_eml2_1::soap_new_witsml20__WellDirection)
 
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Well, WaterDepth, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
-GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Well, GroundElevation, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_witsml2__WellElevationCoord)
+GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Well, GroundElevation, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__WellElevationCoord)
 
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Well, PcInterest, gsoap_eml2_1::eml21__DimensionlessUom, gsoap_eml2_1::soap_new_eml21__DimensionlessMeasure)
 
@@ -110,7 +110,7 @@ void Well::setTimeZone(bool direction, unsigned short hours, unsigned short minu
 {
 	if (hours > 23) { throw invalid_argument("You cannot set a time zone superior to 23 hours"); }
 	if (minutes > 59) { throw invalid_argument("You cannot set a time zone superior to 59 minutes"); }
-	witsml2__Well* well = static_cast<witsml2__Well*>(gsoapProxy2_1);
+	witsml20__Well* well = static_cast<witsml20__Well*>(gsoapProxy2_1);
 	if (well->TimeZone == nullptr) { well->TimeZone = soap_new_eml21__TimeZone(gsoapProxy2_1->soap, 1); }
 
 	if (hours == 00 && minutes == 0) {
@@ -141,24 +141,24 @@ void Well::setTimeZone(bool direction, unsigned short hours, unsigned short minu
 GETTER_PRESENCE_ATTRIBUTE_IMPL(Well, TimeZone)
 bool Well::getTimeZoneDirection() const {
 	if (!hasTimeZone()) { throw invalid_argument("The attribute to get does not exist."); }
-	return static_cast<witsml2__Well*>(gsoapProxy2_1)->TimeZone->at(0) != '-';
+	return static_cast<witsml20__Well*>(gsoapProxy2_1)->TimeZone->at(0) != '-';
 }
 unsigned short Well::getTimeZoneHours() const {
 	if (!hasTimeZone()) { throw invalid_argument("The attribute to get does not exist."); }
-	if (static_cast<witsml2__Well*>(gsoapProxy2_1)->TimeZone->size() == 1) { return 0; }
-	if (static_cast<witsml2__Well*>(gsoapProxy2_1)->TimeZone->size() != 6) { throw invalid_argument("The time zone does not looks to conform to the XSD standard."); }
+	if (static_cast<witsml20__Well*>(gsoapProxy2_1)->TimeZone->size() == 1) { return 0; }
+	if (static_cast<witsml20__Well*>(gsoapProxy2_1)->TimeZone->size() != 6) { throw invalid_argument("The time zone does not looks to conform to the XSD standard."); }
 
-	istringstream iss(static_cast<witsml2__Well*>(gsoapProxy2_1)->TimeZone->substr(1,2));
+	istringstream iss(static_cast<witsml20__Well*>(gsoapProxy2_1)->TimeZone->substr(1,2));
 	unsigned short result;
 	iss >> result;
 	return result;
 }
 unsigned short Well::getTimeZoneMinutes() const {
 	if (!hasTimeZone()) { throw invalid_argument("The attribute to get does not exist."); }
-	if (static_cast<witsml2__Well*>(gsoapProxy2_1)->TimeZone->size() == 1) { return 0; }
-	if (static_cast<witsml2__Well*>(gsoapProxy2_1)->TimeZone->size() != 6) { throw invalid_argument("The time zone does not looks to conform to the XSD standard."); }
+	if (static_cast<witsml20__Well*>(gsoapProxy2_1)->TimeZone->size() == 1) { return 0; }
+	if (static_cast<witsml20__Well*>(gsoapProxy2_1)->TimeZone->size() != 6) { throw invalid_argument("The time zone does not looks to conform to the XSD standard."); }
 
-	istringstream iss(static_cast<witsml2__Well*>(gsoapProxy2_1)->TimeZone->substr(4, 2));
+	istringstream iss(static_cast<witsml20__Well*>(gsoapProxy2_1)->TimeZone->substr(4, 2));
 	unsigned short result;
 	iss >> result;
 	return result;
@@ -166,30 +166,30 @@ unsigned short Well::getTimeZoneMinutes() const {
 
 double Well::getLocationProjectedX(unsigned int locationIndex)
 {
-	witsml2__Well* well = static_cast<witsml2__Well*>(gsoapProxy2_1);
+	witsml20__Well* well = static_cast<witsml20__Well*>(gsoapProxy2_1);
 
 	if (well->WellLocation.size() <= locationIndex) {
 		throw range_error("The well location index is out of range.");
 	}
-	if (well->WellLocation[locationIndex]->soap_type() != SOAP_TYPE_gsoap_eml2_1_witsml2__ProjectedWellLocation){
+	if (well->WellLocation[locationIndex]->soap_type() != SOAP_TYPE_gsoap_eml2_1_witsml20__ProjectedWellLocation){
 		throw invalid_argument("The well location is not a projected one.");
 	}
 
-	return static_cast<witsml2__ProjectedWellLocation*>(well->WellLocation[locationIndex])->Coordinate1;
+	return static_cast<witsml20__ProjectedWellLocation*>(well->WellLocation[locationIndex])->Coordinate1;
 }
 
 double Well::getLocationProjectedY(unsigned int locationIndex)
 {
-	witsml2__Well* well = static_cast<witsml2__Well*>(gsoapProxy2_1);
+	witsml20__Well* well = static_cast<witsml20__Well*>(gsoapProxy2_1);
 
 	if (well->WellLocation.size() <= locationIndex) {
 		throw range_error("The well location index is out of range.");
 	}
-	if (well->WellLocation[locationIndex]->soap_type() != SOAP_TYPE_gsoap_eml2_1_witsml2__ProjectedWellLocation){
+	if (well->WellLocation[locationIndex]->soap_type() != SOAP_TYPE_gsoap_eml2_1_witsml20__ProjectedWellLocation){
 		throw invalid_argument("The well location is not a projected one.");
 	}
 
-	return static_cast<witsml2__ProjectedWellLocation*>(well->WellLocation[locationIndex])->Coordinate2;
+	return static_cast<witsml20__ProjectedWellLocation*>(well->WellLocation[locationIndex])->Coordinate2;
 }
 
 void Well::pushBackLocation(
@@ -198,9 +198,9 @@ void Well::pushBackLocation(
 	double projectedY,
 	unsigned int projectedCrsEpsgCode)
 {
-	witsml2__Well* well = static_cast<witsml2__Well*>(gsoapProxy2_1);
+	witsml20__Well* well = static_cast<witsml20__Well*>(gsoapProxy2_1);
 
-	witsml2__ProjectedWellLocation* location = soap_new_witsml2__ProjectedWellLocation(gsoapProxy2_1->soap, 1);
+	witsml20__ProjectedWellLocation* location = soap_new_witsml20__ProjectedWellLocation(gsoapProxy2_1->soap, 1);
 	if (guid.size() == 0) {
 		ostringstream oss;
 		oss << well->WellLocation.size();
@@ -218,7 +218,7 @@ void Well::pushBackLocation(
 }
 
 unsigned int Well::geLocationCount() const {
-	return static_cast<witsml2__Well*>(gsoapProxy2_1)->WellLocation.size();
+	return static_cast<witsml20__Well*>(gsoapProxy2_1)->WellLocation.size();
 }
 
 void Well::pushBackDatum(
@@ -230,9 +230,9 @@ void Well::pushBackDatum(
 	double elevation,
 	unsigned int verticalCrsEpsgCode)
 {
-	witsml2__Well* well = static_cast<witsml2__Well*>(gsoapProxy2_1);
+	witsml20__Well* well = static_cast<witsml20__Well*>(gsoapProxy2_1);
 
-	witsml2__WellDatum* wellDatum = soap_new_witsml2__WellDatum(gsoapProxy2_1->soap, 1);
+	witsml20__WellDatum* wellDatum = soap_new_witsml20__WellDatum(gsoapProxy2_1->soap, 1);
 	if (guid.empty()) {
 		ostringstream oss;
 		oss << well->WellDatum.size();
@@ -249,7 +249,7 @@ void Well::pushBackDatum(
 	wellDatum->Crs = soap_new_eml21__VerticalEpsgCrs(gsoapProxy2_1->soap, 1);
 	static_cast<eml21__VerticalEpsgCrs*>(wellDatum->Crs)->EpsgCode = verticalCrsEpsgCode;
 
-	wellDatum->Elevation = soap_new_witsml2__WellElevationCoord(gsoapProxy2_1->soap, 1);
+	wellDatum->Elevation = soap_new_witsml20__WellElevationCoord(gsoapProxy2_1->soap, 1);
 	wellDatum->Elevation->datum = datum;
 	wellDatum->Elevation->uom = elevationUnit;
 	wellDatum->Elevation->__item = elevation;
@@ -259,7 +259,7 @@ void Well::pushBackDatum(
 
 unsigned int Well::getDatumCount() const
 {
-	return static_cast<witsml2__Well*>(gsoapProxy2_1)->WellDatum.size();
+	return static_cast<witsml20__Well*>(gsoapProxy2_1)->WellDatum.size();
 }
 
 void Well::loadTargetRelationships()

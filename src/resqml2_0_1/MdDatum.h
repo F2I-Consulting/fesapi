@@ -43,13 +43,13 @@ namespace RESQML2_0_1_NS
 		* @param referenceLocationOrdinal3	The location of the MD reference point on the third axis of the local 3d CRS.
 		*/
 		MdDatum(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title,
-			RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_resqml2_0_1::resqml2__MdReference originKind,
+			RESQML2_NS::AbstractLocal3dCrs * locCrs, gsoap_resqml2_0_1::resqml20__MdReference originKind,
 			double referenceLocationOrdinal1, double referenceLocationOrdinal2, double referenceLocationOrdinal3);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		MdDatum(gsoap_resqml2_0_1::_resqml2__MdDatum* fromGsoap) :RESQML2_NS::MdDatum(fromGsoap) {}
+		MdDatum(gsoap_resqml2_0_1::_resqml20__MdDatum* fromGsoap) :RESQML2_NS::MdDatum(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -82,7 +82,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Getter of the origin kind of the MD.
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__MdReference getOriginKind() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__MdReference getOriginKind() const;
 
 	protected:
 

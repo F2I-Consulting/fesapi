@@ -48,8 +48,8 @@ namespace RESQML2_0_1_NS
 		* @param useInterval				Indicates wether the property values will be attached to the time index or to the interval between consecutive time index. 
 		*/
 		CategoricalPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
-			class StringTableLookup* strLookup, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind,
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
+			class StringTableLookup* strLookup, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind,
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		/**
@@ -65,14 +65,14 @@ namespace RESQML2_0_1_NS
 		* @param useInterval				Indicates wether the property values will be attached to the time index or to the interval between consecutive time index. 
 		*/
 		CategoricalPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
 			class StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropKind,
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		CategoricalPropertySeries(gsoap_resqml2_0_1::_resqml2__CategoricalPropertySeries* fromGsoap): CategoricalProperty(fromGsoap) {}
+		CategoricalPropertySeries(gsoap_resqml2_0_1::_resqml20__CategoricalPropertySeries* fromGsoap): CategoricalProperty(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -82,6 +82,6 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
-		DLL_IMPORT_OR_EXPORT std::string getResqmlVersion() const {return "2.0.1";}
+		DLL_IMPORT_OR_EXPORT std::string getXmlNamespaceVersion() const {return "2.0.1";}
 	};
 }

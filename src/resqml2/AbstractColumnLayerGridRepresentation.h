@@ -44,8 +44,8 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractColumnLayerGridRepresentation(gsoap_resqml2_0_1::resqml2__AbstractColumnLayerGridRepresentation* fromGsoap, bool withTruncatedPillars) : RESQML2_NS::AbstractGridRepresentation(fromGsoap, withTruncatedPillars) {}
-		AbstractColumnLayerGridRepresentation(gsoap_resqml2_0_1::resqml2__AbstractTruncatedColumnLayerGridRepresentation* fromGsoap, bool withTruncatedPillars) : RESQML2_NS::AbstractGridRepresentation(fromGsoap, withTruncatedPillars) {}
+		AbstractColumnLayerGridRepresentation(gsoap_resqml2_0_1::resqml20__AbstractColumnLayerGridRepresentation* fromGsoap, bool withTruncatedPillars) : RESQML2_NS::AbstractGridRepresentation(fromGsoap, withTruncatedPillars) {}
+		AbstractColumnLayerGridRepresentation(gsoap_resqml2_0_1::resqml20__AbstractTruncatedColumnLayerGridRepresentation* fromGsoap, bool withTruncatedPillars) : RESQML2_NS::AbstractGridRepresentation(fromGsoap, withTruncatedPillars) {}
 
 		void loadTargetRelationships();
 
@@ -69,7 +69,7 @@ namespace RESQML2_NS
 		/**
 		* Get the K direction of the grid.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::resqml2__KDirection getKDirection() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::resqml20__KDirection getKDirection() const = 0;
 
 		/**
 		* Set the stratigraphic organization interpretation which is associated to this grid representation.
@@ -103,6 +103,6 @@ namespace RESQML2_NS
 		*
 		* @return The most complex pillar geometry which we can find on this grid.
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__PillarShape getMostComplexPillarGeometry() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__PillarShape getMostComplexPillarGeometry() const;
 	};
 }

@@ -651,17 +651,17 @@ void AbstractObject::initMandatoryMetadata()
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoapProxy2_0_1->schemaVersion = getResqmlVersion();
+		gsoapProxy2_0_1->schemaVersion = getXmlNamespaceVersion();
 		gsoapProxy2_0_1->Citation = gsoap_resqml2_0_1::soap_new_eml20__Citation(gsoapProxy2_0_1->soap, 1);
 	}
 	else if (gsoapProxy2_1 != nullptr) {
 		// currently, WITSML and RESQML are by chance in v2.0 as well
-		gsoapProxy2_1->schemaVersion = getResqmlVersion();
+		gsoapProxy2_1->schemaVersion = getXmlNamespaceVersion();
 		gsoapProxy2_1->Citation = gsoap_eml2_1::soap_new_eml21__Citation(gsoapProxy2_1->soap, 1);
 	}
 #if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_2 != nullptr) {
-		gsoapProxy2_2->schemaVersion = getResqmlVersion();
+		gsoapProxy2_2->schemaVersion = getXmlNamespaceVersion();
 		gsoapProxy2_2->Citation = gsoap_eml2_2::soap_new_eml22__Citation(gsoapProxy2_2->soap, 1);
 	}
 #endif
@@ -801,12 +801,12 @@ gsoap_eml2_2::eml22__DataObjectReference* AbstractObject::newEml22Reference() co
 }
 #endif
 
-gsoap_resqml2_0_1::resqml2__ContactElementReference* AbstractObject::newResqmlContactElementReference() const
+gsoap_resqml2_0_1::resqml20__ContactElementReference* AbstractObject::newResqmlContactElementReference() const
 {
 	if (partialObject != nullptr)
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
 
-	gsoap_resqml2_0_1::resqml2__ContactElementReference* result = gsoap_resqml2_0_1::soap_new_resqml2__ContactElementReference(gsoapProxy2_0_1->soap, 1);
+	gsoap_resqml2_0_1::resqml20__ContactElementReference* result = gsoap_resqml2_0_1::soap_new_resqml20__ContactElementReference(gsoapProxy2_0_1->soap, 1);
 	result->UUID = getUuid();
 	if (gsoapProxy2_0_1 != nullptr && hasVersion()) // Not partial transfer
 	{
@@ -821,37 +821,55 @@ gsoap_resqml2_0_1::resqml2__ContactElementReference* AbstractObject::newResqmlCo
 
 std::string AbstractObject::getXmlNamespace() const
 {
-	return "resqml2";
+	if (gsoapProxy2_0_1 != nullptr && gsoapProxy2_1 == nullptr
+#if WITH_EXPERIMENTAL
+		&& gsoapProxy2_2 == nullptr
+#endif
+		) {
+		return "resqml20"; // or eml20
+	}
+	else if (gsoapProxy2_0_1 == nullptr && gsoapProxy2_1 != nullptr
+#if WITH_EXPERIMENTAL
+		&& gsoapProxy2_2 == nullptr
+#endif
+		) {
+		return "witsml20"; // or eml21
+	}
+#if WITH_EXPERIMENTAL
+	else if (gsoapProxy2_0_1 == nullptr && gsoapProxy2_1 == nullptr && gsoapProxy2_2 != nullptr ) {
+		return "resqml22"; // or eml22
+	}
+#endif
+	else if (partialObject != nullptr) {
+		return "resqml20"; // by default...
+	}
+
+	throw logic_error("There is no associated gsoap proxy.");
 }
 
-std::string AbstractObject::getResqmlVersion() const
+std::string AbstractObject::getXmlNamespaceVersion() const
 {
-	return getXmlNamespace() == "eml21" ? "2.1" : "2.0";
+	const std::string & xmlNs = getXmlNamespace();
+	const size_t xmlNsSize = xmlNs.size();
+
+	std::string result = "";
+	result += xmlNs[xmlNsSize - 2];
+	result +=  '.';
+	result += xmlNs[xmlNsSize - 1];
+	return result;
 }
 
 string AbstractObject::getContentType() const
 {
-	std::string xmlNs = getXmlNamespace();
-	if (xmlNs == "resqml2")
-		return "application/x-resqml+xml;version=" + getResqmlVersion() + ";type=obj_" + getXmlTag();
-	else if (xmlNs == "eml20" )
-		//return RESQML_2_0_CONTENT_TYPE_PREFIX + getXmlTag(); // This is clearly a mistake, the line below is the right one. However, this is needed the time readers can read the right content type.
-		return "application/x-eml+xml;version=2.0;type=obj_" + getXmlTag();
-	else if (xmlNs == "eml21")
-		return "application/x-eml+xml;version=2.1;type=" + getXmlTag();
-	else if (xmlNs == "eml22")
-		return "application/x-eml+xml;version=2.2;type=" + getXmlTag();
-	else if (xmlNs == "resqml22")
-		return "application/x-resqml+xml;version=2.2;type=" + getXmlTag();
-	else
-		throw invalid_argument("unknown xml namespace");
+	const std::string & xmlNs = getXmlNamespace();
+	return "application/x-" + xmlNs.substr(0, xmlNs.size()-2) + "+xml;version=" + getXmlNamespaceVersion() + ";type=" + (xmlNs == "resqml20" || xmlNs == "eml20" ? "obj_" + getXmlTag() : getXmlTag());
 }
 
 std::string AbstractObject::getPartNameInEpcDocument() const
 {
 	const std::string result = getXmlTag() + "_" + getUuid() + ".xml";
-	const std::string xmlNs = getXmlNamespace();
-	return xmlNs == "eml21" || xmlNs == "eml22" || xmlNs == "resqml22" ? result : "obj_" + result;
+	const std::string & xmlNs = getXmlNamespace();
+	return xmlNs == "resqml20" || xmlNs == "eml20" ? "obj_" + result : result;
 }
 
 string AbstractObject::serializeIntoString()
@@ -995,10 +1013,10 @@ RESQML2_NS::Activity * AbstractObject::getActivity(unsigned int index) const
 
 void AbstractObject::pushBackExtraMetadataV2_0_1(const std::string & key, const std::string & value)
 {
-	gsoap_resqml2_0_1::resqml2__NameValuePair* stringPair = gsoap_resqml2_0_1::soap_new_resqml2__NameValuePair(gsoapProxy2_0_1->soap, 1);
+	gsoap_resqml2_0_1::resqml20__NameValuePair* stringPair = gsoap_resqml2_0_1::soap_new_resqml20__NameValuePair(gsoapProxy2_0_1->soap, 1);
 	stringPair->Name = key;
 	stringPair->Value = value;
-	static_cast<gsoap_resqml2_0_1::resqml2__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata.push_back(stringPair);
+	static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata.push_back(stringPair);
 }
 
 void AbstractObject::pushBackExtraMetadataV2_1(const std::string & key, const std::string & value)
@@ -1032,8 +1050,8 @@ void AbstractObject::pushBackExtraMetadataV2_2(const std::string & key, const st
 std::unordered_map< std::string, std::string > AbstractObject::getExtraMetadataSetV2_0_1() const
 {
 	std::unordered_map< std::string, std::string > result;
-	for (size_t i = 0; i < static_cast<gsoap_resqml2_0_1::resqml2__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata.size(); ++i) {
-		result[static_cast<gsoap_resqml2_0_1::resqml2__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata[i]->Name] = static_cast<gsoap_resqml2_0_1::resqml2__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata[i]->Value;
+	for (size_t i = 0; i < static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata.size(); ++i) {
+		result[static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata[i]->Name] = static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata[i]->Value;
 	}
 
 	return result;
@@ -1043,9 +1061,9 @@ vector<string> AbstractObject::getExtraMetadataV2_0_1(const std::string & key)  
 {
 	vector<string> result;
 
-	for (size_t i = 0; i < static_cast<gsoap_resqml2_0_1::resqml2__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata.size(); ++i) {
-		if (static_cast<gsoap_resqml2_0_1::resqml2__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata[i]->Name.compare(key) == 0) {
-			result.push_back(static_cast<gsoap_resqml2_0_1::resqml2__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata[i]->Value);
+	for (size_t i = 0; i < static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata.size(); ++i) {
+		if (static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata[i]->Name.compare(key) == 0) {
+			result.push_back(static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata[i]->Value);
 		}
 	}
 
@@ -1054,7 +1072,7 @@ vector<string> AbstractObject::getExtraMetadataV2_0_1(const std::string & key)  
 
 unsigned int AbstractObject::getExtraMetadataCountV2_0_1() const
 {
-	return static_cast<gsoap_resqml2_0_1::resqml2__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata.size();
+	return static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata.size();
 }
 
 std::string AbstractObject::getExtraMetadataKeyAtIndexV2_0_1(unsigned int index) const
@@ -1063,7 +1081,7 @@ std::string AbstractObject::getExtraMetadataKeyAtIndexV2_0_1(unsigned int index)
 		throw out_of_range("The index is out of range.");
 	}
 
-	return (static_cast<gsoap_resqml2_0_1::resqml2__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata)[index]->Name;
+	return (static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata)[index]->Name;
 }
 
 std::string AbstractObject::getExtraMetadataStringValueAtIndexV2_0_1(unsigned int index) const
@@ -1072,7 +1090,7 @@ std::string AbstractObject::getExtraMetadataStringValueAtIndexV2_0_1(unsigned in
 		throw out_of_range("The index is out of range.");
 	}
 
-	return (static_cast<gsoap_resqml2_0_1::resqml2__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata)[index]->Value;
+	return (static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata)[index]->Value;
 }
 
 void AbstractObject::pushBackExtraMetadata(const std::string & key, const std::string & value)
@@ -1159,27 +1177,27 @@ std::string AbstractObject::getExtraMetadataStringValueAtIndex(unsigned int inde
 	}
 }
 
-void AbstractObject::readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml2__AbstractDoubleArray * arrayInput, double * arrayOutput) const
+void AbstractObject::readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml20__AbstractDoubleArray * arrayInput, double * arrayOutput) const
 {
 	long soapType = arrayInput->soap_type();
-	if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
+	if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array)
 	{
-		COMMON_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(arrayInput)->Values->HdfProxy->UUID);
+		COMMON_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array*>(arrayInput)->Values->HdfProxy->UUID);
 		if (hdfProxy == nullptr) {
-			throw invalid_argument("The hdf proxy " + static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(arrayInput)->Values->HdfProxy->UUID + " is not available.");
+			throw invalid_argument("The hdf proxy " + static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array*>(arrayInput)->Values->HdfProxy->UUID + " is not available.");
 		}
-		hdfProxy->readArrayNdOfDoubleValues(static_cast<gsoap_resqml2_0_1::resqml2__DoubleHdf5Array*>(arrayInput)->Values->PathInHdfFile, arrayOutput);
+		hdfProxy->readArrayNdOfDoubleValues(static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array*>(arrayInput)->Values->PathInHdfFile, arrayOutput);
 	}
-	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleConstantArray)
+	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray)
 	{
-		gsoap_resqml2_0_1::resqml2__DoubleConstantArray* constantArray = static_cast<gsoap_resqml2_0_1::resqml2__DoubleConstantArray*>(arrayInput);
+		gsoap_resqml2_0_1::resqml20__DoubleConstantArray* constantArray = static_cast<gsoap_resqml2_0_1::resqml20__DoubleConstantArray*>(arrayInput);
 		for (size_t i = 0; i < constantArray->Count; ++i) {
 			arrayOutput[i] = constantArray->Value;
 		}
 	}
-	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleLatticeArray)
+	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 	{
-		gsoap_resqml2_0_1::resqml2__DoubleLatticeArray* latticeArray = static_cast<gsoap_resqml2_0_1::resqml2__DoubleLatticeArray*>(arrayInput);
+		gsoap_resqml2_0_1::resqml20__DoubleLatticeArray* latticeArray = static_cast<gsoap_resqml2_0_1::resqml20__DoubleLatticeArray*>(arrayInput);
 		if (latticeArray->Offset.size() > 1) {
 			throw invalid_argument("The integer lattice array contains more than one offset.");
 		}
@@ -1192,34 +1210,34 @@ void AbstractObject::readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml2__Abstr
 }
 
 
-void AbstractObject::readArrayNdOfUIntValues(gsoap_resqml2_0_1::resqml2__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const
+void AbstractObject::readArrayNdOfUIntValues(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const
 {
 	long soapType = arrayInput->soap_type();
-	if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
+	if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array)
 	{
-		COMMON_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(arrayInput)->Values->HdfProxy->UUID);
+		COMMON_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(arrayInput)->Values->HdfProxy->UUID);
 		if (hdfProxy == nullptr) {
-			throw invalid_argument("The hdf proxy " + static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(arrayInput)->Values->HdfProxy->UUID + " is not available.");
+			throw invalid_argument("The hdf proxy " + static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(arrayInput)->Values->HdfProxy->UUID + " is not available.");
 		}
-		hdfProxy->readArrayNdOfUIntValues(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(arrayInput)->Values->PathInHdfFile, arrayOutput);
+		hdfProxy->readArrayNdOfUIntValues(static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(arrayInput)->Values->PathInHdfFile, arrayOutput);
 	}
-	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerRangeArray)
+	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerRangeArray)
 	{
-		gsoap_resqml2_0_1::resqml2__IntegerRangeArray* rangeArray = static_cast<gsoap_resqml2_0_1::resqml2__IntegerRangeArray*>(arrayInput);
+		gsoap_resqml2_0_1::resqml20__IntegerRangeArray* rangeArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerRangeArray*>(arrayInput);
 		for (size_t i = 0; i < rangeArray->Count; ++i) {
 			arrayOutput[i] = i + rangeArray->Value;
 		}
 	}
-	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray)
+	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray)
 	{
-		gsoap_resqml2_0_1::resqml2__IntegerConstantArray* constantArray = static_cast<gsoap_resqml2_0_1::resqml2__IntegerConstantArray*>(arrayInput);
+		gsoap_resqml2_0_1::resqml20__IntegerConstantArray* constantArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray*>(arrayInput);
 		for (size_t i = 0; i < constantArray->Count; ++i) {
 			arrayOutput[i] = constantArray->Value;
 		}
 	}
-	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerLatticeArray)
+	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray)
 	{
-		gsoap_resqml2_0_1::resqml2__IntegerLatticeArray* latticeArray = static_cast<gsoap_resqml2_0_1::resqml2__IntegerLatticeArray*>(arrayInput);
+		gsoap_resqml2_0_1::resqml20__IntegerLatticeArray* latticeArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray*>(arrayInput);
 		if (latticeArray->Offset.size() > 1) {
 			throw invalid_argument("The integer lattice array contains more than one offset.");
 		}
@@ -1231,32 +1249,32 @@ void AbstractObject::readArrayNdOfUIntValues(gsoap_resqml2_0_1::resqml2__Abstrac
 		throw invalid_argument("The integer array type is not supported yet.");
 }
 
-ULONG64 AbstractObject::getCountOfIntegerArray(gsoap_resqml2_0_1::resqml2__AbstractIntegerArray * arrayInput) const
+ULONG64 AbstractObject::getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput) const
 {
 	long soapType = arrayInput->soap_type();
-	if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
+	if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array)
 	{
-		COMMON_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(arrayInput)->Values->HdfProxy->UUID);
+		COMMON_NS::AbstractHdfProxy* hdfProxy = repository->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(arrayInput)->Values->HdfProxy->UUID);
 		if (hdfProxy == nullptr) {
-			throw invalid_argument("The hdf proxy " + static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(arrayInput)->Values->HdfProxy->UUID + " is not available.");
+			throw invalid_argument("The hdf proxy " + static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(arrayInput)->Values->HdfProxy->UUID + " is not available.");
 		}
-		return hdfProxy->getElementCount(static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(arrayInput)->Values->PathInHdfFile);
+		return hdfProxy->getElementCount(static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(arrayInput)->Values->PathInHdfFile);
 	}
-	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerRangeArray)
+	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerRangeArray)
 	{
-		return static_cast<gsoap_resqml2_0_1::resqml2__IntegerRangeArray*>(arrayInput)->Count;
+		return static_cast<gsoap_resqml2_0_1::resqml20__IntegerRangeArray*>(arrayInput)->Count;
 	}
-	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray)
+	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray)
 	{
-		return static_cast<gsoap_resqml2_0_1::resqml2__IntegerConstantArray*>(arrayInput)->Count;
+		return static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray*>(arrayInput)->Count;
 	}
-	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerLatticeArray)
+	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray)
 	{
-		gsoap_resqml2_0_1::resqml2__IntegerLatticeArray* latticeArray = static_cast<gsoap_resqml2_0_1::resqml2__IntegerLatticeArray*>(arrayInput);
+		gsoap_resqml2_0_1::resqml20__IntegerLatticeArray* latticeArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray*>(arrayInput);
 		if (latticeArray->Offset.size() > 1) {
 			throw invalid_argument("The integer lattice array contains more than one offset.");
 		}
-		return static_cast<gsoap_resqml2_0_1::resqml2__IntegerLatticeArray*>(arrayInput)->Offset[0]->Count + 1;
+		return static_cast<gsoap_resqml2_0_1::resqml20__IntegerLatticeArray*>(arrayInput)->Offset[0]->Count + 1;
 	}
 	else
 		throw invalid_argument("The integer array type is not supported yet.");

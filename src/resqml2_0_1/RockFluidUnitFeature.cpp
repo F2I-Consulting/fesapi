@@ -26,13 +26,13 @@ using namespace gsoap_resqml2_0_1;
 
 const char* RockFluidUnitFeature::XML_TAG = "RockFluidUnitFeature";
 
-RockFluidUnitFeature::RockFluidUnitFeature(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title, gsoap_resqml2_0_1::resqml2__Phase phase, BoundaryFeature* top, BoundaryFeature* bottom)
+RockFluidUnitFeature::RockFluidUnitFeature(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title, gsoap_resqml2_0_1::resqml20__Phase phase, BoundaryFeature* top, BoundaryFeature* bottom)
 {
 	if (repo == nullptr)
 		throw invalid_argument("The repo cannot be null.");
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORERockFluidUnitFeature(repo->getGsoapContext(), 1);
-	_resqml2__RockFluidUnitFeature* rfuf = static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERockFluidUnitFeature(repo->getGsoapContext(), 1);
+	_resqml20__RockFluidUnitFeature* rfuf = static_cast<_resqml20__RockFluidUnitFeature*>(gsoapProxy2_0_1);
 	rfuf->Phase = phase;
 
 	initMandatoryMetadata();
@@ -47,31 +47,31 @@ void RockFluidUnitFeature::setTop(BoundaryFeature* top)
 {
 	getRepository()->addRelationship(this, top);
 
-	static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryTop = top->newResqmlReference();
+	static_cast<_resqml20__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryTop = top->newResqmlReference();
 }
 
 BoundaryFeature* RockFluidUnitFeature::getTop() const
 {
-	return repository->getDataObjectByUuid<BoundaryFeature>(static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryTop->UUID);
+	return repository->getDataObjectByUuid<BoundaryFeature>(static_cast<_resqml20__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryTop->UUID);
 }
 
 void RockFluidUnitFeature::setBottom(BoundaryFeature* bottom)
 {
 	getRepository()->addRelationship(this, bottom);
 
-	static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryBottom = bottom->newResqmlReference();
+	static_cast<_resqml20__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryBottom = bottom->newResqmlReference();
 }
 
 BoundaryFeature* RockFluidUnitFeature::getBottom() const
 {
-	return repository->getDataObjectByUuid<BoundaryFeature>(static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryBottom->UUID);
+	return repository->getDataObjectByUuid<BoundaryFeature>(static_cast<_resqml20__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryBottom->UUID);
 }
 
 void RockFluidUnitFeature::loadTargetRelationships()
 {
 	GeologicUnitFeature::loadTargetRelationships();
 
-	_resqml2__RockFluidUnitFeature* interp = static_cast<_resqml2__RockFluidUnitFeature*>(gsoapProxy2_0_1);
+	_resqml20__RockFluidUnitFeature* interp = static_cast<_resqml20__RockFluidUnitFeature*>(gsoapProxy2_0_1);
 
 	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = interp->FluidBoundaryTop;
 	if(dor != nullptr)

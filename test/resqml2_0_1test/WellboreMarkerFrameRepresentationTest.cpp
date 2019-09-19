@@ -55,14 +55,14 @@ void WellboreMarkerFrameRepresentationTest::initRepoHandler() {
 	WellboreMarkerFrameRepresentation* wmf = repo->createWellboreMarkerFrameRepresentation(interp, defaultUuid, defaultTitle, traj);
 	double markerMdValues[2] = { 350, 550 };
 	wmf->setMdValues(markerMdValues, 2, repo->getHdfProxySet()[0]);
-	new WellboreMarker(wmf, "", "", gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__horizon);
-	new WellboreMarker(wmf, "", "testing Fault", gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__fault);
+	new WellboreMarker(wmf, "", "", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
+	new WellboreMarker(wmf, "", "testing Fault", gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
 }
 
 void WellboreMarkerFrameRepresentationTest::readRepoHandler() {
 	WellboreMarkerFrameRepresentation* wmf = repo->getDataObjectByUuid<WellboreMarkerFrameRepresentation>(defaultUuid);
 	REQUIRE(wmf != nullptr);
 	REQUIRE(wmf->getWellboreMarkerCount() == 2);
-	REQUIRE((wmf->getWellboreMarkerSet()[0])->getGeologicBoundaryKind() == gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__horizon);
-	REQUIRE((wmf->getWellboreMarkerSet()[1])->getGeologicBoundaryKind() == gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind__fault);
+	REQUIRE((wmf->getWellboreMarkerSet()[0])->getGeologicBoundaryKind() == gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__horizon);
+	REQUIRE((wmf->getWellboreMarkerSet()[1])->getGeologicBoundaryKind() == gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind__fault);
 }

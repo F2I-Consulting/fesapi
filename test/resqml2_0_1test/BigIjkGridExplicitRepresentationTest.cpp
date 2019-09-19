@@ -64,15 +64,15 @@ void BigIjkGridExplicitRepresentationTest::initRepoHandler() {
 	unsigned int * splitCoordinateLineColumns = new unsigned int[(faultCount * (jCount + 1)) + (faultCount * (jCount - 1))];
 	initSplitCoordinateLine(pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 	initNodesIjkGridRepresentation(iCount, jCount, kCount, faultCount, xMin, xMax, yMin, yMax, zMin, zMax, faultThrow);
-	ijkGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, nullptr,
+	ijkGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape__vertical, gsoap_resqml2_0_1::resqml20__KDirection__down, false, nodesIjkGridRepresentation, nullptr,
 		faultCount * (jCount + 1), pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// adding a discrete property
 	RESQML2_0_1_NS::DiscreteProperty* discreteProperty = repo->createDiscreteProperty(
 		ijkGrid, discretePropertyUuid, discretePropertyTitle,
 		1, 
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, 
-		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__index);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, 
+		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__index);
 	unsigned short * discretePropertyValues = new unsigned short[iCount * jCount * kCount];
 	initDiscreteProperty(discretePropertyValues);
 	discreteProperty->pushBackUShortHdf5Array3dOfValues(discretePropertyValues, iCount, jCount, kCount, nullptr, -1);
@@ -81,9 +81,9 @@ void BigIjkGridExplicitRepresentationTest::initRepoHandler() {
 	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = repo->createContinuousProperty(
 		ijkGrid, continuousPropertyUuid, continuousPropertyTitle,
 		1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells,
-		gsoap_resqml2_0_1::resqml2__ResqmlUom__m,
-		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
+		gsoap_resqml2_0_1::resqml20__ResqmlUom__m,
+		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	double * continuousPropertyValues = new double[iCount * jCount * kCount];
 	initContinuousProperty(continuousPropertyValues);
 	continuousProperty->pushBackDoubleHdf5Array1dOfValues(continuousPropertyValues, iCount * jCount * kCount, nullptr);

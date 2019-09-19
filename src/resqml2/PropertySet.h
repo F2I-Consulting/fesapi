@@ -38,7 +38,7 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		PropertySet(gsoap_resqml2_0_1::_resqml2__PropertySet* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}protected:
+		PropertySet(gsoap_resqml2_0_1::_resqml20__PropertySet* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}protected:
 			
 		virtual void setXmlParent(PropertySet * parent) = 0;
 		virtual void pushBackXmlProperty(RESQML2_NS::AbstractProperty * prop) = 0;
@@ -125,7 +125,7 @@ namespace RESQML2_NS
 		/**
 		* @return The time set kind of this property set.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::resqml2__TimeSetKind getTimeSetKind() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::resqml20__TimeSetKind getTimeSetKind() const = 0;
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }

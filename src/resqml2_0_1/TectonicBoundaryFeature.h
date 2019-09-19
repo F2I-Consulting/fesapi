@@ -46,7 +46,7 @@ namespace RESQML2_0_1_NS
 		*/
 		TectonicBoundaryFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title, const bool isAFracture);
 
-		TectonicBoundaryFeature(gsoap_resqml2_0_1::_resqml2__TectonicBoundaryFeature* fromGsoap): BoundaryFeature(fromGsoap) {}
+		TectonicBoundaryFeature(gsoap_resqml2_0_1::_resqml20__TectonicBoundaryFeature* fromGsoap): BoundaryFeature(fromGsoap) {}
 		virtual ~TectonicBoundaryFeature() {}
 	
 		// Indicates wether the instance is a fracture (or a fault). This public method is especially needed for SWIG reason.

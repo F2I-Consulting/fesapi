@@ -43,7 +43,7 @@ PropertyKindTest::PropertyKindTest(DataObjectRepository* repo, bool init)
 }
 
 void PropertyKindTest::initRepoHandler() {
-	PropertyKind* propertyKind = repo->createPropertyKind(defaultUuid, defaultTitle, "F2I", gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__index);
+	PropertyKind* propertyKind = repo->createPropertyKind(defaultUuid, defaultTitle, "F2I", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__index);
 	REQUIRE(propertyKind != nullptr);
 }
 
@@ -52,9 +52,9 @@ void PropertyKindTest::readRepoHandler() {
 	PropertyKind* propertyKind = repo->getDataObjectByUuid<PropertyKind>(defaultUuid);
 
 	REQUIRE(propertyKind->getNamingSystem().compare("F2I") == 0);
-	REQUIRE(propertyKind->getUom() == gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc);
+	REQUIRE(propertyKind->getUom() == gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc);
 	REQUIRE(propertyKind->isParentAnEnergisticsPropertyKind());
-	REQUIRE(propertyKind->getParentEnergisticsPropertyKind() == gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__index);
+	REQUIRE(propertyKind->getParentEnergisticsPropertyKind() == gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__index);
 	REQUIRE_THROWS(propertyKind->getParentLocalPropertyKind());
 	REQUIRE_THROWS(propertyKind->getParentLocalPropertyKindTitle());
 	REQUIRE_THROWS(propertyKind->getParentLocalPropertyKindUuid());

@@ -58,9 +58,9 @@ void MultirealPropertyTest::initRepoHandler() {
 	RESQML2_0_1_NS::ContinuousProperty* continuousPropertyReal0 = repo->createContinuousProperty(
 		ijkGrid, defaultUuidReal0, "real0",
 		1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells,
-		gsoap_resqml2_0_1::resqml2__ResqmlUom__m,
-		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
+		gsoap_resqml2_0_1::resqml20__ResqmlUom__m,
+		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	REQUIRE(continuousPropertyReal0 != nullptr);
 	double values[2] = { 0.0, 0.0 };
 	continuousPropertyReal0->pushBackDoubleHdf5Array1dOfValues(values, 2, hdfProxy);
@@ -70,9 +70,9 @@ void MultirealPropertyTest::initRepoHandler() {
 	RESQML2_0_1_NS::ContinuousProperty* continuousPropertyReal1 = repo->createContinuousProperty(
 		ijkGrid, defaultUuidReal1, "real1",
 		1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells,
-		gsoap_resqml2_0_1::resqml2__ResqmlUom__m,
-		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
+		gsoap_resqml2_0_1::resqml20__ResqmlUom__m,
+		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	REQUIRE(continuousPropertyReal1 != nullptr);
 	values[0] = 1.0;
 	values[1] = 1.0;
@@ -83,9 +83,9 @@ void MultirealPropertyTest::initRepoHandler() {
 	RESQML2_0_1_NS::ContinuousProperty* continuousPropertyReal10 = repo->createContinuousProperty(
 		ijkGrid, defaultUuidReal10, "real10",
 		1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells,
-		gsoap_resqml2_0_1::resqml2__ResqmlUom__m,
-		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
+		gsoap_resqml2_0_1::resqml20__ResqmlUom__m,
+		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	REQUIRE(continuousPropertyReal10 != nullptr);
 	values[0] = 10;
 	values[1] = 10;
@@ -96,9 +96,9 @@ void MultirealPropertyTest::initRepoHandler() {
 	RESQML2_0_1_NS::ContinuousProperty* continuousPropertyReal15 = repo->createContinuousProperty(
 		ijkGrid, defaultUuidReal15, "real15",
 		1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells,
-		gsoap_resqml2_0_1::resqml2__ResqmlUom__m,
-		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells,
+		gsoap_resqml2_0_1::resqml20__ResqmlUom__m,
+		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	REQUIRE(continuousPropertyReal0 != nullptr);
 	values[0] = 15;
 	values[1] = 15;

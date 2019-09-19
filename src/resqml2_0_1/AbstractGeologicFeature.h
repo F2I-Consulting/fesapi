@@ -37,7 +37,7 @@ namespace RESQML2_0_1_NS
 		*/
 		AbstractGeologicFeature() {}
 
-		AbstractGeologicFeature(gsoap_resqml2_0_1::resqml2__AbstractGeologicFeature* fromGsoap) : RESQML2_NS::AbstractFeature(fromGsoap) {}
+		AbstractGeologicFeature(gsoap_resqml2_0_1::resqml20__AbstractGeologicFeature* fromGsoap) : RESQML2_NS::AbstractFeature(fromGsoap) {}
 
 	public:
 		virtual ~AbstractGeologicFeature() {}

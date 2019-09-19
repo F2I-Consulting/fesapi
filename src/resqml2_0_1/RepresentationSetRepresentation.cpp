@@ -31,8 +31,8 @@ RepresentationSetRepresentation::RepresentationSetRepresentation(RESQML2_NS::Abs
 	}
 
 	// proxy constructor
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORERepresentationSetRepresentation(interp->getGsoapContext(), 1);
-	static_cast<_resqml2__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->IsHomogeneous = true;
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERepresentationSetRepresentation(interp->getGsoapContext(), 1);
+	static_cast<_resqml20__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->IsHomogeneous = true;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -48,8 +48,8 @@ RepresentationSetRepresentation::RepresentationSetRepresentation(COMMON_NS::Data
 	}
 
 	// proxy constructor
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORERepresentationSetRepresentation(repo->getGsoapContext(), 1);
-	static_cast<_resqml2__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->IsHomogeneous = true;
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERepresentationSetRepresentation(repo->getGsoapContext(), 1);
+	static_cast<_resqml20__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->IsHomogeneous = true;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());

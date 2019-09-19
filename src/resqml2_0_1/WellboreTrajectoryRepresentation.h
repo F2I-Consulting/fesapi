@@ -30,7 +30,7 @@ namespace RESQML2_0_1_NS
 	class WellboreTrajectoryRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	private:
-		gsoap_resqml2_0_1::_resqml2__WellboreTrajectoryRepresentation* getSpecializedGsoapProxy() const;
+		gsoap_resqml2_0_1::_resqml20__WellboreTrajectoryRepresentation* getSpecializedGsoapProxy() const;
 
 	public:
 
@@ -57,7 +57,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::_resqml2__WellboreTrajectoryRepresentation* fromGsoap): AbstractRepresentation(fromGsoap) {}
+		WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreTrajectoryRepresentation* fromGsoap): AbstractRepresentation(fromGsoap) {}
 
 		~WellboreTrajectoryRepresentation() {}
 

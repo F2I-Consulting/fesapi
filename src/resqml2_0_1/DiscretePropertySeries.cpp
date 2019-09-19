@@ -31,16 +31,16 @@ using namespace gsoap_resqml2_0_1;
 const char* DiscretePropertySeries::XML_TAG = "DiscretePropertySeries";
 
 DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
-	const resqml2__ResqmlPropertyKind & energisticsPropertyKind,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
+	const resqml20__ResqmlPropertyKind & energisticsPropertyKind,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREDiscretePropertySeries(rep->getGsoapContext(), 1);	
-	_resqml2__DiscretePropertySeries* prop = static_cast<_resqml2__DiscretePropertySeries*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREDiscretePropertySeries(rep->getGsoapContext(), 1);	
+	_resqml20__DiscretePropertySeries* prop = static_cast<_resqml20__DiscretePropertySeries*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
 
-	resqml2__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml2__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
+	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
 	xmlStandardPropKind->Kind = energisticsPropertyKind;
 	prop->PropertyKind = xmlStandardPropKind;
 
@@ -49,19 +49,19 @@ DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentatio
 
 	setRepresentation(rep);
 
-	prop->SeriesTimeIndices = soap_new_resqml2__TimeIndices(gsoapProxy2_0_1->soap, 1);
+	prop->SeriesTimeIndices = soap_new_resqml20__TimeIndices(gsoapProxy2_0_1->soap, 1);
 	prop->SeriesTimeIndices->TimeIndexCount = ts->getTimestampCount();
 	prop->SeriesTimeIndices->UseInterval = useInterval;
 	setTimeSeries(ts);
 }
 
 DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
 	RESQML2_NS::PropertyKind * localPropKind,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREDiscretePropertySeries(rep->getGsoapContext(), 1);	
-	_resqml2__DiscretePropertySeries* prop = static_cast<_resqml2__DiscretePropertySeries*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREDiscretePropertySeries(rep->getGsoapContext(), 1);	
+	_resqml20__DiscretePropertySeries* prop = static_cast<_resqml20__DiscretePropertySeries*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
 
@@ -70,7 +70,7 @@ DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentatio
 
 	setRepresentation(rep);
 
-	prop->SeriesTimeIndices = soap_new_resqml2__TimeIndices(gsoapProxy2_0_1->soap, 1);
+	prop->SeriesTimeIndices = soap_new_resqml20__TimeIndices(gsoapProxy2_0_1->soap, 1);
 	prop->SeriesTimeIndices->TimeIndexCount = ts->getTimestampCount();
 	prop->SeriesTimeIndices->UseInterval = useInterval;
 	setTimeSeries(ts);

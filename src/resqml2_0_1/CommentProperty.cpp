@@ -36,14 +36,14 @@ using namespace gsoap_resqml2_0_1;
 const char* CommentProperty::XML_TAG = "CommentProperty";
 
 CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const resqml2__ResqmlPropertyKind & energisticsPropertyKind)
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const resqml20__ResqmlPropertyKind & energisticsPropertyKind)
 {
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORECommentProperty(rep->getGsoapContext(), 1);	
-	_resqml2__CommentProperty* prop = static_cast<_resqml2__CommentProperty*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECommentProperty(rep->getGsoapContext(), 1);	
+	_resqml20__CommentProperty* prop = static_cast<_resqml20__CommentProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
 
-	resqml2__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml2__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
+	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
 	xmlStandardPropKind->Kind = energisticsPropertyKind;
 	prop->PropertyKind = xmlStandardPropKind;
 
@@ -54,10 +54,10 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 }
 
 CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropKind)
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropKind)
 {
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORECommentProperty(rep->getGsoapContext(), 1);	
-	_resqml2__CommentProperty* prop = static_cast<_resqml2__CommentProperty*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECommentProperty(rep->getGsoapContext(), 1);	
+	_resqml20__CommentProperty* prop = static_cast<_resqml20__CommentProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
 
@@ -112,15 +112,15 @@ void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::str
 std::string CommentProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64)
 {
 	getRepository()->addRelationship(this, hdfProxy);
-	_resqml2__CommentProperty* prop = static_cast<_resqml2__CommentProperty*>(gsoapProxy2_0_1);
+	_resqml20__CommentProperty* prop = static_cast<_resqml20__CommentProperty*>(gsoapProxy2_0_1);
 
-	resqml2__PatchOfValues* patch = soap_new_resqml2__PatchOfValues(gsoapProxy2_0_1->soap, 1);
+	resqml20__PatchOfValues* patch = soap_new_resqml20__PatchOfValues(gsoapProxy2_0_1->soap, 1);
 	patch->RepresentationPatchIndex = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(ULONG64)));
 	*(patch->RepresentationPatchIndex) = prop->PatchOfValues.size();
 
 	// XML
 	ostringstream oss;
-	resqml2__StringHdf5Array* xmlValues = soap_new_resqml2__StringHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__StringHdf5Array* xmlValues = soap_new_resqml20__StringHdf5Array(gsoapProxy2_0_1->soap, 1);
 	xmlValues->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
 	xmlValues->Values->HdfProxy = hdfProxy->newResqmlReference();
 
@@ -145,8 +145,8 @@ std::vector<std::string> CommentProperty::getStringValuesOfPatch(unsigned int pa
 	std::vector<std::string> result;
 
 	// Look for the hdf where the comments are stored.
-	_resqml2__CommentProperty const * prop = static_cast<_resqml2__CommentProperty*>(gsoapProxy2_0_1);
-	eml20__Hdf5Dataset const * dataset = static_cast<resqml2__StringHdf5Array*>(prop->PatchOfValues[patchIndex]->Values)->Values;
+	_resqml20__CommentProperty const * prop = static_cast<_resqml20__CommentProperty*>(gsoapProxy2_0_1);
+	eml20__Hdf5Dataset const * dataset = static_cast<resqml20__StringHdf5Array*>(prop->PatchOfValues[patchIndex]->Values)->Values;
 	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
 	// Check if the hdf dataset really contains constant length string.
@@ -204,7 +204,7 @@ bool CommentProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKind* 
 				repository->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the comment property " + getUuid() + " is right because one if its parent property kind is abstract.");
 				return true;
 			}
-			if (pk->isChildOf(resqml2__ResqmlPropertyKind__continuous) || pk->isChildOf(resqml2__ResqmlPropertyKind__discrete) || pk->isChildOf(resqml2__ResqmlPropertyKind__categorical)) {
+			if (pk->isChildOf(resqml20__ResqmlPropertyKind__continuous) || pk->isChildOf(resqml20__ResqmlPropertyKind__discrete) || pk->isChildOf(resqml20__ResqmlPropertyKind__categorical)) {
 				repository->addWarning("The comment property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which is either a continuous, discrete or categorical standard property kind. This property will be assumed to be a partial one.");
 				changeToPartialObject();
 				return false;
@@ -221,7 +221,7 @@ bool CommentProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKind* 
 	return true;
 }
 
-bool CommentProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk)
+bool CommentProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & pk)
 {
 	COMMON_NS::EnumStringMapper tmp;
 	std::string pkName = tmp.getEnergisticsPropertyKindName(pk);
@@ -233,7 +233,7 @@ bool CommentProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1::r
 			changeToPartialObject();
 			return false;
 		}
-		if (pkMapper->isChildOf(pk, resqml2__ResqmlPropertyKind__continuous) || pkMapper->isChildOf(pk, resqml2__ResqmlPropertyKind__discrete) || pkMapper->isChildOf(pk, resqml2__ResqmlPropertyKind__categorical)) {
+		if (pkMapper->isChildOf(pk, resqml20__ResqmlPropertyKind__continuous) || pkMapper->isChildOf(pk, resqml20__ResqmlPropertyKind__discrete) || pkMapper->isChildOf(pk, resqml20__ResqmlPropertyKind__categorical)) {
 			repository->addWarning("The comment property " + getUuid() + " cannot be associated to a resqml property kind \"" + pkName + "\" which is either a continuous, discrete or categorical standard property kind. This property will be assumed to be a partial one.");
 			changeToPartialObject();
 			return false;

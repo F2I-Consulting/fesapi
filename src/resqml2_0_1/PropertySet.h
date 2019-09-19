@@ -44,12 +44,12 @@ namespace RESQML2_0_1_NS
 		* @param timeSetKind the time set kind of this property set.
 		*/
 		PropertySet(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title,
-			bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_resqml2_0_1::resqml2__TimeSetKind timeSetKind);
+			bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_resqml2_0_1::resqml20__TimeSetKind timeSetKind);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		PropertySet(gsoap_resqml2_0_1::_resqml2__PropertySet* fromGsoap) : RESQML2_NS::PropertySet(fromGsoap) {}
+		PropertySet(gsoap_resqml2_0_1::_resqml20__PropertySet* fromGsoap) : RESQML2_NS::PropertySet(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -69,7 +69,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* @return The time set kind of this property set.
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__TimeSetKind getTimeSetKind() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__TimeSetKind getTimeSetKind() const;
 
 	private :
 

@@ -79,14 +79,14 @@ void DiscreteColorMapTest::initRepoHandler() {
 	unsigned int pillarOfCoordinateLine[2] = { 1, 4 };
 	unsigned int splitCoordinateLineColumnCumulativeCount[2] = { 1, 2 };
 	unsigned int splitCoordinateLineColumns[2] = { 1, 1 };
-	ijkgrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodes, hdfProxy,
+	ijkgrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape__vertical, gsoap_resqml2_0_1::resqml20__KDirection__down, false, nodes, hdfProxy,
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// assotiating a discrete property to the ijk grid
 	PropertyKind* propertyKind = repo->createPropertyKind(uuidPropertyKind, titlePropertyKind, "urn:resqml:f2i-consulting.com", 
-		resqml2__ResqmlUom__Euc, resqml2__ResqmlPropertyKind__discrete);
+		resqml20__ResqmlUom__Euc, resqml20__ResqmlPropertyKind__discrete);
 	DiscreteProperty* discreteProperty = repo->createDiscreteProperty(ijkgrid, uuidDiscreteProperty, titleDiscreteProperty, 1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, propertyKind);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, propertyKind);
 	unsigned short prop1Values[2] = { 0, 1 };
 	discreteProperty->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, -1);
 

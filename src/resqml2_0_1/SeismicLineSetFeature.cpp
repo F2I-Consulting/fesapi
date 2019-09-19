@@ -31,7 +31,7 @@ SeismicLineSetFeature::SeismicLineSetFeature(COMMON_NS::DataObjectRepository* re
 	if (repo == nullptr)
 		throw invalid_argument("The repo cannot be null.");
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORESeismicLineSetFeature(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESeismicLineSetFeature(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());

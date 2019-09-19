@@ -45,7 +45,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.
 		 */
-		SealedVolumeFrameworkRepresentation(gsoap_resqml2_0_1::_resqml2__SealedVolumeFrameworkRepresentation* fromGsoap) : RepresentationSetRepresentation(fromGsoap) {}
+		SealedVolumeFrameworkRepresentation(gsoap_resqml2_0_1::_resqml20__SealedVolumeFrameworkRepresentation* fromGsoap) : RepresentationSetRepresentation(fromGsoap) {}
 
 		/**
 		 * Destructor does nothing since the memory is managed by the gsoap context.
@@ -204,15 +204,15 @@ namespace RESQML2_0_1_NS
 
 	private:
 
-		gsoap_resqml2_0_1::resqml2__VolumeShell* createVolumeShell(
+		gsoap_resqml2_0_1::resqml20__VolumeShell* createVolumeShell(
 			unsigned int shellFaceCount,
 			unsigned int * faceRepresentationIndices, unsigned int * faceRepPatchIndices, bool * faceSide);
 
-		gsoap_resqml2_0_1::resqml2__VolumeRegion* getRegion(unsigned int regionIndex) const;
-		gsoap_resqml2_0_1::resqml2__VolumeShell* getRegionExternalShell(unsigned int regionIndex) const;
-		gsoap_resqml2_0_1::resqml2__VolumeShell* getRegionInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const;
-		gsoap_resqml2_0_1::resqml2__OrientedMacroFace* getRegionExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const;
-		gsoap_resqml2_0_1::resqml2__OrientedMacroFace* getRegionInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const;
+		gsoap_resqml2_0_1::resqml20__VolumeRegion* getRegion(unsigned int regionIndex) const;
+		gsoap_resqml2_0_1::resqml20__VolumeShell* getRegionExternalShell(unsigned int regionIndex) const;
+		gsoap_resqml2_0_1::resqml20__VolumeShell* getRegionInternalShell(unsigned int regionIndex, unsigned int internalShellIndex) const;
+		gsoap_resqml2_0_1::resqml20__OrientedMacroFace* getRegionExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const;
+		gsoap_resqml2_0_1::resqml20__OrientedMacroFace* getRegionInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const;
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getSealedStructuralFrameworkDor() const;
 		std::string getSealedStructuralFrameworkUuid() const;

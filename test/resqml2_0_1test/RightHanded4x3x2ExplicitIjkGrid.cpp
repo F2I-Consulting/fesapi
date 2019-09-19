@@ -72,7 +72,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 	unsigned int pillarOfCoordinateLine[4] = { 17, 12, 7, 2 };
 	unsigned int splitCoordinateLineColumnCumulativeCount[4] = { 1, 3, 5, 6 };
 	unsigned int splitCoordinateLineColumns[6] = { 10, 10, 6, 6, 2, 2 };
-	ijkGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodesIjkGridRepresentation, nullptr,
+	ijkGrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape__vertical, gsoap_resqml2_0_1::resqml20__KDirection__down, false, nodesIjkGridRepresentation, nullptr,
 		4, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// Enabling cell
@@ -104,7 +104,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 
 	// Discrete property
 	RESQML2_0_1_NS::DiscreteProperty* discreteProp = repo->createDiscreteProperty(ijkGrid, "0a8fb2aa-d1e1-4914-931c-e9e6bf2aabe5", "Cell index", 1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__index);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__index);
 	long discretePropValues[24] = {
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
@@ -113,7 +113,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 
 	// Continuous property
 	RESQML2_0_1_NS::ContinuousProperty* continuousProp = repo->createContinuousProperty(ijkGrid, "de5a71cc-879d-4cda-8fb3-146c70539cf9", "Amplitude", 1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__cells, gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__amplitude);
+		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__amplitude);
 	double continuousPropValues[24] = {
 		0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.5, 0.4, 0.3, 0.2, 0.1, 0.0,
 		1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.5, 1.4, 1.3, 1.2, 1.1, 1.0

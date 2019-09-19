@@ -81,7 +81,7 @@ void AbstractColorMap::setRgbColors(unsigned int colorCount,
 
 double AbstractColorMap::getHue(double colorIndex) const
 {
-	resqml2__HsvColor const* const color = getColor(colorIndex);
+	resqml22__HsvColor const* const color = getColor(colorIndex);
 	if (color == nullptr) {
 		throw out_of_range("There is no such color index");
 	}
@@ -91,7 +91,7 @@ double AbstractColorMap::getHue(double colorIndex) const
 
 double AbstractColorMap::getSaturation(double colorIndex) const
 {
-	resqml2__HsvColor const* const color = getColor(colorIndex);
+	resqml22__HsvColor const* const color = getColor(colorIndex);
 	if (color == nullptr) {
 		throw invalid_argument("There is no such color index");
 	}
@@ -100,7 +100,7 @@ double AbstractColorMap::getSaturation(double colorIndex) const
 
 double AbstractColorMap::getValue(double colorIndex) const
 {
-	resqml2__HsvColor const* const color = getColor(colorIndex);
+	resqml22__HsvColor const* const color = getColor(colorIndex);
 	if (color == nullptr) {
 		throw invalid_argument("There is no such color index");
 	}
@@ -110,7 +110,7 @@ double AbstractColorMap::getValue(double colorIndex) const
 
 double AbstractColorMap::getAlpha(double colorIndex) const
 {
-	resqml2__HsvColor const* const color = getColor(colorIndex);
+	resqml22__HsvColor const* const color = getColor(colorIndex);
 	if (color == nullptr) {
 		throw invalid_argument("There is no such color index");
 	}
@@ -130,7 +130,7 @@ void AbstractColorMap::getRgbColor(double colorIndex, unsigned int& red, unsigne
 
 bool AbstractColorMap::hasColorTitle(double colorIndex) const
 {
-	resqml2__HsvColor const* const color = getColor(colorIndex);
+	resqml22__HsvColor const* const color = getColor(colorIndex);
 	if (color == nullptr) {
 		throw invalid_argument("There is no such color index");
 	}
@@ -139,7 +139,7 @@ bool AbstractColorMap::hasColorTitle(double colorIndex) const
 }
 std::string AbstractColorMap::getColorTitle(double colorIndex) const
 {
-	resqml2__HsvColor const* const color = getColor(colorIndex);
+	resqml22__HsvColor const* const color = getColor(colorIndex);
 	if (color == nullptr) {
 		throw invalid_argument("There is no such color index");
 	}

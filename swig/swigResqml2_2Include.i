@@ -30,14 +30,14 @@ under the License.
 
 namespace gsoap_eml2_2
 {
-	enum resqml2__InterpolationDomain {
-		resqml2__InterpolationDomain__hsv = 0,
-		resqml2__InterpolationDomain__rgb = 1
+	enum resqml22__InterpolationDomain {
+		resqml22__InterpolationDomain__hsv = 0,
+		resqml22__InterpolationDomain__rgb = 1
 	};
 	
-	enum resqml2__InterpolationMethod {
-		resqml2__InterpolationMethod__linear = 0,
-		resqml2__InterpolationMethod__logarithmic = 1
+	enum resqml22__InterpolationMethod {
+		resqml22__InterpolationMethod__linear = 0,
+		resqml22__InterpolationMethod__logarithmic = 1
 	};
 }
 
@@ -89,10 +89,10 @@ namespace RESQML2_2_NS
 
 		unsigned int getColorCount() const;
 
-		gsoap_eml2_2::resqml2__InterpolationDomain getInterpolationDomain();
+		gsoap_eml2_2::resqml22__InterpolationDomain getInterpolationDomain();
 		std::string getInterpolationDomainAsString();
 
-		gsoap_eml2_2::resqml2__InterpolationMethod getInterpolationMethod();
+		gsoap_eml2_2::resqml22__InterpolationMethod getInterpolationMethod();
 		std::string getInterpolationMethodAsString();
 
 		void setNanHsvColor(double hue, double saturation, double value, double alpha = 1, std::string const& colorTitle = "");

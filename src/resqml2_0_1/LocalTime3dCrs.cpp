@@ -37,8 +37,8 @@ void LocalTime3dCrs::init(COMMON_NS::DataObjectRepository * repo, const std::str
 		throw invalid_argument("The repo cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORELocalTime3dCrs(repo->getGsoapContext(), 1);
-	_resqml2__LocalTime3dCrs* local3dCrs = static_cast<_resqml2__LocalTime3dCrs*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORELocalTime3dCrs(repo->getGsoapContext(), 1);
+	_resqml20__LocalTime3dCrs* local3dCrs = static_cast<_resqml20__LocalTime3dCrs*>(gsoapProxy2_0_1);
 	local3dCrs->ArealRotation = soap_new_eml20__PlaneAngleMeasure(gsoapProxy2_0_1->soap, 1);
 	local3dCrs->ArealRotation->__item = arealRotation;
 	local3dCrs->ArealRotation->uom = eml20__PlaneAngleUom__rad;
@@ -68,7 +68,7 @@ LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std
 		throw invalid_argument("An EPSG code cannot be set to 0.");
 	}
 	init(repo, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation, projectedUom, timeUom, verticalUom, isUpOriented);
-	_resqml2__LocalTime3dCrs* local3dCrs = static_cast<_resqml2__LocalTime3dCrs*>(gsoapProxy2_0_1);
+	_resqml20__LocalTime3dCrs* local3dCrs = static_cast<_resqml20__LocalTime3dCrs*>(gsoapProxy2_0_1);
 
 	// Projected CRS
 	eml20__ProjectedCrsEpsgCode* projCrs = soap_new_eml20__ProjectedCrsEpsgCode(gsoapProxy2_0_1->soap, 1);
@@ -89,7 +89,7 @@ LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std
 			const gsoap_resqml2_0_1::eml20__LengthUom & verticalUom, const std::string & verticalUnknownReason, const bool & isUpOriented)
 {
 	init(repo, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation, projectedUom, timeUom, verticalUom, isUpOriented);
-	_resqml2__LocalTime3dCrs* local3dCrs = static_cast<_resqml2__LocalTime3dCrs*>(gsoapProxy2_0_1);
+	_resqml20__LocalTime3dCrs* local3dCrs = static_cast<_resqml20__LocalTime3dCrs*>(gsoapProxy2_0_1);
 
 	// Projected CRS
 	eml20__ProjectedUnknownCrs* projCrs = soap_new_eml20__ProjectedUnknownCrs(gsoapProxy2_0_1->soap, 1);
@@ -113,7 +113,7 @@ LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std
 		throw invalid_argument("An EPSG code cannot be set to 0.");
 	}
 	init(repo, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation, projectedUom, timeUom, verticalUom, isUpOriented);
-	_resqml2__LocalTime3dCrs* local3dCrs = static_cast<_resqml2__LocalTime3dCrs*>(gsoapProxy2_0_1);
+	_resqml20__LocalTime3dCrs* local3dCrs = static_cast<_resqml20__LocalTime3dCrs*>(gsoapProxy2_0_1);
 
 	// Projected CRS
 	eml20__ProjectedCrsEpsgCode* projCrs = soap_new_eml20__ProjectedCrsEpsgCode(gsoapProxy2_0_1->soap, 1);
@@ -137,7 +137,7 @@ LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std
 		throw invalid_argument("An EPSG code cannot be set to 0.");
 	}
 	init(repo, guid, title, originOrdinal1, originOrdinal2, originOrdinal3, arealRotation, projectedUom, timeUom, verticalUom, isUpOriented);
-	_resqml2__LocalTime3dCrs* local3dCrs = static_cast<_resqml2__LocalTime3dCrs*>(gsoapProxy2_0_1);
+	_resqml20__LocalTime3dCrs* local3dCrs = static_cast<_resqml20__LocalTime3dCrs*>(gsoapProxy2_0_1);
 
 	// Projected CRS
 	eml20__ProjectedUnknownCrs* projCrs = soap_new_eml20__ProjectedUnknownCrs(gsoapProxy2_0_1->soap, 1);
@@ -152,11 +152,11 @@ LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std
 
 gsoap_resqml2_0_1::eml20__TimeUom LocalTime3dCrs::getUnit() const
 {
-	return static_cast<_resqml2__LocalTime3dCrs*>(gsoapProxy2_0_1)->TimeUom;
+	return static_cast<_resqml20__LocalTime3dCrs*>(gsoapProxy2_0_1)->TimeUom;
 }
 
 std::string LocalTime3dCrs::getUnitAsString() const
 {
-	return gsoap_resqml2_0_1::soap_eml20__TimeUom2s(gsoapProxy2_0_1->soap, static_cast<_resqml2__LocalTime3dCrs*>(gsoapProxy2_0_1)->TimeUom);
+	return gsoap_resqml2_0_1::soap_eml20__TimeUom2s(gsoapProxy2_0_1->soap, static_cast<_resqml20__LocalTime3dCrs*>(gsoapProxy2_0_1)->TimeUom);
 }
 

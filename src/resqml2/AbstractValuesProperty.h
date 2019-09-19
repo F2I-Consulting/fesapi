@@ -63,7 +63,7 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractValuesProperty(gsoap_resqml2_0_1::resqml2__AbstractValuesProperty* fromGsoap) : RESQML2_NS::AbstractProperty(fromGsoap) {}
+		AbstractValuesProperty(gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* fromGsoap) : RESQML2_NS::AbstractProperty(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -215,7 +215,7 @@ namespace RESQML2_NS
 		/**
 		* Pushes back a new facet to this intance
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackFacet(const gsoap_resqml2_0_1::resqml2__Facet & facet, const std::string & facetValue);
+		DLL_IMPORT_OR_EXPORT void pushBackFacet(const gsoap_resqml2_0_1::resqml20__Facet & facet, const std::string & facetValue);
 
 		/**
 		* Get the count of facet of this instance
@@ -225,7 +225,7 @@ namespace RESQML2_NS
 		/**
 		* Get the facet at a particular index of the facet collection of this instance
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__Facet getFacet(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__Facet getFacet(unsigned int index) const;
 
 		/**
 		* Get the facet value at a particular index of the facet collection of this instance.

@@ -33,16 +33,16 @@ using namespace gsoap_resqml2_0_1;
 const char* CategoricalPropertySeries::XML_TAG = "CategoricalPropertySeries";
 
 CategoricalPropertySeries::CategoricalPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
-	StringTableLookup* strLookup, const resqml2__ResqmlPropertyKind & energisticsPropertyKind,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
+	StringTableLookup* strLookup, const resqml20__ResqmlPropertyKind & energisticsPropertyKind,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORECategoricalPropertySeries(rep->getGsoapContext(), 1);	
-	_resqml2__CategoricalPropertySeries* prop = static_cast<_resqml2__CategoricalPropertySeries*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECategoricalPropertySeries(rep->getGsoapContext(), 1);	
+	_resqml20__CategoricalPropertySeries* prop = static_cast<_resqml20__CategoricalPropertySeries*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
 
-	resqml2__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml2__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
+	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
 	xmlStandardPropKind->Kind = energisticsPropertyKind;
 	prop->PropertyKind = xmlStandardPropKind;
 
@@ -51,7 +51,7 @@ CategoricalPropertySeries::CategoricalPropertySeries(RESQML2_NS::AbstractReprese
 
 	setRepresentation(rep);
 
-	prop->SeriesTimeIndices = soap_new_resqml2__TimeIndices(gsoapProxy2_0_1->soap, 1);
+	prop->SeriesTimeIndices = soap_new_resqml20__TimeIndices(gsoapProxy2_0_1->soap, 1);
 	prop->SeriesTimeIndices->TimeIndexCount = ts->getTimestampCount();
 	prop->SeriesTimeIndices->UseInterval = useInterval;
 	setTimeSeries(ts);
@@ -61,12 +61,12 @@ CategoricalPropertySeries::CategoricalPropertySeries(RESQML2_NS::AbstractReprese
 }
 
 CategoricalPropertySeries::CategoricalPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
 	StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropKind,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORECategoricalPropertySeries(rep->getGsoapContext(), 1);	
-	_resqml2__CategoricalPropertySeries* prop = static_cast<_resqml2__CategoricalPropertySeries*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECategoricalPropertySeries(rep->getGsoapContext(), 1);	
+	_resqml20__CategoricalPropertySeries* prop = static_cast<_resqml20__CategoricalPropertySeries*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
 
@@ -75,7 +75,7 @@ CategoricalPropertySeries::CategoricalPropertySeries(RESQML2_NS::AbstractReprese
 
 	setRepresentation(rep);
 
-	prop->SeriesTimeIndices = soap_new_resqml2__TimeIndices(gsoapProxy2_0_1->soap, 1);
+	prop->SeriesTimeIndices = soap_new_resqml20__TimeIndices(gsoapProxy2_0_1->soap, 1);
 	prop->SeriesTimeIndices->TimeIndexCount = ts->getTimestampCount();
 	prop->SeriesTimeIndices->UseInterval = useInterval;
 	setTimeSeries(ts);

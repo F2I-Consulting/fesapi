@@ -38,7 +38,7 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		TimeSeries(gsoap_resqml2_0_1::_resqml2__TimeSeries* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		TimeSeries(gsoap_resqml2_0_1::_resqml20__TimeSeries* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 	public:
 		

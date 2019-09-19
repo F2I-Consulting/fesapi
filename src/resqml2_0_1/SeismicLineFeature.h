@@ -48,7 +48,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		SeismicLineFeature(gsoap_resqml2_0_1::_resqml2__SeismicLineFeature* fromGsoap): 
+		SeismicLineFeature(gsoap_resqml2_0_1::_resqml20__SeismicLineFeature* fromGsoap): 
 			AbstractTechnicalFeature(fromGsoap) {}
 
 		/**

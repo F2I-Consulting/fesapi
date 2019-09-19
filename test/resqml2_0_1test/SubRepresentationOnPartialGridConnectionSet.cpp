@@ -53,7 +53,7 @@ void SubRepresentationOnPartialGridConnectionSet::initRepoHandler()
 	subRep->pushBackSupportingRepresentation(partialGcsr);
 
 	ULONG64 elements[2] = { 1, 2 };
-	subRep->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml2__IndexableElements__cells, 2, elements, hdfProxy);
+	subRep->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements__cells, 2, elements, hdfProxy);
 }
 
 void SubRepresentationOnPartialGridConnectionSet::readRepoHandler()

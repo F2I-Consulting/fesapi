@@ -27,7 +27,7 @@ namespace RESQML2_NS
 	protected:
 		Activity() : AbstractObject() {}
 
-		Activity(gsoap_resqml2_0_1::_resqml2__Activity* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		Activity(gsoap_resqml2_0_1::_resqml20__Activity* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 	public:
 

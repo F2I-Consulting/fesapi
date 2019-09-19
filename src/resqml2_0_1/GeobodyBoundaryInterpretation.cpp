@@ -33,9 +33,9 @@ GeobodyBoundaryInterpretation::GeobodyBoundaryInterpretation(GeneticBoundaryFeat
 	if (geobodyBoundary == nullptr)
 		throw invalid_argument("The interpreted geobody boundary cannot be null.");
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREGeobodyBoundaryInterpretation(geobodyBoundary->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGeobodyBoundaryInterpretation(geobodyBoundary->getGsoapContext(), 1);
 
-	static_cast<_resqml2__GeobodyBoundaryInterpretation*>(gsoapProxy2_0_1)->Domain = resqml2__Domain__mixed;
+	static_cast<_resqml20__GeobodyBoundaryInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());

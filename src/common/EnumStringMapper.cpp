@@ -36,37 +36,37 @@ EnumStringMapper::~EnumStringMapper()
 	soap_free(gsoapContext); // Free the context
 }
 
-std::string EnumStringMapper::getEnergisticsPropertyKindName(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind energisticsPropertyKind) const
+std::string EnumStringMapper::getEnergisticsPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind) const
 {
-	return gsoap_resqml2_0_1::soap_resqml2__ResqmlPropertyKind2s(gsoapContext, energisticsPropertyKind);
+	return gsoap_resqml2_0_1::soap_resqml20__ResqmlPropertyKind2s(gsoapContext, energisticsPropertyKind);
 }
 
-gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind EnumStringMapper::getEnergisticsPropertyKind(const std::string & energisticsPropertyKindName) const
+gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind EnumStringMapper::getEnergisticsPropertyKind(const std::string & energisticsPropertyKindName) const
 {
-	gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind result;
-	return gsoap_resqml2_0_1::soap_s2resqml2__ResqmlPropertyKind(gsoapContext, energisticsPropertyKindName.c_str(), &result) == SOAP_OK ? result : gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__RESQML_x0020root_x0020property;
+	gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind result;
+	return gsoap_resqml2_0_1::soap_s2resqml20__ResqmlPropertyKind(gsoapContext, energisticsPropertyKindName.c_str(), &result) == SOAP_OK ? result : gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__RESQML_x0020root_x0020property;
 }
 
-std::string EnumStringMapper::getEnergisticsUnitOfMeasureName(gsoap_resqml2_0_1::resqml2__ResqmlUom energisticsUom) const
+std::string EnumStringMapper::getEnergisticsUnitOfMeasureName(gsoap_resqml2_0_1::resqml20__ResqmlUom energisticsUom) const
 {
-	return gsoap_resqml2_0_1::soap_resqml2__ResqmlUom2s(gsoapContext, energisticsUom);
+	return gsoap_resqml2_0_1::soap_resqml20__ResqmlUom2s(gsoapContext, energisticsUom);
 }
 
-gsoap_resqml2_0_1::resqml2__ResqmlUom EnumStringMapper::getEnergisticsUnitOfMeasure(const std::string & energisticsUomName) const
+gsoap_resqml2_0_1::resqml20__ResqmlUom EnumStringMapper::getEnergisticsUnitOfMeasure(const std::string & energisticsUomName) const
 {
-	gsoap_resqml2_0_1::resqml2__ResqmlUom result;
-	return gsoap_resqml2_0_1::soap_s2resqml2__ResqmlUom(gsoapContext, energisticsUomName.c_str(), &result) == SOAP_OK ? result : gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc;
+	gsoap_resqml2_0_1::resqml20__ResqmlUom result;
+	return gsoap_resqml2_0_1::soap_s2resqml20__ResqmlUom(gsoapContext, energisticsUomName.c_str(), &result) == SOAP_OK ? result : gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc;
 }
 
-std::string EnumStringMapper::getFacet(gsoap_resqml2_0_1::resqml2__Facet facet) const
+std::string EnumStringMapper::getFacet(gsoap_resqml2_0_1::resqml20__Facet facet) const
 {
-	return gsoap_resqml2_0_1::soap_resqml2__Facet2s(gsoapContext, facet);
+	return gsoap_resqml2_0_1::soap_resqml20__Facet2s(gsoapContext, facet);
 }
 
-gsoap_resqml2_0_1::resqml2__Facet EnumStringMapper::getFacet(const std::string & facet) const
+gsoap_resqml2_0_1::resqml20__Facet EnumStringMapper::getFacet(const std::string & facet) const
 {
-	gsoap_resqml2_0_1::resqml2__Facet result;
-	return gsoap_resqml2_0_1::soap_s2resqml2__Facet(gsoapContext, facet.c_str(), &result) == SOAP_OK ? result : gsoap_resqml2_0_1::resqml2__Facet__what;
+	gsoap_resqml2_0_1::resqml20__Facet result;
+	return gsoap_resqml2_0_1::soap_s2resqml20__Facet(gsoapContext, facet.c_str(), &result) == SOAP_OK ? result : gsoap_resqml2_0_1::resqml20__Facet__what;
 }
 
 std::string EnumStringMapper::lengthUomToString(gsoap_eml2_1::eml21__LengthUom witsmlUom) const

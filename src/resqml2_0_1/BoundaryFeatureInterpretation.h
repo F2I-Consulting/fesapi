@@ -46,7 +46,7 @@ namespace RESQML2_0_1_NS
 		*/
 		BoundaryFeatureInterpretation(class BoundaryFeature * feature, const std::string & guid, const std::string & title);
 
-		BoundaryFeatureInterpretation(gsoap_resqml2_0_1::_resqml2__BoundaryFeatureInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
+		BoundaryFeatureInterpretation(gsoap_resqml2_0_1::_resqml20__BoundaryFeatureInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
 		virtual ~BoundaryFeatureInterpretation() {}
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

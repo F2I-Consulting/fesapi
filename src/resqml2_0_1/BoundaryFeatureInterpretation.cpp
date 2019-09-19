@@ -36,9 +36,9 @@ BoundaryFeatureInterpretation::BoundaryFeatureInterpretation(BoundaryFeature * f
 		throw invalid_argument("The interpreted feature cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREBoundaryFeatureInterpretation(feature->getGsoapContext(), 1);
-	_resqml2__BoundaryFeatureInterpretation* interp = static_cast<_resqml2__BoundaryFeatureInterpretation*>(gsoapProxy2_0_1);
-	interp->Domain = resqml2__Domain__mixed;
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREBoundaryFeatureInterpretation(feature->getGsoapContext(), 1);
+	_resqml20__BoundaryFeatureInterpretation* interp = static_cast<_resqml20__BoundaryFeatureInterpretation*>(gsoapProxy2_0_1);
+	interp->Domain = resqml20__Domain__mixed;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());

@@ -48,16 +48,16 @@ void AbstractIjkGridRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 	}
 
 	if (!withTruncatedPillars) {
-		gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREIjkGridRepresentation(repo->getGsoapContext(), 1);
-		_resqml2__IjkGridRepresentation* ijkGrid = getSpecializedGsoapProxy();
+		gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREIjkGridRepresentation(repo->getGsoapContext(), 1);
+		_resqml20__IjkGridRepresentation* ijkGrid = getSpecializedGsoapProxy();
 
 		ijkGrid->Ni = iCount;
 		ijkGrid->Nj = jCount;
 		ijkGrid->Nk = kCount;
 	}
 	else {
-		gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORETruncatedIjkGridRepresentation(repo->getGsoapContext(), 1);
-		_resqml2__TruncatedIjkGridRepresentation* ijkGrid = static_cast<_resqml2__TruncatedIjkGridRepresentation*>(gsoapProxy2_0_1);
+		gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORETruncatedIjkGridRepresentation(repo->getGsoapContext(), 1);
+		_resqml20__TruncatedIjkGridRepresentation* ijkGrid = static_cast<_resqml20__TruncatedIjkGridRepresentation*>(gsoapProxy2_0_1);
 
 		ijkGrid->Ni = iCount;
 		ijkGrid->Nj = jCount;
@@ -95,19 +95,19 @@ AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(RESQML2_NS::Abstrac
 	setInterpretation(interp);
 }
 
-_resqml2__IjkGridRepresentation* AbstractIjkGridRepresentation::getSpecializedGsoapProxy() const
+_resqml20__IjkGridRepresentation* AbstractIjkGridRepresentation::getSpecializedGsoapProxy() const
 {
 	cannotBePartial();
-	return static_cast<_resqml2__IjkGridRepresentation*>(gsoapProxy2_0_1);
+	return static_cast<_resqml20__IjkGridRepresentation*>(gsoapProxy2_0_1);
 }
 
-gsoap_resqml2_0_1::_resqml2__TruncatedIjkGridRepresentation* AbstractIjkGridRepresentation::getSpecializedTruncatedGsoapProxy() const
+gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* AbstractIjkGridRepresentation::getSpecializedTruncatedGsoapProxy() const
 {
 	cannotBePartial();
-	return static_cast<_resqml2__TruncatedIjkGridRepresentation*>(gsoapProxy2_0_1);
+	return static_cast<_resqml20__TruncatedIjkGridRepresentation*>(gsoapProxy2_0_1);
 }
 
-gsoap_resqml2_0_1::resqml2__PointGeometry* AbstractIjkGridRepresentation::getPointGeometry2_0_1(unsigned int patchIndex) const
+gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractIjkGridRepresentation::getPointGeometry2_0_1(unsigned int patchIndex) const
 {
 	if (patchIndex == 0) {
 		return isTruncated() ? getSpecializedTruncatedGsoapProxy()->Geometry : getSpecializedGsoapProxy()->Geometry;
@@ -160,7 +160,7 @@ void AbstractIjkGridRepresentation::setJCellCount(const unsigned int & jCount)
 
 bool AbstractIjkGridRepresentation::isRightHanded() const
 {
-	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(0));
+	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 	if (geom != nullptr) {
 		return geom->GridIsRighthanded;
 	}
@@ -170,12 +170,12 @@ bool AbstractIjkGridRepresentation::isRightHanded() const
 
 void AbstractIjkGridRepresentation::getPillarsOfSplitCoordinateLines(unsigned int * pillarIndices, bool reverseIAxis, bool reverseJAxis) const
 {
-	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(0));
+	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 	if (geom == nullptr || geom->SplitCoordinateLines == nullptr) {
 		throw invalid_argument("There is no geometry or no split coordinate line in this grid.");
 	}
-	if (geom->SplitCoordinateLines->PillarIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__IntegerHdf5Array*>(geom->SplitCoordinateLines->PillarIndices)->Values;
+	if (geom->SplitCoordinateLines->PillarIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(geom->SplitCoordinateLines->PillarIndices)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 		hdfProxy->readArrayNdOfUIntValues(dataset->PathInHdfFile, pillarIndices);
 	}
@@ -204,14 +204,14 @@ void AbstractIjkGridRepresentation::getPillarsOfSplitCoordinateLines(unsigned in
 
 void AbstractIjkGridRepresentation::getColumnsOfSplitCoordinateLines(unsigned int * columnIndices, bool reverseIAxis, bool reverseJAxis) const
 {
-	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(0));
+	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 	if (geom == nullptr || geom->SplitCoordinateLines == nullptr) {
 		throw invalid_argument("There is no geometry or no split coordinate line in this grid.");
 	}
 
 	hssize_t datasetValueCount = 0;
-	if (geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__IntegerHdf5Array*>(geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements)->Values;
+	if (geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 		hdfProxy->readArrayNdOfUIntValues(dataset->PathInHdfFile, columnIndices);
 		if (reverseIAxis || reverseJAxis) {
@@ -241,12 +241,12 @@ void AbstractIjkGridRepresentation::getColumnsOfSplitCoordinateLines(unsigned in
 
 void AbstractIjkGridRepresentation::getColumnCountOfSplitCoordinateLines(unsigned int * columnIndexCountPerSplitCoordinateLine) const
 {
-	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(0));
+	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 	if (geom == nullptr || geom->SplitCoordinateLines == nullptr) {
 		throw invalid_argument("There is no geometry or no split coordinate line in this grid.");
 	}
-	if (geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__IntegerHdf5Array*>(geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength)->Values;
+	if (geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 		hdfProxy->readArrayNdOfUIntValues(dataset->PathInHdfFile, columnIndexCountPerSplitCoordinateLine);
 	}
@@ -257,7 +257,7 @@ void AbstractIjkGridRepresentation::getColumnCountOfSplitCoordinateLines(unsigne
 
 unsigned long AbstractIjkGridRepresentation::getSplitCoordinateLineCount() const
 {
-	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(0));
+	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
@@ -308,7 +308,7 @@ unsigned long AbstractIjkGridRepresentation::getBlockSplitCoordinateLineCount() 
 
 ULONG64 AbstractIjkGridRepresentation::getSplitNodeCount() const
 {
-	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(0));
+	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
@@ -318,17 +318,17 @@ ULONG64 AbstractIjkGridRepresentation::getSplitNodeCount() const
 
 void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeometryIsDefined, bool reverseIAxis, bool reverseJAxis) const
 {
-	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(0));
+	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 	if (geom != nullptr) {
 		unsigned int pillarCount = (getJCellCount() + 1) * (getICellCount() + 1);
-		if (geom->PillarGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__BooleanHdf5Array)
+		if (geom->PillarGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array)
 		{
-			eml20__Hdf5Dataset const * dataset = static_cast<resqml2__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values;
+			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hid_t dt = hdfProxy->getHdfDatatypeInDataset(static_cast<resqml2__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values->PathInHdfFile);
+			hid_t dt = hdfProxy->getHdfDatatypeInDataset(static_cast<resqml20__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values->PathInHdfFile);
 			if (H5Tequal(dt, H5T_NATIVE_CHAR) > 0) {
 				char* tmp = new char[pillarCount];
-				hdfProxy->readArrayNdOfCharValues(static_cast<resqml2__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values->PathInHdfFile, tmp);
+				hdfProxy->readArrayNdOfCharValues(static_cast<resqml20__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values->PathInHdfFile, tmp);
 				for (unsigned int i = 0; i < pillarCount; ++i) {
 					if (tmp[i] == 0) pillarGeometryIsDefined[i] = false; else pillarGeometryIsDefined[i] = true;
 				}
@@ -336,7 +336,7 @@ void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeom
 			}
 			else if (H5Tequal(dt, H5T_NATIVE_UCHAR) > 0) {
 				unsigned char* tmp = new unsigned char[pillarCount];
-				hdfProxy->readArrayNdOfUCharValues(static_cast<resqml2__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values->PathInHdfFile, tmp);
+				hdfProxy->readArrayNdOfUCharValues(static_cast<resqml20__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values->PathInHdfFile, tmp);
 				for (unsigned int i = 0; i < pillarCount; ++i) {
 					if (tmp[i] == 0) pillarGeometryIsDefined[i] = false; else pillarGeometryIsDefined[i] = true;
 				}
@@ -346,8 +346,8 @@ void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeom
 				throw std::logic_error("Not yet implemented");
 			}
 		}
-		else if (geom->PillarGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__BooleanConstantArray) {
-			if (static_cast<resqml2__BooleanConstantArray*>(geom->PillarGeometryIsDefined)->Value == true) {
+		else if (geom->PillarGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray) {
+			if (static_cast<resqml20__BooleanConstantArray*>(geom->PillarGeometryIsDefined)->Value == true) {
 				for (unsigned int i = 0; i < pillarCount; ++i) {
 					pillarGeometryIsDefined[i] = true;
 				}
@@ -413,7 +413,7 @@ void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeom
 
 bool AbstractIjkGridRepresentation::hasEnabledCellInformation() const
 {
-	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(0));
+	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 	return geom != nullptr && geom->CellGeometryIsDefined != nullptr;
 }
 
@@ -423,14 +423,14 @@ void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool re
 		throw invalid_argument("The grid has no geometry or no information about enabled cells.");
 	}
 
-	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(0));
+	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
 
 	ULONG64 cellCount = getCellCount();
-	if (geom->CellGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__BooleanHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__BooleanHdf5Array*>(geom->CellGeometryIsDefined)->Values;
+	if (geom->CellGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array) {
+		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(geom->CellGeometryIsDefined)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 		char* tmp = new char[cellCount];
 		hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, tmp);
@@ -439,8 +439,8 @@ void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool re
 		}
 		delete [] tmp;
 	}
-	else if (geom->CellGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__BooleanConstantArray) {
-		if (static_cast<resqml2__BooleanConstantArray*>(geom->CellGeometryIsDefined)->Value == true) {
+	else if (geom->CellGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray) {
+		if (static_cast<resqml20__BooleanConstantArray*>(geom->CellGeometryIsDefined)->Value == true) {
 			for (ULONG64 i = 0; i < cellCount; ++i) {
 				enabledCells[i] = true;
 			}
@@ -583,7 +583,7 @@ void AbstractIjkGridRepresentation::loadSplitInformation()
 	unloadSplitInformation();
 	splitInformation = new std::vector< std::pair< unsigned int, std::vector<unsigned int> > >[(getICellCount()+1) * (getJCellCount()+1)];
 
-	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(0));
+	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
@@ -698,7 +698,7 @@ unsigned int AbstractIjkGridRepresentation::getFaceCount() const
 	faceCount += getICellCount() * (getJCellCount() + 1) * getKCellCount(); // non splitted J faces
 	faceCount += (getICellCount() + 1) * getJCellCount() * getKCellCount(); // non splitted I faces
 
-	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(0));
+	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
@@ -931,7 +931,7 @@ void AbstractIjkGridRepresentation::getXyzPointOfBlockFromCellCorner(unsigned in
 
 ULONG64 AbstractIjkGridRepresentation::getXyzPointCountOfKInterfaceOfPatch(unsigned int patchIndex) const
 {
-	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(patchIndex));
+	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(patchIndex));
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
@@ -955,12 +955,12 @@ void AbstractIjkGridRepresentation::getXyzPointsOfKInterfaceOfPatch(unsigned int
 
 void AbstractIjkGridRepresentation::setEnabledCells(unsigned char* enabledCells, COMMON_NS::AbstractHdfProxy* proxy)
 {
-	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(0));
+	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
 
-	resqml2__BooleanHdf5Array* boolArray = soap_new_resqml2__BooleanHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__BooleanHdf5Array* boolArray = soap_new_resqml20__BooleanHdf5Array(gsoapProxy2_0_1->soap, 1);
 	geom->CellGeometryIsDefined = boolArray;
 
 	if (proxy == nullptr) {
@@ -982,9 +982,9 @@ void AbstractIjkGridRepresentation::setEnabledCells(unsigned char* enabledCells,
 	delete [] cellGeometryIsDefinedCount;
 }
 
-gsoap_resqml2_0_1::resqml2__KDirection AbstractIjkGridRepresentation::getKDirection() const
+gsoap_resqml2_0_1::resqml20__KDirection AbstractIjkGridRepresentation::getKDirection() const
 {
-	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(0));
+	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}

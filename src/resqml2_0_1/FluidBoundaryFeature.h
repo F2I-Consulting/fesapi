@@ -37,12 +37,12 @@ namespace RESQML2_0_1_NS
 		* @param guid		The guid to set to the horizon. If empty then a new guid will be generated.
 		* @param title		A title for the instance to create.
 		*/
-		FluidBoundaryFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__FluidContact & fluidContact);
+		FluidBoundaryFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml20__FluidContact & fluidContact);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		FluidBoundaryFeature(gsoap_resqml2_0_1::_resqml2__FluidBoundaryFeature* fromGsoap): BoundaryFeature(fromGsoap) {}
+		FluidBoundaryFeature(gsoap_resqml2_0_1::_resqml20__FluidBoundaryFeature* fromGsoap): BoundaryFeature(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is manged by the gsoap context.

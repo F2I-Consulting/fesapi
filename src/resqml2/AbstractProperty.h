@@ -44,7 +44,7 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractProperty(gsoap_resqml2_0_1::resqml2__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		AbstractProperty(gsoap_resqml2_0_1::resqml20__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -92,7 +92,7 @@ namespace RESQML2_NS
 		/**
 		* Get the kind of elements the property values are attached to.
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__IndexableElements getAttachmentKind() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__IndexableElements getAttachmentKind() const;
 
 		/**
 		* Get all property sets which contain this property
@@ -203,7 +203,7 @@ namespace RESQML2_NS
 		/**
 		* Getter for the energistics property kind which is associated to this intance.
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind getEnergisticsPropertyKind() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getEnergisticsPropertyKind() const;
 
 		/**
 		* Set the property kind of the property to a local one.
@@ -239,7 +239,7 @@ namespace RESQML2_NS
 		/**
 		* Check if the associated standard property kind is allowed for this property.
 		*/
-		virtual bool validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk) = 0;
+		virtual bool validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & pk) = 0;
 
 		/**
 		* Check if the associated property kind is allowed for this property.

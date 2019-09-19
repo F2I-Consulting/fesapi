@@ -50,7 +50,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml2__WellboreFrameRepresentation* fromGsoap): AbstractRepresentation(fromGsoap)
+		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreFrameRepresentation* fromGsoap): AbstractRepresentation(fromGsoap)
 		{}
 
 		~WellboreFrameRepresentation() {}

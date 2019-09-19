@@ -43,7 +43,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::resqml2__AbstractSurfaceFrameworkRepresentation* fromGsoap) : RESQML2_NS::RepresentationSetRepresentation(fromGsoap) {}
+		AbstractSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::resqml20__AbstractSurfaceFrameworkRepresentation* fromGsoap) : RESQML2_NS::RepresentationSetRepresentation(fromGsoap) {}
 
 		/**
 		* Get a contact identity from its index in this framework.
@@ -51,7 +51,7 @@ namespace RESQML2_0_1_NS
 		* @param ciIndex	The index of the contact identity in the contact identity list. It must be in the interval [0..getContactIdentityCount()[.
 		* @return			A contact identity from its index in this framework.
 		*/
-		gsoap_resqml2_0_1::resqml2__ContactIdentity* getContactIdentity(unsigned int ciIndex) const;
+		gsoap_resqml2_0_1::resqml20__ContactIdentity* getContactIdentity(unsigned int ciIndex) const;
 
 	public:
 
@@ -68,7 +68,7 @@ namespace RESQML2_0_1_NS
 		* @param proxy			The hdf proxy.
 		*/
 		DLL_IMPORT_OR_EXPORT void pushBackContactIdentity(
-			gsoap_resqml2_0_1::resqml2__IdentityKind kind,
+			gsoap_resqml2_0_1::resqml20__IdentityKind kind,
 			unsigned int contactCount, int * contactIndices,
 			COMMON_NS::AbstractHdfProxy * proxy);
 
@@ -82,7 +82,7 @@ namespace RESQML2_0_1_NS
 		* @param proxy					The hdf proxy.
 		*/
 		DLL_IMPORT_OR_EXPORT void pushBackContactIdentity(
-			gsoap_resqml2_0_1::resqml2__IdentityKind kind,
+			gsoap_resqml2_0_1::resqml20__IdentityKind kind,
 			unsigned int contactCount, int * contactIndices,
 			unsigned int identicalNodesCount, int * identicalNodesIndexes,
 			COMMON_NS::AbstractHdfProxy * proxy);
@@ -106,7 +106,7 @@ namespace RESQML2_0_1_NS
 		* @param ciIndex	The index of the contact identity in the contact identity list. It must be in the interval [0..getContactIdentityCount()[.
 		* @return The kind of the contact identity located at a particular index.
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__IdentityKind getContactIdentityKind(unsigned int ciIndex) const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__IdentityKind getContactIdentityKind(unsigned int ciIndex) const;
 
 		/**
 		* Get the count of contact of a particular contact identity.
