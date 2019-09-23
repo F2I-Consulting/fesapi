@@ -117,7 +117,7 @@ Energistics::Etp::v12::Datatypes::ErrorInfo AbstractSession::validateUri(const s
 		std::cerr << "The URI \"" + uri + "\"  is invalid." << std::endl;
 	}
 #else
-	const bool result = uri.find("eml://") != 0;
+	const bool result = uri.find("eml://") == 0;
 #endif
 
 	if (!result && sendException) {
@@ -149,8 +149,8 @@ Energistics::Etp::v12::Datatypes::ErrorInfo AbstractSession::validateDataObjectU
 		std::cerr << "The data object URI \"" + uri + "\"  is invalid." << std::endl;
 	}
 #else
-	const bool result = uri.find("eml://resqml20/") != std::string::npos || uri.find("eml://eml20/") != std::string::npos ||
-		uri.find("eml://witsml20/") != std::string::npos || uri.find("eml://eml21/") != 0;
+	const bool result = uri.find("eml://resqml20/") == 0 || uri.find("eml://eml20/") == 0 ||
+		uri.find("eml://witsml20/") == 0 || uri.find("eml://eml21/") == 0;
 #endif
 
 	if (!result && sendException) {
