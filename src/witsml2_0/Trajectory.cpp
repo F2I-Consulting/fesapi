@@ -72,8 +72,8 @@ GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml20__ChannelStatus, 
 GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, DTimTrajStart)
 GETTER_AND_SETTER_TIME_T_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, DTimTrajEnd)
 
-GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, MdMn, eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__MeasuredDepthCoord)
-GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, MdMx, eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__MeasuredDepthCoord)
+GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, MdMn, eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__MeasuredDepthCoord)
+GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Trajectory, MdMx, eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__MeasuredDepthCoord)
 
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Trajectory, ServiceCompany, gsoap_eml2_1::soap_new_std__string)
 
@@ -97,7 +97,7 @@ GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml20__AziRef
 // Mandatory
 GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR_IMPL(std::string, Trajectory, TrajectoryStation, uid)
 GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR_IMPL(gsoap_eml2_1::witsml20__TrajStationType, Trajectory, TrajectoryStation, TypeTrajStation)
-GETTER_AND_SETTER_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, Md, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__MeasuredDepthCoord)
+GETTER_AND_SETTER_DEPTH_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, Md, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__MeasuredDepthCoord)
 
 // Optional bool
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(bool, Trajectory, TrajectoryStation, ManuallyEntered, gsoap_eml2_1::soap_new_bool)
@@ -127,7 +127,7 @@ GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(gsoap_eml2_1::witsml
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(gsoap_eml2_1::witsml20__TrajStationStatus, Trajectory, TrajectoryStation, StatusTrajStation, gsoap_eml2_1::soap_new_witsml20__TrajStationStatus)
 
 // Optional Length Measure
-GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, Tvd, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__WellVerticalDepthCoord)
+GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, Tvd, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__WellVerticalDepthCoord)
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, DispNs, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, DispEw, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, VertSect, gsoap_eml2_1::eml21__LengthUom, gsoap_eml2_1::soap_new_eml21__LengthMeasure)
@@ -155,7 +155,7 @@ GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, Trajecto
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, MagTotalUncert, gsoap_eml2_1::eml21__MagneticFluxDensityUom, gsoap_eml2_1::soap_new_eml21__MagneticFluxDensityMeasure)
 GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(Trajectory, TrajectoryStation, MagTotalFieldReference, gsoap_eml2_1::eml21__MagneticFluxDensityUom, gsoap_eml2_1::soap_new_eml21__MagneticFluxDensityMeasure)
 
-void Trajectory::pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType kind, double mdValue, gsoap_eml2_1::eml21__LengthUom uom, const std::string & uid)
+void Trajectory::pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType kind, double mdValue, gsoap_eml2_1::eml21__LengthUom uom, const std::string & datum, const std::string & uid)
 {
 	static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->TrajectoryStation.push_back(gsoap_eml2_1::soap_new_witsml20__TrajectoryStation(gsoapProxy2_1->soap, 1));
 	unsigned int index = getTrajectoryStationCount() - 1;
@@ -169,7 +169,7 @@ void Trajectory::pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationTy
 	}
 
 	setTrajectoryStationTypeTrajStation(index, kind);
-	setTrajectoryStationMd(index, mdValue, uom);
+	setTrajectoryStationMd(index, mdValue, uom, datum);
 }
 
 unsigned int Trajectory::getTrajectoryStationCount() const

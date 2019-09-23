@@ -21,6 +21,7 @@ under the License.
 #include <stdexcept>
 
 #include "witsml2_0/Well.h"
+#include "witsml2_0/Wellbore.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -30,8 +31,9 @@ const char* WellboreFeature::XML_TAG = "WellboreFeature";
 
 WellboreFeature::WellboreFeature(COMMON_NS::DataObjectRepository* repo, const string & guid, const std::string & title)
 {
-	if (repo == nullptr)
+	if (repo == nullptr) {
 		throw invalid_argument("The repo cannot be null.");
+	}
 
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreFeature(repo->getGsoapContext(), 1);
 

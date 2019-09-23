@@ -19,12 +19,16 @@ under the License.
 #pragma once
 
 #include "witsml2_0/AbstractObject.h"
-#include "resqml2_0_1/WellboreFeature.h"
-#include "witsml2_0/WellboreCompletion.h"
-#include "witsml2_0/Trajectory.h"
+
+namespace RESQML2_0_1_NS {
+	class WellboreFeature;
+}
 
 namespace WITSML2_0_NS
 {
+	class Trajectory;
+	class WellboreCompletion;
+
 	class Wellbore : public WITSML2_0_NS::AbstractObject
 	{
 	public:
@@ -70,7 +74,20 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT std::vector<WellboreCompletion *> getWellboreCompletions() const;
 		DLL_IMPORT_OR_EXPORT std::vector<Trajectory *> getTrajectories() const;
 
-		DLL_IMPORT_OR_EXPORT void setShape(gsoap_eml2_1::witsml20__WellboreShape shape);
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Number);
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, SuffixAPI);
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, NumGovt);
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::eml21__WellStatus, StatusWellbore);
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(bool, IsActive);
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellPurpose, PurposeWellbore);
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellboreType, TypeWellbore);
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(gsoap_eml2_1::witsml20__WellboreShape, Shape);
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(bool, AchievedTD);
+		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(Md, gsoap_eml2_1::eml21__LengthUom);
+		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdBit, gsoap_eml2_1::eml21__LengthUom);
+		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdKickoff, gsoap_eml2_1::eml21__LengthUom);
+		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdPlanned, gsoap_eml2_1::eml21__LengthUom);
+		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdSubSeaPlanned, gsoap_eml2_1::eml21__LengthUom);
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}

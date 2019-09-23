@@ -100,6 +100,10 @@ under the License.
 #endif
 
 #include "witsml2_0/Well.h"
+#include "witsml2_0/Wellbore.h"
+#include "witsml2_0/Trajectory.h"
+#include "witsml2_0/WellCompletion.h"
+#include "witsml2_0/WellboreCompletion.h"
 
 #include "tools/GuidTools.h"
 
