@@ -20,6 +20,7 @@ under the License.
 
 #include <sstream>
 #include <stdexcept>
+#include <limits>
 
 #include "witsml2_0/Wellbore.h"
 
