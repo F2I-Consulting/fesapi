@@ -54,7 +54,7 @@ void MdDatumTest::initRepoHandler() {
 	// cleaning
 	delete crsTest;
 
-	MdDatum* mdDatum = repo->createMdDatum(defaultUuid, defaultTitle, crs, gsoap_resqml2_0_1::resqml2__MdReference__mean_x0020sea_x0020level, 275, 75, 0);
+	MdDatum* mdDatum = repo->createMdDatum(defaultUuid, defaultTitle, crs, gsoap_resqml2_0_1::resqml20__MdReference__mean_x0020sea_x0020level, 275, 75, 0);
 	REQUIRE(mdDatum != nullptr);
 }
 

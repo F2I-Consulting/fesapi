@@ -33,17 +33,17 @@ using namespace gsoap_resqml2_0_1;
 AbstractSurfaceFrameworkRepresentation::AbstractSurfaceFrameworkRepresentation() {}
 
 void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
-	gsoap_resqml2_0_1::resqml2__IdentityKind kind,
+	gsoap_resqml2_0_1::resqml20__IdentityKind kind,
 	unsigned int contactCount, int * contactIndices,
 	COMMON_NS::AbstractHdfProxy * proxy)
 {
-	resqml2__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml2__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
+	resqml20__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml20__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
-	resqml2__ContactIdentity * contactIdentity = soap_new_resqml2__ContactIdentity(gsoapProxy2_0_1->soap, 1);
+	resqml20__ContactIdentity * contactIdentity = soap_new_resqml20__ContactIdentity(gsoapProxy2_0_1->soap, 1);
 	contactIdentity->IdentityKind = kind;
 
 	// ListOfContactRepresentations handling
-	resqml2__IntegerHdf5Array * xmlListOfContactRepresentations = soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array * xmlListOfContactRepresentations = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
 	xmlListOfContactRepresentations->NullValue = (std::numeric_limits<unsigned int>::max)();
 	xmlListOfContactRepresentations->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
 	xmlListOfContactRepresentations->Values->HdfProxy = proxy->newResqmlReference();
@@ -62,17 +62,17 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 }
 
 void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
-	gsoap_resqml2_0_1::resqml2__IdentityKind kind,
+	gsoap_resqml2_0_1::resqml20__IdentityKind kind,
 	unsigned int contactCount, int * contactIndices,
 	unsigned int identicalNodesCount, int * identicalNodesIndexes, COMMON_NS::AbstractHdfProxy * proxy)
 {
-	resqml2__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml2__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
+	resqml20__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml20__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
-	resqml2__ContactIdentity * contactIdentity = soap_new_resqml2__ContactIdentity(gsoapProxy2_0_1->soap, 1);
+	resqml20__ContactIdentity * contactIdentity = soap_new_resqml20__ContactIdentity(gsoapProxy2_0_1->soap, 1);
 	contactIdentity->IdentityKind = kind;
 
 	// ListOfContactRepresentations handling
-	resqml2__IntegerHdf5Array * xmlListOfContactRepresentations = soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array * xmlListOfContactRepresentations = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
 	xmlListOfContactRepresentations->NullValue = (std::numeric_limits<unsigned int>::max)();
 	xmlListOfContactRepresentations->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
 	xmlListOfContactRepresentations->Values->HdfProxy = proxy->newResqmlReference();
@@ -88,7 +88,7 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 		dimContactRepresentations, 1);
 
 	// ListOfIdenticalNodes handling
-	resqml2__IntegerHdf5Array * xmlListOfIdenticalNodes = soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array * xmlListOfIdenticalNodes = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
 	xmlListOfIdenticalNodes->NullValue = (std::numeric_limits<unsigned int>::max)();
 	xmlListOfIdenticalNodes->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
 	xmlListOfIdenticalNodes->Values->HdfProxy = proxy->newResqmlReference();
@@ -108,7 +108,7 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 
 unsigned int AbstractSurfaceFrameworkRepresentation::getContactIdentityCount() const
 {
-	resqml2__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml2__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
+	resqml20__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml20__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
 	if (orgRep->ContactIdentity.size() > (std::numeric_limits<unsigned int>::max)()) {
 		throw range_error("There are too much contact identities in this surface framework");
@@ -117,9 +117,9 @@ unsigned int AbstractSurfaceFrameworkRepresentation::getContactIdentityCount() c
 	return static_cast<unsigned int>(orgRep->ContactIdentity.size());
 }
 
-gsoap_resqml2_0_1::resqml2__ContactIdentity* AbstractSurfaceFrameworkRepresentation::getContactIdentity(unsigned int ciIndex) const
+gsoap_resqml2_0_1::resqml20__ContactIdentity* AbstractSurfaceFrameworkRepresentation::getContactIdentity(unsigned int ciIndex) const
 {
-	resqml2__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml2__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
+	resqml20__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml20__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
 	if (ciIndex >= orgRep->ContactIdentity.size()) {
 		throw range_error("The index of the contact identity is out of range.");
@@ -128,7 +128,7 @@ gsoap_resqml2_0_1::resqml2__ContactIdentity* AbstractSurfaceFrameworkRepresentat
 	return orgRep->ContactIdentity[ciIndex];
 }
 
-gsoap_resqml2_0_1::resqml2__IdentityKind AbstractSurfaceFrameworkRepresentation::getContactIdentityKind(unsigned int ciIndex) const
+gsoap_resqml2_0_1::resqml20__IdentityKind AbstractSurfaceFrameworkRepresentation::getContactIdentityKind(unsigned int ciIndex) const
 {
 	return getContactIdentity(ciIndex)->IdentityKind;
 }

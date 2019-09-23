@@ -57,8 +57,8 @@ void CommentProperty::initRepoHandler() {
 	RESQML2_0_1_NS::CommentProperty* commentProperty = repo->createCommentProperty(
 		frame, defaultUuid, defaultTitle,
 		1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__nodes,
-		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind__length); // TODO : modify for a comment prop kind!!
+		gsoap_resqml2_0_1::resqml20__IndexableElements__nodes,
+		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length); // TODO : modify for a comment prop kind!!
 	REQUIRE(commentProperty != nullptr);
 	std::vector<string> values;
 	values.push_back("test0");
@@ -86,7 +86,7 @@ void CommentProperty::readRepoHandler() {
 	REQUIRE(commentProperty->getElementCountPerValue() == 1);
 
 	// getAttachmentKind
-	REQUIRE(commentProperty->getAttachmentKind() == gsoap_resqml2_0_1::resqml2__IndexableElements__nodes);
+	REQUIRE(commentProperty->getAttachmentKind() == gsoap_resqml2_0_1::resqml20__IndexableElements__nodes);
 
 	std::vector<string> values = commentProperty->getStringValuesOfPatch(0);
 	REQUIRE(values.size() == 5);

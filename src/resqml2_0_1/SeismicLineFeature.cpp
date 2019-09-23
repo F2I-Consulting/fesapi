@@ -33,8 +33,8 @@ SeismicLineFeature::SeismicLineFeature(COMMON_NS::DataObjectRepository* repo, co
 		throw invalid_argument("The soap context cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORESeismicLineFeature(repo->getGsoapContext(), 1);
-	_resqml2__SeismicLineFeature* seismicLine = static_cast<_resqml2__SeismicLineFeature*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESeismicLineFeature(repo->getGsoapContext(), 1);
+	_resqml20__SeismicLineFeature* seismicLine = static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1);
 
 	seismicLine->TraceIndexIncrement = traceIndexIncrement;
 	seismicLine->FirstTraceIndex = firstTraceIndex;
@@ -48,36 +48,36 @@ SeismicLineFeature::SeismicLineFeature(COMMON_NS::DataObjectRepository* repo, co
 
 int SeismicLineFeature::getTraceIndexIncrement() const
 {
-	return static_cast<_resqml2__SeismicLineFeature*>(gsoapProxy2_0_1)->TraceIndexIncrement;
+	return static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1)->TraceIndexIncrement;
 }
 		
 int SeismicLineFeature::getFirstTraceIndex() const
 {
-	return static_cast<_resqml2__SeismicLineFeature*>(gsoapProxy2_0_1)->FirstTraceIndex;
+	return static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1)->FirstTraceIndex;
 }
 		
 unsigned int SeismicLineFeature::getTraceCount() const
 {
-	return static_cast<_resqml2__SeismicLineFeature*>(gsoapProxy2_0_1)->TraceCount;
+	return static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1)->TraceCount;
 }
 
 void SeismicLineFeature::setSeismicLineSet(SeismicLineSetFeature * seisLineSet)
 {
 	getRepository()->addRelationship(this, seisLineSet);
 
-	static_cast<_resqml2__SeismicLineFeature*>(gsoapProxy2_0_1)->IsPartOf = seisLineSet->newResqmlReference();
+	static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1)->IsPartOf = seisLineSet->newResqmlReference();
 }
 
 SeismicLineSetFeature* SeismicLineFeature::getSeismicLineSet() const
 {
-	_resqml2__SeismicLineFeature* seismicLine = static_cast<_resqml2__SeismicLineFeature*>(gsoapProxy2_0_1);
+	_resqml20__SeismicLineFeature* seismicLine = static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1);
 
 	return seismicLine->IsPartOf == nullptr ? nullptr : getRepository()->getDataObjectByUuid<SeismicLineSetFeature>(seismicLine->IsPartOf->UUID);
 }
 
 void SeismicLineFeature::loadTargetRelationships()
 {
-	_resqml2__SeismicLineFeature* seismicLine = static_cast<_resqml2__SeismicLineFeature*>(gsoapProxy2_0_1);
+	_resqml20__SeismicLineFeature* seismicLine = static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1);
 
 	if (seismicLine->IsPartOf != nullptr) {
 		convertDorIntoRel<SeismicLineSetFeature>(seismicLine->IsPartOf);

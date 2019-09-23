@@ -24,24 +24,22 @@ import com.f2i.energisticsStandardsApi.LocalDepth3dCrsVector;
 import com.f2i.energisticsStandardsApi.SWIGTYPE_p_double;
 import com.f2i.energisticsStandardsApi.SWIGTYPE_p_unsigned_int;
 import com.f2i.energisticsStandardsApi.SWIGTYPE_p_unsigned_short;
-import com.f2i.energisticsStandardsApi.StringVector;
 import com.f2i.energisticsStandardsApi.eml20__LengthUom;
 import com.f2i.energisticsStandardsApi.eml21__LengthUom;
 import com.f2i.energisticsStandardsApi.eml21__WellboreDatumReference;
 import com.f2i.energisticsStandardsApi.fesapi;
 import com.f2i.energisticsStandardsApi.resqml2__IndexableElements;
-import com.f2i.energisticsStandardsApi.resqml2__InterpolationDomain;
-import com.f2i.energisticsStandardsApi.resqml2__InterpolationMethod;
 import com.f2i.energisticsStandardsApi.resqml2__ResqmlPropertyKind;
+import com.f2i.energisticsStandardsApi.resqml2.PropertySet;
 import com.f2i.energisticsStandardsApi.resqml2__ResqmlUom;
+import com.f2i.energisticsStandardsApi.resqml2__TimeSetKind;
 import com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractHdfProxy;
-import com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject;
 import com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.DataObjectRepository;
 import com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.EpcDocument;
-import com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.GraphicalInformationSet;
-import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.ContinuousColorMap;
-import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.DiscreteColorMap;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractRepresentation;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractValuesProperty;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.PropertyKind;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.AbstractIjkGridRepresentation;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.ContinuousProperty;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.DiscreteProperty;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.EarthModelInterpretation;
@@ -61,6 +59,8 @@ import com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Well;
 
 public class FesapiJavaExample {
 	private static Horizon horizon1;
+	private static IjkGridExplicitRepresentation ijkgrid;
+	private static PropertyKind cellIndexPropKind;
 
 	/**
 	 * Loading the FesapiCpp native library
@@ -291,144 +291,42 @@ public class FesapiJavaExample {
 			fesapi.delete_DoubleArray(prop1Values);
 		}
 	}
-
-	private static void serializeGraphicalInformationSet(DataObjectRepository repo, AbstractHdfProxy hdfProxy)
+	
+	private static void serializeIjkGrid(DataObjectRepository repo, AbstractHdfProxy hdfProxy)
 	{
-		GraphicalInformationSet graphicalInformationSet = repo.createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
-
-		// *************
-		// Default color
-		// *************
-
-		// horizon1 representation is red
-		graphicalInformationSet.setDefaultHsvColor(horizon1, 0., 1., 1., 1., "red");
-
-		// ******************
-		// Discrete color map
-		// ******************
-
-		// associating a discrete color map to dicreteProp1
-		DiscreteColorMap discrColMap = repo.createDiscreteColorMap("3daf4661-ae8f-4357-adee-0b0159bdd0a9", "Discrete color map");
-		SWIGTYPE_p_unsigned_int discrColMapRgbColors = fesapi.new_UIntArray(18);
-		SWIGTYPE_p_double discrColMapAlphas = fesapi.new_DoubleArray(6);
-		try {
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 0, 255);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 1, 0);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 2, 0);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 3, 0);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 4, 255);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 5, 0);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 6, 0);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 7, 0);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 8, 255);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 9, 169);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 10, 84);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 11, 27);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 12, 0);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 13, 0);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 14, 0);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 15, 255);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 16, 255);
-			fesapi.UIntArray_setitem(discrColMapRgbColors, 17, 255);
-
-			fesapi.DoubleArray_setitem(discrColMapAlphas, 0, 1.);
-			fesapi.DoubleArray_setitem(discrColMapAlphas, 1, 1.);
-			fesapi.DoubleArray_setitem(discrColMapAlphas, 2, 1.);
-			fesapi.DoubleArray_setitem(discrColMapAlphas, 3, 1.);
-			fesapi.DoubleArray_setitem(discrColMapAlphas, 4, 1.);
-			fesapi.DoubleArray_setitem(discrColMapAlphas, 5, 1.);
-
-			StringVector discrColMapTitles = new StringVector();
-			discrColMapTitles.add("red");
-			discrColMapTitles.add("green");
-			discrColMapTitles.add("blue");
-			discrColMapTitles.add("orange");
-			discrColMapTitles.add("black");
-			discrColMapTitles.add("white");
-
-			discrColMap.setRgbColors(6, discrColMapRgbColors, discrColMapAlphas, discrColMapTitles);
-		}
-		finally {
-			fesapi.delete_UIntArray(discrColMapRgbColors);
-			fesapi.delete_DoubleArray(discrColMapAlphas);
-		}
-
-		PropertyKind propType1 = repo.createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", resqml2__ResqmlUom.resqml2__ResqmlUom__Euc, resqml2__ResqmlPropertyKind.resqml2__ResqmlPropertyKind__discrete);
+		cellIndexPropKind = repo.createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", resqml2__ResqmlUom.resqml2__ResqmlUom__Euc, resqml2__ResqmlPropertyKind.resqml2__ResqmlPropertyKind__discrete);
 		OrganizationFeature earthModel = repo.createEarthModel("f2060ce0-fa3d-11e5-8620-0002a5d5c51b", "Grid");
 		EarthModelInterpretation earthModelInterp = repo.createEarthModelInterpretation(earthModel, "f5cd7520-fa3d-11e5-b65b-0002a5d5c51b", "Grid interp");
-		IjkGridExplicitRepresentation ijkgrid = repo.createIjkGridExplicitRepresentation(earthModelInterp, "df2103a0-fa3d-11e5-b8d4-0002a5d5c51b", "Two faulted sugar cubes (explicit geometry)", 2, 1, 1);
+		ijkgrid = repo.createIjkGridExplicitRepresentation(earthModelInterp, "df2103a0-fa3d-11e5-b8d4-0002a5d5c51b", "Two faulted sugar cubes (explicit geometry)", 2, 1, 1);
 		DiscreteProperty discreteProp1 = repo.createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
-				resqml2__IndexableElements.resqml2__IndexableElements__cells, propType1);
+				resqml2__IndexableElements.resqml2__IndexableElements__cells, cellIndexPropKind);
 
-		SWIGTYPE_p_unsigned_short prop1Values = fesapi.new_UShortArray(2);
+		SWIGTYPE_p_unsigned_short propValues = fesapi.new_UShortArray(2);
 		try {
-			fesapi.UShortArray_setitem(prop1Values, 0, 0);
-			fesapi.UShortArray_setitem(prop1Values, 1, 1);
-			discreteProp1.pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
+			fesapi.UShortArray_setitem(propValues, 0, 0);
+			fesapi.UShortArray_setitem(propValues, 1, 1);
+			discreteProp1.pushBackUShortHdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
 		}
 		finally {
-			fesapi.delete_UShortArray(prop1Values);
+			fesapi.delete_UShortArray(propValues);
 		}
+			
+		DiscreteProperty discreteProp2 = repo.createDiscreteProperty(ijkgrid, "", "Two faulted sugar cubes other cellIndex", 1,
+				resqml2__IndexableElements.resqml2__IndexableElements__cells, cellIndexPropKind);
 
-		graphicalInformationSet.setDiscreteColorMap(discreteProp1, discrColMap);
-
-
-		// ********************
-		// Continuous color map
-		// ********************
-
-		Horizon contColMapHrz = repo.createHorizon("b9ec6ec9-2766-4af7-889e-5565b5fa5022", "Horizon for continuous color map");
-		HorizonInterpretation contColMapHrzInterp = repo.createHorizonInterpretation(contColMapHrz, "34b69c81-6cfa-4531-be5b-f6bd9b74802f", "Horizon interpretation for continuous color map");
-		Grid2dRepresentation contColMapGrid2dRep = repo.createGrid2dRepresentation(contColMapHrzInterp, "4e56b0e4-2cd1-4efa-97dd-95f72bcf9f80", "100x10 grid 2d for continuous color map");
-		int numPointInFastestDirection = 50;
-		int numPointsInSlowestDirection = 100;
-		contColMapGrid2dRep.setGeometryAsArray2dOfLatticePoints3d(numPointInFastestDirection, numPointsInSlowestDirection,
-				0., 0., 0.,
-				1., 0., 0.,
-				0., 1., 0.,
-				1., 1.);
-
-		ContinuousProperty contColMapContProp = repo.createContinuousProperty(contColMapGrid2dRep, "c2be50b6-08d2-461b-81a4-73dbb04ba605", "Continuous property for continuous color map", 2,
-				resqml2__IndexableElements.resqml2__IndexableElements__nodes, "continuousColorMapIndex", resqml2__ResqmlPropertyKind.resqml2__ResqmlPropertyKind__continuous);
-		SWIGTYPE_p_double values = fesapi.new_DoubleArray(numPointInFastestDirection * numPointsInSlowestDirection);
+		propValues = fesapi.new_UShortArray(2);
 		try {
-			for (int slowestIndex = 0; slowestIndex < numPointsInSlowestDirection; ++slowestIndex) {
-				for (int fastestIndex = 0; fastestIndex < numPointInFastestDirection; ++fastestIndex) {
-					fesapi.DoubleArray_setitem(values, fastestIndex + slowestIndex * numPointInFastestDirection, fastestIndex * (1. / (numPointInFastestDirection - 1)));
-				}
-			}
+			fesapi.UShortArray_setitem(propValues, 0, 10);
+			fesapi.UShortArray_setitem(propValues, 1, 11);
+			discreteProp2.pushBackUShortHdf5Array3dOfValues(propValues, 2, 1, 1, hdfProxy, 1111);
 		}
 		finally {
-			fesapi.delete_DoubleArray(values);
+			fesapi.delete_UShortArray(propValues);
 		}
-		contColMapContProp.pushBackDoubleHdf5Array2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
-
-		ContinuousColorMap contColMap = repo.createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", resqml2__InterpolationDomain.resqml2__InterpolationDomain__rgb, resqml2__InterpolationMethod.resqml2__InterpolationMethod__linear);
-		SWIGTYPE_p_unsigned_int contColMapRgbColors = fesapi.new_UIntArray(6);
-		SWIGTYPE_p_double contColMapAlphas = fesapi.new_DoubleArray(2);
-		try {
-			fesapi.UIntArray_setitem(contColMapRgbColors, 0, 0);
-			fesapi.UIntArray_setitem(contColMapRgbColors, 1, 255);
-			fesapi.UIntArray_setitem(contColMapRgbColors, 2, 0);
-			fesapi.UIntArray_setitem(contColMapRgbColors, 3, 255);
-			fesapi.UIntArray_setitem(contColMapRgbColors, 4, 0);
-			fesapi.UIntArray_setitem(contColMapRgbColors, 5, 0);
-
-			fesapi.DoubleArray_setitem(contColMapAlphas, 0, 1.);
-			fesapi.DoubleArray_setitem(contColMapAlphas, 1, 1.);
-
-			StringVector contColMapColTitles = new StringVector();
-			contColMapColTitles.add("green");
-			contColMapColTitles.add("red");
-
-			contColMap.setRgbColors(2, contColMapRgbColors, contColMapAlphas, contColMapColTitles);
-		}
-		finally {
-			fesapi.delete_UIntArray(contColMapRgbColors);
-			fesapi.delete_DoubleArray(contColMapAlphas);
-		}
-
-		graphicalInformationSet.setContinuousColorMap(contColMapContProp, contColMap);
+		
+		PropertySet propSet = repo.createPropertySet("", "Testing property set", false, true, resqml2__TimeSetKind.resqml2__TimeSetKind__not_x0020a_x0020time_x0020set);
+		propSet.pushBackProperty(discreteProp1);
+		propSet.pushBackProperty(discreteProp2);
 	}
 
 	private static void serialize()
@@ -446,9 +344,8 @@ public class FesapiJavaExample {
 			AbstractHdfProxy hdfProxy = repo.createHdfProxy("", "Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5", DataObjectRepository.openingMode.OVERWRITE);
 			repo.setDefaultHdfProxy(hdfProxy);
 
-			serializeBoundaries(repo, hdfProxy);
-
-			serializeGraphicalInformationSet(repo, hdfProxy);
+			serializeBoundaries(repo, hdfProxy);			
+			serializeIjkGrid(repo, hdfProxy);
 
 			pck.serializeFrom(repo);
 		}
@@ -523,64 +420,42 @@ public class FesapiJavaExample {
 			{
 				System.out.println("\ttimeZone : " + witsmlWell.getTimeZoneHours() + " hours");
 			}
+			
+			deserializeIjkGrid(repo);
 
-			System.out.println("GRAPHICAL INFORMATIONS");
-			GraphicalInformationSet graphicalInformationSet = (GraphicalInformationSet) repo.getDataObjectByUuid("be17c053-9189-4bc0-9db1-75aa51a026cd");
-			for (int i = 0; i < graphicalInformationSet.getGraphicalInformationSetCount(); ++i)
-			{
-				AbstractObject targetObject = graphicalInformationSet.getTargetObject(i);
-
-				System.out.println("graphical information for: " + targetObject.getTitle());
-
-				if (graphicalInformationSet.hasDefaultColor(targetObject)) {
-					System.out.println("default hue: " + graphicalInformationSet.getDefaultHue(targetObject));
-					System.out.println("default saturation: " + graphicalInformationSet.getDefaultSaturation(targetObject));
-					System.out.println("default value: " + graphicalInformationSet.getDefaultValue(targetObject));
-					System.out.println("default alpha: " + graphicalInformationSet.getDefaultAlpha(targetObject));
-					if (graphicalInformationSet.hasDefaultColorTitle(targetObject)) {
-						System.out.println("default color title: " + graphicalInformationSet.getDefaultColorTitle(targetObject));
-					}
-				}
-
-				if (graphicalInformationSet.hasDiscreteColorMap(targetObject)) {
-					DiscreteColorMap discreteColorMap = graphicalInformationSet.getDiscreteColorMap(targetObject);
-					System.out.println("discrete color map title: " + discreteColorMap.getTitle());
-					SWIGTYPE_p_unsigned_int r = fesapi.new_UIntArray(1);
-					SWIGTYPE_p_unsigned_int g = fesapi.new_UIntArray(1);
-					SWIGTYPE_p_unsigned_int b = fesapi.new_UIntArray(1);
-					for (int colorIndex = 0; colorIndex < discreteColorMap.getColorCount(); ++colorIndex) {
-						discreteColorMap.getRgbColor(colorIndex, r, g, b);
-						System.out.print(colorIndex  + ": (" + fesapi.UIntArray_getitem(r, 0) + ", " + fesapi.UIntArray_getitem(g, 0) + ", " + fesapi.UIntArray_getitem(b, 0) + ", ");
-						System.out.print(discreteColorMap.getAlpha(colorIndex));
-						if (discreteColorMap.hasColorTitle(colorIndex)) {
-							System.out.print(", " + discreteColorMap.getColorTitle(colorIndex));
-						}
-						System.out.println(")");
-					}
-				}
-
-				if (graphicalInformationSet.hasContinuousColorMap(targetObject)) {
-					ContinuousColorMap continuousColorMap = graphicalInformationSet.getContinuousColorMap(targetObject);
-					System.out.println("continuous color map title: " + continuousColorMap.getTitle());
-					SWIGTYPE_p_double r = fesapi.new_DoubleArray(1);
-					SWIGTYPE_p_double g = fesapi.new_DoubleArray(1);
-					SWIGTYPE_p_double b = fesapi.new_DoubleArray(1);
-
-					for (int colorIndex = 0; colorIndex < continuousColorMap.getColorCount(); ++colorIndex) {
-						continuousColorMap.getRgbColor(colorIndex, r, g, b);
-						System.out.print(colorIndex + ": (" + fesapi.DoubleArray_getitem(r, 0) + ", " + fesapi.DoubleArray_getitem(g, 0) + ", " + fesapi.DoubleArray_getitem(b, 0) + ", ");
-						System.out.print(continuousColorMap.getAlpha(colorIndex));
-						if (continuousColorMap.hasColorTitle(colorIndex)) {
-							System.out.print(", " + continuousColorMap.getColorTitle(colorIndex));
-						}
-						System.out.println(")");
-					}
-				}
-			}	
 		}
 		finally {
 			pck.close();
 			repo.clear();
+		}
+	}
+	
+	private static void showAllProperties(AbstractRepresentation rep)
+	{
+		long propCount = rep.getValuesPropertyCount();
+		if (propCount > 0) {
+			System.out.println("PROPERTIES");
+		}
+		for (long propIndex = 0; propIndex < propCount; ++propIndex) {
+			AbstractValuesProperty propVal = rep.getValuesProperty(propIndex);
+			System.out.println("\tProperty : " + propVal.getTitle());
+
+			long propSetCount = propVal.getPropertySetCount();
+			for (long propSetIndex = 0; propSetIndex < propSetCount; ++propSetIndex) {
+				PropertySet propSet = propVal.getPropertySet(propSetIndex);
+				System.out.println("\tContained in property set : " + propSet.getTitle());
+			}
+		}
+	}
+
+	private static void deserializeIjkGrid(DataObjectRepository repo) {
+		System.out.println("IJK GRID REP");
+		long ijkGridCount = repo.getIjkGridRepresentationCount();
+		for (long ijkGridIdx = 0; ijkGridIdx < ijkGridCount; ++ijkGridIdx)
+		{
+			AbstractIjkGridRepresentation ijkGrid = repo.getIjkGridRepresentation(ijkGridIdx);
+			System.out.println("\tIjk Grid : " + ijkGrid.getTitle());
+			showAllProperties(ijkGrid);
 		}
 	}
 

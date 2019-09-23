@@ -32,12 +32,12 @@ namespace RESQML2_0_1_NS
 		*/
 		void init(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 
-		gsoap_resqml2_0_1::_resqml2__SubRepresentation* getSpecializedGsoapProxy() const;
+		gsoap_resqml2_0_1::_resqml20__SubRepresentation* getSpecializedGsoapProxy() const;
 
 		/**
 		* Get a patch of the current subrepresentation at a particluar index.
 		*/
-		gsoap_resqml2_0_1::resqml2__SubRepresentationPatch* getSubRepresentationPatch(const unsigned int & index) const;
+		gsoap_resqml2_0_1::resqml20__SubRepresentationPatch* getSubRepresentationPatch(const unsigned int & index) const;
 
 		/**
 		* Push back a representation which is one of the support of this subrepresentation.
@@ -75,7 +75,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		SubRepresentation(gsoap_resqml2_0_1::_resqml2__SubRepresentation* fromGsoap) : RESQML2_NS::SubRepresentation(fromGsoap) {}
+		SubRepresentation(gsoap_resqml2_0_1::_resqml20__SubRepresentation* fromGsoap) : RESQML2_NS::SubRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -130,7 +130,7 @@ namespace RESQML2_0_1_NS
 		* @param elementCountInMiddleDimension		Commonly in J dimensionn.
 		* @param elementCountInFastestDimension		Commonly in I dimension.
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & originIndex,
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml20__IndexableElements & elementKind, const ULONG64 & originIndex,
 			const unsigned int & elementCountInSlowestDimension,
 			const unsigned int & elementCountInMiddleDimension,
 			const unsigned int & elementCountInFastestDimension);
@@ -143,7 +143,7 @@ namespace RESQML2_0_1_NS
         * @param	proxy					The HDF proxy where the numerical values (indices) are stored.
 		* @param	supportingRepIndices	The indices of the supporting represenation for each elment in the supporting representation. The count must be elementCount.
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, ULONG64 * elementIndices, COMMON_NS::AbstractHdfProxy* proxy, short * supportingRepIndices = nullptr);
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml20__IndexableElements & elementKind, const ULONG64 & elementCount, ULONG64 * elementIndices, COMMON_NS::AbstractHdfProxy* proxy, short * supportingRepIndices = nullptr);
 
 		/**
 		* Push back a new patch in the subrepresentation which is constituted by means of pairwise elements.
@@ -154,7 +154,7 @@ namespace RESQML2_0_1_NS
 		* @param elementIndices1	The indices of the second part of the element pair in the supporting representation.
         * @param proxy				The HDF proxy where the numerical values (indices) are stored.
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind0, const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind1,
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml20__IndexableElements & elementKind0, const gsoap_resqml2_0_1::resqml20__IndexableElements & elementKind1,
 			const ULONG64 & elementCount,
 			ULONG64 * elementIndices0, ULONG64 * elementIndices1,
 			COMMON_NS::AbstractHdfProxy* proxy);
@@ -169,7 +169,7 @@ namespace RESQML2_0_1_NS
 		* @param	hdfProxy				The HDF5 proxy where the values are already or will be stored.
 		* @param	supportingRepDataset	The HDF5 dataset name where the element indices are stored. If empty, it won't be exported any information about suppporting rep relying on the fact there is only one suppporting rep for this whole patch.
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackRefToExistingDataset(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, const std::string & elementDataset,
+		DLL_IMPORT_OR_EXPORT void pushBackRefToExistingDataset(const gsoap_resqml2_0_1::resqml20__IndexableElements & elementKind, const ULONG64 & elementCount, const std::string & elementDataset,
 			const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset = "");
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const;

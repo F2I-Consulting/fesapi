@@ -40,7 +40,7 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		MdDatum(gsoap_resqml2_0_1::_resqml2__MdDatum* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		MdDatum(gsoap_resqml2_0_1::_resqml20__MdDatum* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 	public:
 
@@ -98,7 +98,7 @@ namespace RESQML2_NS
 		/**
 		* Getter of the origin kind of the MD.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::resqml2__MdReference getOriginKind() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::resqml20__MdReference getOriginKind() const = 0;
 
 		void loadTargetRelationships();
 

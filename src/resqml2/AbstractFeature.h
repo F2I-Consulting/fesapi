@@ -43,7 +43,7 @@ namespace RESQML2_NS
 		* Creates an instance of this class by wrapping a gsoap instance.
 		* @param fromGsoap	The gsoap proxy which shold be wrapped by the constructed feature.
 		*/
-		AbstractFeature(gsoap_resqml2_0_1::resqml2__AbstractFeature* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		AbstractFeature(gsoap_resqml2_0_1::resqml20__AbstractFeature* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

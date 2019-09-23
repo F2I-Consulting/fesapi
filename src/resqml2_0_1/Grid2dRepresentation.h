@@ -25,8 +25,8 @@ namespace RESQML2_0_1_NS
 	class Grid2dRepresentation : public AbstractSurfaceRepresentation
 	{
 	private :
-		gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
-		gsoap_resqml2_0_1::resqml2__Point3dLatticeArray* getArrayLatticeOfPoints3d() const;
+		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
+		gsoap_resqml2_0_1::resqml20__Point3dLatticeArray* getArrayLatticeOfPoints3d() const;
 
 		/**
 		* Get a component of an XYZ structure.
@@ -56,7 +56,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		Grid2dRepresentation(gsoap_resqml2_0_1::_resqml2__Grid2dRepresentation* fromGsoap): AbstractSurfaceRepresentation(fromGsoap) {}
+		Grid2dRepresentation(gsoap_resqml2_0_1::_resqml20__Grid2dRepresentation* fromGsoap): AbstractSurfaceRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

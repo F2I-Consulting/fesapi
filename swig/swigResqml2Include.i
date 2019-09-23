@@ -64,6 +64,7 @@ namespace RESQML2_NS
 	%nspace RESQML2_NS::GridConnectionSetRepresentation;
 	%nspace RESQML2_NS::MdDatum;
 	%nspace RESQML2_NS::PropertyKind;
+	%nspace RESQML2_NS::PropertySet;
 	%nspace RESQML2_NS::RepresentationSetRepresentation;
 	%nspace RESQML2_NS::SubRepresentation;
 	%nspace RESQML2_NS::TimeSeries;
@@ -71,10 +72,15 @@ namespace RESQML2_NS
 
 namespace gsoap_resqml2_0_1
 {
-	enum resqml2__PillarShape {
-		resqml2__PillarShape__vertical = 0,
-		resqml2__PillarShape__straight = 1,
-		resqml2__PillarShape__curved = 2
+	enum resqml20__PillarShape {
+		resqml20__PillarShape__vertical = 0,
+		resqml20__PillarShape__straight = 1,
+		resqml20__PillarShape__curved = 2
+	};
+	enum resqml20__TimeSetKind {
+		resqml20__TimeSetKind__single_x0020time = 0,
+		resqml20__TimeSetKind__equivalent_x0020times = 1,
+		resqml20__TimeSetKind__not_x0020a_x0020time_x0020set = 2
 	};
 }
 
@@ -181,7 +187,7 @@ namespace RESQML2_NS
 		virtual double getZ() const = 0;
 		virtual double getZInGlobalCrs() const = 0;
 		
-		virtual gsoap_resqml2_0_1::resqml2__MdReference getOriginKind() const = 0;
+		virtual gsoap_resqml2_0_1::resqml20__MdReference getOriginKind() const = 0;
 	};
 
 	class AbstractFeatureInterpretation;
@@ -201,8 +207,8 @@ namespace RESQML2_NS
 		AbstractRepresentation* 	getRepresentation(const unsigned int & index) const;
 		std::string 						getInterpretedFeatureUuid() const;
 		
-		const gsoap_resqml2_0_1::resqml2__Domain & initDomain(const gsoap_resqml2_0_1::resqml2__Domain & defaultDomain) const;
-		gsoap_resqml2_0_1::resqml2__Domain getDomain() const;
+		const gsoap_resqml2_0_1::resqml20__Domain & initDomain(const gsoap_resqml2_0_1::resqml20__Domain & defaultDomain) const;
+		gsoap_resqml2_0_1::resqml20__Domain getDomain() const;
 	};
 	
 	class AbstractValuesProperty;
@@ -264,12 +270,12 @@ namespace RESQML2_NS
 	class SubRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
-		void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & originIndex, 
+		void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml20__IndexableElements & elementKind, const ULONG64 & originIndex, 
 			const unsigned int & elementCountInSlowestDimension,
 			const unsigned int & elementCountInMiddleDimension,
 			const unsigned int & elementCountInFastestDimension);
-		void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind, const ULONG64 & elementCount, ULONG64 * elementIndices, COMMON_NS::AbstractHdfProxy * proxy, short * supportingRepIndices = nullptr);
-		void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind0, const gsoap_resqml2_0_1::resqml2__IndexableElements & elementKind1,
+		void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml20__IndexableElements & elementKind, const ULONG64 & elementCount, ULONG64 * elementIndices, COMMON_NS::AbstractHdfProxy * proxy, short * supportingRepIndices = nullptr);
+		void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml20__IndexableElements & elementKind0, const gsoap_resqml2_0_1::resqml20__IndexableElements & elementKind1,
 			const ULONG64 & elementCount,
 			ULONG64 * elementIndices0, ULONG64 * elementIndices1,
 			COMMON_NS::AbstractHdfProxy * proxy);
@@ -375,7 +381,7 @@ namespace RESQML2_NS
 		RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* getStratigraphicOrganizationInterpretation() const;
 		bool hasIntervalStratigraphicUnitIndices() const;
 		ULONG64 getIntervalStratigraphicUnitIndices(ULONG64 * stratiUnitIndices);
-		gsoap_resqml2_0_1::resqml2__PillarShape getMostComplexPillarGeometry() const;
+		gsoap_resqml2_0_1::resqml20__PillarShape getMostComplexPillarGeometry() const;
 	};
 	
 	class GridConnectionSetRepresentation : public RESQML2_NS::AbstractRepresentation
@@ -418,8 +424,28 @@ namespace RESQML2_NS
 	public:
 		const std::string & getNamingSystem() const;
 		
-		const gsoap_resqml2_0_1::resqml2__ResqmlUom & getUom() const;
+		const gsoap_resqml2_0_1::resqml20__ResqmlUom & getUom() const;
 		std::string getUomAsString() const;
+	};
+	
+	class PropertySet : public COMMON_NS::AbstractObject
+	{
+	public:
+		void setParent(PropertySet * parent);
+		std::string getParentUuid() const;
+		PropertySet * getParent() const;
+
+		unsigned int getChildrenCount() const;
+		PropertySet* getChildren(unsigned int index) const;
+
+		void pushBackProperty(RESQML2_NS::AbstractProperty * prop);
+
+		unsigned int getPropertyCount() const;
+		RESQML2_NS::AbstractProperty* getProperty(unsigned int index) const;
+
+		virtual bool hasMultipleRealizations() const = 0;
+		virtual bool hasSinglePropertyKind() const = 0;
+		virtual gsoap_resqml2_0_1::resqml20__TimeSetKind getTimeSetKind() const = 0;
 	};
 	
 	class TimeSeries : public COMMON_NS::AbstractObject
@@ -442,14 +468,18 @@ namespace RESQML2_NS
 		std::string getPropertyKindAsString() const;
 		std::string getPropertyKindParentAsString() const;
 		bool isAssociatedToOneStandardEnergisticsPropertyKind() const;
-		gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind getEnergisticsPropertyKind() const;
+		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getEnergisticsPropertyKind() const;
 		
 		std::string getLocalPropertyKindUuid() const;
 		PropertyKind* getLocalPropertyKind() const;
 		
 		unsigned int getElementCountPerValue() const;
 		
-		gsoap_resqml2_0_1::resqml2__IndexableElements getAttachmentKind() const;
+		gsoap_resqml2_0_1::resqml20__IndexableElements getAttachmentKind() const;
+		
+		std::vector<RESQML2_NS::PropertySet *> getPropertySets() const;
+		unsigned int getPropertySetCount() const;
+		RESQML2_NS::PropertySet * getPropertySet(unsigned int index) const;
 		
 		bool hasRealizationIndex() const;
 		ULONG64 getRealizationIndex() const;
@@ -510,11 +540,11 @@ namespace RESQML2_NS
 
 		unsigned int getDimensionsCountOfPatch(unsigned int patchIndex) const;
 
-		void pushBackFacet(const gsoap_resqml2_0_1::resqml2__Facet & facet, const std::string & facetValue);
+		void pushBackFacet(const gsoap_resqml2_0_1::resqml20__Facet & facet, const std::string & facetValue);
 
 		unsigned int getFacetCount() const const;
 
-		gsoap_resqml2_0_1::resqml2__Facet getFacet(unsigned int index) const const;
+		gsoap_resqml2_0_1::resqml20__Facet getFacet(unsigned int index) const const;
 
 		std::string getFacetValue(unsigned int index) const;
 

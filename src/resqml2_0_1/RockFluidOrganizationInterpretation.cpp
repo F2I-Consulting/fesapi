@@ -37,13 +37,13 @@ RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(Organiz
 	if (orgFeat == nullptr) {
 		throw invalid_argument("The interpreted organization feature cannot be null.");
 	}
-	if (!orgFeat->isPartial() && orgFeat->getKind() != gsoap_resqml2_0_1::resqml2__OrganizationKind__fluid) {
+	if (!orgFeat->isPartial() && orgFeat->getKind() != gsoap_resqml2_0_1::resqml20__OrganizationKind__fluid) {
 		throw invalid_argument("The kind of the organization feature is not a fluid organization.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORERockFluidOrganizationInterpretation(orgFeat->getGsoapContext(), 1);
-	_resqml2__RockFluidOrganizationInterpretation* rfoi = static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1);
-	rfoi->RockFluidUnitIndex = soap_new_resqml2__RockFluidUnitInterpretationIndex(orgFeat->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERockFluidOrganizationInterpretation(orgFeat->getGsoapContext(), 1);
+	_resqml20__RockFluidOrganizationInterpretation* rfoi = static_cast<_resqml20__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1);
+	rfoi->RockFluidUnitIndex = soap_new_resqml20__RockFluidUnitInterpretationIndex(orgFeat->getGsoapContext(), 1);
 	// No need to initialize index since it is a bug : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html
 	pushBackRockFluidUnitInterpretation(rockFluidUnitInterp);
 
@@ -87,17 +87,17 @@ bool RockFluidOrganizationInterpretation::isAssociatedToGridRepresentation(RESQM
 
 void RockFluidOrganizationInterpretation::pushBackRockFluidUnitInterpretation(RockFluidUnitInterpretation * rockFluidUnitInterpretation)
 {
-	if (static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit != nullptr) {
+	if (static_cast<_resqml20__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit != nullptr) {
 		throw logic_error("Fesapi for now only supports one unit in a Rock fluid organization");
 	}
 
-	static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit = rockFluidUnitInterpretation->newResqmlReference();
+	static_cast<_resqml20__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit = rockFluidUnitInterpretation->newResqmlReference();
 }
 
 // For now cannot really count cause of the bug http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html
 unsigned int RockFluidOrganizationInterpretation::getRockFluidUnitInterpCount() const
 {
-	return static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit != nullptr ? 1 : 0;
+	return static_cast<_resqml20__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit != nullptr ? 1 : 0;
 }
 
 RockFluidUnitInterpretation* RockFluidOrganizationInterpretation::getRockFluidUnitInterpretation(unsigned int index) const
@@ -106,14 +106,14 @@ RockFluidUnitInterpretation* RockFluidOrganizationInterpretation::getRockFluidUn
 		throw range_error("The index is out of range");
 	}
 
-	return repository->getDataObjectByUuid<RockFluidUnitInterpretation>(static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit->UUID);
+	return repository->getDataObjectByUuid<RockFluidUnitInterpretation>(static_cast<_resqml20__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit->UUID);
 }
 
 void RockFluidOrganizationInterpretation::loadTargetRelationships()
 {
 	AbstractOrganizationInterpretation::loadTargetRelationships();
 
-	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = static_cast<_resqml2__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit;
+	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = static_cast<_resqml20__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit;
 	if (dor != nullptr) {
 		convertDorIntoRel<RockFluidUnitInterpretation>(dor);
 	}

@@ -33,8 +33,8 @@ GeobodyInterpretation::GeobodyInterpretation(GeobodyFeature * feature, const str
 	if (!feature)
 		throw invalid_argument("The interpreted feature cannot be null.");
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREGeobodyInterpretation(feature->getGsoapContext(), 1);
-	static_cast<_resqml2__GeobodyInterpretation*>(gsoapProxy2_0_1)->Domain = resqml2__Domain__mixed;
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGeobodyInterpretation(feature->getGsoapContext(), 1);
+	static_cast<_resqml20__GeobodyInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -42,12 +42,12 @@ GeobodyInterpretation::GeobodyInterpretation(GeobodyFeature * feature, const str
 	setInterpretedFeature(feature);
 }
 
-void GeobodyInterpretation::set3dShape(gsoap_resqml2_0_1::resqml2__Geobody3dShape geobody3dShape)
+void GeobodyInterpretation::set3dShape(gsoap_resqml2_0_1::resqml20__Geobody3dShape geobody3dShape)
 {
-	_resqml2__GeobodyInterpretation* interp = static_cast<_resqml2__GeobodyInterpretation*>(gsoapProxy2_0_1);
+	_resqml20__GeobodyInterpretation* interp = static_cast<_resqml20__GeobodyInterpretation*>(gsoapProxy2_0_1);
 
 	if (!has3dShape()) {
-		interp->Geobody3dShape = static_cast<gsoap_resqml2_0_1::resqml2__Geobody3dShape*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(gsoap_resqml2_0_1::resqml2__Geobody3dShape)));
+		interp->Geobody3dShape = static_cast<gsoap_resqml2_0_1::resqml20__Geobody3dShape*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(gsoap_resqml2_0_1::resqml20__Geobody3dShape)));
 	}
 
 	*interp->Geobody3dShape = geobody3dShape;
@@ -55,15 +55,15 @@ void GeobodyInterpretation::set3dShape(gsoap_resqml2_0_1::resqml2__Geobody3dShap
 
 bool GeobodyInterpretation::has3dShape() const
 {
-	return static_cast<_resqml2__GeobodyInterpretation*>(gsoapProxy2_0_1)->Geobody3dShape != nullptr;
+	return static_cast<_resqml20__GeobodyInterpretation*>(gsoapProxy2_0_1)->Geobody3dShape != nullptr;
 }
 
-gsoap_resqml2_0_1::resqml2__Geobody3dShape GeobodyInterpretation::get3dShape() const
+gsoap_resqml2_0_1::resqml20__Geobody3dShape GeobodyInterpretation::get3dShape() const
 {
 	if (!has3dShape()) {
 		throw invalid_argument("The geobody interpretation has not any 3d shape.");
 	}
 
-	return *static_cast<_resqml2__GeobodyInterpretation*>(gsoapProxy2_0_1)->Geobody3dShape;
+	return *static_cast<_resqml20__GeobodyInterpretation*>(gsoapProxy2_0_1)->Geobody3dShape;
 }
 

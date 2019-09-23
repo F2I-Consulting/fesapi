@@ -63,7 +63,7 @@ void DiscretePropertyOnLgr::initRepoHandler() {
 	RESQML2_0_1_NS::DiscreteProperty* discreteProperty = repo->createDiscreteProperty(
 		frame, defaultUuid, defaultTitle,
 		1,
-		gsoap_resqml2_0_1::resqml2__IndexableElements__intervals,
+		gsoap_resqml2_0_1::resqml20__IndexableElements__intervals,
 		propertyKind);
 	REQUIRE(discreteProperty != nullptr);
 	int values[5] = { 0, 1, 2, 3 };
@@ -89,7 +89,7 @@ void DiscretePropertyOnLgr::readRepoHandler() {
 	REQUIRE(discreteProperty->getElementCountPerValue() == 1);
 
 	// getAttachmentKind
-	REQUIRE(discreteProperty->getAttachmentKind() == gsoap_resqml2_0_1::resqml2__IndexableElements__intervals);
+	REQUIRE(discreteProperty->getAttachmentKind() == gsoap_resqml2_0_1::resqml20__IndexableElements__intervals);
 
 	// getEnergisticsPropertyKind
 	REQUIRE_FALSE(discreteProperty->isAssociatedToOneStandardEnergisticsPropertyKind());

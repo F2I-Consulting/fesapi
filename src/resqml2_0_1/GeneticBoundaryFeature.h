@@ -48,7 +48,7 @@ namespace RESQML2_0_1_NS
 		*/
 		GeneticBoundaryFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, bool isAnHorizon);
 
-		GeneticBoundaryFeature(gsoap_resqml2_0_1::_resqml2__GeneticBoundaryFeature* fromGsoap): BoundaryFeature(fromGsoap) {}
+		GeneticBoundaryFeature(gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature* fromGsoap): BoundaryFeature(fromGsoap) {}
 		virtual ~GeneticBoundaryFeature() {}
 	
 		/**

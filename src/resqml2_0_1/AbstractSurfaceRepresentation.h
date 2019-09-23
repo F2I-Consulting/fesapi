@@ -40,18 +40,18 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractSurfaceRepresentation(gsoap_resqml2_0_1::resqml2__AbstractSurfaceRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
+		AbstractSurfaceRepresentation(gsoap_resqml2_0_1::resqml20__AbstractSurfaceRepresentation* fromGsoap) : RESQML2_NS::AbstractRepresentation(fromGsoap) {}
 
 		/**
 		* Try to get a Point3dFromRepresentationLatticeArray from the geometry of a patch of the representation.
 		* @return	nullptr if the geoemtry does not contain such an information.
 		*/
-		gsoap_resqml2_0_1::resqml2__Point3dFromRepresentationLatticeArray* getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(gsoap_resqml2_0_1::resqml2__PointGeometry* patch) const;
+		gsoap_resqml2_0_1::resqml20__Point3dFromRepresentationLatticeArray* getPoint3dFromRepresentationLatticeArrayFromPointGeometryPatch(gsoap_resqml2_0_1::resqml20__PointGeometry* patch) const;
 
 		/**
 		* Creates an array 2d of lattice points 3d.
 		*/
-		gsoap_resqml2_0_1::resqml2__PointGeometry* createArray2dOfLatticePoints3d(
+		gsoap_resqml2_0_1::resqml20__PointGeometry* createArray2dOfLatticePoints3d(
 			unsigned int numPointsInFastestDirection, unsigned int numPointsInSlowestDirection,
 			double xOrigin, double yOrigin, double zOrigin,
 			double xOffsetInFastestDirection, double yOffsetInFastestDirection, double zOffsetInFastestDirection,
@@ -70,7 +70,7 @@ namespace RESQML2_0_1_NS
 		* @param	indexIncrementI					The constant index increment between two consecutive nodes on the first dimension of the baseLatticeGridRepresentation where z values will be stored.
 		* @param	indexIncrementJ					The constant index increment between two consecutive nodes on the second dimension of the baseLatticeGridRepresentation where z values will be stored.
 		*/
-		gsoap_resqml2_0_1::resqml2__PointGeometry* createArray2dOfExplicitZ(
+		gsoap_resqml2_0_1::resqml20__PointGeometry* createArray2dOfExplicitZ(
 			unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs * localCrs,
 			unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy* proxy,
 			class Grid2dRepresentation * supportingRepresentation,
@@ -85,7 +85,7 @@ namespace RESQML2_0_1_NS
 		* @param	numJ							Number of z values in the second dimension of the array to add.
 		* @param	AbstractHdfProxy				The hdf proxy which indicates the hdf file where the values will be stored.
 		*/
-		gsoap_resqml2_0_1::resqml2__PointGeometry* createArray2dOfExplicitZ(
+		gsoap_resqml2_0_1::resqml20__PointGeometry* createArray2dOfExplicitZ(
 			unsigned int patchIndex, double * zValues, RESQML2_NS::AbstractLocal3dCrs * localCrs,
 			unsigned int numI, unsigned int numJ, COMMON_NS::AbstractHdfProxy* proxy,
 			double originX, double originY, double originZ,
@@ -110,14 +110,14 @@ namespace RESQML2_0_1_NS
 		* map : Representation support for properties.
 		* pick : Representation support for 3D points picked in 2D or 3D.
 		*/
-		DLL_IMPORT_OR_EXPORT void setSurfaceRole(const gsoap_resqml2_0_1::resqml2__SurfaceRole & surfaceRole);
+		DLL_IMPORT_OR_EXPORT void setSurfaceRole(const gsoap_resqml2_0_1::resqml20__SurfaceRole & surfaceRole);
 
 		/**
 		* Get the surface role of this representation.
 		* map : Representation support for properties.
 		* pick : Representation support for 3D points picked in 2D or 3D.
 		*/
-		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml2__SurfaceRole & getSurfaceRole() const;
+		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml20__SurfaceRole & getSurfaceRole() const;
 
 		virtual void loadTargetRelationships();
 	};

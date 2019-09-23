@@ -39,7 +39,7 @@ namespace RESQML2_0_1_NS
 		*/
 		GenericFeatureInterpretation(RESQML2_NS::AbstractFeature * feature, const std::string & guid, const std::string & title);
 
-		GenericFeatureInterpretation(gsoap_resqml2_0_1::_resqml2__GenericFeatureInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
+		GenericFeatureInterpretation(gsoap_resqml2_0_1::_resqml20__GenericFeatureInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
 
 		~GenericFeatureInterpretation() {}
 	

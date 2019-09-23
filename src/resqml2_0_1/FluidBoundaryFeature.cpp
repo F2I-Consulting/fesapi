@@ -27,14 +27,14 @@ using namespace gsoap_resqml2_0_1;
 
 const char* FluidBoundaryFeature::XML_TAG = "FluidBoundaryFeature";
 
-FluidBoundaryFeature::FluidBoundaryFeature(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title, const resqml2__FluidContact & fluidContact)
+FluidBoundaryFeature::FluidBoundaryFeature(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title, const resqml20__FluidContact & fluidContact)
 {
 	if (repo == nullptr) {
 		throw invalid_argument("The repo cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREFluidBoundaryFeature(repo->getGsoapContext(), 1);
-	_resqml2__FluidBoundaryFeature* fbf = static_cast<_resqml2__FluidBoundaryFeature*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREFluidBoundaryFeature(repo->getGsoapContext(), 1);
+	_resqml20__FluidBoundaryFeature* fbf = static_cast<_resqml20__FluidBoundaryFeature*>(gsoapProxy2_0_1);
 	fbf->FluidContact = fluidContact;
 
 	initMandatoryMetadata();

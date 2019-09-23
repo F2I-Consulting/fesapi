@@ -25,7 +25,7 @@ namespace RESQML2_0_1_NS
 	class IjkGridLatticeRepresentation : public AbstractIjkGridRepresentation
 	{
 	private :
-		gsoap_resqml2_0_1::resqml2__Point3dLatticeArray* getArrayLatticeOfPoints3d() const;
+		gsoap_resqml2_0_1::resqml20__Point3dLatticeArray* getArrayLatticeOfPoints3d() const;
 	public:
 
 		IjkGridLatticeRepresentation(COMMON_NS::DataObjectRepository * repo,
@@ -39,8 +39,8 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		IjkGridLatticeRepresentation(gsoap_resqml2_0_1::_resqml2__IjkGridRepresentation* fromGsoap): AbstractIjkGridRepresentation(fromGsoap) {}
-		IjkGridLatticeRepresentation(gsoap_resqml2_0_1::_resqml2__TruncatedIjkGridRepresentation* fromGsoap) : AbstractIjkGridRepresentation(fromGsoap) {}
+		IjkGridLatticeRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap): AbstractIjkGridRepresentation(fromGsoap) {}
+		IjkGridLatticeRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractIjkGridRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -241,8 +241,8 @@ namespace RESQML2_0_1_NS
 		/**
 		* Set the geometry of the IJK grid as a regular IJK grid
 		*/
-		DLL_IMPORT_OR_EXPORT void setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry,
-			gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind,
+		DLL_IMPORT_OR_EXPORT void setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry,
+			gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind,
 			bool isRightHanded,
 			double originX, double originY, double originZ,
 			double directionIX, double directionIY, double directionIZ, double spacingI,

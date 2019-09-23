@@ -43,37 +43,37 @@ IjkGridNoGeometryRepresentation::IjkGridNoGeometryRepresentation(RESQML2_NS::Abs
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* IjkGridNoGeometryRepresentation::getHdfProxyDor() const
 {
-	gsoap_resqml2_0_1::resqml2__AbstractParentWindow* parentWindow = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridRepresentation*>(gsoapProxy2_0_1)->ParentWindow;
+	gsoap_resqml2_0_1::resqml20__AbstractParentWindow* parentWindow = static_cast<gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation*>(gsoapProxy2_0_1)->ParentWindow;
 
 	if (parentWindow != nullptr) {
-		if (parentWindow->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IjkParentWindow) {
-			gsoap_resqml2_0_1::resqml2__IjkParentWindow* pw = static_cast<gsoap_resqml2_0_1::resqml2__IjkParentWindow*>(parentWindow);
-			if (pw->IRegrid->Intervals->ChildCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-				return static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(pw->IRegrid->Intervals->ChildCountPerInterval)->Values->HdfProxy;
+		if (parentWindow->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IjkParentWindow) {
+			gsoap_resqml2_0_1::resqml20__IjkParentWindow* pw = static_cast<gsoap_resqml2_0_1::resqml20__IjkParentWindow*>(parentWindow);
+			if (pw->IRegrid->Intervals->ChildCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+				return static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(pw->IRegrid->Intervals->ChildCountPerInterval)->Values->HdfProxy;
 			}
-			else if (pw->IRegrid->Intervals->ParentCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-				return static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(pw->IRegrid->Intervals->ParentCountPerInterval)->Values->HdfProxy;
+			else if (pw->IRegrid->Intervals->ParentCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+				return static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(pw->IRegrid->Intervals->ParentCountPerInterval)->Values->HdfProxy;
 			}
-			else if (pw->JRegrid->Intervals->ChildCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-				return static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(pw->JRegrid->Intervals->ChildCountPerInterval)->Values->HdfProxy;
+			else if (pw->JRegrid->Intervals->ChildCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+				return static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(pw->JRegrid->Intervals->ChildCountPerInterval)->Values->HdfProxy;
 			}
-			else if (pw->JRegrid->Intervals->ParentCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-				return static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(pw->JRegrid->Intervals->ParentCountPerInterval)->Values->HdfProxy;
+			else if (pw->JRegrid->Intervals->ParentCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+				return static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(pw->JRegrid->Intervals->ParentCountPerInterval)->Values->HdfProxy;
 			}
-			else if (pw->KRegrid->Intervals->ChildCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-				return static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(pw->KRegrid->Intervals->ChildCountPerInterval)->Values->HdfProxy;
+			else if (pw->KRegrid->Intervals->ChildCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+				return static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(pw->KRegrid->Intervals->ChildCountPerInterval)->Values->HdfProxy;
 			}
-			else if (pw->KRegrid->Intervals->ParentCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array) {
-				return static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(pw->KRegrid->Intervals->ParentCountPerInterval)->Values->HdfProxy;
+			else if (pw->KRegrid->Intervals->ParentCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+				return static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(pw->KRegrid->Intervals->ParentCountPerInterval)->Values->HdfProxy;
 			}
 		}
-		else if (parentWindow->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__ColumnLayerParentWindow) {
-			gsoap_resqml2_0_1::resqml2__ColumnLayerParentWindow* pw = static_cast<gsoap_resqml2_0_1::resqml2__ColumnLayerParentWindow*>(parentWindow);
-			return pw->ColumnIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array ? static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(pw->ColumnIndices)->Values->HdfProxy : nullptr;
+		else if (parentWindow->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ColumnLayerParentWindow) {
+			gsoap_resqml2_0_1::resqml20__ColumnLayerParentWindow* pw = static_cast<gsoap_resqml2_0_1::resqml20__ColumnLayerParentWindow*>(parentWindow);
+			return pw->ColumnIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array ? static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(pw->ColumnIndices)->Values->HdfProxy : nullptr;
 		}
-		else if (parentWindow->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__CellParentWindow) {
-			gsoap_resqml2_0_1::resqml2__CellParentWindow* pw = static_cast<gsoap_resqml2_0_1::resqml2__CellParentWindow*>(parentWindow);
-			return pw->CellIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array ? static_cast<gsoap_resqml2_0_1::resqml2__IntegerHdf5Array*>(pw->CellIndices)->Values->HdfProxy : nullptr;
+		else if (parentWindow->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__CellParentWindow) {
+			gsoap_resqml2_0_1::resqml20__CellParentWindow* pw = static_cast<gsoap_resqml2_0_1::resqml20__CellParentWindow*>(parentWindow);
+			return pw->CellIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array ? static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(pw->CellIndices)->Values->HdfProxy : nullptr;
 		}
 		else {
 			throw logic_error("Unexpected parent window type.");
@@ -89,7 +89,7 @@ ULONG64 IjkGridNoGeometryRepresentation::getXyzPointCountOfPatch(const unsigned 
 		throw range_error("An ijk grid has a maximum of one patch.");
 	}
 
-	if (getParentGrid() != nullptr && getParentGrid()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREIjkGridRepresentation) {
+	if (getParentGrid() != nullptr && getParentGrid()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCOREIjkGridRepresentation) {
 		const ULONG64 kIntervalCount =  getRegridIntervalCount('k');
 		ULONG64* const kChildCellCountPerInterval = new ULONG64[kIntervalCount];
 		getRegridCellCountPerInterval('k', kChildCellCountPerInterval, true);

@@ -41,7 +41,7 @@ namespace RESQML2_0_1_NS
         /**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		NonSealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::_resqml2__NonSealedSurfaceFrameworkRepresentation* fromGsoap): AbstractSurfaceFrameworkRepresentation(fromGsoap) {}
+		NonSealedSurfaceFrameworkRepresentation(gsoap_resqml2_0_1::_resqml20__NonSealedSurfaceFrameworkRepresentation* fromGsoap): AbstractSurfaceFrameworkRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

@@ -136,7 +136,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		LocalTime3dCrs(gsoap_resqml2_0_1::_resqml2__LocalTime3dCrs* fromGsoap):
+		LocalTime3dCrs(gsoap_resqml2_0_1::_resqml20__LocalTime3dCrs* fromGsoap):
 			AbstractLocal3dCrs(fromGsoap) {}
 
 		/**

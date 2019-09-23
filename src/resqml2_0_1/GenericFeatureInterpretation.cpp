@@ -34,9 +34,9 @@ GenericFeatureInterpretation::GenericFeatureInterpretation(RESQML2_NS::AbstractF
 		throw invalid_argument("The interpreted feature cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREGenericFeatureInterpretation(feature->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGenericFeatureInterpretation(feature->getGsoapContext(), 1);
 
-	static_cast<_resqml2__GenericFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = resqml2__Domain__mixed;
+	static_cast<_resqml20__GenericFeatureInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());

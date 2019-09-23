@@ -38,12 +38,12 @@ namespace RESQML2_0_1_NS
 		* @param title		A title for the instance to create.
 		* @param orgType	The type of organization we want to create
 		*/
-		OrganizationFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml2__OrganizationKind orgType);
+		OrganizationFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__OrganizationKind orgType);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		OrganizationFeature(gsoap_resqml2_0_1::_resqml2__OrganizationFeature* fromGsoap): AbstractGeologicFeature(fromGsoap) {}
+		OrganizationFeature(gsoap_resqml2_0_1::_resqml20__OrganizationFeature* fromGsoap): AbstractGeologicFeature(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -53,7 +53,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get the kind of the organization feature.
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__OrganizationKind getKind() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__OrganizationKind getKind() const;
 	
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}

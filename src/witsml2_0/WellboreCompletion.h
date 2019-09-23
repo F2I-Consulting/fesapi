@@ -40,7 +40,7 @@ namespace WITSML2_0_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreCompletion(gsoap_eml2_1::witsml2__WellboreCompletion* fromGsoap) :WellboreObject(fromGsoap) {}
+		WellboreCompletion(gsoap_eml2_1::witsml20__WellboreCompletion* fromGsoap) :WellboreObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -67,7 +67,7 @@ namespace WITSML2_0_NS
 			const std::string & guid = "");
 
 		DLL_IMPORT_OR_EXPORT void pushBackPerforationHistory(unsigned int index,
-			gsoap_eml2_1::witsml2__PerforationStatus perforationStatus,
+			gsoap_eml2_1::witsml20__PerforationStatus perforationStatus,
 			const time_t & startDate,
 			const std::string & guid = "");
 
@@ -102,7 +102,7 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryStatus(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
 
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::witsml2__PerforationStatus getPerforationHistoryStatus(unsigned int historyIndex,
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::witsml20__PerforationStatus getPerforationHistoryStatus(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
 
 		DLL_IMPORT_OR_EXPORT std::string getPerforationHistoryStatusToString(unsigned int historyIndex,
@@ -110,7 +110,7 @@ namespace WITSML2_0_NS
 
 		DLL_IMPORT_OR_EXPORT void setPerforationHistoryStatus(unsigned int historyIndex,
 			unsigned int perforationIndex, 
-			gsoap_eml2_1::witsml2__PerforationStatus perforationStatus);
+			gsoap_eml2_1::witsml20__PerforationStatus perforationStatus);
 
 		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryStartDate(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
@@ -190,9 +190,9 @@ namespace WITSML2_0_NS
 		void loadTargetRelationships();
 
 	private:
-		gsoap_eml2_1::witsml2__PerforationSetInterval* getPerforation(unsigned int index) const;
+		gsoap_eml2_1::witsml20__PerforationSetInterval* getPerforation(unsigned int index) const;
 
-		gsoap_eml2_1::witsml2__PerforationStatusHistory* getPerforationHistoryEntry(unsigned int index,
+		gsoap_eml2_1::witsml20__PerforationStatusHistory* getPerforationHistoryEntry(unsigned int index,
 			unsigned int perforationIndex) const;
 	};
 }

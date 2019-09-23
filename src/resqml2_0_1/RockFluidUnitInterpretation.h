@@ -41,7 +41,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		RockFluidUnitInterpretation(gsoap_resqml2_0_1::_resqml2__RockFluidUnitInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
+		RockFluidUnitInterpretation(gsoap_resqml2_0_1::_resqml20__RockFluidUnitInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -57,7 +57,7 @@ namespace RESQML2_0_1_NS
 		 * Get the deposition mode of the stratigraphic unit interpretation.
 		 * You should verify its existency using hasDepositionMode() before to call this function.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__Phase getPhase() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__Phase getPhase() const;
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}

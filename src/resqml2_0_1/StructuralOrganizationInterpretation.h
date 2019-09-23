@@ -39,12 +39,12 @@ namespace RESQML2_0_1_NS
 		* @param title				A title for the instance to create.
 		* @param orderingCriteria	How the included horizons are ordered.
 		*/
-		StructuralOrganizationInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml2__OrderingCriteria & orderingCriteria);
+		StructuralOrganizationInterpretation(class OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, const gsoap_resqml2_0_1::resqml20__OrderingCriteria & orderingCriteria);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		StructuralOrganizationInterpretation(gsoap_resqml2_0_1::_resqml2__StructuralOrganizationInterpretation* fromGsoap): AbstractOrganizationInterpretation(fromGsoap) {}
+		StructuralOrganizationInterpretation(gsoap_resqml2_0_1::_resqml20__StructuralOrganizationInterpretation* fromGsoap): AbstractOrganizationInterpretation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

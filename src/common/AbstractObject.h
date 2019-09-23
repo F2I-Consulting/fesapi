@@ -131,13 +131,13 @@ namespace COMMON_NS
 		* Read an input array which come from XML (and potentially HDF5) and store it into a preallocated output array in memory.
 		* It does not allocate or deallocate memory.
 		*/
-		void readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml2__AbstractDoubleArray * arrayInput, double * arrayOutput) const;
+		void readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml20__AbstractDoubleArray * arrayInput, double * arrayOutput) const;
 
 		/*
 		* Read an input array which come from XML (and potentially HDF5) and store it into a preallocated output array in memory.
 		* It does not allocate or deallocate memory.
 		*/
-		void readArrayNdOfUIntValues(gsoap_resqml2_0_1::resqml2__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const;
+		void readArrayNdOfUIntValues(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const;
 
 		/*
 		* Get the count of item in an array of integer
@@ -145,7 +145,7 @@ namespace COMMON_NS
 		* @param arrayInput	The array of integer.
 		* @return			The count of item in the array of integer.
 		*/
-		ULONG64 getCountOfIntegerArray(gsoap_resqml2_0_1::resqml2__AbstractIntegerArray * arrayInput) const;
+		ULONG64 getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput) const;
 
 		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor);
 
@@ -317,7 +317,7 @@ namespace COMMON_NS
 		gsoap_eml2_2::eml22__DataObjectReference* newEml22Reference() const;
 #endif
 
-		gsoap_resqml2_0_1::resqml2__ContactElementReference* newResqmlContactElementReference() const;
+		gsoap_resqml2_0_1::resqml20__ContactElementReference* newResqmlContactElementReference() const;
 
 		/**
 		 * Return the data object repository document which contains this gsoap wrapper.
@@ -335,9 +335,9 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const = 0;
 
 		/**
-		* Get the XML tag for the XML serialization of this instance
+		* Get the version of the XML namespace (i.e. WITSML, RESQML, PRODML) for the XML serialization of this instance
 		*/
-		virtual std::string getResqmlVersion() const;
+		virtual std::string getXmlNamespaceVersion() const;
 
 		/**
 		* Get the content type of the instance according to EPC recommendation

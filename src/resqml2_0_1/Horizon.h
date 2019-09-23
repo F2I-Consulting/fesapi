@@ -42,7 +42,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		Horizon(gsoap_resqml2_0_1::_resqml2__GeneticBoundaryFeature* fromGsoap): GeneticBoundaryFeature(fromGsoap) {}
+		Horizon(gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature* fromGsoap): GeneticBoundaryFeature(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is manged by the gsoap context.

@@ -41,7 +41,7 @@ namespace RESQML2_0_1_NS
 		* @param energisticsPropertyKind	The property kind of these property values which must be defined in the standard energistics property type dictionary.
 		*/
 		CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind);
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind);
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -53,12 +53,12 @@ namespace RESQML2_0_1_NS
 		* @param localPropKind				The property kind of these property values which must be defined in the EPC document as a local property kind.
 		*/
 		CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropKind);
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropKind);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		CommentProperty(gsoap_resqml2_0_1::_resqml2__CommentProperty* fromGsoap): AbstractValuesProperty(fromGsoap) {}
+		CommentProperty(gsoap_resqml2_0_1::_resqml20__CommentProperty* fromGsoap): AbstractValuesProperty(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -90,6 +90,6 @@ namespace RESQML2_0_1_NS
 		/**
 		* Check if the associated standard property kind is allowed for this property.
 		*/
-		bool validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk);
+		bool validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & pk);
 	};
 }

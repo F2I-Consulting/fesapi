@@ -36,10 +36,10 @@ using namespace gsoap_resqml2_0_1;
 const char* ContinuousProperty::XML_TAG = "ContinuousProperty";
 
 void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind)
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind)
 {
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREContinuousProperty(rep->getGsoapContext(), 1);
-	_resqml2__ContinuousProperty* prop = static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREContinuousProperty(rep->getGsoapContext(), 1);
+	_resqml20__ContinuousProperty* prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
 
@@ -50,59 +50,59 @@ void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const st
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, const resqml2__ResqmlPropertyKind & energisticsPropertyKind)
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, const resqml20__ResqmlPropertyKind & energisticsPropertyKind)
 {
 	init(rep, guid, title, dimension, attachmentKind);
 
-	static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1)->UOM = uom;
+	static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->UOM = uom;
 
-	resqml2__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml2__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
+	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
 	xmlStandardPropKind->Kind = energisticsPropertyKind;
-	static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1)->PropertyKind = xmlStandardPropKind;
+	static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->PropertyKind = xmlStandardPropKind;
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, RESQML2_NS::PropertyKind * localPropKind)
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, RESQML2_NS::PropertyKind * localPropKind)
 {
 	init(rep, guid, title, dimension, attachmentKind);
 
-	static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1)->UOM = uom;
+	static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->UOM = uom;
 
 	setLocalPropertyKind(localPropKind);
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const std::string & nonStandardUom, const resqml2__ResqmlPropertyKind & energisticsPropertyKind)
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const std::string & nonStandardUom, const resqml20__ResqmlPropertyKind & energisticsPropertyKind)
 {
 	init(rep, guid, title, dimension, attachmentKind);
 
-	static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1)->UOM = gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc;
+	static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->UOM = gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc;
 	pushBackExtraMetadata("Uom", nonStandardUom);
 
-	resqml2__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml2__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
+	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
 	xmlStandardPropKind->Kind = energisticsPropertyKind;
-	static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1)->PropertyKind = xmlStandardPropKind;
+	static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->PropertyKind = xmlStandardPropKind;
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * localPropKind)
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * localPropKind)
 {
 	init(rep, guid, title, dimension, attachmentKind);
 
-	static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1)->UOM = gsoap_resqml2_0_1::resqml2__ResqmlUom__Euc;
+	static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->UOM = gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc;
 	pushBackExtraMetadata("Uom", nonStandardUom);
 
 	setLocalPropertyKind(localPropKind);
 }
 
-const gsoap_resqml2_0_1::resqml2__ResqmlUom & ContinuousProperty::getUom() const
+const gsoap_resqml2_0_1::resqml20__ResqmlUom & ContinuousProperty::getUom() const
 {
-	return static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1)->UOM;
+	return static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->UOM;
 }
 
 std::string ContinuousProperty::getUomAsString() const
 {
-	return gsoap_resqml2_0_1::soap_resqml2__ResqmlUom2s(gsoapProxy2_0_1->soap, getUom());
+	return gsoap_resqml2_0_1::soap_resqml20__ResqmlUom2s(gsoapProxy2_0_1->soap, getUom());
 }
 
 void ContinuousProperty::pushBackDoubleHdf5Array1dOfValues(const double * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy,
@@ -224,14 +224,14 @@ std::string ContinuousProperty::pushBackRefToExistingDataset(COMMON_NS::Abstract
 		hdfProxy = getRepository()->getDefaultHdfProxy();
 	}
 	getRepository()->addRelationship(this, hdfProxy);
-	gsoap_resqml2_0_1::resqml2__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml2__AbstractValuesProperty*>(gsoapProxy2_0_1);
+	gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1);
 
-	gsoap_resqml2_0_1::resqml2__PatchOfValues* patch = gsoap_resqml2_0_1::soap_new_resqml2__PatchOfValues(gsoapProxy2_0_1->soap, 1);
+	gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = gsoap_resqml2_0_1::soap_new_resqml20__PatchOfValues(gsoapProxy2_0_1->soap, 1);
 	patch->RepresentationPatchIndex = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(ULONG64)));
 	*(patch->RepresentationPatchIndex) = prop->PatchOfValues.size();
 
 	// XML
-	gsoap_resqml2_0_1::resqml2__DoubleHdf5Array* xmlValues = gsoap_resqml2_0_1::soap_new_resqml2__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
+	gsoap_resqml2_0_1::resqml20__DoubleHdf5Array* xmlValues = gsoap_resqml2_0_1::soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
 	xmlValues->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
 	xmlValues->Values->HdfProxy = hdfProxy->newResqmlReference();
 
@@ -311,7 +311,7 @@ void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(
 	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, string());
 
-	gsoap_resqml2_0_1::_resqml2__ContinuousProperty* prop = static_cast<gsoap_resqml2_0_1::_resqml2__ContinuousProperty*>(gsoapProxy2_0_1);
+	gsoap_resqml2_0_1::_resqml20__ContinuousProperty* prop = static_cast<gsoap_resqml2_0_1::_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 	for (ULONG64 i = 0; i < prop->Count; ++i) {
 		prop->MinimumValue.push_back(FLT_MAX);
 		prop->MaximumValue.push_back(FLT_MIN);
@@ -331,7 +331,7 @@ void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
 	COMMON_NS::AbstractHdfProxy* proxy,
 	unsigned int patchIndex)
 {
-	_resqml2__ContinuousProperty* prop = static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1);
+	_resqml20__ContinuousProperty* prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 
 	setPropertyMinMax(
 		values,
@@ -363,8 +363,8 @@ void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
 
 void ContinuousProperty::getDoubleValuesOfPatch(unsigned int patchIndex, double * values) const
 {
-	_resqml2__ContinuousProperty const * prop = static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1);
-	eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(prop->PatchOfValues[patchIndex]->Values) ->Values;
+	_resqml20__ContinuousProperty const * prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
+	eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(prop->PatchOfValues[patchIndex]->Values) ->Values;
 	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
 	hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, values);
@@ -372,8 +372,8 @@ void ContinuousProperty::getDoubleValuesOfPatch(unsigned int patchIndex, double 
 
 void ContinuousProperty::getFloatValuesOfPatch(unsigned int patchIndex, float * values) const
 {
-	_resqml2__ContinuousProperty const * prop = static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1);
-	eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(prop->PatchOfValues[patchIndex]->Values)->Values;
+	_resqml20__ContinuousProperty const * prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
+	eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(prop->PatchOfValues[patchIndex]->Values)->Values;
 	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
 	hdfProxy->readArrayNdOfFloatValues(dataset->PathInHdfFile, values);
@@ -386,8 +386,8 @@ void ContinuousProperty::getFloatValuesOfPatch(
 	unsigned long long* offsetInEachDimension,
 	unsigned int numArrayDimensions) const
 {
-	_resqml2__ContinuousProperty const * prop = static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1);
-	eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(prop->PatchOfValues[patchIndex]->Values)->Values;
+	_resqml20__ContinuousProperty const * prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
+	eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(prop->PatchOfValues[patchIndex]->Values)->Values;
 	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
 	hdfProxy->readArrayNdOfFloatValues(
@@ -422,14 +422,14 @@ void ContinuousProperty::getFloatValuesOf3dPatch(
 
 double ContinuousProperty::getMinimumValue() const
 {
-	_resqml2__ContinuousProperty* prop = static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1);
+	_resqml20__ContinuousProperty* prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 
 	return prop->MinimumValue.empty() ? std::numeric_limits<double>::quiet_NaN() : prop->MinimumValue[0];
 }
 
 double ContinuousProperty::getMaximumValue() const
 {
-	_resqml2__ContinuousProperty* prop = static_cast<_resqml2__ContinuousProperty*>(gsoapProxy2_0_1);
+	_resqml20__ContinuousProperty* prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 
 	return prop->MaximumValue.empty() ? std::numeric_limits<double>::quiet_NaN() : prop->MaximumValue[0];
 }
@@ -451,7 +451,7 @@ bool ContinuousProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKin
 				repository->addWarning("Cannot verify if the local property kind " + pk->getUuid() + " of the continuous property " + getUuid() + " is right because one if its parent property kind is abstract.");
 				return true;
 			}
-			if (!pk->isChildOf(resqml2__ResqmlPropertyKind__continuous)) {
+			if (!pk->isChildOf(resqml20__ResqmlPropertyKind__continuous)) {
 				repository->addWarning("The continuous property " + getUuid() + " cannot be associated to a local property kind " + pk->getUuid() + " which does not derive from the continuous standard property kind. This property will be assumed to be a partial one.");
 				changeToPartialObject();
 				return false;
@@ -468,7 +468,7 @@ bool ContinuousProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKin
 	return true;
 }
 
-bool ContinuousProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk)
+bool ContinuousProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & pk)
 {
 	COMMON_NS::EnumStringMapper tmp;
 	std::string pkName = tmp.getEnergisticsPropertyKindName(pk);
@@ -480,7 +480,7 @@ bool ContinuousProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1
 			changeToPartialObject();
 			return false;
 		}
-		if (!pkMapper->isChildOf(pk, resqml2__ResqmlPropertyKind__continuous)) {
+		if (!pkMapper->isChildOf(pk, resqml20__ResqmlPropertyKind__continuous)) {
 			repository->addWarning("The continuous property " + getUuid() + " cannot be associated to a resqml property kind \"" + pkName + "\" which does not derive from the continuous standard property kind. This property will be assumed to be a partial one.");
 			changeToPartialObject();
 			return false;

@@ -46,7 +46,7 @@ namespace RESQML2_0_1_NS
 		* @param attachmentKind				The topological orbit which supports each value.
 		*/
 		void init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind);
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind);
 
 	public:
 
@@ -66,7 +66,7 @@ namespace RESQML2_0_1_NS
 		* @param energisticsPropertyKind	The property kind of these property values which must be defined in the standard energistics property type dictionary.
 		*/
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind);
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind);
 
 		/**
 		* Creates an instance of this class in a gsoap context based on a local kind and a standard uom.
@@ -79,7 +79,7 @@ namespace RESQML2_0_1_NS
 		* @param localPropType				The property kind of these property values which must be defined in the EPC document as a local property kind.
 		*/
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml2__ResqmlUom & uom, RESQML2_NS::PropertyKind * localPropKind);
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, RESQML2_NS::PropertyKind * localPropKind);
 
 		/**
 		* Creates an instance of this class in a gsoap context based on a standard kind and a local uom.
@@ -92,7 +92,7 @@ namespace RESQML2_0_1_NS
 		* @param energisticsPropertyKind	The property kind of these property values which must be defined in the standard energistics property type dictionary.
 		*/
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const std::string & nonStandardUom, const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & energisticsPropertyKind);
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const std::string & nonStandardUom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind);
 
 		/**
 		* Creates an instance of this class in a gsoap context based on a local kind and a local uom.
@@ -105,12 +105,12 @@ namespace RESQML2_0_1_NS
 		* @param localPropType				The property kind of these property values which must be defined in the EPC document as a local property kind.
 		*/
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml2__IndexableElements & attachmentKind, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * localPropKind);
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * localPropKind);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		ContinuousProperty(gsoap_resqml2_0_1::_resqml2__ContinuousProperty* fromGsoap): AbstractValuesProperty(fromGsoap) {}
+		ContinuousProperty(gsoap_resqml2_0_1::_resqml20__ContinuousProperty* fromGsoap): AbstractValuesProperty(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -124,7 +124,7 @@ namespace RESQML2_0_1_NS
 		* Get the unit of measure of the values of this property.
 		* If 'Euc'  is returned, you should check if an extrametadata called "Uom" also exists. If so, it would mean that the property uses a non standard uom. This is an official workaround for a known issue of Resqml 2.0.1.
 		*/
-		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml2__ResqmlUom & getUom() const;
+		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml20__ResqmlUom & getUom() const;
 
 		/**
 		* Get the unit of measure of the values of this property as a string.
@@ -380,7 +380,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Check if the associated standard property kind is allowed for this property.
 		*/
-		bool validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind & pk);
+		bool validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & pk);
 
 	private:
 
@@ -399,7 +399,7 @@ namespace RESQML2_0_1_NS
 			const unsigned int& numArrayDimensions,
 			T * minimumValue = nullptr, T * maximumValue = nullptr)
 		{
-			gsoap_resqml2_0_1::_resqml2__ContinuousProperty* prop = static_cast<gsoap_resqml2_0_1::_resqml2__ContinuousProperty*>(gsoapProxy2_0_1);
+			gsoap_resqml2_0_1::_resqml20__ContinuousProperty* prop = static_cast<gsoap_resqml2_0_1::_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 			prop->MinimumValue.clear();
 			prop->MaximumValue.clear();
 

@@ -28,17 +28,17 @@ using namespace RESQML2_2_NS;
 const char* ContinuousColorMap::XML_TAG = "ContinuousColorMap";
 
 ContinuousColorMap::ContinuousColorMap(COMMON_NS::DataObjectRepository* repo, string const& guid, string const& title,
-	resqml2__InterpolationDomain interpolationDomain, resqml2__InterpolationMethod interpolationMethod)
+	resqml22__InterpolationDomain interpolationDomain, resqml22__InterpolationMethod interpolationMethod)
 {
 	if (repo == nullptr)
 		throw invalid_argument("The repository cannot be null.");
 
-	gsoapProxy2_2 = soap_new_resqml2__ContinuousColorMap(repo->getGsoapContext(), 1);
+	gsoapProxy2_2 = soap_new_resqml22__ContinuousColorMap(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	resqml2__ContinuousColorMap* continuousColorMap = static_cast<resqml2__ContinuousColorMap*>(gsoapProxy2_2);
+	resqml22__ContinuousColorMap* continuousColorMap = static_cast<resqml22__ContinuousColorMap*>(gsoapProxy2_2);
 	continuousColorMap->InterpolationDomain = interpolationDomain;
 	continuousColorMap->InterpolationMethod = interpolationMethod;
 
@@ -52,7 +52,7 @@ void ContinuousColorMap::setHsvColors(unsigned int colorCount,
 	if (colorCount < 2)
 		throw invalid_argument("At least 2 color must be set.");
 
-	resqml2__ContinuousColorMap* const continuousColorMap = static_cast<resqml2__ContinuousColorMap*>(gsoapProxy2_2);
+	resqml22__ContinuousColorMap* const continuousColorMap = static_cast<resqml22__ContinuousColorMap*>(gsoapProxy2_2);
 
 	for (size_t colorIndex = 0; colorIndex < colorCount; ++colorIndex) {
 		if (hsvColors[3 * colorIndex] < 0 || hsvColors[3 * colorIndex] > 360) {
@@ -71,9 +71,9 @@ void ContinuousColorMap::setHsvColors(unsigned int colorCount,
 			throw invalid_argument("alpha must be in range [0, 1]");
 		}
 
-		resqml2__ContinuousColorMapEntry* continuousColorMapEntry = soap_new_resqml2__ContinuousColorMapEntry(gsoapProxy2_2->soap, 1);
+		resqml22__ContinuousColorMapEntry* continuousColorMapEntry = soap_new_resqml22__ContinuousColorMapEntry(gsoapProxy2_2->soap, 1);
 		indices != nullptr ? continuousColorMapEntry->Index = indices[colorIndex] : continuousColorMapEntry->Index = colorIndex;
-		resqml2__HsvColor* color = soap_new_resqml2__HsvColor(gsoapProxy2_2->soap, 1);
+		resqml22__HsvColor* color = soap_new_resqml22__HsvColor(gsoapProxy2_2->soap, 1);
 		color->Hue = hsvColors[3 * colorIndex];
 		color->Saturation = hsvColors[3 * colorIndex + 1];
 		color->Value = hsvColors[3 * colorIndex + 2];
@@ -91,30 +91,30 @@ void ContinuousColorMap::setHsvColors(unsigned int colorCount,
 
 unsigned int ContinuousColorMap::getColorCount() const
 {
-	resqml2__ContinuousColorMap const* const continuousColorMap = static_cast<resqml2__ContinuousColorMap*>(gsoapProxy2_2);
+	resqml22__ContinuousColorMap const* const continuousColorMap = static_cast<resqml22__ContinuousColorMap*>(gsoapProxy2_2);
 	return continuousColorMap->Entry.size();
 }
 
-resqml2__InterpolationDomain ContinuousColorMap::getInterpolationDomain()
+resqml22__InterpolationDomain ContinuousColorMap::getInterpolationDomain()
 {
-	resqml2__ContinuousColorMap const* const continuousColorMap = static_cast<resqml2__ContinuousColorMap*>(gsoapProxy2_2);
+	resqml22__ContinuousColorMap const* const continuousColorMap = static_cast<resqml22__ContinuousColorMap*>(gsoapProxy2_2);
 	return continuousColorMap->InterpolationDomain;
 }
 
 std::string ContinuousColorMap::getInterpolationDomainAsString()
 {
-	return soap_resqml2__InterpolationDomain2s(gsoapProxy2_2->soap, getInterpolationDomain());
+	return soap_resqml22__InterpolationDomain2s(gsoapProxy2_2->soap, getInterpolationDomain());
 }
 
-resqml2__InterpolationMethod ContinuousColorMap::getInterpolationMethod()
+resqml22__InterpolationMethod ContinuousColorMap::getInterpolationMethod()
 {
-	resqml2__ContinuousColorMap const* const continuousColorMap = static_cast<resqml2__ContinuousColorMap*>(gsoapProxy2_2);
+	resqml22__ContinuousColorMap const* const continuousColorMap = static_cast<resqml22__ContinuousColorMap*>(gsoapProxy2_2);
 	return continuousColorMap->InterpolationMethod;
 }
 
 std::string ContinuousColorMap::getInterpolationMethodAsString()
 {
-	return soap_resqml2__InterpolationMethod2s(gsoapProxy2_2->soap, getInterpolationMethod());
+	return soap_resqml22__InterpolationMethod2s(gsoapProxy2_2->soap, getInterpolationMethod());
 }
 
 void ContinuousColorMap::setNanHsvColor(double hue, double saturation, double value, double alpha, std::string const& colorTitle)
@@ -135,10 +135,10 @@ void ContinuousColorMap::setNanHsvColor(double hue, double saturation, double va
 		throw invalid_argument("alpha must be in range [0, 1]");
 	}
 
-	resqml2__ContinuousColorMap * const continuousColorMap = static_cast<resqml2__ContinuousColorMap*>(gsoapProxy2_2);
+	resqml22__ContinuousColorMap * const continuousColorMap = static_cast<resqml22__ContinuousColorMap*>(gsoapProxy2_2);
 
 	if (continuousColorMap->NaNColor == nullptr) {
-		continuousColorMap->NaNColor = soap_new_resqml2__HsvColor(gsoapProxy2_2->soap, 1);
+		continuousColorMap->NaNColor = soap_new_resqml22__HsvColor(gsoapProxy2_2->soap, 1);
 	}
 
 	continuousColorMap->NaNColor->Hue = hue;
@@ -199,9 +199,9 @@ void ContinuousColorMap::setNanRgbColor(unsigned int red, unsigned int green, un
 	setNanHsvColor(hue, saturation, value, alpha, colorTitle);
 }
 
-resqml2__HsvColor* ContinuousColorMap::getColor(double colorIndex) const
+resqml22__HsvColor* ContinuousColorMap::getColor(double colorIndex) const
 {
-	resqml2__ContinuousColorMap const* const continuousColorMap = static_cast<resqml2__ContinuousColorMap*>(gsoapProxy2_2);
+	resqml22__ContinuousColorMap const* const continuousColorMap = static_cast<resqml22__ContinuousColorMap*>(gsoapProxy2_2);
 
 	for (size_t i = 0; i < continuousColorMap->Entry.size(); ++i) {
 		if (continuousColorMap->Entry[i]->Index == colorIndex) {

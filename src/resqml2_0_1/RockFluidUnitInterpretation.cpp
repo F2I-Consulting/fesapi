@@ -31,8 +31,8 @@ RockFluidUnitInterpretation::RockFluidUnitInterpretation(RockFluidUnitFeature * 
 		throw invalid_argument("The interpreted feature cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCORERockFluidUnitInterpretation(feature->getGsoapContext(), 1);
-	//static_cast<_resqml2__RockFluidUnitInterpretation*>(gsoapProxy2_0_1)->Phase = ??;
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERockFluidUnitInterpretation(feature->getGsoapContext(), 1);
+	//static_cast<_resqml20__RockFluidUnitInterpretation*>(gsoapProxy2_0_1)->Phase = ??;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -42,13 +42,13 @@ RockFluidUnitInterpretation::RockFluidUnitInterpretation(RockFluidUnitFeature * 
 
 bool RockFluidUnitInterpretation::hasPhase() const
 {
-	return static_cast<_resqml2__RockFluidUnitInterpretation*>(gsoapProxy2_0_1)->Phase != nullptr;
+	return static_cast<_resqml20__RockFluidUnitInterpretation*>(gsoapProxy2_0_1)->Phase != nullptr;
 }
 
-gsoap_resqml2_0_1::resqml2__Phase RockFluidUnitInterpretation::getPhase() const
+gsoap_resqml2_0_1::resqml20__Phase RockFluidUnitInterpretation::getPhase() const
 {
 	if (hasPhase() == false)
 		throw invalid_argument("The rock fluid unit interpretation has not any phase.");
 
-	return *static_cast<_resqml2__RockFluidUnitInterpretation*>(gsoapProxy2_0_1)->Phase;
+	return *static_cast<_resqml20__RockFluidUnitInterpretation*>(gsoapProxy2_0_1)->Phase;
 }

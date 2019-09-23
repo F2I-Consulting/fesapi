@@ -44,7 +44,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		TimeSeries(gsoap_resqml2_0_1::_resqml2__TimeSeries* fromGsoap) : RESQML2_NS::TimeSeries(fromGsoap) {}
+		TimeSeries(gsoap_resqml2_0_1::_resqml20__TimeSeries* fromGsoap) : RESQML2_NS::TimeSeries(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -52,6 +52,6 @@ namespace RESQML2_0_1_NS
 		~TimeSeries() {}
 
 	protected:		
-		gsoap_resqml2_0_1::_resqml2__TimeSeries* getSpecializedGsoapProxy() const;
+		gsoap_resqml2_0_1::_resqml20__TimeSeries* getSpecializedGsoapProxy() const;
 	};
 }

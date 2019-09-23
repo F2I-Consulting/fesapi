@@ -32,7 +32,7 @@ StratigraphicColumn::StratigraphicColumn(COMMON_NS::DataObjectRepository* repo, 
 		throw invalid_argument("The repo cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREStratigraphicColumn(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStratigraphicColumn(repo->getGsoapContext(), 1);
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -44,7 +44,7 @@ void StratigraphicColumn::pushBackStratiColumnRank(StratigraphicColumnRankInterp
 {
 	getRepository()->addRelationship(this, stratiColumnRank);
 
-	static_cast<_resqml2__StratigraphicColumn*>(gsoapProxy2_0_1)->Ranks.push_back(stratiColumnRank->newResqmlReference());
+	static_cast<_resqml20__StratigraphicColumn*>(gsoapProxy2_0_1)->Ranks.push_back(stratiColumnRank->newResqmlReference());
 }
 
 std::vector<class StratigraphicColumnRankInterpretation *> StratigraphicColumn::getStratigraphicColumnRankInterpretationSet() const
@@ -54,7 +54,7 @@ std::vector<class StratigraphicColumnRankInterpretation *> StratigraphicColumn::
 
 void StratigraphicColumn::loadTargetRelationships()
 {
-	const std::vector<eml20__DataObjectReference *>& stratColRanks= static_cast<_resqml2__StratigraphicColumn*>(gsoapProxy2_0_1)->Ranks;
+	const std::vector<eml20__DataObjectReference *>& stratColRanks= static_cast<_resqml20__StratigraphicColumn*>(gsoapProxy2_0_1)->Ranks;
 	for (size_t i = 0; i < stratColRanks.size(); ++i) {
 		gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = stratColRanks[i];
 		if (dor != nullptr) {

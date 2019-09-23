@@ -42,7 +42,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		GeobodyInterpretation(gsoap_resqml2_0_1::_resqml2__GeobodyInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
+		GeobodyInterpretation(gsoap_resqml2_0_1::_resqml20__GeobodyInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -52,7 +52,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Set the geobody 3d shape
 		*/
-		DLL_IMPORT_OR_EXPORT void set3dShape(gsoap_resqml2_0_1::resqml2__Geobody3dShape geobody3dShape);
+		DLL_IMPORT_OR_EXPORT void set3dShape(gsoap_resqml2_0_1::resqml20__Geobody3dShape geobody3dShape);
 
 		/**
 		* check if the 3d shape of this geobody is known
@@ -62,7 +62,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* get the 3d shape of this geobody
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__Geobody3dShape get3dShape() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__Geobody3dShape get3dShape() const;
 			
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}

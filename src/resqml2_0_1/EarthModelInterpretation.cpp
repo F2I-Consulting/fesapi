@@ -35,10 +35,10 @@ const char* EarthModelInterpretation::XML_TAG = "EarthModelInterpretation";
 
 EarthModelInterpretation::EarthModelInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const string & title)
 {
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREEarthModelInterpretation(orgFeat->getGsoapContext(), 1);
-	_resqml2__EarthModelInterpretation* interp = static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREEarthModelInterpretation(orgFeat->getGsoapContext(), 1);
+	_resqml20__EarthModelInterpretation* interp = static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1);
 
-	interp->Domain = resqml2__Domain__mixed;
+	interp->Domain = resqml20__Domain__mixed;
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -48,7 +48,7 @@ EarthModelInterpretation::EarthModelInterpretation(OrganizationFeature * orgFeat
 
 bool EarthModelInterpretation::hasStructuralOrganizationInterpretation() const
 {
-	return static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure != nullptr;
+	return static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure != nullptr;
 }
 
 StructuralOrganizationInterpretation* EarthModelInterpretation::getStructuralOrganizationInterpertation() const
@@ -57,26 +57,26 @@ StructuralOrganizationInterpretation* EarthModelInterpretation::getStructuralOrg
 		throw invalid_argument("There is no associated structural organization");
 	}
 
-	return repository->getDataObjectByUuid<StructuralOrganizationInterpretation>(static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure->UUID);
+	return repository->getDataObjectByUuid<StructuralOrganizationInterpretation>(static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure->UUID);
 }
 
 void EarthModelInterpretation::setStructuralOrganizationInterpretation(StructuralOrganizationInterpretation * structOrganization)
 {
 	getRepository()->addRelationship(this, structOrganization);
         
-	static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure = structOrganization->newResqmlReference();
+	static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Structure = structOrganization->newResqmlReference();
 }
 
 bool EarthModelInterpretation::hasStratiColumn() const
 {
-	return static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn != nullptr;
+	return static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn != nullptr;
 }
 
 void EarthModelInterpretation::setStratiColumn(StratigraphicColumn * stratiColumn)
 {
 	getRepository()->addRelationship(this, stratiColumn);
 
-	static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn = stratiColumn->newResqmlReference();
+	static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn = stratiColumn->newResqmlReference();
 }
 
 StratigraphicColumn* EarthModelInterpretation::getStratiColumn() const
@@ -85,17 +85,17 @@ StratigraphicColumn* EarthModelInterpretation::getStratiColumn() const
 		throw invalid_argument("There is no associated stratigraphic column");
 	}
 
-	return repository->getDataObjectByUuid<StratigraphicColumn>(static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn->UUID);
+	return repository->getDataObjectByUuid<StratigraphicColumn>(static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicColumn->UUID);
 }
 
 unsigned int EarthModelInterpretation::getStratiOccurenceCount() const
 {
-	return static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.size();
+	return static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.size();
 }
 
 StratigraphicOccurrenceInterpretation* EarthModelInterpretation::getStratiOccurence(unsigned int index) const
 {
-	_resqml2__EarthModelInterpretation* earthModelInterpretation = static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1);
+	_resqml20__EarthModelInterpretation* earthModelInterpretation = static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1);
 	if (index < earthModelInterpretation->StratigraphicOccurrences.size()) {
 		return static_cast<StratigraphicOccurrenceInterpretation*>(repository->getDataObjectByUuid(earthModelInterpretation->StratigraphicOccurrences[index]->UUID));
 	}
@@ -108,19 +108,19 @@ void EarthModelInterpretation::pushBackStratiOccurence(StratigraphicOccurrenceIn
 {
 	getRepository()->addRelationship(this, stratiOccurence);
 		
-	static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.push_back(stratiOccurence->newResqmlReference());
+	static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.push_back(stratiOccurence->newResqmlReference());
 }
 
 bool EarthModelInterpretation::hasRockFluidOrganizationInterpretation() const
 {
-	return static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid != nullptr;
+	return static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid != nullptr;
 }
 
 void EarthModelInterpretation::setRockFluidOrganizationInterpretation(class RockFluidOrganizationInterpretation* rockFluid)
 {
 	getRepository()->addRelationship(this, rockFluid);
 
-	static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid = rockFluid->newResqmlReference();
+	static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid = rockFluid->newResqmlReference();
 }
 
 RockFluidOrganizationInterpretation* EarthModelInterpretation::getRockFluidOrganizationInterpretation() const
@@ -129,14 +129,14 @@ RockFluidOrganizationInterpretation* EarthModelInterpretation::getRockFluidOrgan
 		throw invalid_argument("There is no rock fluid organization");
 	}
 
-	return repository->getDataObjectByUuid<RockFluidOrganizationInterpretation>(static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid->UUID);
+	return repository->getDataObjectByUuid<RockFluidOrganizationInterpretation>(static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->Fluid->UUID);
 }
 		
 void EarthModelInterpretation::loadTargetRelationships()
 {
 	AbstractFeatureInterpretation::loadTargetRelationships();
 
-	_resqml2__EarthModelInterpretation* interp = static_cast<_resqml2__EarthModelInterpretation*>(gsoapProxy2_0_1);
+	_resqml20__EarthModelInterpretation* interp = static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1);
 
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = interp->Structure;
 	if (dor != nullptr) {

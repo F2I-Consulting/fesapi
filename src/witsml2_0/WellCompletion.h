@@ -39,7 +39,7 @@ namespace WITSML2_0_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellCompletion(gsoap_eml2_1::witsml2__WellCompletion* fromGsoap) :AbstractObject(fromGsoap) {}
+		WellCompletion(gsoap_eml2_1::witsml20__WellCompletion* fromGsoap) :AbstractObject(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

@@ -45,12 +45,12 @@ namespace RESQML2_0_1_NS
 		* @param title					A title for the instance to create.
 		* @param geologicBoundaryKind	The type of the feature which the marker intersects.
 		*/
-		DLL_IMPORT_OR_EXPORT WellboreMarker(class WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind geologicBoundaryKind);
+		DLL_IMPORT_OR_EXPORT WellboreMarker(class WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind geologicBoundaryKind);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreMarker(gsoap_resqml2_0_1::resqml2__WellboreMarker* fromGsoap) : AbstractObject(fromGsoap)  {}
+		WellboreMarker(gsoap_resqml2_0_1::resqml20__WellboreMarker* fromGsoap) : AbstractObject(fromGsoap)  {}
 
 		/**
 		* Destructor
@@ -66,7 +66,7 @@ namespace RESQML2_0_1_NS
 		* Get the type of the intersected feature of the marker.
 		* Throw an exception if the marker has no GeologicBoundaryKind (see method hasAGeologicBoundaryKind).
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__GeologicBoundaryKind getGeologicBoundaryKind() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__GeologicBoundaryKind getGeologicBoundaryKind() const;
 
 		DLL_IMPORT_OR_EXPORT class WellboreMarkerFrameRepresentation const * getWellMarkerFrameRepresentation() const;
 

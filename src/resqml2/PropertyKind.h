@@ -39,7 +39,7 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		PropertyKind(gsoap_resqml2_0_1::_resqml2__PropertyKind* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		PropertyKind(gsoap_resqml2_0_1::_resqml20__PropertyKind* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 	public:
 
@@ -56,7 +56,7 @@ namespace RESQML2_NS
 		/**
 		* Get the unit of measure of the values of this property kind.
 		*/
-		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml2__ResqmlUom & getUom() const;
+		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml20__ResqmlUom & getUom() const;
 
 		/**
 		* Get the unit of measure of the values of this property kind as a string.
@@ -76,7 +76,7 @@ namespace RESQML2_NS
 		/**
 		* Getter for the energistics property kind which is associated to this intance.
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind getParentEnergisticsPropertyKind() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getParentEnergisticsPropertyKind() const;
 
 		/**
 		* @return	null pointer if no local parent property kind is associated to this property. Otherwise return the data object reference of the associated parent local property kind.
@@ -107,7 +107,7 @@ namespace RESQML2_NS
 		/**
 		* Check if this property kind is a child of a particular standard Energistics Property kind.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual bool isChildOf(gsoap_resqml2_0_1::resqml2__ResqmlPropertyKind standardPropKind) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool isChildOf(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind standardPropKind) const = 0;
 
 		/**
 		* Check if this property kind is abstract or not.

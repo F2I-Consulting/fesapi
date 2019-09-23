@@ -53,7 +53,7 @@ bool IjkGridLatticeRepresentation::isASeismicCube() const
 	vector<RESQML2_NS::AbstractValuesProperty *> allValuesProperty = getValuesPropertySet();
     for (size_t propIndex = 0; propIndex < allValuesProperty.size(); ++propIndex)
     {
-        if (allValuesProperty[propIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCOREContinuousProperty)
+        if (allValuesProperty[propIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCOREContinuousProperty)
         {
             atLeastOneContProp = true;
             break;
@@ -62,7 +62,7 @@ bool IjkGridLatticeRepresentation::isASeismicCube() const
     if (!atLeastOneContProp)
         return false;
 
-    return getInterpretation() && getInterpretation()->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORESeismicLatticeFeature;
+    return getInterpretation() && getInterpretation()->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCORESeismicLatticeFeature;
 }
 
 bool IjkGridLatticeRepresentation::isAFaciesCube() const
@@ -73,7 +73,7 @@ bool IjkGridLatticeRepresentation::isAFaciesCube() const
 	vector<RESQML2_NS::AbstractValuesProperty *> allValuesProperty = getValuesPropertySet();
     for (size_t propIndex = 0; propIndex < allValuesProperty.size(); ++propIndex)
     {
-        if (allValuesProperty[propIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORECategoricalProperty)
+        if (allValuesProperty[propIndex]->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCORECategoricalProperty)
         {
             atLeastOneCateProp = true;
             break;
@@ -82,7 +82,7 @@ bool IjkGridLatticeRepresentation::isAFaciesCube() const
     if (!atLeastOneCateProp)
         return false;
 
-    return getInterpretation() && getInterpretation()->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORESeismicLatticeFeature;
+    return getInterpretation() && getInterpretation()->getInterpretedFeature()->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCORESeismicLatticeFeature;
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* IjkGridLatticeRepresentation::getHdfProxyDor() const
@@ -110,14 +110,14 @@ void IjkGridLatticeRepresentation::getXyzPointsOfPatch(const unsigned int & patc
 		throw range_error("An ijk grid has a maximum of one patch.");
 }
 
-resqml2__Point3dLatticeArray* IjkGridLatticeRepresentation::getArrayLatticeOfPoints3d() const
+resqml20__Point3dLatticeArray* IjkGridLatticeRepresentation::getArrayLatticeOfPoints3d() const
 {
-    resqml2__Point3dLatticeArray* result = nullptr;
+    resqml20__Point3dLatticeArray* result = nullptr;
 
-    resqml2__PointGeometry* ptGeom = getPointGeometry2_0_1(0);
-    if (ptGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dLatticeArray)
+    resqml20__PointGeometry* ptGeom = getPointGeometry2_0_1(0);
+    if (ptGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dLatticeArray)
     {
-        result = static_cast<resqml2__Point3dLatticeArray*>(ptGeom->Points);
+        result = static_cast<resqml20__Point3dLatticeArray*>(ptGeom->Points);
     }
 
     return result;
@@ -125,7 +125,7 @@ resqml2__Point3dLatticeArray* IjkGridLatticeRepresentation::getArrayLatticeOfPoi
 
 double IjkGridLatticeRepresentation::getXOrigin() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
 	if (arrayLatticeOfPoint3d)
 		return arrayLatticeOfPoint3d->Origin->Coordinate1;
 	else
@@ -146,7 +146,7 @@ double IjkGridLatticeRepresentation::getXOriginInGlobalCrs() const
 
 double IjkGridLatticeRepresentation::getYOrigin() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
 	if (arrayLatticeOfPoint3d)
 		return arrayLatticeOfPoint3d->Origin->Coordinate2;
 	else
@@ -167,7 +167,7 @@ double IjkGridLatticeRepresentation::getYOriginInGlobalCrs() const
 
 double IjkGridLatticeRepresentation::getZOrigin() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
 	if (arrayLatticeOfPoint3d)
 		return arrayLatticeOfPoint3d->Origin->Coordinate3;
 	else
@@ -182,7 +182,7 @@ double IjkGridLatticeRepresentation::getZOriginInGlobalCrs() const
 	}
 	// Only one patch is allowed for an IJK Grid lattice
 	RESQML2_NS::AbstractLocal3dCrs const * localCrs = getLocalCrs(0);
-	if (localCrs->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__obj_USCORELocalTime3dCrs) {
+	if (localCrs->getGsoapType() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__obj_USCORELocalTime3dCrs) {
 		return result;
 	}
 
@@ -191,7 +191,7 @@ double IjkGridLatticeRepresentation::getZOriginInGlobalCrs() const
 
 double IjkGridLatticeRepresentation::getXIOffset() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
 	if (arrayLatticeOfPoint3d)
 		return arrayLatticeOfPoint3d->Offset[0]->Offset->Coordinate1;
 	else
@@ -200,7 +200,7 @@ double IjkGridLatticeRepresentation::getXIOffset() const
 
 double IjkGridLatticeRepresentation::getYIOffset() const
 {
-    resqml2__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
+    resqml20__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
 	if (arrayLatticeOfPoint3d)
 		return arrayLatticeOfPoint3d->Offset[0]->Offset->Coordinate2;
 	else
@@ -209,7 +209,7 @@ double IjkGridLatticeRepresentation::getYIOffset() const
 
 double IjkGridLatticeRepresentation::getZIOffset() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
 	if (arrayLatticeOfPoint3d)
 		return arrayLatticeOfPoint3d->Offset[0]->Offset->Coordinate3;
 	else
@@ -218,7 +218,7 @@ double IjkGridLatticeRepresentation::getZIOffset() const
 
 double IjkGridLatticeRepresentation::getXJOffset() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
 	if (arrayLatticeOfPoint3d)
 		return arrayLatticeOfPoint3d->Offset[1]->Offset->Coordinate1;
 	else
@@ -227,7 +227,7 @@ double IjkGridLatticeRepresentation::getXJOffset() const
 
 double IjkGridLatticeRepresentation::getYJOffset() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
 	if (arrayLatticeOfPoint3d)
 		return arrayLatticeOfPoint3d->Offset[1]->Offset->Coordinate2;
 	else
@@ -236,7 +236,7 @@ double IjkGridLatticeRepresentation::getYJOffset() const
 
 double IjkGridLatticeRepresentation::getZJOffset() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
 	if (arrayLatticeOfPoint3d)
 		return arrayLatticeOfPoint3d->Offset[1]->Offset->Coordinate3;
 	else
@@ -245,7 +245,7 @@ double IjkGridLatticeRepresentation::getZJOffset() const
 
 double IjkGridLatticeRepresentation::getXKOffset() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
 	if (arrayLatticeOfPoint3d)
 		return arrayLatticeOfPoint3d->Offset[2]->Offset->Coordinate1;
 	else
@@ -254,7 +254,7 @@ double IjkGridLatticeRepresentation::getXKOffset() const
 
 double IjkGridLatticeRepresentation::getYKOffset() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
 	if (arrayLatticeOfPoint3d)
 		return arrayLatticeOfPoint3d->Offset[2]->Offset->Coordinate2;
 	else
@@ -263,7 +263,7 @@ double IjkGridLatticeRepresentation::getYKOffset() const
 
 double IjkGridLatticeRepresentation::getZKOffset() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoint3d = getArrayLatticeOfPoints3d();
 	if (arrayLatticeOfPoint3d)
 		return arrayLatticeOfPoint3d->Offset[2]->Offset->Coordinate3;
 	else
@@ -272,64 +272,64 @@ double IjkGridLatticeRepresentation::getZKOffset() const
 
 double IjkGridLatticeRepresentation::getISpacing() const
 {
-    resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+    resqml20__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
-    if (arrayLatticeOfPoints3d && arrayLatticeOfPoints3d->Offset[0]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleConstantArray)
-        return static_cast<resqml2__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[0]->Spacing)->Value;
+    if (arrayLatticeOfPoints3d && arrayLatticeOfPoints3d->Offset[0]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray)
+        return static_cast<resqml20__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[0]->Spacing)->Value;
     else
         return std::numeric_limits<double>::signaling_NaN();
 }
 
 double IjkGridLatticeRepresentation::getJSpacing() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
-    if (arrayLatticeOfPoints3d && arrayLatticeOfPoints3d->Offset[1]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleConstantArray)
-        return static_cast<resqml2__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[1]->Spacing)->Value;
+    if (arrayLatticeOfPoints3d && arrayLatticeOfPoints3d->Offset[1]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray)
+        return static_cast<resqml20__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[1]->Spacing)->Value;
     else
         return std::numeric_limits<double>::signaling_NaN();
 }
 
 double IjkGridLatticeRepresentation::getKSpacing() const
 {
-	resqml2__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
+	resqml20__Point3dLatticeArray* arrayLatticeOfPoints3d = getArrayLatticeOfPoints3d();
 
-    if (arrayLatticeOfPoints3d && arrayLatticeOfPoints3d->Offset[2]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleConstantArray)
-        return static_cast<resqml2__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[2]->Spacing)->Value;
+    if (arrayLatticeOfPoints3d && arrayLatticeOfPoints3d->Offset[2]->Spacing->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray)
+        return static_cast<resqml20__DoubleConstantArray*>(arrayLatticeOfPoints3d->Offset[2]->Spacing)->Value;
     else
         return std::numeric_limits<double>::signaling_NaN();
 }
 
 int IjkGridLatticeRepresentation::getOriginInline() const
 {
-	resqml2__Seismic3dCoordinates* s3c = getSeismic3dCoordinates(0);
+	resqml20__Seismic3dCoordinates* s3c = getSeismic3dCoordinates(0);
 
-	if (s3c && s3c->InlineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleLatticeArray)
-		return (int)static_cast<resqml2__DoubleLatticeArray*>(s3c->InlineCoordinates)->StartValue;
+	if (s3c && s3c->InlineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
+		return (int)static_cast<resqml20__DoubleLatticeArray*>(s3c->InlineCoordinates)->StartValue;
 	else
 		return 0;
 }
 
 int IjkGridLatticeRepresentation::getOriginCrossline() const
 {
-	resqml2__Seismic3dCoordinates* s3c = getSeismic3dCoordinates(0);
+	resqml20__Seismic3dCoordinates* s3c = getSeismic3dCoordinates(0);
 
-	if (s3c && s3c->CrosslineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleLatticeArray)
-		return (int)static_cast<resqml2__DoubleLatticeArray*>(s3c->CrosslineCoordinates)->StartValue;
+	if (s3c && s3c->CrosslineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
+		return (int)static_cast<resqml20__DoubleLatticeArray*>(s3c->CrosslineCoordinates)->StartValue;
 	else
 		return 0;
 }
 
 int IjkGridLatticeRepresentation::getInlineIOffset() const
 {
-	resqml2__Seismic3dCoordinates* s3c = getSeismic3dCoordinates(0);
+	resqml20__Seismic3dCoordinates* s3c = getSeismic3dCoordinates(0);
 
-	if (s3c && s3c->InlineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleLatticeArray)
+	if (s3c && s3c->InlineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 	{
-		resqml2__DoubleLatticeArray* dla = static_cast<resqml2__DoubleLatticeArray*>(s3c->InlineCoordinates);
-	    if (dla && dla->Offset[0]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleConstantArray)
+		resqml20__DoubleLatticeArray* dla = static_cast<resqml20__DoubleLatticeArray*>(s3c->InlineCoordinates);
+	    if (dla && dla->Offset[0]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray)
 		{
-			return (int)static_cast<resqml2__DoubleConstantArray*>(dla->Offset[0])->Value;
+			return (int)static_cast<resqml20__DoubleConstantArray*>(dla->Offset[0])->Value;
 		}
 	}
 
@@ -338,14 +338,14 @@ int IjkGridLatticeRepresentation::getInlineIOffset() const
 
 int IjkGridLatticeRepresentation::getInlineJOffset() const
 {
-	resqml2__Seismic3dCoordinates* s3c = getSeismic3dCoordinates(0);
+	resqml20__Seismic3dCoordinates* s3c = getSeismic3dCoordinates(0);
 
-	if (s3c && s3c->InlineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleLatticeArray)
+	if (s3c && s3c->InlineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 	{
-		resqml2__DoubleLatticeArray* dla = static_cast<resqml2__DoubleLatticeArray*>(s3c->InlineCoordinates);
-	    if (dla && dla->Offset[1]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleConstantArray)
+		resqml20__DoubleLatticeArray* dla = static_cast<resqml20__DoubleLatticeArray*>(s3c->InlineCoordinates);
+	    if (dla && dla->Offset[1]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray)
 		{
-			return (int)static_cast<resqml2__DoubleConstantArray*>(dla->Offset[1])->Value;
+			return (int)static_cast<resqml20__DoubleConstantArray*>(dla->Offset[1])->Value;
 		}
 	}
 
@@ -354,14 +354,14 @@ int IjkGridLatticeRepresentation::getInlineJOffset() const
 
 int IjkGridLatticeRepresentation::getInlineKOffset() const
 {
-	resqml2__Seismic3dCoordinates* s3c = getSeismic3dCoordinates(0);
+	resqml20__Seismic3dCoordinates* s3c = getSeismic3dCoordinates(0);
 
-	if (s3c && s3c->InlineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleLatticeArray)
+	if (s3c && s3c->InlineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 	{
-		resqml2__DoubleLatticeArray* dla = static_cast<resqml2__DoubleLatticeArray*>(s3c->InlineCoordinates);
-	    if (dla && dla->Offset[2]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleConstantArray)
+		resqml20__DoubleLatticeArray* dla = static_cast<resqml20__DoubleLatticeArray*>(s3c->InlineCoordinates);
+	    if (dla && dla->Offset[2]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray)
 		{
-			return (int)static_cast<resqml2__DoubleConstantArray*>(dla->Offset[2])->Value;
+			return (int)static_cast<resqml20__DoubleConstantArray*>(dla->Offset[2])->Value;
 		}
 	}
 
@@ -370,14 +370,14 @@ int IjkGridLatticeRepresentation::getInlineKOffset() const
 
 int IjkGridLatticeRepresentation::getCrosslineIOffset() const
 {
-	resqml2__Seismic3dCoordinates* s3c = getSeismic3dCoordinates(0);
+	resqml20__Seismic3dCoordinates* s3c = getSeismic3dCoordinates(0);
 
-	if (s3c && s3c->CrosslineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleLatticeArray)
+	if (s3c && s3c->CrosslineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 	{
-		resqml2__DoubleLatticeArray* dla = static_cast<resqml2__DoubleLatticeArray*>(s3c->CrosslineCoordinates);
-	    if (dla && dla->Offset[0]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleConstantArray)
+		resqml20__DoubleLatticeArray* dla = static_cast<resqml20__DoubleLatticeArray*>(s3c->CrosslineCoordinates);
+	    if (dla && dla->Offset[0]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray)
 		{
-			return (int)static_cast<resqml2__DoubleConstantArray*>(dla->Offset[0])->Value;
+			return (int)static_cast<resqml20__DoubleConstantArray*>(dla->Offset[0])->Value;
 		}
 	}
 
@@ -386,14 +386,14 @@ int IjkGridLatticeRepresentation::getCrosslineIOffset() const
 
 int IjkGridLatticeRepresentation::getCrosslineJOffset() const
 {
-	resqml2__Seismic3dCoordinates* s3c = getSeismic3dCoordinates(0);
+	resqml20__Seismic3dCoordinates* s3c = getSeismic3dCoordinates(0);
 
-	if (s3c && s3c->CrosslineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleLatticeArray)
+	if (s3c && s3c->CrosslineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 	{
-		resqml2__DoubleLatticeArray* dla = static_cast<resqml2__DoubleLatticeArray*>(s3c->CrosslineCoordinates);
-	    if (dla && dla->Offset[1]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleConstantArray)
+		resqml20__DoubleLatticeArray* dla = static_cast<resqml20__DoubleLatticeArray*>(s3c->CrosslineCoordinates);
+	    if (dla && dla->Offset[1]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray)
 		{
-			return (int)static_cast<resqml2__DoubleConstantArray*>(dla->Offset[1])->Value;
+			return (int)static_cast<resqml20__DoubleConstantArray*>(dla->Offset[1])->Value;
 		}
 	}
 
@@ -402,14 +402,14 @@ int IjkGridLatticeRepresentation::getCrosslineJOffset() const
 
 int IjkGridLatticeRepresentation::getCrosslineKOffset() const
 {
-	resqml2__Seismic3dCoordinates* s3c = getSeismic3dCoordinates(0);
+	resqml20__Seismic3dCoordinates* s3c = getSeismic3dCoordinates(0);
 
-	if (s3c && s3c->CrosslineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleLatticeArray)
+	if (s3c && s3c->CrosslineCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray)
 	{
-		resqml2__DoubleLatticeArray* dla = static_cast<resqml2__DoubleLatticeArray*>(s3c->CrosslineCoordinates);
-	    if (dla && dla->Offset[2]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleConstantArray)
+		resqml20__DoubleLatticeArray* dla = static_cast<resqml20__DoubleLatticeArray*>(s3c->CrosslineCoordinates);
+	    if (dla && dla->Offset[2]->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleConstantArray)
 		{
-			return (int)static_cast<resqml2__DoubleConstantArray*>(dla->Offset[2])->Value;
+			return (int)static_cast<resqml20__DoubleConstantArray*>(dla->Offset[2])->Value;
 		}
 	}
 
@@ -417,8 +417,8 @@ int IjkGridLatticeRepresentation::getCrosslineKOffset() const
 }
 
 void IjkGridLatticeRepresentation::setGeometryAsCoordinateLineNodes(
-	resqml2__PillarShape mostComplexPillarGeometry,
-	resqml2__KDirection kDirectionKind,
+	resqml20__PillarShape mostComplexPillarGeometry,
+	resqml20__KDirection kDirectionKind,
 	bool isRightHanded,
 	double originX, double originY, double originZ,
 	double directionIX, double directionIY, double directionIZ, double spacingI,
@@ -429,7 +429,7 @@ void IjkGridLatticeRepresentation::setGeometryAsCoordinateLineNodes(
 		localCrs = getRepository()->getDefaultCrs();
 	}
 
-	resqml2__IjkGridGeometry* geom = soap_new_resqml2__IjkGridGeometry(gsoapProxy2_0_1->soap, 1);
+	resqml20__IjkGridGeometry* geom = soap_new_resqml20__IjkGridGeometry(gsoapProxy2_0_1->soap, 1);
 	geom->LocalCrs = localCrs->newResqmlReference();
 	if (!isTruncated()) {
 		getSpecializedGsoapProxy()->Geometry = geom;
@@ -442,55 +442,55 @@ void IjkGridLatticeRepresentation::setGeometryAsCoordinateLineNodes(
 	geom->KDirection = kDirectionKind;
 
 	// Pillar defined
-	resqml2__BooleanConstantArray* definedPillars = soap_new_resqml2__BooleanConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__BooleanConstantArray* definedPillars = soap_new_resqml20__BooleanConstantArray(gsoapProxy2_0_1->soap, 1);
 	geom->PillarGeometryIsDefined = definedPillars;
 	definedPillars->Count = (getICellCount() + 1) * (getJCellCount() + 1);
 	definedPillars->Value = true;
 
 	// XML coordinate lines
-	resqml2__Point3dLatticeArray* xmlPoints = soap_new_resqml2__Point3dLatticeArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dLatticeArray* xmlPoints = soap_new_resqml20__Point3dLatticeArray(gsoapProxy2_0_1->soap, 1);
 	geom->Points = xmlPoints;
 
 	xmlPoints->AllDimensionsAreOrthogonal = (bool*)soap_malloc(gsoapProxy2_0_1->soap, sizeof(bool));
 	*xmlPoints->AllDimensionsAreOrthogonal = true;
-	xmlPoints->Origin = soap_new_resqml2__Point3d(gsoapProxy2_0_1->soap, 1);
+	xmlPoints->Origin = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap, 1);
 	xmlPoints->Origin->Coordinate1 = originX;
 	xmlPoints->Origin->Coordinate2 = originY;
 	xmlPoints->Origin->Coordinate3 = originZ;
 
 	// slowest axis to fastest axis so k,j,i 
-	resqml2__Point3dOffset * dimK = soap_new_resqml2__Point3dOffset (gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dOffset * dimK = soap_new_resqml20__Point3dOffset (gsoapProxy2_0_1->soap, 1);
 	xmlPoints->Offset.push_back(dimK);
 	// the dimension is the index of the axis in the collection. here we start from 0 and goes up by 1
-	dimK->Offset = soap_new_resqml2__Point3d(gsoapProxy2_0_1->soap, 1);
+	dimK->Offset = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap, 1);
 	dimK->Offset->Coordinate1 = directionKX;
 	dimK->Offset->Coordinate2 = directionKY;
 	dimK->Offset->Coordinate3 = directionKZ;
-	resqml2__DoubleConstantArray * xmlSpacingK = soap_new_resqml2__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray * xmlSpacingK = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
 	dimK->Spacing = xmlSpacingK;
 	xmlSpacingK->Count = getKCellCount(); // number of cells on K axis
 	xmlSpacingK->Value = spacingK;
 	
-	resqml2__Point3dOffset * dimJ = soap_new_resqml2__Point3dOffset (gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dOffset * dimJ = soap_new_resqml20__Point3dOffset (gsoapProxy2_0_1->soap, 1);
 	xmlPoints->Offset.push_back(dimJ);
 	// the dimension is the index of the axis in the collection
-	dimJ->Offset = soap_new_resqml2__Point3d(gsoapProxy2_0_1->soap, 1);
+	dimJ->Offset = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap, 1);
 	dimJ->Offset->Coordinate1 = directionJX;
 	dimJ->Offset->Coordinate2 = directionJY;
 	dimJ->Offset->Coordinate3 = directionJZ;
-	resqml2__DoubleConstantArray * xmlSpacingJ = soap_new_resqml2__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray * xmlSpacingJ = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
 	dimJ->Spacing = xmlSpacingJ;
 	xmlSpacingJ->Count = getJCellCount(); // number of cells on J axis
 	xmlSpacingJ->Value = spacingJ;
 
-	resqml2__Point3dOffset * dimI = soap_new_resqml2__Point3dOffset (gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dOffset * dimI = soap_new_resqml20__Point3dOffset (gsoapProxy2_0_1->soap, 1);
 	xmlPoints->Offset.push_back(dimI);
 	// the dimension is the index of the axis in the collection
-	dimI->Offset = soap_new_resqml2__Point3d(gsoapProxy2_0_1->soap, 1);
+	dimI->Offset = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap, 1);
 	dimI->Offset->Coordinate1 = directionIX;
 	dimI->Offset->Coordinate2 = directionIY;
 	dimI->Offset->Coordinate3 = directionIZ;
-	resqml2__DoubleConstantArray * xmlSpacingI = soap_new_resqml2__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray * xmlSpacingI = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
 	dimI->Spacing = xmlSpacingI;
 	xmlSpacingI->Count = getICellCount(); // number of cells on I axis
 	xmlSpacingI->Value = spacingI;
@@ -504,34 +504,34 @@ void IjkGridLatticeRepresentation::addSeismic3dCoordinatesToPatch(
 	double startCrossline, double incrCrossline, unsigned int countCrossline,
 	unsigned int countSample, RESQML2_NS::AbstractRepresentation * seismicSupport)
 {
-	resqml2__PointGeometry* geom = getPointGeometry2_0_1(patchIndex);
+	resqml20__PointGeometry* geom = getPointGeometry2_0_1(patchIndex);
 	if (geom == nullptr)
 		throw invalid_argument("The patchIndex does not identify a point geometry.");
 
 	if (geom->SeismicCoordinates == nullptr)
-		geom->SeismicCoordinates = soap_new_resqml2__Seismic3dCoordinates(gsoapProxy2_0_1->soap, 1);
-	else if (geom->SeismicCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Seismic2dCoordinates)
+		geom->SeismicCoordinates = soap_new_resqml20__Seismic3dCoordinates(gsoapProxy2_0_1->soap, 1);
+	else if (geom->SeismicCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Seismic2dCoordinates)
 		throw invalid_argument("It already exists some seismic 2d coordinates for this patch.");
-	resqml2__Seismic3dCoordinates* patch = static_cast<resqml2__Seismic3dCoordinates*>(geom->SeismicCoordinates);
+	resqml20__Seismic3dCoordinates* patch = static_cast<resqml20__Seismic3dCoordinates*>(geom->SeismicCoordinates);
 
 	patch->SeismicSupport = seismicSupport->newResqmlReference();
 	getRepository()->addRelationship(this, seismicSupport);
 
 	// inlines XML
-	resqml2__DoubleLatticeArray* inlineValues = soap_new_resqml2__DoubleLatticeArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleLatticeArray* inlineValues = soap_new_resqml20__DoubleLatticeArray(gsoapProxy2_0_1->soap, 1);
 	inlineValues->StartValue = startInline;
 
-	resqml2__DoubleConstantArray * IoffsetInline = soap_new_resqml2__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray * IoffsetInline = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
 	IoffsetInline->Count = countInline - 1;
 	IoffsetInline->Value = incrInline;
 	inlineValues->Offset.push_back(IoffsetInline);
 
-	resqml2__DoubleConstantArray * IoffsetCrossline = soap_new_resqml2__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray * IoffsetCrossline = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
 	IoffsetCrossline->Count = countCrossline -1;
 	IoffsetCrossline->Value = 0;
 	inlineValues->Offset.push_back(IoffsetCrossline);
 
-	resqml2__DoubleConstantArray * IoffsetSample = soap_new_resqml2__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray * IoffsetSample = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
 	IoffsetSample->Count = countSample -1;
 	IoffsetSample->Value = 0;
 	inlineValues->Offset.push_back(IoffsetSample);
@@ -539,18 +539,18 @@ void IjkGridLatticeRepresentation::addSeismic3dCoordinatesToPatch(
 	patch->InlineCoordinates = inlineValues;
 
 	// crosslines XML
-	resqml2__DoubleLatticeArray* crosslineValues = soap_new_resqml2__DoubleLatticeArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleLatticeArray* crosslineValues = soap_new_resqml20__DoubleLatticeArray(gsoapProxy2_0_1->soap, 1);
 	crosslineValues->StartValue = startCrossline;
 
-	resqml2__DoubleConstantArray * CoffsetInline = soap_new_resqml2__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray * CoffsetInline = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
 	CoffsetInline->Count = countInline - 1;
 	CoffsetInline->Value = 0;
 	crosslineValues->Offset.push_back(CoffsetInline);
-	resqml2__DoubleConstantArray * CoffsetCrossline = soap_new_resqml2__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray * CoffsetCrossline = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
 	CoffsetCrossline->Count = countCrossline - 1;
 	CoffsetCrossline->Value = incrCrossline;
 	crosslineValues->Offset.push_back(CoffsetCrossline);
-	resqml2__DoubleConstantArray * CoffsetSample = soap_new_resqml2__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray * CoffsetSample = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
 	CoffsetSample->Count = countSample - 1;
 	CoffsetSample->Value = 0;
 	crosslineValues->Offset.push_back(CoffsetSample);

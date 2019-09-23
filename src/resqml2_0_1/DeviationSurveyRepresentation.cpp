@@ -37,8 +37,8 @@ const char* DeviationSurveyRepresentation::XML_TAG = "DeviationSurveyRepresentat
 
 DeviationSurveyRepresentation::DeviationSurveyRepresentation(WellboreInterpretation * interp, const string & guid, const std::string & title, bool isFinal, RESQML2_NS::MdDatum * mdInfo)
 {
-	gsoapProxy2_0_1 = soap_new_resqml2__obj_USCOREDeviationSurveyRepresentation(interp->getGsoapContext(), 1);	
-	_resqml2__DeviationSurveyRepresentation* rep = static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREDeviationSurveyRepresentation(interp->getGsoapContext(), 1);	
+	_resqml20__DeviationSurveyRepresentation* rep = static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
 
 	rep->IsFinal = isFinal;
 
@@ -73,9 +73,9 @@ void DeviationSurveyRepresentation::setGeometry(double * firstStationLocation, c
 	}
 	getRepository()->addRelationship(this, proxy);
 
-	_resqml2__DeviationSurveyRepresentation* rep = static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
+	_resqml20__DeviationSurveyRepresentation* rep = static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
 
-	rep->FirstStationLocation = soap_new_resqml2__Point3d(gsoapProxy2_0_1->soap, 1);
+	rep->FirstStationLocation = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap, 1);
 	rep->FirstStationLocation->Coordinate1 = firstStationLocation[0];
 	rep->FirstStationLocation->Coordinate2 = firstStationLocation[1];
 	rep->FirstStationLocation->Coordinate3 = firstStationLocation[2];
@@ -83,7 +83,7 @@ void DeviationSurveyRepresentation::setGeometry(double * firstStationLocation, c
 	rep->StationCount = stationCount;
 
 	rep->MdUom = mdUom;
-	resqml2__DoubleHdf5Array* xmlMds = soap_new_resqml2__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleHdf5Array* xmlMds = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
 	xmlMds->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
 	xmlMds->Values->HdfProxy = proxy->newResqmlReference();
 	xmlMds->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/mds";
@@ -94,7 +94,7 @@ void DeviationSurveyRepresentation::setGeometry(double * firstStationLocation, c
 
 	rep->AngleUom = angleUom;
 	// XML azimuths
-	resqml2__DoubleHdf5Array* xmlAzims = soap_new_resqml2__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleHdf5Array* xmlAzims = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
 	xmlAzims->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
 	xmlAzims->Values->HdfProxy = proxy->newResqmlReference();
 	xmlAzims->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/azimuths";
@@ -102,7 +102,7 @@ void DeviationSurveyRepresentation::setGeometry(double * firstStationLocation, c
 	// HDF azimuths
 	proxy->writeArrayNdOfDoubleValues(rep->uuid, "azimuths", azimuths, dim, 1);
 	// XML inclinations
-	resqml2__DoubleHdf5Array* xmlIncls = soap_new_resqml2__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleHdf5Array* xmlIncls = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
 	xmlIncls->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
 	xmlIncls->Values->HdfProxy = proxy->newResqmlReference();
 	xmlIncls->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/inclinations";
@@ -124,7 +124,7 @@ ULONG64 DeviationSurveyRepresentation::getXyzPointCountOfPatch(const unsigned in
 		throw range_error("The index patch is not in the allowed range of patch.");
 	}
 
-	_resqml2__DeviationSurveyRepresentation* rep = static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
+	_resqml20__DeviationSurveyRepresentation* rep = static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
 	return rep->StationCount;
 }
 
@@ -139,9 +139,9 @@ void DeviationSurveyRepresentation::getXyzPointsOfPatch(const unsigned int & pat
 
 void DeviationSurveyRepresentation::getMdValues(double * values) const
 {		
-	_resqml2__DeviationSurveyRepresentation* rep = static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
-	if (rep->Mds->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(rep->Mds)->Values;
+	_resqml20__DeviationSurveyRepresentation* rep = static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
+	if (rep->Mds->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
+		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(rep->Mds)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, values);
 	}
@@ -152,9 +152,9 @@ void DeviationSurveyRepresentation::getMdValues(double * values) const
 
 void DeviationSurveyRepresentation::getInclinations(double* values) const
 {
-	_resqml2__DeviationSurveyRepresentation* rep = static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
-	if (rep->Inclinations->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(rep->Inclinations)->Values;
+	_resqml20__DeviationSurveyRepresentation* rep = static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
+	if (rep->Inclinations->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
+		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(rep->Inclinations)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, values);
 	}
@@ -165,9 +165,9 @@ void DeviationSurveyRepresentation::getInclinations(double* values) const
 
 void DeviationSurveyRepresentation::getAzimuths(double* values) const
 {
-	_resqml2__DeviationSurveyRepresentation* rep = static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
-	if (rep->Azimuths->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(rep->Azimuths)->Values;
+	_resqml20__DeviationSurveyRepresentation* rep = static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
+	if (rep->Azimuths->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
+		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(rep->Azimuths)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, values);
 	}
@@ -187,12 +187,12 @@ void DeviationSurveyRepresentation::setMdDatum(RESQML2_NS::MdDatum * mdDatum)
 
 	getRepository()->addRelationship(this, mdDatum);
 
-	static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1)->MdDatum = mdDatum->newResqmlReference();
+	static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1)->MdDatum = mdDatum->newResqmlReference();
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* DeviationSurveyRepresentation::getMdDatumDor() const
 {
-	return static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1)->MdDatum;
+	return static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1)->MdDatum;
 }
 
 RESQML2_NS::MdDatum * DeviationSurveyRepresentation::getMdDatum() const
@@ -207,35 +207,35 @@ std::string DeviationSurveyRepresentation::getMdDatumUuid() const
 
 bool DeviationSurveyRepresentation::isFinal() const
 {
-	return static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1)->IsFinal;
+	return static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1)->IsFinal;
 }
 
 gsoap_resqml2_0_1::eml20__LengthUom DeviationSurveyRepresentation::getMdUom() const
 {
-	return static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1)->MdUom;
+	return static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1)->MdUom;
 }
 
 gsoap_resqml2_0_1::eml20__PlaneAngleUom DeviationSurveyRepresentation::getAngleUom() const
 {
-	return static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1)->AngleUom;
+	return static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1)->AngleUom;
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* DeviationSurveyRepresentation::getHdfProxyDor() const
 {
-	_resqml2__DeviationSurveyRepresentation* rep = static_cast<_resqml2__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
+	_resqml20__DeviationSurveyRepresentation* rep = static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
 	if (rep->Mds != nullptr) {
-		if (rep->Mds->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-			return static_cast<resqml2__DoubleHdf5Array*>(rep->Mds)->Values->HdfProxy;
+		if (rep->Mds->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
+			return static_cast<resqml20__DoubleHdf5Array*>(rep->Mds)->Values->HdfProxy;
 		}
 	}
 	else if (rep->Inclinations != nullptr) {
-		if (rep->Inclinations->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-			return static_cast<resqml2__DoubleHdf5Array*>(rep->Inclinations)->Values->HdfProxy;
+		if (rep->Inclinations->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
+			return static_cast<resqml20__DoubleHdf5Array*>(rep->Inclinations)->Values->HdfProxy;
 		}
 	}
 	else if (rep->Azimuths != nullptr) {
-		if (rep->Azimuths->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-			return static_cast<resqml2__DoubleHdf5Array*>(rep->Azimuths)->Values->HdfProxy;
+		if (rep->Azimuths->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
+			return static_cast<resqml20__DoubleHdf5Array*>(rep->Azimuths)->Values->HdfProxy;
 		}
 	}
 

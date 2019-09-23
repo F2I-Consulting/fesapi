@@ -36,7 +36,7 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractLocal3dCrs(gsoap_resqml2_0_1::resqml2__AbstractLocal3dCrs* fromGsoap):
+		AbstractLocal3dCrs(gsoap_resqml2_0_1::resqml20__AbstractLocal3dCrs* fromGsoap):
 			COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**

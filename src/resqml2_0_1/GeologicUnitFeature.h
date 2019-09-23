@@ -47,7 +47,7 @@ namespace RESQML2_0_1_NS
 		*/
 		GeologicUnitFeature(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title);
 
-		GeologicUnitFeature(gsoap_resqml2_0_1::_resqml2__GeologicUnitFeature* fromGsoap): AbstractGeologicFeature(fromGsoap) {}
+		GeologicUnitFeature(gsoap_resqml2_0_1::_resqml20__GeologicUnitFeature* fromGsoap): AbstractGeologicFeature(fromGsoap) {}
 		virtual ~GeologicUnitFeature() {}
 	
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;

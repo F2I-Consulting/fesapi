@@ -41,13 +41,13 @@ namespace RESQML2_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		AbstractRepresentation(gsoap_resqml2_0_1::resqml2__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		AbstractRepresentation(gsoap_resqml2_0_1::resqml20__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
 		* Get the point geometry of a specific patch of the representation.
 		* @return	nullptr if there is no point geometry for this particular patch otherwise the found point geometry.
 		*/
-		virtual gsoap_resqml2_0_1::resqml2__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
+		virtual gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
 
 		/**
 		* Creates a point geometry patch.
@@ -58,13 +58,13 @@ namespace RESQML2_NS
 		* @param numDimensionsInArray	The number of dimensions in the array to write.
 		* @param proxy					The HDF proxy where to write the points. It must be already opened for writing and won't be closed in this method.
 		*/
-		gsoap_resqml2_0_1::resqml2__PointGeometry* createPointGeometryPatch2_0_1(unsigned int patchIndex, double * points, class AbstractLocal3dCrs* localCrs, unsigned long long * numPoints, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy);
+		gsoap_resqml2_0_1::resqml20__PointGeometry* createPointGeometryPatch2_0_1(unsigned int patchIndex, double * points, class AbstractLocal3dCrs* localCrs, unsigned long long * numPoints, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy);
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDorFromPointGeometryPatch(gsoap_resqml2_0_1::resqml2__PointGeometry* patch) const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDorFromPointGeometryPatch(gsoap_resqml2_0_1::resqml20__PointGeometry* patch) const;
 
-		gsoap_resqml2_0_1::resqml2__Seismic2dCoordinates* getSeismic2dCoordinates(const unsigned int & patchIndex) const;
+		gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates* getSeismic2dCoordinates(const unsigned int & patchIndex) const;
 
-		gsoap_resqml2_0_1::resqml2__Seismic3dCoordinates* getSeismic3dCoordinates(const unsigned int & patchIndex) const;
+		gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* getSeismic3dCoordinates(const unsigned int & patchIndex) const;
 
 	public:
 

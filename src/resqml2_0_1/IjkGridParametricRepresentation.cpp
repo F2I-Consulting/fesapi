@@ -183,13 +183,13 @@ IjkGridParametricRepresentation::IjkGridParametricRepresentation(RESQML2_NS::Abs
 
 unsigned int IjkGridParametricRepresentation::getControlPointMaxCountPerPillar() const
 {
-	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
+	gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(0);
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
-	resqml2__Point3dParametricArray* points = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
-	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__ParametricLineArray) {
-		const ULONG64 result = static_cast<resqml2__ParametricLineArray*>(points->ParametricLines)->KnotCount;
+	resqml20__Point3dParametricArray* points = static_cast<resqml20__Point3dParametricArray*>(geom->Points);
+	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ParametricLineArray) {
+		const ULONG64 result = static_cast<resqml20__ParametricLineArray*>(points->ParametricLines)->KnotCount;
 		if (result > (std::numeric_limits<unsigned int>::max)())
 			throw std::out_of_range("There are too many knot counts");
 		return static_cast<unsigned int>(result);
@@ -200,15 +200,15 @@ unsigned int IjkGridParametricRepresentation::getControlPointMaxCountPerPillar()
 
 void IjkGridParametricRepresentation::getControlPoints(double * controlPoints, bool reverseIAxis, bool reverseJAxis, bool reverseKAxis) const
 {
-	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
+	gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(0);
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
-	resqml2__Point3dParametricArray* points = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
-	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__ParametricLineArray) {
-		resqml2__ParametricLineArray* paramLineArray = static_cast<resqml2__ParametricLineArray*>(points->ParametricLines);
-		if (paramLineArray->ControlPoints->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array) {
-			eml20__Hdf5Dataset const * dataset = static_cast<resqml2__Point3dHdf5Array*>(paramLineArray->ControlPoints)->Coordinates;
+	resqml20__Point3dParametricArray* points = static_cast<resqml20__Point3dParametricArray*>(geom->Points);
+	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ParametricLineArray) {
+		resqml20__ParametricLineArray* paramLineArray = static_cast<resqml20__ParametricLineArray*>(points->ParametricLines);
+		if (paramLineArray->ControlPoints->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array) {
+			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__Point3dHdf5Array*>(paramLineArray->ControlPoints)->Coordinates;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 			hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, controlPoints);
 		}
@@ -286,14 +286,14 @@ void IjkGridParametricRepresentation::getControlPoints(double * controlPoints, b
 
 bool IjkGridParametricRepresentation::hasControlPointParameters() const
 {
-	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
+	gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(0);
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
-	resqml2__Point3dParametricArray* points = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
-	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__ParametricLineArray)
+	resqml20__Point3dParametricArray* points = static_cast<resqml20__Point3dParametricArray*>(geom->Points);
+	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ParametricLineArray)
 	{
-		resqml2__ParametricLineArray* paramLineArray = static_cast<resqml2__ParametricLineArray*>(points->ParametricLines);
+		resqml20__ParametricLineArray* paramLineArray = static_cast<resqml20__ParametricLineArray*>(points->ParametricLines);
 		return paramLineArray->ControlPointParameters != nullptr;
 	}
 	else
@@ -302,19 +302,19 @@ bool IjkGridParametricRepresentation::hasControlPointParameters() const
 
 void IjkGridParametricRepresentation::getControlPointParameters(double * controlPointParameters, bool reverseIAxis, bool reverseJAxis, bool reverseKAxis) const
 {
-	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
+	gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(0);
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
-	resqml2__Point3dParametricArray* points = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
-	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__ParametricLineArray)
+	resqml20__Point3dParametricArray* points = static_cast<resqml20__Point3dParametricArray*>(geom->Points);
+	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ParametricLineArray)
 	{
-		resqml2__ParametricLineArray* paramLineArray = static_cast<resqml2__ParametricLineArray*>(points->ParametricLines);
+		resqml20__ParametricLineArray* paramLineArray = static_cast<resqml20__ParametricLineArray*>(points->ParametricLines);
 		if (paramLineArray->ControlPointParameters == nullptr)
 			throw invalid_argument("The grid does not contain any control point parameters.");
-		if (paramLineArray->ControlPointParameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
+		if (paramLineArray->ControlPointParameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array)
 		{
-			eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(paramLineArray->ControlPointParameters)->Values;
+			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(paramLineArray->ControlPointParameters)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 			hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, controlPointParameters);
 		}
@@ -394,26 +394,26 @@ void IjkGridParametricRepresentation::getControlPointParameters(double * control
 
 bool IjkGridParametricRepresentation::isParametricLineKindConstant() const
 {
-	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
+	gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(0);
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
-	resqml2__Point3dParametricArray* points = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
-	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__ParametricLineArray)
+	resqml20__Point3dParametricArray* points = static_cast<resqml20__Point3dParametricArray*>(geom->Points);
+	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ParametricLineArray)
 	{
-		resqml2__ParametricLineArray* paramLineArray = static_cast<resqml2__ParametricLineArray*>(points->ParametricLines);
-		if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerLatticeArray)
+		resqml20__ParametricLineArray* paramLineArray = static_cast<resqml20__ParametricLineArray*>(points->ParametricLines);
+		if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray)
 		{
-			if (static_cast<resqml2__IntegerLatticeArray*>(paramLineArray->LineKindIndices)->Offset[0]->Count == 0)
+			if (static_cast<resqml20__IntegerLatticeArray*>(paramLineArray->LineKindIndices)->Offset[0]->Count == 0)
 				return true;
 		}
-		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray)
+		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray)
 		{
 			return true;
 		}
-		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
+		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array)
 		{
-			eml20__Hdf5Dataset const * dataset = static_cast<resqml2__IntegerHdf5Array*>(paramLineArray->LineKindIndices)->Values;
+			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(paramLineArray->LineKindIndices)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 			short * pillarKind = new short [getPillarCount()];
 			hdfProxy->readArrayNdOfShortValues(dataset->PathInHdfFile, pillarKind);
@@ -443,25 +443,25 @@ short IjkGridParametricRepresentation::getConstantParametricLineKind() const
 	if (!isParametricLineKindConstant())
 		throw invalid_argument("The parametric line kind is not constant.");
 
-	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
+	gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(0);
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
-	resqml2__Point3dParametricArray* points = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
-	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__ParametricLineArray)
+	resqml20__Point3dParametricArray* points = static_cast<resqml20__Point3dParametricArray*>(geom->Points);
+	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ParametricLineArray)
 	{
-		resqml2__ParametricLineArray* paramLineArray = static_cast<resqml2__ParametricLineArray*>(points->ParametricLines);
-		if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerLatticeArray)
+		resqml20__ParametricLineArray* paramLineArray = static_cast<resqml20__ParametricLineArray*>(points->ParametricLines);
+		if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray)
 		{
-			return static_cast<resqml2__IntegerLatticeArray*>(paramLineArray->LineKindIndices)->StartValue;
+			return static_cast<resqml20__IntegerLatticeArray*>(paramLineArray->LineKindIndices)->StartValue;
 		}
-		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray)
+		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray)
 		{
-			return static_cast<resqml2__IntegerConstantArray*>(paramLineArray->LineKindIndices)->Value;
+			return static_cast<resqml20__IntegerConstantArray*>(paramLineArray->LineKindIndices)->Value;
 		}
-		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
+		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array)
 		{
-			eml20__Hdf5Dataset const * dataset = static_cast<resqml2__IntegerHdf5Array*>(paramLineArray->LineKindIndices)->Values;
+			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(paramLineArray->LineKindIndices)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 			short * pillarKind = new short [getPillarCount()];
 			hdfProxy->readArrayNdOfShortValues(dataset->PathInHdfFile, pillarKind);
@@ -478,26 +478,26 @@ short IjkGridParametricRepresentation::getConstantParametricLineKind() const
 
 void IjkGridParametricRepresentation::getParametricLineKind(short * pillarKind, bool reverseIAxis, bool reverseJAxis) const
 {
-	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
+	gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(0);
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
-	resqml2__Point3dParametricArray* points = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
-	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__ParametricLineArray)
+	resqml20__Point3dParametricArray* points = static_cast<resqml20__Point3dParametricArray*>(geom->Points);
+	if (points->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ParametricLineArray)
 	{
-		resqml2__ParametricLineArray* paramLineArray = static_cast<resqml2__ParametricLineArray*>(points->ParametricLines);
-		if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerHdf5Array)
+		resqml20__ParametricLineArray* paramLineArray = static_cast<resqml20__ParametricLineArray*>(points->ParametricLines);
+		if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array)
 		{
-			eml20__Hdf5Dataset const * dataset = static_cast<resqml2__IntegerHdf5Array*>(paramLineArray->LineKindIndices)->Values;
+			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(paramLineArray->LineKindIndices)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 			hdfProxy->readArrayNdOfShortValues(dataset->PathInHdfFile, pillarKind);
 		}
-		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__IntegerConstantArray)
+		else if (paramLineArray->LineKindIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray)
 		{
 			const LONG64 value =
-				static_cast<resqml2__IntegerConstantArray*>(paramLineArray->LineKindIndices)->Value;
+				static_cast<resqml20__IntegerConstantArray*>(paramLineArray->LineKindIndices)->Value;
 			const ULONG64 lineKindCount =
-				static_cast<resqml2__IntegerConstantArray*>(paramLineArray->LineKindIndices)->Count;
+				static_cast<resqml20__IntegerConstantArray*>(paramLineArray->LineKindIndices)->Count;
 			if( lineKindCount != getPillarCount() )
 			{
 				throw invalid_argument("The parametric line kind count is inconsistent with the pillar count.");
@@ -558,14 +558,14 @@ void IjkGridParametricRepresentation::getParametricLineKind(short * pillarKind, 
 
 void IjkGridParametricRepresentation::getParametersOfNodes(double * parameters, bool reverseIAxis, bool reverseJAxis, bool reverseKAxis) const
 {
-	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
+	gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(0);
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
-	resqml2__Point3dParametricArray* points = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
-	if (points->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
+	resqml20__Point3dParametricArray* points = static_cast<resqml20__Point3dParametricArray*>(geom->Points);
+	if (points->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array)
 	{
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(points->Parameters)->Values;
+		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(points->Parameters)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, parameters);
 	}
@@ -653,15 +653,15 @@ void IjkGridParametricRepresentation::getParametersOfNodesOfKInterfaceSequenceOf
 	if (parameters == nullptr)
 		throw invalid_argument("xyzPoints must be allocated.");
 
-	gsoap_resqml2_0_1::resqml2__PointGeometry const * const geom = getPointGeometry2_0_1(0);
+	gsoap_resqml2_0_1::resqml20__PointGeometry const * const geom = getPointGeometry2_0_1(0);
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
-	resqml2__Point3dParametricArray const * const parametricPoint3d = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
+	resqml20__Point3dParametricArray const * const parametricPoint3d = static_cast<resqml20__Point3dParametricArray*>(geom->Points);
 
 	// parameters : ordered
-	if (parametricPoint3d->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(parametricPoint3d->Parameters)->Values;
+	if (parametricPoint3d->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
+		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(parametricPoint3d->Parameters)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
 		unsigned long long* const numValuesInEachDimension = new unsigned long long[2];
@@ -682,14 +682,14 @@ void IjkGridParametricRepresentation::getParametersOfNodesOfKInterfaceSequenceOf
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* IjkGridParametricRepresentation::getHdfProxyDor() const
 {
-	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
+	gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(0);
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
-	resqml2__Point3dParametricArray* points = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
-	if (points->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array)
+	resqml20__Point3dParametricArray* points = static_cast<resqml20__Point3dParametricArray*>(geom->Points);
+	if (points->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array)
 	{
-		return static_cast<resqml2__DoubleHdf5Array*>(points->Parameters)->Values->HdfProxy;
+		return static_cast<resqml20__DoubleHdf5Array*>(points->Parameters)->Values->HdfProxy;
 	}
 	else
 		throw std::logic_error("Not yet implemented");
@@ -699,13 +699,13 @@ ULONG64 IjkGridParametricRepresentation::getXyzPointCountOfPatch(const unsigned 
 {
 	ULONG64 result = getXyzPointCountOfKInterfaceOfPatch(patchIndex) * (getKCellCount() + 1);
 
-	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(patchIndex));
+	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(patchIndex));
 	if (geom->SplitNodes != nullptr) {
 		result += geom->SplitNodes->Count;
 	}
 
 	if (isTruncated()) {
-		result += static_cast<gsoap_resqml2_0_1::_resqml2__TruncatedIjkGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->TruncationNodeCount;
+		result += static_cast<gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->TruncationNodeCount;
 	}
 
 	return result;
@@ -731,8 +731,8 @@ void IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch(co
 		pillarInformation = new PillarInformation();
 		loadPillarInformation(*pillarInformation);
 	}
-	resqml2__Point3dParametricArray const * const parametricPoint3d = static_cast<resqml2__Point3dParametricArray*>(getPointGeometry2_0_1(patchIndex)->Points);
-	if (parametricPoint3d->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__ParametricLineArray) {
+	resqml20__Point3dParametricArray const * const parametricPoint3d = static_cast<resqml20__Point3dParametricArray*>(getPointGeometry2_0_1(patchIndex)->Points);
+	if (parametricPoint3d->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ParametricLineArray) {
 		//Mapping
 		size_t paramIndex = 0;
 		for (unsigned int pillarIndex = 0; pillarIndex < pillarInformation->parametricLineCount; ++pillarIndex) {
@@ -933,7 +933,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfKInterfaceSequenceOfPatch(co
 	else
 	{
 		delete[] parameters;
-		throw logic_error("Parametric lines should be of type resqml2__ParametricLineArray. Other type is not implemented yet.");
+		throw logic_error("Parametric lines should be of type resqml20__ParametricLineArray. Other type is not implemented yet.");
 	}
 
 	delete[] parameters;
@@ -950,11 +950,11 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlockOfPatch(const unsigned 
 	if (xyzPoints == nullptr)
 		throw invalid_argument("xyzPoints must be allocated.");
 
-	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
+	gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(0);
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
-	resqml2__Point3dParametricArray* parametricPoint3d = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
+	resqml20__Point3dParametricArray* parametricPoint3d = static_cast<resqml20__Point3dParametricArray*>(geom->Points);
 
 	if (pillarInformation == nullptr)
 	{
@@ -972,7 +972,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlockOfPatch(const unsigned 
 
 	// parameters : ordered
 	double * parameters = new double[getXyzPointCountOfBlock()];
-	if (parametricPoint3d->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {	
+	if (parametricPoint3d->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {	
 		unsigned long long* blockCountPerDimension = new unsigned long long[2];
 		blockCountPerDimension[0] = 1;
 		blockCountPerDimension[1] = blockInformation->jInterfaceEnd - blockInformation->jInterfaceStart + 1;
@@ -986,7 +986,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlockOfPatch(const unsigned 
 		blockSizeInEachDimension[0] = blockInformation->kInterfaceEnd - blockInformation->kInterfaceStart + 1;
 		blockSizeInEachDimension[1] = blockInformation->iInterfaceEnd - blockInformation->iInterfaceStart + 1;
 
-		eml20__Hdf5Dataset const * xmlDataset = static_cast<resqml2__DoubleHdf5Array*>(parametricPoint3d->Parameters)->Values;
+		eml20__Hdf5Dataset const * xmlDataset = static_cast<resqml20__DoubleHdf5Array*>(parametricPoint3d->Parameters)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(xmlDataset);
 
 		hid_t dataset, filespace;
@@ -1080,7 +1080,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlockOfPatch(const unsigned 
 		throw logic_error("Non floating point coordinate line parameters are not implemented yet");
 	}
 
-	if (parametricPoint3d->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__ParametricLineArray) {
+	if (parametricPoint3d->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ParametricLineArray) {
 		//Mapping
 		size_t paramIndex = 0;
 		for (unsigned int j = blockInformation->jInterfaceStart; j <= blockInformation->jInterfaceEnd; ++j)
@@ -1289,7 +1289,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlockOfPatch(const unsigned 
 	else
 	{
 		delete[] parameters;
-		throw logic_error("Parametric lines should be of type resqml2__ParametricLineArray. Other type is not implemented yet.");
+		throw logic_error("Parametric lines should be of type resqml20__ParametricLineArray. Other type is not implemented yet.");
 	}
 
 	delete[] parameters;
@@ -1297,23 +1297,23 @@ void IjkGridParametricRepresentation::getXyzPointsOfBlockOfPatch(const unsigned 
 
 void IjkGridParametricRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
 {
-	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
+	gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(0);
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
-	resqml2__Point3dParametricArray* points = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
+	resqml20__Point3dParametricArray* points = static_cast<resqml20__Point3dParametricArray*>(geom->Points);
 
 	getXyzPointsOfPatchFromParametricPoints(points, xyzPoints);
 
 	// Truncation
 	if (isTruncated()) {
-		resqml2__AbstractGridGeometry* truncatedGeom = static_cast<gsoap_resqml2_0_1::resqml2__AbstractGridGeometry*>(geom);
-		if (truncatedGeom->AdditionalGridPoints.size() == 1 && truncatedGeom->AdditionalGridPoints[0]->Attachment == resqml2__GridGeometryAttachment__nodes) {
-			if (truncatedGeom->AdditionalGridPoints[0]->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dHdf5Array)
+		resqml20__AbstractGridGeometry* truncatedGeom = static_cast<gsoap_resqml2_0_1::resqml20__AbstractGridGeometry*>(geom);
+		if (truncatedGeom->AdditionalGridPoints.size() == 1 && truncatedGeom->AdditionalGridPoints[0]->Attachment == resqml20__GridGeometryAttachment__nodes) {
+			if (truncatedGeom->AdditionalGridPoints[0]->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array)
 			{
-				eml20__Hdf5Dataset const * xmlDataset = static_cast<resqml2__Point3dHdf5Array*>(truncatedGeom->AdditionalGridPoints[0]->Points)->Coordinates;
+				eml20__Hdf5Dataset const * xmlDataset = static_cast<resqml20__Point3dHdf5Array*>(truncatedGeom->AdditionalGridPoints[0]->Points)->Coordinates;
 				COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(xmlDataset);
-				xyzPoints += getXyzPointCountOfPatch(patchIndex) - static_cast<gsoap_resqml2_0_1::_resqml2__TruncatedIjkGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->TruncationNodeCount;
+				xyzPoints += getXyzPointCountOfPatch(patchIndex) - static_cast<gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation*>(gsoapProxy2_0_1)->TruncationCells->TruncationNodeCount;
 				hdfProxy->readArrayNdOfDoubleValues(xmlDataset->PathInHdfFile, xyzPoints);
 			}
 			else {
@@ -1327,7 +1327,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfPatch(const unsigned int & p
 }
 
 void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNodes(
-	gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, bool isRightHanded,
+	gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 	double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy* proxy, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	setGeometryAsParametricSplittedPillarNodes(mostComplexPillarGeometry, isRightHanded, parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, pillarKind, proxy,
@@ -1335,7 +1335,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNo
 }
 
 void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNodesUsingExistingDatasets(
-	gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
+	gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, COMMON_NS::AbstractHdfProxy* proxy, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
 	setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(mostComplexPillarGeometry, kDirectionKind, isRightHanded, parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, pillarKind, definedPillars, proxy,
@@ -1343,7 +1343,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricNonSplittedPillarNo
 }
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes(
-	gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, bool isRightHanded,
+	gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, bool isRightHanded,
 	double * parameters, double * controlPoints, double * controlPointParameters, unsigned int controlPointMaxCountPerPillar, short * pillarKind, COMMON_NS::AbstractHdfProxy * proxy,
 	unsigned long splitCoordinateLineCount, unsigned int * pillarOfCoordinateLine,
 	unsigned int * splitCoordinateLineColumnCumulativeCount, unsigned int * splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
@@ -1352,7 +1352,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		throw invalid_argument("The kind of the coordinate lines cannot be null.");
 	}
 
-	gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind = computeKDirection(controlPoints, controlPointMaxCountPerPillar, pillarKind, localCrs == nullptr ? getRepository()->getDefaultCrs() : localCrs);
+	gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind = computeKDirection(controlPoints, controlPointMaxCountPerPillar, pillarKind, localCrs == nullptr ? getRepository()->getDefaultCrs() : localCrs);
 
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -1368,14 +1368,14 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		splitCoordinateLineCount, pillarOfCoordinateLine,
 		splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns, proxy);
 
-	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(0));
+	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
 	geom->PillarShape = mostComplexPillarGeometry;
 
 	// XML Pillar defined
-	resqml2__BooleanHdf5Array* xmlDefinedPillars = soap_new_resqml2__BooleanHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__BooleanHdf5Array* xmlDefinedPillars = soap_new_resqml20__BooleanHdf5Array(gsoapProxy2_0_1->soap, 1);
 	geom->PillarGeometryIsDefined = xmlDefinedPillars;
 	xmlDefinedPillars->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
 	xmlDefinedPillars->Values->HdfProxy = proxy->newResqmlReference();
@@ -1401,12 +1401,12 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	// *********************************
 	// Overwrite line kind hdf dataset
 	// *********************************
-	resqml2__Point3dParametricArray* xmlPoints = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
-	resqml2__ParametricLineArray* paramLines = static_cast<resqml2__ParametricLineArray*>(xmlPoints->ParametricLines);
+	resqml20__Point3dParametricArray* xmlPoints = static_cast<resqml20__Point3dParametricArray*>(geom->Points);
+	resqml20__ParametricLineArray* paramLines = static_cast<resqml20__ParametricLineArray*>(xmlPoints->ParametricLines);
 	paramLines->KnotCount = controlPointMaxCountPerPillar;
 
 	// XML Line kinds
-	resqml2__IntegerHdf5Array* xmlLineKinds = soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array* xmlLineKinds = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
 	paramLines->LineKindIndices = xmlLineKinds;
 	xmlLineKinds->NullValue = -1;
 	xmlLineKinds->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
@@ -1422,7 +1422,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 }
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
-	gsoap_resqml2_0_1::resqml2__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
+	gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry, gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointMaxCountPerPillar, const std::string & pillarKind, const std::string & definedPillars, COMMON_NS::AbstractHdfProxy* proxy,
 	unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
@@ -1440,14 +1440,14 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		splitCoordinateLineCount, pillarOfCoordinateLine,
 		splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns, localCrs);
 
-	gsoap_resqml2_0_1::resqml2__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml2__IjkGridGeometry*>(getPointGeometry2_0_1(0));
+	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
 	geom->PillarShape = mostComplexPillarGeometry;
 
 	// XML Pillar defined
-	resqml2__BooleanHdf5Array* xmlDefinedPillars = soap_new_resqml2__BooleanHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__BooleanHdf5Array* xmlDefinedPillars = soap_new_resqml20__BooleanHdf5Array(gsoapProxy2_0_1->soap, 1);
 	geom->PillarGeometryIsDefined = xmlDefinedPillars;
 	xmlDefinedPillars->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
 	xmlDefinedPillars->Values->HdfProxy = proxy->newResqmlReference();
@@ -1456,12 +1456,12 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	// *********************************
 	// Line kind hdf dataset
 	// *********************************
-	resqml2__Point3dParametricArray* xmlPoints = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
-	resqml2__ParametricLineArray* paramLines = static_cast<resqml2__ParametricLineArray*>(xmlPoints->ParametricLines);
+	resqml20__Point3dParametricArray* xmlPoints = static_cast<resqml20__Point3dParametricArray*>(geom->Points);
+	resqml20__ParametricLineArray* paramLines = static_cast<resqml20__ParametricLineArray*>(xmlPoints->ParametricLines);
 	paramLines->KnotCount = controlPointMaxCountPerPillar;
 
 	// XML Line kinds
-	resqml2__IntegerHdf5Array* xmlLineKinds = soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array* xmlLineKinds = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
 	paramLines->LineKindIndices = xmlLineKinds;
 	xmlLineKinds->NullValue = -1;
 	xmlLineKinds->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
@@ -1543,8 +1543,8 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		throw invalid_argument("The definition of the split coordinate lines is incomplete.");
 	}
 
-	gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind = pillarKind == -1
-		? gsoap_resqml2_0_1::resqml2__KDirection__down
+	gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind = pillarKind == -1
+		? gsoap_resqml2_0_1::resqml20__KDirection__down
 		: computeKDirection(controlPoints, controlPointCountPerPillar, nullptr, localCrs == nullptr ? getRepository()->getDefaultCrs() : localCrs);
 
 	if (proxy == nullptr) {
@@ -1563,7 +1563,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 }
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodesWithoutPillarKindUsingExistingDatasets(
-	gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
+	gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, COMMON_NS::AbstractHdfProxy* proxy,
 	unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
@@ -1578,7 +1578,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		}
 	}
 
-	resqml2__IjkGridGeometry* geom = soap_new_resqml2__IjkGridGeometry(gsoapProxy2_0_1->soap, 1);
+	resqml20__IjkGridGeometry* geom = soap_new_resqml20__IjkGridGeometry(gsoapProxy2_0_1->soap, 1);
 	geom->LocalCrs = localCrs->newResqmlReference();
 	if (!isTruncated()) {
 		getSpecializedGsoapProxy()->Geometry = geom;
@@ -1597,9 +1597,9 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	}
 	getRepository()->addRelationship(this, proxy);
 	// XML parametric nodes
-	resqml2__Point3dParametricArray* xmlPoints = soap_new_resqml2__Point3dParametricArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dParametricArray* xmlPoints = soap_new_resqml20__Point3dParametricArray(gsoapProxy2_0_1->soap, 1);
 	geom->Points = xmlPoints;
-	resqml2__DoubleHdf5Array* xmlParameters = soap_new_resqml2__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleHdf5Array* xmlParameters = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
 	xmlPoints->Parameters = xmlParameters;
 	xmlParameters->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
 	xmlParameters->Values->HdfProxy = proxy->newResqmlReference();
@@ -1607,11 +1607,11 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 
 	if (splitCoordinateLineCount > 0) {
 		// XML split coordinate lines
-		geom->SplitCoordinateLines = soap_new_resqml2__ColumnLayerSplitCoordinateLines(gsoapProxy2_0_1->soap, 1);;
+		geom->SplitCoordinateLines = soap_new_resqml20__ColumnLayerSplitCoordinateLines(gsoapProxy2_0_1->soap, 1);;
 		geom->SplitCoordinateLines->Count = splitCoordinateLineCount;
 
 		//XML
-		resqml2__IntegerHdf5Array* pillarIndices = soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+		resqml20__IntegerHdf5Array* pillarIndices = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
 		geom->SplitCoordinateLines->PillarIndices = pillarIndices;
 		pillarIndices->NullValue = getPillarCount();
 		pillarIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
@@ -1619,16 +1619,16 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		pillarIndices->Values->PathInHdfFile = pillarOfCoordinateLine;
 
 		//XML
-		geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine = soap_new_resqml2__ResqmlJaggedArray(gsoapProxy2_0_1->soap, 1);
+		geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine = soap_new_resqml20__ResqmlJaggedArray(gsoapProxy2_0_1->soap, 1);
 		// Cumulative
-		resqml2__IntegerHdf5Array* cumulativeLength = soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+		resqml20__IntegerHdf5Array* cumulativeLength = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
 		geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength = cumulativeLength;
 		cumulativeLength->NullValue = 0;
 		cumulativeLength->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
 		cumulativeLength->Values->HdfProxy = proxy->newResqmlReference();
 		cumulativeLength->Values->PathInHdfFile = splitCoordinateLineColumnCumulativeCount;
 		// Elements
-		resqml2__IntegerHdf5Array* elements = soap_new_resqml2__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+		resqml20__IntegerHdf5Array* elements = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
 		geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements = elements;
 		elements->NullValue = getColumnCount();
 		elements->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
@@ -1639,12 +1639,12 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	// *********************************
 	// Parametric coordinate lines
 	// *********************************
-	resqml2__ParametricLineArray* paramLines = soap_new_resqml2__ParametricLineArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__ParametricLineArray* paramLines = soap_new_resqml20__ParametricLineArray(gsoapProxy2_0_1->soap, 1);
 	xmlPoints->ParametricLines = paramLines;
 	paramLines->KnotCount = controlPointCountPerPillar;
 
 	// XML control points
-	resqml2__Point3dHdf5Array* xmlcontrolPoints = soap_new_resqml2__Point3dHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dHdf5Array* xmlcontrolPoints = soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap, 1);
 	paramLines->ControlPoints = xmlcontrolPoints;
 	xmlcontrolPoints->Coordinates = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
 	xmlcontrolPoints->Coordinates->HdfProxy = proxy->newResqmlReference();
@@ -1655,7 +1655,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	// *********************************
 	if (!controlPointParameters.empty()) {
 		// XML control point parameters
-		resqml2__DoubleHdf5Array* xmlcontrolPointParams = soap_new_resqml2__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
+		resqml20__DoubleHdf5Array* xmlcontrolPointParams = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
 		paramLines->ControlPointParameters = xmlcontrolPointParams;
 		xmlcontrolPointParams->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
 		xmlcontrolPointParams->Values->HdfProxy = proxy->newResqmlReference();
@@ -1667,7 +1667,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
-	gsoap_resqml2_0_1::resqml2__KDirection kDirectionKind, bool isRightHanded,
+	gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind, bool isRightHanded,
 	const std::string & parameters, const std::string & controlPoints, const std::string & controlPointParameters, unsigned int controlPointCountPerPillar, short pillarKind, COMMON_NS::AbstractHdfProxy* proxy,
 	unsigned long splitCoordinateLineCount, const std::string & pillarOfCoordinateLine,
 	const std::string & splitCoordinateLineColumnCumulativeCount, const std::string & splitCoordinateLineColumns, RESQML2_NS::AbstractLocal3dCrs * localCrs)
@@ -1681,32 +1681,32 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		splitCoordinateLineCount, pillarOfCoordinateLine,
 		splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns, localCrs);
 
-	resqml2__IjkGridGeometry* geom = isTruncated() ? getSpecializedTruncatedGsoapProxy()->Geometry : getSpecializedGsoapProxy()->Geometry;
+	resqml20__IjkGridGeometry* geom = isTruncated() ? getSpecializedTruncatedGsoapProxy()->Geometry : getSpecializedGsoapProxy()->Geometry;
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
 
 	if (pillarKind > 1 || controlPointCountPerPillar > 2) {
-		geom->PillarShape = resqml2__PillarShape__curved;
+		geom->PillarShape = resqml20__PillarShape__curved;
 	}
 	else if (pillarKind == 1) {
-		geom->PillarShape = resqml2__PillarShape__straight;
+		geom->PillarShape = resqml20__PillarShape__straight;
 	}
 	else {
-		geom->PillarShape = resqml2__PillarShape__vertical;
+		geom->PillarShape = resqml20__PillarShape__vertical;
 	}
 
 	// XML Pillar defined
-	resqml2__BooleanConstantArray* xmlDefinedPillars = soap_new_resqml2__BooleanConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__BooleanConstantArray* xmlDefinedPillars = soap_new_resqml20__BooleanConstantArray(gsoapProxy2_0_1->soap, 1);
 	geom->PillarGeometryIsDefined = xmlDefinedPillars;
 	xmlDefinedPillars->Value = true;
 	xmlDefinedPillars->Count = getPillarCount();
 
-	resqml2__Point3dParametricArray* xmlPoints = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
-	resqml2__ParametricLineArray* paramLines = static_cast<resqml2__ParametricLineArray*>(xmlPoints->ParametricLines);
+	resqml20__Point3dParametricArray* xmlPoints = static_cast<resqml20__Point3dParametricArray*>(geom->Points);
+	resqml20__ParametricLineArray* paramLines = static_cast<resqml20__ParametricLineArray*>(xmlPoints->ParametricLines);
 
 	// XML Line kinds
-	resqml2__IntegerConstantArray* xmlLineKinds = soap_new_resqml2__IntegerConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerConstantArray* xmlLineKinds = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap, 1);
 	paramLines->LineKindIndices = xmlLineKinds;
 	xmlLineKinds->Value = pillarKind;
 	xmlLineKinds->Count = getPillarCount();
@@ -1716,21 +1716,21 @@ void IjkGridParametricRepresentation::loadPillarInformation(IjkGridParametricRep
 {
 	pillarInfo.cleanMemory();
 
-	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
+	gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(0);
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
-	if (geom->Points->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml2__Point3dParametricArray)
+	if (geom->Points->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dParametricArray)
 	{
 		throw invalid_argument("The geometry of the grid is not a parametric one.");
 	}
-	resqml2__Point3dParametricArray* parametricPoint3d = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
+	resqml20__Point3dParametricArray* parametricPoint3d = static_cast<resqml20__Point3dParametricArray*>(geom->Points);
 
-	if (parametricPoint3d->ParametricLines->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml2__ParametricLineArray) {
-		throw logic_error("Parametric lines should be of type resqml2__ParametricLineArray. Other type is not implemented yet.");
+	if (parametricPoint3d->ParametricLines->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ParametricLineArray) {
+		throw logic_error("Parametric lines should be of type resqml20__ParametricLineArray. Other type is not implemented yet.");
 	}
 
-	resqml2__ParametricLineArray* paramLineArray = static_cast<resqml2__ParametricLineArray*>(parametricPoint3d->ParametricLines);
+	resqml20__ParametricLineArray* paramLineArray = static_cast<resqml20__ParametricLineArray*>(parametricPoint3d->ParametricLines);
 	pillarInfo.maxControlPointCount = getControlPointMaxCountPerPillar();
 	pillarInfo.parametricLineCount = getPillarCount();
 	pillarInfo.splitLineCount = getSplitCoordinateLineCount();
@@ -1800,12 +1800,12 @@ void IjkGridParametricRepresentation::loadPillarInformation(IjkGridParametricRep
 	}
 }
 
-void IjkGridParametricRepresentation::getXyzPointsOfPatchFromParametricPoints(gsoap_resqml2_0_1::resqml2__Point3dParametricArray* parametricPoint3d, double * xyzPoints) const
+void IjkGridParametricRepresentation::getXyzPointsOfPatchFromParametricPoints(gsoap_resqml2_0_1::resqml20__Point3dParametricArray* parametricPoint3d, double * xyzPoints) const
 {
 	// parameters : ordered
 	double * parameters = new double[getXyzPointCountOfPatch(0)];
-	if (parametricPoint3d->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(parametricPoint3d->Parameters)->Values;
+	if (parametricPoint3d->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
+		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(parametricPoint3d->Parameters)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, parameters);
 	}
@@ -1814,7 +1814,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfPatchFromParametricPoints(gs
 		throw logic_error("Non floating point coordinate line parameters are not implemented yet");
 	}
 
-	if (parametricPoint3d->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__ParametricLineArray) {
+	if (parametricPoint3d->ParametricLines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ParametricLineArray) {
 		IjkGridParametricRepresentation::PillarInformation pillarInfo;
 		loadPillarInformation(pillarInfo);
 
@@ -1988,7 +1988,7 @@ void IjkGridParametricRepresentation::getXyzPointsOfPatchFromParametricPoints(gs
 	else
 	{
 		delete [] parameters;
-		throw logic_error("Parametric lines should be of type resqml2__ParametricLineArray. Other type is not implemented yet.");
+		throw logic_error("Parametric lines should be of type resqml20__ParametricLineArray. Other type is not implemented yet.");
 	}
 
 	delete [] parameters;
@@ -2022,23 +2022,23 @@ namespace {
 				continue;
 			}
 
-			gsoap_resqml2_0_1::resqml2__KDirection tmp = gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__not_x0020monotonic;
+			gsoap_resqml2_0_1::resqml20__KDirection tmp = gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__not_x0020monotonic;
 			if (isCrsDepthOriented) {
 				tmp = controlPoints[controlPointIndex] > firstZ
-					? gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__down
-					: gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__up;
+					? gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__down
+					: gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__up;
 			}
 			else {
 				tmp = controlPoints[controlPointIndex] > firstZ
-					? gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__up
-					: gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__down;
+					? gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__up
+					: gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__down;
 			}
 
 			if (result == -1) {
 				result = tmp;
 			}
 			else if (result != tmp) {
-				return gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__not_x0020monotonic;
+				return gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__not_x0020monotonic;
 			}
 		}
 
@@ -2046,7 +2046,7 @@ namespace {
 	}
 }
 
-gsoap_resqml2_0_1::resqml2__KDirection IjkGridParametricRepresentation::computeKDirection(double const * controlPoints, unsigned int controlPointCountPerPillar, short * pillarKind, RESQML2_NS::AbstractLocal3dCrs const * localCrs) {
+gsoap_resqml2_0_1::resqml20__KDirection IjkGridParametricRepresentation::computeKDirection(double const * controlPoints, unsigned int controlPointCountPerPillar, short * pillarKind, RESQML2_NS::AbstractLocal3dCrs const * localCrs) {
 	if (controlPoints == nullptr) {
 		throw invalid_argument("The control points cannot be null.");
 	}
@@ -2054,7 +2054,7 @@ gsoap_resqml2_0_1::resqml2__KDirection IjkGridParametricRepresentation::computeK
 		throw invalid_argument("The max count of control points per coordinate line of the ijk grid cannot be less than one.");
 	}
 	if (controlPointCountPerPillar == 1) {
-		return gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__down; // arbitrary default
+		return gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__down; // arbitrary default
 	}
 	
 	// CRS
@@ -2068,8 +2068,8 @@ gsoap_resqml2_0_1::resqml2__KDirection IjkGridParametricRepresentation::computeK
 			result = computeKDirectionOnASinglePillar(pillarIndex, getPillarCount(), controlPoints, controlPointCountPerPillar, isCrsDepthOriented);
 		}
 	}
-	if (result == gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__not_x0020monotonic)
-		return gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__not_x0020monotonic;
+	if (result == gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__not_x0020monotonic)
+		return gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__not_x0020monotonic;
 
 	// Loop
 	for (; pillarIndex < getPillarCount(); ++pillarIndex) {
@@ -2077,25 +2077,25 @@ gsoap_resqml2_0_1::resqml2__KDirection IjkGridParametricRepresentation::computeK
 			const short tmp = computeKDirectionOnASinglePillar(pillarIndex, getPillarCount(), controlPoints, controlPointCountPerPillar, isCrsDepthOriented);
 
 			if (tmp != -1 && tmp != result) {
-				return gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__not_x0020monotonic;
+				return gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__not_x0020monotonic;
 			}
 		}
 	}
 
 	return result < 0
-		? gsoap_resqml2_0_1::resqml2__KDirection::resqml2__KDirection__down  // arbitrary default
-		: static_cast<gsoap_resqml2_0_1::resqml2__KDirection>(result);
+		? gsoap_resqml2_0_1::resqml20__KDirection::resqml20__KDirection__down  // arbitrary default
+		: static_cast<gsoap_resqml2_0_1::resqml20__KDirection>(result);
 }
 
 bool IjkGridParametricRepresentation::isNodeGeometryCompressed() const {
-	gsoap_resqml2_0_1::resqml2__PointGeometry* geom = getPointGeometry2_0_1(0);
+	gsoap_resqml2_0_1::resqml20__PointGeometry* geom = getPointGeometry2_0_1(0);
 	if (geom == nullptr) {
 		throw invalid_argument("There is no geometry on this grid.");
 	}
-	resqml2__Point3dParametricArray* points = static_cast<resqml2__Point3dParametricArray*>(geom->Points);
+	resqml20__Point3dParametricArray* points = static_cast<resqml20__Point3dParametricArray*>(geom->Points);
 
-	if (points->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml2__DoubleHdf5Array) {
-		eml20__Hdf5Dataset const * dataset = static_cast<resqml2__DoubleHdf5Array*>(points->Parameters)->Values;
+	if (points->Parameters->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
+		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(points->Parameters)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 		return hdfProxy->isCompressed(dataset->PathInHdfFile);
 	}
