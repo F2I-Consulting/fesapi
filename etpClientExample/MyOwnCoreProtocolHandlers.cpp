@@ -208,7 +208,7 @@ void askUser(std::shared_ptr<ETP_NS::AbstractSession> session, COMMON_NS::DataOb
 			unsigned int pillarOfCoordinateLine[2] = { 1, 4 };
 			unsigned int splitCoordinateLineColumnCumulativeCount[2] = { 1, 2 };
 			unsigned int splitCoordinateLineColumns[2] = { 1, 1 };
-			ijkgrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml2__PillarShape__vertical, gsoap_resqml2_0_1::resqml2__KDirection__down, false, nodes, hdfProxy,
+			ijkgrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape__vertical, gsoap_resqml2_0_1::resqml20__KDirection__down, false, nodes, hdfProxy,
 				2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 			Energistics::Etp::v12::Datatypes::Object::DataObject dataObject = ETP_NS::EtpHelpers::buildEtpDataObjectFromEnergisticsObject(ijkgrid);
@@ -250,7 +250,7 @@ void askUser(std::shared_ptr<ETP_NS::AbstractSession> session, COMMON_NS::DataOb
 					for (const auto & prop : propSet) {
 						RESQML2_0_1_NS::ContinuousProperty const * continuousProp = dynamic_cast<RESQML2_0_1_NS::ContinuousProperty const *>(prop);
 						if (continuousProp != nullptr && dynamic_cast<RESQML2_0_1_NS::ContinuousPropertySeries const *>(continuousProp) == nullptr &&
-							continuousProp->getAttachmentKind() == gsoap_resqml2_0_1::resqml2__IndexableElements::resqml2__IndexableElements__cells) {
+							continuousProp->getAttachmentKind() == gsoap_resqml2_0_1::resqml20__IndexableElements::resqml20__IndexableElements__cells) {
 							std::cout << "Continuous property " << prop->getTitle() << " : " << prop->getUuid() << std::endl;
 							auto cellCount = ijkGrid->getCellCount();
 							std::unique_ptr<double[]> values(new double[cellCount * continuousProp->getElementCountPerValue()]);

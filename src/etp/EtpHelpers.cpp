@@ -22,14 +22,10 @@ under the License.
 
 std::string ETP_NS::EtpHelpers::buildUriFromEnergisticsObject(const COMMON_NS::AbstractObject * const obj)
 {
-	// TODO : change the xml namespace to be the same as the etp one
-	std::string etpNs = obj->getXmlNamespace();
-	if (etpNs == "resqml2") { etpNs += '0'; }
-	else if (etpNs == "witsml2") { etpNs += '1'; }
-	// END TODO
+	const std::string etpNs = obj->getXmlNamespace();
 	std::string uri = "eml://" + etpNs;
 	if (etpNs == "resqml20" || etpNs == "eml20") { uri += "/obj_"; }
-	else if (etpNs == "witsml21") { uri += "/"; }
+	else { uri += "/"; }
 	uri += obj->getXmlTag() + "(" + obj->getUuid() + ")";
 
 	return uri;

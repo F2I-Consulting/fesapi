@@ -34,11 +34,6 @@ namespace WITSML2_NS
 		~AbstractObject() {}
 
 		/**
-		* Get the XML namespace for the tags for the XML serialization of this instance
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const;
-
-		/**
 		* Get part name of this XML top level instance in the EPC document
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getPartNameInEpcDocument() const;

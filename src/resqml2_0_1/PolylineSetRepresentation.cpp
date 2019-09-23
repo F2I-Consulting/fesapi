@@ -323,7 +323,7 @@ bool PolylineSetRepresentation::areAllPolylinesClosedOfPatch(unsigned int patchI
 
 bool PolylineSetRepresentation::areAllPolylinesClosedOfAllPatches() const
 {
-	_resqml2__PolylineSetRepresentation* rep = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1);
+	_resqml20__PolylineSetRepresentation* rep = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1);
 	for (size_t patchIndex = 0; patchIndex < rep->LinePatch.size(); patchIndex++) {
 		if (!areAllPolylinesClosedOfPatch(patchIndex)) {
 			return false;

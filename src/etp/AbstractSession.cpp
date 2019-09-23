@@ -108,7 +108,7 @@ Energistics::Etp::v12::Datatypes::ErrorInfo AbstractSession::validateUri(const s
 	// Regular expressions are not handled before GCC 4.9
 	// https://stackoverflow.com/questions/12530406/is-gcc-4-8-or-earlier-buggy-about-regular-expressions
 #if (defined(_WIN32) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9))))
-	bool result = std::regex_match(uri, std::regex("^eml://((witsml|resqml|prodml|eml)([0-9]{2}))?/?", std::regex::ECMAScript)) ||
+	const bool result = std::regex_match(uri, std::regex("^eml://((witsml|resqml|prodml|eml)([0-9]{2}))?/?", std::regex::ECMAScript)) ||
 		std::regex_match(uri, std::regex("^eml://(witsml|resqml|prodml|eml)([0-9]{2})/obj_[a-zA-Z0-9]+", std::regex::ECMAScript)) ||
 		std::regex_match(uri, std::regex("^eml://(witsml|resqml|prodml|eml)([0-9]{2})/[a-zA-Z0-9]+", std::regex::ECMAScript)) ||
 		std::regex_match(uri, std::regex("^eml://(witsml|resqml|prodml|eml)([0-9]{2})/[a-zA-Z0-9]+[(][a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}[)]", std::regex::ECMAScript)) ||
@@ -116,6 +116,9 @@ Energistics::Etp::v12::Datatypes::ErrorInfo AbstractSession::validateUri(const s
 	if (!result) {
 		std::cerr << "The URI \"" + uri + "\"  is invalid." << std::endl;
 	}
+#else
+	const bool result = uri.find("eml://") != 0;
+#endif
 
 	if (!result && sendException) {
 		errorInfo.m_code = 9;
@@ -127,7 +130,7 @@ Energistics::Etp::v12::Datatypes::ErrorInfo AbstractSession::validateUri(const s
 			send(error);
 		}
 	}
-#endif
+
 	return errorInfo;
 
 }
@@ -139,12 +142,16 @@ Energistics::Etp::v12::Datatypes::ErrorInfo AbstractSession::validateDataObjectU
 	// Regular expressions are not handled before GCC 4.9
 	// https://stackoverflow.com/questions/12530406/is-gcc-4-8-or-earlier-buggy-about-regular-expressions
 #if (defined(_WIN32) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9))))
-	bool result = (uri.find("resqml20") != std::string::npos || uri.find("eml20") != std::string::npos)
+	const bool result = (uri.find("resqml20") != std::string::npos || uri.find("eml20") != std::string::npos)
 		? std::regex_match(uri, std::regex("^eml://(resqml20|eml20)/obj_[a-zA-Z0-9]+[(][a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}[)]", std::regex::ECMAScript))
 		: std::regex_match(uri, std::regex("^eml://(witsml|resqml|prodml|eml)([0-9]{2})/[a-zA-Z0-9]+[(][a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}[)]", std::regex::ECMAScript));
 	if (!result) {
 		std::cerr << "The data object URI \"" + uri + "\"  is invalid." << std::endl;
 	}
+#else
+	const bool result = uri.find("eml://resqml20/") != std::string::npos || uri.find("eml://eml20/") != std::string::npos ||
+		uri.find("eml://witsml20/") != std::string::npos || uri.find("eml://eml21/") != 0;
+#endif
 
 	if (!result && sendException) {
 		errorInfo.m_code = 9;
@@ -156,6 +163,6 @@ Energistics::Etp::v12::Datatypes::ErrorInfo AbstractSession::validateDataObjectU
 			send(error);
 		}
 	}
-#endif
+
 	return errorInfo;
 }

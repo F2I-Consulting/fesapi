@@ -746,11 +746,12 @@ namespace COMMON_NS
 		* However, such an object has quickly a lot of limitations when we want to access the data object.
 		*/
 		template <class valueType>
-		valueType* createPartial(const std::string & guid, const std::string & title)
+		valueType* createPartial(const std::string & guid, const std::string & title, const std::string & contentType)
 		{
 			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapContext, 1);
 			dor->UUID = guid.empty() ? generateRandomUuidAsString() : guid;
 			dor->Title = title;
+			dor->ContentType = contentType;
 			valueType* result = new valueType(dor);
 			addOrReplaceDataObject(result);
 			return result;
@@ -762,11 +763,12 @@ namespace COMMON_NS
 		* However, such an object has quickly a lot of limitations when we want to access the data object.
 		*/
 		template <class valueType>
-		valueType* createPartial(const std::string & guid, const std::string & title, const std::string & version)
+		valueType* createPartial(const std::string & guid, const std::string & title, const std::string & contentType, const std::string & version)
 		{
 			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapContext, 1);
 			dor->UUID = guid.empty() ? generateRandomUuidAsString() : guid;
 			dor->Title = title;
+			dor->ContentType = contentType;
 			dor->VersionString = gsoap_resqml2_0_1::soap_new_std__string(gsoapContext, 1);
 			dor->VersionString->assign(version);
 			valueType* result = new valueType(dor);

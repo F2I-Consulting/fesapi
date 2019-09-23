@@ -21,11 +21,6 @@ under the License.
 using namespace std;
 using namespace WITSML2_NS;
 
-std::string AbstractObject::getXmlNamespace() const
-{
-	return "witsml2";
-}
-
 std::string AbstractObject::getPartNameInEpcDocument() const
 {
 	return getXmlTag() + "_" + getUuid() + ".xml";

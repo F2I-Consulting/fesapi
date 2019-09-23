@@ -29,8 +29,8 @@ COMMON_NS::AbstractObject* Helpers::getObjectFromUri(COMMON_NS::DataObjectReposi
 	}
 
 	std::vector<std::string> tokens = tokenize(uri.substr(6), '/');
-	if (tokens[0] != "resqml20" && tokens[0] != "eml20" && tokens[0] != "witsml21") {
-		throw ETP_NS::EtpException(2, "The URI " + uri + "  uses some dataspaces or witsml or prodml. This agent does not support dataspace.");
+	if (tokens[0] != "resqml20" && tokens[0] != "eml20" && tokens[0] != "witsml20") {
+		throw ETP_NS::EtpException(2, "The URI " + uri + " uses some dataspaces or witsml or prodml. This agent does not support dataspace.");
 	}
 
 	tokens = tokenize(tokens[1], '(');

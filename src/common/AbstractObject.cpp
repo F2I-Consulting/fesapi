@@ -740,14 +740,6 @@ void AbstractObject::serializeIntoStream(ostream * stream)
 	}
 }
 
-gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* AbstractObject::getGsoapProxy() const {
-	return gsoapProxy2_0_1;
-}
-
-void AbstractObject::setGsoapProxy(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy) {
-	gsoapProxy2_0_1 = gsoapProxy;
-}
-
 gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractObject::newResqmlReference() const
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference* result = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(getGsoapContext(), 1);
@@ -841,7 +833,9 @@ std::string AbstractObject::getXmlNamespace() const
 	}
 #endif
 	else if (partialObject != nullptr) {
-		return "resqml20"; // by default...
+		const size_t plus = partialObject->ContentType.find('+');
+		const size_t equal = partialObject->ContentType.find('=');
+		return partialObject->ContentType.substr(14, plus - 14) + partialObject->ContentType[equal + 1] + partialObject->ContentType[equal + 3];
 	}
 
 	throw logic_error("There is no associated gsoap proxy.");

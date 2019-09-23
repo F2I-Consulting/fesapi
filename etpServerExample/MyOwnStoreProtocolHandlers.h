@@ -21,7 +21,6 @@ under the License.
 #include "etp/ProtocolHandlers/StoreHandlers.h"
 
 #include "common/DataObjectRepository.h"
-#include "common/DataFeeder.h"
 
 class MyOwnStoreProtocolHandlers : public ETP_NS::StoreHandlers
 {

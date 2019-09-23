@@ -160,7 +160,7 @@ COMMON_NS::AbstractObject::hdfDatatypeEnum WellboreFrameRepresentation::getMdHdf
 			return COMMON_NS::AbstractObject::UNKNOWN;
 		}
 
-		return hdfProxy->getHdfDatatypeInDataset(static_cast<resqml2__DoubleHdf5Array*>(frame->NodeMd)->Values->PathInHdfFile);
+		return hdfProxy->getHdfDatatypeInDataset(static_cast<resqml20__DoubleHdf5Array*>(frame->NodeMd)->Values->PathInHdfFile);
 	}
 	else if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray) {
 		return COMMON_NS::AbstractObject::DOUBLE;

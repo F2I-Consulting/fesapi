@@ -145,27 +145,27 @@ namespace {
 #define CREATE_FESAPI_PARTIAL_WRAPPER(className)\
 	(datatype.compare(className::XML_TAG) == 0)\
 	{\
-		return createPartial<className>(uuid, title);\
+		return createPartial<className>(uuid, title, contentType);\
 	}
 #define CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(className)\
 	(datatype.compare(className::XML_TAG) == 0)\
 	{\
-		return createPartial<className>(uuid, title, version);\
+		return createPartial<className>(uuid, title, contentType, version);\
 	}
 #define CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(className)\
 	(contentType.compare(className::XML_TAG) == 0)\
 	{\
-		return dor->VersionString == nullptr ? createPartial<className>(dor->UUID, dor->Title) : createPartial<className>(dor->UUID, dor->Title, *dor->VersionString);\
+		return dor->VersionString == nullptr ? createPartial<className>(dor->UUID, dor->Title, dor->ContentType) : createPartial<className>(dor->UUID, dor->Title, dor->ContentType, *dor->VersionString);\
 	}
 #define CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(className)\
 	(contentType.compare(className::XML_TAG) == 0)\
 	{\
-		return dor->VersionString == nullptr ? createPartial<className>(dor->Uuid, dor->Title) : createPartial<className>(dor->Uuid, dor->Title, *dor->VersionString);\
+		return dor->VersionString == nullptr ? createPartial<className>(dor->Uuid, dor->Title, dor->ContentType) : createPartial<className>(dor->Uuid, dor->Title, dor->ContentType, *dor->VersionString);\
 	}
 #define CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(className)\
 	(contentType.compare(className::XML_TAG) == 0)\
 	{\
-		return dor->ObjectVersion == nullptr ? createPartial<className>(dor->Uuid, dor->Title) : createPartial<className>(dor->Uuid, dor->Title, *dor->ObjectVersion);\
+		return dor->ObjectVersion == nullptr ? createPartial<className>(dor->Uuid, dor->Title, dor->ContentType) : createPartial<className>(dor->Uuid, dor->Title, dor->ContentType, *dor->ObjectVersion);\
 	}
 
 /////////////////////
@@ -389,7 +389,17 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 				*same = proxy;
 			}
 			else {
-				(*same)->setGsoapProxy(proxy->getGsoapProxy());
+				if (proxy->getXmlNamespace() == "resqml20" || proxy->getXmlNamespace() == "eml20") {
+					(*same)->setGsoapProxy(proxy->getEml20GsoapProxy());
+				}
+				else if (proxy->getXmlNamespace() == "witsml20" || proxy->getXmlNamespace() == "eml21") {
+					(*same)->setGsoapProxy(proxy->getEml21GsoapProxy());
+				}
+#if WITH_EXPERIMENTAL
+				else if (proxy->getXmlNamespace() == "resqml22" || proxy->getXmlNamespace() == "eml22") {
+					(*same)->setGsoapProxy(proxy->getEml22GsoapProxy());
+				}
+#endif
 				return *same;
 			}
 		}
@@ -577,6 +587,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(AbstractIjkGridRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(UnstructuredGridRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(PropertyKind)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(PropertySet)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(ContinuousProperty)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(ContinuousPropertySeries)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(CategoricalProperty)
@@ -988,7 +999,7 @@ BoundaryFeatureInterpretation* DataObjectRepository::createBoundaryFeatureInterp
 
 HorizonInterpretation* DataObjectRepository::createPartialHorizonInterpretation(const std::string & guid, const std::string & title)
 {
-	return createPartial<HorizonInterpretation>(guid, title);
+	return createPartial<HorizonInterpretation>(guid, title, "application/x-resqml+xml;version=2.0;type=obj_HorizonInterpretation");
 }
 
 HorizonInterpretation* DataObjectRepository::createHorizonInterpretation(Horizon * horizon, const std::string & guid, const std::string & title)
@@ -1191,7 +1202,7 @@ RESQML2_NS::RepresentationSetRepresentation* DataObjectRepository::createReprese
 
 RESQML2_NS::RepresentationSetRepresentation* DataObjectRepository::createPartialRepresentationSetRepresentation(const std::string & guid, const std::string & title)
 {
-	return createPartial<RESQML2_0_1_NS::RepresentationSetRepresentation>(guid, title);
+	return createPartial<RESQML2_0_1_NS::RepresentationSetRepresentation>(guid, title, "application/x-resqml+xml;version=2.0;type=obj_RepresentationSetRepresentation");
 }
 
 NonSealedSurfaceFrameworkRepresentation* DataObjectRepository::createNonSealedSurfaceFrameworkRepresentation(
@@ -1221,7 +1232,7 @@ RESQML2_0_1_NS::SealedVolumeFrameworkRepresentation* DataObjectRepository::creat
 
 AbstractIjkGridRepresentation* DataObjectRepository::createPartialIjkGridRepresentation(const std::string & guid, const std::string & title)
 {
-	return createPartial<AbstractIjkGridRepresentation>(guid, title);
+	return createPartial<AbstractIjkGridRepresentation>(guid, title, "application/x-resqml+xml;version=2.0;type=obj_IjkGridRepresentation");
 }
 
 AbstractIjkGridRepresentation* DataObjectRepository::createPartialTruncatedIjkGridRepresentation(const std::string & guid, const std::string & title)
@@ -1287,7 +1298,7 @@ RESQML2_0_1_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjk
 
 UnstructuredGridRepresentation* DataObjectRepository::createPartialUnstructuredGridRepresentation(const std::string & guid, const std::string & title)
 {
-	return createPartial<UnstructuredGridRepresentation>(guid, title);
+	return createPartial<UnstructuredGridRepresentation>(guid, title, "application/x-resqml+xml;version=2.0;type=obj_UnstructuredGridRepresentation");
 }
 
 UnstructuredGridRepresentation* DataObjectRepository::createUnstructuredGridRepresentation(const std::string & guid, const std::string & title,
@@ -1298,7 +1309,7 @@ UnstructuredGridRepresentation* DataObjectRepository::createUnstructuredGridRepr
 
 RESQML2_NS::SubRepresentation* DataObjectRepository::createPartialSubRepresentation(const std::string & guid, const std::string & title)
 {
-	return createPartial<SubRepresentation>(guid, title);
+	return createPartial<SubRepresentation>(guid, title, "application/x-resqml+xml;version=2.0;type=obj_SubRepresentation");
 }
 
 RESQML2_NS::SubRepresentation* DataObjectRepository::createSubRepresentation(const std::string & guid, const std::string & title)
@@ -1314,7 +1325,7 @@ RESQML2_NS::SubRepresentation* DataObjectRepository::createSubRepresentation(RES
 
 RESQML2_NS::GridConnectionSetRepresentation* DataObjectRepository::createPartialGridConnectionSetRepresentation(const std::string & guid, const std::string & title)
 {
-	return createPartial<GridConnectionSetRepresentation>(guid, title);
+	return createPartial<GridConnectionSetRepresentation>(guid, title, "application/x-resqml+xml;version=2.0;type=obj_GridConnectionSetRepresentation");
 }
 
 RESQML2_NS::GridConnectionSetRepresentation* DataObjectRepository::createGridConnectionSetRepresentation(const std::string & guid, const std::string & title)
@@ -1339,7 +1350,7 @@ RESQML2_NS::TimeSeries* DataObjectRepository::createTimeSeries(const std::string
 
 RESQML2_NS::TimeSeries* DataObjectRepository::createPartialTimeSeries(const std::string & guid, const std::string & title)
 {
-	return createPartial<TimeSeries>(guid, title);
+	return createPartial<TimeSeries>(guid, title, "application/x-resqml+xml;version=2.0;type=obj_TimeSeries");
 }
 
 StringTableLookup* DataObjectRepository::createStringTableLookup(const std::string & guid, const std::string & title)
@@ -1373,7 +1384,7 @@ RESQML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::st
 
 RESQML2_NS::PropertyKind* DataObjectRepository::createPartialPropertyKind(const std::string & guid, const std::string & title)
 {
-	return createPartial<PropertyKind>(guid, title);
+	return createPartial<PropertyKind>(guid, title, "application/x-resqml+xml;version=2.0;type=obj_PropertyKind");
 }
 
 RESQML2_NS::PropertySet* DataObjectRepository::createPropertySet(const std::string & guid, const std::string & title,
@@ -1525,7 +1536,7 @@ WITSML2_0_NS::Wellbore* DataObjectRepository::createPartialWellbore(
 	const std::string & guid,
 	const std::string & title)
 {
-	return createPartial<WITSML2_0_NS::Wellbore>(guid, title);
+	return createPartial<WITSML2_0_NS::Wellbore>(guid, title, "application/x-witsml+xml;version=2.0;type=Wellbore");
 }
 
 WITSML2_0_NS::Wellbore* DataObjectRepository::createWellbore(WITSML2_0_NS::Well* witsmlWell,

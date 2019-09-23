@@ -191,6 +191,10 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResources(const Energistics::Etp::v12
 		on_GetDataObject(msg, correlationId, mb.m_resources);
 	}
 	else { // eml, dataspace or namespace
+		if (session->validateUri(msg.m_context.m_uri, true).m_code > -1) {
+			return;
+		}
+
 		Energistics::Etp::v12::Protocol::Discovery::GetResources nextGr = msg;
 		--nextGr.m_context.m_depth;
 		if (msg.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources ||
@@ -232,7 +236,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResources(const Energistics::Etp::v12
 			Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
 			Energistics::Etp::v12::Datatypes::ErrorInfo error;
 			error.m_code = 9;
-			error.m_message = "The URI " + msg.m_context.m_uri + "  targets something which does not exist.";
+			error.m_message = "The URI " + msg.m_context.m_uri + " targets something which does not exist.";
 			pe.m_error.set_ErrorInfo(error);
 
 			session->send(pe, correlationId, 0x01 | 0x02);
@@ -314,7 +318,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetSupportedTypes(const Energistics::Etp
 			msg.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf) {
 			auto sameCt = repo->getDataObjectsByContentType(obj->getContentType());
 			Energistics::Etp::v12::Datatypes::Object::SupportedType st;
-			st.m_contentType = sameCt.size();
+			st.m_contentType = obj->getContentType();
 			if (msg.m_countObjects) {
 				st.m_objectCount.set_int(sameCt.size());
 			}

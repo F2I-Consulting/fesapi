@@ -289,15 +289,18 @@ namespace COMMON_NS
 		/**
 		* Set the underlying gsoap proxy of this object
 		*/
-		void setGsoapProxy(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy);
+		void setGsoapProxy(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy) { gsoapProxy2_0_1 = gsoapProxy; }
+		void setGsoapProxy(gsoap_eml2_1::eml21__AbstractObject* gsoapProxy) { gsoapProxy2_1 = gsoapProxy; }
 
 		/**
 		* Get the gsoap proxy which is wrapped by this entity
 		*/
-		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* getGsoapProxy() const;
+		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* getEml20GsoapProxy() const { return gsoapProxy2_0_1; }
+		gsoap_eml2_1::eml21__AbstractObject* getEml21GsoapProxy() const { return gsoapProxy2_1; }
 
 #if WITH_EXPERIMENTAL
-		gsoap_eml2_2::eml22__AbstractObject* getGsoapProxy2_2() const { return gsoapProxy2_2; }
+		gsoap_eml2_2::eml22__AbstractObject* getEml22GsoapProxy() const { return gsoapProxy2_2; }
+		void setGsoapProxy(gsoap_eml2_2::eml22__AbstractObject* gsoapProxy) { gsoapProxy2_2 = gsoapProxy; }
 #endif
 
 		/**

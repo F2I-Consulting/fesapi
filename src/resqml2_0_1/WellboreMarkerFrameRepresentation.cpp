@@ -66,7 +66,7 @@ void WellboreMarkerFrameRepresentation::pushBackNewWellboreMarker(WellboreMarker
 	getRepository()->addRelationship(marker, this);
 
 	_resqml20__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml20__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
-	frame->WellboreMarker.push_back(static_cast<resqml20__WellboreMarker*>(marker->getGsoapProxy()));
+	frame->WellboreMarker.push_back(static_cast<resqml20__WellboreMarker*>(marker->getEml20GsoapProxy()));
 
 	getRepository()->addOrReplaceDataObject(marker);
 }
