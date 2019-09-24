@@ -97,6 +97,10 @@ under the License.
 #endif
 
 #include "witsml2_0/Well.h"
+#include "witsml2_0/Wellbore.h"
+#include "witsml2_0/Trajectory.h"
+#include "witsml2_0/WellCompletion.h"
+#include "witsml2_0/WellboreCompletion.h"
 
 #include "tools/TimeTools.h"
 
@@ -136,47 +140,90 @@ WITSML2_0_NS::Wellbore* witsmlWellbore = nullptr;
 
 void serializeWells(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
+	////////////////////////
+	// WITSML
+	////////////////////////
+
 	// WELL
 	witsmlWell = pck->createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1");
 	witsmlWell->setNameLegal("Legal Name");
-	witsmlWell->pushBackLocation("8cd3c8b2-face-4426-8aea-ae34870bd969", 275, 75, 0);
+	witsmlWell->pushBackLocation("8cd3c8b2-face-4426-8aea-ae34870bd969", 275, 75, 23031);
 	witsmlWell->pushBackDatum("aa92fa8b-d6cc-459e-b456-27fec0c08b24", "well1 msl datum", gsoap_eml2_1::eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 0, 5100);
 	witsmlWell->pushBackDatum("d3ac5401-d3e7-4474-b846-070673b210ae", "KB", gsoap_eml2_1::eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 15, 5100);
 
 	// WELLBORE
 	witsmlWellbore = pck->createWellbore(witsmlWell, "3bd60188-5688-43df-89bb-935fe86a813f", "Wellbore1");
+	witsmlWellbore->setNumber("Wb1");
+	witsmlWellbore->setStatusWellbore(gsoap_eml2_1::eml21__WellStatus__completed);
+	witsmlWellbore->setIsActive(false);
+	witsmlWellbore->setTypeWellbore(gsoap_eml2_1::witsml20__WellboreType__initial);
+	witsmlWellbore->setShape(gsoap_eml2_1::witsml20__WellboreShape__vertical);
+	witsmlWellbore->setAchievedTD(true);
+	witsmlWellbore->setMd(1000, gsoap_eml2_1::eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+	witsmlWellbore->setMdPlanned(1000, gsoap_eml2_1::eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+
+	// TRAJECTORY
+	WITSML2_0_NS::Trajectory* witsmlTrajectory = pck->createTrajectory(
+		witsmlWellbore, "4e76e1de-eff1-4458-805e-a6a877fa333B", "My trajectory", gsoap_eml2_1::witsml20__ChannelStatus__closed);
+	witsmlTrajectory->setMdMn(.0, gsoap_eml2_1::eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+	witsmlTrajectory->setMdMx(1000., gsoap_eml2_1::eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+	witsmlTrajectory->setDefinitive(true);
+	witsmlTrajectory->setFinalTraj(true);
+	witsmlTrajectory->setServiceCompany("F2I-CONSULTING");
+
+	witsmlTrajectory->pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType__N_x0020E_x0020and_x0020TVD, 0, gsoap_eml2_1::eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+	witsmlTrajectory->setTrajectoryStationManuallyEntered(0, true);
+	witsmlTrajectory->setTrajectoryStationDispNs(0, .0, gsoap_eml2_1::eml21__LengthUom__m);
+	witsmlTrajectory->setTrajectoryStationDispEw(0, .0, gsoap_eml2_1::eml21__LengthUom__m);
+	witsmlTrajectory->setTrajectoryStationTvd(0, .0, gsoap_eml2_1::eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+	witsmlTrajectory->pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType__N_x0020E_x0020and_x0020TVD, 325, gsoap_eml2_1::eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+	witsmlTrajectory->setTrajectoryStationManuallyEntered(1, true);
+	witsmlTrajectory->setTrajectoryStationDispNs(1, 325, gsoap_eml2_1::eml21__LengthUom__m);
+	witsmlTrajectory->setTrajectoryStationDispEw(1, 325, gsoap_eml2_1::eml21__LengthUom__m);
+	witsmlTrajectory->setTrajectoryStationTvd(1, 325, gsoap_eml2_1::eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+	witsmlTrajectory->pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType__N_x0020E_x0020and_x0020TVD, 500, gsoap_eml2_1::eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+	witsmlTrajectory->setTrajectoryStationManuallyEntered(2, true);
+	witsmlTrajectory->setTrajectoryStationDispNs(2, 500, gsoap_eml2_1::eml21__LengthUom__m);
+	witsmlTrajectory->setTrajectoryStationDispEw(2, 500, gsoap_eml2_1::eml21__LengthUom__m);
+	witsmlTrajectory->setTrajectoryStationTvd(2, 500, gsoap_eml2_1::eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+	witsmlTrajectory->pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType__N_x0020E_x0020and_x0020TVD, 1000, gsoap_eml2_1::eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+	witsmlTrajectory->setTrajectoryStationManuallyEntered(3, true);
+	witsmlTrajectory->setTrajectoryStationDispNs(3, 1000, gsoap_eml2_1::eml21__LengthUom__m);
+	witsmlTrajectory->setTrajectoryStationDispEw(3, 1000, gsoap_eml2_1::eml21__LengthUom__m);
+	witsmlTrajectory->setTrajectoryStationTvd(3, 1000, gsoap_eml2_1::eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
 
 	////////////////////////
 	// RESQML
 	////////////////////////
 
 	// Features
-	wellbore1 = pck->createWellboreFeature("", "Wellbore1");
-	if (witsmlWellbore)
+	wellbore1 = pck->createWellboreFeature("22d5b48f-f789-46e7-a454-6d8bd05afd0b", "Wellbore1");
+	if (witsmlWellbore != nullptr) {
 		wellbore1->setWitsmlWellbore(witsmlWellbore);
+	}
 
 	// Interpretations
-	wellbore1Interp1 = pck->createWellboreInterpretation(wellbore1, "", "Wellbore1 Interp1", false);
+	wellbore1Interp1 = pck->createWellboreInterpretation(wellbore1, "dc7840fe-e5a3-4b53-a1df-18040bc4d0c0", "Wellbore1 Interp1", false);
 
 	// Representation
-	RESQML2_NS::MdDatum* mdInfo = pck->createMdDatum("", "md Info", local3dCrs, gsoap_resqml2_0_1::resqml20__MdReference__mean_x0020sea_x0020level, 275, 75, 0);
+	RESQML2_NS::MdDatum* mdInfo = pck->createMdDatum("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", local3dCrs, gsoap_resqml2_0_1::resqml20__MdReference__mean_x0020sea_x0020level, 275, 75, 0);
 
 	//Geometry	
-	w1i1TrajRep = pck->createWellboreTrajectoryRepresentation(wellbore1Interp1, "", "Wellbore1 Interp1 TrajRep", mdInfo);
+	w1i1TrajRep = pck->createWellboreTrajectoryRepresentation(wellbore1Interp1, "acd2cdcf-bb5d-48da-bd0e-9aeff3e52180", "Wellbore1 Interp1 TrajRep", mdInfo);
 	double controlPoints[12] = { 275, 75, 0, 275, 75, 325, 275, 75, 500, 275, 75, 1000 };
 	double trajectoryTangentVectors[12] = { 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1 };
 	double trajectoryMds[4] = { 0, 325, 500, 1000 };
 	w1i1TrajRep->setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, hdfProxy);
 
 	// WellboreFeature frame
-	WellboreFrameRepresentation* w1i1FrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
+	WellboreFrameRepresentation* w1i1FrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "d873e243-d893-41ab-9a3e-d20b851c099f", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
 	double logMds[5] = { 0, 250, 500, 750, 1000 };
 	w1i1FrameRep->setMdValues(logMds, 5, hdfProxy);
 
 	WellboreFrameRepresentation* w1i1RegularFrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
 	w1i1RegularFrameRep->setMdValues(0, 200, 6);
 
-	RESQML2_NS::PropertyKind * unitNumberPropType = pck->createPropertyKind("", "Unit number", "urn:resqml:F2I.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__discrete);
+	RESQML2_NS::PropertyKind * unitNumberPropType = pck->createPropertyKind("358aac23-b377-4349-9e72-bff99a6edf34", "Unit number", "urn:resqml:F2I.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__discrete);
 
 	DiscreteProperty* discreteProp = pck->createDiscreteProperty(w1i1FrameRep, "61c2917c-2334-4205-824e-d4f4a0cf6d8e", "Wellbore1 Interp1 FrameRep IntervalIndex", 1,
 		gsoap_resqml2_0_1::resqml20__IndexableElements__intervals, unitNumberPropType);
@@ -3405,7 +3452,7 @@ void deserialize(const string & inputFile)
 	for (size_t i = 0; i < depthCrsSet.size(); ++i) {
 		cout << "Title is : " << depthCrsSet[i]->getTitle() << endl;
 		if (depthCrsSet[i]->isProjectedCrsDefinedWithEpsg())
-			cout << "Projected : EPSG one" << endl;
+			cout << "Projected : EPSG " << depthCrsSet[i]->getProjectedCrsEpsgCode() << endl;
 		else if (depthCrsSet[i]->isProjectedCrsUnknown())
 			cout << "Projected : Unknown." << "Reason is:" << depthCrsSet[i]->getProjectedCrsUnknownReason() << endl;
 	}

@@ -19,7 +19,8 @@ under the License.
 #include "Trajectory.h"
 #include "../catch.hpp"
 #include "common/EpcDocument.h"
-#include "witsml2_0/Well.h"
+#include "witsml2_0/Wellbore.h"
+#include "witsml2_0/Trajectory.h"
 #include <stdexcept>
 
 using namespace std;
@@ -44,8 +45,8 @@ Trajectory::Trajectory(DataObjectRepository* repo, bool init)
 void Trajectory::initRepoHandler() {
 	WITSML2_0_NS::Wellbore* wellbore = repo->createPartialWellbore("", "");
 	WITSML2_0_NS::Trajectory* traj = repo->createTrajectory(wellbore, defaultUuid, defaultTitle, gsoap_eml2_1::witsml20__ChannelStatus__inactive);
-	traj->pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType__unknown, 250, gsoap_eml2_1::eml21__LengthUom__m);
-	traj->pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType__DLS, 500, gsoap_eml2_1::eml21__LengthUom__ft, "my Uid");
+	traj->pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType__unknown, 250, gsoap_eml2_1::eml21__LengthUom__m, "fake datum");
+	traj->pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType__DLS, 500, gsoap_eml2_1::eml21__LengthUom__ft, "fake datum", "my Uid");
 	traj->setTrajectoryStationAzi(1, 15, gsoap_eml2_1::eml21__PlaneAngleUom__dega);
 }
 

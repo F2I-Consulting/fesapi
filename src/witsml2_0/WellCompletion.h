@@ -19,10 +19,11 @@ under the License.
 #pragma once
 
 #include "witsml2_0/AbstractObject.h"
-#include "witsml2_0/WellboreCompletion.h"
 
 namespace WITSML2_0_NS
 {
+	class WellboreCompletion;
+
 	class WellCompletion : public WITSML2_0_NS::AbstractObject
 	{
 	public:
