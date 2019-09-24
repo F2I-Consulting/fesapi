@@ -17,9 +17,14 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "witsml2_0/Wellbore.h"
-#include "witsml2_0/Well.h"
 
 #include <stdexcept>
+
+#include "witsml2_0/Well.h"
+#include "witsml2_0/WellboreCompletion.h"
+#include "witsml2_0/Trajectory.h"
+
+#include "resqml2_0_1/WellboreFeature.h"
 
 using namespace std;
 using namespace WITSML2_0_NS;
@@ -95,16 +100,6 @@ void Wellbore::setWell(Well* witsmlWell)
 	wellbore->Well = witsmlWell->newEmlReference();
 }
 
-void Wellbore::setShape(witsml20__WellboreShape shape)
-{
-	witsml20__Wellbore* wellbore = static_cast<witsml20__Wellbore*>(gsoapProxy2_1);
-
-	if (wellbore->Shape == nullptr) {
-		wellbore->Shape = soap_new_witsml20__WellboreShape(gsoapProxy2_1->soap, 1);
-	}
-	*wellbore->Shape = shape;
-}
-
 void Wellbore::loadTargetRelationships()
 {
 	convertDorIntoRel<Well>(getWellDor());
@@ -124,3 +119,18 @@ std::vector<Trajectory *> Wellbore::getTrajectories() const
 {
 	return getRepository()->getSourceObjects<Trajectory>(this);
 }
+
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Wellbore, Number, gsoap_eml2_1::soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Wellbore, SuffixAPI, gsoap_eml2_1::soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Wellbore, NumGovt, gsoap_eml2_1::soap_new_std__string)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::eml21__WellStatus, Wellbore, StatusWellbore, gsoap_eml2_1::soap_new_eml21__WellStatus)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(bool, Wellbore, IsActive, gsoap_eml2_1::soap_new_bool)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml20__WellPurpose, Wellbore, PurposeWellbore, gsoap_eml2_1::soap_new_witsml20__WellPurpose)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml20__WellboreType, Wellbore, TypeWellbore, gsoap_eml2_1::soap_new_witsml20__WellboreType)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml20__WellboreShape, Wellbore, Shape, gsoap_eml2_1::soap_new_witsml20__WellboreShape)
+GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(bool, Wellbore, AchievedTD, gsoap_eml2_1::soap_new_bool)
+GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Wellbore, Md, eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__MeasuredDepthCoord)
+GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Wellbore, MdBit, eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__MeasuredDepthCoord)
+GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Wellbore, MdKickoff, eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__MeasuredDepthCoord)
+GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Wellbore, MdPlanned, eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__MeasuredDepthCoord)
+GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE_IMPL(Wellbore, MdSubSeaPlanned, eml21__LengthUom, gsoap_eml2_1::soap_new_witsml20__MeasuredDepthCoord)

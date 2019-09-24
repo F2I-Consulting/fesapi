@@ -21,6 +21,11 @@ under the License.
 #include <stdexcept>
 #include <sstream>
 
+#include "witsml2_0/Wellbore.h"
+#include "witsml2_0/WellCompletion.h"
+
+#include "resqml2_0_1/WellboreFeature.h"
+
 #include "tools/TimeTools.h"
 
 using namespace std;
