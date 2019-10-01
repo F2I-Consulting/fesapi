@@ -34,7 +34,7 @@ Activity::Activity(RESQML2_NS::ActivityTemplate* activityTemplate, const string 
 		throw invalid_argument("The activity template of an activity must be not null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREActivity(activityTemplate->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREActivity(activityTemplate->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -60,7 +60,7 @@ void Activity::pushBackParameter(const std::string title,
 
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
 
-	resqml20__FloatingPointQuantityParameter* fpqp = soap_new_resqml20__FloatingPointQuantityParameter(activity->soap, 1);
+	resqml20__FloatingPointQuantityParameter* fpqp = soap_new_resqml20__FloatingPointQuantityParameter(activity->soap);
 	fpqp->Title = title;
 	fpqp->Value = value;
 	fpqp->Uom = uom;
@@ -84,7 +84,7 @@ void Activity::pushBackParameter(const std::string title, const std::string & va
 
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
 
-	resqml20__StringParameter* sp = soap_new_resqml20__StringParameter(activity->soap, 1);
+	resqml20__StringParameter* sp = soap_new_resqml20__StringParameter(activity->soap);
 	sp->Title = title;
 	sp->Value = value;
 	activity->Parameter.push_back(sp);
@@ -107,7 +107,7 @@ void Activity::pushBackParameter(const std::string title, const LONG64 & value)
 
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
 
-	resqml20__IntegerQuantityParameter* iqp = soap_new_resqml20__IntegerQuantityParameter(activity->soap, 1);
+	resqml20__IntegerQuantityParameter* iqp = soap_new_resqml20__IntegerQuantityParameter(activity->soap);
 	iqp->Title = title;
 	iqp->Value = value;
 	activity->Parameter.push_back(iqp);
@@ -134,7 +134,7 @@ void Activity::pushBackParameter(const std::string title, AbstractObject* resqml
 
 	_resqml20__Activity* activity = static_cast<_resqml20__Activity*>(gsoapProxy2_0_1);
 
-	resqml20__DataObjectParameter* dop = soap_new_resqml20__DataObjectParameter(activity->soap, 1);
+	resqml20__DataObjectParameter* dop = soap_new_resqml20__DataObjectParameter(activity->soap);
 	dop->Title = title;
 	dop->DataObject = resqmlObject->newResqmlReference();
 	activity->Parameter.push_back(dop);

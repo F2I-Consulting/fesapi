@@ -37,7 +37,7 @@ const char* PolylineSetRepresentation::XML_TAG = "PolylineSetRepresentation";
 void PolylineSetRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 									 const std::string & guid, const std::string & title)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREPolylineSetRepresentation(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREPolylineSetRepresentation(repo->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -80,7 +80,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 				unsigned int polylineCount, bool allPolylinesClosedFlag,
 				COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
-	resqml20__PolylineSetPatch* patch = soap_new_resqml20__PolylineSetPatch(gsoapProxy2_0_1->soap, 1);
+	resqml20__PolylineSetPatch* patch = soap_new_resqml20__PolylineSetPatch(gsoapProxy2_0_1->soap);
 	patch->PatchIndex = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.size();
 
 	if (proxy == nullptr) {
@@ -89,9 +89,9 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	getRepository()->addRelationship(this, proxy);
 
 	// node count
-	resqml20__IntegerHdf5Array* xmlNodeCountPerPolyline = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array* xmlNodeCountPerPolyline = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	xmlNodeCountPerPolyline->NullValue = (std::numeric_limits<int>::max)();
-	xmlNodeCountPerPolyline->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	xmlNodeCountPerPolyline->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlNodeCountPerPolyline->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream ossForHdf;
 	ossForHdf << "NodeCountPerPolyline_patch" << patch->PatchIndex;
@@ -105,7 +105,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 		&dim, 1);
 
 	// closed polylines
-	resqml20__BooleanConstantArray* xmlClosedPolylines = soap_new_resqml20__BooleanConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__BooleanConstantArray* xmlClosedPolylines = soap_new_resqml20__BooleanConstantArray(gsoapProxy2_0_1->soap);
 	xmlClosedPolylines->Count = polylineCount;
 	xmlClosedPolylines->Value = allPolylinesClosedFlag;
 	patch->ClosedPolylines = xmlClosedPolylines;
@@ -129,7 +129,7 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 				unsigned int polylineCount, bool * polylineClosedFlags,
 				COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
-	resqml20__PolylineSetPatch* patch = soap_new_resqml20__PolylineSetPatch(gsoapProxy2_0_1->soap, 1);
+	resqml20__PolylineSetPatch* patch = soap_new_resqml20__PolylineSetPatch(gsoapProxy2_0_1->soap);
 	patch->PatchIndex = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.size();
 
 	if (proxy == nullptr) {
@@ -138,9 +138,9 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	getRepository()->addRelationship(this, proxy);
 
 	// node count
-	resqml20__IntegerHdf5Array* xmlNodeCountPerPolyline = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array* xmlNodeCountPerPolyline = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	xmlNodeCountPerPolyline->NullValue = (std::numeric_limits<int>::max)();
-	xmlNodeCountPerPolyline->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	xmlNodeCountPerPolyline->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlNodeCountPerPolyline->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream ossForHdf;
 	ossForHdf << "NodeCountPerPolyline_patch" << patch->PatchIndex;
@@ -154,8 +154,8 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 		&dim, 1);
 
 	// closed polylines
-	resqml20__BooleanHdf5Array* xmlClosedPolylines = soap_new_resqml20__BooleanHdf5Array(gsoapProxy2_0_1->soap, 1);
-	xmlClosedPolylines->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	resqml20__BooleanHdf5Array* xmlClosedPolylines = soap_new_resqml20__BooleanHdf5Array(gsoapProxy2_0_1->soap);
+	xmlClosedPolylines->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlClosedPolylines->Values->HdfProxy = proxy->newResqmlReference();
 	ossForHdf.str("");
 	ossForHdf.clear();

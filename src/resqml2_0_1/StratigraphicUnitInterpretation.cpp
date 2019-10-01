@@ -36,7 +36,7 @@ StratigraphicUnitInterpretation::StratigraphicUnitInterpretation(StratigraphicUn
 		throw invalid_argument("The interpreted feature cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStratigraphicUnitInterpretation(feature->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStratigraphicUnitInterpretation(feature->getGsoapContext());
 	static_cast<_resqml20__StratigraphicUnitInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
 
 	initMandatoryMetadata();

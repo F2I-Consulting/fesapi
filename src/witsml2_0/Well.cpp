@@ -43,7 +43,7 @@ Well::Well(COMMON_NS::DataObjectRepository * repo,
 		throw invalid_argument("A repo must exist.");
 	}
 
-	gsoapProxy2_1 = soap_new_witsml20__Well(repo->getGsoapContext(), 1);
+	gsoapProxy2_1 = soap_new_witsml20__Well(repo->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -63,7 +63,7 @@ Well::Well(COMMON_NS::DataObjectRepository * repo,
 		throw invalid_argument("A repo must exist.");
 	}
 
-	gsoapProxy2_1 = soap_new_witsml20__Well(repo->getGsoapContext(), 1);
+	gsoapProxy2_1 = soap_new_witsml20__Well(repo->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -116,7 +116,7 @@ void Well::setTimeZone(bool direction, unsigned short hours, unsigned short minu
 	if (hours > 23) { throw invalid_argument("You cannot set a time zone superior to 23 hours"); }
 	if (minutes > 59) { throw invalid_argument("You cannot set a time zone superior to 59 minutes"); }
 	witsml20__Well* well = static_cast<witsml20__Well*>(gsoapProxy2_1);
-	if (well->TimeZone == nullptr) { well->TimeZone = soap_new_eml21__TimeZone(gsoapProxy2_1->soap, 1); }
+	if (well->TimeZone == nullptr) { well->TimeZone = soap_new_eml21__TimeZone(gsoapProxy2_1->soap); }
 
 	if (hours == 00 && minutes == 0) {
 		well->TimeZone->assign("Z");
@@ -205,7 +205,7 @@ void Well::pushBackLocation(
 {
 	witsml20__Well* well = static_cast<witsml20__Well*>(gsoapProxy2_1);
 
-	witsml20__ProjectedWellLocation* location = soap_new_witsml20__ProjectedWellLocation(gsoapProxy2_1->soap, 1);
+	witsml20__ProjectedWellLocation* location = soap_new_witsml20__ProjectedWellLocation(gsoapProxy2_1->soap);
 	if (guid.size() == 0) {
 		ostringstream oss;
 		oss << well->WellLocation.size();
@@ -216,7 +216,7 @@ void Well::pushBackLocation(
 	}
 	location->Coordinate1 = projectedX;
 	location->Coordinate2 = projectedY;
-	location->Crs = soap_new_eml21__ProjectedEpsgCrs(gsoapProxy2_1->soap, 1);
+	location->Crs = soap_new_eml21__ProjectedEpsgCrs(gsoapProxy2_1->soap);
 	static_cast<eml21__ProjectedEpsgCrs*>(location->Crs)->EpsgCode = projectedCrsEpsgCode;
 
 	well->WellLocation.push_back(location);
@@ -237,7 +237,7 @@ void Well::pushBackDatum(
 {
 	witsml20__Well* well = static_cast<witsml20__Well*>(gsoapProxy2_1);
 
-	witsml20__WellDatum* wellDatum = soap_new_witsml20__WellDatum(gsoapProxy2_1->soap, 1);
+	witsml20__WellDatum* wellDatum = soap_new_witsml20__WellDatum(gsoapProxy2_1->soap);
 	if (guid.empty()) {
 		ostringstream oss;
 		oss << well->WellDatum.size();
@@ -251,10 +251,10 @@ void Well::pushBackDatum(
 	wellDatum->Code = (eml21__WellboreDatumReference *)soap_malloc(gsoapProxy2_1->soap, sizeof(eml21__WellboreDatumReference));
 	*wellDatum->Code = code;
 
-	wellDatum->Crs = soap_new_eml21__VerticalEpsgCrs(gsoapProxy2_1->soap, 1);
+	wellDatum->Crs = soap_new_eml21__VerticalEpsgCrs(gsoapProxy2_1->soap);
 	static_cast<eml21__VerticalEpsgCrs*>(wellDatum->Crs)->EpsgCode = verticalCrsEpsgCode;
 
-	wellDatum->Elevation = soap_new_witsml20__WellElevationCoord(gsoapProxy2_1->soap, 1);
+	wellDatum->Elevation = soap_new_witsml20__WellElevationCoord(gsoapProxy2_1->soap);
 	wellDatum->Elevation->datum = datum;
 	wellDatum->Elevation->uom = elevationUnit;
 	wellDatum->Elevation->__item = elevation;

@@ -36,7 +36,7 @@ void AbstractOrganizationInterpretation::pushBackBinaryContact(const gsoap_resqm
 
 	resqml20__AbstractOrganizationInterpretation* org = static_cast<resqml20__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
 
-	resqml20__BinaryContactInterpretationPart* contact = soap_new_resqml20__BinaryContactInterpretationPart(org->soap, 1);
+	resqml20__BinaryContactInterpretationPart* contact = soap_new_resqml20__BinaryContactInterpretationPart(org->soap);
 	contact->Index = org->ContactInterpretation.size();
 	org->ContactInterpretation.push_back(contact);
 

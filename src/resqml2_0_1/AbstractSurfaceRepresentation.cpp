@@ -74,35 +74,35 @@ resqml20__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfLatticePo
 		throw invalid_argument("The CRS cannot be the null pointer");
 	}
 
-	resqml20__PointGeometry* geom = soap_new_resqml20__PointGeometry(gsoapProxy2_0_1->soap, 1);
+	resqml20__PointGeometry* geom = soap_new_resqml20__PointGeometry(gsoapProxy2_0_1->soap);
 	geom->LocalCrs = localCrs->newResqmlReference();
 
 	// XML
-	resqml20__Point3dLatticeArray* xmlPoints = soap_new_resqml20__Point3dLatticeArray(gsoapProxy2_0_1->soap, 1);
-	xmlPoints->Origin = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dLatticeArray* xmlPoints = soap_new_resqml20__Point3dLatticeArray(gsoapProxy2_0_1->soap);
+	xmlPoints->Origin = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap);
 	xmlPoints->Origin->Coordinate1 = xOrigin;
 	xmlPoints->Origin->Coordinate2 = yOrigin;
 	xmlPoints->Origin->Coordinate3 = zOrigin;
 
 	// first (slowest) dim : fastest is I (or inline), slowest is J (or crossline)
-	resqml20__Point3dOffset* latticeDim = soap_new_resqml20__Point3dOffset(gsoapProxy2_0_1->soap, 1);
-	latticeDim->Offset = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dOffset* latticeDim = soap_new_resqml20__Point3dOffset(gsoapProxy2_0_1->soap);
+	latticeDim->Offset = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap);
 	latticeDim->Offset->Coordinate1 = xOffsetInSlowestDirection;
 	latticeDim->Offset->Coordinate2 = yOffsetInSlowestDirection;
 	latticeDim->Offset->Coordinate3 = zOffsetInSlowestDirection;
-	resqml20__DoubleConstantArray* spacingInfo = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray* spacingInfo = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap);
 	spacingInfo->Count = numPointsInSlowestDirection-1;
 	spacingInfo->Value = spacingInSlowestDirection;
 	latticeDim->Spacing = spacingInfo;
 	xmlPoints->Offset.push_back(latticeDim);
 
 	// Second (fastest) dimension :fastest is I (or inline), slowest is J (or crossline)
-	latticeDim = soap_new_resqml20__Point3dOffset(gsoapProxy2_0_1->soap, 1);
-	latticeDim->Offset = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap, 1);
+	latticeDim = soap_new_resqml20__Point3dOffset(gsoapProxy2_0_1->soap);
+	latticeDim->Offset = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap);
 	latticeDim->Offset->Coordinate1 = xOffsetInFastestDirection;
 	latticeDim->Offset->Coordinate2 = yOffsetInFastestDirection;
 	latticeDim->Offset->Coordinate3 = zOffsetInFastestDirection;
-	spacingInfo = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	spacingInfo = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap);
 	spacingInfo->Count = numPointsInFastestDirection-1;
 	spacingInfo->Value = spacingInFastestDirection;
 	latticeDim->Spacing = spacingInfo;
@@ -131,32 +131,32 @@ resqml20__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ
 
 	getRepository()->addRelationship(this, supportingRepresentation);
 
-	resqml20__PointGeometry* geom = soap_new_resqml20__PointGeometry(gsoapProxy2_0_1->soap, 1);
+	resqml20__PointGeometry* geom = soap_new_resqml20__PointGeometry(gsoapProxy2_0_1->soap);
 	geom->LocalCrs = localCrs->newResqmlReference();
 
 	// XML
-	resqml20__Point3dZValueArray* xmlPoints = soap_new_resqml20__Point3dZValueArray(gsoapProxy2_0_1->soap, 1);
-	resqml20__Point3dFromRepresentationLatticeArray* patchPoints = soap_new_resqml20__Point3dFromRepresentationLatticeArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dZValueArray* xmlPoints = soap_new_resqml20__Point3dZValueArray(gsoapProxy2_0_1->soap);
+	resqml20__Point3dFromRepresentationLatticeArray* patchPoints = soap_new_resqml20__Point3dFromRepresentationLatticeArray(gsoapProxy2_0_1->soap);
 	patchPoints->SupportingRepresentation = supportingRepresentation->newResqmlReference();
-	patchPoints->NodeIndicesOnSupportingRepresentation = soap_new_resqml20__IntegerLatticeArray(gsoapProxy2_0_1->soap, 1);
+	patchPoints->NodeIndicesOnSupportingRepresentation = soap_new_resqml20__IntegerLatticeArray(gsoapProxy2_0_1->soap);
 	patchPoints->NodeIndicesOnSupportingRepresentation->StartValue = startGlobalIndex;
 	xmlPoints->SupportingGeometry = patchPoints;
 
 	// first (slowest) dim :fastest is I (or inline), slowest is J (or crossline)
-	resqml20__IntegerConstantArray* offset = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerConstantArray* offset = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap);
 	offset->Count = numJ-1;
 	offset->Value = indexIncrementJ;
 	patchPoints->NodeIndicesOnSupportingRepresentation->Offset.push_back(offset);
 
 	//second (fastest) dim :fastest is I (or inline), slowest is J (or crossline)
-	offset = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap, 1);
+	offset = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap);
 	offset->Count = numI-1;
 	offset->Value = indexIncrementI;
 	patchPoints->NodeIndicesOnSupportingRepresentation->Offset.push_back(offset);
 
 	// Z Values
-	resqml20__DoubleHdf5Array* xmlZValues = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
-	xmlZValues->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleHdf5Array* xmlZValues = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
+	xmlZValues->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlZValues->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream oss3;
 	oss3 << "points_patch" << patchIndex;
@@ -191,36 +191,36 @@ resqml20__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ
 	}
 	getRepository()->addRelationship(this, proxy);
 
-	resqml20__PointGeometry* geom = soap_new_resqml20__PointGeometry(gsoapProxy2_0_1->soap, 1);
+	resqml20__PointGeometry* geom = soap_new_resqml20__PointGeometry(gsoapProxy2_0_1->soap);
 	geom->LocalCrs = localCrs->newResqmlReference();
 
 	// XML
-	resqml20__Point3dZValueArray* xmlPoints = soap_new_resqml20__Point3dZValueArray(gsoapProxy2_0_1->soap, 1);
-	resqml20__Point3dLatticeArray* latticePoints = soap_new_resqml20__Point3dLatticeArray(gsoapProxy2_0_1->soap, 1);
-	latticePoints->Origin = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dZValueArray* xmlPoints = soap_new_resqml20__Point3dZValueArray(gsoapProxy2_0_1->soap);
+	resqml20__Point3dLatticeArray* latticePoints = soap_new_resqml20__Point3dLatticeArray(gsoapProxy2_0_1->soap);
+	latticePoints->Origin = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap);
 	latticePoints->Origin->Coordinate1 = originX;
 	latticePoints->Origin->Coordinate2 = originY;
 	latticePoints->Origin->Coordinate3 = originZ;
 
 	// first (slowest) dim :fastest is I (or inline), slowest is J (or crossline)
-	resqml20__Point3dOffset* latticeDimForJ = soap_new_resqml20__Point3dOffset(gsoapProxy2_0_1->soap, 1);
-	latticeDimForJ->Offset = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dOffset* latticeDimForJ = soap_new_resqml20__Point3dOffset(gsoapProxy2_0_1->soap);
+	latticeDimForJ->Offset = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap);
 	latticeDimForJ->Offset->Coordinate1 = offsetJX;
 	latticeDimForJ->Offset->Coordinate2 = offsetJY;
 	latticeDimForJ->Offset->Coordinate3 = offsetJZ;
-	resqml20__DoubleConstantArray* spacingForJ = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray* spacingForJ = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap);
 	spacingForJ->Value = spacingJ;
 	spacingForJ->Count = numJ - 1;
 	latticeDimForJ->Spacing = spacingForJ;
 	latticePoints->Offset.push_back(latticeDimForJ);
 
 	//second (fastest) dim :fastest is I (or inline), slowest is J (or crossline)
-	resqml20__Point3dOffset* latticeDimForI = soap_new_resqml20__Point3dOffset(gsoapProxy2_0_1->soap, 1);
-	latticeDimForI->Offset = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dOffset* latticeDimForI = soap_new_resqml20__Point3dOffset(gsoapProxy2_0_1->soap);
+	latticeDimForI->Offset = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap);
 	latticeDimForI->Offset->Coordinate1 = offsetIX;
 	latticeDimForI->Offset->Coordinate2 = offsetIY;
 	latticeDimForI->Offset->Coordinate3 = offsetIZ;
-	resqml20__DoubleConstantArray* spacingForI = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray* spacingForI = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap);
 	spacingForI->Value = spacingI;
 	spacingForI->Count = numI - 1;
 	latticeDimForI->Spacing = spacingForI;
@@ -229,8 +229,8 @@ resqml20__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ
 	xmlPoints->SupportingGeometry = latticePoints;
 
 	// Z Values
-	resqml20__DoubleHdf5Array* xmlZValues = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
-	xmlZValues->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleHdf5Array* xmlZValues = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
+	xmlZValues->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlZValues->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream oss3;
 	oss3 << "points_patch" << patchIndex;
@@ -277,7 +277,7 @@ void AbstractSurfaceRepresentation::pushBackOuterRing(PolylineRepresentation * o
 {
 	resqml20__AbstractSurfaceRepresentation* rep = static_cast<resqml20__AbstractSurfaceRepresentation*>(gsoapProxy2_0_1);
 
-	resqml20__PatchBoundaries * boundary = soap_new_resqml20__PatchBoundaries(gsoapProxy2_0_1->soap, 1);
+	resqml20__PatchBoundaries * boundary = soap_new_resqml20__PatchBoundaries(gsoapProxy2_0_1->soap);
 	boundary->ReferencedPatch = rep->Boundaries.size();
 	boundary->OuterRing = outerRing->newResqmlReference();
 	rep->Boundaries.push_back(boundary);

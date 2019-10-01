@@ -41,9 +41,9 @@ RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(Organiz
 		throw invalid_argument("The kind of the organization feature is not a fluid organization.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERockFluidOrganizationInterpretation(orgFeat->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERockFluidOrganizationInterpretation(orgFeat->getGsoapContext());
 	_resqml20__RockFluidOrganizationInterpretation* rfoi = static_cast<_resqml20__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1);
-	rfoi->RockFluidUnitIndex = soap_new_resqml20__RockFluidUnitInterpretationIndex(orgFeat->getGsoapContext(), 1);
+	rfoi->RockFluidUnitIndex = soap_new_resqml20__RockFluidUnitInterpretationIndex(orgFeat->getGsoapContext());
 	// No need to initialize index since it is a bug : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html
 	pushBackRockFluidUnitInterpretation(rockFluidUnitInterp);
 

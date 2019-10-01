@@ -43,7 +43,7 @@ StructuralOrganizationInterpretation::StructuralOrganizationInterpretation(Organ
 		throw invalid_argument("The kind of the organization feature is not a structural organization.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStructuralOrganizationInterpretation(orgFeat->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStructuralOrganizationInterpretation(orgFeat->getGsoapContext());
 	
 	static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->OrderingCriteria = orderingCriteria;
 	static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
@@ -91,7 +91,7 @@ void StructuralOrganizationInterpretation::pushBackHorizonInterpretation(Horizon
 
 	_resqml20__StructuralOrganizationInterpretation* structuralOrganization = static_cast<_resqml20__StructuralOrganizationInterpretation*>(gsoapProxy2_0_1);
 
-	resqml20__HorizonInterpretationIndex* horizonInterpListElement = soap_new_resqml20__HorizonInterpretationIndex(gsoapProxy2_0_1->soap, 1);
+	resqml20__HorizonInterpretationIndex* horizonInterpListElement = soap_new_resqml20__HorizonInterpretationIndex(gsoapProxy2_0_1->soap);
 	horizonInterpListElement->StratigraphicRank = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(ULONG64)));
 	*(horizonInterpListElement->StratigraphicRank) = stratigraphicRank;
 	horizonInterpListElement->Index = structuralOrganization->Horizons.size();

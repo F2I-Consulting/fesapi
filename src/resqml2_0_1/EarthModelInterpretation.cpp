@@ -35,7 +35,7 @@ const char* EarthModelInterpretation::XML_TAG = "EarthModelInterpretation";
 
 EarthModelInterpretation::EarthModelInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const string & title)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREEarthModelInterpretation(orgFeat->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREEarthModelInterpretation(orgFeat->getGsoapContext());
 	_resqml20__EarthModelInterpretation* interp = static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1);
 
 	interp->Domain = resqml20__Domain__mixed;

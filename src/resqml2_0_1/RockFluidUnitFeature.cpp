@@ -31,7 +31,7 @@ RockFluidUnitFeature::RockFluidUnitFeature(COMMON_NS::DataObjectRepository* repo
 	if (repo == nullptr)
 		throw invalid_argument("The repo cannot be null.");
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERockFluidUnitFeature(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERockFluidUnitFeature(repo->getGsoapContext());
 	_resqml20__RockFluidUnitFeature* rfuf = static_cast<_resqml20__RockFluidUnitFeature*>(gsoapProxy2_0_1);
 	rfuf->Phase = phase;
 

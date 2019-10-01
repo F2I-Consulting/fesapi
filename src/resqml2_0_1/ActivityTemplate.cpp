@@ -28,7 +28,7 @@ const char* ActivityTemplate::XML_TAG = "ActivityTemplate";
 
 ActivityTemplate::ActivityTemplate(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREActivityTemplate(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREActivityTemplate(repo->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -47,7 +47,7 @@ void ActivityTemplate::pushBackParameter(const std::string & title,
 
 	_resqml20__ActivityTemplate* activityTemplate = static_cast<_resqml20__ActivityTemplate*>(gsoapProxy2_0_1);
 
-	resqml20__ParameterTemplate* param =soap_new_resqml20__ParameterTemplate(gsoapProxy2_0_1->soap, 1);
+	resqml20__ParameterTemplate* param =soap_new_resqml20__ParameterTemplate(gsoapProxy2_0_1->soap);
 	param->Title = title;
 	param->IsInput = isInput;
 	param->IsOutput = isOutput;
@@ -78,7 +78,7 @@ void ActivityTemplate::pushBackParameter(const std::string & title,
 	if (!resqmlObjectContentType.empty())
 	{
 		_resqml20__ActivityTemplate* activityTemplate = static_cast<_resqml20__ActivityTemplate*>(gsoapProxy2_0_1);
-		activityTemplate->Parameter[activityTemplate->Parameter.size()-1]->DataObjectContentType = soap_new_std__string(gsoapProxy2_0_1->soap, 1);
+		activityTemplate->Parameter[activityTemplate->Parameter.size()-1]->DataObjectContentType = soap_new_std__string(gsoapProxy2_0_1->soap);
 		activityTemplate->Parameter[activityTemplate->Parameter.size()-1]->DataObjectContentType->assign(resqmlObjectContentType);
 	}
 }

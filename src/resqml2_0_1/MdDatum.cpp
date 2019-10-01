@@ -34,11 +34,11 @@ MdDatum::MdDatum(COMMON_NS::DataObjectRepository * repo, const string & guid, co
 	if (repo == nullptr)
 		throw invalid_argument("The repo must exist");
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREMdDatum(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREMdDatum(repo->getGsoapContext());
 	_resqml20__MdDatum* mdInfo = static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1);
 
 	mdInfo->MdReference = originKind;
-	mdInfo->Location = soap_new_resqml20__Point3d(repo->getGsoapContext(), 1);
+	mdInfo->Location = soap_new_resqml20__Point3d(repo->getGsoapContext());
 	mdInfo->Location->Coordinate1 = referenceLocationOrdinal1;
 	mdInfo->Location->Coordinate2 = referenceLocationOrdinal2;
 	mdInfo->Location->Coordinate3 = referenceLocationOrdinal3;

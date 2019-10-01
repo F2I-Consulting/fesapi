@@ -33,7 +33,7 @@ FluidBoundaryFeature::FluidBoundaryFeature(COMMON_NS::DataObjectRepository * rep
 		throw invalid_argument("The repo cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREFluidBoundaryFeature(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREFluidBoundaryFeature(repo->getGsoapContext());
 	_resqml20__FluidBoundaryFeature* fbf = static_cast<_resqml20__FluidBoundaryFeature*>(gsoapProxy2_0_1);
 	fbf->FluidContact = fluidContact;
 

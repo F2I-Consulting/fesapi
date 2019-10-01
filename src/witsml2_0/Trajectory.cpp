@@ -39,7 +39,7 @@ Trajectory::Trajectory(Wellbore* witsmlWellbore,
 {
 	if (witsmlWellbore == nullptr) throw invalid_argument("A wellbore must be associated to a wellbore trajectory.");
 
-	gsoapProxy2_1 = soap_new_witsml20__Trajectory(witsmlWellbore->getGsoapContext(), 1);
+	gsoapProxy2_1 = soap_new_witsml20__Trajectory(witsmlWellbore->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());

@@ -42,11 +42,11 @@ SealedSurfaceFrameworkRepresentation::SealedSurfaceFrameworkRepresentation(
 	}
 
     // proxy constructor
-    gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESealedSurfaceFrameworkRepresentation(interp->getGsoapContext(), 1);
+    gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESealedSurfaceFrameworkRepresentation(interp->getGsoapContext());
     _resqml20__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
 	orgRep->IsHomogeneous = true;
-    orgRep->RepresentedInterpretation = soap_new_eml20__DataObjectReference(gsoapProxy2_0_1->soap, 1);
+    orgRep->RepresentedInterpretation = soap_new_eml20__DataObjectReference(gsoapProxy2_0_1->soap);
     orgRep->RepresentedInterpretation->UUID.assign(interp->getUuid());
 
     initMandatoryMetadata();
@@ -59,7 +59,7 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(gsoap_resqml2_0_1::re
 {
     _resqml20__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
-    resqml20__SealedContactRepresentationPart* contactRep = soap_new_resqml20__SealedContactRepresentationPart(gsoapProxy2_0_1->soap, 1);
+    resqml20__SealedContactRepresentationPart* contactRep = soap_new_resqml20__SealedContactRepresentationPart(gsoapProxy2_0_1->soap);
     contactRep->Index = orgRep->SealedContactRepresentation.size();
     contactRep->IdentityKind = kind;
     orgRep->SealedContactRepresentation.push_back(contactRep);
@@ -90,9 +90,9 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
 	pushBackContact(kind);
 	resqml20__SealedContactRepresentationPart* contactRep = static_cast<_resqml20__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1)->SealedContactRepresentation.back();
 
-    resqml20__IntegerHdf5Array * xmlListOfIdenticalNodes = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+    resqml20__IntegerHdf5Array * xmlListOfIdenticalNodes = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
     xmlListOfIdenticalNodes->NullValue = (std::numeric_limits<int>::max)();
-    xmlListOfIdenticalNodes->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+    xmlListOfIdenticalNodes->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
     xmlListOfIdenticalNodes->Values->HdfProxy = proxy->newResqmlReference();
     ostringstream ossForHdf;
     ossForHdf << "listOfIdenticalNodes_contact" << contactRep->Index;
@@ -148,14 +148,14 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
 		throw invalid_argument("The supporting representation is not referenced by the sealed surface framework");
 	}
 
-    resqml20__ContactPatch* contactPatch = soap_new_resqml20__ContactPatch(gsoapProxy2_0_1->soap, 1);
+    resqml20__ContactPatch* contactPatch = soap_new_resqml20__ContactPatch(gsoapProxy2_0_1->soap);
     contactPatch->PatchIndex = contactRep->Contact.size();
     contactPatch->Count = nodeCount;
     contactPatch->RepresentationIndex = representationIndex;
 
-    resqml20__IntegerHdf5Array* xmlSupportingRepresentationNodes = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+    resqml20__IntegerHdf5Array* xmlSupportingRepresentationNodes = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
     xmlSupportingRepresentationNodes->NullValue = (std::numeric_limits<int>::max)();
-    xmlSupportingRepresentationNodes->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+    xmlSupportingRepresentationNodes->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
     xmlSupportingRepresentationNodes->Values->HdfProxy = proxy->newResqmlReference();
     ostringstream ossForHdf;
     ossForHdf << "SupportingRepresentationNodes_contact" << contactIndex << "_patch" << contactPatch->PatchIndex;
