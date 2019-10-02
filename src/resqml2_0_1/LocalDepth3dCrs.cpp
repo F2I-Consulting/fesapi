@@ -36,9 +36,9 @@ void LocalDepth3dCrs::init(COMMON_NS::DataObjectRepository * repo, const std::st
 		throw invalid_argument("The soap context where the local CRS will be instantiated must exist.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORELocalDepth3dCrs(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORELocalDepth3dCrs(repo->getGsoapContext());
 	_resqml20__LocalDepth3dCrs* local3dCrs = static_cast<_resqml20__LocalDepth3dCrs*>(gsoapProxy2_0_1);
-	local3dCrs->ArealRotation = soap_new_eml20__PlaneAngleMeasure(gsoapProxy2_0_1->soap, 1);
+	local3dCrs->ArealRotation = soap_new_eml20__PlaneAngleMeasure(gsoapProxy2_0_1->soap);
 	local3dCrs->ArealRotation->__item = arealRotation;
 	local3dCrs->ArealRotation->uom = eml20__PlaneAngleUom__rad;
 	local3dCrs->ProjectedAxisOrder = eml20__AxisOrder2d__easting_x0020northing;
@@ -68,12 +68,12 @@ LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const s
 	_resqml20__LocalDepth3dCrs* local3dCrs = static_cast<_resqml20__LocalDepth3dCrs*>(gsoapProxy2_0_1);
 
 	// Projected CRS
-	eml20__ProjectedCrsEpsgCode* projCrs = soap_new_eml20__ProjectedCrsEpsgCode(gsoapProxy2_0_1->soap, 1);
+	eml20__ProjectedCrsEpsgCode* projCrs = soap_new_eml20__ProjectedCrsEpsgCode(gsoapProxy2_0_1->soap);
 	local3dCrs->ProjectedCrs = projCrs;
 	projCrs->EpsgCode = projectedEpsgCode;
 
 	// Vertical CRS
-	eml20__VerticalCrsEpsgCode* vertCrs = soap_new_eml20__VerticalCrsEpsgCode(gsoapProxy2_0_1->soap, 1);
+	eml20__VerticalCrsEpsgCode* vertCrs = soap_new_eml20__VerticalCrsEpsgCode(gsoapProxy2_0_1->soap);
 	local3dCrs->VerticalCrs = vertCrs;
 	vertCrs->EpsgCode = verticalEpsgCode;
 }
@@ -88,12 +88,12 @@ LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const s
 	_resqml20__LocalDepth3dCrs* local3dCrs = static_cast<_resqml20__LocalDepth3dCrs*>(gsoapProxy2_0_1);
 
 	// Projected CRS
-	eml20__ProjectedUnknownCrs* projCrs = soap_new_eml20__ProjectedUnknownCrs(gsoapProxy2_0_1->soap, 1);
+	eml20__ProjectedUnknownCrs* projCrs = soap_new_eml20__ProjectedUnknownCrs(gsoapProxy2_0_1->soap);
 	local3dCrs->ProjectedCrs = projCrs;
 	projCrs->Unknown = projectedUnknownReason;
 
 	// Vertical CRS
-	eml20__VerticalUnknownCrs* vertCrs = soap_new_eml20__VerticalUnknownCrs(gsoapProxy2_0_1->soap, 1);
+	eml20__VerticalUnknownCrs* vertCrs = soap_new_eml20__VerticalUnknownCrs(gsoapProxy2_0_1->soap);
 	local3dCrs->VerticalCrs = vertCrs;
 	vertCrs->Unknown = verticalUnknownReason;
 }
@@ -111,12 +111,12 @@ LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const s
 	_resqml20__LocalDepth3dCrs* local3dCrs = static_cast<_resqml20__LocalDepth3dCrs*>(gsoapProxy2_0_1);
 
 	// Projected CRS
-	eml20__ProjectedCrsEpsgCode* projCrs = soap_new_eml20__ProjectedCrsEpsgCode(gsoapProxy2_0_1->soap, 1);
+	eml20__ProjectedCrsEpsgCode* projCrs = soap_new_eml20__ProjectedCrsEpsgCode(gsoapProxy2_0_1->soap);
 	local3dCrs->ProjectedCrs = projCrs;
 	projCrs->EpsgCode = projectedEpsgCode;
 
 	// Vertical CRS
-	eml20__VerticalUnknownCrs* vertCrs = soap_new_eml20__VerticalUnknownCrs(gsoapProxy2_0_1->soap, 1);
+	eml20__VerticalUnknownCrs* vertCrs = soap_new_eml20__VerticalUnknownCrs(gsoapProxy2_0_1->soap);
 	local3dCrs->VerticalCrs = vertCrs;
 	vertCrs->Unknown = verticalUnknownReason;
 }
@@ -134,12 +134,12 @@ LocalDepth3dCrs::LocalDepth3dCrs(COMMON_NS::DataObjectRepository * repo, const s
 	_resqml20__LocalDepth3dCrs* local3dCrs = static_cast<_resqml20__LocalDepth3dCrs*>(gsoapProxy2_0_1);
 
 	// Projected CRS
-	eml20__ProjectedUnknownCrs* projCrs = soap_new_eml20__ProjectedUnknownCrs(gsoapProxy2_0_1->soap, 1);
+	eml20__ProjectedUnknownCrs* projCrs = soap_new_eml20__ProjectedUnknownCrs(gsoapProxy2_0_1->soap);
 	local3dCrs->ProjectedCrs = projCrs;
 	projCrs->Unknown = projectedUnknownReason;
 
 	// Vertical CRS
-	eml20__VerticalCrsEpsgCode* vertCrs = soap_new_eml20__VerticalCrsEpsgCode(gsoapProxy2_0_1->soap, 1);
+	eml20__VerticalCrsEpsgCode* vertCrs = soap_new_eml20__VerticalCrsEpsgCode(gsoapProxy2_0_1->soap);
 	local3dCrs->VerticalCrs = vertCrs;
 	vertCrs->EpsgCode = verticalEpsgCode;
 }

@@ -38,7 +38,7 @@ const char* ContinuousProperty::XML_TAG = "ContinuousProperty";
 void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREContinuousProperty(rep->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREContinuousProperty(rep->getGsoapContext());
 	_resqml20__ContinuousProperty* prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
@@ -56,7 +56,7 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 
 	static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->UOM = uom;
 
-	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
+	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap);
 	xmlStandardPropKind->Kind = energisticsPropertyKind;
 	static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->PropertyKind = xmlStandardPropKind;
 }
@@ -79,7 +79,7 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 	static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->UOM = gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc;
 	pushBackExtraMetadata("Uom", nonStandardUom);
 
-	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
+	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap);
 	xmlStandardPropKind->Kind = energisticsPropertyKind;
 	static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1)->PropertyKind = xmlStandardPropKind;
 }
@@ -226,13 +226,13 @@ std::string ContinuousProperty::pushBackRefToExistingDataset(COMMON_NS::Abstract
 	getRepository()->addRelationship(this, hdfProxy);
 	gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1);
 
-	gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = gsoap_resqml2_0_1::soap_new_resqml20__PatchOfValues(gsoapProxy2_0_1->soap, 1);
+	gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = gsoap_resqml2_0_1::soap_new_resqml20__PatchOfValues(gsoapProxy2_0_1->soap);
 	patch->RepresentationPatchIndex = static_cast<ULONG64*>(soap_malloc(gsoapProxy2_0_1->soap, sizeof(ULONG64)));
 	*(patch->RepresentationPatchIndex) = prop->PatchOfValues.size();
 
 	// XML
-	gsoap_resqml2_0_1::resqml20__DoubleHdf5Array* xmlValues = gsoap_resqml2_0_1::soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
-	xmlValues->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	gsoap_resqml2_0_1::resqml20__DoubleHdf5Array* xmlValues = gsoap_resqml2_0_1::soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
+	xmlValues->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlValues->Values->HdfProxy = hdfProxy->newResqmlReference();
 
 	if (datasetName.empty()) {

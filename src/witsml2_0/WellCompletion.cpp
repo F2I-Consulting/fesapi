@@ -35,7 +35,7 @@ WellCompletion::WellCompletion(Well* witsmlWell,
 {
 	if (witsmlWell == nullptr) throw invalid_argument("A well must be associated to a well completion.");
 
-	gsoapProxy2_1 = soap_new_witsml20__WellCompletion(witsmlWell->getGsoapContext(), 1);
+	gsoapProxy2_1 = soap_new_witsml20__WellCompletion(witsmlWell->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");

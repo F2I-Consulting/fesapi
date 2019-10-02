@@ -33,7 +33,7 @@ SeismicLineFeature::SeismicLineFeature(COMMON_NS::DataObjectRepository* repo, co
 		throw invalid_argument("The soap context cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESeismicLineFeature(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESeismicLineFeature(repo->getGsoapContext());
 	_resqml20__SeismicLineFeature* seismicLine = static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1);
 
 	seismicLine->TraceIndexIncrement = traceIndexIncrement;

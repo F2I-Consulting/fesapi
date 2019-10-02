@@ -297,7 +297,7 @@ namespace COMMON_NS
 		{
 			std::istringstream iss(xml);
 			setGsoapStream(&iss);
-			gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* read = gsoap_resqml2_0_1::soap_new_eml20__obj_USCOREEpcExternalPartReference(gsoapContext, 1);
+			gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* read = gsoap_resqml2_0_1::soap_new_eml20__obj_USCOREEpcExternalPartReference(gsoapContext);
 			soap_read_eml20__obj_USCOREEpcExternalPartReference(gsoapContext, read);
 
 			if (gsoapContext->error != SOAP_OK) {
@@ -708,7 +708,7 @@ namespace COMMON_NS
 		template <class valueType>
 		valueType* createPartial(const std::string & guid, const std::string & title)
 		{
-			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapContext, 1);
+			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapContext);
 			dor->UUID = guid.empty() ? generateRandomUuidAsString() : guid;
 			dor->Title = title;
 			valueType* result = new valueType(dor);
@@ -724,10 +724,10 @@ namespace COMMON_NS
 		template <class valueType>
 		valueType* createPartial(const std::string & guid, const std::string & title, const std::string & version)
 		{
-			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapContext, 1);
+			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapContext);
 			dor->UUID = guid.empty() ? generateRandomUuidAsString() : guid;
 			dor->Title = title;
-			dor->VersionString = gsoap_resqml2_0_1::soap_new_std__string(gsoapContext, 1);
+			dor->VersionString = gsoap_resqml2_0_1::soap_new_std__string(gsoapContext);
 			dor->VersionString->assign(version);
 			valueType* result = new valueType(dor);
 			addOrReplaceDataObject(result);

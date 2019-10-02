@@ -31,7 +31,7 @@ RockFluidUnitInterpretation::RockFluidUnitInterpretation(RockFluidUnitFeature * 
 		throw invalid_argument("The interpreted feature cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERockFluidUnitInterpretation(feature->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERockFluidUnitInterpretation(feature->getGsoapContext());
 	//static_cast<_resqml20__RockFluidUnitInterpretation*>(gsoapProxy2_0_1)->Phase = ??;
 
 	initMandatoryMetadata();

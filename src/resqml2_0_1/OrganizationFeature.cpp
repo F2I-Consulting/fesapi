@@ -32,7 +32,7 @@ OrganizationFeature::OrganizationFeature(COMMON_NS::DataObjectRepository * repo,
 		throw invalid_argument("The repo cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREOrganizationFeature(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREOrganizationFeature(repo->getGsoapContext());
 	static_cast<_resqml20__OrganizationFeature*>(gsoapProxy2_0_1)->OrganizationKind = orgType;
 
 	initMandatoryMetadata();

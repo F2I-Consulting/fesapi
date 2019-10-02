@@ -30,7 +30,7 @@ TectonicBoundaryFeature::TectonicBoundaryFeature(COMMON_NS::DataObjectRepository
 		throw invalid_argument("The repo must exist");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORETectonicBoundaryFeature(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORETectonicBoundaryFeature(repo->getGsoapContext());
 	static_cast<gsoap_resqml2_0_1::_resqml20__TectonicBoundaryFeature*>(gsoapProxy2_0_1)->TectonicBoundaryKind = isAFracture ? gsoap_resqml2_0_1::resqml20__TectonicBoundaryKind__fracture : gsoap_resqml2_0_1::resqml20__TectonicBoundaryKind__fault;
 
 	initMandatoryMetadata();

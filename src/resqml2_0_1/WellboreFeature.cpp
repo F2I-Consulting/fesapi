@@ -35,7 +35,7 @@ WellboreFeature::WellboreFeature(COMMON_NS::DataObjectRepository* repo, const st
 		throw invalid_argument("The repo cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreFeature(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreFeature(repo->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -48,7 +48,7 @@ void WellboreFeature::setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore)
 	getRepository()->addRelationship(this, wellbore);
 
 	resqml20__obj_USCOREWellboreFeature* resqmlWellbore = static_cast<resqml20__obj_USCOREWellboreFeature*>(gsoapProxy2_0_1);
-	resqmlWellbore->WitsmlWellbore = soap_new_resqml20__WitsmlWellboreReference(gsoapProxy2_0_1->soap, 1);
+	resqmlWellbore->WitsmlWellbore = soap_new_resqml20__WitsmlWellboreReference(gsoapProxy2_0_1->soap);
 	resqmlWellbore->WitsmlWellbore->WitsmlWellbore = wellbore->newResqmlReference();
 	resqmlWellbore->WitsmlWellbore->WitsmlWell = wellbore->getWell()->newResqmlReference();
 }

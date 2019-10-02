@@ -36,7 +36,7 @@ HorizonInterpretation::HorizonInterpretation(Horizon * horizon, const string & g
 		throw invalid_argument("The interpreted horizon cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREHorizonInterpretation(horizon->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREHorizonInterpretation(horizon->getGsoapContext());
 
 	static_cast<_resqml20__HorizonInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
 

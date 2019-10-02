@@ -36,7 +36,7 @@ const char* PolylineRepresentation::XML_TAG = "PolylineRepresentation";
 
 void PolylineRepresentation::init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, bool isClosed)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREPolylineRepresentation(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREPolylineRepresentation(repo->getGsoapContext());
 	_resqml20__PolylineRepresentation* polylineRep = static_cast<_resqml20__PolylineRepresentation*>(gsoapProxy2_0_1);
 
 	polylineRep->IsClosed = isClosed;
@@ -117,7 +117,7 @@ void PolylineRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex
 void PolylineRepresentation::setGeometry(double * points, unsigned int pointCount, COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	_resqml20__PolylineRepresentation* polylineRep = static_cast<_resqml20__PolylineRepresentation*>(gsoapProxy2_0_1);
-	polylineRep->NodePatch = soap_new_resqml20__NodePatch(gsoapProxy2_0_1->soap, 1);
+	polylineRep->NodePatch = soap_new_resqml20__NodePatch(gsoapProxy2_0_1->soap);
 	polylineRep->NodePatch->Count = pointCount;
 	polylineRep->NodePatch->PatchIndex = 0;
 

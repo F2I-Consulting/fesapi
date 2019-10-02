@@ -28,7 +28,7 @@ GeneticBoundaryFeature::GeneticBoundaryFeature(COMMON_NS::DataObjectRepository *
 	if (repo == nullptr)
 		throw invalid_argument("The soap context cannot be null.");
 
-	gsoapProxy2_0_1 = gsoap_resqml2_0_1::soap_new_resqml20__obj_USCOREGeneticBoundaryFeature(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = gsoap_resqml2_0_1::soap_new_resqml20__obj_USCOREGeneticBoundaryFeature(repo->getGsoapContext());
 	gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature* horizon = static_cast<gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature*>(gsoapProxy2_0_1);
 	horizon->GeneticBoundaryKind = isAnHorizon ? gsoap_resqml2_0_1::resqml20__GeneticBoundaryKind__horizon : gsoap_resqml2_0_1::resqml20__GeneticBoundaryKind__geobody_x0020boundary;
 

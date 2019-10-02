@@ -48,7 +48,7 @@ void AbstractIjkGridRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 	}
 
 	if (!withTruncatedPillars) {
-		gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREIjkGridRepresentation(repo->getGsoapContext(), 1);
+		gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREIjkGridRepresentation(repo->getGsoapContext());
 		_resqml20__IjkGridRepresentation* ijkGrid = getSpecializedGsoapProxy();
 
 		ijkGrid->Ni = iCount;
@@ -56,7 +56,7 @@ void AbstractIjkGridRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 		ijkGrid->Nk = kCount;
 	}
 	else {
-		gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORETruncatedIjkGridRepresentation(repo->getGsoapContext(), 1);
+		gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORETruncatedIjkGridRepresentation(repo->getGsoapContext());
 		_resqml20__TruncatedIjkGridRepresentation* ijkGrid = static_cast<_resqml20__TruncatedIjkGridRepresentation*>(gsoapProxy2_0_1);
 
 		ijkGrid->Ni = iCount;
@@ -960,7 +960,7 @@ void AbstractIjkGridRepresentation::setEnabledCells(unsigned char* enabledCells,
 		throw invalid_argument("There is no geometry on this grid.");
 	}
 
-	resqml20__BooleanHdf5Array* boolArray = soap_new_resqml20__BooleanHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__BooleanHdf5Array* boolArray = soap_new_resqml20__BooleanHdf5Array(gsoapProxy2_0_1->soap);
 	geom->CellGeometryIsDefined = boolArray;
 
 	if (proxy == nullptr) {
@@ -969,7 +969,7 @@ void AbstractIjkGridRepresentation::setEnabledCells(unsigned char* enabledCells,
 			throw invalid_argument("You miss an HDF proxy");
 		}
 	}
-	boolArray->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	boolArray->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	boolArray->Values->HdfProxy = proxy->newResqmlReference();
 	boolArray->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/CellGeometryIsDefined";
 

@@ -38,7 +38,7 @@ StratigraphicOccurrenceInterpretation::StratigraphicOccurrenceInterpretation(Org
 		throw invalid_argument("The kind of an organization feature linked to a stratigraphic occurrence interpretation must be a stratigraphic one.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStratigraphicOccurrenceInterpretation(orgFeat->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStratigraphicOccurrenceInterpretation(orgFeat->getGsoapContext());
 	static_cast<_resqml20__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
 	static_cast<_resqml20__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1)->OrderingCriteria = orderingCriteria;
 

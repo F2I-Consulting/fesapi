@@ -35,7 +35,7 @@ const char* WellboreFrameRepresentation::XML_TAG = "WellboreFrameRepresentation"
 
 WellboreFrameRepresentation::WellboreFrameRepresentation(WellboreInterpretation * interp, const string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreFrameRepresentation(interp->getGsoapContext(), 1);	
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreFrameRepresentation(interp->getGsoapContext());	
 	_resqml20__WellboreFrameRepresentation* frame = static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
 
 	initMandatoryMetadata();
@@ -73,8 +73,8 @@ void WellboreFrameRepresentation::setMdValues(double * mdValues, unsigned int md
 	_resqml20__WellboreFrameRepresentation* frame = static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
 
 	// XML
-	resqml20__DoubleHdf5Array* xmlMdValues = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
-	xmlMdValues->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleHdf5Array* xmlMdValues = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
+	xmlMdValues->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlMdValues->Values->HdfProxy = proxy->newResqmlReference();
 	xmlMdValues->Values->PathInHdfFile = "/RESQML/" + frame->uuid + "/mdValues";
 
@@ -96,7 +96,7 @@ void WellboreFrameRepresentation::setMdValues(const double & firstMdValue, const
 	_resqml20__WellboreFrameRepresentation* frame = static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
 
 	// XML
-	resqml20__DoubleLatticeArray* xmlMdValues = soap_new_resqml20__DoubleLatticeArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleLatticeArray* xmlMdValues = soap_new_resqml20__DoubleLatticeArray(gsoapProxy2_0_1->soap);
 	xmlMdValues->StartValue = firstMdValue;
 	xmlMdValues->Offset.push_back(soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1));
 	xmlMdValues->Offset[0]->Count = mdValueCount - 1;

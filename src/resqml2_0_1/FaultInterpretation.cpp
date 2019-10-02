@@ -40,7 +40,7 @@ FaultInterpretation::FaultInterpretation(TectonicBoundaryFeature * fault, const 
 		throw invalid_argument("The interpreted fault cannot be a fracture.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREFaultInterpretation(fault->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREFaultInterpretation(fault->getGsoapContext());
 	_resqml20__FaultInterpretation* interp = static_cast<_resqml20__FaultInterpretation*>(gsoapProxy2_0_1);
 	interp->Domain = resqml20__Domain__mixed;
 
@@ -60,12 +60,12 @@ FaultInterpretation::FaultInterpretation(TectonicBoundaryFeature * fault, const 
 		throw invalid_argument("The interpreted fault cannot be a fracture.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREFaultInterpretation(fault->getGsoapContext(), 1);	
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREFaultInterpretation(fault->getGsoapContext());	
 	_resqml20__FaultInterpretation* interp = static_cast<_resqml20__FaultInterpretation*>(gsoapProxy2_0_1);
 	interp->Domain = resqml20__Domain__mixed;
 	interp->InterpretedFeature = fault->newResqmlReference();
 
-	interp->HasOccuredDuring = soap_new_resqml20__TimeInterval(interp->soap, 1);
+	interp->HasOccuredDuring = soap_new_resqml20__TimeInterval(interp->soap);
 	interp->HasOccuredDuring->ChronoBottom = chronoBtm->newResqmlReference();
 	interp->HasOccuredDuring->ChronoTop = chronoTop->newResqmlReference();
 
@@ -79,7 +79,7 @@ void FaultInterpretation::pushBackThrowInterpretation(const gsoap_resqml2_0_1::r
 {
 	_resqml20__FaultInterpretation* interp = static_cast<_resqml20__FaultInterpretation*>(gsoapProxy2_0_1);
 
-	resqml20__FaultThrow * throwInterp = soap_new_resqml20__FaultThrow(gsoapProxy2_0_1->soap, 1);
+	resqml20__FaultThrow * throwInterp = soap_new_resqml20__FaultThrow(gsoapProxy2_0_1->soap);
 	throwInterp->Throw.push_back(throwKind);
 
 	interp->ThrowInterpretation.push_back(throwInterp);

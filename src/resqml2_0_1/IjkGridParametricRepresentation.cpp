@@ -1375,9 +1375,9 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	geom->PillarShape = mostComplexPillarGeometry;
 
 	// XML Pillar defined
-	resqml20__BooleanHdf5Array* xmlDefinedPillars = soap_new_resqml20__BooleanHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__BooleanHdf5Array* xmlDefinedPillars = soap_new_resqml20__BooleanHdf5Array(gsoapProxy2_0_1->soap);
 	geom->PillarGeometryIsDefined = xmlDefinedPillars;
-	xmlDefinedPillars->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	xmlDefinedPillars->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlDefinedPillars->Values->HdfProxy = proxy->newResqmlReference();
 	xmlDefinedPillars->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/PillarGeometryIsDefined";
 
@@ -1406,10 +1406,10 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	paramLines->KnotCount = controlPointMaxCountPerPillar;
 
 	// XML Line kinds
-	resqml20__IntegerHdf5Array* xmlLineKinds = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array* xmlLineKinds = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	paramLines->LineKindIndices = xmlLineKinds;
 	xmlLineKinds->NullValue = -1;
-	xmlLineKinds->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	xmlLineKinds->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlLineKinds->Values->HdfProxy = proxy->newResqmlReference();
 	xmlLineKinds->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/LineKindIndices";
 
@@ -1447,9 +1447,9 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	geom->PillarShape = mostComplexPillarGeometry;
 
 	// XML Pillar defined
-	resqml20__BooleanHdf5Array* xmlDefinedPillars = soap_new_resqml20__BooleanHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__BooleanHdf5Array* xmlDefinedPillars = soap_new_resqml20__BooleanHdf5Array(gsoapProxy2_0_1->soap);
 	geom->PillarGeometryIsDefined = xmlDefinedPillars;
-	xmlDefinedPillars->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	xmlDefinedPillars->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlDefinedPillars->Values->HdfProxy = proxy->newResqmlReference();
 	xmlDefinedPillars->Values->PathInHdfFile = definedPillars;
 
@@ -1461,10 +1461,10 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	paramLines->KnotCount = controlPointMaxCountPerPillar;
 
 	// XML Line kinds
-	resqml20__IntegerHdf5Array* xmlLineKinds = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array* xmlLineKinds = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	paramLines->LineKindIndices = xmlLineKinds;
 	xmlLineKinds->NullValue = -1;
-	xmlLineKinds->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	xmlLineKinds->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlLineKinds->Values->HdfProxy = proxy->newResqmlReference();
 	xmlLineKinds->Values->PathInHdfFile = pillarKind;
 }
@@ -1578,7 +1578,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		}
 	}
 
-	resqml20__IjkGridGeometry* geom = soap_new_resqml20__IjkGridGeometry(gsoapProxy2_0_1->soap, 1);
+	resqml20__IjkGridGeometry* geom = soap_new_resqml20__IjkGridGeometry(gsoapProxy2_0_1->soap);
 	geom->LocalCrs = localCrs->newResqmlReference();
 	if (!isTruncated()) {
 		getSpecializedGsoapProxy()->Geometry = geom;
@@ -1597,41 +1597,41 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	}
 	getRepository()->addRelationship(this, proxy);
 	// XML parametric nodes
-	resqml20__Point3dParametricArray* xmlPoints = soap_new_resqml20__Point3dParametricArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dParametricArray* xmlPoints = soap_new_resqml20__Point3dParametricArray(gsoapProxy2_0_1->soap);
 	geom->Points = xmlPoints;
-	resqml20__DoubleHdf5Array* xmlParameters = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleHdf5Array* xmlParameters = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
 	xmlPoints->Parameters = xmlParameters;
-	xmlParameters->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	xmlParameters->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlParameters->Values->HdfProxy = proxy->newResqmlReference();
 	xmlParameters->Values->PathInHdfFile = parameters;
 
 	if (splitCoordinateLineCount > 0) {
 		// XML split coordinate lines
-		geom->SplitCoordinateLines = soap_new_resqml20__ColumnLayerSplitCoordinateLines(gsoapProxy2_0_1->soap, 1);;
+		geom->SplitCoordinateLines = soap_new_resqml20__ColumnLayerSplitCoordinateLines(gsoapProxy2_0_1->soap);;
 		geom->SplitCoordinateLines->Count = splitCoordinateLineCount;
 
 		//XML
-		resqml20__IntegerHdf5Array* pillarIndices = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+		resqml20__IntegerHdf5Array* pillarIndices = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 		geom->SplitCoordinateLines->PillarIndices = pillarIndices;
 		pillarIndices->NullValue = getPillarCount();
-		pillarIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+		pillarIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		pillarIndices->Values->HdfProxy = proxy->newResqmlReference();
 		pillarIndices->Values->PathInHdfFile = pillarOfCoordinateLine;
 
 		//XML
-		geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine = soap_new_resqml20__ResqmlJaggedArray(gsoapProxy2_0_1->soap, 1);
+		geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine = soap_new_resqml20__ResqmlJaggedArray(gsoapProxy2_0_1->soap);
 		// Cumulative
-		resqml20__IntegerHdf5Array* cumulativeLength = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+		resqml20__IntegerHdf5Array* cumulativeLength = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 		geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->CumulativeLength = cumulativeLength;
 		cumulativeLength->NullValue = 0;
-		cumulativeLength->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+		cumulativeLength->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		cumulativeLength->Values->HdfProxy = proxy->newResqmlReference();
 		cumulativeLength->Values->PathInHdfFile = splitCoordinateLineColumnCumulativeCount;
 		// Elements
-		resqml20__IntegerHdf5Array* elements = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+		resqml20__IntegerHdf5Array* elements = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 		geom->SplitCoordinateLines->ColumnsPerSplitCoordinateLine->Elements = elements;
 		elements->NullValue = getColumnCount();
-		elements->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+		elements->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		elements->Values->HdfProxy = proxy->newResqmlReference();
 		elements->Values->PathInHdfFile = splitCoordinateLineColumns;
 	}
@@ -1639,14 +1639,14 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	// *********************************
 	// Parametric coordinate lines
 	// *********************************
-	resqml20__ParametricLineArray* paramLines = soap_new_resqml20__ParametricLineArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__ParametricLineArray* paramLines = soap_new_resqml20__ParametricLineArray(gsoapProxy2_0_1->soap);
 	xmlPoints->ParametricLines = paramLines;
 	paramLines->KnotCount = controlPointCountPerPillar;
 
 	// XML control points
-	resqml20__Point3dHdf5Array* xmlcontrolPoints = soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dHdf5Array* xmlcontrolPoints = soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap);
 	paramLines->ControlPoints = xmlcontrolPoints;
-	xmlcontrolPoints->Coordinates = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	xmlcontrolPoints->Coordinates = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlcontrolPoints->Coordinates->HdfProxy = proxy->newResqmlReference();
 	xmlcontrolPoints->Coordinates->PathInHdfFile = controlPoints;
 
@@ -1655,9 +1655,9 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	// *********************************
 	if (!controlPointParameters.empty()) {
 		// XML control point parameters
-		resqml20__DoubleHdf5Array* xmlcontrolPointParams = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
+		resqml20__DoubleHdf5Array* xmlcontrolPointParams = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
 		paramLines->ControlPointParameters = xmlcontrolPointParams;
-		xmlcontrolPointParams->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+		xmlcontrolPointParams->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		xmlcontrolPointParams->Values->HdfProxy = proxy->newResqmlReference();
 		xmlcontrolPointParams->Values->PathInHdfFile = controlPointParameters;
 	}
@@ -1697,7 +1697,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	}
 
 	// XML Pillar defined
-	resqml20__BooleanConstantArray* xmlDefinedPillars = soap_new_resqml20__BooleanConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__BooleanConstantArray* xmlDefinedPillars = soap_new_resqml20__BooleanConstantArray(gsoapProxy2_0_1->soap);
 	geom->PillarGeometryIsDefined = xmlDefinedPillars;
 	xmlDefinedPillars->Value = true;
 	xmlDefinedPillars->Count = getPillarCount();
@@ -1706,7 +1706,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	resqml20__ParametricLineArray* paramLines = static_cast<resqml20__ParametricLineArray*>(xmlPoints->ParametricLines);
 
 	// XML Line kinds
-	resqml20__IntegerConstantArray* xmlLineKinds = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerConstantArray* xmlLineKinds = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap);
 	paramLines->LineKindIndices = xmlLineKinds;
 	xmlLineKinds->Value = pillarKind;
 	xmlLineKinds->Count = getPillarCount();

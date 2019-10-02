@@ -36,7 +36,7 @@ Wellbore::Wellbore( Well* witsmlWell, const std::string & guid, const std::strin
 {
 	if (witsmlWell == nullptr) throw invalid_argument("A wellbore must be associated to a well.");
 
-	gsoapProxy2_1 = soap_new_witsml20__Wellbore(witsmlWell->getGsoapContext(), 1);
+	gsoapProxy2_1 = soap_new_witsml20__Wellbore(witsmlWell->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -55,7 +55,7 @@ Wellbore::Wellbore(
 {
 	if (witsmlWell == nullptr) throw invalid_argument("A wellbore must be associated to a well.");
 
-	gsoapProxy2_1 = soap_new_witsml20__Wellbore(witsmlWell->getGsoapContext(), 1);
+	gsoapProxy2_1 = soap_new_witsml20__Wellbore(witsmlWell->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");

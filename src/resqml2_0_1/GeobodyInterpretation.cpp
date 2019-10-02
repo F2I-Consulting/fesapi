@@ -33,7 +33,7 @@ GeobodyInterpretation::GeobodyInterpretation(GeobodyFeature * feature, const str
 	if (!feature)
 		throw invalid_argument("The interpreted feature cannot be null.");
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGeobodyInterpretation(feature->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGeobodyInterpretation(feature->getGsoapContext());
 	static_cast<_resqml20__GeobodyInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
 
 	initMandatoryMetadata();

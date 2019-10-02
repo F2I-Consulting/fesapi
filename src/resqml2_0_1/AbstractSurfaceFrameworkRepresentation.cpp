@@ -39,13 +39,13 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 {
 	resqml20__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml20__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
-	resqml20__ContactIdentity * contactIdentity = soap_new_resqml20__ContactIdentity(gsoapProxy2_0_1->soap, 1);
+	resqml20__ContactIdentity * contactIdentity = soap_new_resqml20__ContactIdentity(gsoapProxy2_0_1->soap);
 	contactIdentity->IdentityKind = kind;
 
 	// ListOfContactRepresentations handling
-	resqml20__IntegerHdf5Array * xmlListOfContactRepresentations = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array * xmlListOfContactRepresentations = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	xmlListOfContactRepresentations->NullValue = (std::numeric_limits<unsigned int>::max)();
-	xmlListOfContactRepresentations->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	xmlListOfContactRepresentations->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlListOfContactRepresentations->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream ossForHdfContactRepresentations;
 	ossForHdfContactRepresentations << "contactIdentity_listOfContactRep_" << orgRep->ContactIdentity.size();
@@ -68,13 +68,13 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 {
 	resqml20__AbstractSurfaceFrameworkRepresentation* orgRep = static_cast<resqml20__AbstractSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
-	resqml20__ContactIdentity * contactIdentity = soap_new_resqml20__ContactIdentity(gsoapProxy2_0_1->soap, 1);
+	resqml20__ContactIdentity * contactIdentity = soap_new_resqml20__ContactIdentity(gsoapProxy2_0_1->soap);
 	contactIdentity->IdentityKind = kind;
 
 	// ListOfContactRepresentations handling
-	resqml20__IntegerHdf5Array * xmlListOfContactRepresentations = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array * xmlListOfContactRepresentations = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	xmlListOfContactRepresentations->NullValue = (std::numeric_limits<unsigned int>::max)();
-	xmlListOfContactRepresentations->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	xmlListOfContactRepresentations->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlListOfContactRepresentations->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream ossForHdfContactRepresentations;
 	ossForHdfContactRepresentations << "contactIdentity_listOfContactRep_" << orgRep->ContactIdentity.size();
@@ -88,9 +88,9 @@ void AbstractSurfaceFrameworkRepresentation::pushBackContactIdentity(
 		dimContactRepresentations, 1);
 
 	// ListOfIdenticalNodes handling
-	resqml20__IntegerHdf5Array * xmlListOfIdenticalNodes = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array * xmlListOfIdenticalNodes = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	xmlListOfIdenticalNodes->NullValue = (std::numeric_limits<unsigned int>::max)();
-	xmlListOfIdenticalNodes->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	xmlListOfIdenticalNodes->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlListOfIdenticalNodes->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream ossForHdfIdenticalNodes;
 	ossForHdfIdenticalNodes << "contactIdentity_listOfIdenticalNodes_" << orgRep->ContactIdentity.size();

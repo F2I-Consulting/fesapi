@@ -35,12 +35,12 @@ DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentatio
 	const resqml20__ResqmlPropertyKind & energisticsPropertyKind,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREDiscretePropertySeries(rep->getGsoapContext(), 1);	
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREDiscretePropertySeries(rep->getGsoapContext());	
 	_resqml20__DiscretePropertySeries* prop = static_cast<_resqml20__DiscretePropertySeries*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
 
-	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
+	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap);
 	xmlStandardPropKind->Kind = energisticsPropertyKind;
 	prop->PropertyKind = xmlStandardPropKind;
 
@@ -49,7 +49,7 @@ DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentatio
 
 	setRepresentation(rep);
 
-	prop->SeriesTimeIndices = soap_new_resqml20__TimeIndices(gsoapProxy2_0_1->soap, 1);
+	prop->SeriesTimeIndices = soap_new_resqml20__TimeIndices(gsoapProxy2_0_1->soap);
 	prop->SeriesTimeIndices->TimeIndexCount = ts->getTimestampCount();
 	prop->SeriesTimeIndices->UseInterval = useInterval;
 	setTimeSeries(ts);
@@ -60,7 +60,7 @@ DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentatio
 	RESQML2_NS::PropertyKind * localPropKind,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREDiscretePropertySeries(rep->getGsoapContext(), 1);	
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREDiscretePropertySeries(rep->getGsoapContext());	
 	_resqml20__DiscretePropertySeries* prop = static_cast<_resqml20__DiscretePropertySeries*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
@@ -70,7 +70,7 @@ DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentatio
 
 	setRepresentation(rep);
 
-	prop->SeriesTimeIndices = soap_new_resqml20__TimeIndices(gsoapProxy2_0_1->soap, 1);
+	prop->SeriesTimeIndices = soap_new_resqml20__TimeIndices(gsoapProxy2_0_1->soap);
 	prop->SeriesTimeIndices->TimeIndexCount = ts->getTimestampCount();
 	prop->SeriesTimeIndices->UseInterval = useInterval;
 	setTimeSeries(ts);
