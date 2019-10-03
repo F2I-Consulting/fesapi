@@ -108,11 +108,12 @@ std::string ContinuousProperty::getUomAsString() const
 void ContinuousProperty::pushBackDoubleHdf5Array1dOfValues(const double * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy * proxy,
 	double minimumValue, double maximumValue)
 {
+	const hsize_t valueCountPerDimension = valueCount;
 	if (minimumValue == minimumValue && maximumValue == maximumValue) {
-		pushBackDoubleHdf5ArrayOfValues(values, &valueCount, 1, proxy, &minimumValue, &maximumValue);
+		pushBackDoubleHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy, &minimumValue, &maximumValue);
 	}
 	else {
-		pushBackDoubleHdf5ArrayOfValues(values, &valueCount, 1, proxy);
+		pushBackDoubleHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy);
 	}
 }
 
@@ -160,11 +161,12 @@ void ContinuousProperty::pushBackDoubleHdf5ArrayOfValues(double const * values, 
 void ContinuousProperty::pushBackFloatHdf5Array1dOfValues(const float * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy * proxy,
 	float minimumValue, float maximumValue)
 {
+	const hsize_t valueCountPerDimension = valueCount;
 	if (minimumValue == minimumValue && maximumValue == maximumValue) {
-		pushBackFloatHdf5ArrayOfValues(values, &valueCount, 1, proxy, &minimumValue, &maximumValue);
+		pushBackFloatHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy, &minimumValue, &maximumValue);
 	}
 	else {
-		pushBackFloatHdf5ArrayOfValues(values, &valueCount, 1, proxy);
+		pushBackFloatHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy);
 	}
 }
 
