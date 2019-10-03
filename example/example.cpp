@@ -213,7 +213,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHd
 	double controlPoints[12] = { 275, 75, 0, 275, 75, 325, 275, 75, 500, 275, 75, 1000 };
 	double trajectoryTangentVectors[12] = { 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1 };
 	double trajectoryMds[4] = { 0, 325, 500, 1000 };
-	w1i1TrajRep->setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, hdfProxy);
+	w1i1TrajRep->setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, 0, hdfProxy);
 
 	// WellboreFeature frame
 	WellboreFrameRepresentation* w1i1FrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "d873e243-d893-41ab-9a3e-d20b851c099f", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
@@ -235,8 +235,6 @@ void serializePerforations(COMMON_NS::DataObjectRepository * pck)
 {
 	// WELL COMPLETION
 	WITSML2_0_NS::WellCompletion* wellCompletion = pck->createWellCompletion(witsmlWell, "6593d580-2f44-4b18-97ce-8a9cf42a0414", "WellCompletion1");
-	WITSML2_0_NS::WellCompletion* toto = static_cast<WITSML2_0_NS::WellCompletion*>(pck->getDataObjectByUuid("6593d580-2f44-4b18-97ce-8a9cf42a0414"));
-	toto->getActivityCount();
 	// WELLBORE COMPLETION
 	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = pck->createWellboreCompletion(witsmlWellbore, wellCompletion, "7bda8ecf-2037-4dc7-8c59-db6ca09f2008", "WellboreCompletion1", "wellCompletionName");
 
@@ -3491,7 +3489,9 @@ void deserialize(const string & inputFile)
 
 	std::cout << "FAULTS" << endl;
 	for (size_t i = 0; i < faultSet.size(); ++i) {
-		showAllMetadata(faultSet[i]);
+		TectonicBoundaryFeature const * faultFeature = faultSet[i];
+		showAllMetadata(faultFeature);
+		std::cout << "InterpretationCount : " << faultFeature->getInterpretationCount() << std::endl;
 	}
 
 	std::cout << faultPolyRep.size() << " FAULT POLYLINE SET REP" << endl;
@@ -3575,11 +3575,13 @@ void deserialize(const string & inputFile)
 
 	std::cout << "HORIZONS" << endl;
 	for (size_t i = 0; i < horizonSet.size(); i++) {
-		showAllMetadata(horizonSet[i]);
-		if (horizonSet[i]->hasAnAge()) {
-			cout << "Age " << horizonSet[i]->getAge() << " years" << endl;
+		Horizon const * horFeature = horizonSet[i];
+		showAllMetadata(horFeature);
+		if (horFeature->hasAnAge()) {
+			cout << "Age " << horFeature->getAge() << " years" << endl;
 		}
 		std::cout << std::endl;
+		std::cout << "InterpretationCount : " << horFeature->getInterpretationCount() << std::endl;
 	}
 
 	std::cout << "HORIZONS GRID 2D REP" << endl;

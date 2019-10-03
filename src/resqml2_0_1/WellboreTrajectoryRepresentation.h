@@ -71,18 +71,25 @@ namespace RESQML2_0_1_NS
 		* @param lineKind						Integer indicating the parametric line kind: 0 for vertical, 1 for linear spline, 2 for natural cubic spline, 3 for cubic spline, 4 for z linear cubic spline, 5 for minimum-curvature spline, (-1) for null: no line
 		* @param proxy							The HDF proxy which indicates in which HDF5 file the control points and its parameters will be stored.
 		*										It must be already opened for writing and won't be closed.
+		*										If null, then the default HDF Proxy of the DataObject repository will be arbitrarily selected for writing.
+		* @localCrs								The local CRS where the control points are given.
+		*										If null, then the default Local CRS of the DataObject repository will be arbitrarily selected.
 		*/
 		DLL_IMPORT_OR_EXPORT void setGeometry(double * controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/*
 		*  Set the geometry of the representation by means of one natural cubic parametric line.
 		* @param controlPoints					All the control points of all the cubic parametric lines. They are ordered by parametric line first.
-		* @param controlPointCount				The count of control points and control point parameters per cubic parametric line.
 		* @param controlPointParameters			The arrays of control point parameters (ordered regarding the control points). It corresponds to the MD values in a WellboreFeature context.
+		* @param controlPointCount				The count of control points and control point parameters per cubic parametric line.
+		* @param lineKind						Integer indicating the parametric line kind: 0 for vertical, 1 for linear spline, 2 for natural cubic spline, 3 for cubic spline, 4 for z linear cubic spline, 5 for minimum-curvature spline, (-1) for null: no line
 		* @param proxy							The HDF proxy which indicates in which HDF5 file the control points and its parameters will be stored.
 		*										It must be already opened for writing and won't be closed.
+		*										If null, then the default HDF Proxy of the DataObject repository will be arbitrarily selected for writing.
+		* @localCrs								The local CRS where the control points are given.
+		*										If null, then the default Local CRS of the DataObject repository will be arbitrarily selected.
 		*/
-		DLL_IMPORT_OR_EXPORT void setGeometry(double * controlPoints, double* controlPointParameters, unsigned int controlPointCount,
+		DLL_IMPORT_OR_EXPORT void setGeometry(double * controlPoints, double* controlPointParameters, unsigned int controlPointCount, int lineKind,
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/*
@@ -91,11 +98,15 @@ namespace RESQML2_0_1_NS
 		* @param tangentVectors					All the tangent vectors of all the control points of all the cubic parametric lines. They are ordered according to the control points.
 		* @param controlPointParameters			The arrays of control point parameters (ordered regarding the control points). It corresponds to the MD values in a WellboreFeature context.
 		* @param controlPointCount				The count of control points and control point parameters and tangent vectors per cubic parametric line.
+		* @param lineKind						Integer indicating the parametric line kind: 0 for vertical, 1 for linear spline, 2 for natural cubic spline, 3 for cubic spline, 4 for z linear cubic spline, 5 for minimum-curvature spline, (-1) for null: no line
 		* @param proxy							The HDF proxy which indicates in which HDF5 file the parameters and the tangent vectors will be stored.
 		*										It must be already opened for writing and won't be closed.
+		*										If null, then the default HDF Proxy of the DataObject repository will be arbitrarily selected for writing.
+		* @localCrs								The local CRS where the control points are given.
+		*										If null, then the default Local CRS of the DataObject repository will be arbitrarily selected.
 		*/
 		DLL_IMPORT_OR_EXPORT void setGeometry(double * controlPoints,
-			double * tangentVectors, double* controlPointParameters, unsigned int controlPointCount,
+			double * tangentVectors, double* controlPointParameters, unsigned int controlPointCount, int lineKind,
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
