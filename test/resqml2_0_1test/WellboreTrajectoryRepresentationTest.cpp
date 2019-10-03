@@ -62,7 +62,7 @@ void WellboreTrajectoryRepresentationTest::initRepoHandler() {
 	double controlPoints[12] = { 275, 75, 0, 275, 75, 325, 275, 75, 500, 275, 75, 1000 };
 	double trajectoryTangentVectors[12] = { 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1 };
 	double trajectoryMds[4] = { 0, 325, 500, 1000 };
-	rep->setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, repo->getHdfProxySet()[0]);
+	rep->setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, 0, repo->getHdfProxySet()[0]);
 }
 
 void WellboreTrajectoryRepresentationTest::readRepoHandler() {
@@ -71,6 +71,7 @@ void WellboreTrajectoryRepresentationTest::readRepoHandler() {
 
 	REQUIRE(traj->getMdDatumUuid() == MdDatumTest::defaultUuid);
 	REQUIRE(traj->getXyzPointCountOfAllPatches() == 4);
+	REQUIRE(traj->getGeometryKind() == 0);
 	double trajectoryMds[4];
 	traj->getMdValues(trajectoryMds);
 	REQUIRE(trajectoryMds[0] == 0);
