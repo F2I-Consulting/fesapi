@@ -275,7 +275,7 @@ namespace COMMON_NS
 
 		bool hasValueVectorIndex(AbstractObject const* targetObject);
 		LONG64 getValueVectorIndex(AbstractObject const* targetObject);
-		setValueVectorIndex(AbstractObject const* targetObject, LONG64 valueVectorIndex);
+		void setValueVectorIndex(AbstractObject const* targetObject, LONG64 valueVectorIndex);
 
 		static void rgbToHsv(double red, double green, double blue, double& hue, double& saturation, double& value);
 		static void rgbToHsv(unsigned int red, unsigned int green, unsigned int blue, double& hue, double& saturation, double& value);

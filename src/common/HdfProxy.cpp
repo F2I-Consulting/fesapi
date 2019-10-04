@@ -182,8 +182,8 @@ void HdfProxy::readArrayNdOfValues(const std::string & datasetName, void* values
 void HdfProxy::readArrayNdOfValues(
 	const std::string & datasetName,
 	void* values,
-	unsigned long long * numValuesInEachDimension,
-	unsigned long long * offsetInEachDimension,
+	unsigned long long const * numValuesInEachDimension,
+	unsigned long long const * offsetInEachDimension,
 	unsigned int numDimensions, hid_t datatype)
 {
 	readArrayNdOfValues(datasetName, values, numValuesInEachDimension, offsetInEachDimension, nullptr, nullptr, numDimensions, datatype);
@@ -192,10 +192,10 @@ void HdfProxy::readArrayNdOfValues(
 void HdfProxy::readArrayNdOfValues(
 	const std::string & datasetName,
 	void* values,
-	unsigned long long * blockCountPerDimension,
-	unsigned long long * offsetInEachDimension,
-	unsigned long long * strideInEachDimension,
-	unsigned long long * blockSizeInEachDimension,
+	unsigned long long const * blockCountPerDimension,
+	unsigned long long const * offsetInEachDimension,
+	unsigned long long const * strideInEachDimension,
+	unsigned long long const * blockSizeInEachDimension,
 	unsigned int numDimensions, hid_t datatype)
 {
 	if (!isOpened()) {
@@ -262,10 +262,10 @@ void HdfProxy::readArrayNdOfValues(
 
 void HdfProxy::selectArrayNdOfValues(
 	const std::string & datasetName,
-	unsigned long long * blockCountPerDimension,
-	unsigned long long * offsetInEachDimension,
-	unsigned long long * strideInEachDimension,
-	unsigned long long * blockSizeInEachDimension,
+	unsigned long long const * blockCountPerDimension,
+	unsigned long long const * offsetInEachDimension,
+	unsigned long long const * strideInEachDimension,
+	unsigned long long const * blockSizeInEachDimension,
 	unsigned int numDimensions,
 	bool newSelection,
 	hid_t & dataset,
@@ -767,8 +767,8 @@ void HdfProxy::readArrayNdOfDoubleValues(const std::string & datasetName, double
 
 void HdfProxy::readArrayNdOfDoubleValues(
 	const std::string & datasetName, double* values,
-	hsize_t * numValuesInEachDimension,
-	hsize_t * offsetInEachDimension,
+	hsize_t const * numValuesInEachDimension,
+	hsize_t const * offsetInEachDimension,
 	unsigned int numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
@@ -778,10 +778,10 @@ void HdfProxy::readArrayNdOfDoubleValues(
 
 void HdfProxy::readArrayNdOfDoubleValues(
 	const std::string & datasetName, double* values,
-	hsize_t * blockCountPerDimension,
-	hsize_t * offsetInEachDimension,
-	hsize_t * strideInEachDimension,
-	hsize_t * blockSizeInEachDimension,
+	hsize_t const * blockCountPerDimension,
+	hsize_t const * offsetInEachDimension,
+	hsize_t const * strideInEachDimension,
+	hsize_t const * blockSizeInEachDimension,
 	unsigned int numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
@@ -805,8 +805,8 @@ void HdfProxy::readArrayNdOfFloatValues(const std::string & datasetName, float* 
 
 void HdfProxy::readArrayNdOfFloatValues(
 	const std::string& datasetName, float* values,
-	hsize_t* numValuesInEachDimension,
-	hsize_t* offsetInEachDimension,
+	hsize_t const * numValuesInEachDimension,
+	hsize_t const * offsetInEachDimension,
 	unsigned int numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
@@ -831,8 +831,8 @@ void HdfProxy::readArrayNdOfLongValues(const std::string & datasetName, long* va
 
 void HdfProxy::readArrayNdOfLongValues(
 	const std::string& datasetName, long* values,
-	hsize_t* numValuesInEachDimension,
-	hsize_t* offsetInEachDimension,
+	hsize_t const * numValuesInEachDimension,
+	hsize_t const * offsetInEachDimension,
 	unsigned int numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
@@ -852,8 +852,8 @@ void HdfProxy::readArrayNdOfIntValues(const std::string & datasetName, int* valu
 
 void HdfProxy::readArrayNdOfIntValues(
 	const std::string & datasetName, int* values,
-	hsize_t* numValuesInEachDimension,
-	hsize_t* offsetInEachDimension,
+	hsize_t const * numValuesInEachDimension,
+	hsize_t const * offsetInEachDimension,
 	unsigned int numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,

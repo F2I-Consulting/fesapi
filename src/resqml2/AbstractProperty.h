@@ -239,7 +239,7 @@ namespace RESQML2_NS
 		/**
 		* Check if the associated standard property kind is allowed for this property.
 		*/
-		virtual bool validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & pk) = 0;
+		virtual bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) = 0;
 
 		/**
 		* Check if the associated property kind is allowed for this property.

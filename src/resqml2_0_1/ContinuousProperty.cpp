@@ -36,7 +36,7 @@ using namespace gsoap_resqml2_0_1;
 const char* ContinuousProperty::XML_TAG = "ContinuousProperty";
 
 void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind)
+	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind)
 {
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREContinuousProperty(rep->getGsoapContext());
 	_resqml20__ContinuousProperty* prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
@@ -50,7 +50,7 @@ void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const st
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, const resqml20__ResqmlPropertyKind & energisticsPropertyKind)
+	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, resqml20__ResqmlPropertyKind energisticsPropertyKind)
 {
 	init(rep, guid, title, dimension, attachmentKind);
 
@@ -62,7 +62,7 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, RESQML2_NS::PropertyKind * localPropKind)
+	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, RESQML2_NS::PropertyKind * localPropKind)
 {
 	init(rep, guid, title, dimension, attachmentKind);
 
@@ -72,7 +72,7 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const std::string & nonStandardUom, const resqml20__ResqmlPropertyKind & energisticsPropertyKind)
+	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, const std::string & nonStandardUom, resqml20__ResqmlPropertyKind energisticsPropertyKind)
 {
 	init(rep, guid, title, dimension, attachmentKind);
 
@@ -85,7 +85,7 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * localPropKind)
+	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * localPropKind)
 {
 	init(rep, guid, title, dimension, attachmentKind);
 
@@ -105,55 +105,43 @@ std::string ContinuousProperty::getUomAsString() const
 	return gsoap_resqml2_0_1::soap_resqml20__ResqmlUom2s(gsoapProxy2_0_1->soap, getUom());
 }
 
-void ContinuousProperty::pushBackDoubleHdf5Array1dOfValues(const double * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy,
-		const double & minimumValue, const double & maximumValue)
+void ContinuousProperty::pushBackDoubleHdf5Array1dOfValues(const double * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy * proxy,
+	double minimumValue, double maximumValue)
 {
-	hsize_t valueCountPerDimension[1] = {valueCount};
-	if (minimumValue == minimumValue && maximumValue == maximumValue)
-	{
-		double minimumValuePerDimension[1] = {minimumValue};
-		double maximumValuePerDimension[1] = {maximumValue};
-		pushBackDoubleHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, minimumValuePerDimension, maximumValuePerDimension);
+	const hsize_t valueCountPerDimension = valueCount;
+	if (minimumValue == minimumValue && maximumValue == maximumValue) {
+		pushBackDoubleHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy, &minimumValue, &maximumValue);
 	}
-	else
-	{
-		pushBackDoubleHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy);
+	else {
+		pushBackDoubleHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy);
 	}
 }
 
-void ContinuousProperty::pushBackDoubleHdf5Array2dOfValues(const double * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
-			const double & minimumValue, const double & maximumValue)
+void ContinuousProperty::pushBackDoubleHdf5Array2dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+	double minimumValue, double maximumValue)
 {
-	hsize_t valueCountPerDimension[2] = {valueCountInSlowestDim, valueCountInFastestDim};
-	if (minimumValue == minimumValue && maximumValue == maximumValue)
-	{
-		double minimumValuePerDimension[1] = {minimumValue};
-		double maximumValuePerDimension[1] = {maximumValue};
-		pushBackDoubleHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, minimumValuePerDimension, maximumValuePerDimension);
+	const hsize_t valueCountPerDimension[2] = {valueCountInSlowestDim, valueCountInFastestDim};
+	if (minimumValue == minimumValue && maximumValue == maximumValue) {
+		pushBackDoubleHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, &minimumValue, &maximumValue);
 	}
-	else
-	{
+	else {
 		pushBackDoubleHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy);
 	}
 }
 
-void ContinuousProperty::pushBackDoubleHdf5Array3dOfValues(const double * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
-			const double & minimumValue, const double & maximumValue)
+void ContinuousProperty::pushBackDoubleHdf5Array3dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+	double minimumValue, double maximumValue)
 {
-	hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
-	if (minimumValue == minimumValue && maximumValue == maximumValue)
-	{
-		double minimumValuePerDimension[1] = {minimumValue};
-		double maximumValuePerDimension[1] = {maximumValue};
-		pushBackDoubleHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, minimumValuePerDimension, maximumValuePerDimension);
+	const hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
+	if (minimumValue == minimumValue && maximumValue == maximumValue) {
+		pushBackDoubleHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, &minimumValue, &maximumValue);
 	}
-	else
-	{
+	else {
 		pushBackDoubleHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy);
 	}
 }
 
-void ContinuousProperty::pushBackDoubleHdf5ArrayOfValues(const double * values, hsize_t * numValues, const unsigned int & numArrayDimensions, COMMON_NS::AbstractHdfProxy * proxy,
+void ContinuousProperty::pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, COMMON_NS::AbstractHdfProxy * proxy,
 	double * minimumValue, double * maximumValue)
 {
 	if (proxy == nullptr) {
@@ -170,50 +158,38 @@ void ContinuousProperty::pushBackDoubleHdf5ArrayOfValues(const double * values, 
 		numValues, numArrayDimensions);
 }
 
-void ContinuousProperty::pushBackFloatHdf5Array1dOfValues(const float * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy,
-	const float & minimumValue, const float & maximumValue)
+void ContinuousProperty::pushBackFloatHdf5Array1dOfValues(const float * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy * proxy,
+	float minimumValue, float maximumValue)
 {
-	hsize_t valueCountPerDimension[1] = {valueCount};
-	if (minimumValue == minimumValue && maximumValue == maximumValue)
-	{
-		float minimumValuePerDimension[1] = { minimumValue };
-		float maximumValuePerDimension[1] = { maximumValue };
-		pushBackFloatHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy, minimumValuePerDimension, maximumValuePerDimension);
+	const hsize_t valueCountPerDimension = valueCount;
+	if (minimumValue == minimumValue && maximumValue == maximumValue) {
+		pushBackFloatHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy, &minimumValue, &maximumValue);
 	}
-	else
-	{
-		pushBackFloatHdf5ArrayOfValues(values, valueCountPerDimension, 1, proxy);
+	else {
+		pushBackFloatHdf5ArrayOfValues(values, &valueCountPerDimension, 1, proxy);
 	}
 }
 
-void ContinuousProperty::pushBackFloatHdf5Array2dOfValues(const float * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
-	const float & minimumValue, const float & maximumValue)
+void ContinuousProperty::pushBackFloatHdf5Array2dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+	float minimumValue, float maximumValue)
 {
-	hsize_t valueCountPerDimension[2] = {valueCountInSlowestDim, valueCountInFastestDim};
-	if (minimumValue == minimumValue && maximumValue == maximumValue)
-	{
-		float minimumValuePerDimension[1] = { minimumValue };
-		float maximumValuePerDimension[1] = { maximumValue };
-		pushBackFloatHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, minimumValuePerDimension, maximumValuePerDimension);
+	const hsize_t valueCountPerDimension[2] = {valueCountInSlowestDim, valueCountInFastestDim};
+	if (minimumValue == minimumValue && maximumValue == maximumValue) {
+		pushBackFloatHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy, &minimumValue, &maximumValue);
 	}
-	else
-	{
+	else {
 		pushBackFloatHdf5ArrayOfValues(values, valueCountPerDimension, 2, proxy);
 	}
 }
 
-void ContinuousProperty::pushBackFloatHdf5Array3dOfValues(const float * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
-	const float & minimumValue, const float & maximumValue)
+void ContinuousProperty::pushBackFloatHdf5Array3dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy,
+	float minimumValue, float maximumValue)
 {
-	hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
-	if (minimumValue == minimumValue && maximumValue == maximumValue)
-	{
-		float minimumValuePerDimension[1] = { minimumValue };
-		float maximumValuePerDimension[1] = { maximumValue };
-		pushBackFloatHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, minimumValuePerDimension, maximumValuePerDimension);
+	const hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
+	if (minimumValue == minimumValue && maximumValue == maximumValue) {
+		pushBackFloatHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy, &minimumValue, &maximumValue);
 	}
-	else
-	{
+	else {
 		pushBackFloatHdf5ArrayOfValues(values, valueCountPerDimension, 3, proxy);
 	}
 }
@@ -252,28 +228,28 @@ std::string ContinuousProperty::pushBackRefToExistingDataset(COMMON_NS::Abstract
 }
 
 void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(
-	const ULONG64& valueCountInFastestDim,
-	const ULONG64& valueCountInMiddleDim,
-	const ULONG64& valueCountInSlowestDim,
+	ULONG64 valueCountInFastestDim,
+	ULONG64 valueCountInMiddleDim,
+	ULONG64 valueCountInSlowestDim,
 	COMMON_NS::AbstractHdfProxy* proxy)
 {
-	hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
+	const hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
 	pushBackFloatHdf5ArrayOfValues(valueCountPerDimension, 3, proxy);
 }
 
 void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
-	float* values, 
-	const ULONG64& valueCountInFastestDim,
-	const ULONG64& valueCountInMiddleDim,
-	const ULONG64& valueCountInSlowestDim,
-	const ULONG64& offsetInFastestDim,
-	const ULONG64& offsetInMiddleDim,
-	const ULONG64& offsetInSlowestDim,
+	float const * values, 
+	ULONG64 valueCountInFastestDim,
+	ULONG64 valueCountInMiddleDim,
+	ULONG64 valueCountInSlowestDim,
+	ULONG64 offsetInFastestDim,
+	ULONG64 offsetInMiddleDim,
+	ULONG64 offsetInSlowestDim,
 	COMMON_NS::AbstractHdfProxy* proxy,
 	unsigned int patchIndex)
 {
-	hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
-	hsize_t offsetPerDimension[3] = {offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim};
+	const hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
+	const hsize_t offsetPerDimension[3] = {offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim};
 	setValuesOfFloatHdf5ArrayOfValues(
 		values, 
 		valueCountPerDimension, 
@@ -284,7 +260,7 @@ void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
 	);
 }
 
-void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(const float * values, unsigned long long * numValues, const unsigned int & numArrayDimensions, COMMON_NS::AbstractHdfProxy * proxy,
+void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, COMMON_NS::AbstractHdfProxy * proxy,
 	float * minimumValue, float * maximumValue)
 {
 	if (proxy == nullptr) {
@@ -302,8 +278,8 @@ void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(const float * values, un
 }
 
 void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(
-	const unsigned long long* numValues,
-	const unsigned int& numArrayDimensions, 
+	unsigned long long const * numValues,
+	unsigned int numArrayDimensions, 
 	COMMON_NS::AbstractHdfProxy* proxy)
 {
 	if (proxy == nullptr) {
@@ -326,12 +302,12 @@ void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(
 
 
 void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
-	float* values, unsigned long long* numValuesInEachDimension,
-	unsigned long long* offsetInEachDimension, const unsigned int& numArrayDimensions,
+	float const * values, unsigned long long const * numValuesInEachDimension,
+	unsigned long long const * offsetInEachDimension, unsigned int numArrayDimensions,
 	COMMON_NS::AbstractHdfProxy* proxy,
 	unsigned int patchIndex)
 {
-	_resqml20__ContinuousProperty* prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
+	_resqml20__ContinuousProperty const * prop = static_cast<_resqml20__ContinuousProperty const *>(gsoapProxy2_0_1);
 
 	setPropertyMinMax(
 		values,
@@ -340,11 +316,12 @@ void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
 	);
 
 	ostringstream oss;
+	oss << "values_patch";
 	if (patchIndex == (numeric_limits<unsigned int>::max)()) {
-		oss << "values_patch" << prop->PatchOfValues.size() - 1;
+		oss << prop->PatchOfValues.size() - 1;
 	}
 	else {
-		oss << "values_patch" << patchIndex;
+		oss << patchIndex;
 	}
 
 	// HDF
@@ -382,8 +359,8 @@ void ContinuousProperty::getFloatValuesOfPatch(unsigned int patchIndex, float * 
 void ContinuousProperty::getFloatValuesOfPatch(
 	unsigned int patchIndex,
 	float* values,
-	unsigned long long* numValuesInEachDimension,
-	unsigned long long* offsetInEachDimension,
+	unsigned long long const * numValuesInEachDimension,
+	unsigned long long const * offsetInEachDimension,
 	unsigned int numArrayDimensions) const
 {
 	_resqml20__ContinuousProperty const * prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
@@ -468,7 +445,7 @@ bool ContinuousProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKin
 	return true;
 }
 
-bool ContinuousProperty::validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & pk)
+bool ContinuousProperty::validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk)
 {
 	COMMON_NS::EnumStringMapper tmp;
 	std::string pkName = tmp.getEnergisticsPropertyKindName(pk);
