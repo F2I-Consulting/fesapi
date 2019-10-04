@@ -53,6 +53,7 @@ under the License.
 #include "resqml2_0_1test/MultirealPropertyTest.h"
 #include "witsml2_0test/WellTest.h"
 #include "witsml2_0test/Trajectory.h"
+#include "witsml2_0test/Perforation.h"
 
 #ifdef WITH_EXPERIMENTAL
 #include "GraphicalInformationSetTest.h"
@@ -153,7 +154,8 @@ FESAPI_TEST("Export and import a seismic lattice feature", "[seismic]", SeismicL
 FESAPI_TEST("Export and import a seismic horizon grid 2d rep", "[seismic]", Grid2dRepresentationTest)
 FESAPI_TEST("Export and import an horizon on a seismic line", "[seismic]", HorizonOnSeismicLine)
 
-FESAPI_TEST("Export and import a Witsml well", "[well]", WellTest)
-FESAPI_TEST("Export and import a Witsml trajectory", "[well]", Trajectory)
+FESAPI_TEST("Export and import a WITSML well", "[well]", WellTest)
+FESAPI_TEST("Export and import a WITSML trajectory", "[well]", Trajectory)
+FESAPI_TEST("Export and import a WITSML perforation", "[well]", Perforation)
 
 FESAPI_TEST("Export and import some multi realization properties", "[property]", MultirealPropertyTest)

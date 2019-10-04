@@ -238,7 +238,7 @@ void serializePerforations(COMMON_NS::DataObjectRepository * pck)
 	// WELLBORE COMPLETION
 	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = pck->createWellboreCompletion(witsmlWellbore, wellCompletion, "7bda8ecf-2037-4dc7-8c59-db6ca09f2008", "WellboreCompletion1", "wellCompletionName");
 
-	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980);
+	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980, "myId");
 	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 2000);
 	wellboreCompletion->pushBackPerforationHistory(0);
 	wellboreCompletion->setPerforationHistoryStatus(0, 0, gsoap_eml2_1::witsml20__PerforationStatus__open);
@@ -3275,7 +3275,7 @@ void deserializePerforations(COMMON_NS::DataObjectRepository & pck)
 
 	for (unsigned int perforationIndex = 0; perforationIndex < wellboreCompletion->getPerforationCount(); ++perforationIndex)
 	{
-		cout << std::endl << "perforation " << perforationIndex << ":" << std::endl;
+		cout << std::endl << "perforation " << perforationIndex << " with uid \"" << wellboreCompletion->getPerforationUid(perforationIndex) << "\":" << std::endl;
 		if (wellboreCompletion->hasPerforationMdDatum(perforationIndex))
 		{
 			cout << "datum: " << wellboreCompletion->getPerforationMdDatum(perforationIndex) << std::endl;

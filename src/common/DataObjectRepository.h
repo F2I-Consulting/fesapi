@@ -1221,6 +1221,10 @@ namespace COMMON_NS
 
 		//*************** WITSML *************
 
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Well* createPartialWell(
+			const std::string & guid,
+			const std::string & title);
+
 		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Well* createWell(const std::string & guid,
 			const std::string & title);
 

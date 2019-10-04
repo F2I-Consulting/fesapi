@@ -43,6 +43,9 @@ void HdfProxy::open()
 	if (openingMode == COMMON_NS::DataObjectRepository::READ_ONLY) {
 		if (H5Fis_hdf5((packageDirectoryAbsolutePath + relativeFilePath).c_str()) > 0) {
 			hdfFile = H5Fopen((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_RDONLY, H5P_DEFAULT);
+			if (hdfFile < 0) {
+				throw invalid_argument("Can not open HDF5 file (in read only mode) : " + packageDirectoryAbsolutePath + relativeFilePath);
+			}
 
 			// Check the uuid
 			string hdfUuid = readStringAttribute(".", "uuid");
@@ -67,6 +70,9 @@ void HdfProxy::open()
 		if (hdfFile < 0) {
 			if (H5Fis_hdf5((packageDirectoryAbsolutePath + relativeFilePath).c_str()) > 0) {
 				hdfFile = H5Fopen((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_RDWR, access_props);
+				if (hdfFile < 0) {
+					throw invalid_argument("Can not open HDF5 file (in read and write mode): " + packageDirectoryAbsolutePath + relativeFilePath);
+				}
 
 				string hdfUuid = readStringAttribute(".", "uuid");
 				if (getUuid() != hdfUuid) {
@@ -112,6 +118,9 @@ void HdfProxy::open()
 #endif
 
 		hdfFile = H5Fcreate((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, access_props);
+		if (hdfFile < 0) {
+			throw invalid_argument("Can not create HDF5 file : " + packageDirectoryAbsolutePath + relativeFilePath);
+		}
 
 		// create an attribute at the file level to store the uuid of the corresponding resqml hdf proxy.
 		hid_t aid = H5Screate(H5S_SCALAR);
@@ -139,10 +148,6 @@ void HdfProxy::open()
 	}
 	else {
 		throw invalid_argument("The HDF5 permission access is unknown.");
-	}
-
-	if (hdfFile < 0) {
-		throw invalid_argument("The HDF5 file " + packageDirectoryAbsolutePath + relativeFilePath + " could not have been created or opened.");
 	}
 }
 

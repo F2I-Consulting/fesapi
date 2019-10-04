@@ -401,8 +401,8 @@ namespace WITSML2_0_NS
 
 		void pushBackPerforation(const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom MdUnit,
-			const double & TopMd,
-			const double & BaseMd, 
+			double TopMd,
+			double BaseMd, 
 			const std::string & guid = "");
 
 		void pushBackPerforationHistory(unsigned int index,
@@ -410,10 +410,12 @@ namespace WITSML2_0_NS
 			
 		void pushBackPerforationHistory(unsigned int index,
 			gsoap_eml2_1::witsml20__PerforationStatus perforationStatus,
-			const time_t & startDate,
+			time_t startDate,
 			const std::string & guid = "");	
 
 		unsigned int getPerforationCount() const;
+		
+		std::string getPerforationUid(unsigned int index) const;
 
 		bool hasPerforationMdDatum(unsigned int index) const;
 	
@@ -455,7 +457,7 @@ namespace WITSML2_0_NS
 			unsigned int perforationIndex) const;
 
 		void setPerforationHistoryStartDate(unsigned int historyIndex,
-			unsigned int perforationIndex, const time_t & startDate) const;
+			unsigned int perforationIndex, time_t startDate) const;
 
 		bool hasPerforationHistoryEndDate(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
@@ -464,7 +466,7 @@ namespace WITSML2_0_NS
 			unsigned int perforationIndex) const;
 
 		void setPerforationHistoryEndDate(unsigned int historyIndex,
-			unsigned int perforationIndex, const time_t & endDate) const;
+			unsigned int perforationIndex, time_t endDate) const;
 		
 		bool hasPerforationHistoryMdDatum(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
@@ -491,7 +493,7 @@ namespace WITSML2_0_NS
 			unsigned int perforationIndex,
 			const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom MdUnit,
-			const double & TopMd);
+			double TopMd);
 		
 		bool hasPerforationHistoryBaseMd(unsigned int historyIndex,
 			unsigned int perforationIndex) const;
@@ -503,7 +505,7 @@ namespace WITSML2_0_NS
 			unsigned int perforationIndex,
 			const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom MdUnit,
-			const double & BaseMd);
+			double BaseMd);
 	};
 	
 	class Trajectory : public WellboreObject
