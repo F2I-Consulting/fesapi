@@ -179,6 +179,16 @@ namespace WITSML2_0_NS
 			const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom MdUnit,
 			double BaseMd);
+			
+		DLL_IMPORT_OR_EXPORT bool hasPerforationHistoryComment(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
+
+		DLL_IMPORT_OR_EXPORT std::string getPerforationHistoryComment(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
+
+		DLL_IMPORT_OR_EXPORT void setPerforationHistoryComment(unsigned int historyIndex,
+			unsigned int perforationIndex,
+			const std::string & comment);				
 
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }

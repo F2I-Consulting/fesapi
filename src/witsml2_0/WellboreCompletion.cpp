@@ -505,6 +505,40 @@ void WellboreCompletion::setPerforationHistoryBaseMd(unsigned int historyIndex,
 	perforationStatusHistory->PerforationMdInterval->MdBase->__item = BaseMd;
 }
 
+bool WellboreCompletion::hasPerforationHistoryComment(unsigned int historyIndex,
+	unsigned int perforationIndex) const
+{
+	witsml20__PerforationStatusHistory const* const perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
+	if (perforationStatusHistory == nullptr) {
+		return false;
+	}
+
+	return perforationStatusHistory->Comment != nullptr;
+}
+
+std::string WellboreCompletion::getPerforationHistoryComment(unsigned int historyIndex,
+	unsigned int perforationIndex) const
+{
+	if (!hasPerforationHistoryComment(historyIndex, perforationIndex))
+	{
+		throw invalid_argument("No perforation history comment is defined.");
+	}
+
+	return *getPerforationHistoryEntry(historyIndex, perforationIndex)->Comment;
+}
+
+void WellboreCompletion::setPerforationHistoryComment(unsigned int historyIndex,
+	unsigned int perforationIndex,
+	const std::string & comment)
+{
+	witsml20__PerforationStatusHistory* perforationStatusHistory = getPerforationHistoryEntry(historyIndex, perforationIndex);
+
+	if (perforationStatusHistory->Comment == nullptr) {
+		perforationStatusHistory->Comment = soap_new_std__string(gsoapProxy2_1->soap, 1);
+	}
+	perforationStatusHistory->Comment->assign(comment);
+}
+
 void WellboreCompletion::loadTargetRelationships()
 {
 	WellboreObject::loadTargetRelationships();

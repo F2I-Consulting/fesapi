@@ -57,6 +57,7 @@ void Perforation::initRepoHandler() {
 	wellboreCompletion->setPerforationHistoryBaseMd(0, 0, "Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1980);
 	wellboreCompletion->setPerforationHistoryStartDate(0, 0, 407568645);
 	wellboreCompletion->setPerforationHistoryEndDate(0, 0, 1514764800);
+	wellboreCompletion->setPerforationHistoryComment(0, 0, "Comment");
 }
 
 void Perforation::readRepoHandler() {
@@ -88,4 +89,5 @@ void Perforation::readRepoHandler() {
 	REQUIRE(wellboreCompletion->getPerforationHistoryTopMd(0, 0) == 1970);
 	REQUIRE(wellboreCompletion->hasPerforationHistoryBaseMd(0, 0));
 	REQUIRE(wellboreCompletion->getPerforationHistoryBaseMd(0, 0) == 1980);
+	REQUIRE(wellboreCompletion->getPerforationHistoryComment(0, 0) == "Comment");
 }

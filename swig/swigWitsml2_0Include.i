@@ -506,6 +506,16 @@ namespace WITSML2_0_NS
 			const std::string & datum,
 			gsoap_eml2_1::eml21__LengthUom MdUnit,
 			double BaseMd);
+			
+		bool hasPerforationHistoryComment(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
+
+		std::string getPerforationHistoryComment(unsigned int historyIndex,
+			unsigned int perforationIndex) const;
+
+		void setPerforationHistoryComment(unsigned int historyIndex,
+			unsigned int perforationIndex,
+			const std::string & comment);
 	};
 	
 	class Trajectory : public WellboreObject
