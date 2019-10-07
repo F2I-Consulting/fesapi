@@ -755,6 +755,10 @@ namespace COMMON_NS
 
 		//*************** WITSML *************
 
+		WITSML2_0_NS::Well* createPartialWell(
+			const std::string & guid,
+			const std::string & title);
+
 		WITSML2_0_NS::Well* createWell(const std::string & guid,
 			const std::string & title);
 

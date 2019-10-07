@@ -1344,6 +1344,13 @@ RESQML2_NS::Activity* DataObjectRepository::createActivity(RESQML2_NS::ActivityT
 //*************** WITSML *************
 //************************************
 
+WITSML2_0_NS::Well* DataObjectRepository::createPartialWell(
+	const std::string & guid,
+	const std::string & title)
+{
+	return createPartial<WITSML2_0_NS::Well>(guid, title);
+}
+
 WITSML2_0_NS::Well* DataObjectRepository::createWell(const std::string & guid,
 	const std::string & title)
 {
