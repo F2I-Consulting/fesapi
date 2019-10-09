@@ -94,6 +94,7 @@ under the License.
 #include "common/GraphicalInformationSet.h"
 #include "resqml2_2/DiscreteColorMap.h"
 #include "resqml2_2/ContinuousColorMap.h"
+#include "resqml2_2/SeismicWellboreFrameRepresentation.h"
 #endif
 
 #include "witsml2_0/Well.h"
@@ -229,6 +230,13 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHd
 		gsoap_resqml2_0_1::resqml20__IndexableElements__intervals, unitNumberPropType);
 	char unitNumbers[5] = { 0, 1, 2, 3, 4 };
 	discreteProp->pushBackCharHdf5Array1dOfValues(unitNumbers, 5, hdfProxy, -1);
+
+	// SeismicWellboreFrameRepresentation
+	RESQML2_2_NS::SeismicWellboreFrameRepresentation* w1i1SeismicFrameRep = pck->createSeismicWellboreFrameRepresentation(wellbore1Interp1, "dcbeea2e-8327-4c5b-97e3-bdced0680de5", "Wellbore1 Interp1 SeismicFrameRep", w1i1TrajRep);
+	w1i1SeismicFrameRep->setMdValues(logMds, 5, hdfProxy);
+
+	RESQML2_2_NS::SeismicWellboreFrameRepresentation* w1i1RegularSeismicFrameRep = pck->createSeismicWellboreFrameRepresentation(wellbore1Interp1, "7f1b75ff-1226-4c0a-a531-8f71661da419", "Wellbore1 Interp1 Regular SeismicFrameRep", w1i1TrajRep);
+	w1i1RegularSeismicFrameRep->setMdValues(0, 200, 6);
 }
 
 void serializePerforations(COMMON_NS::DataObjectRepository * pck)

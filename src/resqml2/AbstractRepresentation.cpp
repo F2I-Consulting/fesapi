@@ -203,9 +203,11 @@ void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation * i
 	if (gsoapProxy2_0_1 != nullptr) {
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation = interp->newResqmlReference();
 	}
-	else {
-		throw logic_error("Not implemented yet");
+	else if (gsoapProxy2_2 != nullptr) {
+		static_cast<gsoap_eml2_2::resqml22__AbstractRepresentation*>(gsoapProxy2_2)->RepresentedInterpretation = interp->newEml22Reference();
 	}
+	else 
+		throw logic_error("Not implemented yet");
 }
 
 AbstractFeatureInterpretation* AbstractRepresentation::getInterpretation() const
