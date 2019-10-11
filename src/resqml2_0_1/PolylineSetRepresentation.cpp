@@ -303,78 +303,13 @@ bool PolylineSetRepresentation::areAllPolylinesClosedOfPatch(unsigned int patchI
 	}
 	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array)
 	{
-		unsigned int polylineCount = getPolylineCountOfPatch(patchIndex);
+		const unsigned int polylineCount = getPolylineCountOfPatch(patchIndex);
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values;
-		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hid_t datatype = hdfProxy->getHdfDatatypeInDataset(dataset->PathInHdfFile);
 
-		bool result = true;
-		if (H5Tequal(datatype, H5T_NATIVE_CHAR) > 0)
-		{
-			char* tmp = new char[polylineCount];
-			hdfProxy->readArrayNdOfCharValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-			if (find(tmp, tmp + polylineCount, 0) != tmp + polylineCount)
-				result = false;
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_UCHAR) > 0)
-		{
-			unsigned char* tmp = new unsigned char[polylineCount];
-			hdfProxy->readArrayNdOfUCharValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-			if (find(tmp, tmp + polylineCount, 0) != tmp + polylineCount)
-				result = false;
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_SHORT) > 0)
-		{
-			short* tmp = new short[polylineCount];
-			hdfProxy->readArrayNdOfShortValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-			if (find(tmp, tmp + polylineCount, 0) != tmp + polylineCount)
-				result = false;
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_USHORT) > 0)
-		{
-			unsigned short* tmp = new unsigned short[polylineCount];
-			hdfProxy->readArrayNdOfUShortValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-			if (find(tmp, tmp + polylineCount, 0) != tmp + polylineCount)
-				result = false;
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_INT) > 0)
-		{
-			int* tmp = new int[polylineCount];
-			hdfProxy->readArrayNdOfIntValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-			if (find(tmp, tmp + polylineCount, 0) != tmp + polylineCount)
-				result = false;
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_UINT) > 0)
-		{
-			unsigned int* tmp = new unsigned int[polylineCount];
-			hdfProxy->readArrayNdOfUIntValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-			if (find(tmp, tmp + polylineCount, 0u) != tmp + polylineCount)
-				result = false;
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_LONG) > 0)
-		{
-			long* tmp = new long[polylineCount];
-			hdfProxy->readArrayNdOfLongValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-			if (find(tmp, tmp + polylineCount, 0) != tmp + polylineCount)
-				result = false;
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_ULONG) > 0)
-		{
-			unsigned long* tmp = new unsigned long[polylineCount];
-			hdfProxy->readArrayNdOfULongValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-			if (find(tmp, tmp + polylineCount, 0u) != tmp + polylineCount)
-				result = false;
-			delete [] tmp;
-		}
-		else
-			throw logic_error("Not yet implemented.");
+		char* const tmp = new char[polylineCount];
+		getHdfProxyFromDataset(dataset)->readArrayNdOfCharValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
+		const bool result = find(tmp, tmp + polylineCount, 0) == tmp + polylineCount;
+		delete [] tmp;
 
 		return result;
 	}
@@ -385,10 +320,10 @@ bool PolylineSetRepresentation::areAllPolylinesClosedOfPatch(unsigned int patchI
 bool PolylineSetRepresentation::areAllPolylinesClosedOfAllPatches() const
 {
 	_resqml20__PolylineSetRepresentation* rep = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1);
-	for (unsigned int patchIndex = 0; patchIndex < rep->LinePatch.size(); patchIndex++)
-	{
-		if (areAllPolylinesClosedOfPatch(patchIndex) == false)
+	for (size_t patchIndex = 0; patchIndex < rep->LinePatch.size(); patchIndex++) {
+		if (!areAllPolylinesClosedOfPatch(patchIndex)) {
 			return false;
+		}
 	}
 
 	return true;
@@ -399,7 +334,7 @@ bool isNotZero(const long & i)
 	return i != 0;
 }
 
-bool PolylineSetRepresentation::areAllPolylinesNonClosedOfPatch(const unsigned int & patchIndex) const
+bool PolylineSetRepresentation::areAllPolylinesNonClosedOfPatch(unsigned int patchIndex) const
 {
 	resqml20__PolylineSetPatch* patch = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch[patchIndex];
 	if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray)
@@ -408,118 +343,17 @@ bool PolylineSetRepresentation::areAllPolylinesNonClosedOfPatch(const unsigned i
 	}
 	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array)
 	{
-		unsigned int polylineCount = getPolylineCountOfPatch(patchIndex);
+		const unsigned int polylineCount = getPolylineCountOfPatch(patchIndex);
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values;
-		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hid_t datatype = hdfProxy->getHdfDatatypeInDataset(dataset->PathInHdfFile);
 
-		bool result = true;
-		if (H5Tequal(datatype, H5T_NATIVE_CHAR) > 0)
-		{
-			char* tmp = new char[polylineCount];
-			hdfProxy->readArrayNdOfCharValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
+		char* tmp = new char[polylineCount];
+		getHdfProxyFromDataset(dataset)->readArrayNdOfCharValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
 #if (defined(_WIN32) && _MSC_VER >= 1600) || (__GNUC__ > 4 && __GNUC_MINOR__ > 4)
-			if (find_if(tmp, tmp + polylineCount, [](char i){return i != 0;}) != tmp + polylineCount)
-				result = false;
+		const bool result = find_if(tmp, tmp + polylineCount, [](char i) {return i != 0; }) == tmp + polylineCount;
 #else
-			if (find_if(tmp, tmp + polylineCount, isNotZero) != tmp + polylineCount)
-				result = false;
+		const bool result = find_if(tmp, tmp + polylineCount, isNotZero) == tmp + polylineCount;
 #endif
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_UCHAR) > 0)
-		{
-			unsigned char* tmp = new unsigned char[polylineCount];
-			hdfProxy->readArrayNdOfUCharValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-#if (defined(_WIN32) && _MSC_VER >= 1600) || (__GNUC__ > 4 && __GNUC_MINOR__ > 4)
-			if (find_if(tmp, tmp + polylineCount, [](unsigned char i){return i != 0;}) != tmp + polylineCount)
-				result = false;
-#else
-			if (find_if(tmp, tmp + polylineCount, isNotZero) != tmp + polylineCount)
-				result = false;
-#endif
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_SHORT) > 0)
-		{
-			short* tmp = new short[polylineCount];
-			hdfProxy->readArrayNdOfShortValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-#if (defined(_WIN32) && _MSC_VER >= 1600) || (__GNUC__ > 4 && __GNUC_MINOR__ > 4)
-			if (find_if(tmp, tmp + polylineCount, [](short i){return i != 0;}) != tmp + polylineCount)
-				result = false;
-#else
-			if (find_if(tmp, tmp + polylineCount, isNotZero) != tmp + polylineCount)
-				result = false;
-#endif
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_USHORT) > 0)
-		{
-			unsigned short* tmp = new unsigned short[polylineCount];
-			hdfProxy->readArrayNdOfUShortValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-#if (defined(_WIN32) && _MSC_VER >= 1600) || (__GNUC__ > 4 && __GNUC_MINOR__ > 4)
-			if (find_if(tmp, tmp + polylineCount, [](unsigned short i){return i != 0;}) != tmp + polylineCount)
-				result = false;
-#else
-			if (find_if(tmp, tmp + polylineCount, isNotZero) != tmp + polylineCount)
-				result = false;
-#endif
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_INT) > 0)
-		{
-			int* tmp = new int[polylineCount];
-			hdfProxy->readArrayNdOfIntValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-#if (defined(_WIN32) && _MSC_VER >= 1600) || (__GNUC__ > 4 && __GNUC_MINOR__ > 4)
-			if (find_if(tmp, tmp + polylineCount, [](int i){return i != 0;}) != tmp + polylineCount)
-				result = false;
-#else
-			if (find_if(tmp, tmp + polylineCount, isNotZero) != tmp + polylineCount)
-				result = false;
-#endif
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_UINT) > 0)
-		{
-			unsigned int* tmp = new unsigned int[polylineCount];
-			hdfProxy->readArrayNdOfUIntValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-#if (defined(_WIN32) && _MSC_VER >= 1600) || (__GNUC__ > 4 && __GNUC_MINOR__ > 4)
-			if (find_if(tmp, tmp + polylineCount, [](unsigned int i){return i != 0;}) != tmp + polylineCount)
-				result = false;
-#else
-			if (find_if(tmp, tmp + polylineCount, isNotZero) != tmp + polylineCount)
-				result = false;
-#endif
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_LONG) > 0)
-		{
-			long* tmp = new long[polylineCount];
-			hdfProxy->readArrayNdOfLongValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-#if (defined(_WIN32) && _MSC_VER >= 1600) || (__GNUC__ > 4 && __GNUC_MINOR__ > 4)
-			if (find_if(tmp, tmp + polylineCount, [](long i){return i != 0;}) != tmp + polylineCount)
-				result = false;
-#else
-			if (find_if(tmp, tmp + polylineCount, isNotZero) != tmp + polylineCount)
-				result = false;
-#endif
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_ULONG) > 0)
-		{
-			unsigned long* tmp = new unsigned long[polylineCount];
-			hdfProxy->readArrayNdOfULongValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-#if (defined(_WIN32) && _MSC_VER >= 1600) || (__GNUC__ > 4 && __GNUC_MINOR__ > 4)
-			if (find_if(tmp, tmp + polylineCount, [](unsigned long i){return i != 0;}) != tmp + polylineCount)
-				result = false;
-#else
-			if (find_if(tmp, tmp + polylineCount, isNotZero) != tmp + polylineCount)
-				result = false;
-#endif
-			delete [] tmp;
-		}
-		else
-			throw logic_error("Not yet implemented.");
+		delete [] tmp;
 
 		return result;
 	}
@@ -530,95 +364,31 @@ bool PolylineSetRepresentation::areAllPolylinesNonClosedOfPatch(const unsigned i
 bool PolylineSetRepresentation::areAllPolylinesNonClosedOfAllPatches() const
 {
 	_resqml20__PolylineSetRepresentation* rep = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1);
-	for (size_t patchIndex = 0; patchIndex < rep->LinePatch.size(); patchIndex++)
-	{
-		if (areAllPolylinesNonClosedOfPatch(patchIndex) == false)
+	for (size_t patchIndex = 0; patchIndex < rep->LinePatch.size(); patchIndex++) {
+		if (!areAllPolylinesNonClosedOfPatch(patchIndex)) {
 			return false;
+		}
 	}
 
 	return true;
 }
 		
-void PolylineSetRepresentation::getClosedFlagPerPolylineOfPatch(const unsigned int & patchIndex, bool * closedFlagPerPolyline) const
+void PolylineSetRepresentation::getClosedFlagPerPolylineOfPatch(unsigned int patchIndex, bool * closedFlagPerPolyline) const
 {
 	unsigned int polylineCount = getPolylineCountOfPatch(patchIndex);
 	resqml20__PolylineSetPatch* patch = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch[patchIndex];
-	if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray)
-	{
+	if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray) {
 		fill(closedFlagPerPolyline, closedFlagPerPolyline + polylineCount, static_cast<resqml20__BooleanConstantArray*>(patch->ClosedPolylines)->Value);
 	}
-	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array)
-	{
+	else if (patch->ClosedPolylines->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array) {
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values;
-		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hid_t datatype = hdfProxy->getHdfDatatypeInDataset(dataset->PathInHdfFile);
 
-		if (H5Tequal(datatype, H5T_NATIVE_CHAR) > 0)
-		{
-			char* tmp = new char[polylineCount];
-			hdfProxy->readArrayNdOfCharValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-			for (unsigned int i = 0; i < polylineCount; ++i)
-				closedFlagPerPolyline[i] = tmp[i];
-			delete [] tmp;
+		char* const  tmp = new char[polylineCount];
+		getHdfProxyFromDataset(dataset)->readArrayNdOfCharValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
+		for (size_t i = 0; i < polylineCount; ++i) {
+			closedFlagPerPolyline[i] = tmp[i];
 		}
-		else if (H5Tequal(datatype, H5T_NATIVE_UCHAR) > 0)
-		{
-			unsigned char* tmp = new unsigned char[polylineCount];
-			hdfProxy->readArrayNdOfUCharValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-			for (unsigned int i = 0; i < polylineCount; ++i)
-				closedFlagPerPolyline[i] = tmp[i];
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_SHORT) > 0)
-		{
-			short* tmp = new short[polylineCount];
-			hdfProxy->readArrayNdOfShortValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-			for (unsigned int i = 0; i < polylineCount; ++i)
-				closedFlagPerPolyline[i] = tmp[i];
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_USHORT) > 0)
-		{
-			unsigned short* tmp = new unsigned short[polylineCount];
-			hdfProxy->readArrayNdOfUShortValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-			for (unsigned int i = 0; i < polylineCount; ++i)
-				closedFlagPerPolyline[i] = tmp[i];
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_INT) > 0)
-		{
-			int* tmp = new int[polylineCount];
-			hdfProxy->readArrayNdOfIntValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-			for (unsigned int i = 0; i < polylineCount; ++i)
-				closedFlagPerPolyline[i] = tmp[i];
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_UINT) > 0)
-		{
-			unsigned int* tmp = new unsigned int[polylineCount];
-			hdfProxy->readArrayNdOfUIntValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-			for (unsigned int i = 0; i < polylineCount; ++i)
-				closedFlagPerPolyline[i] = tmp[i];
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_LONG) > 0)
-		{
-			long* tmp = new long[polylineCount];
-			hdfProxy->readArrayNdOfLongValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-			for (unsigned int i = 0; i < polylineCount; ++i)
-				closedFlagPerPolyline[i] = tmp[i];
-			delete [] tmp;
-		}
-		else if (H5Tequal(datatype, H5T_NATIVE_ULONG) > 0)
-		{
-			unsigned long* tmp = new unsigned long[polylineCount];
-			hdfProxy->readArrayNdOfULongValues(static_cast<resqml20__BooleanHdf5Array*>(patch->ClosedPolylines)->Values->PathInHdfFile, tmp);
-			for (unsigned int i = 0; i < polylineCount; ++i)
-				closedFlagPerPolyline[i] = tmp[i];
-			delete [] tmp;
-		}
-		else
-			throw logic_error("Not yet implemented.");
+		delete [] tmp;
 	}
 	else
 		throw logic_error("Not yet implemented.");
@@ -627,8 +397,7 @@ void PolylineSetRepresentation::getClosedFlagPerPolylineOfPatch(const unsigned i
 void PolylineSetRepresentation::getClosedFlagPerPolylineOfAllPatches(bool * closedFlagPerPolyline) const
 {
 	_resqml20__PolylineSetRepresentation* rep = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1);
-	for (size_t i = 0; i < rep->LinePatch.size(); i++)
-	{
+	for (size_t i = 0; i < rep->LinePatch.size(); ++i) {
 		getClosedFlagPerPolylineOfPatch(i, closedFlagPerPolyline);
 		closedFlagPerPolyline += getPolylineCountOfPatch(i);
 	}
@@ -641,17 +410,18 @@ bool PolylineSetRepresentation::hasALineRole() const
 
 gsoap_resqml2_0_1::resqml20__LineRole PolylineSetRepresentation::getLineRole() const
 {
-	if (!hasALineRole())
+	if (!hasALineRole()) {
 		throw invalid_argument("The polylineSet doesn't have any role");
+	}
 
-	return *(static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole);
+	return *static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole;
 }
 
-void PolylineSetRepresentation::setLineRole(const gsoap_resqml2_0_1::resqml20__LineRole & lineRole)
+void PolylineSetRepresentation::setLineRole(gsoap_resqml2_0_1::resqml20__LineRole lineRole)
 {
-	if (!hasALineRole())
+	if (!hasALineRole()) {
 		static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole = (resqml20__LineRole*)soap_malloc(gsoapProxy2_0_1->soap, sizeof(resqml20__LineRole));
+	}
 
-	(*static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole) = lineRole;
+	*static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole = lineRole;
 }
-

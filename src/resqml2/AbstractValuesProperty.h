@@ -47,7 +47,7 @@ namespace RESQML2_NS
 
 	public:
 
-		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG = 3, ULONG = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
+		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG_64 = 3, ULONG_64 = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
 
 		/**
 		* Only to be used in partial transfer context
@@ -95,7 +95,7 @@ namespace RESQML2_NS
 		* Not for continuous property values.
 		* @return the null value
 		*/
-		DLL_IMPORT_OR_EXPORT long getLongValuesOfPatch(unsigned int patchIndex, long * values) const;
+		DLL_IMPORT_OR_EXPORT LONG64 getLongValuesOfPatch(unsigned int patchIndex, LONG64 * values) const;
 
 		/**
 		* Get the null value of the instance which are supposed to be integer ones.
@@ -109,7 +109,7 @@ namespace RESQML2_NS
 		* Not for continuous property values.
 		* @return the null value
 		*/
-		DLL_IMPORT_OR_EXPORT unsigned long getULongValuesOfPatch(unsigned int patchIndex, unsigned long * values) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getULongValuesOfPatch(unsigned int patchIndex, ULONG64 * values) const;
 
 		/**
 		* Get all the values of the instance which are supposed to be int ones.
@@ -272,7 +272,7 @@ namespace RESQML2_NS
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
 		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5SlabArray3dOfValues(
-			long* values, 
+			LONG64* values, 
 			unsigned int valueCountInFastestDim, 
 			unsigned int valueCountInMiddleDim, 
 			unsigned int valueCountInSlowestDim, 
@@ -291,9 +291,9 @@ namespace RESQML2_NS
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
 		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5SlabArrayOfValues(
-			long * values, 
-			unsigned long long * numValues,
-			unsigned long long * offsetValues,
+			LONG64* values,
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
 			unsigned int numArrayDimensions, 
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 
@@ -307,9 +307,9 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void getLongValuesOfPatch(
 			unsigned int patchIndex, 
-			long* values, 
-			unsigned long long* numValuesInEachDimension,
-			unsigned long long* offsetInEachDimension,
+			LONG64* values,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
 
@@ -326,7 +326,7 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void getLongValuesOf3dPatch(
 			unsigned int patchIndex, 
-			long* values, 
+			LONG64* values,
 			unsigned int valueCountInFastestDim, 
 			unsigned int valueCountInMiddleDim, 
 			unsigned int valueCountInSlowestDim, 

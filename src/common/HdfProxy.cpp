@@ -819,35 +819,25 @@ void HdfProxy::readArrayNdOfFloatValues(
 			H5T_NATIVE_FLOAT);
 }
 
-void HdfProxy::readArrayNdOfGSoapLong64Values(const std::string & datasetName, LONG64* values)
+void HdfProxy::readArrayNdOfLongValues(const std::string & datasetName, LONG64* values)
 {
 	readArrayNdOfValues(datasetName, values, H5T_NATIVE_LLONG);
 }
 
-void HdfProxy::readArrayNdOfGSoapULong64Values(const std::string & datasetName, ULONG64* values)
-{
-	readArrayNdOfValues(datasetName, values, H5T_NATIVE_ULLONG);
-}
-
-void HdfProxy::readArrayNdOfLongValues(const std::string & datasetName, long* values)
-{
-	readArrayNdOfValues(datasetName, values, H5T_NATIVE_LONG);
-}
-
 void HdfProxy::readArrayNdOfLongValues(
-	const std::string& datasetName, long* values,
+	const std::string& datasetName, LONG64* values,
 	hsize_t const * numValuesInEachDimension,
 	hsize_t const * offsetInEachDimension,
 	unsigned int numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
 			numValuesInEachDimension, offsetInEachDimension, numDimensions,
-			H5T_NATIVE_LONG);
+			H5T_NATIVE_LLONG);
 }
 
-void HdfProxy::readArrayNdOfULongValues(const std::string & datasetName, unsigned long* values)
+void HdfProxy::readArrayNdOfULongValues(const std::string & datasetName, ULONG64* values)
 {
-	readArrayNdOfValues(datasetName, values, H5T_NATIVE_ULONG);
+	readArrayNdOfValues(datasetName, values, H5T_NATIVE_ULLONG);
 }
 
 void HdfProxy::readArrayNdOfIntValues(const std::string & datasetName, int* values)

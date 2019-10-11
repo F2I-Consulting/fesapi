@@ -25,17 +25,20 @@ namespace COMMON_NS {
 }
 
 namespace resqml2_0_1test {
-	class DiscretePropertyOnLgr : public commontest::AbstractObjectTest {
+	class DiscreteProperty : public commontest::AbstractObjectTest {
 	public:
-		static const char* defaultUuid;
-		static const char* defaultTitle;
+		static const char* defaultCharPropUuid;
+		static const char* defaultShortPropUuid;
+		static const char* defaultUShortPropUuid;
+		static const char* defaultIntPropUuid;
+		static const char* defaultLongPropUuid;
 
 		/**
 		* Creation of a testing object from an EPC document path. At serialize() call,
 		* exising .epc file will be erased.
 		* @param repoPath the path of the .epc file (including .epc extension)
 		*/
-		DiscretePropertyOnLgr(const std::string & repoPath);
+		DiscreteProperty(const std::string & repoPath);
 
 		/**
 		* Creation of a testing object from an existing EPC document.
@@ -43,7 +46,7 @@ namespace resqml2_0_1test {
 		* @param init true if this object is created for initialization purpose else false if it is
 		* created for reading purpose. According to init value a inirepo() or readRepo() is called.
 		*/
-		DiscretePropertyOnLgr(COMMON_NS::DataObjectRepository * repo, bool init);
+		DiscreteProperty(COMMON_NS::DataObjectRepository * repo, bool init);
 	protected:
 		void initRepoHandler();
 		void readRepoHandler();

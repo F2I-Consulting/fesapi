@@ -105,7 +105,7 @@ void RightHanded4x3x2ExplicitIjkGrid::initRepoHandler() {
 	// Discrete property
 	RESQML2_0_1_NS::DiscreteProperty* discreteProp = repo->createDiscreteProperty(ijkGrid, "0a8fb2aa-d1e1-4914-931c-e9e6bf2aabe5", "Cell index", 1,
 		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__index);
-	long discretePropValues[24] = {
+	LONG64 discretePropValues[24] = {
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
 		12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
 	};

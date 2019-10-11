@@ -51,6 +51,7 @@ under the License.
 #include "resqml2_0_1test/LgrOnRightHanded4x3x2ExplicitIjkGrid.h"
 #include "resqml2_0_1test/InterpretationDomain.h"
 #include "resqml2_0_1test/MultirealPropertyTest.h"
+#include "resqml2_0_1test/DiscreteProperty.h"
 #include "witsml2_0test/WellTest.h"
 #include "witsml2_0test/Trajectory.h"
 #include "witsml2_0test/Perforation.h"
@@ -159,3 +160,4 @@ FESAPI_TEST("Export and import a WITSML trajectory", "[well]", Trajectory)
 FESAPI_TEST("Export and import a WITSML perforation", "[well]", Perforation)
 
 FESAPI_TEST("Export and import some multi realization properties", "[property]", MultirealPropertyTest)
+FESAPI_TEST("Check discrete property datatypes", "[property]", DiscreteProperty)
