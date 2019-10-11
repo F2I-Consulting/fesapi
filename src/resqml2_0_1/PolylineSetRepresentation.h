@@ -148,14 +148,14 @@ namespace RESQML2_0_1_NS
 		* @param patchIndex	The index of the patch to check.
 		* @return			True if all polylines of the studied patch are not closed.
 		*/
-		DLL_IMPORT_OR_EXPORT bool areAllPolylinesNonClosedOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT bool areAllPolylinesNonClosedOfPatch(unsigned int patchIndex) const;
 		DLL_IMPORT_OR_EXPORT bool areAllPolylinesNonClosedOfAllPatches() const;
 		
 		/**
 		 * Get all the node count par polyline for all teh aptches of the representation.
 		 * @param NodeCountPerPolyline It must be pre-allocated.
 		 */
-		DLL_IMPORT_OR_EXPORT void getClosedFlagPerPolylineOfPatch(const unsigned int & patchIndex, bool * closedFlagPerPolyline) const;
+		DLL_IMPORT_OR_EXPORT void getClosedFlagPerPolylineOfPatch(unsigned int patchIndex, bool * closedFlagPerPolyline) const;
 		DLL_IMPORT_OR_EXPORT void getClosedFlagPerPolylineOfAllPatches(bool * closedFlagPerPolyline) const;
 
 		/**
@@ -172,6 +172,6 @@ namespace RESQML2_0_1_NS
 		/**
 		* Set the line role of this instance
 		*/
-		DLL_IMPORT_OR_EXPORT void setLineRole(const gsoap_resqml2_0_1::resqml20__LineRole & lineRole);
+		DLL_IMPORT_OR_EXPORT void setLineRole(gsoap_resqml2_0_1::resqml20__LineRole lineRole);
 	};
 }

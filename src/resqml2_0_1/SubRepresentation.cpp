@@ -354,7 +354,7 @@ void SubRepresentation::getElementIndicesOfPatch(const unsigned int & patchIndex
 	if (rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, elementIndices);
+		hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, elementIndices);
 	}
 	else {
 		throw logic_error("Not yet implemented");

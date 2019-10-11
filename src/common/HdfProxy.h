@@ -473,23 +473,11 @@ namespace COMMON_NS
 		);
 
 		/**
-		* TODO : check all possible size of LONG64 on all different platforms
-		* @param values 		The values must be pre-allocated and won't be freed by this method.
-		*/
-		void readArrayNdOfGSoapLong64Values(const std::string & datasetName, LONG64* values);
-	
-		/**
-		* TODO : check all possible size of ULONG64 on all different platforms
-		* @param values 		The values must be pre-allocated and won't be freed by this method.
-		*/
-		void readArrayNdOfGSoapULong64Values(const std::string & datasetName, ULONG64* values);
-
-		/**
 		* Read an array Nd of long values stored in a specific dataset.
 		* @param datasetName	The absolute dataset name where to read the values
 		* @param values 		The values must be pre-allocated and won't be freed by this method.
 		*/
-		void readArrayNdOfLongValues(const std::string & datasetName, long* values);
+		virtual void readArrayNdOfLongValues(const std::string & datasetName, LONG64* values);
 
 		/**
 		* Find the array associated with datasetName and read from it.
@@ -499,20 +487,19 @@ namespace COMMON_NS
 		* @param offsetValuesInEachDimension    Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
 		* @param numDimensions                  The number of the dimensions of the array to read.
 		*/
-		void readArrayNdOfLongValues(
-			const std::string & datasetName, 
-			long* values, 
+		virtual void readArrayNdOfLongValues(
+			const std::string & datasetName,
+			LONG64* values,
 			unsigned long long const * numValuesInEachDimension,
 			unsigned long long const * offsetInEachDimension,
-			unsigned int numDimensions
-		);
+			unsigned int numDimensions);
 
 		/**
 		* Read an array Nd of unsigned long values stored in a specific dataset.
 		* @param datasetName	The absolute dataset name where to read the values
 		* @param values 		The values must be pre-allocated and won't be freed by this method.
 		*/
-		void readArrayNdOfULongValues(const std::string & datasetName, unsigned long* values);
+		virtual void readArrayNdOfULongValues(const std::string & datasetName, ULONG64* values);
 
 		/**
 		* Read an array Nd of int values stored in a specific dataset.

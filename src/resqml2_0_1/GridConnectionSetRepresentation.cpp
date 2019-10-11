@@ -398,7 +398,7 @@ ULONG64 GridConnectionSetRepresentation::getCellIndexPairs(ULONG64 * cellIndexPa
 
 	if (rep->CellIndexPairs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->CellIndexPairs)->Values;
-		getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID)->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, cellIndexPairs);
+		getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID)->readArrayNdOfULongValues(dataset->PathInHdfFile, cellIndexPairs);
 		return static_cast<resqml20__IntegerHdf5Array*>(rep->CellIndexPairs)->NullValue;
 	}
 	else {

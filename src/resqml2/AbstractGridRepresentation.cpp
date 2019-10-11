@@ -590,7 +590,7 @@ void AbstractGridRepresentation::getParentCellIndices(ULONG64 * parentCellIndice
 				if (cpw->CellIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 					gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(cpw->CellIndices)->Values;
 					COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-					hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, parentCellIndices);
+					hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, parentCellIndices);
 				}
 				else
 					throw invalid_argument("This list of cells can only be stored in HDF5 file.");
@@ -652,7 +652,7 @@ void AbstractGridRepresentation::getParentColumnIndices(ULONG64 * parentColumnIn
 				if (clpw->ColumnIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 					gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(clpw->ColumnIndices)->Values;
 					COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-					return hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, parentColumnIndices);
+					return hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, parentColumnIndices);
 				}
 				else {
 					throw invalid_argument("This list of columns can only be stored in HDF5 file.");
@@ -892,7 +892,7 @@ void AbstractGridRepresentation::getRegridCellCountPerInterval(const char & dime
 		else if (childCountPerInterval->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array const *>(childCountPerInterval)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, childCellCountPerInterval);
+			hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, childCellCountPerInterval);
 		}
 		else  {
 			throw logic_error("Not implemented yet");
@@ -1257,7 +1257,7 @@ ULONG64 AbstractGridRepresentation::getCellStratigraphicUnitIndices(ULONG64 * st
 		{
 			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->CellStratigraphicUnits->UnitIndices)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, stratiUnitIndices);
+			hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, stratiUnitIndices);
 			return static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->CellStratigraphicUnits->UnitIndices)->NullValue;
 		}
 
@@ -1280,7 +1280,7 @@ ULONG64 AbstractGridRepresentation::getCellFluidPhaseUnitIndices(ULONG64 * rockF
 		{
 			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->CellFluidPhaseUnits->PhaseUnitIndices)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, rockFluidUnitIndices);
+			hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, rockFluidUnitIndices);
 			return static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->CellFluidPhaseUnits->PhaseUnitIndices)->NullValue;
 		}
 
@@ -1335,7 +1335,7 @@ void AbstractGridRepresentation::getNodeIndicesOfTruncatedFaces(ULONG64 * nodeIn
 		{
 			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->TruncationCells->NodesPerTruncationFace->Elements)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, nodeIndices);
+			hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, nodeIndices);
 		}
 		else
 			throw logic_error("Not yet implemented");
@@ -1358,7 +1358,7 @@ void AbstractGridRepresentation::getCumulativeNodeCountPerTruncatedFace(ULONG64 
 		{
 			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->TruncationCells->NodesPerTruncationFace->CumulativeLength)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, nodeCountPerFace);
+			hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, nodeCountPerFace);
 		}
 		else if (rep->TruncationCells->NodesPerTruncationFace->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray)
 		{
@@ -1421,7 +1421,7 @@ void AbstractGridRepresentation::getTruncatedCellIndices(ULONG64* cellIndices) c
 		{
 			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->TruncationCells->ParentCellIndices)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, cellIndices);
+			hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, cellIndices);
 		}
 		else if (rep->TruncationCells->ParentCellIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray)
 		{
@@ -1451,7 +1451,7 @@ void AbstractGridRepresentation::getTruncatedFaceIndicesOfTruncatedCells(ULONG64
 		{
 			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->TruncationCells->TruncationFacesPerCell->Elements)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, faceIndices);
+			hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, faceIndices);
 		}
 		else
 			throw logic_error("Not yet implemented");
@@ -1475,7 +1475,7 @@ void AbstractGridRepresentation::getCumulativeTruncatedFaceCountPerTruncatedCell
 		{
 			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->TruncationCells->TruncationFacesPerCell->CumulativeLength)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, cumulativeFaceCountPerCell);
+			hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, cumulativeFaceCountPerCell);
 		}
 		else if (rep->TruncationCells->TruncationFacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray)
 		{
@@ -1526,7 +1526,7 @@ void AbstractGridRepresentation::getNonTruncatedFaceIndicesOfTruncatedCells(ULON
 		{
 			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->TruncationCells->LocalFacesPerCell->Elements)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, faceIndices);
+			hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, faceIndices);
 		}
 		else
 			throw logic_error("Not yet implemented");
@@ -1550,7 +1550,7 @@ void AbstractGridRepresentation::getCumulativeNonTruncatedFaceCountPerTruncatedC
 		{
 			gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(rep->TruncationCells->LocalFacesPerCell->CumulativeLength)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, cumulativeFaceCountPerCell);
+			hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, cumulativeFaceCountPerCell);
 		}
 		else if (rep->TruncationCells->LocalFacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray)
 		{
