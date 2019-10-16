@@ -2772,6 +2772,8 @@ namespace RESQML2_0_1_NS
 		std::string getMdDatumUuid() const;
 		RESQML2_NS::MdDatum * getMdDatum() const;
 		
+		void setMinimalGeometry(double startMd, double endMd);
+		
 		void setGeometry(double * controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		void setGeometry(double * controlPoints, double* controlPointParameters, unsigned int controlPointCount, int lineKind,
