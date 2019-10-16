@@ -201,7 +201,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Getter (in read only mode) of all the associated Wellbore frame representations
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<class WellboreFrameRepresentation *> getWellboreFrameRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class RESQML2_NS::WellboreFrameRepresentation *> getWellboreFrameRepresentationSet() const;
 
 		/**
 		* Get the count of wellbore frame representation which are associated with this wellbore trajectory.
@@ -214,7 +214,27 @@ namespace RESQML2_0_1_NS
 		* Necessary for now in SWIG context because I mm not sure if I can always wrap a vector of polymorphic class yet.
 		* Throw an out of bound exception if the index is superior or equal to the count of wellbore frame representation.
 		*/
-		DLL_IMPORT_OR_EXPORT class WellboreFrameRepresentation * getWellboreFrameRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT class RESQML2_NS::WellboreFrameRepresentation * getWellboreFrameRepresentation(unsigned int index) const;
+
+#if WITH_EXPERIMENTAL
+		/**
+		* Getter (in read only mode) of all the associated seismic wellbore frame representations
+		*/
+		DLL_IMPORT_OR_EXPORT std::vector<class RESQML2_2_NS::SeismicWellboreFrameRepresentation*> getSeismicWellboreFrameRepresentationSet() const;
+
+		/**
+		* Get the count of seismic wellbore frame representation which are associated with this wellbore trajectory.
+		* Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
+		*/
+		DLL_IMPORT_OR_EXPORT unsigned int getSeismicWellboreFrameRepresentationCount() const;
+
+		/**
+		* Get a particular seismic wellbore frame representation of this wellbore trajectory representation according to its position in the EPC document.
+		* Necessary for now in SWIG context because I mm not sure if I can always wrap a vector of polymorphic class yet.
+		* Throw an out of bound exception if the index is superior or equal to the count of seismic wellbore frame representation.
+		*/
+		DLL_IMPORT_OR_EXPORT class RESQML2_2_NS::SeismicWellboreFrameRepresentation* getSeismicWellboreFrameRepresentation(unsigned int index) const;
+#endif
 
 		/**
 		* Set the deviation survey which is the source of this trajectory.

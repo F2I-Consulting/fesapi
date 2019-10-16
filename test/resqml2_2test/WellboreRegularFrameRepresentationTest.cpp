@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1test/WellboreFrameRepresentationTest.h"
+#include "resqml2_2test/WellboreRegularFrameRepresentationTest.h"
 
 #include "catch.hpp"
 
@@ -30,30 +30,25 @@ under the License.
 
 using namespace std;
 using namespace COMMON_NS;
-using namespace RESQML2_0_1_NS;
-using namespace resqml2_0_1test;
+using namespace resqml2_2test;
 
-const char* WellboreFrameRepresentationTest::defaultUuid = "0047500b-cf08-47c0-89e0-84f330c7e132";
-const char* WellboreFrameRepresentationTest::defaultTitle = "Wellbore Frame Representation";
+const char* WellboreRegularFrameRepresentationTest::defaultUuid = "7cc1e441-ad2f-4eb5-88e6-5c5dfc7aff51";
+const char* WellboreRegularFrameRepresentationTest::defaultTitle = "Wellbore Regular Frame Representation";
 
-WellboreFrameRepresentationTest::WellboreFrameRepresentationTest(const string & epcDocPath)
-	: commontest::AbstractObjectTest(epcDocPath) {
+WellboreRegularFrameRepresentationTest::WellboreRegularFrameRepresentationTest(const string & repoPath)
+	: commontest::AbstractObjectTest(repoPath) {
 }
 
-WellboreFrameRepresentationTest::WellboreFrameRepresentationTest(DataObjectRepository * repo, bool init)
+WellboreRegularFrameRepresentationTest::WellboreRegularFrameRepresentationTest(DataObjectRepository * repo)
 	: commontest::AbstractObjectTest(repo) {
-	if (init)
-		initRepo();
-	else
-		readRepo();
 }
 
-void WellboreFrameRepresentationTest::initRepoHandler() {
+void WellboreRegularFrameRepresentationTest::initRepoHandler() {
 	// creating dependencies
-	WellboreTrajectoryRepresentationTest trajTest(repo, true);
+	resqml2_0_1test::WellboreTrajectoryRepresentationTest trajTest(repo, true);
 
-	WellboreInterpretation * interp = static_cast<WellboreInterpretation*>(repo->getDataObjectByUuid(WellboreInterpretationTest::defaultUuid));
-	WellboreTrajectoryRepresentation * traj = static_cast<WellboreTrajectoryRepresentation*>(repo->getDataObjectByUuid(WellboreTrajectoryRepresentationTest::defaultUuid));
+	RESQML2_0_1_NS::WellboreInterpretation * interp = repo->getDataObjectByUuid<RESQML2_0_1_NS::WellboreInterpretation>(resqml2_0_1test::WellboreInterpretationTest::defaultUuid);
+	RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj = repo->getDataObjectByUuid<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>(resqml2_0_1test::WellboreTrajectoryRepresentationTest::defaultUuid);
 
 	// getting the hdf proxy
 	COMMON_NS::AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
@@ -65,29 +60,16 @@ void WellboreFrameRepresentationTest::initRepoHandler() {
 #else
 	RESQML2_NS::WellboreFrameRepresentation* w1i1FrameRep = repo->createWellboreFrameRepresentation(interp, defaultUuid, defaultTitle, traj);
 #endif
-	double logMds[5] = { 0, 250, 500, 750, 1200 };
-	w1i1FrameRep->setMdValues(logMds, 5, hdfProxy);
+	w1i1FrameRep->setMdValues(0, 200, 6);
 }
 
-void WellboreFrameRepresentationTest::readRepoHandler() {
+void WellboreRegularFrameRepresentationTest::readRepoHandler() {
 	RESQML2_NS::WellboreFrameRepresentation* w1i1FrameRep = repo->getDataObjectByUuid<RESQML2_NS::WellboreFrameRepresentation>(defaultUuid);
 	REQUIRE(w1i1FrameRep != nullptr);
 
-	WellboreTrajectoryRepresentation* traj = static_cast<WellboreTrajectoryRepresentation*>(repo->getDataObjectByUuid(WellboreTrajectoryRepresentationTest::defaultUuid));
-	RESQML2_NS::WellboreFrameRepresentation* w1i1FrameRepFromTraj = traj->getWellboreFrameRepresentation(0);
-	REQUIRE(w1i1FrameRep->getUuid() == w1i1FrameRepFromTraj->getUuid());
+	REQUIRE(w1i1FrameRep->areMdValuesRegularlySpaced());
+	REQUIRE(w1i1FrameRep->getMdValuesCount() == 6);
 
-	REQUIRE(w1i1FrameRep->areMdValuesRegularlySpaced() == false);
-	REQUIRE(w1i1FrameRep->getMdValuesCount() == 5);
-
-	double* logMds = new double[w1i1FrameRep->getMdValuesCount()];
-
-	w1i1FrameRep->getMdAsDoubleValues(logMds);
-	REQUIRE(logMds[0] == .0);
-	REQUIRE(logMds[1] == 250);
-	REQUIRE(logMds[2] == 500);
-	REQUIRE(logMds[3] == 750);
-	REQUIRE(logMds[4] == 1200);
-
-	delete[] logMds;
+	REQUIRE(w1i1FrameRep->getMdFirstValue() == .0);
+	REQUIRE(w1i1FrameRep->getMdConstantIncrementValue() == 200);
 }

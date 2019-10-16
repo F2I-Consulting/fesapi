@@ -81,6 +81,7 @@ namespace RESQML2_NS
 	%nspace RESQML2_NS::RepresentationSetRepresentation;
 	%nspace RESQML2_NS::SubRepresentation;
 	%nspace RESQML2_NS::TimeSeries;
+	%nspace RESQML2_NS::WellboreFrameRepresentation;
 #endif
 
 namespace gsoap_resqml2_0_1
@@ -635,5 +636,26 @@ namespace RESQML2_NS
 		) const;
 	};
 	
+	//************************************
+	//************** Well ****************
+	//************************************
+
+	class WellboreFrameRepresentation : public RESQML2_NS::AbstractRepresentation
+	{
+	public:
+		void setMdValues(double const * mdValues, unsigned int mdValueCount, class COMMON_NS::AbstractHdfProxy* proxy);
+		void setMdValues(double firstMdValue, double incrementMdValue, unsigned int mdValueCount);
+
+		bool areMdValuesRegularlySpaced() const;
+		double getMdConstantIncrementValue() const;
+		double getMdFirstValue() const;
+		unsigned int getMdValuesCount() const;
+		AbstractValuesProperty::hdfDatatypeEnum getMdHdfDatatype() const;
+		void getMdAsDoubleValues(double * values) const;
+		void getMdAsFloatValues(float * values) const;
+
+		std::string getWellboreTrajectoryUuid() const;
+		class RESQML2_0_1_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
+	};
 }
 

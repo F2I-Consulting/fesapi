@@ -42,11 +42,13 @@ namespace RESQML2_NS
 		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreFrameRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap)
 		{}
 
+#if WITH_EXPERIMENTAL
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		WellboreFrameRepresentation(gsoap_eml2_2::resqml22__WellboreFrameRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap)
 		{}
+#endif
 
 	public:
 		~WellboreFrameRepresentation() {}
@@ -57,7 +59,7 @@ namespace RESQML2_NS
 		* @param mdValueCount	The MD values count.
 		* @param proxy			The HDF proxy where to write the MD values. It must be already opened for writing and won't be closed in this method.
 		*/
-		DLL_IMPORT_OR_EXPORT void setMdValues(double * mdValues, unsigned int mdValueCount, COMMON_NS::AbstractHdfProxy* proxy);
+		DLL_IMPORT_OR_EXPORT void setMdValues(double const * mdValues, unsigned int mdValueCount, COMMON_NS::AbstractHdfProxy* proxy);
 
 		/**
 		* Set the MD values of this WellboreFrameRepresentation frame as a regular discretization along the wellbore trajectory.
@@ -65,7 +67,7 @@ namespace RESQML2_NS
 		* @param incrementMdValue	The increment value between two Measured depth.
 		* @param mdValueCount		The count of md values in this WellboreFrameRepresentation.
 		*/
-		DLL_IMPORT_OR_EXPORT void setMdValues(const double & firstMdValue, const double & incrementMdValue, const unsigned int & mdValueCount);
+		DLL_IMPORT_OR_EXPORT void setMdValues(double firstMdValue, double incrementMdValue, unsigned int mdValueCount);
 
 		/**
 		* Indicates either the MDs are regularly spaced or not (useful for optimization)
@@ -117,6 +119,11 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void getMdAsFloatValues(float * values) const;
 
 		/**
+		* Get the associated resqml wellbore trajectory data object reference
+		*/
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getWellboreTrajectoryDor() const;
+
+		/**
 		* Get the associated resqml wellbore trajectory uuid
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getWellboreTrajectoryUuid() const;
@@ -126,10 +133,19 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT class RESQML2_0_1_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
 
+		/**
+		* Get the associated resqml local crs data object reference
+		*/
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const;
 
+		/**
+		* Get the associated hdf proxy data object reference
+		*/
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
+
+		protected:
+			void loadTargetRelationships();
 	};
 }

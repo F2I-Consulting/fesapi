@@ -61,7 +61,7 @@ namespace COMMON_NS
 		* Get the count of extra metadata in the instance.
 		*/
 		unsigned int getExtraMetadataCountV2_0_1() const;
-
+		
 		/**
 		* Get the key of a string value pair at a particular index in the extra metadata set
 		*/
@@ -71,6 +71,23 @@ namespace COMMON_NS
 		* Get the string value of a string value pair at a particular index in the extra metadata set
 		*/
 		std::string getExtraMetadataStringValueAtIndexV2_0_1(unsigned int index) const;
+
+#if WITH_EXPERIMENTAL
+		/**
+		* Get the count of extra metadata in the instance.
+		*/
+		unsigned int getExtraMetadataCountV2_2() const;
+
+		/**
+		* Get the key of a string value pair at a particular index in the extra metadata set
+		*/
+		std::string getExtraMetadataKeyAtIndexV2_2(unsigned int index) const;
+
+		/**
+		* Get the string value of a string value pair at a particular index in the extra metadata set
+		*/
+		std::string getExtraMetadataStringValueAtIndexV2_2(unsigned int index) const;
+#endif
 
 	protected:
 
@@ -320,7 +337,7 @@ namespace COMMON_NS
 		/**
 		* Get the version of the XML namespace (i.e. WITSML, RESQML, PRODML) for the XML serialization of this instance
 		*/
-		virtual std::string getXmlNamespaceVersion() const;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespaceVersion() const;
 
 		/**
 		* Get the content type of the instance according to EPC recommendation

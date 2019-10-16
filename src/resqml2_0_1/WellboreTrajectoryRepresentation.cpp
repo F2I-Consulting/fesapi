@@ -28,6 +28,10 @@ under the License.
 #include "resqml2/AbstractLocal3dCrs.h"
 #include "common/AbstractHdfProxy.h"
 
+#if WITH_EXPERIMENTAL
+#include "resqml2_2/SeismicWellboreFrameRepresentation.h"
+#endif
+
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
@@ -413,9 +417,9 @@ DeviationSurveyRepresentation* WellboreTrajectoryRepresentation::getDeviationSur
 	return dsDor == nullptr ? nullptr : repository->getDataObjectByUuid<DeviationSurveyRepresentation>(dsDor->UUID);
 }
 
-std::vector<WellboreFrameRepresentation *> WellboreTrajectoryRepresentation::getWellboreFrameRepresentationSet() const
+std::vector<RESQML2_NS::WellboreFrameRepresentation *> WellboreTrajectoryRepresentation::getWellboreFrameRepresentationSet() const
 {
-	return getRepository()->getSourceObjects<WellboreFrameRepresentation>(this);
+	return getRepository()->getSourceObjects<RESQML2_NS::WellboreFrameRepresentation>(this);
 }
 
 unsigned int WellboreTrajectoryRepresentation::getWellboreFrameRepresentationCount() const
@@ -423,9 +427,9 @@ unsigned int WellboreTrajectoryRepresentation::getWellboreFrameRepresentationCou
 	return getWellboreFrameRepresentationSet().size();
 }
 
-WellboreFrameRepresentation * WellboreTrajectoryRepresentation::getWellboreFrameRepresentation(unsigned int index) const
+RESQML2_NS::WellboreFrameRepresentation * WellboreTrajectoryRepresentation::getWellboreFrameRepresentation(unsigned int index) const
 {
-	const std::vector<WellboreFrameRepresentation *>& wfrs = getWellboreFrameRepresentationSet();
+	const std::vector<RESQML2_NS::WellboreFrameRepresentation *>& wfrs = getWellboreFrameRepresentationSet();
 	
 	if (index >= wfrs.size()) {
 		throw out_of_range("The index if out of range");
@@ -433,3 +437,26 @@ WellboreFrameRepresentation * WellboreTrajectoryRepresentation::getWellboreFrame
 
 	return wfrs[index];
 }
+
+#if WITH_EXPERIMENTAL
+std::vector<RESQML2_2_NS::SeismicWellboreFrameRepresentation*> WellboreTrajectoryRepresentation::getSeismicWellboreFrameRepresentationSet() const
+{
+	return getRepository()->getSourceObjects<RESQML2_2_NS::SeismicWellboreFrameRepresentation>(this);
+}
+
+unsigned int WellboreTrajectoryRepresentation::getSeismicWellboreFrameRepresentationCount() const
+{
+	return getSeismicWellboreFrameRepresentationSet().size();
+}
+
+RESQML2_2_NS::SeismicWellboreFrameRepresentation* WellboreTrajectoryRepresentation::getSeismicWellboreFrameRepresentation(unsigned int index) const
+{
+	const std::vector<RESQML2_2_NS::SeismicWellboreFrameRepresentation*>& swfrs = getSeismicWellboreFrameRepresentationSet();
+
+	if (index >= swfrs.size()) {
+		throw out_of_range("The index if out of range");
+	}
+
+	return swfrs[index];
+}
+#endif

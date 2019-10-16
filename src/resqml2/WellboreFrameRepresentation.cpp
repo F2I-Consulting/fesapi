@@ -24,42 +24,27 @@ under the License.
 
 #include "resqml2/AbstractLocal3dCrs.h"
 #include "common/AbstractHdfProxy.h"
+#include "tools/Misc.h"
 
 using namespace std;
 using namespace RESQML2_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace gsoap_eml2_2;
 
-void WellboreFrameRepresentation::getXyzPointsOfPatch(const unsigned int& patchIndex, double* xyzPoints) const
+void WellboreFrameRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const
 {
 	if (patchIndex >= getPatchCount())
 		throw range_error("The index of the patch is not in the allowed range of patch.");
 
-	// TODO: la méthode getPointGeometry2_0_1 lève une exception ou retourne nullptr dans WellboreFrameRepresentation et n'est pas surchargée dans ses classes dérivée
-	// je n'ai pas mis à jour cette méthode pour les WellboreFrameRepresentation 2.2
-	resqml20__PointGeometry* pointGeom = getPointGeometry2_0_1(patchIndex);
-	if (pointGeom != nullptr && pointGeom->Points->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array)
-	{
-		eml20__Hdf5Dataset const* dataset = static_cast<resqml20__Point3dHdf5Array*>(pointGeom->Points)->Coordinates;
-		COMMON_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID);
-		if (hdfProxy == nullptr) {
-			throw invalid_argument("The HDF proxy is missing.");
-		}
-		hdfProxy->readArrayNdOfDoubleValues(dataset->PathInHdfFile, xyzPoints);
-	}
-	else {
-		throw invalid_argument("The geometry of the representation either does not exist or it is not an explicit one.");
-	}
+	throw logic_error("Not implemented yet");
 }
 
-void WellboreFrameRepresentation::setMdValues(double* mdValues, unsigned int mdValueCount, COMMON_NS::AbstractHdfProxy* proxy)
+void WellboreFrameRepresentation::setMdValues(double const * mdValues, unsigned int mdValueCount, COMMON_NS::AbstractHdfProxy* proxy)
 {
 	getRepository()->addRelationship(this, proxy);
 
 	string frameUuid;
-#if WITH_EXPERIMENTAL
 	if (gsoapProxy2_0_1 != nullptr) {
-#endif
 		_resqml20__WellboreFrameRepresentation* frame = static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
 		frameUuid = frame->uuid;
 
@@ -72,8 +57,8 @@ void WellboreFrameRepresentation::setMdValues(double* mdValues, unsigned int mdV
 		frame->NodeMd = xmlMdValues;
 
 		frame->NodeCount = mdValueCount;
-#if WITH_EXPERIMENTAL
 	}
+#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_2 != nullptr) {
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_2);
 		frameUuid = frame->uuid;
@@ -91,10 +76,10 @@ void WellboreFrameRepresentation::setMdValues(double* mdValues, unsigned int mdV
 
 		frame->NodeCount = mdValueCount;
 	}
+#endif
 	else {
 		throw invalid_argument("Not implemented yet");
 	}
-#endif
 
 	// HDF
 	hsize_t dim[] = { mdValueCount };
@@ -105,11 +90,9 @@ void WellboreFrameRepresentation::setMdValues(double* mdValues, unsigned int mdV
 		dim, 1);
 }
 
-void WellboreFrameRepresentation::setMdValues(const double& firstMdValue, const double& incrementMdValue, const unsigned int& mdValueCount)
+void WellboreFrameRepresentation::setMdValues(double firstMdValue, double incrementMdValue, unsigned int mdValueCount)
 {
-#if WITH_EXPERIMENTAL
 	if (gsoapProxy2_0_1 != nullptr) {
-#endif
 		_resqml20__WellboreFrameRepresentation* frame = static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
 
 		// XML
@@ -122,8 +105,8 @@ void WellboreFrameRepresentation::setMdValues(const double& firstMdValue, const 
 		frame->NodeMd = xmlMdValues;
 
 		frame->NodeCount = mdValueCount;
-#if WITH_EXPERIMENTAL
 	}
+#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_2 != nullptr) {
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_2);
 
@@ -138,27 +121,24 @@ void WellboreFrameRepresentation::setMdValues(const double& firstMdValue, const 
 
 		frame->NodeCount = mdValueCount;
 	}
+#endif
 	else {
 		throw invalid_argument("Not implemented yet");
 	}
-#endif
 }
 
 bool WellboreFrameRepresentation::areMdValuesRegularlySpaced() const
 {
-#if WITH_EXPERIMENTAL
 	if (gsoapProxy2_0_1 != nullptr) {
-#endif
 		return static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleLatticeArray;
-#if WITH_EXPERIMENTAL
 	}
+#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_2 != nullptr) {
 		return static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_2)->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__FloatingPointLatticeArray;
 	}
-	else {
-		throw invalid_argument("Not implemented yet");
-	}
 #endif
+	
+	throw invalid_argument("Not implemented yet");
 }
 	
 double WellboreFrameRepresentation::getMdConstantIncrementValue() const
@@ -167,26 +147,21 @@ double WellboreFrameRepresentation::getMdConstantIncrementValue() const
 		throw invalid_argument("The MD values are not regularly spaced.");
 	}
 
-#if WITH_EXPERIMENTAL
 	if (gsoapProxy2_0_1 != nullptr) {
-#endif
 		return static_cast<resqml20__DoubleLatticeArray*>(static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->NodeMd)->Offset[0]->Value;
-#if WITH_EXPERIMENTAL
 	}
+#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_2 != nullptr) {
 		return static_cast<eml22__FloatingPointLatticeArray*>(static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_2)->NodeMd)->Offset[0]->Value;
 	}
-	else {
-		throw invalid_argument("Not implemented yet");
-	}
 #endif
+
+	throw invalid_argument("Not implemented yet");
 }
 
 double WellboreFrameRepresentation::getMdFirstValue() const
 {
-#if WITH_EXPERIMENTAL
 	if (gsoapProxy2_0_1 != nullptr) {
-#endif
 		_resqml20__WellboreFrameRepresentation* frame = static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array)
 		{
@@ -208,8 +183,8 @@ double WellboreFrameRepresentation::getMdFirstValue() const
 		}
 		else
 			throw logic_error("The array structure of MD is not supported?");
-#if WITH_EXPERIMENTAL
 	}
+#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_2 != nullptr) {
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_2);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__DoubleExternalArray)
@@ -233,33 +208,28 @@ double WellboreFrameRepresentation::getMdFirstValue() const
 		else
 			throw logic_error("The array structure of MD is not supported?");
 	}
-	else {
-		throw invalid_argument("Not implemented yet");
-	}
 #endif
+
+	throw invalid_argument("Not implemented yet");
 }
 
 unsigned int WellboreFrameRepresentation::getMdValuesCount() const
 {
-#if WITH_EXPERIMENTAL
 	if (gsoapProxy2_0_1 != nullptr) {
-#endif
 		return static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->NodeCount;
-
 	}
+#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_2 != nullptr) {
 		return static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_2)->NodeCount;
 	}
-	else {
-		throw invalid_argument("Not implemented yet");
-	}
+#endif
+
+	throw invalid_argument("Not implemented yet");
 }
 
 RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum WellboreFrameRepresentation::getMdHdfDatatype() const
 {
-#if WITH_EXPERIMENTAL
 	if (gsoapProxy2_0_1 != nullptr) {
-#endif
 		_resqml20__WellboreFrameRepresentation* frame = static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array)
 		{
@@ -296,8 +266,8 @@ RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum WellboreFrameRepresentation:
 		}
 
 		return RESQML2_NS::AbstractValuesProperty::UNKNOWN; // unknwown datatype...
-#if WITH_EXPERIMENTAL
 	}
+#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_2 != nullptr) {
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_2);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__DoubleExternalArray)
@@ -336,17 +306,14 @@ RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum WellboreFrameRepresentation:
 
 		return RESQML2_NS::AbstractValuesProperty::UNKNOWN; // unknwown datatype...
 	}
-	else {
-		throw invalid_argument("Not implemented yet");
-	}
 #endif
+
+	throw invalid_argument("Not implemented yet");
 }
 
 void WellboreFrameRepresentation::getMdAsDoubleValues(double* values) const
 {
-#if WITH_EXPERIMENTAL
 	if (gsoapProxy2_0_1 != nullptr) {
-#endif
 		_resqml20__WellboreFrameRepresentation* frame = static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array)
 		{
@@ -367,8 +334,8 @@ void WellboreFrameRepresentation::getMdAsDoubleValues(double* values) const
 		else {
 			throw logic_error("The array structure of MD is not supported?");
 		}
-#if WITH_EXPERIMENTAL
 	}
+#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_2 != nullptr) {
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_2);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__DoubleExternalArray)
@@ -391,17 +358,15 @@ void WellboreFrameRepresentation::getMdAsDoubleValues(double* values) const
 			throw logic_error("The array structure of MD is not supported?");
 		}
 	}
+#endif
 	else {
 		throw invalid_argument("Not implemented yet");
 	}
-#endif
 }
 
 void WellboreFrameRepresentation::getMdAsFloatValues(float* values) const
 {
-#if WITH_EXPERIMENTAL
 	if (gsoapProxy2_0_1 != nullptr) {
-#endif
 		_resqml20__WellboreFrameRepresentation* frame = static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array)
 		{
@@ -422,8 +387,8 @@ void WellboreFrameRepresentation::getMdAsFloatValues(float* values) const
 		else {
 			throw logic_error("The array structure of MD is not supported?");
 		}
-#if WITH_EXPERIMENTAL
 	}
+#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_2 != nullptr) {
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_2);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__DoubleExternalArray)
@@ -446,24 +411,39 @@ void WellboreFrameRepresentation::getMdAsFloatValues(float* values) const
 			throw logic_error("The array structure of MD is not supported?");
 		}
 	}
+#endif
 	else {
 		throw invalid_argument("Not implemented yet");
 	}
+}
+
+gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getWellboreTrajectoryDor() const
+{
+	if (gsoapProxy2_0_1 != nullptr) {
+		return static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->Trajectory;
+	}
+#if WITH_EXPERIMENTAL
+	else if (gsoapProxy2_2 != nullptr) {
+		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj = getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>(static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_2)->Trajectory->Uuid);
+		return traj->newResqmlReference();
+	}
 #endif
+
+	throw invalid_argument("Not implemented yet");
 }
 
 std::string WellboreFrameRepresentation::getWellboreTrajectoryUuid() const
 {
-#if WITH_EXPERIMENTAL
 	if (gsoapProxy2_0_1 != nullptr) {
-#endif
 		return static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->Trajectory->UUID;
-#if WITH_EXPERIMENTAL
 	}
+#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_2 != nullptr) {
 		return static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_2)->Trajectory->Uuid;
 	}
 #endif
+
+	throw invalid_argument("Not implemented yet");
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getLocalCrsDor(unsigned int patchIndex) const
@@ -473,35 +453,31 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getL
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getHdfProxyDor() const
 {
-#if WITH_EXPERIMENTAL
 	if (gsoapProxy2_0_1 != nullptr) {
-#endif
 		_resqml20__WellboreFrameRepresentation* frame = static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array)
 		{
 			return static_cast<resqml20__DoubleHdf5Array*>(frame->NodeMd)->Values->HdfProxy;
 		}
-#if WITH_EXPERIMENTAL
 	}
+#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_2 != nullptr) {
 		_resqml22__WellboreFrameRepresentation* frame = static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_2);
 		if (frame->NodeMd->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__DoubleExternalArray)
 		{
-			// TODO: ici le problème vient du fait que j'ai une référence 22 dans dataset->ExternalFileProxy[0]->EpcExternalPartReference
 			eml22__ExternalDataset const* dataset = static_cast<eml22__DoubleExternalArray*>(frame->NodeMd)->Values;
-			COMMON_NS::AbstractHdfProxy* hdfProxy = getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->ExternalFileProxy[0]->EpcExternalPartReference->Uuid);
-			return hdfProxy->newResqmlReference();
+			return misc::eml22ToEml20Reference(dataset->ExternalFileProxy[0]->EpcExternalPartReference, gsoapProxy2_2->soap);
 		}
 	}
+#endif
 	else {
 		throw invalid_argument("Not implemented yet");
 	}
-#endif
 
 	return nullptr;
 }
 
-ULONG64 WellboreFrameRepresentation::getXyzPointCountOfPatch(const unsigned int& patchIndex) const
+ULONG64 WellboreFrameRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
 		throw range_error("The patch index is out of range");
@@ -510,19 +486,35 @@ ULONG64 WellboreFrameRepresentation::getXyzPointCountOfPatch(const unsigned int&
 	return getMdValuesCount();
 }
 
+
+
 RESQML2_0_1_NS::WellboreTrajectoryRepresentation* WellboreFrameRepresentation::getWellboreTrajectory() const
 {
-#if WITH_EXPERIMENTAL
 	if (gsoapProxy2_0_1 != nullptr) {
-#endif
 		return getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>(static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->Trajectory->UUID);
-#if WITH_EXPERIMENTAL
 	}
+#if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_2 != nullptr) {
 		return getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>(static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_2)->Trajectory->Uuid);
 	}
-	else {
-		throw invalid_argument("Not implemented yet");
-	}
 #endif
+
+	throw invalid_argument("Not implemented yet");
+}
+
+void WellboreFrameRepresentation::loadTargetRelationships()
+{
+	AbstractRepresentation::loadTargetRelationships();
+
+	gsoap_resqml2_0_1::eml20__DataObjectReference const* dor = getWellboreTrajectoryDor();
+	// todo the trajectory should be resqml2 instead of resqml2_0_1
+	RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj = getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>(dor->UUID);
+	if (traj == nullptr) { // partial transfer
+		getRepository()->createPartial(dor);
+		traj = getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>(dor->UUID);
+	}
+	if (traj == nullptr) {
+		throw invalid_argument("The DOR looks invalid.");
+	}
+	repository->addRelationship(this, traj);
 }

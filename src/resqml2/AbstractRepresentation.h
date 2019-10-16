@@ -43,10 +43,12 @@ namespace RESQML2_NS
 		*/
 		AbstractRepresentation(gsoap_resqml2_0_1::resqml20__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
+#if WITH_EXPERIMENTAL
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		AbstractRepresentation(gsoap_eml2_2::resqml22__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+#endif
 		
 		/**
 		* Get the point geometry of a specific patch of the representation.

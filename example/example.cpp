@@ -2,6 +2,7 @@
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
+distributed with this work for additional information
 regarding copyright ownership.  The ASF licenses this file
 to you under the Apache License, Version 2.0 (the
 "License"; you may not use this file except in compliance
@@ -90,7 +91,7 @@ under the License.
 #include "resqml2_0_1/Activity.h"
 #include "resqml2_0_1/ActivityTemplate.h"
 
-#ifdef WITH_EXPERIMENTAL
+#if WITH_EXPERIMENTAL
 #include "common/GraphicalInformationSet.h"
 #include "resqml2_2/DiscreteColorMap.h"
 #include "resqml2_2/ContinuousColorMap.h"
@@ -217,11 +218,11 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHd
 	w1i1TrajRep->setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, 0, hdfProxy);
 
 	// WellboreFeature frame
-	WellboreFrameRepresentation* w1i1FrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "d873e243-d893-41ab-9a3e-d20b851c099f", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
+	RESQML2_NS::WellboreFrameRepresentation* w1i1FrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "d873e243-d893-41ab-9a3e-d20b851c099f", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
 	double logMds[5] = { 0, 250, 500, 750, 1000 };
 	w1i1FrameRep->setMdValues(logMds, 5, hdfProxy);
 
-	WellboreFrameRepresentation* w1i1RegularFrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
+	RESQML2_NS::WellboreFrameRepresentation* w1i1RegularFrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
 	w1i1RegularFrameRep->setMdValues(0, 200, 6);
 
 	RESQML2_NS::PropertyKind * unitNumberPropType = pck->createPropertyKind("358aac23-b377-4349-9e72-bff99a6edf34", "Unit number", "urn:resqml:F2I.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__discrete);
@@ -231,12 +232,27 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHd
 	char unitNumbers[5] = { 0, 1, 2, 3, 4 };
 	discreteProp->pushBackCharHdf5Array1dOfValues(unitNumbers, 5, hdfProxy, -1);
 
+#if WITH_EXPERIMENTAL
 	// SeismicWellboreFrameRepresentation
-	RESQML2_2_NS::SeismicWellboreFrameRepresentation* w1i1SeismicFrameRep = pck->createSeismicWellboreFrameRepresentation(wellbore1Interp1, "dcbeea2e-8327-4c5b-97e3-bdced0680de5", "Wellbore1 Interp1 SeismicFrameRep", w1i1TrajRep);
+	RESQML2_2_NS::SeismicWellboreFrameRepresentation* w1i1SeismicFrameRep = pck->createSeismicWellboreFrameRepresentation(
+		wellbore1Interp1, "dcbeea2e-8327-4c5b-97e3-bdced0680de5", "Wellbore1 Interp1 SeismicFrameRep",
+		w1i1TrajRep,
+		0.,
+		0.,
+		localTime3dCrs);
 	w1i1SeismicFrameRep->setMdValues(logMds, 5, hdfProxy);
+	double logTimes[5] = { 0., 10., 20., 25., 30. };
+	w1i1SeismicFrameRep->setTimeValues(logTimes, 5, hdfProxy);
 
-	RESQML2_2_NS::SeismicWellboreFrameRepresentation* w1i1RegularSeismicFrameRep = pck->createSeismicWellboreFrameRepresentation(wellbore1Interp1, "7f1b75ff-1226-4c0a-a531-8f71661da419", "Wellbore1 Interp1 Regular SeismicFrameRep", w1i1TrajRep);
+	RESQML2_2_NS::SeismicWellboreFrameRepresentation* w1i1RegularSeismicFrameRep = pck->createSeismicWellboreFrameRepresentation(
+		wellbore1Interp1, "7f1b75ff-1226-4c0a-a531-8f71661da419", "Wellbore1 Interp1 Regular SeismicFrameRep",
+		w1i1TrajRep,
+		0.,
+		0.,
+		localTime3dCrs);
 	w1i1RegularSeismicFrameRep->setMdValues(0, 200, 6);
+	w1i1RegularSeismicFrameRep->setTimeValues(0., 10., 6);
+#endif
 }
 
 void serializePerforations(COMMON_NS::DataObjectRepository * pck)
@@ -267,7 +283,7 @@ void serializePerforations(COMMON_NS::DataObjectRepository * pck)
 	wellboreCompletion->setPerforationHistoryStartDate(1, 1, 1514764800);
 }
 
-#ifdef WITH_EXPERIMENTAL
+#if WITH_EXPERIMENTAL
 void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, COMMON_NS::AbstractHdfProxy * hdfProxy)
 {
 	COMMON_NS::GraphicalInformationSet* graphicalInformationSet = repo->createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
@@ -1888,7 +1904,7 @@ bool serialize(const string & filePath)
 	serializeRepresentationSetRepresentation(&repo, hdfProxy);
 	serializeFluidBoundary(repo, hdfProxy);
 	serializeRockFluidOrganization(repo, hdfProxy);
-#ifdef WITH_EXPERIMENTAL
+#if WITH_EXPERIMENTAL
 	serializeGraphicalInformationSet(&repo, hdfProxy);
 #endif
 	// Add an extended core property before to serialize
@@ -3336,7 +3352,7 @@ void deserializePerforations(COMMON_NS::DataObjectRepository & pck)
 	}
 }
 
-#ifdef WITH_EXPERIMENTAL
+#if WITH_EXPERIMENTAL
 void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 {
 	std::cout << "GRAPHICAL INFORMATIONS" << std::endl;
@@ -3806,7 +3822,7 @@ void deserialize(const string & inputFile)
 		delete[] xyzPt;
 		std::cout << "LOGS" << endl;
 		std::cout << "--------------------------------------------------" << std::endl;
-		std::vector<WellboreFrameRepresentation *> wellboreFrameSet = wellboreCubicTrajSet[i]->getWellboreFrameRepresentationSet();
+		std::vector<RESQML2_NS::WellboreFrameRepresentation *> wellboreFrameSet = wellboreCubicTrajSet[i]->getWellboreFrameRepresentationSet();
 		for (size_t j = 0; j < wellboreFrameSet.size(); j++)
 		{
 			showAllMetadata(wellboreFrameSet[j]);
@@ -3827,7 +3843,51 @@ void deserialize(const string & inputFile)
 				std::cout << "Hdf datatype is NATIVE FLOAT" << std::endl;
 			else if (wellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN)
 				std::cout << "Hdf datatype is UNKNOWN" << std::endl;
+			std::cout << std::endl;
 		}
+#if WITH_EXPERIMENTAL
+		std::vector<RESQML2_2_NS::SeismicWellboreFrameRepresentation*> seismicWellboreFrameSet = wellboreCubicTrajSet[i]->getSeismicWellboreFrameRepresentationSet();
+		for (size_t j = 0; j < seismicWellboreFrameSet.size(); j++)
+		{
+			showAllMetadata(seismicWellboreFrameSet[j]);
+			std::cout << "Value Count : " << seismicWellboreFrameSet[j]->getMdValuesCount() << endl;
+			if (seismicWellboreFrameSet[j]->areMdValuesRegularlySpaced())
+			{
+				std::cout << "Regularly spaced" << std::endl;
+				std::cout << "First Value : " << seismicWellboreFrameSet[j]->getMdFirstValue() << endl;
+				std::cout << "Increment : " << seismicWellboreFrameSet[j]->getMdConstantIncrementValue() << endl;
+			}
+			else
+			{
+				std::cout << "Iregularly spaced" << std::endl;
+			}
+			if (seismicWellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::DOUBLE)
+				std::cout << "Hdf datatype is NATIVE DOUBLE" << std::endl;
+			else if (seismicWellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::FLOAT)
+				std::cout << "Hdf datatype is NATIVE FLOAT" << std::endl;
+			else if (seismicWellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN)
+				std::cout << "Hdf datatype is UNKNOWN" << std::endl;
+			std::cout << "Seismic reference datum : " << seismicWellboreFrameSet[j]->getSeismicReferenceDatum() << std::endl;
+			std::cout << "Weathering velocity : " << seismicWellboreFrameSet[j]->getWeatheringVelocity() << std::endl;
+			if (seismicWellboreFrameSet[j]->areTimeValuesRegularlySpaced())
+			{
+				std::cout << "Time values regularly spaced" << std::endl;
+				std::cout << "First Value : " << seismicWellboreFrameSet[j]->getTimeFirstValue() << endl;
+				std::cout << "Increment : " << seismicWellboreFrameSet[j]->getTimeConstantIncrementValue() << endl;
+			}
+			else
+			{
+				std::cout << "Time values iregularly spaced" << std::endl;
+			}
+			if (seismicWellboreFrameSet[j]->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::DOUBLE)
+				std::cout << "Hdf datatype is NATIVE DOUBLE" << std::endl;
+			else if (seismicWellboreFrameSet[j]->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::FLOAT)
+				std::cout << "Hdf datatype is NATIVE FLOAT" << std::endl;
+			else if (seismicWellboreFrameSet[j]->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN)
+				std::cout << "Hdf datatype is UNKNOWN" << std::endl;
+			std::cout << std::endl;
+		}
+#endif
 	}
 
 	std::cout << endl << "IJK GRID REP" << endl;
@@ -4216,7 +4276,7 @@ void deserialize(const string & inputFile)
 		}
 	}
 
-#ifdef WITH_EXPERIMENTAL
+#if WITH_EXPERIMENTAL
 	// GRAPHICAL INFORMATION
 	deserializeGraphicalInformationSet(repo);
 #endif
