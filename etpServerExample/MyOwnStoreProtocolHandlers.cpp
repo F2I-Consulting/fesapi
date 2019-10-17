@@ -30,12 +30,12 @@ under the License.
 MyOwnStoreProtocolHandlers::MyOwnStoreProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, COMMON_NS::DataObjectRepository* repo_) :
 	ETP_NS::StoreHandlers(mySession), repo(repo_) {}
 
-void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & getO, int64_t correlationId)
+void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & msg, int64_t correlationId)
 {
 	Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse objResponse;
 
 	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
-	for (const auto & pair : getO.m_uris) {
+	for (const auto & pair : msg.m_uris) {
 		std::cout << "Store received URI : " << pair.second << std::endl;
 
 		try
@@ -65,16 +65,22 @@ void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::
 	}
 }
 
-void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & putDataObjects, int64_t correlationId)
+void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::Protocol::Store::PutDataObjects & msg, int64_t correlationId)
 {
-	for (const auto & dataObject : putDataObjects.m_dataObjects) {
-		std::cout << "Store received data object : " << dataObject.second.m_resource.m_contentType << " (" << dataObject.second.m_resource.m_uri << ")" << std::endl;
+	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
+	for (const auto & pair : msg.m_dataObjects) {
+		std::cout << "Store received data object : " << pair.second.m_resource.m_contentType << " (" << pair.second.m_resource.m_uri << ")" << std::endl;
 
-		COMMON_NS::AbstractObject* importedObj = repo->addOrReplaceGsoapProxy(dataObject.second.m_data, dataObject.second.m_resource.m_contentType);
+		COMMON_NS::AbstractObject* importedObj = repo->addOrReplaceGsoapProxy(pair.second.m_data, pair.second.m_resource.m_contentType);
+		if (importedObj == nullptr) {
+			pe.m_errors[pair.first].m_message = "Could not put the dataobject with content type " + pair.second.m_resource.m_contentType;
+			pe.m_errors[pair.first].m_code = 4001;
+			continue;
+		}
 
 		importedObj->loadTargetRelationships();
 
-		if (dataObject.second.m_resource.m_contentType == "application/x-resqml+xml;version=2.0;type=obj_IjkGridRepresentation") {
+		if (pair.second.m_resource.m_contentType == "application/x-resqml+xml;version=2.0;type=obj_IjkGridRepresentation") {
 			std::cout << "Create a dummy Grid Connection Set for received IJK Grid Representation." << std::endl;
 			RESQML2_NS::GridConnectionSetRepresentation* gcsr = repo->createGridConnectionSetRepresentation(std::string(), "Dummy GCSR");
 			ULONG64 cellIndexPair[] = { 0, 1 };
@@ -82,4 +88,19 @@ void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::
 			gcsr->pushBackSupportingGridRepresentation(static_cast<RESQML2_NS::AbstractGridRepresentation*>(importedObj));
 		}
 	}
+
+	if (!pe.m_errors.empty()) {
+		session->send(pe, correlationId, 0x01 | 0x02);
+	}
+}
+
+void MyOwnStoreProtocolHandlers::on_DeleteDataObjects(const Energistics::Etp::v12::Protocol::Store::DeleteDataObjects & msg, int64_t correlationId)
+{
+	Energistics::Etp::v12::Datatypes::ErrorInfo error;
+	error.m_code = 7;
+	error.m_message = "The operation is not supported by the agent.";
+	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
+	pe.m_error.set_ErrorInfo(error);
+
+	session->send(pe, correlationId, 0x01 | 0x02);
 }

@@ -84,6 +84,11 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 	openSession.m_supportedProtocols = supportedProtocols;
 	std::vector<std::string> supportedObjects;
 	supportedObjects.push_back("application/x-resqml+xml;version=2.0;type=*");
+	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=Well");
+	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=Wellbore");
+	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=Trajectory");
+	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=WellCompletion");
+	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=WellboreCompletion");
 	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=ErrorTerm");
 	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=ErrorTermDictionary");
 	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=ToolErrorModel");

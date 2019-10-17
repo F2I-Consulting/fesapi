@@ -28,6 +28,7 @@ under the License.
 #include "etp/ProtocolHandlers/CoreHandlers.h"
 #include "etp/ProtocolHandlers/DiscoveryHandlers.h"
 #include "etp/ProtocolHandlers/StoreHandlers.h"
+#include "etp/ProtocolHandlers/StoreNotificationHandlers.h"
 #include "etp/ProtocolHandlers/DataArrayHandlers.h"
 
 #if defined(_WIN32) && !defined(FESAPI_STATIC)
@@ -165,6 +166,22 @@ namespace ETP_NS
 				protocolHandlers.push_back(nullptr);
 			}
 			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::Store] = storeHandlers;
+		}
+
+		/**
+		* Set the StoreNotification protocol handlers
+		*/
+		DLL_IMPORT_OR_EXPORT void setStoreNotificationProtocolHandlers(std::shared_ptr<ETP_NS::StoreNotificationHandlers> storeNotificationHandlers) {
+			while (protocolHandlers.size() < Energistics::Etp::v12::Datatypes::Protocol::StoreNotification + 1) {
+				protocolHandlers.push_back(nullptr);
+			}
+			protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::StoreNotification] = storeNotificationHandlers;
+		}
+
+		DLL_IMPORT_OR_EXPORT std::shared_ptr<ETP_NS::ProtocolHandlers> getStoreNotificationProtocolHandlers() {
+			return protocolHandlers.size() > Energistics::Etp::v12::Datatypes::Protocol::StoreNotification ?
+				protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::StoreNotification] :
+				nullptr;
 		}
 
 		/**
