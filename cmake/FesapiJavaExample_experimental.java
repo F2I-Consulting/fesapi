@@ -48,7 +48,6 @@ import com.f2i.energisticsStandardsApi.common.GraphicalInformationSet;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.ContinuousColorMap;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.DiscreteColorMap;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SeismicWellboreFrameRepresentation;
-import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractLocal3dCrs;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractRepresentation;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractValuesProperty;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractValuesProperty.hdfDatatypeEnum;

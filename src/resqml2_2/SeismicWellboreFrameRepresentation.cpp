@@ -163,10 +163,10 @@ RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum SeismicWellboreFrameRepresen
 			return RESQML2_NS::AbstractValuesProperty::DOUBLE;
 		else if (H5Tequal(dt, H5T_NATIVE_FLOAT) > 0)
 			return RESQML2_NS::AbstractValuesProperty::FLOAT;
-		else if (H5Tequal(dt, H5T_NATIVE_LONG) > 0)
-			return RESQML2_NS::AbstractValuesProperty::LONG;
-		else if (H5Tequal(dt, H5T_NATIVE_ULONG) > 0)
-			return RESQML2_NS::AbstractValuesProperty::ULONG;
+		else if (H5Tequal(dt, H5T_NATIVE_LLONG) > 0)
+			return RESQML2_NS::AbstractValuesProperty::LONG_64;
+		else if (H5Tequal(dt, H5T_NATIVE_ULLONG) > 0)
+			return RESQML2_NS::AbstractValuesProperty::ULONG_64;
 		else if (H5Tequal(dt, H5T_NATIVE_INT) > 0)
 			return RESQML2_NS::AbstractValuesProperty::INT;
 		else if (H5Tequal(dt, H5T_NATIVE_UINT) > 0)
