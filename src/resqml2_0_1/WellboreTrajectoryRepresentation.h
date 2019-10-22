@@ -45,7 +45,7 @@ namespace RESQML2_0_1_NS
 		* @param interp					The WellboreFeature interpretation the instance represents.
 		* @param guid					The guid to set to the new instance. If empty then a new guid will be generated.
 		* @param title					A title for the instance to create.
-		* @param mdInfo					The MD information of the trajectory, mainly the well reference point.
+		* @param mdInfo					The MD information of the trajectory, mainly the well reference point. The uom used for the mdInfo coordinates must also be used for the start and end MD of the trajectory.
 		*/
 		WellboreTrajectoryRepresentation(class WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo);
 
@@ -65,8 +65,19 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/*
-		*  Set the geometry of the representation by means of a parametric line without MD information.
+		* Set the geometry of the representation by means of a parametric line without MD information.
+		* @param startMd						The start MD of the trajectory. Uom is the same as the one for the assocaited MdDatum coordinates.
+		* @param endMd							The end MD of the trajectory. Uom is the same as the one for the assocaited MdDatum coordinates.
+		* @localCrs								The local CRS where the control points are given.
+		*										If null, then the default Local CRS of the DataObject repository will be arbitrarily selected.
+		*/
+		DLL_IMPORT_OR_EXPORT void setMinimalGeometry(double startMd, double endMd);
+
+		/*
+		* Set the geometry of the representation by means of a parametric line without MD information (only start and end MD).
 		* @param controlPoints					All the control points of all the cubic parametric lines. They are ordered by parametric line first.
+		* @param startMd						The start MD of the trajectory.
+		* @param endMd							The end MD of the trajectory.
 		* @param controlPointCount				The count of control points and control point parameters per cubic parametric line.
 		* @param lineKind						Integer indicating the parametric line kind: 0 for vertical, 1 for linear spline, 2 for natural cubic spline, 3 for cubic spline, 4 for z linear cubic spline, 5 for minimum-curvature spline, (-1) for null: no line
 		* @param proxy							The HDF proxy which indicates in which HDF5 file the control points and its parameters will be stored.
@@ -78,7 +89,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void setGeometry(double * controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/*
-		*  Set the geometry of the representation by means of one natural cubic parametric line.
+		* Set the geometry of the representation by means of a parametric line with MD information.
 		* @param controlPoints					All the control points of all the cubic parametric lines. They are ordered by parametric line first.
 		* @param controlPointParameters			The arrays of control point parameters (ordered regarding the control points). It corresponds to the MD values in a WellboreFeature context.
 		* @param controlPointCount				The count of control points and control point parameters per cubic parametric line.
@@ -93,7 +104,7 @@ namespace RESQML2_0_1_NS
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/*
-		*  Set the geometry of the representation by means of one cubic parametric line.
+		* Set the geometry of the representation by means of a parametric line with MD and tangent vector information.
 		* @param controlPoints					All the control points of all the cubic parametric lines. They are ordered by parametric line first.
 		* @param tangentVectors					All the tangent vectors of all the control points of all the cubic parametric lines. They are ordered according to the control points.
 		* @param controlPointParameters			The arrays of control point parameters (ordered regarding the control points). It corresponds to the MD values in a WellboreFeature context.

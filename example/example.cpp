@@ -843,10 +843,10 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, propType1);
 	unsigned short prop1Values[2] = { 0, 1 };
 	discreteProp1->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
-	DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(ijkgrid, "", "Two faulted sugar cubes other cellIndex", 1,
+	DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(ijkgrid, "da73937c-2c60-4e10-8917-5154fde4ded5", "Two faulted sugar cubes other cellIndex", 1,
 		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, propType1);
-	unsigned short prop2Values[2] = { 10, 11 };
-	discreteProp2->pushBackUShortHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
+	LONG64 prop2Values[2] = { 10, 11 };
+	discreteProp2->pushBackLongHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
 
 	RESQML2_NS::PropertySet* propSet = pck->createPropertySet("", "Testing property set", false, true,gsoap_resqml2_0_1::resqml20__TimeSetKind__not_x0020a_x0020time_x0020set);
 	propSet->pushBackProperty(discreteProp1);
@@ -2011,7 +2011,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 				const LONG64 minValue = discreteProp->getMinimumValue();
 				std::cout << "\tMax value is " << maxValue << endl;
 				std::cout << "\tMin value is " << minValue << endl;
-				long* values = new long[valueCount];
+				LONG64* values = new LONG64[valueCount];
 				propVal->getLongValuesOfPatch(0, values);
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
@@ -2022,7 +2022,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 			if (dynamic_cast<ContinuousProperty const *>(propVal) == nullptr) {
 				cerr << "\tERROR !!!!! The discrete or categorical property is linked to a floating point HDF5 dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
-				long* values = new long[valueCount];
+				LONG64* values = new LONG64[valueCount];
 				propVal->getLongValuesOfPatch(0, values);
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
@@ -3780,12 +3780,12 @@ void deserialize(const string & inputFile)
 						if (wmf->getPropertySet()[l]->getXmlTag() == CategoricalProperty::XML_TAG)
 						{
 							CategoricalProperty const * catVal = static_cast<CategoricalProperty const *>(wmf->getPropertySet()[l]);
-							if (catVal->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::LONG)
+							if (catVal->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::LONG_64)
 							{
 								std::cout << "Hdf datatype is NATIVE LONG" << std::endl;
-								long* tmp = new long[wmf->getMdValuesCount()];
+								LONG64* tmp = new LONG64[wmf->getMdValuesCount()];
 								catVal->getLongValuesOfPatch(0, tmp);
-								for (unsigned int ind = 0; ind < 2; ind++)
+								for (size_t ind = 0; ind < 2; ind++)
 									std::cout << "Value " << ind << " : " << tmp[ind] << std::endl;
 								delete[] tmp;
 							}
@@ -3803,13 +3803,14 @@ void deserialize(const string & inputFile)
 	deserializePerforations(repo);
 
 	std::cout << endl << "WELLBORES CUBIC TRAJ" << endl;
-	for (size_t i = 0; i < wellboreCubicTrajSet.size(); i++)
+	for (size_t i = 0; i < wellboreCubicTrajSet.size(); ++i)
 	{
 		showAllMetadata(wellboreCubicTrajSet[i]);
 		std::cout << "MD Datum is : " << wellboreCubicTrajSet[i]->getMdDatum()->getTitle() << std::endl;
 		std::cout << "--------------------------------------------------" << std::endl;
-		if (wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches() == 0)
+		if (wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches() == 0) {
 			break;
+		}
 		double* mdValues = new double[wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches()];
 		wellboreCubicTrajSet[i]->getMdValues(mdValues);
 		double* xyzPt = new double[wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches() * 3];

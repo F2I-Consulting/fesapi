@@ -49,7 +49,7 @@ void StratigraphicColumn::pushBackStratiColumnRank(StratigraphicColumnRankInterp
 
 std::vector<class StratigraphicColumnRankInterpretation *> StratigraphicColumn::getStratigraphicColumnRankInterpretationSet() const
 {
-	return getRepository()->getSourceObjects<StratigraphicColumnRankInterpretation>(this);
+	return getRepository()->getTargetObjects<StratigraphicColumnRankInterpretation>(this);
 }
 
 void StratigraphicColumn::loadTargetRelationships()

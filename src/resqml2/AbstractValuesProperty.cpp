@@ -75,16 +75,15 @@ AbstractValuesProperty::hdfDatatypeEnum AbstractValuesProperty::getValuesHdfData
 		throw logic_error("Not implemented yet");
 	}
 
-	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-	const hid_t dt = hdfProxy->getHdfDatatypeInDataset(dataset->PathInHdfFile);
+	const hid_t dt = getHdfProxyFromDataset(dataset)->getHdfDatatypeInDataset(dataset->PathInHdfFile);
 	if (H5Tequal(dt, H5T_NATIVE_DOUBLE) > 0)
 		return AbstractValuesProperty::DOUBLE;
 	else if (H5Tequal(dt, H5T_NATIVE_FLOAT) > 0)
 		return AbstractValuesProperty::FLOAT;
 	else if (H5Tequal(dt, H5T_NATIVE_LLONG) > 0)
-		return AbstractValuesProperty::LONG;
+		return AbstractValuesProperty::LONG_64;
 	else if (H5Tequal(dt, H5T_NATIVE_ULLONG) > 0)
-		return AbstractValuesProperty::ULONG;
+		return AbstractValuesProperty::ULONG_64;
 	else if (H5Tequal(dt, H5T_NATIVE_INT) > 0)
 		return AbstractValuesProperty::INT;
 	else if (H5Tequal(dt, H5T_NATIVE_UINT) > 0)
@@ -135,9 +134,8 @@ std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(COMMON_N
 
 		return xmlValues->Values->PathInHdfFile;
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("Not implemented yet");
 }
 
 gsoap_resqml2_0_1::eml20__Hdf5Dataset const * AbstractValuesProperty::getDatasetOfPatch(unsigned int patchIndex, LONG64 & nullValue) const
@@ -173,13 +171,12 @@ gsoap_resqml2_0_1::eml20__Hdf5Dataset const * AbstractValuesProperty::getDataset
 	}
 }
 
-long AbstractValuesProperty::getLongValuesOfPatch(unsigned int patchIndex, long * values) const
+LONG64 AbstractValuesProperty::getLongValuesOfPatch(unsigned int patchIndex, LONG64 * values) const
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
-	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
-	hdfProxy->readArrayNdOfLongValues(dataset->PathInHdfFile, values);
+	getHdfProxyFromDataset(dataset)->readArrayNdOfLongValues(dataset->PathInHdfFile, values);
 
 	return nullValue;
 }
@@ -199,13 +196,12 @@ LONG64 AbstractValuesProperty::getNullValueOfPatch(unsigned int patchIndex) cons
 	}
 }
 
-unsigned long AbstractValuesProperty::getULongValuesOfPatch(unsigned int patchIndex, unsigned long * values) const
+ULONG64 AbstractValuesProperty::getULongValuesOfPatch(unsigned int patchIndex, ULONG64 * values) const
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
-	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
-	hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, values);
+	getHdfProxyFromDataset(dataset)->readArrayNdOfULongValues(dataset->PathInHdfFile, values);
 
 	return nullValue;
 }
@@ -214,9 +210,8 @@ int AbstractValuesProperty::getIntValuesOfPatch(unsigned int patchIndex, int * v
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
-	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
-	hdfProxy->readArrayNdOfIntValues(dataset->PathInHdfFile, values);
+	getHdfProxyFromDataset(dataset)->readArrayNdOfIntValues(dataset->PathInHdfFile, values);
 
 	return nullValue;
 }
@@ -230,8 +225,7 @@ int AbstractValuesProperty::getIntValuesOfPatch(
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
-	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-	hdfProxy->readArrayNdOfIntValues(
+	getHdfProxyFromDataset(dataset)->readArrayNdOfIntValues(
 		dataset->PathInHdfFile,
 		values,
 		numValuesInEachDimension,
@@ -267,9 +261,8 @@ unsigned int AbstractValuesProperty::getUIntValuesOfPatch(unsigned int patchInde
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
-	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
-	hdfProxy->readArrayNdOfUIntValues(dataset->PathInHdfFile, values);
+	getHdfProxyFromDataset(dataset)->readArrayNdOfUIntValues(dataset->PathInHdfFile, values);
 
 	return nullValue;
 }
@@ -278,9 +271,8 @@ short AbstractValuesProperty::getShortValuesOfPatch(unsigned int patchIndex, sho
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
-	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
-	hdfProxy->readArrayNdOfShortValues(dataset->PathInHdfFile, values);
+	getHdfProxyFromDataset(dataset)->readArrayNdOfShortValues(dataset->PathInHdfFile, values);
 
 	return nullValue;
 }
@@ -289,9 +281,8 @@ unsigned short AbstractValuesProperty::getUShortValuesOfPatch(unsigned int patch
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
-	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
-	hdfProxy->readArrayNdOfUShortValues(dataset->PathInHdfFile, values);
+	getHdfProxyFromDataset(dataset)->readArrayNdOfUShortValues(dataset->PathInHdfFile, values);
 
 	return nullValue;
 }
@@ -300,9 +291,8 @@ char AbstractValuesProperty::getCharValuesOfPatch(unsigned int patchIndex, char 
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
-	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
-	hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, values);
+	getHdfProxyFromDataset(dataset)->readArrayNdOfCharValues(dataset->PathInHdfFile, values);
 
 	return nullValue;
 }
@@ -311,9 +301,8 @@ unsigned char AbstractValuesProperty::getUCharValuesOfPatch(unsigned int patchIn
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
-	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
-	hdfProxy->readArrayNdOfUCharValues(dataset->PathInHdfFile, values);
+	getHdfProxyFromDataset(dataset)->readArrayNdOfUCharValues(dataset->PathInHdfFile, values);
 
 	return nullValue;
 }
@@ -326,20 +315,19 @@ unsigned int AbstractValuesProperty::getValuesCountOfDimensionOfPatch(unsigned i
 
 	std::vector<hsize_t> dims = hdfProxy->readArrayDimensions(dataset->PathInHdfFile);
 
-	if (dimIndex < dims.size())
+	if (dimIndex < dims.size()) {
 		return dims[dimIndex];
-	else{
-		throw out_of_range("The dim index to get the count is out of range.");
 	}
+
+	throw out_of_range("The dim index to get the count is out of range.");
 }
 
 unsigned int AbstractValuesProperty::getDimensionsCountOfPatch(unsigned int patchIndex) const
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
-	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
-	return hdfProxy->getDimensionCount(dataset->PathInHdfFile);
+	return getHdfProxyFromDataset(dataset)->getDimensionCount(dataset->PathInHdfFile);
 }
 
 void AbstractValuesProperty::pushBackFacet(const gsoap_resqml2_0_1::resqml20__Facet & facet, const std::string & facetValue)
@@ -350,9 +338,8 @@ void AbstractValuesProperty::pushBackFacet(const gsoap_resqml2_0_1::resqml20__Fa
 		newFacet->Value = facetValue;
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet.push_back(newFacet);
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("Not implemented yet");
 }
 
 unsigned int AbstractValuesProperty::getFacetCount() const
@@ -360,9 +347,8 @@ unsigned int AbstractValuesProperty::getFacetCount() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet.size();
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("Not implemented yet");
 }
 
 gsoap_resqml2_0_1::resqml20__Facet AbstractValuesProperty::getFacet(unsigned int index) const
@@ -374,9 +360,8 @@ gsoap_resqml2_0_1::resqml20__Facet AbstractValuesProperty::getFacet(unsigned int
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet[index]->Facet;
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+
+	throw logic_error("Not implemented yet");
 }
 
 std::string AbstractValuesProperty::getFacetValue(unsigned int index) const
@@ -388,18 +373,16 @@ std::string AbstractValuesProperty::getFacetValue(unsigned int index) const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->Facet[index]->Value;
 	}
-	else {
-		throw logic_error("Not implemented yet");
-	}
+	
+	throw logic_error("Not implemented yet");
 }
 
 unsigned int AbstractValuesProperty::getValuesCountOfPatch (unsigned int patchIndex) const
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
-	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
-	return hdfProxy->getElementCount(dataset->PathInHdfFile);
+	return getHdfProxyFromDataset(dataset)->getElementCount(dataset->PathInHdfFile);
 }
 
 void AbstractValuesProperty::createLongHdf5Array3dOfValues(
@@ -413,7 +396,7 @@ void AbstractValuesProperty::createLongHdf5Array3dOfValues(
 }
 
 void AbstractValuesProperty::pushBackLongHdf5SlabArray3dOfValues(
-	long* values, 
+	LONG64* values,
 	unsigned int valueCountInFastestDim, 
 	unsigned int valueCountInMiddleDim, 
 	unsigned int valueCountInSlowestDim, 
@@ -471,13 +454,13 @@ void AbstractValuesProperty::createLongHdf5ArrayOfValues(
 	oss << "values_patch" << getPatchCount() - 1;
 	proxy->createArrayNd(getUuid(),
 		oss.str(),
-		H5T_NATIVE_LONG,
+		H5T_NATIVE_LLONG,
 		numValues, numArrayDimensions);
 }
 
 void AbstractValuesProperty::pushBackLongHdf5SlabArrayOfValues(
-	long* values, hsize_t* numValuesInEachDimension,
-	hsize_t* offsetInEachDimension, unsigned int numArrayDimensions, 
+	LONG64* values, hsize_t const * numValuesInEachDimension,
+	hsize_t const * offsetInEachDimension, unsigned int numArrayDimensions, 
 	COMMON_NS::AbstractHdfProxy* proxy)
 {
 	if (proxy == nullptr) {
@@ -491,7 +474,7 @@ void AbstractValuesProperty::pushBackLongHdf5SlabArrayOfValues(
 	// HDF
 	proxy->writeArrayNdSlab(getUuid(),
 		oss.str(),
-		H5T_NATIVE_LONG,
+		H5T_NATIVE_LLONG,
 		values,
 		numValuesInEachDimension, 
 		offsetInEachDimension, 
@@ -500,16 +483,15 @@ void AbstractValuesProperty::pushBackLongHdf5SlabArrayOfValues(
 
 void AbstractValuesProperty::getLongValuesOfPatch(
 	unsigned int patchIndex, 
-	long* values, 
-	hsize_t* numValuesInEachDimension,
-	hsize_t* offsetInEachDimension, 
+	LONG64* values,
+	hsize_t const * numValuesInEachDimension,
+	hsize_t const * offsetInEachDimension, 
 	unsigned int numArrayDimensions) const
 {
 	LONG64 nullValue = (numeric_limits<LONG64>::min)();
 	gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = getDatasetOfPatch(patchIndex, nullValue);
-	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 
-	hdfProxy->readArrayNdOfLongValues(
+	getHdfProxyFromDataset(dataset)->readArrayNdOfLongValues(
 		dataset->PathInHdfFile,
 		values, 
 		numValuesInEachDimension,
@@ -519,7 +501,7 @@ void AbstractValuesProperty::getLongValuesOfPatch(
 
 void AbstractValuesProperty::getLongValuesOf3dPatch(
 	unsigned int patchIndex, 
-	long* values, 
+	LONG64* values,
 	unsigned int valueCountInFastestDim, 
 	unsigned int valueCountInMiddleDim, 
 	unsigned int valueCountInSlowestDim, 
@@ -527,8 +509,8 @@ void AbstractValuesProperty::getLongValuesOf3dPatch(
 	unsigned int offsetInMiddleDim, 
 	unsigned int offsetInSlowestDim) const
 {
-	hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
-	hsize_t offsetPerDimension[3] = {offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim};
+	const hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
+	const hsize_t offsetPerDimension[3] = {offsetInSlowestDim, offsetInMiddleDim, offsetInFastestDim};
 
 	getLongValuesOfPatch(
 		patchIndex,

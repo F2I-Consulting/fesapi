@@ -533,15 +533,15 @@ namespace RESQML2_NS
 	class AbstractValuesProperty : public RESQML2_NS::AbstractProperty
 	{
 	public:
-		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG = 3, ULONG = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
+		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG_64 = 3, ULONG_64 = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
 		AbstractValuesProperty::hdfDatatypeEnum getValuesHdfDatatype() const;
 		virtual std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64 nullValue) = 0;
 		
-		long getLongValuesOfPatch(unsigned int patchIndex, long * values) const;
+		LONG64 getLongValuesOfPatch(unsigned int patchIndex, LONG64 * values) const;
 
 		LONG64 getNullValueOfPatch(unsigned int patchIndex) const;
 
-		unsigned long getULongValuesOfPatch(unsigned int patchIndex, unsigned long * values) const;
+		ULONG64 getULongValuesOfPatch(unsigned int patchIndex, ULONG64 * values) const;
 
 		int getIntValuesOfPatch(unsigned int patchIndex, int * values) const;
 
@@ -600,7 +600,7 @@ namespace RESQML2_NS
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 
 		void pushBackLongHdf5SlabArray3dOfValues(
-			long* values, 
+			LONG64* values, 
 			unsigned int valueCountInFastestDim, 
 			unsigned int valueCountInMiddleDim, 
 			unsigned int valueCountInSlowestDim, 
@@ -610,15 +610,15 @@ namespace RESQML2_NS
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 
 		void pushBackLongHdf5SlabArrayOfValues(
-			long * values, 
-			unsigned long long * numValues,
-			unsigned long long * offsetValues,
+			LONG64 * values, 
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
 			unsigned int numArrayDimensions, 
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 
 		void getLongValuesOfPatch(
 			unsigned int patchIndex, 
-			long* values, 
+			LONG64* values, 
 			unsigned long long* numValuesInEachDimension,
 			unsigned long long* offsetInEachDimension,
 			unsigned int numArrayDimensions
@@ -626,7 +626,7 @@ namespace RESQML2_NS
 
 		void getLongValuesOf3dPatch(
 			unsigned int patchIndex, 
-			long* values, 
+			LONG64* values, 
 			unsigned int valueCountInFastestDim, 
 			unsigned int valueCountInMiddleDim, 
 			unsigned int valueCountInSlowestDim, 

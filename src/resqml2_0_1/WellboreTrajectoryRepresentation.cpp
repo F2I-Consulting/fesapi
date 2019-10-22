@@ -19,6 +19,7 @@ under the License.
 #include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
 
 #include <stdexcept>
+#include <limits>
 
 #include "H5public.h"
 
@@ -46,6 +47,8 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInter
 	if (dynamic_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs()) != nullptr) {
 		rep->MdUom = static_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit();
 	}
+	rep->StartMd = std::numeric_limits<double>::quiet_NaN();
+	rep->FinishMd = std::numeric_limits<double>::quiet_NaN();
 
 	setMdDatum(mdInfo);
 	setInterpretation(interp);
@@ -74,6 +77,15 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInter
 	if (dynamic_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs()) != nullptr) {
 		rep->MdUom = static_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit();
 	}
+	rep->StartMd = std::numeric_limits<double>::quiet_NaN();
+	rep->FinishMd = std::numeric_limits<double>::quiet_NaN();
+}
+
+void WellboreTrajectoryRepresentation::setMinimalGeometry(double startMd, double endMd)
+{
+	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
+	rep->StartMd = startMd;
+	rep->FinishMd = endMd;
 }
 
 void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
@@ -85,7 +97,9 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, doubl
 		throw invalid_argument("The control point count cannot be 0.");
 	}
 
-	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
+	setMinimalGeometry(startMd, endMd);
+
+	_resqml20__WellboreTrajectoryRepresentation* const rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
@@ -94,8 +108,6 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, doubl
 	rep->Geometry = soap_new_resqml20__ParametricLineGeometry(gsoapProxy2_0_1->soap);
 	resqml20__ParametricLineGeometry* paramLine = soap_new_resqml20__ParametricLineGeometry(gsoapProxy2_0_1->soap);
 	paramLine->LocalCrs = localCrs->newResqmlReference();
-	rep->StartMd = startMd;
-	rep->FinishMd = endMd;
 	rep->Geometry = paramLine;
 
 	paramLine->KnotCount = controlPointCount;
