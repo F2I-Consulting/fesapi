@@ -56,7 +56,11 @@ void WellboreRegularFrameRepresentationTest::initRepoHandler() {
 	REQUIRE(hdfProxy != nullptr);
 
 	// WellboreFeature frame
-	WellboreFrameRepresentation* w1i1FrameRep = repo->createWellboreFrameRepresentation(interp, defaultUuid, defaultTitle, traj);
+#if WITH_EXPERIMENTAL
+	RESQML2_NS::WellboreFrameRepresentation* w1i1FrameRep = repo->createWellboreFrameRepresentation(interp, defaultUuid, defaultTitle, traj, true);
+#else
+	RESQML2_NS::WellboreFrameRepresentation* w1i1FrameRep = repo->createWellboreFrameRepresentation(interp, defaultUuid, defaultTitle, traj);
+#endif
 	w1i1FrameRep->setMdValues(0, 200, 6);
 }
 

@@ -57,6 +57,7 @@ under the License.
 #include "resqml2_0_1/DeviationSurveyRepresentation.h"
 #include "resqml2_0_1/WellboreMarker.h"
 #include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
+#include "resqml2_0_1/WellboreFrameRepresentation.h"
 #include "resqml2_0_1/RepresentationSetRepresentation.h"
 #include "resqml2_0_1/NonSealedSurfaceFrameworkRepresentation.h"
 #include "resqml2_0_1/SealedSurfaceFrameworkRepresentation.h"
@@ -2767,7 +2768,7 @@ namespace RESQML2_0_1_NS
 	{
 	public:
 		unsigned int getWellboreFrameRepresentationCount() const;
-		WellboreFrameRepresentation* getWellboreFrameRepresentation(const unsigned int & index) const;
+		class RESQML2_NS::WellboreFrameRepresentation* getWellboreFrameRepresentation(const unsigned int & index) const;
 		
 		std::string getMdDatumUuid() const;
 		RESQML2_NS::MdDatum * getMdDatum() const;
@@ -2828,7 +2829,7 @@ namespace RESQML2_0_1_NS
 		void getAzimuths(double* values) const;
 
 		unsigned int getWellboreFrameRepresentationCount() const;
-		class WellboreFrameRepresentation* getWellboreFrameRepresentation(unsigned int index) const;
+		class RESQML2_NS::WellboreFrameRepresentation* getWellboreFrameRepresentation(unsigned int index) const;
 
 		unsigned int getWellboreTrajectoryRepresentationCount() const;
 		WellboreTrajectoryRepresentation* getWellboreTrajectoryRepresentation(const unsigned int & index) const;
@@ -2837,24 +2838,9 @@ namespace RESQML2_0_1_NS
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_WellboreFrameRepresentation) WellboreFrameRepresentation;
 #endif
-	class WellboreFrameRepresentation : public RESQML2_NS::AbstractRepresentation
+	class WellboreFrameRepresentation : public RESQML2_NS::WellboreFrameRepresentation
 	{
 	public:
-		void setMdValues(double * mdValues, const unsigned int & mdValueCount, class COMMON_NS::AbstractHdfProxy * proxy);
-		void setMdValues(const double & firstMdValue, const double & incrementMdValue, const unsigned int & mdValueCount);
-
-		bool areMdValuesRegularlySpaced() const;
-		double getMdConstantIncrementValue() const;
-		double getMdFirstValue() const;
-
-		unsigned int getMdValuesCount() const;
-		RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum getMdHdfDatatype() const;
-		void getMdAsDoubleValues(double * values) const;
-		void getMdAsFloatValues(float * values) const;
-		
-		std::string getWellboreTrajectoryUuid() const;
-		WellboreTrajectoryRepresentation* getWellboreTrajectory();
-
 //		void setWitsmlLog(WITSML1_4_1_1_NS::Log * witsmlLogToSet);
 //		WITSML1_4_1_1_NS::Log* getWitsmlLog();
 	};

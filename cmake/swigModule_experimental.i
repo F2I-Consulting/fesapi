@@ -167,6 +167,7 @@ namespace COMMON_NS
 		void setVersion(const std::string & version);
 				
 		std::string getXmlTag() const;
+		std::string getXmlNamespaceVersion() const;
 		
 		void addAlias(const std::string & authority, const std::string & title);
 		unsigned int getAliasCount() const;
@@ -573,7 +574,15 @@ namespace COMMON_NS
 
 		RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo);
 
-		RESQML2_0_1_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
+		RESQML2_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj, bool previousEnergisticsVersion = false);
+
+		RESQML2_2_NS::SeismicWellboreFrameRepresentation* createSeismicWellboreFrameRepresentation(
+			RESQML2_0_1_NS::WellboreInterpretation* interp, 
+			const std::string& guid, const std::string& title, 
+			RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj,
+			double seismicReferenceDatum,
+			double weatheringVelocity,
+			RESQML2_0_1_NS::LocalTime3dCrs* crs);
 
 		RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
 

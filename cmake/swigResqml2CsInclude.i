@@ -242,7 +242,7 @@ public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject res
   
   public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractRepresentation resqml2_instantiateConcreteRepresentation(global::System.IntPtr cPtr, bool owner)
   {
-	f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractRepresentation ret = resqml2_instantiateConcreteWellboreFrameRepresentation(cPtr, owner);
+	f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractRepresentation ret = resqml2_0_1_instantiateConcreteWellboreFrameRepresentation(cPtr, owner);
 	if (ret != null) {
 		return ret;
 	}
@@ -348,7 +348,7 @@ public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject res
 		return null;
   }
   
-  public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreFrameRepresentation resqml2_instantiateConcreteWellboreFrameRepresentation(global::System.IntPtr cPtr, bool owner)
+  public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreFrameRepresentation resqml2_0_1_instantiateConcreteWellboreFrameRepresentation(global::System.IntPtr cPtr, bool owner)
   {
     if (cPtr == global::System.IntPtr.Zero) {
       return null;
@@ -364,6 +364,11 @@ public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject res
     }
 	else
 		return null;
+  }
+  
+  public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation resqml2_instantiateConcreteWellboreFrameRepresentation(global::System.IntPtr cPtr, bool owner)
+  {
+	return resqml2_0_1_instantiateConcreteWellboreFrameRepresentation(cPtr, owner);
   }
   
   public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractLocal3dCrs resqml2_instantiateConcreteLocal3dCrs(global::System.IntPtr cPtr, bool owner)
@@ -494,13 +499,19 @@ namespace RESQML2_NS
 		$csclassname ret = ($csclassname) $modulePINVOKE.resqml2_instantiateConcreteProperty(cPtr, $owner);$excode
 		return ret;
 	}
+	
+	%typemap(csout, excode=SWIGEXCODE) WellboreFrameRepresentation*  {
+		global::System.IntPtr cPtr = $imcall;
+		$csclassname ret = ($csclassname) $modulePINVOKE.resqml2_instantiateConcreteWellboreFrameRepresentation(cPtr, $owner);$excode
+		return ret;
+	}
 }
 
 namespace RESQML2_0_1_NS
 {	
 	%typemap(csout, excode=SWIGEXCODE) WellboreFrameRepresentation*  {
 		global::System.IntPtr cPtr = $imcall;
-		$csclassname ret = ($csclassname) $modulePINVOKE.resqml2_instantiateConcreteWellboreFrameRepresentation(cPtr, $owner);$excode
+		$csclassname ret = ($csclassname) $modulePINVOKE.resqml2_0_1_instantiateConcreteWellboreFrameRepresentation(cPtr, $owner);$excode
 		return ret;
 	}
 	

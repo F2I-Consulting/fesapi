@@ -97,6 +97,8 @@ under the License.
 #if WITH_EXPERIMENTAL
 #include "resqml2_2/DiscreteColorMap.h"
 #include "resqml2_2/ContinuousColorMap.h"
+#include "resqml2_2/WellboreFrameRepresentation.h"
+#include "resqml2_2/SeismicWellboreFrameRepresentation.h"
 #endif
 
 #include "witsml2_0/Well.h"
@@ -160,10 +162,10 @@ namespace {
 
 #define GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
 	GET_RESQML_2_0_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
-	wrapper = new className(read);
+	wrapper = new RESQML2_0_1_NS::className(read);
 
 #define CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
-	(resqmlContentType.compare(className::XML_TAG) == 0)\
+	(resqmlContentType.compare(RESQML2_0_1_NS::className::XML_TAG) == 0)\
 	{\
 		GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
 	}
@@ -177,10 +179,10 @@ namespace {
 
 #define GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
 	GET_RESQML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
-	wrapper = new className(read);
+	wrapper = new RESQML2_2_NS::className(read);
 
 #define CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
-	(resqmlContentType.compare(className::XML_TAG) == 0)\
+	(resqmlContentType.compare(RESQML2_2_NS::className::XML_TAG) == 0)\
 	{\
 		GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
 	}
@@ -514,7 +516,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_resqml2_0_1
 	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(StratigraphicUnitInterpretation)
 	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(StratigraphicColumnRankInterpretation)
 	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(StratigraphicOccurrenceInterpretation)
-	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(WellboreFrameRepresentation)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::WellboreFrameRepresentation)
 	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(WellboreMarkerFrameRepresentation)
 	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(WellboreTrajectoryRepresentation)
 	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(PolylineSetRepresentation)
@@ -587,6 +589,8 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_2::eml
 	if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(COMMON_NS::GraphicalInformationSet)
 	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::DiscreteColorMap)
 	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::ContinuousColorMap)
+	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::WellboreFrameRepresentation)
+	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::SeismicWellboreFrameRepresentation)
 	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
@@ -996,10 +1000,32 @@ RESQML2_0_1_NS::DeviationSurveyRepresentation* DataObjectRepository::createDevia
 	return new DeviationSurveyRepresentation(interp, guid, title, isFinal, mdInfo);
 }
 
-WellboreFrameRepresentation* DataObjectRepository::createWellboreFrameRepresentation(WellboreInterpretation * interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
+#if WITH_EXPERIMENTAL
+RESQML2_NS::WellboreFrameRepresentation* DataObjectRepository::createWellboreFrameRepresentation(WellboreInterpretation * interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj, bool previousEnergisticsVersion)
+{
+	if (previousEnergisticsVersion) {
+		return new RESQML2_0_1_NS::WellboreFrameRepresentation(interp, guid, title, traj);
+	}
+
+	return new RESQML2_2_NS::WellboreFrameRepresentation(interp, guid, title, traj);
+}
+
+RESQML2_2_NS::SeismicWellboreFrameRepresentation* DataObjectRepository::createSeismicWellboreFrameRepresentation(
+	RESQML2_0_1_NS::WellboreInterpretation* interp,
+	const std::string& guid, const std::string& title,
+	RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj,
+	double seismicReferenceDatum,
+	double weatheringVelocity,
+	class RESQML2_0_1_NS::LocalTime3dCrs* crs)
+{
+	return new RESQML2_2_NS::SeismicWellboreFrameRepresentation(interp, guid, title, traj, seismicReferenceDatum, weatheringVelocity, crs);
+}
+#else
+RESQML2_NS::WellboreFrameRepresentation* DataObjectRepository::createWellboreFrameRepresentation(WellboreInterpretation* interp, const std::string& guid, const std::string& title, WellboreTrajectoryRepresentation* traj)
 {
 	return new WellboreFrameRepresentation(interp, guid, title, traj);
 }
+#endif
 
 WellboreMarkerFrameRepresentation* DataObjectRepository::createWellboreMarkerFrameRepresentation(WellboreInterpretation * interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
 {
@@ -2069,8 +2095,10 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 
 	if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DiscreteColorMap)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ContinuousColorMap)
-
-		return wrapper;
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SeismicWellboreFrameRepresentation)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreFrameRepresentation)
+		
+	return wrapper;
 }
 
 COMMON_NS::AbstractObject* DataObjectRepository::getEml2_2WrapperFromGsoapContext(const std::string & datatype)

@@ -1093,6 +1093,33 @@ std::string AbstractObject::getExtraMetadataStringValueAtIndexV2_0_1(unsigned in
 	return (static_cast<gsoap_resqml2_0_1::resqml20__AbstractResqmlDataObject*>(gsoapProxy2_0_1)->ExtraMetadata)[index]->Value;
 }
 
+#if WITH_EXPERIMENTAL
+
+unsigned int AbstractObject::getExtraMetadataCountV2_2() const
+{
+	return static_cast<gsoap_eml2_2::eml22__AbstractObject*>(gsoapProxy2_2)->ExtensionNameValue.size();
+}
+
+std::string AbstractObject::getExtraMetadataKeyAtIndexV2_2(unsigned int index) const
+{
+	if (getExtraMetadataCount() <= index) {
+		throw out_of_range("The index is out of range.");
+	}
+
+	return (static_cast<gsoap_eml2_2::eml22__AbstractObject*>(gsoapProxy2_2)->ExtensionNameValue)[index]->Name;
+}
+
+std::string AbstractObject::getExtraMetadataStringValueAtIndexV2_2(unsigned int index) const
+{
+	if (getExtraMetadataCount() <= index) {
+		throw out_of_range("The index is out of range.");
+	}
+
+	return (static_cast<gsoap_eml2_2::eml22__AbstractObject*>(gsoapProxy2_2)->ExtensionNameValue)[index]->Value->__item;
+}
+
+#endif
+
 void AbstractObject::pushBackExtraMetadata(const std::string & key, const std::string & value)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -1146,6 +1173,11 @@ unsigned int AbstractObject::getExtraMetadataCount() const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return getExtraMetadataCountV2_0_1();
 	}
+#if WITH_EXPERIMENTAL
+	else if (gsoapProxy2_2 != nullptr) {
+		return getExtraMetadataCountV2_2();
+	}
+#endif
 	else {
 		throw logic_error("Not implemented yet.");
 	}
@@ -1159,6 +1191,11 @@ std::string AbstractObject::getExtraMetadataKeyAtIndex(unsigned int index) const
 	if (gsoapProxy2_0_1 != nullptr) {
 		return getExtraMetadataKeyAtIndexV2_0_1(index);
 	}
+#if WITH_EXPERIMENTAL
+	else if (gsoapProxy2_2 != nullptr) {
+		return getExtraMetadataKeyAtIndexV2_2(index);
+	}
+#endif
 	else {
 		throw logic_error("Not implemented yet.");
 	}
@@ -1172,6 +1209,11 @@ std::string AbstractObject::getExtraMetadataStringValueAtIndex(unsigned int inde
 	if (gsoapProxy2_0_1 != nullptr) {
 		return getExtraMetadataStringValueAtIndexV2_0_1(index);
 	}
+#if WITH_EXPERIMENTAL
+	else if (gsoapProxy2_2 != nullptr) {
+		return getExtraMetadataStringValueAtIndexV2_2(index);
+	}
+#endif
 	else {
 		throw logic_error("Not implemented yet.");
 	}
