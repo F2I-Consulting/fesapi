@@ -1007,7 +1007,7 @@ RESQML2_NS::WellboreFrameRepresentation* DataObjectRepository::createWellboreFra
 		return new RESQML2_0_1_NS::WellboreFrameRepresentation(interp, guid, title, traj);
 	}
 
-	new RESQML2_2_NS::WellboreFrameRepresentation(interp, guid, title, traj);
+	return new RESQML2_2_NS::WellboreFrameRepresentation(interp, guid, title, traj);
 }
 
 RESQML2_2_NS::SeismicWellboreFrameRepresentation* DataObjectRepository::createSeismicWellboreFrameRepresentation(

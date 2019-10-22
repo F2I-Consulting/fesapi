@@ -76,7 +76,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT bool areMdValuesRegularlySpaced() const;
 		
 		/**
-		* Indicates the incremetn value between two MDs only if the MDs are regualrly spaced.
+		* Indicates the increment value between two MDs only if the MDs are regularly spaced.
 		* Please use areMdValuesRegularlySpaced before using this method.
 		*/
 		DLL_IMPORT_OR_EXPORT double getMdConstantIncrementValue() const;

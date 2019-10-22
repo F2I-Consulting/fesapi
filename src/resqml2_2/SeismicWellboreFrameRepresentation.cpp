@@ -78,12 +78,12 @@ void SeismicWellboreFrameRepresentation::setTimeValues(double const * timeValues
 	frame->NodeCount = timeValueCount;
 
 	// HDF
-	hsize_t dim[] = { timeValueCount };
+	hsize_t dim = timeValueCount;
 	proxy->writeArrayNd(frame->uuid,
 		"timeValues",
 		H5T_NATIVE_DOUBLE,
 		timeValues,
-		dim, 1);
+		&dim, 1);
 }
 
 void SeismicWellboreFrameRepresentation::setTimeValues(double firstTimeValue, double incrementTimeValue, unsigned int timeValueCount)
@@ -239,14 +239,10 @@ void SeismicWellboreFrameRepresentation::getTimeAsFloatValues(float* values) con
 
 double SeismicWellboreFrameRepresentation::getSeismicReferenceDatum() const
 {
-	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_2);
-
-	return frame->SeismicReferenceDatum;
+	return static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_2)->SeismicReferenceDatum;
 }
 
 double SeismicWellboreFrameRepresentation::getWeatheringVelocity() const
 {
-	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_2);
-
-	return frame->WeatheringVelocity;
+	return static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_2)->WeatheringVelocity;
 }

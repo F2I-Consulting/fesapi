@@ -1,6 +1,6 @@
 /*-----------------------------------------------------------------------
 Licensed to the Apache Software Foundation (ASF) under one
-or more contributor license agreements.  See the NOTICE createWellboreMarkerFrameRepresentation
+or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
 regarding copyright ownership.  The ASF licenses this file
 to you under the Apache License, Version 2.0 (the
@@ -275,7 +275,7 @@ namespace COMMON_NS
 		template <class valueType>
 		std::vector<valueType *> getSourceObjects(COMMON_NS::AbstractObject const * dataObj) const
 		{
-			const std::vector < COMMON_NS::AbstractObject*> sourceObjects = getSourceObjects(dataObj);
+			const std::vector < COMMON_NS::AbstractObject*> & sourceObjects = getSourceObjects(dataObj);
 
 			return getObjsFilteredOnDatatype<valueType>(sourceObjects);
 		}

@@ -40,7 +40,7 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* misc::eml22ToEml20Reference(gsoap
 	result->UUID = reference->Uuid;
 	result->Title = reference->Title;
 	result->ContentType = reference->ContentType;
-	if (reference->ObjectVersion != nullptr) {
+	if (reference->ObjectVersion != nullptr && !reference->ObjectVersion->empty()) {
 		result->VersionString = gsoap_resqml2_0_1::soap_new_std__string(soapContext);
 		result->VersionString->assign(*reference->ObjectVersion);
 	}

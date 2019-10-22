@@ -83,7 +83,7 @@ namespace RESQML2_2_NS
 		DLL_IMPORT_OR_EXPORT bool areTimeValuesRegularlySpaced() const;
 
 		/**
-		* Indicates the incremetn value between two times only if the times are regualrly spaced.
+		* Indicates the increment value between two times only if the times are regularly spaced.
 		* Please use areTimeValuesRegularlySpaced before using this method.
 		*/
 		DLL_IMPORT_OR_EXPORT double getTimeConstantIncrementValue() const;
