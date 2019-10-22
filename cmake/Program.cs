@@ -132,12 +132,18 @@ namespace example
                         {
                             System.Console.WriteLine("Iregularly spaced");
                         }
-                        if (wbf.getMdHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.DOUBLE)
+                        if (wbf.getMdHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.DOUBLE) 
+						{	
                             System.Console.WriteLine("Hdf datatype is NATIVE DOUBLE");
-                        if (wbf.getMdHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.FLOAT)
+                        }
+						if (wbf.getMdHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.FLOAT)
+						{
                             System.Console.WriteLine("Hdf datatype is NATIVE FLOAT");
+						}
                         if (wbf.getMdHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.UNKNOWN)
+						{
                             System.Console.WriteLine("Hdf datatype is NATIVE UNKNOWN");
+						}
                     }
                 }
             }

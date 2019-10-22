@@ -161,11 +161,17 @@ namespace example
                             System.Console.WriteLine("Iregularly spaced");
                         }
                         if (wbf.getMdHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.DOUBLE)
+						{
                             System.Console.WriteLine("Hdf datatype is NATIVE DOUBLE");
+						}
                         if (wbf.getMdHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.FLOAT)
+						{
                             System.Console.WriteLine("Hdf datatype is NATIVE FLOAT");
+						}
                         if (wbf.getMdHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.UNKNOWN)
+						{
                             System.Console.WriteLine("Hdf datatype is NATIVE UNKNOWN");
+						}
 						if (wbf.getXmlTag() == "SeismicWellboreFrameRepresentation")
 						{
 							SeismicWellboreFrameRepresentation swbf = (SeismicWellboreFrameRepresentation) wbf;
@@ -183,12 +189,18 @@ namespace example
 								System.Console.WriteLine("Time values iregularly spaced");
 							}
 							if (swbf.getTimeHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.DOUBLE)
+							{
 								System.Console.WriteLine("Hdf datatype is NATIVE DOUBLE");
+							}
 							else if (swbf.getTimeHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.FLOAT)
+							{
 								System.Console.WriteLine("Hdf datatype is NATIVE FLOAT");
+							}
 							else if (swbf.getTimeHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.UNKNOWN)
+							{
 								System.Console.WriteLine("Hdf datatype is UNKNOWN");
 							}
+						}
                     }
                 }
             }
