@@ -260,12 +260,10 @@ if (WITH_JAVA_WRAPPING)
 	
 	# Create the dedicated swig files
 if (WITH_EXPERIMENTAL)
-	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2_0_1Include_experimental.i ${FESAPI_ROOT_DIR}/swig/swigResqml2_0_1Include.i) # Overwrite if different
 	configure_file(${FESAPI_ROOT_DIR}/cmake/swigModule_experimental.i ${FESAPI_ROOT_DIR}/swig/swigModule.i) # Overwrite if different
 	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2JavaInclude_experimental.i ${FESAPI_ROOT_DIR}/swig/swigResqml2JavaInclude.i) # Overwrite if different
 	configure_file(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample_experimental.java ${FESAPI_ROOT_DIR}/java/example/FesapiJavaExample.java) # Overwrite if different
 else ()
-	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2_0_1Include.i ${FESAPI_ROOT_DIR}/swig/swigResqml2_0_1Include.i) # Overwrite if different
 	configure_file(${FESAPI_ROOT_DIR}/cmake/swigModule.i ${FESAPI_ROOT_DIR}/swig/swigModule.i) # Overwrite if different
 	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2JavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigResqml2JavaInclude.i) # Overwrite if different
 	configure_file(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR}/java/example/FesapiJavaExample.java) # Overwrite if different
@@ -301,15 +299,15 @@ if (WITH_DOTNET_WRAPPING)
 	
 	# Create the dedicated swig files
 if (WITH_EXPERIMENTAL)
-	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2_0_1Include_experimental.i ${FESAPI_ROOT_DIR}/swig/swigResqml2_0_1Include.i) # Overwrite if different
 	configure_file(${FESAPI_ROOT_DIR}/cmake/swigModule_experimental.i ${FESAPI_ROOT_DIR}/swig/swigModule.i) # Overwrite if different
 	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2CsInclude_experimental.i ${FESAPI_ROOT_DIR}/swig/swigResqml2CsInclude.i) # Overwrite if different
+	configure_file(${FESAPI_ROOT_DIR}/cmake/Program_experimental.cs ${FESAPI_ROOT_DIR}/cs/example/Program.cs) # Overwrite if different
 else ()
-	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2_0_1Include.i ${FESAPI_ROOT_DIR}/swig/swigResqml2_0_1Include.i) # Overwrite if different
 	configure_file(${FESAPI_ROOT_DIR}/cmake/swigModule.i ${FESAPI_ROOT_DIR}/swig/swigModule.i) # Overwrite if different
 	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2CsInclude.i ${FESAPI_ROOT_DIR}/swig/swigResqml2CsInclude.i) # Overwrite if different
-endif()
 	configure_file(${FESAPI_ROOT_DIR}/cmake/Program.cs ${FESAPI_ROOT_DIR}/cs/example/Program.cs) # Overwrite if different
+endif()
+	
 	
 	# Filling
 	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} -c++ -csharp -dllimport ${CPP_LIBRARY_NAME}.${Fesapi_VERSION}.dll -namespace f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/cs/src ${FESAPI_ROOT_DIR}/swig/swigModule.i")

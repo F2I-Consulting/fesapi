@@ -4,6 +4,7 @@ using f2i.energisticsStandardsApi;
 using f2i.energisticsStandardsApi.${FESAPI_COMMON_NS};
 using f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS};
 using f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS};
+using f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS};
 using f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS};
 
 // Add the fesapi cpp and hdf5, szip, zlib dll into the executable directory.
@@ -87,6 +88,33 @@ namespace example
                 f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation w1i1RegularFrameRep = repo.createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
                 w1i1RegularFrameRep.setMdValues(0, 200, 6);
 
+                // WellboreFeature seismic frame
+                LocalTime3dCrs localTime3dCrs = repo.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, eml20__LengthUom.eml20__LengthUom__m, 23031, eml20__TimeUom.eml20__TimeUom__s, eml20__LengthUom.eml20__LengthUom__m, "Unknown", false);
+
+                SeismicWellboreFrameRepresentation w1i1SeismicFrameRep = repo.createSeismicWellboreFrameRepresentation(
+                    wellbore1Interp1, "dcbeea2e-8327-4c5b-97e3-bdced0680de5", "Wellbore1 Interp1 SeismicFrameRep",
+                    w1i1TrajRep,
+                    0,
+                    0,
+                    localTime3dCrs);
+                w1i1SeismicFrameRep.setMdValues(logMds.cast(), 5, hdfProxy);
+                DoubleArray logTimes = new DoubleArray(5);
+                logTimes.setitem(0, 0);
+                logTimes.setitem(1, 10);
+                logTimes.setitem(2, 20);
+                logTimes.setitem(3, 25);
+                logTimes.setitem(4, 30);
+                w1i1SeismicFrameRep.setTimeValues(logTimes.cast(), 5, hdfProxy);
+
+                SeismicWellboreFrameRepresentation w1i1RegularSeismicFrameRep = repo.createSeismicWellboreFrameRepresentation(
+                    wellbore1Interp1, "7f1b75ff-1226-4c0a-a531-8f71661da419", "Wellbore1 Interp1 Regular SeismicFrameRep",
+                    w1i1TrajRep,
+                    0,
+                    0,
+                    localTime3dCrs);
+                w1i1RegularSeismicFrameRep.setMdValues(0, 200, 6);
+                w1i1RegularSeismicFrameRep.setTimeValues(0, 10, 6);
+
                 epc_file.serializeFrom(repo);
                 epc_file.close();
             }
@@ -138,6 +166,29 @@ namespace example
                             System.Console.WriteLine("Hdf datatype is NATIVE FLOAT");
                         if (wbf.getMdHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.UNKNOWN)
                             System.Console.WriteLine("Hdf datatype is NATIVE UNKNOWN");
+						if (wbf.getXmlTag() == "SeismicWellboreFrameRepresentation")
+						{
+							SeismicWellboreFrameRepresentation swbf = (SeismicWellboreFrameRepresentation) wbf;
+							
+							System.Console.WriteLine("Seismic reference datum : " + swbf.getSeismicReferenceDatum());
+							System.Console.WriteLine("Weathering velocity : " + swbf.getWeatheringVelocity());
+							if (swbf.areTimeValuesRegularlySpaced())
+							{
+								System.Console.WriteLine("Time values regularly spaced");
+								System.Console.WriteLine("First Value : " + swbf.getTimeFirstValue());
+								System.Console.WriteLine("Increment : " + swbf.getTimeConstantIncrementValue());
+							}
+							else
+							{
+								System.Console.WriteLine("Time values iregularly spaced");
+							}
+							if (swbf.getTimeHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.DOUBLE)
+								System.Console.WriteLine("Hdf datatype is NATIVE DOUBLE");
+							else if (swbf.getTimeHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.FLOAT)
+								System.Console.WriteLine("Hdf datatype is NATIVE FLOAT");
+							else if (swbf.getTimeHdfDatatype() == AbstractValuesProperty.hdfDatatypeEnum.UNKNOWN)
+								System.Console.WriteLine("Hdf datatype is UNKNOWN");
+							}
                     }
                 }
             }

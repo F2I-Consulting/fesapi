@@ -28,10 +28,6 @@ under the License.
 #include "resqml2/AbstractLocal3dCrs.h"
 #include "common/AbstractHdfProxy.h"
 
-#if WITH_EXPERIMENTAL
-#include "resqml2_2/SeismicWellboreFrameRepresentation.h"
-#endif
-
 using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
@@ -437,26 +433,3 @@ RESQML2_NS::WellboreFrameRepresentation * WellboreTrajectoryRepresentation::getW
 
 	return wfrs[index];
 }
-
-#if WITH_EXPERIMENTAL
-std::vector<RESQML2_2_NS::SeismicWellboreFrameRepresentation*> WellboreTrajectoryRepresentation::getSeismicWellboreFrameRepresentationSet() const
-{
-	return getRepository()->getSourceObjects<RESQML2_2_NS::SeismicWellboreFrameRepresentation>(this);
-}
-
-unsigned int WellboreTrajectoryRepresentation::getSeismicWellboreFrameRepresentationCount() const
-{
-	return getSeismicWellboreFrameRepresentationSet().size();
-}
-
-RESQML2_2_NS::SeismicWellboreFrameRepresentation* WellboreTrajectoryRepresentation::getSeismicWellboreFrameRepresentation(unsigned int index) const
-{
-	const std::vector<RESQML2_2_NS::SeismicWellboreFrameRepresentation*>& swfrs = getSeismicWellboreFrameRepresentationSet();
-
-	if (index >= swfrs.size()) {
-		throw out_of_range("The index if out of range");
-	}
-
-	return swfrs[index];
-}
-#endif

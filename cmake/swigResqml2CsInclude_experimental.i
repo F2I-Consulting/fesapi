@@ -254,7 +254,7 @@ public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject res
   
   public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractRepresentation resqml2_instantiateConcreteRepresentation(global::System.IntPtr cPtr, bool owner)
   {
-	f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractRepresentation ret = resqml2_0_1_instantiateConcreteWellboreFrameRepresentation(cPtr, owner);
+	f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractRepresentation ret = resqml2_instantiateConcreteWellboreFrameRepresentation(cPtr, owner);
 	if (ret != null) {
 		return ret;
 	}
@@ -378,11 +378,35 @@ public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject res
 		return null;
   }
   
+  public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.WellboreFrameRepresentation resqml2_2_instantiateConcreteWellboreFrameRepresentation(global::System.IntPtr cPtr, bool owner)
+  {
+    if (cPtr == global::System.IntPtr.Zero) {
+      return null;
+    }
+    string type = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlTag(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
+	if (type == "WellboreFrameRepresentation")
+    {
+        return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.WellboreFrameRepresentation(cPtr, owner);
+    }
+    else if (type == "SeismicWellboreFrameRepresentation")
+    {
+        return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SeismicWellboreFrameRepresentation(cPtr, owner);
+    }
+	else
+		return null;
+  }
+  
   public static f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation resqml2_instantiateConcreteWellboreFrameRepresentation(global::System.IntPtr cPtr, bool owner)
   {
     if (cPtr == global::System.IntPtr.Zero) {
       return null;
     }
+	
+	string type = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlTag(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
+	if (type != "WellboreFrameRepresentation" && type != "WellboreMarkerFrameRepresentation" && type != "SeismicWellboreFrameRepresentation") {
+		return null;
+	}
+	
     string version = $modulePINVOKE.${FESAPI_COMMON_NS}_AbstractObject_getXmlNamespaceVersion(new global::System.Runtime.InteropServices.HandleRef(null, cPtr));
 	if (version == "2.0")
     {
@@ -390,7 +414,7 @@ public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject res
     }
     else if (version == "2.2")
     {
-        return new f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.WellboreFrameRepresentation(cPtr, owner);
+        return resqml2_2_instantiateConcreteWellboreFrameRepresentation(cPtr, owner);
     }
 	else
 		return null;

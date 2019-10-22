@@ -81,7 +81,7 @@ void SeismicWellboreFrameRepresentationTest::readRepoHandler() {
 	REQUIRE(w1i1SeismicFrameRep != nullptr);
 
 	RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj = static_cast<RESQML2_0_1_NS::WellboreTrajectoryRepresentation*>(repo->getDataObjectByUuid(resqml2_0_1test::WellboreTrajectoryRepresentationTest::defaultUuid));
-	SeismicWellboreFrameRepresentation* w1i1SeismicFrameRepFromTraj = traj->getSeismicWellboreFrameRepresentation(0);
+	SeismicWellboreFrameRepresentation* w1i1SeismicFrameRepFromTraj = static_cast<SeismicWellboreFrameRepresentation *>(traj->getWellboreFrameRepresentation(0));
 	REQUIRE(w1i1SeismicFrameRep->getUuid() == w1i1SeismicFrameRepFromTraj->getUuid());
 
 	REQUIRE(w1i1SeismicFrameRep->areMdValuesRegularlySpaced() == false);

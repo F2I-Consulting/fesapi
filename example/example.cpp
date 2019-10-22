@@ -3844,50 +3844,31 @@ void deserialize(const string & inputFile)
 			else if (wellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN)
 				std::cout << "Hdf datatype is UNKNOWN" << std::endl;
 			std::cout << std::endl;
-		}
 #if WITH_EXPERIMENTAL
-		std::vector<RESQML2_2_NS::SeismicWellboreFrameRepresentation*> seismicWellboreFrameSet = wellboreCubicTrajSet[i]->getSeismicWellboreFrameRepresentationSet();
-		for (size_t j = 0; j < seismicWellboreFrameSet.size(); j++)
-		{
-			showAllMetadata(seismicWellboreFrameSet[j]);
-			std::cout << "Value Count : " << seismicWellboreFrameSet[j]->getMdValuesCount() << endl;
-			if (seismicWellboreFrameSet[j]->areMdValuesRegularlySpaced())
-			{
-				std::cout << "Regularly spaced" << std::endl;
-				std::cout << "First Value : " << seismicWellboreFrameSet[j]->getMdFirstValue() << endl;
-				std::cout << "Increment : " << seismicWellboreFrameSet[j]->getMdConstantIncrementValue() << endl;
+			if (wellboreFrameSet[j]->getXmlTag() == "SeismicWellboreFrameRepresentation") {
+				RESQML2_2_NS::SeismicWellboreFrameRepresentation* seismicWellboreFrame = static_cast<RESQML2_2_NS::SeismicWellboreFrameRepresentation*>(wellboreFrameSet[j]);
+				std::cout << "Seismic reference datum : " << seismicWellboreFrame->getSeismicReferenceDatum() << std::endl;
+				std::cout << "Weathering velocity : " << seismicWellboreFrame->getWeatheringVelocity() << std::endl;
+				if (seismicWellboreFrame->areTimeValuesRegularlySpaced())
+				{
+					std::cout << "Time values regularly spaced" << std::endl;
+					std::cout << "First Value : " << seismicWellboreFrame->getTimeFirstValue() << endl;
+					std::cout << "Increment : " << seismicWellboreFrame->getTimeConstantIncrementValue() << endl;
+				}
+				else
+				{
+					std::cout << "Time values iregularly spaced" << std::endl;
+				}
+				if (seismicWellboreFrame->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::DOUBLE)
+					std::cout << "Hdf datatype is NATIVE DOUBLE" << std::endl;
+				else if (seismicWellboreFrame->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::FLOAT)
+					std::cout << "Hdf datatype is NATIVE FLOAT" << std::endl;
+				else if (seismicWellboreFrame->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN)
+					std::cout << "Hdf datatype is UNKNOWN" << std::endl;
+				std::cout << std::endl;
 			}
-			else
-			{
-				std::cout << "Iregularly spaced" << std::endl;
-			}
-			if (seismicWellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::DOUBLE)
-				std::cout << "Hdf datatype is NATIVE DOUBLE" << std::endl;
-			else if (seismicWellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::FLOAT)
-				std::cout << "Hdf datatype is NATIVE FLOAT" << std::endl;
-			else if (seismicWellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN)
-				std::cout << "Hdf datatype is UNKNOWN" << std::endl;
-			std::cout << "Seismic reference datum : " << seismicWellboreFrameSet[j]->getSeismicReferenceDatum() << std::endl;
-			std::cout << "Weathering velocity : " << seismicWellboreFrameSet[j]->getWeatheringVelocity() << std::endl;
-			if (seismicWellboreFrameSet[j]->areTimeValuesRegularlySpaced())
-			{
-				std::cout << "Time values regularly spaced" << std::endl;
-				std::cout << "First Value : " << seismicWellboreFrameSet[j]->getTimeFirstValue() << endl;
-				std::cout << "Increment : " << seismicWellboreFrameSet[j]->getTimeConstantIncrementValue() << endl;
-			}
-			else
-			{
-				std::cout << "Time values iregularly spaced" << std::endl;
-			}
-			if (seismicWellboreFrameSet[j]->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::DOUBLE)
-				std::cout << "Hdf datatype is NATIVE DOUBLE" << std::endl;
-			else if (seismicWellboreFrameSet[j]->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::FLOAT)
-				std::cout << "Hdf datatype is NATIVE FLOAT" << std::endl;
-			else if (seismicWellboreFrameSet[j]->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN)
-				std::cout << "Hdf datatype is UNKNOWN" << std::endl;
-			std::cout << std::endl;
-		}
 #endif
+		}
 	}
 
 	std::cout << endl << "IJK GRID REP" << endl;

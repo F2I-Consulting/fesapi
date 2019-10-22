@@ -25,26 +25,34 @@ import com.f2i.energisticsStandardsApi.SWIGTYPE_p_double;
 import com.f2i.energisticsStandardsApi.SWIGTYPE_p_unsigned_int;
 import com.f2i.energisticsStandardsApi.SWIGTYPE_p_unsigned_short;
 import com.f2i.energisticsStandardsApi.StringVector;
+import com.f2i.energisticsStandardsApi.WellboreTrajectoryRepresentationVector;
 import com.f2i.energisticsStandardsApi.eml20__LengthUom;
+import com.f2i.energisticsStandardsApi.eml20__TimeUom;
 import com.f2i.energisticsStandardsApi.eml21__LengthUom;
 import com.f2i.energisticsStandardsApi.eml21__WellboreDatumReference;
 import com.f2i.energisticsStandardsApi.fesapi;
-import com.f2i.energisticsStandardsApi.resqml2__IndexableElements;
-import com.f2i.energisticsStandardsApi.resqml2__InterpolationDomain;
-import com.f2i.energisticsStandardsApi.resqml2__InterpolationMethod;
-import com.f2i.energisticsStandardsApi.resqml2__ResqmlPropertyKind;
-import com.f2i.energisticsStandardsApi.resqml2.PropertySet;
-import com.f2i.energisticsStandardsApi.resqml2__ResqmlUom;
-import com.f2i.energisticsStandardsApi.resqml2__TimeSetKind;
-import com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractHdfProxy;
-import com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject;
-import com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.DataObjectRepository;
-import com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.EpcDocument;
-import com.f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.GraphicalInformationSet;
+import com.f2i.energisticsStandardsApi.resqml20__IndexableElements;
+import com.f2i.energisticsStandardsApi.resqml20__MdReference;
+import com.f2i.energisticsStandardsApi.resqml22__InterpolationDomain;
+import com.f2i.energisticsStandardsApi.resqml22__InterpolationMethod;
+import com.f2i.energisticsStandardsApi.resqml20__ResqmlPropertyKind;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.PropertySet;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation;
+import com.f2i.energisticsStandardsApi.resqml20__ResqmlUom;
+import com.f2i.energisticsStandardsApi.resqml20__TimeSetKind;
+import com.f2i.energisticsStandardsApi.common.AbstractHdfProxy;
+import com.f2i.energisticsStandardsApi.common.AbstractObject;
+import com.f2i.energisticsStandardsApi.common.DataObjectRepository;
+import com.f2i.energisticsStandardsApi.common.EpcDocument;
+import com.f2i.energisticsStandardsApi.common.GraphicalInformationSet;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.ContinuousColorMap;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.DiscreteColorMap;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SeismicWellboreFrameRepresentation;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractLocal3dCrs;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractRepresentation;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractValuesProperty;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractValuesProperty.hdfDatatypeEnum;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.MdDatum;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.PropertyKind;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.AbstractIjkGridRepresentation;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.ContinuousProperty;
@@ -56,12 +64,16 @@ import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.Horizon;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.HorizonInterpretation;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.IjkGridExplicitRepresentation;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.LocalDepth3dCrs;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.LocalTime3dCrs;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.OrganizationFeature;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PolylineRepresentation;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SeismicLatticeFeature;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SeismicLineFeature;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.SeismicLineSetFeature;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.TriangulatedSetRepresentation;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreFeature;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreInterpretation;
+import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreTrajectoryRepresentation;
 import com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Well;
 
 public class FesapiJavaExample {
@@ -91,6 +103,107 @@ public class FesapiJavaExample {
 		witsmlWell.pushBackLocation("8cd3c8b2-face-4426-8aea-ae34870bd969", 275, 75, 0);
 		witsmlWell.pushBackDatum("aa92fa8b-d6cc-459e-b456-27fec0c08b24", "well1 msl datum", eml21__WellboreDatumReference.eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", eml21__LengthUom.eml21__LengthUom__m, 0, 5100);
 		witsmlWell.pushBackDatum("d3ac5401-d3e7-4474-b846-070673b210ae", "KB", eml21__WellboreDatumReference.eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", eml21__LengthUom.eml21__LengthUom__m, 15, 5100);
+	
+		// Features
+		WellboreFeature wellbore1 = repo.createWellboreFeature("22d5b48f-f789-46e7-a454-6d8bd05afd0b", "Wellbore1");
+		
+		// Interpretations
+		WellboreInterpretation wellbore1Interp1 = repo.createWellboreInterpretation(wellbore1, "dc7840fe-e5a3-4b53-a1df-18040bc4d0c0", "Wellbore1 Interp1", false);
+
+		// Representation
+		MdDatum mdInfo = repo.createMdDatum("36e91de5-7833-4b6d-90d0-1d643c0adece", "md Info", repo.getDefaultCrs(), resqml20__MdReference.resqml20__MdReference__mean_x0020sea_x0020level, 275, 75, 0);
+
+		//Geometry	
+		WellboreTrajectoryRepresentation w1i1TrajRep = repo.createWellboreTrajectoryRepresentation(wellbore1Interp1, "acd2cdcf-bb5d-48da-bd0e-9aeff3e52180", "Wellbore1 Interp1 TrajRep", mdInfo);
+		SWIGTYPE_p_double controlPoints = fesapi.new_DoubleArray(12);
+		SWIGTYPE_p_double trajectoryTangentVectors = fesapi.new_DoubleArray(12);
+		SWIGTYPE_p_double trajectoryMds = fesapi.new_DoubleArray(4);
+		try {
+			fesapi.DoubleArray_setitem(controlPoints, 0, 275);
+			fesapi.DoubleArray_setitem(controlPoints, 1, 75);
+			fesapi.DoubleArray_setitem(controlPoints, 2, 0);
+			fesapi.DoubleArray_setitem(controlPoints, 3, 275);
+			fesapi.DoubleArray_setitem(controlPoints, 4, 75);
+			fesapi.DoubleArray_setitem(controlPoints, 5, 325);
+			fesapi.DoubleArray_setitem(controlPoints, 6, 275);
+			fesapi.DoubleArray_setitem(controlPoints, 7, 75);
+			fesapi.DoubleArray_setitem(controlPoints, 8, 500);
+			fesapi.DoubleArray_setitem(controlPoints, 9, 275);
+			fesapi.DoubleArray_setitem(controlPoints, 10, 75);
+			fesapi.DoubleArray_setitem(controlPoints, 11, 1000);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 0, 0);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 1, 0);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 2, 1);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 3, 0);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 4, 0);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 5, 1);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 6, 0);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 7, 0);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 8, 1);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 9, 0);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 10, 0);
+			fesapi.DoubleArray_setitem(trajectoryTangentVectors, 11, 1);
+			fesapi.DoubleArray_setitem(trajectoryMds, 0, 0);
+			fesapi.DoubleArray_setitem(trajectoryMds, 1, 325);
+			fesapi.DoubleArray_setitem(trajectoryMds, 2, 500);
+			fesapi.DoubleArray_setitem(trajectoryMds, 3, 1000);
+			w1i1TrajRep.setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, 0, repo.getDefaultHdfProxy());			
+		}
+		finally {
+			fesapi.delete_DoubleArray(controlPoints);
+			fesapi.delete_DoubleArray(trajectoryTangentVectors);
+			fesapi.delete_DoubleArray(trajectoryMds);
+		}
+		
+		// WellboreFeature frame
+		WellboreFrameRepresentation w1i1FrameRep = repo.createWellboreFrameRepresentation(wellbore1Interp1, "d873e243-d893-41ab-9a3e-d20b851c099f", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
+		SWIGTYPE_p_double logMds = fesapi.new_DoubleArray(5);
+		try {
+			fesapi.DoubleArray_setitem(logMds, 0, 0);
+			fesapi.DoubleArray_setitem(logMds, 1, 250);
+			fesapi.DoubleArray_setitem(logMds, 2, 500);
+			fesapi.DoubleArray_setitem(logMds, 3, 750);
+			fesapi.DoubleArray_setitem(logMds, 4, 1000);
+			w1i1FrameRep.setMdValues(logMds, 5, repo.getDefaultHdfProxy());					
+		}
+		finally {
+			fesapi.delete_DoubleArray(logMds);
+		}
+	
+		WellboreFrameRepresentation w1i1RegularFrameRep = repo.createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
+		w1i1RegularFrameRep.setMdValues(0, 200, 6);
+
+		// SeismicWellboreFrameRepresentation
+		LocalTime3dCrs localTime3dCrs = repo.createLocalTime3dCrs("", "Default local time CRS", 1.0, 0.1, 15, .0, eml20__LengthUom.eml20__LengthUom__m, 23031, eml20__TimeUom.eml20__TimeUom__s, eml20__LengthUom.eml20__LengthUom__m, "Unknown", false);
+				
+		SeismicWellboreFrameRepresentation w1i1SeismicFrameRep = repo.createSeismicWellboreFrameRepresentation(
+			wellbore1Interp1, "dcbeea2e-8327-4c5b-97e3-bdced0680de5", "Wellbore1 Interp1 SeismicFrameRep",
+			w1i1TrajRep,
+			0.,
+			0.,
+			localTime3dCrs);
+		w1i1SeismicFrameRep.setMdValues(logMds, 5, repo.getDefaultHdfProxy());
+		SWIGTYPE_p_double logTimes = fesapi.new_DoubleArray(5);
+		try {
+			fesapi.DoubleArray_setitem(logTimes, 0, 0);
+			fesapi.DoubleArray_setitem(logTimes, 1, 10);
+			fesapi.DoubleArray_setitem(logTimes, 2, 20);
+			fesapi.DoubleArray_setitem(logTimes, 3, 25);
+			fesapi.DoubleArray_setitem(logTimes, 4, 30);
+			w1i1SeismicFrameRep.setTimeValues(logTimes, 5, repo.getDefaultHdfProxy());				
+		}
+		finally {
+			fesapi.delete_DoubleArray(logTimes);
+		}
+		
+		SeismicWellboreFrameRepresentation w1i1RegularSeismicFrameRep = repo.createSeismicWellboreFrameRepresentation(
+			wellbore1Interp1, "7f1b75ff-1226-4c0a-a531-8f71661da419", "Wellbore1 Interp1 Regular SeismicFrameRep",
+			w1i1TrajRep,
+			0.,
+			0.,
+			localTime3dCrs);
+		w1i1RegularSeismicFrameRep.setMdValues(0, 200, 6);
+		w1i1RegularSeismicFrameRep.setTimeValues(0., 10., 6);
 	}
 
 	private static void serializeBoundaries(DataObjectRepository repo, AbstractHdfProxy hdfProxy) {
@@ -270,9 +383,9 @@ public class FesapiJavaExample {
 		//
 		// Properties
 		//
-		PropertyKind  propType1 = repo.createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", resqml2__ResqmlUom.resqml2__ResqmlUom__Euc, resqml2__ResqmlPropertyKind.resqml2__ResqmlPropertyKind__continuous);
+		PropertyKind  propType1 = repo.createPropertyKind("f7ad7cf5-f2e7-4daa-8b13-7b3df4edba3b", "propType1", "urn:resqml:f2i.com:testingAPI", resqml20__ResqmlUom.resqml20__ResqmlUom__Euc, resqml20__ResqmlPropertyKind.resqml20__ResqmlPropertyKind__continuous);
 		ContinuousProperty contProp1 = repo.createContinuousProperty(h1i1SingleGrid2dRep, "fcaccfc7-10cb-4f73-800e-a381642478cb", "Horizon1 Interp1 Grid2dRep Prop1", 2,
-				resqml2__IndexableElements.resqml2__IndexableElements__nodes, resqml2__ResqmlUom.resqml2__ResqmlUom__m, propType1);
+				resqml20__IndexableElements.resqml20__IndexableElements__nodes, resqml20__ResqmlUom.resqml20__ResqmlUom__m, propType1);
 		SWIGTYPE_p_double prop1Values = fesapi.new_DoubleArray(16);
 		try {
 			fesapi.DoubleArray_setitem(prop1Values, 0, 301);
@@ -301,12 +414,12 @@ public class FesapiJavaExample {
 	
 	private static void serializeIjkGrid(DataObjectRepository repo, AbstractHdfProxy hdfProxy)
 	{
-		cellIndexPropKind = repo.createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", resqml2__ResqmlUom.resqml2__ResqmlUom__Euc, resqml2__ResqmlPropertyKind.resqml2__ResqmlPropertyKind__discrete);
+		cellIndexPropKind = repo.createPropertyKind("0a5f4400-fa3e-11e5-80a4-0002a5d5c51b", "cellIndex", "urn:resqml:f2i-consulting.com", resqml20__ResqmlUom.resqml20__ResqmlUom__Euc, resqml20__ResqmlPropertyKind.resqml20__ResqmlPropertyKind__discrete);
 		OrganizationFeature earthModel = repo.createEarthModel("f2060ce0-fa3d-11e5-8620-0002a5d5c51b", "Grid");
 		EarthModelInterpretation earthModelInterp = repo.createEarthModelInterpretation(earthModel, "f5cd7520-fa3d-11e5-b65b-0002a5d5c51b", "Grid interp");
 		ijkgrid = repo.createIjkGridExplicitRepresentation(earthModelInterp, "df2103a0-fa3d-11e5-b8d4-0002a5d5c51b", "Two faulted sugar cubes (explicit geometry)", 2, 1, 1);
 		DiscreteProperty discreteProp1 = repo.createDiscreteProperty(ijkgrid, "ee0857fe-23ad-4dd9-8300-21fa2e9fb572", "Two faulted sugar cubes cellIndex", 1,
-				resqml2__IndexableElements.resqml2__IndexableElements__cells, cellIndexPropKind);
+				resqml20__IndexableElements.resqml20__IndexableElements__cells, cellIndexPropKind);
 
 		SWIGTYPE_p_unsigned_short propValues = fesapi.new_UShortArray(2);
 		try {
@@ -319,7 +432,7 @@ public class FesapiJavaExample {
 		}
 		
 		DiscreteProperty discreteProp2 = repo.createDiscreteProperty(ijkgrid, "", "Two faulted sugar cubes other cellIndex", 1,
-				resqml2__IndexableElements.resqml2__IndexableElements__cells, cellIndexPropKind);
+				resqml20__IndexableElements.resqml20__IndexableElements__cells, cellIndexPropKind);
 
 		propValues = fesapi.new_UShortArray(2);
 		try {
@@ -331,7 +444,7 @@ public class FesapiJavaExample {
 			fesapi.delete_UShortArray(propValues);
 		}
 		
-		PropertySet propSet = repo.createPropertySet("", "Testing property set", false, true, resqml2__TimeSetKind.resqml2__TimeSetKind__not_x0020a_x0020time_x0020set);
+		PropertySet propSet = repo.createPropertySet("", "Testing property set", false, true, resqml20__TimeSetKind.resqml20__TimeSetKind__not_x0020a_x0020time_x0020set);
 		propSet.pushBackProperty(discreteProp1);
 		propSet.pushBackProperty(discreteProp2);
 	}
@@ -397,8 +510,8 @@ public class FesapiJavaExample {
 			fesapi.delete_DoubleArray(discrColMapAlphas);
 		}
 
-		DiscreteProperty* discreteProp2 = repo.createDiscreteProperty(ijkgrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex", 1,
-						resqml2__IndexableElements.resqml2__IndexableElements__cells, cellIndexPropKind);
+		DiscreteProperty discreteProp2 = repo.createDiscreteProperty(ijkgrid, "1e2822ef-b6cb-4123-bdf4-c99df84a896f", "Another two faulted sugar cubes cellIndex", 1,
+						resqml20__IndexableElements.resqml20__IndexableElements__cells, cellIndexPropKind);
 		SWIGTYPE_p_unsigned_short propValues = fesapi.new_UShortArray(2);
 		try {
 			fesapi.UShortArray_setitem(propValues, 0, 10);
@@ -428,7 +541,7 @@ public class FesapiJavaExample {
 				1., 1.);
 
 		ContinuousProperty contColMapContProp = repo.createContinuousProperty(contColMapGrid2dRep, "c2be50b6-08d2-461b-81a4-73dbb04ba605", "Continuous property for continuous color map", 2,
-				resqml2__IndexableElements.resqml2__IndexableElements__nodes, "continuousColorMapIndex", resqml2__ResqmlPropertyKind.resqml2__ResqmlPropertyKind__continuous);
+				resqml20__IndexableElements.resqml20__IndexableElements__nodes, "continuousColorMapIndex", resqml20__ResqmlPropertyKind.resqml20__ResqmlPropertyKind__continuous);
 		SWIGTYPE_p_double values = fesapi.new_DoubleArray(numPointInFastestDirection * numPointsInSlowestDirection);
 		try {
 			for (int slowestIndex = 0; slowestIndex < numPointsInSlowestDirection; ++slowestIndex) {
@@ -442,7 +555,7 @@ public class FesapiJavaExample {
 		}
 		contColMapContProp.pushBackDoubleHdf5Array2dOfValues(values, numPointInFastestDirection, numPointsInSlowestDirection, hdfProxy);
 
-		ContinuousColorMap contColMap = repo.createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", resqml2__InterpolationDomain.resqml2__InterpolationDomain__rgb, resqml2__InterpolationMethod.resqml2__InterpolationMethod__linear);
+		ContinuousColorMap contColMap = repo.createContinuousColorMap("a207faa2-963e-48d6-b3ad-53f6c1fc4dd4", "Continuous color map", resqml22__InterpolationDomain.resqml22__InterpolationDomain__rgb, resqml22__InterpolationMethod.resqml22__InterpolationMethod__linear);
 		SWIGTYPE_p_unsigned_int contColMapRgbColors = fesapi.new_UIntArray(6);
 		SWIGTYPE_p_double contColMapAlphas = fesapi.new_DoubleArray(2);
 		try {
@@ -476,15 +589,15 @@ public class FesapiJavaExample {
 		DataObjectRepository repo = new DataObjectRepository();
 		
 		try {
-			// WITSML
-			serializeWells(repo);
-
-			// RESQML
 			LocalDepth3dCrs crs = repo.createLocalDepth3dCrs(UUID.randomUUID().toString(), "UTF8 Crs title", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.eml20__LengthUom__m, 5215, eml20__LengthUom.eml20__LengthUom__m, "Unknown", false);
 			repo.setDefaultCrs(crs);
 			AbstractHdfProxy hdfProxy = repo.createHdfProxy("", "Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5", DataObjectRepository.openingMode.OVERWRITE);
 			repo.setDefaultHdfProxy(hdfProxy);
+			
+			// WITSML
+			serializeWells(repo);
 
+			// RESQML
 			serializeBoundaries(repo, hdfProxy);			
 			serializeIjkGrid(repo, hdfProxy);
 
@@ -552,17 +665,7 @@ public class FesapiJavaExample {
 				}
 			}
 
-			System.out.println("WITSML WELL");
-			Well witsmlWell = (Well) repo.getDataObjectByUuid("704a287c-5c24-4af3-a97b-bc6670f4e14f");
-			System.out.println("Well title is : " + witsmlWell.getTitle());
-			System.out.println("Location projected X : " + witsmlWell.getLocationProjectedX(0));
-			System.out.println("Location projected Y : " + witsmlWell.getLocationProjectedY(0));
-			System.out.println("\tnameLegal : " + witsmlWell.getNameLegal());
-			System.out.println("\twaterDepth : " + witsmlWell.getWaterDepthValue() + " (" + witsmlWell.getWaterDepthUom() + ")");
-			if (witsmlWell.hasTimeZone())
-			{
-				System.out.println("\ttimeZone : " + witsmlWell.getTimeZoneHours() + " hours");
-			}
+			deserializeWell(repo);
 			
 			deserializeIjkGrid(repo);
 
@@ -644,6 +747,72 @@ public class FesapiJavaExample {
 		}
 	}
 
+	private static void deserializeWell(DataObjectRepository repo) {
+		System.out.println("WITSML WELL");
+		Well witsmlWell = (Well) repo.getDataObjectByUuid("704a287c-5c24-4af3-a97b-bc6670f4e14f");
+		System.out.println("Well title is : " + witsmlWell.getTitle());
+		System.out.println("Location projected X : " + witsmlWell.getLocationProjectedX(0));
+		System.out.println("Location projected Y : " + witsmlWell.getLocationProjectedY(0));
+		System.out.println("\tnameLegal : " + witsmlWell.getNameLegal());
+		System.out.println("\twaterDepth : " + witsmlWell.getWaterDepthValue() + " (" + witsmlWell.getWaterDepthUom() + ")");
+		if (witsmlWell.hasTimeZone())
+		{
+			System.out.println("\ttimeZone : " + witsmlWell.getTimeZoneHours() + " hours");
+		}
+		
+		System.out.println("WellboreFrameRepresentation");
+		WellboreTrajectoryRepresentationVector wellboreCubicTrajSet = repo.getWellboreTrajectoryRepresentationSet();
+		for (int trajIndex = 0; trajIndex < wellboreCubicTrajSet.size(); trajIndex++) {
+			System.out.println("wbf count = " + wellboreCubicTrajSet.get(trajIndex).getWellboreFrameRepresentationCount());
+			for (int wbfIndex = 0; wbfIndex < wellboreCubicTrajSet.get(trajIndex).getWellboreFrameRepresentationCount(); wbfIndex++) {
+				WellboreFrameRepresentation wbf = wellboreCubicTrajSet.get(trajIndex).getWellboreFrameRepresentation(wbfIndex);
+				
+				System.out.println("WellboreFrameRepresentation title : " + wbf.getTitle());
+				System.out.println("WellboreFrameRepresentation uuid : " + wbf.getUuid());
+				
+				System.out.println("Value Count : " + wbf.getMdValuesCount());
+				if (wbf.areMdValuesRegularlySpaced())
+				{
+					System.out.println("Regularly spaced");
+					System.out.println("First Value : " + wbf.getMdFirstValue());
+					System.out.println("Increment : " + wbf.getMdConstantIncrementValue());
+				}
+				else
+				{
+					System.out.println("Iregularly spaced");
+				}
+				if (wbf.getMdHdfDatatype() == hdfDatatypeEnum.DOUBLE)
+					System.out.println("Hdf datatype is NATIVE DOUBLE");
+				else if (wbf.getMdHdfDatatype() == hdfDatatypeEnum.FLOAT)
+					System.out.println("Hdf datatype is NATIVE FLOAT");
+				else if (wbf.getMdHdfDatatype() == hdfDatatypeEnum.UNKNOWN)
+					System.out.println("Hdf datatype is UNKNOWN");
+				if (wbf.getXmlTag().equals("SeismicWellboreFrameRepresentation")) {
+					SeismicWellboreFrameRepresentation swbf = (SeismicWellboreFrameRepresentation) wbf;
+					
+					System.out.println("Seismic reference datum : " + swbf.getSeismicReferenceDatum());
+					System.out.println("Weathering velocity : " + swbf.getWeatheringVelocity());
+					if (swbf.areTimeValuesRegularlySpaced())
+					{
+						System.out.println("Time values regularly spaced");
+						System.out.println("First Value : " + swbf.getTimeFirstValue());
+						System.out.println("Increment : " + swbf.getTimeConstantIncrementValue());
+					}
+					else
+					{
+						System.out.println("Time values iregularly spaced");
+					}
+					if (swbf.getTimeHdfDatatype() == hdfDatatypeEnum.DOUBLE)
+						System.out.println("Hdf datatype is NATIVE DOUBLE");
+					else if (swbf.getTimeHdfDatatype() == hdfDatatypeEnum.FLOAT)
+						System.out.println("Hdf datatype is NATIVE FLOAT");
+					else if (swbf.getTimeHdfDatatype() == hdfDatatypeEnum.UNKNOWN)
+						System.out.println("Hdf datatype is UNKNOWN");
+				}
+			}
+		}
+	}
+	
 	private static void deserializeIjkGrid(DataObjectRepository repo) {
 		System.out.println("IJK GRID REP");
 		long ijkGridCount = repo.getIjkGridRepresentationCount();

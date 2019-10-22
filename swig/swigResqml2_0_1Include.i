@@ -2770,9 +2770,6 @@ namespace RESQML2_0_1_NS
 		unsigned int getWellboreFrameRepresentationCount() const;
 		class RESQML2_NS::WellboreFrameRepresentation* getWellboreFrameRepresentation(const unsigned int & index) const;
 		
-		unsigned int getSeismicWellboreFrameRepresentationCount() const;
-		class RESQML2_2_NS::SeismicWellboreFrameRepresentation* getSeismicWellboreFrameRepresentation(unsigned int index) const;
-		
 		std::string getMdDatumUuid() const;
 		RESQML2_NS::MdDatum * getMdDatum() const;
 		
