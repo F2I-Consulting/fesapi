@@ -48,10 +48,17 @@ namespace COMMON_NS
 		*/
 		~EpcExternalPartReference() {}
 
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	protected:
-		void loadTargetRelationships();
+		void loadTargetRelationships() {};
 	};
 }

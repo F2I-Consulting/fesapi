@@ -34,7 +34,7 @@ namespace RESQML2_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		Activity(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT Activity(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		virtual ~Activity() {}
 
@@ -111,8 +111,15 @@ namespace RESQML2_NS
 		**/
 		DLL_IMPORT_OR_EXPORT std::vector<AbstractObject*> getResqmlObjectSet() const;
 
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const {return XML_TAG;}
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	protected:
 		void loadTargetRelationships();

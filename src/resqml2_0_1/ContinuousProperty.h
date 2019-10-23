@@ -58,7 +58,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		ContinuousProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractValuesProperty(partialObject) {}
+		DLL_IMPORT_OR_EXPORT ContinuousProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractValuesProperty(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context based on a standard kind and a standard uom.
@@ -121,9 +121,6 @@ namespace RESQML2_0_1_NS
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		virtual ~ContinuousProperty() {}
-
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/**
 		* Get the unit of measure of the values of this property.
@@ -386,6 +383,16 @@ namespace RESQML2_0_1_NS
 		* Check if the associated standard property kind is allowed for this property.
 		*/
 		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk);
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	private:
 

@@ -41,7 +41,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		Grid2dRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractSurfaceRepresentation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT Grid2dRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractSurfaceRepresentation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -62,9 +62,6 @@ namespace RESQML2_0_1_NS
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~Grid2dRepresentation() {}
-
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
@@ -340,6 +337,16 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT int getIndexOffsetOnSupportingRepresentation(const unsigned int & dimension) const;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	private:
 		void loadTargetRelationships();

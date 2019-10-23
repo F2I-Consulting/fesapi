@@ -29,7 +29,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		PlaneSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractRepresentation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT PlaneSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractRepresentation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -51,9 +51,6 @@ namespace RESQML2_0_1_NS
 		~PlaneSetRepresentation() {}
 		
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const { return nullptr; }
-
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/**
 		* Get the Local 3d CRS dor where the reference point ordinals are given
@@ -92,5 +89,15 @@ namespace RESQML2_0_1_NS
 			double x2, double y2, double z2,
 			double x3, double y3, double z3,
 			RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

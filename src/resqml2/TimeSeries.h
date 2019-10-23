@@ -33,7 +33,7 @@ namespace RESQML2_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		TimeSeries(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT TimeSeries(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -45,10 +45,7 @@ namespace RESQML2_NS
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
-		~TimeSeries() {}
-
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
+		virtual ~TimeSeries() {}
 
 		/**
 		* Add a representation values object which uses this property type.
@@ -94,6 +91,16 @@ namespace RESQML2_NS
 		* Get all the properties which use this time series
 		*/
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::AbstractProperty *> getPropertySet() const;
+		
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	protected:
 		void loadTargetRelationships();

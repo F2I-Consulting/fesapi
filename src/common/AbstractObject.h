@@ -27,8 +27,14 @@ namespace COMMON_NS
 	class AbstractObject
 	{
 	private:
-		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject; // only in case of partial transfer
+		/**
+		* Should be instantiate in case a the object is (or was) a partial object.
+		*/
+		gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject;
 
+		/**
+		* The variable which holds the format for all exported Energistics DataObjects.
+		*/
 		static char citationFormat[];
 
 		/**
@@ -74,19 +80,40 @@ namespace COMMON_NS
 
 	protected:
 
+		/**
+		* Enumeration for the various EML versions.
+		*/
 		enum EmlVersion {
 			TWO_DOT_ZERO = 0,
-			TWO_DOT_ONE = 1
+			TWO_DOT_ONE = 1,
+			TWO_DOT_TWO = 2
 		};
 
+		/**
+		* The underlying generated gSoap proxy for a EML 2.0 dataobject.
+		*/
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* gsoapProxy2_0_1;
+
+		/**
+		* The underlying generated gSoap proxy for a EML 2.1 dataobject.
+		*/
 		gsoap_eml2_1::eml21__AbstractObject* gsoapProxy2_1;
+
 #if WITH_EXPERIMENTAL
+		/**
+		* The underlying generated gSoap proxy for a EML 2.2 dataobject.
+		*/
 		gsoap_eml2_2::eml22__AbstractObject* gsoapProxy2_2;
 #endif
+
+		/**
+		* The repository which contain this data object.
+		*/
 		COMMON_NS::DataObjectRepository* repository;
 
-		//Default constructor
+		/**
+		* Default constructor
+		*/
 		AbstractObject();
 
 		/**
@@ -94,16 +121,28 @@ namespace COMMON_NS
 		*/
 		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_);
 
+		/**
+		* Constructor when importing EML 2.0 (i.e RESQML2.0.1) dataobjects
+		*/
 		AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy);
 
+		/**
+		* Constructor when importing EML 2.1 dataobjects
+		*/
 		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy);
 
 #if WITH_EXPERIMENTAL
+		/**
+		* Constructor when importing EML 2.1 dataobjects
+		*/
 		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy);
 #endif
 
 		friend void COMMON_NS::DataObjectRepository::addOrReplaceDataObject(AbstractObject* proxy);
 
+		/**
+		* Initialize all mandatory attributes of an AbstractObject (not the attributes of a specialization) with some valid values.
+		*/
 		void initMandatoryMetadata();
 		
 		/**
@@ -130,19 +169,19 @@ namespace COMMON_NS
 		*/
 		void changeToPartialObject();
 
-		/*
+		/**
 		* Read an input array which come from XML (and potentially HDF5) and store it into a preallocated output array in memory.
 		* It does not allocate or deallocate memory.
 		*/
 		void readArrayNdOfDoubleValues(gsoap_resqml2_0_1::resqml20__AbstractDoubleArray * arrayInput, double * arrayOutput) const;
 
-		/*
+		/**
 		* Read an input array which come from XML (and potentially HDF5) and store it into a preallocated output array in memory.
 		* It does not allocate or deallocate memory.
 		*/
 		void readArrayNdOfUIntValues(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput, unsigned int * arrayOutput) const;
 
-		/*
+		/**
 		* Get the count of item in an array of integer
 		*
 		* @param arrayInput	The array of integer.
@@ -150,13 +189,22 @@ namespace COMMON_NS
 		*/
 		ULONG64 getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput) const;
 
+		/**
+		* Convert a EML 2.0 Data Object Reference into a DataObjectRepository relationship.
+		*/
 		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor);
 
 #if WITH_EXPERIMENTAL
+		/**
+		* Convert a EML 2.2 Data Object Reference into a DataObjectRepository relationship.
+		*/
 		void convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor);
 #endif
 
-		// Check that the content type of the DOR is OK with the datatype in memory.
+		/**
+		* Same as convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor).
+		* Also check that the content type of the DOR is OK with the target datatype in memory.
+		*/
 		template <class valueType>
 		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor)
 		{
@@ -171,6 +219,10 @@ namespace COMMON_NS
 			getRepository()->addRelationship(this, targetObj);
 		}
 
+		/**
+		* Same as convertDorIntoRel(gsoap_eml2_1::eml21__DataObjectReference const * dor).
+		* Also check that the content type of the DOR is OK with the target datatype in memory.
+		*/
 		template <class valueType>
 		void convertDorIntoRel(gsoap_eml2_1::eml21__DataObjectReference const * dor)
 		{
@@ -186,6 +238,10 @@ namespace COMMON_NS
 		}
 
 #if WITH_EXPERIMENTAL
+		/**
+		* Same as convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor).
+		* Also check that the content type of the DOR is OK with the target datatype in memory.
+		*/
 		template <class valueType>
 		void convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor)
 		{
@@ -201,6 +257,9 @@ namespace COMMON_NS
 		}
 #endif
 
+		/**
+		* Get an Hdf Proxy from a EML 2.0 dataset.
+		*/
 		COMMON_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset, bool throwException = true) const;
 
 	public:
@@ -213,38 +272,124 @@ namespace COMMON_NS
 		*/
 		DLL_IMPORT_OR_EXPORT bool isPartial() const {return partialObject != nullptr;}
 
-		DLL_IMPORT_OR_EXPORT std::string getUuid() const;
-		DLL_IMPORT_OR_EXPORT std::string getTitle() const;
-		DLL_IMPORT_OR_EXPORT std::string getEditor() const;
-		DLL_IMPORT_OR_EXPORT time_t getCreation() const;
 		/**
+		* Get the UUID (https://tools.ietf.org/html/rfc4122#page-3) of the DataOject.
+		* The UUID intends to give an id to the thing (i.e. the business object), not to this instance.
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getUuid() const;
+
+		/**
+		* Get the title (i.e. name) of the DataOject.
+		* This is the equivalent in ISO 19115 of CI_Citation.title
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getTitle() const;
+
+		/**
+		* Get the name (or other human-readable identifier) of the last person who updated the object. 
+		* This is the equivalent in ISO 19115 to the CI_Individual.name or the CI_Organization.name of the citedResponsibleParty whose role is "editor".
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getEditor() const;
+
+		/**
+		* Get the Date and time the document was created in the source application or, if that information is not available, when it was saved to the file.
+		* This is the equivalent of the ISO 19115 CI_Date where the CI_DateTypeCode = ”creation"
+		*/
+		DLL_IMPORT_OR_EXPORT time_t getCreation() const;
+
+		/**
+		* Same as getCreation().
 		* Use this method if you want to read some dates out of range of time_t
 		*/
 		DLL_IMPORT_OR_EXPORT tm getCreationAsTimeStructure() const;
-		DLL_IMPORT_OR_EXPORT std::string getOriginator() const;
-		DLL_IMPORT_OR_EXPORT std::string getDescription() const;
-		DLL_IMPORT_OR_EXPORT time_t getLastUpdate() const;
+
 		/**
+		* Get the name (or other human-readable identifier) of the person who initially originated the object or document in the source application. If that information is not available, then this is the user who created the format file. The originator remains the same as the object is subsequently edited. 
+		* This is the equivalent in ISO 19115 to the CI_Individual.name or the CI_Organization.name of the citedResponsibleParty whose role is "originator".
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getOriginator() const;
+
+		/**
+		* Get the user descriptive comments about the object. Intended for end-user use (human readable); not necessarily meant to be used by software.
+		* This is the equivalent of the ISO 19115 abstract.CharacterString
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getDescription() const;
+
+		/**
+		* Get the date and time the document was last modified in the source application or, if that information is not available, when it was last saved to the format file.
+		* This is the equivalent of the ISO 19115 CI_Date where the CI_DateTypeCode = ”lastUpdate"
+		*/
+		DLL_IMPORT_OR_EXPORT time_t getLastUpdate() const;
+
+		/**
+		* Same as getLastUpdate()
 		* Use this method if you want to read some dates out of range of time_t
 		*/
 		DLL_IMPORT_OR_EXPORT tm getLastUpdateAsTimeStructure() const;
+
+		/**
+		* Get the software or service that was used to originate the object and the file format created. Must be human and machine readable and unambiguously identify the software by including the company name, software name and software version.
+		* This is the equivalent in ISO 19115 to the distributionFormat.MD_Format. The ISO format for this is [vendor:applicationName]/fileExtension where the application name includes the version number of the application.
+		* In our case, FileExtension is not relevant and will be ignored if present. Vendor and applicationName are mandatory.
+		*/
 		DLL_IMPORT_OR_EXPORT std::string getFormat() const;
+
+		/**
+		* Get the key words to describe the activity, for example, history match or volumetric calculations, relevant to this object. Intended to be used in a search function by software.
+		* This is the equivalent in ISO 19115 of descriptiveKeywords.MD_Keywords
+		*/
 		DLL_IMPORT_OR_EXPORT std::string getDescriptiveKeywords() const;
-		DLL_IMPORT_OR_EXPORT bool hasVersion() const;
+
+		/**
+		* Get the version of this data object.
+		* A returned empty version dataobject indicates that this is the latest (and ideally also the unique) version of this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT std::string getVersion() const;
 
-		DLL_IMPORT_OR_EXPORT void setTitle(const std::string & title);
-		DLL_IMPORT_OR_EXPORT void setEditor(const std::string & editor);
-		DLL_IMPORT_OR_EXPORT void setCreation(time_t creation);
 		/**
+		* Set the title (i.e. name) of the DataOject.
+		* This is the equivalent in ISO 19115 of CI_Citation.title
+		*/
+		DLL_IMPORT_OR_EXPORT void setTitle(const std::string & title);
+
+		/**
+		* Set the name (or other human-readable identifier) of the last person who updated the object.
+		* This is the equivalent in ISO 19115 to the CI_Individual.name or the CI_Organization.name of the citedResponsibleParty whose role is "editor".
+		*/
+		DLL_IMPORT_OR_EXPORT void setEditor(const std::string & editor);
+
+		/**
+		* Get the Date and time the document was created in the source application or, if that information is not available, when it was saved to the file.
+		* This is the equivalent of the ISO 19115 CI_Date where the CI_DateTypeCode = ”creation"
+		*/
+		DLL_IMPORT_OR_EXPORT void setCreation(time_t creation);
+
+		/**
+		* Same as setCreation(time_t creation)
 		* Use this method if you want to set some dates out of range of time_t
 		*/
 		DLL_IMPORT_OR_EXPORT void setCreation(const tm & creation);
-		DLL_IMPORT_OR_EXPORT void setOriginator(const std::string & originator);
-		DLL_IMPORT_OR_EXPORT void setDescription(const std::string & description);
-		DLL_IMPORT_OR_EXPORT void setLastUpdate(time_t lastUpdate);
+
 		/**
-		* Use this method if you want to set some dates out of range of time_t
+		* Set the name (or other human-readable identifier) of the person who initially originated the object or document in the source application. If that information is not available, then this is the user who created the format file. The originator remains the same as the object is subsequently edited.
+		* This is the equivalent in ISO 19115 to the CI_Individual.name or the CI_Organization.name of the citedResponsibleParty whose role is "originator".
+		*/
+		DLL_IMPORT_OR_EXPORT void setOriginator(const std::string & originator);
+
+		/**
+		* Set the user descriptive comments about the object. Intended for end-user use (human readable); not necessarily meant to be used by software.
+		* This is the equivalent of the ISO 19115 abstract.CharacterString
+		*/
+		DLL_IMPORT_OR_EXPORT void setDescription(const std::string & description);
+
+		/**
+		* Set the date and time the document was last modified in the source application or, if that information is not available, when it was last saved to the format file.
+		* This is the equivalent of the ISO 19115 CI_Date where the CI_DateTypeCode = ”lastUpdate"
+		*/
+		DLL_IMPORT_OR_EXPORT void setLastUpdate(time_t lastUpdate);
+
+		/**
+		* Same as setLastUpdate(time_t lastUpdate).
+		* Use this method if you want to set some dates out of range of time_t.
 		*/
 		DLL_IMPORT_OR_EXPORT void setLastUpdate(const tm & lastUpdate);
 		
@@ -257,7 +402,16 @@ namespace COMMON_NS
 		*/
 		DLL_IMPORT_OR_EXPORT static void setFormat(const std::string & vendor, const std::string & applicationName, const std::string & applicationVersionNumber);
 
+		/**
+		* Set the key words to describe the activity, for example, history match or volumetric calculations, relevant to this object. Intended to be used in a search function by software.
+		* This is the equivalent in ISO 19115 of descriptiveKeywords.MD_Keywords
+		*/
 		DLL_IMPORT_OR_EXPORT void setDescriptiveKeywords(const std::string & descriptiveKeywords);
+
+		/**
+		* Set the version of this data object.
+		* @param version Cannot be empty.
+		*/
 		DLL_IMPORT_OR_EXPORT void setVersion(const std::string & version);
 
 		/**
@@ -293,13 +447,26 @@ namespace COMMON_NS
 		*/
 		int getGsoapType() const;
 
+		/**
+		* Creates an returns an EML2.0 Data Object Reference which targets this dataobject.
+		*/
 		gsoap_resqml2_0_1::eml20__DataObjectReference* newResqmlReference() const;
+
+		/**
+		* Creates an returns an EML2.1 Data Object Reference which targets this dataobject.
+		*/
 		gsoap_eml2_1::eml21__DataObjectReference* newEmlReference() const;
 
 #if WITH_EXPERIMENTAL
+		/**
+		* Creates an returns an EML2.2 Data Object Reference which targets this dataobject.
+		*/
 		gsoap_eml2_2::eml22__DataObjectReference* newEml22Reference() const;
 #endif
 
+		/**
+		* Creates an returns an EML2.0 Contact Data Object Reference which targets this dataobject.
+		*/
 		gsoap_resqml2_0_1::resqml20__ContactElementReference* newResqmlContactElementReference() const;
 
 		/**

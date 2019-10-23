@@ -34,6 +34,11 @@ using namespace RESQML2_0_1_NS;
 const char* AbstractIjkGridRepresentation::XML_TAG = "IjkGridRepresentation";
 const char* AbstractIjkGridRepresentation::XML_TAG_TRUNCATED = "TruncatedIjkGridRepresentation";
 
+AbstractIjkGridRepresentation::AbstractIjkGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars) :
+	AbstractColumnLayerGridRepresentation(partialObject, withTruncatedPillars), splitInformation(nullptr), blockInformation(nullptr)
+{
+}
+
 std::string AbstractIjkGridRepresentation::getXmlTag() const
 {
 	return !isTruncated() ? XML_TAG : XML_TAG_TRUNCATED;

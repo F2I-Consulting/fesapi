@@ -29,7 +29,7 @@ namespace RESQML2_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		SubRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
+		DLL_IMPORT_OR_EXPORT SubRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
 			RESQML2_NS::AbstractRepresentation(partialObject)
 		{
 		}
@@ -49,9 +49,6 @@ namespace RESQML2_NS
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		virtual ~SubRepresentation() {}
-        
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/**
 		* Get the kind of the selected elements for a particular patch of this subrepresentation.
@@ -189,6 +186,16 @@ namespace RESQML2_NS
 		* This is a current limitation of fesapi compared the Resqml datamodel.
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getSupportingRepresentationContentType() const;
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	private:
 		void loadTargetRelationships();

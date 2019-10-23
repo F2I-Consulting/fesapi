@@ -35,7 +35,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		TriangulatedSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractSurfaceRepresentation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT TriangulatedSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractSurfaceRepresentation(partialObject) {}
 
 		TriangulatedSetRepresentation(COMMON_NS::DataObjectRepository* repo,
 			const std::string & guid, const std::string & title);
@@ -111,13 +111,20 @@ namespace RESQML2_0_1_NS
 		 * @param triangleNodeIndices	Must be pre-allocated. The count/size of this array should be equal to getTriangleCountOfAllPatches()*3.
 		 */
 		DLL_IMPORT_OR_EXPORT void getTriangleNodeIndicesOfAllPatches(unsigned int * triangleNodeIndices) const;
-        
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 		
 		/**
 		* Get the patch count in this representation.
 		*/
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const;
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

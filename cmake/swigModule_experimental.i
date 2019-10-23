@@ -152,7 +152,6 @@ namespace COMMON_NS
 		time_t getLastUpdate() const;
 		std::string getFormat() const;
 		std::string getDescriptiveKeywords() const;
-		bool hasVersion() const;
 		std::string getVersion() const;
 		
 		void setMetadata(const std::string & title, const std::string & editor, time_t creation, const std::string & originator, const std::string & description, time_t lastUpdate, const std::string & descriptiveKeywords);
@@ -820,6 +819,92 @@ namespace COMMON_NS
 		void clearWarnings();
 		void addWarning(const std::string & warning);
 		const std::vector<std::string> & getWarnings() const;
+		
+		template <class valueType>
+		valueType* createPartial(const std::string & guid, const std::string & title, const std::string & version = "")
+		{
+			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapContext);
+			dor->UUID = guid.empty() ? generateRandomUuidAsString() : guid;
+			dor->Title = title;
+			if (!version.empty()) {
+				dor->VersionString = gsoap_resqml2_0_1::soap_new_std__string(gsoapContext);
+				dor->VersionString->assign(version);
+			}
+			valueType* result = new valueType(dor);
+			addOrReplaceDataObject(result);
+			return result;
+		}
+		
+		// Template for RESQML2.0.1
+		
+		%template(createPartialLocalDepth3dCrs) createPartial<RESQML2_0_1_NS::LocalDepth3dCrs>;
+		%template(createPartialLocalTime3dCrs) createPartial<RESQML2_0_1_NS::LocalTime3dCrs>;
+		%template(createPartialMdDatum) createPartial<RESQML2_0_1_NS::MdDatum>;
+
+		%template(createPartialHorizon) createPartial<RESQML2_0_1_NS::Horizon>;
+		%template(createPartialTectonicBoundaryFeature) createPartial<RESQML2_0_1_NS::TectonicBoundaryFeature>;
+		%template(createPartialFrontierFeature) createPartial<RESQML2_0_1_NS::FrontierFeature>;
+		%template(createPartialWellboreFeature) createPartial<RESQML2_0_1_NS::WellboreFeature>;
+		%template(createPartialSeismicLineFeature) createPartial<RESQML2_0_1_NS::SeismicLineFeature>;
+		%template(createPartialSeismicLineSetFeature) createPartial<RESQML2_0_1_NS::SeismicLineSetFeature>;
+		%template(createPartialSeismicLatticeFeature) createPartial<RESQML2_0_1_NS::SeismicLatticeFeature>;
+		%template(createPartialOrganizationFeature) createPartial<RESQML2_0_1_NS::OrganizationFeature>;
+		%template(createPartialStratigraphicUnitFeature) createPartial<RESQML2_0_1_NS::StratigraphicUnitFeature>;
+		%template(createPartialGeobodyFeature) createPartial<RESQML2_0_1_NS::GeobodyFeature>;
+		%template(createPartialFluidBoundaryFeature) createPartial<RESQML2_0_1_NS::FluidBoundaryFeature>;
+
+		%template(createPartialGenericFeatureInterpretation) createPartial<RESQML2_0_1_NS::GenericFeatureInterpretation>;
+		%template(createPartialHorizonInterpretation) createPartial<RESQML2_0_1_NS::HorizonInterpretation>;
+		%template(createPartialFaultInterpretation) createPartial<RESQML2_0_1_NS::FaultInterpretation>;
+		%template(createPartialWellboreInterpretation) createPartial<RESQML2_0_1_NS::WellboreInterpretation>;
+		%template(createPartialStratigraphicUnitInterpretation) createPartial<RESQML2_0_1_NS::StratigraphicUnitInterpretation>;
+		%template(createPartialStructuralOrganizationInterpretation) createPartial<RESQML2_0_1_NS::StructuralOrganizationInterpretation>;
+		%template(createPartialStratigraphicColumnRankInterpretation) createPartial<RESQML2_0_1_NS::StratigraphicColumnRankInterpretation>;
+		%template(createPartialStratigraphicOccurrenceInterpretation) createPartial<RESQML2_0_1_NS::StratigraphicOccurrenceInterpretation>;
+		%template(createPartialEarthModelInterpretation) createPartial<RESQML2_0_1_NS::EarthModelInterpretation>;
+		%template(createPartialGeobodyBoundaryInterpretation) createPartial<RESQML2_0_1_NS::GeobodyBoundaryInterpretation>;
+		%template(createPartialGeobodyInterpretation) createPartial<RESQML2_0_1_NS::GeobodyInterpretation>;
+
+		%template(createPartialPolylineSetRepresentation) createPartial<RESQML2_0_1_NS::PolylineSetRepresentation>;
+		%template(createPartialPointSetRepresentation) createPartial<RESQML2_0_1_NS::PointSetRepresentation>;
+		%template(createPartialPlaneSetRepresentation) createPartial<RESQML2_0_1_NS::PlaneSetRepresentation>;
+		%template(createPartialPolylineRepresentation) createPartial<RESQML2_0_1_NS::PolylineRepresentation>;
+		%template(createPartialGrid2dRepresentation) createPartial<RESQML2_0_1_NS::Grid2dRepresentation>;
+		%template(createPartialTriangulatedSetRepresentation) createPartial<RESQML2_0_1_NS::TriangulatedSetRepresentation>;
+		%template(createPartialWellboreTrajectoryRepresentation) createPartial<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>;
+		%template(createPartialDeviationSurveyRepresentation) createPartial<RESQML2_0_1_NS::DeviationSurveyRepresentation>;
+		%template(createPartialWellboreMarkerFrameRepresentation) createPartial<RESQML2_0_1_NS::WellboreMarkerFrameRepresentation>;
+		%template(createPartialRepresentationSetRepresentation) createPartial<RESQML2_0_1_NS::RepresentationSetRepresentation>;
+		%template(createPartialNonSealedSurfaceFrameworkRepresentation) createPartial<RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation>;
+		%template(createPartialSealedSurfaceFrameworkRepresentation) createPartial<RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation>;
+
+		%template(createPartialUnstructuredGridRepresentation) createPartial<RESQML2_0_1_NS::UnstructuredGridRepresentation>;
+		%template(createPartialSubRepresentation) createPartial<RESQML2_0_1_NS::SubRepresentation>;
+		%template(createPartialGridConnectionSetRepresentation) createPartial<RESQML2_0_1_NS::GridConnectionSetRepresentation>;
+
+		%template(createPartialTimeSeries) createPartial<RESQML2_0_1_NS::TimeSeries>;
+
+		%template(createPartialPropertyKind) createPartial<RESQML2_0_1_NS::PropertyKind>;
+		%template(createPartialPropertySet) createPartial<RESQML2_0_1_NS::PropertySet>;
+		%template(createPartialStringTableLookup) createPartial<RESQML2_0_1_NS::StringTableLookup>;
+		%template(createPartialDiscreteProperty) createPartial<RESQML2_0_1_NS::DiscreteProperty>;
+		%template(createPartialDiscretePropertySeries) createPartial<RESQML2_0_1_NS::DiscretePropertySeries>;
+		%template(createPartialCategoricalProperty) createPartial<RESQML2_0_1_NS::CategoricalProperty>;
+		%template(createPartialCategoricalPropertySeries) createPartial<RESQML2_0_1_NS::CategoricalPropertySeries>;
+		%template(createPartialCommentProperty) createPartial<RESQML2_0_1_NS::CommentProperty>;
+		%template(createPartialContinuousProperty) createPartial<RESQML2_0_1_NS::ContinuousProperty>;
+		%template(createPartialContinuousPropertySeries) createPartial<RESQML2_0_1_NS::ContinuousPropertySeries>;
+
+		%template(createPartialActivity) createPartial<RESQML2_0_1_NS::Activity>;
+		%template(createPartialActivityTemplate) createPartial<RESQML2_0_1_NS::ActivityTemplate>;
+		
+		// Template for WITSML2.0
+		
+		%template(createPartialWell) createPartial<WITSML2_0_NS::Well>;
+		%template(createPartialWellCompletion) createPartial<WITSML2_0_NS::WellCompletion>;
+		%template(createPartialWellbore) createPartial<WITSML2_0_NS::Wellbore>;
+		%template(createPartialWellboreCompletion) createPartial<WITSML2_0_NS::WellboreCompletion>;
+		%template(createPartialTrajectory) createPartial<WITSML2_0_NS::Trajectory>;
 	};
 	
 	class EpcDocument

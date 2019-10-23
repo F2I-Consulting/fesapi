@@ -37,7 +37,7 @@ namespace RESQML2_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		RepresentationSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
+		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
 			RESQML2_NS::AbstractRepresentation(partialObject)
 		{
 		}
@@ -46,9 +46,6 @@ namespace RESQML2_NS
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		virtual ~RepresentationSetRepresentation() {}
-
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const;
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const { return nullptr; }
 
@@ -89,6 +86,16 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT std::string getRepresentationUuid(const unsigned int & index) const;
 
 		DLL_IMPORT_OR_EXPORT void pushBack(RESQML2_NS::AbstractRepresentation* rep);
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
     protected:
 		virtual void loadTargetRelationships();

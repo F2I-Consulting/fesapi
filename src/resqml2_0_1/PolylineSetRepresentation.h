@@ -33,7 +33,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		PolylineSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractRepresentation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT PolylineSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractRepresentation(partialObject) {}
 		
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -78,9 +78,6 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT unsigned int getPolylineCountOfPatch(const unsigned int & patchIndex) const;
 		DLL_IMPORT_OR_EXPORT unsigned int getPolylineCountOfAllPatches() const;
-
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		DLL_IMPORT_OR_EXPORT void getNodeCountPerPolylineInPatch(unsigned int patchIndex, unsigned int * nodeCountPerPolyline) const;
 
@@ -173,5 +170,15 @@ namespace RESQML2_0_1_NS
 		* Set the line role of this instance
 		*/
 		DLL_IMPORT_OR_EXPORT void setLineRole(gsoap_resqml2_0_1::resqml20__LineRole lineRole);
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

@@ -127,10 +127,6 @@ namespace {
 			return dataObj->getVersion() == version;
 		}
 	};
-
-	bool hasNoVersion(COMMON_NS::AbstractObject const * dataObj) {
-		return !dataObj->hasVersion();
-	}
 }
 
 // Create a fesapi partial wrapper based on a content type
@@ -350,9 +346,7 @@ void DataObjectRepository::addOrReplaceDataObject(COMMON_NS::AbstractObject* pro
 	}
 	else {
 		std::vector< COMMON_NS::AbstractObject* >& versions = dataObjects[proxy->getUuid()];
-		std::vector< COMMON_NS::AbstractObject* >::iterator same = proxy->hasVersion()
-			? std::find_if(versions.begin(), versions.end(), SameVersion(proxy->getVersion()))
-			: std::find_if(versions.begin(), versions.end(), hasNoVersion);
+		std::vector< COMMON_NS::AbstractObject* >::iterator same = std::find_if(versions.begin(), versions.end(), SameVersion(proxy->getVersion()));
 		
 		if (same == versions.end()) {
 			dataObjects[proxy->getUuid()].push_back(proxy);
@@ -824,11 +818,6 @@ BoundaryFeatureInterpretation* DataObjectRepository::createBoundaryFeatureInterp
 	return new BoundaryFeatureInterpretation(feature, guid, title);
 }
 
-HorizonInterpretation* DataObjectRepository::createPartialHorizonInterpretation(const std::string & guid, const std::string & title)
-{
-	return createPartial<HorizonInterpretation>(guid, title);
-}
-
 HorizonInterpretation* DataObjectRepository::createHorizonInterpretation(Horizon * horizon, const std::string & guid, const std::string & title)
 {
 	return new HorizonInterpretation(horizon, guid, title);
@@ -1027,11 +1016,6 @@ RESQML2_NS::RepresentationSetRepresentation* DataObjectRepository::createReprese
 	return new RESQML2_0_1_NS::RepresentationSetRepresentation(this, guid, title);
 }
 
-RESQML2_NS::RepresentationSetRepresentation* DataObjectRepository::createPartialRepresentationSetRepresentation(const std::string & guid, const std::string & title)
-{
-	return createPartial<RESQML2_0_1_NS::RepresentationSetRepresentation>(guid, title);
-}
-
 NonSealedSurfaceFrameworkRepresentation* DataObjectRepository::createNonSealedSurfaceFrameworkRepresentation(
 	StructuralOrganizationInterpretation* interp,
 	const std::string & guid,
@@ -1123,20 +1107,10 @@ RESQML2_0_1_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjk
 	return new IjkGridNoGeometryRepresentation(interp, guid, title, iCount, jCount, kCount);
 }
 
-UnstructuredGridRepresentation* DataObjectRepository::createPartialUnstructuredGridRepresentation(const std::string & guid, const std::string & title)
-{
-	return createPartial<UnstructuredGridRepresentation>(guid, title);
-}
-
 UnstructuredGridRepresentation* DataObjectRepository::createUnstructuredGridRepresentation(const std::string & guid, const std::string & title,
 	const ULONG64 & cellCount)
 {
 	return new UnstructuredGridRepresentation(this, guid, title, cellCount);
-}
-
-RESQML2_NS::SubRepresentation* DataObjectRepository::createPartialSubRepresentation(const std::string & guid, const std::string & title)
-{
-	return createPartial<SubRepresentation>(guid, title);
 }
 
 RESQML2_NS::SubRepresentation* DataObjectRepository::createSubRepresentation(const std::string & guid, const std::string & title)
@@ -1148,11 +1122,6 @@ RESQML2_NS::SubRepresentation* DataObjectRepository::createSubRepresentation(RES
 	const std::string & guid, const std::string & title)
 {
 	return new SubRepresentation(interp, guid, title);
-}
-
-RESQML2_NS::GridConnectionSetRepresentation* DataObjectRepository::createPartialGridConnectionSetRepresentation(const std::string & guid, const std::string & title)
-{
-	return createPartial<GridConnectionSetRepresentation>(guid, title);
 }
 
 RESQML2_NS::GridConnectionSetRepresentation* DataObjectRepository::createGridConnectionSetRepresentation(const std::string & guid, const std::string & title)
@@ -1173,11 +1142,6 @@ RESQML2_NS::GridConnectionSetRepresentation* DataObjectRepository::createGridCon
 RESQML2_NS::TimeSeries* DataObjectRepository::createTimeSeries(const std::string & guid, const std::string & title)
 {
 	return new RESQML2_0_1_NS::TimeSeries(this, guid, title);
-}
-
-RESQML2_NS::TimeSeries* DataObjectRepository::createPartialTimeSeries(const std::string & guid, const std::string & title)
-{
-	return createPartial<TimeSeries>(guid, title);
 }
 
 StringTableLookup* DataObjectRepository::createStringTableLookup(const std::string & guid, const std::string & title)
@@ -1207,11 +1171,6 @@ RESQML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::st
 	const std::string & namingSystem, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * parentPropType)
 {
 	return new RESQML2_0_1_NS::PropertyKind(guid, title, namingSystem, nonStandardUom, parentPropType);
-}
-
-RESQML2_NS::PropertyKind* DataObjectRepository::createPartialPropertyKind(const std::string & guid, const std::string & title)
-{
-	return createPartial<PropertyKind>(guid, title);
 }
 
 RESQML2_NS::PropertySet* DataObjectRepository::createPropertySet(const std::string & guid, const std::string & title,
@@ -1344,13 +1303,6 @@ RESQML2_NS::Activity* DataObjectRepository::createActivity(RESQML2_NS::ActivityT
 //*************** WITSML *************
 //************************************
 
-WITSML2_0_NS::Well* DataObjectRepository::createPartialWell(
-	const std::string & guid,
-	const std::string & title)
-{
-	return createPartial<WITSML2_0_NS::Well>(guid, title);
-}
-
 WITSML2_0_NS::Well* DataObjectRepository::createWell(const std::string & guid,
 	const std::string & title)
 {
@@ -1364,13 +1316,6 @@ WITSML2_0_NS::Well* DataObjectRepository::createWell(const std::string & guid,
 	gsoap_eml2_1::witsml20__WellDirection directionWell)
 {
 	return new Well(this, guid, title, operator_, statusWell, directionWell);
-}
-
-WITSML2_0_NS::Wellbore* DataObjectRepository::createPartialWellbore(
-	const std::string & guid,
-	const std::string & title)
-{
-	return createPartial<WITSML2_0_NS::Wellbore>(guid, title);
 }
 
 WITSML2_0_NS::Wellbore* DataObjectRepository::createWellbore(WITSML2_0_NS::Well* witsmlWell,
@@ -2091,4 +2036,16 @@ std::string DataObjectRepository::getGsoapErrorMessage() const
 	ostringstream oss;
 	soap_stream_fault(gsoapContext, oss);
 	return oss.str();
+}
+
+gsoap_resqml2_0_1::eml20__DataObjectReference* DataObjectRepository::createDor(const std::string & guid, const std::string & title, const std::string & version)
+{
+	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapContext);
+	dor->UUID = guid.empty() ? generateRandomUuidAsString() : guid;
+	dor->Title = title;
+	if (!version.empty()) {
+		dor->VersionString = gsoap_resqml2_0_1::soap_new_std__string(gsoapContext);
+		dor->VersionString->assign(version);
+	}
+	return dor;
 }

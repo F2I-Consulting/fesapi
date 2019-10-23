@@ -29,7 +29,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		ActivityTemplate(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::ActivityTemplate(partialObject) {}
+		DLL_IMPORT_OR_EXPORT ActivityTemplate(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::ActivityTemplate(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.

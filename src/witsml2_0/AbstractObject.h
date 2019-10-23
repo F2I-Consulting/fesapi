@@ -53,13 +53,16 @@ namespace WITSML2_0_NS
 		/**
 		* Constructor for partial transfer
 		*/
-		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Default constructor
 		*/
 		AbstractObject() {}
 
+		/**
+		* Constructor when importing EML 2.1 dataobjects
+		*/
 		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) : COMMON_NS::AbstractObject(proxy) {}
 	};
 }

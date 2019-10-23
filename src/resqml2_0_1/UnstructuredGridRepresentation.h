@@ -84,7 +84,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		UnstructuredGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
+		DLL_IMPORT_OR_EXPORT UnstructuredGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
 			RESQML2_NS::AbstractGridRepresentation(partialObject, false), constantNodeCountPerFace(0), constantFaceCountPerCell(0),
 			cumulativeNodeCountPerFace(nullptr), cumulativeFaceCountPerCell(nullptr),
 			nodeIndicesOfFaces(nullptr), faceIndicesOfCells(nullptr)
@@ -341,9 +341,16 @@ namespace RESQML2_0_1_NS
 			ULONG64 pointCount, ULONG64 faceCount, COMMON_NS::AbstractHdfProxy* proxy,
 			ULONG64 * faceIndicesPerCell, ULONG64 * nodeIndicesPerFace, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
-
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

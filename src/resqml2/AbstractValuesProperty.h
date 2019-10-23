@@ -26,6 +26,23 @@ namespace RESQML2_NS
 	class AbstractValuesProperty : public AbstractProperty
 	{
 	protected:
+
+		/**
+		* Only to be used in partial transfer context
+		*/
+		DLL_IMPORT_OR_EXPORT AbstractValuesProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractProperty(partialObject) {}
+
+		/**
+		* Default constructor
+		* Set the relationship with an AbstractRepresentation and a local property type.
+		*/
+		AbstractValuesProperty() {}
+
+		/**
+		* Creates an instance of this class by wrapping a gsoap instance.
+		*/
+		AbstractValuesProperty(gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* fromGsoap) : RESQML2_NS::AbstractProperty(fromGsoap) {}
+
 		/**
 		* Get the dataset which contains the property values of a particular patch.
 		* @param patchIndex	The corresponding patch index of the dataset to get.
@@ -48,22 +65,6 @@ namespace RESQML2_NS
 	public:
 
 		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG_64 = 3, ULONG_64 = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
-
-		/**
-		* Only to be used in partial transfer context
-		*/
-		AbstractValuesProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractProperty(partialObject) {}
-
-		/**
-		* Default constructor
-		* Set the relationship with an AbstractRepresentation and a local property type.
-		*/
-		AbstractValuesProperty() {}
-
-		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		AbstractValuesProperty(gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* fromGsoap) : RESQML2_NS::AbstractProperty(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
