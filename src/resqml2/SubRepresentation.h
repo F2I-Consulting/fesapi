@@ -22,6 +22,11 @@ under the License.
 
 namespace RESQML2_NS
 {
+	/**
+	* An ordered list of indexable elements and/or indexable element pairs of an existing representation. 
+	* Because the representation concepts of topology, geometry, and property values are separate in RESQML, it is now possible to select a range of nodes, edges, faces, or volumes (cell) indices from the topological support of an existing representation to define a sub-representation.
+	* A sub-representation may describe a different feature interpretation using the same geometry or property as the "parent" representation. In this case, the only information exchanged is a set of potentially non-consecutive indices of the topological support of the representation.
+	*/
 	class SubRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	protected:

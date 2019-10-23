@@ -508,8 +508,6 @@ namespace COMMON_NS
 
 		RESQML2_0_1_NS::BoundaryFeatureInterpretation* createBoundaryFeatureInterpretation(RESQML2_0_1_NS::BoundaryFeature * feature, const std::string & guid, const std::string & title);
 
-		RESQML2_0_1_NS::HorizonInterpretation* createPartialHorizonInterpretation(const std::string & guid, const std::string & title);
-
 		RESQML2_0_1_NS::HorizonInterpretation* createHorizonInterpretation(RESQML2_0_1_NS::Horizon * horizon, const std::string & guid, const std::string & title);
 
 		RESQML2_0_1_NS::GeobodyBoundaryInterpretation* createGeobodyBoundaryInterpretation(RESQML2_0_1_NS::GeneticBoundaryFeature * geobodyBoundary, const std::string & guid, const std::string & title);
@@ -597,8 +595,6 @@ namespace COMMON_NS
 			const std::string & guid,
 			const std::string & title);
 
-		RESQML2_NS::RepresentationSetRepresentation* createPartialRepresentationSetRepresentation(const std::string & guid, const std::string & title);
-
 		RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation* createNonSealedSurfaceFrameworkRepresentation(
 			RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp,
 			const std::string & guid,
@@ -648,20 +644,14 @@ namespace COMMON_NS
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
-		RESQML2_0_1_NS::UnstructuredGridRepresentation* createPartialUnstructuredGridRepresentation(const std::string & guid, const std::string & title);
-
 		RESQML2_0_1_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(const std::string & guid, const std::string & title,
 			const ULONG64 & cellCount);
-
-		RESQML2_NS::SubRepresentation* createPartialSubRepresentation(const std::string & guid, const std::string & title);
 
 		RESQML2_NS::SubRepresentation* createSubRepresentation(
 			const std::string & guid, const std::string & title);
 
 		RESQML2_NS::SubRepresentation* createSubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
-
-		RESQML2_NS::GridConnectionSetRepresentation* createPartialGridConnectionSetRepresentation(const std::string & guid, const std::string & title);
 
 		RESQML2_NS::GridConnectionSetRepresentation* createGridConnectionSetRepresentation(const std::string & guid, const std::string & title);
 
@@ -671,8 +661,6 @@ namespace COMMON_NS
 		//************* PROPERTIES ***********
 
 		RESQML2_NS::TimeSeries* createTimeSeries(const std::string & guid, const std::string & title);
-
-		RESQML2_NS::TimeSeries* createPartialTimeSeries(const std::string & guid, const std::string & title);
 
 		RESQML2_0_1_NS::StringTableLookup* createStringTableLookup(const std::string & guid, const std::string & title);
 
@@ -687,8 +675,6 @@ namespace COMMON_NS
 
 		RESQML2_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
 			const std::string & namingSystem, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * parentPropType);
-
-		RESQML2_NS::PropertyKind* createPartialPropertyKind(const std::string & guid, const std::string & title);
 
 		RESQML2_NS::PropertySet* createPropertySet(const std::string & guid, const std::string & title,
 			bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_resqml2_0_1::resqml20__TimeSetKind timeSetKind);
@@ -759,10 +745,6 @@ namespace COMMON_NS
 
 		//*************** WITSML *************
 
-		WITSML2_0_NS::Well* createPartialWell(
-			const std::string & guid,
-			const std::string & title);
-
 		WITSML2_0_NS::Well* createWell(const std::string & guid,
 			const std::string & title);
 
@@ -772,10 +754,6 @@ namespace COMMON_NS
 			gsoap_eml2_1::eml21__WellStatus statusWell,
 			gsoap_eml2_1::witsml20__WellDirection directionWell
 		);
-
-		WITSML2_0_NS::Wellbore* createPartialWellbore(
-			const std::string & guid,
-			const std::string & title);
 
 		WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
 			const std::string & guid,
@@ -844,7 +822,13 @@ namespace COMMON_NS
 			return result;
 		}
 		
-		// Template for RESQML2.0.1
+		// Template for partial RESQML2.2
+		
+		%template(createPartialDiscreteColorMap) createPartial<RESQML2_2_NS::DiscreteColorMap>;
+		%template(createPartialContinuousColorMap) createPartial<RESQML2_2_NS::ContinuousColorMap>;
+		%template(createPartialSeismicWellboreFrameRepresentation) createPartial<RESQML2_2_NS::SeismicWellboreFrameRepresentation>;
+		
+		// Template for partial RESQML2.0.1
 		
 		%template(createPartialLocalDepth3dCrs) createPartial<RESQML2_0_1_NS::LocalDepth3dCrs>;
 		%template(createPartialLocalTime3dCrs) createPartial<RESQML2_0_1_NS::LocalTime3dCrs>;
@@ -882,6 +866,7 @@ namespace COMMON_NS
 		%template(createPartialTriangulatedSetRepresentation) createPartial<RESQML2_0_1_NS::TriangulatedSetRepresentation>;
 		%template(createPartialWellboreTrajectoryRepresentation) createPartial<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>;
 		%template(createPartialDeviationSurveyRepresentation) createPartial<RESQML2_0_1_NS::DeviationSurveyRepresentation>;
+		%template(createPartialWellboreFrameRepresentation) createPartial<RESQML2_0_1_NS::WellboreFrameRepresentation>;
 		%template(createPartialWellboreMarkerFrameRepresentation) createPartial<RESQML2_0_1_NS::WellboreMarkerFrameRepresentation>;
 		%template(createPartialRepresentationSetRepresentation) createPartial<RESQML2_0_1_NS::RepresentationSetRepresentation>;
 		%template(createPartialNonSealedSurfaceFrameworkRepresentation) createPartial<RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation>;
@@ -907,7 +892,7 @@ namespace COMMON_NS
 		%template(createPartialActivity) createPartial<RESQML2_0_1_NS::Activity>;
 		%template(createPartialActivityTemplate) createPartial<RESQML2_0_1_NS::ActivityTemplate>;
 		
-		// Template for WITSML2.0
+		// Template for partial WITSML2.0
 		
 		%template(createPartialWell) createPartial<WITSML2_0_NS::Well>;
 		%template(createPartialWellCompletion) createPartial<WITSML2_0_NS::WellCompletion>;

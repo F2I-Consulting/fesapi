@@ -533,6 +533,7 @@ namespace COMMON_NS
 		RESQML2_NS::RepresentationSetRepresentation* createRepresentationSetRepresentation(
 			const std::string & guid,
 			const std::string & title);
+
 		RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation* createNonSealedSurfaceFrameworkRepresentation(
 			RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp,
 			const std::string & guid,
@@ -749,7 +750,7 @@ namespace COMMON_NS
 			return result;
 		}
 		
-		// Template for RESQML2.0.1
+		// Template for partial RESQML2.0.1
 		
 		%template(createPartialLocalDepth3dCrs) createPartial<RESQML2_0_1_NS::LocalDepth3dCrs>;
 		%template(createPartialLocalTime3dCrs) createPartial<RESQML2_0_1_NS::LocalTime3dCrs>;
@@ -787,6 +788,7 @@ namespace COMMON_NS
 		%template(createPartialTriangulatedSetRepresentation) createPartial<RESQML2_0_1_NS::TriangulatedSetRepresentation>;
 		%template(createPartialWellboreTrajectoryRepresentation) createPartial<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>;
 		%template(createPartialDeviationSurveyRepresentation) createPartial<RESQML2_0_1_NS::DeviationSurveyRepresentation>;
+		%template(createPartialWellboreFrameRepresentation) createPartial<RESQML2_0_1_NS::WellboreFrameRepresentation>;
 		%template(createPartialWellboreMarkerFrameRepresentation) createPartial<RESQML2_0_1_NS::WellboreMarkerFrameRepresentation>;
 		%template(createPartialRepresentationSetRepresentation) createPartial<RESQML2_0_1_NS::RepresentationSetRepresentation>;
 		%template(createPartialNonSealedSurfaceFrameworkRepresentation) createPartial<RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation>;
@@ -812,7 +814,7 @@ namespace COMMON_NS
 		%template(createPartialActivity) createPartial<RESQML2_0_1_NS::Activity>;
 		%template(createPartialActivityTemplate) createPartial<RESQML2_0_1_NS::ActivityTemplate>;
 		
-		// Template for WITSML2.0
+		// Template for partial WITSML2.0
 		
 		%template(createPartialWell) createPartial<WITSML2_0_NS::Well>;
 		%template(createPartialWellCompletion) createPartial<WITSML2_0_NS::WellCompletion>;

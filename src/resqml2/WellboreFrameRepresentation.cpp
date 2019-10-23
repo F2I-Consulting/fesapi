@@ -41,6 +41,9 @@ void WellboreFrameRepresentation::getXyzPointsOfPatch(const unsigned int & patch
 
 void WellboreFrameRepresentation::setMdValues(double const * mdValues, unsigned int mdValueCount, COMMON_NS::AbstractHdfProxy* proxy)
 {
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
 	getRepository()->addRelationship(this, proxy);
 
 	string frameUuid;

@@ -643,7 +643,7 @@ namespace RESQML2_NS
 	class WellboreFrameRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	public:
-		void setMdValues(double const * mdValues, unsigned int mdValueCount, class COMMON_NS::AbstractHdfProxy* proxy);
+		void setMdValues(double const * mdValues, unsigned int mdValueCount, COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 		void setMdValues(double firstMdValue, double incrementMdValue, unsigned int mdValueCount);
 
 		bool areMdValuesRegularlySpaced() const;
@@ -655,7 +655,7 @@ namespace RESQML2_NS
 		void getMdAsFloatValues(float * values) const;
 
 		std::string getWellboreTrajectoryUuid() const;
-		class RESQML2_0_1_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
+		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
 	};
 }
 

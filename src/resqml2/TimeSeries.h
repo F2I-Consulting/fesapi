@@ -22,6 +22,9 @@ under the License.
 
 namespace RESQML2_NS
 {
+	/**
+	* Stores an ordered list of times, for example, for time-dependent properties, geometries, or representations. It is used in conjunction with the time index to specify times for RESQML.
+	*/
 	class TimeSeries : public COMMON_NS::AbstractObject
 	{
 	protected:

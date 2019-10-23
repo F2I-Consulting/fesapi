@@ -23,6 +23,9 @@ under the License.
 
 namespace RESQML2_NS
 {
+	/**
+	* Representation of a wellbore that is organized along a wellbore trajectory by its MD values. RESQML uses MD values to associate properties on points and to organize association of properties on intervals between MD points. 
+	*/
 	class WellboreFrameRepresentation : public AbstractRepresentation
 	{
 	protected:
@@ -32,22 +35,20 @@ namespace RESQML2_NS
 		* Only to be used in partial transfer context
 		*/
 		WellboreFrameRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			RESQML2_NS::AbstractRepresentation(partialObject)
-		{
-		}
+			RESQML2_NS::AbstractRepresentation(partialObject) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreFrameRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap)
-		{}
+		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreFrameRepresentation* fromGsoap) :
+			AbstractRepresentation(fromGsoap) {}
 
 #if WITH_EXPERIMENTAL
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreFrameRepresentation(gsoap_eml2_2::resqml22__WellboreFrameRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap)
-		{}
+		WellboreFrameRepresentation(gsoap_eml2_2::resqml22__WellboreFrameRepresentation* fromGsoap) :
+			AbstractRepresentation(fromGsoap) {}
 #endif
 
 	public:
@@ -59,7 +60,7 @@ namespace RESQML2_NS
 		* @param mdValueCount	The MD values count.
 		* @param proxy			The HDF proxy where to write the MD values. It must be already opened for writing and won't be closed in this method.
 		*/
-		DLL_IMPORT_OR_EXPORT void setMdValues(double const * mdValues, unsigned int mdValueCount, COMMON_NS::AbstractHdfProxy* proxy);
+		DLL_IMPORT_OR_EXPORT void setMdValues(double const * mdValues, unsigned int mdValueCount, COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		* Set the MD values of this WellboreFrameRepresentation frame as a regular discretization along the wellbore trajectory.
@@ -70,7 +71,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void setMdValues(double firstMdValue, double incrementMdValue, unsigned int mdValueCount);
 
 		/**
-		* Indicates either the MDs are regularly spaced or not (useful for optimization)
+		* Indicates either the MDs are regularly spaced or not (useful for optimization).
 		* Does not verify if the writer has used a generic array to store regular mds.
 		*/
 		DLL_IMPORT_OR_EXPORT bool areMdValuesRegularlySpaced() const;
@@ -119,30 +120,33 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void getMdAsFloatValues(float * values) const;
 
 		/**
-		* Get the associated resqml wellbore trajectory data object reference
+		* Get the associated RESQML wellbore trajectory data object reference.
 		*/
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getWellboreTrajectoryDor() const;
 
 		/**
-		* Get the associated resqml wellbore trajectory uuid
+		* Get the associated RESQML wellbore trajectory uuid.
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getWellboreTrajectoryUuid() const;
 
 		/**
-		* Get the associated resqml wellbore trajector
+		* Get the associated RESQML wellbore trajector.
 		*/
 		DLL_IMPORT_OR_EXPORT class RESQML2_0_1_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
 
 		/**
-		* Get the associated resqml local crs data object reference
+		* Get the associated RESQML local crs data object reference.
 		*/
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const;
 
 		/**
-		* Get the associated hdf proxy data object reference
+		* Get the associated hdf proxy data object reference.
 		*/
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
+		/**
+		* Get the count of patch of this representation.
+		*/
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
 
 		protected:

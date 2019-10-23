@@ -28,6 +28,10 @@ namespace RESQML2_0_1_NS
 
 namespace RESQML2_NS
 {
+	/**
+	* Specifies the location of the measured depth = 0 reference point.
+	* The location of this reference point is defined with respect to a CRS, which need not be the same as the CRS of a wellbore trajectory representation, which may reference this location.
+	*/
 	class MdDatum : public COMMON_NS::AbstractObject
 	{
 	protected :

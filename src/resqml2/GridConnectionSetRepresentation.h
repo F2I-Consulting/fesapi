@@ -24,6 +24,14 @@ under the License.
 
 namespace RESQML2_NS
 {
+	/**
+	* Representation that consists of a list of connections between grid cells, potentially on different grids.
+	* Connections are in the form of (Grid,Cell,Face)1<=>(Grid,Cell,Face)2 and are stored as three integer pair arrays corresponding to these six elements.
+	* Grid connection sets are the preferred means of representing faults on a grid. The use of cell-face-pairs is more complete than single cell-faces, which are missing a corresponding cell face entry, and only provide an incomplete representation of the topology of a fault.
+	* Unlike what is sometimes the case in reservoir simulation software, RESQML does not distinguish between standard and non-standard connections.
+	* Within RESQML, if a grid connection corresponds to a "nearest neighbor" as defined by the cell indices, then it is never additive to the implicit nearest neighbor connection.
+	* BUSINESS RULE: A single cell-face-pair should not appear within more than a single grid connection set. This rule is designed to simplify the interpretation of properties assigned to multiple grid connection sets, which might otherwise have the same property defined more than once on a single connection, with no clear means of resolving the multiple values.
+	*/
 	class GridConnectionSetRepresentation : public AbstractRepresentation
 	{
 	protected:
