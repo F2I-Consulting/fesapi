@@ -147,8 +147,7 @@ namespace {
 			gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = rep->getInterpretationDor();
 			return dor == nullptr
 				|| dor->UUID != interp->getUuid()
-				|| (interp->hasVersion() && (dor->VersionString == nullptr || *dor->VersionString != interp->getVersion()))
-				|| (!interp->hasVersion() && dor->VersionString != nullptr);
+				|| (dor->VersionString == nullptr ? "" : *dor->VersionString) != interp->getVersion();
 		}
 	};
 }

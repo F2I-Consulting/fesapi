@@ -33,18 +33,14 @@ namespace RESQML2_2_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		WellboreFrameRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			RESQML2_NS::WellboreFrameRepresentation(partialObject)
-		{
-		}
+		DLL_IMPORT_OR_EXPORT WellboreFrameRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
+			RESQML2_NS::WellboreFrameRepresentation(partialObject) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		WellboreFrameRepresentation(gsoap_eml2_2::resqml22__WellboreFrameRepresentation* fromGsoap):
-			RESQML2_NS::WellboreFrameRepresentation(fromGsoap)
-		{
-		}
+			RESQML2_NS::WellboreFrameRepresentation(fromGsoap) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -55,7 +51,14 @@ namespace RESQML2_2_NS
 		*/
 		WellboreFrameRepresentation(class RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, class RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj);
 
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

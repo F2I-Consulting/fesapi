@@ -47,7 +47,7 @@ void SubRepresentationOnPartialGridConnectionSet::initRepoHandler()
 	// getting the hdf proxy
 	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
-	RESQML2_NS::GridConnectionSetRepresentation* partialGcsr = repo->createPartialGridConnectionSetRepresentation("00a7d22f-4746-409b-87dc-5bdb83660d27", "GCSR");
+	RESQML2_0_1_NS::GridConnectionSetRepresentation* partialGcsr = repo->createPartial<RESQML2_0_1_NS::GridConnectionSetRepresentation>("00a7d22f-4746-409b-87dc-5bdb83660d27", "GCSR");
 	REQUIRE(partialGcsr != nullptr);
 	RESQML2_NS::SubRepresentation* subRep = repo->createSubRepresentation(defaultUuid, defaultTitle);
 	subRep->pushBackSupportingRepresentation(partialGcsr);

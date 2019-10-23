@@ -23,7 +23,7 @@ under the License.
 #include "resqml2_0_1test/PropertyKindTest.h"
 #include "resqml2_0_1test/WellboreFrameRepresentationTest.h"
 
-#include "resqml2/PropertyKind.h"
+#include "resqml2_0_1/PropertyKind.h"
 #include "resqml2_0_1/DiscreteProperty.h"
 #include "resqml2_0_1/AbstractIjkGridRepresentation.h"
 #include "common/AbstractHdfProxy.h"
@@ -53,7 +53,7 @@ DiscreteProperty::DiscreteProperty(DataObjectRepository * repo, bool init)
 
 void DiscreteProperty::initRepoHandler() {
 	RESQML2_0_1_NS::AbstractIjkGridRepresentation* ijkGrid = repo->createPartialIjkGridRepresentation("", "partial IJK Grid");
-	PropertyKind * propertyKind = repo->createPartialPropertyKind("", "Partial prop kind");
+	RESQML2_0_1_NS::PropertyKind * propertyKind = repo->createPartial<RESQML2_0_1_NS::PropertyKind>("", "Partial prop kind");
 
 	// getting the hdf proxy
 	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];

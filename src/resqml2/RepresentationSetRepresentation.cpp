@@ -30,11 +30,6 @@ using namespace RESQML2_NS;
 
 const char* RepresentationSetRepresentation::XML_TAG = "RepresentationSetRepresentation";
 
-std::string RepresentationSetRepresentation::getXmlTag() const
-{
-	return XML_TAG;
-}
-
 void RepresentationSetRepresentation::loadTargetRelationships()
 {
 	AbstractRepresentation::loadTargetRelationships();

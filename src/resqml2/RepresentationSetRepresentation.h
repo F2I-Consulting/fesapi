@@ -22,6 +22,11 @@ under the License.
 
 namespace RESQML2_NS
 {
+	/**
+	* The parent class of the framework representations. It is used to group together individual representations to represent a “bag” of representations. If the individual representations are all of the same, then you can indicate that the set is homogenous.
+	* These “bags” do not imply any geologic consistency. For example, you can define a set of wellbore frames, a set of wellbore trajectories, a set of blocked wellbores. 
+	* Because the framework representations inherit from this class, they inherit the capability to gather individual representations into sealed and non-sealed surface framework representations, or sealed volume framework representations.
+	*/
 	class RepresentationSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	protected:
@@ -37,7 +42,7 @@ namespace RESQML2_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		RepresentationSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
+		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
 			RESQML2_NS::AbstractRepresentation(partialObject)
 		{
 		}
@@ -46,9 +51,6 @@ namespace RESQML2_NS
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		virtual ~RepresentationSetRepresentation() {}
-
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const;
 
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const { return nullptr; }
 
@@ -89,6 +91,16 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT std::string getRepresentationUuid(const unsigned int & index) const;
 
 		DLL_IMPORT_OR_EXPORT void pushBack(RESQML2_NS::AbstractRepresentation* rep);
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
     protected:
 		virtual void loadTargetRelationships();

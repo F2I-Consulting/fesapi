@@ -18,23 +18,4 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "common/EpcExternalPartReference.h"
 
-#include <stdexcept>
-
-#include "tools/GuidTools.h"
-
-#include "resqml2/AbstractRepresentation.h"
-#include "resqml2/AbstractProperty.h"
-
-using namespace std;
-using namespace COMMON_NS;
-using namespace gsoap_resqml2_0_1;
-
-const char* EpcExternalPartReference::XML_TAG = "EpcExternalPartReference";
-
-string EpcExternalPartReference::getXmlTag() const
-{
-	return XML_TAG;
-}
-
-void EpcExternalPartReference::loadTargetRelationships()
-{}
+const char* COMMON_NS::EpcExternalPartReference::XML_TAG = "EpcExternalPartReference";

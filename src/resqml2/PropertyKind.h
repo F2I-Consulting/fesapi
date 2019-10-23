@@ -34,7 +34,7 @@ namespace RESQML2_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		PropertyKind(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT PropertyKind(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -99,10 +99,10 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT PropertyKind* getParentLocalPropertyKind() const;
 
+		/**
+		* Set the parent of the property kind.
+		*/
 		DLL_IMPORT_OR_EXPORT void setParentPropertyKind(PropertyKind* parentPropertyKind);
-
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/**
 		* Check if this property kind is a child of a particular standard Energistics Property kind.
@@ -118,6 +118,16 @@ namespace RESQML2_NS
 		* Check if this property kind is partial or if one of its parent is partial.
 		*/
 		DLL_IMPORT_OR_EXPORT virtual bool isParentPartial() const = 0;
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	protected:
 		virtual void setXmlParentPropertyKind(PropertyKind* parentPropertyKind) = 0;

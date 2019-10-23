@@ -127,7 +127,7 @@ namespace RESQML2_2_NS
 	class SeismicWellboreFrameRepresentation : public WellboreFrameRepresentation
 	{
 	public:
-		void setTimeValues(double const * timeValues, unsigned int timeValueCount, class COMMON_NS::AbstractHdfProxy* proxy);
+		void setTimeValues(double const * timeValues, unsigned int timeValueCount, COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 		void setTimeValues(double firstTimeValue, double incrementTimeValue, unsigned int timeValueCount);
 
 		bool areTimeValuesRegularlySpaced() const;

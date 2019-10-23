@@ -50,7 +50,7 @@ void GridConnectionSetOnPartialGridSet::initRepoHandler() {
 	AbstractHdfProxy* hdfProxy = repo->getHdfProxySet()[0];
 
 	// Unstructured grid
-	RESQML2_0_1_NS::UnstructuredGridRepresentation* partialGrid = repo->createPartialUnstructuredGridRepresentation(unstructuredGridUuid, unstructuredGridTitle);
+	RESQML2_0_1_NS::UnstructuredGridRepresentation* partialGrid = repo->createPartial<RESQML2_0_1_NS::UnstructuredGridRepresentation>(unstructuredGridUuid, unstructuredGridTitle);
 	REQUIRE( partialGrid != nullptr );
 	RESQML2_0_1_NS::ContinuousProperty* continuousProperty = repo->createContinuousProperty(partialGrid, "62d7e07d-5e17-4e42-b4b2-a4c26204cba2", "Continuous prop on partial unstructured grid", 1,
 		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, 

@@ -332,66 +332,50 @@ string AbstractObject::getDescriptiveKeywords() const
 		return string();
 }
 
-bool AbstractObject::hasVersion() const
-{
-	if (gsoapProxy2_0_1 != nullptr) {
-		return gsoapProxy2_0_1->Citation->VersionString != nullptr;
-	}
-	else if (gsoapProxy2_1 != nullptr)
-		return gsoapProxy2_1->objectVersion != nullptr;
-#if WITH_EXPERIMENTAL
-	else if (gsoapProxy2_2 != nullptr)
-		return gsoapProxy2_2->objectVersion != nullptr;
-#endif
-	else if (partialObject != nullptr) { // partial transfer
-		return partialObject->VersionString != nullptr;
-	}
-
-	throw logic_error("The object does not lookg to be initialized");
-}
-
 std::string AbstractObject::getVersion() const
 {
-	if (!hasVersion()) {
-		throw invalid_argument("No version is available for this object. You should verify first by calling hasVersion()");
+	if (gsoapProxy2_0_1 != nullptr && gsoapProxy2_0_1->Citation->VersionString != nullptr && !gsoapProxy2_0_1->Citation->VersionString->empty()) {
+		return *gsoapProxy2_0_1->Citation->VersionString;
+	}
+	else if (gsoapProxy2_1 != nullptr && gsoapProxy2_1->objectVersion != nullptr && !gsoapProxy2_1->objectVersion->empty()) {
+		return *gsoapProxy2_1->objectVersion;
+	}
+#if WITH_EXPERIMENTAL
+	else if (gsoapProxy2_2 != nullptr && gsoapProxy2_2->objectVersion != nullptr && !gsoapProxy2_2->objectVersion->empty()) {
+		return *gsoapProxy2_2->objectVersion;
+	}
+#endif
+	else if (partialObject != nullptr && partialObject->VersionString != nullptr && !partialObject->VersionString->empty()) {
+		return *partialObject->VersionString;
 	}
 
-	if (gsoapProxy2_0_1 != nullptr)
-		return *gsoapProxy2_0_1->Citation->VersionString;
-	else if (gsoapProxy2_1 != nullptr)
-		return *gsoapProxy2_1->objectVersion;
-#if WITH_EXPERIMENTAL
-	else if (gsoapProxy2_2 != nullptr)
-		return *gsoapProxy2_2->objectVersion;
-#endif
-	else if (partialObject != nullptr) // partial transfer
-		return *partialObject->VersionString;
-
-	throw logic_error("The object does not lookg to be initialized");
+	return "";
 }
 
 void AbstractObject::setUuid(const std::string & uuid)
 {
-	if (partialObject != nullptr)
+	if (partialObject != nullptr) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
+	}
 
 	if (uuid.empty()) {
-		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->uuid = GuidTools::generateUidAsString();
-		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->uuid = GuidTools::generateUidAsString();
+		if (gsoapProxy2_0_1 != nullptr) { gsoapProxy2_0_1->uuid = GuidTools::generateUidAsString(); }
+		else if (gsoapProxy2_1 != nullptr) { gsoapProxy2_1->uuid = GuidTools::generateUidAsString(); }
 #if WITH_EXPERIMENTAL
-		else if (gsoapProxy2_2 != nullptr) gsoapProxy2_2->uuid = GuidTools::generateUidAsString();
+		else if (gsoapProxy2_2 != nullptr) { gsoapProxy2_2->uuid = GuidTools::generateUidAsString(); }
 #endif
 	}
 	else
 	{
 #if (defined(_WIN32) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9))))
-		if (!regex_match(uuid, regex("[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}")))
+		if (!regex_match(uuid, regex("[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"))) {
 			throw invalid_argument("The uuid does not match the official uuid regular expression : " + uuid);
+	}
 #endif
-		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->uuid = uuid;
-		else if (gsoapProxy2_1 != nullptr) gsoapProxy2_1->uuid = uuid;
+		if (gsoapProxy2_0_1 != nullptr) { gsoapProxy2_0_1->uuid = uuid; }
+		else if (gsoapProxy2_1 != nullptr) { gsoapProxy2_1->uuid = uuid; }
 #if WITH_EXPERIMENTAL
-		else if (gsoapProxy2_2 != nullptr) gsoapProxy2_2->uuid = uuid;
+		else if (gsoapProxy2_2 != nullptr) { gsoapProxy2_2->uuid = uuid; }
 #endif
 	}
 }
@@ -621,6 +605,10 @@ void AbstractObject::setDescriptiveKeywords(const std::string & descriptiveKeywo
 
 void AbstractObject::setVersion(const std::string & version)
 {
+	if (version.empty()) {
+		throw invalid_argument("Cannot set an empty version");
+	}
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		if (gsoapProxy2_0_1->Citation->VersionString == nullptr)
 			gsoapProxy2_0_1->Citation->VersionString = gsoap_resqml2_0_1::soap_new_std__string(gsoapProxy2_0_1->soap);
@@ -754,7 +742,7 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractObject::newResqmlReferenc
 	result->UUID = getUuid();
 	result->Title = getTitle();
 	result->ContentType = getContentType();
-	if (gsoapProxy2_0_1 != nullptr && hasVersion())
+	if (gsoapProxy2_0_1 != nullptr && !getVersion().empty())
 	{
 		result->VersionString = gsoap_resqml2_0_1::soap_new_std__string(gsoapProxy2_0_1->soap);
 		result->VersionString->assign(getVersion());
@@ -769,7 +757,7 @@ gsoap_eml2_1::eml21__DataObjectReference* AbstractObject::newEmlReference() cons
 	result->Uuid = getUuid();
 	result->Title = getTitle();
 	result->ContentType = getContentType();
-	if (gsoapProxy2_0_1 != nullptr && hasVersion()) // Not partial transfer
+	if (gsoapProxy2_0_1 != nullptr && !getVersion().empty()) // Not partial transfer
 	{
 		result->VersionString = gsoap_eml2_1::soap_new_std__string(gsoapProxy2_0_1->soap);
 		result->VersionString->assign(getVersion());
@@ -787,14 +775,10 @@ gsoap_eml2_2::eml22__DataObjectReference* AbstractObject::newEml22Reference() co
 	result->Uuid = getUuid();
 	result->Title = getTitle();
 	result->ContentType = getContentType();
-	if (gsoapProxy2_2 != nullptr) // Not partial transfer
+	if (gsoapProxy2_2 != nullptr && !getVersion().empty()) // Not partial transfer
 	{
 		result->ObjectVersion = gsoap_eml2_1::soap_new_std__string(gsoapProxy2_2->soap);
-		if (getLastUpdate() != -1)
-			oss << getLastUpdate();
-		else
-			oss << getCreation();
-		result->ObjectVersion->assign(oss.str());
+		result->ObjectVersion->assign(getVersion());
 	}
 
 	return result;
@@ -808,7 +792,7 @@ gsoap_resqml2_0_1::resqml20__ContactElementReference* AbstractObject::newResqmlC
 
 	gsoap_resqml2_0_1::resqml20__ContactElementReference* result = gsoap_resqml2_0_1::soap_new_resqml20__ContactElementReference(gsoapProxy2_0_1->soap);
 	result->UUID = getUuid();
-	if (gsoapProxy2_0_1 != nullptr && hasVersion()) // Not partial transfer
+	if (gsoapProxy2_0_1 != nullptr && !getVersion().empty()) // Not partial transfer
 	{
 		result->VersionString = gsoap_eml2_1::soap_new_std__string(gsoapProxy2_0_1->soap);
 		result->VersionString->assign(getVersion());

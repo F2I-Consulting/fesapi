@@ -22,6 +22,11 @@ under the License.
 
 namespace RESQML2_NS
 {
+	/**
+	* An ordered list of indexable elements and/or indexable element pairs of an existing representation. 
+	* Because the representation concepts of topology, geometry, and property values are separate in RESQML, it is now possible to select a range of nodes, edges, faces, or volumes (cell) indices from the topological support of an existing representation to define a sub-representation.
+	* A sub-representation may describe a different feature interpretation using the same geometry or property as the "parent" representation. In this case, the only information exchanged is a set of potentially non-consecutive indices of the topological support of the representation.
+	*/
 	class SubRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
 	protected:
@@ -29,7 +34,7 @@ namespace RESQML2_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		SubRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
+		DLL_IMPORT_OR_EXPORT SubRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
 			RESQML2_NS::AbstractRepresentation(partialObject)
 		{
 		}
@@ -49,9 +54,6 @@ namespace RESQML2_NS
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		virtual ~SubRepresentation() {}
-        
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/**
 		* Get the kind of the selected elements for a particular patch of this subrepresentation.
@@ -189,6 +191,16 @@ namespace RESQML2_NS
 		* This is a current limitation of fesapi compared the Resqml datamodel.
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getSupportingRepresentationContentType() const;
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	private:
 		void loadTargetRelationships();

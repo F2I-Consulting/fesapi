@@ -44,8 +44,8 @@ Perforation::Perforation(DataObjectRepository* repo, bool init)
 }
 
 void Perforation::initRepoHandler() {
-	WITSML2_0_NS::Well* well = repo->createPartialWell("", "");
-	WITSML2_0_NS::Wellbore* wellbore = repo->createPartialWellbore("", "");
+	WITSML2_0_NS::Well* well = repo->createPartial<WITSML2_0_NS::Well>("", "");
+	WITSML2_0_NS::Wellbore* wellbore = repo->createPartial<WITSML2_0_NS::Wellbore>("", "");
 	WITSML2_0_NS::WellCompletion* wellCompletion = repo->createWellCompletion(well, "6593d580-2f44-4b18-97ce-8a9cf42a0414", "WellCompletion1");
 	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = repo->createWellboreCompletion(wellbore, wellCompletion, "7bda8ecf-2037-4dc7-8c59-db6ca09f2008", "WellboreCompletion1", "wellCompletionName");
 

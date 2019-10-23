@@ -33,12 +33,22 @@ const char* SeismicWellboreFrameRepresentation::XML_TAG = "SeismicWellboreFrameR
 
 SeismicWellboreFrameRepresentation::SeismicWellboreFrameRepresentation(
 	RESQML2_0_1_NS::WellboreInterpretation* interp,
-	const string& guid, const std::string& title,
+	const std::string& guid, const std::string& title,
 	RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj,
 	double seismicReferenceDatum,
 	double weatheringVelocity,
 	RESQML2_0_1_NS::LocalTime3dCrs* crs)
 {
+	if (interp == nullptr) {
+		throw invalid_argument("The wellbore interpretation cannot be null.");
+	}
+	if (traj == nullptr) {
+		throw invalid_argument("The trajectory cannot be null.");
+	}
+	if (crs == nullptr) {
+		throw invalid_argument("The local time crs cannot be null.");
+	}
+
 	gsoapProxy2_2 = soap_new_resqml22__SeismicWellboreFrameRepresentation(interp->getGsoapContext());
 	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_2);
 
@@ -60,6 +70,9 @@ SeismicWellboreFrameRepresentation::SeismicWellboreFrameRepresentation(
 
 void SeismicWellboreFrameRepresentation::setTimeValues(double const * timeValues, unsigned int timeValueCount, COMMON_NS::AbstractHdfProxy* proxy)
 {
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+	}
 	getRepository()->addRelationship(this, proxy);
 
 	_resqml22__SeismicWellboreFrameRepresentation* frame = static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_2);

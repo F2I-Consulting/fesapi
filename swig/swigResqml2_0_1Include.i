@@ -3211,34 +3211,34 @@ namespace RESQML2_0_1_NS
 		const gsoap_resqml2_0_1::resqml20__ResqmlUom & getUom() const;
 		std::string getUomAsString() const;
 		
-		void pushBackDoubleHdf5Array1dOfValues(const double * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy,
+		void pushBackDoubleHdf5Array1dOfValues(const double * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			double minimumValue = std::numeric_limits<double>::quiet_NaN(), double maximumValue = std::numeric_limits<double>::quiet_NaN());
-		void pushBackDoubleHdf5Array2dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
+		void pushBackDoubleHdf5Array2dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			double minimumValue = std::numeric_limits<double>::quiet_NaN(), double maximumValue = std::numeric_limits<double>::quiet_NaN());
-		void pushBackDoubleHdf5Array3dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
+		void pushBackDoubleHdf5Array3dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			double minimumValue = std::numeric_limits<double>::quiet_NaN(), double maximumValue = std::numeric_limits<double>::quiet_NaN());
-		void pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy,
+		void pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			double * minimumValue = nullptr, double * maximumValue = nullptr);
 
-		void pushBackFloatHdf5Array1dOfValues(const float * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy,
+		void pushBackFloatHdf5Array1dOfValues(const float * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			float minimumValue = std::numeric_limits<float>::quiet_NaN(), float maximumValue = std::numeric_limits<float>::quiet_NaN());
-		void pushBackFloatHdf5Array2dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
+		void pushBackFloatHdf5Array2dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			float minimumValue = std::numeric_limits<float>::quiet_NaN(), float maximumValue = std::numeric_limits<float>::quiet_NaN());
-		void pushBackFloatHdf5Array3dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
+		void pushBackFloatHdf5Array3dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			float minimumValue = std::numeric_limits<float>::quiet_NaN(), float maximumValue = std::numeric_limits<float>::quiet_NaN());
-		void pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy,
+		void pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			float * minimumValue = nullptr, float * maximumValue = nullptr);
 
 		void pushBackFloatHdf5ArrayOfValues(
 			unsigned long long const * numValues,
 			unsigned int numArrayDimensions, 
-			COMMON_NS::AbstractHdfProxy* proxy
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr
 		);
 		void pushBackFloatHdf5ArrayOfValues(
 			ULONG64 valueCountInFastestDim,
 			ULONG64 valueCountInMiddleDim,
 			ULONG64 valueCountInSlowestDim,
-			COMMON_NS::AbstractHdfProxy* proxy
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr
 		);
 		void setValuesOfFloatHdf5ArrayOfValues(
 			float const * values, 
@@ -3248,7 +3248,7 @@ namespace RESQML2_0_1_NS
 			ULONG64 offsetInFastestDim,
 			ULONG64 offsetInMiddleDim,
 			ULONG64 offsetInSlowestDim,
-			COMMON_NS::AbstractHdfProxy* proxy,
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max()
 		);
 		void setValuesOfFloatHdf5ArrayOfValues(
@@ -3256,7 +3256,7 @@ namespace RESQML2_0_1_NS
 			unsigned long long const * numValues,
 			unsigned long long const * offsetValues,
 			unsigned int numArrayDimensions, 
-			COMMON_NS::AbstractHdfProxy* proxy,
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max()
 		);
 

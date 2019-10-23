@@ -34,9 +34,8 @@ namespace {
 		bool operator()(AbstractFeatureInterpretation const * dataObj) const
 		{
 			gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = dataObj->getInterpretedFeatureDor();
-			return dor->UUID != obj->getUuid() || 
-				(obj->hasVersion() && (dor->VersionString == nullptr || *dor->VersionString != obj->getVersion())) ||
-				(!obj->hasVersion() && dor->VersionString != nullptr);
+			return dor->UUID != obj->getUuid()
+				|| (dor->VersionString == nullptr ? "" : *dor->VersionString) != obj->getVersion();
 		}
 	};
 }

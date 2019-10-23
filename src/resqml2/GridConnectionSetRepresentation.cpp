@@ -19,9 +19,7 @@ under the License.
 #include "resqml2/GridConnectionSetRepresentation.h"
 
 #include <algorithm>
-#if defined(__gnu_linux__) || defined(__APPLE__) 
 #include <stdexcept>
-#endif 
 
 #include "hdf5.h"
 
@@ -37,11 +35,6 @@ using namespace RESQML2_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* GridConnectionSetRepresentation::XML_TAG = "GridConnectionSetRepresentation";
-
-std::string GridConnectionSetRepresentation::getXmlTag() const
-{
-	return XML_TAG;
-}
 
 void GridConnectionSetRepresentation::pushBackSupportingGridRepresentation(AbstractGridRepresentation * supportingGridRep)
 {
@@ -150,4 +143,3 @@ std::string GridConnectionSetRepresentation::getSupportingGridRepresentationCont
 {
 	return getSupportingGridRepresentationDor(index)->ContentType;
 }
-

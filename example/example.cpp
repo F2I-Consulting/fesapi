@@ -920,7 +920,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	ijkgrid->setIntervalAssociationWithStratigraphicOrganizationInterpretation(&stratiUnitIndice, 1000, stratiColumnRank0);
 
 	// Partial transfer
-	UnstructuredGridRepresentation* partialGrid = pck->createPartialUnstructuredGridRepresentation("", "Partial Grid");
+	UnstructuredGridRepresentation* partialGrid = pck->createPartial<UnstructuredGridRepresentation>("", "Partial Grid");
 	ContinuousProperty* continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "Testing partial property", 1,
 		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	double continuousProp1Values[6] = { 0, 1, 2, 3, 4, 5 };
@@ -1932,7 +1932,7 @@ void showAllMetadata(COMMON_NS::AbstractObject const * obj, const std::string & 
 		std::cout << prefix << "Creation date is (unix timestamp) : " << creation << std::endl;
 		tm creationTm = obj->getCreationAsTimeStructure();
 		std::cout << prefix << "Creation date is (struct tm) : " << 1900 + creationTm.tm_year << "-" << creationTm.tm_mon + 1 << "-" << creationTm.tm_mday << "T" << creationTm.tm_hour << ":" << creationTm.tm_min << ":" << creationTm.tm_sec << std::endl;
-		if (obj->hasVersion()) {
+		if (!obj->getVersion().empty()) {
 			std::cout << prefix << "version is : " << obj->getVersion() << std::endl;
 		}
 		std::cout << prefix << "--------------------------------------------------" << std::endl;

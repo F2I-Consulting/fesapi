@@ -28,7 +28,7 @@ namespace WITSML2_0_NS
 		/**
 		* Constructor for partial transfer
 		*/
-		Trajectory(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WellboreObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT Trajectory(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WellboreObject(partialObject) {}
 
 		Trajectory(class Wellbore* witsmlWellbore,
 			const std::string & guid,
@@ -154,7 +154,14 @@ namespace WITSML2_0_NS
 		*/
 		DLL_IMPORT_OR_EXPORT unsigned int getTrajectoryStationCount() const;
 
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

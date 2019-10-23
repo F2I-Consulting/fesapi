@@ -20,6 +20,13 @@ under the License.
 
 #include "resqml2_2/WellboreFrameRepresentation.h"
 
+namespace RESQML2_0_1_NS
+{
+	class WellboreInterpretation;
+	class WellboreTrajectoryRepresentation;
+	class LocalTime3dCrs;
+}
+
 namespace RESQML2_2_NS
 {
 	class SeismicWellboreFrameRepresentation : public RESQML2_2_NS::WellboreFrameRepresentation
@@ -29,16 +36,14 @@ namespace RESQML2_2_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		SeismicWellboreFrameRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			RESQML2_2_NS::WellboreFrameRepresentation(partialObject)
-		{
-		}
+		DLL_IMPORT_OR_EXPORT SeismicWellboreFrameRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
+			RESQML2_2_NS::WellboreFrameRepresentation(partialObject) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		SeismicWellboreFrameRepresentation(gsoap_eml2_2::resqml22__SeismicWellboreFrameRepresentation * fromGsoap) : RESQML2_2_NS::WellboreFrameRepresentation(fromGsoap)
-		{}
+		SeismicWellboreFrameRepresentation(gsoap_eml2_2::resqml22__SeismicWellboreFrameRepresentation * fromGsoap) :
+			RESQML2_2_NS::WellboreFrameRepresentation(fromGsoap) {}
 
 		~SeismicWellboreFrameRepresentation() {}
 
@@ -52,13 +57,12 @@ namespace RESQML2_2_NS
 		* @param weatheringVelocity		The weathering velocity (also called veolocity replacement).
 		* @param crs					The crs the time values are based on.
 		*/
-		SeismicWellboreFrameRepresentation(class RESQML2_0_1_NS::WellboreInterpretation* interp,
+		SeismicWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp,
 			const std::string& guid, const std::string& title,
-			class RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj,
+			RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj,
 			double seismicReferenceDatum,
 			double weatheringVelocity,
-			class RESQML2_0_1_NS::LocalTime3dCrs* crs
-			);
+			RESQML2_0_1_NS::LocalTime3dCrs* crs);
 	
 		/**
 		* Set the time values of this SeismicWellboreFrameRepresentation frame to an array 1d of explicit values.
@@ -66,7 +70,7 @@ namespace RESQML2_2_NS
 		* @param timeValueCount	The time values count. It must be the same that the md values count.
 		* @param proxy			The HDF proxy where to write the time values. It must be already opened for writing and won't be closed in this method.
 		*/
-		DLL_IMPORT_OR_EXPORT void setTimeValues(double const * timeValues, unsigned int timeValueCount, COMMON_NS::AbstractHdfProxy* proxy);
+		DLL_IMPORT_OR_EXPORT void setTimeValues(double const * timeValues, unsigned int timeValueCount, COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
 		* Set the time values of this WellboreFrameRepresentation frame as a regular discretization along the wellbore trajectory.
@@ -123,7 +127,14 @@ namespace RESQML2_2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT double getWeatheringVelocity() const;
 			   
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

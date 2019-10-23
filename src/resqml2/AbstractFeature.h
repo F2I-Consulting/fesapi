@@ -26,12 +26,12 @@ namespace RESQML2_NS
 {
 	class AbstractFeature : public COMMON_NS::AbstractObject
 	{
-	public:
+	protected:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		AbstractFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT AbstractFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Default constructor
@@ -44,6 +44,8 @@ namespace RESQML2_NS
 		* @param fromGsoap	The gsoap proxy which shold be wrapped by the constructed feature.
 		*/
 		AbstractFeature(gsoap_resqml2_0_1::resqml20__AbstractFeature* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
+	public:
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

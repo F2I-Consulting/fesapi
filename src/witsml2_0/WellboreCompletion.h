@@ -28,6 +28,15 @@ namespace WITSML2_0_NS
 	class WellboreCompletion : public WITSML2_0_NS::WellboreObject
 	{
 	public:
+
+		/**
+		* Only to be used in partial transfer context
+		*/
+		DLL_IMPORT_OR_EXPORT WellboreCompletion(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::WellboreObject(partialObject) {}
+
+		/**
+		* Constructor
+		*/
 		WellboreCompletion(class Wellbore* witsmlWellbore,
 			class WellCompletion* wellCompletion,
 			const std::string & guid,
@@ -44,14 +53,29 @@ namespace WITSML2_0_NS
 		*/
 		~WellboreCompletion() {}
 
+		/**
+		* Get the Data Object Reference of the wellbore linked with this data object.
+		*/
 		gsoap_eml2_1::eml21__DataObjectReference* getWellboreDor() const;
 
+		/**
+		* Get the Data Object Reference of the well completion linked with this data object.
+		*/
 		gsoap_eml2_1::eml21__DataObjectReference* getWellCompletionDor() const;
 
+		/**
+		* Get the well completion linked with this data object
+		*/
 		DLL_IMPORT_OR_EXPORT class WellCompletion* getWellCompletion() const;
 
+		/**
+		* Set the wellbore linked with this data object
+		*/
 		DLL_IMPORT_OR_EXPORT void setWellbore(class Wellbore* witsmlWellbore);
 		
+		/**
+		* Set the well completion linked with this data object
+		*/
 		DLL_IMPORT_OR_EXPORT void setWellCompletion(class WellCompletion* wellCompletion);
 
 		DLL_IMPORT_OR_EXPORT void pushBackPerforation(const std::string & datum,
@@ -190,7 +214,14 @@ namespace WITSML2_0_NS
 			unsigned int perforationIndex,
 			const std::string & comment);				
 
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	private:
