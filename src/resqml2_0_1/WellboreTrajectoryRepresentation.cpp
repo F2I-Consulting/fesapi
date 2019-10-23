@@ -425,9 +425,9 @@ DeviationSurveyRepresentation* WellboreTrajectoryRepresentation::getDeviationSur
 	return dsDor == nullptr ? nullptr : repository->getDataObjectByUuid<DeviationSurveyRepresentation>(dsDor->UUID);
 }
 
-std::vector<WellboreFrameRepresentation *> WellboreTrajectoryRepresentation::getWellboreFrameRepresentationSet() const
+std::vector<RESQML2_NS::WellboreFrameRepresentation *> WellboreTrajectoryRepresentation::getWellboreFrameRepresentationSet() const
 {
-	return getRepository()->getSourceObjects<WellboreFrameRepresentation>(this);
+	return getRepository()->getSourceObjects<RESQML2_NS::WellboreFrameRepresentation>(this);
 }
 
 unsigned int WellboreTrajectoryRepresentation::getWellboreFrameRepresentationCount() const
@@ -435,9 +435,9 @@ unsigned int WellboreTrajectoryRepresentation::getWellboreFrameRepresentationCou
 	return getWellboreFrameRepresentationSet().size();
 }
 
-WellboreFrameRepresentation * WellboreTrajectoryRepresentation::getWellboreFrameRepresentation(unsigned int index) const
+RESQML2_NS::WellboreFrameRepresentation * WellboreTrajectoryRepresentation::getWellboreFrameRepresentation(unsigned int index) const
 {
-	const std::vector<WellboreFrameRepresentation *>& wfrs = getWellboreFrameRepresentationSet();
+	const std::vector<RESQML2_NS::WellboreFrameRepresentation *>& wfrs = getWellboreFrameRepresentationSet();
 	
 	if (index >= wfrs.size()) {
 		throw out_of_range("The index if out of range");

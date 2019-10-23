@@ -58,6 +58,7 @@ namespace RESQML2_NS
 	class SubRepresentation;
 	class TimeSeries;
 	class RepresentationSetRepresentation;
+	class WellboreFrameRepresentation;
 }
 
 namespace RESQML2_0_1_NS
@@ -135,6 +136,7 @@ namespace RESQML2_2_NS
 {
 	class DiscreteColorMap;
 	class ContinuousColorMap;
+	class SeismicWellboreFrameRepresentation;
 }
 #endif
 
@@ -275,7 +277,9 @@ namespace COMMON_NS
 		template <class valueType>
 		std::vector<valueType *> getSourceObjects(COMMON_NS::AbstractObject const * dataObj) const
 		{
-			return getObjsFilteredOnDatatype<valueType>(getSourceObjects(dataObj));
+			const std::vector < COMMON_NS::AbstractObject*> & sourceObjects = getSourceObjects(dataObj);
+
+			return getObjsFilteredOnDatatype<valueType>(sourceObjects);
 		}
 
 		/**
@@ -1022,7 +1026,21 @@ namespace COMMON_NS
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
+		
+#if WITH_EXPERIMENTAL
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj, bool previousEnergisticsVersion = false);
+
+		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::SeismicWellboreFrameRepresentation* createSeismicWellboreFrameRepresentation(
+			RESQML2_0_1_NS::WellboreInterpretation* interp, 
+			const std::string& guid, const std::string& title, 
+			RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj,
+			double seismicReferenceDatum,
+			double weatheringVelocity,
+			class RESQML2_0_1_NS::LocalTime3dCrs* crs);
+#else
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj);
+#endif
+
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
 

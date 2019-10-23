@@ -242,14 +242,14 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* DeviationSurveyRepresentation::ge
 	return nullptr;
 }
 
-vector<WellboreFrameRepresentation *> DeviationSurveyRepresentation::getWellboreFrameRepresentationSet() const
+vector<RESQML2_NS::WellboreFrameRepresentation *> DeviationSurveyRepresentation::getWellboreFrameRepresentationSet() const
 {
-	vector<WellboreFrameRepresentation *> result;
+	vector<RESQML2_NS::WellboreFrameRepresentation *> result;
 
 	const vector<WellboreTrajectoryRepresentation *>& trajectories = getWellboreTrajectoryRepresentationSet();
 	for (size_t index = 0; index < trajectories.size(); ++index) {
 		if (trajectories[index]->getMdDatumUuid() == getMdDatumUuid() && trajectories[index]->getMdUom() == getMdUom()) {
-			vector<WellboreFrameRepresentation *> tmp = trajectories[index]->getWellboreFrameRepresentationSet();
+			vector<RESQML2_NS::WellboreFrameRepresentation *> tmp = trajectories[index]->getWellboreFrameRepresentationSet();
 			result.insert(result.end(), tmp.begin(), tmp.end());
 		}
 	}
@@ -270,7 +270,7 @@ unsigned int DeviationSurveyRepresentation::getWellboreFrameRepresentationCount(
 	return result;
 }
 
-WellboreFrameRepresentation * DeviationSurveyRepresentation::getWellboreFrameRepresentation(unsigned int index) const
+RESQML2_NS::WellboreFrameRepresentation * DeviationSurveyRepresentation::getWellboreFrameRepresentation(unsigned int index) const
 {
 	const vector<WellboreTrajectoryRepresentation *>& trajectories = getWellboreTrajectoryRepresentationSet();
 	for (size_t trajIndex = 0; trajIndex < trajectories.size(); ++trajIndex) {

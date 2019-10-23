@@ -18,12 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/AbstractRepresentation.h"
+#include "resqml2/WellboreFrameRepresentation.h"
 #include "resqml2/AbstractValuesProperty.h"
 
 namespace RESQML2_0_1_NS
 {
-	class WellboreFrameRepresentation : public RESQML2_NS::AbstractRepresentation
+	class WellboreFrameRepresentation : public RESQML2_NS::WellboreFrameRepresentation
 	{
 	protected:
 		WellboreFrameRepresentation() {}
@@ -34,9 +34,13 @@ namespace RESQML2_0_1_NS
 		* Only to be used in partial transfer context
 		*/
 		DLL_IMPORT_OR_EXPORT WellboreFrameRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			RESQML2_NS::AbstractRepresentation(partialObject)
-		{
-		}
+			RESQML2_NS::WellboreFrameRepresentation(partialObject) {}
+
+		/**
+		* Creates an instance of this class by wrapping a gsoap instance.
+		*/
+		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreFrameRepresentation* fromGsoap) : 
+			RESQML2_NS::WellboreFrameRepresentation(fromGsoap) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -45,96 +49,7 @@ namespace RESQML2_0_1_NS
 		* @param title		A title for the instance to create.
 		* @param traj		The trajectory this WellboreFeature frame is based on.
 		*/
-		WellboreFrameRepresentation(class WellboreInterpretation * interp, const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation * traj);
-
-		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreFrameRepresentation* fromGsoap): AbstractRepresentation(fromGsoap)
-		{}
-
-		~WellboreFrameRepresentation() {}
-
-		/**
-		* Set the MD values of this WellboreFrameRepresentation frame to an array 1d of explicit values.
-		* @param mdValues		All the MD values to set from top of the well trajectory to bottom.
-		* @param mdValueCount	The MD values count.
-		* @param proxy			The HDF proxy where to write the MD values. It must be already opened for writing and won't be closed in this method.
-		*/
-		DLL_IMPORT_OR_EXPORT void setMdValues(double * mdValues, unsigned int mdValueCount, COMMON_NS::AbstractHdfProxy* proxy);
-
-		/**
-		* Set the MD values of this WellboreFrameRepresentation frame as a regular discretization along the wellbore trajectory.
-		* @param firstMdValue		The first MD value.
-		* @param incrementMdValue	The increment value between two Measured depth.
-		* @param mdValueCount		The count of md values in this WellboreFrameRepresentation.
-		*/
-		DLL_IMPORT_OR_EXPORT void setMdValues(const double & firstMdValue, const double & incrementMdValue, const unsigned int & mdValueCount);
-
-		/**
-		* Indicates either the MDs are regularly spaced or not (useful for optimization)
-		* Does not verify if the writer has used a generic array to store regular mds.
-		*/
-		DLL_IMPORT_OR_EXPORT bool areMdValuesRegularlySpaced() const;
-		
-		/**
-		* Indicates the incremetn value between two MDs only if the MDs are regualrly spaced.
-		* Please use areMdValuesRegularlySpaced before using this method.
-		*/
-		DLL_IMPORT_OR_EXPORT double getMdConstantIncrementValue() const;
-
-		/**
-		* Returns the first MD value of this WellboreFrameRepresentation
-		*/
-		DLL_IMPORT_OR_EXPORT double getMdFirstValue() const;
-		
-		/**
-		* Get the number of Md values in this WellboreFeature frame.
-		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getMdValuesCount() const;
-
-		/**
-		* Get the xyz point count in a given patch.
-		*/
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
-
-		/**
-		* Get all the XYZ points of a particular patch of this representation.
-		* XYZ points are given in the local CRS.
-		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
-		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
-
-		/**
-		* Get the Measured Depth datatype in the HDF dataset
-		*/
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum getMdHdfDatatype() const;
-
-		/**
-		* Get all the md values of the instance which are supposed to be double ones.
-		*/
-		DLL_IMPORT_OR_EXPORT void getMdAsDoubleValues(double * values) const;
-
-		/**
-		* Get all the md values of the instance which are supposed to be float ones.
-		*/
-		DLL_IMPORT_OR_EXPORT void getMdAsFloatValues(float * values) const;
-
-		/**
-		* Get the associated resqml wellbore trajectory uuid
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getWellboreTrajectoryUuid() const;
-
-		/**
-		* Get the associated resqml wellbore trajector
-		*/
-		DLL_IMPORT_OR_EXPORT class WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
-
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const;
-
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
-
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
+		WellboreFrameRepresentation(class WellboreInterpretation* interp, const std::string& guid, const std::string& title, class WellboreTrajectoryRepresentation* traj);
 
 		/**
 		* The standard XML tag without XML namespace for serializing this data object.
