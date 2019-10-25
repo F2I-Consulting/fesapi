@@ -16,13 +16,13 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/DiscretePropertySeries.h"
+#include "DiscretePropertySeries.h"
 
 #include <stdexcept>
 
-#include "resqml2_0_1/TimeSeries.h"
-#include "resqml2/AbstractRepresentation.h"
-#include "resqml2_0_1/PropertyKind.h"
+#include "TimeSeries.h"
+#include "../resqml2/AbstractRepresentation.h"
+#include "PropertyKind.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

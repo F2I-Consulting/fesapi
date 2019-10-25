@@ -16,18 +16,18 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2/AbstractValuesProperty.h"
+#include "AbstractValuesProperty.h"
 
 #include <stdexcept>
 #include <ostream>
 #include <sstream>
 
-#include "hdf5.h"
+#include <hdf5.h>
 
-#include "resqml2/AbstractRepresentation.h"
-#include "resqml2/PropertyKind.h"
-#include "resqml2/AbstractLocal3dCrs.h"
-#include "common/AbstractHdfProxy.h"
+#include "AbstractRepresentation.h"
+#include "PropertyKind.h"
+#include "AbstractLocal3dCrs.h"
+#include "../common/AbstractHdfProxy.h"
 
 using namespace RESQML2_NS;
 using namespace std;

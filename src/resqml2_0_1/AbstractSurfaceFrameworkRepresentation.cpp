@@ -16,15 +16,15 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/AbstractSurfaceFrameworkRepresentation.h"
+#include "AbstractSurfaceFrameworkRepresentation.h"
 
 #include <stdexcept>
 #include <sstream>
 
 #include "H5Tpublic.h"
 
-#include "resqml2_0_1/StructuralOrganizationInterpretation.h"
-#include "common/AbstractHdfProxy.h"
+#include "StructuralOrganizationInterpretation.h"
+#include "../common/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

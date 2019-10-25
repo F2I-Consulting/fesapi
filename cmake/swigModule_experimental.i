@@ -217,9 +217,9 @@ namespace COMMON_NS
 %template(StringVector) std::vector< std::string >;
 
 %{
-#include "common/EnumStringMapper.h"
-#include "common/EpcDocument.h"
-#include "common/GraphicalInformationSet.h"
+#include "../src/common/EnumStringMapper.h"
+#include "../src/common/EpcDocument.h"
+#include "../src/common/GraphicalInformationSet.h"
 %}
 
 namespace RESQML2_NS

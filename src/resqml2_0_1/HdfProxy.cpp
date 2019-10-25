@@ -16,11 +16,11 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/HdfProxy.h"
+#include "HdfProxy.h"
 
 #include <stdexcept>
 
-#include "hdf5.h"
+#include <hdf5.h>
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

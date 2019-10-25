@@ -16,13 +16,13 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2/PropertyKind.h"
+#include "PropertyKind.h"
 
 #include <stdexcept>
 
-#include "common/EnumStringMapper.h"
+#include "../common/EnumStringMapper.h"
 
-#include "resqml2/AbstractValuesProperty.h"
+#include "AbstractValuesProperty.h"
 
 using namespace std;
 using namespace RESQML2_NS;

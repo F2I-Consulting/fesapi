@@ -16,19 +16,20 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2/AbstractGridRepresentation.h"
+#include "AbstractGridRepresentation.h"
 
 #include <stdexcept>
 #include <algorithm>
 #include <limits>
 
-#include "hdf5.h"
-#include "tools/Misc.h"
-#include "resqml2_0_1/AbstractStratigraphicOrganizationInterpretation.h"
-#include "common/AbstractHdfProxy.h"
-#include "resqml2_0_1/UnstructuredGridRepresentation.h"
-#include "resqml2_0_1/AbstractIjkGridRepresentation.h"
-#include "resqml2_0_1/RockFluidOrganizationInterpretation.h"
+#include <hdf5.h>
+
+#include "../tools/Misc.h"
+#include "../resqml2_0_1/AbstractStratigraphicOrganizationInterpretation.h"
+#include "../common/AbstractHdfProxy.h"
+#include "../resqml2_0_1/UnstructuredGridRepresentation.h"
+#include "../resqml2_0_1/AbstractIjkGridRepresentation.h"
+#include "../resqml2_0_1/RockFluidOrganizationInterpretation.h"
 
 using namespace RESQML2_NS;
 using namespace std;

@@ -16,15 +16,15 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/Grid2dRepresentation.h"
+#include "Grid2dRepresentation.h"
 
 #include <algorithm>
 #include <stdexcept>
 
-#include "resqml2/AbstractFeatureInterpretation.h"
-#include "resqml2_0_1/SeismicLatticeFeature.h"
-#include "common/AbstractHdfProxy.h"
-#include "resqml2_0_1/LocalDepth3dCrs.h"
+#include "../resqml2/AbstractFeatureInterpretation.h"
+#include "SeismicLatticeFeature.h"
+#include "../common/AbstractHdfProxy.h"
+#include "LocalDepth3dCrs.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

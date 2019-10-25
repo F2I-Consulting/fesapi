@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2/AbstractFeature.h"
+#include "AbstractFeature.h"
 
 #include <stdexcept>
 #include <algorithm>

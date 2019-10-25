@@ -20,7 +20,7 @@ under the License.
 
 #include <stdexcept>
 
-#include "common/DataObjectRepository.h"
+#include "DataObjectRepository.h"
 
 namespace COMMON_NS
 {

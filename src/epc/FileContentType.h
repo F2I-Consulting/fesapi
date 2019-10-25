@@ -16,9 +16,6 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-
-
-
 #ifndef FILE_CONTENT_TYPE_H
 #define FILE_CONTENT_TYPE_H
 

@@ -23,9 +23,9 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
-#include "epc/Package.h"
+#include "../epc/Package.h"
 
-#include "common/DataObjectRepository.h"
+#include "DataObjectRepository.h"
 
 namespace COMMON_NS
 {

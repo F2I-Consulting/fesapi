@@ -16,19 +16,19 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/CategoricalProperty.h"
+#include "CategoricalProperty.h"
 
 #include <stdexcept>
 #include <sstream>
 
-#include "hdf5.h"
+#include <hdf5.h>
 
-#include "common/AbstractHdfProxy.h"
-#include "common/EnumStringMapper.h"
+#include "../common/AbstractHdfProxy.h"
+#include "../common/EnumStringMapper.h"
 
-#include "resqml2/AbstractRepresentation.h"
-#include "resqml2_0_1/PropertyKind.h"
-#include "resqml2_0_1/StringTableLookup.h"
+#include "../resqml2/AbstractRepresentation.h"
+#include "PropertyKind.h"
+#include "StringTableLookup.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

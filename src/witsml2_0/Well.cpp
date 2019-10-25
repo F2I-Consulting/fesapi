@@ -16,17 +16,17 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "witsml2_0/Well.h"
+#include "Well.h"
 
 #include <stdexcept>
 #include <sstream>
 
-#include "witsml2_0/Wellbore.h"
-#include "witsml2_0/WellCompletion.h"
+#include "Wellbore.h"
+#include "WellCompletion.h"
 
-#include "resqml2_0_1/WellboreFeature.h"
+#include "../resqml2_0_1/WellboreFeature.h"
 
-#include "tools/TimeTools.h"
+#include "../tools/TimeTools.h"
 
 using namespace std;
 using namespace WITSML2_0_NS;

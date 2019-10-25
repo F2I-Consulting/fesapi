@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/AbstractObject.h"
+#include "../common/AbstractObject.h"
 
 namespace RESQML2_0_1_NS
 {

@@ -16,25 +16,25 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2/AbstractProperty.h"
+#include "AbstractProperty.h"
 
 #include <stdexcept>
 #include <algorithm>
 
-#include "common/EnumStringMapper.h"
+#include "../common/EnumStringMapper.h"
 
-#include "resqml2/SubRepresentation.h"
-#include "resqml2_0_1/PropertySet.h"
-#include "resqml2_0_1/UnstructuredGridRepresentation.h"
-#include "resqml2_0_1/IjkGridExplicitRepresentation.h"
-#include "resqml2_0_1/IjkGridParametricRepresentation.h"
-#include "resqml2_0_1/IjkGridLatticeRepresentation.h"
-#include "resqml2/RepresentationSetRepresentation.h"
-#include "resqml2/PropertyKind.h"
-#include "resqml2/AbstractLocal3dCrs.h"
-#include "common/AbstractHdfProxy.h"
-#include "resqml2/TimeSeries.h"
-#include "resqml2_0_1/PropertyKindMapper.h"
+#include "SubRepresentation.h"
+#include "../resqml2_0_1/PropertySet.h"
+#include "../resqml2_0_1/UnstructuredGridRepresentation.h"
+#include "../resqml2_0_1/IjkGridExplicitRepresentation.h"
+#include "../resqml2_0_1/IjkGridParametricRepresentation.h"
+#include "../resqml2_0_1/IjkGridLatticeRepresentation.h"
+#include "RepresentationSetRepresentation.h"
+#include "PropertyKind.h"
+#include "AbstractLocal3dCrs.h"
+#include "../common/AbstractHdfProxy.h"
+#include "TimeSeries.h"
+#include "../resqml2_0_1/PropertyKindMapper.h"
 
 using namespace RESQML2_NS;
 using namespace std;

@@ -18,8 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/PropertyKind.h"
-#include "resqml2_0_1/PropertyKindMapper.h"
+#include "../resqml2/PropertyKind.h"
+#include "PropertyKindMapper.h"
 
 namespace RESQML2_0_1_NS
 {

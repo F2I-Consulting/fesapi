@@ -18,8 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/EpcExternalPartReference.h"
-#include "common/HidtType.h"
+#include "EpcExternalPartReference.h"
+#include "HidtType.h"
 
 #define CUMULATIVE_LENGTH_DS_NAME "cumulativeLength"
 #define ELEMENTS_DS_NAME "elements"

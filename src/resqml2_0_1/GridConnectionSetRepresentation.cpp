@@ -16,22 +16,22 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/GridConnectionSetRepresentation.h"
+#include "GridConnectionSetRepresentation.h"
 
 #include <algorithm>
 #if defined(__gnu_linux__) || defined(__APPLE__) 
 #include <stdexcept>
 #endif 
 
-#include "hdf5.h"
+#include <hdf5.h>
 
-#include "resqml2_0_1/FaultInterpretation.h"
-#include "resqml2/AbstractGridRepresentation.h"
-#include "common/AbstractHdfProxy.h"
-#include "resqml2/AbstractLocal3dCrs.h"
-#include "resqml2_0_1/StructuralOrganizationInterpretation.h"
+#include "FaultInterpretation.h"
+#include "../resqml2/AbstractGridRepresentation.h"
+#include "../common/AbstractHdfProxy.h"
+#include "../resqml2/AbstractLocal3dCrs.h"
+#include "StructuralOrganizationInterpretation.h"
 
-#include "tools/Misc.h"
+#include "../tools/Misc.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
+#include "StratigraphicColumnRankInterpretation.h"
 
 namespace RESQML2_0_1_NS
 {

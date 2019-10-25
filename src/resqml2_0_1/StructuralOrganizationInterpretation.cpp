@@ -16,16 +16,16 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/StructuralOrganizationInterpretation.h"
+#include "StructuralOrganizationInterpretation.h"
 
 #include <stdexcept>
 
-#include "resqml2_0_1/OrganizationFeature.h"
-#include "resqml2_0_1/FaultInterpretation.h"
-#include "resqml2_0_1/HorizonInterpretation.h"
-#include "resqml2_0_1/EarthModelInterpretation.h"
-#include "resqml2/AbstractFeatureInterpretation.h"
-#include "tools/Misc.h"
+#include "OrganizationFeature.h"
+#include "FaultInterpretation.h"
+#include "HorizonInterpretation.h"
+#include "EarthModelInterpretation.h"
+#include "../resqml2/AbstractFeatureInterpretation.h"
+#include "../tools/Misc.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

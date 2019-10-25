@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "common/EpcDocument.h"
+#include "EpcDocument.h"
 
 #include <sstream>
 #include <stdexcept>
@@ -24,12 +24,12 @@ under the License.
 #include "H5Epublic.h"
 #include "H5Fpublic.h"
 
-#include "epc/Relationship.h"
-#include "epc/FilePart.h"
+#include "../epc/Relationship.h"
+#include "../epc/FilePart.h"
 
-#include "resqml2_0_1/WellboreMarker.h"
-#include "resqml2_0_1/HdfProxy.h"
-#include "resqml2/AbstractProperty.h"
+#include "../resqml2_0_1/WellboreMarker.h"
+#include "../resqml2_0_1/HdfProxy.h"
+#include "../resqml2/AbstractProperty.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;

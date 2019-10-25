@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/MdDatum.h"
+#include "MdDatum.h"
 
 namespace RESQML2_NS
 {

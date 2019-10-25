@@ -19,7 +19,7 @@ under the License.
 #pragma once
 
 #include <limits>
-#include "resqml2/AbstractProperty.h"
+#include "AbstractProperty.h"
 
 namespace RESQML2_NS
 {

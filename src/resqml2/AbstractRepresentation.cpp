@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2/AbstractRepresentation.h"
+#include "AbstractRepresentation.h"
 
 #include <sstream>
 #include <algorithm>
@@ -24,14 +24,14 @@ under the License.
 
 #include "H5public.h"
 
-#include "resqml2_0_1/AbstractTechnicalFeature.h"
-#include "resqml2/AbstractFeatureInterpretation.h"
-#include "resqml2/RepresentationSetRepresentation.h"
-#include "resqml2/AbstractValuesProperty.h"
-#include "resqml2/SubRepresentation.h"
-#include "common/AbstractHdfProxy.h"
-#include "resqml2/AbstractLocal3dCrs.h"
-#include "tools/Misc.h"
+#include "../resqml2_0_1/AbstractTechnicalFeature.h"
+#include "AbstractFeatureInterpretation.h"
+#include "RepresentationSetRepresentation.h"
+#include "AbstractValuesProperty.h"
+#include "SubRepresentation.h"
+#include "../common/AbstractHdfProxy.h"
+#include "AbstractLocal3dCrs.h"
+#include "../tools/Misc.h"
 
 using namespace RESQML2_NS;
 using namespace std;

@@ -16,17 +16,17 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/DeviationSurveyRepresentation.h"
+#include "DeviationSurveyRepresentation.h"
 
 #include <stdexcept>
 
 #include "H5public.h"
 
-#include "resqml2_0_1/WellboreInterpretation.h"
-#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
-#include "resqml2/MdDatum.h"
-#include "resqml2/AbstractLocal3dCrs.h"
-#include "common/HdfProxy.h"
+#include "WellboreInterpretation.h"
+#include "WellboreTrajectoryRepresentation.h"
+#include "../resqml2/MdDatum.h"
+#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../common/HdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

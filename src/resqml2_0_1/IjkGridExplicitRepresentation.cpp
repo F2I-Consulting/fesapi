@@ -17,16 +17,16 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
-#include "resqml2_0_1/IjkGridExplicitRepresentation.h"
+#include "IjkGridExplicitRepresentation.h"
 
 #include <stdexcept>
 
-#include "hdf5.h"
+#include <hdf5.h>
 
-#include "resqml2/AbstractFeatureInterpretation.h"
-#include "resqml2/AbstractLocal3dCrs.h"
-#include "resqml2/AbstractValuesProperty.h"
-#include "common/AbstractHdfProxy.h"
+#include "../resqml2/AbstractFeatureInterpretation.h"
+#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../resqml2/AbstractValuesProperty.h"
+#include "../common/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;

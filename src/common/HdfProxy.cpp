@@ -16,14 +16,14 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "common/HdfProxy.h"
+#include "HdfProxy.h"
 
 #include <algorithm>
 #include <numeric>
 #include <stdexcept>
 #include <sstream>
 
-#include "hdf5.h"
+#include <hdf5.h>
 
 // https://support.hdfgroup.org/HDF5/doc/Advanced/Chunking/index.html
 #define MAX_CHUNK_SIZE 0xffffffff // 2^32 - 1

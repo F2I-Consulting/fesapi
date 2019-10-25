@@ -16,13 +16,13 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2/TimeSeries.h"
+#include "TimeSeries.h"
 
 #include <stdexcept>
 
-#include "tools/TimeTools.h"
+#include "../tools/TimeTools.h"
 
-#include "resqml2/AbstractValuesProperty.h"
+#include "AbstractValuesProperty.h"
 
 using namespace std;
 using namespace RESQML2_NS;

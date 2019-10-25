@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/Activity.h"
+#include "../resqml2/Activity.h"
 
 namespace RESQML2_NS
 {

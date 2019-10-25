@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/AbstractLocal3dCrs.h"
+#include "../resqml2/AbstractLocal3dCrs.h"
 
 namespace RESQML2_0_1_NS
 {

@@ -104,8 +104,6 @@ under the License.
 #include "witsml2_0/WellCompletion.h"
 #include "witsml2_0/WellboreCompletion.h"
 
-#include "tools/TimeTools.h"
-
 using namespace std;
 using namespace RESQML2_0_1_NS;
 

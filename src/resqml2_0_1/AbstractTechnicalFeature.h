@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/AbstractFeature.h"
+#include "../resqml2/AbstractFeature.h"
 
 namespace RESQML2_0_1_NS
 {

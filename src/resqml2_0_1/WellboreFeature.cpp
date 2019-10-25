@@ -16,12 +16,12 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/WellboreFeature.h"
+#include "WellboreFeature.h"
 
 #include <stdexcept>
 
-#include "witsml2_0/Well.h"
-#include "witsml2_0/Wellbore.h"
+#include "../witsml2_0/Well.h"
+#include "../witsml2_0/Wellbore.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

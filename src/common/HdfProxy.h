@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/AbstractHdfProxy.h"
+#include "AbstractHdfProxy.h"
 
 #include <unordered_map>
 

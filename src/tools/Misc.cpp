@@ -17,10 +17,10 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
-#include "tools/Misc.h"
+#include "../tools/Misc.h"
 
 #include <stdexcept>
-#include "proxies/gsoap_resqml2_0_1H.h"
+#include "../proxies/gsoap_resqml2_0_1H.h"
 
 using namespace std;
 

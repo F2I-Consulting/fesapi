@@ -16,14 +16,14 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2/AbstractColumnLayerGridRepresentation.h"
+#include "AbstractColumnLayerGridRepresentation.h"
 
 #include <stdexcept>
 
-#include "hdf5.h"
+#include <hdf5.h>
 
-#include "resqml2_0_1/AbstractStratigraphicOrganizationInterpretation.h"
-#include "common/AbstractHdfProxy.h"
+#include "../resqml2_0_1/AbstractStratigraphicOrganizationInterpretation.h"
+#include "../common/AbstractHdfProxy.h"
 
 using namespace gsoap_resqml2_0_1;
 using namespace RESQML2_NS;

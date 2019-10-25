@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/PropertyKindMapper.h"
+#include "PropertyKindMapper.h"
 
 #if defined(_WIN32)
 #include <windows.h>
@@ -28,7 +28,7 @@ under the License.
 #include <sstream>
 #include <stdexcept>
 
-#include "resqml2_0_1/PropertyKind.h"
+#include "PropertyKind.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

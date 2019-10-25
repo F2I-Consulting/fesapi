@@ -20,7 +20,7 @@ under the License.
 
 #include <limits>
 
-#include "resqml2/AbstractRepresentation.h"
+#include "AbstractRepresentation.h"
 
 namespace RESQML2_NS
 {

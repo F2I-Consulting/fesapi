@@ -16,10 +16,10 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "witsml2_0/WellCompletion.h"
+#include "WellCompletion.h"
 
-#include "witsml2_0/Well.h"
-#include "witsml2_0/WellboreCompletion.h"
+#include "Well.h"
+#include "WellboreCompletion.h"
 
 #include <stdexcept>
 
