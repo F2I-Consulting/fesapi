@@ -17,11 +17,11 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
-#include "resqml2_0_1/IjkGridNoGeometryRepresentation.h"
+#include "IjkGridNoGeometryRepresentation.h"
 
 #include <stdexcept>
 
-#include "resqml2/AbstractFeatureInterpretation.h"
+#include "../resqml2/AbstractFeatureInterpretation.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;

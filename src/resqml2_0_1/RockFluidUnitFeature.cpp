@@ -16,9 +16,9 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/RockFluidUnitFeature.h"
-#include "resqml2_0_1/BoundaryFeature.h"
-#include "tools/Misc.h"
+#include "RockFluidUnitFeature.h"
+#include "BoundaryFeature.h"
+#include "../tools/Misc.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

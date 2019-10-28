@@ -16,9 +16,9 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_2/ContinuousColorMap.h"
+#include "ContinuousColorMap.h"
 
-#include "common/GraphicalInformationSet.h"
+#include "../common/GraphicalInformationSet.h"
 
 using namespace std;
 using namespace gsoap_eml2_2;

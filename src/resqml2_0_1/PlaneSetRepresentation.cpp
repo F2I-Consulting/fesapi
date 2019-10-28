@@ -16,15 +16,15 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/PlaneSetRepresentation.h"
+#include "PlaneSetRepresentation.h"
 
 #include <stdexcept>
 #include <sstream>
 #include <algorithm>
 #include <stdexcept>
 
-#include "resqml2/AbstractFeatureInterpretation.h"
-#include "resqml2/AbstractLocal3dCrs.h"
+#include "../resqml2/AbstractFeatureInterpretation.h"
+#include "../resqml2/AbstractLocal3dCrs.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

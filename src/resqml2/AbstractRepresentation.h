@@ -20,7 +20,7 @@ under the License.
 
 #include <set>
 
-#include "resqml2/AbstractProperty.h"
+#include "AbstractProperty.h"
 
 namespace RESQML2_NS
 {

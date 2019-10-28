@@ -19,8 +19,8 @@ under the License.
 %{
 #define SWIG_FILE_WITH_INIT // In case we use Python Swig Wrapping
 
-#include "resqml2/ActivityTemplate.h"
-#include "common/HdfProxy.h"
+#include "../src/resqml2/ActivityTemplate.h"
+#include "../src/common/HdfProxy.h"
 
 %}
 typedef long long					LONG64;

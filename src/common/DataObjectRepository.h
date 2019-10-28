@@ -21,16 +21,16 @@ under the License.
 #include <unordered_map>
 #include <sstream>
 
-#include "proxies/gsoap_resqml2_0_1H.h"
-#include "proxies/gsoap_eml2_1H.h"
+#include "../proxies/gsoap_resqml2_0_1H.h"
+#include "../proxies/gsoap_eml2_1H.h"
 #if WITH_EXPERIMENTAL
-#include "proxies/gsoap_eml2_2H.h"
+#include "../proxies/gsoap_eml2_2H.h"
 #endif
 
-#include "nsDefinitions.h"
+#include "../nsDefinitions.h"
 
 #if (defined(_WIN32) && _MSC_VER < 1600) || (defined(__GNUC__) && (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 6)))
-#include "tools/nullptr_emulation.h"
+#include "../tools/nullptr_emulation.h"
 #endif
 
 #if defined(_WIN32) && !defined(FESAPI_STATIC)

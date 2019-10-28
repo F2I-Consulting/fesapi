@@ -18,9 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/AbstractStratigraphicOrganizationInterpretation.h"
-#include "resqml2_0_1/StratigraphicColumn.h"
-#include "resqml2_0_1/StratigraphicOccurrenceInterpretation.h"
+#include "AbstractStratigraphicOrganizationInterpretation.h"
+#include "StratigraphicColumn.h"
+#include "StratigraphicOccurrenceInterpretation.h"
 
 namespace RESQML2_0_1_NS
 {

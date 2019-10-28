@@ -16,10 +16,10 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "common/EnumStringMapper.h"
+#include "EnumStringMapper.h"
 
-#include "proxies/gsoap_resqml2_0_1H.h"
-#include "proxies/gsoap_eml2_1H.h"
+#include "../proxies/gsoap_resqml2_0_1H.h"
+#include "../proxies/gsoap_eml2_1H.h"
 
 using namespace COMMON_NS;
 

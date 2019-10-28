@@ -2,8 +2,12 @@ cmake_minimum_required (VERSION 3.12)
 
 project (Fesapi_SRC)
 
+add_library (${CPP_LIBRARY_NAME} ${LIB_TYPE} "")
+
+# Create the version config header file in order for fesapi users to know the fesapi version at runtime.
 configure_file(${FESAPI_ROOT_DIR}/cmake/version_config.h.in ${FESAPI_ROOT_DIR}/src/version_config.h)
 
+#configure the HDF5 hidt type to use in Fesapi according to the HDF5 version
 if (HDF5_1_10)
 	set (COMMENT_HDF5_1_8 "//")
 	set (COMMENT_HDF5_1_10 "")
@@ -13,12 +17,7 @@ else ()
 endif ()
 configure_file(${FESAPI_ROOT_DIR}/cmake/HidtType.h.in ${FESAPI_ROOT_DIR}/src/common/HidtType.h)
 
-# ============================================================================
-# Getting source files
-# ============================================================================
-
-add_library (${CPP_LIBRARY_NAME} ${LIB_TYPE} "")
-
+# Define the name of the directories where the various Energistics namespaces sources are located.
 set (RESQML_PREFIX_2 "resqml2")
 set (RESQML_PREFIX_2_0_1 "resqml2_0_1")
 if (WITH_EXPERIMENTAL)
@@ -28,7 +27,8 @@ endif(WITH_EXPERIMENTAL)
 set (WITSML_PREFIX_2_0 "witsml2_0")
 #set (PRODML_PREFIX_2_0 "prodml2_0")
 
-target_compile_options(${CPP_LIBRARY_NAME}	PUBLIC
+# Define the compile options according to the compiler
+target_compile_options(${CPP_LIBRARY_NAME}	PRIVATE
 	$<$<CXX_COMPILER_ID:MSVC>:/bigobj>
 	$<$<CXX_COMPILER_ID:MSVC>:/MP>
 	$<$<CXX_COMPILER_ID:MSVC>:/W4>
@@ -99,8 +99,10 @@ if (WIN32)
 	set (DLL_SUFFIX ".dll")  
 	set (IMPORT_SUFFIX ".lib")
 	if (SUFFIX_INCLUDES_VERSION)
+		set_target_properties(${CPP_LIBRARY_NAME}
+			PROPERTIES PDB_NAME ${ASSEMBLY_NAME}.${Fesapi_VERSION}
+		)
 		set (ASSEMBLY_NAME ${ASSEMBLY_NAME}.${Fesapi_VERSION})
-		set (CS_LIBRARY_NAME ${CS_LIBRARY_NAME}.${Fesapi_VERSION})
 		set (DLL_SUFFIX .${Fesapi_VERSION}${DLL_SUFFIX})  
 		set (IMPORT_SUFFIX .${Fesapi_VERSION}${IMPORT_SUFFIX})
 	endif ()
@@ -201,8 +203,8 @@ set (ALL_SOURCES_AND_HEADERS
 	${FESAPI_RESQML_2_2_HEADERS}
 	${FESAPI_WITSML_2_0_SOURCES}
 	${FESAPI_WITSML_2_0_HEADERS}
-#	${FESAPI_PRODML_2_0_SOURCES}
-#	${FESAPI_PRODML_2_0_HEADERS}
+	#${FESAPI_PRODML_2_0_SOURCES}
+	#${FESAPI_PRODML_2_0_HEADERS}
 	${FESAPI_PROXIES_SOURCES}
 	${FESAPI_PROXIES_HEADERS}
 )
@@ -215,8 +217,7 @@ if (UNIX)
 	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${UUID_INCLUDE_DIR})
 endif (UNIX)
 
-target_include_directories(${CPP_LIBRARY_NAME} PUBLIC
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+target_include_directories(${CPP_LIBRARY_NAME} INTERFACE
 	$<INSTALL_INTERFACE:include>
 )
 
@@ -229,104 +230,31 @@ if (WIN32)
 	source_group ("${RESQML_PREFIX_2}" FILES ${FESAPI_RESQML_2_SOURCES} ${FESAPI_RESQML_2_HEADERS})
 	
 	source_group ("${RESQML_PREFIX_2_0_1}" FILES ${FESAPI_RESQML_2_0_1_SOURCES} ${FESAPI_RESQML_2_0_1_HEADERS})
-if (WITH_EXPERIMENTAL)
-	source_group ("${RESQML_PREFIX_2_2}" FILES ${FESAPI_RESQML_2_2_SOURCES} ${FESAPI_RESQML_2_2_HEADERS})
-endif(WITH_EXPERIMENTAL)
+	if (WITH_EXPERIMENTAL)
+		source_group ("${RESQML_PREFIX_2_2}" FILES ${FESAPI_RESQML_2_2_SOURCES} ${FESAPI_RESQML_2_2_HEADERS})
+	endif(WITH_EXPERIMENTAL)
 	
 	source_group ("${WITSML_PREFIX_2_0}" FILES ${FESAPI_WITSML_2_0_SOURCES} ${FESAPI_WITSML_2_0_HEADERS})
 	
-#	source_group ("${PRODML_PREFIX_2_0}" FILES ${FESAPI_PRODML_2_0_SOURCES} ${FESAPI_PRODML_2_0_HEADERS})
+	#source_group ("${PRODML_PREFIX_2_0}" FILES ${FESAPI_PRODML_2_0_SOURCES} ${FESAPI_PRODML_2_0_HEADERS})
 	
 	source_group ("proxies" FILES ${FESAPI_PROXIES_SOURCES} ${FESAPI_PROXIES_HEADERS})
 endif (WIN32)
 
+# ${FESAPI_ROOT_DIR}/java/CMakeLists.txt uses GNUInstallDirs in its install command
+include(GNUInstallDirs)
+
 if (WITH_JAVA_WRAPPING)
-	find_package(JNI REQUIRED)
-	find_package(SWIG REQUIRED)
-	find_package(Java REQUIRED)
-	include(UseJava)
-
-	message("Generating SWIG files")
-	#Cleaning
-	file (GLOB TO_DELETE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/*.java)
-	if (TO_DELETE)
-		file (REMOVE ${TO_DELETE})
-	endif (TO_DELETE)
-	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/common)
-	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2)
-	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2_0_1)
-	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2_2)
-	file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml2_0)
-	
-	# Create the dedicated swig files
-if (WITH_EXPERIMENTAL)
-	configure_file(${FESAPI_ROOT_DIR}/cmake/swigModule_experimental.i ${FESAPI_ROOT_DIR}/swig/swigModule.i) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2JavaInclude_experimental.i ${FESAPI_ROOT_DIR}/swig/swigResqml2JavaInclude.i) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample_experimental.java ${FESAPI_ROOT_DIR}/java/example/FesapiJavaExample.java) # Overwrite if different
-else ()
-	configure_file(${FESAPI_ROOT_DIR}/cmake/swigModule.i ${FESAPI_ROOT_DIR}/swig/swigModule.i) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2JavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigResqml2JavaInclude.i) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR}/java/example/FesapiJavaExample.java) # Overwrite if different
-endif()
-
-	# Filling
-	if (WIN32)
-		set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} -c++ -java -package com.f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i")
-		execute_process(COMMAND powershell  ${EXECUTE_COMMAND})
-	elseif (UNIX)
-		set ( EXECUTE_COMMAND ${SWIG_EXECUTABLE} -c++ -java -package com.f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i)
-		execute_process(COMMAND ${EXECUTE_COMMAND})
-	endif (WIN32)
-	message("SWIG files have been generated")
-	
-	# Building the jar
-	file (GLOB_RECURSE SWIG_JAVA_FILES ${FESAPI_ROOT_DIR}/java/src/*.java)
-	set(CMAKE_JAVA_COMPILE_FLAGS -g)
-	add_jar(fesapiJava ${SWIG_JAVA_FILES} VERSION ${Fesapi_VERSION})
-	
-	target_sources(${CPP_LIBRARY_NAME} PRIVATE ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp)
-	
-	target_include_directories(${CPP_LIBRARY_NAME} PUBLIC ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2})
-
+	include(${FESAPI_ROOT_DIR}/java/CMakeLists.txt)
 endif (WITH_JAVA_WRAPPING)
 
 if (WITH_DOTNET_WRAPPING)
-	find_package(SWIG REQUIRED)
-	
-	message("Generating SWIG files")
-	#Cleaning
-	execute_process(COMMAND powershell "Remove-Item ${FESAPI_ROOT_DIR}/cs/src/* -recurse -exclude .gitignore")
-	
-	# Create the dedicated swig files
-if (WITH_EXPERIMENTAL)
-	configure_file(${FESAPI_ROOT_DIR}/cmake/swigModule_experimental.i ${FESAPI_ROOT_DIR}/swig/swigModule.i) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2CsInclude_experimental.i ${FESAPI_ROOT_DIR}/swig/swigResqml2CsInclude.i) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/Program_experimental.cs ${FESAPI_ROOT_DIR}/cs/example/Program.cs) # Overwrite if different
-else ()
-	configure_file(${FESAPI_ROOT_DIR}/cmake/swigModule.i ${FESAPI_ROOT_DIR}/swig/swigModule.i) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2CsInclude.i ${FESAPI_ROOT_DIR}/swig/swigResqml2CsInclude.i) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/Program.cs ${FESAPI_ROOT_DIR}/cs/example/Program.cs) # Overwrite if different
-endif()
-	
-	
-	# Filling
-	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} -c++ -csharp -dllimport ${CPP_LIBRARY_NAME}.${Fesapi_VERSION}.dll -namespace f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/cs/src ${FESAPI_ROOT_DIR}/swig/swigModule.i")
-	execute_process(COMMAND powershell  ${EXECUTE_COMMAND})
-	message("SWIG files have been generated")
-
-	#Add the swig cpp file to the FesapiCpp
-	target_sources(${CPP_LIBRARY_NAME} PRIVATE ${FESAPI_ROOT_DIR}/swig/swigGeneratedCsWrapper.cpp)
-	
-	# Create the Visual Studio project from a template file
-	#file(TO_NATIVE_PATH "${FESAPI_ROOT_DIR}/cs/src" DOS_STYLE_SOURCE_DIR)
-	configure_file(${FESAPI_ROOT_DIR}/cmake/fesapiCs.csproj.template ${FESAPI_ROOT_DIR}/cs/fesapiCs.csproj) # Overwrite if different
-	configure_file(${FESAPI_ROOT_DIR}/cmake/AssemblyInfo.cs ${FESAPI_ROOT_DIR}/cs/Properties/AssemblyInfo.cs) # Overwrite if different
+	include(${FESAPI_ROOT_DIR}/cs/CMakeLists.txt)
 endif (WITH_DOTNET_WRAPPING)
 
 # ============================================================================
 # Install FesapiCpp library
 # ============================================================================
-include(GNUInstallDirs)
 
 INSTALL (
 	TARGETS ${CPP_LIBRARY_NAME}
@@ -335,67 +263,70 @@ INSTALL (
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
-if (${WITH_JAVA_WRAPPING})
+IF (WIN32)
+	#PDB for debug
 	INSTALL (
-		FILES ${CMAKE_CURRENT_BINARY_DIR}/fesapiJava-${Fesapi_VERSION}.jar
-		DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		FILES $<TARGET_PDB_FILE:${CPP_LIBRARY_NAME}>
+		CONFIGURATIONS Debug RelWithDebInfo
+		DESTINATION ${CMAKE_INSTALL_BINDIR}
+		OPTIONAL
 	)
-endif (${WITH_JAVA_WRAPPING})
+ENDIF()
 
 # proxies headers
 INSTALL (
-	FILES ${FESAPI_ROOT_DIR}/src/nsDefinitions.h
-	DESTINATION include/
+	FILES ${FESAPI_ROOT_DIR}/src/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/version_config.h
+	DESTINATION include/fesapi/
 )
 
 # proxies headers
 INSTALL (
 	FILES ${FESAPI_PROXIES_HEADERS}
-	DESTINATION include/proxies/
+	DESTINATION include/fesapi/proxies/
 )
 
 # main headers
 INSTALL (
 	FILES ${FESAPI_COMMON_HEADERS}
-	DESTINATION include/common
+	DESTINATION include/fesapi/common
 )
 
 # tools headers
 IF (UNIX) # Methods are not exported  under windows
 	INSTALL (
 		FILES ${FESAPI_TOOLS_HEADERS}
-		DESTINATION include/tools/
+		DESTINATION include/fesapi/tools/
 	)
 ENDIF (UNIX)
 
 # epc headers
 INSTALL (
 	FILES ${FESAPI_EPC_HEADERS}
-	DESTINATION include/epc/
+	DESTINATION include/fesapi/epc/
 )
 
 # resqml headers
 INSTALL (
 	FILES ${FESAPI_RESQML_2_HEADERS}
-	DESTINATION include/${RESQML_PREFIX_2}/
+	DESTINATION include/fesapi/${RESQML_PREFIX_2}/
 )
 
 INSTALL (
 	FILES ${FESAPI_RESQML_2_0_1_HEADERS}
-	DESTINATION include/${RESQML_PREFIX_2_0_1}/
+	DESTINATION include/fesapi/${RESQML_PREFIX_2_0_1}/
 )
 
 if (WITH_EXPERIMENTAL)
 	INSTALL (
 		FILES ${FESAPI_RESQML_2_2_HEADERS}
-		DESTINATION include/${RESQML_PREFIX_2_2}/
+		DESTINATION include/fesapi/${RESQML_PREFIX_2_2}/
 	)
 endif(WITH_EXPERIMENTAL)
 
 # witsml headers
 INSTALL (
 	FILES ${FESAPI_WITSML_2_0_HEADERS}
-	DESTINATION include/${WITSML_PREFIX_2_0}/
+	DESTINATION include/fesapi/${WITSML_PREFIX_2_0}/
 )
 
 # prodml headers

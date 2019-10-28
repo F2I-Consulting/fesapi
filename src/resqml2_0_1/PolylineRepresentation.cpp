@@ -16,17 +16,17 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/PolylineRepresentation.h"
+#include "PolylineRepresentation.h"
 
 #include <stdexcept>
 
 #include "H5public.h"
 
-#include "resqml2/AbstractFeature.h"
-#include "resqml2/AbstractFeatureInterpretation.h"
-#include "resqml2/AbstractLocal3dCrs.h"
-#include "resqml2/AbstractValuesProperty.h"
-#include "common/AbstractHdfProxy.h"
+#include "../resqml2/AbstractFeature.h"
+#include "../resqml2/AbstractFeatureInterpretation.h"
+#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../resqml2/AbstractValuesProperty.h"
+#include "../common/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

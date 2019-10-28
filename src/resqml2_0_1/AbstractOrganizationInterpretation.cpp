@@ -16,12 +16,12 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/AbstractOrganizationInterpretation.h"
+#include "AbstractOrganizationInterpretation.h"
 
 #include <stdexcept>
 
-#include "resqml2_0_1/OrganizationFeature.h"
-#include "resqml2_0_1/EarthModelInterpretation.h"
+#include "OrganizationFeature.h"
+#include "EarthModelInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

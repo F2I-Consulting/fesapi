@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/RepresentationSetRepresentation.h"
+#include "../resqml2/RepresentationSetRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {

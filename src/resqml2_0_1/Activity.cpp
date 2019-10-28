@@ -16,10 +16,10 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/Activity.h"
+#include "Activity.h"
 
-#include "resqml2_0_1/ActivityTemplate.h"
-#include "resqml2_0_1/StringTableLookup.h"
+#include "ActivityTemplate.h"
+#include "StringTableLookup.h"
 
 #include <algorithm>
 #include <stdexcept>

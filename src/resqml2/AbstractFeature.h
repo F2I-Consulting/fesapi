@@ -20,7 +20,7 @@ under the License.
 
 #include <vector>
 
-#include "resqml2/AbstractFeatureInterpretation.h"
+#include "AbstractFeatureInterpretation.h"
 
 namespace RESQML2_NS
 {

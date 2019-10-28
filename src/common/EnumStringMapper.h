@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/DataObjectRepository.h"
+#include "DataObjectRepository.h"
 
 #if defined(_WIN32) && !defined(FESAPI_STATIC)
 #if defined(FesapiCpp_EXPORTS) || defined(FesapiCppUnderDev_EXPORTS)

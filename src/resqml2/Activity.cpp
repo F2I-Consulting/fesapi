@@ -16,9 +16,9 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2/Activity.h"
+#include "Activity.h"
 
-#include "resqml2/ActivityTemplate.h"
+#include "ActivityTemplate.h"
 
 #include <stdexcept>
 #include <algorithm>

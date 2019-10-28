@@ -18,8 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/AbstractRepresentation.h"
-#include "resqml2/AbstractValuesProperty.h"
+#include "AbstractRepresentation.h"
+#include "AbstractValuesProperty.h"
 
 namespace RESQML2_NS
 {

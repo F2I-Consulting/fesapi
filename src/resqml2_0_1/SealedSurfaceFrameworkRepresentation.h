@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/AbstractSurfaceFrameworkRepresentation.h"
+#include "AbstractSurfaceFrameworkRepresentation.h"
 
 namespace RESQML2_NS {
 	class AbstractHdfProxy;

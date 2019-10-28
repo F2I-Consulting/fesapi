@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/AbstractColumnLayerGridRepresentation.h"
+#include "../resqml2/AbstractColumnLayerGridRepresentation.h"
 
 #include <stdexcept>
 #include <map>

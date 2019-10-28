@@ -18,8 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/AbstractValuesProperty.h"
-#include "common/AbstractHdfProxy.h"
+#include "../resqml2/AbstractValuesProperty.h"
+#include "../common/AbstractHdfProxy.h"
 
 #include <stdexcept>
 #include <sstream>

@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/WellboreFrameRepresentation.h"
+#include "WellboreFrameRepresentation.h"
 
 namespace RESQML2_NS
 {

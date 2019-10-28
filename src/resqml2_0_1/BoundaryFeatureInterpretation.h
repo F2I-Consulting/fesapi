@@ -18,8 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/AbstractFeatureInterpretation.h"
-#include "resqml2_0_1/WellboreMarker.h"
+#include "../resqml2/AbstractFeatureInterpretation.h"
+#include "WellboreMarker.h"
 
 namespace RESQML2_0_1_NS
 {

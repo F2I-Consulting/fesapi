@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
+#include "WellboreMarkerFrameRepresentation.h"
 
 #include <stdexcept>
 
@@ -27,14 +27,14 @@ under the License.
 
 #include "H5Tpublic.h"
 
-#include "resqml2_0_1/WellboreInterpretation.h"
-#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
-#include "resqml2/AbstractLocal3dCrs.h"
-#include "tools/GuidTools.h"
-#include "resqml2_0_1/WellboreMarker.h"
-#include "resqml2_0_1/StratigraphicOccurrenceInterpretation.h"
-#include "resqml2_0_1/HorizonInterpretation.h"
-#include "common/AbstractHdfProxy.h"
+#include "WellboreInterpretation.h"
+#include "WellboreTrajectoryRepresentation.h"
+#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../tools/GuidTools.h"
+#include "WellboreMarker.h"
+#include "StratigraphicOccurrenceInterpretation.h"
+#include "HorizonInterpretation.h"
+#include "../common/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

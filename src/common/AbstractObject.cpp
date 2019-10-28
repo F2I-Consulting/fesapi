@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
-#include "common/AbstractObject.h"
+#include "AbstractObject.h"
 
 #include <stdexcept>
 #include <string>
@@ -27,18 +27,18 @@ under the License.
 #endif
 #include <algorithm>
 
-#include "tools/GuidTools.h"
-#include "tools/TimeTools.h"
+#include "../tools/GuidTools.h"
+#include "../tools/TimeTools.h"
 
 #if defined(__gnu_linux__) || defined(__APPLE__)
 #include <unistd.h>
 #include <pwd.h>
 #endif
 
-#include "version_config.h"
+#include "../version_config.h"
 
-#include "resqml2/Activity.h"
-#include "common/AbstractHdfProxy.h"
+#include "../resqml2/Activity.h"
+#include "AbstractHdfProxy.h"
 
 using namespace std;
 using namespace COMMON_NS;

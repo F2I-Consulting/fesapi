@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "witsml2_0/WellboreObject.h"
+#include "WellboreObject.h"
 
 namespace WITSML2_0_NS
 {

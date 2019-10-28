@@ -17,11 +17,11 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 %{
-#include "resqml2_2/AbstractColorMap.h"
-#include "resqml2_2/DiscreteColorMap.h"
-#include "resqml2_2/ContinuousColorMap.h"
-#include "resqml2_2/WellboreFrameRepresentation.h"
-#include "resqml2_2/SeismicWellboreFrameRepresentation.h"
+#include "../src/resqml2_2/AbstractColorMap.h"
+#include "../src/resqml2_2/DiscreteColorMap.h"
+#include "../src/resqml2_2/ContinuousColorMap.h"
+#include "../src/resqml2_2/WellboreFrameRepresentation.h"
+#include "../src/resqml2_2/SeismicWellboreFrameRepresentation.h"
 %}
 
 #ifdef SWIGPYTHON

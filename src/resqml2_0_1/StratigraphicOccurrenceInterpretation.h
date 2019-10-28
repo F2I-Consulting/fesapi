@@ -18,9 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/AbstractStratigraphicOrganizationInterpretation.h"
-#include "resqml2_0_1/EarthModelInterpretation.h"
-#include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
+#include "AbstractStratigraphicOrganizationInterpretation.h"
+#include "EarthModelInterpretation.h"
+#include "WellboreMarkerFrameRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {

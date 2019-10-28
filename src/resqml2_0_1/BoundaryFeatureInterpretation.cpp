@@ -16,13 +16,13 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/BoundaryFeatureInterpretation.h"
+#include "BoundaryFeatureInterpretation.h"
 
 #include <algorithm>
 #include <stdexcept>
 
-#include "resqml2_0_1/BoundaryFeature.h"
-#include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
+#include "BoundaryFeature.h"
+#include "WellboreMarkerFrameRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

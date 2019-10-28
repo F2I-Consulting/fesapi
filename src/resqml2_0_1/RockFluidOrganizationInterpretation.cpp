@@ -16,15 +16,15 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/RockFluidOrganizationInterpretation.h"
+#include "RockFluidOrganizationInterpretation.h"
 
 #include <algorithm>
 
-#include "resqml2_0_1/OrganizationFeature.h"
-#include "resqml2_0_1/RockFluidUnitInterpretation.h"
-#include "resqml2/AbstractGridRepresentation.h"
+#include "OrganizationFeature.h"
+#include "RockFluidUnitInterpretation.h"
+#include "../resqml2/AbstractGridRepresentation.h"
 
-#include "tools/Misc.h"
+#include "../tools/Misc.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

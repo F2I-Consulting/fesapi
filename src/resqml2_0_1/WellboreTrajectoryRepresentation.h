@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/AbstractRepresentation.h"
+#include "../resqml2/AbstractRepresentation.h"
 
 namespace WITSML1_4_1_1_NS
 {

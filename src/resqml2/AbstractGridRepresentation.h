@@ -18,8 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/GridConnectionSetRepresentation.h"
-#include "resqml2_0_1/BlockedWellboreRepresentation.h"
+#include "GridConnectionSetRepresentation.h"
+#include "../resqml2_0_1/BlockedWellboreRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {

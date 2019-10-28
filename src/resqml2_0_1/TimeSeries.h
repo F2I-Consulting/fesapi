@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/TimeSeries.h"
+#include "../resqml2/TimeSeries.h"
 
 namespace RESQML2_0_1_NS
 {

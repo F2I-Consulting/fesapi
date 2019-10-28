@@ -18,8 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
-#include "resqml2_0_1/SealedVolumeFrameworkRepresentation.h"
+#include "StratigraphicColumnRankInterpretation.h"
+#include "SealedVolumeFrameworkRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {

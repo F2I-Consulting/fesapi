@@ -17,12 +17,12 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 %{
-#include "witsml2_0/Well.h"
-#include "witsml2_0/WellCompletion.h"
-#include "witsml2_0/Wellbore.h"
-#include "witsml2_0/WellboreObject.h"
-#include "witsml2_0/WellboreCompletion.h"
-#include "witsml2_0/Trajectory.h"
+#include "../src/witsml2_0/Well.h"
+#include "../src/witsml2_0/WellCompletion.h"
+#include "../src/witsml2_0/Wellbore.h"
+#include "../src/witsml2_0/WellboreObject.h"
+#include "../src/witsml2_0/WellboreCompletion.h"
+#include "../src/witsml2_0/Trajectory.h"
 %}
 
 #define GETTER_AND_SETTER_GENERIC_ATTRIBUTE(attributeDatatype, attributeName)\

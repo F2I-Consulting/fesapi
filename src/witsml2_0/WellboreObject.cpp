@@ -16,9 +16,9 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "witsml2_0/WellboreObject.h"
+#include "WellboreObject.h"
 
-#include "witsml2_0/Wellbore.h"
+#include "Wellbore.h"
 
 #include <stdexcept>
 

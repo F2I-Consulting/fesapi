@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractColorMap.h"
 
-#include "common/GraphicalInformationSet.h"
+#include "../common/GraphicalInformationSet.h"
 
 using namespace std;
 using namespace gsoap_eml2_2;

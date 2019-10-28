@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/LocalTime3dCrs.h"
+#include "LocalTime3dCrs.h"
 
 #include <stdexcept>
 

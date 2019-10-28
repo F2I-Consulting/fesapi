@@ -16,11 +16,11 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/SealedVolumeFrameworkRepresentation.h"
+#include "SealedVolumeFrameworkRepresentation.h"
 
-#include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
-#include "resqml2_0_1/SealedSurfaceFrameworkRepresentation.h"
-#include "resqml2_0_1/StratigraphicUnitInterpretation.h"
+#include "StratigraphicColumnRankInterpretation.h"
+#include "SealedSurfaceFrameworkRepresentation.h"
+#include "StratigraphicUnitInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;

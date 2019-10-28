@@ -18,9 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/BoundaryFeatureInterpretation.h"
-#include "resqml2_0_1/StructuralOrganizationInterpretation.h"
-#include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
+#include "BoundaryFeatureInterpretation.h"
+#include "StructuralOrganizationInterpretation.h"
+#include "StratigraphicColumnRankInterpretation.h"
 
 namespace RESQML2_0_1_NS
 {

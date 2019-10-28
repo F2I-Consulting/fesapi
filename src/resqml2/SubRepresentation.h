@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/AbstractRepresentation.h"
+#include "AbstractRepresentation.h"
 
 namespace RESQML2_NS
 {

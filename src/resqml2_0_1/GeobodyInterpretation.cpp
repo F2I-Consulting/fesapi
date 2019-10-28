@@ -16,9 +16,9 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/GeobodyInterpretation.h"
+#include "GeobodyInterpretation.h"
 
-#include "resqml2_0_1/GeobodyFeature.h"
+#include "GeobodyFeature.h"
 
 #include <stdexcept>
 
