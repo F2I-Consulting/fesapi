@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/BoundaryFeatureInterpretation.h"
+#include "BoundaryFeatureInterpretation.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -29,7 +29,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		FaultInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : BoundaryFeatureInterpretation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT FaultInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : BoundaryFeatureInterpretation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -59,9 +59,6 @@ namespace RESQML2_0_1_NS
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~FaultInterpretation() {}
-
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 		
 		/**
 		 * Pushes back a new throw interpretation for this fault interpretation.
@@ -69,5 +66,15 @@ namespace RESQML2_0_1_NS
 		 * TODO : add a parameter to be able to indicate the time period the throw occured.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackThrowInterpretation(const gsoap_resqml2_0_1::resqml20__ThrowKind & throwKind);
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

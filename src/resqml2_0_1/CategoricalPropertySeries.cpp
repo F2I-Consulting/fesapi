@@ -16,15 +16,15 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/CategoricalPropertySeries.h"
+#include "CategoricalPropertySeries.h"
 
 #include <stdexcept>
 
-#include "resqml2_0_1/TimeSeries.h"
-#include "resqml2/AbstractRepresentation.h"
-#include "resqml2_0_1/PropertyKind.h"
-#include "resqml2_0_1/StringTableLookup.h"
-#include "common/AbstractHdfProxy.h"
+#include "TimeSeries.h"
+#include "../resqml2/AbstractRepresentation.h"
+#include "PropertyKind.h"
+#include "StringTableLookup.h"
+#include "../common/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -37,12 +37,12 @@ CategoricalPropertySeries::CategoricalPropertySeries(RESQML2_NS::AbstractReprese
 	StringTableLookup* strLookup, const resqml20__ResqmlPropertyKind & energisticsPropertyKind,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECategoricalPropertySeries(rep->getGsoapContext(), 1);	
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECategoricalPropertySeries(rep->getGsoapContext());	
 	_resqml20__CategoricalPropertySeries* prop = static_cast<_resqml20__CategoricalPropertySeries*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
 
-	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
+	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap);
 	xmlStandardPropKind->Kind = energisticsPropertyKind;
 	prop->PropertyKind = xmlStandardPropKind;
 
@@ -51,7 +51,7 @@ CategoricalPropertySeries::CategoricalPropertySeries(RESQML2_NS::AbstractReprese
 
 	setRepresentation(rep);
 
-	prop->SeriesTimeIndices = soap_new_resqml20__TimeIndices(gsoapProxy2_0_1->soap, 1);
+	prop->SeriesTimeIndices = soap_new_resqml20__TimeIndices(gsoapProxy2_0_1->soap);
 	prop->SeriesTimeIndices->TimeIndexCount = ts->getTimestampCount();
 	prop->SeriesTimeIndices->UseInterval = useInterval;
 	setTimeSeries(ts);
@@ -65,7 +65,7 @@ CategoricalPropertySeries::CategoricalPropertySeries(RESQML2_NS::AbstractReprese
 	StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropKind,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECategoricalPropertySeries(rep->getGsoapContext(), 1);	
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECategoricalPropertySeries(rep->getGsoapContext());	
 	_resqml20__CategoricalPropertySeries* prop = static_cast<_resqml20__CategoricalPropertySeries*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
 	prop->Count = dimension;
@@ -75,7 +75,7 @@ CategoricalPropertySeries::CategoricalPropertySeries(RESQML2_NS::AbstractReprese
 
 	setRepresentation(rep);
 
-	prop->SeriesTimeIndices = soap_new_resqml20__TimeIndices(gsoapProxy2_0_1->soap, 1);
+	prop->SeriesTimeIndices = soap_new_resqml20__TimeIndices(gsoapProxy2_0_1->soap);
 	prop->SeriesTimeIndices->TimeIndexCount = ts->getTimestampCount();
 	prop->SeriesTimeIndices->UseInterval = useInterval;
 	setTimeSeries(ts);

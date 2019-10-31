@@ -16,12 +16,12 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/MdDatum.h"
+#include "MdDatum.h"
 
 #include <stdexcept>
 
-#include "resqml2/AbstractLocal3dCrs.h"
-#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
+#include "../resqml2/AbstractLocal3dCrs.h"
+#include "WellboreTrajectoryRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -34,11 +34,11 @@ MdDatum::MdDatum(COMMON_NS::DataObjectRepository * repo, const string & guid, co
 	if (repo == nullptr)
 		throw invalid_argument("The repo must exist");
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREMdDatum(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREMdDatum(repo->getGsoapContext());
 	_resqml20__MdDatum* mdInfo = static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1);
 
 	mdInfo->MdReference = originKind;
-	mdInfo->Location = soap_new_resqml20__Point3d(repo->getGsoapContext(), 1);
+	mdInfo->Location = soap_new_resqml20__Point3d(repo->getGsoapContext());
 	mdInfo->Location->Coordinate1 = referenceLocationOrdinal1;
 	mdInfo->Location->Coordinate2 = referenceLocationOrdinal2;
 	mdInfo->Location->Coordinate3 = referenceLocationOrdinal3;

@@ -18,8 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/EpcExternalPartReference.h"
-#include "common/HidtType.h"
+#include "EpcExternalPartReference.h"
+#include "HidtType.h"
 
 #define CUMULATIVE_LENGTH_DS_NAME "cumulativeLength"
 #define ELEMENTS_DS_NAME "elements"
@@ -41,19 +41,19 @@ namespace COMMON_NS
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
 		*/
-		AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::READ_ONLY);
+		DLL_IMPORT_OR_EXPORT AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::READ_ONLY);
 
-		AbstractHdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
+		DLL_IMPORT_OR_EXPORT AbstractHdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
 			EpcExternalPartReference(fromGsoap), openingMode(DataObjectRepository::READ_ONLY) {}
 
-		AbstractHdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
+		DLL_IMPORT_OR_EXPORT AbstractHdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
 			EpcExternalPartReference(fromGsoap), openingMode(DataObjectRepository::READ_ONLY) {}
 
 		/**
 		* Instantiate and initialize the gsoap proxy v2.0.1.
 		* This method is defined in order to be used in derived class without having to link to generated gsoap files.
 		*/
-		void initGsoapProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, EmlVersion emlVersion);
+		DLL_IMPORT_OR_EXPORT void initGsoapProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, EmlVersion emlVersion);
 
 	public:
 
@@ -369,8 +369,8 @@ namespace COMMON_NS
 		virtual void readArrayNdOfDoubleValues(
 		  const std::string & datasetName,
 		  double* values,
-		  unsigned long long * numValuesInEachDimension,
-		  unsigned long long * offsetInEachDimension,
+		  unsigned long long const * numValuesInEachDimension,
+		  unsigned long long const * offsetInEachDimension,
 		  unsigned int numDimensions
 		  ) = 0;
 
@@ -387,10 +387,10 @@ namespace COMMON_NS
 		virtual void readArrayNdOfDoubleValues(
 			const std::string & datasetName, 
 			double* values,
-			unsigned long long * blockCountPerDimension,
-			unsigned long long * offsetInEachDimension,
-			unsigned long long * strideInEachDimension,
-			unsigned long long * blockSizeInEachDimension,
+			unsigned long long const * blockCountPerDimension,
+			unsigned long long const * offsetInEachDimension,
+			unsigned long long const * strideInEachDimension,
+			unsigned long long const * blockSizeInEachDimension,
 			unsigned int numDimensions) = 0;
 
 		/**
@@ -408,10 +408,10 @@ namespace COMMON_NS
 		 */
 		virtual void selectArrayNdOfValues(
 			const std::string & datasetName,
-			unsigned long long * blockCountPerDimension,
-			unsigned long long * offsetInEachDimension,
-			unsigned long long * strideInEachDimension,
-			unsigned long long * blockSizeInEachDimension,
+			unsigned long long const* blockCountPerDimension,
+			unsigned long long const* offsetInEachDimension,
+			unsigned long long const* strideInEachDimension,
+			unsigned long long const* blockSizeInEachDimension,
 			unsigned int numDimensions,
 			bool newSelection,
 			hdf5_hid_t & dataset,
@@ -448,29 +448,17 @@ namespace COMMON_NS
 		virtual void readArrayNdOfFloatValues(
 		  const std::string & datasetName,
 		  float* values,
-		  unsigned long long * numValuesInEachDimension,
-		  unsigned long long * offsetInEachDimension,
+		  unsigned long long const * numValuesInEachDimension,
+		  unsigned long long const * offsetInEachDimension,
 		  unsigned int numDimensions
 		  ) = 0;
-
-		/**
-		* TODO : check all possible size of LONG64 on all different platforms
-		* @param values 		The values must be pre-allocated and won't be freed by this method.
-		*/
-		virtual void readArrayNdOfGSoapLong64Values(const std::string & datasetName, LONG64* values) = 0;
-	
-		/**
-		* TODO : check all possible size of ULONG64 on all different platforms
-		* @param values 		The values must be pre-allocated and won't be freed by this method.
-		*/
-		virtual void readArrayNdOfGSoapULong64Values(const std::string & datasetName, ULONG64* values) = 0;
 
 		/**
 		 * Read an array Nd of long values stored in a specific dataset.
 		 * @param datasetName	The absolute dataset name where to read the values
 		 * @param values 		The values must be pre-allocated and won't be freed by this method.
 		 */
-		virtual void readArrayNdOfLongValues(const std::string & datasetName, long* values) = 0;
+		virtual void readArrayNdOfLongValues(const std::string & datasetName, LONG64* values) = 0;
 
 		/**
 		 * Find the array associated with datasetName and read from it.
@@ -481,19 +469,18 @@ namespace COMMON_NS
 		 * @param numDimensions                  The number of the dimensions of the array to read.
 		 */
 		virtual void readArrayNdOfLongValues(
-		  const std::string & datasetName,
-		  long* values,
-		  unsigned long long * numValuesInEachDimension,
-		  unsigned long long * offsetInEachDimension,
-		  unsigned int numDimensions
-		  ) = 0;
+			const std::string & datasetName,
+			LONG64* values,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
+			unsigned int numDimensions) = 0;
 
 		/**
 		 * Read an array Nd of unsigned long values stored in a specific dataset.
 		 * @param datasetName	The absolute dataset name where to read the values
 		 * @param values 		The values must be pre-allocated and won't be freed by this method.
 		 */
-		virtual void readArrayNdOfULongValues(const std::string & datasetName, unsigned long* values) = 0;
+		virtual void readArrayNdOfULongValues(const std::string & datasetName, ULONG64* values) = 0;
 
 		/**
 		 * Read an array Nd of int values stored in a specific dataset.
@@ -513,8 +500,8 @@ namespace COMMON_NS
 		virtual void readArrayNdOfIntValues(
 			const std::string & datasetName,
 			int* values,
-			unsigned long long * numValuesInEachDimension,
-			unsigned long long * offsetInEachDimension,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
 			unsigned int numDimensions
 		) = 0;
 

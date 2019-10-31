@@ -16,11 +16,11 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/PropertyKind.h"
+#include "PropertyKind.h"
 
 #include <stdexcept>
 
-#include "resqml2/AbstractValuesProperty.h"
+#include "../resqml2/AbstractValuesProperty.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -31,7 +31,7 @@ void PropertyKind::init(COMMON_NS::DataObjectRepository * repo, const std::strin
 	if (repo == nullptr)
 		throw invalid_argument("The repo cannot be null.");
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREPropertyKind(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREPropertyKind(repo->getGsoapContext());
 	_resqml20__PropertyKind* propType = getSpecializedGsoapProxy();
 
 	propType->NamingSystem = namingSystem;
@@ -48,7 +48,7 @@ PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const string 
 	init(repo, guid, title, namingSystem);
 	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = uom;
 
-	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
+	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap);
 	xmlStandardPropKind->Kind = parentEnergisticsPropertyKind;
 	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->ParentPropertyKind = xmlStandardPropKind;
 }
@@ -69,7 +69,7 @@ PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const string 
 	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc;
 	pushBackExtraMetadata("Uom", nonStandardUom);
 
-	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap, 1);
+	resqml20__StandardPropertyKind* xmlStandardPropKind = soap_new_resqml20__StandardPropertyKind(gsoapProxy2_0_1->soap);
 	xmlStandardPropKind->Kind = parentEnergisticsPropertyKind;
 	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->ParentPropertyKind = xmlStandardPropKind;
 }
@@ -97,7 +97,7 @@ void PropertyKind::setXmlParentPropertyKind(RESQML2_NS::PropertyKind* parentProp
 {
 	_resqml20__PropertyKind* propType = getSpecializedGsoapProxy();
 
-	resqml20__LocalPropertyKind* xmlLocalPropKind = soap_new_resqml20__LocalPropertyKind(gsoapProxy2_0_1->soap, 1);
+	resqml20__LocalPropertyKind* xmlLocalPropKind = soap_new_resqml20__LocalPropertyKind(gsoapProxy2_0_1->soap);
 	xmlLocalPropKind->LocalPropertyKind = parentPropertyKind->newResqmlReference();
 	propType->ParentPropertyKind = xmlLocalPropKind;
 }

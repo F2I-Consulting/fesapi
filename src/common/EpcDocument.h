@@ -23,10 +23,10 @@ under the License.
 #include <limits>
 #include <stdexcept>
 
-#include "epc/Package.h"
+#include "../epc/Package.h"
 
-#include "common/DataObjectRepository.h"
-#include "common/DataFeeder.h"
+#include "DataObjectRepository.h
+#include "DataFeeder.h"
 
 namespace COMMON_NS
 {

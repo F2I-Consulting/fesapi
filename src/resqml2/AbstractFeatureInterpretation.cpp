@@ -17,15 +17,15 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
-#include "resqml2/AbstractFeatureInterpretation.h"
+#include "AbstractFeatureInterpretation.h"
 
 #include <stdexcept>
 #include <algorithm>
 
-#include "resqml2/AbstractFeature.h"
-#include "resqml2/AbstractLocal3dCrs.h"
-#include "resqml2/GridConnectionSetRepresentation.h"
-#include "resqml2_0_1/StructuralOrganizationInterpretation.h"
+#include "AbstractFeature.h"
+#include "AbstractLocal3dCrs.h"
+#include "GridConnectionSetRepresentation.h"
+#include "../resqml2_0_1/StructuralOrganizationInterpretation.h"
 
 using namespace RESQML2_NS;
 using namespace std;
@@ -147,8 +147,7 @@ namespace {
 			gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = rep->getInterpretationDor();
 			return dor == nullptr
 				|| dor->UUID != interp->getUuid()
-				|| (interp->hasVersion() && (dor->VersionString == nullptr || *dor->VersionString != interp->getVersion()))
-				|| (!interp->hasVersion() && dor->VersionString != nullptr);
+				|| (dor->VersionString == nullptr ? "" : *dor->VersionString) != interp->getVersion();
 		}
 	};
 }

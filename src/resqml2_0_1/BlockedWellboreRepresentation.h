@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/WellboreFrameRepresentation.h"
+#include "WellboreFrameRepresentation.h"
 
 namespace RESQML2_NS
 {
@@ -37,7 +37,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		BlockedWellboreRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WellboreFrameRepresentation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT BlockedWellboreRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WellboreFrameRepresentation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -58,9 +58,6 @@ namespace RESQML2_0_1_NS
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~BlockedWellboreRepresentation() {}
-        
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const {return XML_TAG;}
 	
 		/**
 		* Set all information about the intersected grid cells. You must first provide MD values of the frame before to use this method.
@@ -110,6 +107,16 @@ namespace RESQML2_0_1_NS
 		* Get the supporting grid representation uuid located at a specific index of this blocked wellbore representation.
 		*/
 		DLL_IMPORT_OR_EXPORT std::string getSupportingGridRepresentationUuid(unsigned int index) const;
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 		void loadTargetRelationships();
 	};

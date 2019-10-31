@@ -16,10 +16,10 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/WellboreInterpretation.h"
+#include "WellboreInterpretation.h"
 
-#include "resqml2_0_1/WellboreFeature.h"
-#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
+#include "WellboreFeature.h"
+#include "WellboreTrajectoryRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -29,7 +29,7 @@ const char* WellboreInterpretation::XML_TAG = "WellboreInterpretation";
 
 WellboreInterpretation::WellboreInterpretation(WellboreFeature * WellboreFeature, const string & guid, const string & title, bool isDrilled)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreInterpretation(WellboreFeature->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreInterpretation(WellboreFeature->getGsoapContext());
 	_resqml20__WellboreInterpretation* wbInterp = static_cast<_resqml20__WellboreInterpretation*>(gsoapProxy2_0_1);
 	wbInterp->Domain = resqml20__Domain__mixed;
 

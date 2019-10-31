@@ -17,15 +17,15 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
-#include "resqml2_0_1/UnstructuredGridRepresentation.h"
+#include "UnstructuredGridRepresentation.h"
 
 #include <stdexcept>
 
-#include "hdf5.h"
+#include <hdf5.h>
 
-#include "resqml2/AbstractFeatureInterpretation.h"
-#include "resqml2/AbstractLocal3dCrs.h"
-#include "common/AbstractHdfProxy.h"
+#include "../resqml2/AbstractFeatureInterpretation.h"
+#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../common/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
@@ -42,7 +42,7 @@ void UnstructuredGridRepresentation::init(COMMON_NS::DataObjectRepository* repo,
 		throw invalid_argument("The repo cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREUnstructuredGridRepresentation(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREUnstructuredGridRepresentation(repo->getGsoapContext());
 	_resqml20__UnstructuredGridRepresentation* unstructuredGrid = getSpecializedGsoapProxy();
 
 	unstructuredGrid->CellCount = cellCount;
@@ -167,7 +167,7 @@ void UnstructuredGridRepresentation::getFaceIndicesOfCells(ULONG64 * faceIndices
 	if (grid->Geometry->FacesPerCell->Elements->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(grid->Geometry->FacesPerCell->Elements)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, faceIndices);
+		hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, faceIndices);
 	}
 	else {
 		throw logic_error("Not yet implemented");
@@ -183,7 +183,7 @@ void UnstructuredGridRepresentation::getCumulativeFaceCountPerCell(ULONG64 * cum
 	{
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(grid->Geometry->FacesPerCell->CumulativeLength)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, cumulativeFaceCountPerCell_);
+		hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, cumulativeFaceCountPerCell_);
 	}
 	else if (grid->Geometry->FacesPerCell->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray)
 	{
@@ -279,7 +279,7 @@ void UnstructuredGridRepresentation::getNodeIndicesOfFaces(ULONG64 * nodeIndices
 	{
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(grid->Geometry->NodesPerFace->Elements)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, nodeIndices);
+		hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, nodeIndices);
 	}
 	else
 		throw logic_error("Not yet implemented");
@@ -294,7 +294,7 @@ void UnstructuredGridRepresentation::getCumulativeNodeCountPerFace(ULONG64 * nod
 	{
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(grid->Geometry->NodesPerFace->CumulativeLength)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, nodeCountPerFace);
+		hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, nodeCountPerFace);
 	}
 	else if (grid->Geometry->NodesPerFace->CumulativeLength->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray)
 	{
@@ -410,7 +410,7 @@ void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std:
 		localCrs = getRepository()->getDefaultCrs();
 	}
 
-	resqml20__UnstructuredGridGeometry* geom = soap_new_resqml20__UnstructuredGridGeometry(gsoapProxy2_0_1->soap, 1);
+	resqml20__UnstructuredGridGeometry* geom = soap_new_resqml20__UnstructuredGridGeometry(gsoapProxy2_0_1->soap);
 	getSpecializedGsoapProxy()->Geometry = geom;
 	getSpecializedGsoapProxy()->Geometry->LocalCrs = localCrs->newResqmlReference();
 
@@ -424,52 +424,52 @@ void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std:
 	getRepository()->addRelationship(this, proxy);
 	// Face Right handness
 	//XML
-	resqml20__BooleanHdf5Array* cellFaceIsRightHandedForHdf5 = soap_new_resqml20__BooleanHdf5Array(gsoapProxy2_0_1->soap, 1);
-	cellFaceIsRightHandedForHdf5->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	resqml20__BooleanHdf5Array* cellFaceIsRightHandedForHdf5 = soap_new_resqml20__BooleanHdf5Array(gsoapProxy2_0_1->soap);
+	cellFaceIsRightHandedForHdf5->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	cellFaceIsRightHandedForHdf5->Values->HdfProxy = proxy->newResqmlReference();
 	cellFaceIsRightHandedForHdf5->Values->PathInHdfFile = cellFaceIsRightHanded;
 	geom->CellFaceIsRightHanded = cellFaceIsRightHandedForHdf5;
 
 	// Face indices
 	//XML
-	geom->FacesPerCell = soap_new_resqml20__ResqmlJaggedArray(gsoapProxy2_0_1->soap, 1);
+	geom->FacesPerCell = soap_new_resqml20__ResqmlJaggedArray(gsoapProxy2_0_1->soap);
 	// Cumulative
-	resqml20__IntegerHdf5Array* cumulativeLength = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array* cumulativeLength = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	geom->FacesPerCell->CumulativeLength = cumulativeLength;
 	cumulativeLength->NullValue = -1;
-	cumulativeLength->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	cumulativeLength->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	cumulativeLength->Values->HdfProxy = proxy->newResqmlReference();
 	cumulativeLength->Values->PathInHdfFile = faceIndicesCumulativeCountPerCell;
 	// Elements
-	resqml20__IntegerHdf5Array* elements = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array* elements = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	geom->FacesPerCell->Elements = elements;
 	elements->NullValue = faceCount+1;
-	elements->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	elements->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	elements->Values->HdfProxy = proxy->newResqmlReference();
 	elements->Values->PathInHdfFile = faceIndicesPerCell;
 
 	// Node indices
 	//XML
-	geom->NodesPerFace = soap_new_resqml20__ResqmlJaggedArray(gsoapProxy2_0_1->soap, 1);
+	geom->NodesPerFace = soap_new_resqml20__ResqmlJaggedArray(gsoapProxy2_0_1->soap);
 	// Cumulative
-	cumulativeLength = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	cumulativeLength = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	geom->NodesPerFace->CumulativeLength = cumulativeLength;
 	cumulativeLength->NullValue = -1;
-	cumulativeLength->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	cumulativeLength->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	cumulativeLength->Values->HdfProxy = proxy->newResqmlReference();
 	cumulativeLength->Values->PathInHdfFile = nodeIndicesCumulativeCountPerFace;
 	// Elements
-	elements = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	elements = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	geom->NodesPerFace->Elements = elements;
 	elements->NullValue = pointCount+1;
-	elements->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	elements->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	elements->Values->HdfProxy = proxy->newResqmlReference();
 	elements->Values->PathInHdfFile = nodeIndicesPerFace;
 
 	// XML points
-	resqml20__Point3dHdf5Array* xmlPoints = soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dHdf5Array* xmlPoints = soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap);
 	geom->Points = xmlPoints;
-	xmlPoints->Coordinates = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	xmlPoints->Coordinates = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlPoints->Coordinates->HdfProxy = proxy->newResqmlReference();
 	xmlPoints->Coordinates->PathInHdfFile = points;
 
@@ -539,7 +539,7 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDa
 		localCrs = getRepository()->getDefaultCrs();
 	}
 
-	resqml20__UnstructuredGridGeometry* geom = soap_new_resqml20__UnstructuredGridGeometry(gsoapProxy2_0_1->soap, 1);
+	resqml20__UnstructuredGridGeometry* geom = soap_new_resqml20__UnstructuredGridGeometry(gsoapProxy2_0_1->soap);
 	getSpecializedGsoapProxy()->Geometry = geom;
 	getSpecializedGsoapProxy()->Geometry->LocalCrs = localCrs->newResqmlReference();
 
@@ -561,26 +561,26 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDa
 	getRepository()->addRelationship(this, proxy);
 	// Face Right handness
 	//XML
-	resqml20__BooleanHdf5Array* cellFaceIsRightHandedForHdf5 = soap_new_resqml20__BooleanHdf5Array(gsoapProxy2_0_1->soap, 1);
-	cellFaceIsRightHandedForHdf5->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	resqml20__BooleanHdf5Array* cellFaceIsRightHandedForHdf5 = soap_new_resqml20__BooleanHdf5Array(gsoapProxy2_0_1->soap);
+	cellFaceIsRightHandedForHdf5->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	cellFaceIsRightHandedForHdf5->Values->HdfProxy = proxy->newResqmlReference();
 	cellFaceIsRightHandedForHdf5->Values->PathInHdfFile = cellFaceIsRightHanded;
 	geom->CellFaceIsRightHanded = cellFaceIsRightHandedForHdf5;
 
 	// Face indices
 	//XML
-	geom->FacesPerCell = soap_new_resqml20__ResqmlJaggedArray(gsoapProxy2_0_1->soap, 1);
+	geom->FacesPerCell = soap_new_resqml20__ResqmlJaggedArray(gsoapProxy2_0_1->soap);
 	// Cumulative
 	if (cellCount == 1)
 	{
-		resqml20__IntegerConstantArray* cumulativeLength = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap, 1);
+		resqml20__IntegerConstantArray* cumulativeLength = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap);
 		geom->FacesPerCell->CumulativeLength = cumulativeLength;
 		cumulativeLength->Count = cellCount;
 		cumulativeLength->Value = faceCountPerCell;
 	}
 	else
 	{
-		resqml20__IntegerLatticeArray* cumulativeLength = soap_new_resqml20__IntegerLatticeArray(gsoapProxy2_0_1->soap, 1);
+		resqml20__IntegerLatticeArray* cumulativeLength = soap_new_resqml20__IntegerLatticeArray(gsoapProxy2_0_1->soap);
 		geom->FacesPerCell->CumulativeLength = cumulativeLength;
 		cumulativeLength->StartValue = faceCountPerCell;
 		cumulativeLength->Offset.push_back(soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap, 1));
@@ -588,35 +588,35 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDa
 		cumulativeLength->Offset[0]->Value = faceCountPerCell;
 	}
 	// Elements
-	resqml20__IntegerHdf5Array* elements = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array* elements = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	geom->FacesPerCell->Elements = elements;
 	elements->NullValue = faceCount+1;
-	elements->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	elements->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	elements->Values->HdfProxy = proxy->newResqmlReference();
 	elements->Values->PathInHdfFile = faceIndicesPerCell;
 
 	// Node indices
 	//XML
-	geom->NodesPerFace = soap_new_resqml20__ResqmlJaggedArray(gsoapProxy2_0_1->soap, 1);
+	geom->NodesPerFace = soap_new_resqml20__ResqmlJaggedArray(gsoapProxy2_0_1->soap);
 	// Cumulative
-	resqml20__IntegerLatticeArray* cumulativeLength = soap_new_resqml20__IntegerLatticeArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerLatticeArray* cumulativeLength = soap_new_resqml20__IntegerLatticeArray(gsoapProxy2_0_1->soap);
 	geom->NodesPerFace->CumulativeLength = cumulativeLength;
 	cumulativeLength->StartValue = nodeCountPerFace;
 	cumulativeLength->Offset.push_back(soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap, 1));
 	cumulativeLength->Offset[0]->Count = geom->FaceCount - 1;
 	cumulativeLength->Offset[0]->Value = nodeCountPerFace;
 	// Elements
-	elements = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	elements = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	geom->NodesPerFace->Elements = elements;
 	elements->NullValue = pointCount+1;
-	elements->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	elements->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	elements->Values->HdfProxy = proxy->newResqmlReference();
 	elements->Values->PathInHdfFile = nodeIndicesPerFace;
 
 	// XML points
-	resqml20__Point3dHdf5Array* xmlPoints = soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dHdf5Array* xmlPoints = soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap);
 	geom->Points = xmlPoints;
-	xmlPoints->Coordinates = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	xmlPoints->Coordinates = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlPoints->Coordinates->HdfProxy = proxy->newResqmlReference();
 	xmlPoints->Coordinates->PathInHdfFile = points;
 

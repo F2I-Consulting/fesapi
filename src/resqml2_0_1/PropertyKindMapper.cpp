@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/PropertyKindMapper.h"
+#include "PropertyKindMapper.h"
 
 #if defined(_WIN32)
 #include <windows.h>
@@ -28,7 +28,7 @@ under the License.
 #include <sstream>
 #include <stdexcept>
 
-#include "resqml2_0_1/PropertyKind.h"
+#include "PropertyKind.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -64,7 +64,7 @@ string PropertyKindMapper::loadMappingFilesFromDirectory(const string & director
 
 					if ( file ) {
 						dataObjRepo->getGsoapContext()->is = &file;
-						gsoap_resqml2_0_1::_ptm__standardEnergisticsPropertyTypeSet* read = gsoap_resqml2_0_1::soap_new_ptm__standardEnergisticsPropertyTypeSet(dataObjRepo->getGsoapContext(), 1);
+						gsoap_resqml2_0_1::_ptm__standardEnergisticsPropertyTypeSet* read = gsoap_resqml2_0_1::soap_new_ptm__standardEnergisticsPropertyTypeSet(dataObjRepo->getGsoapContext());
 						soap_read_ptm__standardEnergisticsPropertyTypeSet(dataObjRepo->getGsoapContext(), read);
 						file.close();
 
@@ -94,7 +94,7 @@ string PropertyKindMapper::loadMappingFilesFromDirectory(const string & director
 
 					if ( file ) {
 						dataObjRepo->getGsoapContext()->is = &file;
-						gsoap_resqml2_0_1::_resqml20__PropertyKind* read = gsoap_resqml2_0_1::soap_new_resqml20__obj_USCOREPropertyKind(dataObjRepo->getGsoapContext(), 1);
+						gsoap_resqml2_0_1::_resqml20__PropertyKind* read = gsoap_resqml2_0_1::soap_new_resqml20__obj_USCOREPropertyKind(dataObjRepo->getGsoapContext());
 						soap_read_resqml20__obj_USCOREPropertyKind(dataObjRepo->getGsoapContext(), read);
 						file.close();
 

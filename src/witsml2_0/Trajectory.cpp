@@ -16,15 +16,15 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "witsml2_0/Trajectory.h"
+#include "Trajectory.h"
 
 #include <sstream>
 #include <stdexcept>
 #include <limits>
 
-#include "witsml2_0/Wellbore.h"
+#include "Wellbore.h"
 
-#include "tools/TimeTools.h"
+#include "../tools/TimeTools.h"
 
 using namespace std;
 using namespace WITSML2_0_NS;
@@ -39,7 +39,7 @@ Trajectory::Trajectory(Wellbore* witsmlWellbore,
 {
 	if (witsmlWellbore == nullptr) throw invalid_argument("A wellbore must be associated to a wellbore trajectory.");
 
-	gsoapProxy2_1 = soap_new_witsml20__Trajectory(witsmlWellbore->getGsoapContext(), 1);
+	gsoapProxy2_1 = soap_new_witsml20__Trajectory(witsmlWellbore->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());

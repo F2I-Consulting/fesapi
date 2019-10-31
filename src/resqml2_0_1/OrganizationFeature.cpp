@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/OrganizationFeature.h"
+#include "OrganizationFeature.h"
 
 #include <stdexcept>
 
@@ -32,7 +32,7 @@ OrganizationFeature::OrganizationFeature(COMMON_NS::DataObjectRepository * repo,
 		throw invalid_argument("The repo cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREOrganizationFeature(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREOrganizationFeature(repo->getGsoapContext());
 	static_cast<_resqml20__OrganizationFeature*>(gsoapProxy2_0_1)->OrganizationKind = orgType;
 
 	initMandatoryMetadata();

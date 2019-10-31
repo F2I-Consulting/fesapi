@@ -16,11 +16,11 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/StringTableLookup.h"
+#include "StringTableLookup.h"
 
 #include <stdexcept>
 
-#include "resqml2_0_1/CategoricalProperty.h"
+#include "CategoricalProperty.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -33,7 +33,7 @@ StringTableLookup::StringTableLookup(COMMON_NS::DataObjectRepository* repo, cons
 	if (repo == nullptr)
 		throw invalid_argument("The repo cannot be null.");
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStringTableLookup(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStringTableLookup(repo->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -96,7 +96,7 @@ void StringTableLookup::addValue(const string & strValue, const long & longValue
 {
 	_resqml20__StringTableLookup* stringLookup = static_cast<_resqml20__StringTableLookup*>(gsoapProxy2_0_1);
 
-	resqml20__StringLookup* xmlValue = soap_new_resqml20__StringLookup(gsoapProxy2_0_1->soap, 1);
+	resqml20__StringLookup* xmlValue = soap_new_resqml20__StringLookup(gsoapProxy2_0_1->soap);
 	xmlValue->Key = longValue;
 	xmlValue->Value = strValue;
 	stringLookup->Value.push_back(xmlValue);

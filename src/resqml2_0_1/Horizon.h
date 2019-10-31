@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2_0_1/GeneticBoundaryFeature.h"
+#include "GeneticBoundaryFeature.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -29,7 +29,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		Horizon(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : GeneticBoundaryFeature(partialObject) {}
+		DLL_IMPORT_OR_EXPORT Horizon(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : GeneticBoundaryFeature(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.

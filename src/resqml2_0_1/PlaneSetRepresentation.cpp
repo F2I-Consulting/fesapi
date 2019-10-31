@@ -16,15 +16,15 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/PlaneSetRepresentation.h"
+#include "PlaneSetRepresentation.h"
 
 #include <stdexcept>
 #include <sstream>
 #include <algorithm>
 #include <stdexcept>
 
-#include "resqml2/AbstractFeatureInterpretation.h"
-#include "resqml2/AbstractLocal3dCrs.h"
+#include "../resqml2/AbstractFeatureInterpretation.h"
+#include "../resqml2/AbstractLocal3dCrs.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -39,7 +39,7 @@ PlaneSetRepresentation::PlaneSetRepresentation(RESQML2_NS::AbstractFeatureInterp
 		throw invalid_argument("You must provide an interpretation");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREPlaneSetRepresentation(interp->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREPlaneSetRepresentation(interp->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -65,7 +65,7 @@ void PlaneSetRepresentation::pushBackHorizontalPlaneGeometryPatch(double zCoordi
 		localCrs = getRepository()->getDefaultCrs();
 	}
 
-	resqml20__HorizontalPlaneGeometry* patch = soap_new_resqml20__HorizontalPlaneGeometry(gsoapProxy2_0_1->soap, 1);
+	resqml20__HorizontalPlaneGeometry* patch = soap_new_resqml20__HorizontalPlaneGeometry(gsoapProxy2_0_1->soap);
 	patch->LocalCrs = localCrs->newResqmlReference();
 	patch->Coordinate = zCoordinate;
 
@@ -84,7 +84,7 @@ void PlaneSetRepresentation::pushBackTiltedPlaneGeometryPatch(
 		localCrs = getRepository()->getDefaultCrs();
 	}
 
-	resqml20__TiltedPlaneGeometry* patch = soap_new_resqml20__TiltedPlaneGeometry(gsoapProxy2_0_1->soap, 1);
+	resqml20__TiltedPlaneGeometry* patch = soap_new_resqml20__TiltedPlaneGeometry(gsoapProxy2_0_1->soap);
 	patch->LocalCrs = localCrs->newResqmlReference();
 
 	patch->Plane.push_back(soap_new_resqml20__ThreePoint3d(gsoapProxy2_0_1->soap, 1));

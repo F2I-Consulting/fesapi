@@ -19,13 +19,30 @@ under the License.
 #pragma once
 
 #include <limits>
-#include "resqml2/AbstractProperty.h"
+#include "AbstractProperty.h"
 
 namespace RESQML2_NS
 {
 	class AbstractValuesProperty : public AbstractProperty
 	{
 	protected:
+
+		/**
+		* Only to be used in partial transfer context
+		*/
+		DLL_IMPORT_OR_EXPORT AbstractValuesProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractProperty(partialObject) {}
+
+		/**
+		* Default constructor
+		* Set the relationship with an AbstractRepresentation and a local property type.
+		*/
+		AbstractValuesProperty() {}
+
+		/**
+		* Creates an instance of this class by wrapping a gsoap instance.
+		*/
+		AbstractValuesProperty(gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* fromGsoap) : RESQML2_NS::AbstractProperty(fromGsoap) {}
+
 		/**
 		* Get the dataset which contains the property values of a particular patch.
 		* @param patchIndex	The corresponding patch index of the dataset to get.
@@ -44,22 +61,6 @@ namespace RESQML2_NS
 		std::string pushBackRefToExistingIntegerDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
 
 	public:
-
-		/**
-		* Only to be used in partial transfer context
-		*/
-		AbstractValuesProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractProperty(partialObject) {}
-
-		/**
-		* Default constructor
-		* Set the relationship with an AbstractRepresentation and a local property type.
-		*/
-		AbstractValuesProperty() {}
-
-		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		AbstractValuesProperty(gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* fromGsoap) : RESQML2_NS::AbstractProperty(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -91,7 +92,7 @@ namespace RESQML2_NS
 		* Not for continuous property values.
 		* @return the null value
 		*/
-		DLL_IMPORT_OR_EXPORT long getLongValuesOfPatch(unsigned int patchIndex, long * values) const;
+		DLL_IMPORT_OR_EXPORT LONG64 getLongValuesOfPatch(unsigned int patchIndex, LONG64 * values) const;
 
 		/**
 		* Get the null value of the instance which are supposed to be integer ones.
@@ -105,7 +106,7 @@ namespace RESQML2_NS
 		* Not for continuous property values.
 		* @return the null value
 		*/
-		DLL_IMPORT_OR_EXPORT unsigned long getULongValuesOfPatch(unsigned int patchIndex, unsigned long * values) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getULongValuesOfPatch(unsigned int patchIndex, ULONG64 * values) const;
 
 		/**
 		* Get all the values of the instance which are supposed to be int ones.
@@ -268,7 +269,7 @@ namespace RESQML2_NS
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
 		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5SlabArray3dOfValues(
-			long* values, 
+			LONG64* values, 
 			unsigned int valueCountInFastestDim, 
 			unsigned int valueCountInMiddleDim, 
 			unsigned int valueCountInSlowestDim, 
@@ -287,9 +288,9 @@ namespace RESQML2_NS
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
 		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5SlabArrayOfValues(
-			long * values, 
-			unsigned long long * numValues,
-			unsigned long long * offsetValues,
+			LONG64* values,
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
 			unsigned int numArrayDimensions, 
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 
@@ -303,9 +304,9 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void getLongValuesOfPatch(
 			unsigned int patchIndex, 
-			long* values, 
-			unsigned long long* numValuesInEachDimension,
-			unsigned long long* offsetInEachDimension,
+			LONG64* values,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
 
@@ -322,7 +323,7 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void getLongValuesOf3dPatch(
 			unsigned int patchIndex, 
-			long* values, 
+			LONG64* values,
 			unsigned int valueCountInFastestDim, 
 			unsigned int valueCountInMiddleDim, 
 			unsigned int valueCountInSlowestDim, 

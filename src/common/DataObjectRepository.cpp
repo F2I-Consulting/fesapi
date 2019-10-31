@@ -16,108 +16,109 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "common/DataObjectRepository.h"
+#include "DataObjectRepository.h"
 
 #include <algorithm>
 #include <functional>
 
-#include "common/DataFeeder.h"
+#include "../common/DataFeeder.h"
 
-#include "resqml2_0_1/PropertyKindMapper.h"
+#include "../resqml2_0_1/PropertyKindMapper.h"
 
-#include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "resqml2_0_1/LocalTime3dCrs.h"
-#include "resqml2_0_1/Horizon.h"
-#include "resqml2_0_1/FluidBoundaryFeature.h"
-#include "resqml2_0_1/TectonicBoundaryFeature.h"
-#include "resqml2_0_1/FrontierFeature.h"
-#include "resqml2_0_1/GeobodyFeature.h"
-#include "resqml2_0_1/GenericFeatureInterpretation.h"
-#include "resqml2_0_1/FaultInterpretation.h"
-#include "resqml2_0_1/HorizonInterpretation.h"
-#include "resqml2_0_1/GeobodyBoundaryInterpretation.h"
-#include "resqml2_0_1/GeobodyInterpretation.h"
-#include "resqml2_0_1/PolylineSetRepresentation.h"
-#include "resqml2_0_1/PointSetRepresentation.h"
-#include "resqml2_0_1/PlaneSetRepresentation.h"
-#include "resqml2_0_1/SeismicLatticeFeature.h"
-#include "resqml2_0_1/Grid2dRepresentation.h"
-#include "resqml2_0_1/HdfProxy.h"
-#include "resqml2_0_1/TriangulatedSetRepresentation.h"
-#include "resqml2_0_1/WellboreFeature.h"
-#include "resqml2_0_1/WellboreInterpretation.h"
-#include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
-#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
-#include "resqml2_0_1/DeviationSurveyRepresentation.h"
-#include "resqml2_0_1/MdDatum.h"
-#include "resqml2_0_1/PolylineRepresentation.h"
-#include "resqml2_0_1/SubRepresentation.h"
-#include "resqml2_0_1/GridConnectionSetRepresentation.h"
-#include "resqml2_0_1/TimeSeries.h"
-#include "resqml2_0_1/PropertyKind.h"
-#include "resqml2_0_1/PropertySet.h"
-#include "resqml2_0_1/ContinuousProperty.h"
-#include "resqml2_0_1/CategoricalProperty.h"
-#include "resqml2_0_1/DiscreteProperty.h"
-#include "resqml2_0_1/CommentProperty.h"
-#include "resqml2_0_1/StringTableLookup.h"
-#include "resqml2_0_1/SeismicLineFeature.h"
-#include "resqml2_0_1/SeismicLineSetFeature.h"
-#include "resqml2_0_1/OrganizationFeature.h"
+#include "../resqml2_0_1/LocalDepth3dCrs.h"
+#include "../resqml2_0_1/LocalTime3dCrs.h"
+#include "../resqml2_0_1/Horizon.h"
+#include "../resqml2_0_1/FluidBoundaryFeature.h"
+#include "../resqml2_0_1/TectonicBoundaryFeature.h"
+#include "../resqml2_0_1/FrontierFeature.h"
+#include "../resqml2_0_1/GeobodyFeature.h"
+#include "../resqml2_0_1/GenericFeatureInterpretation.h"
+#include "../resqml2_0_1/FaultInterpretation.h"
+#include "../resqml2_0_1/HorizonInterpretation.h"
+#include "../resqml2_0_1/GeobodyBoundaryInterpretation.h"
+#include "../resqml2_0_1/GeobodyInterpretation.h"
+#include "../resqml2_0_1/PolylineSetRepresentation.h"
+#include "../resqml2_0_1/PointSetRepresentation.h"
+#include "../resqml2_0_1/PlaneSetRepresentation.h"
+#include "../resqml2_0_1/SeismicLatticeFeature.h"
+#include "../resqml2_0_1/Grid2dRepresentation.h"
+#include "../resqml2_0_1/HdfProxy.h"
+#include "../resqml2_0_1/TriangulatedSetRepresentation.h"
+#include "../resqml2_0_1/WellboreFeature.h"
+#include "../resqml2_0_1/WellboreInterpretation.h"
+#include "../resqml2_0_1/WellboreMarkerFrameRepresentation.h"
+#include "../resqml2_0_1/WellboreTrajectoryRepresentation.h"
+#include "../resqml2_0_1/DeviationSurveyRepresentation.h"
+#include "../resqml2_0_1/MdDatum.h"
+#include "../resqml2_0_1/PolylineRepresentation.h"
+#include "../resqml2_0_1/SubRepresentation.h"
+#include "../resqml2_0_1/GridConnectionSetRepresentation.h"
+#include "../resqml2_0_1/TimeSeries.h"
+#include "../resqml2_0_1/PropertyKind.h"
+#include "../resqml2_0_1/PropertySet.h"
+#include "../resqml2_0_1/ContinuousProperty.h"
+#include "../resqml2_0_1/CategoricalProperty.h"
+#include "../resqml2_0_1/DiscreteProperty.h"
+#include "../resqml2_0_1/CommentProperty.h"
+#include "../resqml2_0_1/StringTableLookup.h"
+#include "../resqml2_0_1/SeismicLineFeature.h"
+#include "../resqml2_0_1/SeismicLineSetFeature.h"
+#include "../resqml2_0_1/OrganizationFeature.h"
 
-#include "resqml2_0_1/BlockedWellboreRepresentation.h"
+#include "../resqml2_0_1/BlockedWellboreRepresentation.h"
 
-#include "resqml2_0_1/EarthModelInterpretation.h"
-#include "resqml2_0_1/RepresentationSetRepresentation.h"
-#include "resqml2_0_1/StructuralOrganizationInterpretation.h"
-#include "resqml2_0_1/NonSealedSurfaceFrameworkRepresentation.h"
-#include "resqml2_0_1/SealedSurfaceFrameworkRepresentation.h"
-#include "resqml2_0_1/SealedVolumeFrameworkRepresentation.h"
+#include "../resqml2_0_1/EarthModelInterpretation.h"
+#include "../resqml2_0_1/RepresentationSetRepresentation.h"
+#include "../resqml2_0_1/StructuralOrganizationInterpretation.h"
+#include "../resqml2_0_1/NonSealedSurfaceFrameworkRepresentation.h"
+#include "../resqml2_0_1/SealedSurfaceFrameworkRepresentation.h"
+#include "../resqml2_0_1/SealedVolumeFrameworkRepresentation.h"
 
-#include "resqml2_0_1/RockFluidUnitFeature.h"
-#include "resqml2_0_1/RockFluidUnitInterpretation.h"
-#include "resqml2_0_1/RockFluidOrganizationInterpretation.h"
+#include "../resqml2_0_1/RockFluidUnitFeature.h"
+#include "../resqml2_0_1/RockFluidUnitInterpretation.h"
+#include "../resqml2_0_1/RockFluidOrganizationInterpretation.h"
 
-#include "resqml2_0_1/StratigraphicUnitFeature.h"
-#include "resqml2_0_1/StratigraphicUnitInterpretation.h"
-#include "resqml2_0_1/StratigraphicColumn.h"
-#include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
-#include "resqml2_0_1/StratigraphicOccurrenceInterpretation.h"
+#include "../resqml2_0_1/StratigraphicUnitFeature.h"
+#include "../resqml2_0_1/StratigraphicUnitInterpretation.h"
+#include "../resqml2_0_1/StratigraphicColumn.h"
+#include "../resqml2_0_1/StratigraphicColumnRankInterpretation.h"
+#include "../resqml2_0_1/StratigraphicOccurrenceInterpretation.h"
 
-#include "resqml2_0_1/IjkGridExplicitRepresentation.h"
-#include "resqml2_0_1/IjkGridParametricRepresentation.h"
-#include "resqml2_0_1/IjkGridLatticeRepresentation.h"
-#include "resqml2_0_1/IjkGridNoGeometryRepresentation.h"
-#include "resqml2_0_1/UnstructuredGridRepresentation.h"
+#include "../resqml2_0_1/IjkGridExplicitRepresentation.h"
+#include "../resqml2_0_1/IjkGridParametricRepresentation.h"
+#include "../resqml2_0_1/IjkGridLatticeRepresentation.h"
+#include "../resqml2_0_1/IjkGridNoGeometryRepresentation.h"
+#include "../resqml2_0_1/UnstructuredGridRepresentation.h"
 
-#include "resqml2_0_1/Activity.h"
-#include "resqml2_0_1/ActivityTemplate.h"
-#include "resqml2_0_1/ContinuousPropertySeries.h"
-#include "resqml2_0_1/CategoricalPropertySeries.h"
-#include "resqml2_0_1/DiscretePropertySeries.h"
+#include "../resqml2_0_1/Activity.h"
+#include "../resqml2_0_1/ActivityTemplate.h"
+#include "../resqml2_0_1/ContinuousPropertySeries.h"
+#include "../resqml2_0_1/CategoricalPropertySeries.h"
+#include "../resqml2_0_1/DiscretePropertySeries.h"
 
 #if WITH_EXPERIMENTAL
-#include "common/GraphicalInformationSet.h"
-#include "resqml2_2/DiscreteColorMap.h"
-#include "resqml2_2/ContinuousColorMap.h"
+#include "../resqml2_2/DiscreteColorMap.h"
+#include "../resqml2_2/ContinuousColorMap.h"
+#include "../resqml2_2/WellboreFrameRepresentation.h"
+#include "../resqml2_2/SeismicWellboreFrameRepresentation.h"
 
-#include "witsml2_1/Well.h"
-#include "witsml2_1/Wellbore.h"
-#include "witsml2_1/Trajectory.h"
-#include "witsml2_1/Log.h"
-#include "witsml2_1/WellboreMarkerSet.h"
-#include "witsml2_1/ToolErrorModelDictionary.h"
-#include "witsml2_1/ErrorTermDictionary.h"
-#include "witsml2_1/WeightingFunction.h"
+#include "../witsml2_1/Well.h"
+#include "../witsml2_1/Wellbore.h"
+#include "../witsml2_1/Trajectory.h"
+#include "../witsml2_1/Log.h"
+#include "../witsml2_1/WellboreMarkerSet.h"
+#include "../witsml2_1/ToolErrorModelDictionary.h"
+#include "../witsml2_1/ErrorTermDictionary.h"
+#include "../witsml2_1/WeightingFunction.h"
 #endif
 
-#include "witsml2_0/Well.h"
-#include "witsml2_0/Wellbore.h"
-#include "witsml2_0/Trajectory.h"
-#include "witsml2_0/WellCompletion.h"
-#include "witsml2_0/WellboreCompletion.h"
+#include "../witsml2_0/Well.h"
+#include "../witsml2_0/Wellbore.h"
+#include "../witsml2_0/Trajectory.h"
+#include "../witsml2_0/WellCompletion.h"
+#include "../witsml2_0/WellboreCompletion.h"
 
-#include "tools/GuidTools.h"
+#include "../tools/GuidTools.h"
 
 using namespace std;
 using namespace COMMON_NS;
@@ -139,10 +140,6 @@ namespace {
 			return dataObj->getVersion() == version;
 		}
 	};
-
-	bool hasNoVersion(COMMON_NS::AbstractObject const * dataObj) {
-		return !dataObj->hasVersion();
-	}
 }
 
 // Create a fesapi partial wrapper based on a content type
@@ -176,16 +173,16 @@ namespace {
 /////// RESQML //////
 /////////////////////
 #define GET_RESQML_2_0_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
-	gsoap_resqml2_0_1::_resqml20__##className* read = gsoap_resqml2_0_1::soap_new_resqml20__obj_USCORE##className(gsoapContext, 1);\
+	gsoap_resqml2_0_1::_resqml20__##className* read = gsoap_resqml2_0_1::soap_new_resqml20__obj_USCORE##className(gsoapContext);\
 	soap_read_resqml20__obj_USCORE##className(gsoapContext, read);
 
 
 #define GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
 	GET_RESQML_2_0_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
-	wrapper = new className(read);
+	wrapper = new RESQML2_0_1_NS::className(read);
 
 #define CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
-	(resqmlContentType.compare(className::XML_TAG) == 0)\
+	(resqmlContentType.compare(RESQML2_0_1_NS::className::XML_TAG) == 0)\
 	{\
 		GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
 	}
@@ -194,15 +191,15 @@ namespace {
 /////// RESQML 2.2 //////
 ///////////////////////////
 #define GET_RESQML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
-	gsoap_eml2_2::_resqml22__##className* read = gsoap_eml2_2::soap_new_resqml22__##className(gsoapContext, 1);\
+	gsoap_eml2_2::_resqml22__##className* read = gsoap_eml2_2::soap_new_resqml22__##className(gsoapContext);\
 	soap_read_resqml22__##className(gsoapContext, read);
 
 #define GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
 	GET_RESQML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className)\
-	wrapper = new className(read);
+	wrapper = new RESQML2_2_NS::className(read);
 
 #define CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className)\
-	(resqmlContentType.compare(className::XML_TAG) == 0)\
+	(resqmlContentType.compare(RESQML2_2_NS::className::XML_TAG) == 0)\
 	{\
 		GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(className);\
 	}
@@ -211,7 +208,7 @@ namespace {
 ///// WITSML 2.1 ////
 /////////////////////
 #define GET_WITSML_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
-	gsoapNameSpace::_witsml20__##className* read = gsoapNameSpace::soap_new_witsml20__##className(gsoapContext, 1);\
+	gsoapNameSpace::_witsml20__##className* read = gsoapNameSpace::soap_new_witsml20__##className(gsoapContext);\
 	gsoapNameSpace::soap_read_witsml20__##className(gsoapContext, read);
 
 #define GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
@@ -228,7 +225,7 @@ namespace {
 ////// EML 2.2 //////
 /////////////////////
 #define GET_EML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
-	gsoapNameSpace::_eml22__##className* read = gsoapNameSpace::soap_new_eml22__##className(gsoapContext, 1);\
+	gsoapNameSpace::_eml22__##className* read = gsoapNameSpace::soap_new_eml22__##className(gsoapContext);\
 	gsoapNameSpace::soap_read_eml22__##className(gsoapContext, read);
 
 #define GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
@@ -377,9 +374,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 	}
 	else {
 		std::vector< COMMON_NS::AbstractObject* >& versions = dataObjects[proxy->getUuid()];
-		std::vector< COMMON_NS::AbstractObject* >::iterator same = proxy->hasVersion()
-			? std::find_if(versions.begin(), versions.end(), SameVersion(proxy->getVersion()))
-			: std::find_if(versions.begin(), versions.end(), hasNoVersion);
+		std::vector< COMMON_NS::AbstractObject* >::iterator same = std::find_if(versions.begin(), versions.end(), SameVersion(proxy->getVersion()));
 		
 		if (same == versions.end()) {
 			dataObjects[proxy->getUuid()].push_back(proxy);
@@ -578,7 +573,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(StratigraphicUnitInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(StratigraphicColumnRankInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(StratigraphicOccurrenceInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(WellboreFrameRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::WellboreFrameRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WellboreMarkerFrameRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(WellboreTrajectoryRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(PolylineSetRepresentation)
@@ -630,9 +625,10 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(COMMON_NS::GraphicalInformationSet)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::DiscreteColorMap)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::ContinuousColorMap)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::WellboreFrameRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::SeismicWellboreFrameRepresentation)
 #endif
-	else if (contentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
-	{
+	else if (contentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0) {
 		throw invalid_argument("Please handle this type outside of this method since it is not only XML related.");
 	}
 
@@ -668,7 +664,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(StratigraphicUnitInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(StratigraphicColumnRankInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(StratigraphicOccurrenceInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WellboreFrameRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_0_1_NS::WellboreFrameRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WellboreMarkerFrameRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WellboreTrajectoryRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PolylineSetRepresentation)
@@ -717,6 +713,8 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(COMMON_NS::GraphicalInformationSet)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::DiscreteColorMap)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::ContinuousColorMap)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::WellboreFrameRepresentation)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::SeismicWellboreFrameRepresentation)
 #endif
 	else if (contentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
@@ -1001,11 +999,6 @@ BoundaryFeatureInterpretation* DataObjectRepository::createBoundaryFeatureInterp
 	return new BoundaryFeatureInterpretation(feature, guid, title);
 }
 
-HorizonInterpretation* DataObjectRepository::createPartialHorizonInterpretation(const std::string & guid, const std::string & title)
-{
-	return createPartial<HorizonInterpretation>(guid, title, "application/x-resqml+xml;version=2.0;type=obj_HorizonInterpretation");
-}
-
 HorizonInterpretation* DataObjectRepository::createHorizonInterpretation(Horizon * horizon, const std::string & guid, const std::string & title)
 {
 	return new HorizonInterpretation(horizon, guid, title);
@@ -1173,10 +1166,32 @@ RESQML2_0_1_NS::DeviationSurveyRepresentation* DataObjectRepository::createDevia
 	return new DeviationSurveyRepresentation(interp, guid, title, isFinal, mdInfo);
 }
 
-WellboreFrameRepresentation* DataObjectRepository::createWellboreFrameRepresentation(WellboreInterpretation * interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
+#if WITH_EXPERIMENTAL
+RESQML2_NS::WellboreFrameRepresentation* DataObjectRepository::createWellboreFrameRepresentation(WellboreInterpretation * interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj, bool previousEnergisticsVersion)
+{
+	if (previousEnergisticsVersion) {
+		return new RESQML2_0_1_NS::WellboreFrameRepresentation(interp, guid, title, traj);
+	}
+
+	return new RESQML2_2_NS::WellboreFrameRepresentation(interp, guid, title, traj);
+}
+
+RESQML2_2_NS::SeismicWellboreFrameRepresentation* DataObjectRepository::createSeismicWellboreFrameRepresentation(
+	RESQML2_0_1_NS::WellboreInterpretation* interp,
+	const std::string& guid, const std::string& title,
+	RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj,
+	double seismicReferenceDatum,
+	double weatheringVelocity,
+	class RESQML2_0_1_NS::LocalTime3dCrs* crs)
+{
+	return new RESQML2_2_NS::SeismicWellboreFrameRepresentation(interp, guid, title, traj, seismicReferenceDatum, weatheringVelocity, crs);
+}
+#else
+RESQML2_NS::WellboreFrameRepresentation* DataObjectRepository::createWellboreFrameRepresentation(WellboreInterpretation* interp, const std::string& guid, const std::string& title, WellboreTrajectoryRepresentation* traj)
 {
 	return new WellboreFrameRepresentation(interp, guid, title, traj);
 }
+#endif
 
 WellboreMarkerFrameRepresentation* DataObjectRepository::createWellboreMarkerFrameRepresentation(WellboreInterpretation * interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
 {
@@ -1202,11 +1217,6 @@ RESQML2_NS::RepresentationSetRepresentation* DataObjectRepository::createReprese
 	const std::string & title)
 {
 	return new RESQML2_0_1_NS::RepresentationSetRepresentation(this, guid, title);
-}
-
-RESQML2_NS::RepresentationSetRepresentation* DataObjectRepository::createPartialRepresentationSetRepresentation(const std::string & guid, const std::string & title)
-{
-	return createPartial<RESQML2_0_1_NS::RepresentationSetRepresentation>(guid, title, "application/x-resqml+xml;version=2.0;type=obj_RepresentationSetRepresentation");
 }
 
 NonSealedSurfaceFrameworkRepresentation* DataObjectRepository::createNonSealedSurfaceFrameworkRepresentation(
@@ -1241,7 +1251,7 @@ AbstractIjkGridRepresentation* DataObjectRepository::createPartialIjkGridReprese
 
 AbstractIjkGridRepresentation* DataObjectRepository::createPartialTruncatedIjkGridRepresentation(const std::string & guid, const std::string & title)
 {
-	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(getGsoapContext(), 1);
+	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(getGsoapContext());
 	dor->UUID = guid;
 	dor->Title = title;
 	return new AbstractIjkGridRepresentation(dor, true);
@@ -1300,20 +1310,10 @@ RESQML2_0_1_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjk
 	return new IjkGridNoGeometryRepresentation(interp, guid, title, iCount, jCount, kCount);
 }
 
-UnstructuredGridRepresentation* DataObjectRepository::createPartialUnstructuredGridRepresentation(const std::string & guid, const std::string & title)
-{
-	return createPartial<UnstructuredGridRepresentation>(guid, title, "application/x-resqml+xml;version=2.0;type=obj_UnstructuredGridRepresentation");
-}
-
 UnstructuredGridRepresentation* DataObjectRepository::createUnstructuredGridRepresentation(const std::string & guid, const std::string & title,
 	const ULONG64 & cellCount)
 {
 	return new UnstructuredGridRepresentation(this, guid, title, cellCount);
-}
-
-RESQML2_NS::SubRepresentation* DataObjectRepository::createPartialSubRepresentation(const std::string & guid, const std::string & title)
-{
-	return createPartial<SubRepresentation>(guid, title, "application/x-resqml+xml;version=2.0;type=obj_SubRepresentation");
 }
 
 RESQML2_NS::SubRepresentation* DataObjectRepository::createSubRepresentation(const std::string & guid, const std::string & title)
@@ -1325,11 +1325,6 @@ RESQML2_NS::SubRepresentation* DataObjectRepository::createSubRepresentation(RES
 	const std::string & guid, const std::string & title)
 {
 	return new SubRepresentation(interp, guid, title);
-}
-
-RESQML2_NS::GridConnectionSetRepresentation* DataObjectRepository::createPartialGridConnectionSetRepresentation(const std::string & guid, const std::string & title)
-{
-	return createPartial<GridConnectionSetRepresentation>(guid, title, "application/x-resqml+xml;version=2.0;type=obj_GridConnectionSetRepresentation");
 }
 
 RESQML2_NS::GridConnectionSetRepresentation* DataObjectRepository::createGridConnectionSetRepresentation(const std::string & guid, const std::string & title)
@@ -1350,11 +1345,6 @@ RESQML2_NS::GridConnectionSetRepresentation* DataObjectRepository::createGridCon
 RESQML2_NS::TimeSeries* DataObjectRepository::createTimeSeries(const std::string & guid, const std::string & title)
 {
 	return new RESQML2_0_1_NS::TimeSeries(this, guid, title);
-}
-
-RESQML2_NS::TimeSeries* DataObjectRepository::createPartialTimeSeries(const std::string & guid, const std::string & title)
-{
-	return createPartial<TimeSeries>(guid, title, "application/x-resqml+xml;version=2.0;type=obj_TimeSeries");
 }
 
 StringTableLookup* DataObjectRepository::createStringTableLookup(const std::string & guid, const std::string & title)
@@ -1384,11 +1374,6 @@ RESQML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::st
 	const std::string & namingSystem, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * parentPropType)
 {
 	return new RESQML2_0_1_NS::PropertyKind(guid, title, namingSystem, nonStandardUom, parentPropType);
-}
-
-RESQML2_NS::PropertyKind* DataObjectRepository::createPartialPropertyKind(const std::string & guid, const std::string & title)
-{
-	return createPartial<PropertyKind>(guid, title, "application/x-resqml+xml;version=2.0;type=obj_PropertyKind");
 }
 
 RESQML2_NS::PropertySet* DataObjectRepository::createPropertySet(const std::string & guid, const std::string & title,
@@ -1534,13 +1519,6 @@ WITSML2_0_NS::Well* DataObjectRepository::createWell(const std::string & guid,
 	gsoap_eml2_1::witsml20__WellDirection directionWell)
 {
 	return new WITSML2_0_NS::Well(this, guid, title, operator_, statusWell, directionWell);
-}
-
-WITSML2_0_NS::Wellbore* DataObjectRepository::createPartialWellbore(
-	const std::string & guid,
-	const std::string & title)
-{
-	return createPartial<WITSML2_0_NS::Wellbore>(guid, title, "application/x-witsml+xml;version=2.0;type=Wellbore");
 }
 
 WITSML2_0_NS::Wellbore* DataObjectRepository::createWellbore(WITSML2_0_NS::Well* witsmlWell,
@@ -2308,8 +2286,10 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 
 	if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DiscreteColorMap)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ContinuousColorMap)
-
-		return wrapper;
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SeismicWellboreFrameRepresentation)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreFrameRepresentation)
+		
+	return wrapper;
 }
 
 COMMON_NS::AbstractObject* DataObjectRepository::getEml2_2WrapperFromGsoapContext(const std::string & datatype)
@@ -2348,4 +2328,16 @@ COMMON_NS::AbstractObject* DataObjectRepository::resolvePartial(COMMON_NS::Abstr
 	}
 
 	return nullptr;
+}
+
+gsoap_resqml2_0_1::eml20__DataObjectReference* DataObjectRepository::createDor(const std::string & guid, const std::string & title, const std::string & version)
+{
+	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapContext);
+	dor->UUID = guid.empty() ? generateRandomUuidAsString() : guid;
+	dor->Title = title;
+	if (!version.empty()) {
+		dor->VersionString = gsoap_resqml2_0_1::soap_new_std__string(gsoapContext);
+		dor->VersionString->assign(version);
+	}
+	return dor;
 }

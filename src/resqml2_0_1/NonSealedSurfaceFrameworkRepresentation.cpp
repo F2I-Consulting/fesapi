@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/NonSealedSurfaceFrameworkRepresentation.h"
+#include "NonSealedSurfaceFrameworkRepresentation.h"
 
 #include <algorithm>
 #include <stdexcept>
@@ -24,9 +24,9 @@ under the License.
 
 #include "H5public.h"
 
-#include "resqml2_0_1/StructuralOrganizationInterpretation.h"
-#include "common/AbstractHdfProxy.h"
-#include "resqml2/AbstractLocal3dCrs.h"
+#include "StructuralOrganizationInterpretation.h"
+#include "../common/AbstractHdfProxy.h"
+#include "../resqml2/AbstractLocal3dCrs.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -44,11 +44,11 @@ NonSealedSurfaceFrameworkRepresentation::NonSealedSurfaceFrameworkRepresentation
 	}
 
 	// proxy constructor
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORENonSealedSurfaceFrameworkRepresentation(interp->getGsoapContext(), 1);	
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORENonSealedSurfaceFrameworkRepresentation(interp->getGsoapContext());	
 	_resqml20__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
 	orgRep->IsHomogeneous = true;
-	orgRep->RepresentedInterpretation = soap_new_eml20__DataObjectReference(gsoapProxy2_0_1->soap, 1);
+	orgRep->RepresentedInterpretation = soap_new_eml20__DataObjectReference(gsoapProxy2_0_1->soap);
     orgRep->RepresentedInterpretation->UUID.assign(interp->getUuid());
 
 	initMandatoryMetadata();
@@ -75,15 +75,15 @@ void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresenta
 
 	_resqml20__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
-	resqml20__NonSealedContactRepresentationPart* contactRep = soap_new_resqml20__NonSealedContactRepresentationPart(gsoapProxy2_0_1->soap, 1);
+	resqml20__NonSealedContactRepresentationPart* contactRep = soap_new_resqml20__NonSealedContactRepresentationPart(gsoapProxy2_0_1->soap);
 	contactRep->Index = orgRep->NonSealedContactRepresentation.size();
 	orgRep->NonSealedContactRepresentation.push_back(contactRep);
-	resqml20__PointGeometry* contactGeom = soap_new_resqml20__PointGeometry(gsoapProxy2_0_1->soap, 1);
+	resqml20__PointGeometry* contactGeom = soap_new_resqml20__PointGeometry(gsoapProxy2_0_1->soap);
 	contactRep->Geometry = contactGeom;
 	contactGeom->LocalCrs = localCrs->newResqmlReference();
-	resqml20__Point3dHdf5Array* contactGeomPoints = soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dHdf5Array* contactGeomPoints = soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap);
 	contactGeom->Points = contactGeomPoints;
-	contactGeomPoints->Coordinates = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	contactGeomPoints->Coordinates = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	contactGeomPoints->Coordinates->HdfProxy = proxy->newResqmlReference();
 	ostringstream oss;
 	oss << "points_contact_representation" << orgRep->NonSealedContactRepresentation.size()-1;

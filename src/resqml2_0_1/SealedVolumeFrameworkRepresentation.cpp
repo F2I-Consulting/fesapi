@@ -16,11 +16,11 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/SealedVolumeFrameworkRepresentation.h"
+#include "SealedVolumeFrameworkRepresentation.h"
 
-#include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
-#include "resqml2_0_1/SealedSurfaceFrameworkRepresentation.h"
-#include "resqml2_0_1/StratigraphicUnitInterpretation.h"
+#include "StratigraphicColumnRankInterpretation.h"
+#include "SealedSurfaceFrameworkRepresentation.h"
+#include "StratigraphicUnitInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -41,7 +41,7 @@ SealedVolumeFrameworkRepresentation::SealedVolumeFrameworkRepresentation(Stratig
 	}
 
 	// proxy constructor
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESealedVolumeFrameworkRepresentation(interp->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESealedVolumeFrameworkRepresentation(interp->getGsoapContext());
 	_resqml20__SealedVolumeFrameworkRepresentation* orgRep = static_cast<_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1);
 
 	orgRep->IsHomogeneous = true;
@@ -53,11 +53,11 @@ SealedVolumeFrameworkRepresentation::SealedVolumeFrameworkRepresentation(Stratig
 	setSealedSurfaceFramework(ssf);
 
 	// Create a dummy shell as an official workaround (see note in http://docs.energistics.org/RESQML/RESQML_TOPICS/RESQML-500-269-0-R-sv2010.html)
-	resqml20__VolumeShell* dummyShell = soap_new_resqml20__VolumeShell(gsoapProxy2_0_1->soap, 1);
+	resqml20__VolumeShell* dummyShell = soap_new_resqml20__VolumeShell(gsoapProxy2_0_1->soap);
 	dummyShell->ShellUid = "dummy uid";
 	orgRep->Shells.push_back(dummyShell);
 
-	resqml20__OrientedMacroFace* face = soap_new_resqml20__OrientedMacroFace(gsoapProxy2_0_1->soap, 1);
+	resqml20__OrientedMacroFace* face = soap_new_resqml20__OrientedMacroFace(gsoapProxy2_0_1->soap);
 	face->RepresentationIndex = (std::numeric_limits<int>::max)();
 	face->PatchIndexOfRepresentation = (std::numeric_limits<int>::max)();
 	dummyShell->MacroFaces.push_back(face);
@@ -122,12 +122,12 @@ gsoap_resqml2_0_1::resqml20__VolumeShell* SealedVolumeFrameworkRepresentation::c
 		throw invalid_argument("Cannot create a shell with has got a face count of zero.");
 	}
 
-	resqml20__VolumeShell* externalShell = soap_new_resqml20__VolumeShell(gsoapProxy2_0_1->soap, 1);
+	resqml20__VolumeShell* externalShell = soap_new_resqml20__VolumeShell(gsoapProxy2_0_1->soap);
 	externalShell->ShellUid = "dummy uid";
 
 	// Faces
 	for (unsigned int faceIdx = 0; faceIdx < shellFaceCount; ++faceIdx) {
-		resqml20__OrientedMacroFace* face = soap_new_resqml20__OrientedMacroFace(gsoapProxy2_0_1->soap, 1);
+		resqml20__OrientedMacroFace* face = soap_new_resqml20__OrientedMacroFace(gsoapProxy2_0_1->soap);
 		face->RepresentationIndex = faceRepresentationIndices[faceIdx];
 		face->PatchIndexOfRepresentation = faceRepPatchIndices[faceIdx];
 		face->SideIsPlus = faceSide[faceIdx];
@@ -142,7 +142,7 @@ void SealedVolumeFrameworkRepresentation::pushBackVolumeRegion(StratigraphicUnit
 	unsigned int * faceRepresentationIndices, unsigned int * faceRepPatchIndices, bool * faceSide)
 {
 	// Region
-	resqml20__VolumeRegion* region = soap_new_resqml20__VolumeRegion(gsoapProxy2_0_1->soap, 1);
+	resqml20__VolumeRegion* region = soap_new_resqml20__VolumeRegion(gsoapProxy2_0_1->soap);
 	region->PatchIndex = static_cast<_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->Regions.size();
 	static_cast<_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->Regions.push_back(region);
 	setInterpretationOfVolumeRegion(region->PatchIndex, stratiUnitInterp);

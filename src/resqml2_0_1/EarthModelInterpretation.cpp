@@ -16,16 +16,16 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/EarthModelInterpretation.h"
+#include "EarthModelInterpretation.h"
 
 #include <stdexcept>
 
-#include "resqml2_0_1/OrganizationFeature.h"
-#include "resqml2_0_1/StructuralOrganizationInterpretation.h"
-#include "resqml2_0_1/StratigraphicColumn.h"
-#include "resqml2_0_1/StratigraphicOccurrenceInterpretation.h"
-#include "resqml2_0_1/RockFluidOrganizationInterpretation.h"
-#include "tools/Misc.h"
+#include "OrganizationFeature.h"
+#include "StructuralOrganizationInterpretation.h"
+#include "StratigraphicColumn.h"
+#include "StratigraphicOccurrenceInterpretation.h"
+#include "RockFluidOrganizationInterpretation.h"
+#include "../tools/Misc.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -35,7 +35,7 @@ const char* EarthModelInterpretation::XML_TAG = "EarthModelInterpretation";
 
 EarthModelInterpretation::EarthModelInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const string & title)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREEarthModelInterpretation(orgFeat->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREEarthModelInterpretation(orgFeat->getGsoapContext());
 	_resqml20__EarthModelInterpretation* interp = static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1);
 
 	interp->Domain = resqml20__Domain__mixed;

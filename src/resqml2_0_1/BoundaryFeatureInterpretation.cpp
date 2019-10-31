@@ -16,13 +16,13 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/BoundaryFeatureInterpretation.h"
+#include "BoundaryFeatureInterpretation.h"
 
 #include <algorithm>
 #include <stdexcept>
 
-#include "resqml2_0_1/BoundaryFeature.h"
-#include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
+#include "BoundaryFeature.h"
+#include "WellboreMarkerFrameRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -36,7 +36,7 @@ BoundaryFeatureInterpretation::BoundaryFeatureInterpretation(BoundaryFeature * f
 		throw invalid_argument("The interpreted feature cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREBoundaryFeatureInterpretation(feature->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREBoundaryFeatureInterpretation(feature->getGsoapContext());
 	_resqml20__BoundaryFeatureInterpretation* interp = static_cast<_resqml20__BoundaryFeatureInterpretation*>(gsoapProxy2_0_1);
 	interp->Domain = resqml20__Domain__mixed;
 

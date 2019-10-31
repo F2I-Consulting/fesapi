@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/AbstractRepresentation.h"
+#include "../resqml2/AbstractRepresentation.h"
 
 namespace WITSML1_4_1_1_NS
 {
@@ -37,7 +37,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :AbstractRepresentation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :AbstractRepresentation(partialObject) {}
 
 
 		/**
@@ -45,7 +45,7 @@ namespace RESQML2_0_1_NS
 		* @param interp					The WellboreFeature interpretation the instance represents.
 		* @param guid					The guid to set to the new instance. If empty then a new guid will be generated.
 		* @param title					A title for the instance to create.
-		* @param mdInfo					The MD information of the trajectory, mainly the well reference point.
+		* @param mdInfo					The MD information of the trajectory, mainly the well reference point. The uom used for the mdInfo coordinates must also be used for the start and end MD of the trajectory.
 		*/
 		WellboreTrajectoryRepresentation(class WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo);
 
@@ -61,41 +61,60 @@ namespace RESQML2_0_1_NS
 
 		~WellboreTrajectoryRepresentation() {}
 
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
+		/*
+		* Set the geometry of the representation by means of a parametric line without MD information.
+		* @param startMd						The start MD of the trajectory. Uom is the same as the one for the assocaited MdDatum coordinates.
+		* @param endMd							The end MD of the trajectory. Uom is the same as the one for the assocaited MdDatum coordinates.
+		* @localCrs								The local CRS where the control points are given.
+		*										If null, then the default Local CRS of the DataObject repository will be arbitrarily selected.
+		*/
+		DLL_IMPORT_OR_EXPORT void setMinimalGeometry(double startMd, double endMd);
 
 		/*
-		*  Set the geometry of the representation by means of a parametric line without MD information.
+		* Set the geometry of the representation by means of a parametric line without MD information (only start and end MD).
 		* @param controlPoints					All the control points of all the cubic parametric lines. They are ordered by parametric line first.
+		* @param startMd						The start MD of the trajectory.
+		* @param endMd							The end MD of the trajectory.
 		* @param controlPointCount				The count of control points and control point parameters per cubic parametric line.
 		* @param lineKind						Integer indicating the parametric line kind: 0 for vertical, 1 for linear spline, 2 for natural cubic spline, 3 for cubic spline, 4 for z linear cubic spline, 5 for minimum-curvature spline, (-1) for null: no line
 		* @param proxy							The HDF proxy which indicates in which HDF5 file the control points and its parameters will be stored.
 		*										It must be already opened for writing and won't be closed.
+		*										If null, then the default HDF Proxy of the DataObject repository will be arbitrarily selected for writing.
+		* @localCrs								The local CRS where the control points are given.
+		*										If null, then the default Local CRS of the DataObject repository will be arbitrarily selected.
 		*/
 		DLL_IMPORT_OR_EXPORT void setGeometry(double * controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/*
-		*  Set the geometry of the representation by means of one natural cubic parametric line.
+		* Set the geometry of the representation by means of a parametric line with MD information.
 		* @param controlPoints					All the control points of all the cubic parametric lines. They are ordered by parametric line first.
-		* @param controlPointCount				The count of control points and control point parameters per cubic parametric line.
 		* @param controlPointParameters			The arrays of control point parameters (ordered regarding the control points). It corresponds to the MD values in a WellboreFeature context.
+		* @param controlPointCount				The count of control points and control point parameters per cubic parametric line.
+		* @param lineKind						Integer indicating the parametric line kind: 0 for vertical, 1 for linear spline, 2 for natural cubic spline, 3 for cubic spline, 4 for z linear cubic spline, 5 for minimum-curvature spline, (-1) for null: no line
 		* @param proxy							The HDF proxy which indicates in which HDF5 file the control points and its parameters will be stored.
 		*										It must be already opened for writing and won't be closed.
+		*										If null, then the default HDF Proxy of the DataObject repository will be arbitrarily selected for writing.
+		* @localCrs								The local CRS where the control points are given.
+		*										If null, then the default Local CRS of the DataObject repository will be arbitrarily selected.
 		*/
-		DLL_IMPORT_OR_EXPORT void setGeometry(double * controlPoints, double* controlPointParameters, unsigned int controlPointCount,
+		DLL_IMPORT_OR_EXPORT void setGeometry(double * controlPoints, double* controlPointParameters, unsigned int controlPointCount, int lineKind,
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/*
-		*  Set the geometry of the representation by means of one cubic parametric line.
+		* Set the geometry of the representation by means of a parametric line with MD and tangent vector information.
 		* @param controlPoints					All the control points of all the cubic parametric lines. They are ordered by parametric line first.
 		* @param tangentVectors					All the tangent vectors of all the control points of all the cubic parametric lines. They are ordered according to the control points.
 		* @param controlPointParameters			The arrays of control point parameters (ordered regarding the control points). It corresponds to the MD values in a WellboreFeature context.
 		* @param controlPointCount				The count of control points and control point parameters and tangent vectors per cubic parametric line.
+		* @param lineKind						Integer indicating the parametric line kind: 0 for vertical, 1 for linear spline, 2 for natural cubic spline, 3 for cubic spline, 4 for z linear cubic spline, 5 for minimum-curvature spline, (-1) for null: no line
 		* @param proxy							The HDF proxy which indicates in which HDF5 file the parameters and the tangent vectors will be stored.
 		*										It must be already opened for writing and won't be closed.
+		*										If null, then the default HDF Proxy of the DataObject repository will be arbitrarily selected for writing.
+		* @localCrs								The local CRS where the control points are given.
+		*										If null, then the default Local CRS of the DataObject repository will be arbitrarily selected.
 		*/
 		DLL_IMPORT_OR_EXPORT void setGeometry(double * controlPoints,
-			double * tangentVectors, double* controlPointParameters, unsigned int controlPointCount,
+			double * tangentVectors, double* controlPointParameters, unsigned int controlPointCount, int lineKind,
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
@@ -190,7 +209,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Getter (in read only mode) of all the associated Wellbore frame representations
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<class WellboreFrameRepresentation *> getWellboreFrameRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class RESQML2_NS::WellboreFrameRepresentation *> getWellboreFrameRepresentationSet() const;
 
 		/**
 		* Get the count of wellbore frame representation which are associated with this wellbore trajectory.
@@ -203,7 +222,7 @@ namespace RESQML2_0_1_NS
 		* Necessary for now in SWIG context because I mm not sure if I can always wrap a vector of polymorphic class yet.
 		* Throw an out of bound exception if the index is superior or equal to the count of wellbore frame representation.
 		*/
-		DLL_IMPORT_OR_EXPORT class WellboreFrameRepresentation * getWellboreFrameRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT class RESQML2_NS::WellboreFrameRepresentation * getWellboreFrameRepresentation(unsigned int index) const;
 
 		/**
 		* Set the deviation survey which is the source of this trajectory.
@@ -227,6 +246,16 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT bool hasGeometry() const;
 
 		void loadTargetRelationships();
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	private:
 

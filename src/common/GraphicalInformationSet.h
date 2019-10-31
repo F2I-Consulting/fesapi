@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/AbstractObject.h"
+#include "AbstractObject.h"
 
 namespace COMMON_NS
 {

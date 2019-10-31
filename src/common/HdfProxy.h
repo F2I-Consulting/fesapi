@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/AbstractHdfProxy.h"
+#include "AbstractHdfProxy.h"
 
 #include <unordered_map>
 
@@ -63,8 +63,8 @@ namespace COMMON_NS
 		void readArrayNdOfValues(
 			const std::string & datasetName,
 			void* values,
-			unsigned long long * numValuesInEachDimension,
-			unsigned long long * offsetInEachDimension,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
 			unsigned int numDimensions,
 			hdf5_hid_t datatype);
 
@@ -83,10 +83,10 @@ namespace COMMON_NS
 		void readArrayNdOfValues(
 			const std::string & datasetName,
 			void* values,
-			unsigned long long * blockCountPerDimension,
-			unsigned long long * offsetInEachDimension,
-			unsigned long long * strideInEachDimension,
-			unsigned long long * blockSizeInEachDimension,
+			unsigned long long const * blockCountPerDimension,
+			unsigned long long const * offsetInEachDimension,
+			unsigned long long const * strideInEachDimension,
+			unsigned long long const * blockSizeInEachDimension,
 			unsigned int numDimensions,
 			hdf5_hid_t datatype);
 
@@ -105,10 +105,10 @@ namespace COMMON_NS
 		*/
 		void selectArrayNdOfValues(
 			const std::string & datasetName,
-			unsigned long long * blockCountPerDimension,
-			unsigned long long * offsetInEachDimension,
-			unsigned long long * strideInEachDimension,
-			unsigned long long * blockSizeInEachDimension,
+			unsigned long long const * blockCountPerDimension,
+			unsigned long long const * offsetInEachDimension,
+			unsigned long long const * strideInEachDimension,
+			unsigned long long const * blockSizeInEachDimension,
 			unsigned int numDimensions,
 			bool newSelection,
 			hdf5_hid_t & dataset,
@@ -423,8 +423,8 @@ namespace COMMON_NS
 		void readArrayNdOfDoubleValues(
 		  const std::string & datasetName,
 		  double* values,
-		  unsigned long long * numValuesInEachDimension,
-		  unsigned long long * offsetInEachDimension,
+		  unsigned long long const * numValuesInEachDimension,
+		  unsigned long long const * offsetInEachDimension,
 		  unsigned int numDimensions
 		  );
 
@@ -440,10 +440,10 @@ namespace COMMON_NS
 		*/
 		void readArrayNdOfDoubleValues(
 			const std::string & datasetName, double* values,
-			unsigned long long * blockCountPerDimension,
-			unsigned long long * offsetInEachDimension,
-			unsigned long long * strideInEachDimension,
-			unsigned long long * blockSizeInEachDimension,
+			unsigned long long const * blockCountPerDimension,
+			unsigned long long const * offsetInEachDimension,
+			unsigned long long const * strideInEachDimension,
+			unsigned long long const * blockSizeInEachDimension,
 			unsigned int numDimensions);
 
 		/**
@@ -477,29 +477,17 @@ namespace COMMON_NS
 		void readArrayNdOfFloatValues(
 			const std::string & datasetName, 
 			float* values, 
-			unsigned long long * numValuesInEachDimension,
-			unsigned long long * offsetInEachDimension,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
 			unsigned int numDimensions
 		);
-
-		/**
-		* TODO : check all possible size of LONG64 on all different platforms
-		* @param values 		The values must be pre-allocated and won't be freed by this method.
-		*/
-		void readArrayNdOfGSoapLong64Values(const std::string & datasetName, LONG64* values);
-	
-		/**
-		* TODO : check all possible size of ULONG64 on all different platforms
-		* @param values 		The values must be pre-allocated and won't be freed by this method.
-		*/
-		void readArrayNdOfGSoapULong64Values(const std::string & datasetName, ULONG64* values);
 
 		/**
 		* Read an array Nd of long values stored in a specific dataset.
 		* @param datasetName	The absolute dataset name where to read the values
 		* @param values 		The values must be pre-allocated and won't be freed by this method.
 		*/
-		void readArrayNdOfLongValues(const std::string & datasetName, long* values);
+		virtual void readArrayNdOfLongValues(const std::string & datasetName, LONG64* values);
 
 		/**
 		* Find the array associated with datasetName and read from it.
@@ -509,20 +497,19 @@ namespace COMMON_NS
 		* @param offsetValuesInEachDimension    Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
 		* @param numDimensions                  The number of the dimensions of the array to read.
 		*/
-		void readArrayNdOfLongValues(
-			const std::string & datasetName, 
-			long* values, 
-			unsigned long long * numValuesInEachDimension,
-			unsigned long long * offsetInEachDimension,
-			unsigned int numDimensions
-		);
+		virtual void readArrayNdOfLongValues(
+			const std::string & datasetName,
+			LONG64* values,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
+			unsigned int numDimensions);
 
 		/**
 		* Read an array Nd of unsigned long values stored in a specific dataset.
 		* @param datasetName	The absolute dataset name where to read the values
 		* @param values 		The values must be pre-allocated and won't be freed by this method.
 		*/
-		void readArrayNdOfULongValues(const std::string & datasetName, unsigned long* values);
+		virtual void readArrayNdOfULongValues(const std::string & datasetName, ULONG64* values);
 
 		/**
 		* Read an array Nd of int values stored in a specific dataset.
@@ -542,8 +529,8 @@ namespace COMMON_NS
 		void readArrayNdOfIntValues(
 			const std::string & datasetName,
 			int* values,
-			unsigned long long * numValuesInEachDimension,
-			unsigned long long * offsetInEachDimension,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
 			unsigned int numDimensions
 		);
 

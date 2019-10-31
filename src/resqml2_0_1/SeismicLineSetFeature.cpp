@@ -16,9 +16,9 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/SeismicLineSetFeature.h"
+#include "SeismicLineSetFeature.h"
 
-#include "resqml2_0_1/SeismicLineFeature.h"
+#include "SeismicLineFeature.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -31,7 +31,7 @@ SeismicLineSetFeature::SeismicLineSetFeature(COMMON_NS::DataObjectRepository* re
 	if (repo == nullptr)
 		throw invalid_argument("The repo cannot be null.");
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESeismicLineSetFeature(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESeismicLineSetFeature(repo->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());

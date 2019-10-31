@@ -18,8 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/GraphicalInformationSet.h"
-#include "resqml2_2/AbstractColorMap.h"
+#include "../common/GraphicalInformationSet.h"
+#include "AbstractColorMap.h"
 
 namespace RESQML2_2_NS
 {
@@ -34,7 +34,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 */
-		ContinuousColorMap(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractColorMap(partialObject) {}
+		DLL_IMPORT_OR_EXPORT ContinuousColorMap(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractColorMap(partialObject) {}
 
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.

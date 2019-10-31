@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "tools/GuidTools.h"
+#include "../tools/GuidTools.h"
 
 #if defined(__gnu_linux__) || defined(__APPLE__)
 

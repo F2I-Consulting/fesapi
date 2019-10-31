@@ -27,7 +27,7 @@ using namespace commontest;
 
 AbstractTest::AbstractTest(const string & epcDocPath) :
 	repo(nullptr),
-	epcDocPath(epcDocPath) {
+	epcDocPath(epcDocPath.find("::") == string::npos ? epcDocPath : epcDocPath.substr(0, epcDocPath.find("::")) + "__" + epcDocPath.substr(epcDocPath.find("::") + 2, epcDocPath.size() - epcDocPath.find("::"))) {
 }
 
 AbstractTest::AbstractTest(COMMON_NS::DataObjectRepository* repo_) :
@@ -57,7 +57,7 @@ void AbstractTest::deserialize() {
 		cout << "Validation error: " << validationResult << endl;
 	}
 	REQUIRE( validationResult.empty() );
-	
+
 	REQUIRE( repo->getHdfProxySet().size() == 1 );
 
 	vector<string> warningSet = repo->getWarnings();

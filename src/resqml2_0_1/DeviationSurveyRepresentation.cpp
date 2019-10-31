@@ -16,17 +16,17 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/DeviationSurveyRepresentation.h"
+#include "DeviationSurveyRepresentation.h"
 
 #include <stdexcept>
 
 #include "H5public.h"
 
-#include "resqml2_0_1/WellboreInterpretation.h"
-#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
-#include "resqml2/MdDatum.h"
-#include "resqml2/AbstractLocal3dCrs.h"
-#include "common/HdfProxy.h"
+#include "WellboreInterpretation.h"
+#include "WellboreTrajectoryRepresentation.h"
+#include "../resqml2/MdDatum.h"
+#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../common/HdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -37,7 +37,7 @@ const char* DeviationSurveyRepresentation::XML_TAG = "DeviationSurveyRepresentat
 
 DeviationSurveyRepresentation::DeviationSurveyRepresentation(WellboreInterpretation * interp, const string & guid, const std::string & title, bool isFinal, RESQML2_NS::MdDatum * mdInfo)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREDeviationSurveyRepresentation(interp->getGsoapContext(), 1);	
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREDeviationSurveyRepresentation(interp->getGsoapContext());	
 	_resqml20__DeviationSurveyRepresentation* rep = static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
 
 	rep->IsFinal = isFinal;
@@ -75,7 +75,7 @@ void DeviationSurveyRepresentation::setGeometry(double * firstStationLocation, c
 
 	_resqml20__DeviationSurveyRepresentation* rep = static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
 
-	rep->FirstStationLocation = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap, 1);
+	rep->FirstStationLocation = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap);
 	rep->FirstStationLocation->Coordinate1 = firstStationLocation[0];
 	rep->FirstStationLocation->Coordinate2 = firstStationLocation[1];
 	rep->FirstStationLocation->Coordinate3 = firstStationLocation[2];
@@ -83,8 +83,8 @@ void DeviationSurveyRepresentation::setGeometry(double * firstStationLocation, c
 	rep->StationCount = stationCount;
 
 	rep->MdUom = mdUom;
-	resqml20__DoubleHdf5Array* xmlMds = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
-	xmlMds->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleHdf5Array* xmlMds = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
+	xmlMds->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlMds->Values->HdfProxy = proxy->newResqmlReference();
 	xmlMds->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/mds";
 	rep->Mds = xmlMds;
@@ -94,16 +94,16 @@ void DeviationSurveyRepresentation::setGeometry(double * firstStationLocation, c
 
 	rep->AngleUom = angleUom;
 	// XML azimuths
-	resqml20__DoubleHdf5Array* xmlAzims = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
-	xmlAzims->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleHdf5Array* xmlAzims = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
+	xmlAzims->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlAzims->Values->HdfProxy = proxy->newResqmlReference();
 	xmlAzims->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/azimuths";
 	rep->Azimuths = xmlAzims;
 	// HDF azimuths
 	proxy->writeArrayNdOfDoubleValues(rep->uuid, "azimuths", azimuths, dim, 1);
 	// XML inclinations
-	resqml20__DoubleHdf5Array* xmlIncls = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
-	xmlIncls->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleHdf5Array* xmlIncls = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
+	xmlIncls->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlIncls->Values->HdfProxy = proxy->newResqmlReference();
 	xmlIncls->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/inclinations";
 	rep->Inclinations = xmlIncls;
@@ -242,14 +242,14 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* DeviationSurveyRepresentation::ge
 	return nullptr;
 }
 
-vector<WellboreFrameRepresentation *> DeviationSurveyRepresentation::getWellboreFrameRepresentationSet() const
+vector<RESQML2_NS::WellboreFrameRepresentation *> DeviationSurveyRepresentation::getWellboreFrameRepresentationSet() const
 {
-	vector<WellboreFrameRepresentation *> result;
+	vector<RESQML2_NS::WellboreFrameRepresentation *> result;
 
 	const vector<WellboreTrajectoryRepresentation *>& trajectories = getWellboreTrajectoryRepresentationSet();
 	for (size_t index = 0; index < trajectories.size(); ++index) {
 		if (trajectories[index]->getMdDatumUuid() == getMdDatumUuid() && trajectories[index]->getMdUom() == getMdUom()) {
-			vector<WellboreFrameRepresentation *> tmp = trajectories[index]->getWellboreFrameRepresentationSet();
+			vector<RESQML2_NS::WellboreFrameRepresentation *> tmp = trajectories[index]->getWellboreFrameRepresentationSet();
 			result.insert(result.end(), tmp.begin(), tmp.end());
 		}
 	}
@@ -270,7 +270,7 @@ unsigned int DeviationSurveyRepresentation::getWellboreFrameRepresentationCount(
 	return result;
 }
 
-WellboreFrameRepresentation * DeviationSurveyRepresentation::getWellboreFrameRepresentation(unsigned int index) const
+RESQML2_NS::WellboreFrameRepresentation * DeviationSurveyRepresentation::getWellboreFrameRepresentation(unsigned int index) const
 {
 	const vector<WellboreTrajectoryRepresentation *>& trajectories = getWellboreTrajectoryRepresentationSet();
 	for (size_t trajIndex = 0; trajIndex < trajectories.size(); ++trajIndex) {

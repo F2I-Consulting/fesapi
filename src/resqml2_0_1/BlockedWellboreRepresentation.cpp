@@ -16,18 +16,18 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/BlockedWellboreRepresentation.h"
+#include "BlockedWellboreRepresentation.h"
 
 #include <stdexcept>
 
-#include "hdf5.h"
+#include <hdf5.h>
 
-#include "resqml2/AbstractGridRepresentation.h"
-#include "resqml2_0_1/WellboreInterpretation.h"
-#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
-#include "common/AbstractHdfProxy.h"
+#include "../resqml2/AbstractGridRepresentation.h"
+#include "WellboreInterpretation.h"
+#include "WellboreTrajectoryRepresentation.h"
+#include "../common/AbstractHdfProxy.h"
 
-#include "tools/Misc.h"
+#include "../tools/Misc.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -41,7 +41,7 @@ void BlockedWellboreRepresentation::init(const std::string & guid, const std::st
 		throw invalid_argument("The wellbore trajectory of a blocked wellbore cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREBlockedWellboreRepresentation(traj->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREBlockedWellboreRepresentation(traj->getGsoapContext());
 	_resqml20__BlockedWellboreRepresentation* frame = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 
 	initMandatoryMetadata();
@@ -89,9 +89,9 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int * gridIndic
 
 	// gridIndices
 	// XML
-	resqml20__IntegerHdf5Array* xmlGridIndices = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array* xmlGridIndices = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	xmlGridIndices->NullValue = gridIndicesNullValue;
-	xmlGridIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	xmlGridIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlGridIndices->Values->HdfProxy = hdfProxy->newResqmlReference();
 	xmlGridIndices->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/GridIndices";
 	rep->GridIndices = xmlGridIndices;
@@ -105,9 +105,9 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int * gridIndic
 
 	// cellIndices
 	// XML
-	resqml20__IntegerHdf5Array* xmlCellIndices = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array* xmlCellIndices = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	xmlCellIndices->NullValue = -1;
-	xmlCellIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	xmlCellIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlCellIndices->Values->HdfProxy = hdfProxy->newResqmlReference();
 	xmlCellIndices->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/CellIndices";
 	rep->CellIndices = xmlCellIndices;
@@ -121,9 +121,9 @@ void BlockedWellboreRepresentation::setIntevalGridCells(unsigned int * gridIndic
 
 	// localFacePairPerCellIndices
 	// XML
-	resqml20__IntegerHdf5Array* xmlLocalFacePairPerCellIndices = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array* xmlLocalFacePairPerCellIndices = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	xmlLocalFacePairPerCellIndices->NullValue = localFacePairPerCellIndicesNullValue;
-	xmlLocalFacePairPerCellIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	xmlLocalFacePairPerCellIndices->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlLocalFacePairPerCellIndices->Values->HdfProxy = hdfProxy->newResqmlReference();
 	xmlLocalFacePairPerCellIndices->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/LocalFacePairPerCellIndices";
 	rep->LocalFacePairPerCellIndices = xmlLocalFacePairPerCellIndices;

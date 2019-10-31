@@ -14,13 +14,7 @@ set (Fesapi_VERSION_TWEAK 0)
 set (Fesapi_VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR}.${Fesapi_VERSION_PATCH}.${Fesapi_VERSION_TWEAK})
 
 set (CPP_LIBRARY_NAME FesapiCpp)
-set (CS_LIBRARY_NAME FesapiCs)
 set (SUFFIX_INCLUDES_VERSION TRUE)
-set (UNDER_DEV FALSE)
-if (${UNDER_DEV})
-	set (CPP_LIBRARY_NAME ${CPP_LIBRARY_NAME}UnderDev)
-	set (CS_LIBRARY_NAME ${CS_LIBRARY_NAME}UnderDev)
-endif (${UNDER_DEV})
 
 if(NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE "Release")
@@ -174,8 +168,12 @@ set (WITH_EXPERIMENTAL OFF CACHE BOOL "Compile some experimental functionalities
 # ============================================================================
 
 add_subdirectory(src)
-add_subdirectory(example)
 add_subdirectory(doc)
+
+set (WITH_EXAMPLE OFF CACHE BOOL "Also builds and installs an example executable which allows to serialize and deserialize a basic EPC document.")
+if (WITH_EXAMPLE)
+	add_subdirectory(example)
+endif (WITH_EXAMPLE)
 
 set (WITH_TEST OFF CACHE BOOL "Also build the unit tests.")
 if (WITH_TEST)

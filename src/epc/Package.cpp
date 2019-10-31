@@ -33,8 +33,8 @@ under the License.
 #include <stdio.h>
 #endif
 
-#include "zip.h"
-#include "unzip.h"
+#include <zip.h>
+#include <unzip.h>
 
 #include "FilePart.h"
 

@@ -16,18 +16,18 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "common/GraphicalInformationSet.h"
+#include "GraphicalInformationSet.h"
 
-#include "tools/Misc.h"
-#include "resqml2/AbstractFeature.h"
-#include "resqml2/AbstractFeatureInterpretation.h"
-#include "resqml2/AbstractRepresentation.h"
-#include "resqml2/AbstractValuesProperty.h"
-#include "resqml2/PropertyKind.h"
-#include "resqml2_0_1/WellboreMarker.h"
-#include "resqml2_2/AbstractColorMap.h"
-#include "resqml2_2/DiscreteColorMap.h"
-#include "resqml2_2/ContinuousColorMap.h"
+#include "../tools/Misc.h"
+#include "../resqml2/AbstractFeature.h"
+#include "../resqml2/AbstractFeatureInterpretation.h"
+#include "../resqml2/AbstractRepresentation.h"
+#include "../resqml2/AbstractValuesProperty.h"
+#include "../resqml2/PropertyKind.h"
+#include "../resqml2_0_1/WellboreMarker.h"
+#include "../resqml2_2/AbstractColorMap.h"
+#include "../resqml2_2/DiscreteColorMap.h"
+#include "../resqml2_2/ContinuousColorMap.h"
 
 #include <stdexcept>
 

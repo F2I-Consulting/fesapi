@@ -20,7 +20,7 @@ under the License.
 
 #include <unordered_map>
 
-#include "common/DataObjectRepository.h"
+#include "../common/DataObjectRepository.h"
 
 namespace RESQML2_0_1_NS
 {

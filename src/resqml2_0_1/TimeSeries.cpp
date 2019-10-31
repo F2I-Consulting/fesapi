@@ -16,11 +16,11 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/TimeSeries.h"
+#include "TimeSeries.h"
 
 #include <stdexcept>
 
-#include "resqml2/AbstractValuesProperty.h"
+#include "../resqml2/AbstractValuesProperty.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -32,7 +32,7 @@ TimeSeries::TimeSeries(COMMON_NS::DataObjectRepository* repo, const string & gui
 		throw invalid_argument("The repo cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORETimeSeries(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORETimeSeries(repo->getGsoapContext());
 	
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());

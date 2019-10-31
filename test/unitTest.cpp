@@ -54,13 +54,19 @@ under the License.
 #include "resqml2_2test/DiscreteColorMapTest.h"
 #include "resqml2_2test/ContinuousColorMapTest.h"
 #include "resqml2_0_1test/MultirealPropertyTest.h"
+#include "resqml2_0_1test/DiscreteProperty.h"
 #include "witsml2_0test/WellTest.h"
 #include "witsml2_0test/Trajectory.h"
+#include "witsml2_0test/Perforation.h"
 
-#ifdef WITH_EXPERIMENTAL
+#if WITH_EXPERIMENTAL
 #include "GraphicalInformationSetTest.h"
 #include "resqml2_2test/DiscreteColorMapTest.h"
 #include "resqml2_2test/ContinuousColorMapTest.h"
+#include "resqml2_2test/WellboreFrameRepresentationTest.h"
+#include "resqml2_2test/WellboreRegularFrameRepresentationTest.h"
+#include "resqml2_2test/SeismicWellboreFrameRepresentationTest.h"
+#include "resqml2_2test/SeismicWellboreRegularFrameRepresentationTest.h"
 using namespace resqml2_2test;
 #endif
 
@@ -83,10 +89,14 @@ TEST_CASE( "Deserialize an EPC document", "[epc]")
 }
 */
 
-#ifdef WITH_EXPERIMENTAL
+#if WITH_EXPERIMENTAL
 FESAPI_TEST("Export and import graphical information set", "[graphical information]", GraphicalInformationSetTest)
 FESAPI_TEST("Export and import discrete color map on a discrete property", "[graphical information][color map][discrete color map]", DiscreteColorMapTest)
 FESAPI_TEST("Export and import continuous color map on a discrete property", "[graphical information][color map][continuous color map]", ContinuousColorMapTest)
+FESAPI_TEST("Export and import wellbore frame", "[well]", resqml2_2test::WellboreFrameRepresentationTest)
+FESAPI_TEST("Export and import regular wellbore frame", "[well]", resqml2_2test::WellboreRegularFrameRepresentationTest)
+FESAPI_TEST("Export and import seismic wellbore frame", "[well]", SeismicWellboreFrameRepresentationTest)
+FESAPI_TEST("Export and import regular seismic wellbore frame", "[well]", SeismicWellboreRegularFrameRepresentationTest)
 #endif
 
 TEST_CASE("Export and import an empty EPC document", "[repo]")
@@ -146,7 +156,7 @@ FESAPI_TEST("Export and import a time series", "[property]", TimeSeriesTest)
 
 FESAPI_TEST("Export and import a wellbore marker frame", "[well][stratigraphy]", WellboreMarkerFrameRepresentationTest)
 
-FESAPI_TEST("Export and import a wellbore frame (regular md spacings)", "[well]", WellboreRegularFrameRepresentationTest)
+FESAPI_TEST("Export and import a wellbore frame (regular md spacings)", "[well]", resqml2_0_1test::WellboreRegularFrameRepresentationTest)
 
 FESAPI_TEST("Export and import a wellbore frame (irregular md spacings) with a single continuous property on node", "[well][property]", ContinuousPropertyOnWellFrameTest)
 FESAPI_TEST("Export and import a wellbore frame (irregular md spacings) with a single comment property on node", "[well][property]", CommentProperty)
@@ -157,7 +167,9 @@ FESAPI_TEST("Export and import a seismic lattice feature", "[seismic]", SeismicL
 FESAPI_TEST("Export and import a seismic horizon grid 2d rep", "[seismic]", Grid2dRepresentationTest)
 FESAPI_TEST("Export and import an horizon on a seismic line", "[seismic]", HorizonOnSeismicLine)
 
-FESAPI_TEST("Export and import a Witsml well", "[well]", WellTest)
-FESAPI_TEST("Export and import a Witsml trajectory", "[well]", Trajectory)
+FESAPI_TEST("Export and import a WITSML well", "[well]", WellTest)
+FESAPI_TEST("Export and import a WITSML trajectory", "[well]", Trajectory)
+FESAPI_TEST("Export and import a WITSML perforation", "[well]", Perforation)
 
 FESAPI_TEST("Export and import some multi realization properties", "[property]", MultirealPropertyTest)
+FESAPI_TEST("Check discrete property datatypes", "[property]", DiscreteProperty)

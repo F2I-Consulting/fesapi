@@ -21,13 +21,13 @@ under the License.
 #include <unordered_map>
 #include <sstream>
 
-#include "proxies/gsoap_resqml2_0_1H.h"
-#include "proxies/gsoap_eml2_1H.h"
+#include "../proxies/gsoap_resqml2_0_1H.h"
+#include "../proxies/gsoap_eml2_1H.h"
 #if WITH_EXPERIMENTAL
-#include "proxies/gsoap_eml2_2H.h"
+#include "../proxies/gsoap_eml2_2H.h"
 #endif
 
-#include "nsDefinitions.h"
+#include "../nsDefinitions.h"
 
 #if defined(_WIN32) && !defined(FESAPI_STATIC)
 #if defined(FesapiCpp_EXPORTS) || defined(FesapiCppUnderDev_EXPORTS)
@@ -54,6 +54,7 @@ namespace RESQML2_NS
 	class SubRepresentation;
 	class TimeSeries;
 	class RepresentationSetRepresentation;
+	class WellboreFrameRepresentation;
 }
 
 namespace RESQML2_0_1_NS
@@ -131,6 +132,7 @@ namespace RESQML2_2_NS
 {
 	class DiscreteColorMap;
 	class ContinuousColorMap;
+	class SeismicWellboreFrameRepresentation;
 }
 
 namespace WITSML2_1_NS
@@ -239,6 +241,8 @@ namespace COMMON_NS
 			return result;
 		}
 
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__DataObjectReference* createDor(const std::string & guid, const std::string & title, const std::string & version);
+
 	public:
 
 		DLL_IMPORT_OR_EXPORT DataObjectRepository();
@@ -295,7 +299,9 @@ namespace COMMON_NS
 		template <class valueType>
 		std::vector<valueType *> getSourceObjects(COMMON_NS::AbstractObject const * dataObj) const
 		{
-			return getObjsFilteredOnDatatype<valueType>(getSourceObjects(dataObj));
+			const std::vector < COMMON_NS::AbstractObject*> & sourceObjects = getSourceObjects(dataObj);
+
+			return getObjsFilteredOnDatatype<valueType>(sourceObjects);
 		}
 
 		/**
@@ -320,7 +326,7 @@ namespace COMMON_NS
 		{
 			std::istringstream iss(xml);
 			setGsoapStream(&iss);
-			gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* read = gsoap_resqml2_0_1::soap_new_eml20__obj_USCOREEpcExternalPartReference(gsoapContext, 1);
+			gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* read = gsoap_resqml2_0_1::soap_new_eml20__obj_USCOREEpcExternalPartReference(gsoapContext);
 			soap_read_eml20__obj_USCOREEpcExternalPartReference(gsoapContext, read);
 
 			if (gsoapContext->error != SOAP_OK) {
@@ -741,37 +747,14 @@ namespace COMMON_NS
 #endif
 
 		/**
-		* Create a partial object i.e. a data object reference (DOR) based on an UUID + a title.
-		* Such an object is useful to describe the underlying data object by means of a minimal amount of information : UUID, Title, Version.
-		* However, such an object has quickly a lot of limitations when we want to access the data object.
-		*/
-		template <class valueType>
-		valueType* createPartial(const std::string & guid, const std::string & title, const std::string & contentType)
-		{
-			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapContext, 1);
-			dor->UUID = guid.empty() ? generateRandomUuidAsString() : guid;
-			dor->Title = title;
-			dor->ContentType = contentType;
-			valueType* result = new valueType(dor);
-			addOrReplaceDataObject(result);
-			return result;
-		}
-
-		/**
 		* Create a partial object i.e. a data object reference (DOR) based on an UUID + a title + a version.
 		* Such an object is useful to describe the underlying data object by means of a minimal amount of information : UUID, Title, Version.
 		* However, such an object has quickly a lot of limitations when we want to access the data object.
 		*/
 		template <class valueType>
-		valueType* createPartial(const std::string & guid, const std::string & title, const std::string & contentType, const std::string & version)
+		valueType* createPartial(const std::string & guid, const std::string & title, const std::string & version = "")
 		{
-			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapContext, 1);
-			dor->UUID = guid.empty() ? generateRandomUuidAsString() : guid;
-			dor->Title = title;
-			dor->ContentType = contentType;
-			dor->VersionString = gsoap_resqml2_0_1::soap_new_std__string(gsoapContext, 1);
-			dor->VersionString->assign(version);
-			valueType* result = new valueType(dor);
+			valueType* result = new valueType(createDor(guid, title, version));
 			addOrReplaceDataObject(result);
 			return result;
 		}
@@ -1020,8 +1003,6 @@ namespace COMMON_NS
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::BoundaryFeatureInterpretation* createBoundaryFeatureInterpretation(RESQML2_0_1_NS::BoundaryFeature * feature, const std::string & guid, const std::string & title);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::HorizonInterpretation* createPartialHorizonInterpretation(const std::string & guid, const std::string & title);
-
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::HorizonInterpretation* createHorizonInterpretation(RESQML2_0_1_NS::Horizon * horizon, const std::string & guid, const std::string & title);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::GeobodyBoundaryInterpretation* createGeobodyBoundaryInterpretation(RESQML2_0_1_NS::GeneticBoundaryFeature * geobodyBoundary, const std::string & guid, const std::string & title);
@@ -1085,7 +1066,21 @@ namespace COMMON_NS
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
+		
+#if WITH_EXPERIMENTAL
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj, bool previousEnergisticsVersion = false);
+
+		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::SeismicWellboreFrameRepresentation* createSeismicWellboreFrameRepresentation(
+			RESQML2_0_1_NS::WellboreInterpretation* interp, 
+			const std::string& guid, const std::string& title, 
+			RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj,
+			double seismicReferenceDatum,
+			double weatheringVelocity,
+			class RESQML2_0_1_NS::LocalTime3dCrs* crs);
+#else
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj);
+#endif
+
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
 
@@ -1100,8 +1095,6 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::RepresentationSetRepresentation* createRepresentationSetRepresentation(
 			const std::string & guid,
 			const std::string & title);
-
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::RepresentationSetRepresentation* createPartialRepresentationSetRepresentation(const std::string & guid, const std::string & title);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::NonSealedSurfaceFrameworkRepresentation* createNonSealedSurfaceFrameworkRepresentation(
 			RESQML2_0_1_NS::StructuralOrganizationInterpretation* interp,
@@ -1152,20 +1145,14 @@ namespace COMMON_NS
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::UnstructuredGridRepresentation* createPartialUnstructuredGridRepresentation(const std::string & guid, const std::string & title);
-
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(const std::string & guid, const std::string & title,
 			const ULONG64 & cellCount);
-
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::SubRepresentation* createPartialSubRepresentation(const std::string & guid, const std::string & title);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::SubRepresentation* createSubRepresentation(
 			const std::string & guid, const std::string & title);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::SubRepresentation* createSubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
-
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::GridConnectionSetRepresentation* createPartialGridConnectionSetRepresentation(const std::string & guid, const std::string & title);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::GridConnectionSetRepresentation* createGridConnectionSetRepresentation(const std::string & guid, const std::string & title);
 
@@ -1175,8 +1162,6 @@ namespace COMMON_NS
 		//************* PROPERTIES ***********
 
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::TimeSeries* createTimeSeries(const std::string & guid, const std::string & title);
-
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::TimeSeries* createPartialTimeSeries(const std::string & guid, const std::string & title);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::StringTableLookup* createStringTableLookup(const std::string & guid, const std::string & title);
 
@@ -1191,8 +1176,6 @@ namespace COMMON_NS
 
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
 			const std::string & namingSystem, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * parentPropType);
-
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::PropertyKind* createPartialPropertyKind(const std::string & guid, const std::string & title);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::PropertySet* createPropertySet(const std::string & guid, const std::string & title,
 			bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_resqml2_0_1::resqml20__TimeSetKind timeSetKind);
@@ -1307,10 +1290,6 @@ namespace COMMON_NS
 			gsoap_eml2_1::eml21__WellStatus statusWell,
 			gsoap_eml2_1::witsml20__WellDirection directionWell
 		);
-
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Wellbore* createPartialWellbore(
-			const std::string & guid,
-			const std::string & title);
 
 		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Wellbore* createWellbore(WITSML2_0_NS::Well* witsmlWell,
 			const std::string & guid,

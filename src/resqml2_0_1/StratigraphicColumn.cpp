@@ -16,9 +16,9 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/StratigraphicColumn.h"
+#include "StratigraphicColumn.h"
 
-#include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
+#include "StratigraphicColumnRankInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -32,7 +32,7 @@ StratigraphicColumn::StratigraphicColumn(COMMON_NS::DataObjectRepository* repo, 
 		throw invalid_argument("The repo cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStratigraphicColumn(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStratigraphicColumn(repo->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -49,7 +49,7 @@ void StratigraphicColumn::pushBackStratiColumnRank(StratigraphicColumnRankInterp
 
 std::vector<class StratigraphicColumnRankInterpretation *> StratigraphicColumn::getStratigraphicColumnRankInterpretationSet() const
 {
-	return getRepository()->getSourceObjects<StratigraphicColumnRankInterpretation>(this);
+	return getRepository()->getTargetObjects<StratigraphicColumnRankInterpretation>(this);
 }
 
 void StratigraphicColumn::loadTargetRelationships()

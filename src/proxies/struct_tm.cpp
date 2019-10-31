@@ -39,7 +39,7 @@ Product and source code licensed by Genivia, Inc., contact@genivia.com
 # include SOAP_XSTRINGIFY(SOAP_H_FILE)
 #else
 // F2I-CONSULTING : Replaced the line below to include the right header file.
-#include "proxies/gsoap_resqml2_0_1H.h"	/* or manually replace with soapcpp2-generated *H.h file */
+#include "../proxies/gsoap_resqml2_0_1H.h"	/* or manually replace with soapcpp2-generated *H.h file */
 #endif
 
 SOAP_FMAC3 void SOAP_FMAC4 soap_default_xsd__dateTime(struct soap *soap, struct tm *a)

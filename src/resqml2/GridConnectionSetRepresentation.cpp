@@ -16,32 +16,25 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2/GridConnectionSetRepresentation.h"
+#include "GridConnectionSetRepresentation.h"
 
 #include <algorithm>
-#if defined(__gnu_linux__) || defined(__APPLE__) 
 #include <stdexcept>
-#endif 
 
-#include "hdf5.h"
+#include <hdf5.h>
 
-#include "resqml2_0_1/FaultInterpretation.h"
-#include "common/AbstractHdfProxy.h"
-#include "resqml2/AbstractLocal3dCrs.h"
-#include "resqml2_0_1/UnstructuredGridRepresentation.h"
-#include "resqml2_0_1/AbstractIjkGridRepresentation.h"
-#include "resqml2_0_1/StructuralOrganizationInterpretation.h"
+#include "../resqml2_0_1/FaultInterpretation.h"
+#include "../common/AbstractHdfProxy.h"
+#include "AbstractLocal3dCrs.h"
+#include "../resqml2_0_1/UnstructuredGridRepresentation.h"
+#include "../resqml2_0_1/AbstractIjkGridRepresentation.h"
+#include "../resqml2_0_1/StructuralOrganizationInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* GridConnectionSetRepresentation::XML_TAG = "GridConnectionSetRepresentation";
-
-std::string GridConnectionSetRepresentation::getXmlTag() const
-{
-	return XML_TAG;
-}
 
 void GridConnectionSetRepresentation::pushBackSupportingGridRepresentation(AbstractGridRepresentation * supportingGridRep)
 {
@@ -150,4 +143,3 @@ std::string GridConnectionSetRepresentation::getSupportingGridRepresentationCont
 {
 	return getSupportingGridRepresentationDor(index)->ContentType;
 }
-

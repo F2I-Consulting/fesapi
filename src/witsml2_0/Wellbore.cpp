@@ -16,15 +16,15 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "witsml2_0/Wellbore.h"
+#include "Wellbore.h"
 
 #include <stdexcept>
 
-#include "witsml2_0/Well.h"
-#include "witsml2_0/WellboreCompletion.h"
-#include "witsml2_0/Trajectory.h"
+#include "Well.h"
+#include "WellboreCompletion.h"
+#include "Trajectory.h"
 
-#include "resqml2_0_1/WellboreFeature.h"
+#include "../resqml2_0_1/WellboreFeature.h"
 
 using namespace std;
 using namespace WITSML2_0_NS;
@@ -36,7 +36,7 @@ Wellbore::Wellbore( Well* witsmlWell, const std::string & guid, const std::strin
 {
 	if (witsmlWell == nullptr) throw invalid_argument("A wellbore must be associated to a well.");
 
-	gsoapProxy2_1 = soap_new_witsml20__Wellbore(witsmlWell->getGsoapContext(), 1);
+	gsoapProxy2_1 = soap_new_witsml20__Wellbore(witsmlWell->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
@@ -55,7 +55,7 @@ Wellbore::Wellbore(
 {
 	if (witsmlWell == nullptr) throw invalid_argument("A wellbore must be associated to a well.");
 
-	gsoapProxy2_1 = soap_new_witsml20__Wellbore(witsmlWell->getGsoapContext(), 1);
+	gsoapProxy2_1 = soap_new_witsml20__Wellbore(witsmlWell->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");

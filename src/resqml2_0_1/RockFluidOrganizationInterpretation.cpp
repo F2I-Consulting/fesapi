@@ -16,15 +16,15 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/RockFluidOrganizationInterpretation.h"
+#include "RockFluidOrganizationInterpretation.h"
 
 #include <algorithm>
 
-#include "resqml2_0_1/OrganizationFeature.h"
-#include "resqml2_0_1/RockFluidUnitInterpretation.h"
-#include "resqml2/AbstractGridRepresentation.h"
+#include "OrganizationFeature.h"
+#include "RockFluidUnitInterpretation.h"
+#include "../resqml2/AbstractGridRepresentation.h"
 
-#include "tools/Misc.h"
+#include "../tools/Misc.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -41,9 +41,9 @@ RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(Organiz
 		throw invalid_argument("The kind of the organization feature is not a fluid organization.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERockFluidOrganizationInterpretation(orgFeat->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERockFluidOrganizationInterpretation(orgFeat->getGsoapContext());
 	_resqml20__RockFluidOrganizationInterpretation* rfoi = static_cast<_resqml20__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1);
-	rfoi->RockFluidUnitIndex = soap_new_resqml20__RockFluidUnitInterpretationIndex(orgFeat->getGsoapContext(), 1);
+	rfoi->RockFluidUnitIndex = soap_new_resqml20__RockFluidUnitInterpretationIndex(orgFeat->getGsoapContext());
 	// No need to initialize index since it is a bug : http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-106-0-R-sv2010.html
 	pushBackRockFluidUnitInterpretation(rockFluidUnitInterp);
 

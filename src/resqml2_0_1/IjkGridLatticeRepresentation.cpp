@@ -17,15 +17,15 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
-#include "resqml2_0_1/IjkGridLatticeRepresentation.h"
+#include "IjkGridLatticeRepresentation.h"
 
 #include <stdexcept>
 
-#include "resqml2/AbstractFeature.h"
-#include "resqml2/AbstractFeatureInterpretation.h"
-#include "resqml2/AbstractLocal3dCrs.h"
-#include "resqml2/AbstractValuesProperty.h"
-#include "common/AbstractHdfProxy.h"
+#include "../resqml2/AbstractFeature.h"
+#include "../resqml2/AbstractFeatureInterpretation.h"
+#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../resqml2/AbstractValuesProperty.h"
+#include "../common/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace gsoap_resqml2_0_1;
@@ -429,7 +429,7 @@ void IjkGridLatticeRepresentation::setGeometryAsCoordinateLineNodes(
 		localCrs = getRepository()->getDefaultCrs();
 	}
 
-	resqml20__IjkGridGeometry* geom = soap_new_resqml20__IjkGridGeometry(gsoapProxy2_0_1->soap, 1);
+	resqml20__IjkGridGeometry* geom = soap_new_resqml20__IjkGridGeometry(gsoapProxy2_0_1->soap);
 	geom->LocalCrs = localCrs->newResqmlReference();
 	if (!isTruncated()) {
 		getSpecializedGsoapProxy()->Geometry = geom;
@@ -442,55 +442,55 @@ void IjkGridLatticeRepresentation::setGeometryAsCoordinateLineNodes(
 	geom->KDirection = kDirectionKind;
 
 	// Pillar defined
-	resqml20__BooleanConstantArray* definedPillars = soap_new_resqml20__BooleanConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__BooleanConstantArray* definedPillars = soap_new_resqml20__BooleanConstantArray(gsoapProxy2_0_1->soap);
 	geom->PillarGeometryIsDefined = definedPillars;
 	definedPillars->Count = (getICellCount() + 1) * (getJCellCount() + 1);
 	definedPillars->Value = true;
 
 	// XML coordinate lines
-	resqml20__Point3dLatticeArray* xmlPoints = soap_new_resqml20__Point3dLatticeArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dLatticeArray* xmlPoints = soap_new_resqml20__Point3dLatticeArray(gsoapProxy2_0_1->soap);
 	geom->Points = xmlPoints;
 
 	xmlPoints->AllDimensionsAreOrthogonal = (bool*)soap_malloc(gsoapProxy2_0_1->soap, sizeof(bool));
 	*xmlPoints->AllDimensionsAreOrthogonal = true;
-	xmlPoints->Origin = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap, 1);
+	xmlPoints->Origin = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap);
 	xmlPoints->Origin->Coordinate1 = originX;
 	xmlPoints->Origin->Coordinate2 = originY;
 	xmlPoints->Origin->Coordinate3 = originZ;
 
 	// slowest axis to fastest axis so k,j,i 
-	resqml20__Point3dOffset * dimK = soap_new_resqml20__Point3dOffset (gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dOffset * dimK = soap_new_resqml20__Point3dOffset (gsoapProxy2_0_1->soap);
 	xmlPoints->Offset.push_back(dimK);
 	// the dimension is the index of the axis in the collection. here we start from 0 and goes up by 1
-	dimK->Offset = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap, 1);
+	dimK->Offset = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap);
 	dimK->Offset->Coordinate1 = directionKX;
 	dimK->Offset->Coordinate2 = directionKY;
 	dimK->Offset->Coordinate3 = directionKZ;
-	resqml20__DoubleConstantArray * xmlSpacingK = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray * xmlSpacingK = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap);
 	dimK->Spacing = xmlSpacingK;
 	xmlSpacingK->Count = getKCellCount(); // number of cells on K axis
 	xmlSpacingK->Value = spacingK;
 	
-	resqml20__Point3dOffset * dimJ = soap_new_resqml20__Point3dOffset (gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dOffset * dimJ = soap_new_resqml20__Point3dOffset (gsoapProxy2_0_1->soap);
 	xmlPoints->Offset.push_back(dimJ);
 	// the dimension is the index of the axis in the collection
-	dimJ->Offset = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap, 1);
+	dimJ->Offset = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap);
 	dimJ->Offset->Coordinate1 = directionJX;
 	dimJ->Offset->Coordinate2 = directionJY;
 	dimJ->Offset->Coordinate3 = directionJZ;
-	resqml20__DoubleConstantArray * xmlSpacingJ = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray * xmlSpacingJ = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap);
 	dimJ->Spacing = xmlSpacingJ;
 	xmlSpacingJ->Count = getJCellCount(); // number of cells on J axis
 	xmlSpacingJ->Value = spacingJ;
 
-	resqml20__Point3dOffset * dimI = soap_new_resqml20__Point3dOffset (gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dOffset * dimI = soap_new_resqml20__Point3dOffset (gsoapProxy2_0_1->soap);
 	xmlPoints->Offset.push_back(dimI);
 	// the dimension is the index of the axis in the collection
-	dimI->Offset = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap, 1);
+	dimI->Offset = soap_new_resqml20__Point3d(gsoapProxy2_0_1->soap);
 	dimI->Offset->Coordinate1 = directionIX;
 	dimI->Offset->Coordinate2 = directionIY;
 	dimI->Offset->Coordinate3 = directionIZ;
-	resqml20__DoubleConstantArray * xmlSpacingI = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray * xmlSpacingI = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap);
 	dimI->Spacing = xmlSpacingI;
 	xmlSpacingI->Count = getICellCount(); // number of cells on I axis
 	xmlSpacingI->Value = spacingI;
@@ -509,7 +509,7 @@ void IjkGridLatticeRepresentation::addSeismic3dCoordinatesToPatch(
 		throw invalid_argument("The patchIndex does not identify a point geometry.");
 
 	if (geom->SeismicCoordinates == nullptr)
-		geom->SeismicCoordinates = soap_new_resqml20__Seismic3dCoordinates(gsoapProxy2_0_1->soap, 1);
+		geom->SeismicCoordinates = soap_new_resqml20__Seismic3dCoordinates(gsoapProxy2_0_1->soap);
 	else if (geom->SeismicCoordinates->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Seismic2dCoordinates)
 		throw invalid_argument("It already exists some seismic 2d coordinates for this patch.");
 	resqml20__Seismic3dCoordinates* patch = static_cast<resqml20__Seismic3dCoordinates*>(geom->SeismicCoordinates);
@@ -518,20 +518,20 @@ void IjkGridLatticeRepresentation::addSeismic3dCoordinatesToPatch(
 	getRepository()->addRelationship(this, seismicSupport);
 
 	// inlines XML
-	resqml20__DoubleLatticeArray* inlineValues = soap_new_resqml20__DoubleLatticeArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleLatticeArray* inlineValues = soap_new_resqml20__DoubleLatticeArray(gsoapProxy2_0_1->soap);
 	inlineValues->StartValue = startInline;
 
-	resqml20__DoubleConstantArray * IoffsetInline = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray * IoffsetInline = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap);
 	IoffsetInline->Count = countInline - 1;
 	IoffsetInline->Value = incrInline;
 	inlineValues->Offset.push_back(IoffsetInline);
 
-	resqml20__DoubleConstantArray * IoffsetCrossline = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray * IoffsetCrossline = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap);
 	IoffsetCrossline->Count = countCrossline -1;
 	IoffsetCrossline->Value = 0;
 	inlineValues->Offset.push_back(IoffsetCrossline);
 
-	resqml20__DoubleConstantArray * IoffsetSample = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray * IoffsetSample = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap);
 	IoffsetSample->Count = countSample -1;
 	IoffsetSample->Value = 0;
 	inlineValues->Offset.push_back(IoffsetSample);
@@ -539,18 +539,18 @@ void IjkGridLatticeRepresentation::addSeismic3dCoordinatesToPatch(
 	patch->InlineCoordinates = inlineValues;
 
 	// crosslines XML
-	resqml20__DoubleLatticeArray* crosslineValues = soap_new_resqml20__DoubleLatticeArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleLatticeArray* crosslineValues = soap_new_resqml20__DoubleLatticeArray(gsoapProxy2_0_1->soap);
 	crosslineValues->StartValue = startCrossline;
 
-	resqml20__DoubleConstantArray * CoffsetInline = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray * CoffsetInline = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap);
 	CoffsetInline->Count = countInline - 1;
 	CoffsetInline->Value = 0;
 	crosslineValues->Offset.push_back(CoffsetInline);
-	resqml20__DoubleConstantArray * CoffsetCrossline = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray * CoffsetCrossline = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap);
 	CoffsetCrossline->Count = countCrossline - 1;
 	CoffsetCrossline->Value = incrCrossline;
 	crosslineValues->Offset.push_back(CoffsetCrossline);
-	resqml20__DoubleConstantArray * CoffsetSample = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleConstantArray * CoffsetSample = soap_new_resqml20__DoubleConstantArray(gsoapProxy2_0_1->soap);
 	CoffsetSample->Count = countSample - 1;
 	CoffsetSample->Value = 0;
 	crosslineValues->Offset.push_back(CoffsetSample);

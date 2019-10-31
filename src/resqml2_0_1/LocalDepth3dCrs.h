@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/AbstractLocal3dCrs.h"
+#include "../resqml2/AbstractLocal3dCrs.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -38,7 +38,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		LocalDepth3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractLocal3dCrs(partialObject) {}
+		DLL_IMPORT_OR_EXPORT LocalDepth3dCrs(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractLocal3dCrs(partialObject) {}
 
 		/**
 		* Creates a local depth 3d CRS which is fully identified by means of EPSG code.
@@ -135,11 +135,14 @@ namespace RESQML2_0_1_NS
 		*/
 		~LocalDepth3dCrs() {}
 
-		//******************************************************************
-		//********** INHERITED FROM AbstractObjectWithDcMetadata ***********
-		//******************************************************************
-
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const {return XML_TAG;}
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

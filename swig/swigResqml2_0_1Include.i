@@ -17,75 +17,78 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 %{
-#include "resqml2_0_1/LocalDepth3dCrs.h"
-#include "resqml2_0_1/LocalTime3dCrs.h"
-#include "resqml2_0_1/MdDatum.h"
+#define SWIG_FILE_WITH_INIT // In case we use Python Swig Wrapping
 
-#include "resqml2_0_1/Horizon.h"
-#include "resqml2_0_1/TectonicBoundaryFeature.h"
-#include "resqml2_0_1/FrontierFeature.h"
-#include "resqml2_0_1/WellboreFeature.h"
-#include "resqml2_0_1/SeismicLineFeature.h"
-#include "resqml2_0_1/SeismicLineSetFeature.h"
-#include "resqml2_0_1/SeismicLatticeFeature.h"
-#include "resqml2_0_1/OrganizationFeature.h"
-#include "resqml2_0_1/StratigraphicUnitFeature.h"
-#include "resqml2_0_1/GeobodyFeature.h"
-#include "resqml2_0_1/FluidBoundaryFeature.h"
+#include "../src/resqml2_0_1/LocalDepth3dCrs.h"
+#include "../src/resqml2_0_1/LocalTime3dCrs.h"
+#include "../src/resqml2_0_1/MdDatum.h"
 
-#include "resqml2_0_1/GenericFeatureInterpretation.h"
-#include "resqml2_0_1/HorizonInterpretation.h"
-#include "resqml2_0_1/FaultInterpretation.h"
-#include "resqml2_0_1/WellboreInterpretation.h"
-#include "resqml2_0_1/StratigraphicUnitInterpretation.h"
-#include "resqml2_0_1/StructuralOrganizationInterpretation.h"
-#include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
-#include "resqml2_0_1/StratigraphicOccurrenceInterpretation.h"
-#include "resqml2_0_1/EarthModelInterpretation.h"
-#include "resqml2_0_1/GeobodyBoundaryInterpretation.h"
-#include "resqml2_0_1/GeobodyInterpretation.h"
+#include "../src/resqml2_0_1/Horizon.h"
+#include "../src/resqml2_0_1/TectonicBoundaryFeature.h"
+#include "../src/resqml2_0_1/FrontierFeature.h"
+#include "../src/resqml2_0_1/WellboreFeature.h"
+#include "../src/resqml2_0_1/SeismicLineFeature.h"
+#include "../src/resqml2_0_1/SeismicLineSetFeature.h"
+#include "../src/resqml2_0_1/SeismicLatticeFeature.h"
+#include "../src/resqml2_0_1/OrganizationFeature.h"
+#include "../src/resqml2_0_1/StratigraphicUnitFeature.h"
+#include "../src/resqml2_0_1/GeobodyFeature.h"
+#include "../src/resqml2_0_1/FluidBoundaryFeature.h"
 
-#include "resqml2_0_1/PolylineSetRepresentation.h"
-#include "resqml2_0_1/PointSetRepresentation.h"
-#include "resqml2_0_1/PlaneSetRepresentation.h"
-#include "resqml2_0_1/PolylineRepresentation.h"
-#include "resqml2_0_1/Grid2dRepresentation.h"
-#include "resqml2_0_1/TriangulatedSetRepresentation.h"
-#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
-#include "resqml2_0_1/DeviationSurveyRepresentation.h"
-#include "resqml2_0_1/WellboreMarker.h"
-#include "resqml2_0_1/WellboreMarkerFrameRepresentation.h"
-#include "resqml2_0_1/RepresentationSetRepresentation.h"
-#include "resqml2_0_1/NonSealedSurfaceFrameworkRepresentation.h"
-#include "resqml2_0_1/SealedSurfaceFrameworkRepresentation.h"
+#include "../src/resqml2_0_1/GenericFeatureInterpretation.h"
+#include "../src/resqml2_0_1/HorizonInterpretation.h"
+#include "../src/resqml2_0_1/FaultInterpretation.h"
+#include "../src/resqml2_0_1/WellboreInterpretation.h"
+#include "../src/resqml2_0_1/StratigraphicUnitInterpretation.h"
+#include "../src/resqml2_0_1/StructuralOrganizationInterpretation.h"
+#include "../src/resqml2_0_1/StratigraphicColumnRankInterpretation.h"
+#include "../src/resqml2_0_1/StratigraphicOccurrenceInterpretation.h"
+#include "../src/resqml2_0_1/EarthModelInterpretation.h"
+#include "../src/resqml2_0_1/GeobodyBoundaryInterpretation.h"
+#include "../src/resqml2_0_1/GeobodyInterpretation.h"
 
-#include "resqml2_0_1/IjkGridExplicitRepresentation.h"
-#include "resqml2_0_1/IjkGridParametricRepresentation.h"
-#include "resqml2_0_1/IjkGridLatticeRepresentation.h"
-#include "resqml2_0_1/IjkGridNoGeometryRepresentation.h"
-#include "resqml2_0_1/UnstructuredGridRepresentation.h"
-#include "resqml2_0_1/SubRepresentation.h"
-#include "resqml2_0_1/GridConnectionSetRepresentation.h"
+#include "../src/resqml2_0_1/PolylineSetRepresentation.h"
+#include "../src/resqml2_0_1/PointSetRepresentation.h"
+#include "../src/resqml2_0_1/PlaneSetRepresentation.h"
+#include "../src/resqml2_0_1/PolylineRepresentation.h"
+#include "../src/resqml2_0_1/Grid2dRepresentation.h"
+#include "../src/resqml2_0_1/TriangulatedSetRepresentation.h"
+#include "../src/resqml2_0_1/WellboreTrajectoryRepresentation.h"
+#include "../src/resqml2_0_1/DeviationSurveyRepresentation.h"
+#include "../src/resqml2_0_1/WellboreMarker.h"
+#include "../src/resqml2_0_1/WellboreMarkerFrameRepresentation.h"
+#include "../src/resqml2_0_1/WellboreFrameRepresentation.h"
+#include "../src/resqml2_0_1/RepresentationSetRepresentation.h"
+#include "../src/resqml2_0_1/NonSealedSurfaceFrameworkRepresentation.h"
+#include "../src/resqml2_0_1/SealedSurfaceFrameworkRepresentation.h"
 
-#include "resqml2_0_1/TimeSeries.h"
+#include "../src/resqml2_0_1/IjkGridExplicitRepresentation.h"
+#include "../src/resqml2_0_1/IjkGridParametricRepresentation.h"
+#include "../src/resqml2_0_1/IjkGridLatticeRepresentation.h"
+#include "../src/resqml2_0_1/IjkGridNoGeometryRepresentation.h"
+#include "../src/resqml2_0_1/UnstructuredGridRepresentation.h"
+#include "../src/resqml2_0_1/SubRepresentation.h"
+#include "../src/resqml2_0_1/GridConnectionSetRepresentation.h"
 
-#include "resqml2_0_1/PropertyKind.h"
-#include "resqml2_0_1/PropertySet.h"
-#include "resqml2_0_1/StringTableLookup.h"
-#include "resqml2_0_1/DiscreteProperty.h"
-#include "resqml2_0_1/DiscretePropertySeries.h"
-#include "resqml2_0_1/CategoricalProperty.h"
-#include "resqml2_0_1/CategoricalPropertySeries.h"
-#include "resqml2_0_1/CommentProperty.h"
-#include "resqml2_0_1/ContinuousProperty.h"
-#include "resqml2_0_1/ContinuousPropertySeries.h"
+#include "../src/resqml2_0_1/TimeSeries.h"
 
-#include "resqml2_0_1/Activity.h"
-#include "resqml2_0_1/ActivityTemplate.h"
+#include "../src/resqml2_0_1/PropertyKind.h"
+#include "../src/resqml2_0_1/PropertySet.h"
+#include "../src/resqml2_0_1/StringTableLookup.h"
+#include "../src/resqml2_0_1/DiscreteProperty.h"
+#include "../src/resqml2_0_1/DiscretePropertySeries.h"
+#include "../src/resqml2_0_1/CategoricalProperty.h"
+#include "../src/resqml2_0_1/CategoricalPropertySeries.h"
+#include "../src/resqml2_0_1/CommentProperty.h"
+#include "../src/resqml2_0_1/ContinuousProperty.h"
+#include "../src/resqml2_0_1/ContinuousPropertySeries.h"
 
-#include "resqml2_0_1/PropertyKindMapper.h"
+#include "../src/resqml2_0_1/Activity.h"
+#include "../src/resqml2_0_1/ActivityTemplate.h"
 
-#include "resqml2_0_1/HdfProxy.h"
+#include "../src/resqml2_0_1/PropertyKindMapper.h"
+
+#include "../src/resqml2_0_1/HdfProxy.h"
 %}
 
 namespace RESQML2_0_1_NS {
@@ -2612,15 +2615,15 @@ namespace RESQML2_0_1_NS
 			unsigned int polylineCount, bool * polylineClosedFlags,
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 				
-		bool areAllPolylinesClosedOfPatch(const unsigned int & patchIndex) const;
+		bool areAllPolylinesClosedOfPatch(unsigned int patchIndex) const;
 		bool areAllPolylinesClosedOfAllPatches() const;
 		bool areAllPolylinesNonClosedOfPatch(const unsigned int & patchIndex) const;
 		bool areAllPolylinesNonClosedOfAllPatches() const;
-		void getClosedFlagPerPolylineOfPatch(const unsigned int & patchIndex, bool * closedFlagPerPolyline) const;
+		void getClosedFlagPerPolylineOfPatch(unsigned int patchIndex, bool * closedFlagPerPolyline) const;
 		void getClosedFlagPerPolylineOfAllPatches(bool * closedFlagPerPolyline) const;
 		bool hasALineRole() const;
 		gsoap_resqml2_0_1::resqml20__LineRole getLineRole() const;
-		void setLineRole(const gsoap_resqml2_0_1::resqml20__LineRole & lineRole);
+		void setLineRole(gsoap_resqml2_0_1::resqml20__LineRole lineRole);
 	};
 
 #ifdef SWIGPYTHON
@@ -2761,18 +2764,20 @@ namespace RESQML2_0_1_NS
 	{
 	public:
 		unsigned int getWellboreFrameRepresentationCount() const;
-		WellboreFrameRepresentation* getWellboreFrameRepresentation(const unsigned int & index) const;
+		class RESQML2_NS::WellboreFrameRepresentation* getWellboreFrameRepresentation(const unsigned int & index) const;
 		
 		std::string getMdDatumUuid() const;
 		RESQML2_NS::MdDatum * getMdDatum() const;
 		
+		void setMinimalGeometry(double startMd, double endMd);
+		
 		void setGeometry(double * controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
-		void setGeometry(double * controlPoints, double* controlPointParameters, unsigned int controlPointCount,
+		void setGeometry(double * controlPoints, double* controlPointParameters, unsigned int controlPointCount, int lineKind,
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		void setGeometry(double * controlPoints,
-			double * tangentVectors, double* controlPointParameters, unsigned int controlPointCount,
+			double * tangentVectors, double* controlPointParameters, unsigned int controlPointCount, int lineKind,
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 			
 		void addParentTrajectory(double kickoffMd, double parentMd, WellboreTrajectoryRepresentation* parentTrajRep);
@@ -2820,7 +2825,7 @@ namespace RESQML2_0_1_NS
 		void getAzimuths(double* values) const;
 
 		unsigned int getWellboreFrameRepresentationCount() const;
-		class WellboreFrameRepresentation* getWellboreFrameRepresentation(unsigned int index) const;
+		class RESQML2_NS::WellboreFrameRepresentation* getWellboreFrameRepresentation(unsigned int index) const;
 
 		unsigned int getWellboreTrajectoryRepresentationCount() const;
 		WellboreTrajectoryRepresentation* getWellboreTrajectoryRepresentation(const unsigned int & index) const;
@@ -2829,24 +2834,9 @@ namespace RESQML2_0_1_NS
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_WellboreFrameRepresentation) WellboreFrameRepresentation;
 #endif
-	class WellboreFrameRepresentation : public RESQML2_NS::AbstractRepresentation
+	class WellboreFrameRepresentation : public RESQML2_NS::WellboreFrameRepresentation
 	{
 	public:
-		void setMdValues(double * mdValues, const unsigned int & mdValueCount, class COMMON_NS::AbstractHdfProxy * proxy);
-		void setMdValues(const double & firstMdValue, const double & incrementMdValue, const unsigned int & mdValueCount);
-
-		bool areMdValuesRegularlySpaced() const;
-		double getMdConstantIncrementValue() const;
-		double getMdFirstValue() const;
-
-		unsigned int getMdValuesCount() const;
-		COMMON_NS::AbstractObject::hdfDatatypeEnum getMdHdfDatatype() const;
-		void getMdAsDoubleValues(double * values) const;
-		void getMdAsFloatValues(float * values) const;
-		
-		std::string getWellboreTrajectoryUuid() const;
-		WellboreTrajectoryRepresentation* getWellboreTrajectory();
-
 //		void setWitsmlLog(WITSML1_4_1_1_NS::Log * witsmlLogToSet);
 //		WITSML1_4_1_1_NS::Log* getWitsmlLog();
 	};
@@ -3217,65 +3207,68 @@ namespace RESQML2_0_1_NS
 		const gsoap_resqml2_0_1::resqml20__ResqmlUom & getUom() const;
 		std::string getUomAsString() const;
 		
-		void pushBackDoubleHdf5Array1dOfValues(const double * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy,
-			const double & minimumValue = std::numeric_limits<double>::quiet_NaN(), const double & maximumValue = std::numeric_limits<double>::quiet_NaN());
-		void pushBackDoubleHdf5Array2dOfValues(const double * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
-			const double & minimumValue = std::numeric_limits<double>::quiet_NaN(), const double & maximumValue = std::numeric_limits<double>::quiet_NaN());
-		void pushBackDoubleHdf5Array3dOfValues(const double * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
-			const double & minimumValue = std::numeric_limits<double>::quiet_NaN(), const double & maximumValue = std::numeric_limits<double>::quiet_NaN());
-		void pushBackDoubleHdf5ArrayOfValues(const double * values, unsigned long long * numValues, const unsigned int & numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy,
+		void pushBackDoubleHdf5Array1dOfValues(const double * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			double minimumValue = std::numeric_limits<double>::quiet_NaN(), double maximumValue = std::numeric_limits<double>::quiet_NaN());
+		void pushBackDoubleHdf5Array2dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			double minimumValue = std::numeric_limits<double>::quiet_NaN(), double maximumValue = std::numeric_limits<double>::quiet_NaN());
+		void pushBackDoubleHdf5Array3dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			double minimumValue = std::numeric_limits<double>::quiet_NaN(), double maximumValue = std::numeric_limits<double>::quiet_NaN());
+		void pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			double * minimumValue = nullptr, double * maximumValue = nullptr);
 
-		void pushBackFloatHdf5Array1dOfValues(const float * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy,
-			const float & minimumValue = std::numeric_limits<float>::quiet_NaN(), const float & maximumValue = std::numeric_limits<float>::quiet_NaN());
-		void pushBackFloatHdf5Array2dOfValues(const float * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
-			const float & minimumValue = std::numeric_limits<float>::quiet_NaN(), const float & maximumValue = std::numeric_limits<float>::quiet_NaN());
-		void pushBackFloatHdf5Array3dOfValues(const float * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
-			const float & minimumValue = std::numeric_limits<float>::quiet_NaN(), const float & maximumValue = std::numeric_limits<float>::quiet_NaN());
-		void pushBackFloatHdf5ArrayOfValues(const float * values, unsigned long long * numValues, const unsigned int & numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy,
+		void pushBackFloatHdf5Array1dOfValues(const float * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			float minimumValue = std::numeric_limits<float>::quiet_NaN(), float maximumValue = std::numeric_limits<float>::quiet_NaN());
+		void pushBackFloatHdf5Array2dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			float minimumValue = std::numeric_limits<float>::quiet_NaN(), float maximumValue = std::numeric_limits<float>::quiet_NaN());
+		void pushBackFloatHdf5Array3dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			float minimumValue = std::numeric_limits<float>::quiet_NaN(), float maximumValue = std::numeric_limits<float>::quiet_NaN());
+		void pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			float * minimumValue = nullptr, float * maximumValue = nullptr);
+
 		void pushBackFloatHdf5ArrayOfValues(
-			const unsigned long long* numValues,
-			const unsigned int& numArrayDimensions, 
-			COMMON_NS::AbstractHdfProxy* proxy
+			unsigned long long const * numValues,
+			unsigned int numArrayDimensions, 
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr
 		);
 		void pushBackFloatHdf5ArrayOfValues(
-			const ULONG64& valueCountInFastestDim,
-			const ULONG64& valueCountInMiddleDim,
-			const ULONG64& valueCountInSlowestDim,
-			COMMON_NS::AbstractHdfProxy* proxy
+			ULONG64 valueCountInFastestDim,
+			ULONG64 valueCountInMiddleDim,
+			ULONG64 valueCountInSlowestDim,
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr
 		);
-		
 		void setValuesOfFloatHdf5ArrayOfValues(
-			float* values, 
-			const ULONG64& valueCountInFastestDim,
-			const ULONG64& valueCountInMiddleDim,
-			const ULONG64& valueCountInSlowestDim,
-			const ULONG64& offsetInFastestDim,
-			const ULONG64& offsetInMiddleDim,
-			const ULONG64& offsetInSlowestDim,
-			COMMON_NS::AbstractHdfProxy* proxy,
+			float const * values, 
+			ULONG64 valueCountInFastestDim,
+			ULONG64 valueCountInMiddleDim,
+			ULONG64 valueCountInSlowestDim,
+			ULONG64 offsetInFastestDim,
+			ULONG64 offsetInMiddleDim,
+			ULONG64 offsetInSlowestDim,
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max()
 		);
 		void setValuesOfFloatHdf5ArrayOfValues(
-			float * values, 
-			unsigned long long * numValues,
-			unsigned long long * offsetValues,
-			const unsigned int & numArrayDimensions, 
-			COMMON_NS::AbstractHdfProxy* proxy,
+			float const * values, 
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
+			unsigned int numArrayDimensions, 
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = std::numeric_limits<unsigned int>::max()
 		);
 
-		void getDoubleValuesOfPatch(unsigned int patchIndex, double * values) const;
+		std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = std::numeric_limits<LONG64>::max());
+
+		void getDoubleValuesOfPatch(unsigned int patchIndex, double * values) const ;
 		void getFloatValuesOfPatch(unsigned int patchIndex, float * values) const;
 
 		void getFloatValuesOfPatch(
 			unsigned int patchIndex, 
 			float* values, 
-			unsigned long long* numValuesInEachDimension,
-			unsigned long long* offsetInEachDimension,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
+
 		void getFloatValuesOf3dPatch(
 			unsigned int patchIndex, 
 			float* values, 
@@ -3306,47 +3299,50 @@ namespace RESQML2_0_1_NS
 	class DiscreteProperty : public RESQML2_NS::AbstractValuesProperty
 	{
 	public:
-		void pushBackLongHdf5Array1dOfValues(const long * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue, const long & minimumValue, const long & maximumValue);
-		void pushBackLongHdf5Array1dOfValues(const long * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue);
-		void pushBackIntHdf5Array1dOfValues(const int * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy, const int & nullValue, const int & minimumValue, const int & maximumValue);
-		void pushBackIntHdf5Array1dOfValues(const int * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy, const int & nullValue);
-		void pushBackShortHdf5Array1dOfValues(const short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy, const short & nullValue, const short & minimumValue, const short & maximumValue);
-		void pushBackShortHdf5Array1dOfValues(const short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy, const short & nullValue);
-		void pushBackCharHdf5Array1dOfValues(const char * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy, const char & nullValue, const char & minimumValue, const char & maximumValue);
-		void pushBackCharHdf5Array1dOfValues(const char * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy, const char & nullValue);
+		void pushBackLongHdf5Array1dOfValues(const LONG64 * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue);
+		void pushBackLongHdf5Array1dOfValues(const LONG64 * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy, LONG64 nullValue);
+		void pushBackIntHdf5Array1dOfValues(const int * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
+		void pushBackIntHdf5Array1dOfValues(const int * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy, int nullValue);
+		void pushBackShortHdf5Array1dOfValues(const short * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
+		void pushBackShortHdf5Array1dOfValues(const short * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy, short nullValue);
+		void pushBackCharHdf5Array1dOfValues(const char * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy, char nullValue, char minimumValue, char maximumValue);
+		void pushBackCharHdf5Array1dOfValues(const char * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy, char nullValue);
 
-		void pushBackLongHdf5Array2dOfValues(const long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue, const long & minimumValue, const long & maximumValue);
-		void pushBackLongHdf5Array2dOfValues(const long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue);
-		void pushBackIntHdf5Array2dOfValues(const int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const int & nullValue, const int & minimumValue, const int & maximumValue);
-		void pushBackIntHdf5Array2dOfValues(const int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const int & nullValue);
-		void pushBackShortHdf5Array2dOfValues(const short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const short & nullValue, const short & minimumValue, const short & maximumValue);
-		void pushBackShortHdf5Array2dOfValues(const short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const short & nullValue);
-		void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue, const unsigned short & minimumValue, const unsigned short & maximumValue);
-		void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue);
-		void pushBackCharHdf5Array2dOfValues(const char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const char & nullValue, const char & minimumValue, const char & maximumValue);
-		void pushBackCharHdf5Array2dOfValues(const char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const char & nullValue);
+		void pushBackLongHdf5Array2dOfValues(const LONG64 * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue);
+		void pushBackLongHdf5Array2dOfValues(const LONG64 * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, LONG64 nullValue);
+		void pushBackIntHdf5Array2dOfValues(const int * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
+		void pushBackIntHdf5Array2dOfValues(const int * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, int nullValue);
+		void pushBackShortHdf5Array2dOfValues(const short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
+		void pushBackShortHdf5Array2dOfValues(const short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, short nullValue);
+		void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
+		void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		void pushBackCharHdf5Array2dOfValues(const char * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, char nullValue, char minimumValue, char maximumValue);
+		void pushBackCharHdf5Array2dOfValues(const char * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, char nullValue);
 
-		void pushBackLongHdf5Array3dOfValues(const long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue, const long & minimumValue, const long & maximumValue);
-		void pushBackLongHdf5Array3dOfValues(const long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue);
-		void pushBackIntHdf5Array3dOfValues(const int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const int & nullValue, const int & minimumValue, const int & maximumValue);
-		void pushBackIntHdf5Array3dOfValues(const int * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const int & nullValue);
-		void pushBackShortHdf5Array3dOfValues(const short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const short & nullValue, const short & minimumValue, const short & maximumValue);
-		void pushBackShortHdf5Array3dOfValues(const short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const short & nullValue);
-		void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue, const unsigned short & minimumValue, const unsigned short & maximumValue);
-		void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue);
-		void pushBackCharHdf5Array3dOfValues(const char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const char & nullValue, const char & minimumValue, const char & maximumValue);
-		void pushBackCharHdf5Array3dOfValues(const char * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, const char & nullValue);
+		void pushBackLongHdf5Array3dOfValues(const LONG64 * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue);
+		void pushBackLongHdf5Array3dOfValues(const LONG64 * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, LONG64 nullValue);
+		void pushBackIntHdf5Array3dOfValues(const int * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
+		void pushBackIntHdf5Array3dOfValues(const int * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, int nullValue);
+		void pushBackShortHdf5Array3dOfValues(const short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
+		void pushBackShortHdf5Array3dOfValues(const short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, short nullValue);
+		void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
+		void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		void pushBackCharHdf5Array3dOfValues(const char * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, char nullValue, char minimumValue, char maximumValue);
+		void pushBackCharHdf5Array3dOfValues(const char * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, char nullValue);
 
-		void pushBackLongHdf5ArrayOfValues(const long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue, const long & minimumValue, const long & maximumValue);
-		void pushBackLongHdf5ArrayOfValues(const long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue);
-		void pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const int & nullValue, const int & minimumValue, const int & maximumValue);
-		void pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const int & nullValue);
-		void pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const short & nullValue, const short & minimumValue, const short & maximumValue);
-		void pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const short & nullValue);
-		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue, const unsigned short & minimumValue, const unsigned short & maximumValue);
-		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const unsigned short & nullValue);
-		void pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const char & nullValue, const char & minimumValue, const char & maximumValue);
-		void pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const char & nullValue);
+		void pushBackLongHdf5ArrayOfValues(const LONG64 * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue);
+		void pushBackLongHdf5ArrayOfValues(const LONG64 * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, LONG64 nullValue);
+		void pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, int nullValue, int minimumValue, int maximumValue);
+		void pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, int nullValue);
+		void pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, short nullValue, short minimumValue, short maximumValue);
+		void pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, short nullValue);
+		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, unsigned short nullValue, unsigned short minimumValue, unsigned short maximumValue);
+		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		void pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, char nullValue, char minimumValue, char maximumValue);
+		void pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, char nullValue);
+
+		std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* proxy, const std::string & datasetName, LONG64 nullValue, LONG64 minimumValue, LONG64 maximumValue);
+		std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & dataset = "", LONG64 nullValue = std::numeric_limits<LONG64>::max());
 		
 		LONG64 getMinimumValue() const;
 		LONG64 getMaximumValue() const;
@@ -3369,16 +3365,17 @@ namespace RESQML2_0_1_NS
 		std::string getStringLookupUuid() const;
 		StringTableLookup* getStringLookup();
 		
-		void pushBackLongHdf5Array1dOfValues(const long * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
-		void pushBackLongHdf5Array2dOfValues(const long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
-		void pushBackLongHdf5Array3dOfValues(const long * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, const long & nullValue);
-		void pushBackLongHdf5ArrayOfValues(const long * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, const long & nullValue);
+		void pushBackLongHdf5Array1dOfValues(const LONG64 * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy * proxy, LONG64 nullValue);
+		void pushBackLongHdf5Array2dOfValues(const LONG64 * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, LONG64 nullValue);
+		void pushBackLongHdf5Array3dOfValues(const LONG64 * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, LONG64 nullValue);
+		void pushBackLongHdf5ArrayOfValues(const LONG64 * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, LONG64 nullValue);
 
-		void pushBackUShortHdf5Array1dOfValues(const unsigned short * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy * proxy, unsigned short nullValue);
-		void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, unsigned short nullValue);
-		void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, unsigned short nullValue);
-		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, const unsigned int & numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
+		void pushBackUShortHdf5Array1dOfValues(const unsigned short * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy * proxy, unsigned short nullValue);
+		void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, unsigned short nullValue);
+		void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, unsigned short nullValue);
+		void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
 		
+		std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & dataset = "", LONG64 nullValue = std::numeric_limits<LONG64>::max());
 	};
 	
 #ifdef SWIGPYTHON

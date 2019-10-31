@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/GeologicUnitFeature.h"
+#include "GeologicUnitFeature.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -29,7 +29,7 @@ GeologicUnitFeature::GeologicUnitFeature(COMMON_NS::DataObjectRepository * repo,
 	if (repo == nullptr)
 		throw invalid_argument("The repo cannot be null.");
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGeologicUnitFeature(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGeologicUnitFeature(repo->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());

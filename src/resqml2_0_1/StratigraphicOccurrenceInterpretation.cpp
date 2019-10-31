@@ -16,12 +16,12 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/StratigraphicOccurrenceInterpretation.h"
+#include "StratigraphicOccurrenceInterpretation.h"
 
 #include <stdexcept>
 
-#include "resqml2_0_1/OrganizationFeature.h"
-#include "resqml2_0_1/StratigraphicColumnRankInterpretation.h"
+#include "OrganizationFeature.h"
+#include "StratigraphicColumnRankInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -38,7 +38,7 @@ StratigraphicOccurrenceInterpretation::StratigraphicOccurrenceInterpretation(Org
 		throw invalid_argument("The kind of an organization feature linked to a stratigraphic occurrence interpretation must be a stratigraphic one.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStratigraphicOccurrenceInterpretation(orgFeat->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREStratigraphicOccurrenceInterpretation(orgFeat->getGsoapContext());
 	static_cast<_resqml20__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
 	static_cast<_resqml20__StratigraphicOccurrenceInterpretation*>(gsoapProxy2_0_1)->OrderingCriteria = orderingCriteria;
 

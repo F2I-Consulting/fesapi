@@ -16,18 +16,18 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/SubRepresentation.h"
+#include "SubRepresentation.h"
 
 #include <sstream>
 #include <stdexcept>
 
-#include "hdf5.h"
+#include <hdf5.h>
 
-#include "resqml2/AbstractFeatureInterpretation.h"
-#include "common/AbstractHdfProxy.h"
-#include "resqml2_0_1/UnstructuredGridRepresentation.h"
-#include "resqml2_0_1/AbstractIjkGridRepresentation.h"
-#include "resqml2_0_1/DiscreteProperty.h"
+#include "../resqml2/AbstractFeatureInterpretation.h"
+#include "../common/AbstractHdfProxy.h"
+#include "UnstructuredGridRepresentation.h"
+#include "AbstractIjkGridRepresentation.h"
+#include "DiscreteProperty.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -35,7 +35,7 @@ using namespace gsoap_resqml2_0_1;
 
 void SubRepresentation::init(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESubRepresentation(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESubRepresentation(repo->getGsoapContext());
 
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -77,31 +77,31 @@ void SubRepresentation::pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::
 {
 	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
 
-	resqml20__SubRepresentationPatch* patch = soap_new_resqml20__SubRepresentationPatch(gsoapProxy2_0_1->soap, 1);
+	resqml20__SubRepresentationPatch* patch = soap_new_resqml20__SubRepresentationPatch(gsoapProxy2_0_1->soap);
 
 	// XML
 	patch->PatchIndex = rep->SubRepresentationPatch.size();
 	rep->SubRepresentationPatch.push_back(patch);
 	patch->Count = elementCountInSlowestDimension * elementCountInMiddleDimension * elementCountInFastestDimension;
-	resqml20__ElementIndices* elements = soap_new_resqml20__ElementIndices(gsoapProxy2_0_1->soap, 1);
+	resqml20__ElementIndices* elements = soap_new_resqml20__ElementIndices(gsoapProxy2_0_1->soap);
 	patch->ElementIndices.push_back(elements);
 	elements->IndexableElement = elementKind;
 
-	resqml20__IntegerLatticeArray * integerArray = soap_new_resqml20__IntegerLatticeArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerLatticeArray * integerArray = soap_new_resqml20__IntegerLatticeArray(gsoapProxy2_0_1->soap);
 	elements->Indices = integerArray;
 	integerArray->StartValue = originIndex;
 
-	resqml20__IntegerConstantArray * offset = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerConstantArray * offset = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap);
 	offset->Count = elementCountInSlowestDimension - 1;
 	offset->Value = 1;
 	integerArray->Offset.push_back(offset);
 
-	offset = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap, 1);
+	offset = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap);
 	offset->Count = elementCountInMiddleDimension - 1;
 	offset->Value = 1;
 	integerArray->Offset.push_back(offset);
 
-	offset = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap, 1);
+	offset = soap_new_resqml20__IntegerConstantArray(gsoapProxy2_0_1->soap);
 	offset->Count = elementCountInFastestDimension - 1;
 	offset->Value = 1;
 	integerArray->Offset.push_back(offset);
@@ -140,18 +140,18 @@ void SubRepresentation::pushBackRefToExistingDataset(const gsoap_resqml2_0_1::re
 	}
 	getRepository()->addRelationship(this, proxy);
 
-	resqml20__SubRepresentationPatch* patch = soap_new_resqml20__SubRepresentationPatch(gsoapProxy2_0_1->soap, 1);
+	resqml20__SubRepresentationPatch* patch = soap_new_resqml20__SubRepresentationPatch(gsoapProxy2_0_1->soap);
 
 	// XML
 	patch->PatchIndex = rep->SubRepresentationPatch.size();
 	rep->SubRepresentationPatch.push_back(patch);
 	patch->Count = elementCount;
-	resqml20__ElementIndices* elements = soap_new_resqml20__ElementIndices(gsoapProxy2_0_1->soap, 1);
+	resqml20__ElementIndices* elements = soap_new_resqml20__ElementIndices(gsoapProxy2_0_1->soap);
 	patch->ElementIndices.push_back(elements);
 	elements->IndexableElement = elementKind;
 
-	resqml20__IntegerHdf5Array * integerArray = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
-	eml20__Hdf5Dataset * resqmlHDF5dataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array * integerArray = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
+	eml20__Hdf5Dataset * resqmlHDF5dataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	resqmlHDF5dataset->HdfProxy = proxy->newResqmlReference();
 	if (elementDataset.empty()) {
 		ostringstream ossForHdf;
@@ -194,14 +194,14 @@ void SubRepresentation::pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::
 	resqml20__SubRepresentationPatch* patch = rep->SubRepresentationPatch[rep->SubRepresentationPatch.size() - 1];
 
 	// XML
-	resqml20__ElementIndices* elements = soap_new_resqml20__ElementIndices(gsoapProxy2_0_1->soap, 1);
+	resqml20__ElementIndices* elements = soap_new_resqml20__ElementIndices(gsoapProxy2_0_1->soap);
 	patch->ElementIndices.push_back(elements);
 	elements->IndexableElement = elementKind1;
 
 	ostringstream ossForHdf;
 	ossForHdf << "subrepresentation_elementIndices1_patch" << patch->PatchIndex;
-	resqml20__IntegerHdf5Array * integerArray = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
-	eml20__Hdf5Dataset * resqmlHDF5dataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array * integerArray = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
+	eml20__Hdf5Dataset * resqmlHDF5dataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	resqmlHDF5dataset->HdfProxy = proxy->newResqmlReference();
 	resqmlHDF5dataset->PathInHdfFile = "/RESQML/" + rep->uuid + "/" + ossForHdf.str();
 	integerArray->Values = resqmlHDF5dataset;
@@ -354,7 +354,7 @@ void SubRepresentation::getElementIndicesOfPatch(const unsigned int & patchIndex
 	if (rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		hdfProxy->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, elementIndices);
+		hdfProxy->readArrayNdOfULongValues(dataset->PathInHdfFile, elementIndices);
 	}
 	else {
 		throw logic_error("Not yet implemented");
@@ -411,7 +411,7 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* SubRepresentation::getSupportingR
 		return getSpecializedGsoapProxy()->SupportingRepresentation;
 	}
 
-	eml20__DataObjectReference* result = soap_new_eml20__DataObjectReference(getGsoapContext(), 1);
+	eml20__DataObjectReference* result = soap_new_eml20__DataObjectReference(getGsoapContext());
 	result->ContentType = getSpecializedGsoapProxy()->SupportingRepresentation->ContentType;
 	result->Title = getSpecializedGsoapProxy()->SupportingRepresentation->Title;
 	result->UUID = getExtraMetadata("SupportingRepresentation")[index];

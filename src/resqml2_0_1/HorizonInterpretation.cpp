@@ -16,13 +16,13 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/HorizonInterpretation.h"
+#include "HorizonInterpretation.h"
 
 #include <algorithm>
 #include <stdexcept>
 
-#include "resqml2_0_1/Horizon.h"
-#include "resqml2_0_1/StructuralOrganizationInterpretation.h"
+#include "Horizon.h"
+#include "StructuralOrganizationInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -36,7 +36,7 @@ HorizonInterpretation::HorizonInterpretation(Horizon * horizon, const string & g
 		throw invalid_argument("The interpreted horizon cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREHorizonInterpretation(horizon->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREHorizonInterpretation(horizon->getGsoapContext());
 
 	static_cast<_resqml20__HorizonInterpretation*>(gsoapProxy2_0_1)->Domain = resqml20__Domain__mixed;
 

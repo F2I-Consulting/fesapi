@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "common/AbstractHdfProxy.h"
+#include "AbstractHdfProxy.h"
 
 using namespace COMMON_NS;
 
@@ -33,7 +33,7 @@ void AbstractHdfProxy::initGsoapProxy(COMMON_NS::DataObjectRepository * repo, co
 	}
 	else {
 		gsoapProxy2_1 = gsoap_eml2_1::soap_new_eml21__EpcExternalPartReference(repo->getGsoapContext());
-		static_cast<gsoap_eml2_1::_eml21__EpcExternalPartReference*>(gsoapProxy2_1)->MimeType = gsoap_eml2_1::soap_new_std__string(repo->getGsoapContext(), 1);
+		static_cast<gsoap_eml2_1::_eml21__EpcExternalPartReference*>(gsoapProxy2_1)->MimeType = gsoap_eml2_1::soap_new_std__string(repo->getGsoapContext());
 		static_cast<gsoap_eml2_1::_eml21__EpcExternalPartReference*>(gsoapProxy2_1)->MimeType->assign("application/x-hdf5");
 	}
 

@@ -18,8 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/GraphicalInformationSet.h"
-#include "resqml2_2/AbstractColorMap.h"
+#include "../common/GraphicalInformationSet.h"
+#include "AbstractColorMap.h"
 
 namespace RESQML2_2_NS
 {
@@ -34,7 +34,7 @@ namespace RESQML2_2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 */
-		DiscreteColorMap(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractColorMap(partialObject) {}
+		DLL_IMPORT_OR_EXPORT DiscreteColorMap(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractColorMap(partialObject) {}
 
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
@@ -68,7 +68,14 @@ namespace RESQML2_2_NS
 
 		DLL_IMPORT_OR_EXPORT unsigned int getColorCount() const;
 
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const { return XML_TAG; }
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

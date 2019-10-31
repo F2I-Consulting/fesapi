@@ -16,17 +16,18 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
+#include "WellboreTrajectoryRepresentation.h"
 
 #include <stdexcept>
+#include <limits>
 
 #include "H5public.h"
 
-#include "resqml2_0_1/WellboreInterpretation.h"
-#include "resqml2/MdDatum.h"
-#include "resqml2_0_1/WellboreFrameRepresentation.h"
-#include "resqml2/AbstractLocal3dCrs.h"
-#include "common/AbstractHdfProxy.h"
+#include "WellboreInterpretation.h"
+#include "../resqml2/MdDatum.h"
+#include "WellboreFrameRepresentation.h"
+#include "../resqml2/AbstractLocal3dCrs.h"
+#include "../common/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -37,7 +38,7 @@ const char* WellboreTrajectoryRepresentation::XML_TAG = "WellboreTrajectoryRepre
 
 WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInterpretation * interp, const string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreTrajectoryRepresentation(interp->getGsoapContext(), 1);	
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreTrajectoryRepresentation(interp->getGsoapContext());	
 	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 
 	initMandatoryMetadata();
@@ -46,6 +47,8 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInter
 	if (dynamic_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs()) != nullptr) {
 		rep->MdUom = static_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit();
 	}
+	rep->StartMd = std::numeric_limits<double>::quiet_NaN();
+	rep->FinishMd = std::numeric_limits<double>::quiet_NaN();
 
 	setMdDatum(mdInfo);
 	setInterpretation(interp);
@@ -53,7 +56,7 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInter
 
 WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInterpretation * interp, const string & guid, const std::string & title, DeviationSurveyRepresentation * deviationSurvey)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreTrajectoryRepresentation(interp->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreTrajectoryRepresentation(interp->getGsoapContext());
 	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 
 	RESQML2_NS::MdDatum * mdInfo = deviationSurvey->getMdDatum();
@@ -74,26 +77,37 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInter
 	if (dynamic_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs()) != nullptr) {
 		rep->MdUom = static_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit();
 	}
+	rep->StartMd = std::numeric_limits<double>::quiet_NaN();
+	rep->FinishMd = std::numeric_limits<double>::quiet_NaN();
+}
+
+void WellboreTrajectoryRepresentation::setMinimalGeometry(double startMd, double endMd)
+{
+	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
+	rep->StartMd = startMd;
+	rep->FinishMd = endMd;
 }
 
 void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
-	if (controlPoints == nullptr)
+	if (controlPoints == nullptr) {
 		throw invalid_argument("The control points are missing.");
-	if (controlPointCount == 0)
+	}
+	if (controlPointCount == 0) {
 		throw invalid_argument("The control point count cannot be 0.");
+	}
 
-	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
+	setMinimalGeometry(startMd, endMd);
+
+	_resqml20__WellboreTrajectoryRepresentation* const rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
 	}
 
-	rep->Geometry = soap_new_resqml20__ParametricLineGeometry(gsoapProxy2_0_1->soap, 1);
-	resqml20__ParametricLineGeometry* paramLine = soap_new_resqml20__ParametricLineGeometry(gsoapProxy2_0_1->soap, 1);
+	rep->Geometry = soap_new_resqml20__ParametricLineGeometry(gsoapProxy2_0_1->soap);
+	resqml20__ParametricLineGeometry* paramLine = soap_new_resqml20__ParametricLineGeometry(gsoapProxy2_0_1->soap);
 	paramLine->LocalCrs = localCrs->newResqmlReference();
-	rep->StartMd = startMd;
-	rep->FinishMd = endMd;
 	rep->Geometry = paramLine;
 
 	paramLine->KnotCount = controlPointCount;
@@ -105,8 +119,8 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, doubl
 	getRepository()->addRelationship(this, proxy);
 
 	// XML control points
-	resqml20__Point3dHdf5Array* xmlControlPoints = soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap, 1);
-	xmlControlPoints->Coordinates = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dHdf5Array* xmlControlPoints = soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap);
+	xmlControlPoints->Coordinates = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlControlPoints->Coordinates->HdfProxy = proxy->newResqmlReference();
 	xmlControlPoints->Coordinates->PathInHdfFile = "/RESQML/" + rep->uuid + "/controlPoints";
 	paramLine->ControlPoints = xmlControlPoints;
@@ -118,41 +132,41 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, doubl
 	getRepository()->addRelationship(this, localCrs);
 }
 
-void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, double* controlPointParameters, unsigned int controlPointCount,
+void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, double* controlPointParameters, unsigned int controlPointCount, int lineKind,
 	COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
-	if (controlPointParameters == nullptr)
+	if (controlPointParameters == nullptr) {
 		throw invalid_argument("The control points parameters are missing.");
+	}
 
-	setGeometry(controlPoints, controlPointParameters[0], controlPointParameters[controlPointCount - 1], controlPointCount, 2, proxy, localCrs);
+	setGeometry(controlPoints, controlPointParameters[0], controlPointParameters[controlPointCount - 1], controlPointCount, lineKind, proxy, localCrs);
 	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 	resqml20__ParametricLineGeometry* paramLine = static_cast<resqml20__ParametricLineGeometry*>(rep->Geometry);
 
 	// XML control point parameters
-	resqml20__DoubleHdf5Array* xmlControlPointParameters = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap, 1);
-	xmlControlPointParameters->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	resqml20__DoubleHdf5Array* xmlControlPointParameters = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
+	xmlControlPointParameters->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlControlPointParameters->Values->HdfProxy = proxy->newResqmlReference();
 	xmlControlPointParameters->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/controlPointParameters";
 	paramLine->ControlPointParameters = xmlControlPointParameters;
 
 	// HDF control point parameters
-	hsize_t dimParamDataSet[] = {controlPointCount};
-	proxy->writeArrayNdOfDoubleValues(rep->uuid, "controlPointParameters", controlPointParameters, dimParamDataSet, 1);
+	const hsize_t dimParamDataSet = controlPointCount;
+	proxy->writeArrayNdOfDoubleValues(rep->uuid, "controlPointParameters", controlPointParameters, &dimParamDataSet, 1);
 }
 
 void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints,
-	double * tangentVectors, double* controlPointParameters, unsigned int controlPointCount,
+	double * tangentVectors, double* controlPointParameters, unsigned int controlPointCount, int lineKind,
 	COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
-	setGeometry(controlPoints, controlPointParameters, controlPointCount, proxy, localCrs);
+	setGeometry(controlPoints, controlPointParameters, controlPointCount, lineKind, proxy, localCrs);
 
 	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
-	resqml20__ParametricLineGeometry* paramLine = static_cast<resqml20__ParametricLineGeometry*>(rep->Geometry);
-	paramLine->LineKindIndex = 5;
 
+	resqml20__ParametricLineGeometry* paramLine = static_cast<resqml20__ParametricLineGeometry*>(rep->Geometry);
 	// XML tangent vectors
-	resqml20__Point3dHdf5Array* xmlTangentVectors = soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap, 1);
-	xmlTangentVectors->Coordinates = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	resqml20__Point3dHdf5Array* xmlTangentVectors = soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap);
+	xmlTangentVectors->Coordinates = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlTangentVectors->Coordinates->HdfProxy = proxy->newResqmlReference();
 	xmlTangentVectors->Coordinates->PathInHdfFile = "/RESQML/" + rep->uuid + "/tangentVectors";
 	paramLine->TangentVectors = xmlTangentVectors;
@@ -166,7 +180,7 @@ void WellboreTrajectoryRepresentation::loadTargetRelationships()
 {
 	AbstractRepresentation::loadTargetRelationships();
 
-	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
+	_resqml20__WellboreTrajectoryRepresentation const * rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 
 	eml20__DataObjectReference const * dor = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1)->MdDatum;
 	convertDorIntoRel<RESQML2_NS::MdDatum>(dor);
@@ -187,7 +201,7 @@ void WellboreTrajectoryRepresentation::addParentTrajectory(double kickoffMd, dou
 	getRepository()->addRelationship(this, parentTrajRep);
 
 	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
-	rep->ParentIntersection = soap_new_resqml20__WellboreTrajectoryParentIntersection(rep->soap, 1);
+	rep->ParentIntersection = soap_new_resqml20__WellboreTrajectoryParentIntersection(rep->soap);
 	rep->ParentIntersection->KickoffMd = kickoffMd;
 	rep->ParentIntersection->ParentMd = parentMd;
 	rep->ParentIntersection->ParentTrajectory = parentTrajRep->newResqmlReference();
@@ -195,13 +209,8 @@ void WellboreTrajectoryRepresentation::addParentTrajectory(double kickoffMd, dou
 
 WellboreTrajectoryRepresentation* WellboreTrajectoryRepresentation::getParentTrajectory() const
 {
-	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
-
-	if (rep->ParentIntersection == nullptr) {
-		return nullptr;
-	}
-
-	return getRepository()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(rep->ParentIntersection->ParentTrajectory->UUID);
+	_resqml20__WellboreTrajectoryRepresentation const * rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
+	return rep->ParentIntersection == nullptr ? nullptr : getRepository()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(rep->ParentIntersection->ParentTrajectory->UUID);
 }
 
 double WellboreTrajectoryRepresentation::getParentTrajectoryMd() const
@@ -210,9 +219,8 @@ double WellboreTrajectoryRepresentation::getParentTrajectoryMd() const
 	if (rep->ParentIntersection != nullptr) {
 		return rep->ParentIntersection->ParentMd;
 	}
-	else {
-		throw logic_error("This wellbore trajectory has no parent trajecory.");
-	}
+
+	throw logic_error("This wellbore trajectory has no parent trajecory.");
 }
 
 std::vector<WellboreTrajectoryRepresentation *> WellboreTrajectoryRepresentation::getChildrenTrajectorySet() const
@@ -417,9 +425,9 @@ DeviationSurveyRepresentation* WellboreTrajectoryRepresentation::getDeviationSur
 	return dsDor == nullptr ? nullptr : repository->getDataObjectByUuid<DeviationSurveyRepresentation>(dsDor->UUID);
 }
 
-std::vector<WellboreFrameRepresentation *> WellboreTrajectoryRepresentation::getWellboreFrameRepresentationSet() const
+std::vector<RESQML2_NS::WellboreFrameRepresentation *> WellboreTrajectoryRepresentation::getWellboreFrameRepresentationSet() const
 {
-	return getRepository()->getSourceObjects<WellboreFrameRepresentation>(this);
+	return getRepository()->getSourceObjects<RESQML2_NS::WellboreFrameRepresentation>(this);
 }
 
 unsigned int WellboreTrajectoryRepresentation::getWellboreFrameRepresentationCount() const
@@ -427,9 +435,9 @@ unsigned int WellboreTrajectoryRepresentation::getWellboreFrameRepresentationCou
 	return getWellboreFrameRepresentationSet().size();
 }
 
-WellboreFrameRepresentation * WellboreTrajectoryRepresentation::getWellboreFrameRepresentation(unsigned int index) const
+RESQML2_NS::WellboreFrameRepresentation * WellboreTrajectoryRepresentation::getWellboreFrameRepresentation(unsigned int index) const
 {
-	const std::vector<WellboreFrameRepresentation *>& wfrs = getWellboreFrameRepresentationSet();
+	const std::vector<RESQML2_NS::WellboreFrameRepresentation *>& wfrs = getWellboreFrameRepresentationSet();
 	
 	if (index >= wfrs.size()) {
 		throw out_of_range("The index if out of range");

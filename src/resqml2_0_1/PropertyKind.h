@@ -18,8 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/PropertyKind.h"
-#include "resqml2_0_1/PropertyKindMapper.h"
+#include "../resqml2/PropertyKind.h"
+#include "PropertyKindMapper.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -33,7 +33,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		PropertyKind(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::PropertyKind(partialObject) {}
+		DLL_IMPORT_OR_EXPORT PropertyKind(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::PropertyKind(partialObject) {}
 
 		/**
 		* Creates a local property type which uses a standard uom and which derives from a standard Energistics property type.

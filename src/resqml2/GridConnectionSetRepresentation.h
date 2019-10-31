@@ -20,10 +20,18 @@ under the License.
 
 #include <limits>
 
-#include "resqml2/AbstractRepresentation.h"
+#include "AbstractRepresentation.h"
 
 namespace RESQML2_NS
 {
+	/**
+	* Representation that consists of a list of connections between grid cells, potentially on different grids.
+	* Connections are in the form of (Grid,Cell,Face)1<=>(Grid,Cell,Face)2 and are stored as three integer pair arrays corresponding to these six elements.
+	* Grid connection sets are the preferred means of representing faults on a grid. The use of cell-face-pairs is more complete than single cell-faces, which are missing a corresponding cell face entry, and only provide an incomplete representation of the topology of a fault.
+	* Unlike what is sometimes the case in reservoir simulation software, RESQML does not distinguish between standard and non-standard connections.
+	* Within RESQML, if a grid connection corresponds to a "nearest neighbor" as defined by the cell indices, then it is never additive to the implicit nearest neighbor connection.
+	* BUSINESS RULE: A single cell-face-pair should not appear within more than a single grid connection set. This rule is designed to simplify the interpretation of properties assigned to multiple grid connection sets, which might otherwise have the same property defined more than once on a single connection, with no clear means of resolving the multiple values.
+	*/
 	class GridConnectionSetRepresentation : public AbstractRepresentation
 	{
 	protected:
@@ -31,7 +39,7 @@ namespace RESQML2_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		GridConnectionSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
+		DLL_IMPORT_OR_EXPORT GridConnectionSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
 			AbstractRepresentation(partialObject) {}
 
 		/**
@@ -53,9 +61,6 @@ namespace RESQML2_NS
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		virtual ~GridConnectionSetRepresentation() {}
-        
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const;
 
 		/**
 		* Get the cell index pair count of this grid connection representation
@@ -242,6 +247,16 @@ namespace RESQML2_NS
 		* Always return one since this representation does not contain patches.
 		*/
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 		void loadTargetRelationships();
 	};

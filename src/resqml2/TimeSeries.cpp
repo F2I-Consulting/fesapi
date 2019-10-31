@@ -16,13 +16,13 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2/TimeSeries.h"
+#include "TimeSeries.h"
 
 #include <stdexcept>
 
-#include "tools/TimeTools.h"
+#include "../tools/TimeTools.h"
 
-#include "resqml2/AbstractValuesProperty.h"
+#include "AbstractValuesProperty.h"
 
 using namespace std;
 using namespace RESQML2_NS;
@@ -37,7 +37,7 @@ void TimeSeries::pushBackTimestamp(time_t timestamp)
 void TimeSeries::pushBackTimestamp(const tm & timestamp)
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		gsoap_resqml2_0_1::resqml20__Timestamp* ts = gsoap_resqml2_0_1::soap_new_resqml20__Timestamp(gsoapProxy2_0_1->soap, 1);
+		gsoap_resqml2_0_1::resqml20__Timestamp* ts = gsoap_resqml2_0_1::soap_new_resqml20__Timestamp(gsoapProxy2_0_1->soap);
 		ts->DateTime = timestamp;
 		static_cast<gsoap_resqml2_0_1::_resqml20__TimeSeries*>(gsoapProxy2_0_1)->Time.push_back(ts);
 	}

@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/SeismicLatticeFeature.h"
+#include "SeismicLatticeFeature.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -32,7 +32,7 @@ SeismicLatticeFeature::SeismicLatticeFeature(COMMON_NS::DataObjectRepository* re
 	if (repo == nullptr)
 		throw invalid_argument("The repo cannot be null.");
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESeismicLatticeFeature(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESeismicLatticeFeature(repo->getGsoapContext());
 	_resqml20__SeismicLatticeFeature* seismicLattice = static_cast<_resqml20__SeismicLatticeFeature*>(gsoapProxy2_0_1);
 
 	seismicLattice->InlineIndexIncrement = inlineIncrement;

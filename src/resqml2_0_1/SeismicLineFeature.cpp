@@ -16,9 +16,9 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/SeismicLineFeature.h"
+#include "SeismicLineFeature.h"
 
-#include "resqml2_0_1/SeismicLineSetFeature.h"
+#include "SeismicLineSetFeature.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -33,7 +33,7 @@ SeismicLineFeature::SeismicLineFeature(COMMON_NS::DataObjectRepository* repo, co
 		throw invalid_argument("The soap context cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESeismicLineFeature(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESeismicLineFeature(repo->getGsoapContext());
 	_resqml20__SeismicLineFeature* seismicLine = static_cast<_resqml20__SeismicLineFeature*>(gsoapProxy2_0_1);
 
 	seismicLine->TraceIndexIncrement = traceIndexIncrement;

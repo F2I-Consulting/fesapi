@@ -16,9 +16,9 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/RepresentationSetRepresentation.h"
+#include "RepresentationSetRepresentation.h"
 
-#include "resqml2/AbstractFeatureInterpretation.h"
+#include "../resqml2/AbstractFeatureInterpretation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -31,7 +31,7 @@ RepresentationSetRepresentation::RepresentationSetRepresentation(RESQML2_NS::Abs
 	}
 
 	// proxy constructor
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERepresentationSetRepresentation(interp->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERepresentationSetRepresentation(interp->getGsoapContext());
 	static_cast<_resqml20__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->IsHomogeneous = true;
 
 	initMandatoryMetadata();
@@ -48,7 +48,7 @@ RepresentationSetRepresentation::RepresentationSetRepresentation(COMMON_NS::Data
 	}
 
 	// proxy constructor
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERepresentationSetRepresentation(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORERepresentationSetRepresentation(repo->getGsoapContext());
 	static_cast<_resqml20__RepresentationSetRepresentation*>(gsoapProxy2_0_1)->IsHomogeneous = true;
 
 	initMandatoryMetadata();

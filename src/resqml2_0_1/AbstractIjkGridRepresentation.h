@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/AbstractColumnLayerGridRepresentation.h"
+#include "../resqml2/AbstractColumnLayerGridRepresentation.h"
 
 #include <stdexcept>
 #include <map>
@@ -98,11 +98,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject,
-			bool withTruncatedPillars = false) :
-			AbstractColumnLayerGridRepresentation(partialObject, withTruncatedPillars), splitInformation(nullptr), blockInformation(nullptr)
-		{
-		}
+		DLL_IMPORT_OR_EXPORT AbstractIjkGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars = false);
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -357,9 +353,21 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT virtual ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
 
+		/**
+		* The standard XML tag without XML namespace for serializing this data object if not truncated.
+		*/
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object if truncated.
+		*/
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG_TRUNCATED;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const;
+
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
 	};

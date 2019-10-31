@@ -16,22 +16,22 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/GridConnectionSetRepresentation.h"
+#include "GridConnectionSetRepresentation.h"
 
 #include <algorithm>
 #if defined(__gnu_linux__) || defined(__APPLE__) 
 #include <stdexcept>
 #endif 
 
-#include "hdf5.h"
+#include <hdf5.h>
 
-#include "resqml2_0_1/FaultInterpretation.h"
-#include "resqml2/AbstractGridRepresentation.h"
-#include "common/AbstractHdfProxy.h"
-#include "resqml2/AbstractLocal3dCrs.h"
-#include "resqml2_0_1/StructuralOrganizationInterpretation.h"
+#include "FaultInterpretation.h"
+#include "../resqml2/AbstractGridRepresentation.h"
+#include "../common/AbstractHdfProxy.h"
+#include "../resqml2/AbstractLocal3dCrs.h"
+#include "StructuralOrganizationInterpretation.h"
 
-#include "tools/Misc.h"
+#include "../tools/Misc.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -39,7 +39,7 @@ using namespace gsoap_resqml2_0_1;
 
 void GridConnectionSetRepresentation::init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGridConnectionSetRepresentation(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGridConnectionSetRepresentation(repo->getGsoapContext());
 
     initMandatoryMetadata();
     setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
@@ -90,8 +90,8 @@ void GridConnectionSetRepresentation::setCellIndexPairsUsingExistingDataset(ULON
 	getRepository()->addRelationship(this, proxy);
 
 	// XML cell index pair
-	resqml20__IntegerHdf5Array* const integerArray = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
-	eml20__Hdf5Dataset * const resqmlHDF5dataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array* const integerArray = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
+	eml20__Hdf5Dataset * const resqmlHDF5dataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	resqmlHDF5dataset->HdfProxy = proxy->newResqmlReference();
 	resqmlHDF5dataset->PathInHdfFile = cellIndexPair;
 	integerArray->Values = resqmlHDF5dataset;
@@ -100,8 +100,8 @@ void GridConnectionSetRepresentation::setCellIndexPairsUsingExistingDataset(ULON
 
 	// XML grid index pair
 	if (!gridIndexPair.empty()) {
-		resqml20__IntegerHdf5Array* const gridIndexPairArray = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
-		eml20__Hdf5Dataset * const gridIndexPairDataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+		resqml20__IntegerHdf5Array* const gridIndexPairArray = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
+		eml20__Hdf5Dataset * const gridIndexPairDataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		gridIndexPairDataset->HdfProxy = proxy->newResqmlReference();
 		gridIndexPairDataset->PathInHdfFile = gridIndexPair;
 		gridIndexPairArray->Values = gridIndexPairDataset;
@@ -120,8 +120,8 @@ void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairsUsingExisting
 	getRepository()->addRelationship(this, proxy);
 
 	// XML
-	resqml20__IntegerHdf5Array* integerArray = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
-	eml20__Hdf5Dataset * resqmlHDF5dataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array* integerArray = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
+	eml20__Hdf5Dataset * resqmlHDF5dataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	resqmlHDF5dataset->HdfProxy = proxy->newResqmlReference();
 	resqmlHDF5dataset->PathInHdfFile = localFacePerCellIndexPair;
 	integerArray->Values = resqmlHDF5dataset;
@@ -398,7 +398,7 @@ ULONG64 GridConnectionSetRepresentation::getCellIndexPairs(ULONG64 * cellIndexPa
 
 	if (rep->CellIndexPairs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->CellIndexPairs)->Values;
-		getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID)->readArrayNdOfGSoapULong64Values(dataset->PathInHdfFile, cellIndexPairs);
+		getRepository()->getDataObjectByUuid<COMMON_NS::AbstractHdfProxy>(dataset->HdfProxy->UUID)->readArrayNdOfULongValues(dataset->PathInHdfFile, cellIndexPairs);
 		return static_cast<resqml20__IntegerHdf5Array*>(rep->CellIndexPairs)->NullValue;
 	}
 	else {
@@ -463,22 +463,22 @@ void GridConnectionSetRepresentation::setConnectionInterpretationIndices(unsigne
 
 	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 	if (rep->ConnectionInterpretations == nullptr) {
-		rep->ConnectionInterpretations = soap_new_resqml20__ConnectionInterpretations(gsoapProxy2_0_1->soap, 1);
+		rep->ConnectionInterpretations = soap_new_resqml20__ConnectionInterpretations(gsoapProxy2_0_1->soap);
 	}
-	rep->ConnectionInterpretations->InterpretationIndices = soap_new_resqml20__ResqmlJaggedArray(gsoapProxy2_0_1->soap, 1);
+	rep->ConnectionInterpretations->InterpretationIndices = soap_new_resqml20__ResqmlJaggedArray(gsoapProxy2_0_1->soap);
 	
 	// Cumulative
-	resqml20__IntegerHdf5Array* cumulativeLength = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array* cumulativeLength = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	rep->ConnectionInterpretations->InterpretationIndices->CumulativeLength = cumulativeLength;
 	cumulativeLength->NullValue = nullValue;
-	cumulativeLength->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	cumulativeLength->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	cumulativeLength->Values->HdfProxy = proxy->newResqmlReference();
 	cumulativeLength->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/InterpretationIndices/" + CUMULATIVE_LENGTH_DS_NAME;
 	// Elements
-	resqml20__IntegerHdf5Array* elements = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap, 1);
+	resqml20__IntegerHdf5Array* elements = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	rep->ConnectionInterpretations->InterpretationIndices->Elements = elements;
 	elements->NullValue = nullValue;
-	elements->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap, 1);
+	elements->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	elements->Values->HdfProxy = proxy->newResqmlReference();
 	elements->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/InterpretationIndices/" + ELEMENTS_DS_NAME;
 
@@ -495,7 +495,7 @@ void GridConnectionSetRepresentation::pushBackXmlInterpretation(RESQML2_NS::Abst
 {
 	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 	if (rep->ConnectionInterpretations == nullptr) {
-		rep->ConnectionInterpretations = soap_new_resqml20__ConnectionInterpretations(gsoapProxy2_0_1->soap, 1);
+		rep->ConnectionInterpretations = soap_new_resqml20__ConnectionInterpretations(gsoapProxy2_0_1->soap);
 	}
 
 	rep->ConnectionInterpretations->FeatureInterpretation.push_back(interp->newResqmlReference());

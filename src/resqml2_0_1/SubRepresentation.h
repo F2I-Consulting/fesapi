@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/SubRepresentation.h"
+#include "../resqml2/SubRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -52,7 +52,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Only to be used in partial transfer context
 		*/
-		SubRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
+		DLL_IMPORT_OR_EXPORT SubRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
 			RESQML2_NS::SubRepresentation(partialObject) {}
 
 		/**

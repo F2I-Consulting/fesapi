@@ -16,7 +16,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/LocalTime3dCrs.h"
+#include "LocalTime3dCrs.h"
 
 #include <stdexcept>
 
@@ -37,9 +37,9 @@ void LocalTime3dCrs::init(COMMON_NS::DataObjectRepository * repo, const std::str
 		throw invalid_argument("The repo cannot be null.");
 	}
 
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORELocalTime3dCrs(repo->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORELocalTime3dCrs(repo->getGsoapContext());
 	_resqml20__LocalTime3dCrs* local3dCrs = static_cast<_resqml20__LocalTime3dCrs*>(gsoapProxy2_0_1);
-	local3dCrs->ArealRotation = soap_new_eml20__PlaneAngleMeasure(gsoapProxy2_0_1->soap, 1);
+	local3dCrs->ArealRotation = soap_new_eml20__PlaneAngleMeasure(gsoapProxy2_0_1->soap);
 	local3dCrs->ArealRotation->__item = arealRotation;
 	local3dCrs->ArealRotation->uom = eml20__PlaneAngleUom__rad;
 	local3dCrs->ProjectedAxisOrder = eml20__AxisOrder2d__easting_x0020northing;
@@ -71,12 +71,12 @@ LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std
 	_resqml20__LocalTime3dCrs* local3dCrs = static_cast<_resqml20__LocalTime3dCrs*>(gsoapProxy2_0_1);
 
 	// Projected CRS
-	eml20__ProjectedCrsEpsgCode* projCrs = soap_new_eml20__ProjectedCrsEpsgCode(gsoapProxy2_0_1->soap, 1);
+	eml20__ProjectedCrsEpsgCode* projCrs = soap_new_eml20__ProjectedCrsEpsgCode(gsoapProxy2_0_1->soap);
 	local3dCrs->ProjectedCrs = projCrs;
 	projCrs->EpsgCode = projectedEpsgCode;
 
 	// Vertical CRS
-	eml20__VerticalCrsEpsgCode* vertCrs = soap_new_eml20__VerticalCrsEpsgCode(gsoapProxy2_0_1->soap, 1);
+	eml20__VerticalCrsEpsgCode* vertCrs = soap_new_eml20__VerticalCrsEpsgCode(gsoapProxy2_0_1->soap);
 	local3dCrs->VerticalCrs = vertCrs;
 	vertCrs->EpsgCode = verticalEpsgCode;
 }
@@ -92,12 +92,12 @@ LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std
 	_resqml20__LocalTime3dCrs* local3dCrs = static_cast<_resqml20__LocalTime3dCrs*>(gsoapProxy2_0_1);
 
 	// Projected CRS
-	eml20__ProjectedUnknownCrs* projCrs = soap_new_eml20__ProjectedUnknownCrs(gsoapProxy2_0_1->soap, 1);
+	eml20__ProjectedUnknownCrs* projCrs = soap_new_eml20__ProjectedUnknownCrs(gsoapProxy2_0_1->soap);
 	local3dCrs->ProjectedCrs = projCrs;
 	projCrs->Unknown = projectedUnknownReason;
 
 	// Vertical CRS
-	eml20__VerticalUnknownCrs* vertCrs = soap_new_eml20__VerticalUnknownCrs(gsoapProxy2_0_1->soap, 1);
+	eml20__VerticalUnknownCrs* vertCrs = soap_new_eml20__VerticalUnknownCrs(gsoapProxy2_0_1->soap);
 	local3dCrs->VerticalCrs = vertCrs;
 	vertCrs->Unknown = verticalUnknownReason;
 }
@@ -116,12 +116,12 @@ LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std
 	_resqml20__LocalTime3dCrs* local3dCrs = static_cast<_resqml20__LocalTime3dCrs*>(gsoapProxy2_0_1);
 
 	// Projected CRS
-	eml20__ProjectedCrsEpsgCode* projCrs = soap_new_eml20__ProjectedCrsEpsgCode(gsoapProxy2_0_1->soap, 1);
+	eml20__ProjectedCrsEpsgCode* projCrs = soap_new_eml20__ProjectedCrsEpsgCode(gsoapProxy2_0_1->soap);
 	local3dCrs->ProjectedCrs = projCrs;
 	projCrs->EpsgCode = projectedEpsgCode;
 
 	// Vertical CRS
-	eml20__VerticalUnknownCrs* vertCrs = soap_new_eml20__VerticalUnknownCrs(gsoapProxy2_0_1->soap, 1);
+	eml20__VerticalUnknownCrs* vertCrs = soap_new_eml20__VerticalUnknownCrs(gsoapProxy2_0_1->soap);
 	local3dCrs->VerticalCrs = vertCrs;
 	vertCrs->Unknown = verticalUnknownReason;
 }
@@ -140,12 +140,12 @@ LocalTime3dCrs::LocalTime3dCrs(COMMON_NS::DataObjectRepository * repo, const std
 	_resqml20__LocalTime3dCrs* local3dCrs = static_cast<_resqml20__LocalTime3dCrs*>(gsoapProxy2_0_1);
 
 	// Projected CRS
-	eml20__ProjectedUnknownCrs* projCrs = soap_new_eml20__ProjectedUnknownCrs(gsoapProxy2_0_1->soap, 1);
+	eml20__ProjectedUnknownCrs* projCrs = soap_new_eml20__ProjectedUnknownCrs(gsoapProxy2_0_1->soap);
 	local3dCrs->ProjectedCrs = projCrs;
 	projCrs->Unknown = projectedUnknownReason;
 
 	// Vertical CRS
-	eml20__VerticalCrsEpsgCode* vertCrs = soap_new_eml20__VerticalCrsEpsgCode(gsoapProxy2_0_1->soap, 1);
+	eml20__VerticalCrsEpsgCode* vertCrs = soap_new_eml20__VerticalCrsEpsgCode(gsoapProxy2_0_1->soap);
 	local3dCrs->VerticalCrs = vertCrs;
 	vertCrs->EpsgCode = verticalEpsgCode;
 }

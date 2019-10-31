@@ -18,14 +18,19 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "resqml2/AbstractValuesProperty.h"
-#include "common/AbstractHdfProxy.h"
+#include "../resqml2/AbstractValuesProperty.h"
+#include "../common/AbstractHdfProxy.h"
 
 #include <stdexcept>
-#include <sstream>      // std::ostringstream
+#include <sstream>
 
 namespace RESQML2_0_1_NS
 {
+	/**
+	* Most common type of property used for storing rock or fluid attributes; all are represented as floating point values. 
+	* So that the value range can be known before accessing all values, the min and max values of the range are also optionally stored. 
+	* BUSINESS RULE: It also contains a unit of measure, which can be different from the unit of measure of its property type, but it must be convertible into this unit.
+	*/
 	class ContinuousProperty : public RESQML2_NS::AbstractValuesProperty
 	{
 	protected:
@@ -46,14 +51,14 @@ namespace RESQML2_0_1_NS
 		* @param attachmentKind				The topological orbit which supports each value.
 		*/
 		void init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind);
+			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind);
 
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		ContinuousProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractValuesProperty(partialObject) {}
+		DLL_IMPORT_OR_EXPORT ContinuousProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractValuesProperty(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context based on a standard kind and a standard uom.
@@ -66,7 +71,7 @@ namespace RESQML2_0_1_NS
 		* @param energisticsPropertyKind	The property kind of these property values which must be defined in the standard energistics property type dictionary.
 		*/
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind);
+			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
 		* Creates an instance of this class in a gsoap context based on a local kind and a standard uom.
@@ -79,7 +84,7 @@ namespace RESQML2_0_1_NS
 		* @param localPropType				The property kind of these property values which must be defined in the EPC document as a local property kind.
 		*/
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, RESQML2_NS::PropertyKind * localPropKind);
+			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, RESQML2_NS::PropertyKind * localPropKind);
 
 		/**
 		* Creates an instance of this class in a gsoap context based on a standard kind and a local uom.
@@ -92,7 +97,7 @@ namespace RESQML2_0_1_NS
 		* @param energisticsPropertyKind	The property kind of these property values which must be defined in the standard energistics property type dictionary.
 		*/
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const std::string & nonStandardUom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind);
+			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, const std::string & nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
 		* Creates an instance of this class in a gsoap context based on a local kind and a local uom.
@@ -105,7 +110,7 @@ namespace RESQML2_0_1_NS
 		* @param localPropType				The property kind of these property values which must be defined in the EPC document as a local property kind.
 		*/
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * localPropKind);
+			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * localPropKind);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -116,9 +121,6 @@ namespace RESQML2_0_1_NS
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		virtual ~ContinuousProperty() {}
-
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const {return XML_TAG;}
 
 		/**
 		* Get the unit of measure of the values of this property.
@@ -140,8 +142,8 @@ namespace RESQML2_0_1_NS
 		* @param minimumValue			The minimum value of the values to add. If NAN is provided then the minimum value will be computed from the values.
 		* @param maximumValue			The maximum value of the values to add. If NAN is provided then the maximum value will be computed from the values.
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array1dOfValues(const double * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy,
-			const double & minimumValue = std::numeric_limits<double>::quiet_NaN(), const double & maximumValue = std::numeric_limits<double>::quiet_NaN());
+		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array1dOfValues(const double * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			double minimumValue = std::numeric_limits<double>::quiet_NaN(), double maximumValue = std::numeric_limits<double>::quiet_NaN());
 
 		/**
 		* Add a 2d array of explicit double values to the property values.
@@ -152,8 +154,8 @@ namespace RESQML2_0_1_NS
 		* @param minimumValue			The minimum value of the values to add. If NAN is provided then the minimum value will be computed from the values.
 		* @param maximumValue			The maximum value of the values to add. If NAN is provided then the maximum value will be computed from the values.
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array2dOfValues(const double * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
-			const double & minimumValue = std::numeric_limits<double>::quiet_NaN(), const double & maximumValue = std::numeric_limits<double>::quiet_NaN());
+		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array2dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			double minimumValue = std::numeric_limits<double>::quiet_NaN(), double maximumValue = std::numeric_limits<double>::quiet_NaN());
 
 		/**
 		* Add a 3d array of explicit double values to the property values.
@@ -165,8 +167,8 @@ namespace RESQML2_0_1_NS
 		* @param minimumValue			The minimum value of the values to add. If NAN is provided then the minimum value will be computed from the values.
 		* @param maximumValue			The maximum value of the values to add. If NAN is provided then the maximum value will be computed from the values.
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array3dOfValues(const double * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
-			const double & minimumValue = std::numeric_limits<double>::quiet_NaN(), const double & maximumValue = std::numeric_limits<double>::quiet_NaN());
+		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array3dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			double minimumValue = std::numeric_limits<double>::quiet_NaN(), double maximumValue = std::numeric_limits<double>::quiet_NaN());
 
 		/**
 		* Add an array (potentially multi dimensions) of explicit double values to the property values.
@@ -177,7 +179,7 @@ namespace RESQML2_0_1_NS
 		* @param minimumValue			The minimum value (or value vector) of the values to add. If nullptr is provided and the dimension of value is 1 then the minimum value will be computed from the values.
 		* @param maximumValue			The maximum value (or value vector) of the values to add. If nullptr is provided and the dimension of value is 1 then the maximum value will be computed from the values.
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5ArrayOfValues(const double * values, unsigned long long * numValues, const unsigned int & numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy,
+		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			double * minimumValue = nullptr, double * maximumValue = nullptr);
 
 		/**
@@ -188,8 +190,8 @@ namespace RESQML2_0_1_NS
 		* @param minimumValue			The minimum value of the values to add. If NAN is provided then the minimum value will be computed from the values.
 		* @param maximumValue			The maximum value of the values to add. If NAN is provided then the maximum value will be computed from the values.
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array1dOfValues(const float * values, const ULONG64 & valueCount, COMMON_NS::AbstractHdfProxy* proxy,
-			const float & minimumValue = std::numeric_limits<float>::quiet_NaN(), const float & maximumValue = std::numeric_limits<float>::quiet_NaN());
+		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array1dOfValues(const float * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			float minimumValue = std::numeric_limits<float>::quiet_NaN(), float maximumValue = std::numeric_limits<float>::quiet_NaN());
 
 		/**
 		* Add a 2d array of explicit float values to the property values.
@@ -200,8 +202,8 @@ namespace RESQML2_0_1_NS
 		* @param minimumValue			The minimum value of the values to add. If NAN is provided then the minimum value will be computed from the values.
 		* @param maximumValue			The maximum value of the values to add. If NAN is provided then the maximum value will be computed from the values.
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array2dOfValues(const float * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
-			const float & minimumValue = std::numeric_limits<float>::quiet_NaN(), const float & maximumValue = std::numeric_limits<float>::quiet_NaN());
+		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array2dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			float minimumValue = std::numeric_limits<float>::quiet_NaN(), float maximumValue = std::numeric_limits<float>::quiet_NaN());
 
 		/**
 		* Add a 3d array of explicit float values to the property values.
@@ -213,8 +215,8 @@ namespace RESQML2_0_1_NS
 		* @param minimumValue			The minimum value of the values to add. If NAN is provided then the minimum value will be computed from the values.
 		* @param maximumValue			The maximum value of the values to add. If NAN is provided then the maximum value will be computed from the values.
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array3dOfValues(const float * values, const ULONG64 & valueCountInFastestDim, const ULONG64 & valueCountInMiddleDim, const ULONG64 & valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy,
-			const float & minimumValue = std::numeric_limits<float>::quiet_NaN(), const float & maximumValue = std::numeric_limits<float>::quiet_NaN());
+		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array3dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			float minimumValue = std::numeric_limits<float>::quiet_NaN(), float maximumValue = std::numeric_limits<float>::quiet_NaN());
 
 		/**
 		* Add an array (potentially multi dimensions) of explicit float values to the property values.
@@ -225,7 +227,7 @@ namespace RESQML2_0_1_NS
 		* @param minimumValue			The minimum value (or value vector) of the values to add. If nullptr is provided and the dimension of value is 1 then the minimum value will be computed from the values.
 		* @param maximumValue			The maximum value (or value vector) of the values to add. If nullptr is provided and the dimension of value is 1 then the maximum value will be computed from the values.
 		*/
-		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(const float * values, unsigned long long * numValues, const unsigned int & numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy,
+		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			float * minimumValue = nullptr, float * maximumValue = nullptr);
 
 		/**
@@ -235,9 +237,9 @@ namespace RESQML2_0_1_NS
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
 		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(
-			const unsigned long long* numValues,
-			const unsigned int& numArrayDimensions, 
-			COMMON_NS::AbstractHdfProxy* proxy
+			unsigned long long const * numValues,
+			unsigned int numArrayDimensions, 
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr
 		);
 
 		/**
@@ -248,15 +250,15 @@ namespace RESQML2_0_1_NS
 		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
 		*/
 		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(
-			const ULONG64& valueCountInFastestDim,
-			const ULONG64& valueCountInMiddleDim,
-			const ULONG64& valueCountInSlowestDim,
-			COMMON_NS::AbstractHdfProxy* proxy
+			ULONG64 valueCountInFastestDim,
+			ULONG64 valueCountInMiddleDim,
+			ULONG64 valueCountInSlowestDim,
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr
 		);
 
 		/**
 		* Set some values of an existing 3d array of explicit float values of a particular patch. This method makes use of HDF5 hyperslabbing.
-		* This method is to be used along with createFloatHdf5ArrayOfValues.
+		* This method is to be used along with one of the pushBackFloatHdf5ArrayOfValues methods which do not write any value.
 		* @param values					All the property values to set ordered according the topology of the representation it is based on.
 		* @param valueCountInFastestDim	The number of values to write in the fastest dimension (mainly I dimension).
 		* @param valueCountInMiddleDim	The number of values to write in the middle dimension (mainly J dimension).
@@ -268,20 +270,20 @@ namespace RESQML2_0_1_NS
 		* @param patchIndex				The index of the patch we want to set some values. If not present, the last patch is arbitrarily taken into account.
 		*/
 		DLL_IMPORT_OR_EXPORT void setValuesOfFloatHdf5ArrayOfValues(
-			float* values, 
-			const ULONG64& valueCountInFastestDim,
-			const ULONG64& valueCountInMiddleDim,
-			const ULONG64& valueCountInSlowestDim,
-			const ULONG64& offsetInFastestDim,
-			const ULONG64& offsetInMiddleDim,
-			const ULONG64& offsetInSlowestDim,
-			COMMON_NS::AbstractHdfProxy* proxy,
+			float const * values, 
+			ULONG64 valueCountInFastestDim,
+			ULONG64 valueCountInMiddleDim,
+			ULONG64 valueCountInSlowestDim,
+			ULONG64 offsetInFastestDim,
+			ULONG64 offsetInMiddleDim,
+			ULONG64 offsetInSlowestDim,
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()
 		);
 
 		/**
 		* Set some values of an existing 3d array of explicit float values of a particular patch.  This method makes use of HDF5 hyperslabbing.
-		* This method is to be used along with createFloatHdf5ArrayOfValues.
+		* This method is to be used along with one of the pushBackFloatHdf5ArrayOfValues methods which do not write any value.
 		* @param values					All the property values to set ordered according the topology of the representation it is based on.
 		* @param numValues				The number of property values ordered by dimension of the array to write.
 		* @param offsetValues			The offset values ordered by dimension of the array to write.
@@ -290,11 +292,11 @@ namespace RESQML2_0_1_NS
 		* @param patchIndex				The index of the patch we want to set some values.  If not present, the last patch is arbitrarily taken into account.
 		*/
 		DLL_IMPORT_OR_EXPORT void setValuesOfFloatHdf5ArrayOfValues(
-			float * values, 
-			unsigned long long * numValues,
-			unsigned long long * offsetValues,
-			const unsigned int & numArrayDimensions, 
-			COMMON_NS::AbstractHdfProxy* proxy,
+			float const * values, 
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
+			unsigned int numArrayDimensions, 
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()
 		);
 
@@ -303,7 +305,7 @@ namespace RESQML2_0_1_NS
 		* The reason can be that the values already exist in an external file (only HDF5 for now) or that the writing of the values in the external file is defered in time.
 		* @param	hdfProxy			The HDF5 proxy where the values are already or will be stored.
 		* @param	datasetName			If not provided during the method call, the dataset will be named the same as the dataset naming convention of the fesapi :"/RESQML/" + prop->uuid + "/values_patch" + patchIndex;
-		* @param	nullValue			Only relevant for integer hdf5 datasets. Indeed, Resqml (and fesapi) forces null value for floating point ot be NaN value.
+		* @param	nullValue			Only relevant for integer hdf5 datasets. Indeed, RESQML (and fesapi) forces null value for floating point to be NaN value.
 		* @return	The name of the hdf5 dataset.
 		*/
 		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
@@ -333,8 +335,8 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(
 			unsigned int patchIndex, 
 			float* values, 
-			unsigned long long* numValuesInEachDimension,
-			unsigned long long* offsetInEachDimension,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
 			unsigned int numArrayDimensions
 		) const;
 
@@ -380,7 +382,17 @@ namespace RESQML2_0_1_NS
 		/**
 		* Check if the associated standard property kind is allowed for this property.
 		*/
-		bool validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & pk);
+		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk);
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	private:
 
@@ -394,9 +406,9 @@ namespace RESQML2_0_1_NS
 		*/
 		template <class T>
 		void setPropertyMinMax(
-			const T* values, 
-			unsigned long long* numValuesInEachDimension,
-			const unsigned int& numArrayDimensions,
+			T const * values, 
+			unsigned long long const * numValuesInEachDimension,
+			unsigned int numArrayDimensions,
 			T * minimumValue = nullptr, T * maximumValue = nullptr)
 		{
 			gsoap_resqml2_0_1::_resqml20__ContinuousProperty* prop = static_cast<gsoap_resqml2_0_1::_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
@@ -404,7 +416,7 @@ namespace RESQML2_0_1_NS
 			prop->MaximumValue.clear();
 
 			if (minimumValue != nullptr && maximumValue != nullptr) {
-				for (unsigned int i = 0; i < prop->Count; ++i)
+				for (size_t i = 0; i < prop->Count; ++i)
 				{
 					prop->MinimumValue.push_back(minimumValue[i]);
 					prop->MaximumValue.push_back(maximumValue[i]);
@@ -428,7 +440,7 @@ namespace RESQML2_0_1_NS
 					throw std::invalid_argument("Cannot compute and set min and max value on a property which has a Count set to zero or negative.");
 				}
 
-				for (ULONG64 propIndex = 0; propIndex < prop->Count; ++propIndex) {
+				for (size_t propIndex = 0; propIndex < prop->Count; ++propIndex) {
 					size_t i = propIndex;
 					T computedMin = std::numeric_limits<T>::quiet_NaN();
 					T computedMax = std::numeric_limits<T>::quiet_NaN();

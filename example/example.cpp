@@ -2,6 +2,7 @@
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
+distributed with this work for additional information
 regarding copyright ownership.  The ASF licenses this file
 to you under the Apache License, Version 2.0 (the
 "License"; you may not use this file except in compliance
@@ -90,10 +91,11 @@ under the License.
 #include "resqml2_0_1/Activity.h"
 #include "resqml2_0_1/ActivityTemplate.h"
 
-#ifdef WITH_EXPERIMENTAL
+#if WITH_EXPERIMENTAL
 #include "common/GraphicalInformationSet.h"
 #include "resqml2_2/DiscreteColorMap.h"
 #include "resqml2_2/ContinuousColorMap.h"
+#include "resqml2_2/SeismicWellboreFrameRepresentation.h"
 #endif
 
 #include "witsml2_0/Well.h"
@@ -101,8 +103,6 @@ under the License.
 #include "witsml2_0/Trajectory.h"
 #include "witsml2_0/WellCompletion.h"
 #include "witsml2_0/WellboreCompletion.h"
-
-#include "tools/TimeTools.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -213,14 +213,14 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHd
 	double controlPoints[12] = { 275, 75, 0, 275, 75, 325, 275, 75, 500, 275, 75, 1000 };
 	double trajectoryTangentVectors[12] = { 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1 };
 	double trajectoryMds[4] = { 0, 325, 500, 1000 };
-	w1i1TrajRep->setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, hdfProxy);
+	w1i1TrajRep->setGeometry(controlPoints, trajectoryTangentVectors, trajectoryMds, 4, 0, hdfProxy);
 
 	// WellboreFeature frame
-	WellboreFrameRepresentation* w1i1FrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "d873e243-d893-41ab-9a3e-d20b851c099f", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
+	RESQML2_NS::WellboreFrameRepresentation* w1i1FrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "d873e243-d893-41ab-9a3e-d20b851c099f", "Wellbore1 Interp1 FrameRep", w1i1TrajRep);
 	double logMds[5] = { 0, 250, 500, 750, 1000 };
 	w1i1FrameRep->setMdValues(logMds, 5, hdfProxy);
 
-	WellboreFrameRepresentation* w1i1RegularFrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
+	RESQML2_NS::WellboreFrameRepresentation* w1i1RegularFrameRep = pck->createWellboreFrameRepresentation(wellbore1Interp1, "a54b8399-d3ba-4d4b-b215-8d4f8f537e66", "Wellbore1 Interp1 Regular FrameRep", w1i1TrajRep);
 	w1i1RegularFrameRep->setMdValues(0, 200, 6);
 
 	RESQML2_NS::PropertyKind * unitNumberPropType = pck->createPropertyKind("358aac23-b377-4349-9e72-bff99a6edf34", "Unit number", "urn:resqml:F2I.com:testingAPI", gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__discrete);
@@ -229,18 +229,38 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHd
 		gsoap_resqml2_0_1::resqml20__IndexableElements__intervals, unitNumberPropType);
 	char unitNumbers[5] = { 0, 1, 2, 3, 4 };
 	discreteProp->pushBackCharHdf5Array1dOfValues(unitNumbers, 5, hdfProxy, -1);
+
+#if WITH_EXPERIMENTAL
+	// SeismicWellboreFrameRepresentation
+	RESQML2_2_NS::SeismicWellboreFrameRepresentation* w1i1SeismicFrameRep = pck->createSeismicWellboreFrameRepresentation(
+		wellbore1Interp1, "dcbeea2e-8327-4c5b-97e3-bdced0680de5", "Wellbore1 Interp1 SeismicFrameRep",
+		w1i1TrajRep,
+		0.,
+		0.,
+		localTime3dCrs);
+	w1i1SeismicFrameRep->setMdValues(logMds, 5, hdfProxy);
+	double logTimes[5] = { 0., 10., 20., 25., 30. };
+	w1i1SeismicFrameRep->setTimeValues(logTimes, 5, hdfProxy);
+
+	RESQML2_2_NS::SeismicWellboreFrameRepresentation* w1i1RegularSeismicFrameRep = pck->createSeismicWellboreFrameRepresentation(
+		wellbore1Interp1, "7f1b75ff-1226-4c0a-a531-8f71661da419", "Wellbore1 Interp1 Regular SeismicFrameRep",
+		w1i1TrajRep,
+		0.,
+		0.,
+		localTime3dCrs);
+	w1i1RegularSeismicFrameRep->setMdValues(0, 200, 6);
+	w1i1RegularSeismicFrameRep->setTimeValues(0., 10., 6);
+#endif
 }
 
 void serializePerforations(COMMON_NS::DataObjectRepository * pck)
 {
 	// WELL COMPLETION
 	WITSML2_0_NS::WellCompletion* wellCompletion = pck->createWellCompletion(witsmlWell, "6593d580-2f44-4b18-97ce-8a9cf42a0414", "WellCompletion1");
-	WITSML2_0_NS::WellCompletion* toto = static_cast<WITSML2_0_NS::WellCompletion*>(pck->getDataObjectByUuid("6593d580-2f44-4b18-97ce-8a9cf42a0414"));
-	toto->getActivityCount();
 	// WELLBORE COMPLETION
 	WITSML2_0_NS::WellboreCompletion* wellboreCompletion = pck->createWellboreCompletion(witsmlWellbore, wellCompletion, "7bda8ecf-2037-4dc7-8c59-db6ca09f2008", "WellboreCompletion1", "wellCompletionName");
 
-	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980);
+	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1970, 1980, "myId");
 	wellboreCompletion->pushBackPerforation("Mean Sea Level", gsoap_eml2_1::eml21__LengthUom__m, 1990, 2000);
 	wellboreCompletion->pushBackPerforationHistory(0);
 	wellboreCompletion->setPerforationHistoryStatus(0, 0, gsoap_eml2_1::witsml20__PerforationStatus__open);
@@ -261,7 +281,7 @@ void serializePerforations(COMMON_NS::DataObjectRepository * pck)
 	wellboreCompletion->setPerforationHistoryStartDate(1, 1, 1514764800);
 }
 
-#ifdef WITH_EXPERIMENTAL
+#if WITH_EXPERIMENTAL
 void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, COMMON_NS::AbstractHdfProxy * hdfProxy)
 {
 	COMMON_NS::GraphicalInformationSet* graphicalInformationSet = repo->createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
@@ -823,10 +843,10 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, propType1);
 	unsigned short prop1Values[2] = { 0, 1 };
 	discreteProp1->pushBackUShortHdf5Array3dOfValues(prop1Values, 2, 1, 1, hdfProxy, 1111);
-	DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(ijkgrid, "", "Two faulted sugar cubes other cellIndex", 1,
+	DiscreteProperty* discreteProp2 = pck->createDiscreteProperty(ijkgrid, "da73937c-2c60-4e10-8917-5154fde4ded5", "Two faulted sugar cubes other cellIndex", 1,
 		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, propType1);
-	unsigned short prop2Values[2] = { 10, 11 };
-	discreteProp2->pushBackUShortHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
+	LONG64 prop2Values[2] = { 10, 11 };
+	discreteProp2->pushBackLongHdf5Array3dOfValues(prop2Values, 2, 1, 1, hdfProxy, 1111);
 
 	RESQML2_NS::PropertySet* propSet = pck->createPropertySet("", "Testing property set", false, true,gsoap_resqml2_0_1::resqml20__TimeSetKind__not_x0020a_x0020time_x0020set);
 	propSet->pushBackProperty(discreteProp1);
@@ -900,7 +920,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	ijkgrid->setIntervalAssociationWithStratigraphicOrganizationInterpretation(&stratiUnitIndice, 1000, stratiColumnRank0);
 
 	// Partial transfer
-	UnstructuredGridRepresentation* partialGrid = pck->createPartialUnstructuredGridRepresentation("", "Partial Grid");
+	UnstructuredGridRepresentation* partialGrid = pck->createPartial<UnstructuredGridRepresentation>("", "Partial Grid");
 	ContinuousProperty* continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "Testing partial property", 1,
 		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	double continuousProp1Values[6] = { 0, 1, 2, 3, 4, 5 };
@@ -1884,7 +1904,7 @@ bool serialize(const string & filePath)
 	serializeRepresentationSetRepresentation(&repo, hdfProxy);
 	serializeFluidBoundary(repo, hdfProxy);
 	serializeRockFluidOrganization(repo, hdfProxy);
-#ifdef WITH_EXPERIMENTAL
+#if WITH_EXPERIMENTAL
 	serializeGraphicalInformationSet(&repo, hdfProxy);
 #endif
 	// Add an extended core property before to serialize
@@ -1912,7 +1932,7 @@ void showAllMetadata(COMMON_NS::AbstractObject const * obj, const std::string & 
 		std::cout << prefix << "Creation date is (unix timestamp) : " << creation << std::endl;
 		tm creationTm = obj->getCreationAsTimeStructure();
 		std::cout << prefix << "Creation date is (struct tm) : " << 1900 + creationTm.tm_year << "-" << creationTm.tm_mon + 1 << "-" << creationTm.tm_mday << "T" << creationTm.tm_hour << ":" << creationTm.tm_min << ":" << creationTm.tm_sec << std::endl;
-		if (obj->hasVersion()) {
+		if (!obj->getVersion().empty()) {
 			std::cout << prefix << "version is : " << obj->getVersion() << std::endl;
 		}
 		std::cout << prefix << "--------------------------------------------------" << std::endl;
@@ -1992,7 +2012,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 				const LONG64 minValue = discreteProp->getMinimumValue();
 				std::cout << "\tMax value is " << maxValue << endl;
 				std::cout << "\tMin value is " << minValue << endl;
-				long* values = new long[valueCount];
+				LONG64* values = new LONG64[valueCount];
 				propVal->getLongValuesOfPatch(0, values);
 				for (size_t valueIndex = 0; valueIndex < valueCount; ++valueIndex) {
 					std::cout << "\tDiscrete value at index " << valueIndex << " == "<< values[valueIndex] << endl;
@@ -2004,7 +2024,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 			if (dynamic_cast<ContinuousProperty const *>(propVal) == nullptr) {
 				cerr << "\tERROR !!!!! The discrete or categorical property is linked to a floating point HDF5 dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
-				long* values = new long[valueCount];
+				LONG64* values = new LONG64[valueCount];
 				propVal->getLongValuesOfPatch(0, values);
 				for (size_t valueIndex = 0; valueIndex < valueCount; ++valueIndex) {
 					std::cout << "\tDiscrete value at index " << valueIndex << " == "<< values[valueIndex] << endl;
@@ -3284,7 +3304,7 @@ void deserializePerforations(COMMON_NS::DataObjectRepository & pck)
 
 	for (unsigned int perforationIndex = 0; perforationIndex < wellboreCompletion->getPerforationCount(); ++perforationIndex)
 	{
-		cout << std::endl << "perforation " << perforationIndex << ":" << std::endl;
+		cout << std::endl << "perforation " << perforationIndex << " with uid \"" << wellboreCompletion->getPerforationUid(perforationIndex) << "\":" << std::endl;
 		if (wellboreCompletion->hasPerforationMdDatum(perforationIndex))
 		{
 			cout << "datum: " << wellboreCompletion->getPerforationMdDatum(perforationIndex) << std::endl;
@@ -3337,7 +3357,7 @@ void deserializePerforations(COMMON_NS::DataObjectRepository & pck)
 	}
 }
 
-#ifdef WITH_EXPERIMENTAL
+#if WITH_EXPERIMENTAL
 void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 {
 	std::cout << "GRAPHICAL INFORMATIONS" << std::endl;
@@ -3498,7 +3518,9 @@ void deserialize(const string & inputFile)
 
 	std::cout << "FAULTS" << endl;
 	for (size_t i = 0; i < faultSet.size(); ++i) {
-		showAllMetadata(faultSet[i]);
+		TectonicBoundaryFeature const * faultFeature = faultSet[i];
+		showAllMetadata(faultFeature);
+		std::cout << "InterpretationCount : " << faultFeature->getInterpretationCount() << std::endl;
 	}
 
 	std::cout << faultPolyRep.size() << " FAULT POLYLINE SET REP" << endl;
@@ -3582,11 +3604,13 @@ void deserialize(const string & inputFile)
 
 	std::cout << "HORIZONS" << endl;
 	for (size_t i = 0; i < horizonSet.size(); i++) {
-		showAllMetadata(horizonSet[i]);
-		if (horizonSet[i]->hasAnAge()) {
-			cout << "Age " << horizonSet[i]->getAge() << " years" << endl;
+		Horizon const * horFeature = horizonSet[i];
+		showAllMetadata(horFeature);
+		if (horFeature->hasAnAge()) {
+			cout << "Age " << horFeature->getAge() << " years" << endl;
 		}
 		std::cout << std::endl;
+		std::cout << "InterpretationCount : " << horFeature->getInterpretationCount() << std::endl;
 	}
 
 	std::cout << "HORIZONS GRID 2D REP" << endl;
@@ -3761,12 +3785,12 @@ void deserialize(const string & inputFile)
 						if (wmf->getPropertySet()[l]->getXmlTag() == CategoricalProperty::XML_TAG)
 						{
 							CategoricalProperty const * catVal = static_cast<CategoricalProperty const *>(wmf->getPropertySet()[l]);
-							if (catVal->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::LONG)
+							if (catVal->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::LONG_64)
 							{
 								std::cout << "Hdf datatype is NATIVE LONG" << std::endl;
-								long* tmp = new long[wmf->getMdValuesCount()];
+								LONG64* tmp = new LONG64[wmf->getMdValuesCount()];
 								catVal->getLongValuesOfPatch(0, tmp);
-								for (unsigned int ind = 0; ind < 2; ind++)
+								for (size_t ind = 0; ind < 2; ind++)
 									std::cout << "Value " << ind << " : " << tmp[ind] << std::endl;
 								delete[] tmp;
 							}
@@ -3784,13 +3808,14 @@ void deserialize(const string & inputFile)
 	deserializePerforations(repo);
 
 	std::cout << endl << "WELLBORES CUBIC TRAJ" << endl;
-	for (size_t i = 0; i < wellboreCubicTrajSet.size(); i++)
+	for (size_t i = 0; i < wellboreCubicTrajSet.size(); ++i)
 	{
 		showAllMetadata(wellboreCubicTrajSet[i]);
 		std::cout << "MD Datum is : " << wellboreCubicTrajSet[i]->getMdDatum()->getTitle() << std::endl;
 		std::cout << "--------------------------------------------------" << std::endl;
-		if (wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches() == 0)
+		if (wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches() == 0) {
 			break;
+		}
 		double* mdValues = new double[wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches()];
 		wellboreCubicTrajSet[i]->getMdValues(mdValues);
 		double* xyzPt = new double[wellboreCubicTrajSet[i]->getXyzPointCountOfAllPatches() * 3];
@@ -3803,7 +3828,7 @@ void deserialize(const string & inputFile)
 		delete[] xyzPt;
 		std::cout << "LOGS" << endl;
 		std::cout << "--------------------------------------------------" << std::endl;
-		std::vector<WellboreFrameRepresentation *> wellboreFrameSet = wellboreCubicTrajSet[i]->getWellboreFrameRepresentationSet();
+		std::vector<RESQML2_NS::WellboreFrameRepresentation *> wellboreFrameSet = wellboreCubicTrajSet[i]->getWellboreFrameRepresentationSet();
 		for (size_t j = 0; j < wellboreFrameSet.size(); j++)
 		{
 			showAllMetadata(wellboreFrameSet[j]);
@@ -3824,6 +3849,31 @@ void deserialize(const string & inputFile)
 				std::cout << "Hdf datatype is NATIVE FLOAT" << std::endl;
 			else if (wellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN)
 				std::cout << "Hdf datatype is UNKNOWN" << std::endl;
+			std::cout << std::endl;
+#if WITH_EXPERIMENTAL
+			if (wellboreFrameSet[j]->getXmlTag() == "SeismicWellboreFrameRepresentation") {
+				RESQML2_2_NS::SeismicWellboreFrameRepresentation* seismicWellboreFrame = static_cast<RESQML2_2_NS::SeismicWellboreFrameRepresentation*>(wellboreFrameSet[j]);
+				std::cout << "Seismic reference datum : " << seismicWellboreFrame->getSeismicReferenceDatum() << std::endl;
+				std::cout << "Weathering velocity : " << seismicWellboreFrame->getWeatheringVelocity() << std::endl;
+				if (seismicWellboreFrame->areTimeValuesRegularlySpaced())
+				{
+					std::cout << "Time values regularly spaced" << std::endl;
+					std::cout << "First Value : " << seismicWellboreFrame->getTimeFirstValue() << endl;
+					std::cout << "Increment : " << seismicWellboreFrame->getTimeConstantIncrementValue() << endl;
+				}
+				else
+				{
+					std::cout << "Time values iregularly spaced" << std::endl;
+				}
+				if (seismicWellboreFrame->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::DOUBLE)
+					std::cout << "Hdf datatype is NATIVE DOUBLE" << std::endl;
+				else if (seismicWellboreFrame->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::FLOAT)
+					std::cout << "Hdf datatype is NATIVE FLOAT" << std::endl;
+				else if (seismicWellboreFrame->getTimeHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN)
+					std::cout << "Hdf datatype is UNKNOWN" << std::endl;
+				std::cout << std::endl;
+			}
+#endif
 		}
 	}
 
@@ -4217,7 +4267,7 @@ void deserialize(const string & inputFile)
 		}
 	}
 
-#ifdef WITH_EXPERIMENTAL
+#if WITH_EXPERIMENTAL
 	// GRAPHICAL INFORMATION
 	deserializeGraphicalInformationSet(repo);
 #endif

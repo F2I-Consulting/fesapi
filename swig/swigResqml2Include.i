@@ -17,7 +17,10 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 %{
-#include "resqml2/ActivityTemplate.h"
+#define SWIG_FILE_WITH_INIT // In case we use Python Swig Wrapping
+
+#include "../src/resqml2/ActivityTemplate.h"
+#include "../src/common/HdfProxy.h"
 %}
 typedef long long					LONG64;
 
@@ -68,6 +71,7 @@ namespace RESQML2_NS
 	%nspace RESQML2_NS::RepresentationSetRepresentation;
 	%nspace RESQML2_NS::SubRepresentation;
 	%nspace RESQML2_NS::TimeSeries;
+	%nspace RESQML2_NS::WellboreFrameRepresentation;
 #endif
 
 namespace gsoap_resqml2_0_1
@@ -497,11 +501,11 @@ namespace RESQML2_NS
 		COMMON_NS::AbstractObject::hdfDatatypeEnum getValuesHdfDatatype() const;
 		virtual std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64 nullValue) = 0;
 		
-		long getLongValuesOfPatch(unsigned int patchIndex, long * values) const;
+		LONG64 getLongValuesOfPatch(unsigned int patchIndex, LONG64 * values) const;
 
 		LONG64 getNullValueOfPatch(unsigned int patchIndex) const;
 
-		unsigned long getULongValuesOfPatch(unsigned int patchIndex, unsigned long * values) const;
+		ULONG64 getULongValuesOfPatch(unsigned int patchIndex, ULONG64 * values) const;
 
 		int getIntValuesOfPatch(unsigned int patchIndex, int * values) const;
 
@@ -560,7 +564,7 @@ namespace RESQML2_NS
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 
 		void pushBackLongHdf5SlabArray3dOfValues(
-			long* values, 
+			LONG64* values, 
 			unsigned int valueCountInFastestDim, 
 			unsigned int valueCountInMiddleDim, 
 			unsigned int valueCountInSlowestDim, 
@@ -570,15 +574,15 @@ namespace RESQML2_NS
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 
 		void pushBackLongHdf5SlabArrayOfValues(
-			long * values, 
-			unsigned long long * numValues,
-			unsigned long long * offsetValues,
+			LONG64 * values, 
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
 			unsigned int numArrayDimensions, 
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 
 		void getLongValuesOfPatch(
 			unsigned int patchIndex, 
-			long* values, 
+			LONG64* values, 
 			unsigned long long* numValuesInEachDimension,
 			unsigned long long* offsetInEachDimension,
 			unsigned int numArrayDimensions
@@ -586,7 +590,7 @@ namespace RESQML2_NS
 
 		void getLongValuesOf3dPatch(
 			unsigned int patchIndex, 
-			long* values, 
+			LONG64* values, 
 			unsigned int valueCountInFastestDim, 
 			unsigned int valueCountInMiddleDim, 
 			unsigned int valueCountInSlowestDim, 
@@ -594,5 +598,23 @@ namespace RESQML2_NS
 			unsigned int offsetInMiddleDim, 
 			unsigned int offsetInSlowestDim
 		) const;
+	};
+
+	class WellboreFrameRepresentation : public RESQML2_NS::AbstractRepresentation
+	{
+	public:
+		void setMdValues(double const * mdValues, unsigned int mdValueCount, COMMON_NS::AbstractHdfProxy* proxy = nullptr);
+		void setMdValues(double firstMdValue, double incrementMdValue, unsigned int mdValueCount);
+
+		bool areMdValuesRegularlySpaced() const;
+		double getMdConstantIncrementValue() const;
+		double getMdFirstValue() const;
+		unsigned int getMdValuesCount() const;
+		AbstractValuesProperty::hdfDatatypeEnum getMdHdfDatatype() const;
+		void getMdAsDoubleValues(double * values) const;
+		void getMdAsFloatValues(float * values) const;
+
+		std::string getWellboreTrajectoryUuid() const;
+		RESQML2_0_1_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
 	};
 }

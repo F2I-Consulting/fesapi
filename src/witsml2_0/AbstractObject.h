@@ -18,9 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "witsml2/AbstractObject.h"
+#include "../witsml2/AbstractObject.h"
 
-#include "witsml2_0/MacroDefinitions.h"
+#include "MacroDefinitions.h"
 
 namespace WITSML2_0_NS
 {
@@ -43,13 +43,16 @@ namespace WITSML2_0_NS
 		/**
 		* Constructor for partial transfer
 		*/
-		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Default constructor
 		*/
 		AbstractObject() {}
 
+		/**
+		* Constructor when importing EML 2.1 dataobjects
+		*/
 		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) : WITSML2_NS::AbstractObject(proxy) {}
 	};
 }

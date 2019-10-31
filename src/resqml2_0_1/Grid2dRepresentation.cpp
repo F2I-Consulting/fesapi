@@ -16,15 +16,15 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "resqml2_0_1/Grid2dRepresentation.h"
+#include "Grid2dRepresentation.h"
 
 #include <algorithm>
 #include <stdexcept>
 
-#include "resqml2/AbstractFeatureInterpretation.h"
-#include "resqml2_0_1/SeismicLatticeFeature.h"
-#include "common/AbstractHdfProxy.h"
-#include "resqml2_0_1/LocalDepth3dCrs.h"
+#include "../resqml2/AbstractFeatureInterpretation.h"
+#include "SeismicLatticeFeature.h"
+#include "../common/AbstractHdfProxy.h"
+#include "LocalDepth3dCrs.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -35,7 +35,7 @@ const char* Grid2dRepresentation::XML_TAG = "Grid2dRepresentation";
 Grid2dRepresentation::Grid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const string & guid, const std::string & title)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGrid2dRepresentation(interp->getGsoapContext(), 1);
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREGrid2dRepresentation(interp->getGsoapContext());
 	_resqml20__Grid2dRepresentation* singleGrid2dRep = static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1);
 
 	initMandatoryMetadata();
@@ -627,7 +627,7 @@ void Grid2dRepresentation::setGeometryAsArray2dOfLatticePoints3d(
 			xOffsetInSlowestDirection, yOffsetInSlowestDirection, zOffsetInSlowestDirection,
 			spacingInFastestDirection, spacingInSlowestDirection, localCrs);
 
-	resqml20__Grid2dPatch* patch = soap_new_resqml20__Grid2dPatch(gsoapProxy2_0_1->soap, 1);
+	resqml20__Grid2dPatch* patch = soap_new_resqml20__Grid2dPatch(gsoapProxy2_0_1->soap);
 	patch->PatchIndex = 0;
 	patch->Geometry = geomPatch;
 	patch->SlowestAxisCount = numPointsInSlowestDirection;
@@ -649,7 +649,7 @@ void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
 		localCrs = getRepository()->getDefaultCrs();
 	}
 
-	resqml20__Grid2dPatch* patch = soap_new_resqml20__Grid2dPatch(gsoapProxy2_0_1->soap, 1);
+	resqml20__Grid2dPatch* patch = soap_new_resqml20__Grid2dPatch(gsoapProxy2_0_1->soap);
 	static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch = patch;
 
 	patch->PatchIndex = 0;
@@ -678,7 +678,7 @@ void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
 		localCrs = getRepository()->getDefaultCrs();
 	}
 
-	resqml20__Grid2dPatch* patch = soap_new_resqml20__Grid2dPatch(gsoapProxy2_0_1->soap, 1);
+	resqml20__Grid2dPatch* patch = soap_new_resqml20__Grid2dPatch(gsoapProxy2_0_1->soap);
 	static_cast<_resqml20__Grid2dRepresentation*>(gsoapProxy2_0_1)->Grid2dPatch = patch;
 
 	patch->PatchIndex = 0;

@@ -16,14 +16,14 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "common/HdfProxy.h"
+#include "HdfProxy.h"
 
 #include <algorithm>
 #include <numeric>
 #include <stdexcept>
 #include <sstream>
 
-#include "hdf5.h"
+#include <hdf5.h>
 
 // https://support.hdfgroup.org/HDF5/doc/Advanced/Chunking/index.html
 #define MAX_CHUNK_SIZE 0xffffffff // 2^32 - 1
@@ -43,6 +43,9 @@ void HdfProxy::open()
 	if (openingMode == COMMON_NS::DataObjectRepository::READ_ONLY) {
 		if (H5Fis_hdf5((packageDirectoryAbsolutePath + relativeFilePath).c_str()) > 0) {
 			hdfFile = H5Fopen((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_RDONLY, H5P_DEFAULT);
+			if (hdfFile < 0) {
+				throw invalid_argument("Can not open HDF5 file (in read only mode) : " + packageDirectoryAbsolutePath + relativeFilePath);
+			}
 
 			// Check the uuid
 			string hdfUuid = readStringAttribute(".", "uuid");
@@ -67,6 +70,9 @@ void HdfProxy::open()
 		if (hdfFile < 0) {
 			if (H5Fis_hdf5((packageDirectoryAbsolutePath + relativeFilePath).c_str()) > 0) {
 				hdfFile = H5Fopen((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_RDWR, access_props);
+				if (hdfFile < 0) {
+					throw invalid_argument("Can not open HDF5 file (in read and write mode): " + packageDirectoryAbsolutePath + relativeFilePath);
+				}
 
 				string hdfUuid = readStringAttribute(".", "uuid");
 				if (getUuid() != hdfUuid) {
@@ -112,6 +118,9 @@ void HdfProxy::open()
 #endif
 
 		hdfFile = H5Fcreate((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, access_props);
+		if (hdfFile < 0) {
+			throw invalid_argument("Can not create HDF5 file : " + packageDirectoryAbsolutePath + relativeFilePath);
+		}
 
 		// create an attribute at the file level to store the uuid of the corresponding resqml hdf proxy.
 		hid_t aid = H5Screate(H5S_SCALAR);
@@ -139,10 +148,6 @@ void HdfProxy::open()
 	}
 	else {
 		throw invalid_argument("The HDF5 permission access is unknown.");
-	}
-
-	if (hdfFile < 0) {
-		throw invalid_argument("The HDF5 file " + packageDirectoryAbsolutePath + relativeFilePath + " could not have been created or opened.");
 	}
 }
 
@@ -182,8 +187,8 @@ void HdfProxy::readArrayNdOfValues(const std::string & datasetName, void* values
 void HdfProxy::readArrayNdOfValues(
 	const std::string & datasetName,
 	void* values,
-	unsigned long long * numValuesInEachDimension,
-	unsigned long long * offsetInEachDimension,
+	unsigned long long const * numValuesInEachDimension,
+	unsigned long long const * offsetInEachDimension,
 	unsigned int numDimensions, hid_t datatype)
 {
 	readArrayNdOfValues(datasetName, values, numValuesInEachDimension, offsetInEachDimension, nullptr, nullptr, numDimensions, datatype);
@@ -192,10 +197,10 @@ void HdfProxy::readArrayNdOfValues(
 void HdfProxy::readArrayNdOfValues(
 	const std::string & datasetName,
 	void* values,
-	unsigned long long * blockCountPerDimension,
-	unsigned long long * offsetInEachDimension,
-	unsigned long long * strideInEachDimension,
-	unsigned long long * blockSizeInEachDimension,
+	unsigned long long const * blockCountPerDimension,
+	unsigned long long const * offsetInEachDimension,
+	unsigned long long const * strideInEachDimension,
+	unsigned long long const * blockSizeInEachDimension,
 	unsigned int numDimensions, hid_t datatype)
 {
 	if (!isOpened()) {
@@ -262,10 +267,10 @@ void HdfProxy::readArrayNdOfValues(
 
 void HdfProxy::selectArrayNdOfValues(
 	const std::string & datasetName,
-	unsigned long long * blockCountPerDimension,
-	unsigned long long * offsetInEachDimension,
-	unsigned long long * strideInEachDimension,
-	unsigned long long * blockSizeInEachDimension,
+	unsigned long long const * blockCountPerDimension,
+	unsigned long long const * offsetInEachDimension,
+	unsigned long long const * strideInEachDimension,
+	unsigned long long const * blockSizeInEachDimension,
 	unsigned int numDimensions,
 	bool newSelection,
 	hid_t & dataset,
@@ -831,8 +836,8 @@ void HdfProxy::readArrayNdOfDoubleValues(const std::string & datasetName, double
 
 void HdfProxy::readArrayNdOfDoubleValues(
 	const std::string & datasetName, double* values,
-	hsize_t * numValuesInEachDimension,
-	hsize_t * offsetInEachDimension,
+	hsize_t const * numValuesInEachDimension,
+	hsize_t const * offsetInEachDimension,
 	unsigned int numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
@@ -842,10 +847,10 @@ void HdfProxy::readArrayNdOfDoubleValues(
 
 void HdfProxy::readArrayNdOfDoubleValues(
 	const std::string & datasetName, double* values,
-	hsize_t * blockCountPerDimension,
-	hsize_t * offsetInEachDimension,
-	hsize_t * strideInEachDimension,
-	hsize_t * blockSizeInEachDimension,
+	hsize_t const * blockCountPerDimension,
+	hsize_t const * offsetInEachDimension,
+	hsize_t const * strideInEachDimension,
+	hsize_t const * blockSizeInEachDimension,
 	unsigned int numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
@@ -869,8 +874,8 @@ void HdfProxy::readArrayNdOfFloatValues(const std::string & datasetName, float* 
 
 void HdfProxy::readArrayNdOfFloatValues(
 	const std::string& datasetName, float* values,
-	hsize_t* numValuesInEachDimension,
-	hsize_t* offsetInEachDimension,
+	hsize_t const * numValuesInEachDimension,
+	hsize_t const * offsetInEachDimension,
 	unsigned int numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
@@ -878,35 +883,25 @@ void HdfProxy::readArrayNdOfFloatValues(
 			H5T_NATIVE_FLOAT);
 }
 
-void HdfProxy::readArrayNdOfGSoapLong64Values(const std::string & datasetName, LONG64* values)
+void HdfProxy::readArrayNdOfLongValues(const std::string & datasetName, LONG64* values)
 {
 	readArrayNdOfValues(datasetName, values, H5T_NATIVE_LLONG);
 }
 
-void HdfProxy::readArrayNdOfGSoapULong64Values(const std::string & datasetName, ULONG64* values)
-{
-	readArrayNdOfValues(datasetName, values, H5T_NATIVE_ULLONG);
-}
-
-void HdfProxy::readArrayNdOfLongValues(const std::string & datasetName, long* values)
-{
-	readArrayNdOfValues(datasetName, values, H5T_NATIVE_LONG);
-}
-
 void HdfProxy::readArrayNdOfLongValues(
-	const std::string& datasetName, long* values,
-	hsize_t* numValuesInEachDimension,
-	hsize_t* offsetInEachDimension,
+	const std::string& datasetName, LONG64* values,
+	hsize_t const * numValuesInEachDimension,
+	hsize_t const * offsetInEachDimension,
 	unsigned int numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,
 			numValuesInEachDimension, offsetInEachDimension, numDimensions,
-			H5T_NATIVE_LONG);
+			H5T_NATIVE_LLONG);
 }
 
-void HdfProxy::readArrayNdOfULongValues(const std::string & datasetName, unsigned long* values)
+void HdfProxy::readArrayNdOfULongValues(const std::string & datasetName, ULONG64* values)
 {
-	readArrayNdOfValues(datasetName, values, H5T_NATIVE_ULONG);
+	readArrayNdOfValues(datasetName, values, H5T_NATIVE_ULLONG);
 }
 
 void HdfProxy::readArrayNdOfIntValues(const std::string & datasetName, int* values)
@@ -916,8 +911,8 @@ void HdfProxy::readArrayNdOfIntValues(const std::string & datasetName, int* valu
 
 void HdfProxy::readArrayNdOfIntValues(
 	const std::string & datasetName, int* values,
-	hsize_t* numValuesInEachDimension,
-	hsize_t* offsetInEachDimension,
+	hsize_t const * numValuesInEachDimension,
+	hsize_t const * offsetInEachDimension,
 	unsigned int numDimensions)
 {
 	readArrayNdOfValues(datasetName, values,

@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/HdfProxy.h"
+#include "../common/HdfProxy.h"
 
 namespace RESQML2_0_1_NS
 {

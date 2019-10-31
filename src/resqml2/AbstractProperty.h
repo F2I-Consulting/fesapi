@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/AbstractObject.h"
+#include "../common/AbstractObject.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -29,12 +29,12 @@ namespace RESQML2_NS
 {
 	class AbstractProperty: public COMMON_NS::AbstractObject
 	{
-	public:
+	protected:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		AbstractProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT AbstractProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
 		* Default constructor
@@ -45,6 +45,8 @@ namespace RESQML2_NS
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		AbstractProperty(gsoap_resqml2_0_1::resqml20__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
+	public:
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -239,7 +241,7 @@ namespace RESQML2_NS
 		/**
 		* Check if the associated standard property kind is allowed for this property.
 		*/
-		virtual bool validatePropertyKindAssociation(const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & pk) = 0;
+		virtual bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) = 0;
 
 		/**
 		* Check if the associated property kind is allowed for this property.
