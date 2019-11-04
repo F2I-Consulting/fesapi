@@ -37,9 +37,6 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-IF (UNIX)
-	add_compile_options(-fPIC)
-ENDIF (UNIX)
 
 # ============================================================================
 # checking for required dependencies
@@ -126,6 +123,7 @@ ENDIF (UNIX)
 
 if (BUILD_SHARED_LIBS)
 	set (LIB_TYPE SHARED)
+	set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 else (BUILD_SHARED_LIBS)
 	set (LIB_TYPE STATIC)
 endif (BUILD_SHARED_LIBS)
