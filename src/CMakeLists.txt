@@ -276,57 +276,66 @@ ENDIF()
 # proxies headers
 INSTALL (
 	FILES ${FESAPI_ROOT_DIR}/src/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/version_config.h
-	DESTINATION include/fesapi/
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/
+	COMPONENT fesapi_headers
 )
 
 # proxies headers
 INSTALL (
 	FILES ${FESAPI_PROXIES_HEADERS}
-	DESTINATION include/fesapi/proxies/
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/proxies/
+	COMPONENT fesapi_headers
 )
 
 # main headers
 INSTALL (
 	FILES ${FESAPI_COMMON_HEADERS}
-	DESTINATION include/fesapi/common
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/common
+	COMPONENT fesapi_headers
 )
 
 # tools headers
 IF (UNIX) # Methods are not exported  under windows
 	INSTALL (
 		FILES ${FESAPI_TOOLS_HEADERS}
-		DESTINATION include/fesapi/tools/
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/tools/
+		COMPONENT fesapi_headers
 	)
 ENDIF (UNIX)
 
 # epc headers
 INSTALL (
 	FILES ${FESAPI_EPC_HEADERS}
-	DESTINATION include/fesapi/epc/
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/epc/
+	COMPONENT fesapi_headers
 )
 
 # resqml headers
 INSTALL (
 	FILES ${FESAPI_RESQML_2_HEADERS}
-	DESTINATION include/fesapi/${RESQML_PREFIX_2}/
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${RESQML_PREFIX_2}/
+	COMPONENT fesapi_headers
 )
 
 INSTALL (
 	FILES ${FESAPI_RESQML_2_0_1_HEADERS}
-	DESTINATION include/fesapi/${RESQML_PREFIX_2_0_1}/
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${RESQML_PREFIX_2_0_1}/
+	COMPONENT fesapi_headers
 )
 
 if (WITH_EXPERIMENTAL)
 	INSTALL (
 		FILES ${FESAPI_RESQML_2_2_HEADERS}
-		DESTINATION include/fesapi/${RESQML_PREFIX_2_2}/
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${RESQML_PREFIX_2_2}/
+		COMPONENT fesapi_headers
 	)
 endif(WITH_EXPERIMENTAL)
 
 # witsml headers
 INSTALL (
 	FILES ${FESAPI_WITSML_2_0_HEADERS}
-	DESTINATION include/fesapi/${WITSML_PREFIX_2_0}/
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${WITSML_PREFIX_2_0}/
+	COMPONENT fesapi_headers
 )
 
 # prodml headers
@@ -338,11 +347,13 @@ INSTALL (
 # PropertyTypeMapping.xml
 INSTALL (
 	FILES ${FESAPI_ROOT_DIR}/resources/PropertyKindMapping.xml
-	DESTINATION resources/
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/resources/
+	COMPONENT fesapi_runtime
 )
 
 # license
 INSTALL (
 	FILES ${FESAPI_ROOT_DIR}/LICENSE ${FESAPI_ROOT_DIR}/NOTICE
-	DESTINATION .
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/
+	COMPONENT fesapi_runtime
 )
