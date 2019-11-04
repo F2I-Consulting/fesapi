@@ -43,7 +43,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # ============================================================================
 
 # path to custom find_package modules
-SET (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules/")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
 # hdf5
 # FIND_PACKAGE (HDF5) is not used because we need debug and release versions of hdf5 for windows build environments. The cmake module does not provide both debug and release library cmake variables.
