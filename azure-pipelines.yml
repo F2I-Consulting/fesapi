@@ -87,6 +87,18 @@ jobs:
         displayName: "Build --config $(BuildType)"
         inputs:
           cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
+          
+      - powershell: |
+          Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
+          Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
+          ctest -C $(BuildType) -V
+        failOnStderr: true
+        workingDirectory: $(Build.SourcesDirectory)\build
+        displayName: 'Test'
+
+      - script: |
+          $(Build.SourcesDirectory)\build\$(BuildType)\example.exe"
+        displayName: 'Example'
   - job:
     displayName: Windows VS2017
     pool:
@@ -158,6 +170,18 @@ jobs:
         displayName: "Build --config $(BuildType)"
         inputs:
           cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
+
+      - powershell: |
+          Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
+          Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
+          ctest -C $(BuildType) -V
+        failOnStderr: true
+        workingDirectory: $(Build.SourcesDirectory)\build
+        displayName: 'Test'
+
+      - script: |
+          $(Build.SourcesDirectory)\build\$(BuildType)\example.exe"
+        displayName: 'Example'
   - job:
     displayName: Windows VS2019
     pool:
@@ -229,3 +253,15 @@ jobs:
         displayName: "Build --config $(BuildType)"
         inputs:
           cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
+
+      - powershell: |
+          Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
+          Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
+          ctest -C $(BuildType) -V
+        failOnStderr: true
+        workingDirectory: $(Build.SourcesDirectory)\build
+        displayName: 'Test'
+
+      - script: |
+          $(Build.SourcesDirectory)\build\$(BuildType)\example.exe"
+        displayName: 'Example'
