@@ -12,8 +12,6 @@ matrix:
             - mkdir ../build
             - cd ../build
             - cmake $TRAVIS_BUILD_DIR
-                -DHDF5_C_INCLUDE_DIR=/usr/include
-                -DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libhdf5.so
                 -DMiniZip_ROOT=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.1-linux-ubuntu1604-x86_64-gcc540
                 -DWITH_EXAMPLE=TRUE
                 -DWITH_EXPERIMENTAL=TRUE
@@ -31,8 +29,6 @@ matrix:
             - mkdir ../build
             - cd ../build
             - cmake $TRAVIS_BUILD_DIR
-                -DHDF5_C_INCLUDE_DIR=/usr/include
-                -DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libhdf5.so
                 -DMiniZip_ROOT=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.1-linux-ubuntu1604-x86_64-gcc540                
                 -DWITH_EXAMPLE=TRUE
                 -DWITH_EXPERIMENTAL=TRUE
