@@ -38,6 +38,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 
+include(CMakePackageConfigHelpers)
 
 # ============================================================================
 # checking for required dependencies
@@ -90,9 +91,6 @@ set (WITH_EXPERIMENTAL OFF CACHE BOOL "Compile some experimental functionalities
 # ============================================================================
 # including subdirectories
 # ============================================================================
-
-include(GenerateExportHeader)
-include(CMakePackageConfigHelpers)
 
 add_subdirectory(src)
 add_subdirectory(doc)
