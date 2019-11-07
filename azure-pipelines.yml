@@ -49,15 +49,15 @@ jobs:
             targetType: 'inline'
             script: |
                 Write-Host "Downloading SWIG..."
-                $url = "http://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip"
-                $output = [System.IO.Path]::Combine("C:/", "swigwin-3.0.12.zip")
+                $url = "http://prdownloads.sourceforge.net/swig/swigwin-4.0.1.zip"
+                $output = [System.IO.Path]::Combine("C:/", "swigwin-4.0.1.zip")
                 (new-object System.Net.WebClient).DownloadFile($url, $output)
             errorActionPreference: 'stop'
             failOnStderr: 'true'
         displayName: Download SWIG from official repository
       - task: ExtractFiles@1
         inputs:
-          archiveFilePatterns: 'C:/swigwin-3.0.12.zip'
+          archiveFilePatterns: 'C:/swigwin-4.0.1.zip'
           destinationFolder: 'C:/'
           cleanDestinationFolder: false
         displayName: Install SWIG
@@ -79,7 +79,7 @@ jobs:
             -DWITH_EXPERIMENTAL=TRUE
             -DWITH_DOTNET_WRAPPING=TRUE
             -DWITH_TEST=TRUE
-            -DSWIG_EXECUTABLE=C:/swigwin-3.0.12/swig.exe
+            -DSWIG_EXECUTABLE=C:/swigwin-4.0.1/swig.exe
 
       - task: CMake@1
         displayName: "Build --config $(BuildType)"
@@ -130,15 +130,15 @@ jobs:
             targetType: 'inline'
             script: |
                 Write-Host "Downloading SWIG..."
-                $url = "http://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip"
-                $output = [System.IO.Path]::Combine("C:/", "swigwin-3.0.12.zip")
+                $url = "http://prdownloads.sourceforge.net/swig/swigwin-4.0.1.zip"
+                $output = [System.IO.Path]::Combine("C:/", "swigwin-4.0.1.zip")
                 (new-object System.Net.WebClient).DownloadFile($url, $output)
             errorActionPreference: 'stop'
             failOnStderr: 'true'
         displayName: Download SWIG from official repository
       - task: ExtractFiles@1
         inputs:
-          archiveFilePatterns: 'C:/swigwin-3.0.12.zip'
+          archiveFilePatterns: 'C:/swigwin-4.0.1.zip'
           destinationFolder: 'C:/'
           cleanDestinationFolder: false
         displayName: Install SWIG
@@ -160,7 +160,7 @@ jobs:
             -DWITH_EXPERIMENTAL=TRUE
             -DWITH_DOTNET_WRAPPING=TRUE
             -DWITH_TEST=TRUE
-            -DSWIG_EXECUTABLE=C:/swigwin-3.0.12/swig.exe
+            -DSWIG_EXECUTABLE=C:/swigwin-4.0.1/swig.exe
 
       - task: CMake@1
         displayName: "Build --config $(BuildType)"
@@ -211,15 +211,15 @@ jobs:
             targetType: 'inline'
             script: |
                 Write-Host "Downloading SWIG..."
-                $url = "http://prdownloads.sourceforge.net/swig/swigwin-3.0.12.zip"
-                $output = [System.IO.Path]::Combine("C:/", "swigwin-3.0.12.zip")
+                $url = "http://prdownloads.sourceforge.net/swig/swigwin-4.0.1.zip"
+                $output = [System.IO.Path]::Combine("C:/", "swigwin-4.0.1.zip")
                 (new-object System.Net.WebClient).DownloadFile($url, $output)
             errorActionPreference: 'stop'
             failOnStderr: 'true'
         displayName: Download SWIG from official repository
       - task: ExtractFiles@1
         inputs:
-          archiveFilePatterns: 'C:/swigwin-3.0.12.zip'
+          archiveFilePatterns: 'C:/swigwin-4.0.1.zip'
           destinationFolder: 'C:/'
           cleanDestinationFolder: false
         displayName: Install SWIG
@@ -236,12 +236,12 @@ jobs:
             -DHDF5_C_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/hdf5.lib
             -DMiniZip_ROOT=C:/minizip-1.1-win64-vs2015-static
-            -DZLIB_ROOT=C:/hdf5-1.8.18-win64-vs2015-noszip            
+            -DZLIB_ROOT=C:/hdf5-1.8.18-win64-vs2015-noszip
             -DWITH_EXAMPLE=TRUE
             -DWITH_EXPERIMENTAL=TRUE
             -DWITH_DOTNET_WRAPPING=TRUE
             -DWITH_TEST=TRUE
-            -DSWIG_EXECUTABLE=C:/swigwin-3.0.12/swig.exe
+            -DSWIG_EXECUTABLE=C:/swigwin-4.0.1/swig.exe
 
       - task: CMake@1
         displayName: "Build --config $(BuildType)"
