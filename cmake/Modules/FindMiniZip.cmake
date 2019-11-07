@@ -77,12 +77,12 @@ if(MiniZip_FOUND)
 
 	  if(MiniZip_LIBRARY_RELEASE)
 			set_property(TARGET MiniZip::MiniZip APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
-			set_target_properties(TARGET MiniZip::MiniZip APPEND PROPERTY IMPORTED_LOCATION "${MiniZip_LIBRARY_RELEASE}")
+			set_target_properties(MiniZip::MiniZip APPEND PROPERTY IMPORTED_LOCATION "${MiniZip_LIBRARY_RELEASE}")
 		endif()
 
 		if(MiniZip_LIBRARY_DEBUG)
 			set_property(TARGET MiniZip::MiniZip APPEND PROPERTY IMPORTED_CONFIGURATIONS DEBUG)
-			set_target_properties(TARGET MiniZip::MiniZip APPEND PROPERTY IMPORTED_LOCATION "${MiniZip_LIBRARY_DEBUG}")
+			set_target_properties(MiniZip::MiniZip APPEND PROPERTY IMPORTED_LOCATION "${MiniZip_LIBRARY_DEBUG}")
 		endif()
 
 		if(NOT MiniZip_LIBRARY_RELEASE AND NOT MiniZip_LIBRARY_DEBUG)
