@@ -8,16 +8,16 @@ PROJECT (Fesapi_Example)
 
 find_package(FesapiCpp REQUIRED)
 
-INCLUDE_DIRECTORIES (
-	# ${FESAPI_ROOT_DIR}/src/
-	${HDF5_INCLUDE_DIRS}
-	# ${MINIZIP_INCLUDE_DIR}
-	# ${ZLIB_INCLUDE_DIRS}
-)
+# INCLUDE_DIRECTORIES (
+# 	# ${FESAPI_ROOT_DIR}/src/
+# 	${HDF5_INCLUDE_DIRS}
+# 	# ${MINIZIP_INCLUDE_DIR}
+# 	# ${ZLIB_INCLUDE_DIRS}
+# )
 
-IF (WITH_SZIP)
-	INCLUDE_DIRECTORIES (${SZIP_INCLUDE_DIRS})
-ENDIF (WITH_SZIP)
+# IF (WITH_SZIP)
+# 	INCLUDE_DIRECTORIES (${SZIP_INCLUDE_DIRS})
+# ENDIF (WITH_SZIP)
 
 # ============================================================================
 # build example
@@ -36,11 +36,14 @@ SET(CMAKE_INSTALL_RPATH "\$ORIGIN/${CMAKE_INSTALL_LIBDIR}")
 SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 ADD_EXECUTABLE (example ${CMAKE_CURRENT_SOURCE_DIR}/example.cpp)
+
+target_include_directories(example PRIVATE ${HDF5_INCLUDE_DIRS})
+
 if (WITH_EXPERIMENTAL)
 	target_compile_definitions(example PRIVATE "-DWITH_EXPERIMENTAL")
 endif(WITH_EXPERIMENTAL)
 
-target_link_libraries(example Fesapi::FesapiCpp)
+target_link_libraries(example Fesapi::FesapiCpp  ${HDF5_LIBRARIES})
 
 # ADD_DEPENDENCIES (example ${CPP_LIBRARY_NAME})
 # TARGET_LINK_LIBRARIES (example ${CPP_LIBRARY_NAME})

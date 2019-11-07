@@ -61,7 +61,7 @@ list(APPEND CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}")
 # 	MESSAGE(WARNING "The HDF5 library (HDF5_C_LIBRARY_DEBUG variable) does not look to be a valid file. Please modify it.")
 # ENDIF ()
 IF (WIN32)
-	SET (HDF5_BUILT_AS_DYNAMIC_LIB ON CACHE BOOL "Is your HDF5 library built as a dynamic library ?")
+	SET (HDF5_USE_STATIC_LIBRARIES OFF CACHE BOOL "Is your HDF5 library built as a static library ?")
 ENDIF (WIN32)
 SET (HDF5_1_10 OFF CACHE BOOL "Is your HDF5 library version 1.10 or 1.8 ?")
 

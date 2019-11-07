@@ -1,6 +1,7 @@
 @PACKAGE_INIT@
 include(CMakeFindDependencyMacro)
 find_dependency(ZLIB REQUIRED)
+find_dependency(HDF5 REQUIRED)
 find_dependency(MiniZip REQUIRED)
 
 if(UNIX)

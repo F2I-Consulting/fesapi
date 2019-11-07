@@ -10,9 +10,9 @@ if(UNIX)
 	find_package(UUID REQUIRED)
 endif()
 
-if(NOT HDF5_BUILT_AS_DYNAMIC_LIB)
-	find_package(SZIP)
-endif()
+# if(NOT HDF5_BUILT_AS_DYNAMIC_LIB)
+# 	find_package(SZIP)
+# endif()
 
 add_library (${CPP_LIBRARY_NAME} ${LIB_TYPE} "")
 
@@ -230,9 +230,9 @@ target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_LIBRARIES})
 
 target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE ZLIB::ZLIB MiniZip::MiniZip)
 
-if(NOT HDF5_BUILT_AS_DYNAMIC_LIB)
-	target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE SZIP::SZIP)
-endif()
+# if(NOT HDF5_BUILT_AS_DYNAMIC_LIB)
+# 	target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE SZIP::SZIP)
+# endif()
 
 if (UNIX)
 	target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE UUID::UUID)
