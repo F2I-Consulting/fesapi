@@ -11,6 +11,8 @@ endif()
 
 add_library (${CPP_LIBRARY_NAME} ${LIB_TYPE} "")
 
+add_library(Fesapi::${CPP_LIBRARY_NAME} ALIAS ${CPP_LIBRARY_NAME})
+
 # Create the version config header file in order for fesapi users to know the fesapi version at runtime.
 configure_file(${FESAPI_ROOT_DIR}/cmake/version_config.h.in ${FESAPI_ROOT_DIR}/src/version_config.h)
 
@@ -264,15 +266,80 @@ if (WITH_DOTNET_WRAPPING)
 endif (WITH_DOTNET_WRAPPING)
 
 # ============================================================================
+# Create package
+# ============================================================================
+######## 1. Build tree
+
+export(TARGETS ${CPP_LIBRARY_NAME}
+	NAMESPACE Fesapi::
+	FILE "${CMAKE_BINARY_DIR}/lib/cmake/${CPP_LIBRARY_NAME}/${CPP_LIBRARY_NAME}Targets.cmake"
+)
+
+export(PACKAGE ${CPP_LIBRARY_NAME})
+
+configure_package_config_file(
+	"${CMAKE_CURRENT_SOURCE_DIR}/${CPP_LIBRARY_NAME}Config.cmake.in"
+	"${CMAKE_BINARY_DIR}/lib/cmake/${CPP_LIBRARY_NAME}/${CPP_LIBRARY_NAME}Config.cmake"
+	INSTALL_DESTINATION "${CMAKE_BINARY_DIR}/lib/cmake/${CPP_LIBRARY_NAME}"
+	NO_SET_AND_CHECK_MACRO
+	NO_CHECK_REQUIRED_COMPONENTS_MACRO
+)
+
+write_basic_package_version_file(
+	"${CMAKE_BINARY_DIR}/lib/cmake/${CPP_LIBRARY_NAME}/${CPP_LIBRARY_NAME}ConfigVersion.cmake"
+	VERSION ${Fesapi_VERSION}
+	COMPATIBILITY ExactVersion
+)
+
+######## 2. Install tree
+
+install(TARGETS ${CPP_LIBRARY_NAME}
+	EXPORT ${CPP_LIBRARY_NAME}Targets
+	RUNTIME
+		DESTINATION ${CMAKE_INSTALL_BINDIR}
+		COMPONENT ${CPP_LIBRARY_NAME}_applications
+	LIBRARY
+		DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		COMPONENT ${CPP_LIBRARY_NAME}_libraries
+	ARCHIVE
+		DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		COMPONENT ${CPP_LIBRARY_NAME}_libraries
+)
+
+install(EXPORT ${CPP_LIBRARY_NAME}Targets
+		NAMESPACE Fesapi::
+		DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${CPP_LIBRARY_NAME}"
+		COMPONENT ${CPP_LIBRARY_NAME}_libraries
+)
+
+configure_package_config_file(
+	"${CMAKE_CURRENT_SOURCE_DIR}/${CPP_LIBRARY_NAME}Config.cmake.in"
+	"${CMAKE_BINARY_DIR}/cmake/${CPP_LIBRARY_NAME}/${CPP_LIBRARY_NAME}Config.cmake"
+	INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${CPP_LIBRARY_NAME}"
+	NO_SET_AND_CHECK_MACRO
+	NO_CHECK_REQUIRED_COMPONENTS_MACRO
+)
+
+install(FILES "${CMAKE_BINARY_DIR}/cmake/${CPP_LIBRARY_NAME}/${CPP_LIBRARY_NAME}Config.cmake"
+	DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${CPP_LIBRARY_NAME}"
+	COMPONENT ${CPP_LIBRARY_NAME}_libraries
+)
+
+write_basic_package_version_file(
+	"${CMAKE_BINARY_DIR}/cmake/${CPP_LIBRARY_NAME}/${CPP_LIBRARY_NAME}ConfigVersion.cmake"
+	VERSION ${Fesapi_VERSION}
+	COMPATIBILITY ExactVersion
+)
+
+install(FILES "${CMAKE_BINARY_DIR}/cmake/${CPP_LIBRARY_NAME}/${CPP_LIBRARY_NAME}ConfigVersion.cmake"
+	DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${CPP_LIBRARY_NAME}"
+	COMPONENT ${CPP_LIBRARY_NAME}_libraries
+)
+
+# ============================================================================
 # Install FesapiCpp library
 # ============================================================================
 
-INSTALL (
-	TARGETS ${CPP_LIBRARY_NAME}
-	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-)
 
 IF (WIN32)
 	#PDB for debug

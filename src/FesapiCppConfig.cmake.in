@@ -1,0 +1,12 @@
+@PACKAGE_INIT@
+include(CMakeFindDependencyMacro)
+find_dependency(ZLIB REQUIRED)
+find_dependency(MiniZip REQUIRED)
+
+if(UNIX)
+	find_dependency(UUID REQUIRED)
+endif()
+
+if(NOT TARGET Fesapi::FesapiCpp)
+	include("${CMAKE_CURRENT_LIST_DIR}/FesapiCppTargets.cmake")
+endif()

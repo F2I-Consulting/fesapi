@@ -6,20 +6,18 @@ PROJECT (Fesapi_Example)
 # include directories
 # ============================================================================
 
+find_package(FesapiCpp REQUIRED)
+
 INCLUDE_DIRECTORIES (
-	${FESAPI_ROOT_DIR}/src/
+	# ${FESAPI_ROOT_DIR}/src/
 	${HDF5_INCLUDE_DIRS}
-	${MINIZIP_INCLUDE_DIR}
-	${ZLIB_INCLUDE_DIRS}
+	# ${MINIZIP_INCLUDE_DIR}
+	# ${ZLIB_INCLUDE_DIRS}
 )
 
 IF (WITH_SZIP)
 	INCLUDE_DIRECTORIES (${SZIP_INCLUDE_DIRS})
 ENDIF (WITH_SZIP)
-
-IF (UNIX)
-	INCLUDE_DIRECTORIES (${UUID_INCLUDE_DIRS})
-ENDIF (UNIX)
 
 # ============================================================================
 # build example
@@ -42,8 +40,10 @@ if (WITH_EXPERIMENTAL)
 	target_compile_definitions(example PRIVATE "-DWITH_EXPERIMENTAL")
 endif(WITH_EXPERIMENTAL)
 
-ADD_DEPENDENCIES (example ${CPP_LIBRARY_NAME})
-TARGET_LINK_LIBRARIES (example ${CPP_LIBRARY_NAME})
+target_link_libraries(example Fesapi::FesapiCpp)
+
+# ADD_DEPENDENCIES (example ${CPP_LIBRARY_NAME})
+# TARGET_LINK_LIBRARIES (example ${CPP_LIBRARY_NAME})
 IF (WIN32)
 	SET_TARGET_PROPERTIES (example PROPERTIES LINK_FLAGS "/INCREMENTAL:NO")
 	SET_TARGET_PROPERTIES (example PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${FESAPI_BINARY_DIR})

@@ -65,22 +65,6 @@ IF (WIN32)
 ENDIF (WIN32)
 SET (HDF5_1_10 OFF CACHE BOOL "Is your HDF5 library version 1.10 or 1.8 ?")
 
-# Zlib
-FIND_PACKAGE (ZLIB)
-MARK_AS_ADVANCED(CLEAR ZLIB_INCLUDE_DIR)
-IF (NOT EXISTS ${ZLIB_INCLUDE_DIR})
-	MESSAGE(WARNING "The zlib include dir (ZLIB_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
-ENDIF ()
-MARK_AS_ADVANCED(CLEAR ZLIB_LIBRARY_RELEASE)
-IF (NOT EXISTS ${ZLIB_LIBRARY_RELEASE})
-	MESSAGE(WARNING "The zlib library (ZLIB_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
-ENDIF ()
-MARK_AS_ADVANCED(CLEAR ZLIB_LIBRARY_DEBUG)
-IF (NOT EXISTS ${ZLIB_LIBRARY_DEBUG})
-	MESSAGE(WARNING "The zlib library (ZLIB_LIBRARY_DEBUG variable) does not look to be a valid file. Please modify it.")
-ENDIF ()
-
-
 # Szip (only useful when using static linking to HDF5)
 SET (SZIP_LIBRARY_RELEASE SZIP_LIBRARY_RELEASE-NOTFOUND CACHE FILEPATH "Path to the file which contains the szip library release")
 IF (NOT EXISTS ${SZIP_LIBRARY_RELEASE} AND WIN32 AND NOT ${HDF5_BUILT_AS_DYNAMIC_LIB})
