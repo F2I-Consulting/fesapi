@@ -193,24 +193,24 @@ jobs:
           Generator: '-G"Visual Studio 15 2017 Win64" -T host=x64'
           JFlag: '-j 2'
     steps:
-      - bash: |
-          wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.5/src/hdf5-1.10.5.tar.gz && \
-          tar xf hdf5-1.10.5.tar.gz && \
-          cd hdf5-1.10.5 && \
-          mkdir build && \
-          cd build && \
-          cmake3 -G "Unix Makefiles" \
-            -DCMAKE_BUILD_TYPE:STRING=Release \
-          	-DBUILD_SHARED_LIBS:BOOL=OFF \
-          	-DBUILD_TESTING:BOOL=OFF \
-          	-DHDF5_BUILD_TOOLS:BOOL=OFF \
-          	-DHDF5_BUILD_EXAMPLES:BOOL=OFF \
-          	-DHDF5_BUILD_CPP_LIB:BOOL=OFF \
-          	-DHDF5_BUILD_HL_LIB:BOOL=OFF \
-          	-DCMAKE_INSTALL_PREFIX:STRING=C:/hdf5 \
-          	.. && \
-          cmake3 --build . --config Release && \
-          make install && \
+      - script: |
+          wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.5/src/hdf5-1.10.5.tar.gz
+          tar xf hdf5-1.10.5.tar.gz
+          cd hdf5-1.10.5
+          mkdir build
+          cd build
+          cmake3 -G "Unix Makefiles"
+            -DCMAKE_BUILD_TYPE:STRING=Release
+          	-DBUILD_SHARED_LIBS:BOOL=OFF
+          	-DBUILD_TESTING:BOOL=OFF
+          	-DHDF5_BUILD_TOOLS:BOOL=OFF
+          	-DHDF5_BUILD_EXAMPLES:BOOL=OFF
+          	-DHDF5_BUILD_CPP_LIB:BOOL=OFF
+          	-DHDF5_BUILD_HL_LIB:BOOL=OFF
+          	-DCMAKE_INSTALL_PREFIX:STRING=C:/hdf5
+          	..
+          cmake --build . --config Release
+          make install
         displayName: 'Install HDF5 1.10.5'
 
       - powershell: |
@@ -273,7 +273,7 @@ jobs:
         displayName: 'Example'
 
   - job:
-    displayName: Windows VS2019
+    displayName: Windows VS2019 - HDF5 1.8.18
     pool:
       vmImage: 'windows-latest'
     strategy:
