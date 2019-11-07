@@ -15,8 +15,6 @@ matrix:
                 -DHDF5_C_INCLUDE_DIR=/usr/include
                 -DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libhdf5.so
                 -DMiniZip_ROOT=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.1-linux-ubuntu1604-x86_64-gcc540
-                -DZLIB_INCLUDE_DIR=/usr/include
-                -DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so
                 -DWITH_EXAMPLE=TRUE
                 -DWITH_EXPERIMENTAL=TRUE
                 -DWITH_TEST=TRUE
@@ -36,8 +34,6 @@ matrix:
                 -DHDF5_C_INCLUDE_DIR=/usr/include
                 -DHDF5_C_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libhdf5.so
                 -DMiniZip_ROOT=$TRAVIS_BUILD_DIR/../dependencies/minizip-1.1-linux-ubuntu1604-x86_64-gcc540                
-                -DZLIB_INCLUDE_DIR=/usr/include
-                -DZLIB_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libz.so
                 -DWITH_EXAMPLE=TRUE
                 -DWITH_EXPERIMENTAL=TRUE
                 -DWITH_TEST=TRUE

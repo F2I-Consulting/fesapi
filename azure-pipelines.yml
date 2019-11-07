@@ -74,8 +74,7 @@ jobs:
             -DHDF5_C_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/hdf5.lib
             -DMiniZip_ROOT=C:/minizip-1.1-win64-vs2015-static/
-            -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
-            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
+            -DZLIB_ROOT=C:/hdf5-1.8.18-win64-vs2015-noszip/
             -DWITH_EXAMPLE=TRUE
             -DWITH_EXPERIMENTAL=TRUE
             -DWITH_DOTNET_WRAPPING=TRUE
@@ -156,8 +155,7 @@ jobs:
             -DHDF5_C_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/hdf5.lib
             -DMiniZip_ROOT=C:/minizip-1.1-win64-vs2015-static
-            -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
-            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
+            -DZLIB_ROOT=C:/hdf5-1.8.18-win64-vs2015-noszip
             -DWITH_EXAMPLE=TRUE
             -DWITH_EXPERIMENTAL=TRUE
             -DWITH_DOTNET_WRAPPING=TRUE
@@ -237,9 +235,8 @@ jobs:
             -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE
             -DHDF5_C_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
             -DHDF5_C_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/hdf5.lib
-            -DMiniZip_ROOT=C:/minizip-1.1-win64-vs2015-static            
-            -DZLIB_INCLUDE_DIR=C:/hdf5-1.8.18-win64-vs2015-noszip/include
-            -DZLIB_LIBRARY_RELEASE=C:/hdf5-1.8.18-win64-vs2015-noszip/lib/zlib.lib
+            -DMiniZip_ROOT=C:/minizip-1.1-win64-vs2015-static
+            -DZLIB_ROOT=C:/hdf5-1.8.18-win64-vs2015-noszip            
             -DWITH_EXAMPLE=TRUE
             -DWITH_EXPERIMENTAL=TRUE
             -DWITH_DOTNET_WRAPPING=TRUE
