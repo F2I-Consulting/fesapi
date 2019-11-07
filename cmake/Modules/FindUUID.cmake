@@ -41,7 +41,7 @@ find_path(UUID_INCLUDE_DIR
   DOC "The UUID include directory"
 )
 
-if(NOT MiniZip_LIBRARY)
+if(NOT UUID_LIBRARY)
   find_library(UUID_LIBRARY_RELEASE
     NAMES uuid libuuid
     HINTS ${PC_UUID_LIBDIR} ${PC_UUID_LIBRARY_DIRS}
