@@ -202,7 +202,8 @@ jobs:
           cd C:\hdf5-1.10.5
           mkdir build
           cd build
-          cmake -G "Unix Makefiles"
+          ls .
+          cmake $(Generator)
             -DCMAKE_BUILD_TYPE:STRING=Release
           	-DBUILD_SHARED_LIBS:BOOL=OFF
           	-DBUILD_TESTING:BOOL=OFF
