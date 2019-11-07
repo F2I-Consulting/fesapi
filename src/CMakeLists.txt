@@ -55,12 +55,12 @@ endif (WIN32)
 
 # Linker instructions
 if (WIN32)
-	if (NOT EXISTS ${MINIZIP_LIBRARY_DEBUG} OR NOT EXISTS ${HDF5_C_LIBRARY_DEBUG})
-		set(CMAKE_CONFIGURATION_TYPES "Release;MinSizeRel;RelWithDebInfo" CACHE STRING "" FORCE)
-	endif ()
-	if (NOT EXISTS ${MINIZIP_LIBRARY_RELEASE} OR NOT EXISTS ${HDF5_C_LIBRARY_RELEASE})
-		set(CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "" FORCE)
-	endif ()
+	# if (NOT EXISTS ${MINIZIP_LIBRARY_DEBUG} OR NOT EXISTS ${HDF5_C_LIBRARY_DEBUG})
+	# 	set(CMAKE_CONFIGURATION_TYPES "Release;MinSizeRel;RelWithDebInfo" CACHE STRING "" FORCE)
+	# endif ()
+	# if (NOT EXISTS ${MINIZIP_LIBRARY_RELEASE} OR NOT EXISTS ${HDF5_C_LIBRARY_RELEASE})
+	# 	set(CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "" FORCE)
+	# endif ()
 
 	# if (EXISTS ${MINIZIP_LIBRARY_RELEASE} AND EXISTS ${MINIZIP_LIBRARY_DEBUG})
 	# 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${MINIZIP_LIBRARY_RELEASE} debug ${MINIZIP_LIBRARY_DEBUG})
@@ -119,7 +119,7 @@ if (WIN32)
 		IMPORT_SUFFIX ${IMPORT_SUFFIX}
 		VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR})
 ELSEIF (UNIX)
-	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${UUID_LIBRARY_RELEASE} ${GSOAP_LIBRARIES} ${MINIZIP_LIBRARY_RELEASE} ${HDF5_C_LIBRARY_RELEASE})
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${GSOAP_LIBRARIES} ${HDF5_C_LIBRARY_RELEASE})
 # zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
 # zlib is linked because it is a very probable dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to zlib), zlib could be not present in these linked libraries.
 	if (EXISTS ${ZLIB_LIBRARY_RELEASE})
