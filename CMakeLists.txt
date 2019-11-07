@@ -91,6 +91,9 @@ set (WITH_EXPERIMENTAL OFF CACHE BOOL "Compile some experimental functionalities
 # including subdirectories
 # ============================================================================
 
+include(GenerateExportHeader)
+include(CMakePackageConfigHelpers)
+
 add_subdirectory(src)
 add_subdirectory(doc)
 
