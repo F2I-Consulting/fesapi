@@ -194,9 +194,9 @@ jobs:
           JFlag: '-j 2'
     steps:
       - script: |
-          wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.5/src/hdf5-1.10.5.tar.gz
-          tar xf hdf5-1.10.5.tar.gz
-          cd hdf5-1.10.5
+          Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.5/src/hdf5-1.10.5.zip -OutFile C:\hdf5-1.10.5.zip
+          Expand-Archive C:\hdf5-1.10.5.zip -DestinationPath C:\
+          cd C:\hdf5-1.10.5
           mkdir build
           cd build
           cmake3 -G "Unix Makefiles"
