@@ -73,5 +73,15 @@ namespace RESQML2_0_1_NS
 		* Get the standard XML tag without XML namespace for serializing this data object.
 		*/
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespace() const { return XML_NS; }
 	};
 }

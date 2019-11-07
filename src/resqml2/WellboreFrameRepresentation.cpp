@@ -449,11 +449,6 @@ std::string WellboreFrameRepresentation::getWellboreTrajectoryUuid() const
 	throw invalid_argument("Not implemented yet");
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getLocalCrsDor(unsigned int patchIndex) const
-{
-	return getWellboreTrajectory()->getLocalCrsDor(patchIndex);
-}
-
 gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getHdfProxyDor() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {

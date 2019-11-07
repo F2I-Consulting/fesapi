@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/AbstractServerSession.h"
+#include "AbstractServerSession.h"
 
 namespace ETP_NS
 {

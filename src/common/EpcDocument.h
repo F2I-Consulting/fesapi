@@ -25,7 +25,7 @@ under the License.
 
 #include "../epc/Package.h"
 
-#include "DataObjectRepository.h
+#include "DataObjectRepository.h"
 #include "DataFeeder.h"
 
 namespace COMMON_NS

@@ -370,9 +370,9 @@ AbstractObject::hdfDatatypeEnum HdfProxy::getHdfDatatypeInDataset(const std::str
 	else if (H5Tequal(native_datatype, H5T_NATIVE_FLOAT) > 0)
 		return AbstractObject::FLOAT;
 	else if (H5Tequal(native_datatype, H5T_NATIVE_LLONG) > 0)
-		return AbstractObject::LONG;
+		return AbstractObject::LONG_64;
 	else if (H5Tequal(native_datatype, H5T_NATIVE_ULLONG) > 0)
-		return AbstractObject::ULONG;
+		return AbstractObject::ULONG_64;
 	else if (H5Tequal(native_datatype, H5T_NATIVE_INT) > 0)
 		return AbstractObject::INT;
 	else if (H5Tequal(native_datatype, H5T_NATIVE_UINT) > 0)

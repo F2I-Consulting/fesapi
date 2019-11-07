@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/ProtocolHandlers/ProtocolHandlers.h"
+#include "ProtocolHandlers.h"
 
 namespace ETP_NS
 {

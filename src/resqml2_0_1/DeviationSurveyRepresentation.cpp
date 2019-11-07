@@ -34,6 +34,7 @@ using namespace gsoap_resqml2_0_1;
 using namespace COMMON_NS;
 
 const char* DeviationSurveyRepresentation::XML_TAG = "DeviationSurveyRepresentation";
+const char* DeviationSurveyRepresentation::XML_NS = "resqml20";
 
 DeviationSurveyRepresentation::DeviationSurveyRepresentation(WellboreInterpretation * interp, const string & guid, const std::string & title, bool isFinal, RESQML2_NS::MdDatum * mdInfo)
 {

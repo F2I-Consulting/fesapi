@@ -18,9 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/AbstractHdfProxy.h"
+#include "../common/HdfProxyFactory.h"
 
-#include "etp/DataArrayBlockingSession.h"
+#include "DataArrayBlockingSession.h"
 
 namespace ETP_NS
 {
@@ -33,10 +33,18 @@ namespace ETP_NS
 		std::string getUri() const;
 
 	public:
+
+		EtpHdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
+			COMMON_NS::AbstractHdfProxy(fromGsoap), session(nullptr), compressionLevel(0) {}
+
+		EtpHdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
+			COMMON_NS::AbstractHdfProxy(fromGsoap), session(nullptr), compressionLevel(0) {}
+
 		/**
 		* Only for partial transfer
 		*/
-		EtpHdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject);
+		EtpHdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
+			COMMON_NS::AbstractHdfProxy(partialObject), session(nullptr), compressionLevel(0) {}
 
 		/**
 		* Destructor.
@@ -326,8 +334,8 @@ namespace ETP_NS
 		void readArrayNdOfDoubleValues(
 			const std::string & datasetName,
 			double* values,
-			unsigned long long * numValuesInEachDimension,
-			unsigned long long * offsetInEachDimension,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
 			unsigned int numDimensions
 		  );
 
@@ -343,18 +351,18 @@ namespace ETP_NS
 		*/
 		void readArrayNdOfDoubleValues(
 			const std::string & datasetName, double* values,
-			unsigned long long * blockCountPerDimension,
-			unsigned long long * offsetInEachDimension,
-			unsigned long long * strideInEachDimension,
-			unsigned long long * blockSizeInEachDimension,
+			unsigned long long const * blockCountPerDimension,
+			unsigned long long const * offsetInEachDimension,
+			unsigned long long const * strideInEachDimension,
+			unsigned long long const * blockSizeInEachDimension,
 			unsigned int numDimensions);
 
 		void selectArrayNdOfValues(
 			const std::string & datasetName,
-			unsigned long long * blockCountPerDimension,
-			unsigned long long * offsetInEachDimension,
-			unsigned long long * strideInEachDimension,
-			unsigned long long * blockSizeInEachDimension,
+			unsigned long long const * blockCountPerDimension,
+			unsigned long long const * offsetInEachDimension,
+			unsigned long long const * strideInEachDimension,
+			unsigned long long const * blockSizeInEachDimension,
 			unsigned int numDimensions,
 			bool newSelection,
 			hdf5_hid_t & dataset,
@@ -391,27 +399,17 @@ namespace ETP_NS
 		void readArrayNdOfFloatValues(
 			const std::string & datasetName,
 			float* values,
-			unsigned long long * numValuesInEachDimension,
-			unsigned long long * offsetInEachDimension,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
 			unsigned int numDimensions
 		);
-
-		/**
-		* TODO : check all possible size of LONG64 on all different platforms
-		*/
-		void readArrayNdOfGSoapLong64Values(const std::string & datasetName, LONG64* values);
-
-		/**
-		* TODO : check all possible size of ULONG64 on all different platforms
-		*/
-		void readArrayNdOfGSoapULong64Values(const std::string & datasetName, ULONG64* values);
 
 		/**
 		* Read an array Nd of long values stored in a specific dataset.
 		* @param datasetName	The absolute dataset name where to read the values
 		* @param values 		The values must be pre-allocated.
 		*/
-		void readArrayNdOfLongValues(const std::string & datasetName, long* values);
+		void readArrayNdOfLongValues(const std::string & datasetName, LONG64* values);
 
 		/**
 		* Find the array associated with datasetName and read from it.
@@ -423,9 +421,9 @@ namespace ETP_NS
 		*/
 		void readArrayNdOfLongValues(
 			const std::string & datasetName,
-			long* values,
-			unsigned long long * numValuesInEachDimension,
-			unsigned long long * offsetInEachDimension,
+			LONG64* values,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
 			unsigned int numDimensions
 		);
 
@@ -434,7 +432,7 @@ namespace ETP_NS
 		* @param datasetName	The absolute dataset name where to read the values
 		* @param values 		The values must be pre-allocated.
 		*/
-		void readArrayNdOfULongValues(const std::string & datasetName, unsigned long* values);
+		void readArrayNdOfULongValues(const std::string & datasetName, ULONG64* values);
 
 		/**
 		* Read an array Nd of int values stored in a specific dataset.
@@ -454,8 +452,8 @@ namespace ETP_NS
 		void readArrayNdOfIntValues(
 			const std::string & datasetName,
 			int* values,
-			unsigned long long * numValuesInEachDimension,
-			unsigned long long * offsetInEachDimension,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
 			unsigned int numDimensions
 		);
 
@@ -509,5 +507,33 @@ namespace ETP_NS
 		* Check wether a dataset is compressed or not.
 		*/
 		bool isCompressed(const std::string & datasetName);
+
+		/**
+		* The standard XML namespace for serializing this data object.
+		*/
+		static const char* XML_NS;
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		std::string getXmlNamespace() const { return XML_NS; }
+	};
+
+	class DLL_IMPORT_OR_EXPORT EtpHdfProxyFactory : public COMMON_NS::HdfProxyFactory
+	{
+	public:
+		/**
+		* Only to be used in partial transfer context
+		*/
+		COMMON_NS::AbstractHdfProxy* make(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) {
+			return new EtpHdfProxy(partialObject);
+		}
+
+		/**
+		* Creates an instance of this class by wrapping a gsoap instance.
+		*/
+		COMMON_NS::AbstractHdfProxy* make(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) {
+			return new EtpHdfProxy(fromGsoap);
+		}
 	};
 }

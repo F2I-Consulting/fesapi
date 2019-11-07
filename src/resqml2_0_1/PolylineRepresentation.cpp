@@ -34,6 +34,8 @@ using namespace gsoap_resqml2_0_1;
 
 const char* PolylineRepresentation::XML_TAG = "PolylineRepresentation";
 
+const char* PolylineRepresentation::XML_NS = "resqml20";
+
 void PolylineRepresentation::init(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, bool isClosed)
 {
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREPolylineRepresentation(repo->getGsoapContext());

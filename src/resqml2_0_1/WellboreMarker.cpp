@@ -29,6 +29,8 @@ using namespace gsoap_resqml2_0_1;
 
 const char* WellboreMarker::XML_TAG = "WellboreMarker";
 
+const char* WellboreMarker::XML_NS = "resqml20";
+
 WellboreMarker::WellboreMarker(WellboreMarkerFrameRepresentation* wellboreMarkerFrame, const std::string & guid, const std::string & title)
 {
 	gsoapProxy2_0_1 = soap_new_resqml20__WellboreMarker(wellboreMarkerFrame->getGsoapContext());

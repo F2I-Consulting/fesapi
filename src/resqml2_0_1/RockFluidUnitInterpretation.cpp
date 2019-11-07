@@ -25,6 +25,8 @@ using namespace gsoap_resqml2_0_1;
 
 const char* RockFluidUnitInterpretation::XML_TAG = "RockFluidUnitInterpretation";
 
+const char* RockFluidUnitInterpretation::XML_NS = "resqml20";
+
 RockFluidUnitInterpretation::RockFluidUnitInterpretation(RockFluidUnitFeature * feature, const string & guid, const string & title)
 {
 	if (feature == nullptr) {

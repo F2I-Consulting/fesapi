@@ -73,19 +73,19 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrays(const Energistics::Etp::v1
 				delete[] hdfValues;
 				da.m_data.m_item.set_ArrayOfFloat(avroArray);
 			}
-			else if (dt == COMMON_NS::AbstractObject::LONG)
+			else if (dt == COMMON_NS::AbstractObject::LONG_64)
 			{
 				LONG64* hdfValues = new LONG64[globalElemCount];
-				hdfProxy->readArrayNdOfGSoapLong64Values(dai.m_pathInResource, hdfValues);
+				hdfProxy->readArrayNdOfLongValues(dai.m_pathInResource, hdfValues);
 				Energistics::Etp::v12::Datatypes::ArrayOfLong avroArray;
 				avroArray.m_values.assign(hdfValues, hdfValues + globalElemCount);
 				delete[] hdfValues;
 				da.m_data.m_item.set_ArrayOfLong(avroArray);
 			}
-			else if (dt == COMMON_NS::AbstractObject::ULONG)
+			else if (dt == COMMON_NS::AbstractObject::ULONG_64)
 			{
 				ULONG64* hdfValues = new ULONG64[globalElemCount];
-				hdfProxy->readArrayNdOfGSoapULong64Values(dai.m_pathInResource, hdfValues);
+				hdfProxy->readArrayNdOfULongValues(dai.m_pathInResource, hdfValues);
 				Energistics::Etp::v12::Datatypes::ArrayOfLong avroArray;
 				avroArray.m_values.assign(hdfValues, hdfValues + globalElemCount);
 				delete[] hdfValues;
@@ -250,7 +250,7 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrayMetadata(const Energistics::
 			{
 				dam.m_arrayType = Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfFloat;
 			}
-			else if (dt == COMMON_NS::AbstractObject::LONG || dt == COMMON_NS::AbstractObject::ULONG)
+			else if (dt == COMMON_NS::AbstractObject::LONG_64 || dt == COMMON_NS::AbstractObject::ULONG_64)
 			{
 				dam.m_arrayType = Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfLong;
 			}

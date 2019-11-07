@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "nsDefinitions.h"
+#include "../nsDefinitions.h"
 #include "EtpMessages.h"
 
 #if defined(_WIN32) && !defined(FESAPI_STATIC)

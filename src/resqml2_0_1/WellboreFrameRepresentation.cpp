@@ -26,6 +26,7 @@ using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* WellboreFrameRepresentation::XML_TAG = "WellboreFrameRepresentation";
+const char* WellboreFrameRepresentation::XML_NS = "resqml20";
 
 WellboreFrameRepresentation::WellboreFrameRepresentation(WellboreInterpretation* interp, const string& guid, const std::string& title, WellboreTrajectoryRepresentation* traj)
 {

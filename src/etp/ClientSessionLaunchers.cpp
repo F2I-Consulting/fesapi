@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
-#include "etp/ClientSessionLaunchers.h"
+#include "ClientSessionLaunchers.h"
 
 std::shared_ptr<ETP_NS::PlainClientSession> ETP_NS::ClientSessionLaunchers::createClientSession(const std::string & host, const std::string & port, const std::string & target, const std::string & authorization)
 {

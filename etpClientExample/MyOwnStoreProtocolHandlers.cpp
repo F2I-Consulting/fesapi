@@ -18,7 +18,10 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnStoreProtocolHandlers.h"
 
-#include "common/AbstractObject.h"
+#include <string>
+
+#include <common/AbstractObject.h>
+#include <etp/EtpHdfProxy.h>
 
 void MyOwnStoreProtocolHandlers::on_GetDataObjectsResponse(const Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse & obj, int64_t correlationId)
 {

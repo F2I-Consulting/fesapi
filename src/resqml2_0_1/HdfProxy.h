@@ -47,9 +47,14 @@ namespace RESQML2_0_1_NS
 		~HdfProxy() {}
 
 		/**
-		* Get the XML namespace for the tags for the XML serialization of this instance
+		* The standard XML namespace for serializing this data object.
 		*/
-		std::string getXmlNamespace() const;
+		DLL_IMPORT_OR_EXPORT static const char* XML_NS;
+
+		/**
+		* Get the standard XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespace() const { return XML_NS; }
 
 	private:
 		static const char * RESQML_ROOT_GROUP;

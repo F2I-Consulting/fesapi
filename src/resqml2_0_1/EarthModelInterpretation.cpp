@@ -32,6 +32,7 @@ using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
 const char* EarthModelInterpretation::XML_TAG = "EarthModelInterpretation";
+const char* EarthModelInterpretation::XML_NS = "resqml20";
 
 EarthModelInterpretation::EarthModelInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const string & title)
 {

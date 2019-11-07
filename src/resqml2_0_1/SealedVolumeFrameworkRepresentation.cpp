@@ -28,6 +28,8 @@ using namespace gsoap_resqml2_0_1;
 
 const char* SealedVolumeFrameworkRepresentation::XML_TAG = "SealedVolumeFrameworkRepresentation";
 
+const char* SealedVolumeFrameworkRepresentation::XML_NS = "resqml20";
+
 SealedVolumeFrameworkRepresentation::SealedVolumeFrameworkRepresentation(StratigraphicColumnRankInterpretation* interp,
 	const std::string & guid,
 	const std::string & title,

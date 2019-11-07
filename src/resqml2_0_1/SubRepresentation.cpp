@@ -33,6 +33,8 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* SubRepresentation::XML_NS = "resqml20";
+
 void SubRepresentation::init(COMMON_NS::DataObjectRepository* repo, const string & guid, const string & title)
 {
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESubRepresentation(repo->getGsoapContext());

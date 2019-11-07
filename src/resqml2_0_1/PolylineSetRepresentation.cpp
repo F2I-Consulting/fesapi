@@ -34,6 +34,8 @@ using namespace gsoap_resqml2_0_1;
 
 const char* PolylineSetRepresentation::XML_TAG = "PolylineSetRepresentation";
 
+const char* PolylineSetRepresentation::XML_NS = "resqml20";
+
 void PolylineSetRepresentation::init(COMMON_NS::DataObjectRepository * repo,
 									 const std::string & guid, const std::string & title)
 {

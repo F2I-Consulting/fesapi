@@ -161,6 +161,7 @@ namespace COMMON_NS
 	class AbstractObject;
 	class AbstractHdfProxy;
 	class DataFeeder;
+	class HdfProxyFactory;
 #if WITH_EXPERIMENTAL
 	class GraphicalInformationSet;
 #endif
@@ -194,6 +195,8 @@ namespace COMMON_NS
 		RESQML2_NS::AbstractLocal3dCrs* defaultCrs;
 		
 		std::vector<COMMON_NS::DataFeeder*> dataFeeders;
+
+		COMMON_NS::HdfProxyFactory* hdfProxyFactory;
 
 		/**
 		* Necessary to avoid a dependency on GuidTools.h
@@ -243,6 +246,8 @@ namespace COMMON_NS
 
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__DataObjectReference* createDor(const std::string & guid, const std::string & title, const std::string & version);
 
+		void replaceDataObjectInRels(COMMON_NS::AbstractObject* dataObjToReplace, COMMON_NS::AbstractObject* newDataObj);
+
 	public:
 
 		DLL_IMPORT_OR_EXPORT DataObjectRepository();
@@ -271,6 +276,11 @@ namespace COMMON_NS
 		* It is your responsability to manage the memory of your data feeder. DataObject repository won't never free memory of a data feeder.
 		*/
 		DLL_IMPORT_OR_EXPORT void registerDataFeeder(COMMON_NS::DataFeeder * dataFeeder);
+
+		/**
+		* Set the factory used to create Hdf Proxy
+		*/
+		DLL_IMPORT_OR_EXPORT void setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory);
 
 		/**
 		* Resolve a partial object thanks to a data feeder into this data repository.
@@ -316,37 +326,6 @@ namespace COMMON_NS
 		* @param replaceOnlyContent If true, it does not replace the full object (not the pointer) but only replace the content of the object.
 		*/
 		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceDataObject(COMMON_NS::AbstractObject* proxy, bool replaceOnlyContent = false);
-
-		/**
-		* This method allows to use a different behaviour for gettting numerical data from where they are persisted.
-		* NumericalValueBase must be a child of COMMON_NS::EpcExternalPartReference
-		*/
-		template <class NumericalValueBase>
-		NumericalValueBase* addOrReplaceEpcExternalPartReference2_0(const std::string & xml)
-		{
-			std::istringstream iss(xml);
-			setGsoapStream(&iss);
-			gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* read = gsoap_resqml2_0_1::soap_new_eml20__obj_USCOREEpcExternalPartReference(gsoapContext);
-			soap_read_eml20__obj_USCOREEpcExternalPartReference(gsoapContext, read);
-
-			if (gsoapContext->error != SOAP_OK) {
-				std::ostringstream oss;
-				soap_stream_fault(gsoapContext, oss);
-				return nullptr;
-			}
-			else {
-				NumericalValueBase* obj = getDataObjectByUuid<NumericalValueBase>(read->uuid);
-				if (obj == nullptr) {
-					NumericalValueBase* wrapper = new NumericalValueBase(read);
-					addOrReplaceDataObject(wrapper);
-					return wrapper;
-				}
-				else { // replacement
-					obj->setGsoapProxy(read);
-					return obj;
-				}
-			}
-		}
 
 		/**
 		* Add a dataobject to the repository based on its Energistics XML definition.
@@ -720,14 +699,9 @@ namespace COMMON_NS
 		}
 
 		/**
-		* Create a partial object i.e. a data object reference (DOR) based on an UUID + a title + a content type
-		*/
-		COMMON_NS::AbstractObject* createPartial(const std::string & uuid, const std::string & title, const std::string & contentType);
-
-		/**
 		* Create a partial object i.e. a data object reference (DOR) based on an UUID + a title + a content type + a version
 		*/
-		COMMON_NS::AbstractObject* createPartial(const std::string & uuid, const std::string & title, const std::string & contentType, const std::string & version);
+		COMMON_NS::AbstractObject* createPartial(const std::string & uuid, const std::string & title, const std::string & contentType, const std::string & version = "");
 
 		/**
 		* Create a partial object in this repository based on a RESQML2.0 Data Object Reference
@@ -754,7 +728,9 @@ namespace COMMON_NS
 		template <class valueType>
 		valueType* createPartial(const std::string & guid, const std::string & title, const std::string & version = "")
 		{
-			valueType* result = new valueType(createDor(guid, title, version));
+			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = createDor(guid, title, version);
+			valueType* result = new valueType(dor);
+			dor->ContentType = result->getContentType();
 			addOrReplaceDataObject(result);
 			return result;
 		}

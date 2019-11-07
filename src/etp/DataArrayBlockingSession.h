@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/AbstractSession.h"
+#include "AbstractSession.h"
 
 #include <boost/asio/use_future.hpp>
 

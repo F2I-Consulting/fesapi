@@ -17,12 +17,12 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
-#include "etp/AbstractSession.h"
+#include "AbstractSession.h"
 #if (defined(_WIN32) || (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 9))))
 #include <regex>
 #endif
 
-#include "etp/EtpHelpers.h"
+#include "EtpHelpers.h"
 
 using namespace ETP_NS;
 

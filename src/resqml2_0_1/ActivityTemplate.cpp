@@ -26,6 +26,8 @@ using namespace gsoap_resqml2_0_1;
 
 const char* ActivityTemplate::XML_TAG = "ActivityTemplate";
 
+const char* ActivityTemplate::XML_NS = "resqml20";
+
 ActivityTemplate::ActivityTemplate(COMMON_NS::DataObjectRepository * repo, const string & guid, const string & title)
 {
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREActivityTemplate(repo->getGsoapContext());

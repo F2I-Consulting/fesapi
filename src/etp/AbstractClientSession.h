@@ -18,11 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/AbstractSession.h"
+#include "AbstractSession.h"
 
 #include <boost/asio/connect.hpp>
 
-#include "etp/DataArrayBlockingSession.h"
+#include "DataArrayBlockingSession.h"
 
 namespace ETP_NS
 {

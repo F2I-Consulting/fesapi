@@ -28,6 +28,8 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* Activity::XML_NS = "resqml20";
+
 Activity::Activity(RESQML2_NS::ActivityTemplate* activityTemplate, const string & guid, const string & title)
 {
 	if (activityTemplate == nullptr) {

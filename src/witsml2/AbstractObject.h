@@ -18,9 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "common/AbstractObject.h"
-
-#include "witsml2_0/MacroDefinitions.h"
+#include "../common/AbstractObject.h"
 
 namespace WITSML2_NS
 {

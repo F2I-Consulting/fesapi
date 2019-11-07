@@ -27,6 +27,7 @@ using namespace gsoap_resqml2_0_1;
 using namespace std;
 
 const char* GenericFeatureInterpretation::XML_TAG = "GenericFeatureInterpretation";
+const char* GenericFeatureInterpretation::XML_NS = "resqml20";
 
 GenericFeatureInterpretation::GenericFeatureInterpretation(RESQML2_NS::AbstractFeature * feature, const string & guid, const string & title)
 {

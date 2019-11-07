@@ -16,11 +16,8 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "AbstractObject.h"
+#include "AbstractGeologicFeature.h"
 
-using namespace WITSML2_NS;
+using namespace RESQML2_0_1_NS;
 
-std::string AbstractObject::getPartNameInEpcDocument() const
-{
-	return getXmlTag() + "_" + getUuid() + ".xml";
-}
+const char* AbstractGeologicFeature::XML_NS = "resqml20";

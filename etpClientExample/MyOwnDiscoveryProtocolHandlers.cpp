@@ -18,11 +18,10 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnDiscoveryProtocolHandlers.h"
 
-#include "etp/AbstractSession.h"
-
-#include "common/AbstractObject.h"
-
 #include <algorithm>
+
+#include <etp/AbstractSession.h>
+#include <common/AbstractObject.h>
 
 void MyOwnDiscoveryProtocolHandlers::on_GetDataspacesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetDataspacesResponse & msg, int64_t correlationId)
 {
@@ -70,7 +69,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energistics::
 	unsigned int index = 0;
 
 	std::cout << msg.m_resources.size() << " resources received." << std::endl;
-	for (Energistics::Etp::v12::Datatypes::Object::Resource resource : msg.m_resources) {
+	for (const Energistics::Etp::v12::Datatypes::Object::Resource & resource : msg.m_resources) {
 		std::cout << "*************************************************" << std::endl;
 		std::cout << "uri : " << resource.m_uri << std::endl;
 		std::cout << "contentType : " << resource.m_contentType << std::endl;
@@ -83,7 +82,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energistics::
 
 
 		if (std::find(getObjectWhenDiscovered.begin(), getObjectWhenDiscovered.end(), correlationId) != getObjectWhenDiscovered.end()) {
-			size_t openingParenthesis = resource.m_uri.find('(', 5);
+			const size_t openingParenthesis = resource.m_uri.find('(', 5);
 			if (openingParenthesis != std::string::npos) {
 				auto resqmlObj = repo->getDataObjectByUuid(resource.m_uri.substr(openingParenthesis + 1, 36));
 				if (resqmlObj == nullptr || resqmlObj->isPartial()) {

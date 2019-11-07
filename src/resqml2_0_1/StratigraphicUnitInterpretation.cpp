@@ -30,6 +30,8 @@ using namespace gsoap_resqml2_0_1;
 
 const char* StratigraphicUnitInterpretation::XML_TAG = "StratigraphicUnitInterpretation";
 
+const char* StratigraphicUnitInterpretation::XML_NS = "resqml20";
+
 StratigraphicUnitInterpretation::StratigraphicUnitInterpretation(StratigraphicUnitFeature * feature, const string & guid, const string & title)
 {
 	if (feature == nullptr) {

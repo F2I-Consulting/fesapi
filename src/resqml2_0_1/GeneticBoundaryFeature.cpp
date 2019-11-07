@@ -70,4 +70,3 @@ ULONG64 GeneticBoundaryFeature::getAge() const
 
 	return abs(*(static_cast<gsoap_resqml2_0_1::_resqml20__GeneticBoundaryFeature*>(gsoapProxy2_0_1)->AbsoluteAge->YearOffset));
 }
-

@@ -20,14 +20,14 @@ under the License.
 
 #include <thread>
 
-#include "MyOwnDiscoveryProtocolHandlers.h"
-
-#include "etp/EtpHdfProxy.h"
-#include "etp/EtpHelpers.h"
+#include <etp/EtpHdfProxy.h>
+#include <etp/EtpHelpers.h>
 
 #include <resqml2_0_1/LocalDepth3dCrs.h>
 #include <resqml2_0_1/IjkGridExplicitRepresentation.h>
 #include <resqml2_0_1/ContinuousPropertySeries.h>
+
+#include "MyOwnDiscoveryProtocolHandlers.h"
 
 MyOwnCoreProtocolHandlers::~MyOwnCoreProtocolHandlers() {
 }

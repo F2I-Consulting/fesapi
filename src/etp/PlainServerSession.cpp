@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
-#include "etp/PlainServerSession.h"
+#include "PlainServerSession.h"
 
 using namespace ETP_NS;
 

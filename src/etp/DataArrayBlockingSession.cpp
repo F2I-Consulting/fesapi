@@ -17,7 +17,7 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 
-#include "etp/DataArrayBlockingSession.h"
+#include "DataArrayBlockingSession.h"
 
 #include <vector>
 

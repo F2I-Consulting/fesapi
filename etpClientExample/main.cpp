@@ -29,6 +29,7 @@ under the License.
 */
 
 #include "etp/ClientSessionLaunchers.h"
+#include "etp/EtpHdfProxy.h"
 
 #include "MyOwnCoreProtocolHandlers.h"
 #include "MyOwnDiscoveryProtocolHandlers.h"
@@ -50,6 +51,7 @@ int main(int argc, char **argv)
 	std::getline(std::cin, authorization);
 	
 	COMMON_NS::DataObjectRepository repo;
+	repo.setHdfProxyFactory(new EtpHdfProxyFactory());
 
 	auto session = ClientSessionLaunchers::createClientSession(argv[1], argv[2], argc < 4 ? "/" : argv[3], authorization);
 	session->setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(session, &repo));

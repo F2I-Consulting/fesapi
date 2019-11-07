@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/AbstractSession.h"
+#include "AbstractSession.h"
 
 #include <boost/asio/strand.hpp>
 #include <boost/asio/bind_executor.hpp>

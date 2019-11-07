@@ -22,6 +22,7 @@ under the License.
 #include <functional>
 
 #include "../common/DataFeeder.h"
+#include "../common/HdfProxyFactory.h"
 
 #include "../resqml2_0_1/PropertyKindMapper.h"
 
@@ -143,30 +144,25 @@ namespace {
 }
 
 // Create a fesapi partial wrapper based on a content type
-#define CREATE_FESAPI_PARTIAL_WRAPPER(className)\
-	(datatype.compare(className::XML_TAG) == 0)\
-	{\
-		return createPartial<className>(uuid, title, contentType);\
-	}
 #define CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(className)\
 	(datatype.compare(className::XML_TAG) == 0)\
 	{\
-		return createPartial<className>(uuid, title, contentType, version);\
+		return createPartial<className>(uuid, title, version);\
 	}
 #define CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(className)\
 	(contentType.compare(className::XML_TAG) == 0)\
 	{\
-		return dor->VersionString == nullptr ? createPartial<className>(dor->UUID, dor->Title, dor->ContentType) : createPartial<className>(dor->UUID, dor->Title, dor->ContentType, *dor->VersionString);\
+		return dor->VersionString == nullptr || dor->VersionString->empty() ? createPartial<className>(dor->UUID, dor->Title, dor->ContentType) : createPartial<className>(dor->UUID, dor->Title, dor->ContentType, *dor->VersionString);\
 	}
 #define CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(className)\
 	(contentType.compare(className::XML_TAG) == 0)\
 	{\
-		return dor->VersionString == nullptr ? createPartial<className>(dor->Uuid, dor->Title, dor->ContentType) : createPartial<className>(dor->Uuid, dor->Title, dor->ContentType, *dor->VersionString);\
+		return dor->VersionString == nullptr || dor->VersionString->empty() ? createPartial<className>(dor->Uuid, dor->Title, dor->ContentType) : createPartial<className>(dor->Uuid, dor->Title, dor->ContentType, *dor->VersionString);\
 	}
 #define CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(className)\
 	(contentType.compare(className::XML_TAG) == 0)\
 	{\
-		return dor->ObjectVersion == nullptr ? createPartial<className>(dor->Uuid, dor->Title, dor->ContentType) : createPartial<className>(dor->Uuid, dor->Title, dor->ContentType, *dor->ObjectVersion);\
+		return dor->ObjectVersion == nullptr || dor->ObjectVersion->empty() ? createPartial<className>(dor->Uuid, dor->Title, dor->ContentType) : createPartial<className>(dor->Uuid, dor->Title, dor->ContentType, *dor->ObjectVersion);\
 	}
 
 /////////////////////
@@ -244,7 +240,8 @@ DataObjectRepository::DataObjectRepository() :
 	backwardRels(),
 	gsoapContext(soap_new2(SOAP_XML_STRICT | SOAP_C_UTFSTRING | SOAP_XML_IGNORENS, SOAP_XML_TREE | SOAP_XML_INDENT | SOAP_XML_CANONICAL | SOAP_C_UTFSTRING)),
 	warnings(),
-	propertyKindMapper(nullptr), defaultHdfProxy(nullptr), defaultCrs(nullptr)
+	propertyKindMapper(nullptr), defaultHdfProxy(nullptr), defaultCrs(nullptr),
+	hdfProxyFactory(new COMMON_NS::HdfProxyFactory())
 {
 }
 
@@ -254,7 +251,8 @@ DataObjectRepository::DataObjectRepository(const std::string & propertyKindMappi
 	backwardRels(),
 	gsoapContext(soap_new2(SOAP_XML_STRICT | SOAP_C_UTFSTRING | SOAP_XML_IGNORENS, SOAP_XML_TREE | SOAP_XML_INDENT | SOAP_XML_CANONICAL | SOAP_C_UTFSTRING)),
 	warnings(),
-	propertyKindMapper(new PropertyKindMapper(this)), defaultHdfProxy(nullptr), defaultCrs(nullptr)
+	propertyKindMapper(new PropertyKindMapper(this)), defaultHdfProxy(nullptr), defaultCrs(nullptr),
+	hdfProxyFactory(new COMMON_NS::HdfProxyFactory())
 {
 	const string error = propertyKindMapper->loadMappingFilesFromDirectory(propertyKindMappingFilesDirectory);
 	if (!error.empty())
@@ -292,6 +290,8 @@ void DataObjectRepository::clear()
 	backwardRels.clear();
 
 	warnings.clear();
+
+	delete hdfProxyFactory;
 }
 
 void DataObjectRepository::addRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target)
@@ -365,6 +365,26 @@ std::string DataObjectRepository::generateRandomUuidAsString() const
 	return GuidTools::generateUidAsString();
 }
 
+namespace {
+	void replaceDataObjectInARelMap(COMMON_NS::AbstractObject* dataObjToReplace, COMMON_NS::AbstractObject * newDataObj, std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject * > > & myMap) {
+		for (auto& pair : myMap) {
+			if (pair.first == dataObjToReplace) {
+				myMap[newDataObj] = pair.second;
+			}
+			else {
+				std::replace(pair.second.begin(), pair.second.end(), dataObjToReplace, newDataObj);
+			}
+		}
+		myMap.erase(dataObjToReplace);
+	}
+}
+
+void DataObjectRepository::replaceDataObjectInRels(COMMON_NS::AbstractObject* dataObjToReplace, COMMON_NS::AbstractObject* newDataObj)
+{
+	replaceDataObjectInARelMap(dataObjToReplace, newDataObj, forwardRels);
+	replaceDataObjectInARelMap(dataObjToReplace, newDataObj, backwardRels);
+}
+
 COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_NS::AbstractObject* proxy, bool replaceOnlyContent)
 {
 	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {
@@ -375,7 +395,17 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 	else {
 		std::vector< COMMON_NS::AbstractObject* >& versions = dataObjects[proxy->getUuid()];
 		std::vector< COMMON_NS::AbstractObject* >::iterator same = std::find_if(versions.begin(), versions.end(), SameVersion(proxy->getVersion()));
-		
+		if (same == versions.end()) {
+			if (proxy->getVersion().empty() && !versions.empty()) {
+				throw invalid_argument("You cannot have at the same time a versionned and an unversionned object.");
+			}
+
+			// replace unversionned version by the versioned version.
+			if (!proxy->getVersion().empty()) {
+				same = std::find_if(versions.begin(), versions.end(), SameVersion(""));
+			}
+		}
+
 		if (same == versions.end()) {
 			dataObjects[proxy->getUuid()].push_back(proxy);
 		}
@@ -383,7 +413,9 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 			if (proxy->getContentType() != (*same)->getContentType()) {
 				throw invalid_argument("Cannot replace " + proxy->getUuid() + " with a different content type : " + proxy->getContentType() + " vs " + (*same)->getContentType());
 			}
-			if (!replaceOnlyContent) {
+			if (!replaceOnlyContent || dynamic_cast<AbstractIjkGridRepresentation*>(*same) != nullptr) {
+				replaceDataObjectInRels(*same, proxy);
+
 				delete *same;
 				*same = proxy;
 			}
@@ -416,14 +448,13 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 	if (lastEqualCharPos == string::npos) { lastEqualCharPos = contentType.find_last_of('='); }
 	const string datatype = contentType.substr(lastEqualCharPos + 1);
 
-	// By default, create a RESQML2_0_1_NS::HdfProxy to manage numerical values.
-	// If you want a different one, call addOrReplaceEpcExternalPartReference2_0 directly with the type you want as template parameter.
-	if (contentType.find("application/x-eml+xml;version=2.0;type=obj_") != string::npos) {
-		return addOrReplaceEpcExternalPartReference2_0<RESQML2_0_1_NS::HdfProxy>(xml);
-	}
-
 	COMMON_NS::AbstractObject* wrapper = nullptr;
-	if (contentType.find("application/x-resqml+xml;version=2.0;type=obj_") != string::npos) {
+	if (contentType.find("application/x-eml+xml;version=2.0;type=obj_") != string::npos) {
+		gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* read = gsoap_resqml2_0_1::soap_new_eml20__obj_USCOREEpcExternalPartReference(gsoapContext);
+		soap_read_eml20__obj_USCOREEpcExternalPartReference(gsoapContext, read);
+		wrapper = hdfProxyFactory->make(read);
+	}
+	else if (contentType.find("application/x-resqml+xml;version=2.0;type=obj_") != string::npos) {
 		wrapper = getResqml2_0_1WrapperFromGsoapContext(datatype);
 	}
 	else if (contentType.find("application/x-resqml+xml;version=2.0.1;type=obj_") != string::npos) {
@@ -544,97 +575,6 @@ const std::vector<std::string> & DataObjectRepository::getWarnings() const
 	return warnings;
 }
 
-COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string & uuid, const std::string & title, const std::string & contentType)
-{
-	size_t lastEqualCharPos = contentType.find_last_of('_'); // The XML tag is after "obj_"
-	if (lastEqualCharPos == string::npos) { lastEqualCharPos = contentType.find_last_of('='); }
-	const string datatype = contentType.substr(lastEqualCharPos + 1);
-
-	if CREATE_FESAPI_PARTIAL_WRAPPER(MdDatum)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(Activity)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(ActivityTemplate)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(SeismicLatticeFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(SeismicLineFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(SeismicLineSetFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(FrontierFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(LocalDepth3dCrs)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(LocalTime3dCrs)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(TectonicBoundaryFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(GeneticBoundaryFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(BoundaryFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(WellboreFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(StratigraphicUnitFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(StratigraphicColumn)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(GenericFeatureInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(BoundaryFeatureInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(WellboreInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(FaultInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(HorizonInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(StratigraphicUnitInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(StratigraphicColumnRankInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(StratigraphicOccurrenceInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::WellboreFrameRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(WellboreMarkerFrameRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(WellboreTrajectoryRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(PolylineSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(PointSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(PlaneSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(PolylineRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(Grid2dRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(TriangulatedSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(BlockedWellboreRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(AbstractIjkGridRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(UnstructuredGridRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(PropertyKind)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(PropertySet)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(ContinuousProperty)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(ContinuousPropertySeries)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(CategoricalProperty)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(CategoricalPropertySeries)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(DiscreteProperty)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(DiscretePropertySeries)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(CommentProperty)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(StringTableLookup)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(EarthModelInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(OrganizationFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(StructuralOrganizationInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(FluidBoundaryFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(SubRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(GridConnectionSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(TimeSeries)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(RepresentationSetRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(NonSealedSurfaceFrameworkRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(SealedSurfaceFrameworkRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(SealedVolumeFrameworkRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(DeviationSurveyRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(GeobodyFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(GeobodyBoundaryInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(GeobodyInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(RockFluidOrganizationInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(RockFluidUnitInterpretation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(RockFluidUnitFeature)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Well)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Wellbore)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Trajectory)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::WellCompletion)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::WellboreCompletion)
-#if WITH_EXPERIMENTAL
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::ToolErrorModel)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::ErrorTerm)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(WITSML2_1_NS::WeightingFunction)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(COMMON_NS::GraphicalInformationSet)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::DiscreteColorMap)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::ContinuousColorMap)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::WellboreFrameRepresentation)
-	else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::SeismicWellboreFrameRepresentation)
-#endif
-	else if (contentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0) {
-		throw invalid_argument("Please handle this type outside of this method since it is not only XML related.");
-	}
-
-	throw invalid_argument("The content type " + contentType + " of the partial object to create has not been recognized by fesapi.");
-}
-
 COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string & uuid, const std::string & title, const std::string & contentType, const std::string & version)
 {
 	size_t lastEqualCharPos = contentType.find_last_of('_'); // The XML tag is after "obj_"
@@ -677,6 +617,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(AbstractIjkGridRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(UnstructuredGridRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PropertyKind)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PropertySet)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(ContinuousProperty)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(ContinuousPropertySeries)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(CategoricalProperty)
@@ -704,6 +645,8 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RockFluidUnitInterpretation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RockFluidUnitFeature)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Well)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::WellCompletion)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::WellboreCompletion)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Wellbore)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Trajectory)
 #if WITH_EXPERIMENTAL
@@ -716,9 +659,13 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::WellboreFrameRepresentation)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(RESQML2_2_NS::SeismicWellboreFrameRepresentation)
 #endif
-	else if (contentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
+	else if (datatype.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
-		throw invalid_argument("Please handle this type outside of this method since it is not only XML related.");
+		gsoap_resqml2_0_1::eml20__DataObjectReference* dor = createDor(uuid, title, version);
+		COMMON_NS::AbstractObject* result = hdfProxyFactory->make(dor);
+		dor->ContentType = result->getContentType();
+		addOrReplaceDataObject(result);
+		return result;
 	}
 
 	throw invalid_argument("The content type " + contentType + " of the partial object to create has not been recognized by fesapi.");
@@ -777,7 +724,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_2::eml
 
 COMMON_NS::AbstractHdfProxy* DataObjectRepository::createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess)
 {
-	return new RESQML2_0_1_NS::HdfProxy(this, guid, title, packageDirAbsolutePath, externalFilePath, hdfPermissionAccess);
+	return hdfProxyFactory->make(this, guid, title, packageDirAbsolutePath, externalFilePath, hdfPermissionAccess);
 }
 
 //************************************
@@ -2316,6 +2263,11 @@ std::string DataObjectRepository::getGsoapErrorMessage() const
 void DataObjectRepository::registerDataFeeder(COMMON_NS::DataFeeder * dataFeeder)
 {
 	dataFeeders.push_back(dataFeeder);
+}
+
+void DataObjectRepository::setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory) {
+	delete hdfProxyFactory;
+	hdfProxyFactory = factory;
 }
 
 COMMON_NS::AbstractObject* DataObjectRepository::resolvePartial(COMMON_NS::AbstractObject * partialObj)

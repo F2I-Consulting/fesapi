@@ -20,8 +20,8 @@ under the License.
 
 #include <memory>
 
-#include "nsDefinitions.h"
-#include "etp/EtpMessages.h"
+#include "../../nsDefinitions.h"
+#include "../EtpMessages.h"
 
 #if defined(_WIN32) && !defined(FESAPI_STATIC)
 	#ifndef DLL_IMPORT_OR_EXPORT

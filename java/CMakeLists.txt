@@ -13,10 +13,14 @@ if (TO_DELETE)
 	file (REMOVE ${TO_DELETE})
 endif (TO_DELETE)
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/common)
+
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2)
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2_0_1)
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/resqml2_2)
+
+file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml2)
 file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml2_0)
+file (REMOVE_RECURSE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/witsml2_1)
 
 # Create the dedicated swig files
 if (WITH_EXPERIMENTAL)
@@ -28,6 +32,9 @@ else ()
 	configure_file(${FESAPI_ROOT_DIR}/cmake/swigResqml2JavaInclude.i ${FESAPI_ROOT_DIR}/swig/swigResqml2JavaInclude.i) # Overwrite if different
 	configure_file(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR}/java/example/FesapiJavaExample.java) # Overwrite if different
 endif()
+configure_file(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR}/java/example/FesapiJavaExample.java) # Overwrite if different
+configure_file(${FESAPI_ROOT_DIR}/cmake/EtpExample.java ${FESAPI_ROOT_DIR}/java/example/EtpExample.java) # Overwrite if different
+configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnCoreProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/example/MyOwnCoreProtocolHandlers.java) # Overwrite if different
 
 # Filling
 if (WIN32)

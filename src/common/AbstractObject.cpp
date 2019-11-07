@@ -795,36 +795,6 @@ gsoap_resqml2_0_1::resqml20__ContactElementReference* AbstractObject::newResqmlC
 	return result;
 }
 
-std::string AbstractObject::getXmlNamespace() const
-{
-	if (gsoapProxy2_0_1 != nullptr && gsoapProxy2_1 == nullptr
-#if WITH_EXPERIMENTAL
-		&& gsoapProxy2_2 == nullptr
-#endif
-		) {
-		return "resqml20"; // or eml20
-	}
-	else if (gsoapProxy2_0_1 == nullptr && gsoapProxy2_1 != nullptr
-#if WITH_EXPERIMENTAL
-		&& gsoapProxy2_2 == nullptr
-#endif
-		) {
-		return "witsml20"; // or eml21
-	}
-#if WITH_EXPERIMENTAL
-	else if (gsoapProxy2_0_1 == nullptr && gsoapProxy2_1 == nullptr && gsoapProxy2_2 != nullptr ) {
-		return "resqml22"; // or eml22
-	}
-#endif
-	else if (partialObject != nullptr) {
-		const size_t plus = partialObject->ContentType.find('+');
-		const size_t equal = partialObject->ContentType.find('=');
-		return partialObject->ContentType.substr(14, plus - 14) + partialObject->ContentType[equal + 1] + partialObject->ContentType[equal + 3];
-	}
-
-	throw logic_error("There is no associated gsoap proxy.");
-}
-
 std::string AbstractObject::getXmlNamespaceVersion() const
 {
 	const std::string & xmlNs = getXmlNamespace();

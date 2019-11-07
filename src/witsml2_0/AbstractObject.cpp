@@ -18,10 +18,11 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "AbstractObject.h"
 
-using namespace std;
 using namespace WITSML2_0_NS;
 
-string AbstractObject::getContentType() const
+const char* AbstractObject::XML_NS = "witsml20";
+
+std::string AbstractObject::getContentType() const
 {
 	return "application/x-witsml+xml;version=2.0;type=" + getXmlTag();
 }

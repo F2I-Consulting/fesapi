@@ -27,7 +27,9 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-void AbstractOrganizationInterpretation::pushBackBinaryContact(const gsoap_resqml2_0_1::resqml20__ContactRelationship & kind, AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml20__ContactVerb & verb, AbstractFeatureInterpretation* directObject)
+const char* AbstractOrganizationInterpretation::XML_NS = "resqml20";
+
+void AbstractOrganizationInterpretation::pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship kind, AbstractFeatureInterpretation* subject, gsoap_resqml2_0_1::resqml20__ContactVerb verb, AbstractFeatureInterpretation* directObject)
 {
 	if (!subject)
 		throw invalid_argument("The subject of the binary contact cannot be null.");
@@ -46,8 +48,8 @@ void AbstractOrganizationInterpretation::pushBackBinaryContact(const gsoap_resqm
 	contact->DirectObject = directObject->newResqmlContactElementReference(); // Not to add for EPC relationships since by business rule it must be present in the object listing/stack of the organization
 }
 
-void AbstractOrganizationInterpretation::pushBackBinaryContact(const gsoap_resqml2_0_1::resqml20__ContactRelationship & kind, AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml20__ContactVerb & verb, AbstractFeatureInterpretation* directObject,
-		const gsoap_resqml2_0_1::resqml20__ContactSide & directObjectQualifier)
+void AbstractOrganizationInterpretation::pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship kind, AbstractFeatureInterpretation* subject, gsoap_resqml2_0_1::resqml20__ContactVerb verb, AbstractFeatureInterpretation* directObject,
+		gsoap_resqml2_0_1::resqml20__ContactSide directObjectQualifier)
 {
 	resqml20__AbstractOrganizationInterpretation* org = static_cast<resqml20__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
 
@@ -57,9 +59,9 @@ void AbstractOrganizationInterpretation::pushBackBinaryContact(const gsoap_resqm
 	*(contact->DirectObject->Qualifier) = directObjectQualifier;
 }
 
-void AbstractOrganizationInterpretation::pushBackBinaryContact(const gsoap_resqml2_0_1::resqml20__ContactRelationship & kind, AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml20__ContactSide & subjectQualifier,
-        const gsoap_resqml2_0_1::resqml20__ContactVerb & verb,
-        AbstractFeatureInterpretation* directObject, const gsoap_resqml2_0_1::resqml20__ContactSide & directObjectQualifier)
+void AbstractOrganizationInterpretation::pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship kind, AbstractFeatureInterpretation* subject, gsoap_resqml2_0_1::resqml20__ContactSide subjectQualifier,
+        gsoap_resqml2_0_1::resqml20__ContactVerb verb,
+        AbstractFeatureInterpretation* directObject, gsoap_resqml2_0_1::resqml20__ContactSide directObjectQualifier)
 {
     resqml20__AbstractOrganizationInterpretation* org = static_cast<resqml20__AbstractOrganizationInterpretation*>(gsoapProxy2_0_1);
 

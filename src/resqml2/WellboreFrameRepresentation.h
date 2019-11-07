@@ -135,9 +135,10 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT class RESQML2_0_1_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
 
 		/**
-		* Get the associated RESQML local crs data object reference.
+		* The frame is not associated to a CRS.
+		* If necessary get the Local CRS of the associated trajectory if you really need it.
 		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const { return nullptr; }
 
 		/**
 		* Get the associated hdf proxy data object reference.

@@ -32,6 +32,8 @@ using namespace gsoap_resqml2_0_1;
 
 const char* PointSetRepresentation::XML_TAG = "PointSetRepresentation";
 
+const char* PointSetRepresentation::XML_NS = "resqml20";
+
 PointSetRepresentation::PointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 		const std::string & guid, const std::string & title)
 {

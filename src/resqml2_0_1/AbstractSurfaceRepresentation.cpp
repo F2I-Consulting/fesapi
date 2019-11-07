@@ -32,6 +32,8 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
+const char* AbstractSurfaceRepresentation::XML_NS = "resqml20";
+
 void AbstractSurfaceRepresentation::setSurfaceRole(const resqml20__SurfaceRole & surfaceRole)
 {
 	static_cast<resqml20__AbstractSurfaceRepresentation*>(gsoapProxy2_0_1)->SurfaceRole = surfaceRole;

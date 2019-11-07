@@ -508,7 +508,7 @@ namespace COMMON_NS
 		/**
 		* Get the XML namespace for the tags for the XML serialization of this instance
 		*/
-		virtual std::string getXmlNamespace() const;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespace() const = 0;
 
 		/**
 		* Get the XML tag for the XML serialization of this instance

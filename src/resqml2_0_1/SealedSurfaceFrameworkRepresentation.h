@@ -204,8 +204,6 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT void getContactPatchNodeIndices(unsigned int contactIdx, unsigned int cpIndex, unsigned int * nodeIndices) const;
 
-		DLL_IMPORT_OR_EXPORT virtual std::string getHdfProxyUuid() const;
-
 		/**
 		* The standard XML tag without XML namespace for serializing this data object.
 		*/

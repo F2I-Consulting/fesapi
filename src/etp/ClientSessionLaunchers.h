@@ -18,12 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/PlainClientSession.h"
+#include "PlainClientSession.h"
 
-#include "etp/ProtocolHandlers/CoreHandlers.h"
-#include "etp/ProtocolHandlers/DiscoveryHandlers.h"
-#include "etp/ProtocolHandlers/StoreHandlers.h"
-#include "etp/ProtocolHandlers/DataArrayHandlers.h"
+#include "ProtocolHandlers/CoreHandlers.h"
+#include "ProtocolHandlers/DiscoveryHandlers.h"
+#include "ProtocolHandlers/StoreHandlers.h"
+#include "ProtocolHandlers/DataArrayHandlers.h"
 
 namespace ETP_NS
 {

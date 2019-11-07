@@ -22,14 +22,14 @@ under the License.
 #include <boost/beast/websocket.hpp>
 #include <boost/asio/ip/tcp.hpp>
 
-#include "nsDefinitions.h"
+#include "../nsDefinitions.h"
 
-#include "etp/EtpMessages.h"
-#include "etp/ProtocolHandlers/CoreHandlers.h"
-#include "etp/ProtocolHandlers/DiscoveryHandlers.h"
-#include "etp/ProtocolHandlers/StoreHandlers.h"
-#include "etp/ProtocolHandlers/StoreNotificationHandlers.h"
-#include "etp/ProtocolHandlers/DataArrayHandlers.h"
+#include "EtpMessages.h"
+#include "ProtocolHandlers/CoreHandlers.h"
+#include "ProtocolHandlers/DiscoveryHandlers.h"
+#include "ProtocolHandlers/StoreHandlers.h"
+#include "ProtocolHandlers/StoreNotificationHandlers.h"
+#include "ProtocolHandlers/DataArrayHandlers.h"
 
 #if defined(_WIN32) && !defined(FESAPI_STATIC)
 	#ifndef DLL_IMPORT_OR_EXPORT

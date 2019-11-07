@@ -35,6 +35,7 @@ using namespace gsoap_resqml2_0_1;
 using namespace COMMON_NS;
 
 const char* WellboreTrajectoryRepresentation::XML_TAG = "WellboreTrajectoryRepresentation";
+const char* WellboreTrajectoryRepresentation::XML_NS = "resqml20";
 
 WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInterpretation * interp, const string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo)
 {
