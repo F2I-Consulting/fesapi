@@ -220,18 +220,18 @@ set (ALL_SOURCES_AND_HEADERS
 
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${ALL_SOURCES_AND_HEADERS})
 
-target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_INCLUDE_DIR} ${HDF5_C_INCLUDE_DIR} ${MINIZIP_INCLUDE_DIR})
+target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_C_INCLUDE_DIR})
 
-target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE ZLIB::ZLIB)
-
-target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE MiniZip::MiniZip)
+target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE ZLIB::ZLIB MiniZip::MiniZip)
 
 if (UNIX)
-	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE UUID::UUID)
+	target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE UUID::UUID)
 endif (UNIX)
 
 target_include_directories(${CPP_LIBRARY_NAME} INTERFACE
-	$<INSTALL_INTERFACE:include>
+	$<BUILD_INTERFACE:${CMAKE_BINARY_DIR}>
+	$<BUILD_INTERFACE:${FESAPI_ROOT_DIR}/src/>
+	$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 # organizing sources and headers in the Visual Studio Project
@@ -268,6 +268,8 @@ endif (WITH_DOTNET_WRAPPING)
 # ============================================================================
 # Create package
 # ============================================================================
+include(CMakePackageConfigHelpers)
+
 ######## 1. Build tree
 
 export(TARGETS ${CPP_LIBRARY_NAME}
