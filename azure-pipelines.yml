@@ -193,13 +193,16 @@ jobs:
           Generator: '-G"Visual Studio 15 2017 Win64" -T host=x64'
           JFlag: '-j 2'
     steps:
-      - script: |
+      - powershell: |
           Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.5/src/hdf5-1.10.5.zip -OutFile C:\hdf5-1.10.5.zip
           Expand-Archive C:\hdf5-1.10.5.zip -DestinationPath C:\
+        displayName: 'Download HDF5 1.10.5'
+
+      - script: |
           cd C:\hdf5-1.10.5
           mkdir build
           cd build
-          cmake3 -G "Unix Makefiles"
+          cmake -G "Unix Makefiles"
             -DCMAKE_BUILD_TYPE:STRING=Release
           	-DBUILD_SHARED_LIBS:BOOL=OFF
           	-DBUILD_TESTING:BOOL=OFF
