@@ -3,10 +3,15 @@ cmake_minimum_required (VERSION 3.12)
 project (Fesapi_SRC)
 
 find_package(ZLIB REQUIRED)
+find_package(HDF5 REQUIRED)
 find_package(MiniZip REQUIRED)
 
 if(UNIX)
 	find_package(UUID REQUIRED)
+endif()
+
+if(NOT HDF5_BUILT_AS_DYNAMIC_LIB)
+	find_package(SZIP)
 endif()
 
 add_library (${CPP_LIBRARY_NAME} ${LIB_TYPE} "")
@@ -75,15 +80,15 @@ if (WIN32)
 	# 	message(ERROR "No minizip library has been set.")
 	# endif ()
 
-	if (EXISTS ${HDF5_C_LIBRARY_RELEASE} AND EXISTS ${HDF5_C_LIBRARY_DEBUG})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${HDF5_C_LIBRARY_RELEASE} debug ${HDF5_C_LIBRARY_DEBUG})
-	elseif (EXISTS ${HDF5_C_LIBRARY_RELEASE})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${HDF5_C_LIBRARY_RELEASE})
-	elseif (EXISTS ${HDF5_C_LIBRARY_DEBUG})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${HDF5_C_LIBRARY_DEBUG})
-	else ()
-		message(ERROR "No hdf5 library has been set.")
-	endif ()
+	# if (EXISTS ${HDF5_C_LIBRARY_RELEASE} AND EXISTS ${HDF5_C_LIBRARY_DEBUG})
+	# 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${HDF5_C_LIBRARY_RELEASE} debug ${HDF5_C_LIBRARY_DEBUG})
+	# elseif (EXISTS ${HDF5_C_LIBRARY_RELEASE})
+	# 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${HDF5_C_LIBRARY_RELEASE})
+	# elseif (EXISTS ${HDF5_C_LIBRARY_DEBUG})
+	# 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${HDF5_C_LIBRARY_DEBUG})
+	# else ()
+	# 	message(ERROR "No hdf5 library has been set.")
+	# endif ()
 
 # zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
 # zlib is linked because it is a very probable dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to zlib), zlib could be not present in these linked libraries.
@@ -96,13 +101,13 @@ if (WIN32)
 	# endif ()
 
 # szip is linked because it is a potential dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to szip), szip could be not present in these linked libraries.
-	if (EXISTS ${SZIP_LIBRARY_RELEASE} AND EXISTS ${SZIP_LIBRARY_DEBUG})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${SZIP_LIBRARY_RELEASE} debug ${SZIP_LIBRARY_DEBUG})
-	elseif (EXISTS ${SZIP_LIBRARY_RELEASE})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${SZIP_LIBRARY_RELEASE})
-	elseif (EXISTS ${SZIP_LIBRARY_DEBUG})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${SZIP_LIBRARY_DEBUG})
-	endif ()
+	# if (EXISTS ${SZIP_LIBRARY_RELEASE} AND EXISTS ${SZIP_LIBRARY_DEBUG})
+	# 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${SZIP_LIBRARY_RELEASE} debug ${SZIP_LIBRARY_DEBUG})
+	# elseif (EXISTS ${SZIP_LIBRARY_RELEASE})
+	# 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${SZIP_LIBRARY_RELEASE})
+	# elseif (EXISTS ${SZIP_LIBRARY_DEBUG})
+	# 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${SZIP_LIBRARY_DEBUG})
+	# endif ()
 
 	set (ASSEMBLY_NAME ${CPP_LIBRARY_NAME})
 	set (DLL_SUFFIX ".dll")
@@ -129,9 +134,9 @@ ELSEIF (UNIX)
 	# 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_LIBRARY_RELEASE})
 	# endif ()
 # szip is linked because it is a potential dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to szip), szip could be not present in these linked libraries.
-	if (EXISTS ${SZIP_LIBRARY_RELEASE})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${SZIP_LIBRARY_RELEASE})
-	endif ()
+	# if (EXISTS ${SZIP_LIBRARY_RELEASE})
+	# 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${SZIP_LIBRARY_RELEASE})
+	# endif ()
 
 	# In case of static link to hdf5 libraries, then we need to also link to some other libraries
 	if( ${HDF5_C_LIBRARY_RELEASE} MATCHES ".*\.a$" )
@@ -220,9 +225,14 @@ set (ALL_SOURCES_AND_HEADERS
 
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${ALL_SOURCES_AND_HEADERS})
 
-target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_C_INCLUDE_DIR})
+target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_INCLUDE_DIRS})
+target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_LIBRARIES})
 
 target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE ZLIB::ZLIB MiniZip::MiniZip)
+
+if(NOT HDF5_BUILT_AS_DYNAMIC_LIB)
+	target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE SZIP::SZIP)
+endif()
 
 if (UNIX)
 	target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE UUID::UUID)
@@ -233,6 +243,9 @@ target_include_directories(${CPP_LIBRARY_NAME} INTERFACE
 	$<BUILD_INTERFACE:${FESAPI_ROOT_DIR}/src/>
 	$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
+
+target_compile_definitions(${CPP_LIBRARY_NAME} PUBLIC ${HDF5_DEFINITIONS})
+
 
 # organizing sources and headers in the Visual Studio Project
 if (WIN32)
