@@ -29,10 +29,6 @@ FILE (GLOB FESAPI_PROXIES_HEADERS ${FESAPI_ROOT_DIR}/src/proxies/*.h)
 
 SET (BUILD_SHARED_LIBS ON CACHE BOOL "Build shared lib")
 
-IF (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-	SET (CMAKE_INSTALL_PREFIX ${FESAPI_BINARY_DIR}/install CACHE PATH "FesapiCpp install prefix" FORCE)
-ENDIF (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -46,20 +42,6 @@ set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 list(APPEND CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}")
 
-# hdf5
-# FIND_PACKAGE (HDF5) is not used because we need debug and release versions of hdf5 for windows build environments. The cmake module does not provide both debug and release library cmake variables.
-# SET (HDF5_C_INCLUDE_DIR HDF5_C_INCLUDE_DIR-NOTFOUND CACHE PATH "Path to the directory which contains the HDF5 C header files")
-# IF (NOT IS_DIRECTORY ${HDF5_C_INCLUDE_DIR})
-# 	MESSAGE(WARNING "The HDF5 include dir (HDF5_C_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
-# ENDIF ()
-# SET (HDF5_C_LIBRARY_RELEASE HDF5_C_LIBRARY_RELEASE-NOTFOUND CACHE FILEPATH "Path to the file which contains the HDF5 C library release")
-# IF (NOT EXISTS ${HDF5_C_LIBRARY_RELEASE})
-# 	MESSAGE(WARNING "The HDF5 library (HDF5_C_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
-# ENDIF ()
-# SET (HDF5_C_LIBRARY_DEBUG HDF5_C_LIBRARY_DEBUG-NOTFOUND CACHE FILEPATH "Path to the file which contains the HDF5 C library debug")
-# IF (NOT EXISTS ${HDF5_C_LIBRARY_DEBUG})
-# 	MESSAGE(WARNING "The HDF5 library (HDF5_C_LIBRARY_DEBUG variable) does not look to be a valid file. Please modify it.")
-# ENDIF ()
 IF (WIN32)
 	SET (HDF5_USE_STATIC_LIBRARIES OFF CACHE BOOL "Is your HDF5 library built as a static library ?")
 ENDIF (WIN32)
