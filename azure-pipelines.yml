@@ -196,26 +196,36 @@ jobs:
       - powershell: |
           Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.5/src/hdf5-1.10.5.zip -OutFile C:\hdf5-1.10.5.zip
           Expand-Archive C:\hdf5-1.10.5.zip -DestinationPath C:\
+          New-Item -Path "C:\hdf5-1.10.5" -Name "build" -ItemType "directory"
         displayName: 'Download HDF5 1.10.5'
 
-      - script: |
-          cd C:\hdf5-1.10.5
-          mkdir build
-          cd build
-          ls .
-          cmake $(Generator)
+      - task: CMake@1
+        displayName: 'Configure HDF5'
+        inputs:
+          workingDirectory: C:\hdf5-1.10.5\build
+          cmakeArgs:
+            ..
+            $(Generator)
             -DCMAKE_BUILD_TYPE:STRING=Release
-          	-DBUILD_SHARED_LIBS:BOOL=OFF
-          	-DBUILD_TESTING:BOOL=OFF
-          	-DHDF5_BUILD_TOOLS:BOOL=OFF
-          	-DHDF5_BUILD_EXAMPLES:BOOL=OFF
-          	-DHDF5_BUILD_CPP_LIB:BOOL=OFF
-          	-DHDF5_BUILD_HL_LIB:BOOL=OFF
-          	-DCMAKE_INSTALL_PREFIX:STRING=C:/hdf5
-          	..
-          cmake --build . --config Release
-          make install
-        displayName: 'Install HDF5 1.10.5'
+            -DBUILD_SHARED_LIBS:BOOL=OFF
+            -DBUILD_TESTING:BOOL=OFF
+            -DHDF5_BUILD_TOOLS:BOOL=OFF
+            -DHDF5_BUILD_EXAMPLES:BOOL=OFF
+            -DHDF5_BUILD_CPP_LIB:BOOL=OFF
+            -DHDF5_BUILD_HL_LIB:BOOL=OFF
+            -DCMAKE_INSTALL_PREFIX:STRING=C:/hdf5
+
+      - task: CMake@1
+        displayName: "Build HDF5"
+        inputs:
+          workingDirectory: C:\hdf5-1.10.5\build
+          cmakeArgs: --build . --config Release -- /verbosity:minimal
+
+      - task: CMake@1
+        displayName: "Install HDF5"
+        inputs:
+          workingDirectory: C:\hdf5-1.10.5\build
+          cmakeArgs: --build . --target install
 
       - powershell: |
           Invoke-WebRequest https://github.com/F2I-Consulting/Minizip/releases/download/1.1/minizip-1.1-win64-vs2015-static.zip -OutFile C:\minizip-1.1-win64-vs2015-static.zip
