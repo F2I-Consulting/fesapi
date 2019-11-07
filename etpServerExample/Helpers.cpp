@@ -28,16 +28,15 @@ COMMON_NS::AbstractObject* Helpers::getObjectFromUri(COMMON_NS::DataObjectReposi
 		throw ETP_NS::EtpException(error.m_code, error.m_message);
 	}
 
-	std::vector<std::string> tokens = tokenize(uri.substr(6), '/');
-	if (tokens[0] != "resqml20" && tokens[0] != "eml20" && tokens[0] != "witsml20") {
+	if (uri[6] != '/') {
 		throw ETP_NS::EtpException(2, "The URI " + uri + " uses some dataspaces or witsml or prodml. This agent does not support dataspace.");
 	}
 
-	tokens = tokenize(tokens[1], '(');
-	tokens[1].pop_back();
-	COMMON_NS::AbstractObject* result = repo->getDataObjectByUuid(tokens[1]);
+	const size_t openingParenthesisPos = uri.find('(');
+	const std::string uuid = uri.substr(openingParenthesisPos + 1, 36);
+	COMMON_NS::AbstractObject* result = repo->getDataObjectByUuid(uuid);
 	if (result == nullptr) {
-		throw ETP_NS::EtpException(11, tokens[1] + " cannot be resolved as a data object in this store");
+		throw ETP_NS::EtpException(11, uuid + " cannot be resolved as a data object in this store");
 	}
 
 	return result;

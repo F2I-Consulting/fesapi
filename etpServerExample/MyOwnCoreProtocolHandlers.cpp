@@ -80,7 +80,7 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 	Energistics::Etp::v12::Protocol::Core::OpenSession openSession;
 	openSession.m_applicationName = "F2I ETP Example Server";
 	openSession.m_applicationVersion = "0.0";
-	openSession.m_sessionId = GuidTools::generateUidAsString();
+	openSession.m_serverInstanceId.m_array = GuidTools::generateUidAsByteArray();
 	openSession.m_supportedProtocols = supportedProtocols;
 	std::vector<std::string> supportedObjects;
 	supportedObjects.push_back("application/x-resqml+xml;version=2.0;type=*");

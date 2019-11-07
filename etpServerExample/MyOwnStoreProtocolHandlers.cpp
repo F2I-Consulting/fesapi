@@ -69,18 +69,18 @@ void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::
 {
 	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
 	for (const auto & pair : msg.m_dataObjects) {
-		std::cout << "Store received data object : " << pair.second.m_resource.m_contentType << " (" << pair.second.m_resource.m_uri << ")" << std::endl;
+		std::cout << "Store received data object : " << pair.second.m_resource.m_dataObjectType << " (" << pair.second.m_resource.m_uri << ")" << std::endl;
 
-		COMMON_NS::AbstractObject* importedObj = repo->addOrReplaceGsoapProxy(pair.second.m_data, pair.second.m_resource.m_contentType);
+		COMMON_NS::AbstractObject* importedObj = repo->addOrReplaceGsoapProxy(pair.second.m_data, pair.second.m_resource.m_dataObjectType);
 		if (importedObj == nullptr) {
-			pe.m_errors[pair.first].m_message = "Could not put the dataobject with content type " + pair.second.m_resource.m_contentType;
+			pe.m_errors[pair.first].m_message = "Could not put the dataobject with content type " + pair.second.m_resource.m_dataObjectType;
 			pe.m_errors[pair.first].m_code = 4001;
 			continue;
 		}
 
 		importedObj->loadTargetRelationships();
 
-		if (pair.second.m_resource.m_contentType == "application/x-resqml+xml;version=2.0;type=obj_IjkGridRepresentation") {
+		if (pair.second.m_resource.m_dataObjectType == "resqml20.obj_IjkGridRepresentation") {
 			std::cout << "Create a dummy Grid Connection Set for received IJK Grid Representation." << std::endl;
 			RESQML2_NS::GridConnectionSetRepresentation* gcsr = repo->createGridConnectionSetRepresentation(std::string(), "Dummy GCSR");
 			ULONG64 cellIndexPair[] = { 0, 1 };

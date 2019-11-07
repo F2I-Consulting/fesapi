@@ -32,4 +32,18 @@ std::string GuidTools::generateUidAsString()
     return uuidStr;
 }
 
+std::array<uint8_t, 16> GuidTools::generateUidAsByteArray()
+{
+	uuid_t uuid;
+	uuid_generate_random(uuid);
+	
+	std::array<uint8_t, 16> result;
+
+	std::copy_n(uuid,
+		uuid + 16,
+		result);
+
+	return result;
+}
+
 #endif

@@ -29,7 +29,7 @@ void DiscoveryHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes
 		std::cerr << "Error : This message header does not belong to the protocol Discovery" << std::endl;
 		return;
 	}
-
+	/*
 	if (mh.m_messageType == Energistics::Etp::v12::Protocol::Discovery::GetDataspaces::messageTypeId) {
 		Energistics::Etp::v12::Protocol::Discovery::GetDataspaces msg;
 		avro::decode(*d, msg);
@@ -54,7 +54,7 @@ void DiscoveryHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes
 		session->flushReceivingBuffer();
 		on_GetNamespacesResponse(msg, mh.m_correlationId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypes::messageTypeId) {
+	else*/ if (mh.m_messageType == Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypes::messageTypeId) {
 		Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypes msg;
 		avro::decode(*d, msg);
 		session->flushReceivingBuffer();
@@ -78,24 +78,12 @@ void DiscoveryHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes
 		session->flushReceivingBuffer();
 		on_GetResourcesResponse(msg, mh.m_correlationId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Discovery::GetDeletedResources::messageTypeId) {
-		Energistics::Etp::v12::Protocol::Discovery::GetDeletedResources msg;
-		avro::decode(*d, msg);
-		session->flushReceivingBuffer();
-		on_GetDeletedResources(msg, mh.m_messageId);
-	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Discovery::GetDeletedResourcesResponse::messageTypeId) {
-		Energistics::Etp::v12::Protocol::Discovery::GetDeletedResourcesResponse msg;
-		avro::decode(*d, msg);
-		session->flushReceivingBuffer();
-		on_GetDeletedResourcesResponse(msg, mh.m_correlationId);
-	}
 	else {
 		session->flushReceivingBuffer();
 		sendExceptionCode3();
 	}
 }
-
+/*
 void DiscoveryHandlers::on_GetDataspaces(const Energistics::Etp::v12::Protocol::Discovery::GetDataspaces & msg, int64_t correlationId)
 {
 	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The Discovery::on_GetDataspaces method has not been overriden by the agent."));
@@ -129,7 +117,7 @@ void DiscoveryHandlers::on_GetNamespacesResponse(const Energistics::Etp::v12::Pr
 		std::cout << "DICOVERED NAMESPACE (" << uri << ')' << std::endl;
 	}
 }
-
+*/
 void DiscoveryHandlers::on_GetSupportedTypes(const Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypes & msg, int64_t correlationId)
 {
 	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The Discovery::on_GetSupportedTypes method has not been overriden by the agent."));
@@ -138,7 +126,7 @@ void DiscoveryHandlers::on_GetSupportedTypes(const Energistics::Etp::v12::Protoc
 void DiscoveryHandlers::on_GetSupportedTypesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypesResponse & msg, int64_t correlationId)
 {
 	for (const auto & resource : msg.m_supportedTypes) {
-		std::cout << "DICOVERED SUPPORTED TYPE (" << resource.m_contentType << " count == " << (resource.m_objectCount.is_null() ? "unknown" : std::to_string(resource.m_objectCount.get_int())) << ')' << std::endl;
+		std::cout << "DICOVERED SUPPORTED TYPE (" << resource.m_dataObjectType << " count == " << (resource.m_objectCount.is_null() ? "unknown" : std::to_string(resource.m_objectCount.get_int())) << ')' << std::endl;
 	}
 }
 
@@ -150,18 +138,6 @@ void DiscoveryHandlers::on_GetResources(const Energistics::Etp::v12::Protocol::D
 void DiscoveryHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse & msg, int64_t correlationId)
 {
 	for (const auto & resource : msg.m_resources) {
-		std::cout << "DISCOVERED RESOURCE (" << resource.m_name << ", " << resource.m_contentType << ')' << std::endl;
-	}
-}
-
-void DiscoveryHandlers::on_GetDeletedResources(const Energistics::Etp::v12::Protocol::Discovery::GetDeletedResources & msg, int64_t correlationId)
-{
-	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The Discovery::on_GetDeletedResources method has not been overriden by the agent."));
-}
-
-void DiscoveryHandlers::on_GetDeletedResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetDeletedResourcesResponse & msg, int64_t correlationId)
-{
-	for (const auto & resource : msg.m_deletedResources) {
-		std::cout << "DICOVERED DELETED (" << resource.m_uri << ", " << resource.m_contentType << ", timestamp:" << resource.m_lastChanged << ')' << std::endl;
+		std::cout << "DISCOVERED RESOURCE (" << resource.m_name << ", " << resource.m_dataObjectType << ')' << std::endl;
 	}
 }

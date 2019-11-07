@@ -87,8 +87,14 @@ void StoreHandlers::on_GetDataObjectsResponse(const Energistics::Etp::v12::Proto
 		std::cout << "*************************************************" << std::endl;
 		std::cout << "Resource received : " << std::endl;
 		std::cout << "uri : " << graphResource.second.m_resource.m_uri << std::endl;
-		std::cout << "uri with path : " << graphResource.second.m_resource.m_uriWithPath << std::endl;
-		std::cout << "contentType : " << graphResource.second.m_resource.m_contentType << std::endl;
+		if (!graphResource.second.m_resource.m_alternateUris.empty()) {
+			std::cout << "alternateUris :";
+			for (const auto & alternateUri : graphResource.second.m_resource.m_alternateUris) {
+				std::cout << " " << alternateUri;
+			}
+			std::cout << std::endl;
+		}
+		std::cout << "contentType : " << graphResource.second.m_resource.m_dataObjectType << std::endl;
 		std::cout << "name : " << graphResource.second.m_resource.m_name << std::endl;
 		if (!graphResource.second.m_resource.m_sourceCount.is_null()) {
 			std::cout << "source count : " << graphResource.second.m_resource.m_sourceCount.get_int() << std::endl;

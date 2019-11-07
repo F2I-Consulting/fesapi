@@ -813,6 +813,12 @@ string AbstractObject::getContentType() const
 	return "application/x-" + xmlNs.substr(0, xmlNs.size()-2) + "+xml;version=" + getXmlNamespaceVersion() + ";type=" + (xmlNs == "resqml20" || xmlNs == "eml20" ? "obj_" + getXmlTag() : getXmlTag());
 }
 
+string AbstractObject::getQualifiedType() const
+{
+	const std::string & xmlNs = getXmlNamespace();
+	return getXmlNamespace() + "." + (xmlNs == "resqml20" || xmlNs == "eml20" ? "obj_" + getXmlTag() : getXmlTag());
+}
+
 std::string AbstractObject::getPartNameInEpcDocument() const
 {
 	const std::string result = getXmlTag() + "_" + getUuid() + ".xml";

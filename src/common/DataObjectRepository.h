@@ -329,10 +329,10 @@ namespace COMMON_NS
 
 		/**
 		* Add a dataobject to the repository based on its Energistics XML definition.
-		* @param xml			The XML which is the serialization of the Energistics dataobject to add or to replace
-		* @param contentType	The content type of the Energistics dataobject to add or to replace
+		* @param xml				The XML which is the serialization of the Energistics dataobject to add or to replace.
+		* @param contentOrDataType	The content or qualified data type of the Energistics dataobject to add or to replace.
 		*/
-		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentType);
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* addOrReplaceGsoapProxy(const std::string & xml, const std::string & contentOrDataType);
 
 		/**
 		* Get all the data objects which are part of this repository.
@@ -341,17 +341,17 @@ namespace COMMON_NS
 		const std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > & getDataObjects() const { return dataObjects; }
 
 		/**
-		* Group Data objects by content type
-		* @return A map where the key is a content type and where the value is the collection of Data objects of this content type
+		* Group Data objects by datatype
+		* @return A map where the key is a qualified datatype and where the value is the collection of Data objects of this data type
 		*/
-		DLL_IMPORT_OR_EXPORT std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > getDataObjectsGroupedByContentType() const;
+		DLL_IMPORT_OR_EXPORT std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > getDataObjectsGroupedByDataType() const;
 
 		/**
-		* Group Data objects by content type abed on a filtered list of the repository
-		* @param filter A string that the returned Dataobject must contain in their content type.
-		* @return A map where the key is a content type and where the value is the collection of Data objects of this content type
+		* Group Data objects of the repository by datatype based on a filtered list 
+		* @param filter A string that the returned Dataobject must contain in their datatype.
+		* @return A map where the key is a datatype and where the value is the collection of Data objects of this datatype
 		*/
-		DLL_IMPORT_OR_EXPORT std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > getDataObjectsGroupedByContentType(const std::string & filter) const;
+		DLL_IMPORT_OR_EXPORT std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > getDataObjectsGroupedByDataType(const std::string & filter) const;
 
 		/**
 		* Get Data objects which honor this content type

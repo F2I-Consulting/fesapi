@@ -26,7 +26,7 @@ under the License.
 #include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
 #include "resqml2_0_1/IjkGridExplicitRepresentation.h"
 #include "resqml2_0_1/IjkGridParametricRepresentation.h"
-
+/*
 void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlash(const Energistics::Etp::v12::Protocol::Discovery::GetNamespaces & gn, int64_t correlationId,
 	std::vector<std::string> & result)
 {
@@ -104,12 +104,12 @@ void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlash(const Energistics:
 		result.push_back("eml://eml22");
 	}
 }
-
+*/
 void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v12::Protocol::Discovery::GetResources & msg, int64_t correlationId,
 	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result)
 {
 	Energistics::Etp::v12::Datatypes::Object::Resource resource;
-	resource.m_contentType = "";
+	resource.m_dataObjectType = "";
 
 	if (msg.m_context.m_depth >= 0) {
 		const size_t openingParenthesis = msg.m_context.m_uri.find('(', 5);
@@ -137,7 +137,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v1
 					lastUpdate = obj->getCreation();
 				}
 			}
-			if ((msg.m_context.m_contentTypes.empty() || std::find(msg.m_context.m_contentTypes.begin(), msg.m_context.m_contentTypes.end(), obj->getContentType()) != msg.m_context.m_contentTypes.end()) &&
+			if ((msg.m_context.m_dataObjectTypes.empty() || std::find(msg.m_context.m_dataObjectTypes.begin(), msg.m_context.m_dataObjectTypes.end(), obj->getQualifiedType()) != msg.m_context.m_dataObjectTypes.end()) &&
 				(msg.m_lastChangedFilter.is_null() || lastUpdate >= msg.m_lastChangedFilter.get_long())) {
 				result.push_back(ETP_NS::EtpHelpers::buildEtpResourceFromEnergisticsObject(obj, msg.m_countObjects));
 			}
@@ -190,7 +190,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResources(const Energistics::Etp::v12
 
 		on_GetDataObject(msg, correlationId, mb.m_resources);
 	}
-	else { // eml, dataspace or namespace
+	else { // eml, dataspace
 		if (session->validateUri(msg.m_context.m_uri, true).m_code > -1) {
 			return;
 		}
@@ -206,31 +206,9 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResources(const Energistics::Etp::v12
 			nextGr.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
 		}
 
-		const std::string path = msg.m_context.m_uri.substr(6);
 		std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > groupedDataObj;
-		if (path == "resqml20" || path == "resqml20/") {
-			groupedDataObj = repo->getDataObjectsGroupedByContentType("x-resqml+xml;version=2.0");
-		}
-		else if (path == "resqml22" || path == "resqml22/") {
-			groupedDataObj = repo->getDataObjectsGroupedByContentType("x-resqml+xml;version=2.2");
-		}
-		else if (path == "eml20" || path == "eml20/") {
-			groupedDataObj = repo->getDataObjectsGroupedByContentType("x-eml+xml;version=2.0");
-		}
-		else if (path == "eml21" || path == "eml21/") {
-			groupedDataObj = repo->getDataObjectsGroupedByContentType("x-eml+xml;version=2.1");
-		}
-		else if (path == "eml22" || path == "eml22/") {
-			groupedDataObj = repo->getDataObjectsGroupedByContentType("x-eml+xml;version=2.2");
-		}
-		else if (path == "witsml20" || path == "witsml20/") {
-			groupedDataObj = repo->getDataObjectsGroupedByContentType("x-witsml+xml;version=2.0");
-		}
-		else if (path == "witsml21" || path == "witsml21/") {
-			groupedDataObj = repo->getDataObjectsGroupedByContentType("x-witsmlml+xml;version=2.1");
-		}
-		else if (msg.m_context.m_uri == "eml://") {
-			groupedDataObj = repo->getDataObjectsGroupedByContentType();
+		if (msg.m_context.m_uri == "eml:///") {
+			groupedDataObj = repo->getDataObjectsGroupedByDataType();
 		}
 		else {
 			Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
@@ -253,7 +231,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResources(const Energistics::Etp::v12
 
 	session->send(mb, correlationId, 0x01 | 0x02);
 }
-
+/*
 void MyOwnDiscoveryProtocolHandlers::on_GetDataspaces(const Energistics::Etp::v12::Protocol::Discovery::GetDataspaces & msg, int64_t correlationId)
 {
 	std::cout << "Discovery dataspace received uri : " << msg.m_uri << std::endl;
@@ -276,7 +254,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetNamespaces(const Energistics::Etp::v1
 
 	session->send(mb, correlationId, 0x01 | 0x02);
 }
-
+*/
 void MyOwnDiscoveryProtocolHandlers::on_GetSupportedTypes(const Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypes & msg, int64_t correlationId)
 {
 	std::cout << "Discovery supported types received uri " << msg.m_uri  << std::endl;
@@ -318,7 +296,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetSupportedTypes(const Energistics::Etp
 			msg.m_scope == Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf) {
 			auto sameCt = repo->getDataObjectsByContentType(obj->getContentType());
 			Energistics::Etp::v12::Datatypes::Object::SupportedType st;
-			st.m_contentType = obj->getContentType();
+			st.m_dataObjectType = obj->getQualifiedType();
 			if (msg.m_countObjects) {
 				st.m_objectCount.set_int(sameCt.size());
 			}
@@ -340,13 +318,13 @@ void MyOwnDiscoveryProtocolHandlers::on_GetSupportedTypes(const Energistics::Etp
 		}
 
 		for (const auto & rel : groupedByRel) {
-			groupedByTargets[rel->getContentType()].push_back(rel);
+			groupedByTargets[rel->getQualifiedType()].push_back(rel);
 		}
-		for (const auto & folder : groupedByTargets) {
+		for (const auto & dataObjectType : groupedByTargets) {
 			Energistics::Etp::v12::Datatypes::Object::SupportedType st;
-			st.m_contentType = folder.first;
+			st.m_dataObjectType = dataObjectType.first;
 			if (msg.m_countObjects) {
-				st.m_objectCount.set_int(folder.second.size());
+				st.m_objectCount.set_int(dataObjectType.second.size());
 			}
 			else {
 				st.m_objectCount.set_null();
@@ -354,33 +332,11 @@ void MyOwnDiscoveryProtocolHandlers::on_GetSupportedTypes(const Energistics::Etp
 			response.m_supportedTypes.push_back(st);
 		}
 	}
-	else { // eml, dataspace or namespace 
+	else { // eml or dataspace 
 		// msg.m_scope is irrelevant
-		const std::string path = msg.m_uri.substr(6);
 		std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > groupedDataObj;
-		if (path == "resqml20" || path == "resqml20/") {
-			groupedDataObj = repo->getDataObjectsGroupedByContentType("x-resqml+xml;version=2.0");	
-		}
-		else if (path == "resqml22" || path == "resqml22/") {
-			groupedDataObj = repo->getDataObjectsGroupedByContentType("x-resqml+xml;version=2.2");
-		}
-		else if (path == "eml20" || path == "eml20/") {
-			groupedDataObj = repo->getDataObjectsGroupedByContentType("x-eml+xml;version=2.0");
-		}
-		else if (path == "eml21" || path == "eml21/") {
-			groupedDataObj = repo->getDataObjectsGroupedByContentType("x-eml+xml;version=2.1");
-		}
-		else if (path == "eml22" || path == "eml22/") {
-			groupedDataObj = repo->getDataObjectsGroupedByContentType("x-eml+xml;version=2.2");
-		}
-		else if (path == "witsml20" || path == "witsml20/") {
-			groupedDataObj = repo->getDataObjectsGroupedByContentType("x-witsml+xml;version=2.0");
-		}
-		else if (path == "witsml21" || path == "witsml21/") {
-			groupedDataObj = repo->getDataObjectsGroupedByContentType("x-witsmlml+xml;version=2.1");
-		}
-		else if (msg.m_uri == "eml://") {
-			groupedDataObj = repo->getDataObjectsGroupedByContentType();
+		if (msg.m_uri == "eml:///") {
+			groupedDataObj = repo->getDataObjectsGroupedByDataType();
 		}
 		else {
 			Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
@@ -395,7 +351,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetSupportedTypes(const Energistics::Etp
 
 		for (const auto & obj : groupedDataObj) {
 			Energistics::Etp::v12::Datatypes::Object::SupportedType st;
-			st.m_contentType = obj.first;
+			st.m_dataObjectType = obj.first;
 			if (msg.m_countObjects) {
 				st.m_objectCount.set_int(obj.second.size());
 			}
@@ -407,13 +363,4 @@ void MyOwnDiscoveryProtocolHandlers::on_GetSupportedTypes(const Energistics::Etp
 	}
 
 	session->send(response, correlationId, 0x01 | 0x02);
-}
-
-void MyOwnDiscoveryProtocolHandlers::on_GetDeletedResources(const Energistics::Etp::v12::Protocol::Discovery::GetDeletedResources & msg, int64_t correlationId)
-{
-	std::cout << "Discovery deleted received" << std::endl;
-
-	Energistics::Etp::v12::Protocol::Discovery::GetDeletedResourcesResponse mb;
-
-	session->send(mb, correlationId, 0x01 | 0x02);
 }

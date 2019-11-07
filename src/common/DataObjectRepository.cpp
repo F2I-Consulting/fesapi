@@ -439,47 +439,67 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 	return proxy;
 }
 
-COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const std::string & xml, const string & contentType)
+COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const std::string & xml, const string & contentOrDataType)
 {
 	istringstream iss(xml);
 	setGsoapStream(&iss);
 
-	size_t lastEqualCharPos = contentType.find_last_of('_'); // The XML tag is after "obj_"
-	if (lastEqualCharPos == string::npos) { lastEqualCharPos = contentType.find_last_of('='); }
-	const string datatype = contentType.substr(lastEqualCharPos + 1);
+	string ns;
+	size_t dataTypeCharPos;
+	if (contentOrDataType.find("application/x-") == 0) { // content type
+		// datatype
+		dataTypeCharPos = contentOrDataType.find_last_of('_'); // The XML tag is after "obj_"
+		if (dataTypeCharPos == string::npos) { dataTypeCharPos = contentOrDataType.find_last_of('='); }
+
+		//namespace
+		const size_t dashPos = contentOrDataType.find('-');
+		const size_t plusPos = contentOrDataType.find('+');
+		ns = contentOrDataType.substr(dashPos + 1, plusPos - dashPos - 1);
+		const size_t equalPos = contentOrDataType.find('=');
+		ns += contentOrDataType[equalPos + 1];
+		ns += contentOrDataType[equalPos + 3];
+	}
+	else { // qualified data type
+		const size_t dotPos = contentOrDataType.find('.');
+
+		// datatype
+		dataTypeCharPos = contentOrDataType.find_last_of('_'); // The XML tag is after "obj_"
+		if (dataTypeCharPos == string::npos) { dataTypeCharPos = dotPos; }
+
+		//namespace
+		ns = contentOrDataType.substr(0, dotPos);
+	}
+	const string datatype = contentOrDataType.substr(dataTypeCharPos + 1);
 
 	COMMON_NS::AbstractObject* wrapper = nullptr;
-	if (contentType.find("application/x-eml+xml;version=2.0;type=obj_") != string::npos) {
+	if (ns == "eml20" && datatype == "EpcExternalPartReference") {
 		gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* read = gsoap_resqml2_0_1::soap_new_eml20__obj_USCOREEpcExternalPartReference(gsoapContext);
 		soap_read_eml20__obj_USCOREEpcExternalPartReference(gsoapContext, read);
 		wrapper = hdfProxyFactory->make(read);
 	}
-	else if (contentType.find("application/x-resqml+xml;version=2.0;type=obj_") != string::npos) {
-		wrapper = getResqml2_0_1WrapperFromGsoapContext(datatype);
-	}
-	else if (contentType.find("application/x-resqml+xml;version=2.0.1;type=obj_") != string::npos) {
-		if (contentType != "application/x-resqml+xml;version=2.0.1;type=obj_Activity" &&
-			contentType != "application/x-resqml+xml;version=2.0.1;type=obj_ActivityTemplate" &&
-			contentType != "application/x-resqml+xml;version=2.0.1;type=obj_CategoricalPropertySeries" &&
-			contentType != "application/x-resqml+xml;version=2.0.1;type=obj_CommentPropertySeries" &&
-			contentType != "application/x-resqml+xml;version=2.0.1;type=obj_ContinuousPropertySeries" &&
-			contentType != "application/x-resqml+xml;version=2.0.1;type=obj_StreamlinesFeature" &&
-			contentType != "application/x-resqml+xml;version=2.0.1;type=obj_StreamlinesRepresentation") {
-			addWarning("Content type \"" + contentType + "\" does not belong to 2.0.1. Probably to 2.0? Please fix your ccontent type or ask exporter to fix it.");
+	else if (ns == "resqml20") {
+		if (contentOrDataType != "application/x-resqml+xml;version=2.0.1;type=obj_Activity" &&
+			contentOrDataType != "application/x-resqml+xml;version=2.0.1;type=obj_ActivityTemplate" &&
+			contentOrDataType != "application/x-resqml+xml;version=2.0.1;type=obj_CategoricalPropertySeries" &&
+			contentOrDataType != "application/x-resqml+xml;version=2.0.1;type=obj_CommentPropertySeries" &&
+			contentOrDataType != "application/x-resqml+xml;version=2.0.1;type=obj_ContinuousPropertySeries" &&
+			contentOrDataType != "application/x-resqml+xml;version=2.0.1;type=obj_StreamlinesFeature" &&
+			contentOrDataType != "application/x-resqml+xml;version=2.0.1;type=obj_StreamlinesRepresentation") {
+			addWarning("Content type \"" + contentOrDataType + "\" does not belong to 2.0.1. Probably to 2.0? Please fix your content type or ask exporter to fix it.");
 		}
 		wrapper = getResqml2_0_1WrapperFromGsoapContext(datatype);
 	}
-	else if (contentType.find("application/x-witsml+xml;version=2.0;type=") != string::npos) {
+	else if (ns == "witsml20") {
 		wrapper = getWitsml2_0WrapperFromGsoapContext(datatype);
 	}
 #if WITH_EXPERIMENTAL
-	else if (contentType.find("application/x-resqml+xml;version=2.2;type=") != string::npos) {
+	else if (ns == "resqml22") {
 		wrapper = getResqml2_2WrapperFromGsoapContext(datatype);
 	}
-	else if (contentType.find("application/x-eml+xml;version=2.2;type=") != string::npos) {
+	else if (ns == "eml22") {
 		wrapper = getEml2_2WrapperFromGsoapContext(datatype);
 	}
-	else if (contentType.find("application/x-witsml+xml;version=2.1;type=") != string::npos) {
+	else if (ns == "witsml21") {
 		wrapper = getWitsml2_1WrapperFromGsoapContext(datatype);
 	}
 #endif
@@ -499,30 +519,30 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 		}
 	}
 
-	addWarning("The content type " + contentType + " could not be wrapped by fesapi. The related instance will be ignored.");
+	addWarning("The content or data type " + contentOrDataType + " could not be wrapped by fesapi. The related instance will be ignored.");
 	return nullptr;
 }
 
-std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataObjectRepository::getDataObjectsGroupedByContentType() const
+std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataObjectRepository::getDataObjectsGroupedByDataType() const
 {
 	std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
 	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
 		for (size_t i = 0; i < it->second.size(); ++i) {
-			result[it->second[i]->getContentType()].push_back(it->second[i]);
+			result[it->second[i]->getQualifiedType()].push_back(it->second[i]);
 		}
 	}
 
 	return result;
 }
 
-std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataObjectRepository::getDataObjectsGroupedByContentType(const std::string & filter) const
+std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > DataObjectRepository::getDataObjectsGroupedByDataType(const std::string & filter) const
 {
 	std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > result;
 	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
 		for (size_t i = 0; i < it->second.size(); ++i) {
-			std::string contentType = it->second[i]->getContentType();
-			if (contentType.find(filter) != std::string::npos) {
-				result[contentType].push_back(it->second[i]);
+			std::string datatype = it->second[i]->getQualifiedType();
+			if (datatype.find(filter) != std::string::npos) {
+				result[datatype].push_back(it->second[i]);
 			}
 		}
 	}

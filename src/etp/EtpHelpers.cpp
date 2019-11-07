@@ -22,13 +22,7 @@ under the License.
 
 std::string ETP_NS::EtpHelpers::buildUriFromEnergisticsObject(const COMMON_NS::AbstractObject * const obj)
 {
-	const std::string etpNs = obj->getXmlNamespace();
-	std::string uri = "eml://" + etpNs;
-	if (etpNs == "resqml20" || etpNs == "eml20") { uri += "/obj_"; }
-	else { uri += "/"; }
-	uri += obj->getXmlTag() + "(" + obj->getUuid() + ")";
-
-	return uri;
+	return "eml:///" + obj->getQualifiedType() + "(" + obj->getUuid() + ")";
 }
 
 Energistics::Etp::v12::Datatypes::Object::Resource ETP_NS::EtpHelpers::buildEtpResourceFromEnergisticsObject(const COMMON_NS::AbstractObject * const obj, bool countRels)
@@ -39,7 +33,7 @@ Energistics::Etp::v12::Datatypes::Object::Resource ETP_NS::EtpHelpers::buildEtpR
 
 	Energistics::Etp::v12::Datatypes::Object::Resource result;
 
-	result.m_contentType = obj->getContentType();
+	result.m_dataObjectType = obj->getQualifiedType();
 	result.m_uri = buildUriFromEnergisticsObject(obj);
 	result.m_name = obj->getTitle();
 	if (obj->isPartial()) {

@@ -524,6 +524,11 @@ namespace COMMON_NS
 		* Get the content type of the instance according to EPC recommendation
 		*/
 		DLL_IMPORT_OR_EXPORT virtual std::string getContentType() const;
+
+		/**
+		* Get the qualified type of the instance i.e. "namespace.datatype"
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getQualifiedType() const;
 		
 		/**
 		* Get part name of this XML top level instance in the EPC document

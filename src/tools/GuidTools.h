@@ -23,6 +23,9 @@ under the License.
 #endif
 
 #include <string>
+#include <array>
+#include <cstdint>
+#include <algorithm>
 
 namespace GuidTools
 {
@@ -47,5 +50,35 @@ namespace GuidTools
 	}
 #else
 	;
+#endif
+
+#if defined(_WIN32)
+	inline
+#endif
+		std::array<uint8_t, 16> generateUidAsByteArray()
+#if defined(_WIN32)
+	{
+		GUID sessionGUID = GUID_NULL;
+		HRESULT hr = CoCreateGuid(&sessionGUID);
+
+		std::array<uint8_t, 16> result;
+
+		std::copy_n(static_cast<uint8_t*>(static_cast<void*>(&sessionGUID.Data1)),
+			sizeof sessionGUID.Data1,
+			result.begin());
+		std::copy_n(static_cast<uint8_t*>(static_cast<void*>(&sessionGUID.Data2)),
+			sizeof sessionGUID.Data2,
+			result.begin() + sizeof sessionGUID.Data1);
+		std::copy_n(static_cast<uint8_t*>(static_cast<void*>(&sessionGUID.Data3)),
+			sizeof sessionGUID.Data3,
+			result.begin() + sizeof sessionGUID.Data1 + sizeof sessionGUID.Data2);
+		std::copy_n(static_cast<uint8_t*>(static_cast<void*>(&sessionGUID.Data4)),
+			sizeof sessionGUID.Data4,
+			result.begin() + sizeof sessionGUID.Data1 + sizeof sessionGUID.Data2 + sizeof sessionGUID.Data3);
+
+		return result;
+	}
+#else
+		;
 #endif
 }
