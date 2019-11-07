@@ -2,6 +2,12 @@ cmake_minimum_required (VERSION 3.12)
 
 project (Fesapi_SRC)
 
+find_package(MiniZip REQUIRED)
+
+if(UNIX)
+	find_package(UUID REQUIRED)
+endif()
+
 add_library (${CPP_LIBRARY_NAME} ${LIB_TYPE} "")
 
 # Create the version config header file in order for fesapi users to know the fesapi version at runtime.
@@ -56,15 +62,15 @@ if (WIN32)
 		set(CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "" FORCE)
 	endif ()
 
-	if (EXISTS ${MINIZIP_LIBRARY_RELEASE} AND EXISTS ${MINIZIP_LIBRARY_DEBUG})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${MINIZIP_LIBRARY_RELEASE} debug ${MINIZIP_LIBRARY_DEBUG})
-	elseif (EXISTS ${MINIZIP_LIBRARY_RELEASE})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_RELEASE})
-	elseif (EXISTS ${MINIZIP_LIBRARY_DEBUG})
-		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_DEBUG})
-	else ()
-		message(ERROR "No minizip library has been set.")
-	endif ()
+	# if (EXISTS ${MINIZIP_LIBRARY_RELEASE} AND EXISTS ${MINIZIP_LIBRARY_DEBUG})
+	# 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${MINIZIP_LIBRARY_RELEASE} debug ${MINIZIP_LIBRARY_DEBUG})
+	# elseif (EXISTS ${MINIZIP_LIBRARY_RELEASE})
+	# 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_RELEASE})
+	# elseif (EXISTS ${MINIZIP_LIBRARY_DEBUG})
+	# 	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_DEBUG})
+	# else ()
+	# 	message(ERROR "No minizip library has been set.")
+	# endif ()
 
 	if (EXISTS ${HDF5_C_LIBRARY_RELEASE} AND EXISTS ${HDF5_C_LIBRARY_DEBUG})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${HDF5_C_LIBRARY_RELEASE} debug ${HDF5_C_LIBRARY_DEBUG})
@@ -213,8 +219,10 @@ target_sources(${CPP_LIBRARY_NAME} PRIVATE ${ALL_SOURCES_AND_HEADERS})
 
 target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_INCLUDE_DIR} ${HDF5_C_INCLUDE_DIR} ${MINIZIP_INCLUDE_DIR})
 
+target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE MiniZip::MiniZip)
+
 if (UNIX)
-	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${UUID_INCLUDE_DIR})
+	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE UUID::UUID)
 endif (UNIX)
 
 target_include_directories(${CPP_LIBRARY_NAME} INTERFACE

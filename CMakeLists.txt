@@ -81,21 +81,6 @@ IF (NOT EXISTS ${ZLIB_LIBRARY_DEBUG})
 ENDIF ()
 
 
-# Minizip
-SET (MINIZIP_INCLUDE_DIR MINIZIP_INCLUDE_DIR-NOTFOUND CACHE PATH "Path to the directory which contains the minizip header files")
-IF (NOT IS_DIRECTORY ${MINIZIP_INCLUDE_DIR})
-	MESSAGE(WARNING "The Minizip include dir (MINIZIP_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
-ENDIF ()
-SET (MINIZIP_LIBRARY_RELEASE MINIZIP_LIBRARY_RELEASE-NOTFOUND CACHE FILEPATH "Path to the file which contains the minizip library release")
-IF (NOT EXISTS ${MINIZIP_LIBRARY_RELEASE})
-	MESSAGE(WARNING "The Minizip library (MINIZIP_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
-ENDIF ()
-SET (MINIZIP_LIBRARY_DEBUG MINIZIP_LIBRARY_DEBUG-NOTFOUND CACHE FILEPATH "Path to the file which contains the minizip library DEBUG")
-IF (NOT EXISTS ${MINIZIP_LIBRARY_DEBUG})
-	MESSAGE(WARNING "The Minizip library (MINIZIP_LIBRARY_DEBUG variable) does not look to be a valid file. Please modify it.")
-ENDIF ()
-
-
 # Szip (only useful when using static linking to HDF5)
 SET (SZIP_LIBRARY_RELEASE SZIP_LIBRARY_RELEASE-NOTFOUND CACHE FILEPATH "Path to the file which contains the szip library release")
 IF (NOT EXISTS ${SZIP_LIBRARY_RELEASE} AND WIN32 AND NOT ${HDF5_BUILT_AS_DYNAMIC_LIB})
@@ -105,18 +90,6 @@ SET (SZIP_LIBRARY_DEBUG SZIP_LIBRARY_DEBUG-NOTFOUND CACHE FILEPATH "Path to the 
 IF (NOT EXISTS ${SZIP_LIBRARY_DEBUG} AND WIN32 AND NOT ${HDF5_BUILT_AS_DYNAMIC_LIB})
 	MESSAGE(WARNING "The Szip library (SZIP_LIBRARY_DEBUG variable) does not look to be a valid file. Please modify it.")
 ENDIF ()
-
-# Uuid
-IF (UNIX)
-	SET (UUID_INCLUDE_DIR /usr/include CACHE PATH "Path to the directory which contains the uuid/uuid.h header file")
-	IF (NOT IS_DIRECTORY ${UUID_INCLUDE_DIR})
-		MESSAGE(WARNING "The UUID include dir (UUID_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
-	ENDIF ()
-	SET (UUID_LIBRARY_RELEASE /usr/lib/x86_64-linux-gnu/libuuid.so CACHE FILEPATH "Path to the file which contains the UUID library release")
-	IF (NOT EXISTS ${UUID_LIBRARY_RELEASE})
-		MESSAGE(WARNING "The UUID library (UUID_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
-	ENDIF ()
-ENDIF (UNIX)
 
 # ============================================================================
 # some useful variables
