@@ -48,23 +48,23 @@ void DataArrayHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes
 		session->flushReceivingBuffer();
 		on_PutDataArrays(pda, mh.m_messageId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::GetDataArraySlices::messageTypeId) {
-		Energistics::Etp::v12::Protocol::DataArray::GetDataArraySlices gdas;
-		avro::decode(*d, gdas);
+	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::GetDataSubarrays::messageTypeId) {
+		Energistics::Etp::v12::Protocol::DataArray::GetDataSubarrays msg;
+		avro::decode(*d, msg);
 		session->flushReceivingBuffer();
-		on_GetDataArraySlices(gdas, mh.m_messageId);
+		on_GetDataSubarrays(msg, mh.m_messageId);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::GetDataArraySlicesResponse::messageTypeId) {
-		Energistics::Etp::v12::Protocol::DataArray::GetDataArraySlicesResponse gdasr;
-		avro::decode(*d, gdasr);
+	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::GetDataSubarraysResponse::messageTypeId) {
+		Energistics::Etp::v12::Protocol::DataArray::GetDataSubarraysResponse msg;
+		avro::decode(*d, msg);
 		session->flushReceivingBuffer();
-		on_GetDataArraySlicesResponse(gdasr);
+		on_GetDataSubarraysResponse(msg);
 	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::PutDataArraySlices::messageTypeId) {
-		Energistics::Etp::v12::Protocol::DataArray::PutDataArraySlices pdas;
-		avro::decode(*d, pdas);
+	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::PutDataSubarrays::messageTypeId) {
+		Energistics::Etp::v12::Protocol::DataArray::PutDataSubarrays msg;
+		avro::decode(*d, msg);
 		session->flushReceivingBuffer();
-		on_PutDataArraySlices(pdas, mh.m_messageId);
+		on_PutDataSubarrays(msg, mh.m_messageId);
 	}
 	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadata::messageTypeId) {
 		Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadata gdam;
@@ -150,17 +150,17 @@ void DataArrayHandlers::on_PutDataArrays(const Energistics::Etp::v12::Protocol::
 	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_PutDataArrays method has not been overriden by the agent."));
 }
 
-void DataArrayHandlers::on_GetDataArraySlices(const Energistics::Etp::v12::Protocol::DataArray::GetDataArraySlices & gdas, int64_t correlationId)
+void DataArrayHandlers::on_GetDataSubarrays(const Energistics::Etp::v12::Protocol::DataArray::GetDataSubarrays & msg, int64_t correlationId)
 {
 	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_GetDataArraySlice method has not been overriden by the agent."));
 }
 
-void DataArrayHandlers::on_GetDataArraySlicesResponse(const Energistics::Etp::v12::Protocol::DataArray::GetDataArraySlicesResponse & gdasr)
+void DataArrayHandlers::on_GetDataSubarraysResponse(const Energistics::Etp::v12::Protocol::DataArray::GetDataSubarraysResponse & msg)
 {
 	std::cout << "on_GetDataArraySlicesResponse : not implemented yet" << std::endl;
 }
 
-void DataArrayHandlers::on_PutDataArraySlices(const Energistics::Etp::v12::Protocol::DataArray::PutDataArraySlices & pdas, int64_t correlationId)
+void DataArrayHandlers::on_PutDataSubarrays(const Energistics::Etp::v12::Protocol::DataArray::PutDataSubarrays & msg, int64_t correlationId)
 {
 	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The DataArrayHandlers::on_PutDataArraySlices method has not been overriden by the agent."));
 }
