@@ -277,6 +277,7 @@ jobs:
             -DWITH_DOTNET_WRAPPING=TRUE
             -DWITH_TEST=TRUE
             -DSWIG_EXECUTABLE=C:/swigwin-4.0.1/swig.exe
+            -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake
 
       - task: CMake@1
         displayName: "Build --config $(BuildType)"
