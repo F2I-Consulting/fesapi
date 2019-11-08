@@ -193,12 +193,11 @@ jobs:
           Generator: '-G"Visual Studio 15 2017" -A x64 -T host=x64'
           JFlag: '-j 2'
     steps:
-      - script: |
-          git clone https://github.com/Microsoft/vcpkg
-          .\vcpkg\bootstrap-vcpkg.bat
-          .\vcpkg\vcpkg.exe install zlib --triplet x64-windows --vcpkg-root .\vcpkg
+
+      - script: .\vcpkg\vcpkg.exe install zlib --triplet x64-windows
         workingDirectory: C:\
-        displayName: Bootstrap vcpkg
+        displayName: Installing dependencies
+
 
       - powershell: |
           Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.5/src/hdf5-1.10.5.zip -OutFile C:\hdf5-1.10.5.zip
