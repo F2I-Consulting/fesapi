@@ -39,9 +39,7 @@ std::array<uint8_t, 16> GuidTools::generateUidAsByteArray()
 	
 	std::array<uint8_t, 16> result;
 
-	std::copy_n(uuid,
-		uuid + 16,
-		result);
+	std::copy(std::begin(uuid), std::end(uuid), std::begin(result));
 
 	return result;
 }

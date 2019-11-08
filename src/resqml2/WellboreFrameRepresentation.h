@@ -138,7 +138,7 @@ namespace RESQML2_NS
 		* The frame is not associated to a CRS.
 		* If necessary get the Local CRS of the associated trajectory if you really need it.
 		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const { return nullptr; }
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int) const { return nullptr; }
 
 		/**
 		* Get the associated hdf proxy data object reference.
