@@ -211,7 +211,7 @@ jobs:
             ..
             $(Generator)
             -DCMAKE_BUILD_TYPE:STRING=Release
-            -DBUILD_SHARED_LIBS:BOOL=OFF
+            -DBUILD_SHARED_LIBS:BOOL=ON
             -DBUILD_TESTING:BOOL=OFF
             -DHDF5_BUILD_TOOLS:BOOL=OFF
             -DHDF5_BUILD_EXAMPLES:BOOL=OFF
