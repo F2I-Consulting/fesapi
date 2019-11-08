@@ -197,7 +197,7 @@ jobs:
           git clone https://github.com/Microsoft/vcpkg
           .\vcpkg\bootstrap-vcpkg.bat
           .\vcpkg\vcpkg.exe integrate install
-          .\vcpkg\vcpkg.exe install zlib:x64-windows --vcpkg-root .\vcpkg
+          .\vcpkg\vcpkg.exe install zlib:x64-windows
         workingDirectory: C:\
         displayName: Bootstrap vcpkg
 
