@@ -282,8 +282,7 @@ jobs:
           cmakeArgs: --build . --config $(BuildType) -- /verbosity:minimal
 
       - powershell: |
-          Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\hdf5.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
-          Copy-Item C:\hdf5-1.8.18-win64-vs2015-noszip\bin\zlib.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
+          Copy-Item C:\hdf5\bin\hdf5.dll -Destination $(Build.SourcesDirectory)\build\$(BuildType)
           ctest -C $(BuildType) -V
         failOnStderr: true
         workingDirectory: $(Build.SourcesDirectory)\build
