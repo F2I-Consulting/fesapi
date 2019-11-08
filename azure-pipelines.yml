@@ -190,14 +190,13 @@ jobs:
 
         64-bit Release:
           BuildType: Release
-          Generator: '-G"Visual Studio 15 2017 Win64" -T host=x64'
+          Generator: '-G"Visual Studio 15 2017" -A x64 -T host=x64'
           JFlag: '-j 2'
     steps:
       - script: |
           git clone https://github.com/Microsoft/vcpkg
           .\vcpkg\bootstrap-vcpkg.bat
-          .\vcpkg\vcpkg.exe integrate install
-          .\vcpkg\vcpkg.exe install zlib:x64-windows
+          .\vcpkg\vcpkg.exe install zlib --triplet x64-windows --vcpkg-root .\vcpkg
         workingDirectory: C:\
         displayName: Bootstrap vcpkg
 
