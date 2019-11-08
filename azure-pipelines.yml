@@ -150,7 +150,7 @@ jobs:
             ..
             $(Generator)
             -Wno-dev -Wno-deprecated
-            -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE
+            -DHDF5_USE_STATIC_LIBRARIES=FALSE
             -DHDF5_ROOT=C:/hdf5-1.8.18-win64-vs2015-noszip
             -DMiniZip_ROOT=C:/minizip-1.1-win64-vs2015-static
             -DZLIB_ROOT=C:/hdf5-1.8.18-win64-vs2015-noszip
@@ -193,11 +193,9 @@ jobs:
           Generator: '-G"Visual Studio 15 2017" -A x64 -T host=x64'
           JFlag: '-j 2'
     steps:
-
       - script: .\vcpkg\vcpkg.exe install zlib --triplet x64-windows
         workingDirectory: C:\
         displayName: Installing dependencies
-
 
       - powershell: |
           Invoke-WebRequest https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.5/src/hdf5-1.10.5.zip -OutFile C:\hdf5-1.10.5.zip
@@ -221,6 +219,7 @@ jobs:
             -DHDF5_BUILD_HL_LIB:BOOL=OFF
             -DCMAKE_INSTALL_PREFIX:STRING=C:/hdf5
             -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake
+            -DHDF5_ENABLE_SZIP_ENCODING:BOOL=OFF
 
       - task: CMake@1
         displayName: "Build HDF5"
@@ -232,7 +231,7 @@ jobs:
         displayName: "Install HDF5"
         inputs:
           workingDirectory: C:\hdf5-1.10.5\build
-          cmakeArgs: --build . --target install
+          cmakeArgs: --build . --config Release --target install
 
       - powershell: |
           Invoke-WebRequest https://github.com/F2I-Consulting/Minizip/releases/download/1.1/minizip-1.1-win64-vs2015-static.zip -OutFile C:\minizip-1.1-win64-vs2015-static.zip
@@ -266,7 +265,7 @@ jobs:
             ..
             $(Generator)
             -Wno-dev -Wno-deprecated
-            -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE
+            -DHDF5_USE_STATIC_LIBRARIES=FALSE
             -DHDF5_1_10=TRUE
             -DHDF5_ROOT=C:/hdf5
             -DMiniZip_ROOT=C:/minizip-1.1-win64-vs2015-static
@@ -348,7 +347,7 @@ jobs:
             ..
             $(Generator)
             -Wno-dev -Wno-deprecated
-            -DHDF5_BUILT_AS_DYNAMIC_LIB=TRUE
+            -DHDF5_USE_STATIC_LIBRARIES=FALSE
             -DHDF5_ROOT=C:/hdf5-1.8.18-win64-vs2015-noszip
             -DMiniZip_ROOT=C:/minizip-1.1-win64-vs2015-static
             -DZLIB_ROOT=C:/hdf5-1.8.18-win64-vs2015-noszip

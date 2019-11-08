@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 3.12)
 project (Fesapi_SRC)
 
 find_package(ZLIB REQUIRED)
-find_package(HDF5 REQUIRED)
+find_package(HDF5 REQUIRED C)
 find_package(MiniZip REQUIRED)
 
 if(UNIX)
@@ -56,7 +56,7 @@ if (WIN32)
 	if (NOT BUILD_SHARED_LIBS)
 		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE "-DFESAPI_STATIC")
 	endif ()
-	if (HDF5_USE_STATIC_LIBRARIES)
+	if (NOT HDF5_USE_STATIC_LIBRARIES)
 		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE "-DH5_BUILT_AS_DYNAMIC_LIB")
 	endif ()
 endif (WIN32)
@@ -171,7 +171,7 @@ set (ALL_SOURCES_AND_HEADERS
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${ALL_SOURCES_AND_HEADERS})
 
 target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_INCLUDE_DIRS})
-target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_LIBRARIES})
+target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_C_LIBRARIES})
 
 target_link_libraries(${CPP_LIBRARY_NAME} PRIVATE ZLIB::ZLIB MiniZip::MiniZip)
 
@@ -189,7 +189,7 @@ target_include_directories(${CPP_LIBRARY_NAME} INTERFACE
 	$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-target_compile_definitions(${CPP_LIBRARY_NAME} PUBLIC ${HDF5_DEFINITIONS})
+target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE ${HDF5_DEFINITIONS})
 
 
 # organizing sources and headers in the Visual Studio Project
