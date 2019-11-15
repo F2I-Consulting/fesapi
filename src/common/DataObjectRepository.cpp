@@ -20,6 +20,8 @@ under the License.
 
 #include <algorithm>
 #include <functional>
+#include <chrono>
+#include <ctime>
 
 #include "../common/DataFeeder.h"
 #include "../common/HdfProxyFactory.h"
@@ -325,14 +327,66 @@ void DataObjectRepository::addRelationship(COMMON_NS::AbstractObject * source, C
 	}
 }
 
-const std::vector< COMMON_NS::AbstractObject * >& DataObjectRepository::getTargetObjects(COMMON_NS::AbstractObject const * dataObj) const
+std::vector<COMMON_NS::AbstractObject*> DataObjectRepository::getTargetObjects(COMMON_NS::AbstractObject const * dataObj, size_t depth, const std::vector<std::string>& filteredDatatypes) const
 {
-	return forwardRels.at(dataObj);
+	std::vector< COMMON_NS::AbstractObject*> result;
+	if (depth == 0) {
+		result.push_back(getDataObjectByUuidAndVersion(dataObj->getUuid(), dataObj->getVersion()));
+	}
+	else {
+		result = getTargetObjects(dataObj);
+		if (depth > 1) {
+			for (auto target : result) {
+				const std::vector< COMMON_NS::AbstractObject*>& nextTargets = getTargetObjects(target, depth - 1);
+				result.insert(result.end(), nextTargets.begin(), nextTargets.end());
+			}
+		}
+	}
+
+	// Filter on datatype
+	if (!filteredDatatypes.empty()) {
+		result.erase(
+			std::remove_if(result.begin(), result.end(), [&filteredDatatypes](COMMON_NS::AbstractObject* obj) {
+				return std::find_if(filteredDatatypes.begin(), filteredDatatypes.end(),
+					[obj](const std::string & filter) { return obj->getQualifiedType() == filter || (obj->getXmlNamespace() + ".*" == filter); })
+					== filteredDatatypes.end();
+			}),
+			result.end()
+		);
+	}
+
+	return result;
 }
 
-const std::vector< COMMON_NS::AbstractObject * >& DataObjectRepository::getSourceObjects(COMMON_NS::AbstractObject const * dataObj) const
+std::vector<COMMON_NS::AbstractObject*> DataObjectRepository::getSourceObjects(COMMON_NS::AbstractObject const * dataObj, size_t depth, const std::vector<std::string>& filteredDatatypes) const
 {
-	return backwardRels.at(dataObj);
+	std::vector< COMMON_NS::AbstractObject*> result;
+	if (depth == 0) {
+		result.push_back(getDataObjectByUuidAndVersion(dataObj->getUuid(), dataObj->getVersion()));
+	}
+	else {
+		result = getSourceObjects(dataObj);
+		if (depth > 1) {
+			for (auto source : result) {
+				const std::vector< COMMON_NS::AbstractObject*>& nextSources = getSourceObjects(source, depth - 1);
+				result.insert(result.end(), nextSources.begin(), nextSources.end());
+			}
+		}
+	}
+
+	// Filter on datatype
+	if (!filteredDatatypes.empty()) {
+		result.erase(
+			std::remove_if(result.begin(), result.end(), [&filteredDatatypes](COMMON_NS::AbstractObject* obj) {
+			return std::find_if(filteredDatatypes.begin(), filteredDatatypes.end(),
+				[obj](const std::string & filter) { return obj->getQualifiedType() == filter || (obj->getXmlNamespace() + ".*" == filter); })
+				== filteredDatatypes.end();
+		}),
+			result.end()
+			);
+	}
+
+	return result;
 }
 
 namespace {
@@ -387,10 +441,20 @@ void DataObjectRepository::replaceDataObjectInRels(COMMON_NS::AbstractObject* da
 
 COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_NS::AbstractObject* proxy, bool replaceOnlyContent)
 {
+	proxy->repository = this;
+
 	if (getDataObjectByUuid(proxy->getUuid()) == nullptr) {
 		dataObjects[proxy->getUuid()].push_back(proxy);
-		forwardRels[proxy] = std::vector<COMMON_NS::AbstractObject *>();
-		backwardRels[proxy] = std::vector<COMMON_NS::AbstractObject *>();
+		if (forwardRels.count(proxy) == 0) {
+			forwardRels[proxy] = std::vector<COMMON_NS::AbstractObject *>();
+		}
+		if (backwardRels.count(proxy) == 0) {
+			backwardRels[proxy] = std::vector<COMMON_NS::AbstractObject *>();
+		}
+
+		auto now = std::chrono::system_clock::now();
+		journal.push_back(std::make_tuple(now, DataObjectIdentifier(proxy->getUuid(), proxy->getVersion()), CREATED));
+		on_CreateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
 	}
 	else {
 		std::vector< COMMON_NS::AbstractObject* >& versions = dataObjects[proxy->getUuid()];
@@ -407,19 +471,37 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 		}
 
 		if (same == versions.end()) {
+			// New version of an existing UUID
 			dataObjects[proxy->getUuid()].push_back(proxy);
+			auto now = std::chrono::system_clock::now();
+			journal.push_back(std::make_tuple(now, DataObjectIdentifier((*same)->getUuid(), (*same)->getVersion()), CREATED));
+			on_CreateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
 		}
 		else {
+			// Replacement
 			if (proxy->getContentType() != (*same)->getContentType()) {
 				throw invalid_argument("Cannot replace " + proxy->getUuid() + " with a different content type : " + proxy->getContentType() + " vs " + (*same)->getContentType());
 			}
+
 			if (!replaceOnlyContent || dynamic_cast<AbstractIjkGridRepresentation*>(*same) != nullptr) {
 				replaceDataObjectInRels(*same, proxy);
+
+				if (!(*same)->isPartial()) {
+					auto now = std::chrono::system_clock::now();
+					journal.push_back(std::make_tuple(now, DataObjectIdentifier(proxy->getUuid(), proxy->getVersion()), UPDATED));
+					on_UpdateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
+				}
 
 				delete *same;
 				*same = proxy;
 			}
 			else {
+				if (!(*same)->isPartial()) {
+					auto now = std::chrono::system_clock::now();
+					journal.push_back(std::make_tuple(now, DataObjectIdentifier((*same)->getUuid(), (*same)->getVersion()), UPDATED));
+					on_UpdateDataObject(std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>> { std::make_pair(now, proxy) });
+				}
+
 				if (proxy->getXmlNamespace() == "resqml20" || proxy->getXmlNamespace() == "eml20") {
 					(*same)->setGsoapProxy(proxy->getEml20GsoapProxy());
 				}
@@ -431,11 +513,12 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 					(*same)->setGsoapProxy(proxy->getEml22GsoapProxy());
 				}
 #endif
+				delete proxy;
 				return *same;
 			}
 		}
 	}
-	proxy->repository = this;
+
 	return proxy;
 }
 
@@ -511,11 +594,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 			delete wrapper;
 		}
 		else {
-			COMMON_NS::AbstractObject* wrapperInRepo = addOrReplaceDataObject(wrapper, true);
-			if (wrapperInRepo != wrapper) {
-				delete wrapper;
-			}
-			return wrapperInRepo;
+			return addOrReplaceDataObject(wrapper, true);
 		}
 	}
 
@@ -570,7 +649,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuid(const strin
 {
 	std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.find(uuid);
 
-	return it == dataObjects.end() || it->second.empty() ? nullptr : it->second[0];
+	return it == dataObjects.end() || it->second.empty() ? nullptr : it->second.back();
 }
 
 COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuidAndVersion(const string & uuid, const std::string & version) const
@@ -581,8 +660,18 @@ COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuidAndVersion(c
 		return nullptr;
 	}
 	
-	std::vector< COMMON_NS::AbstractObject* >::const_iterator vectIt = std::find_if(it->second.begin(), it->second.end(), SameVersion(version));
-	return vectIt == it->second.end() ? nullptr : *vectIt;
+	if (!version.empty()) {
+		std::vector< COMMON_NS::AbstractObject* >::const_iterator vectIt = std::find_if(it->second.begin(), it->second.end(), SameVersion(version));
+		return vectIt == it->second.end() ? nullptr : *vectIt;
+	}
+	else {
+		return it->second.empty() ? nullptr : it->second.back();
+	}
+}
+
+COMMON_NS::AbstractObject* DataObjectRepository::getDataObjectByUuidAndVersion(const std::array<uint8_t, 16> & uuid, const std::string & version) const
+{
+	return getDataObjectByUuidAndVersion(GuidTools::convertToString(uuid), version);
 }
 
 void DataObjectRepository::addWarning(const std::string & warning)

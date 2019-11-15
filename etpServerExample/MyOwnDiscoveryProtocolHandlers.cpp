@@ -26,6 +26,9 @@ under the License.
 #include "resqml2_0_1/WellboreTrajectoryRepresentation.h"
 #include "resqml2_0_1/IjkGridExplicitRepresentation.h"
 #include "resqml2_0_1/IjkGridParametricRepresentation.h"
+
+#include "MyDataObjectRepository.h"
+
 /*
 void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlash(const Energistics::Etp::v12::Protocol::Discovery::GetNamespaces & gn, int64_t correlationId,
 	std::vector<std::string> & result)
@@ -121,7 +124,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v1
 			error.m_message = "The URI " + msg.m_context.m_uri + " targets something which does not exist.";
 			pe.m_error.set_ErrorInfo(error);
 
-			session->send(pe, correlationId, 0x01);
+			session->send(pe, correlationId);
 			return;
 		}
 
@@ -178,20 +181,20 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResources(const Energistics::Etp::v12
 	std::cout << "Discovery graph resource received uri : " << msg.m_context.m_uri << std::endl;
 
 	if (msg.m_context.m_depth < 0) {
-		session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(5, "The requested depth cannot be inferior to zero."), correlationId, 0x01 | 0x02);
+		session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(5, "The requested depth cannot be inferior to zero."), correlationId, 0x02);
 		return;
 	}
 
 	Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse mb;
 	if (msg.m_context.m_uri.back() == ')') { // dataobject
-		if (session->validateDataObjectUri(msg.m_context.m_uri, true).m_code > -1) {
+		if (ETP_NS::EtpHelpers::validateDataObjectUri(msg.m_context.m_uri, session).m_code > -1) {
 			return;
 		}
 
 		on_GetDataObject(msg, correlationId, mb.m_resources);
 	}
 	else { // eml, dataspace
-		if (session->validateUri(msg.m_context.m_uri, true).m_code > -1) {
+		if (ETP_NS::EtpHelpers::validateUri(msg.m_context.m_uri, session).m_code > -1) {
 			return;
 		}
 
@@ -217,7 +220,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResources(const Energistics::Etp::v12
 			error.m_message = "The URI " + msg.m_context.m_uri + " targets something which does not exist.";
 			pe.m_error.set_ErrorInfo(error);
 
-			session->send(pe, correlationId, 0x01 | 0x02);
+			session->send(pe, correlationId, 0x02);
 			return;
 		}
 
@@ -229,7 +232,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResources(const Energistics::Etp::v12
 		}
 	}
 
-	session->send(mb, correlationId, 0x01 | 0x02);
+	session->send(mb, correlationId, 0x02);
 }
 /*
 void MyOwnDiscoveryProtocolHandlers::on_GetDataspaces(const Energistics::Etp::v12::Protocol::Discovery::GetDataspaces & msg, int64_t correlationId)
@@ -242,7 +245,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataspaces(const Energistics::Etp::v1
 
 	Energistics::Etp::v12::Protocol::Discovery::GetDataspacesResponse mb;
 
-	session->send(mb, correlationId, 0x01 | 0x02);
+	session->send(mb, correlationId,  | 0x02);
 }
 
 void MyOwnDiscoveryProtocolHandlers::on_GetNamespaces(const Energistics::Etp::v12::Protocol::Discovery::GetNamespaces & msg, int64_t correlationId)
@@ -252,7 +255,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetNamespaces(const Energistics::Etp::v1
 	Energistics::Etp::v12::Protocol::Discovery::GetNamespacesResponse mb;
 	on_GetEmlColonSlashSlash(msg, correlationId, mb.m_uris);
 
-	session->send(mb, correlationId, 0x01 | 0x02);
+	session->send(mb, correlationId,  | 0x02);
 }
 */
 void MyOwnDiscoveryProtocolHandlers::on_GetSupportedTypes(const Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypes & msg, int64_t correlationId)
@@ -267,10 +270,10 @@ void MyOwnDiscoveryProtocolHandlers::on_GetSupportedTypes(const Energistics::Etp
 		error.m_message = "ReturnEmptyTypes attribute is not supported by the agent.";
 		pe.m_error.set_ErrorInfo(error);
 
-		session->send(pe, correlationId, 0x01);
+		session->send(pe, correlationId);
 	}
 
-	if (session->validateUri(msg.m_uri, true).m_code > -1) {
+	if (ETP_NS::EtpHelpers::validateUri(msg.m_uri, session).m_code > -1) {
 		return;
 	}
 
@@ -286,7 +289,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetSupportedTypes(const Energistics::Etp
 			error.m_message = "The URI " + msg.m_uri + "  targets something which does not exist.";
 			pe.m_error.set_ErrorInfo(error);
 
-			session->send(pe, correlationId, 0x01 | 0x02);
+			session->send(pe, correlationId, 0x02);
 			return;
 		}
 
@@ -345,7 +348,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetSupportedTypes(const Energistics::Etp
 			error.m_message = "The URI " + msg.m_uri + "  targets something which does not exist.";
 			pe.m_error.set_ErrorInfo(error);
 
-			session->send(pe, correlationId, 0x01 | 0x02);
+			session->send(pe, correlationId, 0x02);
 			return;
 		}
 
@@ -362,5 +365,5 @@ void MyOwnDiscoveryProtocolHandlers::on_GetSupportedTypes(const Energistics::Etp
 		}
 	}
 
-	session->send(response, correlationId, 0x01 | 0x02);
+	session->send(response, correlationId, 0x02);
 }

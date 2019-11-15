@@ -28,11 +28,11 @@ under the License.
 #include <stdexcept>
 #include <vector>
 
-#include "common/DataObjectRepository.h"
-
+#include "MyDataObjectRepository.h"
 #include "MyOwnCoreProtocolHandlers.h"
 #include "MyOwnDiscoveryProtocolHandlers.h"
 #include "MyOwnStoreProtocolHandlers.h"
+#include "MyOwnStoreNotificationProtocolHandlers.h"
 #include "MyOwnDataArrayProtocolHandlers.h"
 
 using tcp = boost::asio::ip::tcp;               // from <boost/asio/ip/tcp.hpp>
@@ -42,7 +42,7 @@ class Server
 {
 private:
 
-	COMMON_NS::DataObjectRepository& repo;
+	MyDataObjectRepository& repo;
 	std::vector< std::shared_ptr<T> > sessions;
 
 	// Accepts incoming connections and launches the sessions
@@ -54,7 +54,7 @@ private:
 #endif
 		tcp::socket socket_;
 		std::vector< std::shared_ptr<T> >& sessions;
-		COMMON_NS::DataObjectRepository& repo;
+		MyDataObjectRepository& repo;
 
 	public:
 		listener(
@@ -64,7 +64,7 @@ private:
 #endif
 			tcp::endpoint endpoint,
 			std::vector< std::shared_ptr<T> >& sessions_,
-			COMMON_NS::DataObjectRepository& repo_)
+			MyDataObjectRepository& repo_)
 			: acceptor_(ioc)
 #ifdef WITH_ETP_SSL
 			, ctx_(ctx)
@@ -136,11 +136,13 @@ private:
 				session->setCoreProtocolHandlers(std::make_shared<MyOwnCoreProtocolHandlers>(session));
 				session->setDiscoveryProtocolHandlers(std::make_shared<MyOwnDiscoveryProtocolHandlers>(session, &repo));
 				session->setStoreProtocolHandlers(std::make_shared<MyOwnStoreProtocolHandlers>(session, &repo));
+				session->setStoreNotificationProtocolHandlers(std::make_shared<MyOwnStoreNotificationProtocolHandlers>(session, &repo));
 				session->setDataArrayProtocolHandlers(std::make_shared<MyOwnDataArrayProtocolHandlers>(session, &repo));
 
 				// Run session
 				session->run();
 				sessions.push_back(session);
+				repo.sessions.push_back(session);
 				std::cout << "Opening the session " << sessions.size() << std::endl;
 			}
 
@@ -150,7 +152,7 @@ private:
 	};
 
 public:
-	Server(COMMON_NS::DataObjectRepository & repo_): repo(repo_) {}
+	Server(MyDataObjectRepository & repo_): repo(repo_) {}
 
 	std::vector< std::shared_ptr<T> >& getSessions() { return sessions; }
 

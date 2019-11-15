@@ -122,6 +122,11 @@ namespace ETP_NS
 
 		virtual ~AbstractSession() {}
 
+		/**
+		* The list of subscriptions recorded by customers on this session.
+		*/
+		std::unordered_map<int64_t, Energistics::Etp::v12::Datatypes::Object::SubscriptionInfo> subscriptions;
+
 		virtual void run() = 0;
 
 		virtual boost::asio::io_context& getIoContext() = 0;
@@ -263,9 +268,6 @@ namespace ETP_NS
 #endif
 			webSocketSessionClosed = true;
 		}
-
-		DLL_IMPORT_OR_EXPORT Energistics::Etp::v12::Datatypes::ErrorInfo validateUri(const std::string & uri, bool sendException = false);
-		DLL_IMPORT_OR_EXPORT Energistics::Etp::v12::Datatypes::ErrorInfo validateDataObjectUri(const std::string & uri, bool sendException = false);
 
 		DLL_IMPORT_OR_EXPORT bool isWebSocketSessionClosed() const { return webSocketSessionClosed;  }
 

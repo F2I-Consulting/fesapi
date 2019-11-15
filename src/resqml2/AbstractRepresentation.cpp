@@ -195,11 +195,12 @@ void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation* in
 	if (interp == nullptr) {
 		throw invalid_argument("Cannot set a null interpretation to a representation");
 	}
+
+	interp->getRepository()->addRelationship(this, interp);
+
 	if (getRepository() == nullptr) {
 		interp->getRepository()->addOrReplaceDataObject(this);
 	}
-
-	getRepository()->addRelationship(this, interp);
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation = interp->newResqmlReference();

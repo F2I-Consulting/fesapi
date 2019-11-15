@@ -475,11 +475,12 @@ void Activity::setActivityTemplate(RESQML2_NS::ActivityTemplate * activityTempla
 	if (activityTemplate == nullptr) {
 		return;
 	}
+
+	activityTemplate->getRepository()->addRelationship(this, activityTemplate);
+
 	if (getRepository() == nullptr) {
 		activityTemplate->getRepository()->addOrReplaceDataObject(this);
 	}
-
-	getRepository()->addRelationship(this, activityTemplate);
 
 	static_cast<_resqml20__Activity*>(gsoapProxy2_0_1)->ActivityDescriptor = activityTemplate->newResqmlReference();
 }

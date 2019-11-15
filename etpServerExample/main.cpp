@@ -28,8 +28,32 @@ under the License.
 #include "ssl/server_certificate.h"
 #endif
 
-#include "common/DataObjectRepository.h"
+#include "MyDataObjectRepository.h"
+
 #include "common/EpcDocument.h"
+
+#include "resqml2/AbstractRepresentation.h"
+
+#include "resqml2_0_1/ContinuousProperty.h"
+
+void generateProperties(RESQML2_NS::AbstractRepresentation* ijkgrid)
+{
+	for (unsigned short i = 0; i < 36; ) {
+		auto name = "Two faulted sugar cubes timestamp " + std::to_string(i);
+		RESQML2_0_1_NS::ContinuousProperty* continuousProp = ijkgrid->getRepository()->createContinuousProperty(ijkgrid, "", name, 1,
+			gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
+
+		double prop1Values[2] = { i, i };
+		continuousProp->pushBackDoubleHdf5Array3dOfValues(prop1Values, 2, 1, 1, nullptr, -1);
+
+		std::cout << "A new discrete property has been added" << std::endl;
+
+		const size_t secondCount = 10;
+		std::cout << "New generated property in " << secondCount << " seconds" << std::endl;
+		std::chrono::seconds dura(secondCount);
+		std::this_thread::sleep_for(dura);
+	}
+}
 
 int main(int argc, char **argv)
 {
@@ -45,11 +69,16 @@ int main(int argc, char **argv)
 	std::cout << "Start listening on " << argv[1] << ":" << argv[2] << " with " << threadCount << " threads..." << std::endl;
 
 	COMMON_NS::EpcDocument epcDoc(argv[3]);
-	COMMON_NS::DataObjectRepository repo;
-	std::string resqmlResult = epcDoc.deserializePartiallyInto(repo);
-	repo.registerDataFeeder(&epcDoc);
+	MyDataObjectRepository repo;
+	std::string resqmlResult = epcDoc.deserializePartiallyInto(repo, COMMON_NS::DataObjectRepository::READ_WRITE); // Do not open XML files. Simply rely on the EPC content type and rel files.
+	repo.registerDataFeeder(&epcDoc); // Necessary to resolve partial objects
 	if (!resqmlResult.empty()) {
 		std::cerr << "Error when deserializing " << resqmlResult << std::endl;
+	}
+
+	if (argc > 4) {
+		std::thread generatePropertiesThread(generateProperties, repo.getDataObjectByUuid<RESQML2_NS::AbstractRepresentation>("df2103a0-fa3d-11e5-b8d4-0002a5d5c51b"));
+		generatePropertiesThread.detach(); // Detach the thread since we don't want it to be a blocking one.
 	}
 
 #ifdef WITH_ETP_SSL

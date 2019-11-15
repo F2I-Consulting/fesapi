@@ -35,6 +35,7 @@ under the License.
 #include "MyOwnDiscoveryProtocolHandlers.h"
 #include "MyOwnStoreProtocolHandlers.h"
 #include "etp/ProtocolHandlers/DataArrayHandlers.h"
+#include "etp/ProtocolHandlers/StoreNotificationHandlers.h"
 
 using namespace ETP_NS;
 
@@ -58,6 +59,7 @@ int main(int argc, char **argv)
 	session->setDiscoveryProtocolHandlers(std::make_shared<MyOwnDiscoveryProtocolHandlers>(session, &repo));
 	session->setStoreProtocolHandlers(std::make_shared<MyOwnStoreProtocolHandlers>(session, &repo));
 	session->setDataArrayProtocolHandlers(std::make_shared<ETP_NS::DataArrayHandlers>(session));
+	session->setStoreNotificationProtocolHandlers(std::make_shared<ETP_NS::StoreNotificationHandlers>(session));
 	
 	session->run();
 

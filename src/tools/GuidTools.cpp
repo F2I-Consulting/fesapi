@@ -44,4 +44,26 @@ std::array<uint8_t, 16> GuidTools::generateUidAsByteArray()
 	return result;
 }
 
+std::array<uint8_t, 16> GuidTools::convertFromString(const std::string& uuidStr)
+{
+	uuid_t uuid;
+	uuid_parse(uuidStr.c_str(), uuid);
+
+	std::array<uint8_t, 16> result;
+
+	std::copy(std::begin(uuid), std::end(uuid), std::begin(result));
+
+	return result;
+}
+
+std::string GuidTools::convertToString(const std::array<uint8_t, 16>& uuidArray)
+{
+	uuid_t uuid;
+	std::copy(std::begin(uuidArray), std::end(uuidArray), std::begin(uuid));
+
+	char uuidStr[37];
+	uuid_unparse_lower(uuid, uuidStr);
+	return uuidStr;
+}
+
 #endif

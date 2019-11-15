@@ -90,11 +90,12 @@ void AbstractProperty::setRepresentation(AbstractRepresentation * rep)
 	if (rep == nullptr) {
 		throw invalid_argument("The representation of this property values cannot be null.");
 	}
+
+	rep->getRepository()->addRelationship(this, rep);
+
 	if (getRepository() == nullptr) {
 		rep->getRepository()->addOrReplaceDataObject(this);
 	}
-
-	getRepository()->addRelationship(this, rep);
 
 	// XML
 	if (gsoapProxy2_0_1 != nullptr) {

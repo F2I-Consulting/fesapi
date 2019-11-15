@@ -18,20 +18,20 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/ProtocolHandlers/DataArrayHandlers.h"
+#include "etp/ProtocolHandlers/StoreNotificationHandlers.h"
 
 class MyDataObjectRepository;
 
-class MyOwnDataArrayProtocolHandlers : public ETP_NS::DataArrayHandlers
+class MyOwnStoreNotificationProtocolHandlers : public ETP_NS::StoreNotificationHandlers
 {
 private:
+
 	MyDataObjectRepository* repo;
 
 public:
-	MyOwnDataArrayProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, MyDataObjectRepository* repo_): ETP_NS::DataArrayHandlers(mySession), repo(repo_) {}
-	~MyOwnDataArrayProtocolHandlers() {}
+	MyOwnStoreNotificationProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, MyDataObjectRepository* repo_);
+	~MyOwnStoreNotificationProtocolHandlers() {}
 
-    void on_GetDataArrays(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrays & gda, int64_t correlationId);
-	void on_PutDataArrays(const Energistics::Etp::v12::Protocol::DataArray::PutDataArrays & pda, int64_t correlationId);
-	void on_GetDataArrayMetadata(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadata & gdam, int64_t correlationId);
+	void on_SubscribeNotifications(const Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotifications & msg, int64_t messageId);
+	void on_UnsubscribeNotifications(const Energistics::Etp::v12::Protocol::StoreNotification::UnsubscribeNotifications & msg, int64_t messageId, int64_t correlationId);
 };

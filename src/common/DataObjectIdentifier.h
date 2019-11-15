@@ -18,20 +18,24 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/ProtocolHandlers/DataArrayHandlers.h"
+#include <array>
 
-class MyDataObjectRepository;
+#include "../nsDefinitions.h"
 
-class MyOwnDataArrayProtocolHandlers : public ETP_NS::DataArrayHandlers
+namespace COMMON_NS
 {
-private:
-	MyDataObjectRepository* repo;
+	class DataObjectIdentifier
+	{
+	public:
 
-public:
-	MyOwnDataArrayProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, MyDataObjectRepository* repo_): ETP_NS::DataArrayHandlers(mySession), repo(repo_) {}
-	~MyOwnDataArrayProtocolHandlers() {}
+		const std::array<uint8_t, 16> uuid;
+		const std::string version;
 
-    void on_GetDataArrays(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrays & gda, int64_t correlationId);
-	void on_PutDataArrays(const Energistics::Etp::v12::Protocol::DataArray::PutDataArrays & pda, int64_t correlationId);
-	void on_GetDataArrayMetadata(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadata & gdam, int64_t correlationId);
-};
+		DataObjectIdentifier(const std::string& uuid);
+		DataObjectIdentifier(const std::array<uint8_t, 16>& uuid) : uuid(uuid) {}
+		DataObjectIdentifier(const std::string& uuid, const std::string& version);
+		DataObjectIdentifier(const std::array<uint8_t, 16>& uuid, const std::string& version) : uuid(uuid), version(version) {}
+
+		~DataObjectIdentifier() {}
+	};
+}

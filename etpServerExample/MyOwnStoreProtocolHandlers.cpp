@@ -22,12 +22,12 @@ under the License.
 #include "etp/EtpHelpers.h"
 #include "etp/EtpException.h"
 
-#include "Helpers.h"
-
 #include "resqml2/AbstractGridRepresentation.h"
 #include "resqml2/GridConnectionSetRepresentation.h"
 
-MyOwnStoreProtocolHandlers::MyOwnStoreProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, COMMON_NS::DataObjectRepository* repo_) :
+#include "MyDataObjectRepository.h"
+
+MyOwnStoreProtocolHandlers::MyOwnStoreProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, MyDataObjectRepository* repo_) :
 	ETP_NS::StoreHandlers(mySession), repo(repo_) {}
 
 void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::Protocol::Store::GetDataObjects & msg, int64_t correlationId)
@@ -40,7 +40,7 @@ void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::
 
 		try
 		{
-			COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(repo, session, pair.second);
+			COMMON_NS::AbstractObject* obj = repo->getObjectFromUri(pair.second);
 
 			if (obj->isPartial()) {
 				obj = repo->resolvePartial(obj);
@@ -57,11 +57,11 @@ void MyOwnStoreProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::
 	}
 
 	if (!pe.m_errors.empty()) {
-		session->send(objResponse, correlationId, 0x01);
-		session->send(pe, correlationId, 0x01 | 0x02);
+		session->send(objResponse, correlationId);
+		session->send(pe, correlationId, 0x02);
 	}
 	else {
-		session->send(objResponse, correlationId, 0x01 | 0x02);
+		session->send(objResponse, correlationId, 0x02);
 	}
 }
 
@@ -90,7 +90,7 @@ void MyOwnStoreProtocolHandlers::on_PutDataObjects(const Energistics::Etp::v12::
 	}
 
 	if (!pe.m_errors.empty()) {
-		session->send(pe, correlationId, 0x01 | 0x02);
+		session->send(pe, correlationId, 0x02);
 	}
 }
 
@@ -102,5 +102,5 @@ void MyOwnStoreProtocolHandlers::on_DeleteDataObjects(const Energistics::Etp::v1
 	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
 	pe.m_error.set_ErrorInfo(error);
 
-	session->send(pe, correlationId, 0x01 | 0x02);
+	session->send(pe, correlationId, 0x02);
 }

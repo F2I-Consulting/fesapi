@@ -16,28 +16,24 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
+#pragma once
 
-#include "Helpers.h"
+#include "common/DataObjectRepository.h"
 
 #include "etp/AbstractSession.h"
-#include "etp/EtpException.h"
 
-COMMON_NS::AbstractObject* Helpers::getObjectFromUri(COMMON_NS::DataObjectRepository const * repo, std::shared_ptr<ETP_NS::AbstractSession> session, const std::string & uri) {
-	Energistics::Etp::v12::Datatypes::ErrorInfo error = session->validateDataObjectUri(uri, false);
-	if (error.m_code > -1) {
-		throw ETP_NS::EtpException(error.m_code, error.m_message);
-	}
+class MyDataObjectRepository : public COMMON_NS::DataObjectRepository
+{
+public:
+	std::vector<std::shared_ptr<ETP_NS::AbstractSession>> sessions;
 
-	if (uri[6] != '/') {
-		throw ETP_NS::EtpException(2, "The URI " + uri + " uses some dataspaces or witsml or prodml. This agent does not support dataspace.");
-	}
+	~MyDataObjectRepository() {}
 
-	const size_t openingParenthesisPos = uri.find('(');
-	const std::string uuid = uri.substr(openingParenthesisPos + 1, 36);
-	COMMON_NS::AbstractObject* result = repo->getDataObjectByUuid(uuid);
-	if (result == nullptr) {
-		throw ETP_NS::EtpException(11, uuid + " cannot be resolved as a data object in this store");
-	}
+	COMMON_NS::AbstractObject* getObjectFromUri(const std::string & uri) const;
 
-	return result;
-}
+	void on_CreateDataObject(const std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>>& created);
+	void on_UpdateDataObject(const std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>>& updated);
+
+private:
+	std::vector<COMMON_NS::AbstractObject*> getDataObjects(const Energistics::Etp::v12::Datatypes::Object::SubscriptionInfo& subscriptionInfo) const;
+};

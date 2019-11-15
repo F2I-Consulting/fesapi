@@ -18,12 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnDataArrayProtocolHandlers.h"
 
-#include "Helpers.h"
-
 #include "etp/AbstractSession.h"
 #include "etp/EtpException.h"
 
 #include "common/AbstractHdfProxy.h"
+
+#include "MyDataObjectRepository.h"
 
 void MyOwnDataArrayProtocolHandlers::on_GetDataArrays(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrays & gda, int64_t correlationId)
 {
@@ -36,7 +36,7 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrays(const Energistics::Etp::v1
 
 		try
 		{
-			COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(repo, session, dai.m_uri);
+			COMMON_NS::AbstractObject* obj = repo->getObjectFromUri(dai.m_uri);
 			COMMON_NS::AbstractHdfProxy* hdfProxy = dynamic_cast<COMMON_NS::AbstractHdfProxy*>(obj);
 			if (hdfProxy == nullptr) {
 				pe.m_errors[element.first].m_message = "The URI points to an object which is not an HDF proxy";
@@ -177,7 +177,7 @@ void MyOwnDataArrayProtocolHandlers::on_PutDataArrays(const Energistics::Etp::v1
 		}
 
 		try {
-			COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(repo, session, pdat.second.m_uri);
+			COMMON_NS::AbstractObject* obj = repo->getObjectFromUri(pdat.second.m_uri);
 			COMMON_NS::AbstractHdfProxy* hdfProxy = dynamic_cast<COMMON_NS::AbstractHdfProxy*>(obj);
 			if (hdfProxy == nullptr) {
 				pe.m_errors[pdat.first].m_message = obj->getUuid() + " cannot be resolved as an HDF Proxy in this store";
@@ -223,7 +223,7 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrayMetadata(const Energistics::
 		std::cout << "GetDataArrayMetadata received uri : " << dai.m_uri << std::endl;
 
 		try {
-			COMMON_NS::AbstractObject* obj = Helpers::getObjectFromUri(repo, session, dai.m_uri);
+			COMMON_NS::AbstractObject* obj = repo->getObjectFromUri(dai.m_uri);
 			COMMON_NS::AbstractHdfProxy* hdfProxy = dynamic_cast<COMMON_NS::AbstractHdfProxy*>(obj);
 			if (hdfProxy == nullptr) {
 				pe.m_errors[element.first].m_message = "The URI points to an object which is not an HDF proxy";

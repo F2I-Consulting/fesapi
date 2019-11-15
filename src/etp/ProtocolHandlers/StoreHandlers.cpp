@@ -84,27 +84,7 @@ void StoreHandlers::on_DeleteDataObjects(const Energistics::Etp::v12::Protocol::
 void StoreHandlers::on_GetDataObjectsResponse(const Energistics::Etp::v12::Protocol::Store::GetDataObjectsResponse & msg, int64_t correlationId)
 {
 	for (const auto& graphResource : msg.m_dataObjects) {
-		std::cout << "*************************************************" << std::endl;
 		std::cout << "Resource received : " << std::endl;
-		std::cout << "uri : " << graphResource.second.m_resource.m_uri << std::endl;
-		if (!graphResource.second.m_resource.m_alternateUris.empty()) {
-			std::cout << "alternateUris :";
-			for (const auto & alternateUri : graphResource.second.m_resource.m_alternateUris) {
-				std::cout << " " << alternateUri;
-			}
-			std::cout << std::endl;
-		}
-		std::cout << "contentType : " << graphResource.second.m_resource.m_dataObjectType << std::endl;
-		std::cout << "name : " << graphResource.second.m_resource.m_name << std::endl;
-		if (!graphResource.second.m_resource.m_sourceCount.is_null()) {
-			std::cout << "source count : " << graphResource.second.m_resource.m_sourceCount.get_int() << std::endl;
-		}
-		if (!graphResource.second.m_resource.m_targetCount.is_null()) {
-			std::cout << "target count : " << graphResource.second.m_resource.m_targetCount.get_int() << std::endl;
-		}
-		std::cout << "lastChanged : " << graphResource.second.m_resource.m_lastChanged << std::endl;
-		std::cout << "*************************************************" << std::endl;
-		std::cout << graphResource.second.m_data << std::endl;
-		std::cout << "*************************************************" << std::endl;
+		printDataObject(graphResource.second);
 	}
 }

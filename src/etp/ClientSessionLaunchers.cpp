@@ -53,5 +53,10 @@ std::shared_ptr<ETP_NS::PlainClientSession> ETP_NS::ClientSessionLaunchers::crea
 	protocol.m_role = "store";
 	requestedProtocols.push_back(protocol);
 
+	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::StoreNotification;
+	protocol.m_protocolVersion = protocolVersion;
+	protocol.m_role = "store";
+	requestedProtocols.push_back(protocol);
+
 	return std::make_shared<PlainClientSession>(host, port, target.empty() ? "/" : target, authorization, requestedProtocols, supportedObjects);
 }

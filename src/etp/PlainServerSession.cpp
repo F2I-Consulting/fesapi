@@ -22,7 +22,7 @@ under the License.
 using namespace ETP_NS;
 
 PlainServerSession::PlainServerSession(tcp::socket socket)
-	: AbstractServerSession<PlainServerSession>(socket.get_executor().context()),
+	: AbstractPlainOrSslServerSession<PlainServerSession>(socket.get_executor().context()),
 	ws_(std::move(socket))
 {
 	ws_.binary(true);

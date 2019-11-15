@@ -36,11 +36,11 @@ void AbstractFeatureInterpretation::setInterpretedFeature(AbstractFeature * feat
 		throw invalid_argument("The interpreted feature cannot be null.");
 	}
 
+	feature->getRepository()->addRelationship(this, feature);
+
 	if (getRepository() == nullptr) {
 		feature->getRepository()->addOrReplaceDataObject(this);
 	}
-
-	repository->addRelationship(this, feature);
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->InterpretedFeature = feature->newResqmlReference();

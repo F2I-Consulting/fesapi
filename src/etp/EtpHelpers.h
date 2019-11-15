@@ -40,7 +40,19 @@ namespace COMMON_NS
 
 namespace ETP_NS
 {
+	class AbstractSession;
+
 	namespace EtpHelpers {
+
+		/**
+		* Provide a session if you want to send a protocol exception in case of non validation.
+		*/
+		DLL_IMPORT_OR_EXPORT Energistics::Etp::v12::Datatypes::ErrorInfo validateUri(const std::string & uri, std::shared_ptr<AbstractSession> session = nullptr);
+
+		/**
+		* Provide a session if you want to send a protocol exception in case of non validation.
+		*/
+		DLL_IMPORT_OR_EXPORT Energistics::Etp::v12::Datatypes::ErrorInfo validateDataObjectUri(const std::string & uri, std::shared_ptr<AbstractSession> session = nullptr);
 
 		/**
 		* Build and return an URI from an Energistics object.
@@ -62,7 +74,7 @@ namespace ETP_NS
 		* @param obj	The input Energistics obj
 		* @return		The ETP data object built from the Energistics object
 		*/
-		DLL_IMPORT_OR_EXPORT Energistics::Etp::v12::Datatypes::Object::DataObject buildEtpDataObjectFromEnergisticsObject(COMMON_NS::AbstractObject * obj);
+		DLL_IMPORT_OR_EXPORT Energistics::Etp::v12::Datatypes::Object::DataObject buildEtpDataObjectFromEnergisticsObject(COMMON_NS::AbstractObject * obj, bool includeSerialization = true);
 
 		/**
 		* Build a protocol exception message which only contains a single error message (not a messsage map).

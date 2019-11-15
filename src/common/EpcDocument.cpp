@@ -268,6 +268,8 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 							break;
 						}
 					}
+
+					repo.setDefaultHdfProxy(static_cast<COMMON_NS::AbstractHdfProxy*>(wrapper));
 				}
 				else {
 					repo.createPartial(extractUuidFromFileName(it->first), "Partial title", contentType);

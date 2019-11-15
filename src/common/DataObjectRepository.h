@@ -20,6 +20,7 @@ under the License.
 
 #include <unordered_map>
 #include <sstream>
+#include <chrono>
 
 #include "../proxies/gsoap_resqml2_0_1H.h"
 #include "../proxies/gsoap_eml2_1H.h"
@@ -27,7 +28,7 @@ under the License.
 #include "../proxies/gsoap_eml2_2H.h"
 #endif
 
-#include "../nsDefinitions.h"
+#include "DataObjectIdentifier.h"
 
 #if defined(_WIN32) && !defined(FESAPI_STATIC)
 #if defined(FesapiCpp_EXPORTS) || defined(FesapiCppUnderDev_EXPORTS)
@@ -171,89 +172,13 @@ namespace COMMON_NS
 	*/
 	class DataObjectRepository
 	{
-	private:
-
-		/**
-		* The key is the UUID.
-		* The value is a vector storing all various versions of this data object
-		*/
-		std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > dataObjects;
-
-		// Forward relationships
-		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject * > > forwardRels;
-
-		// Backward relationships. It is redundant with forward relationships but it allows more performance.
-		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject * > > backwardRels;
-
-		soap* gsoapContext;
-
-		std::vector<std::string> warnings;
-
-		RESQML2_0_1_NS::PropertyKindMapper* propertyKindMapper;
-
-		COMMON_NS::AbstractHdfProxy* defaultHdfProxy;
-		RESQML2_NS::AbstractLocal3dCrs* defaultCrs;
-		
-		std::vector<COMMON_NS::DataFeeder*> dataFeeders;
-
-		COMMON_NS::HdfProxyFactory* hdfProxyFactory;
-
-		/**
-		* Necessary to avoid a dependency on GuidTools.h
-		*/
-		std::string generateRandomUuidAsString() const;
-
-		/**
-		* Set the stream of the curent gsoap context.
-		*/
-		void setGsoapStream(std::istream * inputStream) { gsoapContext->is = inputStream; }
-
-		/**
-		* Read the Gsoap proxy from the stream associated to the current gsoap context and wrap this gsoap proxy into a fesapi wrapper.
-		* It does not add this fesapi wrapper to the current instance.
-		* It does not work for EpcExternalPartReference content type since this type is related to an external file which must be handled differently.
-		*/
-		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
-#if WITH_EXPERIMENTAL
-		COMMON_NS::AbstractObject* getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType);
-		COMMON_NS::AbstractObject* getEml2_2WrapperFromGsoapContext(const std::string & datatype);
-		COMMON_NS::AbstractObject* getWitsml2_1WrapperFromGsoapContext(const std::string & datatype);
-#endif
-		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
-
-		/**
-		* Get the error code of the current gsoap context.
-		*/
-		int getGsoapErrorCode() const;
-
-		/**
-		* Get the error message (if any) of the current gsoap context.
-		*/
-		std::string getGsoapErrorMessage() const;
-
-		template <class valueType>
-		std::vector<valueType *> getObjsFilteredOnDatatype(const std::vector< COMMON_NS::AbstractObject * >& objs) const
-		{
-			std::vector<valueType *> result;
-			for (size_t i = 0; i < objs.size(); ++i) {
-				valueType * castedObj = dynamic_cast<valueType *>(objs[i]);
-				if (castedObj != nullptr) {
-					result.push_back(castedObj);
-				}
-			}
-			return result;
-		}
-
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__DataObjectReference* createDor(const std::string & guid, const std::string & title, const std::string & version);
-
-		void replaceDataObjectInRels(COMMON_NS::AbstractObject* dataObjToReplace, COMMON_NS::AbstractObject* newDataObj);
-
 	public:
 
 		DLL_IMPORT_OR_EXPORT DataObjectRepository();
 		DLL_IMPORT_OR_EXPORT DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);
 
 		enum openingMode { READ_ONLY = 0, READ_WRITE = 1, OVERWRITE = 2 };
+		enum CUD { CREATED = 0, UPDATED = 1, DELETED = 2 };
 
 		DLL_IMPORT_OR_EXPORT virtual ~DataObjectRepository();
 
@@ -283,16 +208,40 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory);
 
 		/**
+		* Get the journal of the DataObject repository.
+		*/
+		const std::vector< std::tuple<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::DataObjectIdentifier, CUD> >& getJournal() const { return journal; }
+
+		/**
+		* Allow a specialization of a DataObjectRepository to provide a special behaviour when a dataobject is created
+		*/
+		DLL_IMPORT_OR_EXPORT virtual void on_CreateDataObject(const std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>>& created) {}
+
+		/**
+		* Allow a specialization of a DataObjectRepository to provide a special behaviour when a dataobject is update
+		*/
+		DLL_IMPORT_OR_EXPORT virtual void on_UpdateDataObject(const std::vector<std::pair<std::chrono::time_point<std::chrono::system_clock>, COMMON_NS::AbstractObject*>>& updated) {}
+
+		/**
 		* Resolve a partial object thanks to a data feeder into this data repository.
 		* This method needs some registered data feeder in order to work.
 		*/
 		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* resolvePartial(COMMON_NS::AbstractObject * partialObj);
 
 		/**
-		* Get the target objects of a particular data objects.
-		* Throw an exception if the target objects have not been defined yet.
+		* Get the direct target objects (by reference) of a particular data object.
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector< COMMON_NS::AbstractObject * >& getTargetObjects(COMMON_NS::AbstractObject const * dataObj) const;
+		DLL_IMPORT_OR_EXPORT const std::vector<COMMON_NS::AbstractObject*>& getTargetObjects(COMMON_NS::AbstractObject const * dataObj) const { return forwardRels.at(dataObj); }
+
+		/**
+		* Get the target objects of a particular data object and potentially targets of targets, etc...
+		* @param dataObj			The dataobject which we want to know the targets about.
+		* @param depth				How much targets of tagerts do we want? A depth of 0 means that we only want the dataobject itself. A depth of 1 means that we only want the direct targets.
+		*							A depth of 2 means that we want the direct targets + the targets of the direct targets, etc... 
+		* @param filteredDatatypes	The returned targets will be filtered based on this list of authorized datatypes. A qualified type "namespace.*" means a filter on the namespace.
+		*/
+		DLL_IMPORT_OR_EXPORT std::vector<COMMON_NS::AbstractObject*> getTargetObjects(COMMON_NS::AbstractObject const * dataObj, size_t depth,
+			const std::vector<std::string>& filteredDatatypes = std::vector<std::string>()) const;
 
 		template <class valueType>
 		std::vector<valueType *> getTargetObjects(COMMON_NS::AbstractObject const * dataObj) const
@@ -301,10 +250,19 @@ namespace COMMON_NS
 		}
 
 		/**
-		* Get the source objects of a particular data objects.
-		* Throw an exception if the source objects have not been defined yet.
+		* Get the source objects of a particular data object.
 		*/
-		DLL_IMPORT_OR_EXPORT const std::vector< COMMON_NS::AbstractObject * >& getSourceObjects(COMMON_NS::AbstractObject const * dataObj) const;
+		DLL_IMPORT_OR_EXPORT const std::vector< COMMON_NS::AbstractObject*>& getSourceObjects(COMMON_NS::AbstractObject const * dataObj) const { return backwardRels.at(dataObj); }
+
+		/**
+		* Get the source objects of a particular data object and potentially sources of sources, etc...
+		* @param dataObj			The dataobject which we want to know the sources about.
+		* @param depth				How much sources of sources do we want? A depth of 0 means that we only want the dataobject itself. A depth of 1 means that we only want the direct sources.
+		*							A depth of 2 means that we want the direct sources + the sources of the direct sources, etc...
+		* @param filteredDatatypes	The returned sources will be filtered based on this list of authorized datatypes. A qualified type "namespace.*" means a filter on the namespace.
+		*/
+		DLL_IMPORT_OR_EXPORT std::vector<COMMON_NS::AbstractObject*> getSourceObjects(COMMON_NS::AbstractObject const * dataObj, size_t depth,
+			const std::vector<std::string>& filteredDatatypes = std::vector<std::string>()) const;
 
 		template <class valueType>
 		std::vector<valueType *> getSourceObjects(COMMON_NS::AbstractObject const * dataObj) const
@@ -678,6 +636,14 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* getDataObjectByUuidAndVersion(const std::string & uuid, const std::string & version) const;
 
 		/**
+		* Get a data object from the repository by means of its uuid and from its version.
+		* @param uuid		The uuid of the requested data object.
+		* @param version	The version of the requested data object.
+		* @return			nullptr if no dataobject corresponds to the uuid + version
+		*/
+		DLL_IMPORT_OR_EXPORT COMMON_NS::AbstractObject* getDataObjectByUuidAndVersion(const std::array<uint8_t, 16> & uuid, const std::string & version) const;
+
+		/**
 		* Get a data object from the repository by means of its uuid and from its version
 		* and try to cast it to a child class of COMMON_NS::AbstractObject
 		* @return nullptr if no dataobject corresponds to the uuid + version
@@ -740,17 +706,6 @@ namespace COMMON_NS
 		//***** DataObject creation **********
 		//************************************
 
-		/**
-		* This method allows to use a different behaviour for persisting numerical data.
-		* NumericalValueBase must be a child of COMMON_NS::EpcExternalPartReference
-		*/
-		template <class NumericalValueBase>
-		NumericalValueBase* createEpcExternalPartReference(const std::string & guid, const std::string & title)
-		{
-			NumericalValueBase* result = new NumericalValueBase(getGsoapContext(), guid);
-			addDataObject(result);
-			return result;
-		}
 		/**
 		* This method create a non parallel access to an HDF proxy for writing to it.
 		*/
@@ -1324,5 +1279,98 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void clearWarnings() { warnings.clear();  }
 		DLL_IMPORT_OR_EXPORT void addWarning(const std::string & warning);
 		DLL_IMPORT_OR_EXPORT const std::vector<std::string> & getWarnings() const;
+
+		//*********** TRANSACTION ***********
+
+		/**
+		* Creates a transaction.
+		* The transactionis actually a child dataobject repository which will be merged into this master dataobject repository.
+		*/
+		DataObjectRepository* newTransactionRepo();
+
+		/**
+		* Commit a transaction into this master repository.
+		*/
+		void commitTransactionRepo(DataObjectRepository* transactionRepo);
+
+
+	private:
+
+		/**
+		* The key is the UUID.
+		* The value is a vector storing all various versions of this data object
+		*/
+		std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > dataObjects;
+
+		// Forward relationships
+		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject * > > forwardRels;
+
+		// Backward relationships. It is redundant with forward relationships but it allows more performance.
+		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject * > > backwardRels;
+
+		soap* gsoapContext;
+
+		std::vector<std::string> warnings;
+
+		RESQML2_0_1_NS::PropertyKindMapper* propertyKindMapper;
+
+		COMMON_NS::AbstractHdfProxy* defaultHdfProxy;
+		RESQML2_NS::AbstractLocal3dCrs* defaultCrs;
+
+		std::vector<COMMON_NS::DataFeeder*> dataFeeders;
+
+		COMMON_NS::HdfProxyFactory* hdfProxyFactory;
+
+		std::vector< std::tuple<std::chrono::time_point<std::chrono::system_clock>, DataObjectIdentifier, CUD> > journal;
+
+		/**
+		* Necessary to avoid a dependency on GuidTools.h
+		*/
+		std::string generateRandomUuidAsString() const;
+
+		/**
+		* Set the stream of the curent gsoap context.
+		*/
+		void setGsoapStream(std::istream * inputStream) { gsoapContext->is = inputStream; }
+
+		/**
+		* Read the Gsoap proxy from the stream associated to the current gsoap context and wrap this gsoap proxy into a fesapi wrapper.
+		* It does not add this fesapi wrapper to the current instance.
+		* It does not work for EpcExternalPartReference content type since this type is related to an external file which must be handled differently.
+		*/
+		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
+#if WITH_EXPERIMENTAL
+		COMMON_NS::AbstractObject* getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType);
+		COMMON_NS::AbstractObject* getEml2_2WrapperFromGsoapContext(const std::string & datatype);
+		COMMON_NS::AbstractObject* getWitsml2_1WrapperFromGsoapContext(const std::string & datatype);
+#endif
+		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
+
+		/**
+		* Get the error code of the current gsoap context.
+		*/
+		int getGsoapErrorCode() const;
+
+		/**
+		* Get the error message (if any) of the current gsoap context.
+		*/
+		std::string getGsoapErrorMessage() const;
+
+		template <class valueType>
+		std::vector<valueType *> getObjsFilteredOnDatatype(const std::vector< COMMON_NS::AbstractObject * >& objs) const
+		{
+			std::vector<valueType *> result;
+			for (size_t i = 0; i < objs.size(); ++i) {
+				valueType * castedObj = dynamic_cast<valueType *>(objs[i]);
+				if (castedObj != nullptr) {
+					result.push_back(castedObj);
+				}
+			}
+			return result;
+		}
+
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__DataObjectReference* createDor(const std::string & guid, const std::string & title, const std::string & version);
+
+		void replaceDataObjectInRels(COMMON_NS::AbstractObject* dataObjToReplace, COMMON_NS::AbstractObject* newDataObj);
 	};
 }

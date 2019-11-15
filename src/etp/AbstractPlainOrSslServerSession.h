@@ -20,15 +20,19 @@ under the License.
 
 #include "AbstractSession.h"
 
+#include <unordered_map>
+
 #include <boost/asio/strand.hpp>
 #include <boost/asio/bind_executor.hpp>
+
+#include "../common/AbstractObject.h"
 
 namespace ETP_NS
 {
 	// Echoes back all received WebSocket messages.
 	// This uses the Curiously Recurring Template Pattern so that the same code works with both SSL streams and regular sockets.
 	template<class Derived>
-	class AbstractServerSession : public ETP_NS::AbstractSession
+	class AbstractPlainOrSslServerSession : public ETP_NS::AbstractSession
 	{
 	private:
 		// Access the derived class, this is part of the Curiously Recurring Template Pattern idiom.
@@ -38,13 +42,19 @@ namespace ETP_NS
 		boost::asio::strand<boost::asio::io_context::executor_type> strand;
 
 	public:
-		AbstractServerSession(boost::asio::io_context& ioc) : strand(ioc.get_executor()) {}
+		AbstractPlainOrSslServerSession(boost::asio::io_context& ioc) : strand(ioc.get_executor()) {}
 
-		virtual ~AbstractServerSession() {}
+		virtual ~AbstractPlainOrSslServerSession() {}
 
 		boost::asio::io_context& getIoContext() {
 			return derived().ws().get_executor().context();
 		}
+
+		/**
+		* The key is the UUID of the subscription.
+		* The vector allows to buffer the dataobjects which we want to be notified about
+		*/
+		std::vector<Energistics::Etp::v12::Datatypes::Object::SubscriptionInfo> subscriptions;
 
 		/**
 		* This method is done after ssl handshake
@@ -88,8 +98,8 @@ namespace ETP_NS
 				boost::asio::bind_executor(
 					strand,
 					std::bind(
-						&AbstractServerSession::on_accept,
-						std::static_pointer_cast<AbstractServerSession>(shared_from_this()),
+						&AbstractPlainOrSslServerSession::on_accept,
+						std::static_pointer_cast<AbstractPlainOrSslServerSession>(shared_from_this()),
 						std::placeholders::_1)));
 #endif
 		}

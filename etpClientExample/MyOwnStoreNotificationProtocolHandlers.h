@@ -18,20 +18,16 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/ProtocolHandlers/DataArrayHandlers.h"
+#include "etp/ProtocolHandlers/StoreNotificationHandlers.h"
 
-class MyDataObjectRepository;
+#include "common/DataObjectRepository.h"
 
-class MyOwnDataArrayProtocolHandlers : public ETP_NS::DataArrayHandlers
+class MyOwnStoreNotificationProtocolHandlers : public ETP_NS::StoreNotificationHandlers
 {
 private:
-	MyDataObjectRepository* repo;
+	COMMON_NS::DataObjectRepository* repo;
 
 public:
-	MyOwnDataArrayProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, MyDataObjectRepository* repo_): ETP_NS::DataArrayHandlers(mySession), repo(repo_) {}
-	~MyOwnDataArrayProtocolHandlers() {}
-
-    void on_GetDataArrays(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrays & gda, int64_t correlationId);
-	void on_PutDataArrays(const Energistics::Etp::v12::Protocol::DataArray::PutDataArrays & pda, int64_t correlationId);
-	void on_GetDataArrayMetadata(const Energistics::Etp::v12::Protocol::DataArray::GetDataArrayMetadata & gdam, int64_t correlationId);
+	MyOwnStoreNotificationProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, COMMON_NS::DataObjectRepository* repo_) : ETP_NS::StoreNotificationHandlers(mySession), repo(repo_) {}
+	~MyOwnStoreNotificationProtocolHandlers() {}
 };

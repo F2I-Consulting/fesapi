@@ -27,35 +27,13 @@ under the License.
 #include <resqml2_0_1/IjkGridExplicitRepresentation.h>
 #include <resqml2_0_1/ContinuousPropertySeries.h>
 
+#include <tools/GuidTools.h>
+
 #include "MyOwnDiscoveryProtocolHandlers.h"
 
 MyOwnCoreProtocolHandlers::~MyOwnCoreProtocolHandlers() {
 }
 
-/*
-void setSessionToEtpHdfProxy(ETP_NS::AbstractSession* myOwnEtpSession, COMMON_NS::DataObjectRepository& repo) {
-	for (const auto & hdfProxy : repo.getHdfProxySet())
-	{
-		ETP_NS::EtpHdfProxy* etpHdfProxy = dynamic_cast<ETP_NS::EtpHdfProxy*>(hdfProxy);
-		if (etpHdfProxy != nullptr && etpHdfProxy->getSession() == nullptr) {
-			if (dynamic_cast<ETP_NS::AbstractClientSession*>(myOwnEtpSession) != nullptr) {
-				etpHdfProxy->setSession(myOwnEtpSession->getIoContext(),
-					static_cast<ETP_NS::AbstractClientSession*>(myOwnEtpSession)->getHost(),
-					static_cast<ETP_NS::AbstractClientSession*>(myOwnEtpSession)->getPort(),
-					static_cast<ETP_NS::AbstractClientSession*>(myOwnEtpSession)->getTarget());
-			}
-#ifdef WITH_ETP_SSL
-			else if (dynamic_cast<MyOwnEtpSslClientSession*>(myOwnEtpSession) != nullptr) {
-				etpHdfProxy->setSession(myOwnEtpSession->getIoContext(),
-					static_cast<MyOwnEtpSslClientSession*>(myOwnEtpSession)->getHost(),
-					static_cast<MyOwnEtpSslClientSession*>(myOwnEtpSession)->getPort(),
-					static_cast<MyOwnEtpSslClientSession*>(myOwnEtpSession)->getTarget());
-			}
-#endif
-		}
-	}
-}
-*/
 void printHelp()
 {
 	std::cout << "List of available commands :" << std::endl;
@@ -69,6 +47,7 @@ void printHelp()
 	std::cout << "\tGetTargetObjects dataObjectURI" << std::endl << "\t\tGet the target objects of another object from an ETP store and put it into the in memory epc" << std::endl << std::endl;
 	std::cout << "\tGetResourceObjects dataObjectURI" << std::endl << "\t\tGet the object, its source and its target objects from an ETP store and put it into the in memory epc" << std::endl << std::endl;
 	std::cout << "\tGetDataArray epcExternalPartURI datasetPathInEpcExternalPart" << std::endl << "\t\tGet the numerical values from a dataset included in an EpcExternalPart over ETP." << std::endl << std::endl;
+	std::cout << "\tSubscribeNotif URI scope(default self) depth(default 1) receiveXML(true or false, default is true) startTime(default is now) dataTypeFilter,dataTypeFilter,...(default noFilter)" << std::endl << "\t\tSubscribe to notifications." << std::endl << std::endl;
 	std::cout << "\tquit" << std::endl << "\t\tQuit the session." << std::endl << std::endl;
 }
 
@@ -102,7 +81,8 @@ void askUser(std::shared_ptr<ETP_NS::AbstractSession> session, COMMON_NS::DataOb
 			session->send(mb);
 			continue;
 		}
-		else*/ if (commandTokens[0] == "GetSupportedTypes") {
+		else*/
+		if (commandTokens[0] == "GetSupportedTypes") {
 			Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypes mb;
 			mb.m_uri = commandTokens[1];
 			mb.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self;
@@ -211,6 +191,50 @@ void askUser(std::shared_ptr<ETP_NS::AbstractSession> session, COMMON_NS::DataOb
 
 			session->send(putDataObjects, 0, 0x10); // 0x10 requires Acknowledge from the store
 		}
+		else if (commandTokens[0] == "SubscribeNotif") {
+			Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotifications mb;
+			mb.m_request.m_context.m_uri = commandTokens[1];
+			mb.m_request.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self;
+			mb.m_request.m_context.m_depth = 1;
+			mb.m_request.m_startTime = std::time(nullptr);
+			mb.m_request.m_requestUuid.m_array = GuidTools::generateUidAsByteArray();
+
+			if (commandTokens.size() > 2) {
+				if (commandTokens[2] == "self")
+					mb.m_request.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self;
+				else if (commandTokens[2] == "sources")
+					mb.m_request.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources;
+				else if (commandTokens[2] == "sourcesOrSelf")
+					mb.m_request.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf;
+				else if (commandTokens[2] == "targets")
+					mb.m_request.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets;
+				else if (commandTokens[2] == "targetsOrSelf")
+					mb.m_request.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
+
+				if (commandTokens.size() > 3) {
+					mb.m_request.m_context.m_depth = std::stoi(commandTokens[3]);
+
+					if (commandTokens.size() > 4) {
+						mb.m_request.m_includeObjectData = commandTokens[4] == "true";
+
+						if (commandTokens.size() > 5) {
+							if (commandTokens[5] != "now") {
+								mb.m_request.m_startTime = std::stoll(commandTokens[5]);
+							}
+
+							if (commandTokens.size() > 6) {
+								mb.m_request.m_context.m_dataObjectTypes = tokenize(commandTokens[6], ',');
+							}
+						}
+					}
+				}
+			}
+
+			session->send(mb);
+
+			continue;
+		}
+
 		if (commandTokens.size() == 1) {
 			if (commandTokens[0] == "GetXyzOfIjkGrids") {
 				//setSessionToEtpHdfProxy(session);

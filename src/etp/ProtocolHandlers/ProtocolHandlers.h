@@ -46,6 +46,7 @@ namespace ETP_NS
 
 		std::shared_ptr<AbstractSession> session;
 
+		void printDataObject(const Energistics::Etp::v12::Datatypes::Object::DataObject & dataObject);
 		void sendExceptionCode3();
 
 	public:

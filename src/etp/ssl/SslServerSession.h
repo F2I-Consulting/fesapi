@@ -31,7 +31,7 @@ under the License.
 
 namespace ETP_NS
 {
-	class SslServerSession : public AbstractServerSession<SslServerSession>
+	class SslServerSession : public AbstractPlainOrSslServerSession<SslServerSession>
 	{
 	private:
 		websocket::stream<boost::beast::ssl_stream<tcp::socket>> ws_;
@@ -52,8 +52,8 @@ namespace ETP_NS
 				boost::asio::bind_executor(
 					strand_,
 					std::bind(
-						&AbstractServerSession::on_handshake,
-						std::static_pointer_cast<AbstractServerSession>(shared_from_this()),
+						&AbstractPlainOrSslServerSession::on_handshake,
+						std::static_pointer_cast<AbstractPlainOrSslServerSession>(shared_from_this()),
 						std::placeholders::_1)));
 		}
 	};

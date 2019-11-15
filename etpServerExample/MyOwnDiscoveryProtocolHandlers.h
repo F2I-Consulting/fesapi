@@ -19,13 +19,14 @@ under the License.
 #pragma once
 
 #include "etp/AbstractSession.h"
-#include "common/DataObjectRepository.h"
+
+class MyDataObjectRepository;
 
 class MyOwnDiscoveryProtocolHandlers : public ETP_NS::DiscoveryHandlers
 {
 private:
 	
-	COMMON_NS::DataObjectRepository* repo;
+	MyDataObjectRepository* repo;
 	/*
 	void on_GetEmlColonSlashSlash(const Energistics::Etp::v12::Protocol::Discovery::GetNamespaces & gn, int64_t correlationId,
 		std::vector<std::string> & result);
@@ -34,7 +35,7 @@ private:
 		std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result);
 
 public:
-	MyOwnDiscoveryProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, COMMON_NS::DataObjectRepository* repo_): ETP_NS::DiscoveryHandlers(mySession), repo(repo_) {}
+	MyOwnDiscoveryProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, MyDataObjectRepository* repo_): ETP_NS::DiscoveryHandlers(mySession), repo(repo_) {}
 	~MyOwnDiscoveryProtocolHandlers() {}
 
 	//void on_GetDataspaces(const Energistics::Etp::v12::Protocol::Discovery::GetDataspaces & msg, int64_t correlationId);

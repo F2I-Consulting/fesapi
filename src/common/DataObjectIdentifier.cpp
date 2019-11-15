@@ -7,7 +7,7 @@ to you under the Apache License, Version 2.0 (the
 "License"; you may not use this file except in compliance
 with the License.  You may obtain a copy of the License at
 
-  http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing,
 software distributed under the License is distributed on an
@@ -16,14 +16,14 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#pragma once
+#include "DataObjectIdentifier.h"
 
-#include "common/AbstractObject.h"
+#include "../tools/GuidTools.h"
 
-namespace ETP_NS {
-	class AbstractSession;
-}
+using namespace COMMON_NS;
 
-namespace Helpers {
-	COMMON_NS::AbstractObject* getObjectFromUri(COMMON_NS::DataObjectRepository const * repo, std::shared_ptr<ETP_NS::AbstractSession> session, const std::string & uri);
-};
+DataObjectIdentifier::DataObjectIdentifier(const std::string& uuid) :
+	uuid(GuidTools::convertFromString(uuid)), version("") {}
+
+DataObjectIdentifier::DataObjectIdentifier(const std::string& uuid, const std::string& version) :
+	uuid(GuidTools::convertFromString(uuid)), version(version) {}

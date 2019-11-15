@@ -164,7 +164,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHd
 
 	// TRAJECTORY
 	WITSML2_0_NS::Trajectory* witsmlTrajectory = pck->createTrajectory(
-		witsmlWellbore, "4e76e1de-eff1-4458-805e-a6a877fa333B", "My trajectory", gsoap_eml2_1::witsml20__ChannelStatus__closed);
+		witsmlWellbore, "4e76e1de-eff1-4458-805e-a6a877fa333b", "My trajectory", gsoap_eml2_1::witsml20__ChannelStatus__closed);
 	witsmlTrajectory->setMdMn(.0, gsoap_eml2_1::eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
 	witsmlTrajectory->setMdMx(1000., gsoap_eml2_1::eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
 	witsmlTrajectory->setDefinitive(true);
