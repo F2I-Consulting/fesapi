@@ -56,21 +56,3 @@ void MyOwnStoreNotificationProtocolHandlers::on_SubscribeNotifications(const Ene
 		repo->on_UpdateDataObject(created);
 	}
 }
-
-void MyOwnStoreNotificationProtocolHandlers::on_UnsubscribeNotifications(const Energistics::Etp::v12::Protocol::StoreNotification::UnsubscribeNotifications & msg, int64_t messageId, int64_t correlationId)
-{
-	int64_t toRemove = (std::numeric_limits<int64_t>::max)();
-	for (const auto& pair : session->subscriptions) {
-		if (pair.second.m_requestUuid.m_array == msg.m_requestUuid.m_array) {
-			toRemove = pair.first;
-			break;
-		}
-	}
-
-	if (toRemove != (std::numeric_limits<int64_t>::max)()) {
-		session->subscriptions.erase(toRemove);
-	}
-	else {
-		session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(5, "The subscription request UUID is unknown by the store."), messageId, 0x02);
-	}
-}

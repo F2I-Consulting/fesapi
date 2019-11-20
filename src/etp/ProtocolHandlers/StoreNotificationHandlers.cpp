@@ -89,7 +89,20 @@ void StoreNotificationHandlers::on_UnsubscribeNotifications(const Energistics::E
 {
 	std::cout << "on_UnsubscribeNotifications" << std::endl;
 
-	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The StoreHandlers::on_UnsubscribeNotifications method has not been overriden by the agent."));
+	int64_t toRemove = (std::numeric_limits<int64_t>::max)();
+	for (const auto& pair : session->subscriptions) {
+		if (pair.second.m_requestUuid.m_array == msg.m_requestUuid.m_array) {
+			toRemove = pair.first;
+			break;
+		}
+	}
+
+	if (toRemove != (std::numeric_limits<int64_t>::max)()) {
+		session->subscriptions.erase(toRemove);
+	}
+	else {
+		session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(5, "The subscription request UUID is unknown by the store."), messageId, 0x02);
+	}
 }
 
 void StoreNotificationHandlers::on_UnsolicitedStoreNotifications(const Energistics::Etp::v12::Protocol::StoreNotification::UnsolicitedStoreNotifications & msg, int64_t correlationId)

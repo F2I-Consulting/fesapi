@@ -38,7 +38,7 @@ under the License.
 
 void generateProperties(RESQML2_NS::AbstractRepresentation* ijkgrid)
 {
-	for (unsigned short i = 0; i < 36; ) {
+	for (unsigned short i = 0; i < (std::numeric_limits<unsigned short>::max)(); ++i) {
 		auto name = "Two faulted sugar cubes timestamp " + std::to_string(i);
 		RESQML2_0_1_NS::ContinuousProperty* continuousProp = ijkgrid->getRepository()->createContinuousProperty(ijkgrid, "", name, 1,
 			gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);

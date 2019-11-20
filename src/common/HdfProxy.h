@@ -145,9 +145,8 @@ namespace COMMON_NS
 
 		/**
 		* Open the file for reading and writing.
-		* Does never overwrite an existing file but append to it if it already exists.
 		*/
-		void open();
+		virtual void open();
 
 		/**
 		* Check if the Hdf file is open or not

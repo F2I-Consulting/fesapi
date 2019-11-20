@@ -65,7 +65,7 @@ namespace ETP_NS
 	{
 	protected:
 		boost::beast::flat_buffer receivedBuffer;
-	    long long messageId;
+		int64_t messageId;
 	    std::vector<std::shared_ptr<ETP_NS::ProtocolHandlers>> protocolHandlers;
 	    bool webSocketSessionClosed; // open with the websocket handshake
 		bool etpSessionClosed; // open with the requestSession and openSession message

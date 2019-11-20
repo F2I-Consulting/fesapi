@@ -18,19 +18,35 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/ProtocolHandlers/StoreNotificationHandlers.h"
+#include "HdfProxyFactory.h"
 
-class MyDataObjectRepository;
+#include "../resqml2_0_1/HdfProxyROS3.h"
 
-class MyOwnStoreNotificationProtocolHandlers : public ETP_NS::StoreNotificationHandlers
+namespace COMMON_NS
 {
-private:
+	class HdfProxyROS3Factory : public HdfProxyFactory
+	{
+	public:
 
-	MyDataObjectRepository* repo;
+		std::string secret_id;
+		std::string secret_key;
 
-public:
-	MyOwnStoreNotificationProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, MyDataObjectRepository* repo_);
-	~MyOwnStoreNotificationProtocolHandlers() {}
+		HdfProxyROS3Factory() {}
 
-	void on_SubscribeNotifications(const Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotifications & msg, int64_t messageId);
-};
+		 ~HdfProxyROS3Factory() {}
+
+		 /**
+		 * Only to be used in partial transfer context
+		 */
+		 virtual AbstractHdfProxy* make(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) {
+			 return new RESQML2_0_1_NS::HdfProxyROS3(partialObject, secret_id, secret_key);
+		 }
+
+		/**
+		* Creates an instance of this class by wrapping a gsoap instance.
+		*/
+		virtual AbstractHdfProxy* make(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) {
+			return new RESQML2_0_1_NS::HdfProxyROS3(fromGsoap, secret_id, secret_key);
+		}
+	};
+}

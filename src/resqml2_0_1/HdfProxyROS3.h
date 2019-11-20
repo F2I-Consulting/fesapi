@@ -18,19 +18,34 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "etp/ProtocolHandlers/StoreNotificationHandlers.h"
+#include "HdfProxy.h"
 
-class MyDataObjectRepository;
-
-class MyOwnStoreNotificationProtocolHandlers : public ETP_NS::StoreNotificationHandlers
+namespace RESQML2_0_1_NS
 {
-private:
+	/**
+	* This class allows to open an HDF5 file for reading only which is located on an AWS S3 bucket.
+	*/
+	class HdfProxyROS3 : public RESQML2_0_1_NS::HdfProxy
+	{
+		// aws_region is assumed to be managed by means of inherited setRootPath method
+		std::string secret_id;
+		std::string secret_key;
 
-	MyDataObjectRepository* repo;
+	public:
 
-public:
-	MyOwnStoreNotificationProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, MyDataObjectRepository* repo_);
-	~MyOwnStoreNotificationProtocolHandlers() {}
+		/**
+		* Only to be used in partial transfer context
+		*/
+		HdfProxyROS3(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, const std::string & secret_id = "", const std::string & secret_key = "") : RESQML2_0_1_NS::HdfProxy(partialObject) {}
 
-	void on_SubscribeNotifications(const Energistics::Etp::v12::Protocol::StoreNotification::SubscribeNotifications & msg, int64_t messageId);
-};
+		HdfProxyROS3(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & secret_id = "", const std::string & secret_key = "") :
+			RESQML2_0_1_NS::HdfProxy(fromGsoap) {}
+
+		~HdfProxyROS3() {}
+
+		/**
+		* Open the file for reading.
+		*/
+		void open();
+	};
+}
