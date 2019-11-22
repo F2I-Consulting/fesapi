@@ -103,6 +103,7 @@ under the License.
 #include "witsml2_0/Trajectory.h"
 #include "witsml2_0/WellCompletion.h"
 #include "witsml2_0/WellboreCompletion.h"
+#include "witsml2_0/WellboreGeometry.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -164,7 +165,7 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHd
 
 	// TRAJECTORY
 	WITSML2_0_NS::Trajectory* witsmlTrajectory = pck->createTrajectory(
-		witsmlWellbore, "4e76e1de-eff1-4458-805e-a6a877fa333B", "My trajectory", gsoap_eml2_1::witsml20__ChannelStatus__closed);
+		witsmlWellbore, "4e76e1de-eff1-4458-805e-a6a877fa333b", "My trajectory", gsoap_eml2_1::witsml20__ChannelStatus__closed);
 	witsmlTrajectory->setMdMn(.0, gsoap_eml2_1::eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
 	witsmlTrajectory->setMdMx(1000., gsoap_eml2_1::eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
 	witsmlTrajectory->setDefinitive(true);
@@ -191,6 +192,25 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHd
 	witsmlTrajectory->setTrajectoryStationDispNs(3, 1000, gsoap_eml2_1::eml21__LengthUom__m);
 	witsmlTrajectory->setTrajectoryStationDispEw(3, 1000, gsoap_eml2_1::eml21__LengthUom__m);
 	witsmlTrajectory->setTrajectoryStationTvd(3, 1000, gsoap_eml2_1::eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+
+	// Geometry
+	WITSML2_0_NS::WellboreGeometry* witsmlWbGeom = pck->createWellboreGeometry(witsmlWellbore, "c9dc03e9-722c-478b-b0ae-b2dd9da67c11", "My wellbore geometry", gsoap_eml2_1::witsml20__ChannelStatus__closed);
+	witsmlWbGeom->setMdBase(0, gsoap_eml2_1::eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+	witsmlWbGeom->pushBackSection();
+	witsmlWbGeom->setWellboreGeometrySectionTypeHoleCasing(0, gsoap_eml2_1::witsml20__HoleCasingType__casing);
+	witsmlWbGeom->setWellboreGeometrySectionOdSection(0, 30, gsoap_eml2_1::eml21__LengthUom__in);
+	witsmlWbGeom->setWellboreGeometrySectionMdInterval(0, 0, 250, "d3ac5401-d3e7-4474-b846-070673b210ae", gsoap_eml2_1::eml21__LengthUom__m);
+	witsmlWbGeom->setWellboreGeometrySectionTvdInterval(0, 0, 250, "d3ac5401-d3e7-4474-b846-070673b210ae", gsoap_eml2_1::eml21__LengthUom__m);
+	witsmlWbGeom->pushBackSection();
+	witsmlWbGeom->setWellboreGeometrySectionTypeHoleCasing(1, gsoap_eml2_1::witsml20__HoleCasingType__casing);
+	witsmlWbGeom->setWellboreGeometrySectionCurveConductor(1, false);
+	witsmlWbGeom->setWellboreGeometrySectionDiaDrift(1, 17.5, gsoap_eml2_1::eml21__LengthUom__in);
+	witsmlWbGeom->setWellboreGeometrySectionFactFric(1, 0.25);
+	witsmlWbGeom->setWellboreGeometrySectionGrade(1, "L80");
+	witsmlWbGeom->setWellboreGeometrySectionIdSection(1, 18, gsoap_eml2_1::eml21__LengthUom__in);
+	witsmlWbGeom->setWellboreGeometrySectionOdSection(1, 20, gsoap_eml2_1::eml21__LengthUom__in);
+	witsmlWbGeom->setWellboreGeometrySectionWtPerLen(1, 123, gsoap_eml2_1::eml21__MassPerLengthUom__lbm_x002fft);
+	witsmlWbGeom->setWellboreGeometrySectionTvdInterval(1, 0, 990, "d3ac5401-d3e7-4474-b846-070673b210ae", gsoap_eml2_1::eml21__LengthUom__m);
 
 	////////////////////////
 	// RESQML
@@ -3274,6 +3294,48 @@ void discretePropertyHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, 
 	std::cout << endl << "END: IJK GRID REP (hyperslabbed and non-hyperslabbed property reading comparison)" << std::endl;
 }
 
+void deserializeWbGeometry(COMMON_NS::DataObjectRepository & repo)
+{
+	cout << endl << "WELLBORE GEOMETRY" << endl;
+
+	std::vector<WITSML2_0_NS::Well*> witsmlWells = repo.getDataObjects<WITSML2_0_NS::Well>();
+	for (size_t wellIdx = 0; wellIdx < witsmlWells.size(); ++wellIdx) {
+		cout << "witsml well: " << witsmlWells[wellIdx]->getTitle() << " (" << witsmlWells[wellIdx]->getUuid() << ")" << std::endl;
+		std::vector<WITSML2_0_NS::Wellbore*> witsmlWellbores = witsmlWells[wellIdx]->getWellbores();
+		for (size_t wellboreIdx = 0; wellboreIdx < witsmlWellbores.size(); ++wellboreIdx) {
+			cout << "witsml wellbore: " << witsmlWellbores[wellboreIdx]->getTitle() << " (" << witsmlWellbores[wellboreIdx]->getUuid() << ")" << std::endl;
+			std::vector<WITSML2_0_NS::WellboreGeometry*> wbGeoms = witsmlWellbores[wellboreIdx]->getWellboreGeometries();
+			for (size_t wbGeomIdx = 0; wbGeomIdx < wbGeoms.size(); ++wbGeomIdx) {
+				WITSML2_0_NS::WellboreGeometry* wbGeom = wbGeoms[wbGeomIdx];
+				cout << "witsml wellbore geom: " << wbGeom->getTitle() << " (" << wbGeom->getUuid() << ")" << std::endl;
+				if (wbGeom->hasDepthWaterMean()) { cout << "DepthWaterMean: " << wbGeom->getDepthWaterMeanValue() << " " << wbGeom->getDepthWaterMeanUom() << std::endl; }
+				if (wbGeom->hasGapAir()) { cout << "GapAir: " << wbGeom->getGapAirValue() << " " << wbGeom->getGapAirUom() << std::endl; }
+				if (wbGeom->hasMdBase()) { cout << "MdBase: " << wbGeom->getMdBaseValue() << " " << wbGeom->getMdBaseUom() << " datum=" << wbGeom->getMdBaseDatum() << std::endl; }
+				for (size_t sectionIdx = 0; sectionIdx < wbGeom->getSectionCount(); ++sectionIdx) {
+					std::cout << "Section " << sectionIdx << endl;
+					if (wbGeom->hasWellboreGeometrySectionCurveConductor(sectionIdx)) { cout << "CurveConductor: " << wbGeom->getWellboreGeometrySectionCurveConductor(sectionIdx) << std::endl; }
+					if (wbGeom->hasWellboreGeometrySectionDiaDrift(sectionIdx)) { cout << "DiaDrift: " << wbGeom->getWellboreGeometrySectionDiaDriftValue(sectionIdx) << " " << wbGeom->getWellboreGeometrySectionDiaDriftUom(sectionIdx) << std::endl; }
+					if (wbGeom->hasWellboreGeometrySectionFactFric(sectionIdx)) { cout << "FactFric: " << wbGeom->getWellboreGeometrySectionFactFric(sectionIdx) << std::endl; }
+					if (wbGeom->hasWellboreGeometrySectionGrade(sectionIdx)) { cout << "Grade: " << wbGeom->getWellboreGeometrySectionGrade(sectionIdx) << std::endl; }
+					if (wbGeom->hasWellboreGeometrySectionIdSection(sectionIdx)) { cout << "IdSection: " << wbGeom->getWellboreGeometrySectionIdSectionValue(sectionIdx) << " " << wbGeom->getWellboreGeometrySectionIdSectionUom(sectionIdx) << std::endl; }
+					if (wbGeom->hasWellboreGeometrySectionOdSection(sectionIdx)) { cout << "OdSection: " << wbGeom->getWellboreGeometrySectionOdSectionValue(sectionIdx) << " " << wbGeom->getWellboreGeometrySectionOdSectionUom(sectionIdx) << std::endl; }
+					if (wbGeom->hasWellboreGeometrySectionTypeHoleCasing(sectionIdx)) { cout << "TypeHoleCasing: " << wbGeom->getWellboreGeometrySectionTypeHoleCasing(sectionIdx) << std::endl; }
+					if (wbGeom->hasWellboreGeometrySectionMdInterval(sectionIdx)) {
+						cout << "Base md: " << wbGeom->getWellboreGeometrySectionMdIntervalBase(sectionIdx) << " " << wbGeom->getWellboreGeometrySectionMdIntervalBaseUom(sectionIdx) << std::endl;
+						cout << "Top md: " << wbGeom->getWellboreGeometrySectionMdIntervalTop(sectionIdx) << " " << wbGeom->getWellboreGeometrySectionMdIntervalTopUom(sectionIdx) << std::endl;
+						cout << "datum: " << wbGeom->getWellboreGeometrySectionMdIntervaldatum(sectionIdx) << std::endl;
+					}
+					if (wbGeom->hasWellboreGeometrySectionTvdInterval(sectionIdx)) {
+						cout << "Base Tvd: " << wbGeom->getWellboreGeometrySectionTvdIntervalBase(sectionIdx) << " " << wbGeom->getWellboreGeometrySectionTvdIntervalBaseUom(sectionIdx) << std::endl;
+						cout << "Top Tvd: " << wbGeom->getWellboreGeometrySectionTvdIntervalTop(sectionIdx) << " " << wbGeom->getWellboreGeometrySectionTvdIntervalTopUom(sectionIdx) << std::endl;
+						cout << "datum: " << wbGeom->getWellboreGeometrySectionTvdIntervaldatum(sectionIdx) << std::endl;
+					}
+				}
+			}
+		}
+	}
+}
+
 void deserializePerforations(COMMON_NS::DataObjectRepository & pck)
 {
 	cout << endl << "PERFORATIONS" << endl;
@@ -3751,35 +3813,27 @@ void deserialize(const string & inputFile)
 	{
 		showAllMetadata(wellboreSet[i]);
 		witsmlWellbore = wellboreSet[i]->getWitsmlWellbore();
-		if (witsmlWellbore != nullptr)
-		{
+		if (witsmlWellbore != nullptr) {
 			std::cout << "Associated with witsml well bore " << witsmlWellbore->getTitle()
 				<< " with GUID " << witsmlWellbore->getUuid() << " and witsml well " << witsmlWellbore->getWell()->getTitle()
 				<< " with GUID " << witsmlWellbore->getWell()->getUuid() << std::endl;
 		}
-		for (size_t j = 0; j < wellboreSet[i]->getInterpretationSet().size(); j++)
-		{
-			for (size_t k = 0; k < wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet().size(); k++)
-			{
-				if (wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet()[k]->getXmlTag() == WellboreMarkerFrameRepresentation::XML_TAG)
-				{
+		for (size_t j = 0; j < wellboreSet[i]->getInterpretationSet().size(); j++) {
+			for (size_t k = 0; k < wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet().size(); k++) {
+				if (wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet()[k]->getXmlTag() == WellboreMarkerFrameRepresentation::XML_TAG) {
 					WellboreMarkerFrameRepresentation const * wmf = static_cast<WellboreMarkerFrameRepresentation const *>(wellboreSet[i]->getInterpretationSet()[j]->getRepresentationSet()[k]);
 					vector<WellboreMarker *> marketSet = wmf->getWellboreMarkerSet();
-					for (size_t markerIndex = 0; markerIndex < marketSet.size(); ++markerIndex)
-					{
+					for (size_t markerIndex = 0; markerIndex < marketSet.size(); ++markerIndex) {
 						std::cout << "marker : " << marketSet[markerIndex]->getTitle() << std::endl;
 						if (marketSet[markerIndex]->getBoundaryFeatureInterpretation() != nullptr) {
 							std::cout << "marker boundary feature : " << marketSet[markerIndex]->getBoundaryFeatureInterpretation()->getTitle() << std::endl;
 						}
 					}
 
-					for (size_t l = 0; l < wmf->getPropertySet().size(); ++l)
-					{
-						if (wmf->getPropertySet()[l]->getXmlTag() == CategoricalProperty::XML_TAG)
-						{
+					for (size_t l = 0; l < wmf->getPropertySet().size(); ++l) {
+						if (wmf->getPropertySet()[l]->getXmlTag() == CategoricalProperty::XML_TAG) {
 							CategoricalProperty const * catVal = static_cast<CategoricalProperty const *>(wmf->getPropertySet()[l]);
-							if (catVal->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::LONG_64)
-							{
+							if (catVal->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::LONG_64) {
 								std::cout << "Hdf datatype is NATIVE LONG" << std::endl;
 								LONG64* tmp = new LONG64[wmf->getMdValuesCount()];
 								catVal->getLongValuesOfPatch(0, tmp);
@@ -3787,8 +3841,7 @@ void deserialize(const string & inputFile)
 									std::cout << "Value " << ind << " : " << tmp[ind] << std::endl;
 								delete[] tmp;
 							}
-							else if (catVal->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::INT)
-							{
+							else if (catVal->getValuesHdfDatatype() == RESQML2_NS::AbstractValuesProperty::INT) {
 								std::cout << "Hdf datatype is NATIVE INT" << std::endl;
 							}
 						}
@@ -3799,6 +3852,7 @@ void deserialize(const string & inputFile)
 	}
 
 	deserializePerforations(repo);
+	deserializeWbGeometry(repo);
 
 	std::cout << endl << "WELLBORES CUBIC TRAJ" << endl;
 	for (size_t i = 0; i < wellboreCubicTrajSet.size(); ++i)

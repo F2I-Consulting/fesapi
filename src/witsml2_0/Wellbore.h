@@ -28,6 +28,7 @@ namespace WITSML2_0_NS
 {
 	class Trajectory;
 	class WellboreCompletion;
+	class WellboreGeometry;
 
 	class Wellbore : public WITSML2_0_NS::AbstractObject
 	{
@@ -73,6 +74,7 @@ namespace WITSML2_0_NS
 
 		DLL_IMPORT_OR_EXPORT std::vector<WellboreCompletion *> getWellboreCompletions() const;
 		DLL_IMPORT_OR_EXPORT std::vector<Trajectory *> getTrajectories() const;
+		DLL_IMPORT_OR_EXPORT std::vector<WellboreGeometry *> getWellboreGeometries() const;
 
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Number)
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, SuffixAPI)

@@ -20,11 +20,6 @@ under the License.
 
 #include "../resqml2/AbstractRepresentation.h"
 
-namespace WITSML1_4_1_1_NS
-{
-	class Trajectory;
-}
-
 namespace RESQML2_0_1_NS
 {
 	class WellboreTrajectoryRepresentation : public RESQML2_NS::AbstractRepresentation

@@ -77,10 +77,9 @@ void WellboreCompletion::setWellbore(Wellbore* witsmlWellbore)
 		witsmlWellbore->getRepository()->addOrReplaceDataObject(this);
 	}
 
-	getRepository()->addRelationship(this, witsmlWellbore);
+	static_cast<witsml20__WellboreCompletion*>(gsoapProxy2_1)->ReferenceWellbore = witsmlWellbore->newEmlReference();
 
-	witsml20__WellboreCompletion* wellboreCompletion = static_cast<witsml20__WellboreCompletion*>(gsoapProxy2_1);
-	wellboreCompletion->ReferenceWellbore = witsmlWellbore->newEmlReference();
+	getRepository()->addRelationship(this, witsmlWellbore);
 }
 
 void WellboreCompletion::setWellCompletion(WellCompletion* wellCompletion)

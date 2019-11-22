@@ -22,6 +22,7 @@ under the License.
 #include "../src/witsml2_0/Wellbore.h"
 #include "../src/witsml2_0/WellboreObject.h"
 #include "../src/witsml2_0/WellboreCompletion.h"
+#include "../src/witsml2_0/WellboreGeometry.h"
 #include "../src/witsml2_0/Trajectory.h"
 %}
 
@@ -83,9 +84,12 @@ under the License.
 
 %include "std_vector.i"
 namespace std {
+	%template(WellVector) vector<WITSML2_0_NS::Well*>;
 	%template(WellboreVector) vector<WITSML2_0_NS::Wellbore*>;
 	%template(WellCompletionVector) vector<WITSML2_0_NS::WellCompletion*>;
 	%template(WellboreCompletionVector) vector<WITSML2_0_NS::WellboreCompletion*>;
+	%template(WellboreGeometryVector) vector<WITSML2_0_NS::WellboreGeometry*>;
+	%template(TrajectoryVector) vector<WITSML2_0_NS::Trajectory*>;
 }
 
 namespace gsoap_eml2_1
@@ -95,9 +99,6 @@ namespace gsoap_eml2_1
 	enum witsml20__WellFluid { witsml20__WellFluid__air = 0, witsml20__WellFluid__condensate = 1, witsml20__WellFluid__dry = 2, witsml20__WellFluid__gas = 3, witsml20__WellFluid__gas_water = 4, witsml20__WellFluid__non_x0020HC_x0020gas = 5, witsml20__WellFluid__non_x0020HC_x0020gas_x0020_x002d__x0020CO2 = 6, witsml20__WellFluid__oil = 7, witsml20__WellFluid__oil_gas = 8, witsml20__WellFluid__oil_water = 9, witsml20__WellFluid__steam = 10, witsml20__WellFluid__water = 11, witsml20__WellFluid__water_x0020_x002d__x0020brine = 12, witsml20__WellFluid__water_x0020_x002d__x0020fresh_x0020water = 13 };
 	enum witsml20__WellDirection { witsml20__WellDirection__huff_n_puff = 0, witsml20__WellDirection__injector = 1, witsml20__WellDirection__producer = 2, witsml20__WellDirection__uncertain = 3 };
 	enum eml21__WellboreDatumReference { eml21__WellboreDatumReference__ground_x0020level = 0, eml21__WellboreDatumReference__kelly_x0020bushing = 1, eml21__WellboreDatumReference__mean_x0020sea_x0020level = 2, eml21__WellboreDatumReference__derrick_x0020floor = 3, eml21__WellboreDatumReference__casing_x0020flange = 4, eml21__WellboreDatumReference__crown_x0020valve = 5, eml21__WellboreDatumReference__rotary_x0020bushing = 6, eml21__WellboreDatumReference__rotary_x0020table = 7, eml21__WellboreDatumReference__sea_x0020floor = 8, eml21__WellboreDatumReference__lowest_x0020astronomical_x0020tide = 9, eml21__WellboreDatumReference__mean_x0020higher_x0020high_x0020water = 10, eml21__WellboreDatumReference__mean_x0020high_x0020water = 11, eml21__WellboreDatumReference__mean_x0020lower_x0020low_x0020water = 12, eml21__WellboreDatumReference__mean_x0020low_x0020water = 13, eml21__WellboreDatumReference__mean_x0020tide_x0020level = 14,eml21__WellboreDatumReference__kickoff_x0020point = 15 };
-	enum eml21__LengthUom { eml21__LengthUom__m = 'm', eml21__LengthUom__0_x002e1_x0020ft = 'n', eml21__LengthUom__0_x002e1_x0020ft_x005bUS_x005d = 'o', eml21__LengthUom__0_x002e1_x0020in = 'p', eml21__LengthUom__0_x002e1_x0020yd = 'q', eml21__LengthUom__1_x002f16_x0020in = 'r', eml21__LengthUom__1_x002f2_x0020ft = 's', eml21__LengthUom__1_x002f32_x0020in = 't', eml21__LengthUom__1_x002f64_x0020in = 'u', eml21__LengthUom__10_x0020ft = 'v', eml21__LengthUom__10_x0020in = 'w', eml21__LengthUom__10_x0020km = 'x', eml21__LengthUom__100_x0020ft = 'y', eml21__LengthUom__100_x0020km = 'z', eml21__LengthUom__1000_x0020ft = 123, eml21__LengthUom__30_x0020ft = 124, eml21__LengthUom__30_x0020m = 125, eml21__LengthUom__angstrom = 126, eml21__LengthUom__chain = 127, eml21__LengthUom__chain_x005bBnA_x005d = 128, eml21__LengthUom__chain_x005bBnB_x005d = 129, eml21__LengthUom__chain_x005bCla_x005d = 130, eml21__LengthUom__chain_x005bInd37_x005d = 131, eml21__LengthUom__chain_x005bSe_x005d = 132, eml21__LengthUom__chain_x005bSeT_x005d = 133, eml21__LengthUom__chain_x005bUS_x005d = 134, eml21__LengthUom__cm = 135, eml21__LengthUom__dam = 136, eml21__LengthUom__dm = 137, eml21__LengthUom__Em = 138, eml21__LengthUom__fathom = 139, eml21__LengthUom__fm = 140, eml21__LengthUom__ft = 141, eml21__LengthUom__ft_x005bBnA_x005d = 142, eml21__LengthUom__ft_x005bBnB_x005d = 143, eml21__LengthUom__ft_x005bBr36_x005d = 144, eml21__LengthUom__ft_x005bBr65_x005d = 145, eml21__LengthUom__ft_x005bCla_x005d = 146, eml21__LengthUom__ft_x005bGC_x005d = 147, eml21__LengthUom__ft_x005bInd_x005d = 148, eml21__LengthUom__ft_x005bInd37_x005d = 149, eml21__LengthUom__ft_x005bInd62_x005d = 150, eml21__LengthUom__ft_x005bInd75_x005d = 151, eml21__LengthUom__ft_x005bSe_x005d = 152, eml21__LengthUom__ft_x005bSeT_x005d = 153, eml21__LengthUom__ft_x005bUS_x005d = 154, eml21__LengthUom__fur_x005bUS_x005d = 155, eml21__LengthUom__Gm = 156, eml21__LengthUom__hm = 157, eml21__LengthUom__in = 158, eml21__LengthUom__in_x005bUS_x005d = 159, eml21__LengthUom__km = 160, eml21__LengthUom__link = 161, eml21__LengthUom__link_x005bBnA_x005d = 162, eml21__LengthUom__link_x005bBnB_x005d = 163, eml21__LengthUom__link_x005bCla_x005d = 164, eml21__LengthUom__link_x005bSe_x005d = 165, eml21__LengthUom__link_x005bSeT_x005d = 166, eml21__LengthUom__link_x005bUS_x005d = 167, eml21__LengthUom__m_x005bGer_x005d = 168, eml21__LengthUom__mi = 169, eml21__LengthUom__mi_x005bnaut_x005d = 170, eml21__LengthUom__mi_x005bnautUK_x005d = 171, eml21__LengthUom__mi_x005bUS_x005d = 172, eml21__LengthUom__mil = 173, eml21__LengthUom__mm = 174, eml21__LengthUom__Mm = 175, eml21__LengthUom__nm = 176, eml21__LengthUom__pm = 177, eml21__LengthUom__rod_x005bUS_x005d = 178, eml21__LengthUom__Tm = 179, eml21__LengthUom__um = 180, eml21__LengthUom__yd = 181, eml21__LengthUom__yd_x005bBnA_x005d = 182, eml21__LengthUom__yd_x005bBnB_x005d = 183, eml21__LengthUom__yd_x005bCla_x005d = 184, eml21__LengthUom__yd_x005bInd_x005d = 185, eml21__LengthUom__yd_x005bInd37_x005d = 186, eml21__LengthUom__yd_x005bInd62_x005d = 187, eml21__LengthUom__yd_x005bInd75_x005d = 188, eml21__LengthUom__yd_x005bSe_x005d = 189, eml21__LengthUom__yd_x005bSeT_x005d = 190, eml21__LengthUom__yd_x005bUS_x005d = 191 };
-	enum eml21__VerticalCoordinateUom { eml21__VerticalCoordinateUom__m = 'm', eml21__VerticalCoordinateUom__ft = 'n', eml21__VerticalCoordinateUom__ftUS = 'o', eml21__VerticalCoordinateUom__ftBr_x002865_x0029 = 'p' };
-	enum eml21__PlaneAngleUom { eml21__PlaneAngleUom__0_x002e001_x0020seca = 0, eml21__PlaneAngleUom__ccgr = 1, eml21__PlaneAngleUom__cgr = 2, eml21__PlaneAngleUom__dega = 3, eml21__PlaneAngleUom__gon = 4, eml21__PlaneAngleUom__krad = 5, eml21__PlaneAngleUom__mila = 6, eml21__PlaneAngleUom__mina = 7, eml21__PlaneAngleUom__Mrad = 8, eml21__PlaneAngleUom__mrad = 9, eml21__PlaneAngleUom__rad = 10, eml21__PlaneAngleUom__rev = 11, eml21__PlaneAngleUom__seca = 12, eml21__PlaneAngleUom__urad = 13 };
 	enum witsml20__WellboreType { witsml20__WellboreType__bypass = 0, witsml20__WellboreType__initial = 1, witsml20__WellboreType__redrill = 2, witsml20__WellboreType__reentry = 3, witsml20__WellboreType__respud = 4, witsml20__WellboreType__sidetrack = 5 };
 	enum witsml20__WellboreShape { witsml20__WellboreShape__build_x0020and_x0020hold = 0, witsml20__WellboreShape__deviated = 1, witsml20__WellboreShape__double_x0020kickoff = 2, witsml20__WellboreShape__horizontal = 3, witsml20__WellboreShape__S_shaped = 4, witsml20__WellboreShape__vertical = 5 };
 	enum witsml20__PerforationStatus { witsml20__PerforationStatus__open = 0, witsml20__PerforationStatus__proposed = 1, witsml20__PerforationStatus__squeezed = 2 };
@@ -185,6 +186,16 @@ namespace gsoap_eml2_1
 		witsml20__TrajStationStatus__rejected = 1,
 		witsml20__TrajStationStatus__position = 2
 	};
+	enum witsml20__HoleCasingType {
+		witsml20__HoleCasingType__blow_x0020out_x0020preventer = 0,
+		witsml20__HoleCasingType__casing = 1,
+		witsml20__HoleCasingType__conductor = 2,
+		witsml20__HoleCasingType__curved_x0020conductor = 3,
+		witsml20__HoleCasingType__liner = 4,
+		witsml20__HoleCasingType__open_x0020hole = 5,
+		witsml20__HoleCasingType__riser = 6,
+		witsml20__HoleCasingType__tubing = 7
+	};
 	enum eml21__AnglePerLengthUom {
 		eml21__AnglePerLengthUom__0_x002e01_x0020dega_x002fft = 0,
 		eml21__AnglePerLengthUom__1_x002f30_x0020dega_x002fft = 1,
@@ -196,6 +207,7 @@ namespace gsoap_eml2_1
 		eml21__AnglePerLengthUom__rev_x002fft = 7,
 		eml21__AnglePerLengthUom__rev_x002fm = 8
 	};
+	enum eml21__LengthUom { eml21__LengthUom__m = 'm', eml21__LengthUom__0_x002e1_x0020ft = 'n', eml21__LengthUom__0_x002e1_x0020ft_x005bUS_x005d = 'o', eml21__LengthUom__0_x002e1_x0020in = 'p', eml21__LengthUom__0_x002e1_x0020yd = 'q', eml21__LengthUom__1_x002f16_x0020in = 'r', eml21__LengthUom__1_x002f2_x0020ft = 's', eml21__LengthUom__1_x002f32_x0020in = 't', eml21__LengthUom__1_x002f64_x0020in = 'u', eml21__LengthUom__10_x0020ft = 'v', eml21__LengthUom__10_x0020in = 'w', eml21__LengthUom__10_x0020km = 'x', eml21__LengthUom__100_x0020ft = 'y', eml21__LengthUom__100_x0020km = 'z', eml21__LengthUom__1000_x0020ft = 123, eml21__LengthUom__30_x0020ft = 124, eml21__LengthUom__30_x0020m = 125, eml21__LengthUom__angstrom = 126, eml21__LengthUom__chain = 127, eml21__LengthUom__chain_x005bBnA_x005d = 128, eml21__LengthUom__chain_x005bBnB_x005d = 129, eml21__LengthUom__chain_x005bCla_x005d = 130, eml21__LengthUom__chain_x005bInd37_x005d = 131, eml21__LengthUom__chain_x005bSe_x005d = 132, eml21__LengthUom__chain_x005bSeT_x005d = 133, eml21__LengthUom__chain_x005bUS_x005d = 134, eml21__LengthUom__cm = 135, eml21__LengthUom__dam = 136, eml21__LengthUom__dm = 137, eml21__LengthUom__Em = 138, eml21__LengthUom__fathom = 139, eml21__LengthUom__fm = 140, eml21__LengthUom__ft = 141, eml21__LengthUom__ft_x005bBnA_x005d = 142, eml21__LengthUom__ft_x005bBnB_x005d = 143, eml21__LengthUom__ft_x005bBr36_x005d = 144, eml21__LengthUom__ft_x005bBr65_x005d = 145, eml21__LengthUom__ft_x005bCla_x005d = 146, eml21__LengthUom__ft_x005bGC_x005d = 147, eml21__LengthUom__ft_x005bInd_x005d = 148, eml21__LengthUom__ft_x005bInd37_x005d = 149, eml21__LengthUom__ft_x005bInd62_x005d = 150, eml21__LengthUom__ft_x005bInd75_x005d = 151, eml21__LengthUom__ft_x005bSe_x005d = 152, eml21__LengthUom__ft_x005bSeT_x005d = 153, eml21__LengthUom__ft_x005bUS_x005d = 154, eml21__LengthUom__fur_x005bUS_x005d = 155, eml21__LengthUom__Gm = 156, eml21__LengthUom__hm = 157, eml21__LengthUom__in = 158, eml21__LengthUom__in_x005bUS_x005d = 159, eml21__LengthUom__km = 160, eml21__LengthUom__link = 161, eml21__LengthUom__link_x005bBnA_x005d = 162, eml21__LengthUom__link_x005bBnB_x005d = 163, eml21__LengthUom__link_x005bCla_x005d = 164, eml21__LengthUom__link_x005bSe_x005d = 165, eml21__LengthUom__link_x005bSeT_x005d = 166, eml21__LengthUom__link_x005bUS_x005d = 167, eml21__LengthUom__m_x005bGer_x005d = 168, eml21__LengthUom__mi = 169, eml21__LengthUom__mi_x005bnaut_x005d = 170, eml21__LengthUom__mi_x005bnautUK_x005d = 171, eml21__LengthUom__mi_x005bUS_x005d = 172, eml21__LengthUom__mil = 173, eml21__LengthUom__mm = 174, eml21__LengthUom__Mm = 175, eml21__LengthUom__nm = 176, eml21__LengthUom__pm = 177, eml21__LengthUom__rod_x005bUS_x005d = 178, eml21__LengthUom__Tm = 179, eml21__LengthUom__um = 180, eml21__LengthUom__yd = 181, eml21__LengthUom__yd_x005bBnA_x005d = 182, eml21__LengthUom__yd_x005bBnB_x005d = 183, eml21__LengthUom__yd_x005bCla_x005d = 184, eml21__LengthUom__yd_x005bInd_x005d = 185, eml21__LengthUom__yd_x005bInd37_x005d = 186, eml21__LengthUom__yd_x005bInd62_x005d = 187, eml21__LengthUom__yd_x005bInd75_x005d = 188, eml21__LengthUom__yd_x005bSe_x005d = 189, eml21__LengthUom__yd_x005bSeT_x005d = 190, eml21__LengthUom__yd_x005bUS_x005d = 191 };
 	enum eml21__LinearAccelerationUom {
 		eml21__LinearAccelerationUom__cm_x002fs2 = 0,
 		eml21__LinearAccelerationUom__ft_x002fs2 = 1,
@@ -233,6 +245,15 @@ namespace gsoap_eml2_1
 		eml21__MagneticFluxDensityUom__ugauss = 'k',
 		eml21__MagneticFluxDensityUom__uT = 'l'
 	};
+	enum eml21__MassPerLengthUom {
+		eml21__MassPerLengthUom__kg_x002em_x002fcm2 = 0,
+		eml21__MassPerLengthUom__kg_x002fm = 1,
+		eml21__MassPerLengthUom__klbm_x002fin = 2,
+		eml21__MassPerLengthUom__lbm_x002fft = 3,
+		eml21__MassPerLengthUom__Mg_x002fin = 4
+	};
+	enum eml21__PlaneAngleUom { eml21__PlaneAngleUom__0_x002e001_x0020seca = 0, eml21__PlaneAngleUom__ccgr = 1, eml21__PlaneAngleUom__cgr = 2, eml21__PlaneAngleUom__dega = 3, eml21__PlaneAngleUom__gon = 4, eml21__PlaneAngleUom__krad = 5, eml21__PlaneAngleUom__mila = 6, eml21__PlaneAngleUom__mina = 7, eml21__PlaneAngleUom__Mrad = 8, eml21__PlaneAngleUom__mrad = 9, eml21__PlaneAngleUom__rad = 10, eml21__PlaneAngleUom__rev = 11, eml21__PlaneAngleUom__seca = 12, eml21__PlaneAngleUom__urad = 13 };
+	enum eml21__VerticalCoordinateUom { eml21__VerticalCoordinateUom__m = 'm', eml21__VerticalCoordinateUom__ft = 'n', eml21__VerticalCoordinateUom__ftUS = 'o', eml21__VerticalCoordinateUom__ftBr_x002865_x0029 = 'p' };
 }
 
 //#ifdef SWIGJAVA
@@ -253,6 +274,7 @@ namespace gsoap_eml2_1
 	%nspace WITSML2_0_NS::Wellbore;
 	%nspace WITSML2_0_NS::WellboreObject;
 	%nspace WITSML2_0_NS::WellboreCompletion;
+	%nspace WITSML2_0_NS::WellboreGeometry;
 	%nspace WITSML2_0_NS::Trajectory;
 #endif
 
@@ -343,6 +365,7 @@ namespace WITSML2_0_NS
 	};
 	
 	class WellboreCompletion;
+	class WellboreGeometry;
 	class Trajectory;
 	class Wellbore : public AbstractObject 
 	{
@@ -355,6 +378,7 @@ namespace WITSML2_0_NS
 
 		std::vector<class WellboreCompletion *> getWellboreCompletions() const;
 		std::vector<class Trajectory *> getTrajectories() const;
+		std::vector<WellboreGeometry *> getWellboreGeometries() const;
 
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, Number);
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(std::string, SuffixAPI);
@@ -518,11 +542,64 @@ namespace WITSML2_0_NS
 			const std::string & comment);
 	};
 	
+	class WellboreGeometry : public WellboreObject
+	{
+	public:
+		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdBase, gsoap_eml2_1::eml21__LengthUom)
+
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(GapAir, gsoap_eml2_1::eml21__LengthUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(DepthWaterMean, gsoap_eml2_1::eml21__LengthUom)
+
+		//***************************************
+		//************** SECTION ****************
+		//***************************************
+
+		// Mandatory
+		GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IN_VECTOR(std::string, WellboreGeometrySection, uid)
+
+		// Optional bool
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(bool, WellboreGeometrySection, CurveConductor)
+
+		// Optional double
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(double, WellboreGeometrySection, FactFric)
+
+		// Optional string
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(std::string, WellboreGeometrySection, Grade)
+
+		// Optional enum
+		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoap_eml2_1::witsml20__HoleCasingType, WellboreGeometrySection, TypeHoleCasing)
+
+		// Optional Length Measure
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(WellboreGeometrySection, IdSection, gsoap_eml2_1::eml21__LengthUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(WellboreGeometrySection, OdSection, gsoap_eml2_1::eml21__LengthUom)
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(WellboreGeometrySection, DiaDrift, gsoap_eml2_1::eml21__LengthUom)
+
+		// Optional Mass per Length Measure
+		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(WellboreGeometrySection, WtPerLen, gsoap_eml2_1::eml21__MassPerLengthUom)
+
+		void setWellboreGeometrySectionMdInterval(unsigned int index, double top, double base, const std::string & datum, gsoap_eml2_1::eml21__LengthUom uom);
+		double getWellboreGeometrySectionMdIntervalTop(unsigned int index) const;
+		gsoap_eml2_1::eml21__LengthUom getWellboreGeometrySectionMdIntervalTopUom(unsigned int index) const;
+		double getWellboreGeometrySectionMdIntervalBase(unsigned int index) const;
+		gsoap_eml2_1::eml21__LengthUom getWellboreGeometrySectionMdIntervalBaseUom(unsigned int index) const;
+		std::string getWellboreGeometrySectionMdIntervaldatum(unsigned int index) const;
+		bool hasWellboreGeometrySectionMdInterval(unsigned int index) const;
+
+		void setWellboreGeometrySectionTvdInterval(unsigned int index, double top, double base, const std::string & datum, gsoap_eml2_1::eml21__LengthUom uom);
+		double getWellboreGeometrySectionTvdIntervalTop(unsigned int index) const;
+		gsoap_eml2_1::eml21__LengthUom getWellboreGeometrySectionTvdIntervalTopUom(unsigned int index) const;
+		double getWellboreGeometrySectionTvdIntervalBase(unsigned int index) const;
+		gsoap_eml2_1::eml21__LengthUom getWellboreGeometrySectionTvdIntervalBaseUom(unsigned int index) const;
+		std::string getWellboreGeometrySectionTvdIntervaldatum(unsigned int index) const;
+		bool hasWellboreGeometrySectionTvdInterval(unsigned int index) const;
+
+		void pushBackSection(const std::string & uid = "");
+		unsigned int getSectionCount() const;
+	};
+	
 	class Trajectory : public WellboreObject
 	{
 	public:
-		void setWellbore(Wellbore* witsmlWellbore);
-
 		GETTER_AND_SETTER_GENERIC_ATTRIBUTE(gsoap_eml2_1::witsml20__ChannelStatus, GrowingStatus)
 
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE(time_t, DTimTrajStart)

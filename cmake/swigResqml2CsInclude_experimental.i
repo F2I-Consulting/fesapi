@@ -118,7 +118,16 @@ public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject res
 	else if (type == "WellboreCompletion")
 	{
 		ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellboreCompletion(cPtr, owner);
-	}else
+	}
+	else if (type == "WellboreGeometry")
+	{
+		ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellboreGeometry(cPtr, owner);
+	}
+	else if (type == "Trajectory")
+	{
+		ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Trajectory(cPtr, owner);
+	}
+	else
 	{
 		throw new System.ArgumentException(string.Format("Encountered type '{0}' that is not known to be a Resqml or Witsml concrete class", type.ToString()));
 	}

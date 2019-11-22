@@ -338,6 +338,28 @@ namespace COMMON_NS
 		COMMON_NS::AbstractObject* getDataObjectByUuid(const std::string & uuid) const;
 		COMMON_NS::AbstractObject* getDataObjectByUuidAndVersion(const std::string & uuid, const std::string & version) const;
 		
+		template <class valueType>
+		std::vector<valueType*> getDataObjects() const
+		{
+			std::vector<valueType*> result;
+
+			for (std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it) {
+				for (size_t i = 0; i < it->second.size(); ++i) {
+					if (dynamic_cast<valueType*>(it->second[i]) != nullptr) {
+						result.push_back(static_cast<valueType*>(it->second[i]));
+					}
+				}
+			}
+
+			return result;
+		}
+		%template(getWells) getDataObjects<WITSML2_0_NS::Well>;
+		%template(getWellbores) getDataObjects<WITSML2_0_NS::Wellbore>;
+		%template(getTrajectories) getDataObjects<WITSML2_0_NS::Trajectory>;
+		%template(getWellCompletions) getDataObjects<WITSML2_0_NS::WellCompletion>;
+		%template(getWellboreCompletions) getDataObjects<WITSML2_0_NS::WellboreCompletion>;
+		%template(getWellboreGeometries) getDataObjects<WITSML2_0_NS::WellboreGeometry>;
+		
 		COMMON_NS::AbstractHdfProxy* createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess);
 
 
@@ -715,6 +737,11 @@ namespace COMMON_NS
 			const std::string & guid,
 			const std::string & title,
 			const std::string & wellCompletionName);
+			
+		WITSML2_0_NS::WellboreGeometry* createWellboreGeometry(WITSML2_0_NS::Wellbore* witsmlWellbore,
+			const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
 
 		WITSML2_0_NS::Trajectory* createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
@@ -820,6 +847,7 @@ namespace COMMON_NS
 		%template(createPartialWellCompletion) createPartial<WITSML2_0_NS::WellCompletion>;
 		%template(createPartialWellbore) createPartial<WITSML2_0_NS::Wellbore>;
 		%template(createPartialWellboreCompletion) createPartial<WITSML2_0_NS::WellboreCompletion>;
+		%template(createPartialWellboreGeometry) createPartial<WITSML2_0_NS::WellboreGeometry>;
 		%template(createPartialTrajectory) createPartial<WITSML2_0_NS::Trajectory>;
 	};
 	

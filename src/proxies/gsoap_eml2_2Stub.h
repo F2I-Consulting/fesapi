@@ -4986,405 +4986,8 @@ enum resqml22__ViewerKind {
 #endif
 
 /* eml2_2ForGsoap.h:13569 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__MdDomain
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__MdDomain (-1274)
-
-/* resqml22:MdDomain */
-enum resqml22__MdDomain {
-	resqml22__MdDomain__driller = 0,
-	resqml22__MdDomain__logger = 1
-};
-#endif
-
-/* eml2_2ForGsoap.h:13590 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFrameIndexableElements
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFrameIndexableElements (-1275)
-
-/* resqml22:WellboreFrameIndexableElements */
-enum resqml22__WellboreFrameIndexableElements {
-	resqml22__WellboreFrameIndexableElements__intervals = 0,
-	resqml22__WellboreFrameIndexableElements__nodes = 1,
-	resqml22__WellboreFrameIndexableElements__cells = 2,
-	resqml22__WellboreFrameIndexableElements__intervals_x0020from_x0020datum = 3
-};
-#endif
-
-/* eml2_2ForGsoap.h:13618 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicBoundaryKind
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicBoundaryKind (-1276)
-
-/* resqml22:GeologicBoundaryKind */
-enum resqml22__GeologicBoundaryKind {
-	resqml22__GeologicBoundaryKind__fault = 0,
-	resqml22__GeologicBoundaryKind__geobody = 1,
-	resqml22__GeologicBoundaryKind__horizon = 2
-};
-#endif
-
-/* eml2_2ForGsoap.h:13632 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__LineRole
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__LineRole (-1277)
-
-/* resqml22:LineRole */
-enum resqml22__LineRole {
-	resqml22__LineRole__fault_x0020center_x0020line = 0,
-	resqml22__LineRole__pick = 1,
-	resqml22__LineRole__inner_x0020ring = 2,
-	resqml22__LineRole__outer_x0020ring = 3,
-	resqml22__LineRole__trajectory = 4,
-	resqml22__LineRole__interpretation_x0020line = 5,
-	resqml22__LineRole__contact = 6,
-	resqml22__LineRole__depositional_x0020line = 7,
-	resqml22__LineRole__erosion_x0020line = 8,
-	resqml22__LineRole__contouring = 9,
-	resqml22__LineRole__pillar = 10
-};
-#endif
-
-/* eml2_2ForGsoap.h:13699 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SurfaceRole
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SurfaceRole (-1278)
-
-/* resqml22:SurfaceRole */
-enum resqml22__SurfaceRole {
-	resqml22__SurfaceRole__map = 0,
-	resqml22__SurfaceRole__pick = 1
-};
-#endif
-
-/* eml2_2ForGsoap.h:13720 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryRelation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryRelation (-1279)
-
-/* resqml22:BoundaryRelation */
-enum resqml22__BoundaryRelation {
-	resqml22__BoundaryRelation__conformable = 0,
-	resqml22__BoundaryRelation__unconformable_x0020below_x0020and_x0020above = 1,
-	resqml22__BoundaryRelation__unconformable_x0020above = 2,
-	resqml22__BoundaryRelation__unconformable_x0020below = 3
-};
-#endif
-
-/* eml2_2ForGsoap.h:13748 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactMode
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactMode (-1280)
-
-/* resqml22:ContactMode */
-enum resqml22__ContactMode {
-	resqml22__ContactMode__conformable = 0,
-	resqml22__ContactMode__extended = 1,
-	resqml22__ContactMode__unconformable = 2
-};
-#endif
-
-/* eml2_2ForGsoap.h:13763 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactSide
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactSide (-1281)
-
-/* resqml22:ContactSide */
-enum resqml22__ContactSide {
-	resqml22__ContactSide__footwall = 0,
-	resqml22__ContactSide__hanging_x0020wall = 1,
-	resqml22__ContactSide__north = 2,
-	resqml22__ContactSide__south = 3,
-	resqml22__ContactSide__east = 4,
-	resqml22__ContactSide__west = 5,
-	resqml22__ContactSide__younger = 6,
-	resqml22__ContactSide__older = 7,
-	resqml22__ContactSide__both = 8
-};
-#endif
-
-/* eml2_2ForGsoap.h:13815 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactVerb
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactVerb (-1282)
-
-/* resqml22:ContactVerb */
-enum resqml22__ContactVerb {
-	resqml22__ContactVerb__stops = 0,
-	resqml22__ContactVerb__interrupts = 1,
-	resqml22__ContactVerb__crosses = 2
-};
-#endif
-
-/* eml2_2ForGsoap.h:13837 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__DepositionMode
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__DepositionMode (-1283)
-
-/* resqml22:DepositionMode */
-enum resqml22__DepositionMode {
-	resqml22__DepositionMode__proportional_x0020between_x0020top_x0020and_x0020bottom = 0,
-	resqml22__DepositionMode__parallel_x0020to_x0020bottom = 1,
-	resqml22__DepositionMode__parallel_x0020to_x0020top = 2,
-	resqml22__DepositionMode__parallel_x0020to_x0020another_x0020boundary = 3
-};
-#endif
-
-/* eml2_2ForGsoap.h:13852 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Domain
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Domain (-1284)
-
-/* resqml22:Domain */
-enum resqml22__Domain {
-	resqml22__Domain__depth = 0,
-	resqml22__Domain__time = 1,
-	resqml22__Domain__mixed = 2
-};
-#endif
-
-/* eml2_2ForGsoap.h:13878 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicUnitMaterialEmplacement
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicUnitMaterialEmplacement (-1285)
-
-/* resqml22:GeologicUnitMaterialEmplacement */
-enum resqml22__GeologicUnitMaterialEmplacement {
-	resqml22__GeologicUnitMaterialEmplacement__intrusive = 0,
-	resqml22__GeologicUnitMaterialEmplacement__non_intrusive = 1
-};
-#endif
-
-/* eml2_2ForGsoap.h:13892 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__HorizonStratigraphicRole
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__HorizonStratigraphicRole (-1286)
-
-/* resqml22:HorizonStratigraphicRole */
-enum resqml22__HorizonStratigraphicRole {
-	resqml22__HorizonStratigraphicRole__chronostratigraphic = 0,
-	resqml22__HorizonStratigraphicRole__lithostratigraphic = 1,
-	resqml22__HorizonStratigraphicRole__biostratigraphic = 2
-};
-#endif
-
-/* eml2_2ForGsoap.h:13906 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__OrderingCriteria
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__OrderingCriteria (-1287)
-
-/* resqml22:OrderingCriteria */
-enum resqml22__OrderingCriteria {
-	resqml22__OrderingCriteria__age = 0,
-	resqml22__OrderingCriteria__apparent_x0020depth = 1,
-	resqml22__OrderingCriteria__measured_x0020depth = 2
-};
-#endif
-
-/* eml2_2ForGsoap.h:13932 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SequenceStratigraphySurface
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SequenceStratigraphySurface (-1288)
-
-/* resqml22:SequenceStratigraphySurface */
-enum resqml22__SequenceStratigraphySurface {
-	resqml22__SequenceStratigraphySurface__flooding = 0,
-	resqml22__SequenceStratigraphySurface__ravinement = 1,
-	resqml22__SequenceStratigraphySurface__maximum_x0020flooding = 2,
-	resqml22__SequenceStratigraphySurface__transgressive = 3
-};
-#endif
-
-/* eml2_2ForGsoap.h:13947 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Shape3d
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Shape3d (-1289)
-
-/* resqml22:Shape3d */
-enum resqml22__Shape3d {
-	resqml22__Shape3d__sheet = 0,
-	resqml22__Shape3d__dyke = 1,
-	resqml22__Shape3d__dome = 2,
-	resqml22__Shape3d__mushroom = 3,
-	resqml22__Shape3d__channel = 4,
-	resqml22__Shape3d__delta = 5,
-	resqml22__Shape3d__dune = 6,
-	resqml22__Shape3d__fan = 7,
-	resqml22__Shape3d__reef = 8,
-	resqml22__Shape3d__wedge = 9
-};
-#endif
-
-/* eml2_2ForGsoap.h:13968 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitKind
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitKind (-1290)
-
-/* resqml22:StratigraphicUnitKind */
-enum resqml22__StratigraphicUnitKind {
-	resqml22__StratigraphicUnitKind__chronostratigraphic = 0,
-	resqml22__StratigraphicUnitKind__lithostratigraphic = 1,
-	resqml22__StratigraphicUnitKind__biostratigraphic = 2
-};
-#endif
-
-/* eml2_2ForGsoap.h:13982 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ThrowKind
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ThrowKind (-1291)
-
-/* resqml22:ThrowKind */
-enum resqml22__ThrowKind {
-	resqml22__ThrowKind__reverse = 0,
-	resqml22__ThrowKind__strike_slip = 1,
-	resqml22__ThrowKind__normal = 2,
-	resqml22__ThrowKind__thrust = 3,
-	resqml22__ThrowKind__scissor = 4,
-	resqml22__ThrowKind__variable = 5
-};
-#endif
-
-/* eml2_2ForGsoap.h:14005 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__CellShape
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__CellShape (-1292)
-
-/* resqml22:CellShape */
-enum resqml22__CellShape {
-	resqml22__CellShape__tetrahedral = 0,
-	resqml22__CellShape__pyramidal = 1,
-	resqml22__CellShape__prism = 2,
-	resqml22__CellShape__hexahedral = 3,
-	resqml22__CellShape__polyhedral = 4
-};
-#endif
-
-/* eml2_2ForGsoap.h:14043 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnShape
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnShape (-1293)
-
-/* resqml22:ColumnShape */
-enum resqml22__ColumnShape {
-	resqml22__ColumnShape__triangular = 0,
-	resqml22__ColumnShape__quadrilateral = 1,
-	resqml22__ColumnShape__polygonal = 2
-};
-#endif
-
-/* eml2_2ForGsoap.h:14069 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GridGeometryAttachment
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GridGeometryAttachment (-1294)
-
-/* resqml22:GridGeometryAttachment */
-enum resqml22__GridGeometryAttachment {
-	resqml22__GridGeometryAttachment__cells = 0,
-	resqml22__GridGeometryAttachment__edges = 1,
-	resqml22__GridGeometryAttachment__faces = 2,
-	resqml22__GridGeometryAttachment__hinge_x0020node_x0020faces = 3,
-	resqml22__GridGeometryAttachment__nodes = 4,
-	resqml22__GridGeometryAttachment__radial_x0020origin_x0020polyline = 5,
-	resqml22__GridGeometryAttachment__subnodes = 6
-};
-#endif
-
-/* eml2_2ForGsoap.h:14119 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IjkIndexableElements
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkIndexableElements (-1295)
-
-/* resqml22:IjkIndexableElements */
-enum resqml22__IjkIndexableElements {
-	resqml22__IjkIndexableElements__cells = 0,
-	resqml22__IjkIndexableElements__column_x0020edges = 1,
-	resqml22__IjkIndexableElements__columns = 2,
-	resqml22__IjkIndexableElements__coordinate_x0020lines = 3,
-	resqml22__IjkIndexableElements__edges = 4,
-	resqml22__IjkIndexableElements__edges_x0020per_x0020column = 5,
-	resqml22__IjkIndexableElements__faces = 6,
-	resqml22__IjkIndexableElements__faces_x0020per_x0020cell = 7,
-	resqml22__IjkIndexableElements__hinge_x0020node_x0020faces = 8,
-	resqml22__IjkIndexableElements__interval_x0020edges = 9,
-	resqml22__IjkIndexableElements__intervals = 10,
-	resqml22__IjkIndexableElements__I0 = 11,
-	resqml22__IjkIndexableElements__I0_x0020edges = 12,
-	resqml22__IjkIndexableElements__J0 = 13,
-	resqml22__IjkIndexableElements__J0_x0020edges = 14,
-	resqml22__IjkIndexableElements__layers = 15,
-	resqml22__IjkIndexableElements__nodes = 16,
-	resqml22__IjkIndexableElements__nodes_x0020per_x0020cell = 17,
-	resqml22__IjkIndexableElements__nodes_x0020per_x0020edge = 18,
-	resqml22__IjkIndexableElements__nodes_x0020per_x0020face = 19,
-	resqml22__IjkIndexableElements__pillars = 20,
-	resqml22__IjkIndexableElements__radial_x0020origin_x0020polyline = 21,
-	resqml22__IjkIndexableElements__subnodes = 22
-};
-#endif
-
-/* eml2_2ForGsoap.h:14245 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__KDirection
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__KDirection (-1296)
-
-/* resqml22:KDirection */
-enum resqml22__KDirection {
-	resqml22__KDirection__down = 0,
-	resqml22__KDirection__up = 1,
-	resqml22__KDirection__not_x0020monotonic = 2
-};
-#endif
-
-/* eml2_2ForGsoap.h:14274 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PillarShape
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__PillarShape (-1297)
-
-/* resqml22:PillarShape */
-enum resqml22__PillarShape {
-	resqml22__PillarShape__vertical = 0,
-	resqml22__PillarShape__straight = 1,
-	resqml22__PillarShape__curved = 2
-};
-#endif
-
-/* eml2_2ForGsoap.h:14300 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SubnodeNodeObject
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubnodeNodeObject (-1298)
-
-/* resqml22:SubnodeNodeObject */
-enum resqml22__SubnodeNodeObject {
-	resqml22__SubnodeNodeObject__cell = 0,
-	resqml22__SubnodeNodeObject__face = 1,
-	resqml22__SubnodeNodeObject__edge = 2
-};
-#endif
-
-/* eml2_2ForGsoap.h:14327 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredCellIndexableElements
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredCellIndexableElements (-1299)
-
-/* resqml22:UnstructuredCellIndexableElements */
-enum resqml22__UnstructuredCellIndexableElements {
-	resqml22__UnstructuredCellIndexableElements__cells = 0,
-	resqml22__UnstructuredCellIndexableElements__edges = 1,
-	resqml22__UnstructuredCellIndexableElements__faces = 2,
-	resqml22__UnstructuredCellIndexableElements__faces_x0020per_x0020cell = 3,
-	resqml22__UnstructuredCellIndexableElements__hinge_x0020node_x0020faces = 4,
-	resqml22__UnstructuredCellIndexableElements__nodes = 5,
-	resqml22__UnstructuredCellIndexableElements__nodes_x0020per_x0020cell = 6,
-	resqml22__UnstructuredCellIndexableElements__nodes_x0020per_x0020edge = 7,
-	resqml22__UnstructuredCellIndexableElements__nodes_x0020per_x0020face = 8,
-	resqml22__UnstructuredCellIndexableElements__subnodes = 9
-};
-#endif
-
-/* eml2_2ForGsoap.h:14388 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerIndexableElements
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerIndexableElements (-1300)
-
-/* resqml22:UnstructuredColumnLayerIndexableElements */
-enum resqml22__UnstructuredColumnLayerIndexableElements {
-	resqml22__UnstructuredColumnLayerIndexableElements__cells = 0,
-	resqml22__UnstructuredColumnLayerIndexableElements__column_x0020edges = 1,
-	resqml22__UnstructuredColumnLayerIndexableElements__columns = 2,
-	resqml22__UnstructuredColumnLayerIndexableElements__coordinate_x0020lines = 3,
-	resqml22__UnstructuredColumnLayerIndexableElements__edges = 4,
-	resqml22__UnstructuredColumnLayerIndexableElements__edges_x0020per_x0020column = 5,
-	resqml22__UnstructuredColumnLayerIndexableElements__faces = 6,
-	resqml22__UnstructuredColumnLayerIndexableElements__faces_x0020per_x0020cell = 7,
-	resqml22__UnstructuredColumnLayerIndexableElements__hinge_x0020node_x0020faces = 8,
-	resqml22__UnstructuredColumnLayerIndexableElements__interval_x0020edges = 9,
-	resqml22__UnstructuredColumnLayerIndexableElements__intervals = 10,
-	resqml22__UnstructuredColumnLayerIndexableElements__layers = 11,
-	resqml22__UnstructuredColumnLayerIndexableElements__nodes = 12,
-	resqml22__UnstructuredColumnLayerIndexableElements__nodes_x0020per_x0020cell = 13,
-	resqml22__UnstructuredColumnLayerIndexableElements__nodes_x0020per_x0020edge = 14,
-	resqml22__UnstructuredColumnLayerIndexableElements__nodes_x0020per_x0020face = 15,
-	resqml22__UnstructuredColumnLayerIndexableElements__pillars = 16,
-	resqml22__UnstructuredColumnLayerIndexableElements__subnodes = 17
-};
-#endif
-
-/* eml2_2ForGsoap.h:14490 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IdentityKind
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IdentityKind (-1301)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IdentityKind (-1274)
 
 /* resqml22:IdentityKind */
 enum resqml22__IdentityKind {
@@ -5395,9 +4998,9 @@ enum resqml22__IdentityKind {
 };
 #endif
 
-/* eml2_2ForGsoap.h:14527 */
+/* eml2_2ForGsoap.h:13606 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IndexableElement
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IndexableElement (-1302)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IndexableElement (-1275)
 
 /* resqml22:IndexableElement */
 enum resqml22__IndexableElement {
@@ -5430,6 +5033,403 @@ enum resqml22__IndexableElement {
 	resqml22__IndexableElement__representation = 26,
 	resqml22__IndexableElement__subnodes = 27,
 	resqml22__IndexableElement__triangles = 28
+};
+#endif
+
+/* eml2_2ForGsoap.h:13674 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicBoundaryKind
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicBoundaryKind (-1276)
+
+/* resqml22:GeologicBoundaryKind */
+enum resqml22__GeologicBoundaryKind {
+	resqml22__GeologicBoundaryKind__fault = 0,
+	resqml22__GeologicBoundaryKind__geobody = 1,
+	resqml22__GeologicBoundaryKind__horizon = 2
+};
+#endif
+
+/* eml2_2ForGsoap.h:13688 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__LineRole
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__LineRole (-1277)
+
+/* resqml22:LineRole */
+enum resqml22__LineRole {
+	resqml22__LineRole__fault_x0020center_x0020line = 0,
+	resqml22__LineRole__pick = 1,
+	resqml22__LineRole__inner_x0020ring = 2,
+	resqml22__LineRole__outer_x0020ring = 3,
+	resqml22__LineRole__trajectory = 4,
+	resqml22__LineRole__interpretation_x0020line = 5,
+	resqml22__LineRole__contact = 6,
+	resqml22__LineRole__depositional_x0020line = 7,
+	resqml22__LineRole__erosion_x0020line = 8,
+	resqml22__LineRole__contouring = 9,
+	resqml22__LineRole__pillar = 10
+};
+#endif
+
+/* eml2_2ForGsoap.h:13755 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SurfaceRole
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SurfaceRole (-1278)
+
+/* resqml22:SurfaceRole */
+enum resqml22__SurfaceRole {
+	resqml22__SurfaceRole__map = 0,
+	resqml22__SurfaceRole__pick = 1
+};
+#endif
+
+/* eml2_2ForGsoap.h:13776 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryRelation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryRelation (-1279)
+
+/* resqml22:BoundaryRelation */
+enum resqml22__BoundaryRelation {
+	resqml22__BoundaryRelation__conformable = 0,
+	resqml22__BoundaryRelation__unconformable_x0020below_x0020and_x0020above = 1,
+	resqml22__BoundaryRelation__unconformable_x0020above = 2,
+	resqml22__BoundaryRelation__unconformable_x0020below = 3
+};
+#endif
+
+/* eml2_2ForGsoap.h:13804 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactMode
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactMode (-1280)
+
+/* resqml22:ContactMode */
+enum resqml22__ContactMode {
+	resqml22__ContactMode__conformable = 0,
+	resqml22__ContactMode__extended = 1,
+	resqml22__ContactMode__unconformable = 2
+};
+#endif
+
+/* eml2_2ForGsoap.h:13819 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactSide
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactSide (-1281)
+
+/* resqml22:ContactSide */
+enum resqml22__ContactSide {
+	resqml22__ContactSide__footwall = 0,
+	resqml22__ContactSide__hanging_x0020wall = 1,
+	resqml22__ContactSide__north = 2,
+	resqml22__ContactSide__south = 3,
+	resqml22__ContactSide__east = 4,
+	resqml22__ContactSide__west = 5,
+	resqml22__ContactSide__younger = 6,
+	resqml22__ContactSide__older = 7,
+	resqml22__ContactSide__both = 8
+};
+#endif
+
+/* eml2_2ForGsoap.h:13871 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactVerb
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactVerb (-1282)
+
+/* resqml22:ContactVerb */
+enum resqml22__ContactVerb {
+	resqml22__ContactVerb__stops = 0,
+	resqml22__ContactVerb__interrupts = 1,
+	resqml22__ContactVerb__crosses = 2
+};
+#endif
+
+/* eml2_2ForGsoap.h:13893 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__DepositionMode
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__DepositionMode (-1283)
+
+/* resqml22:DepositionMode */
+enum resqml22__DepositionMode {
+	resqml22__DepositionMode__proportional_x0020between_x0020top_x0020and_x0020bottom = 0,
+	resqml22__DepositionMode__parallel_x0020to_x0020bottom = 1,
+	resqml22__DepositionMode__parallel_x0020to_x0020top = 2,
+	resqml22__DepositionMode__parallel_x0020to_x0020another_x0020boundary = 3
+};
+#endif
+
+/* eml2_2ForGsoap.h:13908 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Domain
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Domain (-1284)
+
+/* resqml22:Domain */
+enum resqml22__Domain {
+	resqml22__Domain__depth = 0,
+	resqml22__Domain__time = 1,
+	resqml22__Domain__mixed = 2
+};
+#endif
+
+/* eml2_2ForGsoap.h:13934 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicUnitMaterialEmplacement
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicUnitMaterialEmplacement (-1285)
+
+/* resqml22:GeologicUnitMaterialEmplacement */
+enum resqml22__GeologicUnitMaterialEmplacement {
+	resqml22__GeologicUnitMaterialEmplacement__intrusive = 0,
+	resqml22__GeologicUnitMaterialEmplacement__non_intrusive = 1
+};
+#endif
+
+/* eml2_2ForGsoap.h:13948 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__HorizonStratigraphicRole
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__HorizonStratigraphicRole (-1286)
+
+/* resqml22:HorizonStratigraphicRole */
+enum resqml22__HorizonStratigraphicRole {
+	resqml22__HorizonStratigraphicRole__chronostratigraphic = 0,
+	resqml22__HorizonStratigraphicRole__lithostratigraphic = 1,
+	resqml22__HorizonStratigraphicRole__biostratigraphic = 2
+};
+#endif
+
+/* eml2_2ForGsoap.h:13962 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__OrderingCriteria
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__OrderingCriteria (-1287)
+
+/* resqml22:OrderingCriteria */
+enum resqml22__OrderingCriteria {
+	resqml22__OrderingCriteria__age = 0,
+	resqml22__OrderingCriteria__apparent_x0020depth = 1,
+	resqml22__OrderingCriteria__measured_x0020depth = 2
+};
+#endif
+
+/* eml2_2ForGsoap.h:13988 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SequenceStratigraphySurface
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SequenceStratigraphySurface (-1288)
+
+/* resqml22:SequenceStratigraphySurface */
+enum resqml22__SequenceStratigraphySurface {
+	resqml22__SequenceStratigraphySurface__flooding = 0,
+	resqml22__SequenceStratigraphySurface__ravinement = 1,
+	resqml22__SequenceStratigraphySurface__maximum_x0020flooding = 2,
+	resqml22__SequenceStratigraphySurface__transgressive = 3
+};
+#endif
+
+/* eml2_2ForGsoap.h:14003 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Shape3d
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Shape3d (-1289)
+
+/* resqml22:Shape3d */
+enum resqml22__Shape3d {
+	resqml22__Shape3d__sheet = 0,
+	resqml22__Shape3d__dyke = 1,
+	resqml22__Shape3d__dome = 2,
+	resqml22__Shape3d__mushroom = 3,
+	resqml22__Shape3d__channel = 4,
+	resqml22__Shape3d__delta = 5,
+	resqml22__Shape3d__dune = 6,
+	resqml22__Shape3d__fan = 7,
+	resqml22__Shape3d__reef = 8,
+	resqml22__Shape3d__wedge = 9
+};
+#endif
+
+/* eml2_2ForGsoap.h:14024 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitKind
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitKind (-1290)
+
+/* resqml22:StratigraphicUnitKind */
+enum resqml22__StratigraphicUnitKind {
+	resqml22__StratigraphicUnitKind__chronostratigraphic = 0,
+	resqml22__StratigraphicUnitKind__lithostratigraphic = 1,
+	resqml22__StratigraphicUnitKind__biostratigraphic = 2
+};
+#endif
+
+/* eml2_2ForGsoap.h:14038 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ThrowKind
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ThrowKind (-1291)
+
+/* resqml22:ThrowKind */
+enum resqml22__ThrowKind {
+	resqml22__ThrowKind__reverse = 0,
+	resqml22__ThrowKind__strike_slip = 1,
+	resqml22__ThrowKind__normal = 2,
+	resqml22__ThrowKind__thrust = 3,
+	resqml22__ThrowKind__scissor = 4,
+	resqml22__ThrowKind__variable = 5
+};
+#endif
+
+/* eml2_2ForGsoap.h:14059 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__MdDomain
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__MdDomain (-1292)
+
+/* resqml22:MdDomain */
+enum resqml22__MdDomain {
+	resqml22__MdDomain__driller = 0,
+	resqml22__MdDomain__logger = 1
+};
+#endif
+
+/* eml2_2ForGsoap.h:14080 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFrameIndexableElements
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFrameIndexableElements (-1293)
+
+/* resqml22:WellboreFrameIndexableElements */
+enum resqml22__WellboreFrameIndexableElements {
+	resqml22__WellboreFrameIndexableElements__intervals = 0,
+	resqml22__WellboreFrameIndexableElements__nodes = 1,
+	resqml22__WellboreFrameIndexableElements__cells = 2,
+	resqml22__WellboreFrameIndexableElements__intervals_x0020from_x0020datum = 3
+};
+#endif
+
+/* eml2_2ForGsoap.h:14110 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__CellShape
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__CellShape (-1294)
+
+/* resqml22:CellShape */
+enum resqml22__CellShape {
+	resqml22__CellShape__tetrahedral = 0,
+	resqml22__CellShape__pyramidal = 1,
+	resqml22__CellShape__prism = 2,
+	resqml22__CellShape__hexahedral = 3,
+	resqml22__CellShape__polyhedral = 4
+};
+#endif
+
+/* eml2_2ForGsoap.h:14148 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnShape
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnShape (-1295)
+
+/* resqml22:ColumnShape */
+enum resqml22__ColumnShape {
+	resqml22__ColumnShape__triangular = 0,
+	resqml22__ColumnShape__quadrilateral = 1,
+	resqml22__ColumnShape__polygonal = 2
+};
+#endif
+
+/* eml2_2ForGsoap.h:14174 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GridGeometryAttachment
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GridGeometryAttachment (-1296)
+
+/* resqml22:GridGeometryAttachment */
+enum resqml22__GridGeometryAttachment {
+	resqml22__GridGeometryAttachment__cells = 0,
+	resqml22__GridGeometryAttachment__edges = 1,
+	resqml22__GridGeometryAttachment__faces = 2,
+	resqml22__GridGeometryAttachment__hinge_x0020node_x0020faces = 3,
+	resqml22__GridGeometryAttachment__nodes = 4,
+	resqml22__GridGeometryAttachment__radial_x0020origin_x0020polyline = 5,
+	resqml22__GridGeometryAttachment__subnodes = 6
+};
+#endif
+
+/* eml2_2ForGsoap.h:14224 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IjkIndexableElements
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkIndexableElements (-1297)
+
+/* resqml22:IjkIndexableElements */
+enum resqml22__IjkIndexableElements {
+	resqml22__IjkIndexableElements__cells = 0,
+	resqml22__IjkIndexableElements__column_x0020edges = 1,
+	resqml22__IjkIndexableElements__columns = 2,
+	resqml22__IjkIndexableElements__coordinate_x0020lines = 3,
+	resqml22__IjkIndexableElements__edges = 4,
+	resqml22__IjkIndexableElements__edges_x0020per_x0020column = 5,
+	resqml22__IjkIndexableElements__faces = 6,
+	resqml22__IjkIndexableElements__faces_x0020per_x0020cell = 7,
+	resqml22__IjkIndexableElements__hinge_x0020node_x0020faces = 8,
+	resqml22__IjkIndexableElements__interval_x0020edges = 9,
+	resqml22__IjkIndexableElements__intervals = 10,
+	resqml22__IjkIndexableElements__I0 = 11,
+	resqml22__IjkIndexableElements__I0_x0020edges = 12,
+	resqml22__IjkIndexableElements__J0 = 13,
+	resqml22__IjkIndexableElements__J0_x0020edges = 14,
+	resqml22__IjkIndexableElements__layers = 15,
+	resqml22__IjkIndexableElements__nodes = 16,
+	resqml22__IjkIndexableElements__nodes_x0020per_x0020cell = 17,
+	resqml22__IjkIndexableElements__nodes_x0020per_x0020edge = 18,
+	resqml22__IjkIndexableElements__nodes_x0020per_x0020face = 19,
+	resqml22__IjkIndexableElements__pillars = 20,
+	resqml22__IjkIndexableElements__radial_x0020origin_x0020polyline = 21,
+	resqml22__IjkIndexableElements__subnodes = 22
+};
+#endif
+
+/* eml2_2ForGsoap.h:14350 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__KDirection
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__KDirection (-1298)
+
+/* resqml22:KDirection */
+enum resqml22__KDirection {
+	resqml22__KDirection__down = 0,
+	resqml22__KDirection__up = 1,
+	resqml22__KDirection__not_x0020monotonic = 2
+};
+#endif
+
+/* eml2_2ForGsoap.h:14379 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PillarShape
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__PillarShape (-1299)
+
+/* resqml22:PillarShape */
+enum resqml22__PillarShape {
+	resqml22__PillarShape__vertical = 0,
+	resqml22__PillarShape__straight = 1,
+	resqml22__PillarShape__curved = 2
+};
+#endif
+
+/* eml2_2ForGsoap.h:14405 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SubnodeNodeObject
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubnodeNodeObject (-1300)
+
+/* resqml22:SubnodeNodeObject */
+enum resqml22__SubnodeNodeObject {
+	resqml22__SubnodeNodeObject__cell = 0,
+	resqml22__SubnodeNodeObject__face = 1,
+	resqml22__SubnodeNodeObject__edge = 2
+};
+#endif
+
+/* eml2_2ForGsoap.h:14432 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredCellIndexableElements
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredCellIndexableElements (-1301)
+
+/* resqml22:UnstructuredCellIndexableElements */
+enum resqml22__UnstructuredCellIndexableElements {
+	resqml22__UnstructuredCellIndexableElements__cells = 0,
+	resqml22__UnstructuredCellIndexableElements__edges = 1,
+	resqml22__UnstructuredCellIndexableElements__faces = 2,
+	resqml22__UnstructuredCellIndexableElements__faces_x0020per_x0020cell = 3,
+	resqml22__UnstructuredCellIndexableElements__hinge_x0020node_x0020faces = 4,
+	resqml22__UnstructuredCellIndexableElements__nodes = 5,
+	resqml22__UnstructuredCellIndexableElements__nodes_x0020per_x0020cell = 6,
+	resqml22__UnstructuredCellIndexableElements__nodes_x0020per_x0020edge = 7,
+	resqml22__UnstructuredCellIndexableElements__nodes_x0020per_x0020face = 8,
+	resqml22__UnstructuredCellIndexableElements__subnodes = 9
+};
+#endif
+
+/* eml2_2ForGsoap.h:14493 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerIndexableElements
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerIndexableElements (-1302)
+
+/* resqml22:UnstructuredColumnLayerIndexableElements */
+enum resqml22__UnstructuredColumnLayerIndexableElements {
+	resqml22__UnstructuredColumnLayerIndexableElements__cells = 0,
+	resqml22__UnstructuredColumnLayerIndexableElements__column_x0020edges = 1,
+	resqml22__UnstructuredColumnLayerIndexableElements__columns = 2,
+	resqml22__UnstructuredColumnLayerIndexableElements__coordinate_x0020lines = 3,
+	resqml22__UnstructuredColumnLayerIndexableElements__edges = 4,
+	resqml22__UnstructuredColumnLayerIndexableElements__edges_x0020per_x0020column = 5,
+	resqml22__UnstructuredColumnLayerIndexableElements__faces = 6,
+	resqml22__UnstructuredColumnLayerIndexableElements__faces_x0020per_x0020cell = 7,
+	resqml22__UnstructuredColumnLayerIndexableElements__hinge_x0020node_x0020faces = 8,
+	resqml22__UnstructuredColumnLayerIndexableElements__interval_x0020edges = 9,
+	resqml22__UnstructuredColumnLayerIndexableElements__intervals = 10,
+	resqml22__UnstructuredColumnLayerIndexableElements__layers = 11,
+	resqml22__UnstructuredColumnLayerIndexableElements__nodes = 12,
+	resqml22__UnstructuredColumnLayerIndexableElements__nodes_x0020per_x0020cell = 13,
+	resqml22__UnstructuredColumnLayerIndexableElements__nodes_x0020per_x0020edge = 14,
+	resqml22__UnstructuredColumnLayerIndexableElements__nodes_x0020per_x0020face = 15,
+	resqml22__UnstructuredColumnLayerIndexableElements__pillars = 16,
+	resqml22__UnstructuredColumnLayerIndexableElements__subnodes = 17
 };
 #endif
 
@@ -7263,60 +7263,60 @@ class resqml22__ContinuousColorMapEntry;	/* eml2_2ForGsoap.h:285 */
 class resqml22__DiscreteColorMapEntry;	/* eml2_2ForGsoap.h:293 */
 class resqml22__HsvColor;	/* eml2_2ForGsoap.h:305 */
 class resqml22__MinMax;	/* eml2_2ForGsoap.h:307 */
-class resqml22__CorrectionInformation;	/* eml2_2ForGsoap.h:313 */
-class resqml22__TvdInformation;	/* eml2_2ForGsoap.h:321 */
-class resqml22__WellboreTrajectoryParentIntersection;	/* eml2_2ForGsoap.h:335 */
-class resqml22__WitsmlWellWellbore;	/* eml2_2ForGsoap.h:339 */
-class resqml22__AbstractContactRepresentationPart;	/* eml2_2ForGsoap.h:341 */
-class resqml22__ContactIdentity;	/* eml2_2ForGsoap.h:347 */
-class resqml22__OrientedMacroFace;	/* eml2_2ForGsoap.h:363 */
-class resqml22__PatchBoundaries;	/* eml2_2ForGsoap.h:365 */
-class resqml22__VolumeShell;	/* eml2_2ForGsoap.h:385 */
-class resqml22__AbstractContactInterpretationPart;	/* eml2_2ForGsoap.h:387 */
-class resqml22__AbstractTimeInterval;	/* eml2_2ForGsoap.h:395 */
-class resqml22__BoundaryFeatureInterpretationPlusItsRank;	/* eml2_2ForGsoap.h:401 */
-class resqml22__FaultThrow;	/* eml2_2ForGsoap.h:409 */
-class resqml22__AbstractParentWindow;	/* eml2_2ForGsoap.h:455 */
-class resqml22__Activation;	/* eml2_2ForGsoap.h:459 */
-class resqml22__AdditionalGridPoints;	/* eml2_2ForGsoap.h:461 */
-class resqml22__AdditionalGridTopology;	/* eml2_2ForGsoap.h:463 */
-class resqml22__AlternateCellIndex;	/* eml2_2ForGsoap.h:465 */
-class resqml22__CellFluidPhaseUnits;	/* eml2_2ForGsoap.h:467 */
-struct __resqml22__CellOverlap_sequence;	/* eml2_2ForGsoap.h:18666 */
-class resqml22__CellOverlap;	/* eml2_2ForGsoap.h:469 */
-class resqml22__ColumnLayerGpGrid;	/* eml2_2ForGsoap.h:473 */
-class resqml22__ColumnLayerSplitCoordinateLines;	/* eml2_2ForGsoap.h:477 */
-class resqml22__ConnectionInterpretations;	/* eml2_2ForGsoap.h:483 */
-class resqml22__Edges;	/* eml2_2ForGsoap.h:485 */
-struct __resqml22__IjGaps_sequence;	/* eml2_2ForGsoap.h:18859 */
-class resqml22__IjGaps;	/* eml2_2ForGsoap.h:491 */
-class resqml22__IntervalGridCells;	/* eml2_2ForGsoap.h:501 */
-class resqml22__Intervals;	/* eml2_2ForGsoap.h:503 */
-class resqml22__IntervalStratigraphicUnits;	/* eml2_2ForGsoap.h:505 */
-struct __resqml22__KGaps_sequence;	/* eml2_2ForGsoap.h:19053 */
-class resqml22__KGaps;	/* eml2_2ForGsoap.h:507 */
-struct __resqml22__OverlapVolume_sequence;	/* eml2_2ForGsoap.h:19096 */
-class resqml22__OverlapVolume;	/* eml2_2ForGsoap.h:511 */
-class resqml22__Regrid;	/* eml2_2ForGsoap.h:513 */
-class resqml22__SplitColumnEdges;	/* eml2_2ForGsoap.h:515 */
-class resqml22__SplitEdges;	/* eml2_2ForGsoap.h:517 */
-class resqml22__SplitFaces;	/* eml2_2ForGsoap.h:519 */
-class resqml22__SubnodeTopology;	/* eml2_2ForGsoap.h:525 */
-class resqml22__UnstructuredColumnEdges;	/* eml2_2ForGsoap.h:535 */
-class resqml22__UnstructuredGridHingeNodeFaces;	/* eml2_2ForGsoap.h:547 */
-class resqml22__AbstractGeometry;	/* eml2_2ForGsoap.h:555 */
-class resqml22__AbstractParametricLineArray;	/* eml2_2ForGsoap.h:557 */
-class resqml22__AbstractPoint3dArray;	/* eml2_2ForGsoap.h:563 */
-class resqml22__ParametricLineIntersections;	/* eml2_2ForGsoap.h:577 */
-class resqml22__Point3d;	/* eml2_2ForGsoap.h:581 */
-class resqml22__Point3dOffset;	/* eml2_2ForGsoap.h:589 */
-class resqml22__ThreePoint3d;	/* eml2_2ForGsoap.h:599 */
-class resqml22__AbstractSeismicCoordinates;	/* eml2_2ForGsoap.h:603 */
-class resqml22__ElementIdentity;	/* eml2_2ForGsoap.h:629 */
-struct __resqml22__ElementIndices_sequence;	/* eml2_2ForGsoap.h:19706 */
-class resqml22__ElementIndices;	/* eml2_2ForGsoap.h:631 */
-class resqml22__Patch;	/* eml2_2ForGsoap.h:633 */
-class resqml22__RepresentationIdentity;	/* eml2_2ForGsoap.h:641 */
+class resqml22__ElementIdentity;	/* eml2_2ForGsoap.h:313 */
+struct __resqml22__ElementIndices_sequence;	/* eml2_2ForGsoap.h:18053 */
+class resqml22__ElementIndices;	/* eml2_2ForGsoap.h:315 */
+class resqml22__Patch;	/* eml2_2ForGsoap.h:317 */
+class resqml22__RepresentationIdentity;	/* eml2_2ForGsoap.h:325 */
+class resqml22__AbstractContactRepresentationPart;	/* eml2_2ForGsoap.h:335 */
+class resqml22__ContactIdentity;	/* eml2_2ForGsoap.h:341 */
+class resqml22__OrientedMacroFace;	/* eml2_2ForGsoap.h:357 */
+class resqml22__PatchBoundaries;	/* eml2_2ForGsoap.h:359 */
+class resqml22__VolumeShell;	/* eml2_2ForGsoap.h:379 */
+class resqml22__AbstractContactInterpretationPart;	/* eml2_2ForGsoap.h:381 */
+class resqml22__AbstractTimeInterval;	/* eml2_2ForGsoap.h:389 */
+class resqml22__BoundaryFeatureInterpretationPlusItsRank;	/* eml2_2ForGsoap.h:395 */
+class resqml22__FaultThrow;	/* eml2_2ForGsoap.h:403 */
+class resqml22__CorrectionInformation;	/* eml2_2ForGsoap.h:443 */
+class resqml22__TvdInformation;	/* eml2_2ForGsoap.h:451 */
+class resqml22__WellboreTrajectoryParentIntersection;	/* eml2_2ForGsoap.h:465 */
+class resqml22__WitsmlWellWellbore;	/* eml2_2ForGsoap.h:469 */
+class resqml22__AbstractParentWindow;	/* eml2_2ForGsoap.h:479 */
+class resqml22__Activation;	/* eml2_2ForGsoap.h:483 */
+class resqml22__AdditionalGridPoints;	/* eml2_2ForGsoap.h:485 */
+class resqml22__AdditionalGridTopology;	/* eml2_2ForGsoap.h:487 */
+class resqml22__AlternateCellIndex;	/* eml2_2ForGsoap.h:489 */
+class resqml22__CellFluidPhaseUnits;	/* eml2_2ForGsoap.h:491 */
+struct __resqml22__CellOverlap_sequence;	/* eml2_2ForGsoap.h:18811 */
+class resqml22__CellOverlap;	/* eml2_2ForGsoap.h:493 */
+class resqml22__ColumnLayerGpGrid;	/* eml2_2ForGsoap.h:497 */
+class resqml22__ColumnLayerSplitCoordinateLines;	/* eml2_2ForGsoap.h:501 */
+class resqml22__ConnectionInterpretations;	/* eml2_2ForGsoap.h:507 */
+class resqml22__Edges;	/* eml2_2ForGsoap.h:509 */
+struct __resqml22__IjGaps_sequence;	/* eml2_2ForGsoap.h:19004 */
+class resqml22__IjGaps;	/* eml2_2ForGsoap.h:515 */
+class resqml22__IntervalGridCells;	/* eml2_2ForGsoap.h:525 */
+class resqml22__Intervals;	/* eml2_2ForGsoap.h:527 */
+class resqml22__IntervalStratigraphicUnits;	/* eml2_2ForGsoap.h:529 */
+struct __resqml22__KGaps_sequence;	/* eml2_2ForGsoap.h:19198 */
+class resqml22__KGaps;	/* eml2_2ForGsoap.h:531 */
+struct __resqml22__OverlapVolume_sequence;	/* eml2_2ForGsoap.h:19241 */
+class resqml22__OverlapVolume;	/* eml2_2ForGsoap.h:535 */
+class resqml22__Regrid;	/* eml2_2ForGsoap.h:537 */
+class resqml22__SplitColumnEdges;	/* eml2_2ForGsoap.h:539 */
+class resqml22__SplitEdges;	/* eml2_2ForGsoap.h:541 */
+class resqml22__SplitFaces;	/* eml2_2ForGsoap.h:543 */
+class resqml22__SubnodeTopology;	/* eml2_2ForGsoap.h:549 */
+class resqml22__UnstructuredColumnEdges;	/* eml2_2ForGsoap.h:559 */
+class resqml22__UnstructuredGridHingeNodeFaces;	/* eml2_2ForGsoap.h:571 */
+class resqml22__AbstractGeometry;	/* eml2_2ForGsoap.h:579 */
+class resqml22__AbstractParametricLineArray;	/* eml2_2ForGsoap.h:581 */
+class resqml22__AbstractPoint3dArray;	/* eml2_2ForGsoap.h:587 */
+class resqml22__ParametricLineIntersections;	/* eml2_2ForGsoap.h:601 */
+class resqml22__Point3d;	/* eml2_2ForGsoap.h:605 */
+class resqml22__Point3dOffset;	/* eml2_2ForGsoap.h:613 */
+class resqml22__ThreePoint3d;	/* eml2_2ForGsoap.h:623 */
+class resqml22__AbstractSeismicCoordinates;	/* eml2_2ForGsoap.h:627 */
 class eml22__AbstractObject;	/* eml2_2ForGsoap.h:671 */
 class eml22__Citation;	/* eml2_2ForGsoap.h:673 */
 class eml22__CustomData;	/* eml2_2ForGsoap.h:675 */
@@ -7495,51 +7495,51 @@ class resqml22__GraphicalInformationForNodes;	/* eml2_2ForGsoap.h:299 */
 class resqml22__GraphicalInformationForVolumes;	/* eml2_2ForGsoap.h:301 */
 class resqml22__GraphicalInformationForWholeObject;	/* eml2_2ForGsoap.h:303 */
 class resqml22__SizeInformation;	/* eml2_2ForGsoap.h:309 */
-class resqml22__MdDatum;	/* eml2_2ForGsoap.h:317 */
-class resqml22__WellboreMarker;	/* eml2_2ForGsoap.h:331 */
-class resqml22__ContactRepresentationReference;	/* eml2_2ForGsoap.h:351 */
-class resqml22__NonSealedContactRepresentationPart;	/* eml2_2ForGsoap.h:359 */
-class resqml22__SealedContactRepresentationPart;	/* eml2_2ForGsoap.h:373 */
-class resqml22__VolumeRegion;	/* eml2_2ForGsoap.h:383 */
-class resqml22__AbstractFeatureInterpretation;	/* eml2_2ForGsoap.h:389 */
-class resqml22__BinaryContactInterpretationPart;	/* eml2_2ForGsoap.h:397 */
-class resqml22__ContactElement;	/* eml2_2ForGsoap.h:403 */
-class resqml22__FeatureInterpretationSet;	/* eml2_2ForGsoap.h:411 */
-class resqml22__GeneticBoundaryBasedTimeInterval;	/* eml2_2ForGsoap.h:417 */
-class resqml22__GeologicTimeBasedTimeInterval;	/* eml2_2ForGsoap.h:423 */
-class resqml22__MultipleContactInterpretationPart;	/* eml2_2ForGsoap.h:429 */
-class resqml22__StratigraphicColumn;	/* eml2_2ForGsoap.h:435 */
-class resqml22__StratigraphicUnitDictionary;	/* eml2_2ForGsoap.h:441 */
-class resqml22__CellParentWindow;	/* eml2_2ForGsoap.h:471 */
-class resqml22__ColumnLayerParentWindow;	/* eml2_2ForGsoap.h:475 */
-class resqml22__ColumnLayerSubnodeTopology;	/* eml2_2ForGsoap.h:479 */
-class resqml22__IjkGpGridPatch;	/* eml2_2ForGsoap.h:493 */
-class resqml22__IjkParentWindow;	/* eml2_2ForGsoap.h:499 */
-class resqml22__LocalGridSet;	/* eml2_2ForGsoap.h:509 */
-class resqml22__SplitNodePatch;	/* eml2_2ForGsoap.h:521 */
-class resqml22__SubnodePatch;	/* eml2_2ForGsoap.h:523 */
-class resqml22__TruncationCellPatch;	/* eml2_2ForGsoap.h:531 */
-class resqml22__UnstructuredColumnLayerGpGridPatch;	/* eml2_2ForGsoap.h:537 */
-class resqml22__UnstructuredGpGridPatch;	/* eml2_2ForGsoap.h:543 */
-class resqml22__UnstructuredSubnodeTopology;	/* eml2_2ForGsoap.h:551 */
-class resqml22__AbstractParametricLineGeometry;	/* eml2_2ForGsoap.h:559 */
-class resqml22__AbstractPlaneGeometry;	/* eml2_2ForGsoap.h:561 */
-class resqml22__ParametricLineArray;	/* eml2_2ForGsoap.h:569 */
-class resqml22__ParametricLineFromRepresentationLatticeArray;	/* eml2_2ForGsoap.h:573 */
-class resqml22__Point2dExternalArray;	/* eml2_2ForGsoap.h:579 */
-class resqml22__Point3dExternalArray;	/* eml2_2ForGsoap.h:583 */
-class resqml22__Point3dFromRepresentationLatticeArray;	/* eml2_2ForGsoap.h:585 */
-class resqml22__Point3dLatticeArray;	/* eml2_2ForGsoap.h:587 */
-class resqml22__Point3dParametricArray;	/* eml2_2ForGsoap.h:591 */
-class resqml22__Point3dZValueArray;	/* eml2_2ForGsoap.h:593 */
-class resqml22__PointGeometry;	/* eml2_2ForGsoap.h:595 */
-class resqml22__SinglePointGeometry;	/* eml2_2ForGsoap.h:597 */
-class resqml22__Seismic2dCoordinates;	/* eml2_2ForGsoap.h:611 */
-class resqml22__Seismic3dCoordinates;	/* eml2_2ForGsoap.h:615 */
-class resqml22__AbstractRepresentation;	/* eml2_2ForGsoap.h:627 */
-class resqml22__Patch1d;	/* eml2_2ForGsoap.h:635 */
-class resqml22__PolylineSetPatch;	/* eml2_2ForGsoap.h:637 */
-class resqml22__RepresentationIdentitySet;	/* eml2_2ForGsoap.h:643 */
+class resqml22__AbstractRepresentation;	/* eml2_2ForGsoap.h:311 */
+class resqml22__Patch1d;	/* eml2_2ForGsoap.h:319 */
+class resqml22__PolylineSetPatch;	/* eml2_2ForGsoap.h:321 */
+class resqml22__RepresentationIdentitySet;	/* eml2_2ForGsoap.h:327 */
+class resqml22__ContactRepresentationReference;	/* eml2_2ForGsoap.h:345 */
+class resqml22__NonSealedContactRepresentationPart;	/* eml2_2ForGsoap.h:353 */
+class resqml22__SealedContactRepresentationPart;	/* eml2_2ForGsoap.h:367 */
+class resqml22__VolumeRegion;	/* eml2_2ForGsoap.h:377 */
+class resqml22__AbstractFeatureInterpretation;	/* eml2_2ForGsoap.h:383 */
+class resqml22__BinaryContactInterpretationPart;	/* eml2_2ForGsoap.h:391 */
+class resqml22__ContactElement;	/* eml2_2ForGsoap.h:397 */
+class resqml22__FeatureInterpretationSet;	/* eml2_2ForGsoap.h:405 */
+class resqml22__GeneticBoundaryBasedTimeInterval;	/* eml2_2ForGsoap.h:411 */
+class resqml22__GeologicTimeBasedTimeInterval;	/* eml2_2ForGsoap.h:417 */
+class resqml22__MultipleContactInterpretationPart;	/* eml2_2ForGsoap.h:423 */
+class resqml22__StratigraphicColumn;	/* eml2_2ForGsoap.h:429 */
+class resqml22__StratigraphicUnitDictionary;	/* eml2_2ForGsoap.h:435 */
+class resqml22__MdDatum;	/* eml2_2ForGsoap.h:447 */
+class resqml22__WellboreMarker;	/* eml2_2ForGsoap.h:461 */
+class resqml22__CellParentWindow;	/* eml2_2ForGsoap.h:495 */
+class resqml22__ColumnLayerParentWindow;	/* eml2_2ForGsoap.h:499 */
+class resqml22__ColumnLayerSubnodeTopology;	/* eml2_2ForGsoap.h:503 */
+class resqml22__IjkGpGridPatch;	/* eml2_2ForGsoap.h:517 */
+class resqml22__IjkParentWindow;	/* eml2_2ForGsoap.h:523 */
+class resqml22__LocalGridSet;	/* eml2_2ForGsoap.h:533 */
+class resqml22__SplitNodePatch;	/* eml2_2ForGsoap.h:545 */
+class resqml22__SubnodePatch;	/* eml2_2ForGsoap.h:547 */
+class resqml22__TruncationCellPatch;	/* eml2_2ForGsoap.h:555 */
+class resqml22__UnstructuredColumnLayerGpGridPatch;	/* eml2_2ForGsoap.h:561 */
+class resqml22__UnstructuredGpGridPatch;	/* eml2_2ForGsoap.h:567 */
+class resqml22__UnstructuredSubnodeTopology;	/* eml2_2ForGsoap.h:575 */
+class resqml22__AbstractParametricLineGeometry;	/* eml2_2ForGsoap.h:583 */
+class resqml22__AbstractPlaneGeometry;	/* eml2_2ForGsoap.h:585 */
+class resqml22__ParametricLineArray;	/* eml2_2ForGsoap.h:593 */
+class resqml22__ParametricLineFromRepresentationLatticeArray;	/* eml2_2ForGsoap.h:597 */
+class resqml22__Point2dExternalArray;	/* eml2_2ForGsoap.h:603 */
+class resqml22__Point3dExternalArray;	/* eml2_2ForGsoap.h:607 */
+class resqml22__Point3dFromRepresentationLatticeArray;	/* eml2_2ForGsoap.h:609 */
+class resqml22__Point3dLatticeArray;	/* eml2_2ForGsoap.h:611 */
+class resqml22__Point3dParametricArray;	/* eml2_2ForGsoap.h:615 */
+class resqml22__Point3dZValueArray;	/* eml2_2ForGsoap.h:617 */
+class resqml22__PointGeometry;	/* eml2_2ForGsoap.h:619 */
+class resqml22__SinglePointGeometry;	/* eml2_2ForGsoap.h:621 */
+class resqml22__Seismic2dCoordinates;	/* eml2_2ForGsoap.h:635 */
+class resqml22__Seismic3dCoordinates;	/* eml2_2ForGsoap.h:639 */
 class resqml22__AbstractFeature;	/* eml2_2ForGsoap.h:651 */
 class resqml22__RockVolumeFeatureDictionary;	/* eml2_2ForGsoap.h:663 */
 class resqml22__AbstractLocal3dCrs;	/* eml2_2ForGsoap.h:665 */
@@ -7639,39 +7639,39 @@ class witsml21__InterpretedGeologyInterval;	/* eml2_2ForGsoap.h:1913 */
 class witsml21__ShowEvaluation;	/* eml2_2ForGsoap.h:1921 */
 class witsml21__ShowEvaluationInterval;	/* eml2_2ForGsoap.h:1923 */
 class witsml21__WellboreGeology;	/* eml2_2ForGsoap.h:1925 */
-class resqml22__DeviationSurveyRepresentation;	/* eml2_2ForGsoap.h:315 */
-class resqml22__WellboreFrameRepresentation;	/* eml2_2ForGsoap.h:325 */
-class resqml22__WellboreInterpretation;	/* eml2_2ForGsoap.h:327 */
-class resqml22__WellboreInterpretationSet;	/* eml2_2ForGsoap.h:329 */
-class resqml22__WellboreTrajectoryRepresentation;	/* eml2_2ForGsoap.h:337 */
-class resqml22__AbstractSurfaceRepresentation;	/* eml2_2ForGsoap.h:345 */
-class resqml22__ContactPatch;	/* eml2_2ForGsoap.h:349 */
-class resqml22__EdgePatch;	/* eml2_2ForGsoap.h:353 */
-class resqml22__NodePatch;	/* eml2_2ForGsoap.h:357 */
-class resqml22__PointSetRepresentation;	/* eml2_2ForGsoap.h:369 */
-class resqml22__PolylineRepresentation;	/* eml2_2ForGsoap.h:371 */
-class resqml22__TrianglePatch;	/* eml2_2ForGsoap.h:379 */
-class resqml22__AbstractOrganizationInterpretation;	/* eml2_2ForGsoap.h:391 */
-class resqml22__BoundaryFeatureInterpretation;	/* eml2_2ForGsoap.h:399 */
-class resqml22__EarthModelInterpretation;	/* eml2_2ForGsoap.h:405 */
-class resqml22__GenericFeatureInterpretation;	/* eml2_2ForGsoap.h:415 */
-class resqml22__GeologicUnitInterpretation;	/* eml2_2ForGsoap.h:425 */
-class resqml22__AbstractGridGeometry;	/* eml2_2ForGsoap.h:451 */
-class resqml22__AbstractGridRepresentation;	/* eml2_2ForGsoap.h:453 */
-class resqml22__ColumnSubnodePatch;	/* eml2_2ForGsoap.h:481 */
-class resqml22__GridConnectionSetRepresentation;	/* eml2_2ForGsoap.h:489 */
-class resqml22__UniformSubnodePatch;	/* eml2_2ForGsoap.h:533 */
-class resqml22__VariableSubnodePatch;	/* eml2_2ForGsoap.h:553 */
-class resqml22__Graph2dRepresentation;	/* eml2_2ForGsoap.h:565 */
-class resqml22__HorizontalPlaneGeometry;	/* eml2_2ForGsoap.h:567 */
-class resqml22__ParametricLineFromRepresentationGeometry;	/* eml2_2ForGsoap.h:571 */
-class resqml22__ParametricLineGeometry;	/* eml2_2ForGsoap.h:575 */
-class resqml22__TiltedPlaneGeometry;	/* eml2_2ForGsoap.h:601 */
-class resqml22__Seismic2dPostStackRepresentation;	/* eml2_2ForGsoap.h:613 */
-class resqml22__PolylineSetRepresentation;	/* eml2_2ForGsoap.h:639 */
-class resqml22__RepresentationSetRepresentation;	/* eml2_2ForGsoap.h:645 */
-class resqml22__SubRepresentation;	/* eml2_2ForGsoap.h:647 */
-class resqml22__SubRepresentationPatch;	/* eml2_2ForGsoap.h:649 */
+class resqml22__PolylineSetRepresentation;	/* eml2_2ForGsoap.h:323 */
+class resqml22__RepresentationSetRepresentation;	/* eml2_2ForGsoap.h:329 */
+class resqml22__SubRepresentation;	/* eml2_2ForGsoap.h:331 */
+class resqml22__SubRepresentationPatch;	/* eml2_2ForGsoap.h:333 */
+class resqml22__AbstractSurfaceRepresentation;	/* eml2_2ForGsoap.h:339 */
+class resqml22__ContactPatch;	/* eml2_2ForGsoap.h:343 */
+class resqml22__EdgePatch;	/* eml2_2ForGsoap.h:347 */
+class resqml22__NodePatch;	/* eml2_2ForGsoap.h:351 */
+class resqml22__PointSetRepresentation;	/* eml2_2ForGsoap.h:363 */
+class resqml22__PolylineRepresentation;	/* eml2_2ForGsoap.h:365 */
+class resqml22__TrianglePatch;	/* eml2_2ForGsoap.h:373 */
+class resqml22__AbstractOrganizationInterpretation;	/* eml2_2ForGsoap.h:385 */
+class resqml22__BoundaryFeatureInterpretation;	/* eml2_2ForGsoap.h:393 */
+class resqml22__EarthModelInterpretation;	/* eml2_2ForGsoap.h:399 */
+class resqml22__GenericFeatureInterpretation;	/* eml2_2ForGsoap.h:409 */
+class resqml22__GeologicUnitInterpretation;	/* eml2_2ForGsoap.h:419 */
+class resqml22__DeviationSurveyRepresentation;	/* eml2_2ForGsoap.h:445 */
+class resqml22__WellboreFrameRepresentation;	/* eml2_2ForGsoap.h:455 */
+class resqml22__WellboreInterpretation;	/* eml2_2ForGsoap.h:457 */
+class resqml22__WellboreInterpretationSet;	/* eml2_2ForGsoap.h:459 */
+class resqml22__WellboreTrajectoryRepresentation;	/* eml2_2ForGsoap.h:467 */
+class resqml22__AbstractGridGeometry;	/* eml2_2ForGsoap.h:475 */
+class resqml22__AbstractGridRepresentation;	/* eml2_2ForGsoap.h:477 */
+class resqml22__ColumnSubnodePatch;	/* eml2_2ForGsoap.h:505 */
+class resqml22__GridConnectionSetRepresentation;	/* eml2_2ForGsoap.h:513 */
+class resqml22__UniformSubnodePatch;	/* eml2_2ForGsoap.h:557 */
+class resqml22__VariableSubnodePatch;	/* eml2_2ForGsoap.h:577 */
+class resqml22__Graph2dRepresentation;	/* eml2_2ForGsoap.h:589 */
+class resqml22__HorizontalPlaneGeometry;	/* eml2_2ForGsoap.h:591 */
+class resqml22__ParametricLineFromRepresentationGeometry;	/* eml2_2ForGsoap.h:595 */
+class resqml22__ParametricLineGeometry;	/* eml2_2ForGsoap.h:599 */
+class resqml22__TiltedPlaneGeometry;	/* eml2_2ForGsoap.h:625 */
+class resqml22__Seismic2dPostStackRepresentation;	/* eml2_2ForGsoap.h:637 */
 class resqml22__AbstractTechnicalFeature;	/* eml2_2ForGsoap.h:653 */
 class resqml22__BoundaryFeature;	/* eml2_2ForGsoap.h:655 */
 class resqml22__Model;	/* eml2_2ForGsoap.h:659 */
@@ -8066,34 +8066,34 @@ class gml__LengthType;	/* eml2_2ForGsoap.h:1671 */
 class gmd__AbstractDQ_USCOREPositionalAccuracy_USCOREType;	/* eml2_2ForGsoap.h:1719 */
 class witsml21__WellElevationCoord;	/* eml2_2ForGsoap.h:1809 */
 class witsml21__AzimuthRange;	/* eml2_2ForGsoap.h:1863 */
-class resqml22__BlockedWellboreRepresentation;	/* eml2_2ForGsoap.h:311 */
-class resqml22__SeismicWellboreFrameRepresentation;	/* eml2_2ForGsoap.h:319 */
-class resqml22__WellboreFeature;	/* eml2_2ForGsoap.h:323 */
-class resqml22__WellboreMarkerFrameRepresentation;	/* eml2_2ForGsoap.h:333 */
-class resqml22__AbstractSurfaceFrameworkRepresentation;	/* eml2_2ForGsoap.h:343 */
-class resqml22__Grid2dRepresentation;	/* eml2_2ForGsoap.h:355 */
-class resqml22__PlaneSetRepresentation;	/* eml2_2ForGsoap.h:367 */
-class resqml22__SealedVolumeFrameworkRepresentation;	/* eml2_2ForGsoap.h:377 */
-class resqml22__TriangulatedSetRepresentation;	/* eml2_2ForGsoap.h:381 */
-class resqml22__AbstractStratigraphicOrganizationInterpretation;	/* eml2_2ForGsoap.h:393 */
-class resqml22__FaultInterpretation;	/* eml2_2ForGsoap.h:407 */
-class resqml22__FluidBoundaryInterpretation;	/* eml2_2ForGsoap.h:413 */
-class resqml22__GeobodyBoundaryInterpretation;	/* eml2_2ForGsoap.h:419 */
-class resqml22__GeobodyInterpretation;	/* eml2_2ForGsoap.h:421 */
-struct __resqml22__HorizonInterpretation_sequence;	/* eml2_2ForGsoap.h:45939 */
-class resqml22__HorizonInterpretation;	/* eml2_2ForGsoap.h:427 */
-class resqml22__RockFluidOrganizationInterpretation;	/* eml2_2ForGsoap.h:431 */
-class resqml22__RockFluidUnitInterpretation;	/* eml2_2ForGsoap.h:433 */
-class resqml22__StratigraphicUnitInterpretation;	/* eml2_2ForGsoap.h:443 */
-class resqml22__StructuralOrganizationInterpretation;	/* eml2_2ForGsoap.h:445 */
-class resqml22__AbstractColumnLayerGridGeometry;	/* eml2_2ForGsoap.h:447 */
-class resqml22__AbstractColumnLayerGridRepresentation;	/* eml2_2ForGsoap.h:449 */
-class resqml22__AbstractTruncatedColumnLayerGridRepresentation;	/* eml2_2ForGsoap.h:457 */
-class resqml22__GpGridRepresentation;	/* eml2_2ForGsoap.h:487 */
-class resqml22__UnstructuredGridGeometry;	/* eml2_2ForGsoap.h:545 */
-class resqml22__UnstructuredGridRepresentation;	/* eml2_2ForGsoap.h:549 */
-class resqml22__AbstractSeismicSurveyFeature;	/* eml2_2ForGsoap.h:607 */
-class resqml22__Seismic3dPostStackRepresentation;	/* eml2_2ForGsoap.h:617 */
+class resqml22__AbstractSurfaceFrameworkRepresentation;	/* eml2_2ForGsoap.h:337 */
+class resqml22__Grid2dRepresentation;	/* eml2_2ForGsoap.h:349 */
+class resqml22__PlaneSetRepresentation;	/* eml2_2ForGsoap.h:361 */
+class resqml22__SealedVolumeFrameworkRepresentation;	/* eml2_2ForGsoap.h:371 */
+class resqml22__TriangulatedSetRepresentation;	/* eml2_2ForGsoap.h:375 */
+class resqml22__AbstractStratigraphicOrganizationInterpretation;	/* eml2_2ForGsoap.h:387 */
+class resqml22__FaultInterpretation;	/* eml2_2ForGsoap.h:401 */
+class resqml22__FluidBoundaryInterpretation;	/* eml2_2ForGsoap.h:407 */
+class resqml22__GeobodyBoundaryInterpretation;	/* eml2_2ForGsoap.h:413 */
+class resqml22__GeobodyInterpretation;	/* eml2_2ForGsoap.h:415 */
+struct __resqml22__HorizonInterpretation_sequence;	/* eml2_2ForGsoap.h:45611 */
+class resqml22__HorizonInterpretation;	/* eml2_2ForGsoap.h:421 */
+class resqml22__RockFluidOrganizationInterpretation;	/* eml2_2ForGsoap.h:425 */
+class resqml22__RockFluidUnitInterpretation;	/* eml2_2ForGsoap.h:427 */
+class resqml22__StratigraphicUnitInterpretation;	/* eml2_2ForGsoap.h:437 */
+class resqml22__StructuralOrganizationInterpretation;	/* eml2_2ForGsoap.h:439 */
+class resqml22__BlockedWellboreRepresentation;	/* eml2_2ForGsoap.h:441 */
+class resqml22__SeismicWellboreFrameRepresentation;	/* eml2_2ForGsoap.h:449 */
+class resqml22__WellboreFeature;	/* eml2_2ForGsoap.h:453 */
+class resqml22__WellboreMarkerFrameRepresentation;	/* eml2_2ForGsoap.h:463 */
+class resqml22__AbstractColumnLayerGridGeometry;	/* eml2_2ForGsoap.h:471 */
+class resqml22__AbstractColumnLayerGridRepresentation;	/* eml2_2ForGsoap.h:473 */
+class resqml22__AbstractTruncatedColumnLayerGridRepresentation;	/* eml2_2ForGsoap.h:481 */
+class resqml22__GpGridRepresentation;	/* eml2_2ForGsoap.h:511 */
+class resqml22__UnstructuredGridGeometry;	/* eml2_2ForGsoap.h:569 */
+class resqml22__UnstructuredGridRepresentation;	/* eml2_2ForGsoap.h:573 */
+class resqml22__AbstractSeismicSurveyFeature;	/* eml2_2ForGsoap.h:631 */
+class resqml22__Seismic3dPostStackRepresentation;	/* eml2_2ForGsoap.h:641 */
 class resqml22__CulturalFeature;	/* eml2_2ForGsoap.h:657 */
 class eml22__AuthorityQualifiedName;	/* eml2_2ForGsoap.h:693 */
 class eml22__FloatingPointConstantArray;	/* eml2_2ForGsoap.h:709 */
@@ -8108,20 +8108,20 @@ class eml22__StringMeasure;	/* eml2_2ForGsoap.h:737 */
 class gml__IdentifiedObjectType;	/* eml2_2ForGsoap.h:1611 */
 class witsml21__GeochronologicalUnit;	/* eml2_2ForGsoap.h:1909 */
 class witsml21__LithostratigraphicUnit;	/* eml2_2ForGsoap.h:1919 */
-class resqml22__NonSealedSurfaceFrameworkRepresentation;	/* eml2_2ForGsoap.h:361 */
-class resqml22__SealedSurfaceFrameworkRepresentation;	/* eml2_2ForGsoap.h:375 */
-class resqml22__StratigraphicColumnRankInterpretation;	/* eml2_2ForGsoap.h:437 */
-class resqml22__StratigraphicOccurrenceInterpretation;	/* eml2_2ForGsoap.h:439 */
-class resqml22__IjkGridGeometry;	/* eml2_2ForGsoap.h:495 */
-class resqml22__IjkGridRepresentation;	/* eml2_2ForGsoap.h:497 */
-class resqml22__TruncatedIjkGridRepresentation;	/* eml2_2ForGsoap.h:527 */
-class resqml22__TruncatedUnstructuredColumnLayerGridRepresentation;	/* eml2_2ForGsoap.h:529 */
-class resqml22__UnstructuredColumnLayerGridGeometry;	/* eml2_2ForGsoap.h:539 */
-class resqml22__UnstructuredColumnLayerGridRepresentation;	/* eml2_2ForGsoap.h:541 */
-class resqml22__AbstractSeismicLineFeature;	/* eml2_2ForGsoap.h:605 */
-class resqml22__SeismicLatticeFeature;	/* eml2_2ForGsoap.h:619 */
-class resqml22__SeismicLatticeSetFeature;	/* eml2_2ForGsoap.h:621 */
-class resqml22__SeismicLineSetFeature;	/* eml2_2ForGsoap.h:623 */
+class resqml22__NonSealedSurfaceFrameworkRepresentation;	/* eml2_2ForGsoap.h:355 */
+class resqml22__SealedSurfaceFrameworkRepresentation;	/* eml2_2ForGsoap.h:369 */
+class resqml22__StratigraphicColumnRankInterpretation;	/* eml2_2ForGsoap.h:431 */
+class resqml22__StratigraphicOccurrenceInterpretation;	/* eml2_2ForGsoap.h:433 */
+class resqml22__IjkGridGeometry;	/* eml2_2ForGsoap.h:519 */
+class resqml22__IjkGridRepresentation;	/* eml2_2ForGsoap.h:521 */
+class resqml22__TruncatedIjkGridRepresentation;	/* eml2_2ForGsoap.h:551 */
+class resqml22__TruncatedUnstructuredColumnLayerGridRepresentation;	/* eml2_2ForGsoap.h:553 */
+class resqml22__UnstructuredColumnLayerGridGeometry;	/* eml2_2ForGsoap.h:563 */
+class resqml22__UnstructuredColumnLayerGridRepresentation;	/* eml2_2ForGsoap.h:565 */
+class resqml22__AbstractSeismicLineFeature;	/* eml2_2ForGsoap.h:629 */
+class resqml22__SeismicLatticeFeature;	/* eml2_2ForGsoap.h:643 */
+class resqml22__SeismicLatticeSetFeature;	/* eml2_2ForGsoap.h:645 */
+class resqml22__SeismicLineSetFeature;	/* eml2_2ForGsoap.h:647 */
 class eml22__DoubleExternalArray;	/* eml2_2ForGsoap.h:703 */
 class eml22__FloatExternalArray;	/* eml2_2ForGsoap.h:707 */
 class gml__AbstractCRSType;	/* eml2_2ForGsoap.h:1609 */
@@ -8131,8 +8131,8 @@ class gml__AbstractDatumType;	/* eml2_2ForGsoap.h:1657 */
 class gml__PrimeMeridianType;	/* eml2_2ForGsoap.h:1661 */
 class gml__EllipsoidType;	/* eml2_2ForGsoap.h:1669 */
 class gml__AbstractCoordinateOperationType;	/* eml2_2ForGsoap.h:1681 */
-class resqml22__CmpLineFeature;	/* eml2_2ForGsoap.h:609 */
-class resqml22__ShotPointLineFeature;	/* eml2_2ForGsoap.h:625 */
+class resqml22__CmpLineFeature;	/* eml2_2ForGsoap.h:633 */
+class resqml22__ShotPointLineFeature;	/* eml2_2ForGsoap.h:649 */
 union _gml__union_GeodeticCRSType;	/* eml2_2ForGsoap.h:48883 */
 class gml__GeodeticCRSType;	/* eml2_2ForGsoap.h:1607 */
 class gml__EllipsoidalCSType;	/* eml2_2ForGsoap.h:1637 */
@@ -8380,8 +8380,527 @@ class SOAP_CMAC resqml22__MinMax {
 #endif
 
 /* eml2_2ForGsoap.h:313 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIdentity
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIdentity (-37)
+/* complex XML schema type 'resqml22:ElementIdentity': */
+class SOAP_CMAC resqml22__ElementIdentity {
+      public:
+        /// Optional element 'resqml22:ElementIndices' of XML schema type 'eml22:AbstractIntegerArray'
+        eml22__AbstractIntegerArray *ElementIndices;
+        /// Required element 'resqml22:IdentityKind' of XML schema type 'resqml22:IdentityKind'
+        enum resqml22__IdentityKind IdentityKind;
+        /// Required element 'resqml22:IndexableElement' of XML schema type 'resqml22:IndexableElement'
+        enum resqml22__IndexableElement IndexableElement;
+        /// Required element 'resqml22:Representation' of XML schema type 'eml22:DataObjectReference'
+        eml22__DataObjectReference *Representation;
+        /// Optional element 'resqml22:ToTimeIndex' of XML schema type 'eml22:TimeIndex'
+        eml22__TimeIndex *ToTimeIndex;
+        /// Optional element 'resqml22:FromTimeIndex' of XML schema type 'eml22:TimeIndex'
+        eml22__TimeIndex *FromTimeIndex;
+        /// Context that manages this object
+        struct soap *soap;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIdentity
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIdentity; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__ElementIdentity, default initialized and not managed by a soap context
+        virtual resqml22__ElementIdentity *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__ElementIdentity); }
+      public:
+        /// Constructor with default initializations
+        resqml22__ElementIdentity() : ElementIndices(), IdentityKind(), IndexableElement(), Representation(), ToTimeIndex(), FromTimeIndex(), soap() { }
+        virtual ~resqml22__ElementIdentity() { }
+        /// Friend allocator used by soap_new_resqml22__ElementIdentity(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__ElementIdentity * SOAP_FMAC2 soap_instantiate_resqml22__ElementIdentity(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:18053 */
+#ifndef SOAP_TYPE_gsoap_eml2_2___resqml22__ElementIndices_sequence
+#define SOAP_TYPE_gsoap_eml2_2___resqml22__ElementIndices_sequence (-1371)
+/* Wrapper: */
+struct SOAP_CMAC __resqml22__ElementIndices_sequence {
+      public:
+        /** Required element 'resqml22:IndexableElement' of XML schema type 'resqml22:IndexableElement' */
+        enum resqml22__IndexableElement IndexableElement;
+        /** Required element 'resqml22:Indices' of XML schema type 'eml22:AbstractIntegerArray' */
+        eml22__AbstractIntegerArray *Indices;
+        /** Optional element 'resqml22:SupportingRepresentationIndex' of XML schema type 'eml22:AbstractIntegerArray' */
+        eml22__AbstractIntegerArray *SupportingRepresentationIndex;
+      public:
+        /** Return unique type id SOAP_TYPE_gsoap_eml2_2___resqml22__ElementIndices_sequence */
+        long soap_type() const { return SOAP_TYPE_gsoap_eml2_2___resqml22__ElementIndices_sequence; }
+        /** Constructor with member initializations */
+        __resqml22__ElementIndices_sequence() : IndexableElement(), Indices(), SupportingRepresentationIndex() { }
+        /** Friend allocator */
+        friend SOAP_FMAC1 __resqml22__ElementIndices_sequence * SOAP_FMAC2 soap_instantiate___resqml22__ElementIndices_sequence(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:315 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIndices
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIndices (-38)
+/* complex XML schema type 'resqml22:ElementIndices': */
+class SOAP_CMAC resqml22__ElementIndices {
+      public:
+        struct __resqml22__ElementIndices_sequence *__ElementIndices_sequence;
+        /// Context that manages this object
+        struct soap *soap;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIndices
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIndices; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__ElementIndices, default initialized and not managed by a soap context
+        virtual resqml22__ElementIndices *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__ElementIndices); }
+      public:
+        /// Constructor with default initializations
+        resqml22__ElementIndices() : __ElementIndices_sequence(), soap() { }
+        virtual ~resqml22__ElementIndices() { }
+        /// Friend allocator used by soap_new_resqml22__ElementIndices(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__ElementIndices * SOAP_FMAC2 soap_instantiate_resqml22__ElementIndices(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:317 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Patch
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Patch (-39)
+/* complex XML schema type 'resqml22:Patch': */
+class SOAP_CMAC resqml22__Patch {
+      public:
+        /// Context that manages this object
+        struct soap *soap;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__Patch
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__Patch; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__Patch, default initialized and not managed by a soap context
+        virtual resqml22__Patch *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__Patch); }
+      public:
+        /// Constructor with default initializations
+        resqml22__Patch() : soap() { }
+        virtual ~resqml22__Patch() { }
+        /// Friend allocator used by soap_new_resqml22__Patch(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__Patch * SOAP_FMAC2 soap_instantiate_resqml22__Patch(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:325 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentity
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentity (-43)
+/* complex XML schema type 'resqml22:RepresentationIdentity': */
+class SOAP_CMAC resqml22__RepresentationIdentity {
+      public:
+        /// Required element 'resqml22:IdenticalElementCount' of XML schema type 'xsd:unsignedLong'
+        ULONG64 IdenticalElementCount;
+        /// Optional element 'resqml22:AdditionalGridTopology' of XML schema type 'resqml22:AdditionalGridTopology'
+        resqml22__AdditionalGridTopology *AdditionalGridTopology;
+        /// Required element 'resqml22:ElementIdentity' of XML schema type 'resqml22:ElementIdentity'
+        std::vector<resqml22__ElementIdentity *> ElementIdentity;
+        /// Context that manages this object
+        struct soap *soap;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentity
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentity; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__RepresentationIdentity, default initialized and not managed by a soap context
+        virtual resqml22__RepresentationIdentity *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__RepresentationIdentity); }
+      public:
+        /// Constructor with default initializations
+        resqml22__RepresentationIdentity() : IdenticalElementCount(), AdditionalGridTopology(), ElementIdentity(), soap() { }
+        virtual ~resqml22__RepresentationIdentity() { }
+        /// Friend allocator used by soap_new_resqml22__RepresentationIdentity(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__RepresentationIdentity * SOAP_FMAC2 soap_instantiate_resqml22__RepresentationIdentity(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:335 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactRepresentationPart
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactRepresentationPart (-48)
+/* complex XML schema type 'resqml22:AbstractContactRepresentationPart': */
+class SOAP_CMAC resqml22__AbstractContactRepresentationPart {
+      public:
+        /// Required element 'resqml22:Index' of XML schema type 'xsd:unsignedLong'
+        ULONG64 Index;
+        /// Context that manages this object
+        struct soap *soap;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactRepresentationPart
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactRepresentationPart; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__AbstractContactRepresentationPart, default initialized and not managed by a soap context
+        virtual resqml22__AbstractContactRepresentationPart *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__AbstractContactRepresentationPart); }
+      public:
+        /// Constructor with default initializations
+        resqml22__AbstractContactRepresentationPart() : Index(), soap() { }
+        virtual ~resqml22__AbstractContactRepresentationPart() { }
+        /// Friend allocator used by soap_new_resqml22__AbstractContactRepresentationPart(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__AbstractContactRepresentationPart * SOAP_FMAC2 soap_instantiate_resqml22__AbstractContactRepresentationPart(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:341 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactIdentity
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactIdentity (-51)
+/* complex XML schema type 'resqml22:ContactIdentity': */
+class SOAP_CMAC resqml22__ContactIdentity {
+      public:
+        /// Required element 'resqml22:IdentityKind' of XML schema type 'resqml22:IdentityKind'
+        enum resqml22__IdentityKind IdentityKind;
+        /// Required element 'resqml22:ListOfContactRepresentations' of XML schema type 'eml22:AbstractIntegerArray'
+        eml22__AbstractIntegerArray *ListOfContactRepresentations;
+        /// Optional element 'resqml22:ListOfIdenticalNodes' of XML schema type 'eml22:AbstractIntegerArray'
+        eml22__AbstractIntegerArray *ListOfIdenticalNodes;
+        /// Context that manages this object
+        struct soap *soap;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__ContactIdentity
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__ContactIdentity; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__ContactIdentity, default initialized and not managed by a soap context
+        virtual resqml22__ContactIdentity *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__ContactIdentity); }
+      public:
+        /// Constructor with default initializations
+        resqml22__ContactIdentity() : IdentityKind(), ListOfContactRepresentations(), ListOfIdenticalNodes(), soap() { }
+        virtual ~resqml22__ContactIdentity() { }
+        /// Friend allocator used by soap_new_resqml22__ContactIdentity(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__ContactIdentity * SOAP_FMAC2 soap_instantiate_resqml22__ContactIdentity(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:357 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__OrientedMacroFace
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__OrientedMacroFace (-59)
+/* complex XML schema type 'resqml22:OrientedMacroFace': */
+class SOAP_CMAC resqml22__OrientedMacroFace {
+      public:
+        /// Required element 'resqml22:PatchIndexOfRepresentation' of XML schema type 'xsd:unsignedLong'
+        ULONG64 PatchIndexOfRepresentation;
+        /// Required element 'resqml22:RepresentationIndex' of XML schema type 'xsd:unsignedLong'
+        ULONG64 RepresentationIndex;
+        /// Required element 'resqml22:SideIsPlus' of XML schema type 'xsd:boolean'
+        bool SideIsPlus;
+        /// Context that manages this object
+        struct soap *soap;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__OrientedMacroFace
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__OrientedMacroFace; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__OrientedMacroFace, default initialized and not managed by a soap context
+        virtual resqml22__OrientedMacroFace *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__OrientedMacroFace); }
+      public:
+        /// Constructor with default initializations
+        resqml22__OrientedMacroFace() : PatchIndexOfRepresentation(), RepresentationIndex(), SideIsPlus(), soap() { }
+        virtual ~resqml22__OrientedMacroFace() { }
+        /// Friend allocator used by soap_new_resqml22__OrientedMacroFace(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__OrientedMacroFace * SOAP_FMAC2 soap_instantiate_resqml22__OrientedMacroFace(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:359 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PatchBoundaries
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__PatchBoundaries (-60)
+/* complex XML schema type 'resqml22:PatchBoundaries': */
+class SOAP_CMAC resqml22__PatchBoundaries {
+      public:
+        /// Required element 'resqml22:ReferencedPatch' of XML schema type 'xsd:unsignedLong'
+        ULONG64 ReferencedPatch;
+        /// Optional element 'resqml22:OuterRing' of XML schema type 'eml22:DataObjectReference'
+        eml22__DataObjectReference *OuterRing;
+        /// Optional element 'resqml22:InnerRing' of XML schema type 'eml22:DataObjectReference'
+        std::vector<eml22__DataObjectReference *> InnerRing;
+        /// Context that manages this object
+        struct soap *soap;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__PatchBoundaries
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__PatchBoundaries; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__PatchBoundaries, default initialized and not managed by a soap context
+        virtual resqml22__PatchBoundaries *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__PatchBoundaries); }
+      public:
+        /// Constructor with default initializations
+        resqml22__PatchBoundaries() : ReferencedPatch(), OuterRing(), InnerRing(), soap() { }
+        virtual ~resqml22__PatchBoundaries() { }
+        /// Friend allocator used by soap_new_resqml22__PatchBoundaries(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__PatchBoundaries * SOAP_FMAC2 soap_instantiate_resqml22__PatchBoundaries(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:379 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeShell
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeShell (-70)
+/* complex XML schema type 'resqml22:VolumeShell': */
+class SOAP_CMAC resqml22__VolumeShell {
+      public:
+        /// Required element 'resqml22:ShellUid' of XML schema type 'eml22:String64'
+        std::string ShellUid;
+        /// Required element 'resqml22:MacroFaces' of XML schema type 'resqml22:OrientedMacroFace'
+        std::vector<resqml22__OrientedMacroFace *> MacroFaces;
+        /// Context that manages this object
+        struct soap *soap;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeShell
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeShell; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__VolumeShell, default initialized and not managed by a soap context
+        virtual resqml22__VolumeShell *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__VolumeShell); }
+      public:
+        /// Constructor with default initializations
+        resqml22__VolumeShell() : ShellUid(), MacroFaces(), soap() { }
+        virtual ~resqml22__VolumeShell() { }
+        /// Friend allocator used by soap_new_resqml22__VolumeShell(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__VolumeShell * SOAP_FMAC2 soap_instantiate_resqml22__VolumeShell(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:381 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactInterpretationPart
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactInterpretationPart (-71)
+/* complex XML schema type 'resqml22:AbstractContactInterpretationPart': */
+class SOAP_CMAC resqml22__AbstractContactInterpretationPart {
+      public:
+        /// Optional element 'resqml22:PartOf' of XML schema type 'eml22:DataObjectReference'
+        eml22__DataObjectReference *PartOf;
+        /// Context that manages this object
+        struct soap *soap;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactInterpretationPart
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactInterpretationPart; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__AbstractContactInterpretationPart, default initialized and not managed by a soap context
+        virtual resqml22__AbstractContactInterpretationPart *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__AbstractContactInterpretationPart); }
+      public:
+        /// Constructor with default initializations
+        resqml22__AbstractContactInterpretationPart() : PartOf(), soap() { }
+        virtual ~resqml22__AbstractContactInterpretationPart() { }
+        /// Friend allocator used by soap_new_resqml22__AbstractContactInterpretationPart(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__AbstractContactInterpretationPart * SOAP_FMAC2 soap_instantiate_resqml22__AbstractContactInterpretationPart(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:389 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractTimeInterval
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractTimeInterval (-75)
+/* complex XML schema type 'resqml22:AbstractTimeInterval': */
+class SOAP_CMAC resqml22__AbstractTimeInterval {
+      public:
+        /// Context that manages this object
+        struct soap *soap;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractTimeInterval
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractTimeInterval; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__AbstractTimeInterval, default initialized and not managed by a soap context
+        virtual resqml22__AbstractTimeInterval *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__AbstractTimeInterval); }
+      public:
+        /// Constructor with default initializations
+        resqml22__AbstractTimeInterval() : soap() { }
+        virtual ~resqml22__AbstractTimeInterval() { }
+        /// Friend allocator used by soap_new_resqml22__AbstractTimeInterval(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__AbstractTimeInterval * SOAP_FMAC2 soap_instantiate_resqml22__AbstractTimeInterval(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:395 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretationPlusItsRank
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretationPlusItsRank (-78)
+/* complex XML schema type 'resqml22:BoundaryFeatureInterpretationPlusItsRank': */
+class SOAP_CMAC resqml22__BoundaryFeatureInterpretationPlusItsRank {
+      public:
+        /// Optional element 'resqml22:StratigraphicRank' of XML schema type 'xsd:unsignedLong'
+        ULONG64 *StratigraphicRank;
+        /// Optional element 'resqml22:BoundaryFeatureInterpretation' of XML schema type 'eml22:DataObjectReference'
+        eml22__DataObjectReference *BoundaryFeatureInterpretation;
+        /// Optional element 'resqml22:FaultCollection' of XML schema type 'resqml22:FeatureInterpretationSet'
+        resqml22__FeatureInterpretationSet *FaultCollection;
+        /// Context that manages this object
+        struct soap *soap;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretationPlusItsRank
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretationPlusItsRank; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__BoundaryFeatureInterpretationPlusItsRank, default initialized and not managed by a soap context
+        virtual resqml22__BoundaryFeatureInterpretationPlusItsRank *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__BoundaryFeatureInterpretationPlusItsRank); }
+      public:
+        /// Constructor with default initializations
+        resqml22__BoundaryFeatureInterpretationPlusItsRank() : StratigraphicRank(), BoundaryFeatureInterpretation(), FaultCollection(), soap() { }
+        virtual ~resqml22__BoundaryFeatureInterpretationPlusItsRank() { }
+        /// Friend allocator used by soap_new_resqml22__BoundaryFeatureInterpretationPlusItsRank(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__BoundaryFeatureInterpretationPlusItsRank * SOAP_FMAC2 soap_instantiate_resqml22__BoundaryFeatureInterpretationPlusItsRank(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:403 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__FaultThrow
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__FaultThrow (-82)
+/* complex XML schema type 'resqml22:FaultThrow': */
+class SOAP_CMAC resqml22__FaultThrow {
+      public:
+        /// Required element 'resqml22:Throw' of XML schema type 'resqml22:ThrowKindExt'
+        std::vector<std::string> Throw;
+        /// Optional element 'resqml22:HasOccurredDuring' of XML schema type 'resqml22:AbstractTimeInterval'
+        resqml22__AbstractTimeInterval *HasOccurredDuring;
+        /// Context that manages this object
+        struct soap *soap;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__FaultThrow
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__FaultThrow; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__FaultThrow, default initialized and not managed by a soap context
+        virtual resqml22__FaultThrow *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__FaultThrow); }
+      public:
+        /// Constructor with default initializations
+        resqml22__FaultThrow() : Throw(), HasOccurredDuring(), soap() { }
+        virtual ~resqml22__FaultThrow() { }
+        /// Friend allocator used by soap_new_resqml22__FaultThrow(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__FaultThrow * SOAP_FMAC2 soap_instantiate_resqml22__FaultThrow(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:443 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__CorrectionInformation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__CorrectionInformation (-37)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__CorrectionInformation (-102)
 /* complex XML schema type 'resqml22:CorrectionInformation': */
 class SOAP_CMAC resqml22__CorrectionInformation {
       public:
@@ -8417,9 +8936,9 @@ class SOAP_CMAC resqml22__CorrectionInformation {
 };
 #endif
 
-/* eml2_2ForGsoap.h:321 */
+/* eml2_2ForGsoap.h:451 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__TvdInformation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__TvdInformation (-41)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__TvdInformation (-106)
 /* complex XML schema type 'resqml22:TvdInformation': */
 class SOAP_CMAC resqml22__TvdInformation {
       public:
@@ -8459,9 +8978,9 @@ class SOAP_CMAC resqml22__TvdInformation {
 };
 #endif
 
-/* eml2_2ForGsoap.h:335 */
+/* eml2_2ForGsoap.h:465 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreTrajectoryParentIntersection
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreTrajectoryParentIntersection (-48)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreTrajectoryParentIntersection (-113)
 /* complex XML schema type 'resqml22:WellboreTrajectoryParentIntersection': */
 class SOAP_CMAC resqml22__WellboreTrajectoryParentIntersection {
       public:
@@ -8499,9 +9018,9 @@ class SOAP_CMAC resqml22__WellboreTrajectoryParentIntersection {
 };
 #endif
 
-/* eml2_2ForGsoap.h:339 */
+/* eml2_2ForGsoap.h:469 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WitsmlWellWellbore
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WitsmlWellWellbore (-50)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WitsmlWellWellbore (-115)
 /* complex XML schema type 'resqml22:WitsmlWellWellbore': */
 class SOAP_CMAC resqml22__WitsmlWellWellbore {
       public:
@@ -8537,351 +9056,9 @@ class SOAP_CMAC resqml22__WitsmlWellWellbore {
 };
 #endif
 
-/* eml2_2ForGsoap.h:341 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactRepresentationPart
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactRepresentationPart (-51)
-/* complex XML schema type 'resqml22:AbstractContactRepresentationPart': */
-class SOAP_CMAC resqml22__AbstractContactRepresentationPart {
-      public:
-        /// Required element 'resqml22:Index' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Index;
-        /// Context that manages this object
-        struct soap *soap;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactRepresentationPart
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactRepresentationPart; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__AbstractContactRepresentationPart, default initialized and not managed by a soap context
-        virtual resqml22__AbstractContactRepresentationPart *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__AbstractContactRepresentationPart); }
-      public:
-        /// Constructor with default initializations
-        resqml22__AbstractContactRepresentationPart() : Index(), soap() { }
-        virtual ~resqml22__AbstractContactRepresentationPart() { }
-        /// Friend allocator used by soap_new_resqml22__AbstractContactRepresentationPart(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__AbstractContactRepresentationPart * SOAP_FMAC2 soap_instantiate_resqml22__AbstractContactRepresentationPart(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:347 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactIdentity
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactIdentity (-54)
-/* complex XML schema type 'resqml22:ContactIdentity': */
-class SOAP_CMAC resqml22__ContactIdentity {
-      public:
-        /// Required element 'resqml22:IdentityKind' of XML schema type 'resqml22:IdentityKind'
-        enum resqml22__IdentityKind IdentityKind;
-        /// Required element 'resqml22:ListOfContactRepresentations' of XML schema type 'eml22:AbstractIntegerArray'
-        eml22__AbstractIntegerArray *ListOfContactRepresentations;
-        /// Optional element 'resqml22:ListOfIdenticalNodes' of XML schema type 'eml22:AbstractIntegerArray'
-        eml22__AbstractIntegerArray *ListOfIdenticalNodes;
-        /// Context that manages this object
-        struct soap *soap;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__ContactIdentity
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__ContactIdentity; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__ContactIdentity, default initialized and not managed by a soap context
-        virtual resqml22__ContactIdentity *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__ContactIdentity); }
-      public:
-        /// Constructor with default initializations
-        resqml22__ContactIdentity() : IdentityKind(), ListOfContactRepresentations(), ListOfIdenticalNodes(), soap() { }
-        virtual ~resqml22__ContactIdentity() { }
-        /// Friend allocator used by soap_new_resqml22__ContactIdentity(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__ContactIdentity * SOAP_FMAC2 soap_instantiate_resqml22__ContactIdentity(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:363 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__OrientedMacroFace
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__OrientedMacroFace (-62)
-/* complex XML schema type 'resqml22:OrientedMacroFace': */
-class SOAP_CMAC resqml22__OrientedMacroFace {
-      public:
-        /// Required element 'resqml22:PatchIndexOfRepresentation' of XML schema type 'xsd:unsignedLong'
-        ULONG64 PatchIndexOfRepresentation;
-        /// Required element 'resqml22:RepresentationIndex' of XML schema type 'xsd:unsignedLong'
-        ULONG64 RepresentationIndex;
-        /// Required element 'resqml22:SideIsPlus' of XML schema type 'xsd:boolean'
-        bool SideIsPlus;
-        /// Context that manages this object
-        struct soap *soap;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__OrientedMacroFace
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__OrientedMacroFace; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__OrientedMacroFace, default initialized and not managed by a soap context
-        virtual resqml22__OrientedMacroFace *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__OrientedMacroFace); }
-      public:
-        /// Constructor with default initializations
-        resqml22__OrientedMacroFace() : PatchIndexOfRepresentation(), RepresentationIndex(), SideIsPlus(), soap() { }
-        virtual ~resqml22__OrientedMacroFace() { }
-        /// Friend allocator used by soap_new_resqml22__OrientedMacroFace(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__OrientedMacroFace * SOAP_FMAC2 soap_instantiate_resqml22__OrientedMacroFace(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:365 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PatchBoundaries
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__PatchBoundaries (-63)
-/* complex XML schema type 'resqml22:PatchBoundaries': */
-class SOAP_CMAC resqml22__PatchBoundaries {
-      public:
-        /// Required element 'resqml22:ReferencedPatch' of XML schema type 'xsd:unsignedLong'
-        ULONG64 ReferencedPatch;
-        /// Optional element 'resqml22:OuterRing' of XML schema type 'eml22:DataObjectReference'
-        eml22__DataObjectReference *OuterRing;
-        /// Optional element 'resqml22:InnerRing' of XML schema type 'eml22:DataObjectReference'
-        std::vector<eml22__DataObjectReference *> InnerRing;
-        /// Context that manages this object
-        struct soap *soap;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__PatchBoundaries
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__PatchBoundaries; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__PatchBoundaries, default initialized and not managed by a soap context
-        virtual resqml22__PatchBoundaries *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__PatchBoundaries); }
-      public:
-        /// Constructor with default initializations
-        resqml22__PatchBoundaries() : ReferencedPatch(), OuterRing(), InnerRing(), soap() { }
-        virtual ~resqml22__PatchBoundaries() { }
-        /// Friend allocator used by soap_new_resqml22__PatchBoundaries(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__PatchBoundaries * SOAP_FMAC2 soap_instantiate_resqml22__PatchBoundaries(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:385 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeShell
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeShell (-73)
-/* complex XML schema type 'resqml22:VolumeShell': */
-class SOAP_CMAC resqml22__VolumeShell {
-      public:
-        /// Required element 'resqml22:ShellUid' of XML schema type 'eml22:String64'
-        std::string ShellUid;
-        /// Required element 'resqml22:MacroFaces' of XML schema type 'resqml22:OrientedMacroFace'
-        std::vector<resqml22__OrientedMacroFace *> MacroFaces;
-        /// Context that manages this object
-        struct soap *soap;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeShell
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeShell; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__VolumeShell, default initialized and not managed by a soap context
-        virtual resqml22__VolumeShell *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__VolumeShell); }
-      public:
-        /// Constructor with default initializations
-        resqml22__VolumeShell() : ShellUid(), MacroFaces(), soap() { }
-        virtual ~resqml22__VolumeShell() { }
-        /// Friend allocator used by soap_new_resqml22__VolumeShell(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__VolumeShell * SOAP_FMAC2 soap_instantiate_resqml22__VolumeShell(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:387 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactInterpretationPart
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactInterpretationPart (-74)
-/* complex XML schema type 'resqml22:AbstractContactInterpretationPart': */
-class SOAP_CMAC resqml22__AbstractContactInterpretationPart {
-      public:
-        /// Optional element 'resqml22:PartOf' of XML schema type 'eml22:DataObjectReference'
-        eml22__DataObjectReference *PartOf;
-        /// Context that manages this object
-        struct soap *soap;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactInterpretationPart
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactInterpretationPart; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__AbstractContactInterpretationPart, default initialized and not managed by a soap context
-        virtual resqml22__AbstractContactInterpretationPart *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__AbstractContactInterpretationPart); }
-      public:
-        /// Constructor with default initializations
-        resqml22__AbstractContactInterpretationPart() : PartOf(), soap() { }
-        virtual ~resqml22__AbstractContactInterpretationPart() { }
-        /// Friend allocator used by soap_new_resqml22__AbstractContactInterpretationPart(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__AbstractContactInterpretationPart * SOAP_FMAC2 soap_instantiate_resqml22__AbstractContactInterpretationPart(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:395 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractTimeInterval
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractTimeInterval (-78)
-/* complex XML schema type 'resqml22:AbstractTimeInterval': */
-class SOAP_CMAC resqml22__AbstractTimeInterval {
-      public:
-        /// Context that manages this object
-        struct soap *soap;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractTimeInterval
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractTimeInterval; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__AbstractTimeInterval, default initialized and not managed by a soap context
-        virtual resqml22__AbstractTimeInterval *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__AbstractTimeInterval); }
-      public:
-        /// Constructor with default initializations
-        resqml22__AbstractTimeInterval() : soap() { }
-        virtual ~resqml22__AbstractTimeInterval() { }
-        /// Friend allocator used by soap_new_resqml22__AbstractTimeInterval(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__AbstractTimeInterval * SOAP_FMAC2 soap_instantiate_resqml22__AbstractTimeInterval(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:401 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretationPlusItsRank
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretationPlusItsRank (-81)
-/* complex XML schema type 'resqml22:BoundaryFeatureInterpretationPlusItsRank': */
-class SOAP_CMAC resqml22__BoundaryFeatureInterpretationPlusItsRank {
-      public:
-        /// Optional element 'resqml22:StratigraphicRank' of XML schema type 'xsd:unsignedLong'
-        ULONG64 *StratigraphicRank;
-        /// Optional element 'resqml22:BoundaryFeatureInterpretation' of XML schema type 'eml22:DataObjectReference'
-        eml22__DataObjectReference *BoundaryFeatureInterpretation;
-        /// Optional element 'resqml22:FaultCollection' of XML schema type 'resqml22:FeatureInterpretationSet'
-        resqml22__FeatureInterpretationSet *FaultCollection;
-        /// Context that manages this object
-        struct soap *soap;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretationPlusItsRank
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretationPlusItsRank; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__BoundaryFeatureInterpretationPlusItsRank, default initialized and not managed by a soap context
-        virtual resqml22__BoundaryFeatureInterpretationPlusItsRank *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__BoundaryFeatureInterpretationPlusItsRank); }
-      public:
-        /// Constructor with default initializations
-        resqml22__BoundaryFeatureInterpretationPlusItsRank() : StratigraphicRank(), BoundaryFeatureInterpretation(), FaultCollection(), soap() { }
-        virtual ~resqml22__BoundaryFeatureInterpretationPlusItsRank() { }
-        /// Friend allocator used by soap_new_resqml22__BoundaryFeatureInterpretationPlusItsRank(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__BoundaryFeatureInterpretationPlusItsRank * SOAP_FMAC2 soap_instantiate_resqml22__BoundaryFeatureInterpretationPlusItsRank(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:409 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__FaultThrow
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__FaultThrow (-85)
-/* complex XML schema type 'resqml22:FaultThrow': */
-class SOAP_CMAC resqml22__FaultThrow {
-      public:
-        /// Required element 'resqml22:Throw' of XML schema type 'resqml22:ThrowKindExt'
-        std::vector<std::string> Throw;
-        /// Optional element 'resqml22:HasOccurredDuring' of XML schema type 'resqml22:AbstractTimeInterval'
-        resqml22__AbstractTimeInterval *HasOccurredDuring;
-        /// Context that manages this object
-        struct soap *soap;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__FaultThrow
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__FaultThrow; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__FaultThrow, default initialized and not managed by a soap context
-        virtual resqml22__FaultThrow *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__FaultThrow); }
-      public:
-        /// Constructor with default initializations
-        resqml22__FaultThrow() : Throw(), HasOccurredDuring(), soap() { }
-        virtual ~resqml22__FaultThrow() { }
-        /// Friend allocator used by soap_new_resqml22__FaultThrow(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__FaultThrow * SOAP_FMAC2 soap_instantiate_resqml22__FaultThrow(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:455 */
+/* eml2_2ForGsoap.h:479 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractParentWindow
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractParentWindow (-108)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractParentWindow (-120)
 /* complex XML schema type 'resqml22:AbstractParentWindow': */
 class SOAP_CMAC resqml22__AbstractParentWindow {
       public:
@@ -8915,9 +9092,9 @@ class SOAP_CMAC resqml22__AbstractParentWindow {
 };
 #endif
 
-/* eml2_2ForGsoap.h:459 */
+/* eml2_2ForGsoap.h:483 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Activation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Activation (-110)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Activation (-122)
 /* complex XML schema type 'resqml22:Activation': */
 class SOAP_CMAC resqml22__Activation {
       public:
@@ -8953,9 +9130,9 @@ class SOAP_CMAC resqml22__Activation {
 };
 #endif
 
-/* eml2_2ForGsoap.h:461 */
+/* eml2_2ForGsoap.h:485 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AdditionalGridPoints
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AdditionalGridPoints (-111)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AdditionalGridPoints (-123)
 /* complex XML schema type 'resqml22:AdditionalGridPoints': */
 class SOAP_CMAC resqml22__AdditionalGridPoints {
       public:
@@ -8993,9 +9170,9 @@ class SOAP_CMAC resqml22__AdditionalGridPoints {
 };
 #endif
 
-/* eml2_2ForGsoap.h:463 */
+/* eml2_2ForGsoap.h:487 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AdditionalGridTopology
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AdditionalGridTopology (-112)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AdditionalGridTopology (-124)
 /* complex XML schema type 'resqml22:AdditionalGridTopology': */
 class SOAP_CMAC resqml22__AdditionalGridTopology {
       public:
@@ -9041,9 +9218,9 @@ class SOAP_CMAC resqml22__AdditionalGridTopology {
 };
 #endif
 
-/* eml2_2ForGsoap.h:465 */
+/* eml2_2ForGsoap.h:489 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AlternateCellIndex
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AlternateCellIndex (-113)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AlternateCellIndex (-125)
 /* complex XML schema type 'resqml22:AlternateCellIndex': */
 class SOAP_CMAC resqml22__AlternateCellIndex {
       public:
@@ -9081,9 +9258,9 @@ class SOAP_CMAC resqml22__AlternateCellIndex {
 };
 #endif
 
-/* eml2_2ForGsoap.h:467 */
+/* eml2_2ForGsoap.h:491 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__CellFluidPhaseUnits
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__CellFluidPhaseUnits (-114)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__CellFluidPhaseUnits (-126)
 /* complex XML schema type 'resqml22:CellFluidPhaseUnits': */
 class SOAP_CMAC resqml22__CellFluidPhaseUnits {
       public:
@@ -9119,9 +9296,9 @@ class SOAP_CMAC resqml22__CellFluidPhaseUnits {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18666 */
+/* eml2_2ForGsoap.h:18811 */
 #ifndef SOAP_TYPE_gsoap_eml2_2___resqml22__CellOverlap_sequence
-#define SOAP_TYPE_gsoap_eml2_2___resqml22__CellOverlap_sequence (-1389)
+#define SOAP_TYPE_gsoap_eml2_2___resqml22__CellOverlap_sequence (-1395)
 /* Wrapper: */
 struct SOAP_CMAC __resqml22__CellOverlap_sequence {
       public:
@@ -9141,9 +9318,9 @@ struct SOAP_CMAC __resqml22__CellOverlap_sequence {
 };
 #endif
 
-/* eml2_2ForGsoap.h:469 */
+/* eml2_2ForGsoap.h:493 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__CellOverlap
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__CellOverlap (-115)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__CellOverlap (-127)
 /* complex XML schema type 'resqml22:CellOverlap': */
 class SOAP_CMAC resqml22__CellOverlap {
       public:
@@ -9176,9 +9353,9 @@ class SOAP_CMAC resqml22__CellOverlap {
 };
 #endif
 
-/* eml2_2ForGsoap.h:473 */
+/* eml2_2ForGsoap.h:497 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerGpGrid
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerGpGrid (-117)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerGpGrid (-129)
 /* complex XML schema type 'resqml22:ColumnLayerGpGrid': */
 class SOAP_CMAC resqml22__ColumnLayerGpGrid {
       public:
@@ -9218,9 +9395,9 @@ class SOAP_CMAC resqml22__ColumnLayerGpGrid {
 };
 #endif
 
-/* eml2_2ForGsoap.h:477 */
+/* eml2_2ForGsoap.h:501 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerSplitCoordinateLines
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerSplitCoordinateLines (-119)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerSplitCoordinateLines (-131)
 /* complex XML schema type 'resqml22:ColumnLayerSplitCoordinateLines': */
 class SOAP_CMAC resqml22__ColumnLayerSplitCoordinateLines {
       public:
@@ -9258,9 +9435,9 @@ class SOAP_CMAC resqml22__ColumnLayerSplitCoordinateLines {
 };
 #endif
 
-/* eml2_2ForGsoap.h:483 */
+/* eml2_2ForGsoap.h:507 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ConnectionInterpretations
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ConnectionInterpretations (-122)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ConnectionInterpretations (-134)
 /* complex XML schema type 'resqml22:ConnectionInterpretations': */
 class SOAP_CMAC resqml22__ConnectionInterpretations {
       public:
@@ -9296,9 +9473,9 @@ class SOAP_CMAC resqml22__ConnectionInterpretations {
 };
 #endif
 
-/* eml2_2ForGsoap.h:485 */
+/* eml2_2ForGsoap.h:509 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Edges
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Edges (-123)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Edges (-135)
 /* complex XML schema type 'resqml22:Edges': */
 class SOAP_CMAC resqml22__Edges {
       public:
@@ -9334,9 +9511,9 @@ class SOAP_CMAC resqml22__Edges {
 };
 #endif
 
-/* eml2_2ForGsoap.h:18859 */
+/* eml2_2ForGsoap.h:19004 */
 #ifndef SOAP_TYPE_gsoap_eml2_2___resqml22__IjGaps_sequence
-#define SOAP_TYPE_gsoap_eml2_2___resqml22__IjGaps_sequence (-1397)
+#define SOAP_TYPE_gsoap_eml2_2___resqml22__IjGaps_sequence (-1403)
 /* Wrapper: */
 struct SOAP_CMAC __resqml22__IjGaps_sequence {
       public:
@@ -9356,9 +9533,9 @@ struct SOAP_CMAC __resqml22__IjGaps_sequence {
 };
 #endif
 
-/* eml2_2ForGsoap.h:491 */
+/* eml2_2ForGsoap.h:515 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IjGaps
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjGaps (-126)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjGaps (-138)
 /* complex XML schema type 'resqml22:IjGaps': */
 class SOAP_CMAC resqml22__IjGaps {
       public:
@@ -9391,9 +9568,9 @@ class SOAP_CMAC resqml22__IjGaps {
 };
 #endif
 
-/* eml2_2ForGsoap.h:501 */
+/* eml2_2ForGsoap.h:525 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IntervalGridCells
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IntervalGridCells (-131)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IntervalGridCells (-143)
 /* complex XML schema type 'resqml22:IntervalGridCells': */
 class SOAP_CMAC resqml22__IntervalGridCells {
       public:
@@ -9435,9 +9612,9 @@ class SOAP_CMAC resqml22__IntervalGridCells {
 };
 #endif
 
-/* eml2_2ForGsoap.h:503 */
+/* eml2_2ForGsoap.h:527 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Intervals
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Intervals (-132)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Intervals (-144)
 /* complex XML schema type 'resqml22:Intervals': */
 class SOAP_CMAC resqml22__Intervals {
       public:
@@ -9477,9 +9654,9 @@ class SOAP_CMAC resqml22__Intervals {
 };
 #endif
 
-/* eml2_2ForGsoap.h:505 */
+/* eml2_2ForGsoap.h:529 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IntervalStratigraphicUnits
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IntervalStratigraphicUnits (-133)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IntervalStratigraphicUnits (-145)
 /* complex XML schema type 'resqml22:IntervalStratigraphicUnits': */
 class SOAP_CMAC resqml22__IntervalStratigraphicUnits {
       public:
@@ -9515,9 +9692,9 @@ class SOAP_CMAC resqml22__IntervalStratigraphicUnits {
 };
 #endif
 
-/* eml2_2ForGsoap.h:19053 */
+/* eml2_2ForGsoap.h:19198 */
 #ifndef SOAP_TYPE_gsoap_eml2_2___resqml22__KGaps_sequence
-#define SOAP_TYPE_gsoap_eml2_2___resqml22__KGaps_sequence (-1399)
+#define SOAP_TYPE_gsoap_eml2_2___resqml22__KGaps_sequence (-1405)
 /* Wrapper: */
 struct SOAP_CMAC __resqml22__KGaps_sequence {
       public:
@@ -9535,9 +9712,9 @@ struct SOAP_CMAC __resqml22__KGaps_sequence {
 };
 #endif
 
-/* eml2_2ForGsoap.h:507 */
+/* eml2_2ForGsoap.h:531 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__KGaps
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__KGaps (-134)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__KGaps (-146)
 /* complex XML schema type 'resqml22:KGaps': */
 class SOAP_CMAC resqml22__KGaps {
       public:
@@ -9570,9 +9747,9 @@ class SOAP_CMAC resqml22__KGaps {
 };
 #endif
 
-/* eml2_2ForGsoap.h:19096 */
+/* eml2_2ForGsoap.h:19241 */
 #ifndef SOAP_TYPE_gsoap_eml2_2___resqml22__OverlapVolume_sequence
-#define SOAP_TYPE_gsoap_eml2_2___resqml22__OverlapVolume_sequence (-1402)
+#define SOAP_TYPE_gsoap_eml2_2___resqml22__OverlapVolume_sequence (-1408)
 /* Wrapper: */
 struct SOAP_CMAC __resqml22__OverlapVolume_sequence {
       public:
@@ -9590,9 +9767,9 @@ struct SOAP_CMAC __resqml22__OverlapVolume_sequence {
 };
 #endif
 
-/* eml2_2ForGsoap.h:511 */
+/* eml2_2ForGsoap.h:535 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__OverlapVolume
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__OverlapVolume (-136)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__OverlapVolume (-148)
 /* complex XML schema type 'resqml22:OverlapVolume': */
 class SOAP_CMAC resqml22__OverlapVolume {
       public:
@@ -9625,9 +9802,9 @@ class SOAP_CMAC resqml22__OverlapVolume {
 };
 #endif
 
-/* eml2_2ForGsoap.h:513 */
+/* eml2_2ForGsoap.h:537 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Regrid
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Regrid (-137)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Regrid (-149)
 /* complex XML schema type 'resqml22:Regrid': */
 class SOAP_CMAC resqml22__Regrid {
       public:
@@ -9663,9 +9840,9 @@ class SOAP_CMAC resqml22__Regrid {
 };
 #endif
 
-/* eml2_2ForGsoap.h:515 */
+/* eml2_2ForGsoap.h:539 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SplitColumnEdges
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SplitColumnEdges (-138)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SplitColumnEdges (-150)
 /* complex XML schema type 'resqml22:SplitColumnEdges': */
 class SOAP_CMAC resqml22__SplitColumnEdges {
       public:
@@ -9703,9 +9880,9 @@ class SOAP_CMAC resqml22__SplitColumnEdges {
 };
 #endif
 
-/* eml2_2ForGsoap.h:517 */
+/* eml2_2ForGsoap.h:541 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SplitEdges
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SplitEdges (-139)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SplitEdges (-151)
 /* complex XML schema type 'resqml22:SplitEdges': */
 class SOAP_CMAC resqml22__SplitEdges {
       public:
@@ -9743,9 +9920,9 @@ class SOAP_CMAC resqml22__SplitEdges {
 };
 #endif
 
-/* eml2_2ForGsoap.h:519 */
+/* eml2_2ForGsoap.h:543 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SplitFaces
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SplitFaces (-140)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SplitFaces (-152)
 /* complex XML schema type 'resqml22:SplitFaces': */
 class SOAP_CMAC resqml22__SplitFaces {
       public:
@@ -9785,9 +9962,9 @@ class SOAP_CMAC resqml22__SplitFaces {
 };
 #endif
 
-/* eml2_2ForGsoap.h:525 */
+/* eml2_2ForGsoap.h:549 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SubnodeTopology
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubnodeTopology (-143)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubnodeTopology (-155)
 /* complex XML schema type 'resqml22:SubnodeTopology': */
 class SOAP_CMAC resqml22__SubnodeTopology {
       public:
@@ -9823,9 +10000,9 @@ class SOAP_CMAC resqml22__SubnodeTopology {
 };
 #endif
 
-/* eml2_2ForGsoap.h:535 */
+/* eml2_2ForGsoap.h:559 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnEdges
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnEdges (-148)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnEdges (-160)
 /* complex XML schema type 'resqml22:UnstructuredColumnEdges': */
 class SOAP_CMAC resqml22__UnstructuredColumnEdges {
       public:
@@ -9861,9 +10038,9 @@ class SOAP_CMAC resqml22__UnstructuredColumnEdges {
 };
 #endif
 
-/* eml2_2ForGsoap.h:547 */
+/* eml2_2ForGsoap.h:571 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGridHingeNodeFaces
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGridHingeNodeFaces (-154)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGridHingeNodeFaces (-166)
 /* complex XML schema type 'resqml22:UnstructuredGridHingeNodeFaces': */
 class SOAP_CMAC resqml22__UnstructuredGridHingeNodeFaces {
       public:
@@ -9899,9 +10076,9 @@ class SOAP_CMAC resqml22__UnstructuredGridHingeNodeFaces {
 };
 #endif
 
-/* eml2_2ForGsoap.h:555 */
+/* eml2_2ForGsoap.h:579 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractGeometry (-158)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractGeometry (-170)
 /* complex XML schema type 'resqml22:AbstractGeometry': */
 class SOAP_CMAC resqml22__AbstractGeometry {
       public:
@@ -9937,9 +10114,9 @@ class SOAP_CMAC resqml22__AbstractGeometry {
 };
 #endif
 
-/* eml2_2ForGsoap.h:557 */
+/* eml2_2ForGsoap.h:581 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractParametricLineArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractParametricLineArray (-159)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractParametricLineArray (-171)
 /* complex XML schema type 'resqml22:AbstractParametricLineArray': */
 class SOAP_CMAC resqml22__AbstractParametricLineArray {
       public:
@@ -9971,9 +10148,9 @@ class SOAP_CMAC resqml22__AbstractParametricLineArray {
 };
 #endif
 
-/* eml2_2ForGsoap.h:563 */
+/* eml2_2ForGsoap.h:587 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractPoint3dArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractPoint3dArray (-162)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractPoint3dArray (-174)
 /* Type resqml22__AbstractPoint3dArray is a recursive data type, (in)directly referencing itself through its (base or derived class) members */
 /* complex XML schema type 'resqml22:AbstractPoint3dArray': */
 class SOAP_CMAC resqml22__AbstractPoint3dArray {
@@ -10006,9 +10183,9 @@ class SOAP_CMAC resqml22__AbstractPoint3dArray {
 };
 #endif
 
-/* eml2_2ForGsoap.h:577 */
+/* eml2_2ForGsoap.h:601 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineIntersections
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineIntersections (-169)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineIntersections (-181)
 /* complex XML schema type 'resqml22:ParametricLineIntersections': */
 class SOAP_CMAC resqml22__ParametricLineIntersections {
       public:
@@ -10046,9 +10223,9 @@ class SOAP_CMAC resqml22__ParametricLineIntersections {
 };
 #endif
 
-/* eml2_2ForGsoap.h:581 */
+/* eml2_2ForGsoap.h:605 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Point3d
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3d (-171)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3d (-183)
 /* complex XML schema type 'resqml22:Point3d': */
 class SOAP_CMAC resqml22__Point3d {
       public:
@@ -10086,9 +10263,9 @@ class SOAP_CMAC resqml22__Point3d {
 };
 #endif
 
-/* eml2_2ForGsoap.h:589 */
+/* eml2_2ForGsoap.h:613 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dOffset
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dOffset (-175)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dOffset (-187)
 /* complex XML schema type 'resqml22:Point3dOffset': */
 class SOAP_CMAC resqml22__Point3dOffset {
       public:
@@ -10124,9 +10301,9 @@ class SOAP_CMAC resqml22__Point3dOffset {
 };
 #endif
 
-/* eml2_2ForGsoap.h:599 */
+/* eml2_2ForGsoap.h:623 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ThreePoint3d
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ThreePoint3d (-180)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ThreePoint3d (-192)
 /* complex XML schema type 'resqml22:ThreePoint3d': */
 class SOAP_CMAC resqml22__ThreePoint3d {
       public:
@@ -10160,9 +10337,9 @@ class SOAP_CMAC resqml22__ThreePoint3d {
 };
 #endif
 
-/* eml2_2ForGsoap.h:603 */
+/* eml2_2ForGsoap.h:627 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSeismicCoordinates
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSeismicCoordinates (-182)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSeismicCoordinates (-194)
 /* complex XML schema type 'resqml22:AbstractSeismicCoordinates': */
 class SOAP_CMAC resqml22__AbstractSeismicCoordinates {
       public:
@@ -10193,183 +10370,6 @@ class SOAP_CMAC resqml22__AbstractSeismicCoordinates {
         virtual ~resqml22__AbstractSeismicCoordinates() { }
         /// Friend allocator used by soap_new_resqml22__AbstractSeismicCoordinates(struct soap*, int)
         friend SOAP_FMAC1 resqml22__AbstractSeismicCoordinates * SOAP_FMAC2 soap_instantiate_resqml22__AbstractSeismicCoordinates(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:629 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIdentity
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIdentity (-195)
-/* complex XML schema type 'resqml22:ElementIdentity': */
-class SOAP_CMAC resqml22__ElementIdentity {
-      public:
-        /// Optional element 'resqml22:ElementIndices' of XML schema type 'eml22:AbstractIntegerArray'
-        eml22__AbstractIntegerArray *ElementIndices;
-        /// Required element 'resqml22:IdentityKind' of XML schema type 'resqml22:IdentityKind'
-        enum resqml22__IdentityKind IdentityKind;
-        /// Required element 'resqml22:IndexableElement' of XML schema type 'resqml22:IndexableElement'
-        enum resqml22__IndexableElement IndexableElement;
-        /// Required element 'resqml22:Representation' of XML schema type 'eml22:DataObjectReference'
-        eml22__DataObjectReference *Representation;
-        /// Optional element 'resqml22:ToTimeIndex' of XML schema type 'eml22:TimeIndex'
-        eml22__TimeIndex *ToTimeIndex;
-        /// Optional element 'resqml22:FromTimeIndex' of XML schema type 'eml22:TimeIndex'
-        eml22__TimeIndex *FromTimeIndex;
-        /// Context that manages this object
-        struct soap *soap;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIdentity
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIdentity; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__ElementIdentity, default initialized and not managed by a soap context
-        virtual resqml22__ElementIdentity *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__ElementIdentity); }
-      public:
-        /// Constructor with default initializations
-        resqml22__ElementIdentity() : ElementIndices(), IdentityKind(), IndexableElement(), Representation(), ToTimeIndex(), FromTimeIndex(), soap() { }
-        virtual ~resqml22__ElementIdentity() { }
-        /// Friend allocator used by soap_new_resqml22__ElementIdentity(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__ElementIdentity * SOAP_FMAC2 soap_instantiate_resqml22__ElementIdentity(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:19706 */
-#ifndef SOAP_TYPE_gsoap_eml2_2___resqml22__ElementIndices_sequence
-#define SOAP_TYPE_gsoap_eml2_2___resqml22__ElementIndices_sequence (-1413)
-/* Wrapper: */
-struct SOAP_CMAC __resqml22__ElementIndices_sequence {
-      public:
-        /** Required element 'resqml22:IndexableElement' of XML schema type 'resqml22:IndexableElement' */
-        enum resqml22__IndexableElement IndexableElement;
-        /** Required element 'resqml22:Indices' of XML schema type 'eml22:AbstractIntegerArray' */
-        eml22__AbstractIntegerArray *Indices;
-        /** Optional element 'resqml22:SupportingRepresentationIndex' of XML schema type 'eml22:AbstractIntegerArray' */
-        eml22__AbstractIntegerArray *SupportingRepresentationIndex;
-      public:
-        /** Return unique type id SOAP_TYPE_gsoap_eml2_2___resqml22__ElementIndices_sequence */
-        long soap_type() const { return SOAP_TYPE_gsoap_eml2_2___resqml22__ElementIndices_sequence; }
-        /** Constructor with member initializations */
-        __resqml22__ElementIndices_sequence() : IndexableElement(), Indices(), SupportingRepresentationIndex() { }
-        /** Friend allocator */
-        friend SOAP_FMAC1 __resqml22__ElementIndices_sequence * SOAP_FMAC2 soap_instantiate___resqml22__ElementIndices_sequence(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:631 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIndices
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIndices (-196)
-/* complex XML schema type 'resqml22:ElementIndices': */
-class SOAP_CMAC resqml22__ElementIndices {
-      public:
-        struct __resqml22__ElementIndices_sequence *__ElementIndices_sequence;
-        /// Context that manages this object
-        struct soap *soap;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIndices
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIndices; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__ElementIndices, default initialized and not managed by a soap context
-        virtual resqml22__ElementIndices *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__ElementIndices); }
-      public:
-        /// Constructor with default initializations
-        resqml22__ElementIndices() : __ElementIndices_sequence(), soap() { }
-        virtual ~resqml22__ElementIndices() { }
-        /// Friend allocator used by soap_new_resqml22__ElementIndices(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__ElementIndices * SOAP_FMAC2 soap_instantiate_resqml22__ElementIndices(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:633 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Patch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Patch (-197)
-/* complex XML schema type 'resqml22:Patch': */
-class SOAP_CMAC resqml22__Patch {
-      public:
-        /// Context that manages this object
-        struct soap *soap;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__Patch
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__Patch; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__Patch, default initialized and not managed by a soap context
-        virtual resqml22__Patch *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__Patch); }
-      public:
-        /// Constructor with default initializations
-        resqml22__Patch() : soap() { }
-        virtual ~resqml22__Patch() { }
-        /// Friend allocator used by soap_new_resqml22__Patch(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__Patch * SOAP_FMAC2 soap_instantiate_resqml22__Patch(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:641 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentity
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentity (-201)
-/* complex XML schema type 'resqml22:RepresentationIdentity': */
-class SOAP_CMAC resqml22__RepresentationIdentity {
-      public:
-        /// Required element 'resqml22:IdenticalElementCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 IdenticalElementCount;
-        /// Optional element 'resqml22:AdditionalGridTopology' of XML schema type 'resqml22:AdditionalGridTopology'
-        resqml22__AdditionalGridTopology *AdditionalGridTopology;
-        /// Required element 'resqml22:ElementIdentity' of XML schema type 'resqml22:ElementIdentity'
-        std::vector<resqml22__ElementIdentity *> ElementIdentity;
-        /// Context that manages this object
-        struct soap *soap;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentity
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentity; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__RepresentationIdentity, default initialized and not managed by a soap context
-        virtual resqml22__RepresentationIdentity *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__RepresentationIdentity); }
-      public:
-        /// Constructor with default initializations
-        resqml22__RepresentationIdentity() : IdenticalElementCount(), AdditionalGridTopology(), ElementIdentity(), soap() { }
-        virtual ~resqml22__RepresentationIdentity() { }
-        /// Friend allocator used by soap_new_resqml22__RepresentationIdentity(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__RepresentationIdentity * SOAP_FMAC2 soap_instantiate_resqml22__RepresentationIdentity(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
@@ -16895,9 +16895,627 @@ class SOAP_CMAC resqml22__SizeInformation : public eml22__AbstractGraphicalInfor
 };
 #endif
 
-/* eml2_2ForGsoap.h:317 */
+/* eml2_2ForGsoap.h:311 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractRepresentation (-36)
+/* complex XML schema type 'resqml22:AbstractRepresentation': */
+class SOAP_CMAC resqml22__AbstractRepresentation : public eml22__AbstractObject {
+      public:
+        /// Optional element 'resqml22:RealizationIndex' of XML schema type 'xsd:unsignedLong'
+        ULONG64 *RealizationIndex;
+        /// Optional element 'resqml22:RepresentedInterpretation' of XML schema type 'eml22:DataObjectReference'
+        eml22__DataObjectReference *RepresentedInterpretation;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractRepresentation
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractRepresentation; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__AbstractRepresentation, default initialized and not managed by a soap context
+        virtual resqml22__AbstractRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__AbstractRepresentation); }
+      public:
+        /// Constructor with default initializations
+        resqml22__AbstractRepresentation() : RealizationIndex(), RepresentedInterpretation() { }
+        virtual ~resqml22__AbstractRepresentation() { }
+        /// Friend allocator used by soap_new_resqml22__AbstractRepresentation(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__AbstractRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__AbstractRepresentation(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:319 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Patch1d
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Patch1d (-40)
+/* complex XML schema type 'resqml22:Patch1d': */
+class SOAP_CMAC resqml22__Patch1d : public resqml22__Patch {
+      public:
+        /// Required element 'resqml22:Count' of XML schema type 'xsd:unsignedLong'
+        ULONG64 Count;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__Patch1d
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__Patch1d; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__Patch1d, default initialized and not managed by a soap context
+        virtual resqml22__Patch1d *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__Patch1d); }
+      public:
+        /// Constructor with default initializations
+        resqml22__Patch1d() : Count() { }
+        virtual ~resqml22__Patch1d() { }
+        /// Friend allocator used by soap_new_resqml22__Patch1d(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__Patch1d * SOAP_FMAC2 soap_instantiate_resqml22__Patch1d(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:321 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetPatch
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetPatch (-41)
+/* complex XML schema type 'resqml22:PolylineSetPatch': */
+class SOAP_CMAC resqml22__PolylineSetPatch : public resqml22__Patch {
+      public:
+        /// Required element 'resqml22:NodeCount' of XML schema type 'xsd:unsignedLong'
+        ULONG64 NodeCount;
+        /// Required element 'resqml22:IntervalCount' of XML schema type 'xsd:unsignedLong'
+        ULONG64 IntervalCount;
+        /// Required element 'resqml22:NodeCountPerPolyline' of XML schema type 'eml22:AbstractIntegerArray'
+        eml22__AbstractIntegerArray *NodeCountPerPolyline;
+        /// Required element 'resqml22:ClosedPolylines' of XML schema type 'eml22:AbstractBooleanArray'
+        eml22__AbstractBooleanArray *ClosedPolylines;
+        /// Required element 'resqml22:Geometry' of XML schema type 'resqml22:PointGeometry'
+        resqml22__PointGeometry *Geometry;
+        /// Optional element 'resqml22:IntervalGridCells' of XML schema type 'resqml22:IntervalGridCells'
+        resqml22__IntervalGridCells *IntervalGridCells;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetPatch
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetPatch; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__PolylineSetPatch, default initialized and not managed by a soap context
+        virtual resqml22__PolylineSetPatch *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__PolylineSetPatch); }
+      public:
+        /// Constructor with default initializations
+        resqml22__PolylineSetPatch() : NodeCount(), IntervalCount(), NodeCountPerPolyline(), ClosedPolylines(), Geometry(), IntervalGridCells() { }
+        virtual ~resqml22__PolylineSetPatch() { }
+        /// Friend allocator used by soap_new_resqml22__PolylineSetPatch(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__PolylineSetPatch * SOAP_FMAC2 soap_instantiate_resqml22__PolylineSetPatch(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:327 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentitySet
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentitySet (-44)
+/* complex XML schema type 'resqml22:RepresentationIdentitySet': */
+class SOAP_CMAC resqml22__RepresentationIdentitySet : public eml22__AbstractObject {
+      public:
+        /// Required element 'resqml22:RepresentationIdentity' of XML schema type 'resqml22:RepresentationIdentity'
+        std::vector<resqml22__RepresentationIdentity *> RepresentationIdentity;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentitySet
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentitySet; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__RepresentationIdentitySet, default initialized and not managed by a soap context
+        virtual resqml22__RepresentationIdentitySet *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__RepresentationIdentitySet); }
+      public:
+        /// Constructor with default initializations
+        resqml22__RepresentationIdentitySet() : RepresentationIdentity() { }
+        virtual ~resqml22__RepresentationIdentitySet() { }
+        /// Friend allocator used by soap_new_resqml22__RepresentationIdentitySet(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__RepresentationIdentitySet * SOAP_FMAC2 soap_instantiate_resqml22__RepresentationIdentitySet(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:345 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactRepresentationReference
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactRepresentationReference (-53)
+/* complex XML schema type 'resqml22:ContactRepresentationReference': */
+class SOAP_CMAC resqml22__ContactRepresentationReference : public resqml22__AbstractContactRepresentationPart {
+      public:
+        /// Required element 'resqml22:Representation' of XML schema type 'eml22:DataObjectReference'
+        eml22__DataObjectReference *Representation;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__ContactRepresentationReference
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__ContactRepresentationReference; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__ContactRepresentationReference, default initialized and not managed by a soap context
+        virtual resqml22__ContactRepresentationReference *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__ContactRepresentationReference); }
+      public:
+        /// Constructor with default initializations
+        resqml22__ContactRepresentationReference() : Representation() { }
+        virtual ~resqml22__ContactRepresentationReference() { }
+        /// Friend allocator used by soap_new_resqml22__ContactRepresentationReference(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__ContactRepresentationReference * SOAP_FMAC2 soap_instantiate_resqml22__ContactRepresentationReference(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:353 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__NonSealedContactRepresentationPart
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__NonSealedContactRepresentationPart (-57)
+/* complex XML schema type 'resqml22:NonSealedContactRepresentationPart': */
+class SOAP_CMAC resqml22__NonSealedContactRepresentationPart : public resqml22__AbstractContactRepresentationPart {
+      public:
+        /// Optional element 'resqml22:Geometry' of XML schema type 'resqml22:AbstractGeometry'
+        resqml22__AbstractGeometry *Geometry;
+        /// Optional element 'resqml22:Contact' of XML schema type 'resqml22:ContactPatch'
+        std::vector<resqml22__ContactPatch *> Contact;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__NonSealedContactRepresentationPart
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__NonSealedContactRepresentationPart; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__NonSealedContactRepresentationPart, default initialized and not managed by a soap context
+        virtual resqml22__NonSealedContactRepresentationPart *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__NonSealedContactRepresentationPart); }
+      public:
+        /// Constructor with default initializations
+        resqml22__NonSealedContactRepresentationPart() : Geometry(), Contact() { }
+        virtual ~resqml22__NonSealedContactRepresentationPart() { }
+        /// Friend allocator used by soap_new_resqml22__NonSealedContactRepresentationPart(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__NonSealedContactRepresentationPart * SOAP_FMAC2 soap_instantiate_resqml22__NonSealedContactRepresentationPart(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:367 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SealedContactRepresentationPart
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SealedContactRepresentationPart (-64)
+/* complex XML schema type 'resqml22:SealedContactRepresentationPart': */
+class SOAP_CMAC resqml22__SealedContactRepresentationPart : public resqml22__AbstractContactRepresentationPart {
+      public:
+        /// Optional element 'resqml22:IdenticalNodeIndices' of XML schema type 'eml22:AbstractIntegerArray'
+        eml22__AbstractIntegerArray *IdenticalNodeIndices;
+        /// Required element 'resqml22:IdentityKind' of XML schema type 'resqml22:IdentityKind'
+        enum resqml22__IdentityKind IdentityKind;
+        /// Required element 'resqml22:Contact' of XML schema type 'resqml22:ContactPatch'
+        std::vector<resqml22__ContactPatch *> Contact;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__SealedContactRepresentationPart
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__SealedContactRepresentationPart; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__SealedContactRepresentationPart, default initialized and not managed by a soap context
+        virtual resqml22__SealedContactRepresentationPart *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__SealedContactRepresentationPart); }
+      public:
+        /// Constructor with default initializations
+        resqml22__SealedContactRepresentationPart() : IdenticalNodeIndices(), IdentityKind(), Contact() { }
+        virtual ~resqml22__SealedContactRepresentationPart() { }
+        /// Friend allocator used by soap_new_resqml22__SealedContactRepresentationPart(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__SealedContactRepresentationPart * SOAP_FMAC2 soap_instantiate_resqml22__SealedContactRepresentationPart(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:377 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeRegion
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeRegion (-69)
+/* complex XML schema type 'resqml22:VolumeRegion': */
+class SOAP_CMAC resqml22__VolumeRegion : public resqml22__Patch {
+      public:
+        /// Required element 'resqml22:PatchIndex' of XML schema type 'xsd:unsignedLong'
+        ULONG64 PatchIndex;
+        /// Required element 'resqml22:ExternalShell' of XML schema type 'resqml22:VolumeShell'
+        resqml22__VolumeShell *ExternalShell;
+        /// Optional element 'resqml22:InternalShells' of XML schema type 'resqml22:VolumeShell'
+        std::vector<resqml22__VolumeShell *> InternalShells;
+        /// Required element 'resqml22:Represents' of XML schema type 'eml22:DataObjectReference'
+        eml22__DataObjectReference *Represents;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeRegion
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeRegion; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__VolumeRegion, default initialized and not managed by a soap context
+        virtual resqml22__VolumeRegion *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__VolumeRegion); }
+      public:
+        /// Constructor with default initializations
+        resqml22__VolumeRegion() : PatchIndex(), ExternalShell(), InternalShells(), Represents() { }
+        virtual ~resqml22__VolumeRegion() { }
+        /// Friend allocator used by soap_new_resqml22__VolumeRegion(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__VolumeRegion * SOAP_FMAC2 soap_instantiate_resqml22__VolumeRegion(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:383 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractFeatureInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractFeatureInterpretation (-72)
+/* complex XML schema type 'resqml22:AbstractFeatureInterpretation': */
+class SOAP_CMAC resqml22__AbstractFeatureInterpretation : public eml22__AbstractObject {
+      public:
+        /// Optional element 'resqml22:Domain' of XML schema type 'resqml22:Domain'
+        enum resqml22__Domain *Domain;
+        /// Optional element 'resqml22:HasOccurredDuring' of XML schema type 'resqml22:AbstractTimeInterval'
+        resqml22__AbstractTimeInterval *HasOccurredDuring;
+        /// Required element 'resqml22:InterpretedFeature' of XML schema type 'eml22:DataObjectReference'
+        eml22__DataObjectReference *InterpretedFeature;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractFeatureInterpretation
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractFeatureInterpretation; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__AbstractFeatureInterpretation, default initialized and not managed by a soap context
+        virtual resqml22__AbstractFeatureInterpretation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__AbstractFeatureInterpretation); }
+      public:
+        /// Constructor with default initializations
+        resqml22__AbstractFeatureInterpretation() : Domain(), HasOccurredDuring(), InterpretedFeature() { }
+        virtual ~resqml22__AbstractFeatureInterpretation() { }
+        /// Friend allocator used by soap_new_resqml22__AbstractFeatureInterpretation(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__AbstractFeatureInterpretation * SOAP_FMAC2 soap_instantiate_resqml22__AbstractFeatureInterpretation(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:391 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__BinaryContactInterpretationPart
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__BinaryContactInterpretationPart (-76)
+/* complex XML schema type 'resqml22:BinaryContactInterpretationPart': */
+class SOAP_CMAC resqml22__BinaryContactInterpretationPart : public resqml22__AbstractContactInterpretationPart {
+      public:
+        /// Required element 'resqml22:DirectObject' of XML schema type 'resqml22:ContactElement'
+        resqml22__ContactElement *DirectObject;
+        /// Required element 'resqml22:Subject' of XML schema type 'resqml22:ContactElement'
+        resqml22__ContactElement *Subject;
+        /// Required element 'resqml22:Verb' of XML schema type 'resqml22:ContactVerb'
+        enum resqml22__ContactVerb Verb;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__BinaryContactInterpretationPart
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__BinaryContactInterpretationPart; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__BinaryContactInterpretationPart, default initialized and not managed by a soap context
+        virtual resqml22__BinaryContactInterpretationPart *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__BinaryContactInterpretationPart); }
+      public:
+        /// Constructor with default initializations
+        resqml22__BinaryContactInterpretationPart() : DirectObject(), Subject(), Verb() { }
+        virtual ~resqml22__BinaryContactInterpretationPart() { }
+        /// Friend allocator used by soap_new_resqml22__BinaryContactInterpretationPart(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__BinaryContactInterpretationPart * SOAP_FMAC2 soap_instantiate_resqml22__BinaryContactInterpretationPart(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:397 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactElement
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactElement (-79)
+/* complex XML schema type 'resqml22:ContactElement': */
+class SOAP_CMAC resqml22__ContactElement : public eml22__DataObjectReference {
+      public:
+        /// Optional element 'resqml22:Qualifier' of XML schema type 'resqml22:ContactSide'
+        enum resqml22__ContactSide *Qualifier;
+        /// Optional element 'resqml22:SecondaryQualifier' of XML schema type 'resqml22:ContactMode'
+        enum resqml22__ContactMode *SecondaryQualifier;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__ContactElement
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__ContactElement; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__ContactElement, default initialized and not managed by a soap context
+        virtual resqml22__ContactElement *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__ContactElement); }
+      public:
+        /// Constructor with default initializations
+        resqml22__ContactElement() : Qualifier(), SecondaryQualifier() { }
+        virtual ~resqml22__ContactElement() { }
+        /// Friend allocator used by soap_new_resqml22__ContactElement(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__ContactElement * SOAP_FMAC2 soap_instantiate_resqml22__ContactElement(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:405 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__FeatureInterpretationSet
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__FeatureInterpretationSet (-83)
+/* complex XML schema type 'resqml22:FeatureInterpretationSet': */
+class SOAP_CMAC resqml22__FeatureInterpretationSet : public eml22__AbstractObject {
+      public:
+        /// Required element 'resqml22:IsHomogeneous' of XML schema type 'xsd:boolean'
+        bool IsHomogeneous;
+        /// Required element 'resqml22:FeatureInterpretation' of XML schema type 'eml22:DataObjectReference'
+        std::vector<eml22__DataObjectReference *> FeatureInterpretation;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__FeatureInterpretationSet
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__FeatureInterpretationSet; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__FeatureInterpretationSet, default initialized and not managed by a soap context
+        virtual resqml22__FeatureInterpretationSet *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__FeatureInterpretationSet); }
+      public:
+        /// Constructor with default initializations
+        resqml22__FeatureInterpretationSet() : IsHomogeneous(), FeatureInterpretation() { }
+        virtual ~resqml22__FeatureInterpretationSet() { }
+        /// Friend allocator used by soap_new_resqml22__FeatureInterpretationSet(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__FeatureInterpretationSet * SOAP_FMAC2 soap_instantiate_resqml22__FeatureInterpretationSet(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:411 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeneticBoundaryBasedTimeInterval
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeneticBoundaryBasedTimeInterval (-86)
+/* complex XML schema type 'resqml22:GeneticBoundaryBasedTimeInterval': */
+class SOAP_CMAC resqml22__GeneticBoundaryBasedTimeInterval : public resqml22__AbstractTimeInterval {
+      public:
+        /// Required element 'resqml22:ChronoBottom' of XML schema type 'eml22:DataObjectReference'
+        eml22__DataObjectReference *ChronoBottom;
+        /// Required element 'resqml22:ChronoTop' of XML schema type 'eml22:DataObjectReference'
+        eml22__DataObjectReference *ChronoTop;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__GeneticBoundaryBasedTimeInterval
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__GeneticBoundaryBasedTimeInterval; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__GeneticBoundaryBasedTimeInterval, default initialized and not managed by a soap context
+        virtual resqml22__GeneticBoundaryBasedTimeInterval *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__GeneticBoundaryBasedTimeInterval); }
+      public:
+        /// Constructor with default initializations
+        resqml22__GeneticBoundaryBasedTimeInterval() : ChronoBottom(), ChronoTop() { }
+        virtual ~resqml22__GeneticBoundaryBasedTimeInterval() { }
+        /// Friend allocator used by soap_new_resqml22__GeneticBoundaryBasedTimeInterval(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__GeneticBoundaryBasedTimeInterval * SOAP_FMAC2 soap_instantiate_resqml22__GeneticBoundaryBasedTimeInterval(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:417 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicTimeBasedTimeInterval
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicTimeBasedTimeInterval (-89)
+/* complex XML schema type 'resqml22:GeologicTimeBasedTimeInterval': */
+class SOAP_CMAC resqml22__GeologicTimeBasedTimeInterval : public resqml22__AbstractTimeInterval {
+      public:
+        /// Required element 'resqml22:Start' of XML schema type 'eml22:GeologicTime'
+        eml22__GeologicTime *Start;
+        /// Required element 'resqml22:End' of XML schema type 'eml22:GeologicTime'
+        eml22__GeologicTime *End;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicTimeBasedTimeInterval
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicTimeBasedTimeInterval; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__GeologicTimeBasedTimeInterval, default initialized and not managed by a soap context
+        virtual resqml22__GeologicTimeBasedTimeInterval *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__GeologicTimeBasedTimeInterval); }
+      public:
+        /// Constructor with default initializations
+        resqml22__GeologicTimeBasedTimeInterval() : Start(), End() { }
+        virtual ~resqml22__GeologicTimeBasedTimeInterval() { }
+        /// Friend allocator used by soap_new_resqml22__GeologicTimeBasedTimeInterval(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__GeologicTimeBasedTimeInterval * SOAP_FMAC2 soap_instantiate_resqml22__GeologicTimeBasedTimeInterval(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:423 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__MultipleContactInterpretationPart
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__MultipleContactInterpretationPart (-92)
+/* complex XML schema type 'resqml22:MultipleContactInterpretationPart': */
+class SOAP_CMAC resqml22__MultipleContactInterpretationPart : public resqml22__AbstractContactInterpretationPart {
+      public:
+        /// Required element 'resqml22:With' of XML schema type 'xsd:unsignedLong'
+        std::vector<ULONG64> With;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__MultipleContactInterpretationPart
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__MultipleContactInterpretationPart; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__MultipleContactInterpretationPart, default initialized and not managed by a soap context
+        virtual resqml22__MultipleContactInterpretationPart *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__MultipleContactInterpretationPart); }
+      public:
+        /// Constructor with default initializations
+        resqml22__MultipleContactInterpretationPart() : With() { }
+        virtual ~resqml22__MultipleContactInterpretationPart() { }
+        /// Friend allocator used by soap_new_resqml22__MultipleContactInterpretationPart(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__MultipleContactInterpretationPart * SOAP_FMAC2 soap_instantiate_resqml22__MultipleContactInterpretationPart(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:429 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicColumn
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicColumn (-95)
+/* complex XML schema type 'resqml22:StratigraphicColumn': */
+class SOAP_CMAC resqml22__StratigraphicColumn : public eml22__AbstractObject {
+      public:
+        /// Required element 'resqml22:Ranks' of XML schema type 'eml22:DataObjectReference'
+        std::vector<eml22__DataObjectReference *> Ranks;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicColumn
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicColumn; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__StratigraphicColumn, default initialized and not managed by a soap context
+        virtual resqml22__StratigraphicColumn *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__StratigraphicColumn); }
+      public:
+        /// Constructor with default initializations
+        resqml22__StratigraphicColumn() : Ranks() { }
+        virtual ~resqml22__StratigraphicColumn() { }
+        /// Friend allocator used by soap_new_resqml22__StratigraphicColumn(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__StratigraphicColumn * SOAP_FMAC2 soap_instantiate_resqml22__StratigraphicColumn(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:435 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitDictionary
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitDictionary (-98)
+/* complex XML schema type 'resqml22:StratigraphicUnitDictionary': */
+class SOAP_CMAC resqml22__StratigraphicUnitDictionary : public eml22__AbstractObject {
+      public:
+        /// Required element 'resqml22:StratigraphicUnitInterpretation' of XML schema type 'resqml22:StratigraphicUnitInterpretation'
+        std::vector<resqml22__StratigraphicUnitInterpretation *> StratigraphicUnitInterpretation;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitDictionary
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitDictionary; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__StratigraphicUnitDictionary, default initialized and not managed by a soap context
+        virtual resqml22__StratigraphicUnitDictionary *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__StratigraphicUnitDictionary); }
+      public:
+        /// Constructor with default initializations
+        resqml22__StratigraphicUnitDictionary() : StratigraphicUnitInterpretation() { }
+        virtual ~resqml22__StratigraphicUnitDictionary() { }
+        /// Friend allocator used by soap_new_resqml22__StratigraphicUnitDictionary(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__StratigraphicUnitDictionary * SOAP_FMAC2 soap_instantiate_resqml22__StratigraphicUnitDictionary(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:447 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__MdDatum
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__MdDatum (-39)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__MdDatum (-104)
 /* complex XML schema type 'resqml22:MdDatum': */
 class SOAP_CMAC resqml22__MdDatum : public eml22__AbstractObject {
       public:
@@ -16931,9 +17549,9 @@ class SOAP_CMAC resqml22__MdDatum : public eml22__AbstractObject {
 };
 #endif
 
-/* eml2_2ForGsoap.h:331 */
+/* eml2_2ForGsoap.h:461 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreMarker
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreMarker (-46)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreMarker (-111)
 /* complex XML schema type 'resqml22:WellboreMarker': */
 class SOAP_CMAC resqml22__WellboreMarker : public eml22__AbstractObject {
       public:
@@ -16973,479 +17591,9 @@ class SOAP_CMAC resqml22__WellboreMarker : public eml22__AbstractObject {
 };
 #endif
 
-/* eml2_2ForGsoap.h:351 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactRepresentationReference
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactRepresentationReference (-56)
-/* complex XML schema type 'resqml22:ContactRepresentationReference': */
-class SOAP_CMAC resqml22__ContactRepresentationReference : public resqml22__AbstractContactRepresentationPart {
-      public:
-        /// Required element 'resqml22:Representation' of XML schema type 'eml22:DataObjectReference'
-        eml22__DataObjectReference *Representation;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__ContactRepresentationReference
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__ContactRepresentationReference; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__ContactRepresentationReference, default initialized and not managed by a soap context
-        virtual resqml22__ContactRepresentationReference *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__ContactRepresentationReference); }
-      public:
-        /// Constructor with default initializations
-        resqml22__ContactRepresentationReference() : Representation() { }
-        virtual ~resqml22__ContactRepresentationReference() { }
-        /// Friend allocator used by soap_new_resqml22__ContactRepresentationReference(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__ContactRepresentationReference * SOAP_FMAC2 soap_instantiate_resqml22__ContactRepresentationReference(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:359 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__NonSealedContactRepresentationPart
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__NonSealedContactRepresentationPart (-60)
-/* complex XML schema type 'resqml22:NonSealedContactRepresentationPart': */
-class SOAP_CMAC resqml22__NonSealedContactRepresentationPart : public resqml22__AbstractContactRepresentationPart {
-      public:
-        /// Optional element 'resqml22:Geometry' of XML schema type 'resqml22:AbstractGeometry'
-        resqml22__AbstractGeometry *Geometry;
-        /// Optional element 'resqml22:Contact' of XML schema type 'resqml22:ContactPatch'
-        std::vector<resqml22__ContactPatch *> Contact;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__NonSealedContactRepresentationPart
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__NonSealedContactRepresentationPart; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__NonSealedContactRepresentationPart, default initialized and not managed by a soap context
-        virtual resqml22__NonSealedContactRepresentationPart *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__NonSealedContactRepresentationPart); }
-      public:
-        /// Constructor with default initializations
-        resqml22__NonSealedContactRepresentationPart() : Geometry(), Contact() { }
-        virtual ~resqml22__NonSealedContactRepresentationPart() { }
-        /// Friend allocator used by soap_new_resqml22__NonSealedContactRepresentationPart(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__NonSealedContactRepresentationPart * SOAP_FMAC2 soap_instantiate_resqml22__NonSealedContactRepresentationPart(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:373 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SealedContactRepresentationPart
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SealedContactRepresentationPart (-67)
-/* complex XML schema type 'resqml22:SealedContactRepresentationPart': */
-class SOAP_CMAC resqml22__SealedContactRepresentationPart : public resqml22__AbstractContactRepresentationPart {
-      public:
-        /// Optional element 'resqml22:IdenticalNodeIndices' of XML schema type 'eml22:AbstractIntegerArray'
-        eml22__AbstractIntegerArray *IdenticalNodeIndices;
-        /// Required element 'resqml22:IdentityKind' of XML schema type 'resqml22:IdentityKind'
-        enum resqml22__IdentityKind IdentityKind;
-        /// Required element 'resqml22:Contact' of XML schema type 'resqml22:ContactPatch'
-        std::vector<resqml22__ContactPatch *> Contact;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__SealedContactRepresentationPart
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__SealedContactRepresentationPart; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__SealedContactRepresentationPart, default initialized and not managed by a soap context
-        virtual resqml22__SealedContactRepresentationPart *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__SealedContactRepresentationPart); }
-      public:
-        /// Constructor with default initializations
-        resqml22__SealedContactRepresentationPart() : IdenticalNodeIndices(), IdentityKind(), Contact() { }
-        virtual ~resqml22__SealedContactRepresentationPart() { }
-        /// Friend allocator used by soap_new_resqml22__SealedContactRepresentationPart(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__SealedContactRepresentationPart * SOAP_FMAC2 soap_instantiate_resqml22__SealedContactRepresentationPart(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:383 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeRegion
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeRegion (-72)
-/* complex XML schema type 'resqml22:VolumeRegion': */
-class SOAP_CMAC resqml22__VolumeRegion : public resqml22__Patch {
-      public:
-        /// Required element 'resqml22:PatchIndex' of XML schema type 'xsd:unsignedLong'
-        ULONG64 PatchIndex;
-        /// Required element 'resqml22:ExternalShell' of XML schema type 'resqml22:VolumeShell'
-        resqml22__VolumeShell *ExternalShell;
-        /// Optional element 'resqml22:InternalShells' of XML schema type 'resqml22:VolumeShell'
-        std::vector<resqml22__VolumeShell *> InternalShells;
-        /// Required element 'resqml22:Represents' of XML schema type 'eml22:DataObjectReference'
-        eml22__DataObjectReference *Represents;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeRegion
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeRegion; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__VolumeRegion, default initialized and not managed by a soap context
-        virtual resqml22__VolumeRegion *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__VolumeRegion); }
-      public:
-        /// Constructor with default initializations
-        resqml22__VolumeRegion() : PatchIndex(), ExternalShell(), InternalShells(), Represents() { }
-        virtual ~resqml22__VolumeRegion() { }
-        /// Friend allocator used by soap_new_resqml22__VolumeRegion(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__VolumeRegion * SOAP_FMAC2 soap_instantiate_resqml22__VolumeRegion(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:389 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractFeatureInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractFeatureInterpretation (-75)
-/* complex XML schema type 'resqml22:AbstractFeatureInterpretation': */
-class SOAP_CMAC resqml22__AbstractFeatureInterpretation : public eml22__AbstractObject {
-      public:
-        /// Optional element 'resqml22:Domain' of XML schema type 'resqml22:Domain'
-        enum resqml22__Domain *Domain;
-        /// Optional element 'resqml22:HasOccurredDuring' of XML schema type 'resqml22:AbstractTimeInterval'
-        resqml22__AbstractTimeInterval *HasOccurredDuring;
-        /// Required element 'resqml22:InterpretedFeature' of XML schema type 'eml22:DataObjectReference'
-        eml22__DataObjectReference *InterpretedFeature;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractFeatureInterpretation
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractFeatureInterpretation; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__AbstractFeatureInterpretation, default initialized and not managed by a soap context
-        virtual resqml22__AbstractFeatureInterpretation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__AbstractFeatureInterpretation); }
-      public:
-        /// Constructor with default initializations
-        resqml22__AbstractFeatureInterpretation() : Domain(), HasOccurredDuring(), InterpretedFeature() { }
-        virtual ~resqml22__AbstractFeatureInterpretation() { }
-        /// Friend allocator used by soap_new_resqml22__AbstractFeatureInterpretation(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__AbstractFeatureInterpretation * SOAP_FMAC2 soap_instantiate_resqml22__AbstractFeatureInterpretation(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:397 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__BinaryContactInterpretationPart
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__BinaryContactInterpretationPart (-79)
-/* complex XML schema type 'resqml22:BinaryContactInterpretationPart': */
-class SOAP_CMAC resqml22__BinaryContactInterpretationPart : public resqml22__AbstractContactInterpretationPart {
-      public:
-        /// Required element 'resqml22:DirectObject' of XML schema type 'resqml22:ContactElement'
-        resqml22__ContactElement *DirectObject;
-        /// Required element 'resqml22:Subject' of XML schema type 'resqml22:ContactElement'
-        resqml22__ContactElement *Subject;
-        /// Required element 'resqml22:Verb' of XML schema type 'resqml22:ContactVerb'
-        enum resqml22__ContactVerb Verb;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__BinaryContactInterpretationPart
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__BinaryContactInterpretationPart; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__BinaryContactInterpretationPart, default initialized and not managed by a soap context
-        virtual resqml22__BinaryContactInterpretationPart *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__BinaryContactInterpretationPart); }
-      public:
-        /// Constructor with default initializations
-        resqml22__BinaryContactInterpretationPart() : DirectObject(), Subject(), Verb() { }
-        virtual ~resqml22__BinaryContactInterpretationPart() { }
-        /// Friend allocator used by soap_new_resqml22__BinaryContactInterpretationPart(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__BinaryContactInterpretationPart * SOAP_FMAC2 soap_instantiate_resqml22__BinaryContactInterpretationPart(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:403 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactElement
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactElement (-82)
-/* complex XML schema type 'resqml22:ContactElement': */
-class SOAP_CMAC resqml22__ContactElement : public eml22__DataObjectReference {
-      public:
-        /// Optional element 'resqml22:Qualifier' of XML schema type 'resqml22:ContactSide'
-        enum resqml22__ContactSide *Qualifier;
-        /// Optional element 'resqml22:SecondaryQualifier' of XML schema type 'resqml22:ContactMode'
-        enum resqml22__ContactMode *SecondaryQualifier;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__ContactElement
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__ContactElement; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__ContactElement, default initialized and not managed by a soap context
-        virtual resqml22__ContactElement *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__ContactElement); }
-      public:
-        /// Constructor with default initializations
-        resqml22__ContactElement() : Qualifier(), SecondaryQualifier() { }
-        virtual ~resqml22__ContactElement() { }
-        /// Friend allocator used by soap_new_resqml22__ContactElement(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__ContactElement * SOAP_FMAC2 soap_instantiate_resqml22__ContactElement(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:411 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__FeatureInterpretationSet
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__FeatureInterpretationSet (-86)
-/* complex XML schema type 'resqml22:FeatureInterpretationSet': */
-class SOAP_CMAC resqml22__FeatureInterpretationSet : public eml22__AbstractObject {
-      public:
-        /// Required element 'resqml22:IsHomogeneous' of XML schema type 'xsd:boolean'
-        bool IsHomogeneous;
-        /// Required element 'resqml22:FeatureInterpretation' of XML schema type 'eml22:DataObjectReference'
-        std::vector<eml22__DataObjectReference *> FeatureInterpretation;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__FeatureInterpretationSet
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__FeatureInterpretationSet; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__FeatureInterpretationSet, default initialized and not managed by a soap context
-        virtual resqml22__FeatureInterpretationSet *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__FeatureInterpretationSet); }
-      public:
-        /// Constructor with default initializations
-        resqml22__FeatureInterpretationSet() : IsHomogeneous(), FeatureInterpretation() { }
-        virtual ~resqml22__FeatureInterpretationSet() { }
-        /// Friend allocator used by soap_new_resqml22__FeatureInterpretationSet(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__FeatureInterpretationSet * SOAP_FMAC2 soap_instantiate_resqml22__FeatureInterpretationSet(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:417 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeneticBoundaryBasedTimeInterval
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeneticBoundaryBasedTimeInterval (-89)
-/* complex XML schema type 'resqml22:GeneticBoundaryBasedTimeInterval': */
-class SOAP_CMAC resqml22__GeneticBoundaryBasedTimeInterval : public resqml22__AbstractTimeInterval {
-      public:
-        /// Required element 'resqml22:ChronoBottom' of XML schema type 'eml22:DataObjectReference'
-        eml22__DataObjectReference *ChronoBottom;
-        /// Required element 'resqml22:ChronoTop' of XML schema type 'eml22:DataObjectReference'
-        eml22__DataObjectReference *ChronoTop;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__GeneticBoundaryBasedTimeInterval
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__GeneticBoundaryBasedTimeInterval; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__GeneticBoundaryBasedTimeInterval, default initialized and not managed by a soap context
-        virtual resqml22__GeneticBoundaryBasedTimeInterval *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__GeneticBoundaryBasedTimeInterval); }
-      public:
-        /// Constructor with default initializations
-        resqml22__GeneticBoundaryBasedTimeInterval() : ChronoBottom(), ChronoTop() { }
-        virtual ~resqml22__GeneticBoundaryBasedTimeInterval() { }
-        /// Friend allocator used by soap_new_resqml22__GeneticBoundaryBasedTimeInterval(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__GeneticBoundaryBasedTimeInterval * SOAP_FMAC2 soap_instantiate_resqml22__GeneticBoundaryBasedTimeInterval(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:423 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicTimeBasedTimeInterval
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicTimeBasedTimeInterval (-92)
-/* complex XML schema type 'resqml22:GeologicTimeBasedTimeInterval': */
-class SOAP_CMAC resqml22__GeologicTimeBasedTimeInterval : public resqml22__AbstractTimeInterval {
-      public:
-        /// Required element 'resqml22:Start' of XML schema type 'eml22:GeologicTime'
-        eml22__GeologicTime *Start;
-        /// Required element 'resqml22:End' of XML schema type 'eml22:GeologicTime'
-        eml22__GeologicTime *End;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicTimeBasedTimeInterval
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicTimeBasedTimeInterval; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__GeologicTimeBasedTimeInterval, default initialized and not managed by a soap context
-        virtual resqml22__GeologicTimeBasedTimeInterval *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__GeologicTimeBasedTimeInterval); }
-      public:
-        /// Constructor with default initializations
-        resqml22__GeologicTimeBasedTimeInterval() : Start(), End() { }
-        virtual ~resqml22__GeologicTimeBasedTimeInterval() { }
-        /// Friend allocator used by soap_new_resqml22__GeologicTimeBasedTimeInterval(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__GeologicTimeBasedTimeInterval * SOAP_FMAC2 soap_instantiate_resqml22__GeologicTimeBasedTimeInterval(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:429 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__MultipleContactInterpretationPart
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__MultipleContactInterpretationPart (-95)
-/* complex XML schema type 'resqml22:MultipleContactInterpretationPart': */
-class SOAP_CMAC resqml22__MultipleContactInterpretationPart : public resqml22__AbstractContactInterpretationPart {
-      public:
-        /// Required element 'resqml22:With' of XML schema type 'xsd:unsignedLong'
-        std::vector<ULONG64> With;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__MultipleContactInterpretationPart
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__MultipleContactInterpretationPart; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__MultipleContactInterpretationPart, default initialized and not managed by a soap context
-        virtual resqml22__MultipleContactInterpretationPart *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__MultipleContactInterpretationPart); }
-      public:
-        /// Constructor with default initializations
-        resqml22__MultipleContactInterpretationPart() : With() { }
-        virtual ~resqml22__MultipleContactInterpretationPart() { }
-        /// Friend allocator used by soap_new_resqml22__MultipleContactInterpretationPart(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__MultipleContactInterpretationPart * SOAP_FMAC2 soap_instantiate_resqml22__MultipleContactInterpretationPart(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:435 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicColumn
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicColumn (-98)
-/* complex XML schema type 'resqml22:StratigraphicColumn': */
-class SOAP_CMAC resqml22__StratigraphicColumn : public eml22__AbstractObject {
-      public:
-        /// Required element 'resqml22:Ranks' of XML schema type 'eml22:DataObjectReference'
-        std::vector<eml22__DataObjectReference *> Ranks;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicColumn
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicColumn; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__StratigraphicColumn, default initialized and not managed by a soap context
-        virtual resqml22__StratigraphicColumn *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__StratigraphicColumn); }
-      public:
-        /// Constructor with default initializations
-        resqml22__StratigraphicColumn() : Ranks() { }
-        virtual ~resqml22__StratigraphicColumn() { }
-        /// Friend allocator used by soap_new_resqml22__StratigraphicColumn(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__StratigraphicColumn * SOAP_FMAC2 soap_instantiate_resqml22__StratigraphicColumn(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:441 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitDictionary
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitDictionary (-101)
-/* complex XML schema type 'resqml22:StratigraphicUnitDictionary': */
-class SOAP_CMAC resqml22__StratigraphicUnitDictionary : public eml22__AbstractObject {
-      public:
-        /// Required element 'resqml22:StratigraphicUnitInterpretation' of XML schema type 'resqml22:StratigraphicUnitInterpretation'
-        std::vector<resqml22__StratigraphicUnitInterpretation *> StratigraphicUnitInterpretation;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitDictionary
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitDictionary; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__StratigraphicUnitDictionary, default initialized and not managed by a soap context
-        virtual resqml22__StratigraphicUnitDictionary *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__StratigraphicUnitDictionary); }
-      public:
-        /// Constructor with default initializations
-        resqml22__StratigraphicUnitDictionary() : StratigraphicUnitInterpretation() { }
-        virtual ~resqml22__StratigraphicUnitDictionary() { }
-        /// Friend allocator used by soap_new_resqml22__StratigraphicUnitDictionary(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__StratigraphicUnitDictionary * SOAP_FMAC2 soap_instantiate_resqml22__StratigraphicUnitDictionary(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:471 */
+/* eml2_2ForGsoap.h:495 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__CellParentWindow
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__CellParentWindow (-116)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__CellParentWindow (-128)
 /* complex XML schema type 'resqml22:CellParentWindow': */
 class SOAP_CMAC resqml22__CellParentWindow : public resqml22__AbstractParentWindow {
       public:
@@ -17479,9 +17627,9 @@ class SOAP_CMAC resqml22__CellParentWindow : public resqml22__AbstractParentWind
 };
 #endif
 
-/* eml2_2ForGsoap.h:475 */
+/* eml2_2ForGsoap.h:499 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerParentWindow
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerParentWindow (-118)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerParentWindow (-130)
 /* complex XML schema type 'resqml22:ColumnLayerParentWindow': */
 class SOAP_CMAC resqml22__ColumnLayerParentWindow : public resqml22__AbstractParentWindow {
       public:
@@ -17519,9 +17667,9 @@ class SOAP_CMAC resqml22__ColumnLayerParentWindow : public resqml22__AbstractPar
 };
 #endif
 
-/* eml2_2ForGsoap.h:479 */
+/* eml2_2ForGsoap.h:503 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerSubnodeTopology
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerSubnodeTopology (-120)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerSubnodeTopology (-132)
 /* complex XML schema type 'resqml22:ColumnLayerSubnodeTopology': */
 class SOAP_CMAC resqml22__ColumnLayerSubnodeTopology : public resqml22__SubnodeTopology {
       public:
@@ -17553,9 +17701,9 @@ class SOAP_CMAC resqml22__ColumnLayerSubnodeTopology : public resqml22__SubnodeT
 };
 #endif
 
-/* eml2_2ForGsoap.h:493 */
+/* eml2_2ForGsoap.h:517 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IjkGpGridPatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkGpGridPatch (-127)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkGpGridPatch (-139)
 /* complex XML schema type 'resqml22:IjkGpGridPatch': */
 class SOAP_CMAC resqml22__IjkGpGridPatch : public resqml22__Patch {
       public:
@@ -17595,9 +17743,9 @@ class SOAP_CMAC resqml22__IjkGpGridPatch : public resqml22__Patch {
 };
 #endif
 
-/* eml2_2ForGsoap.h:499 */
+/* eml2_2ForGsoap.h:523 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IjkParentWindow
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkParentWindow (-130)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkParentWindow (-142)
 /* complex XML schema type 'resqml22:IjkParentWindow': */
 class SOAP_CMAC resqml22__IjkParentWindow : public resqml22__AbstractParentWindow {
       public:
@@ -17637,9 +17785,9 @@ class SOAP_CMAC resqml22__IjkParentWindow : public resqml22__AbstractParentWindo
 };
 #endif
 
-/* eml2_2ForGsoap.h:509 */
+/* eml2_2ForGsoap.h:533 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__LocalGridSet
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__LocalGridSet (-135)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__LocalGridSet (-147)
 /* complex XML schema type 'resqml22:LocalGridSet': */
 class SOAP_CMAC resqml22__LocalGridSet : public eml22__AbstractObject {
       public:
@@ -17673,9 +17821,9 @@ class SOAP_CMAC resqml22__LocalGridSet : public eml22__AbstractObject {
 };
 #endif
 
-/* eml2_2ForGsoap.h:521 */
+/* eml2_2ForGsoap.h:545 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SplitNodePatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SplitNodePatch (-141)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SplitNodePatch (-153)
 /* complex XML schema type 'resqml22:SplitNodePatch': */
 class SOAP_CMAC resqml22__SplitNodePatch : public resqml22__Patch {
       public:
@@ -17713,9 +17861,9 @@ class SOAP_CMAC resqml22__SplitNodePatch : public resqml22__Patch {
 };
 #endif
 
-/* eml2_2ForGsoap.h:523 */
+/* eml2_2ForGsoap.h:547 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SubnodePatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubnodePatch (-142)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubnodePatch (-154)
 /* complex XML schema type 'resqml22:SubnodePatch': */
 class SOAP_CMAC resqml22__SubnodePatch : public resqml22__Patch {
       public:
@@ -17749,9 +17897,9 @@ class SOAP_CMAC resqml22__SubnodePatch : public resqml22__Patch {
 };
 #endif
 
-/* eml2_2ForGsoap.h:531 */
+/* eml2_2ForGsoap.h:555 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__TruncationCellPatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__TruncationCellPatch (-146)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__TruncationCellPatch (-158)
 /* complex XML schema type 'resqml22:TruncationCellPatch': */
 class SOAP_CMAC resqml22__TruncationCellPatch : public resqml22__Patch {
       public:
@@ -17797,9 +17945,9 @@ class SOAP_CMAC resqml22__TruncationCellPatch : public resqml22__Patch {
 };
 #endif
 
-/* eml2_2ForGsoap.h:537 */
+/* eml2_2ForGsoap.h:561 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerGpGridPatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerGpGridPatch (-149)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerGpGridPatch (-161)
 /* complex XML schema type 'resqml22:UnstructuredColumnLayerGpGridPatch': */
 class SOAP_CMAC resqml22__UnstructuredColumnLayerGpGridPatch : public resqml22__Patch {
       public:
@@ -17835,9 +17983,9 @@ class SOAP_CMAC resqml22__UnstructuredColumnLayerGpGridPatch : public resqml22__
 };
 #endif
 
-/* eml2_2ForGsoap.h:543 */
+/* eml2_2ForGsoap.h:567 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGpGridPatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGpGridPatch (-152)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGpGridPatch (-164)
 /* complex XML schema type 'resqml22:UnstructuredGpGridPatch': */
 class SOAP_CMAC resqml22__UnstructuredGpGridPatch : public resqml22__Patch {
       public:
@@ -17871,9 +18019,9 @@ class SOAP_CMAC resqml22__UnstructuredGpGridPatch : public resqml22__Patch {
 };
 #endif
 
-/* eml2_2ForGsoap.h:551 */
+/* eml2_2ForGsoap.h:575 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredSubnodeTopology
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredSubnodeTopology (-156)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredSubnodeTopology (-168)
 /* complex XML schema type 'resqml22:UnstructuredSubnodeTopology': */
 class SOAP_CMAC resqml22__UnstructuredSubnodeTopology : public resqml22__SubnodeTopology {
       public:
@@ -17907,9 +18055,9 @@ class SOAP_CMAC resqml22__UnstructuredSubnodeTopology : public resqml22__Subnode
 };
 #endif
 
-/* eml2_2ForGsoap.h:559 */
+/* eml2_2ForGsoap.h:583 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractParametricLineGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractParametricLineGeometry (-160)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractParametricLineGeometry (-172)
 /* complex XML schema type 'resqml22:AbstractParametricLineGeometry': */
 class SOAP_CMAC resqml22__AbstractParametricLineGeometry : public resqml22__AbstractGeometry {
       public:
@@ -17938,9 +18086,9 @@ class SOAP_CMAC resqml22__AbstractParametricLineGeometry : public resqml22__Abst
 };
 #endif
 
-/* eml2_2ForGsoap.h:561 */
+/* eml2_2ForGsoap.h:585 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractPlaneGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractPlaneGeometry (-161)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractPlaneGeometry (-173)
 /* complex XML schema type 'resqml22:AbstractPlaneGeometry': */
 class SOAP_CMAC resqml22__AbstractPlaneGeometry : public resqml22__AbstractGeometry {
       public:
@@ -17969,9 +18117,9 @@ class SOAP_CMAC resqml22__AbstractPlaneGeometry : public resqml22__AbstractGeome
 };
 #endif
 
-/* eml2_2ForGsoap.h:569 */
+/* eml2_2ForGsoap.h:593 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineArray (-165)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineArray (-177)
 /* complex XML schema type 'resqml22:ParametricLineArray': */
 class SOAP_CMAC resqml22__ParametricLineArray : public resqml22__AbstractParametricLineArray {
       public:
@@ -18013,9 +18161,9 @@ class SOAP_CMAC resqml22__ParametricLineArray : public resqml22__AbstractParamet
 };
 #endif
 
-/* eml2_2ForGsoap.h:573 */
+/* eml2_2ForGsoap.h:597 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineFromRepresentationLatticeArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineFromRepresentationLatticeArray (-167)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineFromRepresentationLatticeArray (-179)
 /* complex XML schema type 'resqml22:ParametricLineFromRepresentationLatticeArray': */
 class SOAP_CMAC resqml22__ParametricLineFromRepresentationLatticeArray : public resqml22__AbstractParametricLineArray {
       public:
@@ -18049,9 +18197,9 @@ class SOAP_CMAC resqml22__ParametricLineFromRepresentationLatticeArray : public 
 };
 #endif
 
-/* eml2_2ForGsoap.h:579 */
+/* eml2_2ForGsoap.h:603 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Point2dExternalArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point2dExternalArray (-170)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point2dExternalArray (-182)
 /* Type resqml22__Point2dExternalArray is a recursive data type, (in)directly referencing itself through its (base or derived class) members */
 /* complex XML schema type 'resqml22:Point2dExternalArray': */
 class SOAP_CMAC resqml22__Point2dExternalArray : public resqml22__AbstractPoint3dArray {
@@ -18084,9 +18232,9 @@ class SOAP_CMAC resqml22__Point2dExternalArray : public resqml22__AbstractPoint3
 };
 #endif
 
-/* eml2_2ForGsoap.h:583 */
+/* eml2_2ForGsoap.h:607 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dExternalArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dExternalArray (-172)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dExternalArray (-184)
 /* Type resqml22__Point3dExternalArray is a recursive data type, (in)directly referencing itself through its (base or derived class) members */
 /* complex XML schema type 'resqml22:Point3dExternalArray': */
 class SOAP_CMAC resqml22__Point3dExternalArray : public resqml22__AbstractPoint3dArray {
@@ -18119,9 +18267,9 @@ class SOAP_CMAC resqml22__Point3dExternalArray : public resqml22__AbstractPoint3
 };
 #endif
 
-/* eml2_2ForGsoap.h:585 */
+/* eml2_2ForGsoap.h:609 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dFromRepresentationLatticeArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dFromRepresentationLatticeArray (-173)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dFromRepresentationLatticeArray (-185)
 /* Type resqml22__Point3dFromRepresentationLatticeArray is a recursive data type, (in)directly referencing itself through its (base or derived class) members */
 /* complex XML schema type 'resqml22:Point3dFromRepresentationLatticeArray': */
 class SOAP_CMAC resqml22__Point3dFromRepresentationLatticeArray : public resqml22__AbstractPoint3dArray {
@@ -18156,9 +18304,9 @@ class SOAP_CMAC resqml22__Point3dFromRepresentationLatticeArray : public resqml2
 };
 #endif
 
-/* eml2_2ForGsoap.h:587 */
+/* eml2_2ForGsoap.h:611 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dLatticeArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dLatticeArray (-174)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dLatticeArray (-186)
 /* Type resqml22__Point3dLatticeArray is a recursive data type, (in)directly referencing itself through its (base or derived class) members */
 /* complex XML schema type 'resqml22:Point3dLatticeArray': */
 class SOAP_CMAC resqml22__Point3dLatticeArray : public resqml22__AbstractPoint3dArray {
@@ -18195,9 +18343,9 @@ class SOAP_CMAC resqml22__Point3dLatticeArray : public resqml22__AbstractPoint3d
 };
 #endif
 
-/* eml2_2ForGsoap.h:591 */
+/* eml2_2ForGsoap.h:615 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dParametricArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dParametricArray (-176)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dParametricArray (-188)
 /* Type resqml22__Point3dParametricArray is a recursive data type, (in)directly referencing itself through its (base or derived class) members */
 /* complex XML schema type 'resqml22:Point3dParametricArray': */
 class SOAP_CMAC resqml22__Point3dParametricArray : public resqml22__AbstractPoint3dArray {
@@ -18236,9 +18384,9 @@ class SOAP_CMAC resqml22__Point3dParametricArray : public resqml22__AbstractPoin
 };
 #endif
 
-/* eml2_2ForGsoap.h:593 */
+/* eml2_2ForGsoap.h:617 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dZValueArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dZValueArray (-177)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dZValueArray (-189)
 /* Type resqml22__Point3dZValueArray is a recursive data type, (in)directly referencing itself through its (base or derived class) members */
 /* complex XML schema type 'resqml22:Point3dZValueArray': */
 class SOAP_CMAC resqml22__Point3dZValueArray : public resqml22__AbstractPoint3dArray {
@@ -18273,9 +18421,9 @@ class SOAP_CMAC resqml22__Point3dZValueArray : public resqml22__AbstractPoint3dA
 };
 #endif
 
-/* eml2_2ForGsoap.h:595 */
+/* eml2_2ForGsoap.h:619 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PointGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__PointGeometry (-178)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__PointGeometry (-190)
 /* complex XML schema type 'resqml22:PointGeometry': */
 class SOAP_CMAC resqml22__PointGeometry : public resqml22__AbstractGeometry {
       public:
@@ -18309,9 +18457,9 @@ class SOAP_CMAC resqml22__PointGeometry : public resqml22__AbstractGeometry {
 };
 #endif
 
-/* eml2_2ForGsoap.h:597 */
+/* eml2_2ForGsoap.h:621 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SinglePointGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SinglePointGeometry (-179)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SinglePointGeometry (-191)
 /* complex XML schema type 'resqml22:SinglePointGeometry': */
 class SOAP_CMAC resqml22__SinglePointGeometry : public resqml22__AbstractGeometry {
       public:
@@ -18343,9 +18491,9 @@ class SOAP_CMAC resqml22__SinglePointGeometry : public resqml22__AbstractGeometr
 };
 #endif
 
-/* eml2_2ForGsoap.h:611 */
+/* eml2_2ForGsoap.h:635 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic2dCoordinates
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic2dCoordinates (-186)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic2dCoordinates (-198)
 /* complex XML schema type 'resqml22:Seismic2dCoordinates': */
 class SOAP_CMAC resqml22__Seismic2dCoordinates : public resqml22__AbstractSeismicCoordinates {
       public:
@@ -18379,9 +18527,9 @@ class SOAP_CMAC resqml22__Seismic2dCoordinates : public resqml22__AbstractSeismi
 };
 #endif
 
-/* eml2_2ForGsoap.h:615 */
+/* eml2_2ForGsoap.h:639 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic3dCoordinates
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic3dCoordinates (-188)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic3dCoordinates (-200)
 /* complex XML schema type 'resqml22:Seismic3dCoordinates': */
 class SOAP_CMAC resqml22__Seismic3dCoordinates : public resqml22__AbstractSeismicCoordinates {
       public:
@@ -18414,154 +18562,6 @@ class SOAP_CMAC resqml22__Seismic3dCoordinates : public resqml22__AbstractSeismi
         virtual ~resqml22__Seismic3dCoordinates() { }
         /// Friend allocator used by soap_new_resqml22__Seismic3dCoordinates(struct soap*, int)
         friend SOAP_FMAC1 resqml22__Seismic3dCoordinates * SOAP_FMAC2 soap_instantiate_resqml22__Seismic3dCoordinates(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:627 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractRepresentation (-194)
-/* complex XML schema type 'resqml22:AbstractRepresentation': */
-class SOAP_CMAC resqml22__AbstractRepresentation : public eml22__AbstractObject {
-      public:
-        /// Optional element 'resqml22:RealizationIndex' of XML schema type 'xsd:unsignedLong'
-        ULONG64 *RealizationIndex;
-        /// Optional element 'resqml22:RepresentedInterpretation' of XML schema type 'eml22:DataObjectReference'
-        eml22__DataObjectReference *RepresentedInterpretation;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractRepresentation
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractRepresentation; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__AbstractRepresentation, default initialized and not managed by a soap context
-        virtual resqml22__AbstractRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__AbstractRepresentation); }
-      public:
-        /// Constructor with default initializations
-        resqml22__AbstractRepresentation() : RealizationIndex(), RepresentedInterpretation() { }
-        virtual ~resqml22__AbstractRepresentation() { }
-        /// Friend allocator used by soap_new_resqml22__AbstractRepresentation(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__AbstractRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__AbstractRepresentation(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:635 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Patch1d
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Patch1d (-198)
-/* complex XML schema type 'resqml22:Patch1d': */
-class SOAP_CMAC resqml22__Patch1d : public resqml22__Patch {
-      public:
-        /// Required element 'resqml22:Count' of XML schema type 'xsd:unsignedLong'
-        ULONG64 Count;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__Patch1d
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__Patch1d; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__Patch1d, default initialized and not managed by a soap context
-        virtual resqml22__Patch1d *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__Patch1d); }
-      public:
-        /// Constructor with default initializations
-        resqml22__Patch1d() : Count() { }
-        virtual ~resqml22__Patch1d() { }
-        /// Friend allocator used by soap_new_resqml22__Patch1d(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__Patch1d * SOAP_FMAC2 soap_instantiate_resqml22__Patch1d(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:637 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetPatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetPatch (-199)
-/* complex XML schema type 'resqml22:PolylineSetPatch': */
-class SOAP_CMAC resqml22__PolylineSetPatch : public resqml22__Patch {
-      public:
-        /// Required element 'resqml22:NodeCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 NodeCount;
-        /// Required element 'resqml22:IntervalCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 IntervalCount;
-        /// Required element 'resqml22:NodeCountPerPolyline' of XML schema type 'eml22:AbstractIntegerArray'
-        eml22__AbstractIntegerArray *NodeCountPerPolyline;
-        /// Required element 'resqml22:ClosedPolylines' of XML schema type 'eml22:AbstractBooleanArray'
-        eml22__AbstractBooleanArray *ClosedPolylines;
-        /// Required element 'resqml22:Geometry' of XML schema type 'resqml22:PointGeometry'
-        resqml22__PointGeometry *Geometry;
-        /// Optional element 'resqml22:IntervalGridCells' of XML schema type 'resqml22:IntervalGridCells'
-        resqml22__IntervalGridCells *IntervalGridCells;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetPatch
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetPatch; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__PolylineSetPatch, default initialized and not managed by a soap context
-        virtual resqml22__PolylineSetPatch *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__PolylineSetPatch); }
-      public:
-        /// Constructor with default initializations
-        resqml22__PolylineSetPatch() : NodeCount(), IntervalCount(), NodeCountPerPolyline(), ClosedPolylines(), Geometry(), IntervalGridCells() { }
-        virtual ~resqml22__PolylineSetPatch() { }
-        /// Friend allocator used by soap_new_resqml22__PolylineSetPatch(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__PolylineSetPatch * SOAP_FMAC2 soap_instantiate_resqml22__PolylineSetPatch(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:643 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentitySet
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentitySet (-202)
-/* complex XML schema type 'resqml22:RepresentationIdentitySet': */
-class SOAP_CMAC resqml22__RepresentationIdentitySet : public eml22__AbstractObject {
-      public:
-        /// Required element 'resqml22:RepresentationIdentity' of XML schema type 'resqml22:RepresentationIdentity'
-        std::vector<resqml22__RepresentationIdentity *> RepresentationIdentity;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentitySet
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentitySet; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__RepresentationIdentitySet, default initialized and not managed by a soap context
-        virtual resqml22__RepresentationIdentitySet *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__RepresentationIdentitySet); }
-      public:
-        /// Constructor with default initializations
-        resqml22__RepresentationIdentitySet() : RepresentationIdentity() { }
-        virtual ~resqml22__RepresentationIdentitySet() { }
-        /// Friend allocator used by soap_new_resqml22__RepresentationIdentitySet(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__RepresentationIdentitySet * SOAP_FMAC2 soap_instantiate_resqml22__RepresentationIdentitySet(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
@@ -22515,9 +22515,588 @@ class SOAP_CMAC witsml21__WellboreGeology : public eml22__AbstractObject {
 };
 #endif
 
-/* eml2_2ForGsoap.h:315 */
+/* eml2_2ForGsoap.h:323 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetRepresentation (-42)
+/* complex XML schema type 'resqml22:PolylineSetRepresentation': */
+class SOAP_CMAC resqml22__PolylineSetRepresentation : public resqml22__AbstractRepresentation {
+      public:
+        /// Optional element 'resqml22:LineRole' of XML schema type 'resqml22:LineRole'
+        enum resqml22__LineRole *LineRole;
+        /// Required element 'resqml22:LinePatch' of XML schema type 'resqml22:PolylineSetPatch'
+        std::vector<resqml22__PolylineSetPatch *> LinePatch;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetRepresentation
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetRepresentation; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__PolylineSetRepresentation, default initialized and not managed by a soap context
+        virtual resqml22__PolylineSetRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__PolylineSetRepresentation); }
+      public:
+        /// Constructor with default initializations
+        resqml22__PolylineSetRepresentation() : LineRole(), LinePatch() { }
+        virtual ~resqml22__PolylineSetRepresentation() { }
+        /// Friend allocator used by soap_new_resqml22__PolylineSetRepresentation(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__PolylineSetRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__PolylineSetRepresentation(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:329 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationSetRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationSetRepresentation (-45)
+/* complex XML schema type 'resqml22:RepresentationSetRepresentation': */
+class SOAP_CMAC resqml22__RepresentationSetRepresentation : public resqml22__AbstractRepresentation {
+      public:
+        /// Required element 'resqml22:IsHomogeneous' of XML schema type 'xsd:boolean'
+        bool IsHomogeneous;
+        /// Required element 'resqml22:Representation' of XML schema type 'eml22:DataObjectReference'
+        std::vector<eml22__DataObjectReference *> Representation;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationSetRepresentation
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationSetRepresentation; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__RepresentationSetRepresentation, default initialized and not managed by a soap context
+        virtual resqml22__RepresentationSetRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__RepresentationSetRepresentation); }
+      public:
+        /// Constructor with default initializations
+        resqml22__RepresentationSetRepresentation() : IsHomogeneous(), Representation() { }
+        virtual ~resqml22__RepresentationSetRepresentation() { }
+        /// Friend allocator used by soap_new_resqml22__RepresentationSetRepresentation(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__RepresentationSetRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__RepresentationSetRepresentation(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:331 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentation (-46)
+/* complex XML schema type 'resqml22:SubRepresentation': */
+class SOAP_CMAC resqml22__SubRepresentation : public resqml22__AbstractRepresentation {
+      public:
+        /// Optional element 'resqml22:AdditionalGridTopology' of XML schema type 'resqml22:AdditionalGridTopology'
+        resqml22__AdditionalGridTopology *AdditionalGridTopology;
+        /// Required element 'resqml22:SupportingRepresentation' of XML schema type 'eml22:DataObjectReference'
+        std::vector<eml22__DataObjectReference *> SupportingRepresentation;
+        /// Required element 'resqml22:SubRepresentationPatch' of XML schema type 'resqml22:SubRepresentationPatch'
+        std::vector<resqml22__SubRepresentationPatch *> SubRepresentationPatch;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentation
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentation; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__SubRepresentation, default initialized and not managed by a soap context
+        virtual resqml22__SubRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__SubRepresentation); }
+      public:
+        /// Constructor with default initializations
+        resqml22__SubRepresentation() : AdditionalGridTopology(), SupportingRepresentation(), SubRepresentationPatch() { }
+        virtual ~resqml22__SubRepresentation() { }
+        /// Friend allocator used by soap_new_resqml22__SubRepresentation(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__SubRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__SubRepresentation(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:333 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentationPatch
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentationPatch (-47)
+/* complex XML schema type 'resqml22:SubRepresentationPatch': */
+class SOAP_CMAC resqml22__SubRepresentationPatch : public resqml22__Patch1d {
+      public:
+        /// Sequence of 1 to 2 elements 'resqml22:ElementIndices' of XML schema type 'resqml22:ElementIndices'
+        std::vector<resqml22__ElementIndices *> ElementIndices;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentationPatch
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentationPatch; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__SubRepresentationPatch, default initialized and not managed by a soap context
+        virtual resqml22__SubRepresentationPatch *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__SubRepresentationPatch); }
+      public:
+        /// Constructor with default initializations
+        resqml22__SubRepresentationPatch() : ElementIndices() { }
+        virtual ~resqml22__SubRepresentationPatch() { }
+        /// Friend allocator used by soap_new_resqml22__SubRepresentationPatch(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__SubRepresentationPatch * SOAP_FMAC2 soap_instantiate_resqml22__SubRepresentationPatch(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:339 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSurfaceRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSurfaceRepresentation (-50)
+/* complex XML schema type 'resqml22:AbstractSurfaceRepresentation': */
+class SOAP_CMAC resqml22__AbstractSurfaceRepresentation : public resqml22__AbstractRepresentation {
+      public:
+        /// Required element 'resqml22:SurfaceRole' of XML schema type 'resqml22:SurfaceRole'
+        enum resqml22__SurfaceRole SurfaceRole;
+        /// Optional element 'resqml22:Boundaries' of XML schema type 'resqml22:PatchBoundaries'
+        std::vector<resqml22__PatchBoundaries *> Boundaries;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSurfaceRepresentation
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSurfaceRepresentation; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__AbstractSurfaceRepresentation, default initialized and not managed by a soap context
+        virtual resqml22__AbstractSurfaceRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__AbstractSurfaceRepresentation); }
+      public:
+        /// Constructor with default initializations
+        resqml22__AbstractSurfaceRepresentation() : SurfaceRole(), Boundaries() { }
+        virtual ~resqml22__AbstractSurfaceRepresentation() { }
+        /// Friend allocator used by soap_new_resqml22__AbstractSurfaceRepresentation(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__AbstractSurfaceRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__AbstractSurfaceRepresentation(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:343 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactPatch
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactPatch (-52)
+/* complex XML schema type 'resqml22:ContactPatch': */
+class SOAP_CMAC resqml22__ContactPatch : public resqml22__Patch1d {
+      public:
+        /// Required element 'resqml22:RepresentationIndex' of XML schema type 'xsd:unsignedLong'
+        ULONG64 RepresentationIndex;
+        /// Required element 'resqml22:SupportingRepresentationNodes' of XML schema type 'eml22:AbstractIntegerArray'
+        eml22__AbstractIntegerArray *SupportingRepresentationNodes;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__ContactPatch
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__ContactPatch; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__ContactPatch, default initialized and not managed by a soap context
+        virtual resqml22__ContactPatch *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__ContactPatch); }
+      public:
+        /// Constructor with default initializations
+        resqml22__ContactPatch() : RepresentationIndex(), SupportingRepresentationNodes() { }
+        virtual ~resqml22__ContactPatch() { }
+        /// Friend allocator used by soap_new_resqml22__ContactPatch(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__ContactPatch * SOAP_FMAC2 soap_instantiate_resqml22__ContactPatch(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:347 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__EdgePatch
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__EdgePatch (-54)
+/* complex XML schema type 'resqml22:EdgePatch': */
+class SOAP_CMAC resqml22__EdgePatch : public resqml22__Patch1d {
+      public:
+        /// Optional element 'resqml22:SplitEdges' of XML schema type 'eml22:AbstractIntegerArray'
+        eml22__AbstractIntegerArray *SplitEdges;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__EdgePatch
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__EdgePatch; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__EdgePatch, default initialized and not managed by a soap context
+        virtual resqml22__EdgePatch *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__EdgePatch); }
+      public:
+        /// Constructor with default initializations
+        resqml22__EdgePatch() : SplitEdges() { }
+        virtual ~resqml22__EdgePatch() { }
+        /// Friend allocator used by soap_new_resqml22__EdgePatch(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__EdgePatch * SOAP_FMAC2 soap_instantiate_resqml22__EdgePatch(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:351 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__NodePatch
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__NodePatch (-56)
+/* complex XML schema type 'resqml22:NodePatch': */
+class SOAP_CMAC resqml22__NodePatch : public resqml22__Patch1d {
+      public:
+        /// Required element 'resqml22:Geometry' of XML schema type 'resqml22:PointGeometry'
+        resqml22__PointGeometry *Geometry;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__NodePatch
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__NodePatch; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__NodePatch, default initialized and not managed by a soap context
+        virtual resqml22__NodePatch *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__NodePatch); }
+      public:
+        /// Constructor with default initializations
+        resqml22__NodePatch() : Geometry() { }
+        virtual ~resqml22__NodePatch() { }
+        /// Friend allocator used by soap_new_resqml22__NodePatch(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__NodePatch * SOAP_FMAC2 soap_instantiate_resqml22__NodePatch(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:363 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PointSetRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__PointSetRepresentation (-62)
+/* complex XML schema type 'resqml22:PointSetRepresentation': */
+class SOAP_CMAC resqml22__PointSetRepresentation : public resqml22__AbstractRepresentation {
+      public:
+        /// Required element 'resqml22:NodePatch' of XML schema type 'resqml22:NodePatch'
+        std::vector<resqml22__NodePatch *> NodePatch;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__PointSetRepresentation
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__PointSetRepresentation; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__PointSetRepresentation, default initialized and not managed by a soap context
+        virtual resqml22__PointSetRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__PointSetRepresentation); }
+      public:
+        /// Constructor with default initializations
+        resqml22__PointSetRepresentation() : NodePatch() { }
+        virtual ~resqml22__PointSetRepresentation() { }
+        /// Friend allocator used by soap_new_resqml22__PointSetRepresentation(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__PointSetRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__PointSetRepresentation(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:365 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineRepresentation (-63)
+/* complex XML schema type 'resqml22:PolylineRepresentation': */
+class SOAP_CMAC resqml22__PolylineRepresentation : public resqml22__AbstractRepresentation {
+      public:
+        /// Optional element 'resqml22:LineRole' of XML schema type 'resqml22:LineRole'
+        enum resqml22__LineRole *LineRole;
+        /// Required element 'resqml22:IsClosed' of XML schema type 'xsd:boolean'
+        bool IsClosed;
+        /// Required element 'resqml22:NodePatch' of XML schema type 'resqml22:NodePatch'
+        resqml22__NodePatch *NodePatch;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineRepresentation
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineRepresentation; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__PolylineRepresentation, default initialized and not managed by a soap context
+        virtual resqml22__PolylineRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__PolylineRepresentation); }
+      public:
+        /// Constructor with default initializations
+        resqml22__PolylineRepresentation() : LineRole(), IsClosed(), NodePatch() { }
+        virtual ~resqml22__PolylineRepresentation() { }
+        /// Friend allocator used by soap_new_resqml22__PolylineRepresentation(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__PolylineRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__PolylineRepresentation(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:373 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__TrianglePatch
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__TrianglePatch (-67)
+/* complex XML schema type 'resqml22:TrianglePatch': */
+class SOAP_CMAC resqml22__TrianglePatch : public resqml22__Patch1d {
+      public:
+        /// Required element 'resqml22:NodeCount' of XML schema type 'xsd:unsignedLong'
+        ULONG64 NodeCount;
+        /// Required element 'resqml22:Triangles' of XML schema type 'eml22:AbstractIntegerArray'
+        eml22__AbstractIntegerArray *Triangles;
+        /// Optional element 'resqml22:SplitEdgePatch' of XML schema type 'resqml22:EdgePatch'
+        std::vector<resqml22__EdgePatch *> SplitEdgePatch;
+        /// Required element 'resqml22:Geometry' of XML schema type 'resqml22:PointGeometry'
+        resqml22__PointGeometry *Geometry;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__TrianglePatch
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__TrianglePatch; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__TrianglePatch, default initialized and not managed by a soap context
+        virtual resqml22__TrianglePatch *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__TrianglePatch); }
+      public:
+        /// Constructor with default initializations
+        resqml22__TrianglePatch() : NodeCount(), Triangles(), SplitEdgePatch(), Geometry() { }
+        virtual ~resqml22__TrianglePatch() { }
+        /// Friend allocator used by soap_new_resqml22__TrianglePatch(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__TrianglePatch * SOAP_FMAC2 soap_instantiate_resqml22__TrianglePatch(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:385 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractOrganizationInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractOrganizationInterpretation (-73)
+/* complex XML schema type 'resqml22:AbstractOrganizationInterpretation': */
+class SOAP_CMAC resqml22__AbstractOrganizationInterpretation : public resqml22__AbstractFeatureInterpretation {
+      public:
+        /// Optional element 'resqml22:ContactInterpretation' of XML schema type 'resqml22:AbstractContactInterpretationPart'
+        std::vector<resqml22__AbstractContactInterpretationPart *> ContactInterpretation;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractOrganizationInterpretation
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractOrganizationInterpretation; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__AbstractOrganizationInterpretation, default initialized and not managed by a soap context
+        virtual resqml22__AbstractOrganizationInterpretation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__AbstractOrganizationInterpretation); }
+      public:
+        /// Constructor with default initializations
+        resqml22__AbstractOrganizationInterpretation() : ContactInterpretation() { }
+        virtual ~resqml22__AbstractOrganizationInterpretation() { }
+        /// Friend allocator used by soap_new_resqml22__AbstractOrganizationInterpretation(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__AbstractOrganizationInterpretation * SOAP_FMAC2 soap_instantiate_resqml22__AbstractOrganizationInterpretation(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:393 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretation (-77)
+/* complex XML schema type 'resqml22:BoundaryFeatureInterpretation': */
+class SOAP_CMAC resqml22__BoundaryFeatureInterpretation : public resqml22__AbstractFeatureInterpretation {
+      public:
+        /// Optional element 'resqml22:OlderPossibleAge' of XML schema type 'xsd:long'
+        LONG64 *OlderPossibleAge;
+        /// Optional element 'resqml22:YoungerPossibleAge' of XML schema type 'xsd:long'
+        LONG64 *YoungerPossibleAge;
+        /// Optional element 'resqml22:AbsoluteAge' of XML schema type 'eml22:GeologicTime'
+        eml22__GeologicTime *AbsoluteAge;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretation
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretation; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__BoundaryFeatureInterpretation, default initialized and not managed by a soap context
+        virtual resqml22__BoundaryFeatureInterpretation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__BoundaryFeatureInterpretation); }
+      public:
+        /// Constructor with default initializations
+        resqml22__BoundaryFeatureInterpretation() : OlderPossibleAge(), YoungerPossibleAge(), AbsoluteAge() { }
+        virtual ~resqml22__BoundaryFeatureInterpretation() { }
+        /// Friend allocator used by soap_new_resqml22__BoundaryFeatureInterpretation(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__BoundaryFeatureInterpretation * SOAP_FMAC2 soap_instantiate_resqml22__BoundaryFeatureInterpretation(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:399 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__EarthModelInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__EarthModelInterpretation (-80)
+/* complex XML schema type 'resqml22:EarthModelInterpretation': */
+class SOAP_CMAC resqml22__EarthModelInterpretation : public resqml22__AbstractFeatureInterpretation {
+      public:
+        /// Optional element 'resqml22:StratigraphicColumn' of XML schema type 'eml22:DataObjectReference'
+        eml22__DataObjectReference *StratigraphicColumn;
+        /// Optional element 'resqml22:Structure' of XML schema type 'eml22:DataObjectReference'
+        std::vector<eml22__DataObjectReference *> Structure;
+        /// Optional element 'resqml22:StratigraphicOccurrences' of XML schema type 'eml22:DataObjectReference'
+        std::vector<eml22__DataObjectReference *> StratigraphicOccurrences;
+        /// Optional element 'resqml22:WellboreInterpretationSet' of XML schema type 'eml22:DataObjectReference'
+        std::vector<eml22__DataObjectReference *> WellboreInterpretationSet;
+        /// Optional element 'resqml22:Fluid' of XML schema type 'eml22:DataObjectReference'
+        std::vector<eml22__DataObjectReference *> Fluid;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__EarthModelInterpretation
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__EarthModelInterpretation; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__EarthModelInterpretation, default initialized and not managed by a soap context
+        virtual resqml22__EarthModelInterpretation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__EarthModelInterpretation); }
+      public:
+        /// Constructor with default initializations
+        resqml22__EarthModelInterpretation() : StratigraphicColumn(), Structure(), StratigraphicOccurrences(), WellboreInterpretationSet(), Fluid() { }
+        virtual ~resqml22__EarthModelInterpretation() { }
+        /// Friend allocator used by soap_new_resqml22__EarthModelInterpretation(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__EarthModelInterpretation * SOAP_FMAC2 soap_instantiate_resqml22__EarthModelInterpretation(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:409 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GenericFeatureInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GenericFeatureInterpretation (-85)
+/* complex XML schema type 'resqml22:GenericFeatureInterpretation': */
+class SOAP_CMAC resqml22__GenericFeatureInterpretation : public resqml22__AbstractFeatureInterpretation {
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__GenericFeatureInterpretation
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__GenericFeatureInterpretation; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__GenericFeatureInterpretation, default initialized and not managed by a soap context
+        virtual resqml22__GenericFeatureInterpretation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__GenericFeatureInterpretation); }
+      public:
+        /// Constructor with default initializations
+        resqml22__GenericFeatureInterpretation() { }
+        virtual ~resqml22__GenericFeatureInterpretation() { }
+        /// Friend allocator used by soap_new_resqml22__GenericFeatureInterpretation(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__GenericFeatureInterpretation * SOAP_FMAC2 soap_instantiate_resqml22__GenericFeatureInterpretation(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:419 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicUnitInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicUnitInterpretation (-90)
+/* complex XML schema type 'resqml22:GeologicUnitInterpretation': */
+class SOAP_CMAC resqml22__GeologicUnitInterpretation : public resqml22__AbstractFeatureInterpretation {
+      public:
+        /// Optional element 'resqml22:GeologicUnitComposition' of XML schema type 'eml22:LithologyKindExt'
+        std::string *GeologicUnitComposition;
+        /// Optional element 'resqml22:GeologicUnitMaterialEmplacement' of XML schema type 'resqml22:GeologicUnitMaterialEmplacement'
+        enum resqml22__GeologicUnitMaterialEmplacement *GeologicUnitMaterialEmplacement;
+        /// Optional element 'resqml22:GeologicUnit3dShape' of XML schema type 'resqml22:Shape3dExt'
+        std::string *GeologicUnit3dShape;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicUnitInterpretation
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicUnitInterpretation; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__GeologicUnitInterpretation, default initialized and not managed by a soap context
+        virtual resqml22__GeologicUnitInterpretation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__GeologicUnitInterpretation); }
+      public:
+        /// Constructor with default initializations
+        resqml22__GeologicUnitInterpretation() : GeologicUnitComposition(), GeologicUnitMaterialEmplacement(), GeologicUnit3dShape() { }
+        virtual ~resqml22__GeologicUnitInterpretation() { }
+        /// Friend allocator used by soap_new_resqml22__GeologicUnitInterpretation(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__GeologicUnitInterpretation * SOAP_FMAC2 soap_instantiate_resqml22__GeologicUnitInterpretation(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:445 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__DeviationSurveyRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__DeviationSurveyRepresentation (-38)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__DeviationSurveyRepresentation (-103)
 /* complex XML schema type 'resqml22:DeviationSurveyRepresentation': */
 class SOAP_CMAC resqml22__DeviationSurveyRepresentation : public resqml22__AbstractRepresentation {
       public:
@@ -22571,9 +23150,9 @@ class SOAP_CMAC resqml22__DeviationSurveyRepresentation : public resqml22__Abstr
 };
 #endif
 
-/* eml2_2ForGsoap.h:325 */
+/* eml2_2ForGsoap.h:455 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFrameRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFrameRepresentation (-43)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFrameRepresentation (-108)
 /* complex XML schema type 'resqml22:WellboreFrameRepresentation': */
 class SOAP_CMAC resqml22__WellboreFrameRepresentation : public resqml22__AbstractRepresentation {
       public:
@@ -22615,9 +23194,9 @@ class SOAP_CMAC resqml22__WellboreFrameRepresentation : public resqml22__Abstrac
 };
 #endif
 
-/* eml2_2ForGsoap.h:327 */
+/* eml2_2ForGsoap.h:457 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreInterpretation (-44)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreInterpretation (-109)
 /* complex XML schema type 'resqml22:WellboreInterpretation': */
 class SOAP_CMAC resqml22__WellboreInterpretation : public resqml22__AbstractFeatureInterpretation {
       public:
@@ -22649,9 +23228,9 @@ class SOAP_CMAC resqml22__WellboreInterpretation : public resqml22__AbstractFeat
 };
 #endif
 
-/* eml2_2ForGsoap.h:329 */
+/* eml2_2ForGsoap.h:459 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreInterpretationSet
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreInterpretationSet (-45)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreInterpretationSet (-110)
 /* complex XML schema type 'resqml22:WellboreInterpretationSet': */
 class SOAP_CMAC resqml22__WellboreInterpretationSet : public resqml22__AbstractFeatureInterpretation {
       public:
@@ -22683,9 +23262,9 @@ class SOAP_CMAC resqml22__WellboreInterpretationSet : public resqml22__AbstractF
 };
 #endif
 
-/* eml2_2ForGsoap.h:337 */
+/* eml2_2ForGsoap.h:467 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreTrajectoryRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreTrajectoryRepresentation (-49)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreTrajectoryRepresentation (-114)
 /* complex XML schema type 'resqml22:WellboreTrajectoryRepresentation': */
 class SOAP_CMAC resqml22__WellboreTrajectoryRepresentation : public resqml22__AbstractRepresentation {
       public:
@@ -22735,444 +23314,9 @@ class SOAP_CMAC resqml22__WellboreTrajectoryRepresentation : public resqml22__Ab
 };
 #endif
 
-/* eml2_2ForGsoap.h:345 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSurfaceRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSurfaceRepresentation (-53)
-/* complex XML schema type 'resqml22:AbstractSurfaceRepresentation': */
-class SOAP_CMAC resqml22__AbstractSurfaceRepresentation : public resqml22__AbstractRepresentation {
-      public:
-        /// Required element 'resqml22:SurfaceRole' of XML schema type 'resqml22:SurfaceRole'
-        enum resqml22__SurfaceRole SurfaceRole;
-        /// Optional element 'resqml22:Boundaries' of XML schema type 'resqml22:PatchBoundaries'
-        std::vector<resqml22__PatchBoundaries *> Boundaries;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSurfaceRepresentation
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSurfaceRepresentation; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__AbstractSurfaceRepresentation, default initialized and not managed by a soap context
-        virtual resqml22__AbstractSurfaceRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__AbstractSurfaceRepresentation); }
-      public:
-        /// Constructor with default initializations
-        resqml22__AbstractSurfaceRepresentation() : SurfaceRole(), Boundaries() { }
-        virtual ~resqml22__AbstractSurfaceRepresentation() { }
-        /// Friend allocator used by soap_new_resqml22__AbstractSurfaceRepresentation(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__AbstractSurfaceRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__AbstractSurfaceRepresentation(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:349 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactPatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactPatch (-55)
-/* complex XML schema type 'resqml22:ContactPatch': */
-class SOAP_CMAC resqml22__ContactPatch : public resqml22__Patch1d {
-      public:
-        /// Required element 'resqml22:RepresentationIndex' of XML schema type 'xsd:unsignedLong'
-        ULONG64 RepresentationIndex;
-        /// Required element 'resqml22:SupportingRepresentationNodes' of XML schema type 'eml22:AbstractIntegerArray'
-        eml22__AbstractIntegerArray *SupportingRepresentationNodes;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__ContactPatch
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__ContactPatch; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__ContactPatch, default initialized and not managed by a soap context
-        virtual resqml22__ContactPatch *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__ContactPatch); }
-      public:
-        /// Constructor with default initializations
-        resqml22__ContactPatch() : RepresentationIndex(), SupportingRepresentationNodes() { }
-        virtual ~resqml22__ContactPatch() { }
-        /// Friend allocator used by soap_new_resqml22__ContactPatch(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__ContactPatch * SOAP_FMAC2 soap_instantiate_resqml22__ContactPatch(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:353 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__EdgePatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__EdgePatch (-57)
-/* complex XML schema type 'resqml22:EdgePatch': */
-class SOAP_CMAC resqml22__EdgePatch : public resqml22__Patch1d {
-      public:
-        /// Optional element 'resqml22:SplitEdges' of XML schema type 'eml22:AbstractIntegerArray'
-        eml22__AbstractIntegerArray *SplitEdges;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__EdgePatch
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__EdgePatch; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__EdgePatch, default initialized and not managed by a soap context
-        virtual resqml22__EdgePatch *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__EdgePatch); }
-      public:
-        /// Constructor with default initializations
-        resqml22__EdgePatch() : SplitEdges() { }
-        virtual ~resqml22__EdgePatch() { }
-        /// Friend allocator used by soap_new_resqml22__EdgePatch(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__EdgePatch * SOAP_FMAC2 soap_instantiate_resqml22__EdgePatch(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:357 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__NodePatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__NodePatch (-59)
-/* complex XML schema type 'resqml22:NodePatch': */
-class SOAP_CMAC resqml22__NodePatch : public resqml22__Patch1d {
-      public:
-        /// Required element 'resqml22:Geometry' of XML schema type 'resqml22:PointGeometry'
-        resqml22__PointGeometry *Geometry;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__NodePatch
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__NodePatch; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__NodePatch, default initialized and not managed by a soap context
-        virtual resqml22__NodePatch *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__NodePatch); }
-      public:
-        /// Constructor with default initializations
-        resqml22__NodePatch() : Geometry() { }
-        virtual ~resqml22__NodePatch() { }
-        /// Friend allocator used by soap_new_resqml22__NodePatch(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__NodePatch * SOAP_FMAC2 soap_instantiate_resqml22__NodePatch(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:369 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PointSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__PointSetRepresentation (-65)
-/* complex XML schema type 'resqml22:PointSetRepresentation': */
-class SOAP_CMAC resqml22__PointSetRepresentation : public resqml22__AbstractRepresentation {
-      public:
-        /// Required element 'resqml22:NodePatch' of XML schema type 'resqml22:NodePatch'
-        std::vector<resqml22__NodePatch *> NodePatch;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__PointSetRepresentation
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__PointSetRepresentation; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__PointSetRepresentation, default initialized and not managed by a soap context
-        virtual resqml22__PointSetRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__PointSetRepresentation); }
-      public:
-        /// Constructor with default initializations
-        resqml22__PointSetRepresentation() : NodePatch() { }
-        virtual ~resqml22__PointSetRepresentation() { }
-        /// Friend allocator used by soap_new_resqml22__PointSetRepresentation(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__PointSetRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__PointSetRepresentation(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:371 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineRepresentation (-66)
-/* complex XML schema type 'resqml22:PolylineRepresentation': */
-class SOAP_CMAC resqml22__PolylineRepresentation : public resqml22__AbstractRepresentation {
-      public:
-        /// Optional element 'resqml22:LineRole' of XML schema type 'resqml22:LineRole'
-        enum resqml22__LineRole *LineRole;
-        /// Required element 'resqml22:IsClosed' of XML schema type 'xsd:boolean'
-        bool IsClosed;
-        /// Required element 'resqml22:NodePatch' of XML schema type 'resqml22:NodePatch'
-        resqml22__NodePatch *NodePatch;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineRepresentation
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineRepresentation; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__PolylineRepresentation, default initialized and not managed by a soap context
-        virtual resqml22__PolylineRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__PolylineRepresentation); }
-      public:
-        /// Constructor with default initializations
-        resqml22__PolylineRepresentation() : LineRole(), IsClosed(), NodePatch() { }
-        virtual ~resqml22__PolylineRepresentation() { }
-        /// Friend allocator used by soap_new_resqml22__PolylineRepresentation(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__PolylineRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__PolylineRepresentation(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:379 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__TrianglePatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__TrianglePatch (-70)
-/* complex XML schema type 'resqml22:TrianglePatch': */
-class SOAP_CMAC resqml22__TrianglePatch : public resqml22__Patch1d {
-      public:
-        /// Required element 'resqml22:NodeCount' of XML schema type 'xsd:unsignedLong'
-        ULONG64 NodeCount;
-        /// Required element 'resqml22:Triangles' of XML schema type 'eml22:AbstractIntegerArray'
-        eml22__AbstractIntegerArray *Triangles;
-        /// Optional element 'resqml22:SplitEdgePatch' of XML schema type 'resqml22:EdgePatch'
-        std::vector<resqml22__EdgePatch *> SplitEdgePatch;
-        /// Required element 'resqml22:Geometry' of XML schema type 'resqml22:PointGeometry'
-        resqml22__PointGeometry *Geometry;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__TrianglePatch
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__TrianglePatch; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__TrianglePatch, default initialized and not managed by a soap context
-        virtual resqml22__TrianglePatch *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__TrianglePatch); }
-      public:
-        /// Constructor with default initializations
-        resqml22__TrianglePatch() : NodeCount(), Triangles(), SplitEdgePatch(), Geometry() { }
-        virtual ~resqml22__TrianglePatch() { }
-        /// Friend allocator used by soap_new_resqml22__TrianglePatch(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__TrianglePatch * SOAP_FMAC2 soap_instantiate_resqml22__TrianglePatch(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:391 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractOrganizationInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractOrganizationInterpretation (-76)
-/* complex XML schema type 'resqml22:AbstractOrganizationInterpretation': */
-class SOAP_CMAC resqml22__AbstractOrganizationInterpretation : public resqml22__AbstractFeatureInterpretation {
-      public:
-        /// Optional element 'resqml22:ContactInterpretation' of XML schema type 'resqml22:AbstractContactInterpretationPart'
-        std::vector<resqml22__AbstractContactInterpretationPart *> ContactInterpretation;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractOrganizationInterpretation
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractOrganizationInterpretation; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__AbstractOrganizationInterpretation, default initialized and not managed by a soap context
-        virtual resqml22__AbstractOrganizationInterpretation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__AbstractOrganizationInterpretation); }
-      public:
-        /// Constructor with default initializations
-        resqml22__AbstractOrganizationInterpretation() : ContactInterpretation() { }
-        virtual ~resqml22__AbstractOrganizationInterpretation() { }
-        /// Friend allocator used by soap_new_resqml22__AbstractOrganizationInterpretation(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__AbstractOrganizationInterpretation * SOAP_FMAC2 soap_instantiate_resqml22__AbstractOrganizationInterpretation(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:399 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretation (-80)
-/* complex XML schema type 'resqml22:BoundaryFeatureInterpretation': */
-class SOAP_CMAC resqml22__BoundaryFeatureInterpretation : public resqml22__AbstractFeatureInterpretation {
-      public:
-        /// Optional element 'resqml22:OlderPossibleAge' of XML schema type 'xsd:long'
-        LONG64 *OlderPossibleAge;
-        /// Optional element 'resqml22:YoungerPossibleAge' of XML schema type 'xsd:long'
-        LONG64 *YoungerPossibleAge;
-        /// Optional element 'resqml22:AbsoluteAge' of XML schema type 'eml22:GeologicTime'
-        eml22__GeologicTime *AbsoluteAge;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretation
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretation; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__BoundaryFeatureInterpretation, default initialized and not managed by a soap context
-        virtual resqml22__BoundaryFeatureInterpretation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__BoundaryFeatureInterpretation); }
-      public:
-        /// Constructor with default initializations
-        resqml22__BoundaryFeatureInterpretation() : OlderPossibleAge(), YoungerPossibleAge(), AbsoluteAge() { }
-        virtual ~resqml22__BoundaryFeatureInterpretation() { }
-        /// Friend allocator used by soap_new_resqml22__BoundaryFeatureInterpretation(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__BoundaryFeatureInterpretation * SOAP_FMAC2 soap_instantiate_resqml22__BoundaryFeatureInterpretation(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:405 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__EarthModelInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__EarthModelInterpretation (-83)
-/* complex XML schema type 'resqml22:EarthModelInterpretation': */
-class SOAP_CMAC resqml22__EarthModelInterpretation : public resqml22__AbstractFeatureInterpretation {
-      public:
-        /// Optional element 'resqml22:StratigraphicColumn' of XML schema type 'eml22:DataObjectReference'
-        eml22__DataObjectReference *StratigraphicColumn;
-        /// Optional element 'resqml22:Structure' of XML schema type 'eml22:DataObjectReference'
-        std::vector<eml22__DataObjectReference *> Structure;
-        /// Optional element 'resqml22:StratigraphicOccurrences' of XML schema type 'eml22:DataObjectReference'
-        std::vector<eml22__DataObjectReference *> StratigraphicOccurrences;
-        /// Optional element 'resqml22:WellboreInterpretationSet' of XML schema type 'eml22:DataObjectReference'
-        std::vector<eml22__DataObjectReference *> WellboreInterpretationSet;
-        /// Optional element 'resqml22:Fluid' of XML schema type 'eml22:DataObjectReference'
-        std::vector<eml22__DataObjectReference *> Fluid;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__EarthModelInterpretation
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__EarthModelInterpretation; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__EarthModelInterpretation, default initialized and not managed by a soap context
-        virtual resqml22__EarthModelInterpretation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__EarthModelInterpretation); }
-      public:
-        /// Constructor with default initializations
-        resqml22__EarthModelInterpretation() : StratigraphicColumn(), Structure(), StratigraphicOccurrences(), WellboreInterpretationSet(), Fluid() { }
-        virtual ~resqml22__EarthModelInterpretation() { }
-        /// Friend allocator used by soap_new_resqml22__EarthModelInterpretation(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__EarthModelInterpretation * SOAP_FMAC2 soap_instantiate_resqml22__EarthModelInterpretation(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:415 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GenericFeatureInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GenericFeatureInterpretation (-88)
-/* complex XML schema type 'resqml22:GenericFeatureInterpretation': */
-class SOAP_CMAC resqml22__GenericFeatureInterpretation : public resqml22__AbstractFeatureInterpretation {
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__GenericFeatureInterpretation
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__GenericFeatureInterpretation; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__GenericFeatureInterpretation, default initialized and not managed by a soap context
-        virtual resqml22__GenericFeatureInterpretation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__GenericFeatureInterpretation); }
-      public:
-        /// Constructor with default initializations
-        resqml22__GenericFeatureInterpretation() { }
-        virtual ~resqml22__GenericFeatureInterpretation() { }
-        /// Friend allocator used by soap_new_resqml22__GenericFeatureInterpretation(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__GenericFeatureInterpretation * SOAP_FMAC2 soap_instantiate_resqml22__GenericFeatureInterpretation(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:425 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicUnitInterpretation (-93)
-/* complex XML schema type 'resqml22:GeologicUnitInterpretation': */
-class SOAP_CMAC resqml22__GeologicUnitInterpretation : public resqml22__AbstractFeatureInterpretation {
-      public:
-        /// Optional element 'resqml22:GeologicUnitComposition' of XML schema type 'eml22:LithologyKindExt'
-        std::string *GeologicUnitComposition;
-        /// Optional element 'resqml22:GeologicUnitMaterialEmplacement' of XML schema type 'resqml22:GeologicUnitMaterialEmplacement'
-        enum resqml22__GeologicUnitMaterialEmplacement *GeologicUnitMaterialEmplacement;
-        /// Optional element 'resqml22:GeologicUnit3dShape' of XML schema type 'resqml22:Shape3dExt'
-        std::string *GeologicUnit3dShape;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicUnitInterpretation
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicUnitInterpretation; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__GeologicUnitInterpretation, default initialized and not managed by a soap context
-        virtual resqml22__GeologicUnitInterpretation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__GeologicUnitInterpretation); }
-      public:
-        /// Constructor with default initializations
-        resqml22__GeologicUnitInterpretation() : GeologicUnitComposition(), GeologicUnitMaterialEmplacement(), GeologicUnit3dShape() { }
-        virtual ~resqml22__GeologicUnitInterpretation() { }
-        /// Friend allocator used by soap_new_resqml22__GeologicUnitInterpretation(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__GeologicUnitInterpretation * SOAP_FMAC2 soap_instantiate_resqml22__GeologicUnitInterpretation(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:451 */
+/* eml2_2ForGsoap.h:475 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractGridGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractGridGeometry (-106)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractGridGeometry (-118)
 /* complex XML schema type 'resqml22:AbstractGridGeometry': */
 class SOAP_CMAC resqml22__AbstractGridGeometry : public resqml22__PointGeometry {
       public:
@@ -23204,9 +23348,9 @@ class SOAP_CMAC resqml22__AbstractGridGeometry : public resqml22__PointGeometry 
 };
 #endif
 
-/* eml2_2ForGsoap.h:453 */
+/* eml2_2ForGsoap.h:477 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractGridRepresentation (-107)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractGridRepresentation (-119)
 /* complex XML schema type 'resqml22:AbstractGridRepresentation': */
 class SOAP_CMAC resqml22__AbstractGridRepresentation : public resqml22__AbstractRepresentation {
       public:
@@ -23242,9 +23386,9 @@ class SOAP_CMAC resqml22__AbstractGridRepresentation : public resqml22__Abstract
 };
 #endif
 
-/* eml2_2ForGsoap.h:481 */
+/* eml2_2ForGsoap.h:505 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnSubnodePatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnSubnodePatch (-121)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnSubnodePatch (-133)
 /* complex XML schema type 'resqml22:ColumnSubnodePatch': */
 class SOAP_CMAC resqml22__ColumnSubnodePatch : public resqml22__SubnodePatch {
       public:
@@ -23276,9 +23420,9 @@ class SOAP_CMAC resqml22__ColumnSubnodePatch : public resqml22__SubnodePatch {
 };
 #endif
 
-/* eml2_2ForGsoap.h:489 */
+/* eml2_2ForGsoap.h:513 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GridConnectionSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GridConnectionSetRepresentation (-125)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GridConnectionSetRepresentation (-137)
 /* complex XML schema type 'resqml22:GridConnectionSetRepresentation': */
 class SOAP_CMAC resqml22__GridConnectionSetRepresentation : public resqml22__AbstractRepresentation {
       public:
@@ -23320,9 +23464,9 @@ class SOAP_CMAC resqml22__GridConnectionSetRepresentation : public resqml22__Abs
 };
 #endif
 
-/* eml2_2ForGsoap.h:533 */
+/* eml2_2ForGsoap.h:557 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UniformSubnodePatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UniformSubnodePatch (-147)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UniformSubnodePatch (-159)
 /* complex XML schema type 'resqml22:UniformSubnodePatch': */
 class SOAP_CMAC resqml22__UniformSubnodePatch : public resqml22__SubnodePatch {
       public:
@@ -23354,9 +23498,9 @@ class SOAP_CMAC resqml22__UniformSubnodePatch : public resqml22__SubnodePatch {
 };
 #endif
 
-/* eml2_2ForGsoap.h:553 */
+/* eml2_2ForGsoap.h:577 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__VariableSubnodePatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__VariableSubnodePatch (-157)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__VariableSubnodePatch (-169)
 /* complex XML schema type 'resqml22:VariableSubnodePatch': */
 class SOAP_CMAC resqml22__VariableSubnodePatch : public resqml22__SubnodePatch {
       public:
@@ -23390,9 +23534,9 @@ class SOAP_CMAC resqml22__VariableSubnodePatch : public resqml22__SubnodePatch {
 };
 #endif
 
-/* eml2_2ForGsoap.h:565 */
+/* eml2_2ForGsoap.h:589 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Graph2dRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Graph2dRepresentation (-163)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Graph2dRepresentation (-175)
 /* complex XML schema type 'resqml22:Graph2dRepresentation': */
 class SOAP_CMAC resqml22__Graph2dRepresentation : public resqml22__AbstractRepresentation {
       public:
@@ -23428,9 +23572,9 @@ class SOAP_CMAC resqml22__Graph2dRepresentation : public resqml22__AbstractRepre
 };
 #endif
 
-/* eml2_2ForGsoap.h:567 */
+/* eml2_2ForGsoap.h:591 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__HorizontalPlaneGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__HorizontalPlaneGeometry (-164)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__HorizontalPlaneGeometry (-176)
 /* complex XML schema type 'resqml22:HorizontalPlaneGeometry': */
 class SOAP_CMAC resqml22__HorizontalPlaneGeometry : public resqml22__AbstractPlaneGeometry {
       public:
@@ -23462,9 +23606,9 @@ class SOAP_CMAC resqml22__HorizontalPlaneGeometry : public resqml22__AbstractPla
 };
 #endif
 
-/* eml2_2ForGsoap.h:571 */
+/* eml2_2ForGsoap.h:595 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineFromRepresentationGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineFromRepresentationGeometry (-166)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineFromRepresentationGeometry (-178)
 /* complex XML schema type 'resqml22:ParametricLineFromRepresentationGeometry': */
 class SOAP_CMAC resqml22__ParametricLineFromRepresentationGeometry : public resqml22__AbstractParametricLineGeometry {
       public:
@@ -23498,9 +23642,9 @@ class SOAP_CMAC resqml22__ParametricLineFromRepresentationGeometry : public resq
 };
 #endif
 
-/* eml2_2ForGsoap.h:575 */
+/* eml2_2ForGsoap.h:599 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineGeometry (-168)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineGeometry (-180)
 /* complex XML schema type 'resqml22:ParametricLineGeometry': */
 class SOAP_CMAC resqml22__ParametricLineGeometry : public resqml22__AbstractParametricLineGeometry {
       public:
@@ -23540,9 +23684,9 @@ class SOAP_CMAC resqml22__ParametricLineGeometry : public resqml22__AbstractPara
 };
 #endif
 
-/* eml2_2ForGsoap.h:601 */
+/* eml2_2ForGsoap.h:625 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__TiltedPlaneGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__TiltedPlaneGeometry (-181)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__TiltedPlaneGeometry (-193)
 /* complex XML schema type 'resqml22:TiltedPlaneGeometry': */
 class SOAP_CMAC resqml22__TiltedPlaneGeometry : public resqml22__AbstractPlaneGeometry {
       public:
@@ -23574,9 +23718,9 @@ class SOAP_CMAC resqml22__TiltedPlaneGeometry : public resqml22__AbstractPlaneGe
 };
 #endif
 
-/* eml2_2ForGsoap.h:613 */
+/* eml2_2ForGsoap.h:637 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic2dPostStackRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic2dPostStackRepresentation (-187)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic2dPostStackRepresentation (-199)
 /* complex XML schema type 'resqml22:Seismic2dPostStackRepresentation': */
 class SOAP_CMAC resqml22__Seismic2dPostStackRepresentation : public resqml22__AbstractRepresentation {
       public:
@@ -23611,150 +23755,6 @@ class SOAP_CMAC resqml22__Seismic2dPostStackRepresentation : public resqml22__Ab
         virtual ~resqml22__Seismic2dPostStackRepresentation() { }
         /// Friend allocator used by soap_new_resqml22__Seismic2dPostStackRepresentation(struct soap*, int)
         friend SOAP_FMAC1 resqml22__Seismic2dPostStackRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__Seismic2dPostStackRepresentation(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:639 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetRepresentation (-200)
-/* complex XML schema type 'resqml22:PolylineSetRepresentation': */
-class SOAP_CMAC resqml22__PolylineSetRepresentation : public resqml22__AbstractRepresentation {
-      public:
-        /// Optional element 'resqml22:LineRole' of XML schema type 'resqml22:LineRole'
-        enum resqml22__LineRole *LineRole;
-        /// Required element 'resqml22:LinePatch' of XML schema type 'resqml22:PolylineSetPatch'
-        std::vector<resqml22__PolylineSetPatch *> LinePatch;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetRepresentation
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetRepresentation; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__PolylineSetRepresentation, default initialized and not managed by a soap context
-        virtual resqml22__PolylineSetRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__PolylineSetRepresentation); }
-      public:
-        /// Constructor with default initializations
-        resqml22__PolylineSetRepresentation() : LineRole(), LinePatch() { }
-        virtual ~resqml22__PolylineSetRepresentation() { }
-        /// Friend allocator used by soap_new_resqml22__PolylineSetRepresentation(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__PolylineSetRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__PolylineSetRepresentation(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:645 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationSetRepresentation (-203)
-/* complex XML schema type 'resqml22:RepresentationSetRepresentation': */
-class SOAP_CMAC resqml22__RepresentationSetRepresentation : public resqml22__AbstractRepresentation {
-      public:
-        /// Required element 'resqml22:IsHomogeneous' of XML schema type 'xsd:boolean'
-        bool IsHomogeneous;
-        /// Required element 'resqml22:Representation' of XML schema type 'eml22:DataObjectReference'
-        std::vector<eml22__DataObjectReference *> Representation;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationSetRepresentation
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationSetRepresentation; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__RepresentationSetRepresentation, default initialized and not managed by a soap context
-        virtual resqml22__RepresentationSetRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__RepresentationSetRepresentation); }
-      public:
-        /// Constructor with default initializations
-        resqml22__RepresentationSetRepresentation() : IsHomogeneous(), Representation() { }
-        virtual ~resqml22__RepresentationSetRepresentation() { }
-        /// Friend allocator used by soap_new_resqml22__RepresentationSetRepresentation(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__RepresentationSetRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__RepresentationSetRepresentation(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:647 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentation (-204)
-/* complex XML schema type 'resqml22:SubRepresentation': */
-class SOAP_CMAC resqml22__SubRepresentation : public resqml22__AbstractRepresentation {
-      public:
-        /// Optional element 'resqml22:AdditionalGridTopology' of XML schema type 'resqml22:AdditionalGridTopology'
-        resqml22__AdditionalGridTopology *AdditionalGridTopology;
-        /// Required element 'resqml22:SupportingRepresentation' of XML schema type 'eml22:DataObjectReference'
-        std::vector<eml22__DataObjectReference *> SupportingRepresentation;
-        /// Required element 'resqml22:SubRepresentationPatch' of XML schema type 'resqml22:SubRepresentationPatch'
-        std::vector<resqml22__SubRepresentationPatch *> SubRepresentationPatch;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentation
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentation; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__SubRepresentation, default initialized and not managed by a soap context
-        virtual resqml22__SubRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__SubRepresentation); }
-      public:
-        /// Constructor with default initializations
-        resqml22__SubRepresentation() : AdditionalGridTopology(), SupportingRepresentation(), SubRepresentationPatch() { }
-        virtual ~resqml22__SubRepresentation() { }
-        /// Friend allocator used by soap_new_resqml22__SubRepresentation(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__SubRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__SubRepresentation(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:649 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentationPatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentationPatch (-205)
-/* complex XML schema type 'resqml22:SubRepresentationPatch': */
-class SOAP_CMAC resqml22__SubRepresentationPatch : public resqml22__Patch1d {
-      public:
-        /// Sequence of 1 to 2 elements 'resqml22:ElementIndices' of XML schema type 'resqml22:ElementIndices'
-        std::vector<resqml22__ElementIndices *> ElementIndices;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentationPatch
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentationPatch; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__SubRepresentationPatch, default initialized and not managed by a soap context
-        virtual resqml22__SubRepresentationPatch *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__SubRepresentationPatch); }
-      public:
-        /// Constructor with default initializations
-        resqml22__SubRepresentationPatch() : ElementIndices() { }
-        virtual ~resqml22__SubRepresentationPatch() { }
-        /// Friend allocator used by soap_new_resqml22__SubRepresentationPatch(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__SubRepresentationPatch * SOAP_FMAC2 soap_instantiate_resqml22__SubRepresentationPatch(struct soap*, int, const char*, const char*, size_t*);
 };
 #endif
 
@@ -38637,155 +38637,9 @@ class SOAP_CMAC witsml21__AzimuthRange : public witsml21__PlaneAngleOperatingRan
 };
 #endif
 
-/* eml2_2ForGsoap.h:311 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__BlockedWellboreRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__BlockedWellboreRepresentation (-36)
-/* complex XML schema type 'resqml22:BlockedWellboreRepresentation': */
-class SOAP_CMAC resqml22__BlockedWellboreRepresentation : public resqml22__WellboreFrameRepresentation {
-      public:
-        /// Required element 'resqml22:IntervalGridCells' of XML schema type 'resqml22:IntervalGridCells'
-        resqml22__IntervalGridCells *IntervalGridCells;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__BlockedWellboreRepresentation
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__BlockedWellboreRepresentation; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__BlockedWellboreRepresentation, default initialized and not managed by a soap context
-        virtual resqml22__BlockedWellboreRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__BlockedWellboreRepresentation); }
-      public:
-        /// Constructor with default initializations
-        resqml22__BlockedWellboreRepresentation() : IntervalGridCells() { }
-        virtual ~resqml22__BlockedWellboreRepresentation() { }
-        /// Friend allocator used by soap_new_resqml22__BlockedWellboreRepresentation(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__BlockedWellboreRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__BlockedWellboreRepresentation(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:319 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicWellboreFrameRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicWellboreFrameRepresentation (-40)
-/* complex XML schema type 'resqml22:SeismicWellboreFrameRepresentation': */
-class SOAP_CMAC resqml22__SeismicWellboreFrameRepresentation : public resqml22__WellboreFrameRepresentation {
-      public:
-        /// Required element 'resqml22:NodeTimeValues' of XML schema type 'eml22:AbstractFloatingPointArray'
-        eml22__AbstractFloatingPointArray *NodeTimeValues;
-        /// Required element 'resqml22:SeismicReferenceDatum' of XML schema type 'xsd:double'
-        double SeismicReferenceDatum;
-        /// Required element 'resqml22:WeatheringVelocity' of XML schema type 'xsd:double'
-        double WeatheringVelocity;
-        /// Optional element 'resqml22:TvdInformation' of XML schema type 'resqml22:TvdInformation'
-        resqml22__TvdInformation *TvdInformation;
-        /// Optional element 'resqml22:CorrectionInformation' of XML schema type 'resqml22:CorrectionInformation'
-        resqml22__CorrectionInformation *CorrectionInformation;
-        /// Required element 'resqml22:LocalTime3dCrs' of XML schema type 'eml22:DataObjectReference'
-        eml22__DataObjectReference *LocalTime3dCrs;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicWellboreFrameRepresentation
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicWellboreFrameRepresentation; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__SeismicWellboreFrameRepresentation, default initialized and not managed by a soap context
-        virtual resqml22__SeismicWellboreFrameRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__SeismicWellboreFrameRepresentation); }
-      public:
-        /// Constructor with default initializations
-        resqml22__SeismicWellboreFrameRepresentation() : NodeTimeValues(), SeismicReferenceDatum(), WeatheringVelocity(), TvdInformation(), CorrectionInformation(), LocalTime3dCrs() { }
-        virtual ~resqml22__SeismicWellboreFrameRepresentation() { }
-        /// Friend allocator used by soap_new_resqml22__SeismicWellboreFrameRepresentation(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__SeismicWellboreFrameRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__SeismicWellboreFrameRepresentation(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:323 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFeature
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFeature (-42)
-/* complex XML schema type 'resqml22:WellboreFeature': */
-class SOAP_CMAC resqml22__WellboreFeature : public resqml22__AbstractTechnicalFeature {
-      public:
-        /// Optional element 'resqml22:WitsmlWellbore' of XML schema type 'resqml22:WitsmlWellWellbore'
-        resqml22__WitsmlWellWellbore *WitsmlWellbore;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFeature
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFeature; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__WellboreFeature, default initialized and not managed by a soap context
-        virtual resqml22__WellboreFeature *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__WellboreFeature); }
-      public:
-        /// Constructor with default initializations
-        resqml22__WellboreFeature() : WitsmlWellbore() { }
-        virtual ~resqml22__WellboreFeature() { }
-        /// Friend allocator used by soap_new_resqml22__WellboreFeature(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__WellboreFeature * SOAP_FMAC2 soap_instantiate_resqml22__WellboreFeature(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:333 */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreMarkerFrameRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreMarkerFrameRepresentation (-47)
-/* complex XML schema type 'resqml22:WellboreMarkerFrameRepresentation': */
-class SOAP_CMAC resqml22__WellboreMarkerFrameRepresentation : public resqml22__WellboreFrameRepresentation {
-      public:
-        /// Required element 'resqml22:WellboreMarker' of XML schema type 'resqml22:WellboreMarker'
-        std::vector<resqml22__WellboreMarker *> WellboreMarker;
-      public:
-        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreMarkerFrameRepresentation
-        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreMarkerFrameRepresentation; }
-        /// (Re)set members to default values
-        virtual void soap_default(struct soap*);
-        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
-        virtual void soap_serialize(struct soap*) const;
-        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
-        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
-        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
-        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
-        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
-        virtual void *soap_get(struct soap*, const char *tag, const char *type);
-        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
-        virtual void *soap_in(struct soap*, const char *tag, const char *type);
-        /// Return a new object of type resqml22__WellboreMarkerFrameRepresentation, default initialized and not managed by a soap context
-        virtual resqml22__WellboreMarkerFrameRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__WellboreMarkerFrameRepresentation); }
-      public:
-        /// Constructor with default initializations
-        resqml22__WellboreMarkerFrameRepresentation() : WellboreMarker() { }
-        virtual ~resqml22__WellboreMarkerFrameRepresentation() { }
-        /// Friend allocator used by soap_new_resqml22__WellboreMarkerFrameRepresentation(struct soap*, int)
-        friend SOAP_FMAC1 resqml22__WellboreMarkerFrameRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__WellboreMarkerFrameRepresentation(struct soap*, int, const char*, const char*, size_t*);
-};
-#endif
-
-/* eml2_2ForGsoap.h:343 */
+/* eml2_2ForGsoap.h:337 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSurfaceFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSurfaceFrameworkRepresentation (-52)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSurfaceFrameworkRepresentation (-49)
 /* complex XML schema type 'resqml22:AbstractSurfaceFrameworkRepresentation': */
 class SOAP_CMAC resqml22__AbstractSurfaceFrameworkRepresentation : public resqml22__RepresentationSetRepresentation {
       public:
@@ -38817,9 +38671,9 @@ class SOAP_CMAC resqml22__AbstractSurfaceFrameworkRepresentation : public resqml
 };
 #endif
 
-/* eml2_2ForGsoap.h:355 */
+/* eml2_2ForGsoap.h:349 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Grid2dRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Grid2dRepresentation (-58)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Grid2dRepresentation (-55)
 /* complex XML schema type 'resqml22:Grid2dRepresentation': */
 class SOAP_CMAC resqml22__Grid2dRepresentation : public resqml22__AbstractSurfaceRepresentation {
       public:
@@ -38855,9 +38709,9 @@ class SOAP_CMAC resqml22__Grid2dRepresentation : public resqml22__AbstractSurfac
 };
 #endif
 
-/* eml2_2ForGsoap.h:367 */
+/* eml2_2ForGsoap.h:361 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PlaneSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__PlaneSetRepresentation (-64)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__PlaneSetRepresentation (-61)
 /* complex XML schema type 'resqml22:PlaneSetRepresentation': */
 class SOAP_CMAC resqml22__PlaneSetRepresentation : public resqml22__AbstractSurfaceRepresentation {
       public:
@@ -38889,9 +38743,9 @@ class SOAP_CMAC resqml22__PlaneSetRepresentation : public resqml22__AbstractSurf
 };
 #endif
 
-/* eml2_2ForGsoap.h:377 */
+/* eml2_2ForGsoap.h:371 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SealedVolumeFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SealedVolumeFrameworkRepresentation (-69)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SealedVolumeFrameworkRepresentation (-66)
 /* complex XML schema type 'resqml22:SealedVolumeFrameworkRepresentation': */
 class SOAP_CMAC resqml22__SealedVolumeFrameworkRepresentation : public resqml22__RepresentationSetRepresentation {
       public:
@@ -38925,9 +38779,9 @@ class SOAP_CMAC resqml22__SealedVolumeFrameworkRepresentation : public resqml22_
 };
 #endif
 
-/* eml2_2ForGsoap.h:381 */
+/* eml2_2ForGsoap.h:375 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__TriangulatedSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__TriangulatedSetRepresentation (-71)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__TriangulatedSetRepresentation (-68)
 /* complex XML schema type 'resqml22:TriangulatedSetRepresentation': */
 class SOAP_CMAC resqml22__TriangulatedSetRepresentation : public resqml22__AbstractSurfaceRepresentation {
       public:
@@ -38959,9 +38813,9 @@ class SOAP_CMAC resqml22__TriangulatedSetRepresentation : public resqml22__Abstr
 };
 #endif
 
-/* eml2_2ForGsoap.h:393 */
+/* eml2_2ForGsoap.h:387 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractStratigraphicOrganizationInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractStratigraphicOrganizationInterpretation (-77)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractStratigraphicOrganizationInterpretation (-74)
 /* complex XML schema type 'resqml22:AbstractStratigraphicOrganizationInterpretation': */
 class SOAP_CMAC resqml22__AbstractStratigraphicOrganizationInterpretation : public resqml22__AbstractOrganizationInterpretation {
       public:
@@ -38993,9 +38847,9 @@ class SOAP_CMAC resqml22__AbstractStratigraphicOrganizationInterpretation : publ
 };
 #endif
 
-/* eml2_2ForGsoap.h:407 */
+/* eml2_2ForGsoap.h:401 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__FaultInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__FaultInterpretation (-84)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__FaultInterpretation (-81)
 /* complex XML schema type 'resqml22:FaultInterpretation': */
 class SOAP_CMAC resqml22__FaultInterpretation : public resqml22__BoundaryFeatureInterpretation {
       public:
@@ -39035,9 +38889,9 @@ class SOAP_CMAC resqml22__FaultInterpretation : public resqml22__BoundaryFeature
 };
 #endif
 
-/* eml2_2ForGsoap.h:413 */
+/* eml2_2ForGsoap.h:407 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__FluidBoundaryInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__FluidBoundaryInterpretation (-87)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__FluidBoundaryInterpretation (-84)
 /* complex XML schema type 'resqml22:FluidBoundaryInterpretation': */
 class SOAP_CMAC resqml22__FluidBoundaryInterpretation : public resqml22__BoundaryFeatureInterpretation {
       public:
@@ -39069,9 +38923,9 @@ class SOAP_CMAC resqml22__FluidBoundaryInterpretation : public resqml22__Boundar
 };
 #endif
 
-/* eml2_2ForGsoap.h:419 */
+/* eml2_2ForGsoap.h:413 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeobodyBoundaryInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeobodyBoundaryInterpretation (-90)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeobodyBoundaryInterpretation (-87)
 /* complex XML schema type 'resqml22:GeobodyBoundaryInterpretation': */
 class SOAP_CMAC resqml22__GeobodyBoundaryInterpretation : public resqml22__BoundaryFeatureInterpretation {
       public:
@@ -39103,9 +38957,9 @@ class SOAP_CMAC resqml22__GeobodyBoundaryInterpretation : public resqml22__Bound
 };
 #endif
 
-/* eml2_2ForGsoap.h:421 */
+/* eml2_2ForGsoap.h:415 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeobodyInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeobodyInterpretation (-91)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeobodyInterpretation (-88)
 /* complex XML schema type 'resqml22:GeobodyInterpretation': */
 class SOAP_CMAC resqml22__GeobodyInterpretation : public resqml22__GeologicUnitInterpretation {
       public:
@@ -39134,9 +38988,9 @@ class SOAP_CMAC resqml22__GeobodyInterpretation : public resqml22__GeologicUnitI
 };
 #endif
 
-/* eml2_2ForGsoap.h:45939 */
+/* eml2_2ForGsoap.h:45611 */
 #ifndef SOAP_TYPE_gsoap_eml2_2___resqml22__HorizonInterpretation_sequence
-#define SOAP_TYPE_gsoap_eml2_2___resqml22__HorizonInterpretation_sequence (-1888)
+#define SOAP_TYPE_gsoap_eml2_2___resqml22__HorizonInterpretation_sequence (-1883)
 /* Wrapper: */
 struct SOAP_CMAC __resqml22__HorizonInterpretation_sequence {
       public:
@@ -39160,9 +39014,9 @@ struct SOAP_CMAC __resqml22__HorizonInterpretation_sequence {
 };
 #endif
 
-/* eml2_2ForGsoap.h:427 */
+/* eml2_2ForGsoap.h:421 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__HorizonInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__HorizonInterpretation (-94)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__HorizonInterpretation (-91)
 /* complex XML schema type 'resqml22:HorizonInterpretation': */
 class SOAP_CMAC resqml22__HorizonInterpretation : public resqml22__BoundaryFeatureInterpretation {
       public:
@@ -39193,9 +39047,9 @@ class SOAP_CMAC resqml22__HorizonInterpretation : public resqml22__BoundaryFeatu
 };
 #endif
 
-/* eml2_2ForGsoap.h:431 */
+/* eml2_2ForGsoap.h:425 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__RockFluidOrganizationInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__RockFluidOrganizationInterpretation (-96)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__RockFluidOrganizationInterpretation (-93)
 /* complex XML schema type 'resqml22:RockFluidOrganizationInterpretation': */
 class SOAP_CMAC resqml22__RockFluidOrganizationInterpretation : public resqml22__AbstractOrganizationInterpretation {
       public:
@@ -39227,9 +39081,9 @@ class SOAP_CMAC resqml22__RockFluidOrganizationInterpretation : public resqml22_
 };
 #endif
 
-/* eml2_2ForGsoap.h:433 */
+/* eml2_2ForGsoap.h:427 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__RockFluidUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__RockFluidUnitInterpretation (-97)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__RockFluidUnitInterpretation (-94)
 /* complex XML schema type 'resqml22:RockFluidUnitInterpretation': */
 class SOAP_CMAC resqml22__RockFluidUnitInterpretation : public resqml22__GeologicUnitInterpretation {
       public:
@@ -39261,9 +39115,9 @@ class SOAP_CMAC resqml22__RockFluidUnitInterpretation : public resqml22__Geologi
 };
 #endif
 
-/* eml2_2ForGsoap.h:443 */
+/* eml2_2ForGsoap.h:437 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitInterpretation (-102)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitInterpretation (-99)
 /* complex XML schema type 'resqml22:StratigraphicUnitInterpretation': */
 class SOAP_CMAC resqml22__StratigraphicUnitInterpretation : public resqml22__GeologicUnitInterpretation {
       public:
@@ -39301,9 +39155,9 @@ class SOAP_CMAC resqml22__StratigraphicUnitInterpretation : public resqml22__Geo
 };
 #endif
 
-/* eml2_2ForGsoap.h:445 */
+/* eml2_2ForGsoap.h:439 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StructuralOrganizationInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__StructuralOrganizationInterpretation (-103)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__StructuralOrganizationInterpretation (-100)
 /* complex XML schema type 'resqml22:StructuralOrganizationInterpretation': */
 class SOAP_CMAC resqml22__StructuralOrganizationInterpretation : public resqml22__AbstractOrganizationInterpretation {
       public:
@@ -39345,9 +39199,155 @@ class SOAP_CMAC resqml22__StructuralOrganizationInterpretation : public resqml22
 };
 #endif
 
-/* eml2_2ForGsoap.h:447 */
+/* eml2_2ForGsoap.h:441 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__BlockedWellboreRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__BlockedWellboreRepresentation (-101)
+/* complex XML schema type 'resqml22:BlockedWellboreRepresentation': */
+class SOAP_CMAC resqml22__BlockedWellboreRepresentation : public resqml22__WellboreFrameRepresentation {
+      public:
+        /// Required element 'resqml22:IntervalGridCells' of XML schema type 'resqml22:IntervalGridCells'
+        resqml22__IntervalGridCells *IntervalGridCells;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__BlockedWellboreRepresentation
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__BlockedWellboreRepresentation; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__BlockedWellboreRepresentation, default initialized and not managed by a soap context
+        virtual resqml22__BlockedWellboreRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__BlockedWellboreRepresentation); }
+      public:
+        /// Constructor with default initializations
+        resqml22__BlockedWellboreRepresentation() : IntervalGridCells() { }
+        virtual ~resqml22__BlockedWellboreRepresentation() { }
+        /// Friend allocator used by soap_new_resqml22__BlockedWellboreRepresentation(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__BlockedWellboreRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__BlockedWellboreRepresentation(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:449 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicWellboreFrameRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicWellboreFrameRepresentation (-105)
+/* complex XML schema type 'resqml22:SeismicWellboreFrameRepresentation': */
+class SOAP_CMAC resqml22__SeismicWellboreFrameRepresentation : public resqml22__WellboreFrameRepresentation {
+      public:
+        /// Required element 'resqml22:NodeTimeValues' of XML schema type 'eml22:AbstractFloatingPointArray'
+        eml22__AbstractFloatingPointArray *NodeTimeValues;
+        /// Required element 'resqml22:SeismicReferenceDatum' of XML schema type 'xsd:double'
+        double SeismicReferenceDatum;
+        /// Required element 'resqml22:WeatheringVelocity' of XML schema type 'xsd:double'
+        double WeatheringVelocity;
+        /// Optional element 'resqml22:TvdInformation' of XML schema type 'resqml22:TvdInformation'
+        resqml22__TvdInformation *TvdInformation;
+        /// Optional element 'resqml22:CorrectionInformation' of XML schema type 'resqml22:CorrectionInformation'
+        resqml22__CorrectionInformation *CorrectionInformation;
+        /// Required element 'resqml22:LocalTime3dCrs' of XML schema type 'eml22:DataObjectReference'
+        eml22__DataObjectReference *LocalTime3dCrs;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicWellboreFrameRepresentation
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicWellboreFrameRepresentation; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__SeismicWellboreFrameRepresentation, default initialized and not managed by a soap context
+        virtual resqml22__SeismicWellboreFrameRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__SeismicWellboreFrameRepresentation); }
+      public:
+        /// Constructor with default initializations
+        resqml22__SeismicWellboreFrameRepresentation() : NodeTimeValues(), SeismicReferenceDatum(), WeatheringVelocity(), TvdInformation(), CorrectionInformation(), LocalTime3dCrs() { }
+        virtual ~resqml22__SeismicWellboreFrameRepresentation() { }
+        /// Friend allocator used by soap_new_resqml22__SeismicWellboreFrameRepresentation(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__SeismicWellboreFrameRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__SeismicWellboreFrameRepresentation(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:453 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFeature
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFeature (-107)
+/* complex XML schema type 'resqml22:WellboreFeature': */
+class SOAP_CMAC resqml22__WellboreFeature : public resqml22__AbstractTechnicalFeature {
+      public:
+        /// Optional element 'resqml22:WitsmlWellbore' of XML schema type 'resqml22:WitsmlWellWellbore'
+        resqml22__WitsmlWellWellbore *WitsmlWellbore;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFeature
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFeature; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__WellboreFeature, default initialized and not managed by a soap context
+        virtual resqml22__WellboreFeature *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__WellboreFeature); }
+      public:
+        /// Constructor with default initializations
+        resqml22__WellboreFeature() : WitsmlWellbore() { }
+        virtual ~resqml22__WellboreFeature() { }
+        /// Friend allocator used by soap_new_resqml22__WellboreFeature(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__WellboreFeature * SOAP_FMAC2 soap_instantiate_resqml22__WellboreFeature(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:463 */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreMarkerFrameRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreMarkerFrameRepresentation (-112)
+/* complex XML schema type 'resqml22:WellboreMarkerFrameRepresentation': */
+class SOAP_CMAC resqml22__WellboreMarkerFrameRepresentation : public resqml22__WellboreFrameRepresentation {
+      public:
+        /// Required element 'resqml22:WellboreMarker' of XML schema type 'resqml22:WellboreMarker'
+        std::vector<resqml22__WellboreMarker *> WellboreMarker;
+      public:
+        /// Return unique type id SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreMarkerFrameRepresentation
+        virtual long soap_type(void) const { return SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreMarkerFrameRepresentation; }
+        /// (Re)set members to default values
+        virtual void soap_default(struct soap*);
+        /// Serialize object to prepare for SOAP 1.1/1.2 encoded output (or with SOAP_XML_GRAPH) by analyzing its (cyclic) structures
+        virtual void soap_serialize(struct soap*) const;
+        /// Output object in XML, compliant with SOAP 1.1 encoding style, return error code or SOAP_OK
+        virtual int soap_put(struct soap*, const char *tag, const char *type) const;
+        /// Output object in XML, with tag and optional id attribute and xsi:type, return error code or SOAP_OK
+        virtual int soap_out(struct soap*, const char *tag, int id, const char *type) const;
+        /// Get object from XML, compliant with SOAP 1.1 encoding style, return pointer to object or NULL on error
+        virtual void *soap_get(struct soap*, const char *tag, const char *type);
+        /// Get object from XML, with matching tag and type (NULL matches any tag and type), return pointer to object or NULL on error
+        virtual void *soap_in(struct soap*, const char *tag, const char *type);
+        /// Return a new object of type resqml22__WellboreMarkerFrameRepresentation, default initialized and not managed by a soap context
+        virtual resqml22__WellboreMarkerFrameRepresentation *soap_alloc(void) const { return SOAP_NEW_UNMANAGED(resqml22__WellboreMarkerFrameRepresentation); }
+      public:
+        /// Constructor with default initializations
+        resqml22__WellboreMarkerFrameRepresentation() : WellboreMarker() { }
+        virtual ~resqml22__WellboreMarkerFrameRepresentation() { }
+        /// Friend allocator used by soap_new_resqml22__WellboreMarkerFrameRepresentation(struct soap*, int)
+        friend SOAP_FMAC1 resqml22__WellboreMarkerFrameRepresentation * SOAP_FMAC2 soap_instantiate_resqml22__WellboreMarkerFrameRepresentation(struct soap*, int, const char*, const char*, size_t*);
+};
+#endif
+
+/* eml2_2ForGsoap.h:471 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractColumnLayerGridGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractColumnLayerGridGeometry (-104)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractColumnLayerGridGeometry (-116)
 /* complex XML schema type 'resqml22:AbstractColumnLayerGridGeometry': */
 class SOAP_CMAC resqml22__AbstractColumnLayerGridGeometry : public resqml22__AbstractGridGeometry {
       public:
@@ -39397,9 +39397,9 @@ class SOAP_CMAC resqml22__AbstractColumnLayerGridGeometry : public resqml22__Abs
 };
 #endif
 
-/* eml2_2ForGsoap.h:449 */
+/* eml2_2ForGsoap.h:473 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractColumnLayerGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractColumnLayerGridRepresentation (-105)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractColumnLayerGridRepresentation (-117)
 /* complex XML schema type 'resqml22:AbstractColumnLayerGridRepresentation': */
 class SOAP_CMAC resqml22__AbstractColumnLayerGridRepresentation : public resqml22__AbstractGridRepresentation {
       public:
@@ -39431,9 +39431,9 @@ class SOAP_CMAC resqml22__AbstractColumnLayerGridRepresentation : public resqml2
 };
 #endif
 
-/* eml2_2ForGsoap.h:457 */
+/* eml2_2ForGsoap.h:481 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractTruncatedColumnLayerGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractTruncatedColumnLayerGridRepresentation (-109)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractTruncatedColumnLayerGridRepresentation (-121)
 /* complex XML schema type 'resqml22:AbstractTruncatedColumnLayerGridRepresentation': */
 class SOAP_CMAC resqml22__AbstractTruncatedColumnLayerGridRepresentation : public resqml22__AbstractGridRepresentation {
       public:
@@ -39467,9 +39467,9 @@ class SOAP_CMAC resqml22__AbstractTruncatedColumnLayerGridRepresentation : publi
 };
 #endif
 
-/* eml2_2ForGsoap.h:487 */
+/* eml2_2ForGsoap.h:511 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GpGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GpGridRepresentation (-124)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GpGridRepresentation (-136)
 /* complex XML schema type 'resqml22:GpGridRepresentation': */
 class SOAP_CMAC resqml22__GpGridRepresentation : public resqml22__AbstractGridRepresentation {
       public:
@@ -39503,9 +39503,9 @@ class SOAP_CMAC resqml22__GpGridRepresentation : public resqml22__AbstractGridRe
 };
 #endif
 
-/* eml2_2ForGsoap.h:545 */
+/* eml2_2ForGsoap.h:569 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGridGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGridGeometry (-153)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGridGeometry (-165)
 /* complex XML schema type 'resqml22:UnstructuredGridGeometry': */
 class SOAP_CMAC resqml22__UnstructuredGridGeometry : public resqml22__AbstractGridGeometry {
       public:
@@ -39551,9 +39551,9 @@ class SOAP_CMAC resqml22__UnstructuredGridGeometry : public resqml22__AbstractGr
 };
 #endif
 
-/* eml2_2ForGsoap.h:549 */
+/* eml2_2ForGsoap.h:573 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGridRepresentation (-155)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGridRepresentation (-167)
 /* complex XML schema type 'resqml22:UnstructuredGridRepresentation': */
 class SOAP_CMAC resqml22__UnstructuredGridRepresentation : public resqml22__AbstractGridRepresentation {
       public:
@@ -39589,9 +39589,9 @@ class SOAP_CMAC resqml22__UnstructuredGridRepresentation : public resqml22__Abst
 };
 #endif
 
-/* eml2_2ForGsoap.h:607 */
+/* eml2_2ForGsoap.h:631 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSeismicSurveyFeature
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSeismicSurveyFeature (-184)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSeismicSurveyFeature (-196)
 /* complex XML schema type 'resqml22:AbstractSeismicSurveyFeature': */
 class SOAP_CMAC resqml22__AbstractSeismicSurveyFeature : public resqml22__AbstractTechnicalFeature {
       public:
@@ -39620,9 +39620,9 @@ class SOAP_CMAC resqml22__AbstractSeismicSurveyFeature : public resqml22__Abstra
 };
 #endif
 
-/* eml2_2ForGsoap.h:617 */
+/* eml2_2ForGsoap.h:641 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic3dPostStackRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic3dPostStackRepresentation (-189)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic3dPostStackRepresentation (-201)
 /* complex XML schema type 'resqml22:Seismic3dPostStackRepresentation': */
 class SOAP_CMAC resqml22__Seismic3dPostStackRepresentation : public resqml22__AbstractGridRepresentation {
       public:
@@ -40169,9 +40169,9 @@ class SOAP_CMAC witsml21__LithostratigraphicUnit {
 };
 #endif
 
-/* eml2_2ForGsoap.h:361 */
+/* eml2_2ForGsoap.h:355 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__NonSealedSurfaceFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__NonSealedSurfaceFrameworkRepresentation (-61)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__NonSealedSurfaceFrameworkRepresentation (-58)
 /* complex XML schema type 'resqml22:NonSealedSurfaceFrameworkRepresentation': */
 class SOAP_CMAC resqml22__NonSealedSurfaceFrameworkRepresentation : public resqml22__AbstractSurfaceFrameworkRepresentation {
       public:
@@ -40203,9 +40203,9 @@ class SOAP_CMAC resqml22__NonSealedSurfaceFrameworkRepresentation : public resqm
 };
 #endif
 
-/* eml2_2ForGsoap.h:375 */
+/* eml2_2ForGsoap.h:369 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SealedSurfaceFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SealedSurfaceFrameworkRepresentation (-68)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SealedSurfaceFrameworkRepresentation (-65)
 /* complex XML schema type 'resqml22:SealedSurfaceFrameworkRepresentation': */
 class SOAP_CMAC resqml22__SealedSurfaceFrameworkRepresentation : public resqml22__AbstractSurfaceFrameworkRepresentation {
       public:
@@ -40237,9 +40237,9 @@ class SOAP_CMAC resqml22__SealedSurfaceFrameworkRepresentation : public resqml22
 };
 #endif
 
-/* eml2_2ForGsoap.h:437 */
+/* eml2_2ForGsoap.h:431 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicColumnRankInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicColumnRankInterpretation (-99)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicColumnRankInterpretation (-96)
 /* complex XML schema type 'resqml22:StratigraphicColumnRankInterpretation': */
 class SOAP_CMAC resqml22__StratigraphicColumnRankInterpretation : public resqml22__AbstractStratigraphicOrganizationInterpretation {
       public:
@@ -40273,9 +40273,9 @@ class SOAP_CMAC resqml22__StratigraphicColumnRankInterpretation : public resqml2
 };
 #endif
 
-/* eml2_2ForGsoap.h:439 */
+/* eml2_2ForGsoap.h:433 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicOccurrenceInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicOccurrenceInterpretation (-100)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicOccurrenceInterpretation (-97)
 /* complex XML schema type 'resqml22:StratigraphicOccurrenceInterpretation': */
 class SOAP_CMAC resqml22__StratigraphicOccurrenceInterpretation : public resqml22__AbstractStratigraphicOrganizationInterpretation {
       public:
@@ -40309,9 +40309,9 @@ class SOAP_CMAC resqml22__StratigraphicOccurrenceInterpretation : public resqml2
 };
 #endif
 
-/* eml2_2ForGsoap.h:495 */
+/* eml2_2ForGsoap.h:519 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IjkGridGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkGridGeometry (-128)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkGridGeometry (-140)
 /* complex XML schema type 'resqml22:IjkGridGeometry': */
 class SOAP_CMAC resqml22__IjkGridGeometry : public resqml22__AbstractColumnLayerGridGeometry {
       public:
@@ -40345,9 +40345,9 @@ class SOAP_CMAC resqml22__IjkGridGeometry : public resqml22__AbstractColumnLayer
 };
 #endif
 
-/* eml2_2ForGsoap.h:497 */
+/* eml2_2ForGsoap.h:521 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IjkGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkGridRepresentation (-129)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkGridRepresentation (-141)
 /* complex XML schema type 'resqml22:IjkGridRepresentation': */
 class SOAP_CMAC resqml22__IjkGridRepresentation : public resqml22__AbstractColumnLayerGridRepresentation {
       public:
@@ -40387,9 +40387,9 @@ class SOAP_CMAC resqml22__IjkGridRepresentation : public resqml22__AbstractColum
 };
 #endif
 
-/* eml2_2ForGsoap.h:527 */
+/* eml2_2ForGsoap.h:551 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__TruncatedIjkGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__TruncatedIjkGridRepresentation (-144)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__TruncatedIjkGridRepresentation (-156)
 /* complex XML schema type 'resqml22:TruncatedIjkGridRepresentation': */
 class SOAP_CMAC resqml22__TruncatedIjkGridRepresentation : public resqml22__AbstractTruncatedColumnLayerGridRepresentation {
       public:
@@ -40425,9 +40425,9 @@ class SOAP_CMAC resqml22__TruncatedIjkGridRepresentation : public resqml22__Abst
 };
 #endif
 
-/* eml2_2ForGsoap.h:529 */
+/* eml2_2ForGsoap.h:553 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__TruncatedUnstructuredColumnLayerGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__TruncatedUnstructuredColumnLayerGridRepresentation (-145)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__TruncatedUnstructuredColumnLayerGridRepresentation (-157)
 /* complex XML schema type 'resqml22:TruncatedUnstructuredColumnLayerGridRepresentation': */
 class SOAP_CMAC resqml22__TruncatedUnstructuredColumnLayerGridRepresentation : public resqml22__AbstractTruncatedColumnLayerGridRepresentation {
       public:
@@ -40461,9 +40461,9 @@ class SOAP_CMAC resqml22__TruncatedUnstructuredColumnLayerGridRepresentation : p
 };
 #endif
 
-/* eml2_2ForGsoap.h:539 */
+/* eml2_2ForGsoap.h:563 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerGridGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerGridGeometry (-150)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerGridGeometry (-162)
 /* complex XML schema type 'resqml22:UnstructuredColumnLayerGridGeometry': */
 class SOAP_CMAC resqml22__UnstructuredColumnLayerGridGeometry : public resqml22__AbstractColumnLayerGridGeometry {
       public:
@@ -40503,9 +40503,9 @@ class SOAP_CMAC resqml22__UnstructuredColumnLayerGridGeometry : public resqml22_
 };
 #endif
 
-/* eml2_2ForGsoap.h:541 */
+/* eml2_2ForGsoap.h:565 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerGridRepresentation (-151)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerGridRepresentation (-163)
 /* complex XML schema type 'resqml22:UnstructuredColumnLayerGridRepresentation': */
 class SOAP_CMAC resqml22__UnstructuredColumnLayerGridRepresentation : public resqml22__AbstractColumnLayerGridRepresentation {
       public:
@@ -40539,9 +40539,9 @@ class SOAP_CMAC resqml22__UnstructuredColumnLayerGridRepresentation : public res
 };
 #endif
 
-/* eml2_2ForGsoap.h:605 */
+/* eml2_2ForGsoap.h:629 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSeismicLineFeature
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSeismicLineFeature (-183)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSeismicLineFeature (-195)
 /* complex XML schema type 'resqml22:AbstractSeismicLineFeature': */
 class SOAP_CMAC resqml22__AbstractSeismicLineFeature : public resqml22__AbstractSeismicSurveyFeature {
       public:
@@ -40575,9 +40575,9 @@ class SOAP_CMAC resqml22__AbstractSeismicLineFeature : public resqml22__Abstract
 };
 #endif
 
-/* eml2_2ForGsoap.h:619 */
+/* eml2_2ForGsoap.h:643 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicLatticeFeature
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicLatticeFeature (-190)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicLatticeFeature (-202)
 /* complex XML schema type 'resqml22:SeismicLatticeFeature': */
 class SOAP_CMAC resqml22__SeismicLatticeFeature : public resqml22__AbstractSeismicSurveyFeature {
       public:
@@ -40613,9 +40613,9 @@ class SOAP_CMAC resqml22__SeismicLatticeFeature : public resqml22__AbstractSeism
 };
 #endif
 
-/* eml2_2ForGsoap.h:621 */
+/* eml2_2ForGsoap.h:645 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicLatticeSetFeature
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicLatticeSetFeature (-191)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicLatticeSetFeature (-203)
 /* complex XML schema type 'resqml22:SeismicLatticeSetFeature': */
 class SOAP_CMAC resqml22__SeismicLatticeSetFeature : public resqml22__AbstractSeismicSurveyFeature {
       public:
@@ -40644,9 +40644,9 @@ class SOAP_CMAC resqml22__SeismicLatticeSetFeature : public resqml22__AbstractSe
 };
 #endif
 
-/* eml2_2ForGsoap.h:623 */
+/* eml2_2ForGsoap.h:647 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicLineSetFeature
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicLineSetFeature (-192)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicLineSetFeature (-204)
 /* complex XML schema type 'resqml22:SeismicLineSetFeature': */
 class SOAP_CMAC resqml22__SeismicLineSetFeature : public resqml22__AbstractSeismicSurveyFeature {
       public:
@@ -41005,9 +41005,9 @@ class SOAP_CMAC gml__AbstractCoordinateOperationType : public gml__IdentifiedObj
 };
 #endif
 
-/* eml2_2ForGsoap.h:609 */
+/* eml2_2ForGsoap.h:633 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__CmpLineFeature
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__CmpLineFeature (-185)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__CmpLineFeature (-197)
 /* complex XML schema type 'resqml22:CmpLineFeature': */
 class SOAP_CMAC resqml22__CmpLineFeature : public resqml22__AbstractSeismicLineFeature {
       public:
@@ -41041,9 +41041,9 @@ class SOAP_CMAC resqml22__CmpLineFeature : public resqml22__AbstractSeismicLineF
 };
 #endif
 
-/* eml2_2ForGsoap.h:625 */
+/* eml2_2ForGsoap.h:649 */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ShotPointLineFeature
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ShotPointLineFeature (-193)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ShotPointLineFeature (-205)
 /* complex XML schema type 'resqml22:ShotPointLineFeature': */
 class SOAP_CMAC resqml22__ShotPointLineFeature : public resqml22__AbstractSeismicLineFeature {
       public:
@@ -43264,374 +43264,374 @@ typedef resqml22__DiscreteColorMap _resqml22__DiscreteColorMap;
 #endif
 
 /* eml2_2ForGsoap.h:49452 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__BlockedWellboreRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__BlockedWellboreRepresentation (-1942)
-
-typedef resqml22__BlockedWellboreRepresentation _resqml22__BlockedWellboreRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49455 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__DeviationSurveyRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__DeviationSurveyRepresentation (-1943)
-
-typedef resqml22__DeviationSurveyRepresentation _resqml22__DeviationSurveyRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49458 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__MdDatum
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__MdDatum (-1944)
-
-typedef resqml22__MdDatum _resqml22__MdDatum;
-#endif
-
-/* eml2_2ForGsoap.h:49461 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicWellboreFrameRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicWellboreFrameRepresentation (-1945)
-
-typedef resqml22__SeismicWellboreFrameRepresentation _resqml22__SeismicWellboreFrameRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49464 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreFeature
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreFeature (-1946)
-
-typedef resqml22__WellboreFeature _resqml22__WellboreFeature;
-#endif
-
-/* eml2_2ForGsoap.h:49467 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreFrameRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreFrameRepresentation (-1947)
-
-typedef resqml22__WellboreFrameRepresentation _resqml22__WellboreFrameRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49470 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreInterpretation (-1948)
-
-typedef resqml22__WellboreInterpretation _resqml22__WellboreInterpretation;
-#endif
-
-/* eml2_2ForGsoap.h:49473 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreInterpretationSet
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreInterpretationSet (-1949)
-
-typedef resqml22__WellboreInterpretationSet _resqml22__WellboreInterpretationSet;
-#endif
-
-/* eml2_2ForGsoap.h:49476 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreMarkerFrameRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreMarkerFrameRepresentation (-1950)
-
-typedef resqml22__WellboreMarkerFrameRepresentation _resqml22__WellboreMarkerFrameRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49479 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreTrajectoryRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreTrajectoryRepresentation (-1951)
-
-typedef resqml22__WellboreTrajectoryRepresentation _resqml22__WellboreTrajectoryRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49482 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__Grid2dRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__Grid2dRepresentation (-1952)
-
-typedef resqml22__Grid2dRepresentation _resqml22__Grid2dRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49485 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__NonSealedSurfaceFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__NonSealedSurfaceFrameworkRepresentation (-1953)
-
-typedef resqml22__NonSealedSurfaceFrameworkRepresentation _resqml22__NonSealedSurfaceFrameworkRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49488 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__PlaneSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__PlaneSetRepresentation (-1954)
-
-typedef resqml22__PlaneSetRepresentation _resqml22__PlaneSetRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49491 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__PointSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__PointSetRepresentation (-1955)
-
-typedef resqml22__PointSetRepresentation _resqml22__PointSetRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49494 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__PolylineRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__PolylineRepresentation (-1956)
-
-typedef resqml22__PolylineRepresentation _resqml22__PolylineRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49497 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SealedSurfaceFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__SealedSurfaceFrameworkRepresentation (-1957)
-
-typedef resqml22__SealedSurfaceFrameworkRepresentation _resqml22__SealedSurfaceFrameworkRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49500 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SealedVolumeFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__SealedVolumeFrameworkRepresentation (-1958)
-
-typedef resqml22__SealedVolumeFrameworkRepresentation _resqml22__SealedVolumeFrameworkRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49503 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__TriangulatedSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__TriangulatedSetRepresentation (-1959)
-
-typedef resqml22__TriangulatedSetRepresentation _resqml22__TriangulatedSetRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49506 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__BoundaryFeatureInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__BoundaryFeatureInterpretation (-1960)
-
-typedef resqml22__BoundaryFeatureInterpretation _resqml22__BoundaryFeatureInterpretation;
-#endif
-
-/* eml2_2ForGsoap.h:49509 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__EarthModelInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__EarthModelInterpretation (-1961)
-
-typedef resqml22__EarthModelInterpretation _resqml22__EarthModelInterpretation;
-#endif
-
-/* eml2_2ForGsoap.h:49512 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__FaultInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__FaultInterpretation (-1962)
-
-typedef resqml22__FaultInterpretation _resqml22__FaultInterpretation;
-#endif
-
-/* eml2_2ForGsoap.h:49515 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__FluidBoundaryInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__FluidBoundaryInterpretation (-1963)
-
-typedef resqml22__FluidBoundaryInterpretation _resqml22__FluidBoundaryInterpretation;
-#endif
-
-/* eml2_2ForGsoap.h:49518 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GenericFeatureInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__GenericFeatureInterpretation (-1964)
-
-typedef resqml22__GenericFeatureInterpretation _resqml22__GenericFeatureInterpretation;
-#endif
-
-/* eml2_2ForGsoap.h:49521 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GeobodyBoundaryInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__GeobodyBoundaryInterpretation (-1965)
-
-typedef resqml22__GeobodyBoundaryInterpretation _resqml22__GeobodyBoundaryInterpretation;
-#endif
-
-/* eml2_2ForGsoap.h:49524 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GeobodyInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__GeobodyInterpretation (-1966)
-
-typedef resqml22__GeobodyInterpretation _resqml22__GeobodyInterpretation;
-#endif
-
-/* eml2_2ForGsoap.h:49527 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GeologicUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__GeologicUnitInterpretation (-1967)
-
-typedef resqml22__GeologicUnitInterpretation _resqml22__GeologicUnitInterpretation;
-#endif
-
-/* eml2_2ForGsoap.h:49530 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__HorizonInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__HorizonInterpretation (-1968)
-
-typedef resqml22__HorizonInterpretation _resqml22__HorizonInterpretation;
-#endif
-
-/* eml2_2ForGsoap.h:49533 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__RockFluidOrganizationInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__RockFluidOrganizationInterpretation (-1969)
-
-typedef resqml22__RockFluidOrganizationInterpretation _resqml22__RockFluidOrganizationInterpretation;
-#endif
-
-/* eml2_2ForGsoap.h:49536 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__RockFluidUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__RockFluidUnitInterpretation (-1970)
-
-typedef resqml22__RockFluidUnitInterpretation _resqml22__RockFluidUnitInterpretation;
-#endif
-
-/* eml2_2ForGsoap.h:49539 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicColumn
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicColumn (-1971)
-
-typedef resqml22__StratigraphicColumn _resqml22__StratigraphicColumn;
-#endif
-
-/* eml2_2ForGsoap.h:49542 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicColumnRankInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicColumnRankInterpretation (-1972)
-
-typedef resqml22__StratigraphicColumnRankInterpretation _resqml22__StratigraphicColumnRankInterpretation;
-#endif
-
-/* eml2_2ForGsoap.h:49545 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicOccurrenceInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicOccurrenceInterpretation (-1973)
-
-typedef resqml22__StratigraphicOccurrenceInterpretation _resqml22__StratigraphicOccurrenceInterpretation;
-#endif
-
-/* eml2_2ForGsoap.h:49548 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicUnitDictionary
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicUnitDictionary (-1974)
-
-typedef resqml22__StratigraphicUnitDictionary _resqml22__StratigraphicUnitDictionary;
-#endif
-
-/* eml2_2ForGsoap.h:49551 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicUnitInterpretation (-1975)
-
-typedef resqml22__StratigraphicUnitInterpretation _resqml22__StratigraphicUnitInterpretation;
-#endif
-
-/* eml2_2ForGsoap.h:49554 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StructuralOrganizationInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__StructuralOrganizationInterpretation (-1976)
-
-typedef resqml22__StructuralOrganizationInterpretation _resqml22__StructuralOrganizationInterpretation;
-#endif
-
-/* eml2_2ForGsoap.h:49557 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GpGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__GpGridRepresentation (-1977)
-
-typedef resqml22__GpGridRepresentation _resqml22__GpGridRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49560 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GridConnectionSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__GridConnectionSetRepresentation (-1978)
-
-typedef resqml22__GridConnectionSetRepresentation _resqml22__GridConnectionSetRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49563 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__IjkGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__IjkGridRepresentation (-1979)
-
-typedef resqml22__IjkGridRepresentation _resqml22__IjkGridRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49566 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__LocalGridSet
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__LocalGridSet (-1980)
-
-typedef resqml22__LocalGridSet _resqml22__LocalGridSet;
-#endif
-
-/* eml2_2ForGsoap.h:49569 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__TruncatedIjkGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__TruncatedIjkGridRepresentation (-1981)
-
-typedef resqml22__TruncatedIjkGridRepresentation _resqml22__TruncatedIjkGridRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49572 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__TruncatedUnstructuredColumnLayerGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__TruncatedUnstructuredColumnLayerGridRepresentation (-1982)
-
-typedef resqml22__TruncatedUnstructuredColumnLayerGridRepresentation _resqml22__TruncatedUnstructuredColumnLayerGridRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49575 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__UnstructuredColumnLayerGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__UnstructuredColumnLayerGridRepresentation (-1983)
-
-typedef resqml22__UnstructuredColumnLayerGridRepresentation _resqml22__UnstructuredColumnLayerGridRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49578 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__UnstructuredGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__UnstructuredGridRepresentation (-1984)
-
-typedef resqml22__UnstructuredGridRepresentation _resqml22__UnstructuredGridRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49581 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__CmpLineFeature
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__CmpLineFeature (-1985)
-
-typedef resqml22__CmpLineFeature _resqml22__CmpLineFeature;
-#endif
-
-/* eml2_2ForGsoap.h:49584 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__Seismic2dPostStackRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__Seismic2dPostStackRepresentation (-1986)
-
-typedef resqml22__Seismic2dPostStackRepresentation _resqml22__Seismic2dPostStackRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49587 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__Seismic3dPostStackRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__Seismic3dPostStackRepresentation (-1987)
-
-typedef resqml22__Seismic3dPostStackRepresentation _resqml22__Seismic3dPostStackRepresentation;
-#endif
-
-/* eml2_2ForGsoap.h:49590 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicLatticeFeature
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicLatticeFeature (-1988)
-
-typedef resqml22__SeismicLatticeFeature _resqml22__SeismicLatticeFeature;
-#endif
-
-/* eml2_2ForGsoap.h:49593 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicLineSetFeature
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicLineSetFeature (-1989)
-
-typedef resqml22__SeismicLineSetFeature _resqml22__SeismicLineSetFeature;
-#endif
-
-/* eml2_2ForGsoap.h:49596 */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__ShotPointLineFeature
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__ShotPointLineFeature (-1990)
-
-typedef resqml22__ShotPointLineFeature _resqml22__ShotPointLineFeature;
-#endif
-
-/* eml2_2ForGsoap.h:49599 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__PolylineSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__PolylineSetRepresentation (-1991)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__PolylineSetRepresentation (-1942)
 
 typedef resqml22__PolylineSetRepresentation _resqml22__PolylineSetRepresentation;
 #endif
 
-/* eml2_2ForGsoap.h:49602 */
+/* eml2_2ForGsoap.h:49455 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__RepresentationIdentitySet
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__RepresentationIdentitySet (-1992)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__RepresentationIdentitySet (-1943)
 
 typedef resqml22__RepresentationIdentitySet _resqml22__RepresentationIdentitySet;
 #endif
 
-/* eml2_2ForGsoap.h:49605 */
+/* eml2_2ForGsoap.h:49458 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__RepresentationSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__RepresentationSetRepresentation (-1993)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__RepresentationSetRepresentation (-1944)
 
 typedef resqml22__RepresentationSetRepresentation _resqml22__RepresentationSetRepresentation;
 #endif
 
-/* eml2_2ForGsoap.h:49608 */
+/* eml2_2ForGsoap.h:49461 */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SubRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__SubRepresentation (-1994)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__SubRepresentation (-1945)
 
 typedef resqml22__SubRepresentation _resqml22__SubRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49464 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__Grid2dRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__Grid2dRepresentation (-1946)
+
+typedef resqml22__Grid2dRepresentation _resqml22__Grid2dRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49467 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__NonSealedSurfaceFrameworkRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__NonSealedSurfaceFrameworkRepresentation (-1947)
+
+typedef resqml22__NonSealedSurfaceFrameworkRepresentation _resqml22__NonSealedSurfaceFrameworkRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49470 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__PlaneSetRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__PlaneSetRepresentation (-1948)
+
+typedef resqml22__PlaneSetRepresentation _resqml22__PlaneSetRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49473 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__PointSetRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__PointSetRepresentation (-1949)
+
+typedef resqml22__PointSetRepresentation _resqml22__PointSetRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49476 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__PolylineRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__PolylineRepresentation (-1950)
+
+typedef resqml22__PolylineRepresentation _resqml22__PolylineRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49479 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SealedSurfaceFrameworkRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__SealedSurfaceFrameworkRepresentation (-1951)
+
+typedef resqml22__SealedSurfaceFrameworkRepresentation _resqml22__SealedSurfaceFrameworkRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49482 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SealedVolumeFrameworkRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__SealedVolumeFrameworkRepresentation (-1952)
+
+typedef resqml22__SealedVolumeFrameworkRepresentation _resqml22__SealedVolumeFrameworkRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49485 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__TriangulatedSetRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__TriangulatedSetRepresentation (-1953)
+
+typedef resqml22__TriangulatedSetRepresentation _resqml22__TriangulatedSetRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49488 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__BoundaryFeatureInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__BoundaryFeatureInterpretation (-1954)
+
+typedef resqml22__BoundaryFeatureInterpretation _resqml22__BoundaryFeatureInterpretation;
+#endif
+
+/* eml2_2ForGsoap.h:49491 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__EarthModelInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__EarthModelInterpretation (-1955)
+
+typedef resqml22__EarthModelInterpretation _resqml22__EarthModelInterpretation;
+#endif
+
+/* eml2_2ForGsoap.h:49494 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__FaultInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__FaultInterpretation (-1956)
+
+typedef resqml22__FaultInterpretation _resqml22__FaultInterpretation;
+#endif
+
+/* eml2_2ForGsoap.h:49497 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__FluidBoundaryInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__FluidBoundaryInterpretation (-1957)
+
+typedef resqml22__FluidBoundaryInterpretation _resqml22__FluidBoundaryInterpretation;
+#endif
+
+/* eml2_2ForGsoap.h:49500 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GenericFeatureInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__GenericFeatureInterpretation (-1958)
+
+typedef resqml22__GenericFeatureInterpretation _resqml22__GenericFeatureInterpretation;
+#endif
+
+/* eml2_2ForGsoap.h:49503 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GeobodyBoundaryInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__GeobodyBoundaryInterpretation (-1959)
+
+typedef resqml22__GeobodyBoundaryInterpretation _resqml22__GeobodyBoundaryInterpretation;
+#endif
+
+/* eml2_2ForGsoap.h:49506 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GeobodyInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__GeobodyInterpretation (-1960)
+
+typedef resqml22__GeobodyInterpretation _resqml22__GeobodyInterpretation;
+#endif
+
+/* eml2_2ForGsoap.h:49509 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GeologicUnitInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__GeologicUnitInterpretation (-1961)
+
+typedef resqml22__GeologicUnitInterpretation _resqml22__GeologicUnitInterpretation;
+#endif
+
+/* eml2_2ForGsoap.h:49512 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__HorizonInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__HorizonInterpretation (-1962)
+
+typedef resqml22__HorizonInterpretation _resqml22__HorizonInterpretation;
+#endif
+
+/* eml2_2ForGsoap.h:49515 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__RockFluidOrganizationInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__RockFluidOrganizationInterpretation (-1963)
+
+typedef resqml22__RockFluidOrganizationInterpretation _resqml22__RockFluidOrganizationInterpretation;
+#endif
+
+/* eml2_2ForGsoap.h:49518 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__RockFluidUnitInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__RockFluidUnitInterpretation (-1964)
+
+typedef resqml22__RockFluidUnitInterpretation _resqml22__RockFluidUnitInterpretation;
+#endif
+
+/* eml2_2ForGsoap.h:49521 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicColumn
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicColumn (-1965)
+
+typedef resqml22__StratigraphicColumn _resqml22__StratigraphicColumn;
+#endif
+
+/* eml2_2ForGsoap.h:49524 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicColumnRankInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicColumnRankInterpretation (-1966)
+
+typedef resqml22__StratigraphicColumnRankInterpretation _resqml22__StratigraphicColumnRankInterpretation;
+#endif
+
+/* eml2_2ForGsoap.h:49527 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicOccurrenceInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicOccurrenceInterpretation (-1967)
+
+typedef resqml22__StratigraphicOccurrenceInterpretation _resqml22__StratigraphicOccurrenceInterpretation;
+#endif
+
+/* eml2_2ForGsoap.h:49530 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicUnitDictionary
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicUnitDictionary (-1968)
+
+typedef resqml22__StratigraphicUnitDictionary _resqml22__StratigraphicUnitDictionary;
+#endif
+
+/* eml2_2ForGsoap.h:49533 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicUnitInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicUnitInterpretation (-1969)
+
+typedef resqml22__StratigraphicUnitInterpretation _resqml22__StratigraphicUnitInterpretation;
+#endif
+
+/* eml2_2ForGsoap.h:49536 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StructuralOrganizationInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__StructuralOrganizationInterpretation (-1970)
+
+typedef resqml22__StructuralOrganizationInterpretation _resqml22__StructuralOrganizationInterpretation;
+#endif
+
+/* eml2_2ForGsoap.h:49539 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__BlockedWellboreRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__BlockedWellboreRepresentation (-1971)
+
+typedef resqml22__BlockedWellboreRepresentation _resqml22__BlockedWellboreRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49542 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__DeviationSurveyRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__DeviationSurveyRepresentation (-1972)
+
+typedef resqml22__DeviationSurveyRepresentation _resqml22__DeviationSurveyRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49545 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__MdDatum
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__MdDatum (-1973)
+
+typedef resqml22__MdDatum _resqml22__MdDatum;
+#endif
+
+/* eml2_2ForGsoap.h:49548 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicWellboreFrameRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicWellboreFrameRepresentation (-1974)
+
+typedef resqml22__SeismicWellboreFrameRepresentation _resqml22__SeismicWellboreFrameRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49551 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreFeature
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreFeature (-1975)
+
+typedef resqml22__WellboreFeature _resqml22__WellboreFeature;
+#endif
+
+/* eml2_2ForGsoap.h:49554 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreFrameRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreFrameRepresentation (-1976)
+
+typedef resqml22__WellboreFrameRepresentation _resqml22__WellboreFrameRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49557 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreInterpretation (-1977)
+
+typedef resqml22__WellboreInterpretation _resqml22__WellboreInterpretation;
+#endif
+
+/* eml2_2ForGsoap.h:49560 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreInterpretationSet
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreInterpretationSet (-1978)
+
+typedef resqml22__WellboreInterpretationSet _resqml22__WellboreInterpretationSet;
+#endif
+
+/* eml2_2ForGsoap.h:49563 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreMarkerFrameRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreMarkerFrameRepresentation (-1979)
+
+typedef resqml22__WellboreMarkerFrameRepresentation _resqml22__WellboreMarkerFrameRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49566 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreTrajectoryRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreTrajectoryRepresentation (-1980)
+
+typedef resqml22__WellboreTrajectoryRepresentation _resqml22__WellboreTrajectoryRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49569 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GpGridRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__GpGridRepresentation (-1981)
+
+typedef resqml22__GpGridRepresentation _resqml22__GpGridRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49572 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GridConnectionSetRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__GridConnectionSetRepresentation (-1982)
+
+typedef resqml22__GridConnectionSetRepresentation _resqml22__GridConnectionSetRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49575 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__IjkGridRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__IjkGridRepresentation (-1983)
+
+typedef resqml22__IjkGridRepresentation _resqml22__IjkGridRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49578 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__LocalGridSet
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__LocalGridSet (-1984)
+
+typedef resqml22__LocalGridSet _resqml22__LocalGridSet;
+#endif
+
+/* eml2_2ForGsoap.h:49581 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__TruncatedIjkGridRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__TruncatedIjkGridRepresentation (-1985)
+
+typedef resqml22__TruncatedIjkGridRepresentation _resqml22__TruncatedIjkGridRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49584 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__TruncatedUnstructuredColumnLayerGridRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__TruncatedUnstructuredColumnLayerGridRepresentation (-1986)
+
+typedef resqml22__TruncatedUnstructuredColumnLayerGridRepresentation _resqml22__TruncatedUnstructuredColumnLayerGridRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49587 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__UnstructuredColumnLayerGridRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__UnstructuredColumnLayerGridRepresentation (-1987)
+
+typedef resqml22__UnstructuredColumnLayerGridRepresentation _resqml22__UnstructuredColumnLayerGridRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49590 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__UnstructuredGridRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__UnstructuredGridRepresentation (-1988)
+
+typedef resqml22__UnstructuredGridRepresentation _resqml22__UnstructuredGridRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49593 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__CmpLineFeature
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__CmpLineFeature (-1989)
+
+typedef resqml22__CmpLineFeature _resqml22__CmpLineFeature;
+#endif
+
+/* eml2_2ForGsoap.h:49596 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__Seismic2dPostStackRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__Seismic2dPostStackRepresentation (-1990)
+
+typedef resqml22__Seismic2dPostStackRepresentation _resqml22__Seismic2dPostStackRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49599 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__Seismic3dPostStackRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__Seismic3dPostStackRepresentation (-1991)
+
+typedef resqml22__Seismic3dPostStackRepresentation _resqml22__Seismic3dPostStackRepresentation;
+#endif
+
+/* eml2_2ForGsoap.h:49602 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicLatticeFeature
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicLatticeFeature (-1992)
+
+typedef resqml22__SeismicLatticeFeature _resqml22__SeismicLatticeFeature;
+#endif
+
+/* eml2_2ForGsoap.h:49605 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicLineSetFeature
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicLineSetFeature (-1993)
+
+typedef resqml22__SeismicLineSetFeature _resqml22__SeismicLineSetFeature;
+#endif
+
+/* eml2_2ForGsoap.h:49608 */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__ShotPointLineFeature
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__ShotPointLineFeature (-1994)
+
+typedef resqml22__ShotPointLineFeature _resqml22__ShotPointLineFeature;
 #endif
 
 /* eml2_2ForGsoap.h:49611 */
@@ -44861,69 +44861,69 @@ typedef witsml21__WellboreGeology _witsml21__WellboreGeology;
 
 #endif
 
-/* enum resqml22__IndexableElement has binding name 'resqml22__IndexableElement' for type 'resqml22:IndexableElement' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IndexableElement
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IndexableElement (-1302)
-
-#endif
-
-/* enum resqml22__IdentityKind has binding name 'resqml22__IdentityKind' for type 'resqml22:IdentityKind' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IdentityKind
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IdentityKind (-1301)
-
-#endif
-
 /* enum resqml22__UnstructuredColumnLayerIndexableElements has binding name 'resqml22__UnstructuredColumnLayerIndexableElements' for type 'resqml22:UnstructuredColumnLayerIndexableElements' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerIndexableElements
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerIndexableElements (-1300)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerIndexableElements (-1302)
 
 #endif
 
 /* enum resqml22__UnstructuredCellIndexableElements has binding name 'resqml22__UnstructuredCellIndexableElements' for type 'resqml22:UnstructuredCellIndexableElements' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredCellIndexableElements
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredCellIndexableElements (-1299)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredCellIndexableElements (-1301)
 
 #endif
 
 /* enum resqml22__SubnodeNodeObject has binding name 'resqml22__SubnodeNodeObject' for type 'resqml22:SubnodeNodeObject' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SubnodeNodeObject
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubnodeNodeObject (-1298)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubnodeNodeObject (-1300)
 
 #endif
 
 /* enum resqml22__PillarShape has binding name 'resqml22__PillarShape' for type 'resqml22:PillarShape' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PillarShape
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__PillarShape (-1297)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__PillarShape (-1299)
 
 #endif
 
 /* enum resqml22__KDirection has binding name 'resqml22__KDirection' for type 'resqml22:KDirection' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__KDirection
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__KDirection (-1296)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__KDirection (-1298)
 
 #endif
 
 /* enum resqml22__IjkIndexableElements has binding name 'resqml22__IjkIndexableElements' for type 'resqml22:IjkIndexableElements' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IjkIndexableElements
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkIndexableElements (-1295)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkIndexableElements (-1297)
 
 #endif
 
 /* enum resqml22__GridGeometryAttachment has binding name 'resqml22__GridGeometryAttachment' for type 'resqml22:GridGeometryAttachment' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GridGeometryAttachment
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GridGeometryAttachment (-1294)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GridGeometryAttachment (-1296)
 
 #endif
 
 /* enum resqml22__ColumnShape has binding name 'resqml22__ColumnShape' for type 'resqml22:ColumnShape' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnShape
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnShape (-1293)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnShape (-1295)
 
 #endif
 
 /* enum resqml22__CellShape has binding name 'resqml22__CellShape' for type 'resqml22:CellShape' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__CellShape
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__CellShape (-1292)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__CellShape (-1294)
+
+#endif
+
+/* enum resqml22__WellboreFrameIndexableElements has binding name 'resqml22__WellboreFrameIndexableElements' for type 'resqml22:WellboreFrameIndexableElements' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFrameIndexableElements
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFrameIndexableElements (-1293)
+
+#endif
+
+/* enum resqml22__MdDomain has binding name 'resqml22__MdDomain' for type 'resqml22:MdDomain' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__MdDomain
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__MdDomain (-1292)
 
 #endif
 
@@ -45023,15 +45023,15 @@ typedef witsml21__WellboreGeology _witsml21__WellboreGeology;
 
 #endif
 
-/* enum resqml22__WellboreFrameIndexableElements has binding name 'resqml22__WellboreFrameIndexableElements' for type 'resqml22:WellboreFrameIndexableElements' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFrameIndexableElements
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFrameIndexableElements (-1275)
+/* enum resqml22__IndexableElement has binding name 'resqml22__IndexableElement' for type 'resqml22:IndexableElement' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IndexableElement
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IndexableElement (-1275)
 
 #endif
 
-/* enum resqml22__MdDomain has binding name 'resqml22__MdDomain' for type 'resqml22:MdDomain' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__MdDomain
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__MdDomain (-1274)
+/* enum resqml22__IdentityKind has binding name 'resqml22__IdentityKind' for type 'resqml22:IdentityKind' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IdentityKind
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IdentityKind (-1274)
 
 #endif
 
@@ -46871,321 +46871,321 @@ typedef witsml21__WellboreGeology _witsml21__WellboreGeology;
 
 #endif
 
-/* _resqml22__SubRepresentation has binding name '_resqml22__SubRepresentation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SubRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__SubRepresentation (-1994)
-
-#endif
-
-/* _resqml22__RepresentationSetRepresentation has binding name '_resqml22__RepresentationSetRepresentation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__RepresentationSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__RepresentationSetRepresentation (-1993)
-
-#endif
-
-/* _resqml22__RepresentationIdentitySet has binding name '_resqml22__RepresentationIdentitySet' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__RepresentationIdentitySet
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__RepresentationIdentitySet (-1992)
-
-#endif
-
-/* _resqml22__PolylineSetRepresentation has binding name '_resqml22__PolylineSetRepresentation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__PolylineSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__PolylineSetRepresentation (-1991)
-
-#endif
-
 /* _resqml22__ShotPointLineFeature has binding name '_resqml22__ShotPointLineFeature' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__ShotPointLineFeature
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__ShotPointLineFeature (-1990)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__ShotPointLineFeature (-1994)
 
 #endif
 
 /* _resqml22__SeismicLineSetFeature has binding name '_resqml22__SeismicLineSetFeature' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicLineSetFeature
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicLineSetFeature (-1989)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicLineSetFeature (-1993)
 
 #endif
 
 /* _resqml22__SeismicLatticeFeature has binding name '_resqml22__SeismicLatticeFeature' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicLatticeFeature
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicLatticeFeature (-1988)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicLatticeFeature (-1992)
 
 #endif
 
 /* _resqml22__Seismic3dPostStackRepresentation has binding name '_resqml22__Seismic3dPostStackRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__Seismic3dPostStackRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__Seismic3dPostStackRepresentation (-1987)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__Seismic3dPostStackRepresentation (-1991)
 
 #endif
 
 /* _resqml22__Seismic2dPostStackRepresentation has binding name '_resqml22__Seismic2dPostStackRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__Seismic2dPostStackRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__Seismic2dPostStackRepresentation (-1986)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__Seismic2dPostStackRepresentation (-1990)
 
 #endif
 
 /* _resqml22__CmpLineFeature has binding name '_resqml22__CmpLineFeature' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__CmpLineFeature
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__CmpLineFeature (-1985)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__CmpLineFeature (-1989)
 
 #endif
 
 /* _resqml22__UnstructuredGridRepresentation has binding name '_resqml22__UnstructuredGridRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__UnstructuredGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__UnstructuredGridRepresentation (-1984)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__UnstructuredGridRepresentation (-1988)
 
 #endif
 
 /* _resqml22__UnstructuredColumnLayerGridRepresentation has binding name '_resqml22__UnstructuredColumnLayerGridRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__UnstructuredColumnLayerGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__UnstructuredColumnLayerGridRepresentation (-1983)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__UnstructuredColumnLayerGridRepresentation (-1987)
 
 #endif
 
 /* _resqml22__TruncatedUnstructuredColumnLayerGridRepresentation has binding name '_resqml22__TruncatedUnstructuredColumnLayerGridRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__TruncatedUnstructuredColumnLayerGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__TruncatedUnstructuredColumnLayerGridRepresentation (-1982)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__TruncatedUnstructuredColumnLayerGridRepresentation (-1986)
 
 #endif
 
 /* _resqml22__TruncatedIjkGridRepresentation has binding name '_resqml22__TruncatedIjkGridRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__TruncatedIjkGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__TruncatedIjkGridRepresentation (-1981)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__TruncatedIjkGridRepresentation (-1985)
 
 #endif
 
 /* _resqml22__LocalGridSet has binding name '_resqml22__LocalGridSet' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__LocalGridSet
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__LocalGridSet (-1980)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__LocalGridSet (-1984)
 
 #endif
 
 /* _resqml22__IjkGridRepresentation has binding name '_resqml22__IjkGridRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__IjkGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__IjkGridRepresentation (-1979)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__IjkGridRepresentation (-1983)
 
 #endif
 
 /* _resqml22__GridConnectionSetRepresentation has binding name '_resqml22__GridConnectionSetRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GridConnectionSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__GridConnectionSetRepresentation (-1978)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__GridConnectionSetRepresentation (-1982)
 
 #endif
 
 /* _resqml22__GpGridRepresentation has binding name '_resqml22__GpGridRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GpGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__GpGridRepresentation (-1977)
-
-#endif
-
-/* _resqml22__StructuralOrganizationInterpretation has binding name '_resqml22__StructuralOrganizationInterpretation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StructuralOrganizationInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__StructuralOrganizationInterpretation (-1976)
-
-#endif
-
-/* _resqml22__StratigraphicUnitInterpretation has binding name '_resqml22__StratigraphicUnitInterpretation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicUnitInterpretation (-1975)
-
-#endif
-
-/* _resqml22__StratigraphicUnitDictionary has binding name '_resqml22__StratigraphicUnitDictionary' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicUnitDictionary
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicUnitDictionary (-1974)
-
-#endif
-
-/* _resqml22__StratigraphicOccurrenceInterpretation has binding name '_resqml22__StratigraphicOccurrenceInterpretation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicOccurrenceInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicOccurrenceInterpretation (-1973)
-
-#endif
-
-/* _resqml22__StratigraphicColumnRankInterpretation has binding name '_resqml22__StratigraphicColumnRankInterpretation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicColumnRankInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicColumnRankInterpretation (-1972)
-
-#endif
-
-/* _resqml22__StratigraphicColumn has binding name '_resqml22__StratigraphicColumn' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicColumn
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicColumn (-1971)
-
-#endif
-
-/* _resqml22__RockFluidUnitInterpretation has binding name '_resqml22__RockFluidUnitInterpretation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__RockFluidUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__RockFluidUnitInterpretation (-1970)
-
-#endif
-
-/* _resqml22__RockFluidOrganizationInterpretation has binding name '_resqml22__RockFluidOrganizationInterpretation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__RockFluidOrganizationInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__RockFluidOrganizationInterpretation (-1969)
-
-#endif
-
-/* _resqml22__HorizonInterpretation has binding name '_resqml22__HorizonInterpretation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__HorizonInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__HorizonInterpretation (-1968)
-
-#endif
-
-/* _resqml22__GeologicUnitInterpretation has binding name '_resqml22__GeologicUnitInterpretation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GeologicUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__GeologicUnitInterpretation (-1967)
-
-#endif
-
-/* _resqml22__GeobodyInterpretation has binding name '_resqml22__GeobodyInterpretation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GeobodyInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__GeobodyInterpretation (-1966)
-
-#endif
-
-/* _resqml22__GeobodyBoundaryInterpretation has binding name '_resqml22__GeobodyBoundaryInterpretation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GeobodyBoundaryInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__GeobodyBoundaryInterpretation (-1965)
-
-#endif
-
-/* _resqml22__GenericFeatureInterpretation has binding name '_resqml22__GenericFeatureInterpretation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GenericFeatureInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__GenericFeatureInterpretation (-1964)
-
-#endif
-
-/* _resqml22__FluidBoundaryInterpretation has binding name '_resqml22__FluidBoundaryInterpretation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__FluidBoundaryInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__FluidBoundaryInterpretation (-1963)
-
-#endif
-
-/* _resqml22__FaultInterpretation has binding name '_resqml22__FaultInterpretation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__FaultInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__FaultInterpretation (-1962)
-
-#endif
-
-/* _resqml22__EarthModelInterpretation has binding name '_resqml22__EarthModelInterpretation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__EarthModelInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__EarthModelInterpretation (-1961)
-
-#endif
-
-/* _resqml22__BoundaryFeatureInterpretation has binding name '_resqml22__BoundaryFeatureInterpretation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__BoundaryFeatureInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__BoundaryFeatureInterpretation (-1960)
-
-#endif
-
-/* _resqml22__TriangulatedSetRepresentation has binding name '_resqml22__TriangulatedSetRepresentation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__TriangulatedSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__TriangulatedSetRepresentation (-1959)
-
-#endif
-
-/* _resqml22__SealedVolumeFrameworkRepresentation has binding name '_resqml22__SealedVolumeFrameworkRepresentation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SealedVolumeFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__SealedVolumeFrameworkRepresentation (-1958)
-
-#endif
-
-/* _resqml22__SealedSurfaceFrameworkRepresentation has binding name '_resqml22__SealedSurfaceFrameworkRepresentation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SealedSurfaceFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__SealedSurfaceFrameworkRepresentation (-1957)
-
-#endif
-
-/* _resqml22__PolylineRepresentation has binding name '_resqml22__PolylineRepresentation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__PolylineRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__PolylineRepresentation (-1956)
-
-#endif
-
-/* _resqml22__PointSetRepresentation has binding name '_resqml22__PointSetRepresentation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__PointSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__PointSetRepresentation (-1955)
-
-#endif
-
-/* _resqml22__PlaneSetRepresentation has binding name '_resqml22__PlaneSetRepresentation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__PlaneSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__PlaneSetRepresentation (-1954)
-
-#endif
-
-/* _resqml22__NonSealedSurfaceFrameworkRepresentation has binding name '_resqml22__NonSealedSurfaceFrameworkRepresentation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__NonSealedSurfaceFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__NonSealedSurfaceFrameworkRepresentation (-1953)
-
-#endif
-
-/* _resqml22__Grid2dRepresentation has binding name '_resqml22__Grid2dRepresentation' for type '' */
-#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__Grid2dRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__Grid2dRepresentation (-1952)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__GpGridRepresentation (-1981)
 
 #endif
 
 /* _resqml22__WellboreTrajectoryRepresentation has binding name '_resqml22__WellboreTrajectoryRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreTrajectoryRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreTrajectoryRepresentation (-1951)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreTrajectoryRepresentation (-1980)
 
 #endif
 
 /* _resqml22__WellboreMarkerFrameRepresentation has binding name '_resqml22__WellboreMarkerFrameRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreMarkerFrameRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreMarkerFrameRepresentation (-1950)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreMarkerFrameRepresentation (-1979)
 
 #endif
 
 /* _resqml22__WellboreInterpretationSet has binding name '_resqml22__WellboreInterpretationSet' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreInterpretationSet
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreInterpretationSet (-1949)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreInterpretationSet (-1978)
 
 #endif
 
 /* _resqml22__WellboreInterpretation has binding name '_resqml22__WellboreInterpretation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreInterpretation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreInterpretation (-1948)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreInterpretation (-1977)
 
 #endif
 
 /* _resqml22__WellboreFrameRepresentation has binding name '_resqml22__WellboreFrameRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreFrameRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreFrameRepresentation (-1947)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreFrameRepresentation (-1976)
 
 #endif
 
 /* _resqml22__WellboreFeature has binding name '_resqml22__WellboreFeature' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreFeature
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreFeature (-1946)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__WellboreFeature (-1975)
 
 #endif
 
 /* _resqml22__SeismicWellboreFrameRepresentation has binding name '_resqml22__SeismicWellboreFrameRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicWellboreFrameRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicWellboreFrameRepresentation (-1945)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__SeismicWellboreFrameRepresentation (-1974)
 
 #endif
 
 /* _resqml22__MdDatum has binding name '_resqml22__MdDatum' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__MdDatum
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__MdDatum (-1944)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__MdDatum (-1973)
 
 #endif
 
 /* _resqml22__DeviationSurveyRepresentation has binding name '_resqml22__DeviationSurveyRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__DeviationSurveyRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__DeviationSurveyRepresentation (-1943)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__DeviationSurveyRepresentation (-1972)
 
 #endif
 
 /* _resqml22__BlockedWellboreRepresentation has binding name '_resqml22__BlockedWellboreRepresentation' for type '' */
 #ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__BlockedWellboreRepresentation
-#define SOAP_TYPE_gsoap_eml2_2__resqml22__BlockedWellboreRepresentation (-1942)
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__BlockedWellboreRepresentation (-1971)
+
+#endif
+
+/* _resqml22__StructuralOrganizationInterpretation has binding name '_resqml22__StructuralOrganizationInterpretation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StructuralOrganizationInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__StructuralOrganizationInterpretation (-1970)
+
+#endif
+
+/* _resqml22__StratigraphicUnitInterpretation has binding name '_resqml22__StratigraphicUnitInterpretation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicUnitInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicUnitInterpretation (-1969)
+
+#endif
+
+/* _resqml22__StratigraphicUnitDictionary has binding name '_resqml22__StratigraphicUnitDictionary' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicUnitDictionary
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicUnitDictionary (-1968)
+
+#endif
+
+/* _resqml22__StratigraphicOccurrenceInterpretation has binding name '_resqml22__StratigraphicOccurrenceInterpretation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicOccurrenceInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicOccurrenceInterpretation (-1967)
+
+#endif
+
+/* _resqml22__StratigraphicColumnRankInterpretation has binding name '_resqml22__StratigraphicColumnRankInterpretation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicColumnRankInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicColumnRankInterpretation (-1966)
+
+#endif
+
+/* _resqml22__StratigraphicColumn has binding name '_resqml22__StratigraphicColumn' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicColumn
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__StratigraphicColumn (-1965)
+
+#endif
+
+/* _resqml22__RockFluidUnitInterpretation has binding name '_resqml22__RockFluidUnitInterpretation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__RockFluidUnitInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__RockFluidUnitInterpretation (-1964)
+
+#endif
+
+/* _resqml22__RockFluidOrganizationInterpretation has binding name '_resqml22__RockFluidOrganizationInterpretation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__RockFluidOrganizationInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__RockFluidOrganizationInterpretation (-1963)
+
+#endif
+
+/* _resqml22__HorizonInterpretation has binding name '_resqml22__HorizonInterpretation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__HorizonInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__HorizonInterpretation (-1962)
+
+#endif
+
+/* _resqml22__GeologicUnitInterpretation has binding name '_resqml22__GeologicUnitInterpretation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GeologicUnitInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__GeologicUnitInterpretation (-1961)
+
+#endif
+
+/* _resqml22__GeobodyInterpretation has binding name '_resqml22__GeobodyInterpretation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GeobodyInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__GeobodyInterpretation (-1960)
+
+#endif
+
+/* _resqml22__GeobodyBoundaryInterpretation has binding name '_resqml22__GeobodyBoundaryInterpretation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GeobodyBoundaryInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__GeobodyBoundaryInterpretation (-1959)
+
+#endif
+
+/* _resqml22__GenericFeatureInterpretation has binding name '_resqml22__GenericFeatureInterpretation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__GenericFeatureInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__GenericFeatureInterpretation (-1958)
+
+#endif
+
+/* _resqml22__FluidBoundaryInterpretation has binding name '_resqml22__FluidBoundaryInterpretation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__FluidBoundaryInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__FluidBoundaryInterpretation (-1957)
+
+#endif
+
+/* _resqml22__FaultInterpretation has binding name '_resqml22__FaultInterpretation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__FaultInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__FaultInterpretation (-1956)
+
+#endif
+
+/* _resqml22__EarthModelInterpretation has binding name '_resqml22__EarthModelInterpretation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__EarthModelInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__EarthModelInterpretation (-1955)
+
+#endif
+
+/* _resqml22__BoundaryFeatureInterpretation has binding name '_resqml22__BoundaryFeatureInterpretation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__BoundaryFeatureInterpretation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__BoundaryFeatureInterpretation (-1954)
+
+#endif
+
+/* _resqml22__TriangulatedSetRepresentation has binding name '_resqml22__TriangulatedSetRepresentation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__TriangulatedSetRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__TriangulatedSetRepresentation (-1953)
+
+#endif
+
+/* _resqml22__SealedVolumeFrameworkRepresentation has binding name '_resqml22__SealedVolumeFrameworkRepresentation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SealedVolumeFrameworkRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__SealedVolumeFrameworkRepresentation (-1952)
+
+#endif
+
+/* _resqml22__SealedSurfaceFrameworkRepresentation has binding name '_resqml22__SealedSurfaceFrameworkRepresentation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SealedSurfaceFrameworkRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__SealedSurfaceFrameworkRepresentation (-1951)
+
+#endif
+
+/* _resqml22__PolylineRepresentation has binding name '_resqml22__PolylineRepresentation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__PolylineRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__PolylineRepresentation (-1950)
+
+#endif
+
+/* _resqml22__PointSetRepresentation has binding name '_resqml22__PointSetRepresentation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__PointSetRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__PointSetRepresentation (-1949)
+
+#endif
+
+/* _resqml22__PlaneSetRepresentation has binding name '_resqml22__PlaneSetRepresentation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__PlaneSetRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__PlaneSetRepresentation (-1948)
+
+#endif
+
+/* _resqml22__NonSealedSurfaceFrameworkRepresentation has binding name '_resqml22__NonSealedSurfaceFrameworkRepresentation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__NonSealedSurfaceFrameworkRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__NonSealedSurfaceFrameworkRepresentation (-1947)
+
+#endif
+
+/* _resqml22__Grid2dRepresentation has binding name '_resqml22__Grid2dRepresentation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__Grid2dRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__Grid2dRepresentation (-1946)
+
+#endif
+
+/* _resqml22__SubRepresentation has binding name '_resqml22__SubRepresentation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__SubRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__SubRepresentation (-1945)
+
+#endif
+
+/* _resqml22__RepresentationSetRepresentation has binding name '_resqml22__RepresentationSetRepresentation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__RepresentationSetRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__RepresentationSetRepresentation (-1944)
+
+#endif
+
+/* _resqml22__RepresentationIdentitySet has binding name '_resqml22__RepresentationIdentitySet' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__RepresentationIdentitySet
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__RepresentationIdentitySet (-1943)
+
+#endif
+
+/* _resqml22__PolylineSetRepresentation has binding name '_resqml22__PolylineSetRepresentation' for type '' */
+#ifndef SOAP_TYPE_gsoap_eml2_2__resqml22__PolylineSetRepresentation
+#define SOAP_TYPE_gsoap_eml2_2__resqml22__PolylineSetRepresentation (-1942)
 
 #endif
 
@@ -52373,1023 +52373,1023 @@ typedef witsml21__WellboreGeology _witsml21__WellboreGeology;
 
 #endif
 
-/* resqml22__SubRepresentationPatch has binding name 'resqml22__SubRepresentationPatch' for type 'resqml22:SubRepresentationPatch' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentationPatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentationPatch (-205)
-
-#endif
-
-/* resqml22__SubRepresentation has binding name 'resqml22__SubRepresentation' for type 'resqml22:SubRepresentation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentation (-204)
-
-#endif
-
-/* resqml22__RepresentationSetRepresentation has binding name 'resqml22__RepresentationSetRepresentation' for type 'resqml22:RepresentationSetRepresentation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationSetRepresentation (-203)
-
-#endif
-
-/* resqml22__RepresentationIdentitySet has binding name 'resqml22__RepresentationIdentitySet' for type 'resqml22:RepresentationIdentitySet' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentitySet
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentitySet (-202)
-
-#endif
-
-/* resqml22__RepresentationIdentity has binding name 'resqml22__RepresentationIdentity' for type 'resqml22:RepresentationIdentity' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentity
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentity (-201)
-
-#endif
-
-/* resqml22__PolylineSetRepresentation has binding name 'resqml22__PolylineSetRepresentation' for type 'resqml22:PolylineSetRepresentation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetRepresentation (-200)
-
-#endif
-
-/* resqml22__PolylineSetPatch has binding name 'resqml22__PolylineSetPatch' for type 'resqml22:PolylineSetPatch' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetPatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetPatch (-199)
-
-#endif
-
-/* resqml22__Patch1d has binding name 'resqml22__Patch1d' for type 'resqml22:Patch1d' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Patch1d
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Patch1d (-198)
-
-#endif
-
-/* resqml22__Patch has binding name 'resqml22__Patch' for type 'resqml22:Patch' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Patch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Patch (-197)
-
-#endif
-
-/* resqml22__ElementIndices has binding name 'resqml22__ElementIndices' for type 'resqml22:ElementIndices' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIndices
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIndices (-196)
-
-#endif
-
-/* resqml22__ElementIdentity has binding name 'resqml22__ElementIdentity' for type 'resqml22:ElementIdentity' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIdentity
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIdentity (-195)
-
-#endif
-
-/* resqml22__AbstractRepresentation has binding name 'resqml22__AbstractRepresentation' for type 'resqml22:AbstractRepresentation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractRepresentation (-194)
-
-#endif
-
 /* resqml22__ShotPointLineFeature has binding name 'resqml22__ShotPointLineFeature' for type 'resqml22:ShotPointLineFeature' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ShotPointLineFeature
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ShotPointLineFeature (-193)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ShotPointLineFeature (-205)
 
 #endif
 
 /* resqml22__SeismicLineSetFeature has binding name 'resqml22__SeismicLineSetFeature' for type 'resqml22:SeismicLineSetFeature' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicLineSetFeature
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicLineSetFeature (-192)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicLineSetFeature (-204)
 
 #endif
 
 /* resqml22__SeismicLatticeSetFeature has binding name 'resqml22__SeismicLatticeSetFeature' for type 'resqml22:SeismicLatticeSetFeature' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicLatticeSetFeature
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicLatticeSetFeature (-191)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicLatticeSetFeature (-203)
 
 #endif
 
 /* resqml22__SeismicLatticeFeature has binding name 'resqml22__SeismicLatticeFeature' for type 'resqml22:SeismicLatticeFeature' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicLatticeFeature
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicLatticeFeature (-190)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicLatticeFeature (-202)
 
 #endif
 
 /* resqml22__Seismic3dPostStackRepresentation has binding name 'resqml22__Seismic3dPostStackRepresentation' for type 'resqml22:Seismic3dPostStackRepresentation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic3dPostStackRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic3dPostStackRepresentation (-189)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic3dPostStackRepresentation (-201)
 
 #endif
 
 /* resqml22__Seismic3dCoordinates has binding name 'resqml22__Seismic3dCoordinates' for type 'resqml22:Seismic3dCoordinates' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic3dCoordinates
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic3dCoordinates (-188)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic3dCoordinates (-200)
 
 #endif
 
 /* resqml22__Seismic2dPostStackRepresentation has binding name 'resqml22__Seismic2dPostStackRepresentation' for type 'resqml22:Seismic2dPostStackRepresentation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic2dPostStackRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic2dPostStackRepresentation (-187)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic2dPostStackRepresentation (-199)
 
 #endif
 
 /* resqml22__Seismic2dCoordinates has binding name 'resqml22__Seismic2dCoordinates' for type 'resqml22:Seismic2dCoordinates' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic2dCoordinates
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic2dCoordinates (-186)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Seismic2dCoordinates (-198)
 
 #endif
 
 /* resqml22__CmpLineFeature has binding name 'resqml22__CmpLineFeature' for type 'resqml22:CmpLineFeature' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__CmpLineFeature
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__CmpLineFeature (-185)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__CmpLineFeature (-197)
 
 #endif
 
 /* resqml22__AbstractSeismicSurveyFeature has binding name 'resqml22__AbstractSeismicSurveyFeature' for type 'resqml22:AbstractSeismicSurveyFeature' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSeismicSurveyFeature
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSeismicSurveyFeature (-184)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSeismicSurveyFeature (-196)
 
 #endif
 
 /* resqml22__AbstractSeismicLineFeature has binding name 'resqml22__AbstractSeismicLineFeature' for type 'resqml22:AbstractSeismicLineFeature' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSeismicLineFeature
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSeismicLineFeature (-183)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSeismicLineFeature (-195)
 
 #endif
 
 /* resqml22__AbstractSeismicCoordinates has binding name 'resqml22__AbstractSeismicCoordinates' for type 'resqml22:AbstractSeismicCoordinates' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSeismicCoordinates
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSeismicCoordinates (-182)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSeismicCoordinates (-194)
 
 #endif
 
 /* resqml22__TiltedPlaneGeometry has binding name 'resqml22__TiltedPlaneGeometry' for type 'resqml22:TiltedPlaneGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__TiltedPlaneGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__TiltedPlaneGeometry (-181)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__TiltedPlaneGeometry (-193)
 
 #endif
 
 /* resqml22__ThreePoint3d has binding name 'resqml22__ThreePoint3d' for type 'resqml22:ThreePoint3d' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ThreePoint3d
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ThreePoint3d (-180)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ThreePoint3d (-192)
 
 #endif
 
 /* resqml22__SinglePointGeometry has binding name 'resqml22__SinglePointGeometry' for type 'resqml22:SinglePointGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SinglePointGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SinglePointGeometry (-179)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SinglePointGeometry (-191)
 
 #endif
 
 /* resqml22__PointGeometry has binding name 'resqml22__PointGeometry' for type 'resqml22:PointGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PointGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__PointGeometry (-178)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__PointGeometry (-190)
 
 #endif
 
 /* resqml22__Point3dZValueArray has binding name 'resqml22__Point3dZValueArray' for type 'resqml22:Point3dZValueArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dZValueArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dZValueArray (-177)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dZValueArray (-189)
 
 #endif
 
 /* resqml22__Point3dParametricArray has binding name 'resqml22__Point3dParametricArray' for type 'resqml22:Point3dParametricArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dParametricArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dParametricArray (-176)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dParametricArray (-188)
 
 #endif
 
 /* resqml22__Point3dOffset has binding name 'resqml22__Point3dOffset' for type 'resqml22:Point3dOffset' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dOffset
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dOffset (-175)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dOffset (-187)
 
 #endif
 
 /* resqml22__Point3dLatticeArray has binding name 'resqml22__Point3dLatticeArray' for type 'resqml22:Point3dLatticeArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dLatticeArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dLatticeArray (-174)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dLatticeArray (-186)
 
 #endif
 
 /* resqml22__Point3dFromRepresentationLatticeArray has binding name 'resqml22__Point3dFromRepresentationLatticeArray' for type 'resqml22:Point3dFromRepresentationLatticeArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dFromRepresentationLatticeArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dFromRepresentationLatticeArray (-173)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dFromRepresentationLatticeArray (-185)
 
 #endif
 
 /* resqml22__Point3dExternalArray has binding name 'resqml22__Point3dExternalArray' for type 'resqml22:Point3dExternalArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dExternalArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dExternalArray (-172)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dExternalArray (-184)
 
 #endif
 
 /* resqml22__Point3d has binding name 'resqml22__Point3d' for type 'resqml22:Point3d' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Point3d
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3d (-171)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point3d (-183)
 
 #endif
 
 /* resqml22__Point2dExternalArray has binding name 'resqml22__Point2dExternalArray' for type 'resqml22:Point2dExternalArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Point2dExternalArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point2dExternalArray (-170)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Point2dExternalArray (-182)
 
 #endif
 
 /* resqml22__ParametricLineIntersections has binding name 'resqml22__ParametricLineIntersections' for type 'resqml22:ParametricLineIntersections' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineIntersections
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineIntersections (-169)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineIntersections (-181)
 
 #endif
 
 /* resqml22__ParametricLineGeometry has binding name 'resqml22__ParametricLineGeometry' for type 'resqml22:ParametricLineGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineGeometry (-168)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineGeometry (-180)
 
 #endif
 
 /* resqml22__ParametricLineFromRepresentationLatticeArray has binding name 'resqml22__ParametricLineFromRepresentationLatticeArray' for type 'resqml22:ParametricLineFromRepresentationLatticeArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineFromRepresentationLatticeArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineFromRepresentationLatticeArray (-167)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineFromRepresentationLatticeArray (-179)
 
 #endif
 
 /* resqml22__ParametricLineFromRepresentationGeometry has binding name 'resqml22__ParametricLineFromRepresentationGeometry' for type 'resqml22:ParametricLineFromRepresentationGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineFromRepresentationGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineFromRepresentationGeometry (-166)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineFromRepresentationGeometry (-178)
 
 #endif
 
 /* resqml22__ParametricLineArray has binding name 'resqml22__ParametricLineArray' for type 'resqml22:ParametricLineArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineArray (-165)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ParametricLineArray (-177)
 
 #endif
 
 /* resqml22__HorizontalPlaneGeometry has binding name 'resqml22__HorizontalPlaneGeometry' for type 'resqml22:HorizontalPlaneGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__HorizontalPlaneGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__HorizontalPlaneGeometry (-164)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__HorizontalPlaneGeometry (-176)
 
 #endif
 
 /* resqml22__Graph2dRepresentation has binding name 'resqml22__Graph2dRepresentation' for type 'resqml22:Graph2dRepresentation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Graph2dRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Graph2dRepresentation (-163)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Graph2dRepresentation (-175)
 
 #endif
 
 /* resqml22__AbstractPoint3dArray has binding name 'resqml22__AbstractPoint3dArray' for type 'resqml22:AbstractPoint3dArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractPoint3dArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractPoint3dArray (-162)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractPoint3dArray (-174)
 
 #endif
 
 /* resqml22__AbstractPlaneGeometry has binding name 'resqml22__AbstractPlaneGeometry' for type 'resqml22:AbstractPlaneGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractPlaneGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractPlaneGeometry (-161)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractPlaneGeometry (-173)
 
 #endif
 
 /* resqml22__AbstractParametricLineGeometry has binding name 'resqml22__AbstractParametricLineGeometry' for type 'resqml22:AbstractParametricLineGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractParametricLineGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractParametricLineGeometry (-160)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractParametricLineGeometry (-172)
 
 #endif
 
 /* resqml22__AbstractParametricLineArray has binding name 'resqml22__AbstractParametricLineArray' for type 'resqml22:AbstractParametricLineArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractParametricLineArray
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractParametricLineArray (-159)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractParametricLineArray (-171)
 
 #endif
 
 /* resqml22__AbstractGeometry has binding name 'resqml22__AbstractGeometry' for type 'resqml22:AbstractGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractGeometry (-158)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractGeometry (-170)
 
 #endif
 
 /* resqml22__VariableSubnodePatch has binding name 'resqml22__VariableSubnodePatch' for type 'resqml22:VariableSubnodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__VariableSubnodePatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__VariableSubnodePatch (-157)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__VariableSubnodePatch (-169)
 
 #endif
 
 /* resqml22__UnstructuredSubnodeTopology has binding name 'resqml22__UnstructuredSubnodeTopology' for type 'resqml22:UnstructuredSubnodeTopology' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredSubnodeTopology
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredSubnodeTopology (-156)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredSubnodeTopology (-168)
 
 #endif
 
 /* resqml22__UnstructuredGridRepresentation has binding name 'resqml22__UnstructuredGridRepresentation' for type 'resqml22:UnstructuredGridRepresentation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGridRepresentation (-155)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGridRepresentation (-167)
 
 #endif
 
 /* resqml22__UnstructuredGridHingeNodeFaces has binding name 'resqml22__UnstructuredGridHingeNodeFaces' for type 'resqml22:UnstructuredGridHingeNodeFaces' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGridHingeNodeFaces
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGridHingeNodeFaces (-154)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGridHingeNodeFaces (-166)
 
 #endif
 
 /* resqml22__UnstructuredGridGeometry has binding name 'resqml22__UnstructuredGridGeometry' for type 'resqml22:UnstructuredGridGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGridGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGridGeometry (-153)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGridGeometry (-165)
 
 #endif
 
 /* resqml22__UnstructuredGpGridPatch has binding name 'resqml22__UnstructuredGpGridPatch' for type 'resqml22:UnstructuredGpGridPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGpGridPatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGpGridPatch (-152)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredGpGridPatch (-164)
 
 #endif
 
 /* resqml22__UnstructuredColumnLayerGridRepresentation has binding name 'resqml22__UnstructuredColumnLayerGridRepresentation' for type 'resqml22:UnstructuredColumnLayerGridRepresentation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerGridRepresentation (-151)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerGridRepresentation (-163)
 
 #endif
 
 /* resqml22__UnstructuredColumnLayerGridGeometry has binding name 'resqml22__UnstructuredColumnLayerGridGeometry' for type 'resqml22:UnstructuredColumnLayerGridGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerGridGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerGridGeometry (-150)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerGridGeometry (-162)
 
 #endif
 
 /* resqml22__UnstructuredColumnLayerGpGridPatch has binding name 'resqml22__UnstructuredColumnLayerGpGridPatch' for type 'resqml22:UnstructuredColumnLayerGpGridPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerGpGridPatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerGpGridPatch (-149)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnLayerGpGridPatch (-161)
 
 #endif
 
 /* resqml22__UnstructuredColumnEdges has binding name 'resqml22__UnstructuredColumnEdges' for type 'resqml22:UnstructuredColumnEdges' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnEdges
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnEdges (-148)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UnstructuredColumnEdges (-160)
 
 #endif
 
 /* resqml22__UniformSubnodePatch has binding name 'resqml22__UniformSubnodePatch' for type 'resqml22:UniformSubnodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__UniformSubnodePatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__UniformSubnodePatch (-147)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__UniformSubnodePatch (-159)
 
 #endif
 
 /* resqml22__TruncationCellPatch has binding name 'resqml22__TruncationCellPatch' for type 'resqml22:TruncationCellPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__TruncationCellPatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__TruncationCellPatch (-146)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__TruncationCellPatch (-158)
 
 #endif
 
 /* resqml22__TruncatedUnstructuredColumnLayerGridRepresentation has binding name 'resqml22__TruncatedUnstructuredColumnLayerGridRepresentation' for type 'resqml22:TruncatedUnstructuredColumnLayerGridRepresentation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__TruncatedUnstructuredColumnLayerGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__TruncatedUnstructuredColumnLayerGridRepresentation (-145)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__TruncatedUnstructuredColumnLayerGridRepresentation (-157)
 
 #endif
 
 /* resqml22__TruncatedIjkGridRepresentation has binding name 'resqml22__TruncatedIjkGridRepresentation' for type 'resqml22:TruncatedIjkGridRepresentation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__TruncatedIjkGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__TruncatedIjkGridRepresentation (-144)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__TruncatedIjkGridRepresentation (-156)
 
 #endif
 
 /* resqml22__SubnodeTopology has binding name 'resqml22__SubnodeTopology' for type 'resqml22:SubnodeTopology' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SubnodeTopology
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubnodeTopology (-143)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubnodeTopology (-155)
 
 #endif
 
 /* resqml22__SubnodePatch has binding name 'resqml22__SubnodePatch' for type 'resqml22:SubnodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SubnodePatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubnodePatch (-142)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubnodePatch (-154)
 
 #endif
 
 /* resqml22__SplitNodePatch has binding name 'resqml22__SplitNodePatch' for type 'resqml22:SplitNodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SplitNodePatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SplitNodePatch (-141)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SplitNodePatch (-153)
 
 #endif
 
 /* resqml22__SplitFaces has binding name 'resqml22__SplitFaces' for type 'resqml22:SplitFaces' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SplitFaces
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SplitFaces (-140)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SplitFaces (-152)
 
 #endif
 
 /* resqml22__SplitEdges has binding name 'resqml22__SplitEdges' for type 'resqml22:SplitEdges' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SplitEdges
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SplitEdges (-139)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SplitEdges (-151)
 
 #endif
 
 /* resqml22__SplitColumnEdges has binding name 'resqml22__SplitColumnEdges' for type 'resqml22:SplitColumnEdges' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SplitColumnEdges
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SplitColumnEdges (-138)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SplitColumnEdges (-150)
 
 #endif
 
 /* resqml22__Regrid has binding name 'resqml22__Regrid' for type 'resqml22:Regrid' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Regrid
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Regrid (-137)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Regrid (-149)
 
 #endif
 
 /* resqml22__OverlapVolume has binding name 'resqml22__OverlapVolume' for type 'resqml22:OverlapVolume' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__OverlapVolume
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__OverlapVolume (-136)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__OverlapVolume (-148)
 
 #endif
 
 /* resqml22__LocalGridSet has binding name 'resqml22__LocalGridSet' for type 'resqml22:LocalGridSet' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__LocalGridSet
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__LocalGridSet (-135)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__LocalGridSet (-147)
 
 #endif
 
 /* resqml22__KGaps has binding name 'resqml22__KGaps' for type 'resqml22:KGaps' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__KGaps
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__KGaps (-134)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__KGaps (-146)
 
 #endif
 
 /* resqml22__IntervalStratigraphicUnits has binding name 'resqml22__IntervalStratigraphicUnits' for type 'resqml22:IntervalStratigraphicUnits' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IntervalStratigraphicUnits
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IntervalStratigraphicUnits (-133)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IntervalStratigraphicUnits (-145)
 
 #endif
 
 /* resqml22__Intervals has binding name 'resqml22__Intervals' for type 'resqml22:Intervals' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Intervals
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Intervals (-132)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Intervals (-144)
 
 #endif
 
 /* resqml22__IntervalGridCells has binding name 'resqml22__IntervalGridCells' for type 'resqml22:IntervalGridCells' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IntervalGridCells
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IntervalGridCells (-131)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IntervalGridCells (-143)
 
 #endif
 
 /* resqml22__IjkParentWindow has binding name 'resqml22__IjkParentWindow' for type 'resqml22:IjkParentWindow' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IjkParentWindow
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkParentWindow (-130)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkParentWindow (-142)
 
 #endif
 
 /* resqml22__IjkGridRepresentation has binding name 'resqml22__IjkGridRepresentation' for type 'resqml22:IjkGridRepresentation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IjkGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkGridRepresentation (-129)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkGridRepresentation (-141)
 
 #endif
 
 /* resqml22__IjkGridGeometry has binding name 'resqml22__IjkGridGeometry' for type 'resqml22:IjkGridGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IjkGridGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkGridGeometry (-128)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkGridGeometry (-140)
 
 #endif
 
 /* resqml22__IjkGpGridPatch has binding name 'resqml22__IjkGpGridPatch' for type 'resqml22:IjkGpGridPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IjkGpGridPatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkGpGridPatch (-127)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjkGpGridPatch (-139)
 
 #endif
 
 /* resqml22__IjGaps has binding name 'resqml22__IjGaps' for type 'resqml22:IjGaps' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__IjGaps
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjGaps (-126)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__IjGaps (-138)
 
 #endif
 
 /* resqml22__GridConnectionSetRepresentation has binding name 'resqml22__GridConnectionSetRepresentation' for type 'resqml22:GridConnectionSetRepresentation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GridConnectionSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GridConnectionSetRepresentation (-125)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GridConnectionSetRepresentation (-137)
 
 #endif
 
 /* resqml22__GpGridRepresentation has binding name 'resqml22__GpGridRepresentation' for type 'resqml22:GpGridRepresentation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GpGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GpGridRepresentation (-124)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GpGridRepresentation (-136)
 
 #endif
 
 /* resqml22__Edges has binding name 'resqml22__Edges' for type 'resqml22:Edges' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Edges
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Edges (-123)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Edges (-135)
 
 #endif
 
 /* resqml22__ConnectionInterpretations has binding name 'resqml22__ConnectionInterpretations' for type 'resqml22:ConnectionInterpretations' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ConnectionInterpretations
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ConnectionInterpretations (-122)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ConnectionInterpretations (-134)
 
 #endif
 
 /* resqml22__ColumnSubnodePatch has binding name 'resqml22__ColumnSubnodePatch' for type 'resqml22:ColumnSubnodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnSubnodePatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnSubnodePatch (-121)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnSubnodePatch (-133)
 
 #endif
 
 /* resqml22__ColumnLayerSubnodeTopology has binding name 'resqml22__ColumnLayerSubnodeTopology' for type 'resqml22:ColumnLayerSubnodeTopology' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerSubnodeTopology
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerSubnodeTopology (-120)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerSubnodeTopology (-132)
 
 #endif
 
 /* resqml22__ColumnLayerSplitCoordinateLines has binding name 'resqml22__ColumnLayerSplitCoordinateLines' for type 'resqml22:ColumnLayerSplitCoordinateLines' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerSplitCoordinateLines
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerSplitCoordinateLines (-119)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerSplitCoordinateLines (-131)
 
 #endif
 
 /* resqml22__ColumnLayerParentWindow has binding name 'resqml22__ColumnLayerParentWindow' for type 'resqml22:ColumnLayerParentWindow' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerParentWindow
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerParentWindow (-118)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerParentWindow (-130)
 
 #endif
 
 /* resqml22__ColumnLayerGpGrid has binding name 'resqml22__ColumnLayerGpGrid' for type 'resqml22:ColumnLayerGpGrid' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerGpGrid
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerGpGrid (-117)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ColumnLayerGpGrid (-129)
 
 #endif
 
 /* resqml22__CellParentWindow has binding name 'resqml22__CellParentWindow' for type 'resqml22:CellParentWindow' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__CellParentWindow
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__CellParentWindow (-116)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__CellParentWindow (-128)
 
 #endif
 
 /* resqml22__CellOverlap has binding name 'resqml22__CellOverlap' for type 'resqml22:CellOverlap' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__CellOverlap
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__CellOverlap (-115)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__CellOverlap (-127)
 
 #endif
 
 /* resqml22__CellFluidPhaseUnits has binding name 'resqml22__CellFluidPhaseUnits' for type 'resqml22:CellFluidPhaseUnits' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__CellFluidPhaseUnits
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__CellFluidPhaseUnits (-114)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__CellFluidPhaseUnits (-126)
 
 #endif
 
 /* resqml22__AlternateCellIndex has binding name 'resqml22__AlternateCellIndex' for type 'resqml22:AlternateCellIndex' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AlternateCellIndex
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AlternateCellIndex (-113)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AlternateCellIndex (-125)
 
 #endif
 
 /* resqml22__AdditionalGridTopology has binding name 'resqml22__AdditionalGridTopology' for type 'resqml22:AdditionalGridTopology' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AdditionalGridTopology
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AdditionalGridTopology (-112)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AdditionalGridTopology (-124)
 
 #endif
 
 /* resqml22__AdditionalGridPoints has binding name 'resqml22__AdditionalGridPoints' for type 'resqml22:AdditionalGridPoints' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AdditionalGridPoints
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AdditionalGridPoints (-111)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AdditionalGridPoints (-123)
 
 #endif
 
 /* resqml22__Activation has binding name 'resqml22__Activation' for type 'resqml22:Activation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Activation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Activation (-110)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Activation (-122)
 
 #endif
 
 /* resqml22__AbstractTruncatedColumnLayerGridRepresentation has binding name 'resqml22__AbstractTruncatedColumnLayerGridRepresentation' for type 'resqml22:AbstractTruncatedColumnLayerGridRepresentation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractTruncatedColumnLayerGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractTruncatedColumnLayerGridRepresentation (-109)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractTruncatedColumnLayerGridRepresentation (-121)
 
 #endif
 
 /* resqml22__AbstractParentWindow has binding name 'resqml22__AbstractParentWindow' for type 'resqml22:AbstractParentWindow' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractParentWindow
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractParentWindow (-108)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractParentWindow (-120)
 
 #endif
 
 /* resqml22__AbstractGridRepresentation has binding name 'resqml22__AbstractGridRepresentation' for type 'resqml22:AbstractGridRepresentation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractGridRepresentation (-107)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractGridRepresentation (-119)
 
 #endif
 
 /* resqml22__AbstractGridGeometry has binding name 'resqml22__AbstractGridGeometry' for type 'resqml22:AbstractGridGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractGridGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractGridGeometry (-106)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractGridGeometry (-118)
 
 #endif
 
 /* resqml22__AbstractColumnLayerGridRepresentation has binding name 'resqml22__AbstractColumnLayerGridRepresentation' for type 'resqml22:AbstractColumnLayerGridRepresentation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractColumnLayerGridRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractColumnLayerGridRepresentation (-105)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractColumnLayerGridRepresentation (-117)
 
 #endif
 
 /* resqml22__AbstractColumnLayerGridGeometry has binding name 'resqml22__AbstractColumnLayerGridGeometry' for type 'resqml22:AbstractColumnLayerGridGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractColumnLayerGridGeometry
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractColumnLayerGridGeometry (-104)
-
-#endif
-
-/* resqml22__StructuralOrganizationInterpretation has binding name 'resqml22__StructuralOrganizationInterpretation' for type 'resqml22:StructuralOrganizationInterpretation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StructuralOrganizationInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__StructuralOrganizationInterpretation (-103)
-
-#endif
-
-/* resqml22__StratigraphicUnitInterpretation has binding name 'resqml22__StratigraphicUnitInterpretation' for type 'resqml22:StratigraphicUnitInterpretation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitInterpretation (-102)
-
-#endif
-
-/* resqml22__StratigraphicUnitDictionary has binding name 'resqml22__StratigraphicUnitDictionary' for type 'resqml22:StratigraphicUnitDictionary' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitDictionary
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitDictionary (-101)
-
-#endif
-
-/* resqml22__StratigraphicOccurrenceInterpretation has binding name 'resqml22__StratigraphicOccurrenceInterpretation' for type 'resqml22:StratigraphicOccurrenceInterpretation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicOccurrenceInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicOccurrenceInterpretation (-100)
-
-#endif
-
-/* resqml22__StratigraphicColumnRankInterpretation has binding name 'resqml22__StratigraphicColumnRankInterpretation' for type 'resqml22:StratigraphicColumnRankInterpretation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicColumnRankInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicColumnRankInterpretation (-99)
-
-#endif
-
-/* resqml22__StratigraphicColumn has binding name 'resqml22__StratigraphicColumn' for type 'resqml22:StratigraphicColumn' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicColumn
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicColumn (-98)
-
-#endif
-
-/* resqml22__RockFluidUnitInterpretation has binding name 'resqml22__RockFluidUnitInterpretation' for type 'resqml22:RockFluidUnitInterpretation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__RockFluidUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__RockFluidUnitInterpretation (-97)
-
-#endif
-
-/* resqml22__RockFluidOrganizationInterpretation has binding name 'resqml22__RockFluidOrganizationInterpretation' for type 'resqml22:RockFluidOrganizationInterpretation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__RockFluidOrganizationInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__RockFluidOrganizationInterpretation (-96)
-
-#endif
-
-/* resqml22__MultipleContactInterpretationPart has binding name 'resqml22__MultipleContactInterpretationPart' for type 'resqml22:MultipleContactInterpretationPart' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__MultipleContactInterpretationPart
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__MultipleContactInterpretationPart (-95)
-
-#endif
-
-/* resqml22__HorizonInterpretation has binding name 'resqml22__HorizonInterpretation' for type 'resqml22:HorizonInterpretation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__HorizonInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__HorizonInterpretation (-94)
-
-#endif
-
-/* resqml22__GeologicUnitInterpretation has binding name 'resqml22__GeologicUnitInterpretation' for type 'resqml22:GeologicUnitInterpretation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicUnitInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicUnitInterpretation (-93)
-
-#endif
-
-/* resqml22__GeologicTimeBasedTimeInterval has binding name 'resqml22__GeologicTimeBasedTimeInterval' for type 'resqml22:GeologicTimeBasedTimeInterval' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicTimeBasedTimeInterval
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicTimeBasedTimeInterval (-92)
-
-#endif
-
-/* resqml22__GeobodyInterpretation has binding name 'resqml22__GeobodyInterpretation' for type 'resqml22:GeobodyInterpretation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeobodyInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeobodyInterpretation (-91)
-
-#endif
-
-/* resqml22__GeobodyBoundaryInterpretation has binding name 'resqml22__GeobodyBoundaryInterpretation' for type 'resqml22:GeobodyBoundaryInterpretation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeobodyBoundaryInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeobodyBoundaryInterpretation (-90)
-
-#endif
-
-/* resqml22__GeneticBoundaryBasedTimeInterval has binding name 'resqml22__GeneticBoundaryBasedTimeInterval' for type 'resqml22:GeneticBoundaryBasedTimeInterval' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeneticBoundaryBasedTimeInterval
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeneticBoundaryBasedTimeInterval (-89)
-
-#endif
-
-/* resqml22__GenericFeatureInterpretation has binding name 'resqml22__GenericFeatureInterpretation' for type 'resqml22:GenericFeatureInterpretation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GenericFeatureInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__GenericFeatureInterpretation (-88)
-
-#endif
-
-/* resqml22__FluidBoundaryInterpretation has binding name 'resqml22__FluidBoundaryInterpretation' for type 'resqml22:FluidBoundaryInterpretation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__FluidBoundaryInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__FluidBoundaryInterpretation (-87)
-
-#endif
-
-/* resqml22__FeatureInterpretationSet has binding name 'resqml22__FeatureInterpretationSet' for type 'resqml22:FeatureInterpretationSet' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__FeatureInterpretationSet
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__FeatureInterpretationSet (-86)
-
-#endif
-
-/* resqml22__FaultThrow has binding name 'resqml22__FaultThrow' for type 'resqml22:FaultThrow' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__FaultThrow
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__FaultThrow (-85)
-
-#endif
-
-/* resqml22__FaultInterpretation has binding name 'resqml22__FaultInterpretation' for type 'resqml22:FaultInterpretation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__FaultInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__FaultInterpretation (-84)
-
-#endif
-
-/* resqml22__EarthModelInterpretation has binding name 'resqml22__EarthModelInterpretation' for type 'resqml22:EarthModelInterpretation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__EarthModelInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__EarthModelInterpretation (-83)
-
-#endif
-
-/* resqml22__ContactElement has binding name 'resqml22__ContactElement' for type 'resqml22:ContactElement' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactElement
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactElement (-82)
-
-#endif
-
-/* resqml22__BoundaryFeatureInterpretationPlusItsRank has binding name 'resqml22__BoundaryFeatureInterpretationPlusItsRank' for type 'resqml22:BoundaryFeatureInterpretationPlusItsRank' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretationPlusItsRank
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretationPlusItsRank (-81)
-
-#endif
-
-/* resqml22__BoundaryFeatureInterpretation has binding name 'resqml22__BoundaryFeatureInterpretation' for type 'resqml22:BoundaryFeatureInterpretation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretation (-80)
-
-#endif
-
-/* resqml22__BinaryContactInterpretationPart has binding name 'resqml22__BinaryContactInterpretationPart' for type 'resqml22:BinaryContactInterpretationPart' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__BinaryContactInterpretationPart
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__BinaryContactInterpretationPart (-79)
-
-#endif
-
-/* resqml22__AbstractTimeInterval has binding name 'resqml22__AbstractTimeInterval' for type 'resqml22:AbstractTimeInterval' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractTimeInterval
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractTimeInterval (-78)
-
-#endif
-
-/* resqml22__AbstractStratigraphicOrganizationInterpretation has binding name 'resqml22__AbstractStratigraphicOrganizationInterpretation' for type 'resqml22:AbstractStratigraphicOrganizationInterpretation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractStratigraphicOrganizationInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractStratigraphicOrganizationInterpretation (-77)
-
-#endif
-
-/* resqml22__AbstractOrganizationInterpretation has binding name 'resqml22__AbstractOrganizationInterpretation' for type 'resqml22:AbstractOrganizationInterpretation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractOrganizationInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractOrganizationInterpretation (-76)
-
-#endif
-
-/* resqml22__AbstractFeatureInterpretation has binding name 'resqml22__AbstractFeatureInterpretation' for type 'resqml22:AbstractFeatureInterpretation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractFeatureInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractFeatureInterpretation (-75)
-
-#endif
-
-/* resqml22__AbstractContactInterpretationPart has binding name 'resqml22__AbstractContactInterpretationPart' for type 'resqml22:AbstractContactInterpretationPart' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactInterpretationPart
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactInterpretationPart (-74)
-
-#endif
-
-/* resqml22__VolumeShell has binding name 'resqml22__VolumeShell' for type 'resqml22:VolumeShell' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeShell
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeShell (-73)
-
-#endif
-
-/* resqml22__VolumeRegion has binding name 'resqml22__VolumeRegion' for type 'resqml22:VolumeRegion' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeRegion
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeRegion (-72)
-
-#endif
-
-/* resqml22__TriangulatedSetRepresentation has binding name 'resqml22__TriangulatedSetRepresentation' for type 'resqml22:TriangulatedSetRepresentation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__TriangulatedSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__TriangulatedSetRepresentation (-71)
-
-#endif
-
-/* resqml22__TrianglePatch has binding name 'resqml22__TrianglePatch' for type 'resqml22:TrianglePatch' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__TrianglePatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__TrianglePatch (-70)
-
-#endif
-
-/* resqml22__SealedVolumeFrameworkRepresentation has binding name 'resqml22__SealedVolumeFrameworkRepresentation' for type 'resqml22:SealedVolumeFrameworkRepresentation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SealedVolumeFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SealedVolumeFrameworkRepresentation (-69)
-
-#endif
-
-/* resqml22__SealedSurfaceFrameworkRepresentation has binding name 'resqml22__SealedSurfaceFrameworkRepresentation' for type 'resqml22:SealedSurfaceFrameworkRepresentation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SealedSurfaceFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SealedSurfaceFrameworkRepresentation (-68)
-
-#endif
-
-/* resqml22__SealedContactRepresentationPart has binding name 'resqml22__SealedContactRepresentationPart' for type 'resqml22:SealedContactRepresentationPart' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SealedContactRepresentationPart
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SealedContactRepresentationPart (-67)
-
-#endif
-
-/* resqml22__PolylineRepresentation has binding name 'resqml22__PolylineRepresentation' for type 'resqml22:PolylineRepresentation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineRepresentation (-66)
-
-#endif
-
-/* resqml22__PointSetRepresentation has binding name 'resqml22__PointSetRepresentation' for type 'resqml22:PointSetRepresentation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PointSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__PointSetRepresentation (-65)
-
-#endif
-
-/* resqml22__PlaneSetRepresentation has binding name 'resqml22__PlaneSetRepresentation' for type 'resqml22:PlaneSetRepresentation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PlaneSetRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__PlaneSetRepresentation (-64)
-
-#endif
-
-/* resqml22__PatchBoundaries has binding name 'resqml22__PatchBoundaries' for type 'resqml22:PatchBoundaries' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PatchBoundaries
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__PatchBoundaries (-63)
-
-#endif
-
-/* resqml22__OrientedMacroFace has binding name 'resqml22__OrientedMacroFace' for type 'resqml22:OrientedMacroFace' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__OrientedMacroFace
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__OrientedMacroFace (-62)
-
-#endif
-
-/* resqml22__NonSealedSurfaceFrameworkRepresentation has binding name 'resqml22__NonSealedSurfaceFrameworkRepresentation' for type 'resqml22:NonSealedSurfaceFrameworkRepresentation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__NonSealedSurfaceFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__NonSealedSurfaceFrameworkRepresentation (-61)
-
-#endif
-
-/* resqml22__NonSealedContactRepresentationPart has binding name 'resqml22__NonSealedContactRepresentationPart' for type 'resqml22:NonSealedContactRepresentationPart' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__NonSealedContactRepresentationPart
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__NonSealedContactRepresentationPart (-60)
-
-#endif
-
-/* resqml22__NodePatch has binding name 'resqml22__NodePatch' for type 'resqml22:NodePatch' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__NodePatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__NodePatch (-59)
-
-#endif
-
-/* resqml22__Grid2dRepresentation has binding name 'resqml22__Grid2dRepresentation' for type 'resqml22:Grid2dRepresentation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Grid2dRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__Grid2dRepresentation (-58)
-
-#endif
-
-/* resqml22__EdgePatch has binding name 'resqml22__EdgePatch' for type 'resqml22:EdgePatch' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__EdgePatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__EdgePatch (-57)
-
-#endif
-
-/* resqml22__ContactRepresentationReference has binding name 'resqml22__ContactRepresentationReference' for type 'resqml22:ContactRepresentationReference' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactRepresentationReference
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactRepresentationReference (-56)
-
-#endif
-
-/* resqml22__ContactPatch has binding name 'resqml22__ContactPatch' for type 'resqml22:ContactPatch' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactPatch
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactPatch (-55)
-
-#endif
-
-/* resqml22__ContactIdentity has binding name 'resqml22__ContactIdentity' for type 'resqml22:ContactIdentity' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactIdentity
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactIdentity (-54)
-
-#endif
-
-/* resqml22__AbstractSurfaceRepresentation has binding name 'resqml22__AbstractSurfaceRepresentation' for type 'resqml22:AbstractSurfaceRepresentation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSurfaceRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSurfaceRepresentation (-53)
-
-#endif
-
-/* resqml22__AbstractSurfaceFrameworkRepresentation has binding name 'resqml22__AbstractSurfaceFrameworkRepresentation' for type 'resqml22:AbstractSurfaceFrameworkRepresentation' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSurfaceFrameworkRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSurfaceFrameworkRepresentation (-52)
-
-#endif
-
-/* resqml22__AbstractContactRepresentationPart has binding name 'resqml22__AbstractContactRepresentationPart' for type 'resqml22:AbstractContactRepresentationPart' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactRepresentationPart
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactRepresentationPart (-51)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractColumnLayerGridGeometry (-116)
 
 #endif
 
 /* resqml22__WitsmlWellWellbore has binding name 'resqml22__WitsmlWellWellbore' for type 'resqml22:WitsmlWellWellbore' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WitsmlWellWellbore
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WitsmlWellWellbore (-50)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WitsmlWellWellbore (-115)
 
 #endif
 
 /* resqml22__WellboreTrajectoryRepresentation has binding name 'resqml22__WellboreTrajectoryRepresentation' for type 'resqml22:WellboreTrajectoryRepresentation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreTrajectoryRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreTrajectoryRepresentation (-49)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreTrajectoryRepresentation (-114)
 
 #endif
 
 /* resqml22__WellboreTrajectoryParentIntersection has binding name 'resqml22__WellboreTrajectoryParentIntersection' for type 'resqml22:WellboreTrajectoryParentIntersection' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreTrajectoryParentIntersection
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreTrajectoryParentIntersection (-48)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreTrajectoryParentIntersection (-113)
 
 #endif
 
 /* resqml22__WellboreMarkerFrameRepresentation has binding name 'resqml22__WellboreMarkerFrameRepresentation' for type 'resqml22:WellboreMarkerFrameRepresentation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreMarkerFrameRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreMarkerFrameRepresentation (-47)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreMarkerFrameRepresentation (-112)
 
 #endif
 
 /* resqml22__WellboreMarker has binding name 'resqml22__WellboreMarker' for type 'resqml22:WellboreMarker' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreMarker
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreMarker (-46)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreMarker (-111)
 
 #endif
 
 /* resqml22__WellboreInterpretationSet has binding name 'resqml22__WellboreInterpretationSet' for type 'resqml22:WellboreInterpretationSet' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreInterpretationSet
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreInterpretationSet (-45)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreInterpretationSet (-110)
 
 #endif
 
 /* resqml22__WellboreInterpretation has binding name 'resqml22__WellboreInterpretation' for type 'resqml22:WellboreInterpretation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreInterpretation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreInterpretation (-44)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreInterpretation (-109)
 
 #endif
 
 /* resqml22__WellboreFrameRepresentation has binding name 'resqml22__WellboreFrameRepresentation' for type 'resqml22:WellboreFrameRepresentation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFrameRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFrameRepresentation (-43)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFrameRepresentation (-108)
 
 #endif
 
 /* resqml22__WellboreFeature has binding name 'resqml22__WellboreFeature' for type 'resqml22:WellboreFeature' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFeature
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFeature (-42)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__WellboreFeature (-107)
 
 #endif
 
 /* resqml22__TvdInformation has binding name 'resqml22__TvdInformation' for type 'resqml22:TvdInformation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__TvdInformation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__TvdInformation (-41)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__TvdInformation (-106)
 
 #endif
 
 /* resqml22__SeismicWellboreFrameRepresentation has binding name 'resqml22__SeismicWellboreFrameRepresentation' for type 'resqml22:SeismicWellboreFrameRepresentation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicWellboreFrameRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicWellboreFrameRepresentation (-40)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SeismicWellboreFrameRepresentation (-105)
 
 #endif
 
 /* resqml22__MdDatum has binding name 'resqml22__MdDatum' for type 'resqml22:MdDatum' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__MdDatum
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__MdDatum (-39)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__MdDatum (-104)
 
 #endif
 
 /* resqml22__DeviationSurveyRepresentation has binding name 'resqml22__DeviationSurveyRepresentation' for type 'resqml22:DeviationSurveyRepresentation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__DeviationSurveyRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__DeviationSurveyRepresentation (-38)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__DeviationSurveyRepresentation (-103)
 
 #endif
 
 /* resqml22__CorrectionInformation has binding name 'resqml22__CorrectionInformation' for type 'resqml22:CorrectionInformation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__CorrectionInformation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__CorrectionInformation (-37)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__CorrectionInformation (-102)
 
 #endif
 
 /* resqml22__BlockedWellboreRepresentation has binding name 'resqml22__BlockedWellboreRepresentation' for type 'resqml22:BlockedWellboreRepresentation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__BlockedWellboreRepresentation
-#define SOAP_TYPE_gsoap_eml2_2_resqml22__BlockedWellboreRepresentation (-36)
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__BlockedWellboreRepresentation (-101)
+
+#endif
+
+/* resqml22__StructuralOrganizationInterpretation has binding name 'resqml22__StructuralOrganizationInterpretation' for type 'resqml22:StructuralOrganizationInterpretation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StructuralOrganizationInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__StructuralOrganizationInterpretation (-100)
+
+#endif
+
+/* resqml22__StratigraphicUnitInterpretation has binding name 'resqml22__StratigraphicUnitInterpretation' for type 'resqml22:StratigraphicUnitInterpretation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitInterpretation (-99)
+
+#endif
+
+/* resqml22__StratigraphicUnitDictionary has binding name 'resqml22__StratigraphicUnitDictionary' for type 'resqml22:StratigraphicUnitDictionary' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitDictionary
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicUnitDictionary (-98)
+
+#endif
+
+/* resqml22__StratigraphicOccurrenceInterpretation has binding name 'resqml22__StratigraphicOccurrenceInterpretation' for type 'resqml22:StratigraphicOccurrenceInterpretation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicOccurrenceInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicOccurrenceInterpretation (-97)
+
+#endif
+
+/* resqml22__StratigraphicColumnRankInterpretation has binding name 'resqml22__StratigraphicColumnRankInterpretation' for type 'resqml22:StratigraphicColumnRankInterpretation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicColumnRankInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicColumnRankInterpretation (-96)
+
+#endif
+
+/* resqml22__StratigraphicColumn has binding name 'resqml22__StratigraphicColumn' for type 'resqml22:StratigraphicColumn' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicColumn
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__StratigraphicColumn (-95)
+
+#endif
+
+/* resqml22__RockFluidUnitInterpretation has binding name 'resqml22__RockFluidUnitInterpretation' for type 'resqml22:RockFluidUnitInterpretation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__RockFluidUnitInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__RockFluidUnitInterpretation (-94)
+
+#endif
+
+/* resqml22__RockFluidOrganizationInterpretation has binding name 'resqml22__RockFluidOrganizationInterpretation' for type 'resqml22:RockFluidOrganizationInterpretation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__RockFluidOrganizationInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__RockFluidOrganizationInterpretation (-93)
+
+#endif
+
+/* resqml22__MultipleContactInterpretationPart has binding name 'resqml22__MultipleContactInterpretationPart' for type 'resqml22:MultipleContactInterpretationPart' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__MultipleContactInterpretationPart
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__MultipleContactInterpretationPart (-92)
+
+#endif
+
+/* resqml22__HorizonInterpretation has binding name 'resqml22__HorizonInterpretation' for type 'resqml22:HorizonInterpretation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__HorizonInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__HorizonInterpretation (-91)
+
+#endif
+
+/* resqml22__GeologicUnitInterpretation has binding name 'resqml22__GeologicUnitInterpretation' for type 'resqml22:GeologicUnitInterpretation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicUnitInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicUnitInterpretation (-90)
+
+#endif
+
+/* resqml22__GeologicTimeBasedTimeInterval has binding name 'resqml22__GeologicTimeBasedTimeInterval' for type 'resqml22:GeologicTimeBasedTimeInterval' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicTimeBasedTimeInterval
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeologicTimeBasedTimeInterval (-89)
+
+#endif
+
+/* resqml22__GeobodyInterpretation has binding name 'resqml22__GeobodyInterpretation' for type 'resqml22:GeobodyInterpretation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeobodyInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeobodyInterpretation (-88)
+
+#endif
+
+/* resqml22__GeobodyBoundaryInterpretation has binding name 'resqml22__GeobodyBoundaryInterpretation' for type 'resqml22:GeobodyBoundaryInterpretation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeobodyBoundaryInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeobodyBoundaryInterpretation (-87)
+
+#endif
+
+/* resqml22__GeneticBoundaryBasedTimeInterval has binding name 'resqml22__GeneticBoundaryBasedTimeInterval' for type 'resqml22:GeneticBoundaryBasedTimeInterval' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GeneticBoundaryBasedTimeInterval
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GeneticBoundaryBasedTimeInterval (-86)
+
+#endif
+
+/* resqml22__GenericFeatureInterpretation has binding name 'resqml22__GenericFeatureInterpretation' for type 'resqml22:GenericFeatureInterpretation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__GenericFeatureInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__GenericFeatureInterpretation (-85)
+
+#endif
+
+/* resqml22__FluidBoundaryInterpretation has binding name 'resqml22__FluidBoundaryInterpretation' for type 'resqml22:FluidBoundaryInterpretation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__FluidBoundaryInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__FluidBoundaryInterpretation (-84)
+
+#endif
+
+/* resqml22__FeatureInterpretationSet has binding name 'resqml22__FeatureInterpretationSet' for type 'resqml22:FeatureInterpretationSet' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__FeatureInterpretationSet
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__FeatureInterpretationSet (-83)
+
+#endif
+
+/* resqml22__FaultThrow has binding name 'resqml22__FaultThrow' for type 'resqml22:FaultThrow' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__FaultThrow
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__FaultThrow (-82)
+
+#endif
+
+/* resqml22__FaultInterpretation has binding name 'resqml22__FaultInterpretation' for type 'resqml22:FaultInterpretation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__FaultInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__FaultInterpretation (-81)
+
+#endif
+
+/* resqml22__EarthModelInterpretation has binding name 'resqml22__EarthModelInterpretation' for type 'resqml22:EarthModelInterpretation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__EarthModelInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__EarthModelInterpretation (-80)
+
+#endif
+
+/* resqml22__ContactElement has binding name 'resqml22__ContactElement' for type 'resqml22:ContactElement' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactElement
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactElement (-79)
+
+#endif
+
+/* resqml22__BoundaryFeatureInterpretationPlusItsRank has binding name 'resqml22__BoundaryFeatureInterpretationPlusItsRank' for type 'resqml22:BoundaryFeatureInterpretationPlusItsRank' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretationPlusItsRank
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretationPlusItsRank (-78)
+
+#endif
+
+/* resqml22__BoundaryFeatureInterpretation has binding name 'resqml22__BoundaryFeatureInterpretation' for type 'resqml22:BoundaryFeatureInterpretation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__BoundaryFeatureInterpretation (-77)
+
+#endif
+
+/* resqml22__BinaryContactInterpretationPart has binding name 'resqml22__BinaryContactInterpretationPart' for type 'resqml22:BinaryContactInterpretationPart' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__BinaryContactInterpretationPart
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__BinaryContactInterpretationPart (-76)
+
+#endif
+
+/* resqml22__AbstractTimeInterval has binding name 'resqml22__AbstractTimeInterval' for type 'resqml22:AbstractTimeInterval' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractTimeInterval
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractTimeInterval (-75)
+
+#endif
+
+/* resqml22__AbstractStratigraphicOrganizationInterpretation has binding name 'resqml22__AbstractStratigraphicOrganizationInterpretation' for type 'resqml22:AbstractStratigraphicOrganizationInterpretation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractStratigraphicOrganizationInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractStratigraphicOrganizationInterpretation (-74)
+
+#endif
+
+/* resqml22__AbstractOrganizationInterpretation has binding name 'resqml22__AbstractOrganizationInterpretation' for type 'resqml22:AbstractOrganizationInterpretation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractOrganizationInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractOrganizationInterpretation (-73)
+
+#endif
+
+/* resqml22__AbstractFeatureInterpretation has binding name 'resqml22__AbstractFeatureInterpretation' for type 'resqml22:AbstractFeatureInterpretation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractFeatureInterpretation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractFeatureInterpretation (-72)
+
+#endif
+
+/* resqml22__AbstractContactInterpretationPart has binding name 'resqml22__AbstractContactInterpretationPart' for type 'resqml22:AbstractContactInterpretationPart' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactInterpretationPart
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactInterpretationPart (-71)
+
+#endif
+
+/* resqml22__VolumeShell has binding name 'resqml22__VolumeShell' for type 'resqml22:VolumeShell' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeShell
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeShell (-70)
+
+#endif
+
+/* resqml22__VolumeRegion has binding name 'resqml22__VolumeRegion' for type 'resqml22:VolumeRegion' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeRegion
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__VolumeRegion (-69)
+
+#endif
+
+/* resqml22__TriangulatedSetRepresentation has binding name 'resqml22__TriangulatedSetRepresentation' for type 'resqml22:TriangulatedSetRepresentation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__TriangulatedSetRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__TriangulatedSetRepresentation (-68)
+
+#endif
+
+/* resqml22__TrianglePatch has binding name 'resqml22__TrianglePatch' for type 'resqml22:TrianglePatch' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__TrianglePatch
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__TrianglePatch (-67)
+
+#endif
+
+/* resqml22__SealedVolumeFrameworkRepresentation has binding name 'resqml22__SealedVolumeFrameworkRepresentation' for type 'resqml22:SealedVolumeFrameworkRepresentation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SealedVolumeFrameworkRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SealedVolumeFrameworkRepresentation (-66)
+
+#endif
+
+/* resqml22__SealedSurfaceFrameworkRepresentation has binding name 'resqml22__SealedSurfaceFrameworkRepresentation' for type 'resqml22:SealedSurfaceFrameworkRepresentation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SealedSurfaceFrameworkRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SealedSurfaceFrameworkRepresentation (-65)
+
+#endif
+
+/* resqml22__SealedContactRepresentationPart has binding name 'resqml22__SealedContactRepresentationPart' for type 'resqml22:SealedContactRepresentationPart' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SealedContactRepresentationPart
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SealedContactRepresentationPart (-64)
+
+#endif
+
+/* resqml22__PolylineRepresentation has binding name 'resqml22__PolylineRepresentation' for type 'resqml22:PolylineRepresentation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineRepresentation (-63)
+
+#endif
+
+/* resqml22__PointSetRepresentation has binding name 'resqml22__PointSetRepresentation' for type 'resqml22:PointSetRepresentation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PointSetRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__PointSetRepresentation (-62)
+
+#endif
+
+/* resqml22__PlaneSetRepresentation has binding name 'resqml22__PlaneSetRepresentation' for type 'resqml22:PlaneSetRepresentation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PlaneSetRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__PlaneSetRepresentation (-61)
+
+#endif
+
+/* resqml22__PatchBoundaries has binding name 'resqml22__PatchBoundaries' for type 'resqml22:PatchBoundaries' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PatchBoundaries
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__PatchBoundaries (-60)
+
+#endif
+
+/* resqml22__OrientedMacroFace has binding name 'resqml22__OrientedMacroFace' for type 'resqml22:OrientedMacroFace' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__OrientedMacroFace
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__OrientedMacroFace (-59)
+
+#endif
+
+/* resqml22__NonSealedSurfaceFrameworkRepresentation has binding name 'resqml22__NonSealedSurfaceFrameworkRepresentation' for type 'resqml22:NonSealedSurfaceFrameworkRepresentation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__NonSealedSurfaceFrameworkRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__NonSealedSurfaceFrameworkRepresentation (-58)
+
+#endif
+
+/* resqml22__NonSealedContactRepresentationPart has binding name 'resqml22__NonSealedContactRepresentationPart' for type 'resqml22:NonSealedContactRepresentationPart' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__NonSealedContactRepresentationPart
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__NonSealedContactRepresentationPart (-57)
+
+#endif
+
+/* resqml22__NodePatch has binding name 'resqml22__NodePatch' for type 'resqml22:NodePatch' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__NodePatch
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__NodePatch (-56)
+
+#endif
+
+/* resqml22__Grid2dRepresentation has binding name 'resqml22__Grid2dRepresentation' for type 'resqml22:Grid2dRepresentation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Grid2dRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Grid2dRepresentation (-55)
+
+#endif
+
+/* resqml22__EdgePatch has binding name 'resqml22__EdgePatch' for type 'resqml22:EdgePatch' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__EdgePatch
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__EdgePatch (-54)
+
+#endif
+
+/* resqml22__ContactRepresentationReference has binding name 'resqml22__ContactRepresentationReference' for type 'resqml22:ContactRepresentationReference' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactRepresentationReference
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactRepresentationReference (-53)
+
+#endif
+
+/* resqml22__ContactPatch has binding name 'resqml22__ContactPatch' for type 'resqml22:ContactPatch' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactPatch
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactPatch (-52)
+
+#endif
+
+/* resqml22__ContactIdentity has binding name 'resqml22__ContactIdentity' for type 'resqml22:ContactIdentity' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ContactIdentity
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ContactIdentity (-51)
+
+#endif
+
+/* resqml22__AbstractSurfaceRepresentation has binding name 'resqml22__AbstractSurfaceRepresentation' for type 'resqml22:AbstractSurfaceRepresentation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSurfaceRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSurfaceRepresentation (-50)
+
+#endif
+
+/* resqml22__AbstractSurfaceFrameworkRepresentation has binding name 'resqml22__AbstractSurfaceFrameworkRepresentation' for type 'resqml22:AbstractSurfaceFrameworkRepresentation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSurfaceFrameworkRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractSurfaceFrameworkRepresentation (-49)
+
+#endif
+
+/* resqml22__AbstractContactRepresentationPart has binding name 'resqml22__AbstractContactRepresentationPart' for type 'resqml22:AbstractContactRepresentationPart' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactRepresentationPart
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractContactRepresentationPart (-48)
+
+#endif
+
+/* resqml22__SubRepresentationPatch has binding name 'resqml22__SubRepresentationPatch' for type 'resqml22:SubRepresentationPatch' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentationPatch
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentationPatch (-47)
+
+#endif
+
+/* resqml22__SubRepresentation has binding name 'resqml22__SubRepresentation' for type 'resqml22:SubRepresentation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__SubRepresentation (-46)
+
+#endif
+
+/* resqml22__RepresentationSetRepresentation has binding name 'resqml22__RepresentationSetRepresentation' for type 'resqml22:RepresentationSetRepresentation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationSetRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationSetRepresentation (-45)
+
+#endif
+
+/* resqml22__RepresentationIdentitySet has binding name 'resqml22__RepresentationIdentitySet' for type 'resqml22:RepresentationIdentitySet' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentitySet
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentitySet (-44)
+
+#endif
+
+/* resqml22__RepresentationIdentity has binding name 'resqml22__RepresentationIdentity' for type 'resqml22:RepresentationIdentity' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentity
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__RepresentationIdentity (-43)
+
+#endif
+
+/* resqml22__PolylineSetRepresentation has binding name 'resqml22__PolylineSetRepresentation' for type 'resqml22:PolylineSetRepresentation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetRepresentation (-42)
+
+#endif
+
+/* resqml22__PolylineSetPatch has binding name 'resqml22__PolylineSetPatch' for type 'resqml22:PolylineSetPatch' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetPatch
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__PolylineSetPatch (-41)
+
+#endif
+
+/* resqml22__Patch1d has binding name 'resqml22__Patch1d' for type 'resqml22:Patch1d' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Patch1d
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Patch1d (-40)
+
+#endif
+
+/* resqml22__Patch has binding name 'resqml22__Patch' for type 'resqml22:Patch' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__Patch
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__Patch (-39)
+
+#endif
+
+/* resqml22__ElementIndices has binding name 'resqml22__ElementIndices' for type 'resqml22:ElementIndices' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIndices
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIndices (-38)
+
+#endif
+
+/* resqml22__ElementIdentity has binding name 'resqml22__ElementIdentity' for type 'resqml22:ElementIdentity' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIdentity
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__ElementIdentity (-37)
+
+#endif
+
+/* resqml22__AbstractRepresentation has binding name 'resqml22__AbstractRepresentation' for type 'resqml22:AbstractRepresentation' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractRepresentation
+#define SOAP_TYPE_gsoap_eml2_2_resqml22__AbstractRepresentation (-36)
 
 #endif
 
@@ -53789,93 +53789,93 @@ typedef witsml21__WellboreGeology _witsml21__WellboreGeology;
 
 #endif
 
-/* resqml22__BoundaryFeatureInterpretationPlusItsRank * has binding name 'PointerToresqml22__BoundaryFeatureInterpretationPlusItsRank' for type 'resqml22:BoundaryFeatureInterpretationPlusItsRank' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__BoundaryFeatureInterpretationPlusItsRank
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__BoundaryFeatureInterpretationPlusItsRank (-1895)
-
-#endif
-
-/* enum resqml22__StratigraphicUnitKind * has binding name 'PointerToresqml22__StratigraphicUnitKind' for type 'resqml22:StratigraphicUnitKind' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__StratigraphicUnitKind
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__StratigraphicUnitKind (-1894)
-
-#endif
-
-/* enum resqml22__DepositionMode * has binding name 'PointerToresqml22__DepositionMode' for type 'resqml22:DepositionMode' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__DepositionMode
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__DepositionMode (-1893)
-
-#endif
-
-/* enum resqml22__Phase * has binding name 'PointerToresqml22__Phase' for type 'resqml22:Phase' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Phase
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Phase (-1892)
-
-#endif
-
-/* struct __resqml22__HorizonInterpretation_sequence * has binding name 'PointerTo__resqml22__HorizonInterpretation_sequence' for type '-resqml22:HorizonInterpretation-sequence' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__HorizonInterpretation_sequence
-#define SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__HorizonInterpretation_sequence (-1891)
-
-#endif
-
-/* enum resqml22__SequenceStratigraphySurface * has binding name 'PointerToresqml22__SequenceStratigraphySurface' for type 'resqml22:SequenceStratigraphySurface' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SequenceStratigraphySurface
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SequenceStratigraphySurface (-1890)
-
-#endif
-
-/* resqml22__FaultThrow * has binding name 'PointerToresqml22__FaultThrow' for type 'resqml22:FaultThrow' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__FaultThrow
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__FaultThrow (-1885)
-
-#endif
-
-/* resqml22__TrianglePatch * has binding name 'PointerToresqml22__TrianglePatch' for type 'resqml22:TrianglePatch' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__TrianglePatch
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__TrianglePatch (-1883)
-
-#endif
-
-/* resqml22__VolumeRegion * has binding name 'PointerToresqml22__VolumeRegion' for type 'resqml22:VolumeRegion' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__VolumeRegion
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__VolumeRegion (-1881)
-
-#endif
-
-/* resqml22__AbstractPlaneGeometry * has binding name 'PointerToresqml22__AbstractPlaneGeometry' for type 'resqml22:AbstractPlaneGeometry' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractPlaneGeometry
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractPlaneGeometry (-1879)
-
-#endif
-
-/* resqml22__ContactIdentity * has binding name 'PointerToresqml22__ContactIdentity' for type 'resqml22:ContactIdentity' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ContactIdentity
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ContactIdentity (-1877)
-
-#endif
-
 /* resqml22__WellboreMarker * has binding name 'PointerToresqml22__WellboreMarker' for type 'resqml22:WellboreMarker' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__WellboreMarker
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__WellboreMarker (-1875)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__WellboreMarker (-1895)
 
 #endif
 
 /* resqml22__WitsmlWellWellbore * has binding name 'PointerToresqml22__WitsmlWellWellbore' for type 'resqml22:WitsmlWellWellbore' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__WitsmlWellWellbore
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__WitsmlWellWellbore (-1874)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__WitsmlWellWellbore (-1894)
 
 #endif
 
 /* resqml22__CorrectionInformation * has binding name 'PointerToresqml22__CorrectionInformation' for type 'resqml22:CorrectionInformation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__CorrectionInformation
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__CorrectionInformation (-1873)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__CorrectionInformation (-1893)
 
 #endif
 
 /* resqml22__TvdInformation * has binding name 'PointerToresqml22__TvdInformation' for type 'resqml22:TvdInformation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__TvdInformation
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__TvdInformation (-1872)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__TvdInformation (-1892)
+
+#endif
+
+/* resqml22__BoundaryFeatureInterpretationPlusItsRank * has binding name 'PointerToresqml22__BoundaryFeatureInterpretationPlusItsRank' for type 'resqml22:BoundaryFeatureInterpretationPlusItsRank' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__BoundaryFeatureInterpretationPlusItsRank
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__BoundaryFeatureInterpretationPlusItsRank (-1890)
+
+#endif
+
+/* enum resqml22__StratigraphicUnitKind * has binding name 'PointerToresqml22__StratigraphicUnitKind' for type 'resqml22:StratigraphicUnitKind' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__StratigraphicUnitKind
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__StratigraphicUnitKind (-1889)
+
+#endif
+
+/* enum resqml22__DepositionMode * has binding name 'PointerToresqml22__DepositionMode' for type 'resqml22:DepositionMode' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__DepositionMode
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__DepositionMode (-1888)
+
+#endif
+
+/* enum resqml22__Phase * has binding name 'PointerToresqml22__Phase' for type 'resqml22:Phase' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Phase
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Phase (-1887)
+
+#endif
+
+/* struct __resqml22__HorizonInterpretation_sequence * has binding name 'PointerTo__resqml22__HorizonInterpretation_sequence' for type '-resqml22:HorizonInterpretation-sequence' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__HorizonInterpretation_sequence
+#define SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__HorizonInterpretation_sequence (-1886)
+
+#endif
+
+/* enum resqml22__SequenceStratigraphySurface * has binding name 'PointerToresqml22__SequenceStratigraphySurface' for type 'resqml22:SequenceStratigraphySurface' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SequenceStratigraphySurface
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SequenceStratigraphySurface (-1885)
+
+#endif
+
+/* resqml22__FaultThrow * has binding name 'PointerToresqml22__FaultThrow' for type 'resqml22:FaultThrow' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__FaultThrow
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__FaultThrow (-1880)
+
+#endif
+
+/* resqml22__TrianglePatch * has binding name 'PointerToresqml22__TrianglePatch' for type 'resqml22:TrianglePatch' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__TrianglePatch
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__TrianglePatch (-1878)
+
+#endif
+
+/* resqml22__VolumeRegion * has binding name 'PointerToresqml22__VolumeRegion' for type 'resqml22:VolumeRegion' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__VolumeRegion
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__VolumeRegion (-1876)
+
+#endif
+
+/* resqml22__AbstractPlaneGeometry * has binding name 'PointerToresqml22__AbstractPlaneGeometry' for type 'resqml22:AbstractPlaneGeometry' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractPlaneGeometry
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractPlaneGeometry (-1874)
+
+#endif
+
+/* resqml22__ContactIdentity * has binding name 'PointerToresqml22__ContactIdentity' for type 'resqml22:ContactIdentity' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ContactIdentity
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ContactIdentity (-1872)
 
 #endif
 
@@ -53891,51 +53891,63 @@ typedef witsml21__WellboreGeology _witsml21__WellboreGeology;
 
 #endif
 
-/* resqml22__ElementIndices * has binding name 'PointerToresqml22__ElementIndices' for type 'resqml22:ElementIndices' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ElementIndices
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ElementIndices (-1867)
-
-#endif
-
-/* resqml22__SubRepresentationPatch * has binding name 'PointerToresqml22__SubRepresentationPatch' for type 'resqml22:SubRepresentationPatch' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SubRepresentationPatch
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SubRepresentationPatch (-1865)
-
-#endif
-
-/* resqml22__PolylineSetPatch * has binding name 'PointerToresqml22__PolylineSetPatch' for type 'resqml22:PolylineSetPatch' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__PolylineSetPatch
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__PolylineSetPatch (-1863)
-
-#endif
-
 /* eml22__FloatingPointLatticeArray * has binding name 'PointerToeml22__FloatingPointLatticeArray' for type 'eml22:FloatingPointLatticeArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToeml22__FloatingPointLatticeArray
-#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__FloatingPointLatticeArray (-1862)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__FloatingPointLatticeArray (-1868)
 
 #endif
 
 /* resqml22__ThreePoint3d * has binding name 'PointerToresqml22__ThreePoint3d' for type 'resqml22:ThreePoint3d' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ThreePoint3d
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ThreePoint3d (-1860)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ThreePoint3d (-1866)
 
 #endif
 
 /* resqml22__ConnectionInterpretations * has binding name 'PointerToresqml22__ConnectionInterpretations' for type 'resqml22:ConnectionInterpretations' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ConnectionInterpretations
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ConnectionInterpretations (-1859)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ConnectionInterpretations (-1865)
 
 #endif
 
 /* resqml22__AbstractParentWindow * has binding name 'PointerToresqml22__AbstractParentWindow' for type 'resqml22:AbstractParentWindow' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractParentWindow
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractParentWindow (-1858)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractParentWindow (-1864)
 
 #endif
 
 /* resqml22__AdditionalGridPoints * has binding name 'PointerToresqml22__AdditionalGridPoints' for type 'resqml22:AdditionalGridPoints' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AdditionalGridPoints
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AdditionalGridPoints (-1856)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AdditionalGridPoints (-1862)
+
+#endif
+
+/* resqml22__WellboreTrajectoryParentIntersection * has binding name 'PointerToresqml22__WellboreTrajectoryParentIntersection' for type 'resqml22:WellboreTrajectoryParentIntersection' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__WellboreTrajectoryParentIntersection
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__WellboreTrajectoryParentIntersection (-1861)
+
+#endif
+
+/* resqml22__AbstractParametricLineGeometry * has binding name 'PointerToresqml22__AbstractParametricLineGeometry' for type 'resqml22:AbstractParametricLineGeometry' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractParametricLineGeometry
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractParametricLineGeometry (-1860)
+
+#endif
+
+/* enum resqml22__MdDomain * has binding name 'PointerToresqml22__MdDomain' for type 'resqml22:MdDomain' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__MdDomain
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__MdDomain (-1859)
+
+#endif
+
+/* resqml22__IntervalStratigraphicUnits * has binding name 'PointerToresqml22__IntervalStratigraphicUnits' for type 'resqml22:IntervalStratigraphicUnits' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__IntervalStratigraphicUnits
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__IntervalStratigraphicUnits (-1857)
+
+#endif
+
+/* resqml22__CellFluidPhaseUnits * has binding name 'PointerToresqml22__CellFluidPhaseUnits' for type 'resqml22:CellFluidPhaseUnits' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__CellFluidPhaseUnits
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__CellFluidPhaseUnits (-1856)
 
 #endif
 
@@ -53969,51 +53981,39 @@ typedef witsml21__WellboreGeology _witsml21__WellboreGeology;
 
 #endif
 
-/* enum resqml22__LineRole * has binding name 'PointerToresqml22__LineRole' for type 'resqml22:LineRole' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__LineRole
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__LineRole (-1848)
-
-#endif
-
 /* resqml22__NodePatch * has binding name 'PointerToresqml22__NodePatch' for type 'resqml22:NodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__NodePatch
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__NodePatch (-1846)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__NodePatch (-1847)
 
 #endif
 
 /* resqml22__PatchBoundaries * has binding name 'PointerToresqml22__PatchBoundaries' for type 'resqml22:PatchBoundaries' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__PatchBoundaries
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__PatchBoundaries (-1844)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__PatchBoundaries (-1845)
 
 #endif
 
-/* resqml22__WellboreTrajectoryParentIntersection * has binding name 'PointerToresqml22__WellboreTrajectoryParentIntersection' for type 'resqml22:WellboreTrajectoryParentIntersection' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__WellboreTrajectoryParentIntersection
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__WellboreTrajectoryParentIntersection (-1843)
+/* resqml22__ElementIndices * has binding name 'PointerToresqml22__ElementIndices' for type 'resqml22:ElementIndices' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ElementIndices
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ElementIndices (-1843)
 
 #endif
 
-/* resqml22__AbstractParametricLineGeometry * has binding name 'PointerToresqml22__AbstractParametricLineGeometry' for type 'resqml22:AbstractParametricLineGeometry' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractParametricLineGeometry
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractParametricLineGeometry (-1842)
+/* resqml22__SubRepresentationPatch * has binding name 'PointerToresqml22__SubRepresentationPatch' for type 'resqml22:SubRepresentationPatch' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SubRepresentationPatch
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SubRepresentationPatch (-1841)
 
 #endif
 
-/* enum resqml22__MdDomain * has binding name 'PointerToresqml22__MdDomain' for type 'resqml22:MdDomain' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__MdDomain
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__MdDomain (-1841)
+/* resqml22__PolylineSetPatch * has binding name 'PointerToresqml22__PolylineSetPatch' for type 'resqml22:PolylineSetPatch' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__PolylineSetPatch
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__PolylineSetPatch (-1839)
 
 #endif
 
-/* resqml22__IntervalStratigraphicUnits * has binding name 'PointerToresqml22__IntervalStratigraphicUnits' for type 'resqml22:IntervalStratigraphicUnits' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__IntervalStratigraphicUnits
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__IntervalStratigraphicUnits (-1839)
-
-#endif
-
-/* resqml22__CellFluidPhaseUnits * has binding name 'PointerToresqml22__CellFluidPhaseUnits' for type 'resqml22:CellFluidPhaseUnits' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__CellFluidPhaseUnits
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__CellFluidPhaseUnits (-1838)
+/* enum resqml22__LineRole * has binding name 'PointerToresqml22__LineRole' for type 'resqml22:LineRole' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__LineRole
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__LineRole (-1838)
 
 #endif
 
@@ -54593,105 +54593,111 @@ typedef witsml21__WellboreGeology _witsml21__WellboreGeology;
 
 #endif
 
-/* resqml22__RepresentationIdentity * has binding name 'PointerToresqml22__RepresentationIdentity' for type 'resqml22:RepresentationIdentity' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__RepresentationIdentity
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__RepresentationIdentity (-1698)
-
-#endif
-
-/* resqml22__IntervalGridCells * has binding name 'PointerToresqml22__IntervalGridCells' for type 'resqml22:IntervalGridCells' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__IntervalGridCells
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__IntervalGridCells (-1697)
-
-#endif
-
-/* resqml22__PointGeometry * has binding name 'PointerToresqml22__PointGeometry' for type 'resqml22:PointGeometry' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__PointGeometry
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__PointGeometry (-1696)
-
-#endif
-
 /* resqml22__AbstractSeismicCoordinates * has binding name 'PointerToresqml22__AbstractSeismicCoordinates' for type 'resqml22:AbstractSeismicCoordinates' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractSeismicCoordinates
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractSeismicCoordinates (-1695)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractSeismicCoordinates (-1699)
 
 #endif
 
 /* resqml22__AbstractParametricLineArray * has binding name 'PointerToresqml22__AbstractParametricLineArray' for type 'resqml22:AbstractParametricLineArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractParametricLineArray
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractParametricLineArray (-1694)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractParametricLineArray (-1698)
 
 #endif
 
 /* resqml22__Point3dOffset * has binding name 'PointerToresqml22__Point3dOffset' for type 'resqml22:Point3dOffset' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Point3dOffset
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Point3dOffset (-1692)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Point3dOffset (-1696)
 
 #endif
 
 /* eml22__ExternalDataset * has binding name 'PointerToeml22__ExternalDataset' for type 'eml22:ExternalDataset' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToeml22__ExternalDataset
-#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__ExternalDataset (-1691)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__ExternalDataset (-1695)
 
 #endif
 
 /* eml22__IntegerLatticeArray * has binding name 'PointerToeml22__IntegerLatticeArray' for type 'eml22:IntegerLatticeArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToeml22__IntegerLatticeArray
-#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__IntegerLatticeArray (-1690)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__IntegerLatticeArray (-1694)
 
 #endif
 
 /* resqml22__ParametricLineIntersections * has binding name 'PointerToresqml22__ParametricLineIntersections' for type 'resqml22:ParametricLineIntersections' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ParametricLineIntersections
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ParametricLineIntersections (-1689)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ParametricLineIntersections (-1693)
 
 #endif
 
 /* resqml22__Edges * has binding name 'PointerToresqml22__Edges' for type 'resqml22:Edges' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Edges
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Edges (-1688)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Edges (-1692)
 
 #endif
 
 /* resqml22__UnstructuredGridGeometry * has binding name 'PointerToresqml22__UnstructuredGridGeometry' for type 'resqml22:UnstructuredGridGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__UnstructuredGridGeometry
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__UnstructuredGridGeometry (-1687)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__UnstructuredGridGeometry (-1691)
 
 #endif
 
 /* resqml22__UnstructuredColumnLayerGridGeometry * has binding name 'PointerToresqml22__UnstructuredColumnLayerGridGeometry' for type 'resqml22:UnstructuredColumnLayerGridGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__UnstructuredColumnLayerGridGeometry
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__UnstructuredColumnLayerGridGeometry (-1686)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__UnstructuredColumnLayerGridGeometry (-1690)
 
 #endif
 
 /* resqml22__Activation * has binding name 'PointerToresqml22__Activation' for type 'resqml22:Activation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Activation
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Activation (-1685)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Activation (-1689)
 
 #endif
 
 /* resqml22__TruncationCellPatch * has binding name 'PointerToresqml22__TruncationCellPatch' for type 'resqml22:TruncationCellPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__TruncationCellPatch
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__TruncationCellPatch (-1684)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__TruncationCellPatch (-1688)
 
 #endif
 
 /* resqml22__IjkGridGeometry * has binding name 'PointerToresqml22__IjkGridGeometry' for type 'resqml22:IjkGridGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__IjkGridGeometry
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__IjkGridGeometry (-1683)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__IjkGridGeometry (-1687)
 
 #endif
 
 /* resqml22__ColumnSubnodePatch * has binding name 'PointerToresqml22__ColumnSubnodePatch' for type 'resqml22:ColumnSubnodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ColumnSubnodePatch
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ColumnSubnodePatch (-1681)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ColumnSubnodePatch (-1685)
 
 #endif
 
 /* resqml22__Regrid * has binding name 'PointerToresqml22__Regrid' for type 'resqml22:Regrid' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Regrid
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Regrid (-1680)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Regrid (-1684)
+
+#endif
+
+/* enum resqml22__GeologicBoundaryKind * has binding name 'PointerToresqml22__GeologicBoundaryKind' for type 'resqml22:GeologicBoundaryKind' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__GeologicBoundaryKind
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__GeologicBoundaryKind (-1683)
+
+#endif
+
+/* enum resqml22__FluidMarker * has binding name 'PointerToresqml22__FluidMarker' for type 'resqml22:FluidMarker' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__FluidMarker
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__FluidMarker (-1682)
+
+#endif
+
+/* enum resqml22__FluidContact * has binding name 'PointerToresqml22__FluidContact' for type 'resqml22:FluidContact' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__FluidContact
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__FluidContact (-1681)
+
+#endif
+
+/* resqml22__SinglePointGeometry * has binding name 'PointerToresqml22__SinglePointGeometry' for type 'resqml22:SinglePointGeometry' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SinglePointGeometry
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SinglePointGeometry (-1680)
 
 #endif
 
@@ -54749,27 +54755,21 @@ typedef witsml21__WellboreGeology _witsml21__WellboreGeology;
 
 #endif
 
-/* enum resqml22__GeologicBoundaryKind * has binding name 'PointerToresqml22__GeologicBoundaryKind' for type 'resqml22:GeologicBoundaryKind' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__GeologicBoundaryKind
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__GeologicBoundaryKind (-1666)
+/* resqml22__RepresentationIdentity * has binding name 'PointerToresqml22__RepresentationIdentity' for type 'resqml22:RepresentationIdentity' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__RepresentationIdentity
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__RepresentationIdentity (-1665)
 
 #endif
 
-/* enum resqml22__FluidMarker * has binding name 'PointerToresqml22__FluidMarker' for type 'resqml22:FluidMarker' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__FluidMarker
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__FluidMarker (-1665)
+/* resqml22__IntervalGridCells * has binding name 'PointerToresqml22__IntervalGridCells' for type 'resqml22:IntervalGridCells' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__IntervalGridCells
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__IntervalGridCells (-1664)
 
 #endif
 
-/* enum resqml22__FluidContact * has binding name 'PointerToresqml22__FluidContact' for type 'resqml22:FluidContact' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__FluidContact
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__FluidContact (-1664)
-
-#endif
-
-/* resqml22__SinglePointGeometry * has binding name 'PointerToresqml22__SinglePointGeometry' for type 'resqml22:SinglePointGeometry' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SinglePointGeometry
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SinglePointGeometry (-1663)
+/* resqml22__PointGeometry * has binding name 'PointerToresqml22__PointGeometry' for type 'resqml22:PointGeometry' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__PointGeometry
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__PointGeometry (-1663)
 
 #endif
 
@@ -55751,207 +55751,207 @@ typedef witsml21__WellboreGeology _witsml21__WellboreGeology;
 
 #endif
 
-/* resqml22__ElementIdentity * has binding name 'PointerToresqml22__ElementIdentity' for type 'resqml22:ElementIdentity' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ElementIdentity
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ElementIdentity (-1416)
-
-#endif
-
-/* resqml22__AdditionalGridTopology * has binding name 'PointerToresqml22__AdditionalGridTopology' for type 'resqml22:AdditionalGridTopology' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AdditionalGridTopology
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AdditionalGridTopology (-1415)
-
-#endif
-
-/* struct __resqml22__ElementIndices_sequence * has binding name 'PointerTo__resqml22__ElementIndices_sequence' for type '-resqml22:ElementIndices-sequence' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__ElementIndices_sequence
-#define SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__ElementIndices_sequence (-1414)
-
-#endif
-
 /* resqml22__Point3d * has binding name 'PointerToresqml22__Point3d' for type 'resqml22:Point3d' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Point3d
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Point3d (-1411)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Point3d (-1416)
 
 #endif
 
 /* eml22__AbstractValueArray * has binding name 'PointerToeml22__AbstractValueArray' for type 'eml22:AbstractValueArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToeml22__AbstractValueArray
-#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__AbstractValueArray (-1410)
-
-#endif
-
-/* eml22__TimeIndex * has binding name 'PointerToeml22__TimeIndex' for type 'eml22:TimeIndex' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToeml22__TimeIndex
-#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__TimeIndex (-1409)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__AbstractValueArray (-1415)
 
 #endif
 
 /* resqml22__VariableSubnodePatch * has binding name 'PointerToresqml22__VariableSubnodePatch' for type 'resqml22:VariableSubnodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__VariableSubnodePatch
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__VariableSubnodePatch (-1407)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__VariableSubnodePatch (-1413)
 
 #endif
 
 /* resqml22__UniformSubnodePatch * has binding name 'PointerToresqml22__UniformSubnodePatch' for type 'resqml22:UniformSubnodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__UniformSubnodePatch
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__UniformSubnodePatch (-1405)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__UniformSubnodePatch (-1411)
 
 #endif
 
 /* resqml22__Intervals * has binding name 'PointerToresqml22__Intervals' for type 'resqml22:Intervals' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Intervals
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Intervals (-1404)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__Intervals (-1410)
 
 #endif
 
 /* struct __resqml22__OverlapVolume_sequence * has binding name 'PointerTo__resqml22__OverlapVolume_sequence' for type '-resqml22:OverlapVolume-sequence' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__OverlapVolume_sequence
-#define SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__OverlapVolume_sequence (-1403)
+#define SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__OverlapVolume_sequence (-1409)
 
 #endif
 
 /* struct __resqml22__KGaps_sequence * has binding name 'PointerTo__resqml22__KGaps_sequence' for type '-resqml22:KGaps-sequence' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__KGaps_sequence
-#define SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__KGaps_sequence (-1401)
+#define SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__KGaps_sequence (-1407)
 
 #endif
 
 /* eml22__AbstractBooleanArray * has binding name 'PointerToeml22__AbstractBooleanArray' for type 'eml22:AbstractBooleanArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToeml22__AbstractBooleanArray
-#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__AbstractBooleanArray (-1400)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__AbstractBooleanArray (-1406)
 
 #endif
 
 /* struct __resqml22__IjGaps_sequence * has binding name 'PointerTo__resqml22__IjGaps_sequence' for type '-resqml22:IjGaps-sequence' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__IjGaps_sequence
-#define SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__IjGaps_sequence (-1398)
+#define SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__IjGaps_sequence (-1404)
 
 #endif
 
 /* resqml22__KGaps * has binding name 'PointerToresqml22__KGaps' for type 'resqml22:KGaps' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__KGaps
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__KGaps (-1396)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__KGaps (-1402)
 
 #endif
 
 /* resqml22__IjkGpGridPatch * has binding name 'PointerToresqml22__IjkGpGridPatch' for type 'resqml22:IjkGpGridPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__IjkGpGridPatch
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__IjkGpGridPatch (-1394)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__IjkGpGridPatch (-1400)
 
 #endif
 
 /* resqml22__UnstructuredColumnLayerGpGridPatch * has binding name 'PointerToresqml22__UnstructuredColumnLayerGpGridPatch' for type 'resqml22:UnstructuredColumnLayerGpGridPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__UnstructuredColumnLayerGpGridPatch
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__UnstructuredColumnLayerGpGridPatch (-1392)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__UnstructuredColumnLayerGpGridPatch (-1398)
 
 #endif
 
 /* struct __resqml22__CellOverlap_sequence * has binding name 'PointerTo__resqml22__CellOverlap_sequence' for type '-resqml22:CellOverlap-sequence' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__CellOverlap_sequence
-#define SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__CellOverlap_sequence (-1391)
+#define SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__CellOverlap_sequence (-1397)
 
 #endif
 
 /* resqml22__OverlapVolume * has binding name 'PointerToresqml22__OverlapVolume' for type 'resqml22:OverlapVolume' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__OverlapVolume
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__OverlapVolume (-1390)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__OverlapVolume (-1396)
 
 #endif
 
 /* eml22__JaggedArray * has binding name 'PointerToeml22__JaggedArray' for type 'eml22:JaggedArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToeml22__JaggedArray
-#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__JaggedArray (-1388)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__JaggedArray (-1394)
 
 #endif
 
 /* resqml22__UnstructuredColumnEdges * has binding name 'PointerToresqml22__UnstructuredColumnEdges' for type 'resqml22:UnstructuredColumnEdges' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__UnstructuredColumnEdges
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__UnstructuredColumnEdges (-1387)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__UnstructuredColumnEdges (-1393)
 
 #endif
 
 /* resqml22__SplitFaces * has binding name 'PointerToresqml22__SplitFaces' for type 'resqml22:SplitFaces' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SplitFaces
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SplitFaces (-1386)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SplitFaces (-1392)
 
 #endif
 
 /* resqml22__SplitNodePatch * has binding name 'PointerToresqml22__SplitNodePatch' for type 'resqml22:SplitNodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SplitNodePatch
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SplitNodePatch (-1385)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SplitNodePatch (-1391)
 
 #endif
 
 /* resqml22__SplitEdges * has binding name 'PointerToresqml22__SplitEdges' for type 'resqml22:SplitEdges' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SplitEdges
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SplitEdges (-1384)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SplitEdges (-1390)
 
 #endif
 
 /* resqml22__UnstructuredSubnodeTopology * has binding name 'PointerToresqml22__UnstructuredSubnodeTopology' for type 'resqml22:UnstructuredSubnodeTopology' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__UnstructuredSubnodeTopology
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__UnstructuredSubnodeTopology (-1383)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__UnstructuredSubnodeTopology (-1389)
 
 #endif
 
 /* resqml22__SplitColumnEdges * has binding name 'PointerToresqml22__SplitColumnEdges' for type 'resqml22:SplitColumnEdges' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SplitColumnEdges
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SplitColumnEdges (-1382)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__SplitColumnEdges (-1388)
 
 #endif
 
 /* resqml22__ColumnLayerSubnodeTopology * has binding name 'PointerToresqml22__ColumnLayerSubnodeTopology' for type 'resqml22:ColumnLayerSubnodeTopology' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ColumnLayerSubnodeTopology
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ColumnLayerSubnodeTopology (-1381)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ColumnLayerSubnodeTopology (-1387)
 
 #endif
 
 /* resqml22__AbstractPoint3dArray * has binding name 'PointerToresqml22__AbstractPoint3dArray' for type 'resqml22:AbstractPoint3dArray' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractPoint3dArray
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractPoint3dArray (-1380)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractPoint3dArray (-1386)
 
 #endif
 
 /* eml22__TimeSeries * has binding name 'PointerToeml22__TimeSeries' for type 'eml22:TimeSeries' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToeml22__TimeSeries
-#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__TimeSeries (-1379)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__TimeSeries (-1385)
 
 #endif
 
 /* resqml22__CellOverlap * has binding name 'PointerToresqml22__CellOverlap' for type 'resqml22:CellOverlap' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__CellOverlap
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__CellOverlap (-1378)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__CellOverlap (-1384)
+
+#endif
+
+/* eml22__AbstractFloatingPointArray * has binding name 'PointerToeml22__AbstractFloatingPointArray' for type 'eml22:AbstractFloatingPointArray' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToeml22__AbstractFloatingPointArray
+#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__AbstractFloatingPointArray (-1383)
 
 #endif
 
 /* resqml22__AbstractTimeInterval * has binding name 'PointerToresqml22__AbstractTimeInterval' for type 'resqml22:AbstractTimeInterval' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractTimeInterval
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractTimeInterval (-1377)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AbstractTimeInterval (-1382)
 
 #endif
 
 /* resqml22__FeatureInterpretationSet * has binding name 'PointerToresqml22__FeatureInterpretationSet' for type 'resqml22:FeatureInterpretationSet' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__FeatureInterpretationSet
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__FeatureInterpretationSet (-1375)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__FeatureInterpretationSet (-1380)
 
 #endif
 
 /* ULONG64 * has binding name 'PointerToULONG64' for type 'xsd:unsignedLong' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToULONG64
-#define SOAP_TYPE_gsoap_eml2_2_PointerToULONG64 (-1374)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToULONG64 (-1379)
 
 #endif
 
 /* resqml22__OrientedMacroFace * has binding name 'PointerToresqml22__OrientedMacroFace' for type 'resqml22:OrientedMacroFace' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__OrientedMacroFace
-#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__OrientedMacroFace (-1372)
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__OrientedMacroFace (-1377)
 
 #endif
 
-/* eml22__AbstractIntegerArray * has binding name 'PointerToeml22__AbstractIntegerArray' for type 'eml22:AbstractIntegerArray' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToeml22__AbstractIntegerArray
-#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__AbstractIntegerArray (-1370)
+/* resqml22__ElementIdentity * has binding name 'PointerToresqml22__ElementIdentity' for type 'resqml22:ElementIdentity' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ElementIdentity
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__ElementIdentity (-1374)
+
+#endif
+
+/* resqml22__AdditionalGridTopology * has binding name 'PointerToresqml22__AdditionalGridTopology' for type 'resqml22:AdditionalGridTopology' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AdditionalGridTopology
+#define SOAP_TYPE_gsoap_eml2_2_PointerToresqml22__AdditionalGridTopology (-1373)
+
+#endif
+
+/* struct __resqml22__ElementIndices_sequence * has binding name 'PointerTo__resqml22__ElementIndices_sequence' for type '-resqml22:ElementIndices-sequence' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__ElementIndices_sequence
+#define SOAP_TYPE_gsoap_eml2_2_PointerTo__resqml22__ElementIndices_sequence (-1372)
+
+#endif
+
+/* eml22__TimeIndex * has binding name 'PointerToeml22__TimeIndex' for type 'eml22:TimeIndex' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToeml22__TimeIndex
+#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__TimeIndex (-1370)
 
 #endif
 
@@ -55961,9 +55961,9 @@ typedef witsml21__WellboreGeology _witsml21__WellboreGeology;
 
 #endif
 
-/* eml22__AbstractFloatingPointArray * has binding name 'PointerToeml22__AbstractFloatingPointArray' for type 'eml22:AbstractFloatingPointArray' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToeml22__AbstractFloatingPointArray
-#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__AbstractFloatingPointArray (-1368)
+/* eml22__AbstractIntegerArray * has binding name 'PointerToeml22__AbstractIntegerArray' for type 'eml22:AbstractIntegerArray' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_PointerToeml22__AbstractIntegerArray
+#define SOAP_TYPE_gsoap_eml2_2_PointerToeml22__AbstractIntegerArray (-1368)
 
 #endif
 
@@ -56069,57 +56069,57 @@ typedef witsml21__WellboreGeology _witsml21__WellboreGeology;
 
 #endif
 
+/* std::vector<resqml22__WellboreMarker *>  has binding name 'std__vectorTemplateOfPointerToresqml22__WellboreMarker' for type 'resqml22:WellboreMarker' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__WellboreMarker
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__WellboreMarker (-1896)
+
+#endif
+
 /* std::vector<resqml22__BoundaryFeatureInterpretationPlusItsRank *>  has binding name 'std__vectorTemplateOfPointerToresqml22__BoundaryFeatureInterpretationPlusItsRank' for type 'resqml22:BoundaryFeatureInterpretationPlusItsRank' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__BoundaryFeatureInterpretationPlusItsRank
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__BoundaryFeatureInterpretationPlusItsRank (-1896)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__BoundaryFeatureInterpretationPlusItsRank (-1891)
 
 #endif
 
 /* std::vector<enum resqml22__HorizonStratigraphicRole>  has binding name 'std__vectorTemplateOfresqml22__HorizonStratigraphicRole' for type 'resqml22:HorizonStratigraphicRole' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfresqml22__HorizonStratigraphicRole
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfresqml22__HorizonStratigraphicRole (-1889)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfresqml22__HorizonStratigraphicRole (-1884)
 
 #endif
 
 /* std::vector<enum resqml22__BoundaryRelation>  has binding name 'std__vectorTemplateOfresqml22__BoundaryRelation' for type 'resqml22:BoundaryRelation' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfresqml22__BoundaryRelation
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfresqml22__BoundaryRelation (-1887)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfresqml22__BoundaryRelation (-1882)
 
 #endif
 
 /* std::vector<resqml22__FaultThrow *>  has binding name 'std__vectorTemplateOfPointerToresqml22__FaultThrow' for type 'resqml22:FaultThrow' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__FaultThrow
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__FaultThrow (-1886)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__FaultThrow (-1881)
 
 #endif
 
 /* std::vector<resqml22__TrianglePatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__TrianglePatch' for type 'resqml22:TrianglePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__TrianglePatch
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__TrianglePatch (-1884)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__TrianglePatch (-1879)
 
 #endif
 
 /* std::vector<resqml22__VolumeRegion *>  has binding name 'std__vectorTemplateOfPointerToresqml22__VolumeRegion' for type 'resqml22:VolumeRegion' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__VolumeRegion
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__VolumeRegion (-1882)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__VolumeRegion (-1877)
 
 #endif
 
 /* std::vector<resqml22__AbstractPlaneGeometry *>  has binding name 'std__vectorTemplateOfPointerToresqml22__AbstractPlaneGeometry' for type 'resqml22:AbstractPlaneGeometry' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__AbstractPlaneGeometry
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__AbstractPlaneGeometry (-1880)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__AbstractPlaneGeometry (-1875)
 
 #endif
 
 /* std::vector<resqml22__ContactIdentity *>  has binding name 'std__vectorTemplateOfPointerToresqml22__ContactIdentity' for type 'resqml22:ContactIdentity' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__ContactIdentity
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__ContactIdentity (-1878)
-
-#endif
-
-/* std::vector<resqml22__WellboreMarker *>  has binding name 'std__vectorTemplateOfPointerToresqml22__WellboreMarker' for type 'resqml22:WellboreMarker' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__WellboreMarker
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__WellboreMarker (-1876)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__ContactIdentity (-1873)
 
 #endif
 
@@ -56129,33 +56129,21 @@ typedef witsml21__WellboreGeology _witsml21__WellboreGeology;
 
 #endif
 
-/* std::vector<resqml22__ElementIndices *>  has binding name 'std__vectorTemplateOfPointerToresqml22__ElementIndices' for type 'resqml22:ElementIndices' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__ElementIndices
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__ElementIndices (-1868)
-
-#endif
-
-/* std::vector<resqml22__SubRepresentationPatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__SubRepresentationPatch' for type 'resqml22:SubRepresentationPatch' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__SubRepresentationPatch
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__SubRepresentationPatch (-1866)
-
-#endif
-
-/* std::vector<resqml22__PolylineSetPatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__PolylineSetPatch' for type 'resqml22:PolylineSetPatch' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__PolylineSetPatch
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__PolylineSetPatch (-1864)
-
-#endif
-
 /* std::vector<resqml22__ThreePoint3d *>  has binding name 'std__vectorTemplateOfPointerToresqml22__ThreePoint3d' for type 'resqml22:ThreePoint3d' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__ThreePoint3d
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__ThreePoint3d (-1861)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__ThreePoint3d (-1867)
 
 #endif
 
 /* std::vector<resqml22__AdditionalGridPoints *>  has binding name 'std__vectorTemplateOfPointerToresqml22__AdditionalGridPoints' for type 'resqml22:AdditionalGridPoints' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__AdditionalGridPoints
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__AdditionalGridPoints (-1857)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__AdditionalGridPoints (-1863)
+
+#endif
+
+/* std::vector<resqml22__IntervalStratigraphicUnits *>  has binding name 'std__vectorTemplateOfPointerToresqml22__IntervalStratigraphicUnits' for type 'resqml22:IntervalStratigraphicUnits' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__IntervalStratigraphicUnits
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__IntervalStratigraphicUnits (-1858)
 
 #endif
 
@@ -56173,19 +56161,31 @@ typedef witsml21__WellboreGeology _witsml21__WellboreGeology;
 
 /* std::vector<resqml22__NodePatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__NodePatch' for type 'resqml22:NodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__NodePatch
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__NodePatch (-1847)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__NodePatch (-1848)
 
 #endif
 
 /* std::vector<resqml22__PatchBoundaries *>  has binding name 'std__vectorTemplateOfPointerToresqml22__PatchBoundaries' for type 'resqml22:PatchBoundaries' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__PatchBoundaries
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__PatchBoundaries (-1845)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__PatchBoundaries (-1846)
 
 #endif
 
-/* std::vector<resqml22__IntervalStratigraphicUnits *>  has binding name 'std__vectorTemplateOfPointerToresqml22__IntervalStratigraphicUnits' for type 'resqml22:IntervalStratigraphicUnits' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__IntervalStratigraphicUnits
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__IntervalStratigraphicUnits (-1840)
+/* std::vector<resqml22__ElementIndices *>  has binding name 'std__vectorTemplateOfPointerToresqml22__ElementIndices' for type 'resqml22:ElementIndices' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__ElementIndices
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__ElementIndices (-1844)
+
+#endif
+
+/* std::vector<resqml22__SubRepresentationPatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__SubRepresentationPatch' for type 'resqml22:SubRepresentationPatch' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__SubRepresentationPatch
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__SubRepresentationPatch (-1842)
+
+#endif
+
+/* std::vector<resqml22__PolylineSetPatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__PolylineSetPatch' for type 'resqml22:PolylineSetPatch' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__PolylineSetPatch
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__PolylineSetPatch (-1840)
 
 #endif
 
@@ -56423,21 +56423,15 @@ typedef witsml21__WellboreGeology _witsml21__WellboreGeology;
 
 #endif
 
-/* std::vector<resqml22__RepresentationIdentity *>  has binding name 'std__vectorTemplateOfPointerToresqml22__RepresentationIdentity' for type 'resqml22:RepresentationIdentity' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__RepresentationIdentity
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__RepresentationIdentity (-1699)
-
-#endif
-
 /* std::vector<resqml22__Point3dOffset *>  has binding name 'std__vectorTemplateOfPointerToresqml22__Point3dOffset' for type 'resqml22:Point3dOffset' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__Point3dOffset
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__Point3dOffset (-1693)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__Point3dOffset (-1697)
 
 #endif
 
 /* std::vector<resqml22__ColumnSubnodePatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__ColumnSubnodePatch' for type 'resqml22:ColumnSubnodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__ColumnSubnodePatch
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__ColumnSubnodePatch (-1682)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__ColumnSubnodePatch (-1686)
 
 #endif
 
@@ -56462,6 +56456,12 @@ typedef witsml21__WellboreGeology _witsml21__WellboreGeology;
 /* std::vector<resqml22__ContactPatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__ContactPatch' for type 'resqml22:ContactPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__ContactPatch
 #define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__ContactPatch (-1669)
+
+#endif
+
+/* std::vector<resqml22__RepresentationIdentity *>  has binding name 'std__vectorTemplateOfPointerToresqml22__RepresentationIdentity' for type 'resqml22:RepresentationIdentity' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__RepresentationIdentity
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__RepresentationIdentity (-1666)
 
 #endif
 
@@ -56645,57 +56645,57 @@ typedef witsml21__WellboreGeology _witsml21__WellboreGeology;
 
 #endif
 
-/* std::vector<resqml22__ElementIdentity *>  has binding name 'std__vectorTemplateOfPointerToresqml22__ElementIdentity' for type 'resqml22:ElementIdentity' */
-#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__ElementIdentity
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__ElementIdentity (-1417)
-
-#endif
-
 /* std::vector<resqml22__Point3d *>  has binding name 'std__vectorTemplateOfPointerToresqml22__Point3d' for type 'resqml22:Point3d' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__Point3d
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__Point3d (-1412)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__Point3d (-1417)
 
 #endif
 
 /* std::vector<resqml22__VariableSubnodePatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__VariableSubnodePatch' for type 'resqml22:VariableSubnodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__VariableSubnodePatch
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__VariableSubnodePatch (-1408)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__VariableSubnodePatch (-1414)
 
 #endif
 
 /* std::vector<resqml22__UniformSubnodePatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__UniformSubnodePatch' for type 'resqml22:UniformSubnodePatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__UniformSubnodePatch
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__UniformSubnodePatch (-1406)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__UniformSubnodePatch (-1412)
 
 #endif
 
 /* std::vector<resqml22__IjkGpGridPatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__IjkGpGridPatch' for type 'resqml22:IjkGpGridPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__IjkGpGridPatch
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__IjkGpGridPatch (-1395)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__IjkGpGridPatch (-1401)
 
 #endif
 
 /* std::vector<resqml22__UnstructuredColumnLayerGpGridPatch *>  has binding name 'std__vectorTemplateOfPointerToresqml22__UnstructuredColumnLayerGpGridPatch' for type 'resqml22:UnstructuredColumnLayerGpGridPatch' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__UnstructuredColumnLayerGpGridPatch
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__UnstructuredColumnLayerGpGridPatch (-1393)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__UnstructuredColumnLayerGpGridPatch (-1399)
 
 #endif
 
 /* std::vector<std::string>  has binding name 'std__vectorTemplateOfresqml22__ThrowKindExt' for type 'resqml22:ThrowKindExt' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfresqml22__ThrowKindExt
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfresqml22__ThrowKindExt (-1376)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfresqml22__ThrowKindExt (-1381)
 
 #endif
 
 /* std::vector<resqml22__OrientedMacroFace *>  has binding name 'std__vectorTemplateOfPointerToresqml22__OrientedMacroFace' for type 'resqml22:OrientedMacroFace' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__OrientedMacroFace
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__OrientedMacroFace (-1373)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__OrientedMacroFace (-1378)
 
 #endif
 
 /* std::vector<eml22__DataObjectReference *>  has binding name 'std__vectorTemplateOfPointerToeml22__DataObjectReference' for type 'eml22:DataObjectReference' */
 #ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToeml22__DataObjectReference
-#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToeml22__DataObjectReference (-1371)
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToeml22__DataObjectReference (-1376)
+
+#endif
+
+/* std::vector<resqml22__ElementIdentity *>  has binding name 'std__vectorTemplateOfPointerToresqml22__ElementIdentity' for type 'resqml22:ElementIdentity' */
+#ifndef SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__ElementIdentity
+#define SOAP_TYPE_gsoap_eml2_2_std__vectorTemplateOfPointerToresqml22__ElementIdentity (-1375)
 
 #endif
 
