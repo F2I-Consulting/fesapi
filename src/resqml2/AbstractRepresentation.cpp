@@ -353,11 +353,11 @@ bool AbstractRepresentation::isInSingleGlobalCrs() const
 		return true;
 	}
 	AbstractLocal3dCrs const* localCrs = getLocalCrs(0);
-	const ULONG64 epsgCode = localCrs->isProjectedCrsDefinedWithEpsg() ? localCrs->getProjectedCrsEpsgCode() : (std::numeric_limits<ULONG64>::max)();
+	const ULONG64 epsgCode = (localCrs != nullptr && localCrs->isProjectedCrsDefinedWithEpsg()) ? localCrs->getProjectedCrsEpsgCode() : (std::numeric_limits<ULONG64>::max)();
 
 	for (unsigned int patchIndex = 1; patchIndex < patchCount; ++patchIndex) {
 		localCrs = getLocalCrs(patchIndex);
-		if (epsgCode != (localCrs->isProjectedCrsDefinedWithEpsg() ? localCrs->getProjectedCrsEpsgCode() : (std::numeric_limits<ULONG64>::max)())) {
+		if (epsgCode != ((localCrs != nullptr && localCrs->isProjectedCrsDefinedWithEpsg()) ? localCrs->getProjectedCrsEpsgCode() : (std::numeric_limits<ULONG64>::max)())) {
 			return false;
 		}
 	}

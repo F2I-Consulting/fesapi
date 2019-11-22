@@ -106,6 +106,7 @@ under the License.
 #include "../witsml2_0/Trajectory.h"
 #include "../witsml2_0/WellCompletion.h"
 #include "../witsml2_0/WellboreCompletion.h"
+#include "../witsml2_0/WellboreGeometry.h"
 
 #include "../tools/GuidTools.h"
 
@@ -1377,6 +1378,15 @@ WITSML2_0_NS::WellboreCompletion* DataObjectRepository::createWellboreCompletion
 	return new WellboreCompletion(witsmlWellbore, wellCompletion, guid, title, wellCompletionName);
 }
 
+
+WITSML2_0_NS::WellboreGeometry* DataObjectRepository::createWellboreGeometry(WITSML2_0_NS::Wellbore* witsmlWellbore,
+	const std::string & guid,
+	const std::string & title,
+	gsoap_eml2_1::witsml20__ChannelStatus channelStatus)
+{
+	return new WellboreGeometry(witsmlWellbore, guid, title, channelStatus);
+}
+
 WITSML2_0_NS::Trajectory* DataObjectRepository::createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
 	const std::string & guid,
 	const std::string & title,
@@ -2028,6 +2038,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getWitsml2_0WrapperFromGsoapCon
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, WellCompletion, gsoap_eml2_1)
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Wellbore, gsoap_eml2_1)
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, WellboreCompletion, gsoap_eml2_1)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, WellboreGeometry, gsoap_eml2_1)
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Trajectory, gsoap_eml2_1)
 
 	return wrapper;

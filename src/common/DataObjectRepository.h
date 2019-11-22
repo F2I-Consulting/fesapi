@@ -147,6 +147,7 @@ namespace WITSML2_0_NS
 	class WellCompletion;
 	class Wellbore;
 	class WellboreCompletion;
+	class WellboreGeometry;
 	class Trajectory;
 }
 
@@ -1237,6 +1238,11 @@ namespace COMMON_NS
 			const std::string & guid,
 			const std::string & title,
 			const std::string & wellCompletionName);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreGeometry* createWellboreGeometry(WITSML2_0_NS::Wellbore* witsmlWellbore,
+			const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
 
 		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Trajectory* createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,

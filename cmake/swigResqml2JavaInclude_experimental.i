@@ -119,6 +119,14 @@ Basically this file add methods resqml2_0_instantiate* which will create the rig
 	{
 		ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellboreCompletion(cPtr, owner);
 	}
+	else if (type.equals("WellboreGeometry"))
+	{
+		ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellboreGeometry(cPtr, owner);
+	}
+	else if (type.equals("Trajectory"))
+	{
+		ret = new com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Trajectory(cPtr, owner);
+	}
 	else
     {
 	throw new IllegalArgumentException("Encountered type " + type + " that is not known to be a Resqml or Witsml concrete class");
