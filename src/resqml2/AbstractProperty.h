@@ -25,6 +25,11 @@ namespace RESQML2_0_1_NS
 	class PropertySet;
 }
 
+namespace COMMON_NS
+{
+	class PropertyKind;
+}
+
 namespace RESQML2_NS
 {
 	class AbstractProperty: public COMMON_NS::AbstractObject
@@ -210,7 +215,7 @@ namespace RESQML2_NS
 		/**
 		* Set the property kind of the property to a local one.
 		*/
-		DLL_IMPORT_OR_EXPORT void setLocalPropertyKind(class PropertyKind* propKind);
+		DLL_IMPORT_OR_EXPORT void setLocalPropertyKind(COMMON_NS::PropertyKind* propKind);
 
 		/**
 		* @return	null pointer if no local property kind is associated to this property. Otherwise return the data object reference of the associated local property kind.
@@ -231,12 +236,12 @@ namespace RESQML2_NS
 		* Getter for the local property kind which is associated to this instance.
 		* If nullptr is returned then it means this instance is associated to an energistics standard property kind.
 		*/
-		DLL_IMPORT_OR_EXPORT class PropertyKind* getLocalPropertyKind() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* getLocalPropertyKind() const;
 
 		/**
 		* Check if the associated local property kind is allowed for this property.
 		*/
-		virtual bool validatePropertyKindAssociation(class PropertyKind* pk) = 0;
+		virtual bool validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk) = 0;
 
 		/**
 		* Check if the associated standard property kind is allowed for this property.

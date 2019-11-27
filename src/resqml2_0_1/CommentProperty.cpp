@@ -54,7 +54,7 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 }
 
 CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, RESQML2_NS::PropertyKind * localPropKind)
+	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, COMMON_NS::PropertyKind * localPropKind)
 {
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECommentProperty(rep->getGsoapContext());	
 	_resqml20__CommentProperty* prop = static_cast<_resqml20__CommentProperty*>(gsoapProxy2_0_1);
@@ -187,7 +187,7 @@ std::vector<std::string> CommentProperty::getStringValuesOfPatch(unsigned int pa
 	return result;
 }
 
-bool CommentProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKind* pk)
+bool CommentProperty::validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk)
 {
 	if (pk == nullptr) {
 		throw invalid_argument("The property kind to validate cannot be null.");

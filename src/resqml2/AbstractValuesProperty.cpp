@@ -24,8 +24,9 @@ under the License.
 
 #include <hdf5.h>
 
+#include "../common/PropertyKind.h"
+
 #include "AbstractRepresentation.h"
-#include "PropertyKind.h"
 #include "AbstractLocal3dCrs.h"
 #include "../common/AbstractHdfProxy.h"
 

@@ -73,7 +73,7 @@ public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject res
     }
     else if (type == "PropertyKind")
     {
-        ret = new f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.PropertyKind(cPtr, owner);
+        ret = new f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.PropertyKind(cPtr, owner);
     }
     else if (type == "PropertySet")
     {
@@ -114,6 +114,18 @@ public static f2i.energisticsStandardsApi.${FESAPI_COMMON_NS}.AbstractObject res
 	else if (type == "Trajectory")
 	{
 		ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Trajectory(cPtr, owner);
+	}
+	else if (type == "Log")
+	{
+		ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Log(cPtr, owner);
+	}
+	else if (type == "ChannelSet")
+	{
+		ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.ChannelSet(cPtr, owner);
+	}
+	else if (type == "Channel")
+	{
+		ret = new f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Channel(cPtr, owner);
 	}
 	else
 	{

@@ -58,7 +58,7 @@ ContinuousPropertySeries::ContinuousPropertySeries(RESQML2_NS::AbstractRepresent
 
 ContinuousPropertySeries::ContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
-	const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, RESQML2_NS::PropertyKind * localPropKind,
+	const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, COMMON_NS::PropertyKind * localPropKind,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREContinuousPropertySeries(rep->getGsoapContext());	

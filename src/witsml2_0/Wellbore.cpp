@@ -24,6 +24,7 @@ under the License.
 #include "WellboreCompletion.h"
 #include "WellboreGeometry.h"
 #include "Trajectory.h"
+#include "Log.h"
 
 #include "../resqml2_0_1/WellboreFeature.h"
 
@@ -127,6 +128,11 @@ std::vector<Trajectory *> Wellbore::getTrajectories() const
 std::vector<WellboreGeometry *> Wellbore::getWellboreGeometries() const
 {
 	return getRepository()->getSourceObjects<WellboreGeometry>(this);
+}
+
+std::vector<Log *> Wellbore::getLogs() const
+{
+	return getRepository()->getSourceObjects<Log>(this);
 }
 
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Wellbore, Number, gsoap_eml2_1::soap_new_std__string)

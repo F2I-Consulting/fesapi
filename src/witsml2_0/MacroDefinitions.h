@@ -25,10 +25,10 @@ under the License.
 #define CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE(className, vectorName, attributeName) \
 		CHECK_RANGE(static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName, index)\
 		if (static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName == nullptr) { throw std::invalid_argument("The attribute in vector does not exist"); }
-#define CREATE_ATTRIBUTE_IF_NOT_PRESENT(className, attributeName, constructor) if (static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName == nullptr) { static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName = constructor(gsoapProxy2_1->soap, 1); }
+#define CREATE_ATTRIBUTE_IF_NOT_PRESENT(className, attributeName, constructor) if (static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName == nullptr) { static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName = constructor(gsoapProxy2_1->soap); }
 #define CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT(className, vectorName, attributeName, constructor)\
 		CHECK_RANGE(static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName, index)\
-		if (static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName == nullptr) { static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName = constructor(gsoapProxy2_1->soap, 1); }
+		if (static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName == nullptr) { static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName = constructor(gsoapProxy2_1->soap); }
 
 #define GETTER_PRESENCE_ATTRIBUTE(attributeName) DLL_IMPORT_OR_EXPORT bool has##attributeName() const;
 #define GETTER_PRESENCE_ATTRIBUTE_IMPL(className, attributeName) bool GLUE(,className)::has##attributeName() const { return static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName != nullptr; }

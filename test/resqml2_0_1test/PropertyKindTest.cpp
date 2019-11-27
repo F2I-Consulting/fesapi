@@ -19,7 +19,7 @@ under the License.
 #include "PropertyKindTest.h"
 #include "../catch.hpp"
 #include "common/EpcDocument.h"
-#include "resqml2/PropertyKind.h"
+#include "common/PropertyKind.h"
 #include <stdexcept>
 
 using namespace std;

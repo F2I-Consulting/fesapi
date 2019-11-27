@@ -23,7 +23,7 @@ under the License.
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "../resqml2/AbstractRepresentation.h"
 #include "../resqml2/AbstractValuesProperty.h"
-#include "../resqml2/PropertyKind.h"
+#include "../common/PropertyKind.h"
 #include "../resqml2_0_1/WellboreMarker.h"
 #include "../resqml2_2/AbstractColorMap.h"
 #include "../resqml2_2/DiscreteColorMap.h"
