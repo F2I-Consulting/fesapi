@@ -52,42 +52,42 @@ namespace WITSML2_0_NS
 		DLL_IMPORT_OR_EXPORT virtual void pushBackChannelIndex(gsoap_eml2_1::witsml20__ChannelIndexType indexType, gsoap_eml2_1::eml21__UnitOfMeasure uom, const std::string & mnemonic, bool isIncreasing = true, const std::string & datum = "") = 0;
 
 		unsigned int getChannelIndexCount() const {
-			return static_cast<T*>(gsoapProxy2_1)->Index.size();
+			return static_cast<T*>(this->gsoapProxy2_1)->Index.size();
 		}
 
 		gsoap_eml2_1::witsml20__ChannelIndexType getChannelIndexType(unsigned int index) {
 			if (index >= getChannelIndexCount()) {
 				throw std::out_of_range("The channel index is out of range");
 			}
-			return static_cast<T*>(gsoapProxy2_1)->Index[index]->IndexType;
+			return static_cast<T*>(this->gsoapProxy2_1)->Index[index]->IndexType;
 		}
 
 		std::string getChannelIndexUom(unsigned int index) {
 			if (index >= getChannelIndexCount()) {
 				throw std::out_of_range("The channel index is out of range");
 			}
-			return static_cast<T*>(gsoapProxy2_1)->Index[index]->Uom;
+			return static_cast<T*>(this->gsoapProxy2_1)->Index[index]->Uom;
 		}
 
 		bool getChannelIndexIsIncreasing(unsigned int index) {
 			if (index >= getChannelIndexCount()) {
 				throw std::out_of_range("The channel index is out of range");
 			}
-			return static_cast<T*>(gsoapProxy2_1)->Index[index]->Direction == gsoap_eml2_1::witsml20__IndexDirection__increasing;
+			return static_cast<T*>(this->gsoapProxy2_1)->Index[index]->Direction == gsoap_eml2_1::witsml20__IndexDirection__increasing;
 		}
 
 		std::string getChannelIndexMnemonic(unsigned int index) {
 			if (index >= getChannelIndexCount()) {
 				throw std::out_of_range("The channel index is out of range");
 			}
-			return static_cast<T*>(gsoapProxy2_1)->Index[index]->Mnemonic;
+			return static_cast<T*>(this->gsoapProxy2_1)->Index[index]->Mnemonic;
 		}
 
 		std::string getChannelIndexDatum(unsigned int index) {
 			if (index >= getChannelIndexCount()) {
 				throw std::out_of_range("The channel index is out of range");
 			}
-			return static_cast<T*>(gsoapProxy2_1)->Index[index]->DatumReference == nullptr ? "" : *static_cast<T*>(gsoapProxy2_1)->Index[index]->DatumReference;
+			return static_cast<T*>(this->gsoapProxy2_1)->Index[index]->DatumReference == nullptr ? "" : *static_cast<T*>(this->gsoapProxy2_1)->Index[index]->DatumReference;
 		}
 	};
 }
