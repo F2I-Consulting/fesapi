@@ -122,16 +122,16 @@ namespace WITSML2_0_NS
 		GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_TEMPLATE(std::string, ToolClass, gsoap_eml2_1::soap_new_std__string)
 	};
 
-	template<> std::string ChannelMetaDataObject<gsoap_eml2_1::witsml20__Channel>::getTimeDepth() const {
+	template<> inline std::string ChannelMetaDataObject<gsoap_eml2_1::witsml20__Channel>::getTimeDepth() const {
 		return static_cast<gsoap_eml2_1::witsml20__Channel*>(gsoapProxy2_1)->TimeDepth;
 	}
-	template<> bool ChannelMetaDataObject<gsoap_eml2_1::witsml20__Channel>::hasTimeDepth() const {
+	template<> inline bool ChannelMetaDataObject<gsoap_eml2_1::witsml20__Channel>::hasTimeDepth() const {
 		return true;
 	}
-	template<> std::string ChannelMetaDataObject<gsoap_eml2_1::witsml20__Channel>::getLoggingCompanyName() const {
+	template<> inline std::string ChannelMetaDataObject<gsoap_eml2_1::witsml20__Channel>::getLoggingCompanyName() const {
 		return static_cast<gsoap_eml2_1::witsml20__Channel*>(gsoapProxy2_1)->LoggingCompanyName;
 	}
-	template<> bool ChannelMetaDataObject<gsoap_eml2_1::witsml20__Channel>::hasLoggingCompanyName() const {
+	template<> inline bool ChannelMetaDataObject<gsoap_eml2_1::witsml20__Channel>::hasLoggingCompanyName() const {
 		return true;
 	}
 }
