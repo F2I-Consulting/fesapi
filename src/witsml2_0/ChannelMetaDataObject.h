@@ -85,7 +85,7 @@ namespace WITSML2_0_NS
 		*/
 		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* getPropertyKind() const
 		{
-			return this->getRepository()->getDataObjectByUuid<COMMON_NS::PropertyKind>(getPropertyKindDor()->Uuid);
+			return getRepository()->template getDataObjectByUuid<COMMON_NS::PropertyKind>(getPropertyKindDor()->Uuid);
 		}
 
 		/**
