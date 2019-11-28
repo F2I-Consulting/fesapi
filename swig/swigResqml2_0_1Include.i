@@ -3160,7 +3160,7 @@ namespace RESQML2_0_1_NS
 #ifdef SWIGPYTHON
 	%rename(Resqml2_0_1_PropertyKind) PropertyKind;
 #endif	
-	class PropertyKind : public RESQML2_NS::PropertyKind
+	class PropertyKind : public COMMON_NS::PropertyKind
 	{
 	public:
 	};
@@ -3401,7 +3401,7 @@ namespace RESQML2_0_1_NS
 		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getResqmlStandardPropertyKindNameFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application) const;
 		std::string getApplicationPropertyKindNameFromResqmlLocalPropertyKindUuid(const std::string & resqmlLocalPropertyKindUuid, const std::string & application) const;
 		std::string getResqmlLocalPropertyKindUuidFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application) const;
-		PropertyKind* addResqmlLocalPropertyKindToEpcDocumentFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application);
+		COMMON_NS::PropertyKind* addResqmlLocalPropertyKindToEpcDocumentFromApplicationPropertyKindName(const std::string & applicationPropertyKindName, const std::string & application);
 		bool isChildOf(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind child, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind parent) const;
 		bool isAbstract(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind resqmlStandardPropertyKindName) const;
 	};

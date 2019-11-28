@@ -24,8 +24,9 @@ under the License.
 
 #include <hdf5.h>
 
+#include "../common/PropertyKind.h"
+
 #include "AbstractRepresentation.h"
-#include "PropertyKind.h"
 #include "AbstractLocal3dCrs.h"
 #include "../common/AbstractHdfProxy.h"
 
@@ -104,6 +105,9 @@ std::string AbstractValuesProperty::pushBackRefToExistingIntegerDataset(COMMON_N
 {
 	if (hdfProxy == nullptr) {
 		hdfProxy = getRepository()->getDefaultHdfProxy();
+		if (hdfProxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	getRepository()->addRelationship(this, hdfProxy);
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -423,6 +427,9 @@ void AbstractValuesProperty::createLongHdf5ArrayOfValues(
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	getRepository()->addRelationship(this, proxy);
 
@@ -465,6 +472,9 @@ void AbstractValuesProperty::pushBackLongHdf5SlabArrayOfValues(
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	getRepository()->addRelationship(this, proxy);
 

@@ -405,9 +405,17 @@ void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std:
 		throw invalid_argument("The dataset path of the node indices per face is incomplete.");
 	if (nodeIndicesCumulativeCountPerFace.empty())
 		throw invalid_argument("The dataset path of the node indices count per face is incomplete.");
-
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
+	}
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 
 	resqml20__UnstructuredGridGeometry* geom = soap_new_resqml20__UnstructuredGridGeometry(gsoapProxy2_0_1->soap);
@@ -418,9 +426,6 @@ void UnstructuredGridRepresentation::setGeometryUsingExistingDatasets(const std:
 	geom->NodeCount = pointCount;
 	geom->CellShape = cellShape;
 
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-	}
 	getRepository()->addRelationship(this, proxy);
 	// Face Right handness
 	//XML
@@ -532,12 +537,20 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDa
 		throw invalid_argument("The dataset path of the face indices per cell is incomplete.");
 	if (nodeIndicesPerFace.empty())
 		throw invalid_argument("The dataset path of the node indices per face is incomplete.");
-
-	const ULONG64 cellCount = getSpecializedGsoapProxy()->CellCount;
-
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
 	}
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
+
+	const ULONG64 cellCount = getSpecializedGsoapProxy()->CellCount;
 
 	resqml20__UnstructuredGridGeometry* geom = soap_new_resqml20__UnstructuredGridGeometry(gsoapProxy2_0_1->soap);
 	getSpecializedGsoapProxy()->Geometry = geom;
@@ -555,9 +568,6 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometryUsingExistingDa
 		geom->CellShape = resqml20__CellShape__polyhedral;
 	}
 
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-	}
 	getRepository()->addRelationship(this, proxy);
 	// Face Right handness
 	//XML
@@ -628,18 +638,25 @@ void UnstructuredGridRepresentation::setConstantCellShapeGeometry(unsigned char 
 	ULONG64 * faceIndicesPerCell, ULONG64 faceCountPerCell,
 	ULONG64 * nodeIndicesPerFace, ULONG64 nodeCountPerFace)
 {
-	if (cellFaceIsRightHanded == nullptr)
+	if (cellFaceIsRightHanded == nullptr) {
 		throw invalid_argument("The cellFaceIsRightHanded information cannot be null.");
-	if (points == nullptr)
+	}
+	if (points == nullptr) {
 		throw invalid_argument("The points of the ijk grid cannot be null.");
-	if (faceIndicesPerCell == nullptr)
+	}
+	if (faceIndicesPerCell == nullptr) {
 		throw invalid_argument("The definition of the face indices per cell is incomplete.");
-	if (nodeIndicesPerFace == nullptr)
+	}
+	if (nodeIndicesPerFace == nullptr) {
 		throw invalid_argument("The definition of the node indices per face is incomplete.");
-
+	}
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
+
 	setConstantCellShapeGeometryUsingExistingDatasets("/RESQML/" + gsoapProxy2_0_1->uuid + "/CellFaceIsRightHanded", "/RESQML/" + gsoapProxy2_0_1->uuid + "/Points",
 		pointCount, faceCount, localCrs, proxy,
 		"/RESQML/" + gsoapProxy2_0_1->uuid + "/FacesPerCell", faceCountPerCell,

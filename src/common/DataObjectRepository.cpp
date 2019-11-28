@@ -107,6 +107,10 @@ under the License.
 #include "../witsml2_0/WellCompletion.h"
 #include "../witsml2_0/WellboreCompletion.h"
 #include "../witsml2_0/WellboreGeometry.h"
+#include "../witsml2_0/Log.h"
+#include "../witsml2_0/ChannelSet.h"
+#include "../witsml2_0/Channel.h"
+#include "../witsml2_0/PropertyKind.h"
 
 #include "../tools/GuidTools.h"
 
@@ -523,7 +527,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_resqml2_0_1
 	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(BlockedWellboreRepresentation)
 	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(AbstractIjkGridRepresentation)
 	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(UnstructuredGridRepresentation)
-	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(PropertyKind)
+	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::PropertyKind)
 	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(PropertySet)
 	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(ContinuousProperty)
 	else if CREATE_EML_2_0_FESAPI_PARTIAL_WRAPPER(ContinuousPropertySeries)
@@ -567,6 +571,10 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_1::eml
 	if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Well)
 	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Wellbore)
 	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Trajectory)
+	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::PropertyKind)
+	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Log)
+	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::ChannelSet)
+	else if CREATE_EML_2_1_FESAPI_PARTIAL_WRAPPER(WITSML2_0_NS::Channel)
 	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
@@ -1176,28 +1184,34 @@ StringTableLookup* DataObjectRepository::createStringTableLookup(const std::stri
 	return new StringTableLookup(this, guid, title);
 }
 
-RESQML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
+COMMON_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
 	const std::string & namingSystem, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & parentEnergisticsPropertyKind)
 {
 	return new RESQML2_0_1_NS::PropertyKind(this, guid, title, namingSystem, uom, parentEnergisticsPropertyKind);
 }
 
-RESQML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
-	const std::string & namingSystem, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, RESQML2_NS::PropertyKind * parentPropType)
+COMMON_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
+	const std::string & namingSystem, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, COMMON_NS::PropertyKind * parentPropType)
 {
 	return new RESQML2_0_1_NS::PropertyKind(guid, title, namingSystem, uom, parentPropType);
 }
 
-RESQML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
+COMMON_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
 	const std::string & namingSystem, const std::string & nonStandardUom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & parentEnergisticsPropertyKind)
 {
 	return new RESQML2_0_1_NS::PropertyKind(this, guid, title, namingSystem, nonStandardUom, parentEnergisticsPropertyKind);
 }
 
-RESQML2_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
-	const std::string & namingSystem, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * parentPropType)
+COMMON_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
+	const std::string & namingSystem, const std::string & nonStandardUom, COMMON_NS::PropertyKind * parentPropType)
 {
 	return new RESQML2_0_1_NS::PropertyKind(guid, title, namingSystem, nonStandardUom, parentPropType);
+}
+
+COMMON_NS::PropertyKind* DataObjectRepository::createPropertyKind(const std::string & guid, const std::string & title,
+	gsoap_eml2_1::eml21__QuantityClassKind quantityClass, bool isAbstract, COMMON_NS::PropertyKind* parentPropertyKind)
+{
+	return new WITSML2_0_NS::PropertyKind(this, guid, title, quantityClass, isAbstract, parentPropertyKind);
 }
 
 RESQML2_NS::PropertySet* DataObjectRepository::createPropertySet(const std::string & guid, const std::string & title,
@@ -1213,7 +1227,7 @@ CommentProperty* DataObjectRepository::createCommentProperty(RESQML2_NS::Abstrac
 }
 
 CommentProperty* DataObjectRepository::createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropType)
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, COMMON_NS::PropertyKind * localPropType)
 {
 	return new CommentProperty(rep, guid, title, dimension, attachmentKind, localPropType);
 }
@@ -1225,7 +1239,7 @@ ContinuousProperty* DataObjectRepository::createContinuousProperty(RESQML2_NS::A
 }
 
 ContinuousProperty* DataObjectRepository::createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, RESQML2_NS::PropertyKind * localPropType)
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, COMMON_NS::PropertyKind * localPropType)
 {
 	return new ContinuousProperty(rep, guid, title, dimension, attachmentKind, uom, localPropType);
 }
@@ -1237,7 +1251,7 @@ ContinuousProperty* DataObjectRepository::createContinuousProperty(RESQML2_NS::A
 }
 
 ContinuousProperty* DataObjectRepository::createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * localPropType)
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * localPropType)
 {
 	return new ContinuousProperty(rep, guid, title, dimension, attachmentKind, nonStandardUom, localPropType);
 }
@@ -1250,7 +1264,7 @@ ContinuousPropertySeries* DataObjectRepository::createContinuousPropertySeries(R
 }
 
 ContinuousPropertySeries* DataObjectRepository::createContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, RESQML2_NS::PropertyKind * localPropType,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, COMMON_NS::PropertyKind * localPropType,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
 	return new ContinuousPropertySeries(rep, guid, title, dimension, attachmentKind, uom, localPropType, ts, useInterval);
@@ -1263,7 +1277,7 @@ DiscreteProperty* DataObjectRepository::createDiscreteProperty(RESQML2_NS::Abstr
 }
 
 DiscreteProperty* DataObjectRepository::createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropType)
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, COMMON_NS::PropertyKind * localPropType)
 {
 	return new DiscreteProperty(rep, guid, title, dimension, attachmentKind, localPropType);
 }
@@ -1276,7 +1290,7 @@ DiscretePropertySeries* DataObjectRepository::createDiscretePropertySeries(RESQM
 }
 
 DiscretePropertySeries* DataObjectRepository::createDiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropType,
+	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, COMMON_NS::PropertyKind * localPropType,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
 	return new DiscretePropertySeries(rep, guid, title, dimension, attachmentKind, localPropType, ts, useInterval);
@@ -1291,7 +1305,7 @@ CategoricalProperty* DataObjectRepository::createCategoricalProperty(RESQML2_NS:
 
 CategoricalProperty* DataObjectRepository::createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
-	StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropType)
+	StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropType)
 {
 	return new CategoricalProperty(rep, guid, title, dimension, attachmentKind, strLookup, localPropType);
 }
@@ -1306,7 +1320,7 @@ CategoricalPropertySeries* DataObjectRepository::createCategoricalPropertySeries
 
 CategoricalPropertySeries* DataObjectRepository::createCategoricalPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
-	StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropType,
+	StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropType,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
 	return new CategoricalPropertySeries(rep, guid, title, dimension, attachmentKind, strLookup, localPropType, ts, useInterval);
@@ -1378,7 +1392,6 @@ WITSML2_0_NS::WellboreCompletion* DataObjectRepository::createWellboreCompletion
 	return new WellboreCompletion(witsmlWellbore, wellCompletion, guid, title, wellCompletionName);
 }
 
-
 WITSML2_0_NS::WellboreGeometry* DataObjectRepository::createWellboreGeometry(WITSML2_0_NS::Wellbore* witsmlWellbore,
 	const std::string & guid,
 	const std::string & title,
@@ -1393,6 +1406,29 @@ WITSML2_0_NS::Trajectory* DataObjectRepository::createTrajectory(WITSML2_0_NS::W
 	gsoap_eml2_1::witsml20__ChannelStatus channelStatus)
 {
 	return new WITSML2_0_NS::Trajectory(witsmlWellbore, guid, title, channelStatus);
+}
+
+WITSML2_0_NS::Log* DataObjectRepository::createLog(WITSML2_0_NS::Wellbore* witsmlWellbore,
+	const std::string & guid,
+	const std::string & title)
+{
+	return new WITSML2_0_NS::Log(witsmlWellbore, guid, title);
+}
+
+WITSML2_0_NS::ChannelSet* DataObjectRepository::createChannelSet(const std::string & guid, const std::string & title)
+{
+	return new WITSML2_0_NS::ChannelSet(this, guid, title);
+}
+
+WITSML2_0_NS::Channel* DataObjectRepository::createChannel(COMMON_NS::PropertyKind * propertyKind,
+	const std::string & guid, const std::string & title,
+	const std::string & mnemonic, gsoap_eml2_1::eml21__UnitOfMeasure uom, gsoap_eml2_1::witsml20__EtpDataType dataType, gsoap_eml2_1::witsml20__ChannelStatus growingStatus,
+	const std::string & timeDepth, const std::string & loggingCompanyName)
+{
+	return new WITSML2_0_NS::Channel(propertyKind,
+		guid, title,
+		mnemonic, uom, dataType, growingStatus,
+		timeDepth, loggingCompanyName);
 }
 
 #if WITH_EXPERIMENTAL
@@ -2040,6 +2076,9 @@ COMMON_NS::AbstractObject* DataObjectRepository::getWitsml2_0WrapperFromGsoapCon
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, WellboreCompletion, gsoap_eml2_1)
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, WellboreGeometry, gsoap_eml2_1)
 	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Trajectory, gsoap_eml2_1)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Log, gsoap_eml2_1)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, ChannelSet, gsoap_eml2_1)
+	else if CHECK_AND_GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WITSML2_0_NS, Channel, gsoap_eml2_1)
 
 	return wrapper;
 }

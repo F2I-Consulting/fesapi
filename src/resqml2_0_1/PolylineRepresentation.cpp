@@ -116,14 +116,18 @@ void PolylineRepresentation::getXyzPointsOfPatch(const unsigned int & patchIndex
 
 void PolylineRepresentation::setGeometry(double * points, unsigned int pointCount, COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
+	}
+
 	_resqml20__PolylineRepresentation* polylineRep = static_cast<_resqml20__PolylineRepresentation*>(gsoapProxy2_0_1);
 	polylineRep->NodePatch = soap_new_resqml20__NodePatch(gsoapProxy2_0_1->soap);
 	polylineRep->NodePatch->Count = pointCount;
 	polylineRep->NodePatch->PatchIndex = 0;
 
-	if (localCrs == nullptr) {
-		localCrs = getRepository()->getDefaultCrs();
-	}
 	hsize_t pointCountDims[] = {pointCount};
 	polylineRep->NodePatch->Geometry = createPointGeometryPatch2_0_1(0, points, localCrs, pointCountDims, 1, proxy);
 	getRepository()->addRelationship(this, localCrs);

@@ -97,11 +97,16 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointG
 	double* points, AbstractLocal3dCrs* localCrs, hsize_t* numPoints, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy)
 {
 	if (localCrs == nullptr) {
-		throw invalid_argument("The CRS cannot be the null pointer");
+		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
 	}
-
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	getRepository()->addRelationship(this, proxy);
 

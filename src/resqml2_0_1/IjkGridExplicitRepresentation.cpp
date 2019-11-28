@@ -359,9 +359,17 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodesUsingExistin
 	if (splitCoordinateLineCount != 0 && (pillarOfCoordinateLine.empty() || splitCoordinateLineColumnCumulativeCount.empty() || splitCoordinateLineColumns.empty())) {
 		throw invalid_argument("The definition of the split coordinate lines HDF dataset is incomplete.");
 	}
-
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
+	}
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 
 	resqml20__IjkGridGeometry* geom = soap_new_resqml20__IjkGridGeometry(gsoapProxy2_0_1->soap);
@@ -376,9 +384,6 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodesUsingExistin
 	geom->PillarShape = mostComplexPillarGeometry;
 	geom->KDirection = kDirectionKind;
 
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-	}
 	getRepository()->addRelationship(this, proxy);
 	// Pillar defined
 	if (definedPillars.empty()) {
@@ -453,6 +458,12 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodes(
 	if (splitCoordinateLineCount != 0 && (pillarOfCoordinateLine == nullptr || splitCoordinateLineColumnCumulativeCount == nullptr || splitCoordinateLineColumns == nullptr)) {
 		throw invalid_argument("The definition of the split coordinate lines is incomplete.");
 	}
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
 
 	const std::string hdfDatasetPrefix = "/RESQML/" + gsoapProxy2_0_1->uuid;
 	setGeometryAsCoordinateLineNodesUsingExistingDatasets(mostComplexPillarGeometry, kDirectionKind, isRightHanded,
@@ -460,11 +471,6 @@ void IjkGridExplicitRepresentation::setGeometryAsCoordinateLineNodes(
 		splitCoordinateLineCount, pillarOfCoordinateLine == nullptr ? "" : hdfDatasetPrefix + "/PillarIndices",
 		splitCoordinateLineColumnCumulativeCount == nullptr ? "" : hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + CUMULATIVE_LENGTH_DS_NAME, splitCoordinateLineColumns == nullptr ? "" : hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + ELEMENTS_DS_NAME,
 		definedPillars == nullptr ? "" : hdfDatasetPrefix + "/PillarGeometryIsDefined", localCrs);
-
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-	}
-	getRepository()->addRelationship(this, proxy);
 
 	// Pillar defined
 	if (definedPillars != nullptr) {

@@ -62,7 +62,7 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, RESQML2_NS::PropertyKind * localPropKind)
+	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, COMMON_NS::PropertyKind * localPropKind)
 {
 	init(rep, guid, title, dimension, attachmentKind);
 
@@ -85,7 +85,7 @@ ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep,
 }
 
 ContinuousProperty::ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * localPropKind)
+	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * localPropKind)
 {
 	init(rep, guid, title, dimension, attachmentKind);
 
@@ -146,6 +146,9 @@ void ContinuousProperty::pushBackDoubleHdf5ArrayOfValues(double const * values, 
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "");
 	setPropertyMinMax(values, numValues, numArrayDimensions, minimumValue, maximumValue);
@@ -194,12 +197,15 @@ void ContinuousProperty::pushBackFloatHdf5Array3dOfValues(const float * values, 
 	}
 }
 
-std::string ContinuousProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName, LONG64)
+std::string ContinuousProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* proxy, const std::string & datasetName, LONG64)
 {
-	if (hdfProxy == nullptr) {
-		hdfProxy = getRepository()->getDefaultHdfProxy();
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
-	getRepository()->addRelationship(this, hdfProxy);
+	getRepository()->addRelationship(this, proxy);
 	gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1);
 
 	gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = gsoap_resqml2_0_1::soap_new_resqml20__PatchOfValues(gsoapProxy2_0_1->soap);
@@ -209,7 +215,7 @@ std::string ContinuousProperty::pushBackRefToExistingDataset(COMMON_NS::Abstract
 	// XML
 	gsoap_resqml2_0_1::resqml20__DoubleHdf5Array* xmlValues = gsoap_resqml2_0_1::soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
 	xmlValues->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
-	xmlValues->Values->HdfProxy = hdfProxy->newResqmlReference();
+	xmlValues->Values->HdfProxy = proxy->newResqmlReference();
 
 	if (datasetName.empty()) {
 		ostringstream ossForHdf;
@@ -265,6 +271,9 @@ void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(float const * values, un
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, string());
 	setPropertyMinMax(values, numValues, numArrayDimensions, minimumValue, maximumValue);
@@ -284,6 +293,9 @@ void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, string());
 
@@ -327,6 +339,9 @@ void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
 	// HDF
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	proxy->writeArrayNdSlab(
 		prop->uuid,
@@ -411,7 +426,7 @@ double ContinuousProperty::getMaximumValue() const
 	return prop->MaximumValue.empty() ? std::numeric_limits<double>::quiet_NaN() : prop->MaximumValue[0];
 }
 
-bool ContinuousProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKind* pk)
+bool ContinuousProperty::validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk)
 {
 	if (pk == nullptr) {
 		throw invalid_argument("The property kind to validate cannot be null.");

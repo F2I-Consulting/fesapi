@@ -455,6 +455,11 @@ namespace COMMON_NS
 		gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* getGsoapProxy() const;
 
 		/**
+		* Get the gsoap proxy which is wrapped by this entity
+		*/
+		gsoap_eml2_1::eml21__AbstractObject* getEml21GsoapProxy() const { return gsoapProxy2_1; }
+
+		/**
 		* Get the gsoap context where the underlying gsoap proxy is defined.
 		*/
 		soap* getGsoapContext() const;

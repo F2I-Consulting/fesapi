@@ -96,14 +96,22 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, doubl
 	if (controlPointCount == 0) {
 		throw invalid_argument("The control point count cannot be 0.");
 	}
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
+	}
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
 
 	setMinimalGeometry(startMd, endMd);
 
 	_resqml20__WellboreTrajectoryRepresentation* const rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
-
-	if (localCrs == nullptr) {
-		localCrs = getRepository()->getDefaultCrs();
-	}
 
 	rep->Geometry = soap_new_resqml20__ParametricLineGeometry(gsoapProxy2_0_1->soap);
 	resqml20__ParametricLineGeometry* paramLine = soap_new_resqml20__ParametricLineGeometry(gsoapProxy2_0_1->soap);
@@ -113,9 +121,6 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, doubl
 	paramLine->KnotCount = controlPointCount;
 	paramLine->LineKindIndex = lineKind;
 
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-	}
 	getRepository()->addRelationship(this, proxy);
 
 	// XML control points

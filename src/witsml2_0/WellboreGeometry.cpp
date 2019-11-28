@@ -44,9 +44,9 @@ WellboreGeometry::WellboreGeometry(Wellbore* witsmlWellbore,
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
-	setWellbore(witsmlWellbore);
-
 	static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->GrowingStatus = channelStatus;
+
+	setWellbore(witsmlWellbore);
 }
 
 gsoap_eml2_1::eml21__DataObjectReference* WellboreGeometry::getWellboreDor() const

@@ -619,6 +619,9 @@ void Grid2dRepresentation::setGeometryAsArray2dOfLatticePoints3d(
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
 	}
 
 	resqml20__PointGeometry* geomPatch = createArray2dOfLatticePoints3d(numPointsInFastestDirection, numPointsInSlowestDirection,
@@ -647,6 +650,9 @@ void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
 	}
 
 	resqml20__Grid2dPatch* patch = soap_new_resqml20__Grid2dPatch(gsoapProxy2_0_1->soap);
@@ -676,6 +682,9 @@ void Grid2dRepresentation::setGeometryAsArray2dOfExplicitZ(
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
 	}
 
 	resqml20__Grid2dPatch* patch = soap_new_resqml20__Grid2dPatch(gsoapProxy2_0_1->soap);

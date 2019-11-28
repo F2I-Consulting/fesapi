@@ -67,9 +67,11 @@ void DeviationSurveyRepresentation::setGeometry(double * firstStationLocation, c
 		throw invalid_argument("The azimuths are missing.");
 	if (inclinations == nullptr)
 		throw invalid_argument("The inclinations are missing.");
-
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	getRepository()->addRelationship(this, proxy);
 

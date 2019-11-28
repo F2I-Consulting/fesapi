@@ -66,7 +66,7 @@ namespace RESQML2_0_1_NS
 		*/
 		ContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
-			const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, RESQML2_NS::PropertyKind * localPropKind,
+			const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, COMMON_NS::PropertyKind * localPropKind,
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		/**

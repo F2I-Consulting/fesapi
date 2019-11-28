@@ -1351,12 +1351,21 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	if (pillarKind == nullptr) {
 		throw invalid_argument("The kind of the coordinate lines cannot be null.");
 	}
-
-	gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind = computeKDirection(controlPoints, controlPointMaxCountPerPillar, pillarKind, localCrs == nullptr ? getRepository()->getDefaultCrs() : localCrs);
-
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
+	}
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
+
+	gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind = computeKDirection(controlPoints, controlPointMaxCountPerPillar, pillarKind, localCrs);
+
 	const std::string hdfDatasetPrefix = "/RESQML/" + gsoapProxy2_0_1->uuid;
 	setGeometryAsParametricSplittedPillarNodesWithoutPillarKindUsingExistingDatasets(kDirectionKind, isRightHanded,
 		hdfDatasetPrefix + "/PointParameters", hdfDatasetPrefix + "/ControlPoints", controlPointParameters != nullptr ? hdfDatasetPrefix + "/controlPointParameters" : "", controlPointMaxCountPerPillar, proxy,
@@ -1382,9 +1391,6 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	xmlDefinedPillars->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/PillarGeometryIsDefined";
 
 	// HDF Pillar defined
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-	}
 	getRepository()->addRelationship(this, proxy);
 	const unsigned int pillarCount = getPillarCount();
 	unsigned char * definedPillars = new unsigned char[pillarCount];
@@ -1432,9 +1438,6 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	if (definedPillars.empty())
 		throw invalid_argument("The defined pillars cannot be null.");
 
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-	}
 	setGeometryAsParametricSplittedPillarNodesWithoutPillarKindUsingExistingDatasets(kDirectionKind, isRightHanded,
 		parameters, controlPoints, controlPointParameters, controlPointMaxCountPerPillar, proxy,
 		splitCoordinateLineCount, pillarOfCoordinateLine,
@@ -1542,14 +1545,23 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	if (splitCoordinateLineCount != 0 && (pillarOfCoordinateLine == nullptr || splitCoordinateLineColumnCumulativeCount == nullptr || splitCoordinateLineColumns == nullptr)) {
 		throw invalid_argument("The definition of the split coordinate lines is incomplete.");
 	}
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
+	}
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
 
 	gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind = pillarKind == -1
 		? gsoap_resqml2_0_1::resqml20__KDirection__down
-		: computeKDirection(controlPoints, controlPointCountPerPillar, nullptr, localCrs == nullptr ? getRepository()->getDefaultCrs() : localCrs);
+		: computeKDirection(controlPoints, controlPointCountPerPillar, nullptr, localCrs);
 
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-	}
 	const std::string hdfDatasetPrefix = "/RESQML/" + gsoapProxy2_0_1->uuid;
 	setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(kDirectionKind, isRightHanded,
 		hdfDatasetPrefix + "/PointParameters", hdfDatasetPrefix + "/ControlPoints", controlPointParameters != nullptr ? hdfDatasetPrefix + "/controlPointParameters" : "", controlPointCountPerPillar, pillarKind, proxy,
@@ -1574,7 +1586,13 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
 		if (localCrs == nullptr) {
-			throw invalid_argument("You need to provide a local CRS : at least a default one.");
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
+	}
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
 
@@ -1589,12 +1607,6 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	geom->GridIsRighthanded = isRightHanded;
 	geom->KDirection = kDirectionKind;
 
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-		if (proxy == nullptr) {
-			throw invalid_argument("You need to provide an HDF proxy : at least a default one.");
-		}
-	}
 	getRepository()->addRelationship(this, proxy);
 	// XML parametric nodes
 	resqml20__Point3dParametricArray* xmlPoints = soap_new_resqml20__Point3dParametricArray(gsoapProxy2_0_1->soap);

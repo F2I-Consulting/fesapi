@@ -57,7 +57,7 @@ DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentatio
 
 DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
-	RESQML2_NS::PropertyKind * localPropKind,
+	COMMON_NS::PropertyKind * localPropKind,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREDiscretePropertySeries(rep->getGsoapContext());	

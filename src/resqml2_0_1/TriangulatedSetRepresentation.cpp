@@ -90,24 +90,30 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 	unsigned int triangleCount, unsigned int * triangleNodeIndices,
 	COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
+	}
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
+
 	_resqml20__TriangulatedSetRepresentation* triRep = static_cast<_resqml20__TriangulatedSetRepresentation*>(gsoapProxy2_0_1);
 
 	resqml20__TrianglePatch* patch = soap_new_resqml20__TrianglePatch(gsoapProxy2_0_1->soap);
 	patch->PatchIndex = triRep->TrianglePatch.size();
 	triRep->TrianglePatch.push_back(patch);
 
-
-	if (localCrs == nullptr) {
-		localCrs = getRepository()->getDefaultCrs();
-	}
 	hsize_t pointCountDims[] = {nodeCount};
 	patch->NodeCount = nodeCount;
 	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, nodes, localCrs, pointCountDims, 1, proxy);
 	getRepository()->addRelationship(this, localCrs);
 
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-	}
 	getRepository()->addRelationship(this, proxy);
 
 	patch->Count = triangleCount;

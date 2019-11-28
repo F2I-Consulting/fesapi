@@ -30,7 +30,7 @@ under the License.
 #include "../resqml2_0_1/IjkGridParametricRepresentation.h"
 #include "../resqml2_0_1/IjkGridLatticeRepresentation.h"
 #include "RepresentationSetRepresentation.h"
-#include "PropertyKind.h"
+#include "../common/PropertyKind.h"
 #include "AbstractLocal3dCrs.h"
 #include "../common/AbstractHdfProxy.h"
 #include "TimeSeries.h"
@@ -68,10 +68,10 @@ void AbstractProperty::loadTargetRelationships()
 	if (!isAssociatedToOneStandardEnergisticsPropertyKind())
 	{
 		dor = getLocalPropertyKindDor();
-		RESQML2_NS::PropertyKind* pk = getRepository()->getDataObjectByUuid<PropertyKind>(dor->UUID);
+		COMMON_NS::PropertyKind* pk = getRepository()->getDataObjectByUuid<COMMON_NS::PropertyKind>(dor->UUID);
 		if (pk == nullptr) {
 			getRepository()->createPartial(dor);
-			pk = getRepository()->getDataObjectByUuid<PropertyKind>(dor->UUID);
+			pk = getRepository()->getDataObjectByUuid<COMMON_NS::PropertyKind>(dor->UUID);
 			if (pk == nullptr) {
 				throw invalid_argument("The DOR looks invalid.");
 			}
@@ -407,7 +407,7 @@ gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind AbstractProperty::getEnergistics
 	throw invalid_argument("The property kind of this property is not an Energistics one.");
 }
 
-void AbstractProperty::setLocalPropertyKind(PropertyKind* propKind)
+void AbstractProperty::setLocalPropertyKind(COMMON_NS::PropertyKind* propKind)
 {
 	if (propKind == nullptr) {
 		throw invalid_argument("The local property kind of this property cannot be null.");
@@ -454,9 +454,9 @@ std::string AbstractProperty::getLocalPropertyKindTitle() const
 	return getLocalPropertyKindDor()->Title;
 }
 
-PropertyKind* AbstractProperty::getLocalPropertyKind() const
+COMMON_NS::PropertyKind* AbstractProperty::getLocalPropertyKind() const
 {
-	return getRepository()->getDataObjectByUuid<PropertyKind>(getLocalPropertyKindUuid());
+	return getRepository()->getDataObjectByUuid<COMMON_NS::PropertyKind>(getLocalPropertyKindUuid());
 }
 
 bool AbstractProperty::hasRealizationIndex() const
