@@ -22,6 +22,8 @@ under the License.
 
 #include <stdexcept>
 
+#include "../common/PropertyKind.h"
+
 namespace WITSML2_0_NS
 {
 	/**

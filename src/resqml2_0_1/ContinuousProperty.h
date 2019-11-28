@@ -303,12 +303,12 @@ namespace RESQML2_0_1_NS
 		/**
 		* Push back a new patch of values for this property where the values have not to be written in the HDF file.
 		* The reason can be that the values already exist in an external file (only HDF5 for now) or that the writing of the values in the external file is defered in time.
-		* @param	hdfProxy			The HDF5 proxy where the values are already or will be stored.
+		* @param	proxy				The HDF5 proxy where the values are already or will be stored.
 		* @param	datasetName			If not provided during the method call, the dataset will be named the same as the dataset naming convention of the fesapi :"/RESQML/" + prop->uuid + "/values_patch" + patchIndex;
 		* @param	nullValue			Only relevant for integer hdf5 datasets. Indeed, RESQML (and fesapi) forces null value for floating point to be NaN value.
 		* @return	The name of the hdf5 dataset.
 		*/
-		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
+		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
 
 		/**
 		* Get all the values of a particular patch of the instance which are supposed to be double ones.

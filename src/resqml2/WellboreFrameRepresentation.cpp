@@ -43,6 +43,9 @@ void WellboreFrameRepresentation::setMdValues(double const * mdValues, unsigned 
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	getRepository()->addRelationship(this, proxy);
 

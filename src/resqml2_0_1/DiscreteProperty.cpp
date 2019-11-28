@@ -298,6 +298,9 @@ void DiscreteProperty::pushBackLongHdf5ArrayOfValues(const LONG64 * values, unsi
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
 
@@ -325,6 +328,9 @@ void DiscreteProperty::pushBackIntHdf5ArrayOfValues(const int * values, unsigned
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
 
@@ -351,6 +357,9 @@ void DiscreteProperty::pushBackShortHdf5ArrayOfValues(const short * values, unsi
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
 
@@ -377,6 +386,9 @@ void DiscreteProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * va
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
 
@@ -403,6 +415,9 @@ void DiscreteProperty::pushBackCharHdf5ArrayOfValues(const char * values, unsign
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
 

@@ -168,12 +168,11 @@ gsoap_resqml2_0_1::resqml20__Regrid* AbstractGridRepresentation::createRegrid(un
 		regrid->Intervals->ParentCountPerInterval = xmlParentCountPerInterval;
 	}
 	else {
-
 		if (proxy == nullptr) {
 			proxy = getRepository()->getDefaultHdfProxy();
-		}
-		if (proxy == nullptr) {
-			throw invalid_argument("No Hdf Proxy has been found");
+			if (proxy == nullptr) {
+				throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+			}
 		}
 		getRepository()->addRelationship(this, proxy);
 
@@ -200,9 +199,9 @@ gsoap_resqml2_0_1::resqml20__Regrid* AbstractGridRepresentation::createRegrid(un
 	if (childCellWeights != nullptr) {
 		if (proxy == nullptr) {
 			proxy = getRepository()->getDefaultHdfProxy();
-		}
-		if (proxy == nullptr) {
-			throw invalid_argument("No Hdf Proxy has been found");
+			if (proxy == nullptr) {
+				throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+			}
 		}
 		getRepository()->addRelationship(this, proxy);
 
@@ -237,12 +236,11 @@ void AbstractGridRepresentation::setParentWindow(ULONG64 * cellIndices, ULONG64 
 
 		cpw->ParentGrid = parentGrid->newResqmlReference();
 		if (cellIndexCount > 1) {
-
 			if (proxy == nullptr) {
 				proxy = getRepository()->getDefaultHdfProxy();
-			}
-			if (proxy == nullptr) {
-				throw invalid_argument("No Hdf Proxy has been found");
+				if (proxy == nullptr) {
+					throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+				}
 			}
 			getRepository()->addRelationship(this, proxy);
 
@@ -296,9 +294,9 @@ void AbstractGridRepresentation::setParentWindow(unsigned int * columnIndices, u
 		{
 			if (proxy == nullptr) {
 				proxy = getRepository()->getDefaultHdfProxy();
-			}
-			if (proxy == nullptr) {
-				throw invalid_argument("No Hdf Proxy has been found");
+				if (proxy == nullptr) {
+					throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+				}
 			}
 			getRepository()->addRelationship(this, proxy);
 

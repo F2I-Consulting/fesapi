@@ -31,14 +31,14 @@ namespace WITSML2_0_NS
 		/**
 		* Constructor for partial transfer
 		*/
-		DLL_IMPORT_OR_EXPORT ChannelSet(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : ChannelIndexDataObject(partialObject) {}
+		DLL_IMPORT_OR_EXPORT ChannelSet(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : ChannelIndexDataObject<gsoap_eml2_1::witsml20__ChannelSet>(partialObject) {}
 
 		ChannelSet(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 	
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		ChannelSet(gsoap_eml2_1::witsml20__ChannelSet* fromGsoap) :ChannelIndexDataObject(fromGsoap) {}
+		ChannelSet(gsoap_eml2_1::witsml20__ChannelSet* fromGsoap) : ChannelIndexDataObject<gsoap_eml2_1::witsml20__ChannelSet>(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.

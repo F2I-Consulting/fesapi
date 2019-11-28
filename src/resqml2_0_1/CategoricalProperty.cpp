@@ -107,6 +107,9 @@ void CategoricalProperty::pushBackLongHdf5ArrayOfValues(const LONG64 * values, u
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue);
 
@@ -140,6 +143,9 @@ void CategoricalProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short *
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue);
 

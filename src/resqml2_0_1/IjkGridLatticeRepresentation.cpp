@@ -427,6 +427,9 @@ void IjkGridLatticeRepresentation::setGeometryAsCoordinateLineNodes(
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
 	}
 
 	resqml20__IjkGridGeometry* geom = soap_new_resqml20__IjkGridGeometry(gsoapProxy2_0_1->soap);

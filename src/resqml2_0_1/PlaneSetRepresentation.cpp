@@ -63,6 +63,9 @@ void PlaneSetRepresentation::pushBackHorizontalPlaneGeometryPatch(double zCoordi
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
 	}
 
 	resqml20__HorizontalPlaneGeometry* patch = soap_new_resqml20__HorizontalPlaneGeometry(gsoapProxy2_0_1->soap);
@@ -82,6 +85,9 @@ void PlaneSetRepresentation::pushBackTiltedPlaneGeometryPatch(
 {
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
 	}
 
 	resqml20__TiltedPlaneGeometry* patch = soap_new_resqml20__TiltedPlaneGeometry(gsoapProxy2_0_1->soap);

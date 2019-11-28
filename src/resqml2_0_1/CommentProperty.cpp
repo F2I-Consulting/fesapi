@@ -72,6 +72,12 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 void CommentProperty::pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values,
 	COMMON_NS::AbstractHdfProxy * proxy)
 {
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "");
 
 	// Build the CHAR array
