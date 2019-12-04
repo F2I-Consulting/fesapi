@@ -50,13 +50,13 @@ FluidSystem::FluidSystem(COMMON_NS::DataObjectRepository * repo,
 	static_cast<eml22__TemperaturePressure*>(fs->StandardConditions)->Temperature->__item = temperatureValue;
 	static_cast<eml22__TemperaturePressure*>(fs->StandardConditions)->Temperature->uom = temperatureUom;
 	static_cast<eml22__TemperaturePressure*>(fs->StandardConditions)->Pressure->__item = pressureValue;
-	static_cast<eml22__TemperaturePressure*>(fs->StandardConditions)->Pressure->uom = pressureUom;
+	static_cast<eml22__TemperaturePressure*>(fs->StandardConditions)->Pressure->uom = gsoap_eml2_2::soap_eml22__PressureUom2s(repo->getGsoapContext(), pressureUom);
 
 	fs->ReservoirFluidKind = reservoirFluidKind;
 
 	fs->SolutionGOR = soap_new_eml22__VolumePerVolumeMeasure(repo->getGsoapContext());
-	fs->SolutionGOR->__item = temperatureValue;
-	fs->SolutionGOR->uom = temperatureUom;
+	fs->SolutionGOR->__item = gasOilRatio;
+	fs->SolutionGOR->uom = gsoap_eml2_2::soap_eml22__VolumePerVolumeUom2s(repo->getGsoapContext(), gasOilRatioUom);
 
 	repo->addOrReplaceDataObject(this);
 }

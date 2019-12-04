@@ -20,7 +20,7 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
-#include "../MacroDefinitions.h"
+#include "PvtSpecification.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -202,11 +202,11 @@ namespace PRODML2_1_NS
 		DLL_IMPORT_OR_EXPORT unsigned int getModelCount() const;
 		DLL_IMPORT_OR_EXPORT void pushBackModel(const std::string & uid);
 
-		DLL_IMPORT_OR_EXPORT class PvtSpecification* getModelSpecification(unsigned int modelIndex) { return modelSpecifications[modelIndex]; }
+		DLL_IMPORT_OR_EXPORT PvtSpecification* getModelSpecification(unsigned int modelIndex) { return modelSpecifications[modelIndex]; }
 		/**
 		* Return the PvtSpecification according to the kind. Please downcast it and set all attributes which you want.
 		*/
-		DLL_IMPORT_OR_EXPORT class PvtSpecification* setModelSpecification(unsigned int modelIndex, ModelSpecification kind);
+		DLL_IMPORT_OR_EXPORT PvtSpecification* setModelSpecification(unsigned int modelIndex, ModelSpecification kind);
 
 		GETTER_SETTER_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoap_eml2_2::prodml21__FluidCharacterization, gsoapProxy2_2, FluidCharacterizationModel, Name, std::string)
 		GETTER_SETTER_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoap_eml2_2::prodml21__FluidCharacterization, gsoapProxy2_2, FluidCharacterizationModel, Remark, std::string)
@@ -228,6 +228,6 @@ namespace PRODML2_1_NS
 		void loadTargetRelationships();
 
 	private:
-		std::vector<class PvtSpecification*> modelSpecifications;
+		std::vector<PvtSpecification*> modelSpecifications;
 	};
 }

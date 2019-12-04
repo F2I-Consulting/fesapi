@@ -2464,7 +2464,7 @@ void deserializeFluidCharacterization(COMMON_NS::DataObjectRepository & pck)
 * Deserialize IJK grid explicit and parametric representations packed in a given EPC document.
 * This method read grid geometry by using hyperslabbing methods. Each grid is read interface by interface
 * and then layer by layer.
-* @param pck	An EPC document containine the IJK grid to deserialize.
+* @param pck	An EPC document containing the IJK grid to deserialize.
 */
 void deserializeGridHyperslabbingInterfaceSequence(COMMON_NS::DataObjectRepository & pck)
 {

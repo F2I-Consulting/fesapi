@@ -419,7 +419,7 @@ void PolylineSetRepresentation::getClosedFlagPerPolylineOfAllPatches(bool * clos
 
 bool PolylineSetRepresentation::hasALineRole() const
 {
-	return static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole;
+	return static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LineRole != nullptr;
 }
 
 gsoap_resqml2_0_1::resqml20__LineRole PolylineSetRepresentation::getLineRole() const

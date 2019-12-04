@@ -17,6 +17,8 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #pragma once
+#include <limits>
+
 #include "../proxies/gsoap_eml2_2H.h"
 
 #include "../nsDefinitions.h"
