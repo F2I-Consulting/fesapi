@@ -17,7 +17,11 @@ specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
 #include "RockFluidUnitFeature.h"
+
 #include "BoundaryFeature.h"
+
+#include "../prodml2_1/FluidCharacterization.h"
+
 #include "../tools/Misc.h"
 
 using namespace std;
@@ -67,6 +71,11 @@ BoundaryFeature* RockFluidUnitFeature::getBottom() const
 	return repository->getDataObjectByUuid<BoundaryFeature>(static_cast<_resqml20__RockFluidUnitFeature*>(gsoapProxy2_0_1)->FluidBoundaryBottom->UUID);
 }
 
+std::vector<PRODML2_1_NS::FluidCharacterization *> RockFluidUnitFeature::getFluidCharacterizationSet() const
+{
+	return repository->getSourceObjects<PRODML2_1_NS::FluidCharacterization>(this);
+}
+
 void RockFluidUnitFeature::loadTargetRelationships()
 {
 	GeologicUnitFeature::loadTargetRelationships();
@@ -74,14 +83,12 @@ void RockFluidUnitFeature::loadTargetRelationships()
 	_resqml20__RockFluidUnitFeature* interp = static_cast<_resqml20__RockFluidUnitFeature*>(gsoapProxy2_0_1);
 
 	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = interp->FluidBoundaryTop;
-	if(dor != nullptr)
-	{
+	if(dor != nullptr) {
 		convertDorIntoRel<BoundaryFeature>(dor);
 	}
 
 	dor = interp->FluidBoundaryBottom;
-	if(dor != nullptr)
-	{
+	if(dor != nullptr) {
 		convertDorIntoRel<BoundaryFeature>(dor);
 	}
 }

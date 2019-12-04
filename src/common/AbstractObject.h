@@ -48,9 +48,7 @@ namespace COMMON_NS
 		*/
 		void pushBackExtraMetadataV2_0_1(const std::string & key, const std::string & value);
 		void pushBackExtraMetadataV2_1(const std::string & key, const std::string & value);
-#if WITH_EXPERIMENTAL
 		void pushBackExtraMetadataV2_2(const std::string & key, const std::string & value);
-#endif
 
 		/**
 		* Getter (in read only mode) of all the extra metadata
@@ -78,7 +76,6 @@ namespace COMMON_NS
 		*/
 		std::string getExtraMetadataStringValueAtIndexV2_0_1(unsigned int index) const;
 
-#if WITH_EXPERIMENTAL
 		/**
 		* Get the count of extra metadata in the instance.
 		*/
@@ -93,7 +90,6 @@ namespace COMMON_NS
 		* Get the string value of a string value pair at a particular index in the extra metadata set
 		*/
 		std::string getExtraMetadataStringValueAtIndexV2_2(unsigned int index) const;
-#endif
 
 	protected:
 
@@ -116,12 +112,10 @@ namespace COMMON_NS
 		*/
 		gsoap_eml2_1::eml21__AbstractObject* gsoapProxy2_1;
 
-#if WITH_EXPERIMENTAL
 		/**
 		* The underlying generated gSoap proxy for a EML 2.2 dataobject.
 		*/
 		gsoap_eml2_2::eml22__AbstractObject* gsoapProxy2_2;
-#endif
 
 		/**
 		* The repository which contain this data object.
@@ -148,12 +142,10 @@ namespace COMMON_NS
 		*/
 		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy);
 
-#if WITH_EXPERIMENTAL
 		/**
 		* Constructor when importing EML 2.1 dataobjects
 		*/
 		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy);
-#endif
 
 		friend void COMMON_NS::DataObjectRepository::addOrReplaceDataObject(AbstractObject* proxy);
 
@@ -211,12 +203,10 @@ namespace COMMON_NS
 		*/
 		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor);
 
-#if WITH_EXPERIMENTAL
 		/**
 		* Convert a EML 2.2 Data Object Reference into a DataObjectRepository relationship.
 		*/
 		void convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor);
-#endif
 
 		/**
 		* Same as convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor).
@@ -254,7 +244,6 @@ namespace COMMON_NS
 			getRepository()->addRelationship(this, targetObj);
 		}
 
-#if WITH_EXPERIMENTAL
 		/**
 		* Same as convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor).
 		* Also check that the content type of the DOR is OK with the target datatype in memory.
@@ -272,7 +261,6 @@ namespace COMMON_NS
 			}
 			getRepository()->addRelationship(this, targetObj);
 		}
-#endif
 
 		/**
 		* Get an Hdf Proxy from a EML 2.0 dataset.
@@ -479,12 +467,10 @@ namespace COMMON_NS
 		*/
 		gsoap_eml2_1::eml21__DataObjectReference* newEmlReference() const;
 
-#if WITH_EXPERIMENTAL
 		/**
 		* Creates an returns an EML2.2 Data Object Reference which targets this dataobject.
 		*/
 		gsoap_eml2_2::eml22__DataObjectReference* newEml22Reference() const;
-#endif
 
 		/**
 		* Creates an returns an EML2.0 Contact Data Object Reference which targets this dataobject.
