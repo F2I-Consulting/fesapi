@@ -109,6 +109,9 @@ under the License.
 #include "witsml2_0/Channel.h"
 #include "witsml2_0/PropertyKind.h"
 
+#include "prodml2_1/FluidCharacterization.h"
+#include "prodml2_1/FrictionTheorySpecification.h"
+
 using namespace std;
 using namespace RESQML2_0_1_NS;
 
@@ -1838,6 +1841,39 @@ void serializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck, COMMO
 	singleCellIjkgrid->setCellAssociationWithRockFluidOrganizationInterpretation(&rockFluidUnitIndice, 1000, rockFluidOrgInterp);
 }
 
+void serializeFluidCharacterization(COMMON_NS::DataObjectRepository & pck)
+{
+	PRODML2_1_NS::FluidCharacterization* fluidCharac = pck.createFluidCharacterization("6f5f6146-6f8b-4222-b322-9dbef1e7e4cf", "my Fluid Characterization");
+
+	fluidCharac->pushBackFormationWater("h2o");
+	fluidCharac->setFormationWaterSpecificGravity(0, 1.02);
+	fluidCharac->setFormationWaterSalinity(0, 80000, gsoap_eml2_2::eml22__MassPerMassUom__ppm);
+
+	fluidCharac->pushBackPureFluidComponent("c1", gsoap_eml2_2::prodml21__PureComponentEnum__c1, false);
+	fluidCharac->setPureFluidComponentMolecularWeight(0, 16.04, gsoap_eml2_2::eml22__MolecularWeightUom__g_x002fmol);
+
+	fluidCharac->pushBackPseudoFluidComponent("c2-3", gsoap_eml2_2::prodml21__PseudoComponentEnum__c2_c4_x002bn2);
+	fluidCharac->setPseudoFluidComponentStartingCarbonNumber(0, 2);
+	fluidCharac->setPseudoFluidComponentEndingCarbonNumber(0, 3);
+
+	fluidCharac->pushBackModel("0");
+	fluidCharac->setFluidCharacterizationModelName(0, "F2I Good Oil No. 4 EOS Demonstration");
+	fluidCharac->setFluidCharacterizationModelReferenceTemperature(0, 60, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom__degF);
+
+	PRODML2_1_NS::PvtSpecification* spec = fluidCharac->setModelSpecification(0, PRODML2_1_NS::FluidCharacterization::SrkEos);
+	PRODML2_1_NS::CompositionalSpecification* srkEosSpec = dynamic_cast<PRODML2_1_NS::CompositionalSpecification*>(spec);
+	srkEosSpec->pushBackCoefficient(1, gsoap_eml2_2::prodml21__PvtModelParameterKind__a1);
+	srkEosSpec->setMixingRule(gsoap_eml2_2::prodml21__MixingRule__classical);
+	srkEosSpec->pushBackFluidComponentProperty("h2o");
+	srkEosSpec->pushBackFluidComponentProperty("c1");
+	srkEosSpec->pushBackFluidComponentProperty("c2-3");
+	srkEosSpec->setFluidComponentPropertyCriticalPressure(2, 666.6, "psi");
+	srkEosSpec->setFluidComponentPropertyCriticalTemperature(2, 121.9, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom__degC);
+	srkEosSpec->setFluidComponentPropertyCriticalVolume(2, 2.607, gsoap_eml2_2::eml22__MolarVolumeUom__ft3_x002flbmol);
+	srkEosSpec->setFluidComponentPropertyAcentricFactor(2, 0.1140);
+	srkEosSpec->setFluidComponentPropertyParachor(2, 126.03);
+}
+
 void deserializePropertyKindMappingFiles(COMMON_NS::DataObjectRepository * pck)
 {
 	PropertyKindMapper* ptMapper = pck->getPropertyKindMapper();
@@ -1946,6 +1982,7 @@ bool serialize(const string & filePath)
 	serializeRepresentationSetRepresentation(&repo, hdfProxy);
 	serializeFluidBoundary(repo, hdfProxy);
 	serializeRockFluidOrganization(repo, hdfProxy);
+	serializeFluidCharacterization(repo);
 #if WITH_EXPERIMENTAL
 	serializeGraphicalInformationSet(&repo, hdfProxy);
 #endif
@@ -2356,11 +2393,78 @@ void deserializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck)
 	}
 }
 
+void deserializeFluidCharacterization(COMMON_NS::DataObjectRepository & pck)
+{
+	std::vector<PRODML2_1_NS::FluidCharacterization*> fluidCharacterization = pck.getDataObjects<PRODML2_1_NS::FluidCharacterization>();
+	for (size_t fcIndex = 0; fcIndex < fluidCharacterization.size(); ++fcIndex) {
+		PRODML2_1_NS::FluidCharacterization* fc = fluidCharacterization[fcIndex];
+		showAllMetadata(fc);
+		RESQML2_0_1_NS::RockFluidUnitFeature* rfu = fc->getRockFluidUnit();
+		if (rfu != nullptr) {
+			std::cout << "connected wiht rock fluid unit " << std::endl;
+			showAllMetadata(rfu);
+		}
+		for (size_t i = 0; i < fc->getFormationWaterCount(); ++i) {
+			std::cout << "FORMATION WATER " << std::endl;
+			if (fc->hasFormationWaterMassFraction(i)) { cout << "MassFraction: " << fc->getFormationWaterMassFractionValue(i) << " " << fc->getFormationWaterMassFractionUom(i) << std::endl; }
+			if (fc->hasFormationWaterMoleFraction(i)) { cout << "MoleFraction: " << fc->getFormationWaterMoleFractionValue(i) << " " << fc->getFormationWaterMoleFractionUom(i) << std::endl; }
+			if (fc->hasFormationWaterSalinity(i)) { cout << "Salinity: " << fc->getFormationWaterSalinityValue(i) << " " << fc->getFormationWaterSalinityUom(i) << std::endl; }
+			if (fc->hasFormationWaterSpecificGravity(i)) { cout << "SpecificGravity: " << fc->getFormationWaterSpecificGravity(i) << std::endl; }
+			if (fc->hasFormationWaterRemark(i)) { cout << "Remark: " << fc->getFormationWaterRemark(i) << std::endl; }
+		}
+		for (size_t i = 0; i < fc->getPureFluidComponentCount(); ++i) {
+			std::cout << "PURE FLUID COMPONENT " << std::endl;
+			if (fc->hasPureFluidComponentMassFraction(i)) { cout << "MassFraction: " << fc->getPureFluidComponentMassFractionValue(i) << " " << fc->getPureFluidComponentMassFractionUom(i) << std::endl; }
+			if (fc->hasPureFluidComponentMolecularWeight(i)) { cout << "MolecularWeight: " << fc->getPureFluidComponentMolecularWeightValue(i) << " " << fc->getPureFluidComponentMolecularWeightUom(i) << std::endl; }
+			if (fc->hasPureFluidComponentMoleFraction(i)) { cout << "MoleFraction: " << fc->getPureFluidComponentMoleFractionValue(i) << " " << fc->getPureFluidComponentMoleFractionUom(i) << std::endl; }
+			if (fc->hasPureFluidComponentRemark(i)) { cout << "Remark: " << fc->getPureFluidComponentRemark(i) << std::endl; }
+		}
+
+		for (size_t modelIndex = 0; modelIndex < fc->getModelCount(); ++modelIndex) {
+			std::cout << "MODEL " << std::endl;
+			if (fc->hasFluidCharacterizationModelName(modelIndex)) { cout << "name: " << fc->getFluidCharacterizationModelName(modelIndex) << std::endl; }
+			if (fc->hasFluidCharacterizationModelReferenceStockTankTemperature(modelIndex)) {
+				cout << "ReferenceStockTankTemperature: " << fc->getFluidCharacterizationModelReferenceStockTankTemperatureValue(modelIndex) << " " << fc->getFluidCharacterizationModelReferenceStockTankTemperatureUom(modelIndex) << std::endl;
+			}
+			if (fc->hasFluidCharacterizationModelReferenceTemperature(modelIndex)) {
+				cout << "ReferenceTemperature: " << fc->getFluidCharacterizationModelReferenceTemperatureValue(modelIndex) << " " << fc->getFluidCharacterizationModelReferenceTemperatureUom(modelIndex) << std::endl;
+			}
+			if (fc->hasFluidCharacterizationModelRemark(modelIndex)) { cout << "Remark: " << fc->getFluidCharacterizationModelRemark(modelIndex) << std::endl; }
+
+			PRODML2_1_NS::PvtSpecification* spec = fc->getModelSpecification(modelIndex);
+			if (spec != nullptr) {
+				if (dynamic_cast<PRODML2_1_NS::CompositionalSpecification*>(spec) != nullptr) {
+					PRODML2_1_NS::CompositionalSpecification* compoSpec = static_cast<PRODML2_1_NS::CompositionalSpecification*>(spec);
+					for (size_t coeffIndex = 0; coeffIndex < compoSpec->getCoefficientCount(); ++coeffIndex) {
+						cout << "coeff value: " << compoSpec->getCoefficientValue(coeffIndex) << std::endl;
+						cout << "coeff kind: " << compoSpec->getCoefficientKind(coeffIndex) << std::endl;
+						if (compoSpec->hasCoefficientName(modelIndex)) { cout << "Name: " << compoSpec->getCoefficientName(coeffIndex) << std::endl; }
+					}
+					for (size_t coeffIndex = 0; coeffIndex < compoSpec->getBinaryInteractionCoefficientCount(); ++coeffIndex) {
+						cout << "fluid compo 1 ref: " << compoSpec->getBinaryInteractionCoefficientFluidComponent1Reference(coeffIndex) << std::endl;
+						if (compoSpec->hasBinaryInteractionCoefficientFluidComponent2Reference(modelIndex)) { cout << "fluid compo 2 ref: " << compoSpec->getBinaryInteractionCoefficientFluidComponent2Reference(coeffIndex) << std::endl; }
+					}
+					for (size_t propIndex = 0; propIndex < compoSpec->getFluidComponentPropertyCount(); ++propIndex) {
+						cout << "fluid compo ref: " << compoSpec->getFluidComponentPropertyFluidComponentReference(propIndex) << std::endl;
+						if (compoSpec->hasFluidComponentPropertyAcentricFactor(propIndex)) { cout << "AcentricFactor: " << compoSpec->getFluidComponentPropertyAcentricFactor(propIndex) << std::endl; }
+						if (compoSpec->hasFluidComponentPropertyCompactVolume(propIndex)) { cout << "CompactVolume: " << compoSpec->getFluidComponentPropertyCompactVolumeValue(propIndex) << " " << compoSpec->getFluidComponentPropertyCompactVolumeUom(propIndex)  << std::endl; }
+						if (compoSpec->hasFluidComponentPropertyCriticalPressure(propIndex)) { cout << "CriticalPressure: " << compoSpec->getFluidComponentPropertyCriticalPressureValue(propIndex) << " " << compoSpec->getFluidComponentPropertyCriticalPressureUom(propIndex) << std::endl; }
+						if (compoSpec->hasFluidComponentPropertyCriticalTemperature(propIndex)) { cout << "CriticalTemperature: " << compoSpec->getFluidComponentPropertyCriticalTemperatureValue(propIndex) << " " << compoSpec->getFluidComponentPropertyCriticalTemperatureUom(propIndex) << std::endl; }
+						if (compoSpec->hasFluidComponentPropertyCriticalViscosity(propIndex)) { cout << "CriticalViscosity: " << compoSpec->getFluidComponentPropertyCriticalViscosityValue(propIndex) << " " << compoSpec->getFluidComponentPropertyCriticalViscosityUom(propIndex) << std::endl; }
+						if (compoSpec->hasFluidComponentPropertyCriticalVolume(propIndex)) { cout << "CriticalVolume: " << compoSpec->getFluidComponentPropertyCriticalVolumeValue(propIndex) << " " << compoSpec->getFluidComponentPropertyCriticalVolumeUom(propIndex) << std::endl; }
+						if (compoSpec->hasFluidComponentPropertyMassDensity(propIndex)) { cout << "MassDensity: " << compoSpec->getFluidComponentPropertyMassDensityValue(propIndex) << " " << compoSpec->getFluidComponentPropertyMassDensityUom(propIndex) << std::endl; }
+					}
+				}
+			}
+		}
+	}
+}
+
 /**
 * Deserialize IJK grid explicit and parametric representations packed in a given EPC document.
 * This method read grid geometry by using hyperslabbing methods. Each grid is read interface by interface
 * and then layer by layer.
-* @param pck	An EPC document containine the IJK grid to deserialize.
+* @param pck	An EPC document containing the IJK grid to deserialize.
 */
 void deserializeGridHyperslabbingInterfaceSequence(COMMON_NS::DataObjectRepository & pck)
 {
@@ -3629,6 +3733,7 @@ void deserialize(const string & inputFile)
 	deserializeGeobody(&repo);
 	deserializeFluidBoundary(repo);
 	deserializeRockFluidOrganization(repo);
+	deserializeFluidCharacterization(repo);
 
 	std::vector<TectonicBoundaryFeature*> faultSet = repo.getFaultSet();
 	std::vector<PolylineSetRepresentation *> faultPolyRep = repo.getFaultPolylineSetRepSet();
@@ -4461,3 +4566,4 @@ int main()
 
 	return 0;
 }
+

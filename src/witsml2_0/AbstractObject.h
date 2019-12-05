@@ -20,7 +20,7 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
-#include "MacroDefinitions.h"
+#include "../MacroDefinitions.h"
 
 namespace WITSML2_0_NS
 {

@@ -21,6 +21,8 @@ under the License.
 #include <algorithm>
 #include <functional>
 
+#include "GraphicalInformationSet.h"
+
 #include "../resqml2_0_1/PropertyKindMapper.h"
 
 #include "../resqml2_0_1/LocalDepth3dCrs.h"
@@ -112,12 +114,16 @@ under the License.
 #include "../witsml2_0/Channel.h"
 #include "../witsml2_0/PropertyKind.h"
 
+#include "../prodml2_1/FluidSystem.h"
+#include "../prodml2_1/FluidCharacterization.h"
+
 #include "../tools/GuidTools.h"
 
 using namespace std;
 using namespace COMMON_NS;
 using namespace RESQML2_0_1_NS;
 using namespace WITSML2_0_NS;
+using namespace PRODML2_1_NS;
 #if WITH_EXPERIMENTAL
 using namespace RESQML2_2_NS;
 #endif
@@ -189,7 +195,7 @@ namespace {
 	}
 
 /////////////////////
-///// WITSML 2.1 ////
+///// WITSML 2.0 ////
 /////////////////////
 #define GET_WITSML_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
 	gsoapNameSpace::_witsml20__##className* read = gsoapNameSpace::soap_new_witsml20__##className(gsoapContext);\
@@ -203,6 +209,23 @@ namespace {
 	(datatype.compare(classNamespace::className::XML_TAG) == 0)\
 	{\
 		GET_WITSML_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace);\
+	}
+
+/////////////////////
+///// PRODML 2.1 ////
+/////////////////////
+#define GET_PRODML_2_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
+	gsoapNameSpace::_prodml21__##className* read = gsoapNameSpace::soap_new_prodml21__##className(gsoapContext);\
+	gsoapNameSpace::soap_read_prodml21__##className(gsoapContext, read);
+
+#define GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
+	GET_PRODML_2_1_GSOAP_PROXY_FROM_GSOAP_CONTEXT(className, gsoapNameSpace)\
+	wrapper = new classNamespace::className(read);
+
+#define CHECK_AND_GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace)\
+	(datatype.compare(classNamespace::className::XML_TAG) == 0)\
+	{\
+		GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(classNamespace, className, gsoapNameSpace);\
 	}
 
 /////////////////////
@@ -227,8 +250,7 @@ DataObjectRepository::DataObjectRepository() :
 	gsoapContext(soap_new2(SOAP_XML_STRICT | SOAP_C_UTFSTRING | SOAP_XML_IGNORENS, SOAP_XML_TREE | SOAP_XML_INDENT | SOAP_XML_CANONICAL | SOAP_C_UTFSTRING)),
 	warnings(),
 	propertyKindMapper(nullptr), defaultHdfProxy(nullptr), defaultCrs(nullptr)
-{
-}
+{}
 
 DataObjectRepository::DataObjectRepository(const std::string & propertyKindMappingFilesDirectory) :
 	dataObjects(),
@@ -239,8 +261,7 @@ DataObjectRepository::DataObjectRepository(const std::string & propertyKindMappi
 	propertyKindMapper(new PropertyKindMapper(this)), defaultHdfProxy(nullptr), defaultCrs(nullptr)
 {
 	const string error = propertyKindMapper->loadMappingFilesFromDirectory(propertyKindMappingFilesDirectory);
-	if (!error.empty())
-	{
+	if (!error.empty()) {
 		delete propertyKindMapper;
 		propertyKindMapper = nullptr;
 		throw invalid_argument("Could not import property kind mappers : " + error);
@@ -290,8 +311,9 @@ void DataObjectRepository::addRelationship(COMMON_NS::AbstractObject * source, C
 		if (std::find(targets.begin(), targets.end(), target) == targets.end()) {
 			forwardRels[source].push_back(target);
 		}
-		else
+		else {
 			return;
+		}
 	}
 	backwardRels[target].push_back(source);
 	
@@ -403,14 +425,17 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 	else if (contentType.find("application/x-witsml+xml;version=2.0;type=") != string::npos) {
 		wrapper = getWitsml2_0WrapperFromGsoapContext(datatype);
 	}
+	else if (contentType.find("application/x-prodml+xml;version=2.1;type=") != string::npos) {
+		wrapper = getProdml2_1WrapperFromGsoapContext(datatype);
+	}
 #if WITH_EXPERIMENTAL
 	else if (contentType.find("application/x-resqml+xml;version=2.2;type=") != string::npos) {
 		wrapper = getResqml2_2WrapperFromGsoapContext(datatype);
 	}
+#endif
 	else if (contentType.find("application/x-eml+xml;version=2.2;type=") != string::npos) {
 		wrapper = getEml2_2WrapperFromGsoapContext(datatype);
 	}
-#endif
 
 	if (wrapper != nullptr) {
 		if (gsoapContext->error != SOAP_OK) {
@@ -583,17 +608,20 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_1::eml
 	throw invalid_argument("The content type " + resqmlContentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
 }
 
-#if WITH_EXPERIMENTAL
 COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_2::eml22__DataObjectReference const * dor)
 {
 	const size_t lastEqualCharPos = dor->ContentType.find_last_of('='); // The XML tag is after "type="
 	const string contentType = dor->ContentType.substr(lastEqualCharPos + 1);
 
 	if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(COMMON_NS::GraphicalInformationSet)
+	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(PRODML2_1_NS::FluidSystem)
+	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(PRODML2_1_NS::FluidCharacterization)
+#if WITH_EXPERIMENTAL
 	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::DiscreteColorMap)
 	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::ContinuousColorMap)
 	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::WellboreFrameRepresentation)
 	else if CREATE_EML_2_2_FESAPI_PARTIAL_WRAPPER(RESQML2_2_NS::SeismicWellboreFrameRepresentation)
+#endif
 	else if (dor->ContentType.compare(COMMON_NS::EpcExternalPartReference::XML_TAG) == 0)
 	{
 		throw invalid_argument("Please handle this type outside this method since it is not only XML related.");
@@ -601,7 +629,6 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_2::eml
 
 	throw invalid_argument("The content type " + contentType + " of the partial object (DOR) to create has not been recognized by fesapi.");
 }
-#endif
 
 //************************************
 //************ HDF *******************
@@ -1431,12 +1458,36 @@ WITSML2_0_NS::Channel* DataObjectRepository::createChannel(COMMON_NS::PropertyKi
 		timeDepth, loggingCompanyName);
 }
 
-#if WITH_EXPERIMENTAL
+//************************************
+//*************** PRODML *************
+//************************************
+
+PRODML2_1_NS::FluidSystem* DataObjectRepository::createFluidSystem(const std::string & guid,
+	const std::string & title,
+	double temperatureValue, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom temperatureUom,
+	double pressureValue, gsoap_eml2_2::eml22__PressureUom pressureUom,
+	gsoap_eml2_2::prodml21__ReservoirFluidKind reservoirFluidKind,
+	double gasOilRatio, gsoap_eml2_2::eml22__VolumePerVolumeUom gasOilRatioUom)
+{
+	return new PRODML2_1_NS::FluidSystem(this,
+		guid, title,
+		temperatureValue, temperatureUom,
+		pressureValue, pressureUom,
+		reservoirFluidKind,
+		gasOilRatio, gasOilRatioUom);
+}
+
+PRODML2_1_NS::FluidCharacterization* DataObjectRepository::createFluidCharacterization(const std::string & guid, const std::string & title)
+{
+	return new PRODML2_1_NS::FluidCharacterization(this, guid, title);
+}
+
 COMMON_NS::GraphicalInformationSet* DataObjectRepository::createGraphicalInformationSet(const std::string & guid, const std::string & title)
 {
 	return new COMMON_NS::GraphicalInformationSet(this, guid, title);
 }
 
+#if WITH_EXPERIMENTAL
 RESQML2_2_NS::DiscreteColorMap* DataObjectRepository::createDiscreteColorMap(const std::string& guid, const std::string& title)
 {
 	return new RESQML2_2_NS::DiscreteColorMap(this, guid, title);
@@ -2083,6 +2134,16 @@ COMMON_NS::AbstractObject* DataObjectRepository::getWitsml2_0WrapperFromGsoapCon
 	return wrapper;
 }
 
+COMMON_NS::AbstractObject* DataObjectRepository::getProdml2_1WrapperFromGsoapContext(const std::string & datatype)
+{
+	COMMON_NS::AbstractObject* wrapper = nullptr;
+
+	if CHECK_AND_GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PRODML2_1_NS, FluidSystem, gsoap_eml2_2)
+	else if CHECK_AND_GET_PRODML_2_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(PRODML2_1_NS, FluidCharacterization, gsoap_eml2_2)
+
+	return wrapper;
+}
+
 #if WITH_EXPERIMENTAL
 COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType)
 {
@@ -2095,6 +2156,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 		
 	return wrapper;
 }
+#endif
 
 COMMON_NS::AbstractObject* DataObjectRepository::getEml2_2WrapperFromGsoapContext(const std::string & datatype)
 {
@@ -2102,7 +2164,6 @@ COMMON_NS::AbstractObject* DataObjectRepository::getEml2_2WrapperFromGsoapContex
 	if CHECK_AND_GET_EML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(COMMON_NS, GraphicalInformationSet, gsoap_eml2_2)
 		return wrapper;
 }
-#endif
 
 int DataObjectRepository::getGsoapErrorCode() const
 {

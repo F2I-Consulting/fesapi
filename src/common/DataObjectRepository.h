@@ -23,9 +23,7 @@ under the License.
 
 #include "../proxies/gsoap_resqml2_0_1H.h"
 #include "../proxies/gsoap_eml2_1H.h"
-#if WITH_EXPERIMENTAL
 #include "../proxies/gsoap_eml2_2H.h"
-#endif
 
 #include "../nsDefinitions.h"
 
@@ -153,14 +151,18 @@ namespace WITSML2_0_NS
 	class Channel;
 }
 
+namespace PRODML2_1_NS
+{
+	class FluidSystem;
+	class FluidCharacterization;
+}
+
 namespace COMMON_NS
 {
 	class AbstractObject;
 	class AbstractHdfProxy;
 	class PropertyKind;
-#if WITH_EXPERIMENTAL
 	class GraphicalInformationSet;
-#endif
 
 	/**
 	* This abstract class acts as a buffer between the RESQML (business) classes and the persisted data.
@@ -208,9 +210,11 @@ namespace COMMON_NS
 		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
 #if WITH_EXPERIMENTAL
 		COMMON_NS::AbstractObject* getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType);
-		COMMON_NS::AbstractObject* getEml2_2WrapperFromGsoapContext(const std::string & datatype);
 #endif
+		COMMON_NS::AbstractObject* getEml2_2WrapperFromGsoapContext(const std::string & datatype);
+
 		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
+		COMMON_NS::AbstractObject* getProdml2_1WrapperFromGsoapContext(const std::string & datatype);
 
 		/**
 		* Get the error code of the current gsoap context.
@@ -703,12 +707,10 @@ namespace COMMON_NS
 		*/
 		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_1::eml21__DataObjectReference const * dor);
 
-#if WITH_EXPERIMENTAL
 		/**
 		* Create a partial object in this repository based on a EML2.1 Data Object Reference
 		*/
 		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_2::eml22__DataObjectReference const * dor);
-#endif
 
 		/**
 		* Create a partial object i.e. a data object reference (DOR) based on an UUID + a title + a version.
@@ -1271,13 +1273,24 @@ namespace COMMON_NS
 			const std::string & mnemonic, gsoap_eml2_1::eml21__UnitOfMeasure uom, gsoap_eml2_1::witsml20__EtpDataType dataType, gsoap_eml2_1::witsml20__ChannelStatus growingStatus,
 			const std::string & timeDepth, const std::string & loggingCompanyName);
 
-#if WITH_EXPERIMENTAL
+		//*************** PRODML *************
+
+		DLL_IMPORT_OR_EXPORT PRODML2_1_NS::FluidSystem* createFluidSystem(const std::string & guid,
+			const std::string & title,
+			double temperatureValue, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom temperatureUom,
+			double pressureValue, gsoap_eml2_2::eml22__PressureUom pressureUom,
+			gsoap_eml2_2::prodml21__ReservoirFluidKind reservoirFluidKind,
+			double gasOilRatio, gsoap_eml2_2::eml22__VolumePerVolumeUom gasOilRatioUom);
+
+		DLL_IMPORT_OR_EXPORT PRODML2_1_NS::FluidCharacterization* createFluidCharacterization(const std::string & guid, const std::string & title);
+
 		//************************************
 		//************ EML2.2 ****************
 		//************************************
 
 		DLL_IMPORT_OR_EXPORT GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
 
+#if WITH_EXPERIMENTAL
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::DiscreteColorMap* createDiscreteColorMap(const std::string& guid, const std::string& title);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::ContinuousColorMap* createContinuousColorMap(const std::string& guid, const std::string& title,
