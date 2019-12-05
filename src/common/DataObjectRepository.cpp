@@ -534,8 +534,11 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceDataObject(COMMON_N
 				else if (proxy->getXmlNamespace() == "witsml20" || proxy->getXmlNamespace() == "eml21") {
 					(*same)->setGsoapProxy(proxy->getEml21GsoapProxy());
 				}
+				else if (proxy->getXmlNamespace() == "prodml21" || proxy->getXmlNamespace() == "eml22") {
+					(*same)->setGsoapProxy(proxy->getEml22GsoapProxy());
+				}
 #if WITH_EXPERIMENTAL
-				else if (proxy->getXmlNamespace() == "resqml22" || proxy->getXmlNamespace() == "eml22") {
+				else if (proxy->getXmlNamespace() == "resqml22") {
 					(*same)->setGsoapProxy(proxy->getEml22GsoapProxy());
 				}
 #endif
@@ -787,6 +790,12 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const std::string
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::WellboreCompletion)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Wellbore)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Trajectory)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Log)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::ChannelSet)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::Channel)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_0_NS::WellboreGeometry)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PRODML2_1_NS::FluidSystem)
+	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(PRODML2_1_NS::FluidCharacterization)
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(COMMON_NS::GraphicalInformationSet)
 #if WITH_EXPERIMENTAL
 	else if CREATE_FESAPI_PARTIAL_WRAPPER_WITH_VERSION(WITSML2_1_NS::ToolErrorModel)

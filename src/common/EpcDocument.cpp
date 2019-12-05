@@ -33,6 +33,7 @@ under the License.
 #include "../resqml2_0_1/HdfProxy.h"
 #include "../resqml2/AbstractProperty.h"
 
+#include "../witsml2_0/Log.h"
 #include "../witsml2_0/Channel.h"
 #include "../witsml2_0/ChannelSet.h"
 
@@ -113,11 +114,24 @@ namespace {
 		}
 
 		const std::vector<COMMON_NS::AbstractObject *>& targetObj = repo.getTargetObjects(dataObj);
-		for (size_t index = 0; index < targetObj.size(); ++index) {
-			if (!targetObj[index]->isPartial()) {
-				epc::Relationship relRep(targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
-				relRep.setDestinationObjectType();
-				result.push_back(relRep);
+		if (dynamic_cast<WITSML2_0_NS::Log const *>(dataObj) == nullptr && dynamic_cast<WITSML2_0_NS::ChannelSet const *>(dataObj) == nullptr) {
+			for (size_t index = 0; index < targetObj.size(); ++index) {
+				if (!targetObj[index]->isPartial()) {
+					epc::Relationship relRep(targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
+					relRep.setDestinationObjectType();
+					result.push_back(relRep);
+				}
+			}
+		}
+		else {
+			for (size_t index = 0; index < targetObj.size(); ++index) {
+				if (!targetObj[index]->isPartial() && 
+					dynamic_cast<WITSML2_0_NS::ChannelSet*>(targetObj[index]) == nullptr &&
+					dynamic_cast<WITSML2_0_NS::Log*>(targetObj[index]) == nullptr) {
+					epc::Relationship relRep(targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
+					relRep.setDestinationObjectType();
+					result.push_back(relRep);
+				}
 			}
 		}
 
@@ -262,7 +276,8 @@ std::string EpcDocument::deserializePartiallyInto(DataObjectRepository & repo, D
 			std::string contentType = it->second.getContentTypeString();
 			if (contentType.find("resqml", 14) != std::string::npos ||
 				contentType.find("eml", 14) != std::string::npos ||
-				contentType.find("witsml", 14) != std::string::npos)
+				contentType.find("witsml", 14) != std::string::npos ||
+				contentType.find("prodml", 14) != std::string::npos)
 			{
 				if (contentType == "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference") {
 					// Look for the relative path of the HDF file

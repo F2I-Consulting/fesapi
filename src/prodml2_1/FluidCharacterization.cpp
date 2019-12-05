@@ -31,6 +31,7 @@ using namespace gsoap_eml2_2;
 using namespace COMMON_NS;
 
 const char* FluidCharacterization::XML_TAG = "FluidCharacterization";
+const char* FluidCharacterization::XML_NS = "prodml21";
 
 FluidCharacterization::FluidCharacterization(COMMON_NS::DataObjectRepository * repo,
 	const std::string & guid,

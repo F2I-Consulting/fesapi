@@ -26,11 +26,6 @@ SET (FESAPI_PROXIES_SOURCES
 	${CMAKE_CURRENT_SOURCE_DIR}/src/proxies/struct_tm.cpp
 )
 FILE (GLOB FESAPI_PROXIES_HEADERS ${FESAPI_ROOT_DIR}/src/proxies/*.h)
-if (NOT WITH_EXPERIMENTAL)
-	list(REMOVE_ITEM FESAPI_PROXIES_SOURCES "${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_2C.cpp")
-	list(REMOVE_ITEM FESAPI_PROXIES_HEADERS "${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_2H.h")
-	list(REMOVE_ITEM FESAPI_PROXIES_HEADERS "${FESAPI_ROOT_DIR}/src/proxies/gsoap_eml2_2Stub.h")
-endif ()
 
 SET (BUILD_SHARED_LIBS ON CACHE BOOL "Build shared lib")
 

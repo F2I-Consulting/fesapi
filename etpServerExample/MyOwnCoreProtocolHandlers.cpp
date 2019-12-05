@@ -89,6 +89,12 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=Trajectory");
 	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=WellCompletion");
 	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=WellboreCompletion");
+	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=WellboreGeometry");
+	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=Log");
+	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=ChannelSet");
+	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=Channel");
+	supportedObjects.push_back("application/x-prodml+xml;version=2.1;type=FluidSystem");
+	supportedObjects.push_back("application/x-prodml+xml;version=2.1;type=FluidCharacterization");
 	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=ErrorTerm");
 	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=ErrorTermDictionary");
 	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=ToolErrorModel");

@@ -140,8 +140,11 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v1
 					lastUpdate = obj->getCreation();
 				}
 			}
-			if ((msg.m_context.m_dataObjectTypes.empty() || std::find(msg.m_context.m_dataObjectTypes.begin(), msg.m_context.m_dataObjectTypes.end(), obj->getQualifiedType()) != msg.m_context.m_dataObjectTypes.end()) &&
-				(msg.m_lastChangedFilter.is_null() || lastUpdate >= msg.m_lastChangedFilter.get_long())) {
+			std::string qualifiedType = obj->getQualifiedType();
+			std::string namespaceStar = qualifiedType.substr(0, qualifiedType.find(".") + 1) + "*";
+			if ((msg.m_context.m_dataObjectTypes.empty() || std::find(msg.m_context.m_dataObjectTypes.begin(), msg.m_context.m_dataObjectTypes.end(), qualifiedType) != msg.m_context.m_dataObjectTypes.end()
+				|| std::find(msg.m_context.m_dataObjectTypes.begin(), msg.m_context.m_dataObjectTypes.end(), namespaceStar) != msg.m_context.m_dataObjectTypes.end())
+				&& (msg.m_lastChangedFilter.is_null() || lastUpdate >= msg.m_lastChangedFilter.get_long())) {
 				result.push_back(ETP_NS::EtpHelpers::buildEtpResourceFromEnergisticsObject(obj, msg.m_countObjects));
 			}
 		}
