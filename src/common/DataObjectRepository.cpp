@@ -117,7 +117,12 @@ under the License.
 #include "../prodml2_1/FluidSystem.h"
 #include "../prodml2_1/FluidCharacterization.h"
 
+#if !defined(FESAPI_USE_BOOST_UUID)
 #include "../tools/GuidTools.h"
+#else
+#include <boost/uuid/random_generator.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#endif
 
 using namespace std;
 using namespace COMMON_NS;
@@ -359,11 +364,6 @@ void DataObjectRepository::updateAllRelationships()
 	for (size_t nonPartialObjIndex = 0; nonPartialObjIndex < nonPartialObjects.size(); ++nonPartialObjIndex) {
 		nonPartialObjects[nonPartialObjIndex]->loadTargetRelationships();
 	}
-}
-
-std::string DataObjectRepository::generateRandomUuidAsString()
-{
-	return GuidTools::generateUidAsString();
 }
 
 void DataObjectRepository::addOrReplaceDataObject(COMMON_NS::AbstractObject* proxy)
@@ -2180,7 +2180,19 @@ std::string DataObjectRepository::getGsoapErrorMessage() const
 gsoap_resqml2_0_1::eml20__DataObjectReference* DataObjectRepository::createDor(const std::string & guid, const std::string & title, const std::string & version)
 {
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = gsoap_resqml2_0_1::soap_new_eml20__DataObjectReference(gsoapContext);
-	dor->UUID = guid.empty() ? generateRandomUuidAsString() : guid;
+
+	if (guid.empty()) {
+#if !defined(FESAPI_USE_BOOST_UUID)
+		dor->UUID = GuidTools::generateUidAsString()
+#else
+		boost::uuids::random_generator gen;
+		dor->UUID = boost::uuids::to_string(gen());
+#endif
+	}
+	else {
+		dor->UUID = guid;
+	}
+
 	dor->Title = title;
 	if (!version.empty()) {
 		dor->VersionString = gsoap_resqml2_0_1::soap_new_std__string(gsoapContext);
