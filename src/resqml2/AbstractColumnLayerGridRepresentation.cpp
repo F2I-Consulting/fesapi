@@ -71,9 +71,11 @@ void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigrap
 	if (isTruncated()) {
 		throw invalid_argument("A truncated grid cannot be linked to a strati columnumn in Resqml2");
 	}
-
 	if (hdfProxy == nullptr) {
 		hdfProxy = getRepository()->getDefaultHdfProxy();
+		if (hdfProxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	getRepository()->addRelationship(this, hdfProxy);
 

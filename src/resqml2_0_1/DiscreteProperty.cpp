@@ -25,10 +25,10 @@ under the License.
 
 #include "../common/AbstractHdfProxy.h"
 #include "../common/EnumStringMapper.h"
+#include "../common/PropertyKind.h"
 
 #include "../tools/Statistics.h"
 #include "../resqml2/AbstractRepresentation.h"
-#include "../resqml2/PropertyKind.h"
 #include "PropertyKindMapper.h"
 
 using namespace std;
@@ -57,7 +57,7 @@ DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, con
 }
 
 DiscreteProperty::DiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
-	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, RESQML2_NS::PropertyKind * localPropKind)
+	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, COMMON_NS::PropertyKind * localPropKind)
 {
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREDiscreteProperty(rep->getGsoapContext());	
 	_resqml20__DiscreteProperty* prop = static_cast<_resqml20__DiscreteProperty*>(gsoapProxy2_0_1);
@@ -299,6 +299,9 @@ void DiscreteProperty::pushBackLongHdf5ArrayOfValues(const LONG64 * values, unsi
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
 
@@ -326,6 +329,9 @@ void DiscreteProperty::pushBackIntHdf5ArrayOfValues(const int * values, unsigned
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
 
@@ -352,6 +358,9 @@ void DiscreteProperty::pushBackShortHdf5ArrayOfValues(const short * values, unsi
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
 
@@ -378,6 +387,9 @@ void DiscreteProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * va
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
 
@@ -404,6 +416,9 @@ void DiscreteProperty::pushBackCharHdf5ArrayOfValues(const char * values, unsign
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue);
 
@@ -426,7 +441,7 @@ void DiscreteProperty::pushBackCharHdf5ArrayOfValues(const char * values, unsign
 	pushBackCharHdf5ArrayOfValues(values, numValues, numDimensionsInArray, proxy, nullValue, minMax.first, minMax.second);
 }
 
-bool DiscreteProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKind* pk)
+bool DiscreteProperty::validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk)
 {
 	if (pk == nullptr) {
 		throw invalid_argument("The property kind to validate cannot be null.");

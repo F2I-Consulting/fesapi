@@ -20,6 +20,10 @@ under the License.
 
 #include "GeologicUnitFeature.h"
 
+namespace PRODML2_1_NS {
+	class FluidCharacterization;
+}
+
 namespace RESQML2_0_1_NS
 {
 	class RockFluidUnitFeature : public GeologicUnitFeature
@@ -55,6 +59,11 @@ namespace RESQML2_0_1_NS
 
 		DLL_IMPORT_OR_EXPORT void setBottom(class BoundaryFeature* bottom);
 		DLL_IMPORT_OR_EXPORT class BoundaryFeature* getBottom() const;
+
+		/**
+		* Get all the Fluid Characterizations of this rock fluid unit.
+		*/
+		DLL_IMPORT_OR_EXPORT std::vector<PRODML2_1_NS::FluidCharacterization *> getFluidCharacterizationSet() const;
 
 		/**
 		* The standard XML tag without XML namespace for serializing this data object.

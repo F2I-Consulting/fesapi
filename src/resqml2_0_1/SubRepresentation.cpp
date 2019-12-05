@@ -135,16 +135,18 @@ void SubRepresentation::pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::
 void SubRepresentation::pushBackRefToExistingDataset(const gsoap_resqml2_0_1::resqml20__IndexableElements & elementKind, const ULONG64 & elementCount, const std::string & elementDataset,
 	const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset)
 {
-	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
-
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	getRepository()->addRelationship(this, proxy);
 
 	resqml20__SubRepresentationPatch* patch = soap_new_resqml20__SubRepresentationPatch(gsoapProxy2_0_1->soap);
 
 	// XML
+	_resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
 	patch->PatchIndex = rep->SubRepresentationPatch.size();
 	rep->SubRepresentationPatch.push_back(patch);
 	patch->Count = elementCount;

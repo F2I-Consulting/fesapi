@@ -24,12 +24,13 @@ namespace COMMON_NS
 {
 	class GraphicalInformationSet : public AbstractObject
 	{
+#if WITH_EXPERIMENTAL
 	private:
 		gsoap_eml2_2::resqml22__DefaultGraphicalInformation* getDefaultGraphicalInformationForAllIndexableElements(AbstractObject const* targetObject) const;
 		gsoap_eml2_2::resqml22__GraphicalInformationForWholeObject* getDefaultGraphicalInformation(AbstractObject const* targetObject) const;
 		gsoap_eml2_2::resqml22__HsvColor* getDefaultColor(AbstractObject const* targetObject) const;
 		gsoap_eml2_2::resqml22__ColorInformation* getColorInformation(AbstractObject const* targetObject) const;
-
+#endif
 	public:
 		/**
 		* Only to be used in partial transfer context
@@ -86,7 +87,7 @@ namespace COMMON_NS
 		 * @return				true if the target object (or its property kind) has some graphical informations
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasGraphicalInformation(AbstractObject const* targetObject) const;
-
+#if WITH_EXPERIMENTAL
 		/**
 		 * @param targetObject	the object we want to test for having a default color
 		 * @return				true if the target object has one
@@ -279,7 +280,7 @@ namespace COMMON_NS
 		 * @param targetObject	the object for wich we want to set value vector index to look when mapping with a color map.
 		 */
 		DLL_IMPORT_OR_EXPORT void setValueVectorIndex(AbstractObject const* targetObject, LONG64 valueVectorIndex);
-
+#endif
 		/**
 		 * https://en.wikipedia.org/wiki/HSL_and_HSV#From_RGB
 		 * note: no range check is done on parameters

@@ -63,15 +63,19 @@ void NonSealedSurfaceFrameworkRepresentation::pushBackNonSealedContactRepresenta
 		throw invalid_argument("Contact point count cannot be zero.");
 	if (points == nullptr)
 		throw invalid_argument("The contact points cannot be null.");
-
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-	}
-	getRepository()->addRelationship(this, proxy);
-
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
 	}
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
+	getRepository()->addRelationship(this, proxy);
 
 	_resqml20__NonSealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__NonSealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 

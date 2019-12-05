@@ -58,6 +58,7 @@ under the License.
 #include "witsml2_0test/WellTest.h"
 #include "witsml2_0test/Trajectory.h"
 #include "witsml2_0test/Perforation.h"
+#include "witsml2_0test/WellboreGeometryTest.h"
 
 #if WITH_EXPERIMENTAL
 #include "GraphicalInformationSetTest.h"
@@ -170,6 +171,7 @@ FESAPI_TEST("Export and import an horizon on a seismic line", "[seismic]", Horiz
 FESAPI_TEST("Export and import a WITSML well", "[well]", WellTest)
 FESAPI_TEST("Export and import a WITSML trajectory", "[well]", Trajectory)
 FESAPI_TEST("Export and import a WITSML perforation", "[well]", Perforation)
+FESAPI_TEST("Export and import a WITSML Wellbore Geometry", "[well]", WellboreGeometryTest)
 
 FESAPI_TEST("Export and import some multi realization properties", "[property]", MultirealPropertyTest)
 FESAPI_TEST("Check discrete property datatypes", "[property]", DiscreteProperty)

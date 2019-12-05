@@ -53,14 +53,18 @@ void PointSetRepresentation::pushBackGeometryPatch(
 	unsigned int xyzPointCount, double * xyzPoints,
 	COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
+	}
+
 	resqml20__NodePatch* patch = soap_new_resqml20__NodePatch(gsoapProxy2_0_1->soap);
 	patch->PatchIndex = static_cast<_resqml20__PointSetRepresentation*>(gsoapProxy2_0_1)->NodePatch.size();
 	patch->Count = xyzPointCount;
 
 	// XYZ points
-	if (localCrs == nullptr) {
-		localCrs = getRepository()->getDefaultCrs();
-	}
 	hsize_t pointCountDims[] = {xyzPointCount};
 	patch->Geometry = createPointGeometryPatch2_0_1(patch->PatchIndex, xyzPoints, localCrs, pointCountDims, 1, proxy);
 

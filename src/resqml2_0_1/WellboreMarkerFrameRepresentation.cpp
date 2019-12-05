@@ -20,20 +20,13 @@ under the License.
 
 #include <stdexcept>
 
-#if defined(__gnu_linux__) || defined(__APPLE__)
-#include <unistd.h>
-#include <pwd.h>
-#endif
-
 #include "H5Tpublic.h"
 
 #include "WellboreInterpretation.h"
 #include "WellboreTrajectoryRepresentation.h"
-#include "../resqml2/AbstractLocal3dCrs.h"
-#include "../tools/GuidTools.h"
 #include "WellboreMarker.h"
 #include "StratigraphicOccurrenceInterpretation.h"
-#include "HorizonInterpretation.h"
+#include "BoundaryFeatureInterpretation.h"
 #include "../common/AbstractHdfProxy.h"
 
 using namespace std;
@@ -126,14 +119,12 @@ void WellboreMarkerFrameRepresentation::loadTargetRelationships()
 		convertDorIntoRel<StratigraphicOccurrenceInterpretation>(rep->IntervalStratigraphiUnits->StratigraphicOrganization);
 	}
 
-	for (size_t i = 0; i < rep->WellboreMarker.size(); ++i)
-	{
+	for (size_t i = 0; i < rep->WellboreMarker.size(); ++i) {
 		WellboreMarker* marker = getRepository()->getDataObjectByUuid<WellboreMarker>(rep->WellboreMarker[i]->uuid);
 		if (marker == nullptr) {
 			marker = new WellboreMarker(rep->WellboreMarker[i]);
 			getRepository()->addOrReplaceDataObject(marker);
-			if (rep->WellboreMarker[i]->Interpretation != nullptr)
-			{
+			if (rep->WellboreMarker[i]->Interpretation != nullptr) {
 				marker->setBoundaryFeatureInterpretation(getRepository()->getDataObjectByUuid<BoundaryFeatureInterpretation>(rep->WellboreMarker[i]->Interpretation->UUID));
 			}
 		}

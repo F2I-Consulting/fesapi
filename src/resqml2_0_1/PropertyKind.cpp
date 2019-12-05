@@ -56,7 +56,7 @@ PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const string 
 }
 
 PropertyKind::PropertyKind(const string & guid, const string & title,
-	const string & namingSystem, const resqml20__ResqmlUom & uom, RESQML2_NS::PropertyKind * parentPropType)
+	const string & namingSystem, const resqml20__ResqmlUom & uom, COMMON_NS::PropertyKind * parentPropType)
 {
 	init(parentPropType->getRepository(), guid, title, namingSystem);
 	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = uom;
@@ -77,7 +77,7 @@ PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const string 
 }
 
 PropertyKind::PropertyKind(const string & guid, const string & title,
-	const string & namingSystem, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * parentPropType)
+	const string & namingSystem, const std::string & nonStandardUom, COMMON_NS::PropertyKind * parentPropType)
 {
 	init(parentPropType->getRepository(), guid, title, namingSystem);
 	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = gsoap_resqml2_0_1::resqml20__ResqmlUom__Euc;
@@ -95,7 +95,7 @@ _resqml20__PropertyKind* PropertyKind::getSpecializedGsoapProxy() const
 	return static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1);
 }
 
-void PropertyKind::setXmlParentPropertyKind(RESQML2_NS::PropertyKind* parentPropertyKind)
+void PropertyKind::setXmlParentPropertyKind(COMMON_NS::PropertyKind* parentPropertyKind)
 {
 	_resqml20__PropertyKind* propType = getSpecializedGsoapProxy();
 
@@ -139,7 +139,7 @@ bool PropertyKind::isParentPartial() const
 		return false;
 	}
 
-	RESQML2_NS::PropertyKind* parentPk = getParentLocalPropertyKind();
+	COMMON_NS::PropertyKind* parentPk = getParentLocalPropertyKind();
 	while (!parentPk->isPartial() && !parentPk->isParentAnEnergisticsPropertyKind()) {
 		parentPk = parentPk->getParentLocalPropertyKind();
 	}

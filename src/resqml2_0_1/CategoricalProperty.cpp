@@ -61,7 +61,7 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 
 CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind,
-	StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropKind)
+	StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropKind)
 {
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECategoricalProperty(rep->getGsoapContext());	
 	_resqml20__CategoricalProperty* prop = static_cast<_resqml20__CategoricalProperty*>(gsoapProxy2_0_1);
@@ -108,6 +108,9 @@ void CategoricalProperty::pushBackLongHdf5ArrayOfValues(const LONG64 * values, u
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue);
 
@@ -141,6 +144,9 @@ void CategoricalProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short *
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	const string datasetName = pushBackRefToExistingDataset(proxy, "", nullValue);
 
@@ -162,7 +168,7 @@ std::string CategoricalProperty::getStringLookupUuid() const
 	return static_cast<_resqml20__CategoricalProperty*>(gsoapProxy2_0_1)->Lookup->UUID;
 }
 
-bool CategoricalProperty::validatePropertyKindAssociation(RESQML2_NS::PropertyKind* pk)
+bool CategoricalProperty::validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk)
 {
 	if (pk == nullptr) {
 		throw invalid_argument("The property kind to validate cannot be null.");

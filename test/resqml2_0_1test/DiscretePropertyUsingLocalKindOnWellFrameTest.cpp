@@ -22,7 +22,7 @@ under the License.
 #include "resqml2_0_1test/WellboreFrameRepresentationTest.h"
 #include "resqml2_0_1test/PropertyKindTest.h"
 
-#include "resqml2/PropertyKind.h"
+#include "common/PropertyKind.h"
 #include "resqml2_0_1/DiscreteProperty.h"
 #include "resqml2_0_1/WellboreFrameRepresentation.h"
 #include "common/AbstractHdfProxy.h"

@@ -69,7 +69,7 @@ namespace RESQML2_0_1_NS
 		*/
 		CategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind,
-			class StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropKind);
+			class StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropKind);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -168,7 +168,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Check if the associated local property kind is allowed for this property.
 		*/
-		bool validatePropertyKindAssociation(RESQML2_NS::PropertyKind* pk);
+		bool validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk);
 
 		/**
 		* Check if the associated standard property kind is allowed for this property.

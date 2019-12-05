@@ -84,7 +84,7 @@ namespace RESQML2_0_1_NS
 		* @param localPropType				The property kind of these property values which must be defined in the EPC document as a local property kind.
 		*/
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, RESQML2_NS::PropertyKind * localPropKind);
+			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, COMMON_NS::PropertyKind * localPropKind);
 
 		/**
 		* Creates an instance of this class in a gsoap context based on a standard kind and a local uom.
@@ -110,7 +110,7 @@ namespace RESQML2_0_1_NS
 		* @param localPropType				The property kind of these property values which must be defined in the EPC document as a local property kind.
 		*/
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * localPropKind);
+			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * localPropKind);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
@@ -303,12 +303,12 @@ namespace RESQML2_0_1_NS
 		/**
 		* Push back a new patch of values for this property where the values have not to be written in the HDF file.
 		* The reason can be that the values already exist in an external file (only HDF5 for now) or that the writing of the values in the external file is defered in time.
-		* @param	hdfProxy			The HDF5 proxy where the values are already or will be stored.
+		* @param	proxy				The HDF5 proxy where the values are already or will be stored.
 		* @param	datasetName			If not provided during the method call, the dataset will be named the same as the dataset naming convention of the fesapi :"/RESQML/" + prop->uuid + "/values_patch" + patchIndex;
 		* @param	nullValue			Only relevant for integer hdf5 datasets. Indeed, RESQML (and fesapi) forces null value for floating point to be NaN value.
 		* @return	The name of the hdf5 dataset.
 		*/
-		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
+		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
 
 		/**
 		* Get all the values of a particular patch of the instance which are supposed to be double ones.
@@ -377,7 +377,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Check if the associated local property kind is allowed for this property.
 		*/
-		bool validatePropertyKindAssociation(RESQML2_NS::PropertyKind* pk);
+		bool validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk);
 
 		/**
 		* Check if the associated standard property kind is allowed for this property.

@@ -20,12 +20,10 @@ under the License.
 
 #include <stdexcept>
 
-#include "../common/EnumStringMapper.h"
-
-#include "AbstractValuesProperty.h"
+#include "EnumStringMapper.h"
 
 using namespace std;
-using namespace RESQML2_NS;
+using namespace COMMON_NS;
 
 const char* PropertyKind::XML_TAG = "PropertyKind";
 
@@ -39,7 +37,7 @@ const std::string & PropertyKind::getNamingSystem() const
 	}
 }
 
-const gsoap_resqml2_0_1::resqml20__ResqmlUom & PropertyKind::getUom() const
+gsoap_resqml2_0_1::resqml20__ResqmlUom PropertyKind::getUom() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom;
@@ -133,12 +131,13 @@ void PropertyKind::setParentPropertyKind(PropertyKind* parentPropertyKind)
 	if (parentPropertyKind == nullptr) {
 		throw invalid_argument("The parent property kind cannot be null");
 	}
+
+	setXmlParentPropertyKind(parentPropertyKind);
+
+	parentPropertyKind->getRepository()->addRelationship(this, parentPropertyKind);
 	if (getRepository() == nullptr) {
 		parentPropertyKind->getRepository()->addOrReplaceDataObject(this);
 	}
-	getRepository()->addRelationship(this, parentPropertyKind);
-
-	setXmlParentPropertyKind(parentPropertyKind);
 }
 
 void PropertyKind::loadTargetRelationships()
@@ -148,7 +147,7 @@ void PropertyKind::loadTargetRelationships()
 	}
 
 	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getParentLocalPropertyKindDor();
-	RESQML2_NS::PropertyKind* parentPk = getRepository()->getDataObjectByUuid<PropertyKind>(dor->UUID);
+	COMMON_NS::PropertyKind* parentPk = getRepository()->getDataObjectByUuid<PropertyKind>(dor->UUID);
 	if (parentPk == nullptr) {
 		getRepository()->createPartial(dor);
 		parentPk = getRepository()->getDataObjectByUuid<PropertyKind>(dor->UUID);

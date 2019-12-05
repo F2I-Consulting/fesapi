@@ -82,12 +82,22 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 				unsigned int polylineCount, bool allPolylinesClosedFlag,
 				COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
+	}
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
+
 	resqml20__PolylineSetPatch* patch = soap_new_resqml20__PolylineSetPatch(gsoapProxy2_0_1->soap);
 	patch->PatchIndex = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.size();
 
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-	}
 	getRepository()->addRelationship(this, proxy);
 
 	// node count
@@ -113,9 +123,6 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	patch->ClosedPolylines = xmlClosedPolylines;
 
 	// XYZ points
-	if (localCrs == nullptr) {
-		localCrs = getRepository()->getDefaultCrs();
-	}
 	unsigned int nodeCount = 0;
 	for (unsigned int i = 0; i < polylineCount; ++i)
 		nodeCount += nodeCountPerPolyline[i];
@@ -131,12 +138,22 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 				unsigned int polylineCount, bool * polylineClosedFlags,
 				COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
+	if (localCrs == nullptr) {
+		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
+	}
+	if (proxy == nullptr) {
+		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
+	}
+
 	resqml20__PolylineSetPatch* patch = soap_new_resqml20__PolylineSetPatch(gsoapProxy2_0_1->soap);
 	patch->PatchIndex = static_cast<_resqml20__PolylineSetRepresentation*>(gsoapProxy2_0_1)->LinePatch.size();
 
-	if (proxy == nullptr) {
-		proxy = getRepository()->getDefaultHdfProxy();
-	}
 	getRepository()->addRelationship(this, proxy);
 
 	// node count
@@ -171,9 +188,6 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 		&dim, 1);
 
 	// XYZ points
-	if (localCrs == nullptr) {
-		localCrs = getRepository()->getDefaultCrs();
-	}
 	dim = 0;
 	for (unsigned int i = 0; i < polylineCount; ++i)
 		dim += nodeCountPerPolyline[i];

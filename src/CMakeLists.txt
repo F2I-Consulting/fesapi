@@ -27,7 +27,7 @@ if (WITH_EXPERIMENTAL)
 endif(WITH_EXPERIMENTAL)
 set (WITSML_PREFIX_2 "witsml2")
 set (WITSML_PREFIX_2_0 "witsml2_0")
-#set (PRODML_PREFIX_2_0 "prodml2_0")
+set (PRODML_PREFIX_2_1 "prodml2_1")
 set (ETP_PREFIX "etp")
 
 # Define the compile options according to the compiler
@@ -50,12 +50,17 @@ if (WIN32)
 	endif ()
 endif (WIN32)
 
-if (WITH_ETP)
-	target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE WITH_ETP)
+if (WITH_ETP OR FESAPI_USE_BOOST_UUID)
 	target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE BOOST_ALL_NO_LIB)
-	if (WITH_ETP_SSL)
-		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE WITH_ETP_SSL)
+	if (WITH_ETP)
+		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE WITH_ETP)
+		if (WITH_ETP_SSL)
+			target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE WITH_ETP_SSL)
+		endif ()
 	endif ()
+	if (FESAPI_USE_BOOST_UUID)
+		target_compile_definitions(${CPP_LIBRARY_NAME} PRIVATE FESAPI_USE_BOOST_UUID)
+	endif (FESAPI_USE_BOOST_UUID)
 endif (WITH_ETP)
 
 # Linker instructions
@@ -67,7 +72,11 @@ if (WIN32)
 		set(CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "" FORCE)
 	endif ()
 
-	if (EXISTS ${MINIZIP_LIBRARY_RELEASE} AND EXISTS ${MINIZIP_LIBRARY_DEBUG}) 
+	if (FESAPI_USE_BOOST_UUID)
+		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE bcrypt.lib)
+	endif (FESAPI_USE_BOOST_UUID)
+
+	if (EXISTS ${MINIZIP_LIBRARY_RELEASE} AND EXISTS ${MINIZIP_LIBRARY_DEBUG})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${MINIZIP_LIBRARY_RELEASE} debug ${MINIZIP_LIBRARY_DEBUG})
 	elseif (EXISTS ${MINIZIP_LIBRARY_RELEASE})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_RELEASE})
@@ -76,8 +85,8 @@ if (WIN32)
 	else ()
 		message(ERROR "No minizip library has been set.")
 	endif ()
-	
-	if (EXISTS ${HDF5_C_LIBRARY_RELEASE} AND EXISTS ${HDF5_C_LIBRARY_DEBUG}) 
+
+	if (EXISTS ${HDF5_C_LIBRARY_RELEASE} AND EXISTS ${HDF5_C_LIBRARY_DEBUG})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${HDF5_C_LIBRARY_RELEASE} debug ${HDF5_C_LIBRARY_DEBUG})
 	elseif (EXISTS ${HDF5_C_LIBRARY_RELEASE})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${HDF5_C_LIBRARY_RELEASE})
@@ -86,35 +95,35 @@ if (WIN32)
 	else ()
 		message(ERROR "No hdf5 library has been set.")
 	endif ()
-		
+
 # zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
 # zlib is linked because it is a very probable dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to zlib), zlib could be not present in these linked libraries.
-	if (EXISTS ${ZLIB_LIBRARY_RELEASE} AND EXISTS ${ZLIB_LIBRARY_DEBUG}) 
+	if (EXISTS ${ZLIB_LIBRARY_RELEASE} AND EXISTS ${ZLIB_LIBRARY_DEBUG})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${ZLIB_LIBRARY_RELEASE} debug ${ZLIB_LIBRARY_DEBUG})
 	elseif (EXISTS ${ZLIB_LIBRARY_RELEASE})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_LIBRARY_RELEASE})
 	elseif (EXISTS ${ZLIB_LIBRARY_DEBUG})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${ZLIB_LIBRARY_DEBUG})
 	endif ()
-	
+
 # szip is linked because it is a potential dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to szip), szip could be not present in these linked libraries.
-	if (EXISTS ${SZIP_LIBRARY_RELEASE} AND EXISTS ${SZIP_LIBRARY_DEBUG}) 
+	if (EXISTS ${SZIP_LIBRARY_RELEASE} AND EXISTS ${SZIP_LIBRARY_DEBUG})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE optimized ${SZIP_LIBRARY_RELEASE} debug ${SZIP_LIBRARY_DEBUG})
 	elseif (EXISTS ${SZIP_LIBRARY_RELEASE})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${SZIP_LIBRARY_RELEASE})
 	elseif (EXISTS ${SZIP_LIBRARY_DEBUG})
 		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${SZIP_LIBRARY_DEBUG})
 	endif ()
-	
+
 	set (ASSEMBLY_NAME ${CPP_LIBRARY_NAME})
-	set (DLL_SUFFIX ".dll")  
+	set (DLL_SUFFIX ".dll")
 	set (IMPORT_SUFFIX ".lib")
 	if (SUFFIX_INCLUDES_VERSION)
 		set_target_properties(${CPP_LIBRARY_NAME}
 			PROPERTIES PDB_NAME ${ASSEMBLY_NAME}.${Fesapi_VERSION}
 		)
 		set (ASSEMBLY_NAME ${ASSEMBLY_NAME}.${Fesapi_VERSION})
-		set (DLL_SUFFIX .${Fesapi_VERSION}${DLL_SUFFIX})  
+		set (DLL_SUFFIX .${Fesapi_VERSION}${DLL_SUFFIX})
 		set (IMPORT_SUFFIX .${Fesapi_VERSION}${IMPORT_SUFFIX})
 	endif ()
 	set_target_properties(${CPP_LIBRARY_NAME} PROPERTIES
@@ -124,7 +133,10 @@ if (WIN32)
 		IMPORT_SUFFIX ${IMPORT_SUFFIX}
 		VERSION ${Fesapi_VERSION_MAJOR}.${Fesapi_VERSION_MINOR})
 ELSEIF (UNIX)
-	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${UUID_LIBRARY_RELEASE} ${GSOAP_LIBRARIES} ${MINIZIP_LIBRARY_RELEASE} ${HDF5_C_LIBRARY_RELEASE})
+	if (NOT FESAPI_USE_BOOST_UUID)
+		target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${UUID_LIBRARY_RELEASE})
+	endif ()
+	target_link_libraries (${CPP_LIBRARY_NAME} PRIVATE ${MINIZIP_LIBRARY_RELEASE} ${HDF5_C_LIBRARY_RELEASE})
 # zlib is linked because it is a dependency of minizip which is usually statically linked to fesapi. If minizip would be dynamically linked from fesapi, zlib could be not present in these linked libraries.
 # zlib is linked because it is a very probable dependency of hdf5 which is sometimes statically linked to fesapi. If hdf5 would be dynamically linked from fesapi (or if hdf5 does not depend at all to zlib), zlib could be not present in these linked libraries.
 	if (EXISTS ${ZLIB_LIBRARY_RELEASE})
@@ -164,7 +176,7 @@ set (WITH_DOTNET_WRAPPING OFF CACHE BOOL "Compile the swig cpp generated file fo
 
 # Namespaces definitions
 set (FESAPI_COMMON_NS common CACHE STRING "Namespace for common objects")
-#set (FESAPI_PRODML2_0_NS prodml2_0 CACHE STRING "Namespace for prodml2_0 objects")
+set (FESAPI_PRODML2_1_NS prodml2_1 CACHE STRING "Namespace for prodml2_1 objects")
 set (FESAPI_RESQML2_NS resqml2 CACHE STRING "Namespace for resqml2 objects")
 set (FESAPI_RESQML2_0_1_NS resqml2_0_1 CACHE STRING "Namespace for resqml2_0_1 objects")
 
@@ -182,13 +194,13 @@ configure_file(${FESAPI_ROOT_DIR}/cmake/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/n
 
 file (GLOB FESAPI_COMMON_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/common/*.cpp)
 file (GLOB FESAPI_COMMON_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/common/*.h)
-if (NOT WITH_EXPERIMENTAL)
-	list(REMOVE_ITEM FESAPI_COMMON_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/common/GraphicalInformationSet.cpp")
-	list(REMOVE_ITEM FESAPI_COMMON_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/common/GraphicalInformationSet.h")
-endif ()
 
 file (GLOB FESAPI_TOOLS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/tools/*.cpp)
 file (GLOB FESAPI_TOOLS_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/tools/*.h)
+if (FESAPI_USE_BOOST_UUID)
+	list(REMOVE_ITEM FESAPI_TOOLS_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/tools/GuidTools.cpp")
+	list(REMOVE_ITEM FESAPI_TOOLS_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/tools/GuidTools.h")
+endif ()
 
 file (GLOB FESAPI_EPC_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/epc/*.cpp)
 file (GLOB FESAPI_EPC_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/epc/*.h)
@@ -213,8 +225,8 @@ else ()
 	set (FESAPI_WITSML_2_1_HEADERS "")
 endif()
 
-#file (GLOB FESAPI_PRODML_2_0_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_0}/*.cpp)
-#file (GLOB FESAPI_PRODML_2_0_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_0}/*.h)
+file (GLOB FESAPI_PRODML_2_1_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_1}/*.cpp)
+file (GLOB FESAPI_PRODML_2_1_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${PRODML_PREFIX_2_1}/*.h)
 
 file (GLOB FESAPI_WITSML_2_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2}/*.cpp)
 file (GLOB FESAPI_WITSML_2_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX_2}/*.h)
@@ -225,6 +237,7 @@ file (GLOB FESAPI_WITSML_2_0_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/${WITSML_PREFIX
 set (ALL_SOURCES_AND_HEADERS
 	${CMAKE_CURRENT_SOURCE_DIR}/nsDefinitions.h
 	${CMAKE_CURRENT_SOURCE_DIR}/version_config.h
+	${CMAKE_CURRENT_SOURCE_DIR}/MacroDefinitions.h
 	${FESAPI_COMMON_SOURCES}
 	${FESAPI_COMMON_HEADERS}
 	${FESAPI_TOOLS_SOURCES}
@@ -243,8 +256,8 @@ set (ALL_SOURCES_AND_HEADERS
 	${FESAPI_WITSML_2_0_HEADERS}
 	${FESAPI_WITSML_2_1_SOURCES}
 	${FESAPI_WITSML_2_1_HEADERS}
-#	${FESAPI_PRODML_2_0_SOURCES}
-#	${FESAPI_PRODML_2_0_HEADERS}
+	${FESAPI_PRODML_2_1_SOURCES}
+	${FESAPI_PRODML_2_1_HEADERS}
 	${FESAPI_PROXIES_SOURCES}
 	${FESAPI_PROXIES_HEADERS}
 )
@@ -284,11 +297,13 @@ if (WITH_ETP)
 	if (WITH_ETP_SSL)
 		target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${OPENSSL_INCLUDE_DIR})
 	endif ()
+elseif (FESAPI_USE_BOOST_UUID)
+	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${Boost_INCLUDE_DIR})
 endif (WITH_ETP)
 
-if (UNIX)
+if (UNIX AND NOT FESAPI_USE_BOOST_UUID)
 	target_include_directories(${CPP_LIBRARY_NAME} PRIVATE ${UUID_INCLUDE_DIR})
-endif (UNIX)
+endif ()
 
 target_include_directories(${CPP_LIBRARY_NAME} INTERFACE
 	$<INSTALL_INTERFACE:include>
@@ -299,9 +314,9 @@ if (WIN32)
 	source_group ("common" FILES ${FESAPI_COMMON_SOURCES} ${FESAPI_COMMON_HEADERS})
 	source_group ("tools" FILES ${FESAPI_TOOLS_SOURCES} ${FESAPI_TOOLS_HEADERS})
 	source_group ("epc" FILES ${FESAPI_EPC_SOURCES} ${FESAPI_EPC_HEADERS})
-	
+
 	source_group ("${RESQML_PREFIX_2}" FILES ${FESAPI_RESQML_2_SOURCES} ${FESAPI_RESQML_2_HEADERS})
-	
+
 	source_group ("${RESQML_PREFIX_2_0_1}" FILES ${FESAPI_RESQML_2_0_1_SOURCES} ${FESAPI_RESQML_2_0_1_HEADERS})
 	
 	if (WITH_EXPERIMENTAL)
@@ -310,10 +325,11 @@ if (WIN32)
 	endif(WITH_EXPERIMENTAL)
 	
 	source_group ("${WITSML_PREFIX_2}" FILES ${FESAPI_WITSML_2_SOURCES} ${FESAPI_WITSML_2_HEADERS})
+
 	source_group ("${WITSML_PREFIX_2_0}" FILES ${FESAPI_WITSML_2_0_SOURCES} ${FESAPI_WITSML_2_0_HEADERS})
-	
-	#source_group ("${PRODML_PREFIX_2_0}" FILES ${FESAPI_PRODML_2_0_SOURCES} ${FESAPI_PRODML_2_0_HEADERS})
-	
+
+	source_group ("${PRODML_PREFIX_2_1}" FILES ${FESAPI_PRODML_2_1_SOURCES} ${FESAPI_PRODML_2_1_HEADERS})
+
 	source_group ("proxies" FILES ${FESAPI_PROXIES_SOURCES} ${FESAPI_PROXIES_HEADERS})
 	
 	if (WITH_ETP)
@@ -360,51 +376,59 @@ ENDIF()
 
 # namespaces
 INSTALL (
-	FILES ${FESAPI_ROOT_DIR}/src/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/version_config.h
-	DESTINATION include/fesapi/
+	FILES ${FESAPI_ROOT_DIR}/src/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/version_config.h ${FESAPI_ROOT_DIR}/src/MacroDefinitions.h
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/
+	COMPONENT fesapi_headers
 )
 
 # proxies headers
 INSTALL (
 	FILES ${FESAPI_PROXIES_HEADERS}
-	DESTINATION include/fesapi/proxies/
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/proxies/
+	COMPONENT fesapi_headers
 )
 
 # common headers
 INSTALL (
 	FILES ${FESAPI_COMMON_HEADERS}
-	DESTINATION include/fesapi/common
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/common
+	COMPONENT fesapi_headers
 )
 
 # tools headers
 IF (UNIX) # Methods are not exported  under windows
 	INSTALL (
 		FILES ${FESAPI_TOOLS_HEADERS}
-		DESTINATION include/fesapi/tools/
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/tools/
+		COMPONENT fesapi_headers
 	)
 ENDIF (UNIX)
 
 # epc headers
 INSTALL (
 	FILES ${FESAPI_EPC_HEADERS}
-	DESTINATION include/fesapi/epc/
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/epc/
+	COMPONENT fesapi_headers
 )
 
 # resqml headers
 INSTALL (
 	FILES ${FESAPI_RESQML_2_HEADERS}
-	DESTINATION include/fesapi/${RESQML_PREFIX_2}/
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${RESQML_PREFIX_2}/
+	COMPONENT fesapi_headers
 )
 
 INSTALL (
 	FILES ${FESAPI_RESQML_2_0_1_HEADERS}
-	DESTINATION include/fesapi/${RESQML_PREFIX_2_0_1}/
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${RESQML_PREFIX_2_0_1}/
+	COMPONENT fesapi_headers
 )
 
 if (WITH_EXPERIMENTAL)
 	INSTALL (
 		FILES ${FESAPI_RESQML_2_2_HEADERS}
-		DESTINATION include/fesapi/${RESQML_PREFIX_2_2}/
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${RESQML_PREFIX_2_2}/
+		COMPONENT fesapi_headers
 	)
 	
 	INSTALL (
@@ -421,15 +445,15 @@ INSTALL (
 
 INSTALL (
 	FILES ${FESAPI_WITSML_2_0_HEADERS}
-	DESTINATION include/fesapi/${WITSML_PREFIX_2_0}/
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${WITSML_PREFIX_2_0}/
+	COMPONENT fesapi_headers
 )
 
-
 # prodml headers
-#INSTALL (
-#	FILES ${FESAPI_PRODML_2_0_HEADERS}
-#	DESTINATION include/${PRODML_PREFIX_2_0}/
-#)
+INSTALL (
+	FILES ${FESAPI_PRODML_2_1_HEADERS}
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${PRODML_PREFIX_2_1}/
+	COMPONENT fesapi_headers
 
 # etp header
 IF (WITH_ETP)
@@ -442,12 +466,14 @@ endif (WITH_ETP)
 
 # PropertyTypeMapping.xml
 INSTALL (
-	FILES ${FESAPI_ROOT_DIR}/resources/PropertyKindMapping.xml
-	DESTINATION resources/
+	FILES ${FESAPI_PRODML_2_1_HEADERS}
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/${PRODML_PREFIX_2_1}/
+	COMPONENT fesapi_headers
 )
 
-# license
+# PropertyTypeMapping.xml
 INSTALL (
-	FILES ${FESAPI_ROOT_DIR}/LICENSE ${FESAPI_ROOT_DIR}/NOTICE 
-	DESTINATION .
+	FILES ${FESAPI_ROOT_DIR}/resources/PropertyKindMapping.xml
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/fesapi/resources/
+	COMPONENT fesapi_runtime
 )

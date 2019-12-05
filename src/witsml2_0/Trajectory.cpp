@@ -63,9 +63,9 @@ void Trajectory::setWellbore(Wellbore* witsmlWellbore)
 		witsmlWellbore->getRepository()->addOrReplaceDataObject(this);
 	}
 
-	getRepository()->addRelationship(this, witsmlWellbore);
-
 	static_cast<witsml20__Trajectory*>(gsoapProxy2_1)->Wellbore = witsmlWellbore->newEmlReference();
+
+	getRepository()->addRelationship(this, witsmlWellbore);
 }
 
 GETTER_AND_SETTER_GENERIC_ATTRIBUTE_IMPL(gsoap_eml2_1::witsml20__ChannelStatus, Trajectory, GrowingStatus)

@@ -81,9 +81,11 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
 	if (identicalNodes == nullptr) {
 		throw invalid_argument("The array of identical nodes cannot be null.");
 	}
-
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	getRepository()->addRelationship(this, proxy);
 
@@ -121,9 +123,11 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
 	if (supportingRepresentation == nullptr) {
 		throw invalid_argument("The supporting representation cannot be null.");
 	}
-
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	getRepository()->addRelationship(this, proxy);
 

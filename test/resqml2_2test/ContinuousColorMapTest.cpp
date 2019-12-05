@@ -20,7 +20,7 @@ under the License.
 #include "catch.hpp"
 #include "common/AbstractHdfProxy.h"
 #include "common/GraphicalInformationSet.h"
-#include "resqml2/PropertyKind.h"
+#include "common/PropertyKind.h"
 #include "resqml2_0_1/Horizon.h"
 #include "resqml2_0_1/HorizonInterpretation.h"
 #include "resqml2_0_1/Grid2dRepresentation.h"

@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractObject.h"
+#include "Wellbore.h"
 
 namespace WITSML2_0_NS
 {
@@ -58,16 +58,16 @@ namespace WITSML2_0_NS
 		/**
 		* Get the wellbore linked with this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT class Wellbore* getWellbore() const;
+		DLL_IMPORT_OR_EXPORT Wellbore* getWellbore() const;
 
 		/**
 		* Set the wellbore linked with this data object.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual void setWellbore(class Wellbore* witsmlWellbore) = 0;
+		DLL_IMPORT_OR_EXPORT virtual void setWellbore(Wellbore* witsmlWellbore) = 0;
 
 		/**
 		* Resolve all relationships of the object in a repository.
 		*/
-		void loadTargetRelationships();
+		virtual void loadTargetRelationships();
 	};
 }

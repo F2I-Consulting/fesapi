@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.9.2)
+cmake_minimum_required (VERSION 3.12)
 
 project (Fesapi)
 
@@ -7,7 +7,7 @@ set (FESAPI_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
 # version mechanism
 set (Fesapi_VERSION_MAJOR 1)
-set (Fesapi_VERSION_MINOR 0)
+set (Fesapi_VERSION_MINOR 1)
 set (Fesapi_VERSION_PATCH 0)
 set (Fesapi_VERSION_TWEAK 0)
 
@@ -38,21 +38,18 @@ IF (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 	SET (CMAKE_INSTALL_PREFIX ${FESAPI_BINARY_DIR}/install CACHE PATH "FesapiCpp install prefix" FORCE)
 ENDIF (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
-IF (UNIX)
-	if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.7 OR CMAKE_CXX_COMPILER_VERSION VERSION_EQUAL 4.7)
-		add_compile_options(-std=c++11)
-	else ()
-		add_compile_options(-std=c++0x)
-	endif()
-	add_compile_options(-fPIC)
-ENDIF (UNIX)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+
 
 # ============================================================================
 # checking for required dependencies
 # ============================================================================
 
 # path to custom find_package modules
-SET (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules/")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
 # hdf5
 # FIND_PACKAGE (HDF5) is not used because we need debug and release versions of hdf5 for windows build environments. The cmake module does not provide both debug and release library cmake variables.
@@ -115,7 +112,11 @@ IF (NOT EXISTS ${SZIP_LIBRARY_DEBUG} AND WIN32 AND NOT ${HDF5_BUILT_AS_DYNAMIC_L
 ENDIF ()
 
 # Uuid
-IF (UNIX)
+set (FESAPI_USE_BOOST_UUID OFF CACHE BOOL "Use the Boost uuid library instead of the windows API or the linux libuuid library.")
+if (FESAPI_USE_BOOST_UUID)
+	# Boost DEPENDENCY
+	find_package(Boost 1.44.0) # 1.44 because we cant boost::uuids::to_string method
+elseif (UNIX)
 	SET (UUID_INCLUDE_DIR /usr/include CACHE PATH "Path to the directory which contains the uuid/uuid.h header file")
 	IF (NOT IS_DIRECTORY ${UUID_INCLUDE_DIR})
 		MESSAGE(WARNING "The UUID include dir (UUID_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
@@ -124,7 +125,7 @@ IF (UNIX)
 	IF (NOT EXISTS ${UUID_LIBRARY_RELEASE})
 		MESSAGE(WARNING "The UUID library (UUID_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
 	ENDIF ()
-ENDIF (UNIX)
+endif (FESAPI_USE_BOOST_UUID)
 
 # ============================================================================
 # some useful variables

@@ -24,9 +24,7 @@ under the License.
 
 #include "../proxies/gsoap_resqml2_0_1H.h"
 #include "../proxies/gsoap_eml2_1H.h"
-#if WITH_EXPERIMENTAL
 #include "../proxies/gsoap_eml2_2H.h"
-#endif
 
 #include "DataObjectIdentifier.h"
 
@@ -50,7 +48,6 @@ namespace RESQML2_NS
 	class ActivityTemplate;
 	class GridConnectionSetRepresentation;
 	class MdDatum;
-	class PropertyKind;
 	class PropertySet;
 	class SubRepresentation;
 	class TimeSeries;
@@ -154,7 +151,17 @@ namespace WITSML2_0_NS
 	class WellCompletion;
 	class Wellbore;
 	class WellboreCompletion;
+	class WellboreGeometry;
 	class Trajectory;
+	class Log;
+	class ChannelSet;
+	class Channel;
+}
+
+namespace PRODML2_1_NS
+{
+	class FluidSystem;
+	class FluidCharacterization;
 }
 
 namespace COMMON_NS
@@ -163,9 +170,8 @@ namespace COMMON_NS
 	class AbstractHdfProxy;
 	class DataFeeder;
 	class HdfProxyFactory;
-#if WITH_EXPERIMENTAL
+	class PropertyKind;
 	class GraphicalInformationSet;
-#endif
 
 	/**
 	* This abstract class acts as a buffer between the RESQML (business) classes and the persisted data.
@@ -679,12 +685,10 @@ namespace COMMON_NS
 		*/
 		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_1::eml21__DataObjectReference const * dor);
 
-#if WITH_EXPERIMENTAL
 		/**
 		* Create a partial object in this repository based on a EML2.1 Data Object Reference
 		*/
 		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_2::eml22__DataObjectReference const * dor);
-#endif
 
 		/**
 		* Create a partial object i.e. a data object reference (DOR) based on an UUID + a title + a version.
@@ -1096,17 +1100,23 @@ namespace COMMON_NS
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::StringTableLookup* createStringTableLookup(const std::string & guid, const std::string & title);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
 			const std::string & namingSystem, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & parentEnergisticsPropertyKind);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, RESQML2_NS::PropertyKind * parentPropType);
+		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
+			const std::string & namingSystem, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, COMMON_NS::PropertyKind * parentPropType);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
 			const std::string & namingSystem, const std::string & nonStandardUom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & parentEnergisticsPropertyKind);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
-			const std::string & namingSystem, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * parentPropType);
+		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
+			const std::string & namingSystem, const std::string & nonStandardUom, COMMON_NS::PropertyKind * parentPropType);
+
+		/**
+		* Create an EML2.1 property kind
+		*/
+		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* createPropertyKind(const std::string & guid, const std::string & title,
+			gsoap_eml2_1::eml21__QuantityClassKind quantityClass, bool isAbstract = false, COMMON_NS::PropertyKind* parentPropertyKind = nullptr);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::PropertySet* createPropertySet(const std::string & guid, const std::string & title,
 			bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_resqml2_0_1::resqml20__TimeSetKind timeSetKind);
@@ -1115,40 +1125,40 @@ namespace COMMON_NS
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CommentProperty* createCommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropType);
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, COMMON_NS::PropertyKind * localPropType);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, RESQML2_NS::PropertyKind * localPropType);
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, COMMON_NS::PropertyKind * localPropType);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const std::string & nonStandardUom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousProperty* createContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const std::string & nonStandardUom, RESQML2_NS::PropertyKind * localPropType);
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * localPropType);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousPropertySeries* createContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind,
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::ContinuousPropertySeries* createContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, RESQML2_NS::PropertyKind * localPropType,
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, COMMON_NS::PropertyKind * localPropType,
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DiscreteProperty* createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DiscreteProperty* createDiscreteProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropType);
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, COMMON_NS::PropertyKind * localPropType);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DiscretePropertySeries* createDiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind,
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DiscretePropertySeries* createDiscretePropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
-			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, RESQML2_NS::PropertyKind * localPropType,
+			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, COMMON_NS::PropertyKind * localPropType,
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
@@ -1157,7 +1167,7 @@ namespace COMMON_NS
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
-			RESQML2_0_1_NS::StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropType);
+			RESQML2_0_1_NS::StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropType);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalPropertySeries* createCategoricalPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
@@ -1166,7 +1176,7 @@ namespace COMMON_NS
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalPropertySeries* createCategoricalPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
-			RESQML2_0_1_NS::StringTableLookup* strLookup, RESQML2_NS::PropertyKind * localPropType,
+			RESQML2_0_1_NS::StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropType,
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		//************* ACTIVITIES ***********
@@ -1244,18 +1254,47 @@ namespace COMMON_NS
 			const std::string & title,
 			const std::string & wellCompletionName);
 
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreGeometry* createWellboreGeometry(WITSML2_0_NS::Wellbore* witsmlWellbore,
+			const std::string & guid,
+			const std::string & title,
+			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
+
 		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Trajectory* createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
 
-#if WITH_EXPERIMENTAL
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Log* createLog(WITSML2_0_NS::Wellbore* witsmlWellbore,
+			const std::string & guid,
+			const std::string & title);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::ChannelSet* createChannelSet(
+			const std::string & guid,
+			const std::string & title);
+
+		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Channel* createChannel(COMMON_NS::PropertyKind * propertyKind,
+			const std::string & guid, const std::string & title,
+			const std::string & mnemonic, gsoap_eml2_1::eml21__UnitOfMeasure uom, gsoap_eml2_1::witsml20__EtpDataType dataType, gsoap_eml2_1::witsml20__ChannelStatus growingStatus,
+			const std::string & timeDepth, const std::string & loggingCompanyName);
+
+		//*************** PRODML *************
+
+		DLL_IMPORT_OR_EXPORT PRODML2_1_NS::FluidSystem* createFluidSystem(const std::string & guid,
+			const std::string & title,
+			double temperatureValue, gsoap_eml2_2::eml22__ThermodynamicTemperatureUom temperatureUom,
+			double pressureValue, gsoap_eml2_2::eml22__PressureUom pressureUom,
+			gsoap_eml2_2::prodml21__ReservoirFluidKind reservoirFluidKind,
+			double gasOilRatio, gsoap_eml2_2::eml22__VolumePerVolumeUom gasOilRatioUom);
+
+		DLL_IMPORT_OR_EXPORT PRODML2_1_NS::FluidCharacterization* createFluidCharacterization(const std::string & guid, const std::string & title);
+
 		//************************************
 		//************ EML2.2 ****************
 		//************************************
 
 		DLL_IMPORT_OR_EXPORT GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
 
+#if WITH_EXPERIMENTAL
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::DiscreteColorMap* createDiscreteColorMap(const std::string& guid, const std::string& title);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::ContinuousColorMap* createContinuousColorMap(const std::string& guid, const std::string& title,
@@ -1341,10 +1380,11 @@ namespace COMMON_NS
 		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
 #if WITH_EXPERIMENTAL
 		COMMON_NS::AbstractObject* getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType);
-		COMMON_NS::AbstractObject* getEml2_2WrapperFromGsoapContext(const std::string & datatype);
-		COMMON_NS::AbstractObject* getWitsml2_1WrapperFromGsoapContext(const std::string & datatype);
 #endif
+		COMMON_NS::AbstractObject* getEml2_2WrapperFromGsoapContext(const std::string & datatype);
+
 		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
+		COMMON_NS::AbstractObject* getProdml2_1WrapperFromGsoapContext(const std::string & datatype);
 
 		/**
 		* Get the error code of the current gsoap context.

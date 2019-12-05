@@ -973,7 +973,7 @@ void AbstractIjkGridRepresentation::setEnabledCells(unsigned char* enabledCells,
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
 		if (proxy == nullptr) {
-			throw invalid_argument("You miss an HDF proxy");
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
 	boolArray->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);

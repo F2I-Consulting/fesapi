@@ -25,10 +25,15 @@ import com.f2i.energisticsStandardsApi.SWIGTYPE_p_double;
 import com.f2i.energisticsStandardsApi.SWIGTYPE_p_unsigned_int;
 import com.f2i.energisticsStandardsApi.SWIGTYPE_p_unsigned_short;
 import com.f2i.energisticsStandardsApi.StringVector;
+import com.f2i.energisticsStandardsApi.WellVector;
+import com.f2i.energisticsStandardsApi.WellboreGeometryVector;
 import com.f2i.energisticsStandardsApi.WellboreTrajectoryRepresentationVector;
+import com.f2i.energisticsStandardsApi.WellboreVector;
 import com.f2i.energisticsStandardsApi.eml20__LengthUom;
 import com.f2i.energisticsStandardsApi.eml20__TimeUom;
 import com.f2i.energisticsStandardsApi.eml21__LengthUom;
+import com.f2i.energisticsStandardsApi.eml21__MassPerLengthUom;
+import com.f2i.energisticsStandardsApi.eml21__WellStatus;
 import com.f2i.energisticsStandardsApi.eml21__WellboreDatumReference;
 import com.f2i.energisticsStandardsApi.fesapi;
 import com.f2i.energisticsStandardsApi.resqml20__IndexableElements;
@@ -40,6 +45,10 @@ import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.PropertySet;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.WellboreFrameRepresentation;
 import com.f2i.energisticsStandardsApi.resqml20__ResqmlUom;
 import com.f2i.energisticsStandardsApi.resqml20__TimeSetKind;
+import com.f2i.energisticsStandardsApi.witsml20__ChannelStatus;
+import com.f2i.energisticsStandardsApi.witsml20__HoleCasingType;
+import com.f2i.energisticsStandardsApi.witsml20__WellboreShape;
+import com.f2i.energisticsStandardsApi.witsml20__WellboreType;
 import com.f2i.energisticsStandardsApi.common.AbstractHdfProxy;
 import com.f2i.energisticsStandardsApi.common.AbstractObject;
 import com.f2i.energisticsStandardsApi.common.DataObjectRepository;
@@ -74,6 +83,8 @@ import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreFeature;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreInterpretation;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.WellboreTrajectoryRepresentation;
 import com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Well;
+import com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.Wellbore;
+import com.f2i.energisticsStandardsApi.${FESAPI_WITSML2_0_NS}.WellboreGeometry;
 
 public class FesapiJavaExample {
 	private static Horizon horizon1;
@@ -92,7 +103,7 @@ public class FesapiJavaExample {
 		}
 	}
 
-	static void serializeWells(DataObjectRepository repo)
+	private static void serializeWells(DataObjectRepository repo)
 	{
 		// WELL
 		Well witsmlWell = repo.createWell("704a287c-5c24-4af3-a97b-bc6670f4e14f", "Well1");
@@ -103,6 +114,36 @@ public class FesapiJavaExample {
 		witsmlWell.pushBackDatum("aa92fa8b-d6cc-459e-b456-27fec0c08b24", "well1 msl datum", eml21__WellboreDatumReference.eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", eml21__LengthUom.eml21__LengthUom__m, 0, 5100);
 		witsmlWell.pushBackDatum("d3ac5401-d3e7-4474-b846-070673b210ae", "KB", eml21__WellboreDatumReference.eml21__WellboreDatumReference__kelly_x0020bushing, "Mean Sea Level", eml21__LengthUom.eml21__LengthUom__m, 15, 5100);
 	
+		// WELLBORE
+		Wellbore witsmlWellbore = repo.createWellbore(witsmlWell, "3bd60188-5688-43df-89bb-935fe86a813f", "Wellbore1");
+		witsmlWellbore.setNumber("Wb1");
+		witsmlWellbore.setStatusWellbore(eml21__WellStatus.eml21__WellStatus__completed);
+		witsmlWellbore.setIsActive(false);
+		witsmlWellbore.setTypeWellbore(witsml20__WellboreType.witsml20__WellboreType__initial);
+		witsmlWellbore.setShape(witsml20__WellboreShape.witsml20__WellboreShape__vertical);
+		witsmlWellbore.setAchievedTD(true);
+		witsmlWellbore.setMd(1000, eml21__LengthUom.eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+		witsmlWellbore.setMdPlanned(1000, eml21__LengthUom.eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+
+		// Geometry
+		WellboreGeometry witsmlWbGeom = repo.createWellboreGeometry(witsmlWellbore, "c9dc03e9-722c-478b-b0ae-b2dd9da67c11", "My wellbore geometry", witsml20__ChannelStatus.witsml20__ChannelStatus__closed);
+		witsmlWbGeom.setMdBase(0, eml21__LengthUom.eml21__LengthUom__m, "d3ac5401-d3e7-4474-b846-070673b210ae");
+		witsmlWbGeom.pushBackSection();
+		witsmlWbGeom.setWellboreGeometrySectionTypeHoleCasing(0, witsml20__HoleCasingType.witsml20__HoleCasingType__casing);
+		witsmlWbGeom.setWellboreGeometrySectionOdSection(0, 30, eml21__LengthUom.eml21__LengthUom__in);
+		witsmlWbGeom.setWellboreGeometrySectionMdInterval(0, 0, 250, "d3ac5401-d3e7-4474-b846-070673b210ae", eml21__LengthUom.eml21__LengthUom__m);
+		witsmlWbGeom.setWellboreGeometrySectionTvdInterval(0, 0, 250, "d3ac5401-d3e7-4474-b846-070673b210ae", eml21__LengthUom.eml21__LengthUom__m);
+		witsmlWbGeom.pushBackSection();
+		witsmlWbGeom.setWellboreGeometrySectionTypeHoleCasing(1, witsml20__HoleCasingType.witsml20__HoleCasingType__casing);
+		witsmlWbGeom.setWellboreGeometrySectionCurveConductor(1, false);
+		witsmlWbGeom.setWellboreGeometrySectionDiaDrift(1, 17.5, eml21__LengthUom.eml21__LengthUom__in);
+		witsmlWbGeom.setWellboreGeometrySectionFactFric(1, 0.25);
+		witsmlWbGeom.setWellboreGeometrySectionGrade(1, "L80");
+		witsmlWbGeom.setWellboreGeometrySectionIdSection(1, 18, eml21__LengthUom.eml21__LengthUom__in);
+		witsmlWbGeom.setWellboreGeometrySectionOdSection(1, 20, eml21__LengthUom.eml21__LengthUom__in);
+		witsmlWbGeom.setWellboreGeometrySectionWtPerLen(1, 123, eml21__MassPerLengthUom.eml21__MassPerLengthUom__lbm_x002fft);
+		witsmlWbGeom.setWellboreGeometrySectionTvdInterval(1, 0, 990, "d3ac5401-d3e7-4474-b846-070673b210ae", eml21__LengthUom.eml21__LengthUom__m);
+		
 		// Features
 		WellboreFeature wellbore1 = repo.createWellboreFeature("22d5b48f-f789-46e7-a454-6d8bd05afd0b", "Wellbore1");
 		
@@ -747,16 +788,51 @@ public class FesapiJavaExample {
 	}
 
 	private static void deserializeWell(DataObjectRepository repo) {
-		System.out.println("WITSML WELL");
-		Well witsmlWell = (Well) repo.getDataObjectByUuid("704a287c-5c24-4af3-a97b-bc6670f4e14f");
-		System.out.println("Well title is : " + witsmlWell.getTitle());
-		System.out.println("Location projected X : " + witsmlWell.getLocationProjectedX(0));
-		System.out.println("Location projected Y : " + witsmlWell.getLocationProjectedY(0));
-		System.out.println("\tnameLegal : " + witsmlWell.getNameLegal());
-		System.out.println("\twaterDepth : " + witsmlWell.getWaterDepthValue() + " (" + witsmlWell.getWaterDepthUom() + ")");
-		if (witsmlWell.hasTimeZone())
-		{
-			System.out.println("\ttimeZone : " + witsmlWell.getTimeZoneHours() + " hours");
+		WellVector witsmlWells = repo.getWells();
+		for (int wellIdx = 0; wellIdx < witsmlWells.size(); ++wellIdx) {
+			Well witsmlWell = witsmlWells.get(wellIdx);
+			System.out.println("witsml Well: " + witsmlWell.getTitle() + " (" + witsmlWell.getUuid() + ")");
+			System.out.println("Location projected X : " + witsmlWell.getLocationProjectedX(0));
+			System.out.println("Location projected Y : " + witsmlWell.getLocationProjectedY(0));
+			System.out.println("\tnameLegal : " + witsmlWell.getNameLegal());
+			System.out.println("\twaterDepth : " + witsmlWell.getWaterDepthValue() + " (" + witsmlWell.getWaterDepthUom() + ")");
+			if (witsmlWell.hasTimeZone())
+			{
+				System.out.println("\ttimeZone : " + witsmlWell.getTimeZoneHours() + " hours");
+			}
+			WellboreVector witsmlWellbores = witsmlWell.getWellbores();
+			for (int wellboreIdx = 0; wellboreIdx < witsmlWellbores.size(); ++wellboreIdx) {
+				Wellbore witsmlWellbore = witsmlWellbores.get(wellboreIdx);
+				System.out.println("witsml wellbore: " + witsmlWellbore.getTitle() + " (" + witsmlWellbore.getUuid() + ")");
+				WellboreGeometryVector wbGeoms = witsmlWellbore.getWellboreGeometries();
+				for (int wbGeomIdx = 0; wbGeomIdx < wbGeoms.size(); ++wbGeomIdx) {
+					WellboreGeometry wbGeom = wbGeoms.get(wbGeomIdx);
+					System.out.println("witsml wellbore geom: " + wbGeom.getTitle() + " (" + wbGeom.getUuid() + ")");
+					if (wbGeom.hasDepthWaterMean()) { System.out.println("DepthWaterMean: " + wbGeom.getDepthWaterMeanValue() + " " + wbGeom.getDepthWaterMeanUom()); }
+					if (wbGeom.hasGapAir()) { System.out.println("GapAir: " + wbGeom.getGapAirValue() + " " + wbGeom.getGapAirUom()); }
+					if (wbGeom.hasMdBase()) { System.out.println("MdBase: " + wbGeom.getMdBaseValue() + " " + wbGeom.getMdBaseUom() + " datum=" + wbGeom.getMdBaseDatum()); }
+					for (int sectionIdx = 0; sectionIdx < wbGeom.getSectionCount(); ++sectionIdx) {
+						System.out.println("Section " + sectionIdx);
+						if (wbGeom.hasWellboreGeometrySectionCurveConductor(sectionIdx)) { System.out.println("CurveConductor: " + wbGeom.getWellboreGeometrySectionCurveConductor(sectionIdx)); }
+						if (wbGeom.hasWellboreGeometrySectionDiaDrift(sectionIdx)) { System.out.println("DiaDrift: " + wbGeom.getWellboreGeometrySectionDiaDriftValue(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionDiaDriftUom(sectionIdx)); }
+						if (wbGeom.hasWellboreGeometrySectionFactFric(sectionIdx)) { System.out.println("FactFric: " + wbGeom.getWellboreGeometrySectionFactFric(sectionIdx)); }
+						if (wbGeom.hasWellboreGeometrySectionGrade(sectionIdx)) { System.out.println("Grade: " + wbGeom.getWellboreGeometrySectionGrade(sectionIdx)); }
+						if (wbGeom.hasWellboreGeometrySectionIdSection(sectionIdx)) { System.out.println("IdSection: " + wbGeom.getWellboreGeometrySectionIdSectionValue(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionIdSectionUom(sectionIdx)); }
+						if (wbGeom.hasWellboreGeometrySectionOdSection(sectionIdx)) { System.out.println("OdSection: " + wbGeom.getWellboreGeometrySectionOdSectionValue(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionOdSectionUom(sectionIdx)); }
+						if (wbGeom.hasWellboreGeometrySectionTypeHoleCasing(sectionIdx)) { System.out.println("TypeHoleCasing: " + wbGeom.getWellboreGeometrySectionTypeHoleCasing(sectionIdx)); }
+						if (wbGeom.hasWellboreGeometrySectionMdInterval(sectionIdx)) {
+							System.out.println("Base md: " + wbGeom.getWellboreGeometrySectionMdIntervalBase(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionMdIntervalBaseUom(sectionIdx));
+							System.out.println("Top md: " + wbGeom.getWellboreGeometrySectionMdIntervalTop(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionMdIntervalTopUom(sectionIdx));
+							System.out.println("datum: " + wbGeom.getWellboreGeometrySectionMdIntervaldatum(sectionIdx));
+						}
+						if (wbGeom.hasWellboreGeometrySectionTvdInterval(sectionIdx)) {
+							System.out.println("Base Tvd: " + wbGeom.getWellboreGeometrySectionTvdIntervalBase(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionTvdIntervalBaseUom(sectionIdx));
+							System.out.println("Top Tvd: " + wbGeom.getWellboreGeometrySectionTvdIntervalTop(sectionIdx) + " " + wbGeom.getWellboreGeometrySectionTvdIntervalTopUom(sectionIdx));
+							System.out.println("datum: " + wbGeom.getWellboreGeometrySectionTvdIntervaldatum(sectionIdx));
+						}
+					}
+				}
+			}
 		}
 		
 		System.out.println("WellboreFrameRepresentation");

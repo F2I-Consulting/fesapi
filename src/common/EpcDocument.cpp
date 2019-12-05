@@ -33,6 +33,9 @@ under the License.
 #include "../resqml2_0_1/HdfProxy.h"
 #include "../resqml2/AbstractProperty.h"
 
+#include "../witsml2_0/Channel.h"
+#include "../witsml2_0/ChannelSet.h"
+
 using namespace std;
 using namespace gsoap_resqml2_0_1;
 using namespace COMMON_NS;
@@ -140,7 +143,9 @@ void EpcDocument::serializeFrom(const DataObjectRepository & repo, bool useZip64
 	for (std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > >::const_iterator it = dataObjects.begin(); it != dataObjects.end(); ++it)
 	{
 		for (size_t i = 0; i < it->second.size(); ++i) {
-			if (!it->second[i]->isPartial() && dynamic_cast<RESQML2_0_1_NS::WellboreMarker*>(it->second[i]) == nullptr) {
+			if (!it->second[i]->isPartial() && dynamic_cast<RESQML2_0_1_NS::WellboreMarker*>(it->second[i]) == nullptr &&
+				(dynamic_cast<WITSML2_0_NS::ChannelSet*>(it->second[i]) == nullptr || static_cast<WITSML2_0_NS::ChannelSet*>(it->second[i])->getLogs().empty()) &&
+				(dynamic_cast<WITSML2_0_NS::Channel*>(it->second[i]) == nullptr || static_cast<WITSML2_0_NS::Channel*>(it->second[i])->getChannelSets().empty())) {
 				const string str = it->second[i]->serializeIntoString();
 
 				epc::FilePart* const fp = package->createPart(str, it->second[i]->getPartNameInEpcDocument());
@@ -173,7 +178,8 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 		std::string contentType = it->second.getContentTypeString();
 		if (contentType.find("resqml", 14) != std::string::npos ||
 			contentType.find("eml", 14) != std::string::npos ||
-			contentType.find("witsml", 14) != std::string::npos)
+			contentType.find("witsml", 14) != std::string::npos ||
+			contentType.find("prodml", 14) != std::string::npos)
 		{
 			if (contentType == "application/x-resqml+xml;version=2.0;type=obj_EpcExternalPartReference") {
 				result += "The content type " + contentType + " should belong to eml and not to resqml since obj_EpcExternalPartReference is part of COMMON and not part of RESQML.\n";

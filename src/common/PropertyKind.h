@@ -18,9 +18,9 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractProperty.h"
+#include "AbstractObject.h"
 
-namespace RESQML2_NS
+namespace COMMON_NS
 {
 	class PropertyKind : public COMMON_NS::AbstractObject
 	{
@@ -41,6 +41,11 @@ namespace RESQML2_NS
 		*/
 		PropertyKind(gsoap_resqml2_0_1::_resqml20__PropertyKind* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
+		/**
+		* Creates an instance of this class by wrapping a gsoap instance.
+		*/
+		PropertyKind(gsoap_eml2_1::eml21__PropertyKind* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+
 	public:
 
 		/**
@@ -56,7 +61,7 @@ namespace RESQML2_NS
 		/**
 		* Get the unit of measure of the values of this property kind.
 		*/
-		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml20__ResqmlUom & getUom() const;
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlUom getUom() const;
 
 		/**
 		* Get the unit of measure of the values of this property kind as a string.

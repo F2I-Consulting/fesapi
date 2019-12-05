@@ -22,7 +22,9 @@ under the License.
 
 #include "Well.h"
 #include "WellboreCompletion.h"
+#include "WellboreGeometry.h"
 #include "Trajectory.h"
+#include "Log.h"
 
 #include "../resqml2_0_1/WellboreFeature.h"
 
@@ -34,7 +36,9 @@ const char* Wellbore::XML_TAG = "Wellbore";
 
 Wellbore::Wellbore( Well* witsmlWell, const std::string & guid, const std::string & title)
 {
-	if (witsmlWell == nullptr) throw invalid_argument("A wellbore must be associated to a well.");
+	if (witsmlWell == nullptr) {
+		throw invalid_argument("A wellbore must be associated to a well.");
+	}
 
 	gsoapProxy2_1 = soap_new_witsml20__Wellbore(witsmlWell->getGsoapContext());
 
@@ -53,7 +57,9 @@ Wellbore::Wellbore(
 		bool achievedTD
 	)
 {
-	if (witsmlWell == nullptr) throw invalid_argument("A wellbore must be associated to a well.");
+	if (witsmlWell == nullptr) {
+		throw invalid_argument("A wellbore must be associated to a well.");
+	}
 
 	gsoapProxy2_1 = soap_new_witsml20__Wellbore(witsmlWell->getGsoapContext());
 
@@ -84,7 +90,6 @@ class Well* Wellbore::getWell() const
 	return getRepository()->getDataObjectByUuid<Well>(getWellDor()->Uuid);
 }
 
-
 void Wellbore::setWell(Well* witsmlWell)
 {
 	if (witsmlWell == nullptr) {
@@ -94,10 +99,10 @@ void Wellbore::setWell(Well* witsmlWell)
 		witsmlWell->getRepository()->addOrReplaceDataObject(this);
 	}
 
-	getRepository()->addRelationship(this, witsmlWell);
-
 	witsml20__Wellbore* wellbore = static_cast<witsml20__Wellbore*>(gsoapProxy2_1);
 	wellbore->Well = witsmlWell->newEmlReference();
+
+	getRepository()->addRelationship(this, witsmlWell);
 }
 
 void Wellbore::loadTargetRelationships()
@@ -118,6 +123,16 @@ std::vector<WellboreCompletion *> Wellbore::getWellboreCompletions() const
 std::vector<Trajectory *> Wellbore::getTrajectories() const
 {
 	return getRepository()->getSourceObjects<Trajectory>(this);
+}
+
+std::vector<WellboreGeometry *> Wellbore::getWellboreGeometries() const
+{
+	return getRepository()->getSourceObjects<WellboreGeometry>(this);
+}
+
+std::vector<Log *> Wellbore::getLogs() const
+{
+	return getRepository()->getSourceObjects<Log>(this);
 }
 
 GETTER_AND_SETTER_GENERIC_OPTIONAL_ATTRIBUTE_IMPL(std::string, Wellbore, Number, gsoap_eml2_1::soap_new_std__string)

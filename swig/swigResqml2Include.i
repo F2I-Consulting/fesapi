@@ -66,7 +66,6 @@ namespace RESQML2_NS
 	%nspace RESQML2_NS::ActivityTemplate;
 	%nspace RESQML2_NS::GridConnectionSetRepresentation;
 	%nspace RESQML2_NS::MdDatum;
-	%nspace RESQML2_NS::PropertyKind;
 	%nspace RESQML2_NS::PropertySet;
 	%nspace RESQML2_NS::RepresentationSetRepresentation;
 	%nspace RESQML2_NS::SubRepresentation;
@@ -423,15 +422,6 @@ namespace RESQML2_NS
 		std::string getSupportingGridRepresentationUuid(unsigned int index) const;
 	};
 	
-	class PropertyKind : public COMMON_NS::AbstractObject
-	{
-	public:
-		const std::string & getNamingSystem() const;
-		
-		const gsoap_resqml2_0_1::resqml20__ResqmlUom & getUom() const;
-		std::string getUomAsString() const;
-	};
-	
 	class PropertySet : public COMMON_NS::AbstractObject
 	{
 	public:
@@ -475,7 +465,7 @@ namespace RESQML2_NS
 		gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getEnergisticsPropertyKind() const;
 		
 		std::string getLocalPropertyKindUuid() const;
-		PropertyKind* getLocalPropertyKind() const;
+		COMMON_NS::PropertyKind* getLocalPropertyKind() const;
 		
 		unsigned int getElementCountPerValue() const;
 		

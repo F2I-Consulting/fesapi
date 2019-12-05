@@ -94,9 +94,11 @@ void GridConnectionSetRepresentation::setCellIndexPairs(ULONG64 cellIndexPairCou
 	if (cellIndexPairNullValue > (std::numeric_limits<LONG64>::max)()) {
 		throw std::invalid_argument("The XML null value cannot be greater than a 64 bits signed integer cause of gsoap mappings");
 	}
-
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	const std::string uuid = getUuid();
 	setCellIndexPairsUsingExistingDataset(cellIndexPairCount, "/RESQML/" + uuid + "/CellIndexPairs", cellIndexPairNullValue, proxy, gridIndexPairNullValue, gridIndexPair != nullptr ? "/RESQML/" + getUuid() + "/GridIndexPairs" : "");

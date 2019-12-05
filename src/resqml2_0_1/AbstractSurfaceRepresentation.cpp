@@ -123,11 +123,16 @@ resqml20__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ
 		int indexIncrementI, int indexIncrementJ)
 {
 	if (localCrs == nullptr) {
-		throw invalid_argument("The CRS cannot be the null pointer");
+		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
 	}
-
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	getRepository()->addRelationship(this, proxy);
 
@@ -185,11 +190,16 @@ resqml20__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ
 		double offsetJX, double offsetJY, double offsetJZ, double spacingJ)
 {
 	if (localCrs == nullptr) {
-		throw invalid_argument("The CRS cannot be the null pointer");
+		localCrs = getRepository()->getDefaultCrs();
+		if (localCrs == nullptr) {
+			throw std::invalid_argument("A (default) CRS must be provided.");
+		}
 	}
-
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
+		if (proxy == nullptr) {
+			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
+		}
 	}
 	getRepository()->addRelationship(this, proxy);
 

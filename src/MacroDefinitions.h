@@ -18,17 +18,93 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
+#define CHECK_RANGE(vector, index) if (index >= vector.size()) { throw std::range_error("The index is out of range"); }
+#define CHECKER_PRESENCE_ATTRIBUTE(gsoapClassName, proxyVariable, attributeName) DLL_IMPORT_OR_EXPORT bool has##attributeName() const { return static_cast<gsoapClassName*>(proxyVariable)->attributeName != nullptr; }
+#define CHECKER_PRESENCE_ATTRIBUTE_IN_VECTOR(gsoapClassName, proxyVariable, vectorName, attributeName) DLL_IMPORT_OR_EXPORT bool has##vectorName##attributeName(unsigned int index) const {\
+	CHECK_RANGE(static_cast<gsoapClassName*>(proxyVariable)->vectorName, index)\
+	return static_cast<gsoapClassName*>(proxyVariable)->vectorName[index]->attributeName != nullptr;\
+}
+
+#define GETTER_SETTER_OPTIONAL_ATTRIBUTE(gsoapClassName, proxyVariable, attributeName, attributeDatatype)\
+	DLL_IMPORT_OR_EXPORT void set##attributeName(const attributeDatatype& value);\
+	DLL_IMPORT_OR_EXPORT attributeDatatype get##attributeName() const {\
+		if (!has##attributeName()) { throw std::invalid_argument("The attribute does not exist"); }\
+		return *static_cast<gsoapClassName*>(proxyVariable)->attributeName;\
+	}\
+	CHECKER_PRESENCE_ATTRIBUTE(gsoapClassName, proxyVariable, attributeName)
+#define GETTER_SETTER_MEASURE_OPTIONAL_ATTRIBUTE(gsoapClassName, proxyVariable, attributeName, uomDatatype)\
+	DLL_IMPORT_OR_EXPORT void set##attributeName(double value, uomDatatype uom);\
+	DLL_IMPORT_OR_EXPORT double get##attributeName##Value() const {\
+		if (!has##attributeName()) { throw std::invalid_argument("The attribute does not exist"); }\
+		return static_cast<gsoapClassName*>(proxyVariable)->attributeName->__item;\
+	}\
+	DLL_IMPORT_OR_EXPORT uomDatatype get##attributeName##Uom() const {\
+		if (!has##attributeName()) { throw std::invalid_argument("The attribute does not exist"); }\
+		return static_cast<gsoapClassName*>(proxyVariable)->attributeName->uom;\
+	}\
+	CHECKER_PRESENCE_ATTRIBUTE(gsoapClassName, proxyVariable, attributeName)
+#define GETTER_SETTER_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoapClassName, proxyVariable, vectorName, attributeName, attributeDatatype)\
+	DLL_IMPORT_OR_EXPORT void set##vectorName##attributeName(unsigned int index, const attributeDatatype& value);\
+	DLL_IMPORT_OR_EXPORT attributeDatatype get##vectorName##attributeName(unsigned int index) const {\
+		if (!has##vectorName##attributeName(index)) { throw std::invalid_argument("The attribute does not exist"); }\
+		return *static_cast<gsoapClassName*>(proxyVariable)->vectorName[index]->attributeName;\
+	}\
+	CHECKER_PRESENCE_ATTRIBUTE_IN_VECTOR(gsoapClassName, proxyVariable, vectorName, attributeName)
+#define GETTER_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(gsoapClassName, proxyVariable, vectorName, attributeName, uomDatatype)\
+	DLL_IMPORT_OR_EXPORT void set##vectorName##attributeName(unsigned int index, double value, uomDatatype uom);\
+	DLL_IMPORT_OR_EXPORT double get##vectorName##attributeName##Value(unsigned int index) const {\
+		if (!has##vectorName##attributeName(index)) { throw std::invalid_argument("The attribute does not exist"); }\
+		return static_cast<gsoapClassName*>(proxyVariable)->vectorName[index]->attributeName->__item;\
+	}\
+	DLL_IMPORT_OR_EXPORT uomDatatype get##vectorName##attributeName##Uom(unsigned int index) const {\
+		if (!has##vectorName##attributeName(index)) { throw std::invalid_argument("The attribute does not exist"); }\
+		return static_cast<gsoapClassName*>(proxyVariable)->vectorName[index]->attributeName->uom;\
+	}\
+	CHECKER_PRESENCE_ATTRIBUTE_IN_VECTOR(gsoapClassName, proxyVariable, vectorName, attributeName)
+
+#define SETTER_OPTIONAL_ATTRIBUTE_IMPL(className, gsoapClassName, proxyVariable, attributeName, uomDatatype, constructor)\
+void className::set##attributeName(const attributeDatatype& value)\
+{\
+	static_cast<gsoapClassName*>(proxyVariable)->attributeName = constructor(proxyVariable->soap);\
+	*static_cast<gsoapClassName*>(proxyVariable)->attributeName = value;\
+}
+#define SETTER_MEASURE_ATTRIBUTE_IMPL(className, gsoapClassName, proxyVariable, attributeName, uomDatatype, constructor)\
+void className::set##attributeName(double value, uomDatatype uom)\
+{\
+	static_cast<gsoapClassName*>(proxyVariable)->attributeName = constructor(proxyVariable->soap);\
+	static_cast<gsoapClassName*>(proxyVariable)->attributeName->__item = value;\
+	static_cast<gsoapClassName*>(proxyVariable)->attributeName->uom = uom;\
+}
+#define SETTER_OPTIONAL_ATTRIBUTE_IN_VECTOR_IMPL(className, gsoapClassName, proxyVariable, vectorName, attributeName, attributeDatatype, constructor)\
+void className::set##vectorName##attributeName(unsigned int index, const attributeDatatype& value)\
+{\
+	CHECK_RANGE(static_cast<gsoapClassName*>(proxyVariable)->vectorName, index)\
+	static_cast<gsoapClassName*>(proxyVariable)->vectorName[index]->attributeName = constructor(proxyVariable->soap);\
+	*static_cast<gsoapClassName*>(proxyVariable)->vectorName[index]->attributeName = value;\
+}
+#define SETTER_MEASURE_ATTRIBUTE_IN_VECTOR_IMPL(className, gsoapClassName, proxyVariable, vectorName, attributeName, uomDatatype, constructor)\
+void className::set##vectorName##attributeName(unsigned int index, double value, uomDatatype uom)\
+{\
+	CHECK_RANGE(static_cast<gsoapClassName*>(proxyVariable)->vectorName, index)\
+	static_cast<gsoapClassName*>(proxyVariable)->vectorName[index]->attributeName = constructor(proxyVariable->soap);\
+	static_cast<gsoapClassName*>(proxyVariable)->vectorName[index]->attributeName->__item = value;\
+	static_cast<gsoapClassName*>(proxyVariable)->vectorName[index]->attributeName->uom = uom;\
+}
+
+//*****************
+// Previous macros
+//*****************
+
 #define GLUE(a,b) a##b
 
-#define CHECK_RANGE(vector, index) if (index >= vector.size()) { throw std::range_error("The index is out of range"); }
 #define CHECK_ATTRIBUTE_EXISTENCE(className, attributeName) if (static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName == nullptr) { throw std::invalid_argument("The attribute does not exist"); }
 #define CHECK_ATTRIBUTE_IN_VECTOR_EXISTENCE(className, vectorName, attributeName) \
 		CHECK_RANGE(static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName, index)\
 		if (static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName == nullptr) { throw std::invalid_argument("The attribute in vector does not exist"); }
-#define CREATE_ATTRIBUTE_IF_NOT_PRESENT(className, attributeName, constructor) if (static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName == nullptr) { static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName = constructor(gsoapProxy2_1->soap, 1); }
+#define CREATE_ATTRIBUTE_IF_NOT_PRESENT(className, attributeName, constructor) if (static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName == nullptr) { static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName = constructor(gsoapProxy2_1->soap); }
 #define CREATE_ATTRIBUTE_IN_VECTOR_IF_NOT_PRESENT(className, vectorName, attributeName, constructor)\
 		CHECK_RANGE(static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName, index)\
-		if (static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName == nullptr) { static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName = constructor(gsoapProxy2_1->soap, 1); }
+		if (static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName == nullptr) { static_cast<witsml20__##className*>(gsoapProxy2_1)->vectorName[index]->attributeName = constructor(gsoapProxy2_1->soap); }
 
 #define GETTER_PRESENCE_ATTRIBUTE(attributeName) DLL_IMPORT_OR_EXPORT bool has##attributeName() const;
 #define GETTER_PRESENCE_ATTRIBUTE_IMPL(className, attributeName) bool GLUE(,className)::has##attributeName() const { return static_cast<witsml20__##className*>(gsoapProxy2_1)->attributeName != nullptr; }
