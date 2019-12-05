@@ -191,11 +191,6 @@ namespace COMMON_NS
 
 		COMMON_NS::AbstractHdfProxy* defaultHdfProxy;
 		RESQML2_NS::AbstractLocal3dCrs* defaultCrs;
-		
-		/**
-		* Necessary to avoid a dependency on GuidTools.h
-		*/
-		std::string generateRandomUuidAsString();
 
 		/**
 		* Set the stream of the curent gsoap context.

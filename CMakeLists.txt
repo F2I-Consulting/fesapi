@@ -107,7 +107,11 @@ IF (NOT EXISTS ${SZIP_LIBRARY_DEBUG} AND WIN32 AND NOT ${HDF5_BUILT_AS_DYNAMIC_L
 ENDIF ()
 
 # Uuid
-IF (UNIX)
+set (FESAPI_USE_BOOST_UUID OFF CACHE BOOL "Use the Boost uuid library instead of the windows API or the linux libuuid library.")
+if (FESAPI_USE_BOOST_UUID)
+	# Boost DEPENDENCY
+	find_package(Boost 1.44.0) # 1.44 because we cant boost::uuids::to_string method
+elseif (UNIX)
 	SET (UUID_INCLUDE_DIR /usr/include CACHE PATH "Path to the directory which contains the uuid/uuid.h header file")
 	IF (NOT IS_DIRECTORY ${UUID_INCLUDE_DIR})
 		MESSAGE(WARNING "The UUID include dir (UUID_INCLUDE_DIR variable) does not look to be a valid directory. Please modify it.")
@@ -116,7 +120,7 @@ IF (UNIX)
 	IF (NOT EXISTS ${UUID_LIBRARY_RELEASE})
 		MESSAGE(WARNING "The UUID library (UUID_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
 	ENDIF ()
-ENDIF (UNIX)
+endif (FESAPI_USE_BOOST_UUID)
 
 # ============================================================================
 # some useful variables

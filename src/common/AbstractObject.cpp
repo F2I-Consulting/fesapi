@@ -27,7 +27,13 @@ under the License.
 #endif
 #include <algorithm>
 
+#if !defined(FESAPI_USE_BOOST_UUID)
 #include "../tools/GuidTools.h"
+#else
+#include <boost/uuid/random_generator.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#endif
+
 #include "../tools/TimeTools.h"
 
 #if defined(__gnu_linux__) || defined(__APPLE__)
@@ -326,9 +332,15 @@ void AbstractObject::setUuid(const std::string & uuid)
 	}
 
 	if (uuid.empty()) {
-		if (gsoapProxy2_0_1 != nullptr) { gsoapProxy2_0_1->uuid = GuidTools::generateUidAsString(); }
-		else if (gsoapProxy2_1 != nullptr) { gsoapProxy2_1->uuid = GuidTools::generateUidAsString(); }
-		else if (gsoapProxy2_2 != nullptr) { gsoapProxy2_2->uuid = GuidTools::generateUidAsString(); }
+#if defined(FESAPI_USE_BOOST_UUID)
+		boost::uuids::random_generator gen;
+		const std::string uuidStr = boost::uuids::to_string(gen());
+#else
+		const std::string uuidStr = GuidTools::generateUidAsString();
+#endif
+		if (gsoapProxy2_0_1 != nullptr) { gsoapProxy2_0_1->uuid = uuidStr; }
+		else if (gsoapProxy2_1 != nullptr) { gsoapProxy2_1->uuid = uuidStr; }
+		else if (gsoapProxy2_2 != nullptr) { gsoapProxy2_2->uuid = uuidStr; }
 	}
 	else
 	{
