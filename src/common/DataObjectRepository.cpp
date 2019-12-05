@@ -2183,7 +2183,7 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* DataObjectRepository::createDor(c
 
 	if (guid.empty()) {
 #if !defined(FESAPI_USE_BOOST_UUID)
-		dor->UUID = GuidTools::generateUidAsString()
+		dor->UUID = GuidTools::generateUidAsString();
 #else
 		boost::uuids::random_generator gen;
 		dor->UUID = boost::uuids::to_string(gen());
