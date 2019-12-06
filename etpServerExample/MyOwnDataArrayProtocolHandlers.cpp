@@ -171,13 +171,13 @@ void MyOwnDataArrayProtocolHandlers::on_PutDataArrays(const Energistics::Etp::v1
 
 	Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
 	for (std::pair < std::string, Energistics::Etp::v12::Datatypes::DataArrayTypes::PutDataArraysType > pdat : pda.m_dataArrays) {
-		std::cout << "PutDataArray in resource " << pdat.second.m_uri << " at path " << pdat.second.m_pathInResource << std::endl;;
-		for (auto i = 0; i < pdat.second.m_dimensions.size(); ++i) {
-			std::cout << "Dimension " << i << " with count : " << pdat.second.m_dimensions[i] << std::endl;
+		std::cout << "PutDataArray in resource " << pdat.second.m_uid.m_uri << " at path " << pdat.second.m_uid.m_pathInResource << std::endl;;
+		for (auto i = 0; i < pdat.second.m_array.m_dimensions.size(); ++i) {
+			std::cout << "Dimension " << i << " with count : " << pdat.second.m_array.m_dimensions[i] << std::endl;
 		}
 
 		try {
-			COMMON_NS::AbstractObject* obj = repo->getObjectFromUri(pdat.second.m_uri);
+			COMMON_NS::AbstractObject* obj = repo->getObjectFromUri(pdat.second.m_uid.m_uri);
 			COMMON_NS::AbstractHdfProxy* hdfProxy = dynamic_cast<COMMON_NS::AbstractHdfProxy*>(obj);
 			if (hdfProxy == nullptr) {
 				pe.m_errors[pdat.first].m_message = obj->getUuid() + " cannot be resolved as an HDF Proxy in this store";
@@ -185,7 +185,7 @@ void MyOwnDataArrayProtocolHandlers::on_PutDataArrays(const Energistics::Etp::v1
 				continue;
 			}
 
-			auto hdfGroups = tokenize(pdat.second.m_pathInResource, '/');
+			auto hdfGroups = tokenize(pdat.second.m_uid.m_pathInResource, '/');
 
 			if (hdfGroups.size() != 3) {
 				std::cout << "This server does not support putting a data array in a path which does not follow /RESQML/groupname/datasetname convention." << std::endl;
