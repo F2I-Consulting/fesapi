@@ -41,7 +41,7 @@ void printHelp()
 	//std::cout << "\tGetDataspaces URI depth(default 1)" << std::endl << std::endl;
 	std::cout << "\tGetSupportedTypes URI scope(default self) countObjects(true or false, default is true) emptytypes(true or false, default is false)" << std::endl << std::endl;
 	std::cout << "\tGetResources URI scope(default self) depth(default 1) getObject(true or false, default is false) dataTypeFilter,dataTypeFilter,...(default noFilter)" << std::endl << std::endl;
-	std::cout << "\tGetDataObject dataObjectURI,dataObjectURI,..." << std::endl << "\t\tGet the objects from an ETP store and store them into the in memory epc (only create partial TARGET relationships, not any SOURCE relationships)" << std::endl << std::endl;
+	std::cout << "\tGetDataObjects dataObjectURI,dataObjectURI,..." << std::endl << "\t\tGet the objects from an ETP store and store them into the in memory epc (only create partial TARGET relationships, not any SOURCE relationships)" << std::endl << std::endl;
 	std::cout << "\tPutDataObject" << std::endl << "\t\tCreate an IJK Grid on the fly and put/push it to the store" << std::endl << std::endl;
 	std::cout << "\tGetSourceObjects dataObjectURI" << std::endl << "\t\tGet the source objects of another object from an ETP store and put it into the in memory epc" << std::endl << std::endl;
 	std::cout << "\tGetTargetObjects dataObjectURI" << std::endl << "\t\tGet the target objects of another object from an ETP store and put it into the in memory epc" << std::endl << std::endl;
@@ -156,7 +156,7 @@ void askUser(std::shared_ptr<ETP_NS::AbstractSession> session, COMMON_NS::DataOb
 			}
 			continue;
 		}
-		else if (commandTokens[0] == "GetDataObject") {
+		else if (commandTokens[0] == "GetDataObjects") {
 			Energistics::Etp::v12::Protocol::Store::GetDataObjects getO;
 			std::vector<std::string> tokens = tokenize(commandTokens[1], ',');
 			std::map<std::string, std::string> tokenMaps;

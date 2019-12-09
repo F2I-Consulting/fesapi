@@ -108,7 +108,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetEmlColonSlashSlash(const Energistics:
 	}
 }
 */
-void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v12::Protocol::Discovery::GetResources & msg, int64_t correlationId,
+void MyOwnDiscoveryProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v12::Protocol::Discovery::GetResources & msg, int64_t correlationId,
 	std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result)
 {
 	Energistics::Etp::v12::Datatypes::Object::Resource resource;
@@ -159,7 +159,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v1
 
 				for (const auto & targetObj : repo->getTargetObjects(obj)) {
 					nextGr.m_context.m_uri = msg.m_context.m_uri.substr(0, openingParenthesis) + '(' + targetObj->getUuid() + ')';
-					on_GetDataObject(nextGr, correlationId, result);
+					on_GetDataObjects(nextGr, correlationId, result);
 				}
 			}
 
@@ -172,7 +172,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObject(const Energistics::Etp::v1
 				
 				for (const auto & sourceObj : repo->getSourceObjects(obj)) {
 					nextGr.m_context.m_uri = msg.m_context.m_uri.substr(0, openingParenthesis) + '(' + sourceObj->getUuid() + ')';
-					on_GetDataObject(nextGr, correlationId, result);
+					on_GetDataObjects(nextGr, correlationId, result);
 				}
 			}
 		}
@@ -194,7 +194,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResources(const Energistics::Etp::v12
 			return;
 		}
 
-		on_GetDataObject(msg, correlationId, mb.m_resources);
+		on_GetDataObjects(msg, correlationId, mb.m_resources);
 	}
 	else { // eml, dataspace
 		if (ETP_NS::EtpHelpers::validateUri(msg.m_context.m_uri, session).m_code > -1) {
@@ -230,7 +230,7 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResources(const Energistics::Etp::v12
 		for (const auto & pair : groupedDataObj) {
 			for (const auto & obj : pair.second) {
 				nextGr.m_context.m_uri = ETP_NS::EtpHelpers::buildUriFromEnergisticsObject(obj);
-				on_GetDataObject(nextGr, correlationId, mb.m_resources);
+				on_GetDataObjects(nextGr, correlationId, mb.m_resources);
 			}
 		}
 	}
