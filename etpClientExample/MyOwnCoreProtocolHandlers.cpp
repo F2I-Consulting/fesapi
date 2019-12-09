@@ -40,7 +40,7 @@ void printHelp()
 	std::cout << "\tList" << std::endl << "\t\tList the objects which have been got from ETP to the in-memory epc" << std::endl << std::endl;
 	//std::cout << "\tGetDataspaces URI depth(default 1)" << std::endl << std::endl;
 	std::cout << "\tGetSupportedTypes URI scope(default self) countObjects(true or false, default is true) emptytypes(true or false, default is false)" << std::endl << std::endl;
-	std::cout << "\tGetResources URI scope(default self) depth(default 1) getObject(true or false, default is false) dataTypeFilter,dataTypeFilter,...(default noFilter)" << std::endl << std::endl;
+	std::cout << "\tGetResources URI scope(default self) depth(default 1) countObjects(true or false, default is true) getObject(true or false, default is false) dataTypeFilter,dataTypeFilter,...(default noFilter)" << std::endl << std::endl;
 	std::cout << "\tGetDataObjects dataObjectURI,dataObjectURI,..." << std::endl << "\t\tGet the objects from an ETP store and store them into the in memory epc (only create partial TARGET relationships, not any SOURCE relationships)" << std::endl << std::endl;
 	std::cout << "\tPutDataObject" << std::endl << "\t\tCreate an IJK Grid on the fly and put/push it to the store" << std::endl << std::endl;
 	std::cout << "\tGetSourceObjects dataObjectURI" << std::endl << "\t\tGet the source objects of another object from an ETP store and put it into the in memory epc" << std::endl << std::endl;
@@ -126,6 +126,7 @@ void askUser(std::shared_ptr<ETP_NS::AbstractSession> session, COMMON_NS::DataOb
 			mb.m_context.m_uri = commandTokens[1];
 			mb.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self;
 			mb.m_context.m_depth = 1;
+			mb.m_countObjects = true;
 
 			if (commandTokens.size() > 2) {
 				if (commandTokens[2] == "self")
@@ -142,13 +143,19 @@ void askUser(std::shared_ptr<ETP_NS::AbstractSession> session, COMMON_NS::DataOb
 				if (commandTokens.size() > 3) {
 					mb.m_context.m_depth = std::stoi(commandTokens[3]);
 
-					if (commandTokens.size() > 5) {
-						mb.m_context.m_dataObjectTypes = tokenize(commandTokens[5], ',');
+					if (commandTokens.size() > 4) {
+						if (commandTokens[4] == "false" || commandTokens[4] == "False" || commandTokens[4] == "FALSE") {
+							mb.m_countObjects = false;
+						}
+
+						if (commandTokens.size() > 6) {
+							mb.m_context.m_dataObjectTypes = tokenize(commandTokens[6], ',');
+						}
 					}
 				}
 			}
 
-			if (commandTokens.size() > 4 && (commandTokens[4] == "true" || commandTokens[4] == "True" || commandTokens[4] == "TRUE")) {
+			if (commandTokens.size() > 5 && (commandTokens[5] == "true" || commandTokens[5] == "True" || commandTokens[5] == "TRUE")) {
 				std::static_pointer_cast<MyOwnDiscoveryProtocolHandlers>(session->getDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb));
 			}
 			else {
