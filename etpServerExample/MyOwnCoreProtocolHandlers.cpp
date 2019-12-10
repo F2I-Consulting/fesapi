@@ -44,9 +44,6 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::Discovery;
 			protocol.m_protocolVersion = protocolVersion;
 			protocol.m_role = "store";
-			Energistics::Etp::v12::Datatypes::DataValue value;
-			value.m_item.set_int(1000);
-			protocol.m_protocolCapabilities.insert(std::make_pair("MaxGetResourcesResponse", value));
 	    	supportedProtocols.push_back(protocol);
 	    }
 	    else if (rp.m_protocol == Energistics::Etp::v12::Datatypes::Protocol::Store && rp.m_role == "store") {
@@ -54,19 +51,23 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::Store;
 			protocol.m_protocolVersion = protocolVersion;
 			protocol.m_role = "store";
-			Energistics::Etp::v12::Datatypes::DataValue value;
-			value.m_item.set_int(1000);
-			protocol.m_protocolCapabilities.insert(std::make_pair("MaxGetResourcesResponse", value));
 	    	supportedProtocols.push_back(protocol);
 	    }
+		else if (rp.m_protocol == Energistics::Etp::v12::Datatypes::Protocol::StoreNotification && rp.m_role == "store") {
+			Energistics::Etp::v12::Datatypes::SupportedProtocol protocol;
+			protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::StoreNotification;
+			protocol.m_protocolVersion = protocolVersion;
+			protocol.m_role = "store";
+			Energistics::Etp::v12::Datatypes::DataValue value;
+			value.m_item.set_int((std::numeric_limits<int>::max)());
+			protocol.m_protocolCapabilities["MaxDataArraySize"] = value;
+			supportedProtocols.push_back(protocol);
+		}
 	    else if (rp.m_protocol == Energistics::Etp::v12::Datatypes::Protocol::DataArray && rp.m_role == "store") {
 	    	Energistics::Etp::v12::Datatypes::SupportedProtocol protocol;
 	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::DataArray;
 			protocol.m_protocolVersion = protocolVersion;
 			protocol.m_role = "store";
-			Energistics::Etp::v12::Datatypes::DataValue value;
-			value.m_item.set_int(1000);
-			protocol.m_protocolCapabilities.insert(std::make_pair("MaxGetResourcesResponse", value));
 	    	supportedProtocols.push_back(protocol);
 	    }
 	}
@@ -82,8 +83,12 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 	openSession.m_applicationVersion = "0.0";
 	openSession.m_serverInstanceId.m_array = GuidTools::generateUidAsByteArray();
 	openSession.m_supportedProtocols = supportedProtocols;
+	Energistics::Etp::v12::Datatypes::DataValue value;
+	value.m_item.set_boolean(false);
+	openSession.m_endpointCapabilities["SupportsAlternateRequestUris"] = value;
 	std::vector<std::string> supportedObjects;
 	supportedObjects.push_back("application/x-resqml+xml;version=2.0;type=*");
+
 	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=Well");
 	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=Wellbore");
 	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=Trajectory");
@@ -93,8 +98,10 @@ void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::P
 	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=Log");
 	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=ChannelSet");
 	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=Channel");
+
 	supportedObjects.push_back("application/x-prodml+xml;version=2.1;type=FluidSystem");
 	supportedObjects.push_back("application/x-prodml+xml;version=2.1;type=FluidCharacterization");
+
 	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=ErrorTerm");
 	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=ErrorTermDictionary");
 	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=ToolErrorModel");

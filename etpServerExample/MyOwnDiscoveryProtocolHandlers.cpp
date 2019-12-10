@@ -115,7 +115,8 @@ void MyOwnDiscoveryProtocolHandlers::on_GetDataObjects(const Energistics::Etp::v
 	resource.m_dataObjectType = "";
 
 	if (msg.m_context.m_depth >= 0) {
-		const size_t openingParenthesis = msg.m_context.m_uri.find('(', 5);
+		const size_t dataspacePos = msg.m_context.m_uri.find("dataspace");
+		const size_t openingParenthesis = dataspacePos != std::string::npos ? msg.m_context.m_uri.find('(', dataspacePos + 10) : msg.m_context.m_uri.find('(', 5);
 		COMMON_NS::AbstractObject* obj = repo->getDataObjectByUuid(msg.m_context.m_uri.substr(openingParenthesis + 1, 36));
 		if (obj == nullptr) {
 			Energistics::Etp::v12::Protocol::Core::ProtocolException pe;
@@ -190,7 +191,11 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResources(const Energistics::Etp::v12
 	}
 
 	Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse mb;
-	if (msg.m_context.m_uri.back() == ')') { // dataobject
+	if ((msg.m_context.m_uri.find("eml2") != std::string::npos ||
+		msg.m_context.m_uri.find("resqml2") != std::string::npos ||
+		msg.m_context.m_uri.find("witsml2") != std::string::npos ||
+		msg.m_context.m_uri.find("prodml2") != std::string::npos) &&
+		msg.m_context.m_uri.back() == ')') { // dataobject
 		if (ETP_NS::EtpHelpers::validateDataObjectUri(msg.m_context.m_uri, session).m_code > -1) {
 			return;
 		}
@@ -214,7 +219,8 @@ void MyOwnDiscoveryProtocolHandlers::on_GetResources(const Energistics::Etp::v12
 		}
 
 		std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > groupedDataObj;
-		if (msg.m_context.m_uri == "eml:///") {
+		if (msg.m_context.m_uri == "eml:///" || msg.m_context.m_uri == "eml:/" ||
+			msg.m_context.m_uri == "eml:///dataspace()" || msg.m_context.m_uri == "eml:/dataspace()") {
 			groupedDataObj = repo->getDataObjectsGroupedByDataType();
 		}
 		else {
@@ -282,8 +288,13 @@ void MyOwnDiscoveryProtocolHandlers::on_GetSupportedTypes(const Energistics::Etp
 	}
 
 	Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypesResponse response;
-	if (msg.m_uri.back() == ')') { // dataobject
-		const size_t openingParenthesis = msg.m_uri.find('(', 5);
+	if ((msg.m_uri.find("eml2") != std::string::npos ||
+		msg.m_uri.find("resqml2") != std::string::npos ||
+		msg.m_uri.find("witsml2") != std::string::npos ||
+		msg.m_uri.find("prodml2") != std::string::npos) &&
+		msg.m_uri.back() == ')') { // dataobject
+		const size_t dataspacePos = msg.m_uri.find("dataspace");
+		const size_t openingParenthesis = dataspacePos != std::string::npos ? msg.m_uri.find('(', dataspacePos + 10) : msg.m_uri.find('(', 5);
 		COMMON_NS::AbstractObject* obj = repo->getDataObjectByUuid(msg.m_uri.substr(openingParenthesis + 1, 36));
 
 		if (obj == nullptr) {
@@ -342,7 +353,8 @@ void MyOwnDiscoveryProtocolHandlers::on_GetSupportedTypes(const Energistics::Etp
 	else { // eml or dataspace 
 		// msg.m_scope is irrelevant
 		std::unordered_map< std::string, std::vector<COMMON_NS::AbstractObject*> > groupedDataObj;
-		if (msg.m_uri == "eml:///") {
+		if (msg.m_uri == "eml:///" || msg.m_uri == "eml:/" ||
+			msg.m_uri == "eml:///dataspace()" || msg.m_uri == "eml:/dataspace()") {
 			groupedDataObj = repo->getDataObjectsGroupedByDataType();
 		}
 		else {
