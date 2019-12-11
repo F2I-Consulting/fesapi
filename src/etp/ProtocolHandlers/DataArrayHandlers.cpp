@@ -100,41 +100,41 @@ void DataArrayHandlers::on_GetDataArraysResponse(Energistics::Etp::v12::Protocol
 			std::cout << "Dimension " << i << " with count : " << da.m_dimensions[i] << std::endl;
 		}
 		std::cout << "*************************************************" << std::endl;
-		if (da.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfBoolean) {
+		if (da.m_data.m_item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfBoolean) {
 			Energistics::Etp::v12::Datatypes::ArrayOfBoolean avroArray = da.m_data.m_item.get_ArrayOfBoolean();
 			auto values = avroArray.m_values;
 			for (auto i = 0; i < values.size() && i < 20; ++i) {
 				std::cout << "bool value " << i << " == " << values[i] << std::endl;
 			}
 		}
-		else if (da.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::bytes) {
+		else if (da.m_data.m_item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::bytes) {
 			std::string values = da.m_data.m_item.get_bytes();
 			for (auto i = 0; i < values.size() && i < 20; ++i) {
 				std::cout << "char value " << i << " == " << (int)values[i] << std::endl;
 			}
 		}
-		else if (da.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfInt) {
+		else if (da.m_data.m_item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfInt) {
 			Energistics::Etp::v12::Datatypes::ArrayOfInt avroArray = da.m_data.m_item.get_ArrayOfInt();
 			auto values = avroArray.m_values;
 			for (auto i = 0; i < values.size() && i < 20; ++i) {
 				std::cout << "int value " << i << " == " << values[i] << std::endl;
 			}
 		}
-		else if (da.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfLong) {
+		else if (da.m_data.m_item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfLong) {
 			Energistics::Etp::v12::Datatypes::ArrayOfLong avroArray = da.m_data.m_item.get_ArrayOfLong();
 			auto values = avroArray.m_values;
 			for (auto i = 0; i < values.size() && i < 20; ++i) {
 				std::cout << "long value " << i << " == " << values[i] << std::endl;
 			}
 		}
-		else if (da.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfFloat) {
+		else if (da.m_data.m_item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfFloat) {
 			Energistics::Etp::v12::Datatypes::ArrayOfFloat avroArray = da.m_data.m_item.get_ArrayOfFloat();
 			auto values = avroArray.m_values;
 			for (auto i = 0; i < values.size() && i < 20; ++i) {
 				std::cout << "float value " << i << " == " << values[i] << std::endl;
 			}
 		}
-		else if (da.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfDouble) {
+		else if (da.m_data.m_item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfDouble) {
 			Energistics::Etp::v12::Datatypes::ArrayOfDouble avroArray = da.m_data.m_item.get_ArrayOfDouble();
 			auto values = avroArray.m_values;
 			for (auto i = 0; i < values.size() && i < 20; ++i) {
