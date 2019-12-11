@@ -108,37 +108,37 @@ namespace ETP_NS
 
 				if (gdar.m_dataArrays.size() == 1) {
 					auto dataArray = gdar.m_dataArrays.begin()->second;
-					if (dataArray.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfBoolean) {
+					if (dataArray.m_data.m_item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfBoolean) {
 						Energistics::Etp::v12::Datatypes::ArrayOfBoolean& avroArray = dataArray.m_data.m_item.get_ArrayOfBoolean();
 						for (auto i = 0; i < avroArray.m_values.size(); ++i) {
 							values[i] = avroArray.m_values[i];
 						}
 					}
-					else if (dataArray.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::bytes) {
+					else if (dataArray.m_data.m_item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::bytes) {
 						std::string& avroValues = dataArray.m_data.m_item.get_bytes();
 						for (auto i = 0; i < avroValues.size(); ++i) {
 							values[i] = avroValues[i];
 						}
 					}
-					else if (dataArray.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfInt) {
+					else if (dataArray.m_data.m_item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfInt) {
 						Energistics::Etp::v12::Datatypes::ArrayOfInt& avroArray = dataArray.m_data.m_item.get_ArrayOfInt();
 						for (auto i = 0; i < avroArray.m_values.size(); ++i) {
 							values[i] = avroArray.m_values[i];
 						}
 					}
-					else if (dataArray.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfLong) {
+					else if (dataArray.m_data.m_item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfLong) {
 						Energistics::Etp::v12::Datatypes::ArrayOfLong& avroArray = dataArray.m_data.m_item.get_ArrayOfLong();
 						for (auto i = 0; i < avroArray.m_values.size(); ++i) {
 							values[i] = avroArray.m_values[i];
 						}
 					}
-					else if (dataArray.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfFloat) {
+					else if (dataArray.m_data.m_item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfFloat) {
 						Energistics::Etp::v12::Datatypes::ArrayOfFloat& avroArray = dataArray.m_data.m_item.get_ArrayOfFloat();
 						for (auto i = 0; i < avroArray.m_values.size(); ++i) {
 							values[i] = avroArray.m_values[i];
 						}
 					}
-					else if (dataArray.m_data.m_item.idx() - 1 == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfDouble) {
+					else if (dataArray.m_data.m_item.idx() == Energistics::Etp::v12::Datatypes::AnyArrayType::arrayOfDouble) {
 						Energistics::Etp::v12::Datatypes::ArrayOfDouble& avroArray = dataArray.m_data.m_item.get_ArrayOfDouble();
 						for (auto i = 0; i < avroArray.m_values.size(); ++i) {
 							values[i] = avroArray.m_values[i];

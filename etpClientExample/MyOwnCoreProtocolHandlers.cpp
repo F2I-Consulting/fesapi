@@ -46,7 +46,7 @@ void printHelp()
 	std::cout << "\tGetSourceObjects dataObjectURI" << std::endl << "\t\tGet the source objects of another object from an ETP store and put it into the in memory epc" << std::endl << std::endl;
 	std::cout << "\tGetTargetObjects dataObjectURI" << std::endl << "\t\tGet the target objects of another object from an ETP store and put it into the in memory epc" << std::endl << std::endl;
 	std::cout << "\tGetResourceObjects dataObjectURI" << std::endl << "\t\tGet the object, its source and its target objects from an ETP store and put it into the in memory epc" << std::endl << std::endl;
-	std::cout << "\tGetDataArray epcExternalPartURI datasetPathInEpcExternalPart" << std::endl << "\t\tGet the numerical values from a dataset included in an EpcExternalPart over ETP." << std::endl << std::endl;
+	std::cout << "\tGetDataArrays epcExternalPartURI datasetPathInEpcExternalPart" << std::endl << "\t\tGet the numerical values from a dataset included in an EpcExternalPart over ETP." << std::endl << std::endl;
 	std::cout << "\tSubscribeNotif URI scope(default self) depth(default 1) receiveXML(true or false, default is true) startTime(default is now) dataTypeFilter,dataTypeFilter,...(default noFilter)" << std::endl << "\t\tSubscribe to notifications." << std::endl << std::endl;
 	std::cout << "\tquit" << std::endl << "\t\tQuit the session." << std::endl << std::endl;
 }
@@ -347,7 +347,7 @@ void askUser(std::shared_ptr<ETP_NS::AbstractSession> session, COMMON_NS::DataOb
 			}
 		}
 		else if (commandTokens.size() == 3) {
-			if (commandTokens[0] == "GetDataArray") {
+			if (commandTokens[0] == "GetDataArrays") {
 				Energistics::Etp::v12::Protocol::DataArray::GetDataArrays gda;
 				gda.m_dataArrays["0"].m_uri = commandTokens[1];
 				gda.m_dataArrays["0"].m_pathInResource = commandTokens[2];
