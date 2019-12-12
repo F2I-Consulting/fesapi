@@ -346,20 +346,18 @@ void EpcDocument::deserializeRelFiles(DataObjectRepository & repo)
 				relFilePath = it->second.getExtensionOrPartName().substr(1).substr(0, slashPos + 1);
 			}
 			relFilePath += "_rels" + it->second.getExtensionOrPartName().substr(it->second.getExtensionOrPartName().find_last_of("/\\")) + ".rels";
-			if (!package->fileExists(relFilePath)) {
-				throw invalid_argument("The associate rel file does not exist : " + relFilePath);
-			}
-
-			// Read Relationshsips
-			epc::FileRelationship relFile;
-			relFile.readFromString(package->extractFile(relFilePath));
-			const vector<epc::Relationship>& allRels = relFile.getAllRelationship();
-			for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
-				const epc::Relationship & rel = allRels[relIndex];
-				if (rel.getType() == "http://schemas.energistics.org/package/2012/relationships/destinationObject") {
-					COMMON_NS::AbstractObject* source = repo.getDataObjectByUuid(extractUuidFromFileName(it->first));
-					COMMON_NS::AbstractObject* destination = repo.getDataObjectByUuid(extractUuidFromFileName(rel.getTarget()));
-					repo.addRelationship(source, destination);
+			if (package->fileExists(relFilePath)) {
+				// Read Relationshsips
+				epc::FileRelationship relFile;
+				relFile.readFromString(package->extractFile(relFilePath));
+				const vector<epc::Relationship>& allRels = relFile.getAllRelationship();
+				for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
+					const epc::Relationship& rel = allRels[relIndex];
+					if (rel.getType() == "http://schemas.energistics.org/package/2012/relationships/destinationObject") {
+						COMMON_NS::AbstractObject* source = repo.getDataObjectByUuid(extractUuidFromFileName(it->first));
+						COMMON_NS::AbstractObject* destination = repo.getDataObjectByUuid(extractUuidFromFileName(rel.getTarget()));
+						repo.addRelationship(source, destination);
+					}
 				}
 			}
 		}
