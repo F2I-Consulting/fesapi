@@ -4167,6 +4167,12 @@ void deserialize(const string & inputFile)
 							cout << "Pillar index " << pillarIndex << " with kind " << pillarKind[pillarIndex] << endl;
 						}
 						delete[] pillarKind;
+						bool* pillarIsDefined = new bool[paramIjkGrid->getPillarCount()];
+						paramIjkGrid->getPillarGeometryIsDefined(pillarIsDefined);
+						for (size_t pillarIndex = 0; pillarIndex < paramIjkGrid->getPillarCount() && pillarIndex < 10; ++pillarIndex) {
+							cout << "Pillar index " << pillarIndex << " is defined : " << pillarIsDefined[pillarIndex] << endl;
+						}
+						delete[] pillarIsDefined;
 					}
 
 					unsigned int patchCount = ijkGrid->getPatchCount();
