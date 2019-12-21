@@ -28,18 +28,18 @@ CoreProperty::CoreProperty() :
 {
 }
 
-CoreProperty::CoreProperty(const TypeProperty & pType):
+CoreProperty::CoreProperty(TypeProperty pType):
 	type(pType), value()
 {
 }
 
-CoreProperty::CoreProperty(const TypeProperty & pType, const string & pValue):
+CoreProperty::CoreProperty(TypeProperty pType, const string & pValue):
 	type(pType), value()
 {
 	value.push_back(pValue);
 }
 
-CoreProperty::CoreProperty(const TypeProperty & pType, const std::vector<std::string> & pValue):
+CoreProperty::CoreProperty(TypeProperty pType, const std::vector<std::string> & pValue):
 	type(pType), value(pValue)
 {
 }
@@ -54,17 +54,17 @@ CoreProperty::TypeProperty CoreProperty::getTypeProperty() const
 	return type;
 }
 
-void CoreProperty::setTypeProperty(const TypeProperty & corePropertyType)
+void CoreProperty::setTypeProperty(TypeProperty corePropertyType)
 {
 	type = corePropertyType;
 }
 
-vector<string> CoreProperty::getAllValue() const
+const vector<string>& CoreProperty::getAllValue() const
 {
 	return value;
 }
 
-string CoreProperty::getValue(const int & index) const
+string CoreProperty::getValue(size_t index) const
 {
 	return value[index];
 }
@@ -87,14 +87,12 @@ string CoreProperty::toString() const
 		return "<dc:identifier>" + getValue() + "</dc:identifier>";
 	case keywords:
 		{
-			vector<string> wk_Vector = getAllValue();
-			unsigned int wk_SizeVector = wk_Vector.size();
+			const vector<string> wk_Vector = getAllValue();
 
 			ostringstream oss;
 			oss << "<keywords xml:lang=\"" << wk_Vector[0].substr(0,5) << "\"> " << wk_Vector[0].substr(5,wk_Vector[0].size()) << endl;
 		
-			for (unsigned int i = 1; i < wk_SizeVector; i++)
-			{
+			for (size_t i = 1; i < wk_Vector.size(); ++i) {
 				oss << "<value xml:lang=\"" << wk_Vector[i].substr(0,5) << "\">" << wk_Vector[i].substr(5,wk_Vector[i].size()) << "</value>" << endl; 
 			}
 
@@ -234,18 +232,3 @@ void CoreProperty::setVersion(std::string pValue)
 	value.erase(value.begin(), value.end());
 	value.push_back(pValue);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

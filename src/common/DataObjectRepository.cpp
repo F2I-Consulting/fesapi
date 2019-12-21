@@ -21,6 +21,8 @@ under the License.
 #include <algorithm>
 #include <functional>
 
+#include "../common/HdfProxyFactory.h"
+
 #include "GraphicalInformationSet.h"
 
 #include "../resqml2_0_1/PropertyKindMapper.h"
@@ -254,8 +256,8 @@ DataObjectRepository::DataObjectRepository() :
 	backwardRels(),
 	gsoapContext(soap_new2(SOAP_XML_STRICT | SOAP_C_UTFSTRING | SOAP_XML_IGNORENS, SOAP_XML_TREE | SOAP_XML_INDENT | SOAP_XML_CANONICAL | SOAP_C_UTFSTRING)),
 	warnings(),
-	propertyKindMapper(nullptr), defaultHdfProxy(nullptr), defaultCrs(nullptr)
-{}
+	propertyKindMapper(nullptr), defaultHdfProxy(nullptr), defaultCrs(nullptr),
+	hdfProxyFactory(new COMMON_NS::HdfProxyFactory()) {}
 
 DataObjectRepository::DataObjectRepository(const std::string & propertyKindMappingFilesDirectory) :
 	dataObjects(),
@@ -263,7 +265,8 @@ DataObjectRepository::DataObjectRepository(const std::string & propertyKindMappi
 	backwardRels(),
 	gsoapContext(soap_new2(SOAP_XML_STRICT | SOAP_C_UTFSTRING | SOAP_XML_IGNORENS, SOAP_XML_TREE | SOAP_XML_INDENT | SOAP_XML_CANONICAL | SOAP_C_UTFSTRING)),
 	warnings(),
-	propertyKindMapper(new PropertyKindMapper(this)), defaultHdfProxy(nullptr), defaultCrs(nullptr)
+	propertyKindMapper(new PropertyKindMapper(this)), defaultHdfProxy(nullptr), defaultCrs(nullptr),
+	hdfProxyFactory(new COMMON_NS::HdfProxyFactory())
 {
 	const string error = propertyKindMapper->loadMappingFilesFromDirectory(propertyKindMappingFilesDirectory);
 	if (!error.empty()) {
@@ -300,6 +303,8 @@ void DataObjectRepository::clear()
 	backwardRels.clear();
 
 	warnings.clear();
+
+	delete hdfProxyFactory;
 }
 
 void DataObjectRepository::addRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target)
@@ -400,14 +405,13 @@ COMMON_NS::AbstractObject* DataObjectRepository::addOrReplaceGsoapProxy(const st
 	if (lastEqualCharPos == string::npos) { lastEqualCharPos = contentType.find_last_of('='); }
 	const string datatype = contentType.substr(lastEqualCharPos + 1);
 
-	// By default, create a RESQML2_0_1_NS::HdfProxy to manage numerical values.
-	// If you want a different one, call addOrReplaceEpcExternalPartReference2_0 directly with the type you want as template parameter.
-	if (contentType.find("application/x-eml+xml;version=2.0;type=obj_") != string::npos) {
-		return addOrReplaceEpcExternalPartReference2_0<RESQML2_0_1_NS::HdfProxy>(xml);
-	}
-
 	COMMON_NS::AbstractObject* wrapper = nullptr;
-	if (contentType.find("application/x-resqml+xml;version=2.0;type=obj_") != string::npos) {
+	if (contentType.find("application/x-eml+xml;version=2.0;type=obj_") != string::npos) {
+		gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* read = gsoap_resqml2_0_1::soap_new_eml20__obj_USCOREEpcExternalPartReference(gsoapContext);
+		soap_read_eml20__obj_USCOREEpcExternalPartReference(gsoapContext, read);
+		wrapper = hdfProxyFactory->make(read);
+	}
+	else if (contentType.find("application/x-resqml+xml;version=2.0;type=obj_") != string::npos) {
 		wrapper = getResqml2_0_1WrapperFromGsoapContext(datatype);
 	}
 	else if (contentType.find("application/x-resqml+xml;version=2.0.1;type=obj_") != string::npos) {
@@ -636,7 +640,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(gsoap_eml2_2::eml
 
 COMMON_NS::AbstractHdfProxy* DataObjectRepository::createHdfProxy(const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess)
 {
-	return new RESQML2_0_1_NS::HdfProxy(this, guid, title, packageDirAbsolutePath, externalFilePath, hdfPermissionAccess);
+	return hdfProxyFactory->make(this, guid, title, packageDirAbsolutePath, externalFilePath, hdfPermissionAccess);
 }
 
 //************************************
@@ -2175,6 +2179,11 @@ std::string DataObjectRepository::getGsoapErrorMessage() const
 	ostringstream oss;
 	soap_stream_fault(gsoapContext, oss);
 	return oss.str();
+}
+
+void DataObjectRepository::setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory) {
+	delete hdfProxyFactory;
+	hdfProxyFactory = factory;
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* DataObjectRepository::createDor(const std::string & guid, const std::string & title, const std::string & version)

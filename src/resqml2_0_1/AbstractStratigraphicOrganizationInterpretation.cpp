@@ -35,10 +35,10 @@ unsigned int AbstractStratigraphicOrganizationInterpretation::getGridRepresentat
 	const size_t count = getGridRepresentations().size();
 
 	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("Too moch associated grids");
+		throw out_of_range("Too much associated grids");
 	}
 
-	return count;
+	return static_cast<unsigned int>(count);
 }
 
 RESQML2_NS::AbstractGridRepresentation * AbstractStratigraphicOrganizationInterpretation::getGridRepresentation(unsigned int index) const

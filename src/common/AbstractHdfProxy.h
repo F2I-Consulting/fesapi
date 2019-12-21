@@ -29,6 +29,10 @@ namespace COMMON_NS
 	class AbstractHdfProxy : public EpcExternalPartReference
 	{
 	protected:
+		/**
+		* Only to be used in partial transfer context
+		*/
+		AbstractHdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::EpcExternalPartReference(partialObject) {}
 
 		std::string packageDirectoryAbsolutePath;												/// The directory where the EPC document is stored.
 		std::string relativeFilePath;															/// Must be relative to the location of the package
