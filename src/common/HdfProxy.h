@@ -133,6 +133,11 @@ namespace COMMON_NS
 	public:
 
 		/**
+		* Only to be used in partial transfer context
+		*/
+		HdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractHdfProxy(partialObject), hdfFile(-1), compressionLevel(0) {}
+
+		/**
 		* Destructor.
 		* Close the hdf file.
 		*/

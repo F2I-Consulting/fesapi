@@ -24,6 +24,8 @@ under the License.
 #include "H5Epublic.h"
 #include "H5Fpublic.h"
 
+#include "HdfProxyROS3Factory.h"
+
 #include "../epc/Relationship.h"
 #include "../epc/FilePart.h"
 
@@ -31,6 +33,7 @@ under the License.
 #include "../resqml2_0_1/HdfProxy.h"
 #include "../resqml2/AbstractProperty.h"
 
+#include "../witsml2_0/Log.h"
 #include "../witsml2_0/Channel.h"
 #include "../witsml2_0/ChannelSet.h"
 
@@ -111,11 +114,24 @@ namespace {
 		}
 
 		const std::vector<COMMON_NS::AbstractObject *>& targetObj = repo.getTargetObjects(dataObj);
-		for (size_t index = 0; index < targetObj.size(); ++index) {
-			if (!targetObj[index]->isPartial()) {
-				epc::Relationship relRep(targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
-				relRep.setDestinationObjectType();
-				result.push_back(relRep);
+		if (dynamic_cast<WITSML2_0_NS::Log const *>(dataObj) == nullptr && dynamic_cast<WITSML2_0_NS::ChannelSet const *>(dataObj) == nullptr) {
+			for (size_t index = 0; index < targetObj.size(); ++index) {
+				if (!targetObj[index]->isPartial()) {
+					epc::Relationship relRep(targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
+					relRep.setDestinationObjectType();
+					result.push_back(relRep);
+				}
+			}
+		}
+		else {
+			for (size_t index = 0; index < targetObj.size(); ++index) {
+				if (!targetObj[index]->isPartial() &&
+					dynamic_cast<WITSML2_0_NS::ChannelSet*>(targetObj[index]) == nullptr &&
+					dynamic_cast<WITSML2_0_NS::Log*>(targetObj[index]) == nullptr) {
+					epc::Relationship relRep(targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());
+					relRep.setDestinationObjectType();
+					result.push_back(relRep);
+				}
 			}
 		}
 
@@ -183,11 +199,7 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 				result += "The content type " + contentType + " should belong to eml and not to resqml since obj_EpcExternalPartReference is part of COMMON and not part of RESQML.\n";
 				contentType = "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference";
 			}
-			COMMON_NS::AbstractObject* wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
 			if (contentType == "application/x-eml+xml;version=2.0;type=obj_EpcExternalPartReference") {
-				static_cast<RESQML2_0_1_NS::HdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
-				static_cast<RESQML2_0_1_NS::HdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
-
 				// Look for the relative path of the HDF file
 				string relFilePath = "";
 				const size_t slashPos = it->second.getExtensionOrPartName().substr(1).find_last_of("/\\");
@@ -201,13 +213,30 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 				}
 				epc::FileRelationship relFile;
 				relFile.readFromString(package->extractFile(relFilePath));
-				const vector<epc::Relationship> allRels = relFile.getAllRelationship();
+				const vector<epc::Relationship>& allRels = relFile.getAllRelationship();
+				COMMON_NS::AbstractObject* wrapper = nullptr;
 				for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
 					if (allRels[relIndex].getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
-						static_cast<RESQML2_0_1_NS::HdfProxy*>(wrapper)->setRelativePath(allRels[relIndex].getTarget());
+						const std::string target = allRels[relIndex].getTarget();
+						if (target.find("http://") == 0 || target.find("https://") == 0) {
+							repo.setHdfProxyFactory(new HdfProxyROS3Factory());
+						}
+						else {
+							repo.setHdfProxyFactory(new HdfProxyFactory());
+						}
+						wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
+						static_cast<AbstractHdfProxy*>(wrapper)->setRelativePath(target);
 						break;
 					}
 				}
+
+				static_cast<AbstractHdfProxy*>(wrapper)->setOpeningMode(hdfPermissionAccess);
+				static_cast<AbstractHdfProxy*>(wrapper)->setRootPath(getStorageDirectory());
+
+				repo.setDefaultHdfProxy(static_cast<COMMON_NS::AbstractHdfProxy*>(wrapper));
+			}
+			else {
+				repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
 			}
 		}
 	}

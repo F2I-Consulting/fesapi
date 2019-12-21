@@ -161,6 +161,7 @@ namespace COMMON_NS
 {
 	class AbstractObject;
 	class AbstractHdfProxy;
+	class HdfProxyFactory;
 	class PropertyKind;
 	class GraphicalInformationSet;
 
@@ -191,6 +192,8 @@ namespace COMMON_NS
 
 		COMMON_NS::AbstractHdfProxy* defaultHdfProxy;
 		RESQML2_NS::AbstractLocal3dCrs* defaultCrs;
+
+		COMMON_NS::HdfProxyFactory* hdfProxyFactory;
 
 		/**
 		* Set the stream of the curent gsoap context.
@@ -260,6 +263,11 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void addRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target);
 
 		/**
+		* Set the factory used to create Hdf Proxy
+		*/
+		DLL_IMPORT_OR_EXPORT void setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory);
+
+		/**
 		* Get the target objects of a particular data objects.
 		* Throw an exception if the target objects have not been defined yet.
 		*/
@@ -296,37 +304,6 @@ namespace COMMON_NS
 		* @param proxy	The dataobject to add or replace.
 		*/
 		DLL_IMPORT_OR_EXPORT void addOrReplaceDataObject(COMMON_NS::AbstractObject* proxy);
-
-		/**
-		* This method allows to use a different behaviour for gettting numerical data from where they are persisted.
-		* NumericalValueBase must be a child of COMMON_NS::EpcExternalPartReference
-		*/
-		template <class NumericalValueBase>
-		NumericalValueBase* addOrReplaceEpcExternalPartReference2_0(const std::string & xml)
-		{
-			std::istringstream iss(xml);
-			setGsoapStream(&iss);
-			gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* read = gsoap_resqml2_0_1::soap_new_eml20__obj_USCOREEpcExternalPartReference(gsoapContext);
-			soap_read_eml20__obj_USCOREEpcExternalPartReference(gsoapContext, read);
-
-			if (gsoapContext->error != SOAP_OK) {
-				std::ostringstream oss;
-				soap_stream_fault(gsoapContext, oss);
-				return nullptr;
-			}
-			else {
-				NumericalValueBase* obj = getDataObjectByUuid<NumericalValueBase>(read->uuid);
-				if (obj == nullptr) {
-					NumericalValueBase* wrapper = new NumericalValueBase(read);
-					addOrReplaceDataObject(wrapper);
-					return wrapper;
-				}
-				else { // replacement
-					obj->setGsoapProxy(read);
-					return obj;
-				}
-			}
-		}
 
 		/**
 		* Add a dataobject to the repository based on its Energistics XML definition.

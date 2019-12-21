@@ -24,10 +24,6 @@ under the License.
 using namespace std; // in order not to prefix by "std::" for each class in the "std" namespace. Never use "using namespace" in *.h file but only in *.cpp file!!!
 using namespace epc; // in order not to prefix by "epc::" for each class in the "epc" namespace. Never use "using namespace" in *.h file but only in *.cpp file!!!
 
-FileRelationship::FileRelationship()
-{
-}
-
 FileRelationship::FileRelationship(const Relationship & frRelationship) : pathName("_rels\\.rels"), relationship()
 {
 	relationship.push_back(frRelationship);
@@ -42,17 +38,7 @@ bool FileRelationship::isEmpty() const
 	return relationship.empty();
 }
 
-string FileRelationship::getPathName() const
-{
-	return pathName;
-}
-
-vector<Relationship> FileRelationship::getAllRelationship() const
-{
-	return relationship;
-}
-
-Relationship FileRelationship::getIndexRelationship(const int & index) const
+Relationship FileRelationship::getIndexRelationship(size_t index) const
 {
 	return relationship[index];
 }
@@ -66,8 +52,7 @@ string FileRelationship::toString() const
 		oss << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" << endl << "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">" << endl;
 
 		// parcourir le vector...
-		for (size_t i = 0; i < relationship.size(); ++i)
-		{
+		for (size_t i = 0; i < relationship.size(); ++i) {
 			oss << "\t" << relationship[i].toString() << endl;
 		}
 
@@ -75,11 +60,6 @@ string FileRelationship::toString() const
 		oss << "</Relationships>" << endl;
 	}
 	return oss.str();
-}
-
-void FileRelationship::setPathName(const std::string & frPathName)
-{
-	pathName = frPathName;
 }
 
 void FileRelationship::addRelationship(const Relationship & frRelationship)
@@ -158,19 +138,3 @@ void FileRelationship::readFromString(const string & textInput)
 			pos = textInput.find("Relationship>", end + 1);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

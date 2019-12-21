@@ -24,6 +24,12 @@ namespace COMMON_NS
 {
 	class EpcExternalPartReference : public COMMON_NS::AbstractObject
 	{
+	protected:
+		/**
+		* Only to be used in partial transfer context
+		*/
+		EpcExternalPartReference(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
+
 	public:
 		/**
 		* @param packageDirAbsolutePath		The directory where the EPC document is stored. Must end with a slash or back-slash

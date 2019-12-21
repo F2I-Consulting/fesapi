@@ -141,7 +141,7 @@ ULONG64 BlockedWellboreRepresentation::getCellCount() const
 	return static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->CellCount;
 }
 
-unsigned int BlockedWellboreRepresentation::getGridIndices(unsigned int * gridIndices) const
+LONG64 BlockedWellboreRepresentation::getGridIndices(unsigned int * gridIndices) const
 {
 	_resqml20__BlockedWellboreRepresentation* rep = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
 
@@ -161,7 +161,7 @@ unsigned int BlockedWellboreRepresentation::getGridIndices(unsigned int * gridIn
 		throw std::logic_error("Not implemented yet");
 	}
 
-	return (numeric_limits<unsigned int>::max)();
+	return (numeric_limits<LONG64>::max)();
 }
 
 void BlockedWellboreRepresentation::pushBackSupportingGridRepresentation(RESQML2_NS::AbstractGridRepresentation * supportingGridRep)

@@ -29,9 +29,6 @@ under the License.
 
 namespace COMMON_NS
 {
-	class AbstractObject;
-	class AbstractHdfProxy;
-
 	/**
 	* This class allows an access to a memory package representing an EPC document.
 	*/
