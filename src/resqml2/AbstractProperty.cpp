@@ -65,6 +65,19 @@ void AbstractProperty::loadTargetRelationships()
 		repository->addRelationship(this, ts);
 	}
 
+	dor = getLocalCrsDor();
+	if (dor != nullptr) {
+		AbstractLocal3dCrs* crs = getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(dor->UUID);
+		if (crs == nullptr) { // partial transfer
+			getRepository()->createPartial(dor);
+			crs = getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(dor->UUID);
+			if (crs == nullptr) {
+				throw invalid_argument("The DOR looks invalid.");
+			}
+		}
+		repository->addRelationship(this, crs);
+	}
+
 	if (!isAssociatedToOneStandardEnergisticsPropertyKind())
 	{
 		dor = getLocalPropertyKindDor();
@@ -343,6 +356,53 @@ RESQML2_NS::PropertySet * AbstractProperty::getPropertySet(unsigned int index) c
 	}
 
 	throw out_of_range("The index of the prop Set is out of range");
+}
+
+void AbstractProperty::setLocalCrs(AbstractLocal3dCrs * crs)
+{
+	if (crs == nullptr) {
+		throw invalid_argument("The crs of this property values cannot be null.");
+	}
+	if (getRepository() == nullptr) {
+		crs->getRepository()->addOrReplaceDataObject(this);
+	}
+
+	getRepository()->addRelationship(this, crs);
+
+	// XML
+	if (gsoapProxy2_0_1 != nullptr) {
+		static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->LocalCrs = crs->newResqmlReference();
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
+}
+
+AbstractLocal3dCrs* AbstractProperty::getLocalCrs() const
+{
+	return getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(getLocalCrsUuid());
+}
+
+gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractProperty::getLocalCrsDor() const
+{
+	if (gsoapProxy2_0_1 != nullptr) {
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->LocalCrs;
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
+}
+
+std::string AbstractProperty::getLocalCrsUuid() const
+{
+	gsoap_resqml2_0_1::eml20__DataObjectReference const * const dor = getLocalCrsDor();
+	return dor == nullptr ? "" : dor->UUID;
+}
+
+std::string AbstractProperty::getLocalCrsTitle() const
+{
+	gsoap_resqml2_0_1::eml20__DataObjectReference const * const dor = getLocalCrsDor();
+	return dor == nullptr ? "" : dor->Title;
 }
 
 bool AbstractProperty::isAssociatedToOneStandardEnergisticsPropertyKind() const

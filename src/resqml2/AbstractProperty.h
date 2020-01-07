@@ -109,6 +109,39 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT unsigned int getPropertySetCount() const;
 
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::PropertySet * getPropertySet(unsigned int index) const;
+		
+		//*********************************************
+		//****** CRS ***********************
+		//*********************************************
+
+		/**
+		* Set the local CRS which is associated to the current property.
+		* you sould not set any CRS if your property is not CRS related.
+		*/
+		DLL_IMPORT_OR_EXPORT void setLocalCrs(class AbstractLocal3dCrs * crs);
+
+		/**
+		* Getter for the local CRS which is associated to this property.
+		* Usually returns null except for a property which is CRS related.
+		*/
+		DLL_IMPORT_OR_EXPORT class AbstractLocal3dCrs* getLocalCrs() const;
+
+		/**
+		* @return	null pointer if no local CRS is associated to this property. Otherwise return the data object reference of the associated local CRS.
+		*/
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor() const;
+
+		/*
+		* Getter for the uuid of the local CRS which is associated to this property.
+		* @return empty string if no local CRS is associated to this property
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getLocalCrsUuid() const;
+
+		/*
+		* Getter for the uuid of the local CRS which is associated to this property.
+		* @return empty string if no local CRS is associated to this property
+		*/
+		DLL_IMPORT_OR_EXPORT std::string getLocalCrsTitle() const;
 
 		//*********************************************
 		//****** REALIZATION DIMENSION ****************
