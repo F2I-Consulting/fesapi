@@ -357,8 +357,12 @@ void AbstractObject::setUuid(const std::string & uuid)
 
 void AbstractObject::setTitle(const std::string & title)
 {
-	if (partialObject != nullptr)
+	if (partialObject != nullptr) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
+	}
+	if (title.size() > 256) {
+		throw range_error("The title cannot be more than 256 chars long.");
+	}
 
 	if (title.empty()) {
 		if (gsoapProxy2_0_1 != nullptr) gsoapProxy2_0_1->Citation->Title = "unknown";
@@ -374,8 +378,12 @@ void AbstractObject::setTitle(const std::string & title)
 
 void AbstractObject::setEditor(const std::string & editor)
 {
-	if (partialObject != nullptr)
+	if (partialObject != nullptr) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
+	}
+	if (editor.size() > 64) {
+		throw range_error("The editor cannot be more than 64 chars long.");
+	}
 
 	if (!editor.empty()) {
 		if (gsoapProxy2_0_1 != nullptr) {
@@ -426,8 +434,12 @@ void AbstractObject::setCreation(const tm & creation)
 
 void AbstractObject::setOriginator(const std::string & originator)
 {
-	if (partialObject != nullptr)
+	if (partialObject != nullptr) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
+	}
+	if (originator.size() > 64) {
+		throw range_error("The originator cannot be more than 64 chars long.");
+	}
 
 	if (originator.empty()) {
 #if defined(__gnu_linux__) || defined(__APPLE__)
@@ -458,22 +470,32 @@ void AbstractObject::setOriginator(const std::string & originator)
 
 void AbstractObject::setDescription(const std::string & description)
 {
-	if (partialObject != nullptr)
+	if (partialObject != nullptr) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
+	}
 
 	if (!description.empty())
 	{
 		if (gsoapProxy2_0_1 != nullptr) {
+			if (description.size() > 4000) {
+				throw range_error("The description cannot be more than 4000 chars long.");
+			}
 			if (gsoapProxy2_0_1->Citation->Description == nullptr)
 				gsoapProxy2_0_1->Citation->Description = gsoap_resqml2_0_1::soap_new_std__string(gsoapProxy2_0_1->soap);
 			gsoapProxy2_0_1->Citation->Description->assign(description);
 		}
 		else if (gsoapProxy2_1 != nullptr) {
+			if (description.size() > 2000) {
+				throw range_error("The description cannot be more than 2000 chars long.");
+			}
 			if (gsoapProxy2_1->Citation->Description == nullptr)
 				gsoapProxy2_1->Citation->Description = gsoap_eml2_1::soap_new_std__string(gsoapProxy2_1->soap);
 			gsoapProxy2_1->Citation->Description->assign(description);
 		}
 		else if (gsoapProxy2_2 != nullptr) {
+			if (description.size() > 2000) {
+				throw range_error("The description cannot be more than 2000 chars long.");
+			}
 			if (gsoapProxy2_2->Citation->Description == nullptr)
 				gsoapProxy2_2->Citation->Description = gsoap_eml2_2::soap_new_std__string(gsoapProxy2_2->soap);
 			gsoapProxy2_2->Citation->Description->assign(description);
@@ -526,7 +548,7 @@ void AbstractObject::setFormat(const std::string & vendor, const std::string & a
 	format += applicationVersionNumber;
 	format += ']';
 	if (vendor.size() + applicationName.size() + applicationVersionNumber.size() > 256) {
-		throw range_error("The format cannot be more than 256 characters");
+		throw range_error("The format cannot be more than 256 chars long");
 	}
 
 	format.copy(citationFormat, format.size());
@@ -535,22 +557,32 @@ void AbstractObject::setFormat(const std::string & vendor, const std::string & a
 
 void AbstractObject::setDescriptiveKeywords(const std::string & descriptiveKeywords)
 {
-	if (partialObject != nullptr)
+	if (partialObject != nullptr) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
+	}
 
 	if (!descriptiveKeywords.empty())
 	{
 		if (gsoapProxy2_0_1 != nullptr) {
+			if (descriptiveKeywords.size() > 4000) {
+				throw range_error("The descriptiveKeywords cannot be more than 4000 chars long.");
+			}
 			if (gsoapProxy2_0_1->Citation->DescriptiveKeywords == nullptr)
 				gsoapProxy2_0_1->Citation->DescriptiveKeywords = gsoap_resqml2_0_1::soap_new_std__string(gsoapProxy2_0_1->soap);
 			gsoapProxy2_0_1->Citation->DescriptiveKeywords->assign(descriptiveKeywords);
 		}
 		else if(gsoapProxy2_1 != nullptr) {
+			if (descriptiveKeywords.size() > 2000) {
+				throw range_error("The descriptiveKeywords cannot be more than 2000 chars long.");
+			}
 			if (gsoapProxy2_1->Citation->DescriptiveKeywords == nullptr)
 				gsoapProxy2_1->Citation->DescriptiveKeywords = gsoap_eml2_1::soap_new_std__string(gsoapProxy2_1->soap);
 			gsoapProxy2_1->Citation->DescriptiveKeywords->assign(descriptiveKeywords);
 		}
 		else if (gsoapProxy2_2 != nullptr) {
+			if (descriptiveKeywords.size() > 2000) {
+				throw range_error("The descriptiveKeywords cannot be more than 2000 chars long.");
+			}
 			if (gsoapProxy2_2->Citation->DescriptiveKeywords == nullptr)
 				gsoapProxy2_2->Citation->DescriptiveKeywords = gsoap_eml2_2::soap_new_std__string(gsoapProxy2_2->soap);
 			gsoapProxy2_2->Citation->DescriptiveKeywords->assign(descriptiveKeywords);
@@ -562,6 +594,9 @@ void AbstractObject::setVersion(const std::string & version)
 {
 	if (version.empty()) {
 		throw invalid_argument("Cannot set an empty version");
+	}
+	if (version.size() > 64) {
+		throw range_error("The version cannot be more than 64 chars long.");
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -805,8 +840,15 @@ string AbstractObject::serializeIntoString()
 
 void AbstractObject::addAlias(const std::string & authority, const std::string & title)
 {
-	if (partialObject != nullptr)
+	if (partialObject != nullptr) {
 		throw invalid_argument("The wrapped gsoap proxy must not be null");
+	}
+	if (authority.size() > 64) {
+		throw range_error("The authority cannot be more than 64 chars long.");
+	}
+	if (title.size() > 64) {
+		throw range_error("The identifier cannot be more than 64 chars long.");
+	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::eml20__ObjectAlias* alias = gsoap_resqml2_0_1::soap_new_eml20__ObjectAlias(gsoapProxy2_0_1->soap);
