@@ -483,6 +483,7 @@ namespace RESQML2_NS
 		void setTimeStep(const unsigned int & timeStep);
 		TimeSeries* getTimeSeries() const;
 		time_t getTimestamp() const;
+		unsigned int getTimeIndex() const;
 	};
 	
 	class AbstractValuesProperty : public RESQML2_NS::AbstractProperty

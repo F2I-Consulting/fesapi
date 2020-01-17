@@ -26,6 +26,8 @@ under the License.
 #include "../common/DataFeeder.h"
 #include "../common/HdfProxyFactory.h"
 
+#include "../common/HdfProxyFactory.h"
+
 #include "GraphicalInformationSet.h"
 
 #include "../resqml2_0_1/PropertyKindMapper.h"

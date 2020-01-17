@@ -27,13 +27,13 @@ using namespace RESQML2_0_1_NS;
 
 void HdfProxyROS3::open()
 {
-#if H5_VERSION_GE(1, 10, 6)
+#if HDF5_ROS3_ENABLED
 	if (hdfFile != -1) {
 		close();
 	}
 
 	if (openingMode == COMMON_NS::DataObjectRepository::READ_ONLY) {
-		H5FD_ros3_fapl_t fa = { 1, 0, "", "", "" }; // Only non authenticate mode is supported buy fesapi so far.
+		H5FD_ros3_fapl_t fa = { 1, 0, "", "", "" }; // Only non authenticate mode is supported by fesapi so far.
 		if (!secret_id.empty() && !secret_key.empty()) {
 			strcpy(fa.aws_region, packageDirectoryAbsolutePath.c_str());
 			strcpy(fa.secret_id, secret_id.c_str());
@@ -64,6 +64,6 @@ void HdfProxyROS3::open()
 		throw invalid_argument("HDF5 file on an AWS bucket can only be open in read only mode for now.");
 	}
 #else
-	throw logic_error("ROS3 VFD is only supported starting from HDF 1.10.6 release.");
+	throw logic_error("Please enable ROS3 VFD support using CMAKE HDF5_ROS3_ENABLED variable if you want to use it.");
 #endif
 }

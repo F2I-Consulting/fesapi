@@ -1397,11 +1397,10 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	for (unsigned int i = 0; i < pillarCount; ++i) {
 		definedPillars[i] = pillarKind[i] == -1 ? 0 : 1;
 	}
-	hsize_t * pillarGeometryIsDefinedCount = new hsize_t[2];
+	hsize_t pillarGeometryIsDefinedCount[2];
 	pillarGeometryIsDefinedCount[0] = getJCellCount() + 1;
 	pillarGeometryIsDefinedCount[1] = getICellCount() + 1;
 	proxy->writeArrayNd(gsoapProxy2_0_1->uuid, "PillarGeometryIsDefined", H5T_NATIVE_UCHAR, definedPillars, pillarGeometryIsDefinedCount, 2);
-	delete [] pillarGeometryIsDefinedCount;
 	delete [] definedPillars;
 
 	// *********************************
@@ -1420,11 +1419,10 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	xmlLineKinds->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/LineKindIndices";
 
 	// HDF Line kinds
-	hsize_t * lineKindCount = new hsize_t[2];
+	hsize_t lineKindCount[2];
 	lineKindCount[0] = getJCellCount() + 1;
 	lineKindCount[1] = getICellCount() + 1;
 	proxy->writeArrayNd(gsoapProxy2_0_1->uuid, "LineKindIndices", H5T_NATIVE_SHORT, pillarKind, lineKindCount, 2);
-	delete [] lineKindCount;
 }
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
@@ -1479,13 +1477,12 @@ void IjkGridParametricRepresentation::writeGeometryOnHdf(double const * paramete
 {
 	if (splitCoordinateLineCount == 0) {
 		// HDF
-		hsize_t * numValues = new hsize_t[3];
+		hsize_t numValues[3];
 		numValues[0] = getKCellCount() + 1;
 		numValues[1] = getJCellCount() + 1;
 		numValues[2] = getICellCount() + 1;
 
 		proxy->writeArrayNdOfDoubleValues(gsoapProxy2_0_1->uuid, "PointParameters", parameters, numValues, 3);
-		delete[] numValues;
 	}
 	else {
 		// PointParameters
@@ -1509,25 +1506,23 @@ void IjkGridParametricRepresentation::writeGeometryOnHdf(double const * paramete
 	// Parametric coordinate lines
 	// *********************************
 	// HDF control points
-	hsize_t * controlPointCount = new hsize_t[4];
+	hsize_t controlPointCount[4];
 	controlPointCount[0] = controlPointCountPerPillar;
 	controlPointCount[1] = getJCellCount() + 1;
 	controlPointCount[2] = getICellCount() + 1;
 	controlPointCount[3] = 3; // 3 for X, Y and Z
 	proxy->writeArrayNd(gsoapProxy2_0_1->uuid, "ControlPoints", H5T_NATIVE_DOUBLE, controlPoints, controlPointCount, 4);
-	delete[] controlPointCount;
 
 	// *********************************
 	// Control point parameters are defined
 	// *********************************
 	if (controlPointParameters != nullptr) {
 		// HDF control points parameters
-		hsize_t * controlPointParamCount = new hsize_t[3];
+		hsize_t controlPointParamCount[3];
 		controlPointParamCount[0] = controlPointCountPerPillar;
 		controlPointParamCount[1] = getJCellCount() + 1;
 		controlPointParamCount[2] = getICellCount() + 1;
 		proxy->writeArrayNd(gsoapProxy2_0_1->uuid, "controlPointParameters", H5T_NATIVE_DOUBLE, controlPointParameters, controlPointParamCount, 3);
-		delete[] controlPointParamCount;
 	}
 }
 
@@ -1760,6 +1755,15 @@ void IjkGridParametricRepresentation::loadPillarInformation(IjkGridParametricRep
 	// Line kind indices
 	pillarInfo.pillarKind = new short[pillarInfo.parametricLineCount];
 	getParametricLineKind(pillarInfo.pillarKind);
+	// Pillar geometry definition overrides the kind information : https://discourse.f2i-consulting.com/t/ijkparametricgrid-xyz-points/148
+	bool* pillarGeomIsDefined = new bool[pillarInfo.parametricLineCount];
+	getPillarGeometryIsDefined(pillarGeomIsDefined);
+	for (unsigned int parametricLineIndex = 0; parametricLineIndex < pillarInfo.parametricLineCount; ++parametricLineIndex) {
+		if (!pillarGeomIsDefined[parametricLineIndex]) {
+			pillarInfo.pillarKind[parametricLineIndex] = -1;
+		}
+	}
+	delete[] pillarGeomIsDefined;
 
 	// Pillars of split line
 	if (pillarInfo.splitLineCount > 0) {

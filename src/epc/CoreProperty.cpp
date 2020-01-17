@@ -28,18 +28,18 @@ CoreProperty::CoreProperty() :
 {
 }
 
-CoreProperty::CoreProperty(const TypeProperty & pType):
+CoreProperty::CoreProperty(TypeProperty pType):
 	type(pType), value()
 {
 }
 
-CoreProperty::CoreProperty(const TypeProperty & pType, const string & pValue):
+CoreProperty::CoreProperty(TypeProperty pType, const string & pValue):
 	type(pType), value()
 {
 	value.push_back(pValue);
 }
 
-CoreProperty::CoreProperty(const TypeProperty & pType, const std::vector<std::string> & pValue):
+CoreProperty::CoreProperty(TypeProperty pType, const std::vector<std::string> & pValue):
 	type(pType), value(pValue)
 {
 }
@@ -54,12 +54,17 @@ CoreProperty::TypeProperty CoreProperty::getTypeProperty() const
 	return type;
 }
 
-void CoreProperty::setTypeProperty(const TypeProperty & corePropertyType)
+void CoreProperty::setTypeProperty(TypeProperty corePropertyType)
 {
 	type = corePropertyType;
 }
 
-string CoreProperty::getValue(const int & index) const
+const vector<string>& CoreProperty::getAllValue() const
+{
+	return value;
+}
+
+string CoreProperty::getValue(size_t index) const
 {
 	return value[index];
 }
@@ -82,6 +87,8 @@ string CoreProperty::toString() const
 		return "<dc:identifier>" + getValue() + "</dc:identifier>";
 	case keywords:
 		{
+			const vector<string> wk_Vector = getAllValue();
+
 			ostringstream oss;
 			oss << "<keywords xml:lang=\"" << getValue(0).substr(0,5) << "\"> " << getValue(0).substr(5, getValue(0).size()) << endl;
 		

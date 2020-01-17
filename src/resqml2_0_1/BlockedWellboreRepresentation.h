@@ -80,7 +80,7 @@ namespace RESQML2_0_1_NS
 		* Size of array = IntervalCount on the wellbore frame rep. The grids (and there indices) are defined using pushBackSupportingGridRepresentation method.
 		* @return nullValue
 		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getGridIndices(unsigned int * gridIndices) const;
+		DLL_IMPORT_OR_EXPORT LONG64 getGridIndices(unsigned int * gridIndices) const;
 
 		/**
 		 * Pushes back a grid representation which is one of the support of this representation.

@@ -56,7 +56,7 @@ const FileRelationship & FilePart::getFileRelationship() const
 	return fileRelationship;
 }
 
-Relationship FilePart::getIndexRelationship(const int & index) const
+Relationship FilePart::getIndexRelationship(int index) const
 {
 	return fileRelationship.getIndexRelationship(index);
 }
@@ -80,7 +80,7 @@ void FilePart::setFinalPathName(const string & finalPath)
 	fileRelationship.setPathName(wkRelsPathname);
 }
 
-void FilePart::createRelationship(const std::string & rsTarget, const std::string & rsType,const std::string & rsId, const bool & internalTarget)
+void FilePart::createRelationship(const std::string & rsTarget, const std::string & rsType,const std::string & rsId, bool internalTarget)
 {
 	Relationship rel(rsTarget, rsType, rsId, internalTarget);
 	fileRelationship.addRelationship(rel);

@@ -2,6 +2,8 @@ cmake_minimum_required (VERSION 3.12)
 
 project (Fesapi)
 
+set(CMAKE_DEBUG_POSTFIX "d" CACHE STRING "DEBUG_POSTFIX property is initialized when the target is created to the value of this variable except for executable targets")
+
 set (FESAPI_ROOT_DIR ${CMAKE_SOURCE_DIR})
 set (FESAPI_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 

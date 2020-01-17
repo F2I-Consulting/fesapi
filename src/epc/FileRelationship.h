@@ -36,19 +36,19 @@ namespace epc
 
 	public:
 		// CONSTRUCTORS
-		FileRelationship();
+		FileRelationship() {}
 		FileRelationship(const Relationship & frRelationship);
 		FileRelationship(const std::vector<Relationship> & frRelationship);
 		~FileRelationship() {}
 
 		// ACCESSORS
 		bool isEmpty() const;
-		std::string getPathName() const;
-		std::vector<Relationship> getAllRelationship() const;
-		Relationship getIndexRelationship(const int & index) const;
+		const std::string& getPathName() const { return pathName; }
+		const std::vector<Relationship>& getAllRelationship() const { return relationship; }
+		Relationship getIndexRelationship(size_t index) const;
 		std::string toString() const;
 
-		void setPathName(const std::string & frPathName);
+		void setPathName(const std::string & frPathName) { pathName = frPathName; }
 		void addRelationship(const Relationship & frRelationship);
 
 		/**

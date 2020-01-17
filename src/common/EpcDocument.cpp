@@ -125,7 +125,7 @@ namespace {
 		}
 		else {
 			for (size_t index = 0; index < targetObj.size(); ++index) {
-				if (!targetObj[index]->isPartial() && 
+				if (!targetObj[index]->isPartial() &&
 					dynamic_cast<WITSML2_0_NS::ChannelSet*>(targetObj[index]) == nullptr &&
 					dynamic_cast<WITSML2_0_NS::Log*>(targetObj[index]) == nullptr) {
 					epc::Relationship relRep(targetObj[index]->getPartNameInEpcDocument(), "", targetObj[index]->getUuid());

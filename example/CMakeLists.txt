@@ -39,6 +39,10 @@ if (WIN32)
 		RUNTIME_OUTPUT_DIRECTORY ${FESAPI_BINARY_DIR})
 endif (WIN32)
 
+# The value of DEBUG_POSTFIX property is initialized when the target is created to the value of the variable CMAKE_<CONFIG>_POSTFIX
+# except for executable targets because earlier CMake versions which did not use this variable for executables.
+set_target_properties(example PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
+
 install (
 	TARGETS example
 	DESTINATION ${CMAKE_INSTALL_PREFIX}
