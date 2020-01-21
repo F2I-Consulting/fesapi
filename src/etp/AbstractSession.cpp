@@ -73,11 +73,16 @@ void AbstractSession::on_read(boost::system::error_code ec, std::size_t bytes_tr
 		send(acknowledge, receivedMh.m_messageId);
 	}
 
+	auto specificProtocolHandlerIt = specificProtocolHandlers.find(receivedMh.m_correlationId);
 	if (receivedMh.m_messageType == Energistics::Etp::v12::Protocol::Core::Acknowledge::messageTypeId) { // Receive Acknowledge
 		protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::Core]->decodeMessageBody(receivedMh, d);
 	}
 	else if (receivedMh.m_messageType == Energistics::Etp::v12::Protocol::Core::ProtocolException::messageTypeId) { // Receive Protocol Exception
 		protocolHandlers[Energistics::Etp::v12::Datatypes::Protocol::Core]->decodeMessageBody(receivedMh, d);
+	}
+	else if (specificProtocolHandlerIt != specificProtocolHandlers.end()) {
+		specificProtocolHandlerIt->second->decodeMessageBody(receivedMh, d);
+		specificProtocolHandlers.erase(specificProtocolHandlerIt);
 	}
 	else if (receivedMh.m_protocol < protocolHandlers.size() && protocolHandlers[receivedMh.m_protocol] != nullptr) {
 		protocolHandlers[receivedMh.m_protocol]->decodeMessageBody(receivedMh, d);

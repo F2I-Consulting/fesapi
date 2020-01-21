@@ -67,11 +67,12 @@ namespace ETP_NS
 		boost::beast::flat_buffer receivedBuffer;
 		int64_t messageId;
 	    std::vector<std::shared_ptr<ETP_NS::ProtocolHandlers>> protocolHandlers;
+		std::unordered_map<int64_t, std::shared_ptr<ETP_NS::ProtocolHandlers>> specificProtocolHandlers;
 	    bool webSocketSessionClosed; // open with the websocket handshake
 		bool etpSessionClosed; // open with the requestSession and openSession message
 		std::vector<std::vector<uint8_t> > sendingQueue;
 
-	    AbstractSession() : receivedBuffer(), messageId(1), protocolHandlers(),
+	    AbstractSession() : receivedBuffer(), messageId(1), protocolHandlers(), specificProtocolHandlers(),
 			webSocketSessionClosed(true), etpSessionClosed(true),
 			sendingQueue() {
 	    }
@@ -127,7 +128,7 @@ namespace ETP_NS
 		*/
 		std::unordered_map<int64_t, Energistics::Etp::v12::Datatypes::Object::SubscriptionInfo> subscriptions;
 
-		virtual void run() = 0;
+		virtual bool run() = 0;
 
 		virtual boost::asio::io_context& getIoContext() = 0;
 
@@ -216,6 +217,17 @@ namespace ETP_NS
 			if(sendingQueue.size() == 1) {
 				do_write();
 			}
+
+			return msgId;
+		}
+
+		/**
+		* Send a message and register a specific handler for the response.
+		*/
+		template<typename T> int64_t sendWithSpecificHandler(const T & mb, std::shared_ptr<ETP_NS::ProtocolHandlers> specificHandler, int64_t correlationId = 0, int32_t messageFlags = 0)
+		{
+			int64_t msgId = send(mb, correlationId, messageFlags);
+			specificProtocolHandlers[msgId] = specificHandler;
 
 			return msgId;
 		}

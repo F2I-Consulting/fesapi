@@ -51,7 +51,7 @@ namespace ETP_NS
 			return ws.get_executor().context();
 		}
 
-		void run();
+		bool run();
 
 		void do_write() {
 			auto completed = ws.async_write(

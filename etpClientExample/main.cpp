@@ -61,7 +61,11 @@ int main(int argc, char **argv)
 	session->setDataArrayProtocolHandlers(std::make_shared<ETP_NS::DataArrayHandlers>(session));
 	session->setStoreNotificationProtocolHandlers(std::make_shared<ETP_NS::StoreNotificationHandlers>(session));
 	
-	session->run();
+	bool successfulConnection = session->run();
+
+	if (!successfulConnection) {
+		std::cout << "Could not connect to the server " << argv[1] << " " << argv[2] << std::endl;
+	}
 
 #ifdef _WIN32
 	_CrtDumpMemoryLeaks();

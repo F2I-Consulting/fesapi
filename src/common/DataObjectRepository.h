@@ -190,8 +190,6 @@ namespace COMMON_NS
 
 		soap* getGsoapContext() const { return gsoapContext; }
 
-		COMMON_NS::HdfProxyFactory* hdfProxyFactory;
-
 		/**
 		* Remove and clean all dataobjects from this repository
 		*/
@@ -244,16 +242,9 @@ namespace COMMON_NS
 		/**
 		* Get the target objects of a particular data object and potentially targets of targets, etc...
 		* @param dataObj			The dataobject which we want to know the targets about.
-		* @param depth				How much targets of tagerts do we want? A depth of 0 means that we only want the dataobject itself. A depth of 1 means that we only want the direct targets.
+		* @param depth				How much targets of targets do we want? A depth of 0 means that we only want the dataobject itself. A depth of 1 means that we only want the direct targets.
 		*							A depth of 2 means that we want the direct targets + the targets of the direct targets, etc... 
 		* @param filteredDatatypes	The returned targets will be filtered based on this list of authorized datatypes. A qualified type "namespace.*" means a filter on the namespace.
-		* Set the factory used to create Hdf Proxy
-		*/
-		DLL_IMPORT_OR_EXPORT void setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory);
-
-		/**
-		* Get the target objects of a particular data objects.
-		* Throw an exception if the target objects have not been defined yet.
 		*/
 		DLL_IMPORT_OR_EXPORT std::vector<COMMON_NS::AbstractObject*> getTargetObjects(COMMON_NS::AbstractObject const * dataObj, size_t depth,
 			const std::vector<std::string>& filteredDatatypes = std::vector<std::string>()) const;

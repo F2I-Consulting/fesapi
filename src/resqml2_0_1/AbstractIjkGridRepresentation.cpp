@@ -331,38 +331,16 @@ void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeom
 		if (geom->PillarGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array)
 		{
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values;
-			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			COMMON_NS::AbstractObject::hdfDatatypeEnum dt = hdfProxy->getHdfDatatypeInDataset(static_cast<resqml20__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values->PathInHdfFile);
-			if (dt == COMMON_NS::AbstractObject::CHAR) {
-				char* tmp = new char[pillarCount];
-				hdfProxy->readArrayNdOfCharValues(static_cast<resqml20__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values->PathInHdfFile, tmp);
-				for (unsigned int i = 0; i < pillarCount; ++i) {
-					if (tmp[i] == 0) pillarGeometryIsDefined[i] = false; else pillarGeometryIsDefined[i] = true;
-				}
-				delete[] tmp;
+			char* tmp = new char[pillarCount];
+			getHdfProxyFromDataset(dataset)->readArrayNdOfCharValues(static_cast<resqml20__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values->PathInHdfFile, tmp);
+			for (unsigned int i = 0; i < pillarCount; ++i) {
+				pillarGeometryIsDefined[i] = tmp[i] != 0;
 			}
-			else if (dt == COMMON_NS::AbstractObject::UCHAR) {
-				unsigned char* tmp = new unsigned char[pillarCount];
-				hdfProxy->readArrayNdOfUCharValues(static_cast<resqml20__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values->PathInHdfFile, tmp);
-				for (unsigned int i = 0; i < pillarCount; ++i) {
-					if (tmp[i] == 0) pillarGeometryIsDefined[i] = false; else pillarGeometryIsDefined[i] = true;
-				}
-				delete[] tmp;
-			}
-			else {
-				throw std::logic_error("Not implemented yet");
-			}
+			delete[] tmp;
 		}
 		else if (geom->PillarGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray) {
-			if (static_cast<resqml20__BooleanConstantArray*>(geom->PillarGeometryIsDefined)->Value == true) {
-				for (unsigned int i = 0; i < pillarCount; ++i) {
-					pillarGeometryIsDefined[i] = true;
-				}
-			}
-			else {
-				for (unsigned int i = 0; i < pillarCount; ++i) {
-					pillarGeometryIsDefined[i] = false;
-				}
+			for (unsigned int i = 0; i < pillarCount; ++i) {
+				pillarGeometryIsDefined[i] = static_cast<resqml20__BooleanConstantArray*>(geom->PillarGeometryIsDefined)->Value;
 			}
 		}
 		else {
@@ -372,8 +350,6 @@ void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeom
 	else {
 		throw invalid_argument("The grid has no geometry.");
 	}
-
-	
 
 	if (reverseIAxis || reverseJAxis)
 	{

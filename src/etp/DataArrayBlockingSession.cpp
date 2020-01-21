@@ -58,10 +58,13 @@ DataArrayBlockingSession::DataArrayBlockingSession(boost::asio::io_context& ioc,
 	requestSession.m_supportedObjects = supportedObjects;
 }
 
-void DataArrayBlockingSession::run()
+bool DataArrayBlockingSession::run()
 {
 	// Look up the domain name
 	auto const results = resolver.resolve(host, port);
+	if (results.empty()) {
+		return false;
+	}
 
 	// Make the connection on the IP address we get from a lookup
 	boost::asio::connect(
@@ -78,8 +81,10 @@ void DataArrayBlockingSession::run()
 		});
 
 	if (!responseType.count(boost::beast::http::field::sec_websocket_protocol) ||
-		responseType[boost::beast::http::field::sec_websocket_protocol] != "etp12.energistics.org")
+		responseType[boost::beast::http::field::sec_websocket_protocol] != "etp12.energistics.org") {
 		std::cerr << "The client MUST specify the Sec-Websocket-Protocol header value of etp12.energistics.org, and the server MUST reply with the same" << std::endl;
+		return false;
+	}
 
 	webSocketSessionClosed = false;
 
@@ -87,10 +92,12 @@ void DataArrayBlockingSession::run()
 	do_read();
 	std::size_t bytes_transferred = future_bytes_transferred.get();
 	boost::ignore_unused(bytes_transferred);
-	if (bytes_transferred == 0) return;
+	if (bytes_transferred == 0) return false;
 	flushReceivingBuffer();
 
 	do_read();
+
+	return true;
 }
 
 void DataArrayBlockingSession::do_read()

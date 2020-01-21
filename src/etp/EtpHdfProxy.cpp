@@ -29,7 +29,7 @@ const char* EtpHdfProxy::XML_NS = "eml20";
 
 std::string EtpHdfProxy::getUri() const
 {
-	return "eml://eml20/obj_EpcExternalPartReference(" + getUuid() + ")";
+	return "eml:///eml20.obj_EpcExternalPartReference(" + getUuid() + ")";
 }
 
 void EtpHdfProxy::setSession(boost::asio::io_context& ioc, const std::string & host, const std::string & port, const std::string & target)

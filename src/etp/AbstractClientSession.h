@@ -40,6 +40,7 @@ namespace ETP_NS
 		std::string authorization;
 	    websocket::response_type responseType; // In order to check handshake sec_websocket_protocol
 	    Energistics::Etp::v12::Protocol::Core::RequestSession requestSession;
+		bool successfulConnection;
 
 		// Access the derived class, this is part of the Curiously Recurring Template Pattern idiom.
 		Derived& derived() { return static_cast<Derived&>(*this); }
@@ -51,7 +52,8 @@ namespace ETP_NS
 			host(),
 			port(),
 			target(),
-			authorization() {}
+			authorization(),
+			successfulConnection(false) {}
 
 	    /**
 	     * @param host		The IP address on which the server is listening for etp (websocket) connection
@@ -70,7 +72,8 @@ namespace ETP_NS
 			host(host),
 			port(port),
 			target(target),
-			authorization(authorization)
+			authorization(authorization),
+			successfulConnection(false)
 		{
 			// Build the request session
 			requestSession.m_applicationName = "F2I ETP Client";
@@ -90,7 +93,7 @@ namespace ETP_NS
 		DLL_IMPORT_OR_EXPORT const std::string& getTarget() const { return target; }
 		DLL_IMPORT_OR_EXPORT const std::string& getAuthorization() const { return authorization; }
 
-		DLL_IMPORT_OR_EXPORT void run() {
+		DLL_IMPORT_OR_EXPORT bool run() {
 			// We run the io_service off in its own thread so that it operates completely asynchronously with respect to the rest of the program.
 			// This is particularly important regarding "std::future" usage in DataArrayBlockingSession
 			auto work = boost::asio::make_work_guard(ioc);
@@ -100,6 +103,7 @@ namespace ETP_NS
 				std::cerr << "End IOC" << std::endl;
 			});
 
+			successfulConnection = false;
 			// Look up the domain name
 			resolver.async_resolve(
 				host,
@@ -115,6 +119,8 @@ namespace ETP_NS
 			work.reset();
 			// Wait for ioc.run() (in the other thread) to return
 			thread.join();
+
+			return successfulConnection;
 		}
 
 		void on_connect(boost::system::error_code ec) {
@@ -197,6 +203,7 @@ namespace ETP_NS
 				responseType[boost::beast::http::field::sec_websocket_protocol] != "etp12.energistics.org")
 				std::cerr << "The client MUST specify the Sec-Websocket-Protocol header value of etp12.energistics.org, and the server MUST reply with the same" << std::endl;
 
+			successfulConnection = true;
 			webSocketSessionClosed = false;
 
 			send(requestSession);

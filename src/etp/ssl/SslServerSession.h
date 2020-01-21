@@ -45,7 +45,7 @@ namespace ETP_NS
 		// Called by the base class
 		DLL_IMPORT_OR_EXPORT websocket::stream<boost::beast::ssl_stream<tcp::socket>>& ws() { return ws_; }
 
-		DLL_IMPORT_OR_EXPORT void run() {
+		DLL_IMPORT_OR_EXPORT bool run() {
 			// Perform the SSL handshake
 			ws_.next_layer().async_handshake(
 				boost::asio::ssl::stream_base::server,
@@ -55,6 +55,7 @@ namespace ETP_NS
 						&AbstractPlainOrSslServerSession::on_handshake,
 						std::static_pointer_cast<AbstractPlainOrSslServerSession>(shared_from_this()),
 						std::placeholders::_1)));
+			return true;
 		}
 	};
 }

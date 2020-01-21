@@ -29,10 +29,6 @@ namespace ETP_NS
 
 	    void decodeMessageBody(const Energistics::Etp::v12::Datatypes::MessageHeader & mh, avro::DecoderPtr d);
 
-		//virtual void on_GetDataspaces(const Energistics::Etp::v12::Protocol::Discovery::GetDataspaces & msg, int64_t correlationId);
-		//virtual void on_GetDataspacesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetDataspacesResponse & msg, int64_t correlationId);
-		//virtual void on_GetNamespaces(const Energistics::Etp::v12::Protocol::Discovery::GetNamespaces & msg, int64_t correlationId);
-		//virtual void on_GetNamespacesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetNamespacesResponse & msg, int64_t correlationId);
 		virtual void on_GetSupportedTypes(const Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypes & msg, int64_t correlationId);
 		virtual void on_GetSupportedTypesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypesResponse & msg, int64_t correlationId);
 		virtual void on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources & msg, int64_t correlationId);
