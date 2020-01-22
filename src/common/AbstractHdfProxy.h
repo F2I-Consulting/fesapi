@@ -41,13 +41,13 @@ namespace COMMON_NS
 		/**
 		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
 		*/
-		DLL_IMPORT_OR_EXPORT AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::READ_ONLY);
+		DLL_IMPORT_OR_EXPORT AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
 
 		DLL_IMPORT_OR_EXPORT AbstractHdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
-			EpcExternalPartReference(fromGsoap), openingMode(DataObjectRepository::READ_ONLY) {}
+			EpcExternalPartReference(fromGsoap), openingMode(DataObjectRepository::openingMode::READ_ONLY) {}
 
 		DLL_IMPORT_OR_EXPORT AbstractHdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
-			EpcExternalPartReference(fromGsoap), openingMode(DataObjectRepository::READ_ONLY) {}
+			EpcExternalPartReference(fromGsoap), openingMode(DataObjectRepository::openingMode::READ_ONLY) {}
 
 		/**
 		* Instantiate and initialize the gsoap proxy v2.0.1.

@@ -244,7 +244,12 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT DataObjectRepository();
 		DLL_IMPORT_OR_EXPORT DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);
 
-		enum openingMode { READ_ONLY = 0, READ_WRITE = 1, OVERWRITE = 2 };
+		enum class openingMode : std::int8_t {
+			READ_ONLY = 0, // It is meant to open an existing file in read only mode. It throws an exception if the file does not exist.
+			READ_WRITE = 1, // It is meant to open a file in read and write mode. It creates the file if the file does not exist.
+			READ_WRITE_DO_NOT_CREATE = 2, // It is meant to open an existing file in read and write mode. It throws an exception if the file does not exist.
+			OVERWRITE = 3 // It is meant to open an existing file in read and write mode. It deletes the content of the file if the later does already exist.
+		};
 
 		DLL_IMPORT_OR_EXPORT virtual ~DataObjectRepository();
 
