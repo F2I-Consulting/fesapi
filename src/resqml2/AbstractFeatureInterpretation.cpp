@@ -40,6 +40,12 @@ void AbstractFeatureInterpretation::setInterpretedFeature(AbstractFeature * feat
 		feature->getRepository()->addOrReplaceDataObject(this);
 	}
 
+	if (gsoapProxy2_0_1 != nullptr) {
+		if (static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->InterpretedFeature != nullptr) {
+			getRepository()->deleteRelationship(this, getInterpretedFeature());
+		}
+	}
+
 	repository->addRelationship(this, feature);
 
 	if (gsoapProxy2_0_1 != nullptr) {

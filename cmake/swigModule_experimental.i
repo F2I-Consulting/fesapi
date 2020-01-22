@@ -293,7 +293,12 @@ namespace COMMON_NS
 	{
 	public:
 	
-		enum openingMode { READ_ONLY = 0, READ_WRITE = 1, OVERWRITE = 2 };
+		enum class openingMode : std::int8_t {
+			READ_ONLY = 0,
+			READ_WRITE = 1,
+			READ_WRITE_DO_NOT_CREATE = 2,
+			OVERWRITE = 3
+		};
 		
 		DataObjectRepository();
 		DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);		
@@ -967,7 +972,7 @@ namespace COMMON_NS
 		void setFilePath(const std::string & fp);
 
 		virtual void serializeFrom(const DataObjectRepository & repo, bool useZip64 = false);
-		virtual std::string deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::READ_ONLY);
+		virtual std::string deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
 		void close();
 		std::string getStorageDirectory() const;
 		std::string getName() const;

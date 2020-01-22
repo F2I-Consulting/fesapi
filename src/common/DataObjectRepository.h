@@ -268,6 +268,13 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void addRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target);
 
 		/**
+		* Delete a relationship between two objects
+		* Source and target are defined by Energistics data model. Usually, the simplest is to look at Energistics UML diagrams. Another way is to rely on XSD/XML : explicit relationships are contained by the source objects and point to target objects.
+		* @param source	The source object of the relationship
+		*/
+		DLL_IMPORT_OR_EXPORT void deleteRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target);
+
+		/**
 		* Set the factory used to create Hdf Proxy
 		*/
 		DLL_IMPORT_OR_EXPORT void setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory);
