@@ -19,9 +19,7 @@ under the License.
 #include "resqml2_0_1test/IjkGridExplicitRepresentationTest.h"
 
 #include "catch.hpp"
-#include "resqml2_0_1test/LocalDepth3dCrsTest.h"
 
-#include "resqml2_0_1/LocalDepth3dCrs.h"
 #include "resqml2_0_1/IjkGridExplicitRepresentation.h"
 
 using namespace std;
