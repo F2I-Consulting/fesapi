@@ -39,7 +39,7 @@ namespace COMMON_NS
 		* @packageDirAbsolutePath	The directory where the EPC document is stored. Must end with a slash or back-slash
 		* @relativeFilePath			The relative file path of the associated HDF file. It is relative to the location of the package
 		*/
-		HdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::READ_ONLY);
+		HdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
 
 		/**
 		* Read an array Nd of float values stored in a specific dataset.
@@ -130,6 +130,11 @@ namespace COMMON_NS
 			unsigned long long slabSize, 
 			hdf5_hid_t datatype);
 
+		/**
+		* Write the uuid of the XML EpcExternalPartReference as a string attribute of the HDF5 file.
+		*/
+		void writeUuidAttribute();
+
 	public:
 
 		/**
@@ -144,7 +149,7 @@ namespace COMMON_NS
 		virtual ~HdfProxy() {close();}
 
 		/**
-		* Open the file for reading and writing.
+		* Create or open the file according to the chosen openingMode.
 		*/
 		virtual void open();
 

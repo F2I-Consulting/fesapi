@@ -967,14 +967,14 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	ijkgrid->setIntervalAssociationWithStratigraphicOrganizationInterpretation(&stratiUnitIndice, 1000, stratiColumnRank0);
 
 	// Partial transfer
-	UnstructuredGridRepresentation* partialGrid = pck->createPartial<UnstructuredGridRepresentation>("", "Partial Grid");
+	UnstructuredGridRepresentation* partialGrid = pck->createPartial<UnstructuredGridRepresentation>("5cc3ee47-4bd5-4d82-ae3e-ed64e6d8d1eb", "Partial Grid");
 	ContinuousProperty* continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "Testing partial property", 1,
 		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	double continuousProp1Values[6] = { 0, 1, 2, 3, 4, 5 };
 	continuousProp1->pushBackDoubleHdf5Array1dOfValues(continuousProp1Values, 6, hdfProxy);
 
 	// sub rep of a partial unstructured grid
-	RESQML2_NS::SubRepresentation * subRepOfUnstructuredGrid = pck->createSubRepresentation("", "Subrep On Partial grid");
+	RESQML2_NS::SubRepresentation * subRepOfUnstructuredGrid = pck->createSubRepresentation("6b48c8d0-d60e-42b5-994c-2d4d4f3d0765", "Subrep On Partial grid");
 	subRepOfUnstructuredGrid->pushBackSupportingRepresentation(partialGrid);
 	ULONG64 nodeIndex[2] = { 0, 1 };
 	subRepOfUnstructuredGrid->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements__nodes, 2, nodeIndex, hdfProxy);
@@ -1965,7 +1965,7 @@ bool serialize(const string & filePath)
 
 	COMMON_NS::AbstractObject::setFormat("F2I-CONSULTING", "Fesapi Example", FESAPI_VERSION);
 
-	COMMON_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5", COMMON_NS::DataObjectRepository::OVERWRITE);
+	COMMON_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Hdf Proxy", pck.getStorageDirectory(), pck.getName() + ".h5", COMMON_NS::DataObjectRepository::openingMode::OVERWRITE);
 	repo.setDefaultHdfProxy(hdfProxy);
 
 	local3dCrs = repo.createLocalDepth3dCrs("", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);

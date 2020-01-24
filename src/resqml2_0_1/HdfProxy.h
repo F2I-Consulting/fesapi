@@ -39,7 +39,7 @@ namespace RESQML2_0_1_NS
 		* @packageDirAbsolutePath	The directory where the EPC document is stored. Must end with a slash or back-slash
 		* @relativeFilePath			The relative file path of the associated HDF file. It is relative to the location of the package
 		*/
-		DLL_IMPORT_OR_EXPORT HdfProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::READ_ONLY);
+		DLL_IMPORT_OR_EXPORT HdfProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
 
 		DLL_IMPORT_OR_EXPORT HdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
 			COMMON_NS::HdfProxy(fromGsoap) {}

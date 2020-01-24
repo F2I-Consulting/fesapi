@@ -104,6 +104,12 @@ void AbstractProperty::setRepresentation(AbstractRepresentation * rep)
 		throw invalid_argument("The representation of this property values cannot be null.");
 	}
 
+	if (gsoapProxy2_0_1 != nullptr) {
+		if (static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->SupportingRepresentation != nullptr) {
+			rep->getRepository()->deleteRelationship(this, getRepresentation());
+		}
+	}
+
 	rep->getRepository()->addRelationship(this, rep);
 
 	if (getRepository() == nullptr) {
@@ -475,6 +481,13 @@ void AbstractProperty::setLocalPropertyKind(COMMON_NS::PropertyKind* propKind)
 	}
 	if (getRepository() == nullptr) {
 		propKind->getRepository()->addOrReplaceDataObject(this);
+	}
+
+	if (gsoapProxy2_0_1 != nullptr) {
+		if (static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->PropertyKind != nullptr &&
+			static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->PropertyKind->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__LocalPropertyKind) {
+			getRepository()->deleteRelationship(this, getLocalPropertyKind());
+		}
 	}
 
 	getRepository()->addRelationship(this, propKind);

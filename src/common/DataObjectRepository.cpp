@@ -334,13 +334,13 @@ void DataObjectRepository::addRelationship(COMMON_NS::AbstractObject * source, C
 		throw invalid_argument("Cannot set a relationship with a null pointer");
 	}
 
-	if (forwardRels.find(source) == forwardRels.end()) {
+	auto sourceIt = forwardRels.find(source);
+	if (sourceIt == forwardRels.end()) {
 		forwardRels[source].push_back(target);
 	}
 	else {
-		const std::vector< COMMON_NS::AbstractObject * >& targets = forwardRels.at(source);
-		if (std::find(targets.begin(), targets.end(), target) == targets.end()) {
-			forwardRels[source].push_back(target);
+		if (std::find(sourceIt->second.begin(), sourceIt->second.end(), target) == sourceIt->second.end()) {
+			sourceIt->second.push_back(target);
 		}
 		else {
 			return;
@@ -356,6 +356,26 @@ void DataObjectRepository::addRelationship(COMMON_NS::AbstractObject * source, C
 			if (interp != nullptr && !interp->isPartial()) {
 				interp->initDomain(gsoap_resqml2_0_1::resqml20__Domain__mixed);
 			}
+		}
+	}
+}
+
+void DataObjectRepository::deleteRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target)
+{
+	if (source == nullptr || target == nullptr) {
+		throw invalid_argument("Cannot set a relationship with a null pointer");
+	}
+
+	auto sourceIt = forwardRels.find(source);
+	if (sourceIt != forwardRels.end()) {
+		auto targetIt = std::find(sourceIt->second.begin(), sourceIt->second.end(), target);
+		if (targetIt != sourceIt->second.end()) {
+			// Erase in Forward Rels
+			sourceIt->second.erase(targetIt);
+			
+			// Erase in Backward rels
+			auto& sources = backwardRels[target];
+			sources.erase(std::find(sources.begin(), sources.end(), source));
 		}
 	}
 }

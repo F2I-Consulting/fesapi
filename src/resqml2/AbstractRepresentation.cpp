@@ -201,6 +201,19 @@ void AbstractRepresentation::setInterpretation(AbstractFeatureInterpretation* in
 		throw invalid_argument("Cannot set a null interpretation to a representation");
 	}
 
+	if (gsoapProxy2_0_1 != nullptr) {
+		if (static_cast<gsoap_resqml2_0_1::resqml20__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation != nullptr) {
+			interp->getRepository()->deleteRelationship(this, getInterpretation());
+		}
+	}
+#if WITH_EXPERIMENTAL
+	else if (gsoapProxy2_2 != nullptr) {
+		if (static_cast<gsoap_eml2_2::resqml22__AbstractRepresentation*>(gsoapProxy2_2)->RepresentedInterpretation != nullptr) {
+			interp->getRepository()->deleteRelationship(this, getInterpretation());
+		}
+	}
+#endif
+
 	interp->getRepository()->addRelationship(this, interp);
 
 	if (getRepository() == nullptr) {
@@ -227,8 +240,7 @@ AbstractFeatureInterpretation* AbstractRepresentation::getInterpretation() const
 gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractRepresentation::getInterpretationDor() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation != nullptr ?
-			static_cast<gsoap_resqml2_0_1::resqml20__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation : nullptr;
+		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractRepresentation*>(gsoapProxy2_0_1)->RepresentedInterpretation;
 	}
 #if WITH_EXPERIMENTAL
 	else if (gsoapProxy2_2 != nullptr) {

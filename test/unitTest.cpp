@@ -24,6 +24,9 @@ under the License.
 
 #include "catch.hpp"
 
+#include "common/DataObjectRepository.h"
+#include "common/AbstractHdfProxy.h"
+
 #include "EpcDocumentTest.h"
 #include "GraphicalInformationSetTest.h"
 #include "resqml2_0_1test/LocalDepth3dCrsTest.h"
@@ -106,8 +109,32 @@ TEST_CASE("Export and import an empty EPC document", "[repo]")
 	testIn.serialize();
 
 	// Check that the epc file extension has properly been added at previous step.
+
 	EpcDocumentTest testOut("../../EpcDocumentTest.epc");
 	testOut.deserialize();	
+}
+
+TEST_CASE("Test hdf5 opening mode", "[hdf]")
+{
+	std::remove("../../testingFile.h5");
+
+	COMMON_NS::DataObjectRepository repo;
+	COMMON_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Hdf Proxy Test", "../../", "testingFile.h5", COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
+	REQUIRE_THROWS(hdfProxy->open());
+	hdfProxy->setOpeningMode(COMMON_NS::DataObjectRepository::openingMode::READ_WRITE_DO_NOT_CREATE);
+	REQUIRE_THROWS(hdfProxy->open());
+	hdfProxy->setOpeningMode(COMMON_NS::DataObjectRepository::openingMode::READ_WRITE);
+	REQUIRE_NOTHROW(hdfProxy->open());
+	hdfProxy->close();
+	hdfProxy->setOpeningMode(COMMON_NS::DataObjectRepository::openingMode::OVERWRITE);
+	REQUIRE_NOTHROW(hdfProxy->open());
+	hdfProxy->close();
+	hdfProxy->setOpeningMode(COMMON_NS::DataObjectRepository::openingMode::READ_WRITE_DO_NOT_CREATE);
+	REQUIRE_NOTHROW(hdfProxy->open());
+	hdfProxy->close();
+	hdfProxy->setOpeningMode(COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
+	REQUIRE_NOTHROW(hdfProxy->open());
+	hdfProxy->close();
 }
 
 FESAPI_TEST("Export and import a local depth 3d crs", "[crs]", LocalDepth3dCrsTest)
@@ -148,7 +175,7 @@ FESAPI_TEST("Export and import a LGR on a 4*3*2 explicit right handed ijk grid",
 
 FESAPI_TEST("Export and import an unstructured grid", "[grid]", OneTetrahedronUnstructuredGridRepresentationTest)
 
-FESAPI_TEST("Export and import a subrepresenation on a partial grid connection set", "[grid]", SubRepresentationOnPartialGridConnectionSet)
+FESAPI_TEST("Export and import a subrepresentation on a partial grid connection set", "[grid]", SubRepresentationOnPartialGridConnectionSet)
 
 FESAPI_TEST("Export and import a time series", "[property]", TimeSeriesTest)
 

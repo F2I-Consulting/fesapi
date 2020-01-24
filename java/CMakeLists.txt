@@ -6,7 +6,17 @@ find_package(JNI REQUIRED)
 find_package(Java REQUIRED)
 include(UseJava)
 
-message("Generating SWIG files")
+set(SWIG_LINKED_TO_RELEASE ON CACHE BOOL "Is your SWIG generated library linked to the release or debug version of FesapiCpp ?")
+
+if (SWIG_LINKED_TO_RELEASE)
+	set (ASSEMBLY_NAME ${CPP_LIBRARY_NAME}${CMAKE_RELEASE_POSTFIX}.${Fesapi_VERSION})
+	add_jar(fesapiJava${CMAKE_RELEASE_POSTFIX} ${SWIG_JAVA_FILES} VERSION ${Fesapi_VERSION})
+else (SWIG_LINKED_TO_RELEASE)
+	set (ASSEMBLY_NAME ${CPP_LIBRARY_NAME}${CMAKE_DEBUG_POSTFIX}.${Fesapi_VERSION})
+	add_jar(fesapiJava${CMAKE_DEBUG_POSTFIX} ${SWIG_JAVA_FILES} VERSION ${Fesapi_VERSION})
+endif (SWIG_LINKED_TO_RELEASE)
+
+message("Generating SWIG Java files...")
 #Cleaning
 file (GLOB TO_DELETE ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/*.java)
 if (TO_DELETE)
@@ -36,26 +46,32 @@ configure_file(${FESAPI_ROOT_DIR}/cmake/FesapiJavaExample.java ${FESAPI_ROOT_DIR
 configure_file(${FESAPI_ROOT_DIR}/cmake/EtpExample.java ${FESAPI_ROOT_DIR}/java/example/EtpExample.java) # Overwrite if different
 configure_file(${FESAPI_ROOT_DIR}/cmake/MyOwnCoreProtocolHandlers.java ${FESAPI_ROOT_DIR}/java/example/MyOwnCoreProtocolHandlers.java) # Overwrite if different
 
-# Filling
+# SWIG execution
 if (WIN32)
 	set ( EXECUTE_COMMAND "${SWIG_EXECUTABLE} -c++ -java -package com.f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i")
-	execute_process(COMMAND powershell  ${EXECUTE_COMMAND})
+	execute_process(COMMAND powershell ${EXECUTE_COMMAND})
 elseif (UNIX)
 	set ( EXECUTE_COMMAND ${SWIG_EXECUTABLE} -c++ -java -package com.f2i.energisticsStandardsApi -o ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp -outdir ${FESAPI_ROOT_DIR}/java/src/com/f2i/energisticsStandardsApi/ ${FESAPI_ROOT_DIR}/swig/swigModule.i)
 	execute_process(COMMAND ${EXECUTE_COMMAND})
 endif (WIN32)
-message("SWIG files have been generated")
+message("SWIG Java files have been generated.")
 
 # Building the jar
 file (GLOB_RECURSE SWIG_JAVA_FILES ${FESAPI_ROOT_DIR}/java/src/*.java)
 set(CMAKE_JAVA_COMPILE_FLAGS -g)
-add_jar(fesapiJava ${SWIG_JAVA_FILES} VERSION ${Fesapi_VERSION})
 
 target_sources(${CPP_LIBRARY_NAME} PRIVATE ${FESAPI_ROOT_DIR}/swig/swigGeneratedJavaWrapper.cpp)
 
 target_include_directories(${CPP_LIBRARY_NAME} PUBLIC ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2})
 
-install (
-	FILES ${CMAKE_CURRENT_BINARY_DIR}/fesapiJava-${Fesapi_VERSION}.jar
-	DESTINATION ${CMAKE_INSTALL_LIBDIR}
-)
+if (SWIG_LINKED_TO_RELEASE)
+	install (
+		FILES ${CMAKE_CURRENT_BINARY_DIR}/fesapiJava${CMAKE_RELEASE_POSTFIX}-${Fesapi_VERSION}.jar
+		DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	)
+else (SWIG_LINKED_TO_RELEASE)
+	install (
+		FILES ${CMAKE_CURRENT_BINARY_DIR}/fesapiJava${CMAKE_DEBUG_POSTFIX}-${Fesapi_VERSION}.jar
+		DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	)
+endif (SWIG_LINKED_TO_RELEASE)
