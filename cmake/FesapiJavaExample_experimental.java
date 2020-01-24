@@ -54,6 +54,7 @@ import com.f2i.energisticsStandardsApi.common.AbstractObject;
 import com.f2i.energisticsStandardsApi.common.DataObjectRepository;
 import com.f2i.energisticsStandardsApi.common.EpcDocument;
 import com.f2i.energisticsStandardsApi.common.GraphicalInformationSet;
+import com.f2i.energisticsStandardsApi.common.PropertyKind;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.ContinuousColorMap;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.DiscreteColorMap;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_2_NS}.SeismicWellboreFrameRepresentation;
@@ -61,7 +62,6 @@ import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractRepresentati
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractValuesProperty;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.AbstractValuesProperty.hdfDatatypeEnum;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.MdDatum;
-import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_NS}.PropertyKind;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.AbstractIjkGridRepresentation;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.ContinuousProperty;
 import com.f2i.energisticsStandardsApi.${FESAPI_RESQML2_0_1_NS}.DiscreteProperty;

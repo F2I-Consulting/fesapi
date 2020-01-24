@@ -74,6 +74,25 @@ namespace RESQML2_0_1_NS
 
 		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
 
+		/**
+		* Information about the splits (mainly due to faults) which occur in this grid.
+		* A splitInformation equal to nullptr means that it has not been initialized. An initialized splitInformation has always a size of getPillarCount().
+		* Indeed, each pillar of the grid (ordered I fastest then J slowest) is represented by a vector of split coordinate line information.
+		* A split coordinate line information is a pair composed by :
+		*  - first : the split coordinate line index
+		*  - second : all grid columns (identified by their indices: i fastest, j slowest) which are incident to (and consequently affected by) this split coordinate line
+		*
+		* Example : split info set to => {empty, empty, {{10, {51, 23}}}, empty, {{12, {51, 23}}, {15, {22}}, emtpy}
+		* This grid has 3 split coordinate lines (10, 12 and 15) which are related to two pillars (2 and 4).
+		* On the pillar 2, only a single split coordinate line (10) affects two columns (51, 23).
+		* On the pillar 4, two split coordinate lines exist (12 and 15). The split coordinate line 12 affects two columns (51 and 23). The split coordinate line 15 affects a single column (22).
+		* The other pillars are not splitted at all.
+		*
+		* Remarks :
+		* - There is a maximum of 3 split coordinate lines per pillar (the fourth one being considered as the non split one).
+		* -	There is a minimum of 1 column per split coordinate line.
+		* - There is a maximum of 3 columns per split coordinate line.
+		*/
 		std::vector< std::pair< unsigned int, std::vector<unsigned int> > >* splitInformation;
 
 		BlockInformation* blockInformation;
