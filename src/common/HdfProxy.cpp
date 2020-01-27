@@ -103,9 +103,9 @@ void HdfProxy::open()
 		hdfFile = H5Fcreate(fullName.c_str(), H5F_ACC_EXCL, H5P_DEFAULT, access_props);
 
 		if (hdfFile < 0) {
-			openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_WRITE_DO_NOT_CREATE;
+			openingMode = COMMON_NS::DataObjectRepository::openingMode::READ_WRITE_DO_NOT_CREATE;
 			open();
-			openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_WRITE;
+			openingMode = COMMON_NS::DataObjectRepository::openingMode::READ_WRITE;
 		}
 		else {
 			writeUuidAttribute();
