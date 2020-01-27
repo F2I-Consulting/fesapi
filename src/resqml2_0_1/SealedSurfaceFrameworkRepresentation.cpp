@@ -44,7 +44,7 @@ SealedSurfaceFrameworkRepresentation::SealedSurfaceFrameworkRepresentation(
     // proxy constructor
     gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORESealedSurfaceFrameworkRepresentation(interp->getGsoapContext());
     _resqml20__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
-
+	
 	orgRep->IsHomogeneous = true;
 
     initMandatoryMetadata();
