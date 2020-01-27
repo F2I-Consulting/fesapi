@@ -554,7 +554,7 @@ private:
 						strand_,
 						std::bind(
 							&http_session::run,
-							shared_from_this())));
+							http_session::shared_from_this())));
 
 			// Run the timer. The timer is operated
 			// continuously, this simplifies the code.
@@ -579,7 +579,7 @@ private:
 					strand_,
 					std::bind(
 						&http_session::on_read,
-						shared_from_this(),
+						http_session::shared_from_this(),
 						std::placeholders::_1)));
 		}
 
@@ -612,7 +612,7 @@ private:
 					strand_,
 					std::bind(
 						&http_session::on_timer,
-						shared_from_this(),
+						http_session::shared_from_this(),
 						std::placeholders::_1)));
 		}
 
@@ -796,7 +796,7 @@ private:
 public:
 	Server(MyDataObjectRepository & repo): repo_(repo) {}
 
-	std::vector< std::shared_ptr<T> >& getSessions() { return sessions; }
+	std::vector< std::shared_ptr<T> >& getSessions() { return sessions_; }
 
 #ifdef WITH_ETP_SSL
 	void listen(const std::string & host, unsigned short port, int threadCount, boost::asio::ssl::context & sslContext) {
@@ -813,7 +813,7 @@ public:
 
 #ifdef WITH_ETP_SSL
 		// Create and launch a listening port
-		std::make_shared<Server::listener>(ioc, sslContext, tcp::endpoint{ address, port }, sessions, repo_)->run();
+		std::make_shared<Server::listener>(ioc, sslContext, tcp::endpoint{ address, port }, sessions_, repo_)->run();
 #else
 		// Create and launch a listening port
 		std::make_shared<Server::listener>(ioc, tcp::endpoint{ address, port }, sessions_, repo_)->run();
