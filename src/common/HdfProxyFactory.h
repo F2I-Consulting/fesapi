@@ -22,29 +22,50 @@ under the License.
 
 namespace COMMON_NS
 {
+	/** An HDF5 file proxy factory. */
 	class HdfProxyFactory
 	{
 	public:
 
+		/** Destructor */
 		DLL_IMPORT_OR_EXPORT virtual ~HdfProxyFactory() {}
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Creates an instance of HDF5 file proxy. Only to be used in partial transfer context
+		 *
+		 * @param [in]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A pointer to an instantiated HDF5 file proxy.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual AbstractHdfProxy* make(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) {
 			return new RESQML2_0_1_NS::HdfProxy(partialObject);
 		}
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of HDF5 file proxy by wrapping a gSOAP instance.
+		 *
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 *
+		 * @returns	A pointer to an instantiated HDF5 file proxy.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual AbstractHdfProxy* make(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) {
 			return new RESQML2_0_1_NS::HdfProxy(fromGsoap);
 		}
-		
+
 		/**
-		* Creates an instance of this class for serialization purpose.
-		*/
+		 * Creates an instance of HDF5 file proxy for serialization purpose.
+		 *
+		 * @param [in]	repo				  	A non-null data object repository.
+		 * @param 	  	guid				  	A unique identifier for the HDF5 file proxy.
+		 * @param 	  	title				  	The title of the HDF5 file proxy.
+		 * @param 	  	packageDirAbsolutePath	Path of the directory containing the EPC file.
+		 * @param 	  	externalFilePath	  	Path of the HDF5 file relative to the directory where
+		 * 										the EPC document is stored.
+		 * @param 	  	hdfPermissionAccess   	(Optional) The HDF5 file permission access. It is read
+		 * 										only by default.
+		 *
+		 * @returns	A pointer to an instantiated HDF5 file proxy.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual AbstractHdfProxy* make(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::READ_ONLY) {
 			return new RESQML2_0_1_NS::HdfProxy(repo, guid, title, packageDirAbsolutePath, externalFilePath, hdfPermissionAccess);
 		}
