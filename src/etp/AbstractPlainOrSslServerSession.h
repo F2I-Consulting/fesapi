@@ -56,21 +56,26 @@ namespace ETP_NS
 		*/
 		std::vector<Energistics::Etp::v12::Datatypes::Object::SubscriptionInfo> subscriptions;
 
+		virtual bool run(boost::beast::http::request<boost::beast::http::string_body> req) = 0;
+
 		/**
 		* This method is done after ssl handshake
 		* or directly if no SSL mode
 		*/
-		void on_handshake(boost::system::error_code ec)
+		void on_handshake(boost::system::error_code ec,
+			boost::beast::http::request<boost::beast::http::string_body> req)
 		{
 			if (ec) {
 				std::cerr << "on_handshake : " << ec.message() << std::endl;
 			}
 
-#ifndef NDEBUG
+#ifndef LINUX
 			// Show the HTTP request
+			/*
 			boost::beast::flat_buffer buffer;
 			boost::beast::http::request<boost::beast::http::string_body> req;
 			boost::beast::http::read(derived().ws().next_layer(), buffer, req);
+			*/
 			if (boost::beast::websocket::is_upgrade(req))
 			{
 				std::cout << req << std::endl;
@@ -85,8 +90,8 @@ namespace ETP_NS
 				boost::asio::bind_executor(
 					strand,
 					std::bind(
-						&AbstractServerSession::on_accept,
-						std::static_pointer_cast<AbstractServerSession>(shared_from_this()),
+						&AbstractPlainOrSslServerSession::on_accept,
+						std::static_pointer_cast<AbstractPlainOrSslServerSession>(shared_from_this()),
 						std::placeholders::_1)));
 #else
 			// does not show up the HTTP request

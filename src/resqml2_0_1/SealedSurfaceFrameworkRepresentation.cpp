@@ -46,8 +46,6 @@ SealedSurfaceFrameworkRepresentation::SealedSurfaceFrameworkRepresentation(
     _resqml20__SealedSurfaceFrameworkRepresentation* orgRep = static_cast<_resqml20__SealedSurfaceFrameworkRepresentation*>(gsoapProxy2_0_1);
 
 	orgRep->IsHomogeneous = true;
-    orgRep->RepresentedInterpretation = soap_new_eml20__DataObjectReference(gsoapProxy2_0_1->soap);
-    orgRep->RepresentedInterpretation->UUID.assign(interp->getUuid());
 
     initMandatoryMetadata();
     setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());

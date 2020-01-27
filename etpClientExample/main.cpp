@@ -30,6 +30,7 @@ under the License.
 
 #include "etp/ClientSessionLaunchers.h"
 #include "etp/EtpHdfProxy.h"
+#include "etp/HttpClientSession.h"
 
 #include "MyOwnCoreProtocolHandlers.h"
 #include "MyOwnDiscoveryProtocolHandlers.h"
@@ -46,6 +47,14 @@ int main(int argc, char **argv)
 
 		return 1;
 	}
+
+	// Ask for Server capabilites
+	boost::asio::io_context ioc;
+	auto httpClientSession = std::make_shared<HttpClientSession>(ioc);
+	httpClientSession->run(argv[1], argv[2], "/.well-known/etp-server-capabilities", 11);
+	// Run the I/O service. The call will return when the get operation is complete.
+	ioc.run();
+	std::cout << httpClientSession->getResponse() << std::endl;
 
 	std::cout << "Give your authorization to pass to the server (or hit enter if no authorization)" << std::endl;
 	std::string authorization;

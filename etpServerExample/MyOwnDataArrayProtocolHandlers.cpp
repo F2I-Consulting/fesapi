@@ -48,7 +48,7 @@ void MyOwnDataArrayProtocolHandlers::on_GetDataArrays(const Energistics::Etp::v1
 			auto elemCountPerDim = hdfProxy->getElementCountPerDimension(dai.m_pathInResource);
 			Energistics::Etp::v12::Datatypes::DataArrayTypes::DataArray da;
 			da.m_dimensions.reserve(elemCountPerDim.size());
-			unsigned long long globalElemCount = 1;
+			size_t globalElemCount = 1;
 			for (size_t i = 0; i < elemCountPerDim.size(); ++i) {
 				da.m_dimensions.push_back(elemCountPerDim[i]);
 				globalElemCount *= elemCountPerDim[i];

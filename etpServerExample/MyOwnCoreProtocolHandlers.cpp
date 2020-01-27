@@ -18,6 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "MyOwnCoreProtocolHandlers.h"
 
+#include "ServerCapabilities.h"
 #include "etp/AbstractSession.h"
 #include "etp/EtpHelpers.h"
 #include "tools/GuidTools.h"
@@ -25,89 +26,34 @@ under the License.
 void MyOwnCoreProtocolHandlers::on_RequestSession(const Energistics::Etp::v12::Protocol::Core::RequestSession & rs, int64_t correlationId)
 {
 	// Check requested protocols
-	std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> supportedProtocols;
-	Energistics::Etp::v12::Datatypes::Version protocolVersion;
-	protocolVersion.m_major = 1;
-	protocolVersion.m_minor = 2;
-	protocolVersion.m_patch = 0;
-	protocolVersion.m_revision = 0;
+	std::vector<Energistics::Etp::v12::Datatypes::SupportedProtocol> requestedAndSupportedProtocols;
 	for (auto& rp : rs.m_requestedProtocols) {
-	    if (rp.m_protocol == Energistics::Etp::v12::Datatypes::Protocol::Core && rp.m_role == "server") {
-	    	Energistics::Etp::v12::Datatypes::SupportedProtocol protocol;
-	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::Core;
-	    	protocol.m_protocolVersion = protocolVersion;
-	    	protocol.m_role = "server";
-	    	supportedProtocols.push_back(protocol);
-	    }
-	    else if (rp.m_protocol == Energistics::Etp::v12::Datatypes::Protocol::Discovery && rp.m_role == "store") {
-	    	Energistics::Etp::v12::Datatypes::SupportedProtocol protocol;
-	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::Discovery;
-			protocol.m_protocolVersion = protocolVersion;
-			protocol.m_role = "store";
-	    	supportedProtocols.push_back(protocol);
-	    }
-	    else if (rp.m_protocol == Energistics::Etp::v12::Datatypes::Protocol::Store && rp.m_role == "store") {
-	    	Energistics::Etp::v12::Datatypes::SupportedProtocol protocol;
-	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::Store;
-			protocol.m_protocolVersion = protocolVersion;
-			protocol.m_role = "store";
-	    	supportedProtocols.push_back(protocol);
-	    }
-		else if (rp.m_protocol == Energistics::Etp::v12::Datatypes::Protocol::StoreNotification && rp.m_role == "store") {
-			Energistics::Etp::v12::Datatypes::SupportedProtocol protocol;
-			protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::StoreNotification;
-			protocol.m_protocolVersion = protocolVersion;
-			protocol.m_role = "store";
-			Energistics::Etp::v12::Datatypes::DataValue value;
-			value.m_item.set_int((std::numeric_limits<int>::max)());
-			protocol.m_protocolCapabilities["MaxDataArraySize"] = value;
-			supportedProtocols.push_back(protocol);
-		}
-	    else if (rp.m_protocol == Energistics::Etp::v12::Datatypes::Protocol::DataArray && rp.m_role == "store") {
-	    	Energistics::Etp::v12::Datatypes::SupportedProtocol protocol;
-	    	protocol.m_protocol = Energistics::Etp::v12::Datatypes::Protocol::DataArray;
-			protocol.m_protocolVersion = protocolVersion;
-			protocol.m_role = "store";
-	    	supportedProtocols.push_back(protocol);
-	    }
+		const auto validatedProtocol = std::find_if(supportedProtocols.begin(), supportedProtocols.end(),
+			[rp](const Energistics::Etp::v12::Datatypes::SupportedProtocol & sp) -> bool {
+				return sp.m_protocol == rp.m_protocol &&
+					sp.m_role == rp.m_role &&
+					sp.m_protocolVersion.m_major == rp.m_protocolVersion.m_major &&
+					sp.m_protocolVersion.m_minor == rp.m_protocolVersion.m_minor &&
+					sp.m_protocolVersion.m_patch == rp.m_protocolVersion.m_patch &&
+					sp.m_protocolVersion.m_revision == rp.m_protocolVersion.m_revision;
+			}
+		);
+		requestedAndSupportedProtocols.push_back(*validatedProtocol);
 	}
 
-	if (supportedProtocols.empty()) {
+	if (requestedAndSupportedProtocols.empty()) {
 		session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The server does not support any of the requested protocols."));
 		return;
 	}
 
 	// Build Open Session message
 	Energistics::Etp::v12::Protocol::Core::OpenSession openSession;
-	openSession.m_applicationName = "F2I ETP Example Server";
-	openSession.m_applicationVersion = "0.0";
+	openSession.m_applicationName = applicationName;
+	openSession.m_applicationVersion = applicationVersion;
 	openSession.m_serverInstanceId.m_array = GuidTools::generateUidAsByteArray();
-	openSession.m_supportedProtocols = supportedProtocols;
-	Energistics::Etp::v12::Datatypes::DataValue value;
-	value.m_item.set_boolean(false);
-	openSession.m_endpointCapabilities["SupportsAlternateRequestUris"] = value;
-	std::vector<std::string> supportedObjects;
-	supportedObjects.push_back("application/x-resqml+xml;version=2.0;type=*");
-
-	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=Well");
-	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=Wellbore");
-	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=Trajectory");
-	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=WellCompletion");
-	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=WellboreCompletion");
-	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=WellboreGeometry");
-	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=Log");
-	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=ChannelSet");
-	supportedObjects.push_back("application/x-witsml+xml;version=2.0;type=Channel");
-
-	supportedObjects.push_back("application/x-prodml+xml;version=2.1;type=FluidSystem");
-	supportedObjects.push_back("application/x-prodml+xml;version=2.1;type=FluidCharacterization");
-
-	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=ErrorTerm");
-	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=ErrorTermDictionary");
-	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=ToolErrorModel");
-	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=ToolErrorModelDictionary");
-	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=WeightingFunction");
-	supportedObjects.push_back("application/x-witsml+xml;version=2.1;type=WeightingFunctionDictionary");
+	openSession.m_supportedFormats.push_back("xml");
+	openSession.m_supportedProtocols = requestedAndSupportedProtocols;
+	openSession.m_endpointCapabilities = endpointCapabilities;
 	openSession.m_supportedObjects = supportedObjects;
 
 	session->send(openSession, correlationId);

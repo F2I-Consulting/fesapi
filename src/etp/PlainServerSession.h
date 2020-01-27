@@ -35,8 +35,8 @@ namespace ETP_NS
 		// Called by the base class
 		DLL_IMPORT_OR_EXPORT websocket::stream<tcp::socket>& ws() { return ws_; }
 
-		DLL_IMPORT_OR_EXPORT bool run() {
-			on_handshake(boost::system::error_code());
+		DLL_IMPORT_OR_EXPORT bool run(boost::beast::http::request<boost::beast::http::string_body> req) {
+			on_handshake(boost::system::error_code(), std::move(req));
 			return true;
 		}
 	};

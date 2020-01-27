@@ -178,7 +178,7 @@ void askUser(std::shared_ptr<ETP_NS::AbstractSession> session, COMMON_NS::DataOb
 			
 			// Fake the creation of an IJK Grid
 			COMMON_NS::DataObjectRepository repo;
-			COMMON_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Hdf Proxy", "../..", "fakeForIjkGrid.h5", COMMON_NS::DataObjectRepository::OVERWRITE);
+			COMMON_NS::AbstractHdfProxy* hdfProxy = repo.createHdfProxy("", "Hdf Proxy", "../..", "fakeForIjkGrid.h5", COMMON_NS::DataObjectRepository::openingMode::OVERWRITE);
 			repo.setDefaultHdfProxy(hdfProxy);
 
 			RESQML2_0_1_NS::LocalDepth3dCrs* local3dCrs = repo.createLocalDepth3dCrs("f951f4b7-684a-4c1b-bcd7-bc61d939b328", "Default local CRS", .0, .0, .0, .0, gsoap_resqml2_0_1::eml20__LengthUom__m, 23031, gsoap_resqml2_0_1::eml20__LengthUom__m, "Unknown", false);

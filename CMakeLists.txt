@@ -148,6 +148,10 @@ if (WITH_ETP)
 	if (NOT EXISTS ${AVRO_LIBRARY_RELEASE})
 		message(WARNING "The avro library (AVRO_LIBRARY_RELEASE variable) does not look to be a valid file. Please modify it.")
 	endif ()
+	set (AVRO_LIBRARY_DEBUG AVRO_LIBRARY_DEBUG-NOTFOUND CACHE FILEPATH "Path to the file which contains the AVRO library DEBUG")
+	if (NOT EXISTS ${AVRO_LIBRARY_DEBUG})
+		message(WARNING "The AVRO library (AVRO_LIBRARY_DEBUG variable) does not look to be a valid file. Please modify it.")
+	endif ()
 
 	# Boost DEPENDENCY
 	find_package(Boost 1.66.0 REQUIRED system)

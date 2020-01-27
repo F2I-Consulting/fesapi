@@ -70,7 +70,7 @@ int main(int argc, char **argv)
 
 	COMMON_NS::EpcDocument epcDoc(argv[3]);
 	MyDataObjectRepository repo;
-	std::string resqmlResult = epcDoc.deserializePartiallyInto(repo, COMMON_NS::DataObjectRepository::READ_WRITE); // Do not open XML files. Simply rely on the EPC content type and rel files.
+	std::string resqmlResult = epcDoc.deserializePartiallyInto(repo, COMMON_NS::DataObjectRepository::openingMode::READ_WRITE); // Do not open XML files. Simply rely on the EPC content type and rel files.
 	repo.registerDataFeeder(&epcDoc); // Necessary to resolve partial objects
 	if (!resqmlResult.empty()) {
 		std::cerr << "Error when deserializing " << resqmlResult << std::endl;

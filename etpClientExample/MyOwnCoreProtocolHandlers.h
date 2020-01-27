@@ -28,7 +28,7 @@ private:
 	COMMON_NS::DataObjectRepository* repo;
 
 public:
-	MyOwnCoreProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, COMMON_NS::DataObjectRepository* repo_): ETP_NS::CoreHandlers(mySession), repo(repo_) { std::cout << "create here\n"; }
+	MyOwnCoreProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, COMMON_NS::DataObjectRepository* repo_): ETP_NS::CoreHandlers(mySession), repo(repo_) {}
 	~MyOwnCoreProtocolHandlers();
 
 	void on_OpenSession(const Energistics::Etp::v12::Protocol::Core::OpenSession & os, int64_t correlationId);

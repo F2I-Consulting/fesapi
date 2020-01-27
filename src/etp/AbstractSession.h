@@ -128,8 +128,6 @@ namespace ETP_NS
 		*/
 		std::unordered_map<int64_t, Energistics::Etp::v12::Datatypes::Object::SubscriptionInfo> subscriptions;
 
-		virtual bool run() = 0;
-
 		virtual boost::asio::io_context& getIoContext() = 0;
 
 		void flushReceivingBuffer() {

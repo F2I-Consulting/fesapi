@@ -133,7 +133,7 @@ int AbstractObject::getGsoapType() const {
 	else if (gsoapProxy2_2 != nullptr) {
 		return gsoapProxy2_2->soap_type();
 	}
-	else {
+	else if (isPartial()) { // partial transfer
 		return partialObject->soap_type();
 	}
 

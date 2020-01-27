@@ -93,7 +93,7 @@ namespace ETP_NS
 		DLL_IMPORT_OR_EXPORT const std::string& getTarget() const { return target; }
 		DLL_IMPORT_OR_EXPORT const std::string& getAuthorization() const { return authorization; }
 
-		DLL_IMPORT_OR_EXPORT bool run() {
+		bool run() {
 			// We run the io_service off in its own thread so that it operates completely asynchronously with respect to the rest of the program.
 			// This is particularly important regarding "std::future" usage in DataArrayBlockingSession
 			auto work = boost::asio::make_work_guard(ioc);
