@@ -586,7 +586,7 @@ unsigned int AbstractIjkGridRepresentation::getGlobalIndexCellFromIjkIndex(unsig
 void AbstractIjkGridRepresentation::loadSplitInformation()
 {
 	unloadSplitInformation();
-	splitInformation = new std::vector< std::pair< unsigned int, std::vector<unsigned int> > >[(getICellCount()+1) * (getJCellCount()+1)];
+	splitInformation = new std::vector< std::pair< unsigned int, std::vector<unsigned int> > >[getPillarCount()];
 
 	gsoap_resqml2_0_1::resqml20__IjkGridGeometry* geom = static_cast<gsoap_resqml2_0_1::resqml20__IjkGridGeometry*>(getPointGeometry2_0_1(0));
 	if (geom == nullptr) {
@@ -594,12 +594,12 @@ void AbstractIjkGridRepresentation::loadSplitInformation()
 	}
 	if (geom->SplitCoordinateLines != nullptr) {
 		// Read the split information
-		unsigned int* splitPillars = new unsigned int [getSplitCoordinateLineCount()];
-		getPillarsOfSplitCoordinateLines(splitPillars);
-		unsigned int* columnIndexCumulativeCountPerSplitCoordinateLine = new unsigned int[getSplitCoordinateLineCount()];
-		getColumnCountOfSplitCoordinateLines(columnIndexCumulativeCountPerSplitCoordinateLine);
-		unsigned int* splitColumnIndices = new unsigned int [columnIndexCumulativeCountPerSplitCoordinateLine[getSplitCoordinateLineCount() - 1]];
-		getColumnsOfSplitCoordinateLines(splitColumnIndices);
+		std::unique_ptr<unsigned int[]> splitPillars(new unsigned int[getSplitCoordinateLineCount()]);
+		getPillarsOfSplitCoordinateLines(splitPillars.get());
+		std::unique_ptr<unsigned int[]> columnIndexCumulativeCountPerSplitCoordinateLine(new unsigned int[getSplitCoordinateLineCount()]);
+		getColumnCountOfSplitCoordinateLines(columnIndexCumulativeCountPerSplitCoordinateLine.get());
+		std::unique_ptr<unsigned int[]> splitColumnIndices(new unsigned int [columnIndexCumulativeCountPerSplitCoordinateLine[getSplitCoordinateLineCount() - 1]]);
+		getColumnsOfSplitCoordinateLines(splitColumnIndices.get());
 
 		// Rearrange the split information
 		std::pair< unsigned int, std::vector<unsigned int> > splittedColumns;
@@ -620,10 +620,6 @@ void AbstractIjkGridRepresentation::loadSplitInformation()
 			}
 			splitInformation[splitPillars[splitCoordinateLineIndex]].push_back(splittedColumns);
 		}
-		
-		delete [] splitPillars;
-		delete [] columnIndexCumulativeCountPerSplitCoordinateLine;
-		delete [] splitColumnIndices;
 	}
 }
 

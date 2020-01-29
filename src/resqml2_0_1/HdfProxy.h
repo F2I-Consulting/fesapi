@@ -44,19 +44,14 @@ namespace RESQML2_0_1_NS
 		 * 											be created.
 		 * @param 		  	guid				  	The guid of the underlying gsoap proxy to be created.
 		 * @param 		  	title				  	The title of the underlying gsoap proxy to be created.
-		 * 											@packageDirAbsolutePath	The directory where the EPC
+		 * @param			packageDirAbsolutePath	The directory where the EPC
 		 * 											document is stored. Must end with a slash or back-
-		 * 											slash
-		 * 											@relativeFilePath			The relative file path of the
-		 * 											associated HDF file. It is relative to the location
-		 * 											of the package.
-		 * @param 		  	packageDirAbsolutePath	Full pathname of the package dir absolute file.
-		 * @param 		  	externalFilePath	  	Full pathname of the external file.
+		 * 											slash.
+		 * @param			externalFilePath		The relative file path of the associated HDF file. It
+		 * 											is relative to the location of the package.
 		 * @param 		  	hdfPermissionAccess   	(Optional) The hdf permission access.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT HdfProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::READ_ONLY);
+		DLL_IMPORT_OR_EXPORT HdfProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
 
 		/**
 		 * Hdf proxy

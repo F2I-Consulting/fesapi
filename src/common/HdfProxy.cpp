@@ -34,17 +34,54 @@ using namespace COMMON_NS;
 HdfProxy::HdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess) :
 	AbstractHdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess), hdfFile(-1), compressionLevel(0), openedGroups() {}
 
+// create an attribute at the file level to store the uuid of the corresponding COMMON hdf proxy.
+void HdfProxy::writeUuidAttribute()
+{
+	const hid_t aid = H5Screate(H5S_SCALAR);
+	if (aid < 0) {
+		throw invalid_argument("The HDF5 uuid file attribute dataspace could not have been created.");
+	}
+	const hid_t atype = H5Tcopy(H5T_C_S1);
+	if (atype < 0) {
+		throw invalid_argument("The HDF5 uuid file attribute datatype could not have been created by copy.");
+	}
+	if (H5Tset_size(atype, getUuid().size()) < 0) {
+		throw invalid_argument("Cannot set the size of the HDF5 uuid file attribute.");
+	}
+	const hid_t attribute_id = H5Acreate2(hdfFile, "uuid", atype, aid, H5P_DEFAULT, H5P_DEFAULT);
+	if (attribute_id < 0) {
+		throw invalid_argument("The HDF5 uuid file attribute could not have been created.");
+	}
+	if (H5Awrite(attribute_id, atype, getUuid().c_str()) < 0) {
+		throw invalid_argument("The uuid file attribute could not have been written.");
+	}
+
+	// Close the attribute.
+	if (H5Sclose(aid) < 0) {
+		throw invalid_argument("The HDF5 uuid file attribute dataspace could not have been closed.");
+	}
+	if (H5Tclose(atype) < 0) {
+		throw invalid_argument("The HDF5 uuid file attribute datatype could not have been closed.");
+	}
+	if (H5Aclose(attribute_id) < 0) {
+		throw invalid_argument("The HDF5 uuid file attribute could not have been closed.");
+	}
+}
+
 void HdfProxy::open()
 {
-	if (hdfFile != -1) {
+	if (hdfFile > -1) {
 		close();
 	}
 
-	if (openingMode == COMMON_NS::DataObjectRepository::READ_ONLY) {
-		if (H5Fis_hdf5((packageDirectoryAbsolutePath + relativeFilePath).c_str()) > 0) {
-			hdfFile = H5Fopen((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_RDONLY, H5P_DEFAULT);
+	const std::string fullName = packageDirectoryAbsolutePath + relativeFilePath;
+	if (openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_ONLY || openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_WRITE_DO_NOT_CREATE) {
+		if (H5Fis_hdf5(fullName.c_str()) > 0) {
+			hdfFile = H5Fopen(fullName.c_str(),
+				openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_ONLY ? H5F_ACC_RDONLY : H5F_ACC_RDWR,
+				H5P_DEFAULT);
 			if (hdfFile < 0) {
-				throw invalid_argument("Can not open HDF5 file (in read only mode) : " + packageDirectoryAbsolutePath + relativeFilePath);
+				throw invalid_argument("Can not open HDF5 file (in read only mode) : " + fullName);
 			}
 
 			// Check the uuid
@@ -54,97 +91,38 @@ void HdfProxy::open()
 			}
 		}
 		else {
-			throw invalid_argument("The HDF5 file " + packageDirectoryAbsolutePath + relativeFilePath + " does not exist or is not a valid HDF5 file.");
+			throw invalid_argument("The HDF5 file " + fullName + " does not exist or is not a valid HDF5 file.");
 		}
 	}
-	else if (openingMode == COMMON_NS::DataObjectRepository::READ_WRITE) {
-
-	        hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
+	else if (openingMode == COMMON_NS::DataObjectRepository::openingMode::READ_WRITE) {
+		hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
 #ifdef H5F_LIBVER_V18
-		H5Pset_libver_bounds (access_props,
-				      H5F_LIBVER_V18, H5F_LIBVER_V18);
+		H5Pset_libver_bounds (access_props, H5F_LIBVER_V18, H5F_LIBVER_V18);
 #endif
 
-		hdfFile = H5Fcreate((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_EXCL, H5P_DEFAULT, access_props);
+		hdfFile = H5Fcreate(fullName.c_str(), H5F_ACC_EXCL, H5P_DEFAULT, access_props);
 
 		if (hdfFile < 0) {
-			if (H5Fis_hdf5((packageDirectoryAbsolutePath + relativeFilePath).c_str()) > 0) {
-				hdfFile = H5Fopen((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_RDWR, access_props);
-				if (hdfFile < 0) {
-					throw invalid_argument("Can not open HDF5 file (in read and write mode): " + packageDirectoryAbsolutePath + relativeFilePath);
-				}
-
-				string hdfUuid = readStringAttribute(".", "uuid");
-				if (getUuid() != hdfUuid) {
-					getRepository()->addWarning("The uuid \"" + hdfUuid + "\" attribute of the HDF5 file is not the same as the uuid \"" + getUuid() + "\" of the xml EpcExternalPart.");
-				}
-			}
-			else {
-				throw invalid_argument("The HDF5 file " + packageDirectoryAbsolutePath + relativeFilePath + " is not a valid HDF5 file.");
-			}
+			openingMode = COMMON_NS::DataObjectRepository::openingMode::READ_WRITE_DO_NOT_CREATE;
+			open();
+			openingMode = COMMON_NS::DataObjectRepository::openingMode::READ_WRITE;
 		}
 		else {
-			// create an attribute at the file level to store the uuid of the corresponding resqml hdf proxy.
-			hid_t aid = H5Screate(H5S_SCALAR);
-			hid_t atype = H5Tcopy(H5T_C_S1);
-			H5Tset_size(atype, getUuid().size());
-			hid_t attribute_id = H5Acreate2(hdfFile, "uuid", atype, aid, H5P_DEFAULT, H5P_DEFAULT);
-			int status = H5Awrite(attribute_id, atype, getUuid().c_str());
-			if (status < 0) {
-				throw invalid_argument("The uuid file attribute could not have been written.");
-			}
-
-			// Close the attribute.
-			status = H5Sclose(aid);
-			if (status < 0) {
-				throw invalid_argument("The uuid file attribute dataspace could not have been closed.");
-			}
-			status = H5Tclose(atype);
-			if (status < 0) {
-				throw invalid_argument("The uuid file attribute datatype could not have been closed.");
-			}
-			status = H5Aclose(attribute_id);
-			if (status < 0) {
-				throw invalid_argument("The uuid file attribute could not have been closed.");
-			}
+			writeUuidAttribute();
 		}
 	}
-	else if (openingMode == COMMON_NS::DataObjectRepository::OVERWRITE) {
-
-	        hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
+	else if (openingMode == COMMON_NS::DataObjectRepository::openingMode::OVERWRITE) {
+		hid_t access_props = H5Pcreate (H5P_FILE_ACCESS);
 #ifdef H5F_LIBVER_V18
-		H5Pset_libver_bounds (access_props,
-				      H5F_LIBVER_V18, H5F_LIBVER_V18);
+		H5Pset_libver_bounds (access_props, H5F_LIBVER_V18, H5F_LIBVER_V18);
 #endif
 
-		hdfFile = H5Fcreate((packageDirectoryAbsolutePath + relativeFilePath).c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, access_props);
+		hdfFile = H5Fcreate(fullName.c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, access_props);
 		if (hdfFile < 0) {
-			throw invalid_argument("Can not create HDF5 file : " + packageDirectoryAbsolutePath + relativeFilePath);
+			throw invalid_argument("Can not create HDF5 file : " + fullName);
 		}
 
-		// create an attribute at the file level to store the uuid of the corresponding resqml hdf proxy.
-		hid_t aid = H5Screate(H5S_SCALAR);
-		hid_t atype = H5Tcopy(H5T_C_S1);
-		H5Tset_size(atype, getUuid().size());
-		hid_t attribute_id = H5Acreate2(hdfFile, "uuid", atype, aid, H5P_DEFAULT, H5P_DEFAULT);
-		int status = H5Awrite(attribute_id, atype, getUuid().c_str());
-		if (status < 0) {
-			throw invalid_argument("The uuid file attribute could not have been written.");
-		}
-
-		// Close the attribute.
-		status = H5Sclose(aid);
-		if (status < 0) {
-			throw invalid_argument("The uuid file attribute dataspace could not have been closed.");
-		}
-		status = H5Tclose(atype);
-		if (status < 0) {
-			throw invalid_argument("The uuid file attribute datatype could not have been closed.");
-		}
-		status = H5Aclose(attribute_id);
-		if (status < 0) {
-			throw invalid_argument("The uuid file attribute could not have been closed.");
-		}
+		writeUuidAttribute();
 	}
 	else {
 		throw invalid_argument("The HDF5 permission access is unknown.");
@@ -160,7 +138,7 @@ void HdfProxy::close()
 	}
 	openedGroups.clear();
 
-	if (hdfFile != -1) {
+	if (hdfFile > -1) {
 		H5Fclose(hdfFile);
 		hdfFile = -1;
 	}

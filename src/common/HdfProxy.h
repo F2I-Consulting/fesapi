@@ -56,10 +56,10 @@ namespace COMMON_NS
 		 * @param 	externalFilePath	  	Full pathname of the external file.
 		 * @param 	hdfPermissionAccess   	(Optional) The hdf permission access.
 		 */
-		HdfProxy(const std::string& packageDirAbsolutePath, const std::string& externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::READ_ONLY);
+		HdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
 
 		/**
-		 * Read an array Nd of float values stored in a specific dataset.
+		 * Read an nd array of float values stored in a specific dataset.
 		 *
 		 * @param 		  	datasetName	The absolute dataset name where to read the values.
 		 * @param [in,out]	values	   	The values must be pre-allocated.
@@ -188,6 +188,11 @@ namespace COMMON_NS
 			unsigned long long slabSize,
 			hdf5_hid_t datatype);
 
+		/**
+		* Write the uuid of the XML EpcExternalPartReference as a string attribute of the HDF5 file.
+		*/
+		void writeUuidAttribute();
+
 	public:
 
 		/**
@@ -201,8 +206,7 @@ namespace COMMON_NS
 		virtual ~HdfProxy() { close(); }
 
 		/**
-		 * Opens the HDF5 file for reading and writing. The read and write rights are determined by the
-		 * EPC document configuration
+		 * Creates or opens the HDF5 file according to the chosen opening mode.
 		 */
 		void open();
 

@@ -66,7 +66,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	A pointer to an instantiated HDF5 file proxy.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual AbstractHdfProxy* make(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::READ_ONLY) {
+		DLL_IMPORT_OR_EXPORT virtual AbstractHdfProxy* make(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess = COMMON_NS::DataObjectRepository::openingMode::READ_ONLY) {
 			return new RESQML2_0_1_NS::HdfProxy(repo, guid, title, packageDirAbsolutePath, externalFilePath, hdfPermissionAccess);
 		}
 

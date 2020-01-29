@@ -83,7 +83,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	An empty string if everything's ok otherwise the error string.
 		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::READ_ONLY);
+		DLL_IMPORT_OR_EXPORT virtual std::string deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
 
 		/**
 		 * Get the absolute path of the directory where the epc document is stored.

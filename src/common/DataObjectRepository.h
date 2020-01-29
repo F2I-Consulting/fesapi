@@ -319,7 +319,12 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);
 
 		/** Values that represent the HDF5 file permission access */
-		enum openingMode { READ_ONLY = 0, READ_WRITE = 1, OVERWRITE = 2 };
+		enum class openingMode : std::int8_t {
+			READ_ONLY = 0, // It is meant to open an existing file in read only mode. It throws an exception if the file does not exist.
+			READ_WRITE = 1, // It is meant to open a file in read and write mode. It creates the file if the file does not exist.
+			READ_WRITE_DO_NOT_CREATE = 2, // It is meant to open an existing file in read and write mode. It throws an exception if the file does not exist.
+			OVERWRITE = 3 // It is meant to open an existing file in read and write mode. It deletes the content of the file if the later does already exist.
+		};
 
 		/** Destructor */
 		DLL_IMPORT_OR_EXPORT virtual ~DataObjectRepository();
@@ -346,6 +351,19 @@ namespace COMMON_NS
 		 * @param [in]	target	The target object of the relationship.
 		 */
 		DLL_IMPORT_OR_EXPORT void addRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target);
+
+		/**
+		 * Delete a relationship between two objects. Source and target of the relationship are defined
+		 * by Energistics data model. Usually, the simplest is to look at Energistics UML diagrams. 
+		 * Another way is to rely on XSD/XML: explicit relationships are contained by the source objects
+		 * and point to target objects.
+		 * 
+		 * @exception	std::invalid_argument	if the source or target object is null.
+		 *
+		 * @param [in]	source	The source object of the relationship.
+		 * @param [in]	target	The target object of the relationship.
+		 */
+		DLL_IMPORT_OR_EXPORT void deleteRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target);
 
 		/**
 		 * Sets the factory used to create the HDF5 file proxy
