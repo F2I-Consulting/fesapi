@@ -91,6 +91,10 @@ void RockFluidOrganizationInterpretation::pushBackRockFluidUnitInterpretation(Ro
 		throw logic_error("Fesapi for now only supports one unit in a Rock fluid organization");
 	}
 
+	if (rockFluidUnitInterpretation == nullptr) {
+		throw invalid_argument("The rock fluid unit interpretation cannot be null.");
+	}
+
 	static_cast<_resqml20__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit = rockFluidUnitInterpretation->newResqmlReference();
 }
 

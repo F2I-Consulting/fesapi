@@ -20,75 +20,104 @@ under the License.
 
 #include "ContinuousProperty.h"
 
+/** . */
 namespace RESQML2_0_1_NS
 {
 	/**
-	* This class is mainly useful for describing temporal properties on well objects.
-	* The prefered approach to describe temporal properties on Reservoir grids is to use one instance of ContinuousProperty per time step.
-	*/
+	 * This class is mainly useful for describing temporal properties on well objects. The prefered
+	 * approach to describe temporal properties on Reservoir grids is to use one instance of
+	 * ContinuousProperty per time step.
+	 */
 	class ContinuousPropertySeries : public ContinuousProperty
 	{
 	public:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
 		DLL_IMPORT_OR_EXPORT ContinuousPropertySeries(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : ContinuousProperty(partialObject) {}
 
 		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param rep						The representation which supports these property values.
-		* @param guid						The guid to set to the fault. If empty then a new guid will be generated.
-		* @param title						A title for the instance to create.
-		* @param dimension					The dimension of each value (scalar properties == 1).
-		* @param attachmentKind				The topological orbit which support each value.
-		* @apram uom						The uom of the values
-		* @param energisticsPropertyKind	The property type of these property values which must be defined in the standard energistics property kind catalog.
-		* @param ts							The associated time series.
-		* @param useInterval				Indicates wether the property values will be attached to the time index or to the interval between consecutive time index. 
-		*/
+		 * Creates an instance of this class in a gsoap context.
+		 *
+		 * @param [in,out]	rep					   	The representation which supports these property
+		 * 											values.
+		 * @param 		  	guid				   	The guid to set to the fault. If empty then a new
+		 * 											guid will be generated.
+		 * @param 		  	title				   	A title for the instance to create.
+		 * @param 		  	dimension			   	The dimension of each value (scalar properties == 1).
+		 * @param 		  	attachmentKind		   	The topological orbit which support each value.
+		 * 											@apram uom						The uom of the values.
+		 * @param 		  	uom					   	The uom.
+		 * @param 		  	energisticsPropertyKind	The property type of these property values which must
+		 * 											be defined in the standard energistics property kind
+		 * 											catalog.
+		 * @param [in,out]	ts					   	The associated time series.
+		 * @param 		  	useInterval			   	(Optional) Indicates wether the property values will
+		 * 											be attached to the time index or to the interval
+		 * 											between consecutive time index.
+		 */
 		ContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
 			const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind,
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param rep						The representation which supports these property values.
-		* @param guid						The guid to set to the fault. If empty then a new guid will be generated.
-		* @param title						A title for the instance to create.
-		* @param dimension					The dimension of each value (scalar properties == 1).
-		* @param attachmentKind				The topological orbit which support each value.
-		* @apram uom						The uom of the values
-		* @param localPropKind				The property type of these property values which must be defined in the EPC document as a local property kind.
-		* @param ts							The associated time series.
-		* @param useInterval				Indicates wether the property values will be attached to the time index or to the interval between consecutive time index.
-		*/
+		 * Creates an instance of this class in a gsoap context.
+		 *
+		 * @param [in,out]	rep			  	The representation which supports these property values.
+		 * @param 		  	guid		  	The guid to set to the fault. If empty then a new guid will
+		 * 									be generated.
+		 * @param 		  	title		  	A title for the instance to create.
+		 * @param 		  	dimension	  	The dimension of each value (scalar properties == 1).
+		 * @param 		  	attachmentKind	The topological orbit which support each value.
+		 * 									@apram uom						The uom of the values.
+		 * @param 		  	uom			  	The uom.
+		 * @param [in,out]	localPropKind 	The property type of these property values which must be
+		 * 									defined in the EPC document as a local property kind.
+		 * @param [in,out]	ts			  	The associated time series.
+		 * @param 		  	useInterval   	(Optional) Indicates wether the property values will be
+		 * 									attached to the time index or to the interval between
+		 * 									consecutive time index.
+		 */
 		ContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
 			const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, COMMON_NS::PropertyKind * localPropKind,
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		ContinuousPropertySeries(gsoap_resqml2_0_1::_resqml20__ContinuousPropertySeries* fromGsoap): ContinuousProperty(fromGsoap) {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~ContinuousPropertySeries() {}
 
+		/**
+		 * Gets XML namespace version
+		 *
+		 * @returns	The XML namespace version.
+		 */
 		std::string getXmlNamespaceVersion() const {return "2.0.1";}
 
 		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
+		 * The standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
+		 * Get the standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

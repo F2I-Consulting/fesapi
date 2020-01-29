@@ -56,6 +56,10 @@ PropertyKind::PropertyKind(COMMON_NS::DataObjectRepository * repo, const string 
 PropertyKind::PropertyKind(const string & guid, const string & title,
 	const string & namingSystem, const resqml20__ResqmlUom & uom, COMMON_NS::PropertyKind * parentPropType)
 {
+	if (parentPropType == nullptr) {
+		throw invalid_argument("The parent property kind cannot be null.");
+	}
+
 	init(parentPropType->getRepository(), guid, title, namingSystem);
 	static_cast<_resqml20__PropertyKind*>(gsoapProxy2_0_1)->RepresentativeUom = uom;
 

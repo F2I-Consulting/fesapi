@@ -21,60 +21,105 @@ under the License.
 #include "GridConnectionSetRepresentation.h"
 #include "../resqml2_0_1/BlockedWellboreRepresentation.h"
 
+/** . */
 namespace RESQML2_0_1_NS
 {
+	/** An abstract stratigraphic organization interpretation. */
 	class AbstractStratigraphicOrganizationInterpretation;
+	/** An unstructured grid representation. */
 	class UnstructuredGridRepresentation;
 }
 
+/** . */
 namespace RESQML2_NS
 {
+	/** An abstract grid representation. */
 	class AbstractGridRepresentation : public AbstractRepresentation
 	{
 	private:
 
 		/**
-		* @param	 forceConstantCellCountPerInterval	If true, will assume that the child and parent cell count per interval are constant. Then it will use constant xml array instead of hdf5 array for storage.
-		*												The method will consequently only consider the first cell count per interval value in childCellCountPerInterval and parentCellCountPerInterval as the constant ones.
-		**/
+		 * Creates a regrid
+		 *
+		 * @param 		  	indexRegridStart				 	The index regrid start.
+		 * @param [in,out]	childCellCountPerInterval		 	If non-null, the child cell count per
+		 * 														interval.
+		 * @param [in,out]	parentCellCountPerInterval		 	If non-null, the parent cell count per
+		 * 														interval.
+		 * @param 		  	intervalCount					 	Number of intervals.
+		 * @param [in,out]	childCellWeights				 	If non-null, the child cell weights.
+		 * @param 		  	dimension						 	The dimension.
+		 * @param [in,out]	proxy							 	If non-null, the proxy.
+		 * @param 		  	forceConstantCellCountPerInterval	(Optional) If true, will assume that the
+		 * 														child and parent cell count per interval
+		 * 														are constant. Then it will use constant
+		 * 														xml array instead of hdf5 array for
+		 * 														storage. The method will consequently
+		 * 														only consider the first cell count per
+		 * 														interval value in
+		 * 														childCellCountPerInterval and
+		 * 														parentCellCountPerInterval as the
+		 * 														constant ones.
+		 *
+		 * @returns	Null if it fails, else the new regrid.
+		 */
 		gsoap_resqml2_0_1::resqml20__Regrid* createRegrid(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount, double * childCellWeights,
 			const std::string & dimension, COMMON_NS::AbstractHdfProxy * proxy, bool forceConstantCellCountPerInterval = false);
 
-		/*
-		* @param	dimension					It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
-		* @param	childVsParentCellCount		If true return the child cell count per interval. If false return the parent cell count per interval.
-		*/
+		/**
+		 * Gets cell count per interval 2 0 1
+		 *
+		 * @param 	dimension			  	It must be either 'i', 'j' ou 'k' (upper or lower case) for
+		 * 									an ijk parent grid. 'k' for a strict column layer parent grid.
+		 * @param 	childVsParentCellCount	If true return the child cell count per interval. If false
+		 * 									return the parent cell count per interval.
+		 *
+		 * @returns	Null if it fails, else the cell count per interval 2 0 1.
+		 */
 		gsoap_resqml2_0_1::resqml20__AbstractIntegerArray* getCellCountPerInterval2_0_1(const char & dimension, const bool & childVsParentCellCount) const;
 
+		/**
+		 * Gets the parent window 2 0 1
+		 *
+		 * @returns	Null if it fails, else the parent window 2 0 1.
+		 */
 		gsoap_resqml2_0_1::resqml20__AbstractParentWindow* getParentWindow2_0_1() const;
 
 	protected:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject			If non-null, the partial object.
+		 * @param 		  	withTruncatedPillars	True to with truncated pillars.
+		 */
 		AbstractGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars) :AbstractRepresentation(partialObject), withTruncatedPillars(withTruncatedPillars)  {}
-		
+
 		/**
-		* Default constructor
-		*/
+		 * Default constructor
+		 *
+		 * @param 	withTruncatedPillars	True to with truncated pillars.
+		 */
 		AbstractGridRepresentation(bool withTruncatedPillars) : withTruncatedPillars(withTruncatedPillars){}
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap				If non-null, from gsoap.
+		 * @param 		  	withTruncatedPillars	True to with truncated pillars.
+		 */
 		AbstractGridRepresentation(gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation* fromGsoap, bool withTruncatedPillars) : AbstractRepresentation(fromGsoap), withTruncatedPillars(withTruncatedPillars) {}
 
 	public:
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~AbstractGridRepresentation() {}
 
 		/**
-		* Get the count of (volumic) cells in the grid.
-		*/
+		 * Get the count of (volumic) cells in the grid.
+		 *
+		 * @returns	The cell count.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual ULONG64 getCellCount() const = 0;
 
 		//************************************************************
@@ -82,19 +127,27 @@ namespace RESQML2_NS
 		//************************************************************
 
 		/**
-		* Get the vector of all grid connection set rep associated to this grid instance.
-		*/
+		 * Get the vector of all grid connection set rep associated to this grid instance.
+		 *
+		 * @returns	Null if it fails, else the grid connection set representation set.
+		 */
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::GridConnectionSetRepresentation *> getGridConnectionSetRepresentationSet() const;
 
 		/**
-		 * Get the GridConnectionSetRepresentation count into this EPC document which are associated to this grid.
-		 * It is mainly used in SWIG context for parsing the vector from a non C++ language.
+		 * Get the GridConnectionSetRepresentation count into this EPC document which are associated to
+		 * this grid. It is mainly used in SWIG context for parsing the vector from a non C++ language.
+		 *
+		 * @returns	The grid connection set representation count.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getGridConnectionSetRepresentationCount() const;
 
 		/**
-		 * Get a particular ijk parametric grid according to its position in the EPC document.
-		 * It is mainly used in SWIG context for parsing the vector from a non C++ language.
+		 * Get a particular ijk parametric grid according to its position in the EPC document. It is
+		 * mainly used in SWIG context for parsing the vector from a non C++ language.
+		 *
+		 * @param 	index	Zero-based index of the.
+		 *
+		 * @returns	Null if it fails, else the grid connection set representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::GridConnectionSetRepresentation * getGridConnectionSetRepresentation(unsigned int index) const;
 
@@ -104,56 +157,90 @@ namespace RESQML2_NS
 		//************************************************************
 
 		/**
-		* Get the parent grid of this grid.
-		* @return	nullptr if the grid is not a child grid (not a LGR)
-		*/
+		 * Get the parent grid of this grid.
+		 *
+		 * @returns	nullptr if the grid is not a child grid (not a LGR)
+		 */
 		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation* getParentGrid() const;
 
 		/**
-		* Get the parent grid dor of this grid.
-		* @return	null pointer if the grid is not a child grid (not a LGR)
-		*/
+		 * Get the parent grid dor of this grid.
+		 *
+		 * @returns	null pointer if the grid is not a child grid (not a LGR)
+		 */
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getParentGridDor() const;
 
 		/**
-		* Get the parent grid uuid of this grid.
-		* @return	empty string if the grid is not a child grid (not a LGR)
-		*/
+		 * Get the parent grid uuid of this grid.
+		 *
+		 * @returns	empty string if the grid is not a child grid (not a LGR)
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getParentGridUuid() const;
 
 		/**
-		* Get the vector of all child grids
-		*/
+		 * Get the vector of all child grids
+		 *
+		 * @returns	Null if it fails, else the child grid set.
+		 */
 		std::vector<RESQML2_NS::AbstractGridRepresentation *> getChildGridSet() const;
 
 		/**
-		* Return the count of child grid in this grid.
-		*/
+		 * Return the count of child grid in this grid.
+		 *
+		 * @returns	The child grid count.
+		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getChildGridCount() const;
 
 		/**
-		* Return the count of child grid in this grid.
-		*/
+		 * Return the count of child grid in this grid.
+		 *
+		 * @param 	index	Zero-based index of the.
+		 *
+		 * @returns	Null if it fails, else the child grid.
+		 */
 		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation * getChildGrid(unsigned int index) const;
 
 		/**
-		* Indicates that this grid takes place into another unstructured parent grid.
-		* @param	proxy						The HDF proxy where to store the numerical values. If null, then the proxy will be the current one of the grid and if also null, it will be the one of the parent grid.
-		*/
+		 * Indicates that this grid takes place into another unstructured parent grid.
+		 *
+		 * @param [in,out]	cellIndices   	If non-null, the cell indices.
+		 * @param 		  	cellIndexCount	Number of cell indexes.
+		 * @param [in,out]	parentGrid	  	If non-null, the parent grid.
+		 * @param [in,out]	proxy		  	(Optional) The HDF proxy where to store the numerical values.
+		 * 									If null, then the proxy will be the current one of the grid
+		 * 									and if also null, it will be the one of the parent grid.
+		 */
 		DLL_IMPORT_OR_EXPORT void setParentWindow(ULONG64 * cellIndices, ULONG64 cellIndexCount, RESQML2_0_1_NS::UnstructuredGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr);
 
 		/**
-		* Indicates that this grid takes place into another Column Layer parent grid.
-		* @param	columnIndices				Identifies the columns (of the parent grid) which are regrided.
-		* @param	columnIndexCount			Identifies the coutn of columns (of the parent grid) which are regrided.
-		* @param	kLayerIndexRegridStart		Identifies the first kLayer of all above columns (of the parent grid) which is regrided.
-		* @param	childCellCountPerInterval	The count of cells per interval in this (child) grid.
-		* @param	parentCellCountPerInterval	The count of cells per interval in the parent grid.
-		* @param	intervalCount				The count of intervals. An interval is a portion of cells to regrid which is independant to other portion of cell. Intervals are the same for all the columns.
-		* @param	parentGrid					The parent grid which is regridded.
-		* @param	proxy						The HDF proxy where to store the numerical values. If null, then the proxy will be the current one of the grid and if also null, it will be the one of the parent grid.
-		* @param	childCellWeights			The weights that are proportional to the relative sizes of child cells within each interval. The weights need not to be normalized. The count of double values must be equal to the count of all child cells per column (sum of child cells per interval).
-		*/
+		 * Indicates that this grid takes place into another Column Layer parent grid.
+		 *
+		 * @param [in,out]	columnIndices			  	Identifies the columns (of the parent grid) which
+		 * 												are regrided.
+		 * @param 		  	columnIndexCount		  	Identifies the coutn of columns (of the parent
+		 * 												grid) which are regrided.
+		 * @param 		  	kLayerIndexRegridStart	  	Identifies the first kLayer of all above columns
+		 * 												(of the parent grid) which is regrided.
+		 * @param [in,out]	childCellCountPerInterval 	The count of cells per interval in this (child)
+		 * 												grid.
+		 * @param [in,out]	parentCellCountPerInterval	The count of cells per interval in the parent
+		 * 												grid.
+		 * @param 		  	intervalCount			  	The count of intervals. An interval is a portion
+		 * 												of cells to regrid which is independant to other
+		 * 												portion of cell. Intervals are the same for all
+		 * 												the columns.
+		 * @param [in,out]	parentGrid				  	The parent grid which is regridded.
+		 * @param [in,out]	proxy					  	(Optional) The HDF proxy where to store the
+		 * 												numerical values. If null, then the proxy will be
+		 * 												the current one of the grid and if also null, it
+		 * 												will be the one of the parent grid.
+		 * @param [in,out]	childCellWeights		  	(Optional) The weights that are proportional to
+		 * 												the relative sizes of child cells within each
+		 * 												interval. The weights need not to be normalized.
+		 * 												The count of double values must be equal to the
+		 * 												count of all child cells per column (sum of child
+		 * 												cells per interval).
+		 */
 		DLL_IMPORT_OR_EXPORT void setParentWindow(unsigned int * columnIndices, unsigned int columnIndexCount,
 			unsigned int kLayerIndexRegridStart,
 			unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval,  unsigned int intervalCount,
@@ -161,25 +248,59 @@ namespace RESQML2_NS
 			COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * childCellWeights = nullptr);
 
 		/**
-		* Indicates that this grid takes place into another IJK parent grid.
-		* @param	iCellIndexRegridStart		Identifies the first Cell by its i dimension of the regrid window.
-		* @param	childCellCountPerIInterval	The count of cells per i interval in this (child) grid.
-		* @param	parentCellCountPerIInterval	The count of cells per i interval in the parent grid.
-		* @param	iIntervalCount				The count of intervals on i dimension. An interval is a portion of cells to regrid which is independant to other portion of cell.
-		* @param	jCellIndexRegridStart		Identifies the first Cell by its j dimension of the regrid window.
-		* @param	childCellCountPerJInterval	The count of cells per j interval in this (child) grid.
-		* @param	parentCellCountPerJInterval	The count of cells per j interval in the parent grid.
-		* @param	jIntervalCount				The count of intervals on j dimension. An interval is a portion of cells to regrid which is independant to other portion of cell.
-		* @param	kCellIndexRegridStart		Identifies the first Cell by its k dimension of the regrid window.
-		* @param	childCellCountPerKInterval	The count of cells per k interval in this (child) grid.
-		* @param	parentCellCountPerKInterval	The count of cells per k interval in the parent grid.
-		* @param	kIntervalCount				The count of intervals on k dimension. An interval is a portion of cells to regrid which is independant to other portion of cell.
-		* @param	parentGrid					The parent grid which is regridded.
-		* @param	proxy						The HDF proxy where to store the numerical values. If null, then the proxy will be the current one of the grid and if also null, it will be the one of the parent grid.
-		* @param	iChildCellWeights			The weights that are proportional to the relative i sizes of child cells within each i interval. The weights need not to be normalized. The count of double values must be equal to the count of all child cells on i dimension (sum of child cells per interval).
-		* @param	jChildCellWeights			The weights that are proportional to the relative j sizes of child cells within each j interval. The weights need not to be normalized. The count of double values must be equal to the count of all child cells on j dimension (sum of child cells per interval).
-		* @param	kChildCellWeights			The weights that are proportional to the relative k sizes of child cells within each k interval. The weights need not to be normalized. The count of double values must be equal to the count of all child cells on k dimension (sum of child cells per interval).
-		*/
+		 * Indicates that this grid takes place into another IJK parent grid.
+		 *
+		 * @param 		  	iCellIndexRegridStart	   	Identifies the first Cell by its i dimension of
+		 * 												the regrid window.
+		 * @param [in,out]	childCellCountPerIInterval 	The count of cells per i interval in this (child)
+		 * 												grid.
+		 * @param [in,out]	parentCellCountPerIInterval	The count of cells per i interval in the parent
+		 * 												grid.
+		 * @param 		  	iIntervalCount			   	The count of intervals on i dimension. An
+		 * 												interval is a portion of cells to regrid which is
+		 * 												independant to other portion of cell.
+		 * @param 		  	jCellIndexRegridStart	   	Identifies the first Cell by its j dimension of
+		 * 												the regrid window.
+		 * @param [in,out]	childCellCountPerJInterval 	The count of cells per j interval in this (child)
+		 * 												grid.
+		 * @param [in,out]	parentCellCountPerJInterval	The count of cells per j interval in the parent
+		 * 												grid.
+		 * @param 		  	jIntervalCount			   	The count of intervals on j dimension. An
+		 * 												interval is a portion of cells to regrid which is
+		 * 												independant to other portion of cell.
+		 * @param 		  	kCellIndexRegridStart	   	Identifies the first Cell by its k dimension of
+		 * 												the regrid window.
+		 * @param [in,out]	childCellCountPerKInterval 	The count of cells per k interval in this (child)
+		 * 												grid.
+		 * @param [in,out]	parentCellCountPerKInterval	The count of cells per k interval in the parent
+		 * 												grid.
+		 * @param 		  	kIntervalCount			   	The count of intervals on k dimension. An
+		 * 												interval is a portion of cells to regrid which is
+		 * 												independant to other portion of cell.
+		 * @param [in,out]	parentGrid				   	The parent grid which is regridded.
+		 * @param [in,out]	proxy					   	(Optional) The HDF proxy where to store the
+		 * 												numerical values. If null, then the proxy will be
+		 * 												the current one of the grid and if also null, it
+		 * 												will be the one of the parent grid.
+		 * @param [in,out]	iChildCellWeights		   	(Optional) The weights that are proportional to
+		 * 												the relative i sizes of child cells within each i
+		 * 												interval. The weights need not to be normalized.
+		 * 												The count of double values must be equal to the
+		 * 												count of all child cells on i dimension (sum of
+		 * 												child cells per interval).
+		 * @param [in,out]	jChildCellWeights		   	(Optional) The weights that are proportional to
+		 * 												the relative j sizes of child cells within each j
+		 * 												interval. The weights need not to be normalized.
+		 * 												The count of double values must be equal to the
+		 * 												count of all child cells on j dimension (sum of
+		 * 												child cells per interval).
+		 * @param [in,out]	kChildCellWeights		   	(Optional) The weights that are proportional to
+		 * 												the relative k sizes of child cells within each k
+		 * 												interval. The weights need not to be normalized.
+		 * 												The count of double values must be equal to the
+		 * 												count of all child cells on k dimension (sum of
+		 * 												child cells per interval).
+		 */
 		DLL_IMPORT_OR_EXPORT void setParentWindow(
 			unsigned int iCellIndexRegridStart, unsigned int * childCellCountPerIInterval, unsigned int * parentCellCountPerIInterval,  unsigned int iIntervalCount,
 			unsigned int jCellIndexRegridStart, unsigned int * childCellCountPerJInterval, unsigned int * parentCellCountPerJInterval,  unsigned int jIntervalCount,
@@ -187,25 +308,69 @@ namespace RESQML2_NS
 			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 
 		/**
-		* Indicates that this grid takes place into another IJK parent grid.
-		* @param	iCellIndexRegridStart				Identifies the first Cell by its i dimension of the regrid window.
-		* @param	constantChildCellCountPerIInterval	The constant count of cells per i interval in this (child) grid.
-		* @param	constantParentCellCountPerIInterval	The constant count of cells per i interval in the parent grid.
-		* @param	iIntervalCount						The count of intervals on i dimension. An interval is a portion of cells to regrid which is independant to other portion of cell.
-		* @param	jCellIndexRegridStart				Identifies the first Cell by its j dimension of the regrid window.
-		* @param	constantChildCellCountPerJInterval	The constant count of cells per j interval in this (child) grid.
-		* @param	constantParentCellCountPerJInterval	The constant count of cells per j interval in the parent grid.
-		* @param	jIntervalCount						The count of intervals on j dimension. An interval is a portion of cells to regrid which is independant to other portion of cell.
-		* @param	kCellIndexRegridStart				Identifies the first Cell by its k dimension of the regrid window.
-		* @param	constantChildCellCountPerKInterval	The constant count of cells per k interval in this (child) grid.
-		* @param	constantParentCellCountPerKInterval	The constant count of cells per k interval in the parent grid.
-		* @param	kIntervalCount						The count of intervals on k dimension. An interval is a portion of cells to regrid which is independant to other portion of cell.
-		* @param	parentGrid							The parent grid which is regridded.
-		* @param	proxy								The HDF proxy where to store the child cell weights values. If null, then the proxy will be the current one of the grid and if also null, it will be the one of the parent grid.
-		* @param	iChildCellWeights					The weights that are proportional to the relative i sizes of child cells within each i interval. The weights need not to be normalized. The count of double values must be equal to the count of all child cells on i dimension (sum of child cells per interval).
-		* @param	jChildCellWeights					The weights that are proportional to the relative j sizes of child cells within each j interval. The weights need not to be normalized. The count of double values must be equal to the count of all child cells on j dimension (sum of child cells per interval).
-		* @param	kChildCellWeights					The weights that are proportional to the relative k sizes of child cells within each k interval. The weights need not to be normalized. The count of double values must be equal to the count of all child cells on k dimension (sum of child cells per interval).
-		*/
+		 * Indicates that this grid takes place into another IJK parent grid.
+		 *
+		 * @param 		  	iCellIndexRegridStart			   	Identifies the first Cell by its i
+		 * 														dimension of the regrid window.
+		 * @param 		  	constantChildCellCountPerIInterval 	The constant count of cells per i
+		 * 														interval in this (child) grid.
+		 * @param 		  	constantParentCellCountPerIInterval	The constant count of cells per i
+		 * 														interval in the parent grid.
+		 * @param 		  	iIntervalCount					   	The count of intervals on i dimension. An
+		 * 														interval is a portion of cells to regrid
+		 * 														which is independant to other portion of
+		 * 														cell.
+		 * @param 		  	jCellIndexRegridStart			   	Identifies the first Cell by its j
+		 * 														dimension of the regrid window.
+		 * @param 		  	constantChildCellCountPerJInterval 	The constant count of cells per j
+		 * 														interval in this (child) grid.
+		 * @param 		  	constantParentCellCountPerJInterval	The constant count of cells per j
+		 * 														interval in the parent grid.
+		 * @param 		  	jIntervalCount					   	The count of intervals on j dimension. An
+		 * 														interval is a portion of cells to regrid
+		 * 														which is independant to other portion of
+		 * 														cell.
+		 * @param 		  	kCellIndexRegridStart			   	Identifies the first Cell by its k
+		 * 														dimension of the regrid window.
+		 * @param 		  	constantChildCellCountPerKInterval 	The constant count of cells per k
+		 * 														interval in this (child) grid.
+		 * @param 		  	constantParentCellCountPerKInterval	The constant count of cells per k
+		 * 														interval in the parent grid.
+		 * @param 		  	kIntervalCount					   	The count of intervals on k dimension. An
+		 * 														interval is a portion of cells to regrid
+		 * 														which is independant to other portion of
+		 * 														cell.
+		 * @param [in,out]	parentGrid						   	The parent grid which is regridded.
+		 * @param [in,out]	proxy							   	(Optional) The HDF proxy where to store
+		 * 														the child cell weights values. If null,
+		 * 														then the proxy will be the current one of
+		 * 														the grid and if also null, it will be the
+		 * 														one of the parent grid.
+		 * @param [in,out]	iChildCellWeights				   	(Optional) The weights that are
+		 * 														proportional to the relative i sizes of
+		 * 														child cells within each i interval. The
+		 * 														weights need not to be normalized. The
+		 * 														count of double values must be equal to
+		 * 														the count of all child cells on i
+		 * 														dimension (sum of child cells per
+		 * 														interval).
+		 * @param [in,out]	jChildCellWeights				   	(Optional) The weights that are
+		 * 														proportional to the relative j sizes of
+		 * 														child cells within each j interval. The
+		 * 														weights need not to be normalized. The
+		 * 														count of double values must be equal to
+		 * 														the count of all child cells on j
+		 * 														dimension (sum of child cells per
+		 * 														interval).
+		 * @param [in,out]	kChildCellWeights				   	(Optional) The weights that are
+		 * 														proportional to the relative k sizes of
+		 * 														child cells within each k interval. The
+		 * 														weights need not to be normalized. The
+		 * 														count of double values must be equal to
+		 * 														the count of all child cells on k
+		 * 														dimension (sum of child cells per
+		 * 														interval).
+		 */
 		DLL_IMPORT_OR_EXPORT void setParentWindow(
 			unsigned int iCellIndexRegridStart, unsigned int constantChildCellCountPerIInterval, unsigned int constantParentCellCountPerIInterval, unsigned int iIntervalCount,
 			unsigned int jCellIndexRegridStart, unsigned int constantChildCellCountPerJInterval, unsigned int constantParentCellCountPerJInterval, unsigned int jIntervalCount,
@@ -213,23 +378,45 @@ namespace RESQML2_NS
 			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 
 		/**
-		* Indicates that this grid takes place into another IJK parent grid.
-		* This method assumes there is only one regrid interval per dimension.
-		* @param	iCellIndexRegridStart		Identifies the first Cell by its i dimension of the regrid window.
-		* @param	iChildCellCount				The count of cells for the unique i interval in this (child) grid.
-		* @param	iParentCellCount			The count of cells for the unique i interval in the parent grid.
-		* @param	jCellIndexRegridStart		Identifies the first Cell by its j dimension of the regrid window.
-		* @param	jChildCellCount				The count of cells for the unique j interval in this (child) grid.
-		* @param	jParentCellCount			The count of cells for the unique j interval in the parent grid.
-		* @param	kCellIndexRegridStart		Identifies the first Cell by its k dimension of the regrid window.
-		* @param	kChildCellCount				The count of cells for the unique k interval in this (child) grid.
-		* @param	kParentCellCount			The count of cells for the unique k interval in the parent grid.
-		* @param	parentGrid					The parent grid which is regridded.
-		* @param	proxy						The HDF proxy where to store the child cell weights values. If null, then the proxy will be the current one of the grid and if also null, it will be the one of the parent grid.
-		* @param	iChildCellWeights			The weights that are proportional to the relative i sizes of child cells. The weights need not to be normalized. The count of double values must be equal to iChildCellCount.
-		* @param	jChildCellWeights			The weights that are proportional to the relative j sizes of child cells. The weights need not to be normalized. The count of double values must be equal to jChildCellCount.
-		* @param	kChildCellWeights			The weights that are proportional to the relative k sizes of child cells. The weights need not to be normalized. The count of double values must be equal to kChildCellCount.
-		*/
+		 * Indicates that this grid takes place into another IJK parent grid. This method assumes there
+		 * is only one regrid interval per dimension.
+		 *
+		 * @param 		  	iCellIndexRegridStart	Identifies the first Cell by its i dimension of the
+		 * 											regrid window.
+		 * @param 		  	iChildCellCount		 	The count of cells for the unique i interval in this
+		 * 											(child) grid.
+		 * @param 		  	iParentCellCount	 	The count of cells for the unique i interval in the
+		 * 											parent grid.
+		 * @param 		  	jCellIndexRegridStart	Identifies the first Cell by its j dimension of the
+		 * 											regrid window.
+		 * @param 		  	jChildCellCount		 	The count of cells for the unique j interval in this
+		 * 											(child) grid.
+		 * @param 		  	jParentCellCount	 	The count of cells for the unique j interval in the
+		 * 											parent grid.
+		 * @param 		  	kCellIndexRegridStart	Identifies the first Cell by its k dimension of the
+		 * 											regrid window.
+		 * @param 		  	kChildCellCount		 	The count of cells for the unique k interval in this
+		 * 											(child) grid.
+		 * @param 		  	kParentCellCount	 	The count of cells for the unique k interval in the
+		 * 											parent grid.
+		 * @param [in,out]	parentGrid			 	The parent grid which is regridded.
+		 * @param [in,out]	proxy				 	(Optional) The HDF proxy where to store the child
+		 * 											cell weights values. If null, then the proxy will be
+		 * 											the current one of the grid and if also null, it will
+		 * 											be the one of the parent grid.
+		 * @param [in,out]	iChildCellWeights	 	(Optional) The weights that are proportional to the
+		 * 											relative i sizes of child cells. The weights need not
+		 * 											to be normalized. The count of double values must be
+		 * 											equal to iChildCellCount.
+		 * @param [in,out]	jChildCellWeights	 	(Optional) The weights that are proportional to the
+		 * 											relative j sizes of child cells. The weights need not
+		 * 											to be normalized. The count of double values must be
+		 * 											equal to jChildCellCount.
+		 * @param [in,out]	kChildCellWeights	 	(Optional) The weights that are proportional to the
+		 * 											relative k sizes of child cells. The weights need not
+		 * 											to be normalized. The count of double values must be
+		 * 											equal to kChildCellCount.
+		 */
 		DLL_IMPORT_OR_EXPORT void setParentWindow(
 			unsigned int iCellIndexRegridStart, unsigned int iChildCellCount, unsigned int iParentCellCount,
 			unsigned int jCellIndexRegridStart, unsigned int jChildCellCount, unsigned int jParentCellCount,
@@ -237,95 +424,149 @@ namespace RESQML2_NS
 			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 
 		/**
-		* When a parent windows has been defined, this method allows to force some parent cells to be noted as non regridded.
-		* It mainly allows non-rectangular local grids to be specified.
-		*/
+		 * When a parent windows has been defined, this method allows to force some parent cells to be
+		 * noted as non regridded. It mainly allows non-rectangular local grids to be specified.
+		 *
+		 * @param [in,out]	cellIndices   	If non-null, the cell indices.
+		 * @param 		  	cellIndexCount	Number of cell indexes.
+		 */
 		DLL_IMPORT_OR_EXPORT void setForcedNonRegridedParentCell(ULONG64 * cellIndices, const ULONG64 & cellIndexCount);
 
 		/**
-		* Optional cell volume overlap information between the current grid (the child) and the parent grid. Use this data-object when the child grid has an explicitly defined geometry, and these relationships cannot be inferred from the regrid descriptions.
-		*/
+		 * Optional cell volume overlap information between the current grid (the child) and the parent
+		 * grid. Use this data-object when the child grid has an explicitly defined geometry, and these
+		 * relationships cannot be inferred from the regrid descriptions.
+		 *
+		 * @param 		  	parentChildCellPairCount	Number of parent child cell pairs.
+		 * @param [in,out]	parentChildCellPair			If non-null, the parent child cell pair.
+		 * @param 		  	volumeUom					(Optional) The volume uom.
+		 * @param [in,out]	overlapVolumes				(Optional) If non-null, the overlap volumes.
+		 */
 		DLL_IMPORT_OR_EXPORT void setCellOverlap(const ULONG64 & parentChildCellPairCount, ULONG64 * parentChildCellPair,
 			const gsoap_resqml2_0_1::eml20__VolumeUom & volumeUom = gsoap_resqml2_0_1::eml20__VolumeUom__m3, double * overlapVolumes = nullptr);
 
 		/**
-		* Only run this method for an unstructured parent grid.
-		* Use regrid information for ijk parent grid or (regrid and columIndexCount) for strict column layer parent grid.
-		*/
+		 * Only run this method for an unstructured parent grid. Use regrid information for ijk parent
+		 * grid or (regrid and columIndexCount) for strict column layer parent grid.
+		 *
+		 * @returns	The parent cell index count.
+		 */
 		DLL_IMPORT_OR_EXPORT LONG64 getParentCellIndexCount() const;
 
 		/**
-		* Only run this method for an unstructured parent grid.
-		* @param parentCellIndices	This array must have been preallocated with a size of getParentCellIndexCount().
-		*/
+		 * Only run this method for an unstructured parent grid.
+		 *
+		 * @param [in,out]	parentCellIndices	This array must have been preallocated with a size of
+		 * 										getParentCellIndexCount().
+		 */
 		DLL_IMPORT_OR_EXPORT void getParentCellIndices(ULONG64 * parentCellIndices) const;
 
 		/**
-		* Only run this method for a strict column layer parent grid.
-		*/
+		 * Only run this method for a strict column layer parent grid.
+		 *
+		 * @returns	The parent column index count.
+		 */
 		DLL_IMPORT_OR_EXPORT LONG64 getParentColumnIndexCount() const;
 
 		/**
-		* Only run this method for an unstructured parent grid.
-		* @param parentCellIndices	This array must have been preallocated with a size of getParentCellIndexCount().
-		*/
+		 * Only run this method for an unstructured parent grid.
+		 *
+		 * @param [in,out]	parentColumnIndices	This array must have been preallocated with a size of
+		 * 										getParentCellIndexCount().
+		 */
 		DLL_IMPORT_OR_EXPORT void getParentColumnIndices(ULONG64 * parentColumnIndices) const;
 
 		/**
-		* Only run this method for an ijk parent grid or a strict column layer parent grid.
-		* Get the first cell index of the regrid on a particular dimension.
-		* @param	dimension	It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
-		*/
+		 * Only run this method for an ijk parent grid or a strict column layer parent grid. Get the
+		 * first cell index of the regrid on a particular dimension.
+		 *
+		 * @param 	dimension	It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent
+		 * 						grid. 'k' for a strict column layer parent grid.
+		 *
+		 * @returns	The regrid start index on parent grid.
+		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getRegridStartIndexOnParentGrid(const char & dimension) const;
 
 		/**
-		* Only run this method for an ijk parent grid or a strict column layer parent grid.
-		* Get the count of intervals which are regridded on a particular dimension
-		* @param	dimension	It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
-		*/
+		 * Only run this method for an ijk parent grid or a strict column layer parent grid. Get the
+		 * count of intervals which are regridded on a particular dimension
+		 *
+		 * @param 	dimension	It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent
+		 * 						grid. 'k' for a strict column layer parent grid.
+		 *
+		 * @returns	The regrid interval count.
+		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getRegridIntervalCount(const char & dimension) const;
 
 		/**
-		* Check if the cell count per interval is constant against a particular dimension.
-		* Only run this method for an ijk parent grid or a strict column layer parent grid.
-		* @param	dimension					It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
-		* @param	childVsParentCellCount		If true check if the child cell count per interval is constant. If false check if the parent cell count per interval is constant.
-		*/
+		 * Check if the cell count per interval is constant against a particular dimension. Only run
+		 * this method for an ijk parent grid or a strict column layer parent grid.
+		 *
+		 * @param 	dimension			  	It must be either 'i', 'j' ou 'k' (upper or lower case) for
+		 * 									an ijk parent grid. 'k' for a strict column layer parent grid.
+		 * @param 	childVsParentCellCount	If true check if the child cell count per interval is
+		 * 									constant. If false check if the parent cell count per
+		 * 									interval is constant.
+		 *
+		 * @returns	True if regrid cell count per interval constant, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT bool isRegridCellCountPerIntervalConstant(const char & dimension, const bool & childVsParentCellCount) const;
 
-		/*
-		* Get the constant cell count per interval
-		* Only run this method for an ijk parent grid or a strict column layer parent grid.
-		* @param	dimension					It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
-		* @param	childVsParentCellCount		If true return the child cell count per interval. If false return the parent cell count per interval.
-		*/
+		/**
+		 * Get the constant cell count per interval Only run this method for an ijk parent grid or a
+		 * strict column layer parent grid.
+		 *
+		 * @param 	dimension			  	It must be either 'i', 'j' ou 'k' (upper or lower case) for
+		 * 									an ijk parent grid. 'k' for a strict column layer parent grid.
+		 * @param 	childVsParentCellCount	If true return the child cell count per interval. If false
+		 * 									return the parent cell count per interval.
+		 *
+		 * @returns	The regrid constant cell count per interval.
+		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getRegridConstantCellCountPerInterval(const char & dimension, const bool & childVsParentCellCount) const;
 
 		/**
-		* Only run this method for an ijk parent grid or a strict column layer parent grid.
-		* @param	dimension					It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
-		* @param	childCellCountPerInterval	This array must have been preallocated with a size of getRegridIntervalCount().
-		* @param	childVsParentCellCount		If true return the child cell count per interval. If false return the parent cell count per interval.
-		*/
+		 * Only run this method for an ijk parent grid or a strict column layer parent grid.
+		 *
+		 * @param 		  	dimension				 	It must be either 'i', 'j' ou 'k' (upper or lower
+		 * 												case) for an ijk parent grid. 'k' for a strict
+		 * 												column layer parent grid.
+		 * @param [in,out]	childCellCountPerInterval	This array must have been preallocated with a
+		 * 												size of getRegridIntervalCount().
+		 * @param 		  	childVsParentCellCount   	If true return the child cell count per interval.
+		 * 												If false return the parent cell count per
+		 * 												interval.
+		 */
 		DLL_IMPORT_OR_EXPORT void getRegridCellCountPerInterval(const char & dimension, ULONG64 * childCellCountPerInterval, const bool & childVsParentCellCount) const;
 
 		/**
-		* Only run this method for an ijk parent grid or a strict column layer parent grid.
-		* @param	dimension					It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
-		*/
+		 * Only run this method for an ijk parent grid or a strict column layer parent grid.
+		 *
+		 * @param 	dimension	It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent
+		 * 						grid. 'k' for a strict column layer parent grid.
+		 *
+		 * @returns	True if regrid child cell weights, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT bool hasRegridChildCellWeights(const char & dimension) const;
 
 		/**
-		* Only run this method for an ijk parent grid or a strict column layer parent grid.
-		* @param	dimension			It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
-		* @param	childCellWeights	This array must have been preallocated with a size equal to the sum of ChildCellCountPerInterval.
-		*/
+		 * Only run this method for an ijk parent grid or a strict column layer parent grid.
+		 *
+		 * @param 		  	dimension			It must be either 'i', 'j' ou 'k' (upper or lower case)
+		 * 										for an ijk parent grid. 'k' for a strict column layer parent
+		 * 										grid.
+		 * @param [in,out]	childCellWeights	This array must have been preallocated with a size equal
+		 * 										to the sum of ChildCellCountPerInterval.
+		 */
 		DLL_IMPORT_OR_EXPORT void getRegridChildCellWeights(const char & dimension, double * childCellWeights) const;
 
 		/**
-		* When a parent windows has been defined, this method checks if some parent cells have been noted to be forced not to be regridded.
-		* It mainly occurs in case of non-rectangular local grids.
-		*/
+		 * When a parent windows has been defined, this method checks if some parent cells have been
+		 * noted to be forced not to be regridded. It mainly occurs in case of non-rectangular local
+		 * grids.
+		 *
+		 * @returns	True if forced non regrided parent cell, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT bool hasForcedNonRegridedParentCell() const;
 
 		//************************************************************
@@ -333,43 +574,75 @@ namespace RESQML2_NS
 		//************************************************************
 
 		/**
-		* Set the stratigraphic organization interpretation which is associated to this grid representation.
-		* @param stratiUnitIndices	Index of the stratigraphic unit of a given stratigraphic column for each cell. Array length is the number of cells in the grid or the blocked well.
-		* @param nullValue			The value which is used to tell the association between a cell and strati unit is unavailable.
-		* @param stratiOrgInterp	The stratigraphic organization interpretation which is associated to this grid representation.
-		*/
+		 * Set the stratigraphic organization interpretation which is associated to this grid
+		 * representation.
+		 *
+		 * @param [in,out]	stratiUnitIndices	Index of the stratigraphic unit of a given stratigraphic
+		 * 										column for each cell. Array length is the number of cells
+		 * 										in the grid or the blocked well.
+		 * @param 		  	nullValue		 	The value which is used to tell the association between a
+		 * 										cell and strati unit is unavailable.
+		 * @param [in,out]	stratiOrgInterp  	The stratigraphic organization interpretation which is
+		 * 										associated to this grid representation.
+		 */
 		DLL_IMPORT_OR_EXPORT void setCellAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
 
 		/**
-		* @return	nullptr if no stratigraphic organization interpretation is associated to this grid representation. Otherwise return the associated stratigraphic organization interpretation.
-		*/
+		 * Gets stratigraphic organization interpretation
+		 *
+		 * @returns	nullptr if no stratigraphic organization interpretation is associated to this grid
+		 * 			representation. Otherwise return the associated stratigraphic organization
+		 * 			interpretation.
+		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* getStratigraphicOrganizationInterpretation() const;
 
 		/**
-		* @return	null pointer if no stratigraphic organization interpretation is associated to this grid representation. Otherwise return the data objet reference of the associated stratigraphic organization interpretation.
-		*/
+		 * Gets stratigraphic organization interpretation dor
+		 *
+		 * @returns	null pointer if no stratigraphic organization interpretation is associated to this
+		 * 			grid representation. Otherwise return the data objet reference of the associated
+		 * 			stratigraphic organization interpretation.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::eml20__DataObjectReference const * getStratigraphicOrganizationInterpretationDor() const;
 
 		/**
-		* @return	empty string if no stratigraphic organization interpretation is associated to this grid representation. Otherwise return the uuid of the associated stratigraphic organization interpretation.
-		*/
+		 * Gets stratigraphic organization interpretation uuid
+		 *
+		 * @returns	empty string if no stratigraphic organization interpretation is associated to this
+		 * 			grid representation. Otherwise return the uuid of the associated stratigraphic
+		 * 			organization interpretation.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getStratigraphicOrganizationInterpretationUuid() const;
 
 		/**
-		* @return	empty string if no stratigraphic organization interpretation is associated to this grid representation. Otherwise return the title of the associated stratigraphic organization interpretation.
-		*/
+		 * Gets stratigraphic organization interpretation title
+		 *
+		 * @returns	empty string if no stratigraphic organization interpretation is associated to this
+		 * 			grid representation. Otherwise return the title of the associated stratigraphic
+		 * 			organization interpretation.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getStratigraphicOrganizationInterpretationTitle() const;
-		
+
 		/**
-		* @return	true if this grid representation has got some association between stratigraphic unit indices and cell.
-		*/
+		 * Query if this object has cell stratigraphic unit indices
+		 *
+		 * @returns	true if this grid representation has got some association between stratigraphic unit
+		 * 			indices and cell.
+		 */
 		DLL_IMPORT_OR_EXPORT bool hasCellStratigraphicUnitIndices() const;
 
 		/**
-		* Get the stratigraphic unit indices (regarding the associated stratigraphic organization interpretation) of each cell of this grid representation.
-		* @param stratiUnitIndices	This array must be allocated with a count equal to getCellCount(). It will be filled in with the stratigraphic unit indices ordered as grid cells are ordered.
-		* @return					The null value is returned. The null value is used to tell the association between a cell and strati unit is unavailable.
-		*/
+		 * Get the stratigraphic unit indices (regarding the associated stratigraphic organization
+		 * interpretation) of each cell of this grid representation.
+		 *
+		 * @param [in,out]	stratiUnitIndices	This array must be allocated with a count equal to
+		 * 										getCellCount(). It will be filled in with the
+		 * 										stratigraphic unit indices ordered as grid cells are
+		 * 										ordered.
+		 *
+		 * @returns	The null value is returned. The null value is used to tell the association between a
+		 * 			cell and strati unit is unavailable.
+		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getCellStratigraphicUnitIndices(ULONG64 * stratiUnitIndices);
 
 		//************************************************************
@@ -377,43 +650,74 @@ namespace RESQML2_NS
 		//************************************************************
 
 		/**
-		* Set the rock fluid organization interpretation which is associated to this grid representation.
-		* @param rockFluidUnitIndices	Index of the rock fluid unit of a given rock fluid column for each cell. Array length is the number of cells in the grid or the blocked well.
-		* @param nullValue			The value which is used to tell the association between a cell and rockFluid unit is unavailable.
-		* @param rockFluidOrgInterp	The rock fluid organization interpretation which is associated to this grid representation.
-		*/
+		 * Set the rock fluid organization interpretation which is associated to this grid
+		 * representation.
+		 *
+		 * @param [in,out]	rockFluidUnitIndices	Index of the rock fluid unit of a given rock fluid
+		 * 											column for each cell. Array length is the number of cells
+		 * 											in the grid or the blocked well.
+		 * @param 		  	nullValue				The value which is used to tell the association
+		 * 											between a cell and rockFluid unit is unavailable.
+		 * @param [in,out]	rockFluidOrgInterp  	The rock fluid organization interpretation which is
+		 * 											associated to this grid representation.
+		 */
 		DLL_IMPORT_OR_EXPORT void setCellAssociationWithRockFluidOrganizationInterpretation(ULONG64 * rockFluidUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::RockFluidOrganizationInterpretation* rockFluidOrgInterp);
 
 		/**
-		* @return	nullptr if no rock fluid organization interpretation is associated to this grid representation. Otherwise return the associated rock fluid organization interpretation.
-		*/
+		 * Gets rock fluid organization interpretation
+		 *
+		 * @returns	nullptr if no rock fluid organization interpretation is associated to this grid
+		 * 			representation. Otherwise return the associated rock fluid organization
+		 * 			interpretation.
+		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::RockFluidOrganizationInterpretation* getRockFluidOrganizationInterpretation() const;
 
 		/**
-		* @return	null pointer if no rock fluid organization interpretation is associated to this grid representation. Otherwise return the data objet reference of the associated rock fluid organization interpretation.
-		*/
+		 * Gets rock fluid organization interpretation dor
+		 *
+		 * @returns	null pointer if no rock fluid organization interpretation is associated to this grid
+		 * 			representation. Otherwise return the data objet reference of the associated rock
+		 * 			fluid organization interpretation.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::eml20__DataObjectReference const * getRockFluidOrganizationInterpretationDor() const;
 
 		/**
-		* @return	empty string if no rock fluid organization interpretation is associated to this grid representation. Otherwise return the uuid of the associated rock fluid organization interpretation.
-		*/
+		 * Gets rock fluid organization interpretation uuid
+		 *
+		 * @returns	empty string if no rock fluid organization interpretation is associated to this grid
+		 * 			representation. Otherwise return the uuid of the associated rock fluid organization
+		 * 			interpretation.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getRockFluidOrganizationInterpretationUuid() const;
 
 		/**
-		* @return	empty string if no rock fluid organization interpretation is associated to this grid representation. Otherwise return the title of the associated rock fluid organization interpretation.
-		*/
+		 * Gets rock fluid organization interpretation title
+		 *
+		 * @returns	empty string if no rock fluid organization interpretation is associated to this grid
+		 * 			representation. Otherwise return the title of the associated rock fluid organization
+		 * 			interpretation.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getRockFluidOrganizationInterpretationTitle() const;
-		
+
 		/**
-		* @return	true if this grid representation has got some association between rock fluid unit indices and cell.
-		*/
+		 * Query if this object has cell fluid phase unit indices
+		 *
+		 * @returns	true if this grid representation has got some association between rock fluid unit
+		 * 			indices and cell.
+		 */
 		DLL_IMPORT_OR_EXPORT bool hasCellFluidPhaseUnitIndices() const;
 
 		/**
-		* Get the rock fluid unit indices (regarding the associated rock fluid organization interpretation) of each cell of this grid representation.
-		* @param rockFluidUnitIndices	This array must be allocated with a count equal to getCellCount(). It will be filled in with the rock fluid unit indices ordered as grid cells are ordered.
-		* @return					The null value is returned. The null value is used to tell the association between a cell and rock fluid unit is unavailable.
-		*/
+		 * Get the rock fluid unit indices (regarding the associated rock fluid organization
+		 * interpretation) of each cell of this grid representation.
+		 *
+		 * @param [in,out]	rockfluidUnitIndices	This array must be allocated with a count equal to
+		 * 											getCellCount(). It will be filled in with the rock fluid
+		 * 											unit indices ordered as grid cells are ordered.
+		 *
+		 * @returns	The null value is returned. The null value is used to tell the association between a
+		 * 			cell and rock fluid unit is unavailable.
+		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getCellFluidPhaseUnitIndices(ULONG64 * rockfluidUnitIndices);
 
 
@@ -422,110 +726,152 @@ namespace RESQML2_NS
 		//************************************************************
 
 		/**
-		* Indicates wether this grid instance contains truncated pillars or not.
-		*/
+		 * Indicates wether this grid instance contains truncated pillars or not.
+		 *
+		 * @returns	True if truncated, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT bool isTruncated() const;
 
 		/**
-		* Get the truncation face count. It does not include face of truncated cells whch are not truncated.
-		*/
+		 * Get the truncation face count. It does not include face of truncated cells whch are not
+		 * truncated.
+		 *
+		 * @returns	The truncated face count.
+		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getTruncatedFaceCount() const;
 
 		/**
-		* Get all the node indices of the truncated faces.
-		* @param nodeIndices 			It must be pre allocated with the last value returned by getCumulativeNodeCountOfTruncatedFaces().
-		*/
+		 * Get all the node indices of the truncated faces.
+		 *
+		 * @param [in,out]	nodeIndices	It must be pre allocated with the last value returned by
+		 * 								getCumulativeNodeCountOfTruncatedFaces().
+		 */
 		DLL_IMPORT_OR_EXPORT void getNodeIndicesOfTruncatedFaces(ULONG64 * nodeIndices) const;
 
 		/**
-		* Get the cumulative node count per truncated face. First value is the count of nodes in the first face.
-		* Second value is the count of nodes in the first and in the second face. Third value is the count of nodes in the first and in the second and in the third face. Etc...
-		* Count of this array is equal to getTruncatedFaceCount()
-		* A single node count should be at least 3.
-		* @param nodeCountPerFace	It must be pre allocated with getTruncatedFaceCount() == last value of getCumulativeTruncatedFaceCountPerTruncatedCell()
-		*/
+		 * Get the cumulative node count per truncated face. First value is the count of nodes in the
+		 * first face. Second value is the count of nodes in the first and in the second face. Third
+		 * value is the count of nodes in the first and in the second and in the third face. Etc...
+		 * Count of this array is equal to getTruncatedFaceCount()
+		 * A single node count should be at least 3.
+		 *
+		 * @param [in,out]	nodeCountPerFace	It must be pre allocated with getTruncatedFaceCount() ==
+		 * 										last value of
+		 * 										getCumulativeTruncatedFaceCountPerTruncatedCell()
+		 */
 		DLL_IMPORT_OR_EXPORT void getCumulativeNodeCountPerTruncatedFace(ULONG64 * nodeCountPerFace) const;
 
 		/**
-		* Less efficient than getCumulativeNodeCountPerTruncatedFace.
-		* Get the node count per truncated face. First value is the count of nodes in the first face.
-		* Second value is the count of nodes in the second face. etc...
-		* @param nodeCountPerFace	It must be pre allocated with getTruncatedFaceCount() == last value of getCumulativeTruncatedFaceCountPerTruncatedCell()
-		*/
+		 * Less efficient than getCumulativeNodeCountPerTruncatedFace. Get the node count per truncated
+		 * face. First value is the count of nodes in the first face. Second value is the count of nodes
+		 * in the second face. etc...
+		 *
+		 * @param [in,out]	nodeCountPerFace	It must be pre allocated with getTruncatedFaceCount() ==
+		 * 										last value of
+		 * 										getCumulativeTruncatedFaceCountPerTruncatedCell()
+		 */
 		DLL_IMPORT_OR_EXPORT void getNodeCountPerTruncatedFace(ULONG64 * nodeCountPerFace) const;
 
 		/**
-		* Get the truncated cell count.
-		*/
+		 * Get the truncated cell count.
+		 *
+		 * @returns	The truncated cell count.
+		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getTruncatedCellCount() const;
 
 		/**
-		* Get the the indices of the truncated cells in the non truncated grid.
-		*/
+		 * Get the the indices of the truncated cells in the non truncated grid.
+		 *
+		 * @param [in,out]	cellIndices	If non-null, the cell indices.
+		 */
 		DLL_IMPORT_OR_EXPORT void getTruncatedCellIndices(ULONG64* cellIndices) const;
 
 		/**
-		* Get all the truncated face indices of all the truncated cells. It does not get the non truncated face indices of a truncated cell.
-		* Please use getNonTruncatedFaceIndicesOfTruncatedCells(ULONG64 * faceIndices) in addition to this method in order to get the full list of face indices for a truncated cell.
-		* @param faceIndices 			It must be pre allocated with the last value returned by getCumulativeTruncatedFaceCountPerTruncatedCell()
-		*/
+		 * Get all the truncated face indices of all the truncated cells. It does not get the non
+		 * truncated face indices of a truncated cell. Please use
+		 * getNonTruncatedFaceIndicesOfTruncatedCells(ULONG64 * faceIndices) in addition to this method
+		 * in order to get the full list of face indices for a truncated cell.
+		 *
+		 * @param [in,out]	faceIndices	It must be pre allocated with the last value returned by
+		 * 								getCumulativeTruncatedFaceCountPerTruncatedCell()
+		 */
 		DLL_IMPORT_OR_EXPORT void getTruncatedFaceIndicesOfTruncatedCells(ULONG64 * faceIndices) const;
 
 		/**
-		* Get the cumulative truncated face count per truncated cell. It does not take into account the non truncated face indices of a truncated cell.
-		* First value is the count of faces in the first cell.
-		* Second value is the count of faces in the first and in the second cell. Third value is the count of faces in the first and in the second and in the third cell. Etc...
-		* Count of this array is equal to getCellCount()
-		* A single face count should be at least 4.
-		* @param cumulativeFaceCountPerCellIndex	It must be pre allocated with getTruncatedCellCount()
-		*/
+		 * Get the cumulative truncated face count per truncated cell. It does not take into account the
+		 * non truncated face indices of a truncated cell. First value is the count of faces in the
+		 * first cell. Second value is the count of faces in the first and in the second cell. Third
+		 * value is the count of faces in the first and in the second and in the third cell. Etc...
+		 * Count of this array is equal to getCellCount()
+		 * A single face count should be at least 4.
+		 *
+		 * @param [in,out]	cumulativeFaceCountPerCell	It must be pre allocated with
+		 * 												getTruncatedCellCount()
+		 */
 		DLL_IMPORT_OR_EXPORT void getCumulativeTruncatedFaceCountPerTruncatedCell(ULONG64 * cumulativeFaceCountPerCell) const;
 
 		/**
-		* Less efficient than getCumulativeTruncatedFaceCountPerTruncatedCell.
-		* Get the face count per cell. First value is the count of faces in the first cell.
-		* Second value is the count of faces in the second cell. etc...
-		* @param faceCountPerCell	It must be pre allocated with getTruncatedCellCount()
-		*/
+		 * Less efficient than getCumulativeTruncatedFaceCountPerTruncatedCell. Get the face count per
+		 * cell. First value is the count of faces in the first cell. Second value is the count of faces
+		 * in the second cell. etc...
+		 *
+		 * @param [in,out]	faceCountPerCell	It must be pre allocated with getTruncatedCellCount()
+		 */
 		DLL_IMPORT_OR_EXPORT void getTruncatedFaceCountPerTruncatedCell(ULONG64 * faceCountPerCell) const;
 
 		/**
-		* Get all the truncated face indices of all the truncated cells. It does not get the non truncated face indices of a truncated cell.
-		* Please use getNonTruncatedFaceIndicesOfTruncatedCells(ULONG64 * faceIndices) in addition to this method in order to get the full list of face indices for a truncated cell.
-		* @param faceIndices 			It must be pre allocated with the last value returned by getCumulativeTruncatedFaceCountPerTruncatedCell()
-		*/
+		 * Get all the truncated face indices of all the truncated cells. It does not get the non
+		 * truncated face indices of a truncated cell. Please use
+		 * getNonTruncatedFaceIndicesOfTruncatedCells(ULONG64 * faceIndices) in addition to this method
+		 * in order to get the full list of face indices for a truncated cell.
+		 *
+		 * @param [in,out]	faceIndices	It must be pre allocated with the last value returned by
+		 * 								getCumulativeTruncatedFaceCountPerTruncatedCell()
+		 */
 		DLL_IMPORT_OR_EXPORT void getNonTruncatedFaceIndicesOfTruncatedCells(ULONG64 * faceIndices) const;
 
 		/**
-		* Get the cumulative truncated face count per truncated cell. It does not take into account the non truncated face indices of a truncated cell.
-		* First value is the count of faces in the first cell.
-		* Second value is the count of faces in the first and in the second cell. Third value is the count of faces in the first and in the second and in the third cell. Etc...
-		* Count of this array is equal to getCellCount()
-		* A single face count should be at least 4.
-		* @param cumulativeFaceCountPerCellIndex	It must be pre allocated with getTruncatedCellCount()
-		*/
+		 * Get the cumulative truncated face count per truncated cell. It does not take into account the
+		 * non truncated face indices of a truncated cell. First value is the count of faces in the
+		 * first cell. Second value is the count of faces in the first and in the second cell. Third
+		 * value is the count of faces in the first and in the second and in the third cell. Etc...
+		 * Count of this array is equal to getCellCount()
+		 * A single face count should be at least 4.
+		 *
+		 * @param [in,out]	cumulativeFaceCountPerCell	It must be pre allocated with
+		 * 												getTruncatedCellCount()
+		 */
 		DLL_IMPORT_OR_EXPORT void getCumulativeNonTruncatedFaceCountPerTruncatedCell(ULONG64 * cumulativeFaceCountPerCell) const;
 
 		/**
-		* Less efficient than getCumulativeTruncatedFaceCountPerTruncatedCell.
-		* Get the face count per cell. First value is the count of faces in the first cell.
-		* Second value is the count of faces in the second cell. etc...
-		* @param faceCountPerCell	It must be pre allocated with getTruncatedCellCount()
-		*/
+		 * Less efficient than getCumulativeTruncatedFaceCountPerTruncatedCell. Get the face count per
+		 * cell. First value is the count of faces in the first cell. Second value is the count of faces
+		 * in the second cell. etc...
+		 *
+		 * @param [in,out]	faceCountPerCell	It must be pre allocated with getTruncatedCellCount()
+		 */
 		DLL_IMPORT_OR_EXPORT void getNonTruncatedFaceCountPerTruncatedCell(ULONG64 * faceCountPerCell) const;
 
 		/**
-		* Retrieves orientation i.e. if each truncated face is right handed or not
-		* @param cellFaceIsRightHanded	It must be pre allocated with getTruncatedFaceCount()
-		*/
+		 * Retrieves orientation i.e. if each truncated face is right handed or not
+		 *
+		 * @param [in,out]	cellFaceIsRightHanded	It must be pre allocated with getTruncatedFaceCount()
+		 */
 		DLL_IMPORT_OR_EXPORT void getTruncatedFaceIsRightHanded(unsigned char* cellFaceIsRightHanded) const;
 
+		/**
+		 * Gets the XML tag
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 	protected:
 
+		/** Loads target relationships */
 		void loadTargetRelationships();
 
+		/** True to with truncated pillars */
 		bool withTruncatedPillars;
 	};
 }

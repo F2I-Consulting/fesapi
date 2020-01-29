@@ -56,6 +56,10 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInter
 
 WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInterpretation * interp, const string & guid, const std::string & title, DeviationSurveyRepresentation * deviationSurvey)
 {
+	if (deviationSurvey == nullptr) {
+		throw invalid_argument("The deviation survey cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreTrajectoryRepresentation(interp->getGsoapContext());
 	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 

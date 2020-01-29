@@ -328,12 +328,30 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT static void hsvToRgb(double hue, double saturation, double value, unsigned int& red, unsigned int& green, unsigned int& blue);
 
+		/**
+		 * Gets the XML tag
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		 * Gets XML tag
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const { return XML_TAG; }
+
+		/**
+		 * Gets XML namespace
+		 *
+		 * @returns	The XML namespace.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const {
 			return "eml22";
 		}
 
+		/** Loads target relationships */
 		void loadTargetRelationships();
 	};
 }

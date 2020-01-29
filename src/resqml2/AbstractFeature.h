@@ -22,53 +22,65 @@ under the License.
 
 #include "AbstractFeatureInterpretation.h"
 
+/** . */
 namespace RESQML2_NS
 {
+	/** An abstract feature. */
 	class AbstractFeature : public COMMON_NS::AbstractObject
 	{
 	protected:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
 		DLL_IMPORT_OR_EXPORT AbstractFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
-		/**
-		* Default constructor
-		* Set the gsoap proxy to nullptr.
-		*/
+		/** Default constructor Set the gsoap proxy to nullptr. */
 		AbstractFeature() {}
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		* @param fromGsoap	The gsoap proxy which shold be wrapped by the constructed feature.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	The gsoap proxy which shold be wrapped by the constructed feature.
+		 */
 		AbstractFeature(gsoap_resqml2_0_1::resqml20__AbstractFeature* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 	public:
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~AbstractFeature() {}
 
 		/**
-		* Get all the interpretations of this feature
-		*/
+		 * Get all the interpretations of this feature
+		 *
+		 * @returns	Null if it fails, else the interpretation set.
+		 */
 		DLL_IMPORT_OR_EXPORT std::vector<AbstractFeatureInterpretation *> getInterpretationSet() const;
 
 		/**
 		 * Get the interpretation count of this feature.
+		 *
+		 * @returns	The interpretation count.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getInterpretationCount() const;
 
 		/**
-		 * Get a particular interpretation of this feature according to its position in the interpretation ordering.
+		 * Get a particular interpretation of this feature according to its position in the
+		 * interpretation ordering.
+		 *
+		 * @param 	index	Zero-based index of the.
+		 *
+		 * @returns	Null if it fails, else the interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation *	getInterpretation(unsigned int index) const;
 
 	protected:
 
+		/** Loads target relationships */
 		virtual void loadTargetRelationships();
 	};
 }

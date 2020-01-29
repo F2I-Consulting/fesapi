@@ -21,50 +21,91 @@ under the License.
 
 #include <string>
 
+/** . */
 namespace epc
 {
+	/** A content type. */
 	class ContentType
 	{
 	private:
+		/** The content type string */
 		std::string contentTypeString;
+		/** Name of the extension or part */
 		std::string extensionOrPartName;
 
 	public:
-		bool isAssociatedToAnExtension; /// if false, the content type is associated to a part and overrides another content type.
+		/** / if false, the content type is associated to a part and overrides another content type. */
+		bool isAssociatedToAnExtension;
 
-		// The part URI grammar is defined as follows: 
-		// part-URI  = 1*( "/" segment ) 
-		// segment   = 1*( pchar ) 
-		// pchar is defined in RFC 3986
-		//
-		// The part URI grammar implies the following constraints. The package implementer shall neither create any part 
-		// that violates these constraints nor retrieve any data from a package as a part if the purported part URI violates 
-		// these constraints.  
-		// *  A part URI shall not be empty. [Note: The Mx.x notation is discussed in ?2. end note] 
-		// *  A part URI shall not have empty segments.
-		// *  A part URI shall start with a forward slash (?/?) character.
-		// *  A part URI shall not have a forward slash as the last character.
-		// *  A segment shall not hold any characters other than pchar characters.
-		// Part URI segments have the following additional constraints. The package implementer shall neither create any 
-		// part with a part URI comprised of a segment that violates these constraints nor retrieve any data from a package 
-		// as a part if the purported part URI contains a segment that violates these constraints. 
-		// *  A segment shall not contain percent-encoded forward slash (?/?), or backward slash (?\?) characters.
-		// *  A segment shall not contain percent-encoded unreserved characters.
-		// *  A segment shall not end with a dot (?.?) character.
-		// *  A segment shall include at least one non-dot character.
-
+		/**
+		 * The part URI grammar is defined as follows: part-URI  = 1*( "/" segment )
+		 * segment   = 1*( pchar )
+		 * pchar is defined in RFC 3986
+		 * 
+		 * The part URI grammar implies the following constraints. The package implementer shall neither
+		 * create any part that violates these constraints nor retrieve any data from a package as a
+		 * part if the purported part URI violates these constraints.  
+		 * *  A part URI shall not be empty. [Note: The Mx.x notation is discussed in ?2. end note]
+		 * *  A part URI shall not have empty segments.
+		 * *  A part URI shall start with a forward slash (?/?) character.
+		 * *  A part URI shall not have a forward slash as the last character.
+		 * *  A segment shall not hold any characters other than pchar characters.
+		 * Part URI segments have the following additional constraints. The package implementer shall
+		 * neither create any part with a part URI comprised of a segment that violates these
+		 * constraints nor retrieve any data from a package as a part if the purported part URI contains
+		 * a segment that violates these constraints.
+		 * *  A segment shall not contain percent-encoded forward slash (?/?), or backward slash (?\?)
+		 * characters.
+		 * *  A segment shall not contain percent-encoded unreserved characters.
+		 * *  A segment shall not end with a dot (?.?) character.
+		 * *  A segment shall include at least one non-dot character.
+		 */
 		ContentType(){};
+
+		/**
+		 * Constructor
+		 *
+		 * @param 	isAssociatedToAnExt	True if is associated to an extent, false if not.
+		 * @param 	contentType		   	Type of the content.
+		 * @param 	extOrPartName	   	Name of the extent or part.
+		 */
 		ContentType(bool isAssociatedToAnExt, const std::string & contentType, const std::string & extOrPartName);
+		/** Destructor */
 		~ContentType() {};
 
-		// GETTTERS
+		/**
+		 * GETTTERS
+		 *
+		 * @returns	The content type string.
+		 */
 		const std::string & getContentTypeString() const;
+
+		/**
+		 * Gets extension or part name
+		 *
+		 * @returns	The extension or part name.
+		 */
 		const std::string & getExtensionOrPartName() const;
 
-		// SETTERS
+		/**
+		 * SETTERS
+		 *
+		 * @param 	ctString	The ct string.
+		 */
 		void setContentTypeString(const std::string & ctString) {contentTypeString = ctString;}
+
+		/**
+		 * Sets extension or part name
+		 *
+		 * @param 	extOrPartName	Name of the extent or part.
+		 */
 		void setExtensionOrPartName(const std::string & extOrPartName) {extensionOrPartName = extOrPartName;}
 
+		/**
+		 * Convert this object into a string representation
+		 *
+		 * @returns	A std::string that represents this object.
+		 */
 		std::string toString() const;
 	};
 }

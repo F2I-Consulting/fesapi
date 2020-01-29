@@ -21,43 +21,80 @@ under the License.
 
 #include "FileRelationship.h"
 
+/** . */
 namespace epc
 {
 
+	/** A file part. */
 	class FilePart
 	{
 	private:
 
-		std::string finalPathName;			/// The path of the part in the package.
-		FileRelationship fileRelationship;	/// The associated rel file to the part
+		/** / The path of the part in the package. */
+		std::string finalPathName;
+		/** / The associated rel file to the part */
+		FileRelationship fileRelationship;
 
 	public:
 
+		/** Default constructor */
 		FilePart();
 
 		/**
-		* Constructor
-		* @param inputContent		The content which will be included into a part of the package
-		* @param outputPartPath		The path of the part within the package.
-		*/
+		 * Constructor
+		 *
+		 * @param 	outputPartPath	The path of the part within the package.
+		 */
 		FilePart(const std::string & outputPartPath);
+		/** Destructor */
 		~FilePart() {}
 
-		// ACCESSORS
+		/**
+		 * ACCESSORS
+		 *
+		 * @returns	The final path name.
+		 */
 		const std::string & getFinalPathName() const;
+
+		/**
+		 * Gets file relationship
+		 *
+		 * @returns	The file relationship.
+		 */
 		const FileRelationship & getFileRelationship() const;
+
+		/**
+		 * Gets index relationship
+		 *
+		 * @param 	index	Zero-based index of the.
+		 *
+		 * @returns	The index relationship.
+		 */
 		Relationship getIndexRelationship(int index) const;
 
+		/**
+		 * Sets final path name
+		 *
+		 * @param 	finalPath	Full pathname of the final file.
+		 */
 		void setFinalPathName(const std::string & finalPath);
 
 		/**
-		* Copy an existing relationship into the relationship set of the part.
-		*/
+		 * Copy an existing relationship into the relationship set of the part.
+		 *
+		 * @param 	relationship	The relationship.
+		 */
 		void addRelationship(const Relationship & relationship);
 
 		/**
-		* Creates a new relationship into the relationship set of the part according to the supplied parameters
-		*/
+		 * Creates a new relationship into the relationship set of the part according to the supplied
+		 * parameters
+		 *
+		 * @param 	rsTarget	  	The RS target.
+		 * @param 	rsType		  	Type of the RS.
+		 * @param 	rsId		  	Identifier for the RS.
+		 * @param 	internalTarget	(Optional) True to internal target.
+		 */
 		void createRelationship(const std::string & rsTarget, const std::string & rsType,const std::string & rsId, bool internalTarget = true);
 	};
 }

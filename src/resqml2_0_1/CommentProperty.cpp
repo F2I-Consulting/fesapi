@@ -38,6 +38,10 @@ const char* CommentProperty::XML_TAG = "CommentProperty";
 CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, resqml20__ResqmlPropertyKind energisticsPropertyKind)
 {
+	if (rep == nullptr) {
+		throw invalid_argument("The representation of this property values cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECommentProperty(rep->getGsoapContext());	
 	_resqml20__CommentProperty* prop = static_cast<_resqml20__CommentProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;

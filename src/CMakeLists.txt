@@ -170,7 +170,9 @@ set (FESAPI_RESQML2_NS resqml2 CACHE STRING "Namespace for resqml2 objects")
 set (FESAPI_RESQML2_0_1_NS resqml2_0_1 CACHE STRING "Namespace for resqml2_0_1 objects")
 if (WITH_EXPERIMENTAL)
 	set (FESAPI_RESQML2_2_NS resqml2_2 CACHE STRING "Namespace for resqml2_2 objects")
-endif(WITH_EXPERIMENTAL)
+else (WITH_EXPERIMENTAL)
+	set (FESAPI_RESQML2_2_NS resqml2_2)
+endif (WITH_EXPERIMENTAL)
 set (FESAPI_WITSML2_0_NS witsml2_0 CACHE STRING "Namespace for witsml2_0 objects")
 
 configure_file(${FESAPI_ROOT_DIR}/cmake/nsDefinitions.h ${FESAPI_ROOT_DIR}/src/nsDefinitions.h) # Overwrite if different

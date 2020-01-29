@@ -38,6 +38,10 @@ const char* ContinuousProperty::XML_TAG = "ContinuousProperty";
 void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind)
 {
+	if (rep == nullptr) {
+		throw invalid_argument("The representation of this property values cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREContinuousProperty(rep->getGsoapContext());
 	_resqml20__ContinuousProperty* prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;

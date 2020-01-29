@@ -23,33 +23,65 @@ under the License.
 
 #include "ContentType.h"
 
+/** . */
 namespace epc
 {
+	/** A file content type. */
 	class FileContentType
 	{
     public:
+		/** Defines an alias representing the content type map */
 		typedef std::unordered_map<std::string, ContentType> ContentTypeMap;
 
 	private:
+		/** The header */
 		static const char* header;
+		/** The content type map */
 		ContentTypeMap contentTypeMap;
+		/** The footer */
 		static const char* footer;
 
 	public:
-		// CONSTRUCTORS
+		/** CONSTRUCTORS */
 		FileContentType();
+		/** Destructor */
 		~FileContentType() {};
 
-		// ACCESSORS
+		/**
+		 * ACCESSORS
+		 *
+		 * @param 	extensionOrPartName	Name of the extension or part.
+		 *
+		 * @returns	The content type.
+		 */
 		ContentType getContentType(const std::string& extensionOrPartName) const;
+
+		/**
+		 * Gets all content type
+		 *
+		 * @returns	all content type.
+		 */
 		const ContentTypeMap& getAllContentType() const;
+
+		/**
+		 * Convert this object into a string representation
+		 *
+		 * @returns	A std::string that represents this object.
+		 */
 		std::string toString() const;
 
+		/**
+		 * Adds a content type
+		 *
+		 * @param 	contentType	Type of the content.
+		 */
 		void addContentType(const ContentType & contentType);
 
 		/**
-		* Read a content type part from a string.
-		*/
+		 * Read a content type part from a string.
+		 *
+		 * @param 	textInput	The text input.
+		 */
 		void readFromString(const std::string & textInput);
 	};
 }

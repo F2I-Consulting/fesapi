@@ -20,38 +20,50 @@ under the License.
 
 #include "../resqml2/RepresentationSetRepresentation.h"
 
+/** . */
 namespace RESQML2_0_1_NS
 {
+	/** A representation set representation. */
 	class RepresentationSetRepresentation : public RESQML2_NS::RepresentationSetRepresentation
 	{
 	public:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
 		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::RepresentationSetRepresentation(partialObject) {}
 
 		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param interp the interpretation the instance represents.
-		* @param guid A guid for the instance to create. Empty guid lead to the creation of a random one.
-		* @param title A title for the instance to create.
-		*/
+		 * Creates an instance of this class in a gsoap context.
+		 *
+		 * @param [in,out]	interp	the interpretation the instance represents.
+		 * @param 		  	guid  	A guid for the instance to create. Empty guid lead to the creation of
+		 * 							a random one.
+		 * @param 		  	title 	A title for the instance to create.
+		 */
 		RepresentationSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp, const std::string & guid, const std::string & title);
 
 		/**
-		* To use if the representation set representation is not linked to any interpretation
-		*/
+		 * To use if the representation set representation is not linked to any interpretation
+		 *
+		 * @param [in,out]	repo 	If non-null, the repo.
+		 * @param 		  	guid 	Unique identifier.
+		 * @param 		  	title	The title.
+		 */
 		RepresentationSetRepresentation(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		RepresentationSetRepresentation(gsoap_resqml2_0_1::_resqml20__RepresentationSetRepresentation* fromGsoap) : RESQML2_NS::RepresentationSetRepresentation(fromGsoap) {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~RepresentationSetRepresentation() {}
 	};
 }

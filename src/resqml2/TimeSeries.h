@@ -20,92 +20,123 @@ under the License.
 
 #include "AbstractProperty.h"
 
+/** . */
 namespace RESQML2_NS
 {
 	/**
-	* Stores an ordered list of times, for example, for time-dependent properties, geometries, or representations. It is used in conjunction with the time index to specify times for RESQML.
-	*/
+	 * Stores an ordered list of times, for example, for time-dependent properties, geometries, or
+	 * representations. It is used in conjunction with the time index to specify times for RESQML.
+	 */
 	class TimeSeries : public COMMON_NS::AbstractObject
 	{
 	protected:
-		/**
-		* Default constructor does nothing
-		*/
+		/** Default constructor does nothing */
 		TimeSeries() {}
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
 		DLL_IMPORT_OR_EXPORT TimeSeries(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		TimeSeries(gsoap_resqml2_0_1::_resqml20__TimeSeries* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 	public:
 		
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~TimeSeries() {}
 
 		/**
-		* Add a representation values object which uses this property type.
-		* Does not add the inverse relationship i.e. from the representation values object to this property type.
-		*/
+		 * Add a representation values object which uses this property type. Does not add the inverse
+		 * relationship i.e. from the representation values object to this property type.
+		 *
+		 * @param 	timestamp	The timestamp.
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackTimestamp(time_t timestamp);
 
 		/**
-		* Add a representation values object which uses this property type.
-		* Does not add the inverse relationship i.e. from the representation values object to this property type.
-		*/
+		 * Add a representation values object which uses this property type. Does not add the inverse
+		 * relationship i.e. from the representation values object to this property type.
+		 *
+		 * @param 	timestamp	The timestamp.
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackTimestamp(const tm & timestamp);
 
 		/**
-		* Get the index of a timestamp in the time series.
-		* @return	uint.max if this timestamp has not been found in this time series.
-		*/
+		 * Get the index of a timestamp in the time series.
+		 *
+		 * @param 	timestamp	The timestamp.
+		 *
+		 * @returns	uint.max if this timestamp has not been found in this time series.
+		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getTimestampIndex(time_t timestamp) const;
 
 		/**
-		* Get the index of a timestamp in the time series.
-		* @return	uint.max if this timestamp has not been found in this time series.
-		*/
+		 * Get the index of a timestamp in the time series.
+		 *
+		 * @param 	timestamp	The timestamp.
+		 *
+		 * @returns	uint.max if this timestamp has not been found in this time series.
+		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getTimestampIndex(const tm & timestamp) const;
 
 		/**
-		* Get the count of timestamps in this time series.
-		*/
+		 * Get the count of timestamps in this time series.
+		 *
+		 * @returns	The timestamp count.
+		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getTimestampCount() const;
 
 		/**
-		* Get a timestamp at a particular index of this timeseries.
-		*/
+		 * Get a timestamp at a particular index of this timeseries.
+		 *
+		 * @param 	index	Zero-based index of the.
+		 *
+		 * @returns	The timestamp.
+		 */
 		DLL_IMPORT_OR_EXPORT time_t getTimestamp(unsigned int index) const;
 
 		/**
-		* Get a timestamp as a time structure at a particular index of this timeseries.
-		* It allows to read dates from 1900-01-01T00:00:00
-		*/
+		 * Get a timestamp as a time structure at a particular index of this timeseries. It allows to
+		 * read dates from 1900-01-01T00:00:00
+		 *
+		 * @param 	index	Zero-based index of the.
+		 *
+		 * @returns	The timestamp as time structure.
+		 */
 		DLL_IMPORT_OR_EXPORT tm getTimestampAsTimeStructure(unsigned int index) const;
 
 		/**
-		* Get all the properties which use this time series
-		*/
+		 * Get all the properties which use this time series
+		 *
+		 * @returns	Null if it fails, else the property set.
+		 */
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::AbstractProperty *> getPropertySet() const;
-		
+
 		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
+		 * The standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
+		 * Get the standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	protected:
+		/** Loads target relationships */
 		void loadTargetRelationships();
 	};
 }

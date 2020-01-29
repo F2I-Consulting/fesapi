@@ -29,6 +29,10 @@ const char* WellboreFrameRepresentation::XML_TAG = "WellboreFrameRepresentation"
 
 WellboreFrameRepresentation::WellboreFrameRepresentation(WellboreInterpretation* interp, const string& guid, const std::string& title, WellboreTrajectoryRepresentation* traj)
 {
+	if (traj == nullptr) {
+		throw invalid_argument("The wellbore trajectory representation cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreFrameRepresentation(interp->getGsoapContext());
 	_resqml20__WellboreFrameRepresentation* frame = static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1);
 

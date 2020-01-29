@@ -27,76 +27,114 @@ under the License.
 
 #include "DataObjectRepository.h"
 
+/** . */
 namespace COMMON_NS
 {
-	/**
-	* This class allows an access to a memory package representing an EPC document.
-	*/
+	/** This class allows an access to a memory package representing an EPC document. */
 	class EpcDocument
 	{		
 	public:
 
+		/**
+		 * Epc document
+		 *
+		 * @param 	fileName	Filename of the file.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
 		DLL_IMPORT_OR_EXPORT EpcDocument(const std::string & fileName);
 
-		/**
-		* The destructor frees all allocated ressources.
-		*/
+		/** The destructor frees all allocated ressources. */
 		DLL_IMPORT_OR_EXPORT virtual ~EpcDocument();
 
 		/**
-		* Open an epc document.
-		* If already opened, the epc document must be closed before to open a new one.
-		* Don't forget to call close() before to destroy this object.
-		*/
+		 * Open an epc document. If already opened, the epc document must be closed before to open a new
+		 * one. Don't forget to call close() before to destroy this object.
+		 *
+		 * @param 	fileName	Filename of the file.
+		 */
 		DLL_IMPORT_OR_EXPORT void open(const std::string & fileName);
 	
-		/**
-		 * Free all ressources contained in this package.
-		 */
+		/** Free all ressources contained in this package. */
 		DLL_IMPORT_OR_EXPORT void close();
 
 		/**
-		 * Set the file path which will be used for future serialization and deserialization
-		 * Will add the standard epc extension to the filePath is not already present.
+		 * Set the file path which will be used for future serialization and deserialization Will add
+		 * the standard epc extension to the filePath is not already present.
+		 *
+		 * @param 	fp	The fp.
 		 */
 		DLL_IMPORT_OR_EXPORT void setFilePath(const std::string & fp);
 
 		/**
-		* Serialize the content of a dataobject repository into this EPC document.
-		* It also allows to optionally zip this EPC document.
-		*/
+		 * Serialize the content of a dataobject repository into this EPC document. It also allows to
+		 * optionally zip this EPC document.
+		 *
+		 * @param 	repo		The repo.
+		 * @param 	useZip64	(Optional) True to use zip 64.
+		 */
 		DLL_IMPORT_OR_EXPORT void serializeFrom(const DataObjectRepository & repo, bool useZip64 = false);
 
 		/**
-		* Unzip the package (dataobjects + relationships) into a data repository
-		* @return			An empty string if everything's ok otherwise the error string.
-		*/
+		 * Unzip the package (dataobjects + relationships) into a data repository
+		 *
+		 * @param [in,out]	repo			   	The repo.
+		 * @param 		  	hdfPermissionAccess	(Optional) The hdf permission access.
+		 *
+		 * @returns	An empty string if everything's ok otherwise the error string.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string deserializeInto(DataObjectRepository & repo, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::READ_ONLY);
 
 		/**
-		* Get the absolute path of the directory where the epc document is stored.
-		*/
+		 * Get the absolute path of the directory where the epc document is stored.
+		 *
+		 * @returns	The storage directory.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getStorageDirectory() const;
 
 		/**
-		* Get the name of the epc document.
-		*/
+		 * Get the name of the epc document.
+		 *
+		 * @returns	The name.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getName() const;
 
+		/**
+		 * Gets extended core property
+		 *
+		 * @returns	The extended core property.
+		 */
 		DLL_IMPORT_OR_EXPORT std::unordered_map< std::string, std::string > & getExtendedCoreProperty();
 
+		/**
+		 * Sets extended core property
+		 *
+		 * @param 	key  	The key.
+		 * @param 	value	The value.
+		 */
 		DLL_IMPORT_OR_EXPORT void setExtendedCoreProperty(const std::string & key, const std::string & value);
 
 		/**
-		* Get an extended core property value according its key.
-		* @return An empty string if the extended core property does not exist. Or the extended core property value if it exists
-		*/
+		 * Get an extended core property value according its key.
+		 *
+		 * @param 	key	The key.
+		 *
+		 * @returns	An empty string if the extended core property does not exist. Or the extended core
+		 * 			property value if it exists.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getExtendedCoreProperty(const std::string & key);
 
+	/**
+	 * Gets the document extension
+	 *
+	 * @returns	The document extension.
+	 */
 	private :
 		static const char * DOCUMENT_EXTENSION;
 
+		/** The package */
 		epc::Package* package;
+		/** Full pathname of the file */
 		std::string filePath;
 	};
 }

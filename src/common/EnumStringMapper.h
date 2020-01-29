@@ -30,68 +30,114 @@ under the License.
 #define DLL_IMPORT_OR_EXPORT
 #endif
 
+/** . */
 namespace COMMON_NS
 {
+	/** An enum string mapper. */
 	class EnumStringMapper
 	{
+	/**
+	 * Gets a context for the gsoap
+	 *
+	 * @returns	The gsoap context.
+	 */
 	private :
 		soap* gsoapContext;
+
+	/**
+	 * Enum string mapper
+	 *
+	 * @returns	A DLL_IMPORT_OR_EXPORT.
+	 */
 	public :
 		DLL_IMPORT_OR_EXPORT EnumStringMapper();
+		/** Destructor */
 		DLL_IMPORT_OR_EXPORT ~EnumStringMapper();
 
 		/**
-		* Get the name of the energistics property kind as a string based on the enumerated property kind.
-		* @return The empty string if no correspondence is found
-		*/
+		 * Get the name of the energistics property kind as a string based on the enumerated property
+		 * kind.
+		 *
+		 * @param 	energisticsPropertyKind	The energistics property kind.
+		 *
+		 * @returns	The empty string if no correspondence is found.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getEnergisticsPropertyKindName(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind) const;
 
 		/**
-		* Get the Energistics property kind enumerated value from the name (string) of the property kind.
-		* @return The most abstract energistics property kind if no correspondance is found with the property kind string/name.
-		*/
+		 * Get the Energistics property kind enumerated value from the name (string) of the property
+		 * kind.
+		 *
+		 * @param 	energisticsPropertyKindName	Name of the energistics property kind.
+		 *
+		 * @returns	The most abstract energistics property kind if no correspondance is found with the
+		 * 			property kind string/name.
+		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getEnergisticsPropertyKind(const std::string & energisticsPropertyKindName) const;
 
 		/**
-		* Get the name of the resqml standard property type as a string based on the enumerated property kind.
-		* @return The empty string if no correspondence is found
-		*/
+		 * Get the name of the resqml standard property type as a string based on the enumerated
+		 * property kind.
+		 *
+		 * @param 	energisticsUom	The energistics uom.
+		 *
+		 * @returns	The empty string if no correspondence is found.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getEnergisticsUnitOfMeasureName(gsoap_resqml2_0_1::resqml20__ResqmlUom energisticsUom) const;
 
 		/**
-		* Get the Energistics unit of measure enumerated value from the name (string) of the uom.
-		* @return The Euclidian (no uom) energistics uom if no correspondance is found with the uom string/name.
-		*/
+		 * Get the Energistics unit of measure enumerated value from the name (string) of the uom.
+		 *
+		 * @param 	energisticsUomName	Name of the energistics uom.
+		 *
+		 * @returns	The Euclidian (no uom) energistics uom if no correspondance is found with the uom
+		 * 			string/name.
+		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlUom getEnergisticsUnitOfMeasure(const std::string & energisticsUomName) const;
 
 		/**
-		* Get the name of the resqml facet as a string based on the enumerated facet.
-		* @return The empty string if no correspondence is found
-		*/
+		 * Get the name of the resqml facet as a string based on the enumerated facet.
+		 *
+		 * @param 	facet	The facet.
+		 *
+		 * @returns	The empty string if no correspondence is found.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getFacet(gsoap_resqml2_0_1::resqml20__Facet facet) const;
 
 		/**
-		* Get the facet enumerated value from the name (string) of the facet.
-		* @return The what facet if no correspondance is found with the facet string/name.
-		*/
+		 * Get the facet enumerated value from the name (string) of the facet.
+		 *
+		 * @param 	facet	The facet.
+		 *
+		 * @returns	The what facet if no correspondance is found with the facet string/name.
+		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__Facet getFacet(const std::string & facet) const;
 
 		/**
-		* Get the name (string) of the witsml uom as a string based on the enumerated uom.
-		* @return The empty string if no correspondence is found
-		*/
+		 * Get the name (string) of the witsml uom as a string based on the enumerated uom.
+		 *
+		 * @param 	witsmlUom	The witsml uom.
+		 *
+		 * @returns	The empty string if no correspondence is found.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string lengthUomToString(gsoap_eml2_1::eml21__LengthUom witsmlUom) const;
 
 		/**
-		* Get the name (string) of the witsml uom as a string based on the enumerated uom.
-		* @return The empty string if no correspondence is found
-		*/
+		 * Get the name (string) of the witsml uom as a string based on the enumerated uom.
+		 *
+		 * @param 	witsmlUom	The witsml uom.
+		 *
+		 * @returns	The empty string if no correspondence is found.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string verticalCoordinateUomToString(gsoap_eml2_1::eml21__VerticalCoordinateUom witsmlUom) const;
 
 		/**
-		* Get the name (string) of the witsml uom as a string based on the enumerated uom.
-		* @return The empty string if no correspondence is found
-		*/
+		 * Get the name (string) of the witsml uom as a string based on the enumerated uom.
+		 *
+		 * @param 	witsmlUom	The witsml uom.
+		 *
+		 * @returns	The empty string if no correspondence is found.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string planeAngleUomToString(gsoap_eml2_1::eml21__PlaneAngleUom witsmlUom) const;
 	};
 }

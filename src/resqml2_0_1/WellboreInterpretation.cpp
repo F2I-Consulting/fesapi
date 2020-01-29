@@ -27,9 +27,13 @@ using namespace gsoap_resqml2_0_1;
 
 const char* WellboreInterpretation::XML_TAG = "WellboreInterpretation";
 
-WellboreInterpretation::WellboreInterpretation(WellboreFeature * WellboreFeature, const string & guid, const string & title, bool isDrilled)
+WellboreInterpretation::WellboreInterpretation(WellboreFeature * wellboreFeature, const string & guid, const string & title, bool isDrilled)
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreInterpretation(WellboreFeature->getGsoapContext());
+	if (wellboreFeature == nullptr) {
+		throw invalid_argument("The interpreted wellbore cannot be null.");
+	}
+
+	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreInterpretation(wellboreFeature->getGsoapContext());
 	_resqml20__WellboreInterpretation* wbInterp = static_cast<_resqml20__WellboreInterpretation*>(gsoapProxy2_0_1);
 	wbInterp->Domain = resqml20__Domain__mixed;
 
@@ -38,7 +42,7 @@ WellboreInterpretation::WellboreInterpretation(WellboreFeature * WellboreFeature
 	initMandatoryMetadata();
 	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	setInterpretedFeature(WellboreFeature);
+	setInterpretedFeature(wellboreFeature);
 }
 
 bool WellboreInterpretation::isDrilled() const

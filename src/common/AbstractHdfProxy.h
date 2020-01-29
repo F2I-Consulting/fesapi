@@ -28,7 +28,7 @@ under the License.
 
 namespace COMMON_NS
 {
-	/** A proxy for reading and writing values into an HDF5 file. */
+	/** An abstract proxy for reading and writing values into an HDF5 file. */
 	class AbstractHdfProxy : public EpcExternalPartReference
 	{
 	protected:
@@ -568,7 +568,7 @@ namespace COMMON_NS
 		/**
 		 * Finds the nd array of double values associated with @p datasetName and reads from it
 		 *
-		 * @exception	invalid_argument	Thrown when an invalid argument error condition occurs.
+		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
 		 *
 		 * @param 	   	datasetName					The name of the nd array dataset.
 		 * @param [out]	values						1d array of double values ordered firstly by fastest
@@ -781,7 +781,7 @@ namespace COMMON_NS
 		/**
 		 * Finds the nd array of int values associated with @p datasetName and reads from it
 		 *
-		 * @exception	invalid_argument	Thrown when an invalid argument error condition occurs.
+		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
 		 *
 		 * @param 	   	datasetName					The name of the nd array dataset.
 		 * @param [out]	values						1d array of int values ordered firstly by fastest

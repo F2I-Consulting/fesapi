@@ -20,26 +20,35 @@ under the License.
 
 #include "../resqml2/AbstractFeature.h"
 
+/** . */
 namespace RESQML2_0_1_NS
 {
+	/** An abstract geologic feature. */
 	class AbstractGeologicFeature : public RESQML2_NS::AbstractFeature
 	{
 	protected:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
 		DLL_IMPORT_OR_EXPORT AbstractGeologicFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeature(partialObject) {}
 
-		/**
-		* Default constructor
-		* Set the gsoap proxy to nullptr from superclass constructor
-		*/
+		/** Default constructor Set the gsoap proxy to nullptr from superclass constructor */
 		AbstractGeologicFeature() {}
 
+		/**
+		 * Constructor
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		AbstractGeologicFeature(gsoap_resqml2_0_1::resqml20__AbstractGeologicFeature* fromGsoap) : RESQML2_NS::AbstractFeature(fromGsoap) {}
 
 	public:
+		/** Destructor */
 		virtual ~AbstractGeologicFeature() {}
 	};
 }

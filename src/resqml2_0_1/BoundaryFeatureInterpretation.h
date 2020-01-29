@@ -21,42 +21,57 @@ under the License.
 #include "../resqml2/AbstractFeatureInterpretation.h"
 #include "WellboreMarker.h"
 
+/** . */
 namespace RESQML2_0_1_NS
 {
+	/** A boundary feature interpretation. */
 	class BoundaryFeatureInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	public:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
 		DLL_IMPORT_OR_EXPORT BoundaryFeatureInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :RESQML2_NS::AbstractFeatureInterpretation(partialObject) {}
 
-		/**
-		* Default constructor
-		* Set the gsoap proxy to nullptr from superclass constructor
-		*/
+		/** Default constructor Set the gsoap proxy to nullptr from superclass constructor */
 		BoundaryFeatureInterpretation() {}
 
 		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param feature	The feature the instance interprets.
-		* @param guid		The guid to set to the boundary horizon. If empty then a new guid will be generated.
-		* @param title		A title for the instance to create.
-		*/
+		 * Creates an instance of this class in a gsoap context.
+		 *
+		 * @param [in,out]	feature	The feature the instance interprets.
+		 * @param 		  	guid   	The guid to set to the boundary horizon. If empty then a new guid
+		 * 							will be generated.
+		 * @param 		  	title  	A title for the instance to create.
+		 */
 		BoundaryFeatureInterpretation(class BoundaryFeature * feature, const std::string & guid, const std::string & title);
 
+		/**
+		 * Constructor
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		BoundaryFeatureInterpretation(gsoap_resqml2_0_1::_resqml20__BoundaryFeatureInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
+		/** Destructor */
 		virtual ~BoundaryFeatureInterpretation() {}
 
 		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
+		 * The standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
+		 * Get the standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

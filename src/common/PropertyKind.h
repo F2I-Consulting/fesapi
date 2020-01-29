@@ -20,123 +20,173 @@ under the License.
 
 #include "AbstractObject.h"
 
+/** . */
 namespace COMMON_NS
 {
+	/** A property kind. */
 	class PropertyKind : public COMMON_NS::AbstractObject
 	{
 	protected:
 
-		/**
-		* Default constructor does nothing
-		*/
+		/** Default constructor does nothing */
 		PropertyKind() {}
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
 		DLL_IMPORT_OR_EXPORT PropertyKind(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		PropertyKind(gsoap_resqml2_0_1::_resqml20__PropertyKind* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		PropertyKind(gsoap_eml2_1::eml21__PropertyKind* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 	public:
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~PropertyKind() {}
 
 		/**
-		* Getter (in read only mode) of the naming system of this property type
-		*/
+		 * Getter (in read only mode) of the naming system of this property type
+		 *
+		 * @returns	The naming system.
+		 */
 		DLL_IMPORT_OR_EXPORT const std::string & getNamingSystem() const;
 
 		/**
-		* Get the unit of measure of the values of this property kind.
-		*/
+		 * Get the unit of measure of the values of this property kind.
+		 *
+		 * @returns	The uom.
+		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlUom getUom() const;
 
 		/**
-		* Get the unit of measure of the values of this property kind as a string.
-		*/
+		 * Get the unit of measure of the values of this property kind as a string.
+		 *
+		 * @returns	The uom as string.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getUomAsString() const;
 
 		/**
 		 * Get the title of the parent of this property kind.
+		 *
+		 * @returns	The parent as string.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getParentAsString() const;
 
 		/**
-		* Indicates if the property kind which is the parent of this property kind is either from the standard catalog of Energistics or from another local property kind.
-		*/
+		 * Indicates if the property kind which is the parent of this property kind is either from the
+		 * standard catalog of Energistics or from another local property kind.
+		 *
+		 * @returns	True if parent the energistics property kind, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT bool isParentAnEnergisticsPropertyKind() const;
 
 		/**
-		* Getter for the energistics property kind which is associated to this intance.
-		*/
+		 * Getter for the energistics property kind which is associated to this intance.
+		 *
+		 * @returns	The parent energistics property kind.
+		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getParentEnergisticsPropertyKind() const;
 
 		/**
-		* @return	null pointer if no local parent property kind is associated to this property. Otherwise return the data object reference of the associated parent local property kind.
-		*/
+		 * Gets the parent local property kind dor
+		 *
+		 * @returns	null pointer if no local parent property kind is associated to this property.
+		 * 			Otherwise return the data object reference of the associated parent local property
+		 * 			kind.
+		 */
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getParentLocalPropertyKindDor() const;
 
 		/**
-		* Get the uuid of the local parent property kind which is associated to this property.
-		*/
+		 * Get the uuid of the local parent property kind which is associated to this property.
+		 *
+		 * @returns	The parent local property kind uuid.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getParentLocalPropertyKindUuid() const;
 
 		/**
-		* Get the uuid of the local parent property kind which is associated to this property.
-		*/
+		 * Get the uuid of the local parent property kind which is associated to this property.
+		 *
+		 * @returns	The parent local property kind title.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getParentLocalPropertyKindTitle() const;
 
 		/**
-		* Getter for the local property kind which is the parent of this instance.
-		* If nullptr is returned then it means this instance is associated to an energistics property kind.
-		*/
+		 * Getter for the local property kind which is the parent of this instance. If nullptr is
+		 * returned then it means this instance is associated to an energistics property kind.
+		 *
+		 * @returns	Null if it fails, else the parent local property kind.
+		 */
 		DLL_IMPORT_OR_EXPORT PropertyKind* getParentLocalPropertyKind() const;
 
 		/**
-		* Set the parent of the property kind.
-		*/
+		 * Set the parent of the property kind.
+		 *
+		 * @param [in,out]	parentPropertyKind	If non-null, the parent property kind.
+		 */
 		DLL_IMPORT_OR_EXPORT void setParentPropertyKind(PropertyKind* parentPropertyKind);
 
 		/**
-		* Check if this property kind is a child of a particular standard Energistics Property kind.
-		*/
+		 * Check if this property kind is a child of a particular standard Energistics Property kind.
+		 *
+		 * @param 	standardPropKind	The standard property kind.
+		 *
+		 * @returns	True if child of, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isChildOf(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind standardPropKind) const = 0;
 
 		/**
-		* Check if this property kind is abstract or not.
-		*/
+		 * Check if this property kind is abstract or not.
+		 *
+		 * @returns	True if abstract, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isAbstract() const = 0;
 
 		/**
-		* Check if this property kind is partial or if one of its parent is partial.
-		*/
+		 * Check if this property kind is partial or if one of its parent is partial.
+		 *
+		 * @returns	True if parent partial, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isParentPartial() const = 0;
 
 		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
+		 * The standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
+		 * Get the standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	protected:
+
+		/**
+		 * Sets XML parent property kind
+		 *
+		 * @param [in,out]	parentPropertyKind	If non-null, the parent property kind.
+		 */
 		virtual void setXmlParentPropertyKind(PropertyKind* parentPropertyKind) = 0;
 
+		/** Loads target relationships */
 		void loadTargetRelationships();
 	};
 }

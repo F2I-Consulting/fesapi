@@ -20,48 +20,72 @@ under the License.
 
 #include "../resqml2/AbstractFeatureInterpretation.h"
 
+/** . */
 namespace RESQML2_0_1_NS
 {
-	/**
-	* This class defines the behaviour of all Resqml2 organizations
-	*/
+	/** This class defines the behaviour of all Resqml2 organizations */
 	class AbstractOrganizationInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
 	{
 	protected:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
 		DLL_IMPORT_OR_EXPORT AbstractOrganizationInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeatureInterpretation(partialObject) {}
 
+		/** Default constructor */
 		AbstractOrganizationInterpretation() {}
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		AbstractOrganizationInterpretation(gsoap_resqml2_0_1::resqml20__AbstractOrganizationInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
 
 	public:
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~AbstractOrganizationInterpretation() {}
 
 		/**
 		 * Add a binary contact to the organization interpretation by means of a simple sentence.
+		 *
+		 * @param 		  	kind			The kind.
+		 * @param [in,out]	subject			If non-null, the subject.
+		 * @param 		  	verb			The verb.
+		 * @param [in,out]	directObject	If non-null, the direct object.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(const gsoap_resqml2_0_1::resqml20__ContactRelationship & kind, RESQML2_NS::AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml20__ContactVerb & verb, RESQML2_NS::AbstractFeatureInterpretation* directObject);
 
 		/**
-		 * Add a binary contact to the organization itnerpretation by means of a sentence where the direct object can be qualified.
+		 * Add a binary contact to the organization itnerpretation by means of a sentence where the
+		 * direct object can be qualified.
+		 *
+		 * @param 		  	kind				 	The kind.
+		 * @param [in,out]	subject				 	If non-null, the subject.
+		 * @param 		  	verb				 	The verb.
+		 * @param [in,out]	directObject		 	If non-null, the direct object.
+		 * @param 		  	directObjectQualifier	The direct object qualifier.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(const gsoap_resqml2_0_1::resqml20__ContactRelationship & kind, RESQML2_NS::AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml20__ContactVerb & verb, RESQML2_NS::AbstractFeatureInterpretation* directObject,
 				const gsoap_resqml2_0_1::resqml20__ContactSide & directObjectQualifier);
 
-        /**
-         * Add a binary contact to the organization interpretation by means of a sentence where both the subject and the direct object can be qualified.
-         */
+		/**
+		 * Add a binary contact to the organization interpretation by means of a sentence where both the
+		 * subject and the direct object can be qualified.
+		 *
+		 * @param 		  	kind				 	The kind.
+		 * @param [in,out]	subject				 	If non-null, the subject.
+		 * @param 		  	subjectQualifier	 	The subject qualifier.
+		 * @param 		  	verb				 	The verb.
+		 * @param [in,out]	directObject		 	If non-null, the direct object.
+		 * @param 		  	directObjectQualifier	The direct object qualifier.
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(const gsoap_resqml2_0_1::resqml20__ContactRelationship & kind, RESQML2_NS::AbstractFeatureInterpretation* subject, const gsoap_resqml2_0_1::resqml20__ContactSide & subjectQualifier,
                                    const gsoap_resqml2_0_1::resqml20__ContactVerb & verb,
 								   RESQML2_NS::AbstractFeatureInterpretation* directObject, const gsoap_resqml2_0_1::resqml20__ContactSide & directObjectQualifier);

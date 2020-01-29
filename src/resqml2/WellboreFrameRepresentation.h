@@ -21,135 +21,186 @@ under the License.
 #include "AbstractRepresentation.h"
 #include "AbstractValuesProperty.h"
 
+/** . */
 namespace RESQML2_NS
 {
 	/**
-	* Representation of a wellbore that is organized along a wellbore trajectory by its MD values. RESQML uses MD values to associate properties on points and to organize association of properties on intervals between MD points. 
-	*/
+	 * Representation of a wellbore that is organized along a wellbore trajectory by its MD values.
+	 * RESQML uses MD values to associate properties on points and to organize association of
+	 * properties on intervals between MD points.
+	 */
 	class WellboreFrameRepresentation : public AbstractRepresentation
 	{
 	protected:
+		/** Default constructor */
 		WellboreFrameRepresentation() {}
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 */
 		WellboreFrameRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
 			RESQML2_NS::AbstractRepresentation(partialObject) {}
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreFrameRepresentation* fromGsoap) :
 			AbstractRepresentation(fromGsoap) {}
 
 #if WITH_EXPERIMENTAL
+
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		WellboreFrameRepresentation(gsoap_eml2_2::resqml22__WellboreFrameRepresentation* fromGsoap) :
 			AbstractRepresentation(fromGsoap) {}
 #endif
 
 	public:
+		/** Destructor */
 		~WellboreFrameRepresentation() {}
 
 		/**
-		* Set the MD values of this WellboreFrameRepresentation frame to an array 1d of explicit values.
-		* @param mdValues		All the MD values to set from top of the well trajectory to bottom.
-		* @param mdValueCount	The MD values count.
-		* @param proxy			The HDF proxy where to write the MD values. It must be already opened for writing and won't be closed in this method.
-		*/
+		 * Set the MD values of this WellboreFrameRepresentation frame to an array 1d of explicit values.
+		 *
+		 * @param 		  	mdValues		All the MD values to set from top of the well trajectory to
+		 * 									bottom.
+		 * @param 		  	mdValueCount	The MD values count.
+		 * @param [in,out]	proxy			(Optional) The HDF proxy where to write the MD values. It
+		 * 									must be already opened for writing and won't be closed in this
+		 * 									method.
+		 */
 		DLL_IMPORT_OR_EXPORT void setMdValues(double const * mdValues, unsigned int mdValueCount, COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
-		* Set the MD values of this WellboreFrameRepresentation frame as a regular discretization along the wellbore trajectory.
-		* @param firstMdValue		The first MD value.
-		* @param incrementMdValue	The increment value between two Measured depth.
-		* @param mdValueCount		The count of md values in this WellboreFrameRepresentation.
-		*/
+		 * Set the MD values of this WellboreFrameRepresentation frame as a regular discretization along
+		 * the wellbore trajectory.
+		 *
+		 * @param 	firstMdValue		The first MD value.
+		 * @param 	incrementMdValue	The increment value between two Measured depth.
+		 * @param 	mdValueCount		The count of md values in this WellboreFrameRepresentation.
+		 */
 		DLL_IMPORT_OR_EXPORT void setMdValues(double firstMdValue, double incrementMdValue, unsigned int mdValueCount);
 
 		/**
-		* Indicates either the MDs are regularly spaced or not (useful for optimization).
-		* Does not verify if the writer has used a generic array to store regular mds.
-		*/
+		 * Indicates either the MDs are regularly spaced or not (useful for optimization). Does not
+		 * verify if the writer has used a generic array to store regular mds.
+		 *
+		 * @returns	True if md values regularly spaced, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT bool areMdValuesRegularlySpaced() const;
-		
+
 		/**
-		* Indicates the increment value between two MDs only if the MDs are regularly spaced.
-		* Please use areMdValuesRegularlySpaced before using this method.
-		*/
+		 * Indicates the increment value between two MDs only if the MDs are regularly spaced. Please
+		 * use areMdValuesRegularlySpaced before using this method.
+		 *
+		 * @returns	The md constant increment value.
+		 */
 		DLL_IMPORT_OR_EXPORT double getMdConstantIncrementValue() const;
 
 		/**
-		* Returns the first MD value of this WellboreFrameRepresentation
-		*/
+		 * Returns the first MD value of this WellboreFrameRepresentation
+		 *
+		 * @returns	The md first value.
+		 */
 		DLL_IMPORT_OR_EXPORT double getMdFirstValue() const;
-		
+
 		/**
-		* Get the number of Md values in this WellboreFeature frame.
-		*/
+		 * Get the number of Md values in this WellboreFeature frame.
+		 *
+		 * @returns	The md values count.
+		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getMdValuesCount() const;
 
 		/**
-		* Get the xyz point count in a given patch.
-		*/
+		 * Get the xyz point count in a given patch.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch.
+		 *
+		 * @returns	The xyz point count of patch.
+		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 
 		/**
-		* Get all the XYZ points of a particular patch of this representation.
-		* XYZ points are given in the local CRS.
-		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
-		*/
+		 * Get all the XYZ points of a particular patch of this representation. XYZ points are given in
+		 * the local CRS.
+		 *
+		 * @param 		  	patchIndex	Zero-based index of the patch.
+		 * @param [in,out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is
+		 * 								coordinate dimension (XYZ) and second dimension is vertex
+		 * 								dimension. It must be pre allocated.
+		 */
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
 
 		/**
-		* Get the Measured Depth datatype in the HDF dataset
-		*/
+		 * Get the Measured Depth datatype in the HDF dataset
+		 *
+		 * @returns	The md hdf datatype.
+		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum getMdHdfDatatype() const;
 
 		/**
-		* Get all the md values of the instance which are supposed to be double ones.
-		*/
+		 * Get all the md values of the instance which are supposed to be double ones.
+		 *
+		 * @param [in,out]	values	If non-null, the values.
+		 */
 		DLL_IMPORT_OR_EXPORT void getMdAsDoubleValues(double * values) const;
 
 		/**
-		* Get all the md values of the instance which are supposed to be float ones.
-		*/
+		 * Get all the md values of the instance which are supposed to be float ones.
+		 *
+		 * @param [in,out]	values	If non-null, the values.
+		 */
 		DLL_IMPORT_OR_EXPORT void getMdAsFloatValues(float * values) const;
 
 		/**
-		* Get the associated RESQML wellbore trajectory data object reference.
-		*/
+		 * Get the associated RESQML wellbore trajectory data object reference.
+		 *
+		 * @returns	Null if it fails, else the wellbore trajectory dor.
+		 */
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getWellboreTrajectoryDor() const;
 
 		/**
-		* Get the associated RESQML wellbore trajectory uuid.
-		*/
+		 * Get the associated RESQML wellbore trajectory uuid.
+		 *
+		 * @returns	The wellbore trajectory uuid.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getWellboreTrajectoryUuid() const;
 
-		/**
-		* Get the associated RESQML wellbore trajector.
-		*/
+		/** Get the associated RESQML wellbore trajector. */
 		DLL_IMPORT_OR_EXPORT class RESQML2_0_1_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
 
 		/**
-		* Get the associated RESQML local crs data object reference.
-		*/
+		 * Get the associated RESQML local crs data object reference.
+		 *
+		 * @param 	patchIndex	Zero-based index of the patch.
+		 *
+		 * @returns	Null if it fails, else the local crs dor.
+		 */
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const;
 
 		/**
-		* Get the associated hdf proxy data object reference.
-		*/
+		 * Get the associated hdf proxy data object reference.
+		 *
+		 * @returns	Null if it fails, else the hdf proxy dor.
+		 */
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
 
 		/**
-		* Get the count of patch of this representation.
-		*/
+		 * Get the count of patch of this representation.
+		 *
+		 * @returns	The patch count.
+		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
 
 		protected:
+			/** Loads target relationships */
 			void loadTargetRelationships();
 	};
 }
