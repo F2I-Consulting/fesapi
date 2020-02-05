@@ -148,7 +148,7 @@ namespace epc
 		 * standard core properties will be stored in a single part which will be linked to the standard
 		 * core properties part.
 		 *
-		 * @returns	The extended core property.
+		 * @returns	A map associating keys and values of the extended core properties.
 		 */
 		std::unordered_map< std::string, std::string > & getExtendedCoreProperty();
 

@@ -1086,9 +1086,6 @@ void AbstractObject::pushBackExtraMetadata(const std::string & key, const std::s
 	}
 }
 
-/**
-* Getter (in read only mode) of all the extra metadata
-*/
 std::unordered_map< std::string, std::string > AbstractObject::getExtraMetadataSet() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -1099,10 +1096,6 @@ std::unordered_map< std::string, std::string > AbstractObject::getExtraMetadataS
 	}
 }
 
-/**
-* Get an extra metadata according its key.
-* @return An empty string if the extra metadata does not exist. Or the extra metadata value if it exists
-*/
 vector<string> AbstractObject::getExtraMetadata(const std::string & key) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -1113,9 +1106,6 @@ vector<string> AbstractObject::getExtraMetadata(const std::string & key) const
 	}
 }
 
-/**
-* Get the count of extra metadata in the instance.
-*/
 unsigned int AbstractObject::getExtraMetadataCount() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -1129,9 +1119,6 @@ unsigned int AbstractObject::getExtraMetadataCount() const
 	}
 }
 
-/**
-* Get the key of a string value pair at a particular index in the extra metadata set
-*/
 std::string AbstractObject::getExtraMetadataKeyAtIndex(unsigned int index) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -1145,9 +1132,6 @@ std::string AbstractObject::getExtraMetadataKeyAtIndex(unsigned int index) const
 	}
 }
 
-/**
-* Get the string value of a string value pair at a particular index in the extra metadata set
-*/
 std::string AbstractObject::getExtraMetadataStringValueAtIndex(unsigned int index) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {

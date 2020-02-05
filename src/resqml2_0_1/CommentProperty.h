@@ -23,7 +23,7 @@ under the License.
 /** . */
 namespace RESQML2_0_1_NS
 {
-	/** A comment property. */
+	/** Proxy class for a comment property. */
 	class CommentProperty : public RESQML2_NS::AbstractValuesProperty
 	{
 	public:
@@ -31,48 +31,57 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 * @param [in]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT CommentProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractValuesProperty(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * Creates a comment property which is of a well known Energistics property kind
 		 *
-		 * @param [in,out]	rep					   	The representation which supports these property
-		 * 											values.
-		 * @param 		  	guid				   	The guid to set to the property. If empty then a new
-		 * 											guid will be generated.
-		 * @param 		  	title				   	A title for the instance to create.
-		 * @param 		  	dimension			   	The dimension of each value (scalar properties == 1).
-		 * @param 		  	attachmentKind		   	The topological orbit which support each value.
-		 * @param 		  	energisticsPropertyKind	The property kind of these property values which must
-		 * 											be defined in the standard energistics property type
-		 * 											dictionary.
+		 * @exception	std::invalid_argument	If @p rep is null.
+		 *
+		 * @param [in]	rep					   	The representation on which this property is attached to.
+		 * 										It cannot be null.
+		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
+		 * 										will be generated.
+		 * @param 	  	title				   	The title to set to the property. If empty then
+		 * 										\"unknown\" title will be set.
+		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
+		 * 										is 1 for a scalar property.
+		 * @param 	  	attachmentKind		   	The topological element on which the property values are
+		 * 										attached to.
+		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
+		 * 										defined in the standard Energistics property type
+		 * 										dictionary.
 		 */
 		CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * Creates a comment property which is of a local property kind
 		 *
-		 * @param [in,out]	rep			  	The representation which supports these property values.
-		 * @param 		  	guid		  	The guid to set to the property. If empty then a new guid
-		 * 									will be generated.
-		 * @param 		  	title		  	A title for the instance to create.
-		 * @param 		  	dimension	  	The dimension of each value (scalar properties == 1).
-		 * @param 		  	attachmentKind	The topological orbit which support each value.
-		 * @param [in,out]	localPropKind 	The property kind of these property values which must be
-		 * 									defined in the EPC document as a local property kind.
+		 * @exception	std::invalid_argument	If @p rep or @p localPropKind is null.
+		 *
+		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * 								cannot be null.
+		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
+		 * 								generated.
+		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
+		 * 								will be set.
+		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
+		 * 								a scalar property.
+		 * @param 	  	attachmentKind	The topological element on which the property values are attached
+		 * 								to.
+		 * @param [in]	localPropKind 	The property kind of these property values which must be defined
+		 * 								in the EPC document as a local property kind. It cannot be null.
 		 */
 		CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, COMMON_NS::PropertyKind * localPropKind);
 
 		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
+		 * Creates an instance of this class by wrapping a gSOAP instance
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		CommentProperty(gsoap_resqml2_0_1::_resqml20__CommentProperty* fromGsoap): AbstractValuesProperty(fromGsoap) {}
 
@@ -82,60 +91,69 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Add an array of string values to the property values.
 		 *
-		 * @param 		  	values	All the property values to set ordered according the topology of the
-		 * 							representation it is based on.
-		 * @param [in,out]	proxy 	The HDF proxy where to write the property values. It must be already
-		 * 							opened for writing and won't be closed in this method.
+		 * @param 	  	values	All the property values to set ordered according the topology of the
+		 * 						representation it is based on.
+		 * @param [in]	proxy 	The HDF proxy where to write the property values. It must be already
+		 * 						opened for writing and won't be closed in this method. If null then a
+		 * 						default HDF proxy must be defined in the data object repository.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackStringHdf5ArrayOfValues(const std::vector<std::string> & values, COMMON_NS::AbstractHdfProxy* proxy);
 
 		/**
-		 * Pushes a back reference to existing dataset
+		 * Pushes back a new patch of values for this property where the values have not to be written in
+		 * the HDF5 file. The reason can be that the values already exist in an external file (only HDF5
+		 * for now) or that the writing of the values in the external file is differed in time.
 		 *
-		 * @param [in,out]	hdfProxy   	If non-null, the hdf proxy.
-		 * @param 		  	datasetName	(Optional) Name of the dataset.
-		 * @param 		  	nullValue  	(Optional) The null value.
+		 * @exception	std::invalid_argument	If @p hdfProxy is null.
 		 *
-		 * @returns	A std::string.
+		 * @param [in]	hdfProxy   	The HDF5 proxy where the values are already or will be stored. It
+		 * 							cannot be null.
+		 * @param 	  	datasetName	(Optional) If not provided during the method call, the dataset will
+		 * 							be named the same as the dataset naming convention of fesapi:
+		 * 							<tt>"/RESQML/" + prop-&gt;uuid + "/values_patch" + patchIndex</tt>
+		 * @param 	  	nullValue  	(Optional) Not used for comment properties.
+		 *
+		 * @returns	The name of the HDF5 dataset.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
 
 		/**
-		 * Get all the values of the instance which are supposed to be string ones.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be string ones.
 		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
 		 *
-		 * @returns	The string values of patch.
+		 * @param 	patchIndex	The index of the patch we want the values from.
+		 *
+		 * @returns	The string values of the patch.
 		 */
 		DLL_IMPORT_OR_EXPORT std::vector<std::string> getStringValuesOfPatch(unsigned int patchIndex);
 
 		/**
-		 * Check if the associated local property kind is allowed for this property.
+		 * Checks if it is allowed to associate a given local property kind to this property.
 		 *
-		 * @param [in,out]	pk	If non-null, the pk.
+		 * @exception	std::invalid_argument	If @p pk is null.
 		 *
-		 * @returns	True if it succeeds, false if it fails.
+		 * @param [in]	pk	The local property kind to check.
+		 *
+		 * @returns	True if it is allowed, false if it is not.
 		 */
 		bool validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk);
 
 		/**
-		 * Check if the associated standard property kind is allowed for this property.
+		 * Checks if it is allowed to associate a given standard Energistics property kind to this
+		 * property.
 		 *
-		 * @param 	pk	The pk.
+		 * @param 	pk	The standard Energistics property kind to check.
 		 *
-		 * @returns	True if it succeeds, false if it fails.
+		 * @returns	True if it is allowed, false if it is not.
 		 */
 		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk);
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
+		 * Gets the standard XML tag without XML namespace for serializing this data object
 		 *
 		 * @returns	The XML tag.
 		 */

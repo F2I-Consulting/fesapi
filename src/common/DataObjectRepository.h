@@ -1609,8 +1609,11 @@ namespace COMMON_NS
 		/**
 		 * Creates a fluid boundary feature into this repository
 		 *
-		 * @param 	guid 	The guid to set to the fluid boundary feature. If empty then a new guid will be generated.
-		 * @param 	title	The title to set to the fluid boundary feature. If empty then \"unknown\" title will be set.
+		 * @param 	guid			The guid to set to the fluid boundary feature. If empty then a new
+		 * 							guid will be generated.
+		 * @param 	title			The title to set to the fluid boundary feature. If empty then
+		 * 							\"unknown\" title will be set.
+		 * @param 	fluidContact	The fluid contact.
 		 *
 		 * @returns	A pointer to the new fluid boundary feature.
 		 */
@@ -1688,11 +1691,11 @@ namespace COMMON_NS
 		/**
 		 * Creates a fault interpretation into this repository
 		 *
-		 * @param [in]		horizon	The interpreted fault. It cannot be null.
-		 * @param 		  	guid   	The guid to set to the fault interpretation. If empty then a new
-		 * 							guid will be generated.
-		 * @param 		  	title  	The title to set to the fault interpretation. If empty then
-		 * 							\"unknown\" title will be set.
+		 * @param [in]	fault	The interpreted fault. It cannot be null.
+		 * @param 	  	guid 	The guid to set to the fault interpretation. If empty then a new guid
+		 * 						will be generated.
+		 * @param 	  	title	The title to set to the fault interpretation. If empty then \"unknown\"
+		 * 						title will be set.
 		 *
 		 * @returns	A pointer to the new fault interpretation.
 		 */
@@ -1701,11 +1704,12 @@ namespace COMMON_NS
 		/**
 		 * Creates a wellbore interpretation into this repository
 		 *
-		 * @param [in]		horizon	The interpreted wellbore. It cannot be null.
-		 * @param 		  	guid   	The guid to set to the wellbore interpretation. If empty then a new
+		 * @param [in]	wellbore 	The interpreted wellbore. It cannot be null.
+		 * @param 	  	guid	 	The guid to set to the wellbore interpretation. If empty then a new
 		 * 							guid will be generated.
-		 * @param 		  	title  	The title to set to the wellbore interpretation. If empty then
+		 * @param 	  	title	 	The title to set to the wellbore interpretation. If empty then
 		 * 							\"unknown\" title will be set.
+		 * @param 	  	isDrilled	True if is drilled, false if not.
 		 *
 		 * @returns	A pointer to the new wellbore interpretation.
 		 */
@@ -2543,8 +2547,8 @@ namespace COMMON_NS
 		 * 											\"unknown\" title will be set.
 		 * @param 	namingSystem				 	The name of the dictionary within which the property
 		 * 											is unique. This also defines the name of the
-		 * 											controlling authority. Use a URN of the form \"urn:x-
-		 * 											resqml:domainOrEmail:dictionaryName\".
+		 * 											controlling authority. Use a URN of the form <tt>urn:x-
+		 * 											resqml:domainOrEmail:dictionaryName</tt>.
 		 * @param 	uom							 	The property kind unit of measure taken from the
 		 * 											standard RESQML units of measure catalog.
 		 * @param 	parentEnergisticsPropertyKind	The parent property kind taken from the standard set
@@ -2651,18 +2655,24 @@ namespace COMMON_NS
 			bool hasMultipleRealizations, bool hasSinglePropertyKind, gsoap_resqml2_0_1::resqml20__TimeSetKind timeSetKind);
 
 		/**
-		 * Creates a comment property into this repository
+		 * Creates a comment property (which is of a well known Energistics property kind) into this
+		 * repository
+		 *
+		 * @exception	std::invalid_argument	If @p rep is null.
 		 *
 		 * @param [in]	rep					   	The representation on which this property is attached to.
 		 * 										It cannot be null.
-		 * @param 	  	guid				   	The guid to set to the property. If empty then a new
-		 * 										guid will be generated.
+		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
+		 * 										will be generated.
 		 * @param 	  	title				   	The title to set to the property. If empty then
 		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The size (number of values) of this property.
-		 * @param 	  	attachmentKind		   	The element on which the property values are attached to.
-		 * @param 	  	energisticsPropertyKind	The kind of this property taken from the standard set of
-		 * 										RESQML property kinds.
+		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
+		 * 										is 1 for a scalar property.
+		 * @param 	  	attachmentKind		   	The topological element on which the property values are
+		 * 										attached to.
+		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
+		 * 										defined in the standard Energistics property type
+		 * 										dictionary.
 		 *
 		 * @returns	A pointer to the new comment property.
 		 */
@@ -2670,17 +2680,22 @@ namespace COMMON_NS
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind);
 
 		/**
-		 * Creates a comment property into this repository
+		 * Creates a comment property (which is of a local property kind) into this repository
+		 *
+		 * @exception	std::invalid_argument	If @p rep or @p localPropKind is null.
 		 *
 		 * @param [in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
-		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid
-		 * 								will be generated.
-		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\"
-		 * 								title will be set.
-		 * @param 	  	dimension	  	The size (number of values) of this property.
-		 * @param 	  	attachmentKind	The element on which the property values are attached to.
-		 * @param [in]	localPropType 	The kind of this property. It cannot be null.
+		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
+		 * 								generated.
+		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
+		 * 								will be set.
+		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
+		 * 								a scalar property.
+		 * @param 	  	attachmentKind	The topological element on which the property values are attached
+		 * 								to.
+		 * @param [in]	localPropType 	The property kind of these property values which must be defined
+		 * 								in the EPC document as a local property kind. It cannot be null.
 		 *
 		 * @returns	A pointer to the new comment property.
 		 */
@@ -2692,12 +2707,14 @@ namespace COMMON_NS
 		 *
 		 * @param [in]	rep					   	The representation on which this property is attached to.
 		 * 										It cannot be null.
-		 * @param 	  	guid				   	The guid to set to the property. If empty then a new
-		 * 										guid will be generated.
+		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
+		 * 										will be generated.
 		 * @param 	  	title				   	The title to set to the property. If empty then
 		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The size (number of values) of this property.
-		 * @param 	  	attachmentKind		   	The element on which the property values are attached to.
+		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
+		 * 										is 1 for a scalar property.
+		 * @param 	  	attachmentKind		   	The topological element on which the property values are
+		 * 										attached to.
 		 * @param 	  	uom					   	The property unit of measure taken from the standard
 		 * 										RESQML units of measure catalog.
 		 * @param 	  	energisticsPropertyKind	The kind of this property taken from the standard set of
@@ -2717,8 +2734,10 @@ namespace COMMON_NS
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
 		 * 								will be set.
-		 * @param 	  	dimension	  	The size (number of values) of this property.
-		 * @param 	  	attachmentKind	The element on which the property values are attached to.
+		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
+		 * 								a scalar property.
+		 * @param 	  	attachmentKind	The topological element on which the property values are attached
+		 * 								to.
 		 * @param 	  	uom			  	The property unit of measure taken from the standard RESQML units
 		 * 								of measure catalog.
 		 * @param [in]	localPropType 	The kind of this property. It cannot be null.
@@ -2737,8 +2756,10 @@ namespace COMMON_NS
 		 * 										will be generated.
 		 * @param 	  	title				   	The title to set to the property. If empty then
 		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The size (number of values) of this property.
-		 * @param 	  	attachmentKind		   	The element on which the property values are attached to.
+		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
+		 * 										is 1 for a scalar property.
+		 * @param 	  	attachmentKind		   	The topological element on which the property values are
+		 * 										attached to.
 		 * @param 	  	nonStandardUom		   	The property unit of measure.
 		 * @param 	  	energisticsPropertyKind	The kind of this property taken from the standard set of
 		 * 										RESQML property kinds.
@@ -2757,8 +2778,10 @@ namespace COMMON_NS
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
 		 * 								will be set.
-		 * @param 	  	dimension	  	The size (number of values) of this property.
-		 * @param 	  	attachmentKind	The element on which the property values are attached to.
+		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
+		 * 								a scalar property.
+		 * @param 	  	attachmentKind	The topological element on which the property values are attached
+		 * 								to.
 		 * @param 	  	nonStandardUom	The property unit of measure.
 		 * @param [in]	localPropType 	The kind of this property. It cannot be null.
 		 *
@@ -2776,8 +2799,10 @@ namespace COMMON_NS
 		 * 										will be generated.
 		 * @param 	  	title				   	The title to set to the property. If empty then
 		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The size (number of values) of this property.
-		 * @param 	  	attachmentKind		   	The element on which the property values are attached to.
+		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
+		 * 										is 1 for a scalar property.
+		 * @param 	  	attachmentKind		   	The topological element on which the property values are
+		 * 										attached to.
 		 * @param 	  	uom					   	The property unit of measure taken from the standard
 		 * 										RESQML units of measure catalog.
 		 * @param 	  	energisticsPropertyKind	The kind of this property taken from the standard set of
@@ -2803,8 +2828,10 @@ namespace COMMON_NS
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
 		 * 								will be set.
-		 * @param 	  	dimension	  	The size (number of values) of this property.
-		 * @param 	  	attachmentKind	The element on which the property values are attached to.
+		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
+		 * 								a scalar property.
+		 * @param 	  	attachmentKind	The topological element on which the property values are attached
+		 * 								to.
 		 * @param 	  	uom			  	The property unit of measure taken from the standard RESQML units
 		 * 								of measure catalog.
 		 * @param [in]	localPropType 	The kind of this property. It cannot be null.
@@ -2821,7 +2848,10 @@ namespace COMMON_NS
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		/**
-		 * Creates a discrete property into this repository
+		 * Creates a discrete property (which is of a well known Energistics property kind) into this
+		 * repository
+		 *
+		 * @exception	std::invalid_argument	If @p rep is null.
 		 *
 		 * @param [in]	rep					   	The representation on which this property is attached to.
 		 * 										It cannot be null.
@@ -2829,10 +2859,13 @@ namespace COMMON_NS
 		 * 										will be generated.
 		 * @param 	  	title				   	The title to set to the property. If empty then
 		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The size (number of values) of this property.
-		 * @param 	  	attachmentKind		   	The element on which the property values are attached to.
-		 * @param 	  	energisticsPropertyKind	The kind of this property taken from the standard set of
-		 * 										RESQML property kinds.
+		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
+		 * 										is 1 for a scalar property.
+		 * @param 	  	attachmentKind		   	The topological element on which the property values are
+		 * 										attached to.
+		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
+		 * 										defined in the standard Energistics property type
+		 * 										dictionary.
 		 *
 		 * @returns	A pointer to the new discrete property.
 		 */
@@ -2840,7 +2873,9 @@ namespace COMMON_NS
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind);
 
 		/**
-		 * Creates a discrete property into this repository
+		 * Creates a discrete property (which is of a local property kind) into this repository
+		 *
+		 * @exception	std::invalid_argument	If @p or @p localPropKind is null.
 		 *
 		 * @param [in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
@@ -2848,9 +2883,12 @@ namespace COMMON_NS
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
 		 * 								will be set.
-		 * @param 	  	dimension	  	The size (number of values) of this property.
-		 * @param 	  	attachmentKind	The element on which the property values are attached to.
-		 * @param [in]	localPropType 	The kind of this property. It cannot be null.
+		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
+		 * 								a scalar property.
+		 * @param 	  	attachmentKind	The topological element on which the property values are attached
+		 * 								to.
+		 * @param [in]	localPropType 	The property kind of these property values which must be defined
+		 * 								in the EPC document as a local property kind. It cannot be null.
 		 *
 		 * @returns	A pointer to the new discrete property.
 		 */
@@ -2866,8 +2904,10 @@ namespace COMMON_NS
 		 * 										will be generated.
 		 * @param 	  	title				   	The title to set to the property. If empty then
 		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The size (number of values) of this property.
-		 * @param 	  	attachmentKind		   	The element on which the property values are attached to.
+		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
+		 * 										is 1 for a scalar property.
+		 * @param 	  	attachmentKind		   	The topological element on which the property values are
+		 * 										attached to.
 		 * @param 	  	energisticsPropertyKind	The kind of this property taken from the standard set of
 		 * 										RESQML property kinds.
 		 * @param [in]	ts					   	The time series associated to this property series. It
@@ -2891,8 +2931,10 @@ namespace COMMON_NS
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
 		 * 								will be set.
-		 * @param 	  	dimension	  	The size (number of values) of this property.
-		 * @param 	  	attachmentKind	The element on which the property values are attached to.
+		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
+		 * 								a scalar property.
+		 * @param 	  	attachmentKind	The topological element on which the property values are attached
+		 * 								to.
 		 * @param [in]	localPropType 	The kind of this property. It cannot be null.
 		 * @param [in]	ts			  	The time series associated to this property series. It cannot be
 		 * 								null.
@@ -2907,7 +2949,10 @@ namespace COMMON_NS
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		/**
-		 * Creates a categorical property into this repository
+		 * Creates a categorical property (which is of a well known Energistics property kind) into this
+		 * repository
+		 *
+		 * @exception	std::invalid_argument	If @p rep or @p strLookup is null.
 		 *
 		 * @param [in]	rep					   	The representation on which this property is attached to.
 		 * 										It cannot be null.
@@ -2915,20 +2960,26 @@ namespace COMMON_NS
 		 * 										will be generated.
 		 * @param 	  	title				   	The title to set to the property. If empty then
 		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The size (number of values) of this property.
-		 * @param 	  	attachmentKind		   	The element on which the property values are attached to.
-		 * @param [in]	strLookup			   	The string lookup table associated to this property.
-		 * @param 	  	energisticsPropertyKind	The kind of this property taken from the standard set of
-		 * 										RESQML property kinds.
+		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
+		 * 										is 1 for a scalar property.
+		 * @param 	  	attachmentKind		   	The topological element on which the property values are
+		 * 										attached to.
+		 * @param [in]	strLookup			   	The string lookup which defines the possible string
+		 * 										values and their keys.
+		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
+		 * 										defined in the standard Energistics property type
+		 * 										dictionary.
 		 *
-		 * @returns	A pointer to the new categorical property.
+		 * @returns A pointer to new categorical property.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::CategoricalProperty* createCategoricalProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
 			RESQML2_0_1_NS::StringTableLookup* strLookup, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind);
 
 		/**
-		 * Creates a categorical property into this repository
+		 * Creates a categorical property (which is of a local property kind) into this repository
+		 *
+		 * @exception	std::invalid_argument	If @p rep, @p strLookup or @p localPropKind is null.
 		 *
 		 * @param [in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
@@ -2936,10 +2987,14 @@ namespace COMMON_NS
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
 		 * 								will be set.
-		 * @param 	  	dimension	  	The size (number of values) of this property.
-		 * @param 	  	attachmentKind	The element on which the property values are attached to.
-		 * @param [in]	strLookup	  	The string lookup table associated to this property.
-		 * @param [in]	localPropType 	The kind of this property. It cannot be null.
+		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
+		 * 								a scalar property.
+		 * @param 	  	attachmentKind	The topological element on which the property values are attached
+		 * 								to.
+		 * @param [in]	strLookup	  	The string lookup which defines the possible string values and
+		 * 								their keys. It cannot be null.
+		 * @param [in]	localPropType 	The property kind of these property values which must be defined
+		 * 								in the EPC document as a local property kind. It cannot be null.
 		 *
 		 * @returns	A pointer to the new categorical property.
 		 */
@@ -2956,8 +3011,10 @@ namespace COMMON_NS
 		 * 										will be generated.
 		 * @param 	  	title				   	The title to set to the property. If empty then
 		 * 										\"unknown\" title will be set.
-		 * @param 	  	dimension			   	The size (number of values) of this property.
-		 * @param 	  	attachmentKind		   	The element on which the property values are attached to.
+		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
+		 * 										is 1 for a scalar property.
+		 * @param 	  	attachmentKind		   	The topological element on which the property values are
+		 * 										attached to.
 		 * @param [in]	strLookup			   	The string lookup table associated to this property.
 		 * @param 	  	energisticsPropertyKind	The kind of this property taken from the standard set of
 		 * 										RESQML property kinds.
@@ -2983,8 +3040,10 @@ namespace COMMON_NS
 		 * 								generated.
 		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
 		 * 								will be set.
-		 * @param 	  	dimension	  	The size (number of values) of this property.
-		 * @param 	  	attachmentKind	The element on which the property values are attached to.
+		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
+		 * 								a scalar property.
+		 * @param 	  	attachmentKind	The topological element on which the property values are attached
+		 * 								to.
 		 * @param [in]	strLookup	  	The string lookup table associated to this property.
 		 * @param [in]	localPropType 	The kind of this property. It cannot be null.
 		 * @param [in]	ts			  	The time series associated to this property series. It cannot be
@@ -3063,9 +3122,9 @@ namespace COMMON_NS
 		 * Creates a wellbore into this repository
 		 *
 		 * @param [in]	witsmlWell	The well associated to this wellbore. It cannot be null.
-		 * @param 	  	guid	  	The guid to set to the well. If empty then a new guid will be
+		 * @param 	  	guid	  	The guid to set to the wellbore. If empty then a new guid will be
 		 * 							generated.
-		 * @param 	  	title	  	The title to set to the well. If empty then \"unknown\" title will be
+		 * @param 	  	title	  	The title to set to the wellbore. If empty then \"unknown\" title will be
 		 * 							set.
 		 *
 		 * @returns	A pointer to the new wellbore.
@@ -3078,9 +3137,9 @@ namespace COMMON_NS
 		 * Creates a wellbore into this repository
 		 *
 		 * @param [in]	witsmlWell	  	The well associated to this wellbore. It cannot be null.
-		 * @param 	  	guid		  	The guid to set to the well. If empty then a new guid will be
+		 * @param 	  	guid		  	The guid to set to the wellbore. If empty then a new guid will be
 		 * 								generated.
-		 * @param 	  	title		  	The title to set to the well. If empty then \"unknown\" title
+		 * @param 	  	title		  	The title to set to the wellbore. If empty then \"unknown\" title
 		 * 								will be set.
 		 * @param 	  	statusWellbore	POSC wellbore status.
 		 * @param 	  	isActive	  	True if is active, false if not.
@@ -3101,9 +3160,9 @@ namespace COMMON_NS
 		 * Creates a well completion into this repository
 		 *
 		 * @param [in]	witsmlWell	The well associated to this well completion. It cannot be null.
-		 * @param 	  	guid	  	The guid to set to the well. If empty then a new guid will be
+		 * @param 	  	guid	  	The guid to set to the well completion. If empty then a new guid will be
 		 * 							generated.
-		 * @param 	  	title	  	The title to set to the well. If empty then \"unknown\" title will be
+		 * @param 	  	title	  	The title to set to the well completion. If empty then \"unknown\" title will be
 		 * 							set.
 		 *
 		 * @returns	A pointer to the new well completion.
@@ -3113,15 +3172,20 @@ namespace COMMON_NS
 			const std::string & title);
 
 		/**
-		 * Creates wellbore completion
+		 * Creates a wellbore completion into this repository
 		 *
-		 * @param [in,out]	witsmlWellbore	  	If non-null, the witsml wellbore.
-		 * @param [in,out]	wellCompletion	  	If non-null, the well completion.
-		 * @param 		  	guid			  	Unique identifier.
-		 * @param 		  	title			  	The title.
-		 * @param 		  	wellCompletionName	Name of the well completion.
+		 * @param [in]	witsmlWellbore	  	The wellbore associated to this wellbore completion. It
+		 * 									cannot be null.
+		 * @param [in]	wellCompletion	  	The well completion associated to this wellbore completion.
+		 * 									It cannot be null.
+		 * @param 	  	guid			  	The guid to set to the wellbore completion. If empty then a new guid will be
+		 * 									generated.
+		 * @param 	  	title			  	The title to set to the wellbore completion. If empty then \"unknown\" title
+		 * 									will be set.
+		 * @param 	  	wellCompletionName	Human-recognizable context for the well completion that
+		 * 									contains the completion.
 		 *
-		 * @returns	Null if it fails, else the new wellbore completion.
+		 * @returns	A pointer to the new wellbore completion.
 		 */
 		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreCompletion* createWellboreCompletion(WITSML2_0_NS::Wellbore* witsmlWellbore,
 			WITSML2_0_NS::WellCompletion* wellCompletion,
@@ -3130,14 +3194,19 @@ namespace COMMON_NS
 			const std::string & wellCompletionName);
 
 		/**
-		 * Creates wellbore geometry
+		 * Creates a wellbore geometry into this repository. It is used to capture information about the
+		 * configuration of the permanently installed components in a wellbore
 		 *
-		 * @param [in,out]	witsmlWellbore	If non-null, the witsml wellbore.
-		 * @param 		  	guid		  	Unique identifier.
-		 * @param 		  	title		  	The title.
-		 * @param 		  	channelStatus 	The channel status.
+		 * @param [in]	witsmlWellbore	The wellbore associated to this wellbore geometry. It cannot be
+		 * 								null.
+		 * @param 	  	guid		  	The guid to set to the geometry. If empty then a new guid will be
+		 * 								generated.
+		 * @param 	  	title		  	The title to set to the geometry. If empty then \"unknown\" title
+		 * 								will be set.
+		 * @param 	  	channelStatus 	Describes the growing status of the wellbore geometry, whether
+		 * 								active, inactive or closed.
 		 *
-		 * @returns	Null if it fails, else the new wellbore geometry.
+		 * @returns	A pointer to the new wellbore geometry.
 		 */
 		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::WellboreGeometry* createWellboreGeometry(WITSML2_0_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
@@ -3145,14 +3214,18 @@ namespace COMMON_NS
 			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
 
 		/**
-		 * Creates a trajectory
+		 * Creates a wellbore trajectory into this repository
 		 *
-		 * @param [in,out]	witsmlWellbore	If non-null, the witsml wellbore.
-		 * @param 		  	guid		  	Unique identifier.
-		 * @param 		  	title		  	The title.
-		 * @param 		  	channelStatus 	The channel status.
+		 * @param [in]	witsmlWellbore	The wellbore associated to this wellbore trajectory. It cannot be
+		 * 								null.
+		 * @param 	  	guid		  	The guid to set to the trajectory. If empty then a new guid will be
+		 * 								generated.
+		 * @param 	  	title		  	The title to set to the trajectory. If empty then \"unknown\" title
+		 * 								will be set.
+		 * @param 	  	channelStatus 	Describes the growing status of the trajectory, whether active,
+		 * 								inactive or closed.
 		 *
-		 * @returns	Null if it fails, else the new trajectory.
+		 * @returns	A pointer to the new trajectory.
 		 */
 		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Trajectory* createTrajectory(WITSML2_0_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
@@ -3160,44 +3233,51 @@ namespace COMMON_NS
 			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
 
 		/**
-		 * Creates a log
+		 * Creates a wellbore log into this repository
 		 *
-		 * @param [in,out]	witsmlWellbore	If non-null, the witsml wellbore.
-		 * @param 		  	guid		  	Unique identifier.
-		 * @param 		  	title		  	The title.
+		 * @param [in]	witsmlWellbore	The wellbore associated to this log. It cannot be
+		 * 								null.
+		 * @param 	  	guid		  	The guid to set to the log. If empty then a new guid will be
+		 * 								generated.
+		 * @param 	  	title		  	The title to set to the log. If empty then \"unknown\" title
+		 * 								will be set.
 		 *
-		 * @returns	Null if it fails, else the new log.
+		 * @returns	A pointer to the new log.
 		 */
 		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Log* createLog(WITSML2_0_NS::Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title);
 
 		/**
-		 * Creates channel set
+		 * Creates a channel set into this repository
 		 *
-		 * @param 	guid 	Unique identifier.
-		 * @param 	title	The title.
+		 * @param 	guid 	The guid to set to the channel set. If empty then a new guid will be generated.
+		 * @param 	title	The title to set to the channel set. If empty then \"unknown\" title will be set.
 		 *
-		 * @returns	Null if it fails, else the new channel set.
+		 * @returns	A pointer to the new channel set.
 		 */
 		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::ChannelSet* createChannelSet(
 			const std::string & guid,
 			const std::string & title);
 
 		/**
-		 * Creates a channel
+		 * Creates a channel into this repository
 		 *
-		 * @param [in,out]	propertyKind	  	If non-null, the property kind.
-		 * @param 		  	guid			  	Unique identifier.
-		 * @param 		  	title			  	The title.
-		 * @param 		  	mnemonic		  	The mnemonic.
-		 * @param 		  	uom				  	The uom.
-		 * @param 		  	dataType		  	Type of the data.
-		 * @param 		  	growingStatus	  	The growing status.
-		 * @param 		  	timeDepth		  	Depth of the time.
-		 * @param 		  	loggingCompanyName	Name of the logging company.
+		 * @param [in]	propertyKind	  	The property kind associated to this channel. It cannot be
+		 * 									null.
+		 * @param 	  	guid			  	The guid to set to the channel. If empty then a new guid will be
+		 * 									generated.
+		 * @param 	  	title			  	The title to set to the channel. If empty then \"unknown\" title
+		 * 									will be set.
+		 * @param 	  	mnemonic		  	The mnemonic name to set to this channel.
+		 * @param 	  	uom				  	The underlying unit of measure of the value.
+		 * @param 	  	dataType		  	The underlying ETP data type of the value.
+		 * @param 	  	growingStatus	  	The status of a channel with respect to creating new
+		 * 									measurements.
+		 * @param 	  	timeDepth		  	Use to indicate if this is a time or depth log.
+		 * @param 	  	loggingCompanyName	Name of the logging company.
 		 *
-		 * @returns	Null if it fails, else the new channel.
+		 * @returns	A pointer to the new channel.
 		 */
 		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Channel* createChannel(COMMON_NS::PropertyKind * propertyKind,
 			const std::string & guid, const std::string & title,
@@ -3207,19 +3287,21 @@ namespace COMMON_NS
 		//*************** PRODML *************
 
 		/**
-		 * Creates fluid system
+		 * Creates a fluid system into this repository
 		 *
-		 * @param 	guid			  	Unique identifier.
-		 * @param 	title			  	The title.
+		 * @param 	guid			  	The guid to set to the fluid system. If empty then a new guid
+		 * 								will be generated.
+		 * @param 	title			  	The title to set to the fluid system. If empty then \"unknown\"
+		 * 								title will be set.
 		 * @param 	temperatureValue  	The temperature value.
-		 * @param 	temperatureUom	  	The temperature uom.
+		 * @param 	temperatureUom	  	The temperature unit of measure.
 		 * @param 	pressureValue	  	The pressure value.
-		 * @param 	pressureUom		  	The pressure uom.
-		 * @param 	reservoirFluidKind	The reservoir fluid kind.
+		 * @param 	pressureUom		  	The pressure unit of measure.
+		 * @param 	reservoirFluidKind	The kind of the reservoir fluid.
 		 * @param 	gasOilRatio		  	The gas oil ratio.
-		 * @param 	gasOilRatioUom	  	The gas oil ratio uom.
+		 * @param 	gasOilRatioUom	  	The gas oil ratio unit of measure.
 		 *
-		 * @returns	Null if it fails, else the new fluid system.
+		 * @returns	A pointer to the new fluid system.
 		 */
 		DLL_IMPORT_OR_EXPORT PRODML2_1_NS::FluidSystem* createFluidSystem(const std::string & guid,
 			const std::string & title,
@@ -3229,82 +3311,87 @@ namespace COMMON_NS
 			double gasOilRatio, gsoap_eml2_2::eml22__VolumePerVolumeUom gasOilRatioUom);
 
 		/**
-		 * Creates fluid characterization
+		 * Creates a fluid characterization into this repository
 		 *
-		 * @param 	guid 	Unique identifier.
-		 * @param 	title	The title.
+		 * @param 	guid 	The guid to set to the fluid characterization. If empty then a new guid will
+		 * 					be generated.
+		 * @param 	title	The title to set to the fluid characterization. If empty then \"unknown\"
+		 * 					title will be set.
 		 *
-		 * @returns	Null if it fails, else the new fluid characterization.
+		 * @returns	A pointer to the new fluid characterization.
 		 */
 		DLL_IMPORT_OR_EXPORT PRODML2_1_NS::FluidCharacterization* createFluidCharacterization(const std::string & guid, const std::string & title);
 
+		//************** EML2.2 ****************
+
 		/**
-		 * ************************************
-		 * ************ EML2.2 ****************
-		 * ************************************
+		 * Creates a graphical information set into this repository
 		 *
-		 * @param 	guid 	Unique identifier.
-		 * @param 	title	The title.
+		 * @param 	guid 	The guid to set to the graphical information set. If empty then a new guid will
+		 * 					be generated.
+		 * @param 	title	The title to set to the graphical information set. If empty then \"unknown\"
+		 * 					title will be set.
 		 *
-		 * @returns	Null if it fails, else the new graphical information set.
+		 * @returns	A pointer to the new graphical information set.
 		 */
 		DLL_IMPORT_OR_EXPORT GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
 
 #if WITH_EXPERIMENTAL
 
 		/**
-		 * Creates discrete color map
+		 * Creates a discrete color map into this repository
 		 *
-		 * @param 	guid 	Unique identifier.
-		 * @param 	title	The title.
+		 * @param 	guid 	The guid to set to the discrete color map. If empty then a new guid will be
+		 * 					generated.
+		 * @param 	title	The title to set to the discrete color map. If empty then \"unknown\" title
+		 * 					will be set.
 		 *
-		 * @returns	Null if it fails, else the new discrete color map.
+		 * @returns	A pointer to the new discrete color map.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::DiscreteColorMap* createDiscreteColorMap(const std::string& guid, const std::string& title);
 
 		/**
-		 * Creates continuous color map
+		 * Creates a continuous color map into this repository
 		 *
-		 * @param 	guid			   	Unique identifier.
-		 * @param 	title			   	The title.
-		 * @param 	interpolationDomain	The interpolation domain.
+		 * @param 	guid			   	The guid to set to the continuous color map. If empty then a new
+		 * 								guid will be generated.
+		 * @param 	title			   	The title to set to the continuous color map. If empty then
+		 * 								\"unknown\" title will be set.
+		 * @param 	interpolationDomain	The interpolation domain (the color space).
 		 * @param 	interpolationMethod	The interpolation method.
 		 *
-		 * @returns	Null if it fails, else the new continuous color map.
+		 * @returns	A pointer to the new continuous color map.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::ContinuousColorMap* createContinuousColorMap(const std::string& guid, const std::string& title,
 			gsoap_eml2_2::resqml22__InterpolationDomain interpolationDomain, gsoap_eml2_2::resqml22__InterpolationMethod interpolationMethod);
 #endif
 
-		//************************************
 		//***** STANDARD PROP KIND ***********
-		//************************************
 
 		/**
-		 * Get the property kind mapper if given at repository construction time. Else return NULL.
+		 * Gets the property kind mapper if it was given at repository construction time
 		 *
-		 * @returns	Null if it fails, else the property kind mapper.
+		 * @returns	The property kind mapper, or @c nullptr if no property kind mapper was given at
+		 * 			repository construction time.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PropertyKindMapper* getPropertyKindMapper() const { return propertyKindMapper; }
 
-		/**
-		 * ************************************
-		 * ************* WARNINGS *************
-		 * ************************************
-		 */
+		//*************** WARNINGS *************
+		
+		/** Clears the repository the warnings */
 		DLL_IMPORT_OR_EXPORT void clearWarnings() { warnings.clear();  }
 
 		/**
-		 * Adds a warning
+		 * Adds a warning to this repository
 		 *
 		 * @param 	warning	The warning.
 		 */
 		DLL_IMPORT_OR_EXPORT void addWarning(const std::string & warning);
 
 		/**
-		 * Gets the warnings
+		 * Gets the repository warnings
 		 *
-		 * @returns	The warnings.
+		 * @returns	A vector of all repository warnings.
 		 */
 		DLL_IMPORT_OR_EXPORT const std::vector<std::string> & getWarnings() const;
 	};

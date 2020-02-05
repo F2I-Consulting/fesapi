@@ -20,18 +20,17 @@ under the License.
 
 #include "AbstractObject.h"
 
-/** . */
 namespace COMMON_NS
 {
-	/** An epc external part reference. */
+	/** Proxy class for handling external parts of an EPC package. It must be used at least for external HDF5 parts. */
 	class EpcExternalPartReference : public COMMON_NS::AbstractObject
 	{
 	protected:
 
 		/**
-		 * Only to be used in partial transfer context
+		 * Constructor. Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 * @param [in]	partialObject	If non-null, the partial object.
 		 */
 		EpcExternalPartReference(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
@@ -40,33 +39,29 @@ namespace COMMON_NS
 		EpcExternalPartReference() {}
 
 		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
+		 * Creates an instance of this class by wrapping an EML2.0 gSOAP instance
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		EpcExternalPartReference(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap):
 			COMMON_NS::AbstractObject(fromGsoap) {}
 
 		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
+		 * Creates an instance of this class by wrapping an EML2.1 gSOAP instance
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		EpcExternalPartReference(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
 			COMMON_NS::AbstractObject(fromGsoap) {}
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor does nothing since the memory is managed by the gSOAP context */
 		~EpcExternalPartReference() {}
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
+		 * Get the standard XML tag without XML namespace for serializing this data object
 		 *
 		 * @returns	The XML tag.
 		 */

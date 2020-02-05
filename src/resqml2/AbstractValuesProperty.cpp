@@ -187,6 +187,10 @@ LONG64 AbstractValuesProperty::getLongValuesOfPatch(unsigned int patchIndex, LON
 
 LONG64 AbstractValuesProperty::getNullValueOfPatch(unsigned int patchIndex) const
 {
+	if (patchIndex >= getPatchCount()) {
+		throw range_error("The patch index is out of range");
+	}
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
 		if (patch->Values->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {

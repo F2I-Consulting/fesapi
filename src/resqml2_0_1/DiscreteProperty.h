@@ -24,9 +24,9 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/**
-	 * Contains discrete integer values; typically used to store any type of index. So that the
-	 * value range can be known before accessing all values, it also optionally stores the minimum
-	 * and maximum value in the range.
+	 * Proxy class for a discrete  property. Such property contains discrete integer values;
+	 * typically used to store any type of index. So that the value range can be known before
+	 * accessing all values, it also optionally stores the minimum and maximum value in the range.
 	 */
 	class DiscreteProperty : public RESQML2_NS::AbstractValuesProperty
 	{
@@ -40,48 +40,57 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 * @param [in]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT DiscreteProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractValuesProperty(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * Creates a discrete property which is of a well known Energistics property kind
 		 *
-		 * @param [in,out]	rep					   	The representation which supports these property
-		 * 											values.
-		 * @param 		  	guid				   	The guid to set to the fault. If empty then a new
-		 * 											guid will be generated.
-		 * @param 		  	title				   	A title for the instance to create.
-		 * @param 		  	dimension			   	The dimension of each value (scalar properties == 1).
-		 * @param 		  	attachmentKind		   	The topological orbit which support each value.
-		 * @param 		  	energisticsPropertyKind	The property kind of these property values which must
-		 * 											be defined in the standard energistics property type
-		 * 											dictionary.
+		 * @exception	std::invalid_argument	If @p rep is null.
+		 *
+		 * @param [in]	rep					   	The representation on which this property is attached to.
+		 * 										It cannot be null.
+		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
+		 * 										will be generated.
+		 * @param 	  	title				   	The title to set to the property. If empty then
+		 * 										\"unknown\" title will be set.
+		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
+		 * 										is 1 for a scalar property.
+		 * @param 	  	attachmentKind		   	The topological element on which the property values are
+		 * 										attached to.
+		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
+		 * 										defined in the standard Energistics property type
+		 * 										dictionary.
 		 */
 		DiscreteProperty(RESQML2_NS::AbstractRepresentation* rep, const std::string& guid, const std::string& title,
 			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * Creates a discrete property which is of a local property kind
 		 *
-		 * @param [in,out]	rep			  	The representation which supports these property values.
-		 * @param 		  	guid		  	The guid to set to the fault. If empty then a new guid will
-		 * 									be generated.
-		 * @param 		  	title		  	A title for the instance to create.
-		 * @param 		  	dimension	  	The dimension of each value (scalar properties == 1).
-		 * @param 		  	attachmentKind	The topological orbit which support each value.
-		 * @param [in,out]	localPropKind 	The property kind of these property values which must be
-		 * 									defined in the EPC document as a local property kind.
+		 * @exception	std::invalid_argument	If @p or @p localPropKind is null.
+		 *
+		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * 								cannot be null.
+		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
+		 * 								generated.
+		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
+		 * 								will be set.
+		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
+		 * 								a scalar property.
+		 * @param 	  	attachmentKind	The topological element on which the property values are attached
+		 * 								to.
+		 * @param [in]	localPropKind 	The property kind of these property values which must be defined
+		 * 								in the EPC document as a local property kind. It cannot be null.
 		 */
 		DiscreteProperty(RESQML2_NS::AbstractRepresentation* rep, const std::string& guid, const std::string& title,
 			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, COMMON_NS::PropertyKind* localPropKind);
 
 		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
+		 * Creates an instance of this class by wrapping a gSOAP instance
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		DiscreteProperty(gsoap_resqml2_0_1::_resqml20__DiscreteProperty* fromGsoap) : AbstractValuesProperty(fromGsoap) {}
 

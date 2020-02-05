@@ -24,7 +24,7 @@ under the License.
 /** . */
 namespace RESQML2_NS
 {
-	/** An abstract values property. */
+	/** Proxy class for an abstract values property. */
 	class AbstractValuesProperty : public AbstractProperty
 	{
 	protected:
@@ -64,18 +64,20 @@ namespace RESQML2_NS
 
 		/**
 		 * Push back a new patch of integer values for this property where the values have not to be
-		 * written in the HDF file. The reason can be that the values already exist in an external file
-		 * (only HDF5 for now) or that the writing of the values in the external file is defered in time.
+		 * written in the HDF5 file. The reason can be that the values already exist in an external file
+		 * (only HDF5 for now) or that the writing of the values in the external file is differed in
+		 * time.
 		 *
-		 * @param [in,out]	hdfProxy   	The HDF5 proxy where the values are already or will be stored.
-		 * @param 		  	datasetName	(Optional) If not provided during the method call, the dataset
-		 * 								will be named the same as the dataset naming convention of the
-		 * 								fesapi :"/RESQML/" + prop->uuid + "/values_patch" + patchIndex;
-		 * @param 		  	nullValue  	(Optional) Only relevant for integer hdf5 datasets. Indeed,
-		 * 								Resqml (and fesapi) forces null value for floating point ot be
-		 * 								NaN value.
+		 * @param [in]	hdfProxy   	The HDF5 proxy where the values are already or will be stored. If
+		 * 							null then a default HDF proxy must be defined in the data object
+		 * 							repository.
+		 * @param 	  	datasetName	(Optional) If not provided during the method call, the dataset will
+		 * 							be named the same as the dataset naming convention of fesapi:
+		 * 							<tt>"/RESQML/" + prop-&gt;uuid + "/values_patch" + patchIndex</tt>
+		 * @param 	  	nullValue  	(Optional) Only relevant for integer hdf5 datasets. Indeed, RESQML
+		 * 							(and fesapi) forces null value for floating point to be NaN value.
 		 *
-		 * @returns	The name of the hdf5 dataset.
+		 * @returns	The name of the HDF5 dataset.
 		 */
 		std::string pushBackRefToExistingIntegerDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
 
@@ -84,100 +86,114 @@ namespace RESQML2_NS
 
 	public:
 
-		/** Values that represent hdf datatype enums */
+		/** Values that represent HDF data types */
 		enum hdfDatatypeEnum { UNKNOWN = 0, DOUBLE = 1, FLOAT = 2, LONG_64 = 3, ULONG_64 = 4, INT = 5, UINT = 6, SHORT = 7, USHORT = 8, CHAR = 9, UCHAR = 10};
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~AbstractValuesProperty() {}
 
 		/**
-		 * Get the number of patches in this values property. It should be the same count as the patch
+		 * Gets the number of patches in this values property. It should be the same count as the patch
 		 * count of the associated representation.
+		 *
+		 * @exception	std::out_of_range	If the patch count is strictly greater than unsigned int max
+		 * 									value.
 		 *
 		 * @returns	The patch count.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const;
 
 		/**
-		 * Get the values datatype in the HDF dataset
+		 * Get the values data type in the HDF dataset
 		 *
-		 * @returns	The values hdf datatype.
+		 * @returns	The data type of the values if successful, else @c UNKNOWN.
 		 */
 		DLL_IMPORT_OR_EXPORT AbstractValuesProperty::hdfDatatypeEnum getValuesHdfDatatype() const;
 
 		/**
-		 * Push back a new patch of values for this property where the values have not to be written in
-		 * the HDF file. The reason can be that the values already exist in an external file (only HDF5
-		 * for now) or that the writing of the values in the external file is defered in time.
+		 * Pushes back a new patch of values for this property where the values have not to be written
+		 * in the HDF5 file. The reason can be that the values already exist in an external file (only
+		 * HDF5 for now) or that the writing of the values in the external file is differed in time.
 		 *
-		 * @param [in,out]	hdfProxy   	The HDF5 proxy where the values are already or will be stored.
-		 * @param 		  	datasetName	(Optional) If not provided during the method call, the dataset
-		 * 								will be named the same as the dataset naming convention of the
-		 * 								fesapi :"/RESQML/" + prop->uuid + "/values_patch" + patchIndex;
-		 * @param 		  	nullValue  	(Optional) Only relevant for integer hdf5 datasets. Indeed,
-		 * 								Resqml (and fesapi) forces null value for floating point to be
-		 * 								NaN value.
+		 * @param [in]	hdfProxy   	The HDF5 proxy where the values are already or will be stored. If
+		 * 							null then a default HDF proxy must be defined in the data object
+		 * 							repository.
+		 * @param 	  	datasetName	(Optional) If not provided during the method call, the dataset will
+		 * 							be named the same as the dataset naming convention of fesapi:
+		 * 							<tt>"/RESQML/" + prop-&gt;uuid + "/values_patch" + patchIndex</tt>
+		 * @param 	  	nullValue  	(Optional) Only relevant for integer hdf5 datasets. Indeed, RESQML
+		 * 							(and fesapi) forces null value for floating point to be NaN value.
 		 *
-		 * @returns	The name of the hdf5 dataset.
+		 * @returns	The name of the HDF5 dataset.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)()) = 0;
 
 		/**
-		 * Get all the values of the instance which are supposed to be long ones. Not for continuous
-		 * property values.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be long ones.
+		 * Do not use this method for continuous property values.
 		 *
-		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	values	  	If non-null, the values.
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
 		 *
-		 * @returns	the null value.
+		 * @param 	   	patchIndex	The index of the patch we want the values from.
+		 * @param [out]	values	  	Preallocated buffer for receiving the values.
+		 *
+		 * @returns	The null value.
 		 */
 		DLL_IMPORT_OR_EXPORT LONG64 getLongValuesOfPatch(unsigned int patchIndex, LONG64 * values) const;
 
 		/**
-		 * Get the null value of the instance which are supposed to be integer ones. Not for continuous
-		 * property values.
+		 * Gets the null value of a given patch of this instance. Values are supposed to be integer
+		 * ones. Do not use this method for continuous property values.
 		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
+		 * @exception	std::range_error	 	If @p patchIndex is strictly greater than patch count.
+		 * @exception	std::invalid_argument	If the @p patchIndex patch does not contain integer
+		 * 										values.
+		 *
+		 * @param 	patchIndex	The index of the patch we want the values from.
 		 *
 		 * @returns	the null value.
 		 */
 		DLL_IMPORT_OR_EXPORT LONG64 getNullValueOfPatch(unsigned int patchIndex) const;
 
 		/**
-		 * Get all the values of the instance which are supposed to be unsigned long ones. Not for
-		 * continuous property values.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
+		 * long ones. Do not use this method for continuous property values.
 		 *
-		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	values	  	If non-null, the values.
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
 		 *
-		 * @returns	the null value.
+		 * @param 	   	patchIndex	The index of the patch we want the values from.
+		 * @param [out]	values	  	Preallocated buffer for receiving the values.
+		 *
+		 * @returns	The null value.
 		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getULongValuesOfPatch(unsigned int patchIndex, ULONG64 * values) const;
 
 		/**
-		 * Get all the values of the instance which are supposed to be int ones. Not for continuous
-		 * property values.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be int ones. Do
+		 * not use this method for continuous property values.
 		 *
-		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	values	  	If non-null, the values.
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
 		 *
-		 * @returns	the null value.
+		 * @param 	   	patchIndex	The index of the patch we want the values from.
+		 * @param [out]	values	  	Preallocated buffer for receiving the values.
+		 *
+		 * @returns	The null value.
 		 */
 		DLL_IMPORT_OR_EXPORT int getIntValuesOfPatch(unsigned int patchIndex, int * values) const;
 
 		/**
-		 * Get some of the values of a particular patch of the instance which are supposed to be int
+		 * Gets some of the values of a given patch of this instance. Values are supposed to be int
 		 * ones. This method makes use of HDF5 hyperslabbing.
 		 *
-		 * @param 		  	patchIndex					The index of the patch we want the values from.
-		 * @param [in,out]	values						The array (pointer) of values must be
-		 * 												preallocated.
-		 * @param [in,out]	numValuesInEachDimension	The number of property values ordered by
-		 * 												dimension of the array to write.
-		 * @param [in,out]	offsetInEachDimension   	The offset values ordered by dimension of the
-		 * 												array to write.
-		 * @param 		  	numArrayDimensions			The number of dimensions of the HDF5 array to
-		 * 												read.
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	   	patchIndex					The index of the patch we want the values from.
+		 * @param [out]	values						Preallocated buffer for receiving the values.
+		 * @param [in] 	numValuesInEachDimension	The number of property values ordered by dimension of
+		 * 											the array to read.
+		 * @param [in] 	offsetInEachDimension   	The offset values ordered by dimension of the array
+		 * 											to read.
+		 * @param 	   	numArrayDimensions			The number of dimensions of the HDF5 array to read.
 		 *
 		 * @returns	the null value.
 		 */
@@ -190,22 +206,25 @@ namespace RESQML2_NS
 		) const;
 
 		/**
-		 * Get all the values of the instance which are supposed to be int ones.
+		 * Gets some of the values of a given patch of this instance. Values are supposed to be int
+		 * ones.
 		 *
-		 * @param 		  	patchIndex			  	Patch index.
-		 * @param [in,out]	values				  	The array (pointer) of values must be preallocated.
-		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
-		 * 											dimension (mainly I dimension).
-		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
-		 * 											(mainly J dimension).
-		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
-		 * 											dimension (mainly K dimension).
-		 * @param 		  	offsetInFastestDim	  	The offset to write in the fastest dimension (mainly
-		 * 											I dimension).
-		 * @param 		  	offsetInMiddleDim	  	The offset value to write in the middle dimension
-		 * 											(mainly J dimension).
-		 * @param 		  	offsetInSlowestDim	  	The offset value to write in the slowest dimension
-		 * 											(mainly K dimension).
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	   	patchIndex			  	The index of the patch we want the values from.
+		 * @param [out]	values				  	Preallocated buffer for receiving the values.
+		 * @param 	   	valueCountInFastestDim	The number of values to read in the fastest dimension
+		 * 										(mainly I dimension).
+		 * @param 	   	valueCountInMiddleDim 	The number of values to read in the middle dimension
+		 * 										(mainly J dimension).
+		 * @param 	   	valueCountInSlowestDim	The number of values to read in the slowest dimension
+		 * 										(mainly K dimension).
+		 * @param 	   	offsetInFastestDim	  	The offset value for reading in the fastest dimension
+		 * 										(mainly I dimension).
+		 * @param 	   	offsetInMiddleDim	  	The offset value for reading in the middle dimension
+		 * 										(mainly J dimension).
+		 * @param 	   	offsetInSlowestDim	  	The offset value for reading in the slowest dimension
+		 * 										(mainly K dimension).
 		 */
 		DLL_IMPORT_OR_EXPORT void getIntValuesOf3dPatch(
 			unsigned int patchIndex,
@@ -219,93 +238,110 @@ namespace RESQML2_NS
 		) const;
 
 		/**
-		 * Get all the values of the instance which are supposed to be unsigned int ones. Not for
-		 * continuous property values.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned int
+		 * ones. Do not use this method for continuous property values.
 		 *
-		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	values	  	If non-null, the values.
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
 		 *
-		 * @returns	the null value.
+		 * @param 	   	patchIndex	The index of the patch we want the values from.
+		 * @param [out]	values	  	Preallocated buffer for receiving the values.
+		 *
+		 * @returns	The null value.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getUIntValuesOfPatch(unsigned int patchIndex, unsigned int * values) const;
 
 		/**
-		 * Get all the values of the instance which are supposed to be short ones. Not for continuous
-		 * property values.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be short ones.
+		 * Do not use this method for continuous property values.
 		 *
-		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	values	  	If non-null, the values.
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
 		 *
-		 * @returns	the null value.
+		 * @param 	   	patchIndex	The index of the patch we want the values from.
+		 * @param [out]	values	  	Preallocated buffer for receiving the values.
+		 *
+		 * @returns	The null value.
 		 */
 		DLL_IMPORT_OR_EXPORT short getShortValuesOfPatch(unsigned int patchIndex, short * values) const;
 
 		/**
-		 * Get all the values of the instance which are supposed to be unsigned short ones. Not for
-		 * continuous property values.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
+		 * short ones. Do not use this method for continuous property values.
 		 *
-		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	values	  	If non-null, the values.
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
 		 *
-		 * @returns	the null value.
+		 * @param 	   	patchIndex	The index of the patch we want the values from.
+		 * @param [out]	values	  	Preallocated buffer for receiving the values.
+		 *
+		 * @returns	The null value.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned short getUShortValuesOfPatch(unsigned int patchIndex, unsigned short * values) const;
 
 		/**
-		 * Get all the values of the instance which are supposed to be char ones. Not for continuous
-		 * property values.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be char ones.
+		 * Do not use this method for continuous property values.
 		 *
-		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	values	  	If non-null, the values.
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
 		 *
-		 * @returns	the null value.
+		 * @param 	   	patchIndex	The index of the patch we want the values from.
+		 * @param [out]	values	  	Preallocated buffer for receiving the values.
+		 *
+		 * @returns	The null value.
 		 */
 		DLL_IMPORT_OR_EXPORT char getCharValuesOfPatch(unsigned int patchIndex, char * values) const;
 
 		/**
-		 * Get all the values of the instance which are supposed to be unsigned char ones. Not for
-		 * continuous property values.
+		 * Gets all the values of a given patch of this instance. Values are supposed to be unsigned
+		 * char ones. Do not use this method for continuous property values.
 		 *
-		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	values	  	If non-null, the values.
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
 		 *
-		 * @returns	the null value.
+		 * @param 	   	patchIndex	The index of the patch we want the values from.
+		 * @param [out]	values	  	Preallocated buffer for receiving the values.
+		 *
+		 * @returns	The null value.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned char getUCharValuesOfPatch(unsigned int patchIndex, unsigned char * values) const;
 
 		/**
-		 * Get the count of all values contained into the underlying HDF5 dataset of this property for a
-		 * particular patch.
+		 * Gets the count of all values contained into the underlying HDF5 dataset of a given patch of
+		 * this property.
 		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
 		 *
-		 * @returns	The values count of patch.
+		 * @param 	patchIndex	The index of the patch we want to count the values from.
+		 *
+		 * @returns	The count of values of the @p patchIndex patch.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getValuesCountOfPatch (unsigned int patchIndex) const;
 
 		/**
-		 * Get the count of values on a specific dimension of the underlying HDF5 dataset of this
-		 * property.
+		 * Gets the count of values on a specific dimension of the underlying HDF5 dataset of a given
+		 * patch of this property.
 		 *
-		 * @param 	dimIndex  	The index of the dimension we want to know the values count in this
-		 * 						property.
-		 * @param 	patchIndex	The index of the patch we want to know the values count in this property.
+		 * @exception	std::out_of_range	If @p dimIndex is strictly greater than dimension count.
+		 * @exception	std::range_error 	If @p patchIndex is strictly greater than patch count.
 		 *
-		 * @returns	The number of values, 0 otherwise.
+		 * @param 	dimIndex  	The index of the dimension we want to count the values from.
+		 * @param 	patchIndex	The index of the patch we want to count the values from.
+		 *
+		 * @returns	The count of values in the @p dimIndex dimension of @p patchIndex patch.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getValuesCountOfDimensionOfPatch(unsigned int dimIndex, unsigned int patchIndex) const;
 
 		/**
-		 * Get the count of dimension of the underlying HDF5 dataset of this property.
+		 * Gets the count of dimensions of the underlying HDF5 dataset of a given patch of this property.
 		 *
-		 * @param 	patchIndex	The index of the patch we want to know the dimensions in this property.
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	patchIndex	The index of the patch we want to count the dimensions from.
 		 *
 		 * @returns	The number of values, 0 otherwise.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getDimensionsCountOfPatch(unsigned int patchIndex) const;
 
 		/**
-		 * Pushes back a new facet to this intance
+		 * Pushes back a new facet to this instance. Facets are qualifiers for property values which
+		 * allow users to semantically specialize a property without creating a new property kind.
 		 *
 		 * @param 	facet	  	The facet.
 		 * @param 	facetValue	The facet value.
@@ -313,27 +349,31 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackFacet(const gsoap_resqml2_0_1::resqml20__Facet & facet, const std::string & facetValue);
 
 		/**
-		 * Get the count of facet of this instance
+		 * Gets the count of facet of this instance
 		 *
 		 * @returns	The facet count.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getFacetCount() const;
 
 		/**
-		 * Get the facet at a particular index of the facet collection of this instance
+		 * Gets the facet at a particular index of the facet collection of this instance.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	If @p index is strictly greater than facet count.
 		 *
-		 * @returns	The facet.
+		 * @param 	index	Zero-based index of the facet we want to get.
+		 *
+		 * @returns	The facet at index @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__Facet getFacet(unsigned int index) const;
 
 		/**
-		 * Get the facet value at a particular index of the facet collection of this instance.
+		 * Gets the facet value at a particular index of the facet collection of this instance.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	If @p index is strictly greater than facet count.
 		 *
-		 * @returns	The facet value.
+		 * @param 	index	Zero-based index of the facet we want to get.
+		 *
+		 * @returns	The facet value at index @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getFacetValue(unsigned int index) const;
 
@@ -342,15 +382,19 @@ namespace RESQML2_NS
 		//***************************
 
 		/**
-		 * Create an array (potentially multi dimensions) of explicit long values to the property
-		 * values. No values are written to this array yet.
+		 * Creates an nd array of explicit long values into the property values. No values are written
+		 * to this array yet.
 		 *
-		 * @param [in,out]	numValues		  	The number of property values ordered by dimension of the
-		 * 										array to write.
-		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
-		 * 										values. It must be already opened for writing and won't
-		 * 										be closed in this method.
+		 * @exception	std::invalid_argument	If @p proxy is null and no default HDF proxy is defined
+		 * 										into the data object repository.
+		 *
+		 * @param [in]	numValues		  	The number of property values ordered by dimension of the
+		 * 									array to write.
+		 * @param 	  	numArrayDimensions	The number of dimensions of the array to write.
+		 * @param [in]	proxy			  	(Optional) The HDF proxy where to write the property values.
+		 * 									It must be already opened for writing and won't be closed in
+		 * 									this method. If null (default value), a default HDF proxy
+		 * 									must be defined into the data object repository.
 		 */
 		DLL_IMPORT_OR_EXPORT void createLongHdf5ArrayOfValues(
 			unsigned long long* numValues, 
@@ -358,17 +402,23 @@ namespace RESQML2_NS
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
-		 * Create a 3d array of explicit Long values to the property values.
+		 * Creates a 3d array of explicit long values into the property values. No values are written to
+		 * this array yet.
 		 *
-		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
-		 * 											dimension (mainly I dimension).
-		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
-		 * 											(mainly J dimension).
-		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
-		 * 											dimension (mainly K dimension).
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
-		 * 											values. It must be already opened for writing and
-		 * 											won't be closed in this method.
+		 * @exception	std::invalid_argument	If @p proxy is null and no default HDF proxy is defined
+		 * 										into the data object repository.
+		 *
+		 * @param 	  	valueCountInFastestDim	The number of values in the fastest dimension (mainly I
+		 * 										dimension).
+		 * @param 	  	valueCountInMiddleDim 	The number of values in the middle dimension (mainly J
+		 * 										dimension).
+		 * @param 	  	valueCountInSlowestDim	The number of values in the slowest dimension (mainly K
+		 * 										dimension).
+		 * @param [in]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * 										values. It must be already opened for writing and won't
+		 * 										be closed in this method. If null (default value), a
+		 * 										default HDF proxy must be defined into the data object
+		 * 										repository.
 		 */
 		DLL_IMPORT_OR_EXPORT void createLongHdf5Array3dOfValues(
 			unsigned int valueCountInFastestDim, 
@@ -377,25 +427,32 @@ namespace RESQML2_NS
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
-		 * Add a 3d array of explicit Long values to the property values.
+		 * Adds a 3d array of explicit long values into the property values. Since this methods only
+		 * pushes back values into an existing array, it is to be used along with {@link
+		 * createLongHdf5Array3dOfValues}.
 		 *
-		 * @param [in,out]	values				  	All the property values to set ordered according the
+		 * @exception	std::invalid_argument	If @p proxy is null and no default HDF proxy is defined
+		 * 										into the data object repository.
+		 *
+		 * @param [in]	values				  	All the property values to set ordered according to the
 		 * 											topology of the representation it is based on.
-		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
-		 * 											dimension (mainly I dimension).
-		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
-		 * 											(mainly J dimension).
-		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
-		 * 											dimension (mainly K dimension).
-		 * @param 		  	offsetInFastestDim	  	The offset to write in the fastest dimension (mainly
-		 * 											I dimension).
-		 * @param 		  	offsetInMiddleDim	  	The offset value to write in the middle dimension
-		 * 											(mainly J dimension).
-		 * @param 		  	offsetInSlowestDim	  	The offset value to write in the slowest dimension
-		 * 											(mainly K dimension).
-		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
-		 * 											values. It must be already opened for writing and
-		 * 											won't be closed in this method.
+		 * @param 	  	valueCountInFastestDim	The number of values to write in the fastest dimension
+		 * 										(mainly I dimension).
+		 * @param 	  	valueCountInMiddleDim 	The number of values to write in the middle dimension
+		 * 										(mainly J dimension).
+		 * @param 	  	valueCountInSlowestDim	The number of values to write in the slowest dimension
+		 * 										(mainly K dimension).
+		 * @param 	  	offsetInFastestDim	  	The offset value for writing in the fastest dimension
+		 * 										(mainly I dimension).
+		 * @param 	  	offsetInMiddleDim	  	The offset value for writing in the middle dimension
+		 * 										(mainly J dimension).
+		 * @param 	  	offsetInSlowestDim	  	The offset value for writing in the slowest dimension
+		 * 										(mainly K dimension).
+		 * @param [in]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * 										values. It must be already opened for writing and won't
+		 * 										be closed in this method. If null (default value), a
+		 * 										default HDF proxy must be defined into the data object
+		 * 										repository.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5SlabArray3dOfValues(
 			LONG64* values, 
@@ -408,19 +465,23 @@ namespace RESQML2_NS
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
-		 * Add an array (potentially multi dimensions) of explicit long values to the property values.
-		 * This method is to be used along with createLongHdf5ArrayOfValues.
+		 * Adds an nd array of explicit long values into to the property values. Since this methods
+		 * only pushes back values into an existing array, it is to be used along with {@link
+		 * createLongHdf5ArrayOfValues}.
 		 *
-		 * @param [in,out]	values			  	All the property values to set ordered according the
-		 * 										topology of the representation it is based on.
-		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
-		 * 										array to write.
-		 * @param 		  	offsetValues	  	The offset values ordered by dimension of the array to
-		 * 										write.
-		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
-		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
-		 * 										values. It must be already opened for writing and won't
-		 * 										be closed in this method.
+		 * @exception	std::invalid_argument	If @p proxy is null and no default HDF proxy is defined
+		 * 										into the data object repository.
+		 *
+		 * @param [in]	values			  	All the property values to set ordered according to the
+		 * 									topology of the representation it is based on.
+		 * @param 	  	numValues		  	The number of property values ordered by dimension of the
+		 * 									array to write.
+		 * @param 	  	offsetValues	  	The offset values ordered by dimension of the array to write.
+		 * @param 	  	numArrayDimensions	The number of dimensions of the array to write.
+		 * @param [in]	proxy			  	(Optional) The HDF proxy where to write the property values.
+		 * 									It must be already opened for writing and won't be closed in
+		 * 									this method. If null (default value), a default HDF proxy
+		 * 									must be defined into the data object repository.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5SlabArrayOfValues(
 			LONG64* values,
@@ -430,16 +491,17 @@ namespace RESQML2_NS
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
-		 * Get all the values of the instance which are supposed to be long ones.
+		 * Gets some of the values of a given patch of this instance. Values are supposed to be long ones.
 		 *
-		 * @param 		  	patchIndex					Patch index.
-		 * @param [in,out]	values						The array (pointer) of values which must be
-		 * 												preallocated.
-		 * @param 		  	numValuesInEachDimension	The number of property values ordered by
-		 * 												dimension of the array to write.
-		 * @param 		  	offsetInEachDimension   	The offset values ordered by dimension of the
-		 * 												array to write.
-		 * @param 		  	numArrayDimensions			The number of dimensions of the array to write.
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	   	patchIndex					The index of the patch we want the values from.
+		 * @param [out]	values						Preallocated buffer for receiving the values.
+		 * @param 	   	numValuesInEachDimension	The number of property values ordered by dimension of
+		 * 											the array to read.
+		 * @param 	   	offsetInEachDimension   	The offset values ordered by dimension of the array
+		 * 											to read.
+		 * @param 	   	numArrayDimensions			The number of dimensions of the array to write.
 		 */
 		DLL_IMPORT_OR_EXPORT void getLongValuesOfPatch(
 			unsigned int patchIndex, 
@@ -450,22 +512,24 @@ namespace RESQML2_NS
 		) const;
 
 		/**
-		 * Get all the values of the instance which are supposed to be long ones.
+		 * Gets some of the values of a given patch of this instance. Values are supposed to be long ones.
 		 *
-		 * @param 		  	patchIndex			  	Patch index.
-		 * @param [in,out]	values				  	The array (pointer) of values must be preallocated.
-		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
-		 * 											dimension (mainly I dimension).
-		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
-		 * 											(mainly J dimension).
-		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
-		 * 											dimension (mainly K dimension).
-		 * @param 		  	offsetInFastestDim	  	The offset to write in the fastest dimension (mainly
-		 * 											I dimension).
-		 * @param 		  	offsetInMiddleDim	  	The offset value to write in the middle dimension
-		 * 											(mainly J dimension).
-		 * @param 		  	offsetInSlowestDim	  	The offset value to write in the slowest dimension
-		 * 											(mainly K dimension).
+		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	   	patchIndex			  	The index of the patch we want the values from.
+		 * @param [out]	values				  	Preallocated buffer for receiving the values.
+		 * @param 	   	valueCountInFastestDim	The number of values to read in the fastest dimension
+		 * 										(mainly I dimension).
+		 * @param 	   	valueCountInMiddleDim 	The number of values to read in the middle dimension
+		 * 										(mainly J dimension).
+		 * @param 	   	valueCountInSlowestDim	The number of values to read in the slowest dimension
+		 * 										(mainly K dimension).
+		 * @param 	   	offsetInFastestDim	  	The offset value for reading in the fastest dimension
+		 * 										(mainly I dimension).
+		 * @param 	   	offsetInMiddleDim	  	The offset value for reading in the middle dimension
+		 * 										(mainly J dimension).
+		 * @param 	   	offsetInSlowestDim	  	The offset value for reading in the slowest dimension
+		 * 										(mainly K dimension).
 		 */
 		DLL_IMPORT_OR_EXPORT void getLongValuesOf3dPatch(
 			unsigned int patchIndex, 
