@@ -17,9 +17,6 @@ namespace example
             AbstractIjkGridRepresentation ijkGrid = repo.createPartialIjkGridRepresentation("", "partial IJK Grid");
             f2i.energisticsStandardsApi.common.PropertyKind propertyKind = repo.createPartialPropertyKind("", "Partial prop kind");
 
-            // getting the hdf proxy
-            AbstractHdfProxy hdfProxy = repo.getHdfProxy(0);
-
             // creating the continuous Property with computing min max
             ContinuousProperty propertyCompute = repo.createContinuousProperty(
                 ijkGrid, "9d0a717f-2cd3-4d43-9cbf-3484105ed384", "slab prop compute min max",
