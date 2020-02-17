@@ -91,7 +91,7 @@ void GridConnectionSetRepresentation::loadTargetRelationships()
 
 void GridConnectionSetRepresentation::setCellIndexPairs(ULONG64 cellIndexPairCount, ULONG64 * cellIndexPair, ULONG64 cellIndexPairNullValue, COMMON_NS::AbstractHdfProxy * proxy, unsigned short gridIndexPairNullValue, unsigned short * gridIndexPair)
 {
-	if (cellIndexPairNullValue > (std::numeric_limits<LONG64>::max)()) {
+	if (cellIndexPairNullValue > static_cast<ULONG64>((std::numeric_limits<LONG64>::max)())) {
 		throw std::invalid_argument("The XML null value cannot be greater than a 64 bits signed integer cause of gsoap mappings");
 	}
 	if (proxy == nullptr) {

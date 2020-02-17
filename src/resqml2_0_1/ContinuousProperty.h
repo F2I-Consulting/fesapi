@@ -231,76 +231,6 @@ namespace RESQML2_0_1_NS
 			float * minimumValue = nullptr, float * maximumValue = nullptr);
 
 		/**
-		* Create an array (potentially multi dimensions) of explicit float values to the property values. No values are written to this array yet then the HDF5 array contains uninitialized values.
-		* @param numValues				The number of property values ordered by dimension of the array to write.
-		* @param numArrayDimensions		The number of dimensions of the array to write.
-		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		*/
-		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(
-			unsigned long long const * numValues,
-			unsigned int numArrayDimensions, 
-			COMMON_NS::AbstractHdfProxy* proxy = nullptr
-		);
-
-		/**
-		* Create a 3d array of explicit float values to the property values. No values are written to this array yet then the HDF5 array contains uninitialized values.
-		* @param valueCountInFastestDim	The number of values to write in the fastest dimension (mainly I dimension).
-		* @param valueCountInMiddleDim	The number of values to write in the middle dimension (mainly J dimension).
-		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly K dimension).
-		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		*/
-		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(
-			ULONG64 valueCountInFastestDim,
-			ULONG64 valueCountInMiddleDim,
-			ULONG64 valueCountInSlowestDim,
-			COMMON_NS::AbstractHdfProxy* proxy = nullptr
-		);
-
-		/**
-		* Set some values of an existing 3d array of explicit float values of a particular patch. This method makes use of HDF5 hyperslabbing.
-		* This method is to be used along with one of the pushBackFloatHdf5ArrayOfValues methods which do not write any value.
-		* @param values					All the property values to set ordered according the topology of the representation it is based on.
-		* @param valueCountInFastestDim	The number of values to write in the fastest dimension (mainly I dimension).
-		* @param valueCountInMiddleDim	The number of values to write in the middle dimension (mainly J dimension).
-		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly K dimension).
-		* @param offsetInFastestDim		The offset to write in the fastest dimension (mainly I dimension).
-		* @param offsetInMiddleDim		The offset value to write in the middle dimension (mainly J dimension).
-		* @param offsetInSlowestDim		The offset value to write in the slowest dimension (mainly K dimension).
-		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		* @param patchIndex				The index of the patch we want to set some values. If not present, the last patch is arbitrarily taken into account.
-		*/
-		DLL_IMPORT_OR_EXPORT void setValuesOfFloatHdf5ArrayOfValues(
-			float const * values, 
-			ULONG64 valueCountInFastestDim,
-			ULONG64 valueCountInMiddleDim,
-			ULONG64 valueCountInSlowestDim,
-			ULONG64 offsetInFastestDim,
-			ULONG64 offsetInMiddleDim,
-			ULONG64 offsetInSlowestDim,
-			COMMON_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()
-		);
-
-		/**
-		* Set some values of an existing 3d array of explicit float values of a particular patch.  This method makes use of HDF5 hyperslabbing.
-		* This method is to be used along with one of the pushBackFloatHdf5ArrayOfValues methods which do not write any value.
-		* @param values					All the property values to set ordered according the topology of the representation it is based on.
-		* @param numValues				The number of property values ordered by dimension of the array to write.
-		* @param offsetValues			The offset values ordered by dimension of the array to write.
-		* @param numArrayDimensions		The number of dimensions of the array to write.
-		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		* @param patchIndex				The index of the patch we want to set some values.  If not present, the last patch is arbitrarily taken into account.
-		*/
-		DLL_IMPORT_OR_EXPORT void setValuesOfFloatHdf5ArrayOfValues(
-			float const * values, 
-			unsigned long long const * numValues,
-			unsigned long long const * offsetValues,
-			unsigned int numArrayDimensions, 
-			COMMON_NS::AbstractHdfProxy* proxy = nullptr,
-			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()
-		);
-
-		/**
 		* Push back a new patch of values for this property where the values have not to be written in the HDF file.
 		* The reason can be that the values already exist in an external file (only HDF5 for now) or that the writing of the values in the external file is defered in time.
 		* @param	proxy				The HDF5 proxy where the values are already or will be stored.
@@ -308,7 +238,7 @@ namespace RESQML2_0_1_NS
 		* @param	nullValue			Only relevant for integer hdf5 datasets. Indeed, RESQML (and fesapi) forces null value for floating point to be NaN value.
 		* @return	The name of the hdf5 dataset.
 		*/
-		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
+		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "");
 
 		/**
 		* Get all the values of a particular patch of the instance which are supposed to be double ones.
@@ -323,44 +253,6 @@ namespace RESQML2_0_1_NS
 		* @param values		The array (pointer) of values must be preallocated.
 		*/
 		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(unsigned int patchIndex, float * values) const;
-
-		/**
-		* Get some of the values of a particular patch of the instance which are supposed to be float ones. This method makes use of HDF5 hyperslabbing.
-		* @param patchIndex					The index of the patch we want the values from.
-		* @param values						The array (pointer) of values must be preallocated.
-		* @param numValuesInEachDimension	The number of property values ordered by dimension of the array to write.
-		* @param offsetInEachDimension		The offset values ordered by dimension of the array to write.
-		* @param numArrayDimensions			The number of dimensions of the HDF5 array to read.
-		*/
-		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(
-			unsigned int patchIndex, 
-			float* values, 
-			unsigned long long const * numValuesInEachDimension,
-			unsigned long long const * offsetInEachDimension,
-			unsigned int numArrayDimensions
-		) const;
-
-		/**
-		* Get some of the values of a particular patch of the instance which are supposed to be float ones. This method makes use of HDF5 hyperslabbing.
-		* @param patchIndex					The index of the patch we want the values from.
-		* @param values						The array (pointer) of values must be preallocated.
-		* @param valueCountInFastestDim	The number of values to read in the fastest dimension (mainly I dimension).
-		* @param valueCountInMiddleDim	The number of values to read in the middle dimension (mainly J dimension).
-		* @param valueCountInSlowestDim The number of values to read in the slowest dimension (mainly K dimension).
-		* @param offsetInFastestDim		The offset value to read in the fastest dimension (mainly I dimension).
-		* @param offsetInMiddleDim		The offset value to read in the middle dimension (mainly J dimension).
-		* @param offsetInSlowestDim		The offset value to read in the slowest dimension (mainly K dimension).
-		*/
-		DLL_IMPORT_OR_EXPORT void getFloatValuesOf3dPatch(
-			unsigned int patchIndex, 
-			float* values, 
-			ULONG64 valueCountInFastestDim,
-			ULONG64 valueCountInMiddleDim,
-			ULONG64 valueCountInSlowestDim,
-			ULONG64 offsetInFastestDim,
-			ULONG64 offsetInMiddleDim,
-			ULONG64 offsetInSlowestDim
-		) const;
 
 		/*
 		* Get the minimum value in this continuous properties. It reads it from file.
@@ -383,6 +275,127 @@ namespace RESQML2_0_1_NS
 		* Check if the associated standard property kind is allowed for this property.
 		*/
 		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk);
+
+		//***************************
+		//*** For hyperslabbing *****
+		//***************************
+
+		/**
+		* Create an array (potentially multi dimensions) of explicit float values to the property values. No values are written to this array yet then the HDF5 array contains uninitialized values.
+		* @param numValues				The number of property values ordered by dimension of the array to write.
+		* @param numArrayDimensions		The number of dimensions of the array to write.
+		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
+		* @param minimumValue			The minimum value (or value vector) of the values to add. If nullptr is provided then no minimum value will be set. It cannot be nullptr if maximumValue is not NaN.
+		* @param maximumValue			The maximum value (or value vector) of the values to add. If nullptr is provided then no maximum value will be set. It cannot be nullptr if minimumValue is not NaN.
+		*/
+		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(
+			unsigned long long const * numValues,
+			unsigned int numArrayDimensions,
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			float * minimumValue = nullptr, float * maximumValue = nullptr
+		);
+
+		/**
+		* Create a 3d array of explicit float values to the property values. No values are written to this array yet then the HDF5 array contains uninitialized values.
+		* @param valueCountInFastestDim	The number of values to write in the fastest dimension (mainly I dimension).
+		* @param valueCountInMiddleDim	The number of values to write in the middle dimension (mainly J dimension).
+		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly K dimension).
+		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
+		* @param minimumValue			The minimum value of the values to add. If NAN is provided then no minimum value will be set. It cannot be NaN if maximumValue is not NaN.
+		* @param maximumValue			The maximum value of the values to add. If NAN is provided then no maximum value will be set. It cannot be NaN if minimumValue is not NaN.
+		*/
+		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array3dOfValues(
+			ULONG64 valueCountInFastestDim,
+			ULONG64 valueCountInMiddleDim,
+			ULONG64 valueCountInSlowestDim,
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			float minimumValue = std::numeric_limits<float>::quiet_NaN(), float maximumValue = std::numeric_limits<float>::quiet_NaN()
+		);
+
+		/**
+		* Set some values of an existing 3d array of explicit float values of a particular patch. This method makes use of HDF5 hyperslabbing.
+		* This method is to be used along with one of the pushBackFloatHdf5ArrayOfValues methods which do not write any value.
+		* @param values					All the property values to set ordered according the topology of the representation it is based on.
+		* @param valueCountInFastestDim	The number of values to write in the fastest dimension (mainly I dimension).
+		* @param valueCountInMiddleDim	The number of values to write in the middle dimension (mainly J dimension).
+		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly K dimension).
+		* @param offsetInFastestDim		The offset to write in the fastest dimension (mainly I dimension).
+		* @param offsetInMiddleDim		The offset value to write in the middle dimension (mainly J dimension).
+		* @param offsetInSlowestDim		The offset value to write in the slowest dimension (mainly K dimension).
+		* @param computeMinMax			Indicates if FESAPI needs to compute the min and  max from the given \p values in order to set them.
+		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
+		* @param patchIndex				The index of the patch we want to set some values. If not present, the last patch is arbitrarily taken into account.
+		*/
+		DLL_IMPORT_OR_EXPORT void setValuesOfFloatHdf5Array3dOfValues(
+			float const * values,
+			ULONG64 valueCountInFastestDim,
+			ULONG64 valueCountInMiddleDim,
+			ULONG64 valueCountInSlowestDim,
+			ULONG64 offsetInFastestDim,
+			ULONG64 offsetInMiddleDim,
+			ULONG64 offsetInSlowestDim,
+			bool computeMinMax = true,
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()
+		);
+
+		/**
+		* Set some values of an existing 3d array of explicit float values of a particular patch.  This method makes use of HDF5 hyperslabbing.
+		* This method is to be used along with one of the pushBackFloatHdf5ArrayOfValues methods which do not write any value.
+		* @param values					All the property values to set ordered according the topology of the representation it is based on.
+		* @param numValues				The number of property values ordered by dimension of the array to write. From slowest to fastest.
+		* @param offsetValues			The offset values ordered by dimension of the array to write. From slowest to fastest.
+		* @param numArrayDimensions		The number of dimensions of the array to write.
+		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
+		* @param patchIndex				The index of the patch we want to set some values.  If not present, the last patch is arbitrarily taken into account.
+		*/
+		DLL_IMPORT_OR_EXPORT void setValuesOfFloatHdf5ArrayOfValues(
+			float const * values,
+			unsigned long long const * numValues,
+			unsigned long long const * offsetValues,
+			unsigned int numArrayDimensions,
+			bool computeMinMax = true,
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr,
+			unsigned int patchIndex = (std::numeric_limits<unsigned int>::max)()
+		);
+
+		/**
+		* Get some of the values of a particular patch of the instance as float ones. This method makes use of HDF5 hyperslabbing.
+		* @param patchIndex					The index of the patch we want the values from.
+		* @param values						The array (pointer) of values must be preallocated.
+		* @param numValuesInEachDimension	The number of property values ordered by dimension of the array to write.
+		* @param offsetInEachDimension		The offset values ordered by dimension of the array to write.
+		* @param numArrayDimensions			The number of dimensions of the HDF5 array to read.
+		*/
+		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(
+			unsigned int patchIndex,
+			float* values,
+			unsigned long long const * numValuesInEachDimension,
+			unsigned long long const * offsetInEachDimension,
+			unsigned int numArrayDimensions
+		) const;
+
+		/**
+		* Get some of the values of a particular patch of the instance as float ones. This method makes use of HDF5 hyperslabbing.
+		* @param patchIndex				The index of the patch we want the values from.
+		* @param values					The array (pointer) of values must be preallocated.
+		* @param valueCountInFastestDim	The number of values to read in the fastest dimension (mainly I dimension).
+		* @param valueCountInMiddleDim	The number of values to read in the middle dimension (mainly J dimension).
+		* @param valueCountInSlowestDim The number of values to read in the slowest dimension (mainly K dimension).
+		* @param offsetInFastestDim		The offset value to read in the fastest dimension (mainly I dimension).
+		* @param offsetInMiddleDim		The offset value to read in the middle dimension (mainly J dimension).
+		* @param offsetInSlowestDim		The offset value to read in the slowest dimension (mainly K dimension).
+		*/
+		DLL_IMPORT_OR_EXPORT void getFloatValuesOf3dPatch(
+			unsigned int patchIndex,
+			float* values,
+			ULONG64 valueCountInFastestDim,
+			ULONG64 valueCountInMiddleDim,
+			ULONG64 valueCountInSlowestDim,
+			ULONG64 offsetInFastestDim,
+			ULONG64 offsetInMiddleDim,
+			ULONG64 offsetInSlowestDim
+		) const;
 
 		/**
 		* The standard XML tag without XML namespace for serializing this data object.
@@ -412,65 +425,48 @@ namespace RESQML2_0_1_NS
 			T * minimumValue = nullptr, T * maximumValue = nullptr)
 		{
 			gsoap_resqml2_0_1::_resqml20__ContinuousProperty* prop = static_cast<gsoap_resqml2_0_1::_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
-			prop->MinimumValue.clear();
-			prop->MaximumValue.clear();
 
-			if (minimumValue != nullptr && maximumValue != nullptr) {
-				for (size_t i = 0; i < prop->Count; ++i)
-				{
-					prop->MinimumValue.push_back(minimumValue[i]);
-					prop->MaximumValue.push_back(maximumValue[i]);
-				}
-			}
-			else {
-
-				ULONG64 nValues = numValuesInEachDimension[0];
-				if (prop->Count == 1) {
-					for (unsigned int dim = 1; dim < numArrayDimensions; dim++) {
-						nValues *= numValuesInEachDimension[dim];
-					}
-				}
-				else if (prop->Count > 1) {
-					//In this case, the last (fastest) dimension has the number of properties per indexable element of the representation.
-					for (unsigned int dim = 1; dim < numArrayDimensions - 1; dim++) {
-						nValues *= numValuesInEachDimension[dim];
-					}
-				}
-				else {
-					throw std::invalid_argument("Cannot compute and set min and max value on a property which has a Count set to zero or negative.");
-				}
-
+			// Some minimum and maximum values are given : No need to compute them.
+			if (minimumValue != nullptr) {
 				for (size_t propIndex = 0; propIndex < prop->Count; ++propIndex) {
-					size_t i = propIndex;
-					T computedMin = std::numeric_limits<T>::quiet_NaN();
-					T computedMax = std::numeric_limits<T>::quiet_NaN();
-					while (i < nValues && values[i] != values[i]) i += prop->Count;
-					if (i >= nValues) {
-						// All values of a dimension of the vectorial property look to be only NaN values.
-						if (prop->Count == 1) {
-							return; // Does not set min and max value
-						}
-						else { // Set min and max as NaN values
-							prop->MinimumValue.push_back(std::numeric_limits<T>::quiet_NaN());
-							prop->MaximumValue.push_back(std::numeric_limits<T>::quiet_NaN());
-						}
+					if (prop->MinimumValue.size() > propIndex) {
+						prop->MinimumValue[propIndex] = fmin(prop->MinimumValue[propIndex], minimumValue[propIndex]);
 					}
-					computedMin = values[i];
-					computedMax = values[i];
-
-					for (; i < nValues; i += prop->Count) {
-						T propVal = values[i];
-						if (propVal < computedMin) {
-							computedMin = propVal;
-						}
-						else if (propVal > computedMax) {
-							computedMax = propVal;
-						}
+					else {
+						prop->MinimumValue.push_back(minimumValue[propIndex]);
 					}
-					prop->MinimumValue.push_back(computedMin);
-					prop->MaximumValue.push_back(computedMax);
 				}
 			}
+			if (maximumValue != nullptr) {
+				for (size_t propIndex = 0; propIndex < prop->Count; ++propIndex) {
+					if (prop->MaximumValue.size() > propIndex) {
+						prop->MaximumValue[propIndex] = fmax(prop->MaximumValue[propIndex], maximumValue[propIndex]);
+					}
+					else {
+						prop->MaximumValue.push_back(maximumValue[propIndex]);
+					}
+				}
+			}
+			if (minimumValue != nullptr && maximumValue != nullptr) return; // No need to compute max or min value
+
+			ULONG64 nValues = numValuesInEachDimension[0];
+			//If count > 1, the last (fastest) dimension has the number of properties per indexable element of the representation.
+			for (unsigned int dim = 1; dim < (prop->Count == 1 ? numArrayDimensions : numArrayDimensions - 1); ++dim) { 
+				nValues *= numValuesInEachDimension[dim];
+			}
+
+			// Minimum or maximum values are not given : Need to compute them.
+			std::unique_ptr<T[]> allComputedMin(new T[prop->Count]);
+			std::unique_ptr<T[]> allComputedMax(new T[prop->Count]);
+			for (size_t propIndex = 0; propIndex < prop->Count; ++propIndex) {
+				allComputedMin[propIndex] = std::numeric_limits<T>::quiet_NaN();
+				allComputedMax[propIndex] = std::numeric_limits<T>::quiet_NaN();
+				for (size_t i = 0; i < nValues; i += prop->Count) {
+					allComputedMin[propIndex] = fmin(allComputedMin[propIndex], values[i]);
+					allComputedMax[propIndex] = fmax(allComputedMax[propIndex], values[i]);
+				}
+			}
+			setPropertyMinMax(values, numValuesInEachDimension, numArrayDimensions, allComputedMin.get(), allComputedMax.get());
 		}
 	};
 }
