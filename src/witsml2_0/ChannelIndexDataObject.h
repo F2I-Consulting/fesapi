@@ -20,6 +20,8 @@ under the License.
 
 #include "ChannelMetaDataObject.h"
 
+#include <limits>
+
 namespace WITSML2_0_NS
 {
 	/**
