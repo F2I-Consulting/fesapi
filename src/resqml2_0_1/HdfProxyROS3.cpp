@@ -34,10 +34,10 @@ void HdfProxyROS3::open()
 
 	if (openingMode == COMMON_NS::DataObjectRepository::READ_ONLY) {
 		H5FD_ros3_fapl_t fa = { 1, 0, "", "", "" }; // Only non authenticate mode is supported by fesapi so far.
-		if (!secret_id.empty() && !secret_key.empty()) {
+		if (!secretId_.empty() && !secretKey_.empty()) {
 			strcpy(fa.aws_region, packageDirectoryAbsolutePath.c_str());
-			strcpy(fa.secret_id, secret_id.c_str());
-			strcpy(fa.secret_key, secret_key.c_str());
+			strcpy(fa.secretId_, secretId_.c_str());
+			strcpy(fa.secretKey_, secretKey_.c_str());
 		}
 
 		/* create and set fapl entry */
