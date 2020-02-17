@@ -430,7 +430,7 @@ namespace RESQML2_0_1_NS
 			if (minimumValue != nullptr) {
 				for (size_t propIndex = 0; propIndex < prop->Count; ++propIndex) {
 					if (prop->MinimumValue.size() > propIndex) {
-						prop->MinimumValue[propIndex] = std::fmin(prop->MinimumValue[propIndex], minimumValue[propIndex]);
+						prop->MinimumValue[propIndex] = fmin(prop->MinimumValue[propIndex], minimumValue[propIndex]);
 					}
 					else {
 						prop->MinimumValue.push_back(minimumValue[propIndex]);
@@ -440,7 +440,7 @@ namespace RESQML2_0_1_NS
 			if (maximumValue != nullptr) {
 				for (size_t propIndex = 0; propIndex < prop->Count; ++propIndex) {
 					if (prop->MaximumValue.size() > propIndex) {
-						prop->MaximumValue[propIndex] = std::fmax(prop->MaximumValue[propIndex], maximumValue[propIndex]);
+						prop->MaximumValue[propIndex] = fmax(prop->MaximumValue[propIndex], maximumValue[propIndex]);
 					}
 					else {
 						prop->MaximumValue.push_back(maximumValue[propIndex]);
@@ -462,8 +462,8 @@ namespace RESQML2_0_1_NS
 				allComputedMin[propIndex] = std::numeric_limits<T>::quiet_NaN();
 				allComputedMax[propIndex] = std::numeric_limits<T>::quiet_NaN();
 				for (size_t i = 0; i < nValues; i += prop->Count) {
-					allComputedMin[propIndex] = std::fmin(allComputedMin[propIndex], values[i]);
-					allComputedMax[propIndex] = std::fmax(allComputedMax[propIndex], values[i]);
+					allComputedMin[propIndex] = fmin(allComputedMin[propIndex], values[i]);
+					allComputedMax[propIndex] = fmax(allComputedMax[propIndex], values[i]);
 				}
 			}
 			setPropertyMinMax(values, numValuesInEachDimension, numArrayDimensions, allComputedMin.get(), allComputedMax.get());
