@@ -67,7 +67,7 @@ AbstractFeatureInterpretation *	AbstractFeature::getInterpretation(unsigned int 
 		return interpretationSet[index];
 	}
 
-	throw range_error("The interpretation index is out of the range of the interpretation set of the feature.");
+	throw out_of_range("The interpretation index is out of the range of the interpretation set of the feature.");
 }
 
 void AbstractFeature::loadTargetRelationships()

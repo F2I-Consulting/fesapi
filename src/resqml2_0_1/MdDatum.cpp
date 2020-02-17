@@ -46,11 +46,15 @@ MdDatum::MdDatum(COMMON_NS::DataObjectRepository * repo, const string & guid, co
 	initMandatoryMetadata();
 	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
 
+	repo->addOrReplaceDataObject(this);
 	setLocalCrs(locCrs);
 }
 
 void MdDatum::setXmlLocalCrs(RESQML2_NS::AbstractLocal3dCrs * localCrs)
 {
+	if (localCrs == nullptr)
+		throw invalid_argument("localCrs cannot be nullptr");
+
 	_resqml20__MdDatum* mdDatum = static_cast<_resqml20__MdDatum*>(gsoapProxy2_0_1);
 	mdDatum->LocalCrs = localCrs->newResqmlReference();
 }

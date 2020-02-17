@@ -184,7 +184,7 @@ AbstractRepresentation * AbstractFeatureInterpretation::getRepresentation(unsign
 	if (representationSet.size() > index)
 		return representationSet[index];
 	
-	throw range_error("The representation index you are requesting is out of range.");
+	throw out_of_range("The representation index you are requesting is out of range.");
 }
 
 std::vector<GridConnectionSetRepresentation *> AbstractFeatureInterpretation::getGridConnectionSetRepresentationSet() const

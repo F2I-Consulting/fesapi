@@ -23,22 +23,20 @@ under the License.
 /** . */
 namespace RESQML2_0_1_NS
 {
-	/** A representation set representation. */
+	/** Proxy class for a representation set representation. */
 	class RepresentationSetRepresentation : public RESQML2_NS::RepresentationSetRepresentation
 	{
 	public:
 
 		/**
-		 * Only to be used in partial transfer context
+		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 * @param [in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::RepresentationSetRepresentation(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * Creates an instance of this class in a gSOAP context.
 		 *
 		 * @param [in,out]	interp	the interpretation the instance represents.
 		 * @param 		  	guid  	A guid for the instance to create. Empty guid lead to the creation of

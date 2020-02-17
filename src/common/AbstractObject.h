@@ -761,9 +761,9 @@ namespace COMMON_NS
 		virtual std::string getXmlNamespace() const;
 
 		/**
-		 * Gets the XML tag for the XML serialization of this instance
+		 * Gets the standard XML tag without XML namespace for serializing this data object.
 		 *
-		 * @returns	The XML tag of this instance.
+		 * @returns	The XML tag.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const = 0;
 
@@ -877,7 +877,7 @@ namespace COMMON_NS
 		/**
 		 * Pushes back an extra metadata (not a standard one) onto this instance
 		 *
-		 * @exception	std::logic_error	If there is no underlying gSOAP proxy.
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0, EML2.1 or EML2.2 one.
 		 *
 		 * @param 	key  	The key of the metadata.
 		 * @param 	value	The value of the metadata.
@@ -887,7 +887,7 @@ namespace COMMON_NS
 		/**
 		 * Gets all the extra metadata of this instance in read only mode
 		 *
-		 * @exception	std::logic_error	If there is no underlying gSOAP proxy.
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 *
 		 * @returns	A map associated the keys and values of all extra metadata.
 		 */
@@ -896,7 +896,7 @@ namespace COMMON_NS
 		/**
 		 * Gets an extra metadata of this instance according to its key
 		 *
-		 * @exception	std::logic_error	If there is no underlying gSOAP proxy.
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 *
 		 * @param 	key	The key of an extra metadata.
 		 *
@@ -907,7 +907,7 @@ namespace COMMON_NS
 		/**
 		 * Get the count of extra metadata in this instance
 		 *
-		 * @exception	std::logic_error	If there is no underlying gSOAP proxy.
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 or EML2.2 one.
 		 *
 		 * @returns	The extra metadata count of this instance.
 		 */
@@ -917,7 +917,7 @@ namespace COMMON_NS
 		 * Get the key of a key value pair at a particular index in the extra metadata set of this
 		 * instance
 		 *
-		 * @exception	std::logic_error	If there is no underlying gSOAP proxy.
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 or EML2.2 one.
 		 *
 		 * @param 	index	Zero-based index of the asked key.
 		 *
@@ -929,7 +929,7 @@ namespace COMMON_NS
 		 * Get the value of a key value pair at a particular index in the extra metadata set of this
 		 * instance
 		 *
-		 * @exception	std::logic_error	If there is no underlying gSOAP proxy.
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 or EML2.2 one.
 		 *
 		 * @param 	index	Zero-based index of the asked value.
 		 *

@@ -24,14 +24,14 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * The parent class of the framework representations. It is used to group together individual
-	 * representations to represent a “bag” of representations. If the individual representations
-	 * are all of the same, then you can indicate that the set is homogenous. These “bags” do not
-	 * imply any geologic consistency. For example, you can define a set of wellbore frames, a set
-	 * of wellbore trajectories, a set of blocked wellbores. Because the framework representations
-	 * inherit from this class, they inherit the capability to gather individual representations
-	 * into sealed and non-sealed surface framework representations, or sealed volume framework
-	 * representations.
+	 * Proxy class for a representation set representation. This is the parent class of the
+	 * framework representations. It is used to group together individual representations to
+	 * represent a “bag” of representations. If the individual representations are all of the same
+	 * type, then you can indicate that the set is homogenous. These “bags” do not imply any
+	 * geologic consistency. For example, you can define a set of wellbore frames, a set of wellbore
+	 * trajectories, a set of blocked wellbores. Because the framework representations inherit from
+	 * this class, they inherit the capability to gather individual representations into sealed and
+	 * non-sealed surface framework representations, or sealed volume framework representations.
 	 */
 	class RepresentationSetRepresentation : public RESQML2_NS::AbstractRepresentation
 	{
@@ -49,11 +49,9 @@ namespace RESQML2_NS
 	public:
 
 		/**
-		 * Only to be used in partial transfer context
+		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 * @param [in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT RepresentationSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
 			RESQML2_NS::AbstractRepresentation(partialObject)
@@ -64,84 +62,92 @@ namespace RESQML2_NS
 		virtual ~RepresentationSetRepresentation() {}
 
 		/**
-		 * Gets hdf proxy dor
+		 * Gets the data object reference of the HDF proxy which is used for storing the numerical
+		 * values of this representation (i.e. its geometry).
 		 *
-		 * @returns	Null if it fails, else the hdf proxy dor.
+		 * @returns nullptr since no geometry is directly associated to a representation set representation.
 		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const { return nullptr; }
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const override { return nullptr; }
+
+		/** Please do note use: not implemented yet. */ 
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const override ;
+
+		/** Please do note use: not implemented yet. */
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const override;
 
 		/**
-		 * Gets xyz point count of patch
+		 * Gets the patch count.
 		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
-		 *
-		 * @returns	The xyz point count of patch.
+		 * @returns 1 since we consider that representation set representations have only 1 patch.
 		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const override {return 1;}
 
 		/**
-		 * Get all the XYZ points of a particular patch of this representation. XYZ points are given in
-		 * the local CRS.
+		 * Checks if this representation set contains only one type of representations (homogeneous) or
+		 * several. This methods only read the @c IsHomogeneous attribute.
 		 *
-		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is
-		 * 								coordinate dimension (XYZ) and second dimension is vertex
-		 * 								dimension. It must be pre allocated.
-		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
-
-		/**
-		 * Gets patch count
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 *
-		 * @returns	The patch count.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
-
-		/**
-		 * Indicates if the representation set contains only one type of representations or several.
-		 *
-		 * @returns	True if homogeneous, false if not.
+		 * @returns	True if this representation set is homogeneous, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool isHomogeneous() const;
 
 		/**
-		 * Get the count of representations in this representation set.
+		 * Gets the count of representations in this representation set.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::range_error	If the count is strictly greater than unsigned int max. 
 		 *
 		 * @returns	The representation count.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getRepresentationCount() const;
 
 		/**
-		 * Get a particular representation of this representation set according to its position.
+		 * Gets a particular representation in this representation set according to its position.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p index is out of range.									
 		 *
-		 * @returns	Null if it fails, else the representation.
+		 * @param 	index	Zero-based index of the of the representation we look for.
+		 *
+		 * @returns	A pointer to the representation at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractRepresentation* getRepresentation(unsigned int index) const;
 
 		/**
-		 * Get a particular representation dor of this representation set according to its position.
+		 * Gets the data object reference of a particular representation in this representation set
+		 * according to its position.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p index is out of range.
 		 *
-		 * @returns	Null if it fails, else the representation dor.
+		 * @param 	index	Zero-based index of the of the representation we look for.
+		 *
+		 * @returns	The data object reference of the representation at position @p index.
 		 */
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getRepresentationDor(const unsigned int & index) const;
 
 		/**
-		 * Get a particular representation uuid of this representation set according to its position.
+		 * Gets the UUID of a particular representation in this representation set according to its
+		 * position.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::out_of_range	If @p index is out of range.
 		 *
-		 * @returns	The representation uuid.
+		 * @param 	index	Zero-based index of the of the representation we look for.
+		 *
+		 * @returns	The UUID of the representation at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getRepresentationUuid(const unsigned int & index) const;
 
 		/**
-		 * Pushes a back
+		 * Pushes back a representation into this representation set. The value of the @c
+		 * IsHomogeneous attribute is updated if required (see {@link isHomogeneous}).
 		 *
-		 * @param [in,out]	rep	If non-null, the rep.
+		 * @exception	std::invalid_argument	If @p rep is nullptr.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @param [in]	rep	The representation to push in this representation set.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBack(RESQML2_NS::AbstractRepresentation* rep);
 
@@ -152,12 +158,7 @@ namespace RESQML2_NS
 		 */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 
     protected:
 		/** Loads target relationships */

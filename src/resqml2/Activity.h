@@ -23,7 +23,7 @@ under the License.
 /** . */
 namespace RESQML2_NS
 {
-	/** An activity. */
+	/** Proxy class for an activity. */
 	class Activity : public COMMON_NS::AbstractObject
 	{
 	protected:
@@ -42,41 +42,62 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 * @param [in]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT Activity(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
-		/** Destructor */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~Activity() {}
 
 		/**
-		 * Push back a string parameter in the instance. This parameter must exist in the associated
+		 * Pushes back a string parameter in this instance. This parameter must exist in the associated
 		 * activity template.
 		 *
-		 * @param 	title	The title.
-		 * @param 	value	The value.
+		 * @exception	std::invalid_argument	If the parameter @p title does not exist in the
+		 * 										associated activity template.
+		 * @exception	std::invalid_argument	If the maximum number of occurrences has already been
+		 * 										reached for parameter @p title.
+		 * @exception	std::invalid_argument	If The parameter template @p title does not allow a
+		 * 										string datatype.
+		 *
+		 * @param 	title	The title of the parameter to push back.
+		 * @param 	value	The value of the parameter to push back.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string title,
 			const std::string & value) = 0;
 
 		/**
-		 * Push back an integer parameter in the instance. This parameter must exist in the associated
+		 * Pushes back an integer parameter in this instance. This parameter must exist in the associated
 		 * activity template.
 		 *
-		 * @param 	title	The title.
-		 * @param 	value	The value.
+		 * @exception	std::invalid_argument	If the parameter @p title does not exist in the
+		 * 										associated activity template.
+		 * @exception	std::invalid_argument	If the maximum number of occurrences has already been
+		 * 										reached for parameter @p title.
+		 * @exception	std::invalid_argument	If The parameter template @p title does not allow a
+		 * 										an integer datatype.
+		 *
+		 * @param 	title	The title of the parameter to push back.
+		 * @param 	value	The value of the parameter to push back.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string title,
 			const LONG64 & value) = 0;
 
 		/**
-		 * Push back a resqml object parameter in the instance. This parameter must exist in the
+		 * Pushes back a RESQML object parameter in this instance. This parameter must exist in the
 		 * associated activity template.
 		 *
-		 * @param 		  	title			The title.
-		 * @param [in,out]	resqmlObject	If non-null, the resqml object.
+		 * @exception	std::invalid_argument	If @p resqmlObject is null.
+		 * 										* @exception	std::invalid_argument	If the parameter @p
+		 * 										title does not exist in the
+		 * 											associated activity template.
+		 * @exception	std::invalid_argument	If the maximum number of occurrences has already been
+		 * 										reached for parameter @p title.
+		 * @exception	std::invalid_argument	If The parameter template @p title does not allow a a
+		 * 										data object datatype.
+		 *
+		 * @param 	  	title			The title of the parameter to push back.
+		 * @param [in]	resqmlObject	The RESQML object, value of the parameter to push back.
 		 */
 		virtual void pushBackParameter(const std::string title,
 			AbstractObject* resqmlObject) = 0;
@@ -89,209 +110,278 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getParameterCount() const = 0;
 
 		/**
-		 * Get the count of all the parameters which have got the same title.
+		 * Gets the count of all the parameters which have the same title.
 		 *
-		 * @param 	paramTitle	The parameter title.
+		 * @param 	paramTitle	The title of the parameters we look for.
 		 *
 		 * @returns	The parameter count.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getParameterCount(const std::string & paramTitle) const = 0;
 
 		/**
-		 * Gets parameter title
+		 * Gets the title of a given parameter
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
+		 *
+		 * @param 	index	Zero-based index of the parameter for which we look for the title.
 		 *
 		 * @returns	The parameter title.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual const std::string & getParameterTitle(const unsigned int & index) const = 0;
 
 		/**
-		 * Gets parameter index of title
+		 * Gets the indices of all the parameters sharing a given title.
 		 *
-		 * @param 	paramTitle	The parameter title.
+		 * @param 	paramTitle	The title of the parameters we look for.
 		 *
-		 * @returns	The parameter index of title.
+		 * @returns	A vector of parameter indices.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::vector<unsigned int> getParameterIndexOfTitle(const std::string & paramTitle) const = 0;
 
 		/**
-		 * Query if 'paramTitle' is a floating point quantity parameter
+		 * Queries if all of the parameters sharing a given title are floating point quantity parameters.
 		 *
-		 * @param 	paramTitle	The parameter title.
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
 		 *
-		 * @returns	True if a floating point quantity parameter, false if not.
+		 * @param 	paramTitle	The title of the parameters we want to test the datatype.
+		 *
+		 * @returns	True if all of the @p paramTitle parameters are floating point quantity parameters,
+		 * 			false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isAFloatingPointQuantityParameter(const std::string & paramTitle) const = 0;
 
 		/**
-		 * Query if 'index' is a floating point quantity parameter
+		 * Queries if a given parameter is a floating point quantity parameter.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
 		 *
-		 * @returns	True if a floating point quantity parameter, false if not.
+		 * @param 	index	Zero-based index of the parameter we want to test the datatype.
+		 *
+		 * @returns	True if the parameter at position @p index is a floating point quantity parameter,
+		 * 			false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isAFloatingPointQuantityParameter(const unsigned int & index) const = 0;
 
 		/**
-		 * Gets floating point quantity parameter value
+		 * Gets the values of all the floating point quantity parameters sharing a given title.
 		 *
-		 * @param 	paramTitle	The parameter title.
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
+		 * @exception	std::invalid_argument	If one @p paramTitle parameter contains some non double
+		 * 										values.
 		 *
-		 * @returns	The floating point quantity parameter value.
+		 * @param 	paramTitle	The title of the floating point parameters we look for the value.
+		 *
+		 * @returns	A vector of the value of all the @p paramTitle floating point quantity parameters.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::vector<double> getFloatingPointQuantityParameterValue(const std::string & paramTitle) const = 0;
 
 		/**
-		 * Gets floating point quantity parameter value
+		 * Gets the floating point quantity value of a given parameter.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	 	If @p index is not in the parameter range.
+		 * @exception	std::invalid_argument	If the parameter at @p index is not a floating point
+		 * 										quantity parameter.
 		 *
-		 * @returns	The floating point quantity parameter value.
+		 * @param 	index	Zero-based index of the parameter we look for the value. This index is taken
+		 * 					in the set of all parameters of this activity.
+		 *
+		 * @returns	The floating point quantity value of the parameter at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual double getFloatingPointQuantityParameterValue(const unsigned int & index) const = 0;
 
 		/**
-		 * Query if 'paramTitle' is an integer quantity parameter
+		 * Queries if all of the parameters sharing a given title are integer quantity parameters.
 		 *
-		 * @param 	paramTitle	The parameter title.
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
 		 *
-		 * @returns	True if an integer quantity parameter, false if not.
+		 * @param 	paramTitle	The title of the parameters we want to test the datatype.
+		 *
+		 * @returns	True if all of the @p paramTitle parameters are integer quantity parameters,
+		 * 			false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isAnIntegerQuantityParameter(const std::string & paramTitle) const = 0;
 
 		/**
-		 * Query if 'index' is an integer quantity parameter
+		 * Queries if a given parameter is an integer quantity parameter.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
 		 *
-		 * @returns	True if an integer quantity parameter, false if not.
+		 * @param 	index	Zero-based index of the parameter we want to test the datatype.
+		 *
+		 * @returns	True if the parameter at position @p index is an integer quantity parameter,
+		 * 			false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isAnIntegerQuantityParameter(const unsigned int & index) const = 0;
 
 		/**
-		 * Gets integer quantity parameter value
+		 * Gets the values of all the integer quantity parameters sharing a given title.
 		 *
-		 * @param 	paramTitle	The parameter title.
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
+		 * @exception	std::invalid_argument	If one @p paramTitle parameter contains some non integer
+		 * 										values.
 		 *
-		 * @returns	The integer quantity parameter value.
+		 * @param 	paramTitle	The title of the integer parameters we look for the value.
+		 *
+		 * @returns	A vector of the value of all the @p paramTitle integer quantity parameters.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::vector<LONG64> getIntegerQuantityParameterValue(const std::string & paramTitle) const = 0;
 
 		/**
-		 * Gets integer quantity parameter value
+		 * Gets the integer quantity value of a given parameter.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	 	If @p index is not in the parameter range.
+		 * @exception	std::invalid_argument	If the parameter at @p index is not an integer quantity
+		 * 										parameter.
 		 *
-		 * @returns	The integer quantity parameter value.
+		 * @param 	index	Zero-based index of the parameter we look for the value. This index is taken
+		 * 					in the set of all parameters of this activity.
+		 *
+		 * @returns	The integer quantity value of the parameter at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual LONG64 getIntegerQuantityParameterValue(const unsigned int & index) const = 0;
 
 		/**
-		 * Query if 'paramTitle' is a string parameter
+		 * Queries if all of the parameters sharing a given title are string parameters.
 		 *
-		 * @param 	paramTitle	The parameter title.
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
 		 *
-		 * @returns	True if a string parameter, false if not.
+		 * @param 	paramTitle	The title of the parameters we want to test the datatype.
+		 *
+		 * @returns	True if all of the @p paramTitle parameters are string parameters, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isAStringParameter(const std::string & paramTitle) const = 0;
 
 		/**
-		 * Query if 'index' is a string parameter
+		 * Queries if a given parameter is a string parameter.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
 		 *
-		 * @returns	True if a string parameter, false if not.
+		 * @param 	index	Zero-based index of the parameter we want to test the datatype.
+		 *
+		 * @returns	True if the parameter at position @p index is a string parameter,
+		 * 			false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isAStringParameter(const unsigned int & index) const = 0;
 
 		/**
-		 * Gets string parameter value
+		 * Gets the values of all the string parameters sharing a given title.
 		 *
-		 * @param 	paramTitle	The parameter title.
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
+		 * @exception	std::invalid_argument	If one @p paramTitle parameter contains some non string
+		 * 										values.
 		 *
-		 * @returns	The string parameter value.
+		 * @param 	paramTitle	The title of the string parameters we look for the value.
+		 *
+		 * @returns	A vector of the value of all the @p paramTitle string parameters.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::vector<std::string> getStringParameterValue(const std::string & paramTitle) const = 0;
 
 		/**
-		 * Gets string parameter value
+		 * Gets the string value of a given parameter.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	 	If @p index is not in the parameter range.
+		 * @exception	std::invalid_argument	If the parameter at @p index is not an string parameter.
 		 *
-		 * @returns	The string parameter value.
+		 * @param 	index	Zero-based index of the parameter we look for the value. This index is taken
+		 * 					in the set of all parameters of this activity.
+		 *
+		 * @returns	The string value of the parameter at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual const std::string & getStringParameterValue(const unsigned int & index) const = 0;
 
 		/**
-		 * Query if 'paramTitle' is a resqml object parameter
+		 * Queries if all of the parameters sharing a given title are RESQML object parameters.
 		 *
-		 * @param 	paramTitle	The parameter title.
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
 		 *
-		 * @returns	True if a resqml object parameter, false if not.
+		 * @param 	paramTitle	The title of the parameters we want to test the datatype.
+		 *
+		 * @returns	True if all of the @p paramTitle parameters are RESQML object parameters, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isAResqmlObjectParameter(const std::string & paramTitle) const = 0;
 
 		/**
-		 * Query if 'index' is a resqml object parameter
+		 * Queries if a given parameter is a RESQML object parameter.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
 		 *
-		 * @returns	True if a resqml object parameter, false if not.
+		 * @param 	index	Zero-based index of the parameter we want to test the datatype.
+		 *
+		 * @returns	True if the parameter at position @p index is a RESQML object parameter,
+		 * 			false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isAResqmlObjectParameter(const unsigned int & index) const = 0;
 
 		/**
-		 * Gets resqml object parameter value
+		 * Gets the values of all the RESQML object parameters sharing a given title.
 		 *
-		 * @param 	paramTitle	The parameter title.
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
+		 * @exception	std::invalid_argument	If one @p paramTitle parameter contains some non RESQML object
+		 * 										values.
 		 *
-		 * @returns	Null if it fails, else the resqml object parameter value.
+		 * @param 	paramTitle	The title of the RESQML object parameters we look for the value.
+		 *
+		 * @returns	A vector of the value of all the @p paramTitle RESQML object parameters.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual std::vector<AbstractObject*> getResqmlObjectParameterValue(const std::string & paramTitle) const = 0;
 
 		/**
-		 * Gets resqml object parameter value
+		 * Gets the RESQML object value of a given parameter.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	 	If @p index is not in the parameter range.
+		 * @exception	std::invalid_argument	If the parameter at @p index is not an RESQML object
+		 * 										parameter.
 		 *
-		 * @returns	Null if it fails, else the resqml object parameter value.
+		 * @param 	index	Zero-based index of the parameter we look for the value. This index is taken
+		 * 					in the set of all parameters of this activity.
+		 *
+		 * @returns	The RESQML object value of the parameter at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual AbstractObject* getResqmlObjectParameterValue(const unsigned int & index) const = 0;
 
 		/**
-		 * Set the activity template of the activity
+		 * Sets the activity template of this activity.
 		 *
-		 * @param [in,out]	activityTemplate	If non-null, the activity template.
+		 * @param [in]	activityTemplate	If non-null, the activity template.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setActivityTemplate(class ActivityTemplate* activityTemplate) = 0;
 
 		/**
-		 * Get the activity template dor of the activity
+		 * Gets the data object reference of the activity template of this activity.
 		 *
-		 * @returns	Null if it fails, else the activity template dor.
+		 * @returns	A pointer to the data object reference of the activity template.
 		 */
 		virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getActivityTemplateDor() const = 0;
 		
-		/** Get the activity template of the activity */
+		/** 
+		 * Gets the activity template of this activity.
+		 * 
+		 * @returns The activity template of this activity.
+		 */
 		DLL_IMPORT_OR_EXPORT class ActivityTemplate* getActivityTemplate() const;
 
 		/**
-		 * Get all objects which are either input or output of this acitivty
+		 * Gets all the RESQML objects which are either input or output of this activity. That is to say
+		 * all of the values of the RESQML object parameters of this activity.
 		 *
-		 * @returns	Null if it fails, else the resqml object set.
+		 * @returns	A vector of pointers to the RESQML objects which are either input or output of this
+		 * 			activity.
 		 */
 		DLL_IMPORT_OR_EXPORT std::vector<AbstractObject*> getResqmlObjectSet() const;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
+		 * Gets the standard XML tag without XML namespace for serializing this data object
 		 *
 		 * @returns	The XML tag.
 		 */

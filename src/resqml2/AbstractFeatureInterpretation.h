@@ -23,14 +23,13 @@ under the License.
 /** . */
 namespace RESQML2_0_1_NS
 {
-	/** A structural organization interpretation. */
 	class StructuralOrganizationInterpretation;
 }
 
 /** . */
 namespace RESQML2_NS
 {
-	/** An abstract feature interpretation. */
+	/** Proxy class for an abstract feature interpretation. */
 	class AbstractFeatureInterpretation : public COMMON_NS::AbstractObject
 	{
 	protected:
@@ -60,7 +59,7 @@ namespace RESQML2_NS
 		virtual ~AbstractFeatureInterpretation() {}
 
 		/**
-		 * Gets interpreted feature dor
+		 * Gets the interpreted feature data object reference.
 		 *
 		 * @returns	null pointer if no interpreted feature is associated to this interpretation.
 		 * 			Otherwise return the data objet reference of the associated interpreted feature.
@@ -68,71 +67,80 @@ namespace RESQML2_NS
 		gsoap_resqml2_0_1::eml20__DataObjectReference const * getInterpretedFeatureDor() const;
 
 		/**
-		 * Gets interpreted feature uuid
+		 * Gets the interpreted feature UUID.
 		 *
-		 * @returns	The interpreted feature uuid.
+		 * @returns	The interpreted feature UUID.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getInterpretedFeatureUuid() const;
 
 		/**
-		 * Set the feature which is interpreted by the current instance.
+		 * Sets the feature which is interpreted by the current instance.
 		 *
-		 * @param [in,out]	feature	If non-null, the feature.
+		 * @exception	std::invalid_argument	If @p feature is null.
+		 *
+		 * @param [in]	feature	The feature to interpret.
 		 */
 		DLL_IMPORT_OR_EXPORT void setInterpretedFeature(AbstractFeature* feature);
 
 		/**
-		 * Get the feature this instance interprets
+		 * Gets the feature this instance interprets
 		 *
-		 * @returns	Null if it fails, else the interpreted feature.
+		 * @returns	A pointer to the interpreted feature.
 		 */
 		DLL_IMPORT_OR_EXPORT AbstractFeature* getInterpretedFeature() const;
 
 		/**
-		 * Init the domain of the interpretation based on its representations
+		 * Initializes the domain of the interpretation by looking at the local CRS domain of its
+		 * representations.
 		 *
-		 * @param 	defaultDomain	The default domain to set when there is no representation set to this
-		 * 							interpretation.
+		 * @param 	defaultDomain	The default domain to set when no representation is associated to
+		 * 							this interpretation.
 		 *
-		 * @returns	A reference to a const gsoap_resqml2_0_1::resqml20__Domain.
+		 * @returns	The domain that have been set to this interpretation (either deduced from its
+		 * 			representation or @p defaultDomain).
 		 */
 		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml20__Domain & initDomain(gsoap_resqml2_0_1::resqml20__Domain defaultDomain) const;
 
 		/**
-		 * Set the domain of the interpretation
+		 * Gets the domain of this interpretation.
 		 *
-		 * @returns	The domain.
+		 * @returns	The domain of this interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__Domain getDomain() const;
 
 		/**
-		 * Get all the representations of this interpretation
+		 * Gets all the representations of this interpretation.
 		 *
-		 * @returns	Null if it fails, else the representation set.
+		 * @returns	A vector of all the representations associated to this interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT std::vector<AbstractRepresentation *> getRepresentationSet() const;
 
 		/**
-		 * Get the interpretation count of this feature.
+		 * Get the representation count of this interpretation.
+		 *
+		 * @exception	std::range_error	If the representation count is strictly greater than unsigned
+		 * 									int max.
 		 *
 		 * @returns	The representation count.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getRepresentationCount() const;
 
 		/**
-		 * Get all the Grid Connection Set Representation which reference this interpretation.
+		 * Get all the grid connection set representations which reference this interpretation.
 		 *
-		 * @returns	Null if it fails, else the grid connection set representation set.
+		 * @returns	A vector of pointers to all the grid connection set representations which reference this interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT std::vector<GridConnectionSetRepresentation *> getGridConnectionSetRepresentationSet() const;
 
 		/**
-		 * Get a particular interpretation of this feature according to its position in the
-		 * interpretation ordering.
+		 * Gets a particular representation of this interpretation according to its position in the
+		 * representations ordering.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	If @p index is out of the range of the representation set.
 		 *
-		 * @returns	Null if it fails, else the representation.
+		 * @param 	index	Zero-based index of the representation we look for.
+		 *
+		 * @returns	A pointer to the representation at @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT AbstractRepresentation * getRepresentation(unsigned int index) const;
 

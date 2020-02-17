@@ -23,7 +23,7 @@ under the License.
 /** . */
 namespace RESQML2_NS
 {
-	/** An activity template. */
+	/** Proxy class for an activity template. */
 	class ActivityTemplate : public COMMON_NS::AbstractObject
 	{
 	protected:
@@ -42,39 +42,42 @@ namespace RESQML2_NS
 		/**
 		 * Only to be used in partial transfer context
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 * @param [in]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT ActivityTemplate(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
-		/** Destructor */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~ActivityTemplate() {}
 
 		/**
-		 * Push back a parameter in the activity template instance. This parameter has an unconstrained
-		 * type.
+		 * Pushes back a parameter in this activity template instance. This parameter has an
+		 * unconstrained type.
 		 *
-		 * @param 	title	 	The title.
-		 * @param 	isInput  	True if is input, false if not.
-		 * @param 	isOutput 	True if is output, false if not.
-		 * @param 	minOccurs	The minimum occurs.
-		 * @param 	maxOccurs	The maximum occurs.
+		 * @exception	std::invalid_argument	If @p maxOccurs is strictly lesser than @p minOccurs.
+		 *
+		 * @param 	title	 	The title of the parameter to push back.
+		 * @param 	isInput  	True if the parameter is an input parameter, false if not.
+		 * @param 	isOutput 	True if the parameter is an output parameter, false if not.
+		 * @param 	minOccurs	The minimum number of occurrences of this parameter.
+		 * @param 	maxOccurs	The maximum number of occurrences of this parameter.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string & title,
 			bool isInput, bool isOutput,
 			unsigned int minOccurs, int maxOccurs) = 0;
 
 		/**
-		 * Push back a parameter in the activity template instance. This parameter must be of a data
+		 * Pushes back a parameter in the activity template instance. This parameter must be of a RESQML
 		 * object kind.
 		 *
-		 * @param 	title				   	The title.
-		 * @param 	isInput				   	True if is input, false if not.
-		 * @param 	isOutput			   	True if is output, false if not.
-		 * @param 	minOccurs			   	The minimum occurs.
-		 * @param 	maxOccurs			   	The maximum occurs.
-		 * @param 	resqmlObjectContentType	If empty, there is no constraint on the content type of this
+		 * @exception	std::invalid_argument	If @p maxOccurs is strictly lesser than @p minOccurs.
+		 *
+		 * @param 	title				   	The title of the parameter to push back.
+		 * @param 	isInput				   	True if the parameter is an input parameter, false if not.
+		 * @param 	isOutput			   	True if the parameter is an output parameter, false if not.
+		 * @param 	minOccurs			   	The minimum number of occurrences of this parameter.
+		 * @param 	maxOccurs			   	The maximum number of occurrences of this parameter.
+		 * @param 	resqmlObjectContentType	The content type of the RESQML object kind of the parameter.
+		 * 									If empty, there is no constraint on the content type of this
 		 * 									parameter.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void pushBackParameter(const std::string & title,
@@ -83,118 +86,136 @@ namespace RESQML2_NS
 			std::string resqmlObjectContentType) = 0;
 
 		/**
-		 * Check if the instance contains a parameter with a particular title
+		 * Checks if this instance contains a parameter with a particular title.
 		 *
-		 * @param 	paramTitle	The title of the parameter we are looking for into the instance.
+		 * @param 	paramTitle	The title of the parameter we are looking for into this instance.
 		 *
-		 * @returns	True if an existing parameter, false if not.
+		 * @returns	True if there exists a @p paramTitle parameter in this instance false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isAnExistingParameter(const std::string & paramTitle) const = 0;
 
 		/**
-		 * Gets parameter count
+		 * Gets the parameter count.
 		 *
 		 * @returns	The parameter count.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual unsigned int getParameterCount() const = 0;
 
 		/**
-		 * Gets parameter title
+		 * Gets the title of a particular parameter.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
 		 *
-		 * @returns	The parameter title.
+		 * @param 	index	Zero-based index of the parameter we look for the title.
+		 *
+		 * @returns	The title of the parameter at position @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual const std::string & getParameterTitle(const unsigned int & index) const = 0;
 
 		/**
-		 * Gets parameter is input
+		 * Queries if a particular parameter is an input parameter.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
 		 *
-		 * @returns	The parameter is input.
+		 * @param 	index	Zero-based index of the parameter we want to know if it is an input one.
+		 *
+		 * @returns	True is the parameter at @p index is an input parameter, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual const bool & getParameterIsInput(const unsigned int & index) const = 0;
 
 		/**
-		 * Gets parameter is input
+		 * Queries if a particular parameter is an input parameter.
 		 *
-		 * @param 	paramTitle	The parameter title.
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
 		 *
-		 * @returns	The parameter is input.
+		 * @param 	paramTitle	The title of the parameter we want to know if it is an input one.
+		 *
+		 * @returns	True is the parameter @p paramTitle is an input parameter, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual const bool & getParameterIsInput(const std::string & paramTitle) const = 0;
 
 		/**
-		 * Gets parameter is output
+		 * Queries if a particular parameter is an output parameter.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
 		 *
-		 * @returns	The parameter is output.
+		 * @param 	index	Zero-based index of the parameter we want to know if it is an output one.
+		 *
+		 * @returns	True is the parameter at @p index is an output parameter, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual const bool & getParameterIsOutput(const unsigned int & index) const = 0;
 
 		/**
-		 * Gets parameter is output
+		 * Queries if a particular parameter is an output parameter.
 		 *
-		 * @param 	paramTitle	The parameter title.
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
 		 *
-		 * @returns	The parameter is output.
+		 * @param 	paramTitle	The title of the parameter we want to know if it is an output one.
+		 *
+		 * @returns	True is the parameter @p paramTitle is an output parameter, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual const bool & getParameterIsOutput(const std::string & paramTitle) const = 0;
 
 		/**
-		 * Gets parameter minimum occurences
+		 * Gets the minimum occurrences of a particular parameter.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
 		 *
-		 * @returns	The parameter minimum occurences.
+		 * @param 	index	Zero-based index of the parameter we want to know the minimum occurrences.
+		 *
+		 * @returns	The parameter minimum occurrences.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMinOccurences(const unsigned int & index) const = 0;
 
 		/**
-		 * Gets parameter minimum occurences
+		 * Gets the minimum occurrences of a particular parameter.
 		 *
-		 * @param 	paramTitle	The parameter title.
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
 		 *
-		 * @returns	The parameter minimum occurences.
+		 * @param 	paramTitle	The title of the parameter we want to know the minimum occurrences.
+		 *
+		 * @returns	The parameter minimum occurrences.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMinOccurences(const std::string & paramTitle) const = 0;
 
 		/**
-		 * Gets parameter maximum occurences
+		 * Gets the maximum occurrences of a particular parameter.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	If @p index is not in the parameter range.
 		 *
-		 * @returns	The parameter maximum occurences.
+		 * @param 	index	Zero-based index of the parameter we want to know the maximum occurrences.
+		 *
+		 * @returns	The parameter maximum occurrences.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMaxOccurences(const unsigned int & index) const = 0;
 
 		/**
-		 * Gets parameter maximum occurences
+		 * Gets the maximum occurrences of a particular parameter.
 		 *
-		 * @param 	paramTitle	The parameter title.
+		 * @exception	std::invalid_argument	If there exists no @p paramTitle parameter in this
+		 * 										activity.
 		 *
-		 * @returns	The parameter maximum occurences.
+		 * @param 	paramTitle	The title of the parameter we want to know the maximum occurrences.
+		 *
+		 * @returns	The parameter maximum occurrences.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual LONG64 getParameterMaxOccurences(const std::string & paramTitle) const = 0;
 
 		/**
-		 * Gets activity instance set
+		 * Gets the set of activities which are based on this activity template within the repository.
 		 *
-		 * @returns	Null if it fails, else the activity instance set.
+		 * @returns	A vector of pointers to all the activities based on this activity template.
 		 */
 		DLL_IMPORT_OR_EXPORT std::vector<Activity *> getActivityInstanceSet() const;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
+		 * Gets the standard XML tag without XML namespace for serializing this data object
 		 *
 		 * @returns	The XML tag.
 		 */

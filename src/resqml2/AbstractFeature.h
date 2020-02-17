@@ -25,7 +25,7 @@ under the License.
 /** . */
 namespace RESQML2_NS
 {
-	/** An abstract feature. */
+	/** Proxy class for an abstract feature. */
 	class AbstractFeature : public COMMON_NS::AbstractObject
 	{
 	protected:
@@ -55,26 +55,32 @@ namespace RESQML2_NS
 		virtual ~AbstractFeature() {}
 
 		/**
-		 * Get all the interpretations of this feature
+		 * Gets all the interpretations of this feature.
 		 *
-		 * @returns	Null if it fails, else the interpretation set.
+		 * @returns The vector of all the interpretations of this feature.
 		 */
 		DLL_IMPORT_OR_EXPORT std::vector<AbstractFeatureInterpretation *> getInterpretationSet() const;
 
 		/**
-		 * Get the interpretation count of this feature.
+		 * Gets the interpretation count of this feature.
 		 *
-		 * @returns	The interpretation count.
+		 * @exception	std::range_error	If the interpretation count is strictly greater than unsigned
+		 * 									int max.
+		 *
+		 * @returns	The interpretation count of this feature.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getInterpretationCount() const;
 
 		/**
-		 * Get a particular interpretation of this feature according to its position in the
-		 * interpretation ordering.
+		 * Gets a particular interpretation of this feature according to its position in the
+		 * interpretations ordering.
 		 *
-		 * @param 	index	Zero-based index of the.
+		 * @exception	std::out_of_range	If @p index is out of the range of the interpretation set of
+		 * 									the feature.
 		 *
-		 * @returns	Null if it fails, else the interpretation.
+		 * @param 	index	Zero-based index of the interpretation we look for.
+		 *
+		 * @returns	A pointer to the interpretation at @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT AbstractFeatureInterpretation *	getInterpretation(unsigned int index) const;
 
