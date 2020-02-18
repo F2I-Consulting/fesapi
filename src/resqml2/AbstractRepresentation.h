@@ -312,6 +312,8 @@ namespace RESQML2_NS
 		/**
 		 * Get the xyz point count in a given patch of this representation.
 		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
+		 *
 		 * @param 	patchIndex	Zero-based index of the patch from which we look for the xyz points.
 		 *
 		 * @returns	The xyz point count of the patch at position @p patchIndex.

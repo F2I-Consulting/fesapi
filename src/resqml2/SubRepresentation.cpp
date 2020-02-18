@@ -100,7 +100,7 @@ std::string SubRepresentation::getSupportingRepresentationTitle(unsigned int ind
 	return getSupportingRepresentationDor(index)->Title;
 }
 
-std::string SubRepresentation::getSupportingRepresentationContentType() const
+std::string SubRepresentation::getSupportingRepresentationContentType(unsigned int index) const
 {
-	return getSupportingRepresentationDor(0)->ContentType;
+	return getSupportingRepresentationDor(index)->ContentType;
 }

@@ -867,31 +867,31 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::TimeSeries*> getTimeSeriesSet() const;
 
 		/**
-		 * Gets all the sub representations contained into this repository
+		 * Gets all the sub-representations contained into this repository
 		 * @deprecated Use {@link getDataObjects()} template method
 		 *
-		 * @returns	A vector of pointers to all the sub representations of this repository.
+		 * @returns	A vector of pointers to all the sub-representations of this repository.
 		 */
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::SubRepresentation*> getSubRepresentationSet() const;
 
 		/**
-		 * Gets the sub representations count into this repository
+		 * Gets the sub-representations count into this repository
 		 *
-		 * @exception	std::out_of_range	If the sub representations count is superior to @c unsigned @c
+		 * @exception	std::out_of_range	If the sub-representations count is superior to @c unsigned @c
 		 * 									int max.
 		 *
-		 * @returns	The sub representations count of this repository.
+		 * @returns	The sub-representations count of this repository.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getSubRepresentationCount() const;
 
 		/**
-		 * Gets a particular sub representation into this repository
+		 * Gets a particular sub-representation into this repository
 		 *
-		 * @exception	std::out_of_range	If the index of the sub representation is out of range.
+		 * @exception	std::out_of_range	If the index of the sub-representation is out of range.
 		 *
 		 * @param 	index	Zero-based index.
 		 *
-		 * @returns	A pointer to the sub representation at @p index position into this repository.
+		 * @returns	A pointer to the sub-representation at @p index position into this repository.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::SubRepresentation* getSubRepresentation(unsigned int index) const;
 
@@ -2456,30 +2456,30 @@ namespace COMMON_NS
 			const ULONG64 & cellCount);
 
 		/**
-		 * Creates a sub representation into this repository
+		 * Creates a sub-representation into this repository
 		 *
-		 * @param 	guid 	The guid to set to the sub representation. If empty then a new guid will be
+		 * @param 	guid 	The guid to set to the sub-representation. If empty then a new guid will be
 		 * 					generated.
-		 * @param 	title	The title to set to the sub representation. If empty then \"unknown\" title
+		 * @param 	title	The title to set to the sub-representation. If empty then \"unknown\" title
 		 * 					will be set.
 		 *
-		 * @returns	A pointer to the new sub representation.
+		 * @returns	A pointer to the new sub-representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::SubRepresentation* createSubRepresentation(
 			const std::string & guid, const std::string & title);
 
 		/**
-		 * Creates a sub representation into this repository
+		 * Creates a sub-representation into this repository
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null. You can alternatively
 		 * 						use {@link  createSubRepresentation} if no interpretation is associated
 		 * 						to this representation.
-		 * @param 	  	guid  	The guid to set to the sub representation. If empty then a new guid will
+		 * @param 	  	guid  	The guid to set to the sub-representation. If empty then a new guid will
 		 * 						be generated.
-		 * @param 	  	title 	The title to set to the sub representation. If empty then \"unknown\"
+		 * @param 	  	title 	The title to set to the sub-representation. If empty then \"unknown\"
 		 * 						title will be set.
 		 *
-		 * @returns	A pointer to the new sub representation.
+		 * @returns	A pointer to the new sub-representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::SubRepresentation* createSubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
