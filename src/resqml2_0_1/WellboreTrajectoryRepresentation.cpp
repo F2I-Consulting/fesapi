@@ -42,10 +42,10 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInter
 	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	if (dynamic_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs()) != nullptr) {
-		rep->MdUom = static_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit();
+	if (mdInfo->getLocalCrs() != nullptr) {
+		rep->MdUom = mdInfo->getLocalCrs()->getVerticalCrsUnit();
 	}
 	rep->StartMd = std::numeric_limits<double>::quiet_NaN();
 	rep->FinishMd = std::numeric_limits<double>::quiet_NaN();
@@ -66,23 +66,20 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInter
 	RESQML2_NS::MdDatum * mdInfo = deviationSurvey->getMdDatum();
 	setMdDatum(mdInfo);
 
-	ULONG64 stationCount = deviationSurvey->getXyzPointCountOfPatch(0);
-	double* mdValues = new double[stationCount];
-	deviationSurvey->getMdValues(mdValues);
+	const ULONG64 stationCount = deviationSurvey->getXyzPointCountOfPatch(0);
+	std::unique_ptr<double[]> mdValues(new double[stationCount]);
+	deviationSurvey->getMdValues(mdValues.get());
 	rep->StartMd = mdValues[0];
 	rep->FinishMd = mdValues[stationCount-1];
-	delete[] mdValues;
 
 	setInterpretation(interp);
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
-	if (dynamic_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs()) != nullptr) {
-		rep->MdUom = static_cast<RESQML2_NS::AbstractLocal3dCrs*>(mdInfo->getLocalCrs())->getVerticalCrsUnit();
+	if (mdInfo->getLocalCrs() != nullptr) {
+		rep->MdUom = mdInfo->getLocalCrs()->getVerticalCrsUnit();
 	}
-	rep->StartMd = std::numeric_limits<double>::quiet_NaN();
-	rep->FinishMd = std::numeric_limits<double>::quiet_NaN();
 }
 
 void WellboreTrajectoryRepresentation::setMinimalGeometry(double startMd, double endMd)
@@ -273,14 +270,19 @@ void WellboreTrajectoryRepresentation::getXyzPointsOfPatch(const unsigned int & 
 
 int WellboreTrajectoryRepresentation::getGeometryKind() const
 {
-	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
+	_resqml20__WellboreTrajectoryRepresentation const * rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 	if (rep->Geometry == nullptr) {
 		throw logic_error("This trajectory has not got any geometry.");
 	}
 	if (rep->Geometry->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ParametricLineGeometry) {
-		throw logic_error("This kind of parametric line is not yet supported for a wellbore trajectory.");
+		throw logic_error("This kind of parametric line is not supported yet for a wellbore trajectory.");
 	}
-	return static_cast<resqml20__ParametricLineGeometry*>(rep->Geometry)->LineKindIndex;
+	resqml20__ParametricLineGeometry const * paramLine = static_cast<resqml20__ParametricLineGeometry*>(rep->Geometry);
+	if (paramLine->LineKindIndex < -1 || paramLine->LineKindIndex > 5) {
+		throw out_of_range("The parametric line kind index must be in the range [-1, 5].");
+	}
+
+	return static_cast<int>(paramLine->LineKindIndex);
 }
 
 bool WellboreTrajectoryRepresentation::hasMdValues() const
@@ -290,7 +292,7 @@ bool WellboreTrajectoryRepresentation::hasMdValues() const
 		return false;
 	}
 	if (rep->Geometry->soap_type() != SOAP_TYPE_gsoap_resqml2_0_1_resqml20__ParametricLineGeometry) {
-		throw logic_error("This kind of parametric line is not yet supported for a wellbore trajectory.");
+		throw logic_error("This kind of parametric line is not supported yet for a wellbore trajectory.");
 	}
 	return static_cast<resqml20__ParametricLineGeometry*>(rep->Geometry)->ControlPointParameters != nullptr;
 }
@@ -429,7 +431,7 @@ void WellboreTrajectoryRepresentation::setDeviationSurvey(DeviationSurveyReprese
 
 DeviationSurveyRepresentation* WellboreTrajectoryRepresentation::getDeviationSurvey() const
 {
-	gsoap_resqml2_0_1::eml20__DataObjectReference* dsDor = getDeviationSurveyDor();
+	gsoap_resqml2_0_1::eml20__DataObjectReference const * dsDor = getDeviationSurveyDor();
 
 	return dsDor == nullptr ? nullptr : repository->getDataObjectByUuid<DeviationSurveyRepresentation>(dsDor->UUID);
 }
@@ -441,7 +443,12 @@ std::vector<RESQML2_NS::WellboreFrameRepresentation *> WellboreTrajectoryReprese
 
 unsigned int WellboreTrajectoryRepresentation::getWellboreFrameRepresentationCount() const
 {
-	return getWellboreFrameRepresentationSet().size();
+	const size_t result = getWellboreFrameRepresentationSet().size();
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw range_error("There are too much associated WellboreFrameRepresentation.");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 RESQML2_NS::WellboreFrameRepresentation * WellboreTrajectoryRepresentation::getWellboreFrameRepresentation(unsigned int index) const

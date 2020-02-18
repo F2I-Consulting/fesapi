@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/AbstractValuesProperty.h"
+#include "../resqml2/AbstractDiscreteOrCategoricalProperty.h"
 
 /** . */
 namespace RESQML2_0_1_NS
@@ -28,7 +28,7 @@ namespace RESQML2_0_1_NS
 	 * is associated either: as an internally stored index to a string through a lookup mapping, or
 	 * as an internally stored double to another double value through an explicitly provided table.
 	 */
-	class CategoricalProperty : public RESQML2_NS::AbstractValuesProperty
+	class CategoricalProperty : public RESQML2_NS::AbstractDiscreteOrCategoricalProperty
 	{
 	protected:
 
@@ -42,7 +42,7 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in]	partialObject	If non-null, the partial object.
 		 */
-		DLL_IMPORT_OR_EXPORT CategoricalProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractValuesProperty(partialObject) {}
+		DLL_IMPORT_OR_EXPORT CategoricalProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractDiscreteOrCategoricalProperty(partialObject) {}
 
 		/**
 		 * Creates a categorical property which is of a well known Energistics property kind
@@ -98,166 +98,11 @@ namespace RESQML2_0_1_NS
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
-		CategoricalProperty(gsoap_resqml2_0_1::_resqml20__CategoricalProperty* fromGsoap): AbstractValuesProperty(fromGsoap) {}
+		CategoricalProperty(gsoap_resqml2_0_1::_resqml20__CategoricalProperty* fromGsoap): AbstractDiscreteOrCategoricalProperty(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~CategoricalProperty() {}
 
-		/**
-		 * Adds a 1d array of explicit long values to the property values. It will
-		 * be stored in the HDF5 file identified by its HDF proxy.
-		 *
-		 * @param 	  	values	  	All the property values to set ordered according to the topology of
-		 * 							the representation it is based on.
-		 * @param 	  	valueCount	The number of values to write.
-		 * @param [in]	proxy	  	The HDF proxy where to write the property values. It must be already
-		 * 							opened for writing and won't be closed in this method. If null then a
-		 * 							default HDF proxy must be defined in the data object repository.
-		 * @param 	  	nullValue 	The null value.
-		 */
-		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5Array1dOfValues(const LONG64 * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy * proxy, LONG64 nullValue);
-
-		/**
-		 * Adds a 2d array of explicit long values to the property values. It will
-		 * be stored in the HDF5 file identified by its HDF proxy.
-		 *
-		 * @param 	  	values				  	All the property values to set ordered according to the
-		 * 										topology of the representation it is based on.
-		 * @param 	  	valueCountInFastestDim	The number of values to write in the fastest dimension
-		 * 										(mainly I dimension).
-		 * @param 	  	valueCountInSlowestDim	The number of values to write in the slowest dimension
-		 * 										(mainly J dimension).
-		 * @param [in]	proxy				  	The HDF proxy where to write the property values. It must
-		 * 										be already opened for writing and won't be closed in this
-		 * 										method. If null then a default HDF proxy must be defined
-		 * 										in the data object repository.
-		 * @param 	  	nullValue			  	The null value.
-		 */
-		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5Array2dOfValues(const LONG64 * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, LONG64 nullValue);
-
-		/**
-		 * Adds a 3d array of explicit long values to the property values. It will
-		 * be stored in the HDF5 file identified by its HDF proxy.
-		 *
-		 * @param 	  	values				  	All the property values to set ordered according to the
-		 * 										topology of the representation it is based on.
-		 * @param 	  	valueCountInFastestDim	The number of values to write in the fastest dimension
-		 * 										(mainly I dimension).
-		 * @param 	  	valueCountInMiddleDim 	The number of values to write in the middle dimension
-		 * 										(mainly J dimension).
-		 * @param 	  	valueCountInSlowestDim	The number of values to write in the slowest dimension
-		 * 										(mainly K dimension).
-		 * @param [in]	proxy				  	The HDF proxy where to write the property values. It must
-		 * 										be already opened for writing and won't be closed in this
-		 * 										method. If null then a default HDF proxy must be defined
-		 * 										in the data object repository.
-		 * @param 	  	nullValue			  	The null value.
-		 */
-		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5Array3dOfValues(const LONG64 * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, LONG64 nullValue);
-
-		/**
-		 * Adds an nd array of long values to the property values. It will be stored in the HDF5 file
-		 * identified by its HDF proxy.
-		 *
-		 * @param 	  	values					All the property values to set ordered according to the
-		 * 										topology of the representation it is based on.
-		 * @param [in]	numValues				The number of property values ordered by dimension of the
-		 * 										array to write.
-		 * @param 	  	numDimensionsInArray	The number of dimensions in the array to write.
-		 * @param [in]	proxy					The HDF proxy where to write the property values. It must
-		 * 										be already opened for writing and won't be closed in this
-		 * 										method. If null then a default HDF proxy must be defined in
-		 * 										the data object repository.
-		 * @param 	  	nullValue				The null value.
-		 */
-		DLL_IMPORT_OR_EXPORT void pushBackLongHdf5ArrayOfValues(const LONG64 * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, LONG64 nullValue);
-
-		/**
-		 * Add a 1d array of explicit unsigned short values to the property values. It will be stored
-		 * in the HDF5 file identified by its HDF proxy.
-		 *
-		 * @param 	  	values	  	All the property values to set ordered according to the topology of
-		 * 							the representation it is based on.
-		 * @param 	  	valueCount	The number of values to write.
-		 * @param [in]	proxy	  	The HDF proxy where to write the property values. It must be already
-		 * 							opened for writing and won't be closed in this method. If null then a
-		 * 							default HDF proxy must be defined in the data object repository.
-		 * @param 	  	nullValue 	The null value.
-		 */
-		DLL_IMPORT_OR_EXPORT void pushBackUShortHdf5Array1dOfValues(const unsigned short * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy * proxy, unsigned short nullValue);
-
-		/**
-		 * Add a 2d array of explicit unsigned short values to the property values. It will be stored in
-		 * the HDF5 file identified by its HDF proxy.
-		 *
-		 * @param 	  	values				  	All the property values to set ordered according to the
-		 * 										topology of the representation it is based on.
-		 * @param 	  	valueCountInFastestDim	The number of values to write in the fastest dimension
-		 * 										(mainly I dimension).
-		 * @param 	  	valueCountInSlowestDim	The number of values to write in the slowest dimension
-		 * 										(mainly J dimension).
-		 * @param [in]	proxy				  	The HDF proxy where to write the property values. It must
-		 * 										be already opened for writing and won't be closed in this
-		 * 										method. If null then a default HDF proxy must be defined
-		 * 										in the data object repository.
-		 * @param 	  	nullValue			  	The null value.
-		 */
-		DLL_IMPORT_OR_EXPORT void pushBackUShortHdf5Array2dOfValues(const unsigned short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, unsigned short nullValue);
-
-		/**
-		 * Add a 3d array of explicit unsigned short values to the property values. It will be stored in
-		 * the HDF5 file identified by its HDF proxy.
-		 *
-		 * @param 	  	values				  	All the property values to set ordered according to the
-		 * 										topology of the representation it is based on.
-		 * @param 	  	valueCountInFastestDim	The number of values to write in the fastest dimension
-		 * 										(mainly I dimension).
-		 * @param 	  	valueCountInMiddleDim 	The number of values to write in the middle dimension
-		 * 										(mainly J dimension).
-		 * @param 	  	valueCountInSlowestDim	The number of values to write in the slowest dimension
-		 * 										(mainly K dimension).
-		 * @param [in]	proxy				  	The HDF proxy where to write the property values. It must
-		 * 										be already opened for writing and won't be closed in this
-		 * 										method. If null then a default HDF proxy must be defined
-		 * 										in the data object repository.
-		 * @param 	  	nullValue			  	The null value.
-		 */
-		DLL_IMPORT_OR_EXPORT void pushBackUShortHdf5Array3dOfValues(const unsigned short * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy * proxy, unsigned short nullValue);
-
-		/**
-		 * Add an nd array of unsigned short values to the property values. It will be stored in the
-		 * HDF5 file identified by its HDF proxy.
-		 *
-		 * @param 	  	values					All the property values to set ordered according to the
-		 * 										topology of the representation it is based on.
-		 * @param [in]	numValues				The number of property values ordered by dimension of the
-		 * 										array to write.
-		 * @param 	  	numDimensionsInArray	The number of dimensions in the array to write.
-		 * @param [in]	proxy					The HDF proxy where to write the property values. It must
-		 * 										be already opened for writing and won't be closed in this
-		 * 										method. If null then a default HDF proxy must be defined in
-		 * 										the data object repository.
-		 * @param 	  	nullValue				The null value.
-		 */
-		DLL_IMPORT_OR_EXPORT void pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, unsigned short nullValue);
-
-		/**
-		 * Pushes back a new patch of integer values for this property where the values have not to be
-		 * written in the HDF5 file. The reason can be that the values already exist in an external file
-		 * (only HDF5 for now) or that the writing of the values in the external file is differed in
-		 * time.
-		 *
-		 * @param [in]	hdfProxy 	The HDF5 proxy where the values are already or will be stored. If
-		 * 							null then a default HDF proxy must be defined in the data object
-		 * 							repository.
-		 * @param 	  	dataset  	(Optional) If not provided during the method call, the dataset will
-		 * 							be named the same as the dataset naming convention of fesapi:
-		 * 							<tt>"/RESQML/" + prop-&gt;uuid + "/values_patch" + patchIndex</tt>
-		 * @param 	  	nullValue	(Optional) Only relevant for integer hdf5 datasets. Indeed, RESQML
-		 * 							(and fesapi) forces null value for floating point to be NaN value.
-		 *
-		 * @returns	The name of the HDF5 dataset.
-		 */
 		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & dataset = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
 
 		/**   

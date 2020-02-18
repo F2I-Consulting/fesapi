@@ -90,7 +90,12 @@ StratigraphicColumn* EarthModelInterpretation::getStratiColumn() const
 
 unsigned int EarthModelInterpretation::getStratiOccurenceCount() const
 {
-	return static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.size();
+	const size_t result = static_cast<_resqml20__EarthModelInterpretation*>(gsoapProxy2_0_1)->StratigraphicOccurrences.size();
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw std::range_error("There are too much StratiOccurence");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 StratigraphicOccurrenceInterpretation* EarthModelInterpretation::getStratiOccurence(unsigned int index) const

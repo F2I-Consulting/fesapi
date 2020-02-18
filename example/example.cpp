@@ -2086,12 +2086,12 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 			}
 			else if (dynamic_cast<DiscreteProperty const *>(propVal) != nullptr) {
 				DiscreteProperty const * discreteProp = static_cast<DiscreteProperty const *>(propVal);
-				const LONG64 maxValue = discreteProp->getMaximumValue();
-				const LONG64 minValue = discreteProp->getMinimumValue();
-				std::cout << "\tMax value is " << maxValue << endl;
-				std::cout << "\tMin value is " << minValue << endl;
+				if (discreteProp->hasMinimumValue() && discreteProp->hasMinimumValue()) {
+					std::cout << "\tMax value is " << discreteProp->getMaximumValue() << endl;
+					std::cout << "\tMin value is " << discreteProp->getMinimumValue() << endl;
+				}
 				LONG64* values = new LONG64[valueCount];
-				propVal->getLongValuesOfPatch(0, values);
+				discreteProp->getLongValuesOfPatch(0, values);
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
 				delete[] values;
@@ -2102,7 +2102,7 @@ void showAllProperties(RESQML2_NS::AbstractRepresentation const * rep, bool* ena
 				cerr << "\tERROR !!!!! The discrete or categorical property is linked to a floating point HDF5 dataset." << endl;
 				cout << "\tTrying to convert.." << endl;
 				LONG64* values = new LONG64[valueCount];
-				propVal->getLongValuesOfPatch(0, values);
+				dynamic_cast<RESQML2_NS::AbstractDiscreteOrCategoricalProperty const *>(propVal)->getLongValuesOfPatch(0, values);
 				std::cout << "\tFirst value is " << values[0] << endl;
 				std::cout << "\tSecond value is " << values[1] << endl;
 				delete[] values;

@@ -564,7 +564,7 @@ namespace RESQML2_NS
 		return ret;
 	}
 	
-	%typemap(csout, excode=SWIGEXCODE) AbstractProperty*, AbstractValuesProperty*   {
+	%typemap(csout, excode=SWIGEXCODE) AbstractProperty*, AbstractValuesProperty*, AbstractDiscreteOrCategoricalProperty*   {
 		global::System.IntPtr cPtr = $imcall;
 		$csclassname ret = ($csclassname) $modulePINVOKE.resqml2_instantiateConcreteProperty(cPtr, $owner);$excode
 		return ret;

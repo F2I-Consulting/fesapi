@@ -201,7 +201,7 @@ void ContinuousProperty::pushBackFloatHdf5Array3dOfValues(const float * values, 
 	}
 }
 
-std::string ContinuousProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* proxy, const std::string & datasetName, LONG64)
+std::string ContinuousProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* proxy, const std::string & datasetName)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -237,17 +237,23 @@ std::string ContinuousProperty::pushBackRefToExistingDataset(COMMON_NS::Abstract
 	return xmlValues->Values->PathInHdfFile;
 }
 
-void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(
+void ContinuousProperty::pushBackFloatHdf5Array3dOfValues(
 	ULONG64 valueCountInFastestDim,
 	ULONG64 valueCountInMiddleDim,
 	ULONG64 valueCountInSlowestDim,
-	COMMON_NS::AbstractHdfProxy* proxy)
+	COMMON_NS::AbstractHdfProxy* proxy,
+	float minimumValue, float maximumValue)
 {
 	const hsize_t valueCountPerDimension[3] = {valueCountInSlowestDim, valueCountInMiddleDim, valueCountInFastestDim};
-	pushBackFloatHdf5ArrayOfValues(valueCountPerDimension, 3, proxy);
+	if (minimumValue == minimumValue && maximumValue == maximumValue) {
+		pushBackFloatHdf5ArrayOfValues(valueCountPerDimension, 3, proxy, &minimumValue, &maximumValue);
+	}
+	else {
+		pushBackFloatHdf5ArrayOfValues(valueCountPerDimension, 3, proxy);
+	}
 }
 
-void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
+void ContinuousProperty::setValuesOfFloatHdf5Array3dOfValues(
 	float const * values, 
 	ULONG64 valueCountInFastestDim,
 	ULONG64 valueCountInMiddleDim,
@@ -255,6 +261,7 @@ void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
 	ULONG64 offsetInFastestDim,
 	ULONG64 offsetInMiddleDim,
 	ULONG64 offsetInSlowestDim,
+	bool computeMinMax,
 	COMMON_NS::AbstractHdfProxy* proxy,
 	unsigned int patchIndex)
 {
@@ -264,7 +271,8 @@ void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
 		values, 
 		valueCountPerDimension, 
 		offsetPerDimension, 
-		3, 
+		3,
+		computeMinMax,
 		proxy,
 		patchIndex
 	);
@@ -273,14 +281,21 @@ void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
 void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, COMMON_NS::AbstractHdfProxy * proxy,
 	float * minimumValue, float * maximumValue)
 {
+	if ((minimumValue == nullptr && maximumValue != nullptr) ||
+		(minimumValue != nullptr && maximumValue == nullptr)) {
+		throw std::invalid_argument("You cannot set the minimum value without the maximum value and viceversa.");
+	}
+
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
 		if (proxy == nullptr) {
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	const string datasetName = pushBackRefToExistingDataset(proxy, string());
-	setPropertyMinMax(values, numValues, numArrayDimensions, minimumValue, maximumValue);
+	const string datasetName = pushBackRefToExistingDataset(proxy, "");
+	if (minimumValue != nullptr) { // implies that maximumValue != nullptr as well.
+		setPropertyMinMax(values, numValues, numArrayDimensions, minimumValue, maximumValue);
+	}
 
 	// HDF
 	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
@@ -293,7 +308,8 @@ void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(float const * values, un
 void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(
 	unsigned long long const * numValues,
 	unsigned int numArrayDimensions, 
-	COMMON_NS::AbstractHdfProxy* proxy)
+	COMMON_NS::AbstractHdfProxy* proxy,
+	float * minimumValue, float * maximumValue)
 {
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
@@ -301,12 +317,11 @@ void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-	const string datasetName = pushBackRefToExistingDataset(proxy, string());
+	const string datasetName = pushBackRefToExistingDataset(proxy, "");
 
 	gsoap_resqml2_0_1::_resqml20__ContinuousProperty* prop = static_cast<gsoap_resqml2_0_1::_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
-	for (ULONG64 i = 0; i < prop->Count; ++i) {
-		prop->MinimumValue.push_back(FLT_MAX);
-		prop->MaximumValue.push_back(FLT_MIN);
+	if (minimumValue != nullptr && maximumValue != nullptr) {
+		setPropertyMinMax((float*)nullptr, numValues, numArrayDimensions, minimumValue, maximumValue);
 	}
 
 	// HDF
@@ -316,20 +331,18 @@ void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(
 		numValues, numArrayDimensions);
 }
 
-
 void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
 	float const * values, unsigned long long const * numValuesInEachDimension,
 	unsigned long long const * offsetInEachDimension, unsigned int numArrayDimensions,
+	bool computeMinMax,
 	COMMON_NS::AbstractHdfProxy* proxy,
 	unsigned int patchIndex)
 {
-	_resqml20__ContinuousProperty const * prop = static_cast<_resqml20__ContinuousProperty const *>(gsoapProxy2_0_1);
+	_resqml20__ContinuousProperty const * prop = static_cast<_resqml20__ContinuousProperty *>(gsoapProxy2_0_1);
 
-	setPropertyMinMax(
-		values,
-		numValuesInEachDimension, 
-		numArrayDimensions
-	);
+	if (computeMinMax) {
+		setPropertyMinMax(values, numValuesInEachDimension, numArrayDimensions);
+	}
 
 	ostringstream oss;
 	oss << "values_patch";

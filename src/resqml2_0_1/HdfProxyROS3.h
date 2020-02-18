@@ -27,30 +27,24 @@ namespace RESQML2_0_1_NS
 	class HdfProxyROS3 : public RESQML2_0_1_NS::HdfProxy
 	{
 		/** aws_region is assumed to be managed by means of inherited setRootPath method */
-		std::string secret_id;
+		std::string secretId_;
 		/** The secret key */
-		std::string secret_key;
+		std::string secretKey_;
 
 	public:
 
 		/**
-		 * Only to be used in partial transfer context
-		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 * @param 		  	secret_id	 	(Optional) Identifier for the secret.
-		 * @param 		  	secret_key   	(Optional) The secret key.
-		 */
-		HdfProxyROS3(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, const std::string & secret_id = "", const std::string & secret_key = "") : RESQML2_0_1_NS::HdfProxy(partialObject) {}
+		* Only to be used in partial transfer context
+		*/
+		HdfProxyROS3(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, const std::string & secretId = "", const std::string & secretKey_ = "") :
+			RESQML2_0_1_NS::HdfProxy(partialObject),
+			secretId_(secretId), secretKey_(secretKey_)
+		{}
 
-		/**
-		 * Constructor
-		 *
-		 * @param [in,out]	fromGsoap 	If non-null, from gsoap.
-		 * @param 		  	secret_id 	(Optional) Identifier for the secret.
-		 * @param 		  	secret_key	(Optional) The secret key.
-		 */
-		HdfProxyROS3(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & secret_id = "", const std::string & secret_key = "") :
-			RESQML2_0_1_NS::HdfProxy(fromGsoap) {}
+		HdfProxyROS3(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap, const std::string & secretId = "", const std::string & secretKey_ = "") :
+			RESQML2_0_1_NS::HdfProxy(fromGsoap),
+			secretId_(secretId), secretKey_(secretKey_)
+		{}
 
 		/** Destructor */
 		~HdfProxyROS3() {}

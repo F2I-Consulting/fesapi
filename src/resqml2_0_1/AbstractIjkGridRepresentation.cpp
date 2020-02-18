@@ -330,37 +330,16 @@ void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeom
 		{
 			eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values;
 			COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-			hid_t dt = hdfProxy->getHdfDatatypeInDataset(static_cast<resqml20__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values->PathInHdfFile);
-			if (H5Tequal(dt, H5T_NATIVE_CHAR) > 0) {
-				char* tmp = new char[pillarCount];
-				hdfProxy->readArrayNdOfCharValues(static_cast<resqml20__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values->PathInHdfFile, tmp);
-				for (unsigned int i = 0; i < pillarCount; ++i) {
-					if (tmp[i] == 0) pillarGeometryIsDefined[i] = false; else pillarGeometryIsDefined[i] = true;
-				}
-				delete[] tmp;
-			}
-			else if (H5Tequal(dt, H5T_NATIVE_UCHAR) > 0) {
-				unsigned char* tmp = new unsigned char[pillarCount];
-				hdfProxy->readArrayNdOfUCharValues(static_cast<resqml20__BooleanHdf5Array*>(geom->PillarGeometryIsDefined)->Values->PathInHdfFile, tmp);
-				for (unsigned int i = 0; i < pillarCount; ++i) {
-					if (tmp[i] == 0) pillarGeometryIsDefined[i] = false; else pillarGeometryIsDefined[i] = true;
-				}
-				delete[] tmp;
-			}
-			else {
-				throw std::logic_error("Not yet implemented");
+			std::unique_ptr<char[]> tmp(new char[pillarCount]);
+			hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, tmp.get());
+			for (unsigned int i = 0; i < pillarCount; ++i) {
+				pillarGeometryIsDefined[i] = tmp[i] != 0;
 			}
 		}
 		else if (geom->PillarGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray) {
-			if (static_cast<resqml20__BooleanConstantArray*>(geom->PillarGeometryIsDefined)->Value == true) {
-				for (unsigned int i = 0; i < pillarCount; ++i) {
-					pillarGeometryIsDefined[i] = true;
-				}
-			}
-			else {
-				for (unsigned int i = 0; i < pillarCount; ++i) {
-					pillarGeometryIsDefined[i] = false;
-				}
+			const bool enabled = static_cast<resqml20__BooleanConstantArray*>(geom->PillarGeometryIsDefined)->Value;
+			for (unsigned int i = 0; i < pillarCount; ++i) {
+				pillarGeometryIsDefined[i] = enabled;
 			}
 		}
 		else {
@@ -371,48 +350,37 @@ void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeom
 		throw invalid_argument("The grid has no geometry.");
 	}
 
-	
-
 	if (reverseIAxis || reverseJAxis)
 	{
-		unsigned int iPillarCount = getICellCount()+1;
-		unsigned int jPillarCount = getJCellCount()+1;
-		unsigned int arrayCount = iPillarCount * jPillarCount;
+		const unsigned int iPillarCount = getICellCount()+1;
+		const unsigned int jPillarCount = getJCellCount()+1;
+		const unsigned int arrayCount = iPillarCount * jPillarCount;
 
 		// Copy in order not to modify the controlPoints pointer
-		bool * initialPillarGeometryIsDefined = new bool [arrayCount];
-		for (unsigned int index = 0; index < arrayCount; ++index)
-		{
+		std::unique_ptr<bool[]> initialPillarGeometryIsDefined(new bool[arrayCount]);
+		for (unsigned int index = 0; index < arrayCount; ++index) {
 			initialPillarGeometryIsDefined[index] = pillarGeometryIsDefined[index];
 		}
 
-		if (reverseIAxis)
-		{
+		if (reverseIAxis) {
 			unsigned int pillarIndex = 0;
-			for (unsigned int j = 0; j < jPillarCount; ++j)
-			{
-				for (unsigned int i = 0; i < iPillarCount; ++i)
-				{
+			for (unsigned int j = 0; j < jPillarCount; ++j) {
+				for (unsigned int i = 0; i < iPillarCount; ++i) {
 					pillarGeometryIsDefined[pillarIndex] = initialPillarGeometryIsDefined[getICellCount() - i + j*iPillarCount];
 					++pillarIndex;
 				}
 			}
 		}
 
-		if (reverseJAxis)
-		{
+		if (reverseJAxis) {
 			unsigned int pillarIndex = 0;
-			for (unsigned int j = 0; j < jPillarCount; ++j)
-			{
-				for (unsigned int i = 0; i < iPillarCount; ++i)
-				{
+			for (unsigned int j = 0; j < jPillarCount; ++j) {
+				for (unsigned int i = 0; i < iPillarCount; ++i) {
 					pillarGeometryIsDefined[pillarIndex] = initialPillarGeometryIsDefined[i + (getJCellCount() - j)*iPillarCount];
 					++pillarIndex;
 				}
 			}
 		}
-
-		delete [] initialPillarGeometryIsDefined;
 	}
 }
 
@@ -433,49 +401,39 @@ void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool re
 		throw invalid_argument("There is no geometry on this grid.");
 	}
 
-	ULONG64 cellCount = getCellCount();
+	const ULONG64 cellCount = getCellCount();
 	if (geom->CellGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array) {
 		eml20__Hdf5Dataset const * dataset = static_cast<resqml20__BooleanHdf5Array*>(geom->CellGeometryIsDefined)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
-		char* tmp = new char[cellCount];
-		hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, tmp);
+		std::unique_ptr<char[]> tmp(new char[cellCount]);
+		hdfProxy->readArrayNdOfCharValues(dataset->PathInHdfFile, tmp.get());
 		for (ULONG64 i = 0; i < cellCount; ++i) {
-			if (tmp[i] == 0) enabledCells[i] = false; else enabledCells[i] = true;
+			enabledCells[i] = tmp[i] != 0;
 		}
-		delete [] tmp;
 	}
 	else if (geom->CellGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray) {
-		if (static_cast<resqml20__BooleanConstantArray*>(geom->CellGeometryIsDefined)->Value == true) {
-			for (ULONG64 i = 0; i < cellCount; ++i) {
-				enabledCells[i] = true;
-			}
-		}
-		else {
-			for (ULONG64 i = 0; i < cellCount; ++i) {
-				enabledCells[i] = false;
-			}
+		const bool enabled = static_cast<resqml20__BooleanConstantArray*>(geom->CellGeometryIsDefined)->Value;
+		for (ULONG64 i = 0; i < cellCount; ++i) {
+			enabledCells[i] = enabled;
 		}
 	}
-	else
-		throw std::logic_error("Not yet implemented");
+	else {
+		throw std::logic_error("Not implemented yet");
+	}
 
 	// Copy in order not to modify the controlPoints pointer
 	if (reverseIAxis || reverseJAxis || reverseKAxis) {
 		ULONG64 arrayCount = getCellCount();
-		bool * initialCellGeometryIsDefined = new bool [arrayCount];
+		std::unique_ptr<bool[]> initialCellGeometryIsDefined(new bool[arrayCount]);
 		for (ULONG64 index = 0; index < arrayCount; ++index) {
 			initialCellGeometryIsDefined[index] = enabledCells[index];
 		}
 
-		if (reverseIAxis)
-		{
+		if (reverseIAxis) {
 			unsigned int cellIndex = 0;
-			for (unsigned int k = 0; k < getKCellCount(); ++k)
-			{
-				for (unsigned int j = 0; j < getJCellCount(); ++j)
-				{
-					for (unsigned int i = 0; i < getICellCount(); ++i)
-					{
+			for (unsigned int k = 0; k < getKCellCount(); ++k) {
+				for (unsigned int j = 0; j < getJCellCount(); ++j) {
+					for (unsigned int i = 0; i < getICellCount(); ++i) {
 						enabledCells[cellIndex] = initialCellGeometryIsDefined[getICellCount() - 1 - i + j*getICellCount() + k*getICellCount()*getJCellCount()];
 						++cellIndex;
 					}
@@ -483,15 +441,11 @@ void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool re
 			}
 		}
 
-		if (reverseJAxis)
-		{
+		if (reverseJAxis) {
 			unsigned int cellIndex = 0;
-			for (unsigned int k = 0; k < getKCellCount(); ++k)
-			{
-				for (unsigned int j = 0; j < getJCellCount(); ++j)
-				{
-					for (unsigned int i = 0; i < getICellCount(); ++i)
-					{
+			for (unsigned int k = 0; k < getKCellCount(); ++k) {
+				for (unsigned int j = 0; j < getJCellCount(); ++j) {
+					for (unsigned int i = 0; i < getICellCount(); ++i) {
 						enabledCells[cellIndex] = initialCellGeometryIsDefined[i + (getJCellCount() - 1 -j)*getICellCount() + k*getICellCount()*getJCellCount()];
 						++cellIndex;
 					}
@@ -499,23 +453,17 @@ void AbstractIjkGridRepresentation::getEnabledCells(bool * enabledCells, bool re
 			}
 		}
 
-		if (reverseKAxis)
-		{
+		if (reverseKAxis) {
 			unsigned int cellIndex = 0;
-			for (unsigned int k = 0; k < getKCellCount(); ++k)
-			{
-				for (unsigned int j = 0; j < getJCellCount(); ++j)
-				{
-					for (unsigned int i = 0; i < getICellCount(); ++i)
-					{
+			for (unsigned int k = 0; k < getKCellCount(); ++k) {
+				for (unsigned int j = 0; j < getJCellCount(); ++j) {
+					for (unsigned int i = 0; i < getICellCount(); ++i) {
 						enabledCells[cellIndex] = initialCellGeometryIsDefined[i + j*getICellCount() + (getKCellCount() - 1 -k)*getICellCount()*getJCellCount()];
 						++cellIndex;
 					}
 				}
 			}
 		}
-
-		delete [] initialCellGeometryIsDefined;
 	}
 }
 

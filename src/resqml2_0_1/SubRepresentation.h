@@ -218,83 +218,53 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT ULONG64 getLatticeElementIndicesOffsetCount(const unsigned int & latticeDimensionIndex, const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const;
 
 		/**
-		 * Push back a new patch in the subrepresentation which is based on a lattice definition.
-		 *
-		 * @param 	elementKind					  	The kind of (indexable) elements which constitutes
-		 * 											the subrepresentation.
-		 * @param 	originIndex					  	Zero-based index of the origin.
-		 * @param 	elementCountInSlowestDimension	Commonly in K dimensionn.
-		 * @param 	elementCountInMiddleDimension 	Commonly in J dimensionn.
-		 * @param 	elementCountInFastestDimension	Commonly in I dimension.
-		 */
-		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml20__IndexableElements & elementKind, const ULONG64 & originIndex,
-			const unsigned int & elementCountInSlowestDimension,
-			const unsigned int & elementCountInMiddleDimension,
-			const unsigned int & elementCountInFastestDimension);
+		* Push back a new patch in the subrepresentation which is based on a lattice definition.
+		* @param elementKind						The kind of (indexable) elements which constitutes the subrepresentation.
+		* @param elementCountInSlowestDimension		Commonly in K dimensionn.
+		* @param elementCountInMiddleDimension		Commonly in J dimensionn.
+		* @param elementCountInFastestDimension		Commonly in I dimension.
+		*/
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements elementKind, ULONG64 originIndex,
+			unsigned int elementCountInSlowestDimension,
+			unsigned int elementCountInMiddleDimension,
+			unsigned int elementCountInFastestDimension);
 
 		/**
-		 * Push back a new patch in the subrepresentation.
-		 *
-		 * @param 		  	elementKind				The kind of (indexable) elements which constitutes
-		 * 											the subrepresentation.
-		 * @param 		  	elementCount			The count of elements which constitutes the
-		 * 											subrepresentation.
-		 * @param [in,out]	elementIndices			The indices of the elements of the instance in the
-		 * 											supporting representation.
-		 * @param [in,out]	proxy					The HDF proxy where the numerical values (indices)
-		 * 											are stored.
-		 * @param [in,out]	supportingRepIndices	(Optional) The indices of the supporting
-		 * 											represenation for each elment in the supporting
-		 * 											representation. The count must be elementCount.
-		 */
-		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml20__IndexableElements & elementKind, const ULONG64 & elementCount, ULONG64 * elementIndices, COMMON_NS::AbstractHdfProxy* proxy, short * supportingRepIndices = nullptr);
+		* Push back a new patch in the subrepresentation.
+		* @param	elementKind				The kind of (indexable) elements which constitutes the subrepresentation.
+        * @param	elementCount			The count of elements which constitutes the subrepresentation.
+        * @param	elementIndices			The indices of the elements of the instance in the supporting representation.
+        * @param	proxy					The HDF proxy where the numerical values (indices) are stored.
+		* @param	supportingRepIndices	The indices of the supporting represenation for each elment in the supporting representation. The count must be elementCount.
+		*/
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements elementKind, ULONG64 elementCount, ULONG64 * elementIndices, COMMON_NS::AbstractHdfProxy* proxy, short * supportingRepIndices = nullptr);
 
 		/**
-		 * Push back a new patch in the subrepresentation which is constituted by means of pairwise
-		 * elements.
-		 *
-		 * @param 		  	elementKind0   	The kind of (indexable) elements which constitutes the first
-		 * 									part of the pair of elements of the subrepresentation.
-		 * @param 		  	elementKind1   	The kind of (indexable) elements which constitutes the second
-		 * 									part of the pair of elements of the subrepresentation.
-		 * @param 		  	elementCount   	The count of elements which constitutes the subrepresentation.
-		 * @param [in,out]	elementIndices0	The indices of the first part of the element pair in the
-		 * 									supporting representation.
-		 * @param [in,out]	elementIndices1	The indices of the second part of the element pair in the
-		 * 									supporting representation.
-		 * @param [in,out]	proxy		   	The HDF proxy where the numerical values (indices) are stored.
-		 */
-		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(const gsoap_resqml2_0_1::resqml20__IndexableElements & elementKind0, const gsoap_resqml2_0_1::resqml20__IndexableElements & elementKind1,
-			const ULONG64 & elementCount,
+		* Push back a new patch in the subrepresentation which is constituted by means of pairwise elements.
+		* @param elementKind0		The kind of (indexable) elements which constitutes the first part of the pair of elements of the subrepresentation.
+		* @param elementKind1		The kind of (indexable) elements which constitutes the second part of the pair of elements of the subrepresentation.
+        * @param elementCount		The count of elements which constitutes the subrepresentation.
+        * @param elementIndices0	The indices of the first part of the element pair in the supporting representation.
+		* @param elementIndices1	The indices of the second part of the element pair in the supporting representation.
+        * @param proxy				The HDF proxy where the numerical values (indices) are stored.
+		*/
+		DLL_IMPORT_OR_EXPORT void pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements elementKind0, gsoap_resqml2_0_1::resqml20__IndexableElements elementKind1,
+			ULONG64 elementCount,
 			ULONG64 * elementIndices0, ULONG64 * elementIndices1,
 			COMMON_NS::AbstractHdfProxy* proxy);
 
 		/**
-		 * Push back a new patch (without pairwise elements) in the subrepresentation where the indice
-		 * values have not to be written in the HDF file. The reason can be that the indice values
-		 * already exist in an external file (only HDF5 for now) or that the writing of these indice
-		 * values in the external file is defered in time.
-		 *
-		 * @param 		  	elementKind				The kind of (indexable) elements which constitutes
-		 * 											the subrepresentation.
-		 * @param 		  	elementCount			The count of elements which constitutes the
-		 * 											subrepresentation.
-		 * @param 		  	elementDataset			The HDF5 dataset name where the element indices are
-		 * 											stored. If empty, the dataset will be named the same as
-		 * 											the dataset naming convention of the fesapi :"/RESQML/" +
-		 * 											subRep->uuid + "/subrepresentation_elementIndices0_patch"
-		 * 											+ patchIndex;
-		 * @param 		  	nullValue				The null value which has been chosen in the
-		 * 											referenced hdf dataset.
-		 * @param [in,out]	proxy					The HDF5 proxy where the values are already or will
-		 * 											be stored.
-		 * @param 		  	supportingRepDataset	(Optional) The HDF5 dataset name where the element
-		 * 											indices are stored. If empty, it won't be exported any
-		 * 											information about suppporting rep relying on the fact
-		 * 											there is only one suppporting rep for this whole patch.
-		 */
-		DLL_IMPORT_OR_EXPORT void pushBackRefToExistingDataset(const gsoap_resqml2_0_1::resqml20__IndexableElements & elementKind, const ULONG64 & elementCount, const std::string & elementDataset,
-			const LONG64 & nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset = "");
+		* Push back a new patch (without pairwise elements) in the subrepresentation where the indice values have not to be written in the HDF file.
+		* The reason can be that the indice values already exist in an external file (only HDF5 for now) or that the writing of these indice values in the external file is defered in time.
+		* @param	elementKind				The kind of (indexable) elements which constitutes the subrepresentation.
+        * @param	elementCount			The count of elements which constitutes the subrepresentation.
+		* @param	elementDataset			The HDF5 dataset name where the element indices are stored. If empty, the dataset will be named the same as the dataset naming convention of the fesapi :"/RESQML/" + subRep->uuid + "/subrepresentation_elementIndices0_patch" + patchIndex;
+		* @param	nullValue				The null value which has been chosen in the referenced hdf dataset.
+		* @param	hdfProxy				The HDF5 proxy where the values are already or will be stored.
+		* @param	supportingRepDataset	The HDF5 dataset name where the element indices are stored. If empty, it won't be exported any information about suppporting rep relying on the fact there is only one suppporting rep for this whole patch.
+		*/
+		DLL_IMPORT_OR_EXPORT void pushBackRefToExistingDataset(gsoap_resqml2_0_1::resqml20__IndexableElements elementKind, ULONG64 elementCount, const std::string & elementDataset,
+			LONG64 nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset = "");
 
 		/**
 		 * Gets patch count

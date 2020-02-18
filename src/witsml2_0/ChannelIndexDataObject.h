@@ -20,6 +20,8 @@ under the License.
 
 #include "ChannelMetaDataObject.h"
 
+#include <limits>
+
 /** . */
 namespace WITSML2_0_NS
 {
@@ -74,7 +76,12 @@ namespace WITSML2_0_NS
 		 * @returns	The channel index count.
 		 */
 		unsigned int getChannelIndexCount() const {
-			return static_cast<T*>(this->gsoapProxy2_1)->Index.size();
+			const size_t result = static_cast<T*>(this->gsoapProxy2_1)->Index.size();
+			if (result > (std::numeric_limits<unsigned int>::max)()) {
+				throw std::range_error("There are too much channel index.");
+			}
+
+			return static_cast<unsigned int>(result);
 		}
 
 		/**
