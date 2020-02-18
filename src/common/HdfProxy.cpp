@@ -383,8 +383,7 @@ int HdfProxy::getHdfDatatypeClassInDataset(const std::string & datasetName)
 	return result;
 }
 
-static vector<unsigned long long> reduceForChunking
-(hid_t datatype,
+static vector<unsigned long long> reduceForChunking(hid_t datatype,
 	const unsigned long long * numValuesInEachDimension,
 	unsigned int numDimensions)
 {
@@ -797,7 +796,6 @@ void HdfProxy::writeArrayNdSlab(
 	}
 	errorCode = H5Dwrite(dataset, datatype, memspace, filespace, H5P_DEFAULT, values);
 
-	H5Tclose(datatype);
 	H5Sclose(memspace);
 	H5Sclose(filespace);
 	H5Dclose(dataset);

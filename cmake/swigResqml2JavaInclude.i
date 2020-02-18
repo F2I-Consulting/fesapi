@@ -530,7 +530,7 @@ namespace RESQML2_NS
 		return ret;
 	}
 	
-	%typemap(javaout) AbstractProperty*, AbstractValuesProperty*  {
+	%typemap(javaout) AbstractProperty*, AbstractValuesProperty*, AbstractDiscreteOrCategoricalProperty*  {
 		long cPtr = $jnicall;
 		$javaclassname ret = ($javaclassname) fesapiJNI.resqml2_instantiateConcreteProperty(cPtr, $owner);
 		return ret;

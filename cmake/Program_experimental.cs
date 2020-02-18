@@ -13,9 +13,115 @@ namespace example
 {
     static class Program
     {
+		private static void serializeIjkGrid(DataObjectRepository repo)
+        {
+            AbstractIjkGridRepresentation ijkGrid = repo.createPartialIjkGridRepresentation("", "partial IJK Grid");
+            f2i.energisticsStandardsApi.common.PropertyKind propertyKind = repo.createPartialPropertyKind("", "Partial prop kind");
+
+            // creating the continuous Property with computing min max
+            ContinuousProperty propertyCompute = repo.createContinuousProperty(
+                ijkGrid, "9d0a717f-2cd3-4d43-9cbf-3484105ed384", "slab prop compute min max",
+                1,
+                resqml20__IndexableElements.resqml20__IndexableElements__cells,
+                resqml20__ResqmlUom.resqml20__ResqmlUom__m,
+                propertyKind);
+            propertyCompute.pushBackFloatHdf5Array3dOfValues(2, 3, 4);
+
+            ulong valueCountInFastestDim = 2;
+            ulong valueCountInMiddleDim = 3;
+            ulong valueCountInSlowestDim = 1;
+            ulong offsetInFastestDim = 0;
+            ulong offsetInMiddleDim = 0;
+            ulong offsetInSlowestDim = 0;
+            FloatArray kLayerValues = new FloatArray(6);
+            kLayerValues.setitem(0, -123.0f);
+            kLayerValues.setitem(1, .01f);
+            kLayerValues.setitem(2, .02f);
+            kLayerValues.setitem(3, .03f);
+            kLayerValues.setitem(4, .04f);
+            kLayerValues.setitem(5, .05f);
+            propertyCompute.setValuesOfFloatHdf5Array3dOfValues(kLayerValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
+                offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
+            kLayerValues.setitem(0, .10f);
+            kLayerValues.setitem(1, .11f);
+            kLayerValues.setitem(2, .12f);
+            kLayerValues.setitem(3, .13f);
+            kLayerValues.setitem(4, .14f);
+            kLayerValues.setitem(5, .15f);
+            ++offsetInSlowestDim;
+            propertyCompute.setValuesOfFloatHdf5Array3dOfValues(kLayerValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
+                offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
+            kLayerValues.setitem(0, .20f);
+            kLayerValues.setitem(1, .21f);
+            kLayerValues.setitem(2, .22f);
+            kLayerValues.setitem(3, float.NaN);
+            kLayerValues.setitem(4, .24f);
+            kLayerValues.setitem(5, .25f);
+            ++offsetInSlowestDim;
+            propertyCompute.setValuesOfFloatHdf5Array3dOfValues(kLayerValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
+                offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
+            kLayerValues.setitem(0, .30f);
+            kLayerValues.setitem(1, .31f);
+            kLayerValues.setitem(2, .32f);
+            kLayerValues.setitem(3, .33f);
+            kLayerValues.setitem(4, .34f);
+            kLayerValues.setitem(5, .35f);
+            ++offsetInSlowestDim;
+            propertyCompute.setValuesOfFloatHdf5Array3dOfValues(kLayerValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
+                offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
+            GC.KeepAlive(kLayerValues);
+
+            // creating the discrete Property with computing min max
+            DiscreteProperty discretePropertyCompute = repo.createDiscreteProperty(
+                ijkGrid, "50935c31-93ec-4084-8891-6e9f130c49c3", "testing discrete prop",
+                1,
+                resqml20__IndexableElements.resqml20__IndexableElements__cells,
+                resqml20__ResqmlPropertyKind.resqml20__ResqmlPropertyKind__index);
+            discretePropertyCompute.pushBackLongHdf5Array3dOfValues(2, 3, 4, 9999);
+
+            offsetInSlowestDim = 0;
+            LongArray kLayerlongValues = new LongArray(6);
+            kLayerlongValues.setitem(0, -10);
+            kLayerlongValues.setitem(1, 1);
+            kLayerlongValues.setitem(2, 2);
+            kLayerlongValues.setitem(3, 3);
+            kLayerlongValues.setitem(4, 4);
+            kLayerlongValues.setitem(5, 5);
+            discretePropertyCompute.setValuesOfLongHdf5Array3dOfValues(kLayerlongValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
+                offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
+            kLayerlongValues.setitem(0, 10);
+            kLayerlongValues.setitem(1, 11);
+            kLayerlongValues.setitem(2, 12);
+            kLayerlongValues.setitem(3, 13);
+            kLayerlongValues.setitem(4, 14);
+            kLayerlongValues.setitem(5, 15);
+            ++offsetInSlowestDim;
+            discretePropertyCompute.setValuesOfLongHdf5Array3dOfValues(kLayerlongValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
+                offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
+            kLayerlongValues.setitem(0, 20);
+            kLayerlongValues.setitem(1, 21);
+            kLayerlongValues.setitem(2, 22);
+            kLayerlongValues.setitem(3, 9999);
+            kLayerlongValues.setitem(4, 24);
+            kLayerlongValues.setitem(5, 25);
+            ++offsetInSlowestDim;
+            discretePropertyCompute.setValuesOfLongHdf5Array3dOfValues(kLayerlongValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
+                offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
+            kLayerlongValues.setitem(0, 30);
+            kLayerlongValues.setitem(1, 31);
+            kLayerlongValues.setitem(2, 32);
+            kLayerlongValues.setitem(3, 33);
+            kLayerlongValues.setitem(4, 34);
+            kLayerlongValues.setitem(5, 35);
+            ++offsetInSlowestDim;
+            discretePropertyCompute.setValuesOfLongHdf5Array3dOfValues(kLayerlongValues.cast(), valueCountInFastestDim, valueCountInMiddleDim, valueCountInSlowestDim,
+                offsetInFastestDim, offsetInMiddleDim, offsetInSlowestDim);
+            GC.KeepAlive(kLayerlongValues);
+        }
+		
         private static void serialize()
         {
-            using (EpcDocument epc_file = new EpcDocument("../../../TestingPackageCs.epc"))
+            EpcDocument epc_file = new EpcDocument("TestingPackageCs.epc");
             using (DataObjectRepository repo = new DataObjectRepository())
             {
                 LocalDepth3dCrs crs = repo.createLocalDepth3dCrs(Guid.NewGuid().ToString(), "UTF8 Crs title : éàç : олег1", 0.0, 0.0, 0.0, 0.0, eml20__LengthUom.eml20__LengthUom__m, 5215, eml20__LengthUom.eml20__LengthUom__m, "Unknown", false);
@@ -115,6 +221,8 @@ namespace example
                 w1i1RegularSeismicFrameRep.setMdValues(0, 200, 6);
                 w1i1RegularSeismicFrameRep.setTimeValues(0, 10, 6);
 
+                serializeIjkGrid(repo);
+
                 epc_file.serializeFrom(repo);
                 epc_file.close();
             }
@@ -122,7 +230,7 @@ namespace example
 
         private static void deserialize()
         {
-            using (EpcDocument epc_file = new EpcDocument("../../../TestingPackageCs.epc"))
+            EpcDocument epc_file = new EpcDocument("TestingPackageCs.epc");
             using (DataObjectRepository repo = new DataObjectRepository())
             {
                 string status = epc_file.deserializeInto(repo);

@@ -58,6 +58,7 @@ under the License.
 #include "resqml2_2test/ContinuousColorMapTest.h"
 #include "resqml2_0_1test/MultirealPropertyTest.h"
 #include "resqml2_0_1test/DiscreteProperty.h"
+#include "resqml2_0_1test/PropertyBySlab.h"
 #include "witsml2_0test/WellTest.h"
 #include "witsml2_0test/Trajectory.h"
 #include "witsml2_0test/Perforation.h"
@@ -177,7 +178,6 @@ FESAPI_TEST("Export and import an unstructured grid", "[grid]", OneTetrahedronUn
 
 FESAPI_TEST("Export and import a subrepresentation on a partial grid connection set", "[grid]", SubRepresentationOnPartialGridConnectionSet)
 
-FESAPI_TEST("Export and import a time series", "[property]", TimeSeriesTest)
 
 // fail
 //FESAPI_TEST("Export and import grid connection set on partial grid", "[property]", GridConnectionSetOnPartialGridSet)
@@ -202,3 +202,5 @@ FESAPI_TEST("Export and import a WITSML Wellbore Geometry", "[well]", WellboreGe
 
 FESAPI_TEST("Export and import some multi realization properties", "[property]", MultirealPropertyTest)
 FESAPI_TEST("Check discrete property datatypes", "[property]", DiscreteProperty)
+FESAPI_TEST("Export and import properties using slab", "[property]", PropertyBySlab)
+FESAPI_TEST("Export and import a time series", "[property]", TimeSeriesTest)
