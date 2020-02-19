@@ -46,7 +46,7 @@ unsigned int AbstractGridRepresentation::getGridConnectionSetRepresentationCount
 	const size_t result = getGridConnectionSetRepresentationSet().size();
 
 	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("The count of the GridConnectionSet Representations is too big.");
+		throw range_error("The count of the GridConnectionSet Representations is too big.");
 	}
 
 	return static_cast<unsigned int>(result);
@@ -128,7 +128,7 @@ unsigned int AbstractGridRepresentation::getChildGridCount() const {
 	const size_t result = getChildGridSet().size();
 
 	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("The count of the child grids is too big.");
+		throw range_error("The count of the child grids is too big.");
 	}
 
 	return static_cast<unsigned int>(result);
@@ -212,9 +212,14 @@ gsoap_resqml2_0_1::resqml20__Regrid* AbstractGridRepresentation::createRegrid(un
 		hdf5ChildCellWeights->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/ParentWindow_" + dimension + "Regrid_ChildCellWeights";
 		
 		// HDF
-		hsize_t numValues = 0;
-		for (unsigned int i = 0; i < intervalCount; ++i) {
-			numValues += childCellCountPerInterval[i];
+		hsize_t numValues = *childCellCountPerInterval;
+		if (forceConstantCellCountPerInterval) {
+			numValues *= intervalCount - 1;
+		}
+		else {
+			for (unsigned int i = 1; i < intervalCount; ++i) {
+				numValues += childCellCountPerInterval[i];
+			}
 		}
 		proxy->writeArrayNdOfDoubleValues(gsoapProxy2_0_1->uuid, "ParentWindow_" + dimension + "Regrid_ChildCellWeights", childCellWeights, &numValues, 1);
 	}
