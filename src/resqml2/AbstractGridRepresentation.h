@@ -235,10 +235,7 @@ namespace RESQML2_NS
 		 *
 		 * @param [in]	  	cellIndices   	Identifies the cells (of the parent grid) which are regridded.
 		 * @param 		  	cellIndexCount	Identifies the count of cells (of the parent grid) which are
-		 * 									regridded. // philippe
-		 * 									http://docs.energistics.org/#RESQML/RESQML_TOPICS/RESQML-500-200-0-R-sv2010.html
-		 * 									: "BUSINESS RULE: Number of cells must be consistent with the
-		 * 									child grid cell count.".
+		 * 									regridded.
 		 * @param [in]	  	parentGrid	  	The parent grid which is regridded.
 		 * @param [in,out]	proxy		  	(Optional) The HDF proxy where to store the numerical values.
 		 * 									If nullptr (default), then the proxy will be the default
@@ -538,136 +535,292 @@ namespace RESQML2_NS
 		 * When a parent windows has been defined, this method allows to force some parent cells to be
 		 * noted as non regridded. It mainly allows non-rectangular local grids to be specified.
 		 *
-		 * @param [in,out]	cellIndices   	If non-null, the cell indices.
-		 * @param 		  	cellIndexCount	Number of cell indexes.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If no parent window is already defined of if the defined
+		 * 										parent window is neither an IJK nor a column layer parent
+		 * 										window.
+		 * @exception	std::invalid_argument	If @p cellIndices is nullptr or @cellIndexCount is 0.
+		 * @exception	std::invalid_argument	If an HDF proxy is required and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param [in]	cellIndices   	The indices of the parent cells to be noted as non regridded. The
+		 * 								size is @p cellIndexCount.
+		 * @param 	  	cellIndexCount	Number of cells to be noted as non regridded.
 		 */
 		DLL_IMPORT_OR_EXPORT void setForcedNonRegridedParentCell(ULONG64 * cellIndices, const ULONG64 & cellIndexCount);
 
 		/**
-		 * Optional cell volume overlap information between the current grid (the child) and the parent
+		 * Set optional cell overlap information between the current grid (the child) and the parent
 		 * grid. Use this data-object when the child grid has an explicitly defined geometry, and these
-		 * relationships cannot be inferred from the regrid descriptions.
+		 * relationships cannot be inferred from the regrid descriptions. An overlap volume information
+		 * can be associated to each overlapping (parent cell, child cell) pair.
 		 *
-		 * @param 		  	parentChildCellPairCount	Number of parent child cell pairs.
-		 * @param [in,out]	parentChildCellPair			If non-null, the parent child cell pair.
-		 * @param 		  	volumeUom					(Optional) The volume uom.
-		 * @param [in,out]	overlapVolumes				(Optional) If non-null, the overlap volumes.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If no parent window is already defined.
+		 * @exception	std::invalid_argument	If @p parentChildCellPairCount is 0 or
+		 * 										@parentChildCellPair is nullptr.
+		 * @exception	std::invalid_argument	If no default HDF proxy is defined in the repository.
+		 *
+		 * @param 	  	parentChildCellPairCount	Number of (parent cell, child cell) pairs that
+		 * 											overlap.
+		 * @param [in]	parentChildCellPair			The (parent cell index, child cell index) pair for
+		 * 											each overlap. The size is <tt>2 *
+		 * 											parentChildCellPairCount</tt>.
+		 * 											<tt>parentChildCellPair[2i]</tt> are parent cell indices
+		 * 											and <tt>parentChildCellPair[2i+1]</tt> are child cell
+		 * 											indices.
+		 * @param 	  	volumeUom					(Optional) The volume unit of measure. Default value
+		 * 											is m3.
+		 * @param [in]	overlapVolumes				(Optional) The overlapping volume for each (parent
+		 * 											cell, child cell) that overlaps. Size is @p
+		 * 											parentChildCellPairCount. Default value is nullptr.
 		 */
 		DLL_IMPORT_OR_EXPORT void setCellOverlap(const ULONG64 & parentChildCellPairCount, ULONG64 * parentChildCellPair,
 			const gsoap_resqml2_0_1::eml20__VolumeUom & volumeUom = gsoap_resqml2_0_1::eml20__VolumeUom__m3, double * overlapVolumes = nullptr);
 
 		/**
-		 * Only run this method for an unstructured parent grid. Use regrid information for ijk parent
-		 * grid or (regrid and columIndexCount) for strict column layer parent grid.
+		 * Gets the count of parent grid cells which are regridded. Please only run this method for an
+		 * unstructured parent grid. Please use regrid information for IJK parent grid or (regrid information
+		 * and columIndexCount) for strict column layer parent grid.
 		 *
-		 * @returns	The parent cell index count.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If no parent window is already defined of if the defined
+		 * 										parent window is not an unstructured parent window.
+		 * @exception std::invalid_argument		If the list of regridded cells is not stored in an HDF5 file.
+		 *
+		 * @returns	The count of parent grid cells which are regridded.
 		 */
 		DLL_IMPORT_OR_EXPORT LONG64 getParentCellIndexCount() const;
 
 		/**
-		 * Only run this method for an unstructured parent grid.
+		 * Gets the indices of the parent grid cells which are regridded. Please only run this method
+		 * for an unstructured parent grid.
 		 *
-		 * @param [in,out]	parentCellIndices	This array must have been preallocated with a size of
-		 * 										getParentCellIndexCount().
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If no parent window is already defined of if the defined
+		 * 										parent window is not an unstructured parent window.
+		 * @exception	std::invalid_argument	If the list of regridded cells is not stored in an HDF5
+		 * 										file.
+		 *
+		 * @param [out]	parentCellIndices	An array for receiving the regridded cells indices. This
+		 * 									array must have been preallocated with a size of 
+		 * 									getParentCellIndexCount().
 		 */
 		DLL_IMPORT_OR_EXPORT void getParentCellIndices(ULONG64 * parentCellIndices) const;
 
 		/**
-		 * Only run this method for a strict column layer parent grid.
+		 * Gets the count of parent grid columns which are regridded. Please only run this method for a
+		 * strict column layer parent grid.
 		 *
-		 * @returns	The parent column index count.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If no parent window is already defined of if the defined
+		 * 										parent window is not a column layer parent window.
+		 * @exception	std::invalid_argument	If the list of regridded cells is not stored in an HDF5
+		 * 										file.
+		 *
+		 * @returns	The count of parent grid columns which are regridded.
 		 */
 		DLL_IMPORT_OR_EXPORT LONG64 getParentColumnIndexCount() const;
 
 		/**
-		 * Only run this method for an unstructured parent grid.
+		 * Gets the indices of the parent grid columns which are regridded. Please only run this method
+		 * for a strict column layer parent grid.
 		 *
-		 * @param [in,out]	parentColumnIndices	This array must have been preallocated with a size of
-		 * 										getParentCellIndexCount().
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If no parent window is already defined of if the defined
+		 * 										parent window is not a column layer parent window.
+		 * @exception	std::invalid_argument	If the list of regridded cells is not stored in an HDF5
+		 * 										file.
+		 *
+		 * @param [out]	parentColumnIndices	An array for collecting the regridded column indices. This
+		 * 									array must have been preallocated with a size of
+		 * 										getParentColumnIndexCount().
 		 */
 		DLL_IMPORT_OR_EXPORT void getParentColumnIndices(ULONG64 * parentColumnIndices) const;
 
 		/**
-		 * Only run this method for an ijk parent grid or a strict column layer parent grid. Get the
-		 * first cell index of the regrid on a particular dimension.
+		 * Get the I, J or K index of the first parent grid cell to be regridded. Please only run this
+		 * method for an IJK parent grid or a strict column layer parent grid.
 		 *
-		 * @param 	dimension	It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent
-		 * 						grid. 'k' for a strict column layer parent grid.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If no parent window is already defined of if the defined
+		 * 										parent window is neither an IJK nor a column layer parent
+		 * 										window.
+		 * @exception	std::invalid_argument	If @p dimension differs from 'i', 'j' or 'k' (upper or
+		 * 										lower case) for an IJK parent window or if it differs
+		 * 										from 'k' (upper or lower case) for a column layer parent
+		 * 										window.
 		 *
-		 * @returns	The regrid start index on parent grid.
+		 * @param 	dimension	The dimension of the index we look for. It must be either 'i', 'j' or 'k'
+		 * 						(upper or lower case) for an IJK parent grid or 'k' for a strict column
+		 * 						layer parent grid.
+		 *
+		 * @returns	The regrid start index on the parent grid in dimension @p dimension.
 		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getRegridStartIndexOnParentGrid(const char & dimension) const;
 
 		/**
-		 * Only run this method for an ijk parent grid or a strict column layer parent grid. Get the
-		 * count of intervals which are regridded on a particular dimension
+		 * Gets the count of intervals which are regridded on a particular dimension. Intervals are
+		 * portions of cells to regrid which does not overlap with each others. Please only run this
+		 * method for an IJK parent grid or a strict column layer parent grid.
 		 *
-		 * @param 	dimension	It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent
-		 * 						grid. 'k' for a strict column layer parent grid.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If no parent window is already defined of if the defined
+		 * 										parent window is neither an IJK nor a column layer parent
+		 * 										window.
+		 * @exception	std::invalid_argument	If @p dimension differs from 'i', 'j' or 'k' (upper or
+		 * 										lower case) for an IJK parent window or if it differs
+		 * 										from 'k' (upper or lower case) for a column layer parent
+		 * 										window.
 		 *
-		 * @returns	The regrid interval count.
+		 * @param 	dimension	The dimension of the interval count we look for. It must be either 'i',
+		 * 						'j' or 'k' (upper or lower case) for an IJK parent grid or 'k' for a
+		 * 						strict column layer parent grid.
+		 *
+		 * @returns	The regrid interval count in dimension @p dimension.
 		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getRegridIntervalCount(const char & dimension) const;
 
 		/**
-		 * Check if the cell count per interval is constant against a particular dimension. Only run
-		 * this method for an ijk parent grid or a strict column layer parent grid.
+		 * Checks if the cell count per interval (in the child grid or in the parent grid) is constant
+		 * against a particular dimension. Intervals are portions of cells to regrid which does not
+		 * overlap with each others. Please only run this method for an IJK parent grid or a strict
+		 * column layer parent grid.
 		 *
-		 * @param 	dimension			  	It must be either 'i', 'j' ou 'k' (upper or lower case) for
-		 * 									an ijk parent grid. 'k' for a strict column layer parent grid.
-		 * @param 	childVsParentCellCount	If true check if the child cell count per interval is
-		 * 									constant. If false check if the parent cell count per
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If no parent window is already defined of if the defined
+		 * 										parent window is neither an IJK nor a column layer parent
+		 * 										window.
+		 * @exception	std::invalid_argument	If @p dimension differs from 'i', 'j' or 'k' (upper or
+		 * 										lower case) for an IJK parent window or if it differs
+		 * 										from 'k' (upper or lower case) for a column layer parent
+		 * 										window.
+		 * @exception	std::invalid_argument	If there exists no regrid interval in dimension @p
+		 * 										dimension.
+		 *
+		 * @param 	dimension			  	The dimension of the interval we look for. It must be either
+		 * 									'i', 'j' ou 'k' (upper or lower case) for an IJK parent grid
+		 * 									or 'k' for a strict column layer parent grid.
+		 * @param 	childVsParentCellCount	If true, checks if the child cell count per interval is
+		 * 									constant. If false, checks if the parent cell count per
 		 * 									interval is constant.
 		 *
-		 * @returns	True if regrid cell count per interval constant, false if not.
+		 * @returns	True if the regrid cell count per interval is constant in dimension @p dimension,
+		 * 			false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool isRegridCellCountPerIntervalConstant(const char & dimension, const bool & childVsParentCellCount) const;
 
 		/**
-		 * Get the constant cell count per interval Only run this method for an ijk parent grid or a
-		 * strict column layer parent grid.
+		 * Gets the constant cell count per interval (in the child grid or in the parent grid) against a
+		 * particular dimension. Intervals are portions of cells to regrid which does not overlap with
+		 * each others. Please only run this method for an IJK parent grid or a strict column layer
+		 * parent grid.
 		 *
-		 * @param 	dimension			  	It must be either 'i', 'j' ou 'k' (upper or lower case) for
-		 * 									an ijk parent grid. 'k' for a strict column layer parent grid.
-		 * @param 	childVsParentCellCount	If true return the child cell count per interval. If false
-		 * 									return the parent cell count per interval.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::logic_error	 	If the cell count per interval in dimension @p dimension
+		 * 										is neither an integer constant array nor a HDF5 integer
+		 * 										array.
+		 * @exception	std::invalid_argument	If no parent window is already defined of if the defined
+		 * 										parent window is neither an IJK nor a column layer parent
+		 * 										window.
+		 * @exception	std::invalid_argument	If @p dimension differs from 'i', 'j' or 'k' (upper or
+		 * 										lower case) for an IJK parent window or if it differs
+		 * 										from 'k' (upper or lower case) for a column layer parent
+		 * 										window.
+		 * @exception	std::invalid_argument	If there exists no regrid interval in dimension @p
+		 * 										dimension.
 		 *
-		 * @returns	The regrid constant cell count per interval.
+		 * @param 	dimension			  	The dimension of the interval we look for. It must be either
+		 * 									'i', 'j' ou 'k' (upper or lower case) for an IJK parent grid
+		 * 									or 'k' for a strict column layer parent grid.
+		 * @param 	childVsParentCellCount	If true, gets the constant child cell count per interval. If
+		 * 									false, gets the constant parent cell count per interval.
+		 *
+		 * @returns	The regrid constant cell count per interval in dimension @p dimension.
 		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getRegridConstantCellCountPerInterval(const char & dimension, const bool & childVsParentCellCount) const;
 
 		/**
-		 * Only run this method for an ijk parent grid or a strict column layer parent grid.
+		 * Gets the regrid cell count per interval (in the child grid or in the parent grid) against a
+		 * particular dimension. Intervals are portions of cells to regrid which does not overlap with
+		 * each others. Please only run this method for an IJK parent grid or a strict column layer
+		 * parent grid.
 		 *
-		 * @param 		  	dimension				 	It must be either 'i', 'j' ou 'k' (upper or lower
-		 * 												case) for an ijk parent grid. 'k' for a strict
-		 * 												column layer parent grid.
-		 * @param [in,out]	childCellCountPerInterval	This array must have been preallocated with a
-		 * 												size of getRegridIntervalCount().
-		 * @param 		  	childVsParentCellCount   	If true return the child cell count per interval.
-		 * 												If false return the parent cell count per
-		 * 												interval.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::logic_error	 	If the cell count per interval in dimension @p dimension
+		 * 										is neither an integer constant array nor a HDF5 integer
+		 * 										array.
+		 * @exception	std::invalid_argument	If no parent window is already defined of if the defined
+		 * 										parent window is neither an IJK nor a column layer parent
+		 * 										window.
+		 * @exception	std::invalid_argument	If @p dimension differs from 'i', 'j' or 'k' (upper or
+		 * 										lower case) for an IJK parent window or if it differs
+		 * 										from 'k' (upper or lower case) for a column layer parent
+		 * 										window.
+		 * @exception	std::invalid_argument	If there exists no regrid interval in dimension @p
+		 * 										dimension.
+		 *
+		 * @param 	  	dimension				 	The dimension of the interval we look for. It must be
+		 * 											either 'i', 'j' ou 'k' (upper or lower case) for an
+		 * 											IJK parent grid or 'k' for a strict column layer
+		 * 											parent grid.
+		 * @param [in]	childCellCountPerInterval	An array to receive the regrid cell count per
+		 * 											interval. It must have been preallocated with a size
+		 * 											of getRegridIntervalCount().
+		 * @param 	  	childVsParentCellCount   	If true, gets the child cell count per interval. If
+		 * 											false, gets the parent cell count per interval.
 		 */
 		DLL_IMPORT_OR_EXPORT void getRegridCellCountPerInterval(const char & dimension, ULONG64 * childCellCountPerInterval, const bool & childVsParentCellCount) const;
 
 		/**
-		 * Only run this method for an ijk parent grid or a strict column layer parent grid.
+		 * Checks if regrid child cell weights have been defined for a given dimension. Please only run
+		 * this method for an IJK parent grid or a strict column layer parent grid.
 		 *
-		 * @param 	dimension	It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent
-		 * 						grid. 'k' for a strict column layer parent grid.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If no parent window is already defined of if the defined
+		 * 										parent window is neither an IJK nor a column layer parent
+		 * 										window.
+		 * @exception	std::invalid_argument	If @p dimension differs from 'i', 'j' or 'k' (upper or
+		 * 										lower case) for an IJK parent window or if it differs
+		 * 										from 'k' (upper or lower case) for a column layer parent
+		 * 										window.
+		 * @exception	std::invalid_argument	If there exists no regrid interval in dimension @p
+		 * 										dimension.
 		 *
-		 * @returns	True if regrid child cell weights, false if not.
+		 * @param 	dimension	The dimension from which we look for regrid child cell weights. It must
+		 * 						be either 'i', 'j' ou 'k' (upper or lower case) for an IJK parent grid or
+		 * 						'k' for a strict column layer parent grid.
+		 *
+		 * @returns	True if regrid child cell weights have been defined in dimension @p dimension, false
+		 * 			if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasRegridChildCellWeights(const char & dimension) const;
 
 		/**
-		 * Only run this method for an ijk parent grid or a strict column layer parent grid.
+		 * Gets the regrid child cell weights for a given dimension. Please only run this method for an
+		 * IJK parent grid or a strict column layer parent grid.
 		 *
-		 * @param 		  	dimension			It must be either 'i', 'j' ou 'k' (upper or lower case)
-		 * 										for an ijk parent grid. 'k' for a strict column layer parent
-		 * 										grid.
-		 * @param [in,out]	childCellWeights	This array must have been preallocated with a size equal
-		 * 										to the sum of ChildCellCountPerInterval.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If no parent window is already defined of if the defined
+		 * 										parent window is neither an IJK nor a column layer parent
+		 * 										window.
+		 * @exception	std::invalid_argument	If @p dimension differs from 'i', 'j' or 'k' (upper or
+		 * 										lower case) for an IJK parent window or if it differs
+		 * 										from 'k' (upper or lower case) for a column layer parent
+		 * 										window.
+		 * @exception	std::invalid_argument	If there exists no regrid interval in dimension @p
+		 * 										dimension.
+		 * @exception	std::invalid_argument	If the regrid child cell weights in dimension @p
+		 * 										dimension are not stored in an HDF5 file.
+		 *
+		 * @param 		  	dimension			The dimension from which we look for regrid child cell
+		 * 										weights. It must be either 'i', 'j' ou 'k' (upper or lower
+		 * 										case) for an IJK parent grid or 'k' for a strict column layer
+		 * 										parent grid.
+		 * @param [in,out]	childCellWeights	An array for receiving the regrid child cell weights. It
+		 * 										must have been preallocated with a size equal to the sum of
+		 * 										regrid child cell count per interval (using
+		 * 										getRegridCellCountPerInterval()).
 		 */
 		DLL_IMPORT_OR_EXPORT void getRegridChildCellWeights(const char & dimension, double * childCellWeights) const;
 
@@ -676,7 +829,10 @@ namespace RESQML2_NS
 		 * noted to be forced not to be regridded. It mainly occurs in case of non-rectangular local
 		 * grids.
 		 *
-		 * @returns	True if forced non regridded parent cell, false if not.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If no parent window is already defined.
+		 *
+		 * @returns	True if some parent cells have been forced not to be regridded, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasForcedNonRegridedParentCell() const;
 
@@ -685,21 +841,26 @@ namespace RESQML2_NS
 		//************************************************************
 
 		/**
-		 * Set the stratigraphic organization interpretation which is associated to this grid
+		 * Sets the stratigraphic organization interpretation which is associated to this grid
 		 * representation.
 		 *
-		 * @param [in,out]	stratiUnitIndices	Index of the stratigraphic unit of a given stratigraphic
-		 * 										column for each cell. Array length is the number of cells
-		 * 										in the grid or the blocked well.
-		 * @param 		  	nullValue		 	The value which is used to tell the association between a
-		 * 										cell and strati unit is unavailable.
-		 * @param [in,out]	stratiOrgInterp  	The stratigraphic organization interpretation which is
-		 * 										associated to this grid representation.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If no default HDF proxy is defined in the repository.
+		 *
+		 * @param [in]	stratiUnitIndices	Index of the stratigraphic unit of a given stratigraphic
+		 * 									column for each cell. Array length is the number of cells in
+		 * 									the grid or the blocked well.
+		 * @param 	  	nullValue		 	The value which is used to tell the association between a
+		 * 									cell and a stratigraphic unit is unavailable.
+		 * @param [in]	stratiOrgInterp  	The stratigraphic organization interpretation which is
+		 * 									associated to this grid representation.
 		 */
 		DLL_IMPORT_OR_EXPORT void setCellAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
 
 		/**
-		 * Gets stratigraphic organization interpretation
+		 * Gets the stratigraphic organization interpretation which is associated to this grid.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 *
 		 * @returns	nullptr if no stratigraphic organization interpretation is associated to this grid
 		 * 			representation. Otherwise return the associated stratigraphic organization
@@ -708,51 +869,67 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* getStratigraphicOrganizationInterpretation() const;
 
 		/**
-		 * Gets stratigraphic organization interpretation dor
+		 * Gets the data object reference of the stratigraphic organization interpretation associated to
+		 * this grid.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 *
 		 * @returns	null pointer if no stratigraphic organization interpretation is associated to this
-		 * 			grid representation. Otherwise return the data objet reference of the associated
+		 * 			grid representation. Otherwise return the data object reference of the associated
 		 * 			stratigraphic organization interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::eml20__DataObjectReference const * getStratigraphicOrganizationInterpretationDor() const;
 
 		/**
-		 * Gets stratigraphic organization interpretation uuid
+		 * Gets the UUID of the stratigraphic organization interpretation associated to this grid.
 		 *
-		 * @returns	empty string if no stratigraphic organization interpretation is associated to this
-		 * 			grid representation. Otherwise return the uuid of the associated stratigraphic
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @returns	Empty string if no stratigraphic organization interpretation is associated to this
+		 * 			grid representation. Otherwise return the UUID of the associated stratigraphic
 		 * 			organization interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getStratigraphicOrganizationInterpretationUuid() const;
 
 		/**
-		 * Gets stratigraphic organization interpretation title
+		 * Gets the title of the stratigraphic organization interpretation associated to this grid.
 		 *
-		 * @returns	empty string if no stratigraphic organization interpretation is associated to this
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @returns	Empty string if no stratigraphic organization interpretation is associated to this
 		 * 			grid representation. Otherwise return the title of the associated stratigraphic
 		 * 			organization interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getStratigraphicOrganizationInterpretationTitle() const;
 
 		/**
-		 * Query if this object has cell stratigraphic unit indices
+		 * Queries if there exists some association between stratigraphic unit indices and the cells of
+		 * this grid.
 		 *
-		 * @returns	true if this grid representation has got some association between stratigraphic unit
-		 * 			indices and cell.
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @returns	True if this grid representation has got some association between stratigraphic unit
+		 * 			indices and cells.
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasCellStratigraphicUnitIndices() const;
 
 		/**
-		 * Get the stratigraphic unit indices (regarding the associated stratigraphic organization
+		 * Gets the stratigraphic unit indices (regarding the associated stratigraphic organization
 		 * interpretation) of each cell of this grid representation.
 		 *
-		 * @param [in,out]	stratiUnitIndices	This array must be allocated with a count equal to
-		 * 										getCellCount(). It will be filled in with the
-		 * 										stratigraphic unit indices ordered as grid cells are
-		 * 										ordered.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::logic_error	 	If the associated stratigraphic unit indices are not
+		 * 										stored in a HDF5 integer array.
+		 * @exception	std::invalid_argument	If the cells of this grid are not associated with
+		 * 										stratigraphic units indices.
 		 *
-		 * @returns	The null value is returned. The null value is used to tell the association between a
-		 * 			cell and strati unit is unavailable.
+		 * @param [out]	stratiUnitIndices	An array to receive the stratigraphic unit indices associated
+		 * 									to the cells of this grid. It must be preallocated with a
+		 * 									count equal to getCellCount(). It will be filled in with the
+		 * 									stratigraphic unit indices ordered as grid cells are ordered.
+		 *
+		 * @returns	The null value. The null value is used to tell the association between a cell and
+		 * 			stratigraphic unit is unavailable.
 		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getCellStratigraphicUnitIndices(ULONG64 * stratiUnitIndices);
 
@@ -761,21 +938,26 @@ namespace RESQML2_NS
 		//************************************************************
 
 		/**
-		 * Set the rock fluid organization interpretation which is associated to this grid
+		 * Sets the rock fluid organization interpretation which is associated to this grid
 		 * representation.
 		 *
-		 * @param [in,out]	rockFluidUnitIndices	Index of the rock fluid unit of a given rock fluid
-		 * 											column for each cell. Array length is the number of cells
-		 * 											in the grid or the blocked well.
-		 * @param 		  	nullValue				The value which is used to tell the association
-		 * 											between a cell and rockFluid unit is unavailable.
-		 * @param [in,out]	rockFluidOrgInterp  	The rock fluid organization interpretation which is
-		 * 											associated to this grid representation.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If no default HDF proxy is defined in the repository.
+		 *
+		 * @param [in]	rockFluidUnitIndices	Index of the rock fluid unit of a given rock fluid column
+		 * 										for each cell. Array length is the number of cells in the
+		 * 										grid or the blocked well.
+		 * @param 	  	nullValue				The value which is used to tell the association between a
+		 * 										cell and a rock fluid unit is unavailable.
+		 * @param [in]	rockFluidOrgInterp  	The rock fluid organization interpretation which is
+		 * 										associated to this grid representation.
 		 */
 		DLL_IMPORT_OR_EXPORT void setCellAssociationWithRockFluidOrganizationInterpretation(ULONG64 * rockFluidUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::RockFluidOrganizationInterpretation* rockFluidOrgInterp);
 
 		/**
-		 * Gets rock fluid organization interpretation
+		 * Gets rock fluid organization interpretation which is associated to this grid.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 *
 		 * @returns	nullptr if no rock fluid organization interpretation is associated to this grid
 		 * 			representation. Otherwise return the associated rock fluid organization
@@ -784,50 +966,68 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::RockFluidOrganizationInterpretation* getRockFluidOrganizationInterpretation() const;
 
 		/**
-		 * Gets rock fluid organization interpretation dor
+		 * Gets the data object reference of the rock fluid organization interpretation associated to
+		 * this grid.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 *
 		 * @returns	null pointer if no rock fluid organization interpretation is associated to this grid
-		 * 			representation. Otherwise return the data objet reference of the associated rock
+		 * 			representation. Otherwise return the data object reference of the associated rock
 		 * 			fluid organization interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::eml20__DataObjectReference const * getRockFluidOrganizationInterpretationDor() const;
 
 		/**
-		 * Gets rock fluid organization interpretation uuid
+		 * Gets the UUID of the rock fluid organization interpretation associated to this grid.
 		 *
-		 * @returns	empty string if no rock fluid organization interpretation is associated to this grid
-		 * 			representation. Otherwise return the uuid of the associated rock fluid organization
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @returns	Empty string if no rock fluid organization interpretation is associated to this grid
+		 * 			representation. Otherwise return the UUID of the associated rock fluid organization
 		 * 			interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getRockFluidOrganizationInterpretationUuid() const;
 
 		/**
-		 * Gets rock fluid organization interpretation title
+		 * Gets the title of the rock fluid organization interpretation associated to this grid.
 		 *
-		 * @returns	empty string if no rock fluid organization interpretation is associated to this grid
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @returns	Empty string if no rock fluid organization interpretation is associated to this grid
 		 * 			representation. Otherwise return the title of the associated rock fluid organization
 		 * 			interpretation.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getRockFluidOrganizationInterpretationTitle() const;
 
 		/**
-		 * Query if this object has cell fluid phase unit indices
+		 * Queries if there exists some association between fluid phase unit indices and the cells of
+		 * this grid.
 		 *
-		 * @returns	true if this grid representation has got some association between rock fluid unit
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @returns	True if this grid representation has got some association between rock fluid unit
 		 * 			indices and cell.
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasCellFluidPhaseUnitIndices() const;
 
 		/**
-		 * Get the rock fluid unit indices (regarding the associated rock fluid organization
+		 * Gets the rock fluid unit indices (regarding the associated rock fluid organization
 		 * interpretation) of each cell of this grid representation.
 		 *
-		 * @param [in,out]	rockfluidUnitIndices	This array must be allocated with a count equal to
-		 * 											getCellCount(). It will be filled in with the rock fluid
-		 * 											unit indices ordered as grid cells are ordered.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::logic_error	 	If the associated stratigraphic unit indices are not
+		 * 										stored in a HDF5 integer array.
+		 * @exception	std::invalid_argument	If the cells of this grid are not associated with rock
+		 * 										fluid units indices.
 		 *
-		 * @returns	The null value is returned. The null value is used to tell the association between a
-		 * 			cell and rock fluid unit is unavailable.
+		 * @param [out]	rockfluidUnitIndices	An array to receive the rock fluid unit indices
+		 * 										associated to the cells of this grid? It must be allocated
+		 * 										with a count equal to getCellCount(). It will be filled in
+		 * 										with the rock fluid unit indices ordered as grid cells are
+		 * 										ordered.
+		 *
+		 * @returns	The null value. The null value is used to tell the association between a cell and
+		 * 			rock fluid unit is unavailable.
 		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getCellFluidPhaseUnitIndices(ULONG64 * rockfluidUnitIndices);
 
@@ -837,144 +1037,220 @@ namespace RESQML2_NS
 		//************************************************************
 
 		/**
-		 * Indicates wether this grid instance contains truncated pillars or not.
+		 * Indicates whether this grid instance contains truncated pillars or not.
 		 *
-		 * @returns	True if truncated, false if not.
+		 * @returns	True if truncated pillars exist, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool isTruncated() const;
 
 		/**
-		 * Get the truncation face count. It does not include face of truncated cells whch are not
+		 * Gets the truncated face count. It does not include face of truncated cells which are not
 		 * truncated.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If this grid is not truncated.
 		 *
 		 * @returns	The truncated face count.
 		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getTruncatedFaceCount() const;
 
 		/**
-		 * Get all the node indices of the truncated faces.
+		 * Gets all the node indices of the truncated faces.
 		 *
-		 * @param [in,out]	nodeIndices	It must be pre allocated with the last value returned by
-		 * 								getCumulativeNodeCountOfTruncatedFaces().
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::logic_error	 	If the node indices of the truncated faces are not stored
+		 * 										in a HDF5 integer array.
+		 * @exception	std::invalid_argument	If this grid is not truncated.
+		 *
+		 * @param [out]	nodeIndices	An array to receive the node indices of the truncated faces. It must
+		 * 							be preallocated with the last value returned by
+		 * 							getCumulativeNodeCountOfTruncatedFaces().
 		 */
 		DLL_IMPORT_OR_EXPORT void getNodeIndicesOfTruncatedFaces(ULONG64 * nodeIndices) const;
 
 		/**
-		 * Get the cumulative node count per truncated face. First value is the count of nodes in the
+		 * Gets the cumulative node count per truncated face. First value is the count of nodes in the
 		 * first face. Second value is the count of nodes in the first and in the second face. Third
-		 * value is the count of nodes in the first and in the second and in the third face. Etc...
-		 * Count of this array is equal to getTruncatedFaceCount()
-		 * A single node count should be at least 3.
+		 * value is the count of nodes in the first and in the second and in the third face. Etc... The
+		 * length of the output array is equal to getTruncatedFaceCount(). A single node count should be
+		 * at least 3.
 		 *
-		 * @param [in,out]	nodeCountPerFace	It must be pre allocated with getTruncatedFaceCount() ==
-		 * 										last value of
-		 * 										getCumulativeTruncatedFaceCountPerTruncatedCell()
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If this grid is not truncated.
+		 * @exception	std::range_error	 	If the cumulative length of nodes count per cells is
+		 * 										constant (it is stored in a constant integer array).
+		 *
+		 * @param [in]	nodeCountPerFace	An array to receive the cumulative node count per truncated
+		 * 									face. It must be preallocated with getTruncatedFaceCount()
+		 * 									(equals to last value of
+		 * 									getCumulativeTruncatedFaceCountPerTruncatedCell())
 		 */
 		DLL_IMPORT_OR_EXPORT void getCumulativeNodeCountPerTruncatedFace(ULONG64 * nodeCountPerFace) const;
 
 		/**
-		 * Less efficient than getCumulativeNodeCountPerTruncatedFace. Get the node count per truncated
-		 * face. First value is the count of nodes in the first face. Second value is the count of nodes
-		 * in the second face. etc...
+		 * Get the node count per truncated face. This method is less efficient than
+		 * getCumulativeNodeCountPerTruncatedFace(). First value is the count of nodes in the first
+		 * face. Second value is the count of nodes in the second face. etc...
 		 *
-		 * @param [in,out]	nodeCountPerFace	It must be pre allocated with getTruncatedFaceCount() ==
-		 * 										last value of
-		 * 										getCumulativeTruncatedFaceCountPerTruncatedCell()
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If this grid is not truncated.
+		 * @exception	std::range_error	 	If the cumulative length of nodes count per cells is
+		 * 										constant (it is stored in a constant integer array).
+		 *
+		 * @param [out]	nodeCountPerFace	An array to receive the node count per truncated face. It
+		 * 									must be preallocated with getTruncatedFaceCount() (equals to last
+		 * 									value of getCumulativeTruncatedFaceCountPerTruncatedCell()).
 		 */
 		DLL_IMPORT_OR_EXPORT void getNodeCountPerTruncatedFace(ULONG64 * nodeCountPerFace) const;
 
 		/**
-		 * Get the truncated cell count.
+		 * Gets the truncated cell count.
+		 *
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If this grid is not truncated.
 		 *
 		 * @returns	The truncated cell count.
 		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getTruncatedCellCount() const;
 
 		/**
-		 * Get the the indices of the truncated cells in the non truncated grid.
+		 * Gets the parent cell index for each of the truncation cells.
 		 *
-		 * @param [in,out]	cellIndices	If non-null, the cell indices.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::logic_error	 	If the parent cell indices are stored neither in a HDF5
+		 * 										integer array nor in a constant integer array.
+		 * @exception	std::invalid_argument	If this grid is not truncated.
+		 *
+		 * @param [out]	cellIndices	An array to receive the parent cell index of each truncation cell. It
+		 * 							must be preallocated with getTruncatedCellCount.
 		 */
 		DLL_IMPORT_OR_EXPORT void getTruncatedCellIndices(ULONG64* cellIndices) const;
 
 		/**
-		 * Get all the truncated face indices of all the truncated cells. It does not get the non
+		 * Gets all the truncated face indices of all the truncated cells. It does not get the non
 		 * truncated face indices of a truncated cell. Please use
-		 * getNonTruncatedFaceIndicesOfTruncatedCells(ULONG64 * faceIndices) in addition to this method
-		 * in order to get the full list of face indices for a truncated cell.
+		 * getNonTruncatedFaceIndicesOfTruncatedCells() in addition to this method in order to get the
+		 * full list of face indices for a truncated cell.
 		 *
-		 * @param [in,out]	faceIndices	It must be pre allocated with the last value returned by
-		 * 								getCumulativeTruncatedFaceCountPerTruncatedCell()
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::logic_error	 	If the truncated face indices are not stored in a HDF5
+		 * 										integer array.
+		 * @exception	std::invalid_argument	If this grid is not truncated.
+		 *
+		 * @param [out]	faceIndices	An array to receive the truncated face indices of all the truncated
+		 * 							cells. It must be preallocated with the last value returned by
+		 * 							getCumulativeTruncatedFaceCountPerTruncatedCell()
 		 */
 		DLL_IMPORT_OR_EXPORT void getTruncatedFaceIndicesOfTruncatedCells(ULONG64 * faceIndices) const;
 
 		/**
-		 * Get the cumulative truncated face count per truncated cell. It does not take into account the
-		 * non truncated face indices of a truncated cell. First value is the count of faces in the
-		 * first cell. Second value is the count of faces in the first and in the second cell. Third
-		 * value is the count of faces in the first and in the second and in the third cell. Etc...
-		 * Count of this array is equal to getCellCount()
-		 * A single face count should be at least 4.
+		 * Gets the cumulative truncated face count per truncated cell. It does not take into account
+		 * the non truncated face of a truncated cell. First value is the count of faces in the first
+		 * cell. Second value is the count of faces in the first and in the second cell. Third value is
+		 * the count of faces in the first and in the second and in the third cell. Etc... The length of
+		 * the output array is equal to getTruncatedCellCount(). A single face count should be at least
+		 * 4.
 		 *
-		 * @param [in,out]	cumulativeFaceCountPerCell	It must be pre allocated with
-		 * 												getTruncatedCellCount()
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If this grid is not truncated.
+		 * @exception	std::range_error	 	If the cumulative length of truncated faces count per
+		 * 										cells is constant (it is stored in a constant integer
+		 * 										array) while there is more than one cell in the grid.
+		 *
+		 * @param [out]	cumulativeFaceCountPerCell	An array to receive the cumulative truncated face
+		 * 											count per truncated cell. It must be pre allocated
+		 * 											with getTruncatedCellCount().
 		 */
 		DLL_IMPORT_OR_EXPORT void getCumulativeTruncatedFaceCountPerTruncatedCell(ULONG64 * cumulativeFaceCountPerCell) const;
 
 		/**
-		 * Less efficient than getCumulativeTruncatedFaceCountPerTruncatedCell. Get the face count per
-		 * cell. First value is the count of faces in the first cell. Second value is the count of faces
-		 * in the second cell. etc...
+		 * Gets the truncated face count per truncated cell. This method is less efficient than
+		 * getCumulativeTruncatedFaceCountPerTruncatedCell(). First value is the count of faces in the
+		 * first cell. Second value is the count of faces in the second cell. etc...
 		 *
-		 * @param [in,out]	faceCountPerCell	It must be pre allocated with getTruncatedCellCount()
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If this grid is not truncated.
+		 * @exception	std::range_error	 	If the cumulative length of faces count per cells is
+		 * 										constant (it is stored in a constant integer array) while
+		 * 										there is more than one cell in the grid.
+		 *
+		 * @param [out]	faceCountPerCell	An array to receive the truncated face count per truncated
+		 * 									cell. It must be preallocated with getTruncatedCellCount()
 		 */
 		DLL_IMPORT_OR_EXPORT void getTruncatedFaceCountPerTruncatedCell(ULONG64 * faceCountPerCell) const;
 
 		/**
-		 * Get all the truncated face indices of all the truncated cells. It does not get the non
+		 * Gets all the non truncated face indices of all the truncated cells. It does not get the
 		 * truncated face indices of a truncated cell. Please use
-		 * getNonTruncatedFaceIndicesOfTruncatedCells(ULONG64 * faceIndices) in addition to this method
-		 * in order to get the full list of face indices for a truncated cell.
+		 * getTruncatedFaceIndicesOfTruncatedCells() in addition to this method in order to get the full
+		 * list of face indices for a truncated cell.
 		 *
-		 * @param [in,out]	faceIndices	It must be pre allocated with the last value returned by
-		 * 								getCumulativeTruncatedFaceCountPerTruncatedCell()
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::logic_error	 	If the non truncated face indices are not stored in a
+		 * 										HDF5 integer array.
+		 * @exception	std::invalid_argument	If this grid is not truncated.
+		 *
+		 * @param [out]	faceIndices	An array to receive the non truncated face indices of all the
+		 * 							truncated cells.It must be pre allocated with the last value returned
+		 * 							by getCumulativeNonTruncatedFaceCountPerTruncatedCell()
 		 */
 		DLL_IMPORT_OR_EXPORT void getNonTruncatedFaceIndicesOfTruncatedCells(ULONG64 * faceIndices) const;
 
 		/**
-		 * Get the cumulative truncated face count per truncated cell. It does not take into account the
-		 * non truncated face indices of a truncated cell. First value is the count of faces in the
+		 * Get the cumulative non truncated face count per truncated cell. It does not take into account
+		 * the truncated face indices of a truncated cell. First value is the count of faces in the
 		 * first cell. Second value is the count of faces in the first and in the second cell. Third
 		 * value is the count of faces in the first and in the second and in the third cell. Etc...
-		 * Count of this array is equal to getCellCount()
-		 * A single face count should be at least 4.
+		 * Count of this array is equal to getTruncatedCellCount(). A single face count should be at
+		 * least 4.
 		 *
-		 * @param [in,out]	cumulativeFaceCountPerCell	It must be pre allocated with
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If this grid is not truncated.
+		 * @exception	std::range_error	 	If the cumulative length of non truncated faces count per
+		 * 										cells is constant (it is stored in a constant integer
+		 * 										array) while there is more than one cell in the grid.
+		 *
+		 * @param [out]	cumulativeFaceCountPerCell	An array to receive the cumulative non truncated face
+		 * 											count per truncated cell. It must be preallocated with
 		 * 												getTruncatedCellCount()
 		 */
 		DLL_IMPORT_OR_EXPORT void getCumulativeNonTruncatedFaceCountPerTruncatedCell(ULONG64 * cumulativeFaceCountPerCell) const;
 
 		/**
-		 * Less efficient than getCumulativeTruncatedFaceCountPerTruncatedCell. Get the face count per
-		 * cell. First value is the count of faces in the first cell. Second value is the count of faces
-		 * in the second cell. etc...
+		 * Gets the non truncated face count per cell. This method is less efficient than
+		 * getCumulativeNonTruncatedFaceCountPerTruncatedCell(). First value is the count of faces in
+		 * the first cell. Second value is the count of faces in the second cell. etc...
 		 *
-		 * @param [in,out]	faceCountPerCell	It must be pre allocated with getTruncatedCellCount()
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If this grid is not truncated.
+		 * @exception	std::range_error	 	If the cumulative length of non truncated faces count per
+		 * 										cells is constant (it is stored in a constant integer
+		 * 										array) while there is more than one cell in the grid.
+		 *
+		 * @param [out]	faceCountPerCell	An array to receive the non truncated face count per
+		 * 									truncated cell. It must be pre allocated with
+		 * 									getTruncatedCellCount()
 		 */
 		DLL_IMPORT_OR_EXPORT void getNonTruncatedFaceCountPerTruncatedCell(ULONG64 * faceCountPerCell) const;
 
 		/**
-		 * Retrieves orientation i.e. if each truncated face is right handed or not
+		 * Retrieves the orientation of each truncated face (i.e. if each truncated face is right handed
+		 * or not).
 		 *
-		 * @param [in,out]	cellFaceIsRightHanded	It must be pre allocated with getTruncatedFaceCount()
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::logic_error	 	If the orientation of the truncated faces is neither
+		 * 										stored in a HDF5 boolean array nor in a boolean constant
+		 * 										array.
+		 * @exception	std::invalid_argument	If this grid is not truncated.
+		 *
+		 * @param [out]	cellFaceIsRightHanded	An array to receive the orientation of truncated faces.
+		 * 										Value '0' means left handed and value other than '0'
+		 * 										means right handed. It must be preallocated with
+		 * 										getTruncatedFaceCount()
 		 */
 		DLL_IMPORT_OR_EXPORT void getTruncatedFaceIsRightHanded(unsigned char* cellFaceIsRightHanded) const;
 
-		/**
-		 * Gets the XML tag
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 	protected:

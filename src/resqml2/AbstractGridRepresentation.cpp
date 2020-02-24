@@ -416,6 +416,10 @@ void AbstractGridRepresentation::setParentWindow(
 
 void AbstractGridRepresentation::setForcedNonRegridedParentCell(ULONG64 * cellIndices, const ULONG64 & cellIndexCount)
 {
+	if (cellIndices == nullptr) {
+		throw invalid_argument("cellIndices cannot be nullptr.");
+	}
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractParentWindow* parentWindow = getParentWindow2_0_1();
 
@@ -495,6 +499,10 @@ bool AbstractGridRepresentation::hasForcedNonRegridedParentCell() const
 void AbstractGridRepresentation::setCellOverlap(const ULONG64 & parentChildCellPairCount, ULONG64 * parentChildCellPair,
 	const gsoap_resqml2_0_1::eml20__VolumeUom & volumeUom, double * overlapVolumes)
 {
+	if (parentChildCellPair == nullptr) {
+		throw invalid_argument("parentChildCellPair cannot be nullptr.");
+	}
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractParentWindow* parentWindow = getParentWindow2_0_1();
 
@@ -1114,6 +1122,10 @@ void AbstractGridRepresentation::loadTargetRelationships()
 
 void AbstractGridRepresentation::setCellAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation * stratiOrgInterp)
 {
+	if (stratiOrgInterp == nullptr) {
+		throw invalid_argument("The stratigraphic organization interpretation cannot be null.");
+	}
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation*>(gsoapProxy2_0_1);
 		rep->CellStratigraphicUnits = gsoap_resqml2_0_1::soap_new_resqml20__CellStratigraphicUnits(rep->soap);
