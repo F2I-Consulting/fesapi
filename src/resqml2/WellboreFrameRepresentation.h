@@ -25,7 +25,8 @@ under the License.
 namespace RESQML2_NS
 {
 	/**
-	 * Representation of a wellbore that is organized along a wellbore trajectory by its MD values.
+	 * Proxy class for a wellbore frame representation. A wellbore frame representation is a
+	 * representation of a wellbore that is organized along a wellbore trajectory by its MD values.
 	 * RESQML uses MD values to associate properties on points and to organize association of
 	 * properties on intervals between MD points.
 	 */
@@ -63,141 +64,168 @@ namespace RESQML2_NS
 #endif
 
 	public:
-		/** Destructor */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		~WellboreFrameRepresentation() {}
 
 		/**
-		 * Set the MD values of this WellboreFrameRepresentation frame to an array 1d of explicit values.
+		 * Sets the measured depth (MD) values of this wellbore frame representation as a 1d array of explicit values.
 		 *
-		 * @param 		  	mdValues		All the MD values to set from top of the well trajectory to
-		 * 									bottom.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	mdValues		All the MD values to set from top to bottom of the wellbore
+		 * 									trajectory. Size if @p mdValueCount.
 		 * @param 		  	mdValueCount	The MD values count.
 		 * @param [in,out]	proxy			(Optional) The HDF proxy where to write the MD values. It
 		 * 									must be already opened for writing and won't be closed in this
-		 * 									method.
+		 * 									method. If @c nullptr, then a default HDF proxy must be defined
+		 * 									in the repository.
 		 */
 		DLL_IMPORT_OR_EXPORT void setMdValues(double const * mdValues, unsigned int mdValueCount, COMMON_NS::AbstractHdfProxy* proxy = nullptr);
 
 		/**
-		 * Set the MD values of this WellboreFrameRepresentation frame as a regular discretization along
-		 * the wellbore trajectory.
+		 * Sets the measured depth (MD) values of this wellbore frame representation as a regular
+		 * discretization along the wellbore trajectory.
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 *
 		 * @param 	firstMdValue		The first MD value.
-		 * @param 	incrementMdValue	The increment value between two Measured depth.
-		 * @param 	mdValueCount		The count of md values in this WellboreFrameRepresentation.
+		 * @param 	incrementMdValue	The increment value between two MDs.
+		 * @param 	mdValueCount		The count of MD values in this wellbore frame representation.
 		 */
 		DLL_IMPORT_OR_EXPORT void setMdValues(double firstMdValue, double incrementMdValue, unsigned int mdValueCount);
 
 		/**
 		 * Indicates either the MDs are regularly spaced or not (useful for optimization). Does not
-		 * verify if the writer has used a generic array to store regular mds.
+		 * check the regularity if the writer has used a generic array to store regular MDs.
 		 *
-		 * @returns	True if md values regularly spaced, false if not.
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @returns	True if MD values are regularly spaced, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool areMdValuesRegularlySpaced() const;
 
 		/**
-		 * Indicates the increment value between two MDs only if the MDs are regularly spaced. Please
-		 * use areMdValuesRegularlySpaced before using this method.
+		 * Indicates the increment value between two MDs in case of regularly spaced MDs. Please check
+		 * the regularity of MDs with areMdValuesRegularlySpaced() before using this method.
 		 *
-		 * @returns	The md constant increment value.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If the MD values are not regularly spaced.
+		 *
+		 * @returns	The MD constant increment value.
 		 */
 		DLL_IMPORT_OR_EXPORT double getMdConstantIncrementValue() const;
 
 		/**
-		 * Returns the first MD value of this WellboreFrameRepresentation
+		 * Returns the first MD value of this wellbore frame representation.
 		 *
-		 * @returns	The md first value.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::logic_error	 	If the MD values are neither stored in a HDF5 double
+		 * 										array nor in a double lattice array.
+		 * @exception	std::invalid_argument	If the MD values are stored in a HDF5 double array and
+		 * 										the HDF proxy is missing.
+		 *
+		 * @returns	The first MD value.
 		 */
 		DLL_IMPORT_OR_EXPORT double getMdFirstValue() const;
 
 		/**
-		 * Get the number of Md values in this WellboreFeature frame.
+		 * Gets the number of MD values in this wellbore frame representation.
 		 *
-		 * @returns	The md values count.
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @returns	The MD values count.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getMdValuesCount() const;
 
-		/**
-		 * Get the xyz point count in a given patch.
-		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
-		 *
-		 * @returns	The xyz point count of patch.
-		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const override;
+
+		/** Please do note use: not implemented yet. */
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const override;
 
 		/**
-		 * Get all the XYZ points of a particular patch of this representation. XYZ points are given in
-		 * the local CRS.
+		 * Gets the MD datatype in the HDF dataset.
 		 *
-		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is
-		 * 								coordinate dimension (XYZ) and second dimension is vertex
-		 * 								dimension. It must be pre allocated.
-		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
-
-		/**
-		 * Get the Measured Depth datatype in the HDF dataset
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::invalid_argument	If the MD values are stored in a HDF5 double array and
+		 * 										the HDF proxy is missing.
 		 *
-		 * @returns	The md hdf datatype.
+		 * @returns	The MD datatype in the HDF dataset if MD values are actually stored in a HDF dataset.
+		 * 			Returns @c DOUBLE if MD values are stored as a regular discretization along the
+		 * 			wellbore trajectory.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractValuesProperty::hdfDatatypeEnum getMdHdfDatatype() const;
 
 		/**
-		 * Get all the md values of the instance which are supposed to be double ones.
+		 * Gets all the MD values of this instance which are supposed to be double ones.
 		 *
-		 * @param [in,out]	values	If non-null, the values.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::logic_error	 	If the MD values are neither stored in a HDF5 double
+		 * 										array nor in a double lattice array.
+		 * @exception	std::invalid_argument	If the MD values are stored in a HDF5 double array and
+		 * 										the HDF proxy is missing.
+		 *
+		 * @param [out]	values	A buffer to receive the MD values ordered from top to bottom of the
+		 * 						wellbore trajectory. It must be preallocated with size of
+		 * 						getMdValuesCount().
 		 */
 		DLL_IMPORT_OR_EXPORT void getMdAsDoubleValues(double * values) const;
 
 		/**
-		 * Get all the md values of the instance which are supposed to be float ones.
+		 * Gets all the MD values of this instance which are supposed to be float ones.
 		 *
-		 * @param [in,out]	values	If non-null, the values.
+		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * @exception	std::logic_error	 	If the MD values are neither stored in a HDF5 double
+		 * 										array nor in a double lattice array.
+		 * @exception	std::invalid_argument	If the MD values are stored in a HDF5 double array and
+		 * 										the HDF proxy is missing.
+		 *
+		 * @param [out]	values	A buffer to receive the MD values ordered from top to bottom of the
+		 * 						wellbore trajectory. It must be preallocated with size of
+		 * 						getMdValuesCount().
 		 */
 		DLL_IMPORT_OR_EXPORT void getMdAsFloatValues(float * values) const;
 
 		/**
-		 * Get the associated RESQML wellbore trajectory data object reference.
+		 * Gets the data object reference of the associated RESQML wellbore trajectory.
 		 *
-		 * @returns	Null if it fails, else the wellbore trajectory dor.
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @returns	The data object reference of the associated RESQML wellbore trajectory.
 		 */
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getWellboreTrajectoryDor() const;
 
 		/**
-		 * Get the associated RESQML wellbore trajectory uuid.
+		 * Gets the UUID of the associated RESQML wellbore trajectory.
 		 *
-		 * @returns	The wellbore trajectory uuid.
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 *
+		 * @returns	The UUID of the associated RESQML wellbore trajectory.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getWellboreTrajectoryUuid() const;
 
-		/** Get the associated RESQML wellbore trajector. */
+		/** 
+		 * Gets the associated RESQML wellbore trajectory. 
+		 *
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * 
+		 * @return The associated RESQML wellbore trajectory.
+		 */
 		DLL_IMPORT_OR_EXPORT class RESQML2_0_1_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
 
-		/**
-		 * Get the associated RESQML local crs data object reference.
-		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
-		 *
-		 * @returns	Null if it fails, else the local crs dor.
-		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const override;
 
 		/**
-		 * Get the associated hdf proxy data object reference.
+		 * @copybrief AbstractRepresentation::getHdfProxyDor()
 		 *
-		 * @returns	Null if it fails, else the hdf proxy dor.
+		 * @exception	std::logic_error	If the underlying gSOAP instance is not a RESQML2.0 one.
+		 * 
+		 * @copydetails AbstractRepresentation::getHdfProxyDor()
 		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const override;
 
-		/**
-		 * Get the count of patch of this representation.
-		 *
-		 * @returns	The patch count.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const override {return 1;}
 
 		protected:
 			/** Loads target relationships */

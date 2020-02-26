@@ -137,6 +137,10 @@ void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairsUsingExisting
 
 void GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs(ULONG64 cellIndexPairCount, int * localFacePerCellIndexPair, int nullValue, COMMON_NS::AbstractHdfProxy * proxy)
 {
+	if (nullValue != -1) {
+		throw invalid_argument("The null value must be -1 in RESQML2.0.");
+	}
+
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
 		if (proxy == nullptr) {
@@ -169,7 +173,7 @@ void GridConnectionSetRepresentation::getInterpretationIndexCumulativeCount(unsi
 		}
 	}
 	else {
-		throw std::invalid_argument("There are no fault associated to the cell connections.");
+		throw std::invalid_argument("The grid connection does not contain any (fault) interpretation association.");
 	}
 }
 
@@ -186,7 +190,7 @@ void GridConnectionSetRepresentation::getInterpretationIndices(unsigned int * in
 		}
 	}
 	else {
-		throw std::invalid_argument("There are no fault associated to the cell connections.");
+		throw std::invalid_argument("The grid connection does not contain any (fault) interpretation association.");
 	}
 }
 
@@ -202,7 +206,7 @@ LONG64 GridConnectionSetRepresentation::getInterpretationIndexNullValue() const
 		}
 	}
 	else {
-		throw std::invalid_argument("There are no fault associated to the cell connections.");
+		throw std::invalid_argument("The grid connection does not contain any (fault) interpretation association.");
 	}
 }
 
@@ -213,6 +217,10 @@ ULONG64 GridConnectionSetRepresentation::getCellIndexPairCount() const
 
 unsigned int GridConnectionSetRepresentation::getCellIndexPairCountFromInterpretationIndex(unsigned int interpretationIndex) const
 {
+	if (interpretationIndex >= getInterpretationCount()) {
+		throw out_of_range("The interpretation index is out of range.");
+	}
+	
 	unsigned int result = 0;
 	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 
@@ -238,11 +246,11 @@ unsigned int GridConnectionSetRepresentation::getCellIndexPairCountFromInterpret
 			delete [] faultIndices;
 		}
 		else {
-			throw std::logic_error("Not yet implemented");
+			throw std::logic_error("Not implemented yet");
 		}
 	}
 	else {
-		throw invalid_argument("The grid connection does not contain any fault association."); 
+		throw invalid_argument("The grid connection does not contain any (fault) interpretation association."); 
 	}
 
 	return result;
@@ -350,7 +358,7 @@ void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpr
 			delete[] totalLocalFaceIndexPairs;
 		}
 		delete [] totalCellIndexPairs;
-		throw invalid_argument("The grid connection does not contain any fault association."); 
+		throw invalid_argument("The grid connection does not contain any (fault) interpretation association."); 
 	}
 	
 	if (totalGridIndexPairs != nullptr) {
@@ -376,11 +384,11 @@ std::string GridConnectionSetRepresentation::getInterpretationUuidFromIndex(cons
 			}
 		}
 		else {
-			throw range_error("The fault index is out of range in this grid connection context.");
+			throw out_of_range("The fault index is out of range in this grid connection context.");
 		}
 	}
 	else {
-		throw invalid_argument("The grid connection does not contain any fault association.");
+		throw invalid_argument("The grid connection does not contain any (fault) interpretation association.");
 	}
 }
 
@@ -392,7 +400,7 @@ unsigned int GridConnectionSetRepresentation::getInterpretationCount() const
 		const size_t result = rep->ConnectionInterpretations->FeatureInterpretation.size();
 
 		if (result > (numeric_limits<unsigned int>::max)()) {
-			throw out_of_range("There are too many associated interpretations.");
+			throw range_error("There are too many associated interpretations.");
 		}
 
 		return static_cast<unsigned int>(result);
@@ -466,6 +474,7 @@ void GridConnectionSetRepresentation::pushBackXmlSupportingGridRepresentation(RE
 	static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1)->Grid.push_back(supportingGridRep->newResqmlReference());
 }
 
+// TODO: Resqml allows to map with more than one feature interpretation.
 void GridConnectionSetRepresentation::setConnectionInterpretationIndices(unsigned int * interpretationIndices, unsigned int interpretationIndiceCount, unsigned int nullValue, COMMON_NS::AbstractHdfProxy * proxy)
 {
 	getRepository()->addRelationship(this, proxy);
@@ -515,7 +524,7 @@ unsigned int GridConnectionSetRepresentation::getSupportingGridRepresentationCou
 	const size_t result = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1)->Grid.size();
 
 	if (result > (numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("There are too many supporting grid representations.");
+		throw range_error("There are too many supporting grid representations.");
 	}
 
 	return static_cast<unsigned int>(result);
@@ -526,7 +535,7 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* GridConnectionSetRepresentation::
 	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 
 	if (index >= rep->Grid.size()) {
-		throw range_error("The requested index is out of range of the available supporting grid representations.");
+		throw out_of_range("The requested index is out of range of the available supporting grid representations.");
 	}
 	return rep->Grid[index];
 }

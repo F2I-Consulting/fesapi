@@ -265,18 +265,12 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void setLocalFacePerCellIndexPairsUsingExistingDataset(const std::string & localFacePerCellIndexPair, LONG64 nullValue, COMMON_NS::AbstractHdfProxy * proxy);
 
 		/**
-		 * 2 x #Connections array of local face-per-cell indices for (Cell1,Cell2) for each connection.
-		 * Local face-per-cell indices are used because global face indices need not have been defined.
-		 * The numerical values will be written as a new hdf5 dataset in an existing hdf5 file. Null
-		 * value = -1 by documentation.
+		 * @copybrief RESQML2_NS::GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs
+		 * @p nullValue must be -1 (business rule in RESQML v2.0.1).
+		 * 
+		 * @exception	std::invalid_argument	If <tt>nullValue != -1</tt>. 
 		 *
-		 * @param 		  	cellIndexPairCount		 	The count of cell index pair. It is half of all
-		 * 												the stored numerical values.
-		 * @param [in,out]	localFacePerCellIndexPair	The HDF dataset path where we can find all the
-		 * 												local Face Per CellIndex Pair in a 1d Array.
-		 * @param 		  	nullValue				 	The null value.
-		 * @param [in,out]	proxy					 	The HDF proxy where the numerical values (cell
-		 * 												indices) are stored.
+		 * @copydetails RESQML2_NS::GridConnectionSetRepresentation::setLocalFacePerCellIndexPairs
 		 */
 		DLL_IMPORT_OR_EXPORT void setLocalFacePerCellIndexPairs(ULONG64 cellIndexPairCount, int * localFacePerCellIndexPair, int nullValue, COMMON_NS::AbstractHdfProxy * proxy);
 

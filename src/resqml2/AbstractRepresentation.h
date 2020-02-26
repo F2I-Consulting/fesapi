@@ -175,7 +175,7 @@ namespace RESQML2_NS
 		}
 
 		/**
-		 * Gets the data object reference of the HDF proxy which is used for storing the numerical
+		 * @brief Gets the data object reference of the HDF proxy which is used for storing the numerical
 		 * values of this representation (i.e. its geometry).
 		 *
 		 * @returns	The data object reference of the HDF proxy used for storing the geometry.

@@ -174,12 +174,16 @@ void AbstractDiscreteOrCategoricalProperty::pushBackLongHdf5ArrayOfValues(const 
 			throw std::invalid_argument("A (default) HDF Proxy must be provided.");
 		}
 	}
-
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
-		pushBackRefToExistingDataset(proxy, "", nullValue),
-		H5T_NATIVE_LLONG,
-		values,
-		numValues, numDimensionsInArray);
+	if (gsoapProxy2_0_1 != nullptr) {
+		proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+			pushBackRefToExistingDataset(proxy, "", nullValue),
+			H5T_NATIVE_LLONG,
+			values,
+			numValues, numDimensionsInArray);
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
 }
 
 void AbstractDiscreteOrCategoricalProperty::pushBackIntHdf5ArrayOfValues(const int * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, int nullValue)
@@ -191,11 +195,16 @@ void AbstractDiscreteOrCategoricalProperty::pushBackIntHdf5ArrayOfValues(const i
 		}
 	}
 
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
-		pushBackRefToExistingDataset(proxy, "", nullValue),
-		H5T_NATIVE_INT,
-		values,
-		numValues, numDimensionsInArray);
+	if (gsoapProxy2_0_1 != nullptr) {
+		proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+			pushBackRefToExistingDataset(proxy, "", nullValue),
+			H5T_NATIVE_INT,
+			values,
+			numValues, numDimensionsInArray);
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
 }
 
 void AbstractDiscreteOrCategoricalProperty::pushBackShortHdf5ArrayOfValues(const short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, short nullValue)
@@ -207,11 +216,16 @@ void AbstractDiscreteOrCategoricalProperty::pushBackShortHdf5ArrayOfValues(const
 		}
 	}
 
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
-		pushBackRefToExistingDataset(proxy, "", nullValue),
-		H5T_NATIVE_SHORT,
-		values,
-		numValues, numDimensionsInArray);
+	if (gsoapProxy2_0_1 != nullptr) {
+		proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+			pushBackRefToExistingDataset(proxy, "", nullValue),
+			H5T_NATIVE_SHORT,
+			values,
+			numValues, numDimensionsInArray);
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
 }
 
 void AbstractDiscreteOrCategoricalProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, unsigned short nullValue)
@@ -223,11 +237,16 @@ void AbstractDiscreteOrCategoricalProperty::pushBackUShortHdf5ArrayOfValues(cons
 		}
 	}
 
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
-		pushBackRefToExistingDataset(proxy, "", nullValue),
-		H5T_NATIVE_USHORT,
-		values,
-		numValues, numDimensionsInArray);
+	if (gsoapProxy2_0_1 != nullptr) {
+		proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+			pushBackRefToExistingDataset(proxy, "", nullValue),
+			H5T_NATIVE_USHORT,
+			values,
+			numValues, numDimensionsInArray);
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
 }
 
 void AbstractDiscreteOrCategoricalProperty::pushBackCharHdf5ArrayOfValues(const char * values, unsigned long long * numValues, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy* proxy, char nullValue)
@@ -239,11 +258,16 @@ void AbstractDiscreteOrCategoricalProperty::pushBackCharHdf5ArrayOfValues(const 
 		}
 	}
 
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
-		pushBackRefToExistingDataset(proxy, "", nullValue),
-		H5T_NATIVE_CHAR,
-		values,
-		numValues, numDimensionsInArray);
+	if (gsoapProxy2_0_1 != nullptr) {
+		proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+			pushBackRefToExistingDataset(proxy, "", nullValue),
+			H5T_NATIVE_CHAR,
+			values,
+			numValues, numDimensionsInArray);
+	}
+	else {
+		throw logic_error("Not implemented yet");
+	}
 }
 
 LONG64 AbstractDiscreteOrCategoricalProperty::getLongValuesOfPatch(unsigned int patchIndex, LONG64 * values) const
@@ -258,6 +282,10 @@ LONG64 AbstractDiscreteOrCategoricalProperty::getLongValuesOfPatch(unsigned int 
 
 LONG64 AbstractDiscreteOrCategoricalProperty::getNullValueOfPatch(unsigned int patchIndex) const
 {
+	if (patchIndex >= getPatchCount()) {
+		throw out_of_range("The values property patch is out of range");
+	}
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1)->PatchOfValues[patchIndex];
 		if (patch->Values->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
@@ -427,6 +455,10 @@ void AbstractDiscreteOrCategoricalProperty::setValuesOfLongHdf5ArrayOfValues(
 	COMMON_NS::AbstractHdfProxy* proxy,
 	unsigned int patchIndex)
 {
+	if (patchIndex >= getPatchCount() && patchIndex != (numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("The values property patch is out of range");
+	}
+
 	if (proxy == nullptr) {
 		proxy = getRepository()->getDefaultHdfProxy();
 		if (proxy == nullptr) {

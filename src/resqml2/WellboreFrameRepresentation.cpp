@@ -366,7 +366,7 @@ void WellboreFrameRepresentation::getMdAsDoubleValues(double* values) const
 	}
 #endif
 	else {
-		throw invalid_argument("Not implemented yet");
+		throw logic_error("Not implemented yet");
 	}
 }
 
@@ -419,7 +419,7 @@ void WellboreFrameRepresentation::getMdAsFloatValues(float* values) const
 	}
 #endif
 	else {
-		throw invalid_argument("Not implemented yet");
+		throw logic_error("Not implemented yet");
 	}
 }
 
@@ -486,7 +486,7 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreFrameRepresentation::getH
 ULONG64 WellboreFrameRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
-		throw range_error("The patch index is out of range");
+		throw out_of_range("The patch index is out of range");
 	}
 
 	return getMdValuesCount();

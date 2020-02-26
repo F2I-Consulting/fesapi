@@ -104,7 +104,7 @@ AbstractValuesProperty::hdfDatatypeEnum AbstractValuesProperty::getValuesHdfData
 gsoap_resqml2_0_1::eml20__Hdf5Dataset const * AbstractValuesProperty::getDatasetOfPatch(unsigned int patchIndex, LONG64 & nullValue) const
 {
 	if (patchIndex >= getPatchCount()) {
-		throw range_error("The values property patch is out of range");
+		throw out_of_range("The values property patch is out of range");
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
