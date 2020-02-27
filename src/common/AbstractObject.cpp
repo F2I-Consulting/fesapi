@@ -51,40 +51,6 @@ using namespace COMMON_NS;
 
 char AbstractObject::citationFormat[257] = "[F2I-CONSULTING:fesapi " FESAPI_VERSION "]";
 
-AbstractObject::AbstractObject() :
-	partialObject(nullptr), gsoapProxy2_0_1(nullptr),
-	gsoapProxy2_1(nullptr), 
-	gsoapProxy2_2(nullptr),
-	repository(nullptr) {
-}
-
-/**
-* Only for partial transfer
-*/
-AbstractObject::AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_):
-	partialObject(partialObject_), gsoapProxy2_0_1(nullptr),
-	gsoapProxy2_1(nullptr),
-	gsoapProxy2_2(nullptr),
-	repository(nullptr) {}
-
-AbstractObject::AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy):
-	partialObject(nullptr), gsoapProxy2_0_1(proxy),
-	gsoapProxy2_1(nullptr),
-	gsoapProxy2_2(nullptr),
-	repository(nullptr) {}
-
-AbstractObject::AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) :
-	partialObject(nullptr), gsoapProxy2_0_1(nullptr),
-	gsoapProxy2_1(proxy),
-	gsoapProxy2_2(nullptr),
-	repository(nullptr) {}
-
-AbstractObject::AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy) :
-	partialObject(nullptr), gsoapProxy2_0_1(nullptr),
-	gsoapProxy2_1(nullptr),
-	gsoapProxy2_2(proxy),
-	repository(nullptr) {}
-
 void AbstractObject::cannotBePartial() const
 {
 	if (isPartial()) {
@@ -1208,15 +1174,21 @@ void AbstractObject::readArrayNdOfUIntValues(gsoap_resqml2_0_1::resqml20__Abstra
 	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerRangeArray)
 	{
 		gsoap_resqml2_0_1::resqml20__IntegerRangeArray* rangeArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerRangeArray*>(arrayInput);
-		for (size_t i = 0; i < rangeArray->Count; ++i) {
-			arrayOutput[i] = i + rangeArray->Value;
+		if (rangeArray->Value + rangeArray->Count > (std::numeric_limits<unsigned int>::max)()) {
+			throw std::range_error("The range integer values are superior to unsigned int maximum value.");
+		}
+		for (unsigned int i = 0; i < static_cast<unsigned int>(rangeArray->Count); ++i) {
+			arrayOutput[i] = i + static_cast<unsigned int>(rangeArray->Value);
 		}
 	}
 	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray)
 	{
 		gsoap_resqml2_0_1::resqml20__IntegerConstantArray* constantArray = static_cast<gsoap_resqml2_0_1::resqml20__IntegerConstantArray*>(arrayInput);
+		if (constantArray->Value > (std::numeric_limits<unsigned int>::max)()) {
+			throw std::range_error("The constant integer value is superior to unsigned int maximum value.");
+		}
 		for (size_t i = 0; i < constantArray->Count; ++i) {
-			arrayOutput[i] = constantArray->Value;
+			arrayOutput[i] = static_cast<unsigned int>(constantArray->Value);
 		}
 	}
 	else if (soapType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerLatticeArray)

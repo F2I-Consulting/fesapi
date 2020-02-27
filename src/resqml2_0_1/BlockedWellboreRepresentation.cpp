@@ -143,18 +143,23 @@ ULONG64 BlockedWellboreRepresentation::getCellCount() const
 
 LONG64 BlockedWellboreRepresentation::getGridIndices(unsigned int * gridIndices) const
 {
-	_resqml20__BlockedWellboreRepresentation* rep = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1);
+	auto xmlGridIndices = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->GridIndices;
 
-	if (rep->GridIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-		gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(rep->GridIndices)->Values;
+	if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
+		gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset = static_cast<resqml20__IntegerHdf5Array*>(xmlGridIndices)->Values;
 		COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 		hdfProxy->readArrayNdOfUIntValues(dataset->PathInHdfFile, gridIndices);
-		return static_cast<resqml20__IntegerHdf5Array*>(rep->GridIndices)->NullValue;
+		return static_cast<resqml20__IntegerHdf5Array*>(xmlGridIndices)->NullValue;
 	}
-	else if (rep->GridIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray) {
+	else if (xmlGridIndices->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerConstantArray) {
+		const LONG64 constantXmlValue = static_cast<resqml20__IntegerConstantArray*>(xmlGridIndices)->Value;
+		if (constantXmlValue > (std::numeric_limits<LONG64>::max)()) {
+			throw std::range_error("The constant value is superior than unsigned int maximum value.");
+		}
+
 		const unsigned int intervalCount = getMdValuesCount() - 1;
 		for (unsigned int i = 0; i < intervalCount; ++i) {
-			gridIndices[i] = static_cast<resqml20__IntegerConstantArray*>(rep->GridIndices)->Value;
+			gridIndices[i] = static_cast<unsigned int>(constantXmlValue);
 		}
 	}
 	else {
@@ -216,7 +221,13 @@ void BlockedWellboreRepresentation::loadTargetRelationships()
 
 unsigned int BlockedWellboreRepresentation::getSupportingGridRepresentationCount() const
 {
-	return static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->Grid.size();
+	const size_t result = static_cast<_resqml20__BlockedWellboreRepresentation*>(gsoapProxy2_0_1)->Grid.size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw std::range_error("There are too much supporting representations");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 RESQML2_NS::AbstractGridRepresentation* BlockedWellboreRepresentation::getSupportingGridRepresentation(unsigned int index) const

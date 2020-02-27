@@ -223,7 +223,13 @@ void Well::pushBackLocation(
 }
 
 unsigned int Well::geLocationCount() const {
-	return static_cast<witsml20__Well*>(gsoapProxy2_1)->WellLocation.size();
+	const size_t result = static_cast<witsml20__Well*>(gsoapProxy2_1)->WellLocation.size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw std::range_error("There are too much locations");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 void Well::pushBackDatum(
@@ -264,7 +270,13 @@ void Well::pushBackDatum(
 
 unsigned int Well::getDatumCount() const
 {
-	return static_cast<witsml20__Well*>(gsoapProxy2_1)->WellDatum.size();
+	const size_t result = static_cast<witsml20__Well*>(gsoapProxy2_1)->WellDatum.size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw std::range_error("There are too much datums");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 void Well::loadTargetRelationships()

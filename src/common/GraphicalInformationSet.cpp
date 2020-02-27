@@ -161,8 +161,12 @@ bool GraphicalInformationSet::hasDirectGraphicalInformation(AbstractObject const
 
 	_eml22__GraphicalInformationSet* gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
 
-	string targetUuid = targetObject->getUuid();
-	for (size_t giIndex = 0; giIndex < gis->GraphicalInformation.size(); ++giIndex) {
+	const std::string targetUuid = targetObject->getUuid();
+	const size_t graphicalInfoCount = gis->GraphicalInformation.size();
+	if (graphicalInfoCount > (std::numeric_limits<unsigned int>::max)()) {
+		throw std::range_error("There are too much Graphical Informations");
+	}
+	for (size_t giIndex = 0; giIndex < static_cast<unsigned int>(gis->GraphicalInformation.size()); ++giIndex) {
 		if (getTargetObjectUuid(giIndex).compare(targetUuid) == 0) {
 			return true;
 		}

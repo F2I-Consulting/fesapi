@@ -218,11 +218,10 @@ string EpcDocument::deserializeInto(DataObjectRepository & repo, DataObjectRepos
 				for (size_t relIndex = 0; relIndex < allRels.size(); ++relIndex) {
 					if (allRels[relIndex].getType().compare("http://schemas.energistics.org/package/2012/relationships/externalResource") == 0) {
 						const std::string target = allRels[relIndex].getTarget();
-						if (target.find("http://") == 0 || target.find("https://") == 0) {
-							repo.setHdfProxyFactory(new HdfProxyROS3Factory());
-						}
-						else {
-							repo.setHdfProxyFactory(new HdfProxyFactory());
+						if (!repo.hasHdfProxyFactory()) {
+							repo.setHdfProxyFactory(target.find("http://") == 0 || target.find("https://") == 0
+								? new HdfProxyROS3Factory()
+								: new HdfProxyFactory());
 						}
 						wrapper = repo.addOrReplaceGsoapProxy(package->extractFile(it->second.getExtensionOrPartName().substr(1)), contentType);
 						static_cast<AbstractHdfProxy*>(wrapper)->setRelativePath(target);
