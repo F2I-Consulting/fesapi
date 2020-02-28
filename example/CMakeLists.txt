@@ -28,12 +28,6 @@ target_sources(example PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/HdfProxyExample.h)
 
 target_include_directories (example PRIVATE ${FESAPI_ROOT_DIR}/src/)
-if (WITH_SZIP)
-	target_include_directories (example PRIVATE ${SZIP_INCLUDE_DIRS})
-endif (WITH_SZIP)
-if (UNIX)
-	target_include_directories (example PRIVATE ${UUID_INCLUDE_DIRS})
-endif (UNIX)
 
 ADD_DEPENDENCIES (example ${CPP_LIBRARY_NAME})
 TARGET_LINK_LIBRARIES (example ${CPP_LIBRARY_NAME})
