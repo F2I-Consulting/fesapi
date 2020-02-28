@@ -291,7 +291,7 @@ void AbstractProperty::setTimeStep(const unsigned int & timeStep)
 
 time_t AbstractProperty::getTimestamp() const
 {
-	TimeSeries* timeSeries = getTimeSeries();
+	TimeSeries const * timeSeries = getTimeSeries();
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		if (timeSeries && static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex != nullptr) {
@@ -306,7 +306,7 @@ time_t AbstractProperty::getTimestamp() const
 
 unsigned int AbstractProperty::getTimeIndex() const
 {
-	TimeSeries* timeSeries = getTimeSeries();
+	TimeSeries const * timeSeries = getTimeSeries();
 
 	if (gsoapProxy2_0_1 != nullptr) {
 		if (timeSeries && static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->TimeIndex != nullptr) {
@@ -322,7 +322,13 @@ unsigned int AbstractProperty::getTimeIndex() const
 unsigned int AbstractProperty::getElementCountPerValue() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
-		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->Count;
+		const ULONG64 result = static_cast<gsoap_resqml2_0_1::resqml20__AbstractProperty*>(gsoapProxy2_0_1)->Count;
+
+		if (result > (std::numeric_limits<unsigned int>::max)()) {
+			throw std::range_error("There are too much Element Count Per Value");
+		}
+
+		return static_cast<unsigned int>(result);
 	}
 
 	throw logic_error("Not implemented yet");

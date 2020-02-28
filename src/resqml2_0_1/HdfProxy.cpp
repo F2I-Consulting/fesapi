@@ -30,7 +30,7 @@ const char* HdfProxy::RESQML_ROOT_GROUP = "/RESQML";
 HdfProxy::HdfProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, const std::string & packageDirAbsolutePath, const std::string & externalFilePath, COMMON_NS::DataObjectRepository::openingMode hdfPermissionAccess) :
 	COMMON_NS::HdfProxy(packageDirAbsolutePath, externalFilePath, hdfPermissionAccess)
 {
-	initGsoapProxy(repo, guid, title, TWO_DOT_ZERO);
+	initGsoapProxy(repo, guid, title, COMMON_NS::AbstractObject::EmlVersion::TWO_DOT_ZERO);
 }
 
 std::string HdfProxy::getXmlNamespace() const

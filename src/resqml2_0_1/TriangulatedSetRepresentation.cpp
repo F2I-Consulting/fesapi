@@ -43,7 +43,7 @@ TriangulatedSetRepresentation::TriangulatedSetRepresentation(COMMON_NS::DataObje
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORETriangulatedSetRepresentation(repo->getGsoapContext());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	repo->addOrReplaceDataObject(this);
 }
@@ -58,7 +58,7 @@ TriangulatedSetRepresentation::TriangulatedSetRepresentation(RESQML2_NS::Abstrac
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORETriangulatedSetRepresentation(interp->getGsoapContext());
 
 	initMandatoryMetadata();
-	setMetadata(guid, title, std::string(), -1, std::string(), std::string(), -1, std::string());
+	setMetadata(guid, title, "", -1, "", "", -1, "");
 
 	// relationhsips
 	setInterpretation(interp);

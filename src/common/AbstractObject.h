@@ -96,7 +96,7 @@ namespace COMMON_NS
 		/**
 		* Enumeration for the various EML versions.
 		*/
-		enum EmlVersion {
+		enum class EmlVersion : std::int8_t {
 			TWO_DOT_ZERO = 0,
 			TWO_DOT_ONE = 1,
 			TWO_DOT_TWO = 2
@@ -125,27 +125,47 @@ namespace COMMON_NS
 		/**
 		* Default constructor
 		*/
-		AbstractObject();
+		AbstractObject() :
+			partialObject(nullptr), gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(nullptr),
+			repository(nullptr) {}
 
 		/**
 		* Constructor for partial transfer
 		*/
-		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_);
+		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_) :
+			partialObject(partialObject_), gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(nullptr),
+			repository(nullptr) {}
 
 		/**
 		* Constructor when importing EML 2.0 (i.e RESQML2.0.1) dataobjects
 		*/
-		AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy);
+		AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy) :
+			partialObject(nullptr), gsoapProxy2_0_1(proxy),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(nullptr),
+			repository(nullptr) {}
 
 		/**
 		* Constructor when importing EML 2.1 dataobjects
 		*/
-		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy);
+		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) :
+			partialObject(nullptr), gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(proxy),
+			gsoapProxy2_2(nullptr),
+			repository(nullptr) {}
 
 		/**
 		* Constructor when importing EML 2.1 dataobjects
 		*/
-		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy);
+		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy) :
+			partialObject(nullptr), gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(proxy),
+			repository(nullptr) {}
 
 		friend void COMMON_NS::DataObjectRepository::addOrReplaceDataObject(AbstractObject* proxy);
 
@@ -485,7 +505,7 @@ namespace COMMON_NS
 		/**
 		* Get the XML namespace for the tags for the XML serialization of this instance
 		*/
-		virtual std::string getXmlNamespace() const;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespace() const;
 
 		/**
 		* Get the XML tag for the XML serialization of this instance
@@ -505,7 +525,7 @@ namespace COMMON_NS
 		/**
 		* Get part name of this XML top level instance in the EPC document
 		*/
-		virtual std::string getPartNameInEpcDocument() const;
+		DLL_IMPORT_OR_EXPORT virtual std::string getPartNameInEpcDocument() const;
 
 		/**
 		* Serialize the gsoap proxy into a string

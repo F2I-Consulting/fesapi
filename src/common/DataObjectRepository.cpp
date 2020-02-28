@@ -999,6 +999,11 @@ PolylineSetRepresentation* DataObjectRepository::createPolylineSetRepresentation
 	return new PolylineSetRepresentation(interp, guid, title, roleKind);
 }
 
+PointSetRepresentation* DataObjectRepository::createPointSetRepresentation(const std::string & guid, const std::string & title)
+{
+	return new PointSetRepresentation(this, guid, title);
+}
+
 PointSetRepresentation* DataObjectRepository::createPointSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title)
 {

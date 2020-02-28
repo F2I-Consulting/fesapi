@@ -55,7 +55,7 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* AbstractRepresentation::getHdfPro
 	return nullptr;
 }
 
-gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates* AbstractRepresentation::getSeismic2dCoordinates(const unsigned int& patchIndex) const
+gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates* AbstractRepresentation::getSeismic2dCoordinates(unsigned int patchIndex) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__PointGeometry* const geom = getPointGeometry2_0_1(patchIndex);
@@ -74,7 +74,7 @@ gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates* AbstractRepresentation::getSe
 	}
 }
 
-gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* AbstractRepresentation::getSeismic3dCoordinates(const unsigned int& patchIndex) const
+gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* AbstractRepresentation::getSeismic3dCoordinates(unsigned int patchIndex) const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__PointGeometry* const geom = getPointGeometry2_0_1(patchIndex);
@@ -124,15 +124,13 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointG
 		geom->Points = xmlPts;
 
 		// HDF
-		hsize_t* const numValues = new hsize_t[numDimensionsInArray + 1];
+		std::unique_ptr<hsize_t[]> numValues(new hsize_t[numDimensionsInArray + 1]);
 		for (hsize_t i = 0; i < numDimensionsInArray; ++i) {
 			numValues[i] = numPoints[i];
 		}
 		numValues[numDimensionsInArray] = 3; // 3 for X, Y and Z
 
-		proxy->writeArrayNdOfDoubleValues(getUuid(), oss.str(), points, numValues, numDimensionsInArray + 1);
-
-		delete[] numValues;
+		proxy->writeArrayNdOfDoubleValues(getUuid(), oss.str(), points, numValues.get(), numDimensionsInArray + 1);
 
 		return geom;
 	}
@@ -180,7 +178,13 @@ std::vector<AbstractValuesProperty*> AbstractRepresentation::getValuesPropertySe
 
 unsigned int AbstractRepresentation::getValuesPropertyCount() const
 {
-	return getValuesPropertySet().size();
+	const size_t result = getValuesPropertySet().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw std::range_error("There are too much properties");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 AbstractValuesProperty* AbstractRepresentation::getValuesProperty(unsigned int index) const
@@ -271,7 +275,13 @@ std::vector<SubRepresentation*> AbstractRepresentation::getSubRepresentationSet(
 
 unsigned int AbstractRepresentation::getSubRepresentationCount() const
 {
-	return getSubRepresentationSet().size();
+	const size_t result = getSubRepresentationSet().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw std::range_error("There are too much subrepresentations");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 SubRepresentation* AbstractRepresentation::getSubRepresentation(unsigned int index) const
@@ -301,7 +311,13 @@ std::vector<SubRepresentation*> AbstractRepresentation::getFaultSubRepresentatio
 
 unsigned int AbstractRepresentation::getFaultSubRepresentationCount() const
 {
-	return getFaultSubRepresentationSet().size();
+	const size_t result = getFaultSubRepresentationSet().size();
+
+	if (result > (std::numeric_limits<unsigned int>::max)()) {
+		throw std::range_error("There are too much fault subrepresentations");
+	}
+
+	return static_cast<unsigned int>(result);
 }
 
 SubRepresentation* AbstractRepresentation::getFaultSubRepresentation(unsigned int index) const
@@ -415,7 +431,7 @@ std::set<AbstractRepresentation*> AbstractRepresentation::getAllSeismicSupport()
 {
 	std::set<AbstractRepresentation*> result;
 	const unsigned int patchCount = getPatchCount();
-	for (size_t patchIndex = 0; patchIndex < patchCount; ++patchIndex)
+	for (unsigned int patchIndex = 0; patchIndex < patchCount; ++patchIndex)
 	{
 		AbstractRepresentation* seismicSupport = getSeismicSupportOfPatch(patchIndex);
 		if (seismicSupport != nullptr)
