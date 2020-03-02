@@ -148,6 +148,19 @@ template<
 		return res;
 	};
 
+	// Returns an unprocessable_entity response
+	auto const unprocessable_entity =
+		[&req](boost::beast::string_view target)
+	{
+		http::response<http::string_body> res{ http::status::unprocessable_entity, req.version() };
+		res.set(http::field::server, F2I_ETP_SERVER);
+		res.set(http::field::content_type, "text/html");
+		res.keep_alive(req.keep_alive());
+		res.body() = "This server does not support ETP1.1. Add a query string ?GetVersion=etp12.energistics.org if you want ot discover these server capabilities.";
+		res.prepare_payload();
+		return res;
+	};
+
 	// Returns a server error response
 	auto const server_error =
 		[&req](boost::beast::string_view what)
@@ -176,7 +189,7 @@ template<
 	std::string path = path_cat(doc_root, req.target());
 	if (req.target().back() == '/')
 		path.append("index.html");
-	
+
 	// Attempt to open the file
 	boost::beast::error_code ec;
 	http::string_body::value_type body;
@@ -188,195 +201,205 @@ template<
 		return send(not_found(req.target()));
 		*/
 
-	if (path != "/.well-known/etp-server-capabilities" &&
-		path != ".\\.well-known\\etp-server-capabilities") {
+	if (path == "/.well-known/etp-server-capabilities" ||
+		path == ".\\.well-known\\etp-server-capabilities") {
+		return send(unprocessable_entity(req.target()));
+	}
+
+	if (path != "/.well-known/etp-server-capabilities?GetVersion=etp12.energistics.org" &&
+		path != ".\\.well-known\\etp-server-capabilities?GetVersion=etp12.energistics.org" &&
+		path != "/.well-known/etp-server-capabilities?GetVersions=true" &&
+		path != ".\\.well-known\\etp-server-capabilities?GetVersions=true") {
 		return send(not_found(req.target()));
 	}
-	else {
-		path = "*.json"; // to respond with the right mime type.
-	}
-
-	avro::ValidSchema vs = avro::compileJsonSchemaFromString(
-		"{"
-		"  \"type\": \"record\","
-		"  \"name\": \"ServerCapabilities\","
-		"  \"fields\": ["
-		"	{"
-		"	  \"name\": \"applicationName\","
-		"	  \"type\": \"string\""
-		"	},"
-		"	{"
-		"	  \"name\": \"applicationVersion\","
-		"	  \"type\": \"string\""
-		"	},"
-		"	{"
-		"	  \"name\": \"contactInformation\","
-		"	  \"type\": {"
-		"		\"type\": \"record\","
-		"        \"name\": \"Contact\","
-		"		\"fields\": ["
-		"		  {"
-		"		    \"name\": \"organizationName\","
-		"		    \"type\": \"string\""
-		"		  },"
-		"		  {"
-		"		    \"name\": \"contactName\","
-		"		    \"type\": \"string\""
-		"		  },"
-		"		  {"
-		"		    \"name\": \"contactPhone\","
-		"		    \"type\": \"string\""
-		"		  },"
-		"		  {"
-		"		    \"name\": \"contactEmail\","
-		"		    \"type\": \"string\""
-		"		  }"
-		"		]"
-		"	  }"
-		"	},"
-		"	{"
-		"	  \"name\": \"supportedCompression\","
-		"	  \"type\": {"
-		"		\"type\": \"array\","
-		"		\"items\": \"string\""
-		"	  }"
-		"	},"
-		"	{"
-		"	  \"name\": \"supportedEncodings\","
-		"	  \"type\": \"string\""
-		"	},"
-		"	{"
-		"	  \"name\": \"supportedFormats\","
-		"	  \"type\": {"
-		"		\"type\": \"array\","
-		"		\"items\": \"string\""
-		"	  }"
-		"	},"
-		"	{"
-		"	  \"name\": \"supportedObjects\","
-		"	  \"type\": {"
-		"		\"type\": \"array\","
-		"		\"items\": \"string\""
-		"	  }"
-		"	},"
-		"	{"
-		"	  \"name\": \"supportedProtocols\","
-		"	  \"type\": {"
-		"		\"type\": \"array\","
-		"		\"items\": {"
-		"		  \"type\": \"record\","
-		"		  \"name\": \"SupportedProtocol\","
-		"		  \"fields\": ["
-		"			{"
-		"			  \"name\": \"protocol\","
-		"			  \"type\": \"int\""
-		"			},"
-		"			{"
-		"			  \"name\": \"protocolVersion\","
-		"			  \"type\": {"
-		"				\"type\": \"record\","
-		"			    \"name\": \"Version\","
-		"			    \"fields\": ["
-		"				  {"
-		"				    \"name\": \"major\","
-		"				    \"type\": \"int\""
-		"				  },"
-		"				  {"
-		"  				    \"name\": \"minor\","
-		"				    \"type\": \"int\""
-		"				  },"
-		"				  {"
-		"				    \"name\": \"revision\","
-		"				    \"type\": \"int\""
-		"				  },"
-		"				  {"
-		" 				    \"name\": \"patch\","
-		"				    \"type\": \"int\""
-		"				  }"
-		"			    ]"
-		"			  }"
-		"			},"
-		"			{"
-		"			  \"name\": \"role\","
-		"			  \"type\": \"string\""
-		"			},"
-		"			{"
-		"			  \"name\": \"protocolCapabilities\","
-		"			  \"type\": {"
-		"				\"type\": \"map\","
-		"				\"values\": {"
-		"				  \"type\": \"record\","
-		"				  \"name\": \"DataValue\","
-		"				  \"fields\": ["
-		"					{"
-		"					  \"name\": \"item\","
-		"					  \"type\": ["
-		"						\"null\","
-		"						\"boolean\","
-		"						\"int\","
-		"						\"long\","
-		"						\"float\","
-		"						\"double\","
-		"						\"string\""
-		"					  ]"
-		"					}"
-		"				  ]"
-		"				}"
-		"			  }"
-		"			}"
-		"		  ]"
-		"		}"
-		"	  }"
-		"	},"
-		"	{"
-		"	  \"name\": \"endpointCapabilities\","
-		"	  \"type\": {"
-		"		\"type\": \"map\","
-		"		\"values\": {"
-		"		  \"type\": \"record\","
-		"		  \"name\": \"DataValue\","
-		"		  \"fields\": ["
-		"			{"
-		"			  \"name\": \"item\","
-		"			  \"type\": ["
-		"				\"null\","
-		"				\"boolean\","
-		"				\"int\","
-		"				\"long\","
-		"				\"float\","
-		"				\"double\","
-		"				\"string\""
-		"			  ]"
-		"			}"
-		"		  ]"
-		"		}"
-		"	  }"
-		"	}"
-		"  ]"
-		"}"
-	);
-
-	Energistics::Etp::v12::Datatypes::ServerCapabilities serverCap;
-	serverCap.m_applicationName = applicationName;
-	serverCap.m_applicationVersion = applicationVersion;
-	serverCap.m_contactInformation.m_contactEmail = contactEmail;
-	serverCap.m_contactInformation.m_contactName = contactName;
-	serverCap.m_contactInformation.m_contactPhone = contactPhone;
-	serverCap.m_contactInformation.m_organizationName = organizationName;
-	serverCap.m_endpointCapabilities = endpointCapabilities;
-	serverCap.m_supportedEncodings = supportedEncodings;
-	serverCap.m_supportedFormats.push_back("xml");
-	serverCap.m_supportedObjects = supportedObjects;
-	serverCap.m_supportedProtocols = supportedProtocols;
 
 	std::ostringstream oss;
-	avro::OutputStreamPtr out = avro::ostreamOutputStream(oss);
-	avro::EncoderPtr e = avro::jsonPrettyEncoder(vs);
-	e->init(*out);
-	avro::encode(*e, serverCap);
-	e->flush();
 
-	body = oss.str();
+	if (path == "/.well-known/etp-server-capabilities?GetVersion=etp12.energistics.org" ||
+		path == ".\\.well-known\\etp-server-capabilities?GetVersion=etp12.energistics.org") {
+		avro::ValidSchema vs = avro::compileJsonSchemaFromString(
+			"{"
+			"  \"type\": \"record\","
+			"  \"name\": \"ServerCapabilities\","
+			"  \"fields\": ["
+			"	{"
+			"	  \"name\": \"applicationName\","
+			"	  \"type\": \"string\""
+			"	},"
+			"	{"
+			"	  \"name\": \"applicationVersion\","
+			"	  \"type\": \"string\""
+			"	},"
+			"	{"
+			"	  \"name\": \"contactInformation\","
+			"	  \"type\": {"
+			"		\"type\": \"record\","
+			"        \"name\": \"Contact\","
+			"		\"fields\": ["
+			"		  {"
+			"		    \"name\": \"organizationName\","
+			"		    \"type\": \"string\""
+			"		  },"
+			"		  {"
+			"		    \"name\": \"contactName\","
+			"		    \"type\": \"string\""
+			"		  },"
+			"		  {"
+			"		    \"name\": \"contactPhone\","
+			"		    \"type\": \"string\""
+			"		  },"
+			"		  {"
+			"		    \"name\": \"contactEmail\","
+			"		    \"type\": \"string\""
+			"		  }"
+			"		]"
+			"	  }"
+			"	},"
+			"	{"
+			"	  \"name\": \"supportedCompression\","
+			"	  \"type\": {"
+			"		\"type\": \"array\","
+			"		\"items\": \"string\""
+			"	  }"
+			"	},"
+			"	{"
+			"	  \"name\": \"supportedEncodings\","
+			"	  \"type\": \"string\""
+			"	},"
+			"	{"
+			"	  \"name\": \"supportedFormats\","
+			"	  \"type\": {"
+			"		\"type\": \"array\","
+			"		\"items\": \"string\""
+			"	  }"
+			"	},"
+			"	{"
+			"	  \"name\": \"supportedObjects\","
+			"	  \"type\": {"
+			"		\"type\": \"array\","
+			"		\"items\": \"string\""
+			"	  }"
+			"	},"
+			"	{"
+			"	  \"name\": \"supportedProtocols\","
+			"	  \"type\": {"
+			"		\"type\": \"array\","
+			"		\"items\": {"
+			"		  \"type\": \"record\","
+			"		  \"name\": \"SupportedProtocol\","
+			"		  \"fields\": ["
+			"			{"
+			"			  \"name\": \"protocol\","
+			"			  \"type\": \"int\""
+			"			},"
+			"			{"
+			"			  \"name\": \"protocolVersion\","
+			"			  \"type\": {"
+			"				\"type\": \"record\","
+			"			    \"name\": \"Version\","
+			"			    \"fields\": ["
+			"				  {"
+			"				    \"name\": \"major\","
+			"				    \"type\": \"int\""
+			"				  },"
+			"				  {"
+			"  				    \"name\": \"minor\","
+			"				    \"type\": \"int\""
+			"				  },"
+			"				  {"
+			"				    \"name\": \"revision\","
+			"				    \"type\": \"int\""
+			"				  },"
+			"				  {"
+			" 				    \"name\": \"patch\","
+			"				    \"type\": \"int\""
+			"				  }"
+			"			    ]"
+			"			  }"
+			"			},"
+			"			{"
+			"			  \"name\": \"role\","
+			"			  \"type\": \"string\""
+			"			},"
+			"			{"
+			"			  \"name\": \"protocolCapabilities\","
+			"			  \"type\": {"
+			"				\"type\": \"map\","
+			"				\"values\": {"
+			"				  \"type\": \"record\","
+			"				  \"name\": \"DataValue\","
+			"				  \"fields\": ["
+			"					{"
+			"					  \"name\": \"item\","
+			"					  \"type\": ["
+			"						\"null\","
+			"						\"boolean\","
+			"						\"int\","
+			"						\"long\","
+			"						\"float\","
+			"						\"double\","
+			"						\"string\""
+			"					  ]"
+			"					}"
+			"				  ]"
+			"				}"
+			"			  }"
+			"			}"
+			"		  ]"
+			"		}"
+			"	  }"
+			"	},"
+			"	{"
+			"	  \"name\": \"endpointCapabilities\","
+			"	  \"type\": {"
+			"		\"type\": \"map\","
+			"		\"values\": {"
+			"		  \"type\": \"record\","
+			"		  \"name\": \"DataValue\","
+			"		  \"fields\": ["
+			"			{"
+			"			  \"name\": \"item\","
+			"			  \"type\": ["
+			"				\"null\","
+			"				\"boolean\","
+			"				\"int\","
+			"				\"long\","
+			"				\"float\","
+			"				\"double\","
+			"				\"string\""
+			"			  ]"
+			"			}"
+			"		  ]"
+			"		}"
+			"	  }"
+			"	}"
+			"  ]"
+			"}"
+		);
+
+		Energistics::Etp::v12::Datatypes::ServerCapabilities serverCap;
+		serverCap.m_applicationName = applicationName;
+		serverCap.m_applicationVersion = applicationVersion;
+		serverCap.m_contactInformation.m_contactEmail = contactEmail;
+		serverCap.m_contactInformation.m_contactName = contactName;
+		serverCap.m_contactInformation.m_contactPhone = contactPhone;
+		serverCap.m_contactInformation.m_organizationName = organizationName;
+		serverCap.m_endpointCapabilities = endpointCapabilities;
+		serverCap.m_supportedEncodings = supportedEncodings;
+		serverCap.m_supportedFormats.push_back("xml");
+		serverCap.m_supportedObjects = supportedObjects;
+		serverCap.m_supportedProtocols = supportedProtocols;
+
+		avro::OutputStreamPtr out = avro::ostreamOutputStream(oss);
+		avro::EncoderPtr e = avro::jsonPrettyEncoder(vs);
+		e->init(*out);
+		avro::encode(*e, serverCap);
+		e->flush();
+		body = oss.str();
+	}
+	else {
+		body = "[ \"etp12.energistics.org\" ]";
+	}
 
 	// Handle an unknown error
 	if (ec)
@@ -390,7 +413,7 @@ template<
 	{
 		http::response<http::empty_body> res{ http::status::ok, req.version() };
 		res.set(http::field::server, F2I_ETP_SERVER);
-		res.set(http::field::content_type, mime_type(path));
+		res.set(http::field::content_type, mime_type("*.json"));
 		res.content_length(size);
 		res.keep_alive(req.keep_alive());
 		return send(std::move(res));
@@ -402,7 +425,7 @@ template<
 		std::make_tuple(std::move(body)),
 		std::make_tuple(http::status::ok, req.version()) };
 	res.set(http::field::server, F2I_ETP_SERVER);
-	res.set(http::field::content_type, mime_type(path));
+	res.set(http::field::content_type, mime_type("*.json"));
 	res.content_length(size);
 	res.keep_alive(req.keep_alive());
 	return send(std::move(res));

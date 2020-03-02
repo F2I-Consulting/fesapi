@@ -22,46 +22,6 @@ under the License.
 
 #include <etp/AbstractSession.h>
 #include <common/AbstractObject.h>
-/*
-void MyOwnDiscoveryProtocolHandlers::on_GetDataspacesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetDataspacesResponse & msg, int64_t correlationId)
-{
-	std::cout << msg.m_dataspaces.size() << " dataspaces received." << std::endl;
-	for (const auto & resource : msg.m_dataspaces) {
-		std::cout << "*************************************************" << std::endl;
-		std::cout << "uri : " << resource.m_uri << std::endl;
-		if (!resource.m_dataspaceCount.is_null()) {
-			std::cout << "dataspaceCount : " << resource.m_dataspaceCount.get_int() << std::endl;
-		}
-		std::cout << "name : " << resource.m_name << std::endl;
-		for (const auto & ns : resource.m_namespaces) {
-			std::cout << "namespace : " << ns << std::endl;
-		}
-		std::cout << "*************************************************" << std::endl;
-	}
-}
-
-void MyOwnDiscoveryProtocolHandlers::on_GetNamespacesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetNamespacesResponse & msg, int64_t correlationId)
-{
-	std::cout << "*************************************************" << std::endl;
-	std::cout << msg.m_uris.size() << " namespaces received." << std::endl;
-	for (const auto & uri : msg.m_uris) {
-		std::cout << "namespace uri : " << uri << std::endl;
-	}
-	std::cout << "*************************************************" << std::endl;
-}
-*/
-void MyOwnDiscoveryProtocolHandlers::on_GetSupportedTypesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypesResponse & msg, int64_t correlationId)
-{
-	std::cout << msg.m_supportedTypes.size() << " supported type received." << std::endl;
-	for (const auto & st : msg.m_supportedTypes) {
-		std::cout << "*************************************************" << std::endl;
-		std::cout << "data type : " << st.m_dataObjectType << std::endl;
-		if (!st.m_objectCount.is_null()) {
-			std::cout << "objectCount : " << st.m_objectCount.get_int() << std::endl;
-		}
-		std::cout << "*************************************************" << std::endl;
-	}
-}
 
 void MyOwnDiscoveryProtocolHandlers::on_GetResourcesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetResourcesResponse & msg, int64_t correlationId)
 {

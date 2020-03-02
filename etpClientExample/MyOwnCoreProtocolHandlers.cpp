@@ -39,7 +39,6 @@ void printHelp()
 	std::cout << "List of available commands :" << std::endl;
 	std::cout << "\tList" << std::endl << "\t\tList the objects which have been got from ETP to the in-memory epc" << std::endl << std::endl;
 	//std::cout << "\tGetDataspaces URI depth(default 1)" << std::endl << std::endl;
-	std::cout << "\tGetSupportedTypes URI scope(default self) countObjects(true or false, default is true) emptytypes(true or false, default is false)" << std::endl << std::endl;
 	std::cout << "\tGetResources URI scope(default self) depth(default 1) countObjects(true or false, default is true) getObject(true or false, default is false) dataTypeFilter,dataTypeFilter,...(default noFilter)" << std::endl << std::endl;
 	std::cout << "\tGetDataObjects dataObjectURI,dataObjectURI,..." << std::endl << "\t\tGet the objects from an ETP store and store them into the in memory epc (only create partial TARGET relationships, not any SOURCE relationships)" << std::endl << std::endl;
 	std::cout << "\tPutDataObject" << std::endl << "\t\tCreate an IJK Grid on the fly and put/push it to the store" << std::endl << std::endl;
@@ -82,46 +81,7 @@ void askUser(std::shared_ptr<ETP_NS::AbstractSession> session, COMMON_NS::DataOb
 			continue;
 		}
 		else*/
-		if (commandTokens[0] == "GetSupportedTypes") {
-			Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypes mb;
-			mb.m_uri = commandTokens[1];
-			mb.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self;
-			mb.m_countObjects = true;
-			mb.m_returnEmptyTypes = false;
-
-			if (commandTokens.size() > 2) {
-				if (commandTokens[2] == "self")
-					mb.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self;
-				else if (commandTokens[2] == "sources")
-					mb.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sources;
-				else if (commandTokens[2] == "sourcesOrSelf")
-					mb.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::sourcesOrSelf;
-				else if (commandTokens[2] == "targets")
-					mb.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targets;
-				else if (commandTokens[2] == "targetsOrSelf")
-					mb.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::targetsOrSelf;
-
-				if (commandTokens.size() > 3) {
-					if (commandTokens[3] == "false" || commandTokens[3] == "False" || commandTokens[3] == "FALSE") {
-						mb.m_countObjects = false;
-					}
-					if (commandTokens.size() > 4) {
-						if (commandTokens[4] == "true" || commandTokens[4] == "True" || commandTokens[4] == "TRUE") {
-							mb.m_returnEmptyTypes = true;
-						}
-					}
-				}
-			}
-
-			if (commandTokens.size() > 4) {
-				std::static_pointer_cast<MyOwnDiscoveryProtocolHandlers>(session->getDiscoveryProtocolHandlers())->getObjectWhenDiscovered.push_back(session->send(mb));
-			}
-			else {
-				session->send(mb);
-			}
-			continue;
-		}
-		else if (commandTokens[0] == "GetResources") {
+		if (commandTokens[0] == "GetResources") {
 			Energistics::Etp::v12::Protocol::Discovery::GetResources mb;
 			mb.m_context.m_uri = commandTokens[1];
 			mb.m_scope = Energistics::Etp::v12::Datatypes::Object::ContextScopeKind::self;

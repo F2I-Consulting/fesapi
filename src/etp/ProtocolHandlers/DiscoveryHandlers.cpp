@@ -29,19 +29,7 @@ void DiscoveryHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes
 		std::cerr << "Error : This message header does not belong to the protocol Discovery" << std::endl;
 		return;
 	}
-	if (mh.m_messageType == Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypes::messageTypeId) {
-		Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypes msg;
-		avro::decode(*d, msg);
-		session->flushReceivingBuffer();
-		on_GetSupportedTypes(msg, mh.m_messageId);
-	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypesResponse::messageTypeId) {
-		Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypesResponse msg;
-		avro::decode(*d, msg);
-		session->flushReceivingBuffer();
-		on_GetSupportedTypesResponse(msg, mh.m_correlationId);
-	}
-	else if (mh.m_messageType == Energistics::Etp::v12::Protocol::Discovery::GetResources::messageTypeId) {
+	if (mh.m_messageType == Energistics::Etp::v12::Protocol::Discovery::GetResources::messageTypeId) {
 		Energistics::Etp::v12::Protocol::Discovery::GetResources msg;
 		avro::decode(*d, msg);
 		session->flushReceivingBuffer();
@@ -56,18 +44,6 @@ void DiscoveryHandlers::decodeMessageBody(const Energistics::Etp::v12::Datatypes
 	else {
 		session->flushReceivingBuffer();
 		sendExceptionCode3();
-	}
-}
-
-void DiscoveryHandlers::on_GetSupportedTypes(const Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypes & msg, int64_t correlationId)
-{
-	session->send(ETP_NS::EtpHelpers::buildSingleMessageProtocolException(7, "The Discovery::on_GetSupportedTypes method has not been overriden by the agent."));
-}
-
-void DiscoveryHandlers::on_GetSupportedTypesResponse(const Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypesResponse & msg, int64_t correlationId)
-{
-	for (const auto & resource : msg.m_supportedTypes) {
-		std::cout << "DICOVERED SUPPORTED TYPE (" << resource.m_dataObjectType << " count == " << (resource.m_objectCount.is_null() ? "unknown" : std::to_string(resource.m_objectCount.get_int())) << ')' << std::endl;
 	}
 }
 

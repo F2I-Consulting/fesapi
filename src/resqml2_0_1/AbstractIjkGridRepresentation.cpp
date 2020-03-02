@@ -337,7 +337,6 @@ void AbstractIjkGridRepresentation::getPillarGeometryIsDefined(bool * pillarGeom
 			for (unsigned int i = 0; i < pillarCount; ++i) {
 				pillarGeometryIsDefined[i] = tmp[i] != 0;
 			}
-			delete[] tmp;
 		}
 		else if (geom->PillarGeometryIsDefined->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanConstantArray) {
 			const bool enabled = static_cast<resqml20__BooleanConstantArray*>(geom->PillarGeometryIsDefined)->Value;

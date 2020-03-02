@@ -51,7 +51,7 @@ int main(int argc, char **argv)
 	// Ask for Server capabilites
 	boost::asio::io_context ioc;
 	auto httpClientSession = std::make_shared<HttpClientSession>(ioc);
-	std::string etpServerCapTarget = std::string(argc == 3 ? "" : argv[3]) + "/.well-known/etp-server-capabilities";
+	std::string etpServerCapTarget = std::string(argc == 3 ? "" : argv[3]) + "/.well-known/etp-server-capabilities?GetVersion=etp12.energistics.org";
 	httpClientSession->run(argv[1], argv[2], etpServerCapTarget.c_str(), 11);
 	// Run the I/O service. The call will return when the get operation is complete.
 	ioc.run();

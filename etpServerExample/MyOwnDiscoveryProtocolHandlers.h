@@ -27,10 +27,7 @@ class MyOwnDiscoveryProtocolHandlers : public ETP_NS::DiscoveryHandlers
 private:
 	
 	MyDataObjectRepository* repo;
-	/*
-	void on_GetEmlColonSlashSlash(const Energistics::Etp::v12::Protocol::Discovery::GetNamespaces & gn, int64_t correlationId,
-		std::vector<std::string> & result);
-		*/
+
 	void on_GetDataObjects(const Energistics::Etp::v12::Protocol::Discovery::GetResources & msg, int64_t correlationId,
 		std::vector<Energistics::Etp::v12::Datatypes::Object::Resource> & result);
 
@@ -38,8 +35,5 @@ public:
 	MyOwnDiscoveryProtocolHandlers(std::shared_ptr<ETP_NS::AbstractSession> mySession, MyDataObjectRepository* repo_): ETP_NS::DiscoveryHandlers(mySession), repo(repo_) {}
 	~MyOwnDiscoveryProtocolHandlers() {}
 
-	//void on_GetDataspaces(const Energistics::Etp::v12::Protocol::Discovery::GetDataspaces & msg, int64_t correlationId);
-	//void on_GetNamespaces(const Energistics::Etp::v12::Protocol::Discovery::GetNamespaces & msg, int64_t correlationId);
-	void on_GetSupportedTypes(const Energistics::Etp::v12::Protocol::Discovery::GetSupportedTypes & msg, int64_t correlationId);
 	void on_GetResources(const Energistics::Etp::v12::Protocol::Discovery::GetResources & msg, int64_t correlationId);
 };
