@@ -55,12 +55,14 @@ addons:
       - uuid-dev
       - zlib1g-dev
       - libhdf5-dev #1.8.11
-      - swig
 
 jdk: oraclejdk8
 
 install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get purge cmake; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      sudo apt-get purge cmake;
+      sudo apt-get purge swig;
+    fi
   - sudo rm -rf /usr/local/cmake-*
   - mkdir ../dependencies
   - cd ../dependencies
@@ -69,4 +71,10 @@ install:
       tar -xzf minizip-1.1-linux-ubuntu1604-x86_64-gcc540.tar.gz;
       wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.sh;
       sudo sh cmake-3.12.0-Linux-x86_64.sh --prefix=/usr/local --exclude-subdir;
+      wget http://prdownloads.sourceforge.net/swig/swig-4.0.1.tar.gz
+      tar -xzf swig-4.0.1.tar.gz;
+      cd swig-4.0.1;
+      ./configure
+      make
+      sudo make install
     fi
