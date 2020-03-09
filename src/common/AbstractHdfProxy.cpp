@@ -20,14 +20,9 @@ under the License.
 
 using namespace COMMON_NS;
 
-AbstractHdfProxy::AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess) :
-	packageDirectoryAbsolutePath(packageDirAbsolutePath), relativeFilePath(externalFilePath), openingMode(hdfPermissionAccess)
+void AbstractHdfProxy::initGsoapProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, AbstractObject::EmlVersion emlVersion)
 {
-}
-
-void AbstractHdfProxy::initGsoapProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, EmlVersion emlVersion)
-{
-	if (emlVersion == TWO_DOT_ZERO) {
+	if (emlVersion == AbstractObject::EmlVersion::TWO_DOT_ZERO) {
 		gsoapProxy2_0_1 = gsoap_resqml2_0_1::soap_new_eml20__obj_USCOREEpcExternalPartReference(repo->getGsoapContext());
 		static_cast<gsoap_resqml2_0_1::_eml20__EpcExternalPartReference*>(gsoapProxy2_0_1)->MimeType = "application/x-hdf5";
 	}

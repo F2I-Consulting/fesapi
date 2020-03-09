@@ -15,7 +15,7 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-// Acknowledgements: the serializeOrganizations function have been provided by Geosiris (contact: mathieu.poudret@geosiris.com)
+// Acknowledgements: the serializeOrganizations function have been provided by Geosiris
 
 //#define OFFICIAL
 
@@ -111,6 +111,8 @@ under the License.
 
 #include "prodml2_1/FluidCharacterization.h"
 #include "prodml2_1/FrictionTheorySpecification.h"
+
+#include "HdfProxyFactoryExample.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -1993,6 +1995,13 @@ bool serialize(const string & filePath)
 
 	cout << "Start serialization of " << pck.getName() << " in " << (pck.getStorageDirectory().empty() ? "working directory." : pck.getStorageDirectory()) << endl;
 	pck.serializeFrom(repo);
+
+	// Check HDF proxy factory
+	repo.setHdfProxyFactory(new HdfProxyFactoryExample());
+	auto exoticHdfPox = repo.createHdfProxy("", "Dummy Exotic HDF proxy", "", "", COMMON_NS::DataObjectRepository::openingMode::READ_ONLY);
+	double dummyPoints[3] = { 1.0, 2.0, 3.0 };
+	repo.createPointSetRepresentation("", "")->pushBackGeometryPatch(1, dummyPoints, exoticHdfPox);
+
 	return true;
 }
 

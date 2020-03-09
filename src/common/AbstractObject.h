@@ -138,7 +138,7 @@ namespace COMMON_NS
 	protected:
 
 		/** Enumeration for the various EML versions. */
-		enum EmlVersion {
+		enum class EmlVersion : std::int8_t {
 			TWO_DOT_ZERO = 0,
 			TWO_DOT_ONE = 1,
 			TWO_DOT_TWO = 2
@@ -156,36 +156,58 @@ namespace COMMON_NS
 		/** The repository which contain this data object. */
 		COMMON_NS::DataObjectRepository* repository;
 
-		/** Default constructor */
-		AbstractObject();
+		/**
+		* Default constructor
+		*/
+		AbstractObject() :
+			partialObject(nullptr), gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(nullptr),
+			repository(nullptr) {}
 
 		/**
 		 * Constructor for partial transfer
 		 *
 		 * @param [in,out]	partialObject_	If non-null, the partial object.
 		 */
-		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_);
+		AbstractObject(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject_) :
+			partialObject(partialObject_), gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(nullptr),
+			repository(nullptr) {}
 
 		/**
 		 * Constructor when importing EML 2.0 (i.e RESQML2.0.1) dataobjects
 		 *
 		 * @param [in,out]	proxy	If non-null, the proxy.
 		 */
-		AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy);
+		AbstractObject(gsoap_resqml2_0_1::eml20__AbstractCitedDataObject* proxy) :
+			partialObject(nullptr), gsoapProxy2_0_1(proxy),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(nullptr),
+			repository(nullptr) {}
 
 		/**
 		 * Constructor when importing EML 2.1 dataobjects
 		 *
 		 * @param [in,out]	proxy	If non-null, the proxy.
 		 */
-		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy);
+		AbstractObject(gsoap_eml2_1::eml21__AbstractObject* proxy) :
+			partialObject(nullptr), gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(proxy),
+			gsoapProxy2_2(nullptr),
+			repository(nullptr) {}
 
 		/**
-		 * Constructor when importing EML 2.1 dataobjects
+		 * Constructor when importing EML 2.2 dataobjects
 		 *
 		 * @param [in,out]	proxy	If non-null, the proxy.
 		 */
-		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy);
+		AbstractObject(gsoap_eml2_2::eml22__AbstractObject* proxy) :
+			partialObject(nullptr), gsoapProxy2_0_1(nullptr),
+			gsoapProxy2_1(nullptr),
+			gsoapProxy2_2(proxy),
+			repository(nullptr) {}
 
 		/**
 		 * Adds an or replace data object
@@ -758,7 +780,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The XML namespace of this instance.
 		 */
-		virtual std::string getXmlNamespace() const;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlNamespace() const;
 
 		/**
 		 * Gets the standard XML tag without XML namespace for serializing this data object.
@@ -787,7 +809,7 @@ namespace COMMON_NS
 		 *
 		 * @returns	The part name of this instance.
 		 */
-		virtual std::string getPartNameInEpcDocument() const;
+		DLL_IMPORT_OR_EXPORT virtual std::string getPartNameInEpcDocument() const;
 
 		/**
 		 * Serializes the gSOAP proxy of this instance into a string

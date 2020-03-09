@@ -105,7 +105,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the seismic 2D coordinates.
 		 */
-		gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates* getSeismic2dCoordinates(const unsigned int & patchIndex) const;
+		gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates * getSeismic2dCoordinates(unsigned int patchIndex) const;
 
 		/**
 		 * Gets seismic 3D coordinates
@@ -114,7 +114,7 @@ namespace RESQML2_NS
 		 *
 		 * @returns	Null if it fails, else the seismic 3D coordinates.
 		 */
-		gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* getSeismic3dCoordinates(const unsigned int & patchIndex) const;
+		gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* getSeismic3dCoordinates(unsigned int patchIndex) const;
 
 	public:
 

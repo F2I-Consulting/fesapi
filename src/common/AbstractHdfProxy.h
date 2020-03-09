@@ -57,38 +57,20 @@ namespace COMMON_NS
 		 *
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
-		DLL_IMPORT_OR_EXPORT AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY);
+		AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY) :
+			packageDirectoryAbsolutePath(packageDirAbsolutePath), relativeFilePath(externalFilePath), openingMode(hdfPermissionAccess) {}
 
-		/**
-		 * Abstract hdf proxy
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
-		 */
-		DLL_IMPORT_OR_EXPORT AbstractHdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
+		AbstractHdfProxy(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) :
+			EpcExternalPartReference(fromGsoap), openingMode(DataObjectRepository::openingMode::READ_ONLY) {}
+
+		AbstractHdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
 			EpcExternalPartReference(fromGsoap), openingMode(DataObjectRepository::openingMode::READ_ONLY) {}
 
 		/**
-		 * Abstract hdf proxy
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
-		 */
-		DLL_IMPORT_OR_EXPORT AbstractHdfProxy(gsoap_eml2_1::_eml21__EpcExternalPartReference* fromGsoap) :
-			EpcExternalPartReference(fromGsoap), openingMode(DataObjectRepository::openingMode::READ_ONLY) {}
-
-		/**
-		 * Instantiate and initialize the gSOAP proxy v2.0.1. This method is defined in order to be used
-		 * in derived class without having to link to generated gSOAP files.
-		 *
-		 * @param [in,out]	repo	  	If non-null, the repo.
-		 * @param 		  	guid	  	Unique identifier.
-		 * @param 		  	title	  	The title.
-		 * @param 		  	emlVersion	The eml version.
-		 */
-		DLL_IMPORT_OR_EXPORT void initGsoapProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, EmlVersion emlVersion);
+		* Instantiate and initialize the gsoap proxy.
+		* This method is defined in order to be used in derived class without having to link to generated gsoap files.
+		*/
+		DLL_IMPORT_OR_EXPORT void initGsoapProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, AbstractObject::EmlVersion emlVersion);
 
 	public:  
 		/** Destructor */

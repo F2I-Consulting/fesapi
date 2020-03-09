@@ -30,7 +30,6 @@ namespace RESQML2_0_1_NS
 		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
 
 	public:
-
 		/**
 		 * Only to be used in partial transfer context
 		 *
@@ -39,6 +38,8 @@ namespace RESQML2_0_1_NS
 		 * @returns	A DLL_IMPORT_OR_EXPORT.
 		 */
 		DLL_IMPORT_OR_EXPORT PointSetRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractRepresentation(partialObject) {}
+
+		PointSetRepresentation(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates an instance of this class in a gsoap context.

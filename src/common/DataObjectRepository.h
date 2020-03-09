@@ -366,10 +366,17 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void deleteRelationship(COMMON_NS::AbstractObject * source, COMMON_NS::AbstractObject * target);
 
 		/**
-		 * Sets the factory used to create the HDF5 file proxy
-		 *
-		 * @param [in]	factory	If non-null, the factory.
-		 */
+		* Checks either this repository has got an HDF proxy or not.
+		* 
+		* @returns True if this repository has got an HDF proxy, else false.
+		*/
+		DLL_IMPORT_OR_EXPORT bool hasHdfProxyFactory() { return hdfProxyFactory != nullptr; }
+
+		/**
+		* Set the factory used to create HDF proxy and takes ownership of this HDF Proxy factory (don't delete it!)
+		* 
+		* @param [in]	factory	If non-null, the factory.
+		*/
 		DLL_IMPORT_OR_EXPORT void setHdfProxyFactory(COMMON_NS::HdfProxyFactory * factory);
 
 		/**
@@ -1962,6 +1969,18 @@ namespace COMMON_NS
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PolylineSetRepresentation* createPolylineSetRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title, gsoap_resqml2_0_1::resqml20__LineRole roleKind);
+
+		/**
+		 * Creates a point set representation into this repository
+		 *
+		 * @param 	  	guid  	The guid to set to the point set representation. If empty then a new
+		 * 						guid will be generated.
+		 * @param 	  	title 	The title to set to the point set representation. If empty then
+		 * 						\"unknown\" title will be set.
+		 *
+		 * @returns	A pointer to the new point set representation.
+		 */
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::PointSetRepresentation* createPointSetRepresentation(const std::string & guid, const std::string & title);
 
 		/**
 		 * Creates a point set representation into this repository
