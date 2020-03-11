@@ -29,14 +29,14 @@ namespace RESQML2_0_1_NS
 	public:
 
 		/**
-		 * Only to be used in partial transfer context
+		 * Only to be used in partial transfer context.
 		 *
 		 * @param [in]	partialObject	If non-null, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT CommentProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractValuesProperty(partialObject) {}
 
 		/**
-		 * Creates a comment property which is of a well known Energistics property kind
+		 * Creates a comment property which is of a well known Energistics property kind.
 		 *
 		 * @exception	std::invalid_argument	If @p rep is null.
 		 *
@@ -58,7 +58,7 @@ namespace RESQML2_0_1_NS
 			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
-		 * Creates a comment property which is of a local property kind
+		 * Creates a comment property which is of a local property kind.
 		 *
 		 * @exception	std::invalid_argument	If @p rep or @p localPropKind is null.
 		 *
@@ -79,7 +79,7 @@ namespace RESQML2_0_1_NS
 			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, COMMON_NS::PropertyKind * localPropKind);
 
 		/**
-		 * Creates an instance of this class by wrapping a gSOAP instance
+		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
@@ -89,7 +89,7 @@ namespace RESQML2_0_1_NS
 		~CommentProperty() {}
 
 		/**
-		 * Add an array of string values to the property values.
+		 * Adds an array of string values to the property values.
 		 *
 		 * @param 	  	values	All the property values to set ordered according the topology of the
 		 * 						representation it is based on.
@@ -120,7 +120,7 @@ namespace RESQML2_0_1_NS
 		/**
 		 * Gets all the values of a given patch of this instance. Values are supposed to be string ones.
 		 *
-		 * @exception	std::range_error	If @p patchIndex is strictly greater than patch count.
+		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
 		 *
 		 * @param 	patchIndex	The index of the patch we want the values from.
 		 *
@@ -128,35 +128,13 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT std::vector<std::string> getStringValuesOfPatch(unsigned int patchIndex);
 
-		/**
-		 * Checks if it is allowed to associate a given local property kind to this property.
-		 *
-		 * @exception	std::invalid_argument	If @p pk is null.
-		 *
-		 * @param [in]	pk	The local property kind to check.
-		 *
-		 * @returns	True if it is allowed, false if it is not.
-		 */
-		bool validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk);
+		bool validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk) override;
 
-		/**
-		 * Checks if it is allowed to associate a given standard Energistics property kind to this
-		 * property.
-		 *
-		 * @param 	pk	The standard Energistics property kind to check.
-		 *
-		 * @returns	True if it is allowed, false if it is not.
-		 */
-		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk);
+		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) override;
 
 		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Gets the standard XML tag without XML namespace for serializing this data object
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 	};
 }

@@ -162,7 +162,7 @@ std::vector<std::string> CommentProperty::getStringValuesOfPatch(unsigned int pa
 	_resqml20__CommentProperty const * prop = static_cast<_resqml20__CommentProperty*>(gsoapProxy2_0_1);
 
 	if (patchIndex >= prop->PatchOfValues.size()) {
-		throw std::range_error("The patch index is out of range.");
+		throw std::out_of_range("The patch index is out of range.");
 	}
 
 	eml20__Hdf5Dataset const * dataset = static_cast<resqml20__StringHdf5Array*>(prop->PatchOfValues[patchIndex]->Values)->Values;

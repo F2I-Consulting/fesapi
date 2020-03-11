@@ -2722,7 +2722,10 @@ namespace COMMON_NS
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, COMMON_NS::PropertyKind * localPropType);
 
 		/**
-		 * Creates a continuous property into this repository
+		 * Creates a continuous property (which is of well known Energistics unit of measure and
+		 * property kind) into this repository
+		 *
+		 * @exception	std::invalid_argument	If @p rep is null.
 		 *
 		 * @param [in]	rep					   	The representation on which this property is attached to.
 		 * 										It cannot be null.
@@ -2735,9 +2738,13 @@ namespace COMMON_NS
 		 * @param 	  	attachmentKind		   	The topological element on which the property values are
 		 * 										attached to.
 		 * @param 	  	uom					   	The property unit of measure taken from the standard
-		 * 										RESQML units of measure catalog.
-		 * @param 	  	energisticsPropertyKind	The kind of this property taken from the standard set of
-		 * 										RESQML property kinds.
+		 * 										Energistics units of measure catalog. Please check
+		 * 										COMMON_NS::EnumStringMapper::getEnergisticsUnitOfMeasure
+		 * 										in order to minimize the use of non standard unit of
+		 * 										measure.
+		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
+		 * 										defined in the standard Energistics property type
+		 * 										dictionary.
 		 *
 		 * @returns	A pointer to the new continuous property.
 		 */
@@ -2745,7 +2752,10 @@ namespace COMMON_NS
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind);
 
 		/**
-		 * Creates a continuous property into this repository
+		 * Creates a continuous property (which is of a well known unit of measure and a local property
+		 * kind) into this repository
+		 *
+		 * @exception	std::invalid_argument	If @p rep or @p localPropType is null.
 		 *
 		 * @param [in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
@@ -2757,9 +2767,12 @@ namespace COMMON_NS
 		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
-		 * @param 	  	uom			  	The property unit of measure taken from the standard RESQML units
-		 * 								of measure catalog.
-		 * @param [in]	localPropType 	The kind of this property. It cannot be null.
+		 * @param 	  	uom			  	The property unit of measure taken from the standard Energistics
+		 * 								units of measure catalog. Please check
+		 * 								COMMON_NS::EnumStringMapper::getEnergisticsUnitOfMeasure in order
+		 * 								to minimize the use of non standard unit of measure.
+		 * @param [in]	localPropType 	The property kind of these property values which must be defined
+		 * 								in the EPC document as a local property kind. It cannot be null.
 		 *
 		 * @returns	A pointer to the new continuous property.
 		 */
@@ -2767,7 +2780,10 @@ namespace COMMON_NS
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, COMMON_NS::PropertyKind * localPropType);
 
 		/**
-		 * Creates a continuous property into this repository
+		 * Creates a continuous property (which is of a local unit of measure and a well known property
+		 * kind) into this repository
+		 *
+		 * @exception	std::invalid_argument	If @p rep is null.
 		 *
 		 * @param [in]	rep					   	The representation on which this property is attached to.
 		 * 										It cannot be null.
@@ -2779,9 +2795,13 @@ namespace COMMON_NS
 		 * 										is 1 for a scalar property.
 		 * @param 	  	attachmentKind		   	The topological element on which the property values are
 		 * 										attached to.
-		 * @param 	  	nonStandardUom		   	The property unit of measure.
-		 * @param 	  	energisticsPropertyKind	The kind of this property taken from the standard set of
-		 * 										RESQML property kinds.
+		 * @param 	  	nonStandardUom		   	The property unit of measure. Please check
+		 * 										COMMON_NS::EnumStringMapper::getEnergisticsUnitOfMeasure
+		 * 										in order to minimize the use of non standard unit of
+		 * 										measure.
+		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
+		 * 										defined in the standard Energistics property type
+		 * 										dictionary.
 		 *
 		 * @returns	A pointer to the new continuous property.
 		 */
@@ -2789,7 +2809,10 @@ namespace COMMON_NS
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const std::string & nonStandardUom, const gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind & energisticsPropertyKind);
 
 		/**
-		 * Creates a continuous property into this repository
+		 * Creates a continuous property (which is of local unit of measure and property kind) into this
+		 * repository
+		 *
+		 * @exception	std::invalid_argument	If @p rep or @p localPropType is null.
 		 *
 		 * @param [in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
@@ -2801,8 +2824,11 @@ namespace COMMON_NS
 		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
-		 * @param 	  	nonStandardUom	The property unit of measure.
-		 * @param [in]	localPropType 	The kind of this property. It cannot be null.
+		 * @param 	  	nonStandardUom	The property unit of measure. Please check
+		 * 								COMMON_NS::EnumStringMapper::getEnergisticsUnitOfMeasure in order
+		 * 								to minimize the use of non standard unit of measure.
+		 * @param [in]	localPropType 	The property kind of these property values which must be defined
+		 * 								in the EPC document as a local property kind. It cannot be null.
 		 *
 		 * @returns	A pointer to the new continuous property.
 		 */

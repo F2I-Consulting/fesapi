@@ -103,52 +103,29 @@ namespace RESQML2_0_1_NS
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~CategoricalProperty() {}
 
-		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & dataset = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
-
 		/**   
-		 * Get the string lookup which is associated to this categorical property values. 
-		 * @returns A pointer to the string lookup which is associated to this categorical property
-		 * 			values.
+		 * Gets the string lookup which is associated to this categorical property values. 
+		 * 
+		 * 	@returns A pointer to the string lookup which is associated to this categorical property
+		 * 			 values.
 		 */
 		DLL_IMPORT_OR_EXPORT class StringTableLookup* getStringLookup();
 
 		/**
-		 * Get the UUID of the string lookup which is associated to this categorical property values.
+		 * Gets the UUID of the string lookup which is associated to this categorical property values.
 		 *
-		 * @returns	The string lookup UUID.
+		 * @returns	The UUID of the string lookup which is associated to this categorical property.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getStringLookupUuid() const;
 
-		/**
-		 * Checks if it is allowed to associate a given local property kind to this property.
-		 *
-		 * @exception	std::invalid_argument	If @p pk is null.
-		 *
-		 * @param [in]	pk	The local property kind to check.
-		 *
-		 * @returns	True if it is allowed, false if it is not.
-		 */
-		bool validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk);
+		bool validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk) override;
 
-		/**
-		 * Checks if it is allowed to associate a given standard Energistics property kind to this
-		 * property.
-		 *
-		 * @param 	pk	The standard Energistics property kind to check.
-		 *
-		 * @returns	True if it is allowed, false if it is not.
-		 */
-		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk);
+		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) override;
 
-		/** The standard XML tag without XML namespace for serializing this data object */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Gets the standard XML tag without XML namespace for serializing this data object
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 
 	protected:
 		/** Loads target relationships */

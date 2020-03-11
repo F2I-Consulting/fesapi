@@ -22,6 +22,7 @@ under the License.
 
 namespace RESQML2_NS
 {
+	/** Proxy class for an abstract discrete or categorical property. */
 	class AbstractDiscreteOrCategoricalProperty : public RESQML2_NS::AbstractValuesProperty
 	{
 	protected:
@@ -139,7 +140,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackCharHdf5Array2dOfValues(const char * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, char nullValue);
 
 		/**
-		 * Adds a 3d array of explicit long values to the property values.
+		 * @brief Adds a 3d array of explicit long values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -190,7 +191,7 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void pushBackCharHdf5Array3dOfValues(const char * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy, char nullValue);
 
 		/**
-		 * Adds an nd array of explicit long values to the property values.
+		 * @brief Adds an nd array of explicit long values to the property values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -243,17 +244,15 @@ namespace RESQML2_NS
 		 * HDF5 for now) or that the writing of the values in the external file is differed in time.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
-		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * @exception	std::invalid_argument	If @p hdfProxy is @c nullptr and no default HDF proxy is
 		 * 										defined in the repository.
 		 *
-		 * @param [in]	hdfProxy 	The HDF5 proxy where the values are already or will be stored.If null
-		 * 							then a default HDF proxy must be defined in the data object
-		 * 							repository. If @c nullptr, then a default HDF proxy must be defined
-		 * 							in the repository.
+		 * @param [in]	hdfProxy 	The HDF5 proxy where the values are already or will be stored. If @c
+		 * 							nullptr, then a default HDF proxy must be defined in the repository.
 		 * @param 	  	dataset  	(Optional) If not provided during the method call, the dataset will
 		 * 							be named the same as the dataset naming convention of fesapi :
-		 * 							< tt>"/RESQML/" + prop - &gt; uuid + "/values_patch" +
-		 * 							patchIndex< / tt>
+		 * 							<tt>"/RESQML/" + prop-&gt;uuid + "/values_patch" +
+		 * 							patch-&gt;RepresentationPatchIndex</tt>
 		 * @param 	  	nullValue	(Optional) Only relevant for integer hdf5 datasets.Indeed, RESQML
 		 * 							(and fesapi) forces null value for floating point to be @c NaN value.
 		 *
@@ -269,7 +268,7 @@ namespace RESQML2_NS
 		 *
 		 * @param 	   	patchIndex	The index of the patch we want the values from.
 		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
-		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>
+		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
 		 *
 		 * @returns	The null value.
 		 */
@@ -397,7 +396,7 @@ namespace RESQML2_NS
 
 		/**
 		 * Creates an nd array of explicit long 64 bits values into the property values. No values are
-		 * written to this array yet.
+		 * written to this array yet then the HDF5 array contains uninitialized values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
@@ -423,7 +422,7 @@ namespace RESQML2_NS
 
 		/**
 		 * Creates a 3d array of explicit long 64 values into the property values. No values are written
-		 * to this array yet.
+		 * to this array yet then the HDF5 array contains uninitialized values.
 		 *
 		 * @exception	std::logic_error	 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
