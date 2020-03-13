@@ -222,26 +222,26 @@ gsoap_resqml2_0_1::eml20__PlaneAngleUom DeviationSurveyRepresentation::getAngleU
 	return static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1)->AngleUom;
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* DeviationSurveyRepresentation::getHdfProxyDor() const
+COMMON_NS::DataObjectReference DeviationSurveyRepresentation::getHdfProxyDor() const
 {
 	_resqml20__DeviationSurveyRepresentation* rep = static_cast<_resqml20__DeviationSurveyRepresentation*>(gsoapProxy2_0_1);
 	if (rep->Mds != nullptr) {
 		if (rep->Mds->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
-			return static_cast<resqml20__DoubleHdf5Array*>(rep->Mds)->Values->HdfProxy;
+			return COMMON_NS::DataObjectReference(static_cast<resqml20__DoubleHdf5Array*>(rep->Mds)->Values->HdfProxy);
 		}
 	}
 	else if (rep->Inclinations != nullptr) {
 		if (rep->Inclinations->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
-			return static_cast<resqml20__DoubleHdf5Array*>(rep->Inclinations)->Values->HdfProxy;
+			return COMMON_NS::DataObjectReference(static_cast<resqml20__DoubleHdf5Array*>(rep->Inclinations)->Values->HdfProxy);
 		}
 	}
 	else if (rep->Azimuths != nullptr) {
 		if (rep->Azimuths->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
-			return static_cast<resqml20__DoubleHdf5Array*>(rep->Azimuths)->Values->HdfProxy;
+			return COMMON_NS::DataObjectReference(static_cast<resqml20__DoubleHdf5Array*>(rep->Azimuths)->Values->HdfProxy);
 		}
 	}
 
-	return nullptr;
+	return COMMON_NS::DataObjectReference();
 }
 
 vector<RESQML2_NS::WellboreFrameRepresentation *> DeviationSurveyRepresentation::getWellboreFrameRepresentationSet() const

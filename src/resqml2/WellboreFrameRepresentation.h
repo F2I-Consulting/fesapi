@@ -43,13 +43,11 @@ namespace RESQML2_NS
 		WellboreFrameRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreFrameRepresentation* fromGsoap) :
 			AbstractRepresentation(fromGsoap) {}
 
-#if WITH_EXPERIMENTAL
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		WellboreFrameRepresentation(gsoap_eml2_2::resqml22__WellboreFrameRepresentation* fromGsoap) :
 			AbstractRepresentation(fromGsoap) {}
-#endif
 
 	public:
 		~WellboreFrameRepresentation() {}
@@ -122,12 +120,7 @@ namespace RESQML2_NS
 		/**
 		* Get the associated RESQML wellbore trajectory data object reference.
 		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getWellboreTrajectoryDor() const;
-
-		/**
-		* Get the associated RESQML wellbore trajectory uuid.
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getWellboreTrajectoryUuid() const;
+		COMMON_NS::DataObjectReference getWellboreTrajectoryDor() const;
 
 		/**
 		* Get the associated RESQML wellbore trajector.
@@ -137,12 +130,12 @@ namespace RESQML2_NS
 		/**
 		* Get the associated RESQML local crs data object reference.
 		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const;
+		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const;
 
 		/**
 		* Get the associated hdf proxy data object reference.
 		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const;
 
 		/**
 		* Get the count of patch of this representation.

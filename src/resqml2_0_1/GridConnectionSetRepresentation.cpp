@@ -65,12 +65,12 @@ GridConnectionSetRepresentation::GridConnectionSetRepresentation(RESQML2_NS::Abs
 	setInterpretation(interp);
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* GridConnectionSetRepresentation::getHdfProxyDor() const
+COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getHdfProxyDor() const
 {
 	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 
 	if (rep->CellIndexPairs->soap_type() == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-		return static_cast<resqml20__IntegerHdf5Array*>(rep->CellIndexPairs)->Values->HdfProxy;
+		return COMMON_NS::DataObjectReference(static_cast<resqml20__IntegerHdf5Array*>(rep->CellIndexPairs)->Values->HdfProxy);
 	}
 
 	throw std::logic_error("Not implemented yet");
@@ -362,7 +362,7 @@ void GridConnectionSetRepresentation::getGridConnectionSetInformationFromInterpr
 	delete [] totalCellIndexPairs;
 }
 
-std::string GridConnectionSetRepresentation::getInterpretationUuidFromIndex(const unsigned int & interpretationIndex) const
+std::string GridConnectionSetRepresentation::getInterpretationUuidFromIndex(unsigned int interpretationIndex) const
 {
 	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 
@@ -521,12 +521,12 @@ unsigned int GridConnectionSetRepresentation::getSupportingGridRepresentationCou
 	return static_cast<unsigned int>(result);
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* GridConnectionSetRepresentation::getSupportingGridRepresentationDor(unsigned int index) const
+COMMON_NS::DataObjectReference GridConnectionSetRepresentation::getSupportingGridRepresentationDor(unsigned int index) const
 {
 	_resqml20__GridConnectionSetRepresentation* rep = static_cast<_resqml20__GridConnectionSetRepresentation*>(gsoapProxy2_0_1);
 
 	if (index >= rep->Grid.size()) {
 		throw range_error("The requested index is out of range of the available supporting grid representations.");
 	}
-	return rep->Grid[index];
+	return COMMON_NS::DataObjectReference(rep->Grid[index]);
 }

@@ -177,7 +177,7 @@ namespace RESQML2_0_1_NS
 		*/
 		DLL_IMPORT_OR_EXPORT class WellboreTrajectoryRepresentation * getWellboreTrajectoryRepresentation(unsigned int index) const;
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
 

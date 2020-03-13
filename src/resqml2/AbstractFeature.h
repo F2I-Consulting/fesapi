@@ -69,6 +69,6 @@ namespace RESQML2_NS
 
 	protected:
 
-		virtual void loadTargetRelationships();
+		virtual void loadTargetRelationships() {}
 	};
 }

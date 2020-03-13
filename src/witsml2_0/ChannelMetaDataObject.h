@@ -53,9 +53,9 @@ namespace WITSML2_0_NS
 		*/
 		virtual ~ChannelMetaDataObject() {}
 
-		gsoap_eml2_1::eml21__DataObjectReference* getWellboreDor() const
+		COMMON_NS::DataObjectReference getWellboreDor() const
 		{
-			return static_cast<T*>(gsoapProxy2_1)->Wellbore;
+			return COMMON_NS::DataObjectReference(static_cast<T*>(gsoapProxy2_1)->Wellbore);
 		}
 
 		DLL_IMPORT_OR_EXPORT void setWellbore(Wellbore* witsmlWellbore)
@@ -75,9 +75,9 @@ namespace WITSML2_0_NS
 		/**
 		* Get the Data Object Reference of the PropertyKind linked with this data object.
 		*/
-		gsoap_eml2_1::eml21__DataObjectReference* getPropertyKindDor() const
+		COMMON_NS::DataObjectReference getPropertyKindDor() const
 		{
-			return static_cast<T*>(gsoapProxy2_1)->ChannelClass;
+			return COMMON_NS::DataObjectReference(static_cast<T*>(gsoapProxy2_1)->ChannelClass);
 		}
 
 		/**
@@ -85,7 +85,7 @@ namespace WITSML2_0_NS
 		*/
 		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* getPropertyKind() const
 		{
-			return getRepository()->template getDataObjectByUuid<COMMON_NS::PropertyKind>(getPropertyKindDor()->Uuid);
+			return getRepository()->template getDataObjectByUuid<COMMON_NS::PropertyKind>(getPropertyKindDor()->getUuid());
 		}
 
 		/**

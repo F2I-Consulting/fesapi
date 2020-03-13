@@ -52,7 +52,7 @@ namespace RESQML2_NS
 		*/
 		virtual ~RepresentationSetRepresentation() {}
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const { return nullptr; }
+		COMMON_NS::DataObjectReference getHdfProxyDor() const { return COMMON_NS::DataObjectReference(); }
 
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 

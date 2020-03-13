@@ -58,41 +58,41 @@ namespace RESQML2_NS
 		/**
 		* Get the kind of the selected elements for a particular patch of this subrepresentation.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual indexableElement getElementKindOfPatch(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual indexableElement getElementKindOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex) const = 0;
 
 		/**
 		* Get the count of the selected elements for a particular patch of this subrepresentation.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual ULONG64 getElementCountOfPatch(const unsigned int & patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual ULONG64 getElementCountOfPatch(unsigned int patchIndex) const = 0;
 
 		/**
 		* Get the indices of the selected elements for a particular patch of this subrepresentation.
 		* @param	elementIndicesIndex	Must be equal to 0 if the element indices are not pairwise.
 		* @param	elementIndices		This array must be preallocated with getElementCountOfPatch() size.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual void getElementIndicesOfPatch(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex, ULONG64 * elementIndices) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getElementIndicesOfPatch(unsigned int patchIndex, unsigned int elementIndicesIndex, ULONG64 * elementIndices) const = 0;
 
 		/**
 		* Get the indices of the supporting representations of the selected elements for a particular patch of this subrepresentation.
 		* @param	supportingRepresentationIndices	This array must be preallocated with getElementCountOfPatch() size.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual void getSupportingRepresentationIndicesOfPatch(const unsigned int & patchIndex, short * supportingRepresentationIndices) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual void getSupportingRepresentationIndicesOfPatch(unsigned int patchIndex, short * supportingRepresentationIndices) const = 0;
 
 		/**
 		* Check if the element of a particular patch are pairwise or not.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual bool areElementIndicesPairwise(const unsigned int & patchIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool areElementIndicesPairwise(unsigned int patchIndex) const = 0;
 
 		/**
 		* Check if the element indices of a particular patch are based on a lattice or not.
 		* @param elementIndicesIndex	In case of pairwise element, allow to select the first or second element indice of the pair.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual bool areElementIndicesBasedOnLattice(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual bool areElementIndicesBasedOnLattice(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
 
-		DLL_IMPORT_OR_EXPORT virtual LONG64 getLatticeElementIndicesStartValue(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const = 0;
-		DLL_IMPORT_OR_EXPORT virtual unsigned int getLatticeElementIndicesDimensionCount(const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const = 0;
-		DLL_IMPORT_OR_EXPORT virtual LONG64 getLatticeElementIndicesOffsetValue(const unsigned int & latticeDimensionIndex, const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const = 0;
-		DLL_IMPORT_OR_EXPORT virtual ULONG64 getLatticeElementIndicesOffsetCount(const unsigned int & latticeDimensionIndex, const unsigned int & patchIndex, const unsigned int & elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual LONG64 getLatticeElementIndicesStartValue(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual unsigned int getLatticeElementIndicesDimensionCount(unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual LONG64 getLatticeElementIndicesOffsetValue(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual ULONG64 getLatticeElementIndicesOffsetCount(unsigned int latticeDimensionIndex, unsigned int patchIndex, unsigned int elementIndicesIndex = 0) const = 0;
 
 		/**
 		* Push back a new patch in the subrepresentation which is based on a lattice definition.

@@ -128,7 +128,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, doubl
 	paramLine->ControlPoints = xmlControlPoints;
 
 	// HDF control points
-	hsize_t dim[] = { controlPointCount, 3 };
+	hsize_t dim[2] = { controlPointCount, 3 };
 	proxy->writeArrayNdOfDoubleValues(rep->uuid, "controlPoints", controlPoints, dim, 2);
 
 	getRepository()->addRelationship(this, localCrs);
@@ -174,7 +174,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints,
 	paramLine->TangentVectors = xmlTangentVectors;
 
 	// HDF tangent vectors
-	hsize_t dim[] = { controlPointCount, 3 };
+	hsize_t dim[2] = { controlPointCount, 3 };
 	proxy->writeArrayNdOfDoubleValues(rep->uuid, "tangentVectors", tangentVectors, dim, 2);
 }
 
@@ -184,16 +184,16 @@ void WellboreTrajectoryRepresentation::loadTargetRelationships()
 
 	_resqml20__WellboreTrajectoryRepresentation const * rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 
-	eml20__DataObjectReference const * dor = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1)->MdDatum;
+	COMMON_NS::DataObjectReference dor = COMMON_NS::DataObjectReference(static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1)->MdDatum);
 	convertDorIntoRel<RESQML2_NS::MdDatum>(dor);
 
 	dor = getDeviationSurveyDor();
-	if (dor != nullptr) {
+	if (!dor.isEmpty()) {
 		convertDorIntoRel<DeviationSurveyRepresentation>(dor);
 	}
 
 	if (rep->ParentIntersection != nullptr) {
-		dor = rep->ParentIntersection->ParentTrajectory;
+		dor = COMMON_NS::DataObjectReference(rep->ParentIntersection->ParentTrajectory);
 		convertDorIntoRel<WellboreTrajectoryRepresentation>(dor);
 	}
 }
@@ -379,16 +379,15 @@ std::string WellboreTrajectoryRepresentation::getMdDatumUuid() const
 	return static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1)->MdDatum->UUID;
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreTrajectoryRepresentation::getHdfProxyDor() const
+COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getHdfProxyDor() const
 {
 	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 	if (rep->Geometry != nullptr) {
 		resqml20__ParametricLineGeometry* paramLine = static_cast<resqml20__ParametricLineGeometry*>(rep->Geometry);
-		return static_cast<resqml20__Point3dHdf5Array*>(paramLine->ControlPoints)->Coordinates->HdfProxy;
+		return COMMON_NS::DataObjectReference(static_cast<resqml20__Point3dHdf5Array*>(paramLine->ControlPoints)->Coordinates->HdfProxy);
 	}
-	else {
-		return nullptr;
-	}
+	
+	return COMMON_NS::DataObjectReference();
 }
 
 gsoap_resqml2_0_1::_resqml20__WellboreTrajectoryRepresentation* WellboreTrajectoryRepresentation::getSpecializedGsoapProxy() const
@@ -398,14 +397,16 @@ gsoap_resqml2_0_1::_resqml20__WellboreTrajectoryRepresentation* WellboreTrajecto
 	return static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreTrajectoryRepresentation::getLocalCrsDor(unsigned int patchIndex) const
+COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getLocalCrsDor(unsigned int patchIndex) const
 {
 	if (patchIndex > 0) {
 		throw out_of_range("There is no more than one patch in a wellbore trajectory.");
 	}
 
 	_resqml20__WellboreTrajectoryRepresentation* rep = getSpecializedGsoapProxy();
-	return rep->Geometry != nullptr ? static_cast<resqml20__ParametricLineGeometry*>(rep->Geometry)->LocalCrs : nullptr;
+	return rep->Geometry != nullptr
+		? COMMON_NS::DataObjectReference(static_cast<resqml20__ParametricLineGeometry*>(rep->Geometry)->LocalCrs)
+		: COMMON_NS::DataObjectReference();
 }
 
 gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreTrajectoryRepresentation::getDeviationSurveyDor() const

@@ -18,17 +18,17 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "RockFluidOrganizationInterpretation.h"
+#include "../resqml2/RockFluidUnitInterpretation.h"
 
 namespace RESQML2_0_1_NS
 {
-	class RockFluidUnitInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
+	class RockFluidUnitInterpretation : public RESQML2_NS::RockFluidUnitInterpretation
 	{
 	public:
 		/**
 		* Only to be used in partial transfer context
 		*/
-		DLL_IMPORT_OR_EXPORT RockFluidUnitInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeatureInterpretation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT RockFluidUnitInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::RockFluidUnitInterpretation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -41,7 +41,7 @@ namespace RESQML2_0_1_NS
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		RockFluidUnitInterpretation(gsoap_resqml2_0_1::_resqml20__RockFluidUnitInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
+		RockFluidUnitInterpretation(gsoap_resqml2_0_1::_resqml20__RockFluidUnitInterpretation* fromGsoap) : RESQML2_NS::RockFluidUnitInterpretation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
@@ -57,17 +57,7 @@ namespace RESQML2_0_1_NS
 		 * Get the deposition mode of the stratigraphic unit interpretation.
 		 * You should verify its existency using hasDepositionMode() before to call this function.
 		 */
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__Phase getPhase() const;
-
-		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::resqml22__Phase getPhase() const;
 
 	};
 }

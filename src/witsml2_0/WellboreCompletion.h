@@ -56,12 +56,12 @@ namespace WITSML2_0_NS
 		/**
 		* Get the Data Object Reference of the wellbore linked with this data object.
 		*/
-		gsoap_eml2_1::eml21__DataObjectReference* getWellboreDor() const;
+		COMMON_NS::DataObjectReference getWellboreDor() const;
 
 		/**
 		* Get the Data Object Reference of the well completion linked with this data object.
 		*/
-		gsoap_eml2_1::eml21__DataObjectReference* getWellCompletionDor() const;
+		COMMON_NS::DataObjectReference getWellCompletionDor() const;
 
 		/**
 		* Get the well completion linked with this data object

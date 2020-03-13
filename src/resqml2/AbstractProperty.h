@@ -64,29 +64,14 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT void setRepresentation(class AbstractRepresentation * rep);
 
 		/**
-		* @return	null pointer if no representation is associated to this property. Otherwise return the data object reference of the associated representation.
+		* @return	empty if no representation is associated to this property. Otherwise return the data object reference of the associated representation.
 		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getRepresentationDor() const;
+		COMMON_NS::DataObjectReference getRepresentationDor() const;
 
 		/**
 		* Getter for the representation which supports this instance values.
 		*/
 		DLL_IMPORT_OR_EXPORT class AbstractRepresentation* getRepresentation() const;
-
-		/*
-		* Getter for the uuid of the representation which is described by this property
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getRepresentationUuid() const;
-
-		/*
-		* Getter for the title of the representation which is described by this property
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getRepresentationTitle() const;
-
-		/*
-		* Getter for the content type of the representation which is described by this property
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getRepresentationContentType() const;
 
 		/**
 		* Getter (in read only mode) of the element count per property value.
@@ -127,21 +112,9 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT class AbstractLocal3dCrs* getLocalCrs() const;
 
 		/**
-		* @return	null pointer if no local CRS is associated to this property. Otherwise return the data object reference of the associated local CRS.
+		* @return	empty if no local CRS is associated to this property. Otherwise return the data object reference of the associated local CRS.
 		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor() const;
-
-		/*
-		* Getter for the uuid of the local CRS which is associated to this property.
-		* @return empty string if no local CRS is associated to this property
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getLocalCrsUuid() const;
-
-		/*
-		* Getter for the uuid of the local CRS which is associated to this property.
-		* @return empty string if no local CRS is associated to this property
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getLocalCrsTitle() const;
+		COMMON_NS::DataObjectReference getLocalCrsDor() const;
 
 		//*********************************************
 		//****** REALIZATION DIMENSION ****************
@@ -180,17 +153,7 @@ namespace RESQML2_NS
 		/**
 		* @return	null pointer if no time series is associated to this property. Otherwise return the data object reference of the associated time series.
 		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getTimeSeriesDor() const;
-
-		/*
-		* Getter for the uuid of the time series which is associated to this property.
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getTimeSeriesUuid() const;
-
-		/*
-		* Getter for the uuid of the time series which is associated to this property.
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getTimeSeriesTitle() const;
+		COMMON_NS::DataObjectReference getTimeSeriesDor() const;
 
 		/**
 		* Set the timestamp of this property by means of an index in a time series
@@ -198,12 +161,12 @@ namespace RESQML2_NS
 		* @param[in]	 timeIndex	The index of the timestamp of the property in the time series.
 		* @param[in]	 ts			The time series which contains the timestamp of this property.
 		*/
-		DLL_IMPORT_OR_EXPORT void setTimeIndex(const unsigned int & timeIndex, class TimeSeries * ts);
+		DLL_IMPORT_OR_EXPORT void setTimeIndex(unsigned int timeIndex, class TimeSeries * ts);
 
 		/**
 		* Set the timestep of this property
 		*/
-		DLL_IMPORT_OR_EXPORT void setTimeStep(const unsigned int & timeStep);
+		DLL_IMPORT_OR_EXPORT void setTimeStep(unsigned int timeStep);
 
 		/**
 		* Get the timestamp of this property
@@ -253,17 +216,7 @@ namespace RESQML2_NS
 		/**
 		* @return	null pointer if no local property kind is associated to this property. Otherwise return the data object reference of the associated local property kind.
 		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalPropertyKindDor() const;
-
-		/**
-		* Get the uuid of the local property kind which is associated to this property.
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getLocalPropertyKindUuid() const;
-
-		/**
-		* Get the title of the local property kind which is associated to this property.
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getLocalPropertyKindTitle() const;
+		COMMON_NS::DataObjectReference getLocalPropertyKindDor() const;
 
 		/**
 		* Getter for the local property kind which is associated to this instance.

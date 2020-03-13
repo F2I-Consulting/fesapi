@@ -18,7 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractIjkGridRepresentation.h"
+#include "../resqml2/IjkGridExplicitRepresentation.h"
 
 namespace RESQML2_0_1_NS
 {
@@ -26,7 +26,7 @@ namespace RESQML2_0_1_NS
 	* An IJK Grid explicit representation defines each cell corner position by means of XYZ coordinates.
 	* Adjacent cell corner are supposed to be located the same so they are not repeated unless you define split lines or split nodes.
 	*/
-	class IjkGridExplicitRepresentation : public AbstractIjkGridRepresentation
+	class IjkGridExplicitRepresentation : public RESQML2_NS::IjkGridExplicitRepresentation
 	{
 	public:
 
@@ -36,47 +36,32 @@ namespace RESQML2_0_1_NS
 		IjkGridExplicitRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount,
-			bool withTruncatedPillars = false);
+			bool withTruncatedPillars = false) :
+			RESQML2_NS::IjkGridExplicitRepresentation(repo, guid, title, iCount, jCount, kCount, withTruncatedPillars) {}
 
 		IjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount,
-			bool withTruncatedPillars = false);
+			bool withTruncatedPillars = false) :
+			RESQML2_NS::IjkGridExplicitRepresentation(interp, guid, title, iCount, jCount, kCount, withTruncatedPillars) {}
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		IjkGridExplicitRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : AbstractIjkGridRepresentation(fromGsoap) {}
-		IjkGridExplicitRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractIjkGridRepresentation(fromGsoap) {}
+		IjkGridExplicitRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridExplicitRepresentation(fromGsoap) {}
+		IjkGridExplicitRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridExplicitRepresentation(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		virtual ~IjkGridExplicitRepresentation() {}
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const;
 
 		/**
 		* Get the xyz point count in a given patch.
 		*/
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
-
-		/**
-		* Get all the XYZ points of a particular sequence of K interfaces of a particular patch of this representation.
-		* XYZ points are given in the local CRS.
-		* @param kInterfaceStart The K index of the starting interface taken from zero to kCellCount.
-		* @param kInterfaceEnd The K index of the ending interface taken from zero to kCellCount
-		* @param patchIndex	The index of the patch. It is generally zero.
-		* @param xyzPoints 	A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated with a size of 3*getXyzPointCountOfKInterfaceOfPatch*(kInterfaceEnd - kInterfaceStart + 1).
-		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfKInterfaceSequenceOfPatch(const unsigned int & kInterfaceStart, const unsigned int & kInterfaceEnd, const unsigned int & patchIndex, double * xyzPoints);
-
-		/**
-		* Get all the XYZ points of the current block. XYZ points are given in the local CRS. Block information must be loaded.
-		* @param patchIndex			The index of the patch. It is generally zero.
-		* @param xyzPoints 			A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated with a size of 3*getXyzPointCountOfBlock.
-		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfBlockOfPatch(const unsigned int & patchIndex, double * xyzPoints);
 
 		/**
 		* Get all the XYZ points of a particular patch of this representation.
@@ -119,11 +104,7 @@ namespace RESQML2_0_1_NS
 			const std::string & splitCoordinateLineColumnCumulativeCount = "", const std::string & splitCoordinateLineColumns = "",
 			const std::string & definedPillars = "", RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
-		/**
-		* Check wether the node geometry dataset is compressed or not.
-		*/
-		DLL_IMPORT_OR_EXPORT bool isNodeGeometryCompressed() const;
-
-		DLL_IMPORT_OR_EXPORT geometryKind getGeometryKind() const;
+	private:
+		COMMON_NS::AbstractHdfProxy* getPointDatasetPath(std::string & datasetPathInExternalFile, unsigned long & splitCoordinateLineCount) const;
 	};
 }

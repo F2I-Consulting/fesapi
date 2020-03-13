@@ -81,8 +81,6 @@ namespace RESQML2_0_1_NS
 		*/
 		virtual ~CategoricalProperty() {}
 
-		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* hdfProxy, const std::string & dataset = "", LONG64 nullValue = (std::numeric_limits<LONG64>::max)());
-
 		/**
 		* Get the string lookup which is associated to this categorical property values.
 		*/

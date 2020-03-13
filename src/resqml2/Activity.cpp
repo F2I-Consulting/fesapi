@@ -47,16 +47,16 @@ std::vector<COMMON_NS::AbstractObject*> Activity::getResqmlObjectSet() const
 
 ActivityTemplate* Activity::getActivityTemplate() const
 {
-	return getRepository()->getDataObjectByUuid<RESQML2_NS::ActivityTemplate>(getActivityTemplateDor()->UUID);
+	return getRepository()->getDataObjectByUuid<RESQML2_NS::ActivityTemplate>(getActivityTemplateDor().getUuid());
 }
 
 void Activity::loadTargetRelationships()
 {
-	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getActivityTemplateDor();
-	RESQML2_NS::ActivityTemplate* targetObj = getRepository()->getDataObjectByUuid<ActivityTemplate>(dor->UUID);
+	COMMON_NS::DataObjectReference dor = getActivityTemplateDor();
+	RESQML2_NS::ActivityTemplate* targetObj = getRepository()->getDataObjectByUuid<ActivityTemplate>(dor.getUuid());
 	if (targetObj == nullptr) { // partial transfer
 		getRepository()->createPartial(dor);
-		targetObj = getRepository()->getDataObjectByUuid<ActivityTemplate>(dor->UUID);
+		targetObj = getRepository()->getDataObjectByUuid<ActivityTemplate>(dor.getUuid());
 		if (targetObj == nullptr) {
 			throw invalid_argument("The DOR looks invalid.");
 		}

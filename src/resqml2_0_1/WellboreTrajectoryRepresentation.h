@@ -232,9 +232,9 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get the information to resolve the associated local CRS.
 		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const;
+		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const;
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
 

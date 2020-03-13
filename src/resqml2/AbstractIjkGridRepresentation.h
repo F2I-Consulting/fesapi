@@ -18,12 +18,12 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/AbstractColumnLayerGridRepresentation.h"
+#include "AbstractColumnLayerGridRepresentation.h"
 
 #include <stdexcept>
 #include <map>
 
-namespace RESQML2_0_1_NS
+namespace RESQML2_NS
 {
 	/**
 	* This class is semantically abstract.
@@ -68,11 +68,16 @@ namespace RESQML2_0_1_NS
 		*/
 		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), blockInformation(nullptr) {}
 		AbstractIjkGridRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), blockInformation(nullptr) {}
+		AbstractIjkGridRepresentation(gsoap_eml2_2::_resqml22__IjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, false), splitInformation(nullptr), blockInformation(nullptr) {}
+		AbstractIjkGridRepresentation(gsoap_eml2_2::_resqml22__TruncatedIjkGridRepresentation* fromGsoap) : AbstractColumnLayerGridRepresentation(fromGsoap, true), splitInformation(nullptr), blockInformation(nullptr) {}
 
-		gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* getSpecializedGsoapProxy() const;
-		gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* getSpecializedTruncatedGsoapProxy() const;
+		gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* getSpecializedGsoapProxy2_0_1() const;
+		gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* getSpecializedTruncatedGsoapProxy2_0_1() const;
+		gsoap_eml2_2::_resqml22__IjkGridRepresentation* getSpecializedGsoapProxy2_2() const;
+		gsoap_eml2_2::_resqml22__TruncatedIjkGridRepresentation* getSpecializedTruncatedGsoapProxy2_2() const;
 
 		gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
+		gsoap_eml2_2::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;
 
 		/**
 		* Information about the splits (mainly due to faults) which occur in this grid.
@@ -312,7 +317,7 @@ namespace RESQML2_0_1_NS
 
 		/**
 		* Gets the x, y and z values of the corner of a cell of a given block.
-		* This method requires that you have already both loaded the block information and get the geometry of the block thanks to getXyzPointsOfBlockOfPatch.
+		* This method requires that you have already both loaded the block information and get the geometry of the block thanks to getXyzPointsOfBlock.
 		* @param iCell			The I index of the cell.
 		* @param jCell			The J index of the cell.
 		* @param kCell			The K index of the cell.
@@ -324,7 +329,7 @@ namespace RESQML2_0_1_NS
 		*						5 for (1,0,1)
 		*						6 for (1,1,1)
 		*						7 for (0,1,1)
-		* @param xyzPoints		The XYZ points of the block (resulting from a call to getXyzPointsOfBlockOfPatch).
+		* @param xyzPoints		The XYZ points of the block (resulting from a call to getXyzPointsOfBlock).
 		* @param x				(output parameter) the x value of the corner we look for.
 		* @param y				(output parameter) the y value of the corner we look for.
 		* @param z				(output parameter) the z value of the corner we look for.
@@ -336,7 +341,7 @@ namespace RESQML2_0_1_NS
 		* Get the xyz point count in each K Layer interface in a given patch.
 		* @param patchIndex	The index of the patch. It is generally zero.
 		*/
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfKInterfaceOfPatch(unsigned int patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfKInterface() const;
 
 		/**
 		 * Get the xyz point count of the current block. Block information must be loaded.
@@ -351,11 +356,11 @@ namespace RESQML2_0_1_NS
 		* @param patchIndex	The index of the patch. It is generally zero.
 		* @param xyzPoints 	A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated with a size of 3*getXyzPointCountOfKInterfaceOfPatch.
 		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfKInterfaceOfPatch(unsigned int kInterface, unsigned int patchIndex, double * xyzPoints);
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfKInterface(unsigned int kInterface, double * xyzPoints);
 
-		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfKInterfaceSequenceOfPatch(const unsigned int & kInterfaceStart, const unsigned int & kInterfaceEnd, const unsigned int & patchIndex, double * xyzPoints);
+		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfKInterfaceSequence(unsigned int kInterfaceStart, unsigned int kInterfaceEnd, double * xyzPoints);
 
-		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfBlockOfPatch(const unsigned int & patchIndex, double * xyzPoints);
+		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfBlock(double * xyzPoints);
 
 		/**
 		* Check wether the node geometry dataset is compressed or not.
@@ -368,7 +373,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__KDirection getKDirection() const;
 
 		DLL_IMPORT_OR_EXPORT virtual geometryKind getGeometryKind() const { return UNKNOWN; }
-		virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const { throw std::logic_error("Partial object"); }
+		virtual COMMON_NS::DataObjectReference getHdfProxyDor() const { throw std::logic_error("Partial object"); }
 		DLL_IMPORT_OR_EXPORT virtual ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
 

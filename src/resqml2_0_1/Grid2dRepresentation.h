@@ -63,7 +63,7 @@ namespace RESQML2_0_1_NS
 		*/
 		~Grid2dRepresentation() {}
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const;
 
 		/**
 		* Get the number of nodes in the I direction of the lattice 2d grid
@@ -302,13 +302,7 @@ namespace RESQML2_0_1_NS
 			double offsetIX, double offsetIY, double offsetIZ, double spacingI,
 			double offsetJX, double offsetJY, double offsetJZ, double spacingJ, RESQML2_NS::AbstractLocal3dCrs * localCrs = nullptr);
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference const * getSupportingRepresentationDor() const;
-
-		/**
-		* Get the supporting representation uuid of this representation.
-		* Useful when the supporting representation is not accessible. At least we know its uuid.
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getSupportingRepresentationUuid() const;
+		COMMON_NS::DataObjectReference getSupportingRepresentationDor() const;
 
 		/**
 		* Get the supporting representation of this representation
@@ -324,17 +318,17 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get the index of the origin of the current geometry on a particular dimension of the supporting representation.
 		*/
-		DLL_IMPORT_OR_EXPORT int getIndexOriginOnSupportingRepresentation(const unsigned int & dimension) const;
+		DLL_IMPORT_OR_EXPORT int getIndexOriginOnSupportingRepresentation(unsigned int dimension) const;
 
 		/**
 		* Get the number of nodes of the current geometry which is extracted from a particular dimension of the supporting representation.
 		*/
-		DLL_IMPORT_OR_EXPORT int getNodeCountOnSupportingRepresentation(const unsigned int & dimension) const;
+		DLL_IMPORT_OR_EXPORT int getNodeCountOnSupportingRepresentation(unsigned int dimension) const;
 
 		/**
 		* Get the index offset of the nodes of the current geometry on a particular dimension of the supporting representation.
 		*/
-		DLL_IMPORT_OR_EXPORT int getIndexOffsetOnSupportingRepresentation(const unsigned int & dimension) const;
+		DLL_IMPORT_OR_EXPORT int getIndexOffsetOnSupportingRepresentation(unsigned int dimension) const;
 
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
 

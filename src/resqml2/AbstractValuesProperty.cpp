@@ -225,26 +225,23 @@ void AbstractValuesProperty::loadTargetRelationships()
 	gsoap_resqml2_0_1::resqml20__AbstractValuesProperty* prop = static_cast<gsoap_resqml2_0_1::resqml20__AbstractValuesProperty*>(gsoapProxy2_0_1);
 	
 	for (size_t patchIndex = 0; patchIndex < prop->PatchOfValues.size(); ++patchIndex) {
-		gsoap_resqml2_0_1::resqml20__PatchOfValues* patch = prop->PatchOfValues[patchIndex];
+		auto* patchValues = prop->PatchOfValues[patchIndex]->Values;
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = nullptr;
-
-		int valuesType = patch->Values->soap_type();
-		if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array) {
-			dor = static_cast<gsoap_resqml2_0_1::resqml20__BooleanHdf5Array*>(patch->Values)->Values->HdfProxy;
-		}
-		else if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array) {
-			dor = static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array*>(patch->Values)->Values->HdfProxy;
-		}
-		else if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array) {
-			dor = static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(patch->Values)->Values->HdfProxy;
-		}
-		else if (valuesType == SOAP_TYPE_gsoap_resqml2_0_1_resqml20__StringHdf5Array) {
-			dor = static_cast<gsoap_resqml2_0_1::resqml20__StringHdf5Array*>(patch->Values)->Values->HdfProxy;
-		}
-		else {
+		switch (patchValues->soap_type()) {
+		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__BooleanHdf5Array:
+			convertDorIntoRel<COMMON_NS::AbstractHdfProxy>(COMMON_NS::DataObjectReference(static_cast<gsoap_resqml2_0_1::resqml20__BooleanHdf5Array*>(patchValues)->Values->HdfProxy));
+			break;
+		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__DoubleHdf5Array:
+			convertDorIntoRel<COMMON_NS::AbstractHdfProxy>(COMMON_NS::DataObjectReference(static_cast<gsoap_resqml2_0_1::resqml20__DoubleHdf5Array*>(patchValues)->Values->HdfProxy));
+			break;
+		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__IntegerHdf5Array:
+			convertDorIntoRel<COMMON_NS::AbstractHdfProxy>(COMMON_NS::DataObjectReference(static_cast<gsoap_resqml2_0_1::resqml20__IntegerHdf5Array*>(patchValues)->Values->HdfProxy));
+			break;
+		case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__StringHdf5Array:
+			convertDorIntoRel<COMMON_NS::AbstractHdfProxy>(COMMON_NS::DataObjectReference(static_cast<gsoap_resqml2_0_1::resqml20__StringHdf5Array*>(patchValues)->Values->HdfProxy));
+			break;
+		default:
 			throw logic_error("The type of the property values is not implemented yet.");
 		}
-		convertDorIntoRel<COMMON_NS::AbstractHdfProxy>(dor);
 	}
 }

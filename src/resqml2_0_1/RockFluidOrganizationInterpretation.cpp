@@ -21,7 +21,7 @@ under the License.
 #include <algorithm>
 
 #include "OrganizationFeature.h"
-#include "RockFluidUnitInterpretation.h"
+#include "../resqml2/RockFluidUnitInterpretation.h"
 #include "../resqml2/AbstractGridRepresentation.h"
 
 #include "../tools/Misc.h"
@@ -30,9 +30,7 @@ using namespace std;
 using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 
-const char* RockFluidOrganizationInterpretation::XML_TAG = "RockFluidOrganizationInterpretation";
-
-RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, RockFluidUnitInterpretation * rockFluidUnitInterp)
+RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title, RESQML2_NS::RockFluidUnitInterpretation * rockFluidUnitInterp)
 {
 	if (orgFeat == nullptr) {
 		throw invalid_argument("The interpreted organization feature cannot be null.");
@@ -53,39 +51,7 @@ RockFluidOrganizationInterpretation::RockFluidOrganizationInterpretation(Organiz
 	setInterpretedFeature(orgFeat);
 }
 
-std::vector<RESQML2_NS::AbstractGridRepresentation *> RockFluidOrganizationInterpretation::getGridRepresentationSet() const
-{
-	return getRepository()->getSourceObjects<RESQML2_NS::AbstractGridRepresentation>(this);
-}
-
-unsigned int RockFluidOrganizationInterpretation::getGridRepresentationCount() const
-{
-	const size_t count = getGridRepresentationSet().size();
-	if (count > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("Too much grid representations.");
-	}
-
-	return static_cast<unsigned int>(count);
-}
-
-RESQML2_NS::AbstractGridRepresentation * RockFluidOrganizationInterpretation::getGridRepresentation(unsigned int index) const
-{
-	const std::vector<RESQML2_NS::AbstractGridRepresentation *>& gridRepresentationSet = getGridRepresentationSet();
-
-	if (index >= gridRepresentationSet.size()) {
-		throw range_error("The index of the grid representation to get is out of range.");
-	}
-
-	return gridRepresentationSet[index];
-}
-
-bool RockFluidOrganizationInterpretation::isAssociatedToGridRepresentation(RESQML2_NS::AbstractGridRepresentation* gridRep) const
-{
-	const std::vector<RESQML2_NS::AbstractGridRepresentation *>& gridRepresentationSet = getGridRepresentationSet();
-	return find(gridRepresentationSet.begin(), gridRepresentationSet.end(), gridRep) != gridRepresentationSet.end();
-}
-
-void RockFluidOrganizationInterpretation::pushBackRockFluidUnitInterpretation(RockFluidUnitInterpretation * rockFluidUnitInterpretation)
+void RockFluidOrganizationInterpretation::pushBackRockFluidUnitInterpretation(RESQML2_NS::RockFluidUnitInterpretation * rockFluidUnitInterpretation)
 {
 	if (static_cast<_resqml20__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit != nullptr) {
 		throw logic_error("Fesapi for now only supports one unit in a Rock fluid organization");
@@ -100,21 +66,11 @@ unsigned int RockFluidOrganizationInterpretation::getRockFluidUnitInterpCount() 
 	return static_cast<_resqml20__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit != nullptr ? 1 : 0;
 }
 
-RockFluidUnitInterpretation* RockFluidOrganizationInterpretation::getRockFluidUnitInterpretation(unsigned int index) const
+COMMON_NS::DataObjectReference RockFluidOrganizationInterpretation::getRockFluidUnitInterpretationDor(unsigned int index) const
 {
 	if (index >= getRockFluidUnitInterpCount()) {
 		throw range_error("The index is out of range");
 	}
 
-	return repository->getDataObjectByUuid<RockFluidUnitInterpretation>(static_cast<_resqml20__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit->UUID);
-}
-
-void RockFluidOrganizationInterpretation::loadTargetRelationships()
-{
-	AbstractOrganizationInterpretation::loadTargetRelationships();
-
-	gsoap_resqml2_0_1::eml20__DataObjectReference* dor = static_cast<_resqml20__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit;
-	if (dor != nullptr) {
-		convertDorIntoRel<RockFluidUnitInterpretation>(dor);
-	}
+	return COMMON_NS::DataObjectReference(static_cast<_resqml20__RockFluidOrganizationInterpretation*>(gsoapProxy2_0_1)->RockFluidUnitIndex->RockFluidUnit);
 }

@@ -21,15 +21,7 @@ under the License.
 #include <unordered_map>
 #include <sstream>
 
-#include "../proxies/gsoap_resqml2_0_1H.h"
-#include "../proxies/gsoap_eml2_1H.h"
-#include "../proxies/gsoap_eml2_2H.h"
-
-#include "../nsDefinitions.h"
-
-#if (defined(_WIN32) && _MSC_VER < 1600) || (defined(__GNUC__) && (__GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 6)))
-#include "../tools/nullptr_emulation.h"
-#endif
+#include "DataObjectReference.h"
 
 #if defined(_WIN32) && !defined(FESAPI_STATIC)
 #if defined(FesapiCpp_EXPORTS) || defined(FesapiCppUnderDev_EXPORTS)
@@ -45,7 +37,9 @@ namespace RESQML2_NS
 {
 	class AbstractFeature;
 	class AbstractFeatureInterpretation;
+	class AbstractIjkGridRepresentation;
 	class AbstractLocal3dCrs;
+	class AbstractOrganizationInterpretation;
 	class AbstractRepresentation;
 	class Activity;
 	class ActivityTemplate;
@@ -79,7 +73,6 @@ namespace RESQML2_0_1_NS
 	class Grid2dRepresentation;
 	class WellboreTrajectoryRepresentation;
 	class DeviationSurveyRepresentation;
-	class AbstractIjkGridRepresentation;
 	class IjkGridExplicitRepresentation;
 	class IjkGridParametricRepresentation;
 	class IjkGridLatticeRepresentation;
@@ -115,7 +108,6 @@ namespace RESQML2_0_1_NS
 	class DiscretePropertySeries;
 	class CategoricalProperty;
 	class CategoricalPropertySeries;
-	class AbstractOrganizationInterpretation;
 	class AbstractGridRepresentation;
 	class OrganizationFeature;
 	class StratigraphicOccurrenceInterpretation;
@@ -128,14 +120,12 @@ namespace RESQML2_0_1_NS
 	class RockFluidUnitFeature;
 }
 
-#if WITH_EXPERIMENTAL
 namespace RESQML2_2_NS
 {
 	class DiscreteColorMap;
 	class ContinuousColorMap;
 	class SeismicWellboreFrameRepresentation;
 }
-#endif
 
 namespace WITSML2_0_NS
 {
@@ -170,79 +160,12 @@ namespace COMMON_NS
 	*/
 	class DataObjectRepository
 	{
-	private:
-
-		/**
-		* The key is the UUID.
-		* The value is a vector storing all various versions of this data object
-		*/
-		std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > dataObjects;
-
-		// Forward relationships
-		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject * > > forwardRels;
-
-		// Backward relationships. It is redundant with forward relationships but it allows more performance.
-		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject * > > backwardRels;
-
-		soap* gsoapContext;
-
-		std::vector<std::string> warnings;
-
-		RESQML2_0_1_NS::PropertyKindMapper* propertyKindMapper;
-
-		COMMON_NS::AbstractHdfProxy* defaultHdfProxy;
-		RESQML2_NS::AbstractLocal3dCrs* defaultCrs;
-
-		COMMON_NS::HdfProxyFactory* hdfProxyFactory;
-
-		/**
-		* Set the stream of the curent gsoap context.
-		*/
-		void setGsoapStream(std::istream * inputStream) { gsoapContext->is = inputStream; }
-
-		/**
-		* Read the Gsoap proxy from the stream associated to the current gsoap context and wrap this gsoap proxy into a fesapi wrapper.
-		* It does not add this fesapi wrapper to the current instance.
-		* It does not work for EpcExternalPartReference content type since this type is related to an external file which must be handled differently.
-		*/
-		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
-#if WITH_EXPERIMENTAL
-		COMMON_NS::AbstractObject* getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType);
-#endif
-		COMMON_NS::AbstractObject* getEml2_2WrapperFromGsoapContext(const std::string & datatype);
-
-		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
-		COMMON_NS::AbstractObject* getProdml2_1WrapperFromGsoapContext(const std::string & datatype);
-
-		/**
-		* Get the error code of the current gsoap context.
-		*/
-		int getGsoapErrorCode() const;
-
-		/**
-		* Get the error message (if any) of the current gsoap context.
-		*/
-		std::string getGsoapErrorMessage() const;
-
-		template <class valueType>
-		std::vector<valueType *> getObjsFilteredOnDatatype(const std::vector< COMMON_NS::AbstractObject * >& objs) const
-		{
-			std::vector<valueType *> result;
-			for (size_t i = 0; i < objs.size(); ++i) {
-				valueType * castedObj = dynamic_cast<valueType *>(objs[i]);
-				if (castedObj != nullptr) {
-					result.push_back(castedObj);
-				}
-			}
-			return result;
-		}
-
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__DataObjectReference* createDor(const std::string & guid, const std::string & title, const std::string & version);
-
 	public:
 
 		DLL_IMPORT_OR_EXPORT DataObjectRepository();
 		DLL_IMPORT_OR_EXPORT DataObjectRepository(const std::string & propertyKindMappingFilesDirectory);
+
+		DLL_IMPORT_OR_EXPORT virtual ~DataObjectRepository();
 
 		enum class openingMode : std::int8_t {
 			READ_ONLY = 0, // It is meant to open an existing file in read only mode. It throws an exception if the file does not exist.
@@ -251,9 +174,49 @@ namespace COMMON_NS
 			OVERWRITE = 3 // It is meant to open an existing file in read and write mode. It deletes the content of the file if the later does already exist.
 		};
 
-		DLL_IMPORT_OR_EXPORT virtual ~DataObjectRepository();
+		/**
+		* Enumeration for the various Energistics standards.
+		*/
+		enum class EnergisticsStandard : std::int8_t {
+			RESQML2_0_1 = 0,
+			WITSML2_0 = 1,
+			PRODML2_1 = 2,
+			RESQML2_2 = 3
+		};
 
 		soap* getGsoapContext() const { return gsoapContext; }
+
+		/**
+		* Set the used standard when creating a new dataobject
+		*/
+		DLL_IMPORT_OR_EXPORT void setDefaultStandard(EnergisticsStandard version) {
+			switch (version) {
+			case EnergisticsStandard::PRODML2_1:
+				defaultProdmlVersion = version; break;
+			case EnergisticsStandard::RESQML2_0_1:
+			case EnergisticsStandard::RESQML2_2:
+				defaultResqmlVersion = version; break;
+			case EnergisticsStandard::WITSML2_0:
+				defaultWitsmlVersion = version; break;
+			default :
+				throw std::invalid_argument("Unrecognized Energistics standard.");
+			}
+		}
+
+		/**
+		* Get the default PRODML version used when creating a PRODML dataobject
+		*/
+		EnergisticsStandard getDefaultProdmlVersion() const { return defaultProdmlVersion; }
+
+		/**
+		* Get the default RESQML version used when creating a RESQML dataobject
+		*/
+		EnergisticsStandard getDefaultResqmlVersion() const { return defaultResqmlVersion; }
+
+		/**
+		* Get the default WITSML version used when creating a WITSML dataobject
+		*/
+		EnergisticsStandard getDefaultWitsmlVersion() const { return defaultWitsmlVersion; }
 
 		/**
 		* Remove and clean all dataobjects from this repository
@@ -547,9 +510,9 @@ namespace COMMON_NS
 		* DEPRECATED : use getDataObjects template method
 		* Get all the ijk grid contained into the EPC document.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::AbstractIjkGridRepresentation*> getIjkGridRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::AbstractIjkGridRepresentation*> getIjkGridRepresentationSet() const;
 		DLL_IMPORT_OR_EXPORT unsigned int getIjkGridRepresentationCount() const;
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::AbstractIjkGridRepresentation* getIjkGridRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractIjkGridRepresentation* getIjkGridRepresentation(unsigned int index) const;
 
 		/**
 		* DEPRECATED : use getDataObjects template method
@@ -689,17 +652,7 @@ namespace COMMON_NS
 		/**
 		* Create a partial object in this repository based on a RESQML2.0 Data Object Reference
 		*/
-		COMMON_NS::AbstractObject* createPartial(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor);
-
-		/**
-		* Create a partial object in this repository based on a EML2.1 Data Object Reference
-		*/
-		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_1::eml21__DataObjectReference const * dor);
-
-		/**
-		* Create a partial object in this repository based on a EML2.1 Data Object Reference
-		*/
-		COMMON_NS::AbstractObject* createPartial(gsoap_eml2_2::eml22__DataObjectReference const * dor);
+		COMMON_NS::AbstractObject* createPartial(const DataObjectReference& dor);
 
 		/**
 		* Create a partial object i.e. a data object reference (DOR) based on an UUID + a title + a version.
@@ -1023,9 +976,7 @@ namespace COMMON_NS
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo);
 
-		
-#if WITH_EXPERIMENTAL
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj, bool previousEnergisticsVersion = false);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::SeismicWellboreFrameRepresentation* createSeismicWellboreFrameRepresentation(
 			RESQML2_0_1_NS::WellboreInterpretation* interp, 
@@ -1034,10 +985,6 @@ namespace COMMON_NS
 			double seismicReferenceDatum,
 			double weatheringVelocity,
 			class RESQML2_0_1_NS::LocalTime3dCrs* crs);
-#else
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj);
-#endif
-
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
 
@@ -1045,7 +992,7 @@ namespace COMMON_NS
 			const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::RepresentationSetRepresentation* createRepresentationSetRepresentation(
-			RESQML2_0_1_NS::AbstractOrganizationInterpretation* interp,
+			RESQML2_NS::AbstractOrganizationInterpretation* interp,
 			const std::string & guid,
 			const std::string & title);
 
@@ -1069,9 +1016,9 @@ namespace COMMON_NS
 			const std::string & title,
 			RESQML2_0_1_NS::SealedSurfaceFrameworkRepresentation* ssf);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::AbstractIjkGridRepresentation* createPartialIjkGridRepresentation(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractIjkGridRepresentation* createPartialIjkGridRepresentation(const std::string & guid, const std::string & title);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::AbstractIjkGridRepresentation* createPartialTruncatedIjkGridRepresentation(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractIjkGridRepresentation* createPartialTruncatedIjkGridRepresentation(const std::string & guid, const std::string & title);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
@@ -1281,12 +1228,10 @@ namespace COMMON_NS
 
 		DLL_IMPORT_OR_EXPORT GraphicalInformationSet* createGraphicalInformationSet(const std::string & guid, const std::string & title);
 
-#if WITH_EXPERIMENTAL
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::DiscreteColorMap* createDiscreteColorMap(const std::string& guid, const std::string& title);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::ContinuousColorMap* createContinuousColorMap(const std::string& guid, const std::string& title,
 			gsoap_eml2_2::resqml22__InterpolationDomain interpolationDomain, gsoap_eml2_2::resqml22__InterpolationMethod interpolationMethod);
-#endif
 
 		//************************************
 		//***** STANDARD PROP KIND ***********
@@ -1305,5 +1250,76 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void clearWarnings() { warnings.clear();  }
 		DLL_IMPORT_OR_EXPORT void addWarning(const std::string & warning);
 		DLL_IMPORT_OR_EXPORT const std::vector<std::string> & getWarnings() const;
+
+	private:
+
+		/**
+		* The key is the UUID.
+		* The value is a vector storing all various versions of this data object
+		*/
+		std::unordered_map< std::string, std::vector< COMMON_NS::AbstractObject* > > dataObjects;
+
+		// Forward relationships
+		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject * > > forwardRels;
+
+		// Backward relationships. It is redundant with forward relationships but it allows more performance.
+		std::unordered_map< COMMON_NS::AbstractObject const *, std::vector< COMMON_NS::AbstractObject * > > backwardRels;
+
+		soap* gsoapContext;
+
+		std::vector<std::string> warnings;
+
+		RESQML2_0_1_NS::PropertyKindMapper* propertyKindMapper;
+
+		COMMON_NS::AbstractHdfProxy* defaultHdfProxy;
+		RESQML2_NS::AbstractLocal3dCrs* defaultCrs;
+
+		COMMON_NS::HdfProxyFactory* hdfProxyFactory;
+
+		EnergisticsStandard defaultProdmlVersion;
+		EnergisticsStandard defaultResqmlVersion;
+		EnergisticsStandard defaultWitsmlVersion;
+
+		/**
+		* Set the stream of the curent gsoap context.
+		*/
+		void setGsoapStream(std::istream * inputStream) { gsoapContext->is = inputStream; }
+
+		/**
+		* Read the Gsoap proxy from the stream associated to the current gsoap context and wrap this gsoap proxy into a fesapi wrapper.
+		* It does not add this fesapi wrapper to the current instance.
+		* It does not work for EpcExternalPartReference content type since this type is related to an external file which must be handled differently.
+		*/
+		COMMON_NS::AbstractObject* getResqml2_0_1WrapperFromGsoapContext(const std::string & resqmlContentType);
+		COMMON_NS::AbstractObject* getResqml2_2WrapperFromGsoapContext(const std::string& resqmlContentType);
+		COMMON_NS::AbstractObject* getEml2_2WrapperFromGsoapContext(const std::string & datatype);
+
+		COMMON_NS::AbstractObject* getWitsml2_0WrapperFromGsoapContext(const std::string & datatype);
+		COMMON_NS::AbstractObject* getProdml2_1WrapperFromGsoapContext(const std::string & datatype);
+
+		/**
+		* Get the error code of the current gsoap context.
+		*/
+		int getGsoapErrorCode() const;
+
+		/**
+		* Get the error message (if any) of the current gsoap context.
+		*/
+		std::string getGsoapErrorMessage() const;
+
+		template <class valueType>
+		std::vector<valueType *> getObjsFilteredOnDatatype(const std::vector< COMMON_NS::AbstractObject * >& objs) const
+		{
+			std::vector<valueType *> result;
+			for (size_t i = 0; i < objs.size(); ++i) {
+				valueType * castedObj = dynamic_cast<valueType *>(objs[i]);
+				if (castedObj != nullptr) {
+					result.push_back(castedObj);
+				}
+			}
+			return result;
+		}
+
+		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__DataObjectReference* createDor(const std::string & guid, const std::string & title, const std::string & version);
 	};
 }

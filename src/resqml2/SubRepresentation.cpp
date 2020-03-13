@@ -24,7 +24,7 @@ under the License.
 #include "AbstractFeatureInterpretation.h"
 #include "../common/AbstractHdfProxy.h"
 #include "../resqml2_0_1/UnstructuredGridRepresentation.h"
-#include "../resqml2_0_1/AbstractIjkGridRepresentation.h"
+#include "AbstractIjkGridRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_NS;

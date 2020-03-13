@@ -76,7 +76,7 @@ namespace RESQML2_0_1_NS
 		*/
 		~GridConnectionSetRepresentation() {}
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const;
 
 		/**
 		* Get the cell index pair count of this grid connection representation
@@ -129,7 +129,7 @@ namespace RESQML2_0_1_NS
 		* Get the UUID of a particular interpretation of this grid connection set.
 		* @param interpretationIndex The index of the interpretation in the collection of feature interpretation of this grid connection set.
 		*/
-		DLL_IMPORT_OR_EXPORT std::string getInterpretationUuidFromIndex(const unsigned int & interpretationIndex) const;
+		DLL_IMPORT_OR_EXPORT std::string getInterpretationUuidFromIndex(unsigned int interpretationIndex) const;
 
 		/**
 		* Get the count of interpretations in this grid connection set.
@@ -208,6 +208,6 @@ namespace RESQML2_0_1_NS
 		/**
 		* Get one of the supporting grid representation dor of this grid connection representation.
 		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getSupportingGridRepresentationDor(unsigned int index) const;
+		COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const;
 	};
 }

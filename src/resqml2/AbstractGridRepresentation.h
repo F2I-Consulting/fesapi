@@ -18,14 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "GridConnectionSetRepresentation.h"
-#include "../resqml2_0_1/BlockedWellboreRepresentation.h"
-
-namespace RESQML2_0_1_NS
-{
-	class AbstractStratigraphicOrganizationInterpretation;
-	class UnstructuredGridRepresentation;
-}
+#include "AbstractRepresentation.h"
 
 namespace RESQML2_NS
 {
@@ -37,16 +30,20 @@ namespace RESQML2_NS
 		* @param	 forceConstantCellCountPerInterval	If true, will assume that the child and parent cell count per interval are constant. Then it will use constant xml array instead of hdf5 array for storage.
 		*												The method will consequently only consider the first cell count per interval value in childCellCountPerInterval and parentCellCountPerInterval as the constant ones.
 		**/
-		gsoap_resqml2_0_1::resqml20__Regrid* createRegrid(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount, double * childCellWeights,
+		gsoap_resqml2_0_1::resqml20__Regrid* createRegrid2_0_1(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount, double * childCellWeights,
+			const std::string & dimension, COMMON_NS::AbstractHdfProxy * proxy, bool forceConstantCellCountPerInterval = false);
+		gsoap_eml2_2::resqml22__Regrid* createRegrid2_2(unsigned int indexRegridStart, unsigned int * childCellCountPerInterval, unsigned int * parentCellCountPerInterval, unsigned int intervalCount, double * childCellWeights,
 			const std::string & dimension, COMMON_NS::AbstractHdfProxy * proxy, bool forceConstantCellCountPerInterval = false);
 
 		/*
 		* @param	dimension					It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
 		* @param	childVsParentCellCount		If true return the child cell count per interval. If false return the parent cell count per interval.
 		*/
-		gsoap_resqml2_0_1::resqml20__AbstractIntegerArray* getCellCountPerInterval2_0_1(const char & dimension, const bool & childVsParentCellCount) const;
+		gsoap_resqml2_0_1::resqml20__AbstractIntegerArray* getCellCountPerInterval2_0_1(char dimension, bool childVsParentCellCount) const;
+		gsoap_eml2_2::eml22__AbstractIntegerArray* getCellCountPerInterval2_2(char dimension, bool childVsParentCellCount) const;
 
 		gsoap_resqml2_0_1::resqml20__AbstractParentWindow* getParentWindow2_0_1() const;
+		gsoap_eml2_2::resqml22__AbstractParentWindow* getParentWindow2_2() const;
 
 	protected:
 
@@ -64,6 +61,7 @@ namespace RESQML2_NS
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		AbstractGridRepresentation(gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation* fromGsoap, bool withTruncatedPillars) : AbstractRepresentation(fromGsoap), withTruncatedPillars(withTruncatedPillars) {}
+		AbstractGridRepresentation(gsoap_eml2_2::resqml22__AbstractGridRepresentation* fromGsoap, bool withTruncatedPillars) : AbstractRepresentation(fromGsoap), withTruncatedPillars(withTruncatedPillars) {}
 
 	public:
 
@@ -84,7 +82,7 @@ namespace RESQML2_NS
 		/**
 		* Get the vector of all grid connection set rep associated to this grid instance.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::GridConnectionSetRepresentation *> getGridConnectionSetRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<class GridConnectionSetRepresentation *> getGridConnectionSetRepresentationSet() const;
 
 		/**
 		 * Get the GridConnectionSetRepresentation count into this EPC document which are associated to this grid.
@@ -96,7 +94,7 @@ namespace RESQML2_NS
 		 * Get a particular ijk parametric grid according to its position in the EPC document.
 		 * It is mainly used in SWIG context for parsing the vector from a non C++ language.
 		 */
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::GridConnectionSetRepresentation * getGridConnectionSetRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT class GridConnectionSetRepresentation * getGridConnectionSetRepresentation(unsigned int index) const;
 
 
 		//************************************************************
@@ -111,15 +109,9 @@ namespace RESQML2_NS
 
 		/**
 		* Get the parent grid dor of this grid.
-		* @return	null pointer if the grid is not a child grid (not a LGR)
+		* @return	empty DOR if the grid is not a child grid (not a LGR)
 		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getParentGridDor() const;
-
-		/**
-		* Get the parent grid uuid of this grid.
-		* @return	empty string if the grid is not a child grid (not a LGR)
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getParentGridUuid() const;
+		COMMON_NS::DataObjectReference getParentGridDor() const;
 
 		/**
 		* Get the vector of all child grids
@@ -140,7 +132,7 @@ namespace RESQML2_NS
 		* Indicates that this grid takes place into another unstructured parent grid.
 		* @param	proxy						The HDF proxy where to store the numerical values. If null, then the proxy will be the current one of the grid and if also null, it will be the one of the parent grid.
 		*/
-		DLL_IMPORT_OR_EXPORT void setParentWindow(ULONG64 * cellIndices, ULONG64 cellIndexCount, RESQML2_0_1_NS::UnstructuredGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr);
+		DLL_IMPORT_OR_EXPORT void setParentWindow(ULONG64 * cellIndices, ULONG64 cellIndexCount, class UnstructuredGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr);
 
 		/**
 		* Indicates that this grid takes place into another Column Layer parent grid.
@@ -184,7 +176,7 @@ namespace RESQML2_NS
 			unsigned int iCellIndexRegridStart, unsigned int * childCellCountPerIInterval, unsigned int * parentCellCountPerIInterval,  unsigned int iIntervalCount,
 			unsigned int jCellIndexRegridStart, unsigned int * childCellCountPerJInterval, unsigned int * parentCellCountPerJInterval,  unsigned int jIntervalCount,
 			unsigned int kCellIndexRegridStart, unsigned int * childCellCountPerKInterval, unsigned int * parentCellCountPerKInterval,  unsigned int kIntervalCount,
-			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
+			class AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 
 		/**
 		* Indicates that this grid takes place into another IJK parent grid.
@@ -210,7 +202,7 @@ namespace RESQML2_NS
 			unsigned int iCellIndexRegridStart, unsigned int constantChildCellCountPerIInterval, unsigned int constantParentCellCountPerIInterval, unsigned int iIntervalCount,
 			unsigned int jCellIndexRegridStart, unsigned int constantChildCellCountPerJInterval, unsigned int constantParentCellCountPerJInterval, unsigned int jIntervalCount,
 			unsigned int kCellIndexRegridStart, unsigned int constantChildCellCountPerKInterval, unsigned int constantParentCellCountPerKInterval, unsigned int kIntervalCount,
-			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
+			class AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 
 		/**
 		* Indicates that this grid takes place into another IJK parent grid.
@@ -234,19 +226,19 @@ namespace RESQML2_NS
 			unsigned int iCellIndexRegridStart, unsigned int iChildCellCount, unsigned int iParentCellCount,
 			unsigned int jCellIndexRegridStart, unsigned int jChildCellCount, unsigned int jParentCellCount,
 			unsigned int kCellIndexRegridStart, unsigned int kChildCellCount, unsigned int kParentCellCount,
-			RESQML2_0_1_NS::AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
+			class AbstractIjkGridRepresentation* parentGrid, COMMON_NS::AbstractHdfProxy * proxy = nullptr, double * iChildCellWeights = nullptr, double * jChildCellWeights = nullptr, double * kChildCellWeights = nullptr);
 
 		/**
 		* When a parent windows has been defined, this method allows to force some parent cells to be noted as non regridded.
 		* It mainly allows non-rectangular local grids to be specified.
 		*/
-		DLL_IMPORT_OR_EXPORT void setForcedNonRegridedParentCell(ULONG64 * cellIndices, const ULONG64 & cellIndexCount);
+		DLL_IMPORT_OR_EXPORT void setForcedNonRegridedParentCell(ULONG64 * cellIndices, ULONG64 cellIndexCount);
 
 		/**
 		* Optional cell volume overlap information between the current grid (the child) and the parent grid. Use this data-object when the child grid has an explicitly defined geometry, and these relationships cannot be inferred from the regrid descriptions.
 		*/
-		DLL_IMPORT_OR_EXPORT void setCellOverlap(const ULONG64 & parentChildCellPairCount, ULONG64 * parentChildCellPair,
-			const gsoap_resqml2_0_1::eml20__VolumeUom & volumeUom = gsoap_resqml2_0_1::eml20__VolumeUom__m3, double * overlapVolumes = nullptr);
+		DLL_IMPORT_OR_EXPORT void setCellOverlap(ULONG64 parentChildCellPairCount, ULONG64 * parentChildCellPair,
+			const std::string& volumeUom, double * overlapVolumes = nullptr);
 
 		/**
 		* Only run this method for an unstructured parent grid.
@@ -276,14 +268,14 @@ namespace RESQML2_NS
 		* Get the first cell index of the regrid on a particular dimension.
 		* @param	dimension	It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
 		*/
-		DLL_IMPORT_OR_EXPORT ULONG64 getRegridStartIndexOnParentGrid(const char & dimension) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getRegridStartIndexOnParentGrid(char dimension) const;
 
 		/**
 		* Only run this method for an ijk parent grid or a strict column layer parent grid.
 		* Get the count of intervals which are regridded on a particular dimension
 		* @param	dimension	It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
 		*/
-		DLL_IMPORT_OR_EXPORT ULONG64 getRegridIntervalCount(const char & dimension) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getRegridIntervalCount(char dimension) const;
 
 		/**
 		* Check if the cell count per interval is constant against a particular dimension.
@@ -291,7 +283,7 @@ namespace RESQML2_NS
 		* @param	dimension					It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
 		* @param	childVsParentCellCount		If true check if the child cell count per interval is constant. If false check if the parent cell count per interval is constant.
 		*/
-		DLL_IMPORT_OR_EXPORT bool isRegridCellCountPerIntervalConstant(const char & dimension, const bool & childVsParentCellCount) const;
+		DLL_IMPORT_OR_EXPORT bool isRegridCellCountPerIntervalConstant(char dimension, bool childVsParentCellCount) const;
 
 		/*
 		* Get the constant cell count per interval
@@ -299,7 +291,7 @@ namespace RESQML2_NS
 		* @param	dimension					It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
 		* @param	childVsParentCellCount		If true return the child cell count per interval. If false return the parent cell count per interval.
 		*/
-		DLL_IMPORT_OR_EXPORT ULONG64 getRegridConstantCellCountPerInterval(const char & dimension, const bool & childVsParentCellCount) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getRegridConstantCellCountPerInterval(char dimension, bool childVsParentCellCount) const;
 
 		/**
 		* Only run this method for an ijk parent grid or a strict column layer parent grid.
@@ -307,20 +299,20 @@ namespace RESQML2_NS
 		* @param	childCellCountPerInterval	This array must have been preallocated with a size of getRegridIntervalCount().
 		* @param	childVsParentCellCount		If true return the child cell count per interval. If false return the parent cell count per interval.
 		*/
-		DLL_IMPORT_OR_EXPORT void getRegridCellCountPerInterval(const char & dimension, ULONG64 * childCellCountPerInterval, const bool & childVsParentCellCount) const;
+		DLL_IMPORT_OR_EXPORT void getRegridCellCountPerInterval(char dimension, ULONG64 * childCellCountPerInterval, bool childVsParentCellCount) const;
 
 		/**
 		* Only run this method for an ijk parent grid or a strict column layer parent grid.
 		* @param	dimension					It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
 		*/
-		DLL_IMPORT_OR_EXPORT bool hasRegridChildCellWeights(const char & dimension) const;
+		DLL_IMPORT_OR_EXPORT bool hasRegridChildCellWeights(char dimension) const;
 
 		/**
 		* Only run this method for an ijk parent grid or a strict column layer parent grid.
 		* @param	dimension			It must be either 'i', 'j' ou 'k' (upper or lower case) for an ijk parent grid. 'k' for a strict column layer parent grid.
 		* @param	childCellWeights	This array must have been preallocated with a size equal to the sum of ChildCellCountPerInterval.
 		*/
-		DLL_IMPORT_OR_EXPORT void getRegridChildCellWeights(const char & dimension, double * childCellWeights) const;
+		DLL_IMPORT_OR_EXPORT void getRegridChildCellWeights(char dimension, double * childCellWeights) const;
 
 		/**
 		* When a parent windows has been defined, this method checks if some parent cells have been noted to be forced not to be regridded.
@@ -338,27 +330,17 @@ namespace RESQML2_NS
 		* @param nullValue			The value which is used to tell the association between a cell and strati unit is unavailable.
 		* @param stratiOrgInterp	The stratigraphic organization interpretation which is associated to this grid representation.
 		*/
-		DLL_IMPORT_OR_EXPORT void setCellAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
+		DLL_IMPORT_OR_EXPORT void setCellAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, ULONG64 nullValue, class AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp);
 
 		/**
 		* @return	nullptr if no stratigraphic organization interpretation is associated to this grid representation. Otherwise return the associated stratigraphic organization interpretation.
 		*/
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::AbstractStratigraphicOrganizationInterpretation* getStratigraphicOrganizationInterpretation() const;
+		DLL_IMPORT_OR_EXPORT class AbstractStratigraphicOrganizationInterpretation* getStratigraphicOrganizationInterpretation() const;
 
 		/**
 		* @return	null pointer if no stratigraphic organization interpretation is associated to this grid representation. Otherwise return the data objet reference of the associated stratigraphic organization interpretation.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::eml20__DataObjectReference const * getStratigraphicOrganizationInterpretationDor() const;
-
-		/**
-		* @return	empty string if no stratigraphic organization interpretation is associated to this grid representation. Otherwise return the uuid of the associated stratigraphic organization interpretation.
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getStratigraphicOrganizationInterpretationUuid() const;
-
-		/**
-		* @return	empty string if no stratigraphic organization interpretation is associated to this grid representation. Otherwise return the title of the associated stratigraphic organization interpretation.
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getStratigraphicOrganizationInterpretationTitle() const;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getStratigraphicOrganizationInterpretationDor() const;
 		
 		/**
 		* @return	true if this grid representation has got some association between stratigraphic unit indices and cell.
@@ -382,27 +364,17 @@ namespace RESQML2_NS
 		* @param nullValue			The value which is used to tell the association between a cell and rockFluid unit is unavailable.
 		* @param rockFluidOrgInterp	The rock fluid organization interpretation which is associated to this grid representation.
 		*/
-		DLL_IMPORT_OR_EXPORT void setCellAssociationWithRockFluidOrganizationInterpretation(ULONG64 * rockFluidUnitIndices, const ULONG64 & nullValue, RESQML2_0_1_NS::RockFluidOrganizationInterpretation* rockFluidOrgInterp);
+		DLL_IMPORT_OR_EXPORT void setCellAssociationWithRockFluidOrganizationInterpretation(ULONG64 * rockFluidUnitIndices, ULONG64 nullValue, class RockFluidOrganizationInterpretation* rockFluidOrgInterp);
 
 		/**
 		* @return	nullptr if no rock fluid organization interpretation is associated to this grid representation. Otherwise return the associated rock fluid organization interpretation.
 		*/
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::RockFluidOrganizationInterpretation* getRockFluidOrganizationInterpretation() const;
+		DLL_IMPORT_OR_EXPORT class RockFluidOrganizationInterpretation* getRockFluidOrganizationInterpretation() const;
 
 		/**
 		* @return	null pointer if no rock fluid organization interpretation is associated to this grid representation. Otherwise return the data objet reference of the associated rock fluid organization interpretation.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::eml20__DataObjectReference const * getRockFluidOrganizationInterpretationDor() const;
-
-		/**
-		* @return	empty string if no rock fluid organization interpretation is associated to this grid representation. Otherwise return the uuid of the associated rock fluid organization interpretation.
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getRockFluidOrganizationInterpretationUuid() const;
-
-		/**
-		* @return	empty string if no rock fluid organization interpretation is associated to this grid representation. Otherwise return the title of the associated rock fluid organization interpretation.
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getRockFluidOrganizationInterpretationTitle() const;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getRockFluidOrganizationInterpretationDor() const;
 		
 		/**
 		* @return	true if this grid representation has got some association between rock fluid unit indices and cell.

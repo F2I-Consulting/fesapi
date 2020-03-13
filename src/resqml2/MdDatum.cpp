@@ -31,12 +31,12 @@ const char* MdDatum::XML_TAG = "MdDatum";
 
 void MdDatum::loadTargetRelationships()
 {
-	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getLocalCrsDor();
-	if (dor != nullptr) {
-		AbstractLocal3dCrs* localCrs = getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(dor->UUID);
+	COMMON_NS::DataObjectReference dor = getLocalCrsDor();
+	if (!dor.isEmpty()) {
+		AbstractLocal3dCrs* localCrs = getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(dor.getUuid());
 		if (localCrs == nullptr) { // partial transfer
 			getRepository()->createPartial(dor);
-			localCrs = getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(dor->UUID);
+			localCrs = getRepository()->getDataObjectByUuid<AbstractLocal3dCrs>(dor.getUuid());
 			if (localCrs == nullptr) {
 				throw invalid_argument("The DOR looks invalid.");
 			}

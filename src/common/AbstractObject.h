@@ -219,62 +219,21 @@ namespace COMMON_NS
 		ULONG64 getCountOfIntegerArray(gsoap_resqml2_0_1::resqml20__AbstractIntegerArray * arrayInput) const;
 
 		/**
-		* Convert a EML 2.0 Data Object Reference into a DataObjectRepository relationship.
+		* Convert a Data Object Reference into a DataObjectRepository relationship.
 		*/
-		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor);
-
-		/**
-		* Convert a EML 2.2 Data Object Reference into a DataObjectRepository relationship.
-		*/
-		void convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor);
+		void convertDorIntoRel(const DataObjectReference& dor);
 
 		/**
 		* Same as convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor).
 		* Also check that the content type of the DOR is OK with the target datatype in memory.
 		*/
 		template <class valueType>
-		void convertDorIntoRel(gsoap_resqml2_0_1::eml20__DataObjectReference const * dor)
+		void convertDorIntoRel(const DataObjectReference& dor)
 		{
-			valueType * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->UUID);
+			valueType * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor.getUuid());
 			if (targetObj == nullptr) { // partial transfer
 				getRepository()->createPartial(dor);
-				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->UUID);
-				if (targetObj == nullptr) {
-					throw std::invalid_argument("The DOR looks invalid.");
-				}
-			}
-			getRepository()->addRelationship(this, targetObj);
-		}
-
-		/**
-		* Same as convertDorIntoRel(gsoap_eml2_1::eml21__DataObjectReference const * dor).
-		* Also check that the content type of the DOR is OK with the target datatype in memory.
-		*/
-		template <class valueType>
-		void convertDorIntoRel(gsoap_eml2_1::eml21__DataObjectReference const * dor)
-		{
-			valueType * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
-			if (targetObj == nullptr) { // partial transfer
-				getRepository()->createPartial(dor);
-				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
-				if (targetObj == nullptr) {
-					throw std::invalid_argument("The DOR looks invalid.");
-				}
-			}
-			getRepository()->addRelationship(this, targetObj);
-		}
-
-		/**
-		* Same as convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor).
-		* Also check that the content type of the DOR is OK with the target datatype in memory.
-		*/
-		template <class valueType>
-		void convertDorIntoRel(gsoap_eml2_2::eml22__DataObjectReference const * dor)
-		{
-			valueType * targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
-			if (targetObj == nullptr) { // partial transfer
-				getRepository()->createPartial(dor);
-				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor->Uuid);
+				targetObj = getRepository()->getDataObjectByUuid<valueType>(dor.getUuid());
 				if (targetObj == nullptr) {
 					throw std::invalid_argument("The DOR looks invalid.");
 				}
@@ -286,6 +245,11 @@ namespace COMMON_NS
 		* Get an Hdf Proxy from a EML 2.0 dataset.
 		*/
 		COMMON_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_resqml2_0_1::eml20__Hdf5Dataset const * dataset, bool throwException = true) const;
+
+		/**
+		* Get an Hdf Proxy from a EML 2.2 dataset.
+		*/
+		COMMON_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_eml2_2::eml22__ExternalDatasetPart const * dataset, bool throwException = true) const;
 
 	public:
 		virtual ~AbstractObject() {}
@@ -495,7 +459,12 @@ namespace COMMON_NS
 		/**
 		* Creates an returns an EML2.0 Contact Data Object Reference which targets this dataobject.
 		*/
-		gsoap_resqml2_0_1::resqml20__ContactElementReference* newResqmlContactElementReference() const;
+		gsoap_resqml2_0_1::resqml20__ContactElementReference* newContactElementReference2_0_1() const;
+
+		/**
+		* Creates an returns an EML2.0 Contact Data Object Reference which targets this dataobject.
+		*/
+		gsoap_eml2_2::resqml22__ContactElement* newContactElementReference2_2() const;
 
 		/**
 		 * Return the data object repository document which contains this gsoap wrapper.

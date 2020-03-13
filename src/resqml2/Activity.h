@@ -99,7 +99,7 @@ namespace RESQML2_NS
 		/**
 		* Get the activity template dor of the activity
 		**/
-		virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getActivityTemplateDor() const = 0;
+		virtual COMMON_NS::DataObjectReference getActivityTemplateDor() const = 0;
 		
 		/**
 		* Get the activity template of the activity

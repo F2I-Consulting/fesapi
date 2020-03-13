@@ -49,9 +49,9 @@ WellboreGeometry::WellboreGeometry(Wellbore* witsmlWellbore,
 	setWellbore(witsmlWellbore);
 }
 
-gsoap_eml2_1::eml21__DataObjectReference* WellboreGeometry::getWellboreDor() const
+COMMON_NS::DataObjectReference WellboreGeometry::getWellboreDor() const
 {
-	return static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->Wellbore;
+	return COMMON_NS::DataObjectReference(static_cast<witsml20__WellboreGeometry*>(gsoapProxy2_1)->Wellbore);
 }
 
 void WellboreGeometry::setWellbore(Wellbore* witsmlWellbore)

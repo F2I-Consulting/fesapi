@@ -113,13 +113,13 @@ namespace RESQML2_NS
 		* Get the UUID of a particular interpretation of this grid connection set.
 		* @param interpretationIndex The index of the interpretation in the collection of feature interpretation of this grid connection set.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getInterpretationUuidFromIndex(const unsigned int & interpretationIndex) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual std::string getInterpretationUuidFromIndex(unsigned int interpretationIndex) const = 0;
 
 		/**
 		* Get a particular interpretation of this grid connection set.
 		* @param interpretationIndex The index of the interpretation in the collection of feature interpretation of this grid connection set.
 		*/
-		DLL_IMPORT_OR_EXPORT class AbstractFeatureInterpretation * getInterpretationFromIndex(const unsigned int & interpretationIndex) const;
+		DLL_IMPORT_OR_EXPORT class AbstractFeatureInterpretation * getInterpretationFromIndex(unsigned int interpretationIndex) const;
 
 		/**
 		* Get the count of interpretations in this grid connection set.
@@ -217,22 +217,8 @@ namespace RESQML2_NS
 		/**
 		* Get one of the supporting grid representation dor of this grid connection representation.
 		*/
-		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getSupportingGridRepresentationDor(unsigned int index) const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getSupportingGridRepresentationDor(unsigned int index) const = 0;
 		
-		/**
-		* Get one of the supporting grid representation uuid of this grid connection representation.
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getSupportingGridRepresentationUuid(unsigned int index) const;
-
-		/**
-		* Get one of the supporting grid representation title of this grid connection representation.
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getSupportingGridRepresentationTitle(unsigned int index) const;
-
-		/**
-		* Get one of the supporting grid representation content type of this grid connection representation.
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getSupportingGridRepresentationContentType(unsigned int index) const;
 
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
 

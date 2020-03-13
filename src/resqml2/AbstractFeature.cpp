@@ -33,9 +33,9 @@ namespace {
 
 		bool operator()(AbstractFeatureInterpretation const * dataObj) const
 		{
-			gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = dataObj->getInterpretedFeatureDor();
-			return dor->UUID != obj->getUuid()
-				|| (dor->VersionString == nullptr ? "" : *dor->VersionString) != obj->getVersion();
+			COMMON_NS::DataObjectReference dor = dataObj->getInterpretedFeatureDor();
+			return dor.getUuid() != obj->getUuid()
+				|| dor.getVersion() != obj->getVersion();
 		}
 	};
 }
@@ -69,6 +69,3 @@ AbstractFeatureInterpretation *	AbstractFeature::getInterpretation(unsigned int 
 
 	throw range_error("The interpretation index is out of the range of the interpretation set of the feature.");
 }
-
-void AbstractFeature::loadTargetRelationships()
-{}

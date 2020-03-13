@@ -160,19 +160,14 @@ void SealedVolumeFrameworkRepresentation::pushBackInternalShell(unsigned int reg
 		faceRepresentationIndices, faceRepPatchIndices, faceSide));
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* SealedVolumeFrameworkRepresentation::getSealedStructuralFrameworkDor() const
+COMMON_NS::DataObjectReference SealedVolumeFrameworkRepresentation::getSealedStructuralFrameworkDor() const
 {
-	return static_cast<gsoap_resqml2_0_1::_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->BasedOn;
-}
-
-std::string SealedVolumeFrameworkRepresentation::getSealedStructuralFrameworkUuid() const
-{
-	return getSealedStructuralFrameworkDor()->UUID;
+	return COMMON_NS::DataObjectReference(static_cast<gsoap_resqml2_0_1::_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->BasedOn);
 }
 
 SealedSurfaceFrameworkRepresentation* SealedVolumeFrameworkRepresentation::getSealedStructuralFramework() const
 {
-	return repository->getDataObjectByUuid<SealedSurfaceFrameworkRepresentation>(getSealedStructuralFrameworkUuid());
+	return repository->getDataObjectByUuid<SealedSurfaceFrameworkRepresentation>(getSealedStructuralFrameworkDor().getUuid());
 }
 
 gsoap_resqml2_0_1::resqml20__VolumeRegion* SealedVolumeFrameworkRepresentation::getRegion(unsigned int regionIndex) const
@@ -183,19 +178,14 @@ gsoap_resqml2_0_1::resqml20__VolumeRegion* SealedVolumeFrameworkRepresentation::
 	return static_cast<gsoap_resqml2_0_1::_resqml20__SealedVolumeFrameworkRepresentation*>(gsoapProxy2_0_1)->Regions[regionIndex];
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* SealedVolumeFrameworkRepresentation::getStratiUnitInterpDor(unsigned int regionIndex) const
+COMMON_NS::DataObjectReference SealedVolumeFrameworkRepresentation::getStratiUnitInterpDor(unsigned int regionIndex) const
 {
-	return getRegion(regionIndex)->Represents;
-}
-
-std::string SealedVolumeFrameworkRepresentation::getStratiUnitInterpUuid(unsigned int regionIndex) const
-{
-	return getStratiUnitInterpDor(regionIndex)->UUID;
+	return COMMON_NS::DataObjectReference(getRegion(regionIndex)->Represents);
 }
 
 StratigraphicUnitInterpretation* SealedVolumeFrameworkRepresentation::getStratiUnitInterp(unsigned int regionIndex) const
 {
-	return repository->getDataObjectByUuid<StratigraphicUnitInterpretation>(getStratiUnitInterpUuid(regionIndex));
+	return repository->getDataObjectByUuid<StratigraphicUnitInterpretation>(getStratiUnitInterpDor(regionIndex).getUuid());
 }
 
 unsigned int SealedVolumeFrameworkRepresentation::getRegionCount() const
@@ -304,11 +294,9 @@ void SealedVolumeFrameworkRepresentation::loadTargetRelationships()
 {
 	RESQML2_NS::RepresentationSetRepresentation::loadTargetRelationships();
 
-	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getSealedStructuralFrameworkDor();
-	convertDorIntoRel<SealedSurfaceFrameworkRepresentation>(dor);
+	convertDorIntoRel<SealedSurfaceFrameworkRepresentation>(getSealedStructuralFrameworkDor());
 
 	for (size_t regionIdx = 0; regionIdx < getRegionCount(); ++regionIdx) {
-		dor = getStratiUnitInterpDor(regionIdx);
-		convertDorIntoRel<StratigraphicUnitInterpretation>(dor);
+		convertDorIntoRel<StratigraphicUnitInterpretation>(getStratiUnitInterpDor(regionIdx));
 	}
 }

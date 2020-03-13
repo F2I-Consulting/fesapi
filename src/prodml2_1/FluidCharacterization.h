@@ -124,7 +124,7 @@ namespace PRODML2_1_NS
 
 		DLL_IMPORT_OR_EXPORT void setRockFluidUnit(RESQML2_0_1_NS::RockFluidUnitFeature* rockFluidUnit);
 
-		gsoap_eml2_2::eml22__DataObjectReference* getRockFluidUnitDor() const;
+		COMMON_NS::DataObjectReference getRockFluidUnitDor() const;
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::RockFluidUnitFeature* getRockFluidUnit() const;
 

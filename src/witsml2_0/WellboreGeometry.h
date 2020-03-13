@@ -48,7 +48,7 @@ namespace WITSML2_0_NS
 		*/
 		~WellboreGeometry() {}
 
-		DLL_IMPORT_OR_EXPORT gsoap_eml2_1::eml21__DataObjectReference* getWellboreDor() const;
+		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getWellboreDor() const;
 		DLL_IMPORT_OR_EXPORT void setWellbore(class Wellbore* witsmlWellbore);
 
 		GETTER_AND_SETTER_DEPTH_MEASURE_OPTIONAL_ATTRIBUTE(MdBase, gsoap_eml2_1::eml21__LengthUom)

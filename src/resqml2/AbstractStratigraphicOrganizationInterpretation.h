@@ -19,9 +19,9 @@ under the License.
 #pragma once
 
 #include "AbstractOrganizationInterpretation.h"
-#include "../resqml2/AbstractColumnLayerGridRepresentation.h"
+#include "AbstractGridRepresentation.h"
 
-namespace RESQML2_0_1_NS
+namespace RESQML2_NS
 {
 	class AbstractStratigraphicOrganizationInterpretation : public AbstractOrganizationInterpretation
 	{
@@ -38,6 +38,7 @@ namespace RESQML2_0_1_NS
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		AbstractStratigraphicOrganizationInterpretation(gsoap_resqml2_0_1::resqml20__AbstractStratigraphicOrganizationInterpretation* fromGsoap) : AbstractOrganizationInterpretation(fromGsoap) {}
+		AbstractStratigraphicOrganizationInterpretation(gsoap_eml2_2::resqml22__AbstractStratigraphicOrganizationInterpretation* fromGsoap) : AbstractOrganizationInterpretation(fromGsoap) {}
 
 	public:
 
@@ -46,7 +47,7 @@ namespace RESQML2_0_1_NS
 		*/
 		virtual ~AbstractStratigraphicOrganizationInterpretation() {}
 
-		std::vector<RESQML2_NS::AbstractGridRepresentation *> getGridRepresentations() const;
+		std::vector<AbstractGridRepresentation*> getGridRepresentations() const;
 
 		/**
 		* @return The count of grid representation assocaited to this strati organization.
@@ -57,13 +58,13 @@ namespace RESQML2_0_1_NS
 		* Get a grid representation associated to this strati org interp by means of its index.
 		* @param index	The index of the grid representation to get in the array of grid representaitons of this strati org interp.
 		*/
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractGridRepresentation * getGridRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT AbstractGridRepresentation * getGridRepresentation(unsigned int index) const;
 
 		/**
 		* Check if a grid representation is wether associated to this strati org interp or not.
 		* @param gridRep	The grid representation to check its assocaition with this strati org interp.
 		* @return			True or false.
 		*/
-		DLL_IMPORT_OR_EXPORT bool isAssociatedToGridRepresentation(RESQML2_NS::AbstractGridRepresentation* gridRep) const;
+		DLL_IMPORT_OR_EXPORT bool isAssociatedToGridRepresentation(AbstractGridRepresentation* gridRep) const;
 	};
 }

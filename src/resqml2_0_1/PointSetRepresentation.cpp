@@ -86,7 +86,7 @@ void PointSetRepresentation::pushBackGeometryPatch(
 	getRepository()->addRelationship(this, localCrs);
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* PointSetRepresentation::getHdfProxyDor() const
+COMMON_NS::DataObjectReference PointSetRepresentation::getHdfProxyDor() const
 {
 	return getHdfProxyDorFromPointGeometryPatch(getPointGeometry2_0_1(0));
 }

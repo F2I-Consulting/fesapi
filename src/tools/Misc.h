@@ -32,10 +32,5 @@ namespace misc
 	* Get the part name of an eml 2.2 object in the epc document based on one of its reference.
 	*/
 	std::string getPartNameFromReference(gsoap_eml2_2::eml22__DataObjectReference * reference);
-
-	/**
-	 * Convert an EML 2.2 data object reference to an EML 2.0 data object reference.
-	 */
-	gsoap_resqml2_0_1::eml20__DataObjectReference* eml22ToEml20Reference(gsoap_eml2_2::eml22__DataObjectReference* reference, soap* soapContext);
 }
 

@@ -221,11 +221,9 @@ namespace RESQML2_0_1_NS
 		gsoap_resqml2_0_1::resqml20__OrientedMacroFace* getRegionExternalShellFace(unsigned int regionIndex, unsigned int faceIndex) const;
 		gsoap_resqml2_0_1::resqml20__OrientedMacroFace* getRegionInternalShellFace(unsigned int regionIndex, unsigned int internalShellIndex, unsigned int faceIndex) const;
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getSealedStructuralFrameworkDor() const;
-		std::string getSealedStructuralFrameworkUuid() const;
+		COMMON_NS::DataObjectReference getSealedStructuralFrameworkDor() const;
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getStratiUnitInterpDor(unsigned int regionIndex) const;
-		std::string getStratiUnitInterpUuid(unsigned int regionIndex) const;
+		COMMON_NS::DataObjectReference getStratiUnitInterpDor(unsigned int regionIndex) const;
 
 		void loadTargetRelationships();
 

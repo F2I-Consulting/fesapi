@@ -118,7 +118,7 @@ namespace RESQML2_0_1_NS
 		**/
 		DLL_IMPORT_OR_EXPORT void setActivityTemplate(RESQML2_NS::ActivityTemplate* activityTemplate);
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getActivityTemplateDor() const;
+		COMMON_NS::DataObjectReference getActivityTemplateDor() const;
 
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespaceVersion() const;
 

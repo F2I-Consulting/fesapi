@@ -91,12 +91,10 @@ under the License.
 #include "resqml2_0_1/Activity.h"
 #include "resqml2_0_1/ActivityTemplate.h"
 
-#if WITH_EXPERIMENTAL
 #include "common/GraphicalInformationSet.h"
 #include "resqml2_2/DiscreteColorMap.h"
 #include "resqml2_2/ContinuousColorMap.h"
 #include "resqml2_2/SeismicWellboreFrameRepresentation.h"
-#endif
 
 #include "witsml2_0/Well.h"
 #include "witsml2_0/Wellbore.h"
@@ -279,7 +277,6 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHd
 	char unitNumbers[5] = { 0, 1, 2, 3, 4 };
 	discreteProp->pushBackCharHdf5Array1dOfValues(unitNumbers, 5, hdfProxy, -1);
 
-#if WITH_EXPERIMENTAL
 	// SeismicWellboreFrameRepresentation
 	RESQML2_2_NS::SeismicWellboreFrameRepresentation* w1i1SeismicFrameRep = pck->createSeismicWellboreFrameRepresentation(
 		wellbore1Interp1, "dcbeea2e-8327-4c5b-97e3-bdced0680de5", "Wellbore1 Interp1 SeismicFrameRep",
@@ -299,7 +296,6 @@ void serializeWells(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHd
 		localTime3dCrs);
 	w1i1RegularSeismicFrameRep->setMdValues(0, 200, 6);
 	w1i1RegularSeismicFrameRep->setTimeValues(0., 10., 6);
-#endif
 }
 
 void serializePerforations(COMMON_NS::DataObjectRepository * pck)
@@ -330,7 +326,6 @@ void serializePerforations(COMMON_NS::DataObjectRepository * pck)
 	wellboreCompletion->setPerforationHistoryStartDate(1, 1, 1514764800);
 }
 
-#if WITH_EXPERIMENTAL
 void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, COMMON_NS::AbstractHdfProxy * hdfProxy)
 {
 	COMMON_NS::GraphicalInformationSet* graphicalInformationSet = repo->createGraphicalInformationSet("be17c053-9189-4bc0-9db1-75aa51a026cd", "Graphical Information Set");
@@ -419,7 +414,6 @@ void serializeGraphicalInformationSet(COMMON_NS::DataObjectRepository * repo, CO
 	graphicalInformationSet->setColorMapMinMax(contColMapContProp, 0., 1.);
 	graphicalInformationSet->setValueVectorIndex(contColMapContProp, 1);
 }
-#endif
 
 void serializeStratigraphicModel(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdfProxy* hdfProxy)
 {
@@ -1048,117 +1042,117 @@ void serializeStructuralModel(COMMON_NS::DataObjectRepository & pck, COMMON_NS::
 	// =========================================================================
 	// Binary contact interpretation
 
-	// Contact 0: fault1Interp1 HANGING_WALL_SIDE SPLITS horizon1Interp1 BOTH_SIDES
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020genetic_x0020boundary, fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__hanging_x0020wall,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__splits,
+	// Contact 0: fault1Interp1 HANGING_WALL_SIDE STOPS horizon1Interp1 BOTH_SIDES
+	structuralOrganizationInterpretation->pushBackBinaryContact(fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__hanging_x0020wall,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
 		horizon1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__both);
-	// Contact 1: fault1Interp1 FOOT_WALL_SIDE SPLITS horizon1Interp1 BOTH_SIDES
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020genetic_x0020boundary, fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__footwall,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__splits,
+	// Contact 1: fault1Interp1 FOOT_WALL_SIDE STOPS horizon1Interp1 BOTH_SIDES
+	structuralOrganizationInterpretation->pushBackBinaryContact(fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__footwall,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
 		horizon1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__both);
-	// Contact 2: fault1Interp1 HANGING_WALL_SIDE SPLITS horizon2Interp1 BOTH_SIDES
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020genetic_x0020boundary, fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__hanging_x0020wall,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__splits,
+	// Contact 2: fault1Interp1 HANGING_WALL_SIDE STOPS horizon2Interp1 BOTH_SIDES
+	structuralOrganizationInterpretation->pushBackBinaryContact(fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__hanging_x0020wall,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
 		horizon2Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__both);
-	// Contact 3: fault1Interp1 FOOT_WALL_SIDE SPLITS horizon2Interp1 BOTH_SIDES
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020genetic_x0020boundary, fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__footwall,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__splits,
+	// Contact 3: fault1Interp1 FOOT_WALL_SIDE STOPS horizon2Interp1 BOTH_SIDES
+	structuralOrganizationInterpretation->pushBackBinaryContact(fault1Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__footwall,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
 		horizon2Interp1, gsoap_resqml2_0_1::resqml20__ContactSide__both);
 
 	// Contact 4: horizon1Interp1 STOPS AT yMinusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		yMinusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(yMinusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		horizon1Interp1);
 	// Contact 5: fault1Interp1 STOPS AT yMinusFrontierInterp (part above horizon1Interp1)
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		yMinusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(yMinusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		fault1Interp1);
 	// Contact 6: horizon2Interp1 STOPS AT yMinusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		yMinusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(yMinusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		horizon2Interp1);
 
 	// Contact 7: horizon1Interp1 STOPS AT yPlusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		yPlusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(yPlusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		horizon1Interp1);
 	// Contact 8: fault1Interp1 STOPS AT yPlusFrontierInterp (part above horizon1Interp1)
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		yPlusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(yPlusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		fault1Interp1);
 	// Contact 9: horizon2Interp1 STOPS AT yPlusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		yPlusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(yPlusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		horizon2Interp1);
 
 	// Contact 10: horizon1Interp1 STOPS AT xMinusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		xMinusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(xMinusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		horizon1Interp1);
 	// Contact 11: horizon2Interp1 STOPS AT xMinusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		xMinusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(xMinusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		horizon2Interp1);
 	// Contact 12: xMinusFrontierInterp STOPS AT yMinusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__frontier_x0020feature_x0020to_x0020frontier_x0020feature, xMinusFrontierInterp,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		yMinusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(yMinusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		xMinusFrontierInterp);
 	// Contact 13: xMinusFrontierInterp STOPS AT yPlusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__frontier_x0020feature_x0020to_x0020frontier_x0020feature, xMinusFrontierInterp,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		yPlusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(yPlusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		xMinusFrontierInterp);
 
 	// Contact 14: fault1Interp1 STOPS AT yMinusFrontierInterp (part below horizon1Interp1)
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		yMinusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(yMinusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		fault1Interp1);
 	// Contact 15: fault1Interp1 STOPS AT yPlusFrontierInterp (part above horizon1Interp1)
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		yPlusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(yPlusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		fault1Interp1);
 
 	// Contact 16: horizon1Interp1 STOPS AT yMinusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		yMinusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(yMinusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		horizon1Interp1);
 	// Contact 17: fault1Interp1 STOPS AT yMinusFrontierInterp (part below horizon2Interp1)
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		yMinusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(yMinusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		fault1Interp1);
 	// Contact 18: horizon2Interp1 STOPS AT yMinusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		yMinusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(yMinusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		horizon2Interp1);
 
 	// Contact 19: horizon1Interp1 STOPS AT yPlusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		yPlusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(yPlusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		horizon1Interp1);
 	// Contact 20: fault1Interp1 STOPS AT yPlusFrontierInterp (part below horizon2Interp1)
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__tectonic_x0020boundary_x0020to_x0020frontier_x0020feature, fault1Interp1,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		yPlusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(yPlusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		fault1Interp1);
 	// Contact 21: horizon2Interp1 STOPS AT yPlusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		yPlusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(yPlusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		horizon2Interp1);
 
 	// Contact 22: horizon1Interp1 STOPS AT xPlusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon1Interp1,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		xPlusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(xPlusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		horizon1Interp1);
 	// Contact 23: horizon2Interp1 STOPS AT xPlusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__genetic_x0020boundary_x0020to_x0020frontier_x0020feature, horizon2Interp1,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		xPlusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(xPlusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		horizon2Interp1);
 	// Contact 24: xPlusFrontierInterp STOPS AT yMinusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__frontier_x0020feature_x0020to_x0020frontier_x0020feature, xPlusFrontierInterp,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		yMinusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(yMinusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		xPlusFrontierInterp);
 	// Contact 25: xPlusFrontierInterp STOPS AT yPlusFrontierInterp
-	structuralOrganizationInterpretation->pushBackBinaryContact(gsoap_resqml2_0_1::resqml20__ContactRelationship__frontier_x0020feature_x0020to_x0020frontier_x0020feature, xPlusFrontierInterp,
-		gsoap_resqml2_0_1::resqml20__ContactVerb__stops_x0020at,
-		yPlusFrontierInterp);
+	structuralOrganizationInterpretation->pushBackBinaryContact(yPlusFrontierInterp,
+		gsoap_eml2_2::resqml22__ContactVerb__stops,
+		xPlusFrontierInterp);
 
 	// =========================================================================
 	// =========================================================================
@@ -1961,6 +1955,7 @@ bool serialize(const string & filePath)
 {
 	COMMON_NS::EpcDocument pck(filePath);
 	COMMON_NS::DataObjectRepository repo;
+	repo.setDefaultStandard(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1);
 
 	COMMON_NS::AbstractObject::setFormat("F2I-CONSULTING", "Fesapi Example", FESAPI_VERSION);
 
@@ -1985,9 +1980,8 @@ bool serialize(const string & filePath)
 	serializeFluidBoundary(repo, hdfProxy);
 	serializeRockFluidOrganization(repo, hdfProxy);
 	serializeFluidCharacterization(repo);
-#if WITH_EXPERIMENTAL
 	serializeGraphicalInformationSet(&repo, hdfProxy);
-#endif
+
 	// Add an extended core property before to serialize
 	pck.setExtendedCoreProperty("F2I-ExtendedCoreProp", "TestingVersion");
 
@@ -2387,7 +2381,7 @@ void deserializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck)
 		}
 
 		for (unsigned int unitIndex = 0; unitIndex < rockFluidOrgInterp->getRockFluidUnitInterpCount(); ++unitIndex) {
-			RockFluidUnitInterpretation* rockFluidInterp = rockFluidOrgInterp->getRockFluidUnitInterpretation(unitIndex);
+			RESQML2_NS::RockFluidUnitInterpretation* rockFluidInterp = rockFluidOrgInterp->getRockFluidUnitInterpretation(unitIndex);
 			showAllMetadata(rockFluidInterp);
 
 			RockFluidUnitFeature* rockFluidFeature = static_cast<RockFluidUnitFeature*>(rockFluidInterp->getInterpretedFeature());
@@ -2481,16 +2475,15 @@ void deserializeGridHyperslabbingInterfaceSequence(COMMON_NS::DataObjectReposito
 	unsigned int ijkGridCount = pck.getIjkGridRepresentationCount();
 	for (unsigned int ijkGridIdx = 0; ijkGridIdx < ijkGridCount; ++ijkGridIdx)
 	{
-		AbstractIjkGridRepresentation* ijkGrid = pck.getIjkGridRepresentation(ijkGridIdx);
+		RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = pck.getIjkGridRepresentation(ijkGridIdx);
 
-		if (ijkGrid->getGeometryKind() != AbstractIjkGridRepresentation::NO_GEOMETRY)
+		if (ijkGrid->getGeometryKind() != RESQML2_NS::AbstractIjkGridRepresentation::NO_GEOMETRY)
 		{
-			if (ijkGrid->getGeometryKind() == AbstractIjkGridRepresentation::EXPLICIT || ijkGrid->getGeometryKind() == AbstractIjkGridRepresentation::PARAMETRIC) {
+			if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::EXPLICIT || ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::PARAMETRIC) {
 				cout << "--------------------------------------------------" << std::endl;
 				showAllMetadata(ijkGrid);
 				if (ijkGrid->isPartial()) {
 					continue;
-
 				}
 
 				ijkGrid->loadSplitInformation();
@@ -2499,22 +2492,19 @@ void deserializeGridHyperslabbingInterfaceSequence(COMMON_NS::DataObjectReposito
 				// in i then j direction
 				cout << "INTERFACE BY INTERFACE" << std::endl;
 
-				for (unsigned int kInterface = 0; kInterface < ijkGrid->getKCellCount(); kInterface++)
-				{
+				for (unsigned int kInterface = 0; kInterface < ijkGrid->getKCellCount(); kInterface++) {
 					cout << "INTERFACE: " << kInterface << std::endl;
 
-					double* interfaceXyzPoints = new double[ijkGrid->getXyzPointCountOfKInterfaceOfPatch(0) * 3];
-					ijkGrid->getXyzPointsOfKInterfaceOfPatch(kInterface, 0, interfaceXyzPoints);
+					std::unique_ptr<double[]> interfaceXyzPoints(new double[ijkGrid->getXyzPointCountOfKInterface() * 3]);
+					ijkGrid->getXyzPointsOfKInterface(kInterface, interfaceXyzPoints.get());
 
-					for (unsigned int j = 0; j < ijkGrid->getJCellCount(); j++)
-					{
-						for (unsigned int i = 0; i < ijkGrid->getICellCount(); i++)
-						{
+					for (unsigned int j = 0; j < ijkGrid->getJCellCount(); j++) {
+						for (unsigned int i = 0; i < ijkGrid->getICellCount(); i++) {
 							cout << "CELL (" << i << ", " << j << ", " << kInterface << ")" << std::endl;
 
 							ULONG64 xyzPointIndex;
 							double x, y, z;
-							ULONG64 indexShift = kInterface * ijkGrid->getXyzPointCountOfKInterfaceOfPatch(0) * 3;
+							ULONG64 indexShift = kInterface * ijkGrid->getXyzPointCountOfKInterface() * 3;
 
 							// Corner (0, 0, 0)
 							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 0) * 3 - indexShift;
@@ -2546,15 +2536,13 @@ void deserializeGridHyperslabbingInterfaceSequence(COMMON_NS::DataObjectReposito
 
 						}
 					}
-
-					delete[] interfaceXyzPoints;
 				}
 
 				// last interface differs from the other because of  getXyzPointIndexFromCellCorner usage
 				cout << "INTERFACE: " << ijkGrid->getKCellCount() << std::endl;
 
-				double* interfaceXyzPoints = new double[ijkGrid->getXyzPointCountOfKInterfaceOfPatch(0) * 3];
-				ijkGrid->getXyzPointsOfKInterfaceOfPatch(ijkGrid->getKCellCount(), 0, interfaceXyzPoints);
+				std::unique_ptr<double[]> interfaceXyzPoints(new double[ijkGrid->getXyzPointCountOfKInterface() * 3]);
+				ijkGrid->getXyzPointsOfKInterface(ijkGrid->getKCellCount(), interfaceXyzPoints.get());
 
 				for (unsigned int i = 0; i < ijkGrid->getICellCount(); i++)
 				{
@@ -2564,7 +2552,7 @@ void deserializeGridHyperslabbingInterfaceSequence(COMMON_NS::DataObjectReposito
 
 						ULONG64 xyzPointIndex;
 						double x, y, z;
-						ULONG64 indexShift = ijkGrid->getKCellCount() * ijkGrid->getXyzPointCountOfKInterfaceOfPatch(0) * 3;
+						ULONG64 indexShift = ijkGrid->getKCellCount() * ijkGrid->getXyzPointCountOfKInterface() * 3;
 
 						// Corner (0, 0, 1)
 						xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, ijkGrid->getKCellCount() - 1, 4) * 3 - indexShift;
@@ -2596,8 +2584,6 @@ void deserializeGridHyperslabbingInterfaceSequence(COMMON_NS::DataObjectReposito
 					}
 				}
 
-				delete[] interfaceXyzPoints;
-
 				// here, we read a grid layer by layer. Each layer is read in i,
 				// then j direction.
 				cout << "--------------------------------------------------" << std::endl;
@@ -2607,8 +2593,8 @@ void deserializeGridHyperslabbingInterfaceSequence(COMMON_NS::DataObjectReposito
 				{
 					cout << "LAYER: " << kInterface << std::endl;
 
-					double* layerXyzPoints = new double[ijkGrid->getXyzPointCountOfKInterfaceOfPatch(0) * 3 * 2];
-					ijkGrid->getXyzPointsOfKInterfaceSequenceOfPatch(kInterface, kInterface + 1, 0, layerXyzPoints);
+					std::unique_ptr<double[]> layerXyzPoints(new double[ijkGrid->getXyzPointCountOfKInterface() * 3 * 2]);
+					ijkGrid->getXyzPointsOfKInterfaceSequence(kInterface, kInterface + 1, layerXyzPoints.get());
 
 					for (unsigned int j = 0; j < ijkGrid->getJCellCount(); j++)
 					{
@@ -2618,7 +2604,7 @@ void deserializeGridHyperslabbingInterfaceSequence(COMMON_NS::DataObjectReposito
 
 							ULONG64 xyzPointIndex;
 							double x, y, z;
-							ULONG64 indexShift = kInterface * ijkGrid->getXyzPointCountOfKInterfaceOfPatch(0) * 3;
+							ULONG64 indexShift = kInterface * ijkGrid->getXyzPointCountOfKInterface() * 3;
 
 							// Corner (0, 0, 0)
 							xyzPointIndex = ijkGrid->getXyzPointIndexFromCellCorner(i, j, kInterface, 0) * 3 - indexShift;
@@ -2677,8 +2663,6 @@ void deserializeGridHyperslabbingInterfaceSequence(COMMON_NS::DataObjectReposito
 							cout << "CORNER (0, 1, 1): " << x << " " << y << " " << z << std::endl;
 						}
 					}
-
-					delete[] layerXyzPoints;
 				}
 
 				ijkGrid->unloadSplitInformation();
@@ -2702,7 +2686,7 @@ void deserializeGridHyperslabbingInterfaceSequence(COMMON_NS::DataObjectReposito
 * @param kInterfaceEnd		Ending k interface of the block.
 * @param xyzPoints			The geometry of the block.
 */
-void displayBlockCellGeometry(AbstractIjkGridRepresentation* ijkGrid,
+void displayBlockCellGeometry(RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid,
 	unsigned int iInterfaceStart, unsigned int iInterfaceEnd,
 	unsigned int jInterfaceStart, unsigned int jInterfaceEnd,
 	unsigned int kInterfaceStart, unsigned int kInterfaceEnd,
@@ -2770,7 +2754,7 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::DataObjectRepository & pck)
 	cout << endl << "BEGIN: IJK GRID REP (block hyperslabbing)" << endl;
 
 	// ONE SUGAR
-	AbstractIjkGridRepresentation* ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b"));
+	RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = pck.getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b");
 	if (ijkGrid == nullptr) {
 		return;
 	}
@@ -2792,8 +2776,8 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::DataObjectRepository & pck)
 
 	ULONG64 xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
 
-	double* xyzPoints = new double[xyzPointCountOfBlock * 3];
-	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+	std::unique_ptr<double[]> xyzPoints(new double[xyzPointCountOfBlock * 3]);
+	ijkGrid->getXyzPointsOfBlock(xyzPoints.get());
 
 	// Keep for testing
 	/*cout << "All xyz points:" << endl;
@@ -2805,15 +2789,13 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::DataObjectRepository & pck)
 		iInterfaceStart, iInterfaceEnd,
 		jInterfaceStart, jInterfaceEnd,
 		kInterfaceStart, kInterfaceEnd,
-		xyzPoints
+		xyzPoints.get()
 	);
-
-	delete[] xyzPoints;
 
 	ijkGrid->unloadSplitInformation();
 
 	// Four by Three by Two Left Handed (e96c2bde-e3ae-4d51-b078-a8e57fb1e667)
-	ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("e96c2bde-e3ae-4d51-b078-a8e57fb1e667"));
+	ijkGrid = pck.getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>("e96c2bde-e3ae-4d51-b078-a8e57fb1e667");
 
 	cout << std::endl;
 	cout << "--------------------------------------------------" << std::endl;
@@ -2864,17 +2846,15 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::DataObjectRepository & pck)
 
 	xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
 
-	xyzPoints = new double[xyzPointCountOfBlock * 3];
-	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+	xyzPoints = std::unique_ptr<double[]>(new double[xyzPointCountOfBlock * 3]);
+	ijkGrid->getXyzPointsOfBlock(xyzPoints.get());
 
 	displayBlockCellGeometry(ijkGrid,
 		iInterfaceStart, iInterfaceEnd,
 		jInterfaceStart, jInterfaceEnd,
 		kInterfaceStart, kInterfaceEnd,
-		xyzPoints
+		xyzPoints.get()
 	);
-
-	delete[] xyzPoints;
 
 	cout << "--------------------------------------------------" << std::endl;
 
@@ -2920,17 +2900,15 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::DataObjectRepository & pck)
 
 	xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
 
-	xyzPoints = new double[xyzPointCountOfBlock * 3];
-	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+	xyzPoints = std::unique_ptr<double[]>(new double[xyzPointCountOfBlock * 3]);
+	ijkGrid->getXyzPointsOfBlock(xyzPoints.get());
 
 	displayBlockCellGeometry(ijkGrid,
 		iInterfaceStart, iInterfaceEnd,
 		jInterfaceStart, jInterfaceEnd,
 		kInterfaceStart, kInterfaceEnd,
-		xyzPoints
+		xyzPoints.get()
 	);
-
-	delete[] xyzPoints;
 
 	cout << "--------------------------------------------------" << std::endl;
 
@@ -2976,22 +2954,20 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::DataObjectRepository & pck)
 
 	xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
 
-	xyzPoints = new double[xyzPointCountOfBlock * 3];
-	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+	xyzPoints = std::unique_ptr<double[]>(new double[xyzPointCountOfBlock * 3]);
+	ijkGrid->getXyzPointsOfBlock(xyzPoints.get());
 
 	displayBlockCellGeometry(ijkGrid,
 		iInterfaceStart, iInterfaceEnd,
 		jInterfaceStart, jInterfaceEnd,
 		kInterfaceStart, kInterfaceEnd,
-		xyzPoints
+		xyzPoints.get()
 	);
-
-	delete[] xyzPoints;
 
 	ijkGrid->unloadSplitInformation();
 
 	// Four faulted sugar cubes(parametric geometry) (37c45c00-fa3e-11e5-a21e-0002a5d5c51b)
-	ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("37c45c00-fa3e-11e5-a21e-0002a5d5c51b"));
+	ijkGrid = pck.getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>("37c45c00-fa3e-11e5-a21e-0002a5d5c51b");
 
 	cout << std::endl;
 	cout << "--------------------------------------------------" << std::endl;
@@ -3030,17 +3006,15 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::DataObjectRepository & pck)
 
 	xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
 
-	xyzPoints = new double[xyzPointCountOfBlock * 3];
-	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+	xyzPoints = std::unique_ptr<double[]>(new double[xyzPointCountOfBlock * 3]);
+	ijkGrid->getXyzPointsOfBlock(xyzPoints.get());
 
 	displayBlockCellGeometry(ijkGrid,
 		iInterfaceStart, iInterfaceEnd,
 		jInterfaceStart, jInterfaceEnd,
 		kInterfaceStart, kInterfaceEnd,
-		xyzPoints
+		xyzPoints.get()
 	);
-
-	delete[] xyzPoints;
 
 	cout << "--------------------------------------------------" << std::endl;
 
@@ -3074,22 +3048,20 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::DataObjectRepository & pck)
 
 	xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
 
-	xyzPoints = new double[xyzPointCountOfBlock * 3];
-	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+	xyzPoints = std::unique_ptr<double[]>(new double[xyzPointCountOfBlock * 3]);
+	ijkGrid->getXyzPointsOfBlock(xyzPoints.get());
 
 	displayBlockCellGeometry(ijkGrid,
 		iInterfaceStart, iInterfaceEnd,
 		jInterfaceStart, jInterfaceEnd,
 		kInterfaceStart, kInterfaceEnd,
-		xyzPoints
+		xyzPoints.get()
 	);
-
-	delete[] xyzPoints;
 
 	ijkGrid->unloadSplitInformation();
 
 	// Four faulted sugar cubes (straight parametric geometry) (f68235af-1d7a-4e24-93a8-10739b15ca40)
-	ijkGrid = static_cast<AbstractIjkGridRepresentation*>(pck.getDataObjectByUuid("f68235af-1d7a-4e24-93a8-10739b15ca40"));
+	ijkGrid = (pck.getDataObjectByUuid<RESQML2_NS::AbstractIjkGridRepresentation>("f68235af-1d7a-4e24-93a8-10739b15ca40"));
 
 	cout << std::endl;
 	cout << "--------------------------------------------------" << std::endl;
@@ -3128,8 +3100,8 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::DataObjectRepository & pck)
 
 	xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
 
-	xyzPoints = new double[xyzPointCountOfBlock * 3];
-	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+	xyzPoints = std::unique_ptr<double[]>(new double[xyzPointCountOfBlock * 3]);
+	ijkGrid->getXyzPointsOfBlock(xyzPoints.get());
 
 	// Keep for testing
 	/*cout << "All xyz points:" << endl;
@@ -3141,10 +3113,8 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::DataObjectRepository & pck)
 		iInterfaceStart, iInterfaceEnd,
 		jInterfaceStart, jInterfaceEnd,
 		kInterfaceStart, kInterfaceEnd,
-		xyzPoints
+		xyzPoints.get()
 	);
-
-	delete[] xyzPoints;
 
 	cout << "--------------------------------------------------" << std::endl;
 
@@ -3178,17 +3148,15 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::DataObjectRepository & pck)
 
 	xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
 
-	xyzPoints = new double[xyzPointCountOfBlock * 3];
-	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+	xyzPoints = std::unique_ptr<double[]>(new double[xyzPointCountOfBlock * 3]);
+	ijkGrid->getXyzPointsOfBlock(xyzPoints.get());
 
 	displayBlockCellGeometry(ijkGrid,
 		iInterfaceStart, iInterfaceEnd,
 		jInterfaceStart, jInterfaceEnd,
 		kInterfaceStart, kInterfaceEnd,
-		xyzPoints
+		xyzPoints.get()
 	);
-
-	delete[] xyzPoints;
 
 	cout << "--------------------------------------------------" << std::endl;
 
@@ -3222,17 +3190,15 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::DataObjectRepository & pck)
 
 	xyzPointCountOfBlock = ijkGrid->getXyzPointCountOfBlock();
 
-	xyzPoints = new double[xyzPointCountOfBlock * 3];
-	ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+	xyzPoints = std::unique_ptr<double[]>(new double[xyzPointCountOfBlock * 3]);
+	ijkGrid->getXyzPointsOfBlock(xyzPoints.get());
 
 	displayBlockCellGeometry(ijkGrid,
 		iInterfaceStart, iInterfaceEnd,
 		jInterfaceStart, jInterfaceEnd,
 		kInterfaceStart, kInterfaceEnd,
-		xyzPoints
+		xyzPoints.get()
 	);
-
-	delete[] xyzPoints;
 
 	ijkGrid->unloadSplitInformation();
 
@@ -3246,16 +3212,17 @@ void deserializeGridHyperslabbingBlock(COMMON_NS::DataObjectRepository & pck)
 * @param ijkGrid	an IJK grid representation
 * @param nbIter	number of geometry reading iteration
 */
-void ijkGridHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, unsigned int nbIter)
+void ijkGridHyperslabingTiming(RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid, unsigned int nbIter)
 {
-	if (ijkGrid == nullptr)
+	if (ijkGrid == nullptr) {
 		throw invalid_argument("discretePropertyHyperslabingTiming: ijkGrid is nullptr.");
+	}
 
 	cout << endl << "BEGIN: IJK GRID REP (hyperslabbed and non-hyperslabbed geometry reading comparison)" << std::endl << std::endl;
 	cout.precision(17);
 
 	ijkGrid->loadSplitInformation();
-	double* xyzPoints = new double[ijkGrid->getXyzPointCountOfAllPatches() * 3];
+	std::unique_ptr<double[]> xyzPoints(new double[ijkGrid->getXyzPointCountOfAllPatches() * 3]);
 
 	unsigned int iCellCount = ijkGrid->getICellCount();
 	unsigned int jCellCount = ijkGrid->getJCellCount();
@@ -3285,7 +3252,7 @@ void ijkGridHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, unsigned 
 		clockStart = clock();
 		time(&timeStart);
 		for (unsigned int n = 0; n < nbIter; ++n)
-			ijkGrid->getXyzPointsOfPatch(0, xyzPoints);
+			ijkGrid->getXyzPointsOfPatch(0, xyzPoints.get());
 		clockEnd = clock();
 		time(&timeEnd);
 		nonHyperslabClockDuration += clockEnd - clockStart;
@@ -3300,7 +3267,7 @@ void ijkGridHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, unsigned 
 		clockStart = clock();
 		time(&timeStart);
 		for (unsigned int n = 0; n < nbIter; ++n)
-			ijkGrid->getXyzPointsOfKInterfaceSequenceOfPatch(0, kCellCount, 0, xyzPoints);
+			ijkGrid->getXyzPointsOfKInterfaceSequence(0, kCellCount, xyzPoints.get());
 		clockEnd = clock();
 		time(&timeEnd);
 		hyperslabClockDuration += clockEnd - clockStart;
@@ -3310,7 +3277,7 @@ void ijkGridHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, unsigned 
 		clockStart = clock();
 		time(&timeStart);
 		for (unsigned int n = 0; n < nbIter; ++n)
-			ijkGrid->getXyzPointsOfBlockOfPatch(0, xyzPoints);
+			ijkGrid->getXyzPointsOfBlock(xyzPoints.get());
 		clockEnd = clock();
 		time(&timeEnd);
 		blockHyperslabClockDuration += clockEnd - clockStart;
@@ -3342,7 +3309,6 @@ void ijkGridHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, unsigned 
 	std::cout << "block hyperslab version took " << (blockHyperslabTimeDuration * 100) / hyperslabTimeDuration << " % of k-interface hyperslab version" << std::endl;
 
 	ijkGrid->unloadSplitInformation();
-	delete[] xyzPoints;
 
 	std::cout << endl << "END: IJK GRID REP (hyperslabbed and non-hyperslabbed geometry reading comparison)" << std::endl;
 }
@@ -3354,7 +3320,7 @@ void ijkGridHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, unsigned 
 * @param prop		a dicrete property
 * @param nbIter		number of geometry reading iteration
 */
-void discretePropertyHyperslabingTiming(AbstractIjkGridRepresentation* ijkGrid, DiscreteProperty* prop, unsigned int nbIter)
+void discretePropertyHyperslabingTiming(RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid, DiscreteProperty* prop, unsigned int nbIter)
 {
 	if (ijkGrid == nullptr)
 		throw invalid_argument("discretePropertyHyperslabingTiming: ijkGrid is nullptr.");
@@ -3610,7 +3576,6 @@ void deserializePerforations(COMMON_NS::DataObjectRepository & pck)
 	}
 }
 
-#if WITH_EXPERIMENTAL
 void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 {
 	std::cout << "GRAPHICAL INFORMATIONS" << std::endl;
@@ -3680,7 +3645,6 @@ void deserializeGraphicalInformationSet(COMMON_NS::DataObjectRepository & pck)
 		}
 	}
 }
-#endif
 
 void deserialize(const string & inputFile)
 {
@@ -4097,7 +4061,6 @@ void deserialize(const string & inputFile)
 			else if (wellboreFrameSet[j]->getMdHdfDatatype() == RESQML2_NS::AbstractValuesProperty::UNKNOWN)
 				std::cout << "Hdf datatype is UNKNOWN" << std::endl;
 			std::cout << std::endl;
-#if WITH_EXPERIMENTAL
 			if (wellboreFrameSet[j]->getXmlTag() == "SeismicWellboreFrameRepresentation") {
 				RESQML2_2_NS::SeismicWellboreFrameRepresentation* seismicWellboreFrame = static_cast<RESQML2_2_NS::SeismicWellboreFrameRepresentation*>(wellboreFrameSet[j]);
 				std::cout << "Seismic reference datum : " << seismicWellboreFrame->getSeismicReferenceDatum() << std::endl;
@@ -4120,7 +4083,6 @@ void deserialize(const string & inputFile)
 					std::cout << "Hdf datatype is UNKNOWN" << std::endl;
 				std::cout << std::endl;
 			}
-#endif
 		}
 	}
 
@@ -4128,7 +4090,7 @@ void deserialize(const string & inputFile)
 	unsigned int ijkGridCount = repo.getIjkGridRepresentationCount();
 	for (unsigned int ijkGridIdx = 0; ijkGridIdx < ijkGridCount; ++ijkGridIdx)
 	{
-		AbstractIjkGridRepresentation* ijkGrid = repo.getIjkGridRepresentation(ijkGridIdx);
+		RESQML2_NS::AbstractIjkGridRepresentation* ijkGrid = repo.getIjkGridRepresentation(ijkGridIdx);
 
 		showAllMetadata(ijkGrid);
 		if (ijkGrid->isPartial()) {
@@ -4140,7 +4102,7 @@ void deserialize(const string & inputFile)
 		}
 		std::cout << "compressed." << std::endl;
 
-		if (ijkGrid->getGeometryKind() != AbstractIjkGridRepresentation::NO_GEOMETRY)
+		if (ijkGrid->getGeometryKind() != RESQML2_NS::AbstractIjkGridRepresentation::NO_GEOMETRY)
 		{
 			std::cout << "Most complex pillar geometry is ";
 			gsoap_resqml2_0_1::resqml20__PillarShape mostcomplexPillarGeom = ijkGrid->getMostComplexPillarGeometry();
@@ -4155,11 +4117,11 @@ void deserialize(const string & inputFile)
 			}
 			std::cout << std::endl;
 
-			if (ijkGrid->getGeometryKind() == AbstractIjkGridRepresentation::LATTICE) {
+			if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::LATTICE) {
 				std::cout << "This 3d grid has a lattice geometry." << std::endl;
 			}
 			else {
-				if (ijkGrid->getGeometryKind() == AbstractIjkGridRepresentation::PARAMETRIC)
+				if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::PARAMETRIC)
 				{
 					std::cout << "This 3d grid has a parametric geometry." << std::endl;
 					IjkGridParametricRepresentation* paramIjkGrid = static_cast<IjkGridParametricRepresentation*>(ijkGrid);
@@ -4170,26 +4132,24 @@ void deserialize(const string & inputFile)
 					else
 					{
 						std::cout << "Non constant parametric line kind" << std::endl;
-						short* pillarKind = new short[paramIjkGrid->getPillarCount()];
-						paramIjkGrid->getParametricLineKind(pillarKind);
+						std::unique_ptr<short[]> pillarKind(new short[paramIjkGrid->getPillarCount()]);
+						paramIjkGrid->getParametricLineKind(pillarKind.get());
 						for (size_t pillarIndex = 0; pillarIndex < paramIjkGrid->getPillarCount() && pillarIndex < 10; ++pillarIndex) {
 							cout << "Pillar index " << pillarIndex << " with kind " << pillarKind[pillarIndex] << endl;
 						}
-						delete[] pillarKind;
-						bool* pillarIsDefined = new bool[paramIjkGrid->getPillarCount()];
-						paramIjkGrid->getPillarGeometryIsDefined(pillarIsDefined);
+						std::unique_ptr<bool[]> pillarIsDefined(new bool[paramIjkGrid->getPillarCount()]);
+						paramIjkGrid->getPillarGeometryIsDefined(pillarIsDefined.get());
 						for (size_t pillarIndex = 0; pillarIndex < paramIjkGrid->getPillarCount() && pillarIndex < 10; ++pillarIndex) {
 							cout << "Pillar index " << pillarIndex << " is defined : " << pillarIsDefined[pillarIndex] << endl;
 						}
-						delete[] pillarIsDefined;
 					}
 
 					unsigned int patchCount = ijkGrid->getPatchCount();
 					for (unsigned int currentPatch = 0; currentPatch < patchCount; ++currentPatch) {
 						ULONG64 nbVertex = ijkGrid->getXyzPointCountOfPatch(currentPatch);
 
-						double* xyzPts = new double[nbVertex * 3];
-						ijkGrid->getXyzPointsOfPatch(currentPatch, xyzPts);
+						std::unique_ptr<double[]> xyzPts(new double[nbVertex * 3]);
+						ijkGrid->getXyzPointsOfPatch(currentPatch, xyzPts.get());
 
 						for (size_t vIndex = 0; vIndex < nbVertex && vIndex < 10; ++vIndex) {
 							double x = xyzPts[vIndex * 3];
@@ -4197,8 +4157,6 @@ void deserialize(const string & inputFile)
 							double z = xyzPts[vIndex * 3 + 2];
 							std::cout << x << " " << y << " " << z << std::endl;
 						}
-
-						delete[] xyzPts;
 					}
 					/*
 					ULONG64 pointCountByInterface = paramIjkGrid->getXyzPointCountOfKInterfaceOfPatch(0);
@@ -4207,7 +4165,7 @@ void deserialize(const string & inputFile)
 					delete[] interfaceXyzPoints;
 					*/
 				}
-				else if (ijkGrid->getGeometryKind() == AbstractIjkGridRepresentation::EXPLICIT)
+				else if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::EXPLICIT)
 				{
 					std::cout << "This 3d grid has an explicit geometry." << std::endl;
 				}
@@ -4220,9 +4178,8 @@ void deserialize(const string & inputFile)
 				ULONG64 xyzPointCount = ijkGrid->getXyzPointCountOfAllPatches();
 				std::cout << "\t XYZ points count :" << xyzPointCount << std::endl;
 				std::cout << "\t Start reading XYZ points..." << std::endl;
-				double* xyzPoints = new double[xyzPointCount * 3];
-				ijkGrid->getXyzPointsOfAllPatches(xyzPoints);
-				delete[] xyzPoints;
+				std::unique_ptr<double[]> xyzPoints(new double[xyzPointCount * 3]);
+				ijkGrid->getXyzPointsOfAllPatches(xyzPoints.get());
 				std::cout << "\t Stop reading XYZ points :" << std::endl;
 
 				std::cout << "Split coordinate line count is : " << ijkGrid->getSplitCoordinateLineCount() << std::endl;
@@ -4338,7 +4295,7 @@ void deserialize(const string & inputFile)
 		if (ijkGrid->getParentGrid() != NULL)
 		{
 			std::cout << "\t PARENT WINDOW" << std::endl;
-			if (ijkGrid->getParentGrid()->getXmlTag() == AbstractIjkGridRepresentation::XML_TAG)
+			if (ijkGrid->getParentGrid()->getXmlTag() == RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG)
 			{
 				for (char dimension = 'i'; dimension < 'l'; ++dimension) {
 					std::cout << "\t\t DIMENSION :" << dimension << std::endl;
@@ -4516,10 +4473,8 @@ void deserialize(const string & inputFile)
 		}
 	}
 
-#if WITH_EXPERIMENTAL
 	// GRAPHICAL INFORMATION
 	deserializeGraphicalInformationSet(repo);
-#endif
 
 	std::cout << endl << repo.getWarnings().size() << " WARNING(S)" << endl;
 	for (size_t i = 0; i < repo.getWarnings().size(); ++i) {

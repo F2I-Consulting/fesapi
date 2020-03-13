@@ -58,11 +58,11 @@ void AbstractFeatureInterpretation::setInterpretedFeature(AbstractFeature * feat
 
 void AbstractFeatureInterpretation::loadTargetRelationships()
 {
-	gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = getInterpretedFeatureDor();
-	AbstractFeature* interpretedFeature = getRepository()->getDataObjectByUuid<AbstractFeature>(dor->UUID);
+	COMMON_NS::DataObjectReference dor = getInterpretedFeatureDor();
+	AbstractFeature* interpretedFeature = getRepository()->getDataObjectByUuid<AbstractFeature>(dor.getUuid());
 	if (interpretedFeature == nullptr) { // partial transfer
 		getRepository()->createPartial(dor);
-		interpretedFeature = getRepository()->getDataObjectByUuid<AbstractFeature>(dor->UUID);
+		interpretedFeature = getRepository()->getDataObjectByUuid<AbstractFeature>(dor.getUuid());
 	}
 	if (interpretedFeature == nullptr) {
 		throw invalid_argument("The DOR looks invalid.");
@@ -70,7 +70,7 @@ void AbstractFeatureInterpretation::loadTargetRelationships()
 	repository->addRelationship(this, interpretedFeature);
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference const * AbstractFeatureInterpretation::getInterpretedFeatureDor() const
+COMMON_NS::DataObjectReference AbstractFeatureInterpretation::getInterpretedFeatureDor() const
 {
 	if (gsoapProxy2_0_1 != nullptr) {
 		return static_cast<gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation*>(gsoapProxy2_0_1)->InterpretedFeature;
@@ -79,14 +79,9 @@ gsoap_resqml2_0_1::eml20__DataObjectReference const * AbstractFeatureInterpretat
 	throw logic_error("Not implemented yet");
 }
 
-std::string AbstractFeatureInterpretation::getInterpretedFeatureUuid() const
-{
-	return getInterpretedFeatureDor()->UUID;
-}
-
 AbstractFeature* AbstractFeatureInterpretation::getInterpretedFeature() const
 {
-	return static_cast<AbstractFeature*>(repository->getDataObjectByUuid(getInterpretedFeatureUuid()));
+	return repository->getDataObjectByUuid<AbstractFeature>(getInterpretedFeatureDor().getUuid());
 }
 
 const gsoap_resqml2_0_1::resqml20__Domain & AbstractFeatureInterpretation::initDomain(gsoap_resqml2_0_1::resqml20__Domain defaultDomain) const
@@ -150,10 +145,10 @@ namespace {
 
 		bool operator()(AbstractRepresentation const * rep) const
 		{
-			gsoap_resqml2_0_1::eml20__DataObjectReference const * dor = rep->getInterpretationDor();
-			return dor == nullptr
-				|| dor->UUID != interp->getUuid()
-				|| (dor->VersionString == nullptr ? "" : *dor->VersionString) != interp->getVersion();
+			COMMON_NS::DataObjectReference dor = rep->getInterpretationDor();
+			return dor.isEmpty()
+				|| dor.getUuid() != interp->getUuid()
+				|| dor.getVersion() != interp->getVersion();
 		}
 	};
 }

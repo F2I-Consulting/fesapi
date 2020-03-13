@@ -18,19 +18,19 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractOrganizationInterpretation.h"
+#include "../resqml2/AbstractOrganizationInterpretation.h"
 #include "EarthModelInterpretation.h"
 
 namespace RESQML2_0_1_NS
 {
-	class StructuralOrganizationInterpretation : public AbstractOrganizationInterpretation
+	class StructuralOrganizationInterpretation : public RESQML2_NS::AbstractOrganizationInterpretation
 	{
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		DLL_IMPORT_OR_EXPORT StructuralOrganizationInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractOrganizationInterpretation(partialObject) {}
+		DLL_IMPORT_OR_EXPORT StructuralOrganizationInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractOrganizationInterpretation(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.

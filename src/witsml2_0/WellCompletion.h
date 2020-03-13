@@ -53,7 +53,7 @@ namespace WITSML2_0_NS
 		/**
 		* Get the Data Object Reference of the well linked with this data object.
 		*/
-		gsoap_eml2_1::eml21__DataObjectReference* getWellDor() const;
+		COMMON_NS::DataObjectReference getWellDor() const;
 		
 		/**
 		* Get the well of this well completion.

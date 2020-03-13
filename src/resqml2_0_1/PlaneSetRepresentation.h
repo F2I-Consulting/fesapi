@@ -50,13 +50,13 @@ namespace RESQML2_0_1_NS
 		*/
 		~PlaneSetRepresentation() {}
 		
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const { return nullptr; }
+		COMMON_NS::DataObjectReference getHdfProxyDor() const { return COMMON_NS::DataObjectReference(); }
 
 		/**
 		* Get the Local 3d CRS dor where the reference point ordinals are given
 		* It assumes there is only one CRS used by this instance.
 		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const;
+		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const;
 
 		/**
 		* Get the xyz point count in a given patch.

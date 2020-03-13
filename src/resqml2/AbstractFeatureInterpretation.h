@@ -20,11 +20,6 @@ under the License.
 
 #include "GridConnectionSetRepresentation.h"
 
-namespace RESQML2_0_1_NS
-{
-	class StructuralOrganizationInterpretation;
-}
-
 namespace RESQML2_NS
 {
 	class AbstractFeatureInterpretation : public COMMON_NS::AbstractObject
@@ -46,6 +41,7 @@ namespace RESQML2_NS
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		AbstractFeatureInterpretation(gsoap_resqml2_0_1::resqml20__AbstractFeatureInterpretation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		AbstractFeatureInterpretation(gsoap_eml2_2::resqml22__AbstractFeatureInterpretation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 	public:
 
@@ -57,9 +53,7 @@ namespace RESQML2_NS
 		/**
 		* @return	null pointer if no interpreted feature is associated to this interpretation. Otherwise return the data objet reference of the associated interpreted feature.
 		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference const * getInterpretedFeatureDor() const;
-
-		DLL_IMPORT_OR_EXPORT std::string getInterpretedFeatureUuid() const;
+		COMMON_NS::DataObjectReference getInterpretedFeatureDor() const;
 
 		/**
 		 * Set the feature which is interpreted by the current instance.

@@ -43,18 +43,17 @@ namespace RESQML2_NS
 		*/
 		AbstractRepresentation(gsoap_resqml2_0_1::resqml20__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
-#if WITH_EXPERIMENTAL
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
 		AbstractRepresentation(gsoap_eml2_2::resqml22__AbstractRepresentation* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
-#endif
 		
 		/**
 		* Get the point geometry of a specific patch of the representation.
 		* @return	nullptr if there is no point geometry for this particular patch otherwise the found point geometry.
 		*/
 		virtual gsoap_resqml2_0_1::resqml20__PointGeometry* getPointGeometry2_0_1(unsigned int patchIndex) const;
+		virtual gsoap_eml2_2::resqml22__PointGeometry* getPointGeometry2_2(unsigned int patchIndex) const;
 
 		/**
 		* Creates a point geometry patch.
@@ -67,11 +66,11 @@ namespace RESQML2_NS
 		*/
 		gsoap_resqml2_0_1::resqml20__PointGeometry* createPointGeometryPatch2_0_1(unsigned int patchIndex, double * points, class AbstractLocal3dCrs* localCrs, unsigned long long * numPoints, unsigned int numDimensionsInArray, COMMON_NS::AbstractHdfProxy * proxy);
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDorFromPointGeometryPatch(gsoap_resqml2_0_1::resqml20__PointGeometry* patch) const;
+		COMMON_NS::DataObjectReference getHdfProxyDorFromPointGeometryPatch(gsoap_resqml2_0_1::resqml20__PointGeometry* patch) const;
+		COMMON_NS::DataObjectReference getHdfProxyDorFromPointGeometryPatch(gsoap_eml2_2::resqml22__PointGeometry* patch) const;
 
-		gsoap_resqml2_0_1::resqml20__Seismic2dCoordinates* getSeismic2dCoordinates(unsigned int patchIndex) const;
-
-		gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* getSeismic3dCoordinates(unsigned int patchIndex) const;
+		gsoap_resqml2_0_1::resqml20__Seismic3dCoordinates* getSeismic3dCoordinates2_0_1(unsigned int patchIndex) const;
+		gsoap_eml2_2::resqml22__Seismic3dCoordinates* getSeismic3dCoordinates2_2(unsigned int patchIndex) const;
 
 	public:
 
@@ -90,23 +89,9 @@ namespace RESQML2_NS
 		/**
 		* Get the Local 3d CRS dor where the reference point ordinals are given
 		*/
-		virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const;
-		
-		/**
-		* Get the Local 3d CRS uuid where the reference point ordinals are given
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getLocalCrsUuid(unsigned int patchIndex) const;
+		virtual COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const;
 
-		/*
-		* Getter for the uuid of the hdf proxy which is used for storing the numerical values of this representation i.e. geometry.
-		* An empty string is returned if no hdf proxy is used for storing the representation/geometry.
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getHdfProxyUuid() const {
-			gsoap_resqml2_0_1::eml20__DataObjectReference* dor = getHdfProxyDor();
-			return dor == nullptr ? "" : dor->UUID;
-		}
-
-		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const = 0;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getHdfProxyDor() const = 0;
 
 		/**
 		* Getter (read only) of all the properties which use this representation as support.
@@ -145,17 +130,7 @@ namespace RESQML2_NS
 		/**
 		* @return	null pointer if no interpretation is associated to this representation. Otherwise return the data object reference of the associated interpretation.
 		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getInterpretationDor() const;
-
-		/**
-		* Get the interpretation uuid of this representation
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getInterpretationUuid() const;
-
-		/**
-		* Get the interpretation content type of this representation
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getInterpretationContentType() const;
+		COMMON_NS::DataObjectReference getInterpretationDor() const;
 
 		/**
 		* Get all the subrepresentations of this instance.
@@ -278,11 +253,11 @@ namespace RESQML2_NS
 		* Push back a patch of seismic 3D coordinates info.
 		* The index this patch will be located must be consistent with the index of the geometry patch it is related to.
 		*/
-		DLL_IMPORT_OR_EXPORT void addSeismic3dCoordinatesToPatch(const unsigned int patchIndex, double * inlines, double * crosslines, const unsigned int & pointCount,
+		DLL_IMPORT_OR_EXPORT void addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double * inlines, double * crosslines, unsigned int pointCount,
 			RESQML2_NS::AbstractRepresentation * seismicSupport, COMMON_NS::AbstractHdfProxy * proxy);
 
-		DLL_IMPORT_OR_EXPORT void addSeismic3dCoordinatesToPatch(const unsigned int patchIndex, const double & startInline, const double & incrInline, const unsigned int & countInline,
-			const double & startCrossline, const double & incrCrossline, const unsigned int & countCrossline,
+		DLL_IMPORT_OR_EXPORT void addSeismic3dCoordinatesToPatch(unsigned int patchIndex, double startInline, double incrInline, unsigned int countInline,
+			double startCrossline, double incrCrossline, unsigned int countCrossline,
 			RESQML2_NS::AbstractRepresentation * seismicSupport);
 
 		/**
@@ -292,7 +267,7 @@ namespace RESQML2_NS
 		* @param seismicSupport	The representation of the seismic line.
 		* @param proxy			The hdf proxy where the lineAbscissa are stored.
 		*/
-		DLL_IMPORT_OR_EXPORT void addSeismic2dCoordinatesToPatch(const unsigned int patchIndex, double * lineAbscissa,
+		DLL_IMPORT_OR_EXPORT void addSeismic2dCoordinatesToPatch(unsigned int patchIndex, double * lineAbscissa,
 			RESQML2_NS::AbstractRepresentation * seismicSupport, COMMON_NS::AbstractHdfProxy * proxy);
 
 		/**

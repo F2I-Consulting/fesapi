@@ -59,7 +59,7 @@ namespace RESQML2_0_1_NS
 		*/
 		~TriangulatedSetRepresentation() {}
         
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
+		COMMON_NS::DataObjectReference getHdfProxyDor() const;
 
 		/**
 		* Push back a new patch of triangles
@@ -90,7 +90,7 @@ namespace RESQML2_0_1_NS
 		* Get the triangle count in a given patch
 		* @param patchIndex	The index of the patch of the representation.
 		*/
-		DLL_IMPORT_OR_EXPORT unsigned int getTriangleCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT unsigned int getTriangleCountOfPatch(unsigned int patchIndex) const;
 
         /**
 		* Get the triangle count of all patches of this representation.
@@ -103,7 +103,7 @@ namespace RESQML2_0_1_NS
 		 * @param patchIndex 			The index of the patch which contains the triangle node indices we want.
 		 * @param triangleNodeIndices	Must be pre-allocated. The count/size of this array should be equal to getTriangleCountOfPatch(patchIndex)*3.
 		 */
-		DLL_IMPORT_OR_EXPORT void getTriangleNodeIndicesOfPatch(const unsigned int & patchIndex, unsigned int * triangleNodeIndices) const;
+		DLL_IMPORT_OR_EXPORT void getTriangleNodeIndicesOfPatch(unsigned int patchIndex, unsigned int * triangleNodeIndices) const;
 
 		/**
 		 * Get all the triangle node indices of all patches of this representation.

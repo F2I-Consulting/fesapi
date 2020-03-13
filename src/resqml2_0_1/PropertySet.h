@@ -75,10 +75,10 @@ namespace RESQML2_0_1_NS
 
 		void setXmlParent(RESQML2_NS::PropertySet * parent);
 
-		gsoap_resqml2_0_1::eml20__DataObjectReference const * getParentDor() const;
+		COMMON_NS::DataObjectReference getParentDor() const;
 
 		void pushBackXmlProperty(RESQML2_NS::AbstractProperty * prop);
 
-		std::vector<gsoap_resqml2_0_1::eml20__DataObjectReference *> getAllPropertiesDors() const;
+		std::vector<COMMON_NS::DataObjectReference> getAllPropertiesDors() const;
 	};
 }

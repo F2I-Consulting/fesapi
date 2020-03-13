@@ -66,7 +66,7 @@ namespace WITSML2_0_NS
 		*/
 		~Wellbore() {}
 
-		gsoap_eml2_1::eml21__DataObjectReference* getWellDor() const;
+		COMMON_NS::DataObjectReference getWellDor() const;
 		DLL_IMPORT_OR_EXPORT class Well* getWell() const;
 
 		DLL_IMPORT_OR_EXPORT void setWell(class Well* witsmlWell);
