@@ -83,7 +83,7 @@ void SeismicWellboreFrameRepresentation::setTimeValues(double const * timeValues
 	xmlTimeValues->Values->ExternalFileProxy.push_back(soap_new_eml22__ExternalDatasetPart(gsoapProxy2_2->soap, 1));
 	xmlTimeValues->Values->ExternalFileProxy[0]->Count = timeValueCount;
 	xmlTimeValues->Values->ExternalFileProxy[0]->StartIndex = 0;
-	xmlTimeValues->Values->ExternalFileProxy[0]->PathInExternalFile = "/RESQML/" + frame->uuid + "/timeValues";
+	xmlTimeValues->Values->ExternalFileProxy[0]->PathInExternalFile = getHdfGroup() + "/timeValues";
 	xmlTimeValues->Values->ExternalFileProxy[0]->EpcExternalPartReference = proxy->newEml22Reference();
 
 	frame->NodeTimeValues = xmlTimeValues;
@@ -92,7 +92,7 @@ void SeismicWellboreFrameRepresentation::setTimeValues(double const * timeValues
 
 	// HDF
 	hsize_t dim = timeValueCount;
-	proxy->writeArrayNd(frame->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		"timeValues",
 		H5T_NATIVE_DOUBLE,
 		timeValues,

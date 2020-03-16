@@ -81,7 +81,7 @@ void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigrap
 		}
 	}
 	hsize_t dim = getKCellCount();
-	hdfProxy->writeArrayNd(getUuid(), "IntervalStratigraphicUnits", H5T_NATIVE_ULLONG, stratiUnitIndices, &dim, 1);
+	hdfProxy->writeArrayNd(getHdfGroup(), "IntervalStratigraphicUnits", H5T_NATIVE_ULLONG, stratiUnitIndices, &dim, 1);
 
 	getRepository()->addRelationship(this, hdfProxy);
 	getRepository()->addRelationship(this, stratiOrgInterp);
@@ -95,7 +95,7 @@ void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigrap
 		xmlDataset->NullValue = nullValue;
 		xmlDataset->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		xmlDataset->Values->HdfProxy = hdfProxy->newResqmlReference();
-		xmlDataset->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/IntervalStratigraphicUnits";
+		xmlDataset->Values->PathInHdfFile = getHdfGroup() + "/IntervalStratigraphicUnits";
 		rep->IntervalStratigraphicUnits->UnitIndices = xmlDataset;
 	}
 	else if (gsoapProxy2_2 != nullptr) {
@@ -110,7 +110,7 @@ void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigrap
 		elementDataset->Values = gsoap_eml2_2::soap_new_eml22__ExternalDataset(gsoapProxy2_2->soap);
 		auto dsPart = gsoap_eml2_2::soap_new_eml22__ExternalDatasetPart(gsoapProxy2_2->soap);
 		dsPart->EpcExternalPartReference = hdfProxy->newEml22Reference();
-		dsPart->PathInExternalFile = "/RESQML/" + rep->uuid + "/IntervalStratigraphicUnits";
+		dsPart->PathInExternalFile = getHdfGroup() + "/IntervalStratigraphicUnits";
 		elementDataset->Values->ExternalFileProxy.push_back(dsPart);
 		rep->IntervalStratigraphicUnits->UnitIndices->Elements = elementDataset;
 

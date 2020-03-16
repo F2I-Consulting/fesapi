@@ -96,11 +96,11 @@ void SealedSurfaceFrameworkRepresentation::pushBackContact(
     xmlListOfIdenticalNodes->Values->HdfProxy = proxy->newResqmlReference();
     ostringstream ossForHdf;
     ossForHdf << "listOfIdenticalNodes_contact" << contactRep->Index;
-    xmlListOfIdenticalNodes->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + ossForHdf.str();
+    xmlListOfIdenticalNodes->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
     contactRep->IdenticalNodeIndices = xmlListOfIdenticalNodes;
     // ************ HDF *************
     hsize_t dim[2] = {identicalNodesCount, patchCount};
-    proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+    proxy->writeArrayNd(getHdfGroup(),
         ossForHdf.str(), H5T_NATIVE_UINT,
         identicalNodes,
         dim, 2);
@@ -161,11 +161,11 @@ void SealedSurfaceFrameworkRepresentation::pushBackContactPatch(
     xmlSupportingRepresentationNodes->Values->HdfProxy = proxy->newResqmlReference();
     ostringstream ossForHdf;
     ossForHdf << "SupportingRepresentationNodes_contact" << contactIndex << "_patch" << contactPatch->PatchIndex;
-    xmlSupportingRepresentationNodes->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + ossForHdf.str();
+    xmlSupportingRepresentationNodes->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
     contactPatch->SupportingRepresentationNodes = xmlSupportingRepresentationNodes;
     // ************ HDF *************
     hsize_t dim[1] = {nodeCount};
-    proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+    proxy->writeArrayNd(getHdfGroup(),
                         ossForHdf.str(), H5T_NATIVE_UINT,
                         nodeIndicesOnSupportingRepresentation,
                         dim, 1);

@@ -124,10 +124,10 @@ void TriangulatedSetRepresentation::pushBackTrianglePatch(
 	hdfTriangles->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream ossForHdf;
 	ossForHdf << "triangles_patch" << patch->PatchIndex;
-	hdfTriangles->Values->PathInHdfFile = "/RESQML/" + triRep->uuid + "/" + ossForHdf.str();
+	hdfTriangles->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
 	// ************ HDF *************
 	hsize_t dim[2] = {triangleCount, 3};
-	proxy->writeArrayNd(triRep->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdf.str(), H5T_NATIVE_UINT,
 		triangleNodeIndices,
 		dim, 2);

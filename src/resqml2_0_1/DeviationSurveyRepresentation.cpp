@@ -88,29 +88,29 @@ void DeviationSurveyRepresentation::setGeometry(double * firstStationLocation, c
 	resqml20__DoubleHdf5Array* xmlMds = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
 	xmlMds->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlMds->Values->HdfProxy = proxy->newResqmlReference();
-	xmlMds->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/mds";
+	xmlMds->Values->PathInHdfFile = getHdfGroup() + "/mds";
 	rep->Mds = xmlMds;
 	// HDF mds
 	hsize_t dim[] = { stationCount };
-	proxy->writeArrayNdOfDoubleValues(rep->uuid, "mds", mds, dim, 1);
+	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "mds", mds, dim, 1);
 
 	rep->AngleUom = angleUom;
 	// XML azimuths
 	resqml20__DoubleHdf5Array* xmlAzims = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
 	xmlAzims->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlAzims->Values->HdfProxy = proxy->newResqmlReference();
-	xmlAzims->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/azimuths";
+	xmlAzims->Values->PathInHdfFile = getHdfGroup() + "/azimuths";
 	rep->Azimuths = xmlAzims;
 	// HDF azimuths
-	proxy->writeArrayNdOfDoubleValues(rep->uuid, "azimuths", azimuths, dim, 1);
+	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "azimuths", azimuths, dim, 1);
 	// XML inclinations
 	resqml20__DoubleHdf5Array* xmlIncls = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
 	xmlIncls->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlIncls->Values->HdfProxy = proxy->newResqmlReference();
-	xmlIncls->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/inclinations";
+	xmlIncls->Values->PathInHdfFile = getHdfGroup() + "/inclinations";
 	rep->Inclinations = xmlIncls;
 	// HDF inclinations
-	proxy->writeArrayNdOfDoubleValues(rep->uuid, "inclinations", inclinations, dim, 1);
+	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "inclinations", inclinations, dim, 1);
 }
 
 void DeviationSurveyRepresentation::loadTargetRelationships()

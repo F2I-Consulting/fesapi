@@ -164,7 +164,7 @@ namespace RESQML2_0_1_NS
 		* The reason can be that the indice values already exist in an external file (only HDF5 for now) or that the writing of these indice values in the external file is defered in time.
 		* @param	elementKind				The kind of (indexable) elements which constitutes the subrepresentation.
         * @param	elementCount			The count of elements which constitutes the subrepresentation.
-		* @param	elementDataset			The HDF5 dataset name where the element indices are stored. If empty, the dataset will be named the same as the dataset naming convention of the fesapi :"/RESQML/" + subRep->uuid + "/subrepresentation_elementIndices0_patch" + patchIndex;
+		* @param	elementDataset			The HDF5 dataset name where the element indices are stored. If empty, the dataset will be named the same as the dataset naming convention of the fesapi :getHdfGroup() + "/subrepresentation_elementIndices0_patch" + patchIndex;
 		* @param	nullValue				The null value which has been chosen in the referenced hdf dataset.
 		* @param	hdfProxy				The HDF5 proxy where the values are already or will be stored.
 		* @param	supportingRepDataset	The HDF5 dataset name where the element indices are stored. If empty, it won't be exported any information about suppporting rep relying on the fact there is only one suppporting rep for this whole patch.

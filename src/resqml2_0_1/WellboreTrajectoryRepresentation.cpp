@@ -124,12 +124,12 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, doubl
 	resqml20__Point3dHdf5Array* xmlControlPoints = soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap);
 	xmlControlPoints->Coordinates = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlControlPoints->Coordinates->HdfProxy = proxy->newResqmlReference();
-	xmlControlPoints->Coordinates->PathInHdfFile = "/RESQML/" + rep->uuid + "/controlPoints";
+	xmlControlPoints->Coordinates->PathInHdfFile = getHdfGroup() + "/controlPoints";
 	paramLine->ControlPoints = xmlControlPoints;
 
 	// HDF control points
 	hsize_t dim[2] = { controlPointCount, 3 };
-	proxy->writeArrayNdOfDoubleValues(rep->uuid, "controlPoints", controlPoints, dim, 2);
+	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "controlPoints", controlPoints, dim, 2);
 
 	getRepository()->addRelationship(this, localCrs);
 }
@@ -149,12 +149,12 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, doubl
 	resqml20__DoubleHdf5Array* xmlControlPointParameters = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
 	xmlControlPointParameters->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlControlPointParameters->Values->HdfProxy = proxy->newResqmlReference();
-	xmlControlPointParameters->Values->PathInHdfFile = "/RESQML/" + rep->uuid + "/controlPointParameters";
+	xmlControlPointParameters->Values->PathInHdfFile = getHdfGroup() + "/controlPointParameters";
 	paramLine->ControlPointParameters = xmlControlPointParameters;
 
 	// HDF control point parameters
 	const hsize_t dimParamDataSet = controlPointCount;
-	proxy->writeArrayNdOfDoubleValues(rep->uuid, "controlPointParameters", controlPointParameters, &dimParamDataSet, 1);
+	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "controlPointParameters", controlPointParameters, &dimParamDataSet, 1);
 }
 
 void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints,
@@ -170,12 +170,12 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints,
 	resqml20__Point3dHdf5Array* xmlTangentVectors = soap_new_resqml20__Point3dHdf5Array(gsoapProxy2_0_1->soap);
 	xmlTangentVectors->Coordinates = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlTangentVectors->Coordinates->HdfProxy = proxy->newResqmlReference();
-	xmlTangentVectors->Coordinates->PathInHdfFile = "/RESQML/" + rep->uuid + "/tangentVectors";
+	xmlTangentVectors->Coordinates->PathInHdfFile = getHdfGroup() + "/tangentVectors";
 	paramLine->TangentVectors = xmlTangentVectors;
 
 	// HDF tangent vectors
 	hsize_t dim[2] = { controlPointCount, 3 };
-	proxy->writeArrayNdOfDoubleValues(rep->uuid, "tangentVectors", tangentVectors, dim, 2);
+	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "tangentVectors", tangentVectors, dim, 2);
 }
 
 void WellboreTrajectoryRepresentation::loadTargetRelationships()

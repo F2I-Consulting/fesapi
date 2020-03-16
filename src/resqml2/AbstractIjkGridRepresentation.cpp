@@ -1138,7 +1138,7 @@ void AbstractIjkGridRepresentation::setEnabledCells(unsigned char* enabledCells,
 		resqml20__BooleanHdf5Array* boolArray = soap_new_resqml20__BooleanHdf5Array(gsoapProxy2_0_1->soap);
 		boolArray->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		boolArray->Values->HdfProxy = proxy->newResqmlReference();
-		boolArray->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/CellGeometryIsDefined";
+		boolArray->Values->PathInHdfFile = getHdfGroup() + "/CellGeometryIsDefined";
 		geom->CellGeometryIsDefined = boolArray;
 	}
 	else {
@@ -1151,7 +1151,7 @@ void AbstractIjkGridRepresentation::setEnabledCells(unsigned char* enabledCells,
 		boolArray->Values = gsoap_eml2_2::soap_new_eml22__ExternalDataset(boolArray->soap);
 		gsoap_eml2_2::eml22__ExternalDatasetPart* dsPart = gsoap_eml2_2::soap_new_eml22__ExternalDatasetPart(boolArray->soap);
 		dsPart->EpcExternalPartReference = proxy->newEml22Reference();
-		dsPart->PathInExternalFile = "/RESQML/" + gsoapProxy2_2->uuid + "/CellGeometryIsDefined";
+		dsPart->PathInExternalFile = getHdfGroup() + "/CellGeometryIsDefined";
 		dsPart->StartIndex = 0;
 		dsPart->Count = getCellCount();
 		boolArray->Values->ExternalFileProxy.push_back(dsPart);
@@ -1160,7 +1160,7 @@ void AbstractIjkGridRepresentation::setEnabledCells(unsigned char* enabledCells,
 
 	// HDF
 	hsize_t cellGeometryIsDefinedCount[3] = { getKCellCount(), getJCellCount(), getICellCount() };
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid, "CellGeometryIsDefined", H5T_NATIVE_UCHAR, enabledCells, cellGeometryIsDefinedCount, 3);
+	proxy->writeArrayNd(getHdfGroup(), "CellGeometryIsDefined", H5T_NATIVE_UCHAR, enabledCells, cellGeometryIsDefinedCount, 3);
 }
 
 gsoap_resqml2_0_1::resqml20__KDirection AbstractIjkGridRepresentation::getKDirection() const

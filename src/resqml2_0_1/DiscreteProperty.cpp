@@ -233,7 +233,7 @@ void DiscreteProperty::pushBackLongHdf5ArrayOfValues(const LONG64 * values, unsi
 		}
 	}
 
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue),
 		H5T_NATIVE_LLONG,
 		values,
@@ -249,7 +249,7 @@ void DiscreteProperty::pushBackIntHdf5ArrayOfValues(const int * values, unsigned
 		}
 	}
 
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue),
 		H5T_NATIVE_INT,
 		values,
@@ -265,7 +265,7 @@ void DiscreteProperty::pushBackShortHdf5ArrayOfValues(const short * values, unsi
 		}
 	}
 
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue),
 		H5T_NATIVE_SHORT,
 		values,
@@ -281,7 +281,7 @@ void DiscreteProperty::pushBackUShortHdf5ArrayOfValues(const unsigned short * va
 		}
 	}
 
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue),
 		H5T_NATIVE_USHORT,
 		values,
@@ -297,7 +297,7 @@ void DiscreteProperty::pushBackCharHdf5ArrayOfValues(const char * values, unsign
 		}
 	}
 
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		pushBackRefToExistingDataset(proxy, "", nullValue, minimumValue, maximumValue),
 		H5T_NATIVE_CHAR,
 		values,

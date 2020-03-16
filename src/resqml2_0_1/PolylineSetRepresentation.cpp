@@ -105,11 +105,11 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	xmlNodeCountPerPolyline->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream ossForHdf;
 	ossForHdf << "NodeCountPerPolyline_patch" << patch->PatchIndex;
-	xmlNodeCountPerPolyline->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + ossForHdf.str();
+	xmlNodeCountPerPolyline->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
 	patch->NodeCountPerPolyline = xmlNodeCountPerPolyline;
 	// ************ HDF *************
 	hsize_t dim = polylineCount;
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdf.str(), H5T_NATIVE_UINT,
 		nodeCountPerPolyline,
 		&dim, 1);
@@ -161,11 +161,11 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	xmlNodeCountPerPolyline->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream ossForHdf;
 	ossForHdf << "NodeCountPerPolyline_patch" << patch->PatchIndex;
-	xmlNodeCountPerPolyline->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + ossForHdf.str();
+	xmlNodeCountPerPolyline->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
 	patch->NodeCountPerPolyline = xmlNodeCountPerPolyline;
 	// ************ HDF *************
 	hsize_t dim = polylineCount;
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdf.str(), H5T_NATIVE_UINT,
 		nodeCountPerPolyline,
 		&dim, 1);
@@ -177,10 +177,10 @@ void PolylineSetRepresentation::pushBackGeometryPatch(
 	ossForHdf.str("");
 	ossForHdf.clear();
 	ossForHdf << "ClosedPolylines_patch" << patch->PatchIndex;
-	xmlClosedPolylines->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + ossForHdf.str();
+	xmlClosedPolylines->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
 	patch->ClosedPolylines = xmlClosedPolylines;
 	// ************ HDF *************
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		ossForHdf.str(), H5T_NATIVE_UCHAR,
 		polylineClosedFlags,
 		&dim, 1);

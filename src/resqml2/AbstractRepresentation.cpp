@@ -131,7 +131,7 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointG
 		xmlPts->Coordinates->HdfProxy = proxy->newResqmlReference();
 		ostringstream oss;
 		oss << "points_patch" << patchIndex;
-		xmlPts->Coordinates->PathInHdfFile = "/RESQML/" + getUuid() + "/" + oss.str();
+		xmlPts->Coordinates->PathInHdfFile = getHdfGroup() + "/" + oss.str();
 		geom->Points = xmlPts;
 
 		// HDF
@@ -141,7 +141,7 @@ gsoap_resqml2_0_1::resqml20__PointGeometry* AbstractRepresentation::createPointG
 		}
 		numValues[numDimensionsInArray] = 3; // 3 for X, Y and Z
 
-		proxy->writeArrayNdOfDoubleValues(getUuid(), oss.str(), points, numValues.get(), numDimensionsInArray + 1);
+		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), oss.str(), points, numValues.get(), numDimensionsInArray + 1);
 
 		return geom;
 	}
@@ -556,7 +556,7 @@ void AbstractRepresentation::addSeismic3dCoordinatesToPatch(unsigned int patchIn
 			inlineValues->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 			inlineValues->Values->HdfProxy = proxy->newResqmlReference();
 			oss << "inlineCoordinates_patch" << patchIndex;
-			inlineValues->Values->PathInHdfFile = "/RESQML/" + getUuid() + "/" + oss.str();
+			inlineValues->Values->PathInHdfFile = getHdfGroup() + "/" + oss.str();
 			patch->InlineCoordinates = inlineValues;
 
 			// crosslines XML
@@ -564,7 +564,7 @@ void AbstractRepresentation::addSeismic3dCoordinatesToPatch(unsigned int patchIn
 			crosslineValues->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 			crosslineValues->Values->HdfProxy = proxy->newResqmlReference();
 			oss2 << "crosslineCoordinates_patch" << patchIndex;
-			crosslineValues->Values->PathInHdfFile = "/RESQML/" + getUuid() + "/" + oss2.str();
+			crosslineValues->Values->PathInHdfFile = getHdfGroup() + "/" + oss2.str();
 			patch->CrosslineCoordinates = crosslineValues;
 		}
 		else if (gsoapProxy2_2 != nullptr) {
@@ -592,7 +592,7 @@ void AbstractRepresentation::addSeismic3dCoordinatesToPatch(unsigned int patchIn
 			gsoap_eml2_2::eml22__ExternalDatasetPart* dsPart = gsoap_eml2_2::soap_new_eml22__ExternalDatasetPart(gsoapProxy2_2->soap);
 			dsPart->EpcExternalPartReference = proxy->newEml22Reference();
 			oss << "inlineCoordinates_patch" << patchIndex;
-			dsPart->PathInExternalFile = "/RESQML/" + getUuid() + "/" + oss.str();
+			dsPart->PathInExternalFile = getHdfGroup() + "/" + oss.str();
 			inlineValues->Values->ExternalFileProxy.push_back(dsPart);
 			patch->InlineCoordinates = inlineValues;
 
@@ -602,15 +602,15 @@ void AbstractRepresentation::addSeismic3dCoordinatesToPatch(unsigned int patchIn
 			dsPart = gsoap_eml2_2::soap_new_eml22__ExternalDatasetPart(gsoapProxy2_2->soap);
 			dsPart->EpcExternalPartReference = proxy->newEml22Reference();
 			oss2 << "crosslineCoordinates_patch" << patchIndex;
-			dsPart->PathInExternalFile = "/RESQML/" + getUuid() + "/" + oss2.str();
+			dsPart->PathInExternalFile = getHdfGroup() + "/" + oss2.str();
 			crosslineValues->Values->ExternalFileProxy.push_back(dsPart);
 			patch->CrosslineCoordinates = crosslineValues;
 		}
 
 		// HDF
 		hsize_t dim = pointCount;
-		proxy->writeArrayNdOfDoubleValues(getUuid(), oss.str(), inlines, &dim, 1);
-		proxy->writeArrayNdOfDoubleValues(getUuid(), oss2.str(), crosslines, &dim, 1);
+		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), oss.str(), inlines, &dim, 1);
+		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), oss2.str(), crosslines, &dim, 1);
 	}
 	else {
 		throw logic_error("Not implemented yet");
@@ -731,7 +731,7 @@ void AbstractRepresentation::addSeismic2dCoordinatesToPatch(unsigned int patchIn
 			abscissaValues->Values = gsoap_resqml2_0_1::soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 			abscissaValues->Values->HdfProxy = proxy->newResqmlReference();
 			oss << "lineAbscissa_patch" << patchIndex;
-			abscissaValues->Values->PathInHdfFile = "/RESQML/" + getUuid() + "/" + oss.str();
+			abscissaValues->Values->PathInHdfFile = getHdfGroup() + "/" + oss.str();
 			patch->LineAbscissa = abscissaValues;
 		}
 		else if (gsoapProxy2_2 != nullptr) {
@@ -758,14 +758,14 @@ void AbstractRepresentation::addSeismic2dCoordinatesToPatch(unsigned int patchIn
 			gsoap_eml2_2::eml22__ExternalDatasetPart* dsPart = gsoap_eml2_2::soap_new_eml22__ExternalDatasetPart(gsoapProxy2_2->soap);
 			dsPart->EpcExternalPartReference = proxy->newEml22Reference();
 			oss << "lineAbscissa_patch" << patchIndex;
-			dsPart->PathInExternalFile = "/RESQML/" + getUuid() + "/" + oss.str();
+			dsPart->PathInExternalFile = getHdfGroup() + "/" + oss.str();
 			abscissaValues->Values->ExternalFileProxy.push_back(dsPart);
 			patch->LineAbscissa = abscissaValues;
 		}
 
 		// inlines HDF
 		unsigned long long pointCount = getXyzPointCountOfPatch(patchIndex);
-		proxy->writeArrayNdOfDoubleValues(getUuid(), oss.str(), lineAbscissa, &pointCount, 1);
+		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), oss.str(), lineAbscissa, &pointCount, 1);
 	}
 	else {
 		throw logic_error("Not implemented yet");

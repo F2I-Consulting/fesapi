@@ -961,18 +961,18 @@ void IjkGridParametricRepresentation::writeGeometryOnHdf(double const * paramete
 {
 	if (splitCoordinateLineCount == 0) {
 		hsize_t numValues[3] = { getKCellCount() + 1, getJCellCount() + 1, getICellCount() + 1 };
-		proxy->writeArrayNdOfDoubleValues(getUuid(), "PointParameters", parameters, numValues, 3);
+		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "PointParameters", parameters, numValues, 3);
 	}
 	else {
 		// PointParameters
 		hsize_t numValues[2] = { getKCellCount() + 1, (getJCellCount() + 1) * (getICellCount() + 1) + splitCoordinateLineCount };
-		proxy->writeArrayNdOfDoubleValues(getUuid(), "PointParameters", parameters, numValues, 2);
+		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "PointParameters", parameters, numValues, 2);
 
 		// split coordinate lines
 		hsize_t hdfSplitCoordinateLineCount = splitCoordinateLineCount;
-		proxy->writeArrayNd(getUuid(), "PillarIndices", H5T_NATIVE_UINT, pillarOfCoordinateLine, &hdfSplitCoordinateLineCount, 1);
+		proxy->writeArrayNd(getHdfGroup(), "PillarIndices", H5T_NATIVE_UINT, pillarOfCoordinateLine, &hdfSplitCoordinateLineCount, 1);
 
-		proxy->writeItemizedListOfList(getUuid(), "ColumnsPerSplitCoordinateLine", H5T_NATIVE_UINT, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineCount, H5T_NATIVE_UINT, splitCoordinateLineColumns, splitCoordinateLineColumnCumulativeCount[splitCoordinateLineCount - 1]);
+		proxy->writeItemizedListOfList(getHdfGroup(), "ColumnsPerSplitCoordinateLine", H5T_NATIVE_UINT, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineCount, H5T_NATIVE_UINT, splitCoordinateLineColumns, splitCoordinateLineColumnCumulativeCount[splitCoordinateLineCount - 1]);
 	}
 
 	// *********************************
@@ -980,7 +980,7 @@ void IjkGridParametricRepresentation::writeGeometryOnHdf(double const * paramete
 	// *********************************
 	// HDF control points
 	hsize_t controlPointCount[4] = { controlPointCountPerPillar, getJCellCount() + 1, getICellCount() + 1, 3 };
-	proxy->writeArrayNd(getUuid(), "ControlPoints", H5T_NATIVE_DOUBLE, controlPoints, controlPointCount, 4);
+	proxy->writeArrayNd(getHdfGroup(), "ControlPoints", H5T_NATIVE_DOUBLE, controlPoints, controlPointCount, 4);
 
 	// *********************************
 	// Control point parameters are defined
@@ -988,7 +988,7 @@ void IjkGridParametricRepresentation::writeGeometryOnHdf(double const * paramete
 	if (controlPointParameters != nullptr) {
 		// HDF control points parameters
 		hsize_t controlPointParamCount[3] = { controlPointCountPerPillar, getJCellCount() + 1, getICellCount() + 1 };
-		proxy->writeArrayNd(getUuid(), "controlPointParameters", H5T_NATIVE_DOUBLE, controlPointParameters, controlPointParamCount, 3);
+		proxy->writeArrayNd(getHdfGroup(), "controlPointParameters", H5T_NATIVE_DOUBLE, controlPointParameters, controlPointParamCount, 3);
 	}
 }
 
@@ -1023,7 +1023,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		? gsoap_resqml2_0_1::resqml20__KDirection__down
 		: computeKDirection(controlPoints, controlPointCountPerPillar, nullptr, localCrs);
 
-	const std::string hdfDatasetPrefix = "/RESQML/" + getUuid();
+	const std::string hdfDatasetPrefix = getHdfGroup();
 	setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(kDirectionKind, isRightHanded,
 		hdfDatasetPrefix + "/PointParameters", hdfDatasetPrefix + "/ControlPoints", controlPointParameters != nullptr ? hdfDatasetPrefix + "/controlPointParameters" : "", controlPointCountPerPillar, pillarKind, proxy,
 		splitCoordinateLineCount, hdfDatasetPrefix + "/PillarIndices",

@@ -115,18 +115,18 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml
 	ostringstream ossForHdfSupRep;
 	if (supportingRepIndices != nullptr) {
 		ossForHdfSupRep << "subrepresentation_supportingRepresentationIndices_patch" << rep->SubRepresentationPatch.size();
-		supportingRepDataset = "/RESQML/" + rep->uuid + "/" + ossForHdfSupRep.str();
+		supportingRepDataset = getHdfGroup() + "/" + ossForHdfSupRep.str();
 	}
 	ostringstream ossForHdf;
 	ossForHdf << "subrepresentation_elementIndices0_patch" << rep->SubRepresentationPatch.size();
 
-	pushBackRefToExistingDataset(elementKind, elementCount, "/RESQML/" + rep->uuid + "/" + ossForHdf.str(), (std::numeric_limits<unsigned int>::max)(), proxy, supportingRepDataset);
+	pushBackRefToExistingDataset(elementKind, elementCount, getHdfGroup() + "/" + ossForHdf.str(), (std::numeric_limits<unsigned int>::max)(), proxy, supportingRepDataset);
 
 	// ************ HDF ************		
 	hsize_t numValues = elementCount;
-	proxy->writeArrayNdOfGSoapULong64Values(rep->uuid, ossForHdf.str(), elementIndices, &numValues, 1);
+	proxy->writeArrayNdOfGSoapULong64Values(getHdfGroup(), ossForHdf.str(), elementIndices, &numValues, 1);
 	if (supportingRepIndices != nullptr) {
-		proxy->writeArrayNd(rep->uuid, ossForHdfSupRep.str(), H5T_NATIVE_SHORT, supportingRepIndices, &numValues, 1);
+		proxy->writeArrayNd(getHdfGroup(), ossForHdfSupRep.str(), H5T_NATIVE_SHORT, supportingRepIndices, &numValues, 1);
 	}
 }
 
@@ -158,7 +158,7 @@ void SubRepresentation::pushBackRefToExistingDataset(gsoap_resqml2_0_1::resqml20
 	if (elementDataset.empty()) {
 		ostringstream ossForHdf;
 		ossForHdf << "subrepresentation_elementIndices0_patch" << patch->PatchIndex;
-		resqmlHDF5dataset->PathInHdfFile = "/RESQML/" + rep->uuid + "/" + ossForHdf.str();
+		resqmlHDF5dataset->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
 	}
 	else {
 		resqmlHDF5dataset->PathInHdfFile = elementDataset;
@@ -205,14 +205,14 @@ void SubRepresentation::pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml
 	resqml20__IntegerHdf5Array * integerArray = soap_new_resqml20__IntegerHdf5Array(gsoapProxy2_0_1->soap);
 	eml20__Hdf5Dataset * resqmlHDF5dataset = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	resqmlHDF5dataset->HdfProxy = proxy->newResqmlReference();
-	resqmlHDF5dataset->PathInHdfFile = "/RESQML/" + rep->uuid + "/" + ossForHdf.str();
+	resqmlHDF5dataset->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
 	integerArray->Values = resqmlHDF5dataset;
 	integerArray->NullValue = (std::numeric_limits<unsigned int>::max)();
 	elements->Indices = integerArray;
 
 	// ************ HDF ************		
 	hsize_t numValues = elementCount;
-	proxy->writeArrayNdOfGSoapULong64Values(rep->uuid, ossForHdf.str(), elementIndices1, &numValues, 1);
+	proxy->writeArrayNdOfGSoapULong64Values(getHdfGroup(), ossForHdf.str(), elementIndices1, &numValues, 1);
 }
 
 COMMON_NS::DataObjectReference SubRepresentation::getHdfProxyDor() const

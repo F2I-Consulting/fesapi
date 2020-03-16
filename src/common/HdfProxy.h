@@ -588,18 +588,18 @@ namespace COMMON_NS
 		bool isCompressed(const std::string & datasetName);
 
 	protected:
-		
+
 		/**
 		* Allow to force a root group for all newly created groups in inherited hdf proxies.
 		*/
-		virtual hdf5_hid_t openOrCreateRootGroup();
+		virtual hdf5_hid_t openOrCreateRootGroup(const std::string & rootGroup);
 
 		/**
-		* Check if an hdf group named as groupName exists in the root group.
+		* Check if an hdf group named as groupName exists in a root group.
 		* If it exists, it returns the latter. If not, it creates this group and then returns it.
 		* Do not close opened or created HDF5 group. They are automatically managed by fesapi.
 		*/
-		hdf5_hid_t openOrCreateGroupInRootGroup(const std::string & groupName);
+		hdf5_hid_t openOrCreateGroupInRootGroup(const std::string & rootSlashGroup);
 
 	    hdf5_hid_t hdfFile;
 

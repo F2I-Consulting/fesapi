@@ -165,12 +165,12 @@ resqml20__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ
 	xmlZValues->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream oss3;
 	oss3 << "points_patch" << patchIndex;
-	xmlZValues->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + oss3.str();
+	xmlZValues->Values->PathInHdfFile = getHdfGroup() + "/" + oss3.str();
 	xmlPoints->ZValues = xmlZValues;
 
 	// HDF
 	hsize_t dim[] = {numJ, numI};
-	proxy->writeArrayNdOfDoubleValues(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNdOfDoubleValues(getHdfGroup(),
 			oss3.str(),
 			zValues,
 			dim, 2);
@@ -244,12 +244,12 @@ resqml20__PointGeometry* AbstractSurfaceRepresentation::createArray2dOfExplicitZ
 	xmlZValues->Values->HdfProxy = proxy->newResqmlReference();
 	ostringstream oss3;
 	oss3 << "points_patch" << patchIndex;
-	xmlZValues->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/" + oss3.str();
+	xmlZValues->Values->PathInHdfFile = getHdfGroup() + "/" + oss3.str();
 	xmlPoints->ZValues = xmlZValues;
 
 	// HDF
 	hsize_t dim[] = {numJ, numI};
-	proxy->writeArrayNdOfDoubleValues(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNdOfDoubleValues(getHdfGroup(),
 			oss3.str(),
 			zValues,
 			dim, 2);

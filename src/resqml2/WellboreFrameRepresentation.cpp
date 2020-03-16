@@ -58,7 +58,7 @@ void WellboreFrameRepresentation::setMdValues(double const * mdValues, unsigned 
 		resqml20__DoubleHdf5Array* xmlMdValues = soap_new_resqml20__DoubleHdf5Array(gsoapProxy2_0_1->soap);
 		xmlMdValues->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 		xmlMdValues->Values->HdfProxy = proxy->newResqmlReference();
-		xmlMdValues->Values->PathInHdfFile = "/RESQML/" + frame->uuid + "/mdValues";
+		xmlMdValues->Values->PathInHdfFile = getHdfGroup() + "/mdValues";
 
 		frame->NodeMd = xmlMdValues;
 
@@ -74,7 +74,7 @@ void WellboreFrameRepresentation::setMdValues(double const * mdValues, unsigned 
 		xmlMdValues->Values->ExternalFileProxy.push_back(soap_new_eml22__ExternalDatasetPart(gsoapProxy2_2->soap, 1));
 		xmlMdValues->Values->ExternalFileProxy[0]->Count = mdValueCount;
 		xmlMdValues->Values->ExternalFileProxy[0]->StartIndex = 0;
-		xmlMdValues->Values->ExternalFileProxy[0]->PathInExternalFile = "/RESQML/" + frame->uuid + "/mdValues";
+		xmlMdValues->Values->ExternalFileProxy[0]->PathInExternalFile = getHdfGroup() + "/mdValues";
 		xmlMdValues->Values->ExternalFileProxy[0]->EpcExternalPartReference = proxy->newEml22Reference();
 
 		frame->NodeMd = xmlMdValues;
@@ -86,12 +86,12 @@ void WellboreFrameRepresentation::setMdValues(double const * mdValues, unsigned 
 	}
 
 	// HDF
-	hsize_t dim[] = { mdValueCount };
-	proxy->writeArrayNd(frameUuid,
+	hsize_t dim = mdValueCount;
+	proxy->writeArrayNd(getHdfGroup(),
 		"mdValues",
 		H5T_NATIVE_DOUBLE,
 		mdValues,
-		dim, 1);
+		&dim, 1);
 }
 
 void WellboreFrameRepresentation::setMdValues(double firstMdValue, double incrementMdValue, unsigned int mdValueCount)

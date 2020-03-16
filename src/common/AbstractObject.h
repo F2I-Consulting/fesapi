@@ -251,6 +251,13 @@ namespace COMMON_NS
 		*/
 		COMMON_NS::AbstractHdfProxy* getHdfProxyFromDataset(gsoap_eml2_2::eml22__ExternalDatasetPart const * dataset, bool throwException = true) const;
 
+		/**
+		* @return the HDF group where to write the numerical values associated to this object.
+		*/
+		std::string getHdfGroup() const {
+			return "/" + getXmlNamespace() + "/" + getUuid();
+		}
+
 	public:
 		virtual ~AbstractObject() {}
 

@@ -154,7 +154,7 @@ void ContinuousProperty::pushBackDoubleHdf5ArrayOfValues(double const * values, 
 	setPropertyMinMax(values, numValues, numArrayDimensions, minimumValue, maximumValue);
 
 	// HDF
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		H5T_NATIVE_DOUBLE,
 		values,
@@ -220,7 +220,7 @@ std::string ContinuousProperty::pushBackRefToExistingDataset(COMMON_NS::Abstract
 	if (datasetName.empty()) {
 		ostringstream ossForHdf;
 		ossForHdf << "values_patch" << *(patch->RepresentationPatchIndex);
-		xmlValues->Values->PathInHdfFile = "/RESQML/" + prop->uuid + "/" + ossForHdf.str();
+		xmlValues->Values->PathInHdfFile = getHdfGroup() + "/" + ossForHdf.str();
 	}
 	else {
 		xmlValues->Values->PathInHdfFile = datasetName;
@@ -294,7 +294,7 @@ void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(float const * values, un
 	}
 
 	// HDF
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid,
+	proxy->writeArrayNd(getHdfGroup(),
 		datasetName,
 		H5T_NATIVE_FLOAT,
 		values,
@@ -321,7 +321,7 @@ void ContinuousProperty::pushBackFloatHdf5ArrayOfValues(
 	}
 
 	// HDF
-	proxy->createArrayNd(prop->uuid,
+	proxy->createArrayNd(getHdfGroup(),
 		datasetName,
 		H5T_NATIVE_FLOAT,
 		numValues, numArrayDimensions);
@@ -357,7 +357,7 @@ void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
 		}
 	}
 	proxy->writeArrayNdSlab(
-		prop->uuid,
+		getHdfGroup(),
 		oss.str(),
 		H5T_NATIVE_FLOAT,
 		values,

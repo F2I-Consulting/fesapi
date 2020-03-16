@@ -272,7 +272,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 
 	gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind = computeKDirection(controlPoints, controlPointMaxCountPerPillar, pillarKind, localCrs);
 
-	const std::string hdfDatasetPrefix = "/RESQML/" + gsoapProxy2_0_1->uuid;
+	const std::string hdfDatasetPrefix = getHdfGroup();
 	setGeometryAsParametricSplittedPillarNodesWithoutPillarKindUsingExistingDatasets(kDirectionKind, isRightHanded,
 		hdfDatasetPrefix + "/PointParameters", hdfDatasetPrefix + "/ControlPoints", controlPointParameters != nullptr ? hdfDatasetPrefix + "/controlPointParameters" : "", controlPointMaxCountPerPillar, proxy,
 		splitCoordinateLineCount, hdfDatasetPrefix + "/PillarIndices",
@@ -294,7 +294,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	geom->PillarGeometryIsDefined = xmlDefinedPillars;
 	xmlDefinedPillars->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlDefinedPillars->Values->HdfProxy = proxy->newResqmlReference();
-	xmlDefinedPillars->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/PillarGeometryIsDefined";
+	xmlDefinedPillars->Values->PathInHdfFile = getHdfGroup() + "/PillarGeometryIsDefined";
 
 	// HDF Pillar defined
 	getRepository()->addRelationship(this, proxy);
@@ -304,7 +304,7 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 		definedPillars[i] = pillarKind[i] == -1 ? 0 : 1;
 	}
 	hsize_t pillarGeometryIsDefinedCount[2] = { getJCellCount() + 1, getICellCount() + 1 };
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid, "PillarGeometryIsDefined", H5T_NATIVE_UCHAR, definedPillars.get(), pillarGeometryIsDefinedCount, 2);
+	proxy->writeArrayNd(getHdfGroup(), "PillarGeometryIsDefined", H5T_NATIVE_UCHAR, definedPillars.get(), pillarGeometryIsDefinedCount, 2);
 
 	// *********************************
 	// Overwrite line kind hdf dataset
@@ -319,11 +319,11 @@ void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodes
 	xmlLineKinds->NullValue = -1;
 	xmlLineKinds->Values = soap_new_eml20__Hdf5Dataset(gsoapProxy2_0_1->soap);
 	xmlLineKinds->Values->HdfProxy = proxy->newResqmlReference();
-	xmlLineKinds->Values->PathInHdfFile = "/RESQML/" + gsoapProxy2_0_1->uuid + "/LineKindIndices";
+	xmlLineKinds->Values->PathInHdfFile = getHdfGroup() + "/LineKindIndices";
 
 	// HDF Line kinds
 	hsize_t lineKindCount[2] = { getJCellCount() + 1, getICellCount() + 1 };
-	proxy->writeArrayNd(gsoapProxy2_0_1->uuid, "LineKindIndices", H5T_NATIVE_SHORT, pillarKind, lineKindCount, 2);
+	proxy->writeArrayNd(getHdfGroup(), "LineKindIndices", H5T_NATIVE_SHORT, pillarKind, lineKindCount, 2);
 }
 
 void IjkGridParametricRepresentation::setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(
