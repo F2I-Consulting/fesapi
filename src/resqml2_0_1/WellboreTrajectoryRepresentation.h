@@ -38,66 +38,79 @@ namespace RESQML2_0_1_NS
 	public:
 
 		/**
-		 * Only to be used in partial transfer context
+		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 * @param [in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :AbstractRepresentation(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * Creates a wellbore trajectory representation.
 		 *
-		 * @param [in,out]	interp	The WellboreFeature interpretation the instance represents.
-		 * @param 		  	guid  	The guid to set to the new instance. If empty then a new guid will be
-		 * 							generated.
-		 * @param 		  	title 	A title for the instance to create.
-		 * @param [in,out]	mdInfo	The MD information of the trajectory, mainly the well reference
-		 * 							point. The uom used for the mdInfo coordinates must also be used for
-		 * 							the start and end MD of the trajectory.
+		 * @exception	std::invalid_argument	If @p interp or @p mdInfo is @c nullptr.
+		 *
+		 * @param [in]	interp	The represented wellbore interpretation. It cannot be null.
+		 * @param 	  	guid  	The guid to set to the wellbore trajectory representation. If empty then
+		 * 						a new guid will be generated.
+		 * @param 	  	title 	The title to set to the wellbore trajectory representation. If empty then
+		 * 						\"unknown\" title will be set.
+		 * @param [in]	mdInfo	The MD information of the trajectory, mainly the well reference point.
+		 * 						The unit of measure used for the mdInfo coordinates must also be used for
+		 * 						the start and end MD of the trajectory. It cannot be null.
 		 */
 		WellboreTrajectoryRepresentation(class WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo);
 
 		/**
 		 * Creates an instance with an existing deviation survey as its origin.
 		 *
-		 * @param [in,out]	interp		   	If non-null, the interp.
-		 * @param 		  	guid		   	Unique identifier.
-		 * @param 		  	title		   	The title.
-		 * @param [in,out]	deviationSurvey	If non-null, the deviation survey.
+		 * @exception	std::invalid_argument	If @p interp or @p deviationSurvey is @c nullptr.
+		 *
+		 * @param [in]	interp		   	The represented interpretation. It cannot be null.
+		 * @param 	  	guid		   	The guid to set to the wellbore trajectory representation. If
+		 * 								empty then a new guid will be generated.
+		 * @param 	  	title		   	The title to set to the wellbore trajectory representation. If
+		 * 								empty then \"unknown\" title will be set.
+		 * @param [in]	deviationSurvey	The deviation survey on which this wellbore trajectory relies on.
+		 * 								MD data will be retrieve from it. It cannot be null.
 		 */
 		WellboreTrajectoryRepresentation(class WellboreInterpretation * interp, const std::string & guid, const std::string & title, DeviationSurveyRepresentation * deviationSurvey);
 
 		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
+		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreTrajectoryRepresentation* fromGsoap): AbstractRepresentation(fromGsoap) {}
 
-		/** Destructor */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		~WellboreTrajectoryRepresentation() {}
 
 		/**
-		 * Set the geometry of the representation by means of a parametric line without MD information.
+		 * Sets the minimal geometry of the representation by means of start and end MDs.
 		 *
-		 * @param 	startMd	The start MD of the trajectory. Uom is the same as the one for the assocaited
+		 * @param 	startMd	The start MD of the trajectory. Uom is the same as the one for the associated
 		 * 					MdDatum coordinates.
-		 * @param 	endMd  	The end MD of the trajectory. Uom is the same as the one for the assocaited
+		 * @param 	endMd  	The end MD of the trajectory. Uom is the same as the one for the associated
 		 * 					MdDatum coordinates.
-		 * 					@localCrs								The local CRS where the control points are given.
-		 * 					If null, then the default Local CRS of the DataObject repository will be
-		 * 					arbitrarily selected.
 		 */
 		DLL_IMPORT_OR_EXPORT void setMinimalGeometry(double startMd, double endMd);
 
 		/**
-		 * Set the geometry of the representation by means of a parametric line without MD information
-		 * (only start and end MD).
+		 * Sets the geometry of the representation by means of a parametric line without MD information
+		 * (only start and end MDs).
 		 *
-		 * @param [in,out]	controlPoints	 	All the control points of all the cubic parametric lines.
-		 * 										They are ordered by parametric line first.
+		 * @exception	std::invalid_argument	If @p controlPoints is @c nullptr.
+		 * @exception	std::invalid_argument	If @p controlPointCount is 0.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default CRS is
+		 * 										defined in the repository.
+		 *
+		 * @param [in]	  	controlPoints	 	All the control points of the cubic parametric line in
+		 * 										the order of the MDs. Count is <tt>controlPointCount *
+		 * 										3</tt> and for each control point <tt>(x,y,z) =
+		 * 										(controlPoints[2i], controlPoints[2i+1],
+		 * 										controlPoints[2i+2])</tt>.
 		 * @param 		  	startMd			 	The start MD of the trajectory.
 		 * @param 		  	endMd			 	The end MD of the trajectory.
 		 * @param 		  	controlPointCount	The count of control points and control point parameters
@@ -110,24 +123,35 @@ namespace RESQML2_0_1_NS
 		 * 										file the control points and its parameters will be
 		 * 										stored. It must be already opened for writing and won't
 		 * 										be closed. If null, then the default HDF Proxy of the
-		 * 										DataObject repository will be arbitrarily selected for
+		 * 										data object repository will be arbitrarily selected for
 		 * 										writing.
-		 * 										@localCrs								The local CRS where the control points
-		 * 										are given.
-		 * 										If null, then the default Local CRS of the DataObject
-		 * 										repository will be arbitrarily selected.
-		 * @param [in,out]	localCrs		 	(Optional) If non-null, the local crs.
+		 * @param [in]	  	localCrs		 	(Optional) The local CRS where the control points are
+		 * 										given. If @c nullptr (default), then the default Local
+		 * 										CRS of the data object repository will be arbitrarily
+		 * 										selected.
 		 */
 		DLL_IMPORT_OR_EXPORT void setGeometry(double * controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
-		 * Set the geometry of the representation by means of a parametric line with MD information.
+		 * Sets the geometry of the representation by means of a parametric line with MD information.
 		 *
-		 * @param [in,out]	controlPoints		  	All the control points of all the cubic parametric
-		 * 											lines. They are ordered by parametric line first.
-		 * @param [in,out]	controlPointParameters	The arrays of control point parameters (ordered
+		 * @exception	std::invalid_argument	If @p controlPoints is @c nullptr.
+		 * @exception	std::invalid_argument	If @p controlPointParameters is @c nullptr.
+		 * @exception	std::invalid_argument	If @p controlPointCount is 0.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default CRS is
+		 * 										defined in the repository.
+		 *
+		 * @param [in]	  	controlPoints		  	All the control points of the cubic parametric line
+		 * 											in the order of the MDs. Count is
+		 * 											<tt>controlPointCount * 3</tt> and for each control
+		 * 											point <tt>(x,y, z) = (controlPoints[2i],
+		 * 											controlPoints[2i+1], controlPoints[2i+2])</tt>.
+		 * @param [in]	  	controlPointParameters	The arrays of control point parameters (ordered
 		 * 											regarding the control points). It corresponds to the
-		 * 											MD values in a WellboreFeature context.
+		 * 											MD values in a WellboreFeature context. Count is @p
+		 * 											controlPointCount.  
 		 * @param 		  	controlPointCount	  	The count of control points and control point
 		 * 											parameters per cubic parametric line.
 		 * @param 		  	lineKind			  	Integer indicating the parametric line kind: 0 for
@@ -141,27 +165,42 @@ namespace RESQML2_0_1_NS
 		 * 											won't be closed. If null, then the default HDF Proxy
 		 * 											of the DataObject repository will be arbitrarily
 		 * 											selected for writing.
-		 * 											@localCrs								The local CRS where the control
-		 * 											points are given.
-		 * 											If null, then the default Local CRS of the DataObject
-		 * 											repository will be arbitrarily selected.
-		 * @param [in,out]	localCrs			  	(Optional) If non-null, the local crs.
+		 * @param [in]	  	localCrs			  	(Optional) The local CRS where the control points are
+		 * 											given. If @c nullptr (default), then the default
+		 * 											Local CRS of the DataObject repository will be
+		 * 											arbitrarily selected.
 		 */
 		DLL_IMPORT_OR_EXPORT void setGeometry(double * controlPoints, double* controlPointParameters, unsigned int controlPointCount, int lineKind,
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
-		 * Set the geometry of the representation by means of a parametric line with MD and tangent
+		 * Sets the geometry of the representation by means of a parametric line with MD and tangent
 		 * vector information.
 		 *
-		 * @param [in,out]	controlPoints		  	All the control points of all the cubic parametric
-		 * 											lines. They are ordered by parametric line first.
-		 * @param [in,out]	tangentVectors		  	All the tangent vectors of all the control points of
+		 * @exception	std::invalid_argument	If @p controlPoints is @c nullptr.
+		 * @exception	std::invalid_argument	If @p tangentVectors is @c nullptr.
+		 * @exception	std::invalid_argument	If @p controlPointParameters is @c nullptr.
+		 * @exception	std::invalid_argument	If @p controlPointCount is 0.
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 * @exception	std::invalid_argument	If @p localCrs is @c nullptr and no default CRS is
+		 * 										defined in the repository.
+		 *
+		 * @param [in]	  	controlPoints		  	All the control points of the cubic parametric line
+		 * 											in the order of the MDs. Count is
+		 * 											<tt>controlPointCount * 3</tt> and for each control
+		 * 											point <tt>(x,y, z) = (controlPoints[2i],
+		 * 											controlPoints[2i+1], controlPoints[2i+2])</tt>.
+		 * @param [in]	  	tangentVectors		  	All the tangent vectors of all the control points of
 		 * 											all the cubic parametric lines. They are ordered
-		 * 											according to the control points.
-		 * @param [in,out]	controlPointParameters	The arrays of control point parameters (ordered
+		 * 											according to the control points. Count is
+		 * 											<tt>controlPointCount * 3</tt> and for each tangent
+		 * 											vector <tt>(u,v, w) = (tangentVectors[2i],
+		 * 											tangentVectors[2i+1], tangentVectors[2i+2])</tt>.
+		 * @param [in]	  	controlPointParameters	The arrays of control point parameters (ordered
 		 * 											regarding the control points). It corresponds to the
-		 * 											MD values in a WellboreFeature context.
+		 * 											MD values in a WellboreFeature context. Count is @p
+		 * 											controlPointCount.
 		 * @param 		  	controlPointCount	  	The count of control points and control point
 		 * 											parameters and tangent vectors per cubic parametric
 		 * 											line.
@@ -176,101 +215,104 @@ namespace RESQML2_0_1_NS
 		 * 											won't be closed. If null, then the default HDF Proxy
 		 * 											of the DataObject repository will be arbitrarily
 		 * 											selected for writing.
-		 * 											@localCrs								The local CRS where the control
-		 * 											points are given.
-		 * 											If null, then the default Local CRS of the DataObject
-		 * 											repository will be arbitrarily selected.
-		 * @param [in,out]	localCrs			  	(Optional) If non-null, the local crs.
+		 * @param [in]	  	localCrs			  	(Optional) The local CRS where the control points are
+		 * 											given. If @c nullptr, then the default Local CRS of
+		 * 											the DataObject repository will be arbitrarily
+		 * 											selected.
 		 */
 		DLL_IMPORT_OR_EXPORT void setGeometry(double * controlPoints,
 			double * tangentVectors, double* controlPointParameters, unsigned int controlPointCount, int lineKind,
 			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
 
 		/**
-		 * 0 for vertical, 1 for linear spline, 2 for natural cubic spline, 3 for cubic spline, 4 for z
-		 * linear cubic spline, 5 for minimum-curvature spline, (-1) for null: no line
+		 * Gets the geometry kind.
 		 *
-		 * @returns	The geometry kind.
+		 * @exception	std::logic_error 	If this trajectory has no geometry.
+		 * @exception	std::logic_error 	If the geometry of this trajectory is not a parametric line.
+		 * @exception	std::out_of_range	If the geometry kind index is not in the range <tt>[-1,
+		 * 									5]</tt>.
+		 *
+		 * @returns	0 for vertical, 1 for linear spline, 2 for natural cubic spline, 3 for cubic spline,
+		 * 			4 for z linear cubic spline, 5 for minimum-curvature spline, (-1) for null: no line.
 		 */
 		DLL_IMPORT_OR_EXPORT int getGeometryKind() const;
 
 		/**
-		 * Set the Md datum of this trajectory
+		 * Sets the MD datum of this trajectory.
 		 *
-		 * @param [in,out]	mdDatum	If non-null, the md datum.
+		 * @exception	std::invalid_argument	If @p mdDatum is @c nullptr.
+		 *
+		 * @param [in]	mdDatum	The MD damtum to set to this trajectory. It cannot be null.
 		 */
 		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum * mdDatum);
 
 		/**
-		 * Getter of the md information associated to this WellboreFeature trajectory representation.
+		 * Gets the MD datum associated to this trajectory.
 		 *
-		 * @returns	Null if it fails, else the md datum.
+		 * @returns	The MD datum associated to this trajectory.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::MdDatum * getMdDatum() const;
 
 		/**
-		 * Getter of the md information uuid associated to this WellboreFeature trajectory
-		 * representation.
+		 * Gets the UUID of the MD datum associated to this trajectory.
 		 *
-		 * @returns	The md datum uuid.
+		 * @returns	The UUID of the MD datum associated to this trajectory.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getMdDatumUuid() const;
 
-		/**
-		 * Get the xyz point count in a given patch.
-		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
-		 *
-		 * @returns	The xyz point count of patch.
-		 */
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
+		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const override;
 
 		/**
-		 * Get all the XYZ points of a particular patch of this representation. XYZ points are given in
-		 * the local CRS.
-		 *
-		 * @param 		  	patchIndex	Zero-based index of the patch.
-		 * @param [in,out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is
-		 * 								coordinate dimension (XYZ) and second dimension is vertex
-		 * 								dimension. It must be pre allocated.
+		 * @copybrief RESQML2_NS::AbstractRepresentation::getXyzPointsOfPatch
+		 * 
+		 * @exception std::invalid_argument If the HDF proxy is missing.
+		 * @exception	std::logic_error 	If this trajectory has no geometry.
+		 * 
+		 * @copydetails RESQML2_NS::AbstractRepresentation::getXyzPointsOfPatch
 		 */
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const override ;
 
 		/**
-		 * Indicates if the wellbore trajectory has got md values attached to each trajectory station.
+		 * Indicates if the wellbore trajectory has got MD values attached to each trajectory station.
 		 *
-		 * @returns	True if md values, false if not.
+		 * @exception	std::logic_error	If the geometry of this trajectory is not a parametric line.
+		 *
+		 * @returns	True if there is some MD values, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasMdValues() const;
 
 		/**
-		 * Units of measure of the measured depths along this trajectory.
+		 * Gets the unit of measure of the MDs along this trajectory.
 		 *
-		 * @returns	The md uom.
+		 * @returns	The unit of measure of the MDs along this trajectory.
 		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__LengthUom getMdUom() const;
 
 		/**
-		 * Getter of the md double values associated to each trajectory station of this WellboreFeature
-		 * trajectory representation.
+		 * Gets the MD double values associated to each trajectory station of this trajectory.
 		 *
-		 * @param [in,out]	values	If non-null, the values.
+		 * @exception	std::invalid_argument	If this trajectory has no MD value.
+		 * @exception	std::invalid_argument	If the HDF proxy is missing.
+		 * @exception	std::invalid_argument	If MD values are not defined using a double HDF5 array.
+		 *
+		 * @param [out]	values	A buffer for receiving the MD values. It must be preallocated with size
+		 * 						of getXyzPointCountOfAllPatches().
 		 */
 		DLL_IMPORT_OR_EXPORT void getMdValues(double* values) const;
 
 		/**
-		 * Get the measured depth for the start of the wellbore trajectory. Range may often be from
-		 * kickoff to TD, but this is not necessary.
+		 * Gets the starting MD of this wellbore trajectory. Range may often be from kickoff to TD,
+		 * but this is not necessary.
 		 *
-		 * @returns	The start md.
+		 * @returns	The start MD.
 		 */
 		DLL_IMPORT_OR_EXPORT double getStartMd() const;
 
 		/**
-		 * Get the ending depth for the start of the wellbore trajectory. Range may often be from
-		 * kickoff to TD, but this is not necessary.
+		 * Gets the ending MD of this wellbore trajectory. Range may often be from kickoff to TD, but
+		 * this is not necessary.
 		 *
-		 * @returns	The finish md.
+		 * @returns	The end MD.
 		 */
 		DLL_IMPORT_OR_EXPORT double getFinishMd() const;
 
@@ -278,72 +320,88 @@ namespace RESQML2_0_1_NS
 		 * Indicates if the wellbore trajectory has got tangent vectors attached to each trajectory
 		 * station.
 		 *
-		 * @returns	True if tangent vectors, false if not.
+		 * @exception	std::logic_error	If the geometry of this trajectory is not a parametric line.
+		 *
+		 * @returns	True if there is some tangent vectors, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasTangentVectors() const;
 
 		/**
-		 * Getter of the tangent vectors associated to each trajectory station of this WellboreFeature
-		 * trajectory representation.
+		 * Gets the tangent vectors associated to each trajectory station of this trajectory.
 		 *
-		 * @param [in,out]	tangentVectors	If non-null, the tangent vectors.
+		 * @exception	std::invalid_argument	If this trajectory has no tanget vector.
+		 * @exception	std::invalid_argument	If the HDF proxy is missing.
+		 *
+		 * @param [out]	tangentVectors	A buffer for receiving the tangent vectors. It must be
+		 * 								preallocated with size of <tt>3 * </tt>
+		 * 								getXyzPointCountOfAllPatches().
 		 */
 		DLL_IMPORT_OR_EXPORT void getTangentVectors(double* tangentVectors);
 
 		/**
-		 * Add a trajectory parent to this trajectory in case of trajectory branching. Does add the
-		 * inverse relationship i.e. from the parent trajectory to this trajecotry
+		 * Adds a trajectory parent to this trajectory in case of trajectory branching. Does add the
+		 * inverse relationship i.e. from the parent trajectory to this trajectory.
 		 *
-		 * @param 		  	kickoffMd	 	The kickoff md.
-		 * @param 		  	parentMd	 	The parent md.
-		 * @param [in,out]	parentTrajRep	If non-null, the parent traj rep.
+		 * @exception	std::invalid_argument	If @p parentTrajRep is @c nullptr.
+		 *
+		 * @param 	  	kickoffMd	 	The kickoff MD.
+		 * @param 	  	parentMd	 	The MD on the parent wellbore trajectory where this trajectory is starting.
+		 * @param [in]	parentTrajRep	The parent trajectory.
 		 */
 		DLL_IMPORT_OR_EXPORT void addParentTrajectory(double kickoffMd, double parentMd, WellboreTrajectoryRepresentation* parentTrajRep);
 
 		/**
-		 * Get the parent trajectory of this trajectory
+		 * Gets the parent trajectory of this trajectory
 		 *
-		 * @returns	nullptr if the trajectory has no parent trajectory.
+		 * @returns	The parent trajectory if it exists, else nullptr.
 		 */
 		DLL_IMPORT_OR_EXPORT WellboreTrajectoryRepresentation* getParentTrajectory() const;
 
 		/**
-		 * Get the MD on the parent wellbore trajectory where this trajectory is starting.
+		 * Gets the MD on the parent wellbore trajectory where this trajectory is starting.
 		 *
-		 * @returns	The parent trajectory md.
+		 * @exception	std::logic_error	If this wellbore trajectory has no parent trajecory.
+		 *
+		 * @returns	The parent trajectory MD.
 		 */
 		DLL_IMPORT_OR_EXPORT double getParentTrajectoryMd() const;
 
 		/**
-		 * Get a set of all children trajectories of this trajectory
+		 * Gets the set of all children trajectories of this trajectory/
 		 *
-		 * @returns	Null if it fails, else the children trajectory set.
+		 * @returns	A vector of pointers to all the children trajectories of this trajectory.
 		 */
 		DLL_IMPORT_OR_EXPORT std::vector<WellboreTrajectoryRepresentation *> getChildrenTrajectorySet() const;
 
 		/**
-		 * Getter (in read only mode) of all the associated Wellbore frame representations
+		 * Gets all the associated wellbore frame representations
 		 *
-		 * @returns	Null if it fails, else the wellbore frame representation set.
+		 * @returns A vector of pointers to all the associated wellbore frame representations.
 		 */
 		DLL_IMPORT_OR_EXPORT std::vector<class RESQML2_NS::WellboreFrameRepresentation *> getWellboreFrameRepresentationSet() const;
 
 		/**
-		 * Get the count of wellbore frame representation which are associated with this wellbore
-		 * trajectory. Necessary for now in SWIG context because I am not sure if I can always wrap a
-		 * vector of polymorphic class yet.
+		 * Get the count of wellbore frame representations which are associated with this wellbore
+		 * trajectory.
 		 *
-		 * @returns	The wellbore frame representation count.
+		 * @exception	std::range_error	If the count is strictly greater than unsigned int max.
+		 *
+		 * @returns	The count of wellbore frame representations which are associated with this wellbore
+		 * 			trajectory.
 		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getWellboreFrameRepresentationCount() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getWellboreFrameRepresentationCount() const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
 		/**
-		 * Get a particular wellbore frame representation of this wellbore trajectory representation
-		 * according to its position in the EPC document. Necessary for now in SWIG context because I mm
-		 * not sure if I can always wrap a vector of polymorphic class yet. Throw an out of bound
-		 * exception if the index is superior or equal to the count of wellbore frame representation.
+		 * Gets a particular wellbore frame representation associated to this wellbore trajectory representation
+		 * according to its position in the repository. 
+		 * 
+		 * @exception std::out_of_range If @p index is greater or equal to getWellboreFrameRepresentationCount().
+		 * 
+		 * @param index The index of the wellbore frame representation we look for.
+		 * 				
+		 * @returns The wellbore frame representation at position @p index.
 		 */
-		DLL_IMPORT_OR_EXPORT class RESQML2_NS::WellboreFrameRepresentation * getWellboreFrameRepresentation(unsigned int index) const;
+		DLL_IMPORT_OR_EXPORT class RESQML2_NS::WellboreFrameRepresentation * getWellboreFrameRepresentation(unsigned int index) const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
 		/**
 		 * Set the deviation survey which is the source of this trajectory.

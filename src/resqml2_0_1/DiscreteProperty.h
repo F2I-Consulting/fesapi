@@ -474,7 +474,8 @@ namespace RESQML2_0_1_NS
 		 * 											(mainly J dimension).
 		 * @param 		  	offsetInSlowestDim	  	The offset value for writing in the slowest dimension
 		 * 											(mainly K dimension).
-		 * @param 		  	computeMinMax		  	True to compute and to set minimum and maximum values.
+		 * @param 		  	computeMinMax		  	True if FESAPI needs to compute the min and  max from
+		 * 											the given @p values in order to set them.
 		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
 		 * 											values. It must be already opened for writing and
 		 * 											won't be closed in this method. If @p nullptr

@@ -35,6 +35,13 @@ DiscretePropertySeries::DiscretePropertySeries(RESQML2_NS::AbstractRepresentatio
 	const resqml20__ResqmlPropertyKind & energisticsPropertyKind,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
+	if (rep == nullptr) {
+		throw invalid_argument("The representation of this property values cannot be null.");
+	}
+	if (ts == nullptr) {
+		throw invalid_argument("The time series cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREDiscretePropertySeries(rep->getGsoapContext());	
 	_resqml20__DiscretePropertySeries* prop = static_cast<_resqml20__DiscretePropertySeries*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;

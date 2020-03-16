@@ -33,33 +33,36 @@ namespace RESQML2_0_1_NS
 	public:
 
 		/**
-		 * Only to be used in partial transfer context
+		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 * @param [in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT ContinuousPropertySeries(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : ContinuousProperty(partialObject) {}
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * Creates a continuous property series which is of a well known Energistics property kind.
 		 *
-		 * @param [in,out]	rep					   	The representation which supports these property
-		 * 											values.
-		 * @param 		  	guid				   	The guid to set to the fault. If empty then a new
-		 * 											guid will be generated.
-		 * @param 		  	title				   	A title for the instance to create.
-		 * @param 		  	dimension			   	The dimension of each value (scalar properties == 1).
-		 * @param 		  	attachmentKind		   	The topological orbit which support each value.
-		 * 											@apram uom						The uom of the values.
-		 * @param 		  	uom					   	The uom.
-		 * @param 		  	energisticsPropertyKind	The property type of these property values which must
-		 * 											be defined in the standard energistics property kind
-		 * 											catalog.
-		 * @param [in,out]	ts					   	The associated time series.
-		 * @param 		  	useInterval			   	(Optional) Indicates wether the property values will
-		 * 											be attached to the time index or to the interval
-		 * 											between consecutive time index.
+		 * @exception	std::invalid_argument	If @p rep or @p ts is null.
+		 *
+		 * @param [in]	rep					   	The representation on which this property is attached to.
+		 * 										It cannot be null.
+		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
+		 * 										will be generated.
+		 * @param 	  	title				   	The title to set to the property. If empty then
+		 * 										\"unknown\" title will be set.
+		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
+		 * 										is 1 for a scalar property.
+		 * @param 	  	attachmentKind		   	The topological element on which the property values are
+		 * 										attached to.
+		 * @param 	  	uom					   	The property unit of measure taken from the standard
+		 * 										Energistics units of measure catalog.
+		 * @param 	  	energisticsPropertyKind	The property type of these property values which must be
+		 * 										defined in the standard Energistics property kind catalog.
+		 * @param [in]	ts					   	The time series associated to this property series. It
+		 * 										cannot be null.
+		 * @param 	  	useInterval			   	(Optional) If true the values are associated with each
+		 * 										time interval between two consecutive time entries,
+		 * 										instead (default) of each individual time entry.
 		 */
 		ContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
@@ -67,22 +70,29 @@ namespace RESQML2_0_1_NS
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		/**
-		 * Creates an instance of this class in a gsoap context.
+		 * Creates a continuous property series which is of a local property kind
 		 *
-		 * @param [in,out]	rep			  	The representation which supports these property values.
-		 * @param 		  	guid		  	The guid to set to the fault. If empty then a new guid will
-		 * 									be generated.
-		 * @param 		  	title		  	A title for the instance to create.
-		 * @param 		  	dimension	  	The dimension of each value (scalar properties == 1).
-		 * @param 		  	attachmentKind	The topological orbit which support each value.
-		 * 									@apram uom						The uom of the values.
-		 * @param 		  	uom			  	The uom.
-		 * @param [in,out]	localPropKind 	The property type of these property values which must be
-		 * 									defined in the EPC document as a local property kind.
-		 * @param [in,out]	ts			  	The associated time series.
-		 * @param 		  	useInterval   	(Optional) Indicates wether the property values will be
-		 * 									attached to the time index or to the interval between
-		 * 									consecutive time index.
+		 * @exception	std::invalid_argument	If @p rep, @p localPropType or @p ts is null.
+		 *
+		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * 								cannot be null.
+		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
+		 * 								generated.
+		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
+		 * 								will be set.
+		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
+		 * 								a scalar property.
+		 * @param 	  	attachmentKind	The topological element on which the property values are attached
+		 * 								to.
+		 * @param 	  	uom			  	The property unit of measure taken from the standard Energistics
+		 * 								units of measure catalog.
+		 * @param [in]	localPropKind 	The property type of these property values which must be defined
+		 * 								in this repository as a local property kind.
+		 * @param [in]	ts			  	The time series associated to this property series. It cannot be
+		 * 								null.
+		 * @param 	  	useInterval   	(Optional) If true the values are associated with each time
+		 * 								interval between two consecutive time entries, instead (default)
+		 * 								of each individual time entry.
 		 */
 		ContinuousPropertySeries(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind,
@@ -90,34 +100,20 @@ namespace RESQML2_0_1_NS
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
+		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		ContinuousPropertySeries(gsoap_resqml2_0_1::_resqml20__ContinuousPropertySeries* fromGsoap): ContinuousProperty(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~ContinuousPropertySeries() {}
 
-		/**
-		 * Gets XML namespace version
-		 *
-		 * @returns	The XML namespace version.
-		 */
-		std::string getXmlNamespaceVersion() const {return "2.0.1";}
+		std::string getXmlNamespaceVersion() const override {return "2.0.1";}
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 	};
 }

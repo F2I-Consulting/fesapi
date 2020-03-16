@@ -475,19 +475,44 @@ namespace RESQML2_0_1_NS
 		);
 
 		/**
-		* Set some values of an existing 3d array of explicit float values of a particular patch. This method makes use of HDF5 hyperslabbing.
-		* This method is to be used along with one of the pushBackFloatHdf5ArrayOfValues methods which do not write any value.
-		* @param values					All the property values to set ordered according the topology of the representation it is based on.
-		* @param valueCountInFastestDim	The number of values to write in the fastest dimension (mainly I dimension).
-		* @param valueCountInMiddleDim	The number of values to write in the middle dimension (mainly J dimension).
-		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly K dimension).
-		* @param offsetInFastestDim		The offset to write in the fastest dimension (mainly I dimension).
-		* @param offsetInMiddleDim		The offset value to write in the middle dimension (mainly J dimension).
-		* @param offsetInSlowestDim		The offset value to write in the slowest dimension (mainly K dimension).
-		* @param computeMinMax			Indicates if FESAPI needs to compute the min and  max from the given \p values in order to set them.
-		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		* @param patchIndex				The index of the patch we want to set some values. If not present, the last patch is arbitrarily taken into account.
-		*/
+		 * Sets some values of an existing 3d array of explicit float values of a particular patch. This
+		 * method makes use of HDF5 hyperslabbing. Since this methods only pushes back values into an
+		 * existing array, it is to be used along with pushBackFloatHdf5Array3dOfValues().
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
+		 * 										different from unsigned int maximum value.
+		 *
+		 * @param 		  	values				  	All the property values to set ordered according to
+		 * 											the topology of the representation it is based on.
+		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
+		 * 											dimension (mainly K dimension).
+		 * @param 		  	offsetInFastestDim	  	The offset value for writing in the fastest dimension
+		 * 											(mainly I dimension).
+		 * @param 		  	offsetInMiddleDim	  	The offset value for writing in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	offsetInSlowestDim	  	The offset value for writing in the slowest dimension
+		 * 											(mainly K dimension).
+		 * @param 		  	computeMinMax		  	(Optional) True (default) if FESAPI needs to compute
+		 * 											the min and  max from the given @p values in order to
+		 * 											set them.
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * 											values. It must be already opened for writing and
+		 * 											won't be closed in this method. If @p nullptr
+		 * 											(default), a default HDF proxy must be defined into
+		 * 											the data object repository.
+		 * @param 		  	patchIndex			  	(Optional) Zero-based index of the patch where to
+		 * 											write the property values. If not provided, its
+		 * 											default value is by convention set to unsigned int
+		 * 											maximum value and the property values will be written
+		 * 											in the last property values patch (the one with the
+		 * 											greatest index).
+		 */
 		DLL_IMPORT_OR_EXPORT void setValuesOfFloatHdf5Array3dOfValues(
 			float const * values,
 			ULONG64 valueCountInFastestDim,
@@ -502,15 +527,38 @@ namespace RESQML2_0_1_NS
 		);
 
 		/**
-		* Set some values of an existing 3d array of explicit float values of a particular patch.  This method makes use of HDF5 hyperslabbing.
-		* This method is to be used along with one of the pushBackFloatHdf5ArrayOfValues methods which do not write any value.
-		* @param values					All the property values to set ordered according the topology of the representation it is based on.
-		* @param numValues				The number of property values ordered by dimension of the array to write. From slowest to fastest.
-		* @param offsetValues			The offset values ordered by dimension of the array to write. From slowest to fastest.
-		* @param numArrayDimensions		The number of dimensions of the array to write.
-		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		* @param patchIndex				The index of the patch we want to set some values.  If not present, the last patch is arbitrarily taken into account.
-		*/
+		 * Set some values of an existing 3d array of explicit float values of a particular patch.  This
+		 * method makes use of HDF5 hyperslabbing. This method is to be used along with one of the
+		 * pushBackFloatHdf5ArrayOfValues() methods which do not write any value.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
+		 * 										different from unsigned int maximum value.
+		 *
+		 * @param 		  	values			  	All the property values to set ordered according to the
+		 * 										topology of the representation it is based on.
+		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
+		 * 										array to write. It is ordered from slowest dimension to
+		 * 										fastest dimension.
+		 * @param 		  	offsetValues	  	The offset values ordered by dimension of the array to
+		 * 										write. It is ordered from slowest dimension to fastest
+		 * 										dimension.
+		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
+		 * @param 		  	computeMinMax	  	(Optional) True (default) if FESAPI needs to compute the
+		 * 										min and  max from the given @p values in order to set
+		 * 										them.
+		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * 										values. It must be already opened for writing and won't
+		 * 										be closed in this method. If @p nullptr (default), a
+		 * 										default HDF proxy must be defined into the data object
+		 * 										repository.
+		 * @param 		  	patchIndex		  	(Optional) Zero-based index of the patch where to write
+		 * 										the property values. If not provided, its default value
+		 * 										is by convention set to unsigned int maximum value and
+		 * 										the property values will be written in the last property
+		 * 										values patch (the one with the greatest index).
+		 */
 		DLL_IMPORT_OR_EXPORT void setValuesOfFloatHdf5ArrayOfValues(
 			float const * values,
 			unsigned long long const * numValues,
@@ -522,13 +570,23 @@ namespace RESQML2_0_1_NS
 		);
 
 		/**
-		* Get some of the values of a particular patch of the instance as float ones. This method makes use of HDF5 hyperslabbing.
-		* @param patchIndex					The index of the patch we want the values from.
-		* @param values						The array (pointer) of values must be preallocated.
-		* @param numValuesInEachDimension	The number of property values ordered by dimension of the array to write.
-		* @param offsetInEachDimension		The offset values ordered by dimension of the array to write.
-		* @param numArrayDimensions			The number of dimensions of the HDF5 array to read.
-		*/
+		 * Get some of the values of a particular patch of the instance as float ones. This method makes
+		 * use of HDF5 hyperslabbing.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	   	patchIndex					The index of the patch we want the values from.
+		 * @param [out]	values						The array (pointer) of values must be
+		 * 											preallocated. Size is
+		 * 											<tt>getValuesCountOfPatch(patchIndex)</tt>.
+		 * @param 	   	numValuesInEachDimension	The number of property values ordered by dimension of
+		 * 											the array to read. It is ordered from slowest dimension
+		 * 											to fastest dimension.
+		 * @param 	   	offsetInEachDimension   	The offset values ordered by dimension of the array
+		 * 											to read. It is ordered from slowest dimension to fastest
+		 * 											dimension.
+		 * @param 	   	numArrayDimensions			The number of dimensions of the HDF5 array to read.
+		 */
 		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(
 			unsigned int patchIndex,
 			float* values,
@@ -538,16 +596,27 @@ namespace RESQML2_0_1_NS
 		) const;
 
 		/**
-		* Get some of the values of a particular patch of the instance as float ones. This method makes use of HDF5 hyperslabbing.
-		* @param patchIndex				The index of the patch we want the values from.
-		* @param values					The array (pointer) of values must be preallocated.
-		* @param valueCountInFastestDim	The number of values to read in the fastest dimension (mainly I dimension).
-		* @param valueCountInMiddleDim	The number of values to read in the middle dimension (mainly J dimension).
-		* @param valueCountInSlowestDim The number of values to read in the slowest dimension (mainly K dimension).
-		* @param offsetInFastestDim		The offset value to read in the fastest dimension (mainly I dimension).
-		* @param offsetInMiddleDim		The offset value to read in the middle dimension (mainly J dimension).
-		* @param offsetInSlowestDim		The offset value to read in the slowest dimension (mainly K dimension).
-		*/
+		 * Get some of the values of a particular patch of the instance as float ones. This method makes
+		 * use of HDF5 hyperslabbing.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 		  	patchIndex			  	The index of the patch we want the values from.
+		 * @param [in,out]	values				  	The array (pointer) of values must be preallocated.
+		 * 											Size is <tt>getValuesCountOfPatch(patchIndex)</tt>.
+		 * @param 		  	valueCountInFastestDim	The number of values to read in the fastest dimension
+		 * 											(mainly I dimension).
+		 * @param 		  	valueCountInMiddleDim 	The number of values to read in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to read in the slowest dimension
+		 * 											(mainly K dimension).
+		 * @param 		  	offsetInFastestDim	  	The offset value for reading in the fastest dimension
+		 * 											(mainly I dimension).
+		 * @param 		  	offsetInMiddleDim	  	The offset value for reading in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	offsetInSlowestDim	  	The offset value for reading in the slowest dimension
+		 * 											(mainly K dimension).
+		 */
 		DLL_IMPORT_OR_EXPORT void getFloatValuesOf3dPatch(
 			unsigned int patchIndex,
 			float* values,
@@ -559,19 +628,10 @@ namespace RESQML2_0_1_NS
 			ULONG64 offsetInSlowestDim
 		) const;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 
 	private:
 

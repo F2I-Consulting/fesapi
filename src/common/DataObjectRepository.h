@@ -1711,12 +1711,15 @@ namespace COMMON_NS
 		/**
 		 * Creates a wellbore interpretation into this repository
 		 *
-		 * @param [in]	wellbore 	The interpreted wellbore. It cannot be null.
+		 * @exception	std::invalid_argument	If @p wellbore is @c nullptr.
+		 *
+		 * @param [in]	wellbore 	The interpreted wellbore feature. It cannot be null.
 		 * @param 	  	guid	 	The guid to set to the wellbore interpretation. If empty then a new
 		 * 							guid will be generated.
 		 * @param 	  	title	 	The title to set to the wellbore interpretation. If empty then
 		 * 							\"unknown\" title will be set.
-		 * @param 	  	isDrilled	True if is drilled, false if not.
+		 * @param 	  	isDrilled	Indicate if the wellbore is interpreted wether as drilled (true) or
+		 * 									not (false).
 		 *
 		 * @returns	A pointer to the new wellbore interpretation.
 		 */
@@ -2077,19 +2080,26 @@ namespace COMMON_NS
 		/**
 		 * Creates a wellbore trajectory representation into this repository
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @exception	std::invalid_argument	If @p interp or @p mdInfo is @c nullptr.
+		 *
+		 * @param [in]	interp	The represented wellbore interpretation. It cannot be null.
 		 * @param 	  	guid  	The guid to set to the wellbore trajectory representation. If empty then
 		 * 						a new guid will be generated.
 		 * @param 	  	title 	The title to set to the wellbore trajectory representation. If empty then
 		 * 						\"unknown\" title will be set.
-		 * @param [in]	mdInfo	The MD datum that refers this wellbore trajectory. It cannot be null.
+		 * @param [in]	mdInfo	The MD information of the trajectory, mainly the well reference point.
+		 * 						The unit of measure used for the mdInfo coordinates must also be used for
+		 * 						the start and end MD of the trajectory. It cannot be null.
 		 *
 		 * @returns	A pointer to the new wellbore trajectory representation.
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo);
 
 		/**
-		 * Creates a wellbore trajectory representation into this repository
+		 * Creates a wellbore trajectory representation (with an existing deviation survey as its
+		 * origin) into this repository
+		 *
+		 * @exception	std::invalid_argument	If @p interp or @p deviationSurvey is @c nullptr.
 		 *
 		 * @param [in]	interp		   	The represented interpretation. It cannot be null.
 		 * @param 	  	guid		   	The guid to set to the wellbore trajectory representation. If
@@ -2836,7 +2846,10 @@ namespace COMMON_NS
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * localPropType);
 
 		/**
-		 * Creates a continuous property series into this repository
+		 * Creates a continuous property series (which is of a well known Energistics property kind)
+		 * into this repository.
+		 *
+		 * @exception	std::invalid_argument	If @p rep or @p ts is null.
 		 *
 		 * @param [in]	rep					   	The representation on which this property is attached to.
 		 * 										It cannot be null.
@@ -2849,9 +2862,9 @@ namespace COMMON_NS
 		 * @param 	  	attachmentKind		   	The topological element on which the property values are
 		 * 										attached to.
 		 * @param 	  	uom					   	The property unit of measure taken from the standard
-		 * 										RESQML units of measure catalog.
-		 * @param 	  	energisticsPropertyKind	The kind of this property taken from the standard set of
-		 * 										RESQML property kinds.
+		 * 										Energistics units of measure catalog.
+		 * @param 	  	energisticsPropertyKind	The property type of these property values which must be
+		 * 										defined in the standard Energistics property kind catalog.
 		 * @param [in]	ts					   	The time series associated to this property series. It
 		 * 										cannot be null.
 		 * @param 	  	useInterval			   	(Optional) If true the values are associated with each
@@ -2865,7 +2878,9 @@ namespace COMMON_NS
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		/**
-		 * Creates a continuous property series into this repository
+		 * Creates a continuous property series (which is of a local property kind) into this repository
+		 *
+		 * @exception	std::invalid_argument	If @p rep, @p localPropType or @p ts is null.
 		 *
 		 * @param [in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
@@ -2877,9 +2892,10 @@ namespace COMMON_NS
 		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
-		 * @param 	  	uom			  	The property unit of measure taken from the standard RESQML units
-		 * 								of measure catalog.
-		 * @param [in]	localPropType 	The kind of this property. It cannot be null.
+		 * @param 	  	uom			  	The property unit of measure taken from the standard Energistics
+		 * 								units of measure catalog.
+		 * @param [in]	localPropType 	The property type of these property values which must be defined
+		 * 								in this repository as a local property kind.
 		 * @param [in]	ts			  	The time series associated to this property series. It cannot be
 		 * 								null.
 		 * @param 	  	useInterval   	(Optional) If true the values are associated with each time
@@ -2941,7 +2957,7 @@ namespace COMMON_NS
 			const unsigned int & dimension, const gsoap_resqml2_0_1::resqml20__IndexableElements & attachmentKind, COMMON_NS::PropertyKind * localPropType);
 
 		/**
-		 * Creates a discrete property series into this repository
+		 * Creates a discrete property series (which is of a standard Energistics property kind) into this repository.
 		 *
 		 * @param [in]	rep					   	The representation on which this property is attached to.
 		 * 										It cannot be null.
@@ -2953,8 +2969,9 @@ namespace COMMON_NS
 		 * 										is 1 for a scalar property.
 		 * @param 	  	attachmentKind		   	The topological element on which the property values are
 		 * 										attached to.
-		 * @param 	  	energisticsPropertyKind	The kind of this property taken from the standard set of
-		 * 										RESQML property kinds.
+		 * @param 	  	energisticsPropertyKind	The property type of these property values which must
+		 * 										be defined in the standard Energistics property type
+		 * 										dictionary.
 		 * @param [in]	ts					   	The time series associated to this property series. It
 		 * 										cannot be null.
 		 * @param 	  	useInterval			   	(Optional) If true the values are associated with each
@@ -2968,7 +2985,9 @@ namespace COMMON_NS
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		/**
-		 * Creates a discrete property series into this repository
+		 * Creates a discrete property series (which is of a local property kind) into this repository.
+		 *
+		 * @exception	std::invalid_argument	If @p rep, @p localPropType or @p ts is null.
 		 *
 		 * @param [in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.
@@ -2980,7 +2999,8 @@ namespace COMMON_NS
 		 * 								a scalar property.
 		 * @param 	  	attachmentKind	The topological element on which the property values are attached
 		 * 								to.
-		 * @param [in]	localPropType 	The kind of this property. It cannot be null.
+		 * @param [in]	localPropType 	The property type of these property values which must be defined
+		 * 								in this repository as a local property kind. It cannot be null.
 		 * @param [in]	ts			  	The time series associated to this property series. It cannot be
 		 * 								null.
 		 * @param 	  	useInterval   	(Optional) If true the values are associated with each time
@@ -2994,7 +3014,7 @@ namespace COMMON_NS
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		/**
-		 * Creates a categorical property (which is of a well known Energistics property kind) into this
+		 * Creates a categorical property (which is of a standard Energistics property kind) into this
 		 * repository
 		 *
 		 * @exception	std::invalid_argument	If @p rep or @p strLookup is null.
@@ -3048,7 +3068,10 @@ namespace COMMON_NS
 			RESQML2_0_1_NS::StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropType);
 
 		/**
-		 * Creates a categorical property series into this repository
+		 * Creates a categorical property series (which is of a standard Energistics property kind) into
+		 * this repository
+		 *
+		 * @exception	std::invalid_argument	If @p rep, @p strLookup or @p ts is null.
 		 *
 		 * @param [in]	rep					   	The representation on which this property is attached to.
 		 * 										It cannot be null.
@@ -3077,7 +3100,10 @@ namespace COMMON_NS
 			RESQML2_NS::TimeSeries * ts, const bool & useInterval = false);
 
 		/**
-		 * Creates a categorical property series into this repository
+		 * Creates a categorical property series (which is of a local property kind) into this repository
+		 *
+		 * @exception	std::invalid_argument	If @p rep, @p strLookup, @p localPropKind or @p ts is
+		 * 										null.
 		 *
 		 * @param [in]	rep			  	The representation on which this property is attached to. It
 		 * 								cannot be null.

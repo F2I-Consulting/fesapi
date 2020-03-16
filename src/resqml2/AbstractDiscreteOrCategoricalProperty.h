@@ -543,7 +543,8 @@ namespace RESQML2_NS
 		 *
 		 * @param 	   	patchIndex					The index of the patch we want the values from.
 		 * @param [out]	values						The array (pointer) of values which must be
-		 * 											preallocated.  
+		 * 											preallocated. Size is
+		 * 											<tt>getValuesCountOfPatch(patchIndex)</tt>.
 		 * @param 	   	numValuesInEachDimension	The number of property values ordered by dimension of
 		 * 											the array to read. It is ordered from slowest dimension
 		 * 											to fastest dimension.
@@ -568,7 +569,8 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
 		 *
 		 * @param 	   	patchIndex			  	The index of the patch we want the values from.
-		 * @param [out]	values				  	The array (pointer) of values must be preallocated.
+		 * @param [out]	values				  	The array (pointer) of values must be preallocated. Size
+		 * 										is <tt>getValuesCountOfPatch(patchIndex)</tt>.
 		 * @param 	   	valueCountInFastestDim	The number of values to read in the fastest dimension
 		 * 										(mainly I dimension).
 		 * @param 	   	valueCountInMiddleDim 	The number of values to read in the middle dimension
@@ -600,16 +602,17 @@ namespace RESQML2_NS
 		 * @exception	std::logic_error 	If the underlying gSOAP instance is not a RESQML2.0 one.
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
 		 *
-		 * @param 		  	patchIndex					The index of the patch we want the values from.
-		 * @param [out]	  	values						The array (pointer) of values which must be
-		 * 												preallocated.
-		 * @param [in,out]	numValuesInEachDimension	The number of property values ordered by
-		 * 												dimension of the array to read. It is ordered from
-		 * 												slowest dimension to fastest dimension.
-		 * @param [in,out]	offsetInEachDimension   	The offset values ordered by dimension of the
-		 * 												array to read. It is ordered from slowest dimension
-		 * 												to fastest dimension.
-		 * @param 		  	numArrayDimensions			The number of dimensions of the array to write.
+		 * @param 	   	patchIndex					The index of the patch we want the values from.
+		 * @param [out]	values						The array (pointer) of values which must be
+		 * 											preallocated. Size is
+		 * 											<tt>getValuesCountOfPatch(patchIndex)</tt>.
+		 * @param [in] 	numValuesInEachDimension	The number of property values ordered by
+		 * 											dimension of the array to read. It is ordered from
+		 * 											slowest dimension to fastest dimension.
+		 * @param [in] 	offsetInEachDimension   	The offset values ordered by dimension of the
+		 * 											array to read. It is ordered from slowest dimension to
+		 * 											fastest dimension.
+		 * @param 	   	numArrayDimensions			The number of dimensions of the array to read.
 		 *
 		 * @returns	The null value.
 		 */
@@ -629,7 +632,8 @@ namespace RESQML2_NS
 		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
 		 *
 		 * @param 	   	patchIndex			  	The index of the patch we want the values from.
-		 * @param [out]	values				  	The array (pointer) of values must be preallocated.
+		 * @param [out]	values				  	The array (pointer) of values must be preallocated. Size
+		 * 										is <tt>getValuesCountOfPatch(patchIndex)</tt>.
 		 * @param 	   	valueCountInFastestDim	The number of values to read in the fastest dimension
 		 * 										(mainly I dimension).
 		 * @param 	   	valueCountInMiddleDim 	The number of values to read in the middle dimension

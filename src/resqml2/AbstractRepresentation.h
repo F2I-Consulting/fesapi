@@ -328,37 +328,41 @@ namespace RESQML2_NS
 		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfAllPatches() const;
 
 		/**
-		 * Gets all the xyz points of a particular patch of this representation. xyz points are given in
+		 * @brief Gets all the xyz points of a particular patch of this representation. xyz points are given in
 		 * the local CRS.
 		 *
+		 * @exception std::out_of_range If @p patchIndex is out of range.
+		 * 
 		 * @param 	   	patchIndex	Zero-based index of the patch from which we look for the xyz points.
 		 * @param [out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
-		 * 							coordinate dimension (x, y or Z) and second dimension is vertex
-		 * 							dimension. Thus, its size is 3*(3*[count of xyz points in patch @p
-		 * 							patchIndex]). It must be preallocated.
+		 * 							coordinate dimension (x, y or z) and second dimension is vertex
+		 * 							dimension. It must be preallocated with a size of <tt>3 *
+		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const = 0;
 
 		/**
-		 * Gets all the xyz points of a particular patch of this representation. xyz points are given in
+		 * @brief Gets all the xyz points of a particular patch of this representation. xyz points are given in
 		 * the global CRS.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is out of range.
 		 *
 		 * @param 	   	patchIndex	Zero-based index of the patch from which we look for the xyz points.
 		 * @param [out]	xyzPoints 	A linearized 2d array where the first (quickest) dimension is the
-		 * 							coordinate dimension (x, y or Z) and second dimension is vertex
-		 * 							dimension. Thus, its size is 3*(3*[count of xyz points in patch
-		 * 							@p patchIndex]). It must be preallocated.
+		 * 							coordinate dimension (x, y or z) and second dimension is vertex
+		 * 							dimension. It must be preallocated with a size of <tt>3 *
+		 * 							getXyzPointCountOfPatch(patchIndex)</tt>.
 		 */
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatchInGlobalCrs(const unsigned int & patchIndex, double * xyzPoints) const;
 
 		/**
-		 * Gets all the xyz points of all patches of this representation. xyz points are given in the
+		 * @brief Gets all the xyz points of all patches of this representation. xyz points are given in the
 		 * local CRS.
 		 *
 		 * @param [out]	xyzPoints	A linearized 2d array where the first (quickest) dimension is the
-		 * 							coordinate dimension (x, y or Z) and second dimension is vertex
-		 * 							dimension. Thus, its size is 3*(3*[count of all xyz points]). It must
-		 * 							be preallocated.
+		 * 							coordinate dimension (x, y or z) and second dimension is vertex
+		 * 							dimension. It must be preallocated with a size of <tt>3 *
+		 * 							getXyzPointCountOfAllPatches()</tt>.
 		 */
 		DLL_IMPORT_OR_EXPORT void getXyzPointsOfAllPatches(double * xyzPoints) const;
 
