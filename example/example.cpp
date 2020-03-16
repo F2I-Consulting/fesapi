@@ -76,9 +76,9 @@ under the License.
 #include "resqml2_0_1/DiscreteProperty.h"
 #include "resqml2_0_1/CategoricalProperty.h"
 #include "resqml2_0_1/StringTableLookup.h"
-#include "resqml2_0_1/IjkGridExplicitRepresentation.h"
-#include "resqml2_0_1/IjkGridParametricRepresentation.h"
-#include "resqml2_0_1/UnstructuredGridRepresentation.h"
+#include "resqml2/IjkGridExplicitRepresentation.h"
+#include "resqml2/IjkGridParametricRepresentation.h"
+#include "resqml2/UnstructuredGridRepresentation.h"
 #include "resqml2_0_1/SealedSurfaceFrameworkRepresentation.h"
 #include "resqml2_0_1/SubRepresentation.h"
 #include "resqml2_0_1/TimeSeries.h"
@@ -138,7 +138,7 @@ WellboreFeature* wellbore1 = nullptr;
 WellboreInterpretation* wellbore1Interp1 = nullptr;
 StratigraphicColumnRankInterpretation* stratiColumnRank0 = nullptr;
 SealedSurfaceFrameworkRepresentation* sealedSurfaceFramework = nullptr;
-IjkGridExplicitRepresentation* ijkgrid = nullptr;
+RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid = nullptr;
 COMMON_NS::PropertyKind* propType1 = nullptr;
 DiscreteProperty* discreteProp1 = nullptr;
 ContinuousProperty* contColMapContProp = nullptr;
@@ -689,7 +689,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	EarthModelInterpretation * earthModelInterp = pck->createEarthModelInterpretation(earthModel, "f5cd7520-fa3d-11e5-b65b-0002a5d5c51b", "Grid interp");
 
 	// ONE SUGAR
-	IjkGridExplicitRepresentation* singleCellIjkgrid = pck->createIjkGridExplicitRepresentation("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b", "One unfaulted sugar cube", 1, 1, 1);
+	RESQML2_NS::IjkGridExplicitRepresentation* singleCellIjkgrid = pck->createIjkGridExplicitRepresentation("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b", "One unfaulted sugar cube", 1, 1, 1);
 	double singleCellIjkgridNodes[24] = { 0, 0, 300, 700, 0, 350, 0, 150, 300, 700, 150, 350,
 		0, 0, 500, 700, 0, 550, 0, 150, 500, 700, 150, 550 };
 	singleCellIjkgrid->setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape__vertical, gsoap_resqml2_0_1::resqml20__KDirection__down, false, singleCellIjkgridNodes, hdfProxy);
@@ -705,7 +705,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// FOUR SUGARS PARAMETRIC
-	IjkGridParametricRepresentation* ijkgridParametric = pck->createIjkGridParametricRepresentation(earthModelInterp, "37c45c00-fa3e-11e5-a21e-0002a5d5c51b", "Four faulted sugar cubes (parametric geometry)", 2, 1, 2);
+	RESQML2_NS::IjkGridParametricRepresentation* ijkgridParametric = pck->createIjkGridParametricRepresentation(earthModelInterp, "37c45c00-fa3e-11e5-a21e-0002a5d5c51b", "Four faulted sugar cubes (parametric geometry)", 2, 1, 2);
 	double parameters[24] = { 300, 300, 350, 300, 300, 350, /* SPLIT*/ 350, 350,
 		400, 400, 450, 400, 400, 450, /* SPLIT*/ 450, 450,
 		500, 500, 550, 500, 500, 550, /* SPLIT*/ 550, 550 };
@@ -714,7 +714,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// FOUR SUGARS PARAMETRIC STRAIGHT
-	IjkGridParametricRepresentation* ijkgridParametricStraight = pck->createIjkGridParametricRepresentation(earthModelInterp, "f68235af-1d7a-4e24-93a8-10739b15ca40", "Four faulted sugar cubes (straight parametric geometry)", 2, 1, 2);
+	RESQML2_NS::IjkGridParametricRepresentation* ijkgridParametricStraight = pck->createIjkGridParametricRepresentation(earthModelInterp, "f68235af-1d7a-4e24-93a8-10739b15ca40", "Four faulted sugar cubes (straight parametric geometry)", 2, 1, 2);
 	double controlPointsParametricStraight[36] = { 0, 0, 300, 375, 0, 300, 700, 0, 350, 0, 150, 300, 375, 150, 300, 700, 150, 350,
 		0, 0, 500, 375, 0, 500, 700, 0, 550, 0, 150, 500, 375, 150, 500, 700, 150, 550 };
 	double controlPointsParameters[12] = { 300, 300, 350, 300, 300, 350,
@@ -723,7 +723,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// FOUR SUGARS PARAMETRIC different line kind and one cubic pillar
-	IjkGridParametricRepresentation* ijkgridParametricNotSameLineKind = pck->createIjkGridParametricRepresentation("3ce91933-4f6f-4f35-b0ac-4ba4672f0a87", "Four faulted sugar cubes with one cubic pillar", 2, 1, 2);
+	RESQML2_NS::IjkGridParametricRepresentation* ijkgridParametricNotSameLineKind = pck->createIjkGridParametricRepresentation("3ce91933-4f6f-4f35-b0ac-4ba4672f0a87", "Four faulted sugar cubes with one cubic pillar", 2, 1, 2);
 	const double nan = numeric_limits<double>::quiet_NaN();
 	double controlPointsNotSameLineKind[54] = { 0, 0, 300, 375, 0, 300, 700, 0, 350, 0, 150, 300, 375, 150, 300, 700, 150, 350,
 		50, 30, 1000, 400, 0, 400, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan, nan,
@@ -736,7 +736,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		2, pillarOfCoordinateLine, splitCoordinateLineColumnCumulativeCount, splitCoordinateLineColumns);
 
 	// FOUR SUGARS PARAMETRIC different line kind an one cubic pillar : A copy
-	IjkGridParametricRepresentation* ijkgridParametricNotSameLineKindCopy = pck->createIjkGridParametricRepresentation("46efd88c-87e1-4e00-bbdd-4c7bcc941749", "Copy of Four faulted sugar cubes with one cubic pillar", 2, 1, 2);
+	RESQML2_NS::IjkGridParametricRepresentation* ijkgridParametricNotSameLineKindCopy = pck->createIjkGridParametricRepresentation("46efd88c-87e1-4e00-bbdd-4c7bcc941749", "Copy of Four faulted sugar cubes with one cubic pillar", 2, 1, 2);
 	const std::string hdfDatasetPrefix = "/" + ijkgridParametricNotSameLineKind->getXmlNamespace() + "/" + ijkgridParametricNotSameLineKind->getUuid();
 	ijkgridParametricNotSameLineKindCopy->setGeometryAsParametricSplittedPillarNodesUsingExistingDatasets(gsoap_resqml2_0_1::resqml20__PillarShape__straight, gsoap_resqml2_0_1::resqml20__KDirection__down, false,
 		hdfDatasetPrefix + "/PointParameters", hdfDatasetPrefix + "/ControlPoints", hdfDatasetPrefix + "/controlPointParameters", 3, hdfDatasetPrefix + "/LineKindIndices", hdfDatasetPrefix + "/PillarGeometryIsDefined", hdfProxy,
@@ -744,7 +744,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + CUMULATIVE_LENGTH_DS_NAME, hdfDatasetPrefix + "/ColumnsPerSplitCoordinateLine/" + ELEMENTS_DS_NAME);
 
 	// 4*3*2 explicit grid Left Handed
-	IjkGridExplicitRepresentation* ijkgrid432 = pck->createIjkGridExplicitRepresentation("e96c2bde-e3ae-4d51-b078-a8e57fb1e667", "Four by Three by Two Left Handed", 4, 3, 2);
+	RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid432 = pck->createIjkGridExplicitRepresentation("e96c2bde-e3ae-4d51-b078-a8e57fb1e667", "Four by Three by Two Left Handed", 4, 3, 2);
 	double nodes432[216] = {
 		0, 0, 300, 150, 0, 300, 375, 0, 300, 550, 0, 350, 700, 0, 350, //IJ0K0
 		0, 50, 300, 150, 50, 300, 375, 50, 300, 550, 50, 350, 700, 50, 350, //IJ1K0
@@ -770,7 +770,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 
 
 	// 4*3*2 explicit grid Right Handed
-	IjkGridExplicitRepresentation* ijkgrid432rh = pck->createIjkGridExplicitRepresentation("4fc004e1-0f7d-46a8-935e-588f790a6f84", "Four by Three by Two Right Handed", 4, 3, 2);
+	RESQML2_NS::IjkGridExplicitRepresentation* ijkgrid432rh = pck->createIjkGridExplicitRepresentation("4fc004e1-0f7d-46a8-935e-588f790a6f84", "Four by Three by Two Right Handed", 4, 3, 2);
 	double nodes432rh[216] = {
 		0, 150, 300, 150, 150, 300, 375, 150, 300, 550, 150, 350, 700, 150, 350, //IJ0K0
 		0, 100, 300, 150, 100, 300, 375, 100, 300, 550, 100, 350, 700, 100, 350, //IJ1K0
@@ -947,7 +947,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	// LGR
 	//**************
 
-	IjkGridExplicitRepresentation* lgrGrid = pck->createIjkGridExplicitRepresentation("2aec1720-fa3e-11e5-a116-0002a5d5c51b", "LGR", 2, 1, 3);
+	RESQML2_NS::IjkGridExplicitRepresentation* lgrGrid = pck->createIjkGridExplicitRepresentation("2aec1720-fa3e-11e5-a116-0002a5d5c51b", "LGR", 2, 1, 3);
 	lgrGrid->setParentWindow(
 		0, 2, 1,
 		0, 1, 1,
@@ -961,7 +961,8 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	ijkgrid->setIntervalAssociationWithStratigraphicOrganizationInterpretation(&stratiUnitIndice, 1000, stratiColumnRank0);
 
 	// Partial transfer
-	UnstructuredGridRepresentation* partialGrid = pck->createPartial<UnstructuredGridRepresentation>("5cc3ee47-4bd5-4d82-ae3e-ed64e6d8d1eb", "Partial Grid");
+	/*
+	RESQML2_NS::UnstructuredGridRepresentation* partialGrid = pck->createPartial<RESQML2_NS::UnstructuredGridRepresentation>("5cc3ee47-4bd5-4d82-ae3e-ed64e6d8d1eb", "Partial Grid");
 	ContinuousProperty* continuousProp1 = pck->createContinuousProperty(partialGrid, "cd627946-0f89-48fa-b99c-bdb35d8ac4aa", "Testing partial property", 1,
 		gsoap_resqml2_0_1::resqml20__IndexableElements__cells, gsoap_resqml2_0_1::resqml20__ResqmlUom__m, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind__length);
 	double continuousProp1Values[6] = { 0, 1, 2, 3, 4, 5 };
@@ -972,9 +973,9 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	subRepOfUnstructuredGrid->pushBackSupportingRepresentation(partialGrid);
 	ULONG64 nodeIndex[2] = { 0, 1 };
 	subRepOfUnstructuredGrid->pushBackSubRepresentationPatch(gsoap_resqml2_0_1::resqml20__IndexableElements__nodes, 2, nodeIndex, hdfProxy);
-
+	*/
 	// Tetra grid
-	UnstructuredGridRepresentation* tetraGrid = pck->createUnstructuredGridRepresentation("9283cd33-5e52-4110-b7b1-616abde2b303", "One tetrahedron grid", 1);
+	RESQML2_NS::UnstructuredGridRepresentation* tetraGrid = pck->createUnstructuredGridRepresentation("9283cd33-5e52-4110-b7b1-616abde2b303", "One tetrahedron grid", 1);
 	double tetraGridPoints[12] = { 0, 0, 300, 375, 0, 300, 0, 150, 300, 0, 0, 500 };
 	ULONG64 faceIndicesPerCell[4] = { 0, 1, 2, 3 };
 	unsigned char faceRightHandness[4] = { 0, 0, 1, 1 };
@@ -1832,7 +1833,7 @@ void serializeRockFluidOrganization(COMMON_NS::DataObjectRepository & pck, COMMO
 	RockFluidOrganizationInterpretation* rockFluidOrgInterp = pck.createRockFluidOrganizationInterpretation(rockFluidOrgFeature, "b5bbfe42-4a63-11e9-9eeb-4f036e6e8141", "Rock Fluid org", rockFluidUnit);
 
 	// Link between ijk grid and rock fuid org
-	IjkGridExplicitRepresentation* singleCellIjkgrid = pck.getDataObjectByUuid<IjkGridExplicitRepresentation>("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b");
+	RESQML2_NS::IjkGridExplicitRepresentation* singleCellIjkgrid = pck.getDataObjectByUuid<RESQML2_NS::IjkGridExplicitRepresentation>("e69bfe00-fa3d-11e5-b5eb-0002a5d5c51b");
 	ULONG64 rockFluidUnitIndice = 0;
 	singleCellIjkgrid->setCellAssociationWithRockFluidOrganizationInterpretation(&rockFluidUnitIndice, 1000, rockFluidOrgInterp);
 }
@@ -1955,7 +1956,7 @@ bool serialize(const string & filePath)
 {
 	COMMON_NS::EpcDocument pck(filePath);
 	COMMON_NS::DataObjectRepository repo;
-	repo.setDefaultStandard(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_0_1);
+	repo.setDefaultStandard(COMMON_NS::DataObjectRepository::EnergisticsStandard::RESQML2_2);
 
 	COMMON_NS::AbstractObject::setFormat("F2I-CONSULTING", "Fesapi Example", FESAPI_VERSION);
 
@@ -3718,7 +3719,7 @@ void deserialize(const string & inputFile)
 	std::vector<PolylineRepresentation *> horizonSinglePolylineRepSet = repo.getHorizonPolylineRepSet();
 	std::vector<WellboreFeature*> wellboreSet = repo.getWellboreSet();
 	std::vector<WellboreTrajectoryRepresentation *> wellboreCubicTrajSet = repo.getWellboreTrajectoryRepresentationSet();
-	std::vector<UnstructuredGridRepresentation*> unstructuredGridRepSet = repo.getUnstructuredGridRepresentationSet();
+	std::vector<RESQML2_NS::UnstructuredGridRepresentation*> unstructuredGridRepSet = repo.getUnstructuredGridRepresentationSet();
 	std::vector<RESQML2_NS::TimeSeries*> timeSeriesSet = repo.getTimeSeriesSet();
 	std::vector<StratigraphicColumn*> stratiColumnSet = repo.getStratigraphicColumnSet();
 	std::vector<RESQML2_NS::RepresentationSetRepresentation*> representationSetRepresentationSet = repo.getRepresentationSetRepresentationSet();
@@ -4124,7 +4125,7 @@ void deserialize(const string & inputFile)
 				if (ijkGrid->getGeometryKind() == RESQML2_NS::AbstractIjkGridRepresentation::PARAMETRIC)
 				{
 					std::cout << "This 3d grid has a parametric geometry." << std::endl;
-					IjkGridParametricRepresentation* paramIjkGrid = static_cast<IjkGridParametricRepresentation*>(ijkGrid);
+					RESQML2_NS::IjkGridParametricRepresentation* paramIjkGrid = static_cast<RESQML2_NS::IjkGridParametricRepresentation*>(ijkGrid);
 					if (paramIjkGrid->isParametricLineKindConstant())
 					{
 						std::cout << "Constant parametric line kind : " << paramIjkGrid->getConstantParametricLineKind() << std::endl;
@@ -4319,7 +4320,7 @@ void deserialize(const string & inputFile)
 			 {
 			 std::cout << "\t\t Refined columns count :" << ijkGrid->getParentColumnIndexCount() << std::endl;
 			 }*/
-			else if (ijkGrid->getParentGrid()->getXmlTag() == UnstructuredGridRepresentation::XML_TAG)
+			else if (ijkGrid->getParentGrid()->getXmlTag() == RESQML2_NS::UnstructuredGridRepresentation::XML_TAG)
 			{
 				std::cout << "\t\t Refined cells count :" << ijkGrid->getParentCellIndexCount() << std::endl;
 			}

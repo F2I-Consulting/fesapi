@@ -277,7 +277,7 @@ unordered_map< string, string > & EpcDocument::getExtendedCoreProperty()
 
 void EpcDocument::setExtendedCoreProperty(const std::string & key, const std::string & value)
 {
-	(package->getExtendedCoreProperty())[key] = value;
+	package->getExtendedCoreProperty()[key] = value;
 }
 
 std::string EpcDocument::getExtendedCoreProperty(const std::string & key)

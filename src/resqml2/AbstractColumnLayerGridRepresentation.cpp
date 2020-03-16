@@ -203,7 +203,7 @@ ULONG64 AbstractColumnLayerGridRepresentation::getIntervalStratigraphicUnitIndic
 			if (latticeArray->StartValue == 1 && latticeArray->Offset.size() == 1 &&
 				latticeArray->Offset[0]->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__IntegerConstantArray &&
 				static_cast<gsoap_eml2_2::eml22__IntegerConstantArray*>(latticeArray->Offset[0])->Value == 1 &&
-				static_cast<gsoap_eml2_2::eml22__IntegerConstantArray*>(latticeArray->Offset[0])->Count == getCellCount()) {
+				static_cast<gsoap_eml2_2::eml22__IntegerConstantArray*>(latticeArray->Offset[0])->Count == getKCellCount() - 1) {
 				auto dsPart = static_cast<gsoap_eml2_2::eml22__IntegerExternalArray*>(rep->IntervalStratigraphicUnits->UnitIndices->Elements)->Values->ExternalFileProxy[0];
 				getHdfProxyFromDataset(dsPart)->readArrayNdOfULongValues(dsPart->PathInExternalFile, stratiUnitIndices);
 				return static_cast<gsoap_eml2_2::eml22__IntegerExternalArray*>(rep->IntervalStratigraphicUnits->UnitIndices->Elements)->NullValue;

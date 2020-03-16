@@ -87,9 +87,9 @@ under the License.
 #include "../resqml2_0_1/StratigraphicOccurrenceInterpretation.h"
 
 #include "../resqml2_0_1/IjkGridExplicitRepresentation.h"
-#include "../resqml2_0_1/IjkGridParametricRepresentation.h"
 #include "../resqml2_0_1/IjkGridLatticeRepresentation.h"
 #include "../resqml2_0_1/IjkGridNoGeometryRepresentation.h"
+#include "../resqml2_0_1/IjkGridParametricRepresentation.h"
 #include "../resqml2_0_1/UnstructuredGridRepresentation.h"
 
 #include "../resqml2_0_1/Activity.h"
@@ -98,10 +98,13 @@ under the License.
 #include "../resqml2_0_1/CategoricalPropertySeries.h"
 #include "../resqml2_0_1/DiscretePropertySeries.h"
 
-#include "../resqml2_2/DiscreteColorMap.h"
 #include "../resqml2_2/ContinuousColorMap.h"
-#include "../resqml2_2/WellboreFrameRepresentation.h"
+#include "../resqml2_2/DiscreteColorMap.h"
+#include "../resqml2_2/IjkGridExplicitRepresentation.h"
+#include "../resqml2_2/IjkGridNoGeometryRepresentation.h"
+#include "../resqml2_2/IjkGridParametricRepresentation.h"
 #include "../resqml2_2/SeismicWellboreFrameRepresentation.h"
+#include "../resqml2_2/WellboreFrameRepresentation.h"
 
 #include "../witsml2_0/Well.h"
 #include "../witsml2_0/Wellbore.h"
@@ -1132,63 +1135,87 @@ RESQML2_NS::AbstractIjkGridRepresentation* DataObjectRepository::createPartialTr
 	return new RESQML2_NS::AbstractIjkGridRepresentation(dor, true);
 }
 
-IjkGridExplicitRepresentation* DataObjectRepository::createIjkGridExplicitRepresentation(const std::string & guid, const std::string & title,
+RESQML2_NS::IjkGridExplicitRepresentation* DataObjectRepository::createIjkGridExplicitRepresentation(const std::string & guid, const std::string & title,
 	unsigned int iCount, unsigned int jCount, unsigned int kCount)
 {
-	return new IjkGridExplicitRepresentation(this, guid, title, iCount, jCount, kCount);
+	switch (defaultResqmlVersion) {
+	case EnergisticsStandard::RESQML2_0_1 : return new RESQML2_0_1_NS::IjkGridExplicitRepresentation(this, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridExplicitRepresentation(this, guid, title, iCount, jCount, kCount);
+	default: throw std::logic_error("The RESQML version is not supported.");
+	}
 }
 
-IjkGridExplicitRepresentation* DataObjectRepository::createIjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+RESQML2_NS::IjkGridExplicitRepresentation* DataObjectRepository::createIjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title,
 	unsigned int iCount, unsigned int jCount, unsigned int kCount)
 {
-	return new IjkGridExplicitRepresentation(interp, guid, title, iCount, jCount, kCount);
+	switch (defaultResqmlVersion) {
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridExplicitRepresentation(interp, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridExplicitRepresentation(interp, guid, title, iCount, jCount, kCount);
+	default: throw std::logic_error("The RESQML version is not supported.");
+	}
 }
 
-IjkGridParametricRepresentation* DataObjectRepository::createIjkGridParametricRepresentation(const std::string & guid, const std::string & title,
+RESQML2_NS::IjkGridParametricRepresentation* DataObjectRepository::createIjkGridParametricRepresentation(const std::string & guid, const std::string & title,
 	unsigned int iCount, unsigned int jCount, unsigned int kCount)
 {
-	return new IjkGridParametricRepresentation(this, guid, title, iCount, jCount, kCount);
+	switch (defaultResqmlVersion) {
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridParametricRepresentation(this, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridParametricRepresentation(this, guid, title, iCount, jCount, kCount);
+	default: throw std::logic_error("The RESQML version is not supported.");
+	}
 }
 
-IjkGridParametricRepresentation* DataObjectRepository::createIjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+RESQML2_NS::IjkGridParametricRepresentation* DataObjectRepository::createIjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title,
 	unsigned int iCount, unsigned int jCount, unsigned int kCount)
 {
-	return new IjkGridParametricRepresentation(interp, guid, title, iCount, jCount, kCount);
+	switch (defaultResqmlVersion) {
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridParametricRepresentation(interp, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridParametricRepresentation(interp, guid, title, iCount, jCount, kCount);
+	default: throw std::logic_error("The RESQML version is not supported.");
+	}
 }
 
-IjkGridLatticeRepresentation* DataObjectRepository::createIjkGridLatticeRepresentation(const std::string & guid, const std::string & title,
+RESQML2_NS::IjkGridLatticeRepresentation* DataObjectRepository::createIjkGridLatticeRepresentation(const std::string & guid, const std::string & title,
 	unsigned int iCount, unsigned int jCount, unsigned int kCount)
 {
 	return new IjkGridLatticeRepresentation(this, guid, title, iCount, jCount, kCount);
 }
 
-IjkGridLatticeRepresentation* DataObjectRepository::createIjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+RESQML2_NS::IjkGridLatticeRepresentation* DataObjectRepository::createIjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title,
 	unsigned int iCount, unsigned int jCount, unsigned int kCount)
 {
 	return new IjkGridLatticeRepresentation(interp, guid, title, iCount, jCount, kCount);
 }
 
-RESQML2_0_1_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjkGridNoGeometryRepresentation(
+RESQML2_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjkGridNoGeometryRepresentation(
 	const std::string & guid, const std::string & title,
 	unsigned int iCount, unsigned int jCount, unsigned int kCount)
 {
-	return new IjkGridNoGeometryRepresentation(this, guid, title, iCount, jCount, kCount);
+	switch (defaultResqmlVersion) {
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridNoGeometryRepresentation(this, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridNoGeometryRepresentation(this, guid, title, iCount, jCount, kCount);
+	default: throw std::logic_error("The RESQML version is not supported.");
+	}
 }
 
-RESQML2_0_1_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+RESQML2_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title,
 	unsigned int iCount, unsigned int jCount, unsigned int kCount)
 {
-	return new IjkGridNoGeometryRepresentation(interp, guid, title, iCount, jCount, kCount);
+	switch (defaultResqmlVersion) {
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridNoGeometryRepresentation(interp, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridNoGeometryRepresentation(interp, guid, title, iCount, jCount, kCount);
+	default: throw std::logic_error("The RESQML version is not supported.");
+	}
 }
 
-UnstructuredGridRepresentation* DataObjectRepository::createUnstructuredGridRepresentation(const std::string & guid, const std::string & title,
+RESQML2_NS::UnstructuredGridRepresentation* DataObjectRepository::createUnstructuredGridRepresentation(const std::string & guid, const std::string & title,
 	const ULONG64 & cellCount)
 {
-	return new UnstructuredGridRepresentation(this, guid, title, cellCount);
+	return new RESQML2_0_1_NS::UnstructuredGridRepresentation(this, guid, title, cellCount);
 }
 
 RESQML2_NS::SubRepresentation* DataObjectRepository::createSubRepresentation(const std::string & guid, const std::string & title)
@@ -1927,26 +1954,26 @@ RESQML2_NS::AbstractIjkGridRepresentation* DataObjectRepository::getIjkGridRepre
 	return result[index];
 }
 
-std::vector<RESQML2_0_1_NS::IjkGridParametricRepresentation*> DataObjectRepository::getIjkGridParametricRepresentationSet() const { return getDataObjects<RESQML2_0_1_NS::IjkGridParametricRepresentation>(); }
+std::vector<RESQML2_NS::IjkGridParametricRepresentation*> DataObjectRepository::getIjkGridParametricRepresentationSet() const { return getDataObjects<RESQML2_NS::IjkGridParametricRepresentation>(); }
 
-std::vector<RESQML2_0_1_NS::IjkGridExplicitRepresentation*> DataObjectRepository::getIjkGridExplicitRepresentationSet() const { return getDataObjects<RESQML2_0_1_NS::IjkGridExplicitRepresentation>(); }
+std::vector<RESQML2_NS::IjkGridExplicitRepresentation*> DataObjectRepository::getIjkGridExplicitRepresentationSet() const { return getDataObjects<RESQML2_NS::IjkGridExplicitRepresentation>(); }
 
 namespace {
-	bool isSeismicOrFaciesCube(RESQML2_0_1_NS::IjkGridLatticeRepresentation* Ijkglr) {
+	bool isSeismicOrFaciesCube(RESQML2_NS::IjkGridLatticeRepresentation* Ijkglr) {
 		return Ijkglr->isASeismicCube() || Ijkglr->isAFaciesCube();
 	}
 }
 
-vector<IjkGridLatticeRepresentation*> DataObjectRepository::getIjkSeismicCubeGridRepresentationSet() const
+vector<RESQML2_NS::IjkGridLatticeRepresentation*> DataObjectRepository::getIjkSeismicCubeGridRepresentationSet() const
 {
-	std::vector<RESQML2_0_1_NS::IjkGridLatticeRepresentation*> result = getDataObjects<RESQML2_0_1_NS::IjkGridLatticeRepresentation>();
+	std::vector<RESQML2_NS::IjkGridLatticeRepresentation*> result = getDataObjects<RESQML2_NS::IjkGridLatticeRepresentation>();
 
 	result.erase(std::remove_if(result.begin(), result.end(), std::not1(std::ptr_fun(isSeismicOrFaciesCube))), result.end());
 
 	return result;
 }
 
-std::vector<RESQML2_0_1_NS::UnstructuredGridRepresentation*> DataObjectRepository::getUnstructuredGridRepresentationSet() const { return getDataObjects<RESQML2_0_1_NS::UnstructuredGridRepresentation>(); }
+std::vector<RESQML2_NS::UnstructuredGridRepresentation*> DataObjectRepository::getUnstructuredGridRepresentationSet() const { return getDataObjects<RESQML2_NS::UnstructuredGridRepresentation>(); }
 
 std::vector<RESQML2_0_1_NS::FrontierFeature*> DataObjectRepository::getFrontierSet() const { return getDataObjects<RESQML2_0_1_NS::FrontierFeature>(); }
 
@@ -2066,15 +2093,15 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapC
 			if (read->Geometry != nullptr) {
 				switch (read->Geometry->Points->soap_type()) {
 				case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array:
-					wrapper = new IjkGridExplicitRepresentation(read); break;
+					wrapper = new RESQML2_0_1_NS::IjkGridExplicitRepresentation(read); break;
 				case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dParametricArray:
-					wrapper = new IjkGridParametricRepresentation(read); break;
+					wrapper = new RESQML2_0_1_NS::IjkGridParametricRepresentation(read); break;
 				case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dLatticeArray:
 					wrapper = new IjkGridLatticeRepresentation(read); break;
 				}
 			}
 			else {
-				wrapper = new IjkGridNoGeometryRepresentation(read);
+				wrapper = new RESQML2_0_1_NS::IjkGridNoGeometryRepresentation(read);
 			}
 	}
 	else if (resqmlContentType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG_TRUNCATED) == 0)
@@ -2084,15 +2111,15 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapC
 			if (read->Geometry != nullptr) {
 				switch (read->Geometry->Points->soap_type()) {
 				case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dHdf5Array:
-					wrapper = new IjkGridExplicitRepresentation(read); break;
+					wrapper = new RESQML2_0_1_NS::IjkGridExplicitRepresentation(read); break;
 				case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dParametricArray:
-					wrapper = new IjkGridParametricRepresentation(read); break;
+					wrapper = new RESQML2_0_1_NS::IjkGridParametricRepresentation(read); break;
 				case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dLatticeArray:
 					wrapper = new IjkGridLatticeRepresentation(read); break;
 				}
 			}
 			else {
-				wrapper = new IjkGridNoGeometryRepresentation(read);
+				wrapper = new RESQML2_0_1_NS::IjkGridNoGeometryRepresentation(read);
 			}
 	}
 	else if CHECK_AND_GET_RESQML_2_0_1_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(UnstructuredGridRepresentation)
@@ -2166,8 +2193,44 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ContinuousColorMap)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SeismicWellboreFrameRepresentation)
 	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreFrameRepresentation)
+	else if (resqmlContentType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG) == 0)
+	{
+		GET_RESQML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(IjkGridRepresentation)
 
-		return wrapper;
+			if (read->Geometry != nullptr) {
+				switch (read->Geometry->Points->soap_type()) {
+				case SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dExternalArray:
+					wrapper = new RESQML2_2_NS::IjkGridExplicitRepresentation(read); break;
+				case SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dParametricArray:
+					wrapper = new RESQML2_2_NS::IjkGridParametricRepresentation(read); break;
+				//case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dLatticeArray:
+				//	wrapper = new IjkGridLatticeRepresentation(read); break;
+				}
+			}
+			else {
+				wrapper = new RESQML2_2_NS::IjkGridNoGeometryRepresentation(read);
+			}
+	}
+	else if (resqmlContentType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG_TRUNCATED) == 0)
+	{
+		GET_RESQML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(TruncatedIjkGridRepresentation)
+
+			if (read->Geometry != nullptr) {
+				switch (read->Geometry->Points->soap_type()) {
+				case SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dExternalArray:
+					wrapper = new RESQML2_2_NS::IjkGridExplicitRepresentation(read); break;
+				case SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dParametricArray:
+					wrapper = new RESQML2_2_NS::IjkGridParametricRepresentation(read); break;
+				//case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dLatticeArray:
+				//	wrapper = new IjkGridLatticeRepresentation(read); break;
+				}
+			}
+			else {
+				wrapper = new RESQML2_2_NS::IjkGridNoGeometryRepresentation(read);
+			}
+	}
+	
+	return wrapper;
 }
 
 COMMON_NS::AbstractObject* DataObjectRepository::getEml2_2WrapperFromGsoapContext(const std::string & datatype)

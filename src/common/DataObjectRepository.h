@@ -44,11 +44,16 @@ namespace RESQML2_NS
 	class Activity;
 	class ActivityTemplate;
 	class GridConnectionSetRepresentation;
+	class IjkGridExplicitRepresentation;
+	class IjkGridLatticeRepresentation;
+	class IjkGridNoGeometryRepresentation;
+	class IjkGridParametricRepresentation;
 	class MdDatum;
 	class PropertySet;
+	class RepresentationSetRepresentation;
 	class SubRepresentation;
 	class TimeSeries;
-	class RepresentationSetRepresentation;
+	class UnstructuredGridRepresentation;
 	class WellboreFrameRepresentation;
 }
 
@@ -73,11 +78,6 @@ namespace RESQML2_0_1_NS
 	class Grid2dRepresentation;
 	class WellboreTrajectoryRepresentation;
 	class DeviationSurveyRepresentation;
-	class IjkGridExplicitRepresentation;
-	class IjkGridParametricRepresentation;
-	class IjkGridLatticeRepresentation;
-	class IjkGridNoGeometryRepresentation;
-	class UnstructuredGridRepresentation;
 	class BoundaryFeature;
 	class BoundaryFeatureInterpretation;
 	class TectonicBoundaryFeature;
@@ -518,24 +518,24 @@ namespace COMMON_NS
 		* DEPRECATED : use getDataObjects template method
 		* Get all the ijk grid contained into the EPC document which have a parametric geometry.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::IjkGridParametricRepresentation*> getIjkGridParametricRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::IjkGridParametricRepresentation*> getIjkGridParametricRepresentationSet() const;
 
 		/**
 		* DEPRECATED : use getDataObjects template method
 		* Get all the ijk grid contained into the EPC document which have an explicit geometry.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::IjkGridExplicitRepresentation*> getIjkGridExplicitRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::IjkGridExplicitRepresentation*> getIjkGridExplicitRepresentationSet() const;
 
 		/**
 		* Get all the ijk grid contained into the EPC document which correspond to a seismic cube.
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::IjkGridLatticeRepresentation*> getIjkSeismicCubeGridRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::IjkGridLatticeRepresentation*> getIjkSeismicCubeGridRepresentationSet() const;
 
 		/**
 		* DEPRECATED : use getDataObjects template method
 		* Get all the unstructured grid contained into the EPC document
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::UnstructuredGridRepresentation*> getUnstructuredGridRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::UnstructuredGridRepresentation*> getUnstructuredGridRepresentationSet() const;
 
 		/**
 		* DEPRECATED : use getDataObjects template method
@@ -1020,36 +1020,36 @@ namespace COMMON_NS
 
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractIjkGridRepresentation* createPartialTruncatedIjkGridRepresentation(const std::string & guid, const std::string & title);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridExplicitRepresentation* createIjkGridExplicitRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridParametricRepresentation* createIjkGridParametricRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridLatticeRepresentation* createIjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::IjkGridNoGeometryRepresentation* createIjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(const std::string & guid, const std::string & title,
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::UnstructuredGridRepresentation* createUnstructuredGridRepresentation(const std::string & guid, const std::string & title,
 			const ULONG64 & cellCount);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::SubRepresentation* createSubRepresentation(
