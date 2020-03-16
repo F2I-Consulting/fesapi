@@ -102,8 +102,6 @@ int AbstractObject::getGsoapType() const {
 	else {
 		return partialObject->soap_type();
 	}
-
-	throw invalid_argument("There is no available gsoap proxy instance.");
 }
 
 string AbstractObject::getUuid() const
@@ -770,14 +768,10 @@ gsoap_eml2_2::resqml22__ContactElement* AbstractObject::newContactElementReferen
 
 std::string AbstractObject::getXmlNamespace() const
 {
-	if (gsoapProxy2_0_1 != nullptr && gsoapProxy2_1 == nullptr
-		&& gsoapProxy2_2 == nullptr
-		) {
+	if (gsoapProxy2_0_1 != nullptr && gsoapProxy2_1 == nullptr && gsoapProxy2_2 == nullptr ) {
 		return "resqml20"; // or eml20
 	}
-	else if (gsoapProxy2_0_1 == nullptr && gsoapProxy2_1 != nullptr
-		&& gsoapProxy2_2 == nullptr
-		) {
+	else if (gsoapProxy2_0_1 == nullptr && gsoapProxy2_1 != nullptr && gsoapProxy2_2 == nullptr ) {
 		return "witsml20"; // or eml21
 	}
 	else if (gsoapProxy2_0_1 == nullptr && gsoapProxy2_1 == nullptr && gsoapProxy2_2 != nullptr ) {
@@ -810,9 +804,9 @@ string AbstractObject::getContentType() const
 
 std::string AbstractObject::getPartNameInEpcDocument() const
 {
-	const std::string result = getXmlTag() + "_" + getUuid() + ".xml";
+	const std::string partName = getXmlTag() + "_" + getUuid() + ".xml";
 	const std::string & xmlNs = getXmlNamespace();
-	return xmlNs == "resqml20" || xmlNs == "eml20" ? "obj_" + result : result;
+	return "namespace_" + xmlNs + "/" + (xmlNs == "resqml20" || xmlNs == "eml20" ? "obj_" + partName : partName);
 }
 
 string AbstractObject::serializeIntoString()
