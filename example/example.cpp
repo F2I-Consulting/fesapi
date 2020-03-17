@@ -4394,13 +4394,12 @@ void deserialize(const string & inputFile)
 			ULONG64 faceCount = 0;
 			if (!unstructuredGridRepSet[i]->isFaceCountOfCellsConstant())
 			{
-				ULONG64 * faceCountOfCells = new ULONG64[unstructuredGridRepSet[i]->getCellCount()];
-				unstructuredGridRepSet[i]->getCumulativeFaceCountPerCell(faceCountOfCells);
-				std::cout << "Face count of cell 0 is : " << faceCountOfCells[0] << std::endl;
+				std::unique_ptr<ULONG64> faceCountOfCells(new ULONG64[unstructuredGridRepSet[i]->getCellCount()]);
+				unstructuredGridRepSet[i]->getCumulativeFaceCountPerCell(faceCountOfCells.get());
+				std::cout << "Face count of cell 0 is : " << faceCountOfCells.get()[0] << std::endl;
 				if (unstructuredGridRepSet[i]->getCellCount() > 1)
-					std::cout << "Face count of cell 1 is : " << faceCountOfCells[1] - faceCountOfCells[0] << std::endl;
-				faceCount = faceCountOfCells[unstructuredGridRepSet[i]->getCellCount() - 1];
-				delete[] faceCountOfCells;
+					std::cout << "Face count of cell 1 is : " << faceCountOfCells.get()[1] - faceCountOfCells.get()[0] << std::endl;
+				faceCount = faceCountOfCells.get()[unstructuredGridRepSet[i]->getCellCount() - 1];
 			}
 			else
 			{
@@ -4409,12 +4408,11 @@ void deserialize(const string & inputFile)
 			}
 			if (!unstructuredGridRepSet[i]->isNodeCountOfFacesConstant())
 			{
-				ULONG64 * nodeCountOfFaces = new ULONG64[faceCount];
-				unstructuredGridRepSet[i]->getCumulativeNodeCountPerFace(nodeCountOfFaces);
-				std::cout << "Node count of face 0 is : " << nodeCountOfFaces[0] << std::endl;
+				std::unique_ptr<ULONG64> nodeCountOfFaces(new ULONG64[faceCount]);
+				unstructuredGridRepSet[i]->getCumulativeNodeCountPerFace(nodeCountOfFaces.get());
+				std::cout << "Node count of face 0 is : " << nodeCountOfFaces.get()[0] << std::endl;
 				if (faceCount > 1)
-					std::cout << "Node count of face 1 is : " << nodeCountOfFaces[1] - nodeCountOfFaces[0] << std::endl;
-				delete[] nodeCountOfFaces;
+					std::cout << "Node count of face 1 is : " << nodeCountOfFaces.get()[1] - nodeCountOfFaces.get()[0] << std::endl;
 			}
 			else
 			{
@@ -4423,11 +4421,10 @@ void deserialize(const string & inputFile)
 
 
 			std::cout << "Reading XYZ points" << std::endl;
-			double * gridPoints = new double[unstructuredGridRepSet[i]->getXyzPointCountOfPatch(0) * 3];
-			unstructuredGridRepSet[i]->getXyzPointsOfAllPatchesInGlobalCrs(gridPoints);
+			std::unique_ptr<double> gridPoints(new double[unstructuredGridRepSet[i]->getXyzPointCountOfPatch(0) * 3]);
+			unstructuredGridRepSet[i]->getXyzPointsOfAllPatchesInGlobalCrs(gridPoints.get());
 			std::cout << "DONE" << std::endl;
 			std::cout << "--------------------------------------------------" << std::endl;
-			delete[] gridPoints;
 
 			unstructuredGridRepSet[i]->loadGeometry();
 

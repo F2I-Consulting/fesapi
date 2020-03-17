@@ -304,8 +304,8 @@ int IjkGridLatticeRepresentation::getCrosslineKOffset() const
 }
 
 void IjkGridLatticeRepresentation::setGeometryAsCoordinateLineNodes(
-	gsoap_eml2_2::resqml22__PillarShape mostComplexPillarGeometry,
-	gsoap_eml2_2::resqml22__KDirection kDirectionKind,
+	gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry,
+	gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind,
 	bool isRightHanded,
 	double originX, double originY, double originZ,
 	double directionIX, double directionIY, double directionIZ, double spacingI,
@@ -328,8 +328,8 @@ void IjkGridLatticeRepresentation::setGeometryAsCoordinateLineNodes(
 		getSpecializedTruncatedGsoapProxy2_0_1()->Geometry = geom;
 	}
 	geom->GridIsRighthanded = isRightHanded;
-	geom->PillarShape = static_cast<resqml20__PillarShape>(mostComplexPillarGeometry);
-	geom->KDirection = static_cast<resqml20__KDirection>(kDirectionKind);
+	geom->PillarShape = mostComplexPillarGeometry;
+	geom->KDirection = kDirectionKind;
 
 	// Pillar defined
 	resqml20__BooleanConstantArray* definedPillars = soap_new_resqml20__BooleanConstantArray(gsoapProxy2_0_1->soap);

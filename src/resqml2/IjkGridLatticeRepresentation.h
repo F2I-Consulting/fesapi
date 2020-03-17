@@ -224,8 +224,8 @@ namespace RESQML2_NS
 		/**
 		* Set the geometry of the IJK grid as a regular IJK grid
 		*/
-		DLL_IMPORT_OR_EXPORT virtual void setGeometryAsCoordinateLineNodes(gsoap_eml2_2::resqml22__PillarShape mostComplexPillarGeometry,
-			gsoap_eml2_2::resqml22__KDirection kDirectionKind,
+		DLL_IMPORT_OR_EXPORT virtual void setGeometryAsCoordinateLineNodes(gsoap_resqml2_0_1::resqml20__PillarShape mostComplexPillarGeometry,
+			gsoap_resqml2_0_1::resqml20__KDirection kDirectionKind,
 			bool isRightHanded,
 			double originX, double originY, double originZ,
 			double directionIX, double directionIY, double directionIZ, double spacingI,

@@ -85,11 +85,7 @@ _resqml20__UnstructuredGridRepresentation* UnstructuredGridRepresentation::getSp
 
 gsoap_resqml2_0_1::resqml20__PointGeometry* UnstructuredGridRepresentation::getPointGeometry2_0_1(unsigned int patchIndex) const
 {
-	if (patchIndex == 0) {
-		return getSpecializedGsoapProxy()->Geometry;
-	}
-	
-	return nullptr;
+	return patchIndex == 0 ? getSpecializedGsoapProxy()->Geometry : nullptr;
 }
 
 COMMON_NS::DataObjectReference UnstructuredGridRepresentation::getHdfProxyDor() const

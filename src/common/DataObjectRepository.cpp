@@ -101,9 +101,11 @@ under the License.
 #include "../resqml2_2/ContinuousColorMap.h"
 #include "../resqml2_2/DiscreteColorMap.h"
 #include "../resqml2_2/IjkGridExplicitRepresentation.h"
+#include "../resqml2_2/IjkGridLatticeRepresentation.h"
 #include "../resqml2_2/IjkGridNoGeometryRepresentation.h"
 #include "../resqml2_2/IjkGridParametricRepresentation.h"
 #include "../resqml2_2/SeismicWellboreFrameRepresentation.h"
+#include "../resqml2_2/UnstructuredGridRepresentation.h"
 #include "../resqml2_2/WellboreFrameRepresentation.h"
 
 #include "../witsml2_0/Well.h"
@@ -571,7 +573,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::createPartial(const DataObjectR
 		else if CREATE_FESAPI_PARTIAL_WRAPPER(TriangulatedSetRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER(BlockedWellboreRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_NS::AbstractIjkGridRepresentation)
-		else if CREATE_FESAPI_PARTIAL_WRAPPER(UnstructuredGridRepresentation)
+		else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::UnstructuredGridRepresentation)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER(RESQML2_0_1_NS::PropertyKind)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER(PropertySet)
 		else if CREATE_FESAPI_PARTIAL_WRAPPER(ContinuousProperty)
@@ -1180,14 +1182,22 @@ RESQML2_NS::IjkGridParametricRepresentation* DataObjectRepository::createIjkGrid
 RESQML2_NS::IjkGridLatticeRepresentation* DataObjectRepository::createIjkGridLatticeRepresentation(const std::string & guid, const std::string & title,
 	unsigned int iCount, unsigned int jCount, unsigned int kCount)
 {
-	return new IjkGridLatticeRepresentation(this, guid, title, iCount, jCount, kCount);
+	switch (defaultResqmlVersion) {
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridLatticeRepresentation(this, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridLatticeRepresentation(this, guid, title, iCount, jCount, kCount);
+	default: throw std::logic_error("The RESQML version is not supported.");
+	}
 }
 
 RESQML2_NS::IjkGridLatticeRepresentation* DataObjectRepository::createIjkGridLatticeRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 	const std::string & guid, const std::string & title,
 	unsigned int iCount, unsigned int jCount, unsigned int kCount)
 {
-	return new IjkGridLatticeRepresentation(interp, guid, title, iCount, jCount, kCount);
+	switch (defaultResqmlVersion) {
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::IjkGridLatticeRepresentation(interp, guid, title, iCount, jCount, kCount);
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::IjkGridLatticeRepresentation(interp, guid, title, iCount, jCount, kCount);
+	default: throw std::logic_error("The RESQML version is not supported.");
+	}
 }
 
 RESQML2_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjkGridNoGeometryRepresentation(
@@ -1215,7 +1225,11 @@ RESQML2_NS::IjkGridNoGeometryRepresentation* DataObjectRepository::createIjkGrid
 RESQML2_NS::UnstructuredGridRepresentation* DataObjectRepository::createUnstructuredGridRepresentation(const std::string & guid, const std::string & title,
 	const ULONG64 & cellCount)
 {
-	return new RESQML2_0_1_NS::UnstructuredGridRepresentation(this, guid, title, cellCount);
+	switch (defaultResqmlVersion) {
+	case EnergisticsStandard::RESQML2_0_1: return new RESQML2_0_1_NS::UnstructuredGridRepresentation(this, guid, title, cellCount);
+	case EnergisticsStandard::RESQML2_2: return new RESQML2_2_NS::UnstructuredGridRepresentation(this, guid, title, cellCount);
+	default: throw std::logic_error("The RESQML version is not supported.");
+	}
 }
 
 RESQML2_NS::SubRepresentation* DataObjectRepository::createSubRepresentation(const std::string & guid, const std::string & title)
@@ -2097,7 +2111,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapC
 				case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dParametricArray:
 					wrapper = new RESQML2_0_1_NS::IjkGridParametricRepresentation(read); break;
 				case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dLatticeArray:
-					wrapper = new IjkGridLatticeRepresentation(read); break;
+					wrapper = new RESQML2_0_1_NS::IjkGridLatticeRepresentation(read); break;
 				}
 			}
 			else {
@@ -2115,7 +2129,7 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_0_1WrapperFromGsoapC
 				case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dParametricArray:
 					wrapper = new RESQML2_0_1_NS::IjkGridParametricRepresentation(read); break;
 				case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dLatticeArray:
-					wrapper = new IjkGridLatticeRepresentation(read); break;
+					wrapper = new RESQML2_0_1_NS::IjkGridLatticeRepresentation(read); break;
 				}
 			}
 			else {
@@ -2189,10 +2203,8 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 {
 	COMMON_NS::AbstractObject* wrapper = nullptr;
 
-	if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DiscreteColorMap)
-	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ContinuousColorMap)
-	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SeismicWellboreFrameRepresentation)
-	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreFrameRepresentation)
+	if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(ContinuousColorMap)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(DiscreteColorMap)
 	else if (resqmlContentType.compare(RESQML2_NS::AbstractIjkGridRepresentation::XML_TAG) == 0)
 	{
 		GET_RESQML_2_2_GSOAP_PROXY_FROM_GSOAP_CONTEXT(IjkGridRepresentation)
@@ -2203,8 +2215,8 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 					wrapper = new RESQML2_2_NS::IjkGridExplicitRepresentation(read); break;
 				case SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dParametricArray:
 					wrapper = new RESQML2_2_NS::IjkGridParametricRepresentation(read); break;
-				//case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dLatticeArray:
-				//	wrapper = new IjkGridLatticeRepresentation(read); break;
+				case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dLatticeArray:
+					wrapper = new RESQML2_2_NS::IjkGridLatticeRepresentation(read); break;
 				}
 			}
 			else {
@@ -2221,14 +2233,17 @@ COMMON_NS::AbstractObject* DataObjectRepository::getResqml2_2WrapperFromGsoapCon
 					wrapper = new RESQML2_2_NS::IjkGridExplicitRepresentation(read); break;
 				case SOAP_TYPE_gsoap_eml2_2_resqml22__Point3dParametricArray:
 					wrapper = new RESQML2_2_NS::IjkGridParametricRepresentation(read); break;
-				//case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dLatticeArray:
-				//	wrapper = new IjkGridLatticeRepresentation(read); break;
+				case SOAP_TYPE_gsoap_resqml2_0_1_resqml20__Point3dLatticeArray:
+					wrapper = new RESQML2_2_NS::IjkGridLatticeRepresentation(read); break;
 				}
 			}
 			else {
 				wrapper = new RESQML2_2_NS::IjkGridNoGeometryRepresentation(read);
 			}
 	}
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(SeismicWellboreFrameRepresentation)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(UnstructuredGridRepresentation)
+	else if CHECK_AND_GET_RESQML_2_2_FESAPI_WRAPPER_FROM_GSOAP_CONTEXT(WellboreFrameRepresentation)
 	
 	return wrapper;
 }
