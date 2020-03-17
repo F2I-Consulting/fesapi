@@ -30,48 +30,41 @@ namespace RESQML2_0_1_NS
 	public:
 
 		/**
-		 * Only to be used in partial transfer context
+		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in,out]	partialObject	If non-null, the partial object.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 * @param [in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT BoundaryFeatureInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :RESQML2_NS::AbstractFeatureInterpretation(partialObject) {}
 
-		/** Default constructor Set the gsoap proxy to nullptr from superclass constructor */
+		/** Default constructor Set the gSOAP proxy to @c nullptr from super class constructor. */
 		BoundaryFeatureInterpretation() {}
 
 		/**
 		 * Creates an instance of this class in a gsoap context.
 		 *
-		 * @param [in,out]	feature	The feature the instance interprets.
-		 * @param 		  	guid   	The guid to set to the boundary horizon. If empty then a new guid
-		 * 							will be generated.
-		 * @param 		  	title  	A title for the instance to create.
+		 * @exception	std::invalid_argument	If @p feature is @c nullptr.
+		 *
+		 * @param [in]	feature	The interpreted boundary feature. It cannot be null.
+		 * @param 	  	guid   	The guid to set to the boundary feature interpretation. If empty then a
+		 * 						new guid will be generated.
+		 * @param 	  	title  	The title to set to the boundary feature interpretation. If empty then
+		 * 						\"unknown\" title will be set.
 		 */
 		BoundaryFeatureInterpretation(class BoundaryFeature * feature, const std::string & guid, const std::string & title);
 
 		/**
-		 * Constructor
+		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		BoundaryFeatureInterpretation(gsoap_resqml2_0_1::_resqml20__BoundaryFeatureInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
-		/** Destructor */
+		
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~BoundaryFeatureInterpretation() {}
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 	};
 }

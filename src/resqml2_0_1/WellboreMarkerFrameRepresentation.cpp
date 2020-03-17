@@ -37,6 +37,9 @@ const char* WellboreMarkerFrameRepresentation::XML_TAG = "WellboreMarkerFrameRep
 
 WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(WellboreInterpretation * interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
 {
+	if (interp == nullptr) {
+		throw invalid_argument("The wellbore interpretation cannot be null.");
+	}
 	if (traj == nullptr) {
 		throw invalid_argument("The wellbore trajectory representation cannot be null.");
 	}

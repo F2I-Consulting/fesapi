@@ -29,6 +29,9 @@ const char* WellboreFrameRepresentation::XML_TAG = "WellboreFrameRepresentation"
 
 WellboreFrameRepresentation::WellboreFrameRepresentation(WellboreInterpretation* interp, const string& guid, const std::string& title, WellboreTrajectoryRepresentation* traj)
 {
+	if (interp == nullptr) {
+		throw invalid_argument("The wellbore interpretation this wellbore frame represents cannot be null.");
+	}
 	if (traj == nullptr) {
 		throw invalid_argument("The wellbore trajectory representation cannot be null.");
 	}

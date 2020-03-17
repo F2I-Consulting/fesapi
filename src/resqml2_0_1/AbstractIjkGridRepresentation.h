@@ -27,8 +27,9 @@ under the License.
 namespace RESQML2_0_1_NS
 {
 	/**
-	 * This class is semantically abstract. Technically speaking, it is not an abstract because it
-	 * can be used in case of partial transfer where we don't know the geometry of the ijk grid.
+	 * Proxy class for an abstract IJK grid representation. This class is semantically abstract.
+	 * Technically speaking, it is not an abstract because it can be used in case of partial
+	 * transfer where we don't know the geometry of the IJK grid.
 	 */
 	class AbstractIjkGridRepresentation : public RESQML2_NS::AbstractColumnLayerGridRepresentation
 	{
@@ -142,20 +143,27 @@ namespace RESQML2_0_1_NS
 
 	public:
 
-		/** Values that represent geometry kinds */
+		/** Values that represent geometry kinds. */
 		enum geometryKind { UNKNOWN = 0, EXPLICIT = 1, PARAMETRIC = 2, LATTICE = 3, NO_GEOMETRY = 4}; // UNKNOWN exists in case of partial transfer
 
 		/**
-		 * Constructor
+		 * Constructor.
 		 *
-		 * @param [in,out]	repo					The soap context where the underlying gsoap proxy is
-		 * 											going to be created.
-		 * @param 		  	guid					Unique identifier.
-		 * @param 		  	title					The title.
-		 * @param 		  	iCount					Number of.
-		 * @param 		  	jCount					Number of.
-		 * @param 		  	kCount					Number of.
-		 * @param 		  	withTruncatedPillars	(Optional) True to with truncated pillars.
+		 * @exception	std::invalid_argument	If @p repo is @c nullptr.
+		 *
+		 * @param [in,out]	repo					A repository which will manage the memory of this
+		 * 											instance. It cannot be null.
+		 * @param 		  	guid					The guid to set to the ijk grid with no geometry
+		 * 											representation. If empty then a new guid will be
+		 * 											generated.
+		 * @param 		  	title					The title to set to the ijk grid with no geometry
+		 * 											representation. If empty then \"unknown\" title will be
+		 * 											set.
+		 * @param 		  	iCount					Count of cells in the i-direction in the grid.
+		 * @param 		  	jCount					Count of cells in the j-direction in the grid.
+		 * @param 		  	kCount					Number of layers in the grid.
+		 * @param 		  	withTruncatedPillars	(Optional) True if this IJK grid has some truncated
+		 * 											pillars, else false (default).
 		 */
 		AbstractIjkGridRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title,
@@ -163,15 +171,21 @@ namespace RESQML2_0_1_NS
 			bool withTruncatedPillars = false);
 
 		/**
-		 * Constructor
+		 * Constructor.
 		 *
-		 * @param [in,out]	interp					If non-null, the interp.
-		 * @param 		  	guid					Unique identifier.
-		 * @param 		  	title					The title.
-		 * @param 		  	iCount					Number of.
-		 * @param 		  	jCount					Number of.
-		 * @param 		  	kCount					Number of.
-		 * @param 		  	withTruncatedPillars	(Optional) True to with truncated pillars.
+		 * @exception	std::invalid_argument	If @p interp is @c nullptr.
+		 *
+		 * @param [in]	interp					The interpretation this IJK grid represents. It cannot be
+		 * 										null.
+		 * @param 	  	guid					The guid to set to the ijk grid with no geometry
+		 * 										representation. If empty then a new guid will be generated.
+		 * @param 	  	title					The title to set to the ijk grid with no geometry
+		 * 										representation. If empty then \"unknown\" title will be set.
+		 * @param 	  	iCount					Count of cells in the I direction in the grid.
+		 * @param 	  	jCount					Count of cells in the J direction in the grid.
+		 * @param 	  	kCount					Number of layers in the grid.
+		 * @param 	  	withTruncatedPillars	(Optional) True if this IJK grid has some truncated
+		 * 										pillars, else false (default).
 		 */
 		AbstractIjkGridRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
@@ -179,16 +193,14 @@ namespace RESQML2_0_1_NS
 			bool withTruncatedPillars = false);
 
 		/**
-		 * Only to be used in partial transfer context
+		 * Only to be used in partial transfer context.
 		 *
-		 * @param [in,out]	partialObject			If non-null, the partial object.
-		 * @param 		  	withTruncatedPillars	(Optional) True to with truncated pillars.
-		 *
-		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 * @param [in]	partialObject			If non-nullptr, the partial object.
+		 * @param 	  	withTruncatedPillars	(Optional) True to with truncated pillars.
 		 */
 		DLL_IMPORT_OR_EXPORT AbstractIjkGridRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject, bool withTruncatedPillars = false);
 
-		/** Destructor does nothing since the memory is managed by the gsoap context. */
+		/** Destructor. */
 		virtual ~AbstractIjkGridRepresentation() 
 		{
 			if (blockInformation != nullptr)
@@ -196,57 +208,84 @@ namespace RESQML2_0_1_NS
 		}
 
 		/**
-		 * Get the I cell count of the grid
+		 * Gets the count of cells in the I direction.
 		 *
-		 * @returns	The i cell count.
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error	If the count is strictly greater than unsigned int max.
+		 *
+		 * @returns	The count of cell in the I direction.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getICellCount() const;
 
 		/**
-		 * Set the I cell count of the grid
+		 * Sets the count of cells in the I direction.
 		 *
-		 * @param 	iCount	Number of.
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @param 	iCount	The count of cells to set in the I direction.
 		 */
 		DLL_IMPORT_OR_EXPORT void setICellCount(const unsigned int & iCount);
 
 		/**
-		 * Get the J cell count of the grid
+		 * Gets the count of cells in the J direction.
 		 *
-		 * @returns	The j cell count.
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error	If the count is strictly greater than unsigned int max.
+		 *
+		 * @returns	The count of cell in the J direction.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getJCellCount() const;
 
 		/**
-		 * Set the J cell count of the grid
+		 * Sets the count of cells in the J direction.
 		 *
-		 * @param 	jCount	Number of.
+		 * @exception	std::logic_error	If this grid is partial.
+		 *
+		 * @param 	iCount	The count of cells to set in the J direction.
 		 */
 		DLL_IMPORT_OR_EXPORT void setJCellCount(const unsigned int & jCount);
 
 		/**
-		 * Get the count of cells in the grid
+		 * Gets the count of cells in this grid.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error	If the count of cells in I direction, J direction or K
+		 * 									direction is strictly greater than unsigned int max.
 		 *
 		 * @returns	The cell count.
 		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getCellCount() const {return getICellCount() * getJCellCount() * getKCellCount();}
 
 		/**
-		 * Get the count of columns in the grid
+		 * Gets the count of columns in this grid.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error	If the count of cells in I direction or J direction is
+		 * 									strictly greater than unsigned int max.
 		 *
 		 * @returns	The column count.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getColumnCount() const {return getICellCount() * getJCellCount();}
 
 		/**
-		 * Get the count of pillars in the grid
+		 * Gets the count of pillars in this grid.
+		 *
+		 * @exception	std::logic_error	If this grid is partial.
+		 * @exception	std::range_error	If the count of cells in I direction or J direction is
+		 * 									strictly greater than unsigned int max.
 		 *
 		 * @returns	The pillar count.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getPillarCount() const {return (getICellCount()+1) * (getJCellCount()+1);}
 
 		/**
-		 * Get the count of faces in the grid This method requires you have already loaded the split
-		 * information.
+		 * Gets the count of faces in this grid. This method requires you have already loaded the split
+		 * information thanks to loadSplitInformation().
+		 *
+		 * @exception	std::logic_error	 	If this grid is partial.
+		 * @exception	std::range_error	 	If the count of cells in I direction, J direction or K
+		 * 										direction is strictly greater than unsigned int max.
+		 * @exception	std::invalid_argument	If there is no geometry on this grid.
 		 *
 		 * @returns	The face count.
 		 */
@@ -320,7 +359,7 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT unsigned int getGlobalIndexCellFromIjkIndex(unsigned int iCell, unsigned int jCell, unsigned int kCell) const;
 
 		/**
-		 * Query if this object is right handed
+		 * Queries if this grid is right handed.
 		 *
 		 * @returns	True if right handed, false if not.
 		 */
@@ -600,32 +639,14 @@ namespace RESQML2_0_1_NS
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object if not truncated.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object if truncated.
-		 *
-		 * @returns	The XML tag truncated.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object if truncated. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG_TRUNCATED;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const;
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override;
 
-		/**
-		 * Gets patch count
-		 *
-		 * @returns	The patch count.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const override {return 1;}
 	};
 }

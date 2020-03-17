@@ -404,58 +404,38 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT class RESQML2_NS::WellboreFrameRepresentation * getWellboreFrameRepresentation(unsigned int index) const; // It is mainly used in SWIG context for parsing the vector from a non C++ language.
 
 		/**
-		 * Set the deviation survey which is the source of this trajectory.
+		 * Sets the deviation survey which is the source of this trajectory.
 		 *
-		 * @param [in,out]	deviationSurvey	If non-null, the deviation survey.
+		 * @exception	std::invalid_argument	If @p deviationSurvey is @c nullptr.
+		 *
+		 * @param [in]	deviationSurvey	The deviation survey to set as a source of this trajectory.
 		 */
 		DLL_IMPORT_OR_EXPORT void setDeviationSurvey(class DeviationSurveyRepresentation* deviationSurvey);
 
-		/** Get the deviation survey which is the source of this trajectory. It can return a null pointer. */
+		/** 
+		 * Gets the deviation survey which is the source of this trajectory.
+		 *
+		 * @returns The deviation survey which is the source of this trajectory if exists, else @c nullptr. 
+		 */
 		DLL_IMPORT_OR_EXPORT class DeviationSurveyRepresentation* getDeviationSurvey() const;
 
-		/**
-		 * Get the information to resolve the associated local CRS.
-		 *
-		 * @param 	patchIndex	Zero-based index of the patch.
-		 *
-		 * @returns	Null if it fails, else the local crs dor.
-		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const;
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getLocalCrsDor(unsigned int patchIndex) const override;
+
+		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const override;
+
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const override {return 1;}
 
 		/**
-		 * Gets hdf proxy dor
+		 * Queries if this trajectory has a geometry.
 		 *
-		 * @returns	Null if it fails, else the hdf proxy dor.
-		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getHdfProxyDor() const;
-
-		/**
-		 * Gets patch count
-		 *
-		 * @returns	The patch count.
-		 */
-		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
-
-		/**
-		 * Query if this object has geometry
-		 *
-		 * @returns	True if geometry, false if not.
+		 * @returns	True if this trajectory has a geometry, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasGeometry() const;
 
-		/**
-		 * The standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		 * Get the standard XML tag without XML namespace for serializing this data object.
-		 *
-		 * @returns	The XML tag.
-		 */
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 
 	private:
 

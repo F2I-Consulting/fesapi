@@ -23,7 +23,7 @@ under the License.
 /** . */
 namespace RESQML2_0_1_NS
 {
-	/** An abstract geologic feature. */
+	/** Proxy class for an abstract geologic feature. */
 	class AbstractGeologicFeature : public RESQML2_NS::AbstractFeature
 	{
 	protected:
@@ -48,7 +48,7 @@ namespace RESQML2_0_1_NS
 		AbstractGeologicFeature(gsoap_resqml2_0_1::resqml20__AbstractGeologicFeature* fromGsoap) : RESQML2_NS::AbstractFeature(fromGsoap) {}
 
 	public:
-		/** Destructor */
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~AbstractGeologicFeature() {}
 	};
 }

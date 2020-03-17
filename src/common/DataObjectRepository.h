@@ -1659,11 +1659,13 @@ namespace COMMON_NS
 		/**
 		 * Creates a boundary feature interpretation into this repository
 		 *
-		 * @param [in]		feature	The interpreted boundary feature. It cannot be null.
-		 * @param 		  	guid   	The guid to set to the boundary feature interpretation. If empty then
-		 * 							a new guid will be generated.
-		 * @param 		  	title  	The title to set to the boundary feature interpretation. If empty
-		 * 							then \"unknown\" title will be set.
+		 * @exception	std::invalid_argument	If @p feature is @c nullptr.
+		 *
+		 * @param [in]	feature	The interpreted boundary feature. It cannot be null.
+		 * @param 	  	guid   	The guid to set to the boundary feature interpretation. If empty then a
+		 * 						new guid will be generated.
+		 * @param 	  	title  	The title to set to the boundary feature interpretation. If empty then
+		 * 						\"unknown\" title will be set.
 		 *
 		 * @returns	A pointer to the new boundary feature interpretation.
 		 */
@@ -2185,7 +2187,9 @@ namespace COMMON_NS
 		/**
 		 * Creates a wellbore frame representation into this repository
 		 *
-		 * @param [in]	interp	The represented interpretation. It cannot be null.
+		 * @exception	std::invalid_argument	If @p interp or @p traj is @c nullptr.
+		 *
+		 * @param [in]	interp	The wellbore interpretation this instance represents. It cannot be null.
 		 * @param 	  	guid  	The guid to set to the wellbore frame representation. If empty then a new
 		 * 						guid will be generated.
 		 * @param 	  	title 	The title to set to the wellbore frame representation. If empty then
@@ -2200,6 +2204,8 @@ namespace COMMON_NS
 
 		/**
 		 * Creates a wellbore marker frame representation into this repository
+		 *
+		 * @exception	std::invalid_argument	If @p interp of @p traj is @c nullptr.
 		 *
 		 * @param [in]	interp	The represented interpretation. It cannot be null.
 		 * @param 	  	guid  	The guid to set to the wellbore marker frame representation. If empty
@@ -2340,8 +2346,8 @@ namespace COMMON_NS
 		 * 					guid will be generated.
 		 * @param 	title 	The title to set to the ijk grid explicit representation. If empty then
 		 * 					\"unknown\" title will be set.
-		 * @param 	iCount	Count of cells in the i-direction in the grid.
-		 * @param 	jCount	Count of cells in the j-direction in the grid.
+		 * @param 	iCount	Count of cells in the I direction in the grid.
+		 * @param 	jCount	Count of cells in the J direction in the grid.
 		 * @param 	kCount	Number of layers in the grid.
 		 *
 		 * @returns	A pointer to the new ijk grid explicit representation.
@@ -2357,8 +2363,8 @@ namespace COMMON_NS
 		 * 						new guid will be generated.
 		 * @param 	  	title 	The title to set to the ijk grid explicit representation. If empty then
 		 * 						\"unknown\" title will be set.
-		 * @param 	  	iCount	Count of cells in the i-direction in the grid.
-		 * @param 	  	jCount	Count of cells in the j-direction in the grid.
+		 * @param 	  	iCount	Count of cells in the I direction in the grid.
+		 * @param 	  	jCount	Count of cells in the J direction in the grid.
 		 * @param 	  	kCount	Number of layers in the grid.
 		 *
 		 * @returns	A pointer to the new ijk grid explicit representation.
@@ -2374,8 +2380,8 @@ namespace COMMON_NS
 		 * 					new guid will be generated.
 		 * @param 	title 	The title to set to the ijk grid parametric representation. If empty then
 		 * 					\"unknown\" title will be set.
-		 * @param 	iCount	Count of cells in the i-direction in the grid.
-		 * @param 	jCount	Count of cells in the j-direction in the grid.
+		 * @param 	iCount	Count of cells in the I direction in the grid.
+		 * @param 	jCount	Count of cells in the J direction in the grid.
 		 * @param 	kCount	Number of layers in the grid.
 		 *
 		 * @returns	A pointer to the new ijk grid parametric representation.
@@ -2391,8 +2397,8 @@ namespace COMMON_NS
 		 * 						a new guid will be generated.
 		 * @param 	  	title 	The title to set to the ijk grid parametric representation. If empty then
 		 * 						\"unknown\" title will be set.
-		 * @param 	  	iCount	Count of cells in the i-direction in the grid.
-		 * @param 	  	jCount	Count of cells in the j-direction in the grid.
+		 * @param 	  	iCount	Count of cells in the I direction in the grid.
+		 * @param 	  	jCount	Count of cells in the J direction in the grid.
 		 * @param 	  	kCount	Number of layers in the grid.
 		 *
 		 * @returns	A pointer to the new ijk grid parametric representation.
@@ -2408,8 +2414,8 @@ namespace COMMON_NS
 		 * 					new guid will be generated.
 		 * @param 	title 	The title to set to the ijk grid lattice representation. If empty then
 		 * 					\"unknown\" title will be set.
-		 * @param 	iCount	Count of cells in the i-direction in the grid.
-		 * @param 	jCount	Count of cells in the j-direction in the grid.
+		 * @param 	iCount	Count of cells in the I direction in the grid.
+		 * @param 	jCount	Count of cells in the J direction in the grid.
 		 * @param 	kCount	Number of layers in the grid.
 		 *
 		 * @returns	A pointer to the new ijk grid lattice representation.
@@ -2425,8 +2431,8 @@ namespace COMMON_NS
 		 * 						new guid will be generated.
 		 * @param 	  	title 	The title to set to the ijk grid lattice representation. If empty then
 		 * 						\"unknown\" title will be set.
-		 * @param 	  	iCount	Count of cells in the i-direction in the grid.
-		 * @param 	  	jCount	Count of cells in the j-direction in the grid.
+		 * @param 	  	iCount	Count of cells in the I direction in the grid.
+		 * @param 	  	jCount	Count of cells in the J direction in the grid.
 		 * @param 	  	kCount	Number of layers in the grid.
 		 *
 		 * @returns	A pointer to the new ijk grid lattice representation.
@@ -2442,8 +2448,8 @@ namespace COMMON_NS
 		 * 					then a new guid will be generated.
 		 * @param 	title 	The title to set to the ijk grid with no geometry representation. If empty
 		 * 					then \"unknown\" title will be set.
-		 * @param 	iCount	Count of cells in the i-direction in the grid.
-		 * @param 	jCount	Count of cells in the j-direction in the grid.
+		 * @param 	iCount	Count of cells in the I direction in the grid.
+		 * @param 	jCount	Count of cells in the J direction in the grid.
 		 * @param 	kCount	Number of layers in the grid.
 		 *
 		 * @returns	A pointer to the new ijk grid with no geometry representation.
@@ -2460,8 +2466,8 @@ namespace COMMON_NS
 		 * 						then a new guid will be generated.
 		 * @param 	  	title 	The title to set to the ijk grid with no geometry representation. If
 		 * 						empty then \"unknown\" title will be set.
-		 * @param 	  	iCount	Count of cells in the i-direction in the grid.
-		 * @param 	  	jCount	Count of cells in the j-direction in the grid.
+		 * @param 	  	iCount	Count of cells in the I direction in the grid.
+		 * @param 	  	jCount	Count of cells in the J direction in the grid.
 		 * @param 	  	kCount	Number of layers in the grid.
 		 *
 		 * @returns	A pointer to the new ijk grid with no geometry representation.

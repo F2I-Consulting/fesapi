@@ -76,6 +76,10 @@ namespace RESQML2_NS
 		/**
 		 * Gets the K layer count of this grid
 		 *
+		 * @exception	std::logic_error	If this grid is partial or if the underlying gSOAP instance
+		 * 									is not a RESQML2.0 one.
+		 * @exception	std::range_error	If the count is strictly greater than unsigned int max.
+		 *
 		 * @returns	The K layer count of this grid.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getKCellCount() const;
@@ -83,7 +87,7 @@ namespace RESQML2_NS
 		/**
 		 * Sets the K layer count of this grid
 		 *
-		 * @exception	std::logic_error	If this grid is partial or if the underlying gSOAP instance is not a RESQML2.0 one..
+		 * @exception	std::logic_error	If this grid is partial or if the underlying gSOAP instance is not a RESQML2.0 one.
 		 *
 		 * @param 	kCount	The K layer count to set to this grid.
 		 */
