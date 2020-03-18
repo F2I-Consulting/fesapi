@@ -80,17 +80,12 @@ namespace RESQML2_0_1_NS
 		/**
 		* @return	null pointer if no md datum is associated to this representation. Otherwise return the data object reference of the associated md datum.
 		*/
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getMdDatumDor() const;
+		COMMON_NS::DataObjectReference getMdDatumDor() const;
 
 		/**
 		* Getter of the md information associated to this WellboreFeature trajectory representation.
 		*/
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::MdDatum * getMdDatum() const;
-
-		/**
-		* Getter of the md information uuid associated to this WellboreFeature trajectory representation.
-		*/
-		DLL_IMPORT_OR_EXPORT std::string getMdDatumUuid() const;
 
 		/**
 		* Used to indicate that this is a final version of the deviation survey, as distinct from the interim interpretations.

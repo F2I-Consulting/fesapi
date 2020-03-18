@@ -16,29 +16,31 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 -----------------------------------------------------------------------*/
-#include "WellboreInterpretation.h"
+#pragma once
 
-#include "../resqml2/WellboreFeature.h"
+#include "AbstractFeature.h"
 
-using namespace std;
-using namespace RESQML2_0_1_NS;
-using namespace gsoap_resqml2_0_1;
-
-WellboreInterpretation::WellboreInterpretation(RESQML2_NS::WellboreFeature * WellboreFeature, const string & guid, const string & title, bool isDrilled)
+namespace RESQML2_NS
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreInterpretation(WellboreFeature->getGsoapContext());
-	_resqml20__WellboreInterpretation* wbInterp = static_cast<_resqml20__WellboreInterpretation*>(gsoapProxy2_0_1);
-	wbInterp->Domain = resqml20__Domain__mixed;
+	class AbstractTechnicalFeature : public AbstractFeature
+	{
+	protected:
 
-	wbInterp->IsDrilled = isDrilled;
+		/**
+		* Only to be used in partial transfer context
+		*/
+		DLL_IMPORT_OR_EXPORT AbstractTechnicalFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractFeature(partialObject) {}
 
-	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "");
+		/**
+		* Default constructor
+		* Set the gsoap proxy to nullptr from superclass constructor
+		*/
+		AbstractTechnicalFeature() {}
 
-	setInterpretedFeature(WellboreFeature);
-}
+		AbstractTechnicalFeature(gsoap_resqml2_0_1::resqml20__AbstractTechnicalFeature* fromGsoap) : AbstractFeature(fromGsoap) {}
+		AbstractTechnicalFeature(gsoap_eml2_2::resqml22__AbstractTechnicalFeature* fromGsoap) : AbstractFeature(fromGsoap) {}
 
-bool WellboreInterpretation::isDrilled() const
-{
-	return static_cast<_resqml20__WellboreInterpretation*>(gsoapProxy2_0_1)->IsDrilled;
+	public:
+		virtual ~AbstractTechnicalFeature() {}
+	};
 }

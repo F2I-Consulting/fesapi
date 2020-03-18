@@ -20,11 +20,6 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
-namespace RESQML2_0_1_NS
-{
-	class PropertySet;
-}
-
 namespace COMMON_NS
 {
 	class PropertyKind;

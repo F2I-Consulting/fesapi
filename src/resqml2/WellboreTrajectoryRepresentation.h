@@ -18,43 +18,17 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2/WellboreTrajectoryRepresentation.h"
+#include "AbstractRepresentation.h"
 
-namespace RESQML2_0_1_NS
+namespace RESQML2_NS
 {
-	class WellboreTrajectoryRepresentation : public RESQML2_NS::WellboreTrajectoryRepresentation
-	{
-	private:
-		gsoap_resqml2_0_1::_resqml20__WellboreTrajectoryRepresentation* getSpecializedGsoapProxy() const;
+	class WellboreInterpretation;
 
+	class WellboreTrajectoryRepresentation : public AbstractRepresentation
+	{
 	public:
 
-		/**
-		* Only to be used in partial transfer context
-		*/
-		DLL_IMPORT_OR_EXPORT WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::WellboreTrajectoryRepresentation(partialObject) {}
-
-
-		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param interp					The WellboreFeature interpretation the instance represents.
-		* @param guid					The guid to set to the new instance. If empty then a new guid will be generated.
-		* @param title					A title for the instance to create.
-		* @param mdInfo					The MD information of the trajectory, mainly the well reference point. The uom used for the mdInfo coordinates must also be used for the start and end MD of the trajectory.
-		*/
-		WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo);
-
-		/**
-		* Creates an instance with an existing deviation survey as its origin.
-		*/
-		WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::DeviationSurveyRepresentation * deviationSurvey);
-
-		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreTrajectoryRepresentation* fromGsoap) : RESQML2_NS::WellboreTrajectoryRepresentation(fromGsoap) {}
-
-		~WellboreTrajectoryRepresentation() {}
+		virtual ~WellboreTrajectoryRepresentation() {}
 
 		/*
 		* Set the geometry of the representation by means of a parametric line without MD information.
@@ -63,7 +37,7 @@ namespace RESQML2_0_1_NS
 		* @localCrs								The local CRS where the control points are given.
 		*										If null, then the default Local CRS of the DataObject repository will be arbitrarily selected.
 		*/
-		DLL_IMPORT_OR_EXPORT void setMinimalGeometry(double startMd, double endMd);
+		DLL_IMPORT_OR_EXPORT virtual void setMinimalGeometry(double startMd, double endMd) = 0;
 
 		/*
 		* Set the geometry of the representation by means of a parametric line without MD information (only start and end MD).
@@ -78,7 +52,7 @@ namespace RESQML2_0_1_NS
 		* @localCrs								The local CRS where the control points are given.
 		*										If null, then the default Local CRS of the DataObject repository will be arbitrarily selected.
 		*/
-		DLL_IMPORT_OR_EXPORT void setGeometry(double const* controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
+		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double const* controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, COMMON_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/*
 		* Set the geometry of the representation by means of a parametric line with MD information.
@@ -92,8 +66,8 @@ namespace RESQML2_0_1_NS
 		* @localCrs								The local CRS where the control points are given.
 		*										If null, then the default Local CRS of the DataObject repository will be arbitrarily selected.
 		*/
-		DLL_IMPORT_OR_EXPORT void setGeometry(double const* controlPoints, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
-			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
+		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double const* controlPoints, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/*
 		* Set the geometry of the representation by means of a parametric line with MD and tangent vector information.
@@ -108,106 +82,170 @@ namespace RESQML2_0_1_NS
 		* @localCrs								The local CRS where the control points are given.
 		*										If null, then the default Local CRS of the DataObject repository will be arbitrarily selected.
 		*/
-		DLL_IMPORT_OR_EXPORT void setGeometry(double const* controlPoints,
+		DLL_IMPORT_OR_EXPORT virtual void setGeometry(double const* controlPoints,
 			double const* tangentVectors, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
-			COMMON_NS::AbstractHdfProxy* proxy = nullptr, RESQML2_NS::AbstractLocal3dCrs* localCrs = nullptr);
+			COMMON_NS::AbstractHdfProxy* proxy = nullptr, AbstractLocal3dCrs* localCrs = nullptr) = 0;
 
 		/**
 		* 0 for vertical, 1 for linear spline, 2 for natural cubic spline, 3 for cubic spline, 4 for z linear cubic spline, 5 for minimum-curvature spline, (-1) for null: no line
 		*/
-		DLL_IMPORT_OR_EXPORT int getGeometryKind() const;
+		DLL_IMPORT_OR_EXPORT virtual int getGeometryKind() const = 0;
 
 		/**
 		* Set the Md datum of this trajectory
 		*/
-		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum * mdDatum);
+		DLL_IMPORT_OR_EXPORT virtual void setMdDatum(MdDatum * mdDatum) = 0;
+
+		/**
+		* Getter of the md information associated to this WellboreFeature trajectory representation.
+		*/
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::MdDatum * getMdDatum() const;
 
 		/**
 		* Getter of the md information uuid associated to this WellboreFeature trajectory representation.
 		*/
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getMdDatumDor() const;
-
-		/**
-		* Get the xyz point count in a given patch.
-		*/
-		DLL_IMPORT_OR_EXPORT ULONG64 getXyzPointCountOfPatch(const unsigned int & patchIndex) const;
-
-		/**
-		* Get all the XYZ points of a particular patch of this representation.
-		* XYZ points are given in the local CRS.
-		* @param xyzPoints A linearized 2d array where the first (quickest) dimension is coordinate dimension (XYZ) and second dimension is vertex dimension. It must be pre allocated.
-		*/
-		DLL_IMPORT_OR_EXPORT void getXyzPointsOfPatch(const unsigned int & patchIndex, double * xyzPoints) const;
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getMdDatumDor() const = 0;
 
 		/**
 		* Indicates if the wellbore trajectory has got md values attached to each trajectory station.
 		*/
-		DLL_IMPORT_OR_EXPORT bool hasMdValues() const;
+		DLL_IMPORT_OR_EXPORT virtual bool hasMdValues() const = 0;
 
 		/**
 		* Units of measure of the measured depths along this trajectory.
 		*/
-		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::eml20__LengthUom getMdUom() const;
+		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::eml20__LengthUom getMdUom() const = 0;
 
 		/**
 		* Getter of the md double values associated to each trajectory station of this WellboreFeature trajectory representation.
 		*/
-		DLL_IMPORT_OR_EXPORT void getMdValues(double* values) const;
+		DLL_IMPORT_OR_EXPORT virtual void getMdValues(double* values) const = 0;
 
 		/**
 		* Get the measured depth for the start of the wellbore trajectory. Range may often be from kickoff to TD, but this is not necessary.
 		*/
-		DLL_IMPORT_OR_EXPORT double getStartMd() const;
+		DLL_IMPORT_OR_EXPORT virtual double getStartMd() const = 0;
 
 		/**
 		* Get the ending depth for the start of the wellbore trajectory. Range may often be from kickoff to TD, but this is not necessary.
 		*/
-		DLL_IMPORT_OR_EXPORT double getFinishMd() const;
+		DLL_IMPORT_OR_EXPORT virtual double getFinishMd() const = 0;
 
 		/**
 		* Indicates if the wellbore trajectory has got tangent vectors attached to each trajectory station.
 		*/
-		DLL_IMPORT_OR_EXPORT bool hasTangentVectors() const;
+		DLL_IMPORT_OR_EXPORT virtual bool hasTangentVectors() const = 0;
 
 		/**
 		* Getter of the tangent vectors associated to each trajectory station of this WellboreFeature trajectory representation.
 		*/
-		DLL_IMPORT_OR_EXPORT void getTangentVectors(double* tangentVectors);
+		DLL_IMPORT_OR_EXPORT virtual void getTangentVectors(double* tangentVectors) = 0;
+
+		//*****************
+		//*** PARENTAGE ***
+		//*****************
 
 		/**
 		* Add a trajectory parent to this trajectory in case of trajectory branching.
 		* Does add the inverse relationship i.e. from the parent trajectory to this trajecotry
 		*/
-		DLL_IMPORT_OR_EXPORT void addParentTrajectory(double kickoffMd, double parentMd, RESQML2_NS::WellboreTrajectoryRepresentation* parentTrajRep);
+		DLL_IMPORT_OR_EXPORT void virtual addParentTrajectory(double kickoffMd, double parentMd, WellboreTrajectoryRepresentation* parentTrajRep) = 0;
 
 		/**
-		* Get the parent trajectory DOR of this trajectory
-		* @return empty if the trajectory has no parent trajectory.
+		* Get the parent trajectory of this trajectory
+		* @return nullptr if the trajectory has no parent trajectory.
 		*/
-		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getParentTrajectoryDor() const;
+		DLL_IMPORT_OR_EXPORT WellboreTrajectoryRepresentation* getParentTrajectory() const;
+
+		DLL_IMPORT_OR_EXPORT virtual COMMON_NS::DataObjectReference getParentTrajectoryDor() const = 0;
 
 		/**
 		* Get the MD on the parent wellbore trajectory where this trajectory is starting.
 		*/
-		DLL_IMPORT_OR_EXPORT double getParentTrajectoryMd() const;
+		DLL_IMPORT_OR_EXPORT virtual double getParentTrajectoryMd() const = 0;
+
+		/**
+		* Get a set of all children trajectories of this trajectory
+		*/
+		DLL_IMPORT_OR_EXPORT std::vector<WellboreTrajectoryRepresentation*> getChildrenTrajectorySet() const;
+
+		//*****************
+		//***** FRAME *****
+		//*****************
+
+		/**
+		* Getter (in read only mode) of all the associated Wellbore frame representations
+		*/
+		DLL_IMPORT_OR_EXPORT std::vector<class RESQML2_NS::WellboreFrameRepresentation *> getWellboreFrameRepresentationSet() const;
+
+		/**
+		* Get the count of wellbore frame representation which are associated with this wellbore trajectory.
+		* Necessary for now in SWIG context because I am not sure if I can always wrap a vector of polymorphic class yet.
+		*/
+		DLL_IMPORT_OR_EXPORT unsigned int getWellboreFrameRepresentationCount() const;
+
+		/**
+		* Get a particular wellbore frame representation of this wellbore trajectory representation according to its position in the EPC document.
+		* Necessary for now in SWIG context because I mm not sure if I can always wrap a vector of polymorphic class yet.
+		* Throw an out of bound exception if the index is superior or equal to the count of wellbore frame representation.
+		*/
+		DLL_IMPORT_OR_EXPORT class RESQML2_NS::WellboreFrameRepresentation * getWellboreFrameRepresentation(unsigned int index) const;
+
+		//*****************
+		//***** SURVEY ****
+		//*****************
 
 		/**
 		* Set the deviation survey which is the source of this trajectory.
 		*/
-		DLL_IMPORT_OR_EXPORT void setDeviationSurvey(RESQML2_NS::DeviationSurveyRepresentation* deviationSurvey);
+		DLL_IMPORT_OR_EXPORT virtual void setDeviationSurvey(class DeviationSurveyRepresentation* deviationSurvey) = 0;
 
 		/**
-		* Get the information to resolve the associated deviation survey. It can return empty.
+		* Get the deviation survey which is the source of this trajectory. It can return a null pointer.
 		*/
-		COMMON_NS::DataObjectReference getDeviationSurveyDor() const;
+		DLL_IMPORT_OR_EXPORT class DeviationSurveyRepresentation* getDeviationSurvey() const;
+
+		/**
+		* Get the information to resolve the associated deviation survey. It can return an empty reference.
+		*/
+		virtual COMMON_NS::DataObjectReference getDeviationSurveyDor() const = 0;
 
 		/**
 		* Get the information to resolve the associated local CRS.
 		*/
-		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const;
+		virtual COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const = 0;
 
-		COMMON_NS::DataObjectReference getHdfProxyDor() const;
+		virtual COMMON_NS::DataObjectReference getHdfProxyDor() const = 0;
 
-		DLL_IMPORT_OR_EXPORT bool hasGeometry() const;
+		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const {return 1;}
+
+		DLL_IMPORT_OR_EXPORT virtual bool hasGeometry() const = 0;
+
+		/**
+		* The standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		* Get the standard XML tag without XML namespace for serializing this data object.
+		*/
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+
+	protected:
+
+		/**
+		* Only to be used in partial transfer context
+		*/
+		DLL_IMPORT_OR_EXPORT WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractRepresentation(partialObject) {}
+
+		WellboreTrajectoryRepresentation() {}
+
+		/**
+		* Creates an instance of this class by wrapping a gsoap instance.
+		*/
+		WellboreTrajectoryRepresentation(gsoap_resqml2_0_1::_resqml20__WellboreTrajectoryRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
+		WellboreTrajectoryRepresentation(gsoap_eml2_2::_resqml22__WellboreTrajectoryRepresentation* fromGsoap) : AbstractRepresentation(fromGsoap) {}
+
+		void loadTargetRelationships();
 	};
 }

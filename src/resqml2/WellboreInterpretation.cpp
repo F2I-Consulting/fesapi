@@ -18,27 +18,14 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreInterpretation.h"
 
-#include "../resqml2/WellboreFeature.h"
+#include "WellboreTrajectoryRepresentation.h"
 
 using namespace std;
-using namespace RESQML2_0_1_NS;
-using namespace gsoap_resqml2_0_1;
+using namespace RESQML2_NS;
 
-WellboreInterpretation::WellboreInterpretation(RESQML2_NS::WellboreFeature * WellboreFeature, const string & guid, const string & title, bool isDrilled)
+const char* WellboreInterpretation::XML_TAG = "WellboreInterpretation";
+
+std::vector<WellboreTrajectoryRepresentation*> WellboreInterpretation::getWellboreTrajectoryRepresentationSet() const
 {
-	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreInterpretation(WellboreFeature->getGsoapContext());
-	_resqml20__WellboreInterpretation* wbInterp = static_cast<_resqml20__WellboreInterpretation*>(gsoapProxy2_0_1);
-	wbInterp->Domain = resqml20__Domain__mixed;
-
-	wbInterp->IsDrilled = isDrilled;
-
-	initMandatoryMetadata();
-	setMetadata(guid, title, "", -1, "", "", -1, "");
-
-	setInterpretedFeature(WellboreFeature);
-}
-
-bool WellboreInterpretation::isDrilled() const
-{
-	return static_cast<_resqml20__WellboreInterpretation*>(gsoapProxy2_0_1)->IsDrilled;
+	return getRepository()->getSourceObjects<WellboreTrajectoryRepresentation>(this);
 }

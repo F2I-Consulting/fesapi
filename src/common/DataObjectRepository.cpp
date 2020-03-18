@@ -799,9 +799,9 @@ TectonicBoundaryFeature* DataObjectRepository::createFracture(const std::string 
 	return new TectonicBoundaryFeature(this, guid, title, true);
 }
 
-WellboreFeature* DataObjectRepository::createWellboreFeature(const std::string & guid, const std::string & title)
+RESQML2_NS::WellboreFeature* DataObjectRepository::createWellboreFeature(const std::string & guid, const std::string & title)
 {
-	return new WellboreFeature(this, guid, title);
+	return new RESQML2_0_1_NS::WellboreFeature(this, guid, title);
 }
 
 SeismicLatticeFeature* DataObjectRepository::createSeismicLattice(const std::string & guid, const std::string & title,
@@ -893,9 +893,9 @@ FaultInterpretation* DataObjectRepository::createFaultInterpretation(TectonicBou
 	return new FaultInterpretation(fault, guid, title);
 }
 
-WellboreInterpretation* DataObjectRepository::createWellboreInterpretation(WellboreFeature * wellbore, const std::string & guid, const std::string & title, bool isDrilled)
+RESQML2_NS::WellboreInterpretation* DataObjectRepository::createWellboreInterpretation(RESQML2_NS::WellboreFeature * wellbore, const std::string & guid, const std::string & title, bool isDrilled)
 {
-	return new WellboreInterpretation(wellbore, guid, title, isDrilled);
+	return new RESQML2_0_1_NS::WellboreInterpretation(wellbore, guid, title, isDrilled);
 }
 
 EarthModelInterpretation* DataObjectRepository::createEarthModelInterpretation(OrganizationFeature * orgFeat, const std::string & guid, const std::string & title)
@@ -1035,19 +1035,19 @@ Grid2dRepresentation* DataObjectRepository::createGrid2dRepresentation(RESQML2_N
 	return new Grid2dRepresentation(interp, guid, title);
 }
 
-WellboreTrajectoryRepresentation* DataObjectRepository::createWellboreTrajectoryRepresentation(WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo)
+RESQML2_NS::WellboreTrajectoryRepresentation* DataObjectRepository::createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo)
 {
-	return new WellboreTrajectoryRepresentation(interp, guid, title, mdInfo);
+	return new RESQML2_0_1_NS::WellboreTrajectoryRepresentation(interp, guid, title, mdInfo);
 }
 
-WellboreTrajectoryRepresentation* DataObjectRepository::createWellboreTrajectoryRepresentation(WellboreInterpretation * interp, const std::string & guid, const std::string & title, DeviationSurveyRepresentation * deviationSurvey)
+RESQML2_NS::WellboreTrajectoryRepresentation* DataObjectRepository::createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::DeviationSurveyRepresentation * deviationSurvey)
 {
-	return new WellboreTrajectoryRepresentation(interp, guid, title, deviationSurvey);
+	return new RESQML2_0_1_NS::WellboreTrajectoryRepresentation(interp, guid, title, deviationSurvey);
 }
 
-RESQML2_0_1_NS::DeviationSurveyRepresentation* DataObjectRepository::createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo)
+RESQML2_NS::::DeviationSurveyRepresentation* DataObjectRepository::createDeviationSurveyRepresentation(RESQML2_NS::::WellboreInterpretation * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo)
 {
-	return new DeviationSurveyRepresentation(interp, guid, title, isFinal, mdInfo);
+	return new RESQML2_0_1_NS::DeviationSurveyRepresentation(interp, guid, title, isFinal, mdInfo);
 }
 
 RESQML2_NS::WellboreFrameRepresentation* DataObjectRepository::createWellboreFrameRepresentation(WellboreInterpretation * interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
@@ -1063,9 +1063,9 @@ RESQML2_NS::WellboreFrameRepresentation* DataObjectRepository::createWellboreFra
 }
 
 RESQML2_2_NS::SeismicWellboreFrameRepresentation* DataObjectRepository::createSeismicWellboreFrameRepresentation(
-	RESQML2_0_1_NS::WellboreInterpretation* interp,
+	RESQML2_NS::WellboreInterpretation* interp,
 	const std::string& guid, const std::string& title,
-	RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj,
+	RESQML2_NS::WellboreTrajectoryRepresentation* traj,
 	double seismicReferenceDatum,
 	double weatheringVelocity,
 	class RESQML2_0_1_NS::LocalTime3dCrs* crs)
@@ -1073,7 +1073,7 @@ RESQML2_2_NS::SeismicWellboreFrameRepresentation* DataObjectRepository::createSe
 	return new RESQML2_2_NS::SeismicWellboreFrameRepresentation(interp, guid, title, traj, seismicReferenceDatum, weatheringVelocity, crs);
 }
 
-WellboreMarkerFrameRepresentation* DataObjectRepository::createWellboreMarkerFrameRepresentation(WellboreInterpretation * interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
+RESQML2_NS::WellboreMarkerFrameRepresentation* DataObjectRepository::createWellboreMarkerFrameRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
 {
 	return new WellboreMarkerFrameRepresentation(interp, guid, title, traj);
 }
@@ -1861,13 +1861,13 @@ std::vector<RESQML2_0_1_NS::TriangulatedSetRepresentation*> DataObjectRepository
 
 std::vector<RESQML2_0_1_NS::SeismicLineFeature*> DataObjectRepository::getSeismicLineSet() const { return getDataObjects<RESQML2_0_1_NS::SeismicLineFeature>(); }
 
-std::vector<RESQML2_0_1_NS::WellboreFeature*> DataObjectRepository::getWellboreSet() const { return getDataObjects<RESQML2_0_1_NS::WellboreFeature>(); }
+std::vector<RESQML2_NS::WellboreFeature*> DataObjectRepository::getWellboreSet() const { return getDataObjects<RESQML2_NS::WellboreFeature>(); }
 
-vector<WellboreTrajectoryRepresentation *> DataObjectRepository::getWellboreTrajectoryRepresentationSet() const
+vector<RESQML2_NS::WellboreTrajectoryRepresentation *> DataObjectRepository::getWellboreTrajectoryRepresentationSet() const
 {
-	vector<WellboreTrajectoryRepresentation *> result;
+	vector<RESQML2_NS::WellboreTrajectoryRepresentation *> result;
 
-	const std::vector<RESQML2_0_1_NS::WellboreFeature*> wellboreSet = getWellboreSet();
+	const std::vector<RESQML2_NS::WellboreFeature*> wellboreSet = getWellboreSet();
 
 	for (size_t featureIndex = 0; featureIndex < wellboreSet.size(); ++featureIndex) {
 		const std::vector<RESQML2_NS::AbstractFeatureInterpretation *> interpSet = wellboreSet[featureIndex]->getInterpretationSet();
@@ -1884,11 +1884,11 @@ vector<WellboreTrajectoryRepresentation *> DataObjectRepository::getWellboreTraj
 	return result;
 }
 
-vector<DeviationSurveyRepresentation *> DataObjectRepository::getDeviationSurveyRepresentationSet() const
+vector<RESQML2_NS::DeviationSurveyRepresentation *> DataObjectRepository::getDeviationSurveyRepresentationSet() const
 {
-	vector<DeviationSurveyRepresentation *> result;
+	vector<RESQML2_NS::DeviationSurveyRepresentation *> result;
 
-	const std::vector<RESQML2_0_1_NS::WellboreFeature*> wellboreSet = getWellboreSet();
+	const std::vector<RESQML2_NS::WellboreFeature*> wellboreSet = getWellboreSet();
 
 	for (size_t featureIndex = 0; featureIndex < wellboreSet.size(); ++featureIndex) {
 		const std::vector<RESQML2_NS::AbstractFeatureInterpretation *> interpSet = wellboreSet[featureIndex]->getInterpretationSet();

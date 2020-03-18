@@ -18,28 +18,18 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "AbstractTechnicalFeature.h"
-
-namespace WITSML2_0_NS
-{
-	class Wellbore;
-}
+#include "../resqml2/WellboreFeature.h"
 
 namespace RESQML2_0_1_NS
 {
-	class WellboreFeature : public AbstractTechnicalFeature
+	class WellboreFeature : public RESQML2_NS::WellboreFeature
 	{
 	public:
 
 		/**
 		* Only to be used in partial transfer context
 		*/
-		DLL_IMPORT_OR_EXPORT WellboreFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :AbstractTechnicalFeature(partialObject) {}
-
-		/**
-		* Default constructor
-		*/
-		WellboreFeature() {}
+		DLL_IMPORT_OR_EXPORT WellboreFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::WellboreFeature(partialObject) {}
 
 		/**
 		* Creates an instance of this class in a gsoap context.
@@ -47,29 +37,18 @@ namespace RESQML2_0_1_NS
 		* @param guid		The guid to set to this instance. If empty then a new guid will be generated.
 		* @param title		A title for the instance to create.
 		*/
-		WellboreFeature(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
+		WellboreFeature(COMMON_NS::DataObjectRepository* repo, const std::string& guid, const std::string& title);
 
 		/**
 		* Creates an instance of this class by wrapping a gsoap instance.
 		*/
-		WellboreFeature(gsoap_resqml2_0_1::_resqml20__WellboreFeature* fromGsoap): AbstractTechnicalFeature(fromGsoap) {}
+		WellboreFeature(gsoap_resqml2_0_1::_resqml20__WellboreFeature* fromGsoap): RESQML2_NS::WellboreFeature(fromGsoap) {}
 
 		/**
 		* Destructor does nothing since the memory is managed by the gsoap context.
 		*/
 		~WellboreFeature() {}
 		
-		DLL_IMPORT_OR_EXPORT WITSML2_0_NS::Wellbore* getWitsmlWellbore() const ;
 		DLL_IMPORT_OR_EXPORT void setWitsmlWellbore(WITSML2_0_NS::Wellbore * wellbore);
-
-		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

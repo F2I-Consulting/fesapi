@@ -44,6 +44,7 @@ namespace RESQML2_NS
 		* @param fromGsoap	The gsoap proxy which shold be wrapped by the constructed feature.
 		*/
 		AbstractFeature(gsoap_resqml2_0_1::resqml20__AbstractFeature* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
+		AbstractFeature(gsoap_eml2_2::resqml22__AbstractFeature* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 	public:
 

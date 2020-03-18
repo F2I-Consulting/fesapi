@@ -125,7 +125,7 @@ namespace RESQML2_NS
 		/**
 		* Get the associated RESQML wellbore trajector.
 		*/
-		DLL_IMPORT_OR_EXPORT class RESQML2_0_1_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
+		DLL_IMPORT_OR_EXPORT class WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
 
 		/**
 		* Get the associated RESQML local crs data object reference.

@@ -43,6 +43,7 @@ namespace RESQML2_NS
 	class AbstractRepresentation;
 	class Activity;
 	class ActivityTemplate;
+	class DeviationSurveyRepresentation;
 	class GridConnectionSetRepresentation;
 	class IjkGridExplicitRepresentation;
 	class IjkGridLatticeRepresentation;
@@ -54,7 +55,10 @@ namespace RESQML2_NS
 	class SubRepresentation;
 	class TimeSeries;
 	class UnstructuredGridRepresentation;
+	class WellboreFeature;
 	class WellboreFrameRepresentation;
+	class WellboreInterpretation;
+	class WellboreTrajectoryRepresentation;
 }
 
 namespace RESQML2_0_1_NS
@@ -69,15 +73,12 @@ namespace RESQML2_0_1_NS
 	class GeobodyFeature;
 	class GeobodyInterpretation;
 	class Horizon;
-	class WellboreFeature;
 	class SeismicLineFeature;
 	class StratigraphicUnitFeature;
 	class PolylineSetRepresentation;
 	class PolylineRepresentation;
 	class TriangulatedSetRepresentation;
 	class Grid2dRepresentation;
-	class WellboreTrajectoryRepresentation;
-	class DeviationSurveyRepresentation;
 	class BoundaryFeature;
 	class BoundaryFeatureInterpretation;
 	class TectonicBoundaryFeature;
@@ -87,14 +88,12 @@ namespace RESQML2_0_1_NS
 	class GenericFeatureInterpretation;
 	class HorizonInterpretation;
 	class FaultInterpretation;
-	class WellboreInterpretation;
 	class EarthModelInterpretation;
 	class StructuralOrganizationInterpretation;
 	class StratigraphicUnitInterpretation;
 	class StratigraphicColumn;
 	class StratigraphicColumnRankInterpretation;
 	class PointSetRepresentation;
-	class WellboreFrameRepresentation;
 	class WellboreMarkerFrameRepresentation;
 	class NonSealedSurfaceFrameworkRepresentation;
 	class SealedSurfaceFrameworkRepresentation;
@@ -467,7 +466,7 @@ namespace COMMON_NS
 		* DEPRECATED : use getDataObjects template method
 		* Get all the wellbores contained into the EPC document
 		*/
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::WellboreFeature*> getWellboreSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::WellboreFeature*> getWellboreSet() const;
 
 		/**
 		* Get all the trajectory representations of all wellbores.
@@ -877,7 +876,7 @@ namespace COMMON_NS
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::TectonicBoundaryFeature* createFracture(const std::string & guid, const std::string & title);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreFeature* createWellboreFeature(const std::string & guid, const std::string & title);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreFeature* createWellboreFeature(const std::string & guid, const std::string & title);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::SeismicLatticeFeature* createSeismicLattice(const std::string & guid, const std::string & title,
 			const int & inlineIncrement, const int & crosslineIncrement,
@@ -917,7 +916,7 @@ namespace COMMON_NS
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::FaultInterpretation* createFaultInterpretation(RESQML2_0_1_NS::TectonicBoundaryFeature * fault, const std::string & guid, const std::string & title);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreInterpretation* createWellboreInterpretation(RESQML2_0_1_NS::WellboreFeature * wellbore, const std::string & guid, const std::string & title, bool isDrilled);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreInterpretation* createWellboreInterpretation(RESQML2_NS::WellboreFeature * wellbore, const std::string & guid, const std::string & title, bool isDrilled);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::EarthModelInterpretation* createEarthModelInterpretation(RESQML2_0_1_NS::OrganizationFeature * orgFeat, const std::string & guid, const std::string & title);
 
@@ -971,25 +970,25 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::Grid2dRepresentation* createGrid2dRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo);
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::DeviationSurveyRepresentation * deviationSurvey);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreTrajectoryRepresentation* createWellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::DeviationSurveyRepresentation * deviationSurvey);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::DeviationSurveyRepresentation* createDeviationSurveyRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, const bool & isFinal, RESQML2_NS::MdDatum * mdInfo);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj);
+		DLL_IMPORT_OR_EXPORT RESQML2_NS::WellboreFrameRepresentation* createWellboreFrameRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::WellboreTrajectoryRepresentation* traj);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::SeismicWellboreFrameRepresentation* createSeismicWellboreFrameRepresentation(
-			RESQML2_0_1_NS::WellboreInterpretation* interp, 
+			RESQML2_NS::WellboreInterpretation* interp,
 			const std::string& guid, const std::string& title, 
-			RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj,
+			RESQML2_NS::WellboreTrajectoryRepresentation* traj,
 			double seismicReferenceDatum,
 			double weatheringVelocity,
 			class RESQML2_0_1_NS::LocalTime3dCrs* crs);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::WellboreMarkerFrameRepresentation* createWellboreMarkerFrameRepresentation(RESQML2_NS::WellboreInterpretation * interp, const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj);
 
-		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::BlockedWellboreRepresentation* createBlockedWellboreRepresentation(RESQML2_0_1_NS::WellboreInterpretation * interp,
-			const std::string & guid, const std::string & title, RESQML2_0_1_NS::WellboreTrajectoryRepresentation * traj);
+		DLL_IMPORT_OR_EXPORT RESQML2_0_1_NS::BlockedWellboreRepresentation* createBlockedWellboreRepresentation(RESQML2_NS::WellboreInterpretation * interp,
+			const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj);
 
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::RepresentationSetRepresentation* createRepresentationSetRepresentation(
 			RESQML2_NS::AbstractOrganizationInterpretation* interp,
