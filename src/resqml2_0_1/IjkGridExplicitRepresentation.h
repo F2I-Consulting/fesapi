@@ -72,13 +72,6 @@ namespace RESQML2_0_1_NS
 		IjkGridExplicitRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridExplicitRepresentation(fromGsoap) {}
 		IjkGridExplicitRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridExplicitRepresentation(fromGsoap) {}
 
-		/**
-		 * Constructor
-		 *
-		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
-		 */
-		IjkGridExplicitRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : AbstractIjkGridRepresentation(fromGsoap) {}
-
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~IjkGridExplicitRepresentation() {}
 
