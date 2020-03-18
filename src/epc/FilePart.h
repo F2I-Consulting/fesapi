@@ -21,16 +21,20 @@ under the License.
 
 #include "FileRelationship.h"
 
+/** . */
 namespace epc
 {
 
+	/** A file part. */
 	class FilePart
 	{
 	private:
-		FileRelationship fileRelationship;	/// The associated rel file to the part
+		/** The associated rel file to the part */
+		FileRelationship fileRelationship;
 
 	public:
 
+		/** Default constructor */
 		FilePart();
 
 		/**
@@ -43,16 +47,32 @@ namespace epc
 
 		// ACCESSORS
 		const FileRelationship & getFileRelationship() const;
+
+		/**
+		 * Gets index relationship
+		 *
+		 * @param 	index	Zero-based index of the.
+		 *
+		 * @returns	The index relationship.
+		 */
 		Relationship getIndexRelationship(int index) const;
 
 		/**
-		* Copy an existing relationship into the relationship set of the part.
-		*/
+		 * Copy an existing relationship into the relationship set of the part.
+		 *
+		 * @param 	relationship	The relationship.
+		 */
 		void addRelationship(const Relationship & relationship);
 
 		/**
-		* Creates a new relationship into the relationship set of the part according to the supplied parameters
-		*/
+		 * Creates a new relationship into the relationship set of the part according to the supplied
+		 * parameters
+		 *
+		 * @param 	rsTarget	  	The RS target.
+		 * @param 	rsType		  	Type of the RS.
+		 * @param 	rsId		  	Identifier for the RS.
+		 * @param 	internalTarget	(Optional) True to internal target.
+		 */
 		void createRelationship(const std::string & rsTarget, const std::string & rsType,const std::string & rsId, bool internalTarget = true);
 	};
 }

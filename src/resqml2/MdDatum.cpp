@@ -47,11 +47,10 @@ void MdDatum::loadTargetRelationships()
 
 void MdDatum::setLocalCrs(AbstractLocal3dCrs * localCrs)
 {
+	// The constructor must force getRepository() not to return nullptr
+
 	if (localCrs == nullptr) {
 		localCrs = getRepository()->getDefaultCrs();
-	}
-	if (getRepository() == nullptr) {
-		localCrs->getRepository()->addOrReplaceDataObject(this);
 	}
 
 	setXmlLocalCrs(localCrs);
@@ -61,7 +60,12 @@ void MdDatum::setLocalCrs(AbstractLocal3dCrs * localCrs)
 
 std::string MdDatum::getLocalCrsUuid() const
 {
-	return getLocalCrsDor()->UUID;
+	eml20__DataObjectReference* localCrsDor = getLocalCrsDor();
+	
+	if (localCrsDor == nullptr)
+		throw invalid_argument("The local CRS dor is nullptr.");
+
+	return localCrsDor->UUID;
 }
 
 AbstractLocal3dCrs * MdDatum::getLocalCrs() const

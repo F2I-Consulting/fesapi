@@ -246,11 +246,11 @@ RESQML2_NS::AbstractRepresentation::indexableElement SubRepresentation::getEleme
 			}
 		}
 		else {
-			throw range_error("The elementIndices does not exist at this index.");
+			throw out_of_range("The elementIndices does not exist at this index.");
 		}
 	}
 	else {
-		throw range_error("The patch does not exist at this index.");
+		throw out_of_range("The patch does not exist at this index.");
 	}
 }
 
@@ -320,7 +320,7 @@ LONG64 SubRepresentation::getLatticeElementIndicesOffsetValue(unsigned int latti
 
 	resqml20__IntegerLatticeArray* lattice = static_cast<resqml20__IntegerLatticeArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices);
 	if (lattice->Offset.size() <= latticeDimensionIndex)
-		throw range_error("The lattice dimension index is out of range.");
+		throw out_of_range("The lattice dimension index is out of range.");
 
 	return lattice->Offset[latticeDimensionIndex]->Value;
 }
@@ -338,7 +338,7 @@ ULONG64 SubRepresentation::getLatticeElementIndicesOffsetCount(unsigned int latt
 
 	resqml20__IntegerLatticeArray* lattice = static_cast<resqml20__IntegerLatticeArray*>(rep->SubRepresentationPatch[patchIndex]->ElementIndices[elementIndicesIndex]->Indices);
 	if (lattice->Offset.size() <= latticeDimensionIndex) {
-		throw range_error("The lattice dimension index is out of range.");
+		throw out_of_range("The lattice dimension index is out of range.");
 	}
 
 	return lattice->Offset[latticeDimensionIndex]->Count;
@@ -368,7 +368,7 @@ void SubRepresentation::getSupportingRepresentationIndicesOfPatch(unsigned int p
 {
 	const _resqml20__SubRepresentation* rep = getSpecializedGsoapProxy();
 	if (rep->SubRepresentationPatch.size() <= patchIndex) {
-		throw range_error("The patch does not exist at this index.");
+		throw out_of_range("The patch does not exist at this index.");
 	}
 
 	if (getSupportingRepresentationCount() == 1) {
@@ -407,7 +407,7 @@ gsoap_resqml2_0_1::eml20__DataObjectReference* SubRepresentation::getSupportingR
 		throw invalid_argument("No supporting rep");
 	}
 	if (index >= supRepCount) {
-		throw range_error("The index of the supporting represenation is out of range.");
+		throw out_of_range("The index of the supporting represenation is out of range.");
 	}
 
 	if (supRepCount == 1) {

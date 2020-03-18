@@ -21,16 +21,25 @@ under the License.
 #include "../proxies/gsoap_resqml2_0_1Stub.h"
 #include "../proxies/gsoap_eml2_2Stub.h"
 
+/** . */
 namespace misc
 {
 	/**
-	* Get the part name of an object in the epc document based on one of its reference.
-	*/
+	 * Get the part name of an object in the epc document based on one of its reference.
+	 *
+	 * @param [in,out]	reference	If non-null, the reference.
+	 *
+	 * @returns	The part name from reference.
+	 */
 	std::string getPartNameFromReference(gsoap_resqml2_0_1::eml20__DataObjectReference * reference);
 
 	/**
-	* Get the part name of an eml 2.2 object in the epc document based on one of its reference.
-	*/
+	 * Get the part name of an eml 2.2 object in the epc document based on one of its reference.
+	 *
+	 * @param [in,out]	reference	If non-null, the reference.
+	 *
+	 * @returns	The part name from reference.
+	 */
 	std::string getPartNameFromReference(gsoap_eml2_2::eml22__DataObjectReference * reference);
 }
 

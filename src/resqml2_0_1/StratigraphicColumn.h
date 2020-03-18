@@ -20,57 +20,74 @@ under the License.
 
 #include "EarthModelInterpretation.h"
 
+/** . */
 namespace RESQML2_0_1_NS
 {
-	/**
-	* This class is a container for other organizations that are consistent to each others.
-	*/
+	/** This class is a container for other organizations that are consistent to each others. */
 	class StratigraphicColumn : public COMMON_NS::AbstractObject
 	{
 	public:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
 		DLL_IMPORT_OR_EXPORT StratigraphicColumn(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
 		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param repo		The repo which will contain the instance.
-		* @param guid		The guid to set to the interpretation. If empty then a new guid will be generated.
-		* @param title		A title for the instance to create.
-		*/
+		 * Creates an instance of this class in a gsoap context.
+		 *
+		 * @param [in,out]	repo 	The repo which will contain the instance.
+		 * @param 		  	guid 	The guid to set to the interpretation. If empty then a new guid will
+		 * 							be generated.
+		 * @param 		  	title	A title for the instance to create.
+		 */
 		StratigraphicColumn(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		StratigraphicColumn(gsoap_resqml2_0_1::_resqml20__StratigraphicColumn* fromGsoap) : AbstractObject(fromGsoap) {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~StratigraphicColumn() {}
 
+		/**
+		 * Pushes a back strati column rank
+		 *
+		 * @param [in,out]	stratiColumnRank	If non-null, the strati column rank.
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackStratiColumnRank(class StratigraphicColumnRankInterpretation * stratiColumnRank);
 
 		/**
-		 * Get all the stratigraphic column rank interpretations which are contained in this stratigraphic column.
+		 * Get all the stratigraphic column rank interpretations which are contained in this
+		 * stratigraphic column.
+		 *
+		 * @returns	Null if it fails, else the stratigraphic column rank interpretation set.
 		 */
 		DLL_IMPORT_OR_EXPORT std::vector<class StratigraphicColumnRankInterpretation *> getStratigraphicColumnRankInterpretationSet() const;
-                
+
 		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
+		 * The standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
+		 * Get the standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
     private:
+		/** Loads target relationships */
 		void loadTargetRelationships();
 	};
 }

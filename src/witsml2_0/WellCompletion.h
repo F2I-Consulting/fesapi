@@ -20,34 +20,45 @@ under the License.
 
 #include "AbstractObject.h"
 
+/** . */
 namespace WITSML2_0_NS
 {
+	/** A wellbore completion. */
 	class WellboreCompletion;
 
+	/** A well completion. */
 	class WellCompletion : public WITSML2_0_NS::AbstractObject
 	{
 	public:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
 		DLL_IMPORT_OR_EXPORT WellCompletion(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WITSML2_0_NS::AbstractObject(partialObject) {}
 
 		/**
-		* Constructor
-		*/
+		 * Constructor
+		 *
+		 * @param [in,out]	witsmlWell	If non-null, the witsml well.
+		 * @param 		  	guid	  	Unique identifier.
+		 * @param 		  	title	  	The title.
+		 */
 		WellCompletion(class Well* witsmlWell,
 			const std::string & guid,
 			const std::string & title);
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		WellCompletion(gsoap_eml2_1::witsml20__WellCompletion* fromGsoap) :AbstractObject(fromGsoap) {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~WellCompletion() {}
 
 		/**
@@ -55,35 +66,39 @@ namespace WITSML2_0_NS
 		*/
 		COMMON_NS::DataObjectReference getWellDor() const;
 		
-		/**
-		* Get the well of this well completion.
-		*/
+		/** Get the well of this well completion. */
 		DLL_IMPORT_OR_EXPORT class Well* getWell() const;
 
 		/**
-		* Set the well of this well completion.
-		*/
+		 * Set the well of this well completion.
+		 *
+		 * @param [in,out]	witsmlWell	If non-null, the witsml well.
+		 */
 		DLL_IMPORT_OR_EXPORT void setWell(class Well* witsmlWell);
 
 		/**
-		* Get all welbore completions linked with this well completion.
-		*/
+		 * Get all welbore completions linked with this well completion.
+		 *
+		 * @returns	Null if it fails, else the wellbore completions.
+		 */
 		DLL_IMPORT_OR_EXPORT std::vector<WellboreCompletion *> getWellboreCompletions() const;
 
 		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
+		 * The standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
+		 * Get the standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	protected:
-		/**
-		* Resolve all relationships of the object in the repository.
-		*/
+		/** Resolve all relationships of the object in the repository. */
 		void loadTargetRelationships();
 	};
 }

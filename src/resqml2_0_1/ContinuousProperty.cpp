@@ -38,6 +38,10 @@ const char* ContinuousProperty::XML_TAG = "ContinuousProperty";
 void ContinuousProperty::init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind)
 {
+	if (rep == nullptr) {
+		throw invalid_argument("The representation of this property values cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREContinuousProperty(rep->getGsoapContext());
 	_resqml20__ContinuousProperty* prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
@@ -334,6 +338,10 @@ void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
 	COMMON_NS::AbstractHdfProxy* proxy,
 	unsigned int patchIndex)
 {
+	if (patchIndex >= getPatchCount() && patchIndex != (numeric_limits<unsigned int>::max)()) {
+		throw out_of_range("The values property patch is out of range");
+	}
+
 	_resqml20__ContinuousProperty const * prop = static_cast<_resqml20__ContinuousProperty *>(gsoapProxy2_0_1);
 
 	if (computeMinMax) {
@@ -368,6 +376,10 @@ void ContinuousProperty::setValuesOfFloatHdf5ArrayOfValues(
 
 void ContinuousProperty::getDoubleValuesOfPatch(unsigned int patchIndex, double * values) const
 {
+	if (patchIndex >= getPatchCount()) {
+		throw out_of_range("The values property patch is out of range");
+	}
+
 	_resqml20__ContinuousProperty const * prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 	eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(prop->PatchOfValues[patchIndex]->Values) ->Values;
 	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
@@ -377,6 +389,10 @@ void ContinuousProperty::getDoubleValuesOfPatch(unsigned int patchIndex, double 
 
 void ContinuousProperty::getFloatValuesOfPatch(unsigned int patchIndex, float * values) const
 {
+	if (patchIndex >= getPatchCount()) {
+		throw out_of_range("The values property patch is out of range");
+	}
+
 	_resqml20__ContinuousProperty const * prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 	eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(prop->PatchOfValues[patchIndex]->Values)->Values;
 	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
@@ -391,6 +407,10 @@ void ContinuousProperty::getFloatValuesOfPatch(
 	unsigned long long const * offsetInEachDimension,
 	unsigned int numArrayDimensions) const
 {
+	if (patchIndex >= getPatchCount()) {
+		throw out_of_range("The values property patch is out of range");
+	}
+
 	_resqml20__ContinuousProperty const * prop = static_cast<_resqml20__ContinuousProperty*>(gsoapProxy2_0_1);
 	eml20__Hdf5Dataset const * dataset = static_cast<resqml20__DoubleHdf5Array*>(prop->PatchOfValues[patchIndex]->Values)->Values;
 	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);

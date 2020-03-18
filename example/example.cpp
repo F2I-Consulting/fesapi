@@ -842,7 +842,7 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 	ULONG64 cellConn[6] = { 0, 9999, 0, 1, 9999, 1 };
 	gridConnSet->setCellIndexPairs(3, cellConn, 9999, hdfProxy);
 	int localFacePerCellIndexPairs[6] = { 3, 9999, 3, 5, 9999, 5 };
-	gridConnSet->setLocalFacePerCellIndexPairs(3, localFacePerCellIndexPairs, 9999, hdfProxy);
+	gridConnSet->setLocalFacePerCellIndexPairs(3, localFacePerCellIndexPairs, -1, hdfProxy);
 
 	if (fault1Interp1 != nullptr)
 	{
@@ -869,12 +869,12 @@ void serializeGrid(COMMON_NS::DataObjectRepository * pck, COMMON_NS::AbstractHdf
 		3, 5, 3, 5, 3, 5,
 		9999, 5, 9999, 5, 9999, 5
 	};
-	gridConnSet432->setLocalFacePerCellIndexPairs(15, localFacePerCellIndexPairs432, 9999, hdfProxy);
+	gridConnSet432->setLocalFacePerCellIndexPairs(15, localFacePerCellIndexPairs432, -1, hdfProxy);
 
 	RESQML2_NS::GridConnectionSetRepresentation * gridConnSet432rh = pck->createGridConnectionSetRepresentation("a3d1462a-04e3-4374-921b-a4a1e9ba3ea3", "GridConnectionSetRepresentation");
 	gridConnSet432rh->pushBackSupportingGridRepresentation(ijkgrid432rh);
 	gridConnSet432rh->setCellIndexPairs(15, cellConn432, 9999, hdfProxy);
-	gridConnSet432rh->setLocalFacePerCellIndexPairs(15, localFacePerCellIndexPairs432, 9999, hdfProxy);
+	gridConnSet432rh->setLocalFacePerCellIndexPairs(15, localFacePerCellIndexPairs432, -1, hdfProxy);
 
 	//**************
 	// Properties

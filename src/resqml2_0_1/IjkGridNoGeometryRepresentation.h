@@ -20,17 +20,38 @@ under the License.
 
 #include "../resqml2/IjkGridNoGeometryRepresentation.h"
 
+/** . */
 namespace RESQML2_0_1_NS
 {
 	class IjkGridNoGeometryRepresentation : public RESQML2_NS::IjkGridNoGeometryRepresentation
 	{
 	public:
 
+		/**
+		 * Constructor
+		 *
+		 * @param [in,out]	repo  	If non-null, the repo.
+		 * @param 		  	guid  	Unique identifier.
+		 * @param 		  	title 	The title.
+		 * @param 		  	iCount	Number of.
+		 * @param 		  	jCount	Number of.
+		 * @param 		  	kCount	Number of.
+		 */
 		IjkGridNoGeometryRepresentation(COMMON_NS::DataObjectRepository * repo,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount) :
 			RESQML2_NS::IjkGridNoGeometryRepresentation(repo, guid, title, iCount, jCount, kCount) {}
 
+		/**
+		 * Constructor
+		 *
+		 * @param [in,out]	interp	If non-null, the interp.
+		 * @param 		  	guid  	Unique identifier.
+		 * @param 		  	title 	The title.
+		 * @param 		  	iCount	Number of.
+		 * @param 		  	jCount	Number of.
+		 * @param 		  	kCount	Number of.
+		 */
 		IjkGridNoGeometryRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
 			const std::string & guid, const std::string & title,
 			unsigned int iCount, unsigned int jCount, unsigned int kCount) :
@@ -42,9 +63,7 @@ namespace RESQML2_0_1_NS
 		IjkGridNoGeometryRepresentation(gsoap_resqml2_0_1::_resqml20__IjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridNoGeometryRepresentation(fromGsoap) {}
 		IjkGridNoGeometryRepresentation(gsoap_resqml2_0_1::_resqml20__TruncatedIjkGridRepresentation* fromGsoap) : RESQML2_NS::IjkGridNoGeometryRepresentation(fromGsoap) {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~IjkGridNoGeometryRepresentation() {}
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const;

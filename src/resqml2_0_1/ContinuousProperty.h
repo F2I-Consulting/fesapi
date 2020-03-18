@@ -24,270 +24,415 @@ under the License.
 #include <stdexcept>
 #include <sstream>
 
+/** . */
 namespace RESQML2_0_1_NS
 {
 	/**
-	* Most common type of property used for storing rock or fluid attributes; all are represented as floating point values. 
-	* So that the value range can be known before accessing all values, the min and max values of the range are also optionally stored. 
-	* BUSINESS RULE: It also contains a unit of measure, which can be different from the unit of measure of its property type, but it must be convertible into this unit.
-	*/
+	 * Proxy class for a continuous property. Most common type of property used for storing rock or
+	 * fluid attributes; all are represented as floating point values. So that the value range can
+	 * be known before accessing all values, the min and max values of the range are also optionally
+	 * stored. BUSINESS RULE: It also contains a unit of measure, which can be different from the
+	 * unit of measure of its property type, but it must be convertible into this unit.
+	 */
 	class ContinuousProperty : public RESQML2_NS::AbstractValuesProperty
 	{
 	protected:
 
-		/**
-		* Default constructor
-		*/
+		/** Default constructor */
 		ContinuousProperty() {}
 
 	private:
 
 		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param rep						The representation which supports these property values.
-		* @param guid						The guid to set to the fault. If empty then a new guid will be generated.
-		* @param title						A title for the instance to create.
-		* @param dimension					The dimension of each value (scalar properties == 1).
-		* @param attachmentKind				The topological orbit which supports each value.
-		*/
+		 * Creates an instance of this class in a gsoap context.
+		 *
+		 * @param [in,out]	rep			  	The representation which supports these property values.
+		 * @param 		  	guid		  	The guid to set to the fault. If empty then a new guid will
+		 * 									be generated.
+		 * @param 		  	title		  	A title for the instance to create.
+		 * @param 		  	dimension	  	The dimension of each value (scalar properties == 1).
+		 * @param 		  	attachmentKind	The topological orbit which supports each value.
+		 */
 		void init(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind);
 
 	public:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context.
+		 *
+		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 */
 		DLL_IMPORT_OR_EXPORT ContinuousProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractValuesProperty(partialObject) {}
 
 		/**
-		* Creates an instance of this class in a gsoap context based on a standard kind and a standard uom.
-		* @param rep						The representation which supports these property values.
-		* @param guid						The guid to set to the fault. If empty then a new guid will be generated.
-		* @param title						A title for the instance to create.
-		* @param dimension					The dimension of each value (scalar properties == 1).
-		* @param attachmentKind				The topological orbit which supports each value.
-		* @param uom						The uom of the values. Please check EpcDocument::getEnergisticsUnitOfMeasure(const std::string & energisticsUomName) in order to minimize the use of non standard uom.
-		* @param energisticsPropertyKind	The property kind of these property values which must be defined in the standard energistics property type dictionary.
-		*/
+		 * Creates a continuous property which is of well known Energistics unit of measure and property
+		 * kind.
+		 *
+		 * @exception	std::invalid_argument	If @p rep is null.
+		 *
+		 * @param [in]	rep					   	The representation on which this property is attached to.
+		 * 										It cannot be null.
+		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
+		 * 										will be generated.
+		 * @param 	  	title				   	The title to set to the property. If empty then
+		 * 										\"unknown\" title will be set.
+		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
+		 * 										is 1 for a scalar property.
+		 * @param 	  	attachmentKind		   	The topological element on which the property values are
+		 * 										attached to.
+		 * @param 	  	uom					   	The property unit of measure taken from the standard
+		 * 										Energistics units of measure catalog. Please check
+		 * 										COMMON_NS::EnumStringMapper::getEnergisticsUnitOfMeasure
+		 * 										in order to minimize the use of non standard unit of
+		 * 										measure.
+		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
+		 * 										defined in the standard Energistics property type
+		 * 										dictionary.
+		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
-		* Creates an instance of this class in a gsoap context based on a local kind and a standard uom.
-		* @param rep						The representation which supports these property values.
-		* @param guid						The guid to set to the fault. If empty then a new guid will be generated.
-		* @param title						A title for the instance to create.
-		* @param dimension					The dimension of each value (scalar properties == 1).
-		* @param attachmentKind				The topological orbit which supports each value.
-		* @param uom						The uom of the values. Please check EpcDocument::getEnergisticsUnitOfMeasure(const std::string & energisticsUomName) in order to minimize the use of non standard uom.
-		* @param localPropType				The property kind of these property values which must be defined in the EPC document as a local property kind.
-		*/
+		 * Creates a continuous property which is of a well known unit of measure and a local property
+		 * kind.
+		 *
+		 * @exception	std::invalid_argument	If @p rep or @p localPropType is null.
+		 *
+		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * 								cannot be null.
+		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
+		 * 								generated.
+		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
+		 * 								will be set.
+		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
+		 * 								a scalar property.
+		 * @param 	  	attachmentKind	The topological element on which the property values are attached
+		 * 								to.
+		 * @param 	  	uom			  	The property unit of measure taken from the standard Energistics
+		 * 								units of measure catalog. Please check
+		 * 								COMMON_NS::EnumStringMapper::getEnergisticsUnitOfMeasure in order
+		 * 								to minimize the use of non standard unit of measure.
+		 * @param [in]	localPropKind 	The property kind of these property values which must be defined
+		 * 								in the EPC document as a local property kind. It cannot be null.
+		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, gsoap_resqml2_0_1::resqml20__ResqmlUom uom, COMMON_NS::PropertyKind * localPropKind);
 
 		/**
-		* Creates an instance of this class in a gsoap context based on a standard kind and a local uom.
-		* @param rep						The representation which supports these property values.
-		* @param guid						The guid to set to the fault. If empty then a new guid will be generated.
-		* @param title						A title for the instance to create.
-		* @param dimension					The dimension of each value (scalar properties == 1).
-		* @param attachmentKind				The topological orbit which supports each value.
-		* @param nonStandardUom				The non standard uom of the values. Please check EpcDocument::getEnergisticsUnitOfMeasure(const std::string & energisticsUomName) in order to minimize the use of non standard uom.
-		* @param energisticsPropertyKind	The property kind of these property values which must be defined in the standard energistics property type dictionary.
-		*/
+		 * Creates a continuous property which is of a local unit of measure and a well known property
+		 * kind.
+		 *
+		 * @exception	std::invalid_argument	If @p rep is null.
+		 *
+		 * @param [in]	rep					   	The representation on which this property is attached to.
+		 * 										It cannot be null.
+		 * @param 	  	guid				   	The guid to set to the property. If empty then a new guid
+		 * 										will be generated.
+		 * @param 	  	title				   	The title to set to the property. If empty then
+		 * 										\"unknown\" title will be set.
+		 * @param 	  	dimension			   	The dimension of each value of this property. Dimension
+		 * 										is 1 for a scalar property.
+		 * @param 	  	attachmentKind		   	The topological element on which the property values are
+		 * 										attached to.
+		 * @param 	  	nonStandardUom		   	The property unit of measure. Please check
+		 * 										COMMON_NS::EnumStringMapper::getEnergisticsUnitOfMeasure
+		 * 										in order to minimize the use of non standard unit of
+		 * 										measure.
+		 * @param 	  	energisticsPropertyKind	The property kind of these property values which must be
+		 * 										defined in the standard Energistics property type
+		 * 										dictionary.
+		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, const std::string & nonStandardUom, gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind energisticsPropertyKind);
 
 		/**
-		* Creates an instance of this class in a gsoap context based on a local kind and a local uom.
-		* @param rep						The representation which supports these property values.
-		* @param guid						The guid to set to the fault. If empty then a new guid will be generated.
-		* @param title						A title for the instance to create.
-		* @param dimension					The dimension of each value (scalar properties == 1).
-		* @param attachmentKind				The topological orbit which supports each value.
-		* @param nonStandardUom				The non standard uom of the values. Please check EpcDocument::getEnergisticsUnitOfMeasure(const std::string & energisticsUomName) in order to minimize the use of non standard uom.
-		* @param localPropType				The property kind of these property values which must be defined in the EPC document as a local property kind.
-		*/
+		 * Creates a continuous property which is of local unit of measure and property kind.
+		 *
+		 * @exception	std::invalid_argument	If @p rep or @p localPropType is null.
+		 *
+		 * @param [in]	rep			  	The representation on which this property is attached to. It
+		 * 								cannot be null.
+		 * @param 	  	guid		  	The guid to set to the property. If empty then a new guid will be
+		 * 								generated.
+		 * @param 	  	title		  	The title to set to the property. If empty then \"unknown\" title
+		 * 								will be set.
+		 * @param 	  	dimension	  	The dimension of each value of this property. Dimension is 1 for
+		 * 								a scalar property.
+		 * @param 	  	attachmentKind	The topological element on which the property values are attached
+		 * 								to.
+		 * @param 	  	nonStandardUom	The property unit of measure. Please check
+		 * 								COMMON_NS::EnumStringMapper::getEnergisticsUnitOfMeasure in order
+		 * 								to minimize the use of non standard unit of measure.
+		 * @param [in]	localPropKind 	The property kind of these property values which must be defined
+		 * 								in the EPC document as a local property kind. It cannot be null.
+		 */
 		ContinuousProperty(RESQML2_NS::AbstractRepresentation * rep, const std::string & guid, const std::string & title,
 			unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, const std::string & nonStandardUom, COMMON_NS::PropertyKind * localPropKind);
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gSOAP instance.
+		 *
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 */
 		ContinuousProperty(gsoap_resqml2_0_1::_resqml20__ContinuousProperty* fromGsoap): AbstractValuesProperty(fromGsoap) {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~ContinuousProperty() {}
 
 		/**
-		* Get the unit of measure of the values of this property.
-		* If 'Euc'  is returned, you should check if an extrametadata called "Uom" also exists. If so, it would mean that the property uses a non standard uom. This is an official workaround for a known issue of Resqml 2.0.1.
-		*/
+		 * Gets the unit of measure of the values of this property. If <tt>
+		 * resqml20__ResqmlUom::resqml20__ResqmlUom__Euc </tt> is returned, you should check if an
+		 * extrametadata called "Uom" also exists. If so, it would mean that the property uses a non
+		 * standard unit of measure. This is an official workaround for a known issue of Resqml 2.0.1.
+		 *
+		 * @returns	The unit of measure of the values of this property.
+		 */
 		DLL_IMPORT_OR_EXPORT const gsoap_resqml2_0_1::resqml20__ResqmlUom & getUom() const;
 
 		/**
-		* Get the unit of measure of the values of this property as a string.
-		* If 'Euc'  is returned, you should check if an extrametadata called "Uom" also exists. If so, it would mean that the property uses a non standard uom. This is an official workaround for a known issue of Resqml 2.0.1.
-		*/
+		 * Gets the unit of measure of the values of this property as a string. If "Euc"  is returned,
+		 * you should check if an extrametadata called "Uom" also exists. If so, it would mean that the
+		 * property uses a non standard uom. This is an official workaround for a known issue of Resqml
+		 * 2.0.1.
+		 *
+		 * @returns	The unit of measure of the values of this property as a string.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getUomAsString() const;
 
 		/**
-		* Add a 1d array of explicit double values to the property values.
-		* @param values					All the property values to set ordered according the topology of the representation it is based on.
-		* @param valueCount				The number of values to write.
-		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		* @param minimumValue			The minimum value of the values to add. If NAN is provided then the minimum value will be computed from the values.
-		* @param maximumValue			The maximum value of the values to add. If NAN is provided then the maximum value will be computed from the values.
-		*/
+		 * @brief Adds a 1d array of explicit double values to the property values.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values			All the property values to set ordered according the topology
+		 * 									of the representation it is based on.
+		 * @param 		  	valueCount  	The number of values to write.
+		 * @param [in,out]	proxy			(Optional) The HDF proxy where to write the property values.
+		 * 									It must be already opened for writing and won't be closed in this
+		 * 									method. If @c nullptr (default value), then a default HDF proxy
+		 * 									must be defined in the repository.
+		 * @param 		  	minimumValue	(Optional) The minimum value of the values to add. If @c NaN is
+		 * 									provided then both minimum and maximum values will be computed
+		 * 									from the values.
+		 * @param 		  	maximumValue	(Optional) The maximum value of the values to add. If @s NaN is
+		 * 									provided then both maximum and minimum values will be computed
+		 * 									from the values.
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array1dOfValues(const double * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			double minimumValue = std::numeric_limits<double>::quiet_NaN(), double maximumValue = std::numeric_limits<double>::quiet_NaN());
 
 		/**
-		* Add a 2d array of explicit double values to the property values.
-		* @param values					All the property values to set ordered according the topology of the representation it is based on.
-		* @param valueCountInFastestDim	The number of values to write in the fastest dimension (mainly I dimension).
-		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly J dimension).
-		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		* @param minimumValue			The minimum value of the values to add. If NAN is provided then the minimum value will be computed from the values.
-		* @param maximumValue			The maximum value of the values to add. If NAN is provided then the maximum value will be computed from the values.
-		*/
+		 * @brief Adds a 2d array of explicit double values to the property values.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values				  	All the property values to set ordered according the
+		 * 											topology of the representation it is based on.
+		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
+		 * 											dimension (mainly J dimension).
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * 											values. It must be already opened for writing and
+		 * 											won't be closed in this method. If @c nullptr
+		 * 											(default value), then a default HDF proxy must be
+		 * 											defined in the repository.
+		 * @param 		  	minimumValue		  	(Optional) The minimum value of the values to add. If
+		 * 											@c NaN is provided then both minimum and maximum
+		 * 											values will be computed from the values.
+		 * @param 		  	maximumValue		  	(Optional) The maximum value of the values to add. If
+		 * 											@s NaN is provided then both maximum and minimum
+		 * 											values will be computed from the values.
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array2dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			double minimumValue = std::numeric_limits<double>::quiet_NaN(), double maximumValue = std::numeric_limits<double>::quiet_NaN());
 
 		/**
-		* Add a 3d array of explicit double values to the property values.
-		* @param values					All the property values to set ordered according the topology of the representation it is based on.
-		* @param valueCountInFastestDim	The number of values to write in the fastest dimension (mainly I dimension).
-		* @param valueCountInMiddleDim	The number of values to write in the middle dimension (mainly J dimension).
-		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly K dimension).
-		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		* @param minimumValue			The minimum value of the values to add. If NAN is provided then the minimum value will be computed from the values.
-		* @param maximumValue			The maximum value of the values to add. If NAN is provided then the maximum value will be computed from the values.
-		*/
+		 * @brief Adds a 3d array of explicit double values to the property values.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values				  	All the property values to set ordered according the
+		 * 											topology of the representation it is based on.
+		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
+		 * 											dimension (mainly K dimension).
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * 											values. It must be already opened for writing and
+		 * 											won't be closed in this method. If @c nullptr
+		 * 											(default value), then a default HDF proxy must be
+		 * 											defined in the repository.
+		 * @param 		  	minimumValue		  	(Optional) The minimum value of the values to add. If
+		 * 											@c NaN is provided then both minimum and maximum
+		 * 											values will be computed from the values.
+		 * @param 		  	maximumValue		  	(Optional) The maximum value of the values to add. If
+		 * 											@s NaN is provided then both maximum and minimum
+		 * 											values will be computed from the values.
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5Array3dOfValues(const double * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			double minimumValue = std::numeric_limits<double>::quiet_NaN(), double maximumValue = std::numeric_limits<double>::quiet_NaN());
 
 		/**
-		* Add an array (potentially multi dimensions) of explicit double values to the property values.
-		* @param values					All the property values to set ordered according the topology of the representation it is based on.
-		* @param numValues				The number of property values ordered by dimension of the array to write.
-		* @param numArrayDimensions		The number of dimensions of the array to write.
-		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		* @param minimumValue			The minimum value (or value vector) of the values to add. If nullptr is provided and the dimension of value is 1 then the minimum value will be computed from the values.
-		* @param maximumValue			The maximum value (or value vector) of the values to add. If nullptr is provided and the dimension of value is 1 then the maximum value will be computed from the values.
-		*/
+		 * @brief Adds an nd array of explicit double values to the property values.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param 		  	values			  	All the property values to set ordered according the
+		 * 										topology of the representation it is based on.
+		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
+		 * 										array to write.
+		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
+		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * 										values. It must be already opened for writing and won't
+		 * 										be closed in this method. If @c nullptr (default value),
+		 * 										then a default HDF proxy must be defined in the
+		 * 										repository.
+		 * @param [in]	  	minimumValue	  	(Optional) The minimum value (or value vector) of the
+		 * 										values to add. If @c nullptr is provided for both @p
+		 * 										minimumValue and @p maximumValue and if the dimension of
+		 * 										value is 1 then both minimum and maximum values will be
+		 * 										computed from the values.
+		 * @param [in]	  	maximumValue	  	(Optional) The maximum value (or value vector) of the
+		 * 										values to add. If @ nullptr is provided for both @p
+		 * 										maximumValue and @p minimumValue and if the dimension of
+		 * 										value is 1 then both maximum and minimum values will be
+		 * 										computed from the values.
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackDoubleHdf5ArrayOfValues(double const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			double * minimumValue = nullptr, double * maximumValue = nullptr);
 
 		/**
-		* Add a 1d array of explicit float values to the property values.
-		* @param values					All the property values to set ordered according the topology of the representation it is based on.
-		* @param valueCount				The number of values to write.
-		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		* @param minimumValue			The minimum value of the values to add. If NAN is provided then the minimum value will be computed from the values.
-		* @param maximumValue			The maximum value of the values to add. If NAN is provided then the maximum value will be computed from the values.
-		*/
+		 * Adds a 1d array of explicit float values to the property values.
+		 *
+		 * @copydetails pushBackDoubleHdf5Array1dOfValues
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array1dOfValues(const float * values, ULONG64 valueCount, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			float minimumValue = std::numeric_limits<float>::quiet_NaN(), float maximumValue = std::numeric_limits<float>::quiet_NaN());
 
 		/**
-		* Add a 2d array of explicit float values to the property values.
-		* @param values					All the property values to set ordered according the topology of the representation it is based on.
-		* @param valueCountInFastestDim	The number of values to write in the slowest dimension (mainly I dimension).
-		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly J dimension).
-		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		* @param minimumValue			The minimum value of the values to add. If NAN is provided then the minimum value will be computed from the values.
-		* @param maximumValue			The maximum value of the values to add. If NAN is provided then the maximum value will be computed from the values.
-		*/
+		 * Adds a 2d array of explicit float values to the property values.
+		 *
+		 * @copydetails pushBackDoubleHdf5Array2dOfValues
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array2dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			float minimumValue = std::numeric_limits<float>::quiet_NaN(), float maximumValue = std::numeric_limits<float>::quiet_NaN());
 
 		/**
-		* Add a 3d array of explicit float values to the property values.
-		* @param values					All the property values to set ordered according the topology of the representation it is based on.
-		* @param valueCountInFastestDim	The number of values to write in the slowest dimension (mainly I dimension).
-		* @param valueCountInMiddleDim	The number of values to write in the slowest dimension (mainly J dimension).
-		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly K dimension).
-		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		* @param minimumValue			The minimum value of the values to add. If NAN is provided then the minimum value will be computed from the values.
-		* @param maximumValue			The maximum value of the values to add. If NAN is provided then the maximum value will be computed from the values.
-		*/
+		 * Adds a 3d array of explicit float values to the property values.
+		 *
+		 * @copydetails pushBackDoubleHdf5Array3dOfValues
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array3dOfValues(const float * values, ULONG64 valueCountInFastestDim, ULONG64 valueCountInMiddleDim, ULONG64 valueCountInSlowestDim, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			float minimumValue = std::numeric_limits<float>::quiet_NaN(), float maximumValue = std::numeric_limits<float>::quiet_NaN());
 
 		/**
-		* Add an array (potentially multi dimensions) of explicit float values to the property values.
-		* @param values					All the property values to set ordered according the topology of the representation it is based on.
-		* @param numValues				The number of property values ordered by dimension of the array to write.
-		* @param numArrayDimensions		The number of dimensions of the array to write.
-		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		* @param minimumValue			The minimum value (or value vector) of the values to add. If nullptr is provided and the dimension of value is 1 then the minimum value will be computed from the values.
-		* @param maximumValue			The maximum value (or value vector) of the values to add. If nullptr is provided and the dimension of value is 1 then the maximum value will be computed from the values.
-		*/
+		 * Adds an nd array of explicit float values to the property values.
+		 * 
+		 * @exception std::invalid_argument If <tt> minimumValue == nullptr </tt> and </tt> maximumValue != nullptr </tt>.
+		 * @exception std::invalid_argument	If <tt> minimumValue != nullptr </tt> and <tt> maximumValue == nullptr </tt>.
+		 * 									
+		 * @copydetails	pushBackDoubleHdf5ArrayOfValues
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(float const * values, unsigned long long const * numValues, unsigned int numArrayDimensions, COMMON_NS::AbstractHdfProxy* proxy = nullptr,
 			float * minimumValue = nullptr, float * maximumValue = nullptr);
 
 		/**
-		* Push back a new patch of values for this property where the values have not to be written in the HDF file.
-		* The reason can be that the values already exist in an external file (only HDF5 for now) or that the writing of the values in the external file is defered in time.
-		* @param	proxy				The HDF5 proxy where the values are already or will be stored.
-		* @param	datasetName			If not provided during the method call, the dataset will be named the same as the dataset naming convention of the fesapi :getHdfGroup() + "/values_patch" + patchIndex;
-		* @param	nullValue			Only relevant for integer hdf5 datasets. Indeed, RESQML (and fesapi) forces null value for floating point to be NaN value.
-		* @return	The name of the hdf5 dataset.
-		*/
+		 * Pushes back a reference to an existing (or a "to exist") HDF dataset in a particular HDF
+		 * proxy. The reason can be that the values already exist in an external file (only HDF5 for
+		 * now) or that the writing of the values in the external file is differed in time.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined in the repository.
+		 *
+		 * @param [in]	proxy	   	The HDF5 proxy where the values are already or will be stored. If
+		 * 							@c nullptr, then a default HDF proxy must be defined in the
+		 * 							repository.
+		 * @param 	  	datasetName	(Optional) The HDF5 dataset name where the values are stored. If
+		 * 							empty, the dataset will be named the same as the dataset naming
+		 * 							convention of fesapi :
+		 * 							<tt>getHdfGroup() + "/values_patch" + patchIndex</tt>
+		 *
+		 * @returns	The name of the referenced HDF5 dataset.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string pushBackRefToExistingDataset(COMMON_NS::AbstractHdfProxy* proxy, const std::string & datasetName = "");
 
 		/**
-		* Get all the values of a particular patch of the instance which are supposed to be double ones.
-		* @param patchIndex	The index of the patch we want the values from.
-		* @param values		The array (pointer) of values must be preallocated.
-		*/
+		 * Gets all the values of a particular patch of this instance which are supposed to be double
+		 * ones.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	   	patchIndex	The index of the patch we want the values from.
+		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
+		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT void getDoubleValuesOfPatch(unsigned int patchIndex, double * values) const ;
 
 		/**
-		* Get all the values of a particular patch of the instance which are supposed to be float ones.
-		* @param patchIndex	The index of the patch we want the values from.
-		* @param values		The array (pointer) of values must be preallocated.
-		*/
+		 * Gets all the values of a particular patch of this instance which are supposed to be float
+		 * ones.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	   	patchIndex	The index of the patch we want the values from.
+		 * @param [out]	values	  	Preallocated buffer for receiving the values. Size is
+		 * 							<tt>getValuesCountOfPatch(patchIndex)</tt>.
+		 */
 		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(unsigned int patchIndex, float * values) const;
 
-		/*
-		* Get the minimum value in this continuous properties. It reads it from file.
-		* @return the minimum value if present in the file otherwise NaN.
-		*/
+		/**
+		 * Get the minimum value in this continuous properties. It reads it from file.
+		 *
+		 * @returns	The minimum value if present in the file otherwise @c NaN.
+		 */
 		DLL_IMPORT_OR_EXPORT double getMinimumValue() const;
 
-		/*
-		* Get the maximum value in this discrete properties. It reads it from file.
-		* @return the maximum value if present in the file otherwise NaN.
-		*/
+		/**
+		 * Get the maximum value in this discrete properties. It reads it from file.
+		 *
+		 * @returns	the maximum value if present in the file otherwise @c NaN.
+		 */
 		DLL_IMPORT_OR_EXPORT double getMaximumValue() const;
 
-		/**
-		* Check if the associated local property kind is allowed for this property.
-		*/
-		bool validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk);
+		bool validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk) override;
 
-		/**
-		* Check if the associated standard property kind is allowed for this property.
-		*/
-		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk);
+		bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) override;
 
 		//***************************
 		//*** For hyperslabbing *****
 		//***************************
 
 		/**
-		* Create an array (potentially multi dimensions) of explicit float values to the property values. No values are written to this array yet then the HDF5 array contains uninitialized values.
-		* @param numValues				The number of property values ordered by dimension of the array to write.
-		* @param numArrayDimensions		The number of dimensions of the array to write.
-		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		* @param minimumValue			The minimum value (or value vector) of the values to add. If nullptr is provided then no minimum value will be set. It cannot be nullptr if maximumValue is not NaN.
-		* @param maximumValue			The maximum value (or value vector) of the values to add. If nullptr is provided then no maximum value will be set. It cannot be nullptr if minimumValue is not NaN.
-		*/
+		 * Create an nd array of explicit float values to the property values. No values are written to
+		 * this array yet then the HDF5 array contains uninitialized values.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 *
+		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
+		 * 										array to write.  It is ordered from slowest dimension to
+		 * 										fastest dimension.
+		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
+		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * 										values. It must be already opened for writing and won't
+		 * 										be closed in this method. If @c nullptr (default), a
+		 * 										default HDF proxy must be defined into the data object
+		 * 										repository.
+		 * @param [in]	  	minimumValue	  	(Optional) The minimum value (or value vector) of the
+		 * 										values to add. If @c nullptr (default) is provided then
+		 * 										neither minimum nor maximum value will be set.
+		 * @param [in]	  	maximumValue	  	(Optional) The maximum value (or value vector) of the
+		 * 										values to add. If @c nullptr (default) is provided then
+		 * 										neither maximum nor minimum value will be set.
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5ArrayOfValues(
 			unsigned long long const * numValues,
 			unsigned int numArrayDimensions,
@@ -296,14 +441,30 @@ namespace RESQML2_0_1_NS
 		);
 
 		/**
-		* Create a 3d array of explicit float values to the property values. No values are written to this array yet then the HDF5 array contains uninitialized values.
-		* @param valueCountInFastestDim	The number of values to write in the fastest dimension (mainly I dimension).
-		* @param valueCountInMiddleDim	The number of values to write in the middle dimension (mainly J dimension).
-		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly K dimension).
-		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		* @param minimumValue			The minimum value of the values to add. If NAN is provided then no minimum value will be set. It cannot be NaN if maximumValue is not NaN.
-		* @param maximumValue			The maximum value of the values to add. If NAN is provided then no maximum value will be set. It cannot be NaN if minimumValue is not NaN.
-		*/
+		 * Creates a 3d array of explicit float values to the property values. No values are written to
+		 * this array yet then the HDF5 array contains uninitialized values.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 *
+		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
+		 * 											dimension (mainly K dimension).
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * 											values. It must be already opened for writing and
+		 * 											won't be closed in this method. If @c nullptr
+		 * 											(default), a default HDF proxy must be defined into
+		 * 											the data object repository.
+		 * @param 		  	minimumValue		  	(Optional) The minimum value of the values to add. If
+		 * 											@c NaN is provided (default) then neither minimum nor
+		 * 											maximum value will be set.
+		 * @param 		  	maximumValue		  	(Optional) The maximum value of the values to add. If
+		 * 											@c NaN is provided (default) then neither maximum nor
+		 * 											minimum value will be set.
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackFloatHdf5Array3dOfValues(
 			ULONG64 valueCountInFastestDim,
 			ULONG64 valueCountInMiddleDim,
@@ -313,19 +474,44 @@ namespace RESQML2_0_1_NS
 		);
 
 		/**
-		* Set some values of an existing 3d array of explicit float values of a particular patch. This method makes use of HDF5 hyperslabbing.
-		* This method is to be used along with one of the pushBackFloatHdf5ArrayOfValues methods which do not write any value.
-		* @param values					All the property values to set ordered according the topology of the representation it is based on.
-		* @param valueCountInFastestDim	The number of values to write in the fastest dimension (mainly I dimension).
-		* @param valueCountInMiddleDim	The number of values to write in the middle dimension (mainly J dimension).
-		* @param valueCountInSlowestDim The number of values to write in the slowest dimension (mainly K dimension).
-		* @param offsetInFastestDim		The offset to write in the fastest dimension (mainly I dimension).
-		* @param offsetInMiddleDim		The offset value to write in the middle dimension (mainly J dimension).
-		* @param offsetInSlowestDim		The offset value to write in the slowest dimension (mainly K dimension).
-		* @param computeMinMax			Indicates if FESAPI needs to compute the min and  max from the given \p values in order to set them.
-		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		* @param patchIndex				The index of the patch we want to set some values. If not present, the last patch is arbitrarily taken into account.
-		*/
+		 * Sets some values of an existing 3d array of explicit float values of a particular patch. This
+		 * method makes use of HDF5 hyperslabbing. Since this methods only pushes back values into an
+		 * existing array, it is to be used along with pushBackFloatHdf5Array3dOfValues().
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
+		 * 										different from unsigned int maximum value.
+		 *
+		 * @param 		  	values				  	All the property values to set ordered according to
+		 * 											the topology of the representation it is based on.
+		 * @param 		  	valueCountInFastestDim	The number of values to write in the fastest
+		 * 											dimension (mainly I dimension).
+		 * @param 		  	valueCountInMiddleDim 	The number of values to write in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to write in the slowest
+		 * 											dimension (mainly K dimension).
+		 * @param 		  	offsetInFastestDim	  	The offset value for writing in the fastest dimension
+		 * 											(mainly I dimension).
+		 * @param 		  	offsetInMiddleDim	  	The offset value for writing in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	offsetInSlowestDim	  	The offset value for writing in the slowest dimension
+		 * 											(mainly K dimension).
+		 * @param 		  	computeMinMax		  	(Optional) True (default) if FESAPI needs to compute
+		 * 											the min and  max from the given @p values in order to
+		 * 											set them.
+		 * @param [in,out]	proxy				  	(Optional) The HDF proxy where to write the property
+		 * 											values. It must be already opened for writing and
+		 * 											won't be closed in this method. If @p nullptr
+		 * 											(default), a default HDF proxy must be defined into
+		 * 											the data object repository.
+		 * @param 		  	patchIndex			  	(Optional) Zero-based index of the patch where to
+		 * 											write the property values. If not provided, its
+		 * 											default value is by convention set to unsigned int
+		 * 											maximum value and the property values will be written
+		 * 											in the last property values patch (the one with the
+		 * 											greatest index).
+		 */
 		DLL_IMPORT_OR_EXPORT void setValuesOfFloatHdf5Array3dOfValues(
 			float const * values,
 			ULONG64 valueCountInFastestDim,
@@ -340,15 +526,38 @@ namespace RESQML2_0_1_NS
 		);
 
 		/**
-		* Set some values of an existing 3d array of explicit float values of a particular patch.  This method makes use of HDF5 hyperslabbing.
-		* This method is to be used along with one of the pushBackFloatHdf5ArrayOfValues methods which do not write any value.
-		* @param values					All the property values to set ordered according the topology of the representation it is based on.
-		* @param numValues				The number of property values ordered by dimension of the array to write. From slowest to fastest.
-		* @param offsetValues			The offset values ordered by dimension of the array to write. From slowest to fastest.
-		* @param numArrayDimensions		The number of dimensions of the array to write.
-		* @param proxy					The HDF proxy where to write the property values. It must be already opened for writing and won't be closed in this method.
-		* @param patchIndex				The index of the patch we want to set some values.  If not present, the last patch is arbitrarily taken into account.
-		*/
+		 * Set some values of an existing 3d array of explicit float values of a particular patch.  This
+		 * method makes use of HDF5 hyperslabbing. This method is to be used along with one of the
+		 * pushBackFloatHdf5ArrayOfValues() methods which do not write any value.
+		 *
+		 * @exception	std::invalid_argument	If @p proxy is @c nullptr and no default HDF proxy is
+		 * 										defined into the data object repository.
+		 * @exception	std::out_of_range	 	If @p patchIndex is strictly greater than patch count and
+		 * 										different from unsigned int maximum value.
+		 *
+		 * @param 		  	values			  	All the property values to set ordered according to the
+		 * 										topology of the representation it is based on.
+		 * @param 		  	numValues		  	The number of property values ordered by dimension of the
+		 * 										array to write. It is ordered from slowest dimension to
+		 * 										fastest dimension.
+		 * @param 		  	offsetValues	  	The offset values ordered by dimension of the array to
+		 * 										write. It is ordered from slowest dimension to fastest
+		 * 										dimension.
+		 * @param 		  	numArrayDimensions	The number of dimensions of the array to write.
+		 * @param 		  	computeMinMax	  	(Optional) True (default) if FESAPI needs to compute the
+		 * 										min and  max from the given @p values in order to set
+		 * 										them.
+		 * @param [in,out]	proxy			  	(Optional) The HDF proxy where to write the property
+		 * 										values. It must be already opened for writing and won't
+		 * 										be closed in this method. If @p nullptr (default), a
+		 * 										default HDF proxy must be defined into the data object
+		 * 										repository.
+		 * @param 		  	patchIndex		  	(Optional) Zero-based index of the patch where to write
+		 * 										the property values. If not provided, its default value
+		 * 										is by convention set to unsigned int maximum value and
+		 * 										the property values will be written in the last property
+		 * 										values patch (the one with the greatest index).
+		 */
 		DLL_IMPORT_OR_EXPORT void setValuesOfFloatHdf5ArrayOfValues(
 			float const * values,
 			unsigned long long const * numValues,
@@ -360,13 +569,23 @@ namespace RESQML2_0_1_NS
 		);
 
 		/**
-		* Get some of the values of a particular patch of the instance as float ones. This method makes use of HDF5 hyperslabbing.
-		* @param patchIndex					The index of the patch we want the values from.
-		* @param values						The array (pointer) of values must be preallocated.
-		* @param numValuesInEachDimension	The number of property values ordered by dimension of the array to write.
-		* @param offsetInEachDimension		The offset values ordered by dimension of the array to write.
-		* @param numArrayDimensions			The number of dimensions of the HDF5 array to read.
-		*/
+		 * Get some of the values of a particular patch of the instance as float ones. This method makes
+		 * use of HDF5 hyperslabbing.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 	   	patchIndex					The index of the patch we want the values from.
+		 * @param [out]	values						The array (pointer) of values must be
+		 * 											preallocated. Size is
+		 * 											<tt>getValuesCountOfPatch(patchIndex)</tt>.
+		 * @param 	   	numValuesInEachDimension	The number of property values ordered by dimension of
+		 * 											the array to read. It is ordered from slowest dimension
+		 * 											to fastest dimension.
+		 * @param 	   	offsetInEachDimension   	The offset values ordered by dimension of the array
+		 * 											to read. It is ordered from slowest dimension to fastest
+		 * 											dimension.
+		 * @param 	   	numArrayDimensions			The number of dimensions of the HDF5 array to read.
+		 */
 		DLL_IMPORT_OR_EXPORT void getFloatValuesOfPatch(
 			unsigned int patchIndex,
 			float* values,
@@ -376,16 +595,27 @@ namespace RESQML2_0_1_NS
 		) const;
 
 		/**
-		* Get some of the values of a particular patch of the instance as float ones. This method makes use of HDF5 hyperslabbing.
-		* @param patchIndex				The index of the patch we want the values from.
-		* @param values					The array (pointer) of values must be preallocated.
-		* @param valueCountInFastestDim	The number of values to read in the fastest dimension (mainly I dimension).
-		* @param valueCountInMiddleDim	The number of values to read in the middle dimension (mainly J dimension).
-		* @param valueCountInSlowestDim The number of values to read in the slowest dimension (mainly K dimension).
-		* @param offsetInFastestDim		The offset value to read in the fastest dimension (mainly I dimension).
-		* @param offsetInMiddleDim		The offset value to read in the middle dimension (mainly J dimension).
-		* @param offsetInSlowestDim		The offset value to read in the slowest dimension (mainly K dimension).
-		*/
+		 * Get some of the values of a particular patch of the instance as float ones. This method makes
+		 * use of HDF5 hyperslabbing.
+		 *
+		 * @exception	std::out_of_range	If @p patchIndex is strictly greater than patch count.
+		 *
+		 * @param 		  	patchIndex			  	The index of the patch we want the values from.
+		 * @param [in,out]	values				  	The array (pointer) of values must be preallocated.
+		 * 											Size is <tt>getValuesCountOfPatch(patchIndex)</tt>.
+		 * @param 		  	valueCountInFastestDim	The number of values to read in the fastest dimension
+		 * 											(mainly I dimension).
+		 * @param 		  	valueCountInMiddleDim 	The number of values to read in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	valueCountInSlowestDim	The number of values to read in the slowest dimension
+		 * 											(mainly K dimension).
+		 * @param 		  	offsetInFastestDim	  	The offset value for reading in the fastest dimension
+		 * 											(mainly I dimension).
+		 * @param 		  	offsetInMiddleDim	  	The offset value for reading in the middle dimension
+		 * 											(mainly J dimension).
+		 * @param 		  	offsetInSlowestDim	  	The offset value for reading in the slowest dimension
+		 * 											(mainly K dimension).
+		 */
 		DLL_IMPORT_OR_EXPORT void getFloatValuesOf3dPatch(
 			unsigned int patchIndex,
 			float* values,
@@ -397,26 +627,29 @@ namespace RESQML2_0_1_NS
 			ULONG64 offsetInSlowestDim
 		) const;
 
-		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
+		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
-		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
+		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 
 	private:
 
 		/**
-		* Compute and set the minimum and maximum value in \p values. 
-		* @param values				The array of values.
-		* @param numValues			The number of property values in each dimension.
-		* @param numArrayDimensions	The number of dimensions of the array.
-		* @param minimumValue		If this value and \p maximumValue are defined then the method does not compute the min but forces it to this value.
-		* @param maximumValue		If this value and \p minimumValue are defined then the method does not compute the max but forces it to this value.
-		*/
+		 * Compute and set the minimum and maximum value in \p values.
+		 *
+		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
+		 *
+		 * @tparam	T	Generic type parameter.
+		 * @param 		  	values						The array of values.
+		 * @param 		  	numValuesInEachDimension	The number of property values in each dimension.
+		 * @param 		  	numArrayDimensions			The number of dimensions of the array.
+		 * @param [in,out]	minimumValue				(Optional) If this value and \p maximumValue are
+		 * 												defined then the method does not compute the min but
+		 * 												forces it to this value.
+		 * @param [in,out]	maximumValue				(Optional) If this value and \p minimumValue are
+		 * 												defined then the method does not compute the max but
+		 * 												forces it to this value.
+		 */
 		template <class T>
 		void setPropertyMinMax(
 			T const * values, 

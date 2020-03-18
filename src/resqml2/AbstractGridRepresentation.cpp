@@ -46,7 +46,7 @@ unsigned int AbstractGridRepresentation::getGridConnectionSetRepresentationCount
 	const size_t result = getGridConnectionSetRepresentationSet().size();
 
 	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("The count of the GridConnectionSet Representations is too big.");
+		throw range_error("The count of the GridConnectionSet Representations is too big.");
 	}
 
 	return static_cast<unsigned int>(result);
@@ -134,7 +134,7 @@ unsigned int AbstractGridRepresentation::getChildGridCount() const {
 	const size_t result = getChildGridSet().size();
 
 	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw out_of_range("The count of the child grids is too big.");
+		throw range_error("The count of the child grids is too big.");
 	}
 
 	return static_cast<unsigned int>(result);
@@ -218,9 +218,14 @@ gsoap_resqml2_0_1::resqml20__Regrid* AbstractGridRepresentation::createRegrid2_0
 		hdf5ChildCellWeights->Values->PathInHdfFile = getHdfGroup() + "/ParentWindow_" + dimension + "Regrid_ChildCellWeights";
 		
 		// HDF
-		hsize_t numValues = 0;
-		for (unsigned int i = 0; i < intervalCount; ++i) {
-			numValues += childCellCountPerInterval[i];
+		hsize_t numValues = *childCellCountPerInterval;
+		if (forceConstantCellCountPerInterval) {
+			numValues *= intervalCount - 1;
+		}
+		else {
+			for (unsigned int i = 1; i < intervalCount; ++i) {
+				numValues += childCellCountPerInterval[i];
+			}
 		}
 		proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "ParentWindow_" + dimension + "Regrid_ChildCellWeights", childCellWeights, &numValues, 1);
 	}
@@ -599,6 +604,10 @@ void AbstractGridRepresentation::setParentWindow(
 
 void AbstractGridRepresentation::setForcedNonRegridedParentCell(ULONG64 * cellIndices, ULONG64 cellIndexCount)
 {
+	if (cellIndices == nullptr) {
+		throw invalid_argument("cellIndices cannot be nullptr.");
+	}
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractParentWindow* parentWindow = getParentWindow2_0_1();
 
@@ -728,6 +737,10 @@ bool AbstractGridRepresentation::hasForcedNonRegridedParentCell() const
 void AbstractGridRepresentation::setCellOverlap(ULONG64 parentChildCellPairCount, ULONG64 * parentChildCellPair,
 	const std::string& volumeUom, double * overlapVolumes)
 {
+	if (parentChildCellPair == nullptr) {
+		throw invalid_argument("parentChildCellPair cannot be nullptr.");
+	}
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractParentWindow* parentWindow = getParentWindow2_0_1();
 
@@ -1751,6 +1764,10 @@ void AbstractGridRepresentation::loadTargetRelationships()
 
 void AbstractGridRepresentation::setCellAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, ULONG64 nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation * stratiOrgInterp)
 {
+	if (stratiOrgInterp == nullptr) {
+		throw invalid_argument("The stratigraphic organization interpretation cannot be null.");
+	}
+
 	if (gsoapProxy2_0_1 != nullptr) {
 		gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation* rep = static_cast<gsoap_resqml2_0_1::resqml20__AbstractGridRepresentation*>(gsoapProxy2_0_1);
 		rep->CellStratigraphicUnits = gsoap_resqml2_0_1::soap_new_resqml20__CellStratigraphicUnits(rep->soap);

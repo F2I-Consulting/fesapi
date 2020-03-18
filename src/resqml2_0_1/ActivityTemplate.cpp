@@ -106,7 +106,7 @@ const std::string & ActivityTemplate::getParameterTitle(const unsigned int & ind
 	_resqml20__ActivityTemplate* activityTemplate = static_cast<_resqml20__ActivityTemplate*>(gsoapProxy2_0_1);
 
 	if (activityTemplate->Parameter.size() <= index)
-		throw range_error("The parameter template index is not in the parameter range.");
+		throw out_of_range("The parameter template index is not in the parameter range.");
 
 	return activityTemplate->Parameter[index]->Title;
 }
@@ -136,7 +136,7 @@ const bool & ActivityTemplate::getParameterIsInput(const unsigned int & index) c
 	_resqml20__ActivityTemplate* activityTemplate = static_cast<_resqml20__ActivityTemplate*>(gsoapProxy2_0_1);
 
 	if (activityTemplate->Parameter.size() <= index)
-		throw range_error("The parameter template index is not in the parameter range.");
+		throw out_of_range("The parameter template index is not in the parameter range.");
 
 	return activityTemplate->Parameter[index]->IsInput;
 }
@@ -146,7 +146,7 @@ const bool & ActivityTemplate::getParameterIsInput(const std::string & paramTitl
 	resqml20__ParameterTemplate* param = getParameterFromTitle(paramTitle);
 
 	if (param == nullptr)
-		throw range_error("The parameter template title is not in the parameter template range.");
+		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
 	return param->IsInput;
 }
@@ -166,7 +166,7 @@ const bool & ActivityTemplate::getParameterIsOutput(const std::string & paramTit
 	resqml20__ParameterTemplate* param = getParameterFromTitle(paramTitle);
 
 	if (param == nullptr)
-		throw range_error("The parameter template title is not in the parameter template range.");
+		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
 	return param->IsOutput;
 }
@@ -186,7 +186,7 @@ LONG64 ActivityTemplate::getParameterMinOccurences(const std::string & paramTitl
 	resqml20__ParameterTemplate* param = getParameterFromTitle(paramTitle);
 
 	if (param == nullptr)
-		throw range_error("The parameter template title is not in the parameter template range.");
+		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
 	return param->MinOccurs;
 }
@@ -206,7 +206,7 @@ LONG64 ActivityTemplate::getParameterMaxOccurences(const std::string & paramTitl
 	resqml20__ParameterTemplate* param = getParameterFromTitle(paramTitle);
 
 	if (param == nullptr)
-		throw range_error("The parameter template title is not in the parameter template range.");
+		throw invalid_argument("There exists no " + paramTitle + " parameter in this activity.");
 
 	return param->MaxOccurs;
 }

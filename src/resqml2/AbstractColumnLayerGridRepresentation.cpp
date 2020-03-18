@@ -72,7 +72,7 @@ void AbstractColumnLayerGridRepresentation::setKCellCount(unsigned int kCount)
 void AbstractColumnLayerGridRepresentation::setIntervalAssociationWithStratigraphicOrganizationInterpretation(ULONG64 * stratiUnitIndices, ULONG64 nullValue, RESQML2_NS::AbstractStratigraphicOrganizationInterpretation* stratiOrgInterp, COMMON_NS::AbstractHdfProxy * hdfProxy)
 {
 	if (isTruncated()) {
-		throw invalid_argument("A truncated grid cannot be linked to a strati columnumn in Resqml2");
+		throw invalid_argument("A truncated grid cannot be linked to a strati column in Resqml2");
 	}
 	if (hdfProxy == nullptr) {
 		hdfProxy = getRepository()->getDefaultHdfProxy();

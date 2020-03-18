@@ -20,27 +20,43 @@ under the License.
 
 #include "../common/AbstractObject.h"
 
+/** . */
 namespace RESQML2_NS
 {
 	class AbstractProperty;
+
 	/**
-	* A set of properties collected together for a specific purpose. For example, a property set can be used to collect all the properties corresponding to the simulation output at a single time, or all the values of a single property kind for all times.
-	*/
+	 * Proxy class for a property set. A property set is a set of properties collected together for
+	 * a specific purpose. For example, a property set can be used to collect all the properties
+	 * corresponding to the simulation output at a single time, or all the values of a single
+	 * property kind for all times.
+	 */
 	class PropertySet : public COMMON_NS::AbstractObject
 	{
 	protected:
 
-		/**
-		* Default constructor does nothing
-		*/
+		/** Default constructor does nothing */
 		PropertySet() : COMMON_NS::AbstractObject() {}
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		PropertySet(gsoap_resqml2_0_1::_resqml20__PropertySet* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}protected:
-			
+
+		/**
+		 * Sets XML parent
+		 *
+		 * @param [in,out]	parent	If non-null, the parent.
+		 */
 		virtual void setXmlParent(PropertySet * parent) = 0;
+
+		/**
+		 * Pushes a back XML property
+		 *
+		 * @param [in,out]	prop	If non-null, the property.
+		 */
 		virtual void pushBackXmlProperty(RESQML2_NS::AbstractProperty * prop) = 0;
 
 		virtual std::vector<COMMON_NS::DataObjectReference> getAllPropertiesDors() const = 0;
@@ -48,89 +64,149 @@ namespace RESQML2_NS
 	public:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context.
+		 *
+		 * @param [in]	partialObject	If non-nullptr, the partial object.
+		 */
 		DLL_IMPORT_OR_EXPORT PropertySet(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~PropertySet() {}
 
 		/**
-		* Set the parent property set of this instance.
-		*/
+		 * Sets the parent property set of this instance.
+		 *
+		 * @exception	std::invalid_argument	If @p parent is nullptr.
+		 *
+		 * @param [in]	parent	The parent to set to this instance.
+		 */
 		DLL_IMPORT_OR_EXPORT void setParent(PropertySet * parent);
 
+		/**
+		 * Gets the data object reference of the parent property set of this instance.
+		 *
+		 * @returns	Empty data object reference if no parent property set is defined, else the data
+		 * 			object reference of the parent property set.
+		 */
 		virtual COMMON_NS::DataObjectReference getParentDor() const = 0;
 
 		/**
-		* Get the parent property set of this instance
-		* @return the parent property set or nullptr.
-		*/
+		 * Gets the parent property set of this instance.
+		 *
+		 * @returns	A pointer to the parent property set or nullptr if no parent property set is defined.
+		 */
 		DLL_IMPORT_OR_EXPORT PropertySet * getParent() const;
 
 		/**
-		* Get the children property set of this instance
-		* @return the children property set or empty vector.
-		*/
+		 * Gets the children property set of this instance.
+		 *
+		 * @returns	A vector of pointer to the children property set or empty vector if this instance has
+		 * 			no child property set.
+		 */
 		DLL_IMPORT_OR_EXPORT std::vector<PropertySet *> getChildren() const;
 
 		/**
-		* Get the count of all properties directly contained in this property set.
-		*/
+		 * Gets the count of all children property set of this instance.
+		 *
+		 * @exception	std::range_error	If the count of children property set is strictly greater
+		 * 									than unsigned int max.
+		 *
+		 * @returns	The children count.
+		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getChildrenCount() const;
 
 		/**
-		* Get a particular property of this property set.
-		*/
+		 * Gets a particular child property set of this property set.
+		 *
+		 * @exception	std::out_of_range	If @p index is out of range.
+		 *
+		 * @param 	index	Zero-based index of the child property set we look for.
+		 *
+		 * @returns	The child property set at position @p index.
+		 */
 		DLL_IMPORT_OR_EXPORT PropertySet* getChildren(unsigned int index) const;
 
 		/**
-		* Push back a property into this property set.
-		*/
+		 * Pushes back a property into this property set.
+		 *
+		 * @exception	std::invalid_argument	If @p prop is nullptr.
+		 *
+		 * @param [in]	prop	The property to push into this property set.
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackProperty(RESQML2_NS::AbstractProperty * prop);
 
 		/**
-		* Get all properties directly contained in this property set.
-		*/
+		 * Gets all properties directly contained in this property set. "Directly contained" means that
+		 * this method does not collect properties contained in the children property set.
+		 *
+		 * @returns	The vector of pointer to all the contained properties.
+		 */
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::AbstractProperty *> getProperties() const;
 
 		/**
-		* Get the count of all properties directly contained in this property set.
-		*/
+		 * Gets the count of all properties directly contained in this property set. "Directly
+		 * contained" means that this method does not count properties contained in the children
+		 * property set.
+		 *
+		 * @returns	The count of contained properties.
+		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getPropertyCount() const;
 
 		/**
-		* Get a particular property of this property set.
-		*/
+		 * Gets a particular property among the properties directly contained in this property set.
+		 * "Directly contained" means that this method does not look at properties contained in the
+		 * children property set.
+		 *
+		 * @exception	std::out_of_range	If @p index is out of range.
+		 *
+		 * @param 	index	Zero-based index of the property we look for.
+		 *
+		 * @returns	The contained property at position @p index.
+		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::AbstractProperty* getProperty(unsigned int index) const;
 
 		/**
-		* If true, indicates that the collection contains properties with defined realization indices.
-		*/
+		 * Checks whether this property set contains at least one property with multiple realization
+		 * indices. This method just read the @c HasMultipleRealizations attribute value. The value of
+		 * this attribute only concerns properties directly contained in this property set and thus does
+		 * not inform about properties contained in the children property set.
+		 *
+		 * @returns	True if this property set contains properties with multiple realization indices,
+		 * 			false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual bool hasMultipleRealizations() const = 0;
 
 		/**
-		* If true, indicates that the collection contains only property values associated with a single property kind.
-		*/
+		 * Checks whether this property set contains only property values associated with a single
+		 * property kind. This method just read the @c HasSinglePropertyKind attribute value. The value
+		 * of this attribute only concerns properties directly contained in this property set and thus
+		 * does not inform about properties contained in the children property set.
+		 *
+		 * @returns	True if this property set contains only property values associated with a single
+		 * 			property kind.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual bool hasSinglePropertyKind() const = 0;
 
 		/**
-		* @return The time set kind of this property set.
-		*/
+		 * Gets the time set kind that applies on all properties directly contained in this property
+		 * set. "Directly contained" means that the time set kind does not apply on properties contained
+		 * in the children property set.
+		 *
+		 * @returns	The time set kind associated to this this property set.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual gsoap_resqml2_0_1::resqml20__TimeSetKind getTimeSetKind() const = 0;
 
-		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
+		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
+		 * Gets the standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
+		/** Loads target relationships */
 		void loadTargetRelationships();
 	};
 }

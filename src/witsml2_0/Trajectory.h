@@ -20,29 +20,44 @@ under the License.
 
 #include "WellboreObject.h"
 
+/** . */
 namespace WITSML2_0_NS
 {
+	/** A trajectory. */
 	class Trajectory : public WellboreObject
 	{
 	public:
+
 		/**
-		* Constructor for partial transfer
-		*/
+		 * Constructor for partial transfer
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
 		DLL_IMPORT_OR_EXPORT Trajectory(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : WellboreObject(partialObject) {}
 
+		/**
+		 * Constructor
+		 *
+		 * @param [in,out]	witsmlWellbore	If non-null, the witsml wellbore.
+		 * @param 		  	guid		  	Unique identifier.
+		 * @param 		  	title		  	The title.
+		 * @param 		  	channelStatus 	The channel status.
+		 */
 		Trajectory(class Wellbore* witsmlWellbore,
 			const std::string & guid,
 			const std::string & title,
 			gsoap_eml2_1::witsml20__ChannelStatus channelStatus);
-	
-		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
-		Trajectory(gsoap_eml2_1::witsml20__Trajectory* fromGsoap) :WellboreObject(fromGsoap) {}
 
 		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
+		Trajectory(gsoap_eml2_1::witsml20__Trajectory* fromGsoap) :WellboreObject(fromGsoap) {}
+
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~Trajectory() {}
 
 		DLL_IMPORT_OR_EXPORT COMMON_NS::DataObjectReference getWellboreDor() const;
@@ -137,31 +152,37 @@ namespace WITSML2_0_NS
 		GETTER_AND_SETTER_MEASURE_OPTIONAL_ATTRIBUTE_IN_VECTOR(TrajectoryStation, MagTotalFieldReference, gsoap_eml2_1::eml21__MagneticFluxDensityUom)
 
 		/**
-		* Push back a minimal trajectory station into the trajectory.
-		*
-		* @param kind		The kind of trajectory station
-		* @param mdValue	The Measured Depth value of the trajectory station
-		* @param mdValue	The Measured Depth uom of the trajectory station
-		* @param datum		The datum of the trajectory station. Energistics does not well define if it should be the title or the uid of the referenced datum. 
-		* @param uid		The uid of the trajectory station. Automatically set to its index if empty.
-		*/
+		 * Push back a minimal trajectory station into the trajectory.
+		 *
+		 * @param 	kind   	The kind of trajectory station.
+		 * @param 	mdValue	The Measured Depth value of the trajectory station.
+		 * @param 	uom	   	The Measured Depth uom of the trajectory station.
+		 * @param 	datum  	The datum of the trajectory station. Energistics does not well define if it
+		 * 					should be the title or the uid of the referenced datum.
+		 * @param 	uid	   	(Optional) The uid of the trajectory station. Automatically set to its index
+		 * 					if empty.
+		 */
 		DLL_IMPORT_OR_EXPORT void pushBackTrajectoryStation(gsoap_eml2_1::witsml20__TrajStationType kind, double mdValue, gsoap_eml2_1::eml21__LengthUom uom, const std::string & datum, const std::string & uid = "");
 
 		/**
-		* Get the count of trajectory stations in this trajectory
-		*
-		* @return the count of trajectory stations in this trajectory
-		*/
+		 * Get the count of trajectory stations in this trajectory
+		 *
+		 * @returns	the count of trajectory stations in this trajectory.
+		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getTrajectoryStationCount() const;
 
 		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
+		 * The standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
+		 * Get the standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 	};
 }

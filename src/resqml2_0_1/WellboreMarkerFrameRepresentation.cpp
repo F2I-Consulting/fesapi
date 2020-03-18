@@ -37,6 +37,13 @@ const char* WellboreMarkerFrameRepresentation::XML_TAG = "WellboreMarkerFrameRep
 
 WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(WellboreInterpretation * interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
 {
+	if (interp == nullptr) {
+		throw invalid_argument("The wellbore interpretation cannot be null.");
+	}
+	if (traj == nullptr) {
+		throw invalid_argument("The wellbore trajectory representation cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreMarkerFrameRepresentation(interp->getGsoapContext());	
 	_resqml20__WellboreMarkerFrameRepresentation* frame = static_cast<_resqml20__WellboreMarkerFrameRepresentation*>(gsoapProxy2_0_1);
 

@@ -37,6 +37,13 @@ using namespace COMMON_NS;
 
 WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo)
 {
+	if (interp == nullptr) {
+		throw invalid_argument("The represented wellbore interpretation cannot be null.");
+	}
+	if (mdInfo == nullptr) {
+		throw invalid_argument("The associated MD information cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreTrajectoryRepresentation(interp->getGsoapContext());	
 	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 
@@ -55,6 +62,13 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::W
 
 WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const string & guid, const std::string & title, RESQML2_NS::DeviationSurveyRepresentation * deviationSurvey)
 {
+	if (interp == nullptr) {
+		throw invalid_argument("The represented wellbore interpretation cannot be null.");
+	}
+	if (deviationSurvey == nullptr) {
+		throw invalid_argument("The deviation survey cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREWellboreTrajectoryRepresentation(interp->getGsoapContext());
 	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
 
@@ -160,6 +174,10 @@ void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
 	double const* tangentVectors, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
 	COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
+	if (tangentVectors == nullptr) {
+		throw invalid_argument("The tangent vectors parameter is missing.");
+	}
+
 	setGeometry(controlPoints, controlPointParameters, controlPointCount, lineKind, proxy, localCrs);
 
 	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
@@ -207,7 +225,7 @@ double WellboreTrajectoryRepresentation::getParentTrajectoryMd() const
 ULONG64 WellboreTrajectoryRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
-		throw range_error("The index patch is not in the allowed range of patch.");
+		throw out_of_range("The index patch is not in the allowed range of patch.");
 	}
 
 	_resqml20__WellboreTrajectoryRepresentation* rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);

@@ -61,7 +61,8 @@ void RepresentationSetRepresentation::getXyzPointsOfPatch(const unsigned int & p
 		throw range_error("The index patch is not in the allowed range of patch.");
 	}
 
-	throw logic_error("Please use getXyzPointsOfPatch on each included representation.");
+	// TODO Use getXyzPointsOfAllPatches on each included representation.
+	throw logic_error("Not implemented yet.");
 }
 
 bool RepresentationSetRepresentation::isHomogeneous() const
@@ -97,7 +98,7 @@ RESQML2_NS::AbstractRepresentation* RepresentationSetRepresentation::getRepresen
 gsoap_resqml2_0_1::eml20__DataObjectReference* RepresentationSetRepresentation::getRepresentationDor(const unsigned int & index) const
 {
 	if (index >= getRepresentationCount()) {
-		throw range_error("The index of the representation to get is out of range in this representaiton set representation");
+		throw out_of_range("The index of the representation to get is out of range in this representaiton set representation");
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {

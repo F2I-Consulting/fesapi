@@ -37,6 +37,13 @@ CategoricalPropertySeries::CategoricalPropertySeries(RESQML2_NS::AbstractReprese
 	StringTableLookup* strLookup, const resqml20__ResqmlPropertyKind & energisticsPropertyKind,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
+	if (rep == nullptr) {
+		throw invalid_argument("The representation of this property values cannot be null.");
+	}
+	if (ts == nullptr) {
+		throw invalid_argument("The time series cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECategoricalPropertySeries(rep->getGsoapContext());	
 	_resqml20__CategoricalPropertySeries* prop = static_cast<_resqml20__CategoricalPropertySeries*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
@@ -65,6 +72,13 @@ CategoricalPropertySeries::CategoricalPropertySeries(RESQML2_NS::AbstractReprese
 	StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropKind,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
+	if (rep == nullptr) {
+		throw invalid_argument("The representation of this property values cannot be null.");
+	}
+	if (ts == nullptr) {
+		throw invalid_argument("The time series cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECategoricalPropertySeries(rep->getGsoapContext());	
 	_resqml20__CategoricalPropertySeries* prop = static_cast<_resqml20__CategoricalPropertySeries*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;

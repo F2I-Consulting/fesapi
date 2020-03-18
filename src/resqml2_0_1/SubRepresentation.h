@@ -20,18 +20,28 @@ under the License.
 
 #include "../resqml2/SubRepresentation.h"
 
+/** . */
 namespace RESQML2_0_1_NS
 {
+	/** A sub representation. */
 	class SubRepresentation : public RESQML2_NS::SubRepresentation
 	{
 	private:
-		/*
-		* @param repo		The repo where the underlying gsoap proxy will be created.
-		* @param guid		The guid to set to this instance.
-		* @param title		A title for the instance to init.
-		*/
+
+		/**
+		 * Initializes this object
+		 *
+		 * @param [in,out]	repo 	The repo where the underlying gsoap proxy will be created.
+		 * @param 		  	guid 	The guid to set to this instance.
+		 * @param 		  	title	A title for the instance to init.
+		 */
 		void init(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 
+		/**
+		 * Gets specialized gsoap proxy
+		 *
+		 * @returns	Null if it fails, else the specialized gsoap proxy.
+		 */
 		gsoap_resqml2_0_1::_resqml20__SubRepresentation* getSpecializedGsoapProxy() const;
 
 		/**
@@ -40,9 +50,11 @@ namespace RESQML2_0_1_NS
 		gsoap_resqml2_0_1::resqml20__SubRepresentationPatch* getSubRepresentationPatch(unsigned int index) const;
 
 		/**
-		* Push back a representation which is one of the support of this subrepresentation.
-		* And push back this representation as a subrepresenation of the representation as well.
-		*/
+		 * Push back a representation which is one of the support of this subrepresentation. And push
+		 * back this representation as a subrepresenation of the representation as well.
+		 *
+		 * @param 	supportingRep	The supporting rep.
+		 */
 		void pushBackXmlSupportingRepresentation(RESQML2_NS::AbstractRepresentation const * supportingRep);
 
 		class DiscreteProperty* getSupportingRepresentationIndicesDiscretePropOfPatch(unsigned int patchIndex) const;
@@ -50,36 +62,44 @@ namespace RESQML2_0_1_NS
 	public:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
 		DLL_IMPORT_OR_EXPORT SubRepresentation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject):
 			RESQML2_NS::SubRepresentation(partialObject) {}
 
 		/**
-		* Creates an instance of this class in a gsoap context. This instance is not linked to any interpretation.
-		* @param repo	The repo where the underlying gsoap proxy will be created.
-		* @param guid	The guid to set to this instance.
-		* @param title	A title for the instance to create.
-		*/
+		 * Creates an instance of this class in a gsoap context. This instance is not linked to any
+		 * interpretation.
+		 *
+		 * @param [in,out]	repo 	The repo where the underlying gsoap proxy will be created.
+		 * @param 		  	guid 	The guid to set to this instance.
+		 * @param 		  	title	A title for the instance to create.
+		 */
 		SubRepresentation(COMMON_NS::DataObjectRepository* repo, const std::string & guid, const std::string & title);
 
 		/**
-		* Creates an instance of this class in a gsoap context. This instance must be linked to an interpretation.
-		* @param interp	The interpretation the instance represents.
-		* @param guid	The guid to set to this instance.
-		* @param title	A title for the instance to create.
-		*/
+		 * Creates an instance of this class in a gsoap context. This instance must be linked to an
+		 * interpretation.
+		 *
+		 * @param [in,out]	interp	The interpretation the instance represents.
+		 * @param 		  	guid  	The guid to set to this instance.
+		 * @param 		  	title 	A title for the instance to create.
+		 */
 		SubRepresentation(RESQML2_NS::AbstractFeatureInterpretation* interp,
                 const std::string & guid, const std::string & title);
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		SubRepresentation(gsoap_resqml2_0_1::_resqml20__SubRepresentation* fromGsoap) : RESQML2_NS::SubRepresentation(fromGsoap) {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~SubRepresentation() {}
 
 		COMMON_NS::DataObjectReference getHdfProxyDor() const;
@@ -172,16 +192,27 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void pushBackRefToExistingDataset(gsoap_resqml2_0_1::resqml20__IndexableElements elementKind, ULONG64 elementCount, const std::string & elementDataset,
 			LONG64 nullValue, COMMON_NS::AbstractHdfProxy * proxy, const std::string & supportingRepDataset = "");
 
+		/**
+		 * Gets patch count
+		 *
+		 * @returns	The patch count.
+		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getPatchCount() const;
 
 		/**
-		* Get the count of the supporting representations of this subrepresentation.
-		*/
+		 * Get the count of the supporting representations of this subrepresentation.
+		 *
+		 * @returns	The supporting representation count.
+		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getSupportingRepresentationCount() const;
 
 		/**
-		* Get the supporting representation dor located at a specific index of this subrepresentation.
-		*/
+		 * Get the supporting representation dor located at a specific index of this subrepresentation.
+		 *
+		 * @param 	index	Zero-based index of the.
+		 *
+		 * @returns	Null if it fails, else the supporting representation dor.
+		 */
 		gsoap_resqml2_0_1::eml20__DataObjectReference* getSupportingRepresentationDor(unsigned int index) const;
 	};
 }

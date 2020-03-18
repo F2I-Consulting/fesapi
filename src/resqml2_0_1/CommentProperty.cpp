@@ -38,6 +38,10 @@ const char* CommentProperty::XML_TAG = "CommentProperty";
 CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, resqml20__ResqmlPropertyKind energisticsPropertyKind)
 {
+	if (rep == nullptr) {
+		throw invalid_argument("The representation of this property values cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECommentProperty(rep->getGsoapContext());	
 	_resqml20__CommentProperty* prop = static_cast<_resqml20__CommentProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
@@ -56,6 +60,10 @@ CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const
 CommentProperty::CommentProperty(RESQML2_NS::AbstractRepresentation * rep, const string & guid, const string & title,
 	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind, COMMON_NS::PropertyKind * localPropKind)
 {
+	if (rep == nullptr) {
+		throw invalid_argument("The representation of this property values cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECommentProperty(rep->getGsoapContext());	
 	_resqml20__CommentProperty* prop = static_cast<_resqml20__CommentProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
@@ -147,11 +155,16 @@ std::string CommentProperty::pushBackRefToExistingDataset(COMMON_NS::AbstractHdf
 }
 
 std::vector<std::string> CommentProperty::getStringValuesOfPatch(unsigned int patchIndex)
-{
+{	
 	std::vector<std::string> result;
 
 	// Look for the hdf where the comments are stored.
 	_resqml20__CommentProperty const * prop = static_cast<_resqml20__CommentProperty*>(gsoapProxy2_0_1);
+
+	if (patchIndex >= prop->PatchOfValues.size()) {
+		throw std::out_of_range("The patch index is out of range.");
+	}
+
 	eml20__Hdf5Dataset const * dataset = static_cast<resqml20__StringHdf5Array*>(prop->PatchOfValues[patchIndex]->Values)->Values;
 	COMMON_NS::AbstractHdfProxy * hdfProxy = getHdfProxyFromDataset(dataset);
 

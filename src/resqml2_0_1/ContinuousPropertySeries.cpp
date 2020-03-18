@@ -35,6 +35,13 @@ ContinuousPropertySeries::ContinuousPropertySeries(RESQML2_NS::AbstractRepresent
 	const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, const resqml20__ResqmlPropertyKind & energisticsPropertyKind,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
+	if (rep == nullptr) {
+		throw invalid_argument("The representation of this property values cannot be null.");
+	}
+	if (ts == nullptr) {
+		throw invalid_argument("The time series of this property values cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREContinuousPropertySeries(rep->getGsoapContext());	
 	_resqml20__ContinuousPropertySeries* prop = static_cast<_resqml20__ContinuousPropertySeries*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
@@ -61,6 +68,13 @@ ContinuousPropertySeries::ContinuousPropertySeries(RESQML2_NS::AbstractRepresent
 	const gsoap_resqml2_0_1::resqml20__ResqmlUom & uom, COMMON_NS::PropertyKind * localPropKind,
 	RESQML2_NS::TimeSeries * ts, const bool & useInterval)
 {
+	if (rep == nullptr) {
+		throw invalid_argument("The representation of this property values cannot be null.");
+	}
+	if (ts == nullptr) {
+		throw invalid_argument("The time series of this property values cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCOREContinuousPropertySeries(rep->getGsoapContext());	
 	_resqml20__ContinuousPropertySeries* prop = static_cast<_resqml20__ContinuousPropertySeries*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;

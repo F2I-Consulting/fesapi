@@ -22,6 +22,7 @@ under the License.
 
 namespace COMMON_NS
 {
+	/** Proxy class for handling the graphical information of data objects. */
 	class GraphicalInformationSet : public AbstractObject
 	{
 	private:
@@ -31,20 +32,32 @@ namespace COMMON_NS
 		gsoap_eml2_2::resqml22__ColorInformation* getColorInformation(AbstractObject const* targetObject) const;
 
 	public:
+
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Constructor. Only to be used in partial transfer context
+		 *
+		 * @param [in]	partialObject	If non-null, the partial object.
+		 */
 		GraphicalInformationSet(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject): AbstractObject(partialObject) {}
 
 		/**
-		* @param repo		The repository where the underlying gsoap proxy is going to be created.
-		* @param guid		The guid to set to graphical information set.
-		* @param title		A title for graphical information set.
-		*/
+		 * Creates a graphical information set.
+		 *
+		 * @exception	std::invalid_argument	If @p repo is null.
+		 *
+		 * @param [in,out]	repo 	The repository where the underlying gSOAP proxy is going to be
+		 * 							created.
+		 * @param 		  	guid 	The guid to set to graphical information set. If empty then a new
+		 * 							guid will be generated.
+		 * @param 		  	title	A title for graphical information set. If empty then \"unknown\"
+		 * 							title will be set.
+		 */
 		GraphicalInformationSet(COMMON_NS::DataObjectRepository* repo, std::string const& guid, std::string const& title);
 
 		/**
-		 * Creates an instance of this class by wrapping a gsoap instance.
+		 * Creates an instance of this class by wrapping a gSOAP instance.
+		 *
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
 		GraphicalInformationSet(gsoap_eml2_2::_eml22__GraphicalInformationSet* fromGsoap) :
 			AbstractObject(fromGsoap) {}
@@ -55,284 +68,569 @@ namespace COMMON_NS
 		~GraphicalInformationSet() {}
 
 		/**
-		 * @return	the size of the GraphicalInformationSet.
+		 * Gets the size of this graphical information set
+		 *
+		 * @exception	std::range_error	If the size is strictly greater than unsigned int max.
+		 *
+		 * @returns	The size of this graphical information set.
 		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getGraphicalInformationSetCount() const;
 
 		/**
-		 * @return	the data objet reference of the object which receives some graphical information at a particular index of the GraphicalInformationSet.
+		 * Gets the data object reference of the object which receives some graphical information at a
+		 * particular index of the graphical information set
+		 *
+		 * @exception	std::range_error	If @p index is out of range.
+		 *
+		 * @param 	index	Zero-based index of the data object we look for.
+		 *
+		 * @returns	The data object reference of the object which receives some graphical information at
+		 * 			@p index.
 		 */
 		gsoap_eml2_2::eml22__DataObjectReference* getTargetObjectDor(unsigned int index) const;
 
 		/**
-		 * @return	the Uuid of the object which receives some graphical information at a particular index of the GraphicalInformationSet.
+		 * Gets the UUID of the object which receives some graphical information at a particular index
+		 * of the graphical information set
+		 *
+		 * @exception	std::range_error	If @p index is out of range.
+		 *
+		 * @param 	index	Zero-based index of the data object we look for.
+		 *
+		 * @returns	The UUUID of the object which receives some graphical information at @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getTargetObjectUuid(unsigned int index) const;
 
 		/**
-		 * @return	the object which receives some graphical information at a particular index of the GraphicalInformationSet
+		 * Gets the data object which receives some graphical information at a particular index of the
+		 * graphical information set
+		 *
+		 * @param 	index	Zero-based index of the data object we look for.
+		 *
+		 * @returns	The data object which receives some graphical information at @p index.
 		 */
 		DLL_IMPORT_OR_EXPORT AbstractObject* getTargetObject(unsigned int index) const;
 
 		/**
-		 * @param targetObject	the object we want to test for having some graphical informations
-		 * @return				true if the target object has some graphical informations
+		 * Query if a given data object has some direct graphical information, that is to say if there exists
+		 * a direct association between this data object and a graphical information
+		 *
+		 * @exception	std::invalid_argument	If the target object is null.
+		 *
+		 * @param 	targetObject	The data object we want to test for having some graphical information.
+		 *
+		 * @returns	True if @p targetObject has some graphical information, else false.
 		 */
 		bool hasDirectGraphicalInformation(AbstractObject const* targetObject) const;
 
 		/**
-		 * @param targetObject	the object we want to test for having some graphical informations. If it has not and it is a property,
-								we also check that its property kind has some
-		 * @return				true if the target object (or its property kind) has some graphical informations
+		 * Query if a given data object has some graphical information. If it has no direct graphical
+		 * information (see {@link hasDirectGraphicalInformation}) and it is a property, we also check
+		 * that its property kind has some
+		 *
+		 * @exception	std::invalid_argument	If the target object is null.
+		 *
+		 * @param 	targetObject	The data object we want to test for having some graphical information.
+		 *
+		 * @returns	True if @p targetObject (or its property kind) has some graphical information, else false.
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasGraphicalInformation(AbstractObject const* targetObject) const;
 
 		/**
-		 * @param targetObject	the object we want to test for having a default color
-		 * @return				true if the target object has one
+		 * Query if a given data object has a default color. It only looks at direct color association (see
+		 * {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If the target object is null.
+		 *
+		 * @param 	targetObject	The data object we want to test for having a default color.
+		 *
+		 * @returns	True @p targetObject has one default color, else false.
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasDefaultColor(AbstractObject const* targetObject) const;
 
 		/**
-		 * @param targetObject	the object for which we look for the default hue
-		 * @return				hue in the range [0, 360]
+		 * Gets the default hue of a given data object. It only looks at direct color association (see
+		 * {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no default color.
+		 *
+		 * @param 	targetObject	The data object for which we look for the default hue.
+		 *
+		 * @returns	The default hue of @p targetObject in the range [0, 360].
 		 */
 		DLL_IMPORT_OR_EXPORT double getDefaultHue(AbstractObject const* targetObject) const;
 
 		/**
-		 * @param targetObject	the object for which we look for the default saturation
-		 * @return				saturation in the range [0, 1]
+		 * Gets the default saturation of a given data object. It only looks at direct color association
+		 * (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no default color.
+		 *
+		 * @param 	targetObject	The data object for which we look for the default saturation.
+		 *
+		 * @returns	The default saturation of @p targetObject in the range [0, 1].
 		 */
 		DLL_IMPORT_OR_EXPORT double getDefaultSaturation(AbstractObject const* targetObject) const;
 
 		/**
-		 * @param targetObject	the object for which we look for the default color value
-		 * @return				value in the range [0, 1]
+		 * Gets the default color value of a given data object. It only looks at direct color
+		 * association (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no default color.
+		 *
+		 * @param 	targetObject	The data object for which we look for the default color value.
+		 *
+		 * @returns	The default color value of @p targetObject in the range [0, 1].
 		 */
 		DLL_IMPORT_OR_EXPORT double getDefaultValue(AbstractObject const* targetObject) const;
 
 		/**
-		 * @param targetObject	the object for which we look for the default alpha
-		 * @return				alpha in the range [0, 1] (0 means transparent and 1 means opaque)
+		 * Gets the default alpha value of a given data object. It only looks at direct color
+		 * association (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no default color.
+		 *
+		 * @param 	targetObject	The data object for which we look for the default alpha value.
+		 *
+		 * @returns	The default alpha value in the range [0, 1] (0 means transparent and 1 means opaque).
 		 */
 		DLL_IMPORT_OR_EXPORT double getDefaultAlpha(AbstractObject const* targetObject) const;
 
 		/**
-		 * @param targetObject	the object for which we look for the default rgb color
-		 * @param red			(output parameter) red value in the range [0, 1]
-		 * @param green			(output parameter) green value in the range [0, 1]
-		 * @param blue			(output parameter) blue value in the range [0, 1]
+		 * Gets the default RGB color (https://en.wikipedia.org/wiki/RGB_color_space) of a given data
+		 * object. It only looks at direct color association (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no default color.
+		 *
+		 * @param 	   	targetObject	The data object for which we look for the default RGB color.
+		 * @param [out]	red				Red value in the range [0, 1].
+		 * @param [out]	green			Green value in the range [0, 1].
+		 * @param [out]	blue			Blue value in the range [0, 1].
 		 */
 		DLL_IMPORT_OR_EXPORT void getDefaultRgbColor(AbstractObject const* targetObject, double& red, double& green, double& blue) const;
 
 		/**
-		 * @param targetObject	the object for which we look for the default rgb color
-		 * @param red			(output parameter) red value in the range [0, 255]
-		 * @param green			(output parameter) green value in the range [0, 255]
-		 * @param blue			(output parameter) blue value in the range [0, 255]
+		 * Gets the default RGB color (https://en.wikipedia.org/wiki/RGB_color_space) of a given data
+		 * object. It only looks at direct color association (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no default color.
+		 *
+		 * @param 	   	targetObject	The data object for which we look for the default RGB color.
+		 * @param [out]	red				Red value in the range [0, 255].
+		 * @param [out]	green			Green value in the range [0, 255].
+		 * @param [out]	blue			Blue value in the range [0, 255].
 		 */
 		DLL_IMPORT_OR_EXPORT void getDefaultRgbColor(AbstractObject const* targetObject, unsigned int& red, unsigned int& green, unsigned int& blue) const;
 
 		/**
-		 * @param targetObject	the object for which we look for a default title
-		 * @return				true if the target object has a default title
+		 * Query if a given data object has a default color title. It only looks at direct color
+		 * association (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no default color.
+		 *
+		 * @param 	targetObject	The data object for which we look for a default color title.
+		 *
+		 * @returns	True if @p targetObject has a default color title, else false.
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasDefaultColorTitle(AbstractObject const* targetObject) const;
 
 		/**
-		 * @param targetObject	the object for which we look for a default title
-		 * @return				the default title
+		 * Gets the default color title of a given data object. It only looks at direct color
+		 * association (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no default color or if its default
+		 * 										color has no title.
+		 *
+		 * @param 	targetObject	The data object for which we look for the default color title.
+		 *
+		 * @returns	The default title.
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getDefaultColorTitle(AbstractObject const* targetObject) const;
 
 		/**
-		* https://en.wikipedia.org/wiki/HSV_color_space
-		* @param targetObject	the object which receives the color
-		* @param hue			angle in degrees in the range [0, 360]
-		* @param saturation		numeric value in the range [0, 1]
-		* @param value			numeric value in the range [0, 1]
-		* @param alpha			numeric value in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). Default value is 1.
-		* @param colorTitle		title for the given color. It is not set if title is empty
-		*/
+		 * Sets the default HSV color (https://en.wikipedia.org/wiki/HSV_color_space) of a given data
+		 * object
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it is not a feature,
+		 * 										interpretation, representation or wellbore marker.
+		 * @exception	std::invalid_argument	If @p hue is out of range [0, 360].
+		 * @exception	std::invalid_argument	If @p saturation, @p value or @p alpha is out of range [0,
+		 * 										1].
+		 *
+		 * @param [in]	targetObject	The data object which receives the color.
+		 * @param 	  	hue				The hue angle in degrees in range [0, 360].
+		 * @param 	  	saturation  	The saturation value in range [0, 1].
+		 * @param 	  	value			The color value in range [0, 1].
+		 * @param 	  	alpha			(Optional) The alpha value in range [0, 1] for transparency
+		 * 								channel (0 means transparent and 1 means opaque). Default value is 1.
+		 * @param 	  	colorTitle  	(Optional) The title of the given HSV color. It is not set if
+		 * 								title is empty (default).
+		 */
 		DLL_IMPORT_OR_EXPORT void setDefaultHsvColor(AbstractObject* targetObject, double hue, double saturation, double value, double alpha = 1.0, std::string const& colorTitle = "");
 
 		/**
-		* https://en.wikipedia.org/wiki/RGB_color_space
-		* @param targetObject	The object which receives the color
-		* @param red			numeric value in the range [0, 1]
-		* @param green			numeric value in the range [0, 1]
-		* @param blue			numeric value in the range [0, 1]
-		* @param alpha			numeric value in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). Default value is 1.
-		* @param colorTitle		title for the given color. It is not set if title is empty
-		*/
+		 * Sets the default RGB color https://en.wikipedia.org/wiki/RGB_color_space of a given data
+		 * object
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it is not a feature,
+		 * 										interpretation, representation or wellbore marker.
+		 * @exception	std::invalid_argument	If @p red, @p green, @p blue or @p alpha is out of range
+		 * 										[0,
+		 * 										1].
+		 *
+		 * @param [in]	targetObject	The data object which receives the color.
+		 * @param 	  	red				Red value in range [0, 1].
+		 * @param 	  	green			Green value in range [0, 1].
+		 * @param 	  	blue			Blue value in range [0, 1].
+		 * @param 	  	alpha			(Optional) The alpha value in range [0, 1] for transparency
+		 * 								channel (0 means transparent and 1 means opaque). Default value is 1.
+		 * @param 	  	colorTitle  	(Optional) The title of the given HSV color. It is not set if
+		 * 								title is empty (default).
+		 */
 		DLL_IMPORT_OR_EXPORT void setDefaultRgbColor(AbstractObject* targetObject, double red, double green, double blue, double alpha = 1.0, std::string const& colorTitle = "");
 
 		/**
-		* https://en.wikipedia.org/wiki/RGB_color_space
-		* @param targetObject	The object which receives the color
-		* @param red			numeric value in the range [0, 255]
-		* @param green			numeric value in the range [0, 255]
-		* @param blue			numeric value in the range [0, 255]
-		* @param alpha			numeric value in the range [0, 1] for alpha transparency channel (0 means transparent and 1 means opaque). Default value is 1.
-		* @param colorTitle		title for the given color. It is not set if title is empty
-		*/
+		 * Sets the default RGB color https://en.wikipedia.org/wiki/RGB_color_space of a given data
+		 * object
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it is not a feature,
+		 * 										interpretation, representation or wellbore marker.
+		 * @exception	std::invalid_argument	If @p red, @p green, @p blue or @p alpha is out of range
+		 * 										[0,
+		 * 										255].
+		 * @exception	std::invalid_argument	If @p alpha is out of range [0,1].
+		 *
+		 * @param [in]	targetObject	The data object which receives the color.
+		 * @param 	  	red				Red value in range [0, 255].
+		 * @param 	  	green			Green value in range [0, 255].
+		 * @param 	  	blue			Blue value in range [0, 255].
+		 * @param 	  	alpha			(Optional) The alpha value in range [0, 1] for transparency
+		 * 								channel (0 means transparent and 1 means opaque). Default value is 1.
+		 * @param 	  	colorTitle  	(Optional) The title of the given HSV color. It is not set if
+		 * 								title is empty (default).
+		 */
 		DLL_IMPORT_OR_EXPORT void setDefaultRgbColor(AbstractObject* targetObject, unsigned int red, unsigned int green, unsigned int blue, double alpha = 1.0, std::string const& colorTitle = "");
 
 		/**
-		 * @param targetObject	the object for wich we look for a discrete color map. If it has not and it is a property,
-		 *						we also look for its property kind discrete color map
-		 * @return				true if the target object (or its property kind) has a discrete color map
+		 * Query if a given data object has a discrete color map. If it has not and it is a property, we
+		 * also look for its property kind discrete color map
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null.
+		 *
+		 * @param 	targetObject	The data object for which we look for a discrete color map.
+		 *
+		 * @returns	True if @p targetObject (or its property kind) has a discrete color map, else false.
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasDiscreteColorMap(AbstractObject const* targetObject) const;
-		
+
 		/**
-		 * @param targetObject	the object for wich we look for a discrete color map. If it has not and it is a property,
-		 *						we also look for its property kind discrete color map
-		 * @return				the discrete color map data object reference
+		 * Gets the discrete color map data object reference of a given data object. If the data object
+		 * has no discrete color map and if it is a property, we also look for its property kind
+		 * discrete color map
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no discrete color
+		 * 										map.
+		 *
+		 * @param 	targetObject	The data object for which we look for a discrete color map.
+		 *
+		 * @returns	A data object reference on the discrete color map of @p targetObject (or of its
+		 * 			property kind).
 		 */
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::eml22__DataObjectReference* getDiscreteColorMapDor(AbstractObject const* targetObject) const;
 
 		/**
-		 * @param targetObject	the object for wich we look for a discrete color map. If it has not and it is a property,
-		 *						we also look for its property kind discrete color map
-		 * @return				the discrete color map uuid
+		 * Gets the discrete color map data UUID of a given data object. If the data object has no
+		 * discrete color map and if it is a property, we also look for its property kind discrete color
+		 * map
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no discrete color
+		 * 										map.
+		 *
+		 * @param 	targetObject	The data object for which we look for a discrete color map.
+		 *
+		 * @returns	The UUID of the discrete color map of @p targetObject (or of its property kind).
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getDiscreteColorMapUuid(AbstractObject const* targetObject) const;
 
 		/**
-		 * @param targetObject	the object for wich we look for a discrete color map. If it has not and it is a property,
-		 *						we also look for its property kind discrete color map
-		 * @return				the discrete color map
+		 * Gets the discrete color map of a given data object. If the data object has no discrete color
+		 * map and if it is a property, we also look for its property kind discrete color map
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no discrete color
+		 * 										map.
+		 *
+		 * @param 	targetObject	The data object for which we look for a discrete color map.
+		 *
+		 * @returns	The discrete color map of @p targetObject (or of its property kind).
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::DiscreteColorMap* getDiscreteColorMap(AbstractObject const* targetObject) const;
 
+		/**
+		 * Sets a discrete color map on a given data object
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject or @p discreteColorMap is null.
+		 * @exception	std::invalid_argument	If @p targetObject is neither a property nor a property
+		 * 										kind.
+		 *
+		 * @param [in]	targetObject		 	The data object on which we want to set a discrete color
+		 * 										map.
+		 * @param [in]	discreteColorMap	 	The discrete color map we want to set on the data object.
+		 * @param 	  	useReverseMapping	 	(Optional) It true, it indicates that the minimum value
+		 * 										of the property corresponds to the maximum index of the
+		 * 										color map and that the maximum value of the property
+		 * 										corresponds to the minimum index of the color map.
+		 * 										Default value is false.
+		 * @param 	  	useLogarithmicMapping	(Optional) If true, it indicates that the log of the
+		 * 										property values are taken into account when mapped with
+		 * 										the index of the color map. Default value is false.
+		 */
 		DLL_IMPORT_OR_EXPORT void setDiscreteColorMap(AbstractObject* targetObject, RESQML2_2_NS::DiscreteColorMap* discreteColorMap,
 			bool useReverseMapping = false, bool useLogarithmicMapping = false);
 
 		/**
-		 * @param targetObject	the object for wich we look for a continuous color map. If it has not and it is a property,
-		 *						we also look for its property kind continuous color map
-		 * @return				true if the target object (or its property kind) has a continuous color map
+		 * Query if a given data object has a continuous color map. If it has not and it is a property,
+		 * we also look for its property kind continuous color map
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null.
+		 *
+		 * @param 	targetObject	The data object for which we look for a continuous color map.
+		 *
+		 * @returns	True if @p targetObject (or its property kind) has a continuous color map, else false.
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasContinuousColorMap(AbstractObject const* targetObject) const;
-		
+
 		/**
-		 * @param targetObject	the object for wich we look for a continuous color map. If it has not and it is a property,
-		 *						we also look for its property kind continuous color map
-		 * @return				the continuous color map data object reference
+		 * Gets the continuous color map data object reference of a given data object. If the data
+		 * object has no continuous color map and if it is a property, we also look for its property kind
+		 * continuous color map
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no continuous
+		 * 										color map.
+		 *
+		 * @param 	targetObject	The data object for which we look for a continuous color map.
+		 *
+		 * @returns	A data object reference on the continuous color map of @p targetObject (or of its
+		 * 			property kind).
 		 */
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::eml22__DataObjectReference* getContinuousColorMapDor(AbstractObject const* targetObject) const;
-		
+
 		/**
-		 * @param targetObject	the object for wich we look for a continuous color map. If it has not and it is a property,
-		 *						we also look for its property kind continuous color map
-		 * @return				the continuous color map uuid
+		 * Gets the continuous color map data UUID of a given data object. If the data object has no
+		 * continuous color map and if it is a property, we also look for its property kind continuous
+		 * color map
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no continuous
+		 * 										color map.
+		 *
+		 * @param 	targetObject	The data object for which we look for a continuous color map.
+		 *
+		 * @returns	The UUID of the continuous color map of @p targetObject (or of its property kind).
 		 */
 		DLL_IMPORT_OR_EXPORT std::string getContinuousColorMapUuid(AbstractObject const* targetObject) const;
 
 		/**
-		 * @param targetObject	the object for wich we look for a continuous color map. If it has not and it is a property,
-		 *						we also look for its property kind continuous color map
-		 * @return				the continuous color map
+		 * Gets the continuous color map of a given data object. If the data object has no continuous
+		 * color map and if it is a property, we also look for its property kind continuous color map
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no continuous
+		 * 										color map.
+		 *
+		 * @param 	targetObject	The data object for which we look for a continuous color map.
+		 *
+		 * @returns	The continuous color map of @p targetObject (or of its property kind).
 		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_2_NS::ContinuousColorMap* getContinuousColorMap(AbstractObject const* targetObject) const;
 
+		/**
+		 * Sets a continuous color map on a given data object
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject or @p continuous is null.
+		 * @exception	std::invalid_argument	If @p targetObject is neither a property nor a property
+		 * 										kind.
+		 *
+		 * @param [in]	targetObject		 	The data object on which we want to set a continuous
+		 * 										color map.
+		 * @param [in]	continuousColorMap   	The continuous color map we want to set on the data
+		 * 										object.
+		 * @param 	  	useReverseMapping	 	(Optional) It true, it indicates that the minimum value
+		 * 										of the property corresponds to the maximum index of the
+		 * 										color map and that the maximum value of the property
+		 * 										corresponds to the minimum index of the color map.
+		 * 										Default value is false.
+		 * @param 	  	useLogarithmicMapping	(Optional) If true, it indicates that the log of the
+		 * 										property values are taken into account when mapped with
+		 * 										the index of the color map. Default value is false.
+		 */
 		DLL_IMPORT_OR_EXPORT void setContinuousColorMap(AbstractObject* targetObject, RESQML2_2_NS::ContinuousColorMap* continuousColorMap,
 			bool useReverseMapping = false, bool useLogarithmicMapping = false);
 
 		/**
-		 * @param targetObject	the object for wich we look for the min or max value to map with a color map.
-		 * @return				true if min and max exists else false
+		 * Query if a given data object has minimum and maximum values to map with a color map. It only
+		 * looks at direct color association (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no color
+		 * 										information.
+		 *
+		 * @param 	targetObject	The data object for which we look for the minimum and maximum values.
+		 *
+		 * @returns	True if minimum and maximum values exist, else false.
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasColorMapMinMax(AbstractObject const* targetObject) const;
-		
+
 		/**
-		 * @param targetObject	the object for wich we look for the min value to map with a color map.
-		 * @return				the min value
+		 * Gets the minimum value to map with a color map for a given data object. It only looks at
+		 * direct color association (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If the color information associated @p targetObject has
+		 * 										no minimum value.
+		 *
+		 * @param 	targetObject	The data object for which we look for the minimum value.
+		 *
+		 * @returns	The minimum value.
 		 */
 		DLL_IMPORT_OR_EXPORT double getColorMapMin(AbstractObject const* targetObject) const;
-		
+
 		/**
-		 * @param targetObject	the object for wich we look for the max value to map with a color map.
-		 * @return				the max value
+		 * Gets the maximum value to map with a color map for a given data object. It only looks at
+		 * direct color association (see {@link hasDirectGraphicalInformation})
+		 *
+		 * @exception	std::invalid_argument	If the color information associated @p targetObject has
+		 * 										no maximum value.
+		 *
+		 * @param 	targetObject	The data object for which we look for the maximum value.
+		 *
+		 * @returns	The maximum value.
 		 */
 		DLL_IMPORT_OR_EXPORT double getColorMapMax(AbstractObject const* targetObject) const;
-		
+
 		/**
-		 * @param targetObject	the object for wich we want to set the min and max values to map with a color map.
+		 * Sets the minimum and maximum values to map with a color map for a given data object
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no color information.
+		 *
+		 * @param 	targetObject	The data object for which we want to set the minimum and maximum
+		 * 							values to map with a color map.
+		 * @param 	min				The minimum value.
+		 * @param 	max				The maximum value.
 		 */
 		DLL_IMPORT_OR_EXPORT void setColorMapMinMax(AbstractObject const* targetObject, double min, double max) const;
 
 		/**
-		 * @param targetObject	the object for wich we look for a value vector index to look when mapping with a color map.
-		 * @return				true if value vector index exists else false
+		 * Query if a given data object indicates which value vector index to look when mapping with a
+		 * color map. It is especially useful for vectorial property and for geometry
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject is null or if it has no color
+		 * 										information.
+		 *
+		 * @param 	targetObject	The data object for which we look for a value vector index to look
+		 * 							when mapping with a color map.
+		 *
+		 * @returns	True if a value vector index exists, else false.
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasValueVectorIndex(AbstractObject const* targetObject);
 
 		/**
-		 * @param targetObject	the object for wich we look for a value vector index to look when mapping with a color map.
-		 * @param				the value vector index
+		 * Gets the value vector index to look when mapping with a color map. It is especially useful
+		 * for vectorial property and for geometry
+		 *
+		 * @exception	std::invalid_argument	If the color information associated to @p targetObject
+		 * 										has no value vector index.
+		 *
+		 * @param 	targetObject	The data object for which we look for a value vector index to look
+		 * 							when mapping with a color map.
+		 *
+		 * @returns	The value vector index.
 		 */
 		DLL_IMPORT_OR_EXPORT LONG64 getValueVectorIndex(AbstractObject const* targetObject);
 
 		/**
-		 * @param targetObject	the object for wich we want to set value vector index to look when mapping with a color map.
+		 * Sets the value vector index to look when mapping with a color map. It is especially useful
+		 * for vectorial property and for geometry
+		 *
+		 * @exception	std::invalid_argument	If @p targetObject has no color information.
+		 *
+		 * @param 	targetObject		The data object for which we want to set the value vector index
+		 * 								to look when mapping with a color map.
+		 * @param 	valueVectorIndex	The value vector index to set.
 		 */
 		DLL_IMPORT_OR_EXPORT void setValueVectorIndex(AbstractObject const* targetObject, LONG64 valueVectorIndex);
 
 		/**
-		 * https://en.wikipedia.org/wiki/HSL_and_HSV#From_RGB
-		 * note: no range check is done on parameters
-		 * @param red			numeric value in the range [0, 1]
-		 * @param green			numeric value in the range [0, 1]
-		 * @param blue			numeric value in the range [0, 1]
-		 * @param hue			(output parameter) angle in degrees in the range [0, 360]
-		 * @param saturation	(output parameter) numeric value in the range [0, 1]
-		 * @param value			(output parameter) numeric value in the range [0, 1]
+		 * Converts RGB to HSV color (using https://en.wikipedia.org/wiki/HSL_and_HSV#From_RGB
+		 * algorithm). No range check is done on parameters
+		 *
+		 * @param 	   	red		  	Numeric value in the range [0, 1].
+		 * @param 	   	green	  	Numeric value in the range [0, 1].
+		 * @param 	   	blue	  	Numeric value in the range [0, 1].
+		 * @param [out]	hue		  	Angle in degrees in the range [0, 360].
+		 * @param [out]	saturation	Numeric value in the range [0, 1].
+		 * @param [out]	value	  	Numeric value in the range [0, 1].
 		 */
 		DLL_IMPORT_OR_EXPORT static void rgbToHsv(double red, double green, double blue, double& hue, double& saturation, double& value);
 
 		/**
-		 * note: no range check is done on parameters
-		 * @param red			numeric value in the range [0, 255]
-		 * @param green			numeric value in the range [0, 255]
-		 * @param blue			numeric value in the range [0, 255]
-		 * @param hue			(output parameter) angle in degrees in the range [0, 360]
-		 * @param saturation	(output parameter) numeric value in the range [0, 1]
-		 * @param value			(output parameter) numeric value in the range [0, 1]
+		 * Converts RGB to HSV color (using https://en.wikipedia.org/wiki/HSL_and_HSV#From_RGB
+		 * algorithm). No range check is done on parameters
+		 *
+		 * @param 	   	red		  	Numeric value in the range [0, 255].
+		 * @param 	   	green	  	Numeric value in the range [0, 255].
+		 * @param 	   	blue	  	Numeric value in the range [0, 255].
+		 * @param [out]	hue		  	Angle in degrees in the range [0, 360].
+		 * @param [out]	saturation	Numeric value in the range [0, 1].
+		 * @param [out]	value	  	Numeric value in the range [0, 1].
 		 */
 		DLL_IMPORT_OR_EXPORT static void rgbToHsv(unsigned int red, unsigned int green, unsigned int blue, double& hue, double& saturation, double& value);
 
 		/**
-		 * https://en.wikipedia.org/wiki/HSL_and_HSV#HSV_to_RGB
-		 * note: no range check is done on parameters
-		 * @param hue			angle in degrees in the range [0, 360]
-		 * @param saturation	numeric value in the range [0, 1]
-		 * @param value			numeric value in the range [0, 1]
-		 * @param red			(output parameter) numeric value in the range [0, 1]
-		 * @param green			(output parameter) numeric value in the range [0, 1]
-		 * @param blue			(output parameter) numeric value in the range [0, 1]
+		 * Converts HSV to RGB color (using https://en.wikipedia.org/wiki/HSL_and_HSV#HSV_to_RGB
+		 * algorithm). No range check is done on parameters
+		 *
+		 * @param 	   	hue		  	Angle in degrees in the range [0, 360].
+		 * @param 	   	saturation	Numeric value in the range [0, 1].
+		 * @param 	   	value	  	Numeric value in the range [0, 1].
+		 * @param [out]	red		  	Numeric value in the range.
+		 * @param [out]	green	  	Numeric value in the range.
+		 * @param [out]	blue	  	Numeric value in the range.
 		 */
 		DLL_IMPORT_OR_EXPORT static void hsvToRgb(double hue, double saturation, double value, double& red, double& green, double& blue);
 
 		/**
+		 * Converts HSV to RGB color (using
 		 * https://stackoverflow.com/questions/1914115/converting-color-value-from-float-0-1-to-byte-0-255
-		 * note: no range check is done on parameters
-		 * @param hue			angle in degrees in the range [0, 360]
-		 * @param saturation	numeric value in the range [0, 1]
-		 * @param value			numeric value in the range [0, 1]
-		 * @param red			(output parameter) numeric value in the range [0, 255]
-		 * @param green			(output parameter) numeric value in the range [0, 255]
-		 * @param blue			(output parameter) numeric value in the range [0, 255]
+		 * algorithm). No range check is done on parameters
+		 *
+		 * @param 	   	hue		  	Angle in degrees in the range [0, 360].
+		 * @param 	   	saturation	Numeric value in the range [0, 1].
+		 * @param 	   	value	  	Numeric value in the range [0, 1].
+		 * @param [out]	red		  	Numeric value in the range.
+		 * @param [out]	green	  	Numeric value in the range.
+		 * @param [out]	blue	  	Numeric value in the range.
 		 */
 		DLL_IMPORT_OR_EXPORT static void hsvToRgb(double hue, double saturation, double value, unsigned int& red, unsigned int& green, unsigned int& blue);
 
+		/** The standard XML tag without XML namespace for serializing this data object */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
+
+		/**
+		 * Get the standard XML tag without XML namespace for serializing this data object
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getXmlTag() const { return XML_TAG; }
+
+		/**
+		 * Gets the XML namespace for the tags for the XML serialization of this instance
+		 *
+		 * @returns	The XML namespace of this instance.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getXmlNamespace() const {
 			return "eml22";
 		}
 
+		/**
+		 * Reads the forward relationships of this data object and update the <tt>.rels</tt> of the
+		 * associated data repository.
+		 */
 		void loadTargetRelationships();
 	};
 }

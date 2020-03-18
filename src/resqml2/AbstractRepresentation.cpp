@@ -277,7 +277,7 @@ SubRepresentation* AbstractRepresentation::getSubRepresentation(unsigned int ind
 	const std::vector<SubRepresentation*>& subRepresentationSet = getSubRepresentationSet();
 
 	if (index >= subRepresentationSet.size()) {
-		throw range_error("The subrepresentation at the specified index is out of range.");
+		throw out_of_range("The subrepresentation at the specified index is out of range.");
 	}
 
 	return subRepresentationSet[index];
@@ -399,7 +399,7 @@ void AbstractRepresentation::getXyzPointsOfAllPatchesInGlobalCrs(double* xyzPoin
 AbstractRepresentation* AbstractRepresentation::getSeismicSupportOfPatch(const unsigned int& patchIndex) const
 {
 	if (patchIndex >= getPatchCount()) {
-		throw range_error("The seismic support of the patch at the specified index is out of range.");
+		throw out_of_range("The seismic support of the patch at the specified index is out of range.");
 	}
 
 	if (gsoapProxy2_0_1 != nullptr) {
@@ -461,7 +461,7 @@ RepresentationSetRepresentation* AbstractRepresentation::getRepresentationSetRep
 	const std::vector<RESQML2_NS::RepresentationSetRepresentation*>& representationSetRepresentationSet = getRepresentationSetRespresentationSet();
 
 	if (index >= getRepresentationSetRepresentationCount()) {
-		throw range_error("The index of the representation set representation is out of range.");
+		throw out_of_range("The index of the representation set representation is out of range.");
 	}
 
 	return representationSetRepresentationSet[index];

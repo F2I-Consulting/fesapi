@@ -27,11 +27,18 @@ under the License.
 #include <cstdint>
 #include <algorithm>
 
+/** . */
 namespace GuidTools
 {
 #if defined(_WIN32)
 	inline
 #endif
+
+	/**
+	 * Generates an UID as string
+	 *
+	 * @returns	The UID as string.
+	 */
 	std::string generateUidAsString()
 #if defined(_WIN32)
 	{
@@ -50,12 +57,19 @@ namespace GuidTools
 		return uuidStr;
 	}
 #else
+	///< .
 	;
 #endif
 
 #if defined(_WIN32)
 	inline
 #endif
+
+		/**
+		 * Generates an UID as byte array
+		 *
+		 * @returns	The UID as byte array.
+		 */
 		std::array<uint8_t, 16> generateUidAsByteArray()
 #if defined(_WIN32)
 	{
@@ -80,12 +94,21 @@ namespace GuidTools
 		return result;
 	}
 #else
+		///< .
 		;
 #endif
 
 #if defined(_WIN32)
 	inline
 #endif
+
+		/**
+		 * Initializes this object from the given string
+		 *
+		 * @param 	uuidStr	The uuid string.
+		 *
+		 * @returns	from converted string.
+		 */
 		std::array<uint8_t, 16> convertFromString(const std::string& uuidStr)
 #if defined(_WIN32)
 	{
@@ -117,12 +140,21 @@ namespace GuidTools
 		return result;
 	}
 #else
+		///< .
 		;
 #endif
 
 #if defined(_WIN32)
 	inline
 #endif
+
+		/**
+		 * Converts an uuidArray to a string
+		 *
+		 * @param 	uuidArray	Array of uuids.
+		 *
+		 * @returns	The given data converted to a string.
+		 */
 		std::string convertToString(const std::array<uint8_t, 16>& uuidArray)
 #if defined(_WIN32)
 	{
@@ -147,6 +179,7 @@ namespace GuidTools
 		return uuidStr;
 	}
 #else
+		///< .
 		;
 #endif
 

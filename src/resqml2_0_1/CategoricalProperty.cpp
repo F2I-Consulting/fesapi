@@ -40,6 +40,13 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind,
 	StringTableLookup* strLookup, resqml20__ResqmlPropertyKind energisticsPropertyKind)
 {
+	if (rep == nullptr) {
+		throw invalid_argument("The representation of this property values cannot be null.");
+	}
+	if (strLookup == nullptr) {
+		throw invalid_argument("The string lookup table cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECategoricalProperty(rep->getGsoapContext());	
 	_resqml20__CategoricalProperty* prop = static_cast<_resqml20__CategoricalProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;
@@ -62,6 +69,13 @@ CategoricalProperty::CategoricalProperty(RESQML2_NS::AbstractRepresentation * re
 	unsigned int dimension, gsoap_resqml2_0_1::resqml20__IndexableElements attachmentKind,
 	StringTableLookup* strLookup, COMMON_NS::PropertyKind * localPropKind)
 {
+	if (rep == nullptr) {
+		throw invalid_argument("The representation of this property values cannot be null.");
+	}
+	if (strLookup == nullptr) {
+		throw invalid_argument("The string lookup table cannot be null.");
+	}
+
 	gsoapProxy2_0_1 = soap_new_resqml20__obj_USCORECategoricalProperty(rep->getGsoapContext());	
 	_resqml20__CategoricalProperty* prop = static_cast<_resqml20__CategoricalProperty*>(gsoapProxy2_0_1);
 	prop->IndexableElement = attachmentKind;

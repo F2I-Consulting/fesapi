@@ -37,7 +37,7 @@ WellboreGeometry::WellboreGeometry(Wellbore* witsmlWellbore,
 	const std::string & title,
 	gsoap_eml2_1::witsml20__ChannelStatus channelStatus)
 {
-	if (witsmlWellbore == nullptr) throw invalid_argument("A wellbore must be associated to a wellbore trajectory.");
+	if (witsmlWellbore == nullptr) throw invalid_argument("A wellbore must be associated to a wellbore geometry.");
 
 	gsoapProxy2_1 = soap_new_witsml20__WellboreGeometry(witsmlWellbore->getGsoapContext());
 

@@ -30,7 +30,7 @@ const char* PropertySet::XML_TAG = "PropertySet";
 void PropertySet::setParent(PropertySet * parent)
 {
 	if (parent == nullptr) {
-		throw invalid_argument("The interpreted feature cannot be null.");
+		throw invalid_argument("The parent property set cannot be null.");
 	}
 
 	repository->addRelationship(this, parent);
@@ -72,6 +72,9 @@ PropertySet* PropertySet::getChildren(unsigned int index) const
 
 void PropertySet::pushBackProperty(RESQML2_NS::AbstractProperty * prop)
 {
+	if (prop == nullptr)
+		throw invalid_argument("The property to push cannot be null.");
+
 	pushBackXmlProperty(prop);
 
 	repository->addRelationship(this, prop);

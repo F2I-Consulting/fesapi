@@ -24,27 +24,42 @@ under the License.
 
 namespace COMMON_NS
 {
+	/** A proxy factory for an HDF5 file located on an Amazon S3 cloud. Here, HDF5 file access is read only. */
 	class HdfProxyROS3Factory : public HdfProxyFactory
 	{
 	public:
 
+		/** Identifier for an Amazon S3 secret access key */
 		std::string secret_id;
+		/** An Amazon S3 secret access key */
 		std::string secret_key;
 
+		/** Default constructor */
 		HdfProxyROS3Factory() {}
 
-		 ~HdfProxyROS3Factory() {}
-
-		 /**
-		 * Only to be used in partial transfer context
-		 */
-		 virtual AbstractHdfProxy* make(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) {
-			 return new RESQML2_0_1_NS::HdfProxyROS3(partialObject, secret_id, secret_key);
-		 }
+		/** Destructor */
+		~HdfProxyROS3Factory() {}
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of a proxy for an HDF5 file located on an Amazon S3 cloud. Only to be
+		 * used in partial transfer context
+		 *
+		 * @param [in]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A pointer to an instantiated proxy for an HDF5 file located on an Amazon S3 cloud.
+		 */
+		virtual AbstractHdfProxy* make(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) {
+			return new RESQML2_0_1_NS::HdfProxyROS3(partialObject, secret_id, secret_key);
+		}
+
+		/**
+		 * Creates an instance of a proxy for an HDF5 file located on an Amazon S3 cloud by wrapping a
+		 * gSOAP instance
+		 *
+		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
+		 *
+		 * @returns	A pointer to an instantiated proxy for an HDF5 file located on an Amazon S3 cloud.
+		 */
 		virtual AbstractHdfProxy* make(gsoap_resqml2_0_1::_eml20__EpcExternalPartReference* fromGsoap) {
 			return new RESQML2_0_1_NS::HdfProxyROS3(fromGsoap, secret_id, secret_key);
 		}

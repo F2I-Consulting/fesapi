@@ -27,151 +27,230 @@ namespace COMMON_NS
 
 namespace RESQML2_NS
 {
+	/** Proxy class for an abstract property. */
 	class AbstractProperty: public COMMON_NS::AbstractObject
 	{
 	protected:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 */
 		DLL_IMPORT_OR_EXPORT AbstractProperty(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::AbstractObject(partialObject) {}
 
-		/**
-		* Default constructor
-		*/
+		/** Default constructor */
 		AbstractProperty() {}
 
 		/**
-		* Creates an instance of this class by wrapping a gsoap instance.
-		*/
+		 * Creates an instance of this class by wrapping a gsoap instance.
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		AbstractProperty(gsoap_resqml2_0_1::resqml20__AbstractProperty* fromGsoap) : COMMON_NS::AbstractObject(fromGsoap) {}
 
 	public:
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gSOAP context */
 		virtual ~AbstractProperty() {}
 
 		/**
-		 * Set the representation which is associated to the current property.
+		 * Sets the representation which is associated to the current property
+		 *
+		 * @exception	std::invalid_argument	If @p rep is null.
+		 *
+		 * @param [in]	rep	The representation to associate to the current property.
 		 */
 		DLL_IMPORT_OR_EXPORT void setRepresentation(class AbstractRepresentation * rep);
 
 		/**
-		* @return	empty if no representation is associated to this property. Otherwise return the data object reference of the associated representation.
-		*/
+		 * Gets the data object reference of the representation which is associated to the current
+		 * property
+		 *
+		 * @returns	Empty data object reference if no representation is associated to this property.
+		 * 			Otherwise returns the data object reference of the associated representation. Null
+		 * 			should not occured since each property must be associated to a representation.
+		 */
 		COMMON_NS::DataObjectReference getRepresentationDor() const;
 
-		/**
-		* Getter for the representation which supports this instance values.
-		*/
+		/**  
+		 * Gets the representation which is associated to the current property. That is to say the one
+		 * which supports this instance values, also called supporting representation
+		 * 
+		 * @returns The representation which is associated to the current property.
+		 */
 		DLL_IMPORT_OR_EXPORT class AbstractRepresentation* getRepresentation() const;
 
 		/**
-		* Getter (in read only mode) of the element count per property value.
-		* If the property is a scalar one then it should be one.
-		* If it is a vectorial one, then it should be more than one.
-		* It is not possible to have some tensor property values (more dimensions than a vector).
-		*/
+		 * Gets the count of elements per property value. If the property is a scalar one then it should
+		 * be one. If it is a vectorial one, then it should be more than one. It is not possible to have
+		 * some tensor property values (more dimensions than a vector)
+		 *
+		 * @returns	The element count per value.
+		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getElementCountPerValue() const;
 
 		/**
-		* Get the kind of elements the property values are attached to.
-		*/
+		 * Gets the kind of elements on which the property values are attached to
+		 *
+		 * @returns	The kind of elements on which the property values are attached to.
+		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__IndexableElements getAttachmentKind() const;
 
 		/**
-		* Get all property sets which contain this property
-		*/
+		 * Gets all property sets which contain this property
+		 *
+		 * @returns A vector of all property sets which contain this property.
+		 */
 		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::PropertySet *> getPropertySets() const;
 
+		/**
+		 * Gets the count of property sets which contain this property
+		 *
+		 * @exception	std::range_error	If the count of property sets is strictly greater than
+		 * 									unsigned int max.
+		 *
+		 * @returns	The count of property sets which contain this property.
+		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getPropertySetCount() const;
 
+		/**
+		 * Gets a given property set taken from all property sets which contain this property
+		 *
+		 * @exception	std::out_of_range	If @p index is out of range.
+		 *
+		 * @param 	index	Zero-based index of the property set we look for.
+		 *
+		 * @returns	The property set at @p index.
+		 */
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::PropertySet * getPropertySet(unsigned int index) const;
 		
 		//*********************************************
-		//****** CRS ***********************
+		//****************** CRS **********************
 		//*********************************************
 
 		/**
-		* Set the local CRS which is associated to the current property.
-		* you sould not set any CRS if your property is not CRS related.
-		*/
+		 * Sets the local CRS which is associated to the current property. You should not set any CRS if
+		 * your property is not CRS related
+		 *
+		 * @exception	std::invalid_argument	If @p crs is null.
+		 *
+		 * @param [in]	crs	The local CRS to associate with the current property.
+		 */
 		DLL_IMPORT_OR_EXPORT void setLocalCrs(class AbstractLocal3dCrs * crs);
 
 		/**
-		* Getter for the local CRS which is associated to this property.
-		* Usually returns null except for a property which is CRS related.
-		*/
+		 * Gets the local CRS which is associated to this property.
+		 * 
+		 * @returns The local CRS which is associated to the current property if exists, null if not 
+		 * 			(usually for a property which is not CRS related).
+		 */
 		DLL_IMPORT_OR_EXPORT class AbstractLocal3dCrs* getLocalCrs() const;
 
 		/**
-		* @return	empty if no local CRS is associated to this property. Otherwise return the data object reference of the associated local CRS.
-		*/
+		 * Gets the data object reference of the local CRS which is associated to this property
+		 *
+		 * @returns	Empty data object reference if no local CRS is associated to this property. Otherwise
+		 * 			returns the data object reference of the associated local CRS.
+		 */
 		COMMON_NS::DataObjectReference getLocalCrsDor() const;
 
 		//*********************************************
-		//****** REALIZATION DIMENSION ****************
+		//********** REALIZATION DIMENSION ************
 		//*********************************************
 
 		/**
-		* Check if this property has a realization index.
-		*/
+		 * Checks if this property has a realization index. Realization index is used if the property is
+		 * the result of a multi-realization process
+		 *
+		 * @returns	True if the property has a realization index, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT bool hasRealizationIndex() const;
 
 		/**
-		* Get the realization index of this property.
-		* You should have verified before that this property actually has a realization index.
-		*/
+		 * Gets the realization index of this property. Realization index is used if the property is the
+		 * result of a multi-realization process. You should have checked before that this property
+		 * actually has a realization index.
+		 *
+		 * @exception	std::invalid_argument	If this property has actually no realization index.
+		 *
+		 * @returns	The realization index.
+		 */
 		DLL_IMPORT_OR_EXPORT ULONG64 getRealizationIndex() const;
 
 		/**
-		* Set the realization index of this property
-		*/
+		 * Sets the realization index of this property
+		 *
+		 * @param 	realizationIndex	The realization index to set to this property.
+		 */
 		DLL_IMPORT_OR_EXPORT void setRealizationIndex(ULONG64 realizationIndex);
 
 		//*********************************************
-		//****** TIME DIMENSION ***********************
+		//************ TIME DIMENSION *****************
 		//*********************************************
 
 		/**
-		* Set the representation which is associated to the current property.
-		*/
+		 * Sets the time series associated to the current property
+		 *
+		 * @exception	invalid_argument	If @p ts is null or if the current property has no time
+		 * 									indices.
+		 *
+		 * @param [in]	ts	The time series to associate to this property
+		 */
 		DLL_IMPORT_OR_EXPORT void setTimeSeries(class TimeSeries * ts);
 
 		/**
-		* Getter for the time series which is associated to this property.
-		*/
+		 * Gets the time series which is associated to this property
+		 *
+		 * @returns	Null pointer if no time series is associated to this property. Otherwise returns the
+		 * 			associated time series.
+		 */
 		DLL_IMPORT_OR_EXPORT TimeSeries* getTimeSeries() const;
 
 		/**
-		* @return	null pointer if no time series is associated to this property. Otherwise return the data object reference of the associated time series.
-		*/
+		 * Gets the data object reference of the time series associated to this property
+		 *
+		 * @returns	Empty data object reference if no time series is associated to this property. Otherwise returns the
+		 * 			data object reference of the associated time series.
+		 */
 		COMMON_NS::DataObjectReference getTimeSeriesDor() const;
 
 		/**
-		* Set the timestamp of this property by means of an index in a time series
-		*
-		* @param[in]	 timeIndex	The index of the timestamp of the property in the time series.
-		* @param[in]	 ts			The time series which contains the timestamp of this property.
-		*/
-		DLL_IMPORT_OR_EXPORT void setTimeIndex(unsigned int timeIndex, class TimeSeries * ts);
+		 * Sets the time stamp of this property by means of an index in a time series
+		 *
+		 * @exception	invalid_argument	If @p ts is null or if the current property has no time
+		 * 									indices.
+		 *
+		 * @param [in]	timeIndex	The index of the timestamp of the property in the time series.
+		 * @param [in]	ts		 	The time series which contains the timestamp of this property.
+		 */
+		DLL_IMPORT_OR_EXPORT void setTimeIndex(unsigned int timeIndex, class TimeSeries* ts);
 
 		/**
-		* Set the timestep of this property
-		*/
+		 * Sets the time step of this property. The time step indicates that the property is the output
+		 * of a specific time step from a flow simulator. Time step is metadata that makes sense in the
+		 * context of a specific simulation run, and should not be confused with the time index.
+		 *
+		 * @param 	timeStep	The time step to set to this property.
+		 */
 		DLL_IMPORT_OR_EXPORT void setTimeStep(unsigned int timeStep);
 
 		/**
-		* Get the timestamp of this property
-		* @return maximum value of unsigned int is returned if no timestamp is allowed.
-		*/
+		 * Gets the time stamp of this property
+		 *
+		 * @exception	std::invalid_argument	If this property does not have any time stamp.
+		 *
+		 * @returns	The time stamp of this property.
+		 */
 		DLL_IMPORT_OR_EXPORT time_t getTimestamp() const;
 
 		/**
-		* Get the time index of this property in its assocaited time series
-		*/
+		 * Get the time index of this property in its associated time series
+		 *
+		 * @exception	std::invalid_argument	If this property does not have any time stamp.
+		 *
+		 * @returns	The time index of this property.
+		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getTimeIndex() const;
 
 		//*********************************************
@@ -179,63 +258,106 @@ namespace RESQML2_NS
 		//*********************************************
 
 		/**
-		* Indicates if the property kind attached to this property is either from the standard catalog of Energistics or from a local property kind.
-		*/
+		 * Indicates if the property kind attached to this property is either from the standard catalog
+		 * of Energistics or from a local property kind
+		 *
+		 * @returns	True if associated to one standard Energistics property kind, false if not.
+		 */
 		DLL_IMPORT_OR_EXPORT bool isAssociatedToOneStandardEnergisticsPropertyKind() const;
 
 		/**
-		* Get the title of the property kind of this property
-		*/
+		 * Gets the description of the property kind of this property
+		 *
+		 * @exception	std::invalid_argument	If the property kind is a standard Energistics one and
+		 * 										the property kind mapping file is not loaded.
+		 *
+		 * @returns	The property kind description.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getPropertyKindDescription() const;
 
 		/**
-		* Get the title of the property kind of this property
-		*/
+		 * Gets the title of the property kind of this property
+		 *
+		 * @returns	The property kind title.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getPropertyKindAsString() const;
 
 		/**
-		* Get the title of the parent of the property kind.
-		*/
+		 * Get the title of the parent property kind of this property
+		 *
+		 * @exception	std::invalid_argument	If the property kind is a standard Energistics one and
+		 * 										the property kind mapping file is not loaded.
+		 *
+		 * @returns	The parent property kind title.
+		 */
 		DLL_IMPORT_OR_EXPORT std::string getPropertyKindParentAsString() const;
 
 		/**
-		* Getter for the energistics property kind which is associated to this intance.
-		*/
+		 * Gets the Energistics property kind which is associated to this intance
+		 *
+		 * @exception	std::invalid_argument	If the property kind of this property is not an
+		 * 										Energistics one.
+		 *
+		 * @returns	The Energistics property kind.
+		 */
 		DLL_IMPORT_OR_EXPORT gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind getEnergisticsPropertyKind() const;
 
 		/**
-		* Set the property kind of the property to a local one.
-		*/
+		 * Sets the property kind of this property to a local one
+		 *
+		 * @exception	std::invalid_argument	If @p propKind is null.
+		 *
+		 * @param [in]	propKind	The local property kind to set to this property.
+		 */
 		DLL_IMPORT_OR_EXPORT void setLocalPropertyKind(COMMON_NS::PropertyKind* propKind);
 
 		/**
-		* @return	null pointer if no local property kind is associated to this property. Otherwise return the data object reference of the associated local property kind.
-		*/
+		 * Gets the data object reference of the local property kind associated to this property
+		 *
+		 * @exception	std::invalid_argument	If the property kind of this property is not a local one.
+		 *
+		 * @returns	Empty data object reference if no local property kind is associated to this property.
+		 * 			Otherwise return the data object reference of the associated local property kind.
+		 */
 		COMMON_NS::DataObjectReference getLocalPropertyKindDor() const;
 
 		/**
-		* Getter for the local property kind which is associated to this instance.
-		* If nullptr is returned then it means this instance is associated to an energistics standard property kind.
-		*/
+		 * Gets the local property kind which is associated to this instance
+		 *
+		 * @exception	std::invalid_argument	If the property kind of this property is not a local one.
+
+		 * @returns	A pointer to the local property kind.
+		 */
 		DLL_IMPORT_OR_EXPORT COMMON_NS::PropertyKind* getLocalPropertyKind() const;
 
 		/**
-		* Check if the associated local property kind is allowed for this property.
-		*/
+		 * Checks if it is allowed to associate a given local property kind to this property.
+		 *
+		 * @param [in]	pk	The local property kind to check.
+		 *
+		 * @returns	True if it is allowed, false if it is not.
+		 */
 		virtual bool validatePropertyKindAssociation(COMMON_NS::PropertyKind* pk) = 0;
 
 		/**
-		* Check if the associated standard property kind is allowed for this property.
-		*/
+		 * Checks if it is allowed to associate a given standard Energistics property kind to this property.
+		 *
+		 * @param 	pk	The standard Energistics property kind to check.
+		 *
+		 * @returns	True if it is allowed, false if it is not.
+		 */
 		virtual bool validatePropertyKindAssociation(gsoap_resqml2_0_1::resqml20__ResqmlPropertyKind pk) = 0;
 
 		/**
-		* Check if the associated property kind is allowed for this property.
-		*/
+		 * Checks if the associated property kind is allowed for this property.
+		 *
+		 * @returns	True if it is allowed, false if it is not.
+		 */
 		bool validate();
 
 	protected:
 
+		/** Loads target relationships */
 		virtual void loadTargetRelationships();
 	};
 }

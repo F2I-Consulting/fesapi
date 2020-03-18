@@ -34,6 +34,7 @@ namespace RESQML2_NS
 		*/
 		DLL_IMPORT_OR_EXPORT AbstractOrganizationInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : AbstractFeatureInterpretation(partialObject) {}
 
+		/** Default constructor */
 		AbstractOrganizationInterpretation() {}
 
 		/**
@@ -44,18 +45,28 @@ namespace RESQML2_NS
 
 	public:
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		virtual ~AbstractOrganizationInterpretation() {}
 
 		/**
 		 * Add a binary contact to the organization interpretation by means of a simple sentence.
+		 *
+		 * @param 		  	kind			The kind.
+		 * @param [in,out]	subject			If non-null, the subject.
+		 * @param 		  	verb			The verb.
+		 * @param [in,out]	directObject	If non-null, the direct object.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_2::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject);
 
 		/**
-		 * Add a binary contact to the organization itnerpretation by means of a sentence where the direct object can be qualified.
+		 * Add a binary contact to the organization itnerpretation by means of a sentence where the
+		 * direct object can be qualified.
+		 *
+		 * @param 		  	kind				 	The kind.
+		 * @param [in,out]	subject				 	If non-null, the subject.
+		 * @param 		  	verb				 	The verb.
+		 * @param [in,out]	directObject		 	If non-null, the direct object.
+		 * @param 		  	directObjectQualifier	The direct object qualifier.
 		 */
 		DLL_IMPORT_OR_EXPORT void pushBackBinaryContact(AbstractFeatureInterpretation* subject, gsoap_eml2_2::resqml22__ContactVerb verb, AbstractFeatureInterpretation* directObject,
 			gsoap_resqml2_0_1::resqml20__ContactSide directObjectQualifier);

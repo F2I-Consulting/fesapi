@@ -20,6 +20,7 @@ under the License.
 
 #include "../resqml2/RockFluidOrganizationInterpretation.h"
 
+/** . */
 namespace RESQML2_0_1_NS
 {
 	/**
@@ -30,6 +31,7 @@ namespace RESQML2_0_1_NS
 	class RockFluidOrganizationInterpretation : public RESQML2_NS::RockFluidOrganizationInterpretation
 	{
 	public:
+
 		/**
 		* Only to be used in partial transfer context
 		*/
@@ -49,9 +51,7 @@ namespace RESQML2_0_1_NS
 		*/
 		RockFluidOrganizationInterpretation(gsoap_resqml2_0_1::_resqml20__RockFluidOrganizationInterpretation* fromGsoap) : RESQML2_NS::RockFluidOrganizationInterpretation(fromGsoap) {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~RockFluidOrganizationInterpretation() {}
 
 		/**
@@ -62,8 +62,10 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void pushBackRockFluidUnitInterpretation(RESQML2_NS::RockFluidUnitInterpretation * rockFluidUnitInterpretation);
 
 		/**
-		* @return The count of rock fluid unit interp in this rock fluid organization.
-		*/
+		 * Gets rock fluid unit interp count
+		 *
+		 * @returns	The count of rock fluid unit interp in this rock fluid organization.
+		 */
 		DLL_IMPORT_OR_EXPORT unsigned int getRockFluidUnitInterpCount() const;
 
 		COMMON_NS::DataObjectReference getRockFluidUnitInterpretationDor(unsigned int index) const;

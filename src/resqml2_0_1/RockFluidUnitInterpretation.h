@@ -20,22 +20,26 @@ under the License.
 
 #include "../resqml2/RockFluidUnitInterpretation.h"
 
+/** . */
 namespace RESQML2_0_1_NS
 {
 	class RockFluidUnitInterpretation : public RESQML2_NS::RockFluidUnitInterpretation
 	{
 	public:
+
 		/**
 		* Only to be used in partial transfer context
 		*/
 		DLL_IMPORT_OR_EXPORT RockFluidUnitInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::RockFluidUnitInterpretation(partialObject) {}
 
 		/**
-		* Creates an instance of this class in a gsoap context.
-		* @param feature	The feature the instance interprets.
-		* @param guid		The guid to set to the interpretation. If empty then a new guid will be generated.
-		* @param title		A title for the instance to create.
-		*/
+		 * Creates an instance of this class in a gsoap context.
+		 *
+		 * @param [in,out]	feature	The feature the instance interprets.
+		 * @param 		  	guid   	The guid to set to the interpretation. If empty then a new guid will
+		 * 							be generated.
+		 * @param 		  	title  	A title for the instance to create.
+		 */
 		RockFluidUnitInterpretation(class RockFluidUnitFeature * feature, const std::string & guid, const std::string & title);
 
 		/**
@@ -43,21 +47,22 @@ namespace RESQML2_0_1_NS
 		*/
 		RockFluidUnitInterpretation(gsoap_resqml2_0_1::_resqml20__RockFluidUnitInterpretation* fromGsoap) : RESQML2_NS::RockFluidUnitInterpretation(fromGsoap) {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~RockFluidUnitInterpretation() {}
 
 		/**
 		 * Indicates if the instance has an information about its deposition mode.
+		 *
+		 * @returns	True if phase, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT bool hasPhase() const;
 
 		/**
-		 * Get the deposition mode of the stratigraphic unit interpretation.
-		 * You should verify its existency using hasDepositionMode() before to call this function.
+		 * Get the deposition mode of the stratigraphic unit interpretation. You should verify its
+		 * existency using hasDepositionMode() before to call this function.
+		 *
+		 * @returns	The phase.
 		 */
 		DLL_IMPORT_OR_EXPORT gsoap_eml2_2::resqml22__Phase getPhase() const;
-
 	};
 }

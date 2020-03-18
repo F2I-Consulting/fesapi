@@ -72,7 +72,7 @@ eml22__DataObjectReference* GraphicalInformationSet::getTargetObjectDor(unsigned
 	_eml22__GraphicalInformationSet const * gis = static_cast<_eml22__GraphicalInformationSet*>(gsoapProxy2_2);
 
 	if (index >= gis->GraphicalInformation.size()) {
-		throw range_error("The index if out of range in GraphicalInformationSet");
+		throw range_error("The index is out of range.");
 	}
 
 	return gis->GraphicalInformation[index]->TargetObject;
@@ -652,7 +652,7 @@ bool GraphicalInformationSet::hasValueVectorIndex(AbstractObject const* targetOb
 
 LONG64 GraphicalInformationSet::getValueVectorIndex(AbstractObject const* targetObject) {
 	if (!hasValueVectorIndex(targetObject)) {
-		throw invalid_argument("The color information associated to the target object have no value vector index");
+		throw invalid_argument("The color information associated to the target object has no value vector index");
 	}
 
 	resqml22__ColorInformation const* const colorInformation = getColorInformation(targetObject);

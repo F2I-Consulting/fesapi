@@ -20,26 +20,35 @@ under the License.
 
 #include "../resqml2/AbstractFeature.h"
 
+/** . */
 namespace RESQML2_0_1_NS
 {
+	/** An abstract technical feature. */
 	class AbstractTechnicalFeature : public RESQML2_NS::AbstractFeature
 	{
 	protected:
 
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
 		DLL_IMPORT_OR_EXPORT AbstractTechnicalFeature(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : RESQML2_NS::AbstractFeature(partialObject) {}
 
-		/**
-		* Default constructor
-		* Set the gsoap proxy to nullptr from superclass constructor
-		*/
+		/** Default constructor Set the gsoap proxy to nullptr from superclass constructor */
 		AbstractTechnicalFeature() {}
 
+		/**
+		 * Constructor
+		 *
+		 * @param [in,out]	fromGsoap	If non-null, from gsoap.
+		 */
 		AbstractTechnicalFeature(gsoap_resqml2_0_1::resqml20__AbstractTechnicalFeature* fromGsoap) : RESQML2_NS::AbstractFeature(fromGsoap) {}
 
 	public:
+		/** Destructor does nothing since the memory is managed by the gSOAP context. */
 		virtual ~AbstractTechnicalFeature() {}
 	};
 }

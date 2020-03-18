@@ -20,15 +20,15 @@ under the License.
 
 #include "HdfProxy.h"
 
+/** . */
 namespace RESQML2_0_1_NS
 {
-	/**
-	* This class allows to open an HDF5 file for reading only which is located on an AWS S3 bucket.
-	*/
+	/** This class allows to open an HDF5 file for reading only which is located on an AWS S3 bucket. */
 	class HdfProxyROS3 : public RESQML2_0_1_NS::HdfProxy
 	{
-		// aws_region is assumed to be managed by means of inherited setRootPath method
+		/** aws_region is assumed to be managed by means of inherited setRootPath method */
 		std::string secretId_;
+		/** The secret key */
 		std::string secretKey_;
 
 	public:
@@ -46,11 +46,10 @@ namespace RESQML2_0_1_NS
 			secretId_(secretId), secretKey_(secretKey_)
 		{}
 
+		/** Destructor */
 		~HdfProxyROS3() {}
 
-		/**
-		* Open the file for reading.
-		*/
+		/** Open the file for reading. */
 		void open();
 	};
 }

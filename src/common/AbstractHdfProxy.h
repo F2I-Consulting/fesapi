@@ -21,26 +21,42 @@ under the License.
 #include "EpcExternalPartReference.h"
 #include "HidtType.h"
 
+/** A macro that defines cumulative length ds name */
 #define CUMULATIVE_LENGTH_DS_NAME "cumulativeLength"
+/** A macro that defines elements ds name */
 #define ELEMENTS_DS_NAME "elements"
 
 namespace COMMON_NS
 {
+	/** An abstract proxy for reading and writing values into an HDF5 file. */
 	class AbstractHdfProxy : public EpcExternalPartReference
 	{
 	protected:
+
 		/**
-		* Only to be used in partial transfer context
-		*/
+		 * Only to be used in partial transfer context
+		 *
+		 * @param [in,out]	partialObject	If non-null, the partial object.
+		 */
 		AbstractHdfProxy(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) : COMMON_NS::EpcExternalPartReference(partialObject) {}
 
-		std::string packageDirectoryAbsolutePath;												/// The directory where the EPC document is stored.
-		std::string relativeFilePath;															/// Must be relative to the location of the package
+		/** / The directory where the EPC document is stored. */
+		std::string packageDirectoryAbsolutePath;
+		/** / Must be relative to the location of the package */
+		std::string relativeFilePath;
+		/** The opening mode */
 		DataObjectRepository::openingMode openingMode;
 
 		/**
-		* @param soapContext	The soap context where the underlying gsoap proxy is going to be created.
-		*/
+		 * Abstract hdf proxy
+		 *
+		 * @param 	packageDirAbsolutePath	The soap context where the underlying gSOAP proxy is going to
+		 * 									be created.
+		 * @param 	externalFilePath	  	Full pathname of the external file.
+		 * @param 	hdfPermissionAccess   	(Optional) The hdf permission access.
+		 *
+		 * @returns	A DLL_IMPORT_OR_EXPORT.
+		 */
 		AbstractHdfProxy(const std::string & packageDirAbsolutePath, const std::string & externalFilePath, DataObjectRepository::openingMode hdfPermissionAccess = DataObjectRepository::openingMode::READ_ONLY) :
 			packageDirectoryAbsolutePath(packageDirAbsolutePath), relativeFilePath(externalFilePath), openingMode(hdfPermissionAccess) {}
 
@@ -57,69 +73,93 @@ namespace COMMON_NS
 		DLL_IMPORT_OR_EXPORT void initGsoapProxy(COMMON_NS::DataObjectRepository * repo, const std::string & guid, const std::string & title, AbstractObject::EmlVersion emlVersion);
 
 	public:  
+		/** Destructor */
 		virtual ~AbstractHdfProxy() {}
 
 		/**
-		* Set the root of the path where to resolve relativeFilePath.
-		* It must be the folder path containing the EPC file if this HDF5 file is associated to an EPC file.
-		*/
+		 * Sets the path of the directory containing the EPC file associated to this HDF5 file
+		 *
+		 * @param 	rootPath	Path of the directory containing the EPC file.
+		 */
 		DLL_IMPORT_OR_EXPORT void setRootPath(const std::string& rootPath) { packageDirectoryAbsolutePath = rootPath; }
 
 		/**
-		* Set the relative path regarding packageDirectoryAbsolutePath where the HDF5 file is located.
-		*/
+		 * Sets the relative path of the HDF5 file regarding the path of the directory containing the EPC
+		 * file associated to this HDF5 file
+		 *
+		 * @param 	relPath	Relative path of the HDF5 file.
+		 */
 		DLL_IMPORT_OR_EXPORT void setRelativePath(const std::string& relPath) { relativeFilePath = relPath; }
 
 		/**
-		* Set the rights when opening the HDF5 file.
-		*/
+		 * Sets the rights when opening the HDF5 file
+		 *
+		 * @param 	openingMode_	The opening mode of the HDF5 file.
+		 */
 		DLL_IMPORT_OR_EXPORT void setOpeningMode(DataObjectRepository::openingMode openingMode_) { openingMode = openingMode_; }
 
 		/**
-		* Get the relative path regarding packageDirectoryAbsolutePath where the HDF5 file is located.
-		*/
+		 * Gets the relative path of the HDF5 file regarding the path of the directory containing the
+		 * EPC file associated to this HDF5 file
+		 *
+		 * @returns	The relative path of the HDF5 file.
+		 */
 		DLL_IMPORT_OR_EXPORT const std::string& getRelativePath() const { return relativeFilePath; }
 
 		/**
-		* Open the file for reading and writing.
-		* The read/write access are determined by the EPC document configuration.
-		*/
+		 * Opens the HDF5 file for reading and writing. The read and write rights are determined by the EPC
+		 * document configuration
+		 */
 		virtual void open() = 0;
 
 		/**
-		 * Check if the Hdf file is open or not
+		 * Checks if the HDF5 file is open or not
+		 *
+		 * @returns	True if opened, false if not.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual bool isOpened() const = 0;
 
-		/**
-		 * Close the file
-		 */
+		/** Closes the HDF5 file */
 		virtual void close() = 0;
 
 		/**
-		 * Get the used (native) datatype in a dataset
-		* To compare with H5T_NATIVE_INT, H5T_NATIVE_UINT, H5T_NATIVE_FLOAT, etc...
+		 * Gets the native datatype (@c H5T_NATIVE_INT, @c H5T_NATIVE_UINT,
+		 * @c H5T_NATIVE_FLOAT, etc.) of a dataset
+		 *
+		 * @param 	datasetName	Name of the dataset.
+		 *
+		 * @returns	The native HDF5 datatype identifier of the dataset if successful, otherwise returns a
+		 * 			negative value.
 		 */
 		virtual hdf5_hid_t getHdfDatatypeInDataset(const std::string & datasetName) = 0;
 
 		/**
-		* Get the used datatype class in a dataset
-		* To compare with H5T_INTEGER, H5T_FLOAT , H5T_STRING , etc...
-		*/
+		 * Gets the datatype class (@c H5T_INTEGER, @c H5T_FLOAT, @c H5T_STRING, etc.) of a dataset
+		 *
+		 * @param 	datasetName	Name of the dataset.
+		 *
+		 * @returns	The HDF5 datatype class identifier if successful, otherwise @c H5T_NO_CLASS (-1).
+		 */
 		virtual int getHdfDatatypeClassInDataset(const std::string & datasetName) = 0;
 
 		/**
-		* Write an itemized list of list into the HDF file by means of a single group containing 2 datasets.
-		* @param groupName					The name of the group where to create the itemized list of list.
-		*									This name must not contain '/' character and must be directly contained in RESQML group.
-		* @param name						The name of the itemized list of list hdf group.
-		* @param cumulativeLengthDatatype	The datatype of the cumulative length to write.
-		* @param cumulativeLength			1d array of positive integers containing for each list the sum of all the previous list lengths including the current one
-		* @param cumulativeLengthSize		Size of the cumulativeLength array.
-		* @param elementsDatatype			The datatype of the elements to write.
-		* @param elements					1d array of elements containing the aggregation of individual list content.
-		* @param elementsSize				Size of the elements array.
-		*/
+		 * Writes an itemized list of lists into the HDF5 file by means of a single group containing two
+		 * datasets: one for the elements and one for the cumulative lengths of the lists of elements.
+		 *
+		 * @param 	groupName					The name of the group where to create the itemized list
+		 * 										of lists. This name must not contain '/' character and must
+		 * 										be directly contained in the RESQML group.
+		 * @param 	name						The name of the itemized list of lists HDF5 group.
+		 * @param 	cumulativeLengthDatatype	The datatype of the cumulative lengths dataset to write.
+		 * @param 	cumulativeLength			1d array of positive integers containing for each list
+		 * 										the sum of all the previous lists lengths including the
+		 * 										current one.
+		 * @param 	cumulativeLengthSize		Size of the cumulative lengths array.
+		 * @param 	elementsDatatype			The datatype of the elements to write.
+		 * @param 	elements					1d array of elements containing the aggregation of
+		 * 										individual lists contents.
+		 * @param 	elementsSize				Size of the elements array.
+		 */
 		virtual void writeItemizedListOfList(const std::string & groupName,
 			const std::string & name,
 			hdf5_hid_t cumulativeLengthDatatype,
@@ -130,23 +170,50 @@ namespace COMMON_NS
 			unsigned long long elementsSize) = 0;
 
 		/**
-		 * Get the number of dimensions in an HDF dataset of the proxy.
-		 * @param datasetName	The absolute name of the dataset we want to get the number of dimensions.
+		 * Gets the number of dimensions in an HDF5 dataset of the proxy.
+		 *
+		 * @param 	datasetName	The absolute name (not relative to a group) of the dataset we want to get
+		 * 						the number of dimensions.
+		 *
+		 * @returns	The number of dimensions of the dataset if successful, otherwise returns a negative
+		 * 			value.
 		 */
 		virtual unsigned int getDimensionCount(const std::string & datasetName) = 0;
 
 		/**
-		 * Get the number of elements in an HDF dataset of the proxy. The number of elements is get from all dimensions.
-		 * @param datasetName	The absolute name of the dataset we want to get the number of elements.
+		 * Gets the number of elements in an HDF5 dataset of the proxy. The number of elements is got
+		 * from all dimensions.
+		 *
+		 * @param 	datasetName	The absolute name (not relative to a group) of the dataset we want to get
+		 * 						the number of elements.
+		 *
+		 * @returns	The number of elements of the dataset if successful, otherwise returns a negative
+		 * 			value.
 		 */
 		virtual signed long long getElementCount(const std::string & datasetName) = 0;
 
 		/**
-		 * Set the new compression level which will be used for all data to be written
-		 * @param compressionLevel				Lower compression levels are faster but result in less compression. Range [0..9] is allowed.
+		 * Sets the new compression level which will be used for all data to be written
+		 *
+		 * @param 	newCompressionLevel	The new compression level in range [0..9]. Lower compression
+		 * 								levels are faster but result in less compression.
 		 */
 		DLL_IMPORT_OR_EXPORT virtual void setCompressionLevel(unsigned int newCompressionLevel) = 0;
 
+		/**
+		 * Writes an nd array of float values into the HDF5 file by means of a single dataset
+		 *
+		 * @param 	groupName					The name of the group where to create the nd array of
+		 * 										float values. This name must not contain '/' character and
+		 * 										must be directly contained in RESQML group.
+		 * @param 	name						The name of the nd array HDF5 dataset. It must not
+		 * 										already exist.
+		 * @param 	floatValues					1d array of float values ordered firstly by fastest
+		 * 										direction.
+		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
+		 * 										write. They are ordered from fastest index to slowest index.
+		 * @param 	numDimensions				The number of dimensions (n) of the nd array to write.
+		 */
 		virtual void writeArrayNdOfFloatValues(const std::string & groupName,
 		  const std::string & name,
 		  const float * floatValues,
@@ -154,13 +221,18 @@ namespace COMMON_NS
 		  unsigned int numDimensions) = 0;
 
 		/**
-		 * Write an array (potentially with multi dimensions) of double values into the HDF file by means of a single dataset.
-		 * @param groupName						The name of the group where to create the array of double values.
-		 *										This name must not contain '/' character and must be directly contained in RESQML group.
-		 * @param name							The name of the array of double values hdf dataset. It must not already exist.
-		 * @param dblValues						1d array of double values ordered firstly by fastest direction.
-		 * @param numValuesInEachDimension		Number of values in each dimension of the array to write. They are ordered from fastest index to slowest index.
-		 * @param numDimensions					The number of the dimensions of the array to write
+		 * Writes an nd array of double values into the HDF5 file by means of a single dataset
+		 *
+		 * @param 	groupName					The name of the group where to create the nd array of
+		 * 										double values. This name must not contain '/' character and
+		 * 										must be directly contained in RESQML group.
+		 * @param 	name						The name of the nd array HDF5 dataset. It must not
+		 * 										already exist.
+		 * @param 	dblValues					1d array of double values ordered firstly by fastest
+		 * 										direction.
+		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
+		 * 										write. They are ordered from fastest index to slowest index.
+		 * @param 	numDimensions				The number of dimensions (n) of the nd array to write.
 		 */
 		virtual void writeArrayNdOfDoubleValues(const std::string & groupName,
 		  const std::string & name,
@@ -169,14 +241,19 @@ namespace COMMON_NS
 		  unsigned int numDimensions) = 0;
 
 		/**
-		* Write an array (potentially with multi dimensions) of char values into the HDF file by means of a single dataset.
-		* @param groupName						The name of the group where to create the array of int values.
-		*										This name must not contain '/' character and must be directly contained in RESQML group.
-		* @param name							The name of the array of int values hdf dataset. It must not already exist.
-		* @param intValues						1d array of char values ordered firstly by fastest direction.
-		* @param numValuesInEachDimension		Number of values in each dimension of the array to write. They are ordered from fastest index to slowest index.
-		* @param numDimensions					The number of the dimensions of the array to write
-		*/
+		 * Writes an nd array of char values into the HDF5 file by means of a single dataset
+		 *
+		 * @param 	groupName					The name of the group where to create the nd array of int
+		 * 										values. This name must not contain '/' character and must be
+		 * 										directly contained in RESQML group.
+		 * @param 	name						The name of the nd array HDF5 dataset. It must not
+		 * 										already exist.
+		 * @param 	intValues					1d array of char values ordered firstly by fastest
+		 * 										direction.
+		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
+		 * 										write. They are ordered from fastest index to slowest index.
+		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
+		 */
 		virtual void writeArrayNdOfCharValues(const std::string & groupName,
 			const std::string & name,
 			const char * intValues,
@@ -184,13 +261,18 @@ namespace COMMON_NS
 			unsigned int numDimensions) = 0;
 
 		/**
-		 * Write an array (potentially with multi dimensions) of int values into the HDF file by means of a single dataset.
-		 * @param groupName						The name of the group where to create the array of int values.
-		 *										This name must not contain '/' character and must be directly contained in RESQML group.
-		 * @param name							The name of the array of int values hdf dataset. It must not already exist.
-		 * @param intValues						1d array of int values ordered firstly by fastest direction.
-		 * @param numValuesInEachDimension		Number of values in each dimension of the array to write. They are ordered from fastest index to slowest index.
-		 * @param numDimensions					The number of the dimensions of the array to write
+		 * Writes an nd array of int values into the HDF5 file by means of a single dataset
+		 *
+		 * @param 	groupName					The name of the group where to create the nd array of int
+		 * 										values. This name must not contain '/' character and must be
+		 * 										directly contained in RESQML group.
+		 * @param 	name						The name of the nd array HDF5 dataset. It must not
+		 * 										already exist.
+		 * @param 	intValues					1d array of int values ordered firstly by fastest
+		 * 										direction.
+		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
+		 * 										write. They are ordered from fastest index to slowest index.
+		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
 		 */
 		virtual void writeArrayNdOfIntValues(const std::string & groupName,
 		  const std::string & name,
@@ -198,15 +280,21 @@ namespace COMMON_NS
 		  const unsigned long long * numValuesInEachDimension,
 		  unsigned int numDimensions) = 0;
 
-		/**
-		* Write an array (potentially with multi dimensions) of gSoap unsigned long 64 values into the HDF file by means of a single dataset.
-		* @param groupName						The name of the group where to create the array of int values.
-		*										This name must not contain '/' character and must be directly contained in RESQML group.
-		* @param name							The name of the array of gSoap unsigned long 64 values hdf dataset. It must not already exist.
-		* @param ulong64Values					1d array of gSoap unsigned long 64 values ordered firstly by fastest direction.
-		* @param numValuesInEachDimension		Number of values in each dimension of the array to write. They are ordered from fastest index to slowest index.
-		* @param numDimensions					The number of the dimensions of the array to write
-		*/
+ 		/**
+ 		 * Writes an nd array of gSOAP unsigned long 64 values into the HDF5 file by means of a single
+ 		 * dataset
+ 		 *
+ 		 * @param 	groupName					The name of the group where to create the nd array of
+ 		 * 										gSOAP unsigned long 64 values. This name must not contain '/'
+ 		 * 										character and must be directly contained in RESQML group.
+ 		 * @param 	name						The name of the nd array HDF5 dataset. It must not
+ 		 * 										already exist.
+ 		 * @param 	ulong64Values				1d array of gSOAP unsigned long 64 values ordered firstly
+ 		 * 										by fastest direction.
+ 		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
+ 		 * 										write. They are ordered from fastest index to slowest index.
+ 		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
+ 		 */
  		virtual void writeArrayNdOfGSoapULong64Values(const std::string & groupName,
 			const std::string & name,
 			const ULONG64 * ulong64Values,
@@ -214,14 +302,19 @@ namespace COMMON_NS
 			unsigned int numDimensions) = 0;
 
 		/**
-		 * Write an array (potentially with multi dimensions) of a specific datatype into the HDF file by means of a single dataset.
-		 * @param groupName						The name of the group where to create the array of values.
-		 *										This name must not contain '/' character and must be directly contained in RESQML group.
-		 * @param name							The name of the array (potentially with multi dimensions) of a specific datatype hdf dataset. It must not already exist.
-		 * @param datatype						The specific datatype of the valeus to write.
-		 * @param values							1d array of specific datatype ordered firstly by fastest direction.
-		 * @param numValuesInEachDimension		Number of values in each dimension of the array to write. They are ordered from fastest index to slowest index.
-		 * @param numDimensions					The number of the dimensions of the array to write
+		 * Writes an nd array of a specific datatype into the HDF5 file by means of a single dataset
+		 *
+		 * @param 	groupName					The name of the group where to create the nd array of
+		 * 										specific datatype values. This name must not contain '/'
+		 * 										character and must be directly contained in RESQML group.
+		 * @param 	name						The name of the nd array HDF5 dataset. It must not
+		 * 										already exist.
+		 * @param 	datatype					The specific datatype of the values to write.
+		 * @param 	values						1d array of specific datatype values ordered firstly by
+		 * 										fastest direction.
+		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array to
+		 * 										write. They are ordered from fastest index to slowest index.
+		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to write.
 		 */
 		virtual void writeArrayNd(const std::string & groupName,
 		  const std::string & name,
@@ -231,13 +324,18 @@ namespace COMMON_NS
 		  unsigned int numDimensions) = 0;
 
 		/**
-		 * Create an array (potentially with multi dimensions) of a specific datatype into the HDF file. Values are not yet written to this array.
-		 * @param groupName                      The name of the group where to create the array of double values.
-		 *                                       This name must not contain '/' character and must be directly contained in RESQML group.
-		 * @param name                           The name of the array (potentially with multi dimensions) of a specific datatype hdf dataset. It must not exist.
-		 * @param datatype                       The specific datatype of the values to write.
-		 * @param numValuesInEachDimension       Number of values in each dimension of the array to write. They are ordered from fastest index to slowest index.
-		 * @param numDimensions                  The number of the dimensions of the array to write.
+		 * Creates an nd array of a specific datatype into the HDF5 file by means of a single dataset.
+		 * Values are not yet written to this array
+		 *
+		 * @param 	groupName					The name of the group where to create the nd array of
+		 * 										specific datatype values. This name must not contain '/'
+		 * 										character and must be directly contained in RESQML group.
+		 * @param 	name						The name of the nd array HDF5 dataset. It must not exist.
+		 * @param 	datatype					The specific datatype of the nd array values.
+		 * @param 	numValuesInEachDimension	Number of values in each dimension of the nd array. They
+		 * 										are ordered from fastest index to slowest index.
+		 * @param 	numDimensions				The number of the dimensions (n) of the nd array to
+		 * 										create.
 		 */
 		virtual void createArrayNd(
 		  const std::string& groupName,
@@ -248,13 +346,19 @@ namespace COMMON_NS
 		  ) = 0;
 
 		/**
-		 * Find the array associated with @p groupName and @p name and write to it.
-		 * @param groupName                      The name of the group associated with the array.
-		 * @param name                           The name of the array (potentially with multi dimensions).
-		 * @param values                         1d array of specific datatype ordered firstly by fastest direction.
-		 * @param numValuesInEachDimension       Number of values in each dimension of the array to write. They are ordered from fastest index to slowest index.
-		 * @param offsetValuesInEachDimension    Offset values in each dimension of the array to write. They are ordered from fastest index to slowest index.
-		 * @param numDimensions                  The number of the dimensions of the array to write.
+		 * Finds the nd array associated with @p groupName and @p name and writes into it
+		 *
+		 * @param 	groupName				   	The name of the group associated with the nd array.
+		 * @param 	name					   	The name of the nd array dataset.
+		 * @param 	datatype				   	The datatype of the nd array values.
+		 * @param 	values					   	1d array of datatype values ordered firstly by fastest
+		 * 										direction.
+		 * @param 	numValuesInEachDimension   	Number of values in each dimension of the nd array to
+		 * 										write. They are ordered from fastest index to slowest
+		 * 										index.
+		 * @param 	offsetValuesInEachDimension	Offset values in each dimension of the nd array to write.
+		 * 										They are ordered from fastest index to slowest index.
+		 * @param 	numDimensions			   	The number of the dimensions (n) of the nd array to write.
 		 */
 		virtual void writeArrayNdSlab(
 		  const std::string& groupName,
@@ -267,99 +371,199 @@ namespace COMMON_NS
 		  ) = 0;
 
 		/**
-		* Write some string attributes into a group
-		*/
+		 * Writes some string attributes into a group
+		 *
+		 * @exception	std::invalid_argument	Attributes names and string values vector do not have the same
+		 * 										size.
+		 *
+		 * @param 	groupName	  	Name of the group.
+		 * @param 	attributeNames	Vector of attributes names.
+		 * @param 	values		  	Vector of string values.
+		 */
 		virtual void writeGroupAttributes(const std::string & groupName,
 			const std::vector<std::string> & attributeNames,
 			const std::vector<std::string> & values) = 0;
 
 		/**
-		* Write a single attribute which contain an array of strings
-		*/
+		 * Writes a single attribute into a group which contains an array of string values
+		 *
+		 * @param 	groupName	 	Name of the group.
+		 * @param 	attributeName	Name of the attribute.
+		 * @param 	values		 	Vector of string values.
+		 */
 		virtual void writeGroupAttribute(const std::string & groupName,
 			const std::string & attributeName,
 			const std::vector<std::string> & values) = 0;
 
 		/**
-		* Write some double attributes into a group
-		*/
+		 * Writes some double attributes into a group
+		 *
+		 * @exception	std::invalid_argument	Attributes names and double values vector do not have the
+		 * 										same size.  
+		 *
+		 * @param 	groupName	  	Name of the group.
+		 * @param 	attributeNames	Vector of attributes names.
+		 * @param 	values		  	Vector of double values.
+		 */
 		virtual void writeGroupAttributes(const std::string & groupName,
 			const std::vector<std::string> & attributeNames,
 			const std::vector<double> & values) = 0;
 
 		/**
-		* Write some int attributes into a group
-		*/
+		 * Writes some int attributes into a group
+		 *
+		 * @exception	std::invalid_argument	Attributes names and int values vector do not have the
+		 * 										same size.  
+		 *
+		 * @param 	groupName	  	Name of the group.
+		 * @param 	attributeNames	Vector of attributes names.
+		 * @param 	values		  	Vector of int values.
+		 */
 		virtual void writeGroupAttributes(const std::string & groupName,
 			const std::vector<std::string> & attributeNames,
 			const std::vector<int> & values) = 0;
 
 		/**
-		* Write some string attributes into a dataset
-		*/
+		 * Writes some string attributes into a dataset
+		 *
+		 * @exception	std::invalid_argument	Attributes names and string values vector do not have the
+		 * 										same size.
+		 *
+		 * @param 	datasetName   	Name of the dataset.
+		 * @param 	attributeNames	Vector of attributes names.
+		 * @param 	values		  	Vector of string values.
+		 */
 		virtual void writeDatasetAttributes(const std::string & datasetName,
 			const std::vector<std::string> & attributeNames,
 			const std::vector<std::string> & values) = 0;
 
 		/**
-		* Write a single attribute which contain an array of strings
-		*/
+		 * Writes a single attribute into a dataset which contain an array of strings values
+		 *
+		 * @param 	datasetName  	Name of the dataset.
+		 * @param 	attributeName	Name of the attribute.
+		 * @param 	values		 	Vector of string values.
+		 */
 		virtual void writeDatasetAttribute(const std::string & datasetName,
 			const std::string & attributeName,
 			const std::vector<std::string> & values) = 0;
 
 		/**
-		* Write some double attributes into a dataset
-		*/
+		 * Writes some double attributes into a dataset
+		 *
+		 * @exception	std::invalid_argument	Attributes names and double values vector do not have the
+		 * 										same size.
+		 *
+		 * @param 	datasetName   	Name of the dataset.
+		 * @param 	attributeNames	Vector of attributes names.
+		 * @param 	values		  	Vector of double values.
+		 */
 		virtual void writeDatasetAttributes(const std::string & datasetName,
 			const std::vector<std::string> & attributeNames,
 			const std::vector<double> & values) = 0;
 
 		/**
-		* Write some int attributes into a dataset
-		*/
+		 * Writes some int attributes into a dataset
+		 *
+		 * @exception	std::invalid_argument	Attributes names and int values vector do not have the
+		 * 										same size.
+		 *
+		 * @param 	datasetName   	Name of the dataset.
+		 * @param 	attributeNames	Vector of attributes names.
+		 * @param 	values		  	Vector of int values.
+		 */
 		virtual void writeDatasetAttributes(const std::string & datasetName,
 			const std::vector<std::string> & attributeNames,
 			const std::vector<int> & values) = 0;
 
 		/**
-		* Read a string which is stored as an HDF attribute in a file, group or dataset
-		* @param obj_name use '.' if the attribute to read is on the file otherwise the full path
-		*/
+		 * Reads a string which is stored as an HDF5 attribute in a file, group or dataset
+		 *
+		 * @exception	std::invalid_argument	If the HDF5 file is not opened or if the attribute cannot
+		 * 										be read.
+		 *
+		 * @param 	obj_name 	Use "." if the attribute to read is on the HDF5 file otherwise the full
+		 * 						path of the group or dataset.
+		 * @param 	attr_name	Name of the attribute.
+		 *
+		 * @returns	The attribute value.
+		 */
 		virtual std::string readStringAttribute(const std::string & obj_name,
 			const std::string & attr_name) const = 0;
 
+		/**
+		 * Reads string values which are stored as an HDF5 attribute in a file, group or dataset
+		 *
+		 * @exception	std::invalid_argument	If the HDF5 file is not opened or if the attribute cannot
+		 * 										be read.
+		 *
+		 * @param 	obj_name 	Use "." if the attribute to read is on the HDF5 file otherwise the full
+		 * 						path of the group or dataset.
+		 * @param 	attr_name	Name of the attribute.
+		 *
+		 * @returns	The vector of attribute values.
+		 */
 		virtual std::vector<std::string> readStringArrayAttribute(const std::string & obj_name,
 			const std::string & attr_name) const = 0;
 
 		/**
-		* Read a double which is stored as an HDF attribute in a file, group or dataset
-		* @param obj_name use '.' if the attribute to read is on the file otherwise the full path
-		*/
+		 * Reads a double which is stored as an HDF5 attribute in a file, group or dataset
+		 *
+		 * @exception	std::invalid_argument	If the HDF5 file is not opened or if the attribute cannot
+		 * 										be read.
+		 *
+		 * @param 	obj_name 	use "." if the attribute to read is on the file otherwise the full path
+		 * 						of the group or dataset.
+		 * @param 	attr_name	Name of the attribute.
+		 *
+		 * @returns	The attribute value.
+		 */
 		virtual double readDoubleAttribute(const std::string & obj_name,
 			const std::string & attr_name) const = 0;
 
 		/**
-		* Read a long which is stored as an HDF attribute in a file, group or dataset
-		* @param obj_name use '.' if the attribute to read is on the file otherwise the full path
-		*/
+		 * Reads a long which is stored as an HDF5 attribute in a file, group or dataset
+		 *
+		 * @exception	std::invalid_argument	If the HDF5 file is not opened or if the attribute cannot
+		 * 										be read.
+		 *
+		 * @param 	obj_name 	use '.' if the attribute to read is on the file otherwise the full path
+		 * 						of the group or dataset.
+		 * @param 	attr_name	Name of the attribute.
+		 *
+		 * @returns	The attribute value.
+		 */
 		virtual LONG64 readLongAttribute(const std::string & obj_name,
 			const std::string & attr_name) const = 0;
 
 		/**
-		 * Read an array Nd of double values stored in a specific dataset
-		 * @param datasetName	The absolute dataset name where to read the values
-		 * @param values 		The values must be pre-allocated and won't be freed by this method.
+		 * Reads an nd array of double values stored in a specific dataset
+		 *
+		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
+		 *
+		 * @param 	   	datasetName	The absolute name of the nd array dataset.
+		 * @param [out]	values	   	1d array of double values ordered firstly by fastest direction. The
+		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
 		virtual void readArrayNdOfDoubleValues(const std::string & datasetName, double* values) = 0;
 
 		/**
-		 * Find the array associated with @p datasetName and read from it.
-		 * @param datasetName                    The name of the array (potentially with multi dimensions).
-		 * @param values                         1d array output of double values ordered firstly by fastest direction. The values must be pre-allocated and won't be freed by this method.
-		 * @param numValuesInEachDimension       Number of values in each dimension of the array to read. They are ordered from fastest index to slowest index.
-		 * @param offsetValuesInEachDimension    Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
-		 * @param numDimensions                  The number of the dimensions of the array to read.
+		 * Finds the nd array of double values associated with @p datasetName and reads from it
+		 *
+		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
+		 *
+		 * @param 	   	datasetName					The name of the nd array dataset.
+		 * @param [out]	values						1d array of double values ordered firstly by fastest
+		 * 											direction. The values must be pre-allocated and won't be
+		 * 											freed by this method.
+		 * @param 	   	numValuesInEachDimension	Number of values in each dimension of the nd array to
+		 * 											read. They are ordered from fastest index to slowest
+		 * 											index.
+		 * @param 	   	offsetInEachDimension   	Offset values in each dimension of the nd array to
+		 * 											read. They are ordered from fastest index to slowest
+		 * 											index.
+		 * @param 	   	numDimensions				The number of the dimensions (n) of the nd array to
+		 * 											read.
 		 */
 		virtual void readArrayNdOfDoubleValues(
 		  const std::string & datasetName,
@@ -370,14 +574,27 @@ namespace COMMON_NS
 		  ) = 0;
 
 		/**
-		 * Find the array associated with @p datasetName and read from it.
-		 * @param datasetName					The name of the array (potentially with multi dimensions).
-		 * @param values						1d array output of double values ordered firstly by fastest direction. The values must be pre-allocated and won't be freed by this method.
-		 * @param blockCountPerDimension		Number of blocks to select from the dataspace, in each dimension. They are ordered from fastest index to slowest index.
-		 * @param offsetInEachDimension			Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
-		 * @param strideInEachDimension			Number of elements to move from one block to another in each dimension. They are ordered from fastest index to slowest index.
-		 * @param blockSizeInEachDimension		Size of selected blocks in each dimension. They are ordered from fastest index to slowest index.
-		 * @param numDimensions					The number of the dimensions of the array to read.
+		 * Finds the nd array of double values associated with @p datasetName and reads from it
+		 *
+		 * @exception	invalid_argument	Thrown when an invalid argument error condition occurs.
+		 *
+		 * @param 	   	datasetName					The name of the nd array dataset.
+		 * @param [out]	values						1d array of double values ordered firstly by fastest
+		 * 											direction. The values must be pre-allocated and won't be
+		 * 											freed by this method.
+		 * @param 	   	blockCountPerDimension  	Number of blocks to select from the dataspace, in
+		 * 											each dimension. They are ordered from fastest index to
+		 * 											slowest index.
+		 * @param 	   	offsetInEachDimension   	Offset values in each dimension of the nd array to
+		 * 											read. They are ordered from fastest index to slowest
+		 * 											index.
+		 * @param 	   	strideInEachDimension   	Number of elements to move from one block to another
+		 * 											in each dimension. They are ordered from fastest index to
+		 * 											slowest index.
+		 * @param 	   	blockSizeInEachDimension	Size of selected blocks in each dimension. They are
+		 * 											ordered from fastest index to slowest index.
+		 * @param 	   	numDimensions				The number of the dimensions (n) of the nd array to
+		 * 											read.
 		 */
 		virtual void readArrayNdOfDoubleValues(
 			const std::string & datasetName, 
@@ -389,17 +606,34 @@ namespace COMMON_NS
 			unsigned int numDimensions) = 0;
 
 		/**
-		 * Considering a given dataset, this method selects an hyperslab region to add to an existing selected region or to add to a new selected region.
-		 * The dataset is not closed within this method.
-		 * @param datasetName					The name of the array (potentially with multi dimensions).
-		 * @param blockCountPerDimension		Number of blocks to select from the dataspace, in each dimension. They are ordered from fastest index to slowest index.
-		 * @param offsetInEachDimension			Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
-		 * @param strideInEachDimension			Number of elements to move from one block to another in each dimension. They are ordered from fastest index to slowest index.
-		 * @param blockSizeInEachDimension		Size of selected blocks in each dimension. They are ordered from fastest index to slowest index.
-		 * @param numDimensions					The number of the dimensions of the array to read.
-		 * @param newSelection					true if creating a new selected region else false.
-		 * @param dataset						Input dataset ID if adding a new hyperslab region to an existing selected region, output dataset ID if creating a new selected region.
-		 * @param filespace						Input selected region ID if adding a new hyperslab region to an existing selected region, output selected region ID if creating a new selected region.
+		 * Considering a given nd array dataset, this method selects an hyperslab region to add to an
+		 * existing selected region or to add to a new selected region. The dataset is not closed within
+		 * this method.
+		 *
+		 * @exception	invalid_argument	Thrown when an invalid argument error condition occurs.
+		 *
+		 * @param 		  	datasetName					The name of the nd array dataset.
+		 * @param 		  	blockCountPerDimension  	Number of blocks to select from the dataspace, in
+		 * 												each dimension. They are ordered from fastest index
+		 * 												to slowest index.
+		 * @param 		  	offsetInEachDimension   	Offset values in each dimension of the array to
+		 * 												read. They are ordered from fastest index to slowest
+		 * 												index.
+		 * @param 		  	strideInEachDimension   	Number of elements to move from one block to
+		 * 												another in each dimension. They are ordered from
+		 * 												fastest index to slowest index.
+		 * @param 		  	blockSizeInEachDimension	Size of selected blocks in each dimension. They
+		 * 												are ordered from fastest index to slowest index.
+		 * @param 		  	numDimensions				The number of the dimensions (n) of the nd array
+		 * 												to read.
+		 * @param 		  	newSelection				true if creating a new selected region else false.
+		 * @param [in,out]	dataset						Input dataset ID if adding a new hyperslab region
+		 * 												to an existing selected region, output dataset ID if
+		 * 												creating a new selected region.
+		 * @param [in,out]	filespace					Input selected region ID if adding a new
+		 * 												hyperslab region to an existing selected region,
+		 * 												output selected region ID if creating a new selected
+		 * 												region.
 		 */
 		virtual void selectArrayNdOfValues(
 			const std::string & datasetName,
@@ -413,11 +647,16 @@ namespace COMMON_NS
 			hdf5_hid_t & filespace) = 0;
 
 		/**
-		 * Considering a given dataset, read the double values corresponding to an existing selected region. 
-		 * @param dataset		ID of the dataset to read from.
-		 * @param filespace		ID of the selected region.
-		 * @param values		1d array output of double values ordered firstly by fastest direction. The values must be pre-allocated and won't be freed by this method.
-		 * @param slabSize		Number of values to read.
+		 * Considering a given nd array dataset, reads the double values corresponding to an existing
+		 * selected region.
+		 *
+		 * @exception	invalid_argument	Thrown when an invalid argument error condition occurs.
+		 *
+		 * @param 	   	dataset  	ID of the dataset to read from.
+		 * @param 	   	filespace	ID of the selected region.
+		 * @param [out]	values   	1d array of double values ordered firstly by fastest direction. The
+		 * 							values must be pre-allocated and won't be freed by this method.
+		 * @param 	   	slabSize 	Number of values to read.
 		 */
 		virtual void readArrayNdOfDoubleValues(
 			hdf5_hid_t dataset,
@@ -426,19 +665,33 @@ namespace COMMON_NS
 			unsigned long long slabSize) = 0;
 
 		/**
-		 * Read an array Nd of float values stored in a specific dataset.
-		 * @param datasetName	The absolute dataset name where to read the values
-		 * @param values 		The values must be pre-allocated.
+		 * Reads an nd array of float values stored in a specific dataset
+		 *
+		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
+		 *
+		 * @param 	   	datasetName	The absolute name of the nd array dataset.
+		 * @param [out]	values	   	1d array of float values ordered firstly by fastest direction. The
+		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
 		virtual void readArrayNdOfFloatValues(const std::string & datasetName, float* values) = 0;
 
 		/**
-		 * Find the array associated with @p datasetName and read from it.
-		 * @param datasetName                    The name of the array (potentially with multi dimensions).
-		 * @param values                         1d array output of float values ordered firstly by fastest direction. The values must be pre-allocated and won't be freed by this method.
-		 * @param numValuesInEachDimension       Number of values in each dimension of the array to read. They are ordered from fastest index to slowest index.
-		 * @param offsetValuesInEachDimension    Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
-		 * @param numDimensions                  The number of the dimensions of the array to read.
+		 * Finds the nd array of float values associated with @p datasetName and reads from it
+		 *
+		 * @exception	invalid_argument	Thrown when an invalid argument error condition occurs.
+		 *
+		 * @param 	   	datasetName					The name of the nd array dataset.
+		 * @param [out]	values						1d array of float values ordered firstly by fastest
+		 * 											direction. The values must be pre-allocated and won't be
+		 * 											freed by this method.
+		 * @param 	   	numValuesInEachDimension	Number of values in each dimension of the nd array to
+		 * 											read. They are ordered from fastest index to slowest
+		 * 											index.
+		 * @param 	   	offsetInEachDimension   	Offset values in each dimension of the nd array to
+		 * 											read. They are ordered from fastest index to slowest
+		 * 											index.
+		 * @param 	   	numDimensions				The number of the dimensions (n) of the nd array to
+		 * 											read.
 		 */
 		virtual void readArrayNdOfFloatValues(
 		  const std::string & datasetName,
@@ -449,19 +702,33 @@ namespace COMMON_NS
 		  ) = 0;
 
 		/**
-		 * Read an array Nd of long values stored in a specific dataset.
-		 * @param datasetName	The absolute dataset name where to read the values
-		 * @param values 		The values must be pre-allocated and won't be freed by this method.
+		 * Reads an nd array of long values stored in a specific dataset
+		 *
+		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
+		 *
+		 * @param 	   	datasetName	The absolute name of the nd array dataset.
+		 * @param [out]	values	   	1d array of long values ordered firstly by fastest direction. The
+		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
 		virtual void readArrayNdOfLongValues(const std::string & datasetName, LONG64* values) = 0;
 
 		/**
-		 * Find the array associated with datasetName and read from it.
-		 * @param datasetName                    The name of the array (potentially with multi dimensions).
-		 * @param values                         1d array output of long values ordered firstly by fastest direction. The values must be pre-allocated and won't be freed by this method.
-		 * @param numValuesInEachDimension       Number of values in each dimension of the array to read. They are ordered from fastest index to slowest index.
-		 * @param offsetValuesInEachDimension    Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
-		 * @param numDimensions                  The number of the dimensions of the array to read.
+		 * Finds the nd array of long values associated with @p datasetName and reads from it
+		 *
+		 * @exception	invalid_argument	Thrown when an invalid argument error condition occurs.
+		 *
+		 * @param 	   	datasetName					The name of the nd array dataset.
+		 * @param [out]	values						1d array of long values ordered firstly by fastest
+		 * 											direction. The values must be pre-allocated and won't be
+		 * 											freed by this method.
+		 * @param 	   	numValuesInEachDimension	Number of values in each dimension of the nd array to
+		 * 											read. They are ordered from fastest index to slowest
+		 * 											index.
+		 * @param 	   	offsetInEachDimension   	Offset values in each dimension of the nd array to
+		 * 											read. They are ordered from fastest index to slowest
+		 * 											index.
+		 * @param 	   	numDimensions				The number of the dimensions (n) of the nd array to
+		 * 											read.
 		 */
 		virtual void readArrayNdOfLongValues(
 			const std::string & datasetName,
@@ -471,27 +738,46 @@ namespace COMMON_NS
 			unsigned int numDimensions) = 0;
 
 		/**
-		 * Read an array Nd of unsigned long values stored in a specific dataset.
-		 * @param datasetName	The absolute dataset name where to read the values
-		 * @param values 		The values must be pre-allocated and won't be freed by this method.
+		 * Reads an nd array of unsigned long values stored in a specific dataset
+		 *
+		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
+		 *
+		 * @param 	   	datasetName	The absolute name of the nd array dataset.
+		 * @param [out]	values	   	1d array of unsigned long values ordered firstly by fastest
+		 * 							direction. The values must be pre-allocated and won't be freed by
+		 * 							this method.
 		 */
 		virtual void readArrayNdOfULongValues(const std::string & datasetName, ULONG64* values) = 0;
 
 		/**
-		 * Read an array Nd of int values stored in a specific dataset.
-		 * @param datasetName	The absolute dataset name where to read the values
-		 * @param values 		The values must be pre-allocated and won't be freed by this method.
+		 * Reads an nd array of int values stored in a specific dataset
+		 *
+		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
+		 *
+		 * @param 	   	datasetName	The absolute name of the nd array dataset.
+		 * @param [out]	values	   	1d array of int values ordered firstly by fastest direction. The
+		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
 		virtual void readArrayNdOfIntValues(const std::string & datasetName, int* values) = 0;
 
 		/**
-		* Find the array associated with datasetName and read from it.
-		* @param datasetName                    The name of the array (potentially with multi dimensions).
-		* @param values                         1d array output of int values ordered firstly by fastest direction. The values must be pre-allocated and won't be freed by this method.
-		* @param numValuesInEachDimension       Number of values in each dimension of the array to read. They are ordered from fastest index to slowest index.
-		* @param offsetValuesInEachDimension    Offset values in each dimension of the array to read. They are ordered from fastest index to slowest index.
-		* @param numDimensions                  The number of the dimensions of the array to read.
-		*/
+		 * Finds the nd array of int values associated with @p datasetName and reads from it
+		 *
+		 * @exception	std::invalid_argument	Thrown when an invalid argument error condition occurs.
+		 *
+		 * @param 	   	datasetName					The name of the nd array dataset.
+		 * @param [out]	values						1d array of int values ordered firstly by fastest
+		 * 											direction. The values must be pre-allocated and won't be
+		 * 											freed by this method.
+		 * @param 	   	numValuesInEachDimension	Number of values in each dimension of the nd array to
+		 * 											read. They are ordered from fastest index to slowest
+		 * 											index.
+		 * @param 	   	offsetInEachDimension   	Offset values in each dimension of the nd array to
+		 * 											read. They are ordered from fastest index to slowest
+		 * 											index.
+		 * @param 	   	numDimensions				The number of the dimensions (n) of the nd array to
+		 * 											read.
+		 */
 		virtual void readArrayNdOfIntValues(
 			const std::string & datasetName,
 			int* values,
@@ -501,56 +787,89 @@ namespace COMMON_NS
 		) = 0;
 
 		/**
-		 * Read an array Nd of unsigned int values stored in a specific dataset
-		 * Don't forget to delete the allocated pointer when no more necessary.
-		 * @param datasetName	The absolute dataset name where to read the values
-		 * @param values 		The values must be pre-allocated and won't be freed by this method.
+		 * Reads an nd array of unsigned int values stored in a specific dataset
+		 *
+		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
+		 *
+		 * @param 	   	datasetName	The absolute name of the nd array dataset.
+		 * @param [out]	values	   	1d array of unsigned int values ordered firstly by fastest direction.
+		 * 							The values must be pre-allocated and won't be freed by this method.
 		 */
 		virtual void readArrayNdOfUIntValues(const std::string & datasetName, unsigned int* values) = 0;
 
 		/**
-		 * Read an array Nd of short values stored in a specific dataset
-		 * Don't forget to delete the allocated pointer when no more necessary.
-		 * @param datasetName	The absolute dataset name where to read the values
-		 * @param values 		The values must be pre-allocated and won't be freed by this method.
+		 * Reads an nd array of short values stored in a specific dataset
+		 *
+		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
+		 *
+		 * @param 	   	datasetName	The absolute name of the nd array dataset.
+		 * @param [out]	values	   	1d array of short values ordered firstly by fastest direction. The
+		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
 		virtual void readArrayNdOfShortValues(const std::string & datasetName, short* values) = 0;
 
 		/**
-		 * Read an array Nd of unsigned short values stored in a specific dataset.
-		 * @param datasetName	The absolute dataset name where to read the values
-		 * @param values 		The values must be pre-allocated and won't be freed by this method.
+		 * Reads an nd array of unsigned short values stored in a specific dataset
+		 *
+		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
+		 *
+		 * @param 	   	datasetName	The absolute name of the nd array dataset.
+		 * @param [out]	values	   	1d array of unsigned short values ordered firstly by fastest
+		 * 							direction. The values must be pre-allocated and won't be freed by
+		 * 							this method.
 		 */
 		virtual void readArrayNdOfUShortValues(const std::string & datasetName, unsigned short* values) = 0;
 
 		/**
-		 * Read an array Nd of char values stored in a specific dataset.
-		 * @param datasetName	The absolute dataset name where to read the values
-		 * @param values 		The values must be pre-allocated and won't be freed by this method.
+		 * Reads an nd array of char values stored in a specific dataset
+		 *
+		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
+		 *
+		 * @param 	   	datasetName	The absolute name of the nd array dataset.
+		 * @param [out]	values	   	1d array of char values ordered firstly by fastest direction. The
+		 * 							values must be pre-allocated and won't be freed by this method.
 		 */
 		virtual void readArrayNdOfCharValues(const std::string & datasetName, char* values) = 0;
 
 		/**
-		 * Read an array Nd of unsigned char values stored in a specific dataset.
-		 * @param datasetName	The absolute dataset name where to read the values
-		 * @param values 		The values must be pre-allocated and won't be freed by this method.
+		 * Reads an nd array of unsigned char values stored in a specific dataset
+		 *
+		 * @exception	std::invalid_argument	If the nd array dataset cannot be opened or read.
+		 *
+		 * @param 	   	datasetName	The absolute name of the nd array dataset.
+		 * @param [out]	values	   	1d array of unsigned char values ordered firstly by fastest
+		 * 							direction. The values must be pre-allocated and won't be freed by
+		 * 							this method.
 		 */
 		virtual void readArrayNdOfUCharValues(const std::string & datasetName, unsigned char* values) = 0;
 
 		/**
-		 * Read the dimensions of an array stored in a specific dataset
-		 * @param datasetName	The absolute dataset name where to read the array dimensions
+		 * Reads the dimensions size of an nd array stored in a specific dataset
+		 *
+		 * @param 	datasetName	The absolute name of the nd array dataset.
+		 *
+		 * @returns	A vector of dimensions size.
 		 */
 		virtual std::vector<unsigned long long> readArrayDimensions(const std::string & datasetName) = 0;
 
 		/**
-		* Check wether an absolute path exists in the hdf file or not.
-		*/
+		 * Checks whether an absolute path exists in the HDF5 file
+		 *
+		 * @param 	absolutePathInHdfFile	An absolute path in the HDF5 file.
+		 *
+		 * @returns	True if the absolute path exists, else false.
+		 */
 		virtual bool exist(const std::string & absolutePathInHdfFile) const = 0;
 
 		/**
-		* Check wether a dataset is compressed or not.
-		*/
+		 * Checks whether a dataset is compressed or not
+		 *
+		 * @exception	invalid_argument	Thrown when an invalid argument error condition occurs.
+		 *
+		 * @param 	datasetName	Name of the dataset.
+		 *
+		 * @returns	True if compressed, false if not.
+		 */
 		virtual bool isCompressed(const std::string & datasetName) = 0;
 	};
 }

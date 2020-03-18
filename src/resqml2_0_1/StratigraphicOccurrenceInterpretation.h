@@ -22,6 +22,7 @@ under the License.
 #include "EarthModelInterpretation.h"
 #include "WellboreMarkerFrameRepresentation.h"
 
+/** . */
 namespace RESQML2_0_1_NS
 {
 	/**
@@ -49,33 +50,50 @@ namespace RESQML2_0_1_NS
 		*/
 		StratigraphicOccurrenceInterpretation(gsoap_resqml2_0_1::_resqml20__StratigraphicOccurrenceInterpretation* fromGsoap) : RESQML2_NS::AbstractStratigraphicOrganizationInterpretation(fromGsoap) {}
 
-		/**
-		* Destructor does nothing since the memory is managed by the gsoap context.
-		*/
+		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~StratigraphicOccurrenceInterpretation() {}
 
+		/**
+		 * Sets stratigraphic column rank interpretation
+		 *
+		 * @param [in,out]	stratiColumnRankInterp	If non-null, the strati column rank interp.
+		 */
 		DLL_IMPORT_OR_EXPORT void setStratigraphicColumnRankInterpretation(class StratigraphicColumnRankInterpretation * stratiColumnRankInterp);
 
+		/** A stratigraphic column rank interpretation*. */
 		DLL_IMPORT_OR_EXPORT class StratigraphicColumnRankInterpretation * getStratigraphicColumnRankInterpretation() const;
 
 		/**
-		* Get all the stratigraphic occurence interpretations associated with this StratigraphicColumnRankInterpretation.
-		*/
+		 * Get all the stratigraphic occurence interpretations associated with this
+		 * StratigraphicColumnRankInterpretation.
+		 *
+		 * @returns	Null if it fails, else the wellbore marker frame representation set.
+		 */
 		DLL_IMPORT_OR_EXPORT std::vector<class WellboreMarkerFrameRepresentation *> getWellboreMarkerFrameRepresentationSet() const;
 
-		DLL_IMPORT_OR_EXPORT std::string getStratigraphicColumnRankInterpretationUuid() const;
-                
 		/**
-		* The standard XML tag without XML namespace for serializing this data object.
-		*/
+		 * Gets stratigraphic column rank interpretation uuid
+		 *
+		 * @returns	The stratigraphic column rank interpretation uuid.
+		 */
+		DLL_IMPORT_OR_EXPORT std::string getStratigraphicColumnRankInterpretationUuid() const;
+
+		/**
+		 * The standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 		/**
-		* Get the standard XML tag without XML namespace for serializing this data object.
-		*/
+		 * Get the standard XML tag without XML namespace for serializing this data object.
+		 *
+		 * @returns	The XML tag.
+		 */
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const { return XML_TAG; }
 
 	private:
+		/** Loads target relationships */
 		void loadTargetRelationships();
 	};
 }

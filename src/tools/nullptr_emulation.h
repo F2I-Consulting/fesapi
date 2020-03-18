@@ -24,21 +24,38 @@ From Scott Meyers C++ book
 
 #if __cplusplus < 201103L
 
-const // It is a const object...
+///< It is a const object...
+const
 class nullptr_t
 {
   public:
+
+    /**
+     * T* casting operator
+     *
+     * @returns	The result of the operation.
+     */
     template<class T>
     inline operator T*() const // convertible to any type of null non-member pointer...
     { return 0; }
 
+    /**
+     * Gets the *
+     *
+     * @tparam	C	Type of the c.
+     * @tparam	T	Generic type parameter.
+     *
+     * @returns	A T.
+     */
     template<class C, class T>
     inline operator T C::*() const   // or any type of null member pointer...
     { return 0; }
 
   private:
+    /** Reference operator */
     void operator&() const;  // Can't take address of nullptr
 
+///< .
 } nullptr = {};
 
 #endif
