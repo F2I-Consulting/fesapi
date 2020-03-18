@@ -23,10 +23,11 @@ under the License.
 
 #include "H5public.h"
 
-#include "WellboreInterpretation.h"
-#include "../resqml2/MdDatum.h"
-#include "WellboreFrameRepresentation.h"
 #include "../resqml2/AbstractLocal3dCrs.h"
+#include "../resqml2/DeviationSurvey.h"
+#include "../resqml2/MdDatum.h"
+#include "../resqml2/WellboreFrameRepresentation.h"
+#include "../resqml2/WellboreInterpretation.h"
 #include "../common/AbstractHdfProxy.h"
 
 using namespace std;
@@ -34,9 +35,7 @@ using namespace RESQML2_0_1_NS;
 using namespace gsoap_resqml2_0_1;
 using namespace COMMON_NS;
 
-const char* WellboreTrajectoryRepresentation::XML_TAG = "WellboreTrajectoryRepresentation";
-
-WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInterpretation * interp, const string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo)
+WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const string & guid, const std::string & title, RESQML2_NS::MdDatum * mdInfo)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The represented wellbore interpretation cannot be null.");
@@ -61,7 +60,7 @@ WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInter
 	setInterpretation(interp);
 }
 
-WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(WellboreInterpretation * interp, const string & guid, const std::string & title, DeviationSurveyRepresentation * deviationSurvey)
+WellboreTrajectoryRepresentation::WellboreTrajectoryRepresentation(RESQML2_NS::WellboreInterpretation * interp, const string & guid, const std::string & title, RESQML2_NS::DeviationSurveyRepresentation * deviationSurvey)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The represented wellbore interpretation cannot be null.");
@@ -99,7 +98,7 @@ void WellboreTrajectoryRepresentation::setMinimalGeometry(double startMd, double
 	rep->FinishMd = endMd;
 }
 
-void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
+void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, double startMd, double endMd, unsigned int controlPointCount, int lineKind, COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (controlPoints == nullptr) {
 		throw invalid_argument("The control points are missing.");
@@ -148,7 +147,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, doubl
 	getRepository()->addRelationship(this, localCrs);
 }
 
-void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, double* controlPointParameters, unsigned int controlPointCount, int lineKind,
+void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
 	COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (controlPointParameters == nullptr) {
@@ -171,8 +170,8 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints, doubl
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "controlPointParameters", controlPointParameters, &dimParamDataSet, 1);
 }
 
-void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints,
-	double * tangentVectors, double* controlPointParameters, unsigned int controlPointCount, int lineKind,
+void WellboreTrajectoryRepresentation::setGeometry(double const* controlPoints,
+	double const* tangentVectors, double const* controlPointParameters, unsigned int controlPointCount, int lineKind,
 	COMMON_NS::AbstractHdfProxy * proxy, RESQML2_NS::AbstractLocal3dCrs* localCrs)
 {
 	if (tangentVectors == nullptr) {
@@ -196,27 +195,7 @@ void WellboreTrajectoryRepresentation::setGeometry(double * controlPoints,
 	proxy->writeArrayNdOfDoubleValues(getHdfGroup(), "tangentVectors", tangentVectors, dim, 2);
 }
 
-void WellboreTrajectoryRepresentation::loadTargetRelationships()
-{
-	AbstractRepresentation::loadTargetRelationships();
-
-	_resqml20__WellboreTrajectoryRepresentation const * rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
-
-	COMMON_NS::DataObjectReference dor = COMMON_NS::DataObjectReference(static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1)->MdDatum);
-	convertDorIntoRel<RESQML2_NS::MdDatum>(dor);
-
-	dor = getDeviationSurveyDor();
-	if (!dor.isEmpty()) {
-		convertDorIntoRel<DeviationSurveyRepresentation>(dor);
-	}
-
-	if (rep->ParentIntersection != nullptr) {
-		dor = COMMON_NS::DataObjectReference(rep->ParentIntersection->ParentTrajectory);
-		convertDorIntoRel<WellboreTrajectoryRepresentation>(dor);
-	}
-}
-
-void WellboreTrajectoryRepresentation::addParentTrajectory(double kickoffMd, double parentMd, WellboreTrajectoryRepresentation* parentTrajRep)
+void WellboreTrajectoryRepresentation::addParentTrajectory(double kickoffMd, double parentMd, RESQML2_NS::WellboreTrajectoryRepresentation* parentTrajRep)
 {
 	getRepository()->addRelationship(this, parentTrajRep);
 
@@ -227,10 +206,10 @@ void WellboreTrajectoryRepresentation::addParentTrajectory(double kickoffMd, dou
 	rep->ParentIntersection->ParentTrajectory = parentTrajRep->newResqmlReference();
 }
 
-WellboreTrajectoryRepresentation* WellboreTrajectoryRepresentation::getParentTrajectory() const
+COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getParentTrajectoryDor() const
 {
 	_resqml20__WellboreTrajectoryRepresentation const * rep = static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1);
-	return rep->ParentIntersection == nullptr ? nullptr : getRepository()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(rep->ParentIntersection->ParentTrajectory->UUID);
+	return rep->ParentIntersection == nullptr ? COMMON_NS::DataObjectReference() : COMMON_NS::DataObjectReference(rep->ParentIntersection->ParentTrajectory);
 }
 
 double WellboreTrajectoryRepresentation::getParentTrajectoryMd() const
@@ -241,11 +220,6 @@ double WellboreTrajectoryRepresentation::getParentTrajectoryMd() const
 	}
 
 	throw logic_error("This wellbore trajectory has no parent trajecory.");
-}
-
-std::vector<WellboreTrajectoryRepresentation *> WellboreTrajectoryRepresentation::getChildrenTrajectorySet() const
-{
-	return getRepository()->getSourceObjects<WellboreTrajectoryRepresentation>(this);
 }
 
 ULONG64 WellboreTrajectoryRepresentation::getXyzPointCountOfPatch(const unsigned int & patchIndex) const
@@ -387,14 +361,9 @@ void WellboreTrajectoryRepresentation::setMdDatum(RESQML2_NS::MdDatum * mdDatum)
 	static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1)->MdDatum = mdDatum->newResqmlReference();
 }
 
-RESQML2_NS::MdDatum * WellboreTrajectoryRepresentation::getMdDatum() const
+COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getMdDatumDor() const
 {
-	return static_cast<RESQML2_NS::MdDatum*>(getRepository()->getDataObjectByUuid(getMdDatumUuid()));
-}
-
-std::string WellboreTrajectoryRepresentation::getMdDatumUuid() const
-{
-	return static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1)->MdDatum->UUID;
+	return COMMON_NS::DataObjectReference(static_cast<_resqml20__WellboreTrajectoryRepresentation*>(gsoapProxy2_0_1)->MdDatum);
 }
 
 COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getHdfProxyDor() const
@@ -427,7 +396,7 @@ COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getLocalCrsDor(
 		: COMMON_NS::DataObjectReference();
 }
 
-gsoap_resqml2_0_1::eml20__DataObjectReference* WellboreTrajectoryRepresentation::getDeviationSurveyDor() const
+COMMON_NS::DataObjectReference WellboreTrajectoryRepresentation::getDeviationSurveyDor() const
 {
 	return getSpecializedGsoapProxy()->DeviationSurvey;
 }
@@ -437,42 +406,9 @@ bool WellboreTrajectoryRepresentation::hasGeometry() const
 	return getSpecializedGsoapProxy()->Geometry != nullptr;
 }
 
-void WellboreTrajectoryRepresentation::setDeviationSurvey(DeviationSurveyRepresentation* deviationSurvey)
+void WellboreTrajectoryRepresentation::setDeviationSurvey(RESQML2_NS::DeviationSurveyRepresentation* deviationSurvey)
 {
 	getRepository()->addRelationship(this, deviationSurvey);
 
 	getSpecializedGsoapProxy()->DeviationSurvey = deviationSurvey->newResqmlReference();
-}
-
-DeviationSurveyRepresentation* WellboreTrajectoryRepresentation::getDeviationSurvey() const
-{
-	gsoap_resqml2_0_1::eml20__DataObjectReference const * dsDor = getDeviationSurveyDor();
-
-	return dsDor == nullptr ? nullptr : repository->getDataObjectByUuid<DeviationSurveyRepresentation>(dsDor->UUID);
-}
-
-std::vector<RESQML2_NS::WellboreFrameRepresentation *> WellboreTrajectoryRepresentation::getWellboreFrameRepresentationSet() const
-{
-	return getRepository()->getSourceObjects<RESQML2_NS::WellboreFrameRepresentation>(this);
-}
-
-unsigned int WellboreTrajectoryRepresentation::getWellboreFrameRepresentationCount() const
-{
-	const size_t result = getWellboreFrameRepresentationSet().size();
-	if (result > (std::numeric_limits<unsigned int>::max)()) {
-		throw range_error("There are too much associated WellboreFrameRepresentation.");
-	}
-
-	return static_cast<unsigned int>(result);
-}
-
-RESQML2_NS::WellboreFrameRepresentation * WellboreTrajectoryRepresentation::getWellboreFrameRepresentation(unsigned int index) const
-{
-	const std::vector<RESQML2_NS::WellboreFrameRepresentation *>& wfrs = getWellboreFrameRepresentationSet();
-	
-	if (index >= wfrs.size()) {
-		throw out_of_range("The index if out of range");
-	}
-
-	return wfrs[index];
 }

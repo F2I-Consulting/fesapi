@@ -200,7 +200,7 @@ namespace RESQML2_NS
 		 * 
 		 * @return The associated RESQML wellbore trajectory.
 		 */
-		DLL_IMPORT_OR_EXPORT class RESQML2_0_1_NS::WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
+		DLL_IMPORT_OR_EXPORT class WellboreTrajectoryRepresentation* getWellboreTrajectory() const;
 
 		COMMON_NS::DataObjectReference getLocalCrsDor(unsigned int patchIndex) const override;
 

@@ -21,12 +21,6 @@ under the License.
 #include "AbstractGridRepresentation.h"
 
 /** . */
-namespace RESQML2_0_1_NS
-{
-	class AbstractStratigraphicOrganizationInterpretation;
-}
-
-/** . */
 namespace RESQML2_NS
 {
 	/** Proxy class for an abstract column layer grid representation. */

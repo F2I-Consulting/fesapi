@@ -23,6 +23,7 @@ under the License.
 #include <hdf5.h>
 
 #include "AbstractLocal3dCrs.h"
+#include "WellboreTrajectoryRepresentation.h"
 #include "../common/AbstractHdfProxy.h"
 #include "../tools/Misc.h"
 
@@ -454,16 +455,9 @@ ULONG64 WellboreFrameRepresentation::getXyzPointCountOfPatch(const unsigned int 
 	return getMdValuesCount();
 }
 
-RESQML2_0_1_NS::WellboreTrajectoryRepresentation* WellboreFrameRepresentation::getWellboreTrajectory() const
+WellboreTrajectoryRepresentation* WellboreFrameRepresentation::getWellboreTrajectory() const
 {
-	if (gsoapProxy2_0_1 != nullptr) {
-		return getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>(static_cast<_resqml20__WellboreFrameRepresentation*>(gsoapProxy2_0_1)->Trajectory->UUID);
-	}
-	else if (gsoapProxy2_2 != nullptr) {
-		return getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>(static_cast<_resqml22__WellboreFrameRepresentation*>(gsoapProxy2_2)->Trajectory->Uuid);
-	}
-
-	throw invalid_argument("Not implemented yet");
+	return getRepository()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(getWellboreTrajectoryDor().getUuid());
 }
 
 void WellboreFrameRepresentation::loadTargetRelationships()
@@ -472,10 +466,10 @@ void WellboreFrameRepresentation::loadTargetRelationships()
 
 	COMMON_NS::DataObjectReference dor = getWellboreTrajectoryDor();
 	// todo the trajectory should be resqml2 instead of resqml2_0_1
-	RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj = getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>(dor.getUuid());
+	WellboreTrajectoryRepresentation* traj = getRepository()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(dor.getUuid());
 	if (traj == nullptr) { // partial transfer
 		getRepository()->createPartial(dor);
-		traj = getRepository()->getDataObjectByUuid<RESQML2_0_1_NS::WellboreTrajectoryRepresentation>(dor.getUuid());
+		traj = getRepository()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(dor.getUuid());
 	}
 	if (traj == nullptr) {
 		throw invalid_argument("The DOR looks invalid.");

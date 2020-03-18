@@ -96,12 +96,9 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT void setMdDatum(RESQML2_NS::MdDatum * mdDatum);
 
 		/**
-		 * Gets md datum dor
-		 *
-		 * @returns	null pointer if no md datum is associated to this representation. Otherwise return
-		 * 			the data object reference of the associated md datum.
-		 */
-		gsoap_resqml2_0_1::eml20__DataObjectReference* getMdDatumDor() const;
+		* @return	null pointer if no md datum is associated to this representation. Otherwise return the data object reference of the associated md datum.
+		*/
+		COMMON_NS::DataObjectReference getMdDatumDor() const;
 
 		/**
 		 * Getter of the md information associated to this WellboreFeature trajectory representation.
@@ -111,19 +108,8 @@ namespace RESQML2_0_1_NS
 		DLL_IMPORT_OR_EXPORT RESQML2_NS::MdDatum * getMdDatum() const;
 
 		/**
-		 * Getter of the md information uuid associated to this WellboreFeature trajectory
-		 * representation.
-		 *
-		 * @returns	The md datum uuid.
-		 */
-		DLL_IMPORT_OR_EXPORT std::string getMdDatumUuid() const;
-
-		/**
-		 * Used to indicate that this is a final version of the deviation survey, as distinct from the
-		 * interim interpretations.
-		 *
-		 * @returns	True if final, false if not.
-		 */
+		* Used to indicate that this is a final version of the deviation survey, as distinct from the interim interpretations.
+		*/
 		DLL_IMPORT_OR_EXPORT bool isFinal() const;
 
 		/**

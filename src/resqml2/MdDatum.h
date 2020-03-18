@@ -18,14 +18,7 @@ under the License.
 -----------------------------------------------------------------------*/
 #pragma once
 
-#include "../resqml2_0_1/DeviationSurveyRepresentation.h"
-
-/** . */
-namespace RESQML2_0_1_NS
-{
-	class WellboreTrajectoryRepresentation;
-	class DeviationSurveyRepresentation;
-}
+#include "../common/AbstractObject.h"
 
 /** . */
 namespace RESQML2_NS

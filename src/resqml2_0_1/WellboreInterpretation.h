@@ -19,13 +19,13 @@ under the License.
 
 #pragma once
 
-#include "../resqml2/AbstractFeatureInterpretation.h"
+#include "../resqml2/WellboreInterpretation.h"
 
 /** . */
 namespace RESQML2_0_1_NS
 {
 	/** Proxy class for a wellbore interpretation. */
-	class WellboreInterpretation : public RESQML2_NS::AbstractFeatureInterpretation
+	class WellboreInterpretation : public RESQML2_NS::WellboreInterpretation
 	{
 	public:
 
@@ -35,9 +35,8 @@ namespace RESQML2_0_1_NS
 		 * @param [in]	partialObject	If non-nullptr, the partial object.
 		 */
 		DLL_IMPORT_OR_EXPORT WellboreInterpretation(gsoap_resqml2_0_1::eml20__DataObjectReference* partialObject) :
-			RESQML2_NS::AbstractFeatureInterpretation(partialObject)
-		{
-		}
+			RESQML2_NS::WellboreInterpretation(partialObject)
+		{}
 
 		/**
 		 * Creates a wellbore interpretation.
@@ -52,14 +51,14 @@ namespace RESQML2_0_1_NS
 		 * @param 	  	isDrilled	   	Indicate if the wellbore is interpreted wether as drilled (true)
 		 * 								or not (false).
 		 */
-		WellboreInterpretation(class WellboreFeature * wellboreFeature, const std::string & guid, const std::string & title, bool isDrilled);
+		WellboreInterpretation(RESQML2_NS::WellboreFeature* WellboreFeature, const std::string& guid, const std::string& title, bool isDrilled);
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.
 		 *
 		 * @param [in]	fromGsoap	If non-null, the gSOAP instance.
 		 */
-		WellboreInterpretation(gsoap_resqml2_0_1::_resqml20__WellboreInterpretation* fromGsoap) : RESQML2_NS::AbstractFeatureInterpretation(fromGsoap) {}
+		WellboreInterpretation(gsoap_resqml2_0_1::_resqml20__WellboreInterpretation* fromGsoap) : RESQML2_NS::WellboreInterpretation(fromGsoap) {}
 
 		/** Destructor does nothing since the memory is managed by the gsoap context. */
 		~WellboreInterpretation() {}
@@ -70,18 +69,5 @@ namespace RESQML2_0_1_NS
 		 * @returns	True if drilled, false if not.
 		 */
 		bool isDrilled() const;
-
-		/**
-		 * Gets all the trajectory representations of this wellbore interpretation.
-		 *
-		 * @returns	A vector of pointers to all the trajectory representations of this wellbore
-		 * 			interpretation.
-		 */
-		DLL_IMPORT_OR_EXPORT std::vector<class WellboreTrajectoryRepresentation *> getWellboreTrajectoryRepresentationSet() const;
-
-		/** The standard XML tag without XML namespace for serializing this data object. */
-		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
-
-		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
 	};
 }
