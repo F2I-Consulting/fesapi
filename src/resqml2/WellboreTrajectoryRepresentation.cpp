@@ -23,11 +23,9 @@ under the License.
 
 #include "H5public.h"
 
-#include "WellboreInterpretation.h"
+#include "DeviationSurveyRepresentation.h"
 #include "MdDatum.h"
 #include "WellboreFrameRepresentation.h"
-#include "AbstractLocal3dCrs.h"
-#include "../common/AbstractHdfProxy.h"
 
 using namespace std;
 using namespace RESQML2_NS;
@@ -41,7 +39,7 @@ void WellboreTrajectoryRepresentation::loadTargetRelationships()
 	AbstractRepresentation::loadTargetRelationships();
 
 	COMMON_NS::DataObjectReference dor = getMdDatumDor();
-	convertDorIntoRel<RESQML2_NS::MdDatum>(dor);
+	convertDorIntoRel<MdDatum>(dor);
 
 	dor = getDeviationSurveyDor();
 	if (!dor.isEmpty()) {
@@ -61,7 +59,7 @@ RESQML2_NS::MdDatum * WellboreTrajectoryRepresentation::getMdDatum() const
 
 WellboreTrajectoryRepresentation* WellboreTrajectoryRepresentation::getParentTrajectory() const
 {
-	getRepository()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(getParentTrajectoryDor().getUuid());
+	return getRepository()->getDataObjectByUuid<WellboreTrajectoryRepresentation>(getParentTrajectoryDor().getUuid());
 }
 
 std::vector<WellboreTrajectoryRepresentation *> WellboreTrajectoryRepresentation::getChildrenTrajectorySet() const
@@ -97,5 +95,5 @@ RESQML2_NS::WellboreFrameRepresentation * WellboreTrajectoryRepresentation::getW
 
 DeviationSurveyRepresentation* WellboreTrajectoryRepresentation::getDeviationSurvey() const
 {
-	getRepository()->getDataObjectByUuid<DeviationSurveyRepresentation>(getDeviationSurveyDor().getUuid());
+	return getRepository()->getDataObjectByUuid<DeviationSurveyRepresentation>(getDeviationSurveyDor().getUuid());
 }

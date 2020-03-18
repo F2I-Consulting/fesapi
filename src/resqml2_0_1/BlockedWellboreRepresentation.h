@@ -42,7 +42,7 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	title	The title.
 		 * @param [in,out]	traj 	If non-null, the traj.
 		 */
-		void init(const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation * traj);
+		void init(const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj);
 
 	public:
 
@@ -63,8 +63,8 @@ namespace RESQML2_0_1_NS
 		 * @param 		  	title 	A title for the instance to create.
 		 * @param [in,out]	traj  	The wellbore trajectory this intance is based on.
 		 */
-		BlockedWellboreRepresentation(class WellboreInterpretation * interp,
-			const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation * traj);
+		BlockedWellboreRepresentation(RESQML2_NS::WellboreInterpretation * interp,
+			const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj);
 
 		/**
 		 * Creates an instance of this class by wrapping a gsoap instance.

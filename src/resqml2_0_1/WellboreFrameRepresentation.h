@@ -27,10 +27,6 @@ namespace RESQML2_0_1_NS
 	/** Proxy class for a wellbore frame representation. */
 	class WellboreFrameRepresentation : public RESQML2_NS::WellboreFrameRepresentation
 	{
-	protected:
-		/** Default constructor */
-		WellboreFrameRepresentation() {}
-
 	public:
 
 		/**
@@ -62,11 +58,15 @@ namespace RESQML2_0_1_NS
 		 * @param [in]	traj  	The wellbore trajectory that refers this wellbore frame. It cannot be
 		 * 						null.
 		 */
-		WellboreFrameRepresentation(class WellboreInterpretation* interp, const std::string& guid, const std::string& title, class WellboreTrajectoryRepresentation* traj);
+		WellboreFrameRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::WellboreTrajectoryRepresentation* traj);
 
 		/** The standard XML tag without XML namespace for serializing this data object. */
 		DLL_IMPORT_OR_EXPORT static const char* XML_TAG;
 
 		DLL_IMPORT_OR_EXPORT virtual std::string getXmlTag() const override { return XML_TAG; }
+
+	protected:
+		/** Default constructor */
+		WellboreFrameRepresentation() {}
 	};
 }

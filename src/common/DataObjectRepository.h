@@ -612,6 +612,7 @@ namespace COMMON_NS
 		/**
 		 * Gets all the triangulated set representations of this repository which are neither horizon nor
 		 * fault.
+		 * @deprecated Use {@link getDataObjects()} template method
 		 *
 		 * @returns	A vector of pointers to all non-horizon and non-fault triangulated set representations of this repository.
 		 */
@@ -635,17 +636,19 @@ namespace COMMON_NS
 
 		/**
 		 * Gets all the trajectory representations of all wellbores into this repository.
+		 * @deprecated Use {@link getDataObjects()} template method
 		 *
 		 * @returns A vector of pointers to all wellbores trajectory representations of this repository. 
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::WellboreTrajectoryRepresentation *> getWellboreTrajectoryRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::WellboreTrajectoryRepresentation *> getWellboreTrajectoryRepresentationSet() const;
 
 		/**
 		 * Gets all the deviation surveys of all wellbores into this repository.
+		 * @deprecated Use {@link getDataObjects()} template method
 		 *
 		 * @returns	A vector of pointers to all the wellbores deviation surveys of this repository.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::DeviationSurveyRepresentation *> getDeviationSurveyRepresentationSet() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::DeviationSurveyRepresentation *> getDeviationSurveyRepresentationSet() const;
 
 		/**
 		 * Gets all the representation set representations contained into this repository

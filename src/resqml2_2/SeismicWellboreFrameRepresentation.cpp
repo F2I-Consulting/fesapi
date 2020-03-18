@@ -22,8 +22,8 @@ under the License.
 
 #include "../common/AbstractHdfProxy.h"
 #include "../resqml2_0_1/LocalTime3dCrs.h"
-#include "../resqml2_0_1/WellboreInterpretation.h"
-#include "../resqml2_0_1/WellboreTrajectoryRepresentation.h"
+#include "../resqml2/WellboreInterpretation.h"
+#include "../resqml2/WellboreTrajectoryRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_2_NS;
@@ -32,9 +32,9 @@ using namespace gsoap_eml2_2;
 const char* SeismicWellboreFrameRepresentation::XML_TAG = "SeismicWellboreFrameRepresentation";
 
 SeismicWellboreFrameRepresentation::SeismicWellboreFrameRepresentation(
-	RESQML2_0_1_NS::WellboreInterpretation* interp,
+	RESQML2_NS::WellboreInterpretation* interp,
 	const std::string& guid, const std::string& title,
-	RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj,
+	RESQML2_NS::WellboreTrajectoryRepresentation* traj,
 	double seismicReferenceDatum,
 	double weatheringVelocity,
 	RESQML2_0_1_NS::LocalTime3dCrs* crs)
@@ -120,7 +120,6 @@ bool SeismicWellboreFrameRepresentation::areTimeValuesRegularlySpaced() const
 	return static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_2)->NodeTimeValues->soap_type() == SOAP_TYPE_gsoap_eml2_2_eml22__FloatingPointLatticeArray;
 }
 
-
 double SeismicWellboreFrameRepresentation::getTimeConstantIncrementValue() const
 {
 	if (!areTimeValuesRegularlySpaced()) {
@@ -129,7 +128,6 @@ double SeismicWellboreFrameRepresentation::getTimeConstantIncrementValue() const
 
 	return static_cast<eml22__FloatingPointLatticeArray*>(static_cast<_resqml22__SeismicWellboreFrameRepresentation*>(gsoapProxy2_2)->NodeTimeValues)->Offset[0]->Value;
 }
-
 
 double SeismicWellboreFrameRepresentation::getTimeFirstValue() const
 {

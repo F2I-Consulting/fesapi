@@ -221,7 +221,7 @@ namespace WITSML2_0_NS
 		 *
 		 * @returns	Null if it fails, else the resqml wellbore features.
 		 */
-		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_0_1_NS::WellboreFeature *> getResqmlWellboreFeatures() const;
+		DLL_IMPORT_OR_EXPORT std::vector<RESQML2_NS::WellboreFeature *> getResqmlWellboreFeatures() const;
 
 		/**
 		 * Gets the wellbores

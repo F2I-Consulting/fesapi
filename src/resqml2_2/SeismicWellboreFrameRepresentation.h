@@ -57,9 +57,9 @@ namespace RESQML2_2_NS
 		* @param weatheringVelocity		The weathering velocity (also called veolocity replacement).
 		* @param crs					The crs the time values are based on.
 		*/
-		SeismicWellboreFrameRepresentation(RESQML2_0_1_NS::WellboreInterpretation* interp,
+		SeismicWellboreFrameRepresentation(RESQML2_NS::WellboreInterpretation* interp,
 			const std::string& guid, const std::string& title,
-			RESQML2_0_1_NS::WellboreTrajectoryRepresentation* traj,
+			RESQML2_NS::WellboreTrajectoryRepresentation* traj,
 			double seismicReferenceDatum,
 			double weatheringVelocity,
 			RESQML2_0_1_NS::LocalTime3dCrs* crs);

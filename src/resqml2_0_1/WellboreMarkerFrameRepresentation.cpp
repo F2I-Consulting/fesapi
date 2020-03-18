@@ -22,8 +22,8 @@ under the License.
 
 #include "H5Tpublic.h"
 
-#include "WellboreInterpretation.h"
-#include "WellboreTrajectoryRepresentation.h"
+#include "../resqml2/WellboreInterpretation.h"
+#include "../resqml2/WellboreTrajectoryRepresentation.h"
 #include "WellboreMarker.h"
 #include "StratigraphicOccurrenceInterpretation.h"
 #include "BoundaryFeatureInterpretation.h"
@@ -35,7 +35,7 @@ using namespace gsoap_resqml2_0_1;
 
 const char* WellboreMarkerFrameRepresentation::XML_TAG = "WellboreMarkerFrameRepresentation";
 
-WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(WellboreInterpretation * interp, const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
+WellboreMarkerFrameRepresentation::WellboreMarkerFrameRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::WellboreTrajectoryRepresentation* traj)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The wellbore interpretation cannot be null.");

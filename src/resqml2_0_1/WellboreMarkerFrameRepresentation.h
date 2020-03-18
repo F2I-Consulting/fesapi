@@ -53,7 +53,7 @@ namespace RESQML2_0_1_NS
 		 * @param [in]	traj  	The wellbore trajectory that refers this wellbore marker frame. It cannot
 		 * 						be null.
 		 */
-		WellboreMarkerFrameRepresentation(class WellboreInterpretation * interp, const std::string & guid, const std::string & title, class WellboreTrajectoryRepresentation * traj);
+		WellboreMarkerFrameRepresentation(RESQML2_NS::WellboreInterpretation* interp, const std::string& guid, const std::string& title, RESQML2_NS::WellboreTrajectoryRepresentation* traj);
 
 		/**
 		 * Creates an instance of this class by wrapping a gSOAP instance.

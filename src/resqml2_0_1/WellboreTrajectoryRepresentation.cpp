@@ -24,7 +24,7 @@ under the License.
 #include "H5public.h"
 
 #include "../resqml2/AbstractLocal3dCrs.h"
-#include "../resqml2/DeviationSurvey.h"
+#include "../resqml2/DeviationSurveyRepresentation.h"
 #include "../resqml2/MdDatum.h"
 #include "../resqml2/WellboreFrameRepresentation.h"
 #include "../resqml2/WellboreInterpretation.h"

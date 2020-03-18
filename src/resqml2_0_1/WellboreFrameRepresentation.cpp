@@ -18,8 +18,8 @@ under the License.
 -----------------------------------------------------------------------*/
 #include "WellboreFrameRepresentation.h"
 
-#include "WellboreInterpretation.h"
-#include "WellboreTrajectoryRepresentation.h"
+#include "../resqml2/WellboreInterpretation.h"
+#include "../resqml2/WellboreTrajectoryRepresentation.h"
 
 using namespace std;
 using namespace RESQML2_0_1_NS;
@@ -27,7 +27,7 @@ using namespace gsoap_resqml2_0_1;
 
 const char* WellboreFrameRepresentation::XML_TAG = "WellboreFrameRepresentation";
 
-WellboreFrameRepresentation::WellboreFrameRepresentation(WellboreInterpretation* interp, const string& guid, const std::string& title, WellboreTrajectoryRepresentation* traj)
+WellboreFrameRepresentation::WellboreFrameRepresentation(RESQML2_NS::WellboreInterpretation* interp, const string& guid, const std::string& title, RESQML2_NS::WellboreTrajectoryRepresentation* traj)
 {
 	if (interp == nullptr) {
 		throw invalid_argument("The wellbore interpretation this wellbore frame represents cannot be null.");

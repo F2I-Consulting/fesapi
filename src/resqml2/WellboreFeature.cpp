@@ -29,5 +29,10 @@ const char* WellboreFeature::XML_TAG = "WellboreFeature";
 
 WITSML2_0_NS::Wellbore* WellboreFeature::getWitsmlWellbore() const
 {
-	return getRepository()->getTargetObjects<WITSML2_0_NS::Wellbore>(this)[0];
+	const auto& witsmlWellbores = getRepository()->getTargetObjects<WITSML2_0_NS::Wellbore>(this);
+	switch (witsmlWellbores.size()) {
+	case 0: return nullptr;
+	case 1: return witsmlWellbores[0];
+	default: throw std::logic_error("There are toomuch associated WITSML wellbores.");
+	}
 }

@@ -23,8 +23,8 @@ under the License.
 #include <hdf5.h>
 
 #include "../resqml2/AbstractGridRepresentation.h"
-#include "WellboreInterpretation.h"
-#include "WellboreTrajectoryRepresentation.h"
+#include "../resqml2/WellboreInterpretation.h"
+#include "../resqml2/WellboreTrajectoryRepresentation.h"
 #include "../common/AbstractHdfProxy.h"
 
 #include "../tools/Misc.h"
@@ -35,7 +35,7 @@ using namespace gsoap_resqml2_0_1;
 
 const char* BlockedWellboreRepresentation::XML_TAG = "BlockedWellboreRepresentation";
 
-void BlockedWellboreRepresentation::init(const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation * traj)
+void BlockedWellboreRepresentation::init(const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation * traj)
 {
 	if (traj == nullptr) {
 		throw invalid_argument("The wellbore trajectory of a blocked wellbore cannot be null.");
@@ -53,8 +53,8 @@ void BlockedWellboreRepresentation::init(const std::string & guid, const std::st
 	getRepository()->addRelationship(this, traj);
 }
 
-BlockedWellboreRepresentation::BlockedWellboreRepresentation(WellboreInterpretation * interp,
-	const std::string & guid, const std::string & title, WellboreTrajectoryRepresentation  * traj)
+BlockedWellboreRepresentation::BlockedWellboreRepresentation(RESQML2_NS::WellboreInterpretation * interp,
+	const std::string & guid, const std::string & title, RESQML2_NS::WellboreTrajectoryRepresentation  * traj)
 {
 	init(guid, title, traj);
 
